@@ -1,11 +1,13 @@
 ﻿#pragma once
 
+
 #include <glm/glm.hpp>
+#include <gloperate/gloperate_api.h>
 
-#include <cgutils/cgutils_api.h>
 
-namespace cgutils
+namespace gloperate
 {
+
 
 /** \brief Axis aligned rectangular bounding volume spanned by lower left front and upper right back points.
 
@@ -26,8 +28,10 @@ namespace cgutils
 
             \endcode
 */
-class CGUTILS_API AxisAlignedBoundingBox
+class GLOPERATE_API AxisAlignedBoundingBox
 {
+
+
 public:
     AxisAlignedBoundingBox();
     AxisAlignedBoundingBox(const glm::vec3& llf, const glm::vec3 urb);
@@ -44,12 +48,16 @@ public:
     bool inside(const glm::vec3 & vertex) const;
     bool outside(const glm::vec3 & vertex) const;
 
+
 protected:
     glm::vec3 m_urb;
     glm::vec3 m_llf;
 
     glm::vec3 m_center;
     float m_radius;
+
+
 };
 
-} // namespace gloutils
+
+} // namespace gloperate

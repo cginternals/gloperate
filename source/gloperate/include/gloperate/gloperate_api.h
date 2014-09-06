@@ -5,24 +5,24 @@
 // don't do it: http://support.microsoft.com/kb/q168958/
 
 #ifdef _MSC_VER
-#	define CGUTILS_API_EXPORT_DECLARATION __declspec(dllexport)
-#	define CGUTILS_API_IMPORT_DECLARATION __declspec(dllimport)
+#	define GLOPERATE_API_EXPORT_DECLARATION __declspec(dllexport)
+#	define GLOPERATE_API_IMPORT_DECLARATION __declspec(dllimport)
 #elif __GNUC__
-#	define CGUTILS_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
-#	define CGUTILS_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
+#	define GLOPERATE_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#	define GLOPERATE_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#	define CGUTILS_API_EXPORT_DECLARATION
-#	define CGUTILS_API_IMPORT_DECLARATION
+#	define GLOPERATE_API_EXPORT_DECLARATION
+#	define GLOPERATE_API_IMPORT_DECLARATION
 #endif
 
 #ifndef GLOBJECTS_STATIC
-#ifdef CGUTILS_EXPORTS
-#	define CGUTILS_API CGUTILS_API_EXPORT_DECLARATION
+#ifdef GLOPERATE_EXPORTS
+#	define GLOPERATE_API GLOPERATE_API_EXPORT_DECLARATION
 #else
-#	define CGUTILS_API CGUTILS_API_IMPORT_DECLARATION
+#	define GLOPERATE_API GLOPERATE_API_IMPORT_DECLARATION
 #endif
 #else
-#	define CGUTILS_API
+#	define GLOPERATE_API
 #endif
 
 

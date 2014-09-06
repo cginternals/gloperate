@@ -1,11 +1,11 @@
-#include <cgutils/AxisAlignedBoundingBox.h>
-
 #include <cfloat>
+#include <gloperate/AxisAlignedBoundingBox.h>
+
 
 using namespace glm;
-
-namespace cgutils
+namespace gloperate
 {
+
 
 AxisAlignedBoundingBox::AxisAlignedBoundingBox()
 : m_urb(vec3(-FLT_MAX, -FLT_MAX, -FLT_MAX))
@@ -96,5 +96,6 @@ bool AxisAlignedBoundingBox::outside(const vec3 & vertex) const
 {
     return !inside(vertex);
 }
+
     
-} // namespace gloutils
+} // namespace gloperate
