@@ -61,6 +61,7 @@ set(sources
     ${source_path}/util/StringSourceDecorator.cpp
     ${source_path}/Painter.cpp
     ${source_path}/Viewport.cpp
+    ${source_path}/Camera.cpp
 )
 
 set(headers
@@ -70,6 +71,7 @@ set(headers
     ${include_path}/util/StringSourceDecorator.h
     ${include_path}/Painter.h
     ${include_path}/Viewport.h
+    ${include_path}/Camera.h
     ${include_path}/gloperate_api.h
 )
 
