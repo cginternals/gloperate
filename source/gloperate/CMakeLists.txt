@@ -59,6 +59,8 @@ set(sources
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
     ${source_path}/util/StringSourceDecorator.cpp
+    ${source_path}/Painter.cpp
+    ${source_path}/Viewport.cpp
 )
 
 set(headers
@@ -66,6 +68,8 @@ set(headers
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
     ${include_path}/util/StringSourceDecorator.h
+    ${include_path}/Painter.h
+    ${include_path}/Viewport.h
     ${include_path}/gloperate_api.h
 )
 
