@@ -39,9 +39,9 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-D${META_PROJECT_NAME_UPPER}_STATIC")
+    add_definitions("-DGLOPERATE_STATIC")
 else()
-    add_definitions("-DCGUTILS_EXPORTS")
+    add_definitions("-DGLOPERATE_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
