@@ -1,161 +1,58 @@
 #include "gloperate-qt/QtOpenGLWindow.h"
 #include <gloperate-qt/qt-includes-begin.h>
-#include <QApplication>
-#include <QDebug>
 #include <QResizeEvent>
-#include <QOpenGLContext>
 #include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/Viewport.h>
 
 
+using namespace gloperate;
 namespace gloperate_qt
 {
 
 
-QSurfaceFormat QtOpenGLWindow::defaultFormat()
-{
-    QSurfaceFormat format;
-    format.setProfile(QSurfaceFormat::CoreProfile);
-    #ifndef NDEBUG
-        format.setOption(QSurfaceFormat::DebugContext);
-    #endif
-    return format;
-}
-
 QtOpenGLWindow::QtOpenGLWindow()
-: QtOpenGLWindow(QtOpenGLWindow::defaultFormat())
+: QtOpenGLWindowBase()
 {
 }
 
-QtOpenGLWindow::QtOpenGLWindow(const QSurfaceFormat& format)
-: m_context(new QOpenGLContext)
-, m_initialized(false)
-, m_updatePending(false)
+QtOpenGLWindow::QtOpenGLWindow(const QSurfaceFormat & format)
+: QtOpenGLWindowBase(format)
 {
-    QSurfaceFormat f(format);
-    f.setRenderableType(QSurfaceFormat::OpenGL);
-
-    setSurfaceType(OpenGLSurface);
-    create();
-
-    m_context->setFormat(format);
-    if (!m_context->create()) {
-        qDebug() << "Could not create OpenGL context.";
-        QApplication::quit();
-    } else {
-        qDebug().nospace() << "Created OpenGL context " << m_context->format().version().first << "." << m_context->format().version().second;
-    }
 }
 
 QtOpenGLWindow::~QtOpenGLWindow()
 {
 }
 
-QOpenGLContext *QtOpenGLWindow::context() const
+Painter * QtOpenGLWindow::painter() const
 {
-    return m_context.data();
+    return m_painter;
 }
 
-void QtOpenGLWindow::updateGL()
+void QtOpenGLWindow::setPainter(Painter * painter)
 {
-    if (!m_updatePending) {
-        m_updatePending = true;
-        QCoreApplication::postEvent(this, new QEvent(QEvent::UpdateRequest));
-    }
-}
-
-void QtOpenGLWindow::initialize()
-{
-    m_context->makeCurrent(this);
-
-    onInitialize();
-
-    m_context->doneCurrent();
-
-    m_initialized = true;
-}
-
-void QtOpenGLWindow::resize(QResizeEvent * event)
-{
-    if (!m_initialized) {
-        initialize();
-    }
-
-    m_context->makeCurrent(this);
-
-    QResizeEvent deviceSpecificResizeEvent(event->size() * devicePixelRatio(), event->oldSize() * devicePixelRatio());
-
-    onResize(&deviceSpecificResizeEvent);
-
-    m_context->doneCurrent();
-}
-
-void QtOpenGLWindow::paint()
-{
-    if (!m_initialized) {
-        initialize();
-    }
-
-    if (!isExposed()) {
-        return;
-    }
-
-    m_updatePending = false;
-
-    m_context->makeCurrent(this);
-
-    onPaint();
-
-    m_context->swapBuffers(this);
-
-    m_context->doneCurrent();
+    m_painter = painter;
 }
 
 void QtOpenGLWindow::onInitialize()
 {
+    if (m_painter) {
+        m_painter->initialize();
+    }
 }
 
-void QtOpenGLWindow::onResize(QResizeEvent * )
+void QtOpenGLWindow::onResize(QResizeEvent * event)
 {
+    if (m_painter) {
+        m_painter->resize(Viewport(0, 0, event->size().width(), event->size().height()));
+    }
 }
 
 void QtOpenGLWindow::onPaint()
 {
-}
-
-bool QtOpenGLWindow::event(QEvent * event)
-{
-    switch (event->type()) {
-        case QEvent::UpdateRequest:
-            paint();
-            return true;
-        case QEvent::Enter:
-            enterEvent(event);
-            return true;
-        case QEvent::Leave:
-            leaveEvent(event);
-            return true;
-        default:
-            return QWindow::event(event);
+    if (m_painter) {
+        m_painter->paint();
     }
-}
-
-void QtOpenGLWindow::resizeEvent(QResizeEvent * event)
-{
-    resize(event);
-    paint();
-}
-
-void QtOpenGLWindow::exposeEvent(QExposeEvent * )
-{
-    paint();
-}
-
-void QtOpenGLWindow::enterEvent(QEvent *)
-{
-}
-
-void QtOpenGLWindow::leaveEvent(QEvent *)
-{
 }
 
 

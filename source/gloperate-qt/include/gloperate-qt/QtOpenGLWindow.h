@@ -1,59 +1,36 @@
 #pragma once
 
 
-#include <gloperate-qt/qt-includes-begin.h>
-#include <QWindow>
-#include <QScopedPointer>
-#include <QSurfaceFormat>
-#include <gloperate-qt/qt-includes-end.h>
-#include <gloperate-qt/gloperate-qt_api.h>
-
-
-class QOpenGLContext;
+#include <globjects-base/ref_ptr.h>
+#include <gloperate/Painter.h>
+#include <gloperate-qt/QtOpenGLWindowBase.h>
 
 
 namespace gloperate_qt
 {
 
 
-class GLOPERATE_QT_API QtOpenGLWindow : public QWindow
+class GLOPERATE_QT_API QtOpenGLWindow : public QtOpenGLWindowBase
 {
 
 
 public:
-    static QSurfaceFormat defaultFormat();
-
-
-public:
     QtOpenGLWindow();
-    QtOpenGLWindow(const QSurfaceFormat& format);
+    QtOpenGLWindow(const QSurfaceFormat & format);
     virtual ~QtOpenGLWindow();
 
-    QOpenGLContext * context() const;
-
-    void updateGL();
+    gloperate::Painter * painter() const;
+    void setPainter(gloperate::Painter * painter);
 
 
 protected:
-    void initialize();
-    void resize(QResizeEvent * event);
-    void paint();
-
     virtual void onInitialize();
     virtual void onResize(QResizeEvent * event);
     virtual void onPaint();
 
-    virtual bool event(QEvent * event) override;
-    virtual void resizeEvent(QResizeEvent * event) override;
-    virtual void exposeEvent(QExposeEvent * event) override;
-    virtual void enterEvent(QEvent * event);
-    virtual void leaveEvent(QEvent * event);
-
 
 protected:
-    QScopedPointer<QOpenGLContext> m_context;
-    bool                           m_initialized;
-    bool                           m_updatePending;
+    glo::ref_ptr<gloperate::Painter> m_painter;
 
 
 };

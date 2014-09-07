@@ -31,6 +31,7 @@ include_directories(
 
 include_directories(
     BEFORE
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -41,6 +42,7 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    gloperate
 )
 
 #
@@ -65,10 +67,12 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
     ${source_path}/QtOpenGLWindow.cpp
+    ${source_path}/QtOpenGLWindowBase.cpp
 )
 
 set(headers
     ${include_path}/QtOpenGLWindow.h
+    ${include_path}/QtOpenGLWindowBase.h
     ${include_path}/gloperate-qt_api.h
 )
 
