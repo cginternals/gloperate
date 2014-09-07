@@ -31,9 +31,7 @@ void ExampleWindow::onResize(QResizeEvent * event)
 {
     int width  = event->size().width();
     int height = event->size().height();
-    int side   = std::min<int>(width, height);
-
-    gl::glViewport((width - side) / 2, (height - side) / 2, side, side);
+    gl::glViewport(0, 0, width, height);
 }
 
 void ExampleWindow::onPaint()
