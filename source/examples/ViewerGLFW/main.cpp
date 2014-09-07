@@ -4,6 +4,7 @@
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventHandler.h>
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
+#include <basic-examples/RotatingQuad/RotatingQuad.h>
 
 
 using namespace gloperate_glfw;
@@ -14,8 +15,11 @@ int main(int /*argc*/, char* /*argv*/[])
     ContextFormat format;
     format.setVersion(3, 0);
 
+//  gloperate::Painter * painter = new SimpleTexture();
+    gloperate::Painter * painter = new RotatingQuad();
+
     WindowEventHandler * eventHandler = new WindowEventHandler();
-    eventHandler->setPainter(new SimpleTexture());
+    eventHandler->setPainter(painter);
 
     Window window;
     window.setEventHandler(eventHandler);
