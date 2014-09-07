@@ -18,14 +18,14 @@ void Painter::initialize()
     onInitialize();
 }
 
-void Painter::resize(const Viewport &viewport)
+void Painter::resize(const Viewport & viewport)
 {
     onResize(viewport);
 }
 
-void Painter::draw()
+void Painter::paint()
 {
-    onDraw();
+    onPaint();
 }
 
 

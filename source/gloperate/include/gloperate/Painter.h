@@ -21,14 +21,14 @@ public:
     virtual ~Painter();
 
     void initialize();
-    void resize(const Viewport &viewport);
-    void draw();
+    void resize(const Viewport & viewport);
+    void paint();
 
 
 protected:
-    virtual void onInitialize()                     = 0;
-    virtual void onResize(const Viewport &viewport) = 0;
-    virtual void onDraw()                           = 0;
+    virtual void onInitialize()                      = 0;
+    virtual void onResize(const Viewport & viewport) = 0;
+    virtual void onPaint()                            = 0;
 
 
 protected:
