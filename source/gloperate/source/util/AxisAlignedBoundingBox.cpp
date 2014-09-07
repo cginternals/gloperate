@@ -1,5 +1,5 @@
+#include <gloperate/util/AxisAlignedBoundingBox.h>
 #include <cfloat>
-#include <gloperate/AxisAlignedBoundingBox.h>
 
 
 using namespace glm;

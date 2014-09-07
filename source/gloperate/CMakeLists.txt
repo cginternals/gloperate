@@ -1,4 +1,3 @@
-
 # Target
 set(target gloperate)
 message(STATUS "Lib ${target}")
@@ -56,11 +55,17 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/AxisAlignedBoundingBox.cpp
+    ${source_path}/util/AxisAlignedBoundingBox.cpp
+    ${source_path}/util/ScreenAlignedQuad.cpp
+    ${source_path}/util/StringTemplate.cpp
+    ${source_path}/util/StringSourceDecorator.cpp
 )
 
 set(headers
-    ${include_path}/AxisAlignedBoundingBox.h
+    ${include_path}/util/AxisAlignedBoundingBox.h
+    ${include_path}/util/ScreenAlignedQuad.h
+    ${include_path}/util/StringTemplate.h
+    ${include_path}/util/StringSourceDecorator.h
     ${include_path}/gloperate_api.h
 )
 

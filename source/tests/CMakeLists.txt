@@ -1,4 +1,3 @@
-
 # Macro: Build test and add command to execute it via target 'test'
 macro(add_test_without_ctest target)
 

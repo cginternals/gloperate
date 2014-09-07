@@ -1,4 +1,3 @@
-
 set(target gloperate-test)
 message(STATUS "Test ${target}")
 

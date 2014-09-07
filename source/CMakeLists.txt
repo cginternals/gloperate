@@ -8,10 +8,12 @@ include_directories(
 # Libraries
 set(IDE_FOLDER "")
 add_subdirectory(gloperate)
+add_subdirectory(gloperate-qt)
+add_subdirectory(gloperate-glfw)
 
 # Examples
 set(IDE_FOLDER "Examples")
-# add_subdirectory(examples)
+add_subdirectory(examples)
 
 # Tests
 set(IDE_FOLDER "Tests")

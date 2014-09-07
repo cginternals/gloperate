@@ -1,6 +1,7 @@
-
 if(OPTION_BUILD_EXAMPLES)
 
-    # [TODO] Add examples
+    # Samples
+    add_subdirectory(ViewerGLFW)
+    add_subdirectory(ViewerQt)
 
 endif()
