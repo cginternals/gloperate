@@ -4,7 +4,6 @@
 #include <glbinding/gl/enum.h>
 #include <GLFW/glfw3.h>
 #include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/WindowEventHandler.h>
 #include <gloperate-glfw/events.h>
 
 

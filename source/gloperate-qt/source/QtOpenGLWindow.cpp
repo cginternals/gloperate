@@ -2,6 +2,7 @@
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QResizeEvent>
 #include <gloperate-qt/qt-includes-end.h>
+#include <globjects/globjects.h>
 #include <gloperate/Viewport.h>
 
 
@@ -36,6 +37,11 @@ void QtOpenGLWindow::setPainter(Painter * painter)
 
 void QtOpenGLWindow::onInitialize()
 {
+    // Initialize globjects
+    glo::init();
+    glo::DebugMessage::enable();
+
+    // Initialize painter
     if (m_painter) {
         m_painter->initialize();
     }
@@ -44,6 +50,7 @@ void QtOpenGLWindow::onInitialize()
 void QtOpenGLWindow::onResize(QResizeEvent * event)
 {
     if (m_painter) {
+        // Resize painter
         m_painter->resize(Viewport(0, 0, event->size().width(), event->size().height()));
     }
 }
@@ -51,6 +58,7 @@ void QtOpenGLWindow::onResize(QResizeEvent * event)
 void QtOpenGLWindow::onPaint()
 {
     if (m_painter) {
+        // Call painter
         m_painter->paint();
     }
 }

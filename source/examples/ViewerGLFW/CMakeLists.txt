@@ -20,12 +20,13 @@ message(STATUS "Example ${target}")
 
 include_directories(
     ${GLOBJECTS_INCLUDES}
-    ${CMAKE_SOURCE_DIR}/source/gloperate/include
-    ${CMAKE_SOURCE_DIR}/source/gloperate-glfw/include
 )
 
 include_directories(
     BEFORE
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-glfw/include
+    ${CMAKE_SOURCE_DIR}/source/examples/ExampleSimpleTexture/include
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -38,6 +39,7 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     gloperate
     gloperate-glfw
+    example-simpletexture
 )
 
 #
@@ -45,10 +47,8 @@ set(libs
 #
 
 set(headers
-    ExampleWindowEventHandler.h
 )
 set(sources
-    ExampleWindowEventHandler.cpp
     main.cpp
 )
 

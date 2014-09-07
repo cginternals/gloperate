@@ -1,7 +1,11 @@
 #include <gloperate-glfw/WindowEventHandler.h>
+#include <globjects/globjects.h>
+#include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
+#include <gloperate/Viewport.h>
 
 
+using namespace gloperate;
 namespace gloperate_glfw
 {
 
@@ -14,147 +18,51 @@ WindowEventHandler::~WindowEventHandler()
 {
 }
 
-void WindowEventHandler::handleEvent(WindowEvent & event)
+Painter * WindowEventHandler::painter() const
 {
-    if (!event.window())
-        return;
+    return m_painter;
+}
 
-    switch (event.type())
-    {
-        case WindowEvent::Resize:
-            resizeEvent(static_cast<ResizeEvent&>(event));
-            break;
+void WindowEventHandler::setPainter(Painter * painter)
+{
+    m_painter = painter;
+}
 
-        case WindowEvent::FrameBufferResize:
-            framebufferResizeEvent(static_cast<ResizeEvent&>(event));
-            break;
+void WindowEventHandler::initialize(gloperate_glfw::Window & /*window*/)
+{
+    // Initialize globjects
+    glo::init();
+    glo::DebugMessage::enable();
 
-        case WindowEvent::Move:
-            moveEvent(static_cast<MoveEvent&>(event));
-            break;
-
-        case WindowEvent::Paint:
-            paintEvent(static_cast<PaintEvent&>(event));
-            break;
-
-        case WindowEvent::KeyPress:
-            keyPressEvent(static_cast<KeyEvent&>(event));
-            break;
-
-        case WindowEvent::KeyRelease:
-            keyReleaseEvent(static_cast<KeyEvent&>(event));
-            break;
-
-        case WindowEvent::MousePress:
-            mousePressEvent(static_cast<MouseEvent&>(event));
-            break;
-
-        case WindowEvent::MouseRelease:
-            mouseReleaseEvent(static_cast<MouseEvent&>(event));
-            break;
-
-        case WindowEvent::MouseMove:
-            mouseMoveEvent(static_cast<MouseEvent&>(event));
-            break;
-
-        case WindowEvent::MouseEnter:
-
-            break;
-
-        case WindowEvent::MouseLeave:
-
-            break;
-
-        case WindowEvent::Scroll:
-            scrollEvent(static_cast<ScrollEvent&>(event));
-            break;
-
-        case WindowEvent::Focus:
-            focusEvent(static_cast<FocusEvent&>(event));
-            break;
-
-        case WindowEvent::Iconify:
-            iconifyEvent(static_cast<IconifyEvent&>(event));
-            break;
-
-        case WindowEvent::Timer:
-            timerEvent(static_cast<TimerEvent&>(event));
-            break;
-
-        default:
-            break;
+    // Initialize painter
+    if (m_painter) {
+        m_painter->initialize();
     }
 }
 
-void WindowEventHandler::initialize(Window &)
+void WindowEventHandler::idle(Window & window)
 {
+    // Continuous repaint
+    window.repaint();
 }
 
-void WindowEventHandler::finalize(Window &)
+void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 {
+    if (m_painter) {
+        // Resize painter
+        m_painter->resize(Viewport(0, 0, event.width(), event.height()));
+    }
 }
 
-void WindowEventHandler::idle(Window &)
+void WindowEventHandler::paintEvent(PaintEvent & /*event*/)
 {
+    if (m_painter) {
+        // Call painter
+        m_painter->paint();
+    }
 }
 
-void WindowEventHandler::resizeEvent(ResizeEvent &)
-{
-}
-
-void WindowEventHandler::framebufferResizeEvent(ResizeEvent &)
-{
-}
-
-void WindowEventHandler::moveEvent(MoveEvent &)
-{
-}
-
-void WindowEventHandler::paintEvent(PaintEvent &)
-{
-}
-
-void WindowEventHandler::keyPressEvent(KeyEvent &)
-{
-}
-
-void WindowEventHandler::keyReleaseEvent(KeyEvent &)
-{
-}
-
-void WindowEventHandler::mousePressEvent(MouseEvent &)
-{
-}
-
-void WindowEventHandler::mouseMoveEvent(MouseEvent &)
-{
-}
-
-void WindowEventHandler::mouseReleaseEvent(MouseEvent &)
-{
-}
-
-void WindowEventHandler::mouseEnterEvent(MouseEnterEvent &)
-{
-}
-
-void WindowEventHandler::mouseLeaveEvent(MouseLeaveEvent &)
-{
-}
-
-void WindowEventHandler::scrollEvent(ScrollEvent &)
-{
-}
-
-void WindowEventHandler::focusEvent(FocusEvent &)
-{
-}
-
-void WindowEventHandler::iconifyEvent(IconifyEvent &)
-{
-}
-
-void WindowEventHandler::timerEvent(TimerEvent &)
+void WindowEventHandler::keyPressEvent(KeyEvent & /*event*/)
 {
 }
 

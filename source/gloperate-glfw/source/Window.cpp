@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <globjects-base/baselogging.h>
 #include <gloperate-glfw/Context.h>
-#include <gloperate-glfw/WindowEventHandler.h>
+#include <gloperate-glfw/WindowEventHandlerBase.h>
 #include <gloperate-glfw/events.h>
 #include <gloperate-glfw/WindowEventDispatcher.h>
 
@@ -48,12 +48,12 @@ Window::~Window()
     }
 }
 
-WindowEventHandler * Window::eventHandler()
+WindowEventHandlerBase * Window::eventHandler()
 {
     return m_eventHandler.get();
 }
 
-const WindowEventHandler * Window::eventHandler() const
+const WindowEventHandlerBase * Window::eventHandler() const
 {
     return m_eventHandler.get();
 }
@@ -303,7 +303,7 @@ void Window::toggleMode()
     }
 }
 
-void Window::setEventHandler(WindowEventHandler * eventHandler)
+void Window::setEventHandler(WindowEventHandlerBase * eventHandler)
 {
     if (eventHandler == m_eventHandler)
         return;

@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <globjects-base/ref_ptr.h>
 #include <gloperate-glfw/MainLoop.h>
-#include <gloperate-glfw/WindowEventHandler.h>
+#include <gloperate-glfw/WindowEventHandlerBase.h>
 
 
 struct GLFWwindow;
@@ -24,7 +24,7 @@ class Context;
 
 
 /**
- * Attach a WindowEventHandler specialization for event handling.
+ * Attach a WindowEventHandlerBase specialization for event handling.
  */
 class GLOPERATE_GLFW_API Window
 {
@@ -42,9 +42,9 @@ public:
      * quitting, just before the opengl context gets destroyed, or when
      * reassigning a new, different handler.
      */
-    void setEventHandler(WindowEventHandler * eventHandler);
-    const WindowEventHandler * eventHandler() const;
-    WindowEventHandler * eventHandler();
+    void setEventHandler(WindowEventHandlerBase * eventHandler);
+    const WindowEventHandlerBase * eventHandler() const;
+    WindowEventHandlerBase * eventHandler();
 
     void show();
     void hide();
@@ -115,7 +115,7 @@ protected:
 protected:
     Context * m_context;
     GLFWwindow * m_window;
-    glo::ref_ptr<WindowEventHandler> m_eventHandler;
+    glo::ref_ptr<WindowEventHandlerBase> m_eventHandler;
     std::queue<WindowEvent*> m_eventQueue;
     glm::ivec2 m_windowedModeSize;
     std::string m_title;

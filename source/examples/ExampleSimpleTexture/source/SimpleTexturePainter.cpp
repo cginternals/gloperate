@@ -1,8 +1,6 @@
 #include <example-simpletexture/SimpleTexturePainter.h>
 #include <random>
 #include <glbinding/gl/gl.h>
-#include <globjects/globjects.h>
-#include <globjects/DebugMessage.h>
 #include <gloperate/Viewport.h>
 
 
@@ -19,10 +17,6 @@ SimpleTexturePainter::~SimpleTexturePainter()
 
 void SimpleTexturePainter::onInitialize()
 {
-    glo::init();
-
-    glo::DebugMessage::enable();
-
     gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
     createAndSetupTexture();

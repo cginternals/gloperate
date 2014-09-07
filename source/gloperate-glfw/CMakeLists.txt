@@ -69,6 +69,7 @@ set(sources
     ${source_path}/Window.cpp
     ${source_path}/WindowEventDispatcher.cpp
     ${source_path}/WindowEventHandler.cpp
+    ${source_path}/WindowEventHandlerBase.cpp
     ${source_path}/MainLoop.cpp
     ${source_path}/events.cpp
 )
@@ -80,6 +81,7 @@ set(headers
     ${include_path}/Window.h
     ${include_path}/WindowEventDispatcher.h
     ${include_path}/WindowEventHandler.h
+    ${include_path}/WindowEventHandlerBase.h
     ${include_path}/MainLoop.h
     ${include_path}/keys.h
     ${include_path}/gloperate-glfw_api.h
