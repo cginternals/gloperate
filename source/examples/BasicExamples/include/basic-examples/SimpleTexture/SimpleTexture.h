@@ -5,16 +5,16 @@
 #include <globjects/Texture.h>
 #include <gloperate/util/ScreenAlignedQuad.h>
 #include <gloperate/Painter.h>
-#include <example-simpletexture/example_simpletexture_api.h>
+#include <basic-examples/basic_examples_api.h>
 
 
-class EXAMPLE_SIMPLETEXTURE_API SimpleTexturePainter : public gloperate::Painter
+class BASIC_EXAMPLES_API SimpleTexture : public gloperate::Painter
 {
 
 
 public:
-    SimpleTexturePainter();
-    virtual ~SimpleTexturePainter();
+    SimpleTexture();
+    virtual ~SimpleTexture();
 
 
 protected:

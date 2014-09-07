@@ -1,4 +1,4 @@
-#include <example-simpletexture/SimpleTexturePainter.h>
+#include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <random>
 #include <glbinding/gl/gl.h>
 #include <gloperate/Viewport.h>
@@ -7,15 +7,15 @@
 using namespace gloperate;
 
 
-SimpleTexturePainter::SimpleTexturePainter()
+SimpleTexture::SimpleTexture()
 {
 }
 
-SimpleTexturePainter::~SimpleTexturePainter()
+SimpleTexture::~SimpleTexture()
 {
 }
 
-void SimpleTexturePainter::onInitialize()
+void SimpleTexture::onInitialize()
 {
     gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -23,19 +23,19 @@ void SimpleTexturePainter::onInitialize()
     createAndSetupGeometry();
 }
 
-void SimpleTexturePainter::onResize(const Viewport & viewport)
+void SimpleTexture::onResize(const Viewport & viewport)
 {
     gl::glViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height());
 }
 
-void SimpleTexturePainter::onPaint()
+void SimpleTexture::onPaint()
 {
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
     m_quad->draw();
 }
 
-void SimpleTexturePainter::createAndSetupTexture()
+void SimpleTexture::createAndSetupTexture()
 {
     static const int w(256);
     static const int h(256);
@@ -53,7 +53,7 @@ void SimpleTexturePainter::createAndSetupTexture()
     m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
 }
 
-void SimpleTexturePainter::createAndSetupGeometry()
+void SimpleTexture::createAndSetupGeometry()
 {
     m_quad = new gloperate::ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);

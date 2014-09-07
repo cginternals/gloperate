@@ -3,7 +3,7 @@
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventHandler.h>
-#include <example-simpletexture/SimpleTexturePainter.h>
+#include <basic-examples/SimpleTexture/SimpleTexture.h>
 
 
 using namespace gloperate_glfw;
@@ -11,16 +11,11 @@ using namespace gloperate_glfw;
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-
     ContextFormat format;
     format.setVersion(3, 0);
 
     WindowEventHandler * eventHandler = new WindowEventHandler();
-    eventHandler->setPainter(new SimpleTexturePainter());
+    eventHandler->setPainter(new SimpleTexture());
 
     Window window;
     window.setEventHandler(eventHandler);

@@ -1,5 +1,5 @@
 # Target
-set(target example-simpletexture)
+set(target basic-examples)
 message(STATUS "Lib ${target}")
 
 #
@@ -41,9 +41,9 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DEXAMPLE_SIMPLETEXTURE_STATIC")
+    add_definitions("-DBASIC_EXAMPLES_STATIC")
 else()
-    add_definitions("-DEXAMPLE_SIMPLETEXTURE_EXPORTS")
+    add_definitions("-DBASIC_EXAMPLES_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
@@ -57,12 +57,12 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/SimpleTexturePainter.cpp
+    ${source_path}/SimpleTexture/SimpleTexture.cpp
 )
 
 set(headers
-    ${include_path}/SimpleTexturePainter.h
-    ${include_path}/example_simpletexture_api.h
+    ${include_path}/SimpleTexture/SimpleTexture.h
+    ${include_path}/basic_examples_api.h
 )
 
 # Group source files
