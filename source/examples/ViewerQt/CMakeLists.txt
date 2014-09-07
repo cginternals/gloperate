@@ -25,14 +25,15 @@ set(CMAKE_AUTOMOC ON)
 
 include_directories(
     ${GLOBJECTS_INCLUDES}
-    ${CMAKE_SOURCE_DIR}/source/gloperate/include
-    ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
 )
 
 include_directories(
     BEFORE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
+    ${CMAKE_SOURCE_DIR}/source/examples/ExampleSimpleTexture/include
 )
 
 #
@@ -43,6 +44,7 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     gloperate
     gloperate-qt
+    example-simpletexture
 )
 
 #
@@ -50,10 +52,8 @@ set(libs
 #
 
 set(headers
-    ExampleWindow.h
 )
 set(sources
-    ExampleWindow.cpp
     main.cpp
 )
 
