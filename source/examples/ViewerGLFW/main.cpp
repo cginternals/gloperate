@@ -1,4 +1,6 @@
-#include <globjects/DebugMessage.h>
+#include <iostream>
+#include <gloperate/plugin/PluginManager.h>
+#include <gloperate/plugin/Plugin.h>
 #include <gloperate-glfw/ContextFormat.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/Window.h>
@@ -7,6 +9,7 @@
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 
 
+using namespace gloperate;
 using namespace gloperate_glfw;
 
 
@@ -15,8 +18,25 @@ int main(int /*argc*/, char* /*argv*/[])
     ContextFormat format;
     format.setVersion(3, 0);
 
-//  gloperate::Painter * painter = new SimpleTexture();
-    gloperate::Painter * painter = new RotatingQuad();
+    // Create plugin manager
+    PluginManager pluginManager;
+    pluginManager.loadPluginLibrary("build/libbasic-examples.so");
+    for (Plugin * plugin : pluginManager.plugins()) {
+        std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
+        std::cout << "  by " << plugin->vendor() << "\n";
+        std::cout << "  " << plugin->description() << "\n";
+        std::cout << "\n";
+    }
+
+    // Choose a painter
+    gloperate::Painter * painter = nullptr;
+    Plugin * plugin = pluginManager.plugin("RotatingQuad");
+    if (plugin) {
+        painter = plugin->createPainter();
+    } else {
+//      painter = new SimpleTexture();
+        painter = new RotatingQuad();
+    }
 
     WindowEventHandler * eventHandler = new WindowEventHandler();
     eventHandler->setPainter(painter);

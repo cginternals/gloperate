@@ -59,6 +59,7 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(sources
     ${source_path}/SimpleTexture/SimpleTexture.cpp
     ${source_path}/RotatingQuad/RotatingQuad.cpp
+    ${source_path}/plugin.cpp
 )
 
 set(headers

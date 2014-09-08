@@ -59,6 +59,9 @@ set(sources
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
     ${source_path}/util/StringSourceDecorator.cpp
+    ${source_path}/plugin/PluginManager.cpp
+    ${source_path}/plugin/PluginLibrary.cpp
+    ${source_path}/plugin/Plugin.cpp
     ${source_path}/resources/ResourceManager.cpp
     ${source_path}/resources/AbstractLoader.cpp
     ${source_path}/resources/TextureLoader.cpp
@@ -74,6 +77,10 @@ set(headers
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
     ${include_path}/util/StringSourceDecorator.h
+    ${include_path}/plugin/PluginManager.h
+    ${include_path}/plugin/PluginLibrary.h
+    ${include_path}/plugin/Plugin.h
+    ${include_path}/plugin/plugin_api.h
     ${include_path}/resources/ResourceManager.h
     ${include_path}/resources/AbstractLoader.h
     ${include_path}/resources/TextureLoader.h
