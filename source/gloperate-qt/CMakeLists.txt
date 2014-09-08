@@ -68,11 +68,13 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(sources
     ${source_path}/QtOpenGLWindow.cpp
     ${source_path}/QtOpenGLWindowBase.cpp
+    ${source_path}/QtTextureLoader.cpp
 )
 
 set(headers
     ${include_path}/QtOpenGLWindow.h
     ${include_path}/QtOpenGLWindowBase.h
+    ${include_path}/QtTextureLoader.h
     ${include_path}/gloperate-qt_api.h
 )
 

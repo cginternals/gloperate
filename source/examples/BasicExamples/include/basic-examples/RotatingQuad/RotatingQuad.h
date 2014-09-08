@@ -12,12 +12,17 @@
 #include <basic-examples/basic_examples_api.h>
 
 
+namespace gloperate {
+    class TextureLoader;
+}
+
+
 class BASIC_EXAMPLES_API RotatingQuad : public gloperate::Painter
 {
 
 
 public:
-    RotatingQuad();
+    RotatingQuad(gloperate::TextureLoader * loader = nullptr);
     virtual ~RotatingQuad();
 
 
@@ -41,6 +46,7 @@ protected:
     glo::ref_ptr<glo::Shader>       m_vertexShader;
     glo::ref_ptr<glo::Shader>       m_fragmentShader;
     glo::ref_ptr<glo::Texture>      m_texture;
+    gloperate::TextureLoader      * m_textureLoader;
     float                           m_angle;
 
 

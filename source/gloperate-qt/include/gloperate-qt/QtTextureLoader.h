@@ -7,59 +7,33 @@
 #pragma once
 
 
-#include <string>
-#include <vector>
-#include <gloperate/gloperate_api.h>
+#include <gloperate/resources/TextureLoader.h>
+#include <gloperate-qt/gloperate-qt_api.h>
 
 
-namespace glo {
-    class Referenced;
-}
-namespace gloperate
+namespace gloperate_qt
 {
 
 
 /**
 *  @brief
-*    Load base class
+*    Texture loader based on Qt
 */
-class GLOPERATE_API AbstractLoader {
-
-
-    public:
-        /**
-        *  @brief
-        *    Resource type
-        */
-        enum ResourceType {
-            TypeTexture = 0
-        };
+class GLOPERATE_API QtTextureLoader : public gloperate::TextureLoader {
 
 
     public:
         /**
         *  @brief
         *    Constructor
-        *
-        *  @param[in] type
-        *    Resource type
         */
-        AbstractLoader(ResourceType type);
+        QtTextureLoader();
 
         /**
         *  @brief
         *    Destructor
         */
-        virtual ~AbstractLoader();
-
-        /**
-        *  @brief
-        *    Get resource type supported by this loader
-        *
-        *  @return
-        *    Resource type
-        */
-        ResourceType resourceType() const;
+        virtual ~QtTextureLoader();
 
         /**
         *  @brief
@@ -71,7 +45,7 @@ class GLOPERATE_API AbstractLoader {
         *  @return
         *    'true' if loading is implemented for given file type, else 'false'
         */
-        virtual bool canLoad(const std::string & ext) const = 0;
+        virtual bool canLoad(const std::string & ext) const;
 
         /**
         *  @brief
@@ -83,7 +57,7 @@ class GLOPERATE_API AbstractLoader {
         *  @remarks
         *    Example string: "My File Type (*.mft)"
         */
-        virtual std::vector<std::string> loadingTypes() const = 0;
+        virtual std::vector<std::string> loadingTypes() const;
 
         /**
         *  @brief
@@ -95,7 +69,7 @@ class GLOPERATE_API AbstractLoader {
         *  @remarks
         *    Example string: "*.mft *.any *.txt"
         */
-        virtual std::string allLoadingTypes() const = 0;
+        virtual std::string allLoadingTypes() const;
 
         /**
         *  @brief
@@ -107,14 +81,10 @@ class GLOPERATE_API AbstractLoader {
         *  @return
         *    Loaded resource (can be null)
         */
-        virtual glo::Referenced * load(const std::string & filename) const = 0;
-
-
-    protected:
-        ResourceType m_resourceType;    /**< Resource type of the loader */
+        virtual glo::Referenced * load(const std::string & filename) const;
 
 
 };
 
 
-} // namespace gloperate
+} // namespace gloperate_qt

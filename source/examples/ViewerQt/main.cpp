@@ -3,6 +3,7 @@
 #include <QMainWindow>
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
+#include <gloperate-qt/QtTextureLoader.h>
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 
@@ -14,17 +15,25 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-//  gloperate::Painter * painter = new SimpleTexture();
-    gloperate::Painter * painter = new RotatingQuad();
+    // Create Qt texture loader
+	QtTextureLoader loader;
 
+	// Choose a painter
+//  gloperate::Painter * painter = new SimpleTexture();
+    gloperate::Painter * painter = new RotatingQuad(&loader);
+
+    // Create OpenGL window
     QtOpenGLWindow * glWindow = new QtOpenGLWindow();
     glWindow->setPainter(painter);
 
+    // Create main window
     QMainWindow mainWindow;
     mainWindow.setGeometry(100, 100, 800, 600);
     mainWindow.setCentralWidget(QWidget::createWindowContainer(glWindow));
 
+    // Show window
     mainWindow.show();
 
+    // Run application
     return app.exec();
 }
