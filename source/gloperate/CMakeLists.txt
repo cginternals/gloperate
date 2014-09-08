@@ -59,6 +59,9 @@ set(sources
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
     ${source_path}/util/StringSourceDecorator.cpp
+    ${source_path}/resources/AbstractLoader.cpp
+    ${source_path}/resources/GlrawTextureLoader.cpp
+    ${source_path}/resources/RawFile.cpp
     ${source_path}/Painter.cpp
     ${source_path}/Viewport.cpp
     ${source_path}/Camera.cpp
@@ -69,6 +72,9 @@ set(headers
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
     ${include_path}/util/StringSourceDecorator.h
+    ${include_path}/resources/AbstractLoader.h
+    ${include_path}/resources/GlrawTextureLoader.h
+    ${include_path}/resources/RawFile.h
     ${include_path}/Painter.h
     ${include_path}/Viewport.h
     ${include_path}/Camera.h
