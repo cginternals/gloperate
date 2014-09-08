@@ -21,7 +21,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Load base class
+*    Loader base class
 */
 class GLOPERATE_API AbstractLoader {
 
@@ -29,37 +29,15 @@ class GLOPERATE_API AbstractLoader {
     public:
         /**
         *  @brief
-        *    Resource type
-        */
-        enum ResourceType {
-            TypeTexture = 0
-        };
-
-
-    public:
-        /**
-        *  @brief
         *    Constructor
-        *
-        *  @param[in] type
-        *    Resource type
         */
-        AbstractLoader(ResourceType type);
+        AbstractLoader();
 
         /**
         *  @brief
         *    Destructor
         */
         virtual ~AbstractLoader();
-
-        /**
-        *  @brief
-        *    Get resource type supported by this loader
-        *
-        *  @return
-        *    Resource type
-        */
-        ResourceType resourceType() const;
 
         /**
         *  @brief
@@ -108,10 +86,6 @@ class GLOPERATE_API AbstractLoader {
         *    Loaded resource (can be null)
         */
         virtual glo::Referenced * load(const std::string & filename) const = 0;
-
-
-    protected:
-        ResourceType m_resourceType;    /**< Resource type of the loader */
 
 
 };

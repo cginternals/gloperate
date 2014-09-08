@@ -1,6 +1,7 @@
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QApplication>
 #include <QMainWindow>
+#include <gloperate/resources/ResourceManager.h>
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
@@ -8,6 +9,7 @@
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 
 
+using namespace gloperate;
 using namespace gloperate_qt;
 
 
@@ -15,12 +17,13 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    // Create Qt texture loader
-	QtTextureLoader loader;
+    // Create resource manager
+    ResourceManager resourceManager;
+    resourceManager.addLoader(new QtTextureLoader());
 
-	// Choose a painter
+    // Choose a painter
 //  gloperate::Painter * painter = new SimpleTexture();
-    gloperate::Painter * painter = new RotatingQuad(&loader);
+    gloperate::Painter * painter = new RotatingQuad(&resourceManager);
 
     // Create OpenGL window
     QtOpenGLWindow * glWindow = new QtOpenGLWindow();

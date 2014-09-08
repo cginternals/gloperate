@@ -16,7 +16,7 @@ namespace gloperate
 *    Constructor
 */
 GlrawTextureLoader::GlrawTextureLoader()
-: AbstractLoader(AbstractLoader::TypeTexture)
+: TextureLoader()
 {
 }
 

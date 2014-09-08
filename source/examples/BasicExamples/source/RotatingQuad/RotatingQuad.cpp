@@ -6,7 +6,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <gloperate/util/StringTemplate.h>
-#include <gloperate/resources/TextureLoader.h>
+#include <gloperate/resources/ResourceManager.h>
 #include <gloperate/Viewport.h>
 
 
@@ -47,8 +47,8 @@ void main()
 )";
 
 
-RotatingQuad::RotatingQuad(TextureLoader * loader)
-: m_textureLoader(loader)
+RotatingQuad::RotatingQuad(ResourceManager * resourceManager)
+: m_resourceManager(resourceManager)
 , m_angle(0.0f)
 {
 }
@@ -107,9 +107,9 @@ void RotatingQuad::createAndSetupCamera()
 void RotatingQuad::createAndSetupTexture()
 {
     // Check if texture loader is valid
-    if (m_textureLoader) {
+    if (m_resourceManager) {
         // Try to load texture
-        m_texture = m_textureLoader->loadTexture("data/emblem-important.png");
+        m_texture = m_resourceManager->loadTexture("data/emblem-important.png");
     }
 
     // Check if texture is valid

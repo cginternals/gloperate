@@ -15,8 +15,7 @@ namespace gloperate
 *  @brief
 *    Constructor
 */
-AbstractLoader::AbstractLoader(ResourceType type)
-: m_resourceType(type)
+AbstractLoader::AbstractLoader()
 {
 }
 
@@ -26,15 +25,6 @@ AbstractLoader::AbstractLoader(ResourceType type)
 */
 AbstractLoader::~AbstractLoader()
 {
-}
-
-/**
-*  @brief
-*    Get resource type supported by this loader
-*/
-AbstractLoader::ResourceType AbstractLoader::resourceType() const
-{
-    return m_resourceType;
 }
 
 

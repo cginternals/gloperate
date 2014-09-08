@@ -13,7 +13,7 @@
 
 
 namespace gloperate {
-    class TextureLoader;
+    class ResourceManager;
 }
 
 
@@ -22,7 +22,7 @@ class BASIC_EXAMPLES_API RotatingQuad : public gloperate::Painter
 
 
 public:
-    RotatingQuad(gloperate::TextureLoader * loader = nullptr);
+    RotatingQuad(gloperate::ResourceManager * resourceManager = nullptr);
     virtual ~RotatingQuad();
 
 
@@ -46,7 +46,7 @@ protected:
     glo::ref_ptr<glo::Shader>       m_vertexShader;
     glo::ref_ptr<glo::Shader>       m_fragmentShader;
     glo::ref_ptr<glo::Texture>      m_texture;
-    gloperate::TextureLoader      * m_textureLoader;
+    gloperate::ResourceManager    * m_resourceManager;
     float                           m_angle;
 
 

@@ -7,7 +7,7 @@
 #pragma once
 
 
-#include <gloperate/resources/AbstractLoader.h>
+#include <gloperate/resources/TextureLoader.h>
 
 
 namespace gloperate
@@ -18,7 +18,7 @@ namespace gloperate
 *  @brief
 *    Loader for glraw textures
 */
-class GLOPERATE_API GlrawTextureLoader : public AbstractLoader {
+class GLOPERATE_API GlrawTextureLoader : public TextureLoader {
 
 
     public:
