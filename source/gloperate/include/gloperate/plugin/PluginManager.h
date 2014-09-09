@@ -43,12 +43,35 @@ class GLOPERATE_API PluginManager {
 
         /**
         *  @brief
+        *    Get default path to search for plugins
+        *
+        *  @return
+        *    Path to search for plugin libraries
+        *
+        *  @remarks
+        *    Usually, this will return the directory of the current executable
+        */
+        std::string defaultPluginDirectory() const;
+
+        /**
+        *  @brief
         *    Load plugin library
         *
         *  @param[in] filename
         *    Path to dynamic library
         */
         void loadPluginLibrary(const std::string & filename);
+
+        /**
+        *  @brief
+        *    Load plugin
+        *
+        *  @param[in] name
+        *    Name of the plugin library (only the base name, do not add 'lib' or '.so'/'.dll', those are added automatically
+        *  @param[in] path
+        *    Path at which to search for plugin libraries
+        */
+        void loadPlugin(const std::string & name, const std::string & path = "");
 
         /**
         *  @brief
