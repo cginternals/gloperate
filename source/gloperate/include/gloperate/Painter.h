@@ -28,7 +28,7 @@ public:
 protected:
     virtual void onInitialize()                      = 0;
     virtual void onResize(const Viewport & viewport) = 0;
-    virtual void onPaint()                            = 0;
+    virtual void onPaint()                           = 0;
 
 
 protected:
