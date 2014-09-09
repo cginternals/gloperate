@@ -19,7 +19,7 @@ namespace gloperate_qt
 *  @brief
 *    Texture loader based on Qt
 */
-class GLOPERATE_API QtTextureLoader : public gloperate::TextureLoader {
+class GLOPERATE_QT_API QtTextureLoader : public gloperate::TextureLoader {
 
 
     public:
