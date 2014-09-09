@@ -38,8 +38,10 @@ class GLOPERATE_API Plugin {
         *    Description
         *  @param[in] vendor
         *    Vendor name
+        *  @param[in] version
+        *    Plugin version
         */
-        Plugin(const std::string & type, const std::string & name, const std::string & description, const std::string & vendor);
+        Plugin(const std::string & type, const std::string & name, const std::string & description, const std::string & vendor, const std::string & version);
 
         /**
         *  @brief
@@ -85,6 +87,15 @@ class GLOPERATE_API Plugin {
 
         /**
         *  @brief
+        *    Get version
+        *
+        *  @return
+        *    Version
+        */
+        const char * version() const;
+
+        /**
+        *  @brief
         *    Create painter object
         *
         *  @return
@@ -98,6 +109,7 @@ class GLOPERATE_API Plugin {
         std::string m_name;        /**< Name of the plugin */
         std::string m_description; /**< Description */
         std::string m_vendor;      /**< Vendor name */
+        std::string m_version;     /**< Plugin version */
 
 
 };

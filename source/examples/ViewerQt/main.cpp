@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
     pluginManager.loadPluginLibrary("build/libbasic-examples.so");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
+        std::cout << "  version " << plugin->version() << "\n";
         std::cout << "  by " << plugin->vendor() << "\n";
         std::cout << "  " << plugin->description() << "\n";
         std::cout << "\n";
