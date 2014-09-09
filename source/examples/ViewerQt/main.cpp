@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 
     // Create plugin manager
     PluginManager pluginManager;
-    pluginManager.loadPluginLibrary("build/libbasic-examples.so");
+    pluginManager.loadPluginLibrary("build\\debug\\basic-examplesd.dll");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  by " << plugin->vendor() << "\n";
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
         painter = plugin->createPainter();
     } else {
 //      painter = new SimpleTexture();
-        painter = new RotatingQuad(&resourceManager);
+//      painter = new RotatingQuad(&resourceManager);
     }
 
     // Create OpenGL window

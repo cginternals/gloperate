@@ -40,6 +40,37 @@
     protected:
         void * m_handle;
     };
+#elif defined(WIN32)
+#include <Windows.h>
+
+class PluginLibraryImpl : public gloperate::PluginLibrary
+{
+public:
+    PluginLibraryImpl(const std::string & filename)
+        : gloperate::PluginLibrary(filename)
+        , m_dll(0)
+    {
+        // Open library
+        m_dll = LoadLibraryA(filename.c_str());
+        if (m_dll) {
+            // Get function pointers
+            *reinterpret_cast<void**>(&m_initPluginPtr)      = GetProcAddress(m_dll, "initPlugin");
+            *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = GetProcAddress(m_dll, "getNumOfPlugins");
+            *reinterpret_cast<void**>(&m_getPluginPtr)       = GetProcAddress(m_dll, "getPlugin");
+            *reinterpret_cast<void**>(&m_deinitPluginPtr)    = GetProcAddress(m_dll, "deinitPlugin");
+        }
+    }
+
+    virtual ~PluginLibraryImpl() {
+        // Close library
+        if (m_dll) {
+            FreeLibrary(m_dll);
+        }
+    }
+
+protected:
+    HMODULE m_dll;
+};
 #else
     class PluginLibraryImpl : public gloperate::PluginLibrary
     {
