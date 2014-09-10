@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     // Create plugin manager
     PluginManager pluginManager;
 
-    IF_NDEBUG(pluginManager.loadPlugin("basic-examplesd");)
+    IF_NDEBUG(pluginManager.loadPlugin("basic-examples");)
     IF_DEBUG(pluginManager.loadPlugin("basic-examplesd");)
 
     for (Plugin * plugin : pluginManager.plugins()) {
