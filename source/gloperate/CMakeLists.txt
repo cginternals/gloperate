@@ -75,7 +75,6 @@ set(sources
 
     ${source_path}/AutoTimer.cpp
     ${source_path}/ChronoTimer.cpp
-    ${source_path}/ChronoTimer.h
     ${source_path}/CyclicTime.cpp
 )
 
@@ -103,6 +102,7 @@ set(headers
 
     ${include_path}/AutoTimer.h
     ${include_path}/CyclicTime.h
+    ${include_path}/ChronoTimer.h
 )
 
 # Group source files

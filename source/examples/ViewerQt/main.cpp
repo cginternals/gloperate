@@ -2,6 +2,7 @@
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QApplication>
 #include <QMainWindow>
+#include <QScopedPointer>
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
@@ -12,11 +13,12 @@
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 
 #include <gloperate/capabilities/VirtualTimeCapability.h>
+#include <gloperate/ChronoTimer.h>
 
+#include "TimePropagator.h"
 
 using namespace gloperate;
 using namespace gloperate_qt;
-
 
 int main(int argc, char* argv[])
 {
@@ -50,6 +52,8 @@ int main(int argc, char* argv[])
         painter = new RotatingQuad(&resourceManager);
     }
 
+    QScopedPointer<TimePropagator> mainloop(nullptr);
+
     // Create OpenGL window
     QtOpenGLWindow * glWindow = new QtOpenGLWindow();
     if (painter) {
@@ -57,7 +61,7 @@ int main(int argc, char* argv[])
 
         if (painter->supports<gloperate::VirtualTimeCapability>())
         {
-            // add timer
+            mainloop.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::VirtualTimeCapability>()));
         }
     }
 
@@ -72,3 +76,4 @@ int main(int argc, char* argv[])
     // Run application
     return app.exec();
 }
+

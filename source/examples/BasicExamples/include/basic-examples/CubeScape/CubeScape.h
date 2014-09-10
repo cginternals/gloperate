@@ -24,6 +24,7 @@ public:
     CubeScape(gloperate::ResourceManager * resourceManager = nullptr);
     virtual ~CubeScape();
 
+    void update(float delta);
 protected:
     virtual void onInitialize();
     virtual void onResize(const gloperate::Viewport & viewport);
@@ -53,7 +54,7 @@ protected:
 
     globjects::ref_ptr<globjects::Texture> m_textures[2];
 
-    float m_a;
+    float m_time;
 
     glm::mat4 m_view;
     glm::mat4 m_projection;

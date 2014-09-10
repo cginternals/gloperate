@@ -36,6 +36,8 @@ protected:
     virtual void onResize(const Viewport & viewport) = 0;
     virtual void onPaint()                           = 0;
 
+    void addCapability(AbstractCapability * capability);
+
 protected:
     std::vector<AbstractCapability*> m_capabilities;
 };
