@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <time.h>
 
 #include <gloperate/gloperate_api.h>
@@ -87,19 +89,16 @@ protected:
     longf elapsed() const;
 
 protected:
-    ChronoTimer * m_timer;
+    std::unique_ptr<ChronoTimer> m_timer;
 
-	time_t m_utcOffset;
-
-	time_t m_time[3]; // [2] is for stop
-	longf m_timef[3]; // [2] is for stop
-
+    longf m_secondsPerCycle;
+    Status m_mode;
     longf m_offset;
+    longf m_lastModeChangeTime;
+    time_t m_utcOffset;
 
-	Status m_mode;
-	longf m_lastModeChangeTime;
-
-	longf m_secondsPerCycle;
+    time_t m_time[3]; // [2] is for stop
+    longf m_timef[3]; // [2] is for stop
 };
 
 } // namespace gloperate
