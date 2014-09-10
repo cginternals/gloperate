@@ -3,6 +3,7 @@
 #include <gloperate/plugin/Plugin.h>
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
+#include <basic-examples/CubeScape/CubeScape.h>
 
 
 static std::vector<gloperate::Plugin *> g_plugins;
@@ -52,11 +53,34 @@ public:
     }
 };
 
+class Plugin_CubeScape : public gloperate::Plugin {
+public:
+    Plugin_CubeScape()
+    : gloperate::Plugin(
+        "Painter"
+      , "CubeScape"
+      , "Displays a CubeScape"
+      , "gloperate team"
+      , "v1.0.0" )
+    {
+    }
+
+    ~Plugin_CubeScape()
+    {
+    }
+
+    virtual gloperate::Painter * createPainter() const
+    {
+        return new CubeScape();
+    }
+};
+
 
 extern "C" GLOPERATE_PLUGIN_API void initPlugin()
 {
     g_plugins.push_back(new Plugin_SimpleTexture());
     g_plugins.push_back(new Plugin_RotatingQuad());
+    g_plugins.push_back(new Plugin_CubeScape());
 }
 
 extern "C" GLOPERATE_PLUGIN_API int getNumOfPlugins()

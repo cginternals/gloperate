@@ -138,7 +138,7 @@ std::string PluginManager::defaultPluginDirectory() const
 
     return "";
 #else
-    return "";
+    return "build/";
 #endif
 }
 
