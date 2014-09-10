@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 #include <gloperate/util/ScreenAlignedQuad.h>
 #include <gloperate/Painter.h>
@@ -29,8 +29,8 @@ protected:
 
 
 protected:
-    glo::ref_ptr<glo::Texture>                 m_texture;
-    glo::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<globjects::Texture>                 m_texture;
+    globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
 
 
 };

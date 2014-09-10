@@ -2,7 +2,7 @@
 #include <random>
 #include <glm/gtx/transform.hpp>
 #include <glbinding/gl/gl.h>
-#include <globjects-base/StaticStringSource.h>
+#include <globjects/base/StaticStringSource.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <gloperate/util/StringTemplate.h>
@@ -10,7 +10,7 @@
 #include <gloperate/Viewport.h>
 
 
-using namespace glo;
+using namespace globjects;
 using namespace gloperate;
 
 
@@ -127,7 +127,7 @@ void RotatingQuad::createAndSetupTexture()
             data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
         }
 
-        m_texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
         m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
     }
 }

@@ -4,7 +4,7 @@
 
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
-find_package(globjects REQUIRED COMPONENTS core)
+find_package(globjects REQUIRED)
 find_package(Qt5Core 5.1)
 find_package(Qt5Gui 5.1)
 find_package(Qt5Widgets 5.1)

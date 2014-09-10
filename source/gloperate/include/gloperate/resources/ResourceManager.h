@@ -12,7 +12,7 @@
 #include <gloperate/gloperate_api.h>
 
 
-namespace glo {
+namespace globjects {
     class Texture;
 }
 namespace gloperate
@@ -70,7 +70,7 @@ class GLOPERATE_API ResourceManager {
         *  @return
         *    Loaded texture (can be null)
         */
-        glo::Texture * loadTexture(const std::string & filename) const;
+        globjects::Texture * loadTexture(const std::string & filename) const;
 
 
     protected:

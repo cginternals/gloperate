@@ -4,9 +4,9 @@
 
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
-find_package(globjects REQUIRED COMPONENTS core)
+find_package(globjects REQUIRED)
 find_package(GLFW)
-find_package(OpenSceneGraph REQUIRED osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
+find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
 
 # Build only if OSG is available
 if(OPENSCENEGRAPH_FOUND)

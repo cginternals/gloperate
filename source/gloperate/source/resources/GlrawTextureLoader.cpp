@@ -63,7 +63,7 @@ std::string GlrawTextureLoader::allLoadingTypes() const
 *  @brief
 *    Load data from file
 */
-glo::Referenced * GlrawTextureLoader::load(const std::string & /*filename*/) const
+globjects::Referenced * GlrawTextureLoader::load(const std::string & /*filename*/) const
 {
     return nullptr;
 }

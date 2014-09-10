@@ -38,8 +38,8 @@ void QtOpenGLWindow::setPainter(Painter * painter)
 void QtOpenGLWindow::onInitialize()
 {
     // Initialize globjects
-    glo::init();
-    glo::DebugMessage::enable();
+    globjects::init();
+    globjects::DebugMessage::enable();
 
     // Initialize painter
     if (m_painter) {

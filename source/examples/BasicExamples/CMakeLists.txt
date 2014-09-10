@@ -8,7 +8,7 @@ message(STATUS "Lib ${target}")
 
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
-find_package(globjects REQUIRED COMPONENTS core)
+find_package(globjects REQUIRED)
 
 #
 # Includes

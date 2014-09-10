@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
 
@@ -28,7 +28,7 @@ class TimerEvent;
     Can be attached to a Window to handle events.
     The window's context is made current before calling any methods and done current afterwards.
 */
-class GLOPERATE_GLFW_API WindowEventHandlerBase : public glo::Referenced
+class GLOPERATE_GLFW_API WindowEventHandlerBase : public globjects::Referenced
 {
 
 

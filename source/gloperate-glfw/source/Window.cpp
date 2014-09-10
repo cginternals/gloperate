@@ -2,7 +2,7 @@
 #include <cassert>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include <globjects-base/baselogging.h>
+#include <globjects/base/baselogging.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 #include <gloperate-glfw/events.h>
@@ -139,7 +139,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
 
     if (!createContext(format, width, height))
     {
-        glo::fatal() << "Creating native window with OpenGL context failed.";
+        globjects::fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
 
