@@ -29,6 +29,11 @@ bool RawFile::isValid() const
     return m_valid;
 }
 
+const std::string & RawFile::filePath() const
+{
+    return m_filePath;
+}
+
 const char * RawFile::data() const
 {
     return m_data.data();
