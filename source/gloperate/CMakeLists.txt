@@ -55,6 +55,8 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
+    ${source_path}/capabilities/AbstractCapability.cpp
+    ${source_path}/capabilities/VirtualTimeCapability.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
@@ -73,6 +75,8 @@ set(sources
 )
 
 set(headers
+    ${include_path}/capabilities/AbstractCapability.h
+    ${include_path}/capabilities/VirtualTimeCapability.h
     ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
@@ -87,6 +91,7 @@ set(headers
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/RawFile.h
     ${include_path}/Painter.h
+    ${include_path}/Painter.hpp
     ${include_path}/Viewport.h
     ${include_path}/Camera.h
     ${include_path}/gloperate_api.h

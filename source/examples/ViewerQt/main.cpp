@@ -11,6 +11,8 @@
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 
+#include <gloperate/capabilities/VirtualTimeCapability.h>
+
 
 using namespace gloperate;
 using namespace gloperate_qt;
@@ -52,6 +54,11 @@ int main(int argc, char* argv[])
     QtOpenGLWindow * glWindow = new QtOpenGLWindow();
     if (painter) {
         glWindow->setPainter(painter);
+
+        if (painter->supports<gloperate::VirtualTimeCapability>())
+        {
+            // add timer
+        }
     }
 
     // Create main window
