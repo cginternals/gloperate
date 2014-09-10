@@ -12,13 +12,9 @@
 #include <globjects/VertexAttributeBinding.h>
 
 #include <gloperate/Viewport.h>
+#include <gloperate/resources/RawFile.h>
 
 using namespace gl;
-
-// -- rawfile.cpp
-
-#include <fstream>
-#include <iostream>
 
 namespace {
     static const char * vertSource = R"(
@@ -116,62 +112,6 @@ void main()
 
 }
 
-RawFile::RawFile(const std::string & _filePath)
-    : m_filePath(_filePath)
-    , m_valid(false)
-{
-    m_valid = readFile();
-}
-
-RawFile::~RawFile()
-{
-}
-
-bool RawFile::isValid() const
-{
-    return m_valid;
-}
-
-const char * RawFile::data() const
-{
-    return m_data.data();
-}
-
-size_t RawFile::size() const
-{
-    return m_data.size();
-}
-
-bool RawFile::readFile()
-{
-    std::ifstream ifs(m_filePath, std::ios::in | std::ios::binary);
-
-    if (!ifs)
-    {
-        std::cerr << "Reading from file \"" << m_filePath << "\" failed." << std::endl;
-        return false;
-    }
-
-    readRawData(ifs);
-
-    ifs.close();
-
-    return true;
-}
-
-void RawFile::readRawData(std::ifstream & ifs)
-{
-    ifs.seekg(0, std::ios::end);
-
-    const size_t _size = static_cast<size_t>(ifs.tellg());
-    m_data.resize(_size);
-
-    ifs.seekg(0, std::ios::beg);
-    ifs.read(m_data.data(), static_cast<std::streamsize>(_size));
-}
-
-
-// -- cubescape.cpp
 
 CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
 : a_vertex(-1)
@@ -212,7 +152,7 @@ void CubeScape::onInitialize()
     }
 
     {
-        RawFile terrain("data/cubescape/terrain.512.512.r.ub.raw");
+        gloperate::RawFile terrain("data/cubescape/terrain.512.512.r.ub.raw");
         if (!terrain.isValid())
             std::cout << "warning: loading texture from " << terrain.filePath() << " failed.";
 
@@ -220,7 +160,7 @@ void CubeScape::onInitialize()
     }
 
     {
-        RawFile patches("data/cubescape/patches.64.16.rgb.ub.raw");
+        gloperate::RawFile patches("data/cubescape/patches.64.16.rgb.ub.raw");
         if (!patches.isValid())
             std::cout << "warning: loading texture from " << patches.filePath() << " failed.";
 
