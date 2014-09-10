@@ -16,16 +16,17 @@ using namespace gloperate;
 using namespace gloperate_qt;
 
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    // Create plugin manager
-    PluginManager pluginManager;
+    // Initialize plugin manager
+    PluginManager::init(argc > 0 ? argv[0] : "");
 
+    // Load example plugins
+    PluginManager pluginManager;
     IF_NDEBUG(pluginManager.loadPlugin("basic-examples");)
     IF_DEBUG(pluginManager.loadPlugin("basic-examplesd");)
-
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  version " << plugin->version() << "\n";

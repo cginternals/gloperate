@@ -31,6 +31,28 @@ class GLOPERATE_API PluginManager {
     public:
         /**
         *  @brief
+        *    Initialize plugin manager
+        *
+        *  @param[in] executablePath
+        *    Path to the current executable
+        *
+        *  @remarks
+        *    This function has to be called to tell the plugin manager the path
+        *    to the current executable, so it can determine the default search directory
+        *    for plugins. On Window, path is ignored, since the executable path
+        *    can be obtained automatically.
+        */
+        static void init(const std::string & executablePath = "");
+
+
+    protected:
+        /** Default path to look for plugins, by default the path of the executable */
+        static std::string s_defaultPluginPath;
+
+
+    public:
+        /**
+        *  @brief
         *    Constructor
         */
         PluginManager();
@@ -43,15 +65,14 @@ class GLOPERATE_API PluginManager {
 
         /**
         *  @brief
-        *    Get default path to search for plugins
+        *    Load plugin
         *
-        *  @return
-        *    Path to search for plugin libraries
-        *
-        *  @remarks
-        *    Usually, this will return the directory of the current executable
+        *  @param[in] name
+        *    Name of the plugin library (only the base name, do not add 'lib' or '.so'/'.dll', those are added automatically
+        *  @param[in] path
+        *    Path at which to search for plugin libraries. If "", the default search path is used
         */
-        std::string defaultPluginDirectory() const;
+        void loadPlugin(const std::string & name, const std::string & path = "");
 
         /**
         *  @brief
@@ -61,17 +82,6 @@ class GLOPERATE_API PluginManager {
         *    Path to dynamic library
         */
         void loadPluginLibrary(const std::string & filename);
-
-        /**
-        *  @brief
-        *    Load plugin
-        *
-        *  @param[in] name
-        *    Name of the plugin library (only the base name, do not add 'lib' or '.so'/'.dll', those are added automatically
-        *  @param[in] path
-        *    Path at which to search for plugin libraries
-        */
-        void loadPlugin(const std::string & name, const std::string & path = "");
 
         /**
         *  @brief
