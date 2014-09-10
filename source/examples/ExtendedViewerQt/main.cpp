@@ -3,14 +3,18 @@
 #include <QApplication>
 #include <QMainWindow>
 #include <QScopedPointer>
+#include <QDockWidget>
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
-#include <basic-examples/SimpleTexture/SimpleTexture.h>
-#include <basic-examples/RotatingQuad/RotatingQuad.h>
+#include <extended-examples/ExtendedCubeScape/ExtendedCubeScape.h>
+
+#include <reflectionzeug/PropertyGroup.h>
+
+#include <propertyguizeug/PropertyBrowser.h>
 
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 #include <gloperate/ChronoTimer.h>
@@ -49,7 +53,7 @@ int main(int argc, char* argv[])
         painter = plugin->createPainter();
     } else {
 //      painter = new SimpleTexture();
-        painter = new RotatingQuad(&resourceManager);
+        painter = new ExtendedCubeScape(&resourceManager);
     }
 
     QScopedPointer<TimePropagator> mainloop(nullptr);
@@ -69,6 +73,17 @@ int main(int argc, char* argv[])
     QMainWindow mainWindow;
     mainWindow.setGeometry(100, 100, 800, 600);
     mainWindow.setCentralWidget(QWidget::createWindowContainer(glWindow));
+
+    reflectionzeug::PropertyGroup * properties = dynamic_cast<reflectionzeug::PropertyGroup *>(painter);
+
+    if (properties != nullptr)
+    {
+        QDockWidget * dock = new QDockWidget(&mainWindow);
+
+        dock->setWidget(new propertyguizeug::PropertyBrowser(properties, dock));
+
+        mainWindow.addDockWidget(Qt::LeftDockWidgetArea, dock);
+    }
 
     // Show window
     mainWindow.show();

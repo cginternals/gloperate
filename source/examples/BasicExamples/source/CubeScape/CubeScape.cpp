@@ -287,7 +287,7 @@ int CubeScape::numberOfCubes() const
     return m_numCubes;
 }
 
-void CubeScape::setNumberOfCubes(int number)
+void CubeScape::setNumberOfCubes(const int & number)
 {
     m_numCubes = number;
 }

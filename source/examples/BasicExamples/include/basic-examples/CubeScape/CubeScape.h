@@ -27,7 +27,7 @@ public:
     void update(float delta);
 
     int numberOfCubes() const;
-    void setNumberOfCubes(int number);
+    void setNumberOfCubes(const int & number);
 protected:
     virtual void onInitialize();
     virtual void onResize(const gloperate::Viewport & viewport);
