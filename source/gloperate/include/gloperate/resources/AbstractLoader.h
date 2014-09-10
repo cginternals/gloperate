@@ -12,7 +12,7 @@
 #include <gloperate/gloperate_api.h>
 
 
-namespace glo {
+namespace globjects {
     class Referenced;
 }
 namespace gloperate
@@ -85,7 +85,7 @@ class GLOPERATE_API AbstractLoader {
         *  @return
         *    Loaded resource (can be null)
         */
-        virtual glo::Referenced * load(const std::string & filename) const = 0;
+        virtual globjects::Referenced * load(const std::string & filename) const = 0;
 
 
 };

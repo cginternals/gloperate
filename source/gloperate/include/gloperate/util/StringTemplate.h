@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include <globjects-base/CachedValue.h>
+#include <globjects/base/CachedValue.h>
 #include <gloperate/util/StringSourceDecorator.h>
 
 
@@ -28,7 +28,7 @@ public:
 
 
 protected:
-    glo::CachedValue<std::string> m_modifiedSource;
+    globjects::CachedValue<std::string> m_modifiedSource;
 	std::map<std::string, std::string> m_replacements;
 
     virtual ~StringTemplate();

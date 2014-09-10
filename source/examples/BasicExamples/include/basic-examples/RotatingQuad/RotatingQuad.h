@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -39,13 +39,13 @@ protected:
 
 
 protected:
-    glo::ref_ptr<gloperate::Camera> m_camera;
-    glo::ref_ptr<glo::VertexArray>  m_vao;
-    glo::ref_ptr<glo::Buffer>       m_buffer;
-    glo::ref_ptr<glo::Program>      m_program;
-    glo::ref_ptr<glo::Shader>       m_vertexShader;
-    glo::ref_ptr<glo::Shader>       m_fragmentShader;
-    glo::ref_ptr<glo::Texture>      m_texture;
+    globjects::ref_ptr<gloperate::Camera> m_camera;
+    globjects::ref_ptr<globjects::VertexArray>  m_vao;
+    globjects::ref_ptr<globjects::Buffer>       m_buffer;
+    globjects::ref_ptr<globjects::Program>      m_program;
+    globjects::ref_ptr<globjects::Shader>       m_vertexShader;
+    globjects::ref_ptr<globjects::Shader>       m_fragmentShader;
+    globjects::ref_ptr<globjects::Texture>      m_texture;
     gloperate::ResourceManager    * m_resourceManager;
     float                           m_angle;
 

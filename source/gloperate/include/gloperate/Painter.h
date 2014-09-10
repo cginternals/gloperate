@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 #include <gloperate/gloperate_api.h>
 
 
@@ -12,7 +12,7 @@ namespace gloperate
 class Viewport;
 
 
-class GLOPERATE_API Painter : public glo::Referenced
+class GLOPERATE_API Painter : public globjects::Referenced
 {
 
 

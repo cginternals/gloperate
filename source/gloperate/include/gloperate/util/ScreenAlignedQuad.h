@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include <globjects-base/Referenced.h>
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/Referenced.h>
+#include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 #include <globjects/Buffer.h>
@@ -15,24 +15,24 @@ namespace gloperate
 {
 
 
-class GLOPERATE_API ScreenAlignedQuad : public glo::Referenced
+class GLOPERATE_API ScreenAlignedQuad : public globjects::Referenced
 {
 
 
 public:
-    ScreenAlignedQuad(glo::Shader * fragmentShader, glo::Texture * texture);
-    ScreenAlignedQuad(glo::Texture * texture);
-    ScreenAlignedQuad(glo::Shader  * fragmentShader);
-    ScreenAlignedQuad(glo::Program * program);
+    ScreenAlignedQuad(globjects::Shader * fragmentShader, globjects::Texture * texture);
+    ScreenAlignedQuad(globjects::Texture * texture);
+    ScreenAlignedQuad(globjects::Shader  * fragmentShader);
+    ScreenAlignedQuad(globjects::Program * program);
 
 	void draw();
 
-    glo::Program * program();
+    globjects::Program * program();
 
-    glo::Shader * vertexShader();
-    glo::Shader * fragmentShader();
+    globjects::Shader * vertexShader();
+    globjects::Shader * fragmentShader();
 
-    void setTexture(glo::Texture * texture);
+    void setTexture(globjects::Texture * texture);
 
 	void setSamplerUniform(int index);
 
@@ -42,15 +42,15 @@ protected:
 
 
 protected:
-    glo::ref_ptr<glo::VertexArray> m_vao;
+    globjects::ref_ptr<globjects::VertexArray> m_vao;
 
-    glo::ref_ptr<glo::Buffer> m_buffer;
+    globjects::ref_ptr<globjects::Buffer> m_buffer;
 
-    glo::ref_ptr<glo::Shader> m_vertexShader;
-    glo::ref_ptr<glo::Shader> m_fragmentShader;
+    globjects::ref_ptr<globjects::Shader> m_vertexShader;
+    globjects::ref_ptr<globjects::Shader> m_fragmentShader;
 
-    glo::ref_ptr<glo::Program> m_program;
-    glo::ref_ptr<glo::Texture> m_texture;
+    globjects::ref_ptr<globjects::Program> m_program;
+    globjects::ref_ptr<globjects::Texture> m_texture;
 
     int m_samplerIndex;
 

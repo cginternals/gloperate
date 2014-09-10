@@ -1,10 +1,10 @@
 #include <gloperate-glfw/ContextFormat.h>
 #include <cassert>
 #include <sstream>
-#include <globjects-base/baselogging.h>
+#include <globjects/base/baselogging.h>
 
 
-using namespace glo;
+using namespace globjects;
 namespace gloperate_glfw
 {
 
@@ -217,14 +217,14 @@ bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, con
 
 	if (!sameProfiles)
 	{
-        glo::warning() << "A context with a different profile as requested was created: "
+        globjects::warning() << "A context with a different profile as requested was created: "
             << profileString(requested.profile()) << " requested, "
             << profileString(created.profile()) << " created.";
 	}
 
     if (requested.version() != created.version())
 	{
-        glo::warning() << "A context with a different OpenGL Version as requested was created: "
+        globjects::warning() << "A context with a different OpenGL Version as requested was created: "
             << requested.version().toString() << " requested, "
             << created.version().toString() << "  created.";
 
@@ -260,7 +260,7 @@ bool ContextFormat::verifyPixelFormat(
 
 	if (!sameSwapBehaviors)
 	{
-        glo::warning() << "A context with a different swap behavior as requested was initialized: "
+        globjects::warning() << "A context with a different swap behavior as requested was initialized: "
             << swapBehaviorString(requested.swapBehavior()) << " requested, "
             << swapBehaviorString(created.swapBehavior()) << " created.";
 	}
@@ -307,9 +307,9 @@ bool ContextFormat::verifyPixelFormat(
 	if (issues.empty())
 		return true;
 
-    glo::warning() << "Initialized Pixelformat did not match the Requested One:";
+    globjects::warning() << "Initialized Pixelformat did not match the Requested One:";
 	for(const std::string & issue : issues)
-        glo::warning() << issue;
+        globjects::warning() << issue;
 
 	return false;
 }
