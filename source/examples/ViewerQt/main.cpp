@@ -22,7 +22,10 @@ int main(int argc, char* argv[])
 
     // Create plugin manager
     PluginManager pluginManager;
-    pluginManager.loadPluginLibrary("build/libbasic-examples.so");
+
+    IF_NDEBUG(pluginManager.loadPluginLibrary("build/libbasic-examplesd.so");)
+    IF_DEBUG(pluginManager.loadPluginLibrary("build/libbasic-examplesd.so");)
+
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  version " << plugin->version() << "\n";
@@ -37,7 +40,7 @@ int main(int argc, char* argv[])
 
     // Choose a painter
     gloperate::Painter * painter = nullptr;
-    Plugin * plugin = pluginManager.plugin("RotatingQuad");
+    Plugin * plugin = pluginManager.plugin("CubeScape");
     if (plugin) {
         painter = plugin->createPainter();
     } else {

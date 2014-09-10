@@ -39,7 +39,7 @@ void QtOpenGLWindow::onInitialize()
 {
     // Initialize globjects
     globjects::init();
-    globjects::DebugMessage::enable();
+    IF_DEBUG(globjects::DebugMessage::enable(true);)
 
     // Initialize painter
     if (m_painter) {
