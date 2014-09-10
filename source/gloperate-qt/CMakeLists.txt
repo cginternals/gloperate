@@ -1,3 +1,9 @@
+
+# http://qt-project.org/forums/viewthread/30006/
+if(MSVC)
+    cmake_policy(SET CMP0020 NEW)
+endif()
+
 #
 # External libraries
 #
@@ -17,6 +23,7 @@ set(target gloperate-qt)
 message(STATUS "Lib ${target}")
 
 # Qt5 options
+
 set(CMAKE_AUTOMOC ON)
 
 #
