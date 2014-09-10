@@ -116,7 +116,8 @@ void main()
 
 
 CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
-: a_vertex(-1)
+: m_numCubes(25)
+, a_vertex(-1)
 , u_transform(-1)
 , u_time(-1)
 , u_numcubes(-1)
@@ -247,8 +248,6 @@ void CubeScape::onResize(const gloperate::Viewport & viewport)
 
 void CubeScape::onPaint()
 {
-    const int numcubes = 25;
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
@@ -263,12 +262,12 @@ void CubeScape::onPaint()
 
     m_program->setUniform(u_transform, transform);
     m_program->setUniform(u_time, m_time);
-    m_program->setUniform(u_numcubes, numcubes);
+    m_program->setUniform(u_numcubes, m_numCubes);
 
     m_textures[0]->bindActive(GL_TEXTURE0);
     m_textures[1]->bindActive(GL_TEXTURE1);
 
-    m_vao->drawElementsInstanced(GL_TRIANGLES, 18, GL_UNSIGNED_BYTE, nullptr, numcubes * numcubes);
+    m_vao->drawElementsInstanced(GL_TRIANGLES, 18, GL_UNSIGNED_BYTE, nullptr, m_numCubes * m_numCubes);
 
     m_program->release();
     m_vao->unbind();
@@ -281,4 +280,14 @@ void CubeScape::update(float delta)
     {
         m_time -= 20 * glm::pi<float>();
     }
+}
+
+int CubeScape::numberOfCubes() const
+{
+    return m_numCubes;
+}
+
+void CubeScape::setNumberOfCubes(int number)
+{
+    m_numCubes = number;
 }

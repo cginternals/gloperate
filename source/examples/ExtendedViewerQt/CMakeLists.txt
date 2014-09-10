@@ -1,0 +1,101 @@
+
+# http://qt-project.org/forums/viewthread/30006/
+if(MSVC)
+    cmake_policy(SET CMP0020 NEW)
+endif()
+
+#
+# External libraries
+#
+
+find_package(GLM REQUIRED)
+find_package(glbinding REQUIRED)
+find_package(globjects REQUIRED)
+find_package(Qt5Core 5.1)
+find_package(Qt5Gui 5.1)
+find_package(Qt5Widgets 5.1)
+
+# Build only if Qt5 is available
+if(Qt5Core_DIR AND Qt5Gui_DIR AND Qt5Widgets_DIR)
+
+# Target
+set(target ExtendedViewerQt)
+message(STATUS "Example ${target}")
+
+# Qt5 options
+
+set(CMAKE_AUTOMOC ON)
+
+#
+# Includes
+#
+
+include_directories(
+    ${GLM_INCLUDE_DIR}
+    ${GLOBJECTS_INCLUDES}
+)
+
+include_directories(
+    BEFORE
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
+    ${CMAKE_SOURCE_DIR}/source/examples/BasicExamples/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+#
+# Libraries
+#
+
+set(libs
+    ${GLOBJECTS_LIBRARIES}
+    gloperate
+    gloperate-qt
+    basic-examples
+)
+
+#
+# Sources
+#
+
+set(headers
+)
+set(sources
+    main.cpp
+    TimePropagator.cpp
+    TimePropagator.h
+)
+
+#
+# Build executable
+#
+
+add_executable(${target} ${headers} ${sources})
+
+target_link_libraries(${target} ${libs})
+qt5_use_modules(${target} Core Gui Widgets)
+
+set_target_properties(${target}
+    PROPERTIES
+    LINKER_LANGUAGE              CXX
+    FOLDER                      "${IDE_FOLDER}"
+    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
+    COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
+    COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
+    LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
+    LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
+    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
+
+#
+# Deployment
+#
+
+install(TARGETS ${target}
+    RUNTIME DESTINATION ${INSTALL_EXAMPLES}
+#   LIBRARY DESTINATION ${INSTALL_SHARED}
+#   ARCHIVE DESTINATION ${INSTALL_LIB}
+)
+
+# if Qt5
+endif()

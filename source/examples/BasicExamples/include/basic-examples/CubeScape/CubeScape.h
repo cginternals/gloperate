@@ -25,6 +25,9 @@ public:
     virtual ~CubeScape();
 
     void update(float delta);
+
+    int numberOfCubes() const;
+    void setNumberOfCubes(int number);
 protected:
     virtual void onInitialize();
     virtual void onResize(const gloperate::Viewport & viewport);
@@ -34,6 +37,7 @@ protected:
 
     /* parameters */
 
+    int m_numCubes;
 
     /* members */
 
