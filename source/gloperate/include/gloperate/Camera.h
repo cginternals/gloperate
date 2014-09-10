@@ -2,8 +2,8 @@
 
 
 #include <glm/glm.hpp>
-#include <globjects-base/Referenced.h>
-#include <globjects-base/CachedValue.h>
+#include <globjects/base/Referenced.h>
+#include <globjects/base/CachedValue.h>
 #include <gloperate/gloperate_api.h>
 
 
@@ -21,7 +21,7 @@ namespace gloperate
     The class relies on lazzy computation of all matrices, causing less recomputations
     of, e.g., matrices and inverse matrices requested on an irregular basis.
 */
-class GLOPERATE_API Camera : public glo::Referenced
+class GLOPERATE_API Camera : public globjects::Referenced
 {
 
 
@@ -88,13 +88,13 @@ protected:
 
     glm::ivec2 m_viewport;
 
-    glo::CachedValue<glm::mat4> m_view;
-    glo::CachedValue<glm::mat4> m_viewInverted;
-    glo::CachedValue<glm::mat4> m_projection;
-    glo::CachedValue<glm::mat4> m_projectionInverted;
-    glo::CachedValue<glm::mat4> m_viewProjection;
-    glo::CachedValue<glm::mat4> m_viewProjectionInverted;
-    glo::CachedValue<glm::mat3> m_normal;
+    globjects::CachedValue<glm::mat4> m_view;
+    globjects::CachedValue<glm::mat4> m_viewInverted;
+    globjects::CachedValue<glm::mat4> m_projection;
+    globjects::CachedValue<glm::mat4> m_projectionInverted;
+    globjects::CachedValue<glm::mat4> m_viewProjection;
+    globjects::CachedValue<glm::mat4> m_viewProjectionInverted;
+    globjects::CachedValue<glm::mat3> m_normal;
 
 
 };

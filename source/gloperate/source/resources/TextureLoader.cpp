@@ -33,13 +33,13 @@ TextureLoader::~TextureLoader()
 *  @brief
 *    Load texture from file
 */
-glo::Texture * TextureLoader::loadTexture(const std::string & /*filename*/) const
+globjects::Texture * TextureLoader::loadTexture(const std::string & /*filename*/) const
 {
     // Try to load texture
-    glo::Referenced * obj = this->load("data/emblem-important.png");
+    globjects::Referenced * obj = this->load("data/emblem-important.png");
     if (obj) {
         // Check if this is a texture
-        glo::Texture * texture = dynamic_cast<glo::Texture *>(obj);
+        globjects::Texture * texture = dynamic_cast<globjects::Texture *>(obj);
         if (texture) {
             // Return texture
             return texture;

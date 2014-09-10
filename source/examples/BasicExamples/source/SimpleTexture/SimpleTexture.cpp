@@ -49,7 +49,7 @@ void SimpleTexture::createAndSetupTexture()
         data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
     }
 
-    m_texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
     m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
 }
 

@@ -4,7 +4,7 @@
 
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
-find_package(globjects REQUIRED COMPONENTS core)
+find_package(globjects REQUIRED)
 find_package(GLFW)
 
 # Build only if GLFW is available

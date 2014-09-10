@@ -10,7 +10,7 @@
 #include <gloperate/resources/AbstractLoader.h>
 
 
-namespace glo {
+namespace globjects {
     class Texture;
 }
 namespace gloperate
@@ -47,7 +47,7 @@ class GLOPERATE_API TextureLoader : public AbstractLoader {
         *  @return
         *    Loaded texture (can be null)
         */
-        glo::Texture * loadTexture(const std::string & filename) const;
+        globjects::Texture * loadTexture(const std::string & filename) const;
 
 
 };

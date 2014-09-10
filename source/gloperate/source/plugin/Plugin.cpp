@@ -15,11 +15,12 @@ namespace gloperate
 *  @brief
 *    Constructor
 */
-Plugin::Plugin(const std::string & type, const std::string & name, const std::string & description, const std::string & vendor)
+Plugin::Plugin(const std::string & type, const std::string & name, const std::string & description, const std::string & vendor, const std::string & version)
 : m_type(type)
 , m_name(name)
 , m_description(description)
 , m_vendor(vendor)
+, m_version(version)
 {
 }
 
@@ -65,6 +66,15 @@ const char * Plugin::description() const
 const char * Plugin::vendor() const
 {
     return m_vendor.c_str();
+}
+
+/**
+*  @brief
+*    Get version
+*/
+const char * Plugin::version() const
+{
+	return m_version.c_str();
 }
 
 

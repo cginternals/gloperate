@@ -72,7 +72,7 @@ std::string QtTextureLoader::allLoadingTypes() const
 *  @brief
 *    Load data from file
 */
-glo::Referenced * QtTextureLoader::load(const std::string & filename) const
+globjects::Referenced * QtTextureLoader::load(const std::string & filename) const
 {
     // [TODO] Support RGBA format (alpha channel)
     // [TODO] Support other image formats, e.g., grayscale
@@ -86,7 +86,7 @@ glo::Referenced * QtTextureLoader::load(const std::string & filename) const
         QImage converted = image.convertToFormat(QImage::Format_RGB888);
 
         // Create texture
-        glo::Texture * texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+        globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
         texture->image2D(
             0,
             gl::GL_RGB,

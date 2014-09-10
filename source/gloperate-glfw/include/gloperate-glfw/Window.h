@@ -5,7 +5,7 @@
 #include <string>
 #include <queue>
 #include <glm/glm.hpp>
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 #include <gloperate-glfw/MainLoop.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
@@ -115,7 +115,7 @@ protected:
 protected:
     Context * m_context;
     GLFWwindow * m_window;
-    glo::ref_ptr<WindowEventHandlerBase> m_eventHandler;
+    globjects::ref_ptr<WindowEventHandlerBase> m_eventHandler;
     std::queue<WindowEvent*> m_eventQueue;
     glm::ivec2 m_windowedModeSize;
     std::string m_title;

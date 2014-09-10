@@ -2,7 +2,7 @@
 #include <cassert>
 #include <array>
 #include <glbinding/gl/enum.h>
-#include <globjects-base/StaticStringSource.h>
+#include <globjects/base/StaticStringSource.h>
 #include <globjects/Program.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Texture.h>
@@ -12,7 +12,7 @@
 #include <gloperate/util/StringTemplate.h>
 
 
-using namespace glo;
+using namespace globjects;
 namespace gloperate
 {
 

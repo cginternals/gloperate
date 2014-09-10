@@ -70,7 +70,7 @@ void ResourceManager::addLoader(AbstractLoader * loader)
 *  @brief
 *    Load texture from file
 */
-glo::Texture * ResourceManager::loadTexture(const std::string & filename) const
+globjects::Texture * ResourceManager::loadTexture(const std::string & filename) const
 {
     // Get file extension [TODO]
     std::string ext = getFileExtension(filename);

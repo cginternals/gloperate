@@ -15,7 +15,8 @@ public:
         "Painter"
       , "SimpleTexture"
       , "Displays a simple generated texture on the screen"
-      , "gloperate team" )
+      , "gloperate team"
+      , "v1.0.0" )
     {
     }
 
@@ -36,7 +37,8 @@ public:
         "Painter"
       , "RotatingQuad"
       , "Displays a rotating quad geometry, demonstrating animation and cameras"
-      , "gloperate team" )
+      , "gloperate team"
+      , "v1.0.0" )
     {
     }
 

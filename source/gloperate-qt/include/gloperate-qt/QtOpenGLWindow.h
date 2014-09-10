@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 #include <gloperate/Painter.h>
 #include <gloperate-qt/QtOpenGLWindowBase.h>
 
@@ -30,7 +30,7 @@ protected:
 
 
 protected:
-    glo::ref_ptr<gloperate::Painter> m_painter;
+    globjects::ref_ptr<gloperate::Painter> m_painter;
 
 
 };

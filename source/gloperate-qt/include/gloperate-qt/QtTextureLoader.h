@@ -81,7 +81,7 @@ class GLOPERATE_QT_API QtTextureLoader : public gloperate::TextureLoader {
         *  @return
         *    Loaded resource (can be null)
         */
-        virtual glo::Referenced * load(const std::string & filename) const;
+        virtual globjects::Referenced * load(const std::string & filename) const;
 
 
 };

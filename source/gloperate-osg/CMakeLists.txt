@@ -1,7 +1,3 @@
-# Target
-set(target gloperate)
-message(STATUS "Lib ${target}")
-
 #
 # External libraries
 #
@@ -9,6 +5,15 @@ message(STATUS "Lib ${target}")
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(GLFW)
+find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
+
+# Build only if OSG is available
+if(OPENSCENEGRAPH_FOUND)
+
+# Target
+set(target gloperate-osg)
+message(STATUS "Lib ${target}")
 
 #
 # Includes
@@ -18,10 +23,12 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
+    ${OPENSCENEGRAPH_INCLUDE_DIRS}
 )
 
 include_directories(
     BEFORE
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -32,6 +39,8 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${OPENSCENEGRAPH_LIBRARIES}
+    gloperate
 )
 
 #
@@ -39,9 +48,9 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_STATIC")
+    add_definitions("-DGLOPERATE_OSG_STATIC")
 else()
-    add_definitions("-DGLOPERATE_EXPORTS")
+    add_definitions("-DGLOPERATE_OSG_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
@@ -55,41 +64,12 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/util/AxisAlignedBoundingBox.cpp
-    ${source_path}/util/ScreenAlignedQuad.cpp
-    ${source_path}/util/StringTemplate.cpp
-    ${source_path}/util/StringSourceDecorator.cpp
-    ${source_path}/plugin/PluginManager.cpp
-    ${source_path}/plugin/PluginLibrary.cpp
-    ${source_path}/plugin/Plugin.cpp
-    ${source_path}/resources/ResourceManager.cpp
-    ${source_path}/resources/AbstractLoader.cpp
-    ${source_path}/resources/TextureLoader.cpp
-    ${source_path}/resources/GlrawTextureLoader.cpp
-    ${source_path}/resources/RawFile.cpp
-    ${source_path}/Painter.cpp
-    ${source_path}/Viewport.cpp
-    ${source_path}/Camera.cpp
+    ${source_path}/OsgPainter.cpp
 )
 
 set(headers
-    ${include_path}/util/AxisAlignedBoundingBox.h
-    ${include_path}/util/ScreenAlignedQuad.h
-    ${include_path}/util/StringTemplate.h
-    ${include_path}/util/StringSourceDecorator.h
-    ${include_path}/plugin/PluginManager.h
-    ${include_path}/plugin/PluginLibrary.h
-    ${include_path}/plugin/Plugin.h
-    ${include_path}/plugin/plugin_api.h
-    ${include_path}/resources/ResourceManager.h
-    ${include_path}/resources/AbstractLoader.h
-    ${include_path}/resources/TextureLoader.h
-    ${include_path}/resources/GlrawTextureLoader.h
-    ${include_path}/resources/RawFile.h
-    ${include_path}/Painter.h
-    ${include_path}/Viewport.h
-    ${include_path}/Camera.h
-    ${include_path}/gloperate_api.h
+    ${include_path}/OsgPainter.h
+    ${include_path}/gloperate-osg_api.h
 )
 
 # Group source files
@@ -133,3 +113,6 @@ install(TARGETS ${target}
 
 # Header files
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
+
+# if OSG
+endif()

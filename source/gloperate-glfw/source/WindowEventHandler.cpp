@@ -31,8 +31,8 @@ void WindowEventHandler::setPainter(Painter * painter)
 void WindowEventHandler::initialize(gloperate_glfw::Window & /*window*/)
 {
     // Initialize globjects
-    glo::init();
-    glo::DebugMessage::enable();
+    globjects::init();
+    globjects::DebugMessage::enable();
 
     // Initialize painter
     if (m_painter) {
