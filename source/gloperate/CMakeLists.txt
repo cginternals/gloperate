@@ -70,6 +70,11 @@ set(sources
     ${source_path}/Painter.cpp
     ${source_path}/Viewport.cpp
     ${source_path}/Camera.cpp
+
+    ${source_path}/AutoTimer.cpp
+    ${source_path}/ChronoTimer.cpp
+    ${source_path}/ChronoTimer.h
+    ${source_path}/CyclicTime.cpp
 )
 
 set(headers
@@ -90,6 +95,9 @@ set(headers
     ${include_path}/Viewport.h
     ${include_path}/Camera.h
     ${include_path}/gloperate_api.h
+
+    ${include_path}/AutoTimer.h
+    ${include_path}/CyclicTime.h
 )
 
 # Group source files
