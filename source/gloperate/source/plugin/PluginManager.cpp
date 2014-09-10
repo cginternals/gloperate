@@ -40,6 +40,37 @@
     protected:
         void * m_handle;
     };
+#elif defined(WIN32)
+#include <Windows.h>
+
+class PluginLibraryImpl : public gloperate::PluginLibrary
+{
+public:
+    PluginLibraryImpl(const std::string & filename)
+        : gloperate::PluginLibrary(filename)
+        , m_dll(0)
+    {
+        // Open library
+        m_dll = LoadLibraryA(filename.c_str());
+        if (m_dll) {
+            // Get function pointers
+            *reinterpret_cast<void**>(&m_initPluginPtr)      = GetProcAddress(m_dll, "initPlugin");
+            *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = GetProcAddress(m_dll, "getNumOfPlugins");
+            *reinterpret_cast<void**>(&m_getPluginPtr)       = GetProcAddress(m_dll, "getPlugin");
+            *reinterpret_cast<void**>(&m_deinitPluginPtr)    = GetProcAddress(m_dll, "deinitPlugin");
+        }
+    }
+
+    virtual ~PluginLibraryImpl() {
+        // Close library
+        if (m_dll) {
+            FreeLibrary(m_dll);
+        }
+    }
+
+protected:
+    HMODULE m_dll;
+};
 #else
     class PluginLibraryImpl : public gloperate::PluginLibrary
     {
@@ -85,6 +116,34 @@ PluginManager::~PluginManager()
 
 /**
 *  @brief
+*    Get default path to search for plugins
+*
+*  @return
+*    Path to search for plugin libraries
+*
+*  @remarks
+*    Usually, this will return the directory of the current executable
+*/
+std::string PluginManager::defaultPluginDirectory() const
+{
+#ifdef WIN32
+    HMODULE appModule = GetModuleHandle(0);
+    char szFilename[MAX_PATH];
+    char szDrive[8];
+    char szPath[MAX_PATH];
+    if (GetModuleFileNameA(appModule, szFilename, MAX_PATH) > 0) {
+        _splitpath(szFilename, szDrive, szPath, NULL, NULL);
+        return std::string(szDrive) + std::string(szPath);
+    }
+
+    return "";
+#else
+    return "build/";
+#endif
+}
+
+/**
+*  @brief
 *    Load plugin library
 */
 void PluginManager::loadPluginLibrary(const std::string & filename)
@@ -113,6 +172,23 @@ void PluginManager::loadPluginLibrary(const std::string & filename)
         // Error, close library
         delete library;
     }
+}
+
+/**
+*  @brief
+*    Load plugin
+*/
+void PluginManager::loadPlugin(const std::string & name, const std::string & path)
+{
+    std::string dir = path.empty() ? defaultPluginDirectory() : path;
+
+#ifdef WIN32
+    loadPluginLibrary(dir + "\\" + name + ".dll");
+#elif defined(LINUX)
+    loadPluginLibrary(dir + "/lib" + name + ".so");
+#else
+    loadPluginLibrary(dir + "/lib" + name + ".so");
+#endif
 }
 
 /**

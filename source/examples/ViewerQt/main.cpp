@@ -23,8 +23,8 @@ int main(int argc, char* argv[])
     // Create plugin manager
     PluginManager pluginManager;
 
-    IF_NDEBUG(pluginManager.loadPluginLibrary("build/libbasic-examplesd.so");)
-    IF_DEBUG(pluginManager.loadPluginLibrary("build/libbasic-examplesd.so");)
+    IF_NDEBUG(pluginManager.loadPlugin("basic-examplesd");)
+    IF_DEBUG(pluginManager.loadPlugin("basic-examplesd");)
 
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";

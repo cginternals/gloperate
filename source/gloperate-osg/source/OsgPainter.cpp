@@ -8,7 +8,7 @@
 #include <gloperate/Viewport.h>
 
 
-using namespace glo;
+using namespace gloperate;
 namespace gloperate_osg
 {
 

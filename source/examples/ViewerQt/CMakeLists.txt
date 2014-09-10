@@ -24,6 +24,7 @@ set(CMAKE_AUTOMOC ON)
 #
 
 include_directories(
+    ${GLM_INCLUDE_DIR}
     ${GLOBJECTS_INCLUDES}
 )
 

@@ -83,7 +83,7 @@ globjects::Referenced * QtTextureLoader::load(const std::string & filename) cons
     QImage image;
     if (image.load(QString::fromStdString(filename))) {
         // Convert image into RGBA format
-        QImage converted = image.convertToFormat(QImage::QImage::Format_RGB888);
+        QImage converted = image.convertToFormat(QImage::Format_RGB888);
 
         // Create texture
         globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
