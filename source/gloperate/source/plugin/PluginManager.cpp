@@ -6,6 +6,7 @@
 \******************************************************************************/
 #include <gloperate/plugin/PluginManager.h>
 #include <iostream>
+#include <globjects/logging.h>
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
 
@@ -62,6 +63,8 @@
                 *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = dlsym(m_handle, "getNumOfPlugins");
                 *reinterpret_cast<void**>(&m_getPluginPtr)       = dlsym(m_handle, "getPlugin");
                 *reinterpret_cast<void**>(&m_deinitPluginPtr)    = dlsym(m_handle, "deinitPlugin");
+            } else {
+                globjects::debug() << dlerror();
             }
         }
 

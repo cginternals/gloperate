@@ -3,34 +3,37 @@
 #include <QApplication>
 #include <QMainWindow>
 #include <QScopedPointer>
+#include <QDockWidget>
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/capabilities/VirtualTimeCapability.h>
-#include <gloperate/ChronoTimer.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
-#include <basic-examples/SimpleTexture/SimpleTexture.h>
-#include <basic-examples/RotatingQuad/RotatingQuad.h>
-#include "TimePropagator.h"
+#include <extended-examples/ExtendedCubeScape/ExtendedCubeScape.h>
 
+#include <reflectionzeug/PropertyGroup.h>
+
+#include <propertyguizeug/PropertyBrowser.h>
+
+#include <gloperate/capabilities/VirtualTimeCapability.h>
+#include <gloperate/ChronoTimer.h>
+
+#include "TimePropagator.h"
 
 using namespace gloperate;
 using namespace gloperate_qt;
 
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    // Initialize plugin manager
-    PluginManager::init(argc > 0 ? argv[0] : "");
-
-    // Load example plugins
+    // Create plugin manager
     PluginManager pluginManager;
-    IF_NDEBUG(pluginManager.loadPlugin("basic-examples");)
-    IF_DEBUG(pluginManager.loadPlugin("basic-examplesd");)
+
+    IF_NDEBUG(pluginManager.loadPlugin("extended-examples");)
+    IF_DEBUG(pluginManager.loadPlugin("extended-examplesd");)
+
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  version " << plugin->version() << "\n";
@@ -45,25 +48,24 @@ int main(int argc, char *argv[])
 
     // Choose a painter
     gloperate::Painter * painter = nullptr;
-    Plugin * plugin = pluginManager.plugin("CubeScape");
+    Plugin * plugin = pluginManager.plugin("ExtendedCubeScape");
     if (plugin) {
         painter = plugin->createPainter();
     } else {
 //      painter = new SimpleTexture();
-        painter = new RotatingQuad(&resourceManager);
+        painter = new ExtendedCubeScape(&resourceManager);
     }
 
-    QScopedPointer<TimePropagator> timePropagator(nullptr);
+    QScopedPointer<TimePropagator> mainloop(nullptr);
 
     // Create OpenGL window
     QtOpenGLWindow * glWindow = new QtOpenGLWindow();
     if (painter) {
-        // Set painter to window
         glWindow->setPainter(painter);
 
-        // Initialize virtual time propagator
-        if (painter->supports<gloperate::VirtualTimeCapability>()) {
-            timePropagator.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::VirtualTimeCapability>()));
+        if (painter->supports<gloperate::VirtualTimeCapability>())
+        {
+            mainloop.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::VirtualTimeCapability>()));
         }
     }
 
@@ -72,9 +74,21 @@ int main(int argc, char *argv[])
     mainWindow.setGeometry(100, 100, 800, 600);
     mainWindow.setCentralWidget(QWidget::createWindowContainer(glWindow));
 
+    reflectionzeug::PropertyGroup * properties = dynamic_cast<reflectionzeug::PropertyGroup *>(painter);
+
+    if (properties != nullptr)
+    {
+        QDockWidget * dock = new QDockWidget(&mainWindow);
+
+        dock->setWidget(new propertyguizeug::PropertyBrowser(properties, dock));
+
+        mainWindow.addDockWidget(Qt::LeftDockWidgetArea, dock);
+    }
+
     // Show window
     mainWindow.show();
 
     // Run application
     return app.exec();
 }
+
