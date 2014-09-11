@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
     // Load example plugins
     PluginManager pluginManager;
-    pluginManager.scanPlugins("examples");
+    pluginManager.scan("examples");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  version " << plugin->version() << "\n";

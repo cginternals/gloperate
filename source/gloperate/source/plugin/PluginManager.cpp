@@ -156,26 +156,26 @@ PluginManager::~PluginManager()
 
 /**
 *  @brief
-*    Get plugin directory
+*    Get scan directory
 *
 *  @return
 *    Directory from which plugins are loaded
 */
-std::string PluginManager::pluginDirectory() const
+std::string PluginManager::scanDirectory() const
 {
-    return m_pluginDirectory;
+    return m_scanDirectory;
 }
 
 /**
 *  @brief
-*    Set plugin directory
+*    Set scan directory
 *
 *  @param[in] path
 *    Directory from which plugins are loaded
 */
-void PluginManager::setPluginDirectory(const std::string & path)
+void PluginManager::setScanDirectory(const std::string & path)
 {
-    m_pluginDirectory = path;
+    m_scanDirectory = path;
 }
 
 /**
@@ -185,10 +185,10 @@ void PluginManager::setPluginDirectory(const std::string & path)
 *  @param[in] identifier
 *    If set, only libraries that contain the specified substring are loaded
 */
-void PluginManager::scanPlugins(const std::string & identifier)
+void PluginManager::scan(const std::string & identifier)
 {
     // Get search directory
-    std::string path = m_pluginDirectory.empty() ? PluginManager::s_defaultPluginPath : m_pluginDirectory;
+    std::string path = m_scanDirectory.empty() ? PluginManager::s_defaultPluginPath : m_scanDirectory;
 
 #ifndef WIN32
     // Search for plugins
@@ -205,7 +205,7 @@ void PluginManager::scanPlugins(const std::string & identifier)
             bool accepted  = (identifier.empty() || name.find(identifier) != std::string::npos);
             if (isLibrary && accepted) {
                 // Try to load plugin
-                loadPluginLibrary(path + g_sep + name);
+                loadLibrary(path + g_sep + name);
             }
 
             // Read next dir entry
@@ -222,21 +222,21 @@ void PluginManager::scanPlugins(const std::string & identifier)
 *  @brief
 *    Load plugin
 */
-void PluginManager::loadPlugin(const std::string & name)
+void PluginManager::load(const std::string & name)
 {
     // Get search directory
-    std::string path = m_pluginDirectory.empty() ? PluginManager::s_defaultPluginPath : m_pluginDirectory;
+    std::string path = m_scanDirectory.empty() ? PluginManager::s_defaultPluginPath : m_scanDirectory;
 
     // Try to load plugin
     // Compose filename, e.g., on linux: path + "/" + "lib" + name + ".so"
-    loadPluginLibrary(path + g_sep + g_pre + name + g_ext);
+    loadLibrary(path + g_sep + g_pre + name + g_ext);
 }
 
 /**
 *  @brief
 *    Load plugin library
 */
-void PluginManager::loadPluginLibrary(const std::string & filename)
+void PluginManager::loadLibrary(const std::string & filename)
 {
     globjects::info() << "Loading plugin '" << filename << "'";
 

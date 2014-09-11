@@ -65,16 +65,16 @@ class GLOPERATE_API PluginManager {
 
         /**
         *  @brief
-        *    Get plugin directory
+        *    Get scan directory
         *
         *  @return
         *    Directory from which plugins are loaded
         */
-        std::string pluginDirectory() const;
+        std::string scanDirectory() const;
 
         /**
         *  @brief
-        *    Set plugin directory
+        *    Set scan directory
         *
         *  @param[in] path
         *    Directory from which plugins are loaded
@@ -82,7 +82,7 @@ class GLOPERATE_API PluginManager {
         *  @remarks
         *    If the plugin directory is not set, the default search path is used
         */
-        void setPluginDirectory(const std::string & path);
+        void setScanDirectory(const std::string & path);
 
         /**
         *  @brief
@@ -91,7 +91,7 @@ class GLOPERATE_API PluginManager {
         *  @param[in] identifier
         *    If set, only libraries that contain the specified substring are loaded
         */
-        void scanPlugins(const std::string & identifier = "");
+        void scan(const std::string & identifier = "");
 
         /**
         *  @brief
@@ -102,7 +102,7 @@ class GLOPERATE_API PluginManager {
         *  @param[in] path
         *    Path at which to search for plugin libraries. If "", the default search path is used
         */
-        void loadPlugin(const std::string & name);
+        void load(const std::string & name);
 
         /**
         *  @brief
@@ -111,7 +111,7 @@ class GLOPERATE_API PluginManager {
         *  @param[in] filename
         *    Path to dynamic library
         */
-        void loadPluginLibrary(const std::string & filename);
+        void loadLibrary(const std::string & filename);
 
         /**
         *  @brief
@@ -136,7 +136,7 @@ class GLOPERATE_API PluginManager {
 
 
     protected:
-        std::string                     m_pluginDirectory;  /**< Directory from which plugins are loaded */
+        std::string                     m_scanDirectory;    /**< Directory from which plugins are loaded */
         std::vector<PluginLibrary *>    m_libraries;        /**< List of libraries */
         std::vector<Plugin *>           m_plugins;          /**< List of plugins */
         std::map<std::string, Plugin *> m_pluginsByName;    /**< Map of name -> plugin */
