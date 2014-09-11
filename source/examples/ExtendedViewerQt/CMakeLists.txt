@@ -1,3 +1,8 @@
+find_package(libzeug QUIET)
+
+if (NOT LIBZEUG_FOUND)
+	return ()
+endif ()
 
 # http://qt-project.org/forums/viewthread/30006/
 if(MSVC)
@@ -11,7 +16,6 @@ endif()
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
 find_package(Qt5Core 5.1)
 find_package(Qt5Gui 5.1)
 find_package(Qt5Widgets 5.1)
@@ -68,8 +72,6 @@ set(headers
 )
 set(sources
     main.cpp
-    TimePropagator.cpp
-    TimePropagator.h
 )
 
 #

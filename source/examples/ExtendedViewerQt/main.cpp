@@ -19,7 +19,7 @@
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 #include <gloperate/ChronoTimer.h>
 
-#include "TimePropagator.h"
+#include <gloperate-qt/TimePropagator.h>
 
 using namespace gloperate;
 using namespace gloperate_qt;

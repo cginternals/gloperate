@@ -1,6 +1,9 @@
-#include "TimePropagator.h"
+#include <gloperate-qt/TimePropagator.h>
 
 #include <chrono>
+
+namespace gloperate_qt
+{
 
 TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase* window, gloperate::VirtualTimeCapability * capability)
     : m_window(window)
@@ -24,3 +27,5 @@ void TimePropagator::update()
 
     m_window->updateGL();
 }
+
+} // namespace gloperate_qt

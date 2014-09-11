@@ -10,8 +10,12 @@
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 #include <gloperate/ChronoTimer.h>
 #include <gloperate-qt/QtOpenGLWindowBase.h>
+#include <gloperate-qt/gloperate-qt_api.h>
 
-class TimePropagator : public QObject
+namespace gloperate_qt
+{
+
+class GLOPERATE_QT_API TimePropagator : public QObject
 {
     Q_OBJECT
 public:
@@ -24,3 +28,5 @@ protected:
     gloperate::ChronoTimer m_time;
     gloperate::VirtualTimeCapability * m_capability;
 };
+
+} // namespace gloperate_qt
