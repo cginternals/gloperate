@@ -70,6 +70,9 @@ set(sources
     ${source_path}/Painter.cpp
     ${source_path}/Viewport.cpp
     ${source_path}/Camera.cpp
+
+    ${source_path}/AbstractContext.cpp
+    ${source_path}/ContextFormat.cpp
 )
 
 set(headers
@@ -90,6 +93,9 @@ set(headers
     ${include_path}/Viewport.h
     ${include_path}/Camera.h
     ${include_path}/gloperate_api.h
+
+    ${include_path}/AbstractContext.h
+    ${include_path}/ContextFormat.h
 )
 
 # Group source files
