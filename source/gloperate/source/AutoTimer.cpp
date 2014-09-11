@@ -9,7 +9,7 @@
 
 #include <globjects/base/baselogging.h>
 
-#include "ChronoTimer.h"
+#include <gloperate/ChronoTimer.h>
 
 namespace 
 {

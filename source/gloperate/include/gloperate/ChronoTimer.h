@@ -2,11 +2,12 @@
 
 #include <chrono>
 
+#include <gloperate/gloperate_api.h>
 
 namespace gloperate
 {
 
-class ChronoTimer
+class GLOPERATE_API ChronoTimer
 {
     using clock = std::chrono::high_resolution_clock;
     using time_point = clock::time_point;

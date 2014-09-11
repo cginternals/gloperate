@@ -8,6 +8,8 @@
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
 
+#include <globjects/logging.h>
+
 
 #ifdef LINUX
     #include <dlfcn.h>
@@ -27,6 +29,10 @@
                 *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = dlsym(m_handle, "getNumOfPlugins");
                 *reinterpret_cast<void**>(&m_getPluginPtr)       = dlsym(m_handle, "getPlugin");
                 *reinterpret_cast<void**>(&m_deinitPluginPtr)    = dlsym(m_handle, "deinitPlugin");
+            }
+            else
+            {
+                globjects::debug() << dlerror();
             }
         }
 
@@ -138,7 +144,7 @@ std::string PluginManager::defaultPluginDirectory() const
 
     return "";
 #else
-    return "build/";
+    return "build";
 #endif
 }
 

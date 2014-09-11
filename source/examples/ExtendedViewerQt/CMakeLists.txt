@@ -11,6 +11,7 @@ endif()
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(libzeug REQUIRED)
 find_package(Qt5Core 5.1)
 find_package(Qt5Gui 5.1)
 find_package(Qt5Widgets 5.1)
@@ -19,7 +20,7 @@ find_package(Qt5Widgets 5.1)
 if(Qt5Core_DIR AND Qt5Gui_DIR AND Qt5Widgets_DIR)
 
 # Target
-set(target ViewerQt)
+set(target ExtendedViewerQt)
 message(STATUS "Example ${target}")
 
 # Qt5 options
@@ -33,6 +34,7 @@ set(CMAKE_AUTOMOC ON)
 include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLOBJECTS_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
@@ -40,6 +42,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
     ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
     ${CMAKE_SOURCE_DIR}/source/examples/BasicExamples/include
+    ${CMAKE_SOURCE_DIR}/source/examples/ExtendedExamples/include
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -50,9 +53,11 @@ include_directories(
 
 set(libs
     ${GLOBJECTS_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
     gloperate
     gloperate-qt
     basic-examples
+    extended-examples
 )
 
 #

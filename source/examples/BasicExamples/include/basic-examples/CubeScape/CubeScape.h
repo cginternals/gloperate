@@ -24,6 +24,10 @@ public:
     CubeScape(gloperate::ResourceManager * resourceManager = nullptr);
     virtual ~CubeScape();
 
+    void update(float delta);
+
+    int numberOfCubes() const;
+    void setNumberOfCubes(const int & number);
 protected:
     virtual void onInitialize();
     virtual void onResize(const gloperate::Viewport & viewport);
@@ -33,6 +37,7 @@ protected:
 
     /* parameters */
 
+    int m_numCubes;
 
     /* members */
 
@@ -53,7 +58,7 @@ protected:
 
     globjects::ref_ptr<globjects::Texture> m_textures[2];
 
-    float m_a;
+    float m_time;
 
     glm::mat4 m_view;
     glm::mat4 m_projection;
