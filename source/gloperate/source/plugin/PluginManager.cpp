@@ -5,7 +5,6 @@
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include <gloperate/plugin/PluginManager.h>
-#include <iostream>
 #include <globjects/logging.h>
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
@@ -107,8 +106,10 @@ void PluginManager::init(const std::string & executablePath)
     #else
         // Save default plugin path
         PluginManager::s_defaultPluginPath = dirname(const_cast<char *>(executablePath.c_str()));
-        std::cout << "default path = " << s_defaultPluginPath << "\n\n";
     #endif
+
+    // Print default search path
+    globjects::info() << "Default plugin path: " << PluginManager::s_defaultPluginPath;
 }
 
 /**
@@ -137,11 +138,35 @@ PluginManager::~PluginManager()
 
 /**
 *  @brief
+*    Get plugin directory
+*
+*  @return
+*    Directory from which plugins are loaded
+*/
+std::string PluginManager::pluginDirectory() const
+{
+    return m_pluginDirectory;
+}
+
+/**
+*  @brief
+*    Set plugin directory
+*
+*  @param[in] path
+*    Directory from which plugins are loaded
+*/
+void PluginManager::setPluginDirectory(const std::string & path)
+{
+    m_pluginDirectory = path;
+}
+
+/**
+*  @brief
 *    Load plugin
 */
-void PluginManager::loadPlugin(const std::string & name, const std::string & path)
+void PluginManager::loadPlugin(const std::string & name)
 {
-    std::string dir = path.empty() ? PluginManager::s_defaultPluginPath : path;
+    std::string dir = m_pluginDirectory.empty() ? PluginManager::s_defaultPluginPath : m_pluginDirectory;
 
 #ifdef WIN32
     loadPluginLibrary(dir + "\\" + name + ".dll");

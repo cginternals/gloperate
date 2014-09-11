@@ -65,6 +65,27 @@ class GLOPERATE_API PluginManager {
 
         /**
         *  @brief
+        *    Get plugin directory
+        *
+        *  @return
+        *    Directory from which plugins are loaded
+        */
+        std::string pluginDirectory() const;
+
+        /**
+        *  @brief
+        *    Set plugin directory
+        *
+        *  @param[in] path
+        *    Directory from which plugins are loaded
+        *
+        *  @remarks
+        *    If the plugin directory is not set, the default search path is used
+        */
+        void setPluginDirectory(const std::string & path);
+
+        /**
+        *  @brief
         *    Load plugin
         *
         *  @param[in] name
@@ -72,7 +93,7 @@ class GLOPERATE_API PluginManager {
         *  @param[in] path
         *    Path at which to search for plugin libraries. If "", the default search path is used
         */
-        void loadPlugin(const std::string & name, const std::string & path = "");
+        void loadPlugin(const std::string & name);
 
         /**
         *  @brief
@@ -106,9 +127,10 @@ class GLOPERATE_API PluginManager {
 
 
     protected:
-        std::vector<PluginLibrary *>    m_libraries;     /**< List of libraries */
-        std::vector<Plugin *>           m_plugins;       /**< List of plugins */
-        std::map<std::string, Plugin *> m_pluginsByName; /**< Map of name -> plugin */
+        std::string                     m_pluginDirectory;  /**< Directory from which plugins are loaded */
+        std::vector<PluginLibrary *>    m_libraries;        /**< List of libraries */
+        std::vector<Plugin *>           m_plugins;          /**< List of plugins */
+        std::map<std::string, Plugin *> m_pluginsByName;    /**< Map of name -> plugin */
 
 
 };
