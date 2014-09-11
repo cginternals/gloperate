@@ -11,6 +11,10 @@ Painter::Painter()
 
 Painter::~Painter()
 {
+    for (AbstractCapability * capability : m_capabilities)
+    {
+        delete capability;
+    }
 }
 
 void Painter::initialize()
@@ -26,6 +30,11 @@ void Painter::resize(const Viewport & viewport)
 void Painter::paint()
 {
     onPaint();
+}
+
+void Painter::addCapability(AbstractCapability * capability)
+{
+    m_capabilities.push_back(capability);
 }
 
 

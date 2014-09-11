@@ -14,6 +14,8 @@
 #include <gloperate/Viewport.h>
 #include <gloperate/resources/RawFile.h>
 
+#include "VirtualTimeCapability.h"
+
 using namespace gl;
 
 namespace {
@@ -114,12 +116,14 @@ void main()
 
 
 CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
-: a_vertex(-1)
+: m_numCubes(25)
+, a_vertex(-1)
 , u_transform(-1)
 , u_time(-1)
 , u_numcubes(-1)
-, m_a(0.f)
+, m_time(0.f)
 {
+    addCapability(new VirtualTimeCapability(*this));
 }
 
 CubeScape::~CubeScape()
@@ -201,17 +205,15 @@ void CubeScape::onInitialize()
     u_time = m_program->getUniformLocation("time");
     u_numcubes = m_program->getUniformLocation("numcubes");
 
-    //GLint terrain = m_program->getUniformLocation("terrain");
-    //GLint patches = m_program->getUniformLocation("patches");
+    GLint terrain = m_program->getUniformLocation("terrain");
+    GLint patches = m_program->getUniformLocation("patches");
 
     // since only single program and single data is used, bind only once 
 
     glClearColor(0.f, 0.f, 0.f, 1.0f);
 
-    //m_program->setUniform(terrain, 0);
-    m_program->setUniform("terrain", 0);
-    //m_program->setUniform(patches, 1);
-    m_program->setUniform("patches", 1);
+    m_program->setUniform(terrain, 0);
+    m_program->setUniform(patches, 1);
 
     // create fbo for result
 
@@ -246,14 +248,11 @@ void CubeScape::onResize(const gloperate::Viewport & viewport)
 
 void CubeScape::onPaint()
 {
-    const int numcubes = 25;
-    const float t = 0.0f;
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
 
-    glm::mat4 transform = m_projection * m_view;// * glm::rotate(glm::mat4(), t * 0.1f, glm::vec3(0.f, 1.f, 0.f));
+    glm::mat4 transform = m_projection * m_view * glm::rotate(glm::mat4(), m_time * 0.1f, glm::vec3(0.f, 1.f, 0.f));
 
     m_vao->bind();
 
@@ -261,18 +260,34 @@ void CubeScape::onPaint()
 
     m_program->use();
 
-    //m_program->setUniform(u_transform, transform);
-    m_program->setUniform("modelViewProjection", transform);
-    //m_program->setUniform(u_time, t);
-    m_program->setUniform("time", t);
-    //m_program->setUniform(u_numcubes, numcubes);
-    m_program->setUniform("numcubes", numcubes);
+    m_program->setUniform(u_transform, transform);
+    m_program->setUniform(u_time, m_time);
+    m_program->setUniform(u_numcubes, m_numCubes);
 
     m_textures[0]->bindActive(GL_TEXTURE0);
     m_textures[1]->bindActive(GL_TEXTURE1);
 
-    m_vao->drawElementsInstanced(GL_TRIANGLES, 18, GL_UNSIGNED_BYTE, nullptr, numcubes * numcubes);
+    m_vao->drawElementsInstanced(GL_TRIANGLES, 18, GL_UNSIGNED_BYTE, nullptr, m_numCubes * m_numCubes);
 
     m_program->release();
     m_vao->unbind();
+}
+
+void CubeScape::update(float delta)
+{
+    m_time += delta;
+    while (m_time > 20 * glm::pi<float>())
+    {
+        m_time -= 20 * glm::pi<float>();
+    }
+}
+
+int CubeScape::numberOfCubes() const
+{
+    return m_numCubes;
+}
+
+void CubeScape::setNumberOfCubes(const int & number)
+{
+    m_numCubes = number;
 }

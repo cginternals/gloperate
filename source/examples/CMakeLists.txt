@@ -2,8 +2,10 @@ if(OPTION_BUILD_EXAMPLES)
 
     # Example plugins
     add_subdirectory(BasicExamples)
+    add_subdirectory(ExtendedExamples)
 
     # Example applications
+    add_subdirectory(ExtendedViewerQt)
     add_subdirectory(ViewerGLFW)
     add_subdirectory(ViewerQt)
 

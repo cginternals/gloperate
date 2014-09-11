@@ -1,5 +1,5 @@
 # Target
-set(target basic-examples)
+set(target extended-examples)
 message(STATUS "Lib ${target}")
 
 #
@@ -9,6 +9,7 @@ message(STATUS "Lib ${target}")
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(libzeug REQUIRED)
 
 #
 # Includes
@@ -18,11 +19,13 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
     BEFORE
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/examples/BasicExamples/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -33,6 +36,8 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
+    basic-examples
     gloperate
 )
 
@@ -41,9 +46,9 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DBASIC_EXAMPLES_STATIC")
+    add_definitions("-DEXTENDED_EXAMPLES_STATIC")
 else()
-    add_definitions("-DBASIC_EXAMPLES_EXPORTS")
+    add_definitions("-DEXTENDED_EXAMPLES_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
@@ -57,19 +62,13 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/SimpleTexture/SimpleTexture.cpp
-    ${source_path}/RotatingQuad/RotatingQuad.cpp
-    ${source_path}/CubeScape/CubeScape.cpp
-    ${source_path}/CubeScape/VirtualTimeCapability.cpp
-    ${source_path}/CubeScape/VirtualTimeCapability.h
+    ${source_path}/ExtendedCubeScape/ExtendedCubeScape.cpp
     ${source_path}/plugin.cpp
 )
 
 set(headers
-    ${include_path}/SimpleTexture/SimpleTexture.h
-    ${include_path}/RotatingQuad/RotatingQuad.h
-    ${include_path}/CubeScape/CubeScape.h
-    ${include_path}/basic_examples_api.h
+    ${include_path}/ExtendedCubeScape/ExtendedCubeScape.h
+    ${include_path}/extended_examples_api.h
 )
 
 # Group source files
