@@ -86,6 +86,15 @@ class GLOPERATE_API PluginManager {
 
         /**
         *  @brief
+        *    Scan for plugins and load all found plugins
+        *
+        *  @param[in] identifier
+        *    If set, only libraries that contain the specified substring are loaded
+        */
+        void scanPlugins(const std::string & identifier = "");
+
+        /**
+        *  @brief
         *    Load plugin
         *
         *  @param[in] name

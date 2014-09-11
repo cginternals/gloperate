@@ -23,8 +23,7 @@ int main(int argc, char *argv[])
 
     // Load example plugins
     PluginManager pluginManager;
-    IF_NDEBUG(pluginManager.loadPlugin("basic-examples");)
-    IF_DEBUG(pluginManager.loadPlugin("basic-examplesd");)
+    pluginManager.scanPlugins("examples");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  by " << plugin->vendor() << "\n";
