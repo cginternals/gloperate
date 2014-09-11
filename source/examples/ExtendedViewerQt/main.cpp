@@ -30,10 +30,7 @@ int main(int argc, char* argv[])
 
     // Create plugin manager
     PluginManager pluginManager;
-
-    IF_NDEBUG(pluginManager.loadPlugin("extended-examples");)
-    IF_DEBUG(pluginManager.loadPlugin("extended-examplesd");)
-
+    pluginManager.scan("examples");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  version " << plugin->version() << "\n";

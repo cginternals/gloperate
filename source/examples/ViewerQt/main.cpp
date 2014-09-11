@@ -7,29 +7,30 @@
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 #include <gloperate/resources/ResourceManager.h>
+#include <gloperate/capabilities/VirtualTimeCapability.h>
+#include <gloperate/ChronoTimer.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 
-#include <gloperate/capabilities/VirtualTimeCapability.h>
-#include <gloperate/ChronoTimer.h>
-
 #include <gloperate-qt/TimePropagator.h>
+
 
 using namespace gloperate;
 using namespace gloperate_qt;
 
-int main(int argc, char* argv[])
+
+int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    // Create plugin manager
+    // Initialize plugin manager
+    PluginManager::init(argc > 0 ? argv[0] : "");
+
+    // Load example plugins
     PluginManager pluginManager;
-
-    IF_NDEBUG(pluginManager.loadPlugin("basic-examples");)
-    IF_DEBUG(pluginManager.loadPlugin("basic-examplesd");)
-
+    pluginManager.scan("examples");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  version " << plugin->version() << "\n";
@@ -52,16 +53,17 @@ int main(int argc, char* argv[])
         painter = new RotatingQuad(&resourceManager);
     }
 
-    QScopedPointer<TimePropagator> mainloop(nullptr);
+    QScopedPointer<TimePropagator> timePropagator(nullptr);
 
     // Create OpenGL window
     QtOpenGLWindow * glWindow = new QtOpenGLWindow();
     if (painter) {
+        // Set painter to window
         glWindow->setPainter(painter);
 
-        if (painter->supports<gloperate::VirtualTimeCapability>())
-        {
-            mainloop.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::VirtualTimeCapability>()));
+        // Initialize virtual time propagator
+        if (painter->supports<gloperate::VirtualTimeCapability>()) {
+            timePropagator.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::VirtualTimeCapability>()));
         }
     }
 
@@ -76,4 +78,3 @@ int main(int argc, char* argv[])
     // Run application
     return app.exec();
 }
-
