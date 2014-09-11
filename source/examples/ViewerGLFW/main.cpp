@@ -13,17 +13,17 @@ using namespace gloperate;
 using namespace gloperate_glfw;
 
 
-int main(int /*argc*/, char* /*argv*/[])
+int main(int argc, char *argv[])
 {
     ContextFormat format;
     format.setVersion(3, 0);
 
-    // Create plugin manager
+    // Initialize plugin manager
+    PluginManager::init(argc > 0 ? argv[0] : "");
+
+    // Load example plugins
     PluginManager pluginManager;
-
-    IF_NDEBUG(pluginManager.loadPlugin("basic-examples");)
-    IF_DEBUG(pluginManager.loadPlugin("basic-examplesd");)
-
+    pluginManager.scan("examples");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  by " << plugin->vendor() << "\n";
@@ -41,22 +41,20 @@ int main(int /*argc*/, char* /*argv*/[])
         painter = new RotatingQuad();
     }
 
+    // Create event handler
     WindowEventHandler * eventHandler = new WindowEventHandler();
     eventHandler->setPainter(painter);
 
+    // Create window
     Window window;
     window.setEventHandler(eventHandler);
-
-    if (window.create(format, "Simple Texture Example"))
-    {
+    if (window.create(format, "gloperate viewer")) {
+        // Show window and run application
         window.context()->setSwapInterval(Context::VerticalSyncronization);
-
         window.show();
-
         return MainLoop::run();
-    }
-    else
-    {
+    } else {
+        // Error initializing the window
         return 1;
     }
 }
