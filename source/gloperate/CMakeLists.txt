@@ -56,6 +56,7 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
     ${source_path}/capabilities/AbstractCapability.cpp
+    ${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
     ${source_path}/capabilities/VirtualTimeCapability.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
@@ -80,6 +81,7 @@ set(sources
 
 set(headers
     ${include_path}/capabilities/AbstractCapability.h
+    ${include_path}/capabilities/AbstractVirtualTimeCapability.h
     ${include_path}/capabilities/VirtualTimeCapability.h
     ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/ScreenAlignedQuad.h

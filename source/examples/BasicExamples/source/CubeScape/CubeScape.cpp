@@ -14,7 +14,7 @@
 #include <gloperate/Viewport.h>
 #include <gloperate/resources/RawFile.h>
 
-#include "VirtualTimeCapability.h"
+#include <gloperate/capabilities/VirtualTimeCapability.h>
 
 using namespace gl;
 
@@ -117,13 +117,14 @@ void main()
 
 CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
 : m_numCubes(25)
+, m_timeCapability(new gloperate::VirtualTimeCapability)
 , a_vertex(-1)
 , u_transform(-1)
 , u_time(-1)
 , u_numcubes(-1)
-, m_time(0.f)
 {
-    addCapability(new VirtualTimeCapability(*this));
+    m_timeCapability->setLoopDuration(20.0f * glm::pi<float>());
+    addCapability(m_timeCapability);
 }
 
 CubeScape::~CubeScape()
@@ -252,7 +253,7 @@ void CubeScape::onPaint()
 
     glEnable(GL_DEPTH_TEST);
 
-    glm::mat4 transform = m_projection * m_view * glm::rotate(glm::mat4(), m_time * 0.1f, glm::vec3(0.f, 1.f, 0.f));
+    glm::mat4 transform = m_projection * m_view * glm::rotate(glm::mat4(), m_timeCapability->time() * 0.1f, glm::vec3(0.f, 1.f, 0.f));
 
     m_vao->bind();
 
@@ -261,7 +262,7 @@ void CubeScape::onPaint()
     m_program->use();
 
     m_program->setUniform(u_transform, transform);
-    m_program->setUniform(u_time, m_time);
+    m_program->setUniform(u_time, m_timeCapability->time());
     m_program->setUniform(u_numcubes, m_numCubes);
 
     m_textures[0]->bindActive(GL_TEXTURE0);
@@ -271,15 +272,6 @@ void CubeScape::onPaint()
 
     m_program->release();
     m_vao->unbind();
-}
-
-void CubeScape::update(float delta)
-{
-    m_time += delta;
-    while (m_time > 20 * glm::pi<float>())
-    {
-        m_time -= 20 * glm::pi<float>();
-    }
 }
 
 int CubeScape::numberOfCubes() const

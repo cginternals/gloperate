@@ -16,6 +16,7 @@
 
 namespace gloperate {
     class ResourceManager;
+    class AbstractVirtualTimeCapability;
 }
 
 class BASIC_EXAMPLES_API CubeScape : public gloperate::Painter
@@ -39,6 +40,10 @@ protected:
 
     int m_numCubes;
 
+    /* capabilities */
+
+    gloperate::AbstractVirtualTimeCapability * m_timeCapability;
+
     /* members */
 
     //globjects::ref_ptr<globjects::Framebuffer> m_fbo;
@@ -57,8 +62,6 @@ protected:
     globjects::ref_ptr<globjects::Program> m_program;
 
     globjects::ref_ptr<globjects::Texture> m_textures[2];
-
-    float m_time;
 
     glm::mat4 m_view;
     glm::mat4 m_projection;

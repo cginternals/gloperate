@@ -16,7 +16,7 @@
 
 #include <propertyguizeug/PropertyBrowser.h>
 
-#include <gloperate/capabilities/VirtualTimeCapability.h>
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 #include <gloperate/ChronoTimer.h>
 
 #include <gloperate-qt/TimePropagator.h>
@@ -60,9 +60,9 @@ int main(int argc, char* argv[])
     if (painter) {
         glWindow->setPainter(painter);
 
-        if (painter->supports<gloperate::VirtualTimeCapability>())
+        if (painter->supports<gloperate::AbstractVirtualTimeCapability>())
         {
-            mainloop.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::VirtualTimeCapability>()));
+            mainloop.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
         }
     }
 

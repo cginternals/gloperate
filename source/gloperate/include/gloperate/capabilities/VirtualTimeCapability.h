@@ -1,14 +1,26 @@
 #pragma once
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/capabilities/AbstractCapability.h>
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 
-namespace gloperate {
+namespace gloperate
+{
 
-class GLOPERATE_API VirtualTimeCapability : public AbstractCapability
+class GLOPERATE_API VirtualTimeCapability : public AbstractVirtualTimeCapability
 {
 public:
-    virtual void update(float delta) = 0;
+    VirtualTimeCapability();
+    virtual ~VirtualTimeCapability();
+
+    virtual void update(float delta) override;
+    virtual void setLoopDuration(float duration) override;
+    virtual float time() const override;
+
+protected:
+    float m_duration;
+    float m_time;
+
+    void normalizeTime();
 };
 
 } // namespace gloperate

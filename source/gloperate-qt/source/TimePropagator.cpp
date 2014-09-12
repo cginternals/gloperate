@@ -5,7 +5,7 @@
 namespace gloperate_qt
 {
 
-TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase* window, gloperate::VirtualTimeCapability * capability)
+TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase* window, gloperate::AbstractVirtualTimeCapability * capability)
     : m_window(window)
     , m_timer(new QTimer())
     , m_time(false, true)

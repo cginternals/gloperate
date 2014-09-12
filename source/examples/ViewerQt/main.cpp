@@ -7,7 +7,7 @@
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/capabilities/VirtualTimeCapability.h>
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 #include <gloperate/ChronoTimer.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
         glWindow->setPainter(painter);
 
         // Initialize virtual time propagator
-        if (painter->supports<gloperate::VirtualTimeCapability>()) {
-            timePropagator.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::VirtualTimeCapability>()));
+        if (painter->supports<gloperate::AbstractVirtualTimeCapability>()) {
+            timePropagator.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
         }
     }
 
