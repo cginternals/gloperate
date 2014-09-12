@@ -11,7 +11,6 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/VertexAttributeBinding.h>
 
-#include <gloperate/Viewport.h>
 #include <gloperate/resources/RawFile.h>
 
 #include <gloperate/capabilities/TargetFramebufferCapability.h>

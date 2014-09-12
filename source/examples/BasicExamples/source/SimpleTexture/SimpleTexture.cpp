@@ -1,8 +1,6 @@
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <random>
 #include <glbinding/gl/gl.h>
-#include <gloperate/Viewport.h>
-
 #include <gloperate/capabilities/ViewportCapability.h>
 
 

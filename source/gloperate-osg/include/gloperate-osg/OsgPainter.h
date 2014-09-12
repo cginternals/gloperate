@@ -59,9 +59,8 @@ public:
 
 
 protected:
-    virtual void onInitialize();
-    virtual void onResize(const gloperate::Viewport & viewport);
-    virtual void onPaint();
+    virtual void onInitialize() override;
+    virtual void onPaint() override;
 
 
 protected:

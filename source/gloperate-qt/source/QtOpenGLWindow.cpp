@@ -9,7 +9,6 @@
 #include <QResizeEvent>
 #include <gloperate-qt/qt-includes-end.h>
 #include <globjects/globjects.h>
-#include <gloperate/Viewport.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 
 
@@ -24,6 +23,7 @@ namespace gloperate_qt
 */
 QtOpenGLWindow::QtOpenGLWindow()
 : QtOpenGLWindowBase()
+, m_timePropagator(nullptr)
 {
 }
 
@@ -59,7 +59,17 @@ Painter * QtOpenGLWindow::painter() const
 */
 void QtOpenGLWindow::setPainter(Painter * painter)
 {
+    // Save painter
     m_painter = painter;
+
+    // Check for virtual time capability
+    if (painter->supports<gloperate::AbstractVirtualTimeCapability>()) {
+        // Create a time propagator that updates the virtual time
+        m_timePropagator.reset(new TimePropagator(this, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
+    } else {
+        // Destroy old time propagator
+        m_timePropagator.reset(nullptr);
+    }
 }
 
 void QtOpenGLWindow::onInitialize()
@@ -77,12 +87,11 @@ void QtOpenGLWindow::onInitialize()
 void QtOpenGLWindow::onResize(QResizeEvent * event)
 {
     if (m_painter) {
+        // Check if the painter supports the viewport capability
         AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
-
-        if (viewportCapability)
-        {
+        if (viewportCapability) {
             // Resize painter
-            viewportCapability->setViewport(Viewport(0, 0, event->size().width(), event->size().height()));
+            viewportCapability->setViewport(0, 0, event->size().width(), event->size().height());
         }
     }
 }

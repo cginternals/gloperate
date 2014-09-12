@@ -11,9 +11,6 @@ namespace gloperate
 {
 
 
-class Viewport;
-
-
 class GLOPERATE_API Painter : public globjects::Referenced
 {
 

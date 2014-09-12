@@ -7,9 +7,11 @@
 #pragma once
 
 
+#include <QScopedPointer>
 #include <globjects/base/ref_ptr.h>
 #include <gloperate/Painter.h>
 #include <gloperate-qt/QtOpenGLWindowBase.h>
+#include <gloperate-qt/TimePropagator.h>
 
 
 namespace gloperate_qt
@@ -72,7 +74,8 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<gloperate::Painter> m_painter;	/**< Currently used painter */
+    globjects::ref_ptr<gloperate::Painter> m_painter;	      /**< Currently used painter */
+    QScopedPointer<TimePropagator>         m_timePropagator;  /**< Time propagator for continous updates */
 
 
 };

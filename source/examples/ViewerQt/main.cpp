@@ -1,8 +1,13 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #include <iostream>
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QApplication>
 #include <QMainWindow>
-#include <QScopedPointer>
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate/base/ChronoTimer.h>
 #include <gloperate/plugin/PluginManager.h>
@@ -11,7 +16,6 @@
 #include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
-#include <gloperate-qt/TimePropagator.h>
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 
@@ -52,18 +56,11 @@ int main(int argc, char *argv[])
         painter = new RotatingQuad(&resourceManager);
     }
 
-    QScopedPointer<TimePropagator> timePropagator(nullptr);
-
     // Create OpenGL window
     QtOpenGLWindow * glWindow = new QtOpenGLWindow();
     if (painter) {
         // Set painter to window
         glWindow->setPainter(painter);
-
-        // Initialize virtual time propagator
-        if (painter->supports<gloperate::AbstractVirtualTimeCapability>()) {
-            timePropagator.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
-        }
     }
 
     // Create main window
