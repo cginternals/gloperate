@@ -43,6 +43,8 @@ globjects::Framebuffer * TargetFramebufferCapability::framebuffer() const
 void TargetFramebufferCapability::setFramebuffer(globjects::Framebuffer * fbo)
 {
     m_framebuffer = fbo;
+
+    setChanged(true);
 }
 
 

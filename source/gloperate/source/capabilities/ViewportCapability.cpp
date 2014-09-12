@@ -78,6 +78,9 @@ void ViewportCapability::setViewport(int x, int y, int width, int height)
 	m_y      = y;
 	m_width  = width;
 	m_height = height;
+
+	// Mark viewport as changed
+    setChanged(true);
 }
 
 

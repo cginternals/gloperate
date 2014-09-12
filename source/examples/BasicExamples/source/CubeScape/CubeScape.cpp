@@ -229,9 +229,23 @@ void CubeScape::onInitialize()
 
 void CubeScape::onPaint()
 {
-    glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+    if (m_viewportCapability->hasChanged())
+    {
+        glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
 
-    m_projection = glm::perspective(glm::radians(50.f), static_cast<GLfloat>(m_viewportCapability->width()) / static_cast<GLfloat>(m_viewportCapability->height()), 2.f, 8.f);
+        m_projection = glm::perspective(glm::radians(50.f), static_cast<GLfloat>(m_viewportCapability->width()) / static_cast<GLfloat>(m_viewportCapability->height()), 2.f, 8.f);
+
+        m_viewportCapability->setChanged(false);
+    }
+
+    globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
+
+    if (!fbo)
+    {
+        fbo = globjects::Framebuffer::defaultFBO();
+    }
+
+    fbo->bind(GL_FRAMEBUFFER);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -256,6 +270,8 @@ void CubeScape::onPaint()
 
     m_program->release();
     m_vao->unbind();
+
+    globjects::Framebuffer::unbind(GL_FRAMEBUFFER);
 }
 
 int CubeScape::numberOfCubes() const

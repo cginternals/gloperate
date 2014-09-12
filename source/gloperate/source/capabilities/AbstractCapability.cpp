@@ -15,6 +15,7 @@ namespace gloperate {
 *    Constructor
 */
 AbstractCapability::AbstractCapability()
+: m_changed(true)
 {
 }
 
@@ -24,6 +25,24 @@ AbstractCapability::AbstractCapability()
 */
 AbstractCapability::~AbstractCapability()
 {
+}
+
+/**
+ * @brief Returns whether the information of this Capability have changed.
+ * @return the changed flag
+ */
+bool AbstractCapability::hasChanged() const
+{
+    return m_changed;
+}
+
+/**
+ * @brief AbstractCapability::setChanged
+ * @param changed the new value of the changed flag
+ */
+void AbstractCapability::setChanged(bool _changed)
+{
+    m_changed = _changed;
 }
 
 
