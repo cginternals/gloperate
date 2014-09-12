@@ -131,7 +131,7 @@ void WindowEventDispatcher::checkForTimerEvents()
 
             if (timer.ready())
             {
-                dispatchEvent(window, new TimerEvent(id));
+                dispatchEvent(window, new TimerEvent(id, timer.elapsed));
                 if (timer.singleShot)
                 {
                     discarded.emplace_back(window, id);
@@ -150,7 +150,7 @@ void WindowEventDispatcher::checkForTimerEvents()
     }
 }
 
-Window* WindowEventDispatcher::fromGLFW(GLFWwindow* glfwWindow)
+Window *WindowEventDispatcher::fromGLFW(GLFWwindow* glfwWindow)
 {
     return glfwWindow ? static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow)) : nullptr;
 }
