@@ -88,10 +88,9 @@ void QtOpenGLWindow::onInitialize()
 void QtOpenGLWindow::onResize(QResizeEvent * event)
 {
     if (m_painter) {
+        // Check if the painter supports the viewport capability
         AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
-
-        if (viewportCapability)
-        {
+        if (viewportCapability) {
             // Resize painter
             viewportCapability->setViewport(Viewport(0, 0, event->size().width(), event->size().height()));
         }

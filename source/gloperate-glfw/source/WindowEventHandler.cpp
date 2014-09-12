@@ -37,7 +37,7 @@ void WindowEventHandler::initialize(Window & window)
 void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 {
     if (event.window()->painter()) {
-        // Resize painter
+        // Check if the painter supports the viewport capability
         AbstractViewportCapability * viewportCapability = event.window()->painter()->getCapability<AbstractViewportCapability>();
 
         if (viewportCapability)
