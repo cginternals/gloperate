@@ -1,44 +1,49 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #include <gloperate/capabilities/ViewportCapability.h>
+
 
 namespace gloperate
 {
 
+
+/**
+*  @brief
+*    Constructor
+*/
 ViewportCapability::ViewportCapability()
 {
 }
 
+/**
+*  @brief
+*    Destructor
+*/
 ViewportCapability::~ViewportCapability()
 {
 }
 
-void ViewportCapability::setViewport(const Viewport & viewport)
-{
-    m_viewport = viewport;
-}
-
+/**
+*  @brief
+*    Get viewport
+*/
 const Viewport & ViewportCapability::viewport() const
 {
     return m_viewport;
 }
 
-int ViewportCapability::x() const
+/**
+*  @brief
+*    Set viewport
+*/
+void ViewportCapability::setViewport(const Viewport & viewport)
 {
-    return m_viewport.x();
+    m_viewport = viewport;
 }
 
-int ViewportCapability::y() const
-{
-    return m_viewport.y();
-}
-
-int ViewportCapability::width() const
-{
-    return m_viewport.width();
-}
-
-int ViewportCapability::height() const
-{
-    return m_viewport.height();
-}
 
 } // namespace gloperate
