@@ -79,7 +79,6 @@ set(sources
     ${source_path}/resources/GlrawTextureLoader.cpp
     ${source_path}/resources/RawFile.cpp
     ${source_path}/Painter.cpp
-    ${source_path}/Viewport.cpp
     ${source_path}/Camera.cpp
 
 )
@@ -111,7 +110,6 @@ set(headers
     ${include_path}/resources/RawFile.h
     ${include_path}/Painter.h
     ${include_path}/Painter.hpp
-    ${include_path}/Viewport.h
     ${include_path}/Camera.h
     ${include_path}/gloperate_api.h
 )

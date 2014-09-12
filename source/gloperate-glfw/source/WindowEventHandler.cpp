@@ -2,7 +2,6 @@
 #include <globjects/globjects.h>
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
-#include <gloperate/Viewport.h>
 
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
@@ -43,7 +42,7 @@ void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
         if (viewportCapability)
         {
             // Resize painter
-            viewportCapability->setViewport(Viewport(0, 0, event.width(), event.height()));
+            viewportCapability->setViewport(0, 0, event.width(), event.height());
         }
     }
 }

@@ -9,7 +9,6 @@
 #include <QResizeEvent>
 #include <gloperate-qt/qt-includes-end.h>
 #include <globjects/globjects.h>
-#include <gloperate/Viewport.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 
 
@@ -92,7 +91,7 @@ void QtOpenGLWindow::onResize(QResizeEvent * event)
         AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
         if (viewportCapability) {
             // Resize painter
-            viewportCapability->setViewport(Viewport(0, 0, event->size().width(), event->size().height()));
+            viewportCapability->setViewport(0, 0, event->size().width(), event->size().height());
         }
     }
 }

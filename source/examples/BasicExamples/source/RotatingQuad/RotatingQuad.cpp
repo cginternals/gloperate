@@ -8,8 +8,6 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <gloperate/util/StringTemplate.h>
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/Viewport.h>
-
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 

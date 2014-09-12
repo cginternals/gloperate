@@ -9,7 +9,6 @@
 
 #include <gloperate/gloperate_api.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/Viewport.h>
 
 
 namespace gloperate
@@ -39,25 +38,61 @@ public:
 
     /**
     *  @brief
-    *    Get viewport
+    *    Get viewport position x
     *
     *  @return
-    *    Viewport
+    *    X-position
     */
-    virtual const Viewport & viewport() const override;
+    virtual int x() const override;
+
+    /**
+    *  @brief
+    *    Get viewport position y
+    *
+    *  @return
+    *    Y-position
+    */
+    virtual int y() const override;
+
+    /**
+    *  @brief
+    *    Get viewport width
+    *
+    *  @return
+    *    Width
+    */
+    virtual int width() const override;
+
+    /**
+    *  @brief
+    *    Get viewport height
+    *
+    *  @return
+    *    Height
+    */
+    virtual int height() const override;
 
     /**
     *  @brief
     *    Set viewport
     *
-    *  @param[in] viewport
-    *    Viewport
+    *  @param[in] x
+    *    X-position
+    *  @param[in] y
+    *    Y-position
+    *  @param[in] width
+    *    Width
+    *  @param[in] height
+    *    Height
     */
-    virtual void setViewport(const Viewport & viewport) override;
+    virtual void setViewport(int x, int y, int width, int height) override;
 
 
 protected:
-    Viewport m_viewport;	/**< The current viewport */
+    int m_x;      /**< Viewport position x */
+    int m_y;      /**< Viewport position y */
+    int m_width;  /**< Viewport width */
+    int m_height; /**< Viewport height */
 
 
 };
