@@ -31,13 +31,8 @@ public:
     // returns the context handle - if this is somehow encapsulated tryFetchHandle for retrieval.
     virtual glbinding::ContextHandle handle() const = 0;
 
-	virtual bool makeCurrent() = 0;
-    virtual void doneCurrent() = 0;
-
-    virtual void swapBuffers() = 0;
-
 	// this should be in sync to the created context, not the requested one
-    virtual const ContextFormat & format() const; 
+    virtual const ContextFormat & format() const = 0; 
 
 	// returns true if the context was created (irrespective of format verification)
 	// and if handle() returns handle > 0.
@@ -45,12 +40,8 @@ public:
 
 	// swap interval relates to context, since there might be multiple 
 	// shared contexts with same format, but individual swap format.
-	bool setSwapInterval(SwapInterval interval);
     SwapInterval swapInterval() const;
-
-	// vertical sync is basically accessing swap interval with 0/1
-	bool verticalSync() const;
-	bool setVerticalSync(const bool enable);
+	virtual bool setSwapInterval(SwapInterval interval);
 
 protected:
 	// operates by making the context current and fetching its context handle
@@ -59,7 +50,6 @@ protected:
 
 protected:
 	SwapInterval m_swapInterval;
-    ContextFormat m_format;
 };
 
 } // namespace gloperate

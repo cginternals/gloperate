@@ -47,25 +47,16 @@ bool AbstractContext::isValid() const
 	return 0 < handle();
 }
 
-const ContextFormat & AbstractContext::format() const
-{
-	return m_format;
-}
-
 glbinding::ContextHandle AbstractContext::tryFetchHandle()
 {
 	assert(isValid());
     if (!isValid())
 		return 0;
 
-    makeCurrent();
-
     const glbinding::ContextHandle handle = glbinding::getCurrentContext();
 
     if (0 == handle)
         critical("Acquiring OpenGL context handle failed.");
-
-	doneCurrent();
 
     return handle;
 }
@@ -84,13 +75,27 @@ bool AbstractContext::setSwapInterval(const SwapInterval interval)
 
 #ifdef WIN32
 
-    typedef bool (WINAPI * SWAPINTERVALEXTPROC) (int);
+    using SWAPINTERVALEXTPROC = bool(WINAPI *)(int);
     static SWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
+
+    using GETSWAPINTERVALEXTPROC = int(WINAPI *)();
+    static GETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = nullptr;
 
     if(!wglSwapIntervalEXT)
         wglSwapIntervalEXT = reinterpret_cast<SWAPINTERVALEXTPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
-    if(wglSwapIntervalEXT)
+    assert(wglSwapIntervalEXT);
+
+    if (!wglGetSwapIntervalEXT)
+        wglGetSwapIntervalEXT = reinterpret_cast<GETSWAPINTERVALEXTPROC>(wglGetProcAddress("wglGetSwapIntervalEXT"));
+    assert(wglGetSwapIntervalEXT);
+
+    result = wglSwapIntervalEXT(static_cast<int>(interval));
+
+    if(result)
+    {
         result = wglSwapIntervalEXT(static_cast<int>(interval));
+        m_swapInterval = static_cast<SwapInterval>(wglGetSwapIntervalEXT());
+    }
 
 #elif __APPLE__
 
@@ -98,7 +103,7 @@ bool AbstractContext::setSwapInterval(const SwapInterval interval)
 
 #else
 
-    typedef int (APIENTRY * SWAPINTERVALEXTPROC) (int);
+    using SWAPINTERVALEXTPROC = int(APIENTRY *)(int);
     static SWAPINTERVALEXTPROC glXSwapIntervalSGI = nullptr;
 
     if(!glXSwapIntervalSGI)
@@ -109,24 +114,15 @@ bool AbstractContext::setSwapInterval(const SwapInterval interval)
     if(glXSwapIntervalSGI)
         result = glXSwapIntervalSGI(static_cast<int>(interval));
 
+    if (result)
+        m_swapInterval = interval;
+
 #endif
 
     if(!result)
         warning("Setting swap interval to % failed.", swapIntervalString(interval));
-    else
-        m_swapInterval = interval;
 
     return result;
-}
-
-bool AbstractContext::verticalSync() const
-{
-    return m_swapInterval != SwapInterval::NoVerticalSyncronization;
-}
-
-bool AbstractContext::setVerticalSync(const bool enable)
-{
-    return setSwapInterval(static_cast<SwapInterval>(enable ? 1 : 0));
 }
 
 } // namespace gloperate

@@ -68,6 +68,12 @@ public:
     void setVersion(const glbinding::Version & version);
     void setVersion(unsigned int majorVersion, unsigned int minorVersion);
 
+    /** Validates requested version itself and clamps to maximum 
+    */
+    static glbinding::Version ContextFormat::validateVersion(
+        glbinding::Version requestedVersion
+    ,   glbinding::Version maximumVersion);
+
     int majorVersion() const;
     int minorVersion() const;
     const glbinding::Version & version() const;
