@@ -1,4 +1,7 @@
+
 #include <basic-examples/CubeScape/CubeScape.h>
+
+#include <array>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -177,18 +180,24 @@ void CubeScape::onInitialize()
     m_vertices = new globjects::Buffer;
     m_indices = new globjects::Buffer;
 
-    m_vertices->setData(std::array<glm::vec3, 8>{
-        glm::vec3(-1.f, -1.f, -1.f), // 0
-        glm::vec3(-1.f, -1.f,  1.f), // 1
-        glm::vec3(-1.f,  1.f, -1.f), // 2
-        glm::vec3(-1.f,  1.f,  1.f), // 3
-        glm::vec3( 1.f, -1.f, -1.f), // 4
-        glm::vec3( 1.f, -1.f,  1.f), // 5
-        glm::vec3( 1.f,  1.f, -1.f), // 6
-        glm::vec3( 1.f,  1.f,  1.f)  // 7
-    }, GL_STATIC_DRAW);
+    const std::array<glm::vec3, 8> vertices = 
+    {
+        glm::vec3(-1.f, -1.f, -1.f ), // 0
+        glm::vec3(-1.f, -1.f,  1.f ), // 1
+        glm::vec3(-1.f,  1.f, -1.f ), // 2
+        glm::vec3(-1.f,  1.f,  1.f ), // 3
+        glm::vec3( 1.f, -1.f, -1.f ), // 4
+        glm::vec3( 1.f, -1.f,  1.f ), // 5
+        glm::vec3( 1.f,  1.f, -1.f ), // 6
+        glm::vec3( 1.f,  1.f,  1.f )  // 7
+    };
 
-    m_indices->setData(std::array<unsigned char, 18>{ 2, 3, 6, 0, 1, 2, 1, 5, 3, 5, 4, 7, 4, 0, 6, 5, 1, 4 }, GL_STATIC_DRAW);
+    m_vertices->setData(vertices, GL_STATIC_DRAW);
+
+    const std::array<unsigned char, 18> indices =
+        { 2, 3, 6, 0, 1, 2, 1, 5, 3, 5, 4, 7, 4, 0, 6, 5, 1, 4 };
+
+    m_indices->setData(indices, GL_STATIC_DRAW);
     m_indices->bind(GL_ELEMENT_ARRAY_BUFFER);
 
     // setup uniforms
