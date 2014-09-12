@@ -62,13 +62,13 @@ void QtOpenGLWindow::setPainter(Painter * painter)
     // Save painter
     m_painter = painter;
 
+    // Destroy old time propagator
+    m_timePropagator.reset(nullptr);
+
     // Check for virtual time capability
     if (painter->supports<gloperate::AbstractVirtualTimeCapability>()) {
         // Create a time propagator that updates the virtual time
         m_timePropagator.reset(new TimePropagator(this, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
-    } else {
-        // Destroy old time propagator
-        m_timePropagator.reset(nullptr);
     }
 }
 

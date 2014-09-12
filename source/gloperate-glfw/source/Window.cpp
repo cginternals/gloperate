@@ -476,6 +476,8 @@ void Window::setPainter(gloperate::Painter * painter)
 {
     m_painter = painter;
 
+    removeTimer(0);
+
     gloperate::AbstractVirtualTimeCapability * timeCapability = m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>();
 
     if (timeCapability)
