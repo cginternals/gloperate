@@ -42,10 +42,36 @@ public:
     */
     virtual ~AbstractCapability();
 
+    /**
+    *  @brief
+    *    Check if the information of this capability have changed
+    *
+    *  @return
+    *    'true' if capability has been changed, else 'false'
+    *
+    *  @remarks
+    *    This functionality can be used by a painter to determine, whether capability
+    *    data has been changed since the last call. It is the responsibility of the
+    *    painter to react on that change and reset this flag by calling setChanged(false).
+    *    For example, the viewport capability will be marked as 'changed' whenever a
+    *    new viewport is set.
+    */
     bool hasChanged() const;
+
+    /**
+    *  @brief
+    *    Set if the information of this capability have changed
+    *
+    *  @param[in] changed
+    *    'true' if capability has been changed, else 'false'
+    */
     void setChanged(bool changed);
+
+
 protected:
-    bool m_changed;
+    bool m_changed; /**< Has the capability information been changed? */
+
+
 };
 
 
