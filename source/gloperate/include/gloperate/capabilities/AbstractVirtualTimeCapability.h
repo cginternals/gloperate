@@ -42,6 +42,30 @@ public:
 
     /**
     *  @brief
+    *    Check if virtual time is active
+    *
+    *  @return
+    *    'true' if activate, else 'false'
+    */
+    virtual bool isActive() const = 0;
+
+    /**
+    *  @brief
+    *    Activate or deactivate virtual time
+    *
+    *  @param[in] active
+    *    'true' if active, else 'false'
+    *
+    *  @remarks
+    *    When a virtual time capability is present and activated on a painter,
+    *    the window will activate continuous rendering and updates. If not
+    *    activated, the viewer will switch back to on-demand rendering and disable
+    *    continuous updates until the capability has been switched back on.
+    */
+    virtual void setActive(bool active) = 0;
+
+    /**
+    *  @brief
     *    Get virtual time
     *
     *  @return

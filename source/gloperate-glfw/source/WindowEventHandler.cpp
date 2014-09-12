@@ -65,7 +65,7 @@ void WindowEventHandler::timerEvent(TimerEvent & event)
     {
         AbstractVirtualTimeCapability * timeCapability = event.window()->painter()->getCapability<AbstractVirtualTimeCapability>();
 
-        if (timeCapability)
+        if (timeCapability && timeCapability->isActive())
         {
             timeCapability->update(std::chrono::duration_cast<std::chrono::duration<float>>(event.elapsed()).count());
             event.window()->repaint();
