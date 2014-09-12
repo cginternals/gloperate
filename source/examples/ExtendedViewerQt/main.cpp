@@ -1,8 +1,13 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #include <iostream>
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QApplication>
 #include <QMainWindow>
-#include <QScopedPointer>
 #include <QDockWidget>
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate/plugin/PluginManager.h>
@@ -19,7 +24,6 @@
 #include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 #include <gloperate/base/ChronoTimer.h>
 
-#include <gloperate-qt/TimePropagator.h>
 
 using namespace gloperate;
 using namespace gloperate_qt;
@@ -53,17 +57,10 @@ int main(int argc, char* argv[])
         painter = new ExtendedCubeScape(&resourceManager);
     }
 
-    QScopedPointer<TimePropagator> mainloop(nullptr);
-
     // Create OpenGL window
     QtOpenGLWindow * glWindow = new QtOpenGLWindow();
     if (painter) {
         glWindow->setPainter(painter);
-
-        if (painter->supports<gloperate::AbstractVirtualTimeCapability>())
-        {
-            mainloop.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
-        }
     }
 
     // Create main window

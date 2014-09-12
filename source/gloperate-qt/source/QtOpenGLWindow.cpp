@@ -24,6 +24,7 @@ namespace gloperate_qt
 */
 QtOpenGLWindow::QtOpenGLWindow()
 : QtOpenGLWindowBase()
+, m_timePropagator(nullptr)
 {
 }
 
@@ -59,7 +60,17 @@ Painter * QtOpenGLWindow::painter() const
 */
 void QtOpenGLWindow::setPainter(Painter * painter)
 {
+    // Save painter
     m_painter = painter;
+
+    // Check for virtual time capability
+    if (painter->supports<gloperate::AbstractVirtualTimeCapability>()) {
+        // Create a time propagator that updates the virtual time
+        m_timePropagator.reset(new TimePropagator(this, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
+    } else {
+        // Destroy old time propagator
+        m_timePropagator.reset(nullptr);
+    }
 }
 
 void QtOpenGLWindow::onInitialize()
