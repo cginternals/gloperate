@@ -55,6 +55,9 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
+    ${source_path}/base/AutoTimer.cpp
+    ${source_path}/base/ChronoTimer.cpp
+    ${source_path}/base/CyclicTime.cpp
     ${source_path}/capabilities/AbstractCapability.cpp
     ${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
     ${source_path}/capabilities/AbstractViewportCapability.cpp
@@ -62,7 +65,7 @@ set(sources
     ${source_path}/capabilities/TargetFramebufferCapability.cpp
     ${source_path}/capabilities/ViewportCapability.cpp
     ${source_path}/capabilities/VirtualTimeCapability.cpp
-#    ${source_path}/tools/ScreenShot.cpp
+#   ${source_path}/tools/ScreenShot.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
@@ -79,12 +82,12 @@ set(sources
     ${source_path}/Viewport.cpp
     ${source_path}/Camera.cpp
 
-    ${source_path}/AutoTimer.cpp
-    ${source_path}/ChronoTimer.cpp
-    ${source_path}/CyclicTime.cpp
 )
 
 set(headers
+    ${include_path}/base/AutoTimer.h
+    ${include_path}/base/CyclicTime.h
+    ${include_path}/base/ChronoTimer.h
     ${include_path}/capabilities/AbstractCapability.h
     ${include_path}/capabilities/AbstractTargetFramebufferCapability.h
     ${include_path}/capabilities/AbstractViewportCapability.h
@@ -92,7 +95,7 @@ set(headers
     ${include_path}/capabilities/TargetFramebufferCapability.h
     ${include_path}/capabilities/ViewportCapability.h
     ${include_path}/capabilities/VirtualTimeCapability.h
-#    ${include_path}/tools/ScreenShot.h
+#   ${include_path}/tools/ScreenShot.h
     ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
@@ -111,10 +114,6 @@ set(headers
     ${include_path}/Viewport.h
     ${include_path}/Camera.h
     ${include_path}/gloperate_api.h
-
-    ${include_path}/AutoTimer.h
-    ${include_path}/CyclicTime.h
-    ${include_path}/ChronoTimer.h
 )
 
 # Group source files

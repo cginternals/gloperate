@@ -4,17 +4,16 @@
 #include <QMainWindow>
 #include <QScopedPointer>
 #include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/base/ChronoTimer.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
-#include <gloperate/ChronoTimer.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
+#include <gloperate-qt/TimePropagator.h>
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
-
-#include <gloperate-qt/TimePropagator.h>
 
 
 using namespace gloperate;

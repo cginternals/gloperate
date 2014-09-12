@@ -17,7 +17,7 @@
 #include <propertyguizeug/PropertyBrowser.h>
 
 #include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
-#include <gloperate/ChronoTimer.h>
+#include <gloperate/base/ChronoTimer.h>
 
 #include <gloperate-qt/TimePropagator.h>
 
