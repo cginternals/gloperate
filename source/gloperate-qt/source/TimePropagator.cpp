@@ -41,8 +41,8 @@ void TimePropagator::update()
     float delta = std::chrono::duration_cast<std::chrono::duration<float>>(m_time.elapsed()).count();
     m_time.reset();
 
-    // Check if virtual time capability is active
-    if (m_capability->isActive()) {
+    // Check if virtual time capability is enabled
+    if (m_capability->enabled()) {
         // Propagate new time
         m_capability->update(delta);
 

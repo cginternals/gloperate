@@ -42,27 +42,27 @@ public:
 
     /**
     *  @brief
-    *    Check if virtual time is active
+    *    Check if virtual time is enabled
     *
     *  @return
-    *    'true' if activate, else 'false'
+    *    'true' if enabled, else 'false'
     */
-    virtual bool isActive() const = 0;
+    virtual bool enabled() const = 0;
 
     /**
     *  @brief
-    *    Activate or deactivate virtual time
+    *    Enable or disable virtual time
     *
-    *  @param[in] active
-    *    'true' if active, else 'false'
+    *  @param[in] enabled
+    *    'true' if enabled, else 'false'
     *
     *  @remarks
-    *    When a virtual time capability is present and activated on a painter,
+    *    When a virtual time capability is present on a painter and enabled,
     *    the window will activate continuous rendering and updates. If not
-    *    activated, the viewer will switch back to on-demand rendering and disable
+    *    enabled, the viewer will switch back to on-demand rendering and disable
     *    continuous updates until the capability has been switched back on.
     */
-    virtual void setActive(bool active) = 0;
+    virtual void setEnabled(bool enabled) = 0;
 
     /**
     *  @brief

@@ -28,6 +28,9 @@ public:
 
     int numberOfCubes() const;
     void setNumberOfCubes(const int & number);
+
+    bool animation() const;
+    void setAnimation(const bool & enabled);
 protected:
     virtual void onInitialize();
     virtual void onPaint();
@@ -37,6 +40,7 @@ protected:
     /* parameters */
 
     int m_numCubes;
+    bool m_animation;
 
     /* capabilities */
 

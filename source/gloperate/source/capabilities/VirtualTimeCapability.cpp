@@ -17,7 +17,7 @@ namespace gloperate
 *    Constructor
 */
 VirtualTimeCapability::VirtualTimeCapability()
-: m_active(true)
+: m_enabled(true)
 , m_duration(2.0f * 3.141592654f)
 , m_time(0.0f)
 {
@@ -31,14 +31,14 @@ VirtualTimeCapability::~VirtualTimeCapability()
 {
 }
 
-bool VirtualTimeCapability::isActive() const
+bool VirtualTimeCapability::enabled() const
 {
-    return m_active;
+    return m_enabled;
 }
 
-void VirtualTimeCapability::setActive(bool active)
+void VirtualTimeCapability::setEnabled(bool enabled)
 {
-    m_active = active;
+    m_enabled = enabled;
 
     setChanged(true);
 }

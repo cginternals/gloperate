@@ -118,6 +118,7 @@ void main()
 
 CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
 : m_numCubes(25)
+, m_animation(true)
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)
 , m_timeCapability(new gloperate::VirtualTimeCapability)
@@ -282,4 +283,16 @@ int CubeScape::numberOfCubes() const
 void CubeScape::setNumberOfCubes(const int & number)
 {
     m_numCubes = number;
+}
+
+bool CubeScape::animation() const
+{
+    return m_animation;
+}
+
+void CubeScape::setAnimation(const bool & enabled)
+{
+    m_animation = enabled;
+
+    m_timeCapability->setEnabled(m_animation);
 }

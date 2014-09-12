@@ -36,8 +36,8 @@ public:
     */
     virtual ~VirtualTimeCapability();
 
-    virtual bool isActive() const override;
-    virtual void setActive(bool active) override;
+    virtual bool enabled() const override;
+    virtual void setEnabled(bool enabled) override;
     virtual float time() const override;
     virtual void setLoopDuration(float duration) override;
     virtual void update(float delta) override;
@@ -52,7 +52,7 @@ protected:
 
 
 protected:
-    bool  m_active;     /**< Is the virtual time currently active? */
+    bool  m_enabled;    /**< Is virtual time enabled? */
     float m_duration;	/**< Duration after which time is reset to 0 (in seconds) */ 
     float m_time;	  	/**< Current time */
 
