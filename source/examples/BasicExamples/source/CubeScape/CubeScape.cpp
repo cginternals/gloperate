@@ -14,6 +14,8 @@
 #include <gloperate/Viewport.h>
 #include <gloperate/resources/RawFile.h>
 
+#include <gloperate/capabilities/TargetFramebufferCapability.h>
+#include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 
 using namespace gl;
@@ -117,6 +119,8 @@ void main()
 
 CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
 : m_numCubes(25)
+, m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
+, m_viewportCapability(new gloperate::ViewportCapability)
 , m_timeCapability(new gloperate::VirtualTimeCapability)
 , a_vertex(-1)
 , u_transform(-1)
@@ -124,6 +128,9 @@ CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
 , u_numcubes(-1)
 {
     m_timeCapability->setLoopDuration(20.0f * glm::pi<float>());
+
+    addCapability(m_targetFramebufferCapability);
+    addCapability(m_viewportCapability);
     addCapability(m_timeCapability);
 }
 
@@ -216,39 +223,17 @@ void CubeScape::onInitialize()
     m_program->setUniform(terrain, 0);
     m_program->setUniform(patches, 1);
 
-    // create fbo for result
-
-    /*m_tex = new globjects::Texture;
-    m_tex->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    m_tex->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    m_tex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    m_tex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    m_tex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-    m_z = new globjects::Renderbuffer;
-
-    m_fbo = new globjects::Framebuffer;
-
-    m_fbo->attachTexture(GL_COLOR_ATTACHMENT0, m_tex);
-    m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_z);*/
-
     // view
 
     m_view = glm::lookAt(glm::vec3(0.f, 4.f, -4.f), glm::vec3(0.f, -0.6f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 }
 
-void CubeScape::onResize(const gloperate::Viewport & viewport)
-{
-    glViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height());
-
-    //m_z->storage(GL_DEPTH_COMPONENT16, viewport.width(), viewport.height());
-    //m_tex->image2D(0, GL_RGBA, viewport.width(), viewport.height(), 0, GL_BGRA, GL_UNSIGNED_BYTE, nullptr);
-
-    m_projection = glm::perspective(glm::radians(50.f), static_cast<GLfloat>(viewport.width()) / static_cast<GLfloat>(viewport.height()), 2.f, 8.f);
-}
-
 void CubeScape::onPaint()
 {
+    glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+
+    m_projection = glm::perspective(glm::radians(50.f), static_cast<GLfloat>(m_viewportCapability->width()) / static_cast<GLfloat>(m_viewportCapability->height()), 2.f, 8.f);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);

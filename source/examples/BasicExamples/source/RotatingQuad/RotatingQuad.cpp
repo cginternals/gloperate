@@ -1,6 +1,7 @@
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 #include <random>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtc/constants.hpp>
 #include <glbinding/gl/gl.h>
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/VertexArray.h>
@@ -8,6 +9,9 @@
 #include <gloperate/util/StringTemplate.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/Viewport.h>
+
+#include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/capabilities/VirtualTimeCapability.h>
 
 
 using namespace globjects;
@@ -49,8 +53,14 @@ void main()
 
 RotatingQuad::RotatingQuad(ResourceManager * resourceManager)
 : m_resourceManager(resourceManager)
+, m_viewportCapability(new gloperate::ViewportCapability)
+, m_timeCapability(new gloperate::VirtualTimeCapability)
 , m_angle(0.0f)
 {
+    m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
+
+    addCapability(m_viewportCapability);
+    addCapability(m_timeCapability);
 }
 
 RotatingQuad::~RotatingQuad()
@@ -66,15 +76,12 @@ void RotatingQuad::onInitialize()
     createAndSetupGeometry();
 }
 
-void RotatingQuad::onResize(const Viewport & viewport)
-{
-    gl::glViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height());
-}
-
 void RotatingQuad::onPaint()
 {
+    gl::glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+
     // [TODO] Add onIdle()/onUpdate() callback and implement framerate independent animation
-    m_angle += 0.1f;
+    m_angle = m_timeCapability->time();
 
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 

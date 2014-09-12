@@ -23,7 +23,6 @@ public:
     virtual ~Painter();
 
     void initialize();
-    void resize(const Viewport & viewport);
     void paint();
 
     template <typename Capability>
@@ -33,7 +32,6 @@ public:
     Capability * getCapability() const;
 protected:
     virtual void onInitialize()                      = 0;
-    virtual void onResize(const Viewport & viewport) = 0;
     virtual void onPaint()                           = 0;
 
     void addCapability(AbstractCapability * capability);

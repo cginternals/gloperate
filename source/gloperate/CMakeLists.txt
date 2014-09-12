@@ -56,8 +56,13 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
     ${source_path}/capabilities/AbstractCapability.cpp
+    ${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
+    ${source_path}/capabilities/AbstractViewportCapability.cpp
     ${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
+    ${source_path}/capabilities/TargetFramebufferCapability.cpp
+    ${source_path}/capabilities/ViewportCapability.cpp
     ${source_path}/capabilities/VirtualTimeCapability.cpp
+#    ${source_path}/tools/ScreenShot.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
@@ -81,8 +86,13 @@ set(sources
 
 set(headers
     ${include_path}/capabilities/AbstractCapability.h
+    ${include_path}/capabilities/AbstractTargetFramebufferCapability.h
+    ${include_path}/capabilities/AbstractViewportCapability.h
     ${include_path}/capabilities/AbstractVirtualTimeCapability.h
+    ${include_path}/capabilities/TargetFramebufferCapability.h
+    ${include_path}/capabilities/ViewportCapability.h
     ${include_path}/capabilities/VirtualTimeCapability.h
+#    ${include_path}/tools/ScreenShot.h
     ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h

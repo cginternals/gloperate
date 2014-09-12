@@ -22,11 +22,6 @@ void Painter::initialize()
     onInitialize();
 }
 
-void Painter::resize(const Viewport & viewport)
-{
-    onResize(viewport);
-}
-
 void Painter::paint()
 {
     onPaint();

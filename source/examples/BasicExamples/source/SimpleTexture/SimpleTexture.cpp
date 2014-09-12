@@ -3,12 +3,16 @@
 #include <glbinding/gl/gl.h>
 #include <gloperate/Viewport.h>
 
+#include <gloperate/capabilities/ViewportCapability.h>
+
 
 using namespace gloperate;
 
 
 SimpleTexture::SimpleTexture()
+: m_viewportCapability(new gloperate::ViewportCapability)
 {
+    addCapability(m_viewportCapability);
 }
 
 SimpleTexture::~SimpleTexture()
@@ -23,13 +27,10 @@ void SimpleTexture::onInitialize()
     createAndSetupGeometry();
 }
 
-void SimpleTexture::onResize(const Viewport & viewport)
-{
-    gl::glViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height());
-}
-
 void SimpleTexture::onPaint()
 {
+    gl::glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
     m_quad->draw();

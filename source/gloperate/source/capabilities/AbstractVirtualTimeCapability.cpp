@@ -1,4 +1,4 @@
-#include <gloperate/capabilities/VirtualTimeCapability.h>
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 
 namespace gloperate
 {

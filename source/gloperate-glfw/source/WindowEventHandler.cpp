@@ -4,6 +4,7 @@
 #include <gloperate-glfw/events.h>
 #include <gloperate/Viewport.h>
 
+#include <gloperate/capabilities/AbstractViewportCapability.h>
 
 using namespace gloperate;
 namespace gloperate_glfw
@@ -50,7 +51,13 @@ void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 {
     if (m_painter) {
         // Resize painter
-        m_painter->resize(Viewport(0, 0, event.width(), event.height()));
+        AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
+
+        if (viewportCapability)
+        {
+            // Resize painter
+            viewportCapability->setViewport(Viewport(0, 0, event.width(), event.height()));
+        }
     }
 }
 
