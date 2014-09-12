@@ -43,10 +43,10 @@ int main(int argc, char *argv[])
 
     // Create event handler
     WindowEventHandler * eventHandler = new WindowEventHandler();
-    eventHandler->setPainter(painter);
 
     // Create window
     Window window;
+    window.setPainter(painter);
     window.setEventHandler(eventHandler);
     if (window.create(format, "gloperate viewer")) {
         // Show window and run application

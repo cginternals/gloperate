@@ -8,6 +8,8 @@
 #include <gloperate-glfw/events.h>
 #include <gloperate-glfw/WindowEventDispatcher.h>
 
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+
 
 namespace gloperate_glfw
 {
@@ -463,6 +465,23 @@ void Window::addTimer(int id, int interval, bool singleShot)
 void Window::removeTimer(int id)
 {
     WindowEventDispatcher::removeTimer(this, id);
+}
+
+gloperate::Painter * Window::painter() const
+{
+    return m_painter;
+}
+
+void Window::setPainter(gloperate::Painter * painter)
+{
+    m_painter = painter;
+
+    gloperate::AbstractVirtualTimeCapability * timeCapability = m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>();
+
+    if (timeCapability)
+    {
+        addTimer(0, 0, false);
+    }
 }
 
 

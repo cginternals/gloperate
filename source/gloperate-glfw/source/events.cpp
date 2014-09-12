@@ -52,7 +52,7 @@ Window* WindowEvent::window() const
     return m_window;
 }
 
-void WindowEvent::setWindow(Window* window)
+void WindowEvent::setWindow(Window *window)
 {
     m_window = window;
 }
@@ -254,15 +254,21 @@ bool IconifyEvent::isIconified() const
     return m_isIconified;
 }
 
-TimerEvent::TimerEvent(int id)
+TimerEvent::TimerEvent(int id, const Duration & elapsed)
 : WindowEvent(Timer)
 , m_id(id)
+, m_elapsed(elapsed)
 {
 }
 
 int TimerEvent::id() const
 {
     return m_id;
+}
+
+const TimerEvent::Duration & TimerEvent::elapsed() const
+{
+    return m_elapsed;
 }
 
 
