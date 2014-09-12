@@ -5,6 +5,9 @@
 #include <gloperate/Viewport.h>
 
 #include <gloperate/capabilities/AbstractViewportCapability.h>
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+
+#include <gloperate-glfw/Window.h>
 
 using namespace gloperate;
 namespace gloperate_glfw
@@ -19,39 +22,23 @@ WindowEventHandler::~WindowEventHandler()
 {
 }
 
-Painter * WindowEventHandler::painter() const
-{
-    return m_painter;
-}
-
-void WindowEventHandler::setPainter(Painter * painter)
-{
-    m_painter = painter;
-}
-
-void WindowEventHandler::initialize(gloperate_glfw::Window & /*window*/)
+void WindowEventHandler::initialize(Window & window)
 {
     // Initialize globjects
     globjects::init();
     IF_DEBUG(globjects::DebugMessage::enable(true);)
 
     // Initialize painter
-    if (m_painter) {
-        m_painter->initialize();
+    if (window.painter()) {
+        window.painter()->initialize();
     }
-}
-
-void WindowEventHandler::idle(Window & window)
-{
-    // Continuous repaint
-    window.repaint();
 }
 
 void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 {
-    if (m_painter) {
+    if (event.window()->painter()) {
         // Resize painter
-        AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
+        AbstractViewportCapability * viewportCapability = event.window()->painter()->getCapability<AbstractViewportCapability>();
 
         if (viewportCapability)
         {
@@ -61,16 +48,30 @@ void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
     }
 }
 
-void WindowEventHandler::paintEvent(PaintEvent & /*event*/)
+void WindowEventHandler::paintEvent(PaintEvent & event)
 {
-    if (m_painter) {
+    if (event.window()->painter()) {
         // Call painter
-        m_painter->paint();
+        event.window()->painter()->paint();
     }
 }
 
 void WindowEventHandler::keyPressEvent(KeyEvent & /*event*/)
 {
+}
+
+void WindowEventHandler::timerEvent(TimerEvent & event)
+{
+    if (event.window()->painter())
+    {
+        AbstractVirtualTimeCapability * timeCapability = event.window()->painter()->getCapability<AbstractVirtualTimeCapability>();
+
+        if (timeCapability)
+        {
+            timeCapability->update(std::chrono::duration_cast<std::chrono::duration<float>>(event.elapsed()).count());
+            event.window()->repaint();
+        }
+    }
 }
 
 
