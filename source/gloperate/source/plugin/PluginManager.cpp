@@ -290,5 +290,19 @@ Plugin * PluginManager::plugin(const std::string & name) const
     return nullptr;
 }
 
+/**
+*  @brief
+*    Print list of available plugins to log
+*/
+void PluginManager::printPlugins() const
+{
+    for (Plugin * plugin : m_plugins) {
+        globjects::info() << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")";
+        globjects::info() << "  by " << plugin->vendor() << "";
+        globjects::info() << "  " << plugin->description() << "";
+        globjects::info() << "";
+    }
+}
+
 
 } // namespace gloperate

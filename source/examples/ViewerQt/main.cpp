@@ -4,7 +4,6 @@
  * Copyright (C) 2014 Computer Graphics Systems Group at the 
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
-#include <iostream>
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QApplication>
 #include <QMainWindow>
@@ -34,13 +33,7 @@ int main(int argc, char *argv[])
     // Load example plugins
     PluginManager pluginManager;
     pluginManager.scan("examples");
-    for (Plugin * plugin : pluginManager.plugins()) {
-        std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
-        std::cout << "  version " << plugin->version() << "\n";
-        std::cout << "  by " << plugin->vendor() << "\n";
-        std::cout << "  " << plugin->description() << "\n";
-        std::cout << "\n";
-    }
+    pluginManager.printPlugins();
 
     // Create resource manager
     ResourceManager resourceManager;

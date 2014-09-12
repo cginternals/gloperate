@@ -1,4 +1,3 @@
-#include <iostream>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 #include <gloperate-glfw/ContextFormat.h>
@@ -24,12 +23,7 @@ int main(int argc, char *argv[])
     // Load example plugins
     PluginManager pluginManager;
     pluginManager.scan("examples");
-    for (Plugin * plugin : pluginManager.plugins()) {
-        std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
-        std::cout << "  by " << plugin->vendor() << "\n";
-        std::cout << "  " << plugin->description() << "\n";
-        std::cout << "\n";
-    }
+    pluginManager.printPlugins();
 
     // Choose a painter
     gloperate::Painter * painter = nullptr;

@@ -134,6 +134,12 @@ class GLOPERATE_API PluginManager {
         */
         Plugin * plugin(const std::string & name) const;
 
+        /**
+        *  @brief
+        *    Print list of available plugins to log
+        */
+        void printPlugins() const;
+
 
     protected:
         std::string                     m_scanDirectory;    /**< Directory from which plugins are loaded */
