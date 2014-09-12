@@ -1,10 +1,15 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #include "gloperate-qt/QtOpenGLWindow.h"
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QResizeEvent>
 #include <gloperate-qt/qt-includes-end.h>
 #include <globjects/globjects.h>
 #include <gloperate/Viewport.h>
-
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 
 
@@ -13,25 +18,45 @@ namespace gloperate_qt
 {
 
 
+/**
+*  @brief
+*    Constructor
+*/
 QtOpenGLWindow::QtOpenGLWindow()
 : QtOpenGLWindowBase()
 {
 }
 
+/**
+*  @brief
+*    Constructor
+*/
 QtOpenGLWindow::QtOpenGLWindow(const QSurfaceFormat & format)
 : QtOpenGLWindowBase(format)
 {
 }
 
+/**
+*  @brief
+*    Destructor
+*/
 QtOpenGLWindow::~QtOpenGLWindow()
 {
 }
 
+/**
+*  @brief
+*    Get used painter
+*/
 Painter * QtOpenGLWindow::painter() const
 {
     return m_painter;
 }
 
+/**
+*  @brief
+*    Set used painter
+*/
 void QtOpenGLWindow::setPainter(Painter * painter)
 {
     m_painter = painter;
