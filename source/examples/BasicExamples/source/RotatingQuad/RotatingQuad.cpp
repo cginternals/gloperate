@@ -16,6 +16,7 @@
 
 using namespace globjects;
 using namespace gloperate;
+using namespace gl;
 
 
 static const char * s_vertexShader = R"(
@@ -78,7 +79,12 @@ void RotatingQuad::onInitialize()
 
 void RotatingQuad::onPaint()
 {
-    gl::glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+    if (m_viewportCapability->hasChanged())
+    {
+        glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+
+        m_viewportCapability->setChanged(false);
+    }
 
     // [TODO] Add onIdle()/onUpdate() callback and implement framerate independent animation
     m_angle = m_timeCapability->time();

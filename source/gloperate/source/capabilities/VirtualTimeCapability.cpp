@@ -60,6 +60,8 @@ void VirtualTimeCapability::update(float delta)
 {
     m_time += delta;
 
+    setChanged(true);
+
     normalizeTime();
 }
 
@@ -72,6 +74,8 @@ void VirtualTimeCapability::normalizeTime()
     while (m_time > m_duration)
     {
         m_time -= m_duration;
+
+        setChanged(true);
     }
 }
 

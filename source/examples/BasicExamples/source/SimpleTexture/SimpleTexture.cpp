@@ -7,6 +7,7 @@
 
 
 using namespace gloperate;
+using namespace gl;
 
 
 SimpleTexture::SimpleTexture()
@@ -29,9 +30,14 @@ void SimpleTexture::onInitialize()
 
 void SimpleTexture::onPaint()
 {
-    gl::glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+    if (m_viewportCapability->hasChanged())
+    {
+        glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
 
-    gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+        m_viewportCapability->setChanged(false);
+    }
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_quad->draw();
 }

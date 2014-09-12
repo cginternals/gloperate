@@ -43,6 +43,8 @@ const Viewport & ViewportCapability::viewport() const
 void ViewportCapability::setViewport(const Viewport & viewport)
 {
     m_viewport = viewport;
+
+    setChanged(true);
 }
 
 
