@@ -8,18 +8,22 @@
 
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+#include <gloperate/capabilities/AbstractCapability.h>
 
 
-namespace gloperate
-{
+namespace gloperate {
 
 
 /**
 *  @brief
-*    Default implementation for AbstractVirtualTimeCapability
+*    Capability that allows a painter to receive continues timing updates
+*
+*    If a painter supports this capability, it will be supplied with a virtual
+*    time that it can use to calculate updates, e.g., animations. Also, if
+*    a viewer has a painter with an enabled VirtualTimeCapability, it will
+*    switch to continuous rendering mode and trigger automatic rendering updates.
 */
-class GLOPERATE_API VirtualTimeCapability : public AbstractVirtualTimeCapability
+class GLOPERATE_API AbstractVirtualTimeCapability : public AbstractCapability
 {
 
 
@@ -28,13 +32,13 @@ public:
     *  @brief
     *    Constructor
     */
-    VirtualTimeCapability();
+    AbstractVirtualTimeCapability();
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~VirtualTimeCapability();
+    virtual ~AbstractVirtualTimeCapability();
 
     /**
     *  @brief
@@ -43,7 +47,7 @@ public:
     *  @return
     *    Current time (in seconds)
     */
-    virtual float time() const override;
+    virtual float time() const = 0;
 
     /**
     *  @brief
@@ -52,7 +56,7 @@ public:
     *  @param[in] duration
     *    Duration after which time is reset to 0 (in seconds)
     */
-    virtual void setLoopDuration(float duration) override;
+    virtual void setLoopDuration(float duration) = 0;
 
     /**
     *  @brief
@@ -61,20 +65,7 @@ public:
     *  @param[in] delta
     *    Time delta (in seconds)
     */
-    virtual void update(float delta) override;
-
-
-protected:
-    /**
-    *  @brief
-    *    Normalize time by wrapping it at the loop duration
-    */
-    void normalizeTime();
-
-
-protected:
-    float m_duration;	/**< Duration after which time is reset to 0 (in seconds) */ 
-    float m_time;	  	/**< Current time */
+    virtual void update(float delta) = 0;
 
 
 };

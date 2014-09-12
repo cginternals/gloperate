@@ -103,7 +103,7 @@ public:
     /** Compares the created format against the requested one.
     */
     static bool verify(const ContextFormat & requested, const ContextFormat & created);
-
+    bool verify(const ContextFormat & requested) const;
 
 protected:
     /** Compares (logged if erroneous) version and profile between both formats

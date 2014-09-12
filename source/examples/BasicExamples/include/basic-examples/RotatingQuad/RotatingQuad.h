@@ -14,6 +14,8 @@
 
 namespace gloperate {
     class ResourceManager;
+    class AbstractViewportCapability;
+    class AbstractVirtualTimeCapability;
 }
 
 
@@ -28,7 +30,6 @@ public:
 
 protected:
     virtual void onInitialize();
-    virtual void onResize(const gloperate::Viewport & viewport);
     virtual void onPaint();
 
 
@@ -39,6 +40,12 @@ protected:
 
 
 protected:
+    gloperate::ResourceManager    * m_resourceManager;
+
+    /* capabilities */
+    gloperate::AbstractViewportCapability * m_viewportCapability;
+    gloperate::AbstractVirtualTimeCapability * m_timeCapability;
+
     globjects::ref_ptr<gloperate::Camera> m_camera;
     globjects::ref_ptr<globjects::VertexArray>  m_vao;
     globjects::ref_ptr<globjects::Buffer>       m_buffer;
@@ -46,7 +53,7 @@ protected:
     globjects::ref_ptr<globjects::Shader>       m_vertexShader;
     globjects::ref_ptr<globjects::Shader>       m_fragmentShader;
     globjects::ref_ptr<globjects::Texture>      m_texture;
-    gloperate::ResourceManager    * m_resourceManager;
+
     float                           m_angle;
 
 

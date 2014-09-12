@@ -32,7 +32,7 @@ public:
     Context(GLFWwindow * window);
     virtual ~Context();
 
-    virtual glbinding::ContextHandle handle() const = 0;
+    virtual glbinding::ContextHandle handle() const;
 
     virtual const gloperate::ContextFormat & format() const;
 

@@ -1,3 +1,11 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
+
+
 #include "gloperate-qt/QtOpenGLWindowBase.h"
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QApplication>
@@ -11,6 +19,10 @@ namespace gloperate_qt
 {
 
 
+/**
+*  @brief
+*    Get default OpenGL format
+*/
 QSurfaceFormat QtOpenGLWindowBase::defaultFormat()
 {
     QSurfaceFormat format;
@@ -21,11 +33,19 @@ QSurfaceFormat QtOpenGLWindowBase::defaultFormat()
     return format;
 }
 
+/**
+*  @brief
+*    Constructor
+*/
 QtOpenGLWindowBase::QtOpenGLWindowBase()
 : QtOpenGLWindowBase(QtOpenGLWindowBase::defaultFormat())
 {
 }
 
+/**
+*  @brief
+*    Constructor
+*/
 QtOpenGLWindowBase::QtOpenGLWindowBase(const QSurfaceFormat & format)
 : m_context(new QOpenGLContext)
 , m_initialized(false)
@@ -46,15 +66,27 @@ QtOpenGLWindowBase::QtOpenGLWindowBase(const QSurfaceFormat & format)
     }
 }
 
+/**
+*  @brief
+*    Destructor
+*/
 QtOpenGLWindowBase::~QtOpenGLWindowBase()
 {
 }
 
+/**
+*  @brief
+*    Get OpenGL context
+*/
 QOpenGLContext *QtOpenGLWindowBase::context() const
 {
     return m_context.data();
 }
 
+/**
+*  @brief
+*    Request update (repaint) of the window
+*/
 void QtOpenGLWindowBase::updateGL()
 {
     if (!m_updatePending) {
@@ -63,6 +95,10 @@ void QtOpenGLWindowBase::updateGL()
     }
 }
 
+/**
+*  @brief
+*    Initialize OpenGL rendering
+*/
 void QtOpenGLWindowBase::initialize()
 {
     m_context->makeCurrent(this);
@@ -74,6 +110,10 @@ void QtOpenGLWindowBase::initialize()
     m_initialized = true;
 }
 
+/**
+*  @brief
+*    Resize OpenGL scene
+*/
 void QtOpenGLWindowBase::resize(QResizeEvent * event)
 {
     if (!m_initialized) {
@@ -89,6 +129,10 @@ void QtOpenGLWindowBase::resize(QResizeEvent * event)
     m_context->doneCurrent();
 }
 
+/**
+*  @brief
+*    Render OpenGL scene
+*/
 void QtOpenGLWindowBase::paint()
 {
     if (!m_initialized) {

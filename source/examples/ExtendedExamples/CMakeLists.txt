@@ -1,3 +1,9 @@
+find_package(libzeug QUIET)
+
+if (NOT LIBZEUG_FOUND)
+	return ()
+endif ()
+
 # Target
 set(target extended-examples)
 message(STATUS "Lib ${target}")
@@ -9,7 +15,6 @@ message(STATUS "Lib ${target}")
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
 
 #
 # Includes

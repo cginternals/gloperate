@@ -16,10 +16,10 @@
 
 #include <propertyguizeug/PropertyBrowser.h>
 
-#include <gloperate/capabilities/VirtualTimeCapability.h>
-#include <gloperate/ChronoTimer.h>
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+#include <gloperate/base/ChronoTimer.h>
 
-#include "TimePropagator.h"
+#include <gloperate-qt/TimePropagator.h>
 
 using namespace gloperate;
 using namespace gloperate_qt;
@@ -30,10 +30,7 @@ int main(int argc, char* argv[])
 
     // Create plugin manager
     PluginManager pluginManager;
-
-    IF_NDEBUG(pluginManager.loadPlugin("extended-examples");)
-    IF_DEBUG(pluginManager.loadPlugin("extended-examplesd");)
-
+    pluginManager.scan("examples");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  version " << plugin->version() << "\n";
@@ -63,9 +60,9 @@ int main(int argc, char* argv[])
     if (painter) {
         glWindow->setPainter(painter);
 
-        if (painter->supports<gloperate::VirtualTimeCapability>())
+        if (painter->supports<gloperate::AbstractVirtualTimeCapability>())
         {
-            mainloop.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::VirtualTimeCapability>()));
+            mainloop.reset(new TimePropagator(glWindow, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
         }
     }
 

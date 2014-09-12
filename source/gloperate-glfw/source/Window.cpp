@@ -1,13 +1,24 @@
+
 #include <gloperate-glfw/Window.h>
+
 #include <cassert>
+
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+
 #include <globjects/base/baselogging.h>
+
+#include <gloperate/ContextFormat.h>
+
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 #include <gloperate-glfw/events.h>
 #include <gloperate-glfw/WindowEventDispatcher.h>
 
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+
+
+using namespace gloperate;
 
 namespace gloperate_glfw
 {
@@ -124,13 +135,11 @@ void Window::quitOnDestroy(const bool enable)
 
 bool Window::create(const ContextFormat & format, const std::string & title, int width, int height)
 {
-    if (create(format, width, height))
-    {
-        setTitle(title);
-        return true;
-    }
+    if (!create(format, width, height))
+        return false;
 
-    return false;
+    setTitle(title);
+    return true;
 }
 
 bool Window::create(const ContextFormat & format, int width, int height)
@@ -151,32 +160,26 @@ bool Window::create(const ContextFormat & format, int width, int height)
     return true;
 }
 
-bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor)
+bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor * monitor)
 {
     assert(nullptr == m_context);
 
-    m_context = new Context();
-
-    if (m_context->create(format, width, height, monitor))
-    {
-        m_window = m_context->window();
-    }
-    else
-    {
-        delete m_context;
-        m_context = nullptr;
-        m_window = nullptr;
-
+    m_window = Context::create(format);
+    if (!m_window)
         return false;
-    }
+
+    glfwSetWindowSize(m_window, width, height);
+
+    m_context = new Context(m_window);
+    m_context->format().verify(format);
 
     return true;
 }
 
 void Window::destroyContext()
 {
-    m_context->release();
     delete m_context;
+    glfwDestroyWindow(m_window);
 
     m_context = nullptr;
     m_window = nullptr;
@@ -186,9 +189,9 @@ void Window::initializeEventHandler()
 {
     if (m_eventHandler)
     {
-        m_context->makeCurrent();
+        glfwMakeContextCurrent(m_window);
         m_eventHandler->initialize(*this);
-        m_context->doneCurrent();
+        glfwMakeContextCurrent(nullptr);
 
         queueEvent(new ResizeEvent(size()));
         queueEvent(new ResizeEvent(framebufferSize(), true));
@@ -199,9 +202,9 @@ void Window::finalizeEventHandler()
 {
     if (m_eventHandler)
     {
-        m_context->makeCurrent();
+        glfwMakeContextCurrent(m_window);
         m_eventHandler->finalize(*this);
-        m_context->doneCurrent();
+        glfwMakeContextCurrent(nullptr);
     }
 }
 
@@ -363,7 +366,7 @@ void Window::idle()
 
 void Window::swap()
 {
-    m_context->swap();
+    glfwSwapBuffers(m_window);
 }
 
 void Window::destroy()
@@ -398,7 +401,7 @@ void Window::processEvents()
     if (m_eventQueue.empty() || !m_context)
         return;
 
-    m_context->makeCurrent();
+    glfwMakeContextCurrent(m_window);
 
     while (!m_eventQueue.empty())
     {
@@ -417,7 +420,7 @@ void Window::processEvents()
         }
     }
 
-    m_context->doneCurrent();
+    glfwMakeContextCurrent(nullptr);
 }
 
 void Window::processEvent(WindowEvent & event)
@@ -463,6 +466,23 @@ void Window::addTimer(int id, int interval, bool singleShot)
 void Window::removeTimer(int id)
 {
     WindowEventDispatcher::removeTimer(this, id);
+}
+
+gloperate::Painter * Window::painter() const
+{
+    return m_painter;
+}
+
+void Window::setPainter(gloperate::Painter * painter)
+{
+    m_painter = painter;
+
+    gloperate::AbstractVirtualTimeCapability * timeCapability = m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>();
+
+    if (timeCapability)
+    {
+        addTimer(0, 0, false);
+    }
 }
 
 

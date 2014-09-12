@@ -131,17 +131,17 @@ Context::Context(GLFWwindow * window)
 : m_window(window)
 , m_format(nullptr)
 {
-    if (window)
-    {
-        GLFWwindow * current = glfwGetCurrentContext();
-        if (current != m_window)
-            glfwMakeContextCurrent(m_window);
+    if (!window)
+        return;
 
-        m_handle = tryFetchHandle();
+    GLFWwindow * current = glfwGetCurrentContext();
+    if (current != m_window)
+        glfwMakeContextCurrent(m_window);
 
-        if (current != m_window)
-            glfwMakeContextCurrent(current);
-    }
+    m_handle = tryFetchHandle();
+
+    if (current != m_window)
+        glfwMakeContextCurrent(current);
 }
 
 Context::~Context()
@@ -190,17 +190,12 @@ const ContextFormat & Context::format() const
     m_format->setSamples(i);
 
     glGetBooleanv(GLenum::GL_STEREO, &b);
-    m_format->setStereo(static_cast<bool>(b));
+    m_format->setStereo(b == GL_TRUE);
 
     if (current != m_window)
         glfwMakeContextCurrent(current);
 
     return *m_format;
-}
-
-const ContextFormat & Context::format() const
-{
-	return *m_format;
 }
 
 } // namespace gloperate_glfw

@@ -45,6 +45,30 @@ void ContextFormat::setVersion(const glbinding::Version & version)
     m_version = version;
 }
 
+glbinding::Version ContextFormat::validateVersion(
+    glbinding::Version requestedVersion
+,   glbinding::Version maximumVersion)
+{
+    if (maximumVersion.isNull())
+    {
+#ifdef MAC_OS
+        maximumVersion = glbinding::Version(3, 2);
+#else
+        maximumVersion = glbinding::Version(3, 0);
+#endif
+    }
+
+    if (requestedVersion.isNull() || requestedVersion > maximumVersion)
+        return maximumVersion;
+
+    if (!requestedVersion.isValid())
+    {
+        glbinding::Version nearest = requestedVersion.nearest();
+        return nearest > maximumVersion ? maximumVersion : nearest;
+    }
+    return requestedVersion;
+}
+
 int ContextFormat::majorVersion() const
 {
     return m_version.m_major;
@@ -206,6 +230,11 @@ bool ContextFormat::verify(const ContextFormat & requested, const ContextFormat 
     return
         verifyVersionAndProfile(requested, created) &&
         verifyPixelFormat(requested, created);
+}
+
+bool ContextFormat::verify(const ContextFormat & requested) const
+{
+    return verify(requested, *this);
 }
 
 bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, const ContextFormat & created)

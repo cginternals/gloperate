@@ -1,12 +1,12 @@
 
-#include <gloperate/CyclicTime.h>
+#include <gloperate/base/CyclicTime.h>
 
 #include <cmath>
 #include <chrono>
 
 #include <glm/common.hpp>
 
-#include <gloperate/ChronoTimer.h>
+#include <gloperate/base/ChronoTimer.h>
 
 
 namespace gloperate

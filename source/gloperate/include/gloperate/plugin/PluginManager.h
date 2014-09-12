@@ -31,6 +31,28 @@ class GLOPERATE_API PluginManager {
     public:
         /**
         *  @brief
+        *    Initialize plugin manager
+        *
+        *  @param[in] executablePath
+        *    Path to the current executable
+        *
+        *  @remarks
+        *    This function has to be called to tell the plugin manager the path
+        *    to the current executable, so it can determine the default search directory
+        *    for plugins. On Window, path is ignored, since the executable path
+        *    can be obtained automatically.
+        */
+        static void init(const std::string & executablePath = "");
+
+
+    protected:
+        /** Default path to look for plugins, by default the path of the executable */
+        static std::string s_defaultPluginPath;
+
+
+    public:
+        /**
+        *  @brief
         *    Constructor
         */
         PluginManager();
@@ -43,24 +65,33 @@ class GLOPERATE_API PluginManager {
 
         /**
         *  @brief
-        *    Get default path to search for plugins
+        *    Get scan directory
         *
         *  @return
-        *    Path to search for plugin libraries
-        *
-        *  @remarks
-        *    Usually, this will return the directory of the current executable
+        *    Directory from which plugins are loaded
         */
-        std::string defaultPluginDirectory() const;
+        std::string scanDirectory() const;
 
         /**
         *  @brief
-        *    Load plugin library
+        *    Set scan directory
         *
-        *  @param[in] filename
-        *    Path to dynamic library
+        *  @param[in] path
+        *    Directory from which plugins are loaded
+        *
+        *  @remarks
+        *    If the plugin directory is not set, the default search path is used
         */
-        void loadPluginLibrary(const std::string & filename);
+        void setScanDirectory(const std::string & path);
+
+        /**
+        *  @brief
+        *    Scan for plugins and load all found plugins
+        *
+        *  @param[in] identifier
+        *    If set, only libraries that contain the specified substring are loaded
+        */
+        void scan(const std::string & identifier = "");
 
         /**
         *  @brief
@@ -69,9 +100,18 @@ class GLOPERATE_API PluginManager {
         *  @param[in] name
         *    Name of the plugin library (only the base name, do not add 'lib' or '.so'/'.dll', those are added automatically
         *  @param[in] path
-        *    Path at which to search for plugin libraries
+        *    Path at which to search for plugin libraries. If "", the default search path is used
         */
-        void loadPlugin(const std::string & name, const std::string & path = "");
+        void load(const std::string & name);
+
+        /**
+        *  @brief
+        *    Load plugin library
+        *
+        *  @param[in] filename
+        *    Path to dynamic library
+        */
+        void loadLibrary(const std::string & filename);
 
         /**
         *  @brief
@@ -96,9 +136,10 @@ class GLOPERATE_API PluginManager {
 
 
     protected:
-        std::vector<PluginLibrary *>    m_libraries;     /**< List of libraries */
-        std::vector<Plugin *>           m_plugins;       /**< List of plugins */
-        std::map<std::string, Plugin *> m_pluginsByName; /**< Map of name -> plugin */
+        std::string                     m_scanDirectory;    /**< Directory from which plugins are loaded */
+        std::vector<PluginLibrary *>    m_libraries;        /**< List of libraries */
+        std::vector<Plugin *>           m_plugins;          /**< List of plugins */
+        std::map<std::string, Plugin *> m_pluginsByName;    /**< Map of name -> plugin */
 
 
 };

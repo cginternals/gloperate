@@ -1,8 +1,10 @@
 #pragma once
 
+#include <chrono>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 #include <gloperate-glfw/keys.h>
+
 #include <glm/glm.hpp>
 
 
@@ -49,7 +51,7 @@ public:
     void ignore();
 
     Window* window() const;
-    void setWindow(Window* window);
+    void setWindow(Window *window);
 
 protected:
     WindowEvent(Type type);
@@ -191,12 +193,14 @@ protected:
 class GLOPERATE_GLFW_API TimerEvent : public WindowEvent
 {
 public:
-    TimerEvent(int id);
+    using Duration = std::chrono::duration<double, std::milli>;
+    TimerEvent(int id, const Duration & elapsed);
 
     int id() const;
+    const Duration & elapsed() const;
 protected:
     int m_id;
+    Duration m_elapsed;
 };
-
 
 } // namespace gloperate_glfw

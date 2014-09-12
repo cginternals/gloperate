@@ -9,17 +9,27 @@
 #include <gloperate-glfw/MainLoop.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
+#include <globjects/base/ref_ptr.h>
+
+#include <gloperate/Painter.h>
+
+#include <gloperate-glfw/gloperate-glfw_api.h>
+#include <gloperate-glfw/Window.h>
+
 
 struct GLFWwindow;
 struct GLFWmonitor;
+
+namespace gloperate
+{
+    class ContextFormat;
+}
 
 
 namespace gloperate_glfw
 {
 
-
 class WindowEvent;
-class ContextFormat;
 class Context;
 
 
@@ -34,8 +44,8 @@ public:
     Window();
     virtual ~Window();
 
-    bool create(const ContextFormat & format, int width = 1280, int height = 720);
-    bool create(const ContextFormat & format, const std::string & title = "globjects", int width = 1280, int height = 720);
+    bool create(const gloperate::ContextFormat & format, int width = 1280, int height = 720);
+    bool create(const gloperate::ContextFormat & format, const std::string & title = "gloperate", int width = 1280, int height = 720);
 
     /**
      * Takes ownership of the given eventhandler and deletes that either on
@@ -99,9 +109,10 @@ public:
     void swap();
     void destroy();
 
-
+    gloperate::Painter * painter() const;
+    void setPainter(gloperate::Painter * painter);
 protected:
-    bool createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
+    bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
     void destroyContext();
 
     void initializeEventHandler();
@@ -114,11 +125,13 @@ protected:
 
 protected:
     Context * m_context;
+
     GLFWwindow * m_window;
+    std::string m_title;
+
     globjects::ref_ptr<WindowEventHandlerBase> m_eventHandler;
     std::queue<WindowEvent*> m_eventQueue;
     glm::ivec2 m_windowedModeSize;
-    std::string m_title;
 
     bool m_quitOnDestroy;
 
@@ -130,11 +143,10 @@ protected:
 
     Mode m_mode;
 
+    globjects::ref_ptr<gloperate::Painter> m_painter;
 
 private:
     static std::set<Window*> s_instances;
-
-
 };
 
 

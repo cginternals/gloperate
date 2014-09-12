@@ -1,5 +1,5 @@
 
-#include <gloperate/AutoTimer.h>
+#include <gloperate/base/AutoTimer.h>
 
 #include <cassert>
 #include <algorithm>
@@ -9,7 +9,7 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/ChronoTimer.h>
+#include <gloperate/base/ChronoTimer.h>
 
 namespace 
 {

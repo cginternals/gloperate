@@ -1,9 +1,16 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #include "gloperate-qt/QtOpenGLWindow.h"
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QResizeEvent>
 #include <gloperate-qt/qt-includes-end.h>
 #include <globjects/globjects.h>
 #include <gloperate/Viewport.h>
+#include <gloperate/capabilities/AbstractViewportCapability.h>
 
 
 using namespace gloperate;
@@ -11,25 +18,45 @@ namespace gloperate_qt
 {
 
 
+/**
+*  @brief
+*    Constructor
+*/
 QtOpenGLWindow::QtOpenGLWindow()
 : QtOpenGLWindowBase()
 {
 }
 
+/**
+*  @brief
+*    Constructor
+*/
 QtOpenGLWindow::QtOpenGLWindow(const QSurfaceFormat & format)
 : QtOpenGLWindowBase(format)
 {
 }
 
+/**
+*  @brief
+*    Destructor
+*/
 QtOpenGLWindow::~QtOpenGLWindow()
 {
 }
 
+/**
+*  @brief
+*    Get used painter
+*/
 Painter * QtOpenGLWindow::painter() const
 {
     return m_painter;
 }
 
+/**
+*  @brief
+*    Set used painter
+*/
 void QtOpenGLWindow::setPainter(Painter * painter)
 {
     m_painter = painter;
@@ -50,8 +77,13 @@ void QtOpenGLWindow::onInitialize()
 void QtOpenGLWindow::onResize(QResizeEvent * event)
 {
     if (m_painter) {
-        // Resize painter
-        m_painter->resize(Viewport(0, 0, event->size().width(), event->size().height()));
+        AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
+
+        if (viewportCapability)
+        {
+            // Resize painter
+            viewportCapability->setViewport(Viewport(0, 0, event->size().width(), event->size().height()));
+        }
     }
 }
 

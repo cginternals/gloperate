@@ -63,8 +63,6 @@ set(headers
 )
 set(sources
     main.cpp
-    TimePropagator.cpp
-    TimePropagator.h
 )
 
 #

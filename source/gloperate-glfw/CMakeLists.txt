@@ -64,7 +64,6 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
     ${source_path}/Context.cpp
-    ${source_path}/ContextFormat.cpp
     ${source_path}/Timer.cpp
     ${source_path}/Window.cpp
     ${source_path}/WindowEventDispatcher.cpp
@@ -76,7 +75,6 @@ set(sources
 
 set(headers
     ${include_path}/Context.h
-    ${include_path}/ContextFormat.h
     ${include_path}/Timer.h
     ${include_path}/Window.h
     ${include_path}/WindowEventDispatcher.h

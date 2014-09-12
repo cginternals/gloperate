@@ -1,10 +1,13 @@
+
 #include <iostream>
+
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
-#include <gloperate-glfw/ContextFormat.h>
+
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventHandler.h>
+
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 
@@ -13,17 +16,17 @@ using namespace gloperate;
 using namespace gloperate_glfw;
 
 
-int main(int /*argc*/, char* /*argv*/[])
+int main(int argc, char *argv[])
 {
     ContextFormat format;
     format.setVersion(3, 0);
 
-    // Create plugin manager
+    // Initialize plugin manager
+    PluginManager::init(argc > 0 ? argv[0] : "");
+
+    // Load example plugins
     PluginManager pluginManager;
-
-    IF_NDEBUG(pluginManager.loadPlugin("basic-examples");)
-    IF_DEBUG(pluginManager.loadPlugin("basic-examplesd");)
-
+    pluginManager.scan("examples");
     for (Plugin * plugin : pluginManager.plugins()) {
         std::cout << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")\n";
         std::cout << "  by " << plugin->vendor() << "\n";
@@ -41,22 +44,20 @@ int main(int /*argc*/, char* /*argv*/[])
         painter = new RotatingQuad();
     }
 
+    // Create event handler
     WindowEventHandler * eventHandler = new WindowEventHandler();
-    eventHandler->setPainter(painter);
 
+    // Create window
     Window window;
+    window.setPainter(painter);
     window.setEventHandler(eventHandler);
-
-    if (window.create(format, "Simple Texture Example"))
-    {
-        window.context()->setSwapInterval(Context::VerticalSyncronization);
-
+    if (window.create(format, "gloperate viewer")) {
+        // Show window and run application
+        window.context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
         window.show();
-
         return MainLoop::run();
-    }
-    else
-    {
+    } else {
+        // Error initializing the window
         return 1;
     }
 }
