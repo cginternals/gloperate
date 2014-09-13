@@ -75,7 +75,9 @@ set(sources
     ${source_path}/plugin/Plugin.cpp
     ${source_path}/resources/ResourceManager.cpp
     ${source_path}/resources/AbstractLoader.cpp
+    ${source_path}/resources/AbstractStorer.cpp
     ${source_path}/resources/TextureLoader.cpp
+    ${source_path}/resources/TextureStorer.cpp
     ${source_path}/resources/GlrawTextureLoader.cpp
     ${source_path}/resources/RawFile.cpp
     ${source_path}/Painter.cpp
@@ -107,7 +109,9 @@ set(headers
     ${include_path}/plugin/plugin_api.h
     ${include_path}/resources/ResourceManager.h
     ${include_path}/resources/AbstractLoader.h
+    ${include_path}/resources/AbstractStorer.h
     ${include_path}/resources/TextureLoader.h
+    ${include_path}/resources/TextureStorer.h
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/RawFile.h
     ${include_path}/Painter.h
