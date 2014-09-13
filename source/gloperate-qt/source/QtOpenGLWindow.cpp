@@ -7,9 +7,18 @@
 #include "gloperate-qt/QtOpenGLWindow.h"
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QResizeEvent>
+#include <QKeyEvent>
 #include <gloperate-qt/qt-includes-end.h>
 #include <globjects/globjects.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
+#include <gloperate/capabilities/AbstractTargetFramebufferCapability.h>
+#include <gloperate/resources/ResourceManager.h>
+
+#include <glbinding/gl/enum.h>
+
+#include <globjects/Texture.h>
+#include <globjects/Framebuffer.h>
+#include <globjects/Renderbuffer.h>
 
 
 using namespace gloperate;
@@ -21,8 +30,9 @@ namespace gloperate_qt
 *  @brief
 *    Constructor
 */
-QtOpenGLWindow::QtOpenGLWindow()
+QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 : QtOpenGLWindowBase()
+, m_resourceManager(resourceManager)
 , m_timePropagator(nullptr)
 {
 }
@@ -31,8 +41,10 @@ QtOpenGLWindow::QtOpenGLWindow()
 *  @brief
 *    Constructor
 */
-QtOpenGLWindow::QtOpenGLWindow(const QSurfaceFormat & format)
+QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
 : QtOpenGLWindowBase(format)
+, m_resourceManager(resourceManager)
+, m_timePropagator(nullptr)
 {
 }
 
@@ -102,6 +114,48 @@ void QtOpenGLWindow::onPaint()
         // Call painter
         m_painter->paint();
     }
+}
+
+void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
+{
+    makeCurrent();
+
+    if (event->key() == Qt::Key_F10)
+    {
+        gloperate::Painter * p = painter();
+        if (p)
+        {
+            AbstractViewportCapability * viewportCapability = p->getCapability<AbstractViewportCapability>();
+            AbstractTargetFramebufferCapability * fboCapability = p->getCapability<AbstractTargetFramebufferCapability>();
+
+            if (fboCapability && viewportCapability)
+            {
+                globjects::Framebuffer * fbo = new globjects::Framebuffer();
+
+                globjects::Texture * color = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+                color->image2D(0, gl::GL_RGBA, viewportCapability->width(), viewportCapability->height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
+
+                globjects::Renderbuffer * depth = new globjects::Renderbuffer();
+                // [TODO] Check for availability of depth format
+                depth->storage(gl::GL_DEPTH_COMPONENT32, viewportCapability->width(), viewportCapability->height());
+
+                fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, color);
+                fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, depth);
+
+                globjects::Framebuffer * oldFbo = fboCapability->framebuffer();
+                fboCapability->setFramebuffer(fbo);
+
+                p->paint();
+
+                // [TODO] handle filename
+                m_resourceManager.storeTexture("screenshot.png", color);
+
+                fboCapability->setFramebuffer(oldFbo);
+            }
+        }
+    }
+
+    doneCurrent();
 }
 
 

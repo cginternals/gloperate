@@ -89,6 +89,7 @@ bool QtTextureStorer::store(const std::string & filename, const globjects::Refer
 
     // Load image
 
+    texture->bind();
     int width = texture->getLevelParameter(0, gl::GL_TEXTURE_WIDTH);
     int height = texture->getLevelParameter(0, gl::GL_TEXTURE_HEIGHT);
 
@@ -97,12 +98,12 @@ bool QtTextureStorer::store(const std::string & filename, const globjects::Refer
         return false;
     }
 
-    QImage image(width, height, QImage::Format_RGBA8888);
+    QImage image(width, height, QImage::Format_RGB888);
 
     texture->bind();
-    gl::glGetTexImage(texture->target(), 0, gl::GL_BGRA, gl::GL_UNSIGNED_BYTE, image.bits());
+    gl::glGetTexImage(texture->target(), 0, gl::GL_RGB, gl::GL_UNSIGNED_BYTE, image.bits());
 
-    return image.save(QString::fromStdString(filename));
+    return image.mirrored().save(QString::fromStdString(filename));
 }
 
 

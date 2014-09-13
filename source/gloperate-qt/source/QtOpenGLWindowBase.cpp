@@ -200,5 +200,15 @@ void QtOpenGLWindowBase::leaveEvent(QEvent *)
 {
 }
 
+void QtOpenGLWindowBase::makeCurrent()
+{
+    m_context->makeCurrent(this);
+}
+
+void QtOpenGLWindowBase::doneCurrent()
+{
+    m_context->doneCurrent();
+}
+
 
 } // namespace gloperate-qt
