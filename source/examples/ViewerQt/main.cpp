@@ -4,19 +4,16 @@
  * Copyright (C) 2014 Computer Graphics Systems Group at the 
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
+#include <iostream>
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QApplication>
 #include <QMainWindow>
 #include <gloperate-qt/qt-includes-end.h>
-#include <gloperate/base/ChronoTimer.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
-#include <basic-examples/SimpleTexture/SimpleTexture.h>
-#include <basic-examples/RotatingQuad/RotatingQuad.h>
 
 
 using namespace gloperate;
@@ -27,26 +24,31 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    // Create resource manager
+    ResourceManager resourceManager;
+    resourceManager.addLoader(new QtTextureLoader());
+
     // Initialize plugin manager
     PluginManager::init(argc > 0 ? argv[0] : "");
 
     // Load example plugins
     PluginManager pluginManager;
     pluginManager.scan("examples");
-    pluginManager.printPlugins();
-
-    // Create resource manager
-    ResourceManager resourceManager;
-    resourceManager.addLoader(new QtTextureLoader());
 
     // Choose a painter
+    std::string name = (argc > 1) ? argv[1] : "CubeScape";
+    std::cout << "Trying to create painter '" << name << "'\n";
+
+    // Create painter
     gloperate::Painter * painter = nullptr;
-    Plugin * plugin = pluginManager.plugin("CubeScape");
+    Plugin * plugin = pluginManager.plugin(name);
     if (plugin) {
         painter = plugin->createPainter();
     } else {
-//      painter = new SimpleTexture();
-        painter = new RotatingQuad(&resourceManager);
+        // Error, could not find plugin
+        std::cout << "Could not find plugin '" << name << "'\n";
+        pluginManager.printPlugins();
+        return 1;
     }
 
     // Create OpenGL window
