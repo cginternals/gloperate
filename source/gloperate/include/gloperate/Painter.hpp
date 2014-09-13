@@ -1,9 +1,15 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #pragma once
 
-#include <gloperate/Painter.h>
 
 namespace gloperate
 {
+
 
 template <typename Capability>
 bool Painter::supports() const
@@ -26,5 +32,6 @@ Capability * Painter::getCapability() const
 
     return nullptr;
 }
+
 
 } // namespace gloperate

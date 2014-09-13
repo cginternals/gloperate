@@ -1,7 +1,13 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #pragma once
 
-#include <vector>
 
+#include <vector>
 #include <globjects/base/Referenced.h>
 #include <gloperate/gloperate_api.h>
 #include <gloperate/capabilities/AbstractCapability.h>
@@ -27,16 +33,25 @@ public:
 
     template <typename Capability>
     Capability * getCapability() const;
-protected:
-    virtual void onInitialize()                      = 0;
-    virtual void onPaint()                           = 0;
 
+
+protected:
+    virtual void onInitialize() = 0;
+    virtual void onPaint()      = 0;
+
+
+protected:
     void addCapability(AbstractCapability * capability);
+
 
 protected:
     std::vector<AbstractCapability*> m_capabilities;
+
+
 };
 
+
 } // namespace gloperate
+
 
 #include <gloperate/Painter.hpp>
