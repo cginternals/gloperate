@@ -11,28 +11,48 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Constructor
+*/
 Painter::Painter()
 {
 }
 
+/**
+*  @brief
+*    Destructor
+*/
 Painter::~Painter()
 {
-    for (AbstractCapability * capability : m_capabilities)
-    {
+	// Destroy capabilities
+    for (AbstractCapability * capability : m_capabilities) {
         delete capability;
     }
 }
 
+/**
+*  @brief
+*    Initialize painter
+*/
 void Painter::initialize()
 {
     onInitialize();
 }
 
+/**
+*  @brief
+*    Render a frame
+*/
 void Painter::paint()
 {
     onPaint();
 }
 
+/**
+*  @brief
+*    Add capability to the painter
+*/
 void Painter::addCapability(AbstractCapability * capability)
 {
     m_capabilities.push_back(capability);
