@@ -50,8 +50,8 @@ void main()
 )";
 
 
-RotatingQuad::RotatingQuad(ResourceManager * resourceManager)
-: m_resourceManager(resourceManager)
+RotatingQuad::RotatingQuad(ResourceManager & resourceManager)
+: Painter(resourceManager)
 , m_viewportCapability(new gloperate::ViewportCapability)
 , m_timeCapability(new gloperate::VirtualTimeCapability)
 , m_angle(0.0f)
@@ -117,11 +117,8 @@ void RotatingQuad::createAndSetupCamera()
 
 void RotatingQuad::createAndSetupTexture()
 {
-    // Check if texture loader is valid
-    if (m_resourceManager) {
-        // Try to load texture
-        m_texture = m_resourceManager->loadTexture("data/emblem-important.png");
-    }
+    // Try to load texture
+    m_texture = m_resourceManager.loadTexture("data/emblem-important.png");
 
     // Check if texture is valid
     if (!m_texture) {

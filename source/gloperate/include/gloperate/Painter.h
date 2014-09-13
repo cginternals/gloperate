@@ -17,6 +17,9 @@ namespace gloperate
 {
 
 
+class ResourceManager;
+
+
 /**
 *  @brief
 *    Represents the main class for defining a rendering process
@@ -42,8 +45,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] resourceManager
+    *    Resource manager, e.g., to load and save textures
     */
-    Painter();
+    Painter(ResourceManager & resourceManager);
 
     /**
     *  @brief
@@ -113,7 +119,8 @@ protected:
 
 
 protected:
-    std::vector<AbstractCapability*> m_capabilities;    /**< List of supported capabilities */
+    ResourceManager                  & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
+    std::vector<AbstractCapability*>   m_capabilities;    /**< List of supported capabilities */
 
 
 };

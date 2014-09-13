@@ -8,8 +8,9 @@ using namespace gloperate;
 using namespace gl;
 
 
-SimpleTexture::SimpleTexture()
-: m_viewportCapability(new gloperate::ViewportCapability)
+SimpleTexture::SimpleTexture(ResourceManager & resourceManager)
+: Painter(resourceManager)
+, m_viewportCapability(new gloperate::ViewportCapability)
 {
     addCapability(m_viewportCapability);
 }

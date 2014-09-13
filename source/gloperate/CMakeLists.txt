@@ -102,6 +102,8 @@ set(headers
     ${include_path}/plugin/PluginManager.h
     ${include_path}/plugin/PluginLibrary.h
     ${include_path}/plugin/Plugin.h
+    ${include_path}/plugin/PainterPlugin.h
+    ${include_path}/plugin/PainterPlugin.hpp
     ${include_path}/plugin/plugin_api.h
     ${include_path}/resources/ResourceManager.h
     ${include_path}/resources/AbstractLoader.h

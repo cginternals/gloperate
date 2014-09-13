@@ -30,10 +30,10 @@
             m_dll = LoadLibraryA(filename.c_str());
             if (m_dll) {
                 // Get function pointers
-                *reinterpret_cast<void**>(&m_initPluginPtr)      = GetProcAddress(m_dll, "initPlugin");
+                *reinterpret_cast<void**>(&m_initPluginPtr)      = GetProcAddress(m_dll, "initPluginLibrary");
                 *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = GetProcAddress(m_dll, "getNumOfPlugins");
                 *reinterpret_cast<void**>(&m_getPluginPtr)       = GetProcAddress(m_dll, "getPlugin");
-                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = GetProcAddress(m_dll, "deinitPlugin");
+                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = GetProcAddress(m_dll, "deinitPluginLibrary");
             }
         }
 
@@ -76,10 +76,10 @@
             m_handle = dlopen(filename.c_str(), RTLD_NOW);
             if (m_handle) {
                 // Get function pointers
-                *reinterpret_cast<void**>(&m_initPluginPtr)      = dlsym(m_handle, "initPlugin");
+                *reinterpret_cast<void**>(&m_initPluginPtr)      = dlsym(m_handle, "initPluginLibrary");
                 *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = dlsym(m_handle, "getNumOfPlugins");
                 *reinterpret_cast<void**>(&m_getPluginPtr)       = dlsym(m_handle, "getPlugin");
-                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = dlsym(m_handle, "deinitPlugin");
+                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = dlsym(m_handle, "deinitPluginLibrary");
             } else {
                 globjects::debug() << dlerror();
             }

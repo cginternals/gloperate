@@ -116,8 +116,9 @@ void main()
 }
 
 
-CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
-: m_numCubes(25)
+CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
+: Painter(resourceManager)
+, m_numCubes(25)
 , m_animation(true)
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)

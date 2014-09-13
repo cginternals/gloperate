@@ -30,8 +30,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] resourceManager
+    *    Resource manager, e.g., to load and save textures
     */
-    OsgPainter();
+    OsgPainter(gloperate::ResourceManager & resourceManager);
 
     /**
     *  @brief

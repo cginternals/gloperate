@@ -1,11 +1,11 @@
+#include <iostream>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
+#include <gloperate/resources/ResourceManager.h>
 #include <gloperate-glfw/ContextFormat.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventHandler.h>
-#include <basic-examples/SimpleTexture/SimpleTexture.h>
-#include <basic-examples/RotatingQuad/RotatingQuad.h>
 
 
 using namespace gloperate;
@@ -17,31 +17,36 @@ int main(int argc, char *argv[])
     ContextFormat format;
     format.setVersion(3, 0);
 
+    // Create resource manager
+    ResourceManager resourceManager;
+
     // Initialize plugin manager
     PluginManager::init(argc > 0 ? argv[0] : "");
 
     // Load example plugins
     PluginManager pluginManager;
     pluginManager.scan("examples");
-    pluginManager.printPlugins();
 
     // Choose a painter
+    std::string name = (argc > 1) ? argv[1] : "CubeScape";
+    std::cout << "Trying to create painter '" << name << "'\n";
+
+    // Create painter
     gloperate::Painter * painter = nullptr;
-    Plugin * plugin = pluginManager.plugin("RotatingQuad");
+    Plugin * plugin = pluginManager.plugin(name);
     if (plugin) {
-        painter = plugin->createPainter();
+        painter = plugin->createPainter(resourceManager);
     } else {
-//      painter = new SimpleTexture();
-        painter = new RotatingQuad();
+        // Error, could not find plugin
+        std::cout << "Could not find plugin '" << name << "'\n";
+        pluginManager.printPlugins();
+        return 1;
     }
 
-    // Create event handler
-    WindowEventHandler * eventHandler = new WindowEventHandler();
-
-    // Create window
+    // Create main window
     Window window;
     window.setPainter(painter);
-    window.setEventHandler(eventHandler);
+    window.setEventHandler(new WindowEventHandler());
     if (window.create(format, "gloperate viewer")) {
         // Show window and run application
         window.context()->setSwapInterval(Context::VerticalSyncronization);

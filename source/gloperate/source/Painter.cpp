@@ -15,7 +15,8 @@ namespace gloperate
 *  @brief
 *    Constructor
 */
-Painter::Painter()
+Painter::Painter(ResourceManager & resourceManager)
+: m_resourceManager(resourceManager)
 {
 }
 
