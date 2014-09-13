@@ -1,6 +1,6 @@
 #include <vector>
 #include <gloperate/plugin/plugin_api.h>
-#include <gloperate/plugin/Plugin.h>
+#include <gloperate/plugin/PainterPlugin.h>
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 #include <basic-examples/CubeScape/CubeScape.h>
@@ -9,78 +9,25 @@
 static std::vector<gloperate::Plugin *> g_plugins;
 
 
-class Plugin_SimpleTexture : public gloperate::Plugin {
-public:
-    Plugin_SimpleTexture()
-    : gloperate::Plugin(
-        "Painter"
-      , "SimpleTexture"
-      , "Displays a simple generated texture on the screen"
-      , "gloperate team"
-      , "v1.0.0" )
-    {
-    }
-
-    ~Plugin_SimpleTexture()
-    {
-    }
-
-    virtual gloperate::Painter * createPainter() const
-    {
-        return new SimpleTexture();
-    }
-};
-
-class Plugin_RotatingQuad : public gloperate::Plugin {
-public:
-    Plugin_RotatingQuad()
-    : gloperate::Plugin(
-        "Painter"
-      , "RotatingQuad"
-      , "Displays a rotating quad geometry, demonstrating animation and cameras"
-      , "gloperate team"
-      , "v1.0.0" )
-    {
-    }
-
-    ~Plugin_RotatingQuad()
-    {
-    }
-
-    virtual gloperate::Painter * createPainter() const
-    {
-        return new RotatingQuad();
-    }
-};
-
-class Plugin_CubeScape : public gloperate::Plugin {
-public:
-    Plugin_CubeScape()
-    : gloperate::Plugin(
-        "Painter"
-      , "CubeScape"
-      , "Displays a CubeScape"
-      , "gloperate team"
-      , "v1.0.0" )
-    {
-    }
-
-    ~Plugin_CubeScape()
-    {
-    }
-
-    virtual gloperate::Painter * createPainter() const
-    {
-        return new CubeScape();
-    }
-};
-
-
 extern "C" GLOPERATE_PLUGIN_API void initPlugin()
 {
-    g_plugins.push_back(new Plugin_SimpleTexture());
-    g_plugins.push_back(new Plugin_RotatingQuad());
-    g_plugins.push_back(new Plugin_CubeScape());
+    g_plugins.push_back(new gloperate::PainterPlugin<SimpleTexture>(
+                            "SimpleTexture"
+                          , "Displays a simple generated texture on the screen"
+                          , "gloperate team"
+                          , "v1.0.0" ) );
+
+    g_plugins.push_back(new gloperate::PainterPlugin<RotatingQuad>(
+                            "RotatingQuad"
+                          , "Displays a rotating quad geometry, demonstrating animation and cameras"
+                          , "gloperate team"
+                          , "v1.0.0" ) );
+
+    g_plugins.push_back(new gloperate::PainterPlugin<CubeScape>(
+                            "CubeScape"
+                          , "Displays a CubeScape"
+                          , "gloperate team"
+                          , "v1.0.0" ) );
 }
 
 extern "C" GLOPERATE_PLUGIN_API int getNumOfPlugins()
