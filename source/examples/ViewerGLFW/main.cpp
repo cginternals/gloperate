@@ -1,6 +1,7 @@
 #include <iostream>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
+#include <gloperate/resources/ResourceManager.h>
 #include <gloperate-glfw/ContextFormat.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/Window.h>
@@ -15,6 +16,9 @@ int main(int argc, char *argv[])
 {
     ContextFormat format;
     format.setVersion(3, 0);
+
+    // Create resource manager
+    ResourceManager resourceManager;
 
     // Initialize plugin manager
     PluginManager::init(argc > 0 ? argv[0] : "");
@@ -31,7 +35,7 @@ int main(int argc, char *argv[])
     gloperate::Painter * painter = nullptr;
     Plugin * plugin = pluginManager.plugin(name);
     if (plugin) {
-        painter = plugin->createPainter();
+        painter = plugin->createPainter(resourceManager);
     } else {
         // Error, could not find plugin
         std::cout << "Could not find plugin '" << name << "'\n";

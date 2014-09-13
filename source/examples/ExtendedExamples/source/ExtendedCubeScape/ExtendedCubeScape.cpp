@@ -2,7 +2,8 @@
 
 #include <reflectionzeug/Property.h>
 
-ExtendedCubeScape::ExtendedCubeScape(gloperate::ResourceManager * /*resourceManager*/)
+ExtendedCubeScape::ExtendedCubeScape(gloperate::ResourceManager & resourceManager)
+: CubeScape(resourceManager)
 {
     addProperty<int> (std::string("numcubes"),  dynamic_cast<CubeScape*>(this), &CubeScape::numberOfCubes, &CubeScape::setNumberOfCubes);
     addProperty<bool>(std::string("animation"), dynamic_cast<CubeScape*>(this), &CubeScape::animation,     &CubeScape::setAnimation);

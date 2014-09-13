@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     gloperate::Painter * painter = nullptr;
     Plugin * plugin = pluginManager.plugin(name);
     if (plugin) {
-        painter = plugin->createPainter();
+        painter = plugin->createPainter(resourceManager);
     } else {
         // Error, could not find plugin
         std::cout << "Could not find plugin '" << name << "'\n";

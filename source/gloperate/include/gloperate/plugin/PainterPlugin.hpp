@@ -23,9 +23,9 @@ PainterPlugin<PainterType>::~PainterPlugin()
 }
 
 template <typename PainterType>
-Painter * PainterPlugin<PainterType>::createPainter() const
+Painter * PainterPlugin<PainterType>::createPainter(ResourceManager & resourceManager) const
 {
-    return new PainterType();
+    return new PainterType(resourceManager);
 }
 
 

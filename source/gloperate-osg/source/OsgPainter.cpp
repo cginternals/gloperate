@@ -16,7 +16,8 @@ namespace gloperate_osg
 *  @brief
 *    Constructor
 */
-OsgPainter::OsgPainter()
+OsgPainter::OsgPainter(ResourceManager & resourceManager)
+: Painter(resourceManager)
 {
 }
 

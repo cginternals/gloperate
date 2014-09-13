@@ -26,7 +26,7 @@ class GLOPERATE_API PainterPlugin : public Plugin {
         PainterPlugin(const std::string & name, const std::string & description, const std::string & vendor, const std::string & version);
         virtual ~PainterPlugin();
 
-        virtual Painter * createPainter() const;
+        virtual Painter * createPainter(ResourceManager & resourceManager) const;
 
 
 };

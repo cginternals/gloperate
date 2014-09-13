@@ -21,7 +21,7 @@ namespace gloperate {
 class BASIC_EXAMPLES_API CubeScape : public gloperate::Painter
 {
 public:
-    CubeScape(gloperate::ResourceManager * resourceManager = nullptr);
+    CubeScape(gloperate::ResourceManager & resourceManager);
     virtual ~CubeScape();
 
     void update(float delta);
@@ -35,8 +35,6 @@ protected:
     virtual void onInitialize();
     virtual void onPaint();
 protected:
-    gloperate::ResourceManager * m_resourceManager;
-
     /* parameters */
 
     int m_numCubes;
