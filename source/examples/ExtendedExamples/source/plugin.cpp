@@ -7,7 +7,7 @@
 static std::vector<gloperate::Plugin *> g_plugins;
 
 
-extern "C" GLOPERATE_PLUGIN_API void initPlugin()
+extern "C" GLOPERATE_PLUGIN_API void initPluginLibrary()
 {
     g_plugins.push_back(new gloperate::PainterPlugin<ExtendedCubeScape>(
                             "ExtendedCubeScape"
@@ -30,7 +30,7 @@ extern "C" GLOPERATE_PLUGIN_API gloperate::Plugin * getPlugin(unsigned int index
     }
 }
 
-extern "C" GLOPERATE_PLUGIN_API void deinitPlugin()
+extern "C" GLOPERATE_PLUGIN_API void deinitPluginLibrary()
 {
     for (std::vector<gloperate::Plugin *>::iterator it = g_plugins.begin(); it != g_plugins.end(); ++it) {
         gloperate::Plugin * plugin = *it;
