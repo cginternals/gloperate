@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     }
 
     // Create main window
-    Window window;
+    Window window(resourceManager);
     window.setPainter(painter);
     window.setEventHandler(new WindowEventHandler());
     if (window.create(format, "gloperate viewer")) {

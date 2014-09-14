@@ -11,14 +11,8 @@
 #include <gloperate-qt/qt-includes-end.h>
 #include <globjects/globjects.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractTargetFramebufferCapability.h>
 #include <gloperate/resources/ResourceManager.h>
-
-#include <glbinding/gl/enum.h>
-
-#include <globjects/Texture.h>
-#include <globjects/Framebuffer.h>
-#include <globjects/Renderbuffer.h>
+#include <gloperate/tools/ScreenshotTool.h>
 
 
 using namespace gloperate;
@@ -122,36 +116,13 @@ void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
 
     if (event->key() == Qt::Key_F10)
     {
-        gloperate::Painter * p = painter();
-        if (p)
+        if (ScreenshotTool::isApplicableTo(painter()))
         {
-            AbstractViewportCapability * viewportCapability = p->getCapability<AbstractViewportCapability>();
-            AbstractTargetFramebufferCapability * fboCapability = p->getCapability<AbstractTargetFramebufferCapability>();
+            ScreenshotTool screenshot(painter(), m_resourceManager);
 
-            if (fboCapability && viewportCapability)
-            {
-                globjects::Framebuffer * fbo = new globjects::Framebuffer();
+            screenshot.initialize();
 
-                globjects::Texture * color = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-                color->image2D(0, gl::GL_RGBA, viewportCapability->width(), viewportCapability->height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
-
-                globjects::Renderbuffer * depth = new globjects::Renderbuffer();
-                // [TODO] Check for availability of depth format
-                depth->storage(gl::GL_DEPTH_COMPONENT32, viewportCapability->width(), viewportCapability->height());
-
-                fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, color);
-                fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, depth);
-
-                globjects::Framebuffer * oldFbo = fboCapability->framebuffer();
-                fboCapability->setFramebuffer(fbo);
-
-                p->paint();
-
-                // [TODO] handle filename
-                m_resourceManager.storeTexture("screenshot.png", color);
-
-                fboCapability->setFramebuffer(oldFbo);
-            }
+            screenshot.save("screenshot.png");
         }
     }
 

@@ -6,6 +6,8 @@
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 
+#include <gloperate/tools/ScreenshotTool.h>
+
 #include <gloperate-glfw/Window.h>
 
 using namespace gloperate;
@@ -55,8 +57,19 @@ void WindowEventHandler::paintEvent(PaintEvent & event)
     }
 }
 
-void WindowEventHandler::keyPressEvent(KeyEvent & /*event*/)
+void WindowEventHandler::keyPressEvent(KeyEvent & event)
 {
+    if (event.key() == GLFW_KEY_F10)
+    {
+        if (ScreenshotTool::isApplicableTo(event.window()->painter()))
+        {
+            ScreenshotTool screenshot(event.window()->painter(), event.window()->resourceManager());
+
+            screenshot.initialize();
+
+            screenshot.save("screenshot.png");
+        }
+    }
 }
 
 void WindowEventHandler::timerEvent(TimerEvent & event)
