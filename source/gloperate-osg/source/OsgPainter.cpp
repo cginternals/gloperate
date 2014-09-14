@@ -5,6 +5,7 @@
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include <gloperate-osg/OsgPainter.h>
+#include <gloperate/capabilities/ViewportCapability.h>
 
 
 using namespace gloperate;
@@ -18,7 +19,10 @@ namespace gloperate_osg
 */
 OsgPainter::OsgPainter(ResourceManager & resourceManager)
 : Painter(resourceManager)
+, m_viewportCapability(new gloperate::ViewportCapability)
 {
+    // Register capabilities
+    addCapability(m_viewportCapability);
 }
 
 /**
@@ -64,11 +68,8 @@ void OsgPainter::onInitialize()
 
 void OsgPainter::onPaint()
 {
-    // [TODO] Implement using ViewportCapability
-    /*
     // Send resize-event
-    m_embedded->resized(viewport.x(), viewport.y(), viewport.width(), viewport.height());
-    */
+    m_embedded->resized(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
 
 	// Draw OSG scene
 	m_viewer->frame();

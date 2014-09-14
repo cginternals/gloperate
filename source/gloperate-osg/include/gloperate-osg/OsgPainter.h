@@ -14,6 +14,11 @@
 #include <gloperate-osg/gloperate-osg_api.h>
 
 
+namespace gloperate {
+    class AbstractViewportCapability;
+}
+
+
 namespace gloperate_osg
 {
 
@@ -70,6 +75,9 @@ protected:
     osg::ref_ptr<osgViewer::Viewer>                 m_viewer;   /**< OSG viewer */
     osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> m_embedded; /**< Interface that acts like a window to OSG */
     osg::ref_ptr<osg::Node>                         m_scene;    /**< The displayed scene */
+
+    // Capabilities
+    gloperate::AbstractViewportCapability * m_viewportCapability;
 
 
 };
