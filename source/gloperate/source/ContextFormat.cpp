@@ -14,12 +14,13 @@ namespace gloperate
 {
 
 ContextFormat::ContextFormat()
-: m_profile(Profile::None)
+: m_version(glbinding::Version(4, 5))
+, m_profile(Profile::None)
 , m_debugContext(false)
 , m_forwardCompatibility(false)
-, m_redBufferSize(0)
-, m_greenBufferSize(0)
-, m_blueBufferSize(0)
+, m_redBufferSize(8)
+, m_greenBufferSize(8)
+, m_blueBufferSize(8)
 , m_alphaBufferSize(8)
 , m_depthBufferSize(24)
 , m_stencilBufferSize(0)
@@ -293,39 +294,39 @@ bool ContextFormat::verifyPixelFormat(
 	if (requested.depthBufferSize())
 	{
 		if (!created.depthBufferSize())
-			issues.push_back("Depth Buffer requested, but none created.");
+			issues.push_back("- Depth Buffer requested, but none created.");
 		else
             verifyBufferSize(requested.depthBufferSize(), created.depthBufferSize()
-			    , "Depth Buffer", issues);
+			    , "- Depth Buffer", issues);
 	}
 
 	verifyBufferSize(requested.redBufferSize(),   created.redBufferSize()
-		, "Red Buffer", issues);
+		, "- Red Buffer", issues);
 	verifyBufferSize(requested.greenBufferSize(), created.greenBufferSize()
-		, "Green Buffer", issues);
+		, "- Green Buffer", issues);
 	verifyBufferSize(requested.blueBufferSize(),  created.blueBufferSize()
-		, "Blue Buffer", issues);
+		, "- Blue Buffer", issues);
 	verifyBufferSize(requested.alphaBufferSize(), created.alphaBufferSize()
-		, "Alpha Buffer", issues);
+		, "- Alpha Buffer", issues);
 
 	if (requested.stencilBufferSize())
 	{
 		if (!created.stencilBufferSize())
-			issues.push_back("Stencil Buffer requested, but none created.");
+			issues.push_back("- Stencil Buffer requested, but none created.");
 		else
 			verifyBufferSize(requested.stencilBufferSize(), created.stencilBufferSize()
-			    , "Stencil Buffer", issues);
+			    , "- Stencil Buffer", issues);
 	}
 
 	if (requested.stereo() && !created.stereo())
-		issues.push_back("Stereo Buffering requested, but not initialized.");
+		issues.push_back("- Stereo Buffering requested, but not initialized.");
 
 	if (requested.samples())
 	{
 		if (!created.samples())
-			issues.push_back("Sample Buffers requested, but none initialized.");
+			issues.push_back("- Sample Buffers requested, but none initialized.");
 		else
-			verifyBufferSize(requested.samples(), created.samples(), "Samples ", issues);
+			verifyBufferSize(requested.samples(), created.samples(), "- Samples ", issues);
 	}
 
 	if (issues.empty())

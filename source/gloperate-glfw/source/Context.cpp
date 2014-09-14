@@ -3,12 +3,15 @@
 
 #include <cassert>
 
+#include <glbinding/Binding.h>
 #include <glbinding/Version.h>
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/ContextFormat.h>
+
+#include <Windows.h>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
@@ -52,11 +55,8 @@ glbinding::Version Context::maxSupportedVersion()
     {
         glfwMakeContextCurrent(window);
 
-        GLint major, minor;
-        glGetIntegerv(GLenum::GL_MAJOR_VERSION, &major); // major version
-        glGetIntegerv(GLenum::GL_MINOR_VERSION, &minor); // minor version
-
-        version = glbinding::Version(major, minor);
+        glbinding::Binding::initialize(false);
+        version = retrieveVersion();
 
         glfwMakeContextCurrent(nullptr);
         glfwDestroyWindow(window);
@@ -90,10 +90,8 @@ GLFWwindow * Context::create(const ContextFormat & format)
 
     if (version >= glbinding::Version(3, 0))
     {
-        if (format.forwardCompatible())
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
-        if (format.debugContext())
-            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, format.forwardCompatible());
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, format.debugContext());
     }
 
     if (version >= glbinding::Version(3, 2))
@@ -120,6 +118,7 @@ GLFWwindow * Context::create(const ContextFormat & format)
     if (window)
     {
         glfwMakeContextCurrent(window);
+        glbinding::Binding::initialize(false);
         glfwSwapInterval(static_cast<int>(format.swapBehavior()));
         glfwMakeContextCurrent(0);
     }
@@ -169,33 +168,45 @@ const ContextFormat & Context::format() const
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
 
+    m_format->setVersion(retrieveVersion());
+
     GLint i;
     GLboolean b;
 
-    glGetIntegerv(GLenum::GL_DEPTH_BITS, &i);
+    i = -1; glGetIntegerv(GLenum::GL_DEPTH_BITS, &i);
     m_format->setDepthBufferSize(i);
-    glGetIntegerv(GLenum::GL_STENCIL_BITS, &i);
+    i = -1; glGetIntegerv(GLenum::GL_STENCIL_BITS, &i);
     m_format->setStencilBufferSize(i);
+    i = -1; glGetIntegerv(GLenum::GL_RED_BITS, &i);
 
-    glGetIntegerv(GLenum::GL_RED_BITS, &i);
     m_format->setRedBufferSize(i);
-    glGetIntegerv(GLenum::GL_GREEN_BITS, &i);
+    i = -1; glGetIntegerv(GLenum::GL_GREEN_BITS, &i);
     m_format->setGreenBufferSize(i);
-    glGetIntegerv(GLenum::GL_BLUE_BITS, &i);
+    i = -1; glGetIntegerv(GLenum::GL_BLUE_BITS, &i);
     m_format->setBlueBufferSize(i);
-    glGetIntegerv(GLenum::GL_ALPHA_BITS, &i);
+    i = -1; glGetIntegerv(GLenum::GL_ALPHA_BITS, &i);
     m_format->setAlphaBufferSize(i);
-
-    glGetIntegerv(GLenum::GL_SAMPLES, &i);
+    i = -1; glGetIntegerv(GLenum::GL_SAMPLES, &i);
     m_format->setSamples(i);
-
-    glGetBooleanv(GLenum::GL_STEREO, &b);
+    b = GL_FALSE;  glGetBooleanv(GLenum::GL_STEREO, &b);
     m_format->setStereo(b == GL_TRUE);
 
     if (current != m_window)
         glfwMakeContextCurrent(current);
 
     return *m_format;
+}
+
+void Context::makeCurrent() const
+{
+    if (m_window)
+        glfwMakeContextCurrent(m_window);
+}
+
+void Context::doneCurrent() const
+{
+    if (m_window && m_window == glfwGetCurrentContext())
+        glfwMakeContextCurrent(nullptr);
 }
 
 } // namespace gloperate_glfw

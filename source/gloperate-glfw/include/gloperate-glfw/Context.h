@@ -36,6 +36,9 @@ public:
 
     virtual const gloperate::ContextFormat & format() const;
 
+    virtual void makeCurrent() const;
+    virtual void doneCurrent() const;
+
 protected:
     Context();
 

@@ -38,7 +38,8 @@ class Context;
  */
 class GLOPERATE_GLFW_API Window
 {
-
+public:
+    static int init();
 
 public:
     Window();

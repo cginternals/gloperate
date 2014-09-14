@@ -4,23 +4,45 @@
 #include <cassert>
 #include <map>
 
+#include <glbinding/ContextInfo.h>
+#include <glbinding/ProcAddress.h>
+#include <glbinding/Version.h>
+#include <glbinding/gl/gl.h>
+
 #include <globjects/base/baselogging.h>
 
-
-#ifdef WIN32
-    #include <windows.h>
-    #include <gl/GL.h>
-    #include <gl/GLU.h>
-#else
-    #include <GL/glx.h>
-    #include <GL/GLUx.h>
-#endif
-
-
+using namespace gl;
 using namespace globjects;
 
 namespace gloperate
 {
+
+glbinding::Version AbstractContext::retrieveVersion()
+{
+    assert(0 != glbinding::getCurrentContext());
+
+    GLint major = -1;
+    GLint minor = -1;
+
+    glGetIntegerv(GLenum::GL_MAJOR_VERSION, &major); // major version
+    glGetIntegerv(GLenum::GL_MINOR_VERSION, &minor); // minor version
+
+    if (major < 0 && minor < 0) // probably a context < 3.0 with no support for GL_MAJOR/MINOR_VERSION
+    {
+        const GLubyte * vstr = glGetString(GLenum::GL_VERSION);
+        if (!vstr)
+            return glbinding::Version();
+
+        assert(vstr[1] == '.');
+
+        assert(vstr[0] >= '0'  && vstr[0] <= '9');
+        major = vstr[0] - '0';
+
+        assert(vstr[2] >= '0'  && vstr[2] <= '9');
+        minor = vstr[2] - '0';
+    }
+    return glbinding::Version(major, minor);
+}
 
 const std::string & AbstractContext::swapIntervalString(const SwapInterval interval)
 {
@@ -42,6 +64,24 @@ AbstractContext::~AbstractContext()
 {
 }
 
+std::string AbstractContext::version()
+{
+    assert(0 != glbinding::getCurrentContext());
+    return glbinding::ContextInfo::version().toString();
+}
+
+std::string AbstractContext::vendor()
+{
+    assert(0 != glbinding::getCurrentContext());
+    return glbinding::ContextInfo::vendor();
+}
+
+std::string AbstractContext::renderer()
+{
+    assert(0 != glbinding::getCurrentContext());
+    return glbinding::ContextInfo::renderer();
+}
+
 bool AbstractContext::isValid() const
 {
 	return 0 < handle();
@@ -49,10 +89,6 @@ bool AbstractContext::isValid() const
 
 glbinding::ContextHandle AbstractContext::tryFetchHandle()
 {
-	assert(isValid());
-    if (!isValid())
-		return 0;
-
     const glbinding::ContextHandle handle = glbinding::getCurrentContext();
 
     if (0 == handle)
@@ -68,34 +104,28 @@ AbstractContext::SwapInterval AbstractContext::swapInterval() const
 
 bool AbstractContext::setSwapInterval(const SwapInterval interval)
 {
-    if(interval == m_swapInterval)
+    if (interval == m_swapInterval)
         return true;
 
     bool result(false);
 
+    if (handle() != glbinding::getCurrentContext())
+    {
+        warning() << "Setting swap interval skipped (another context was already current).";
+        return false;
+    }
+
+    assert(0 != glbinding::getCurrentContext());
+
 #ifdef WIN32
 
-    using SWAPINTERVALEXTPROC = bool(WINAPI *)(int);
-    static SWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
+    using SWAPINTERVALEXTPROC = bool(*)(int);
+    static SWAPINTERVALEXTPROC wglSwapIntervalEXT(nullptr);
 
-    using GETSWAPINTERVALEXTPROC = int(WINAPI *)();
-    static GETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = nullptr;
-
-    if(!wglSwapIntervalEXT)
-        wglSwapIntervalEXT = reinterpret_cast<SWAPINTERVALEXTPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
-    assert(wglSwapIntervalEXT);
-
-    if (!wglGetSwapIntervalEXT)
-        wglGetSwapIntervalEXT = reinterpret_cast<GETSWAPINTERVALEXTPROC>(wglGetProcAddress("wglGetSwapIntervalEXT"));
-    assert(wglGetSwapIntervalEXT);
-
-    result = wglSwapIntervalEXT(static_cast<int>(interval));
-
-    if(result)
-    {
+    if (!wglSwapIntervalEXT)
+        wglSwapIntervalEXT = reinterpret_cast<SWAPINTERVALEXTPROC>(glbinding::getProcAddress("wglSwapIntervalEXT"));
+    if (wglSwapIntervalEXT)
         result = wglSwapIntervalEXT(static_cast<int>(interval));
-        m_swapInterval = static_cast<SwapInterval>(wglGetSwapIntervalEXT());
-    }
 
 #elif __APPLE__
 
@@ -103,21 +133,18 @@ bool AbstractContext::setSwapInterval(const SwapInterval interval)
 
 #else
 
-    using SWAPINTERVALEXTPROC = int(APIENTRY *)(int);
+    using SWAPINTERVALEXTPROC = int(*)(int);
     static SWAPINTERVALEXTPROC glXSwapIntervalSGI = nullptr;
 
     if(!glXSwapIntervalSGI)
-    {
-        const GLubyte * sgi = reinterpret_cast<const GLubyte*>("glXSwapIntervalSGI");
-        glXSwapIntervalSGI = reinterpret_cast<SWAPINTERVALEXTPROC>(glXGetProcAddress(sgi));
-    }
+        glXSwapIntervalSGI = reinterpret_cast<SWAPINTERVALEXTPROC>(glbinding::getProcAddress("glXSwapIntervalSGI"));
     if(glXSwapIntervalSGI)
         result = glXSwapIntervalSGI(static_cast<int>(interval));
 
+#endif
+
     if (result)
         m_swapInterval = interval;
-
-#endif
 
     if(!result)
         warning("Setting swap interval to % failed.", swapIntervalString(interval));

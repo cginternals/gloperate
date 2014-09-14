@@ -19,7 +19,7 @@ using namespace gloperate_glfw;
 int main(int argc, char *argv[])
 {
     ContextFormat format;
-    format.setVersion(3, 0);
+    format.setVersion(2, 1);
 
     // Initialize plugin manager
     PluginManager::init(argc > 0 ? argv[0] : "");
@@ -37,9 +37,12 @@ int main(int argc, char *argv[])
     // Choose a painter
     gloperate::Painter * painter = nullptr;
     Plugin * plugin = pluginManager.plugin("RotatingQuad");
-    if (plugin) {
+    if (plugin) 
+    {
         painter = plugin->createPainter();
-    } else {
+    }
+    else 
+    {
 //      painter = new SimpleTexture();
         painter = new RotatingQuad();
     }
@@ -47,17 +50,28 @@ int main(int argc, char *argv[])
     // Create event handler
     WindowEventHandler * eventHandler = new WindowEventHandler();
 
+    Window::init();
+
     // Create window
     Window window;
     window.setPainter(painter);
     window.setEventHandler(eventHandler);
-    if (window.create(format, "gloperate viewer")) {
-        // Show window and run application
+
+    if (window.create(format, "gloperate viewer")) 
+    {
+        window.context()->makeCurrent();
         window.context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
+
+        globjects::info() << std::endl
+            << "OpenGL Version:  " << window.context()->version()  << std::endl
+            << "OpenGL Vendor:   " << window.context()->vendor()   << std::endl
+            << "OpenGL Renderer: " << window.context()->renderer() << std::endl;
+
+        window.context()->doneCurrent();
+
         window.show();
         return MainLoop::run();
-    } else {
-        // Error initializing the window
-        return 1;
-    }
+    } 
+    // Error initializing the window
+    return 1;
 }

@@ -23,6 +23,11 @@ using namespace gloperate;
 namespace gloperate_glfw
 {
 
+int Window::init()
+{
+    return glfwInit();
+}
+
 
 std::set<Window*> Window::s_instances;
 
