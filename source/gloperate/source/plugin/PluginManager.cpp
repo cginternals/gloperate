@@ -73,7 +73,7 @@
         , m_handle(0)
         {
             // Open library
-            m_handle = dlopen(filename.c_str(), RTLD_NOW);
+            m_handle = dlopen(filename.c_str(), RTLD_LAZY);
             if (m_handle) {
                 // Get function pointers
                 *reinterpret_cast<void**>(&m_initPluginPtr)      = dlsym(m_handle, "initPluginLibrary");
