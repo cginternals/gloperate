@@ -14,6 +14,7 @@
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
+#include <gloperate-qt/QtTextureStorer.h>
 
 
 using namespace gloperate;
@@ -27,6 +28,7 @@ int main(int argc, char *argv[])
     // Create resource manager
     ResourceManager resourceManager;
     resourceManager.addLoader(new QtTextureLoader());
+    resourceManager.addStorer(new QtTextureStorer());
 
     // Initialize plugin manager
     PluginManager::init(argc > 0 ? argv[0] : "");
@@ -52,7 +54,7 @@ int main(int argc, char *argv[])
     }
 
     // Create OpenGL window
-    QtOpenGLWindow * glWindow = new QtOpenGLWindow();
+    QtOpenGLWindow * glWindow = new QtOpenGLWindow(resourceManager);
     if (painter) {
         // Set painter to window
         glWindow->setPainter(painter);

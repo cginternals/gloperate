@@ -20,6 +20,7 @@ namespace gloperate
 
 
 class AbstractLoader;
+class AbstractStorer;
 
 
 /**
@@ -53,12 +54,30 @@ class GLOPERATE_API ResourceManager {
 
         /**
         *  @brief
+        *    Get available storers
+        *
+        *  @return
+        *    List of storers
+        */
+        const std::vector<AbstractStorer *> & storers() const;
+
+        /**
+        *  @brief
         *    Add loader
         *
         *  @param[in] loader
         *    Resource loader
         */
         void addLoader(AbstractLoader * loader);
+
+        /**
+        *  @brief
+        *    Add storer
+        *
+        *  @param[in] storer
+        *    Resource storer
+        */
+        void addStorer(AbstractStorer * storer);
 
         /**
         *  @brief
@@ -72,9 +91,24 @@ class GLOPERATE_API ResourceManager {
         */
         globjects::Texture * loadTexture(const std::string & filename) const;
 
+        /**
+        *  @brief
+        *    Store texture to file
+        *
+        *  @param filename
+        *    File name
+        *  @param texture
+        *    The texture object
+        *
+        *  @return
+        *    'true', if storage was successful, esle 'false'
+        */
+        bool storeTexture(const std::string & filename, globjects::Texture * texture) const;
+
 
     protected:
         std::vector<AbstractLoader *> m_loaders;    /**< Available loaders */
+        std::vector<AbstractStorer *> m_storers;    /**< Available storers */
 
 
 };
