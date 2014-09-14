@@ -65,6 +65,7 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
     ${source_path}/OsgPainter.cpp
+    ${source_path}/OsgPainter_osg.cpp
 )
 
 set(headers

@@ -4,10 +4,13 @@
  * Copyright (C) 2014 Computer Graphics Systems Group at the 
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
+#include <glbinding/gl/gl.h>
 #include <gloperate-osg/OsgPainter.h>
 #include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/capabilities/TargetFramebufferCapability.h>
 
 
+using namespace gl;
 using namespace gloperate;
 namespace gloperate_osg
 {
@@ -19,10 +22,15 @@ namespace gloperate_osg
 */
 OsgPainter::OsgPainter(ResourceManager & resourceManager)
 : Painter(resourceManager)
+, m_viewer(nullptr)
+, m_embedded(nullptr)
+, m_scene(nullptr)
 , m_viewportCapability(new gloperate::ViewportCapability)
+, m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 {
     // Register capabilities
     addCapability(m_viewportCapability);
+    addCapability(m_targetFramebufferCapability);
 }
 
 /**
@@ -31,6 +39,7 @@ OsgPainter::OsgPainter(ResourceManager & resourceManager)
 */
 OsgPainter::~OsgPainter()
 {
+    osg_cleanup();
 }
 
 /**
@@ -39,7 +48,7 @@ OsgPainter::~OsgPainter()
 */
 osg::Node * OsgPainter::scene() const
 {
-	return m_scene;
+    return m_scene;
 }
 
 /**
@@ -48,31 +57,27 @@ osg::Node * OsgPainter::scene() const
 */
 void OsgPainter::setScene(osg::Node * scene)
 {
-	m_scene = scene;
-    m_viewer->setSceneData(m_scene);
+    osg_setScene(scene);
 }
 
 void OsgPainter::onInitialize()
 {
-	// Create OSG viewer
-    m_viewer = new osgViewer::Viewer;
-    m_embedded = m_viewer->setUpViewerAsEmbeddedInWindow(0, 0, 800, 600);
-
-    // Initialize camera
-    m_viewer->getCamera()->setProjectionMatrixAsPerspective(45.0, 1.0, 0.5, 1000);
-    m_viewer->getCamera()->setViewMatrix(osg::Matrix::lookAt(osg::Vec3(0, 0, 50), osg::Vec3(0, 0, 0), osg::Vec3(0, 1, 0))); 
-
-    // Initialize viewer
-	m_viewer->realize();
+    osg_onInitialize();
 }
 
 void OsgPainter::onPaint()
 {
-    // Send resize-event
-    m_embedded->resized(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+    // Get framebuffer to render into
+    globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
+    if (!fbo) {
+        fbo = globjects::Framebuffer::defaultFBO();
+    }
 
-	// Draw OSG scene
-	m_viewer->frame();
+    // Bind framebuffer
+    fbo->bind(GL_FRAMEBUFFER);
+
+    // Draw osg scene
+    osg_onPaint();
 }
 
 
