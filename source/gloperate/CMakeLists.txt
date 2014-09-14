@@ -65,7 +65,7 @@ set(sources
     ${source_path}/capabilities/TargetFramebufferCapability.cpp
     ${source_path}/capabilities/ViewportCapability.cpp
     ${source_path}/capabilities/VirtualTimeCapability.cpp
-#   ${source_path}/tools/ScreenShot.cpp
+   ${source_path}/tools/ScreenshotTool.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
@@ -96,7 +96,7 @@ set(headers
     ${include_path}/capabilities/TargetFramebufferCapability.h
     ${include_path}/capabilities/ViewportCapability.h
     ${include_path}/capabilities/VirtualTimeCapability.h
-#   ${include_path}/tools/ScreenShot.h
+   ${include_path}/tools/ScreenshotTool.h
     ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
