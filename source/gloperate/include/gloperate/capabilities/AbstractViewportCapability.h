@@ -14,9 +14,6 @@
 namespace gloperate {
 
 
-class Viewport;
-
-
 /**
 *  @brief
 *    Capability that allows for specifying the output viewport of a painter
@@ -43,30 +40,12 @@ public:
 
     /**
     *  @brief
-    *    Get viewport
-    *
-    *  @return
-    *    Viewport
-    */
-    virtual const Viewport & viewport() const = 0;
-
-    /**
-    *  @brief
-    *    Set viewport
-    *
-    *  @param[in] viewport
-    *    Viewport
-    */
-    virtual void setViewport(const Viewport & viewport) = 0;
-
-    /**
-    *  @brief
     *    Get viewport position x
     *
     *  @return
     *    X-position
     */
-    int x() const;
+    virtual int x() const = 0;
 
     /**
     *  @brief
@@ -75,7 +54,7 @@ public:
     *  @return
     *    Y-position
     */
-    int y() const;
+    virtual int y() const = 0;
 
     /**
     *  @brief
@@ -84,7 +63,7 @@ public:
     *  @return
     *    Width
     */
-    int width() const;
+    virtual int width() const = 0;
 
     /**
     *  @brief
@@ -93,7 +72,22 @@ public:
     *  @return
     *    Height
     */
-    int height() const;
+    virtual int height() const = 0;
+
+    /**
+    *  @brief
+    *    Set viewport
+    *
+    *  @param[in] x
+    *    X-position
+    *  @param[in] y
+    *    Y-position
+    *  @param[in] width
+    *    Width
+    *  @param[in] height
+    *    Height
+    */
+    virtual void setViewport(int x, int y, int width, int height) = 0;
 
 
 };

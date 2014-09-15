@@ -16,6 +16,7 @@ namespace gloperate
 
 
 class Painter;
+class ResourceManager;
 
 
 /**
@@ -98,10 +99,13 @@ class GLOPERATE_API Plugin {
         *  @brief
         *    Create painter object
         *
+        *  @param[in] resourceManager
+        *    Resource manager, e.g., to load and save textures
+        *
         *  @return
         *    Painter
         */
-        virtual Painter * createPainter() const = 0;
+        virtual Painter * createPainter(ResourceManager & resourceManager) const = 0;
 
 
     protected:

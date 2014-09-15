@@ -30,8 +30,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] resourceManager
+    *    Resource manager, e.g., to load and save textures
     */
-    OsgPainter();
+    OsgPainter(gloperate::ResourceManager & resourceManager);
 
     /**
     *  @brief
@@ -59,9 +62,8 @@ public:
 
 
 protected:
-    virtual void onInitialize();
-    virtual void onResize(const gloperate::Viewport & viewport);
-    virtual void onPaint();
+    virtual void onInitialize() override;
+    virtual void onPaint() override;
 
 
 protected:

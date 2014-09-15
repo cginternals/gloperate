@@ -25,6 +25,12 @@ namespace gloperate
     class ContextFormat;
 }
 
+namespace gloperate
+{
+
+class ResourceManager;
+
+} // namespace gloperate
 
 namespace gloperate_glfw
 {
@@ -42,7 +48,7 @@ public:
     static int init();
 
 public:
-    Window();
+    Window(gloperate::ResourceManager & resourceManager);
     virtual ~Window();
 
     bool create(const gloperate::ContextFormat & format, int width = 1280, int height = 720);
@@ -112,6 +118,9 @@ public:
 
     gloperate::Painter * painter() const;
     void setPainter(gloperate::Painter * painter);
+
+    gloperate::ResourceManager & resourceManager();
+    const gloperate::ResourceManager & resourceManager() const;
 protected:
     bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
     void destroyContext();
@@ -145,6 +154,7 @@ protected:
     Mode m_mode;
 
     globjects::ref_ptr<gloperate::Painter> m_painter;
+    gloperate::ResourceManager & m_resourceManager;
 
 private:
     static std::set<Window*> s_instances;

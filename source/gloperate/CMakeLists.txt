@@ -65,7 +65,7 @@ set(sources
     ${source_path}/capabilities/TargetFramebufferCapability.cpp
     ${source_path}/capabilities/ViewportCapability.cpp
     ${source_path}/capabilities/VirtualTimeCapability.cpp
-#   ${source_path}/tools/ScreenShot.cpp
+   ${source_path}/tools/ScreenshotTool.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
@@ -75,11 +75,12 @@ set(sources
     ${source_path}/plugin/Plugin.cpp
     ${source_path}/resources/ResourceManager.cpp
     ${source_path}/resources/AbstractLoader.cpp
+    ${source_path}/resources/AbstractStorer.cpp
     ${source_path}/resources/TextureLoader.cpp
+    ${source_path}/resources/TextureStorer.cpp
     ${source_path}/resources/GlrawTextureLoader.cpp
     ${source_path}/resources/RawFile.cpp
     ${source_path}/Painter.cpp
-    ${source_path}/Viewport.cpp
     ${source_path}/Camera.cpp
 
     ${source_path}/AbstractContext.cpp
@@ -98,7 +99,7 @@ set(headers
     ${include_path}/capabilities/TargetFramebufferCapability.h
     ${include_path}/capabilities/ViewportCapability.h
     ${include_path}/capabilities/VirtualTimeCapability.h
-#   ${include_path}/tools/ScreenShot.h
+   ${include_path}/tools/ScreenshotTool.h
     ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
@@ -106,15 +107,18 @@ set(headers
     ${include_path}/plugin/PluginManager.h
     ${include_path}/plugin/PluginLibrary.h
     ${include_path}/plugin/Plugin.h
+    ${include_path}/plugin/PainterPlugin.h
+    ${include_path}/plugin/PainterPlugin.hpp
     ${include_path}/plugin/plugin_api.h
     ${include_path}/resources/ResourceManager.h
     ${include_path}/resources/AbstractLoader.h
+    ${include_path}/resources/AbstractStorer.h
     ${include_path}/resources/TextureLoader.h
+    ${include_path}/resources/TextureStorer.h
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/RawFile.h
     ${include_path}/Painter.h
     ${include_path}/Painter.hpp
-    ${include_path}/Viewport.h
     ${include_path}/Camera.h
     ${include_path}/gloperate_api.h
 

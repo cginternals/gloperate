@@ -1,3 +1,9 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #pragma once
 
 
@@ -11,15 +17,17 @@ namespace gloperate
 {
 
 
-/** \brief Represents matrices for a typical 3d look at camera with perspective.
-
-    A camera is specified via near, far, fovy, as well as an eye, a center, and an up 
-    vector. Furthermore the viewport should be specified. Camera itself does not use
-    any OpenGL calls, but merely provides lazzy math to all common matrices required
-    for affine transformation of a scene, namely the view and projection matrices, their 
-    their combination and all related inverses (as well as a normal matrix).
-    The class relies on lazzy computation of all matrices, causing less recomputations
-    of, e.g., matrices and inverse matrices requested on an irregular basis.
+/**
+*  @brief
+*    Represents matrices for a typical 3D perspective look-at camera.
+*
+*    A camera is specified via near, far, fovy, as well as an eye, a center, and an up 
+*    vector. Furthermore, the viewport should be specified. Camera itself does not use
+*    any OpenGL calls, but merely provides lazy math to all common matrices required
+*    for affine transformation of a scene, namely the view and projection matrices,
+*    their combination and all related inverses (as well as a normal matrix).
+*    The class relies on lazy computation of all matrices, causing less recomputations
+*    of, e.g., matrices and inverse matrices requested on an irregular basis.
 */
 class GLOPERATE_API Camera : public globjects::Referenced
 {

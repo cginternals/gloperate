@@ -30,10 +30,10 @@
             m_dll = LoadLibraryA(filename.c_str());
             if (m_dll) {
                 // Get function pointers
-                *reinterpret_cast<void**>(&m_initPluginPtr)      = GetProcAddress(m_dll, "initPlugin");
+                *reinterpret_cast<void**>(&m_initPluginPtr)      = GetProcAddress(m_dll, "initPluginLibrary");
                 *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = GetProcAddress(m_dll, "getNumOfPlugins");
                 *reinterpret_cast<void**>(&m_getPluginPtr)       = GetProcAddress(m_dll, "getPlugin");
-                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = GetProcAddress(m_dll, "deinitPlugin");
+                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = GetProcAddress(m_dll, "deinitPluginLibrary");
             }
         }
 
@@ -73,13 +73,13 @@
         , m_handle(0)
         {
             // Open library
-            m_handle = dlopen(filename.c_str(), RTLD_NOW);
+            m_handle = dlopen(filename.c_str(), RTLD_LAZY);
             if (m_handle) {
                 // Get function pointers
-                *reinterpret_cast<void**>(&m_initPluginPtr)      = dlsym(m_handle, "initPlugin");
+                *reinterpret_cast<void**>(&m_initPluginPtr)      = dlsym(m_handle, "initPluginLibrary");
                 *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = dlsym(m_handle, "getNumOfPlugins");
                 *reinterpret_cast<void**>(&m_getPluginPtr)       = dlsym(m_handle, "getPlugin");
-                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = dlsym(m_handle, "deinitPlugin");
+                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = dlsym(m_handle, "deinitPluginLibrary");
             } else {
                 globjects::debug() << dlerror();
             }
@@ -288,6 +288,20 @@ Plugin * PluginManager::plugin(const std::string & name) const
 
     // Plugin not found
     return nullptr;
+}
+
+/**
+*  @brief
+*    Print list of available plugins to log
+*/
+void PluginManager::printPlugins() const
+{
+    for (Plugin * plugin : m_plugins) {
+        globjects::info() << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")";
+        globjects::info() << "  by " << plugin->vendor() << "";
+        globjects::info() << "  " << plugin->description() << "";
+        globjects::info() << "";
+    }
 }
 
 

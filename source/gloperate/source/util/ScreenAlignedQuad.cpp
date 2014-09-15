@@ -1,3 +1,9 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #include <gloperate/util/ScreenAlignedQuad.h>
 #include <cassert>
 #include <array>

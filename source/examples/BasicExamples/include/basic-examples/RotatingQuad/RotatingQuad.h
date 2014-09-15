@@ -24,7 +24,7 @@ class BASIC_EXAMPLES_API RotatingQuad : public gloperate::Painter
 
 
 public:
-    RotatingQuad(gloperate::ResourceManager * resourceManager = nullptr);
+    RotatingQuad(gloperate::ResourceManager & resourceManager);
     virtual ~RotatingQuad();
 
 
@@ -40,13 +40,11 @@ protected:
 
 
 protected:
-    gloperate::ResourceManager    * m_resourceManager;
-
     /* capabilities */
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
-    globjects::ref_ptr<gloperate::Camera> m_camera;
+    globjects::ref_ptr<gloperate::Camera>       m_camera;
     globjects::ref_ptr<globjects::VertexArray>  m_vao;
     globjects::ref_ptr<globjects::Buffer>       m_buffer;
     globjects::ref_ptr<globjects::Program>      m_program;

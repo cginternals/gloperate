@@ -38,11 +38,12 @@ const std::set<Window*>& Window::instances()
 }
 
 
-Window::Window()
+Window::Window(gloperate::ResourceManager & resourceManager)
 :   m_context(nullptr)
 ,   m_window(nullptr)
 ,   m_quitOnDestroy(true)
 ,   m_mode(WindowMode)
+,   m_resourceManager(resourceManager)
 {
     s_instances.insert(this);
 }
@@ -482,12 +483,24 @@ void Window::setPainter(gloperate::Painter * painter)
 {
     m_painter = painter;
 
+    removeTimer(0);
+
     gloperate::AbstractVirtualTimeCapability * timeCapability = m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>();
 
     if (timeCapability)
     {
         addTimer(0, 0, false);
     }
+}
+
+gloperate::ResourceManager & Window::resourceManager()
+{
+    return m_resourceManager;
+}
+
+const gloperate::ResourceManager & Window::resourceManager() const
+{
+    return m_resourceManager;
 }
 
 

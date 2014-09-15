@@ -17,7 +17,8 @@ namespace gloperate
 *    Constructor
 */
 VirtualTimeCapability::VirtualTimeCapability()
-: m_duration(2.0f * 3.141592654f)
+: m_enabled(true)
+, m_duration(2.0f * 3.141592654f)
 , m_time(0.0f)
 {
 }
@@ -30,19 +31,23 @@ VirtualTimeCapability::~VirtualTimeCapability()
 {
 }
 
-/**
-*  @brief
-*    Get virtual time
-*/
+bool VirtualTimeCapability::enabled() const
+{
+    return m_enabled;
+}
+
+void VirtualTimeCapability::setEnabled(bool enabled)
+{
+    m_enabled = enabled;
+
+    setChanged(true);
+}
+
 float VirtualTimeCapability::time() const
 {
     return m_time;
 }
 
-/**
-*  @brief
-*    Set duration of a whole cycle (after that, time is reset to 0)
-*/
 void VirtualTimeCapability::setLoopDuration(float duration)
 {
     assert(duration > 0.0f);
@@ -52,10 +57,6 @@ void VirtualTimeCapability::setLoopDuration(float duration)
     normalizeTime();
 }
 
-/**
-*  @brief
-*    Update virtual time
-*/
 void VirtualTimeCapability::update(float delta)
 {
     m_time += delta;
@@ -65,10 +66,6 @@ void VirtualTimeCapability::update(float delta)
     normalizeTime();
 }
 
-/**
-*  @brief
-*    Normalize time by wrapping it at the loop duration
-*/
 void VirtualTimeCapability::normalizeTime()
 {
     while (m_time > m_duration)

@@ -20,7 +20,7 @@ class BASIC_EXAMPLES_API SimpleTexture : public gloperate::Painter
 
 
 public:
-    SimpleTexture();
+    SimpleTexture(gloperate::ResourceManager & resourceManager);
     virtual ~SimpleTexture();
 
 

@@ -1,14 +1,23 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #pragma once
+
 
 #include <string>
 #include <memory>
-
 #include <gloperate/gloperate_api.h>
+
 
 namespace gloperate
 {
 
+
 class ChronoTimer;
+
 
 /** \brief Basic, scoped performance measurements with minimal interace.
 
@@ -42,5 +51,6 @@ protected:
 
     std::unique_ptr<ChronoTimer> m_timer;
 };
+
 
 } // namespace gloperate

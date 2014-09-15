@@ -27,7 +27,6 @@ include_directories(
     BEFORE
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
     ${CMAKE_SOURCE_DIR}/source/gloperate-glfw/include
-    ${CMAKE_SOURCE_DIR}/source/examples/BasicExamples/include
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -40,7 +39,6 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     gloperate
     gloperate-glfw
-    basic-examples
 )
 
 #

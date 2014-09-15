@@ -7,10 +7,19 @@
 #pragma once
 
 
+#include <QScopedPointer>
 #include <globjects/base/ref_ptr.h>
 #include <gloperate/Painter.h>
 #include <gloperate-qt/QtOpenGLWindowBase.h>
+#include <gloperate-qt/TimePropagator.h>
 
+
+namespace gloperate
+{
+
+class ResourceManager;
+
+}
 
 namespace gloperate_qt
 {
@@ -29,7 +38,7 @@ public:
     *  @brief
     *    Constructor
     */
-    QtOpenGLWindow();
+    QtOpenGLWindow(gloperate::ResourceManager & resourceManager);
 
     /**
     *  @brief
@@ -38,7 +47,7 @@ public:
     *  @param[in] format
     *    Surface format
     */
-    QtOpenGLWindow(const QSurfaceFormat & format);
+    QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format);
 
     /**
     *  @brief
@@ -69,10 +78,13 @@ protected:
     virtual void onInitialize() override;
     virtual void onResize(QResizeEvent * event) override;
     virtual void onPaint() override;
+    virtual void keyPressEvent(QKeyEvent * event) override;
 
 
 protected:
-    globjects::ref_ptr<gloperate::Painter> m_painter;	/**< Currently used painter */
+    gloperate::ResourceManager & m_resourceManager;
+    globjects::ref_ptr<gloperate::Painter> m_painter;	      /**< Currently used painter */
+    QScopedPointer<TimePropagator>         m_timePropagator;  /**< Time propagator for continous updates */
 
 
 };

@@ -1,8 +1,6 @@
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
 #include <random>
 #include <glbinding/gl/gl.h>
-#include <gloperate/Viewport.h>
-
 #include <gloperate/capabilities/ViewportCapability.h>
 
 
@@ -10,8 +8,9 @@ using namespace gloperate;
 using namespace gl;
 
 
-SimpleTexture::SimpleTexture()
-: m_viewportCapability(new gloperate::ViewportCapability)
+SimpleTexture::SimpleTexture(ResourceManager & resourceManager)
+: Painter(resourceManager)
+, m_viewportCapability(new gloperate::ViewportCapability)
 {
     addCapability(m_viewportCapability);
 }

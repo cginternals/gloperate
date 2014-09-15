@@ -42,6 +42,30 @@ public:
 
     /**
     *  @brief
+    *    Check if virtual time is enabled
+    *
+    *  @return
+    *    'true' if enabled, else 'false'
+    */
+    virtual bool enabled() const = 0;
+
+    /**
+    *  @brief
+    *    Enable or disable virtual time
+    *
+    *  @param[in] enabled
+    *    'true' if enabled, else 'false'
+    *
+    *  @remarks
+    *    When a virtual time capability is present on a painter and enabled,
+    *    the window will activate continuous rendering and updates. If not
+    *    enabled, the viewer will switch back to on-demand rendering and disable
+    *    continuous updates until the capability has been switched back on.
+    */
+    virtual void setEnabled(bool enabled) = 0;
+
+    /**
+    *  @brief
     *    Get virtual time
     *
     *  @return

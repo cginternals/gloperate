@@ -4,8 +4,8 @@
  * Copyright (C) 2014 Computer Graphics Systems Group at the 
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-
+#include <gloperate/resources/AbstractStorer.h>
+ 
 
 namespace gloperate
 {
@@ -15,7 +15,7 @@ namespace gloperate
 *  @brief
 *    Constructor
 */
-AbstractViewportCapability::AbstractViewportCapability()
+AbstractStorer::AbstractStorer()
 {
 }
 
@@ -23,7 +23,7 @@ AbstractViewportCapability::AbstractViewportCapability()
 *  @brief
 *    Destructor
 */
-AbstractViewportCapability::~AbstractViewportCapability()
+AbstractStorer::~AbstractStorer()
 {
 }
 

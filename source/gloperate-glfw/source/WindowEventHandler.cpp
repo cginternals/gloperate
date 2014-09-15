@@ -2,10 +2,11 @@
 #include <globjects/globjects.h>
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
-#include <gloperate/Viewport.h>
 
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+
+#include <gloperate/tools/ScreenshotTool.h>
 
 #include <gloperate-glfw/Window.h>
 
@@ -37,13 +38,13 @@ void WindowEventHandler::initialize(Window & window)
 void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 {
     if (event.window()->painter()) {
-        // Resize painter
+        // Check if the painter supports the viewport capability
         AbstractViewportCapability * viewportCapability = event.window()->painter()->getCapability<AbstractViewportCapability>();
 
         if (viewportCapability)
         {
             // Resize painter
-            viewportCapability->setViewport(Viewport(0, 0, event.width(), event.height()));
+            viewportCapability->setViewport(0, 0, event.width(), event.height());
         }
     }
 }
@@ -56,8 +57,19 @@ void WindowEventHandler::paintEvent(PaintEvent & event)
     }
 }
 
-void WindowEventHandler::keyPressEvent(KeyEvent & /*event*/)
+void WindowEventHandler::keyPressEvent(KeyEvent & event)
 {
+    if (event.key() == GLFW_KEY_F10)
+    {
+        if (ScreenshotTool::isApplicableTo(event.window()->painter()))
+        {
+            ScreenshotTool screenshot(event.window()->painter(), event.window()->resourceManager());
+
+            screenshot.initialize();
+
+            screenshot.save("screenshot.png");
+        }
+    }
 }
 
 void WindowEventHandler::timerEvent(TimerEvent & event)
@@ -66,7 +78,7 @@ void WindowEventHandler::timerEvent(TimerEvent & event)
     {
         AbstractVirtualTimeCapability * timeCapability = event.window()->painter()->getCapability<AbstractVirtualTimeCapability>();
 
-        if (timeCapability)
+        if (timeCapability && timeCapability->enabled())
         {
             timeCapability->update(std::chrono::duration_cast<std::chrono::duration<float>>(event.elapsed()).count());
             event.window()->repaint();

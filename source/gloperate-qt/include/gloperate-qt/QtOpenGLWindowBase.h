@@ -115,7 +115,8 @@ protected:
     virtual void enterEvent(QEvent * event);
     virtual void leaveEvent(QEvent * event);
 
-
+    void makeCurrent();
+    void doneCurrent();
 protected:
     QScopedPointer<QOpenGLContext> m_context;       /**< OpenGL context created and used by the window */
     bool                           m_initialized;   /**< Has the rendering already been initialized? */

@@ -28,18 +28,18 @@ AbstractCapability::~AbstractCapability()
 }
 
 /**
- * @brief Returns whether the information of this Capability have changed.
- * @return the changed flag
- */
+*  @brief
+*    Check if the information of this capability have changed
+*/
 bool AbstractCapability::hasChanged() const
 {
     return m_changed;
 }
 
 /**
- * @brief AbstractCapability::setChanged
- * @param changed the new value of the changed flag
- */
+*  @brief
+*    Set if the information of this capability have changed
+*/
 void AbstractCapability::setChanged(bool _changed)
 {
     m_changed = _changed;
