@@ -58,9 +58,9 @@ macro (find LIB_NAME HEADER)
     
     find_path(${LIB_NAME_UPPER}_INCLUDE_DIR ${HEADER}
         ${ENVGLOPERATE_DIR}/include
-        ${ENVGLOPERATE_DIR}/source/${LIBNAME}/include
+        ${ENVGLOPERATE_DIR}/source/${LIB_NAME}/include
         ${GLOPERATE_DIR}/include
-        ${GLOPERATE_DIR}/source/${LIBNAME}/include
+        ${GLOPERATE_DIR}/source/${LIB_NAME}/include
         ${ENVPROGRAMFILES}/gloperate/include
         /usr/include
         /usr/local/include
@@ -69,11 +69,11 @@ macro (find LIB_NAME HEADER)
         DOC "The directory where ${header} resides")
 
     find_library(${LIB_NAME_UPPER}_LIBRARY_RELEASE
-        NAMES ${LIBNAME}
+        NAMES ${LIB_NAME}
         PATHS ${HINT_PATHS}
         DOC "The ${LIB_NAME} library")
     find_library(${LIB_NAME_UPPER}_LIBRARY_DEBUG
-        NAMES ${LIBNAME}d
+        NAMES ${LIB_NAME}d
         PATHS ${HINT_PATHS}
         DOC "The ${LIB_NAME} debug library")
     
@@ -98,7 +98,7 @@ endmacro()
 find(gloperate gloperate/gloperate_api.h ${LIB_PATHS})
 
 # add dependencies
-find_package(globjects REQUIRED COMPONENTS core)
+find_package(globjects REQUIRED)
 list(APPEND GLOPERATE_INCLUDES ${GLOBJECTS_INCLUDES})
 list(APPEND GLOPERATE_LIBRARIES ${GLOBJECTS_LIBRARIES})
 
