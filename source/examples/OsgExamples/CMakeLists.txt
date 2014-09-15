@@ -1,3 +1,13 @@
+# Build only if OSG is available
+find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
+if(NOT OPENSCENEGRAPH_FOUND)
+	return ()
+endif ()
+
+# Target
+set(target osg-examples)
+message(STATUS "Lib ${target}")
+
 #
 # External libraries
 #
@@ -5,15 +15,6 @@
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(GLFW)
-find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
-
-# Build only if OSG is available
-if(OPENSCENEGRAPH_FOUND)
-
-# Target
-set(target gloperate-osg)
-message(STATUS "Lib ${target}")
 
 #
 # Includes
@@ -29,6 +30,7 @@ include_directories(
 include_directories(
     BEFORE
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-osg/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -41,6 +43,7 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     ${OPENSCENEGRAPH_LIBRARIES}
     gloperate
+    gloperate-osg
 )
 
 #
@@ -48,9 +51,9 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_OSG_STATIC")
+    add_definitions("-DOSG_EXAMPLES_STATIC")
 else()
-    add_definitions("-DGLOPERATE_OSG_EXPORTS")
+    add_definitions("-DOSG_EXAMPLES_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
@@ -64,13 +67,13 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/OsgPainter.cpp
-    ${source_path}/OsgPainter_osg.cpp
+    ${source_path}/OsgSimpleScene/OsgSimpleScene.cpp
+    ${source_path}/plugin.cpp
 )
 
 set(headers
-    ${include_path}/OsgPainter.h
-    ${include_path}/gloperate-osg_api.h
+    ${include_path}/OsgSimpleScene/OsgSimpleScene.h
+    ${include_path}/osg_examples_api.h
 )
 
 # Group source files
@@ -114,6 +117,3 @@ install(TARGETS ${target}
 
 # Header files
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
-
-# if OSG
-endif()

@@ -113,7 +113,6 @@ void QtOpenGLWindow::onPaint()
 void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
 {
     makeCurrent();
-
     if (event->key() == Qt::Key_F10)
     {
         if (ScreenshotTool::isApplicableTo(painter()))
