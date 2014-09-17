@@ -1,17 +1,20 @@
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
 #include <random>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtc/constants.hpp>
 #include <glbinding/gl/gl.h>
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <gloperate/util/StringTemplate.h>
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/Viewport.h>
+#include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/capabilities/VirtualTimeCapability.h>
 
 
 using namespace globjects;
 using namespace gloperate;
+using namespace gl;
 
 
 static const char * s_vertexShader = R"(
@@ -47,10 +50,16 @@ void main()
 )";
 
 
-RotatingQuad::RotatingQuad(ResourceManager * resourceManager)
-: m_resourceManager(resourceManager)
+RotatingQuad::RotatingQuad(ResourceManager & resourceManager)
+: Painter(resourceManager)
+, m_viewportCapability(new gloperate::ViewportCapability)
+, m_timeCapability(new gloperate::VirtualTimeCapability)
 , m_angle(0.0f)
 {
+    m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
+
+    addCapability(m_viewportCapability);
+    addCapability(m_timeCapability);
 }
 
 RotatingQuad::~RotatingQuad()
@@ -66,15 +75,17 @@ void RotatingQuad::onInitialize()
     createAndSetupGeometry();
 }
 
-void RotatingQuad::onResize(const Viewport & viewport)
-{
-    gl::glViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height());
-}
-
 void RotatingQuad::onPaint()
 {
+    if (m_viewportCapability->hasChanged())
+    {
+        glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+
+        m_viewportCapability->setChanged(false);
+    }
+
     // [TODO] Add onIdle()/onUpdate() callback and implement framerate independent animation
-    m_angle += 0.1f;
+    m_angle = m_timeCapability->time();
 
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
@@ -106,11 +117,8 @@ void RotatingQuad::createAndSetupCamera()
 
 void RotatingQuad::createAndSetupTexture()
 {
-    // Check if texture loader is valid
-    if (m_resourceManager) {
-        // Try to load texture
-        m_texture = m_resourceManager->loadTexture("data/emblem-important.png");
-    }
+    // Try to load texture
+    m_texture = m_resourceManager.loadTexture("data/emblem-important.png");
 
     // Check if texture is valid
     if (!m_texture) {

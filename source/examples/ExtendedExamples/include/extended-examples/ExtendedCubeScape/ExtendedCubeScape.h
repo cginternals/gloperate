@@ -9,6 +9,6 @@
 class EXTENDED_EXAMPLES_API ExtendedCubeScape : public CubeScape, public reflectionzeug::PropertyGroup
 {
 public:
-    ExtendedCubeScape(gloperate::ResourceManager * resourceManager = nullptr);
+    ExtendedCubeScape(gloperate::ResourceManager & resourceManager);
     virtual ~ExtendedCubeScape();
 };

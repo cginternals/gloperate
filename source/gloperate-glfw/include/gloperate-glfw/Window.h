@@ -9,10 +9,24 @@
 #include <gloperate-glfw/MainLoop.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
+#include <globjects/base/ref_ptr.h>
+
+#include <gloperate/Painter.h>
+
+#include <gloperate-glfw/gloperate-glfw_api.h>
+#include <gloperate-glfw/Window.h>
+
 
 struct GLFWwindow;
 struct GLFWmonitor;
 
+
+namespace gloperate
+{
+
+class ResourceManager;
+
+} // namespace gloperate
 
 namespace gloperate_glfw
 {
@@ -31,11 +45,11 @@ class GLOPERATE_GLFW_API Window
 
 
 public:
-    Window();
+    Window(gloperate::ResourceManager & resourceManager);
     virtual ~Window();
 
     bool create(const ContextFormat & format, int width = 1280, int height = 720);
-    bool create(const ContextFormat & format, const std::string & title = "globjects", int width = 1280, int height = 720);
+    bool create(const ContextFormat & format, const std::string & title = "gloperate", int width = 1280, int height = 720);
 
     /**
      * Takes ownership of the given eventhandler and deletes that either on
@@ -99,7 +113,11 @@ public:
     void swap();
     void destroy();
 
+    gloperate::Painter * painter() const;
+    void setPainter(gloperate::Painter * painter);
 
+    gloperate::ResourceManager & resourceManager();
+    const gloperate::ResourceManager & resourceManager() const;
 protected:
     bool createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
     void destroyContext();
@@ -130,7 +148,8 @@ protected:
 
     Mode m_mode;
 
-
+    globjects::ref_ptr<gloperate::Painter> m_painter;
+    gloperate::ResourceManager & m_resourceManager;
 private:
     static std::set<Window*> s_instances;
 

@@ -60,8 +60,6 @@ set(sources
     ${source_path}/SimpleTexture/SimpleTexture.cpp
     ${source_path}/RotatingQuad/RotatingQuad.cpp
     ${source_path}/CubeScape/CubeScape.cpp
-    ${source_path}/CubeScape/VirtualTimeCapability.cpp
-    ${source_path}/CubeScape/VirtualTimeCapability.h
     ${source_path}/plugin.cpp
 )
 

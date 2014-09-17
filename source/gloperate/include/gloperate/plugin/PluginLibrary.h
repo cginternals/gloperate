@@ -22,7 +22,7 @@ class Plugin;
 *  @brief
 *    Function to initialize a plugin library
 */
-typedef void (*INITPLUGIN_PTR)();
+typedef void (*INITPLUGINLIB_PTR)();
 
 /**
 *  @brief
@@ -40,7 +40,7 @@ typedef gloperate::Plugin * (*GETPLUGIN_PTR)(unsigned int);
 *  @brief
 *    Function to deinitialize a plugin library
 */
-typedef void (*DEINITPLUGIN_PTR)();
+typedef void (*DEINITPLUGINLIB_PTR)();
 
 
 /**
@@ -120,10 +120,10 @@ class GLOPERATE_API PluginLibrary {
 
     protected:
         std::string         m_filename;             /**< Filename of the plugin library */
-        INITPLUGIN_PTR      m_initPluginPtr;        /**< Function to initialize a plugin library */
+        INITPLUGINLIB_PTR   m_initPluginPtr;        /**< Function to initialize a plugin library */
         GETNUMOFPLUGINS_PTR m_getNumOfPluginsPtr;   /**< Function to get the number of plugins contained in a library */
         GETPLUGIN_PTR       m_getPluginPtr;         /**< Function to get a specific plugin of a plugin library */
-        DEINITPLUGIN_PTR    m_deinitPluginPtr;      /**< Function to deinitialize a plugin library */
+        DEINITPLUGINLIB_PTR m_deinitPluginPtr;      /**< Function to deinitialize a plugin library */
 
 
 };

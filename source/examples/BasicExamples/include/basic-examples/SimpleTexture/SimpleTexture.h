@@ -8,18 +8,24 @@
 #include <basic-examples/basic_examples_api.h>
 
 
+namespace gloperate
+{
+
+class AbstractViewportCapability;
+
+} // namespace gloperate
+
 class BASIC_EXAMPLES_API SimpleTexture : public gloperate::Painter
 {
 
 
 public:
-    SimpleTexture();
+    SimpleTexture(gloperate::ResourceManager & resourceManager);
     virtual ~SimpleTexture();
 
 
 protected:
     virtual void onInitialize();
-    virtual void onResize(const gloperate::Viewport & viewport);
     virtual void onPaint();
 
 
@@ -29,6 +35,9 @@ protected:
 
 
 protected:
+    /* capabilities */
+    gloperate::AbstractViewportCapability * m_viewportCapability;
+
     globjects::ref_ptr<globjects::Texture>                 m_texture;
     globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
 

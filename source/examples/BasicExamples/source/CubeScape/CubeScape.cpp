@@ -11,10 +11,11 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/VertexAttributeBinding.h>
 
-#include <gloperate/Viewport.h>
 #include <gloperate/resources/RawFile.h>
 
-#include "VirtualTimeCapability.h"
+#include <gloperate/capabilities/TargetFramebufferCapability.h>
+#include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/capabilities/VirtualTimeCapability.h>
 
 using namespace gl;
 
@@ -115,15 +116,23 @@ void main()
 }
 
 
-CubeScape::CubeScape(gloperate::ResourceManager * /*resourceManager*/)
-: m_numCubes(25)
+CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
+: Painter(resourceManager)
+, m_numCubes(25)
+, m_animation(true)
+, m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
+, m_viewportCapability(new gloperate::ViewportCapability)
+, m_timeCapability(new gloperate::VirtualTimeCapability)
 , a_vertex(-1)
 , u_transform(-1)
 , u_time(-1)
 , u_numcubes(-1)
-, m_time(0.f)
 {
-    addCapability(new VirtualTimeCapability(*this));
+    m_timeCapability->setLoopDuration(20.0f * glm::pi<float>());
+
+    addCapability(m_targetFramebufferCapability);
+    addCapability(m_viewportCapability);
+    addCapability(m_timeCapability);
 }
 
 CubeScape::~CubeScape()
@@ -215,44 +224,36 @@ void CubeScape::onInitialize()
     m_program->setUniform(terrain, 0);
     m_program->setUniform(patches, 1);
 
-    // create fbo for result
-
-    /*m_tex = new globjects::Texture;
-    m_tex->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    m_tex->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    m_tex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    m_tex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    m_tex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-    m_z = new globjects::Renderbuffer;
-
-    m_fbo = new globjects::Framebuffer;
-
-    m_fbo->attachTexture(GL_COLOR_ATTACHMENT0, m_tex);
-    m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_z);*/
-
     // view
 
     m_view = glm::lookAt(glm::vec3(0.f, 4.f, -4.f), glm::vec3(0.f, -0.6f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 }
 
-void CubeScape::onResize(const gloperate::Viewport & viewport)
-{
-    glViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height());
-
-    //m_z->storage(GL_DEPTH_COMPONENT16, viewport.width(), viewport.height());
-    //m_tex->image2D(0, GL_RGBA, viewport.width(), viewport.height(), 0, GL_BGRA, GL_UNSIGNED_BYTE, nullptr);
-
-    m_projection = glm::perspective(glm::radians(50.f), static_cast<GLfloat>(viewport.width()) / static_cast<GLfloat>(viewport.height()), 2.f, 8.f);
-}
-
 void CubeScape::onPaint()
 {
+    if (m_viewportCapability->hasChanged())
+    {
+        glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+
+        m_projection = glm::perspective(glm::radians(50.f), static_cast<GLfloat>(m_viewportCapability->width()) / static_cast<GLfloat>(m_viewportCapability->height()), 2.f, 8.f);
+
+        m_viewportCapability->setChanged(false);
+    }
+
+    globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
+
+    if (!fbo)
+    {
+        fbo = globjects::Framebuffer::defaultFBO();
+    }
+
+    fbo->bind(GL_FRAMEBUFFER);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
 
-    glm::mat4 transform = m_projection * m_view * glm::rotate(glm::mat4(), m_time * 0.1f, glm::vec3(0.f, 1.f, 0.f));
+    glm::mat4 transform = m_projection * m_view * glm::rotate(glm::mat4(), m_timeCapability->time() * 0.1f, glm::vec3(0.f, 1.f, 0.f));
 
     m_vao->bind();
 
@@ -261,7 +262,7 @@ void CubeScape::onPaint()
     m_program->use();
 
     m_program->setUniform(u_transform, transform);
-    m_program->setUniform(u_time, m_time);
+    m_program->setUniform(u_time, m_timeCapability->time());
     m_program->setUniform(u_numcubes, m_numCubes);
 
     m_textures[0]->bindActive(GL_TEXTURE0);
@@ -271,15 +272,8 @@ void CubeScape::onPaint()
 
     m_program->release();
     m_vao->unbind();
-}
 
-void CubeScape::update(float delta)
-{
-    m_time += delta;
-    while (m_time > 20 * glm::pi<float>())
-    {
-        m_time -= 20 * glm::pi<float>();
-    }
+    globjects::Framebuffer::unbind(GL_FRAMEBUFFER);
 }
 
 int CubeScape::numberOfCubes() const
@@ -290,4 +284,16 @@ int CubeScape::numberOfCubes() const
 void CubeScape::setNumberOfCubes(const int & number)
 {
     m_numCubes = number;
+}
+
+bool CubeScape::animation() const
+{
+    return m_animation;
+}
+
+void CubeScape::setAnimation(const bool & enabled)
+{
+    m_animation = enabled;
+
+    m_timeCapability->setEnabled(m_animation);
 }

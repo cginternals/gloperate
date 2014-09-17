@@ -1,12 +1,17 @@
-
-#include <gloperate/CyclicTime.h>
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
+#include <gloperate/base/CyclicTime.h>
 
 #include <cmath>
 #include <chrono>
 
 #include <glm/common.hpp>
 
-#include <gloperate/ChronoTimer.h>
+#include <gloperate/base/ChronoTimer.h>
 
 
 namespace gloperate

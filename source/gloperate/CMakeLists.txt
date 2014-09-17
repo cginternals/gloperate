@@ -55,8 +55,17 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
+    ${source_path}/base/AutoTimer.cpp
+    ${source_path}/base/ChronoTimer.cpp
+    ${source_path}/base/CyclicTime.cpp
     ${source_path}/capabilities/AbstractCapability.cpp
+    ${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
+    ${source_path}/capabilities/AbstractViewportCapability.cpp
+    ${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
+    ${source_path}/capabilities/TargetFramebufferCapability.cpp
+    ${source_path}/capabilities/ViewportCapability.cpp
     ${source_path}/capabilities/VirtualTimeCapability.cpp
+   ${source_path}/tools/ScreenshotTool.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
@@ -66,21 +75,28 @@ set(sources
     ${source_path}/plugin/Plugin.cpp
     ${source_path}/resources/ResourceManager.cpp
     ${source_path}/resources/AbstractLoader.cpp
+    ${source_path}/resources/AbstractStorer.cpp
     ${source_path}/resources/TextureLoader.cpp
+    ${source_path}/resources/TextureStorer.cpp
     ${source_path}/resources/GlrawTextureLoader.cpp
     ${source_path}/resources/RawFile.cpp
     ${source_path}/Painter.cpp
-    ${source_path}/Viewport.cpp
     ${source_path}/Camera.cpp
 
-    ${source_path}/AutoTimer.cpp
-    ${source_path}/ChronoTimer.cpp
-    ${source_path}/CyclicTime.cpp
 )
 
 set(headers
+    ${include_path}/base/AutoTimer.h
+    ${include_path}/base/CyclicTime.h
+    ${include_path}/base/ChronoTimer.h
     ${include_path}/capabilities/AbstractCapability.h
+    ${include_path}/capabilities/AbstractTargetFramebufferCapability.h
+    ${include_path}/capabilities/AbstractViewportCapability.h
+    ${include_path}/capabilities/AbstractVirtualTimeCapability.h
+    ${include_path}/capabilities/TargetFramebufferCapability.h
+    ${include_path}/capabilities/ViewportCapability.h
     ${include_path}/capabilities/VirtualTimeCapability.h
+   ${include_path}/tools/ScreenshotTool.h
     ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
@@ -88,21 +104,20 @@ set(headers
     ${include_path}/plugin/PluginManager.h
     ${include_path}/plugin/PluginLibrary.h
     ${include_path}/plugin/Plugin.h
+    ${include_path}/plugin/PainterPlugin.h
+    ${include_path}/plugin/PainterPlugin.hpp
     ${include_path}/plugin/plugin_api.h
     ${include_path}/resources/ResourceManager.h
     ${include_path}/resources/AbstractLoader.h
+    ${include_path}/resources/AbstractStorer.h
     ${include_path}/resources/TextureLoader.h
+    ${include_path}/resources/TextureStorer.h
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/RawFile.h
     ${include_path}/Painter.h
     ${include_path}/Painter.hpp
-    ${include_path}/Viewport.h
     ${include_path}/Camera.h
     ${include_path}/gloperate_api.h
-
-    ${include_path}/AutoTimer.h
-    ${include_path}/CyclicTime.h
-    ${include_path}/ChronoTimer.h
 )
 
 # Group source files

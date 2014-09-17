@@ -76,6 +76,7 @@ set(sources
     ${source_path}/QtOpenGLWindow.cpp
     ${source_path}/QtOpenGLWindowBase.cpp
     ${source_path}/QtTextureLoader.cpp
+    ${source_path}/QtTextureStorer.cpp
     ${source_path}/TimePropagator.cpp
 )
 
@@ -83,6 +84,7 @@ set(headers
     ${include_path}/QtOpenGLWindow.h
     ${include_path}/QtOpenGLWindowBase.h
     ${include_path}/QtTextureLoader.h
+    ${include_path}/QtTextureStorer.h
     ${include_path}/TimePropagator.h
     ${include_path}/gloperate-qt_api.h
 )

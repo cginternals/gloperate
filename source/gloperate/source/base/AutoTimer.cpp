@@ -1,5 +1,10 @@
-
-#include <gloperate/AutoTimer.h>
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
+#include <gloperate/base/AutoTimer.h>
 
 #include <cmath>
 #include <cassert>
@@ -10,7 +15,7 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/ChronoTimer.h>
+#include <gloperate/base/ChronoTimer.h>
 
 namespace 
 {

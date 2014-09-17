@@ -45,8 +45,6 @@ include_directories(
     BEFORE
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
     ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
-    ${CMAKE_SOURCE_DIR}/source/examples/BasicExamples/include
-    ${CMAKE_SOURCE_DIR}/source/examples/ExtendedExamples/include
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -60,8 +58,6 @@ set(libs
     ${LIBZEUG_LIBRARIES}
     gloperate
     gloperate-qt
-    basic-examples
-    extended-examples
 )
 
 #

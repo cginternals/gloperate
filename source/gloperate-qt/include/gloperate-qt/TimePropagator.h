@@ -1,4 +1,11 @@
+/******************************************************************************\
+ * gloperate
+ *
+ * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
+\******************************************************************************/
 #pragma once
+
 
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QObject>
@@ -6,27 +13,62 @@
 #include <QScopedPointer>
 #include <QWidget>
 #include <gloperate-qt/qt-includes-end.h>
-
-#include <gloperate/capabilities/VirtualTimeCapability.h>
-#include <gloperate/ChronoTimer.h>
+#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+#include <gloperate/base/ChronoTimer.h>
 #include <gloperate-qt/QtOpenGLWindowBase.h>
 #include <gloperate-qt/gloperate-qt_api.h>
+
 
 namespace gloperate_qt
 {
 
+
+/**
+*  @brief
+*    Tool class to propagate continues time updates to a window
+*
+*  @remarks
+*    This class is used in a window to allow for continues updates (e.g., to
+*    implement animations). It take a VirtualTimeCapability of a painter to
+*    propagate the time change to the painter, and automatically triggers
+*    an update of the window containing the painter.
+*/
 class GLOPERATE_QT_API TimePropagator : public QObject
 {
+
+
     Q_OBJECT
+
+
 public:
-    TimePropagator(gloperate_qt::QtOpenGLWindowBase* window, gloperate::VirtualTimeCapability * capability);
-public slots:
-    virtual void update();
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] window
+    *    Window that is updated when the timer has elapsed
+    *  @param[in] capability
+    *    VirtualTimeCapability that is informed about the time change
+    */
+    TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloperate::AbstractVirtualTimeCapability * capability);
+
+
+protected slots:
+    /**
+    *  @brief
+    *    Called by the timer when the timer has elapsed
+    */
+    void update();
+
+
 protected:
-    gloperate_qt::QtOpenGLWindowBase * m_window;
-    QScopedPointer<QTimer> m_timer;
-    gloperate::ChronoTimer m_time;
-    gloperate::VirtualTimeCapability * m_capability;
+    gloperate_qt::QtOpenGLWindowBase 		 * m_window;		/**< Window that is updated when the timer has elapsed */
+    gloperate::AbstractVirtualTimeCapability * m_capability;	/**< VirtualTimeCapability that is informed about the time change */
+    QScopedPointer<QTimer> 			   		   m_timer;			/**< Qt timer for continues updates */
+    gloperate::ChronoTimer 			   		   m_time;			/**< Time measurement */
+
+
 };
+
 
 } // namespace gloperate_qt

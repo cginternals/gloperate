@@ -3,12 +3,9 @@
 #include <glm/mat4x4.hpp>
 
 #include <gloperate/Painter.h>
-#include <gloperate/Camera.h>
 #include <basic-examples/basic_examples_api.h>
 
 #include <globjects/base/ref_ptr.h>
-#include <globjects/Framebuffer.h>
-#include <globjects/Renderbuffer.h>
 #include <globjects/Texture.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -16,34 +13,40 @@
 
 namespace gloperate {
     class ResourceManager;
+    class AbstractTargetFramebufferCapability;
+    class AbstractViewportCapability;
+    class AbstractVirtualTimeCapability;
 }
 
 class BASIC_EXAMPLES_API CubeScape : public gloperate::Painter
 {
 public:
-    CubeScape(gloperate::ResourceManager * resourceManager = nullptr);
+    CubeScape(gloperate::ResourceManager & resourceManager);
     virtual ~CubeScape();
 
     void update(float delta);
 
     int numberOfCubes() const;
     void setNumberOfCubes(const int & number);
+
+    bool animation() const;
+    void setAnimation(const bool & enabled);
 protected:
     virtual void onInitialize();
-    virtual void onResize(const gloperate::Viewport & viewport);
     virtual void onPaint();
 protected:
-    gloperate::ResourceManager    * m_resourceManager;
-
     /* parameters */
 
     int m_numCubes;
+    bool m_animation;
+
+    /* capabilities */
+
+    gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
+    gloperate::AbstractViewportCapability * m_viewportCapability;
+    gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
     /* members */
-
-    //globjects::ref_ptr<globjects::Framebuffer> m_fbo;
-    //globjects::ref_ptr<globjects::Texture> m_tex;
-    //globjects::ref_ptr<globjects::Renderbuffer> m_z;
 
     gl::GLint a_vertex;
     gl::GLint u_transform;
@@ -57,8 +60,6 @@ protected:
     globjects::ref_ptr<globjects::Program> m_program;
 
     globjects::ref_ptr<globjects::Texture> m_textures[2];
-
-    float m_time;
 
     glm::mat4 m_view;
     glm::mat4 m_projection;
