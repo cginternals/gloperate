@@ -112,7 +112,6 @@ set(headers
 	${include_path}/gloperate_api.h
 	${include_path}/Painter.h
 	${include_path}/Painter.hpp
-	${include_path}/pipelines/PerformanceMonitor.h
 	${include_path}/pipelines/Parameter.hpp
 	${include_path}/pipelines/StageOwned.h
 	${include_path}/pipelines/AbstractParameter.h
