@@ -62,10 +62,12 @@ set(sources
     ${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
     ${source_path}/capabilities/AbstractViewportCapability.cpp
     ${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
+    ${source_path}/capabilities/AbstractInputCapability.cpp
     ${source_path}/capabilities/TargetFramebufferCapability.cpp
     ${source_path}/capabilities/ViewportCapability.cpp
     ${source_path}/capabilities/VirtualTimeCapability.cpp
-   ${source_path}/tools/ScreenshotTool.cpp
+    ${source_path}/capabilities/InputCapability.cpp
+    ${source_path}/tools/ScreenshotTool.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
@@ -80,6 +82,8 @@ set(sources
     ${source_path}/resources/TextureStorer.cpp
     ${source_path}/resources/GlrawTextureLoader.cpp
     ${source_path}/resources/RawFile.cpp
+    ${source_path}/input/MouseInputHandler.cpp
+    ${source_path}/input/KeyboardInputHandler.cpp
     ${source_path}/Painter.cpp
     ${source_path}/Camera.cpp
 
@@ -93,10 +97,12 @@ set(headers
     ${include_path}/capabilities/AbstractTargetFramebufferCapability.h
     ${include_path}/capabilities/AbstractViewportCapability.h
     ${include_path}/capabilities/AbstractVirtualTimeCapability.h
+    ${include_path}/capabilities/AbstractInputCapability.h
     ${include_path}/capabilities/TargetFramebufferCapability.h
     ${include_path}/capabilities/ViewportCapability.h
     ${include_path}/capabilities/VirtualTimeCapability.h
-   ${include_path}/tools/ScreenshotTool.h
+    ${include_path}/capabilities/InputCapability.h
+    ${include_path}/tools/ScreenshotTool.h
     ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/ScreenAlignedQuad.h
     ${include_path}/util/StringTemplate.h
@@ -114,6 +120,8 @@ set(headers
     ${include_path}/resources/TextureStorer.h
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/RawFile.h
+    ${include_path}/input/MouseInputHandler.h
+    ${include_path}/input/KeyboardInputHandler.h
     ${include_path}/Painter.h
     ${include_path}/Painter.hpp
     ${include_path}/Camera.h
