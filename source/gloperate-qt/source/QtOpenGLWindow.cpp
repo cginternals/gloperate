@@ -11,6 +11,7 @@
 #include <gloperate-qt/qt-includes-end.h>
 #include <globjects/globjects.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
+#include <gloperate/capabilities/AbstractInputCapability.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/tools/ScreenshotTool.h>
 
@@ -18,6 +19,23 @@
 using namespace gloperate;
 namespace gloperate_qt
 {
+
+
+/**
+*  @brief
+*    Convert Qt mouse button into gloperate mouse button
+*/
+static int fromQtMouseButton(Qt::MouseButton button)
+{
+    if (button & Qt::LeftButton)
+        return 1;
+    else if (button & Qt::RightButton)
+        return 2;
+    else if (button & Qt::MiddleButton)
+        return 3;
+    else
+        return 0;
+}
 
 
 /**
@@ -126,6 +144,61 @@ void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
     }
 
     doneCurrent();
+}
+
+void QtOpenGLWindow::keyReleaseEvent(QKeyEvent * /*event*/)
+{
+}
+
+void QtOpenGLWindow::mouseMoveEvent(QMouseEvent * event)
+{
+    int x = event->x();
+    int y = event->y();
+
+    // Check for input capability
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseMove(x, y);
+    }
+}
+
+void QtOpenGLWindow::mousePressEvent(QMouseEvent * event)
+{
+    int x = event->x();
+    int y = event->y();
+    int button = fromQtMouseButton(event->button());
+
+    // Check for input capability
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        m_painter->getCapability<gloperate::AbstractInputCapability>()->onMousePress(x, y, button);
+    }
+}
+
+void QtOpenGLWindow::mouseReleaseEvent(QMouseEvent * event)
+{
+    int x = event->x();
+    int y = event->y();
+    int button = fromQtMouseButton(event->button());
+
+    // Check for input capability
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseRelease(x, y, button);
+    }
+}
+
+void QtOpenGLWindow::mouseDoubleClickEvent(QMouseEvent * event)
+{
+    int x = event->x();
+    int y = event->y();
+    int button = fromQtMouseButton(event->button());
+
+    // Check for input capability
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseDoubleClick(x, y, button);
+    }
 }
 
 
