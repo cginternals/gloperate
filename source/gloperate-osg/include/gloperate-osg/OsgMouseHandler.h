@@ -45,9 +45,9 @@ public:
     virtual ~OsgMouseHandler();
 
     virtual void onMouseMove(int x, int y) override;
-    virtual void onMousePress(int x, int y, int button) override;
-    virtual void onMouseRelease(int x, int y, int button) override;
-    virtual void onMouseDoubleClick(int x, int y, int button) override;
+    virtual void onMousePress(int x, int y, gloperate::MouseButton button) override;
+    virtual void onMouseRelease(int x, int y, gloperate::MouseButton button) override;
+    virtual void onMouseDoubleClick(int x, int y, gloperate::MouseButton button) override;
 
 
 protected:

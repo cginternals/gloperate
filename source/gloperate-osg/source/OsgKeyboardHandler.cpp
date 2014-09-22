@@ -22,12 +22,12 @@ OsgKeyboardHandler::~OsgKeyboardHandler()
 {
 }
 
-void OsgKeyboardHandler::onKeyDown(unsigned int key)
+void OsgKeyboardHandler::onKeyDown(gloperate::Key key)
 {
     m_embedded->getEventQueue()->keyPress(key);
 }
 
-void OsgKeyboardHandler::onKeyUp(unsigned int key)
+void OsgKeyboardHandler::onKeyUp(gloperate::Key key)
 {
     m_embedded->getEventQueue()->keyRelease(key);
 }

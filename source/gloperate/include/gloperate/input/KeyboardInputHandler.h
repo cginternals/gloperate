@@ -49,7 +49,7 @@ public:
     *  @param[in] key
     *    Key
     */
-    virtual void onKeyDown(unsigned int key);
+    virtual void onKeyDown(gloperate::Key key);
 
     /**
     *  @brief
@@ -58,7 +58,7 @@ public:
     *  @param[in] key
     *    Key
     */
-    virtual void onKeyUp(unsigned int key);
+    virtual void onKeyUp(gloperate::Key key);
 
 
 };

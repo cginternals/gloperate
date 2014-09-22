@@ -25,7 +25,7 @@ KeyboardInputHandler::~KeyboardInputHandler()
 *  @brief
 *    Called on key down
 */
-void KeyboardInputHandler::onKeyDown(unsigned int /*key*/)
+void KeyboardInputHandler::onKeyDown(gloperate::Key /*key*/)
 {
 }
 
@@ -33,7 +33,7 @@ void KeyboardInputHandler::onKeyDown(unsigned int /*key*/)
 *  @brief
 *    Called on key up
 */
-void KeyboardInputHandler::onKeyUp(unsigned int /*key*/)
+void KeyboardInputHandler::onKeyUp(gloperate::Key /*key*/)
 {
 }
 

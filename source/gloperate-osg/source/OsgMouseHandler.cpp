@@ -17,14 +17,16 @@ namespace gloperate_osg
 *  @brief
 *    Convert gloperate mouse button into OSG mouse button
 */
-static int toOsgMouseButton(int button)
+static int toOsgMouseButton(gloperate::MouseButton button)
 {
-    if (button == 1)
+    if (button == MouseButtonLeft)
         return 1;
-    else if (button == 2)
+    else if (button == MouseButtonRight)
         return 3;
-    else if (button == 3)
+    else if (button == MouseButtonMiddle)
         return 2;
+    else if (button >= MouseButton4)
+        return (int)button;
     else
         return 0;
 }
@@ -44,17 +46,17 @@ void OsgMouseHandler::onMouseMove(int x, int y)
     m_embedded->getEventQueue()->mouseMotion((float)x, (float)y);
 }
 
-void OsgMouseHandler::onMousePress(int x, int y, int button)
+void OsgMouseHandler::onMousePress(int x, int y, gloperate::MouseButton button)
 {
     m_embedded->getEventQueue()->mouseButtonPress((float)x, (float)y, toOsgMouseButton(button));
 }
 
-void OsgMouseHandler::onMouseRelease(int x, int y, int button)
+void OsgMouseHandler::onMouseRelease(int x, int y, gloperate::MouseButton button)
 {
     m_embedded->getEventQueue()->mouseButtonRelease((float)x, (float)y, toOsgMouseButton(button));
 }
 
-void OsgMouseHandler::onMouseDoubleClick(int x, int y, int button)
+void OsgMouseHandler::onMouseDoubleClick(int x, int y, gloperate::MouseButton button)
 {
     m_embedded->getEventQueue()->mouseDoubleButtonPress((float)x, (float)y, toOsgMouseButton(button));
 }

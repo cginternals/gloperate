@@ -44,8 +44,8 @@ public:
     */
     virtual ~OsgKeyboardHandler();
 
-    virtual void onKeyDown(unsigned int key) override;
-    virtual void onKeyUp(unsigned int key) override;
+    virtual void onKeyDown(gloperate::Key key) override;
+    virtual void onKeyUp(gloperate::Key key) override;
 
 
 protected:

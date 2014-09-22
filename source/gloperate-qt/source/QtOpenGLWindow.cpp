@@ -25,16 +25,20 @@ namespace gloperate_qt
 *  @brief
 *    Convert Qt mouse button into gloperate mouse button
 */
-static int fromQtMouseButton(Qt::MouseButton button)
+static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button)
 {
     if (button & Qt::LeftButton)
-        return 1;
+        return MouseButtonLeft;
     else if (button & Qt::RightButton)
-        return 2;
+        return MouseButtonRight;
     else if (button & Qt::MiddleButton)
-        return 3;
+        return MouseButtonMiddle;
+    else if (button & Qt::XButton1)
+        return MouseButton4;
+    else if (button & Qt::XButton2)
+        return MouseButton5;
     else
-        return 0;
+        return NoMouseButton;
 }
 
 
@@ -166,7 +170,7 @@ void QtOpenGLWindow::mousePressEvent(QMouseEvent * event)
 {
     int x = event->x();
     int y = event->y();
-    int button = fromQtMouseButton(event->button());
+    MouseButton button = fromQtMouseButton(event->button());
 
     // Check for input capability
     if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
@@ -179,7 +183,7 @@ void QtOpenGLWindow::mouseReleaseEvent(QMouseEvent * event)
 {
     int x = event->x();
     int y = event->y();
-    int button = fromQtMouseButton(event->button());
+    MouseButton button = fromQtMouseButton(event->button());
 
     // Check for input capability
     if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
@@ -192,7 +196,7 @@ void QtOpenGLWindow::mouseDoubleClickEvent(QMouseEvent * event)
 {
     int x = event->x();
     int y = event->y();
-    int button = fromQtMouseButton(event->button());
+    MouseButton button = fromQtMouseButton(event->button());
 
     // Check for input capability
     if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {

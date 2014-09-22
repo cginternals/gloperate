@@ -10,6 +10,7 @@ namespace gloperate
 *    Mouse buttons
 */
 enum MouseButton {
+    NoMouseButton = 0,
     MouseButton1 = 1,
     MouseButtonLeft = 1,
     MouseButton2 = 2,
@@ -21,6 +22,18 @@ enum MouseButton {
     MouseButton6,
     MouseButton7,
     MouseButton8
+};
+
+
+/**
+*  @brief
+*    Keyboard modifier keys
+*/
+enum KeyModifier {
+    ModShift = 0x0001,
+    ModControl = 0x0002,
+    ModAlt = 0x0004,
+    ModSuper = 0x0008
 };
 
 

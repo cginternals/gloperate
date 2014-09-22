@@ -103,7 +103,7 @@ void InputCapability::onMouseMove(int x, int y)
     }
 }
 
-void InputCapability::onMousePress(int x, int y, int button)
+void InputCapability::onMousePress(int x, int y, gloperate::MouseButton button)
 {
     // Call mouse handlers
     for (MouseInputHandler * handler : m_mouseHandlers) {
@@ -111,7 +111,7 @@ void InputCapability::onMousePress(int x, int y, int button)
     }
 }
 
-void InputCapability::onMouseRelease(int x, int y, int button)
+void InputCapability::onMouseRelease(int x, int y, gloperate::MouseButton button)
 {
     // Call mouse handlers
     for (MouseInputHandler * handler : m_mouseHandlers) {
@@ -119,7 +119,7 @@ void InputCapability::onMouseRelease(int x, int y, int button)
     }
 }
 
-void InputCapability::onMouseDoubleClick(int x, int y, int button)
+void InputCapability::onMouseDoubleClick(int x, int y, gloperate::MouseButton button)
 {
     // Call mouse handlers
     for (MouseInputHandler * handler : m_mouseHandlers) {
@@ -127,7 +127,7 @@ void InputCapability::onMouseDoubleClick(int x, int y, int button)
     }
 }
 
-void InputCapability::onKeyDown(unsigned int key)
+void InputCapability::onKeyDown(gloperate::Key key)
 {
     // Call keyboard handlers
     for (KeyboardInputHandler * handler : m_keyboardHandlers) {
@@ -135,7 +135,7 @@ void InputCapability::onKeyDown(unsigned int key)
     }
 }
 
-void InputCapability::onKeyUp(unsigned int key)
+void InputCapability::onKeyUp(gloperate::Key key)
 {
     // Call keyboard handlers
     for (KeyboardInputHandler * handler : m_keyboardHandlers) {

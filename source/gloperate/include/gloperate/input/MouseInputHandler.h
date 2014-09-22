@@ -64,7 +64,7 @@ public:
     *  @param[in] button
     *    Mouse button
     */
-    virtual void onMousePress(int x, int y, int button);
+    virtual void onMousePress(int x, int y, gloperate::MouseButton button);
 
     /**
     *  @brief
@@ -77,7 +77,7 @@ public:
     *  @param[in] button
     *    Mouse button
     */
-    virtual void onMouseRelease(int x, int y, int button);
+    virtual void onMouseRelease(int x, int y, gloperate::MouseButton button);
 
     /**
     *  @brief
@@ -90,7 +90,7 @@ public:
     *  @param[in] button
     *    Mouse button
     */
-    virtual void onMouseDoubleClick(int x, int y, int button);
+    virtual void onMouseDoubleClick(int x, int y, gloperate::MouseButton button);
 
 
 };
