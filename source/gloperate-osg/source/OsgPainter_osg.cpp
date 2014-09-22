@@ -7,6 +7,7 @@
 #include <gloperate-osg/OsgPainter.h>
 #include <osg/Node>
 #include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
 #include <osgGA/TrackballManipulator>
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/InputCapability.h>
@@ -56,8 +57,12 @@ void OsgPainter::osg_onInitialize()
     m_viewer->getCamera()->setProjectionMatrixAsPerspective(45.0, 1.0, 0.5, 1000);
     m_viewer->getCamera()->setViewMatrix(osg::Matrix::lookAt(osg::Vec3(0, 0, 50), osg::Vec3(0, 0, 0), osg::Vec3(0, 1, 0))); 
 
-// [TODO] How to define camera manipulator?
+// [DEBUG]
 m_viewer->setCameraManipulator(new osgGA::TrackballManipulator());
+
+// [DEBUG]
+osgViewer::StatsHandler *statsHandler = new osgViewer::StatsHandler;
+m_viewer->addEventHandler(statsHandler);
 
     // Initialize viewer
     if (m_scene) {
