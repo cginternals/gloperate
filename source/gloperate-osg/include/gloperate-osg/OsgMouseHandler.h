@@ -9,6 +9,7 @@
 
 #include <gloperate/input/MouseInputHandler.h>
 #include <gloperate-osg/gloperate-osg_api.h>
+#include <osg/ref_ptr>
 
 
 namespace osgViewer {
@@ -51,7 +52,7 @@ public:
 
 
 protected:
-    osgViewer::GraphicsWindowEmbedded * m_embedded; /**< Interface that acts like a window to OSG */
+    osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> m_embedded; /**< Interface that acts like a window to OSG */
 
 
 };
