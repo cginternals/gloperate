@@ -5,6 +5,7 @@
 
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+#include <gloperate/capabilities/AbstractInputCapability.h>
 
 #include <gloperate/tools/ScreenshotTool.h>
 
@@ -13,6 +14,36 @@
 using namespace gloperate;
 namespace gloperate_glfw
 {
+
+
+/**
+*  @brief
+*    Convert GLFW mouse button into gloperate mouse button
+*/
+static gloperate::MouseButton fromGLFWMouseButton(int button)
+{
+    switch (button) {
+        case GLFW_MOUSE_BUTTON_1: return MouseButton1;
+        case GLFW_MOUSE_BUTTON_2: return MouseButton2;
+        case GLFW_MOUSE_BUTTON_3: return MouseButton3;
+        case GLFW_MOUSE_BUTTON_4: return MouseButton4;
+        case GLFW_MOUSE_BUTTON_5: return MouseButton5;
+        case GLFW_MOUSE_BUTTON_6: return MouseButton6;
+        case GLFW_MOUSE_BUTTON_7: return MouseButton7;
+        case GLFW_MOUSE_BUTTON_8: return MouseButton8;
+        default:                  return NoMouseButton;
+    }
+}
+
+/**
+*  @brief
+*    Convert GLFW key code into gloperate key code
+*/
+static gloperate::Key fromGLFWKeyCode(int key)
+{
+    // We are using the same key code table as GLFW
+    return static_cast<gloperate::Key>(key);
+}
 
 
 WindowEventHandler::WindowEventHandler()
@@ -69,6 +100,63 @@ void WindowEventHandler::keyPressEvent(KeyEvent & event)
 
             screenshot.save("screenshot.png");
         }
+    }
+
+    // Check for input capability
+    if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        event.window()->painter()->getCapability<gloperate::AbstractInputCapability>()->onKeyDown(
+            fromGLFWKeyCode(event.key())
+        );
+    }
+}
+
+void WindowEventHandler::keyReleaseEvent(KeyEvent & event)
+{
+    // Check for input capability
+    if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        event.window()->painter()->getCapability<gloperate::AbstractInputCapability>()->onKeyUp(
+            fromGLFWKeyCode(event.key())
+        );
+    }
+}
+
+void WindowEventHandler::mouseMoveEvent(MouseEvent & event)
+{
+    // Check for input capability
+    if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        event.window()->painter()->getCapability<gloperate::AbstractInputCapability>()->onMouseMove(
+            event.x(),
+            event.y()
+        );
+    }
+}
+
+void WindowEventHandler::mousePressEvent(MouseEvent & event)
+{
+    // Check for input capability
+    if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        event.window()->painter()->getCapability<gloperate::AbstractInputCapability>()->onMousePress(
+            event.x(),
+            event.y(),
+            fromGLFWMouseButton(event.button())
+        );
+    }
+}
+
+void WindowEventHandler::mouseReleaseEvent(MouseEvent & event)
+{
+    // Check for input capability
+    if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        event.window()->painter()->getCapability<gloperate::AbstractInputCapability>()->onMouseRelease(
+            event.x(),
+            event.y(),
+            fromGLFWMouseButton(event.button())
+        );
     }
 }
 
