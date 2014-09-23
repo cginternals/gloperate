@@ -51,6 +51,15 @@ OsgPainter::~OsgPainter()
 
 /**
 *  @brief
+*    Get OSG viewer
+*/
+osgViewer::Viewer * OsgPainter::viewer() const
+{
+    return m_viewer;
+}
+
+/**
+*  @brief
 *    Get OSG scene
 */
 osg::Node * OsgPainter::scene() const

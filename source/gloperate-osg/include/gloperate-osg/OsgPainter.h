@@ -62,6 +62,15 @@ public:
 
     /**
     *  @brief
+    *    Get OSG viewer
+    *
+    *  @return
+    *    OSG viewer
+    */
+    osgViewer::Viewer * viewer() const;
+
+    /**
+    *  @brief
     *    Get OSG scene
     *
     *  @return
