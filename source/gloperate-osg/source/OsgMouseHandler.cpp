@@ -26,7 +26,7 @@ static int toOsgMouseButton(gloperate::MouseButton button)
     else if (button == MouseButtonMiddle)
         return 2;
     else if (button >= MouseButton4)
-        return (int)button;
+        return static_cast<int>(button);
     else
         return 0;
 }
@@ -43,22 +43,22 @@ OsgMouseHandler::~OsgMouseHandler()
 
 void OsgMouseHandler::onMouseMove(int x, int y)
 {
-    m_embedded->getEventQueue()->mouseMotion((float)x, (float)y);
+    m_embedded->getEventQueue()->mouseMotion(static_cast<float>(x), static_cast<float>(y));
 }
 
 void OsgMouseHandler::onMousePress(int x, int y, gloperate::MouseButton button)
 {
-    m_embedded->getEventQueue()->mouseButtonPress((float)x, (float)y, toOsgMouseButton(button));
+    m_embedded->getEventQueue()->mouseButtonPress(static_cast<float>(x), static_cast<float>(y), toOsgMouseButton(button));
 }
 
 void OsgMouseHandler::onMouseRelease(int x, int y, gloperate::MouseButton button)
 {
-    m_embedded->getEventQueue()->mouseButtonRelease((float)x, (float)y, toOsgMouseButton(button));
+    m_embedded->getEventQueue()->mouseButtonRelease(static_cast<float>(x), static_cast<float>(y), toOsgMouseButton(button));
 }
 
 void OsgMouseHandler::onMouseDoubleClick(int x, int y, gloperate::MouseButton button)
 {
-    m_embedded->getEventQueue()->mouseDoubleButtonPress((float)x, (float)y, toOsgMouseButton(button));
+    m_embedded->getEventQueue()->mouseDoubleButtonPress(static_cast<float>(x), static_cast<float>(y), toOsgMouseButton(button));
 }
 
 

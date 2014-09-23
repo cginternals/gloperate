@@ -42,7 +42,7 @@ static gloperate::MouseButton fromGLFWMouseButton(int button)
 static gloperate::Key fromGLFWKeyCode(int key)
 {
     // We are using the same key code table as GLFW
-    return (gloperate::Key)key;
+    return static_cast<gloperate::Key>(key);
 }
 
 
