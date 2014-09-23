@@ -14,6 +14,7 @@ find_package(globjects REQUIRED)
 find_package(Qt5Core 5.1)
 find_package(Qt5Gui 5.1)
 find_package(Qt5Widgets 5.1)
+find_package(Qt5OpenGL)
 
 # Build only if Qt5 is available
 if(Qt5Core_DIR AND Qt5Gui_DIR AND Qt5Widgets_DIR)
@@ -77,6 +78,7 @@ set(sources
     ${source_path}/QtOpenGLWindowBase.cpp
     ${source_path}/QtTextureLoader.cpp
     ${source_path}/QtTextureStorer.cpp
+    ${source_path}/Converter.cpp
     ${source_path}/TimePropagator.cpp
 )
 
@@ -85,6 +87,7 @@ set(headers
     ${include_path}/QtOpenGLWindowBase.h
     ${include_path}/QtTextureLoader.h
     ${include_path}/QtTextureStorer.h
+    ${include_path}/Converter.h
     ${include_path}/TimePropagator.h
     ${include_path}/gloperate-qt_api.h
 )
@@ -104,7 +107,7 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 add_library(${target} ${headers} ${sources})
 
 target_link_libraries(${target} ${libs})
-qt5_use_modules(${target} Core Gui Widgets)
+qt5_use_modules(${target} Core Gui Widgets OpenGL)
 
 set_target_properties(${target}
     PROPERTIES
