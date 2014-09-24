@@ -2,13 +2,15 @@
 
 #include <gloperate/Painter.h>
 
+#include <gloperate/gloperate_api.h>
+
 namespace gloperate
 {
 
 class ResourceManager;
 class AbstractPipeline;
 
-class PipelinePainter : public gloperate::Painter
+class GLOPERATE_API PipelinePainter : public gloperate::Painter
 {
 public:
     PipelinePainter(gloperate::ResourceManager & resourceManager, AbstractPipeline & pipeline);

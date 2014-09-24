@@ -73,10 +73,6 @@ protected:
     void initializeStages();
 
     void tsort(std::vector<AbstractStage*> & stages);
-
-    virtual void setupStages() = 0;
-    virtual void setupParameters();
-    virtual void connectStages();
 protected:
     bool m_initialized;
     std::vector<AbstractStage*> m_stages;

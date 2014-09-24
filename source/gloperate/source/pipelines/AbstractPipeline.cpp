@@ -128,20 +128,9 @@ void AbstractPipeline::initialize()
     if (m_initialized)
         return;
 
-    setupStages();
-    setupParameters();
-    connectStages();
     initializeStages();
 
     m_initialized = true;
-}
-
-void AbstractPipeline::setupParameters()
-{
-}
-
-void AbstractPipeline::connectStages()
-{
 }
 
 void AbstractPipeline::initializeStages()
