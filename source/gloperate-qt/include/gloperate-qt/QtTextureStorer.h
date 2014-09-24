@@ -86,6 +86,11 @@ class GLOPERATE_QT_API QtTextureStorer : public gloperate::TextureStorer {
         virtual bool store(const std::string & filename, const globjects::Referenced * object) const override;
 
 
+    protected:
+        std::vector<std::string> m_extensions; /**< List of supported file extensions (e.g., ".bmp") */
+        std::vector<std::string> m_types;      /**< List of supported file types (e.g., "bmp image (*.bmp)") */
+
+
 };
 
 
