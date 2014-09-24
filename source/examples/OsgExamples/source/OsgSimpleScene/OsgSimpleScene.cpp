@@ -1,5 +1,7 @@
 #include <osg-examples/OsgSimpleScene/OsgSimpleScene.h>
 #include <osgDB/ReadFile>
+#include <osgViewer/ViewerEventHandlers>
+#include <osgGA/TrackballManipulator>
 
 
 using namespace gloperate;
@@ -17,7 +19,15 @@ OsgSimpleScene::~OsgSimpleScene()
 
 void OsgSimpleScene::onInitialize()
 {
-	OsgPainter::onInitialize();
+    OsgPainter::onInitialize();
 
-	setScene(osgDB::readNodeFile("data/OsgSimpleScene/cow.osg"));
+    // Load a simple scene
+    setScene(osgDB::readNodeFile("data/OsgSimpleScene/cow.osg"));
+
+    // Create camera manipulator
+    viewer()->setCameraManipulator(new osgGA::TrackballManipulator());
+
+    // Add stats handler
+    osgViewer::StatsHandler * statsHandler = new osgViewer::StatsHandler;
+    viewer()->addEventHandler(statsHandler);
 }

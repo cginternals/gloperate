@@ -8,6 +8,9 @@
 #include <osg/Node>
 #include <osgViewer/Viewer>
 #include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/capabilities/InputCapability.h>
+#include <gloperate-osg/OsgMouseHandler.h>
+#include <gloperate-osg/OsgKeyboardHandler.h>
 
 
 using namespace gloperate;
@@ -57,6 +60,10 @@ void OsgPainter::osg_onInitialize()
         m_viewer->setSceneData(m_scene);
     }
     m_viewer->realize();
+
+    // Initialize input handlers
+    m_inputCapability->addMouseHandler   (new OsgMouseHandler   (m_embedded));
+    m_inputCapability->addKeyboardHandler(new OsgKeyboardHandler(m_embedded));
 }
 
 void OsgPainter::osg_onPaint()

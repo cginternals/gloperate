@@ -25,8 +25,10 @@ namespace osg {
     class Node;
 }
 namespace gloperate {
-    class AbstractViewportCapability;
-    class AbstractTargetFramebufferCapability;
+    class ViewportCapability;
+    class TargetFramebufferCapability;
+    class InputCapability;
+    class VirtualTimeCapability;
 }
 
 
@@ -57,6 +59,15 @@ public:
     *    Destructor
     */
     virtual ~OsgPainter();
+
+    /**
+    *  @brief
+    *    Get OSG viewer
+    *
+    *  @return
+    *    OSG viewer
+    */
+    osgViewer::Viewer * viewer() const;
 
     /**
     *  @brief
@@ -97,8 +108,10 @@ protected:
     osg::Node                         * m_scene;    /**< The displayed scene */
 
     // Capabilities
-    gloperate::AbstractViewportCapability          * m_viewportCapability;
-    gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
+    gloperate::ViewportCapability          * m_viewportCapability;
+    gloperate::TargetFramebufferCapability * m_targetFramebufferCapability;
+    gloperate::InputCapability             * m_inputCapability;
+    gloperate::VirtualTimeCapability       * m_virtualTimeCapability;
 
 
 };

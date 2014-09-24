@@ -11,6 +11,7 @@
 #include <gloperate-qt/qt-includes-end.h>
 #include <glbinding/gl/gl.h>
 #include <globjects/Texture.h>
+#include <gloperate-qt/Converter.h>
  
 
 namespace gloperate_qt
@@ -83,17 +84,17 @@ globjects::Referenced * QtTextureLoader::load(const std::string & filename) cons
     QImage image;
     if (image.load(QString::fromStdString(filename))) {
         // Convert image into RGBA format
-        QImage converted = image.convertToFormat(QImage::Format_RGB888);
+        QImage converted = Converter::convert(image);
 
         // Create texture
         globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
         texture->image2D(
             0,
-            gl::GL_RGB,
+            gl::GL_RGBA8,
             converted.width(),
             converted.height(),
             0,
-            gl::GL_RGB,
+            gl::GL_RGBA,
             gl::GL_UNSIGNED_BYTE,
             converted.constBits()
         );

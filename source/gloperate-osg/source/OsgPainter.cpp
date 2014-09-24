@@ -5,9 +5,12 @@
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include <glbinding/gl/gl.h>
+#include <globjects/logging.h>
 #include <gloperate-osg/OsgPainter.h>
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/TargetFramebufferCapability.h>
+#include <gloperate/capabilities/InputCapability.h>
+#include <gloperate/capabilities/VirtualTimeCapability.h>
 
 
 using namespace gl;
@@ -27,10 +30,14 @@ OsgPainter::OsgPainter(ResourceManager & resourceManager)
 , m_scene(nullptr)
 , m_viewportCapability(new gloperate::ViewportCapability)
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
+, m_inputCapability(new gloperate::InputCapability)
+, m_virtualTimeCapability(new gloperate::VirtualTimeCapability)
 {
     // Register capabilities
     addCapability(m_viewportCapability);
     addCapability(m_targetFramebufferCapability);
+    addCapability(m_inputCapability);
+    addCapability(m_virtualTimeCapability);
 }
 
 /**
@@ -40,6 +47,15 @@ OsgPainter::OsgPainter(ResourceManager & resourceManager)
 OsgPainter::~OsgPainter()
 {
     osg_cleanup();
+}
+
+/**
+*  @brief
+*    Get OSG viewer
+*/
+osgViewer::Viewer * OsgPainter::viewer() const
+{
+    return m_viewer;
 }
 
 /**

@@ -62,10 +62,14 @@ set(sources
 	${source_path}/capabilities/TargetFramebufferCapability.cpp
 	${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
 	${source_path}/capabilities/ViewportCapability.cpp
+	${source_path}/capabilities/AbstractInputCapability.cpp
 	${source_path}/capabilities/AbstractCapability.cpp
+	${source_path}/capabilities/InputCapability.cpp
 	${source_path}/capabilities/VirtualTimeCapability.cpp
 	${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
 	${source_path}/capabilities/AbstractViewportCapability.cpp
+	${source_path}/input/MouseInputHandler.cpp
+	${source_path}/input/KeyboardInputHandler.cpp
 	${source_path}/Painter.cpp
 	${source_path}/pipelines/AbstractInputSlot.cpp
 	${source_path}/pipelines/InputSlot.cpp
@@ -91,14 +95,14 @@ set(sources
 	${source_path}/signals/ScopedConnection.cpp
 	${source_path}/signals/ConnectionMap.cpp
 	${source_path}/tools/ScreenshotTool.cpp
+	${source_path}/util/Plane3.cpp
 	${source_path}/util/StringTemplate.cpp
 	${source_path}/util/ScreenAlignedQuad.cpp
 	${source_path}/util/AxisAlignedBoundingBox.cpp
-	${source_path}/util/StringSourceDecorator.cpp
-	${source_path}/util/AdaptiveGrid.cpp
 	${source_path}/util/Icosahedron.cpp
-	${source_path}/util/Plane3.cpp
 	${source_path}/util/Plane3.h
+	${source_path}/util/AdaptiveGrid.cpp
+	${source_path}/util/StringSourceDecorator.cpp
 )
 
 set(headers
@@ -106,6 +110,8 @@ set(headers
 	${include_path}/base/ChronoTimer.h
 	${include_path}/base/AutoTimer.h
 	${include_path}/Camera.h
+	${include_path}/capabilities/InputCapability.h
+	${include_path}/capabilities/AbstractInputCapability.h
 	${include_path}/capabilities/AbstractViewportCapability.h
 	${include_path}/capabilities/AbstractTargetFramebufferCapability.h
 	${include_path}/capabilities/AbstractCapability.h
@@ -114,6 +120,9 @@ set(headers
 	${include_path}/capabilities/TargetFramebufferCapability.h
 	${include_path}/capabilities/AbstractVirtualTimeCapability.h
 	${include_path}/gloperate_api.h
+	${include_path}/input/input.h
+	${include_path}/input/KeyboardInputHandler.h
+	${include_path}/input/MouseInputHandler.h
 	${include_path}/Painter.h
 	${include_path}/Painter.hpp
 	${include_path}/pipelines/Parameter.hpp
@@ -156,10 +165,10 @@ set(headers
 	${include_path}/util/StringTemplate.h
 	${include_path}/util/StringSourceDecorator.h
 	${include_path}/util/collection.hpp
-	${include_path}/util/ScreenAlignedQuad.h
-	${include_path}/util/AxisAlignedBoundingBox.h
 	${include_path}/util/AdaptiveGrid.h
+	${include_path}/util/ScreenAlignedQuad.h
 	${include_path}/util/Icosahedron.h
+	${include_path}/util/AxisAlignedBoundingBox.h
 )
 
 # Group source files
