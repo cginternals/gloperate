@@ -7,6 +7,8 @@
 #pragma once
 
 
+#include <vector>
+#include <string>
 #include <gloperate/resources/TextureLoader.h>
 #include <gloperate-qt/gloperate-qt_api.h>
 
@@ -82,6 +84,11 @@ class GLOPERATE_QT_API QtTextureLoader : public gloperate::TextureLoader {
         *    Loaded resource (can be null)
         */
         virtual globjects::Referenced * load(const std::string & filename) const;
+
+
+    protected:
+        std::vector<std::string> m_extensions; /**< List of supported file extensions (e.g., ".bmp") */
+        std::vector<std::string> m_types;      /**< List of supported file types (e.g., "bmp image (*.bmp)") */
 
 
 };
