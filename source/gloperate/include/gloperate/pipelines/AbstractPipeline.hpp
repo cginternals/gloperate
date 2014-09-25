@@ -3,8 +3,8 @@
 #include <gloperate/util/collection.hpp>
 
 #include <gloperate/pipelines/AbstractPipeline.h>
-#include <gloperate/pipelines/AbstractParameter.h>
-#include <gloperate/pipelines/Parameter.h>
+#include <gloperate/pipelines/AbstractData.h>
+#include <gloperate/pipelines/Data.h>
 
 namespace gloperate
 {
@@ -17,23 +17,23 @@ void AbstractPipeline::addStages(T stage, Args... pipeline)
 }
 
 template <typename T>
-Parameter<T> * AbstractPipeline::createParameter(const std::string & name, const T & value)
+Data<T> * AbstractPipeline::createParameter(const std::string & name, const T & value)
 {
-    auto parameter = new Parameter<T>(value);
+    auto parameter = new Data<T>(value);
     addParameter(name, parameter);
     return parameter;
 }
 
 template <typename T>
-Parameter<T> * AbstractPipeline::getParameter(const std::string & name)
+Data<T> * AbstractPipeline::getParameter(const std::string & name)
 {
-    return dynamic_cast<Parameter<T>*>(findParameter(name));
+    return dynamic_cast<Data<T>*>(findParameter(name));
 }
 
 template <typename T>
-Parameter<T> * AbstractPipeline::getParameter()
+Data<T> * AbstractPipeline::getParameter()
 {
-    return dynamic_cast<Parameter<T>*>(collection::detect(m_parameters, [](AbstractParameter * parameter) { return dynamic_cast<Parameter<T>*>(parameter) != nullptr; }, nullptr));
+    return dynamic_cast<Data<T>*>(collection::detect(m_parameters, [](AbstractData * parameter) { return dynamic_cast<Data<T>*>(parameter) != nullptr; }, nullptr));
 }
 
 template <typename T>

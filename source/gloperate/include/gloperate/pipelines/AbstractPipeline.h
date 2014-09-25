@@ -14,11 +14,6 @@ namespace gloperate
 class AbstractData;
 class AbstractStage;
 class AbstractInputSlot;
-class AbstractParameter;
-template <typename T>
-class Parameter;
-template <typename T>
-class ConvertibleParameter;
 template <typename T>
 class Data;
 
@@ -35,25 +30,25 @@ public:
 
     virtual void addStage(AbstractStage * stage);
 
-    void addParameter(AbstractParameter * parameter);
-    void addParameter(const std::string & name, AbstractParameter * parameter);
+    void addParameter(AbstractData * parameter);
+    void addParameter(const std::string & name, AbstractData * parameter);
 
     void shareData(const AbstractData* data);
     void shareDataFrom(const AbstractInputSlot& slot);
 
     template <typename T>
-    Parameter<T> * createParameter(const std::string & name, const T & value);
+    Data<T> * createParameter(const std::string & name, const T & value);
 
     std::vector<AbstractInputSlot*> allInputs();
     std::vector<AbstractData*> allOutputs();
 
-    AbstractParameter * findParameter(const std::string & name);
+    AbstractData * findParameter(const std::string & name);
     std::vector<AbstractData*> findOutputs(const std::string & name);
 
     template <typename T>
-    Parameter<T> * getParameter(const std::string & name);
+    Data<T> * getParameter(const std::string & name);
     template <typename T>
-    Parameter<T> * getParameter();
+    Data<T> * getParameter();
 
     template <typename T>
     Data<T> * getOutput(const std::string & name);
@@ -64,9 +59,9 @@ public:
     void addStages(T stage, Args... pipeline);
 
     const std::vector<AbstractStage*> & stages() const;
-    const std::vector<AbstractParameter*> & parameters() const;
+    const std::vector<AbstractData*> & parameters() const;
 
-    std::set<AbstractParameter*> unusedParameters();
+    std::set<AbstractData*> unusedParameters();
 protected: 
     void sortDependencies();
     void addStages();
@@ -76,7 +71,7 @@ protected:
 protected:
     bool m_initialized;
     std::vector<AbstractStage*> m_stages;
-    std::vector<AbstractParameter*> m_parameters;
+    std::vector<AbstractData*> m_parameters;
     std::vector<const AbstractData*> m_sharedData;
     bool m_dependenciesSorted;
 private:

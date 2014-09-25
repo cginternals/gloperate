@@ -78,7 +78,6 @@ set(sources
 	${source_path}/pipelines/Nameable.cpp
 	${source_path}/pipelines/StageOwned.cpp
 	${source_path}/pipelines/AbstractPipeline.cpp
-	${source_path}/pipelines/AbstractParameter.cpp
 	${source_path}/pipelines/AbstractData.cpp
 	${source_path}/plugin/PluginManager.cpp
 	${source_path}/plugin/Plugin.cpp
@@ -125,12 +124,9 @@ set(headers
 	${include_path}/input/MouseInputHandler.h
 	${include_path}/Painter.h
 	${include_path}/Painter.hpp
-	${include_path}/pipelines/Parameter.hpp
 	${include_path}/pipelines/StageOwned.h
-	${include_path}/pipelines/AbstractParameter.h
 	${include_path}/pipelines/AbstractData.h
 	${include_path}/pipelines/AbstractPipeline.hpp
-	${include_path}/pipelines/Parameter.h
 	${include_path}/pipelines/Data.hpp
 	${include_path}/pipelines/AbstractStage.h
 	${include_path}/pipelines/Nameable.h

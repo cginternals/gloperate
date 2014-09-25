@@ -9,7 +9,6 @@
 
 namespace gloperate {
 
-void GLOPERATE_API printWritingOnMessage(const AbstractInputSlot* slot);
 void GLOPERATE_API printIncompatibleMessage(const AbstractInputSlot* slot, const std::string& typeName,
                               const AbstractData & data);
 
@@ -28,13 +27,6 @@ public:
     virtual bool matchType(const AbstractData & data) override;
 
 	const Data<T> & operator=(const Data<T> & data);
-
-    void operator=(const T & data) { /* TODO: remove; */
-        printWritingOnMessage(this);
-        if (!m_data)
-            m_data = new Data<T>;
-        const_cast<Data<T>*>(m_data)->data() = data;
-    }
 
     virtual const AbstractData * connectedData() const override;
 

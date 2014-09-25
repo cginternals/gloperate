@@ -9,7 +9,7 @@
 namespace gloperate {
 
 template <typename T>
-class Data : public virtual AbstractData
+class Data : public AbstractData
 {
 public:
 	Data();

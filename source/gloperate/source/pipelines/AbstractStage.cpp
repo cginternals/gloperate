@@ -14,10 +14,8 @@ AbstractStage::AbstractStage(const std::string & name)
 : Nameable(name)
 , m_enabled(true)
 , m_alwaysProcess(false)
-, m_usable(false)
-, m_usableValid(false)
 {
-    dependenciesChanged.connect([this]() { m_usableValid = false; });
+    dependenciesChanged.connect([this]() { m_usable.invalidate(); });
 }
 
 AbstractStage::~AbstractStage()
@@ -56,16 +54,15 @@ bool AbstractStage::needsToProcess() const
 
 bool AbstractStage::inputsUsable() const
 {
-    if (m_usableValid)
-        return m_usable;
+    if (m_usable.isValid())
+        return m_usable.value();
 
     std::set<AbstractInputSlot*> inputs = allInputs();
-    m_usable = std::all_of(inputs.begin(), inputs.end(), [](const AbstractInputSlot * input) {
+    m_usable.setValue(std::all_of(inputs.begin(), inputs.end(), [](const AbstractInputSlot * input) {
         return input->isUsable();
-    });
-    m_usableValid = true;
+    }));
 
-    if (!m_usable)
+    if (!m_usable.value())
     {
         std::cout << "Some inputs in " << asPrintable() << " are not be connected: ";
         for (AbstractInputSlot * slot : inputs)
@@ -74,7 +71,7 @@ bool AbstractStage::inputsUsable() const
         std::cout << std::endl;
     }
 
-    return m_usable;
+    return m_usable.value();
 }
 
 void AbstractStage::markInputsProcessed()

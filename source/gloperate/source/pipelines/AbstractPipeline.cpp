@@ -11,8 +11,8 @@
 #include <gloperate/pipelines/AbstractPipeline.h>
 #include <gloperate/pipelines/AbstractInputSlot.h>
 #include <gloperate/pipelines/AbstractData.h>
-#include <gloperate/pipelines/AbstractParameter.h>
-#include <gloperate/pipelines/Parameter.h>
+#include <gloperate/pipelines/AbstractData.h>
+#include <gloperate/pipelines/Data.h>
 
 using namespace collection;
 
@@ -31,7 +31,7 @@ AbstractPipeline::~AbstractPipeline()
 	{
 		delete stage;
 	}
-    for (AbstractParameter* parameter: m_parameters)
+    for (AbstractData* parameter: m_parameters)
     {
         delete parameter;
     }
@@ -47,7 +47,7 @@ void AbstractPipeline::addStage(AbstractStage* stage)
     stage->dependenciesChanged.connect([this]() { m_dependenciesSorted = false; });
 }
 
-void AbstractPipeline::addParameter(AbstractParameter * parameter)
+void AbstractPipeline::addParameter(AbstractData * parameter)
 {
     m_parameters.push_back(parameter);
 }
@@ -64,7 +64,7 @@ void AbstractPipeline::shareDataFrom(const AbstractInputSlot& slot)
     shareData(slot.connectedData());
 }
 
-void AbstractPipeline::addParameter(const std::string & name, AbstractParameter * parameter)
+void AbstractPipeline::addParameter(const std::string & name, AbstractData * parameter)
 {
     parameter->setName(name);
     addParameter(parameter);
@@ -75,7 +75,7 @@ const std::vector<AbstractStage*>& AbstractPipeline::stages() const
     return m_stages;
 }
 
-const std::vector<AbstractParameter*> & AbstractPipeline::parameters() const
+const std::vector<AbstractData*> & AbstractPipeline::parameters() const
 {
     return m_parameters;
 }
@@ -90,9 +90,9 @@ std::vector<AbstractData*> AbstractPipeline::allOutputs()
     return flatten(collect(m_stages, [](const AbstractStage * stage) { return stage->allOutputs(); }));
 }
 
-AbstractParameter * AbstractPipeline::findParameter(const std::string & name)
+AbstractData * AbstractPipeline::findParameter(const std::string & name)
 {
-    return detect(m_parameters, [&name](AbstractParameter * parameter) { return parameter->matchesName(name); }, nullptr);
+    return detect(m_parameters, [&name](AbstractData * parameter) { return parameter->matchesName(name); }, nullptr);
 }
 
 std::vector<AbstractData *> AbstractPipeline::findOutputs(const std::string & name)
@@ -153,13 +153,6 @@ void AbstractPipeline::sortDependencies()
 
     tsort(m_stages);
     m_dependenciesSorted = true;
-
-    /*std::cout << "Sorted stages: ";
-    for (AbstractStage* stage: m_stages)
-    {
-        std::cout << stage->asPrintable() << ", ";
-    }
-    std::cout << std::endl;*/
 }
 
 void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)

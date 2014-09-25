@@ -3,11 +3,13 @@
 #include <set>
 #include <string>
 
+#include <globjects/base/CachedValue.h>
+
 #include <gloperate/signals/Signal.h>
+#include <gloperate/pipelines/Nameable.h>
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/pipelines/Nameable.h>
 
 namespace gloperate
 {
@@ -60,8 +62,7 @@ protected:
 protected:
     bool m_enabled;
     bool m_alwaysProcess;
-    mutable bool m_usable;
-    mutable bool m_usableValid;
+    globjects::CachedValue<bool> m_usable;
 
     std::set<AbstractData*> m_outputs;
     std::set<AbstractData*> m_sharedOutputs;
