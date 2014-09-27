@@ -193,15 +193,15 @@ void Window::destroyContext()
 
 void Window::initializeEventHandler()
 {
-    if (m_eventHandler)
-    {
-        glfwMakeContextCurrent(m_window);
-        m_eventHandler->initialize(*this);
-        glfwMakeContextCurrent(nullptr);
+    if (!m_eventHandler)
+        return;
 
-        queueEvent(new ResizeEvent(size()));
-        queueEvent(new ResizeEvent(framebufferSize(), true));
-    }
+    glfwMakeContextCurrent(m_window);
+    m_eventHandler->initialize(*this);
+    glfwMakeContextCurrent(nullptr);
+
+    queueEvent(new ResizeEvent(size()));
+    queueEvent(new ResizeEvent(framebufferSize(), true));
 }
 
 void Window::finalizeEventHandler()

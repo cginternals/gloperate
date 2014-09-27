@@ -1,5 +1,7 @@
 #include <gloperate-glfw/WindowEventHandler.h>
+
 #include <globjects/globjects.h>
+
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
 
@@ -8,12 +10,10 @@
 
 #include <gloperate/tools/ScreenshotTool.h>
 
-#include <gloperate-glfw/Window.h>
 
 using namespace gloperate;
 namespace gloperate_glfw
 {
-
 
 WindowEventHandler::WindowEventHandler()
 {
@@ -25,14 +25,11 @@ WindowEventHandler::~WindowEventHandler()
 
 void WindowEventHandler::initialize(Window & window)
 {
-    // Initialize globjects
     globjects::init();
     IF_DEBUG(globjects::DebugMessage::enable(true);)
 
-    // Initialize painter
-    if (window.painter()) {
+    if (window.painter())
         window.painter()->initialize();
-    }
 }
 
 void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
@@ -74,17 +71,16 @@ void WindowEventHandler::keyPressEvent(KeyEvent & event)
 
 void WindowEventHandler::timerEvent(TimerEvent & event)
 {
-    if (event.window()->painter())
-    {
-        AbstractVirtualTimeCapability * timeCapability = event.window()->painter()->getCapability<AbstractVirtualTimeCapability>();
+    if (!event.window()->painter())
+        return;
 
-        if (timeCapability && timeCapability->enabled())
-        {
-            timeCapability->update(std::chrono::duration_cast<std::chrono::duration<float>>(event.elapsed()).count());
-            event.window()->repaint();
-        }
+    AbstractVirtualTimeCapability * timeCapability = event.window()->painter()->getCapability<AbstractVirtualTimeCapability>();
+
+    if (timeCapability && timeCapability->enabled())
+    {
+        timeCapability->update(std::chrono::duration_cast<std::chrono::duration<float>>(event.elapsed()).count());
+        event.window()->repaint();
     }
 }
-
 
 } // namespace gloperate_glfw

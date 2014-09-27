@@ -22,10 +22,8 @@ int main(int argc, char *argv[])
     ContextFormat format;
     format.setVersion(2, 1);
 
-    // Create resource manager
     ResourceManager resourceManager;
 
-    // Initialize plugin manager
     PluginManager::init(argc > 0 ? argv[0] : "");
 
     // Load example plugins
@@ -33,25 +31,29 @@ int main(int argc, char *argv[])
     pluginManager.scan("examples");
 
     // Choose a painter
-    std::string name = (argc > 1) ? argv[1] : "CubeScape";
-    std::cout << "Trying to create painter '" << name << "'\n";
+    std::string name = (argc > 1) ? argv[1] : "SimpleTexture";
 
-    // Create painter
     gloperate::Painter * painter = nullptr;
     Plugin * plugin = pluginManager.plugin(name);
-    if (plugin) {
+
+    if (plugin) 
+    {
         painter = plugin->createPainter(resourceManager);
-    } else {
-        // Error, could not find plugin
-        std::cout << "Could not find plugin '" << name << "'\n";
+    } 
+    else // Error, could not find plugin
+    {
+        globjects::fatal() << "Plugin '" << name << "' not found. Listing plugins found:";
         pluginManager.printPlugins();
         return 1;
     }
+
+    Window::init();
 
     // Create main window
     Window window(resourceManager);
     window.setPainter(painter);
     window.setEventHandler(new WindowEventHandler());
+
     if (window.create(format, "gloperate viewer"))
     {
         // Show window and run application
