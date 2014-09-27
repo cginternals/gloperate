@@ -23,6 +23,7 @@ include_directories(
 include_directories(
     BEFORE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/source
 )
 
 #
@@ -65,11 +66,14 @@ set(sources
     ${source_path}/capabilities/TargetFramebufferCapability.cpp
     ${source_path}/capabilities/ViewportCapability.cpp
     ${source_path}/capabilities/VirtualTimeCapability.cpp
-   ${source_path}/tools/ScreenshotTool.cpp
+    ${source_path}/tools/ScreenshotTool.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/StringTemplate.cpp
     ${source_path}/util/StringSourceDecorator.cpp
+    ${source_path}/util/DirectoryIterator.h
+    ${source_path}/util/DirectoryIterator.cpp
+    ${source_path}/util/dirent_msvc.h
     ${source_path}/plugin/PluginManager.cpp
     ${source_path}/plugin/PluginLibrary.cpp
     ${source_path}/plugin/Plugin.cpp

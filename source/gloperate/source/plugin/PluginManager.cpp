@@ -1,308 +1,216 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate/plugin/PluginManager.h>
+
+#ifdef WIN32
+#include <Windows.h>
+#else
+#include <dlfcn.h>
+#include <libgen.h>
+#include <dirent.h>
+#endif
+
 #include <globjects/logging.h>
+
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
 
+#include "util/DirectoryIterator.h"
 
-#ifdef WIN32
+
+namespace
+{
     // Define system specific filename properties
-    static const std::string g_sep = "\\";
-    static const std::string g_pre = "";
-    static const std::string g_ext = ".dll";
-
-    // Implementation for Windows
-    #include <Windows.h>
+#ifdef WIN32
+    const int RTLD_LAZY(0); // ignore for win32 - see dlopen
+    const std::string g_sep = "\\";
+    const std::string g_pre = "";
+    const std::string g_ext = "dll";
+#elif MAC_OS
+    const std::string g_sep = "/";
+    const std::string g_pre = "";
+    const std::string g_ext = "dylib";
+#else
+    const std::string g_sep = "/";
+    const std::string g_pre = "lib";
+    const std::string g_ext = "so";
+#endif
 
     class PluginLibraryImpl : public gloperate::PluginLibrary
     {
     public:
         PluginLibraryImpl(const std::string & filename)
             : gloperate::PluginLibrary(filename)
-            , m_dll(0)
+            , m_handle(0)
         {
-            // Open library
-            m_dll = LoadLibraryA(filename.c_str());
-            if (m_dll) {
-                // Get function pointers
-                *reinterpret_cast<void**>(&m_initPluginPtr)      = GetProcAddress(m_dll, "initPluginLibrary");
-                *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = GetProcAddress(m_dll, "getNumOfPlugins");
-                *reinterpret_cast<void**>(&m_getPluginPtr)       = GetProcAddress(m_dll, "getPlugin");
-                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = GetProcAddress(m_dll, "deinitPluginLibrary");
-            }
-        }
-
-        virtual ~PluginLibraryImpl() {
-            // Close library
-            if (m_dll) {
-                FreeLibrary(m_dll);
-            }
-        }
-
-    protected:
-        HMODULE m_dll;
-    };
-#else
-    #ifdef MAC_OS
-        // Define system specific filename properties
-        static const std::string g_sep = "/";
-        static const std::string g_pre = "";
-        static const std::string g_ext = ".dylib";
-    #else
-        // Define system specific filename properties
-        static const std::string g_sep = "/";
-        static const std::string g_pre = "lib";
-        static const std::string g_ext = ".so";
-    #endif
-
-    // Implementation for POSIX systems
-    #include <dlfcn.h>
-    #include <libgen.h>
-    #include <dirent.h>
-
-    class PluginLibraryImpl : public gloperate::PluginLibrary
-    {
-    public:
-        PluginLibraryImpl(const std::string & filename)
-        : gloperate::PluginLibrary(filename)
-        , m_handle(0)
-        {
-            // Open library
             m_handle = dlopen(filename.c_str(), RTLD_LAZY);
-            if (m_handle) {
-                // Get function pointers
+            if (m_handle)
+            {
                 *reinterpret_cast<void**>(&m_initPluginPtr)      = dlsym(m_handle, "initPluginLibrary");
                 *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = dlsym(m_handle, "getNumOfPlugins");
                 *reinterpret_cast<void**>(&m_getPluginPtr)       = dlsym(m_handle, "getPlugin");
                 *reinterpret_cast<void**>(&m_deinitPluginPtr)    = dlsym(m_handle, "deinitPluginLibrary");
-            } else {
-                globjects::debug() << dlerror();
+            }
+            else
+            {
+                globjects::warning() << dlerror();
             }
         }
 
-        virtual ~PluginLibraryImpl() {
-            // Close library
-            if (m_handle) {
+        virtual ~PluginLibraryImpl()
+        {
+            if (m_handle)
                 dlclose(m_handle);
-            }
         }
 
     protected:
+
+#ifdef WIN32
+        // provide posix handles for windows funcs :P
+        inline HMODULE dlopen(LPCSTR lpFileName, int ignore) { return LoadLibraryA(lpFileName); }
+        inline FARPROC dlsym(HMODULE hModule, LPCSTR lpProcName) { return GetProcAddress(hModule, lpProcName); }
+        inline    BOOL dlclose(HMODULE hModule) { return FreeLibrary(hModule); }
+        inline   DWORD dlerror() { return GetLastError(); }
+
+        HMODULE m_handle;
+#else
         void * m_handle;
-    };
 #endif
+    };
+}
 
 
 namespace gloperate
 {
 
+std::string PluginManager::s_defaultScanPath = "";
 
-std::string PluginManager::s_defaultPluginPath = "";
-
-
-/**
-*  @brief
-*    Initialize plugin manager
-*/
 void PluginManager::init(const std::string & executablePath)
 {
-    #ifdef WIN32
-        // Set default plugin path to the path of the executable
-        HMODULE appModule = GetModuleHandle(0);
-        char szFilename[MAX_PATH];
-        char szDrive[8];
-        char szPath[MAX_PATH];
-        if (GetModuleFileNameA(appModule, szFilename, MAX_PATH) > 0) {
-            _splitpath(szFilename, szDrive, szPath, NULL, NULL);
-            PluginManager::s_defaultPluginPath = std::string(szDrive) + std::string(szPath);
-        }
-    #else
-        // Save default plugin path
-        PluginManager::s_defaultPluginPath = dirname(const_cast<char *>(executablePath.c_str()));
-    #endif
+#ifdef WIN32
+    // Set default plugin path to the path of the executable
+    HMODULE appModule = GetModuleHandle(0);
 
-    // Print default search path
-    globjects::info() << "Default plugin path: " << PluginManager::s_defaultPluginPath;
+    char szFilename[MAX_PATH];
+    char szDrive[8];
+    char szPath[MAX_PATH];
+
+    if (GetModuleFileNameA(appModule, szFilename, MAX_PATH) > 0) 
+    {
+        _splitpath(szFilename, szDrive, szPath, NULL, NULL);
+        s_defaultScanPath = std::string(szDrive) + std::string(szPath);
+    }
+#else
+    // Save default plugin path
+    s_defaultScanPath = dirname(const_cast<char *>(executablePath.c_str()));
+#endif
+    s_defaultScanPath = DirectoryIterator::truncate(s_defaultScanPath);
 }
 
-/**
-*  @brief
-*    Constructor
-*/
 PluginManager::PluginManager()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 PluginManager::~PluginManager()
 {
     // Note: The plugins do not need to (and must not) be destroyed, because this is done
     // inside the plugin library, when deinitialize() is called.
 
-    // Close libraries
-    for (gloperate::PluginLibrary * library : m_libraries) {
+    for (gloperate::PluginLibrary * library : m_libraries) 
+    {
         library->deinitialize();
         delete library;
     }
 }
 
-/**
-*  @brief
-*    Get scan directory
-*
-*  @return
-*    Directory from which plugins are loaded
-*/
 std::string PluginManager::scanDirectory() const
 {
-    return m_scanDirectory;
+    return m_scanPath;
 }
 
-/**
-*  @brief
-*    Set scan directory
-*
-*  @param[in] path
-*    Directory from which plugins are loaded
-*/
 void PluginManager::setScanDirectory(const std::string & path)
 {
-    m_scanDirectory = path;
+    m_scanPath = DirectoryIterator::truncate(path);
 }
 
-/**
-*  @brief
-*    Scan for plugins and load all found plugins
-*
-*  @param[in] identifier
-*    If set, only libraries that contain the specified substring are loaded
-*/
 void PluginManager::scan(const std::string & identifier)
 {
-    // Get search directory
-    std::string path = m_scanDirectory.empty() ? PluginManager::s_defaultPluginPath : m_scanDirectory;
+    std::string path = m_scanPath.empty() ? PluginManager::s_defaultScanPath : m_scanPath;
 
-#ifndef WIN32
-    // Search for plugins
-    DIR * dir = opendir(path.c_str());
-    if (dir) {
-        // Read dir entries
-        dirent * entry = readdir(dir);
-        while (entry) {
-            // Get filename
-            std::string name = entry->d_name;
+    const std::vector<std::string> files(DirectoryIterator::files(path));
 
-            // Check if filename meets search criteria
-            bool isLibrary = (g_ext.size() <= name.size() && std::equal(g_ext.rbegin(), g_ext.rend(), name.rbegin()));
-            bool accepted  = (identifier.empty() || name.find(identifier) != std::string::npos);
-            if (isLibrary && accepted) {
-                // Try to load plugin
-                loadLibrary(path + g_sep + name);
-            }
+    for (const std::string & file : files)
+    {
+        // check if path meets search criteria
+        if (DirectoryIterator::extension(file) != g_ext)
+            continue;
 
-            // Read next dir entry
-            entry = readdir(dir);
-        }
-        closedir(dir);
+        if (identifier.empty() || file.find(identifier) != std::string::npos)
+            loadLibrary(path + g_sep + file);
     }
-#else
-    // [TODO] Windows implementation
-#endif
 }
 
-/**
-*  @brief
-*    Load plugin
-*/
 void PluginManager::load(const std::string & name)
 {
-    // Get search directory
-    std::string path = m_scanDirectory.empty() ? PluginManager::s_defaultPluginPath : m_scanDirectory;
+    std::string path = m_scanPath.empty() ? PluginManager::s_defaultScanPath : m_scanPath;
 
-    // Try to load plugin
-    // Compose filename, e.g., on linux: path + "/" + "lib" + name + ".so"
-    loadLibrary(path + g_sep + g_pre + name + g_ext);
+    // Try to load plugin - compose filename, e.g., on linux: path + "/" + "lib" + name + ".so"
+    loadLibrary(path + g_sep + g_pre + name + "." + g_ext);
 }
 
-/**
-*  @brief
-*    Load plugin library
-*/
-void PluginManager::loadLibrary(const std::string & filename)
+void PluginManager::loadLibrary(const std::string & filepath)
 {
-    globjects::info() << "Loading plugin '" << filename << "'";
-
-    PluginLibraryImpl * library = new PluginLibraryImpl(filename);
-    if (library->isValid()) {
-        // Add library
+    PluginLibraryImpl * library = new PluginLibraryImpl(filepath);
+    if (library->isValid())
+    {
         m_libraries.push_back(library);
 
-        // Initialize library
         library->initialize();
 
         // Iterate over plugins
         unsigned int numPlugins = library->getNumOfPlugins();
-        for (unsigned int i=0; i<numPlugins; i++) {
-            // Get plugin
+        for (unsigned int i = 0; i < numPlugins; ++i) 
+        {
             gloperate::Plugin * plugin = library->getPlugin(i);
-            if (plugin) {
-                // Add plugin
+            if (plugin) 
+            {
                 m_plugins.push_back(plugin);
+
                 std::string name = plugin->name();
                 m_pluginsByName[name] = plugin;
             }
         }
-    } else {
-        // Error, close library
+    }
+    else // error, close library
+    {
+        globjects::warning() << "Loading plugin(s) from '" << filepath << "' failed.";
         delete library;
     }
+
+    
 }
 
-/**
-*  @brief
-*    Get available plugins
-*/
 const std::vector<Plugin *> & PluginManager::plugins() const
 {
     return m_plugins;
 }
 
-/**
-*  @brief
-*    Get plugin by name
-*/
 Plugin * PluginManager::plugin(const std::string & name) const
 {
-    // Get plugin
-    if (m_pluginsByName.count(name) > 0) {
-        return m_pluginsByName.at(name);
-    }
+    if (m_pluginsByName.count(name) == 0)
+        return nullptr;
 
-    // Plugin not found
-    return nullptr;
+    return m_pluginsByName.at(name);
 }
 
-/**
-*  @brief
-*    Print list of available plugins to log
-*/
 void PluginManager::printPlugins() const
 {
-    for (Plugin * plugin : m_plugins) {
-        globjects::info() << "Plugin '" << plugin->name() << "' (" << plugin->type() << ")";
-        globjects::info() << "  by " << plugin->vendor() << "";
-        globjects::info() << "  " << plugin->description() << "";
-        globjects::info() << "";
+    for (Plugin * plugin : m_plugins) 
+    {
+        globjects::info() << " PLUGIN name: " << plugin->name() << " (" << plugin->type() << ")";
+        globjects::info() << " description: " << plugin->description();
+        globjects::info() << "     version: " << plugin->version();
+        globjects::info() << "      vendor: "  << plugin->vendor();
+        globjects::info();
     }
 }
-
 
 } // namespace gloperate
