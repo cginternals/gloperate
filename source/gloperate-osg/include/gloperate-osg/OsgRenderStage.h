@@ -75,6 +75,21 @@ public:
     */
     void setScene(osg::Node * scene);
 
+    /**
+    *  @brief
+    *    Set viewport
+    *
+    *  @param[in] x
+    *    Viewport position x
+    *  @param[in] y
+    *    Viewport position y
+    *  @param[in] width
+    *    Viewport width
+    *  @param[in] height
+    *    Viewport height
+    */
+    void setViewport(int x, int y, int width, int height);
+
 
 protected:
     virtual void initialize() override;
@@ -91,9 +106,13 @@ protected:
 
 
 protected:
-    osgViewer::Viewer                 * m_viewer;   /**< OSG viewer */
-    osgViewer::GraphicsWindowEmbedded * m_embedded; /**< Interface that acts like a window to OSG */
-    osg::Node                         * m_scene;    /**< The displayed scene */
+    osgViewer::Viewer                 * m_viewer;         /**< OSG viewer */
+    osgViewer::GraphicsWindowEmbedded * m_embedded;       /**< Interface that acts like a window to OSG */
+    osg::Node                         * m_scene;          /**< The displayed scene */
+    int                                 m_viewportX;      /**< Viewport position x */
+    int                                 m_viewportY;      /**< Viewport position y */
+    int                                 m_viewportWidth;  /**< Viewport width */
+    int                                 m_viewportHeight; /**< Viewport height */
 
 
 };

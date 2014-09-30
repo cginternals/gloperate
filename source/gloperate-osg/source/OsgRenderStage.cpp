@@ -24,6 +24,10 @@ OsgRenderStage::OsgRenderStage(const std::string & name)
 , m_viewer(nullptr)
 , m_embedded(nullptr)
 , m_scene(nullptr)
+, m_viewportX(0)
+, m_viewportY(0)
+, m_viewportWidth(800)
+, m_viewportHeight(600)
 {
 }
 
@@ -61,6 +65,18 @@ osg::Node * OsgRenderStage::scene() const
 void OsgRenderStage::setScene(osg::Node * scene)
 {
     osg_setScene(scene);
+}
+
+/**
+*  @brief
+*    Set viewport
+*/
+void OsgRenderStage::setViewport(int x, int y, int width, int height)
+{
+    m_viewportX      = x;
+    m_viewportY      = y;
+    m_viewportWidth  = width;
+    m_viewportHeight = height;
 }
 
 void OsgRenderStage::initialize()

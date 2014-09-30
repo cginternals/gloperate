@@ -42,7 +42,7 @@ void OsgRenderStage::osg_initialize()
     m_viewer->ref();
 
     // Setup viewer using the already created window and OpenGL context
-    m_embedded = m_viewer->setUpViewerAsEmbeddedInWindow(0, 0, 800, 600);
+    m_embedded = m_viewer->setUpViewerAsEmbeddedInWindow(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
     m_embedded->ref();
 
     // Initialize camera
@@ -61,10 +61,7 @@ void OsgRenderStage::osg_process()
     // Check if painter has been initialized correctly
     if (m_viewer && m_embedded) {
         // Send resize-event
-        // [TODO] How to pass this to the stage?
-        /*
-        m_embedded->resized(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
-        */
+        m_embedded->resized(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
 
         // Draw OSG scene
         m_viewer->frame();
