@@ -67,6 +67,7 @@ template <typename T>
 const Data<T> & InputSlot<T>::operator=(const Data<T> & data)
 {
 	connect(data);
+
 	return data;
 }
 

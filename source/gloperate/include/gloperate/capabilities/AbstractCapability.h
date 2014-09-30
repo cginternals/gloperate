@@ -9,6 +9,8 @@
 
 #include <gloperate/gloperate_api.h>
 
+#include <gloperate/signals/Signal.h>
+
 
 namespace gloperate {
 
@@ -68,9 +70,9 @@ public:
     void setChanged(bool changed);
 
 
+    Signal<> changed;
 protected:
     bool m_changed; /**< Has the capability information been changed? */
-
 
 };
 

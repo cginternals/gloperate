@@ -1,3 +1,4 @@
+#include <gloperate/pipelines/AbstractStage.h>
 
 #include <iostream>
 #include <algorithm>
@@ -5,21 +6,45 @@
 #include <gloperate/pipelines/AbstractInputSlot.h>
 #include <gloperate/pipelines/AbstractData.h>
 
-#include <gloperate/pipelines/AbstractStage.h>
-
 namespace gloperate
 {
 
 AbstractStage::AbstractStage(const std::string & name)
-: Nameable(name)
-, m_enabled(true)
+: m_enabled(true)
 , m_alwaysProcess(false)
+, m_name(name)
 {
     dependenciesChanged.connect([this]() { m_usable.invalidate(); });
 }
 
 AbstractStage::~AbstractStage()
 {
+}
+
+const std::string & AbstractStage::name() const
+{
+    return m_name;
+}
+
+void AbstractStage::setName(const std::string & name)
+{
+    m_name = name;
+}
+
+bool AbstractStage::hasName() const
+{
+    return !m_name.empty();
+}
+
+std::string AbstractStage::asPrintable() const
+{
+    if (!hasName())
+        return "<unnamed>";
+
+    std::string n = name();
+    std::replace(n.begin(), n.end(), ' ', '_');
+
+    return n;
 }
 
 bool AbstractStage::execute()

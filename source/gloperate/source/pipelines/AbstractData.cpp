@@ -1,15 +1,75 @@
 #include <gloperate/pipelines/AbstractData.h>
 
 #include <algorithm>
+#include <sstream>
+
+#include <gloperate/pipelines/AbstractStage.h>
 
 namespace gloperate {
 
-AbstractData::AbstractData()
+AbstractData::AbstractData(const std::string & name)
+: m_owner(nullptr)
+, m_name(name)
 {
 }
 
 AbstractData::~AbstractData()
 {
+}
+
+const std::string & AbstractData::name() const
+{
+    return m_name;
+}
+
+void AbstractData::setName(const std::string & name)
+{
+    m_name = name;
+}
+
+bool AbstractData::hasName() const
+{
+    return !m_name.empty();
+}
+
+std::string AbstractData::asPrintable() const
+{
+    if (!hasName())
+        return "<unnamed>";
+
+    std::string n = name();
+    std::replace(n.begin(), n.end(), ' ', '_');
+
+    return n;
+}
+
+bool AbstractData::hasOwner() const
+{
+    return m_owner != nullptr;
+}
+
+const AbstractStage * AbstractData::owner() const
+{
+    return m_owner;
+}
+
+void AbstractData::setOwner(AbstractStage * owner)
+{
+    m_owner = owner;
+}
+
+std::string AbstractData::qualifiedName() const
+{
+    std::stringstream ss;
+
+    if (hasOwner())
+    {
+        ss << m_owner->asPrintable() << "::";
+    }
+
+    ss << asPrintable();
+
+    return ss.str();
 }
 
 void AbstractData::invalidate()
@@ -19,27 +79,7 @@ void AbstractData::invalidate()
 
 bool AbstractData::matchesName(const std::string & name) const
 {
-    return this->name() == name || std::find(m_aliasNames.begin(), m_aliasNames.end(), name) != m_aliasNames.end();
-}
-
-const std::vector<std::string> & AbstractData::aliasNames() const
-{
-    return m_aliasNames;
-}
-
-void AbstractData::addAlias(const std::string & aliasName)
-{
-    m_aliasNames.push_back(aliasName);
-}
-
-void AbstractData::setAliasNames(const std::vector<std::string> & aliasNames)
-{
-    m_aliasNames = aliasNames;
-}
-
-bool AbstractData::isParameter() const
-{
-    return false;
+    return this->name() == name;
 }
 
 } // namespace gloperate
