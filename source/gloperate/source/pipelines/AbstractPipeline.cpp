@@ -1,3 +1,5 @@
+#include <gloperate/pipelines/AbstractPipeline.h>
+
 #include <cassert>
 
 #include <string>
@@ -8,7 +10,6 @@
 #include <iostream>
 
 #include <gloperate/pipelines/AbstractStage.h>
-#include <gloperate/pipelines/AbstractPipeline.h>
 #include <gloperate/pipelines/AbstractInputSlot.h>
 #include <gloperate/pipelines/AbstractData.h>
 #include <gloperate/pipelines/AbstractData.h>
@@ -19,8 +20,9 @@ using namespace collection;
 namespace gloperate
 {
 
-AbstractPipeline::AbstractPipeline()
+AbstractPipeline::AbstractPipeline(const std::string & name)
 : m_initialized(false)
+, m_name(name)
 , m_dependenciesSorted(false)
 {
 }
@@ -35,6 +37,32 @@ AbstractPipeline::~AbstractPipeline()
     {
         delete parameter;
     }
+}
+
+const std::string & AbstractPipeline::name() const
+{
+    return m_name;
+}
+
+void AbstractPipeline::setName(const std::string & name)
+{
+    m_name = name;
+}
+
+bool AbstractPipeline::hasName() const
+{
+    return !m_name.empty();
+}
+
+std::string AbstractPipeline::asPrintable() const
+{
+    if (!hasName())
+        return "<unnamed>";
+
+    std::string n = name();
+    std::replace(n.begin(), n.end(), ' ', '_');
+
+    return n;
 }
 
 void AbstractPipeline::addStages()

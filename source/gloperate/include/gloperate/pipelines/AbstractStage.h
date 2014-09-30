@@ -6,7 +6,6 @@
 #include <globjects/base/CachedValue.h>
 
 #include <gloperate/signals/Signal.h>
-#include <gloperate/pipelines/Nameable.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -17,13 +16,18 @@ namespace gloperate
 class AbstractInputSlot;
 class AbstractData;
 
-class GLOPERATE_API AbstractStage : public Nameable
+class GLOPERATE_API AbstractStage
 {
-    friend class AbstractData;
 public:
-    //AbstractStage();
-    AbstractStage(const std::string & name);
+    AbstractStage(const std::string & name = "");
 	virtual ~AbstractStage();
+
+    const std::string & name() const;
+    void setName(const std::string & name);
+
+    bool hasName() const;
+
+    std::string asPrintable() const;
 
     bool execute();
 
@@ -62,6 +66,7 @@ protected:
 protected:
     bool m_enabled;
     bool m_alwaysProcess;
+    std::string m_name;
     globjects::CachedValue<bool> m_usable;
 
     std::set<AbstractData*> m_outputs;

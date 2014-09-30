@@ -6,8 +6,6 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/pipelines/Nameable.h>
-
 namespace gloperate
 {
 
@@ -17,11 +15,18 @@ class AbstractInputSlot;
 template <typename T>
 class Data;
 
-class GLOPERATE_API AbstractPipeline : public Nameable
+class GLOPERATE_API AbstractPipeline
 {
 public:
-    AbstractPipeline();
+    AbstractPipeline(const std::string & name = "");
     virtual ~AbstractPipeline();
+
+    const std::string & name() const;
+    void setName(const std::string & name);
+
+    bool hasName() const;
+
+    std::string asPrintable() const;
 
     bool isInitialized() const;
     void initialize();
@@ -70,6 +75,7 @@ protected:
     void tsort(std::vector<AbstractStage*> & stages);
 protected:
     bool m_initialized;
+    std::string m_name;
     std::vector<AbstractStage*> m_stages;
     std::vector<AbstractData*> m_parameters;
     std::vector<const AbstractData*> m_sharedData;

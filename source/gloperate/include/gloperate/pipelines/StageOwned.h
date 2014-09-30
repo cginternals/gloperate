@@ -1,19 +1,26 @@
 #pragma once
 
-#include <gloperate/gloperate_api.h>
+#include <string>
 
-#include <gloperate/pipelines/Nameable.h>
+#include <gloperate/gloperate_api.h>
 
 namespace gloperate {
 
 class AbstractStage;
 
-class GLOPERATE_API StageOwned : public Nameable
+class GLOPERATE_API StageOwned
 {
     friend class AbstractStage;
 public:
-    StageOwned();
+    StageOwned(const std::string & name = "");
     virtual ~StageOwned();
+
+    const std::string & name() const;
+    void setName(const std::string & name);
+
+    bool hasName() const;
+
+    std::string asPrintable() const;
 
     bool hasOwner() const;
     const AbstractStage * owner() const;
@@ -21,6 +28,7 @@ public:
     virtual std::string qualifiedName() const;
 protected:
     AbstractStage * m_owner;
+    std::string m_name;
 
     void setOwner(AbstractStage * owner);
 };
