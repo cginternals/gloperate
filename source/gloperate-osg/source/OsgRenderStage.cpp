@@ -1,12 +1,16 @@
+#include <gloperate-osg/OsgRenderStage.h>
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/logging.h>
 
-#include <gloperate-osg/OsgRenderStage.h>
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/TargetFramebufferCapability.h>
 #include <gloperate/capabilities/InputCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
+
+#include <gloperate-osg/OsgKeyboardHandler.h>
+#include <gloperate-osg/OsgMouseHandler.h>
 
 
 using namespace gl;
@@ -77,6 +81,32 @@ void OsgRenderStage::setViewport(int x, int y, int width, int height)
     m_viewportY      = y;
     m_viewportWidth  = width;
     m_viewportHeight = height;
+}
+
+/**
+*  @brief
+*    Create keyboard handler to control the wrapped OSG scene
+*/
+OsgKeyboardHandler * OsgRenderStage::createKeyboardHandler() const
+{
+    if (m_embedded) {
+        return new OsgKeyboardHandler(m_embedded);
+    } else {
+        return nullptr;
+    }
+}
+
+/**
+*  @brief
+*    Create mouse handler to control the wrapped OSG scene
+*/
+OsgMouseHandler * OsgRenderStage::createMouseHandler() const
+{
+    if (m_embedded) {
+        return new OsgMouseHandler(m_embedded);
+    } else {
+        return nullptr;
+    }
 }
 
 void OsgRenderStage::initialize()

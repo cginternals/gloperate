@@ -24,6 +24,10 @@ namespace gloperate_osg
 {
 
 
+class OsgKeyboardHandler;
+class OsgMouseHandler;
+
+
 /**
 *  @brief
 *    Rendering stage that renders an OSG scene
@@ -89,6 +93,32 @@ public:
     *    Viewport height
     */
     void setViewport(int x, int y, int width, int height);
+
+    /**
+    *  @brief
+    *    Create keyboard handler to control the wrapped OSG scene
+    *
+    *  @return
+    *    Keyboard handler, can be nullptr, if the scene has not yet been initialized
+    *
+    *  @remarks
+    *    The returned handler must be destroyed by the caller, e.g., by adding
+    *    it to an InputCapability, which will take care of this automatically.
+    */
+    OsgKeyboardHandler * createKeyboardHandler() const;
+
+    /**
+    *  @brief
+    *    Create mouse handler to control the wrapped OSG scene
+    *
+    *  @return
+    *    Mouse handler, can be nullptr, if the scene has not yet been initialized
+    *
+    *  @remarks
+    *    The returned handler must be destroyed by the caller, e.g., by adding
+    *    it to an InputCapability, which will take care of this automatically.
+    */
+    OsgMouseHandler * createMouseHandler() const;
 
 
 protected:
