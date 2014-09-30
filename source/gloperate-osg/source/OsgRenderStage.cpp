@@ -116,18 +116,6 @@ void OsgRenderStage::initialize()
 
 void OsgRenderStage::process()
 {
-    // Get framebuffer to render into
-    // [TODO] How to pass this to the stage?
-    /*
-    globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
-    if (!fbo) {
-        fbo = globjects::Framebuffer::defaultFBO();
-    }
-
-    // Bind framebuffer
-    fbo->bind(GL_FRAMEBUFFER);
-    */
-
     // Draw osg scene
     osg_process();
 }
