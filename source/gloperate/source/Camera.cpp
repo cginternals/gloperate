@@ -187,7 +187,7 @@ const mat4 & Camera::view() const
 {
     if (m_dirty)
         update();
-    
+
     if (!m_view.isValid())
         m_view.setValue(lookAt(m_eye, m_center, m_up));
 
