@@ -1,4 +1,4 @@
-#include <gloperate-osg/OsgSceneStage.h>
+#include <gloperate-osg/OsgRenderStage.h>
 #include <osg/Node>
 #include <osgViewer/Viewer>
 #include <gloperate/capabilities/ViewportCapability.h>
@@ -12,7 +12,7 @@ namespace gloperate_osg
 {
 
 
-void OsgSceneStage::osg_setScene(osg::Node * scene)
+void OsgRenderStage::osg_setScene(osg::Node * scene)
 {
     // Release old scene
     if (m_scene) {
@@ -27,7 +27,7 @@ void OsgSceneStage::osg_setScene(osg::Node * scene)
     }
 }
 
-void OsgSceneStage::osg_initialize()
+void OsgRenderStage::osg_initialize()
 {
     // Release old data
     if (m_viewer) {
@@ -56,7 +56,7 @@ void OsgSceneStage::osg_initialize()
     m_viewer->realize();
 }
 
-void OsgSceneStage::osg_process()
+void OsgRenderStage::osg_process()
 {
     // Check if painter has been initialized correctly
     if (m_viewer && m_embedded) {
@@ -71,7 +71,7 @@ void OsgSceneStage::osg_process()
     }
 }
 
-void OsgSceneStage::osg_cleanup()
+void OsgRenderStage::osg_cleanup()
 {
     if (m_scene) {
         m_scene->unref();

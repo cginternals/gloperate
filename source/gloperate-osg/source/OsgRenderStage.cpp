@@ -2,7 +2,7 @@
 
 #include <globjects/logging.h>
 
-#include <gloperate-osg/OsgSceneStage.h>
+#include <gloperate-osg/OsgRenderStage.h>
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/TargetFramebufferCapability.h>
 #include <gloperate/capabilities/InputCapability.h>
@@ -19,7 +19,7 @@ namespace gloperate_osg
 *  @brief
 *    Constructor
 */
-OsgSceneStage::OsgSceneStage(const std::string & name)
+OsgRenderStage::OsgRenderStage(const std::string & name)
 : AbstractStage(name)
 , m_viewer(nullptr)
 , m_embedded(nullptr)
@@ -31,7 +31,7 @@ OsgSceneStage::OsgSceneStage(const std::string & name)
 *  @brief
 *    Destructor
 */
-OsgSceneStage::~OsgSceneStage()
+OsgRenderStage::~OsgRenderStage()
 {
     osg_cleanup();
 }
@@ -40,7 +40,7 @@ OsgSceneStage::~OsgSceneStage()
 *  @brief
 *    Get OSG viewer
 */
-osgViewer::Viewer * OsgSceneStage::viewer() const
+osgViewer::Viewer * OsgRenderStage::viewer() const
 {
     return m_viewer;
 }
@@ -49,7 +49,7 @@ osgViewer::Viewer * OsgSceneStage::viewer() const
 *  @brief
 *    Get OSG scene
 */
-osg::Node * OsgSceneStage::scene() const
+osg::Node * OsgRenderStage::scene() const
 {
     return m_scene;
 }
@@ -58,17 +58,17 @@ osg::Node * OsgSceneStage::scene() const
 *  @brief
 *    Set OSG scene
 */
-void OsgSceneStage::setScene(osg::Node * scene)
+void OsgRenderStage::setScene(osg::Node * scene)
 {
     osg_setScene(scene);
 }
 
-void OsgSceneStage::initialize()
+void OsgRenderStage::initialize()
 {
     osg_initialize();
 }
 
-void OsgSceneStage::process()
+void OsgRenderStage::process()
 {
     // Get framebuffer to render into
     // [TODO] How to pass this to the stage?

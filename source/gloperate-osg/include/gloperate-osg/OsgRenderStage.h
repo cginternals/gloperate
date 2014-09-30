@@ -28,7 +28,7 @@ namespace gloperate_osg
 *  @brief
 *    Rendering stage that renders an OSG scene
 */
-class GLOPERATE_OSG_API OsgSceneStage : public gloperate::AbstractStage
+class GLOPERATE_OSG_API OsgRenderStage : public gloperate::AbstractStage
 {
 
 
@@ -40,13 +40,13 @@ public:
     *  @param[in] name
     *    Name of the stage
     */
-    OsgSceneStage(const std::string & name);
+    OsgRenderStage(const std::string & name);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~OsgSceneStage();
+    virtual ~OsgRenderStage();
 
     /**
     *  @brief
