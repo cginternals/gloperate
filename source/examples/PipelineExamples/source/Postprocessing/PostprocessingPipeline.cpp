@@ -48,8 +48,6 @@ public:
         addOutput("color", color);
         addOutput("normal", normal);
         addOutput("geometry", geometry);
-
-        alwaysProcess(true);
     }
 
     virtual ~RasterizationStage()
@@ -216,6 +214,16 @@ PostprocessingPipeline::PostprocessingPipeline()
 , m_viewport(new gloperate::ViewportCapability)
 , m_time(new gloperate::VirtualTimeCapability)
 {
+    m_targetFBO.data()->changed.connect([this]() {
+        m_targetFBO.invalidate();
+    });
+    m_viewport.data()->changed.connect([this]() {
+        m_viewport.invalidate();
+    });
+    m_time.data()->changed.connect([this]() {
+        m_time.invalidate();
+    });
+
     m_camera.data()->setZNear(0.1f);
     m_camera.data()->setZFar(16.f);
 
