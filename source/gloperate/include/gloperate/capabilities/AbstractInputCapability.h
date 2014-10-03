@@ -87,6 +87,17 @@ public:
 
     /**
     *  @brief
+    *    Called on mouse wheel event
+    *
+    *  @param[in] dx
+    *    X delta
+    *  @param[in] y
+    *    Y delta
+    */
+    virtual void onMouseWheel(int dx, int dy) = 0;
+
+    /**
+    *  @brief
     *    Called on key down
     *
     *  @param[in] key

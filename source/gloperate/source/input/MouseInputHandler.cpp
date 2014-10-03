@@ -53,5 +53,13 @@ void MouseInputHandler::onMouseDoubleClick(int /*x*/, int /*y*/, gloperate::Mous
 {
 }
 
+/**
+*  @brief
+*    Called on mouse wheel event
+*/
+void MouseInputHandler::onMouseWheel(int /*dx*/, int /*dy*/)
+{
+}
+
 
 } // gloperate
