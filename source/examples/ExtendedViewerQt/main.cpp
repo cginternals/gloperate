@@ -66,6 +66,7 @@ int main(int argc, char* argv[])
     QMainWindow mainWindow;
     mainWindow.setGeometry(100, 100, 800, 600);
     mainWindow.setCentralWidget(QWidget::createWindowContainer(glWindow));
+    mainWindow.centralWidget()->setFocusPolicy(Qt::StrongFocus);
 
     // If the painter has properties, display them in a property browser
     reflectionzeug::PropertyGroup * properties = dynamic_cast<reflectionzeug::PropertyGroup *>(painter);

@@ -8,10 +8,12 @@
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QString>
 #include <QImage>
+#include <QImageReader>
 #include <gloperate-qt/qt-includes-end.h>
 #include <glbinding/gl/gl.h>
 #include <globjects/Texture.h>
- 
+#include <gloperate-qt/Converter.h>
+
 
 namespace gloperate_qt
 {
@@ -24,6 +26,21 @@ namespace gloperate_qt
 QtTextureLoader::QtTextureLoader()
 : TextureLoader()
 {
+    // Get list of supported file formats
+    QList<QByteArray> formats = QImageReader::supportedImageFormats();
+    for (int i = 0; i < formats.size(); ++i) {
+        std::string format = std::string(formats[i].data());
+        m_extensions.push_back(std::string(".") + format);
+        m_types.push_back(format + " image (*." + format + ")");
+    }
+
+    // Add entry that contains all supported file formats
+    std::string allTypes;
+    for (unsigned int i = 0; i < m_extensions.size(); ++i) {
+        if (i > 0) allTypes += " ";
+        allTypes += "*." + m_extensions[i].substr(1);
+    }
+    m_types.push_back(std::string("Qt image formats (") + allTypes + ")");
 }
 
 /**
@@ -38,10 +55,10 @@ QtTextureLoader::~QtTextureLoader()
 *  @brief
 *    Check if this loader can load a specific file type
 */
-bool QtTextureLoader::canLoad(const std::string & /*ext*/) const
+bool QtTextureLoader::canLoad(const std::string & ext) const
 {
-    // [TODO] Get a list of file formats supported by Qt
-    return true;
+    // Check if file type is supported
+    return (std::count(m_extensions.begin(), m_extensions.end(), ext) > 0);
 }
 
 /**
@@ -50,12 +67,8 @@ bool QtTextureLoader::canLoad(const std::string & /*ext*/) const
 */
 std::vector<std::string> QtTextureLoader::loadingTypes() const
 {
-    // [TODO] Get a list of file formats supported by Qt
-    static std::vector<std::string> fileTypes {
-        "Qt image formats (*.*)"
-    };
-
-    return fileTypes;
+    // Return list of supported file types
+    return m_types;
 }
 
 /**
@@ -64,8 +77,15 @@ std::vector<std::string> QtTextureLoader::loadingTypes() const
 */
 std::string QtTextureLoader::allLoadingTypes() const
 {
-    // [TODO] Get a list of file formats supported by Qt
-    return "*.*";
+    // Compose list of all supported file extensions
+    std::string allTypes;
+    for (unsigned int i = 0; i < m_extensions.size(); ++i) {
+        if (i > 0) allTypes += " ";
+        allTypes += "*." + m_extensions[i].substr(1);
+    }
+
+    // Return supported types
+    return allTypes;
 }
 
 /**
@@ -74,26 +94,21 @@ std::string QtTextureLoader::allLoadingTypes() const
 */
 globjects::Referenced * QtTextureLoader::load(const std::string & filename) const
 {
-    // [TODO] Support RGBA format (alpha channel)
-    // [TODO] Support other image formats, e.g., grayscale
-    // [TODO] Support 3D images
-    // [TODO] Image is upside-down
-
     // Load image
     QImage image;
     if (image.load(QString::fromStdString(filename))) {
         // Convert image into RGBA format
-        QImage converted = image.convertToFormat(QImage::Format_RGB888);
+        QImage converted = Converter::convert(image);
 
         // Create texture
         globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
         texture->image2D(
             0,
-            gl::GL_RGB,
+            gl::GL_RGBA8,
             converted.width(),
             converted.height(),
             0,
-            gl::GL_RGB,
+            gl::GL_RGBA,
             gl::GL_UNSIGNED_BYTE,
             converted.constBits()
         );

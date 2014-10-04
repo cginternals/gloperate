@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
     QMainWindow mainWindow;
     mainWindow.setGeometry(100, 100, 800, 600);
     mainWindow.setCentralWidget(QWidget::createWindowContainer(glWindow));
+    mainWindow.centralWidget()->setFocusPolicy(Qt::StrongFocus);
 
     // Show window
     mainWindow.show();

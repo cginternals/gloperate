@@ -6,6 +6,7 @@
 \******************************************************************************/
 #include <gloperate/base/AutoTimer.h>
 
+#include <cmath>
 #include <cassert>
 #include <algorithm>
 #include <chrono>

@@ -7,11 +7,29 @@
 #pragma once
 
 
-#include <osgViewer/Viewer>
-#include <osg/ref_ptr>
-#include <osg/Node>
+// Do not include any osg headers OR gloperate headers that pull in globjects/glbinding,
+// because that would break the separation between glbinding and gl.h.
+// Use only pointers to OSG objects, call ref/unref to maintain memory management,
+// and separate all calls to osg in osg_ functions implemented inside OsgPainter_osg.cpp.
+
+
 #include <gloperate/Painter.h>
 #include <gloperate-osg/gloperate-osg_api.h>
+
+
+namespace osgViewer {
+    class Viewer;
+    class GraphicsWindowEmbedded;
+}
+namespace osg {
+    class Node;
+}
+namespace gloperate {
+    class ViewportCapability;
+    class TargetFramebufferCapability;
+    class InputCapability;
+    class VirtualTimeCapability;
+}
 
 
 namespace gloperate_osg
@@ -44,6 +62,15 @@ public:
 
     /**
     *  @brief
+    *    Get OSG viewer
+    *
+    *  @return
+    *    OSG viewer
+    */
+    osgViewer::Viewer * viewer() const;
+
+    /**
+    *  @brief
     *    Get OSG scene
     *
     *  @return
@@ -67,9 +94,24 @@ protected:
 
 
 protected:
-    osg::ref_ptr<osgViewer::Viewer>                 m_viewer;   /**< OSG viewer */
-    osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> m_embedded; /**< Interface that acts like a window to OSG */
-    osg::ref_ptr<osg::Node>                         m_scene;    /**< The displayed scene */
+    // The following functions are actually using OSG code, so they are not compatible with
+    // globjects/glbinding include. Therefore, they are separately implemented in OsgPainter_osg.cpp
+    void osg_setScene(osg::Node * scene);
+    void osg_onInitialize();
+    void osg_onPaint();
+    void osg_cleanup();
+
+
+protected:
+    osgViewer::Viewer                 * m_viewer;   /**< OSG viewer */
+    osgViewer::GraphicsWindowEmbedded * m_embedded; /**< Interface that acts like a window to OSG */
+    osg::Node                         * m_scene;    /**< The displayed scene */
+
+    // Capabilities
+    gloperate::ViewportCapability          * m_viewportCapability;
+    gloperate::TargetFramebufferCapability * m_targetFramebufferCapability;
+    gloperate::InputCapability             * m_inputCapability;
+    gloperate::VirtualTimeCapability       * m_virtualTimeCapability;
 
 
 };
