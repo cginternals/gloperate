@@ -44,10 +44,10 @@ namespace
             m_handle = dlopen(filename.c_str(), RTLD_LAZY);
             if (m_handle)
             {
-                *reinterpret_cast<void**>(&m_initPluginPtr)      = dlsym(m_handle, "initPluginLibrary");
-                *reinterpret_cast<void**>(&m_getNumOfPluginsPtr) = dlsym(m_handle, "getNumOfPlugins");
-                *reinterpret_cast<void**>(&m_getPluginPtr)       = dlsym(m_handle, "getPlugin");
-                *reinterpret_cast<void**>(&m_deinitPluginPtr)    = dlsym(m_handle, "deinitPluginLibrary");
+                *reinterpret_cast<void**>(&m_initPtr)       = dlsym(m_handle, "initialize");
+                *reinterpret_cast<void**>(&m_numPluginsPtr) = dlsym(m_handle, "numPlugins");
+                *reinterpret_cast<void**>(&m_pluginPtr)     = dlsym(m_handle, "plugin");
+                *reinterpret_cast<void**>(&m_deinitPtr)     = dlsym(m_handle, "deinitialize");
             }
             else
             {
@@ -166,10 +166,10 @@ void PluginManager::loadLibrary(const std::string & filepath)
         library->initialize();
 
         // Iterate over plugins
-        unsigned int numPlugins = library->getNumOfPlugins();
+        unsigned int numPlugins = library->numPlugins();
         for (unsigned int i = 0; i < numPlugins; ++i) 
         {
-            gloperate::Plugin * plugin = library->getPlugin(i);
+            gloperate::Plugin * plugin = library->plugin(i);
             if (plugin) 
             {
                 m_plugins.push_back(plugin);
@@ -183,9 +183,7 @@ void PluginManager::loadLibrary(const std::string & filepath)
     {
         globjects::warning() << "Loading plugin(s) from '" << filepath << "' failed.";
         delete library;
-    }
-
-    
+    }    
 }
 
 const std::vector<Plugin *> & PluginManager::plugins() const

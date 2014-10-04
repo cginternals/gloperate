@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     pluginManager.scan("examples");
 
     // Choose a painter
-    std::string name = (argc > 1) ? argv[1] : "SimpleTexture";
+    std::string name = (argc > 1) ? argv[1] : "CubeScape";
 
     gloperate::Painter * painter = nullptr;
     Plugin * plugin = pluginManager.plugin(name);
