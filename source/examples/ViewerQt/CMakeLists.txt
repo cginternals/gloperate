@@ -1,4 +1,12 @@
 
+set(target viewer-qt)
+
+#
+# Qt5
+#
+
+# good resource: http://www.kdab.com/using-cmake-with-qt-5/
+
 # http://qt-project.org/forums/viewthread/30006/
 if(MSVC)
     cmake_policy(SET CMP0020 NEW)
@@ -11,15 +19,17 @@ endif()
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(Qt5Core 5.1)
-find_package(Qt5Gui 5.1)
-find_package(Qt5Widgets 5.1)
 
-# Build only if Qt5 is available
-if(Qt5Core_DIR AND Qt5Gui_DIR AND Qt5Widgets_DIR)
+find_package(Qt5OpenGL  5.1 REQUIRED)
+find_package(Qt5Core    5.1 REQUIRED)
+find_package(Qt5Gui     5.1 REQUIRED)
+find_package(Qt5Widgets 5.1 REQUIRED)
 
-# Target
-set(target ViewerQt)
+if (NOT Qt5Core_FOUND)
+    message(STATUS "Example ${target} (disabled because Qt5 couldn't be found)")
+    return()
+endif()
+
 message(STATUS "Example ${target}")
 
 # Qt5 options
@@ -59,6 +69,7 @@ set(libs
 
 set(headers
 )
+
 set(sources
     main.cpp
 )
@@ -92,6 +103,3 @@ install(TARGETS ${target}
 #   LIBRARY DESTINATION ${INSTALL_SHARED}
 #   ARCHIVE DESTINATION ${INSTALL_LIB}
 )
-
-# if Qt5
-endif()

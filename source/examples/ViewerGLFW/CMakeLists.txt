@@ -1,3 +1,6 @@
+
+set(target viewer-glfw)
+
 #
 # External libraries
 #
@@ -5,13 +8,14 @@
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(GLFW)
 
-# Build only if GLFW is available
-if(GLFW_FOUND)
+find_package(GLFW QUIET)
 
-# Target
-set(target ViewerGLFW)
+if (NOT GLFW_FOUND)
+    message(STATUS "Example ${target} (disabled because GLFW couldn't be found)")
+    return()
+endif()
+
 message(STATUS "Example ${target}")
 
 #
@@ -79,6 +83,3 @@ install(TARGETS ${target}
 #   LIBRARY DESTINATION ${INSTALL_SHARED}
 #   ARCHIVE DESTINATION ${INSTALL_LIB}
 )
-
-# if GLFW
-endif()
