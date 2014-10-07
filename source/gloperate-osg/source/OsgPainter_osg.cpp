@@ -72,8 +72,17 @@ void OsgPainter::osg_onPaint()
     // Check if painter has been initialized correctly
     if (m_viewer && m_embedded) {
         // Send resize-event
-        m_embedded->resized(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
-        m_embedded->getEventQueue()->windowResize(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+        if (m_viewportX != m_viewportCapability->x() || m_viewportY != m_viewportCapability->y() ||
+            m_viewportWidth != m_viewportCapability->width() || m_viewportHeight != m_viewportCapability->height() )
+        {
+            m_viewportX      = m_viewportCapability->x();
+            m_viewportY      = m_viewportCapability->y();
+            m_viewportWidth  = m_viewportCapability->width();
+            m_viewportHeight = m_viewportCapability->height();
+
+            m_embedded->resized(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+            m_embedded->getEventQueue()->windowResize(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+        }
 
         // Draw OSG scene
         m_viewer->frame();

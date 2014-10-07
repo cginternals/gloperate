@@ -37,6 +37,9 @@ void OsgRenderStage::osg_initialize()
         m_embedded->unref();
     }
 
+    // Initialize
+    m_viewportChanged = true;
+
     // Create OSG viewer
     m_viewer = new osgViewer::Viewer;
     m_viewer->setThreadingModel(osgViewer::Viewer::SingleThreaded);
@@ -62,8 +65,11 @@ void OsgRenderStage::osg_process()
     // Check if painter has been initialized correctly
     if (m_viewer && m_embedded) {
         // Send resize-event
-        m_embedded->resized(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
-        m_embedded->getEventQueue()->windowResize(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+        if (m_viewportChanged) {
+            m_embedded->resized(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+            m_embedded->getEventQueue()->windowResize(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+            m_viewportChanged = false;
+        }
 
         // Draw OSG scene
         m_viewer->frame();

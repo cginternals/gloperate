@@ -136,13 +136,14 @@ protected:
 
 
 protected:
-    osgViewer::Viewer                 * m_viewer;         /**< OSG viewer */
-    osgViewer::GraphicsWindowEmbedded * m_embedded;       /**< Interface that acts like a window to OSG */
-    osg::Node                         * m_scene;          /**< The displayed scene */
-    int                                 m_viewportX;      /**< Viewport position x */
-    int                                 m_viewportY;      /**< Viewport position y */
-    int                                 m_viewportWidth;  /**< Viewport width */
-    int                                 m_viewportHeight; /**< Viewport height */
+    osgViewer::Viewer                 * m_viewer;          /**< OSG viewer */
+    osgViewer::GraphicsWindowEmbedded * m_embedded;        /**< Interface that acts like a window to OSG */
+    osg::Node                         * m_scene;           /**< The displayed scene */
+    int                                 m_viewportX;       /**< Viewport position x */
+    int                                 m_viewportY;       /**< Viewport position y */
+    int                                 m_viewportWidth;   /**< Viewport width */
+    int                                 m_viewportHeight;  /**< Viewport height */
+    bool                                m_viewportChanged; /**< Flag indicating if the viewport has been changed */
 
 
 };
