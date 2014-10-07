@@ -28,7 +28,20 @@ namespace gloperate
 {
 
 void DirectoryIterator::files(
-    std::vector<std::string> & paths
+    std::vector<std::string> & fpaths
+,   const std::vector<std::string> & paths
+,   bool prependpath
+,   bool recursive)
+{
+    for (const std::string & path : paths)
+    {
+        const std::vector<std::string> fs(DirectoryIterator::files(path, prependpath, recursive));
+        fpaths.insert(fpaths.cend(), fs.cbegin(), fs.cend());
+    }
+}
+
+void DirectoryIterator::files(
+    std::vector<std::string> & fpaths
 ,   const std::string & path
 ,   bool prependpath
 ,   bool recursive)
@@ -69,12 +82,23 @@ void DirectoryIterator::files(
         assert(isDir || isFile);
 
         if (isDir && recursive)
-            files(paths, p, true);
+            files(fpaths, p, true);
         else if (isFile)
-            paths.push_back(prependpath ? p : name);
+            fpaths.push_back(prependpath ? p : name);
     }
 
     closedir(dir);
+}
+
+std::vector<std::string> DirectoryIterator::files(
+    const std::vector<std::string> & paths
+,   bool prependpath
+,   bool recursive)
+{
+    std::vector<std::string> fpaths;
+    files(fpaths, paths, prependpath, recursive);
+
+    return fpaths;
 }
 
 std::vector<std::string> DirectoryIterator::files(
@@ -82,10 +106,10 @@ std::vector<std::string> DirectoryIterator::files(
 ,   bool prependpath
 ,   bool recursive)
 {
-    std::vector<std::string> paths;
-    files(paths, path, prependpath, recursive);
+    std::vector<std::string> fpaths;
+    files(fpaths, path, prependpath, recursive);
 
-    return paths;
+    return fpaths;
 }
 
 std::string DirectoryIterator::extension(const std::string & filename)

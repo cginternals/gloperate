@@ -46,7 +46,7 @@ public:
 
     unsigned int numPlugins() const;
 
-    gloperate::Plugin * plugin(unsigned int index) const;
+    gloperate::Plugin * plugin(unsigned int index) const;                                                                                                                                        
 
 protected:
     std::string     m_filename;
