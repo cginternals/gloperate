@@ -127,6 +127,14 @@ void InputCapability::onMouseDoubleClick(int x, int y, gloperate::MouseButton bu
     }
 }
 
+void InputCapability::onMouseWheel(int dx, int dy)
+{
+    // Call mouse handlers
+    for (MouseInputHandler * handler : m_mouseHandlers) {
+        handler->onMouseWheel(dx, dy);
+    }
+}
+
 void InputCapability::onKeyDown(gloperate::Key key)
 {
     // Call keyboard handlers

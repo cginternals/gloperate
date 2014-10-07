@@ -8,6 +8,8 @@
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QResizeEvent>
 #include <QKeyEvent>
+#include <QMouseEvent>
+#include <QWheelEvent>
 #include <gloperate-qt/qt-includes-end.h>
 #include <globjects/globjects.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
@@ -347,6 +349,18 @@ void QtOpenGLWindow::mouseDoubleClickEvent(QMouseEvent * event)
             event->x(),
             event->y(),
             fromQtMouseButton(event->button())
+        );
+    }
+}
+
+void QtOpenGLWindow::wheelEvent(QWheelEvent * event)
+{
+    // Check for input capability
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+        // Propagate event
+        m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseWheel(
+            event->orientation() == Qt::Vertical ? 0 : event->delta(),
+            event->orientation() == Qt::Vertical ? event->delta() : 0
         );
     }
 }

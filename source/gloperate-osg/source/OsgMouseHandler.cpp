@@ -61,5 +61,15 @@ void OsgMouseHandler::onMouseDoubleClick(int x, int y, gloperate::MouseButton bu
     m_embedded->getEventQueue()->mouseDoubleButtonPress(static_cast<float>(x), static_cast<float>(y), toOsgMouseButton(button));
 }
 
+void OsgMouseHandler::onMouseWheel(int dx, int dy)
+{
+    if (dx != 0) {
+        m_embedded->getEventQueue()->mouseScroll(dx > 0 ? osgGA::GUIEventAdapter::SCROLL_LEFT : osgGA::GUIEventAdapter::SCROLL_RIGHT);
+    }
+    if (dy != 0) {
+        m_embedded->getEventQueue()->mouseScroll(dy > 0 ? osgGA::GUIEventAdapter::SCROLL_UP : osgGA::GUIEventAdapter::SCROLL_DOWN);
+    }
+}
+
 
 } // namespace gloperate_osg

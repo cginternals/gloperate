@@ -43,6 +43,11 @@ bool AbstractCapability::hasChanged() const
 void AbstractCapability::setChanged(bool _changed)
 {
     m_changed = _changed;
+
+    if (m_changed)
+    {
+        changed();
+    }
 }
 
 

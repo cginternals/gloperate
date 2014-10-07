@@ -45,6 +45,7 @@ void OsgPainter::osg_onInitialize()
 
     // Create OSG viewer
     m_viewer = new osgViewer::Viewer;
+    m_viewer->setThreadingModel(osgViewer::Viewer::SingleThreaded);
     m_viewer->ref();
 
     // Setup viewer using the already created window and OpenGL context
@@ -72,6 +73,7 @@ void OsgPainter::osg_onPaint()
     if (m_viewer && m_embedded) {
         // Send resize-event
         m_embedded->resized(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+        m_embedded->getEventQueue()->windowResize(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
 
         // Draw OSG scene
         m_viewer->frame();
