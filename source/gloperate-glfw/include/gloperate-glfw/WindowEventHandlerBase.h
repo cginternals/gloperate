@@ -1,15 +1,15 @@
 #pragma once
 
-
 #include <globjects/base/Referenced.h>
+
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
 
 namespace gloperate_glfw
 {
 
-
 class Window;
+
 class WindowEvent;
 class KeyEvent;
 class MouseEvent;
@@ -24,8 +24,8 @@ class MoveEvent;
 class TimerEvent;
 
 
-/**
-    Can be attached to a Window to handle events.
+/** \brief Objects of this class can be attached to a window to handle events.
+
     The window's context is made current before calling any methods and done current afterwards.
 */
 class GLOPERATE_GLFW_API WindowEventHandlerBase : public globjects::Referenced
@@ -77,9 +77,6 @@ protected:
     virtual void iconifyEvent(IconifyEvent & event);
 
     virtual void timerEvent(TimerEvent & event);
-
-
 };
-
 
 } // namespace gloperate_glfw
