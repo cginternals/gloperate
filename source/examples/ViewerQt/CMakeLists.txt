@@ -2,6 +2,14 @@
 set(target viewer-qt)
 
 #
+# External libraries
+#
+
+find_package(GLM REQUIRED)
+find_package(glbinding REQUIRED)
+find_package(globjects REQUIRED)
+
+#
 # Qt5
 #
 
@@ -12,14 +20,6 @@ if(MSVC)
     cmake_policy(SET CMP0020 NEW)
 endif()
 
-#
-# External libraries
-#
-
-find_package(GLM REQUIRED)
-find_package(glbinding REQUIRED)
-find_package(globjects REQUIRED)
-
 find_package(Qt5OpenGL  5.1 REQUIRED)
 find_package(Qt5Core    5.1 REQUIRED)
 find_package(Qt5Gui     5.1 REQUIRED)
@@ -29,6 +29,7 @@ if (NOT Qt5Core_FOUND)
     message(STATUS "Example ${target} (disabled because Qt5 couldn't be found)")
     return()
 endif()
+
 
 message(STATUS "Example ${target}")
 

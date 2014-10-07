@@ -20,101 +20,110 @@
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 
+
 using namespace gl;
+using namespace glm;
 
-namespace {
-    static const char * vertSource = R"(
-#version 150 core
-
-in vec3 a_vertex;
-out float v_h;
-
-uniform sampler2D terrain;
-uniform float time;
-
-uniform int numcubes;
-
-void main()
+namespace 
 {
-    float oneovernumcubes = 1.f / float(numcubes);
-    vec2 uv = vec2(mod(gl_InstanceID, numcubes), int(gl_InstanceID * oneovernumcubes)) * 2.0 * oneovernumcubes;
 
-    vec3 v = 2.0 * a_vertex * oneovernumcubes;
-    v.xz += uv * 2.0 - vec2(2.0);
+static const char * vertSource = R"(
+    #version 150 core
+        
+    in vec3 a_vertex;
+    out float v_h;
 
-    v_h = texture2D(terrain, uv * 0.6 + vec2(sin(time * 0.04), time * 0.02)).r;
-    v.y += v_h;
+    uniform sampler2D terrain;
+    uniform float time;
 
-    gl_Position = vec4(v, 1.0);
-})";
+    uniform int numcubes;
 
-    static const char * geomSource = R"(
-#version 150 core
+    void main()
+    {
+        float oneovernumcubes = 1.f / float(numcubes);
+        vec2 uv = vec2(mod(gl_InstanceID, numcubes), floor(gl_InstanceID * oneovernumcubes)) * 2.0 * oneovernumcubes;
 
-uniform mat4 modelViewProjection;
+        vec3 v = a_vertex * oneovernumcubes - (1.0 - oneovernumcubes);
+        v.xz  += uv;
 
-in  float v_h[3];
-out float g_h;
+        v_h = texture2D(terrain, uv * 0.5 + vec2(sin(time * 0.04), time * 0.02)).r * 2.0 / 3.0;
 
-out vec2 g_uv;
-out vec3 g_normal;
+        if(a_vertex.y > 0.0) 
+            v.y += v_h;
 
-layout (triangles) in;
-layout (triangle_strip, max_vertices = 4) out;
+        gl_Position = vec4(v, 1.0); 
+    })";
 
-void main()
-{
-    vec4 u = gl_in[1].gl_Position - gl_in[0].gl_Position;
-    vec4 v = gl_in[2].gl_Position - gl_in[0].gl_Position;
+static const char * geomSource = R"(
+    #version 150 core
 
-    vec3 n = cross(normalize((modelViewProjection * u).xyz), normalize((modelViewProjection * v).xyz));
+    uniform mat4 modelViewProjection;
+    uniform int numcubes;
 
-    gl_Position = modelViewProjection * gl_in[0].gl_Position;
-    g_uv = vec2(0.0, 0.0);
-    g_normal = n;
-    g_h = v_h[0];
-    EmitVertex();
+    in  float v_h[3];
+    out float g_h;
 
-    gl_Position = modelViewProjection * gl_in[1].gl_Position;
-    g_uv = vec2(1.0, 0.0);
-    EmitVertex();
+    out vec2 g_uv;
+    out vec3 g_normal;
 
-    gl_Position = modelViewProjection * gl_in[2].gl_Position;
-    g_uv = vec2(0.0, 1.0);
-    EmitVertex();
+    layout (triangles) in;
+    layout (triangle_strip, max_vertices = 4) out;
 
-    gl_Position = modelViewProjection * vec4((gl_in[0].gl_Position + u + v).xyz, 1.0);
-    g_uv = vec2(1.0, 1.0);
-    EmitVertex();
-})";
+    void main()
+    {
+        vec4 u = gl_in[1].gl_Position - gl_in[0].gl_Position;
+        vec4 v = gl_in[2].gl_Position - gl_in[0].gl_Position;
 
-    static const char * fragSource = R"(
-#version 150 core
+        float f = mix(1.0, v.y * float(numcubes) * 0.5, step(1.0 / float(numcubes), v.y));
 
-in float g_h;
+        vec3 n = cross(normalize((modelViewProjection * u).xyz), normalize((modelViewProjection * v).xyz));
 
-in vec2 g_uv;
-in vec3 g_normal;
+        gl_Position = modelViewProjection * gl_in[0].gl_Position;
+        g_uv = vec2(0.0, 0.0);
+        g_normal = n;
+        g_h = v_h[0];
+        EmitVertex();
 
-out vec4 fragColor;
+        gl_Position = modelViewProjection * gl_in[1].gl_Position;
+        g_uv = vec2(1.0, 0.0);
+        EmitVertex();
 
-uniform sampler2D patches;
+        gl_Position = modelViewProjection * gl_in[2].gl_Position;
+        g_uv = vec2(0.0, f);
+        EmitVertex();
 
-void main()
-{
-    vec3 n = normalize(g_normal);
-    vec3 l = normalize(vec3(0.0, -0.5, 1.0));
+        gl_Position = modelViewProjection * vec4((gl_in[0].gl_Position + u + v).xyz, 1.0);
+        g_uv = vec2(1.0, f);
+        EmitVertex();
+    })";
 
-    float lambert = dot(n, l);
+static const char * fragSource = R"(
+    #version 150 core
 
-    float t = (1.0 - g_h) * 4.0 - 1.0;
-    vec2 uv = g_uv * vec2(0.25, 1.0);
+    in float g_h;
+        
+    in vec2 g_uv;
+    in vec3 g_normal;
 
-    vec4 c0 = texture2D(patches, uv + max(floor(t), 0.0) * vec2(0.25, 0.0));
-    vec4 c1 = texture2D(patches, uv + min(floor(t) + 1.0, 3.0) * vec2(0.25, 0.0));
+    out vec4 fragColor;
 
-    fragColor = mix(c0, c1, smoothstep(0.25, 0.75, fract(t))) * lambert;
-})";
+    uniform sampler2D patches;
+
+    void main()
+    {
+        vec3 n = normalize(g_normal);
+        vec3 l = normalize(vec3(0.0, -0.5, 1.0));
+
+        float lambert = dot(n, l);
+
+        float t = (2.0 / 3.0 - g_h) * 1.5 * 4.0 - 1.0;
+        vec2 uv = g_uv * vec2(0.25, 1.0);
+
+        vec4 c0 = texture2D(patches, uv + max(floor(t), 0.0) * vec2(0.25, 0.0));
+        vec4 c1 = texture2D(patches, uv + min(floor(t) + 1.0, 3.0) * vec2(0.25, 0.0));
+
+        fragColor = mix(c0, c1, smoothstep(0.25, 0.75, fract(t))) * lambert;
+    })";
 
 }
 
@@ -131,7 +140,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 , u_time(-1)
 , u_numcubes(-1)
 {
-    m_timeCapability->setLoopDuration(20.0f * glm::pi<float>());
+    m_timeCapability->setLoopDuration(20.0f * pi<float>());
 
     addCapability(m_targetFramebufferCapability);
     addCapability(m_viewportCapability);
@@ -172,7 +181,7 @@ void CubeScape::onInitialize()
         if (!terrain.isValid())
             std::cout << "warning: loading texture from " << terrain.filePath() << " failed.";
 
-        m_textures[0]->image2D(0, GL_LUMINANCE8, 512, 512, 0, GL_RED, GL_UNSIGNED_BYTE, terrain.data());
+        m_textures[0]->image2D(0, GL_RED_NV, 512, 512, 0, GL_RED, GL_UNSIGNED_BYTE, terrain.data());
     }
 
     {
@@ -189,16 +198,16 @@ void CubeScape::onInitialize()
     m_vertices = new globjects::Buffer;
     m_indices = new globjects::Buffer;
 
-    const std::array<glm::vec3, 8> vertices = 
+    const std::array<vec3, 8> vertices = 
     {
-        glm::vec3(-1.f, -1.f, -1.f ), // 0
-        glm::vec3(-1.f, -1.f,  1.f ), // 1
-        glm::vec3(-1.f,  1.f, -1.f ), // 2
-        glm::vec3(-1.f,  1.f,  1.f ), // 3
-        glm::vec3( 1.f, -1.f, -1.f ), // 4
-        glm::vec3( 1.f, -1.f,  1.f ), // 5
-        glm::vec3( 1.f,  1.f, -1.f ), // 6
-        glm::vec3( 1.f,  1.f,  1.f )  // 7
+        vec3(-1.f, -1.f, -1.f ), // 0
+        vec3(-1.f, -1.f,  1.f ), // 1
+        vec3(-1.f,  1.f, -1.f ), // 2
+        vec3(-1.f,  1.f,  1.f ), // 3
+        vec3( 1.f, -1.f, -1.f ), // 4
+        vec3( 1.f, -1.f,  1.f ), // 5
+        vec3( 1.f,  1.f, -1.f ), // 6
+        vec3( 1.f,  1.f,  1.f )  // 7
     };
 
     m_vertices->setData(vertices, GL_STATIC_DRAW);
@@ -214,7 +223,7 @@ void CubeScape::onInitialize()
     a_vertex = m_program->getAttributeLocation("a_vertex");
 
     m_vao->binding(0)->setAttribute(a_vertex);
-    m_vao->binding(0)->setBuffer(m_vertices, 0, sizeof(glm::vec3));
+    m_vao->binding(0)->setBuffer(m_vertices, 0, sizeof(vec3));
     m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
 
     m_vao->enable(a_vertex);
@@ -233,9 +242,7 @@ void CubeScape::onInitialize()
     m_program->setUniform(terrain, 0);
     m_program->setUniform(patches, 1);
 
-    // view
-
-    m_view = glm::lookAt(glm::vec3(0.f, 4.f, -4.f), glm::vec3(0.f, -0.6f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+    m_view = lookAt(vec3(0.f, 0.8f, -2.0f), vec3(0.f, -1.2f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
 void CubeScape::onPaint()
@@ -244,7 +251,7 @@ void CubeScape::onPaint()
     {
         glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
 
-        m_projection = glm::perspective(glm::radians(50.f), static_cast<GLfloat>(m_viewportCapability->width()) / static_cast<GLfloat>(m_viewportCapability->height()), 2.f, 8.f);
+        m_projection = perspective(radians(50.f), static_cast<GLfloat>(m_viewportCapability->width()) / static_cast<GLfloat>(m_viewportCapability->height()), 1.f, 4.f);
 
         m_viewportCapability->setChanged(false);
     }
@@ -262,7 +269,7 @@ void CubeScape::onPaint()
 
     glEnable(GL_DEPTH_TEST);
 
-    glm::mat4 transform = m_projection * m_view * glm::rotate(glm::mat4(), m_timeCapability->time() * 0.1f, glm::vec3(0.f, 1.f, 0.f));
+    mat4 transform = m_projection * m_view * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
 
     m_vao->bind();
 
