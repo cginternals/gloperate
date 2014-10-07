@@ -1,0 +1,86 @@
+
+set(target viewer-glfw)
+
+#
+# External libraries
+#
+
+find_package(GLM REQUIRED)
+find_package(glbinding REQUIRED)
+find_package(globjects REQUIRED)
+
+find_package(GLFW QUIET)
+
+if (NOT GLFW_FOUND)
+    message(STATUS "Example ${target} (disabled because GLFW couldn't be found)")
+    return()
+endif()
+
+message(STATUS "Example ${target}")
+
+#
+# Includes
+#
+
+include_directories(
+    ${GLM_INCLUDE_DIR}
+    ${GLBINDING_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
+)
+
+include_directories(
+    BEFORE
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-glfw/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+#
+# Libraries
+#
+
+set(libs
+    ${GLOBJECTS_LIBRARIES}
+    gloperate
+    gloperate-glfw
+)
+
+#
+# Sources
+#
+
+set(headers
+)
+set(sources
+    main.cpp
+)
+
+#
+# Build executable
+#
+
+add_executable(${target} ${headers} ${sources})
+
+target_link_libraries(${target} ${libs})
+
+set_target_properties(${target}
+    PROPERTIES
+    LINKER_LANGUAGE              CXX
+    FOLDER                      "${IDE_FOLDER}"
+    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
+    COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
+    COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
+    LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
+    LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
+    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
+
+#
+# Deployment
+#
+
+install(TARGETS ${target}
+    RUNTIME DESTINATION ${INSTALL_EXAMPLES}
+#   LIBRARY DESTINATION ${INSTALL_SHARED}
+#   ARCHIVE DESTINATION ${INSTALL_LIB}
+)

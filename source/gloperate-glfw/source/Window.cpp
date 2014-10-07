@@ -60,9 +60,7 @@ Window::~Window()
     }
 
     if (s_instances.empty())
-    {
-        MainLoop::quit(0);
-    }
+        Application::quit(0);
 }
 
 WindowEventHandlerBase * Window::eventHandler()
@@ -368,7 +366,7 @@ void Window::destroy()
     destroyContext();
 
     if (m_quitOnDestroy)
-        MainLoop::quit(0);
+        Application::quit(0);
 }
 
 GLFWwindow * Window::internalWindow() const

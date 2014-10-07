@@ -6,7 +6,7 @@
 #include <queue>
 #include <glm/glm.hpp>
 #include <globjects/base/ref_ptr.h>
-#include <gloperate-glfw/MainLoop.h>
+#include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
 #include <globjects/base/ref_ptr.h>

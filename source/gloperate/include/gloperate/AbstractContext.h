@@ -31,7 +31,7 @@ public:
 
 
     /** strings for version, vendor, and renderer information.
-    note: requires active context
+        note: requires active context
     */
     static std::string version();
     static std::string vendor();
