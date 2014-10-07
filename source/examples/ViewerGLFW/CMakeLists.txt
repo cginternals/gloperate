@@ -20,6 +20,7 @@ message(STATUS "Example ${target}")
 
 include_directories(
     ${GLM_INCLUDE_DIR}
+    ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
 )
 
