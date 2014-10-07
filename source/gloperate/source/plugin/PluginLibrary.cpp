@@ -9,9 +9,9 @@ namespace gloperate
 PluginLibrary::PluginLibrary(const std::string & filename)
 : m_filename(filename)
 , m_initPtr(nullptr)
+, m_deinitPtr(nullptr)
 , m_numPluginsPtr(nullptr)
 , m_pluginPtr(nullptr)
-, m_deinitPtr(nullptr)
 {
 }
 

@@ -11,7 +11,9 @@
 
 #include <gloperate/ContextFormat.h>
 
-#include <Windows.h>
+#ifdef WIN32
+    #include <windows.h>
+#endif
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
@@ -127,8 +129,8 @@ GLFWwindow * Context::create(const ContextFormat & format)
 
 
 Context::Context(GLFWwindow * window)
-: m_window(window)
-, m_format(nullptr)
+: m_format(nullptr)
+, m_window(window)
 {
     if (!window)
         return;

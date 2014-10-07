@@ -44,7 +44,7 @@ void DirectoryIterator::files(
     const std::string truncated = truncate(path);
 
     dirent * entry(nullptr);
-    while (entry = readdir(dir))
+    while ((entry = readdir(dir)))
     {
         const std::string name = entry->d_name;
         if (name == "." || name == "..")
