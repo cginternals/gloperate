@@ -49,6 +49,7 @@ public:
     virtual void onMousePress(int x, int y, gloperate::MouseButton button) override;
     virtual void onMouseRelease(int x, int y, gloperate::MouseButton button) override;
     virtual void onMouseDoubleClick(int x, int y, gloperate::MouseButton button) override;
+    virtual void onMouseWheel(int dx, int dy) override;
 
 
 protected:

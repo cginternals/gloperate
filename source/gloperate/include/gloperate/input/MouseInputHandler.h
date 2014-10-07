@@ -92,6 +92,17 @@ public:
     */
     virtual void onMouseDoubleClick(int x, int y, gloperate::MouseButton button);
 
+    /**
+    *  @brief
+    *    Called on mouse wheel event
+    *
+    *  @param[in] dx
+    *    X delta
+    *  @param[in] y
+    *    Y delta
+    */
+    virtual void onMouseWheel(int dx, int dy);
+
 
 };
 
