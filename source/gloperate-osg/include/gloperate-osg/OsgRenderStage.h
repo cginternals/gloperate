@@ -8,6 +8,7 @@
 
 
 #include <gloperate/pipelines/AbstractStage.h>
+#include <gloperate/pipelines/InputSlot.h>
 #include <gloperate-osg/gloperate-osg_api.h>
 
 
@@ -17,6 +18,9 @@ namespace osgViewer {
 }
 namespace osg {
     class Node;
+}
+namespace gloperate {
+    class AbstractViewportCapability;
 }
 
 
@@ -81,21 +85,6 @@ public:
 
     /**
     *  @brief
-    *    Set viewport
-    *
-    *  @param[in] x
-    *    Viewport position x
-    *  @param[in] y
-    *    Viewport position y
-    *  @param[in] width
-    *    Viewport width
-    *  @param[in] height
-    *    Viewport height
-    */
-    void setViewport(int x, int y, int width, int height);
-
-    /**
-    *  @brief
     *    Create keyboard handler to control the wrapped OSG scene
     *
     *  @return
@@ -135,15 +124,20 @@ protected:
     void osg_cleanup();
 
 
+public:
+    // Input data
+    gloperate::InputSlot<gloperate::AbstractViewportCapability *>  m_viewport;
+
+
 protected:
-    osgViewer::Viewer                 * m_viewer;          /**< OSG viewer */
-    osgViewer::GraphicsWindowEmbedded * m_embedded;        /**< Interface that acts like a window to OSG */
-    osg::Node                         * m_scene;           /**< The displayed scene */
-    int                                 m_viewportX;       /**< Viewport position x */
-    int                                 m_viewportY;       /**< Viewport position y */
-    int                                 m_viewportWidth;   /**< Viewport width */
-    int                                 m_viewportHeight;  /**< Viewport height */
-    bool                                m_viewportChanged; /**< Flag indicating if the viewport has been changed */
+    // OSG scene data
+    osgViewer::Viewer                 * m_viewer;    /**< OSG viewer */
+    osgViewer::GraphicsWindowEmbedded * m_embedded;  /**< Interface that acts like a window to OSG */
+    osg::Node                         * m_scene;     /**< The displayed scene */
+    int                                 m_viewportX; /**< Current viewport X */
+    int                                 m_viewportY; /**< Current viewport Y */
+    int                                 m_viewportW; /**< Current viewport width */
+    int                                 m_viewportH; /**< Current viewport height */
 
 
 };

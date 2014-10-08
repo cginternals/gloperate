@@ -4,11 +4,6 @@
 
 #include <globjects/logging.h>
 
-#include <gloperate/capabilities/ViewportCapability.h>
-#include <gloperate/capabilities/TargetFramebufferCapability.h>
-#include <gloperate/capabilities/InputCapability.h>
-#include <gloperate/capabilities/VirtualTimeCapability.h>
-
 #include <gloperate-osg/OsgKeyboardHandler.h>
 #include <gloperate-osg/OsgMouseHandler.h>
 
@@ -30,10 +25,14 @@ OsgRenderStage::OsgRenderStage(const std::string & name)
 , m_scene(nullptr)
 , m_viewportX(0)
 , m_viewportY(0)
-, m_viewportWidth(800)
-, m_viewportHeight(600)
-, m_viewportChanged(false)
+, m_viewportW(0)
+, m_viewportH(0)
 {
+    // Add input slots
+    addInput("viewport", m_viewport);
+
+    // [TODO] This should not be necessary, but if off, at the moment the image flickers
+    alwaysProcess(true);
 }
 
 /**
@@ -70,21 +69,6 @@ osg::Node * OsgRenderStage::scene() const
 void OsgRenderStage::setScene(osg::Node * scene)
 {
     osg_setScene(scene);
-}
-
-/**
-*  @brief
-*    Set viewport
-*/
-void OsgRenderStage::setViewport(int x, int y, int width, int height)
-{
-    if (m_viewportX != x || m_viewportY != y || m_viewportWidth != width || m_viewportHeight != height) {
-        m_viewportX       = x;
-        m_viewportY       = y;
-        m_viewportWidth   = width;
-        m_viewportHeight  = height;
-        m_viewportChanged = true;
-    }
 }
 
 /**
