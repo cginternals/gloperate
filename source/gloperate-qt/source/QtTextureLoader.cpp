@@ -58,7 +58,7 @@ QtTextureLoader::~QtTextureLoader()
 bool QtTextureLoader::canLoad(const std::string & ext) const
 {
     // Check if file type is supported
-    return (std::count(m_extensions.begin(), m_extensions.end(), ext) > 0);
+    return (std::count(m_extensions.begin(), m_extensions.end(), "." + ext) > 0);
 }
 
 /**
