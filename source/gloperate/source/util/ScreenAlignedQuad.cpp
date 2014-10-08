@@ -15,7 +15,7 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
 #include <globjects/Shader.h>
-#include <gloperate/util/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 
 
 using namespace globjects;
