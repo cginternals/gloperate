@@ -187,7 +187,10 @@ protected:
 
         fbo->bind(gl::GL_FRAMEBUFFER);
 
-        fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
+        if (!fbo->isDefault())
+        {
+            fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
+        }
 
         gl::glClearColor(1.0, 1.0, 1.0, 0.0);
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
