@@ -28,10 +28,9 @@ glbinding::Version Context::maxSupportedVersion()
 {
     glbinding::Version version;
 
-    /*
-    * GLFW3 does not set default hint values on window creation so at least
-    * the default values must be set before glfwCreateWindow can be called.
-    * cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
+    /* GLFW3 does not set default hint values on window creation so at least
+        the default values must be set before glfwCreateWindow can be called.
+        cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
     */
     glfwDefaultWindowHints();
 
@@ -120,7 +119,7 @@ GLFWwindow * Context::create(const ContextFormat & format)
         glfwMakeContextCurrent(window);
         glbinding::Binding::initialize(false);
         glfwSwapInterval(static_cast<int>(format.swapBehavior()));
-        glfwMakeContextCurrent(0);
+        glfwMakeContextCurrent(nullptr);
     }
     return window;
 }

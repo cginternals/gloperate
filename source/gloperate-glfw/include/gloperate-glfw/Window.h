@@ -6,7 +6,6 @@
 #include <queue>
 #include <glm/glm.hpp>
 #include <globjects/base/ref_ptr.h>
-#include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
 #include <globjects/base/ref_ptr.h>
@@ -130,7 +129,7 @@ public:
     const gloperate::ResourceManager & resourceManager() const;
 
 protected:
-    bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
+    bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
     void destroyContext();
 
     void initializeEventHandler();
@@ -143,7 +142,6 @@ protected:
 
 protected:
     Context * m_context;
-
     GLFWwindow * m_window;
 
     globjects::ref_ptr<WindowEventHandlerBase> m_eventHandler;

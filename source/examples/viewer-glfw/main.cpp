@@ -22,7 +22,7 @@ int main(int argc, char * argv[])
     Application app(argc, argv);
 
     ContextFormat format;
-    format.setVersion(2, 1);
+    format.setVersion(3, 2);
 
     ResourceManager resourceManager;
 
