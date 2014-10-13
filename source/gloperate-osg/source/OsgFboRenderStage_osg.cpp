@@ -36,6 +36,9 @@ void OsgFboRenderStage::updateFbo_osg()
         camera->attach(osg::Camera::COLOR_BUFFER0, m_colorTextureOsg);
         camera->setViewport(0, 0, m_viewportW, m_viewportH);
 
+        // Update projection matrix to preserve the aspect ratio
+        camera->setProjectionMatrixAsPerspective(30.0f, camera->getViewport()->aspectRatio(), 1.0f, 10000.0f);
+
         // Make sure the camera FBO is rebuilt
         osgViewer::Renderer * renderer = (osgViewer::Renderer*)camera->getRenderer();
         renderer->getSceneView(0)->getRenderStage()->setCameraRequiresSetUp(true);
