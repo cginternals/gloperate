@@ -16,6 +16,7 @@ namespace gloperate_osg
 OsgFboRenderStage::OsgFboRenderStage(const std::string & name)
 : OsgRenderStage(name)
 , m_colorTextureOsg(nullptr)
+, m_depthTextureOsg(nullptr)
 {
 }
 
@@ -47,6 +48,13 @@ void OsgFboRenderStage::updateFbo()
     if (colorTextureId != 0) {
         m_colorTexture = globjects::Texture::fromId(colorTextureId, gl::GL_TEXTURE_2D);
         m_colorTexture.invalidate();
+    }
+
+    // Update depth texture
+    unsigned int depthTextureId = getOsgTextureId(m_depthTextureOsg);
+    if (depthTextureId != 0) {
+        m_depthTexture = globjects::Texture::fromId(depthTextureId, gl::GL_TEXTURE_2D);
+        m_depthTexture.invalidate();
     }
 }
 

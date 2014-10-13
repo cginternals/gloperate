@@ -19,21 +19,35 @@ void OsgFboRenderStage::updateFbo_osg()
     // Get OSG camera
     osg::Camera * camera = (viewer() ? viewer()->getCamera() : nullptr);
     if (camera && m_viewportW > 0 && m_viewportH > 0) {
-        // Re-create color texture
+        // (Re)create color texture
         osg::Texture2D * colorTextureOsg = new osg::Texture2D;
         colorTextureOsg->setTextureSize(m_viewportW, m_viewportH);
         colorTextureOsg->setInternalFormat(GL_RGBA);
-        colorTextureOsg->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR);
-        colorTextureOsg->setFilter(osg::Texture::MAG_FILTER, osg::Texture::LINEAR);
+        colorTextureOsg->setFilter(osg::Texture::MIN_FILTER, osg::Texture::NEAREST);
+        colorTextureOsg->setFilter(osg::Texture::MAG_FILTER, osg::Texture::NEAREST);
         colorTextureOsg->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
         colorTextureOsg->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
         colorTextureOsg->apply(*m_embedded->getState()); // Make sure that the texture is actually generated
         m_colorTextureOsg = colorTextureOsg;
 
+        // (Re)create depth texture
+        osg::Texture2D * depthTextureOsg = new osg::Texture2D;
+        depthTextureOsg->setTextureSize(m_viewportW, m_viewportH);
+        depthTextureOsg->setSourceFormat(GL_DEPTH_COMPONENT);
+        depthTextureOsg->setInternalFormat(GL_DEPTH_COMPONENT24);
+        depthTextureOsg->setFilter(osg::Texture::MIN_FILTER, osg::Texture::NEAREST);
+        depthTextureOsg->setFilter(osg::Texture::MAG_FILTER, osg::Texture::NEAREST);
+        depthTextureOsg->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
+        depthTextureOsg->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
+        depthTextureOsg->apply(*m_embedded->getState()); // Make sure that the texture is actually generated
+        m_depthTextureOsg = depthTextureOsg;
+
         // Create FBO for camera
         camera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER_OBJECT);
         camera->detach(osg::Camera::COLOR_BUFFER0);
         camera->attach(osg::Camera::COLOR_BUFFER0, m_colorTextureOsg);
+        camera->detach(osg::Camera::DEPTH_BUFFER);
+        camera->attach(osg::Camera::DEPTH_BUFFER,  m_depthTextureOsg);
         camera->setViewport(0, 0, m_viewportW, m_viewportH);
 
         // Update projection matrix to preserve the aspect ratio

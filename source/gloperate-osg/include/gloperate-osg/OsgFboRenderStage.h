@@ -70,6 +70,7 @@ protected:
 public:
     // Output data
     gloperate::Data<globjects::ref_ptr<globjects::Texture> > m_colorTexture;
+    gloperate::Data<globjects::ref_ptr<globjects::Texture> > m_depthTexture;
 
 
 protected:
@@ -82,6 +83,7 @@ protected:
 
 protected:
     osg::Texture * m_colorTextureOsg;
+    osg::Texture * m_depthTextureOsg;
 
 
 };
