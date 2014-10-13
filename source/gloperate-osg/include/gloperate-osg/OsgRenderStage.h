@@ -4,7 +4,7 @@
 // Do not include any osg headers OR gloperate headers that pull in globjects/glbinding,
 // because that would break the separation between glbinding and gl.h.
 // Use only pointers to OSG objects, call ref/unref to maintain memory management,
-// and separate all calls to osg in osg_ functions implemented inside OsgPainter_osg.cpp.
+// and separate all calls to osg in osg_ functions implemented inside OsgRenderStage_osg.cpp.
 
 
 #include <gloperate/pipelines/AbstractStage.h>
@@ -111,8 +111,21 @@ public:
 
 
 protected:
+    // Virtual AbstractRenderStage functions
     virtual void initialize() override;
     virtual void process() override;
+
+    /**
+    *  @brief
+    *    Called when the viewport has been changed
+    */
+    virtual void handleViewportChanged();
+
+    /**
+    *  @brief
+    *    Called right after OSG rendering
+    */
+    virtual void postOsgRendering();
 
 
 protected:
@@ -131,13 +144,13 @@ public:
 
 protected:
     // OSG scene data
-    osgViewer::Viewer                 * m_viewer;    /**< OSG viewer */
-    osgViewer::GraphicsWindowEmbedded * m_embedded;  /**< Interface that acts like a window to OSG */
-    osg::Node                         * m_scene;     /**< The displayed scene */
-    int                                 m_viewportX; /**< Current viewport X */
-    int                                 m_viewportY; /**< Current viewport Y */
-    int                                 m_viewportW; /**< Current viewport width */
-    int                                 m_viewportH; /**< Current viewport height */
+    osgViewer::Viewer                 * m_viewer;       /**< OSG viewer */
+    osgViewer::GraphicsWindowEmbedded * m_embedded;     /**< Interface that acts like a window to OSG */
+    osg::Node                         * m_scene;        /**< The displayed scene */
+    int                                 m_viewportX;    /**< Current viewport x */
+    int                                 m_viewportY;    /**< Current viewport y */
+    int                                 m_viewportW;    /**< Current viewport width */
+    int                                 m_viewportH;    /**< Current viewport height */
 
 
 };

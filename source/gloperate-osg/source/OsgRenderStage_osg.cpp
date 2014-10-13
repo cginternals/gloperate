@@ -67,16 +67,23 @@ void OsgRenderStage::osg_process()
             m_viewportX != m_viewport.data()->x() || m_viewportY != m_viewport.data()->y() ||
             m_viewportW != m_viewport.data()->width() || m_viewportH != m_viewport.data()->height()) )
         {
+            // Set new viewport
             m_viewportX = m_viewport.data()->x();
             m_viewportY = m_viewport.data()->y();
             m_viewportW = m_viewport.data()->width();
             m_viewportH = m_viewport.data()->height();
             m_embedded->resized(m_viewportX, m_viewportY, m_viewportW, m_viewportH);
             m_embedded->getEventQueue()->windowResize(m_viewportX, m_viewportY, m_viewportW, m_viewportH);
+
+            // Inform sub-classes about changed viewport
+            handleViewportChanged();
         }
 
         // Draw OSG scene
         m_viewer->frame();
+
+        // Invoke post-render callback
+        postOsgRendering();
     }
 }
 

@@ -28,11 +28,8 @@ OsgRenderStage::OsgRenderStage(const std::string & name)
 , m_viewportW(0)
 , m_viewportH(0)
 {
-    // Add input slots
+    // Register input slots
     addInput("viewport", m_viewport);
-
-    // [TODO] This should not be necessary, but if off, at the moment the image flickers
-    alwaysProcess(true);
 }
 
 /**
@@ -106,6 +103,22 @@ void OsgRenderStage::process()
 {
     // Draw osg scene
     osg_process();
+}
+
+/**
+*  @brief
+*    Called when the viewport has been changed
+*/
+void OsgRenderStage::handleViewportChanged()
+{
+}
+
+/**
+*  @brief
+*    Called right after OSG rendering
+*/
+void OsgRenderStage::postOsgRendering()
+{
 }
 
 
