@@ -6,7 +6,7 @@
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
-#include <gloperate/util/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>

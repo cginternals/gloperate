@@ -93,13 +93,11 @@ set(sources
 	${source_path}/signals/ConnectionMap.cpp
 	${source_path}/tools/ScreenshotTool.cpp
 	${source_path}/util/Plane3.cpp
-	${source_path}/util/StringTemplate.cpp
 	${source_path}/util/ScreenAlignedQuad.cpp
 	${source_path}/util/AxisAlignedBoundingBox.cpp
 	${source_path}/util/Icosahedron.cpp
 	${source_path}/util/Plane3.h
 	${source_path}/util/AdaptiveGrid.cpp
-	${source_path}/util/StringSourceDecorator.cpp
 )
 
 set(headers
@@ -154,8 +152,6 @@ set(headers
 	${include_path}/signals/signalzeug_api.h
 	${include_path}/signals/AbstractSignal.h
 	${include_path}/tools/ScreenshotTool.h
-	${include_path}/util/StringTemplate.h
-	${include_path}/util/StringSourceDecorator.h
 	${include_path}/util/collection.hpp
 	${include_path}/util/AdaptiveGrid.h
 	${include_path}/util/ScreenAlignedQuad.h
