@@ -37,6 +37,7 @@ set(CMAKE_AUTOMOC ON)
 
 include_directories(
     ${GLM_INCLUDE_DIR}
+    ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
     ${LIBZEUG_INCLUDES}
 )

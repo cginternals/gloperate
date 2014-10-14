@@ -5,13 +5,17 @@
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include <gloperate-qt/QtTextureLoader.h>
+
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QString>
 #include <QImage>
 #include <QImageReader>
 #include <gloperate-qt/qt-includes-end.h>
+
 #include <glbinding/gl/gl.h>
+
 #include <globjects/Texture.h>
+
 #include <gloperate-qt/Converter.h>
 
 
@@ -24,7 +28,7 @@ namespace gloperate_qt
 *    Constructor
 */
 QtTextureLoader::QtTextureLoader()
-: TextureLoader()
+: gloperate::Loader<globjects::Texture>()
 {
     // Get list of supported file formats
     QList<QByteArray> formats = QImageReader::supportedImageFormats();
@@ -51,30 +55,18 @@ QtTextureLoader::~QtTextureLoader()
 {
 }
 
-/**
-*  @brief
-*    Check if this loader can load a specific file type
-*/
 bool QtTextureLoader::canLoad(const std::string & ext) const
 {
     // Check if file type is supported
     return (std::count(m_extensions.begin(), m_extensions.end(), "." + ext) > 0);
 }
 
-/**
-*  @brief
-*    Get list of file types for loading
-*/
 std::vector<std::string> QtTextureLoader::loadingTypes() const
 {
     // Return list of supported file types
     return m_types;
 }
 
-/**
-*  @brief
-*    Get all file types for loading
-*/
 std::string QtTextureLoader::allLoadingTypes() const
 {
     // Compose list of all supported file extensions
@@ -88,11 +80,7 @@ std::string QtTextureLoader::allLoadingTypes() const
     return allTypes;
 }
 
-/**
-*  @brief
-*    Load data from file
-*/
-globjects::Referenced * QtTextureLoader::load(const std::string & filename) const
+globjects::Texture * QtTextureLoader::load(const std::string & filename) const
 {
     // Load image
     QImage image;

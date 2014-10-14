@@ -15,8 +15,10 @@
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractTargetFramebufferCapability.h>
 
+
 namespace gloperate
 {
+
 
 ScreenshotTool::ScreenshotTool(Painter * painter, ResourceManager & resourceManager)
     : m_painter(painter)
@@ -56,9 +58,10 @@ void ScreenshotTool::save(const std::string & filename)
     m_painter->paint();
 
     // [TODO] handle filename
-    m_resourceManager.storeTexture(filename, m_color);
+    m_resourceManager.store<globjects::Texture>(filename, m_color);
 
     m_framebufferCapability->setFramebuffer(oldFbo);
 }
+
 
 } // namespace gloperate
