@@ -23,7 +23,7 @@ namespace gloperate_qt
 *    Constructor
 */
 QtTextureStorer::QtTextureStorer()
-: TextureStorer()
+: gloperate::Storer<globjects::Texture>()
 {
     // Get list of supported file formats
     QList<QByteArray> formats = QImageWriter::supportedImageFormats();
@@ -50,30 +50,18 @@ QtTextureStorer::~QtTextureStorer()
 {
 }
 
-/**
-*  @brief
-*    Check if this storer can store into a specific file type
-*/
 bool QtTextureStorer::canStore(const std::string & ext) const
 {
      // Check if file type is supported
     return (std::count(m_extensions.begin(), m_extensions.end(), "." + ext) > 0);
 }
 
-/**
-*  @brief
-*    Get list of file types for storing
-*/
 std::vector<std::string> QtTextureStorer::storingTypes() const
 {
     // Return list of supported file types
     return m_types;
 }
 
-/**
-*  @brief
-*    Get all file types for storing
-*/
 std::string QtTextureStorer::allStoringTypes() const
 {
     // Compose list of all supported file extensions
@@ -87,14 +75,8 @@ std::string QtTextureStorer::allStoringTypes() const
     return allTypes;
 }
 
-/**
-*  @brief
-*    Store data to a file
-*/
-bool QtTextureStorer::store(const std::string & filename, const globjects::Referenced * object) const
+bool QtTextureStorer::store(const std::string & filename, const globjects::Texture * texture) const
 {
-    const globjects::Texture * texture = dynamic_cast<const globjects::Texture *>(object);
-
     if (!texture)
     {
         return false;
