@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-osg/OsgKeyboardHandler.h>
 #include <osgViewer/Viewer>
 
@@ -13,10 +7,6 @@ namespace gloperate_osg
 {
 
 
-/**
-*  @brief
-*    Convert gloperate key code into OSG key code
-*/
 static int toOsgKey(gloperate::Key key)
 {
     switch (key) {

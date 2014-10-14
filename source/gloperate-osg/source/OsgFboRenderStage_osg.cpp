@@ -10,10 +10,6 @@ namespace gloperate_osg
 {
 
 
-/**
-*  @brief
-*    Called to setup target FBO for rendering the OSG scene
-*/
 void OsgFboRenderStage::updateFbo_osg()
 {
     // Get OSG camera
@@ -60,10 +56,6 @@ void OsgFboRenderStage::updateFbo_osg()
     }
 }
 
-/**
-*  @brief
-*    Get texture ID of a given OSG texture
-*/
 unsigned int OsgFboRenderStage::getOsgTextureId(const osg::Texture * texture) const
 {
     // Check if everything is setup correctly

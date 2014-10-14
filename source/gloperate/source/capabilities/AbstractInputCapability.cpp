@@ -5,18 +5,10 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 AbstractInputCapability::AbstractInputCapability()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 AbstractInputCapability::~AbstractInputCapability()
 {
 }

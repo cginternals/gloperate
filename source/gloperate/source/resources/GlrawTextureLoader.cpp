@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate/resources/GlrawTextureLoader.h>
  
 
@@ -11,19 +5,11 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 GlrawTextureLoader::GlrawTextureLoader()
 : Loader<globjects::Texture>()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 GlrawTextureLoader::~GlrawTextureLoader()
 {
 }

@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-qt/QtTextureLoader.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
@@ -23,10 +17,6 @@ namespace gloperate_qt
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 QtTextureLoader::QtTextureLoader()
 : gloperate::Loader<globjects::Texture>()
 {
@@ -47,10 +37,6 @@ QtTextureLoader::QtTextureLoader()
     m_types.push_back(std::string("Qt image formats (") + allTypes + ")");
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtTextureLoader::~QtTextureLoader()
 {
 }

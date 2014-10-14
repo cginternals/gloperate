@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-qt/TimePropagator.h>
 #include <chrono>
 
@@ -12,10 +6,6 @@ namespace gloperate_qt
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloperate::AbstractVirtualTimeCapability * capability)
 : m_window(window)
 , m_capability(capability)
@@ -31,10 +21,6 @@ TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloper
     m_time.start();
 }
 
-/**
-*  @brief
-*    Called by the timer when the timer has elapsed
-*/
 void TimePropagator::update()
 {
     // Calculate time delta

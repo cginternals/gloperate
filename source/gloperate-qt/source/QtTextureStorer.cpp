@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-qt/QtTextureStorer.h>
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QString>
@@ -18,10 +12,6 @@ namespace gloperate_qt
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 QtTextureStorer::QtTextureStorer()
 : gloperate::Storer<globjects::Texture>()
 {
@@ -42,10 +32,6 @@ QtTextureStorer::QtTextureStorer()
     m_types.push_back(std::string("Qt image formats (") + allTypes + ")");
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtTextureStorer::~QtTextureStorer()
 {
 }

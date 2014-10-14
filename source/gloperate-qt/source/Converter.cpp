@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-qt/Converter.h>
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QGLWidget>
@@ -14,10 +8,6 @@ namespace gloperate_qt
 {
 
 
-/**
-*  @brief
-*    Convert image into OpenGL compatible format
-*/
 QImage Converter::convert(const QImage &image)
 {
     return QGLWidget::convertToGLFormat(image);

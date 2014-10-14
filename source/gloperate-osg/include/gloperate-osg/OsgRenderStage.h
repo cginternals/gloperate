@@ -32,99 +32,25 @@ class OsgKeyboardHandler;
 class OsgMouseHandler;
 
 
-/**
-*  @brief
-*    Rendering stage that renders an OSG scene
-*/
 class GLOPERATE_OSG_API OsgRenderStage : public gloperate::AbstractStage
 {
 
 
 public:
-    /**
-    *  @brief
-    *    Constructor
-    *
-    *  @param[in] name
-    *    Name of the stage
-    */
     OsgRenderStage(const std::string & name);
-
-    /**
-    *  @brief
-    *    Destructor
-    */
     virtual ~OsgRenderStage();
 
-    /**
-    *  @brief
-    *    Get OSG viewer
-    *
-    *  @return
-    *    OSG viewer
-    */
     osgViewer::Viewer * viewer() const;
-
-    /**
-    *  @brief
-    *    Get OSG scene
-    *
-    *  @return
-    *    OSG scene
-    */
     osg::Node * scene() const;
-
-    /**
-    *  @brief
-    *    Set OSG scene
-    *
-    *  @param[in] scene
-    *    OSG scene
-    */
     void setScene(osg::Node * scene);
-
-    /**
-    *  @brief
-    *    Create keyboard handler to control the wrapped OSG scene
-    *
-    *  @return
-    *    Keyboard handler, can be nullptr, if the scene has not yet been initialized
-    *
-    *  @remarks
-    *    The returned handler must be destroyed by the caller, e.g., by adding
-    *    it to an InputCapability, which will take care of this automatically.
-    */
     OsgKeyboardHandler * createKeyboardHandler() const;
-
-    /**
-    *  @brief
-    *    Create mouse handler to control the wrapped OSG scene
-    *
-    *  @return
-    *    Mouse handler, can be nullptr, if the scene has not yet been initialized
-    *
-    *  @remarks
-    *    The returned handler must be destroyed by the caller, e.g., by adding
-    *    it to an InputCapability, which will take care of this automatically.
-    */
     OsgMouseHandler * createMouseHandler() const;
 
 
 protected:
-    // Virtual AbstractRenderStage functions
     virtual void initialize() override;
     virtual void process() override;
-
-    /**
-    *  @brief
-    *    Called when the viewport has been changed
-    */
     virtual void handleViewportChanged();
-
-    /**
-    *  @brief
-    *    Called right after OSG rendering
-    */
     virtual void postOsgRendering();
 
 
@@ -144,13 +70,13 @@ public:
 
 protected:
     // OSG scene data
-    osgViewer::Viewer                 * m_viewer;       /**< OSG viewer */
-    osgViewer::GraphicsWindowEmbedded * m_embedded;     /**< Interface that acts like a window to OSG */
-    osg::Node                         * m_scene;        /**< The displayed scene */
-    int                                 m_viewportX;    /**< Current viewport x */
-    int                                 m_viewportY;    /**< Current viewport y */
-    int                                 m_viewportW;    /**< Current viewport width */
-    int                                 m_viewportH;    /**< Current viewport height */
+    osgViewer::Viewer                 * m_viewer;
+    osgViewer::GraphicsWindowEmbedded * m_embedded;
+    osg::Node                         * m_scene;
+    int                                 m_viewportX;
+    int                                 m_viewportY;
+    int                                 m_viewportW;
+    int                                 m_viewportH;
 
 
 };

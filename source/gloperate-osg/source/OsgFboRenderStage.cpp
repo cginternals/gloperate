@@ -9,10 +9,6 @@ namespace gloperate_osg
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 OsgFboRenderStage::OsgFboRenderStage(const std::string & name)
 : OsgRenderStage(name)
 , m_colorTextureOsg(nullptr)
@@ -20,10 +16,6 @@ OsgFboRenderStage::OsgFboRenderStage(const std::string & name)
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 OsgFboRenderStage::~OsgFboRenderStage()
 {
 }
@@ -37,10 +29,6 @@ void OsgFboRenderStage::handleViewportChanged()
     updateFbo();
 }
 
-/**
-*  @brief
-*    Called to setup textures for use with gloperate pipeline
-*/
 void OsgFboRenderStage::updateFbo()
 {
     // Update color texture

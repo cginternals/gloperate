@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-osg/OsgMouseHandler.h>
 #include <osgViewer/Viewer>
 
@@ -13,10 +7,6 @@ namespace gloperate_osg
 {
 
 
-/**
-*  @brief
-*    Convert gloperate mouse button into OSG mouse button
-*/
 static int toOsgMouseButton(gloperate::MouseButton button)
 {
     if (button == MouseButtonLeft)

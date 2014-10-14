@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
 
@@ -12,10 +6,6 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 PluginLibrary::PluginLibrary(const std::string & filename)
 : m_filename(filename)
 , m_initPluginPtr(nullptr)
@@ -25,27 +15,15 @@ PluginLibrary::PluginLibrary(const std::string & filename)
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 PluginLibrary::~PluginLibrary()
 {
 }
 
-/**
-*  @brief
-*    Get filename
-*/
 const std::string & PluginLibrary::filename() const
 {
     return m_filename;
 }
 
-/**
-*  @brief
-*    Check if plugin library is valid
-*/
 bool PluginLibrary::isValid() const
 {
     return (m_initPluginPtr      != nullptr &&
@@ -54,10 +32,6 @@ bool PluginLibrary::isValid() const
             m_deinitPluginPtr    != nullptr );
 }
 
-/**
-*  @brief
-*    Initialize plugin library
-*/
 void PluginLibrary::initialize()
 {
     // Call plugin function
@@ -66,10 +40,6 @@ void PluginLibrary::initialize()
     }
 }
 
-/**
-*  @brief
-*    Get number of plugins contained in the library
-*/
 unsigned int PluginLibrary::getNumOfPlugins() const
 {
     // Call plugin function
@@ -80,10 +50,6 @@ unsigned int PluginLibrary::getNumOfPlugins() const
     }
 }
 
-/**
-*  @brief
-*    Get plugin contained in the library
-*/
 gloperate::Plugin * PluginLibrary::getPlugin(unsigned int index) const
 {
     // Call plugin function
@@ -94,10 +60,6 @@ gloperate::Plugin * PluginLibrary::getPlugin(unsigned int index) const
     }
 }
 
-/**
-*  @brief
-*    Deinitialize plugin library
-*/
 void PluginLibrary::deinitialize()
 {
     // Call plugin function

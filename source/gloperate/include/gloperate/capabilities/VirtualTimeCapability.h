@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -15,25 +9,12 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Default implementation for AbstractVirtualTimeCapability
-*/
 class GLOPERATE_API VirtualTimeCapability : public AbstractVirtualTimeCapability
 {
 
 
 public:
-    /**
-    *  @brief
-    *    Constructor
-    */
     VirtualTimeCapability();
-
-    /**
-    *  @brief
-    *    Destructor
-    */
     virtual ~VirtualTimeCapability();
 
     virtual bool enabled() const override;
@@ -44,17 +25,13 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Normalize time by wrapping it at the loop duration
-    */
     void normalizeTime();
 
 
 protected:
-    bool  m_enabled;    /**< Is virtual time enabled? */
-    float m_duration;	/**< Duration after which time is reset to 0 (in seconds) */ 
-    float m_time;	  	/**< Current time */
+    bool  m_enabled;
+    float m_duration;
+    float m_time;
 
 
 };
