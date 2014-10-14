@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -18,16 +12,6 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Raw data file loader
-*
-*  @remarks
-*    This class allows for loading raw data (e.g., textures) from files. You have to exactly know
-*    how to interpret the content of the file, e.g., you need to know the format and size of the
-*    texture, the file does not provide this information. To create raw textures, you can use
-*    for example glraw.
-*/
 class GLOPERATE_API RawFile
 {
 

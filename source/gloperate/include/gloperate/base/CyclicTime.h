@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 #include <memory>
@@ -20,15 +14,6 @@ using longf = long double;
 
 class ChronoTimer;
 
-/** \brief Provides cyclic access control (in the range [0:1]) over a Timer.
-
-    CyclicTime manages a osg::Timer and features an interface for floating time
-    in the closed interval [0;1] representing a full day and standard c 
-    time (time_t) simultaneously. The time updates have to be requested 
-    explicitly, thus simplifying usage between multiple recipients.
-    The time starts cycling automatically, but can also be paused, stopped, 
-    or set to a specific value.
-*/
 class GLOPERATE_API CyclicTime
 {
 	enum class Status

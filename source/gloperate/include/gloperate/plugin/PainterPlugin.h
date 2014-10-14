@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -14,10 +8,6 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Convenience class to describe a plugin for a painter
-*/
 template <typename PainterType>
 class GLOPERATE_API PainterPlugin : public Plugin {
 

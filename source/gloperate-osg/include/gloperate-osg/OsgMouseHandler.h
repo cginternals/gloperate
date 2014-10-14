@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -21,28 +15,12 @@ namespace gloperate_osg
 {
 
 
-/**
-*  @brief
-*    Input handler that transfers mouse events to OSG
-*/
 class GLOPERATE_OSG_API OsgMouseHandler : public gloperate::MouseInputHandler
 {
 
 
 public:
-    /**
-    *  @brief
-    *    Constructor
-    *
-    *  @param[in] embedded
-    *    Interface that acts like a window to OSG
-    */
     OsgMouseHandler(osgViewer::GraphicsWindowEmbedded * embedded);
-
-    /**
-    *  @brief
-    *    Destructor
-    */
     virtual ~OsgMouseHandler();
 
     virtual void onMouseMove(int x, int y) override;

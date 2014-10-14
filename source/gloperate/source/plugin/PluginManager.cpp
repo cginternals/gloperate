@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate/plugin/PluginManager.h>
 #include <globjects/logging.h>
 #include <gloperate/plugin/PluginLibrary.h>
@@ -105,10 +99,6 @@ namespace gloperate
 std::string PluginManager::s_defaultPluginPath = "";
 
 
-/**
-*  @brief
-*    Initialize plugin manager
-*/
 void PluginManager::init(const std::string & executablePath)
 {
     #ifdef WIN32
@@ -130,18 +120,10 @@ void PluginManager::init(const std::string & executablePath)
     globjects::info() << "Default plugin path: " << PluginManager::s_defaultPluginPath;
 }
 
-/**
-*  @brief
-*    Constructor
-*/
 PluginManager::PluginManager()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 PluginManager::~PluginManager()
 {
     // Note: The plugins do not need to (and must not) be destroyed, because this is done
@@ -154,37 +136,16 @@ PluginManager::~PluginManager()
     }
 }
 
-/**
-*  @brief
-*    Get scan directory
-*
-*  @return
-*    Directory from which plugins are loaded
-*/
 std::string PluginManager::scanDirectory() const
 {
     return m_scanDirectory;
 }
 
-/**
-*  @brief
-*    Set scan directory
-*
-*  @param[in] path
-*    Directory from which plugins are loaded
-*/
 void PluginManager::setScanDirectory(const std::string & path)
 {
     m_scanDirectory = path;
 }
 
-/**
-*  @brief
-*    Scan for plugins and load all found plugins
-*
-*  @param[in] identifier
-*    If set, only libraries that contain the specified substring are loaded
-*/
 void PluginManager::scan(const std::string & identifier)
 {
     // Get search directory
@@ -218,10 +179,6 @@ void PluginManager::scan(const std::string & identifier)
 #endif
 }
 
-/**
-*  @brief
-*    Load plugin
-*/
 void PluginManager::load(const std::string & name)
 {
     // Get search directory
@@ -232,10 +189,6 @@ void PluginManager::load(const std::string & name)
     loadLibrary(path + g_sep + g_pre + name + g_ext);
 }
 
-/**
-*  @brief
-*    Load plugin library
-*/
 void PluginManager::loadLibrary(const std::string & filename)
 {
     globjects::info() << "Loading plugin '" << filename << "'";
@@ -266,19 +219,11 @@ void PluginManager::loadLibrary(const std::string & filename)
     }
 }
 
-/**
-*  @brief
-*    Get available plugins
-*/
 const std::vector<Plugin *> & PluginManager::plugins() const
 {
     return m_plugins;
 }
 
-/**
-*  @brief
-*    Get plugin by name
-*/
 Plugin * PluginManager::plugin(const std::string & name) const
 {
     // Get plugin
@@ -290,10 +235,6 @@ Plugin * PluginManager::plugin(const std::string & name) const
     return nullptr;
 }
 
-/**
-*  @brief
-*    Print list of available plugins to log
-*/
 void PluginManager::printPlugins() const
 {
     for (Plugin * plugin : m_plugins) {

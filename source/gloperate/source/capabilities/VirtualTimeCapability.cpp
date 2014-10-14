@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 #include <cassert>
 
@@ -12,10 +6,6 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 VirtualTimeCapability::VirtualTimeCapability()
 : m_enabled(true)
 , m_duration(2.0f * 3.141592654f)
@@ -23,10 +13,6 @@ VirtualTimeCapability::VirtualTimeCapability()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 VirtualTimeCapability::~VirtualTimeCapability()
 {
 }

@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -17,10 +11,6 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Load resource from file
-*/
 template <typename T>
 T * ResourceManager::load(const std::string & filename) const
 {
@@ -44,10 +34,6 @@ T * ResourceManager::load(const std::string & filename) const
     return nullptr;
 }
 
-/**
-*  @brief
-*    Store resource to file
-*/
 template <typename T>
 bool ResourceManager::store(const std::string & filename, T * resource) const
 {

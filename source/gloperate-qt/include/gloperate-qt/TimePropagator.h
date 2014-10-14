@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -23,16 +17,6 @@ namespace gloperate_qt
 {
 
 
-/**
-*  @brief
-*    Tool class to propagate continues time updates to a window
-*
-*  @remarks
-*    This class is used in a window to allow for continues updates (e.g., to
-*    implement animations). It take a VirtualTimeCapability of a painter to
-*    propagate the time change to the painter, and automatically triggers
-*    an update of the window containing the painter.
-*/
 class GLOPERATE_QT_API TimePropagator : public QObject
 {
 
@@ -41,31 +25,18 @@ class GLOPERATE_QT_API TimePropagator : public QObject
 
 
 public:
-    /**
-    *  @brief
-    *    Constructor
-    *
-    *  @param[in] window
-    *    Window that is updated when the timer has elapsed
-    *  @param[in] capability
-    *    VirtualTimeCapability that is informed about the time change
-    */
     TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloperate::AbstractVirtualTimeCapability * capability);
 
 
 protected slots:
-    /**
-    *  @brief
-    *    Called by the timer when the timer has elapsed
-    */
     void update();
 
 
 protected:
-    gloperate_qt::QtOpenGLWindowBase 		 * m_window;		/**< Window that is updated when the timer has elapsed */
-    gloperate::AbstractVirtualTimeCapability * m_capability;	/**< VirtualTimeCapability that is informed about the time change */
-    QScopedPointer<QTimer> 			   		   m_timer;			/**< Qt timer for continues updates */
-    gloperate::ChronoTimer 			   		   m_time;			/**< Time measurement */
+    gloperate_qt::QtOpenGLWindowBase 		 * m_window;
+    gloperate::AbstractVirtualTimeCapability * m_capability;
+    QScopedPointer<QTimer> 			   		   m_timer;
+    gloperate::ChronoTimer 			   		   m_time;
 
 
 };

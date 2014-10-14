@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -25,52 +19,16 @@ namespace gloperate_qt
 {
 
 
-/**
-*  @brief
-*    Qt window that can be used for rendering with gloperate and OpenGL
-*/
 class GLOPERATE_QT_API QtOpenGLWindow : public QtOpenGLWindowBase
 {
 
 
 public:
-    /**
-    *  @brief
-    *    Constructor
-    */
     QtOpenGLWindow(gloperate::ResourceManager & resourceManager);
-
-    /**
-    *  @brief
-    *    Constructor
-    *
-    *  @param[in] format
-    *    Surface format
-    */
     QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format);
-
-    /**
-    *  @brief
-    *    Destructor
-    */
     virtual ~QtOpenGLWindow();
 
-    /**
-    *  @brief
-    *    Get used painter
-    *
-    *  @return
-    *    Painter, can be nullptr
-    */
     gloperate::Painter * painter() const;
-
-    /**
-    *  @brief
-    *    Set used painter
-    *
-    *  @param[in] painter
-    *    Painter, can be nullptr
-    */
     void setPainter(gloperate::Painter * painter);
 
 

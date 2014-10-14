@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include "gloperate-qt/QtOpenGLWindow.h"
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QResizeEvent>
@@ -23,10 +17,6 @@ namespace gloperate_qt
 {
 
 
-/**
-*  @brief
-*    Convert Qt mouse button into gloperate mouse button
-*/
 static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button)
 {
     if (button & Qt::LeftButton)
@@ -43,10 +33,6 @@ static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button)
         return NoMouseButton;
 }
 
-/**
-*  @brief
-*    Convert Qt key code into gloperate key code
-*/
 static gloperate::Key fromQtKeyCode(int key, int mods)
 {
     if (mods & Qt::KeypadModifier) {
@@ -176,10 +162,6 @@ static gloperate::Key fromQtKeyCode(int key, int mods)
 }
 
 
-/**
-*  @brief
-*    Constructor
-*/
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 : QtOpenGLWindowBase()
 , m_resourceManager(resourceManager)
@@ -187,10 +169,6 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 {
 }
 
-/**
-*  @brief
-*    Constructor
-*/
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
 : QtOpenGLWindowBase(format)
 , m_resourceManager(resourceManager)
@@ -198,27 +176,15 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, con
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtOpenGLWindow::~QtOpenGLWindow()
 {
 }
 
-/**
-*  @brief
-*    Get used painter
-*/
 Painter * QtOpenGLWindow::painter() const
 {
     return m_painter;
 }
 
-/**
-*  @brief
-*    Set used painter
-*/
 void QtOpenGLWindow::setPainter(Painter * painter)
 {
     // Save painter
