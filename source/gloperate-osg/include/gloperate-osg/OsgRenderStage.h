@@ -7,8 +7,11 @@
 // and separate all calls to osg in osg_ functions implemented inside OsgRenderStage_osg.cpp.
 
 
+#include <glm/glm.hpp>
+
 #include <gloperate/pipelines/AbstractStage.h>
 #include <gloperate/pipelines/InputSlot.h>
+#include <gloperate/pipelines/Data.h>
 #include <gloperate-osg/gloperate-osg_api.h>
 
 
@@ -18,9 +21,11 @@ namespace osgViewer {
 }
 namespace osg {
     class Node;
+    class Matrixd;
 }
 namespace gloperate {
     class AbstractViewportCapability;
+    class AbstractVirtualTimeCapability;
 }
 
 
@@ -94,7 +99,7 @@ public:
     *    The returned handler must be destroyed by the caller, e.g., by adding
     *    it to an InputCapability, which will take care of this automatically.
     */
-    OsgKeyboardHandler * createKeyboardHandler() const;
+    OsgKeyboardHandler * createKeyboardHandler();
 
     /**
     *  @brief
@@ -107,7 +112,7 @@ public:
     *    The returned handler must be destroyed by the caller, e.g., by adding
     *    it to an InputCapability, which will take care of this automatically.
     */
-    OsgMouseHandler * createMouseHandler() const;
+    OsgMouseHandler * createMouseHandler();
 
 
 protected:
@@ -136,10 +141,17 @@ protected:
     void osg_process();
     void osg_cleanup();
 
+    glm::mat4 convertMatrix(const osg::Matrixd & mat) const;
+
 
 public:
     // Input data
-    gloperate::InputSlot<gloperate::AbstractViewportCapability *>  m_viewport;
+    gloperate::InputSlot<gloperate::AbstractViewportCapability *>    m_viewport;
+    gloperate::InputSlot<gloperate::AbstractVirtualTimeCapability *> m_virtualTime;
+
+    // Output data
+    gloperate::Data<glm::mat4> m_projectionMatrix;
+    gloperate::Data<glm::mat4> m_viewMatrix;
 
 
 protected:

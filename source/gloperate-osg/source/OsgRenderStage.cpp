@@ -75,7 +75,7 @@ void OsgRenderStage::setScene(osg::Node * scene)
 OsgKeyboardHandler * OsgRenderStage::createKeyboardHandler() const
 {
     if (m_embedded) {
-        return new OsgKeyboardHandler(m_embedded);
+        return new OsgKeyboardHandler(m_embedded, this);
     } else {
         return nullptr;
     }
@@ -88,7 +88,7 @@ OsgKeyboardHandler * OsgRenderStage::createKeyboardHandler() const
 OsgMouseHandler * OsgRenderStage::createMouseHandler() const
 {
     if (m_embedded) {
-        return new OsgMouseHandler(m_embedded);
+        return new OsgMouseHandler(m_embedded, this);
     } else {
         return nullptr;
     }

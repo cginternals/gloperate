@@ -21,6 +21,9 @@ namespace gloperate_osg
 {
 
 
+class OsgRenderStage;
+
+
 /**
 *  @brief
 *    Input handler that transfers keyboard events to OSG
@@ -36,8 +39,10 @@ public:
     *
     *  @param[in] embedded
     *    Interface that acts like a window to OSG
+    *  @param[in] stage
+    *    Render stage that is informed about changes, can be null
     */
-    OsgKeyboardHandler(osgViewer::GraphicsWindowEmbedded * embedded);
+    OsgKeyboardHandler(osgViewer::GraphicsWindowEmbedded * embedded, OsgRenderStage * stage = nullptr);
 
     /**
     *  @brief
@@ -50,7 +55,8 @@ public:
 
 
 protected:
-    osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> m_embedded; /**< Interface that acts like a window to OSG */
+    osg::ref_ptr<osgViewer::GraphicsWindowEmbedded>   m_embedded; /**< Interface that acts like a window to OSG */
+    OsgRenderStage                                  * m_stage;    /**< Render stage to which the input handler belongs (can be null) */
 
 
 };
