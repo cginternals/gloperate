@@ -75,18 +75,6 @@ class GLOPERATE_API AbstractLoader {
         */
         virtual std::string allLoadingTypes() const = 0;
 
-        /**
-        *  @brief
-        *    Load data from file
-        *
-        *  @param filename
-        *    File name
-        *
-        *  @return
-        *    Loaded resource (can be null)
-        */
-        virtual globjects::Referenced * load(const std::string & filename) const = 0;
-
 
 };
 

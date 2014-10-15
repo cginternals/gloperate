@@ -1,8 +1,11 @@
 #include <gloperate-osg/OsgRenderStage.h>
+
+#include <glm/glm.hpp>
+
 #include <osg/Node>
 #include <osgViewer/Viewer>
-#include <gloperate/capabilities/ViewportCapability.h>
-#include <gloperate/capabilities/InputCapability.h>
+
+#include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate-osg/OsgMouseHandler.h>
 #include <gloperate-osg/OsgKeyboardHandler.h>
 
@@ -37,16 +40,13 @@ void OsgRenderStage::osg_initialize()
         m_embedded->unref();
     }
 
-    // Initialize
-    m_viewportChanged = true;
-
     // Create OSG viewer
     m_viewer = new osgViewer::Viewer;
     m_viewer->setThreadingModel(osgViewer::Viewer::SingleThreaded);
     m_viewer->ref();
 
     // Setup viewer using the already created window and OpenGL context
-    m_embedded = m_viewer->setUpViewerAsEmbeddedInWindow(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+    m_embedded = m_viewer->setUpViewerAsEmbeddedInWindow(0, 0, 800, 600);
     m_embedded->ref();
 
     // Initialize camera
@@ -65,14 +65,31 @@ void OsgRenderStage::osg_process()
     // Check if painter has been initialized correctly
     if (m_viewer && m_embedded) {
         // Send resize-event
-        if (m_viewportChanged) {
-            m_embedded->resized(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
-            m_embedded->getEventQueue()->windowResize(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
-            m_viewportChanged = false;
+        if (m_viewport.data() && (
+            m_viewportX != m_viewport.data()->x() || m_viewportY != m_viewport.data()->y() ||
+            m_viewportW != m_viewport.data()->width() || m_viewportH != m_viewport.data()->height()) )
+        {
+            // Set new viewport
+            m_viewportX = m_viewport.data()->x();
+            m_viewportY = m_viewport.data()->y();
+            m_viewportW = m_viewport.data()->width();
+            m_viewportH = m_viewport.data()->height();
+            m_embedded->resized(m_viewportX, m_viewportY, m_viewportW, m_viewportH);
+            m_embedded->getEventQueue()->windowResize(m_viewportX, m_viewportY, m_viewportW, m_viewportH);
+
+            // Inform sub-classes about changed viewport
+            handleViewportChanged();
         }
 
         // Draw OSG scene
         m_viewer->frame();
+
+        // Update view and projection matrices
+        m_projectionMatrix = convertMatrix( m_viewer->getCamera()->getProjectionMatrix() );
+        m_viewMatrix       = convertMatrix( m_viewer->getCamera()->getViewMatrix() );
+
+        // Invoke post-render callback
+        postOsgRendering();
     }
 }
 
@@ -89,6 +106,15 @@ void OsgRenderStage::osg_cleanup()
     if (m_viewer) {
         m_viewer->unref();
     }
+}
+
+glm::mat4 OsgRenderStage::convertMatrix(const osg::Matrixd & mat) const
+{
+    const double * data = mat.ptr();
+    return glm::mat4( (float)data[ 0], (float)data[ 1], (float)data[ 2], (float)data[ 3],
+                      (float)data[ 4], (float)data[ 5], (float)data[ 6], (float)data[ 7],
+                      (float)data[ 8], (float)data[ 9], (float)data[10], (float)data[11],
+                      (float)data[12], (float)data[13], (float)data[14], (float)data[15] );
 }
 
 

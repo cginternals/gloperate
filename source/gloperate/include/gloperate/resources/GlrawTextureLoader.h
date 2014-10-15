@@ -7,7 +7,9 @@
 #pragma once
 
 
-#include <gloperate/resources/TextureLoader.h>
+#include <globjects/Texture.h>
+
+#include <gloperate/resources/Loader.h>
 
 
 namespace gloperate
@@ -18,7 +20,7 @@ namespace gloperate
 *  @brief
 *    Loader for glraw textures
 */
-class GLOPERATE_API GlrawTextureLoader : public TextureLoader {
+class GLOPERATE_API GlrawTextureLoader : public Loader<globjects::Texture> {
 
 
     public:
@@ -34,53 +36,13 @@ class GLOPERATE_API GlrawTextureLoader : public TextureLoader {
         */
         virtual ~GlrawTextureLoader();
 
-        /**
-        *  @brief
-        *    Check if this loader can load a specific file type
-        *
-        *  @param[in] ext
-        *    File extension (e.g., '.png')
-        *
-        *  @return
-        *    'true' if loading is implemented for given file type, else 'false'
-        */
-        virtual bool canLoad(const std::string & ext) const;
+        // Virtual gloperate::AbstractLoader functions
+        virtual bool canLoad(const std::string & ext) const override;
+        virtual std::vector<std::string> loadingTypes() const override;
+        virtual std::string allLoadingTypes() const override;
 
-        /**
-        *  @brief
-        *    Get list of file types for loading
-        *
-        *  @return
-        *    List of supported file types
-        *
-        *  @remarks
-        *    Example string: "My File Type (*.mft)"
-        */
-        virtual std::vector<std::string> loadingTypes() const;
-
-        /**
-        *  @brief
-        *    Get all file types for loading
-        *
-        *  @return
-        *    Supported file types without description, separated by space
-        *
-        *  @remarks
-        *    Example string: "*.mft *.any *.txt"
-        */
-        virtual std::string allLoadingTypes() const;
-
-        /**
-        *  @brief
-        *    Load data from file
-        *
-        *  @param filename
-        *    File name
-        *
-        *  @return
-        *    Loaded resource (can be null)
-        */
-        virtual globjects::Referenced * load(const std::string & filename) const;
+        // Virtual gloperate::Loader<globjects::Texture> functions
+        virtual globjects::Texture * load(const std::string & filename) const override;
 
 
 };

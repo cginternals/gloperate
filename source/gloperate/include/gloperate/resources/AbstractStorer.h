@@ -75,20 +75,6 @@ class GLOPERATE_API AbstractStorer {
         */
         virtual std::string allStoringTypes() const = 0;
 
-        /**
-        *  @brief
-        *    Store data to file
-        *
-        *  @param filename
-        *    File name
-        *  @param object
-        *   Storage resource
-        *
-        *  @return
-        *   'true' if storage was successful, else 'false'
-        */
-        virtual bool store(const std::string & filename, const globjects::Referenced * object) const = 0;
-
 
 };
 

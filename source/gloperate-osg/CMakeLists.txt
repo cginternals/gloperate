@@ -68,14 +68,17 @@ set(sources
     ${source_path}/OsgPainter_osg.cpp
     ${source_path}/OsgRenderStage.cpp
     ${source_path}/OsgRenderStage_osg.cpp
+    ${source_path}/OsgFboRenderStage.cpp
+    ${source_path}/OsgFboRenderStage_osg.cpp
     ${source_path}/OsgMouseHandler.cpp
     ${source_path}/OsgKeyboardHandler.cpp
 )
 
 set(headers
+    ${include_path}/gloperate-osg_api.h
     ${include_path}/OsgPainter.h
     ${include_path}/OsgRenderStage.h
-    ${include_path}/gloperate-osg_api.h
+    ${include_path}/OsgFboRenderStage.h
     ${include_path}/OsgMouseHandler.h
     ${include_path}/OsgKeyboardHandler.h
 )

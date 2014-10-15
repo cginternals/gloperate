@@ -42,6 +42,7 @@ public:
 
 	void setSamplerUniform(int index);
 
+    globjects::VertexArray * vao() const;
 
 protected:
     void initialize();

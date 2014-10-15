@@ -154,6 +154,11 @@ void ScreenAlignedQuad::setSamplerUniform(int index)
     m_program->setUniform("source", m_samplerIndex);
 }
 
+VertexArray * ScreenAlignedQuad::vao() const
+{
+    return m_vao;
+}
+
 Program * ScreenAlignedQuad::program()
 {
     return m_program;

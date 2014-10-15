@@ -1,12 +1,17 @@
 #include <basic-examples/RotatingQuad/RotatingQuad.h>
+
 #include <random>
+
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/constants.hpp>
+
 #include <glbinding/gl/gl.h>
+
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/base/StringTemplate.h>
+
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
@@ -118,7 +123,7 @@ void RotatingQuad::createAndSetupCamera()
 void RotatingQuad::createAndSetupTexture()
 {
     // Try to load texture
-    m_texture = m_resourceManager.loadTexture("data/emblem-important.png");
+    m_texture = m_resourceManager.load<globjects::Texture>("data/emblem-important.png");
 
     // Check if texture is valid
     if (!m_texture) {

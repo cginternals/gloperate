@@ -5,7 +5,10 @@
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include <gloperate-osg/OsgKeyboardHandler.h>
+
 #include <osgViewer/Viewer>
+
+#include <gloperate-osg/OsgRenderStage.h>
 
 
 using namespace gloperate;
@@ -143,8 +146,9 @@ static int toOsgKey(gloperate::Key key)
 }
 
 
-OsgKeyboardHandler::OsgKeyboardHandler(osgViewer::GraphicsWindowEmbedded * embedded)
+OsgKeyboardHandler::OsgKeyboardHandler(osgViewer::GraphicsWindowEmbedded * embedded, OsgRenderStage * stage)
 : m_embedded(embedded)
+, m_stage(stage)
 {
 }
 
@@ -155,11 +159,15 @@ OsgKeyboardHandler::~OsgKeyboardHandler()
 void OsgKeyboardHandler::onKeyDown(gloperate::Key key)
 {
     m_embedded->getEventQueue()->keyPress(toOsgKey(key));
+
+    if (m_stage) m_stage->scheduleProcess();
 }
 
 void OsgKeyboardHandler::onKeyUp(gloperate::Key key)
 {
     m_embedded->getEventQueue()->keyRelease(toOsgKey(key));
+
+    if (m_stage) m_stage->scheduleProcess();
 }
 
 
