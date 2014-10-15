@@ -44,21 +44,21 @@ public:
     template <typename T>
     Data<T> * createParameter(const std::string & name, const T & value);
 
-    std::vector<AbstractInputSlot*> allInputs();
-    std::vector<AbstractData*> allOutputs();
+    std::vector<AbstractInputSlot*> allInputs() const;
+    std::vector<AbstractData*> allOutputs() const;
 
-    AbstractData * findParameter(const std::string & name);
-    std::vector<AbstractData*> findOutputs(const std::string & name);
-
-    template <typename T>
-    Data<T> * getParameter(const std::string & name);
-    template <typename T>
-    Data<T> * getParameter();
+    AbstractData * findParameter(const std::string & name) const;
+    std::vector<AbstractData*> findOutputs(const std::string & name) const;
 
     template <typename T>
-    Data<T> * getOutput(const std::string & name);
+    Data<T> * getParameter(const std::string & name) const;
     template <typename T>
-    Data<T> * getOutput();
+    Data<T> * getParameter() const;
+
+    template <typename T>
+    Data<T> * getOutput(const std::string & name) const;
+    template <typename T>
+    Data<T> * getOutput() const;
 
     template<typename T, typename... Args>
     void addStages(T stage, Args... pipeline);

@@ -108,22 +108,22 @@ const std::vector<AbstractData*> & AbstractPipeline::parameters() const
     return m_parameters;
 }
 
-std::vector<AbstractInputSlot*> AbstractPipeline::allInputs()
+std::vector<AbstractInputSlot*> AbstractPipeline::allInputs() const
 {
     return flatten(collect(m_stages, [](const AbstractStage * stage) { return stage->allInputs(); }));
 }
 
-std::vector<AbstractData*> AbstractPipeline::allOutputs()
+std::vector<AbstractData*> AbstractPipeline::allOutputs() const
 {
     return flatten(collect(m_stages, [](const AbstractStage * stage) { return stage->allOutputs(); }));
 }
 
-AbstractData * AbstractPipeline::findParameter(const std::string & name)
+AbstractData * AbstractPipeline::findParameter(const std::string & name) const
 {
     return detect(m_parameters, [&name](AbstractData * parameter) { return parameter->matchesName(name); }, nullptr);
 }
 
-std::vector<AbstractData *> AbstractPipeline::findOutputs(const std::string & name)
+std::vector<AbstractData *> AbstractPipeline::findOutputs(const std::string & name) const
 {
     return select(allOutputs(), [&name](AbstractData * data) { return data->matchesName(name); });
 }

@@ -25,19 +25,19 @@ Data<T> * AbstractPipeline::createParameter(const std::string & name, const T & 
 }
 
 template <typename T>
-Data<T> * AbstractPipeline::getParameter(const std::string & name)
+Data<T> * AbstractPipeline::getParameter(const std::string & name) const
 {
     return dynamic_cast<Data<T>*>(findParameter(name));
 }
 
 template <typename T>
-Data<T> * AbstractPipeline::getParameter()
+Data<T> * AbstractPipeline::getParameter() const
 {
     return dynamic_cast<Data<T>*>(collection::detect(m_parameters, [](AbstractData * parameter) { return dynamic_cast<Data<T>*>(parameter) != nullptr; }, nullptr));
 }
 
 template <typename T>
-Data<T> * AbstractPipeline::getOutput(const std::string & name)
+Data<T> * AbstractPipeline::getOutput(const std::string & name) const
 {
     for (AbstractData* output : findOutputs(name))
     {
@@ -52,7 +52,7 @@ Data<T> * AbstractPipeline::getOutput(const std::string & name)
 }
 
 template <typename T>
-Data<T> * AbstractPipeline::getOutput()
+Data<T> * AbstractPipeline::getOutput() const
 {
     return dynamic_cast<Data<T>*>(collection::detect(allOutputs(), [](AbstractData * data) { return dynamic_cast<Data<T>*>(data) != nullptr; }, nullptr));
 }

@@ -72,6 +72,17 @@ const Data<T> & InputSlot<T>::operator=(const Data<T> & data)
 }
 
 template <typename T>
+InputSlot<T> & InputSlot<T>::operator=(InputSlot<T> & slot)
+{
+    if (slot.isConnected())
+    {
+        connect(*slot.m_data);
+    }
+
+    return *this;
+}
+
+template <typename T>
 void InputSlot<T>::connect(const Data<T> & data)
 {
 	m_data = &data;
