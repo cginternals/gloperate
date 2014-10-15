@@ -29,7 +29,10 @@ OsgRenderStage::OsgRenderStage(const std::string & name)
 , m_viewportH(0)
 {
     // Register input slots
-    addInput("viewport", m_viewport);
+    addInput("viewport",    m_viewport);
+
+    // [TODO] Allow OPTIONAL inputs
+    addInput("virtualTime", m_virtualTime);
 }
 
 /**
@@ -72,7 +75,7 @@ void OsgRenderStage::setScene(osg::Node * scene)
 *  @brief
 *    Create keyboard handler to control the wrapped OSG scene
 */
-OsgKeyboardHandler * OsgRenderStage::createKeyboardHandler() const
+OsgKeyboardHandler * OsgRenderStage::createKeyboardHandler()
 {
     if (m_embedded) {
         return new OsgKeyboardHandler(m_embedded, this);
@@ -85,7 +88,7 @@ OsgKeyboardHandler * OsgRenderStage::createKeyboardHandler() const
 *  @brief
 *    Create mouse handler to control the wrapped OSG scene
 */
-OsgMouseHandler * OsgRenderStage::createMouseHandler() const
+OsgMouseHandler * OsgRenderStage::createMouseHandler()
 {
     if (m_embedded) {
         return new OsgMouseHandler(m_embedded, this);

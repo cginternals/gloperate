@@ -1,5 +1,7 @@
 #include <gloperate-osg/OsgRenderStage.h>
 
+#include <glm/glm.hpp>
+
 #include <osg/Node>
 #include <osgViewer/Viewer>
 
@@ -82,6 +84,10 @@ void OsgRenderStage::osg_process()
         // Draw OSG scene
         m_viewer->frame();
 
+        // Update view and projection matrices
+        m_projectionMatrix = convertMatrix( m_viewer->getCamera()->getProjectionMatrix() );
+        m_viewMatrix       = convertMatrix( m_viewer->getCamera()->getViewMatrix() );
+
         // Invoke post-render callback
         postOsgRendering();
     }
@@ -100,6 +106,15 @@ void OsgRenderStage::osg_cleanup()
     if (m_viewer) {
         m_viewer->unref();
     }
+}
+
+glm::mat4 OsgRenderStage::convertMatrix(const osg::Matrixd & mat) const
+{
+    const double * data = mat.ptr();
+    return glm::mat4( (float)data[ 0], (float)data[ 1], (float)data[ 2], (float)data[ 3],
+                      (float)data[ 4], (float)data[ 5], (float)data[ 6], (float)data[ 7],
+                      (float)data[ 8], (float)data[ 9], (float)data[10], (float)data[11],
+                      (float)data[12], (float)data[13], (float)data[14], (float)data[15] );
 }
 
 
