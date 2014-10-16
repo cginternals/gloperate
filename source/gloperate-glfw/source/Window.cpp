@@ -152,7 +152,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
     return true;
 }
 
-bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor * monitor)
+bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
 {
     assert(nullptr == m_context);
 
