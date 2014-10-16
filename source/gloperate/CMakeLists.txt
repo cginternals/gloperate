@@ -90,6 +90,7 @@ set(sources
     ${source_path}/signals/ScopedConnection.cpp
     ${source_path}/signals/ConnectionMap.cpp
     ${source_path}/tools/ScreenshotTool.cpp
+    ${source_path}/UniformGroup.cpp
     ${source_path}/util/Plane3.cpp
     ${source_path}/util/ScreenAlignedQuad.cpp
     ${source_path}/util/AxisAlignedBoundingBox.cpp
@@ -153,6 +154,8 @@ set(headers
     ${include_path}/signals/signalzeug_api.h
     ${include_path}/signals/AbstractSignal.h
     ${include_path}/tools/ScreenshotTool.h
+    ${include_path}/UniformGroup.h
+    ${include_path}/UniformGroup.hpp
     ${include_path}/util/collection.hpp
     ${include_path}/util/AdaptiveGrid.h
     ${include_path}/util/ScreenAlignedQuad.h
