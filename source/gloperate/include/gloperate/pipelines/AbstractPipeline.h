@@ -38,11 +38,11 @@ public:
     void addParameter(AbstractData * parameter);
     void addParameter(const std::string & name, AbstractData * parameter);
 
+    template <typename T>
+    Data<T> * addConstantParameter(const T & value);
+
     void shareData(const AbstractData* data);
     void shareDataFrom(const AbstractInputSlot& slot);
-
-    template <typename T>
-    Data<T> * createParameter(const std::string & name, const T & value);
 
     std::vector<AbstractInputSlot*> allInputs() const;
     std::vector<AbstractData*> allOutputs() const;
@@ -78,6 +78,7 @@ protected:
     std::string m_name;
     std::vector<AbstractStage*> m_stages;
     std::vector<AbstractData*> m_parameters;
+    std::vector<AbstractData*> m_constantParameters;
     std::vector<const AbstractData*> m_sharedData;
     bool m_dependenciesSorted;
 private:

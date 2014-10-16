@@ -36,7 +36,7 @@ const T & InputSlot<T>::operator*() const
 template <typename T>
 const T * InputSlot<T>::operator->() const
 {
-	return &data();
+    return &data();
 }
 
 template <typename T>

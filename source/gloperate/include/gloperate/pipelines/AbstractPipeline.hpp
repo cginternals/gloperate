@@ -17,11 +17,13 @@ void AbstractPipeline::addStages(T stage, Args... pipeline)
 }
 
 template <typename T>
-Data<T> * AbstractPipeline::createParameter(const std::string & name, const T & value)
+Data<T> * AbstractPipeline::addConstantParameter(const T & value)
 {
-    auto parameter = new Data<T>(value);
-    addParameter(name, parameter);
-    return parameter;
+    auto constant = new Data<T>(value);
+
+    m_constantParameters.push_back(constant);
+
+    return constant;
 }
 
 template <typename T>

@@ -29,13 +29,14 @@ AbstractPipeline::AbstractPipeline(const std::string & name)
 
 AbstractPipeline::~AbstractPipeline()
 {
-    for (AbstractStage* stage: m_stages)
-	{
-		delete stage;
-	}
-    for (AbstractData* parameter: m_parameters)
+    for (AbstractStage* stage : m_stages)
     {
-        delete parameter;
+        delete stage;
+    }
+
+    for (AbstractData* data : m_constantParameters)
+    {
+        delete data;
     }
 }
 
@@ -139,7 +140,7 @@ void AbstractPipeline::execute()
     {
         sortDependencies();
     }
-	
+
     for (AbstractStage* stage: m_stages)
     {
         stage->execute();
