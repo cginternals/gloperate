@@ -4,10 +4,14 @@
 // Do not include any osg headers OR gloperate headers that pull in globjects/glbinding,
 // because that would break the separation between glbinding and gl.h.
 // Use only pointers to OSG objects, call ref/unref to maintain memory management,
-// and separate all calls to osg in osg_ functions implemented inside OsgPainter_osg.cpp.
+// and separate all calls to osg in osg_ functions implemented inside OsgRenderStage_osg.cpp.
 
+
+#include <glm/glm.hpp>
 
 #include <gloperate/pipelines/AbstractStage.h>
+#include <gloperate/pipelines/InputSlot.h>
+#include <gloperate/pipelines/Data.h>
 #include <gloperate-osg/gloperate-osg_api.h>
 
 
@@ -17,6 +21,11 @@ namespace osgViewer {
 }
 namespace osg {
     class Node;
+    class Matrixd;
+}
+namespace gloperate {
+    class AbstractViewportCapability;
+    class AbstractVirtualTimeCapability;
 }
 
 
@@ -81,21 +90,6 @@ public:
 
     /**
     *  @brief
-    *    Set viewport
-    *
-    *  @param[in] x
-    *    Viewport position x
-    *  @param[in] y
-    *    Viewport position y
-    *  @param[in] width
-    *    Viewport width
-    *  @param[in] height
-    *    Viewport height
-    */
-    void setViewport(int x, int y, int width, int height);
-
-    /**
-    *  @brief
     *    Create keyboard handler to control the wrapped OSG scene
     *
     *  @return
@@ -105,7 +99,7 @@ public:
     *    The returned handler must be destroyed by the caller, e.g., by adding
     *    it to an InputCapability, which will take care of this automatically.
     */
-    OsgKeyboardHandler * createKeyboardHandler() const;
+    OsgKeyboardHandler * createKeyboardHandler();
 
     /**
     *  @brief
@@ -118,12 +112,25 @@ public:
     *    The returned handler must be destroyed by the caller, e.g., by adding
     *    it to an InputCapability, which will take care of this automatically.
     */
-    OsgMouseHandler * createMouseHandler() const;
+    OsgMouseHandler * createMouseHandler();
 
 
 protected:
+    // Virtual AbstractRenderStage functions
     virtual void initialize() override;
     virtual void process() override;
+
+    /**
+    *  @brief
+    *    Called when the viewport has been changed
+    */
+    virtual void handleViewportChanged();
+
+    /**
+    *  @brief
+    *    Called right after OSG rendering
+    */
+    virtual void postOsgRendering();
 
 
 protected:
@@ -134,15 +141,28 @@ protected:
     void osg_process();
     void osg_cleanup();
 
+    glm::mat4 convertMatrix(const osg::Matrixd & mat) const;
+
+
+public:
+    // Input data
+    gloperate::InputSlot<gloperate::AbstractViewportCapability *>    m_viewport;
+    gloperate::InputSlot<gloperate::AbstractVirtualTimeCapability *> m_virtualTime;
+
+    // Output data
+    gloperate::Data<glm::mat4> m_projectionMatrix;
+    gloperate::Data<glm::mat4> m_viewMatrix;
+
 
 protected:
-    osgViewer::Viewer                 * m_viewer;         /**< OSG viewer */
-    osgViewer::GraphicsWindowEmbedded * m_embedded;       /**< Interface that acts like a window to OSG */
-    osg::Node                         * m_scene;          /**< The displayed scene */
-    int                                 m_viewportX;      /**< Viewport position x */
-    int                                 m_viewportY;      /**< Viewport position y */
-    int                                 m_viewportWidth;  /**< Viewport width */
-    int                                 m_viewportHeight; /**< Viewport height */
+    // OSG scene data
+    osgViewer::Viewer                 * m_viewer;       /**< OSG viewer */
+    osgViewer::GraphicsWindowEmbedded * m_embedded;     /**< Interface that acts like a window to OSG */
+    osg::Node                         * m_scene;        /**< The displayed scene */
+    int                                 m_viewportX;    /**< Current viewport x */
+    int                                 m_viewportY;    /**< Current viewport y */
+    int                                 m_viewportW;    /**< Current viewport width */
+    int                                 m_viewportH;    /**< Current viewport height */
 
 
 };

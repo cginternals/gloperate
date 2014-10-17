@@ -15,7 +15,7 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
 #include <globjects/Shader.h>
-#include <gloperate/util/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 
 
 using namespace globjects;
@@ -152,6 +152,11 @@ void ScreenAlignedQuad::setSamplerUniform(int index)
 {
     m_samplerIndex = index;
     m_program->setUniform("source", m_samplerIndex);
+}
+
+VertexArray * ScreenAlignedQuad::vao() const
+{
+    return m_vao;
 }
 
 Program * ScreenAlignedQuad::program()

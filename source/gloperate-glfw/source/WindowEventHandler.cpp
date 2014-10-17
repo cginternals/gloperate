@@ -2,6 +2,9 @@
 
 #include <globjects/globjects.h>
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
 
@@ -13,26 +16,25 @@
 
 
 using namespace gloperate;
+
 namespace gloperate_glfw
 {
 
-
-/**
-*  @brief
-*    Convert GLFW mouse button into gloperate mouse button
+/** \brief Convert GLFW mouse button into gloperate mouse button
 */
 static gloperate::MouseButton fromGLFWMouseButton(int button)
 {
-    switch (button) {
-        case GLFW_MOUSE_BUTTON_1: return MouseButton1;
-        case GLFW_MOUSE_BUTTON_2: return MouseButton2;
-        case GLFW_MOUSE_BUTTON_3: return MouseButton3;
-        case GLFW_MOUSE_BUTTON_4: return MouseButton4;
-        case GLFW_MOUSE_BUTTON_5: return MouseButton5;
-        case GLFW_MOUSE_BUTTON_6: return MouseButton6;
-        case GLFW_MOUSE_BUTTON_7: return MouseButton7;
-        case GLFW_MOUSE_BUTTON_8: return MouseButton8;
-        default:                  return NoMouseButton;
+    switch (button) 
+    {
+    case GLFW_MOUSE_BUTTON_1: return MouseButton1;
+    case GLFW_MOUSE_BUTTON_2: return MouseButton2;
+    case GLFW_MOUSE_BUTTON_3: return MouseButton3;
+    case GLFW_MOUSE_BUTTON_4: return MouseButton4;
+    case GLFW_MOUSE_BUTTON_5: return MouseButton5;
+    case GLFW_MOUSE_BUTTON_6: return MouseButton6;
+    case GLFW_MOUSE_BUTTON_7: return MouseButton7;
+    case GLFW_MOUSE_BUTTON_8: return MouseButton8;
+    default:                  return NoMouseButton;
     }
 }
 

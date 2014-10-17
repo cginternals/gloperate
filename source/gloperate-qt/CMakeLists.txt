@@ -1,8 +1,5 @@
-
-# http://qt-project.org/forums/viewthread/30006/
-if(MSVC)
-    cmake_policy(SET CMP0020 NEW)
-endif()
+# Target
+set(target gloperate-qt)
 
 #
 # External libraries
@@ -11,16 +8,29 @@ endif()
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(Qt5Core 5.1)
-find_package(Qt5Gui 5.1)
-find_package(Qt5Widgets 5.1)
-find_package(Qt5OpenGL)
 
-# Build only if Qt5 is available
-if(Qt5Core_DIR AND Qt5Gui_DIR AND Qt5Widgets_DIR)
+#
+# Qt5
+#
 
-# Target
-set(target gloperate-qt)
+# good resource: http://www.kdab.com/using-cmake-with-qt-5/
+
+# http://qt-project.org/forums/viewthread/30006/
+if(MSVC)
+    cmake_policy(SET CMP0020 NEW)
+endif()
+
+find_package(Qt5OpenGL  5.1 REQUIRED)
+find_package(Qt5Core    5.1 REQUIRED)
+find_package(Qt5Gui     5.1 REQUIRED)
+find_package(Qt5Widgets 5.1 REQUIRED)
+
+if (NOT Qt5Core_FOUND)
+    message(STATUS "Example ${target} (disabled because Qt5 couldn't be found)")
+    return()
+endif()
+
+
 message(STATUS "Lib ${target}")
 
 # Qt5 options
@@ -109,11 +119,15 @@ add_library(${target} ${headers} ${sources})
 target_link_libraries(${target} ${libs})
 qt5_use_modules(${target} Core Gui Widgets OpenGL)
 
+if(UNIX)
+    set(DEFAULT_COMPILE_FLAGS "${DEFAULT_COMPILE_FLAGS} -Wtrampolines -Wfloat-equal -Wconversion -Wswitch")
+endif()
+
 set_target_properties(${target}
     PROPERTIES
     LINKER_LANGUAGE              CXX
     FOLDER                      "${IDE_FOLDER}"
-    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
+    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG} "
     COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
     COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
@@ -134,6 +148,3 @@ install(TARGETS ${target}
 
 # Header files
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
-
-# if Qt5
-endif()

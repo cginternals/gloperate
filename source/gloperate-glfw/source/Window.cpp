@@ -10,6 +10,7 @@
 
 #include <gloperate/ContextFormat.h>
 
+#include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 #include <gloperate-glfw/events.h>
@@ -60,9 +61,7 @@ Window::~Window()
     }
 
     if (s_instances.empty())
-    {
-        MainLoop::quit(0);
-    }
+        Application::quit(0);
 }
 
 WindowEventHandlerBase * Window::eventHandler()
@@ -80,16 +79,6 @@ Context * Window::context() const
     return m_context;
 }
 
-int Window::width() const
-{
-    return size().x;
-}
-
-int Window::height() const
-{
-    return size().y;
-}
-
 glm::ivec2 Window::size() const
 {
     if (!m_window)
@@ -97,6 +86,7 @@ glm::ivec2 Window::size() const
 
     int w, h;
     glfwGetWindowSize(m_window, &w, &h);
+
     return glm::ivec2(w, h);
 }
 
@@ -107,6 +97,7 @@ glm::ivec2 Window::position() const
 
     int x, y;
     glfwGetWindowPos(m_window, &x, &y);
+
     return glm::ivec2(x, y);
 }
 
@@ -117,6 +108,7 @@ glm::ivec2 Window::framebufferSize() const
 
     int w, h;
     glfwGetFramebufferSize(m_window, &w, &h);
+
     return glm::ivec2(w, h);
 }
 
@@ -125,13 +117,7 @@ void Window::setTitle(const std::string & title)
     if (!m_window)
         return;
 
-    m_title = title;
-    glfwSetWindowTitle(m_window, m_title.c_str());
-}
-
-const std::string & Window::title() const
-{
-    return m_title;
+    glfwSetWindowTitle(m_window, title.c_str());
 }
 
 void Window::quitOnDestroy(const bool enable)
@@ -240,13 +226,13 @@ void Window::fullScreen()
     if (WindowMode != m_mode)
         return;
 
-    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    GLFWmonitor * monitor = glfwGetPrimaryMonitor();
     if (!monitor)
         return;
 
     m_windowedModeSize = size();
 
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    const GLFWvidmode * mode = glfwGetVideoMode(monitor);
     int w = mode->width;
     int h = mode->height;
 
@@ -381,7 +367,7 @@ void Window::destroy()
     destroyContext();
 
     if (m_quitOnDestroy)
-        MainLoop::quit(0);
+        Application::quit(0);
 }
 
 GLFWwindow * Window::internalWindow() const
@@ -432,9 +418,7 @@ void Window::processEvents()
 void Window::processEvent(WindowEvent & event)
 {
     if (m_eventHandler)
-    {
         m_eventHandler->handleEvent(event);
-    }
 
     postprocessEvent(event);
 }
@@ -443,15 +427,17 @@ void Window::postprocessEvent(WindowEvent & event)
 {
     switch (event.type())
     {
-        case WindowEvent::Paint:
-            swap();
-            break;
-        case WindowEvent::Close:
-            if (!event.isAccepted())
-                destroy();
-            break;
-        default:
-            break;
+    case WindowEvent::Type::Paint:
+        swap();
+        break;
+
+    case WindowEvent::Type::Close:
+        if (!event.isAccepted())
+            destroy();
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -481,16 +467,22 @@ gloperate::Painter * Window::painter() const
 
 void Window::setPainter(gloperate::Painter * painter)
 {
+    if (m_painter == painter)
+        return;
+
+    if (m_painter)
+        removeTimer(0);
+
     m_painter = painter;
 
-    removeTimer(0);
+    if (!m_painter)
+        return;
 
-    gloperate::AbstractVirtualTimeCapability * timeCapability = m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>();
+    gloperate::AbstractVirtualTimeCapability * timeCapability = 
+        m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>();
 
     if (timeCapability)
-    {
         addTimer(0, 0, false);
-    }
 }
 
 gloperate::ResourceManager & Window::resourceManager()
@@ -502,6 +494,5 @@ const gloperate::ResourceManager & Window::resourceManager() const
 {
     return m_resourceManager;
 }
-
 
 } // namespace gloperate_glfw

@@ -38,27 +38,27 @@ public:
     void addParameter(AbstractData * parameter);
     void addParameter(const std::string & name, AbstractData * parameter);
 
+    template <typename T>
+    Data<T> * addConstantParameter(const T & value);
+
     void shareData(const AbstractData* data);
     void shareDataFrom(const AbstractInputSlot& slot);
 
-    template <typename T>
-    Data<T> * createParameter(const std::string & name, const T & value);
+    std::vector<AbstractInputSlot*> allInputs() const;
+    std::vector<AbstractData*> allOutputs() const;
 
-    std::vector<AbstractInputSlot*> allInputs();
-    std::vector<AbstractData*> allOutputs();
-
-    AbstractData * findParameter(const std::string & name);
-    std::vector<AbstractData*> findOutputs(const std::string & name);
+    AbstractData * findParameter(const std::string & name) const;
+    std::vector<AbstractData*> findOutputs(const std::string & name) const;
 
     template <typename T>
-    Data<T> * getParameter(const std::string & name);
+    Data<T> * getParameter(const std::string & name) const;
     template <typename T>
-    Data<T> * getParameter();
+    Data<T> * getParameter() const;
 
     template <typename T>
-    Data<T> * getOutput(const std::string & name);
+    Data<T> * getOutput(const std::string & name) const;
     template <typename T>
-    Data<T> * getOutput();
+    Data<T> * getOutput() const;
 
     template<typename T, typename... Args>
     void addStages(T stage, Args... pipeline);
@@ -78,6 +78,7 @@ protected:
     std::string m_name;
     std::vector<AbstractStage*> m_stages;
     std::vector<AbstractData*> m_parameters;
+    std::vector<AbstractData*> m_constantParameters;
     std::vector<const AbstractData*> m_sharedData;
     bool m_dependenciesSorted;
 private:

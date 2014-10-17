@@ -6,7 +6,6 @@
 #include <queue>
 #include <glm/glm.hpp>
 #include <globjects/base/ref_ptr.h>
-#include <gloperate-glfw/MainLoop.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
 #include <globjects/base/ref_ptr.h>
@@ -39,8 +38,7 @@ class WindowEvent;
 class Context;
 
 
-/**
- * Attach a WindowEventHandlerBase specialization for event handling.
+/** \brief Attach a WindowEventHandlerBase specialization for event handling.
  */
 class GLOPERATE_GLFW_API Window
 {
@@ -51,31 +49,43 @@ public:
     Window(gloperate::ResourceManager & resourceManager);
     virtual ~Window();
 
-    bool create(const gloperate::ContextFormat & format, int width = 1280, int height = 720);
-    bool create(const gloperate::ContextFormat & format, const std::string & title = "gloperate", int width = 1280, int height = 720);
+    bool create(
+        const gloperate::ContextFormat & format
+    ,   int width  = 1280
+    ,   int height =  720);
+    bool create(
+        const gloperate::ContextFormat & format
+    ,   const std::string & title = "gloperate"
+    ,   int width  = 1280
+    ,   int height =  720);
 
-    /**
-     * Takes ownership of the given eventhandler and deletes that either on
-     * quitting, just before the opengl context gets destroyed, or when
-     * reassigning a new, different handler.
+    /** Takes ownership of the given eventhandler and deletes that either on
+        quitting, just before the opengl context gets destroyed, or when
+        reassigning a new, different handler.
      */
     void setEventHandler(WindowEventHandlerBase * eventHandler);
-    const WindowEventHandlerBase * eventHandler() const;
+
     WindowEventHandlerBase * eventHandler();
+    const WindowEventHandlerBase * eventHandler() const;
+
+    void close();
 
     void show();
     void hide();
 
-    int width() const;
-    int height() const;
-    glm::ivec2 size() const;
-    glm::ivec2 position() const;
-    glm::ivec2 framebufferSize() const;
-    int inputMode(int mode) const;
+    void setTitle(const std::string & title);
     const std::string & title() const;
 
-    void setTitle(const std::string & title);
     void resize(int width, int height);
+    glm::ivec2 size() const;
+
+    glm::ivec2 position() const;
+    glm::ivec2 framebufferSize() const;
+
+
+
+
+    int inputMode(int mode) const;
     void setInputMode(int mode, int value);
 
     /**
@@ -88,11 +98,7 @@ public:
 
     Context * context() const;
 
-    void close();
 
-    /**
-     * Queues a paint event.
-     */
     void repaint();
     void idle();
 
@@ -121,8 +127,9 @@ public:
 
     gloperate::ResourceManager & resourceManager();
     const gloperate::ResourceManager & resourceManager() const;
+
 protected:
-    bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
+    bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
     void destroyContext();
 
     void initializeEventHandler();
@@ -135,9 +142,7 @@ protected:
 
 protected:
     Context * m_context;
-
     GLFWwindow * m_window;
-    std::string m_title;
 
     globjects::ref_ptr<WindowEventHandlerBase> m_eventHandler;
     std::queue<WindowEvent*> m_eventQueue;

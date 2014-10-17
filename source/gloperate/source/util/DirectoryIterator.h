@@ -14,8 +14,14 @@ public:
     /** \brief Creates a list with the file paths of all files of a given path.
     */
     static void files(
-        std::vector<std::string> & paths
+        std::vector<std::string> & fpaths
     ,   const std::string & path
+    ,   bool prependpath = false
+    ,   bool recursive = false);
+
+    static void files(
+        std::vector<std::string> & fpaths
+    ,   const std::vector<std::string> & paths
     ,   bool prependpath = false
     ,   bool recursive = false);
 
@@ -23,6 +29,11 @@ public:
     */
     static std::vector<std::string> files(
         const std::string & path
+    ,   bool prependpath = false
+    ,   bool recursive = false);
+
+   static std::vector<std::string> files(
+        const std::vector<std::string> & path
     ,   bool prependpath = false
     ,   bool recursive = false);
 
