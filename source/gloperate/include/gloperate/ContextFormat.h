@@ -61,9 +61,6 @@ public:
 
 	/** For major and minor parameters only valid version pairs are allowed,
         on invalid pairs, nearest major and minor are set.
-
-        Note: OpenGL versions previous to 3.2. are not supported and might not
-        work. It is not taken into account in the development of globjects.
     */
     void setVersion(const glbinding::Version & version);
     void setVersion(unsigned int majorVersion, unsigned int minorVersion);
