@@ -137,7 +137,7 @@ void PluginManager::removePath(const std::string & path)
 {
     const std::string p = DirectoryIterator::truncate(path);
 
-    const std::vector<std::string>::const_iterator i = std::find(m_paths.cbegin(), m_paths.cend(), p);
+    const std::vector<std::string>::iterator i = std::find(m_paths.begin(), m_paths.end(), p);
     if (i == m_paths.end())
         return;
 

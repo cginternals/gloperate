@@ -36,7 +36,7 @@ void DirectoryIterator::files(
     for (const std::string & path : paths)
     {
         const std::vector<std::string> fs(DirectoryIterator::files(path, prependpath, recursive));
-        fpaths.insert(fpaths.cend(), fs.cbegin(), fs.cend());
+        fpaths.insert(fpaths.end(), fs.begin(), fs.end());
     }
 }
 
