@@ -51,6 +51,7 @@ public:
     void addOptionalInput(const std::string & name, AbstractInputSlot & input);
 
     void alwaysProcess(bool on);
+    void scheduleProcess();
 
     void invalidateOutputs();
 public:
@@ -66,6 +67,7 @@ protected:
 protected:
     bool m_enabled;
     bool m_alwaysProcess;
+    bool m_processScheduled;
     std::string m_name;
     globjects::CachedValue<bool> m_usable;
 

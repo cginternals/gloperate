@@ -53,7 +53,7 @@ void OsgPainter::osg_onInitialize()
     m_embedded->ref();
 
     // Initialize camera
-    m_viewer->getCamera()->setProjectionMatrixAsPerspective(45.0, 1.0, 0.5, 1000);
+    m_viewer->getCamera()->setProjectionMatrixAsPerspective(30.0f, 1.0, 1.0f, 10000.0f);
     m_viewer->getCamera()->setViewMatrix(osg::Matrix::lookAt(osg::Vec3(0, 0, 50), osg::Vec3(0, 0, 0), osg::Vec3(0, 1, 0))); 
 
     // Initialize viewer
@@ -72,8 +72,17 @@ void OsgPainter::osg_onPaint()
     // Check if painter has been initialized correctly
     if (m_viewer && m_embedded) {
         // Send resize-event
-        m_embedded->resized(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
-        m_embedded->getEventQueue()->windowResize(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
+        if (m_viewportX != m_viewportCapability->x() || m_viewportY != m_viewportCapability->y() ||
+            m_viewportWidth != m_viewportCapability->width() || m_viewportHeight != m_viewportCapability->height() )
+        {
+            m_viewportX      = m_viewportCapability->x();
+            m_viewportY      = m_viewportCapability->y();
+            m_viewportWidth  = m_viewportCapability->width();
+            m_viewportHeight = m_viewportCapability->height();
+
+            m_embedded->resized(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+            m_embedded->getEventQueue()->windowResize(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+        }
 
         // Draw OSG scene
         m_viewer->frame();

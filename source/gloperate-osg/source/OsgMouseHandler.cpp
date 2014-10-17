@@ -5,7 +5,10 @@
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include <gloperate-osg/OsgMouseHandler.h>
+
 #include <osgViewer/Viewer>
+
+#include <gloperate-osg/OsgRenderStage.h>
 
 
 using namespace gloperate;
@@ -32,8 +35,9 @@ static int toOsgMouseButton(gloperate::MouseButton button)
 }
 
 
-OsgMouseHandler::OsgMouseHandler(osgViewer::GraphicsWindowEmbedded * embedded)
+OsgMouseHandler::OsgMouseHandler(osgViewer::GraphicsWindowEmbedded * embedded, OsgRenderStage * stage)
 : m_embedded(embedded)
+, m_stage(stage)
 {
 }
 
@@ -44,21 +48,29 @@ OsgMouseHandler::~OsgMouseHandler()
 void OsgMouseHandler::onMouseMove(int x, int y)
 {
     m_embedded->getEventQueue()->mouseMotion(static_cast<float>(x), static_cast<float>(y));
+
+    if (m_stage) m_stage->scheduleProcess();
 }
 
 void OsgMouseHandler::onMousePress(int x, int y, gloperate::MouseButton button)
 {
     m_embedded->getEventQueue()->mouseButtonPress(static_cast<float>(x), static_cast<float>(y), toOsgMouseButton(button));
+
+    if (m_stage) m_stage->scheduleProcess();
 }
 
 void OsgMouseHandler::onMouseRelease(int x, int y, gloperate::MouseButton button)
 {
     m_embedded->getEventQueue()->mouseButtonRelease(static_cast<float>(x), static_cast<float>(y), toOsgMouseButton(button));
+
+    if (m_stage) m_stage->scheduleProcess();
 }
 
 void OsgMouseHandler::onMouseDoubleClick(int x, int y, gloperate::MouseButton button)
 {
     m_embedded->getEventQueue()->mouseDoubleButtonPress(static_cast<float>(x), static_cast<float>(y), toOsgMouseButton(button));
+
+    if (m_stage) m_stage->scheduleProcess();
 }
 
 void OsgMouseHandler::onMouseWheel(int dx, int dy)
@@ -69,6 +81,8 @@ void OsgMouseHandler::onMouseWheel(int dx, int dy)
     if (dy != 0) {
         m_embedded->getEventQueue()->mouseScroll(dy > 0 ? osgGA::GUIEventAdapter::SCROLL_UP : osgGA::GUIEventAdapter::SCROLL_DOWN);
     }
+
+    if (m_stage) m_stage->scheduleProcess();
 }
 
 

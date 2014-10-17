@@ -16,7 +16,7 @@ namespace gloperate
 *    Constructor
 */
 GlrawTextureLoader::GlrawTextureLoader()
-: TextureLoader()
+: Loader<globjects::Texture>()
 {
 }
 
@@ -28,19 +28,11 @@ GlrawTextureLoader::~GlrawTextureLoader()
 {
 }
 
-/**
-*  @brief
-*    Check if this loader can load a specific file type
-*/
 bool GlrawTextureLoader::canLoad(const std::string & ext) const
 {
     return (ext == ".glraw");
 }
 
-/**
-*  @brief
-*    Get list of file types for loading
-*/
 std::vector<std::string> GlrawTextureLoader::loadingTypes() const
 {
     static std::vector<std::string> fileTypes {
@@ -50,21 +42,14 @@ std::vector<std::string> GlrawTextureLoader::loadingTypes() const
     return fileTypes;
 }
 
-/**
-*  @brief
-*    Get all file types for loading
-*/
 std::string GlrawTextureLoader::allLoadingTypes() const
 {
     return "*.glraw";
 }
 
-/**
-*  @brief
-*    Load data from file
-*/
-globjects::Referenced * GlrawTextureLoader::load(const std::string & /*filename*/) const
+globjects::Texture * GlrawTextureLoader::load(const std::string & /*filename*/) const
 {
+	// [TODO] Implement!
     return nullptr;
 }
 

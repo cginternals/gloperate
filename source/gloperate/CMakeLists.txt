@@ -1,18 +1,17 @@
-# Target
+
 set(target gloperate)
 message(STATUS "Lib ${target}")
 
-#
-# External libraries
-#
 
+# External libraries
+
+find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 
-#
+
 # Includes
-#
 
 include_directories(
     ${GLM_INCLUDE_DIR}
@@ -26,18 +25,17 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/source
 )
 
-#
+
 # Libraries
-#
 
 set(libs
+	${OPENGL_LIBRARIES}
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
 )
 
-#
+
 # Compiler definitions
-#
 
 if (OPTION_BUILD_STATIC)
     add_definitions("-DGLOPERATE_STATIC")
@@ -48,9 +46,8 @@ endif()
 # for compatibility between glm 0.9.4 and 0.9.5
 add_definitions("-DGLM_FORCE_RADIANS")
 
-#
+
 # Sources
-#
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
@@ -82,14 +79,12 @@ set(sources
 	${source_path}/pipelines/AbstractPipeline.cpp
 	${source_path}/plugin/Plugin.cpp
 	${source_path}/plugin/PluginLibrary.cpp
-	${source_path}/plugin/PluginManager.cpp
-	${source_path}/resources/TextureLoader.cpp
-	${source_path}/resources/TextureStorer.cpp
+    ${source_path}/plugin/PluginManager.cpp
 	${source_path}/resources/AbstractLoader.cpp
+    ${source_path}/resources/AbstractStorer.cpp
+    ${source_path}/resources/GlrawTextureLoader.cpp
+    ${source_path}/resources/RawFile.cpp
 	${source_path}/resources/ResourceManager.cpp
-	${source_path}/resources/RawFile.cpp
-	${source_path}/resources/GlrawTextureLoader.cpp
-	${source_path}/resources/AbstractStorer.cpp
 	${source_path}/signals/AbstractSignal.cpp
 	${source_path}/signals/ConnectionMap.cpp
 	${source_path}/signals/Connection.cpp
@@ -97,15 +92,13 @@ set(sources
 	${source_path}/tools/ScreenshotTool.cpp
 	${source_path}/util/Icosahedron.cpp
 	${source_path}/util/Plane3.cpp
+	${source_path}/util/Plane3.h
 	${source_path}/util/ScreenAlignedQuad.cpp
 	${source_path}/util/dirent_msvc.h
-	${source_path}/util/StringSourceDecorator.cpp
 	${source_path}/util/AxisAlignedBoundingBox.cpp
 	${source_path}/util/AdaptiveGrid.cpp
-	${source_path}/util/Plane3.h
 	${source_path}/util/DirectoryIterator.h
 	${source_path}/util/DirectoryIterator.cpp
-	${source_path}/util/StringTemplate.cpp
 )
 
 set(headers
@@ -141,18 +134,22 @@ set(headers
 	${include_path}/pipelines/InputSlot.h
 	${include_path}/pipelines/InputSlot.hpp
 	${include_path}/plugin/PainterPlugin.hpp
-	${include_path}/plugin/PluginManager.h
 	${include_path}/plugin/plugin_api.h
 	${include_path}/plugin/Plugin.h
-	${include_path}/plugin/PainterPlugin.h
 	${include_path}/plugin/PluginLibrary.h
-	${include_path}/resources/ResourceManager.h
-	${include_path}/resources/TextureLoader.h
-	${include_path}/resources/AbstractStorer.h
-	${include_path}/resources/GlrawTextureLoader.h
+    ${include_path}/plugin/PainterPlugin.h
+    ${include_path}/plugin/PluginManager.h
+    ${include_path}/resources/AbstractLoader.h
+    ${include_path}/resources/Loader.h
+    ${include_path}/resources/Loader.hpp
+    ${include_path}/resources/AbstractStorer.h
+    ${include_path}/resources/Storer.h
+    ${include_path}/resources/Storer.hpp
+    ${include_path}/resources/GlrawTextureLoader.h
 	${include_path}/resources/RawFile.h
-	${include_path}/resources/AbstractLoader.h
-	${include_path}/resources/TextureStorer.h
+    ${include_path}/resources/ResourceManager.h
+    ${include_path}/resources/ResourceManager.hpp
+    ${include_path}/signals/ScopedConnection.h
 	${include_path}/signals/Signal.h
 	${include_path}/signals/signalzeug_api.h
 	${include_path}/signals/ConnectionMap.hpp
@@ -162,14 +159,14 @@ set(headers
 	${include_path}/signals/Connection.h
 	${include_path}/signals/Signal.hpp
 	${include_path}/tools/ScreenshotTool.h
+    ${include_path}/util/collection.hpp
 	${include_path}/util/AdaptiveGrid.h
 	${include_path}/util/ScreenAlignedQuad.h
 	${include_path}/util/Icosahedron.h
-	${include_path}/util/StringSourceDecorator.h
-	${include_path}/util/StringTemplate.h
 	${include_path}/util/collection.hpp
 	${include_path}/util/AxisAlignedBoundingBox.h
 )
+
 
 # Group source files
 set(header_group "Header Files (API)")
@@ -179,9 +176,8 @@ source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$"
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
-#
+
 # Build library
-#
 
 add_library(${target} ${headers} ${sources})
 
@@ -199,9 +195,8 @@ set_target_properties(${target}
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
     INCLUDE_PATH                ${include_path})
 
-#
+
 # Deployment
-#
 
 # Library
 install(TARGETS ${target}

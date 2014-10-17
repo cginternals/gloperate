@@ -36,7 +36,7 @@ const T & InputSlot<T>::operator*() const
 template <typename T>
 const T * InputSlot<T>::operator->() const
 {
-	return &data();
+    return &data();
 }
 
 template <typename T>
@@ -69,6 +69,17 @@ const Data<T> & InputSlot<T>::operator=(const Data<T> & data)
 	connect(data);
 
 	return data;
+}
+
+template <typename T>
+InputSlot<T> & InputSlot<T>::operator=(InputSlot<T> & slot)
+{
+    if (slot.isConnected())
+    {
+        connect(*slot.m_data);
+    }
+
+    return *this;
 }
 
 template <typename T>

@@ -27,7 +27,7 @@ class AbstractStorer;
 *  @brief
 *    Class to help loading/accessing resources (textures, ...)
 */
-class GLOPERATE_API ResourceManager {
+class ResourceManager {
 
 
     public:
@@ -35,13 +35,13 @@ class GLOPERATE_API ResourceManager {
         *  @brief
         *    Constructor
         */
-        ResourceManager();
+        GLOPERATE_API ResourceManager();
 
         /**
         *  @brief
         *    Destructor
         */
-        virtual ~ResourceManager();
+        GLOPERATE_API virtual ~ResourceManager();
 
         /**
         *  @brief
@@ -50,7 +50,7 @@ class GLOPERATE_API ResourceManager {
         *  @return
         *    List of loaders
         */
-        const std::vector<AbstractLoader *> & loaders() const;
+        GLOPERATE_API const std::vector<AbstractLoader *> & loaders() const;
 
         /**
         *  @brief
@@ -59,7 +59,7 @@ class GLOPERATE_API ResourceManager {
         *  @return
         *    List of storers
         */
-        const std::vector<AbstractStorer *> & storers() const;
+        GLOPERATE_API const std::vector<AbstractStorer *> & storers() const;
 
         /**
         *  @brief
@@ -68,7 +68,7 @@ class GLOPERATE_API ResourceManager {
         *  @param[in] loader
         *    Resource loader
         */
-        void addLoader(AbstractLoader * loader);
+        GLOPERATE_API void addLoader(AbstractLoader * loader);
 
         /**
         *  @brief
@@ -77,33 +77,49 @@ class GLOPERATE_API ResourceManager {
         *  @param[in] storer
         *    Resource storer
         */
-        void addStorer(AbstractStorer * storer);
+        GLOPERATE_API void addStorer(AbstractStorer * storer);
 
         /**
         *  @brief
-        *    Load texture from file
+        *    Load resource from file
         *
         *  @param filename
         *    File name
         *
         *  @return
-        *    Loaded texture (can be null)
+        *    Loaded resource (can be null)
         */
-        globjects::Texture * loadTexture(const std::string & filename) const;
+        template <typename T>
+        T * load(const std::string & filename) const;
 
         /**
         *  @brief
-        *    Store texture to file
+        *    Store resource to file
         *
         *  @param filename
         *    File name
-        *  @param texture
-        *    The texture object
+        *  @param resource
+        *    The resource object
         *
         *  @return
         *    'true', if storage was successful, esle 'false'
         */
-        bool storeTexture(const std::string & filename, globjects::Texture * texture) const;
+        template <typename T>
+        bool store(const std::string & filename, T * resource) const;
+
+
+    protected:
+        /**
+        *  @brief
+        *    Get file extension
+        *
+        *  @param[in] filename
+        *    Path to file (with filename and extension)
+        *
+        *  @return
+        *    Fielname extension
+        */
+        GLOPERATE_API std::string getFileExtension(const std::string & filename) const;
 
 
     protected:
@@ -115,3 +131,6 @@ class GLOPERATE_API ResourceManager {
 
 
 } // namespace gloperate
+
+
+#include <gloperate/resources/ResourceManager.hpp>

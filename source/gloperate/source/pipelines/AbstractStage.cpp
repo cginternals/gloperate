@@ -12,6 +12,7 @@ namespace gloperate
 AbstractStage::AbstractStage(const std::string & name)
 : m_enabled(true)
 , m_alwaysProcess(false)
+, m_processScheduled(false)
 , m_name(name)
 {
     dependenciesChanged.connect([this]() { m_usable.invalidate(); });
@@ -55,10 +56,12 @@ bool AbstractStage::execute()
     if (!inputsUsable())
         return false;
 
-    if (needsToProcess())
+    if (needsToProcess()) {
+        m_processScheduled = false;
         process();
-    else
+    } else {
         return false;
+    }
     
     markInputsProcessed();
     
@@ -72,7 +75,8 @@ void AbstractStage::initialize()
 bool AbstractStage::needsToProcess() const
 {
     std::set<AbstractInputSlot*> inputs = allInputs();
-    return m_alwaysProcess || inputs.empty() || std::any_of(inputs.begin(), inputs.end(), [](const AbstractInputSlot * input) {
+
+    return m_alwaysProcess || m_processScheduled || inputs.empty() || std::any_of(inputs.begin(), inputs.end(), [](const AbstractInputSlot * input) {
         return input->hasChanged();
     });
 }
@@ -128,6 +132,11 @@ bool AbstractStage::isEnabled() const
 void AbstractStage::alwaysProcess(bool on)
 {
     m_alwaysProcess = on;
+}
+
+void AbstractStage::scheduleProcess()
+{
+    m_processScheduled = true;
 }
 
 bool AbstractStage::requires(const AbstractStage * stage, bool recursive) const

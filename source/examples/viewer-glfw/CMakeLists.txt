@@ -1,9 +1,8 @@
 
 set(target viewer-glfw)
 
-#
+
 # External libraries
-#
 
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
@@ -18,9 +17,8 @@ endif()
 
 message(STATUS "Example ${target}")
 
-#
+
 # Includes
-#
 
 include_directories(
     ${GLM_INCLUDE_DIR}
@@ -36,19 +34,18 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-#
+
 # Libraries
-#
 
 set(libs
+    ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
     gloperate
     gloperate-glfw
 )
 
-#
+
 # Sources
-#
 
 set(headers
 )
@@ -56,9 +53,8 @@ set(sources
     main.cpp
 )
 
-#
+
 # Build executable
-#
 
 add_executable(${target} ${headers} ${sources})
 
@@ -75,9 +71,8 @@ set_target_properties(${target}
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
 
-#
+
 # Deployment
-#
 
 install(TARGETS ${target}
     RUNTIME DESTINATION ${INSTALL_EXAMPLES}

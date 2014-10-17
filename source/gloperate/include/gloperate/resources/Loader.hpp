@@ -4,9 +4,11 @@
  * Copyright (C) 2014 Computer Graphics Systems Group at the 
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
-#include <globjects/Texture.h>
-#include <gloperate/resources/TextureStorer.h>
- 
+#pragma once
+
+
+#include <gloperate/resources/Loader.h>
+
 
 namespace gloperate
 {
@@ -16,8 +18,8 @@ namespace gloperate
 *  @brief
 *    Constructor
 */
-TextureStorer::TextureStorer()
-: AbstractStorer()
+template <typename T>
+Loader<T>::Loader()
 {
 }
 
@@ -25,17 +27,9 @@ TextureStorer::TextureStorer()
 *  @brief
 *    Destructor
 */
-TextureStorer::~TextureStorer()
+template <typename T>
+Loader<T>::~Loader()
 {
-}
-
-/**
-*  @brief
-*    Store texture to file
-*/
-bool TextureStorer::storeTexture(const std::string & filename, const globjects::Texture * texture) const
-{
-    return this->store(filename, texture);
 }
 
 

@@ -27,6 +27,7 @@ public:
     virtual bool matchType(const AbstractData & data) override;
 
 	const Data<T> & operator=(const Data<T> & data);
+    InputSlot & operator=(InputSlot & slot);
 
     virtual const AbstractData * connectedData() const override;
 

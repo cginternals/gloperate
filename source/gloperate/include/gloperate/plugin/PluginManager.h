@@ -16,7 +16,7 @@ class Plugin;
 
 /** \brief Class for loading and managing plugins
 */
-class GLOPERATE_API PluginManager 
+class GLOPERATE_API PluginManager
 {
 public:
     /** \brief Initialize plugin manager

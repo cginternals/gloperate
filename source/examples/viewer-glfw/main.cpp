@@ -8,6 +8,7 @@
 
 #include <gloperate/resources/ResourceManager.h>
 
+#include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventHandler.h>

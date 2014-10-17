@@ -19,7 +19,7 @@
 
 #include "Plane3.h"
 #include <gloperate/Camera.h>
-#include <gloperate/util/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 
 using namespace glm;
 using namespace globjects;
