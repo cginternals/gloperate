@@ -20,113 +20,8 @@
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 
-
 using namespace gl;
 using namespace glm;
-
-namespace 
-{
-
-static const char * vertSource = R"(
-    #version 150 core
-        
-    in vec3 a_vertex;
-    out float v_h;
-
-    uniform sampler2D terrain;
-    uniform float time;
-
-    uniform int numcubes;
-
-    void main()
-    {
-        float oneovernumcubes = 1.f / float(numcubes);
-        vec2 uv = vec2(mod(gl_InstanceID, numcubes), floor(gl_InstanceID * oneovernumcubes)) * 2.0 * oneovernumcubes;
-
-        vec3 v = a_vertex * oneovernumcubes - (1.0 - oneovernumcubes);
-        v.xz  += uv;
-
-        v_h = texture2D(terrain, uv * 0.5 + vec2(sin(time * 0.04), time * 0.02)).r * 2.0 / 3.0;
-
-        if(a_vertex.y > 0.0) 
-            v.y += v_h;
-
-        gl_Position = vec4(v, 1.0); 
-    })";
-
-static const char * geomSource = R"(
-    #version 150 core
-
-    uniform mat4 modelViewProjection;
-    uniform int numcubes;
-
-    in  float v_h[3];
-    out float g_h;
-
-    out vec2 g_uv;
-    out vec3 g_normal;
-
-    layout (triangles) in;
-    layout (triangle_strip, max_vertices = 4) out;
-
-    void main()
-    {
-        vec4 u = gl_in[1].gl_Position - gl_in[0].gl_Position;
-        vec4 v = gl_in[2].gl_Position - gl_in[0].gl_Position;
-
-        float f = mix(1.0, v.y * float(numcubes) * 0.5, step(1.0 / float(numcubes), v.y));
-
-        vec3 n = cross(normalize((modelViewProjection * u).xyz), normalize((modelViewProjection * v).xyz));
-
-        gl_Position = modelViewProjection * gl_in[0].gl_Position;
-        g_uv = vec2(0.0, 0.0);
-        g_normal = n;
-        g_h = v_h[0];
-        EmitVertex();
-
-        gl_Position = modelViewProjection * gl_in[1].gl_Position;
-        g_uv = vec2(1.0, 0.0);
-        EmitVertex();
-
-        gl_Position = modelViewProjection * gl_in[2].gl_Position;
-        g_uv = vec2(0.0, f);
-        EmitVertex();
-
-        gl_Position = modelViewProjection * vec4((gl_in[0].gl_Position + u + v).xyz, 1.0);
-        g_uv = vec2(1.0, f);
-        EmitVertex();
-    })";
-
-static const char * fragSource = R"(
-    #version 150 core
-
-    in float g_h;
-        
-    in vec2 g_uv;
-    in vec3 g_normal;
-
-    out vec4 fragColor;
-
-    uniform sampler2D patches;
-
-    void main()
-    {
-        vec3 n = normalize(g_normal);
-        vec3 l = normalize(vec3(0.0, -0.5, 1.0));
-
-        float lambert = dot(n, l);
-
-        float t = (2.0 / 3.0 - g_h) * 1.5 * 4.0 - 1.0;
-        vec2 uv = g_uv * vec2(0.25, 1.0);
-
-        vec4 c0 = texture2D(patches, uv + max(floor(t), 0.0) * vec2(0.25, 0.0));
-        vec4 c1 = texture2D(patches, uv + min(floor(t) + 1.0, 3.0) * vec2(0.25, 0.0));
-
-        fragColor = mix(c0, c1, smoothstep(0.25, 0.75, fract(t))) * lambert;
-    })";
-
-}
-
 
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)
@@ -157,9 +52,9 @@ void CubeScape::onInitialize()
 
     m_program = new globjects::Program;
     m_program->attach(
-        globjects::Shader::fromString(GL_VERTEX_SHADER, vertSource),
-        globjects::Shader::fromString(GL_GEOMETRY_SHADER, geomSource),
-        globjects::Shader::fromString(GL_FRAGMENT_SHADER, fragSource)
+        globjects::Shader::fromFile(GL_VERTEX_SHADER, "data/cubescape/cubescape.vert"),
+        globjects::Shader::fromFile(GL_GEOMETRY_SHADER, "data/cubescape/cubescape.geom"),
+        globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/cubescape/cubescape.frag")
     );
 
     // create textures
