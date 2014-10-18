@@ -20,6 +20,7 @@ Camera::Camera(
 ,   const vec3 & center
 ,   const vec3 & up)
 : m_dirty(false)
+, m_autoUpdate(false)
 
 , m_eye(eye)
 , m_center(center)
@@ -34,6 +35,21 @@ Camera::Camera(
 
 Camera::~Camera()
 {
+}
+
+bool Camera::autoUpdating() const
+{
+    return m_autoUpdate;
+}
+
+void Camera::setAutoUpdating(bool b)
+{
+    m_autoUpdate = b;
+
+    if (m_dirty && m_autoUpdate)
+    {
+        update();
+    }
 }
 
 void Camera::invalidateMatrices() const
@@ -51,7 +67,7 @@ void Camera::dirty(bool update)
 {
     m_dirty = true;
 
-    if (update)
+    if (update || m_autoUpdate)
         this->update();
 }
 
@@ -180,7 +196,7 @@ void Camera::update() const
 
     m_dirty = false;
 
-    changed();
+    const_cast<Camera*>(this)->changed();
 }
 
 const mat4 & Camera::view() const
@@ -260,8 +276,9 @@ const mat3 & Camera::normal() const
     return m_normal.value();
 }
 
-void Camera::changed() const
+void Camera::changed()
 {
+    invalidated();
 }
 
 
