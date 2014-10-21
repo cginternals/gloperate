@@ -1,26 +1,31 @@
-#include <gloperate-glfw/ContextFormat.h>
+
+#include <gloperate/ContextFormat.h>
+
 #include <cassert>
 #include <sstream>
+#include <map>
+
 #include <globjects/base/baselogging.h>
 
 
 using namespace globjects;
-namespace gloperate_glfw
+
+namespace gloperate
 {
 
-
 ContextFormat::ContextFormat()
-: m_profile(AnyProfile)
+: m_version(glbinding::Version(4, 5))
+, m_profile(Profile::None)
 , m_debugContext(false)
 , m_forwardCompatibility(false)
-, m_redBufferSize(0)
-, m_greenBufferSize(0)
-, m_blueBufferSize(0)
+, m_redBufferSize(8)
+, m_greenBufferSize(8)
+, m_blueBufferSize(8)
 , m_alphaBufferSize(8)
 , m_depthBufferSize(24)
 , m_stencilBufferSize(0)
 , m_stereo(false)
-, m_swapBehavior(DoubleBuffering)
+, m_swapBehavior(SwapBehavior::DoubleBuffering)
 , m_samples(0)
 {
 }
@@ -29,7 +34,9 @@ ContextFormat::~ContextFormat()
 {
 }
 
-void ContextFormat::setVersion(unsigned int majorVersion, unsigned int minorVersion)
+void ContextFormat::setVersion(
+    const unsigned int majorVersion
+,   const unsigned int minorVersion)
 {
     setVersion(glbinding::Version(majorVersion, minorVersion));
 }
@@ -37,6 +44,30 @@ void ContextFormat::setVersion(unsigned int majorVersion, unsigned int minorVers
 void ContextFormat::setVersion(const glbinding::Version & version)
 {
     m_version = version;
+}
+
+glbinding::Version ContextFormat::validateVersion(const glbinding::Version &requestedVersion
+,   const glbinding::Version &_maximumVersion)
+{
+    glbinding::Version maximumVersion = _maximumVersion;
+    if (maximumVersion.isNull())
+    {
+#ifdef MAC_OS
+        maximumVersion = glbinding::Version(3, 2);
+#else
+        maximumVersion = glbinding::Version(3, 0);
+#endif
+    }
+
+    if (requestedVersion.isNull() || requestedVersion > maximumVersion)
+        return maximumVersion;
+
+    if (!requestedVersion.isValid())
+    {
+        glbinding::Version nearest = requestedVersion.nearest();
+        return nearest > maximumVersion ? maximumVersion : nearest;
+    }
+    return requestedVersion;
 }
 
 int ContextFormat::majorVersion() const
@@ -69,7 +100,7 @@ bool ContextFormat::debugContext() const
     return m_debugContext;
 }
 
-void ContextFormat::setDebugContext(bool on)
+void ContextFormat::setDebugContext(const bool on)
 {
     m_debugContext = on;
 }
@@ -79,7 +110,7 @@ bool ContextFormat::forwardCompatible() const
     return m_forwardCompatibility;
 }
 
-void ContextFormat::setForwardCompatible(bool on)
+void ContextFormat::setForwardCompatible(const bool on)
 {
     m_forwardCompatibility = on;
 }
@@ -174,34 +205,25 @@ void ContextFormat::setSamples(const int samples)
 	m_samples = samples;
 }
 
-const char* ContextFormat::profileString(const Profile profile)
+const std::string & ContextFormat::profileString(const Profile profile)
 {
-    switch (profile)
-    {
-        case CoreProfile:
-            return "CoreProfile";
-        case CompatibilityProfile:
-            return "CompatibilityProfile";
-        case AnyProfile:
-            return "AnyProfile";
-        default:
-            return "";
-    }
+    static const std::map<Profile, std::string> profileIdentifier = {
+        { Profile::Core,          "Core" }
+    ,   { Profile::Compatibility, "Compatibility" } 
+    ,   { Profile::None,          "None" } };
+
+    return profileIdentifier.at(profile);
 }
 
-const char* ContextFormat::swapBehaviorString(const SwapBehavior swapBehavior)
+const std::string & ContextFormat::swapBehaviorString(const SwapBehavior swapBehavior)
 {
-    switch (swapBehavior)
-    {
-        case SingleBuffering:
-            return "SingleBuffering";
-        case DoubleBuffering:
-            return "DoubleBuffering";
-        case TripleBuffering:
-            return "TripleBuffering";
-        default:
-            return "";
-    }
+    static const std::map<SwapBehavior, std::string> swapbIdentifier = {
+        { SwapBehavior::Default,         "Default" }
+    ,   { SwapBehavior::DoubleBuffering, "DoubleBuffering" }
+    ,   { SwapBehavior::SingleBuffering, "SingleBuffering" } 
+    ,   { SwapBehavior::TripleBuffering, "TripleBuffering" } };
+
+    return swapbIdentifier.at(swapBehavior);
 }
 
 bool ContextFormat::verify(const ContextFormat & requested, const ContextFormat & created)
@@ -211,27 +233,31 @@ bool ContextFormat::verify(const ContextFormat & requested, const ContextFormat 
         verifyPixelFormat(requested, created);
 }
 
+bool ContextFormat::verify(const ContextFormat & requested) const
+{
+    return verify(requested, *this);
+}
+
 bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, const ContextFormat & created)
 {
 	const bool sameProfiles(requested.profile() == created.profile());
 
 	if (!sameProfiles)
 	{
-        globjects::warning() << "A context with a different profile as requested was created: "
+        warning() << "Profile mismatch for the current context: "
             << profileString(requested.profile()) << " requested, "
-            << profileString(created.profile()) << " created.";
+            << profileString(created.profile())   << " created.";
 	}
 
     if (requested.version() != created.version())
 	{
-        globjects::warning() << "A context with a different OpenGL Version as requested was created: "
+        warning() << "Version mismatch for the current context: "
             << requested.version().toString() << " requested, "
-            << created.version().toString() << "  created.";
+            << created.version().toString()   << " created.";
 
-		if (requested.profile() == CoreProfile)
+		if (requested.profile() == Profile::Core)
 			return false;
 	}
-
 	return sameProfiles;
 }
 
@@ -260,59 +286,57 @@ bool ContextFormat::verifyPixelFormat(
 
 	if (!sameSwapBehaviors)
 	{
-        globjects::warning() << "A context with a different swap behavior as requested was initialized: "
+        warning() << "Swap behavior mismatch for the current context: "
             << swapBehaviorString(requested.swapBehavior()) << " requested, "
-            << swapBehaviorString(created.swapBehavior()) << " created.";
+            << swapBehaviorString(created.swapBehavior())   << " created.";
 	}
 
 	if (requested.depthBufferSize())
 	{
 		if (!created.depthBufferSize())
-			issues.push_back("Depth Buffer requested, but none created.");
+			issues.push_back("- Depth Buffer requested, but none created.");
 		else
             verifyBufferSize(requested.depthBufferSize(), created.depthBufferSize()
-			    , "Depth Buffer", issues);
+			    , "- Depth Buffer", issues);
 	}
 
-	verifyBufferSize(requested.redBufferSize(), created.redBufferSize()
-		, "Red Buffer", issues);
+	verifyBufferSize(requested.redBufferSize(),   created.redBufferSize()
+		, "- Red Buffer", issues);
 	verifyBufferSize(requested.greenBufferSize(), created.greenBufferSize()
-		, "Green Buffer", issues);
-	verifyBufferSize(requested.blueBufferSize(), created.blueBufferSize()
-		, "Blue Buffer", issues);
+		, "- Green Buffer", issues);
+	verifyBufferSize(requested.blueBufferSize(),  created.blueBufferSize()
+		, "- Blue Buffer", issues);
 	verifyBufferSize(requested.alphaBufferSize(), created.alphaBufferSize()
-		, "Alpha Buffer", issues);
+		, "- Alpha Buffer", issues);
 
 	if (requested.stencilBufferSize())
 	{
 		if (!created.stencilBufferSize())
-			issues.push_back("Stencil Buffer requested, but none created.");
+			issues.push_back("- Stencil Buffer requested, but none created.");
 		else
 			verifyBufferSize(requested.stencilBufferSize(), created.stencilBufferSize()
-			    , "Stencil Buffer", issues);
+			    , "- Stencil Buffer", issues);
 	}
 
 	if (requested.stereo() && !created.stereo())
-		issues.push_back("Stereo Buffering requested, but not initialized.");
+		issues.push_back("- Stereo Buffering requested, but not initialized.");
 
 	if (requested.samples())
 	{
 		if (!created.samples())
-			issues.push_back("Sample Buffers requested, but none initialized.");
+			issues.push_back("- Sample Buffers requested, but none initialized.");
 		else
-			verifyBufferSize(requested.samples(), created.samples()
-			    , "Samples ", issues);
+			verifyBufferSize(requested.samples(), created.samples(), "- Samples ", issues);
 	}
 
 	if (issues.empty())
 		return true;
 
-    globjects::warning() << "Initialized Pixelformat did not match the Requested One:";
+    warning() << "Pixelformat mismatch for the current context:";
 	for(const std::string & issue : issues)
-        globjects::warning() << issue;
+        warning() << issue;
 
 	return false;
 }
 
-
-} // namespace gloperate_glfw
+} // namespace gloperate

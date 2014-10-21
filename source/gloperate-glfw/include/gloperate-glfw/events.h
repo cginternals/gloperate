@@ -3,7 +3,6 @@
 #include <chrono>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
-#include <gloperate-glfw/keys.h>
 
 #include <glm/glm.hpp>
 
@@ -11,14 +10,13 @@
 namespace gloperate_glfw
 {
 
-
 class Window;
 
 
 class GLOPERATE_GLFW_API WindowEvent
 {
 public:
-    enum Type
+    enum class Type
     {
         KeyPress
     ,   KeyRelease
@@ -50,7 +48,7 @@ public:
     void accept();
     void ignore();
 
-    Window* window() const;
+    Window * window() const;
     void setWindow(Window *window);
 
 protected:
@@ -59,8 +57,10 @@ protected:
 protected:
     Type m_type;
     bool m_accepted;
-    Window* m_window;
+
+    Window * m_window;
 };
+
 
 class GLOPERATE_GLFW_API KeyEvent : public WindowEvent
 {
@@ -81,6 +81,7 @@ protected:
     int m_modifiers;
     unsigned int m_character;
 };
+
 
 class GLOPERATE_GLFW_API MouseEvent : public WindowEvent
 {
@@ -105,17 +106,20 @@ protected:
     glm::ivec2 m_pos;
 };
 
+
 class GLOPERATE_GLFW_API MouseEnterEvent : public WindowEvent
 {
 public:
     MouseEnterEvent();
 };
 
+
 class GLOPERATE_GLFW_API MouseLeaveEvent : public WindowEvent
 {
 public:
     MouseLeaveEvent();
 };
+
 
 class GLOPERATE_GLFW_API ScrollEvent : public WindowEvent
 {
@@ -129,6 +133,7 @@ protected:
     glm::vec2 m_offset;
     glm::ivec2 m_pos;
 };
+
 
 class GLOPERATE_GLFW_API MoveEvent : public WindowEvent
 {
@@ -144,6 +149,7 @@ protected:
     glm::ivec2 m_pos;
 };
 
+
 class GLOPERATE_GLFW_API ResizeEvent : public WindowEvent
 {
 public:
@@ -158,11 +164,13 @@ protected:
     glm::ivec2 m_size;
 };
 
+
 class GLOPERATE_GLFW_API PaintEvent : public WindowEvent
 {
 public:
     PaintEvent();
 };
+
 
 class GLOPERATE_GLFW_API CloseEvent : public WindowEvent
 {
@@ -176,9 +184,11 @@ public:
     FocusEvent(bool hasFocus);
 
     bool hasFocus() const;
+
 protected:
     bool m_hasFocus;
 };
+
 
 class GLOPERATE_GLFW_API IconifyEvent : public WindowEvent
 {
@@ -186,18 +196,22 @@ public:
     IconifyEvent(bool isIconified);
 
     bool isIconified() const;
+
 protected:
     bool m_isIconified;
 };
+
 
 class GLOPERATE_GLFW_API TimerEvent : public WindowEvent
 {
 public:
     using Duration = std::chrono::duration<double, std::milli>;
+
     TimerEvent(int id, const Duration & elapsed);
 
     int id() const;
     const Duration & elapsed() const;
+
 protected:
     int m_id;
     Duration m_elapsed;

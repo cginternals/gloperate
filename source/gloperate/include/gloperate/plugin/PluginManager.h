@@ -1,154 +1,82 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
-
 #include <string>
+#include <set>
 #include <vector>
 #include <map>
+
 #include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
 {
 
-
 class PluginLibrary;
 class Plugin;
 
-
-/**
-*  @brief
-*    Class for loading and managing plugins
+/** \brief Class for loading and managing plugins
 */
-class GLOPERATE_API PluginManager {
+class GLOPERATE_API PluginManager
+{
+public:
+    /** \brief Initialize plugin manager
+        \param[in] applicationPath Path to directory containing 
+        the application executable
 
+        \remarks This function has to be called to tell the plugin 
+        manager the path to the current executable, so it can 
+        determine the default search directory for plugins.
+    */
+    static void init(const std::string & applicationPath = "");
 
-    public:
-        /**
-        *  @brief
-        *    Initialize plugin manager
-        *
-        *  @param[in] executablePath
-        *    Path to the current executable
-        *
-        *  @remarks
-        *    This function has to be called to tell the plugin manager the path
-        *    to the current executable, so it can determine the default search directory
-        *    for plugins. On Window, path is ignored, since the executable path
-        *    can be obtained automatically.
-        */
-        static void init(const std::string & executablePath = "");
+public:
+    PluginManager();
+    virtual ~PluginManager();
 
+    /** \brief appends path to the end of the library path list.
+        \remarks If path is empty or already in the path list, the path list is not changed.
+        \remarks If no plugin path is provided, the default application path is used.
+    */
+    void addPath(const std::string & path);
+    void removePath(const std::string & path);
 
-    protected:
-        /** Default path to look for plugins, by default the path of the executable */
-        static std::string s_defaultPluginPath;
+    void setPaths(const std::vector<std::string> & paths);
+    const std::vector<std::string> & paths() const;
 
+    /** \brief scan for plugins and load all found ones
 
-    public:
-        /**
-        *  @brief
-        *    Constructor
-        */
-        PluginManager();
+        \@param[in] identifier If set, only libraries with a name 
+        containing the specified substring are considered.
+    */
+    void scan(const std::string & identifier = "", bool reload = false);
 
-        /**
-        *  @brief
-        *    Destructor
-        */
-        virtual ~PluginManager();
+    /** \param[in] baseName note: do not add 'lib' or '.so'/'.dll', those are added automatically
+    */
+    bool load(const std::string & baseName, bool reload = true);
 
-        /**
-        *  @brief
-        *    Get scan directory
-        *
-        *  @return
-        *    Directory from which plugins are loaded
-        */
-        std::string scanDirectory() const;
+    const std::vector<Plugin *> & plugins() const;
+    Plugin * plugin(const std::string & name) const;
 
-        /**
-        *  @brief
-        *    Set scan directory
-        *
-        *  @param[in] path
-        *    Directory from which plugins are loaded
-        *
-        *  @remarks
-        *    If the plugin directory is not set, the default search path is used
-        */
-        void setScanDirectory(const std::string & path);
+    /** \brief Print list of available plugins to log
+    */
+    void printPlugins() const;
 
-        /**
-        *  @brief
-        *    Scan for plugins and load all found plugins
-        *
-        *  @param[in] identifier
-        *    If set, only libraries that contain the specified substring are loaded
-        */
-        void scan(const std::string & identifier = "");
+protected:
+    bool loadLibrary(const std::string & filePath, bool reload);
+    void unloadLibrary(PluginLibrary * library) const;
 
-        /**
-        *  @brief
-        *    Load plugin
-        *
-        *  @param[in] name
-        *    Name of the plugin library (only the base name, do not add 'lib' or '.so'/'.dll', those are added automatically
-        *  @param[in] path
-        *    Path at which to search for plugin libraries. If "", the default search path is used
-        */
-        void load(const std::string & name);
+protected:
+    /** Default path to look for plugins, by default the path of the executable
+    */
+    static std::string s_applicationPath;
 
-        /**
-        *  @brief
-        *    Load plugin library
-        *
-        *  @param[in] filename
-        *    Path to dynamic library
-        */
-        void loadLibrary(const std::string & filename);
+protected:
+    std::vector<std::string> m_paths;
 
-        /**
-        *  @brief
-        *    Get available plugins
-        *
-        *  @return
-        *    List of loaded plugins
-        */
-        const std::vector<Plugin *> & plugins() const;
+    std::map<std::string, PluginLibrary *> m_librariesByFilePath;
 
-        /**
-        *  @brief
-        *    Get plugin by name
-        *
-        *  @param[in] name
-        *    Name of plugin
-        *
-        *  @return
-        *    Pointer to plugin, nullptr on error
-        */
-        Plugin * plugin(const std::string & name) const;
-
-        /**
-        *  @brief
-        *    Print list of available plugins to log
-        */
-        void printPlugins() const;
-
-
-    protected:
-        std::string                     m_scanDirectory;    /**< Directory from which plugins are loaded */
-        std::vector<PluginLibrary *>    m_libraries;        /**< List of libraries */
-        std::vector<Plugin *>           m_plugins;          /**< List of plugins */
-        std::map<std::string, Plugin *> m_pluginsByName;    /**< Map of name -> plugin */
-
-
+    std::vector<Plugin *> m_plugins;
+    std::map<std::string, Plugin *> m_pluginsByName;
 };
-
 
 } // namespace gloperate

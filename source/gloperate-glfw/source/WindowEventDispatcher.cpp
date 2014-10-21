@@ -43,7 +43,7 @@ void WindowEventDispatcher::registerWindow(Window* window)
 {
     assert(window != nullptr);
 
-    GLFWwindow* glfwWindow = window->internalWindow();
+    GLFWwindow * glfwWindow = window->internalWindow();
 
     if (!glfwWindow)
         return;

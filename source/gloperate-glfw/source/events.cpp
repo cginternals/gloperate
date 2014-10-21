@@ -1,10 +1,11 @@
 #include <gloperate-glfw/events.h>
+
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 
 namespace gloperate_glfw
 {
-
 
 WindowEvent::WindowEvent(Type type)
 : m_type(type)
@@ -57,8 +58,9 @@ void WindowEvent::setWindow(Window *window)
     m_window = window;
 }
 
+
 KeyEvent::KeyEvent(unsigned int character)
-: WindowEvent(KeyTyped)
+: WindowEvent(Type::KeyTyped)
 , m_key(0)
 , m_scanCode(0)
 , m_action(0)
@@ -68,7 +70,7 @@ KeyEvent::KeyEvent(unsigned int character)
 }
 
 KeyEvent::KeyEvent(int key, int scanCode, int action, int modifiers)
-: WindowEvent(action == GLFW_RELEASE ? KeyRelease : KeyPress)
+: WindowEvent(action == GLFW_RELEASE ? Type::KeyRelease : Type::KeyPress)
 , m_key(key)
 , m_scanCode(scanCode)
 , m_action(action)
@@ -104,7 +106,7 @@ unsigned int KeyEvent::character() const
 
 
 ResizeEvent::ResizeEvent(const glm::ivec2 & size, bool framebuffer)
-: WindowEvent(framebuffer ? FrameBufferResize : Resize)
+: WindowEvent(framebuffer ? Type::FrameBufferResize : Type::Resize)
 , m_size(size)
 {
 }
@@ -126,7 +128,7 @@ int ResizeEvent::height() const
 
 
 MouseEvent::MouseEvent(const glm::ivec2 & pos)
-: WindowEvent(MouseMove)
+: WindowEvent(Type::MouseMove)
 , m_button(-1)
 , m_action(-1)
 , m_modifiers(0)
@@ -135,7 +137,7 @@ MouseEvent::MouseEvent(const glm::ivec2 & pos)
 }
 
 MouseEvent::MouseEvent(const glm::ivec2 & pos, const int button, const int action, const int modifiers)
-: WindowEvent(action == GLFW_RELEASE ? MouseRelease : MousePress)
+: WindowEvent(action == GLFW_RELEASE ? Type::MouseRelease : Type::MousePress)
 , m_button(button)
 , m_action(action)
 , m_modifiers(modifiers)
@@ -173,18 +175,21 @@ const glm::ivec2 & MouseEvent::pos() const
     return m_pos;
 }
 
+
 MouseEnterEvent::MouseEnterEvent()
-: WindowEvent(MouseEnter)
+: WindowEvent(Type::MouseEnter)
 {
 }
+
 
 MouseLeaveEvent::MouseLeaveEvent()
-: WindowEvent(MouseLeave)
+: WindowEvent(Type::MouseLeave)
 {
 }
 
+
 ScrollEvent::ScrollEvent(const glm::vec2 & offset, const glm::ivec2 & pos)
-: WindowEvent(Scroll)
+: WindowEvent(Type::Scroll)
 , m_offset(offset)
 , m_pos(pos)
 {
@@ -202,7 +207,7 @@ const glm::ivec2 & ScrollEvent::pos() const
 
 
 MoveEvent::MoveEvent(const glm::ivec2 & pos)
-: WindowEvent(Move)
+: WindowEvent(Type::Move)
 , m_pos(pos)
 {
 }
@@ -222,18 +227,21 @@ const glm::ivec2 & MoveEvent::pos() const
     return m_pos;
 }
 
+
 PaintEvent::PaintEvent()
-: WindowEvent(Paint)
+: WindowEvent(Type::Paint)
 {
 }
+
 
 CloseEvent::CloseEvent()
-: WindowEvent(Close)
+: WindowEvent(Type::Close)
 {
 }
 
+
 FocusEvent::FocusEvent(bool hasFocus)
-: WindowEvent(Focus)
+: WindowEvent(Type::Focus)
 , m_hasFocus(hasFocus)
 {
 }
@@ -243,8 +251,9 @@ bool FocusEvent::hasFocus() const
     return m_hasFocus;
 }
 
+
 IconifyEvent::IconifyEvent(bool isIconified)
-: WindowEvent(Iconify)
+: WindowEvent(Type::Iconify)
 , m_isIconified(isIconified)
 {
 }
@@ -254,8 +263,9 @@ bool IconifyEvent::isIconified() const
     return m_isIconified;
 }
 
+
 TimerEvent::TimerEvent(int id, const Duration & elapsed)
-: WindowEvent(Timer)
+: WindowEvent(Type::Timer)
 , m_id(id)
 , m_elapsed(elapsed)
 {

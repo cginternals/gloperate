@@ -1,40 +1,38 @@
 #pragma once
 
-
 #include <vector>
 #include <string>
+
+#include <gloperate/gloperate_api.h>
+
 #include <glbinding/Version.h>
-#include <gloperate-glfw/gloperate-glfw_api.h>
 
 
-namespace gloperate_glfw
+namespace gloperate
 {
 
-
-class GLOPERATE_GLFW_API ContextFormat
+class GLOPERATE_API ContextFormat
 {
-
-
 public:
 	// This is based on QSurfaceFormat::OpenGLContextProfile
-	enum Profile
+	enum class Profile
 	{
-	    CoreProfile          ///< Functionality deprecated in OpenGL version 3.0 is not available.
-	,   CompatibilityProfile ///< Functionality from earlier OpenGL versions is available.
-    ,   AnyProfile
+	    Core          ///< Functionality deprecated in OpenGL version 3.0 is not available.
+	,   Compatibility ///< Functionality from earlier OpenGL versions is available.
+    ,   None
 	};
 
 	// This is based on QSurfaceFormat::SwapBehavior
-	enum SwapBehavior
+	enum class SwapBehavior
 	{
-	    SingleBuffering     ///< Might result in flickering when is done directly to screen without an intermediate offscreen buffer.
-	,   DoubleBuffering     ///< Rendering is done to the back buffer, which is then swapped with the front buffer.
-	,   TripleBuffering     ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
+        Default         ///< The default swap behaviour (of the platform).
+    ,   SingleBuffering ///< Might result in flickering when is done directly to screen without an intermediate offscreen buffer.
+	,   DoubleBuffering ///< Rendering is done to the back buffer, which is then swapped with the front buffer.
+	,   TripleBuffering ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
 	};
 
-    static const char * profileString(Profile profile);
-    static const char * swapBehaviorString(SwapBehavior swapBehavior);
-
+    static const std::string & profileString(Profile profile);
+    static const std::string & swapBehaviorString(SwapBehavior swapBehavior);
 
 public:
 	ContextFormat();
@@ -63,12 +61,15 @@ public:
 
 	/** For major and minor parameters only valid version pairs are allowed,
         on invalid pairs, nearest major and minor are set.
-
-        Note: OpenGL versions previous to 3.2. are not supported and might not
-        work. It is not taken into account in the development of globjects.
     */
     void setVersion(const glbinding::Version & version);
     void setVersion(unsigned int majorVersion, unsigned int minorVersion);
+
+    /** Validates requested version itself and clamps to maximum 
+    */
+    static glbinding::Version validateVersion(
+        const glbinding::Version & requestedVersion
+    ,   const glbinding::Version & maximumVersion);
 
     int majorVersion() const;
     int minorVersion() const;
@@ -95,12 +96,11 @@ public:
 	SwapBehavior swapBehavior() const;
     void setSwapBehavior(SwapBehavior behavior);
 
-
 public:
     /** Compares the created format against the requested one.
     */
     static bool verify(const ContextFormat & requested, const ContextFormat & created);
-
+    bool verify(const ContextFormat & requested) const;
 
 protected:
     /** Compares (logged if erroneous) version and profile between both formats
@@ -119,7 +119,6 @@ protected:
     ,   unsigned int sizeInitialized
     ,   const std::string & warning
     ,   std::vector<std::string> & issues);
-
 
 protected:
     glbinding::Version m_version;
@@ -141,9 +140,7 @@ protected:
 
 	SwapBehavior m_swapBehavior;
 	unsigned int m_samples;
-
-
 };
 
 
-} // namespace gloperate_glfw
+} // namespace gloperate

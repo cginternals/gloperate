@@ -1,13 +1,6 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
-
-// NOTE: don't export stl stuff (e.g. containers):
+// Note: don't export stl stuff (e.g. containers):
 // http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 // don't do it: http://support.microsoft.com/kb/q168958/
 
