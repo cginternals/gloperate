@@ -1,5 +1,10 @@
 #include <gloperate-glfw/WindowEventHandler.h>
+
 #include <globjects/globjects.h>
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
 
@@ -9,29 +14,27 @@
 
 #include <gloperate/tools/ScreenshotTool.h>
 
-#include <gloperate-glfw/Window.h>
 
 using namespace gloperate;
+
 namespace gloperate_glfw
 {
 
-
-/**
-*  @brief
-*    Convert GLFW mouse button into gloperate mouse button
+/** \brief Convert GLFW mouse button into gloperate mouse button
 */
 static gloperate::MouseButton fromGLFWMouseButton(int button)
 {
-    switch (button) {
-        case GLFW_MOUSE_BUTTON_1: return MouseButton1;
-        case GLFW_MOUSE_BUTTON_2: return MouseButton2;
-        case GLFW_MOUSE_BUTTON_3: return MouseButton3;
-        case GLFW_MOUSE_BUTTON_4: return MouseButton4;
-        case GLFW_MOUSE_BUTTON_5: return MouseButton5;
-        case GLFW_MOUSE_BUTTON_6: return MouseButton6;
-        case GLFW_MOUSE_BUTTON_7: return MouseButton7;
-        case GLFW_MOUSE_BUTTON_8: return MouseButton8;
-        default:                  return NoMouseButton;
+    switch (button) 
+    {
+    case GLFW_MOUSE_BUTTON_1: return MouseButton1;
+    case GLFW_MOUSE_BUTTON_2: return MouseButton2;
+    case GLFW_MOUSE_BUTTON_3: return MouseButton3;
+    case GLFW_MOUSE_BUTTON_4: return MouseButton4;
+    case GLFW_MOUSE_BUTTON_5: return MouseButton5;
+    case GLFW_MOUSE_BUTTON_6: return MouseButton6;
+    case GLFW_MOUSE_BUTTON_7: return MouseButton7;
+    case GLFW_MOUSE_BUTTON_8: return MouseButton8;
+    default:                  return NoMouseButton;
     }
 }
 
@@ -45,7 +48,6 @@ static gloperate::Key fromGLFWKeyCode(int key)
     return static_cast<gloperate::Key>(key);
 }
 
-
 WindowEventHandler::WindowEventHandler()
 {
 }
@@ -56,15 +58,12 @@ WindowEventHandler::~WindowEventHandler()
 
 void WindowEventHandler::initialize(Window & window)
 {
-    // Initialize globjects
     globjects::init();
     IF_DEBUG(globjects::DebugMessage::enable(true);)
 
-    // Initialize painter
-    if (window.painter()) {
+    if (window.painter())
         window.painter()->initialize();
     }
-}
 
 void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 {
@@ -145,7 +144,7 @@ void WindowEventHandler::mousePressEvent(MouseEvent & event)
             fromGLFWMouseButton(event.button())
         );
     }
-}
+    }
 
 void WindowEventHandler::mouseReleaseEvent(MouseEvent & event)
 {
@@ -162,8 +161,9 @@ void WindowEventHandler::mouseReleaseEvent(MouseEvent & event)
 
 void WindowEventHandler::timerEvent(TimerEvent & event)
 {
-    if (event.window()->painter())
-    {
+    if (!event.window()->painter())
+        return;
+
         AbstractVirtualTimeCapability * timeCapability = event.window()->painter()->getCapability<AbstractVirtualTimeCapability>();
 
         if (timeCapability && timeCapability->enabled())
@@ -172,7 +172,5 @@ void WindowEventHandler::timerEvent(TimerEvent & event)
             event.window()->repaint();
         }
     }
-}
-
 
 } // namespace gloperate_glfw

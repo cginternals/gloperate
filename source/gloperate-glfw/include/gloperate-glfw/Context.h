@@ -1,88 +1,52 @@
 #pragma once
 
-
 #include <string>
-#include <gloperate-glfw/ContextFormat.h>
+
+#include <gloperate/AbstractContext.h>
+
+#include <gloperate-glfw/gloperate-glfw_api.h>
 
 
 struct GLFWwindow;
-struct GLFWmonitor;
-class AbstractNativeContext;
 
+namespace gloperate
+{
+    class ContextFormat;
+}
 
 namespace gloperate_glfw
 {
 
-
-class GLOPERATE_GLFW_API Context
+class GLOPERATE_GLFW_API Context : public gloperate::AbstractContext
 {
-
-
-public:
-    enum SwapInterval {
-        NoVerticalSyncronization =  0,
-        VerticalSyncronization = 1,
-        AdaptiveVerticalSyncronization = -1
-    };
-
-    static const std::string swapIntervalString(SwapInterval swapInterval);
-
+protected:
+    // note: requires that glfw::init was previously called 
+    static glbinding::Version maxSupportedVersion();
 
 public:
-    Context();
+    /** Creates a hidden window of extend 1x1 with the provided format.
+        note: requires that glfw::init was previously called
+    */    
+    static GLFWwindow * create(const gloperate::ContextFormat & format);
+
+    Context(GLFWwindow * window);
     virtual ~Context();
 
-    GLFWwindow * window();
+    virtual glbinding::ContextHandle handle() const;
 
-    /** Tries to create a context with the given format on the given handle.
-     If successfull, m_format is set to the format created.
+    virtual const gloperate::ContextFormat & format() const;
 
-     \return isValid() is returned
-     */
-    bool create(const ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
-    void release();
-
-    void makeCurrent();
-    void doneCurrent();
-
-    void swap();
-
-    /** The returned format refers to the created context, not the requested one.
-     */
-    const ContextFormat & format() const;
-
-    /** \return true if the context was created (irrespective of format
-     verification) and if id() returns id > 0.
-     */
-    bool isValid() const;
-
-    /** Swap interval relates to the context, since there might be multiple
-     shared contexts with same format, but individual swap format.
-     */
-    void setSwapInterval(SwapInterval interval);
-    SwapInterval swapInterval() const;
-
+    virtual void makeCurrent() const;
+    virtual void doneCurrent() const;
 
 protected:
-    SwapInterval m_swapInterval;
-    ContextFormat m_format;
+    Context();
 
+protected:
+    mutable gloperate::ContextFormat * m_format;
 
-private:
     GLFWwindow * m_window;
-
-
-private:
-    void prepareFormat(const ContextFormat & format);
-
-
-private:
-    static glbinding::Version maximumSupportedVersion();
-    static glbinding::Version validateVersion(const glbinding::Version & version);
-    static void handleError(int errorCode, const char* errorMessage);
-
-
+    glbinding::ContextHandle m_handle;
 };
-
 
 } // namespace gloperate_glfw

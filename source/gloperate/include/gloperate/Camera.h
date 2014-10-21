@@ -12,6 +12,8 @@
 #include <globjects/base/CachedValue.h>
 #include <gloperate/gloperate_api.h>
 
+#include <gloperate/signals/Signal.h>
+
 
 namespace gloperate
 {
@@ -39,6 +41,9 @@ public:
            const glm::vec3 & up     = glm::vec3(0.0, 1.0, 0.0) );
 
     virtual ~Camera();
+
+    bool autoUpdating() const;
+    void setAutoUpdating(bool b);
 
     const glm::vec3 & eye() const;
     void setEye(const glm::vec3 & eye);
@@ -74,7 +79,7 @@ public:
 
     void update() const;
 
-    virtual void changed() const;
+    void changed();
 
 
 protected:
@@ -84,6 +89,7 @@ protected:
 
 protected:
     mutable bool m_dirty;
+    bool m_autoUpdate;
 
     glm::vec3 m_eye;
     glm::vec3 m_center;
@@ -104,7 +110,8 @@ protected:
     globjects::CachedValue<glm::mat4> m_viewProjectionInverted;
     globjects::CachedValue<glm::mat3> m_normal;
 
-
+public:
+    Signal<> invalidated;
 };
 
 

@@ -8,7 +8,7 @@ if(OPTION_BUILD_EXAMPLES)
 
     # Example applications
     add_subdirectory(ExtendedViewerQt)
-    add_subdirectory(ViewerGLFW)
+    add_subdirectory(viewer-glfw)
     add_subdirectory(ViewerQt)
 
 endif()

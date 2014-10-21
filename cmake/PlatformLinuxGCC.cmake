@@ -17,7 +17,7 @@ endif()
 
 set(LINUX_COMPILE_DEFS
 	LINUX	                  # Linux system
-        PIC		          # Position-independent code
+	PIC                       # Position-independent code
 	_REENTRANT                # Reentrant code
 )
 set(DEFAULT_COMPILE_DEFS_DEBUG

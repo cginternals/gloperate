@@ -63,28 +63,27 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
+    ${source_path}/Application.cpp
     ${source_path}/Context.cpp
-    ${source_path}/ContextFormat.cpp
+    ${source_path}/events.cpp
     ${source_path}/Timer.cpp
     ${source_path}/Window.cpp
     ${source_path}/WindowEventDispatcher.cpp
     ${source_path}/WindowEventHandler.cpp
     ${source_path}/WindowEventHandlerBase.cpp
-    ${source_path}/MainLoop.cpp
-    ${source_path}/events.cpp
 )
 
 set(headers
+    ${include_path}/gloperate-glfw_api.h
+
+    ${include_path}/Application.h
     ${include_path}/Context.h
-    ${include_path}/ContextFormat.h
+    ${include_path}/events.h
     ${include_path}/Timer.h
     ${include_path}/Window.h
     ${include_path}/WindowEventDispatcher.h
     ${include_path}/WindowEventHandler.h
     ${include_path}/WindowEventHandlerBase.h
-    ${include_path}/MainLoop.h
-    ${include_path}/keys.h
-    ${include_path}/gloperate-glfw_api.h
 )
 
 # Group source files
