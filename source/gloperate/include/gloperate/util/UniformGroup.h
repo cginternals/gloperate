@@ -38,4 +38,4 @@ protected:
 
 } // namespace gloperate
 
-#include <gloperate/UniformGroup.hpp>
+#include <gloperate/util/UniformGroup.hpp>

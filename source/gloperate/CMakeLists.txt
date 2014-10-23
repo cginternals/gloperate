@@ -100,7 +100,7 @@ set(sources
 	${source_path}/util/DirectoryIterator.h
 	${source_path}/util/DirectoryIterator.cpp
     ${source_path}/util/UniformGroup.cpp
-    ${source_path}/util/cgutils.cpp
+    ${source_path}/util/directorytraversal.cpp
     ${source_path}/util/VertexDrawable.cpp
 )
 
@@ -170,7 +170,7 @@ set(headers
 	${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/UniformGroup.h
     ${include_path}/util/UniformGroup.hpp
-    ${include_path}/util/cgutils.h
+    ${include_path}/util/directorytraversal.h
     ${include_path}/util/VertexDrawable.h
     ${include_path}/util/Interpolation.h
 )

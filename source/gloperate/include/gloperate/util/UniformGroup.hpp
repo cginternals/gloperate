@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gloperate/UniformGroup.h>
+#include <gloperate/util/UniformGroup.h>
 
 namespace gloperate
 {

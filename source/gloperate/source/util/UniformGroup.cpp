@@ -1,4 +1,4 @@
-#include <gloperate/UniformGroup.h>
+#include <gloperate/util/UniformGroup.h>
 
 #include <cassert>
 
