@@ -1,5 +1,4 @@
-gloperate
-=========
+![gloperate Logo](gloperate-logo.png "gloperate")
 
 C++ library for defining and controlling modern GPU rendering/processing operations
 
