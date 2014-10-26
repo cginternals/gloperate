@@ -5,7 +5,6 @@
 #include <osg/Node>
 #include <osgViewer/Viewer>
 
-#include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate-osg/OsgMouseHandler.h>
 #include <gloperate-osg/OsgKeyboardHandler.h>
 
@@ -50,7 +49,7 @@ void OsgRenderStage::osg_initialize()
     m_embedded->ref();
 
     // Initialize camera
-    m_viewer->getCamera()->setProjectionMatrixAsPerspective(30.0f, 1.0, 1.0f, 10000.0f);
+    m_viewer->getCamera()->setProjectionMatrixAsPerspective(30.0f, 1.0, 0.01f, 10000.0f);
     m_viewer->getCamera()->setViewMatrix(osg::Matrix::lookAt(osg::Vec3(0, 0, 50), osg::Vec3(0, 0, 0), osg::Vec3(0, 1, 0))); 
 
     // Initialize viewer
@@ -65,15 +64,14 @@ void OsgRenderStage::osg_process()
     // Check if painter has been initialized correctly
     if (m_viewer && m_embedded) {
         // Send resize-event
-        if (m_viewport.data() && (
-            m_viewportX != m_viewport.data()->x() || m_viewportY != m_viewport.data()->y() ||
-            m_viewportW != m_viewport.data()->width() || m_viewportH != m_viewport.data()->height()) )
+        if (m_viewportX != m_viewport.data().x || m_viewportY != m_viewport.data().y ||
+            m_viewportW != m_viewport.data().z || m_viewportH != m_viewport.data().w )
         {
             // Set new viewport
-            m_viewportX = m_viewport.data()->x();
-            m_viewportY = m_viewport.data()->y();
-            m_viewportW = m_viewport.data()->width();
-            m_viewportH = m_viewport.data()->height();
+            m_viewportX = m_viewport.data().x;
+            m_viewportY = m_viewport.data().y;
+            m_viewportW = m_viewport.data().z;
+            m_viewportH = m_viewport.data().w;
             m_embedded->resized(m_viewportX, m_viewportY, m_viewportW, m_viewportH);
             m_embedded->getEventQueue()->windowResize(m_viewportX, m_viewportY, m_viewportW, m_viewportH);
 

@@ -25,8 +25,8 @@ namespace gloperate_osg
 *  This rendering stage sets up an FBO in OSG to render a scene into
 *  a set of textures. Afterwards, these texture are converted into
 *  globjects textures to be used in a gloperate rendering pipeline.
-*  Please note that an AbstractViewportCapability has to be supplied
-*  as an input to this stage in order to correctly setup the FBO
+*  Please note that a valid viewport has to be supplied as input to
+*  this stage (m_viewport) in order to correctly setup the FBO
 *  and textures.
 */
 class GLOPERATE_OSG_API OsgFboRenderStage : public OsgRenderStage
