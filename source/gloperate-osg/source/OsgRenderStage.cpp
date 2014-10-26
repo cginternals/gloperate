@@ -29,10 +29,8 @@ OsgRenderStage::OsgRenderStage(const std::string & name)
 , m_viewportH(0)
 {
     // Register input slots
-    addInput("viewport",    m_viewport);
-
-    // [TODO] Allow OPTIONAL inputs
-    addInput("virtualTime", m_virtualTime);
+    addInput        ("viewport",    m_viewport);
+    addOptionalInput("virtualTime", m_virtualTime);
 }
 
 /**
