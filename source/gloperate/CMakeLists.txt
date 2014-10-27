@@ -68,8 +68,12 @@ set(sources
 	${source_path}/capabilities/ViewportCapability.cpp
 	${source_path}/capabilities/TargetFramebufferCapability.cpp
 	${source_path}/ContextFormat.cpp
+    ${source_path}/input/AbstractEvent.cpp
+    ${source_path}/input/KeyboardEvent.cpp
+    ${source_path}/input/MouseEvent.cpp
 	${source_path}/input/MouseInputHandler.cpp
-	${source_path}/input/KeyboardInputHandler.cpp
+    ${source_path}/input/KeyboardInputHandler.cpp
+    ${source_path}/input/QtEventTransformer.cpp
 	${source_path}/Painter.cpp
 	${source_path}/pipelines/AbstractStage.cpp
 	${source_path}/pipelines/PipelinePainter.cpp
@@ -121,9 +125,14 @@ set(headers
 	${include_path}/capabilities/TargetFramebufferCapability.h
 	${include_path}/ContextFormat.h
 	${include_path}/gloperate_api.h
+	${include_path}/input/AbstractEvent.h
+	${include_path}/input/KeyboardEvent.h
+	${include_path}/input/MouseEvent.h
 	${include_path}/input/KeyboardInputHandler.h
 	${include_path}/input/input.h
 	${include_path}/input/MouseInputHandler.h
+	${include_path}/input/QtEventTransformer.h
+    ${include_path}/navigation/AbstractMapping.h
 	${include_path}/Painter.h
 	${include_path}/Painter.hpp
 	${include_path}/pipelines/AbstractPipeline.h
