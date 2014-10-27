@@ -23,10 +23,6 @@ namespace osg {
     class Node;
     class Matrixd;
 }
-namespace gloperate {
-    class AbstractViewportCapability;
-    class AbstractVirtualTimeCapability;
-}
 
 
 namespace gloperate_osg
@@ -146,12 +142,12 @@ protected:
 
 public:
     // Input data
-    gloperate::InputSlot<gloperate::AbstractViewportCapability *>    m_viewport;
-    gloperate::InputSlot<gloperate::AbstractVirtualTimeCapability *> m_virtualTime;
+    gloperate::InputSlot<glm::ivec4> m_viewport;
+    gloperate::InputSlot<float>      m_virtualTime;
 
     // Output data
-    gloperate::Data<glm::mat4> m_projectionMatrix;
-    gloperate::Data<glm::mat4> m_viewMatrix;
+    gloperate::Data<glm::mat4>       m_projectionMatrix;
+    gloperate::Data<glm::mat4>       m_viewMatrix;
 
 
 protected:
