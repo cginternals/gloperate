@@ -5,7 +5,7 @@ namespace gloperate
 {
 
 AbstractEvent::AbstractEvent(EventType type)
-: m_eventype(type)
+: m_eventType(type)
 {
 }
 

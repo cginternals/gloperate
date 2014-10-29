@@ -12,19 +12,17 @@ namespace gloperate
 class GLOPERATE_API KeyboardEvent : public AbstractEvent
 {
 public:
-    KeyboardEvent(Key key, int scanCode, int action, int modifiers);
-    explicit KeyboardEvent(unsigned int character);
+    KeyboardEvent(EventType eventType, Key key, int scanCode, int modifiers = 0);
+    explicit KeyboardEvent(EventType eventType, unsigned int character);
 
-    int key() const;
+    Key key() const;
     int scanCode() const;
-    int action() const;
     int modifiers() const;
     unsigned int character() const;
 
 protected:
     Key m_key;
     int m_scanCode;
-    int m_action;
     int m_modifiers;
     unsigned int m_character;
 };

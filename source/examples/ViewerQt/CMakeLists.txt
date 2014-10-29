@@ -70,9 +70,11 @@ set(libs
 #
 
 set(headers
+    QtViewerMapping.h
 )
 
 set(sources
+    QtViewerMapping.cpp
     main.cpp
 )
 

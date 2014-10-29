@@ -2,6 +2,11 @@
 
 #include <gloperate/gloperate_api.h>
 
+#include <gloperate/input/AbstractEvent.h>
+
+#include <glm/glm.hpp>
+
+#include <gloperate/input/input.h>
 
 namespace gloperate
 {
@@ -9,11 +14,9 @@ namespace gloperate
 class GLOPERATE_API MouseEvent : public AbstractEvent
 {
 public:
-    MouseEvent(const glm::ivec2 & pos);
-    MouseEvent(const glm::ivec2 & pos, int button, int action, int modifiers);
+    MouseEvent(EventType eventType, const glm::ivec2 & pos, MouseButton button = NoMouseButton, int modifiers = 0);
 
-    int button() const;
-    int action() const;
+    MouseButton button() const;
     int modifiers() const;
 
     const glm::ivec2 & pos() const;
@@ -22,11 +25,10 @@ public:
     int y() const;
 
 protected:
-    int m_button;
-    int m_action;
+    MouseButton m_button;
     int m_modifiers;
 
     glm::ivec2 m_pos;
 };
 
-} // namespace gloperate_glfw
+} // namespace gloperate

@@ -2,12 +2,10 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <queue>
-
 namespace gloperate {
 
 class Painter;
-class Event;
+class AbstractEvent;
 
 class GLOPERATE_API AbstractMapping
 {
@@ -15,11 +13,10 @@ public:
     AbstractMapping();
     virtual ~AbstractMapping();
 
-    void addPainter(Painter * painter);
+    bool hasPainter() const;
+    void setPainter(Painter * painter);
 
-
-protected:
-    virtual void processEvent(Event & event) = 0;
+    virtual void processEvent(AbstractEvent * event) = 0;
 
 protected:
     Painter * m_painter;

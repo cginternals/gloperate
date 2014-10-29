@@ -1,26 +1,120 @@
 /******************************************************************************\
  * gloperate
  *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
+ * Copyright (C) 2014 Computer Graphics Systems Group at the
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include <gloperate/input/QtEventTransformer.h>
-#include <gloperate-qt/qt-includes-begin.h>
-#include <QResizeEvent>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QWheelEvent>
-#include <gloperate-qt/qt-includes-end.h>
+
+
+#include <gloperate/input/input.h>
+#include <gloperate/input/KeyboardEvent.h>
+#include <gloperate/input/MouseEvent.h>
 
 namespace gloperate
 {
 
+/**
+*  @brief
+*    Constructor
+*/
+QtEventTransformer::QtEventTransformer()
+{
+}
+
+/**
+*  @brief
+*    Destructor
+*/
+QtEventTransformer::~QtEventTransformer()
+{
+}
+
+/**
+*  @brief
+*    Convert Qt event into gloperate event
+*/
+AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
+{
+    AbstractEvent * gloperateEvent;
+    switch (event->type())
+    {
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+    case QEvent::MouseMove:
+    case QEvent::MouseButtonPress:
+    { // Mouse Event
+        QMouseEvent * mouseEvent = dynamic_cast<QMouseEvent*>(event);
+        if (mouseEvent) {
+            gloperateEvent =
+                    new MouseEvent(fromQtType(mouseEvent->type()),
+                                   fromQPoint(mouseEvent->pos()),
+                                   fromQtMouseButton(mouseEvent->button()),
+                                   static_cast<int>(mouseEvent->modifiers()));
+        }
+        break;
+    } // Keyboard Event
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease:
+    {
+        QKeyEvent * keyEvent = dynamic_cast<QKeyEvent*>(event);
+        if (keyEvent) {
+            gloperateEvent =
+                    new KeyboardEvent(fromQtType(keyEvent->type()),
+                                      fromQtKeyCode(keyEvent->key(), keyEvent->modifiers()),
+                                      0, // TODO
+                                      keyEvent->modifiers());
+        }
+        break;
+    }
+    case QEvent::None:
+    default:
+    {
+        // TODO find solution for unknown/incomplete/broken/general etc. events
+        gloperateEvent =
+                new KeyboardEvent(EventType::Default,
+                                  Key::KeyUnknown,
+                                  0);
+        break;
+    }
+    }
+    return gloperateEvent;
+}
+
+/**
+*  @brief
+*    Convert Qt event type into gloperate EventType
+*/
+EventType QtEventTransformer::fromQtType(QEvent::Type type)
+{
+    // TODO make complete
+    switch(type)
+    {
+    case QEvent::MouseButtonPress:
+    case QEvent::KeyPress:
+        return EventType::Press;
+    case QEvent::MouseButtonRelease:
+    case QEvent::KeyRelease:
+        return EventType::Release;
+    default:
+        return EventType::Default;
+    }
+}
+
+/**
+*  @brief
+*    Convert QPoint into glm::ivec2
+*/
+glm::ivec2 QtEventTransformer::fromQPoint(const QPoint point)
+{
+    return glm::ivec2(point.x(), point.y());
+}
 
 /**
 *  @brief
 *    Convert Qt mouse button into gloperate mouse button
 */
-static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button)
+MouseButton QtEventTransformer::fromQtMouseButton(Qt::MouseButton button)
 {
     if (button & Qt::LeftButton)
         return MouseButtonLeft;
@@ -40,7 +134,7 @@ static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button)
 *  @brief
 *    Convert Qt key code into gloperate key code
 */
-static gloperate::Key fromQtKeyCode(int key, int mods)
+Key QtEventTransformer::fromQtKeyCode(int key, int mods)
 {
     if (mods & Qt::KeypadModifier) {
         switch (key) {
@@ -167,23 +261,5 @@ static gloperate::Key fromQtKeyCode(int key, int mods)
         }
     }
 }
-
-
-/**
-*  @brief
-*    Constructor
-*/
-QtEventTransformer::QtEventTransformer()
-{
-}
-
-/**
-*  @brief
-*    Destructor
-*/
-QtEventTransformer::~QtEventTransformer()
-{
-}
-
 
 } // namespace gloperate

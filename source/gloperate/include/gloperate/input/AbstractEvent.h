@@ -6,7 +6,7 @@
 namespace gloperate
 {
 
-enum class EventType
+enum class EventType : char
 {
     Default
 ,   Press
@@ -15,7 +15,7 @@ enum class EventType
 ,   Scroll
 };
 
-enum class SourceType
+enum class SourceType : char
 {
     Keyboard
 ,   Mouse

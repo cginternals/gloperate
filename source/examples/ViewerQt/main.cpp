@@ -16,6 +16,7 @@
 #include <gloperate-qt/QtTextureLoader.h>
 #include <gloperate-qt/QtTextureStorer.h>
 
+#include "QtViewerMapping.h"
 
 using namespace gloperate;
 using namespace gloperate_qt;
@@ -53,8 +54,11 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Create Mapping
+    QtViewerMapping * mapping = new QtViewerMapping();
+
     // Create OpenGL window
-    QtOpenGLWindow * glWindow = new QtOpenGLWindow(resourceManager);
+    QtOpenGLWindow * glWindow = new QtOpenGLWindow(resourceManager, mapping);
     if (painter) {
         // Set painter to window
         glWindow->setPainter(painter);

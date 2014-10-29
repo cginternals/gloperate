@@ -5,18 +5,25 @@
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include "gloperate-qt/QtOpenGLWindow.h"
+
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QResizeEvent>
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <gloperate-qt/qt-includes-end.h>
+
 #include <globjects/globjects.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractInputCapability.h>
+#include <gloperate/input/AbstractEvent.h>
+#include <gloperate/input/KeyboardEvent.h>
+#include <gloperate/input/QtEventTransformer.h>
+#include <gloperate/navigation/AbstractMapping.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/tools/ScreenshotTool.h>
 
+#include <QDebug>
 
 using namespace gloperate;
 namespace gloperate_qt
@@ -180,10 +187,11 @@ static gloperate::Key fromQtKeyCode(int key, int mods)
 *  @brief
 *    Constructor
 */
-QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
+QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, gloperate::AbstractMapping * mapping)
 : QtOpenGLWindowBase()
 , m_resourceManager(resourceManager)
 , m_timePropagator(nullptr)
+, m_mapping(mapping)
 {
 }
 
@@ -232,6 +240,16 @@ void QtOpenGLWindow::setPainter(Painter * painter)
         // Create a time propagator that updates the virtual time
         m_timePropagator.reset(new TimePropagator(this, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
     }
+}
+
+bool QtOpenGLWindow::event(QEvent * event)
+{
+    AbstractEvent * gloperateEvent = gloperate::QtEventTransformer::transformEvent(event);
+    if (m_mapping)
+    {
+        m_mapping->processEvent(gloperateEvent);
+    }
+    return QtOpenGLWindowBase::event(event);
 }
 
 void QtOpenGLWindow::onInitialize()
@@ -350,8 +368,6 @@ void QtOpenGLWindow::mouseDoubleClickEvent(QMouseEvent * event)
             event->y(),
             fromQtMouseButton(event->button())
         );
-    } else if (m_mapping) {
-
     }
 }
 
