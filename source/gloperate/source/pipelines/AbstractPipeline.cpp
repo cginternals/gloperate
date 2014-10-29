@@ -74,8 +74,6 @@ void AbstractPipeline::addStage(AbstractStage* stage)
 {
     m_stages.push_back(stage);
 
-    std::cout << "Add stage " << stage->name() << std::endl;
-
     stage->dependenciesChanged.connect([this]() { m_dependenciesSorted = false; });
 }
 
@@ -146,7 +144,6 @@ void AbstractPipeline::execute()
 
     for (AbstractStage* stage: m_stages)
     {
-        std::cout << "Execute stage " << stage->name() << std::endl;
         stage->execute();
     }
 }
@@ -175,7 +172,6 @@ void AbstractPipeline::initializeStages()
 
     for (AbstractStage * stage : m_stages)
     {
-        std::cout << "Initialize stage " << stage->name() << std::endl;
         stage->initialize();
     }
 }
@@ -191,16 +187,8 @@ void AbstractPipeline::sortDependencies()
 
 void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
 {
-    std::cout << "Sort stages" << std::endl;
-
     std::vector<AbstractStage*> sorted;
     std::map<AbstractStage*, unsigned char> marks;
-
-    std::cout << "Stages before:" << std::endl;
-    for (AbstractStage * stage : stages)
-    {
-        std::cout << "\t" << stage->name() << std::endl;
-    }
 
     std::function<void(AbstractStage*)> visit = [&](AbstractStage * stage)
     {
@@ -212,30 +200,18 @@ void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
 
         if (marks[stage] == 0)
         {
-            std::cout << stage->name() << " wasn't visited before" << std::endl;
             marks[stage] = 1;
             for (auto nextStage : stages)
             {
-                std::cout << "Check for dependency of " << stage->name() << " to " << nextStage->name() << std::endl;
                 if (stage->requires(nextStage, false))
                 {
-                    std::cout << "Requires! So visits..." << std::endl;
                     visit(nextStage);
-                }
-                else
-                {
-                    std::cout << "Isn't required" << std::endl;
                 }
             }
 
             marks[stage] = 2;
             sorted.push_back(stage);
-            std::cout << "Add stage " << stage->name() << " to sorted output" << std::endl;
-
-            return;
         }
-
-        std::cout << "Marks[stage] was 2 for stage " << stage->name() << std::endl;
     };
 
     while (sorted.size() < stages.size())
@@ -244,24 +220,12 @@ void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
         {
             if (marks[stage] == 0)
             {
-                std::cout << "Check stage " << stage->name() << std::endl;
-
                 visit(stage);
-            }
-            else
-            {
-                std::cout << "Omit stage " << stage->name() << std::endl;
             }
         }
     }
 
     stages.swap(sorted);
-
-    std::cout << "Stages after:" << std::endl;
-    for (AbstractStage * stage : stages)
-    {
-        std::cout << "\t" << stage->name() << std::endl;
-    }
 }
 
 } // namespace gloperate

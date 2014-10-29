@@ -242,8 +242,8 @@ PostprocessingPipeline::PostprocessingPipeline()
     m_postprocessing->targetFramebuffer = m_targetFBO;
 
     addStages(
-        m_postprocessing,
-        m_rasterization
+        m_rasterization,
+        m_postprocessing
     );
 }
 
