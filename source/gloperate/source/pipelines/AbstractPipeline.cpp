@@ -216,8 +216,8 @@ void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
             marks[stage] = 1;
             for (auto nextStage : stages)
             {
-                std::cout << "Check for dependency of " << nextStage->name() << " to " << stage->name() << std::endl;
-                if (nextStage->requires(stage, false))
+                std::cout << "Check for dependency of " << stage->name() << " to " << nextStage->name() << std::endl;
+                if (stage->requires(nextStage, false))
                 {
                     std::cout << "Requires! So visits..." << std::endl;
                     visit(nextStage);
