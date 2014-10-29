@@ -186,11 +186,10 @@ void AbstractPipeline::sortDependencies()
 
 void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
 {
-    std::vector<AbstractStage*> sorted(stages.size(), nullptr);
-    auto iterator = sorted.rbegin();
+    std::vector<AbstractStage*> sorted;
     std::map<AbstractStage*, unsigned char> marks;
 
-    std::function<void(AbstractStage*)> visit = [&](AbstractStage* stage)
+    std::function<void(AbstractStage*)> visit = [&](AbstractStage * stage)
     {
         if (marks[stage] == 1)
         {
@@ -210,12 +209,11 @@ void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
             }
 
             marks[stage] = 2;
-            *iterator = stage;
-            ++iterator;
+            sorted.push_back(stage);
         }
     };
 
-    while (iterator != sorted.rend())
+    while (sorted.size() < stages.size())
     {
         for (auto stage : stages)
         {
