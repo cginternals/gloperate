@@ -96,7 +96,7 @@ public:
 protected:
     virtual void process() override
     {
-        camera.data()->setViewport(viewport.data()->width(), viewport.data()->height());
+        camera.data()->setAspectRatio(glm::ivec2(viewport.data()->x(), viewport.data()->y()));
         gl::glViewport(viewport.data()->x(), viewport.data()->y(), viewport.data()->width(), viewport.data()->height());
 
         color.data()->image2D(0, gl::GL_RGBA32F, viewport.data()->width(), viewport.data()->height(), 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);

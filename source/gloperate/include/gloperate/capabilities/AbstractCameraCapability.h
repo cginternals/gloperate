@@ -14,6 +14,7 @@
 
 namespace gloperate {
 
+class AbstractViewportCapability;
 class Camera;
 
 /**
@@ -30,7 +31,7 @@ public:
     *  @brief
     *    Constructor
     */
-    AbstractCameraCapability();
+    AbstractCameraCapability(AbstractViewportCapability * viewportCapability);
 
     /**
     *  @brief
@@ -38,8 +39,14 @@ public:
     */
     virtual ~AbstractCameraCapability();
 
+    virtual void onViewportChanged() = 0;
+
     virtual void setCamera(Camera * camera) = 0;
     virtual Camera * getCamera() = 0;
+
+protected:
+    AbstractViewportCapability * m_viewportCapability;
+
 
 };
 

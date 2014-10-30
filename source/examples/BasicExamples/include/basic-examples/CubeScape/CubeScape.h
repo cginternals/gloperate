@@ -12,9 +12,11 @@
 #include <globjects/VertexArray.h>
 
 namespace gloperate {
+    class Camera;
     class ResourceManager;
     class AbstractTargetFramebufferCapability;
     class AbstractViewportCapability;
+    class AbstractCameraCapability;
     class AbstractVirtualTimeCapability;
 }
 
@@ -41,9 +43,11 @@ protected:
     bool m_animation;
 
     /* capabilities */
+    gloperate::Camera * m_camera;
 
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
+    gloperate::AbstractCameraCapability * m_cameraCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
     /* members */

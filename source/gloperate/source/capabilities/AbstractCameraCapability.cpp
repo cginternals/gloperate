@@ -6,6 +6,7 @@
 \******************************************************************************/
 #include <gloperate/capabilities/AbstractCameraCapability.h>
 
+#include <gloperate/capabilities/AbstractViewportCapability.h>
 
 namespace gloperate {
 
@@ -14,9 +15,11 @@ namespace gloperate {
 *  @brief
 *    Constructor
 */
-AbstractCameraCapability::AbstractCameraCapability()
+AbstractCameraCapability::AbstractCameraCapability(AbstractViewportCapability * viewportCapability)
 : AbstractCapability()
+, m_viewportCapability(viewportCapability)
 {
+    viewportCapability->changed.connect([this](){this->onViewportChanged();});
 }
 
 /**

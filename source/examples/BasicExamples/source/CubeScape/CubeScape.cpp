@@ -16,8 +16,10 @@
 
 #include <gloperate/resources/RawFile.h>
 
+#include <gloperate/Camera.h>
 #include <gloperate/capabilities/TargetFramebufferCapability.h>
 #include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/capabilities/CameraCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 
 using namespace gl;
@@ -27,8 +29,10 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)
 , m_numCubes(25)
 , m_animation(true)
+, m_camera(new gloperate::Camera)
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)
+, m_cameraCapability(new gloperate::CameraCapability(m_viewportCapability, m_camera))
 , m_timeCapability(new gloperate::VirtualTimeCapability)
 , a_vertex(-1)
 , u_transform(-1)
@@ -39,6 +43,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 
     addCapability(m_targetFramebufferCapability);
     addCapability(m_viewportCapability);
+    addCapability(m_cameraCapability);
     addCapability(m_timeCapability);
 }
 

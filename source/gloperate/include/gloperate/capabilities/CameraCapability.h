@@ -27,13 +27,15 @@ public:
     *  @brief
     *    Constructor
     */
-    CameraCapability();
+    CameraCapability(AbstractViewportCapability * viewportCapability, Camera * camera = nullptr);
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~CameraCapability();
+
+    virtual void onViewportChanged() override;
 
     virtual void setCamera(Camera * camera) override;
     virtual Camera * getCamera() override;
