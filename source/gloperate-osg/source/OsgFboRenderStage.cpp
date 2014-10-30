@@ -18,6 +18,9 @@ OsgFboRenderStage::OsgFboRenderStage(const std::string & name)
 , m_colorTextureOsg(nullptr)
 , m_depthTextureOsg(nullptr)
 {
+    // Register output slots
+    addOutput("colorTexture", m_colorTexture);
+    addOutput("depthTexture", m_depthTexture);
 }
 
 /**

@@ -31,6 +31,10 @@ OsgRenderStage::OsgRenderStage(const std::string & name)
     // Register input slots
     addInput        ("viewport",    m_viewport);
     addOptionalInput("virtualTime", m_virtualTime);
+
+    // Register output slots
+    addOutput("projectionMatrix", m_projectionMatrix);
+    addOutput("viewMatrix",       m_viewMatrix);
 }
 
 /**
