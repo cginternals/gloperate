@@ -73,6 +73,7 @@ void AbstractPipeline::addStages()
 void AbstractPipeline::addStage(AbstractStage* stage)
 {
     m_stages.push_back(stage);
+
     stage->dependenciesChanged.connect([this]() { m_dependenciesSorted = false; });
 }
 
@@ -186,11 +187,10 @@ void AbstractPipeline::sortDependencies()
 
 void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
 {
-    std::vector<AbstractStage*> sorted(stages.size(), nullptr);
-    auto iterator = sorted.rbegin();
+    std::vector<AbstractStage*> sorted;
     std::map<AbstractStage*, unsigned char> marks;
 
-    std::function<void(AbstractStage*)> visit = [&](AbstractStage* stage)
+    std::function<void(AbstractStage*)> visit = [&](AbstractStage * stage)
     {
         if (marks[stage] == 1)
         {
@@ -203,19 +203,18 @@ void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
             marks[stage] = 1;
             for (auto nextStage : stages)
             {
-                if (nextStage->requires(stage, false))
+                if (stage->requires(nextStage, false))
                 {
                     visit(nextStage);
                 }
             }
 
             marks[stage] = 2;
-            *iterator = stage;
-            ++iterator;
+            sorted.push_back(stage);
         }
     };
 
-    while (iterator != sorted.rend())
+    while (sorted.size() < stages.size())
     {
         for (auto stage : stages)
         {

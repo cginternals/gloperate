@@ -49,6 +49,7 @@ public:
     void shareInput(AbstractInputSlot * input);
     void addFeedbackInput(const std::string & name, AbstractInputSlot & input);
     void addOptionalInput(const std::string & name, AbstractInputSlot & input);
+    void addDependency(AbstractStage * stage);
 
     void alwaysProcess(bool on);
     void scheduleProcess();
@@ -75,6 +76,7 @@ protected:
     std::set<AbstractData*> m_sharedOutputs;
     std::set<AbstractInputSlot*> m_inputs;
     std::set<AbstractInputSlot*> m_sharedInputs;
+    std::set<AbstractStage*> m_dependencies;
 
 private:
     AbstractStage(const AbstractStage&) = delete;
