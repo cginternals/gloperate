@@ -6,8 +6,8 @@
 namespace gloperate
 {
 
-PluginLibrary::PluginLibrary(const std::string & filename)
-: m_filename(filename)
+PluginLibrary::PluginLibrary(const std::string & fileName)
+: m_fileName(fileName)
 , m_initPtr(nullptr)
 , m_deinitPtr(nullptr)
 , m_numPluginsPtr(nullptr)
@@ -19,9 +19,9 @@ PluginLibrary::~PluginLibrary()
 {
 }
 
-const std::string & PluginLibrary::filename() const
+const std::string & PluginLibrary::fileName() const
 {
-    return m_filename;
+    return m_fileName;
 }
 
 bool PluginLibrary::isValid() const
