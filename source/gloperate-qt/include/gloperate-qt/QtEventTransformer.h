@@ -6,7 +6,7 @@
 \******************************************************************************/
 #pragma once
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate-qt/gloperate-qt_api.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QResizeEvent>
@@ -22,7 +22,7 @@
 #include <gloperate/input/input.h>
 #include <gloperate/input/AbstractEvent.h>
 
-namespace gloperate
+namespace gloperate_qt
 {
 
 
@@ -30,7 +30,7 @@ namespace gloperate
 *  @brief
 *    Class that transforms Qt events to gloperate events
 */
-class GLOPERATE_API QtEventTransformer
+class GLOPERATE_QT_API QtEventTransformer
 {
 
 
@@ -47,15 +47,15 @@ public:
     */
     virtual ~QtEventTransformer();
 
-    static AbstractEvent * transformEvent(QEvent * event);
+    static gloperate::AbstractEvent * transformEvent(QEvent * event);
 
-    static EventType fromQtType(QEvent::Type type);
+    static gloperate::EventType fromQtType(QEvent::Type type);
     static glm::ivec2 fromQPoint(const QPoint point);
-    static MouseButton fromQtMouseButton(Qt::MouseButton button);
-    static Key fromQtKeyCode(int key, int mods);
+    static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button);
+    static gloperate::Key fromQtKeyCode(int key, int mods);
 
 
 };
 
 
-} // namespace gloperate
+} // namespace gloperate_qt

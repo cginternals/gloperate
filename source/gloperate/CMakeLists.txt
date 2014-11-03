@@ -10,32 +10,6 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 
-#
-# Qt5
-#
-
-# good resource: http://www.kdab.com/using-cmake-with-qt-5/
-
-# http://qt-project.org/forums/viewthread/30006/
-if(MSVC)
-    cmake_policy(SET CMP0020 NEW)
-endif()
-
-find_package(Qt5Core    5.1 REQUIRED)
-find_package(Qt5Widgets 5.1 REQUIRED)
-
-if (NOT Qt5Core_FOUND)
-    message(STATUS "Example ${target} (disabled because Qt5 couldn't be found)")
-    return()
-endif()
-
-
-message(STATUS "Lib ${target}")
-
-# Qt5 options
-
-set(CMAKE_AUTOMOC ON)
-
 
 # Includes
 
@@ -101,7 +75,6 @@ set(sources
     ${source_path}/input/MouseEvent.cpp
 	${source_path}/input/MouseInputHandler.cpp
     ${source_path}/input/KeyboardInputHandler.cpp
-    ${source_path}/input/QtEventTransformer.cpp
     ${source_path}/navigation/AbstractMapping.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
 	${source_path}/Painter.cpp
@@ -163,7 +136,6 @@ set(headers
 	${include_path}/input/KeyboardInputHandler.h
 	${include_path}/input/input.h
 	${include_path}/input/MouseInputHandler.h
-        ${include_path}/input/QtEventTransformer.h
     ${include_path}/navigation/AbstractMapping.h
     ${include_path}/navigation/WorldInHandNavigation.h
 	${include_path}/Painter.h
@@ -232,7 +204,6 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 add_library(${target} ${headers} ${sources})
 
 target_link_libraries(${target} ${libs})
-qt5_use_modules(${target} Core Widgets)
 
 set_target_properties(${target}
     PROPERTIES

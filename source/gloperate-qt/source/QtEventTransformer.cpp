@@ -4,14 +4,15 @@
  * Copyright (C) 2014 Computer Graphics Systems Group at the
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
-#include <gloperate/input/QtEventTransformer.h>
-
+#include <gloperate-qt/QtEventTransformer.h>
 
 #include <gloperate/input/input.h>
 #include <gloperate/input/KeyboardEvent.h>
 #include <gloperate/input/MouseEvent.h>
 
-namespace gloperate
+using namespace gloperate;
+
+namespace gloperate_qt
 {
 
 /**
@@ -262,4 +263,4 @@ Key QtEventTransformer::fromQtKeyCode(int key, int mods)
     }
 }
 
-} // namespace gloperate
+} // namespace gloperate_qt
