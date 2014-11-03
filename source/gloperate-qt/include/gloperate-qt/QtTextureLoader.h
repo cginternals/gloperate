@@ -10,11 +10,15 @@
 #include <vector>
 #include <string>
 
-#include <globjects/Texture.h>
-
 #include <gloperate/resources/Loader.h>
 #include <gloperate-qt/gloperate-qt_api.h>
 
+namespace globjects
+{
+
+class Texture;
+
+}
 
 namespace gloperate_qt
 {
