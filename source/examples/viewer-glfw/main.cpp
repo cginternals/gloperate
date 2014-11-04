@@ -29,6 +29,8 @@ int main(int argc, char * argv[])
 
     PluginManager::init();
 
+    std::cout << "moep" << std::endl;
+
     PluginManager pluginManager;
     pluginManager.scan("examples");
 

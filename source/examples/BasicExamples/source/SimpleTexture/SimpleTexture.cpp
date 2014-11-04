@@ -1,10 +1,15 @@
 #include <basic-examples/SimpleTexture/SimpleTexture.h>
+
 #include <random>
+
 #include <glbinding/gl/gl.h>
+#include <globjects/logging.h>
+
 #include <gloperate/capabilities/ViewportCapability.h>
 
 
 using namespace gloperate;
+using namespace globjects;
 using namespace gl;
 
 
@@ -21,6 +26,13 @@ SimpleTexture::~SimpleTexture()
 
 void SimpleTexture::onInitialize()
 {
+#ifdef MAC_OS
+    Shader::clearGlobalReplacements();
+    Shader::globalReplace("#version 140", "#version 150");
+
+    debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
+#endif
+
     gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
     createAndSetupTexture();

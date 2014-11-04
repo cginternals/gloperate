@@ -111,6 +111,7 @@ void PluginManager::init(const std::string & applicationFilePath)
 PluginManager::PluginManager()
 {
     m_paths.push_back(s_applicationPath);
+    std::cout << s_applicationPath << std::endl;
 }
 
 PluginManager::~PluginManager()
