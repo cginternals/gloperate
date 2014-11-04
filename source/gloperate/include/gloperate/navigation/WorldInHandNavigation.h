@@ -82,10 +82,6 @@ protected:
     bool m_rotationHappened;
 	InteractionMode m_mode;
 
-    glm::vec3 m_eye;
-    glm::vec3 m_center;
-    glm::mat4x4 m_viewProjectionInverted;
-
     glm::vec3  m_i0;
     glm::vec3  m_i1;
     bool  m_i0Valid; // stores if initial interaction pick yielded valid depth

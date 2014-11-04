@@ -35,10 +35,11 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
     if (event->sourceType() == gloperate::SourceType::Keyboard)
     {
         KeyboardEvent * keyEvent = dynamic_cast<KeyboardEvent*>(event);
-        if (keyEvent)
+        if (keyEvent && keyEvent->eventType() == EventType::Press)
         {
             switch (keyEvent->key())
             {
+            // WASD move camera
             case KeyW:
                 m_navigation->pan(glm::vec3(0, 0, 1));
                 break;
@@ -51,8 +52,22 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
             case KeyD:
                 m_navigation->pan(glm::vec3(-1, 0, 0));
                 break;
+            // Reset camera position
             case KeyR:
                 m_navigation->reset(true);
+                break;
+            // Arrows rotate camera
+            case KeyUp:
+                m_navigation->rotate(0.0f, glm::radians(-10.0f));
+                break;
+            case KeyLeft:
+                m_navigation->rotate(glm::radians(10.0f), 0.0f);
+                break;
+            case KeyDown:
+                m_navigation->rotate(0.0f, glm::radians(10.0f));
+                break;
+            case KeyRight:
+                m_navigation->rotate(glm::radians(-10.0f), 0.0f);
                 break;
             default:
                 break;

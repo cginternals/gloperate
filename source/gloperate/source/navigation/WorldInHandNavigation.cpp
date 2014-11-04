@@ -211,12 +211,10 @@ void WorldInHandNavigation::rotate(
     float hAngle
 ,   float vAngle)
 {
-    static const glm::vec3 up(0.0, 1.0, 0.0);
-
     m_rotationHappened = true;
 
-    const glm::vec3 ray(glm::normalize(m_camera->center() - m_eye));
-    const glm::vec3 rotAxis(glm::cross(ray, up));
+    const glm::vec3 ray(glm::normalize(m_camera->center() - m_camera->eye()));
+    const glm::vec3 rotAxis(glm::cross(ray, m_camera->up()));
 
     hAngle *= ROTATION_HOR_DOF;
     vAngle *= ROTATION_VER_DOF;
@@ -224,16 +222,16 @@ void WorldInHandNavigation::rotate(
     // TODO reimplement
     //enforceRotationConstraints(hAngle, vAngle);
 
-    glm::vec3 t = m_i0Valid ? m_i0 : m_center;
+    glm::vec3 t = m_camera->center();
 
     glm::mat4x4 transform = glm::mat4x4();
     transform = glm::translate(transform, t);
-    transform = glm::rotate(transform, hAngle, up);
+    transform = glm::rotate(transform, hAngle, m_camera->up());
     transform = glm::rotate(transform, vAngle, rotAxis);
     transform = glm::translate(transform, -t);
 
-    glm::vec4 newEye = transform * glm::vec4(m_eye, 1.0f);
-    glm::vec4 newCenter = transform * glm::vec4(m_center, 1.0f);
+    glm::vec4 newEye = transform * glm::vec4(m_camera->eye(), 1.0f);
+    glm::vec4 newCenter = transform * glm::vec4(m_camera->center(), 1.0f);
     m_camera->setEye(glm::vec3(newEye));
     m_camera->setCenter(glm::vec3(newCenter));
 
