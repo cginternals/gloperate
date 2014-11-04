@@ -32,10 +32,10 @@ using deinit_ptr = void (*)();
 class GLOPERATE_API PluginLibrary 
 {
 public:
-    PluginLibrary(const std::string & filename);
+    PluginLibrary(const std::string & fileName);
     virtual ~PluginLibrary();
 
-    const std::string & filename() const;
+    const std::string & fileName() const;
 
     /** \return 'true' if the plugin has been loaded successfully, else 'false'
     */
@@ -49,7 +49,7 @@ public:
     gloperate::Plugin * plugin(unsigned int index) const;                                                                                                                                        
 
 protected:
-    std::string     m_filename;
+    std::string     m_fileName;
 
     init_ptr        m_initPtr;
     deinit_ptr      m_deinitPtr;

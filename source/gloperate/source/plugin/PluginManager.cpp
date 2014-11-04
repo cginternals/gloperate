@@ -127,7 +127,7 @@ void PluginManager::addPath(const std::string & path)
     const std::string p = DirectoryIterator::truncate(path);
 
     const std::vector<std::string>::const_iterator i = std::find(m_paths.cbegin(), m_paths.cend(), p);
-    if (i == m_paths.end())
+    if (i != m_paths.end())
         return;
 
     m_paths.push_back(p);
