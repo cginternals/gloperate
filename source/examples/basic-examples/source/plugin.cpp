@@ -1,15 +1,15 @@
 #include <gloperate/plugin/plugin_api.h>
 
-#include <basic-examples/SimpleTexture/SimpleTexture.h>
-#include <basic-examples/RotatingQuad/RotatingQuad.h>
-#include <basic-examples/CubeScape/CubeScape.h>
+#include <basic-examples/textured-quad/TexturedQuad.h>
+#include <basic-examples/rotating-quad/RotatingQuad.h>
+#include <basic-examples/cubescape/CubeScape.h>
 
 #include <gloperate-version.h>
 
 GLOPERATE_PLUGIN_LIBRARY
 
     GLOPERATE_PLUGIN(SimpleTexture
-    , "SimpleTexture"
+    , "TexturedQuad"
     , "Renders a simple generated texture"
     , GLOPERATE_AUTHOR_ORGANIZATION
     , "v1.0.0" )

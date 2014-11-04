@@ -1,9 +1,11 @@
+
 cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 
-# PROJECT DESCRIPTION
+# Project description and (meta) information
 
 set(META_PROJECT_NAME        "gloperate")
+set(META_PROJECT_DESCRIPTION "C++ library for defining and controlling modern GPU rendering/processing operations")
 set(META_VERSION_MAJOR       "0")
 set(META_VERSION_MINOR       "1")
 set(META_VERSION_PATCH       "0")
@@ -12,14 +14,21 @@ set(META_AUTHOR_ORGANIZATION "hpicgs group")
 set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/gloperate/")
 set(META_AUTHOR_MAINTAINER   "stefan.buschmann@hpi.de")
 
+string(TOUPPER ${META_PROJECT_NAME} META_PROJECT_NAME_UPPER)
 
-# OPTIONS
+# Limit supported configuration types
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
 
-option(OPTION_LIMIT_CONFIGS       "Generate limited configs (Release; Debug)" ON)
+# Set project name and type (C/C++)
+project(${META_PROJECT_NAME} C CXX)
+
+
+# Configuration options
+
 option(OPTION_PORTABLE_INSTALL    "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC        "Build static libraries" OFF)
 option(OPTION_BUILD_TESTS         "Build tests (if gmock and gtest are found)" ON)
-option(OPTION_BUILD_EXAMPLES      "Build examples (requires optional module glfw)" ON)
+option(OPTION_BUILD_EXAMPLES      "Build examples (requires optional module glfw)" OFF)
 
 
 if(OPTION_BUILD_STATIC)
@@ -30,9 +39,7 @@ else()
 endif()
 
 
-#
 # CMake configuration
-#
 
 # Include cmake modules from ./cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -66,9 +73,7 @@ include(cmake/Custom.cmake)
 include(cmake/GitRevision.cmake)
 
 
-#
 # Platform and architecture
-#
 
 # Architecture (32/64 bit)
 set(X64 OFF)
@@ -143,25 +148,20 @@ else()
 endif()
 
 
-#
 # Global deployment
-#
+
+# Add a revision file containing the git-head tag for cpack and install
+create_revision_file(${CMAKE_BINARY_DIR}/revision ${INSTALL_ROOT})
 
 # Project meta files
 install(FILES gloperate-config.cmake DESTINATION ${INSTALL_ROOT})
 install(FILES AUTHORS                DESTINATION ${INSTALL_ROOT})
 install(FILES LICENSE                DESTINATION ${INSTALL_ROOT})
 
-# Add a revision file containing the git-head tag for cpack and install
-create_revision_file(${CMAKE_BINARY_DIR}/revision ${INSTALL_ROOT})
-
 # Data files
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${INSTALL_DATA})
 
-
-#
 # Include projects
-#
 
 add_subdirectory(source)
 add_subdirectory(docs)
