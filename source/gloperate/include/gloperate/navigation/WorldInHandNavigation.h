@@ -31,7 +31,6 @@ public:
 
 	virtual void reset(bool update = true);
 
-protected:
 //	void panningBegin(const glm::ivec2 & mouse);
 //	void panningProcess(const glm::ivec2 & mouse);
 //	void panningEnd();

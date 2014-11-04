@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
 
     // Create Mapping
     QtViewerMapping * mapping = new QtViewerMapping();
+    mapping->setPainter(painter);
 
     // Create OpenGL window
     QtOpenGLWindow * glWindow = new QtOpenGLWindow(resourceManager, mapping);

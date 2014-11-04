@@ -29,7 +29,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)
 , m_numCubes(25)
 , m_animation(true)
-, m_camera(new gloperate::Camera)
+, m_camera(new gloperate::Camera())
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)
 , m_cameraCapability(new gloperate::CameraCapability(m_viewportCapability, m_camera))
@@ -49,7 +49,16 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 
 CubeScape::~CubeScape()
 {
-    m_camera->unref();
+}
+
+void CubeScape::createAndSetupCamera()
+{
+    m_camera->setEye(vec3(0.f, 0.8f, -2.0f));
+    m_camera->setCenter(vec3(0.f, -1.2f, 0.f));
+    m_camera->setUp(vec3(0.f, 1.f, 0.f));
+    m_camera->setZNear(1.f);
+    m_camera->setZFar(4.f);
+    m_camera->setFovy(radians(50.f));
 }
 
 void CubeScape::onInitialize()
@@ -143,7 +152,7 @@ void CubeScape::onInitialize()
     m_program->setUniform(terrain, 0);
     m_program->setUniform(patches, 1);
 
-    m_view = lookAt(vec3(0.f, 0.8f, -2.0f), vec3(0.f, -1.2f, 0.f), vec3(0.f, 1.f, 0.f));
+    createAndSetupCamera();
 }
 
 void CubeScape::onPaint()
@@ -151,8 +160,7 @@ void CubeScape::onPaint()
     if (m_viewportCapability->hasChanged())
     {
         glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
-
-        m_projection = perspective(radians(50.f), static_cast<GLfloat>(m_viewportCapability->width()) / static_cast<GLfloat>(m_viewportCapability->height()), 1.f, 4.f);
+        m_camera->setAspectRatio(ivec2(m_viewportCapability->width(), m_viewportCapability->height()));
 
         m_viewportCapability->setChanged(false);
     }
@@ -170,7 +178,7 @@ void CubeScape::onPaint()
 
     glEnable(GL_DEPTH_TEST);
 
-    mat4 transform = m_projection * m_view * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
+    mat4 transform = m_camera->viewProjection() * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
 
     m_vao->bind();
 

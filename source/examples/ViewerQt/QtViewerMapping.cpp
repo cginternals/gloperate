@@ -37,9 +37,25 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
         KeyboardEvent * keyEvent = dynamic_cast<KeyboardEvent*>(event);
         if (keyEvent)
         {
-            if (keyEvent->key() == gloperate::KeyU && keyEvent->eventType() == EventType::Press)
+            switch (keyEvent->key())
             {
-                qDebug() << "'U' was pressed!";
+            case KeyW:
+                m_navigation->pan(glm::vec3(0, 0, 1));
+                break;
+            case KeyA:
+                m_navigation->pan(glm::vec3(1, 0, 0));
+                break;
+            case KeyS:
+                m_navigation->pan(glm::vec3(0, 0, -1));
+                break;
+            case KeyD:
+                m_navigation->pan(glm::vec3(-1, 0, 0));
+                break;
+            case KeyR:
+                m_navigation->reset(true);
+                break;
+            default:
+                break;
             }
         }
     }

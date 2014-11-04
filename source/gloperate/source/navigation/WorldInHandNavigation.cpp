@@ -13,8 +13,8 @@
 
 namespace
 {
-    static const glm::vec3 DEFAULT_EYE    = glm::vec3(0.f, 1.2f, 2.4f);
-    static const glm::vec3 DEFAULT_CENTER = glm::vec3(0.f, 0.0f, 0.0f);
+    static const glm::vec3 DEFAULT_EYE    = glm::vec3(0.f, 0.8f, -2.0f);
+    static const glm::vec3 DEFAULT_CENTER = glm::vec3(0.f, -1.2f, 0.0f);
     static const glm::vec3 DEFAULT_UP     = glm::vec3(0.f, 1.0f, 0.0f);
 
     static const float DEFAULT_SCALE_STEP = 0.1f;
@@ -201,8 +201,8 @@ void WorldInHandNavigation::pan(glm::vec3 t)
 {
     //enforceTranslationConstraints(t);
 
-    m_camera->setEye(t + m_eye);
-    m_camera->setCenter(t + m_center);
+    m_camera->setEye(t + m_camera->eye());
+    m_camera->setCenter(t + m_camera->center());
 
     m_camera->update();
 }
