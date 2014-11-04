@@ -13,9 +13,19 @@ namespace gloperate
 
 class GLOPERATE_API MouseEvent : public AbstractEvent
 {
-public:
-    MouseEvent(EventType eventType, const glm::ivec2 & pos, MouseButton button = NoMouseButton, int modifiers = 0);
 
+public:
+    enum class Type : char
+    {
+        Press
+    ,   Release
+    ,   Move
+    ,   Scroll
+    };
+
+    MouseEvent(Type type, const glm::ivec2 & pos, MouseButton button = NoMouseButton, int modifiers = 0);
+
+    Type type() const;
     MouseButton button() const;
     int modifiers() const;
 
@@ -25,6 +35,7 @@ public:
     int y() const;
 
 protected:
+    Type m_type;
     MouseButton m_button;
     int m_modifiers;
 

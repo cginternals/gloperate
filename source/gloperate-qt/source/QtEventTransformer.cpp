@@ -48,7 +48,7 @@ AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
         QMouseEvent * mouseEvent = dynamic_cast<QMouseEvent*>(event);
         if (mouseEvent) {
             gloperateEvent =
-                    new MouseEvent(fromQtType(mouseEvent->type()),
+                    new MouseEvent(mouseTypeFromQtType(mouseEvent->type()),
                                    fromQPoint(mouseEvent->pos()),
                                    fromQtMouseButton(mouseEvent->button()),
                                    static_cast<int>(mouseEvent->modifiers()));
@@ -61,7 +61,7 @@ AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
         QKeyEvent * keyEvent = dynamic_cast<QKeyEvent*>(event);
         if (keyEvent) {
             gloperateEvent =
-                    new KeyboardEvent(fromQtType(keyEvent->type()),
+                    new KeyboardEvent(keyboardTypeFromQtType(keyEvent->type()),
                                       fromQtKeyCode(keyEvent->key(), keyEvent->modifiers()),
                                       0, // TODO
                                       keyEvent->modifiers());
@@ -73,7 +73,7 @@ AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
     {
         // TODO find solution for unknown/incomplete/broken/general etc. events
         gloperateEvent =
-                new KeyboardEvent(EventType::Default,
+                new KeyboardEvent(KeyboardEvent::Type::Press,
                                   Key::KeyUnknown,
                                   0);
         break;
@@ -84,21 +84,37 @@ AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
 
 /**
 *  @brief
-*    Convert Qt event type into gloperate EventType
+*    Convert Qt event type into gloperate KeyboardEvent::Type
 */
-EventType QtEventTransformer::fromQtType(QEvent::Type type)
+KeyboardEvent::Type QtEventTransformer::keyboardTypeFromQtType(QEvent::Type type)
+{
+    // TODO make complete
+    switch(type)
+    {
+    case QEvent::KeyPress:
+        return KeyboardEvent::Type::Press;
+    case QEvent::KeyRelease:
+        return KeyboardEvent::Type::Release;
+    default:
+        return KeyboardEvent::Type::Press;
+    }
+}
+
+/**
+*  @brief
+*    Convert Qt event type into gloperate MouseEvent::Type
+*/
+MouseEvent::Type QtEventTransformer::mouseTypeFromQtType(QEvent::Type type)
 {
     // TODO make complete
     switch(type)
     {
     case QEvent::MouseButtonPress:
-    case QEvent::KeyPress:
-        return EventType::Press;
+        return MouseEvent::Type::Press;
     case QEvent::MouseButtonRelease:
-    case QEvent::KeyRelease:
-        return EventType::Release;
+        return MouseEvent::Type::Release;
     default:
-        return EventType::Default;
+        return MouseEvent::Type::Press;
     }
 }
 

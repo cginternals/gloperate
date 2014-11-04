@@ -4,18 +4,12 @@
 namespace gloperate
 {
 
-AbstractEvent::AbstractEvent(EventType type)
-: m_eventType(type)
+AbstractEvent::AbstractEvent()
 {
 }
 
 AbstractEvent::~AbstractEvent()
 {
-}
-
-EventType AbstractEvent::eventType() const
-{
-    return m_eventType;
 }
 
 SourceType AbstractEvent::sourceType() const

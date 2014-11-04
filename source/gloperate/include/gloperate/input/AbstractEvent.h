@@ -6,15 +6,6 @@
 namespace gloperate
 {
 
-enum class EventType : char
-{
-    Default
-,   Press
-,   Release
-,   Move
-,   Scroll
-};
-
 enum class SourceType : char
 {
     Keyboard
@@ -27,14 +18,12 @@ class GLOPERATE_API AbstractEvent
 public:
     virtual ~AbstractEvent();
 
-    EventType eventType() const;
     SourceType sourceType() const;
 
 protected:
-    AbstractEvent(EventType type);
+    AbstractEvent();
 
 protected:
-    EventType m_eventType;
     SourceType m_sourceType;
 
 };

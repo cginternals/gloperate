@@ -3,13 +3,19 @@
 namespace gloperate
 {
 
-MouseEvent::MouseEvent(EventType eventType, const glm::ivec2 & pos, const MouseButton button, const int modifiers)
-: AbstractEvent(eventType)
+MouseEvent::MouseEvent(MouseEvent::Type type, const glm::ivec2 & pos, const MouseButton button, const int modifiers)
+: AbstractEvent()
+, m_type(type)
 , m_button(button)
 , m_modifiers(modifiers)
 , m_pos(pos)
 {
     m_sourceType = SourceType::Mouse;
+}
+
+MouseEvent::Type MouseEvent::type() const
+{
+    return m_type;
 }
 
 MouseButton MouseEvent::button() const

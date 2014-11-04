@@ -4,8 +4,9 @@
 namespace gloperate
 {
 
-KeyboardEvent::KeyboardEvent(EventType eventType, unsigned int character)
-: AbstractEvent(eventType)
+KeyboardEvent::KeyboardEvent(Type type, unsigned int character)
+: AbstractEvent()
+, m_type(type)
 , m_key(KeyUnknown)
 , m_scanCode(0)
 , m_modifiers(0)
@@ -14,14 +15,20 @@ KeyboardEvent::KeyboardEvent(EventType eventType, unsigned int character)
     m_sourceType = SourceType::Keyboard;
 }
 
-KeyboardEvent::KeyboardEvent(EventType eventType, Key key, int scanCode, int modifiers)
-: AbstractEvent(eventType)
+KeyboardEvent::KeyboardEvent(KeyboardEvent::Type type, Key key, int scanCode, int modifiers)
+: AbstractEvent()
+, m_type(type)
 , m_key(key)
 , m_scanCode(scanCode)
 , m_modifiers(modifiers)
 , m_character(0)
 {
     m_sourceType = SourceType::Keyboard;
+}
+
+KeyboardEvent::Type KeyboardEvent::type() const
+{
+    return m_type;
 }
 
 Key KeyboardEvent::key() const

@@ -35,7 +35,7 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
     if (event->sourceType() == gloperate::SourceType::Keyboard)
     {
         KeyboardEvent * keyEvent = dynamic_cast<KeyboardEvent*>(event);
-        if (keyEvent && keyEvent->eventType() == EventType::Press)
+        if (keyEvent && keyEvent->type() == KeyboardEvent::Type::Press)
         {
             switch (keyEvent->key())
             {
@@ -77,7 +77,7 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
     else if (event->sourceType() == gloperate::SourceType::Mouse)
     {
         MouseEvent * mouseEvent = dynamic_cast<MouseEvent*>(event);
-        if (mouseEvent)
+        if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Press)
         {
             if (mouseEvent->button() == gloperate::MouseButton1)
             {

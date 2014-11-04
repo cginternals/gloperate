@@ -21,6 +21,8 @@
 
 #include <gloperate/input/input.h>
 #include <gloperate/input/AbstractEvent.h>
+#include <gloperate/input/KeyboardEvent.h>
+#include <gloperate/input/MouseEvent.h>
 
 namespace gloperate_qt
 {
@@ -49,7 +51,8 @@ public:
 
     static gloperate::AbstractEvent * transformEvent(QEvent * event);
 
-    static gloperate::EventType fromQtType(QEvent::Type type);
+    static gloperate::MouseEvent::Type mouseTypeFromQtType(QEvent::Type type);
+    static gloperate::KeyboardEvent::Type keyboardTypeFromQtType(QEvent::Type type);
     static glm::ivec2 fromQPoint(const QPoint point);
     static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button);
     static gloperate::Key fromQtKeyCode(int key, int mods);
