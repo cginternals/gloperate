@@ -57,7 +57,11 @@ int main(int argc, char* argv[])
     }
 
     // Create OpenGL window
-    QtOpenGLWindow * glWindow = new QtOpenGLWindow(resourceManager);
+    QSurfaceFormat format;
+    format.setVersion(3, 2);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setDepthBufferSize(24);
+    QtOpenGLWindow * glWindow = new QtOpenGLWindow(resourceManager, format);
     if (painter) {
         glWindow->setPainter(painter);
     }

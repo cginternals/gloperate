@@ -27,9 +27,10 @@ int main(int argc, char * argv[])
 
     ResourceManager resourceManager;
 
-    PluginManager::init();
+    PluginManager::init(app.applicationPath());
 
     PluginManager pluginManager;
+    pluginManager.addPath("plugins");
     pluginManager.scan("examples");
 
     // Choose a painter

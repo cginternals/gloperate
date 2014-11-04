@@ -11,6 +11,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/base/StringTemplate.h>
+#include <globjects/logging.h>
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/capabilities/ViewportCapability.h>
@@ -73,6 +74,13 @@ RotatingQuad::~RotatingQuad()
 
 void RotatingQuad::onInitialize()
 {
+#ifdef MAC_OS
+    Shader::clearGlobalReplacements();
+    Shader::globalReplace("#version 140", "#version 150");
+
+    debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
+#endif
+
     gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
     createAndSetupCamera();

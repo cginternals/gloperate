@@ -11,6 +11,7 @@
 #include <glbinding/gl/bitfield.h>
 
 #include <globjects/globjects.h>
+#include <globjects/logging.h>
 #include <globjects/DebugMessage.h>
 #include <globjects/VertexAttributeBinding.h>
 
@@ -22,6 +23,7 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)
@@ -49,6 +51,15 @@ CubeScape::~CubeScape()
 void CubeScape::onInitialize()
 {
     // create program
+
+    globjects::init();
+
+#ifdef MAC_OS
+    Shader::clearGlobalReplacements();
+    Shader::globalReplace("#version 140", "#version 150");
+
+    debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
+#endif
 
     m_program = new globjects::Program;
     m_program->attach(

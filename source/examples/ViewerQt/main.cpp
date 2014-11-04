@@ -4,10 +4,10 @@
  * Copyright (C) 2014 Computer Graphics Systems Group at the 
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
+
 #include <iostream>
+
 #include <gloperate-qt/qt-includes-begin.h>
-#include <QApplication>
-#include <QMainWindow>
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
@@ -15,6 +15,11 @@
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
 #include <gloperate-qt/QtTextureStorer.h>
+
+#include <QApplication>
+#include <QCoreApplication>
+#include <QString>
+#include <QMainWindow>
 
 
 using namespace gloperate;
@@ -31,10 +36,12 @@ int main(int argc, char *argv[])
     resourceManager.addStorer(new QtTextureStorer());
 
     // Initialize plugin manager
-    PluginManager::init(argc > 0 ? argv[0] : "");
+    PluginManager::init(QCoreApplication::applicationDirPath().toStdString());
+    std::cout << "skjaksadj" << QCoreApplication::applicationDirPath().toStdString() << std::endl;
 
     // Load example plugins
     PluginManager pluginManager;
+    pluginManager.addPath("plugins");
     pluginManager.scan("examples");
 
     // Choose a painter
@@ -54,7 +61,11 @@ int main(int argc, char *argv[])
     }
 
     // Create OpenGL window
-    QtOpenGLWindow * glWindow = new QtOpenGLWindow(resourceManager);
+    QSurfaceFormat format;
+    format.setVersion(3, 2);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setDepthBufferSize(24);
+    QtOpenGLWindow * glWindow = new QtOpenGLWindow(resourceManager, format);
     if (painter) {
         // Set painter to window
         glWindow->setPainter(painter);

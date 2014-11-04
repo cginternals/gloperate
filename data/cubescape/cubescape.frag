@@ -19,8 +19,8 @@ void main()
 	float t = (2.0 / 3.0 - g_h) * 1.5 * 4.0 - 1.0;
 	vec2 uv = g_uv * vec2(0.25, 1.0);
 
-	vec4 c0 = texture2D(patches, uv + max(floor(t), 0.0) * vec2(0.25, 0.0));
-	vec4 c1 = texture2D(patches, uv + min(floor(t) + 1.0, 3.0) * vec2(0.25, 0.0));
+	vec4 c0 = texture(patches, uv + max(floor(t), 0.0) * vec2(0.25, 0.0));
+	vec4 c1 = texture(patches, uv + min(floor(t) + 1.0, 3.0) * vec2(0.25, 0.0));
 
 	fragColor = mix(c0, c1, smoothstep(0.25, 0.75, fract(t))) * lambert;
 }
