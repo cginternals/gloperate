@@ -4,7 +4,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <gloperate/Painter.h>
 #include <gloperate/Camera.h>
 #include <gloperate/capabilities/CameraCapability.h>
 
@@ -36,16 +35,12 @@ namespace
 namespace gloperate
 {
 
-WorldInHandNavigation::WorldInHandNavigation(Painter * painter)
-: m_painter(painter)
+WorldInHandNavigation::WorldInHandNavigation(Camera * camera)
+: m_camera(camera)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
 {
-    if (m_painter && m_painter->supports<CameraCapability>())
-    {
-        m_camera = m_painter->getCapability<CameraCapability>()->getCamera();
-        reset();
-    }
+    reset();
 }
 
 WorldInHandNavigation::~WorldInHandNavigation()

@@ -49,6 +49,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 
 CubeScape::~CubeScape()
 {
+    m_camera->unref();
 }
 
 void CubeScape::onInitialize()

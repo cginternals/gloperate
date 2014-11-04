@@ -1,5 +1,8 @@
 #pragma once
 
+#include <gloperate/gloperate_api.h>
+#include <gloperate/navigation/AbstractNavigation.h>
+
 #include <glm/glm.hpp>
 
 //#include "AxisAlignedBoundingBox.h"
@@ -7,10 +10,9 @@
 namespace gloperate
 {
 
-class Painter;
 class Camera;
 
-class WorldInHandNavigation
+class GLOPERATE_API WorldInHandNavigation : public AbstractNavigation
 {
 
 	enum InteractionMode
@@ -21,7 +23,7 @@ class WorldInHandNavigation
 	};
 
 public:
-    WorldInHandNavigation(Painter * painter);
+    WorldInHandNavigation(Camera * camera);
     virtual ~WorldInHandNavigation();
 
 //    void setBoundaryHint(const AxisAlignedBoundingBox & aabb);
@@ -73,7 +75,6 @@ protected:
 //	,	const glm::mat4x4 & viewProjectionInverted) const;
 
 protected:
-    Painter * m_painter;
     Camera * m_camera;
 
     // TODO clean up old

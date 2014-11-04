@@ -1,5 +1,7 @@
 #include <gloperate/navigation/AbstractMapping.h>
 
+#include <gloperate/Painter.h>
+
 
 namespace gloperate
 {
@@ -23,6 +25,8 @@ void AbstractMapping::setPainter(Painter * painter)
     {
         m_painter = painter;
     }
+
+    initializeNavigation();
 }
 
 } // namespace gloperate
