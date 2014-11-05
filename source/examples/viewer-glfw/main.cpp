@@ -27,7 +27,11 @@ int main(int argc, char * argv[])
     PluginManager::init(app.applicationFilePath());
 
     PluginManager pluginManager;
+#ifdef NDEBUG
     pluginManager.addPath("plugins");
+#else
+    pluginManager.addPath("plugins/debug");
+#endif
     pluginManager.scan("painters");
 
     // Choose a painter
