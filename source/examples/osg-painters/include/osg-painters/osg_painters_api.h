@@ -5,24 +5,24 @@
 // don't do it: http://support.microsoft.com/kb/q168958/
 
 #ifdef _MSC_VER
-#	define OSG_EXAMPLES_API_EXPORT_DECLARATION __declspec(dllexport)
-#	define OSG_EXAMPLES_API_IMPORT_DECLARATION __declspec(dllimport)
+#	define OSG_PAINTERS_API_EXPORT_DECLARATION __declspec(dllexport)
+#	define OSG_PAINTERS_API_IMPORT_DECLARATION __declspec(dllimport)
 #elif __GNUC__
-#	define OSG_EXAMPLES_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
-#	define OSG_EXAMPLES_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
+#	define OSG_PAINTERS_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#	define OSG_PAINTERS_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#	define OSG_EXAMPLES_API_EXPORT_DECLARATION
-#	define OSG_EXAMPLES_API_IMPORT_DECLARATION
+#	define OSG_PAINTERS_API_EXPORT_DECLARATION
+#	define OSG_PAINTERS_API_IMPORT_DECLARATION
 #endif
 
-#ifndef OSG_EXAMPLES_STATIC
-#ifdef OSG_EXAMPLES_EXPORTS
-#	define OSG_EXAMPLES_API OSG_EXAMPLES_API_EXPORT_DECLARATION
+#ifndef OSG_PAINTERS_STATIC
+#ifdef OSG_PAINTERS_EXPORTS
+#	define OSG_PAINTERS_API OSG_PAINTERS_API_EXPORT_DECLARATION
 #else
-#	define OSG_EXAMPLES_API OSG_EXAMPLES_API_IMPORT_DECLARATION
+#	define OSG_PAINTERS_API OSG_PAINTERS_API_IMPORT_DECLARATION
 #endif
 #else
-#	define OSG_EXAMPLES_API
+#	define OSG_PAINTERS_API
 #endif
 
 

@@ -1,4 +1,5 @@
-#include <pipeline-examples/Postprocessing/PostprocessingPipeline.h>
+
+#include <pipeline-painters/postprocessing/PostprocessingPipeline.h>
 
 #include <glm/gtc/constants.hpp>
 
@@ -35,6 +36,7 @@
 #include <globjects/base/StringTemplate.h>
 #include <gloperate/util/ScreenAlignedQuad.h>
 
+
 class RasterizationStage : public gloperate::AbstractStage
 {
 public:
@@ -68,8 +70,8 @@ public:
         m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT2, geometry.data());
         m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 
-        globjects::StringTemplate* sphereVertexShader = new globjects::StringTemplate(new globjects::File("data/post-processing/sphere.vert"));
-        globjects::StringTemplate* sphereFragmentShader = new globjects::StringTemplate(new globjects::File("data/post-processing/sphere.frag"));
+        globjects::StringTemplate* sphereVertexShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/sphere.vert"));
+        globjects::StringTemplate* sphereFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/sphere.frag"));
 
         #ifdef MAC_OS
             sphereVertexShader->replace("#version 140", "#version 150");
@@ -147,8 +149,8 @@ public:
 
     virtual void initialize() override
     {
-        globjects::StringTemplate* phongVertexShader = new globjects::StringTemplate(new globjects::File("data/post-processing/phong.vert"));
-        globjects::StringTemplate* phongFragmentShader = new globjects::StringTemplate(new globjects::File("data/post-processing/phong.frag"));
+        globjects::StringTemplate* phongVertexShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/phong.vert"));
+        globjects::StringTemplate* phongFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/phong.frag"));
 
         #ifdef MAC_OS
             phongVertexShader->replace("#version 140", "#version 150");

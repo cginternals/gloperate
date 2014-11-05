@@ -1,5 +1,5 @@
 
-set(target basic-painters)
+set(target pipeline-painters)
 message(STATUS "Example ${target}")
 
 
@@ -37,9 +37,9 @@ set(libs
 # Compiler definitions
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DBASIC_PAINTERS_STATIC")
+    add_definitions("-DPIPELINE_PAINTERS_STATIC")
 else()
-    add_definitions("-DBASIC_PAINTERS_EXPORTS")
+    add_definitions("-DPIPELINE_PAINTERS_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
@@ -47,23 +47,20 @@ add_definitions("-DGLM_FORCE_RADIANS")
 
 
 # Sources
-#
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/textured-quad/TexturedQuad.cpp
-    ${source_path}/rotating-quad/RotatingQuad.cpp
-    ${source_path}/cubescape/CubeScape.cpp
+    ${source_path}/postprocessing/Postprocessing.cpp
+    ${source_path}/postprocessing/PostprocessingPipeline.cpp
     ${source_path}/plugin.cpp
 )
 
 set(headers
-    ${include_path}/textured-quad/TexturedQuad.h
-    ${include_path}/rotating-quad/RotatingQuad.h
-    ${include_path}/cubescape/CubeScape.h
-    ${include_path}/basic_painters_api.h
+    ${include_path}/postprocessing/Postprocessing.h
+    ${include_path}/postprocessing/PostprocessingPipeline.h
+    ${include_path}/pipeline_painters_api.h
 )
 
 # Group source files

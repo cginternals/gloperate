@@ -1,5 +1,6 @@
 #include <gloperate/plugin/plugin_api.h>
-#include <pipeline-examples/Postprocessing/Postprocessing.h>
+
+#include <pipeline-painters/postprocessing/Postprocessing.h>
 
 
 GLOPERATE_PLUGIN_LIBRARY

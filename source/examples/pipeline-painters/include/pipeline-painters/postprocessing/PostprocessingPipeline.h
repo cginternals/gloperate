@@ -3,7 +3,7 @@
 #include <gloperate/pipelines/AbstractPipeline.h>
 #include <gloperate/pipelines/Data.h>
 
-#include <pipeline-examples/pipeline_examples_api.h>
+#include <pipeline-painters/pipeline_painters_api.h>
 
 namespace gloperate
 {
@@ -18,7 +18,7 @@ class Camera;
 class RasterizationStage;
 class PostprocessingStage;
 
-class PIPELINE_EXAMPLES_API PostprocessingPipeline : public gloperate::AbstractPipeline
+class PIPELINE_PAINTERS_API PostprocessingPipeline : public gloperate::AbstractPipeline
 {
 public:
     PostprocessingPipeline();

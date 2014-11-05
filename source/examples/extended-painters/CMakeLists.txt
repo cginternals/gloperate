@@ -4,11 +4,11 @@ set(target extended-painters)
 find_package(libzeug QUIET)
 
 if (NOT LIBZEUG_FOUND)
-    message("Lib ${target} skipped: libzeug not found")
+    message("Example ${target} skipped: libzeug not found")
     return()
 endif ()
 
-message(STATUS "Lib ${target}")
+message(STATUS "Example ${target}")
 
 
 # External libraries

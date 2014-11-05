@@ -1,12 +1,9 @@
 set(target gloperate-test)
 message(STATUS "Test ${target}")
 
-#
 # Includes
-#
 
-include_directories(
-    
+include_directories(   
 )
 
 include_directories(
@@ -14,9 +11,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
 )
 
-#
 # Libraries
-#
 
 set(libs
     ${GMOCK_LIBRARIES}
@@ -24,17 +19,13 @@ set(libs
     gloperate
 )
 
-#
 # Sources
-#
 
 set(sources
     main.cpp
 )
 
-#
 # Build executable
-#
 
 add_executable(${target} ${sources})
 

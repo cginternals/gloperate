@@ -1,5 +1,13 @@
 
-set(target basic-painters)
+set(target osg-painters)
+
+find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
+
+if(NOT OPENSCENEGRAPH_FOUND)
+    message("Example ${target} skipped: OSG not found")
+	return ()
+endif ()
+
 message(STATUS "Example ${target}")
 
 
@@ -16,11 +24,13 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
+    ${OPENSCENEGRAPH_INCLUDE_DIRS}
 )
 
 include_directories(
     BEFORE
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-osg/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -30,16 +40,18 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${OPENSCENEGRAPH_LIBRARIES}
     gloperate
+    gloperate-osg
 )
 
 
 # Compiler definitions
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DBASIC_PAINTERS_STATIC")
+    add_definitions("-DOSG_PAINTERS_STATIC")
 else()
-    add_definitions("-DBASIC_PAINTERS_EXPORTS")
+    add_definitions("-DOSG_PAINTERS_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
@@ -47,23 +59,18 @@ add_definitions("-DGLM_FORCE_RADIANS")
 
 
 # Sources
-#
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/textured-quad/TexturedQuad.cpp
-    ${source_path}/rotating-quad/RotatingQuad.cpp
-    ${source_path}/cubescape/CubeScape.cpp
+    ${source_path}/osg-scene/OsgScene.cpp
     ${source_path}/plugin.cpp
 )
 
 set(headers
-    ${include_path}/textured-quad/TexturedQuad.h
-    ${include_path}/rotating-quad/RotatingQuad.h
-    ${include_path}/cubescape/CubeScape.h
-    ${include_path}/basic_painters_api.h
+    ${include_path}/osg-scene/OsgScene.h
+    ${include_path}/osg_painters_api.h
 )
 
 # Group source files
