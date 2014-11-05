@@ -22,15 +22,13 @@ int main(int argc, char * argv[])
 {
     Application app(argc, argv);
 
-    ContextFormat format;
-    format.setVersion(3, 2);
-
     ResourceManager resourceManager;
 
-    PluginManager::init();
+    PluginManager::init(app.applicationPath());
 
     PluginManager pluginManager;
-    pluginManager.scan("examples");
+    pluginManager.addPath("plugins");
+    pluginManager.scan("painters");
 
     // Choose a painter
     std::string name = (argc > 1) ? argv[1] : "CubeScape";
@@ -53,6 +51,9 @@ int main(int argc, char * argv[])
     Window window(resourceManager);
     window.setPainter(painter);
     window.setEventHandler(new WindowEventHandler());
+
+	ContextFormat format;
+	format.setVersion(3, 2);
 
     if (!window.create(format, "gloperate viewer"))
         return 1;

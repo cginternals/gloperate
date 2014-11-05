@@ -151,7 +151,7 @@ std::string Application::baseName(const std::string & filePath)
 std::string Application::path(const std::string & filePath)
 {
     auto i = filePath.find_last_of(g_sep);
-    return i == filePath.npos ? "" : filePath.substr(0, --i);
+    return i == filePath.npos ? "" : filePath.substr(0, i);
 }
 
 } // namespace gloperate_glfw

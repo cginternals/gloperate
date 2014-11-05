@@ -48,7 +48,7 @@ public:
     *  @param[in] format
     *    Surface format
     */
-    QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format);
+    QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format, gloperate::AbstractMapping * mapping = nullptr);
 
     /**
     *  @brief

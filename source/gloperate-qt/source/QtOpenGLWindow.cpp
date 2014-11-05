@@ -46,10 +46,11 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, glo
 *  @brief
 *    Constructor
 */
-QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
+QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format, gloperate::AbstractMapping * mapping)
 : QtOpenGLWindowBase(format)
 , m_resourceManager(resourceManager)
 , m_timePropagator(nullptr)
+, m_mapping(mapping)
 {
 }
 

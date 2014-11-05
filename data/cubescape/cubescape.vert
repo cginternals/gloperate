@@ -16,7 +16,7 @@ void main()
 	vec3 v = a_vertex * oneovernumcubes - (1.0 - oneovernumcubes);
 	v.xz  += uv;
 
-	v_h = texture2D(terrain, uv * 0.5 + vec2(sin(time * 0.04), time * 0.02)).r * 2.0 / 3.0;
+	v_h = texture(terrain, uv * 0.5 + vec2(sin(time * 0.04), time * 0.02)).r * 2.0 / 3.0;
 
 	if(a_vertex.y > 0.0) 
 	    v.y += v_h;

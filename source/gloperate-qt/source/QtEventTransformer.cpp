@@ -37,7 +37,7 @@ QtEventTransformer::~QtEventTransformer()
 */
 AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
 {
-    AbstractEvent * gloperateEvent;
+    AbstractEvent * gloperateEvent = nullptr;
     switch (event->type())
     {
     case QEvent::MouseButtonRelease:

@@ -9,9 +9,11 @@ endif()
 function(add_test_without_ctest target)
 
     add_subdirectory(${target})
-    add_dependencies(test ${target})
-    add_custom_command(TARGET test POST_BUILD 
-        COMMAND $<TARGET_FILE:${target}> --gtest_output=xml:gtests.xml)
+    if (TARGET ${target})
+        add_dependencies(test ${target})
+        add_custom_command(TARGET test POST_BUILD 
+           COMMAND $<TARGET_FILE:${target}> --gtest_output=xml:gtests.xml)
+    endif()
 
 endfunction()
 
@@ -21,10 +23,11 @@ if(OPTION_BUILD_TESTS)
     find_package(GMOCK)
     find_package(GTEST)
     if(NOT GMOCK_FOUND OR NOT GTEST_FOUND)
-        message(STATUS "Disabled tests (missing gmock and/or gtest)")
+        message("Tests skipped: gmock and/or gtest not found")
     endif()
 endif()
 
+# Check if tests are enabled
 if(OPTION_BUILD_TESTS AND GMOCK_FOUND AND GTEST_FOUND)
 
 	# Include gmock and gtest
