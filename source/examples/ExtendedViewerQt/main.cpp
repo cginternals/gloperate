@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     pluginManager.scan("examples");
 
     // Choose a painter
-    std::string name = (argc > 1) ? argv[1] : "ExtendedCubeScape";
+    std::string name = (argc > 1) ? argv[1] : "CubeScapeExtended";
     std::cout << "Trying to create painter '" << name << "'\n";
 
     // Create painter
