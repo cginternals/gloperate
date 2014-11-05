@@ -2,7 +2,7 @@
 
 #include <gloperate/pipelines/PipelinePainter.h>
 
-#include <pipeline-painters/Postprocessing/PostprocessingPipeline.h>
+#include <pipeline-painters/postprocessing/PostprocessingPipeline.h>
 #include <pipeline-painters/pipeline_painters_api.h>
 
 

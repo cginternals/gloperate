@@ -35,7 +35,7 @@ int main(int argc, char * argv[])
     resourceManager.addStorer(new QtTextureStorer());
 
     // Initialize plugin manager
-    PluginManager::init(QCoreApplication::applicationDirPath().toStdString());
+    PluginManager::init(QCoreApplication::applicationFilePath().toStdString());
 
     // Load example plugins
     PluginManager pluginManager;
@@ -44,6 +44,7 @@ int main(int argc, char * argv[])
 
     // Choose a painter
 	std::string name = (argc > 1) ? argv[1] : "CubeScape";
+    std::cout << "Trying to create painter '" << name << "'\n";
 
     gloperate::Painter * painter = nullptr;
     Plugin * plugin = pluginManager.plugin(name);

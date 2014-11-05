@@ -24,7 +24,7 @@ int main(int argc, char * argv[])
 
     ResourceManager resourceManager;
 
-    PluginManager::init(app.applicationPath());
+    PluginManager::init(app.applicationFilePath());
 
     PluginManager pluginManager;
     pluginManager.addPath("plugins");
