@@ -20,7 +20,7 @@ public:
         Press
     ,   Release
     ,   Move
-    ,   Scroll
+    ,   DoubleClick
     };
 
     MouseEvent(Type type, const glm::ivec2 & pos, MouseButton button = NoMouseButton, int modifiers = 0);

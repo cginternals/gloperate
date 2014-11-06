@@ -34,6 +34,7 @@ QtEventTransformer::~QtEventTransformer()
 /**
 *  @brief
 *    Convert Qt event into gloperate event
+*    does nothing right now
 */
 AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
 {
@@ -45,14 +46,6 @@ AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
     case QEvent::MouseMove:
     case QEvent::MouseButtonPress:
     { // Mouse Event
-        QMouseEvent * mouseEvent = dynamic_cast<QMouseEvent*>(event);
-        if (mouseEvent) {
-            gloperateEvent =
-                    new MouseEvent(mouseTypeFromQtType(mouseEvent->type()),
-                                   fromQPoint(mouseEvent->pos()),
-                                   fromQtMouseButton(mouseEvent->button()),
-                                   static_cast<int>(mouseEvent->modifiers()));
-        }
         break;
     } // Keyboard Event
     case QEvent::KeyPress:
@@ -100,6 +93,10 @@ MouseEvent::Type QtEventTransformer::mouseTypeFromQtType(QEvent::Type type)
         return MouseEvent::Type::Press;
     case QEvent::MouseButtonRelease:
         return MouseEvent::Type::Release;
+    case QEvent::MouseButtonDblClick:
+        return MouseEvent::Type::DoubleClick;
+    case QEvent::MouseMove:
+        return MouseEvent::Type::Move;
     default:
         return MouseEvent::Type::Press;
     }
