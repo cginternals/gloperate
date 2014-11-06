@@ -40,11 +40,15 @@ int main(int argc, char * argv[])
 
     // Load example plugins
     PluginManager pluginManager;
+<<<<<<< HEAD
+    pluginManager.addPath("build");
+=======
 #ifdef NDEBUG
     pluginManager.addPath("plugins");
 #else
     pluginManager.addPath("plugins/debug");
 #endif
+>>>>>>> master
     pluginManager.scan("painters");
 
     // Choose a painter

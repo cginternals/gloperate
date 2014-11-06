@@ -34,11 +34,16 @@ int main(int argc, char* argv[])
     resourceManager.addStorer(new QtTextureStorer());
 
     // Initialize plugin manager
-    PluginManager::init(argc > 0 ? argv[0] : "");
+    PluginManager::init(QCoreApplication::applicationFilePath().toStdString());
 
     // Load example plugins
     PluginManager pluginManager;
-    pluginManager.scan("examples");
+#ifdef NDEBUG
+    pluginManager.addPath("plugins");
+#else
+    pluginManager.addPath("plugins/debug");
+#endif
+    pluginManager.scan("painters");
 
     // Choose a painter
     std::string name = (argc > 1) ? argv[1] : "CubeScapeExtended";
