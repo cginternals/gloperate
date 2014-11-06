@@ -16,15 +16,10 @@
 #include <globjects/globjects.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractInputCapability.h>
-#include <gloperate/input/AbstractEvent.h>
-#include <gloperate/input/KeyboardEvent.h>
-#include <gloperate/navigation/AbstractMapping.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/tools/ScreenshotTool.h>
 
 #include <gloperate-qt/QtEventTransformer.h>
-
-#include <QDebug>
 
 using namespace gloperate;
 namespace gloperate_qt
@@ -34,11 +29,10 @@ namespace gloperate_qt
 *  @brief
 *    Constructor
 */
-QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, gloperate::AbstractMapping * mapping)
+QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 : QtOpenGLWindowBase()
 , m_resourceManager(resourceManager)
 , m_timePropagator(nullptr)
-, m_mapping(mapping)
 {
 }
 
@@ -46,11 +40,10 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, glo
 *  @brief
 *    Constructor
 */
-QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format, gloperate::AbstractMapping * mapping)
+QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
 : QtOpenGLWindowBase(format)
 , m_resourceManager(resourceManager)
 , m_timePropagator(nullptr)
-, m_mapping(mapping)
 {
 }
 
@@ -88,16 +81,6 @@ void QtOpenGLWindow::setPainter(Painter * painter)
         // Create a time propagator that updates the virtual time
         m_timePropagator.reset(new TimePropagator(this, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
     }
-}
-
-bool QtOpenGLWindow::event(QEvent * event)
-{
-    AbstractEvent * gloperateEvent = QtEventTransformer::transformEvent(event);
-    if (m_mapping)
-    {
-        m_mapping->processEvent(gloperateEvent);
-    }
-    return QtOpenGLWindowBase::event(event);
 }
 
 void QtOpenGLWindow::onInitialize()

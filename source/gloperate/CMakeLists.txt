@@ -71,6 +71,7 @@ set(sources
 	${source_path}/capabilities/TargetFramebufferCapability.cpp
 	${source_path}/ContextFormat.cpp
     ${source_path}/input/AbstractEvent.cpp
+    ${source_path}/input/AbstractEventProvider.cpp
     ${source_path}/input/KeyboardEvent.cpp
     ${source_path}/input/MouseEvent.cpp
 	${source_path}/input/MouseInputHandler.cpp
@@ -132,6 +133,7 @@ set(headers
 	${include_path}/ContextFormat.h
 	${include_path}/gloperate_api.h
 	${include_path}/input/AbstractEvent.h
+    ${include_path}/input/AbstractEventProvider.h
 	${include_path}/input/KeyboardEvent.h
 	${include_path}/input/MouseEvent.h
 	${include_path}/input/KeyboardInputHandler.h

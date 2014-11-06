@@ -58,24 +58,11 @@ AbstractEvent * QtEventTransformer::transformEvent(QEvent * event)
     case QEvent::KeyPress:
     case QEvent::KeyRelease:
     {
-        QKeyEvent * keyEvent = dynamic_cast<QKeyEvent*>(event);
-        if (keyEvent) {
-            gloperateEvent =
-                    new KeyboardEvent(keyboardTypeFromQtType(keyEvent->type()),
-                                      fromQtKeyCode(keyEvent->key(), keyEvent->modifiers()),
-                                      0, // TODO
-                                      keyEvent->modifiers());
-        }
         break;
     }
     case QEvent::None:
     default:
     {
-        // TODO find solution for unknown/incomplete/broken/general etc. events
-        gloperateEvent =
-                new KeyboardEvent(KeyboardEvent::Type::Press,
-                                  Key::KeyUnknown,
-                                  0);
         break;
     }
     }

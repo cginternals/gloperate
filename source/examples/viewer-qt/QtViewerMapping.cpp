@@ -1,7 +1,5 @@
 #include "QtViewerMapping.h"
 
-#include <QDebug>
-
 #include <gloperate/Camera.h>
 #include <gloperate/capabilities/CameraCapability.h>
 #include <gloperate/input/AbstractEvent.h>
@@ -74,6 +72,7 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
             }
         }
     }
+    // not used right now
     else if (event->sourceType() == gloperate::SourceType::Mouse)
     {
         MouseEvent * mouseEvent = dynamic_cast<MouseEvent*>(event);
@@ -81,7 +80,7 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
         {
             if (mouseEvent->button() == gloperate::MouseButton1)
             {
-                qDebug() << "'MouseButton1' was pressed!";
+                m_navigation->reset(true);
             }
         }
     }

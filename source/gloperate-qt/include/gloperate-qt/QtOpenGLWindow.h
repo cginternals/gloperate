@@ -10,7 +10,7 @@
 #include <QScopedPointer>
 #include <globjects/base/ref_ptr.h>
 #include <gloperate/Painter.h>
-#include <gloperate/navigation/AbstractMapping.h>
+
 #include <gloperate-qt/QtOpenGLWindowBase.h>
 #include <gloperate-qt/TimePropagator.h>
 
@@ -39,7 +39,7 @@ public:
     *  @brief
     *    Constructor
     */
-    QtOpenGLWindow(gloperate::ResourceManager & resourceManager, gloperate::AbstractMapping * mapping = nullptr);
+    QtOpenGLWindow(gloperate::ResourceManager & resourceManager);
 
     /**
     *  @brief
@@ -48,7 +48,7 @@ public:
     *  @param[in] format
     *    Surface format
     */
-    QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format, gloperate::AbstractMapping * mapping = nullptr);
+    QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format);
 
     /**
     *  @brief
@@ -76,7 +76,6 @@ public:
 
 
 protected:
-    virtual bool event(QEvent * event) override;
     virtual void onInitialize() override;
     virtual void onResize(QResizeEvent * event) override;
     virtual void onPaint() override;
@@ -93,7 +92,6 @@ protected:
     gloperate::ResourceManager & m_resourceManager;
     globjects::ref_ptr<gloperate::Painter> m_painter;	      /**< Currently used painter */
     QScopedPointer<TimePropagator>         m_timePropagator;  /**< Time propagator for continous updates */
-    gloperate::AbstractMapping * m_mapping;
 
 };
 
