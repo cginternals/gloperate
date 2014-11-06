@@ -22,14 +22,14 @@ namespace
     static const float DEFAULT_DIST_MIN   = 0.1f;
     static const float DEFAULT_DIST_MAX   = 4.0f;
 
-    static const float ROTATION_HOR_DOF   = 0.8f * static_cast<float>(M_PI);
-    static const float ROTATION_VER_DOF   = 0.8f * static_cast<float>(M_PI);
+    static const float ROTATION_HOR_DOF   = 0.8f * glm::pi<float>();
+    static const float ROTATION_VER_DOF   = 0.8f * glm::pi<float>();
 
     static const float ROTATION_KEY_SCALE = 1.0f;
 
     //static const float NAV_CONSTRAINT_PAN_CIRCLE_R = 2.83;
-    static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * static_cast<float>(M_PI);
-    static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * static_cast<float>(M_PI);
+    static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * glm::pi<float>();
+    static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * glm::pi<float>();
 }
 
 namespace gloperate
