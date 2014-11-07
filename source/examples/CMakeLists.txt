@@ -1,5 +1,7 @@
 if(OPTION_BUILD_EXAMPLES)
-
+	set(INSTALL_PLUGINS       	${INSTALL_BIN}/plugins)
+	set(INSTALL_PLUGINS_DEBUG	${INSTALL_BIN}/plugins/debug)
+	
     # Example plugins
     add_subdirectory(basic-painters)
     add_subdirectory(pipeline-painters)

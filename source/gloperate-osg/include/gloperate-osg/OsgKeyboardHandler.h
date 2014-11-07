@@ -10,11 +10,7 @@
 #include <gloperate/input/KeyboardInputHandler.h>
 #include <gloperate-osg/gloperate-osg_api.h>
 #include <osg/ref_ptr>
-
-
-namespace osgViewer {
-    class GraphicsWindowEmbedded;
-}
+#include <osgViewer/GraphicsWindow>
 
 
 namespace gloperate_osg
