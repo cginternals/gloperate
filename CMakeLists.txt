@@ -25,10 +25,10 @@ project(${META_PROJECT_NAME} C CXX)
 
 # Configuration options
 
-option(OPTION_PORTABLE_INSTALL    "Install to a local directory instead of the system" OFF)
-option(OPTION_BUILD_STATIC        "Build static libraries" OFF)
-option(OPTION_BUILD_TESTS         "Build tests (if gmock and gtest are found)" ON)
-option(OPTION_BUILD_EXAMPLES      "Build examples (requires optional module glfw)" OFF)
+option(OPTION_PORTABLE_INSTALL  "Install to a local directory instead of the system" OFF)
+option(OPTION_BUILD_STATIC      "Build static libraries" OFF)
+option(OPTION_BUILD_TESTS       "Build tests (if gmock and gtest are found)" ON)
+option(OPTION_BUILD_EXAMPLES    "Build examples (requires optional module glfw)" OFF)
 
 
 if(OPTION_BUILD_STATIC)

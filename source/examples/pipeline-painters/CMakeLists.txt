@@ -95,9 +95,14 @@ set_target_properties(${target}
 
 # Library
 install(TARGETS ${target}
-    RUNTIME DESTINATION ${INSTALL_BIN}
+    RUNTIME DESTINATION ${INSTALL_PLUGINS} CONFIGURATIONS Release
     LIBRARY DESTINATION ${INSTALL_SHARED}
     ARCHIVE DESTINATION ${INSTALL_LIB}
+)
+
+# Debug runtime library
+install(TARGETS ${target}
+    RUNTIME DESTINATION ${INSTALL_PLUGINS_DEBUG} CONFIGURATIONS Debug
 )
 
 # Header files
