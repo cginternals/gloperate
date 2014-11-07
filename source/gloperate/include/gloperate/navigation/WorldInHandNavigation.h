@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/navigation/AbstractNavigation.h>
+#include <gloperate/navigation/AbstractInteraction.h>
 
 #include <glm/glm.hpp>
 
@@ -12,7 +12,7 @@ namespace gloperate
 
 class Camera;
 
-class GLOPERATE_API WorldInHandNavigation : public AbstractNavigation
+class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 {
 
 	enum InteractionMode
