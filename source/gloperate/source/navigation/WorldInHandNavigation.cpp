@@ -220,8 +220,7 @@ void WorldInHandNavigation::rotate(
     hAngle *= ROTATION_HOR_DOF;
     vAngle *= ROTATION_VER_DOF;
 
-    // TODO reimplement
-    //enforceRotationConstraints(hAngle, vAngle);
+    enforceRotationConstraints(hAngle, vAngle);
 
     glm::vec3 t = m_camera->center();
 
@@ -328,24 +327,23 @@ void WorldInHandNavigation::rotate(
 //    p = glm::vec3(i.x(), 0., i.y()) - m_center;
 //}
 
-//void WorldInHandNavigation::enforceRotationConstraints(
-//    float & /*hAngle*/
-//,   float & vAngle) const
-//{
-//    // hAngle is not constrained, vAngle is.
+void WorldInHandNavigation::enforceRotationConstraints(
+    float & /*hAngle*/
+,   float & vAngle) const
+{
+    // hAngle is not constrained, vAngle is.
 
-//    // retrieve the angle between camera-center to up and test how much closer
-//    // to up/down it can be rotated and clamp if required.
+    // retrieve the angle between camera-center to up and test how much closer
+    // to up/down it can be rotated and clamp if required.
 
-//    static const glm::vec3 up(0.0, 1.0, 0.0);
-//    const float va = deg(acos(
-//        glm::vec3::dotProduct((m_eye - m_center).normalized(), up)));
+    const float va = glm::degrees(acos(
+		glm::dot(glm::normalize(m_camera->eye() - m_camera->center()), m_camera->up())));
 
-//    if (vAngle <= 0.0)
-//        vAngle = ma(vAngle, deg(CONSTRAINT_ROT_MAX_V_UP) - va);
-//    else
-//        vAngle = mi(vAngle, deg(CONSTRAINT_ROT_MAX_V_LO) - va);
-//}
+    if (vAngle <= 0.0)
+		vAngle = glm::max(vAngle, glm::degrees(CONSTRAINT_ROT_MAX_V_UP) - va);
+    else
+		vAngle = glm::min(vAngle, glm::degrees(CONSTRAINT_ROT_MAX_V_LO) - va);
+}
  
 //void WorldInHandNavigation::enforceScaleConstraints(
 //    float & scale
