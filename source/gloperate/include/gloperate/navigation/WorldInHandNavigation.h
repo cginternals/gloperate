@@ -51,9 +51,9 @@ public:
 	// constraints
 
 //	void enforceTranslationConstraints(glm::vec3 & p) const;
-//	void enforceRotationConstraints(
-//		float & hAngle
-//	,	float & vAngle) const;
+	void enforceRotationConstraints(
+		float & hAngle
+	,	float & vAngle) const;
 //	void enforceScaleConstraints(
 //		float & scale
 //	,	glm::vec3 & i) const;
