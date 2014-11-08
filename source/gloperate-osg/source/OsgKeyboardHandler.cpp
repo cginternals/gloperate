@@ -7,6 +7,7 @@
 #include <gloperate-osg/OsgKeyboardHandler.h>
 
 #include <osgViewer/Viewer>
+#include <osgViewer/GraphicsWindow>
 
 #include <gloperate-osg/OsgRenderStage.h>
 
