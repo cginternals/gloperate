@@ -7,10 +7,15 @@
 #pragma once
 
 
+#include <osg/ref_ptr>
+
 #include <gloperate/input/KeyboardInputHandler.h>
 #include <gloperate-osg/gloperate-osg_api.h>
-#include <osg/ref_ptr>
-#include <osgViewer/GraphicsWindow>
+
+
+namespace osgViewer {
+    class GraphicsWindowEmbedded;
+}
 
 
 namespace gloperate_osg
@@ -51,8 +56,8 @@ public:
 
 
 protected:
-    osg::ref_ptr<osgViewer::GraphicsWindowEmbedded>   m_embedded; /**< Interface that acts like a window to OSG */
-    OsgRenderStage                                  * m_stage;    /**< Render stage to which the input handler belongs (can be null) */
+    osgViewer::GraphicsWindowEmbedded * m_embedded; /**< Interface that acts like a window to OSG */
+    OsgRenderStage                    * m_stage;    /**< Render stage to which the input handler belongs (can be null) */
 
 
 };

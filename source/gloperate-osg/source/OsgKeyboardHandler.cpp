@@ -150,22 +150,28 @@ OsgKeyboardHandler::OsgKeyboardHandler(osgViewer::GraphicsWindowEmbedded * embed
 : m_embedded(embedded)
 , m_stage(stage)
 {
+    if (m_embedded) {
+        m_embedded->ref();
+    }
 }
 
 OsgKeyboardHandler::~OsgKeyboardHandler()
 {
+    if (m_embedded) {
+        m_embedded->unref();
+    }
 }
 
 void OsgKeyboardHandler::onKeyDown(gloperate::Key key)
 {
-    m_embedded->getEventQueue()->keyPress(toOsgKey(key));
+    if (m_embedded) m_embedded->getEventQueue()->keyPress(toOsgKey(key));
 
     if (m_stage) m_stage->scheduleProcess();
 }
 
 void OsgKeyboardHandler::onKeyUp(gloperate::Key key)
 {
-    m_embedded->getEventQueue()->keyRelease(toOsgKey(key));
+    if (m_embedded) m_embedded->getEventQueue()->keyRelease(toOsgKey(key));
 
     if (m_stage) m_stage->scheduleProcess();
 }
