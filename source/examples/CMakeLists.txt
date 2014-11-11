@@ -1,5 +1,5 @@
 if(OPTION_BUILD_EXAMPLES)
-
+	
     # Example plugins
     add_subdirectory(basic-painters)
     add_subdirectory(pipeline-painters)

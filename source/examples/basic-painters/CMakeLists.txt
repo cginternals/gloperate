@@ -96,11 +96,17 @@ set_target_properties(${target}
 
 # Deployment
 
-# Library
+# Plugin library (release)
 install(TARGETS ${target}
-    RUNTIME DESTINATION ${INSTALL_BIN}
-    LIBRARY DESTINATION ${INSTALL_SHARED}
+    RUNTIME DESTINATION ${INSTALL_PLUGINS}       CONFIGURATIONS Release
+    LIBRARY DESTINATION ${INSTALL_PLUGINS}       CONFIGURATIONS Release
     ARCHIVE DESTINATION ${INSTALL_LIB}
+)
+
+# Plugin library (debug)
+install(TARGETS ${target}
+    RUNTIME DESTINATION ${INSTALL_PLUGINS_DEBUG} CONFIGURATIONS Debug
+    LIBRARY DESTINATION ${INSTALL_PLUGINS_DEBUG} CONFIGURATIONS Debug
 )
 
 # Header files
