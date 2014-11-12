@@ -336,7 +336,7 @@ void WorldInHandNavigation::enforceRotationConstraints(
     // retrieve the angle between camera-center to up and test how much closer
     // to up/down it can be rotated and clamp if required.
 
-    const float va = glm::degrees(acos(
+    const float va = glm::degrees(acosf(
 		glm::dot(glm::normalize(m_camera->eye() - m_camera->center()), m_camera->up())));
 
     if (vAngle <= 0.0)

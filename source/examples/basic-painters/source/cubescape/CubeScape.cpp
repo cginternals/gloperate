@@ -20,6 +20,7 @@
 #include <gloperate/Camera.h>
 #include <gloperate/capabilities/TargetFramebufferCapability.h>
 #include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/capabilities/PerspectiveProjectionCapability.h>
 #include <gloperate/capabilities/CameraCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 
@@ -34,6 +35,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 , m_camera(new gloperate::Camera())
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)
+, m_projectionCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability))
 , m_cameraCapability(new gloperate::CameraCapability(m_viewportCapability, m_camera))
 , m_timeCapability(new gloperate::VirtualTimeCapability)
 , a_vertex(-1)
@@ -45,6 +47,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 
     addCapability(m_targetFramebufferCapability);
     addCapability(m_viewportCapability);
+    addCapability(m_projectionCapability);
     addCapability(m_cameraCapability);
     addCapability(m_timeCapability);
 }
@@ -58,9 +61,10 @@ void CubeScape::createAndSetupCamera()
     m_camera->setEye(vec3(0.f, 0.8f, -2.0f));
     m_camera->setCenter(vec3(0.f, -1.2f, 0.f));
     m_camera->setUp(vec3(0.f, 1.f, 0.f));
-    m_camera->setZNear(1.f);
-    m_camera->setZFar(4.f);
-    m_camera->setFovy(radians(50.f));
+
+    m_projectionCapability->setZNear(1.f);
+    m_projectionCapability->setZFar(4.f);
+    m_projectionCapability->setFovy(radians(50.f));
 }
 
 void CubeScape::onInitialize()
@@ -171,7 +175,6 @@ void CubeScape::onPaint()
     if (m_viewportCapability->hasChanged())
     {
         glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
-        m_camera->setAspectRatio(ivec2(m_viewportCapability->width(), m_viewportCapability->height()));
 
         m_viewportCapability->setChanged(false);
     }
@@ -189,7 +192,7 @@ void CubeScape::onPaint()
 
     glEnable(GL_DEPTH_TEST);
 
-    mat4 transform = m_camera->viewProjection() * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
+    mat4 transform = m_projectionCapability->projection() * m_camera->view() * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
 
     m_vao->bind();
 

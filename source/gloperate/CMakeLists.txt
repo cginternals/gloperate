@@ -62,6 +62,8 @@ set(sources
 	${source_path}/capabilities/VirtualTimeCapability.cpp
 	${source_path}/capabilities/AbstractCapability.cpp
     ${source_path}/capabilities/AbstractCameraCapability.cpp
+    ${source_path}/capabilities/AbstractPerspectiveProjectionCapability.cpp
+    ${source_path}/capabilities/PerspectiveProjectionCapability.cpp
 	${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
 	${source_path}/capabilities/AbstractInputCapability.cpp
 	${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
@@ -128,6 +130,8 @@ set(headers
 	${include_path}/capabilities/AbstractViewportCapability.h
 	${include_path}/capabilities/AbstractCapability.h
     ${include_path}/capabilities/AbstractCameraCapability.h
+    ${include_path}/capabilities/AbstractPerspectiveProjectionCapability.h
+    ${include_path}/capabilities/PerspectiveProjectionCapability.h
     ${include_path}/capabilities/CameraCapability.h
 	${include_path}/capabilities/TargetFramebufferCapability.h
 	${include_path}/ContextFormat.h

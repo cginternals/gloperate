@@ -34,7 +34,7 @@ CameraCapability::~CameraCapability()
 
 void CameraCapability::onViewportChanged()
 {
-    m_camera->setAspectRatio(glm::ivec2(m_viewportCapability->x(), m_viewportCapability->y()));
+    m_camera->setAspectRatio(glm::ivec2(m_viewportCapability->width(), m_viewportCapability->height()));
 }
 
 void CameraCapability::setCamera(Camera * camera)

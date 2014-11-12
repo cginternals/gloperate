@@ -19,6 +19,7 @@ namespace gloperate
     class ResourceManager;
     class AbstractTargetFramebufferCapability;
     class AbstractViewportCapability;
+    class AbstractPerspectiveProjectionCapability;
     class AbstractCameraCapability;
     class AbstractVirtualTimeCapability;
 }
@@ -52,6 +53,7 @@ protected:
 
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
+    gloperate::AbstractPerspectiveProjectionCapability * m_projectionCapability;
     gloperate::AbstractCameraCapability * m_cameraCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
