@@ -6,6 +6,7 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/boolean.h>
+#include <glbinding/gl/functions.h>
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/File.h>
