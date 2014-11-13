@@ -32,7 +32,7 @@ public:
 
     void update(float delta);
 
-    void createAndSetupCamera();
+    void setupProjection();
 
     int numberOfCubes() const;
     void setNumberOfCubes(const int & number);

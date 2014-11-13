@@ -36,8 +36,8 @@ namespace
 namespace gloperate
 {
 
-    WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability)
-        : m_cameraCapability(cameraCapability)
+WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability)
+: m_cameraCapability(cameraCapability)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
 {

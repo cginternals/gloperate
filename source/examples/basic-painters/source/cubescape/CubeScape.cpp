@@ -56,12 +56,8 @@ CubeScape::~CubeScape()
 {
 }
 
-void CubeScape::createAndSetupCamera()
+void CubeScape::setupProjection()
 {
-    m_cameraCapability->setEye(vec3(0.f, 0.8f, -2.0f));
-    m_cameraCapability->setCenter(vec3(0.f, -1.2f, 0.f));
-    m_cameraCapability->setUp(vec3(0.f, 1.f, 0.f));
-
     m_projectionCapability->setZNear(1.f);
     m_projectionCapability->setZFar(4.f);
     m_projectionCapability->setFovy(radians(50.f));
@@ -167,7 +163,7 @@ void CubeScape::onInitialize()
     m_program->setUniform(terrain, 0);
     m_program->setUniform(patches, 1);
 
-    createAndSetupCamera();
+    setupProjection();
 }
 
 void CubeScape::onPaint()
