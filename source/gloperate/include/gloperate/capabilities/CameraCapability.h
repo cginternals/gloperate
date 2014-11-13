@@ -31,8 +31,7 @@ public:
     *  @brief
     *    Constructor
     */
-    CameraCapability(AbstractViewportCapability * viewportCapability, 
-        Camera * camera = nullptr,
+    CameraCapability(
         const glm::vec3 & eye = glm::vec3(0.0, 0.0, 1.0),
         const glm::vec3 & center = glm::vec3(0.0, 0.0, 0.0),
         const glm::vec3 & up = glm::vec3(0.0, 1.0, 0.0));
@@ -42,12 +41,6 @@ public:
     *    Destructor
     */
     virtual ~CameraCapability();
-
-    virtual void onViewportChanged() override;
-
-    virtual void setCamera(Camera * camera) override;
-    virtual Camera * getCamera() override;
-    // Following is copied from Camera.h
     bool autoUpdating() const;
     void setAutoUpdating(bool b);
 
@@ -76,8 +69,6 @@ protected:
     void invalidateMatrices() const;
 
 protected:
-    Camera * m_camera;
-
     mutable bool m_dirty;
     bool m_autoUpdate;
 

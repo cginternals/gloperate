@@ -31,22 +31,13 @@ public:
     *  @brief
     *    Constructor
     */
-    AbstractCameraCapability(AbstractViewportCapability * viewportCapability);
+    AbstractCameraCapability();
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~AbstractCameraCapability();
-
-    virtual void onViewportChanged() = 0;
-
-    virtual void setCamera(Camera * camera) = 0;
-    virtual Camera * getCamera() = 0;
-
-protected:
-    AbstractViewportCapability * m_viewportCapability;
-
 
 };
 

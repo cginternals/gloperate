@@ -15,11 +15,9 @@ namespace gloperate {
 *  @brief
 *    Constructor
 */
-AbstractCameraCapability::AbstractCameraCapability(AbstractViewportCapability * viewportCapability)
+AbstractCameraCapability::AbstractCameraCapability()
 : AbstractCapability()
-, m_viewportCapability(viewportCapability)
-{
-    viewportCapability->changed.connect([this](){this->onViewportChanged();});
+{ 
 }
 
 /**

@@ -21,14 +21,10 @@ namespace gloperate {
 *    Constructor
 */
 CameraCapability::CameraCapability(
-    AbstractViewportCapability * viewportCapability
-,   Camera * camera
-,   const glm::vec3 & eye
+   const glm::vec3 & eye
 , const glm::vec3 & center
 , const glm::vec3 & up)
-: AbstractCameraCapability(viewportCapability)
-, m_camera(camera)
-
+: AbstractCameraCapability()
 , m_dirty(false)
 , m_autoUpdate(false)
 
@@ -168,25 +164,6 @@ void CameraCapability::update() const
 void CameraCapability::changed()
 {
     invalidated();
-}
-
-void CameraCapability::onViewportChanged()
-{
-    m_camera->setAspectRatio(glm::ivec2(m_viewportCapability->width(), m_viewportCapability->height()));
-}
-
-void CameraCapability::setCamera(Camera * camera)
-{
-    if (m_camera != camera)
-    {
-        m_camera = camera;
-        setChanged(true);
-    }
-}
-
-Camera * CameraCapability::getCamera()
-{
-    return m_camera;
 }
 
 } // namespace gloperate
