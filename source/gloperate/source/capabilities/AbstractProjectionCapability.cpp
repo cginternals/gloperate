@@ -4,7 +4,7 @@
  * Copyright (C) 2014 Computer Graphics Systems Group at the 
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
-#include <gloperate/capabilities/AbstractPerspectiveProjectionCapability.h>
+#include <gloperate/capabilities/AbstractProjectionCapability.h>
 
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 
@@ -15,8 +15,8 @@ namespace gloperate {
 *  @brief
 *    Constructor
 */
-AbstractPerspectiveProjectionCapability::AbstractPerspectiveProjectionCapability(AbstractViewportCapability * viewportCapability)
-: AbstractProjectionCapability(viewportCapability)
+AbstractProjectionCapability::AbstractProjectionCapability(AbstractViewportCapability * viewportCapability)
+: AbstractCapability()
 , m_viewportCapability(viewportCapability)
 {
     viewportCapability->changed.connect([this](){this->onViewportChanged();});
@@ -26,11 +26,11 @@ AbstractPerspectiveProjectionCapability::AbstractPerspectiveProjectionCapability
 *  @brief
 *    Destructor
 */
-AbstractPerspectiveProjectionCapability::~AbstractPerspectiveProjectionCapability()
+AbstractProjectionCapability::~AbstractProjectionCapability()
 {
 }
 
-void AbstractPerspectiveProjectionCapability::onViewportChanged()
+void AbstractProjectionCapability::onViewportChanged()
 {
     setAspectRatio(glm::ivec2(m_viewportCapability->width(), m_viewportCapability->height()));
 }

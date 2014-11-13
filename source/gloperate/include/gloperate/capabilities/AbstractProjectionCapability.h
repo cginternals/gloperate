@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/capabilities/AbstractProjectionCapability.h>
+#include <gloperate/capabilities/AbstractCapability.h>
 
 
 namespace gloperate {
@@ -21,7 +21,7 @@ class AbstractViewportCapability;
 *    Base class for painter camera capabilities
 *
 */
-class GLOPERATE_API AbstractPerspectiveProjectionCapability : public AbstractProjectionCapability
+class GLOPERATE_API AbstractProjectionCapability : public AbstractCapability
 {
 
 
@@ -30,21 +30,13 @@ public:
     *  @brief
     *    Constructor
     */
-    AbstractPerspectiveProjectionCapability(AbstractViewportCapability * viewportCapability);
+    AbstractProjectionCapability(AbstractViewportCapability * viewportCapability);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~AbstractPerspectiveProjectionCapability();
-
-    virtual float zNear() const = 0;
-    virtual void setZNear(float zNear) = 0;
-    virtual float zFar() const = 0;
-    virtual void setZFar(float zFar) = 0;
-
-    virtual float fovy() const = 0;
-    virtual void setFovy(float fovy) = 0;
+    virtual ~AbstractProjectionCapability();
 
     virtual float aspectRatio() const = 0;
 
