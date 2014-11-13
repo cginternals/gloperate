@@ -120,18 +120,6 @@ void CameraCapability::setUp(const glm::vec3 & up)
     dirty();
 }
 
-void CameraCapability::update() const
-{
-    if (!m_dirty)
-        return;
-
-    invalidateMatrices();
-
-    m_dirty = false;
-
-    const_cast<CameraCapability*>(this)->changed();
-}
-
 const glm::mat4 & CameraCapability::view() const
 {
     if (m_dirty)
@@ -163,6 +151,18 @@ const glm::mat3 & CameraCapability::normal() const
         m_normal.setValue(glm::inverseTranspose(glm::mat3(view())));
 
     return m_normal.value();
+}
+
+void CameraCapability::update() const
+{
+    if (!m_dirty)
+        return;
+
+    invalidateMatrices();
+
+    m_dirty = false;
+
+    const_cast<CameraCapability*>(this)->changed();
 }
 
 void CameraCapability::changed()
