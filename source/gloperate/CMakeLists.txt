@@ -57,6 +57,7 @@ set(sources
 	${source_path}/base/AutoTimer.cpp
     ${source_path}/base/ChronoTimer.cpp
 	${source_path}/base/CyclicTime.cpp
+	${source_path}/base/RenderTarget.cpp
 	${source_path}/Camera.cpp
 	${source_path}/capabilities/AbstractViewportCapability.cpp
 	${source_path}/capabilities/VirtualTimeCapability.cpp
@@ -65,6 +66,7 @@ set(sources
 	#${source_path}/capabilities/AbstractCoordinateProviderCapability.cpp
     ${source_path}/capabilities/AbstractPerspectiveProjectionCapability.cpp
     ${source_path}/capabilities/AbstractProjectionCapability.cpp
+	${source_path}/capabilities/AbstractTypedRenderTargetCapability.cpp
     ${source_path}/capabilities/PerspectiveProjectionCapability.cpp
 	${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
 	${source_path}/capabilities/AbstractInputCapability.cpp
@@ -73,6 +75,7 @@ set(sources
 	${source_path}/capabilities/InputCapability.cpp
 	${source_path}/capabilities/ViewportCapability.cpp
 	${source_path}/capabilities/TargetFramebufferCapability.cpp
+	${source_path}/capabilities/TypedRenderTargetCapability.cpp
 	${source_path}/ContextFormat.cpp
     ${source_path}/input/AbstractEvent.cpp
     ${source_path}/input/AbstractEventProvider.cpp
@@ -122,6 +125,7 @@ set(headers
 	${include_path}/base/CyclicTime.h
 	${include_path}/base/ChronoTimer.h
 	${include_path}/base/AutoTimer.h
+	${include_path}/base/RenderTarget.h
 	${include_path}/Camera.h
 	${include_path}/capabilities/InputCapability.h
 	${include_path}/capabilities/AbstractVirtualTimeCapability.h
@@ -135,9 +139,11 @@ set(headers
 	#${include_path}/capabilities/AbstractCoordinateProviderCapability.h
     ${include_path}/capabilities/AbstractPerspectiveProjectionCapability.h
     ${include_path}/capabilities/AbstractProjectionCapability.h
+	${include_path}/capabilities/AbstractTypedRenderTargetCapability.h
     ${include_path}/capabilities/PerspectiveProjectionCapability.h
     ${include_path}/capabilities/CameraCapability.h
 	${include_path}/capabilities/TargetFramebufferCapability.h
+	${include_path}/capabilities/TypedRenderTargetCapability.h
 	${include_path}/ContextFormat.h
 	${include_path}/gloperate_api.h
 	${include_path}/input/AbstractEvent.h
