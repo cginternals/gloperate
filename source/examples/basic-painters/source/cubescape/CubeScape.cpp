@@ -32,11 +32,11 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)
 , m_numCubes(25)
 , m_animation(true)
-, m_camera(new gloperate::Camera())
+//, m_camera(new gloperate::Camera())
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)
 , m_projectionCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability))
-, m_cameraCapability(new gloperate::CameraCapability(m_viewportCapability, m_camera))
+, m_cameraCapability(new gloperate::CameraCapability(m_viewportCapability, new gloperate::Camera()))
 , m_timeCapability(new gloperate::VirtualTimeCapability)
 , a_vertex(-1)
 , u_transform(-1)
@@ -58,9 +58,9 @@ CubeScape::~CubeScape()
 
 void CubeScape::createAndSetupCamera()
 {
-    m_camera->setEye(vec3(0.f, 0.8f, -2.0f));
-    m_camera->setCenter(vec3(0.f, -1.2f, 0.f));
-    m_camera->setUp(vec3(0.f, 1.f, 0.f));
+    m_cameraCapability->setEye(vec3(0.f, 0.8f, -2.0f));
+    m_cameraCapability->setCenter(vec3(0.f, -1.2f, 0.f));
+    m_cameraCapability->setUp(vec3(0.f, 1.f, 0.f));
 
     m_projectionCapability->setZNear(1.f);
     m_projectionCapability->setZFar(4.f);
@@ -192,7 +192,7 @@ void CubeScape::onPaint()
 
     glEnable(GL_DEPTH_TEST);
 
-    mat4 transform = m_projectionCapability->projection() * m_camera->view() * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
+    mat4 transform = m_projectionCapability->projection() * m_cameraCapability->view() * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
 
     m_vao->bind();
 

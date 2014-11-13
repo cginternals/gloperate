@@ -15,7 +15,7 @@
 
 namespace gloperate 
 {
-    class Camera;
+    //class Camera;
     class ResourceManager;
     class AbstractTargetFramebufferCapability;
     class AbstractViewportCapability;
@@ -49,12 +49,12 @@ protected:
     bool m_animation;
 
     /* capabilities */
-    globjects::ref_ptr<gloperate::Camera> m_camera;
+    //globjects::ref_ptr<gloperate::Camera> m_camera;
 
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::AbstractPerspectiveProjectionCapability * m_projectionCapability;
-    gloperate::AbstractCameraCapability * m_cameraCapability;
+    gloperate::CameraCapability * m_cameraCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
     /* members */
