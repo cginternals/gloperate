@@ -10,7 +10,7 @@
 namespace gloperate
 {
 
-class Camera;
+class CameraCapability;
 
 class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 {
@@ -23,7 +23,7 @@ class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 	};
 
 public:
-    WorldInHandNavigation(Camera * camera);
+    WorldInHandNavigation(CameraCapability * cameraCapability);
     virtual ~WorldInHandNavigation();
 
 //    void setBoundaryHint(const AxisAlignedBoundingBox & aabb);
@@ -74,7 +74,8 @@ public:
 //	,	const glm::mat4x4 & viewProjectionInverted) const;
 
 protected:
-    Camera * m_camera;
+    //Camera * m_camera;
+    CameraCapability * m_cameraCapability;
 
     // TODO clean up old
 //    AxisAlignedBoundingBox m_aabb;

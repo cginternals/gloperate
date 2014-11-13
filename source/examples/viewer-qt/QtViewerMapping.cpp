@@ -24,7 +24,7 @@ void QtViewerMapping::initializeNavigation()
     if (m_painter && m_painter->supports<CameraCapability>())
     {
         CameraCapability * cameraCapability = dynamic_cast<CameraCapability*>(m_painter->getCapability<CameraCapability>());
-        m_navigation.reset(new WorldInHandNavigation(cameraCapability->getCamera()));
+        m_navigation.reset(new WorldInHandNavigation(cameraCapability));
     }
 }
 

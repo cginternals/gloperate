@@ -20,7 +20,7 @@ namespace gloperate
     class AbstractTargetFramebufferCapability;
     class AbstractViewportCapability;
     class AbstractPerspectiveProjectionCapability;
-    class AbstractCameraCapability;
+    class CameraCapability;
     class AbstractVirtualTimeCapability;
 }
 

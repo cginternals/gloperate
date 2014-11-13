@@ -5,7 +5,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <gloperate/Camera.h>
+//#include <gloperate/Camera.h>
 #include <gloperate/capabilities/CameraCapability.h>
 
 //#include "MathMacros.h"
@@ -36,8 +36,8 @@ namespace
 namespace gloperate
 {
 
-WorldInHandNavigation::WorldInHandNavigation(Camera * camera)
-: m_camera(camera)
+    WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability)
+        : m_cameraCapability(cameraCapability)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
 {
@@ -60,16 +60,16 @@ WorldInHandNavigation::~WorldInHandNavigation()
 
 void WorldInHandNavigation::reset(bool update)
 {
-    m_camera->setEye(DEFAULT_EYE);
-    m_camera->setCenter(DEFAULT_CENTER);
-    m_camera->setUp(DEFAULT_UP);
+    m_cameraCapability->setEye(DEFAULT_EYE);
+    m_cameraCapability->setCenter(DEFAULT_CENTER);
+    m_cameraCapability->setUp(DEFAULT_UP);
 
     m_mode = NoInteraction;
 
 //    enforceWholeMapVisible();
 
     if (update)
-        m_camera->update();
+        m_cameraCapability->update();
 }
 
 
@@ -202,10 +202,10 @@ void WorldInHandNavigation::pan(glm::vec3 t)
 {
     //enforceTranslationConstraints(t);
 
-    m_camera->setEye(t + m_camera->eye());
-    m_camera->setCenter(t + m_camera->center());
+    m_cameraCapability->setEye(t + m_cameraCapability->eye());
+    m_cameraCapability->setCenter(t + m_cameraCapability->center());
 
-    m_camera->update();
+    m_cameraCapability->update();
 }
 
 void WorldInHandNavigation::rotate(
@@ -214,28 +214,28 @@ void WorldInHandNavigation::rotate(
 {
     m_rotationHappened = true;
 
-    const glm::vec3 ray(glm::normalize(m_camera->center() - m_camera->eye()));
-    const glm::vec3 rotAxis(glm::cross(ray, m_camera->up()));
+    const glm::vec3 ray(glm::normalize(m_cameraCapability->center() - m_cameraCapability->eye()));
+    const glm::vec3 rotAxis(glm::cross(ray, m_cameraCapability->up()));
 
     hAngle *= ROTATION_HOR_DOF;
     vAngle *= ROTATION_VER_DOF;
 
     enforceRotationConstraints(hAngle, vAngle);
 
-    glm::vec3 t = m_camera->center();
+    glm::vec3 t = m_cameraCapability->center();
 
     glm::mat4x4 transform = glm::mat4x4();
     transform = glm::translate(transform, t);
-    transform = glm::rotate(transform, hAngle, m_camera->up());
+    transform = glm::rotate(transform, hAngle, m_cameraCapability->up());
     transform = glm::rotate(transform, vAngle, rotAxis);
     transform = glm::translate(transform, -t);
 
-    glm::vec4 newEye = transform * glm::vec4(m_camera->eye(), 1.0f);
-    glm::vec4 newCenter = transform * glm::vec4(m_camera->center(), 1.0f);
-    m_camera->setEye(glm::vec3(newEye));
-    m_camera->setCenter(glm::vec3(newCenter));
+    glm::vec4 newEye = transform * glm::vec4(m_cameraCapability->eye(), 1.0f);
+    glm::vec4 newCenter = transform * glm::vec4(m_cameraCapability->center(), 1.0f);
+    m_cameraCapability->setEye(glm::vec3(newEye));
+    m_cameraCapability->setCenter(glm::vec3(newCenter));
 
-    m_camera->update();
+    m_cameraCapability->update();
 }
 
 
@@ -337,7 +337,7 @@ void WorldInHandNavigation::enforceRotationConstraints(
     // to up/down it can be rotated and clamp if required.
 
     const float va = glm::degrees(acosf(
-		glm::dot(glm::normalize(m_camera->eye() - m_camera->center()), m_camera->up())));
+        glm::dot(glm::normalize(m_cameraCapability->eye() - m_cameraCapability->center()), m_cameraCapability->up())));
 
     if (vAngle <= 0.0)
 		vAngle = glm::max(vAngle, glm::degrees(CONSTRAINT_ROT_MAX_V_UP) - va);
