@@ -16,6 +16,8 @@ namespace gloperate
 class GLOPERATE_API RenderTarget
 {
 public:
+    RenderTarget();
+
     RenderTarget(
         globjects::ref_ptr<globjects::Framebuffer> framebuffer,
         gl::GLenum attachment,
@@ -26,14 +28,17 @@ public:
 
     virtual ~RenderTarget();
 
-    globjects::ref_ptr<globjects::Framebuffer> framebuffer();
-    gl::GLenum attachment();
-    gl::GLenum format();
+    bool isValid() const;
+
+    globjects::ref_ptr<globjects::Framebuffer> framebuffer() const;
+    gl::GLenum attachment() const;
+    gl::GLenum format() const;
 
 protected:
     globjects::ref_ptr<globjects::Framebuffer> m_framebuffer;
     gl::GLenum m_attachment;
     gl::GLenum m_format;
+    bool m_valid;
 };
 
 } // namespace gloperate
