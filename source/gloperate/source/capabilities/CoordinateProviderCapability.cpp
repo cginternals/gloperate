@@ -17,11 +17,15 @@ CoordinateProviderCapability::CoordinateProviderCapability(
     :   AbstractCoordinateProviderCapability()
     ,   m_cameraCapability(cameraCapability)
     ,   m_projectionCapability(projectionCapability)
-    , m_viewportCapability(viewportCapability)
+    ,   m_viewportCapability(viewportCapability)
     ,   m_typedRenderTargetCapability(typedRenderTargetCapability)
 {
     m_depthBuffer = m_typedRenderTargetCapability->renderTarget(RenderTargetType::Depth);
     m_geometryBuffer = m_typedRenderTargetCapability->renderTarget(RenderTargetType::Geometry);
+}
+
+CoordinateProviderCapability::~CoordinateProviderCapability()
+{
 }
 
 float CoordinateProviderCapability::depthAt(const glm::ivec2 & windowCoordinates) const

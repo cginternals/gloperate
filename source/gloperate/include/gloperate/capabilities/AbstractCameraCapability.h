@@ -6,10 +6,11 @@
 \******************************************************************************/
 #pragma once
 
-
 #include <gloperate/gloperate_api.h>
 
 #include <gloperate/capabilities/AbstractCapability.h>
+
+#include <glm/glm.hpp>
 
 
 namespace gloperate {
