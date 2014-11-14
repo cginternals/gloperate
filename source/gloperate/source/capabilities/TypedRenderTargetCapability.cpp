@@ -30,7 +30,10 @@ TypedRenderTargetCapability::~TypedRenderTargetCapability()
 
 const RenderTarget & TypedRenderTargetCapability::renderTarget(RenderTargetType type)
 {
-    return *(m_renderTargets.at(type));
+    if (hasRenderTarget(type))
+        return *(m_renderTargets.at(type));
+    else
+        return m_invalidTarget;
 }
 
 bool TypedRenderTargetCapability::hasRenderTarget(RenderTargetType type)

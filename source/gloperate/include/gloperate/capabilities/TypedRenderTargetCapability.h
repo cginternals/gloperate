@@ -47,6 +47,7 @@ public:
 
 protected:
     std::map<RenderTargetType, RenderTarget *> m_renderTargets;
+    RenderTarget m_invalidTarget;
 };
 
 

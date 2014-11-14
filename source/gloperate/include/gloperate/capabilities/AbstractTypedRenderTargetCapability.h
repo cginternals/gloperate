@@ -28,7 +28,7 @@ namespace gloperate {
 *  @brief
 *    
 */
-class GLOPERATE_API AbstractTypedRenderTargetCapability  : public AbstractCapability
+class GLOPERATE_API AbstractTypedRenderTargetCapability : public AbstractCapability
 {
 
 
