@@ -26,6 +26,19 @@ RenderTarget::RenderTarget(
 
 /**
 *  @brief
+*    Copy Constructor
+*/
+RenderTarget::RenderTarget(
+    const RenderTarget & renderTarget)
+: m_framebuffer(renderTarget.m_framebuffer)
+, m_attachment(renderTarget.m_attachment)
+, m_format(renderTarget.m_format)
+{
+}
+
+
+/**
+*  @brief
 *    Destructor
 */
 RenderTarget::~RenderTarget()

@@ -21,6 +21,9 @@ public:
         gl::GLenum attachment,
         gl::GLenum format);
 
+    RenderTarget(
+        const RenderTarget & renderTarget);
+
     virtual ~RenderTarget();
 
     globjects::ref_ptr<globjects::Framebuffer> framebuffer();
