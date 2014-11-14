@@ -19,7 +19,8 @@ namespace gloperate {
         Color,
         Depth,
         Normal,
-        Geometry
+        Geometry,
+        ObjectID
     };
 
 
