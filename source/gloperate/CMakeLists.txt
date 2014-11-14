@@ -63,7 +63,7 @@ set(sources
 	${source_path}/capabilities/VirtualTimeCapability.cpp
 	${source_path}/capabilities/AbstractCapability.cpp
     ${source_path}/capabilities/AbstractCameraCapability.cpp
-	#${source_path}/capabilities/AbstractCoordinateProviderCapability.cpp
+	${source_path}/capabilities/AbstractCoordinateProviderCapability.cpp
     ${source_path}/capabilities/AbstractPerspectiveProjectionCapability.cpp
     ${source_path}/capabilities/AbstractProjectionCapability.cpp
 	${source_path}/capabilities/AbstractTypedRenderTargetCapability.cpp
@@ -72,6 +72,7 @@ set(sources
 	${source_path}/capabilities/AbstractInputCapability.cpp
 	${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
     ${source_path}/capabilities/CameraCapability.cpp
+	${source_path}/capabilities/CoordinateProviderCapability.cpp
 	${source_path}/capabilities/InputCapability.cpp
 	${source_path}/capabilities/ViewportCapability.cpp
 	${source_path}/capabilities/TargetFramebufferCapability.cpp
@@ -136,7 +137,8 @@ set(headers
 	${include_path}/capabilities/AbstractViewportCapability.h
 	${include_path}/capabilities/AbstractCapability.h
     ${include_path}/capabilities/AbstractCameraCapability.h
-	#${include_path}/capabilities/AbstractCoordinateProviderCapability.h
+	${include_path}/capabilities/AbstractCoordinateProviderCapability.h
+	${include_path}/capabilities/CoordinateProviderCapability.h
     ${include_path}/capabilities/AbstractPerspectiveProjectionCapability.h
     ${include_path}/capabilities/AbstractProjectionCapability.h
 	${include_path}/capabilities/AbstractTypedRenderTargetCapability.h
