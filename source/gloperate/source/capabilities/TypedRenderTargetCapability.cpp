@@ -25,6 +25,7 @@ TypedRenderTargetCapability::TypedRenderTargetCapability()
 */
 TypedRenderTargetCapability::~TypedRenderTargetCapability()
 {
+    m_renderTargets.clear();
 }
 
 const RenderTarget & TypedRenderTargetCapability::renderTarget(RenderTargetType type)
