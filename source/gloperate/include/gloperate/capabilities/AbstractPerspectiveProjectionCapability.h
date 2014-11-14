@@ -48,8 +48,6 @@ public:
 
     virtual float aspectRatio() const = 0;
 
-    virtual const glm::mat4 & projection() const = 0;
-
 protected:
     virtual void setAspectRatio(float ratio) = 0;
     virtual void setAspectRatio(const glm::ivec2 & viewport) = 0;

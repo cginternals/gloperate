@@ -41,6 +41,7 @@ public:
     virtual float aspectRatio() const = 0;
 
     virtual const glm::mat4 & projection() const = 0;
+    virtual const glm::mat4 & projectionInverted() const = 0;
 
 protected:
     virtual void setAspectRatio(float ratio) = 0;

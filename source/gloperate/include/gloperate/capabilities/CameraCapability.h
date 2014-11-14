@@ -52,9 +52,9 @@ public:
     void setUp(const glm::vec3 & up);
 
     // lazy matrices getters
-    const glm::mat4 & view() const;
+    virtual const glm::mat4 & view() const override;
     //const glm::mat4 & viewProjection() const;
-    const glm::mat4 & viewInverted() const;
+    virtual const glm::mat4 & viewInverted() const override;
     //const glm::mat4 & viewProjectionInverted() const;
 
     const glm::mat3 & normal() const;

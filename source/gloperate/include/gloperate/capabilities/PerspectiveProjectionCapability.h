@@ -49,6 +49,7 @@ public:
     virtual float aspectRatio() const override;
 
     virtual const glm::mat4 & projection() const override;
+    virtual const glm::mat4 & projectionInverted() const override;
 
     void update() const;
 
@@ -70,6 +71,7 @@ protected:
     float m_zFar;
 
     globjects::CachedValue<glm::mat4> m_projection;
+    globjects::CachedValue<glm::mat4> m_projectionInverted;
 
 public:
     Signal<> invalidated;

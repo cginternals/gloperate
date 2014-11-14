@@ -39,6 +39,8 @@ public:
     */
     virtual ~AbstractCameraCapability();
 
+    virtual const glm::mat4 & view() const = 0;
+    virtual const glm::mat4 & viewInverted() const = 0;
 };
 
 

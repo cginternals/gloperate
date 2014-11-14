@@ -122,6 +122,7 @@ void PerspectiveProjectionCapability::update() const
 void PerspectiveProjectionCapability::invalidateMatrices() const
 {
     m_projection.invalidate();
+    m_projectionInverted.invalidate();
 }
 
 void PerspectiveProjectionCapability::dirty(bool update)
@@ -146,6 +147,17 @@ const glm::mat4 & PerspectiveProjectionCapability::projection() const
         m_projection.setValue(glm::perspective(m_fovy, m_aspect, m_zNear, m_zFar));
 
     return m_projection.value();
+}
+
+const glm::mat4 & PerspectiveProjectionCapability::projectionInverted() const
+{
+    if (m_dirty)
+        update();
+
+    if (!m_projectionInverted.isValid())
+        m_projectionInverted.setValue(glm::inverse(projection()));
+
+    return m_projectionInverted.value();
 }
 
 } // namespace gloperate
