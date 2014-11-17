@@ -44,6 +44,7 @@ public:
 protected:
     virtual void onInitialize();
     virtual void onPaint();
+    virtual void onTargetFramebufferChanged();
 protected:
     /* parameters */
 

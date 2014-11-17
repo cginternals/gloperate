@@ -48,6 +48,8 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 {
     m_timeCapability->setLoopDuration(20.0f * pi<float>());
 
+    m_targetFramebufferCapability->changed.connect([this](){ this->onTargetFramebufferChanged();});
+
     addCapability(m_targetFramebufferCapability);
     addCapability(m_viewportCapability);
     addCapability(m_projectionCapability);
@@ -236,4 +238,10 @@ void CubeScape::setAnimation(const bool & enabled)
     m_animation = enabled;
 
     m_timeCapability->setEnabled(m_animation);
+}
+
+void CubeScape::onTargetFramebufferChanged()
+{
+    globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
+    m_typedRenderTargetCapability->setRenderTarget(gloperate::RenderTargetType::Depth, fbo, gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
 }
