@@ -11,6 +11,7 @@ namespace gloperate
 {
 
 class CameraCapability;
+class AbstractCoordinateProviderCapability;
 
 class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 {
@@ -23,7 +24,7 @@ class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 	};
 
 public:
-    WorldInHandNavigation(CameraCapability * cameraCapability);
+    WorldInHandNavigation(CameraCapability * cameraCapability, AbstractCoordinateProviderCapability * coordProviderCapability);
     virtual ~WorldInHandNavigation();
 
 //    void setBoundaryHint(const AxisAlignedBoundingBox & aabb);
@@ -60,18 +61,14 @@ public:
 
 	// math
 
-//	const glm::vec3 mouseRayPlaneIntersection(
-//        bool & intersects
-//    ,   const glm::ivec2 & mouse) const;
-//    const glm::vec3 mouseRayPlaneIntersection(
-//        bool & intersects
-//    ,   const glm::ivec2 & mouse
-//    ,   const glm::vec3 & p0) const;
-//    const glm::vec3 mouseRayPlaneIntersection(
-//        bool & intersects
-//    ,   const glm::ivec2 & mouse
-//	,	const glm::vec3 & p0
-//	,	const glm::mat4x4 & viewProjectionInverted) const;
+	const glm::vec3 mouseRayPlaneIntersection(
+        bool & intersects
+    ,   const glm::ivec2 & mouse) const;
+    const glm::vec3 mouseRayPlaneIntersection(
+        bool & intersects
+    ,   const glm::ivec2 & mouse
+    ,   const glm::vec3 & planePosition
+    ,   const glm::vec3 & planeNormal) const;
 
 protected:
     //Camera * m_camera;
@@ -79,6 +76,8 @@ protected:
 
     // TODO clean up old
 //    AxisAlignedBoundingBox m_aabb;
+
+    AbstractCoordinateProviderCapability * m_coordProviderCapability;
 
     bool m_rotationHappened;
 	InteractionMode m_mode;

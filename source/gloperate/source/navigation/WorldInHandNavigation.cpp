@@ -7,9 +7,10 @@
 
 //#include <gloperate/Camera.h>
 #include <gloperate/capabilities/CameraCapability.h>
+#include <gloperate/capabilities/AbstractCoordinateProviderCapability.h>
 
 //#include "MathMacros.h"
-//#include "NavigationMath.h"
+#include <gloperate/navigation/navigationmath.h>
 
 
 namespace
@@ -36,8 +37,9 @@ namespace
 namespace gloperate
 {
 
-WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability)
+WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability, AbstractCoordinateProviderCapability * coordProviderCapability)
 : m_cameraCapability(cameraCapability)
+, m_coordProviderCapability(coordProviderCapability)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
 {
@@ -73,48 +75,34 @@ void WorldInHandNavigation::reset(bool update)
 }
 
 
-//const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
-//    bool & intersects
-//,   const QPoint & mouse
-//,   const glm::vec3 & p0) const
-//{
-//    // build a ray in object space from screen space mouse position and get
-//    // intersection with near and far planes.
+const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
+    bool & intersects,
+    const glm::ivec2 & mouse, 
+    const glm::vec3 & planePosition, 
+    const glm::vec3 & planeNormal) const
+{
+    // build a ray in object space from screen space mouse position and get
+    // intersection with near and far planes.
 
-//    const glm::vec3 ln = m_coordsProvider->objAt(mouse, 0.0);
-//    const glm::vec3 lf = m_coordsProvider->objAt(mouse, 1.0);
+    const glm::vec3 pointNear = m_coordProviderCapability->unproject(mouse, 0.0);
+    const glm::vec3 pointFar = m_coordProviderCapability->unproject(mouse, 1.0);
 
-//    return WorldInHandNavigationMath::rayPlaneIntersection(intersects, ln, lf, p0);
-//}
+    return navigationmath::rayPlaneIntersection(intersects, pointNear, pointFar, planePosition, planeNormal);
+}
 
+const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
+    bool & intersects
+    , const glm::ivec2 & mouse) const
+{
+    const float depth = m_coordProviderCapability->depthAt(mouse);
 
-//const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
-//    bool & intersects
-//,   const QPoint & mouse
-//,   const glm::vec3 & p0
-//,   const QMatrix4x4 & viewProjectionInverted) const
-//{
-//    // build a ray in object space from screen space mouse position and get
-//    // intersection with near and far planes.
+    // no scene object was picked - simulate picking on xz-plane
+    if (depth >= 1.0 - std::numeric_limits<float>::epsilon())
+        // use current center to construct reference plane
+        return mouseRayPlaneIntersection(intersects, mouse, m_cameraCapability->center(), glm::vec3(0.f, 1.f, 0.f));
 
-//    const glm::vec3 ln = m_coordsProvider->objAt(mouse, 0.0, viewProjectionInverted);
-//    const glm::vec3 lf = m_coordsProvider->objAt(mouse, 1.0, viewProjectionInverted);
-
-//    return WorldInHandNavigationMath::rayPlaneIntersection(intersects, ln, lf, p0);
-//}
-
-//const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
-//    bool & intersects
-//,   const QPoint & mouse) const
-//{
-//    const float depth = m_coordsProvider->depthAt(mouse);
-
-//    // no scene object was picked - simulate picking on xz-plane
-//    if (depth >= 1.0 - std::numeric_limits<float>::epsilon())
-//        return mouseRayPlaneIntersection(intersects, mouse, glm::vec3());
-
-//    return m_coordsProvider->objAt(mouse, depth);
-//}
+    return m_coordProviderCapability->unproject(mouse, depth);
+}
 
 
 //void WorldInHandNavigation::panningBegin(const QPoint & mouse)
