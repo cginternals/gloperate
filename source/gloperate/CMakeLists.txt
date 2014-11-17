@@ -86,6 +86,7 @@ set(sources
     ${source_path}/input/KeyboardInputHandler.cpp
     ${source_path}/navigation/AbstractMapping.cpp
     ${source_path}/navigation/AbstractInteraction.cpp
+	${source_path}/navigation/navigationmath.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
 	${source_path}/Painter.cpp
 	${source_path}/pipelines/AbstractStage.cpp
@@ -157,6 +158,7 @@ set(headers
 	${include_path}/input/MouseInputHandler.h
     ${include_path}/navigation/AbstractMapping.h
     ${include_path}/navigation/AbstractInteraction.h
+	${include_path}/navigation/navigationmath.h
     ${include_path}/navigation/WorldInHandNavigation.h
 	${include_path}/Painter.h
 	${include_path}/Painter.hpp
