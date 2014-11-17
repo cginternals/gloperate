@@ -2,6 +2,7 @@
 
 #include <gloperate/Camera.h>
 #include <gloperate/capabilities/CameraCapability.h>
+#include <gloperate/capabilities/AbstractCoordinateProviderCapability.h>
 #include <gloperate/input/AbstractEvent.h>
 #include <gloperate/input/KeyboardEvent.h>
 #include <gloperate/input/MouseEvent.h>
@@ -24,7 +25,8 @@ void QtViewerMapping::initializeNavigation()
     if (m_painter && m_painter->supports<CameraCapability>())
     {
         CameraCapability * cameraCapability = dynamic_cast<CameraCapability*>(m_painter->getCapability<CameraCapability>());
-        m_navigation.reset(new WorldInHandNavigation(cameraCapability));
+        AbstractCoordinateProviderCapability * coordProviderCapability = dynamic_cast<AbstractCoordinateProviderCapability*>(m_painter->getCapability<AbstractCoordinateProviderCapability>());
+        m_navigation.reset(new WorldInHandNavigation(cameraCapability, coordProviderCapability));
     }
 }
 

@@ -22,6 +22,8 @@
 #include <gloperate/capabilities/ViewportCapability.h>
 #include <gloperate/capabilities/PerspectiveProjectionCapability.h>
 #include <gloperate/capabilities/CameraCapability.h>
+#include <gloperate/capabilities/TypedRenderTargetCapability.h>
+#include <gloperate/capabilities/CoordinateProviderCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 
 using namespace gl;
@@ -32,11 +34,12 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)
 , m_numCubes(25)
 , m_animation(true)
-//, m_camera(new gloperate::Camera())
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)
 , m_projectionCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability))
+, m_typedRenderTargetCapability(new gloperate::TypedRenderTargetCapability())
 , m_cameraCapability(new gloperate::CameraCapability())
+, m_coordProviderCapability(new gloperate::CoordinateProviderCapability(m_cameraCapability, m_projectionCapability, m_viewportCapability, m_typedRenderTargetCapability))
 , m_timeCapability(new gloperate::VirtualTimeCapability)
 , a_vertex(-1)
 , u_transform(-1)

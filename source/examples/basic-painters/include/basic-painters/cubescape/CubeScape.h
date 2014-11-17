@@ -21,6 +21,8 @@ namespace gloperate
     class AbstractViewportCapability;
     class AbstractPerspectiveProjectionCapability;
     class CameraCapability;
+    class TypedRenderTargetCapability;
+    class CoordinateProviderCapability;
     class AbstractVirtualTimeCapability;
 }
 
@@ -54,7 +56,9 @@ protected:
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::AbstractPerspectiveProjectionCapability * m_projectionCapability;
+    gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
     gloperate::CameraCapability * m_cameraCapability;
+    gloperate::CoordinateProviderCapability * m_coordProviderCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
     /* members */
