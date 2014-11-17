@@ -53,6 +53,8 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
     addCapability(m_projectionCapability);
     addCapability(m_cameraCapability);
     addCapability(m_timeCapability);
+    addCapability(m_coordProviderCapability);
+    addCapability(m_typedRenderTargetCapability);
 }
 
 CubeScape::~CubeScape()
