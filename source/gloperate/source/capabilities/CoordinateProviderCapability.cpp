@@ -20,8 +20,8 @@ CoordinateProviderCapability::CoordinateProviderCapability(
     ,   m_viewportCapability(viewportCapability)
     ,   m_typedRenderTargetCapability(typedRenderTargetCapability)
 {
-    m_depthBuffer = m_typedRenderTargetCapability->renderTarget(RenderTargetType::Depth);
-    m_geometryBuffer = m_typedRenderTargetCapability->renderTarget(RenderTargetType::Geometry);
+    m_typedRenderTargetCapability->changed.connect([this](){this->onRenderTargetsChanged();});
+    onRenderTargetsChanged();
 }
 
 CoordinateProviderCapability::~CoordinateProviderCapability()
@@ -79,6 +79,12 @@ glm::vec3 CoordinateProviderCapability::unproject(const glm::ivec2 & windowCoord
     // unproject this point back to object space
     const glm::vec4 u = viewProjectionInverted * p;
     return glm::vec3(u) / u.w;
+}
+
+void CoordinateProviderCapability::onRenderTargetsChanged()
+{
+    m_depthBuffer = m_typedRenderTargetCapability->renderTarget(RenderTargetType::Depth);
+    m_geometryBuffer = m_typedRenderTargetCapability->renderTarget(RenderTargetType::Geometry);
 }
 
 } // namespace gloperate

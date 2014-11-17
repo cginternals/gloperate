@@ -53,6 +53,7 @@ void TypedRenderTargetCapability::setRenderTarget(
     }
 
     m_renderTargets[type] = new RenderTarget(framebuffer, attachment, format);
+    setChanged(true);
 }
 
 } // namespace gloperate

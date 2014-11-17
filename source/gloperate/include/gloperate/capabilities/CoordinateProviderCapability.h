@@ -32,6 +32,9 @@ public:
     virtual glm::vec3 unproject(const glm::ivec2 & windowCoordinates, float depth) const override;
 
 protected:
+    void onRenderTargetsChanged();
+
+protected:
     AbstractCameraCapability * m_cameraCapability;
     AbstractProjectionCapability * m_projectionCapability;
     AbstractViewportCapability * m_viewportCapability;
