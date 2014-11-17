@@ -57,22 +57,28 @@ float CoordinateProviderCapability::depthAt(const glm::ivec2 & windowCoordinates
 
 glm::vec3 CoordinateProviderCapability::worldCoordinatesAt(const glm::ivec2 & windowCoordinates) const
 {
-    const glm::mat4 viewProjectionInverted = m_cameraCapability->viewInverted() * m_projectionCapability->projectionInverted();
     const float depth = depthAt(windowCoordinates);
+
+    return unproject(windowCoordinates, depth);
+}
+
+glm::vec3 CoordinateProviderCapability::unproject(const glm::ivec2 & windowCoordinates, float depth) const
+{
+    const glm::mat4 viewProjectionInverted = m_cameraCapability->viewInverted() * m_projectionCapability->projectionInverted();
 
     const float x = static_cast<float>(windowCoordinates.x);
     const float y = static_cast<float>(windowCoordinates.y);
 
     // transform viewport to [-1;+1] (including z!)
-    
-    const float w = 2.0f / static_cast<float>(m_viewportCapability->x());
-    const float h = 2.0f / static_cast<float>(m_viewportCapability->y());
 
-    const glm::vec4 p = glm::vec4(x * w - 1.f, 1.f - y * h, depth * 2.f - 1.f, 1.f);
+    const float width = 2.0f / static_cast<float>(m_viewportCapability->width());
+    const float height = 2.0f / static_cast<float>(m_viewportCapability->height());
+
+    const glm::vec4 p = glm::vec4(x * width - 1.f, 1.f - y * height, depth * 2.f - 1.f, 1.f);
 
     // unproject this point back to object space
     const glm::vec4 u = viewProjectionInverted * p;
     return glm::vec3(u) / u.w;
 }
 
-} // namespace globjectsutils
+} // namespace gloperate

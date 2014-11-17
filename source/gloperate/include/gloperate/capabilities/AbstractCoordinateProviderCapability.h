@@ -34,6 +34,7 @@ public:
     virtual float depthAt(const glm::ivec2 & windowCoordinates) const = 0;
 
     virtual glm::vec3 worldCoordinatesAt(const glm::ivec2 & windowCoordinates) const = 0;
+    virtual glm::vec3 unproject(const glm::ivec2 & windowCoordinates, float depth) const = 0;
 };
 
 } // namespace gloperate

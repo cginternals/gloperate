@@ -26,4 +26,4 @@ bool AbstractCoordinateProviderCapability::validDepth(const float depth)
     return depth < (1.f - std::numeric_limits<float>::epsilon());
 }
 
-} // namespace globjectsutils
+} // namespace gloperate

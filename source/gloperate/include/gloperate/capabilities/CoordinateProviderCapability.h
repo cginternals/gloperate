@@ -29,6 +29,7 @@ public:
     virtual float depthAt(const glm::ivec2 & windowCoordinates) const override;
 
     virtual glm::vec3 worldCoordinatesAt(const glm::ivec2 & windowCoordinates) const override;
+    virtual glm::vec3 unproject(const glm::ivec2 & windowCoordinates, float depth) const override;
 
 protected:
     AbstractCameraCapability * m_cameraCapability;
