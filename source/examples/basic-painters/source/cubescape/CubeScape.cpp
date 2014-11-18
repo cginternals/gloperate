@@ -33,7 +33,7 @@ using namespace globjects;
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)
 , m_numCubes(25)
-, m_animation(true)
+, m_animation(false)
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)
 , m_projectionCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability))
@@ -49,7 +49,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
     m_timeCapability->setLoopDuration(20.0f * pi<float>());
 
     m_targetFramebufferCapability->changed.connect([this](){ this->onTargetFramebufferChanged();});
-
+    
     addCapability(m_targetFramebufferCapability);
     addCapability(m_viewportCapability);
     addCapability(m_projectionCapability);
@@ -75,6 +75,7 @@ void CubeScape::onInitialize()
     // create program
 
     globjects::init();
+    onTargetFramebufferChanged();
 
 #ifdef MAC_OS
     Shader::clearGlobalReplacements();
@@ -195,7 +196,7 @@ void CubeScape::onPaint()
 
     glEnable(GL_DEPTH_TEST);
 
-    mat4 transform = m_projectionCapability->projection() * m_cameraCapability->view() * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
+    mat4 transform = m_projectionCapability->projection() * m_cameraCapability->view();
 
     m_vao->bind();
 
@@ -236,12 +237,16 @@ bool CubeScape::animation() const
 void CubeScape::setAnimation(const bool & enabled)
 {
     m_animation = enabled;
-
+    m_animation = false;
     m_timeCapability->setEnabled(m_animation);
 }
 
 void CubeScape::onTargetFramebufferChanged()
 {
     globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
+    if (!fbo)
+    {
+        fbo = globjects::Framebuffer::defaultFBO();
+    }
     m_typedRenderTargetCapability->setRenderTarget(gloperate::RenderTargetType::Depth, fbo, gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
 }
