@@ -16,7 +16,7 @@ class AbstractCoordinateProviderCapability;
 
 class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 {
-
+public:
 	enum InteractionMode
 	{
 		NoInteraction
@@ -32,6 +32,8 @@ public:
 //    void setCoordinateProvider(AbstractCoordinateProvider * provider);
 
 	virtual void reset(bool update = true);
+
+    InteractionMode mode() const;
 
 	void panBegin(const glm::ivec2 & mouse);
   	void panProcess(const glm::ivec2 & mouse);

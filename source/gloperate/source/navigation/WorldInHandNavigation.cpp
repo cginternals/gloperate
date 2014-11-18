@@ -63,6 +63,11 @@ WorldInHandNavigation::~WorldInHandNavigation()
 //    m_coordsProvider = provider;
 //}
 
+WorldInHandNavigation::InteractionMode WorldInHandNavigation::mode() const
+{
+    return m_mode;
+}
+
 void WorldInHandNavigation::reset(bool update)
 {
     m_cameraCapability->setEye(DEFAULT_EYE);
@@ -124,6 +129,7 @@ void WorldInHandNavigation::panBegin(const glm::ivec2 & mouse)
         const float depth = m_coordProviderCapability->depthAt(mouse);
         m_refPositionValid = AbstractCoordinateProviderCapability::validDepth(depth);
     }
+    m_refPositionValid = true;
 
     m_eye = m_cameraCapability->eye();
     m_center = m_cameraCapability->center();
