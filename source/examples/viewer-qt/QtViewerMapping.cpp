@@ -79,15 +79,41 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
             }
         }
     }
-    // not used right now
     else if (event->sourceType() == gloperate::SourceType::Mouse)
     {
         MouseEvent * mouseEvent = dynamic_cast<MouseEvent*>(event);
         if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Press)
         {
-            if (mouseEvent->button() == gloperate::MouseButton1)
+            switch (mouseEvent->button())
             {
+            case MouseButtonMiddle:
                 m_navigation->reset(true);
+                break;
+            case MouseButtonLeft:
+                m_navigation->panBegin(mouseEvent->pos());
+                break;
+            default:
+                break;
+            }
+        }
+        else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Move)
+        {
+            switch (m_navigation->mode())
+            {
+            case WorldInHandNavigation::InteractionMode::PanInteraction:
+                m_navigation->panProcess(mouseEvent->pos());
+            default:
+                break;
+            }
+        }
+        else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Release)
+        {
+            switch (mouseEvent->button())
+            {
+            case MouseButtonLeft:
+                    m_navigation->panEnd();
+            default:
+                break;
             }
         }
     }
