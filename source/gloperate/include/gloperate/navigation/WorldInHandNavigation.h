@@ -11,6 +11,7 @@ namespace gloperate
 {
 
 class CameraCapability;
+class AbstractViewportCapability;
 class AbstractCoordinateProviderCapability;
 
 class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
@@ -24,7 +25,7 @@ class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 	};
 
 public:
-    WorldInHandNavigation(CameraCapability * cameraCapability, AbstractCoordinateProviderCapability * coordProviderCapability);
+    WorldInHandNavigation(CameraCapability * cameraCapability, AbstractViewportCapability * viewportCapability,AbstractCoordinateProviderCapability * coordProviderCapability);
     virtual ~WorldInHandNavigation();
 
 //    void setBoundaryHint(const AxisAlignedBoundingBox & aabb);
@@ -32,9 +33,9 @@ public:
 
 	virtual void reset(bool update = true);
 
-//	void panningBegin(const glm::ivec2 & mouse);
-//	void panningProcess(const glm::ivec2 & mouse);
-//	void panningEnd();
+	void panBegin(const glm::ivec2 & mouse);
+  	void panProcess(const glm::ivec2 & mouse);
+ 	void panEnd();
 
 //	void rotatingBegin(const glm::ivec2 & mouse);
 //	void rotatingProcess(const glm::ivec2 & mouse);
@@ -73,6 +74,7 @@ public:
 protected:
     //Camera * m_camera;
     CameraCapability * m_cameraCapability;
+    AbstractViewportCapability * m_viewportCapability;
 
     // TODO clean up old
 //    AxisAlignedBoundingBox m_aabb;
@@ -82,9 +84,11 @@ protected:
     bool m_rotationHappened;
 	InteractionMode m_mode;
 
-    glm::vec3  m_i0;
-    glm::vec3  m_i1;
-    bool  m_i0Valid; // stores if initial interaction pick yielded valid depth
+    glm::vec3  m_referencePosition;
+    glm::vec3  m_modifiedPosition;
+    bool  m_refPositionValid; // stores if initial interaction pick yielded valid depth
+    glm::vec3   m_eye;
+    glm::vec3   m_center;
     glm::vec2    m_m0;
 };
 

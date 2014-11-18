@@ -38,7 +38,7 @@ vec3 rayPlaneIntersection(
 	// intersect with plane in point normal form
 	const float lDotN = dot(r, normal);
 
-	valid = r != vec3();
+	valid = (r != vec3());
 
 	if(!valid)
 		return vec3();

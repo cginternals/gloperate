@@ -7,6 +7,7 @@
 
 //#include <gloperate/Camera.h>
 #include <gloperate/capabilities/CameraCapability.h>
+#include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractCoordinateProviderCapability.h>
 
 //#include "MathMacros.h"
@@ -37,12 +38,14 @@ namespace
 namespace gloperate
 {
 
-WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability, AbstractCoordinateProviderCapability * coordProviderCapability)
+WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability, AbstractViewportCapability * viewportCapability,AbstractCoordinateProviderCapability * coordProviderCapability)
 : m_cameraCapability(cameraCapability)
+, m_viewportCapability(viewportCapability)
 , m_coordProviderCapability(coordProviderCapability)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
 {
+    // if (!cameraCapability) Im wird der Konstruktor nur aufgerufen, wenn es eine Camera gibt. Sauberer wäre es, auch hier nochmal auf die Camera zu prüfen
     reset();
 }
 
@@ -105,52 +108,61 @@ const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
 }
 
 
-//void WorldInHandNavigation::panningBegin(const QPoint & mouse)
-//{
-//    assert(NoInteraction == m_mode);
-//    m_mode = PanInteraction;
+void WorldInHandNavigation::panBegin(const glm::ivec2 & mouse)
+{
+    if (NoInteraction != m_mode)
+        return;
 
-//    m_viewProjectionInverted = m_camera->viewProjectionInverted();
-    
-//    bool intersects;
-//    m_i0 = mouseRayPlaneIntersection(intersects, mouse);
-//    m_i0Valid = intersects && WorldInHandNavigationMath::validDepth(m_coordsProvider->depthAt(mouse));
+    m_mode = PanInteraction;
 
-//    m_eye = m_camera->eye();
-//    m_center = m_camera->center();
-//}
+    bool intersects;
+    m_referencePosition = mouseRayPlaneIntersection(intersects, mouse);
 
-//void WorldInHandNavigation::panningEnd()
-//{
-//    assert(PanInteraction == m_mode);
-//    m_mode = NoInteraction;
-//}
+    m_refPositionValid = false;
+    if (intersects)
+    {
+        const float depth = m_coordProviderCapability->depthAt(mouse);
+        m_refPositionValid = AbstractCoordinateProviderCapability::validDepth(depth);
+    }
 
-//void WorldInHandNavigation::panningProcess(const QPoint & mouse)
-//{
-//    assert(PanInteraction == m_mode);
+    m_eye = m_cameraCapability->eye();
+    m_center = m_cameraCapability->center();
+}
 
-//    // The first click of the interaction yields a object space position m_i0.
-//    // this point is our constraint for panning, that means for every mouse
-//    // position there has to be an appropriate positioning for the scene, so
-//    // that the point under the mouse remains m_i0.
-//    // With this point and the up normal we build a plane, that defines the
-//    // panning space. For panning, a ray is created, pointing from the screen
-//    // pixel into the view frustum. This ray then is converted to object space
-//    // and used to intersect with the plane at p.
-//    // The delta of m_i0 and p is the translation required for panning.
+void WorldInHandNavigation::panProcess(const glm::ivec2 & mouse)
+{
+    if (PanInteraction != m_mode || !m_refPositionValid)
+        return;
 
-//    // constrain mouse interaction to viewport (if disabled, could lead to mishaps)
-//    const QPoint clamped(
-//        clamp(0, m_camera->viewport().width(), mouse.x())
-//    ,   clamp(0, m_camera->viewport().height(), mouse.y()));
+    // The first click of the interaction yields a object space position m_i0.
+    // this point is our constraint for panning, that means for every mouse 
+    // position there has to be an appropriate positioning for the scene, so
+    // that the point under the mouse remains m_i0.
+    // With this point and the up normal we build a plane, that defines the 
+    // panning space. For panning, a ray is created, pointing from the screen
+    // pixel into the view frustum. This ray then is converted to object space
+    // and used to intersect with the plane at p. 
+    // The delta of m_referencePosition and p is the translation required for panning.
 
-//    bool intersects;
-//    m_i1 = mouseRayPlaneIntersection(intersects, clamped, m_i0, m_viewProjectionInverted);
+    // constrain mouse interaction to viewport (if disabled, could lead to mishaps)
+    const glm::ivec2 clamped(
+        glm::clamp(mouse.x, 0, m_viewportCapability->width()),
+        glm::clamp(mouse.y, 0, m_viewportCapability->height()));
 
-//    if (intersects)
-//        pan(m_i0 - m_i1);
-//}
+    bool intersects;
+    m_modifiedPosition = mouseRayPlaneIntersection(intersects, clamped, m_referencePosition, glm::vec3(0.f, 1.f, 0.f));
+
+    if (intersects)
+        pan(m_referencePosition - m_modifiedPosition);
+}
+
+void WorldInHandNavigation::panEnd()
+{
+    if (PanInteraction != m_mode)
+        return;
+
+    m_mode = NoInteraction;
+}
 
 //void WorldInHandNavigation::rotatingBegin(const QPoint & mouse)
 //{
