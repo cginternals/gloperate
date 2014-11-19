@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <string>
 
+#include <globjects/base/ref_ptr.h>
 #include <globjects/AbstractUniform.h>
 #include <globjects/Uniform.h>
 
