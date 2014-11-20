@@ -10,7 +10,7 @@
 namespace gloperate
 {
 
-class CameraCapability;
+class AbstractCameraCapability;
 class AbstractViewportCapability;
 class AbstractCoordinateProviderCapability;
 
@@ -25,13 +25,16 @@ public:
 	};
 
 public:
-    WorldInHandNavigation(CameraCapability * cameraCapability, AbstractViewportCapability * viewportCapability,AbstractCoordinateProviderCapability * coordProviderCapability);
+    WorldInHandNavigation(
+        AbstractCameraCapability & cameraCapability, 
+        AbstractViewportCapability & viewportCapability,
+        AbstractCoordinateProviderCapability & coordProviderCapability);
     virtual ~WorldInHandNavigation();
 
 //    void setBoundaryHint(const AxisAlignedBoundingBox & aabb);
 //    void setCoordinateProvider(AbstractCoordinateProvider * provider);
 
-	virtual void reset(bool update = true);
+	virtual void reset();
 
     InteractionMode mode() const;
 
@@ -74,14 +77,13 @@ public:
     ,   const glm::vec3 & planeNormal) const;
 
 protected:
-    //Camera * m_camera;
-    CameraCapability * m_cameraCapability;
-    AbstractViewportCapability * m_viewportCapability;
+    AbstractCameraCapability & m_cameraCapability;
+    AbstractViewportCapability & m_viewportCapability;
 
     // TODO clean up old
 //    AxisAlignedBoundingBox m_aabb;
 
-    AbstractCoordinateProviderCapability * m_coordProviderCapability;
+    AbstractCoordinateProviderCapability & m_coordProviderCapability;
 
     bool m_rotationHappened;
 	InteractionMode m_mode;

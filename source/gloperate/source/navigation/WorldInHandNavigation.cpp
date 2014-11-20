@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 //#include <gloperate/Camera.h>
-#include <gloperate/capabilities/CameraCapability.h>
+#include <gloperate/capabilities/AbstractCameraCapability.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
 #include <gloperate/capabilities/AbstractCoordinateProviderCapability.h>
 
@@ -37,14 +37,16 @@ namespace
 namespace gloperate
 {
 
-WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability, AbstractViewportCapability * viewportCapability,AbstractCoordinateProviderCapability * coordProviderCapability)
+WorldInHandNavigation::WorldInHandNavigation(
+    AbstractCameraCapability & cameraCapability, 
+    AbstractViewportCapability & viewportCapability,
+    AbstractCoordinateProviderCapability & coordProviderCapability)
 : m_cameraCapability(cameraCapability)
 , m_viewportCapability(viewportCapability)
 , m_coordProviderCapability(coordProviderCapability)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
 {
-    // if (!cameraCapability) Referenzen
     reset();
 }
 
@@ -67,18 +69,15 @@ WorldInHandNavigation::InteractionMode WorldInHandNavigation::mode() const
     return m_mode;
 }
 
-void WorldInHandNavigation::reset(bool update)
+void WorldInHandNavigation::reset()
 {
-    m_cameraCapability->setEye(DEFAULT_EYE);
-    m_cameraCapability->setCenter(DEFAULT_CENTER);
-    m_cameraCapability->setUp(DEFAULT_UP);
+    m_cameraCapability.setEye(DEFAULT_EYE);
+    m_cameraCapability.setCenter(DEFAULT_CENTER);
+    m_cameraCapability.setUp(DEFAULT_UP);
 
     m_mode = NoInteraction;
 
 //    enforceWholeMapVisible();
-
-    if (update)
-        m_cameraCapability->update();
 }
 
 
@@ -91,8 +90,8 @@ const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     // build a ray in object space from screen space mouse position and get
     // intersection with near and far planes.
 
-    const glm::vec3 pointNear = m_coordProviderCapability->unproject(mouse, 0.0);
-    const glm::vec3 pointFar = m_coordProviderCapability->unproject(mouse, 1.0);
+    const glm::vec3 pointNear = m_coordProviderCapability.unproject(mouse, 0.0);
+    const glm::vec3 pointFar = m_coordProviderCapability.unproject(mouse, 1.0);
 
     return navigationmath::rayPlaneIntersection(intersects, pointNear, pointFar, planePosition, planeNormal);
 }
@@ -101,14 +100,14 @@ const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     bool & intersects
     , const glm::ivec2 & mouse) const
 {
-    const float depth = m_coordProviderCapability->depthAt(mouse);
+    const float depth = m_coordProviderCapability.depthAt(mouse);
 
     // no scene object was picked - simulate picking on xz-plane
     if (depth >= 1.0 - std::numeric_limits<float>::epsilon())
         // use current center to construct reference plane
-        return mouseRayPlaneIntersection(intersects, mouse, m_cameraCapability->center(), glm::vec3(0.f, 1.f, 0.f));
+        return mouseRayPlaneIntersection(intersects, mouse, m_cameraCapability.center(), glm::vec3(0.f, 1.f, 0.f));
 
-    return m_coordProviderCapability->unproject(mouse, depth);
+    return m_coordProviderCapability.unproject(mouse, depth);
 }
 
 
@@ -125,12 +124,12 @@ void WorldInHandNavigation::panBegin(const glm::ivec2 & mouse)
     m_refPositionValid = false;
     if (intersects)
     {
-        const float depth = m_coordProviderCapability->depthAt(mouse);
+        const float depth = m_coordProviderCapability.depthAt(mouse);
         m_refPositionValid = AbstractCoordinateProviderCapability::validDepth(depth);
     }
 
-    m_eye = m_cameraCapability->eye();
-    m_center = m_cameraCapability->center();
+    m_eye = m_cameraCapability.eye();
+    m_center = m_cameraCapability.center();
 }
 
 void WorldInHandNavigation::panProcess(const glm::ivec2 & mouse)
@@ -150,8 +149,8 @@ void WorldInHandNavigation::panProcess(const glm::ivec2 & mouse)
 
     // constrain mouse interaction to viewport (if disabled, could lead to mishaps)
     const glm::ivec2 clamped(
-        glm::clamp(mouse.x, 0, m_viewportCapability->width()),
-        glm::clamp(mouse.y, 0, m_viewportCapability->height()));
+        glm::clamp(mouse.x, 0, m_viewportCapability.width()),
+        glm::clamp(mouse.y, 0, m_viewportCapability.height()));
 
     bool intersects;
     m_modifiedPosition = mouseRayPlaneIntersection(intersects, clamped, m_referencePosition, glm::vec3(0.f, 1.f, 0.f));
@@ -206,10 +205,8 @@ void WorldInHandNavigation::pan(glm::vec3 t)
 {
     //enforceTranslationConstraints(t);
     
-    m_cameraCapability->setEye(t + m_cameraCapability->eye());
-    m_cameraCapability->setCenter(t + m_cameraCapability->center());
-
-    m_cameraCapability->update();
+    m_cameraCapability.setEye(t + m_cameraCapability.eye());
+    m_cameraCapability.setCenter(t + m_cameraCapability.center());
 }
 
 void WorldInHandNavigation::rotate(
@@ -218,28 +215,26 @@ void WorldInHandNavigation::rotate(
 {
     m_rotationHappened = true;
 
-    const glm::vec3 ray(glm::normalize(m_cameraCapability->center() - m_cameraCapability->eye()));
-    const glm::vec3 rotAxis(glm::cross(ray, m_cameraCapability->up()));
+    const glm::vec3 ray(glm::normalize(m_cameraCapability.center() - m_cameraCapability.eye()));
+    const glm::vec3 rotAxis(glm::cross(ray, m_cameraCapability.up()));
 
     hAngle *= ROTATION_HOR_DOF;
     vAngle *= ROTATION_VER_DOF;
 
     enforceRotationConstraints(hAngle, vAngle);
 
-    glm::vec3 t = m_cameraCapability->center();
+    glm::vec3 t = m_cameraCapability.center();
 
     glm::mat4x4 transform = glm::mat4x4();
     transform = glm::translate(transform, t);
-    transform = glm::rotate(transform, hAngle, m_cameraCapability->up());
+    transform = glm::rotate(transform, hAngle, m_cameraCapability.up());
     transform = glm::rotate(transform, vAngle, rotAxis);
     transform = glm::translate(transform, -t);
 
-    glm::vec4 newEye = transform * glm::vec4(m_cameraCapability->eye(), 1.0f);
-    glm::vec4 newCenter = transform * glm::vec4(m_cameraCapability->center(), 1.0f);
-    m_cameraCapability->setEye(glm::vec3(newEye));
-    m_cameraCapability->setCenter(glm::vec3(newCenter));
-
-    m_cameraCapability->update();
+    glm::vec4 newEye = transform * glm::vec4(m_cameraCapability.eye(), 1.0f);
+    glm::vec4 newCenter = transform * glm::vec4(m_cameraCapability.center(), 1.0f);
+    m_cameraCapability.setEye(glm::vec3(newEye));
+    m_cameraCapability.setCenter(glm::vec3(newCenter));
 }
 
 
@@ -341,7 +336,7 @@ void WorldInHandNavigation::enforceRotationConstraints(
     // to up/down it can be rotated and clamp if required.
 
     const float va = glm::degrees(acosf(
-        glm::dot(glm::normalize(m_cameraCapability->eye() - m_cameraCapability->center()), m_cameraCapability->up())));
+        glm::dot(glm::normalize(m_cameraCapability.eye() - m_cameraCapability.center()), m_cameraCapability.up())));
 
     if (vAngle <= 0.0)
 		vAngle = glm::max(vAngle, glm::degrees(CONSTRAINT_ROT_MAX_V_UP) - va);

@@ -24,14 +24,14 @@ QtViewerMapping::~QtViewerMapping()
 void QtViewerMapping::initializeNavigation()
 {
     if (    m_painter && 
-            m_painter->supports<CameraCapability>() && 
+            m_painter->supports<AbstractCameraCapability>() && 
             m_painter->supports<AbstractCoordinateProviderCapability>() &&
             m_painter->supports<AbstractViewportCapability>())
     {
-        CameraCapability * cameraCapability = dynamic_cast<CameraCapability*>(m_painter->getCapability<CameraCapability>());
+        AbstractCameraCapability * cameraCapability = dynamic_cast<AbstractCameraCapability*>(m_painter->getCapability<AbstractCameraCapability>());
         AbstractCoordinateProviderCapability * coordProviderCapability = dynamic_cast<AbstractCoordinateProviderCapability*>(m_painter->getCapability<AbstractCoordinateProviderCapability>());
         AbstractViewportCapability * viewportCapability = dynamic_cast<AbstractViewportCapability*>(m_painter->getCapability<AbstractViewportCapability>());
-        m_navigation.reset(new WorldInHandNavigation(cameraCapability, viewportCapability, coordProviderCapability));
+        m_navigation.reset(new WorldInHandNavigation(*cameraCapability, *viewportCapability, *coordProviderCapability));
     }
 }
 
@@ -59,7 +59,7 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
                 break;
             // Reset camera position
             case KeyR:
-                m_navigation->reset(true);
+                m_navigation->reset();
                 break;
             // Arrows rotate camera
             case KeyUp:
@@ -87,7 +87,7 @@ void QtViewerMapping::processEvent(AbstractEvent * event)
             switch (mouseEvent->button())
             {
             case MouseButtonMiddle:
-                m_navigation->reset(true);
+                m_navigation->reset();
                 break;
             case MouseButtonLeft:
                 m_navigation->panBegin(mouseEvent->pos());
