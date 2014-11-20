@@ -61,8 +61,6 @@ void CameraCapability::invalidateMatrices() const
 {
     m_view.invalidate();
     m_viewInverted.invalidate();
-    //m_viewProjection.invalidate();
-    //m_viewProjectionInverted.invalidate();
     m_normal.invalidate();
 }
 

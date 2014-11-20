@@ -13,7 +13,6 @@
 //#include "MathMacros.h"
 #include <gloperate/navigation/navigationmath.h>
 
-
 namespace
 {
     static const glm::vec3 DEFAULT_EYE    = glm::vec3(0.f, 0.8f, -2.0f);
@@ -45,7 +44,7 @@ WorldInHandNavigation::WorldInHandNavigation(CameraCapability * cameraCapability
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
 {
-    // if (!cameraCapability) Im wird der Konstruktor nur aufgerufen, wenn es eine Camera gibt. Sauberer wäre es, auch hier nochmal auf die Camera zu prüfen
+    // if (!cameraCapability) Referenzen
     reset();
 }
 
@@ -129,7 +128,6 @@ void WorldInHandNavigation::panBegin(const glm::ivec2 & mouse)
         const float depth = m_coordProviderCapability->depthAt(mouse);
         m_refPositionValid = AbstractCoordinateProviderCapability::validDepth(depth);
     }
-    m_refPositionValid = true;
 
     m_eye = m_cameraCapability->eye();
     m_center = m_cameraCapability->center();
@@ -140,10 +138,10 @@ void WorldInHandNavigation::panProcess(const glm::ivec2 & mouse)
     if (PanInteraction != m_mode || !m_refPositionValid)
         return;
 
-    // The first click of the interaction yields a object space position m_i0.
+    // The first click of the interaction yields an object space position m_referencePosition.
     // this point is our constraint for panning, that means for every mouse 
     // position there has to be an appropriate positioning for the scene, so
-    // that the point under the mouse remains m_i0.
+    // that the point under the mouse remains m_referencePosition.
     // With this point and the up normal we build a plane, that defines the 
     // panning space. For panning, a ray is created, pointing from the screen
     // pixel into the view frustum. This ray then is converted to object space
@@ -207,7 +205,7 @@ void WorldInHandNavigation::panEnd()
 void WorldInHandNavigation::pan(glm::vec3 t)
 {
     //enforceTranslationConstraints(t);
-
+    
     m_cameraCapability->setEye(t + m_cameraCapability->eye());
     m_cameraCapability->setCenter(t + m_cameraCapability->center());
 

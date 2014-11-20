@@ -36,18 +36,19 @@ float CoordinateProviderCapability::depthAt(const glm::ivec2 & windowCoordinates
     const gl::GLint x = windowCoordinates.x;
     const gl::GLint y = windowCoordinates.y;
     
-    const gl::GLint w = static_cast<gl::GLint>(m_viewportCapability->x());
-    const gl::GLint h = static_cast<gl::GLint>(m_viewportCapability->y());
+    const gl::GLint w = static_cast<gl::GLint>(m_viewportCapability->width()); 
+    const gl::GLint h = static_cast<gl::GLint>(m_viewportCapability->height());
 
     if (x >= w || y >= h)
         return 1.f;
-
+    
     gl::glBindFramebuffer(gl::GLenum::GL_READ_FRAMEBUFFER, m_depthBuffer.framebuffer().get()->id());
     gl::glReadBuffer(m_depthBuffer.attachment());
-
+   
     gl::GLfloat z;
-    gl::glReadPixels(x, h - y - 1, 1, 1, m_depthBuffer.format(), gl::GL_FLOAT, reinterpret_cast<void*>(&z));
-
+    gl::GLenum format = m_depthBuffer.format();
+    gl::glReadPixels(x, h - y - 1, 1, 1, format, gl::GLenum::GL_FLOAT, reinterpret_cast<void*>(&z));
+    
     gl::glBindFramebuffer(gl::GLenum::GL_READ_FRAMEBUFFER, 0);
 
     return z;
