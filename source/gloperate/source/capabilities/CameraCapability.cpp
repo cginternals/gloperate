@@ -159,9 +159,4 @@ void CameraCapability::update() const
     const_cast<CameraCapability*>(this)->changed();
 }
 
-void CameraCapability::changed()
-{
-    invalidated();
-}
-
 } // namespace gloperate
