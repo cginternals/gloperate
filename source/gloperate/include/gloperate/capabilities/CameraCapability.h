@@ -44,20 +44,18 @@ public:
     bool autoUpdating() const;
     void setAutoUpdating(bool b);
 
-    const glm::vec3 & eye() const;
-    void setEye(const glm::vec3 & eye);
-    const glm::vec3 & center() const;
-    void setCenter(const glm::vec3 & center);
-    const glm::vec3 & up() const;
-    void setUp(const glm::vec3 & up);
+    virtual const glm::vec3 & eye() const override;
+    virtual void setEye(const glm::vec3 & eye) override;
+    virtual const glm::vec3 & center() const override;
+    virtual void setCenter(const glm::vec3 & center) override;
+    virtual const glm::vec3 & up() const override;
+    virtual void setUp(const glm::vec3 & up) override;
 
     // lazy matrices getters
     virtual const glm::mat4 & view() const override;
-    //const glm::mat4 & viewProjection() const;
     virtual const glm::mat4 & viewInverted() const override;
-    //const glm::mat4 & viewProjectionInverted() const;
 
-    const glm::mat3 & normal() const;
+    virtual const glm::mat3 & normal() const override;
 
     void update() const;
 
