@@ -30,10 +30,7 @@ TypedRenderTargetCapability::~TypedRenderTargetCapability()
 
 const RenderTarget & TypedRenderTargetCapability::renderTarget(RenderTargetType type)
 {
-    if (hasRenderTarget(type))
-        return *(m_renderTargets.at(type));
-    else
-        return m_invalidTarget;
+    return m_renderTargets[type];
 }
 
 bool TypedRenderTargetCapability::hasRenderTarget(RenderTargetType type)
@@ -47,12 +44,13 @@ void TypedRenderTargetCapability::setRenderTarget(
     gl::GLenum attachment,
     gl::GLenum format)
 {
-    if (hasRenderTarget(type))
-    {
-        delete m_renderTargets.at(type);
-    }
+    m_renderTargets[type] = RenderTarget(framebuffer, attachment, format);
+    setChanged(true);
+}
 
-    m_renderTargets[type] = new RenderTarget(framebuffer, attachment, format);
+void TypedRenderTargetCapability::resetRenderTarget(RenderTargetType type)
+{
+    m_renderTargets[type] = RenderTarget();
     setChanged(true);
 }
 

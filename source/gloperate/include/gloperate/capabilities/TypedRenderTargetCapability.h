@@ -6,10 +6,11 @@
 \******************************************************************************/
 #pragma once
 
-
 #include <gloperate/gloperate_api.h>
+
 #include <globjects/Framebuffer.h>
 #include <globjects/base/ref_ptr.h>
+
 #include <gloperate/capabilities/AbstractTypedRenderTargetCapability.h>
 
 
@@ -37,17 +38,17 @@ public:
     */
     virtual ~TypedRenderTargetCapability();
 
-    virtual const RenderTarget & renderTarget(RenderTargetType type);
-    virtual bool hasRenderTarget(RenderTargetType type);
+    virtual const RenderTarget & renderTarget(RenderTargetType type) override;
+    virtual bool hasRenderTarget(RenderTargetType type) override;
     virtual void setRenderTarget(
         RenderTargetType type, 
         globjects::ref_ptr<globjects::Framebuffer> framebuffer,
         gl::GLenum attachment,
         gl::GLenum format);
+    virtual void resetRenderTarget(RenderTargetType type);
 
 protected:
-    std::map<RenderTargetType, RenderTarget *> m_renderTargets;
-    RenderTarget m_invalidTarget;
+    std::map<RenderTargetType, RenderTarget> m_renderTargets;
 };
 
 
