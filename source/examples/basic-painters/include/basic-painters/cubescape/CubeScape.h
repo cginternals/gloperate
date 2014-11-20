@@ -17,13 +17,13 @@ namespace gloperate
 {
     //class Camera;
     class ResourceManager;
-    class AbstractTargetFramebufferCapability;
-    class AbstractViewportCapability;
-    class AbstractPerspectiveProjectionCapability;
+    class TargetFramebufferCapability;
+    class ViewportCapability;
+    class PerspectiveProjectionCapability;
     class CameraCapability;
     class TypedRenderTargetCapability;
     class CoordinateProviderCapability;
-    class AbstractVirtualTimeCapability;
+    class VirtualTimeCapability;
 }
 
 class BASIC_PAINTERS_API CubeScape : public gloperate::Painter
@@ -52,15 +52,13 @@ protected:
     bool m_animation;
 
     /* capabilities */
-    //globjects::ref_ptr<gloperate::Camera> m_camera;
-
-    gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
-    gloperate::AbstractViewportCapability * m_viewportCapability;
-    gloperate::AbstractPerspectiveProjectionCapability * m_projectionCapability;
+    gloperate::TargetFramebufferCapability * m_targetFramebufferCapability;
+    gloperate::ViewportCapability * m_viewportCapability;
+    gloperate::PerspectiveProjectionCapability * m_projectionCapability;
     gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
     gloperate::CameraCapability * m_cameraCapability;
     gloperate::CoordinateProviderCapability * m_coordProviderCapability;
-    gloperate::AbstractVirtualTimeCapability * m_timeCapability;
+    gloperate::VirtualTimeCapability * m_timeCapability;
 
     /* members */
 
