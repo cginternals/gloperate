@@ -9,10 +9,8 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
-#include <QResizeEvent>
 #include <QKeyEvent>
 #include <QMouseEvent>
-#include <QWheelEvent>
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <glm/glm.hpp>
