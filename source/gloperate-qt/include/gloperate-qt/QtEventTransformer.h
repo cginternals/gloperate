@@ -47,8 +47,6 @@ public:
     */
     virtual ~QtEventTransformer();
 
-    static gloperate::AbstractEvent * transformEvent(QEvent * event);
-
     static gloperate::MouseEvent::Type mouseTypeFromQtType(QEvent::Type type);
     static gloperate::KeyboardEvent::Type keyboardTypeFromQtType(QEvent::Type type);
     static glm::ivec2 fromQPoint(const QPoint point);

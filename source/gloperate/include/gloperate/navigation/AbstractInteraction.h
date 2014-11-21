@@ -9,8 +9,8 @@ class GLOPERATE_API AbstractInteraction
 {
 
 public:
-	AbstractInteraction();
-	virtual ~AbstractInteraction();
+    AbstractInteraction();
+    virtual ~AbstractInteraction();
 
 };
 

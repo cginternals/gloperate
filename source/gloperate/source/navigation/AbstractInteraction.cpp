@@ -3,11 +3,11 @@
 namespace gloperate
 {
 
-	AbstractInteraction::AbstractInteraction()
+    AbstractInteraction::AbstractInteraction()
 {
 }
 
-	AbstractInteraction::~AbstractInteraction()
+    AbstractInteraction::~AbstractInteraction()
 {
 }
 
