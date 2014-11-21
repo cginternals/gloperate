@@ -42,9 +42,9 @@ public:
   	void panProcess(const glm::ivec2 & mouse);
  	void panEnd();
 
-//	void rotatingBegin(const glm::ivec2 & mouse);
-//	void rotatingProcess(const glm::ivec2 & mouse);
-//	void rotatingEnd();
+	void rotateBegin(const glm::ivec2 & mouse);
+	void rotateProcess(const glm::ivec2 & mouse);
+	void rotateEnd();
 
     void pan(glm::vec3 t);
     void rotate(float hAngle, float vAngle);

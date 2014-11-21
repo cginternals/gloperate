@@ -167,39 +167,47 @@ void WorldInHandNavigation::panEnd()
     m_mode = NoInteraction;
 }
 
-//void WorldInHandNavigation::rotatingBegin(const QPoint & mouse)
-//{
-//    assert(NoInteraction == m_mode);
-//    m_mode = RotateInteraction;
+void WorldInHandNavigation::rotateBegin(const glm::ivec2 & mouse)
+{
+    if (NoInteraction != m_mode)
+        return;
 
-//    bool intersects;
-//    m_i0 = mouseRayPlaneIntersection(intersects, mouse);
-//    m_i0Valid = intersects && WorldInHandNavigationMath::validDepth(m_coordsProvider->depthAt(mouse));
+    m_mode = RotateInteraction;
 
-//    m_m0 = mouse;
+    bool intersects;
+    m_referencePosition = mouseRayPlaneIntersection(intersects, mouse);
 
-//    m_eye = m_camera->eye();
-//    m_center = m_camera->center();
-//}
+    const float depth = m_coordProviderCapability.depthAt(mouse);
+    m_refPositionValid = intersects && AbstractCoordinateProviderCapability::validDepth(depth);
 
-//void WorldInHandNavigation::rotatingEnd()
-//{
-//    assert(RotateInteraction == m_mode);
-//    m_mode = NoInteraction;
-//}
+    m_m0 = mouse;
 
-//void WorldInHandNavigation::rotatingProcess(const QPoint & mouse)
-//{
-//    assert(RotateInteraction == m_mode);
+    m_eye = m_cameraCapability.eye();
+    m_center = m_cameraCapability.center();
+}
 
-//    const QPointF delta = m_m0 - mouse;
-//    // setup the degree of freedom for horizontal rotation within a single action
-//    const float wDeltaX = deg(delta.x() / m_camera->viewport().width());
-//    // setup the degree of freedom for vertical rotation within a single action
-//    const float wDeltaY = deg(delta.y() / m_camera->viewport().height());
+void WorldInHandNavigation::rotateEnd()
+{
+    if (RotateInteraction != m_mode)
+        return;
 
-//    rotate(wDeltaX, wDeltaY);
-//}
+    m_mode = NoInteraction;
+}
+
+void WorldInHandNavigation::rotateProcess(const glm::ivec2 & mouse)
+{
+    if (RotateInteraction != m_mode)
+        return;
+
+    glm::ivec2 const& const_m_m0 = m_m0;
+    const glm::vec2 delta(const_m_m0 - mouse);
+    // setup the degree of freedom for horizontal rotation within a single action
+    const float wDeltaX = delta.x / static_cast<float>(m_viewportCapability.x());
+    // setup the degree of freedom for vertical rotation within a single action
+    const float wDeltaY = delta.y / static_cast<float>(m_viewportCapability.y());
+
+    rotate(wDeltaX, wDeltaY);
+}
 
 void WorldInHandNavigation::pan(glm::vec3 t)
 {
