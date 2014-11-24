@@ -5,9 +5,13 @@
  * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
 \******************************************************************************/
 #include <gloperate/util/ScreenAlignedQuad.h>
+
 #include <cassert>
 #include <array>
+
 #include <glbinding/gl/enum.h>
+#include <glbinding/gl/functions.h>
+
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/Program.h>
 #include <globjects/VertexArray.h>

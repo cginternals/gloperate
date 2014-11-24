@@ -41,11 +41,8 @@ bool QtKeyEventProvider::eventFilter(QObject * obj, QEvent * event)
         if (qKeyEvent) {
             auto eventType = QtEventTransformer::keyboardTypeFromQtType(qKeyEvent->type());
             auto key = QtEventTransformer::fromQtKeyCode(qKeyEvent->key(), qKeyEvent->modifiers());
-            KeyboardEvent * keyEvent =
-                    new KeyboardEvent(eventType,
-                                      key,
-                                      0, // TODO
-                                      qKeyEvent->modifiers());
+            KeyboardEvent * keyEvent = new KeyboardEvent(eventType
+                , key, qKeyEvent->nativeScanCode(), qKeyEvent->modifiers());
             passEvent(keyEvent);
             return true;
         }
