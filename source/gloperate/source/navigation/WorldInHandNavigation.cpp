@@ -199,8 +199,7 @@ void WorldInHandNavigation::rotateProcess(const glm::ivec2 & mouse)
     if (RotateInteraction != m_mode)
         return;
 
-    glm::ivec2 const& const_m_m0 = m_m0;
-    const glm::vec2 delta(const_m_m0 - mouse);
+    const glm::vec2 delta(m_m0 - glm::vec2(mouse));
     // setup the degree of freedom for horizontal rotation within a single action
     const float wDeltaX = delta.x / static_cast<float>(m_viewportCapability.x());
     // setup the degree of freedom for vertical rotation within a single action
