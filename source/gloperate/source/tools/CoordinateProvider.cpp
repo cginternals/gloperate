@@ -1,4 +1,4 @@
-#include <gloperate/capabilities/CoordinateProviderCapability.h>
+#include <gloperate/tools/CoordinateProvider.h>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
@@ -9,13 +9,12 @@
 
 namespace gloperate
 {
-CoordinateProviderCapability::CoordinateProviderCapability(
+CoordinateProvider::CoordinateProvider(
     AbstractCameraCapability * cameraCapability,
     AbstractProjectionCapability * projectionCapability,
     AbstractViewportCapability * viewportCapability,
     AbstractTypedRenderTargetCapability * typedRenderTargetCapability)
-    :   AbstractCoordinateProviderCapability()
-    ,   m_cameraCapability(cameraCapability)
+    :   m_cameraCapability(cameraCapability)
     ,   m_projectionCapability(projectionCapability)
     ,   m_viewportCapability(viewportCapability)
     ,   m_typedRenderTargetCapability(typedRenderTargetCapability)
@@ -24,11 +23,11 @@ CoordinateProviderCapability::CoordinateProviderCapability(
     onRenderTargetsChanged();
 }
 
-CoordinateProviderCapability::~CoordinateProviderCapability()
+CoordinateProvider::~CoordinateProvider()
 {
 }
 
-float CoordinateProviderCapability::depthAt(const glm::ivec2 & windowCoordinates) const
+float CoordinateProvider::depthAt(const glm::ivec2 & windowCoordinates) const
 {
     if (!m_depthBuffer.isValid()) 
         return 1.f;
@@ -54,16 +53,19 @@ float CoordinateProviderCapability::depthAt(const glm::ivec2 & windowCoordinates
     return z;
 }
 
-//virtual glm::vec3 worldCoordinatesAt(const glm::ivec2 & windowCoordinates) const override;
+bool CoordinateProvider::validDepth(const float depth)
+{
+    return depth < (1.f - std::numeric_limits<float>::epsilon());
+}
 
-glm::vec3 CoordinateProviderCapability::worldCoordinatesAt(const glm::ivec2 & windowCoordinates) const
+glm::vec3 CoordinateProvider::worldCoordinatesAt(const glm::ivec2 & windowCoordinates) const
 {
     const float depth = depthAt(windowCoordinates);
 
     return unproject(windowCoordinates, depth);
 }
 
-glm::vec3 CoordinateProviderCapability::unproject(const glm::ivec2 & windowCoordinates, float depth) const
+glm::vec3 CoordinateProvider::unproject(const glm::ivec2 & windowCoordinates, float depth) const
 {
     const glm::mat4 viewProjectionInverted = m_cameraCapability->viewInverted() * m_projectionCapability->projectionInverted();
 
@@ -82,7 +84,7 @@ glm::vec3 CoordinateProviderCapability::unproject(const glm::ivec2 & windowCoord
     return glm::vec3(u) / u.w;
 }
 
-void CoordinateProviderCapability::onRenderTargetsChanged()
+void CoordinateProvider::onRenderTargetsChanged()
 {
     m_depthBuffer = m_typedRenderTargetCapability->renderTarget(RenderTargetType::Depth);
     m_geometryBuffer = m_typedRenderTargetCapability->renderTarget(RenderTargetType::Geometry);

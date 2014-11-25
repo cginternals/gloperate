@@ -12,7 +12,7 @@ namespace gloperate
 
 class AbstractCameraCapability;
 class AbstractViewportCapability;
-class AbstractCoordinateProviderCapability;
+class CoordinateProvider;
 
 class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 {
@@ -28,7 +28,7 @@ public:
     WorldInHandNavigation(
         AbstractCameraCapability & cameraCapability, 
         AbstractViewportCapability & viewportCapability,
-        AbstractCoordinateProviderCapability & coordProviderCapability);
+        CoordinateProvider & coordProvider);
     virtual ~WorldInHandNavigation();
 
 //    void setBoundaryHint(const AxisAlignedBoundingBox & aabb);
@@ -83,14 +83,14 @@ protected:
     // TODO clean up old
 //    AxisAlignedBoundingBox m_aabb;
 
-    AbstractCoordinateProviderCapability & m_coordProviderCapability;
+    CoordinateProvider & m_coordProvider;
 
     bool m_rotationHappened;
 	InteractionMode m_mode;
 
     glm::vec3  m_referencePosition;
     glm::vec3  m_modifiedPosition;
-    bool  m_refPositionValid; // stores if initial interaction pick yielded valid depth
+    bool        m_refPositionValid; // stores if initial interaction pick yielded valid depth
     glm::vec3   m_eye;
     glm::vec3   m_center;
     glm::vec2   m_m0;

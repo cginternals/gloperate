@@ -35,7 +35,7 @@ void AbstractMapping::setPainter(Painter * painter)
         m_painter = painter;
     }
 
-    initializeNavigation();
+    initializeTools(); //TODO use signal instead?
 }
 
 void AbstractMapping::addProvider(AbstractEventProvider * provider)
@@ -48,6 +48,11 @@ void AbstractMapping::removeProvider(AbstractEventProvider * provider)
 {
     provider->deregisterMapping(this);
     m_providers.remove(provider);
+}
+
+void AbstractMapping::processEvent(AbstractEvent * event)
+{
+    mapEvent(event);
 }
 
 } // namespace gloperate

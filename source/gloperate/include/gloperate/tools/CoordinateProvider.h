@@ -1,35 +1,35 @@
 #pragma once
 
-#include <gloperate/capabilities/AbstractCoordinateProviderCapability.h>
-#include <gloperate/capabilities/AbstractCameraCapability.h>
-#include <gloperate/capabilities/AbstractProjectionCapability.h>
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractTypedRenderTargetCapability.h>
-
 #include <glbinding/gl/types.h>
 
 #include <glm/glm.hpp>
 
 #include <gloperate/gloperate_api.h>
 
+#include <gloperate/capabilities/AbstractCameraCapability.h>
+#include <gloperate/capabilities/AbstractProjectionCapability.h>
+#include <gloperate/capabilities/AbstractViewportCapability.h>
+#include <gloperate/capabilities/AbstractTypedRenderTargetCapability.h>
+
 namespace gloperate
 {
 
-class GLOPERATE_API CoordinateProviderCapability : public AbstractCoordinateProviderCapability
+class GLOPERATE_API CoordinateProvider
 {
 public:
-    CoordinateProviderCapability(
+    CoordinateProvider(
         AbstractCameraCapability * cameraCapability,
         AbstractProjectionCapability * projectionCapability,
         AbstractViewportCapability * viewportCapability,
         AbstractTypedRenderTargetCapability * typedRenderTargetCapability);
 
-    virtual ~CoordinateProviderCapability();
+    virtual ~CoordinateProvider();
 
-    virtual float depthAt(const glm::ivec2 & windowCoordinates) const override;
+    virtual float depthAt(const glm::ivec2 & windowCoordinates) const;
+    static bool validDepth(const float depth);
 
-    virtual glm::vec3 worldCoordinatesAt(const glm::ivec2 & windowCoordinates) const override;
-    virtual glm::vec3 unproject(const glm::ivec2 & windowCoordinates, float depth) const override;
+    virtual glm::vec3 worldCoordinatesAt(const glm::ivec2 & windowCoordinates) const;
+    virtual glm::vec3 unproject(const glm::ivec2 & windowCoordinates, float depth) const;
 
 protected:
     virtual void onRenderTargetsChanged();

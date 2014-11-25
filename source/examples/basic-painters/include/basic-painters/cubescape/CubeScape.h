@@ -22,7 +22,6 @@ namespace gloperate
     class PerspectiveProjectionCapability;
     class CameraCapability;
     class TypedRenderTargetCapability;
-    class CoordinateProviderCapability;
     class VirtualTimeCapability;
 }
 
@@ -57,7 +56,6 @@ protected:
     gloperate::PerspectiveProjectionCapability * m_projectionCapability;
     gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
     gloperate::CameraCapability * m_cameraCapability;
-    gloperate::CoordinateProviderCapability * m_coordProviderCapability;
     gloperate::VirtualTimeCapability * m_timeCapability;
 
     /* members */

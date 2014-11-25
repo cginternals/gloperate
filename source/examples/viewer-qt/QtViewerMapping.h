@@ -5,6 +5,7 @@
 #include <memory>
 
 namespace gloperate {
+    class CoordinateProvider;
     class WorldInHandNavigation;
 }
 
@@ -16,9 +17,12 @@ public:
     QtViewerMapping();
     virtual ~QtViewerMapping();
 
-    virtual void initializeNavigation() override;
-    virtual void processEvent(AbstractEvent * event) override;
+    virtual void initializeTools() override;
+
+protected:
+    virtual void mapEvent(AbstractEvent * event) override;
 
 protected:
     std::unique_ptr<WorldInHandNavigation> m_navigation;
+    std::unique_ptr<CoordinateProvider> m_coordProvider;
 };

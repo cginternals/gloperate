@@ -1,14 +1,16 @@
 #include "QtViewerMapping.h"
 
 #include <gloperate/Camera.h>
-#include <gloperate/capabilities/CameraCapability.h>
+#include <gloperate/capabilities/AbstractCameraCapability.h>
+#include <gloperate/capabilities/AbstractProjectionCapability.h>
 #include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractCoordinateProviderCapability.h>
+#include <gloperate/capabilities/AbstractTypedRenderTargetCapability.h>
 #include <gloperate/input/AbstractEvent.h>
 #include <gloperate/input/KeyboardEvent.h>
 #include <gloperate/input/MouseEvent.h>
 #include <gloperate/navigation/WorldInHandNavigation.h>
 #include <gloperate/Painter.h>
+#include <gloperate/tools/CoordinateProvider.h>
 
 
 using namespace gloperate;
@@ -21,21 +23,25 @@ QtViewerMapping::~QtViewerMapping()
 {
 }
 
-void QtViewerMapping::initializeNavigation()
+void QtViewerMapping::initializeTools()
 {
     if (    m_painter && 
-            m_painter->supports<AbstractCameraCapability>() && 
-            m_painter->supports<AbstractCoordinateProviderCapability>() &&
-            m_painter->supports<AbstractViewportCapability>())
+            m_painter->supports<AbstractCameraCapability>() &&
+            m_painter->supports<AbstractViewportCapability>() &&
+            m_painter->supports<AbstractTypedRenderTargetCapability>() &&
+            m_painter->supports<AbstractProjectionCapability>())
     {
         AbstractCameraCapability * cameraCapability = dynamic_cast<AbstractCameraCapability*>(m_painter->getCapability<AbstractCameraCapability>());
-        AbstractCoordinateProviderCapability * coordProviderCapability = dynamic_cast<AbstractCoordinateProviderCapability*>(m_painter->getCapability<AbstractCoordinateProviderCapability>());
+        AbstractProjectionCapability * projectionCapability = dynamic_cast<AbstractProjectionCapability*>(m_painter->getCapability<AbstractProjectionCapability>());
+        AbstractTypedRenderTargetCapability * renderTargetCapability = dynamic_cast<AbstractTypedRenderTargetCapability*>(m_painter->getCapability<AbstractTypedRenderTargetCapability>());
         AbstractViewportCapability * viewportCapability = dynamic_cast<AbstractViewportCapability*>(m_painter->getCapability<AbstractViewportCapability>());
-        m_navigation.reset(new WorldInHandNavigation(*cameraCapability, *viewportCapability, *coordProviderCapability));
+        
+        m_coordProvider.reset(new CoordinateProvider(cameraCapability, projectionCapability, viewportCapability, renderTargetCapability));
+        m_navigation.reset(new WorldInHandNavigation(*cameraCapability, *viewportCapability, *m_coordProvider));
     }
 }
 
-void QtViewerMapping::processEvent(AbstractEvent * event)
+void QtViewerMapping::mapEvent(AbstractEvent * event)
 {
     if (event->sourceType() == gloperate::SourceType::Keyboard)
     {

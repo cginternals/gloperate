@@ -23,8 +23,11 @@ public:
     void addProvider(AbstractEventProvider * provider);
     void removeProvider(AbstractEventProvider * provider);
 
-    virtual void initializeNavigation() = 0;
-    virtual void processEvent(AbstractEvent * event) = 0;
+    virtual void initializeTools() = 0;
+    virtual void processEvent(AbstractEvent * event);
+
+protected:
+    virtual void mapEvent(AbstractEvent * event) = 0;
 
 protected:
     Painter * m_painter;

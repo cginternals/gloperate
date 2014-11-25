@@ -63,7 +63,6 @@ set(sources
 	${source_path}/capabilities/VirtualTimeCapability.cpp
 	${source_path}/capabilities/AbstractCapability.cpp
     ${source_path}/capabilities/AbstractCameraCapability.cpp
-	${source_path}/capabilities/AbstractCoordinateProviderCapability.cpp
     ${source_path}/capabilities/AbstractPerspectiveProjectionCapability.cpp
     ${source_path}/capabilities/AbstractProjectionCapability.cpp
 	${source_path}/capabilities/AbstractTypedRenderTargetCapability.cpp
@@ -72,7 +71,6 @@ set(sources
     ${source_path}/capabilities/AbstractInputCapability.cpp
     ${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
     ${source_path}/capabilities/CameraCapability.cpp
-	${source_path}/capabilities/CoordinateProviderCapability.cpp
 	${source_path}/capabilities/InputCapability.cpp
 	${source_path}/capabilities/ViewportCapability.cpp
 	${source_path}/capabilities/TargetFramebufferCapability.cpp
@@ -107,6 +105,7 @@ set(sources
     ${source_path}/signals/ConnectionMap.cpp
     ${source_path}/signals/Connection.cpp
     ${source_path}/signals/ScopedConnection.cpp
+	${source_path}/tools/CoordinateProvider.cpp
     ${source_path}/tools/ScreenshotTool.cpp
     ${source_path}/util/Icosahedron.cpp
     ${source_path}/util/Plane3.cpp
@@ -138,8 +137,6 @@ set(headers
 	${include_path}/capabilities/AbstractViewportCapability.h
 	${include_path}/capabilities/AbstractCapability.h
     ${include_path}/capabilities/AbstractCameraCapability.h
-	${include_path}/capabilities/AbstractCoordinateProviderCapability.h
-	${include_path}/capabilities/CoordinateProviderCapability.h
     ${include_path}/capabilities/AbstractPerspectiveProjectionCapability.h
     ${include_path}/capabilities/AbstractProjectionCapability.h
 	${include_path}/capabilities/AbstractTypedRenderTargetCapability.h
@@ -197,6 +194,7 @@ set(headers
     ${include_path}/signals/AbstractSignal.h
     ${include_path}/signals/Connection.h
     ${include_path}/signals/Signal.hpp
+	${include_path}/tools/CoordinateProvider.h
     ${include_path}/tools/ScreenshotTool.h
     ${include_path}/util/collection.hpp
     ${include_path}/util/AdaptiveGrid.h

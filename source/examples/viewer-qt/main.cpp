@@ -70,11 +70,6 @@ int main(int argc, char * argv[])
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
 
-    // Create Mapping
-    QtViewerMapping * mapping = new QtViewerMapping();
-    mapping->setPainter(painter);
-    mapping->addProvider(keyProvider);
-    mapping->addProvider(mouseProvider);
 
     // Create OpenGL window
     QSurfaceFormat format;
@@ -86,6 +81,14 @@ int main(int argc, char * argv[])
 	window->setPainter(painter);
     window->installEventFilter(keyProvider);
     window->installEventFilter(mouseProvider);
+
+    // Create Mapping
+    QtViewerMapping * mapping = new QtViewerMapping();
+    mapping->setPainter(painter);
+    //mapping->setContext(window->context());
+    mapping->addProvider(keyProvider);
+    mapping->addProvider(mouseProvider);
+    
 
 	QRect rect = QApplication::desktop()->screenGeometry(); // used to center the mainwindow on desktop
 
