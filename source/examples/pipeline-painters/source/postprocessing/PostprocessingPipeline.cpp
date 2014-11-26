@@ -74,7 +74,7 @@ public:
         globjects::StringTemplate* sphereVertexShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/sphere.vert"));
         globjects::StringTemplate* sphereFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/sphere.frag"));
 
-        #ifdef MAC_OS
+        #ifdef __APPLE__
             sphereVertexShader->replace("#version 140", "#version 150");
             sphereFragmentShader->replace("#version 140", "#version 150");
         #endif
@@ -153,7 +153,7 @@ public:
         globjects::StringTemplate* phongVertexShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/phong.vert"));
         globjects::StringTemplate* phongFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/phong.frag"));
 
-        #ifdef MAC_OS
+        #ifdef __APPLE__
             phongVertexShader->replace("#version 140", "#version 150");
             phongFragmentShader->replace("#version 140", "#version 150");
         #endif

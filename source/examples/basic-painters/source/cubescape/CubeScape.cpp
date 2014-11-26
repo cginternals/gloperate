@@ -54,7 +54,7 @@ void CubeScape::onInitialize()
 
     globjects::init();
 
-#ifdef MAC_OS
+#ifdef __APPLE__
     Shader::clearGlobalReplacements();
     Shader::globalReplace("#version 140", "#version 150");
 

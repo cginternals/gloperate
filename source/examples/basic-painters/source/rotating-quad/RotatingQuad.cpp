@@ -74,7 +74,7 @@ RotatingQuad::~RotatingQuad()
 
 void RotatingQuad::onInitialize()
 {
-#ifdef MAC_OS
+#ifdef __APPLE__
     Shader::clearGlobalReplacements();
     Shader::globalReplace("#version 140", "#version 150");
 
@@ -174,7 +174,7 @@ void RotatingQuad::createAndSetupGeometry()
     StringTemplate * vertexShaderSource   = new StringTemplate(new StaticStringSource(s_vertexShader  ));
     StringTemplate * fragmentShaderSource = new StringTemplate(new StaticStringSource(s_fragmentShader));
 
-#ifdef MAC_OS
+#ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif

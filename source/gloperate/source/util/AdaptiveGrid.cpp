@@ -118,7 +118,7 @@ AdaptiveGrid::AdaptiveGrid(
     StringTemplate* fragmentShaderString = new StringTemplate(new globjects::StaticStringSource(fsSource));
   
   
-#ifdef MAC_OS
+#ifdef __APPLE__
   vertexShaderString->replace("#version 140", "#version 150");
   fragmentShaderString->replace("#version 140", "#version 150");
 #endif

@@ -16,7 +16,7 @@ namespace
 {
 #ifdef WIN32
     const std::string g_sep = "\\";
-#elif MAC_OS
+#elif __APPLE__
     const std::string g_sep = "/";
 #else
     const std::string g_sep = "/";

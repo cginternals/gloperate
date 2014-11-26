@@ -26,7 +26,7 @@ namespace
     const std::string g_sep = "\\";
     const std::string g_pre = "";
     const std::string g_ext = "dll";
-#elif MAC_OS
+#elif __APPLE__
     const std::string g_sep = "/";
     const std::string g_pre = "";
     const std::string g_ext = "dylib";

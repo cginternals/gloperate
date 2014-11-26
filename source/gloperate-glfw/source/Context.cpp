@@ -38,7 +38,7 @@ glbinding::Version Context::maxSupportedVersion()
 
     glfwWindowHint(GLFW_VISIBLE, false);
 
-#ifdef MAC_OS
+#ifdef __APPLE__
     /*
     * Using OS X the following hints must be set for proper context initialization
     * (cf. http://stackoverflow.com/questions/19969937/getting-a-glsl-330-context-on-osx-10-9-mavericks)
@@ -82,7 +82,7 @@ GLFWwindow * Context::create(const ContextFormat & format)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.m_major);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.m_minor);
 
-#ifdef MAC_OS
+#ifdef __APPLE__
 
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
