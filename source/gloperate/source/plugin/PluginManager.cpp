@@ -15,7 +15,7 @@
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
 
-#include "util/DirectoryIterator.h"
+#include "base/DirectoryIterator.h"
 
 
 namespace

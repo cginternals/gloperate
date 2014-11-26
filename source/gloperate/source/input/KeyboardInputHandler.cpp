@@ -3,8 +3,6 @@
 
 namespace gloperate
 {
-
-
 /**
 *  @brief
 *    Constructor
@@ -36,6 +34,5 @@ void KeyboardInputHandler::onKeyDown(gloperate::Key /*key*/)
 void KeyboardInputHandler::onKeyUp(gloperate::Key /*key*/)
 {
 }
-
 
 } // gloperate

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include <gloperate/plugin/PainterPlugin.h>
 
 #ifdef _MSC_VER
