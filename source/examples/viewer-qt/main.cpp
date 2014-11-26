@@ -4,6 +4,7 @@
 #include <globjects/base/baselogging.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
+#include <QOpenGLContext>
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <gloperate/plugin/PluginManager.h>
@@ -85,7 +86,9 @@ int main(int argc, char * argv[])
     // Create Mapping
     QtViewerMapping * mapping = new QtViewerMapping();
     mapping->setPainter(painter);
-    //mapping->setContext(window->context());
+    //mapping->setContext(window->context()); will never work, we can not create a specific Qt-Context because of incompability between glbinding and QOpenGLContext which uses gl.h
+    mapping->setMakeCurrent([window](){window->context()->makeCurrent(window); });
+    mapping->setDoneCurrent([window](){window->context()->doneCurrent(); });
     mapping->addProvider(keyProvider);
     mapping->addProvider(mouseProvider);
     
