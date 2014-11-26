@@ -1,4 +1,4 @@
-#include <basic-painters/rotating-quad/RotatingQuad.h>
+#include <globjects-painters/rotating-quad/RotatingQuad.h>
 
 #include <random>
 
@@ -7,15 +7,15 @@
 
 #include <glbinding/gl/gl.h>
 
+#include <globjects/logging.h>
+#include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
-#include <globjects/base/StringTemplate.h>
-#include <globjects/logging.h>
 
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/capabilities/ViewportCapability.h>
-#include <gloperate/capabilities/VirtualTimeCapability.h>
+#include <gloperate/painter/ViewportCapability.h>
+#include <gloperate/painter/VirtualTimeCapability.h>
 
 
 using namespace globjects;

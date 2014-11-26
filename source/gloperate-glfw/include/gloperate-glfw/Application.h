@@ -1,8 +1,8 @@
 #pragma once
 
-#include <gloperate-glfw/gloperate-glfw_api.h>
-
 #include <string>
+
+#include <gloperate-glfw/gloperate-glfw_api.h>
 
 
 namespace gloperate_glfw

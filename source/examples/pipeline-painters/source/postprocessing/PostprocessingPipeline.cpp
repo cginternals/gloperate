@@ -18,24 +18,23 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
-#include <gloperate/Camera.h>
-
-#include <gloperate/pipelines/AbstractStage.h>
-#include <gloperate/pipelines/Data.h>
-#include <gloperate/pipelines/InputSlot.h>
-
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
-#include <gloperate/capabilities/AbstractTargetFramebufferCapability.h>
-
-#include <gloperate/capabilities/ViewportCapability.h>
-#include <gloperate/capabilities/VirtualTimeCapability.h>
-#include <gloperate/capabilities/TargetFramebufferCapability.h>
-
-#include <gloperate/util/AdaptiveGrid.h>
-#include <gloperate/util/Icosahedron.h>
 #include <globjects/base/StringTemplate.h>
-#include <gloperate/util/ScreenAlignedQuad.h>
+
+#include <gloperate/pipeline/AbstractStage.h>
+#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/InputSlot.h>
+
+#include <gloperate/painter/Camera.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractVirtualTimeCapability.h>
+#include <gloperate/painter/AbstractTargetFramebufferCapability.h>
+#include <gloperate/painter/ViewportCapability.h>
+#include <gloperate/painter/VirtualTimeCapability.h>
+#include <gloperate/painter/TargetFramebufferCapability.h>
+
+#include <gloperate/primitives/AdaptiveGrid.h>
+#include <gloperate/primitives/Icosahedron.h>
+#include <gloperate/primitives/ScreenAlignedQuad.h>
 
 
 class RasterizationStage : public gloperate::AbstractStage

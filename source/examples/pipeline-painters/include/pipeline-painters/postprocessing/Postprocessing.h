@@ -1,9 +1,11 @@
 #pragma once
 
-#include <gloperate/pipelines/PipelinePainter.h>
+#include <pipeline-painters/pipeline_painters_api.h>
+
+
+#include <gloperate/pipeline/PipelinePainter.h>
 
 #include <pipeline-painters/postprocessing/PostprocessingPipeline.h>
-#include <pipeline-painters/pipeline_painters_api.h>
 
 
 class PIPELINE_PAINTERS_API Postprocessing : public gloperate::PipelinePainter

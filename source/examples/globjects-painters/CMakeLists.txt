@@ -1,13 +1,5 @@
 
-set(target extended-painters)
-
-find_package(libzeug QUIET)
-
-if (NOT LIBZEUG_FOUND)
-    message("Example ${target} skipped: libzeug not found")
-    return()
-endif ()
-
+set(target globjects-painters)
 message(STATUS "Example ${target}")
 
 
@@ -24,13 +16,11 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
-    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
     BEFORE
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
-    ${CMAKE_SOURCE_DIR}/source/examples/basic-painters/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -40,8 +30,6 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
-    ${LIBZEUG_LIBRARIES}
-    basic-painters
     gloperate
 )
 
@@ -49,9 +37,9 @@ set(libs
 # Compiler definitions
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DEXTENDED_PAINTERS_STATIC")
+    add_definitions("-DGLOBJECTS_PAINTERS_STATIC")
 else()
-    add_definitions("-DEXTENDED_PAINTERS_EXPORTS")
+    add_definitions("-DGLOBJECTS_PAINTERS_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
@@ -59,18 +47,23 @@ add_definitions("-DGLM_FORCE_RADIANS")
 
 
 # Sources
+#
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/cubescape-extended/CubeScapeExtended.cpp
+    ${source_path}/textured-quad/TexturedQuad.cpp
+    ${source_path}/rotating-quad/RotatingQuad.cpp
+    ${source_path}/cubescape/CubeScape.cpp
     ${source_path}/plugin.cpp
 )
 
 set(headers
-    ${include_path}/cubescape-extended/CubeScapeExtended.h
-    ${include_path}/extended_painters_api.h
+    ${include_path}/textured-quad/TexturedQuad.h
+    ${include_path}/rotating-quad/RotatingQuad.h
+    ${include_path}/cubescape/CubeScape.h
+    ${include_path}/globjects_painters_api.h
 )
 
 # Group source files

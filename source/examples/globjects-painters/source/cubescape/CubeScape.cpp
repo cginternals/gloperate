@@ -1,5 +1,4 @@
-
-#include <basic-painters/cubescape/CubeScape.h>
+#include <globjects-painters/cubescape/CubeScape.h>
 
 #include <array>
 
@@ -17,13 +16,15 @@
 
 #include <gloperate/resources/RawFile.h>
 
-#include <gloperate/capabilities/TargetFramebufferCapability.h>
-#include <gloperate/capabilities/ViewportCapability.h>
-#include <gloperate/capabilities/VirtualTimeCapability.h>
+#include <gloperate/painter/TargetFramebufferCapability.h>
+#include <gloperate/painter/ViewportCapability.h>
+#include <gloperate/painter/VirtualTimeCapability.h>
+
 
 using namespace gl;
 using namespace glm;
 using namespace globjects;
+
 
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)

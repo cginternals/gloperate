@@ -1,16 +1,12 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
 #include <gloperate-qt/qt-includes-begin.h>
+
 #include <QWindow>
 #include <QScopedPointer>
 #include <QSurfaceFormat>
+
 #include <gloperate-qt/qt-includes-end.h>
 #include <gloperate-qt/gloperate-qt_api.h>
 
@@ -20,7 +16,6 @@ class QOpenGLContext;
 
 namespace gloperate_qt
 {
-
 
 /**
 *  @brief
@@ -33,8 +28,6 @@ namespace gloperate_qt
 */
 class GLOPERATE_QT_API QtOpenGLWindowBase : public QWindow
 {
-
-
 public:
     /**
     *  @brief
@@ -44,7 +37,6 @@ public:
     *    Surface format
     */
     static QSurfaceFormat defaultFormat();
-
 
 public:
     /**
@@ -83,7 +75,6 @@ public:
     */
     void updateGL();
 
-
 protected:
     /**
     *  @brief
@@ -103,7 +94,6 @@ protected:
     */
     void paint();
 
-
 protected:
     virtual void onInitialize();
     virtual void onResize(QResizeEvent * event);
@@ -117,13 +107,11 @@ protected:
 
     void makeCurrent();
     void doneCurrent();
+
 protected:
     QScopedPointer<QOpenGLContext> m_context;       /**< OpenGL context created and used by the window */
     bool                           m_initialized;   /**< Has the rendering already been initialized? */
     bool                           m_updatePending; /**< Flag to indicate if a redraw has been requested */
-
-
 };
-
 
 } // namespace gloperate-qt

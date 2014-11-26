@@ -7,10 +7,11 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
-#include <gloperate/Painter.h>
-#include <gloperate/Camera.h>
 
-#include <basic-painters/basic_painters_api.h>
+#include <gloperate/painter/Painter.h>
+#include <gloperate/painter/Camera.h>
+
+#include <globjects-painters/globjects_painters_api.h>
 
 
 namespace gloperate 
@@ -21,24 +22,20 @@ namespace gloperate
 }
 
 
-class BASIC_PAINTERS_API RotatingQuad : public gloperate::Painter
+class GLOBJECTS_PAINTERS_API RotatingQuad : public gloperate::Painter
 {
-
 public:
     RotatingQuad(gloperate::ResourceManager & resourceManager);
     virtual ~RotatingQuad();
-
 
 protected:
     virtual void onInitialize();
     virtual void onPaint();
 
-
 protected:
     void createAndSetupCamera();
     void createAndSetupTexture();
     void createAndSetupGeometry();
-
 
 protected:
     /* capabilities */
@@ -54,5 +51,4 @@ protected:
     globjects::ref_ptr<globjects::Texture>      m_texture;
 
     float                           m_angle;
-
 };

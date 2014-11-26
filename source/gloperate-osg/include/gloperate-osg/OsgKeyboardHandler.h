@@ -1,26 +1,21 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
 #include <osg/ref_ptr>
 
 #include <gloperate/input/KeyboardInputHandler.h>
+
 #include <gloperate-osg/gloperate-osg_api.h>
 
 
-namespace osgViewer {
+namespace osgViewer 
+{
     class GraphicsWindowEmbedded;
 }
 
 
 namespace gloperate_osg
 {
-
 
 class OsgRenderStage;
 
@@ -31,8 +26,6 @@ class OsgRenderStage;
 */
 class GLOPERATE_OSG_API OsgKeyboardHandler : public gloperate::KeyboardInputHandler
 {
-
-
 public:
     /**
     *  @brief
@@ -54,13 +47,9 @@ public:
     virtual void onKeyDown(gloperate::Key key) override;
     virtual void onKeyUp(gloperate::Key key) override;
 
-
 protected:
     osgViewer::GraphicsWindowEmbedded * m_embedded; /**< Interface that acts like a window to OSG */
     OsgRenderStage                    * m_stage;    /**< Render stage to which the input handler belongs (can be null) */
-
-
 };
-
 
 } // namespace gloperate_osg

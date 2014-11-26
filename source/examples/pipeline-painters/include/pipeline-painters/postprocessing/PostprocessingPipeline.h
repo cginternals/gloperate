@@ -1,9 +1,10 @@
 #pragma once
 
-#include <gloperate/pipelines/AbstractPipeline.h>
-#include <gloperate/pipelines/Data.h>
+#include <gloperate/pipeline/AbstractPipeline.h>
+#include <gloperate/pipeline/Data.h>
 
 #include <pipeline-painters/pipeline_painters_api.h>
+
 
 namespace gloperate
 {

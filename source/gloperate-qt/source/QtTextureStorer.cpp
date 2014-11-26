@@ -1,22 +1,18 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-qt/QtTextureStorer.h>
+
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QString>
 #include <QImage>
 #include <QImageWriter>
 #include <gloperate-qt/qt-includes-end.h>
+
 #include <glbinding/gl/gl.h>
+
 #include <globjects/Texture.h>
 
 
 namespace gloperate_qt
 {
-
 
 /**
 *  @brief
@@ -100,6 +96,5 @@ bool QtTextureStorer::store(const std::string & filename, const globjects::Textu
 
     return image.mirrored().save(QString::fromStdString(filename));
 }
-
 
 } // namespace gloperate_qt

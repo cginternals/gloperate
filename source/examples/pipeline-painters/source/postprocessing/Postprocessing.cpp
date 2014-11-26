@@ -1,9 +1,9 @@
 
 #include <pipeline-painters/postprocessing/Postprocessing.h>
 
-#include <gloperate/capabilities/AbstractTargetFramebufferCapability.h>
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+#include <gloperate/painter/AbstractTargetFramebufferCapability.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractVirtualTimeCapability.h>
 
 
 Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager)

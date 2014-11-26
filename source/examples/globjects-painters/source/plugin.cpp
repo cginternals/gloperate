@@ -1,8 +1,8 @@
 #include <gloperate/plugin/plugin_api.h>
 
-#include <basic-painters/textured-quad/TexturedQuad.h>
-#include <basic-painters/rotating-quad/RotatingQuad.h>
-#include <basic-painters/cubescape/CubeScape.h>
+#include <globjects-painters/textured-quad/TexturedQuad.h>
+#include <globjects-painters/rotating-quad/RotatingQuad.h>
+#include <globjects-painters/cubescape/CubeScape.h>
 
 #include <gloperate-version.h>
 

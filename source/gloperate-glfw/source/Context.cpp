@@ -9,7 +9,7 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/ContextFormat.h>
+#include <gloperate/painter/ContextFormat.h>
 
 #ifdef WIN32
     #include <windows.h>

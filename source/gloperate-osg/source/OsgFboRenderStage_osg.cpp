@@ -2,13 +2,13 @@
 
 #include <osgViewer/Viewer>
 #include <osgViewer/Renderer>
+
 #include <osg/Camera>
 #include <osg/Texture2D>
 
 
 namespace gloperate_osg
 {
-
 
 /**
 *  @brief
@@ -76,6 +76,5 @@ unsigned int OsgFboRenderStage::getOsgTextureId(const osg::Texture * texture) co
         return 0;
     }
 }
-
 
 } // namespace gloperate_osg

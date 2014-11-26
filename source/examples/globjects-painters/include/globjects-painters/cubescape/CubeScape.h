@@ -2,15 +2,15 @@
 
 #include <glm/mat4x4.hpp>
 
-#include <gloperate/Painter.h>
-
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/VertexArray.h>
 
-#include <basic-painters/basic_painters_api.h>
+#include <gloperate/painter/Painter.h>
+
+#include <globjects-painters/globjects_painters_api.h>
 
 
 namespace gloperate 
@@ -21,7 +21,8 @@ namespace gloperate
     class AbstractVirtualTimeCapability;
 }
 
-class BASIC_PAINTERS_API CubeScape : public gloperate::Painter
+
+class GLOBJECTS_PAINTERS_API CubeScape : public gloperate::Painter
 {
 public:
     CubeScape(gloperate::ResourceManager & resourceManager);
@@ -34,9 +35,11 @@ public:
 
     bool animation() const;
     void setAnimation(const bool & enabled);
+
 protected:
     virtual void onInitialize();
     virtual void onPaint();
+
 protected:
     /* parameters */
 

@@ -1,11 +1,11 @@
-#include <basic-painters/textured-quad/TexturedQuad.h>
+#include <globjects-painters/textured-quad/TexturedQuad.h>
 
 #include <random>
 
 #include <glbinding/gl/gl.h>
 #include <globjects/logging.h>
 
-#include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/painter/ViewportCapability.h>
 
 
 using namespace gloperate;

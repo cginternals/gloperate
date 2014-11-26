@@ -1,12 +1,12 @@
 #pragma once
 
-
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
-#include <gloperate/util/ScreenAlignedQuad.h>
-#include <gloperate/Painter.h>
 
-#include <basic-painters/basic_painters_api.h>
+#include <gloperate/painter/Painter.h>
+#include <gloperate/primitives/ScreenAlignedQuad.h>
+
+#include <globjects-painters/globjects_painters_api.h>
 
 
 namespace gloperate
@@ -16,7 +16,7 @@ class AbstractViewportCapability;
 
 } // namespace gloperate
 
-class BASIC_PAINTERS_API TexturedQuad : public gloperate::Painter
+class GLOBJECTS_PAINTERS_API TexturedQuad : public gloperate::Painter
 {
 
 

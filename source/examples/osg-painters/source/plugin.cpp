@@ -1,4 +1,5 @@
 #include <gloperate/plugin/plugin_api.h>
+
 #include <osg-painters/osg-scene/OsgScene.h>
 
 
