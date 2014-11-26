@@ -14,6 +14,8 @@
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
 #include <gloperate-qt/QtTextureStorer.h>
+#include <gloperate-qt/QtKeyEventProvider.h>
+#include <gloperate-qt/QtMouseEventProvider.h>
 
 #include <QApplication>
 #include <QCoreApplication>
@@ -21,6 +23,7 @@
 #include <QString>
 #include <QMainWindow>
 
+#include "QtViewerMapping.h"
 
 using namespace gloperate;
 using namespace gloperate_qt;
@@ -63,14 +66,26 @@ int main(int argc, char * argv[])
 
 	painter = plugin->createPainter(resourceManager);
 
+    // Create Keyboard Provider
+    QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
+    QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
+
+    // Create Mapping
+    QtViewerMapping * mapping = new QtViewerMapping();
+    mapping->setPainter(painter);
+    mapping->addProvider(keyProvider);
+    mapping->addProvider(mouseProvider);
+
     // Create OpenGL window
     QSurfaceFormat format;
     format.setVersion(3, 2);
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setDepthBufferSize(24);
 
-	QtOpenGLWindow * window = new QtOpenGLWindow(resourceManager, format);
+    QtOpenGLWindow * window = new QtOpenGLWindow(resourceManager, format);
 	window->setPainter(painter);
+    window->installEventFilter(keyProvider);
+    window->installEventFilter(mouseProvider);
 
 	QRect rect = QApplication::desktop()->screenGeometry(); // used to center the mainwindow on desktop
 

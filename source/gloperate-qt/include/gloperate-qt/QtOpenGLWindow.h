@@ -10,6 +10,7 @@
 #include <QScopedPointer>
 #include <globjects/base/ref_ptr.h>
 #include <gloperate/Painter.h>
+
 #include <gloperate-qt/QtOpenGLWindowBase.h>
 #include <gloperate-qt/TimePropagator.h>
 
@@ -91,7 +92,6 @@ protected:
     gloperate::ResourceManager & m_resourceManager;
     globjects::ref_ptr<gloperate::Painter> m_painter;	      /**< Currently used painter */
     QScopedPointer<TimePropagator>         m_timePropagator;  /**< Time propagator for continous updates */
-
 
 };
 

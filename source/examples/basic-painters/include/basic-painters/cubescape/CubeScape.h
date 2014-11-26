@@ -15,9 +15,12 @@
 
 namespace gloperate 
 {
+    class Camera;
     class ResourceManager;
     class AbstractTargetFramebufferCapability;
     class AbstractViewportCapability;
+    class AbstractPerspectiveProjectionCapability;
+    class AbstractCameraCapability;
     class AbstractVirtualTimeCapability;
 }
 
@@ -28,6 +31,8 @@ public:
     virtual ~CubeScape();
 
     void update(float delta);
+
+    void createAndSetupCamera();
 
     int numberOfCubes() const;
     void setNumberOfCubes(const int & number);
@@ -44,9 +49,12 @@ protected:
     bool m_animation;
 
     /* capabilities */
+    globjects::ref_ptr<gloperate::Camera> m_camera;
 
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
+    gloperate::AbstractPerspectiveProjectionCapability * m_projectionCapability;
+    gloperate::AbstractCameraCapability * m_cameraCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
     /* members */
@@ -63,7 +71,4 @@ protected:
     globjects::ref_ptr<globjects::Program> m_program;
 
     globjects::ref_ptr<globjects::Texture> m_textures[2];
-
-    glm::mat4 m_view;
-    glm::mat4 m_projection;
 };
