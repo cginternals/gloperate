@@ -161,30 +161,23 @@ void Camera::setFovy(const float fovy)
     dirty();
 }
 
-const ivec2 & Camera::viewport() const
+float Camera::aspectRatio() const
 {
-    return m_viewport;
+    return m_aspect;
 }
 
-void Camera::setViewport(int width, int height)
+void Camera::setAspectRatio(float ratio)
 {
-    return setViewport(ivec2(width, height));
-}
-
-void Camera::setViewport(const ivec2 & viewport)
-{
-    if (viewport == m_viewport)
-        return;
-
-    m_aspect = static_cast<float>(viewport.x) / max(static_cast<float>(viewport.y), 1.f);
-    m_viewport = viewport;
+    m_aspect = ratio;
 
     dirty();
 }
 
-float Camera::aspectRatio() const
+void Camera::setAspectRatio(const ivec2 & viewport)
 {
-    return m_aspect;
+    m_aspect = static_cast<float>(viewport.x) / max(static_cast<float>(viewport.y), 1.f);
+
+    dirty();
 }
 
 void Camera::update() const

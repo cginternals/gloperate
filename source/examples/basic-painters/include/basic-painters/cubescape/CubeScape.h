@@ -15,10 +15,14 @@
 
 namespace gloperate 
 {
+    //class Camera;
     class ResourceManager;
-    class AbstractTargetFramebufferCapability;
-    class AbstractViewportCapability;
-    class AbstractVirtualTimeCapability;
+    class TargetFramebufferCapability;
+    class ViewportCapability;
+    class PerspectiveProjectionCapability;
+    class CameraCapability;
+    class TypedRenderTargetCapability;
+    class VirtualTimeCapability;
 }
 
 class BASIC_PAINTERS_API CubeScape : public gloperate::Painter
@@ -29,6 +33,8 @@ public:
 
     void update(float delta);
 
+    void setupProjection();
+
     int numberOfCubes() const;
     void setNumberOfCubes(const int & number);
 
@@ -37,6 +43,7 @@ public:
 protected:
     virtual void onInitialize();
     virtual void onPaint();
+    virtual void onTargetFramebufferChanged();
 protected:
     /* parameters */
 
@@ -44,10 +51,12 @@ protected:
     bool m_animation;
 
     /* capabilities */
-
-    gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
-    gloperate::AbstractViewportCapability * m_viewportCapability;
-    gloperate::AbstractVirtualTimeCapability * m_timeCapability;
+    gloperate::TargetFramebufferCapability * m_targetFramebufferCapability;
+    gloperate::ViewportCapability * m_viewportCapability;
+    gloperate::PerspectiveProjectionCapability * m_projectionCapability;
+    gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
+    gloperate::CameraCapability * m_cameraCapability;
+    gloperate::VirtualTimeCapability * m_timeCapability;
 
     /* members */
 
@@ -63,7 +72,4 @@ protected:
     globjects::ref_ptr<globjects::Program> m_program;
 
     globjects::ref_ptr<globjects::Texture> m_textures[2];
-
-    glm::mat4 m_view;
-    glm::mat4 m_projection;
 };

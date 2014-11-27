@@ -39,7 +39,7 @@ protected:
     /* capabilities */
     gloperate::AbstractViewportCapability * m_viewportCapability;
 
-    globjects::ref_ptr<globjects::Texture>                 m_texture;
+    globjects::ref_ptr<globjects::Texture>           m_texture;
     globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
 
 

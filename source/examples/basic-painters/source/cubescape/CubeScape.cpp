@@ -17,8 +17,12 @@
 
 #include <gloperate/resources/RawFile.h>
 
+#include <gloperate/Camera.h>
 #include <gloperate/capabilities/TargetFramebufferCapability.h>
 #include <gloperate/capabilities/ViewportCapability.h>
+#include <gloperate/capabilities/PerspectiveProjectionCapability.h>
+#include <gloperate/capabilities/CameraCapability.h>
+#include <gloperate/capabilities/TypedRenderTargetCapability.h>
 #include <gloperate/capabilities/VirtualTimeCapability.h>
 
 using namespace gl;
@@ -28,9 +32,12 @@ using namespace globjects;
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 : Painter(resourceManager)
 , m_numCubes(25)
-, m_animation(true)
+, m_animation(false)
 , m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
 , m_viewportCapability(new gloperate::ViewportCapability)
+, m_projectionCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability))
+, m_typedRenderTargetCapability(new gloperate::TypedRenderTargetCapability())
+, m_cameraCapability(new gloperate::CameraCapability())
 , m_timeCapability(new gloperate::VirtualTimeCapability)
 , a_vertex(-1)
 , u_transform(-1)
@@ -39,13 +46,25 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 {
     m_timeCapability->setLoopDuration(20.0f * pi<float>());
 
+    m_targetFramebufferCapability->changed.connect([this](){ this->onTargetFramebufferChanged();});
+    
     addCapability(m_targetFramebufferCapability);
     addCapability(m_viewportCapability);
+    addCapability(m_projectionCapability);
+    addCapability(m_cameraCapability);
     addCapability(m_timeCapability);
+    addCapability(m_typedRenderTargetCapability);
 }
 
 CubeScape::~CubeScape()
 {
+}
+
+void CubeScape::setupProjection()
+{
+    m_projectionCapability->setZNear(1.f);
+    m_projectionCapability->setZFar(4.f);
+    m_projectionCapability->setFovy(radians(50.f));
 }
 
 void CubeScape::onInitialize()
@@ -53,6 +72,7 @@ void CubeScape::onInitialize()
     // create program
 
     globjects::init();
+    onTargetFramebufferChanged();
 
 #ifdef __APPLE__
     Shader::clearGlobalReplacements();
@@ -148,7 +168,7 @@ void CubeScape::onInitialize()
     m_program->setUniform(terrain, 0);
     m_program->setUniform(patches, 1);
 
-    m_view = lookAt(vec3(0.f, 0.8f, -2.0f), vec3(0.f, -1.2f, 0.f), vec3(0.f, 1.f, 0.f));
+    setupProjection();
 }
 
 void CubeScape::onPaint()
@@ -156,8 +176,6 @@ void CubeScape::onPaint()
     if (m_viewportCapability->hasChanged())
     {
         glViewport(m_viewportCapability->x(), m_viewportCapability->y(), m_viewportCapability->width(), m_viewportCapability->height());
-
-        m_projection = perspective(radians(50.f), static_cast<GLfloat>(m_viewportCapability->width()) / static_cast<GLfloat>(m_viewportCapability->height()), 1.f, 4.f);
 
         m_viewportCapability->setChanged(false);
     }
@@ -175,7 +193,7 @@ void CubeScape::onPaint()
 
     glEnable(GL_DEPTH_TEST);
 
-    mat4 transform = m_projection * m_view * rotate(mat4(), m_timeCapability->time() * 0.1f, vec3(0.f, 1.f, 0.f));
+    mat4 transform = m_projectionCapability->projection() * m_cameraCapability->view();
 
     m_vao->bind();
 
@@ -216,6 +234,16 @@ bool CubeScape::animation() const
 void CubeScape::setAnimation(const bool & enabled)
 {
     m_animation = enabled;
-
+    m_animation = false;
     m_timeCapability->setEnabled(m_animation);
+}
+
+void CubeScape::onTargetFramebufferChanged()
+{
+    globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
+    if (!fbo)
+    {
+        fbo = globjects::Framebuffer::defaultFBO();
+    }
+    m_typedRenderTargetCapability->setRenderTarget(gloperate::RenderTargetType::Depth, fbo, gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
 }

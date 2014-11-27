@@ -4,6 +4,7 @@
 #include <globjects/base/baselogging.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
+#include <QOpenGLContext>
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <gloperate/plugin/PluginManager.h>
@@ -14,6 +15,8 @@
 #include <gloperate-qt/QtOpenGLWindow.h>
 #include <gloperate-qt/QtTextureLoader.h>
 #include <gloperate-qt/QtTextureStorer.h>
+#include <gloperate-qt/QtKeyEventProvider.h>
+#include <gloperate-qt/QtMouseEventProvider.h>
 
 #include <QApplication>
 #include <QCoreApplication>
@@ -21,6 +24,7 @@
 #include <QString>
 #include <QMainWindow>
 
+#include "QtViewerMapping.h"
 
 using namespace gloperate;
 using namespace gloperate_qt;
@@ -63,14 +67,31 @@ int main(int argc, char * argv[])
 
 	painter = plugin->createPainter(resourceManager);
 
+    // Create Keyboard Provider
+    QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
+    QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
+
+
     // Create OpenGL window
     QSurfaceFormat format;
     format.setVersion(3, 2);
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setDepthBufferSize(24);
 
-	QtOpenGLWindow * window = new QtOpenGLWindow(resourceManager, format);
+    QtOpenGLWindow * window = new QtOpenGLWindow(resourceManager, format);
 	window->setPainter(painter);
+    window->installEventFilter(keyProvider);
+    window->installEventFilter(mouseProvider);
+
+    // Create Mapping
+    QtViewerMapping * mapping = new QtViewerMapping();
+    mapping->setPainter(painter);
+    //mapping->setContext(window->context()); will never work, we can not create a specific Qt-Context because of incompability between glbinding and QOpenGLContext which uses gl.h
+    mapping->setMakeCurrent([window](){window->context()->makeCurrent(window); });
+    mapping->setDoneCurrent([window](){window->context()->doneCurrent(); });
+    mapping->addProvider(keyProvider);
+    mapping->addProvider(mouseProvider);
+    
 
 	QRect rect = QApplication::desktop()->screenGeometry(); // used to center the mainwindow on desktop
 

@@ -29,7 +29,7 @@ include_directories(
 # Libraries
 
 set(libs
-	${OPENGL_LIBRARIES}
+    ${OPENGL_LIBRARIES}
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
 )
@@ -53,52 +53,69 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-	${source_path}/AbstractContext.cpp
-	${source_path}/base/AutoTimer.cpp
+    ${source_path}/AbstractContext.cpp
+    ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/ChronoTimer.cpp
 	${source_path}/base/CyclicTime.cpp
+	${source_path}/base/RenderTarget.cpp
 	${source_path}/Camera.cpp
 	${source_path}/capabilities/AbstractViewportCapability.cpp
 	${source_path}/capabilities/VirtualTimeCapability.cpp
 	${source_path}/capabilities/AbstractCapability.cpp
-	${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
-	${source_path}/capabilities/AbstractInputCapability.cpp
-	${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
+    ${source_path}/capabilities/AbstractCameraCapability.cpp
+    ${source_path}/capabilities/AbstractPerspectiveProjectionCapability.cpp
+    ${source_path}/capabilities/AbstractProjectionCapability.cpp
+	${source_path}/capabilities/AbstractTypedRenderTargetCapability.cpp
+    ${source_path}/capabilities/PerspectiveProjectionCapability.cpp
+    ${source_path}/capabilities/AbstractVirtualTimeCapability.cpp
+    ${source_path}/capabilities/AbstractInputCapability.cpp
+    ${source_path}/capabilities/AbstractTargetFramebufferCapability.cpp
+    ${source_path}/capabilities/CameraCapability.cpp
 	${source_path}/capabilities/InputCapability.cpp
 	${source_path}/capabilities/ViewportCapability.cpp
 	${source_path}/capabilities/TargetFramebufferCapability.cpp
+	${source_path}/capabilities/TypedRenderTargetCapability.cpp
 	${source_path}/ContextFormat.cpp
-	${source_path}/input/MouseInputHandler.cpp
-	${source_path}/input/KeyboardInputHandler.cpp
-	${source_path}/Painter.cpp
-	${source_path}/pipelines/AbstractStage.cpp
-	${source_path}/pipelines/PipelinePainter.cpp
-	${source_path}/pipelines/InputSlot.cpp
-	${source_path}/pipelines/AbstractInputSlot.cpp
-	${source_path}/pipelines/AbstractData.cpp
-	${source_path}/pipelines/AbstractPipeline.cpp
-	${source_path}/plugin/Plugin.cpp
-	${source_path}/plugin/PluginLibrary.cpp
+    ${source_path}/input/AbstractEvent.cpp
+    ${source_path}/input/AbstractEventProvider.cpp
+    ${source_path}/input/KeyboardEvent.cpp
+    ${source_path}/input/MouseEvent.cpp
+    ${source_path}/input/MouseInputHandler.cpp
+    ${source_path}/input/KeyboardInputHandler.cpp
+    ${source_path}/navigation/AbstractMapping.cpp
+    ${source_path}/navigation/AbstractInteraction.cpp
+	${source_path}/navigation/navigationmath.cpp
+    ${source_path}/navigation/WorldInHandNavigation.cpp
+    ${source_path}/Painter.cpp
+    ${source_path}/pipelines/AbstractStage.cpp
+    ${source_path}/pipelines/PipelinePainter.cpp
+    ${source_path}/pipelines/InputSlot.cpp
+    ${source_path}/pipelines/AbstractInputSlot.cpp
+    ${source_path}/pipelines/AbstractData.cpp
+    ${source_path}/pipelines/AbstractPipeline.cpp
+    ${source_path}/plugin/Plugin.cpp
+    ${source_path}/plugin/PluginLibrary.cpp
     ${source_path}/plugin/PluginManager.cpp
-	${source_path}/resources/AbstractLoader.cpp
+    ${source_path}/resources/AbstractLoader.cpp
     ${source_path}/resources/AbstractStorer.cpp
     ${source_path}/resources/GlrawTextureLoader.cpp
     ${source_path}/resources/RawFile.cpp
-	${source_path}/resources/ResourceManager.cpp
-	${source_path}/signals/AbstractSignal.cpp
-	${source_path}/signals/ConnectionMap.cpp
-	${source_path}/signals/Connection.cpp
-	${source_path}/signals/ScopedConnection.cpp
-	${source_path}/tools/ScreenshotTool.cpp
-	${source_path}/util/Icosahedron.cpp
-	${source_path}/util/Plane3.cpp
-	${source_path}/util/Plane3.h
-	${source_path}/util/ScreenAlignedQuad.cpp
-	${source_path}/util/dirent_msvc.h
-	${source_path}/util/AxisAlignedBoundingBox.cpp
-	${source_path}/util/AdaptiveGrid.cpp
-	${source_path}/util/DirectoryIterator.h
-	${source_path}/util/DirectoryIterator.cpp
+    ${source_path}/resources/ResourceManager.cpp
+    ${source_path}/signals/AbstractSignal.cpp
+    ${source_path}/signals/ConnectionMap.cpp
+    ${source_path}/signals/Connection.cpp
+    ${source_path}/signals/ScopedConnection.cpp
+	${source_path}/tools/CoordinateProvider.cpp
+    ${source_path}/tools/ScreenshotTool.cpp
+    ${source_path}/util/Icosahedron.cpp
+    ${source_path}/util/Plane3.cpp
+    ${source_path}/util/Plane3.h
+    ${source_path}/util/ScreenAlignedQuad.cpp
+    ${source_path}/util/dirent_msvc.h
+    ${source_path}/util/AxisAlignedBoundingBox.cpp
+    ${source_path}/util/AdaptiveGrid.cpp
+    ${source_path}/util/DirectoryIterator.h
+    ${source_path}/util/DirectoryIterator.cpp
     ${source_path}/util/UniformGroup.cpp
     ${source_path}/util/directorytraversal.cpp
     ${source_path}/util/VertexDrawable.cpp
@@ -109,6 +126,7 @@ set(headers
 	${include_path}/base/CyclicTime.h
 	${include_path}/base/ChronoTimer.h
 	${include_path}/base/AutoTimer.h
+	${include_path}/base/RenderTarget.h
 	${include_path}/Camera.h
 	${include_path}/capabilities/InputCapability.h
 	${include_path}/capabilities/AbstractVirtualTimeCapability.h
@@ -118,28 +136,43 @@ set(headers
 	${include_path}/capabilities/AbstractTargetFramebufferCapability.h
 	${include_path}/capabilities/AbstractViewportCapability.h
 	${include_path}/capabilities/AbstractCapability.h
+    ${include_path}/capabilities/AbstractCameraCapability.h
+    ${include_path}/capabilities/AbstractPerspectiveProjectionCapability.h
+    ${include_path}/capabilities/AbstractProjectionCapability.h
+	${include_path}/capabilities/AbstractTypedRenderTargetCapability.h
+    ${include_path}/capabilities/PerspectiveProjectionCapability.h
+    ${include_path}/capabilities/CameraCapability.h
 	${include_path}/capabilities/TargetFramebufferCapability.h
+	${include_path}/capabilities/TypedRenderTargetCapability.h
 	${include_path}/ContextFormat.h
 	${include_path}/gloperate_api.h
-	${include_path}/input/KeyboardInputHandler.h
-	${include_path}/input/input.h
-	${include_path}/input/MouseInputHandler.h
-	${include_path}/Painter.h
-	${include_path}/Painter.hpp
-	${include_path}/pipelines/AbstractPipeline.h
-	${include_path}/pipelines/Data.hpp
-	${include_path}/pipelines/PipelinePainter.h
-	${include_path}/pipelines/AbstractData.h
-	${include_path}/pipelines/AbstractStage.h
-	${include_path}/pipelines/AbstractInputSlot.h
-	${include_path}/pipelines/AbstractPipeline.hpp
-	${include_path}/pipelines/Data.h
-	${include_path}/pipelines/InputSlot.h
-	${include_path}/pipelines/InputSlot.hpp
-	${include_path}/plugin/PainterPlugin.hpp
-	${include_path}/plugin/plugin_api.h
-	${include_path}/plugin/Plugin.h
-	${include_path}/plugin/PluginLibrary.h
+	${include_path}/input/AbstractEvent.h
+    ${include_path}/input/AbstractEventProvider.h
+    ${include_path}/input/KeyboardEvent.h
+    ${include_path}/input/MouseEvent.h
+    ${include_path}/input/KeyboardInputHandler.h
+    ${include_path}/input/input.h
+    ${include_path}/input/MouseInputHandler.h
+    ${include_path}/navigation/AbstractMapping.h
+    ${include_path}/navigation/AbstractInteraction.h
+	${include_path}/navigation/navigationmath.h
+    ${include_path}/navigation/WorldInHandNavigation.h
+    ${include_path}/Painter.h
+    ${include_path}/Painter.hpp
+    ${include_path}/pipelines/AbstractPipeline.h
+    ${include_path}/pipelines/Data.hpp
+    ${include_path}/pipelines/PipelinePainter.h
+    ${include_path}/pipelines/AbstractData.h
+    ${include_path}/pipelines/AbstractStage.h
+    ${include_path}/pipelines/AbstractInputSlot.h
+    ${include_path}/pipelines/AbstractPipeline.hpp
+    ${include_path}/pipelines/Data.h
+    ${include_path}/pipelines/InputSlot.h
+    ${include_path}/pipelines/InputSlot.hpp
+    ${include_path}/plugin/PainterPlugin.hpp
+    ${include_path}/plugin/plugin_api.h
+    ${include_path}/plugin/Plugin.h
+    ${include_path}/plugin/PluginLibrary.h
     ${include_path}/plugin/PainterPlugin.h
     ${include_path}/plugin/PluginManager.h
     ${include_path}/resources/AbstractLoader.h
@@ -149,25 +182,26 @@ set(headers
     ${include_path}/resources/Storer.h
     ${include_path}/resources/Storer.hpp
     ${include_path}/resources/GlrawTextureLoader.h
-	${include_path}/resources/RawFile.h
+    ${include_path}/resources/RawFile.h
     ${include_path}/resources/ResourceManager.h
     ${include_path}/resources/ResourceManager.hpp
     ${include_path}/signals/ScopedConnection.h
-	${include_path}/signals/Signal.h
-	${include_path}/signals/signalzeug_api.h
-	${include_path}/signals/ConnectionMap.hpp
-	${include_path}/signals/ScopedConnection.h
-	${include_path}/signals/ConnectionMap.h
-	${include_path}/signals/AbstractSignal.h
-	${include_path}/signals/Connection.h
-	${include_path}/signals/Signal.hpp
-	${include_path}/tools/ScreenshotTool.h
+    ${include_path}/signals/Signal.h
+    ${include_path}/signals/signalzeug_api.h
+    ${include_path}/signals/ConnectionMap.hpp
+    ${include_path}/signals/ScopedConnection.h
+    ${include_path}/signals/ConnectionMap.h
+    ${include_path}/signals/AbstractSignal.h
+    ${include_path}/signals/Connection.h
+    ${include_path}/signals/Signal.hpp
+	${include_path}/tools/CoordinateProvider.h
+    ${include_path}/tools/ScreenshotTool.h
     ${include_path}/util/collection.hpp
-	${include_path}/util/AdaptiveGrid.h
-	${include_path}/util/ScreenAlignedQuad.h
-	${include_path}/util/Icosahedron.h
-	${include_path}/util/collection.hpp
-	${include_path}/util/AxisAlignedBoundingBox.h
+    ${include_path}/util/AdaptiveGrid.h
+    ${include_path}/util/ScreenAlignedQuad.h
+    ${include_path}/util/Icosahedron.h
+    ${include_path}/util/collection.hpp
+    ${include_path}/util/AxisAlignedBoundingBox.h
     ${include_path}/util/UniformGroup.h
     ${include_path}/util/UniformGroup.hpp
     ${include_path}/util/directorytraversal.h
@@ -179,9 +213,9 @@ set(headers
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
-source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$"
     ${header_group} ${headers})
-source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
     ${source_group} ${sources})
 
 
