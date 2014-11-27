@@ -59,7 +59,7 @@ set(sources
     ${source_path}/plugin.cpp
 )
 
-set(headers
+set(api_includes
     ${include_path}/textured-quad/TexturedQuad.h
     ${include_path}/rotating-quad/RotatingQuad.h
     ${include_path}/cubescape/CubeScape.h
@@ -70,14 +70,14 @@ set(headers
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
 source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
-    ${header_group} ${headers})
+    ${header_group} ${api_includes})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
 
 # Build library
 
-add_library(${target} ${headers} ${sources})
+add_library(${target} ${api_includes} ${sources})
 
 target_link_libraries(${target} ${libs})
 
