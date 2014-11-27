@@ -82,6 +82,7 @@ set(sources
     ${source_path}/input/MouseEvent.cpp
     ${source_path}/input/MouseInputHandler.cpp
     ${source_path}/input/KeyboardInputHandler.cpp
+	${source_path}/input/WheelEvent.cpp
     ${source_path}/navigation/AbstractMapping.cpp
     ${source_path}/navigation/AbstractInteraction.cpp
 	${source_path}/navigation/navigationmath.cpp
@@ -153,6 +154,7 @@ set(headers
     ${include_path}/input/KeyboardInputHandler.h
     ${include_path}/input/input.h
     ${include_path}/input/MouseInputHandler.h
+	${include_path}/input/WheelEvent.h
     ${include_path}/navigation/AbstractMapping.h
     ${include_path}/navigation/AbstractInteraction.h
 	${include_path}/navigation/navigationmath.h

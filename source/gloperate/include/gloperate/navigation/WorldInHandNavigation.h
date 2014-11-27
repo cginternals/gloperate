@@ -49,9 +49,21 @@ public:
     void pan(glm::vec3 t);
     void rotate(float hAngle, float vAngle);
 
-//	void scaleAtCenter(float scale);
-//	void scaleAtMouse(const glm::ivec2 & mouse,	float scale);
-//	void resetScaleAtMouse(const glm::ivec2 & mouse);
+	void scaleAtCenter(float scale);
+    /**
+    *  @brief
+    *    zoom the camera according to position and scale
+    *
+    *  @param[in] mouse
+    *    mouse position
+    *
+    *  @param[in] scale
+    *    requires a value between -1 and 1
+    *    scale < 0: zoom out
+    *    scale > 0: zoom in
+    */
+	void scaleAtMouse(const glm::ivec2 & mouse,	float scale);
+	void resetScaleAtMouse(const glm::ivec2 & mouse);
 
 //	void enforceWholeMapVisible(const float offset = 0.08);
 
@@ -93,7 +105,7 @@ protected:
     bool        m_refPositionValid; // stores if initial interaction pick yielded valid depth
     glm::vec3   m_eye;
     glm::vec3   m_center;
-    glm::vec2   m_m0;
+    glm::ivec2   m_m0;
 };
 
 } // namespace gloperate

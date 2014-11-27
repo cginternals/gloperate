@@ -11,6 +11,7 @@ enum class SourceType : char
     Keyboard
 ,   Mouse
 ,   Timer
+,   Wheel
 };
 
 class GLOPERATE_API AbstractEvent

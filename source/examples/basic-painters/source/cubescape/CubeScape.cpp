@@ -62,8 +62,8 @@ CubeScape::~CubeScape()
 
 void CubeScape::setupProjection()
 {
-    m_projectionCapability->setZNear(1.f);
-    m_projectionCapability->setZFar(4.f);
+    m_projectionCapability->setZNear(0.3f);
+    m_projectionCapability->setZFar(15.f);
     m_projectionCapability->setFovy(radians(50.f));
 }
 

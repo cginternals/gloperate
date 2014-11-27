@@ -17,6 +17,7 @@
 #include <gloperate-qt/QtTextureStorer.h>
 #include <gloperate-qt/QtKeyEventProvider.h>
 #include <gloperate-qt/QtMouseEventProvider.h>
+#include <gloperate-qt/QtWheelEventProvider.h>
 
 #include <QApplication>
 #include <QCoreApplication>
@@ -70,6 +71,7 @@ int main(int argc, char * argv[])
     // Create Keyboard Provider
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
+    QtWheelEventProvider * wheelProvider = new QtWheelEventProvider();
 
 
     // Create OpenGL window
@@ -82,6 +84,7 @@ int main(int argc, char * argv[])
 	window->setPainter(painter);
     window->installEventFilter(keyProvider);
     window->installEventFilter(mouseProvider);
+    window->installEventFilter(wheelProvider);
 
     // Create Mapping
     QtViewerMapping * mapping = new QtViewerMapping();
@@ -91,6 +94,7 @@ int main(int argc, char * argv[])
     mapping->setDoneCurrent([window](){window->context()->doneCurrent(); });
     mapping->addProvider(keyProvider);
     mapping->addProvider(mouseProvider);
+    mapping->addProvider(wheelProvider);
     
 
 	QRect rect = QApplication::desktop()->screenGeometry(); // used to center the mainwindow on desktop
