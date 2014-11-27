@@ -75,12 +75,13 @@ public:
     */
     void updateGL();
 
+	/**
+	*  @brief
+	*    Initialize OpenGL rendering
+	*/
+	void initialize();
+
 protected:
-    /**
-    *  @brief
-    *    Initialize OpenGL rendering
-    */
-    void initialize();
 
     /**
     *  @brief
