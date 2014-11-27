@@ -196,7 +196,7 @@ void WorldInHandNavigation::rotateEnd()
 
 void WorldInHandNavigation::rotateProcess(const glm::ivec2 & mouse)
 {
-    if (RotateInteraction != m_mode)
+    if (RotateInteraction != m_mode || !m_refPositionValid)
         return;
 
     const glm::vec2 delta(m_m0 - glm::vec2(mouse));

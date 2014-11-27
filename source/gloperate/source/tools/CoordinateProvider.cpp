@@ -40,10 +40,12 @@ float CoordinateProvider::depthAt(const glm::ivec2 & windowCoordinates) const
 
     if (x >= w || y >= h)
         return 1.f;
-    
+
     gl::glBindFramebuffer(gl::GLenum::GL_READ_FRAMEBUFFER, m_depthBuffer.framebuffer().get()->id());
-    gl::glReadBuffer(m_depthBuffer.attachment());
-   
+
+    if (m_depthBuffer.attachment() != gl::GLenum::GL_DEPTH_ATTACHMENT)
+        gl::glReadBuffer(m_depthBuffer.attachment()); // glReadBuffer does not accept GL_DEPTH_ATTACHMENT and causes an error
+
     gl::GLfloat z;
     gl::GLenum format = m_depthBuffer.format();
     gl::glReadPixels(x, h - y - 1, 1, 1, format, gl::GLenum::GL_FLOAT, reinterpret_cast<void*>(&z));
