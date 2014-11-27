@@ -10,9 +10,9 @@
 
 using namespace gl;
 using namespace gloperate;
+
 namespace gloperate_osg
 {
-
 
 /**
 *  @brief
@@ -125,6 +125,5 @@ void OsgRenderStage::handleViewportChanged()
 void OsgRenderStage::postOsgRendering()
 {
 }
-
 
 } // namespace gloperate_osg

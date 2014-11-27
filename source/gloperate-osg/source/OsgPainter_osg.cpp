@@ -1,14 +1,12 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #include <gloperate-osg/OsgPainter.h>
+
 #include <osg/Node>
 #include <osgViewer/Viewer>
-#include <gloperate/capabilities/ViewportCapability.h>
-#include <gloperate/capabilities/InputCapability.h>
+
+#include <gloperate/painter/ViewportCapability.h>
+#include <gloperate/painter/InputCapability.h>
+
 #include <gloperate-osg/OsgMouseHandler.h>
 #include <gloperate-osg/OsgKeyboardHandler.h>
 
@@ -16,7 +14,6 @@
 using namespace gloperate;
 namespace gloperate_osg
 {
-
 
 void OsgPainter::osg_setScene(osg::Node * scene)
 {
@@ -103,6 +100,5 @@ void OsgPainter::osg_cleanup()
         m_viewer->unref();
     }
 }
-
 
 } // namespace gloperate_osg

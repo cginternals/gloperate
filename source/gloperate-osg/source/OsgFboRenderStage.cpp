@@ -8,7 +8,6 @@
 namespace gloperate_osg
 {
 
-
 /**
 *  @brief
 *    Constructor
@@ -60,6 +59,5 @@ void OsgFboRenderStage::updateFbo()
         m_depthTexture.invalidate();
     }
 }
-
 
 } // namespace gloperate_osg

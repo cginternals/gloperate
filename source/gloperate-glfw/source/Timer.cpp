@@ -4,7 +4,6 @@
 namespace gloperate_glfw
 {
 
-
 Timer::Timer(bool _start, bool autoUpdate)
 :   m_paused(true)
 ,   m_auto(autoUpdate)
@@ -89,6 +88,5 @@ bool Timer::autoUpdating() const
 {
     return m_auto;
 }
-
 
 } // namespace gloperate_glfw

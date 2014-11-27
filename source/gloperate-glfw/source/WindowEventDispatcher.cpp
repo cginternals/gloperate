@@ -1,15 +1,18 @@
 #include <gloperate-glfw/WindowEventDispatcher.h>
+
 #include <cassert>
 #include <cmath>
+
 #include <glbinding/gl/enum.h>
+
 #include <GLFW/glfw3.h>
+
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
 
 
 namespace gloperate_glfw
 {
-
 
 WindowEventDispatcher::Timer::Timer()
 : interval(0)

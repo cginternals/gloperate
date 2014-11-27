@@ -15,7 +15,7 @@
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
 
-#include "util/DirectoryIterator.h"
+#include "base/DirectoryIterator.h"
 
 
 namespace
@@ -263,7 +263,7 @@ void PluginManager::printPlugins() const
         globjects::info() << " PLUGIN name: " << plugin->name() << " (" << plugin->type() << ")";
         globjects::info() << " description: " << plugin->description();
         globjects::info() << "     version: " << plugin->version();
-        globjects::info() << "      vendor: "  << plugin->vendor();
+        globjects::info() << "      vendor: " << plugin->vendor();
         globjects::info();
     }
 }

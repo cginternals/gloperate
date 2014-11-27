@@ -1,16 +1,10 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-qt/TimePropagator.h>
+
 #include <chrono>
 
 
 namespace gloperate_qt
 {
-
 
 /**
 *  @brief
@@ -50,6 +44,5 @@ void TimePropagator::update()
         m_window->updateGL();
     }
 }
-
 
 } // namespace gloperate_qt
