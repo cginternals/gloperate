@@ -48,20 +48,14 @@ set(libs
 
 # Compiler definitions
 
-if (OPTION_BUILD_STATIC)
-    add_definitions("-DOSG_PAINTERS_STATIC")
-else()
-    add_definitions("-DOSG_PAINTERS_EXPORTS")
-endif()
-
 # for compatibility between glm 0.9.4 and 0.9.5
 add_definitions("-DGLM_FORCE_RADIANS")
 
 
 # Sources
 
-set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
-set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/")
+set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/")
 
 set(sources
     ${source_path}/osg-scene/OsgScene.cpp
@@ -70,7 +64,6 @@ set(sources
 
 set(headers
     ${include_path}/osg-scene/OsgScene.h
-    ${include_path}/osg_painters_api.h
 )
 
 # Group source files
@@ -84,7 +77,7 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 
 # Build library
 
-add_library(${target} ${headers} ${sources})
+add_library(${target} SHARED ${api_includes} ${sources})
 
 target_link_libraries(${target} ${libs})
 

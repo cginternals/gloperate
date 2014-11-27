@@ -6,8 +6,6 @@
 #include <gloperate/painter/Painter.h>
 #include <gloperate/primitives/ScreenAlignedQuad.h>
 
-#include <globjects-painters/globjects_painters_api.h>
-
 
 namespace gloperate
 {
@@ -16,7 +14,7 @@ class AbstractViewportCapability;
 
 } // namespace gloperate
 
-class GLOBJECTS_PAINTERS_API TexturedQuad : public gloperate::Painter
+class TexturedQuad : public gloperate::Painter
 {
 
 

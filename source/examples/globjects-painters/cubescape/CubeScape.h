@@ -10,8 +10,6 @@
 
 #include <gloperate/painter/Painter.h>
 
-#include <globjects-painters/globjects_painters_api.h>
-
 
 namespace gloperate 
 {
@@ -22,7 +20,7 @@ namespace gloperate
 }
 
 
-class GLOBJECTS_PAINTERS_API CubeScape : public gloperate::Painter
+class CubeScape : public gloperate::Painter
 {
 public:
     CubeScape(gloperate::ResourceManager & resourceManager);

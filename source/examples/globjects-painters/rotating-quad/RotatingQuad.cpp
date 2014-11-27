@@ -1,4 +1,4 @@
-#include <globjects-painters/rotating-quad/RotatingQuad.h>
+#include "RotatingQuad.h"
 
 #include <random>
 

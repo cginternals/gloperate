@@ -1,4 +1,4 @@
-#include <globjects-painters/cubescape/CubeScape.h>
+#include "CubeScape.h"
 
 #include <array>
 

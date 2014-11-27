@@ -1,4 +1,4 @@
-#include <globjects-painters/textured-quad/TexturedQuad.h>
+#include "TexturedQuad.h"
 
 #include <random>
 

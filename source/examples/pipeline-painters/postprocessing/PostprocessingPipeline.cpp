@@ -1,5 +1,5 @@
 
-#include <pipeline-painters/postprocessing/PostprocessingPipeline.h>
+#include "PostprocessingPipeline.h"
 
 #include <glm/gtc/constants.hpp>
 

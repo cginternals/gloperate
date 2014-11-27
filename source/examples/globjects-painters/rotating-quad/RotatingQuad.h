@@ -11,8 +11,6 @@
 #include <gloperate/painter/Painter.h>
 #include <gloperate/painter/Camera.h>
 
-#include <globjects-painters/globjects_painters_api.h>
-
 
 namespace gloperate 
 {
@@ -22,7 +20,7 @@ namespace gloperate
 }
 
 
-class GLOBJECTS_PAINTERS_API RotatingQuad : public gloperate::Painter
+class RotatingQuad : public gloperate::Painter
 {
 public:
     RotatingQuad(gloperate::ResourceManager & resourceManager);

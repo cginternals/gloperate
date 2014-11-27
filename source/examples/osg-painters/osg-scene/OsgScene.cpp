@@ -1,5 +1,5 @@
 
-#include <osg-painters/osg-scene/OsgScene.h>
+#include "OsgScene.h"
 
 #include <osgDB/ReadFile>
 #include <osgViewer/ViewerEventHandlers>

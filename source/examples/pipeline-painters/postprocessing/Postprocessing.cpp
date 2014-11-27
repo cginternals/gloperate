@@ -1,5 +1,5 @@
 
-#include <pipeline-painters/postprocessing/Postprocessing.h>
+#include "Postprocessing.h"
 
 #include <gloperate/painter/AbstractTargetFramebufferCapability.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
