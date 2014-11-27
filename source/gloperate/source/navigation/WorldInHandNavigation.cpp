@@ -6,8 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 //#include <gloperate/Camera.h>
-#include <gloperate/capabilities/AbstractCameraCapability.h>
-#include <gloperate/capabilities/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractCameraCapability.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/tools/CoordinateProvider.h>
 
 //#include "MathMacros.h"

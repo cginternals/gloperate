@@ -1,21 +1,13 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
 #include <gloperate/resources/ResourceManager.h>
-
 #include <gloperate/resources/Loader.h>
 #include <gloperate/resources/Storer.h>
 
 
 namespace gloperate
 {
-
 
 /**
 *  @brief
@@ -70,6 +62,5 @@ bool ResourceManager::store(const std::string & filename, T * resource) const
     // No suitable loader found
     return false;
 }
-
 
 } // namespace gloperate

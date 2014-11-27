@@ -9,17 +9,20 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate/pipelines/AbstractStage.h>
-#include <gloperate/pipelines/InputSlot.h>
-#include <gloperate/pipelines/Data.h>
+#include <gloperate/pipeline/AbstractStage.h>
+#include <gloperate/pipeline/InputSlot.h>
+#include <gloperate/pipeline/Data.h>
+
 #include <gloperate-osg/gloperate-osg_api.h>
 
 
-namespace osgViewer {
+namespace osgViewer 
+{
     class Viewer;
     class GraphicsWindowEmbedded;
 }
-namespace osg {
+namespace osg 
+{
     class Node;
     class Matrixd;
 }
@@ -27,7 +30,6 @@ namespace osg {
 
 namespace gloperate_osg
 {
-
 
 class OsgKeyboardHandler;
 class OsgMouseHandler;
@@ -39,8 +41,6 @@ class OsgMouseHandler;
 */
 class GLOPERATE_OSG_API OsgRenderStage : public gloperate::AbstractStage
 {
-
-
 public:
     /**
     *  @brief
@@ -110,7 +110,6 @@ public:
     */
     OsgMouseHandler * createMouseHandler();
 
-
 protected:
     // Virtual AbstractRenderStage functions
     virtual void initialize() override;
@@ -128,7 +127,6 @@ protected:
     */
     virtual void postOsgRendering();
 
-
 protected:
     // The following functions are actually using OSG code, so they are not compatible with
     // globjects/glbinding include. Therefore, they are separately implemented in OsgPainter_osg.cpp
@@ -139,7 +137,6 @@ protected:
 
     glm::mat4 convertMatrix(const osg::Matrixd & mat) const;
 
-
 public:
     // Input data
     gloperate::InputSlot<glm::ivec4> m_viewport;
@@ -148,7 +145,6 @@ public:
     // Output data
     gloperate::Data<glm::mat4>       m_projectionMatrix;
     gloperate::Data<glm::mat4>       m_viewMatrix;
-
 
 protected:
     // OSG scene data
@@ -159,9 +155,6 @@ protected:
     int                                 m_viewportY;    /**< Current viewport y */
     int                                 m_viewportW;    /**< Current viewport width */
     int                                 m_viewportH;    /**< Current viewport height */
-
-
 };
-
 
 } // namespace gloperate_osg

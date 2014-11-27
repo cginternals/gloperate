@@ -1,23 +1,20 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #include <glbinding/gl/gl.h>
 #include <globjects/logging.h>
+
 #include <gloperate-osg/OsgPainter.h>
-#include <gloperate/capabilities/ViewportCapability.h>
-#include <gloperate/capabilities/TargetFramebufferCapability.h>
-#include <gloperate/capabilities/InputCapability.h>
-#include <gloperate/capabilities/VirtualTimeCapability.h>
+
+#include <gloperate/painter/ViewportCapability.h>
+#include <gloperate/painter/TargetFramebufferCapability.h>
+#include <gloperate/painter/InputCapability.h>
+#include <gloperate/painter/VirtualTimeCapability.h>
 
 
 using namespace gl;
 using namespace gloperate;
+
 namespace gloperate_osg
 {
-
 
 /**
 *  @brief
@@ -99,6 +96,5 @@ void OsgPainter::onPaint()
     // Draw osg scene
     osg_onPaint();
 }
-
 
 } // namespace gloperate_osg

@@ -1,17 +1,11 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate/resources/RawFile.h>
+
 #include <fstream>
 #include <iostream>
 
 
 namespace gloperate
 {
-
 
 RawFile::RawFile(const std::string & filePath)
 : m_filePath(filePath)
@@ -71,6 +65,5 @@ void RawFile::readRawData(std::ifstream & ifs)
     ifs.seekg(0, std::ios::beg);
     ifs.read(m_data.data(), size);
 }
-
 
 } // namespace gloperate

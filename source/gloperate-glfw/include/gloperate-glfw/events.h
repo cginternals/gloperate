@@ -2,9 +2,9 @@
 
 #include <chrono>
 
-#include <gloperate-glfw/gloperate-glfw_api.h>
-
 #include <glm/glm.hpp>
+
+#include <gloperate-glfw/gloperate-glfw_api.h>
 
 
 namespace gloperate_glfw

@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -13,18 +7,22 @@
 // and separate all calls to osg in osg_ functions implemented inside OsgPainter_osg.cpp.
 
 
-#include <gloperate/Painter.h>
+#include <gloperate/painter/Painter.h>
+
 #include <gloperate-osg/gloperate-osg_api.h>
 
 
-namespace osgViewer {
+namespace osgViewer 
+{
     class Viewer;
     class GraphicsWindowEmbedded;
 }
-namespace osg {
+namespace osg 
+{
     class Node;
 }
-namespace gloperate {
+namespace gloperate 
+{
     class ViewportCapability;
     class TargetFramebufferCapability;
     class InputCapability;
@@ -35,15 +33,12 @@ namespace gloperate {
 namespace gloperate_osg
 {
 
-
 /**
 *  @brief
 *    Painter that renders an OSG scene
 */
 class GLOPERATE_OSG_API OsgPainter : public gloperate::Painter
 {
-
-
 public:
     /**
     *  @brief
@@ -87,11 +82,9 @@ public:
     */
     void setScene(osg::Node * scene);
 
-
 protected:
     virtual void onInitialize() override;
     virtual void onPaint() override;
-
 
 protected:
     // The following functions are actually using OSG code, so they are not compatible with
@@ -100,7 +93,6 @@ protected:
     void osg_onInitialize();
     void osg_onPaint();
     void osg_cleanup();
-
 
 protected:
     osgViewer::Viewer                 * m_viewer;          /**< OSG viewer */
@@ -116,9 +108,6 @@ protected:
     gloperate::TargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::InputCapability             * m_inputCapability;
     gloperate::VirtualTimeCapability       * m_virtualTimeCapability;
-
-
 };
-
 
 } // namespace gloperate_osg

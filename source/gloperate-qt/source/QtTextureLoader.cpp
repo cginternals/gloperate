@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate-qt/QtTextureLoader.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
@@ -21,7 +15,6 @@
 
 namespace gloperate_qt
 {
-
 
 /**
 *  @brief
@@ -106,6 +99,5 @@ globjects::Texture * QtTextureLoader::load(const std::string & filename) const
     // Could not load image
     return nullptr;
 }
-
 
 } // namespace gloperate_qt

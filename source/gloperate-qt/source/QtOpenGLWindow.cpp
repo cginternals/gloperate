@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include "gloperate-qt/QtOpenGLWindow.h"
 
 #include <gloperate-qt/qt-includes-begin.h>
@@ -14,12 +8,14 @@
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <globjects/globjects.h>
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractInputCapability.h>
+
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractInputCapability.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/tools/ScreenshotTool.h>
 
 #include <gloperate-qt/QtEventTransformer.h>
+
 
 using namespace gloperate;
 namespace gloperate_qt
@@ -213,6 +209,5 @@ void QtOpenGLWindow::wheelEvent(QWheelEvent * event)
         );
     }
 }
-
 
 } // namespace gloperate-qt

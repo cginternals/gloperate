@@ -10,9 +10,9 @@
 
 
 using namespace gloperate;
+
 namespace gloperate_osg
 {
-
 
 void OsgRenderStage::osg_setScene(osg::Node * scene)
 {
@@ -114,6 +114,5 @@ glm::mat4 OsgRenderStage::convertMatrix(const osg::Matrixd & mat) const
                       (float)data[ 8], (float)data[ 9], (float)data[10], (float)data[11],
                       (float)data[12], (float)data[13], (float)data[14], (float)data[15] );
 }
-
 
 } // namespace gloperate_osg

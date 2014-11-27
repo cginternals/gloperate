@@ -1,24 +1,18 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #include <gloperate/tools/ScreenshotTool.h>
 
 #include <cassert>
 
 #include <glbinding/gl/enum.h>
 
-#include <gloperate/Painter.h>
+#include <gloperate/painter/Painter.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractTargetFramebufferCapability.h>
+
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractTargetFramebufferCapability.h>
 
 
 namespace gloperate
 {
-
 
 ScreenshotTool::ScreenshotTool(Painter * painter, ResourceManager & resourceManager)
     : m_painter(painter)
@@ -62,6 +56,5 @@ void ScreenshotTool::save(const std::string & filename)
 
     m_framebufferCapability->setFramebuffer(oldFbo);
 }
-
 
 } // namespace gloperate

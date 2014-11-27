@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 
@@ -13,15 +7,16 @@
 #include <QScopedPointer>
 #include <QWidget>
 #include <gloperate-qt/qt-includes-end.h>
-#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
+
+#include <gloperate/painter/AbstractVirtualTimeCapability.h>
 #include <gloperate/base/ChronoTimer.h>
+
 #include <gloperate-qt/QtOpenGLWindowBase.h>
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
 namespace gloperate_qt
 {
-
 
 /**
 *  @brief
@@ -35,10 +30,7 @@ namespace gloperate_qt
 */
 class GLOPERATE_QT_API TimePropagator : public QObject
 {
-
-
     Q_OBJECT
-
 
 public:
     /**
@@ -52,7 +44,6 @@ public:
     */
     TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloperate::AbstractVirtualTimeCapability * capability);
 
-
 protected slots:
     /**
     *  @brief
@@ -60,15 +51,11 @@ protected slots:
     */
     void update();
 
-
 protected:
     gloperate_qt::QtOpenGLWindowBase 		 * m_window;		/**< Window that is updated when the timer has elapsed */
     gloperate::AbstractVirtualTimeCapability * m_capability;	/**< VirtualTimeCapability that is informed about the time change */
     QScopedPointer<QTimer> 			   		   m_timer;			/**< Qt timer for continues updates */
     gloperate::ChronoTimer 			   		   m_time;			/**< Time measurement */
-
-
 };
-
 
 } // namespace gloperate_qt

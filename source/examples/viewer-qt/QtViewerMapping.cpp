@@ -1,16 +1,16 @@
 #include "QtViewerMapping.h"
 
-#include <gloperate/Camera.h>
-#include <gloperate/capabilities/AbstractCameraCapability.h>
-#include <gloperate/capabilities/AbstractProjectionCapability.h>
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractTypedRenderTargetCapability.h>
+#include <gloperate/painter/Camera.h>
+#include <gloperate/painter/AbstractCameraCapability.h>
+#include <gloperate/painter/AbstractProjectionCapability.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractTypedRenderTargetCapability.h>
+#include <gloperate/painter/Painter.h>
 #include <gloperate/input/AbstractEvent.h>
 #include <gloperate/input/KeyboardEvent.h>
 #include <gloperate/input/MouseEvent.h>
 #include <gloperate/input/WheelEvent.h>
 #include <gloperate/navigation/WorldInHandNavigation.h>
-#include <gloperate/Painter.h>
 #include <gloperate/tools/CoordinateProvider.h>
 
 

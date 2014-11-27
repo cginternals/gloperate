@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include <gloperate/AbstractContext.h>
-
 #include <gloperate-glfw/gloperate-glfw_api.h>
+
+#include <gloperate/painter/AbstractContext.h>
 
 
 struct GLFWwindow;

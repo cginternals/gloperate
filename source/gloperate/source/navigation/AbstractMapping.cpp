@@ -1,6 +1,6 @@
 #include <gloperate/navigation/AbstractMapping.h>
 
-#include <gloperate/Painter.h>
+#include <gloperate/painter/Painter.h>
 #include <gloperate/input/AbstractEventProvider.h>
 
 namespace gloperate

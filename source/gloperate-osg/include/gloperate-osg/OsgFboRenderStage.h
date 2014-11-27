@@ -1,22 +1,22 @@
 #pragma once
 
 
-#include <gloperate/pipelines/Data.h>
-
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
+
+#include <gloperate/pipeline/Data.h>
 
 #include <gloperate-osg/OsgRenderStage.h>
 
 
-namespace osg {
+namespace osg 
+{
     class Texture;
 }
 
 
 namespace gloperate_osg
 {
-
 
 /**
 *  @brief
@@ -31,8 +31,6 @@ namespace gloperate_osg
 */
 class GLOPERATE_OSG_API OsgFboRenderStage : public OsgRenderStage
 {
-
-
 public:
     /**
     *  @brief
@@ -48,7 +46,6 @@ public:
     *    Destructor
     */
     virtual ~OsgFboRenderStage();
-
 
 protected:
     // Virtual OsgRenderStage functions
@@ -66,12 +63,10 @@ protected:
     */
     virtual void updateFbo();
 
-
 public:
     // Output data
     gloperate::Data<globjects::ref_ptr<globjects::Texture> > m_colorTexture;
     gloperate::Data<globjects::ref_ptr<globjects::Texture> > m_depthTexture;
-
 
 protected:
     /**
@@ -80,13 +75,11 @@ protected:
     */
     unsigned int getOsgTextureId(const osg::Texture * texture) const;
 
-
 protected:
     osg::Texture * m_colorTextureOsg;
     osg::Texture * m_depthTextureOsg;
 
 
 };
-
 
 } // namespace gloperate_osg

@@ -1,9 +1,3 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 #pragma once
 
 #include <string>
@@ -15,6 +9,7 @@
 
 #include <gloperate/gloperate_api.h>
 
+
 namespace gloperate
 {
 
@@ -22,6 +17,7 @@ class Painter;
 class ResourceManager;
 class AbstractViewportCapability;
 class AbstractTargetFramebufferCapability;
+
 
 class GLOPERATE_API ScreenshotTool
 {
@@ -33,6 +29,7 @@ public:
     void initialize();
 
     void save(const std::string & filename);
+
 protected:
     Painter * m_painter;
     ResourceManager & m_resourceManager;

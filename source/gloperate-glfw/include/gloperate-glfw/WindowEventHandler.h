@@ -2,6 +2,7 @@
 
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
+
 namespace gloperate_glfw
 {
 

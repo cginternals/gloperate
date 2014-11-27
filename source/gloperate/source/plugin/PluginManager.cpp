@@ -15,7 +15,7 @@
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
 
-#include "util/DirectoryIterator.h"
+#include "base/DirectoryIterator.h"
 
 
 namespace
@@ -26,7 +26,7 @@ namespace
     const std::string g_sep = "\\";
     const std::string g_pre = "";
     const std::string g_ext = "dll";
-#elif MAC_OS
+#elif __APPLE__
     const std::string g_sep = "/";
     const std::string g_pre = "";
     const std::string g_ext = "dylib";
@@ -263,7 +263,7 @@ void PluginManager::printPlugins() const
         globjects::info() << " PLUGIN name: " << plugin->name() << " (" << plugin->type() << ")";
         globjects::info() << " description: " << plugin->description();
         globjects::info() << "     version: " << plugin->version();
-        globjects::info() << "      vendor: "  << plugin->vendor();
+        globjects::info() << "      vendor: " << plugin->vendor();
         globjects::info();
     }
 }

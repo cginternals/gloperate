@@ -1,19 +1,19 @@
 #pragma once
 
-
 #include <set>
 #include <string>
 #include <queue>
+
 #include <glm/glm.hpp>
-#include <globjects/base/ref_ptr.h>
-#include <gloperate-glfw/WindowEventHandlerBase.h>
 
 #include <globjects/base/ref_ptr.h>
 
-#include <gloperate/Painter.h>
+#include <gloperate/painter/Painter.h>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
+
 #include <gloperate-glfw/Window.h>
+#include <gloperate-glfw/WindowEventHandlerBase.h>
 
 
 struct GLFWwindow;
@@ -30,6 +30,7 @@ namespace gloperate
 class ResourceManager;
 
 } // namespace gloperate
+
 
 namespace gloperate_glfw
 {
@@ -164,6 +165,5 @@ protected:
 private:
     static std::set<Window*> s_instances;
 };
-
 
 } // namespace gloperate_glfw

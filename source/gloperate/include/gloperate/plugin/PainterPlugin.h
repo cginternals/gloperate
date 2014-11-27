@@ -24,4 +24,5 @@ public:
 
 } // namespace gloperate
 
+
 #include <gloperate/plugin/PainterPlugin.hpp>
