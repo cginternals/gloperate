@@ -30,8 +30,6 @@ class TimerEvent;
 */
 class GLOPERATE_GLFW_API WindowEventHandlerBase : public globjects::Referenced
 {
-
-
 public:
     WindowEventHandlerBase();
     virtual ~WindowEventHandlerBase();
@@ -49,7 +47,6 @@ public:
     /** idle is called when no events were queued in the current iteration of the main loop.
     */
     virtual void idle(Window & window);
-
 
 protected:
     virtual void resizeEvent(ResizeEvent & event);

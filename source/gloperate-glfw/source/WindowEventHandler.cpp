@@ -8,9 +8,9 @@
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
 
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
-#include <gloperate/capabilities/AbstractInputCapability.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractVirtualTimeCapability.h>
+#include <gloperate/painter/AbstractInputCapability.h>
 
 #include <gloperate/tools/ScreenshotTool.h>
 

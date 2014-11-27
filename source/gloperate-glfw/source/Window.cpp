@@ -8,15 +8,14 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/ContextFormat.h>
+#include <gloperate/painter/ContextFormat.h>
+#include <gloperate/painter/AbstractVirtualTimeCapability.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 #include <gloperate-glfw/events.h>
 #include <gloperate-glfw/WindowEventDispatcher.h>
-
-#include <gloperate/capabilities/AbstractVirtualTimeCapability.h>
 
 
 using namespace gloperate;

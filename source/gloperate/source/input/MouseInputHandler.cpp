@@ -3,8 +3,7 @@
 
 namespace gloperate
 {
-
-
+   
 /**
 *  @brief
 *    Constructor
@@ -60,6 +59,5 @@ void MouseInputHandler::onMouseDoubleClick(int /*x*/, int /*y*/, gloperate::Mous
 void MouseInputHandler::onMouseWheel(int /*dx*/, int /*dy*/)
 {
 }
-
 
 } // gloperate

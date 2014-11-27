@@ -4,7 +4,7 @@
 
 #include <glm/gtx/norm.hpp>
 
-#include <gloperate/util/AxisAlignedBoundingBox.h>
+#include <gloperate/primitives/AxisAlignedBoundingBox.h>
 
 using namespace glm;
 

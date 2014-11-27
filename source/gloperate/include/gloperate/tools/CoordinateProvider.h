@@ -6,10 +6,10 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/capabilities/AbstractCameraCapability.h>
-#include <gloperate/capabilities/AbstractProjectionCapability.h>
-#include <gloperate/capabilities/AbstractViewportCapability.h>
-#include <gloperate/capabilities/AbstractTypedRenderTargetCapability.h>
+#include <gloperate/painter/AbstractCameraCapability.h>
+#include <gloperate/painter/AbstractProjectionCapability.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractTypedRenderTargetCapability.h>
 
 namespace gloperate
 {

@@ -5,7 +5,7 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate/Camera.h>
+#include <gloperate/painter/Camera.h>
 
 namespace gloperate
 {
