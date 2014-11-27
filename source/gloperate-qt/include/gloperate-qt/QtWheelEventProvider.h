@@ -10,9 +10,11 @@
 
 #include <gloperate/input/AbstractEventProvider.h>
 
+#include <glm/glm.hpp>
+
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QObject>
-#include <QMouseEvent>
+#include <QWheelEvent>
 #include <gloperate-qt/qt-includes-end.h>
 
 namespace gloperate_qt
@@ -23,7 +25,7 @@ namespace gloperate_qt
 *  @brief
 *    Class that transforms Qt events to gloperate events
 */
-class GLOPERATE_QT_API QtMouseEventProvider : public QObject, public gloperate::AbstractEventProvider
+class GLOPERATE_QT_API QtWheelEventProvider : public QObject, public gloperate::AbstractEventProvider
 {
     Q_OBJECT
 
@@ -32,16 +34,18 @@ public:
     *  @brief
     *    Constructor
     */
-    QtMouseEventProvider();
+    QtWheelEventProvider();
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~QtMouseEventProvider();
+    virtual ~QtWheelEventProvider();
 
     virtual bool eventFilter(QObject * obj, QEvent * event) override;
 
+protected:
+    static glm::vec2 toDegrees(const glm::ivec2 & eigthsOfADegree);
 };
 
 } // namespace gloperate_qt

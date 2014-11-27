@@ -9,6 +9,7 @@
 #include <gloperate/input/AbstractEvent.h>
 #include <gloperate/input/KeyboardEvent.h>
 #include <gloperate/input/MouseEvent.h>
+#include <gloperate/input/WheelEvent.h>
 #include <gloperate/navigation/WorldInHandNavigation.h>
 #include <gloperate/tools/CoordinateProvider.h>
 
@@ -113,7 +114,7 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
                 m_navigation->panProcess(mouseEvent->pos());
                 break;
             case WorldInHandNavigation::InteractionMode::RotateInteraction:
-                m_navigation->panProcess(mouseEvent->pos());
+                m_navigation->rotateProcess(mouseEvent->pos());
                 break;
             default:
                 break;
@@ -132,6 +133,17 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
             default:
                 break;
             }
+        }
+    } 
+    else if (event->sourceType() == gloperate::SourceType::Wheel)
+    {
+        WheelEvent * wheelEvent = dynamic_cast<WheelEvent*>(event);
+        if (wheelEvent)
+        {
+            auto scale = wheelEvent->angleDelta().y;
+            scale /= WheelEvent::defaultMouseAngleDelta();
+            scale *= 0.1f; // smoother (slower) scaling
+            m_navigation->scaleAtMouse(wheelEvent->pos(), scale);
         }
     }
 }

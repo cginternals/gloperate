@@ -71,7 +71,12 @@ set(sources
     ${source_path}/input/MouseInputHandler.cpp
     ${source_path}/input/KeyboardEvent.cpp
     ${source_path}/input/MouseEvent.cpp
+    ${source_path}/input/MouseInputHandler.cpp
     ${source_path}/input/KeyboardInputHandler.cpp
+	${source_path}/input/WheelEvent.cpp
+    ${source_path}/navigation/AbstractMapping.cpp
+    ${source_path}/navigation/AbstractInteraction.cpp
+	${source_path}/navigation/navigationmath.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
     ${source_path}/navigation/AbstractInteraction.cpp
     ${source_path}/navigation/navigationmath.cpp
@@ -118,6 +123,10 @@ set(sources
     ${source_path}/resources/RawFile.cpp
     ${source_path}/resources/GlrawTextureLoader.cpp
     ${source_path}/resources/AbstractStorer.cpp
+    ${source_path}/resources/GlrawTextureLoader.cpp
+    ${source_path}/resources/RawFile.cpp
+    ${source_path}/resources/ResourceManager.cpp
+	${source_path}/tools/CoordinateProvider.cpp
     ${source_path}/tools/ScreenshotTool.cpp
     ${source_path}/tools/CoordinateProvider.cpp
 )
@@ -136,13 +145,17 @@ set(api_includes
     ${include_path}/base/RenderTarget.h
     ${include_path}/base/Signal.hpp
     ${include_path}/gloperate_api.h
+	${include_path}/input/AbstractEvent.h
     ${include_path}/input/AbstractEventProvider.h
+    ${include_path}/input/KeyboardEvent.h
+    ${include_path}/input/MouseEvent.h
     ${include_path}/input/KeyboardInputHandler.h
     ${include_path}/input/input.h
     ${include_path}/input/MouseInputHandler.h
-    ${include_path}/input/MouseEvent.h
-    ${include_path}/input/AbstractEvent.h
-    ${include_path}/input/KeyboardEvent.h
+	${include_path}/input/WheelEvent.h
+    ${include_path}/navigation/AbstractMapping.h
+    ${include_path}/navigation/AbstractInteraction.h
+	${include_path}/navigation/navigationmath.h
     ${include_path}/navigation/WorldInHandNavigation.h
     ${include_path}/navigation/AbstractInteraction.h
     ${include_path}/navigation/navigationmath.h
@@ -168,7 +181,7 @@ set(api_includes
     ${include_path}/painter/AbstractViewportCapability.h
     ${include_path}/painter/AbstractCapability.h
     ${include_path}/painter/TargetFramebufferCapability.h
-    ${include_path}/painter/AbstractPerspectiveProjectionCapability.h.orig
+    ${include_path}/painter/AbstractPerspectiveProjectionCapability.h
     ${include_path}/pipeline/AbstractPipeline.h
     ${include_path}/pipeline/Data.hpp
     ${include_path}/pipeline/PipelinePainter.h
@@ -197,6 +210,8 @@ set(api_includes
     ${include_path}/resources/ResourceManager.h
     ${include_path}/resources/Storer.h
     ${include_path}/resources/AbstractStorer.h
+    ${include_path}/resources/Storer.h
+    ${include_path}/resources/Storer.hpp
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/RawFile.h
     ${include_path}/resources/Storer.hpp
