@@ -109,6 +109,7 @@ const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
         // use current center to construct reference plane
         return mouseRayPlaneIntersection(intersects, mouse, m_cameraCapability.center(), glm::vec3(0.f, 1.f, 0.f));
 
+    intersects = true;
     return m_coordProvider.unproject(mouse, depth);
 }
 
@@ -120,7 +121,7 @@ void WorldInHandNavigation::panBegin(const glm::ivec2 & mouse)
 
     m_mode = PanInteraction;
 
-    bool intersects;
+    bool intersects = false;
     m_referencePosition = mouseRayPlaneIntersection(intersects, mouse);
 
     m_refPositionValid = false;
@@ -154,7 +155,7 @@ void WorldInHandNavigation::panProcess(const glm::ivec2 & mouse)
         glm::clamp(mouse.x, 0, m_viewportCapability.width()),
         glm::clamp(mouse.y, 0, m_viewportCapability.height()));
 
-    bool intersects;
+    bool intersects = false;
     m_modifiedPosition = mouseRayPlaneIntersection(intersects, clamped, m_referencePosition, glm::vec3(0.f, 1.f, 0.f));
 
     if (intersects)
@@ -176,7 +177,7 @@ void WorldInHandNavigation::rotateBegin(const glm::ivec2 & mouse)
 
     m_mode = RotateInteraction;
 
-    bool intersects;
+    bool intersects = false;
     m_referencePosition = mouseRayPlaneIntersection(intersects, mouse);
 
     const float depth = m_coordProvider.depthAt(mouse);
@@ -254,7 +255,7 @@ void WorldInHandNavigation::scaleAtMouse(
     const glm::vec3 eye = m_cameraCapability.eye();
     const glm::vec3 center = m_cameraCapability.center();
 
-    bool intersects;
+    bool intersects = false;
 
     glm::vec3 intersectPoint = mouseRayPlaneIntersection(intersects, mouse);
 
@@ -289,7 +290,7 @@ void WorldInHandNavigation::resetScaleAtMouse(const glm::ivec2 & mouse)
 
     // set the distance between pointed position in the scene and camera to 
     // default distance
-    bool intersects;
+    bool intersects = false;
     glm::vec3 i = mouseRayPlaneIntersection(intersects, mouse);
     if (!intersects && !CoordinateProvider::validDepth(m_coordProvider.depthAt(mouse)))
         return;
@@ -307,7 +308,7 @@ void WorldInHandNavigation::scaleAtCenter(float scale)
     const glm::vec3 ln = m_cameraCapability.eye();
     const glm::vec3 lf = m_cameraCapability.center();
 
-    bool intersects;
+    bool intersects = true;
     glm::vec3 i = navigationmath::rayPlaneIntersection(intersects, ln, lf);
     if (!intersects)
         return;

@@ -50,7 +50,7 @@ bool QtWheelEventProvider::eventFilter(QObject * obj, QEvent * event)
     return QObject::eventFilter(obj, event);
 }
 
-const glm::vec2 & QtWheelEventProvider::toDegrees(const glm::ivec2 & eigthsOfADegree)
+glm::vec2 QtWheelEventProvider::toDegrees(const glm::ivec2 & eigthsOfADegree)
 {
     return glm::vec2(eigthsOfADegree) / 8.f;
 }

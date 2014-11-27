@@ -45,7 +45,7 @@ public:
     virtual bool eventFilter(QObject * obj, QEvent * event) override;
 
 protected:
-    static const glm::vec2 & toDegrees(const glm::ivec2 & eigthsOfADegree);
+    static glm::vec2 toDegrees(const glm::ivec2 & eigthsOfADegree);
 };
 
 } // namespace gloperate_qt

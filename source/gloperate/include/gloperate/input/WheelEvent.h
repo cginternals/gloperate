@@ -35,10 +35,10 @@ public:
     static float defaultMouseAngleDelta();
 
 protected:
-    MouseButton m_button;
+    glm::ivec2 m_pos;
     glm::vec2 m_angleDelta;
     glm::ivec2 m_pixelDelta;
-    glm::ivec2 m_pos;
+    MouseButton m_button;
 
 };
 
