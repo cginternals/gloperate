@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gloperate/navigation/AbstractMapping.h>
+#include <gloperate-qt/AbstractQtMapping.h>
 
 #include <memory>
 
@@ -10,11 +10,12 @@ namespace gloperate {
 }
 
 using namespace gloperate;
+using namespace gloperate_qt;
 
-class QtViewerMapping : public AbstractMapping
+class QtViewerMapping : public AbstractQtMapping
 {
 public:
-    QtViewerMapping();
+    QtViewerMapping(QtOpenGLWindow * window);
     virtual ~QtViewerMapping();
 
     virtual void initializeTools() override;
