@@ -9,21 +9,18 @@ namespace gloperate {
     class WorldInHandNavigation;
 }
 
-using namespace gloperate;
-using namespace gloperate_qt;
-
-class QtViewerMapping : public AbstractQtMapping
+class QtViewerMapping : public gloperate_qt::AbstractQtMapping
 {
 public:
-    QtViewerMapping(QtOpenGLWindow * window);
+    QtViewerMapping(gloperate_qt::QtOpenGLWindow * window);
     virtual ~QtViewerMapping();
 
     virtual void initializeTools() override;
 
 protected:
-    virtual void mapEvent(AbstractEvent * event) override;
+    virtual void mapEvent(gloperate::AbstractEvent * event) override;
 
 protected:
-    std::unique_ptr<WorldInHandNavigation> m_navigation;
-    std::unique_ptr<CoordinateProvider> m_coordProvider;
+    std::unique_ptr<gloperate::WorldInHandNavigation> m_navigation;
+    std::unique_ptr<gloperate::CoordinateProvider> m_coordProvider;
 };
