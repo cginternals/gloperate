@@ -8,19 +8,17 @@ namespace gloperate {
     class AbstractEvent;
 }
 
-using namespace gloperate;
-
 namespace gloperate_qt
 {
 class QtOpenGLWindow;
 
-class GLOPERATE_QT_API AbstractQtMapping : public AbstractMapping
+class GLOPERATE_QT_API AbstractQtMapping : public gloperate::AbstractMapping
 {
 public:
     AbstractQtMapping(QtOpenGLWindow * window);
     virtual ~AbstractQtMapping();
 
-    virtual void processEvent(AbstractEvent * event);
+    virtual void processEvent(gloperate::AbstractEvent * event);
 
 protected:
     QtOpenGLWindow * m_window;
