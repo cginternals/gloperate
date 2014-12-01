@@ -66,6 +66,7 @@ set(api_includes
 	${include_path}/base/AbstractSignal.h
 	${include_path}/base/Connection.h
 	${include_path}/base/Signal.hpp
+	${include_path}/base/directorytraversal.h
 
 	${include_path}/painter/AbstractContext.h
 	${include_path}/painter/Camera.h
@@ -138,7 +139,6 @@ set(sources
 	${source_path}/base/DirectoryIterator.h
 	${source_path}/base/DirectoryIterator.cpp
 	${source_path}/base/directorytraversal.cpp
-    ${source_path}/base/directorytraversal.h
 	${source_path}/base/dirent_msvc.h
 	${source_path}/base/ScopedConnection.cpp
 
