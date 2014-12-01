@@ -1,4 +1,4 @@
-#include "directorytraversal.h"
+#include <gloperate/base/directorytraversal.h>
 
 #include <globjects/base/File.h>
 

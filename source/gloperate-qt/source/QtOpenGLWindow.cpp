@@ -72,10 +72,22 @@ void QtOpenGLWindow::setPainter(Painter * painter)
     // Destroy old time propagator
     m_timePropagator.reset(nullptr);
 
+    if (!m_painter)
+    {
+        return;
+    }
+
     // Check for virtual time capability
-    if (painter->supports<gloperate::AbstractVirtualTimeCapability>()) {
+    if (m_painter->supports<gloperate::AbstractVirtualTimeCapability>()) {
         // Create a time propagator that updates the virtual time
-        m_timePropagator.reset(new TimePropagator(this, painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
+        m_timePropagator.reset(new TimePropagator(this, m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
+    }
+
+    AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
+    if (viewportCapability)
+    {
+        // Resize painter
+        viewportCapability->setViewport(0, 0, width(), height());
     }
 }
 
@@ -86,17 +98,20 @@ void QtOpenGLWindow::onInitialize()
     IF_DEBUG(globjects::DebugMessage::enable(true);)
 
     // Initialize painter
-    if (m_painter) {
+    if (m_painter)
+    {
         m_painter->initialize();
     }
 }
 
 void QtOpenGLWindow::onResize(QResizeEvent * event)
 {
-    if (m_painter) {
+    if (m_painter)
+    {
         // Check if the painter supports the viewport capability
         AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
-        if (viewportCapability) {
+        if (viewportCapability)
+        {
             // Resize painter
             viewportCapability->setViewport(0, 0, event->size().width(), event->size().height());
         }
@@ -128,7 +143,8 @@ void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
     doneCurrent();
 
     // Check for input capability
-    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>())
+    {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onKeyDown(
             QtEventTransformer::fromQtKeyCode(event->key(), event->modifiers())
@@ -139,7 +155,8 @@ void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
 void QtOpenGLWindow::keyReleaseEvent(QKeyEvent * event)
 {
     // Check for input capability
-    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>())
+    {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onKeyUp(
             QtEventTransformer::fromQtKeyCode(event->key(), event->modifiers())
@@ -150,7 +167,8 @@ void QtOpenGLWindow::keyReleaseEvent(QKeyEvent * event)
 void QtOpenGLWindow::mouseMoveEvent(QMouseEvent * event)
 {
     // Check for input capability
-    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>())
+    {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseMove(
             event->x(),
@@ -162,7 +180,8 @@ void QtOpenGLWindow::mouseMoveEvent(QMouseEvent * event)
 void QtOpenGLWindow::mousePressEvent(QMouseEvent * event)
 {
     // Check for input capability
-    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>())
+    {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMousePress(
             event->x(),
@@ -175,7 +194,8 @@ void QtOpenGLWindow::mousePressEvent(QMouseEvent * event)
 void QtOpenGLWindow::mouseReleaseEvent(QMouseEvent * event)
 {
     // Check for input capability
-    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>())
+    {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseRelease(
             event->x(),
@@ -188,7 +208,8 @@ void QtOpenGLWindow::mouseReleaseEvent(QMouseEvent * event)
 void QtOpenGLWindow::mouseDoubleClickEvent(QMouseEvent * event)
 {
     // Check for input capability
-    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>())
+    {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseDoubleClick(
             event->x(),
@@ -201,7 +222,8 @@ void QtOpenGLWindow::mouseDoubleClickEvent(QMouseEvent * event)
 void QtOpenGLWindow::wheelEvent(QWheelEvent * event)
 {
     // Check for input capability
-    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>()) {
+    if (m_painter && m_painter->supports<gloperate::AbstractInputCapability>())
+    {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseWheel(
             event->orientation() == Qt::Vertical ? 0 : event->delta(),
