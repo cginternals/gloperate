@@ -15,8 +15,10 @@
 
 
 using namespace gloperate;
+using namespace gloperate_qt;
 
-QtViewerMapping::QtViewerMapping()
+QtViewerMapping::QtViewerMapping(QtOpenGLWindow * window)
+    : AbstractQtMapping(window)
 {
 }
 

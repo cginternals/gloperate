@@ -50,37 +50,9 @@ void AbstractMapping::removeProvider(AbstractEventProvider * provider)
     m_providers.remove(provider);
 }
 
-void AbstractMapping::makeCurrent() const
-{
-    if (m_makeCurrent && m_doneCurrent)
-    {
-        m_makeCurrent();
-    }
-}
-
-void AbstractMapping::setMakeCurrent(std::function<void()> func)
-{
-    m_makeCurrent = func;
-}
-
-void AbstractMapping::doneCurrent() const
-{
-    if (m_doneCurrent)
-    {
-        m_doneCurrent();
-    }
-}
-
-void AbstractMapping::setDoneCurrent(std::function<void()> func)
-{
-    m_doneCurrent = func;
-}
-
 void AbstractMapping::processEvent(AbstractEvent * event)
 {
-    makeCurrent();
     mapEvent(event);
-    doneCurrent();
 }
 
 } // namespace gloperate
