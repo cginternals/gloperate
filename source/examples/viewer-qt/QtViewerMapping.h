@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gloperate/navigation/AbstractMapping.h>
+#include <gloperate-qt/AbstractQtMapping.h>
 
 #include <memory>
 
@@ -9,20 +9,18 @@ namespace gloperate {
     class WorldInHandNavigation;
 }
 
-using namespace gloperate;
-
-class QtViewerMapping : public AbstractMapping
+class QtViewerMapping : public gloperate_qt::AbstractQtMapping
 {
 public:
-    QtViewerMapping();
+    QtViewerMapping(gloperate_qt::QtOpenGLWindow * window);
     virtual ~QtViewerMapping();
 
     virtual void initializeTools() override;
 
 protected:
-    virtual void mapEvent(AbstractEvent * event) override;
+    virtual void mapEvent(gloperate::AbstractEvent * event) override;
 
 protected:
-    std::unique_ptr<WorldInHandNavigation> m_navigation;
-    std::unique_ptr<CoordinateProvider> m_coordProvider;
+    std::unique_ptr<gloperate::WorldInHandNavigation> m_navigation;
+    std::unique_ptr<gloperate::CoordinateProvider> m_coordProvider;
 };

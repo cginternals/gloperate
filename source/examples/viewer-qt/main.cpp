@@ -83,13 +83,10 @@ int main(int argc, char * argv[])
     window->installEventFilter(keyProvider);
     window->installEventFilter(mouseProvider);
     window->installEventFilter(wheelProvider);
-
+    
     // Create Mapping
-    QtViewerMapping * mapping = new QtViewerMapping();
+    QtViewerMapping * mapping = new QtViewerMapping(window);
     mapping->setPainter(painter);
-    //mapping->setContext(window->context()); will never work, we can not create a specific Qt-Context because of incompability between glbinding and QOpenGLContext which uses gl.h
-    mapping->setMakeCurrent([window](){window->context()->makeCurrent(window); });
-    mapping->setDoneCurrent([window](){window->context()->doneCurrent(); });
     mapping->addProvider(keyProvider);
     mapping->addProvider(mouseProvider);
     mapping->addProvider(wheelProvider);
