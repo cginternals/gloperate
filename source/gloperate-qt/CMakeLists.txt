@@ -84,7 +84,7 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-	${source_path}/AbstractQtMapping.cpp
+    ${source_path}/AbstractQtMapping.cpp
     ${source_path}/QtEventTransformer.cpp
     ${source_path}/QtKeyEventProvider.cpp
     ${source_path}/QtMouseEventProvider.cpp
@@ -92,13 +92,13 @@ set(sources
     ${source_path}/QtOpenGLWindowBase.cpp
     ${source_path}/QtTextureLoader.cpp
     ${source_path}/QtTextureStorer.cpp
-	${source_path}/QtWheelEventProvider.cpp
+    ${source_path}/QtWheelEventProvider.cpp
     ${source_path}/Converter.cpp
     ${source_path}/TimePropagator.cpp
 )
 
 set(headers
-	${include_path}/AbstractQtMapping.h
+    ${include_path}/AbstractQtMapping.h
     ${include_path}/QtEventTransformer.h
     ${include_path}/QtKeyEventProvider.h
     ${include_path}/QtMouseEventProvider.h
@@ -106,7 +106,7 @@ set(headers
     ${include_path}/QtOpenGLWindowBase.h
     ${include_path}/QtTextureLoader.h
     ${include_path}/QtTextureStorer.h
-	${include_path}/QtWheelEventProvider.h
+    ${include_path}/QtWheelEventProvider.h
     ${include_path}/Converter.h
     ${include_path}/TimePropagator.h
     ${include_path}/gloperate-qt_api.h

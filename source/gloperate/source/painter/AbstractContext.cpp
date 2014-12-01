@@ -86,7 +86,7 @@ std::string AbstractContext::renderer()
 
 bool AbstractContext::isValid() const
 {
-	return 0 < handle();
+    return 0 < handle();
 }
 
 glbinding::ContextHandle AbstractContext::tryFetchHandle()

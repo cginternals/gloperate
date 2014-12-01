@@ -5,7 +5,7 @@ find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt
 
 if(NOT OPENSCENEGRAPH_FOUND)
     message("Example ${target} skipped: OSG not found")
-	return ()
+    return ()
 endif ()
 
 message(STATUS "Example ${target}")

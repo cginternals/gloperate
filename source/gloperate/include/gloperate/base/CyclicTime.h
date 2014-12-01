@@ -25,66 +25,66 @@ class ChronoTimer;
 */
 class GLOPERATE_API CyclicTime
 {
-	enum class Status
-	{
-		Cycling
+    enum class Status
+    {
+        Cycling
     ,   Pausing
-	};
+    };
 
 public:
-	static long systemUtcOffset();
+    static long systemUtcOffset();
 
-	CyclicTime(longf time = 0.0, longf secondsPerCycle = 0.0);
-	CyclicTime(
-		const time_t & time
+    CyclicTime(longf time = 0.0, longf secondsPerCycle = 0.0);
+    CyclicTime(
+        const time_t & time
     ,   const time_t & utcOffset ///< In seconds (UTC+01:00 is m_utcOffset = +3600).
     ,   longf secondsPerCycle = 0.0);
 
-	virtual ~CyclicTime();
+    virtual ~CyclicTime();
 
-	/** Increments time appropriate to secondsPerCycle.
+    /** Increments time appropriate to secondsPerCycle.
     */
-	void update();
+    void update();
 
-	// Cycling manipulation - does not tamper the time.
+    // Cycling manipulation - does not tamper the time.
 
-	void start(bool update = false);
-	void pause(bool update = false);
-	void reset(bool update = false); ///< resets the time to initial value (secondsPerCycle remain unchanged).
-	void stop (bool update = false); ///< stops and resets the time.
+    void start(bool update = false);
+    void pause(bool update = false);
+    void reset(bool update = false); ///< resets the time to initial value (secondsPerCycle remain unchanged).
+    void stop (bool update = false); ///< stops and resets the time.
 
     longf secondsPerCycle() const;
-	void setSecondsPerCycle(longf secondsPerCycle);
+    void setSecondsPerCycle(longf secondsPerCycle);
 
-	/** Float time in the intervall [0;1]
+    /** Float time in the intervall [0;1]
     */
     longf timef() const;
-	longf timef(bool updateFirst);
+    longf timef(bool updateFirst);
 
-	// Sets only time, date remains unchanged.
-	void setTimef(longf time, bool update = false);
+    // Sets only time, date remains unchanged.
+    void setTimef(longf time, bool update = false);
 
-	// Elapsed float time from initialized time.
-	longf nonModTimef(bool update = false);
+    // Elapsed float time from initialized time.
+    longf nonModTimef(bool update = false);
 
-	/** Time in seconds from initial time.
+    /** Time in seconds from initial time.
     */
     time_t time() const;
-	time_t time(bool update);
-	void setTime(const time_t & time, bool update = false);
+    time_t time(bool update);
+    void setTime(const time_t & time, bool update = false);
 
     time_t utcOffset() const;
-	void setUtcOffset(const time_t & utcOffset /* in seconds */);
+    void setUtcOffset(const time_t & utcOffset /* in seconds */);
 
     // 
 
-	bool isRunning() const;
+    bool isRunning() const;
 
 protected:
-	static longf secondsTof(const time_t & time);
-	static time_t fToSeconds(longf time);
+    static longf secondsTof(const time_t & time);
+    static time_t fToSeconds(longf time);
 
-	void initialize();
+    void initialize();
 
     longf elapsed() const;
 

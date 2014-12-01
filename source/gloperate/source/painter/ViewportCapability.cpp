@@ -30,7 +30,7 @@ ViewportCapability::~ViewportCapability()
 */
 int ViewportCapability::x() const
 {
-	return m_x;
+    return m_x;
 }
 
 /**
@@ -39,7 +39,7 @@ int ViewportCapability::x() const
 */
 int ViewportCapability::y() const
 {
-	return m_y;
+    return m_y;
 }
 
 /**
@@ -48,7 +48,7 @@ int ViewportCapability::y() const
 */
 int ViewportCapability::width() const
 {
-	return m_width;
+    return m_width;
 }
 
 /**
@@ -57,7 +57,7 @@ int ViewportCapability::width() const
 */
 int ViewportCapability::height() const
 {
-	return m_height;
+    return m_height;
 }
 
 /**
@@ -66,13 +66,13 @@ int ViewportCapability::height() const
 */
 void ViewportCapability::setViewport(int x, int y, int width, int height)
 {
-	// Save new viewport
-	m_x      = x;
-	m_y      = y;
-	m_width  = width;
-	m_height = height;
+    // Save new viewport
+    m_x      = x;
+    m_y      = y;
+    m_width  = width;
+    m_height = height;
 
-	// Mark viewport as changed
+    // Mark viewport as changed
     setChanged(true);
 }
 

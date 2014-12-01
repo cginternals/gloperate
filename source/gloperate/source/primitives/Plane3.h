@@ -21,10 +21,10 @@ const glm::mat4 transform(
 ,   const glm::vec3 & normal);
 
 const glm::vec3 intersection(
-	bool & intersects
+    bool & intersects
 ,   const glm::vec3 & location
 ,   const glm::vec3 & normal
-,	const glm::vec3 & rnear
-,	const glm::vec3 & rfar);
+,    const glm::vec3 & rnear
+,    const glm::vec3 & rfar);
 
 } // namespace gloperate

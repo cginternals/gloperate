@@ -12,7 +12,7 @@ class AbstractSignal;
 
 class GLOPERATE_API Connection
 {
-	friend class AbstractSignal;
+    friend class AbstractSignal;
 
 public:
     typedef unsigned int Id;
@@ -20,27 +20,27 @@ public:
 
 protected:
     struct State
-	{
-		const AbstractSignal * signal;
-		Id id;
-	};
+    {
+        const AbstractSignal * signal;
+        Id id;
+    };
 
 public:
-	Connection();
+    Connection();
 
-	void disconnect();
+    void disconnect();
 
-	Id id() const;
+    Id id() const;
 
 protected:
     Connection(
         const AbstractSignal * signal
     ,   Id id);
 
-	void detach();
+    void detach();
 
 protected:
-	std::shared_ptr<State> m_state;
+    std::shared_ptr<State> m_state;
 };
 
 } // namespace gloperate

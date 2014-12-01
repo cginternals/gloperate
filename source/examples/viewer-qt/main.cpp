@@ -51,20 +51,20 @@ int main(int argc, char * argv[])
     pluginManager.scan("painters");
 
     // Choose a painter
-	std::string name = (argc > 1) ? argv[1] : "CubeScape";
+    std::string name = (argc > 1) ? argv[1] : "CubeScape";
 
     gloperate::Painter * painter = nullptr;
     Plugin * plugin = pluginManager.plugin(name);
 
-	if (!plugin)
-	{
-		globjects::fatal() << "Plugin '" << name << "' not found. Listing plugins found:";
-		pluginManager.printPlugins();
+    if (!plugin)
+    {
+        globjects::fatal() << "Plugin '" << name << "' not found. Listing plugins found:";
+        pluginManager.printPlugins();
 
-		return 1;
-	}
+        return 1;
+    }
 
-	painter = plugin->createPainter(resourceManager);
+    painter = plugin->createPainter(resourceManager);
 
     // Create Keyboard Provider
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
@@ -79,7 +79,7 @@ int main(int argc, char * argv[])
     format.setDepthBufferSize(24);
 
     QtOpenGLWindow * window = new QtOpenGLWindow(resourceManager, format);
-	window->setPainter(painter);
+    window->setPainter(painter);
     window->installEventFilter(keyProvider);
     window->installEventFilter(mouseProvider);
     window->installEventFilter(wheelProvider);
@@ -92,11 +92,11 @@ int main(int argc, char * argv[])
     mapping->addProvider(wheelProvider);
     
 
-	QRect rect = QApplication::desktop()->screenGeometry(); // used to center the mainwindow on desktop
+    QRect rect = QApplication::desktop()->screenGeometry(); // used to center the mainwindow on desktop
 
     // Create main window
     QMainWindow mainWindow;
-	mainWindow.setGeometry((rect.width() - 1280) / 2, (rect.height() - 720) / 2, 1280, 720);
+    mainWindow.setGeometry((rect.width() - 1280) / 2, (rect.height() - 720) / 2, 1280, 720);
     mainWindow.setCentralWidget(QWidget::createWindowContainer(window));
     mainWindow.centralWidget()->setFocusPolicy(Qt::StrongFocus);
 

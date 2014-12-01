@@ -43,8 +43,8 @@ protected:
 
 protected:
     bool  m_enabled;    /**< Is virtual time enabled? */
-    float m_duration;	/**< Duration after which time is reset to 0 (in seconds) */ 
-    float m_time;	  	/**< Current time */
+    float m_duration;    /**< Duration after which time is reset to 0 (in seconds) */ 
+    float m_time;          /**< Current time */
 };
 
 } // namespace gloperate

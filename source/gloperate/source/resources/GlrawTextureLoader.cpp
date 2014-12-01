@@ -42,7 +42,7 @@ std::string GlrawTextureLoader::allLoadingTypes() const
 
 globjects::Texture * GlrawTextureLoader::load(const std::string & /*filename*/) const
 {
-	// [TODO] Implement!
+    // [TODO] Implement!
     return nullptr;
 }
 
