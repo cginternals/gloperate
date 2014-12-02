@@ -29,15 +29,9 @@ set(DEFAULT_COMPILE_DEFS_RELEASE
     NDEBUG	                  # Release build
 )
 
-if (OPTION_ERRORS_AS_EXCEPTION)
-	set(EXCEPTION_FLAG "-fexceptions")
-else()
-	set(EXCEPTION_FLAG "-fno-exceptions")
-endif()
-
 set(LINUX_COMPILE_FLAGS
       
-      ${EXCEPTION_FLAG}
+      -fno-exceptions
       -pthread      # -> use pthread library
       -pipe         # -> use pipes
       -fPIC         # -> use position independent code
@@ -55,7 +49,6 @@ set(LINUX_COMPILE_FLAGS
       -Wconversion 
 
       -Wno-error=float-equal 
-      -Wno-error=float-conversion 
       -Wno-error=conversion 
       -Wno-error=switch 
 
@@ -64,6 +57,14 @@ set(LINUX_COMPILE_FLAGS
 
       -fvisibility=hidden
 )
+
+if (CMAKE_COMPILER_IS_GNUCXX)
+    if (NOT (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "4.9"))
+        set(LINUX_COMPILE_FLAGS "${LINUX_COMPILE_FLAGS}
+            -Wno-error=float-conversion
+        ")
+    endif ()
+endif ()
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	# clang
