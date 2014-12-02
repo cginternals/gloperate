@@ -55,6 +55,7 @@ set(LINUX_COMPILE_FLAGS
       -Wconversion 
 
       -Wno-error=float-equal 
+      -Wno-error=float-conversion 
       -Wno-error=conversion 
       -Wno-error=switch 
 
