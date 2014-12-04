@@ -9,7 +9,6 @@
 
 #include <gloperate/gloperate_api.h>
 
-
 namespace gloperate
 {
 
