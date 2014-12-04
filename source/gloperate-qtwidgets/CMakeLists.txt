@@ -28,6 +28,10 @@ set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 # Includes
 
 include_directories(
+    ${GLBINDING_INCLUDE_DIR}
+    ${GLOBJECTS_INCLUDE_DIR}
+    ${GLM_INCLUDE_DIR}
+    ${GLOPERATE_QT_INCLUDE_DIR}
 )
 
 include_directories(
@@ -35,12 +39,18 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
 )
 
 
 # Libraries
 
 set(libs
+    ${GLBINDING_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
+    ${GLM_LIBRARIES}
+    gloperate
+    gloperate-qt
 )
 
 
@@ -59,11 +69,14 @@ set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
+    ${header_path}/gloperate-qtwidgets_api.h
+    ${header_path}/ScreenshotWidget.h
 
 )
 
 set(sources
-    # screenshot tool widgets
+    ${source_path}/ScreenshotWidget.cpp
+    ${source_path}/ScreenshotWidget.ui
 )
 
 # Group source files
