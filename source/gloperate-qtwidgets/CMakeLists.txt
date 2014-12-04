@@ -59,16 +59,11 @@ set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
-    ${header_path}/gloperate-qtwidgets_api.h   
-    # screenshot tool widgets
-    ${header_path}/Dummy.h
 
 )
 
 set(sources
     # screenshot tool widgets
-    ${source_path}/Dummy.cpp
-    ${source_path}/Dummy.ui
 )
 
 # Group source files
