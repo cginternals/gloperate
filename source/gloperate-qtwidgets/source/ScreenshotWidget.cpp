@@ -15,8 +15,8 @@ namespace gloperate_qtwidgets
 
 ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
 :	QWidget(parent)
-,	m_ui(new Ui_ScreenshotWidget)
 ,	m_context(context)
+,	m_ui(new Ui_ScreenshotWidget)
 {
 	m_ui->setupUi(this);
 
