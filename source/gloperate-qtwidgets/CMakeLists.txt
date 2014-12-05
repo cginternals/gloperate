@@ -16,6 +16,7 @@ endif()
 find_package(Qt5Core    5.1 REQUIRED)
 find_package(Qt5Gui     5.1 REQUIRED)
 find_package(Qt5Widgets 5.1 REQUIRED) # this is also important in order to get uic working
+find_package(Qt5OpenGL  5.1 REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
@@ -95,7 +96,7 @@ qt5_wrap_ui(uihs ${uis})
 
 add_library(${target} ${api_includes} ${sources})
 
-qt5_use_modules(${target} Core Gui Widgets)
+qt5_use_modules(${target} Core Gui Widgets OpenGL)
 target_link_libraries(${target} ${libs})
 
 # qt fix - 4244 -> 'argument' : conversion from 'type1' to 'type2', possible loss of data
