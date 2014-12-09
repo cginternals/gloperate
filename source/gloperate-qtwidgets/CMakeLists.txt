@@ -16,6 +16,7 @@ endif()
 find_package(Qt5Core    5.1 REQUIRED)
 find_package(Qt5Gui     5.1 REQUIRED)
 find_package(Qt5Widgets 5.1 REQUIRED) # this is also important in order to get uic working
+find_package(Qt5OpenGL  5.1 REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
@@ -28,6 +29,10 @@ set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 # Includes
 
 include_directories(
+    ${GLBINDING_INCLUDE_DIR}
+    ${GLOBJECTS_INCLUDE_DIR}
+    ${GLM_INCLUDE_DIR}
+    ${GLOPERATE_QT_INCLUDE_DIR}
 )
 
 include_directories(
@@ -35,12 +40,19 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
 )
 
 
 # Libraries
 
 set(libs
+    ${GLBINDING_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
+    ${GLM_LIBRARIES}
+    gloperate
+    gloperate-qt
 )
 
 
@@ -59,16 +71,14 @@ set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
-    ${header_path}/gloperate-qtwidgets_api.h   
-    # screenshot tool widgets
-    ${header_path}/Dummy.h
+    ${header_path}/gloperate-qtwidgets_api.h
+    ${header_path}/ScreenshotWidget.h
 
 )
 
 set(sources
-    # screenshot tool widgets
-    ${source_path}/Dummy.cpp
-    ${source_path}/Dummy.ui
+    ${source_path}/ScreenshotWidget.cpp
+    ${source_path}/ScreenshotWidget.ui
 )
 
 # Group source files
@@ -87,7 +97,7 @@ qt5_wrap_ui(uihs ${uis})
 
 add_library(${target} ${api_includes} ${sources})
 
-qt5_use_modules(${target} Core Gui Widgets)
+qt5_use_modules(${target} Core Gui Widgets OpenGL)
 target_link_libraries(${target} ${libs})
 
 # qt fix - 4244 -> 'argument' : conversion from 'type1' to 'type2', possible loss of data

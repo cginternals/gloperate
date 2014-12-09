@@ -1,6 +1,6 @@
 #include <gloperate/plugin/plugin_api.h>
 
-#include <osg-painters/osg-scene/OsgScene.h>
+#include "osg-scene/OsgScene.h"
 
 
 GLOPERATE_PLUGIN_LIBRARY
