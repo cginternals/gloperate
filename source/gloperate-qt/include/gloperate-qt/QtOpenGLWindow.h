@@ -13,11 +13,14 @@
 
 namespace gloperate
 {
-    class ResourceManager;
+
+class ResourceManager;
+
 }
 
 namespace gloperate_qt
 {
+
 
 /**
 *  @brief
@@ -25,6 +28,8 @@ namespace gloperate_qt
 */
 class GLOPERATE_QT_API QtOpenGLWindow : public QtOpenGLWindowBase
 {
+
+
 public:
     /**
     *  @brief
@@ -65,6 +70,7 @@ public:
     */
     void setPainter(gloperate::Painter * painter);
 
+
 protected:
     virtual void onInitialize() override;
     virtual void onResize(QResizeEvent * event) override;
@@ -77,10 +83,14 @@ protected:
     virtual void mouseDoubleClickEvent(QMouseEvent * event) override;
     virtual void wheelEvent(QWheelEvent * event) override;
 
+
 protected:
     gloperate::ResourceManager & m_resourceManager;
-    globjects::ref_ptr<gloperate::Painter> m_painter;	      /**< Currently used painter */
+    globjects::ref_ptr<gloperate::Painter> m_painter;          /**< Currently used painter */
     QScopedPointer<TimePropagator>         m_timePropagator;  /**< Time propagator for continous updates */
+
+
 };
+
 
 } // namespace gloperate-qt

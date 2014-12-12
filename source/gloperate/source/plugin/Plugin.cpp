@@ -44,7 +44,7 @@ const char * Plugin::vendor() const
 
 const char * Plugin::version() const
 {
-	return m_version.c_str();
+    return m_version.c_str();
 }
 
 } // namespace gloperate

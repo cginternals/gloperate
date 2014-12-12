@@ -17,24 +17,24 @@ Connection::Connection(const AbstractSignal * signal, Id id)
 
 Connection::Id Connection::id() const
 {
-	return m_state ? m_state->id : 0;
+    return m_state ? m_state->id : 0;
 }
 
 void Connection::disconnect()
 {
     if (m_state && m_state->signal)
-	{
-		m_state->signal->disconnect(*this);
-		detach();
-	}
+    {
+        m_state->signal->disconnect(*this);
+        detach();
+    }
 }
 
 void Connection::detach()
 {
-	if (m_state)
-	{
-		m_state->signal = nullptr;
-	}
+    if (m_state)
+    {
+        m_state->signal = nullptr;
+    }
 }
 
 } // namespace gloperate

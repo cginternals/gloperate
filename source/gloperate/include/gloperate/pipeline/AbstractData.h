@@ -19,7 +19,7 @@ class GLOPERATE_API AbstractData
 
 public:
     AbstractData(const std::string & name = "");
-	virtual ~AbstractData();
+    virtual ~AbstractData();
 
     const std::string & name() const;
     void setName(const std::string & name);
@@ -33,7 +33,7 @@ public:
 
     virtual std::string qualifiedName() const;
 
-	void invalidate();
+    void invalidate();
 
     bool matchesName(const std::string & name) const;
 

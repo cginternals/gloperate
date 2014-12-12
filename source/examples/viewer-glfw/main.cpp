@@ -57,8 +57,8 @@ int main(int argc, char * argv[])
     window.setPainter(painter);
     window.setEventHandler(new WindowEventHandler());
 
-	ContextFormat format;
-	format.setVersion(3, 2);
+    ContextFormat format;
+    format.setVersion(3, 2);
 
     if (!window.create(format, "gloperate viewer"))
         return 1;

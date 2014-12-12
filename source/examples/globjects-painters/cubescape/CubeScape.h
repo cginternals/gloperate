@@ -10,15 +10,16 @@
 
 #include <gloperate/painter/Painter.h>
 
-
 namespace gloperate 
 {
     class ResourceManager;
     class AbstractTargetFramebufferCapability;
     class AbstractViewportCapability;
+    class AbstractPerspectiveProjectionCapability;
+    class AbstractCameraCapability;
+    class TypedRenderTargetCapability;
     class AbstractVirtualTimeCapability;
 }
-
 
 class CubeScape : public gloperate::Painter
 {
@@ -27,6 +28,8 @@ public:
     virtual ~CubeScape();
 
     void update(float delta);
+
+    void setupProjection();
 
     int numberOfCubes() const;
     void setNumberOfCubes(const int & number);
@@ -37,6 +40,7 @@ public:
 protected:
     virtual void onInitialize();
     virtual void onPaint();
+    virtual void onTargetFramebufferChanged();
 
 protected:
     /* parameters */
@@ -45,9 +49,11 @@ protected:
     bool m_animation;
 
     /* capabilities */
-
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
+    gloperate::AbstractPerspectiveProjectionCapability * m_projectionCapability;
+    gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
+    gloperate::AbstractCameraCapability * m_cameraCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
     /* members */
@@ -64,7 +70,4 @@ protected:
     globjects::ref_ptr<globjects::Program> m_program;
 
     globjects::ref_ptr<globjects::Texture> m_textures[2];
-
-    glm::mat4 m_view;
-    glm::mat4 m_projection;
 };

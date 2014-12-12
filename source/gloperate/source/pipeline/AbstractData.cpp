@@ -76,7 +76,7 @@ std::string AbstractData::qualifiedName() const
 
 void AbstractData::invalidate()
 {
-	invalidated();
+    invalidated();
 }
 
 bool AbstractData::matchesName(const std::string & name) const

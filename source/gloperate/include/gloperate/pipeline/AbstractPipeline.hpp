@@ -13,8 +13,8 @@ namespace gloperate
 template<typename T, typename... Args>
 void AbstractPipeline::addStages(T stage, Args... pipeline)
 {
-	addStage(stage);
-	addStages(pipeline...);
+    addStage(stage);
+    addStages(pipeline...);
 }
 
 template <typename T>

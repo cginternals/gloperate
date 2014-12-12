@@ -49,7 +49,7 @@ public:
     virtual void setFramebuffer(globjects::Framebuffer * fbo) override;
 
 protected:
-    globjects::ref_ptr<globjects::Framebuffer> m_framebuffer;	/**< Framebuffer used for rendering */
+    globjects::ref_ptr<globjects::Framebuffer> m_framebuffer;    /**< Framebuffer used for rendering */
 };
 
 } // namespace gloperate
