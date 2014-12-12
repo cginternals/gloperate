@@ -1,5 +1,4 @@
 #include <gloperate-qtwidgets/ScreenshotWidget.h>
-#include "ui_ScreenshotWidget.h"
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/painter/Painter.h>
@@ -7,8 +6,11 @@
 
 #include <gloperate-qt/QtOpenGLWindow.h>
 
+#include <gloperate-qt/qt-includes-begin.h>
+#include "ui_ScreenshotWidget.h"
 #include <QAbstractButton>
 #include <QWindow>
+#include <gloperate-qt/qt-includes-end.h>
 
 namespace gloperate_qtwidgets
 {
