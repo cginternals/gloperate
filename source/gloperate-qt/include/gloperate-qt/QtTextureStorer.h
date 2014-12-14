@@ -37,7 +37,7 @@ public:
     virtual std::string allStoringTypes() const;
 
     // Virtual gloperate::Storer<globjects::Texture> functions
-    virtual bool store(const std::string & filename, const globjects::Texture * texture) const override;
+    virtual bool store(const std::string & filename, const globjects::Texture * texture, std::function<void(int, int)> progress) const override;
 
 protected:
     std::vector<std::string> m_extensions; /**< List of supported file extensions (e.g., ".bmp") */

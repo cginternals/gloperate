@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 #include <gloperate/gloperate_api.h>
 
@@ -78,29 +79,33 @@ public:
     *  @brief
     *    Load resource from file
     *
-    *  @param filename
+    *  @param[in] filename
     *    File name
+    *  @param[in] progress
+    *    Callback function that is invoked on progress (can be empty)
     *
     *  @return
     *    Loaded resource (can be null)
     */
     template <typename T>
-    T * load(const std::string & filename) const;
+    T * load(const std::string & filename, std::function<void(int, int)> progress = std::function<void(int, int)>() ) const;
 
     /**
     *  @brief
     *    Store resource to file
     *
-    *  @param filename
+    *  @param[in] filename
     *    File name
-    *  @param resource
+    *  @param[in] resource
     *    The resource object
+    *  @param[in] progress
+    *    Callback function that is invoked on progress (can be empty)
     *
     *  @return
     *    'true', if storage was successful, esle 'false'
     */
     template <typename T>
-    bool store(const std::string & filename, T * resource) const;
+    bool store(const std::string & filename, T * resource, std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
 
 protected:
     /**

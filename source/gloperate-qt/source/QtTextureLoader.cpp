@@ -73,7 +73,7 @@ std::string QtTextureLoader::allLoadingTypes() const
     return allTypes;
 }
 
-globjects::Texture * QtTextureLoader::load(const std::string & filename) const
+globjects::Texture * QtTextureLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
 {
     // Load image
     QImage image;
