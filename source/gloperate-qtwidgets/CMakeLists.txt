@@ -51,6 +51,10 @@ set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
     ${GLM_LIBRARIES}
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::OpenGL
     gloperate
     gloperate-qt
 )
@@ -97,13 +101,13 @@ qt5_wrap_ui(uihs ${uis})
 
 add_library(${target} ${api_includes} ${sources})
 
-qt5_use_modules(${target} Core Gui Widgets OpenGL)
 target_link_libraries(${target} ${libs})
 
-# qt fix - 4244 -> 'argument' : conversion from 'type1' to 'type2', possible loss of data
+
 if(MSVC)
-    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} 
-        /wd4244
+    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS}
+        /wd4244 # -> 'argument' : conversion from 'type1' to 'type2', possible loss of data (problem in qt)
+        /wd4458 # -> msvc14 : declaration hides class member (problem in qt)
     )
 endif()
 
