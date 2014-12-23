@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <iterator>
 
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractData.h>

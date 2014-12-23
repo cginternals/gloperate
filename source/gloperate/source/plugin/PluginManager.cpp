@@ -192,14 +192,14 @@ bool PluginManager::load(const std::string & name, const bool reload)
 
 bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
 {
-    auto i = m_librariesByFilePath.find(filePath);
+    auto it = m_librariesByFilePath.find(filePath);
 
-    if (i != m_librariesByFilePath.cend() && !reload)
+    if (it != m_librariesByFilePath.cend() && !reload)
         return true;
 
     PluginLibrary * previous(nullptr);
-    if (i != m_librariesByFilePath.cend())
-        previous = i->second; // remember this, in case reloading fails
+    if (it != m_librariesByFilePath.cend())
+        previous = it->second; // remember this, in case reloading fails
 
     PluginLibraryImpl * library = new PluginLibraryImpl(filePath);
     if (!library->isValid())

@@ -57,6 +57,10 @@ include_directories(
 
 set(libs
     ${GLOBJECTS_LIBRARIES}
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::OpenGL
     gloperate
     gloperate-qt
 )
@@ -79,7 +83,12 @@ set(sources
 add_executable(${target} ${headers} ${sources})
 
 target_link_libraries(${target} ${libs})
-qt5_use_modules(${target} Core Gui Widgets)
+
+
+if(MSVC)
+    # -> msvc14 : declaration hides class member (problem in qt)
+    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} /wd4458)
+endif()
 
 target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
 
