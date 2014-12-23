@@ -79,8 +79,6 @@ void DirectoryIterator::files(
                 closedir(subdir);
         }
 
-        assert(isDir || isFile);
-
         if (isDir && recursive)
             files(fpaths, p, true);
         else if (isFile)

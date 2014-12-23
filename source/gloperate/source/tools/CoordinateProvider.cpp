@@ -47,9 +47,10 @@ float CoordinateProvider::depthAt(const glm::ivec2 & windowCoordinates) const
         gl::glReadBuffer(m_depthBuffer.attachment()); // glReadBuffer does not accept GL_DEPTH_ATTACHMENT and causes an error
 
     gl::GLfloat z;
+
     gl::GLenum format = m_depthBuffer.format();
     gl::glReadPixels(x, h - y - 1, 1, 1, format, gl::GLenum::GL_FLOAT, reinterpret_cast<void*>(&z));
-    
+
     gl::glBindFramebuffer(gl::GLenum::GL_READ_FRAMEBUFFER, 0);
 
     return z;
