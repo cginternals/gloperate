@@ -14,8 +14,6 @@
 
 namespace gloperate {
 
-class AbstractViewportCapability;
-
 /**
 *  @brief
 *    Base class for painter camera capabilities
@@ -54,8 +52,6 @@ protected:
 
     virtual void onViewportChanged();
 
-protected:
-    AbstractViewportCapability * m_viewportCapability;
 };
 
 

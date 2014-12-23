@@ -79,8 +79,6 @@ void WorldInHandNavigation::reset()
 
     m_mode = NoInteraction;
 
-    std::cout << "Reset camera" << std::endl;
-
 //    enforceWholeMapVisible();
 }
 
@@ -217,14 +215,8 @@ void WorldInHandNavigation::pan(glm::vec3 t)
 {
     //enforceTranslationConstraints(t);
 
-    std::cout << "Old camera eye" << m_cameraCapability.eye().x << " " << m_cameraCapability.eye().y << " " << m_cameraCapability.eye().z << std::endl;
-    std::cout << "Old camera center" << m_cameraCapability.center().x << " " << m_cameraCapability.center().y << " " << m_cameraCapability.center().z << std::endl;
-    
     m_cameraCapability.setEye(t + m_cameraCapability.eye());
     m_cameraCapability.setCenter(t + m_cameraCapability.center());
-
-    std::cout << "New camera eye" << m_cameraCapability.eye().x << " " << m_cameraCapability.eye().y << " " << m_cameraCapability.eye().z << std::endl;
-    std::cout << "New camera center" << m_cameraCapability.center().x << " " << m_cameraCapability.center().y << " " << m_cameraCapability.center().z << std::endl;
 }
 
 void WorldInHandNavigation::rotate(
@@ -252,14 +244,8 @@ void WorldInHandNavigation::rotate(
     glm::vec4 newEye = transform * glm::vec4(m_eye, 0.0f);
     glm::vec4 newCenter = transform * glm::vec4(m_center, 0.0f);
 
-    std::cout << "Old camera eye" << m_cameraCapability.eye().x << " " << m_cameraCapability.eye().y << " " << m_cameraCapability.eye().z << std::endl;
-    std::cout << "Old camera center" << m_cameraCapability.center().x << " " << m_cameraCapability.center().y << " " << m_cameraCapability.center().z << std::endl;
-
     m_cameraCapability.setEye(glm::vec3(newEye));
     m_cameraCapability.setCenter(glm::vec3(newCenter));
-
-    std::cout << "New camera eye" << m_cameraCapability.eye().x << " " << m_cameraCapability.eye().y << " " << m_cameraCapability.eye().z << std::endl;
-    std::cout << "New camera center" << m_cameraCapability.center().x << " " << m_cameraCapability.center().y << " " << m_cameraCapability.center().z << std::endl;
 }
 
 

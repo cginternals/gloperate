@@ -53,8 +53,6 @@ public:
 
     void update() const;
 
-    void changed();
-
 protected:
     void dirty(bool update = true);
     void invalidateMatrices() const;
@@ -72,9 +70,6 @@ protected:
 
     globjects::CachedValue<glm::mat4> m_projection;
     globjects::CachedValue<glm::mat4> m_projectionInverted;
-
-public:
-    Signal<> invalidated;
 
 };
 
