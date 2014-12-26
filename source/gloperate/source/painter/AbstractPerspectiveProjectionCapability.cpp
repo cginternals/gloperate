@@ -17,9 +17,7 @@ namespace gloperate {
 */
 AbstractPerspectiveProjectionCapability::AbstractPerspectiveProjectionCapability(AbstractViewportCapability * viewportCapability)
 : AbstractProjectionCapability(viewportCapability)
-, m_viewportCapability(viewportCapability)
 {
-    viewportCapability->changed.connect([this](){this->onViewportChanged();});
 }
 
 /**

@@ -66,7 +66,7 @@ int main(int argc, char * argv[])
 
     painter = plugin->createPainter(resourceManager);
 
-    // Create Keyboard Provider
+    // Create Event Provider
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
     QtWheelEventProvider * wheelProvider = new QtWheelEventProvider();

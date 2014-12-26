@@ -51,6 +51,7 @@ void PerspectiveProjectionCapability::setZNear(const float zNear)
     assert(m_zNear > 0.0);
 
     dirty();
+    setChanged(true);
 }
 
 float PerspectiveProjectionCapability::zFar() const
@@ -67,6 +68,7 @@ void PerspectiveProjectionCapability::setZFar(const float zFar)
     assert(m_zFar > m_zNear);
 
     dirty();
+    setChanged(true);
 }
 
 float PerspectiveProjectionCapability::fovy() const
@@ -83,6 +85,7 @@ void PerspectiveProjectionCapability::setFovy(const float fovy)
     assert(m_fovy > 0.0);
 
     dirty();
+    setChanged(true);
 }
 
 float PerspectiveProjectionCapability::aspectRatio() const
@@ -97,6 +100,7 @@ void PerspectiveProjectionCapability::setAspectRatio(float ratio)
         m_aspect = ratio;
 
         dirty();
+        setChanged(true);
     }
 }
 
@@ -105,6 +109,7 @@ void PerspectiveProjectionCapability::setAspectRatio(const glm::ivec2 & viewport
     m_aspect = glm::max(static_cast<float>(viewport.x), 1.0f) / glm::max(static_cast<float>(viewport.y), 1.f);
 
     dirty();
+    setChanged(true);
 }
 
 void PerspectiveProjectionCapability::update() const
@@ -115,8 +120,6 @@ void PerspectiveProjectionCapability::update() const
     invalidateMatrices();
 
     m_dirty = false;
-
-    const_cast<PerspectiveProjectionCapability*>(this)->changed();
 }
 
 void PerspectiveProjectionCapability::invalidateMatrices() const
@@ -131,11 +134,6 @@ void PerspectiveProjectionCapability::dirty(bool update)
 
     if (update)
         this->update();
-}
-
-void PerspectiveProjectionCapability::changed()
-{
-    invalidated();
 }
 
 const glm::mat4 & PerspectiveProjectionCapability::projection() const

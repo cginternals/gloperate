@@ -214,7 +214,7 @@ void WorldInHandNavigation::rotateProcess(const glm::ivec2 & mouse)
 void WorldInHandNavigation::pan(glm::vec3 t)
 {
     //enforceTranslationConstraints(t);
-    
+
     m_cameraCapability.setEye(t + m_cameraCapability.eye());
     m_cameraCapability.setCenter(t + m_cameraCapability.center());
 }
@@ -243,6 +243,7 @@ void WorldInHandNavigation::rotate(
 
     glm::vec4 newEye = transform * glm::vec4(m_eye, 0.0f);
     glm::vec4 newCenter = transform * glm::vec4(m_center, 0.0f);
+
     m_cameraCapability.setEye(glm::vec3(newEye));
     m_cameraCapability.setCenter(glm::vec3(newCenter));
 }
