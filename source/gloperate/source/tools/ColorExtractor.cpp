@@ -51,13 +51,13 @@ glm::vec4 ColorExtractor::get(const glm::ivec2 & windowCoordinates) const
     if (colorTarget.attachment() != gl::GL_DEPTH_ATTACHMENT)
         gl::glReadBuffer(colorTarget.attachment()); // glReadBuffer does not accept GL_DEPTH_ATTACHMENT and causes an error
 
-    glm::vec4 color;
+    glm::vec4 value;
 
-    gl::glReadPixels(windowCoordinates.x, h - windowCoordinates.y, 1, 1, colorTarget.format(), gl::GL_FLOAT, reinterpret_cast<void*>(glm::value_ptr(color)));
+    gl::glReadPixels(windowCoordinates.x, h - windowCoordinates.y, 1, 1, colorTarget.format(), gl::GL_FLOAT, reinterpret_cast<void*>(glm::value_ptr(value)));
 
     gl::glBindFramebuffer(gl::GL_READ_FRAMEBUFFER, 0);
 
-    return color;
+    return value;
 }
 
 } // namespace gloperate

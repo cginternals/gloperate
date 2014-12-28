@@ -1,6 +1,7 @@
 #include <gloperate/tools/ObjectIdExtractor.h>
 
 #include <glm/common.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
@@ -51,13 +52,13 @@ int ObjectIdExtractor::get(const glm::ivec2 & windowCoordinates) const
     if (objectIdTarget.attachment() != gl::GL_DEPTH_ATTACHMENT)
         gl::glReadBuffer(objectIdTarget.attachment()); // glReadBuffer does not accept GL_DEPTH_ATTACHMENT and causes an error
 
-    gl::GLfloat id = -1.0;
+    glm::vec4 value;
 
-    gl::glReadPixels(windowCoordinates.x, h - windowCoordinates.y, 1, 1, objectIdTarget.format(), gl::GL_FLOAT, reinterpret_cast<void*>(&id));
+    gl::glReadPixels(windowCoordinates.x, h - windowCoordinates.y, 1, 1, objectIdTarget.format(), gl::GL_FLOAT, reinterpret_cast<void*>(glm::value_ptr(value)));
 
     gl::glBindFramebuffer(gl::GL_READ_FRAMEBUFFER, 0);
 
-    return static_cast<int>(glm::floor(id + 0.5));
+    return static_cast<int>(glm::floor(value.x + 0.5));
 }
 
 } // namespace gloperate

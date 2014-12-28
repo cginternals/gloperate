@@ -2,6 +2,8 @@
 
 #include <limits>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
@@ -51,13 +53,13 @@ float DepthExtractor::get(const glm::ivec2 & windowCoordinates) const
     if (depthTarget.attachment() != gl::GL_DEPTH_ATTACHMENT)
         gl::glReadBuffer(depthTarget.attachment()); // glReadBuffer does not accept GL_DEPTH_ATTACHMENT and causes an error
 
-    gl::GLfloat z;
+    glm::vec4 value;
 
-    gl::glReadPixels(windowCoordinates.x, h - windowCoordinates.y, 1, 1, depthTarget.format(), gl::GL_FLOAT, reinterpret_cast<void*>(&z));
+    gl::glReadPixels(windowCoordinates.x, h - windowCoordinates.y, 1, 1, depthTarget.format(), gl::GL_FLOAT, reinterpret_cast<void*>(glm::value_ptr(value)));
 
     gl::glBindFramebuffer(gl::GL_READ_FRAMEBUFFER, 0);
 
-    return z;
+    return value.x;
 }
 
 bool DepthExtractor::isValidDepth(const float depth)
