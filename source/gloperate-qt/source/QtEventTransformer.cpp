@@ -66,6 +66,10 @@ MouseEvent::Type QtEventTransformer::mouseTypeFromQtType(QEvent::Type type)
         return MouseEvent::Type::DoubleClick;
     case QEvent::MouseMove:
         return MouseEvent::Type::Move;
+    case QEvent::Enter:
+        return MouseEvent::Type::Enter;
+    case QEvent::Leave:
+        return MouseEvent::Type::Leave;
     default:
         return MouseEvent::Type::Press;
     }

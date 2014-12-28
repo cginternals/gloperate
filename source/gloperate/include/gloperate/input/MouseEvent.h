@@ -20,6 +20,8 @@ public:
         Press
     ,   Release
     ,   Move
+    ,   Enter
+    ,   Leave
     ,   DoubleClick
     };
 

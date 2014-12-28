@@ -53,6 +53,16 @@ bool QtMouseEventProvider::eventFilter(QObject * obj, QEvent * event)
             return true;
         }
     }
+
+    if (event->type() == QEvent::Enter ||
+         event->type() == QEvent::Leave)
+    {
+        auto eventType = QtEventTransformer::mouseTypeFromQtType(event->type());
+        MouseEvent * mouseEvent =
+                new MouseEvent(eventType, glm::ivec2(),NoMouseButton, static_cast<int>(Qt::NoModifier));
+        passEvent(mouseEvent);
+        return true;
+    }
     return QObject::eventFilter(obj, event);
 }
 
