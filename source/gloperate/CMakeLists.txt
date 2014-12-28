@@ -135,6 +135,7 @@ set(sources
     ${source_path}/tools/ObjectIdExtractor.cpp
     ${source_path}/tools/ColorExtractor.cpp
     ${source_path}/tools/NormalExtractor.cpp
+    ${source_path}/tools/GBufferExtractor.cpp
 )
 
 set(api_includes
@@ -237,6 +238,7 @@ set(api_includes
     ${include_path}/tools/ObjectIdExtractor.h
     ${include_path}/tools/ColorExtractor.h
     ${include_path}/tools/NormalExtractor.h
+    ${include_path}/tools/GBufferExtractor.h
 )
 
 # Group source files
