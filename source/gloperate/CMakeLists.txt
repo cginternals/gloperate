@@ -99,6 +99,8 @@ set(sources
     ${source_path}/painter/AbstractContext.cpp
     ${source_path}/painter/AbstractTargetFramebufferCapability.cpp
     ${source_path}/painter/AbstractViewportCapability.cpp
+    ${source_path}/painter/AbstractMetaInformationCapability.cpp
+    ${source_path}/painter/MetaInformationCapability.cpp
     
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/InputSlot.cpp
@@ -128,6 +130,11 @@ set(sources
     
     ${source_path}/tools/CoordinateProvider.cpp
     ${source_path}/tools/ScreenshotTool.cpp
+    ${source_path}/tools/DepthExtractor.cpp
+    ${source_path}/tools/WorldExtractor.cpp
+    ${source_path}/tools/ObjectIdExtractor.cpp
+    ${source_path}/tools/ColorExtractor.cpp
+    ${source_path}/tools/NormalExtractor.cpp
 )
 
 set(api_includes
@@ -182,6 +189,8 @@ set(api_includes
     ${include_path}/painter/AbstractCameraCapability.h
     ${include_path}/painter/AbstractVirtualTimeCapability.h
     ${include_path}/painter/AbstractTypedRenderTargetCapability.h
+    ${include_path}/painter/AbstractMetaInformationCapability.h
+    ${include_path}/painter/MetaInformationCapability.h
     
     ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/AbstractPipeline.hpp
@@ -223,6 +232,11 @@ set(api_includes
     
     ${include_path}/tools/CoordinateProvider.h
     ${include_path}/tools/ScreenshotTool.h
+    ${include_path}/tools/DepthExtractor.h
+    ${include_path}/tools/WorldExtractor.h
+    ${include_path}/tools/ObjectIdExtractor.h
+    ${include_path}/tools/ColorExtractor.h
+    ${include_path}/tools/NormalExtractor.h
 )
 
 # Group source files

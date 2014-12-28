@@ -9,6 +9,7 @@
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/tools/CoordinateProvider.h>
+#include <gloperate/tools/DepthExtractor.h>
 
 //#include "MathMacros.h"
 #include <gloperate/navigation/navigationmath.h>
@@ -128,7 +129,7 @@ void WorldInHandNavigation::panBegin(const glm::ivec2 & mouse)
     if (intersects)
     {
         const float depth = m_coordProvider.depthAt(mouse);
-        m_refPositionValid = CoordinateProvider::validDepth(depth);
+        m_refPositionValid = DepthExtractor::isValidDepth(depth);
     }
 
     m_eye = m_cameraCapability.eye();
@@ -181,7 +182,7 @@ void WorldInHandNavigation::rotateBegin(const glm::ivec2 & mouse)
     m_referencePosition = mouseRayPlaneIntersection(intersects, mouse);
 
     const float depth = m_coordProvider.depthAt(mouse);
-    m_refPositionValid = intersects && CoordinateProvider::validDepth(depth);
+    m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
 
     m_m0 = mouse;
 
@@ -260,7 +261,7 @@ void WorldInHandNavigation::scaleAtMouse(
 
     glm::vec3 intersectPoint = mouseRayPlaneIntersection(intersects, mouse);
 
-    if (!intersects && !CoordinateProvider::validDepth(m_coordProvider.depthAt(mouse)))
+    if (!intersects && !DepthExtractor::isValidDepth(m_coordProvider.depthAt(mouse)))
         return;
 
     // scale the distance between the pointed position in the scene and the 
@@ -293,7 +294,7 @@ void WorldInHandNavigation::resetScaleAtMouse(const glm::ivec2 & mouse)
     // default distance
     bool intersects = false;
     glm::vec3 i = mouseRayPlaneIntersection(intersects, mouse);
-    if (!intersects && !CoordinateProvider::validDepth(m_coordProvider.depthAt(mouse)))
+    if (!intersects && !DepthExtractor::isValidDepth(m_coordProvider.depthAt(mouse)))
         return;
 
     float scale = (DEFAULT_DISTANCE / static_cast<float>((ln - i).length()));
