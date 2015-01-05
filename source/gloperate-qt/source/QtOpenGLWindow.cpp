@@ -83,17 +83,7 @@ void QtOpenGLWindow::setPainter(Painter * painter)
         m_timePropagator.reset(new TimePropagator(this, m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
     }
 
-
-    if (m_initialized)
-    {
-        AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
-
-        if (viewportCapability)
-        {
-            // Resize painter
-            viewportCapability->setViewport(0, 0, width(), height());
-        }
-    }
+    m_initialized = false;
 }
 
 void QtOpenGLWindow::onInitialize()

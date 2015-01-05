@@ -4,8 +4,6 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <gloperate/painter/AbstractCapability.h>
 
 
@@ -31,7 +29,7 @@ class ResourceManager;
 *    use capabilities to describe what kind of functionality and interfaces
 *    it supports. See AbstractCapability for more information on capabilities.
 */
-class GLOPERATE_API Painter : public globjects::Referenced
+class GLOPERATE_API Painter
 {
 public:
     /**

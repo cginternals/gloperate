@@ -53,7 +53,7 @@ int main(int argc, char * argv[])
     // Choose a painter
     std::string name = (argc > 1) ? argv[1] : "CubeScape";
 
-    gloperate::Painter * painter = nullptr;
+    std::unique_ptr<gloperate::Painter> painter(nullptr);
     Plugin * plugin = pluginManager.plugin(name);
 
     if (!plugin)
@@ -64,7 +64,7 @@ int main(int argc, char * argv[])
         return 1;
     }
 
-    painter = plugin->createPainter(resourceManager);
+    painter.reset(plugin->createPainter(resourceManager));
 
     // Create Event Provider
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
@@ -79,14 +79,14 @@ int main(int argc, char * argv[])
     format.setDepthBufferSize(24);
 
     QtOpenGLWindow * window = new QtOpenGLWindow(resourceManager, format);
-    window->setPainter(painter);
+    window->setPainter(painter.get());
     window->installEventFilter(keyProvider);
     window->installEventFilter(mouseProvider);
     window->installEventFilter(wheelProvider);
     
     // Create Mapping
     QtViewerMapping * mapping = new QtViewerMapping(window);
-    mapping->setPainter(painter);
+    mapping->setPainter(painter.get());
     mapping->addProvider(keyProvider);
     mapping->addProvider(mouseProvider);
     mapping->addProvider(wheelProvider);
