@@ -28,6 +28,7 @@ namespace gloperate_qt
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 : QtOpenGLWindowBase()
 , m_resourceManager(resourceManager)
+, m_painter(nullptr)
 , m_timePropagator(nullptr)
 {
 }
@@ -39,6 +40,7 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
 : QtOpenGLWindowBase(format)
 , m_resourceManager(resourceManager)
+, m_painter(nullptr)
 , m_timePropagator(nullptr)
 {
 }

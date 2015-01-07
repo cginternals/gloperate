@@ -43,6 +43,7 @@ Window::Window(gloperate::ResourceManager & resourceManager)
 ,   m_window(nullptr)
 ,   m_quitOnDestroy(true)
 ,   m_mode(WindowMode)
+,   m_painter(nullptr)
 ,   m_resourceManager(resourceManager)
 {
     s_instances.insert(this);
