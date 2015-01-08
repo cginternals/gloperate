@@ -5,7 +5,12 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QWindow>
 #include <gloperate-qt/qt-includes-end.h>
+
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/bitfield.h>
 
 #include <globjects/globjects.h>
 
@@ -109,8 +114,9 @@ void QtOpenGLWindow::onInitialize()
 
         if (viewportCapability)
         {
+            qreal factor = QWindow::devicePixelRatio();
             // Resize painter
-            viewportCapability->setViewport(0, 0, width(), height());
+            viewportCapability->setViewport(0, 0, factor * width(), factor * height());
         }
 
         m_painter->initialize();
@@ -125,8 +131,9 @@ void QtOpenGLWindow::onResize(QResizeEvent * event)
         AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
         if (viewportCapability)
         {
+            qreal factor = QWindow::devicePixelRatio();
             // Resize painter
-            viewportCapability->setViewport(0, 0, event->size().width(), event->size().height());
+            viewportCapability->setViewport(0, 0, factor * event->size().width(), factor * event->size().height());
         }
     }
 }
@@ -136,6 +143,15 @@ void QtOpenGLWindow::onPaint()
     if (m_painter) {
         // Call painter
         m_painter->paint();
+    }
+    else
+    {
+        qreal factor = QWindow::devicePixelRatio();
+
+        gl::glClearColor(1.0, 1.0, 1.0, 1.0);
+        gl::glViewport(0, 0, factor * width(), factor * height());
+        gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
     }
 }
 
