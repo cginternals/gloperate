@@ -33,6 +33,7 @@ namespace gloperate_qt
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 : QtOpenGLWindowBase()
 , m_resourceManager(resourceManager)
+, m_painter(nullptr)
 , m_timePropagator(nullptr)
 {
 }
@@ -44,6 +45,7 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
 : QtOpenGLWindowBase(format)
 , m_resourceManager(resourceManager)
+, m_painter(nullptr)
 , m_timePropagator(nullptr)
 {
 }
@@ -88,17 +90,7 @@ void QtOpenGLWindow::setPainter(Painter * painter)
         m_timePropagator.reset(new TimePropagator(this, m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
     }
 
-
-    if (m_initialized)
-    {
-        AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
-
-        if (viewportCapability)
-        {
-            // Resize painter
-            viewportCapability->setViewport(0, 0, width(), height());
-        }
-    }
+    m_initialized = false;
 }
 
 void QtOpenGLWindow::onInitialize()

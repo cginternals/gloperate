@@ -86,7 +86,7 @@ protected:
 
 protected:
     gloperate::ResourceManager & m_resourceManager;
-    globjects::ref_ptr<gloperate::Painter> m_painter;          /**< Currently used painter */
+    gloperate::Painter * m_painter;          /**< Currently used painter */
     QScopedPointer<TimePropagator>         m_timePropagator;  /**< Time propagator for continous updates */
 
 
