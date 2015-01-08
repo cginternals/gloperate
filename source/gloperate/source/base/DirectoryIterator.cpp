@@ -66,7 +66,7 @@ void DirectoryIterator::files(
         const std::string p = path + g_sep + name;
 
         bool isDir  = entry->d_type == DT_DIR;
-        bool isFile = entry->d_type == DT_REG;
+        bool isFile = entry->d_type == DT_REG || entry->d_type == DT_LNK;
 
         if (entry->d_type == DT_UNKNOWN)
         {
