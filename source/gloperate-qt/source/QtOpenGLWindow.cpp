@@ -123,9 +123,8 @@ void QtOpenGLWindow::onResize(QResizeEvent * event)
         AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
         if (viewportCapability)
         {
-            qreal factor = QWindow::devicePixelRatio();
             // Resize painter
-            viewportCapability->setViewport(0, 0, factor * event->size().width(), factor * event->size().height());
+            viewportCapability->setViewport(0, 0, event->size().width(), event->size().height());
         }
     }
 }
