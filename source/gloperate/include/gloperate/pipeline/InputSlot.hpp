@@ -99,6 +99,7 @@ void InputSlot<T>::connect(const Data<U> & data)
     m_data = reinterpret_cast<const Data<T>*>(&data);
     m_connection = data.invalidated.connect([this]() { this->changed(); });
     connectionChanged();
+    changed();
 }
 
 template <typename T>
