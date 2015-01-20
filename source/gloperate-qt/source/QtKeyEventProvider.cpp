@@ -44,7 +44,7 @@ bool QtKeyEventProvider::eventFilter(QObject * obj, QEvent * event)
             KeyboardEvent * keyEvent = new KeyboardEvent(eventType
                 , key, qKeyEvent->nativeScanCode(), qKeyEvent->modifiers());
             passEvent(keyEvent);
-            return true;
+            return false;
         }
     }
     return QObject::eventFilter(obj, event);
