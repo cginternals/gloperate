@@ -66,6 +66,15 @@ osg::Node * OsgRenderStage::scene() const
 
 /**
 *  @brief
+*    Load OSG scene
+*/
+void OsgRenderStage::loadScene(const std::string & filename)
+{
+    osg_loadScene(filename);
+}
+
+/**
+*  @brief
 *    Set OSG scene
 */
 void OsgRenderStage::setScene(osg::Node * scene)
