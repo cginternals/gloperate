@@ -27,6 +27,7 @@ public:
 
     operator const T &() const;
 
+    Data<T> & operator=(const Data<T> & data);
     const T & operator=(const T & value);
 
     void setData(const T & value);

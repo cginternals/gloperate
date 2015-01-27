@@ -61,6 +61,14 @@ Data<T>::operator const T &() const
 }
 
 template <typename T>
+Data<T> & Data<T>::operator=(const Data<T> & data)
+{
+    *this = data.data();
+
+    return *this;
+}
+
+template <typename T>
 const T & Data<T>::operator=(const T & value)
 {
     m_data = value;
