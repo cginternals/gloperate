@@ -142,9 +142,14 @@ const glm::mat4 & PerspectiveProjectionCapability::projection() const
         update();
 
     if (!m_projection.isValid())
-        m_projection.setValue(glm::perspective(m_fovy, m_aspect, m_zNear, m_zFar));
+        m_projection.setValue(projectionForAspectRatio(m_aspect));
 
     return m_projection.value();
+}
+
+glm::mat4 PerspectiveProjectionCapability::projectionForAspectRatio(float ratio) const
+{
+    return glm::perspective(m_fovy, ratio, m_zNear, m_zFar);
 }
 
 const glm::mat4 & PerspectiveProjectionCapability::projectionInverted() const

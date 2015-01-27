@@ -53,6 +53,8 @@ public:
 
     void update() const;
 
+    virtual glm::mat4 projectionForAspectRatio(float ratio) const override;
+
 protected:
     void dirty(bool update = true);
     void invalidateMatrices() const;

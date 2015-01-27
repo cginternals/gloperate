@@ -43,6 +43,7 @@ public:
     virtual const glm::mat4 & projection() const = 0;
     virtual const glm::mat4 & projectionInverted() const = 0;
 
+    virtual glm::mat4 projectionForAspectRatio(float ratio) const = 0;
 protected:
     virtual void setAspectRatio(float ratio) = 0;
     virtual void setAspectRatio(const glm::ivec2 & viewport) = 0;
