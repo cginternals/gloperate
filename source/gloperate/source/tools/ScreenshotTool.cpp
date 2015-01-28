@@ -57,4 +57,14 @@ void ScreenshotTool::save(const std::string & filename)
     m_framebufferCapability->setFramebuffer(oldFbo);
 }
 
+void ScreenshotTool::save(const std::string &filename, const int width, const int height)
+{
+    int oldWidth = m_viewportCapability->width();
+    int oldHeight = m_viewportCapability->height();
+
+    m_viewportCapability->setViewport(m_viewportCapability->x(), m_viewportCapability->y(), width, height);
+    save(filename);
+    m_viewportCapability->setViewport(m_viewportCapability->x(), m_viewportCapability->y(), oldWidth, oldHeight);
+}
+
 } // namespace gloperate
