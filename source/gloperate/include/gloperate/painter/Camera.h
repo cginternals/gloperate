@@ -1,17 +1,19 @@
+
 #pragma once
 
 
 #include <glm/glm.hpp>
 
-#include <gloperate/gloperate_api.h>
-
 #include <globjects/base/Referenced.h>
 #include <globjects/base/CachedValue.h>
+
+#include <gloperate/gloperate_api.h>
 #include <gloperate/base/Signal.h>
 
 
 namespace gloperate
 {
+
 
 /**
 *  @brief
@@ -72,6 +74,10 @@ public:
     void changed();
 
 
+public:
+    Signal<> invalidated;
+
+
 protected:
     void dirty(bool update = true);
     void invalidateMatrices() const;
@@ -97,9 +103,7 @@ protected:
     globjects::CachedValue<glm::mat4> m_viewProjection;
     globjects::CachedValue<glm::mat4> m_viewProjectionInverted;
     globjects::CachedValue<glm::mat3> m_normal;
-
-public:
-    Signal<> invalidated;
 };
+
 
 } // namespace gloperate

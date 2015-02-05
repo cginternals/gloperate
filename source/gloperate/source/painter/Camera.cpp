@@ -1,3 +1,4 @@
+
 #include <gloperate/painter/Camera.h>
 
 #include <cassert>
@@ -12,17 +13,13 @@ using namespace glm;
 namespace gloperate
 {
 
-Camera::Camera(
-    const vec3 & eye
-,   const vec3 & center
-,   const vec3 & up)
+
+Camera::Camera(const vec3 & eye, const vec3 & center, const vec3 & up)
 : m_dirty(false)
 , m_autoUpdate(false)
-
 , m_eye(eye)
 , m_center(center)
 , m_up(up)
-
 , m_fovy(radians(40.f))
 , m_aspect(1.f)
 , m_zNear(0.1f)
@@ -270,5 +267,6 @@ void Camera::changed()
 {
     invalidated();
 }
+
 
 } // namespace gloperate

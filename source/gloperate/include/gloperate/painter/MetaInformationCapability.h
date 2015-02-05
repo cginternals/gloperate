@@ -1,30 +1,25 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #pragma once
+
 
 #include <unordered_map>
 
 #include <gloperate/gloperate_api.h>
-
 #include <gloperate/painter/AbstractMetaInformationCapability.h>
 
 
 namespace gloperate {
 
+
 class AbstractViewportCapability;
+
 
 /**
 *  @brief
-*    Base class for painter camera capabilities
-*
+*    Default implementation for AbstractMetaInformationCapability
 */
 class GLOPERATE_API MetaInformationCapability : public AbstractMetaInformationCapability
 {
-
 public:
     /**
     *  @brief
@@ -38,19 +33,39 @@ public:
     */
     virtual ~MetaInformationCapability();
 
-    /**
-    *  @brief
-    *    Returns meta information for the given id
-    */
+    // Virtual functions from AbstractMetaInformationCapability
     virtual const std::string & get(int id) const override;
 
-    void setMetaInformation(const std::unordered_map<int, std::string> & data);
-
-    std::unordered_map<int, std::string> & data();
+    /**
+    *  @brief
+    *    Get all meta information
+    *
+    *  @return
+    *    Meta information map (ID -> string)
+    */
     const std::unordered_map<int, std::string> & data() const;
 
+    /**
+    *  @brief
+    *    Get all meta information
+    *
+    *  @return
+    *    Meta information map (ID -> string)
+    */
+    std::unordered_map<int, std::string> & data();
+
+    /**
+    *  @brief
+    *    Set all meta information
+    *
+    *  @param[in] data
+    *    Meta information map (ID -> string)
+    */
+    void setMetaInformation(const std::unordered_map<int, std::string> & data);
+
+
 protected:
-    std::unordered_map<int, std::string> m_data;
+    std::unordered_map<int, std::string> m_data;    /**< Meta information map (ID -> string) */
 };
 
 

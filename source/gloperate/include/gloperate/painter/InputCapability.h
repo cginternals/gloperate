@@ -1,14 +1,19 @@
+
 #pragma once
 
+
 #include <vector>
+
 #include <gloperate/painter/AbstractInputCapability.h>
 
 
 namespace gloperate 
 {
 
+
 class MouseInputHandler;
 class KeyboardInputHandler;
+
 
 /**
 *  @brief
@@ -16,8 +21,6 @@ class KeyboardInputHandler;
 */
 class GLOPERATE_API InputCapability : public AbstractInputCapability
 {
-
-
 public:
     /**
     *  @brief
@@ -38,7 +41,7 @@ public:
     *  @return
     *    List of mouse handlers
     */
-    const std::vector<MouseInputHandler *> &mouseHandlers() const;
+    const std::vector<MouseInputHandler *> & mouseHandlers() const;
 
     /**
     *  @brief
@@ -72,7 +75,7 @@ public:
     *  @return
     *    List of keyboard handlers
     */
-    const std::vector<KeyboardInputHandler *> &keyboardHandlers() const;
+    const std::vector<KeyboardInputHandler *> & keyboardHandlers() const;
 
     /**
     *  @brief
@@ -108,9 +111,11 @@ public:
     virtual void onKeyDown(gloperate::Key key) override;
     virtual void onKeyUp(gloperate::Key key) override;
 
+
 protected:
     std::vector<MouseInputHandler *>    m_mouseHandlers;      /**< List of mouse handlers */
     std::vector<KeyboardInputHandler *> m_keyboardHandlers;   /**< List of keyboard handlers */
 };
+
 
 } // namespace gloperate

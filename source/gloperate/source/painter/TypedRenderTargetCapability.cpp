@@ -1,41 +1,28 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 
 
 namespace gloperate {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 TypedRenderTargetCapability::TypedRenderTargetCapability()
-:AbstractTypedRenderTargetCapability()
+: AbstractTypedRenderTargetCapability()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 TypedRenderTargetCapability::~TypedRenderTargetCapability()
 {
     m_renderTargets.clear();
 }
 
-const RenderTarget & TypedRenderTargetCapability::renderTarget(RenderTargetType type)
-{
-    return m_renderTargets[type];
-}
-
 bool TypedRenderTargetCapability::hasRenderTarget(RenderTargetType type)
 {
     return (m_renderTargets.count(type) > 0);
+}
+
+const RenderTarget & TypedRenderTargetCapability::renderTarget(RenderTargetType type)
+{
+    return m_renderTargets[type];
 }
 
 void TypedRenderTargetCapability::setRenderTarget(
@@ -53,5 +40,6 @@ void TypedRenderTargetCapability::resetRenderTarget(RenderTargetType type)
     m_renderTargets[type] = RenderTarget();
     setChanged(true);
 }
+
 
 } // namespace gloperate
