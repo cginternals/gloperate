@@ -1,55 +1,38 @@
+
 #include <gloperate/painter/Painter.h>
 
 
 namespace gloperate
 {
+
     
-/**
-*  @brief
-*    Constructor
-*/
 Painter::Painter(ResourceManager & resourceManager)
 : m_resourceManager(resourceManager)
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 Painter::~Painter()
 {
-	// Destroy capabilities
+    // Destroy capabilities
     for (AbstractCapability * capability : m_capabilities) {
         delete capability;
     }
 }
 
-/**
-*  @brief
-*    Initialize painter
-*/
 void Painter::initialize()
 {
     onInitialize();
 }
 
-/**
-*  @brief
-*    Render a frame
-*/
 void Painter::paint()
 {
     onPaint();
 }
 
-/**
-*  @brief
-*    Add capability to the painter
-*/
 void Painter::addCapability(AbstractCapability * capability)
 {
     m_capabilities.push_back(capability);
 }
+
 
 } // gloperate

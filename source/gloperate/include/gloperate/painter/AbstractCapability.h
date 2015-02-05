@@ -3,12 +3,12 @@
 
 
 #include <gloperate/gloperate_api.h>
-
 #include <gloperate/base/Signal.h>
 
 
 namespace gloperate 
 {
+
 
 /**
 *  @brief
@@ -24,8 +24,6 @@ namespace gloperate
 */
 class GLOPERATE_API AbstractCapability
 {
-
-
 public:
     /**
     *  @brief
@@ -65,10 +63,13 @@ public:
     void setChanged(bool changed);
 
 
-    Signal<> changed;
-protected:
-    bool m_changed; /**< Has the capability information been changed? */
+public:
+    Signal<> changed;   /**< Called when the capability information has been changed */
 
+
+protected:
+    bool m_changed;     /**< Has the capability information been changed? */
 };
+
 
 } // namespace gloperate

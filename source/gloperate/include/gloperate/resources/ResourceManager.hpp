@@ -14,7 +14,7 @@ namespace gloperate
 *    Load resource from file
 */
 template <typename T>
-T * ResourceManager::load(const std::string & filename) const
+T * ResourceManager::load(const std::string & filename, std::function<void(int, int)> progress) const
 {
     // Get file extension
     std::string ext = getFileExtension(filename);
@@ -27,7 +27,7 @@ T * ResourceManager::load(const std::string & filename) const
             // Check if filetype is supported
             if (concreteLoader->canLoad(ext)) {
                 // Use loader
-                return concreteLoader->load(filename);
+                return concreteLoader->load(filename, progress);
             }
         }
     }
@@ -41,7 +41,7 @@ T * ResourceManager::load(const std::string & filename) const
 *    Store resource to file
 */
 template <typename T>
-bool ResourceManager::store(const std::string & filename, T * resource) const
+bool ResourceManager::store(const std::string & filename, T * resource, std::function<void(int, int)> progress) const
 {
     // Get file extension
     std::string ext = getFileExtension(filename);
@@ -54,7 +54,7 @@ bool ResourceManager::store(const std::string & filename, T * resource) const
             // Check if filetype is supported
             if (concreteStorer->canStore(ext)) {
                 // Use store
-                return concreteStorer->store(filename, resource);
+                return concreteStorer->store(filename, resource, progress);
             }
         }
     }

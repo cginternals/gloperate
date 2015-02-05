@@ -1,13 +1,14 @@
+
 #pragma once
 
 
 #include <gloperate/gloperate_api.h>
-
 #include <gloperate/painter/AbstractCapability.h>
 
 
 namespace gloperate 
 {
+
 
 /**
 *  @brief
@@ -82,5 +83,6 @@ public:
     */
     virtual void setViewport(int x, int y, int width, int height) = 0;
 };
+
 
 } // namespace gloperate

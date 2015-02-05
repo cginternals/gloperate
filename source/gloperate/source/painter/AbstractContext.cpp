@@ -19,6 +19,7 @@ using namespace globjects;
 namespace gloperate
 {
 
+
 glbinding::Version AbstractContext::retrieveVersion()
 {
     assert(0 != glbinding::getCurrentContext());
@@ -56,16 +57,6 @@ const std::string & AbstractContext::swapIntervalString(const SwapInterval inter
     return swapiIdentifier.at(interval);
 }
 
-
-AbstractContext::AbstractContext()
-: m_swapInterval(SwapInterval::NoVerticalSyncronization)
-{
-}
-
-AbstractContext::~AbstractContext()
-{
-}
-
 std::string AbstractContext::version()
 {
     assert(0 != glbinding::getCurrentContext());
@@ -84,19 +75,19 @@ std::string AbstractContext::renderer()
     return glbinding::ContextInfo::renderer();
 }
 
-bool AbstractContext::isValid() const
+
+AbstractContext::AbstractContext()
+: m_swapInterval(SwapInterval::NoVerticalSyncronization)
 {
-	return 0 < handle();
 }
 
-glbinding::ContextHandle AbstractContext::tryFetchHandle()
+AbstractContext::~AbstractContext()
 {
-    const glbinding::ContextHandle handle = glbinding::getCurrentContext();
+}
 
-    if (0 == handle)
-        critical("Acquiring OpenGL context handle failed.");
-
-    return handle;
+bool AbstractContext::isValid() const
+{
+    return 0 < handle();
 }
 
 AbstractContext::SwapInterval AbstractContext::swapInterval() const
@@ -153,5 +144,16 @@ bool AbstractContext::setSwapInterval(const SwapInterval interval)
 
     return result;
 }
+
+glbinding::ContextHandle AbstractContext::tryFetchHandle()
+{
+    const glbinding::ContextHandle handle = glbinding::getCurrentContext();
+
+    if (0 == handle)
+        critical("Acquiring OpenGL context handle failed.");
+
+    return handle;
+}
+
 
 } // namespace gloperate

@@ -1,3 +1,4 @@
+
 #include <gloperate/painter/VirtualTimeCapability.h>
 
 #include <cassert>
@@ -6,21 +7,15 @@
 namespace gloperate
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 VirtualTimeCapability::VirtualTimeCapability()
 : m_enabled(true)
 , m_duration(2.0f * 3.141592654f)
 , m_time(0.0f)
+, m_delta(0.0f)
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 VirtualTimeCapability::~VirtualTimeCapability()
 {
 }
@@ -42,6 +37,11 @@ float VirtualTimeCapability::time() const
     return m_time;
 }
 
+float VirtualTimeCapability::delta() const
+{
+    return m_delta;
+}
+
 void VirtualTimeCapability::setLoopDuration(float duration)
 {
     assert(duration > 0.0f);
@@ -53,7 +53,8 @@ void VirtualTimeCapability::setLoopDuration(float duration)
 
 void VirtualTimeCapability::update(float delta)
 {
-    m_time += delta;
+    m_time  += delta;
+    m_delta  = delta;
 
     setChanged(true);
 
@@ -69,5 +70,6 @@ void VirtualTimeCapability::normalizeTime()
         setChanged(true);
     }
 }
+
 
 } // namespace gloperate

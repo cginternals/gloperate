@@ -188,6 +188,7 @@
 #define DT_SOCK     S_IFSOCK
 #define DT_CHR      S_IFCHR
 #define DT_BLK      S_IFBLK
+#define DT_LNK		S_IFLNK
 
 /* Macros for converting between st_mode and d_type */
 #define IFTODT(mode) ((mode) & S_IFMT)
@@ -199,13 +200,13 @@
  * only defined for compatibility.  These macros should always return false
  * on Windows.
  */
-#define	S_ISFIFO(mode) (((mode) & S_IFMT) == S_IFIFO)
-#define	S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
-#define	S_ISREG(mode)  (((mode) & S_IFMT) == S_IFREG)
-#define	S_ISLNK(mode)  (((mode) & S_IFMT) == S_IFLNK)
-#define	S_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
-#define	S_ISCHR(mode)  (((mode) & S_IFMT) == S_IFCHR)
-#define	S_ISBLK(mode)  (((mode) & S_IFMT) == S_IFBLK)
+#define    S_ISFIFO(mode) (((mode) & S_IFMT) == S_IFIFO)
+#define    S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
+#define    S_ISREG(mode)  (((mode) & S_IFMT) == S_IFREG)
+#define    S_ISLNK(mode)  (((mode) & S_IFMT) == S_IFLNK)
+#define    S_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
+#define    S_ISCHR(mode)  (((mode) & S_IFMT) == S_IFCHR)
+#define    S_ISBLK(mode)  (((mode) & S_IFMT) == S_IFBLK)
 
 /* Return the exact length of d_namlen without zero terminator */
 #define _D_EXACT_NAMLEN(p) ((p)->d_namlen)

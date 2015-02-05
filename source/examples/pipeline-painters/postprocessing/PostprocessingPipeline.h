@@ -9,7 +9,9 @@ namespace gloperate
 class AbstractTargetFramebufferCapability;
 class AbstractViewportCapability;
 class AbstractVirtualTimeCapability;
-class Camera;
+class AbstractCameraCapability;
+class AbstractProjectionCapability;
+class AbstractTypedRenderTargetCapability;
 
 }
 
@@ -25,13 +27,18 @@ public:
     gloperate::AbstractTargetFramebufferCapability * targetFramebufferCapability();
     gloperate::AbstractViewportCapability * viewportCapability();
     gloperate::AbstractVirtualTimeCapability * virtualTimeCapability();
+    gloperate::AbstractCameraCapability * cameraCapability();
+    gloperate::AbstractProjectionCapability * projectionCapability();
+    gloperate::AbstractTypedRenderTargetCapability * renderTargetCapability();
 
 protected:
     RasterizationStage  * m_rasterization;
     PostprocessingStage * m_postprocessing;
 
-    gloperate::Data<gloperate::Camera * > m_camera;
     gloperate::Data<gloperate::AbstractTargetFramebufferCapability *> m_targetFBO;
     gloperate::Data<gloperate::AbstractViewportCapability *> m_viewport;
     gloperate::Data<gloperate::AbstractVirtualTimeCapability *> m_time;
+    gloperate::Data<gloperate::AbstractCameraCapability *> m_camera;
+    gloperate::Data<gloperate::AbstractProjectionCapability *> m_projection;
+    gloperate::Data<gloperate::AbstractTypedRenderTargetCapability *> m_renderTargets;
 };

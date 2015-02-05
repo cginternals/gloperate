@@ -1,18 +1,19 @@
+
 #pragma once
+
 
 #include <vector>
 
 #include <gloperate/gloperate_api.h>
-
-#include <globjects/base/Referenced.h>
-
 #include <gloperate/painter/AbstractCapability.h>
 
 
 namespace gloperate
 {
 
+
 class ResourceManager;
+
 
 /**
 *  @brief
@@ -31,7 +32,7 @@ class ResourceManager;
 *    use capabilities to describe what kind of functionality and interfaces
 *    it supports. See AbstractCapability for more information on capabilities.
 */
-class GLOPERATE_API Painter : public globjects::Referenced
+class GLOPERATE_API Painter
 {
 public:
     /**
@@ -40,6 +41,12 @@ public:
     *
     *  @param[in] resourceManager
     *    Resource manager, e.g., to load and save textures
+    *
+    *  @remarks
+    *    Do not initialize your graphics object or call any OpenGL functions in the
+    *    constructor, because at this time there may be no valid context active. Instead,
+    *    all OpenGL initialization code should be implemented in initialize().
+    *    Use the constructor to register properties and capabalities.
     */
     Painter(ResourceManager & resourceManager);
 
@@ -81,6 +88,7 @@ public:
     template <typename Capability>
     Capability * getCapability() const;
 
+
 protected:
     /**
     *  @brief
@@ -94,8 +102,6 @@ protected:
     */
     virtual void onPaint() = 0;
 
-
-protected:
     /**
     *  @brief
     *    Add capability to the painter
@@ -113,6 +119,7 @@ protected:
     ResourceManager                  & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
     std::vector<AbstractCapability*>   m_capabilities;    /**< List of supported capabilities */
 };
+
 
 } // namespace gloperate
 

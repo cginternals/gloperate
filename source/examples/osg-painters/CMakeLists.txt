@@ -5,7 +5,7 @@ find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt
 
 if(NOT OPENSCENEGRAPH_FOUND)
     message("Example ${target} skipped: OSG not found")
-	return ()
+    return ()
 endif ()
 
 message(STATUS "Example ${target}")
@@ -109,6 +109,3 @@ install(TARGETS ${target}
     RUNTIME DESTINATION ${INSTALL_PLUGINS_DEBUG} CONFIGURATIONS Debug
     LIBRARY DESTINATION ${INSTALL_PLUGINS_DEBUG} CONFIGURATIONS Debug
 )
-
-# Header files
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})

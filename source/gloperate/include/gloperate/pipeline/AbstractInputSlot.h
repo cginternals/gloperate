@@ -20,7 +20,7 @@ class GLOPERATE_API AbstractInputSlot
 
 public:
     AbstractInputSlot(const std::string & name = "");
-	virtual ~AbstractInputSlot();
+    virtual ~AbstractInputSlot();
 
     const std::string & name() const;
     void setName(const std::string & name);
@@ -34,21 +34,21 @@ public:
 
     virtual std::string qualifiedName() const;
 
-	virtual bool connectTo(const AbstractData & data) = 0;
+    virtual bool connectTo(const AbstractData & data) = 0;
     virtual bool matchType(const AbstractData & data) = 0;
 
-	bool hasChanged() const;
+    bool hasChanged() const;
 
-	void changed();
-	void processed();
+    void changed();
+    void processed();
 
     bool isUsable() const;
 
-	bool isOptional() const;
-	void setOptional(bool optional);
+    bool isOptional() const;
+    void setOptional(bool optional);
 
-	bool isFeedback() const;
-	void setFeedback(bool isFeedback);
+    bool isFeedback() const;
+    void setFeedback(bool isFeedback);
 
     virtual const AbstractData * connectedData() const = 0;
 
@@ -61,9 +61,9 @@ protected:
     AbstractStage * m_owner;
     std::string m_name;
 
-	bool m_hasChanged;
-	bool m_isOptional;
-	bool m_isFeedback;
+    bool m_hasChanged;
+    bool m_isOptional;
+    bool m_isFeedback;
 
     void setOwner(AbstractStage * owner);
 };

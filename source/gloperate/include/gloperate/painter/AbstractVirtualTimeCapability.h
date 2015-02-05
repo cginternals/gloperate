@@ -1,13 +1,14 @@
+
 #pragma once
 
 
 #include <gloperate/gloperate_api.h>
-
 #include <gloperate/painter/AbstractCapability.h>
 
 
 namespace gloperate 
 {
+
 
 /**
 *  @brief
@@ -68,6 +69,15 @@ public:
 
     /**
     *  @brief
+    *    Get virtual time delta since the last update
+    *
+    *  @return
+    *    Time delta (in seconds)
+    */
+    virtual float delta() const = 0;
+
+    /**
+    *  @brief
     *    Set duration of a whole cycle (after that, time is reset to 0)
     *
     *  @param[in] duration
@@ -84,5 +94,6 @@ public:
     */
     virtual void update(float delta) = 0;
 };
+
 
 } // namespace gloperate

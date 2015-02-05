@@ -1,3 +1,4 @@
+
 #include <gloperate/painter/Camera.h>
 
 #include <cassert>
@@ -12,17 +13,13 @@ using namespace glm;
 namespace gloperate
 {
 
-Camera::Camera(
-    const vec3 & eye
-,   const vec3 & center
-,   const vec3 & up)
+
+Camera::Camera(const vec3 & eye, const vec3 & center, const vec3 & up)
 : m_dirty(false)
 , m_autoUpdate(false)
-
 , m_eye(eye)
 , m_center(center)
 , m_up(up)
-
 , m_fovy(radians(40.f))
 , m_aspect(1.f)
 , m_zNear(0.1f)
@@ -158,30 +155,23 @@ void Camera::setFovy(const float fovy)
     dirty();
 }
 
-const ivec2 & Camera::viewport() const
+float Camera::aspectRatio() const
 {
-    return m_viewport;
+    return m_aspect;
 }
 
-void Camera::setViewport(int width, int height)
+void Camera::setAspectRatio(float ratio)
 {
-    return setViewport(ivec2(width, height));
-}
-
-void Camera::setViewport(const ivec2 & viewport)
-{
-    if (viewport == m_viewport)
-        return;
-
-    m_aspect = static_cast<float>(viewport.x) / max(static_cast<float>(viewport.y), 1.f);
-    m_viewport = viewport;
+    m_aspect = ratio;
 
     dirty();
 }
 
-float Camera::aspectRatio() const
+void Camera::setAspectRatio(const ivec2 & viewport)
 {
-    return m_aspect;
+    m_aspect = static_cast<float>(viewport.x) / max(static_cast<float>(viewport.y), 1.f);
+
+    dirty();
 }
 
 void Camera::update() const
@@ -213,7 +203,7 @@ const mat4 & Camera::projection() const
         update();
 
     if (!m_projection.isValid())
-	    m_projection.setValue(perspective(m_fovy, m_aspect, m_zNear, m_zFar));
+        m_projection.setValue(perspective(m_fovy, m_aspect, m_zNear, m_zFar));
 
     return m_projection.value();
 }
@@ -224,7 +214,7 @@ const mat4 & Camera::viewProjection() const
         update();
 
     if (!m_viewProjection.isValid())
-    	m_viewProjection.setValue(projection() * view());
+        m_viewProjection.setValue(projection() * view());
     
     return m_viewProjection.value();
 }
@@ -277,5 +267,6 @@ void Camera::changed()
 {
     invalidated();
 }
+
 
 } // namespace gloperate

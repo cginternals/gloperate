@@ -41,7 +41,7 @@ public:
     virtual std::string allLoadingTypes() const;
 
     // Virtual gloperate::Loader<globjects::Texture> functions
-    virtual globjects::Texture * load(const std::string & filename) const override;
+    virtual globjects::Texture * load(const std::string & filename, std::function<void(int, int)> progress) const override;
 
 
 protected:

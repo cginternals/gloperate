@@ -1,15 +1,15 @@
+
 #pragma once
 
 
 #include <gloperate/gloperate_api.h>
-
 #include <gloperate/input/input.h>
-
 #include <gloperate/painter/AbstractCapability.h>
 
 
 namespace gloperate 
 {
+
 
 /**
 *  @brief
@@ -22,8 +22,6 @@ namespace gloperate
 */
 class GLOPERATE_API AbstractInputCapability : public AbstractCapability
 {
-
-
 public:
     /**
     *  @brief
@@ -116,5 +114,6 @@ public:
     */
     virtual void onKeyUp(gloperate::Key key) = 0;
 };
+
 
 } // namespace gloperate

@@ -33,12 +33,15 @@ namespace gloperate
 namespace gloperate_osg
 {
 
+
 /**
 *  @brief
 *    Painter that renders an OSG scene
 */
 class GLOPERATE_OSG_API OsgPainter : public gloperate::Painter
 {
+
+
 public:
     /**
     *  @brief
@@ -82,17 +85,30 @@ public:
     */
     void setScene(osg::Node * scene);
 
+    /**
+    *  @brief
+    *    Load OSG scene
+    *
+    *  @param[in] filename
+    *    Path to OSG scene file
+    */
+    void loadScene(const std::string & filename);
+
+
 protected:
     virtual void onInitialize() override;
     virtual void onPaint() override;
 
+
 protected:
     // The following functions are actually using OSG code, so they are not compatible with
     // globjects/glbinding include. Therefore, they are separately implemented in OsgPainter_osg.cpp
+    void osg_loadScene(const std::string & filename);
     void osg_setScene(osg::Node * scene);
     void osg_onInitialize();
     void osg_onPaint();
     void osg_cleanup();
+
 
 protected:
     osgViewer::Viewer                 * m_viewer;          /**< OSG viewer */
@@ -108,6 +124,9 @@ protected:
     gloperate::TargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::InputCapability             * m_inputCapability;
     gloperate::VirtualTimeCapability       * m_virtualTimeCapability;
+
+
 };
+
 
 } // namespace gloperate_osg

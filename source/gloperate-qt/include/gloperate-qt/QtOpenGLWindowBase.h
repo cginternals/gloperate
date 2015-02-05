@@ -75,11 +75,11 @@ public:
     */
     void updateGL();
 
-	/**
-	*  @brief
-	*    Initialize OpenGL rendering
-	*/
-	void initialize();
+    /**
+    *  @brief
+    *    Initialize OpenGL rendering
+    */
+    void initialize();
 
 	void makeCurrent();
 	void doneCurrent();

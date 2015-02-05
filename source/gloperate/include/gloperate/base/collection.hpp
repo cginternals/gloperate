@@ -48,7 +48,7 @@ auto flatten(const Collection & collection) -> decltype(flatten(collection.begin
 template <typename InputIterator, typename Grouper>
 auto groupBy(InputIterator first, InputIterator last, Grouper grouper) -> std::unordered_map<typename std::decay<decltype(grouper(std::declval<typename InputIterator::value_type>()))>::type, std::vector<typename InputIterator::value_type>>
 {
-	std::unordered_map<typename std::decay<decltype(grouper(std::declval<typename InputIterator::value_type>()))>::type, std::vector<typename InputIterator::value_type>> result;
+    std::unordered_map<typename std::decay<decltype(grouper(std::declval<typename InputIterator::value_type>()))>::type, std::vector<typename InputIterator::value_type>> result;
     while (first!=last)
     {
         result[grouper(*first)].push_back(*first);

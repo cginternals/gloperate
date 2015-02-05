@@ -4,6 +4,7 @@
 
 #include <osg/Node>
 #include <osgViewer/Viewer>
+#include <osgDB/ReadFile>
 
 #include <gloperate-osg/OsgMouseHandler.h>
 #include <gloperate-osg/OsgKeyboardHandler.h>
@@ -13,6 +14,11 @@ using namespace gloperate;
 
 namespace gloperate_osg
 {
+
+void OsgRenderStage::osg_loadScene(const std::string & filename)
+{
+    setScene(osgDB::readNodeFile(filename));
+}
 
 void OsgRenderStage::osg_setScene(osg::Node * scene)
 {

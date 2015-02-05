@@ -86,6 +86,15 @@ public:
 
     /**
     *  @brief
+    *    Load OSG scene
+    *
+    *  @param[in] filename
+    *    Path to OSG scene file
+    */
+    void loadScene(const std::string & filename);
+
+    /**
+    *  @brief
     *    Create keyboard handler to control the wrapped OSG scene
     *
     *  @return
@@ -130,6 +139,7 @@ protected:
 protected:
     // The following functions are actually using OSG code, so they are not compatible with
     // globjects/glbinding include. Therefore, they are separately implemented in OsgPainter_osg.cpp
+    void osg_loadScene(const std::string & filename);
     void osg_setScene(osg::Node * scene);
     void osg_initialize();
     void osg_process();

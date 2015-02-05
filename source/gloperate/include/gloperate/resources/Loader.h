@@ -1,5 +1,8 @@
 #pragma once
 
+
+#include <functional>
+
 #include <gloperate/resources/AbstractLoader.h>
 
 
@@ -30,13 +33,15 @@ public:
     *  @brief
     *    Load resource from file
     *
-    *  @param filename
+    *  @param[in] filename
     *    File name
+    *  @param[in] progress
+    *    Callback function that is invoked on progress (can be empty)
     *
     *  @return
     *    Loaded resource (can be null)
     */
-    virtual T * load(const std::string & filename) const = 0;
+    virtual T * load(const std::string & filename, std::function<void(int, int)> progress) const = 0;
 };
 
 } // namespace gloperate

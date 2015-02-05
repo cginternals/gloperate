@@ -34,7 +34,10 @@ void OsgFboRenderStage::handleViewportChanged()
 {
     // Update OSG textures and camera FBO
     updateFbo_osg();
+}
 
+void OsgFboRenderStage::postOsgRendering()
+{
     // Update gloperate textures
     updateFbo();
 }

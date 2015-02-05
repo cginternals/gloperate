@@ -43,26 +43,26 @@ const mat4 transform(
 }
 
 const vec3 intersection(
-	bool & intersects
+    bool & intersects
 ,   const vec3 & location
 ,   const vec3 & normal
-,	const vec3 & rnear
-,	const vec3 & rfar)
+,    const vec3 & rnear
+,    const vec3 & rfar)
 {
-	const vec3 & r0 = rnear; // thats root of the ray
-	const vec3 r = rfar - rnear; // a ray direction
+    const vec3 & r0 = rnear; // thats root of the ray
+    const vec3 r = rfar - rnear; // a ray direction
 
-	// intersect with plane in point normal form
-	const float rDotN = dot(r, normal);
+    // intersect with plane in point normal form
+    const float rDotN = dot(r, normal);
 
-	intersects = r != vec3() && rDotN < 0.; // the later would happen if the intersection is above the "horizon"
+    intersects = r != vec3() && rDotN < 0.; // the later would happen if the intersection is above the "horizon"
 
-	if(!intersects)
-		return vec3();
+    if(!intersects)
+        return vec3();
 
-	const float t = dot(location - r0, normal) / rDotN;
+    const float t = dot(location - r0, normal) / rDotN;
 
-	return t * r + r0; // retrieve point via the ray
+    return t * r + r0; // retrieve point via the ray
 }
 
 } // namespace gloperate
