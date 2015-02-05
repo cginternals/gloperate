@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
     // Choose a painter
     std::string name = (argc > 1) ? argv[1] : "CubeScape";
 
-    gloperate::Painter * painter = nullptr;
+    std::unique_ptr<gloperate::Painter> painter(nullptr);
     Plugin * plugin = pluginManager.plugin(name);
 
     if (!plugin) 
@@ -49,16 +49,16 @@ int main(int argc, char * argv[])
         return 1;
     }
 
-    painter = plugin->createPainter(resourceManager);
+    painter.reset(plugin->createPainter(resourceManager));
 
     Window::init();
 
     Window window(resourceManager);
-    window.setPainter(painter);
+    window.setPainter(painter.get());
     window.setEventHandler(new WindowEventHandler());
 
-	ContextFormat format;
-	format.setVersion(3, 2);
+    ContextFormat format;
+    format.setVersion(3, 2);
 
     if (!window.create(format, "gloperate viewer"))
         return 1;

@@ -1,7 +1,9 @@
 #pragma once
 
+#include <gloperate-qt/qt-includes-begin.h>
 #include <QWidget>
 #include <QScopedPointer>
+#include <gloperate-qt/qt-includes-end.h>
 
 #include <gloperate-qtwidgets/gloperate-qtwidgets_api.h>
 

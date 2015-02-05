@@ -71,7 +71,7 @@ std::string QtTextureStorer::allStoringTypes() const
     return allTypes;
 }
 
-bool QtTextureStorer::store(const std::string & filename, const globjects::Texture * texture) const
+bool QtTextureStorer::store(const std::string & filename, const globjects::Texture * texture, std::function<void(int, int)> /*progress*/) const
 {
     if (!texture)
     {

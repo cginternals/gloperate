@@ -14,26 +14,27 @@ template <typename T>
 class Data : public AbstractData
 {
 public:
-	Data();
-	explicit Data(const T & data);
+    Data();
+    explicit Data(const T & data);
 
-	T & data();
-	const T & data() const;
+    T & data();
+    const T & data() const;
 
-	T & operator*();
-	const T & operator*() const;
-	T * operator->();
-	const T * operator->() const;
+    T & operator*();
+    const T & operator*() const;
+    T * operator->();
+    const T * operator->() const;
 
-	operator const T &() const;
+    operator const T &() const;
 
-	const T & operator=(const T & value);
+    Data<T> & operator=(const Data<T> & data);
+    const T & operator=(const T & value);
 
     void setData(const T & value);
 
     virtual std::string type() const override { return typeid(T).name(); }
 protected:
-	T m_data;
+    T m_data;
 };
 
 } // namespace gloperate

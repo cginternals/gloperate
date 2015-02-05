@@ -15,13 +15,13 @@ ScopedConnection::ScopedConnection(const Connection & connection)
 
 ScopedConnection::~ScopedConnection()
 {
-	m_connection.disconnect();
+    m_connection.disconnect();
 }
 
 void ScopedConnection::operator=(const Connection & connection)
 {
-	m_connection.disconnect();
-	m_connection = connection;
+    m_connection.disconnect();
+    m_connection = connection;
 }
 
 } // namespace gloperate

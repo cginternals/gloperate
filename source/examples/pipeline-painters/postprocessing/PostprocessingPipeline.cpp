@@ -31,6 +31,9 @@
 #include <gloperate/painter/ViewportCapability.h>
 #include <gloperate/painter/VirtualTimeCapability.h>
 #include <gloperate/painter/TargetFramebufferCapability.h>
+#include <gloperate/painter/CameraCapability.h>
+#include <gloperate/painter/PerspectiveProjectionCapability.h>
+#include <gloperate/painter/TypedRenderTargetCapability.h>
 
 #include <gloperate/primitives/AdaptiveGrid.h>
 #include <gloperate/primitives/Icosahedron.h>
@@ -45,6 +48,7 @@ public:
     {
         addInput("viewport", viewport);
         addInput("camera", camera);
+        addInput("projection", projection);
         addInput("time", time);
 
         addOutput("color", color);
@@ -88,9 +92,15 @@ public:
         m_icosahedron = new gloperate::Icosahedron(2);
     }
 
+    globjects::Framebuffer * fbo()
+    {
+        return m_fbo;
+    }
+
     gloperate::InputSlot<gloperate::AbstractViewportCapability *> viewport;
     gloperate::InputSlot<gloperate::AbstractVirtualTimeCapability *> time;
-    gloperate::InputSlot<gloperate::Camera *> camera;
+    gloperate::InputSlot<gloperate::AbstractCameraCapability *> camera;
+    gloperate::InputSlot<gloperate::AbstractProjectionCapability *> projection;
 
     gloperate::Data<globjects::ref_ptr<globjects::Texture>> color;
     gloperate::Data<globjects::ref_ptr<globjects::Texture>> normal;
@@ -98,7 +108,6 @@ public:
 protected:
     virtual void process() override
     {
-        camera.data()->setViewport(viewport.data()->width(), viewport.data()->height());
         gl::glViewport(viewport.data()->x(), viewport.data()->y(), viewport.data()->width(), viewport.data()->height());
 
         color.data()->image2D(0, gl::GL_RGBA32F, viewport.data()->width(), viewport.data()->height(), 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
@@ -107,7 +116,7 @@ protected:
 
         m_depth->storage(gl::GL_DEPTH_COMPONENT32, viewport.data()->width(), viewport.data()->height());
 
-        m_program->setUniform("transform", camera.data()->viewProjection());
+        m_program->setUniform("transform", projection.data()->projection() * camera.data()->view());
         m_program->setUniform("timef", time.data()->time());
 
         m_fbo->bind(gl::GL_FRAMEBUFFER);
@@ -214,10 +223,12 @@ protected:
 PostprocessingPipeline::PostprocessingPipeline()
 : m_rasterization(new RasterizationStage)
 , m_postprocessing(new PostprocessingStage)
-, m_camera(new gloperate::Camera(glm::vec3(0.f, 1.f, 4.0f)))
 , m_targetFBO(new gloperate::TargetFramebufferCapability)
 , m_viewport(new gloperate::ViewportCapability)
 , m_time(new gloperate::VirtualTimeCapability)
+, m_camera(new gloperate::CameraCapability)
+, m_projection(new gloperate::PerspectiveProjectionCapability(m_viewport))
+, m_renderTargets(new gloperate::TypedRenderTargetCapability)
 {
     m_targetFBO.data()->changed.connect([this]() {
         m_targetFBO.invalidate();
@@ -229,19 +240,24 @@ PostprocessingPipeline::PostprocessingPipeline()
         m_time.invalidate();
     });
 
-    m_camera.data()->setZNear(0.1f);
-    m_camera.data()->setZFar(16.f);
+    dynamic_cast<gloperate::PerspectiveProjectionCapability*>(m_projection.data())->setZNear(0.1f);
+    dynamic_cast<gloperate::PerspectiveProjectionCapability*>(m_projection.data())->setZFar(16.f);
 
     m_time.data()->setLoopDuration(glm::pi<float>() * 2);
 
     m_rasterization->camera = m_camera;
     m_rasterization->viewport = m_viewport;
     m_rasterization->time = m_time;
+    m_rasterization->projection = m_projection;
 
     m_postprocessing->color = m_rasterization->color;
     m_postprocessing->normal = m_rasterization->normal;
     m_postprocessing->geometry = m_rasterization->geometry;
     m_postprocessing->targetFramebuffer = m_targetFBO;
+
+    m_rasterization->color.invalidated.connect([this]() {
+        dynamic_cast<gloperate::TypedRenderTargetCapability*>(m_renderTargets.data())->setRenderTarget(gloperate::RenderTargetType::Depth, m_rasterization->fbo(), gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
+    });
 
     addStages(
         m_rasterization,
@@ -251,7 +267,6 @@ PostprocessingPipeline::PostprocessingPipeline()
 
 PostprocessingPipeline::~PostprocessingPipeline()
 {
-    delete m_camera.data();
 }
 
 gloperate::AbstractTargetFramebufferCapability * PostprocessingPipeline::targetFramebufferCapability()
@@ -267,4 +282,19 @@ gloperate::AbstractViewportCapability * PostprocessingPipeline::viewportCapabili
 gloperate::AbstractVirtualTimeCapability * PostprocessingPipeline::virtualTimeCapability()
 {
     return m_time;
+}
+
+gloperate::AbstractCameraCapability * PostprocessingPipeline::cameraCapability()
+{
+    return m_camera;
+}
+
+gloperate::AbstractProjectionCapability * PostprocessingPipeline::projectionCapability()
+{
+    return m_projection;
+}
+
+gloperate::AbstractTypedRenderTargetCapability * PostprocessingPipeline::renderTargetCapability()
+{
+    return m_renderTargets;
 }

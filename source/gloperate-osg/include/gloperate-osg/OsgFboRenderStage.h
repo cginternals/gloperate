@@ -50,6 +50,7 @@ public:
 protected:
     // Virtual OsgRenderStage functions
     virtual void handleViewportChanged() override;
+    virtual void postOsgRendering();
 
     /**
     *  @brief

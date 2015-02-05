@@ -11,14 +11,14 @@ namespace gloperate
 class GLOPERATE_API ScopedConnection
 {
 public:
-	ScopedConnection();
-	ScopedConnection(const Connection & connection);
-	~ScopedConnection();
+    ScopedConnection();
+    ScopedConnection(const Connection & connection);
+    ~ScopedConnection();
 
-	void operator=(const Connection & connection);
+    void operator=(const Connection & connection);
 
 protected:
-	Connection m_connection;
+    Connection m_connection;
 };
 
 } // namespace gloperate

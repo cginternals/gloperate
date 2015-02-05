@@ -3,7 +3,7 @@
 #include <type_traits>
 #include <cmath>
 
-#include <glm/gtx/constants.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include <gloperate/gloperate_api.h>
 

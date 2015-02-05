@@ -3,6 +3,7 @@
 
 #include <osg/Node>
 #include <osgViewer/Viewer>
+#include <osgDB/ReadFile>
 
 #include <gloperate/painter/ViewportCapability.h>
 #include <gloperate/painter/InputCapability.h>
@@ -12,8 +13,16 @@
 
 
 using namespace gloperate;
+
+
 namespace gloperate_osg
 {
+
+
+void OsgPainter::osg_loadScene(const std::string & filename)
+{
+    setScene(osgDB::readNodeFile(filename));
+}
 
 void OsgPainter::osg_setScene(osg::Node * scene)
 {
@@ -100,5 +109,6 @@ void OsgPainter::osg_cleanup()
         m_viewer->unref();
     }
 }
+
 
 } // namespace gloperate_osg

@@ -159,7 +159,7 @@ protected:
 
     Mode m_mode;
 
-    globjects::ref_ptr<gloperate::Painter> m_painter;
+    gloperate::Painter * m_painter;
     gloperate::ResourceManager & m_resourceManager;
 
 private:

@@ -13,8 +13,10 @@
 using namespace gl;
 using namespace gloperate;
 
+
 namespace gloperate_osg
 {
+
 
 /**
 *  @brief
@@ -77,6 +79,15 @@ void OsgPainter::setScene(osg::Node * scene)
     osg_setScene(scene);
 }
 
+/**
+*  @brief
+*    Load OSG scene
+*/
+void OsgPainter::loadScene(const std::string & filename)
+{
+    osg_loadScene(filename);
+}
+
 void OsgPainter::onInitialize()
 {
     osg_onInitialize();
@@ -96,5 +107,6 @@ void OsgPainter::onPaint()
     // Draw osg scene
     osg_onPaint();
 }
+
 
 } // namespace gloperate_osg

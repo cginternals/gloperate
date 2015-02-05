@@ -27,7 +27,6 @@ void OsgFboRenderStage::updateFbo_osg()
         colorTextureOsg->setFilter(osg::Texture::MAG_FILTER, osg::Texture::NEAREST);
         colorTextureOsg->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
         colorTextureOsg->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
-        colorTextureOsg->apply(*m_embedded->getState()); // Make sure that the texture is actually generated
         m_colorTextureOsg = colorTextureOsg;
 
         // (Re)create depth texture
@@ -39,7 +38,6 @@ void OsgFboRenderStage::updateFbo_osg()
         depthTextureOsg->setFilter(osg::Texture::MAG_FILTER, osg::Texture::NEAREST);
         depthTextureOsg->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
         depthTextureOsg->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
-        depthTextureOsg->apply(*m_embedded->getState()); // Make sure that the texture is actually generated
         m_depthTextureOsg = depthTextureOsg;
 
         // Create FBO for camera

@@ -1,5 +1,8 @@
 #pragma once
 
+
+#include <functional>
+
 #include <gloperate/resources/AbstractStorer.h>
 
 
@@ -30,15 +33,17 @@ public:
     *  @brief
     *    Store resource to file
     *
-    *  @param filename
+    *  @param[in] filename
     *    File name
-    *  @param object
+    *  @param[in] object
     *    Resource
+    *  @param[in] progress
+    *    Callback function that is invoked on progress (can be empty)
     *
     *  @return
     *   'true' if storage was successful, else 'false'
     */
-    virtual bool store(const std::string & filename, const T * object) const = 0;
+    virtual bool store(const std::string & filename, const T * object, std::function<void(int, int)> progress) const = 0;
 };
 
 } // namespace gloperate

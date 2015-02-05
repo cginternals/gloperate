@@ -98,23 +98,23 @@ Icosahedron::Icosahedron(const gl::GLsizei iterations, const gl::GLint positionL
 
     m_indices->bind(gl::GL_ELEMENT_ARRAY_BUFFER);
 
-	if (positionLocation >= 0)
+    if (positionLocation >= 0)
     {
-		auto vertexBinding = m_vao->binding(0);
-		vertexBinding->setAttribute(positionLocation);
-		vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
-		vertexBinding->setFormat(3, gl::GL_FLOAT, gl::GL_TRUE);
-		m_vao->enable(0);
-	}
+        auto vertexBinding = m_vao->binding(0);
+        vertexBinding->setAttribute(positionLocation);
+        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
+        vertexBinding->setFormat(3, gl::GL_FLOAT, gl::GL_TRUE);
+        m_vao->enable(0);
+    }
 
-	if (normalLocation >= 0)
+    if (normalLocation >= 0)
     {
-		auto vertexBinding = m_vao->binding(1);
-		vertexBinding->setAttribute(normalLocation);
-		vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
-		vertexBinding->setFormat(3, gl::GL_FLOAT, gl::GL_TRUE);
-		m_vao->enable(1);
-	}
+        auto vertexBinding = m_vao->binding(1);
+        vertexBinding->setAttribute(normalLocation);
+        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
+        vertexBinding->setFormat(3, gl::GL_FLOAT, gl::GL_TRUE);
+        m_vao->enable(1);
+    }
 
     m_vao->unbind();
 }

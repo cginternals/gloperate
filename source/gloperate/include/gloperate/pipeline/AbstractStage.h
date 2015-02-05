@@ -20,7 +20,7 @@ class GLOPERATE_API AbstractStage
 {
 public:
     AbstractStage(const std::string & name = "");
-	virtual ~AbstractStage();
+    virtual ~AbstractStage();
 
     const std::string & name() const;
     void setName(const std::string & name);

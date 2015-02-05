@@ -12,26 +12,26 @@ AbstractSignal::AbstractSignal()
 
 AbstractSignal::~AbstractSignal()
 {
-	for (std::pair<Connection::Id, Connection> pair: m_connections)
-	{
-		Connection & connection = pair.second;
-		connection.detach();
-	}
+    for (std::pair<Connection::Id, Connection> pair: m_connections)
+    {
+        Connection & connection = pair.second;
+        connection.detach();
+    }
 }
 
 Connection AbstractSignal::createConnection() const
 {
-	Connection::Id id = m_nextId++;
-	Connection connection(this, id);
-	m_connections[id] = connection;
+    Connection::Id id = m_nextId++;
+    Connection connection(this, id);
+    m_connections[id] = connection;
 
-	return connection;
+    return connection;
 }
 
 void AbstractSignal::disconnect(Connection & connection) const
 {
-	m_connections.erase(connection.id());
-	disconnectId(connection.id());
+    m_connections.erase(connection.id());
+    disconnectId(connection.id());
 }
 
 } // namespace gloperate

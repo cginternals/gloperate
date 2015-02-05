@@ -19,7 +19,7 @@ Painter::Painter(ResourceManager & resourceManager)
 */
 Painter::~Painter()
 {
-	// Destroy capabilities
+    // Destroy capabilities
     for (AbstractCapability * capability : m_capabilities) {
         delete capability;
     }
