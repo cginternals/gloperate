@@ -29,7 +29,7 @@ ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager,
 {
 	m_ui->setupUi(this);
 
-	connect(m_ui->buttonBox, &QDialogButtonBox::clicked,
+	connect(m_ui->saveButton, &QPushButton::clicked,
 		this, &ScreenshotWidget::handleSave);
 	connect(m_ui->openDirectoryButton, &QPushButton::clicked, 
 		this, &ScreenshotWidget::browseDirectory);
@@ -44,7 +44,7 @@ ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager,
 	context->doneCurrent();
 
 	if (!gloperate::ScreenshotTool::isApplicableTo(painter))
-		m_ui->buttonBox->buttons().first()->setDisabled(true);
+		m_ui->saveButton->setDisabled(true);
 
 	restoreSettings();
 	updateDirectory();
@@ -82,7 +82,7 @@ void ScreenshotWidget::restoreSettings()
 	settings.endGroup();
 }
 
-void ScreenshotWidget::handleSave(QAbstractButton* button)
+void ScreenshotWidget::handleSave(bool checked)
 {
 	m_context->makeCurrent();
 	m_screenshotTool->save(buildFileName());
@@ -145,15 +145,15 @@ void ScreenshotWidget::checkFilename(const QString& text)
 	
 	if (!rx.exactMatch(filename))
 	{
-		if (m_ui->buttonBox->isEnabled())
-			m_ui->buttonBox->setDisabled(true);
+		if (m_ui->saveButton->isEnabled())
+			m_ui->saveButton->setDisabled(true);
 		
 		m_ui->fileNameLineEdit->setStyleSheet("background-color:rgb(255,170,127);");
 	}
 	else
 	{
-		if (!m_ui->buttonBox->isEnabled())
-			m_ui->buttonBox->setDisabled(false);
+		if (!m_ui->saveButton->isEnabled())
+			m_ui->saveButton->setDisabled(false);
 
 		m_ui->fileNameLineEdit->setStyleSheet(emp);
 	}

@@ -41,7 +41,7 @@ public:
 	virtual ~ScreenshotWidget();
 
 protected:
-	void handleSave(QAbstractButton* button);
+	void handleSave(bool checked);
 	void browseDirectory(bool checked);
 	void updateDirectory();
 	void restoreSettings();
