@@ -3,6 +3,7 @@
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QWidget>
 #include <QScopedPointer>
+#include <QString>
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <gloperate-qtwidgets/gloperate-qtwidgets_api.h>
@@ -10,6 +11,7 @@
 class Ui_ScreenshotWidget;
 class QAbstractButton;
 class QPushButton;
+class QDir;
 
 namespace gloperate
 {
@@ -40,6 +42,8 @@ public:
 
 protected:
 	void handleSave(QAbstractButton* button);
+	void browseDirectory(bool checked);
+	void updateDirectory();
 
 protected:
 	gloperate::ScreenshotTool * m_screenshotTool;
@@ -47,6 +51,7 @@ protected:
 
 private:
 	const QScopedPointer<Ui_ScreenshotWidget> m_ui;
+	QString m_dirName;
 	
 
 };

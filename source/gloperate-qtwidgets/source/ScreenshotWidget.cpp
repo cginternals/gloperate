@@ -9,6 +9,8 @@
 #include <gloperate-qt/qt-includes-begin.h>
 #include "ui_ScreenshotWidget.h"
 #include <QAbstractButton>
+#include <QFileDialog>
+#include <QString>
 #include <QWindow>
 #include <gloperate-qt/qt-includes-end.h>
 
@@ -19,11 +21,14 @@ ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager,
 :	QWidget(parent)
 ,	m_context(context)
 ,	m_ui(new Ui_ScreenshotWidget)
+,	m_dirName(QDir::homePath())
 {
 	m_ui->setupUi(this);
 
 	connect(m_ui->buttonBox, &QDialogButtonBox::clicked,
 		this, &ScreenshotWidget::handleSave);
+	connect(m_ui->openDirectoryButton, &QPushButton::clicked, 
+		this, &ScreenshotWidget::browseDirectory);
 	
 	m_screenshotTool = new gloperate::ScreenshotTool(painter, resourceManager);
 	context->makeCurrent();
@@ -32,10 +37,17 @@ ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager,
 
 	if (!gloperate::ScreenshotTool::isApplicableTo(painter))
 		m_ui->buttonBox->buttons().first()->setDisabled(true);
+
+	updateDirectory();
 }
 
 ScreenshotWidget::~ScreenshotWidget()
 {
+}
+
+void ScreenshotWidget::updateDirectory()
+{
+	m_ui->directoryLineEdit->setText(m_dirName);
 }
 
 void ScreenshotWidget::handleSave(QAbstractButton* button)
@@ -43,6 +55,20 @@ void ScreenshotWidget::handleSave(QAbstractButton* button)
 	m_context->makeCurrent();
 	m_screenshotTool->save("screenshot.png");
 	m_context->doneCurrent();
+}
+
+void ScreenshotWidget::browseDirectory(bool checked)
+{
+	QFileDialog dialog(this);
+	dialog.setFileMode(QFileDialog::Directory);
+	dialog.setOption(QFileDialog::ShowDirsOnly);
+	dialog.setDirectory(m_dirName);
+
+	if (dialog.exec() && !dialog.selectedFiles().empty())
+	{
+		m_dirName = dialog.selectedFiles().first();
+		updateDirectory();
+	}
 }
 
 } //namespace gloperate_qtwidgets
