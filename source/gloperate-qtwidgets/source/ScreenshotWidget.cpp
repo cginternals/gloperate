@@ -23,7 +23,7 @@ ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager,
 	m_ui->setupUi(this);
 
 	connect(m_ui->buttonBox, &QDialogButtonBox::clicked,
-		this, &ScreenshotWidget::handleButtons);
+		this, &ScreenshotWidget::handleSave);
 	
 	m_screenshotTool = new gloperate::ScreenshotTool(painter, resourceManager);
 	context->makeCurrent();
@@ -38,18 +38,11 @@ ScreenshotWidget::~ScreenshotWidget()
 {
 }
 
-void ScreenshotWidget::handleButtons(QAbstractButton* button)
+void ScreenshotWidget::handleSave(QAbstractButton* button)
 {
-	if (button->text() == "Cancel")
-	{
-		close();
-	}
-	else if (button->text() == "Save")
-	{
-		m_context->makeCurrent();
-		m_screenshotTool->save("screenshot.png");
-		m_context->doneCurrent();
-	}
+	m_context->makeCurrent();
+	m_screenshotTool->save("screenshot.png");
+	m_context->doneCurrent();
 }
 
 } //namespace gloperate_qtwidgets

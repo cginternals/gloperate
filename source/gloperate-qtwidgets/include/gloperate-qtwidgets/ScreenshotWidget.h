@@ -9,6 +9,7 @@
 
 class Ui_ScreenshotWidget;
 class QAbstractButton;
+class QPushButton;
 
 namespace gloperate
 {
@@ -38,7 +39,7 @@ public:
 	virtual ~ScreenshotWidget();
 
 protected:
-	void handleButtons(QAbstractButton* button);
+	void handleSave(QAbstractButton* button);
 
 protected:
 	gloperate::ScreenshotTool * m_screenshotTool;
