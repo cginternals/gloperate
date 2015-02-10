@@ -44,6 +44,7 @@ protected:
 	void handleSave(QAbstractButton* button);
 	void browseDirectory(bool checked);
 	void updateDirectory();
+	void restoreSettings();
 
 protected:
 	gloperate::ScreenshotTool * m_screenshotTool;

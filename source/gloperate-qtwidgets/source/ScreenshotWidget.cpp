@@ -10,6 +10,7 @@
 #include "ui_ScreenshotWidget.h"
 #include <QAbstractButton>
 #include <QFileDialog>
+#include <QSettings>
 #include <QString>
 #include <QWindow>
 #include <gloperate-qt/qt-includes-end.h>
@@ -21,7 +22,6 @@ ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager,
 :	QWidget(parent)
 ,	m_context(context)
 ,	m_ui(new Ui_ScreenshotWidget)
-,	m_dirName(QDir::homePath())
 {
 	m_ui->setupUi(this);
 
@@ -38,6 +38,7 @@ ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager,
 	if (!gloperate::ScreenshotTool::isApplicableTo(painter))
 		m_ui->buttonBox->buttons().first()->setDisabled(true);
 
+	restoreSettings();
 	updateDirectory();
 }
 
@@ -48,12 +49,24 @@ ScreenshotWidget::~ScreenshotWidget()
 void ScreenshotWidget::updateDirectory()
 {
 	m_ui->directoryLineEdit->setText(m_dirName);
+	QSettings settings;
+	settings.beginGroup("ScreenshotWidget");
+	settings.setValue("dirname", m_dirName);
+	settings.endGroup();
+}
+
+void ScreenshotWidget::restoreSettings()
+{
+	QSettings settings;
+	settings.beginGroup("ScreenshotWidget");
+	m_dirName = settings.value("dirname", QDir::homePath()).toString();
+	settings.endGroup();
 }
 
 void ScreenshotWidget::handleSave(QAbstractButton* button)
 {
 	m_context->makeCurrent();
-	m_screenshotTool->save("screenshot.png");
+	m_screenshotTool->save(m_dirName.toStdString() + "/screenshot.png");
 	m_context->doneCurrent();
 }
 
