@@ -45,6 +45,9 @@ protected:
 	void browseDirectory(bool checked);
 	void updateDirectory();
 	void restoreSettings();
+	void checkFilename(const QString& text);
+	void saveFilename();
+	std::string buildFileName();
 
 protected:
 	gloperate::ScreenshotTool * m_screenshotTool;
@@ -53,6 +56,7 @@ protected:
 private:
 	const QScopedPointer<Ui_ScreenshotWidget> m_ui;
 	QString m_dirName;
+	int m_fileCounter;
 	
 
 };
