@@ -1,4 +1,4 @@
-#include <gloperate/tools/ScreenshotTool.h>
+#include <gloperate/tools/ImageExporter.h>
 
 #include <cassert>
 
@@ -14,7 +14,7 @@
 namespace gloperate
 {
 
-ScreenshotTool::ScreenshotTool(Painter * painter, ResourceManager & resourceManager)
+ImageExporter::ImageExporter(Painter * painter, ResourceManager & resourceManager)
     : m_painter(painter)
     , m_resourceManager(resourceManager)
     , m_viewportCapability(painter->getCapability<AbstractViewportCapability>())
@@ -23,13 +23,13 @@ ScreenshotTool::ScreenshotTool(Painter * painter, ResourceManager & resourceMana
     assert(isApplicableTo(painter));
 }
 
-bool ScreenshotTool::isApplicableTo(Painter * painter)
+bool ImageExporter::isApplicableTo(Painter * painter)
 {
     return painter->getCapability<AbstractViewportCapability>() != nullptr
         && painter->getCapability<AbstractTargetFramebufferCapability>() != nullptr;
 }
 
-void ScreenshotTool::initialize()
+void ImageExporter::initialize()
 {
     m_fbo = new globjects::Framebuffer();
     m_color = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
@@ -39,7 +39,7 @@ void ScreenshotTool::initialize()
     m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 }
 
-void ScreenshotTool::save(const std::string & filename, const int & width, const int & height)
+void ImageExporter::save(const std::string & filename, const int & width, const int & height)
 {
 	const int oldWidth{ m_viewportCapability->width() }, oldHeight{ m_viewportCapability->height() }, oldX{ m_viewportCapability->x() }, oldY{ m_viewportCapability->y() };
 	if (width > 0 && height > 0)

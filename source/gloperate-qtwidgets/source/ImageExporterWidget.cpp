@@ -1,13 +1,13 @@
-#include <gloperate-qtwidgets/ScreenshotWidget.h>
+#include <gloperate-qtwidgets/ImageExporterWidget.h>
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/painter/Painter.h>
-#include <gloperate/tools/ScreenshotTool.h>
+#include <gloperate/tools/ImageExporter.h>
 
 #include <gloperate-qt/QtOpenGLWindow.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
-#include "ui_ScreenshotWidget.h"
+#include "ui_ImageExporterWidget.h"
 #include <QAbstractButton>
 #include <QFile>
 #include <QFileDialog>
@@ -21,29 +21,29 @@
 namespace gloperate_qtwidgets
 {
 
-ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
+ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
 :	QWidget(parent)
 ,	m_context(context)
-,	m_ui(new Ui_ScreenshotWidget)
+,	m_ui(new Ui_ImageExporterWidget)
 ,	m_fileCounter(0)
 {
 	m_ui->setupUi(this);
 
 	connect(m_ui->saveButton, &QPushButton::clicked,
-		this, &ScreenshotWidget::handleSave);
+		this, &ImageExporterWidget::handleSave);
 	connect(m_ui->openDirectoryButton, &QPushButton::clicked, 
-		this, &ScreenshotWidget::browseDirectory);
+		this, &ImageExporterWidget::browseDirectory);
 	connect(m_ui->fileNameLineEdit, &QLineEdit::textChanged,
-		this, &ScreenshotWidget::checkFilename);
+		this, &ImageExporterWidget::checkFilename);
 	connect(m_ui->fileNameLineEdit, &QLineEdit::editingFinished,
-		this, &ScreenshotWidget::saveFilename);
+		this, &ImageExporterWidget::saveFilename);
 	
-	m_screenshotTool = new gloperate::ScreenshotTool(painter, resourceManager);
+	m_imageExporter = new gloperate::ImageExporter(painter, resourceManager);
 	context->makeCurrent();
-	m_screenshotTool->initialize();
+	m_imageExporter->initialize();
 	context->doneCurrent();
 
-	if (!gloperate::ScreenshotTool::isApplicableTo(painter))
+	if (!gloperate::ImageExporter::isApplicableTo(painter))
 		m_ui->saveButton->setDisabled(true);
 
 	restoreSettings();
@@ -51,45 +51,45 @@ ScreenshotWidget::ScreenshotWidget(gloperate::ResourceManager & resourceManager,
 	checkFilename(m_ui->fileNameLineEdit->text());
 }
 
-ScreenshotWidget::~ScreenshotWidget()
+ImageExporterWidget::~ImageExporterWidget()
 {
 }
 
-void ScreenshotWidget::updateDirectory()
+void ImageExporterWidget::updateDirectory()
 {
 	m_ui->directoryLineEdit->setText(m_dirName);
 	QSettings settings;
-	settings.beginGroup("ScreenshotWidget");
+	settings.beginGroup("ImageExporterWidget");
 	settings.setValue("dirname", m_dirName);
 	settings.endGroup();
 }
 
-void ScreenshotWidget::saveFilename()
+void ImageExporterWidget::saveFilename()
 {
 	QSettings settings;
-	settings.beginGroup("ScreenshotWidget");
+	settings.beginGroup("ImageExporterWidget");
 	settings.setValue("filename", m_ui->fileNameLineEdit->text());
 	settings.endGroup();
 	m_fileCounter = 0;
 }
 
-void ScreenshotWidget::restoreSettings()
+void ImageExporterWidget::restoreSettings()
 {
 	QSettings settings;
-	settings.beginGroup("ScreenshotWidget");
+	settings.beginGroup("ImageExporterWidget");
 	m_dirName = settings.value("dirname", QDir::homePath()).toString();
-	m_ui->fileNameLineEdit->setText(settings.value("filename", "screenshot").toString());
+	m_ui->fileNameLineEdit->setText(settings.value("filename", "image").toString());
 	settings.endGroup();
 }
 
-void ScreenshotWidget::handleSave(bool checked)
+void ImageExporterWidget::handleSave(bool checked)
 {
 	m_context->makeCurrent();
-	m_screenshotTool->save(buildFileName());
+	m_imageExporter->save(buildFileName());
 	m_context->doneCurrent();
 }
 
-void ScreenshotWidget::browseDirectory(bool checked)
+void ImageExporterWidget::browseDirectory(bool checked)
 {
 	QFileDialog dialog(this);
 	dialog.setFileMode(QFileDialog::Directory);
@@ -103,7 +103,7 @@ void ScreenshotWidget::browseDirectory(bool checked)
 	}
 }
 
-std::string ScreenshotWidget::buildFileName()
+std::string ImageExporterWidget::buildFileName()
 {
 	std::string filename{ (m_ui->fileNameLineEdit->text()).toStdString() };
 
@@ -129,7 +129,7 @@ std::string ScreenshotWidget::buildFileName()
 	return final_filename;
 }
 
-void ScreenshotWidget::checkFilename(const QString& text)
+void ImageExporterWidget::checkFilename(const QString& text)
 {
 	QString num("<enum>");
 	QString emp("");

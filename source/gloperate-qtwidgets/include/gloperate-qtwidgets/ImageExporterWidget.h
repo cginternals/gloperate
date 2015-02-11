@@ -8,7 +8,7 @@
 
 #include <gloperate-qtwidgets/gloperate-qtwidgets_api.h>
 
-class Ui_ScreenshotWidget;
+class Ui_ImageExporterWidget;
 class QAbstractButton;
 class QPushButton;
 class QDir;
@@ -18,7 +18,7 @@ namespace gloperate
 
 class ResourceManager;
 class Painter;
-class ScreenshotTool;
+class ImageExporter;
 
 }
 
@@ -32,13 +32,13 @@ class QtOpenGLWindow;
 namespace gloperate_qtwidgets
 {
 
-class GLOPERATE_QTWIDGETS_API ScreenshotWidget : public QWidget
+class GLOPERATE_QTWIDGETS_API ImageExporterWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	ScreenshotWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
-	virtual ~ScreenshotWidget();
+	ImageExporterWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
+	virtual ~ImageExporterWidget();
 
 protected:
 	void handleSave(bool checked);
@@ -50,11 +50,11 @@ protected:
 	std::string buildFileName();
 
 protected:
-	gloperate::ScreenshotTool * m_screenshotTool;
+	gloperate::ImageExporter * m_imageExporter;
 	gloperate_qt::QtOpenGLWindow * m_context;
 
 private:
-	const QScopedPointer<Ui_ScreenshotWidget> m_ui;
+	const QScopedPointer<Ui_ImageExporterWidget> m_ui;
 	QString m_dirName;
 	int m_fileCounter;
 	
