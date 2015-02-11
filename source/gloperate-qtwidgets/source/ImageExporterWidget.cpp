@@ -18,6 +18,9 @@
 #include <QWindow>
 #include <gloperate-qt/qt-includes-end.h>
 
+#define CM_PER_INCH 2.54
+#define INCH_PER_CM 1 / 2.54
+
 namespace gloperate_qtwidgets
 {
 
@@ -46,9 +49,171 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
 	if (!gloperate::ImageExporter::isApplicableTo(painter))
 		m_ui->saveButton->setDisabled(true);
 
+	initializeResolutionGroupBox();
+
 	restoreSettings();
 	updateDirectory();
 	checkFilename(m_ui->fileNameLineEdit->text());
+}
+
+void ImageExporterWidget::initializeResolutionGroupBox()
+{
+	void (QComboBox:: *comboBoxCurrentIndexChanged)(const QString &) = &QComboBox::currentIndexChanged;
+	connect(m_ui->widthComboBox, comboBoxCurrentIndexChanged,
+		this, &ImageExporterWidget::widthUnitChanged);
+	connect(m_ui->heightComboBox, comboBoxCurrentIndexChanged,
+		this, &ImageExporterWidget::heightUnitChanged);
+
+	void (QDoubleSpinBox:: *spinBoxValueChanged)(double d) = &QDoubleSpinBox::valueChanged;
+	connect(m_ui->widthDoubleSpinBox, spinBoxValueChanged,
+		this, &ImageExporterWidget::widthValueChanged);
+	connect(m_ui->heightDoubleSpinBox, spinBoxValueChanged,
+		this, &ImageExporterWidget::heightValueChanged);
+
+	QStringList units{ "pixel", "inch", "cm" };
+	m_widthUnit = "pixel";
+	m_heightUnit = "pixel";
+	m_ui->widthComboBox->addItems(units);
+	m_ui->heightComboBox->addItems(units);
+
+	QStringList resolutions{ "pixel/inch", "pixel/cm" };
+	m_resolutionUnit = "pixel/inch";
+	m_ui->resolutionComboBox->addItems(resolutions);
+}
+
+void ImageExporterWidget::widthUnitChanged(const QString& text)
+{
+	if (text == "pixel")
+	{
+		m_ui->widthDoubleSpinBox->setRange(1.0, 100000.0);
+
+		if (m_widthUnit == "inch")
+		{
+			if (m_resolutionUnit == "pixel/inch")
+				m_ui->widthDoubleSpinBox->setValue(std::ceil(m_ui->widthDoubleSpinBox->value() * m_ui->resolutionSpinBox->value()));
+			else if (m_resolutionUnit == "pixel/cm")
+				m_ui->widthDoubleSpinBox->setValue(std::ceil(m_ui->widthDoubleSpinBox->value() * m_ui->resolutionSpinBox->value() * CM_PER_INCH));
+		}
+		else if (m_widthUnit == "cm")
+		{
+			if (m_resolutionUnit == "pixel/inch")
+				m_ui->widthDoubleSpinBox->setValue(std::ceil(m_ui->widthDoubleSpinBox->value() * m_ui->resolutionSpinBox->value() * INCH_PER_CM));
+			else if (m_resolutionUnit == "pixel/cm")
+				m_ui->widthDoubleSpinBox->setValue(std::ceil(m_ui->widthDoubleSpinBox->value() * m_ui->resolutionSpinBox->value()));
+		}
+
+		if (m_ui->heightComboBox->currentText() == "pixel")
+			enableResolution(false);
+
+		m_ui->widthDoubleSpinBox->setDecimals(0);
+	}
+	else if (text == "inch")
+	{
+		if (m_widthUnit == "pixel")
+		{
+			m_ui->widthDoubleSpinBox->setDecimals(2);
+			m_ui->widthDoubleSpinBox->setRange(0.01, 10000.0);
+
+			if (m_resolutionUnit == "pixel/inch")
+				m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() / m_ui->resolutionSpinBox->value());
+			else if (m_resolutionUnit == "pixel/cm")
+				m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() / m_ui->resolutionSpinBox->value() * INCH_PER_CM);
+
+			enableResolution(true);
+		}
+		else if (m_widthUnit == "cm")
+			m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() * INCH_PER_CM);
+	}
+	else
+	{
+		if (m_widthUnit == "pixel")
+		{
+			m_ui->widthDoubleSpinBox->setDecimals(2);
+			m_ui->widthDoubleSpinBox->setRange(0.01, 10000.0);
+
+			if (m_resolutionUnit == "pixel/inch")
+				m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() / m_ui->resolutionSpinBox->value() * CM_PER_INCH);
+			else if (m_resolutionUnit == "pixel/cm")
+				m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() / m_ui->resolutionSpinBox->value());
+
+			enableResolution(true);
+		}
+		else if (m_widthUnit == "inch")
+			m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() * CM_PER_INCH);
+	}
+
+	m_widthUnit = text;
+}
+
+void ImageExporterWidget::heightUnitChanged(const QString& text)
+{
+	if (text == "pixel")
+	{
+		m_ui->heightDoubleSpinBox->setRange(1.0, 100000.0);
+
+		if (m_heightUnit == "inch")
+		{
+			if (m_resolutionUnit == "pixel/inch")
+				m_ui->heightDoubleSpinBox->setValue(std::ceil(m_ui->heightDoubleSpinBox->value() * m_ui->resolutionSpinBox->value()));
+			else if (m_resolutionUnit == "pixel/cm")
+				m_ui->heightDoubleSpinBox->setValue(std::ceil(m_ui->heightDoubleSpinBox->value() * m_ui->resolutionSpinBox->value() * CM_PER_INCH));
+		}
+		else if (m_heightUnit == "cm")
+		{
+			if (m_resolutionUnit == "pixel/inch")
+				m_ui->heightDoubleSpinBox->setValue(std::ceil(m_ui->heightDoubleSpinBox->value() * m_ui->resolutionSpinBox->value() * INCH_PER_CM));
+			else if (m_resolutionUnit == "pixel/cm")
+				m_ui->heightDoubleSpinBox->setValue(std::ceil(m_ui->heightDoubleSpinBox->value() * m_ui->resolutionSpinBox->value()));
+		}
+
+		if (m_ui->widthComboBox->currentText() == "pixel")
+			enableResolution(false);
+
+		m_ui->heightDoubleSpinBox->setDecimals(0);
+	}
+	else if (text == "inch")
+	{
+		if (m_heightUnit == "pixel")
+		{
+			m_ui->heightDoubleSpinBox->setDecimals(2);
+			m_ui->heightDoubleSpinBox->setRange(0.01, 10000.0);
+
+			if (m_resolutionUnit == "pixel/inch")
+				m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() / m_ui->resolutionSpinBox->value());
+			else if (m_resolutionUnit == "pixel/cm")
+				m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() / m_ui->resolutionSpinBox->value() * INCH_PER_CM);
+
+			enableResolution(true);
+		}
+		else if (m_heightUnit == "cm")
+			m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() * INCH_PER_CM);
+	}
+	else
+	{
+		if (m_heightUnit == "pixel")
+		{
+			m_ui->heightDoubleSpinBox->setDecimals(2);
+			m_ui->heightDoubleSpinBox->setRange(0.01, 10000.0);
+
+			if (m_resolutionUnit == "pixel/inch")
+				m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() / m_ui->resolutionSpinBox->value() * CM_PER_INCH);
+			else if (m_resolutionUnit == "pixel/cm")
+				m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() / m_ui->resolutionSpinBox->value());
+
+			enableResolution(true);
+		}
+		else if (m_heightUnit == "inch")
+			m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() * CM_PER_INCH);
+	}
+
+	m_heightUnit = text;
+}
+
+void ImageExporterWidget::enableResolution(bool enable)
+{
+	m_ui->resolutionSpinBox->setEnabled(enable);
+	m_ui->resolutionComboBox->setEnabled(enable);
+	m_ui->resolutionLabel->setEnabled(enable);
 }
 
 ImageExporterWidget::~ImageExporterWidget()

@@ -48,6 +48,10 @@ protected:
 	void checkFilename(const QString& text);
 	void saveFilename();
 	std::string buildFileName();
+	void initializeResolutionGroupBox();
+	void widthUnitChanged(const QString& text);
+	void heightUnitChanged(const QString& text);
+	void enableResolution(bool enable);
 
 protected:
 	gloperate::ImageExporter * m_imageExporter;
@@ -57,6 +61,9 @@ private:
 	const QScopedPointer<Ui_ImageExporterWidget> m_ui;
 	QString m_dirName;
 	int m_fileCounter;
+	QString m_widthUnit;
+	QString m_heightUnit;
+	QString m_resolutionUnit;
 	
 
 };
