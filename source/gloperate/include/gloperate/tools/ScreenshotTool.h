@@ -27,7 +27,7 @@ public:
 
     void initialize();
 
-    void save(const std::string & filename);
+	void save(const std::string & filename, const int & width = 0, const int & height = 0);
 
 protected:
     Painter * m_painter;

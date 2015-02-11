@@ -39,8 +39,12 @@ void ScreenshotTool::initialize()
     m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 }
 
-void ScreenshotTool::save(const std::string & filename)
+void ScreenshotTool::save(const std::string & filename, const int & width, const int & height)
 {
+	const int oldWidth{ m_viewportCapability->width() }, oldHeight{ m_viewportCapability->height() }, oldX{ m_viewportCapability->x() }, oldY{ m_viewportCapability->y() };
+	if (width > 0 && height > 0)
+		m_viewportCapability->setViewport(0, 0, width, height);
+
     m_color->image2D(0, gl::GL_RGBA, m_viewportCapability->width(), m_viewportCapability->height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
 
     // [TODO] Check for availability of depth format
@@ -55,6 +59,8 @@ void ScreenshotTool::save(const std::string & filename)
     m_resourceManager.store<globjects::Texture>(filename, m_color);
 
     m_framebufferCapability->setFramebuffer(oldFbo);
+	if (width > 0 && height > 0)
+		m_viewportCapability->setViewport(oldX, oldY, oldWidth, oldHeight);
 }
 
 } // namespace gloperate
