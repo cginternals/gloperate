@@ -8,6 +8,8 @@
 
 #include <gloperate-qtwidgets/gloperate-qtwidgets_api.h>
 
+#include <memory>
+
 class Ui_ImageExporterWidget;
 class QAbstractButton;
 class QPushButton;
