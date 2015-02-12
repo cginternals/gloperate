@@ -290,7 +290,7 @@ void ImageExporterWidget::restoreSettings()
 void ImageExporterWidget::handleSave(bool checked)
 {
 	m_context->makeCurrent();
-	m_imageExporter->save(buildFileName());
+	m_imageExporter->save(buildFileName(), toPixels(m_widthState->value, m_widthState->type), toPixels(m_heightState->value, m_heightState->type));
 	m_context->doneCurrent();
 }
 
