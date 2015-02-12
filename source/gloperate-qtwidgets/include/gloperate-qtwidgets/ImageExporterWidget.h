@@ -51,21 +51,30 @@ public:
 
 protected:
 	void handleSave(bool checked);
-	void browseDirectory(bool checked);
-	void updateDirectory();
+
 	void restoreSettings();
+	void initializeResolutionGroupBox();
+
 	void checkFilename(const QString& text);
 	void saveFilename();
 	std::string buildFileName();
-	void initializeResolutionGroupBox();
+	void browseDirectory(bool checked);
+	void updateDirectory();
+
 	void widthUnitChanged(const QString& text);
 	void heightUnitChanged(const QString& text);
+	void resolutionUnitChanged(const QString& text);
 	void enableResolution(bool enable);
 	void widthValueChanged(double d);
 	void heightValueChanged(double d);
+	void resolutionValueChanged(int i);
+
 	double inchToPixels(double& value);
 	double cmToPixels(double& value);
 	double toPixels(double& value, QString& type);
+	double pixelsToCm(double& value);
+	double pixelsToInch(double& value);
+	double pixelsTo(double& value, QString& type);
 
 protected:
 	gloperate::ImageExporter * m_imageExporter;
