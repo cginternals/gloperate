@@ -32,6 +32,13 @@ class QtOpenGLWindow;
 namespace gloperate_qtwidgets
 {
 
+struct ResolutionState{
+	ResolutionState(double d, QString s, bool b) :value{ d }, type{ s }, constraintEnforced{ b } {}
+	double value;
+	QString type;
+	bool constraintEnforced;
+};
+
 class GLOPERATE_QTWIDGETS_API ImageExporterWidget : public QWidget
 {
 	Q_OBJECT
@@ -52,6 +59,8 @@ protected:
 	void widthUnitChanged(const QString& text);
 	void heightUnitChanged(const QString& text);
 	void enableResolution(bool enable);
+	void widthValueChanged(double d);
+	void heightValueChanged(double d);
 
 protected:
 	gloperate::ImageExporter * m_imageExporter;
@@ -61,9 +70,9 @@ private:
 	const QScopedPointer<Ui_ImageExporterWidget> m_ui;
 	QString m_dirName;
 	int m_fileCounter;
-	QString m_widthUnit;
-	QString m_heightUnit;
-	QString m_resolutionUnit;
+	std::unique_ptr<ResolutionState> m_widthState;
+	std::unique_ptr<ResolutionState> m_heightState;
+	std::unique_ptr<ResolutionState> m_resolutionState;
 	
 
 };

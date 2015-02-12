@@ -29,6 +29,9 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
 ,	m_context(context)
 ,	m_ui(new Ui_ImageExporterWidget)
 ,	m_fileCounter(0)
+,	m_widthState(new ResolutionState(1.0, "pixel", false))
+,	m_heightState(new ResolutionState(1.0, "pixel", false))
+,	m_resolutionState(new ResolutionState(1.0, "pixel/inch", true))
 {
 	m_ui->setupUi(this);
 
@@ -71,13 +74,10 @@ void ImageExporterWidget::initializeResolutionGroupBox()
 		this, &ImageExporterWidget::heightValueChanged);
 
 	QStringList units{ "pixel", "inch", "cm" };
-	m_widthUnit = "pixel";
-	m_heightUnit = "pixel";
 	m_ui->widthComboBox->addItems(units);
 	m_ui->heightComboBox->addItems(units);
 
 	QStringList resolutions{ "pixel/inch", "pixel/cm" };
-	m_resolutionUnit = "pixel/inch";
 	m_ui->resolutionComboBox->addItems(resolutions);
 }
 
@@ -85,64 +85,64 @@ void ImageExporterWidget::widthUnitChanged(const QString& text)
 {
 	if (text == "pixel")
 	{
-		m_ui->widthDoubleSpinBox->setRange(1.0, 100000.0);
-
-		if (m_widthUnit == "inch")
+		if (m_widthState->type == "inch")
 		{
-			if (m_resolutionUnit == "pixel/inch")
-				m_ui->widthDoubleSpinBox->setValue(std::ceil(m_ui->widthDoubleSpinBox->value() * m_ui->resolutionSpinBox->value()));
-			else if (m_resolutionUnit == "pixel/cm")
-				m_ui->widthDoubleSpinBox->setValue(std::ceil(m_ui->widthDoubleSpinBox->value() * m_ui->resolutionSpinBox->value() * CM_PER_INCH));
+			if (m_resolutionState->type == "pixel/inch")
+				m_widthState->value = m_widthState->value * m_resolutionState->value;
+			else if (m_resolutionState->type == "pixel/cm")
+				m_widthState->value = m_widthState->value * m_resolutionState->value * CM_PER_INCH;
 		}
-		else if (m_widthUnit == "cm")
+		else if (m_widthState->type == "cm")
 		{
-			if (m_resolutionUnit == "pixel/inch")
-				m_ui->widthDoubleSpinBox->setValue(std::ceil(m_ui->widthDoubleSpinBox->value() * m_ui->resolutionSpinBox->value() * INCH_PER_CM));
-			else if (m_resolutionUnit == "pixel/cm")
-				m_ui->widthDoubleSpinBox->setValue(std::ceil(m_ui->widthDoubleSpinBox->value() * m_ui->resolutionSpinBox->value()));
+			if (m_resolutionState->type == "pixel/inch")
+				m_widthState->value = m_widthState->value * m_resolutionState->value * INCH_PER_CM;
+			else if (m_resolutionState->type == "pixel/cm")
+				m_widthState->value = m_widthState->value * m_resolutionState->value;
 		}
 
 		if (m_ui->heightComboBox->currentText() == "pixel")
 			enableResolution(false);
 
+		m_ui->widthDoubleSpinBox->setRange(1.0, 100000.0);
 		m_ui->widthDoubleSpinBox->setDecimals(0);
 	}
 	else if (text == "inch")
 	{
-		if (m_widthUnit == "pixel")
+		if (m_widthState->type == "pixel")
 		{
 			m_ui->widthDoubleSpinBox->setDecimals(2);
 			m_ui->widthDoubleSpinBox->setRange(0.01, 10000.0);
 
-			if (m_resolutionUnit == "pixel/inch")
-				m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() / m_ui->resolutionSpinBox->value());
-			else if (m_resolutionUnit == "pixel/cm")
-				m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() / m_ui->resolutionSpinBox->value() * INCH_PER_CM);
+			if (m_resolutionState->type == "pixel/inch")
+				m_widthState->value = m_widthState->value / m_resolutionState->value;
+			else if (m_resolutionState->type == "pixel/cm")
+				m_widthState->value = m_widthState->value / m_resolutionState->value * INCH_PER_CM;
 
 			enableResolution(true);
 		}
-		else if (m_widthUnit == "cm")
-			m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() * INCH_PER_CM);
+		else if (m_widthState->type == "cm")
+			m_widthState->value = m_widthState->value * INCH_PER_CM;
 	}
 	else
 	{
-		if (m_widthUnit == "pixel")
+		if (m_widthState->type == "pixel")
 		{
 			m_ui->widthDoubleSpinBox->setDecimals(2);
 			m_ui->widthDoubleSpinBox->setRange(0.01, 10000.0);
 
-			if (m_resolutionUnit == "pixel/inch")
-				m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() / m_ui->resolutionSpinBox->value() * CM_PER_INCH);
-			else if (m_resolutionUnit == "pixel/cm")
-				m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() / m_ui->resolutionSpinBox->value());
+			if (m_resolutionState->type == "pixel/inch")
+				m_widthState->value = m_widthState->value / m_resolutionState->value * CM_PER_INCH;
+			else if (m_resolutionState->type == "pixel/cm")
+				m_widthState->value = m_widthState->value / m_resolutionState->value;
 
 			enableResolution(true);
 		}
-		else if (m_widthUnit == "inch")
-			m_ui->widthDoubleSpinBox->setValue(m_ui->widthDoubleSpinBox->value() * CM_PER_INCH);
+		else if (m_widthState->type == "inch")
+			m_widthState->value = m_widthState->value * CM_PER_INCH;
 	}
 
-	m_widthUnit = text;
+	m_ui->widthDoubleSpinBox->setValue(m_widthState->value);
+	m_widthState->type = text;
 }
 
 void ImageExporterWidget::heightUnitChanged(const QString& text)
@@ -151,19 +151,19 @@ void ImageExporterWidget::heightUnitChanged(const QString& text)
 	{
 		m_ui->heightDoubleSpinBox->setRange(1.0, 100000.0);
 
-		if (m_heightUnit == "inch")
+		if (m_heightState->type == "inch")
 		{
-			if (m_resolutionUnit == "pixel/inch")
-				m_ui->heightDoubleSpinBox->setValue(std::ceil(m_ui->heightDoubleSpinBox->value() * m_ui->resolutionSpinBox->value()));
-			else if (m_resolutionUnit == "pixel/cm")
-				m_ui->heightDoubleSpinBox->setValue(std::ceil(m_ui->heightDoubleSpinBox->value() * m_ui->resolutionSpinBox->value() * CM_PER_INCH));
+			if (m_resolutionState->type == "pixel/inch")
+				m_heightState->value = m_heightState->value * m_resolutionState->value;
+			else if (m_resolutionState->type == "pixel/cm")
+				m_heightState->value = m_heightState->value * m_resolutionState->value * CM_PER_INCH;
 		}
-		else if (m_heightUnit == "cm")
+		else if (m_heightState->type == "cm")
 		{
-			if (m_resolutionUnit == "pixel/inch")
-				m_ui->heightDoubleSpinBox->setValue(std::ceil(m_ui->heightDoubleSpinBox->value() * m_ui->resolutionSpinBox->value() * INCH_PER_CM));
-			else if (m_resolutionUnit == "pixel/cm")
-				m_ui->heightDoubleSpinBox->setValue(std::ceil(m_ui->heightDoubleSpinBox->value() * m_ui->resolutionSpinBox->value()));
+			if (m_resolutionState->type == "pixel/inch")
+				m_heightState->value = m_heightState->value * m_resolutionState->value * INCH_PER_CM;
+			else if (m_resolutionState->type == "pixel/cm")
+				m_heightState->value = m_heightState->value * m_resolutionState->value;
 		}
 
 		if (m_ui->widthComboBox->currentText() == "pixel")
@@ -173,40 +173,77 @@ void ImageExporterWidget::heightUnitChanged(const QString& text)
 	}
 	else if (text == "inch")
 	{
-		if (m_heightUnit == "pixel")
+		if (m_heightState->type == "pixel")
 		{
 			m_ui->heightDoubleSpinBox->setDecimals(2);
 			m_ui->heightDoubleSpinBox->setRange(0.01, 10000.0);
 
-			if (m_resolutionUnit == "pixel/inch")
-				m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() / m_ui->resolutionSpinBox->value());
-			else if (m_resolutionUnit == "pixel/cm")
-				m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() / m_ui->resolutionSpinBox->value() * INCH_PER_CM);
+			if (m_resolutionState->type == "pixel/inch")
+				m_heightState->value = m_heightState->value / m_resolutionState->value;
+			else if (m_resolutionState->type == "pixel/cm")
+				m_heightState->value = m_heightState->value / m_resolutionState->value * INCH_PER_CM;
 
 			enableResolution(true);
 		}
-		else if (m_heightUnit == "cm")
-			m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() * INCH_PER_CM);
+		else if (m_heightState->type == "cm")
+			m_heightState->value = m_heightState->value * INCH_PER_CM;
 	}
 	else
 	{
-		if (m_heightUnit == "pixel")
+		if (m_heightState->type == "pixel")
 		{
 			m_ui->heightDoubleSpinBox->setDecimals(2);
 			m_ui->heightDoubleSpinBox->setRange(0.01, 10000.0);
 
-			if (m_resolutionUnit == "pixel/inch")
-				m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() / m_ui->resolutionSpinBox->value() * CM_PER_INCH);
-			else if (m_resolutionUnit == "pixel/cm")
-				m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() / m_ui->resolutionSpinBox->value());
+			if (m_resolutionState->type == "pixel/inch")
+				m_heightState->value = m_heightState->value / m_resolutionState->value * CM_PER_INCH;
+			else if (m_resolutionState->type == "pixel/cm")
+				m_heightState->value = m_heightState->value / m_resolutionState->value;
 
 			enableResolution(true);
 		}
-		else if (m_heightUnit == "inch")
-			m_ui->heightDoubleSpinBox->setValue(m_ui->heightDoubleSpinBox->value() * CM_PER_INCH);
+		else if (m_heightState->type == "inch")
+			m_heightState->value = m_heightState->value * CM_PER_INCH;
 	}
 
-	m_heightUnit = text;
+	m_ui->heightDoubleSpinBox->setValue(m_heightState->value);
+	m_heightState->type = text;
+}
+
+void ImageExporterWidget::widthValueChanged(double d)
+{
+	if (m_ui->aspectCheckBox->isChecked() && !m_widthState->constraintEnforced)
+	{
+		m_heightState->value = d * (m_heightState->value / m_widthState->value);
+		m_heightState->constraintEnforced = true;
+
+		if (m_heightState->type == "pixel")
+			m_ui->heightDoubleSpinBox->setValue(std::round(m_heightState->value));
+		else
+			m_ui->heightDoubleSpinBox->setValue(m_heightState->value);
+	}
+
+	if (!m_widthState->constraintEnforced)
+		m_widthState->value = d;
+	m_widthState->constraintEnforced = false;
+}
+
+void ImageExporterWidget::heightValueChanged(double d)
+{
+	if (m_ui->aspectCheckBox->isChecked() && !m_heightState->constraintEnforced)
+	{
+		m_widthState->value = d * (m_widthState->value / m_heightState->value);
+		m_widthState->constraintEnforced = true;
+
+		if (m_widthState->type == "pixel")
+			m_ui->widthDoubleSpinBox->setValue(std::round(m_widthState->value));
+		else
+			m_ui->widthDoubleSpinBox->setValue(m_widthState->value);
+	}
+
+	if (!m_heightState->constraintEnforced)
+		m_heightState->value = d;
+	m_heightState->constraintEnforced = false;
 }
 
 void ImageExporterWidget::enableResolution(bool enable)
