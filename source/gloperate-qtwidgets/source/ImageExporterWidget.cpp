@@ -81,24 +81,41 @@ void ImageExporterWidget::initializeResolutionGroupBox()
 	m_ui->resolutionComboBox->addItems(resolutions);
 }
 
+double ImageExporterWidget::inchToPixels(double& value)
+{
+	if (m_resolutionState->type == "pixel/inch")
+		value *= m_resolutionState->value;
+	else if (m_resolutionState->type == "pixel/cm")
+		value *= m_resolutionState->value * CM_PER_INCH;
+
+	return value;
+}
+
+double ImageExporterWidget::cmToPixels(double& value)
+{
+	if (m_resolutionState->type == "pixel/inch")
+		value *= m_resolutionState->value * INCH_PER_CM;
+	else if (m_resolutionState->type == "pixel/cm")
+		value *= m_resolutionState->value;
+
+	return value;
+}
+
+double ImageExporterWidget::toPixels(double& value, QString& type)
+{
+	if (type == "inch")
+		value = inchToPixels(value);
+	else if (type == "cm")
+		value = cmToPixels(value);
+
+	return value;
+}
+
 void ImageExporterWidget::widthUnitChanged(const QString& text)
 {
 	if (text == "pixel")
 	{
-		if (m_widthState->type == "inch")
-		{
-			if (m_resolutionState->type == "pixel/inch")
-				m_widthState->value = m_widthState->value * m_resolutionState->value;
-			else if (m_resolutionState->type == "pixel/cm")
-				m_widthState->value = m_widthState->value * m_resolutionState->value * CM_PER_INCH;
-		}
-		else if (m_widthState->type == "cm")
-		{
-			if (m_resolutionState->type == "pixel/inch")
-				m_widthState->value = m_widthState->value * m_resolutionState->value * INCH_PER_CM;
-			else if (m_resolutionState->type == "pixel/cm")
-				m_widthState->value = m_widthState->value * m_resolutionState->value;
-		}
+		m_widthState->value = toPixels(m_widthState->value, m_widthState->type);
 
 		if (m_ui->heightComboBox->currentText() == "pixel")
 			enableResolution(false);
@@ -149,26 +166,12 @@ void ImageExporterWidget::heightUnitChanged(const QString& text)
 {
 	if (text == "pixel")
 	{
-		m_ui->heightDoubleSpinBox->setRange(1.0, 100000.0);
-
-		if (m_heightState->type == "inch")
-		{
-			if (m_resolutionState->type == "pixel/inch")
-				m_heightState->value = m_heightState->value * m_resolutionState->value;
-			else if (m_resolutionState->type == "pixel/cm")
-				m_heightState->value = m_heightState->value * m_resolutionState->value * CM_PER_INCH;
-		}
-		else if (m_heightState->type == "cm")
-		{
-			if (m_resolutionState->type == "pixel/inch")
-				m_heightState->value = m_heightState->value * m_resolutionState->value * INCH_PER_CM;
-			else if (m_resolutionState->type == "pixel/cm")
-				m_heightState->value = m_heightState->value * m_resolutionState->value;
-		}
+		m_heightState->value = toPixels(m_heightState->value, m_heightState->type);
 
 		if (m_ui->widthComboBox->currentText() == "pixel")
 			enableResolution(false);
 
+		m_ui->heightDoubleSpinBox->setRange(1.0, 100000.0);
 		m_ui->heightDoubleSpinBox->setDecimals(0);
 	}
 	else if (text == "inch")

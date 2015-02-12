@@ -61,6 +61,9 @@ protected:
 	void enableResolution(bool enable);
 	void widthValueChanged(double d);
 	void heightValueChanged(double d);
+	double inchToPixels(double& value);
+	double cmToPixels(double& value);
+	double toPixels(double& value, QString& type);
 
 protected:
 	gloperate::ImageExporter * m_imageExporter;
