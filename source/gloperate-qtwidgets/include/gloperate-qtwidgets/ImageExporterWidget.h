@@ -14,6 +14,7 @@ class Ui_ImageExporterWidget;
 class QAbstractButton;
 class QPushButton;
 class QDir;
+class QDoubleSpinBox;
 
 namespace gloperate
 {
@@ -35,10 +36,9 @@ namespace gloperate_qtwidgets
 {
 
 struct ResolutionState{
-	ResolutionState(double d, QString s, bool b) :value{ d }, type{ s }, constraintEnforced{ b } {}
+	ResolutionState(double d, QString s) :value{ d }, type{ s } {}
 	double value;
 	QString type;
-	bool constraintEnforced;
 };
 
 class GLOPERATE_QTWIDGETS_API ImageExporterWidget : public QWidget
@@ -69,12 +69,14 @@ protected:
 	void heightValueChanged(double d);
 	void resolutionValueChanged(int i);
 
-	double inchToPixels(double& value);
-	double cmToPixels(double& value);
-	double toPixels(double& value, QString& type);
-	double pixelsToCm(double& value);
-	double pixelsToInch(double& value);
-	double pixelsTo(double& value, QString& type);
+	double inchToPixels(double value);
+	double cmToPixels(double value);
+	double toPixels(double value, const QString& type);
+	double pixelsToCm(double value);
+	double pixelsToInch(double value);
+	double pixelsTo(double value, const QString& type);
+
+	void setDecimals(QDoubleSpinBox* box, int dec);
 
 protected:
 	gloperate::ImageExporter * m_imageExporter;
