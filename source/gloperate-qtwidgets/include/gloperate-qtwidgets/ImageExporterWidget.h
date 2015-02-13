@@ -54,6 +54,7 @@ protected:
 
 	void restoreSettings();
 	void initializeResolutionGroupBox();
+	void updateResolutionSummary();
 
 	void checkFilename(const QString& text);
 	void saveFilename();

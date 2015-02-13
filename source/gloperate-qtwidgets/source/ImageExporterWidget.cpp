@@ -93,6 +93,43 @@ void ImageExporterWidget::initializeResolutionGroupBox()
 	bool oldSpinBoxSignalStatus = m_ui->resolutionSpinBox->blockSignals(true);
 	m_ui->resolutionSpinBox->setValue(72);
 	m_ui->resolutionSpinBox->blockSignals(oldSpinBoxSignalStatus);
+
+	updateResolutionSummary();
+}
+
+void ImageExporterWidget::updateResolutionSummary()
+{
+	// TODO: detect unsigned long long overflow
+	unsigned long long pixelNumber{ static_cast<unsigned long long>(std::round(toPixels(m_widthState->value, m_widthState->type)) * std::round(toPixels(m_heightState->value, m_heightState->type))) };
+	QString unit;
+	int byte;
+	if (pixelNumber * 4 < 1024)
+	{
+		unit = "Byte";
+		byte = pixelNumber * 4;
+	}
+	else if (pixelNumber * 4 < pow<unsigned long long>(1024, 2))
+	{
+		unit = "KiB";
+		byte = pixelNumber * 4 / 1024;
+	}
+	else if (pixelNumber * 4 < pow<unsigned long long>(1024, 3))
+	{
+		unit = "MiB";
+		byte = pixelNumber * 4 / pow<unsigned long long>(1024, 2);
+	}
+	else if (pixelNumber * 4 < pow<unsigned long long>(1024, 4))
+	{
+		unit = "GiB";
+		byte = pixelNumber * 4 / pow<unsigned long long>(1024, 3);
+	}
+	else //if (pixelNumber * 4 < pow<unsigned long long>(1024, 5))
+	{
+		unit = "TiB";
+		byte = pixelNumber * 4 / pow<unsigned long long>(1024, 4);
+	}
+	QString summary{ QString::number(pixelNumber) + " Pixels, " + QString::number(byte) + " " + unit + " uncompressed data" };
+	m_ui->resolutionSummaryLabel->setText(summary);
 }
 
 double ImageExporterWidget::inchToPixels(double value)
@@ -259,6 +296,7 @@ void ImageExporterWidget::widthValueChanged(double d)
 	
 	m_widthState->value = d;
 
+	updateResolutionSummary();
 }
 
 void ImageExporterWidget::heightValueChanged(double d)
@@ -277,6 +315,8 @@ void ImageExporterWidget::heightValueChanged(double d)
 	}
 
 	m_heightState->value = d;
+
+	updateResolutionSummary();
 }
 
 void ImageExporterWidget::resolutionValueChanged(int i)
@@ -308,6 +348,8 @@ void ImageExporterWidget::resolutionValueChanged(int i)
 	}
 	else
 		m_resolutionState->value = i;
+
+	updateResolutionSummary();
 }
 
 void ImageExporterWidget::resolutionUnitChanged(const QString& text)
@@ -386,16 +428,22 @@ std::string ImageExporterWidget::buildFileName()
 
 	std::string num("<enum>");
 	std::string tim("<timestamp>");
+	std::string res("<resolution>");
 	std::string sep("/");
 	std::string suf(".png");
 
 	if (filename.find(num) != std::string::npos)
 	{
+		// TODO: implement smart counter reset
 		filename.replace(filename.find(num), num.length(), std::to_string(++m_fileCounter));
 	}
 	else if (filename.find(tim) != std::string::npos)
 	{
-		filename.replace(filename.find(tim), tim.length(), QDateTime::currentDateTime().toString("yyyy-dd-MM_hh-mm-ss-zzz").toStdString());
+		filename.replace(filename.find(tim), tim.length(), QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss-zzz").toStdString());
+	}
+	else if (filename.find(res) != std::string::npos)
+	{
+		filename.replace(filename.find(res), res.length(), "(" + std::to_string(static_cast<int>(std::round(toPixels(m_widthState->value, m_widthState->type)))) + " x " + std::to_string(static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type)))));
 	}
 
 	std::string final_filename = m_dirName.toStdString() + sep + filename + suf;
@@ -411,12 +459,15 @@ void ImageExporterWidget::checkFilename(const QString& text)
 	QString num("<enum>");
 	QString emp("");
 	QString tim("<timestamp>");
+	QString res("<resolution>");
 	QString filename(text);
 
 	if (filename.contains(num))
 		filename.replace(filename.indexOf(num), num.length(), emp);
 	if (filename.contains(tim))
 		filename.replace(filename.indexOf(tim), tim.length(), emp);
+	if (filename.contains(res))
+		filename.replace(filename.indexOf(res), res.length(), emp);
 
 	QRegExp rx("[A-Za-z0-9_\\-\\!\\§\\$\\%\\&\\(\\)\\=\\`\\´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
 	
