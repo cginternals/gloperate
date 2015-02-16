@@ -39,7 +39,7 @@ void ImageExporter::initialize()
     m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 }
 
-void ImageExporter::save(const std::string & filename, const int & width, const int & height)
+void ImageExporter::save(const std::string & filename, const int & width, const int & height, const int & renderIterations)
 {
 	const int oldWidth{ m_viewportCapability->width() }, oldHeight{ m_viewportCapability->height() }, oldX{ m_viewportCapability->x() }, oldY{ m_viewportCapability->y() };
 	if (width > 0 && height > 0)
@@ -53,7 +53,8 @@ void ImageExporter::save(const std::string & filename, const int & width, const 
     globjects::Framebuffer * oldFbo = m_framebufferCapability->framebuffer();
     m_framebufferCapability->setFramebuffer(m_fbo);
 
-    m_painter->paint();
+	for (int i = 0; i < renderIterations; i++)
+		m_painter->paint();
 
     // [TODO] handle filename
     m_resourceManager.store<globjects::Texture>(filename, m_color);

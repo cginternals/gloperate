@@ -39,18 +39,39 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="1">
-       <widget class="QComboBox" name="presetsComboBox">
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="renderIterationsSpinBox">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>999999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="renderInterationsLabel">
+        <property name="text">
+         <string>Render &amp;Interations:</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="buddy">
+         <cstring>renderIterationsSpinBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="saveButton">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>2</horstretch>
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="font">
-         <font>
-          <family>Courier New</family>
-         </font>
+        <property name="text">
+         <string>&amp;Export</string>
         </property>
        </widget>
       </item>
@@ -73,10 +94,34 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="saveButton">
+      <item row="0" column="1">
+       <widget class="QComboBox" name="presetsComboBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>2</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Courier New</family>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QLabel" name="resolutionSummaryLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
-         <string>&amp;Export Image</string>
+         <string>Initial</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -111,19 +156,16 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="directoryLineEdit">
-        <property name="enabled">
-         <bool>true</bool>
+      <item row="1" column="0">
+       <widget class="QLabel" name="filenameLabel">
+        <property name="text">
+         <string>&amp;Filename:</string>
         </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>2</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="readOnly">
-         <bool>true</bool>
+        <property name="buddy">
+         <cstring>fileNameLineEdit</cstring>
         </property>
        </widget>
       </item>
@@ -140,16 +182,19 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="filenameLabel">
-        <property name="text">
-         <string>&amp;Filename:</string>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="directoryLineEdit">
+        <property name="enabled">
+         <bool>true</bool>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>2</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="buddy">
-         <cstring>fileNameLineEdit</cstring>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -160,24 +205,20 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="3">
-       <widget class="QLabel" name="label">
+      <item row="2" column="1" colspan="2">
+       <widget class="QLabel" name="filenamePeviewLabel">
         <property name="text">
-         <string>image&lt;timestamp&gt; -&gt; image2015-01-31-00-00:000</string>
+         <string/>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="3">
-       <widget class="QLabel" name="label_2">
+      <item row="1" column="2">
+       <widget class="QPushButton" name="filenameEditButton">
         <property name="text">
-         <string>image&lt;enum&gt; -&gt; image1, image2, image3, ...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="3">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>image&lt;resolution&gt; -&gt; image(1920 x 1080)</string>
+         <string>Edi&amp;t</string>
         </property>
        </widget>
       </item>
@@ -197,7 +238,7 @@
        <widget class="QDoubleSpinBox" name="widthDoubleSpinBox">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>1</horstretch>
+          <horstretch>2</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
@@ -285,19 +326,6 @@
         </property>
         <property name="checked">
          <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" colspan="3">
-       <widget class="QLabel" name="resolutionSummaryLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>3</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Initial</string>
         </property>
        </widget>
       </item>
@@ -391,6 +419,23 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>saveButton</tabstop>
+  <tabstop>presetsComboBox</tabstop>
+  <tabstop>renderIterationsSpinBox</tabstop>
+  <tabstop>directoryLineEdit</tabstop>
+  <tabstop>openDirectoryButton</tabstop>
+  <tabstop>fileNameLineEdit</tabstop>
+  <tabstop>filenameEditButton</tabstop>
+  <tabstop>widthDoubleSpinBox</tabstop>
+  <tabstop>widthComboBox</tabstop>
+  <tabstop>heightDoubleSpinBox</tabstop>
+  <tabstop>heightComboBox</tabstop>
+  <tabstop>resolutionSpinBox</tabstop>
+  <tabstop>resolutionComboBox</tabstop>
+  <tabstop>aspectCheckBox</tabstop>
+  <tabstop>groupBox_2</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

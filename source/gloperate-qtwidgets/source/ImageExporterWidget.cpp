@@ -18,6 +18,8 @@
 #include <QWindow>
 #include <gloperate-qt/qt-includes-end.h>
 
+#include <algorithm>
+
 #define CM_PER_INCH 2.54
 #define INCH_PER_CM 1 / CM_PER_INCH
 
@@ -404,7 +406,7 @@ void ImageExporterWidget::restoreSettings()
 void ImageExporterWidget::handleSave(bool checked)
 {
 	m_context->makeCurrent();
-	m_imageExporter->save(buildFileName(), toPixels(m_widthState->value, m_widthState->type), toPixels(m_heightState->value, m_heightState->type));
+	m_imageExporter->save(buildFileName(), std::max(1, static_cast<int>(std::round(toPixels(m_widthState->value, m_widthState->type)))), std::max(1, static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type)))), m_ui->renderIterationsSpinBox->value());
 	m_context->doneCurrent();
 }
 
