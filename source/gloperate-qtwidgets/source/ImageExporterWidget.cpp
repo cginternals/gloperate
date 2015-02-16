@@ -40,6 +40,7 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
 ,	m_widthState(new ResolutionState(1920.0, pixelString))
 ,	m_heightState(new ResolutionState(1080.0, pixelString))
 ,	m_resolutionState(new ResolutionState(72, ppiString))
+,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum", "<enum>" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" }, { "millisec", "<millisecond>" } })
 {
 	m_ui->setupUi(this);
 
@@ -430,29 +431,53 @@ void ImageExporterWidget::browseDirectory(bool checked)
 	}
 }
 
-std::string ImageExporterWidget::buildFileName()
+std::string ImageExporterWidget::replaceTags(const std::string& filename)
 {
-	std::string filename{ (m_ui->fileNameLineEdit->text()).toStdString() };
+	QDateTime time{ QDateTime::currentDateTime() };
+	std::string newFilename{ filename };
 
-	std::string num("<enum>");
-	std::string tim("<timestamp>");
-	std::string res("<resolution>");
-	std::string sep("/");
-	std::string suf(".png");
+	if (newFilename.find(m_supportedTags["width"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["width"].toStdString()), m_supportedTags["width"].toStdString().length(), std::to_string(static_cast<int>(std::round(toPixels(m_widthState->value, m_widthState->type)))));
 
-	if (filename.find(num) != std::string::npos)
+	if (newFilename.find(m_supportedTags["height"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["height"].toStdString()), m_supportedTags["height"].toStdString().length(), std::to_string(static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type)))));
+
+	if (newFilename.find(m_supportedTags["day"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["day"].toStdString()), m_supportedTags["day"].toStdString().length(), time.toString("dd").toStdString());
+
+	if (newFilename.find(m_supportedTags["month"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["month"].toStdString()), m_supportedTags["month"].toStdString().length(), time.toString("MM").toStdString());
+
+	if (newFilename.find(m_supportedTags["year"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["year"].toStdString()), m_supportedTags["year"].toStdString().length(), time.toString("yyyy").toStdString());
+
+	if (newFilename.find(m_supportedTags["hour"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["hour"].toStdString()), m_supportedTags["hour"].toStdString().length(), time.toString("hh").toStdString());
+
+	if (newFilename.find(m_supportedTags["minute"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["minute"].toStdString()), m_supportedTags["minute"].toStdString().length(), time.toString("mm").toStdString());
+
+	if (newFilename.find(m_supportedTags["second"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["second"].toStdString()), m_supportedTags["second"].toStdString().length(), time.toString("ss").toStdString());
+
+	if (newFilename.find(m_supportedTags["millisec"].toStdString()) != std::string::npos)
+		newFilename.replace(newFilename.find(m_supportedTags["millisec"].toStdString()), m_supportedTags["millisec"].toStdString().length(), time.toString("zzz").toStdString());
+
+	if (newFilename.find(m_supportedTags["enum"].toStdString()) != std::string::npos)
 	{
 		// TODO: implement smart counter reset
-		filename.replace(filename.find(num), num.length(), std::to_string(++m_fileCounter));
+		newFilename.replace(newFilename.find(m_supportedTags["enum"].toStdString()), m_supportedTags["enum"].toStdString().length(), std::to_string(++m_fileCounter));
 	}
-	else if (filename.find(tim) != std::string::npos)
-	{
-		filename.replace(filename.find(tim), tim.length(), QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss-zzz").toStdString());
-	}
-	else if (filename.find(res) != std::string::npos)
-	{
-		filename.replace(filename.find(res), res.length(), std::to_string(static_cast<int>(std::round(toPixels(m_widthState->value, m_widthState->type)))) + "x" + std::to_string(static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type)))));
-	}
+
+	return newFilename;
+}
+
+std::string ImageExporterWidget::buildFileName()
+{
+	std::string filename{ replaceTags(m_ui->fileNameLineEdit->text().toStdString()) };
+	
+	const std::string sep("/");
+	const std::string suf(".png");
 
 	std::string final_filename = m_dirName.toStdString() + sep + filename + suf;
 	int duplicate_count{ 2 };
@@ -464,18 +489,14 @@ std::string ImageExporterWidget::buildFileName()
 
 void ImageExporterWidget::checkFilename(const QString& text)
 {
-	QString num("<enum>");
-	QString emp("");
-	QString tim("<timestamp>");
-	QString res("<resolution>");
+	const QString emp("");
 	QString filename(text);
 
-	if (filename.contains(num))
-		filename.replace(filename.indexOf(num), num.length(), emp);
-	if (filename.contains(tim))
-		filename.replace(filename.indexOf(tim), tim.length(), emp);
-	if (filename.contains(res))
-		filename.replace(filename.indexOf(res), res.length(), emp);
+	for (auto it = m_supportedTags.begin(); it != m_supportedTags.end(); it++)
+	{
+		if (filename.contains(it->second))
+			filename.replace(filename.indexOf(it->second), it->second.length(), emp);
+	}
 
 	QRegExp rx("[A-Za-z0-9_\\-\\!\\§\\$\\%\\&\\(\\)\\=\\`\\´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
 	

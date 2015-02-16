@@ -58,6 +58,7 @@ protected:
 
 	void checkFilename(const QString& text);
 	void saveFilename();
+	std::string replaceTags(const std::string& filename);
 	std::string buildFileName();
 	void browseDirectory(bool checked);
 	void updateDirectory();
@@ -82,6 +83,7 @@ protected:
 protected:
 	gloperate::ImageExporter * m_imageExporter;
 	gloperate_qt::QtOpenGLWindow * m_context;
+	std::map<const QString, const QString> m_supportedTags;
 
 private:
 	const QScopedPointer<Ui_ImageExporterWidget> m_ui;
