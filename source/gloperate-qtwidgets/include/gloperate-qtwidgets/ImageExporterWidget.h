@@ -49,6 +49,9 @@ public:
 	ImageExporterWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
 	virtual ~ImageExporterWidget();
 
+signals:
+	void filenameChanged(const QString& text);
+
 protected:
 	void handleSave(bool checked);
 
@@ -62,6 +65,7 @@ protected:
 	std::string buildFileName();
 	void browseDirectory(bool checked);
 	void updateDirectory();
+	void updateFilenamePreview(const QString& text);
 
 	void widthUnitChanged(const QString& text);
 	void heightUnitChanged(const QString& text);

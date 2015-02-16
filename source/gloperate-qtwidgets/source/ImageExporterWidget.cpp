@@ -52,6 +52,9 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
 		this, &ImageExporterWidget::checkFilename);
 	connect(m_ui->fileNameLineEdit, &QLineEdit::editingFinished,
 		this, &ImageExporterWidget::saveFilename);
+
+	connect(this, &ImageExporterWidget::filenameChanged,
+		this, &ImageExporterWidget::updateFilenamePreview);
 	
 	m_imageExporter = new gloperate::ImageExporter(painter, resourceManager);
 	context->makeCurrent();
@@ -487,6 +490,11 @@ std::string ImageExporterWidget::buildFileName()
 	return final_filename;
 }
 
+void ImageExporterWidget::updateFilenamePreview(const QString& text)
+{
+	m_ui->filenamePeviewLabel->setText(QString::fromStdString(replaceTags(m_ui->fileNameLineEdit->text().toStdString())));
+}
+
 void ImageExporterWidget::checkFilename(const QString& text)
 {
 	const QString emp("");
@@ -506,6 +514,7 @@ void ImageExporterWidget::checkFilename(const QString& text)
 			m_ui->saveButton->setDisabled(true);
 		
 		m_ui->fileNameLineEdit->setStyleSheet("background-color:rgb(255,170,127);");
+		m_ui->filenamePeviewLabel->setText( filename + ".png is not a valid filename...");
 	}
 	else
 	{
@@ -513,6 +522,8 @@ void ImageExporterWidget::checkFilename(const QString& text)
 			m_ui->saveButton->setDisabled(false);
 
 		m_ui->fileNameLineEdit->setStyleSheet(emp);
+
+		emit filenameChanged(text);
 	}
 }
 
