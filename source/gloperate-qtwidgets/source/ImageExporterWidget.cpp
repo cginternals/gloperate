@@ -26,14 +26,20 @@
 namespace gloperate_qtwidgets
 {
 
+const QString ppiString = "ppi";
+const QString pixelsPerCmString = "px/cm";
+const QString pixelString = "pixel";
+const QString inchString = "inch";
+const QString cmString = "cm";
+
 ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
 :	QWidget(parent)
 ,	m_context(context)
 ,	m_ui(new Ui_ImageExporterWidget)
 ,	m_fileCounter(0)
-,	m_widthState(new ResolutionState(1920.0, "pixel"))
-,	m_heightState(new ResolutionState(1080.0, "pixel"))
-,	m_resolutionState(new ResolutionState(72, "pixel/inch"))
+,	m_widthState(new ResolutionState(1920.0, pixelString))
+,	m_heightState(new ResolutionState(1080.0, pixelString))
+,	m_resolutionState(new ResolutionState(72, ppiString))
 {
 	m_ui->setupUi(this);
 
@@ -83,11 +89,11 @@ void ImageExporterWidget::initializeResolutionGroupBox()
 	m_ui->widthDoubleSpinBox->setRange(0.01, 100000.0);
 	m_ui->heightDoubleSpinBox->setRange(0.01, 100000.0);
 
-	QStringList units{ "pixel", "inch", "cm" };
+	QStringList units{ pixelString, inchString, cmString };
 	m_ui->widthComboBox->addItems(units);
 	m_ui->heightComboBox->addItems(units);
 
-	QStringList resolutions{ "pixel/inch", "pixel/cm" };
+	QStringList resolutions{ ppiString, pixelsPerCmString };
 	bool oldComboBoxSignalStatus = m_ui->resolutionComboBox->blockSignals(true);
 	m_ui->resolutionComboBox->addItems(resolutions);
 	m_ui->resolutionComboBox->blockSignals(oldComboBoxSignalStatus);
@@ -104,7 +110,7 @@ void ImageExporterWidget::updateResolutionSummary()
 	// TODO: detect unsigned long long overflow
 	unsigned long long pixelNumber{ static_cast<unsigned long long>(std::round(toPixels(m_widthState->value, m_widthState->type)) * std::round(toPixels(m_heightState->value, m_heightState->type))) };
 	QString unit;
-	int byte;
+	double byte;
 	if (pixelNumber * 4 < 1024)
 	{
 		unit = "Byte";
@@ -130,15 +136,15 @@ void ImageExporterWidget::updateResolutionSummary()
 		unit = "TiB";
 		byte = pixelNumber * 4 / pow<unsigned long long>(1024, 4);
 	}
-	QString summary{ QString::number(pixelNumber) + " Pixels, " + QString::number(byte) + " " + unit + " uncompressed data" };
+	QString summary{ QString::number(pixelNumber) + " pixels (" + QString::number(std::round(byte * 100) / 100) + " " + unit + " uncompressed)" };
 	m_ui->resolutionSummaryLabel->setText(summary);
 }
 
 double ImageExporterWidget::inchToPixels(double value)
 {
-	if (m_resolutionState->type == "pixel/inch")
+	if (m_resolutionState->type == ppiString)
 		value *= m_resolutionState->value;
-	else if (m_resolutionState->type == "pixel/cm")
+	else if (m_resolutionState->type == pixelsPerCmString)
 		value *= m_resolutionState->value * CM_PER_INCH;
 
 	return value;
@@ -146,9 +152,9 @@ double ImageExporterWidget::inchToPixels(double value)
 
 double ImageExporterWidget::cmToPixels(double value)
 {
-	if (m_resolutionState->type == "pixel/inch")
+	if (m_resolutionState->type == ppiString)
 		value *= m_resolutionState->value * INCH_PER_CM;
-	else if (m_resolutionState->type == "pixel/cm")
+	else if (m_resolutionState->type == pixelsPerCmString)
 		value *= m_resolutionState->value;
 
 	return value;
@@ -156,9 +162,9 @@ double ImageExporterWidget::cmToPixels(double value)
 
 double ImageExporterWidget::toPixels(double value, const QString& type)
 {
-	if (type == "inch")
+	if (type == inchString)
 		value = inchToPixels(value);
-	else if (type == "cm")
+	else if (type == cmString)
 		value = cmToPixels(value);
 
 	return value;
@@ -166,9 +172,9 @@ double ImageExporterWidget::toPixels(double value, const QString& type)
 
 double ImageExporterWidget::pixelsToCm(double value)
 {
-	if (m_resolutionState->type == "pixel/inch")
+	if (m_resolutionState->type == ppiString)
 		value *= CM_PER_INCH / m_resolutionState->value;
-	else if (m_resolutionState->type == "pixel/cm")
+	else if (m_resolutionState->type == pixelsPerCmString)
 		value /= m_resolutionState->value;
 
 	return value;
@@ -176,9 +182,9 @@ double ImageExporterWidget::pixelsToCm(double value)
 
 double ImageExporterWidget::pixelsToInch(double value)
 {
-	if (m_resolutionState->type == "pixel/inch")
+	if (m_resolutionState->type == ppiString)
 		value /= m_resolutionState->value;
-	else if (m_resolutionState->type == "pixel/cm")
+	else if (m_resolutionState->type == pixelsPerCmString)
 		value *= INCH_PER_CM / m_resolutionState->value;
 
 	return value;
@@ -186,9 +192,9 @@ double ImageExporterWidget::pixelsToInch(double value)
 
 double ImageExporterWidget::pixelsTo(double value, const QString& type)
 {
-	if (type == "inch")
+	if (type == inchString)
 		value = pixelsToInch(value);
-	else if (type == "cm")
+	else if (type == cmString)
 		value = pixelsToCm(value);
 
 	return value;
@@ -203,37 +209,37 @@ void ImageExporterWidget::setDecimals(QDoubleSpinBox* box, int dec)
 
 void ImageExporterWidget::widthUnitChanged(const QString& text)
 {
-	if (text == "pixel")
+	if (text == pixelString)
 	{
 		m_widthState->value = toPixels(m_widthState->value, m_widthState->type);
 
-		if (m_ui->heightComboBox->currentText() == "pixel")
+		if (m_ui->heightComboBox->currentText() == pixelString)
 			enableResolution(false);
 		
 		setDecimals(m_ui->widthDoubleSpinBox, 0);
 	}
-	else if (text == "inch")
+	else if (text == inchString)
 	{
-		if (m_widthState->type == "pixel")
+		if (m_widthState->type == pixelString)
 		{
 			m_widthState->value = pixelsToInch(m_widthState->value);
 
 			setDecimals(m_ui->widthDoubleSpinBox, 2);
 			enableResolution(true);
 		}
-		else if (m_widthState->type == "cm")
+		else if (m_widthState->type == cmString)
 			m_widthState->value = m_widthState->value * INCH_PER_CM;
 	}
 	else
 	{
-		if (m_widthState->type == "pixel")
+		if (m_widthState->type == pixelString)
 		{
 			m_widthState->value = pixelsToCm(m_widthState->value);
 
 			setDecimals(m_ui->widthDoubleSpinBox, 2);
 			enableResolution(true);
 		}
-		else if (m_widthState->type == "inch")
+		else if (m_widthState->type == inchString)
 			m_widthState->value = m_widthState->value * CM_PER_INCH;
 	}
 
@@ -243,37 +249,37 @@ void ImageExporterWidget::widthUnitChanged(const QString& text)
 
 void ImageExporterWidget::heightUnitChanged(const QString& text)
 {
-	if (text == "pixel")
+	if (text == pixelString)
 	{
 		m_heightState->value = toPixels(m_heightState->value, m_heightState->type);
 
-		if (m_ui->widthComboBox->currentText() == "pixel")
+		if (m_ui->widthComboBox->currentText() == pixelString)
 			enableResolution(false);
 		
 		setDecimals(m_ui->heightDoubleSpinBox, 0);
 	}
-	else if (text == "inch")
+	else if (text == inchString)
 	{
-		if (m_heightState->type == "pixel")
+		if (m_heightState->type == pixelString)
 		{
 			m_heightState->value = pixelsToInch(m_heightState->value);
 
 			setDecimals(m_ui->heightDoubleSpinBox, 2);
 			enableResolution(true);
 		}
-		else if (m_heightState->type == "cm")
+		else if (m_heightState->type == cmString)
 			m_heightState->value = m_heightState->value * INCH_PER_CM;
 	}
 	else
 	{
-		if (m_heightState->type == "pixel")
+		if (m_heightState->type == pixelString)
 		{
 			m_heightState->value = pixelsToCm(m_heightState->value);
 			
 			setDecimals(m_ui->heightDoubleSpinBox, 2);
 			enableResolution(true);
 		}
-		else if (m_heightState->type == "inch")
+		else if (m_heightState->type == inchString)
 			m_heightState->value = m_heightState->value * CM_PER_INCH;
 	}
 
@@ -289,7 +295,7 @@ void ImageExporterWidget::widthValueChanged(double d)
 		m_heightState->value = pixelsTo(newValue, m_heightState->type);
 
 		bool old = m_ui->heightDoubleSpinBox->blockSignals(true);
-		if (m_heightState->type == "pixel")
+		if (m_heightState->type == pixelString)
 			m_ui->heightDoubleSpinBox->setValue(std::round(m_heightState->value));
 		else
 			m_ui->heightDoubleSpinBox->setValue(m_heightState->value);
@@ -309,7 +315,7 @@ void ImageExporterWidget::heightValueChanged(double d)
 		m_widthState->value = pixelsTo(newValue, m_widthState->type);
 
 		bool old = m_ui->widthDoubleSpinBox->blockSignals(true);
-		if (m_widthState->type == "pixel")
+		if (m_widthState->type == pixelString)
 			m_ui->widthDoubleSpinBox->setValue(std::round(m_widthState->value));
 		else
 			m_ui->widthDoubleSpinBox->setValue(m_widthState->value);
@@ -327,7 +333,7 @@ void ImageExporterWidget::resolutionValueChanged(int i)
 	bool old;
 	if (m_ui->aspectCheckBox->isChecked())
 	{
-		if (m_widthState->type == "pixel")
+		if (m_widthState->type == pixelString)
 		{
 			value = pixelsTo(m_widthState->value, m_heightState->type);
 			m_resolutionState->value = i;
@@ -337,7 +343,7 @@ void ImageExporterWidget::resolutionValueChanged(int i)
 			m_ui->widthDoubleSpinBox->setValue(std::round(m_widthState->value));
 			m_ui->widthDoubleSpinBox->blockSignals(old);
 		}
-		else if (m_heightState->type == "pixel")
+		else if (m_heightState->type == pixelString)
 		{
 			value = pixelsTo(m_heightState->value, m_widthState->type);
 			m_resolutionState->value = i;
@@ -356,7 +362,7 @@ void ImageExporterWidget::resolutionValueChanged(int i)
 
 void ImageExporterWidget::resolutionUnitChanged(const QString& text)
 {
-	if (text == "pixel/inch")
+	if (text == ppiString)
 		m_resolutionState->value = std::ceil(m_resolutionState->value * CM_PER_INCH);
 	else
 		m_resolutionState->value = std::ceil(m_resolutionState->value * INCH_PER_CM);
@@ -445,7 +451,7 @@ std::string ImageExporterWidget::buildFileName()
 	}
 	else if (filename.find(res) != std::string::npos)
 	{
-		filename.replace(filename.find(res), res.length(), "(" + std::to_string(static_cast<int>(std::round(toPixels(m_widthState->value, m_widthState->type)))) + " x " + std::to_string(static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type)))));
+		filename.replace(filename.find(res), res.length(), std::to_string(static_cast<int>(std::round(toPixels(m_widthState->value, m_widthState->type)))) + "x" + std::to_string(static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type)))));
 	}
 
 	std::string final_filename = m_dirName.toStdString() + sep + filename + suf;
