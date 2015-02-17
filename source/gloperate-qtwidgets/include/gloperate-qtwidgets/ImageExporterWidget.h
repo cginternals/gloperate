@@ -66,6 +66,8 @@ protected:
 	void browseDirectory(bool checked);
 	void updateDirectory();
 	void updateFilenamePreview(const QString& text);
+	void updateUiFileName();
+	std::string extractEnumNumStartIndex(const std::string& filename, int position);
 
 	void widthUnitChanged(const QString& text);
 	void heightUnitChanged(const QString& text);

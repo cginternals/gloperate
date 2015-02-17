@@ -19,6 +19,7 @@
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <algorithm>
+#include <set>
 
 #define CM_PER_INCH 2.54
 #define INCH_PER_CM 1 / CM_PER_INCH
@@ -40,7 +41,7 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
 ,	m_widthState(new ResolutionState(1920.0, pixelString))
 ,	m_heightState(new ResolutionState(1080.0, pixelString))
 ,	m_resolutionState(new ResolutionState(72, ppiString))
-,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum", "<enum>" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" }, { "millisec", "<millisecond>" } })
+,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum", "<enum>" }, { "enum_num", "<enum#" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" }, { "millisec", "<millisecond>" } })
 {
 	m_ui->setupUi(this);
 
@@ -471,13 +472,39 @@ std::string ImageExporterWidget::replaceTags(const std::string& filename)
 		// TODO: implement smart counter reset
 		newFilename.replace(newFilename.find(m_supportedTags["enum"].toStdString()), m_supportedTags["enum"].toStdString().length(), std::to_string(++m_fileCounter));
 	}
+	
+	if (newFilename.find(m_supportedTags["enum_num"].toStdString()) != std::string::npos)
+	{
+		size_t position = newFilename.find(m_supportedTags["enum_num"].toStdString());
+		newFilename.replace(position, m_supportedTags["enum_num"].length(), "");
+
+		std::string startIndex{ extractEnumNumStartIndex(newFilename, position) };
+
+		int index{ atoi(startIndex.c_str()) };
+		newFilename.replace(position, startIndex.length() + 1, std::to_string(index));		
+	}
 
 	return newFilename;
+}
+
+std::string ImageExporterWidget::extractEnumNumStartIndex(const std::string& filename, int position)
+{
+	std::string startIndex{ "" };
+
+	while (filename.at(position) != '>')
+	{
+		startIndex += filename.at(position);
+		position++;
+	}
+
+	return startIndex;
 }
 
 std::string ImageExporterWidget::buildFileName()
 {
 	std::string filename{ replaceTags(m_ui->fileNameLineEdit->text().toStdString()) };
+
+	updateUiFileName();
 	
 	const std::string sep("/");
 	const std::string suf(".png");
@@ -490,31 +517,81 @@ std::string ImageExporterWidget::buildFileName()
 	return final_filename;
 }
 
+void ImageExporterWidget::updateUiFileName()
+{
+	QString oldUiFilename{ m_ui->fileNameLineEdit->text() };
+	int positionOfEnumNumIndex{ oldUiFilename.indexOf(m_supportedTags["enum_num"]) + m_supportedTags["enum_num"].length() };
+	std::string startIndex{ extractEnumNumStartIndex(oldUiFilename.toStdString(), positionOfEnumNumIndex) };
+	QString newUiFilename{ oldUiFilename.replace(positionOfEnumNumIndex, startIndex.length(), QString::number(atoi(startIndex.c_str()) + 1)) };
+
+	bool oldSignalStatus = m_ui->fileNameLineEdit->blockSignals(true);
+	m_ui->fileNameLineEdit->setText(newUiFilename);
+	emit filenameChanged(newUiFilename);
+	saveFilename();
+	m_ui->fileNameLineEdit->blockSignals(oldSignalStatus);
+}
+
 void ImageExporterWidget::updateFilenamePreview(const QString& text)
 {
-	m_ui->filenamePeviewLabel->setText(QString::fromStdString(replaceTags(m_ui->fileNameLineEdit->text().toStdString())));
+	m_ui->filenamePeviewLabel->setText(QString::fromStdString(replaceTags(m_ui->fileNameLineEdit->text().toStdString())) + ".png");
 }
 
 void ImageExporterWidget::checkFilename(const QString& text)
 {
 	const QString emp("");
 	QString filename(text);
+	QString errorMessage{ "" };
 
 	for (auto it = m_supportedTags.begin(); it != m_supportedTags.end(); it++)
 	{
-		if (filename.contains(it->second))
+		if (filename.contains(it->second) && it->first != "enum_num")
 			filename.replace(filename.indexOf(it->second), it->second.length(), emp);
 	}
-
-	QRegExp rx("[A-Za-z0-9_\\-\\!\\§\\$\\%\\&\\(\\)\\=\\`\\´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
 	
-	if (!rx.exactMatch(filename))
+	if (filename.indexOf(m_supportedTags["enum_num"]) != std::string::npos)
+	{
+		size_t position = filename.indexOf(m_supportedTags["enum_num"]);
+		filename.replace(position, m_supportedTags["enum_num"].length(), "");
+
+		std::set<QString> numbers{ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+		bool numberFound{ false }, endFound{ false };
+
+		while (position < filename.length())
+		{
+			if (numbers.find(filename.at(position)) != numbers.end())
+			{
+				filename.replace(position, 1, "");
+				numberFound = true;
+			}
+			else if (numberFound && filename.at(position) == '>')
+			{
+				filename.replace(position, 1, "");
+				endFound = true;
+				break;
+			}
+			else
+				break;
+		}
+
+		if (!endFound)
+			errorMessage = "includes an incomplete <enum#> tag";
+	}
+	
+	if (errorMessage == "")
+	{
+		QRegExp rx("[A-Za-z0-9_\\-\\!\\§\\$\\%\\&\\(\\)\\=\\`\\´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
+
+		if (!rx.exactMatch(filename))
+			errorMessage = "includes invalid symbols";
+	}
+
+	if (errorMessage != "")
 	{
 		if (m_ui->saveButton->isEnabled())
 			m_ui->saveButton->setDisabled(true);
 		
 		m_ui->fileNameLineEdit->setStyleSheet("background-color:rgb(255,170,127);");
-		m_ui->filenamePeviewLabel->setText( filename + ".png is not a valid filename...");
+		m_ui->filenamePeviewLabel->setText( filename + ".png " + errorMessage);
 	}
 	else
 	{
