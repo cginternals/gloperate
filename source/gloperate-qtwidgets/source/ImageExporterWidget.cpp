@@ -18,6 +18,9 @@
 #include <QWindow>
 #include <gloperate-qt/qt-includes-end.h>
 
+#include <gloperate-qtwidgets/FileNameInputWidget.h>
+#include <gloperate-qtwidgets/FileNameTagCompleter.h>
+
 #include <algorithm>
 #include <set>
 
@@ -47,6 +50,8 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
 
 	connect(m_ui->saveButton, &QPushButton::clicked,
 		this, &ImageExporterWidget::handleSave);
+	connect(m_ui->filenameEditButton, &QPushButton::clicked,
+		this, &ImageExporterWidget::handleEdit);
 	connect(m_ui->openDirectoryButton, &QPushButton::clicked, 
 		this, &ImageExporterWidget::browseDirectory);
 	connect(m_ui->fileNameLineEdit, &QLineEdit::textChanged,
@@ -419,6 +424,15 @@ void ImageExporterWidget::handleSave(bool checked)
 	m_context->makeCurrent();
 	m_imageExporter->save(buildFileName(), std::max(1, static_cast<int>(std::round(toPixels(m_widthState->value, m_widthState->type)))), std::max(1, static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type)))), m_ui->renderIterationsSpinBox->value());
 	m_context->doneCurrent();
+}
+
+void ImageExporterWidget::handleEdit(bool checked)
+{
+	FileNameTagCompleter * fntc{ new FileNameTagCompleter };
+	FileNameInputWidget * fni = new FileNameInputWidget(fntc);
+
+	fni->setWindowModality(Qt::ApplicationModal);
+	fni->show();
 }
 
 void ImageExporterWidget::browseDirectory(bool checked)

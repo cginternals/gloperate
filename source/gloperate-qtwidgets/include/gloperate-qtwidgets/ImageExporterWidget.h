@@ -54,6 +54,7 @@ signals:
 
 protected:
 	void handleSave(bool checked);
+	void handleEdit(bool checked);
 
 	void restoreSettings();
 	void initializeResolutionGroupBox();

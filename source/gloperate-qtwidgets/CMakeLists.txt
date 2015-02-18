@@ -18,6 +18,8 @@ find_package(Qt5Gui     5.1 REQUIRED)
 find_package(Qt5Widgets 5.1 REQUIRED) # this is also important in order to get uic working
 find_package(Qt5OpenGL  5.1 REQUIRED)
 
+find_package(libzeug REQUIRED)
+
 set(CMAKE_AUTOMOC ON)
 set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 
@@ -33,6 +35,7 @@ include_directories(
     ${GLOBJECTS_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLOPERATE_QT_INCLUDE_DIR}
+    ${LIBZEUG_WIDGET_INCLUDE_DIR}
 )
 
 include_directories(
@@ -51,6 +54,7 @@ set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
     ${GLM_LIBRARIES}
+    ${LIBZEUG_LIBRARIES} # ${LIBZEUG_WIDGET_LIBRARIES} is empty
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
@@ -76,11 +80,15 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
     ${header_path}/gloperate-qtwidgets_api.h
+    ${header_path}/FileNameInputWidget.h
+    ${header_path}/FileNameTagCompleter.h
     ${header_path}/ImageExporterWidget.h
-
 )
 
 set(sources
+    ${source_path}/FileNameInputWidget.cpp
+    ${source_path}/FileNameInputWidget.ui
+    ${source_path}/FileNameTagCompleter.cpp
     ${source_path}/ImageExporterWidget.cpp
     ${source_path}/ImageExporterWidget.ui
 )
