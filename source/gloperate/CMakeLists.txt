@@ -136,6 +136,7 @@ set(sources
     ${source_path}/tools/ColorExtractor.cpp
     ${source_path}/tools/NormalExtractor.cpp
     ${source_path}/tools/GBufferExtractor.cpp
+    ${source_path}/tools/FrameCounter.cpp
 )
 
 set(api_includes
@@ -239,6 +240,7 @@ set(api_includes
     ${include_path}/tools/ColorExtractor.h
     ${include_path}/tools/NormalExtractor.h
     ${include_path}/tools/GBufferExtractor.h
+    ${include_path}/tools/FrameCounter.h
 )
 
 # Group source files

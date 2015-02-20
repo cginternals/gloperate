@@ -6,6 +6,7 @@
 #include <globjects/base/ref_ptr.h>
 
 #include <gloperate/painter/Painter.h>
+#include <gloperate/tools/FrameCounter.h>
 
 #include <gloperate-qt/QtOpenGLWindowBase.h>
 #include <gloperate-qt/TimePropagator.h>
@@ -70,6 +71,8 @@ public:
     */
     void setPainter(gloperate::Painter * painter);
 
+    const gloperate::FrameCounter& frameCounter() const;
+
 
 protected:
     virtual void onInitialize() override;
@@ -88,8 +91,7 @@ protected:
     gloperate::ResourceManager & m_resourceManager;
     gloperate::Painter * m_painter;          /**< Currently used painter */
     QScopedPointer<TimePropagator>         m_timePropagator;  /**< Time propagator for continous updates */
-
-
+    gloperate::FrameCounter m_frameCounter;
 };
 
 
