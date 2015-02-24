@@ -1,4 +1,7 @@
+
 #include <gloperate/tools/NormalExtractor.h>
+
+#include <gloperate/base/RenderTargetType.h>
 
 namespace gloperate
 {
