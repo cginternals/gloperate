@@ -2,6 +2,8 @@
 
 #include <limits>
 
+#include <gloperate/base/RenderTargetType.h>
+
 namespace gloperate
 {
 

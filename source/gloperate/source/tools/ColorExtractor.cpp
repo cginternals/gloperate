@@ -1,4 +1,7 @@
+
 #include <gloperate/tools/ColorExtractor.h>
+
+#include <gloperate/base/RenderTargetType.h>
 
 namespace gloperate
 {

@@ -63,6 +63,11 @@ public:
     void setChanged(bool changed);
 
 
+    template <typename T>
+    bool is() const;
+
+    template <typename T>
+    T* as();
 public:
     Signal<> changed;   /**< Called when the capability information has been changed */
 
@@ -73,3 +78,5 @@ protected:
 
 
 } // namespace gloperate
+
+#include <gloperate/painter/AbstractCapability.hpp>
