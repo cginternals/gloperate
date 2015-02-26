@@ -38,7 +38,7 @@ public:
     */
     virtual ~PipelineOutputCapability();
 
-    virtual std::vector<gloperate::AbstractData*> allOutputs() const;
+    virtual std::vector<gloperate::AbstractData*> allOutputs() const override;
 
 protected:
     gloperate::AbstractPipeline & m_pipeline;
