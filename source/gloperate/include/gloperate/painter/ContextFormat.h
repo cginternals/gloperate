@@ -1,15 +1,18 @@
+
 #pragma once
+
 
 #include <vector>
 #include <string>
 
-#include <gloperate/gloperate_api.h>
-
 #include <glbinding/Version.h>
+
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
 {
+
 
 class GLOPERATE_API ContextFormat
 {
@@ -33,6 +36,7 @@ public:
 
     static const std::string & profileString(Profile profile);
     static const std::string & swapBehaviorString(SwapBehavior swapBehavior);
+
 
 public:
     ContextFormat();
@@ -96,11 +100,13 @@ public:
     SwapBehavior swapBehavior() const;
     void setSwapBehavior(SwapBehavior behavior);
 
+
 public:
     /** Compares the created format against the requested one.
     */
     static bool verify(const ContextFormat & requested, const ContextFormat & created);
     bool verify(const ContextFormat & requested) const;
+
 
 protected:
     /** Compares (logged if erroneous) version and profile between both formats
@@ -119,6 +125,7 @@ protected:
     ,   unsigned int sizeInitialized
     ,   const std::string & warning
     ,   std::vector<std::string> & issues);
+
 
 protected:
     glbinding::Version m_version;
@@ -141,5 +148,6 @@ protected:
     SwapBehavior m_swapBehavior;
     unsigned int m_samples;
 };
+
 
 } // namespace gloperate

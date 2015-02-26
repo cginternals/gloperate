@@ -1,35 +1,36 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #pragma once
 
+
 #include <glm/glm.hpp>
+
 #include <globjects/base/CachedValue.h>
 
 #include <gloperate/gloperate_api.h>
-
+#include <gloperate/base/Signal.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 
-#include <gloperate/base/Signal.h>
 
 namespace gloperate {
 
+
 /**
 *  @brief
-*    Base class for painter camera capabilities
-*
+*    Default implementation for AbstractCameraCapability
 */
 class GLOPERATE_API CameraCapability : public AbstractCameraCapability
 {
-
-
 public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] eye
+    *    Camera position
+    *  @param[in] center
+    *    Look-at position
+    *  @param[in] up
+    *    Up-vector
     */
     CameraCapability(
         const glm::vec3 & eye = glm::vec3(0.0, 0.0, 1.0),
@@ -41,39 +42,77 @@ public:
     *    Destructor
     */
     virtual ~CameraCapability();
-    bool autoUpdating() const;
-    void setAutoUpdating(bool b);
 
+    /**
+    *  @brief
+    *    Check if camera is updated automatically
+    *
+    *  @return
+    *    'true' if camera is updated automatically, else 'false'
+    */
+    bool autoUpdating() const;
+
+    /**
+    *  @brief
+    *    Set if camera is updated automatically
+    *
+    *  @param[in] autoUpdate
+    *    'true' if camera is updated automatically, else 'false'
+    */
+    void setAutoUpdating(bool autoUpdate);
+
+    /**
+    *  @brief
+    *    Update camera matrices
+    */
+    void update() const;
+
+    // Virtual functions from AbstractCameraCapability
     virtual const glm::vec3 & eye() const override;
     virtual void setEye(const glm::vec3 & eye) override;
     virtual const glm::vec3 & center() const override;
     virtual void setCenter(const glm::vec3 & center) override;
     virtual const glm::vec3 & up() const override;
     virtual void setUp(const glm::vec3 & up) override;
-
-    // lazy matrices getters
     virtual const glm::mat4 & view() const override;
     virtual const glm::mat4 & viewInverted() const override;
-
     virtual const glm::mat3 & normal() const override;
 
-    void update() const;
 
 protected:
+    /**
+    *  @brief
+    *    Mark data dirty
+    *
+    *  @param[in] update
+    *    Update matrices immediately (true), or later (false)?
+    *
+    *  @remarks
+    *    After calling this function, the matrices will be recalculated the next time they're accessed.
+    */
     void dirty(bool update = true);
+
+    /**
+    *  @brief
+    *    Invalidate matrices, causing them to be recalculated
+    */
     void invalidateMatrices() const;
 
+
 protected:
-    mutable bool m_dirty;
-    bool m_autoUpdate;
+    // Internal data
+    mutable bool m_dirty;   /**< Has the data been changed? If true, matrices will be recalculated */
+    bool m_autoUpdate;      /**< 'true' if camera is updated automatically, else 'false' */
 
-    glm::vec3 m_eye;
-    glm::vec3 m_center;
-    glm::vec3 m_up;
+    // Camera data
+    glm::vec3 m_eye;        /**< Camera position */
+    glm::vec3 m_center;     /**< Look-at position */
+    glm::vec3 m_up;         /**< Up-vector */
 
-    globjects::CachedValue<glm::mat4> m_view;
-    globjects::CachedValue<glm::mat4> m_viewInverted;
-    globjects::CachedValue<glm::mat3> m_normal;
+    // Camera matrices
+    globjects::CachedValue<glm::mat4> m_view;           /**< View matrix */
+    globjects::CachedValue<glm::mat4> m_viewInverted;   /**< Inverted view matrix */
+    globjects::CachedValue<glm::mat3> m_normal;         /**< Normal matrix */
 };
 
 

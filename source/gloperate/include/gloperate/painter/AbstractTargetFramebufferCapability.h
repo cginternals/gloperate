@@ -1,8 +1,8 @@
+
 #pragma once
 
 
 #include <gloperate/gloperate_api.h>
-
 #include <gloperate/painter/AbstractCapability.h>
 
 
@@ -15,6 +15,7 @@ namespace globjects
 namespace gloperate 
 {
 
+
 /**
 *  @brief
 *    Capability that allows the target framebuffer to be set for rendering
@@ -24,8 +25,6 @@ namespace gloperate
 */
 class GLOPERATE_API AbstractTargetFramebufferCapability : public AbstractCapability
 {
-
-
 public:
     /**
     *  @brief
@@ -57,5 +56,6 @@ public:
     */
     virtual void setFramebuffer(globjects::Framebuffer * fbo) = 0;
 };
+
 
 } // namespace gloperate

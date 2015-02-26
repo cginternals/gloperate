@@ -183,6 +183,7 @@ set(api_includes
     ${include_path}/painter/Painter.h
     ${include_path}/painter/AbstractTargetFramebufferCapability.h
     ${include_path}/painter/AbstractCapability.h
+    ${include_path}/painter/AbstractCapability.hpp
     ${include_path}/painter/ViewportCapability.h
     ${include_path}/painter/VirtualTimeCapability.h
     ${include_path}/painter/CameraCapability.h

@@ -16,6 +16,8 @@
 
 #include <gloperate/resources/RawFile.h>
 
+#include <gloperate/base/RenderTargetType.h>
+
 #include <gloperate/painter/Camera.h>
 #include <gloperate/painter/TargetFramebufferCapability.h>
 #include <gloperate/painter/ViewportCapability.h>

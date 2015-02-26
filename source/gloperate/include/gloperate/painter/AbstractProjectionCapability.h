@@ -1,34 +1,32 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #pragma once
 
-#include <glm/glm.hpp>
-#include <gloperate/gloperate_api.h>
 
+#include <glm/glm.hpp>
+
+#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>
 
 
 namespace gloperate {
 
+
 class AbstractViewportCapability;
+
 
 /**
 *  @brief
-*    Base class for painter camera capabilities
-*
+*    Base class for camera projection capabilities
 */
 class GLOPERATE_API AbstractProjectionCapability : public AbstractCapability
 {
-
-
 public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] viewportCapability
+    *    Viewport capability (must NOT be null!)
     */
     AbstractProjectionCapability(AbstractViewportCapability * viewportCapability);
 
@@ -38,20 +36,74 @@ public:
     */
     virtual ~AbstractProjectionCapability();
 
+    /**
+    *  @brief
+    *    Get aspect ratio (width / height)
+    *
+    *  @return
+    *    Aspect ratio
+    */
     virtual float aspectRatio() const = 0;
 
+    /**
+    *  @brief
+    *    Get projection matrix
+    *
+    *  @return
+    *    Projection matrix
+    */
     virtual const glm::mat4 & projection() const = 0;
+
+    /**
+    *  @brief
+    *    Get inverted projection matrix
+    *
+    *  @return
+    *    Inverted projection matrix
+    */
     virtual const glm::mat4 & projectionInverted() const = 0;
 
+    /**
+    *  @brief
+    *    Get projection matrix for a specified aspect ratio
+    *
+    *  @param[in] ratio
+    *    Aspect ratio
+    *
+    *  @return
+    *    Projection matrix
+    */
     virtual glm::mat4 projectionForAspectRatio(float ratio) const = 0;
+
+
 protected:
+    /**
+    *  @brief
+    *    Set aspect ratio (width / height)
+    *
+    *  @param[in] ratio
+    *    Aspect ratio
+    */
     virtual void setAspectRatio(float ratio) = 0;
+
+    /**
+    *  @brief
+    *    Set aspect ratio by providing a viewport
+    *
+    *  @param[in] viewport
+    *    Viewport size
+    */
     virtual void setAspectRatio(const glm::ivec2 & viewport) = 0;
 
+    /**
+    *  @brief
+    *    Called when the viewport has been changed
+    */
     virtual void onViewportChanged();
 
+
 protected:
-    AbstractViewportCapability * m_viewportCapability;
+    AbstractViewportCapability * m_viewportCapability;  /**< Viewport capability (must NOT be null!) */
 };
 
 
