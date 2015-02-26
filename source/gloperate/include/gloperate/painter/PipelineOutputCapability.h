@@ -38,8 +38,6 @@ public:
     */
     virtual ~PipelineOutputCapability();
 
-    virtual std::vector<gloperate::AbstractData*> findOutputs(const std::string & name) const;
-
     virtual std::vector<gloperate::AbstractData*> allOutputs() const;
 
 protected:

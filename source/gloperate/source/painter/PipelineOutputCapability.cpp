@@ -28,11 +28,6 @@ PipelineOutputCapability::~PipelineOutputCapability()
 {
 }
 
-std::vector<gloperate::AbstractData*> PipelineOutputCapability::findOutputs(const std::string & name) const
-{
-    return m_pipeline.findOutputs(name);
-}
-
 std::vector<gloperate::AbstractData*> PipelineOutputCapability::allOutputs() const
 {
     return m_pipeline.allOutputs();
