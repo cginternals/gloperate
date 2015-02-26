@@ -12,8 +12,8 @@ namespace gloperate
 *    Constructor
 */
 PipelineOutputCapability::PipelineOutputCapability(const gloperate::AbstractPipeline & pipeline)
-    : AbstractOutputCapability()
-    , m_pipeline(pipeline)
+    : AbstractOutputCapability{}
+    , m_pipeline { pipeline }
 {
 }
 

@@ -13,7 +13,7 @@ namespace gloperate
 *    Constructor
 */
 AbstractOutputCapability::AbstractOutputCapability()
-    : AbstractCapability()
+    : AbstractCapability{}
 {
 }
 
