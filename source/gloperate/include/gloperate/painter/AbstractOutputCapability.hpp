@@ -1,5 +1,7 @@
 #pragma once
 
+#include <gloperate/pipeline/Data.h>
+
 namespace gloperate
 {
 

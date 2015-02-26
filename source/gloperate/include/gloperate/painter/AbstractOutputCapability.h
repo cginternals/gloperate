@@ -2,8 +2,6 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/pipeline/Data.h>
-
 #include <gloperate/painter/AbstractCapability.h>
 
 #include <string>
@@ -14,6 +12,8 @@ namespace gloperate
 {
 
 class AbstractData;
+template<typename T>
+class Data;
 
 /**
 *  @brief
