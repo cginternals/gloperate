@@ -1,4 +1,4 @@
-#include <gloperate/painter/OutputCapability.h>
+#include <gloperate/painter/PipelineOutputCapability.h>
 
 #include <gloperate/base/collection.hpp>
 
@@ -14,7 +14,7 @@ namespace gloperate
 *  @brief
 *    Constructor
 */
-OutputCapability::OutputCapability(gloperate::AbstractPipeline & pipeline)
+PipelineOutputCapability::PipelineOutputCapability(gloperate::AbstractPipeline & pipeline)
     : AbstractOutputCapability()
     , m_pipeline(pipeline)
 {
@@ -24,16 +24,16 @@ OutputCapability::OutputCapability(gloperate::AbstractPipeline & pipeline)
 *  @brief
 *    Destructor
 */
-OutputCapability::~OutputCapability()
+PipelineOutputCapability::~PipelineOutputCapability()
 {
 }
 
-std::vector<gloperate::AbstractData*> OutputCapability::findOutputs(const std::string & name) const
+std::vector<gloperate::AbstractData*> PipelineOutputCapability::findOutputs(const std::string & name) const
 {
     return m_pipeline.findOutputs(name);
 }
 
-std::vector<gloperate::AbstractData*> OutputCapability::allOutputs() const
+std::vector<gloperate::AbstractData*> PipelineOutputCapability::allOutputs() const
 {
     return m_pipeline.allOutputs();
 }

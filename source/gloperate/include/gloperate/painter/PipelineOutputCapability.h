@@ -21,7 +21,7 @@ class Data;
 *    OutputCapability for pipelines
 *
 */
-class GLOPERATE_API OutputCapability : public AbstractOutputCapability
+class GLOPERATE_API PipelineOutputCapability : public AbstractOutputCapability
 {
 
 
@@ -30,13 +30,13 @@ public:
     *  @brief
     *    Constructor
     */
-    OutputCapability(gloperate::AbstractPipeline & pipeline);
+    PipelineOutputCapability(gloperate::AbstractPipeline & pipeline);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~OutputCapability();
+    virtual ~PipelineOutputCapability();
 
     virtual std::vector<gloperate::AbstractData*> findOutputs(const std::string & name) const;
 
