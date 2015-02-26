@@ -14,7 +14,7 @@ namespace gloperate
 *  @brief
 *    Constructor
 */
-PipelineOutputCapability::PipelineOutputCapability(gloperate::AbstractPipeline & pipeline)
+PipelineOutputCapability::PipelineOutputCapability(const gloperate::AbstractPipeline & pipeline)
     : AbstractOutputCapability()
     , m_pipeline(pipeline)
 {

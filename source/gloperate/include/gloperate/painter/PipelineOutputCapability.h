@@ -30,7 +30,7 @@ public:
     *  @brief
     *    Constructor
     */
-    PipelineOutputCapability(gloperate::AbstractPipeline & pipeline);
+    PipelineOutputCapability(const gloperate::AbstractPipeline & pipeline);
 
     /**
     *  @brief
@@ -41,7 +41,7 @@ public:
     virtual std::vector<gloperate::AbstractData*> allOutputs() const override;
 
 protected:
-    gloperate::AbstractPipeline & m_pipeline;
+    const gloperate::AbstractPipeline & m_pipeline;
 };
 
 } // namespace gloperate
