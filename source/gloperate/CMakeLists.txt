@@ -195,8 +195,8 @@ set(api_includes
     ${include_path}/painter/AbstractMetaInformationCapability.h
     ${include_path}/painter/MetaInformationCapability.h
     ${include_path}/painter/AbstractOutputCapability.h
+    ${include_path}/painter/AbstractOutputCapability.hpp
     ${include_path}/painter/OutputCapability.h
-    ${include_path}/painter/OutputCapability.hpp
     
     ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/AbstractPipeline.hpp

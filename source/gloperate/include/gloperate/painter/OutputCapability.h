@@ -18,7 +18,7 @@ class Data;
 
 /**
 *  @brief
-*    Base class for output capabilities
+*    OutputCapability for pipelines
 *
 */
 class GLOPERATE_API OutputCapability : public AbstractOutputCapability
@@ -40,11 +40,6 @@ public:
 
     virtual std::vector<gloperate::AbstractData*> findOutputs(const std::string & name) const;
 
-    template <typename T>
-    Data<T> * getOutput(const std::string & name) const;
-    template <typename T>
-    Data<T> * getOutput() const;
-
     virtual std::vector<gloperate::AbstractData*> allOutputs() const;
 
 protected:
@@ -52,5 +47,3 @@ protected:
 };
 
 } // namespace gloperate
-
-#include <gloperate/painter/OutputCapability.hpp>
