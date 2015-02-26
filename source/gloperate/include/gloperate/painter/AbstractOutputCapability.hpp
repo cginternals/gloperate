@@ -12,7 +12,7 @@ gloperate::Data<T> * AbstractOutputCapability::getOutput(const std::string & nam
 {
     for (AbstractData* output : findOutputs(name))
     {
-        auto = dynamic_cast<Data<T>*>(output);
+        auto data = dynamic_cast<Data<T>*>(output);
         if (data)
         {
             return data;
