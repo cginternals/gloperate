@@ -101,6 +101,7 @@ set(sources
     ${source_path}/painter/AbstractViewportCapability.cpp
     ${source_path}/painter/AbstractMetaInformationCapability.cpp
     ${source_path}/painter/MetaInformationCapability.cpp
+    ${source_path}/painter/AbstractOutputCapability.cpp
     ${source_path}/painter/OutputCapability.cpp
     
     ${source_path}/pipeline/AbstractInputSlot.cpp
@@ -193,6 +194,7 @@ set(api_includes
     ${include_path}/painter/AbstractTypedRenderTargetCapability.h
     ${include_path}/painter/AbstractMetaInformationCapability.h
     ${include_path}/painter/MetaInformationCapability.h
+    ${include_path}/painter/AbstractOutputCapability.h
     ${include_path}/painter/OutputCapability.h
     ${include_path}/painter/OutputCapability.hpp
     

@@ -15,7 +15,7 @@ namespace gloperate
 *    Constructor
 */
 OutputCapability::OutputCapability(gloperate::AbstractPipeline & pipeline)
-    : AbstractCapability()
+    : AbstractOutputCapability()
     , m_pipeline(pipeline)
 {
 }
@@ -31,6 +31,11 @@ OutputCapability::~OutputCapability()
 std::vector<gloperate::AbstractData*> OutputCapability::findOutputs(const std::string & name) const
 {
     return m_pipeline.findOutputs(name);
+}
+
+std::vector<gloperate::AbstractData*> OutputCapability::allOutputs() const
+{
+    return m_pipeline.allOutputs();
 }
 
 }

@@ -2,7 +2,7 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/painter/AbstractCapability.h>
+#include <gloperate/painter/AbstractOutputCapability.h>
 #include <gloperate/pipeline/AbstractPipeline.h>
 
 #include <string>
@@ -21,7 +21,7 @@ class Data;
 *    Base class for output capabilities
 *
 */
-class GLOPERATE_API OutputCapability : public gloperate::AbstractCapability
+class GLOPERATE_API OutputCapability : public AbstractOutputCapability
 {
 
 
@@ -38,15 +38,14 @@ public:
     */
     virtual ~OutputCapability();
 
-    std::vector<gloperate::AbstractData*> findOutputs(const std::string & name) const;
+    virtual std::vector<gloperate::AbstractData*> findOutputs(const std::string & name) const;
 
     template <typename T>
     Data<T> * getOutput(const std::string & name) const;
     template <typename T>
     Data<T> * getOutput() const;
 
-
-    std::vector<gloperate::AbstractData*> allOutputs() const;
+    virtual std::vector<gloperate::AbstractData*> allOutputs() const;
 
 protected:
     gloperate::AbstractPipeline & m_pipeline;
