@@ -1,0 +1,33 @@
+#include <gloperate/painter/PipelineOutputCapability.h>
+
+#include <gloperate/base/collection.hpp>
+
+#include <gloperate/pipeline/AbstractPipeline.h>
+
+namespace gloperate
+{
+
+/**
+*  @brief
+*    Constructor
+*/
+PipelineOutputCapability::PipelineOutputCapability(const gloperate::AbstractPipeline & pipeline)
+    : AbstractOutputCapability{}
+    , m_pipeline { pipeline }
+{
+}
+
+/**
+*  @brief
+*    Destructor
+*/
+PipelineOutputCapability::~PipelineOutputCapability()
+{
+}
+
+std::vector<gloperate::AbstractData*> PipelineOutputCapability::allOutputs() const
+{
+    return m_pipeline.allOutputs();
+}
+
+}
