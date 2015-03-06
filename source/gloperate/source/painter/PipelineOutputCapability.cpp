@@ -13,7 +13,7 @@ namespace gloperate
 */
 PipelineOutputCapability::PipelineOutputCapability(const gloperate::AbstractPipeline & pipeline)
     : AbstractOutputCapability{}
-    , m_pipeline { pipeline }
+    , m_pipeline ( pipeline )
 {
 }
 
