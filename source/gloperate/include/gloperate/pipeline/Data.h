@@ -14,8 +14,8 @@ template <typename T>
 class Data : public AbstractData
 {
 public:
-    Data();
-    explicit Data(const T & data);
+    template <typename... Args>
+    explicit Data(Args&&... args);
 
     T & data();
     const T & data() const;
