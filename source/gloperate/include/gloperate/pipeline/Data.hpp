@@ -5,16 +5,11 @@
 
 namespace gloperate 
 {
-    
-template <typename T>
-Data<T>::Data()
-: m_data()
-{
-}
 
 template <typename T>
-Data<T>::Data(const T & data)
-: m_data(data)
+template <typename... Args>
+Data<T>::Data(Args&&... args)
+: m_data(std::forward<Args>(args)...)
 {
 }
 
