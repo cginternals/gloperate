@@ -8,6 +8,12 @@
 #include <gloperate/painter/AbstractCapability.h>
 
 
+namespace reflectionzeug
+{
+    class PropertyGroup;
+}
+
+
 namespace gloperate
 {
 
@@ -87,6 +93,15 @@ public:
     */
     template <typename Capability>
     Capability * getCapability() const;
+    
+    /**
+    *  @brief
+    *    Get the painter's property group
+    *
+    *  @return
+    *    Pointer to the property group, nullptr if its not supported
+    */
+    virtual reflectionzeug::PropertyGroup * properties() const = 0;
 
 
 protected:

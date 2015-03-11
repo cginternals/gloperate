@@ -9,7 +9,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-
+find_package(libzeug REQUIRED)
 
 # Includes
 
@@ -17,6 +17,7 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
@@ -32,6 +33,7 @@ set(libs
     ${OPENGL_LIBRARIES}
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
 )
 
 
