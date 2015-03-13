@@ -14,15 +14,15 @@ namespace gloperate_qtwidgets
 
 class GLOPERATE_QTWIDGETS_API ImageExporterTilebasedWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	ImageExporterTilebasedWidget(QWidget * parent = nullptr);
-	virtual ~ImageExporterTilebasedWidget();
+    ImageExporterTilebasedWidget(QWidget * parent = nullptr);
+    virtual ~ImageExporterTilebasedWidget();
 
 private:
-	const QScopedPointer<Ui_ImageExporterTilebasedWidget> m_ui;
-	
+    const QScopedPointer<Ui_ImageExporterTilebasedWidget> m_ui;
+    
 
 };
 

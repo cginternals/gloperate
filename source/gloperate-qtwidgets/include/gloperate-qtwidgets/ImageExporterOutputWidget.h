@@ -34,43 +34,43 @@ namespace gloperate_qtwidgets
 
 class GLOPERATE_QTWIDGETS_API ImageExporterOutputWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	ImageExporterOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
-	virtual ~ImageExporterOutputWidget();
+    ImageExporterOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
+    virtual ~ImageExporterOutputWidget();
 
-	void updateResolutionSummaryLabel(const QString& sizeSummary);
-	void updateResolution(const QSize& resolution);
+    void updateResolutionSummaryLabel(const QString& sizeSummary);
+    void updateResolution(const QSize& resolution);
 
 signals:
-	void filenameChanged(const QString& text);
+    void filenameChanged(const QString& text);
 
 protected:
-	void handleSave(bool checked);
-	void handleEdit(bool checked);
+    void handleSave(bool checked);
+    void handleEdit(bool checked);
 
-	void restoreSettings();
+    void restoreSettings();
 
-	void checkFilename(const QString& text);
-	void saveFilename();
-	std::string replaceTags(const std::string& filename);
-	std::string buildFileName();
-	void browseDirectory(bool checked);
-	void updateDirectory();
-	void updateFilenamePreview(const QString& text);
-	void updateUiFileName();
-	std::string extractEnumNumStartIndex(const std::string& filename, int position);
+    void checkFilename(const QString& text);
+    void saveFilename();
+    std::string replaceTags(const std::string& filename);
+    std::string buildFileName();
+    void browseDirectory(bool checked);
+    void updateDirectory();
+    void updateFilenamePreview(const QString& text);
+    void updateUiFileName();
+    std::string extractEnumNumStartIndex(const std::string& filename, int position);
 
 protected:
-	gloperate::ImageExporter * m_imageExporter;
-	gloperate_qt::QtOpenGLWindow * m_context;
-	std::map<const QString, const QString> m_supportedTags;
+    gloperate::ImageExporter * m_imageExporter;
+    gloperate_qt::QtOpenGLWindow * m_context;
+    std::map<const QString, const QString> m_supportedTags;
 
 private:
-	const QScopedPointer<Ui_ImageExporterOutputWidget> m_ui;
-	QString m_dirName;
-	QScopedPointer<QSize> m_resolution;
+    const QScopedPointer<Ui_ImageExporterOutputWidget> m_ui;
+    QString m_dirName;
+    QScopedPointer<QSize> m_resolution;
 
 };
 

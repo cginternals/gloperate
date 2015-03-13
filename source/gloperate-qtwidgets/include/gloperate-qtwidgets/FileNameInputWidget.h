@@ -20,20 +20,20 @@ class FileNameTextEdit;
 
 class GLOPERATE_QTWIDGETS_API FileNameInputWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	FileNameInputWidget(FileNameTagCompleter * completer, QString & initialFilename, QWidget * parent = nullptr);
-	virtual ~FileNameInputWidget();
+    FileNameInputWidget(FileNameTagCompleter * completer, QString & initialFilename, QWidget * parent = nullptr);
+    virtual ~FileNameInputWidget();
 
 protected:
-	virtual void closeEvent(QCloseEvent * event);
+    virtual void closeEvent(QCloseEvent * event);
 
 protected:
-	std::shared_ptr<FileNameTagCompleter> m_completer;
+    std::shared_ptr<FileNameTagCompleter> m_completer;
 
 private:
-	const QScopedPointer<Ui_FileNameInputWidget> m_ui;
+    const QScopedPointer<Ui_FileNameInputWidget> m_ui;
 };
 
 } //namespace gloperate_qtwidgets

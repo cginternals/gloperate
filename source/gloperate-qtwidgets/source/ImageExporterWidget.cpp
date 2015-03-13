@@ -25,17 +25,17 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
 ,	m_resolutionWidget(new ImageExporterResolutionWidget(this))
 ,	m_tilebasedWidget(new ImageExporterTilebasedWidget(this))
 {
-	connect(m_resolutionWidget.get(), &ImageExporterResolutionWidget::resolutionSummaryChanged,
-		m_outputWidget.get(), &ImageExporterOutputWidget::updateResolutionSummaryLabel);
+    connect(m_resolutionWidget.get(), &ImageExporterResolutionWidget::resolutionSummaryChanged,
+        m_outputWidget.get(), &ImageExporterOutputWidget::updateResolutionSummaryLabel);
 
-	connect(m_resolutionWidget.get(), &ImageExporterResolutionWidget::resolutionChanged,
-		m_outputWidget.get(), &ImageExporterOutputWidget::updateResolution);
+    connect(m_resolutionWidget.get(), &ImageExporterResolutionWidget::resolutionChanged,
+        m_outputWidget.get(), &ImageExporterOutputWidget::updateResolution);
 
-	addWidget(m_outputWidget.get());
-	addWidget(m_resolutionWidget.get());
-	addWidget(m_tilebasedWidget.get());
+    addWidget(m_outputWidget.get());
+    addWidget(m_resolutionWidget.get());
+    addWidget(m_tilebasedWidget.get());
 
-	m_resolutionWidget->updateResolutionSummary();
+    m_resolutionWidget->updateResolutionSummary();
 }
 
 ImageExporterWidget::~ImageExporterWidget()

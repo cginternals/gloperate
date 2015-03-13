@@ -25,7 +25,7 @@ namespace
 FileNameTagCompleter::FileNameTagCompleter(QStringList* currentCompletions)
 :	m_currentCompletions(currentCompletions)
 {
-	registerWords(FilenameTags);
+    registerWords(FilenameTags);
 };
 
 FileNameTagCompleter::~FileNameTagCompleter()
@@ -34,25 +34,25 @@ FileNameTagCompleter::~FileNameTagCompleter()
 
 void FileNameTagCompleter::update(QString word)
 {
-	m_model->setStringList(*m_currentCompletions);
-	complete();
+    m_model->setStringList(*m_currentCompletions);
+    complete();
 }
 
 void FileNameTagCompleter::setCurrentCompletions(const QStringList& newCompletions)
 {
-	m_currentCompletions->clear();
-	m_currentCompletions->append(newCompletions);
-	emit currentCompletionsChanged();
+    m_currentCompletions->clear();
+    m_currentCompletions->append(newCompletions);
+    emit currentCompletionsChanged();
 }
 
 QStringList FileNameTagCompleter::currentCompletions()
 {
-	return *m_currentCompletions;
+    return *m_currentCompletions;
 }
 
 bool FileNameTagCompleter::hasCompletions()
 {
-	return m_currentCompletions->count() > 0;
+    return m_currentCompletions->count() > 0;
 }
 
 } // namespace gloperate_qtwidgets

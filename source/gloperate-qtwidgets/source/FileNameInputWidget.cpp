@@ -18,11 +18,11 @@ FileNameInputWidget::FileNameInputWidget(FileNameTagCompleter * completer, QStri
 ,	m_ui(new Ui_FileNameInputWidget)
 ,	m_completer(completer)
 {
-	m_ui->setupUi(this);
-	m_ui->fileNameTextEdit->setCompleter(m_completer);
-	m_ui->fileNameTextEdit->initialize();
+    m_ui->setupUi(this);
+    m_ui->fileNameTextEdit->setCompleter(m_completer);
+    m_ui->fileNameTextEdit->initialize();
 
-	m_ui->fileNameTextEdit->setText(initialFilename);
+    m_ui->fileNameTextEdit->setText(initialFilename);
 }
 
 FileNameInputWidget::~FileNameInputWidget()
@@ -31,8 +31,8 @@ FileNameInputWidget::~FileNameInputWidget()
 
 void FileNameInputWidget::closeEvent(QCloseEvent * event)
 {
-	m_ui->fileNameTextEdit->closeListWidget();
-	QWidget::closeEvent(event);
+    m_ui->fileNameTextEdit->closeListWidget();
+    QWidget::closeEvent(event);
 }
 
 } //namespace gloperate_qtwidgets

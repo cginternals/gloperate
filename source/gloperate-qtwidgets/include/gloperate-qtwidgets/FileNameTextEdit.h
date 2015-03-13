@@ -18,29 +18,29 @@ class FileNameTagCompleter;
 
 class GLOPERATE_QTWIDGETS_API FileNameTextEdit : public QTextEdit
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	FileNameTextEdit(QWidget * parent = nullptr);
-	virtual ~FileNameTextEdit();
+    FileNameTextEdit(QWidget * parent = nullptr);
+    virtual ~FileNameTextEdit();
 
-	virtual void setCompleter(std::shared_ptr<FileNameTagCompleter> completer);
-	virtual std::shared_ptr<FileNameTagCompleter> completer();
-	virtual void updateCompletionPrefix();
-	void closeListWidget();
-	virtual void initialize();
-
-protected:
-	void textSelected(bool b);
-	virtual void keyPressEvent(QKeyEvent * event);
-	void manageListWidget();
-	void completeTag();
-	void changeListIndex(int direction);
+    virtual void setCompleter(std::shared_ptr<FileNameTagCompleter> completer);
+    virtual std::shared_ptr<FileNameTagCompleter> completer();
+    virtual void updateCompletionPrefix();
+    void closeListWidget();
+    virtual void initialize();
 
 protected:
-	std::shared_ptr<FileNameTagCompleter> m_completer;
-	bool m_textSelected;
-	std::unique_ptr<QListWidget> m_fileNameListWidget;
+    void textSelected(bool b);
+    virtual void keyPressEvent(QKeyEvent * event);
+    void manageListWidget();
+    void completeTag();
+    void changeListIndex(int direction);
+
+protected:
+    std::shared_ptr<FileNameTagCompleter> m_completer;
+    bool m_textSelected;
+    std::unique_ptr<QListWidget> m_fileNameListWidget;
 };
 
 } //namespace gloperate_qtwidgets

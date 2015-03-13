@@ -34,16 +34,16 @@ class ImageExporterTilebasedWidget;
 
 class GLOPERATE_QTWIDGETS_API ImageExporterWidget : public widgetzeug::DockableScrollAreaWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	ImageExporterWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
-	virtual ~ImageExporterWidget();
+    ImageExporterWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
+    virtual ~ImageExporterWidget();
 
 private:
-	std::unique_ptr<ImageExporterOutputWidget> m_outputWidget;
-	std::unique_ptr<ImageExporterResolutionWidget> m_resolutionWidget;
-	std::unique_ptr<ImageExporterTilebasedWidget> m_tilebasedWidget;
+    std::unique_ptr<ImageExporterOutputWidget> m_outputWidget;
+    std::unique_ptr<ImageExporterResolutionWidget> m_resolutionWidget;
+    std::unique_ptr<ImageExporterTilebasedWidget> m_tilebasedWidget;
 };
 
 } //namespace gloperate_qtwidgets
