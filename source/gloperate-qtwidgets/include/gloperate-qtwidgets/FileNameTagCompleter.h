@@ -16,7 +16,6 @@ class GLOPERATE_QTWIDGETS_API FileNameTagCompleter : public widgetzeug::ScriptCo
 public:
     FileNameTagCompleter(QStringList* currentCompletions);
     virtual ~FileNameTagCompleter();
-    virtual void update(QString word);
     virtual void setCurrentCompletions(const QStringList& newCompletions);
     virtual QStringList currentCompletions();
     bool hasCompletions();

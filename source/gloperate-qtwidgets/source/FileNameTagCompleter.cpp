@@ -32,12 +32,6 @@ FileNameTagCompleter::~FileNameTagCompleter()
 {
 }
 
-void FileNameTagCompleter::update(QString word)
-{
-    m_model->setStringList(*m_currentCompletions);
-    complete();
-}
-
 void FileNameTagCompleter::setCurrentCompletions(const QStringList& newCompletions)
 {
     m_currentCompletions->clear();
