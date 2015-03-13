@@ -95,7 +95,6 @@ set(sources
     ${source_path}/FileNameTagCompleter.cpp
     ${source_path}/FileNameTextEdit.cpp
     ${source_path}/ImageExporterWidget.cpp
-    ${source_path}/ImageExporterWidget.ui
     ${source_path}/ImageExporterOutputWidget.cpp
     ${source_path}/ImageExporterOutputWidget.ui
     ${source_path}/ImageExporterResolutionWidget.cpp
