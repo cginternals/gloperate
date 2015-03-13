@@ -46,7 +46,7 @@ public:
     *    Do not initialize your graphics object or call any OpenGL functions in the
     *    constructor, because at this time there may be no valid context active. Instead,
     *    all OpenGL initialization code should be implemented in initialize().
-    *    Use the constructor to register properties and capabalities.
+    *    Use the constructor to register properties and capabilities.
     */
     Painter(ResourceManager & resourceManager);
 
@@ -118,6 +118,7 @@ protected:
 protected:
     ResourceManager                  & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
     std::vector<AbstractCapability*>   m_capabilities;    /**< List of supported capabilities */
+
 };
 
 

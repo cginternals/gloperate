@@ -1,6 +1,7 @@
 
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 
+#include <gloperate/base/RenderTarget.h>
 
 namespace gloperate {
 

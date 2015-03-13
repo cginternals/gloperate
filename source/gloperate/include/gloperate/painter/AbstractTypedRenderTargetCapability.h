@@ -4,23 +4,13 @@
 
 #include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>
-#include <gloperate/base/RenderTarget.h>
 
 
 namespace gloperate {
 
 
-/**
-*  @brief
-*    Type of data provided by the render target
-*/
-enum class RenderTargetType {
-    Color,
-    Depth,
-    Normal,
-    Geometry,
-    ObjectID
-};
+class RenderTarget;
+enum class RenderTargetType : unsigned int;
 
 
 /**

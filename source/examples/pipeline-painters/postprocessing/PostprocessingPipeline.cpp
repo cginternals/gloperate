@@ -20,6 +20,8 @@
 
 #include <globjects/base/StringTemplate.h>
 
+#include <gloperate/base/RenderTargetType.h>
+
 #include <gloperate/pipeline/AbstractStage.h>
 #include <gloperate/pipeline/Data.h>
 #include <gloperate/pipeline/InputSlot.h>

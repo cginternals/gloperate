@@ -1,6 +1,9 @@
+
 #include <gloperate/tools/ObjectIdExtractor.h>
 
 #include <glm/common.hpp>
+
+#include <gloperate/base/RenderTargetType.h>
 
 namespace gloperate
 {
