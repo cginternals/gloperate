@@ -26,7 +26,7 @@ FileNameTagCompleter::FileNameTagCompleter(QStringList* currentCompletions)
 :	m_currentCompletions(currentCompletions)
 {
     registerWords(FilenameTags);
-};
+}
 
 FileNameTagCompleter::~FileNameTagCompleter()
 {

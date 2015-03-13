@@ -6,9 +6,6 @@
 #include <QListWidget>
 #include <gloperate-qt/qt-includes-end.h>
 
-#include <iostream>
-#include <intrin.h>
-
 namespace gloperate_qtwidgets
 {
 
@@ -114,7 +111,7 @@ void FileNameTextEdit::updateCompletionPrefix()
         {
             if ((newPos - 1) - searchIndex > m_completer->searchDepth)
                 break;
-            else if (toPlainText().at(searchIndex) == "<")
+            else if (toPlainText().at(searchIndex) == '<')
             {
                 startIndex = searchIndex;
                 break;
@@ -124,7 +121,7 @@ void FileNameTextEdit::updateCompletionPrefix()
         QStringList completions{};
         if (startIndex >= 0)
         {
-            for (startIndex; startIndex < newPos; startIndex++)
+            for (; startIndex < newPos; startIndex++)
                 prefix += toPlainText().at(startIndex);
         }
         else

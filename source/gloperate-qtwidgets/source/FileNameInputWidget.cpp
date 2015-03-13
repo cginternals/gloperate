@@ -15,8 +15,8 @@ namespace gloperate_qtwidgets
 
 FileNameInputWidget::FileNameInputWidget(FileNameTagCompleter * completer, QString & initialFilename, QWidget *parent)
 :	QWidget(parent)
-,	m_ui(new Ui_FileNameInputWidget)
 ,	m_completer(completer)
+,	m_ui(new Ui_FileNameInputWidget)
 {
     m_ui->setupUi(this);
     m_ui->fileNameTextEdit->setCompleter(m_completer);
