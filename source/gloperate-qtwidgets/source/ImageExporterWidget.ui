@@ -6,31 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>307</width>
-    <height>498</height>
+    <width>277</width>
+    <height>425</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>17</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string/>
@@ -39,41 +23,68 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="3" column="1">
-       <widget class="QSpinBox" name="renderIterationsSpinBox">
-        <property name="minimum">
-         <number>1</number>
+      <item row="3" column="2">
+       <widget class="QPushButton" name="filenameEditButton">
+        <property name="text">
+         <string>Edi&amp;t</string>
         </property>
-        <property name="maximum">
-         <number>999999</number>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="fileNameLineEdit">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="previewLabel">
+        <property name="text">
+         <string>Preview:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="renderInterationsLabel">
+       <widget class="QLabel" name="filenameLabel">
         <property name="text">
-         <string>Render &amp;Interations:</string>
+         <string>&amp;Filename:</string>
         </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="buddy">
-         <cstring>renderIterationsSpinBox</cstring>
+         <cstring>fileNameLineEdit</cstring>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="saveButton">
+      <item row="2" column="2">
+       <widget class="QPushButton" name="openDirectoryButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>1</horstretch>
+          <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;Export</string>
+         <string>&amp;Browse</string>
         </property>
-        <property name="default">
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="directoryLineEdit">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="readOnly">
          <bool>true</bool>
         </property>
        </widget>
@@ -112,6 +123,41 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="directoryLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>&amp;Directory:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>directoryLineEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="saveButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>&amp;Export</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1" colspan="2">
        <widget class="QLabel" name="resolutionSummaryLabel">
         <property name="sizePolicy">
@@ -128,87 +174,7 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>File Path</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QLabel" name="directoryLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>1</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>&amp;Directory:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy">
-         <cstring>directoryLineEdit</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="filenameLabel">
-        <property name="text">
-         <string>&amp;Filename:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy">
-         <cstring>fileNameLineEdit</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="openDirectoryButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>1</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>&amp;Browse</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="directoryLineEdit">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>3</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="fileNameLineEdit">
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2">
+      <item row="4" column="1" colspan="2">
        <widget class="QLabel" name="filenamePeviewLabel">
         <property name="text">
          <string/>
@@ -218,27 +184,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="filenameEditButton">
-        <property name="text">
-         <string>Edi&amp;t</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="previewLabel">
-        <property name="text">
-         <string>Preview:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="1" column="0">
     <widget class="QGroupBox" name="resolutionBox">
      <property name="title">
       <string>Resolution</string>
@@ -252,25 +201,6 @@
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>3</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="suffix">
-         <string/>
-        </property>
-        <property name="minimum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="heightDoubleSpinBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>1</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
@@ -304,6 +234,25 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="heightDoubleSpinBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100000.000000000000000</double>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="2">
        <widget class="QComboBox" name="widthComboBox">
         <property name="sizePolicy">
@@ -319,29 +268,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="resolutionLabel">
-        <property name="text">
-         <string>&amp;Resolution:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy">
-         <cstring>resolutionSpinBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1" colspan="2">
-       <widget class="QCheckBox" name="aspectCheckBox">
-        <property name="text">
-         <string>&amp;Constrain Proportions</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="heightLabel">
         <property name="text">
@@ -352,6 +278,19 @@
         </property>
         <property name="buddy">
          <cstring>heightDoubleSpinBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="resolutionLabel">
+        <property name="text">
+         <string>&amp;Resolution:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>resolutionSpinBox</cstring>
         </property>
        </widget>
       </item>
@@ -371,18 +310,13 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
-       <widget class="QComboBox" name="resolutionComboBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>1</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="3" column="1" colspan="2">
+       <widget class="QCheckBox" name="aspectCheckBox">
+        <property name="text">
+         <string>&amp;Constrain Proportions</string>
         </property>
-        <property name="font">
-         <font>
-          <family>Courier New</family>
-         </font>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -401,10 +335,25 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="2">
+       <widget class="QComboBox" name="resolutionComboBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Courier New</family>
+         </font>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="2" column="0">
     <widget class="QGroupBox" name="tilesBox">
      <property name="title">
       <string>Tiles</string>
@@ -563,7 +512,7 @@
      </layout>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -579,13 +528,7 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>saveButton</tabstop>
   <tabstop>presetsComboBox</tabstop>
-  <tabstop>renderIterationsSpinBox</tabstop>
-  <tabstop>directoryLineEdit</tabstop>
-  <tabstop>openDirectoryButton</tabstop>
-  <tabstop>fileNameLineEdit</tabstop>
-  <tabstop>filenameEditButton</tabstop>
   <tabstop>widthDoubleSpinBox</tabstop>
   <tabstop>widthComboBox</tabstop>
   <tabstop>heightDoubleSpinBox</tabstop>
