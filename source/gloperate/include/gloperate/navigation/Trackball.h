@@ -19,18 +19,16 @@ public:
 	void rotate(const glm::dvec2 & from, const glm::dvec2 & to);
 
 	glm::dquat orientation() const;
-	glm::dmat4 orientationMatrix() const;
+	glm::dmat3 orientationMatrix() const;
 
 	void reset();
-	void reset(const glm::dmat4& orientation);
+	void reset(const glm::dmat3& orientation);
 
 	void setRadius(double radius);
 
 protected:
     glm::dvec3 mapToSphere(const glm::dvec2 & pos) const;
     double depth(const glm::dvec2 & pos) const;
-
-    glm::dquat makeRotation(const glm::dvec3 & from, const glm::dvec3 & to);
 
 protected:
 	double m_radius;

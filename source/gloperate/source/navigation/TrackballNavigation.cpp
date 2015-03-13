@@ -7,14 +7,12 @@
 
 #include <gloperate/navigation/TrackballNavigation.h>
 
+#include <iostream>
+
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
 
 namespace gloperate {
-
-glm::dvec3 operator*(const glm::dmat4& mat, const glm::dvec3& vec) {
-    return glm::dvec3(mat * glm::dvec4(vec, 1.0));
-}
 
 TrackballNavigation::TrackballNavigation(AbstractCameraCapability * cameraCapability, AbstractViewportCapability * viewportCapability)
 : m_cameraCapability(cameraCapability)
@@ -39,7 +37,7 @@ void TrackballNavigation::reset(const glm::dvec3& eye, const glm::dvec3& center,
     auto s = glm::normalize(glm::cross(f, up));
     auto u = glm::normalize(glm::cross(s, f));
 
-    auto rotationMatrix = glm::dmat4(glm::dvec4(s, 0.0), glm::dvec4(u, 0.0), glm::dvec4(-f, 0.0), glm::dvec4(0.0, 0.0, 0.0, 1.0));
+    auto rotationMatrix = glm::dmat3(s, u, -f);
 
     m_center = center;
     m_distance = glm::length(lv);
@@ -56,7 +54,7 @@ void TrackballNavigation::panBegin(const glm::ivec2& viewportPosition)
 
 void TrackballNavigation::pan(const glm::ivec2& viewportPosition)
 {
-    pan(glm::dvec2(viewportPosition - m_lastViewportPosition) / glm::dvec2(m_viewportCapability->width(), m_viewportCapability->height()));
+    pan(glm::dvec2(viewportPosition - m_lastViewportPosition) / viewport());
     m_lastViewportPosition = viewportPosition;
 }
 
@@ -75,11 +73,40 @@ void TrackballNavigation::panEnd()
     m_mode = Mode::NONE;
 }
 
+void TrackballNavigation::rotateBegin(const glm::ivec2& viewportPosition)
+{
+    m_mode = Mode::ROTATE;
+    m_lastViewportPosition = viewportPosition;
+}
+
+void TrackballNavigation::rotate(const glm::ivec2& viewportPosition)
+{
+    rotate(glm::dvec2(m_lastViewportPosition) / viewport() * 2.0 - 1.0, glm::dvec2(viewportPosition) / viewport() * 2.0 - 1.0);
+    m_lastViewportPosition = viewportPosition;
+}
+
+void TrackballNavigation::rotate(const glm::dvec2& normalizedFrom, const glm::dvec2& normalizedTo)
+{
+    m_trackball.rotate(normalizedFrom, normalizedTo);
+
+    updateCamera();
+}
+
+void TrackballNavigation::rotateEnd()
+{
+    m_mode = Mode::NONE;
+}
+
 void TrackballNavigation::updateCamera()
 {
     m_cameraCapability->setCenter(glm::vec3(m_center));
     m_cameraCapability->setEye(glm::vec3(m_center + m_trackball.orientationMatrix() * glm::dvec3(0.0, 0.0, m_distance)));
     m_cameraCapability->setUp(glm::vec3(m_trackball.orientationMatrix() * glm::dvec3(0.0, 1.0, 0.0)));
+}
+
+glm::dvec2 TrackballNavigation::viewport()
+{
+    return { m_viewportCapability->width(), m_viewportCapability->height() };
 }
 
 } /* namespace gloperate */

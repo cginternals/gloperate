@@ -15,7 +15,7 @@ void Trackball::reset()
 	m_orientation = glm::dquat();
 }
 
-void Trackball::reset(const glm::dmat4& rotation)
+void Trackball::reset(const glm::dmat3& rotation)
 {
     m_orientation = glm::dquat(rotation);
 }
@@ -30,19 +30,19 @@ glm::dquat Trackball::orientation() const
 	return m_orientation;
 }
 
-glm::dmat4 Trackball::orientationMatrix() const
+glm::dmat3 Trackball::orientationMatrix() const
 {
-	return glm::mat4_cast(m_orientation);
+	return glm::mat3_cast(m_orientation);
 }
 
 void Trackball::rotate(const glm::dvec2 & from, const glm::dvec2 & to)
 {
-	m_orientation = m_orientation * makeRotation(mapToSphere(from), mapToSphere(to));
+    m_orientation *= glm::dquat(mapToSphere(from), mapToSphere(to));
 }
 
 glm::dvec3 Trackball::mapToSphere(const glm::dvec2 & pos) const
 {
-	return glm::normalize(glm::dvec3(pos, depth(pos)));
+	return glm::normalize(glm::dvec3(-pos.x, pos.y, depth(pos)));
 }
 
 double Trackball::depth(const glm::dvec2 & pos) const
@@ -52,11 +52,6 @@ double Trackball::depth(const glm::dvec2 & pos) const
 	double r2 = m_radius * m_radius;
 
 	return d <= r2 * 0.5 ? glm::sqrt(r2 - d) : r2 * 0.5 / glm::sqrt(d);
-}
-
-glm::dquat Trackball::makeRotation(const glm::dvec3 & from, const glm::dvec3& to)
-{
-	return glm::dquat(glm::dot(from, to), glm::cross(from, to) * m_orientation);
 }
 
 } // namespace gloperate

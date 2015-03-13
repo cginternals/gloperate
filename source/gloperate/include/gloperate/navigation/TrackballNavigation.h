@@ -19,7 +19,8 @@ class GLOPERATE_API TrackballNavigation {
 public:
     enum class Mode {
         NONE,
-        PAN
+        PAN,
+        ROTATE
     };
 
 public:
@@ -35,8 +36,14 @@ public:
     void pan(const glm::dvec2& normalizedDelta);
     void panEnd();
 
+    void rotateBegin(const glm::ivec2& viewportPosition);
+    void rotate(const glm::ivec2& viewportPosition);
+    void rotate(const glm::dvec2& normalizedFrom, const glm::dvec2& normalizedTo);
+    void rotateEnd();
+
 protected:
     void updateCamera();
+    glm::dvec2 viewport();
 
 protected:
     Trackball m_trackball;
