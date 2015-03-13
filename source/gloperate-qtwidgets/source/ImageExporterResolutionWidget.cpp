@@ -18,10 +18,10 @@ const QString cmString = "cm";
 
 ImageExporterResolutionWidget::ImageExporterResolutionWidget(QWidget *parent)
 :	QWidget(parent)
-,	m_ui(new Ui_ImageExporterResolutionWidget)
 ,	m_widthState(new ResolutionState(1920.0, pixelString))
 ,	m_heightState(new ResolutionState(1080.0, pixelString))
 ,	m_resolutionState(new ResolutionState(72, ppiString))
+,	m_ui(new Ui_ImageExporterResolutionWidget)
 {
     m_ui->setupUi(this);
 
