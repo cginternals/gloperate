@@ -2,6 +2,7 @@
 #include <gloperate-qtwidgets/FileNameTagCompleter.h>
 
 #include <QString>
+#include <QStringListModel>
 
 namespace gloperate_qtwidgets
 {
@@ -11,7 +12,6 @@ namespace
     const QStringList FilenameTags = QStringList() 
         << "<width>"
         << "<height>"
-        << "<enum>"
         << "<enum#"
         << "<year>"
         << "<month>"
@@ -22,13 +22,37 @@ namespace
         << "<millisecond>";
 }
 
-FileNameTagCompleter::FileNameTagCompleter()
+FileNameTagCompleter::FileNameTagCompleter(QStringList* currentCompletions)
+:	m_currentCompletions(currentCompletions)
 {
 	registerWords(FilenameTags);
 };
 
 FileNameTagCompleter::~FileNameTagCompleter()
 {
+}
+
+void FileNameTagCompleter::update(QString word)
+{
+	m_model->setStringList(*m_currentCompletions);
+	complete();
+}
+
+void FileNameTagCompleter::setCurrentCompletions(const QStringList& newCompletions)
+{
+	m_currentCompletions->clear();
+	m_currentCompletions->append(newCompletions);
+	emit currentCompletionsChanged();
+}
+
+QStringList FileNameTagCompleter::currentCompletions()
+{
+	return *m_currentCompletions;
+}
+
+bool FileNameTagCompleter::hasCompletions()
+{
+	return m_currentCompletions->count() > 0;
 }
 
 } // namespace gloperate_qtwidgets

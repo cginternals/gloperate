@@ -82,15 +82,26 @@ set(api_includes
     ${header_path}/gloperate-qtwidgets_api.h
     ${header_path}/FileNameInputWidget.h
     ${header_path}/FileNameTagCompleter.h
+    ${header_path}/FileNameTextEdit.h
     ${header_path}/ImageExporterWidget.h
+    ${header_path}/ImageExporterOutputWidget.h
+    ${header_path}/ImageExporterResolutionWidget.h
+    ${header_path}/ImageExporterTilebasedWidget.h
 )
 
 set(sources
     ${source_path}/FileNameInputWidget.cpp
     ${source_path}/FileNameInputWidget.ui
     ${source_path}/FileNameTagCompleter.cpp
+    ${source_path}/FileNameTextEdit.cpp
     ${source_path}/ImageExporterWidget.cpp
     ${source_path}/ImageExporterWidget.ui
+    ${source_path}/ImageExporterOutputWidget.cpp
+    ${source_path}/ImageExporterOutputWidget.ui
+    ${source_path}/ImageExporterResolutionWidget.cpp
+    ${source_path}/ImageExporterResolutionWidget.ui
+    ${source_path}/ImageExporterTilebasedWidget.cpp
+    ${source_path}/ImageExporterTilebasedWidget.ui
 )
 
 # Group source files

@@ -7,38 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>319</width>
-    <height>123</height>
+    <height>102</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLineEdit" name="fileNameLineEdit"/>
-   </item>
-   <item>
-    <widget class="QListWidget" name="listWidget">
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="gloperate_qtwidgets::FileNameTextEdit" name="fileNameTextEdit"/>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>gloperate_qtwidgets::FileNameTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header location="global">gloperate-qtwidgets/FileNameTextEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
