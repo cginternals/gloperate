@@ -15,10 +15,8 @@
 
 
 using namespace gloperate;
-using namespace gloperate_qt;
 
-QtViewerMapping::QtViewerMapping(QtOpenGLWindow * window)
-    : AbstractQtMapping(window)
+QtViewerMapping::QtViewerMapping()
 {
 }
 
@@ -28,7 +26,7 @@ QtViewerMapping::~QtViewerMapping()
 
 void QtViewerMapping::initializeTools()
 {
-    if (    m_painter && 
+    if (    m_painter &&
             m_painter->supports<AbstractCameraCapability>() &&
             m_painter->supports<AbstractViewportCapability>() &&
             m_painter->supports<AbstractTypedRenderTargetCapability>() &&
@@ -38,7 +36,7 @@ void QtViewerMapping::initializeTools()
         AbstractProjectionCapability * projectionCapability = dynamic_cast<AbstractProjectionCapability*>(m_painter->getCapability<AbstractProjectionCapability>());
         AbstractTypedRenderTargetCapability * renderTargetCapability = dynamic_cast<AbstractTypedRenderTargetCapability*>(m_painter->getCapability<AbstractTypedRenderTargetCapability>());
         AbstractViewportCapability * viewportCapability = dynamic_cast<AbstractViewportCapability*>(m_painter->getCapability<AbstractViewportCapability>());
-        
+
         m_coordProvider.reset(new CoordinateProvider(cameraCapability, projectionCapability, viewportCapability, renderTargetCapability));
         m_navigation.reset(new WorldInHandNavigation(*cameraCapability, *viewportCapability, *m_coordProvider));
     }
@@ -136,7 +134,7 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
                 break;
             }
         }
-    } 
+    }
     else if (event->sourceType() == gloperate::SourceType::Wheel)
     {
         WheelEvent * wheelEvent = dynamic_cast<WheelEvent*>(event);

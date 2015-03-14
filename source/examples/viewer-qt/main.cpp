@@ -85,7 +85,7 @@ int main(int argc, char * argv[])
     window->installEventFilter(wheelProvider);
     
     // Create Mapping
-    QtViewerMapping * mapping = new QtViewerMapping(window);
+    QtViewerMapping * mapping = new QtViewerMapping;
     mapping->setPainter(painter.get());
     mapping->addProvider(keyProvider);
     mapping->addProvider(mouseProvider);

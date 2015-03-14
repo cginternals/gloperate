@@ -49,7 +49,7 @@ bool QtMouseEventProvider::eventFilter(QObject * obj, QEvent * event)
                                       position,
                                       button,
                                       static_cast<int>(qMouseEvent->modifiers()));
-            passEvent(mouseEvent);
+            passEventWithContext(obj, mouseEvent);
             return false;
         }
     }
@@ -60,7 +60,7 @@ bool QtMouseEventProvider::eventFilter(QObject * obj, QEvent * event)
         auto eventType = QtEventTransformer::mouseTypeFromQtType(event->type());
         MouseEvent * mouseEvent =
                 new MouseEvent(eventType, glm::ivec2(),NoMouseButton, static_cast<int>(Qt::NoModifier));
-        passEvent(mouseEvent);
+        passEventWithContext(obj, mouseEvent);
         return false;
     }
     return QObject::eventFilter(obj, event);

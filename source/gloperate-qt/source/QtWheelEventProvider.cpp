@@ -43,7 +43,7 @@ bool QtWheelEventProvider::eventFilter(QObject * obj, QEvent * event)
             auto angleDelta = toDegrees(qAngleDelta);
             auto pixelDelta = QtEventTransformer::fromQPoint(qWheelEvent->pixelDelta());
             WheelEvent * wheelEvent = new WheelEvent(position, angleDelta, pixelDelta);
-            passEvent(wheelEvent);
+            passEventWithContext(obj, wheelEvent);
             return true;
         }
     }
