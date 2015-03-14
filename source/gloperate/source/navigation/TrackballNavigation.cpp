@@ -16,13 +16,24 @@ namespace gloperate {
 
 TrackballNavigation::TrackballNavigation(AbstractCameraCapability * cameraCapability, AbstractViewportCapability * viewportCapability)
 : m_cameraCapability(cameraCapability)
-, m_viewportCapability(viewportCapability) {
-    reset(cameraCapability->eye(), cameraCapability->center(), cameraCapability->up());
+, m_viewportCapability(viewportCapability)
+, m_blockCameraSignal(false) {
+    m_cameraCapability->changed.connect([this] {
+        if (!m_blockCameraSignal) {
+            reset();
+        }
+    });
+    reset();
 }
 
 TrackballNavigation::Mode TrackballNavigation::mode()
 {
     return m_mode;
+}
+
+void TrackballNavigation::reset()
+{
+    reset(m_cameraCapability->eye(), m_cameraCapability->center(), m_cameraCapability->up());
 }
 
 void TrackballNavigation::reset(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& up)
@@ -97,11 +108,23 @@ void TrackballNavigation::rotateEnd()
     m_mode = Mode::NONE;
 }
 
+void TrackballNavigation::zoom(double delta)
+{
+    auto scale = 1.0 + delta;
+    m_distance *= scale;
+
+    updateCamera();
+}
+
 void TrackballNavigation::updateCamera()
 {
+    m_blockCameraSignal = true;
+
     m_cameraCapability->setCenter(glm::vec3(m_center));
     m_cameraCapability->setEye(glm::vec3(m_center + m_trackball.orientationMatrix() * glm::dvec3(0.0, 0.0, m_distance)));
     m_cameraCapability->setUp(glm::vec3(m_trackball.orientationMatrix() * glm::dvec3(0.0, 1.0, 0.0)));
+
+    m_blockCameraSignal = false;
 }
 
 glm::dvec2 TrackballNavigation::viewport()
