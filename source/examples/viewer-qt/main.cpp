@@ -18,6 +18,7 @@
 #include <gloperate-qt/QtKeyEventProvider.h>
 #include <gloperate-qt/QtMouseEventProvider.h>
 #include <gloperate-qt/QtWheelEventProvider.h>
+#include <gloperate-qt/QtFrameEventProvider.h>
 
 #include <QApplication>
 #include <QCoreApplication>
@@ -70,6 +71,7 @@ int main(int argc, char * argv[])
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
     QtWheelEventProvider * wheelProvider = new QtWheelEventProvider();
+    QtFrameEventProvider * frameProvider = new QtFrameEventProvider();
 
 
     // Create OpenGL window
@@ -83,6 +85,7 @@ int main(int argc, char * argv[])
     window->installEventFilter(keyProvider);
     window->installEventFilter(mouseProvider);
     window->installEventFilter(wheelProvider);
+    window->installEventFilter(frameProvider);
     
     // Create Mapping
     QtViewerMapping * mapping = new QtViewerMapping;
