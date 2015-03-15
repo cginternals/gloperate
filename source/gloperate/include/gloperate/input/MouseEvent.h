@@ -25,10 +25,11 @@ public:
     ,   DoubleClick
     };
 
-    MouseEvent(Type type, const glm::ivec2 & pos, MouseButton button = NoMouseButton, int modifiers = 0);
+    MouseEvent(Type type, const glm::ivec2 & pos, MouseButton button = NoMouseButton, MouseButton buttonMask = NoMouseButton, int modifiers = 0);
 
     Type type() const;
     MouseButton button() const;
+    MouseButton buttonMask() const;
     int modifiers() const;
 
     const glm::ivec2 & pos() const;
@@ -39,6 +40,7 @@ public:
 protected:
     Type m_type;
     MouseButton m_button;
+    MouseButton m_buttonMask;
     int m_modifiers;
 
     glm::ivec2 m_pos;

@@ -44,10 +44,12 @@ bool QtMouseEventProvider::eventFilter(QObject * obj, QEvent * event)
             auto eventType = QtEventTransformer::mouseTypeFromQtType(qMouseEvent->type());
             auto position = QtEventTransformer::fromQPoint(qMouseEvent->pos());
             auto button = QtEventTransformer::fromQtMouseButton(qMouseEvent->button());
+            auto buttonMask = QtEventTransformer::fromQtMouseButtons(qMouseEvent->buttons());
             MouseEvent * mouseEvent =
                     new MouseEvent(eventType,
                                       position,
                                       button,
+                                      buttonMask,
                                       static_cast<int>(qMouseEvent->modifiers()));
             passEventWithContext(obj, mouseEvent);
             return false;
@@ -57,9 +59,16 @@ bool QtMouseEventProvider::eventFilter(QObject * obj, QEvent * event)
     if (event->type() == QEvent::Enter ||
         event->type() == QEvent::Leave)
     {
+        auto buttonMask = NoMouseButton;
+        QMouseEvent * qMouseEvent = dynamic_cast<QMouseEvent*>(event);
+        if (qMouseEvent)
+        {
+            buttonMask = QtEventTransformer::fromQtMouseButtons(qMouseEvent->buttons());
+        }
+
         auto eventType = QtEventTransformer::mouseTypeFromQtType(event->type());
         MouseEvent * mouseEvent =
-                new MouseEvent(eventType, glm::ivec2(),NoMouseButton, static_cast<int>(Qt::NoModifier));
+                new MouseEvent(eventType, glm::ivec2(),NoMouseButton, buttonMask, static_cast<int>(Qt::NoModifier));
         passEventWithContext(obj, mouseEvent);
         return false;
     }

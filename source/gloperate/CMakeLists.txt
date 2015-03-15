@@ -74,6 +74,7 @@ set(sources
     ${source_path}/input/KeyboardInputHandler.cpp
     ${source_path}/input/MouseEvent.cpp
     ${source_path}/input/FrameEvent.cpp
+    ${source_path}/input/input.cpp
     
     ${source_path}/navigation/AbstractMapping.cpp
     ${source_path}/navigation/AbstractInteraction.cpp

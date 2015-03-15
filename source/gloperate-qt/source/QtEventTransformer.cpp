@@ -104,6 +104,23 @@ MouseButton QtEventTransformer::fromQtMouseButton(Qt::MouseButton button)
         return NoMouseButton;
 }
 
+MouseButton QtEventTransformer::fromQtMouseButtons(Qt::MouseButtons button)
+{
+    auto buttonMask = NoMouseButton;
+    if (button & Qt::LeftButton)
+        buttonMask |= MouseButtonLeft;
+    if (button & Qt::RightButton)
+        buttonMask |= MouseButtonRight;
+    if (button & Qt::MiddleButton)
+        buttonMask |= MouseButtonMiddle;
+    if (button & Qt::XButton1)
+        buttonMask |= MouseButton4;
+    if (button & Qt::XButton2)
+        buttonMask |= MouseButton5;
+
+    return buttonMask;
+}
+
 /**
 *  @brief
 *    Convert Qt key code into gloperate key code
