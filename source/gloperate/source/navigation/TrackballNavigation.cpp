@@ -1,10 +1,3 @@
-/*
- * TrackballNavigation.cpp
- *
- *  Created on: Mar 11, 2015
- *      Author: Jan Ole Vollmer
- */
-
 #include <gloperate/navigation/TrackballNavigation.h>
 
 #include <iostream>

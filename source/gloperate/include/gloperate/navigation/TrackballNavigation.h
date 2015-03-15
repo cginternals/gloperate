@@ -1,12 +1,5 @@
 #pragma once
 
-/*
- * TrackballNavigation.h
- *
- *  Created on: Mar 11, 2015
- *      Author: Jan Ole Vollmer
- */
-
 #include <gloperate/gloperate_api.h>
 #include <gloperate/navigation/Trackball.h>
 
