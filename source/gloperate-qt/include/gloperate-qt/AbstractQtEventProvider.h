@@ -8,7 +8,7 @@ class QObject;
 
 namespace gloperate_qt {
 
-class GLOPERATE_API AbstractQtEventProvider: public gloperate::AbstractEventProvider
+class GLOPERATE_QT_API AbstractQtEventProvider: public gloperate::AbstractEventProvider
 {
 public:
     /**
