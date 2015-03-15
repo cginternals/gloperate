@@ -61,7 +61,7 @@ bool AxisAlignedBoundingBox::extend(const vec3 & vertex)
     if (extended)
     {
         m_center = m_llf + (m_urb - m_llf) * .5f;
-        m_radius = static_cast<float>((m_urb - m_llf).length()) * .5f;
+        m_radius = glm::distance(m_center, m_urb);
     }
 
     return extended;
