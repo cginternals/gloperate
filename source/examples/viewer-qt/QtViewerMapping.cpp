@@ -97,10 +97,10 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
                 m_navigation->reset();
                 break;
             case MouseButtonLeft:
-                m_navigation->panBegin(mouseEvent->pos());
+                m_navigation->panBegin(mouseEvent->position());
                 break;
             case MouseButtonRight:
-                m_navigation->rotateBegin(mouseEvent->pos());
+                m_navigation->rotateBegin(mouseEvent->position());
                 break;
             default:
                 break;
@@ -111,10 +111,10 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
             switch (m_navigation->mode())
             {
             case WorldInHandNavigation::InteractionMode::PanInteraction:
-                m_navigation->panProcess(mouseEvent->pos());
+                m_navigation->panProcess(mouseEvent->position());
                 break;
             case WorldInHandNavigation::InteractionMode::RotateInteraction:
-                m_navigation->rotateProcess(mouseEvent->pos());
+                m_navigation->rotateProcess(mouseEvent->position());
                 break;
             default:
                 break;

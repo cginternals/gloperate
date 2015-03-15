@@ -25,17 +25,23 @@ public:
     ,   DoubleClick
     };
 
-    MouseEvent(Type type, const glm::ivec2 & pos, MouseButton button = NoMouseButton, MouseButton buttonMask = NoMouseButton, int modifiers = 0);
+    MouseEvent(Type type, const glm::ivec2 & pos, const glm::ivec2 & lastPos, const glm::ivec2 & screenSize, MouseButton button = NoMouseButton, MouseButton buttonMask = NoMouseButton, int modifiers = 0);
 
     Type type() const;
     MouseButton button() const;
     MouseButton buttonMask() const;
     int modifiers() const;
 
-    const glm::ivec2 & pos() const;
+    glm::ivec2 position() const;
+    glm::ivec2 lastPosition() const;
+    glm::ivec2 positionDelta() const;
 
-    int x() const;
-    int y() const;
+    glm::vec2 normalizedPosition() const;
+    glm::vec2 normalizedLastPosition() const;
+    glm::vec2 normalizedPositionDelta() const;
+
+protected:
+    glm::vec2 normalize(const glm::ivec2 & pos) const;
 
 protected:
     Type m_type;
@@ -44,6 +50,8 @@ protected:
     int m_modifiers;
 
     glm::ivec2 m_pos;
+    glm::ivec2 m_lastPos;
+    glm::vec2 m_screenSize;
 };
 
 } // namespace gloperate

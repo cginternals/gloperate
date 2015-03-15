@@ -15,6 +15,8 @@
 #include <QMouseEvent>
 #include <gloperate-qt/qt-includes-end.h>
 
+#include <glm/vec2.hpp>
+
 namespace gloperate_qt
 {
 
@@ -42,6 +44,8 @@ public:
 
     virtual bool eventFilter(QObject * obj, QEvent * event) override;
 
+protected:
+    glm::ivec2 m_lastPos;
 };
 
 } // namespace gloperate_qt
