@@ -45,9 +45,7 @@ void TrackballNavigation::reset(const glm::dvec3& eye, const glm::dvec3& center,
 
     m_center = center;
     m_distance = glm::length(lv);
-    m_trackball.reset(glm::inverse(rotationMatrix));
-
-    updateCamera();
+    m_trackball.reset(rotationMatrix);
 }
 
 void TrackballNavigation::panBegin(const glm::ivec2& viewportPosition)
