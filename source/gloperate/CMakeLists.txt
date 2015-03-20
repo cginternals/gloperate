@@ -57,14 +57,10 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(sources
     ${source_path}/base/RenderTarget.cpp
     ${source_path}/base/dirent_msvc.h
-    ${source_path}/base/AbstractSignal.cpp
     ${source_path}/base/DirectoryIterator.cpp
-    ${source_path}/base/Connection.cpp
     ${source_path}/base/directorytraversal.cpp
-    ${source_path}/base/ScopedConnection.cpp
     ${source_path}/base/DirectoryIterator.h
     ${source_path}/base/ChronoTimer.cpp
-    ${source_path}/base/ConnectionMap.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/CyclicTime.cpp
     
@@ -143,18 +139,11 @@ set(sources
 )
 
 set(api_includes
-    ${include_path}/base/ScopedConnection.h
-    ${include_path}/base/Signal.h
-    ${include_path}/base/Signal.hpp
     ${include_path}/base/RenderTarget.h
     ${include_path}/base/directorytraversal.h
-    ${include_path}/base/Connection.h
-    ${include_path}/base/ConnectionMap.hpp
-    ${include_path}/base/ConnectionMap.h
     ${include_path}/base/collection.hpp
     ${include_path}/base/CyclicTime.h
     ${include_path}/base/ChronoTimer.h
-    ${include_path}/base/AbstractSignal.h
     ${include_path}/base/AutoTimer.h
     
     ${include_path}/gloperate_api.h
