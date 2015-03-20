@@ -47,6 +47,8 @@ set(LINUX_COMPILE_FLAGS
       -Wcast-qual 
       -Wcast-align 
       -Wconversion 
+      -Wno-error=comment
+      -Wno-error=strict-aliasing
 
       -Wno-error=float-equal 
       -Wno-error=conversion 

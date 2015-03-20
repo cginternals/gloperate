@@ -23,6 +23,7 @@ set(libs
 
 set(sources
     main.cpp
+    dummy_test.cpp
 )
 
 # Build executable
