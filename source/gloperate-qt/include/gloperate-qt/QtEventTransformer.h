@@ -53,7 +53,7 @@ public:
     static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button);
     static gloperate::MouseButton fromQtMouseButtons(Qt::MouseButtons button);
     static gloperate::Key fromQtKeyCode(int key, int mods);
-
+    static gloperate::KeyModifier fromQtKeyboardModifiers(Qt::KeyboardModifiers modifiers);
 
 };
 

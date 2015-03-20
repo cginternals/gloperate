@@ -26,15 +26,15 @@ static gloperate::MouseButton fromGLFWMouseButton(int button)
 {
     switch (button) 
     {
-    case GLFW_MOUSE_BUTTON_1: return MouseButton1;
-    case GLFW_MOUSE_BUTTON_2: return MouseButton2;
-    case GLFW_MOUSE_BUTTON_3: return MouseButton3;
-    case GLFW_MOUSE_BUTTON_4: return MouseButton4;
-    case GLFW_MOUSE_BUTTON_5: return MouseButton5;
-    case GLFW_MOUSE_BUTTON_6: return MouseButton6;
-    case GLFW_MOUSE_BUTTON_7: return MouseButton7;
-    case GLFW_MOUSE_BUTTON_8: return MouseButton8;
-    default:                  return NoMouseButton;
+    case GLFW_MOUSE_BUTTON_1: return MouseButton::MouseButton1;
+    case GLFW_MOUSE_BUTTON_2: return MouseButton::MouseButton2;
+    case GLFW_MOUSE_BUTTON_3: return MouseButton::MouseButton3;
+    case GLFW_MOUSE_BUTTON_4: return MouseButton::MouseButton4;
+    case GLFW_MOUSE_BUTTON_5: return MouseButton::MouseButton5;
+    case GLFW_MOUSE_BUTTON_6: return MouseButton::MouseButton6;
+    case GLFW_MOUSE_BUTTON_7: return MouseButton::MouseButton7;
+    case GLFW_MOUSE_BUTTON_8: return MouseButton::MouseButton8;
+    default:                  return MouseButton::NoMouseButton;
     }
 }
 

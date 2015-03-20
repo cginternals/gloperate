@@ -7,7 +7,7 @@ namespace gloperate
 KeyboardEvent::KeyboardEvent(Type type, unsigned int character)
 : AbstractEvent()
 , m_type(type)
-, m_key(KeyUnknown)
+, m_key(Key::KeyUnknown)
 , m_scanCode(0)
 , m_modifiers(0)
 , m_character(character)

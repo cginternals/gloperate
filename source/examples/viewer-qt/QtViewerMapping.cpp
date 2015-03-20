@@ -52,33 +52,33 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
             switch (keyEvent->key())
             {
             // WASD move camera
-            case KeyW:
+            case Key::KeyW:
                 m_navigation->pan(glm::vec3(0, 0, 1));
                 break;
-            case KeyA:
+            case Key::KeyA:
                 m_navigation->pan(glm::vec3(1, 0, 0));
                 break;
-            case KeyS:
+            case Key::KeyS:
                 m_navigation->pan(glm::vec3(0, 0, -1));
                 break;
-            case KeyD:
+            case Key::KeyD:
                 m_navigation->pan(glm::vec3(-1, 0, 0));
                 break;
             // Reset camera position
-            case KeyR:
+            case Key::KeyR:
                 m_navigation->reset();
                 break;
             // Arrows rotate camera
-            case KeyUp:
+            case Key::KeyUp:
                 m_navigation->rotate(0.0f, glm::radians(-10.0f));
                 break;
-            case KeyLeft:
+            case Key::KeyLeft:
                 m_navigation->rotate(glm::radians(10.0f), 0.0f);
                 break;
-            case KeyDown:
+            case Key::KeyDown:
                 m_navigation->rotate(0.0f, glm::radians(10.0f));
                 break;
-            case KeyRight:
+            case Key::KeyRight:
                 m_navigation->rotate(glm::radians(-10.0f), 0.0f);
                 break;
             default:
@@ -93,13 +93,13 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
         {
             switch (mouseEvent->button())
             {
-            case MouseButtonMiddle:
+            case MouseButton::MouseButtonMiddle:
                 m_navigation->reset();
                 break;
-            case MouseButtonLeft:
+            case MouseButton::MouseButtonLeft:
                 m_navigation->panBegin(mouseEvent->position());
                 break;
-            case MouseButtonRight:
+            case MouseButton::MouseButtonRight:
                 m_navigation->rotateBegin(mouseEvent->position());
                 break;
             default:
@@ -124,10 +124,10 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
         {
             switch (mouseEvent->button())
             {
-            case MouseButtonLeft:
+            case MouseButton::MouseButtonLeft:
                 m_navigation->panEnd();
                 break;
-            case MouseButtonRight:
+            case MouseButton::MouseButtonRight:
                 m_navigation->rotateEnd();
                 break;
             default:

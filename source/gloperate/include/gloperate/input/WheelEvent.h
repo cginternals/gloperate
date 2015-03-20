@@ -18,7 +18,7 @@ public:
         const glm::ivec2 & pos, 
         const glm::vec2 & angleDelta, 
         const glm::ivec2 & pixelDelta, 
-        MouseButton button = NoMouseButton);
+        MouseButton button = MouseButton::NoMouseButton);
 
     MouseButton button() const;
     const glm::vec2 & angleDelta() const;

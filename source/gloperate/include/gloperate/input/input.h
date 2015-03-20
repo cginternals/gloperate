@@ -11,7 +11,7 @@ namespace gloperate
 *  @brief
 *    Mouse buttons
 */
-enum MouseButton {
+enum class MouseButton {
     NoMouseButton     = 0x0000,
     MouseButton1      = 0x0001,
     MouseButtonLeft   = MouseButton1,
@@ -38,19 +38,27 @@ GLOPERATE_API void operator^=(MouseButton& lhs, MouseButton rhs);
 *  @brief
 *    Keyboard modifier keys
 */
-enum KeyModifier {
-    ModShift = 0x0001,
+enum class KeyModifier {
+    ModNone    = 0x0000,
+    ModShift   = 0x0001,
     ModControl = 0x0002,
-    ModAlt = 0x0004,
-    ModSuper = 0x0008
+    ModAlt     = 0x0004,
+    ModSuper   = 0x0008
 };
+
+GLOPERATE_API KeyModifier operator&(KeyModifier lhs, KeyModifier rhs);
+GLOPERATE_API void operator&=(KeyModifier& lhs, KeyModifier rhs);
+GLOPERATE_API KeyModifier operator|(KeyModifier lhs, KeyModifier rhs);
+GLOPERATE_API void operator|=(KeyModifier& lhs, KeyModifier rhs);
+GLOPERATE_API KeyModifier operator^(KeyModifier lhs, KeyModifier rhs);
+GLOPERATE_API void operator^=(KeyModifier& lhs, KeyModifier rhs);
 
 
 /**
 *  @brief
 *    Virtual key codes
 */
-enum Key {
+enum class Key {
     KeyUnknown = -1,
 
     KeySpace = 32,

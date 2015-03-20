@@ -91,32 +91,32 @@ glm::ivec2 QtEventTransformer::fromQPoint(const QPoint point)
 MouseButton QtEventTransformer::fromQtMouseButton(Qt::MouseButton button)
 {
     if (button & Qt::LeftButton)
-        return MouseButtonLeft;
+        return MouseButton::MouseButtonLeft;
     else if (button & Qt::RightButton)
-        return MouseButtonRight;
+        return MouseButton::MouseButtonRight;
     else if (button & Qt::MiddleButton)
-        return MouseButtonMiddle;
+        return MouseButton::MouseButtonMiddle;
     else if (button & Qt::XButton1)
-        return MouseButton4;
+        return MouseButton::MouseButton4;
     else if (button & Qt::XButton2)
-        return MouseButton5;
+        return MouseButton::MouseButton5;
     else
-        return NoMouseButton;
+        return MouseButton::NoMouseButton;
 }
 
 MouseButton QtEventTransformer::fromQtMouseButtons(Qt::MouseButtons button)
 {
-    auto buttonMask = NoMouseButton;
+    auto buttonMask = MouseButton::NoMouseButton;
     if (button & Qt::LeftButton)
-        buttonMask |= MouseButtonLeft;
+        buttonMask |= MouseButton::MouseButtonLeft;
     if (button & Qt::RightButton)
-        buttonMask |= MouseButtonRight;
+        buttonMask |= MouseButton::MouseButtonRight;
     if (button & Qt::MiddleButton)
-        buttonMask |= MouseButtonMiddle;
+        buttonMask |= MouseButton::MouseButtonMiddle;
     if (button & Qt::XButton1)
-        buttonMask |= MouseButton4;
+        buttonMask |= MouseButton::MouseButton4;
     if (button & Qt::XButton2)
-        buttonMask |= MouseButton5;
+        buttonMask |= MouseButton::MouseButton5;
 
     return buttonMask;
 }
@@ -131,245 +131,260 @@ Key QtEventTransformer::fromQtKeyCode(int key, int mods)
         switch (key)
         {
         case Qt::Key_0:
-            return gloperate::KeyKeypad0;
+            return gloperate::Key::KeyKeypad0;
         case Qt::Key_1:
-            return gloperate::KeyKeypad1;
+            return gloperate::Key::KeyKeypad1;
         case Qt::Key_2:
-            return gloperate::KeyKeypad2;
+            return gloperate::Key::KeyKeypad2;
         case Qt::Key_3:
-            return gloperate::KeyKeypad3;
+            return gloperate::Key::KeyKeypad3;
         case Qt::Key_4:
-            return gloperate::KeyKeypad4;
+            return gloperate::Key::KeyKeypad4;
         case Qt::Key_5:
-            return gloperate::KeyKeypad5;
+            return gloperate::Key::KeyKeypad5;
         case Qt::Key_6:
-            return gloperate::KeyKeypad6;
+            return gloperate::Key::KeyKeypad6;
         case Qt::Key_7:
-            return gloperate::KeyKeypad7;
+            return gloperate::Key::KeyKeypad7;
         case Qt::Key_8:
-            return gloperate::KeyKeypad8;
+            return gloperate::Key::KeyKeypad8;
         case Qt::Key_9:
-            return gloperate::KeyKeypad9;
+            return gloperate::Key::KeyKeypad9;
         case Qt::Key_division:
-            return gloperate::KeyKeypadDivide;
+            return gloperate::Key::KeyKeypadDivide;
         case Qt::Key_multiply:
-            return gloperate::KeyKeypadMultiply;
+            return gloperate::Key::KeyKeypadMultiply;
         case Qt::Key_Minus:
-            return gloperate::KeyKeypadSubtract;
+            return gloperate::Key::KeyKeypadSubtract;
         case Qt::Key_Plus:
-            return gloperate::KeyKeypadAdd;
+            return gloperate::Key::KeyKeypadAdd;
         case Qt::Key_Enter:
-            return gloperate::KeyKeypadEnter;
+            return gloperate::Key::KeyKeypadEnter;
         case Qt::Key_Equal:
-            return gloperate::KeyKeypadEqual;
+            return gloperate::Key::KeyKeypadEqual;
         default:
-            return gloperate::KeyUnknown;
+            return gloperate::Key::KeyUnknown;
         };
     } else {
         switch (key)
         {
         case Qt::Key_Space:
-            return gloperate::KeySpace;
+            return gloperate::Key::KeySpace;
         case Qt::Key_Apostrophe:
-            return gloperate::KeyApostrophe;
+            return gloperate::Key::KeyApostrophe;
         case Qt::Key_Comma:
-            return gloperate::KeyComma;
+            return gloperate::Key::KeyComma;
         case Qt::Key_Minus:
-            return gloperate::KeyMinus;
+            return gloperate::Key::KeyMinus;
         case Qt::Key_Period:
-            return gloperate::KeyPeriod;
+            return gloperate::Key::KeyPeriod;
         case Qt::Key_Slash:
-            return gloperate::KeySlash;
+            return gloperate::Key::KeySlash;
         case Qt::Key_0:
-            return gloperate::Key0;
+            return gloperate::Key::Key0;
         case Qt::Key_1:
-            return gloperate::Key1;
+            return gloperate::Key::Key1;
         case Qt::Key_2:
-            return gloperate::Key2;
+            return gloperate::Key::Key2;
         case Qt::Key_3:
-            return gloperate::Key3;
+            return gloperate::Key::Key3;
         case Qt::Key_4:
-            return gloperate::Key4;
+            return gloperate::Key::Key4;
         case Qt::Key_5:
-            return gloperate::Key5;
+            return gloperate::Key::Key5;
         case Qt::Key_6:
-            return gloperate::Key6;
+            return gloperate::Key::Key6;
         case Qt::Key_7:
-            return gloperate::Key7;
+            return gloperate::Key::Key7;
         case Qt::Key_8:
-            return gloperate::Key8;
+            return gloperate::Key::Key8;
         case Qt::Key_9:
-            return gloperate::Key9;
+            return gloperate::Key::Key9;
         case Qt::Key_Semicolon:
-            return gloperate::KeySemicolon;
+            return gloperate::Key::KeySemicolon;
         case Qt::Key_Equal:
-            return gloperate::KeyEqual;
+            return gloperate::Key::KeyEqual;
         case Qt::Key_A:
-            return gloperate::KeyA;
+            return gloperate::Key::KeyA;
         case Qt::Key_B:
-            return gloperate::KeyB;
+            return gloperate::Key::KeyB;
         case Qt::Key_C:
-            return gloperate::KeyC;
+            return gloperate::Key::KeyC;
         case Qt::Key_D:
-            return gloperate::KeyD;
+            return gloperate::Key::KeyD;
         case Qt::Key_E:
-            return gloperate::KeyE;
+            return gloperate::Key::KeyE;
         case Qt::Key_F:
-            return gloperate::KeyF;
+            return gloperate::Key::KeyF;
         case Qt::Key_G:
-            return gloperate::KeyG;
+            return gloperate::Key::KeyG;
         case Qt::Key_H:
-            return gloperate::KeyH;
+            return gloperate::Key::KeyH;
         case Qt::Key_I:
-            return gloperate::KeyI;
+            return gloperate::Key::KeyI;
         case Qt::Key_J:
-            return gloperate::KeyJ;
+            return gloperate::Key::KeyJ;
         case Qt::Key_K:
-            return gloperate::KeyK;
+            return gloperate::Key::KeyK;
         case Qt::Key_L:
-            return gloperate::KeyL;
+            return gloperate::Key::KeyL;
         case Qt::Key_M:
-            return gloperate::KeyM;
+            return gloperate::Key::KeyM;
         case Qt::Key_N:
-            return gloperate::KeyN;
+            return gloperate::Key::KeyN;
         case Qt::Key_O:
-            return gloperate::KeyO;
+            return gloperate::Key::KeyO;
         case Qt::Key_P:
-            return gloperate::KeyP;
+            return gloperate::Key::KeyP;
         case Qt::Key_Q:
-            return gloperate::KeyQ;
+            return gloperate::Key::KeyQ;
         case Qt::Key_R:
-            return gloperate::KeyR;
+            return gloperate::Key::KeyR;
         case Qt::Key_S:
-            return gloperate::KeyS;
+            return gloperate::Key::KeyS;
         case Qt::Key_T:
-            return gloperate::KeyT;
+            return gloperate::Key::KeyT;
         case Qt::Key_U:
-            return gloperate::KeyU;
+            return gloperate::Key::KeyU;
         case Qt::Key_V:
-            return gloperate::KeyV;
+            return gloperate::Key::KeyV;
         case Qt::Key_W:
-            return gloperate::KeyW;
+            return gloperate::Key::KeyW;
         case Qt::Key_X:
-            return gloperate::KeyX;
+            return gloperate::Key::KeyX;
         case Qt::Key_Y:
-            return gloperate::KeyY;
+            return gloperate::Key::KeyY;
         case Qt::Key_Z:
-            return gloperate::KeyZ;
+            return gloperate::Key::KeyZ;
         case Qt::Key_BracketLeft:
-            return gloperate::KeyLeftBracket;
+            return gloperate::Key::KeyLeftBracket;
         case Qt::Key_Backslash:
-            return gloperate::KeyBackslash;
+            return gloperate::Key::KeyBackslash;
         case Qt::Key_BracketRight:
-            return gloperate::KeyRightBracket;
+            return gloperate::Key::KeyRightBracket;
         case Qt::Key_Agrave:
-            return gloperate::KeyGraveAccent;
+            return gloperate::Key::KeyGraveAccent;
         case Qt::Key_Escape:
-            return gloperate::KeyEscape;
+            return gloperate::Key::KeyEscape;
         case Qt::Key_Return:
-            return gloperate::KeyEnter;
+            return gloperate::Key::KeyEnter;
         case Qt::Key_Tab:
-            return gloperate::KeyTab;
+            return gloperate::Key::KeyTab;
         case Qt::Key_Backspace:
-            return gloperate::KeyBackspace;
+            return gloperate::Key::KeyBackspace;
         case Qt::Key_Insert:
-            return gloperate::KeyInsert;
+            return gloperate::Key::KeyInsert;
         case Qt::Key_Delete:
-            return gloperate::KeyDelete;
+            return gloperate::Key::KeyDelete;
         case Qt::Key_Right:
-            return gloperate::KeyRight;
+            return gloperate::Key::KeyRight;
         case Qt::Key_Left:
-            return gloperate::KeyLeft;
+            return gloperate::Key::KeyLeft;
         case Qt::Key_Down:
-            return gloperate::KeyDown;
+            return gloperate::Key::KeyDown;
         case Qt::Key_Up:
-            return gloperate::KeyUp;
+            return gloperate::Key::KeyUp;
         case Qt::Key_PageUp:
-            return gloperate::KeyPageUp;
+            return gloperate::Key::KeyPageUp;
         case Qt::Key_PageDown:
-            return gloperate::KeyPageDown;
+            return gloperate::Key::KeyPageDown;
         case Qt::Key_Home:
-            return gloperate::KeyHome;
+            return gloperate::Key::KeyHome;
         case Qt::Key_End:
-            return gloperate::KeyEnd;
+            return gloperate::Key::KeyEnd;
         case Qt::Key_CapsLock:
-            return gloperate::KeyCapsLock;
+            return gloperate::Key::KeyCapsLock;
         case Qt::Key_ScrollLock:
-            return gloperate::KeyScrollLock;
+            return gloperate::Key::KeyScrollLock;
         case Qt::Key_NumLock:
-            return gloperate::KeyNumLock;
+            return gloperate::Key::KeyNumLock;
         case Qt::Key_Print:
-            return gloperate::KeyPrintScreen;
+            return gloperate::Key::KeyPrintScreen;
         case Qt::Key_Pause:
-            return gloperate::KeyPause;
+            return gloperate::Key::KeyPause;
         case Qt::Key_F1:
-            return gloperate::KeyF1;
+            return gloperate::Key::KeyF1;
         case Qt::Key_F2:
-            return gloperate::KeyF2;
+            return gloperate::Key::KeyF2;
         case Qt::Key_F3:
-            return gloperate::KeyF3;
+            return gloperate::Key::KeyF3;
         case Qt::Key_F4:
-            return gloperate::KeyF4;
+            return gloperate::Key::KeyF4;
         case Qt::Key_F5:
-            return gloperate::KeyF5;
+            return gloperate::Key::KeyF5;
         case Qt::Key_F6:
-            return gloperate::KeyF6;
+            return gloperate::Key::KeyF6;
         case Qt::Key_F7:
-            return gloperate::KeyF7;
+            return gloperate::Key::KeyF7;
         case Qt::Key_F8:
-            return gloperate::KeyF8;
+            return gloperate::Key::KeyF8;
         case Qt::Key_F9:
-            return gloperate::KeyF9;
+            return gloperate::Key::KeyF9;
         case Qt::Key_F10:
-            return gloperate::KeyF10;
+            return gloperate::Key::KeyF10;
         case Qt::Key_F11:
-            return gloperate::KeyF11;
+            return gloperate::Key::KeyF11;
         case Qt::Key_F12:
-            return gloperate::KeyF12;
+            return gloperate::Key::KeyF12;
         case Qt::Key_F13:
-            return gloperate::KeyF13;
+            return gloperate::Key::KeyF13;
         case Qt::Key_F14:
-            return gloperate::KeyF14;
+            return gloperate::Key::KeyF14;
         case Qt::Key_F15:
-            return gloperate::KeyF15;
+            return gloperate::Key::KeyF15;
         case Qt::Key_F16:
-            return gloperate::KeyF16;
+            return gloperate::Key::KeyF16;
         case Qt::Key_F17:
-            return gloperate::KeyF17;
+            return gloperate::Key::KeyF17;
         case Qt::Key_F18:
-            return gloperate::KeyF18;
+            return gloperate::Key::KeyF18;
         case Qt::Key_F19:
-            return gloperate::KeyF19;
+            return gloperate::Key::KeyF19;
         case Qt::Key_F20:
-            return gloperate::KeyF20;
+            return gloperate::Key::KeyF20;
         case Qt::Key_F21:
-            return gloperate::KeyF21;
+            return gloperate::Key::KeyF21;
         case Qt::Key_F22:
-            return gloperate::KeyF22;
+            return gloperate::Key::KeyF22;
         case Qt::Key_F23:
-            return gloperate::KeyF23;
+            return gloperate::Key::KeyF23;
         case Qt::Key_F24:
-            return gloperate::KeyF24;
+            return gloperate::Key::KeyF24;
         case Qt::Key_F25:
-            return gloperate::KeyF25;
+            return gloperate::Key::KeyF25;
         case Qt::Key_Shift:
-            return gloperate::KeyLeftShift;
+            return gloperate::Key::KeyLeftShift;
         case Qt::Key_Control:
-            return gloperate::KeyLeftControl;
+            return gloperate::Key::KeyLeftControl;
         case Qt::Key_Alt:
-            return gloperate::KeyLeftAlt;
+            return gloperate::Key::KeyLeftAlt;
         case Qt::Key_Super_L:
-            return gloperate::KeyLeftSuper;
+            return gloperate::Key::KeyLeftSuper;
         case Qt::Key_AltGr:
-            return gloperate::KeyRightAlt;
+            return gloperate::Key::KeyRightAlt;
         case Qt::Key_Super_R:
-            return gloperate::KeyRightSuper;
+            return gloperate::Key::KeyRightSuper;
         case Qt::Key_Menu:
-            return gloperate::KeyMenu;
+            return gloperate::Key::KeyMenu;
         default:
-            return gloperate::KeyUnknown;
+            return gloperate::Key::KeyUnknown;
         }
     }
+}
+
+KeyModifier QtEventTransformer::fromQtKeyboardModifiers(Qt::KeyboardModifiers modifiers)
+{
+    KeyModifier result = KeyModifier::ModNone;
+    if (modifiers & Qt::ShiftModifier)
+        result |= KeyModifier::ModShift;
+    if (modifiers & Qt::ControlModifier)
+        result |= KeyModifier::ModControl;
+    if (modifiers & Qt::AltModifier)
+        result |= KeyModifier::ModAlt;
+    if (modifiers & Qt::MetaModifier)
+        result |= KeyModifier::ModSuper;
+
+    return result;
 }
 
 } // namespace gloperate_qt

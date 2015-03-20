@@ -25,12 +25,12 @@ public:
     ,   DoubleClick
     };
 
-    MouseEvent(Type type, const glm::ivec2 & pos, const glm::ivec2 & lastPos, const glm::ivec2 & screenSize, MouseButton button = NoMouseButton, MouseButton buttonMask = NoMouseButton, int modifiers = 0);
+    MouseEvent(Type type, const glm::ivec2 & pos, const glm::ivec2 & lastPos, const glm::ivec2 & screenSize, MouseButton button = MouseButton::NoMouseButton, MouseButton buttonMask = MouseButton::NoMouseButton, KeyModifier modifiers = KeyModifier::ModNone);
 
     Type type() const;
     MouseButton button() const;
     MouseButton buttonMask() const;
-    int modifiers() const;
+    KeyModifier modifiers() const;
 
     glm::ivec2 position() const;
     glm::ivec2 lastPosition() const;
@@ -47,7 +47,7 @@ protected:
     Type m_type;
     MouseButton m_button;
     MouseButton m_buttonMask;
-    int m_modifiers;
+    KeyModifier m_modifiers;
 
     glm::ivec2 m_pos;
     glm::ivec2 m_lastPos;
