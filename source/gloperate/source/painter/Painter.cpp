@@ -11,6 +11,12 @@ Painter::Painter(ResourceManager & resourceManager)
 {
 }
 
+Painter::Painter(ResourceManager & resourceManager, const std::string & name)
+: Object(name)
+, m_resourceManager(resourceManager)
+{
+}
+
 Painter::~Painter()
 {
     // Destroy capabilities

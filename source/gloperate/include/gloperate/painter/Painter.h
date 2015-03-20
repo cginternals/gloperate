@@ -4,14 +4,10 @@
 
 #include <vector>
 
+#include <reflectionzeug/Object.h>
+
 #include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>
-
-
-namespace reflectionzeug
-{
-    class PropertyGroup;
-}
 
 
 namespace gloperate
@@ -38,7 +34,7 @@ class ResourceManager;
 *    use capabilities to describe what kind of functionality and interfaces
 *    it supports. See AbstractCapability for more information on capabilities.
 */
-class GLOPERATE_API Painter
+class GLOPERATE_API Painter : public reflectionzeug::Object
 {
 public:
     /**
@@ -55,6 +51,7 @@ public:
     *    Use the constructor to register properties and capabilities.
     */
     Painter(ResourceManager & resourceManager);
+    Painter(ResourceManager & resourceManager, const std::string & name);
 
     /**
     *  @brief
@@ -93,15 +90,6 @@ public:
     */
     template <typename Capability>
     Capability * getCapability() const;
-    
-    /**
-    *  @brief
-    *    Get the painter's property group
-    *
-    *  @return
-    *    Pointer to the property group, nullptr if its not supported
-    */
-    virtual reflectionzeug::PropertyGroup * properties() const = 0;
 
 
 protected:
