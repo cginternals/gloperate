@@ -135,17 +135,6 @@ add_library(${target} ${headers} ${sources})
 
 target_link_libraries(${target} ${libs})
 
-
-if(UNIX)
-    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} 
-        -Wtrampolines 
-        -Wfloat-equal 
-        -Wconversion 
-        -Wswitch
-    )
-endif()
-
-
 if(MSVC)
     # -> msvc14 : declaration hides class member (problem in qt)
     set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} /wd4458)

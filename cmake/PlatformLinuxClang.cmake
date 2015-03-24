@@ -53,6 +53,8 @@ set(LINUX_COMPILE_FLAGS
       -Wno-unused-function 
       -Wno-missing-braces 
       -Wno-error=shorten-64-to-32
+      -Wno-nested-anon-types
+      -Wno-unused-const-variable
 
     # -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
     # -Wshadow      # -> e.g. when a parameter is named like a member, too many warnings, disabled for now
