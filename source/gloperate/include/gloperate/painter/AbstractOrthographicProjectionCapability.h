@@ -15,7 +15,7 @@ namespace gloperate {
 *  @brief
 *    Capability to access a perspective camera projection
 */
-class GLOPERATE_API AbstractPerspectiveProjectionCapability : public AbstractProjectionCapability
+class GLOPERATE_API AbstractOrthographicProjectionCapability : public AbstractProjectionCapability
 {
 public:
     /**
@@ -25,13 +25,13 @@ public:
     *  @param[in] viewportCapability
     *    Viewport capability (must NOT be null!)
     */
-    AbstractPerspectiveProjectionCapability(AbstractViewportCapability * viewportCapability);
+    AbstractOrthographicProjectionCapability(AbstractViewportCapability * viewportCapability);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~AbstractPerspectiveProjectionCapability();
+    virtual ~AbstractOrthographicProjectionCapability();
 
     /**
     *  @brief
@@ -71,21 +71,21 @@ public:
 
     /**
     *  @brief
-    *    Get field-of-view angle (Y)
+    *    Get projection height (top - bottom)
     *
     *  @return
-    *    Angle
+    *    Height
     */
-    virtual float fovy() const = 0;
+    virtual float height() const = 0;
 
     /**
     *  @brief
-    *    Set field-of-view angle (Y)
+    *    Set projection height (top - bottom)
     *
     *  @param[in] fovy
-    *    Angle
+    *    Height
     */
-    virtual void setFovy(float fovy) = 0;
+    virtual void setHeight(float height) = 0;
 
     /**
     *  @brief
