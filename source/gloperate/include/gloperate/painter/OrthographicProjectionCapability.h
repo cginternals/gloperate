@@ -10,7 +10,8 @@
 #include <gloperate/painter/AbstractOrthographicProjectionCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 /**
@@ -61,13 +62,13 @@ protected:
     *  @brief
     *    Mark data dirty
     *
-    *  @param[in] update
+    *  @param[in] updateNow
     *    Update matrices immediately (true), or later (false)?
     *
     *  @remarks
     *    After calling this function, the matrices will be recalculated the next time they're accessed.
     */
-    void dirty(bool update = true);
+    void dirty(bool updateNow = true);
 
     /**
     *  @brief

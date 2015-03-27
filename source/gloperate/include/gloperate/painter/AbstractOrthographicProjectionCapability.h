@@ -8,7 +8,8 @@
 #include <gloperate/painter/AbstractProjectionCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 /**

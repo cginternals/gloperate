@@ -8,16 +8,17 @@
 #include <gloperate/painter/AbstractViewportCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 OrthographicProjectionCapability::OrthographicProjectionCapability(AbstractViewportCapability * viewportCapability)
 : AbstractOrthographicProjectionCapability(viewportCapability)
-, m_dirty(false)
-, m_height(1.0f)
-, m_aspect(1.0f)
-, m_zNear(0.1f)
-, m_zFar(64.0f)
+, m_dirty{false}
+, m_height{1.0f}
+, m_aspect{1.0f}
+, m_zNear{0.1f}
+, m_zFar{64.0f}
 {
 }
 
@@ -106,7 +107,7 @@ const glm::mat4 & OrthographicProjectionCapability::projectionInverted() const
 glm::mat4 OrthographicProjectionCapability::projectionForAspectRatio(float ratio) const
 {
     const auto width = ratio * m_height;
-    return glm::ortho(-width / 2.0f, width / 2.0f, -m_height / 2.0f, m_height / 2.0f, m_zNear, m_zFar);
+    return glm::ortho(-width * 0.5f, width * 0.5f, -m_height * 0.5f, m_height * 0.5f, m_zNear, m_zFar);
 }
 
 void OrthographicProjectionCapability::update() const
@@ -119,11 +120,11 @@ void OrthographicProjectionCapability::update() const
     m_dirty = false;
 }
 
-void OrthographicProjectionCapability::dirty(bool update)
+void OrthographicProjectionCapability::dirty(bool updateNow)
 {
     m_dirty = true;
 
-    if (update)
+    if (updateNow)
         this->update();
 }
 
@@ -135,13 +136,15 @@ void OrthographicProjectionCapability::invalidateMatrices() const
 
 void OrthographicProjectionCapability::setAspectRatio(float ratio)
 {
-    if (ratio > glm::epsilon<float>())
+    if (ratio <= glm::epsilon<float>())
     {
-        m_aspect = ratio;
-
-        dirty();
-        setChanged(true);
+        return;
     }
+
+    m_aspect = ratio;
+
+    dirty();
+    setChanged(true);
 }
 
 void OrthographicProjectionCapability::setAspectRatio(const glm::ivec2 & viewport)
