@@ -101,6 +101,8 @@ set(sources
     ${source_path}/painter/MetaInformationCapability.cpp
     ${source_path}/painter/AbstractOutputCapability.cpp
     ${source_path}/painter/PipelineOutputCapability.cpp
+    ${source_path}/painter/AbstractOrthographicProjectionCapability.cpp
+    ${source_path}/painter/OrthographicProjectionCapability.cpp
     
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/InputSlot.cpp
@@ -189,6 +191,8 @@ set(api_includes
     ${include_path}/painter/AbstractOutputCapability.h
     ${include_path}/painter/AbstractOutputCapability.hpp
     ${include_path}/painter/PipelineOutputCapability.h
+    ${include_path}/painter/AbstractOrthographicProjectionCapability.h
+    ${include_path}/painter/OrthographicProjectionCapability.h
     
     ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/AbstractPipeline.hpp
