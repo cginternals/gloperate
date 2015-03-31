@@ -242,8 +242,12 @@ PostprocessingPipeline::PostprocessingPipeline()
         m_time.invalidate();
     });
 
-    dynamic_cast<gloperate::PerspectiveProjectionCapability*>(m_projection.data())->setZNear(0.1f);
-    dynamic_cast<gloperate::PerspectiveProjectionCapability*>(m_projection.data())->setZFar(16.f);
+    auto projection = dynamic_cast<gloperate::PerspectiveProjectionCapability*>(m_projection.data());
+
+    assert(projection != nullptr);
+
+    projection->setZNear(0.1f);
+    projection->setZFar(16.f);
 
     m_time.data()->setLoopDuration(glm::pi<float>() * 2);
 
