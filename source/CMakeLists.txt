@@ -12,10 +12,15 @@ add_subdirectory(gloperate-qt)
 add_subdirectory(gloperate-glfw)
 add_subdirectory(gloperate-osg)
 add_subdirectory(gloperate-qtwidgets)
+add_subdirectory(gloperate-qtapplication)
 
 # Examples
 set(IDE_FOLDER "Examples")
 add_subdirectory(examples)
+
+# Examples
+set(IDE_FOLDER "Tools")
+add_subdirectory(tools)
 
 # Tests
 set(IDE_FOLDER "Tests")
