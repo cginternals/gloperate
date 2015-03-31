@@ -76,7 +76,7 @@ int main(int argc, char * argv[])
     QSurfaceFormat format;
     format.setVersion(3, 2);
     format.setProfile(QSurfaceFormat::CoreProfile);
-    format.setDepthBufferSize(24);
+    format.setDepthBufferSize(16);
 
     QtOpenGLWindow * window = new QtOpenGLWindow(resourceManager, format);
     window->setPainter(painter.get());
