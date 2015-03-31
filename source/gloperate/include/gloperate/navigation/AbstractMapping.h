@@ -2,7 +2,7 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <list>
+#include <set>
 #include <functional>
 
 namespace gloperate {
@@ -32,7 +32,7 @@ protected:
 
 protected:
     Painter * m_painter;
-    std::list<AbstractEventProvider *> m_providers;
+    std::set<AbstractEventProvider *> m_providers;
 };
 
 } // namespace gloperate
