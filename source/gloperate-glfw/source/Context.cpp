@@ -131,8 +131,7 @@ Context::Context(GLFWwindow * window)
 : m_format(nullptr)
 , m_window(window)
 {
-    if (!window)
-        return;
+    assert(window);
 
     GLFWwindow * current = glfwGetCurrentContext();
     if (current != m_window)
