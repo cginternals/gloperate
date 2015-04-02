@@ -1,0 +1,6 @@
+*
+!.gitignore
+!cubescape/*
+!osg-scene/*
+!postprocessing/*
+!emplem-important.png

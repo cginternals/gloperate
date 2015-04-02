@@ -200,6 +200,7 @@ set(api_includes
     ${include_path}/pipeline/AbstractStage.h
     ${include_path}/pipeline/InputSlot.h
     ${include_path}/pipeline/PipelinePainter.h
+    ${include_path}/pipeline/PipelinePainter.hpp
     ${include_path}/pipeline/InputSlot.hpp
     ${include_path}/pipeline/AbstractPipeline.h
     ${include_path}/pipeline/Data.h
