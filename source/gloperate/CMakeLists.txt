@@ -77,32 +77,34 @@ set(sources
     ${source_path}/navigation/navigationmath.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
     
-    ${source_path}/painter/PerspectiveProjectionCapability.cpp
-    ${source_path}/painter/TargetFramebufferCapability.cpp
-    ${source_path}/painter/CameraCapability.cpp
-    ${source_path}/painter/TypedRenderTargetCapability.cpp
-    ${source_path}/painter/Painter.cpp
-    ${source_path}/painter/AbstractVirtualTimeCapability.cpp
-    ${source_path}/painter/ViewportCapability.cpp
-    ${source_path}/painter/AbstractInputCapability.cpp
-    ${source_path}/painter/AbstractProjectionCapability.cpp
-    ${source_path}/painter/Camera.cpp
-    ${source_path}/painter/ContextFormat.cpp
     ${source_path}/painter/AbstractCameraCapability.cpp
-    ${source_path}/painter/AbstractPerspectiveProjectionCapability.cpp
     ${source_path}/painter/AbstractCapability.cpp
-    ${source_path}/painter/InputCapability.cpp
-    ${source_path}/painter/AbstractTypedRenderTargetCapability.cpp
-    ${source_path}/painter/VirtualTimeCapability.cpp
     ${source_path}/painter/AbstractContext.cpp
-    ${source_path}/painter/AbstractTargetFramebufferCapability.cpp
-    ${source_path}/painter/AbstractViewportCapability.cpp
+    ${source_path}/painter/AbstractDevicePixelRatioCapability.cpp
+    ${source_path}/painter/AbstractInputCapability.cpp
     ${source_path}/painter/AbstractMetaInformationCapability.cpp
-    ${source_path}/painter/MetaInformationCapability.cpp
-    ${source_path}/painter/AbstractOutputCapability.cpp
-    ${source_path}/painter/PipelineOutputCapability.cpp
     ${source_path}/painter/AbstractOrthographicProjectionCapability.cpp
+    ${source_path}/painter/AbstractOutputCapability.cpp
+    ${source_path}/painter/AbstractPerspectiveProjectionCapability.cpp
+    ${source_path}/painter/AbstractProjectionCapability.cpp
+    ${source_path}/painter/AbstractTargetFramebufferCapability.cpp
+    ${source_path}/painter/AbstractTypedRenderTargetCapability.cpp
+    ${source_path}/painter/AbstractViewportCapability.cpp
+    ${source_path}/painter/AbstractVirtualTimeCapability.cpp
+    ${source_path}/painter/Camera.cpp
+    ${source_path}/painter/CameraCapability.cpp
+    ${source_path}/painter/ContextFormat.cpp
+    ${source_path}/painter/DevicePixelRatioCapability.cpp
+    ${source_path}/painter/InputCapability.cpp
+    ${source_path}/painter/MetaInformationCapability.cpp
     ${source_path}/painter/OrthographicProjectionCapability.cpp
+    ${source_path}/painter/Painter.cpp
+    ${source_path}/painter/PerspectiveProjectionCapability.cpp
+    ${source_path}/painter/PipelineOutputCapability.cpp
+    ${source_path}/painter/TargetFramebufferCapability.cpp
+    ${source_path}/painter/TypedRenderTargetCapability.cpp
+    ${source_path}/painter/ViewportCapability.cpp
+    ${source_path}/painter/VirtualTimeCapability.cpp
     
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/InputSlot.cpp
@@ -164,35 +166,37 @@ set(api_includes
     ${include_path}/navigation/AbstractMapping.h
     ${include_path}/navigation/navigationmath.h
     
-    ${include_path}/painter/InputCapability.h
-    ${include_path}/painter/AbstractInputCapability.h
-    ${include_path}/painter/Painter.hpp
-    ${include_path}/painter/PerspectiveProjectionCapability.h
-    ${include_path}/painter/AbstractProjectionCapability.h
-    ${include_path}/painter/ContextFormat.h
-    ${include_path}/painter/Camera.h
-    ${include_path}/painter/TypedRenderTargetCapability.h
-    ${include_path}/painter/AbstractViewportCapability.h
-    ${include_path}/painter/Painter.h
-    ${include_path}/painter/AbstractTargetFramebufferCapability.h
+    ${include_path}/painter/AbstractCameraCapability.h
     ${include_path}/painter/AbstractCapability.h
     ${include_path}/painter/AbstractCapability.hpp
-    ${include_path}/painter/ViewportCapability.h
-    ${include_path}/painter/VirtualTimeCapability.h
-    ${include_path}/painter/CameraCapability.h
-    ${include_path}/painter/AbstractPerspectiveProjectionCapability.h
     ${include_path}/painter/AbstractContext.h
-    ${include_path}/painter/TargetFramebufferCapability.h
-    ${include_path}/painter/AbstractCameraCapability.h
-    ${include_path}/painter/AbstractVirtualTimeCapability.h
-    ${include_path}/painter/AbstractTypedRenderTargetCapability.h
+    ${include_path}/painter/AbstractDevicePixelRatioCapability.h
+    ${include_path}/painter/AbstractInputCapability.h
     ${include_path}/painter/AbstractMetaInformationCapability.h
-    ${include_path}/painter/MetaInformationCapability.h
+    ${include_path}/painter/AbstractOrthographicProjectionCapability.h
     ${include_path}/painter/AbstractOutputCapability.h
     ${include_path}/painter/AbstractOutputCapability.hpp
-    ${include_path}/painter/PipelineOutputCapability.h
-    ${include_path}/painter/AbstractOrthographicProjectionCapability.h
+    ${include_path}/painter/AbstractPerspectiveProjectionCapability.h
+    ${include_path}/painter/AbstractProjectionCapability.h
+    ${include_path}/painter/AbstractTargetFramebufferCapability.h
+    ${include_path}/painter/AbstractTypedRenderTargetCapability.h
+    ${include_path}/painter/AbstractViewportCapability.h
+    ${include_path}/painter/AbstractVirtualTimeCapability.h
+    ${include_path}/painter/Camera.h
+    ${include_path}/painter/CameraCapability.h
+    ${include_path}/painter/ContextFormat.h
+    ${include_path}/painter/DevicePixelRatioCapability.h
+    ${include_path}/painter/InputCapability.h
+    ${include_path}/painter/MetaInformationCapability.h
     ${include_path}/painter/OrthographicProjectionCapability.h
+    ${include_path}/painter/Painter.h
+    ${include_path}/painter/Painter.hpp
+    ${include_path}/painter/PerspectiveProjectionCapability.h
+    ${include_path}/painter/PipelineOutputCapability.h
+    ${include_path}/painter/TargetFramebufferCapability.h
+    ${include_path}/painter/TypedRenderTargetCapability.h
+    ${include_path}/painter/ViewportCapability.h
+    ${include_path}/painter/VirtualTimeCapability.h
     
     ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/AbstractPipeline.hpp
