@@ -82,12 +82,14 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(api_includes
     ${header_path}/gloperate-qtwidgets_api.h
     ${header_path}/ScreenshotWidget.h
+    ${header_path}/FPSLabel.h
 
 )
 
 set(sources
     ${source_path}/ScreenshotWidget.cpp
     ${source_path}/ScreenshotWidget.ui
+    ${source_path}/FPSLabel.cpp
 )
 
 # Group source files

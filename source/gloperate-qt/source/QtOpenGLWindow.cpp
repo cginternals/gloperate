@@ -93,6 +93,11 @@ void QtOpenGLWindow::setPainter(Painter * painter)
     m_initialized = false;
 }
 
+const gloperate::FrameCounter& QtOpenGLWindow::frameCounter() const
+{
+    return m_frameCounter;
+}
+
 void QtOpenGLWindow::onInitialize()
 {
     // Initialize globjects
@@ -144,6 +149,8 @@ void QtOpenGLWindow::onPaint()
         gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
     }
+
+    m_frameCounter.countFrame();
 }
 
 void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
