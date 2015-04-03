@@ -22,8 +22,8 @@ namespace gloperate_osg
 *  @brief
 *    Constructor
 */
-OsgPainter::OsgPainter(ResourceManager & resourceManager)
-: Painter(resourceManager)
+OsgPainter::OsgPainter(ResourceManager & resourceManager, const std::string & name)
+: Painter(resourceManager, name)
 , m_viewer(nullptr)
 , m_embedded(nullptr)
 , m_scene(nullptr)

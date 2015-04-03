@@ -5,11 +5,6 @@
 namespace gloperate
 {
 
-    
-Painter::Painter(ResourceManager & resourceManager)
-: m_resourceManager(resourceManager)
-{
-}
 
 Painter::Painter(ResourceManager & resourceManager, const std::string & name)
 : Object(name)

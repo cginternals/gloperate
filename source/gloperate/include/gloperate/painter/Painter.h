@@ -43,6 +43,8 @@ public:
     *
     *  @param[in] resourceManager
     *    Resource manager, e.g., to load and save textures
+    *  @param[in] name
+    *    Object name (can be chosen freely, but must not include whitespace)
     *
     *  @remarks
     *    Do not initialize your graphics object or call any OpenGL functions in the
@@ -50,8 +52,7 @@ public:
     *    all OpenGL initialization code should be implemented in initialize().
     *    Use the constructor to register properties and capabilities.
     */
-    Painter(ResourceManager & resourceManager);
-    Painter(ResourceManager & resourceManager, const std::string & name);
+    Painter(ResourceManager & resourceManager, const std::string & name = "painter");
 
     /**
     *  @brief

@@ -19,7 +19,7 @@ class Data;
 class GLOPERATE_API PipelinePainter : public gloperate::Painter
 {
 public:
-    PipelinePainter(gloperate::ResourceManager & resourceManager, AbstractPipeline & pipeline);
+    PipelinePainter(gloperate::ResourceManager & resourceManager, AbstractPipeline & pipeline, const std::string & name = "painter");
     virtual ~PipelinePainter();
 
     virtual void onInitialize() override;
