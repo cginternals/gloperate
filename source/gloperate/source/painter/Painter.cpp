@@ -7,18 +7,12 @@ namespace gloperate
 
 
 Painter::Painter(ResourceManager & resourceManager, const std::string & name)
-: Object(name)
-, m_resourceManager(resourceManager)
+:   Object(name)
+,   m_resourceManager(resourceManager)
 {
 }
 
-Painter::~Painter()
-{
-    // Destroy capabilities
-    for (AbstractCapability * capability : m_capabilities) {
-        delete capability;
-    }
-}
+Painter::~Painter() = default;
 
 void Painter::initialize()
 {

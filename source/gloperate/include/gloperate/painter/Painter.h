@@ -114,14 +114,14 @@ protected:
     *    Capability
     *
     *  @remarks
-    *    The painter takes ownership of the capability.
+    *    The painter does not take ownership of the capability.
     */
     void addCapability(AbstractCapability * capability);
 
 
 protected:
     ResourceManager                  & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
-    std::vector<AbstractCapability*>   m_capabilities;    /**< List of supported capabilities */
+    std::vector<AbstractCapability *>  m_capabilities;    /**< List of supported capabilities */
 
 };
 
