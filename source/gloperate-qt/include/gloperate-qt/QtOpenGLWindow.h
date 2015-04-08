@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <QScopedPointer>
+#include <memory>
 
 #include <globjects/base/ref_ptr.h>
 
@@ -86,10 +86,9 @@ protected:
 
 protected:
     gloperate::ResourceManager & m_resourceManager;
-    gloperate::Painter * m_painter;          /**< Currently used painter */
-    QScopedPointer<TimePropagator>         m_timePropagator;  /**< Time propagator for continous updates */
-
-
+    gloperate::Painter * m_painter;                    /**< Currently used painter */
+    std::unique_ptr<TimePropagator> m_timePropagator;  /**< Time propagator for continous updates */
+    
 };
 
 

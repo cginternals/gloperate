@@ -14,6 +14,8 @@
 
 #include <globjects/globjects.h>
 
+#include <widgetzeug/make_unique.hpp>
+
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractInputCapability.h>
 #include <gloperate/resources/ResourceManager.h>
@@ -21,6 +23,8 @@
 
 #include <gloperate-qt/QtEventTransformer.h>
 
+
+using widgetzeug::make_unique;
 
 using namespace gloperate;
 namespace gloperate_qt
@@ -31,10 +35,9 @@ namespace gloperate_qt
 *    Constructor
 */
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
-: QtOpenGLWindowBase()
-, m_resourceManager(resourceManager)
-, m_painter(nullptr)
-, m_timePropagator(nullptr)
+:   m_resourceManager(resourceManager)
+,   m_painter(nullptr)
+,   m_timePropagator(nullptr)
 {
 }
 
@@ -43,10 +46,10 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 *    Constructor
 */
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
-: QtOpenGLWindowBase(format)
-, m_resourceManager(resourceManager)
-, m_painter(nullptr)
-, m_timePropagator(nullptr)
+:   QtOpenGLWindowBase(format)
+,   m_resourceManager(resourceManager)
+,   m_painter(nullptr)
+,   m_timePropagator(nullptr)
 {
 }
 
@@ -77,18 +80,16 @@ void QtOpenGLWindow::setPainter(Painter * painter)
     m_painter = painter;
 
     // Destroy old time propagator
-    m_timePropagator.reset(nullptr);
+    m_timePropagator = nullptr;
 
     if (!m_painter)
-    {
         return;
-    }
+    
+    m_timePropagator = make_unique<TimePropagator>(this);
 
     // Check for virtual time capability
-    if (m_painter->supports<gloperate::AbstractVirtualTimeCapability>()) {
-        // Create a time propagator that updates the virtual time
-        m_timePropagator.reset(new TimePropagator(this, m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>()));
-    }
+    if (m_painter->supports<AbstractVirtualTimeCapability>())
+        m_timePropagator->setCapability(m_painter->getCapability<AbstractVirtualTimeCapability>());
 
     m_initialized = false;
 }
