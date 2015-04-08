@@ -192,8 +192,8 @@ void QtOpenGLWindow::mouseMoveEvent(QMouseEvent * event)
     {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseMove(
-            event->x(),
-            event->y()
+            event->x() * devicePixelRatio(),
+            event->y() * devicePixelRatio()
         );
     }
 }
@@ -205,8 +205,8 @@ void QtOpenGLWindow::mousePressEvent(QMouseEvent * event)
     {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMousePress(
-            event->x(),
-            event->y(),
+            event->x() * devicePixelRatio(),
+            event->y() * devicePixelRatio(),
             QtEventTransformer::fromQtMouseButton(event->button())
         );
     }
@@ -219,8 +219,8 @@ void QtOpenGLWindow::mouseReleaseEvent(QMouseEvent * event)
     {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseRelease(
-            event->x(),
-            event->y(),
+            event->x() * devicePixelRatio(),
+            event->y() * devicePixelRatio(),
             QtEventTransformer::fromQtMouseButton(event->button())
         );
     }
@@ -233,8 +233,8 @@ void QtOpenGLWindow::mouseDoubleClickEvent(QMouseEvent * event)
     {
         // Propagate event
         m_painter->getCapability<gloperate::AbstractInputCapability>()->onMouseDoubleClick(
-            event->x(),
-            event->y(),
+            event->x() * devicePixelRatio(),
+            event->y() * devicePixelRatio(),
             QtEventTransformer::fromQtMouseButton(event->button())
         );
     }

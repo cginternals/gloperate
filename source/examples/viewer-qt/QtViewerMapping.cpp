@@ -19,6 +19,8 @@
 #include <gloperate/navigation/WorldInHandNavigation.h>
 #include <gloperate/tools/CoordinateProvider.h>
 
+#include <gloperate-qt/QtOpenGLWindow.h>
+
 
 using namespace gloperate;
 using namespace gloperate_qt;
@@ -71,108 +73,123 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
     if (m_renderTarget && !m_renderTarget->hasRenderTarget(RenderTargetType::Depth))
         onTargetFramebufferChanged();
     
-    if (event->sourceType() == gloperate::SourceType::Keyboard)
+    switch (event->sourceType())
     {
-        KeyboardEvent * keyEvent = dynamic_cast<KeyboardEvent*>(event);
-        if (keyEvent && keyEvent->type() == KeyboardEvent::Type::Press)
+    case gloperate::SourceType::Keyboard:
+        mapKeyboardEvent(static_cast<KeyboardEvent *>(event));
+        break;
+    case gloperate::SourceType::Mouse:
+        mapMouseEvent(static_cast<MouseEvent *>(event));
+        break;
+    case gloperate::SourceType::Wheel:
+        mapWheelEvent(static_cast<WheelEvent *>(event));
+        break;
+    default:
+        break;
+    }
+}
+
+void QtViewerMapping::mapKeyboardEvent(KeyboardEvent * event)
+{
+    if (event && event->type() == KeyboardEvent::Type::Press)
+    {
+        switch (event->key())
         {
-            switch (keyEvent->key())
-            {
-            // WASD move camera
-            case KeyW:
-                m_navigation->pan(glm::vec3(0, 0, 1));
-                break;
-            case KeyA:
-                m_navigation->pan(glm::vec3(1, 0, 0));
-                break;
-            case KeyS:
-                m_navigation->pan(glm::vec3(0, 0, -1));
-                break;
-            case KeyD:
-                m_navigation->pan(glm::vec3(-1, 0, 0));
-                break;
-            // Reset camera position
-            case KeyR:
-                m_navigation->reset();
-                break;
-            // Arrows rotate camera
-            case KeyUp:
-                m_navigation->rotate(0.0f, glm::radians(-10.0f));
-                break;
-            case KeyLeft:
-                m_navigation->rotate(glm::radians(10.0f), 0.0f);
-                break;
-            case KeyDown:
-                m_navigation->rotate(0.0f, glm::radians(10.0f));
-                break;
-            case KeyRight:
-                m_navigation->rotate(glm::radians(-10.0f), 0.0f);
-                break;
-            default:
-                break;
-            }
+        // WASD move camera
+        case KeyW:
+            m_navigation->pan(glm::vec3(0, 0, 1));
+            break;
+        case KeyA:
+            m_navigation->pan(glm::vec3(1, 0, 0));
+            break;
+        case KeyS:
+            m_navigation->pan(glm::vec3(0, 0, -1));
+            break;
+        case KeyD:
+            m_navigation->pan(glm::vec3(-1, 0, 0));
+            break;
+        // Reset camera position
+        case KeyR:
+            m_navigation->reset();
+            break;
+        // Arrows rotate camera
+        case KeyUp:
+            m_navigation->rotate(0.0f, glm::radians(-10.0f));
+            break;
+        case KeyLeft:
+            m_navigation->rotate(glm::radians(10.0f), 0.0f);
+            break;
+        case KeyDown:
+            m_navigation->rotate(0.0f, glm::radians(10.0f));
+            break;
+        case KeyRight:
+            m_navigation->rotate(glm::radians(-10.0f), 0.0f);
+            break;
+        default:
+            break;
         }
     }
-    else if (event->sourceType() == gloperate::SourceType::Mouse)
+}
+
+void QtViewerMapping::mapMouseEvent(MouseEvent * mouseEvent)
+{
+    if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Press)
     {
-        MouseEvent * mouseEvent = dynamic_cast<MouseEvent*>(event);
-        if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Press)
+        const auto pos = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
+
+        switch (mouseEvent->button())
         {
-            switch (mouseEvent->button())
-            {
-            case MouseButtonMiddle:
-                m_navigation->reset();
-                break;
-            case MouseButtonLeft:
-                m_navigation->panBegin(mouseEvent->pos());
-                break;
-            case MouseButtonRight:
-                m_navigation->rotateBegin(mouseEvent->pos());
-                break;
-            default:
-                break;
-            }
-        }
-        else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Move)
-        {
-            switch (m_navigation->mode())
-            {
-            case WorldInHandNavigation::InteractionMode::PanInteraction:
-                m_navigation->panProcess(mouseEvent->pos());
-                break;
-            case WorldInHandNavigation::InteractionMode::RotateInteraction:
-                m_navigation->rotateProcess(mouseEvent->pos());
-                break;
-            default:
-                break;
-            }
-        }
-        else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Release)
-        {
-            switch (mouseEvent->button())
-            {
-            case MouseButtonLeft:
-                m_navigation->panEnd();
-                break;
-            case MouseButtonRight:
-                m_navigation->rotateEnd();
-                break;
-            default:
-                break;
-            }
-        }
-    } 
-    else if (event->sourceType() == gloperate::SourceType::Wheel)
-    {
-        WheelEvent * wheelEvent = dynamic_cast<WheelEvent*>(event);
-        if (wheelEvent)
-        {
-            auto scale = wheelEvent->angleDelta().y;
-            scale /= WheelEvent::defaultMouseAngleDelta();
-            scale *= 0.1f; // smoother (slower) scaling
-            m_navigation->scaleAtMouse(wheelEvent->pos(), scale);
+        case MouseButtonMiddle:
+            m_navigation->reset();
+            break;
+        case MouseButtonLeft:
+            m_navigation->panBegin(pos);
+            break;
+        case MouseButtonRight:
+            m_navigation->rotateBegin(pos);
+            break;
+        default:
+            break;
         }
     }
+    else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Move)
+    {
+        const auto pos = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
+        
+        switch (m_navigation->mode())
+        {
+        case WorldInHandNavigation::InteractionMode::PanInteraction:
+            m_navigation->panProcess(pos);
+            break;
+        case WorldInHandNavigation::InteractionMode::RotateInteraction:
+            m_navigation->rotateProcess(pos);
+            break;
+        default:
+            break;
+        }
+    }
+    else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Release)
+    {
+        switch (mouseEvent->button())
+        {
+        case MouseButtonLeft:
+            m_navigation->panEnd();
+            break;
+        case MouseButtonRight:
+            m_navigation->rotateEnd();
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+void QtViewerMapping::mapWheelEvent(WheelEvent * wheelEvent)
+{
+    auto scale = wheelEvent->angleDelta().y;
+    scale /= WheelEvent::defaultMouseAngleDelta();
+    scale *= 0.1f; // smoother (slower) scaling
+    m_navigation->scaleAtMouse(wheelEvent->pos(), scale);
 }
 
 void QtViewerMapping::onTargetFramebufferChanged()
