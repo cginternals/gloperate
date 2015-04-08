@@ -1,10 +1,16 @@
 #include "QtViewerMapping.h"
 
+#include <widgetzeug/make_unique.hpp>
+
+#include <glbinding/gl/enum.h>
+
+#include <gloperate/base/RenderTargetType.h>
 #include <gloperate/painter/Camera.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/AbstractProjectionCapability.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
-#include <gloperate/painter/AbstractTypedRenderTargetCapability.h>
+#include <gloperate/painter/TypedRenderTargetCapability.h>
+#include <gloperate/painter/AbstractTargetFramebufferCapability.h>
 #include <gloperate/painter/Painter.h>
 #include <gloperate/input/AbstractEvent.h>
 #include <gloperate/input/KeyboardEvent.h>
@@ -17,8 +23,10 @@
 using namespace gloperate;
 using namespace gloperate_qt;
 
+using widgetzeug::make_unique;
+
 QtViewerMapping::QtViewerMapping(QtOpenGLWindow * window)
-    : AbstractQtMapping(window)
+:   AbstractQtMapping(window)
 {
 }
 
@@ -28,24 +36,41 @@ QtViewerMapping::~QtViewerMapping()
 
 void QtViewerMapping::initializeTools()
 {
-    if (    m_painter && 
-            m_painter->supports<AbstractCameraCapability>() &&
-            m_painter->supports<AbstractViewportCapability>() &&
-            m_painter->supports<AbstractTypedRenderTargetCapability>() &&
-            m_painter->supports<AbstractProjectionCapability>())
+    m_renderTarget = nullptr;
+
+    if (m_painter && 
+        m_painter->supports<AbstractCameraCapability>() &&
+        m_painter->supports<AbstractViewportCapability>() &&
+        m_painter->supports<AbstractProjectionCapability>() &&
+        (m_painter->supports<AbstractTypedRenderTargetCapability>() ||
+         m_painter->supports<AbstractTargetFramebufferCapability>()))
     {
-        AbstractCameraCapability * cameraCapability = dynamic_cast<AbstractCameraCapability*>(m_painter->getCapability<AbstractCameraCapability>());
-        AbstractProjectionCapability * projectionCapability = dynamic_cast<AbstractProjectionCapability*>(m_painter->getCapability<AbstractProjectionCapability>());
-        AbstractTypedRenderTargetCapability * renderTargetCapability = dynamic_cast<AbstractTypedRenderTargetCapability*>(m_painter->getCapability<AbstractTypedRenderTargetCapability>());
-        AbstractViewportCapability * viewportCapability = dynamic_cast<AbstractViewportCapability*>(m_painter->getCapability<AbstractViewportCapability>());
+        auto cameraCapability = m_painter->getCapability<AbstractCameraCapability>();
+        auto projectionCapability = m_painter->getCapability<AbstractProjectionCapability>();
+        auto viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
         
-        m_coordProvider.reset(new CoordinateProvider(cameraCapability, projectionCapability, viewportCapability, renderTargetCapability));
-        m_navigation.reset(new WorldInHandNavigation(*cameraCapability, *viewportCapability, *m_coordProvider));
+        auto renderTargetCapability = m_painter->getCapability<AbstractTypedRenderTargetCapability>();
+        if (!renderTargetCapability)
+        {
+            m_renderTarget = make_unique<TypedRenderTargetCapability>();
+            renderTargetCapability = m_renderTarget.get();
+
+            auto fboCapability = m_painter->getCapability<AbstractTargetFramebufferCapability>();
+            fboCapability->changed.connect([this] () { this->onTargetFramebufferChanged(); });
+        }
+
+        m_coordProvider = make_unique<CoordinateProvider>(
+            cameraCapability, projectionCapability, viewportCapability, renderTargetCapability);
+        m_navigation = make_unique<WorldInHandNavigation>(
+            *cameraCapability, *viewportCapability, *m_coordProvider);
     }
 }
 
 void QtViewerMapping::mapEvent(AbstractEvent * event)
 {
+    if (m_renderTarget && !m_renderTarget->hasRenderTarget(RenderTargetType::Depth))
+        onTargetFramebufferChanged();
+    
     if (event->sourceType() == gloperate::SourceType::Keyboard)
     {
         KeyboardEvent * keyEvent = dynamic_cast<KeyboardEvent*>(event);
@@ -148,5 +173,16 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
             m_navigation->scaleAtMouse(wheelEvent->pos(), scale);
         }
     }
+}
+
+void QtViewerMapping::onTargetFramebufferChanged()
+{
+    auto fbo = m_painter->getCapability<AbstractTargetFramebufferCapability>()->framebuffer();
+    
+    if (!fbo)
+        fbo = globjects::Framebuffer::defaultFBO();
+
+    m_renderTarget->setRenderTarget(gloperate::RenderTargetType::Depth, fbo,
+        gl::GL_DEPTH_ATTACHMENT, gl::GL_DEPTH_COMPONENT);
 }
 
