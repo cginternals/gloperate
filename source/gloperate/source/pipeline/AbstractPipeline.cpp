@@ -22,24 +22,13 @@ namespace gloperate
 {
 
 AbstractPipeline::AbstractPipeline(const std::string & name)
-: m_initialized(false)
-, m_name(name)
-, m_dependenciesSorted(false)
+:   m_initialized(false)
+,   m_name(name)
+,   m_dependenciesSorted(false)
 {
 }
 
-AbstractPipeline::~AbstractPipeline()
-{
-    for (AbstractStage* stage : m_stages)
-    {
-        delete stage;
-    }
-
-    for (AbstractData* data : m_constantParameters)
-    {
-        delete data;
-    }
-}
+AbstractPipeline::~AbstractPipeline() = default;
 
 const std::string & AbstractPipeline::name() const
 {
@@ -67,15 +56,10 @@ std::string AbstractPipeline::asPrintable() const
     return n;
 }
 
-void AbstractPipeline::addStages()
+void AbstractPipeline::addStage(std::unique_ptr<AbstractStage> stage)
 {
-}
-
-void AbstractPipeline::addStage(AbstractStage* stage)
-{
-    m_stages.push_back(stage);
-
     stage->dependenciesChanged.connect([this]() { m_dependenciesSorted = false; });
+    m_stages.push_back(std::move(stage));
 }
 
 void AbstractPipeline::addParameter(AbstractData * parameter)
@@ -101,24 +85,24 @@ void AbstractPipeline::addParameter(const std::string & name, AbstractData * par
     addParameter(parameter);
 }
 
-const std::vector<AbstractStage*>& AbstractPipeline::stages() const
+std::vector<AbstractStage *> AbstractPipeline::stages() const
 {
-    return m_stages;
+    return collect(m_stages, [](const std::unique_ptr<AbstractStage> & stage) { return stage.get(); });
 }
 
-const std::vector<AbstractData*> & AbstractPipeline::parameters() const
+const std::vector<AbstractData *> & AbstractPipeline::parameters() const
 {
     return m_parameters;
 }
 
-std::vector<AbstractInputSlot*> AbstractPipeline::allInputs() const
+std::vector<AbstractInputSlot *> AbstractPipeline::allInputs() const
 {
-    return flatten(collect(m_stages, [](const AbstractStage * stage) { return stage->allInputs(); }));
+    return flatten(collect(stages(), [](const AbstractStage * stage) { return stage->allInputs(); }));
 }
 
-std::vector<AbstractData*> AbstractPipeline::allOutputs() const
+std::vector<AbstractData *> AbstractPipeline::allOutputs() const
 {
-    return flatten(collect(m_stages, [](const AbstractStage * stage) { return stage->allOutputs(); }));
+    return flatten(collect(stages(), [](const AbstractStage * stage) { return stage->allOutputs(); }));
 }
 
 AbstractData * AbstractPipeline::findParameter(const std::string & name) const
@@ -143,7 +127,7 @@ void AbstractPipeline::execute()
         sortDependencies();
     }
 
-    for (AbstractStage* stage: m_stages)
+    for (auto & stage: m_stages)
     {
         stage->execute();
     }
@@ -171,7 +155,7 @@ void AbstractPipeline::initializeStages()
         sortDependencies();
     }
 
-    for (AbstractStage * stage : m_stages)
+    for (auto & stage : m_stages)
     {
         stage->initialize();
     }
@@ -186,47 +170,49 @@ void AbstractPipeline::sortDependencies()
     m_dependenciesSorted = true;
 }
 
-void AbstractPipeline::tsort(std::vector<AbstractStage*>& stages)
+void AbstractPipeline::addStages()
 {
-    std::vector<AbstractStage*> sorted;
-    std::map<AbstractStage*, unsigned char> marks;
+}
 
-    std::function<void(AbstractStage*)> visit = [&](AbstractStage * stage)
+void AbstractPipeline::tsort(std::vector<std::unique_ptr<AbstractStage>> & stages)
+{
+    std::vector<std::unique_ptr<AbstractStage>> sorted;
+    std::map<AbstractStage *, bool> touched;
+
+    std::function<void(std::unique_ptr<AbstractStage>)> visit = [&](std::unique_ptr<AbstractStage> stage)
     {
-        if (marks[stage] == 1)
+        if (touched[stage.get()])
         {
             std::cerr << "Pipeline is not a directed acyclic graph" << std::endl;
             return;
         }
 
-        if (marks[stage] == 0)
+        touched[stage.get()] = true;
+
+        for (auto stageIt = stages.begin(); stageIt != stages.end();)
         {
-            marks[stage] = 1;
-            for (auto nextStage : stages)
+            if (!stage->requires((*stageIt).get(), false))
             {
-                if (stage->requires(nextStage, false))
-                {
-                    visit(nextStage);
-                }
+                ++stageIt;
+                continue;
             }
 
-            marks[stage] = 2;
-            sorted.push_back(stage);
+            auto nextStage = std::move(*stageIt);
+            stageIt = stages.erase(stageIt);
+            visit(std::move(nextStage));
         }
+
+        sorted.push_back(std::move(stage));
     };
 
-    while (sorted.size() < stages.size())
+    while (stages.empty())
     {
-        for (auto stage : stages)
-        {
-            if (marks[stage] == 0)
-            {
-                visit(stage);
-            }
-        }
+        auto stage = std::move(stages.back());
+        stages.pop_back();
+        visit(std::move(stage));
     }
 
-    stages.swap(sorted);
+    stages = std::move(sorted);
 }
 
 } // namespace gloperate

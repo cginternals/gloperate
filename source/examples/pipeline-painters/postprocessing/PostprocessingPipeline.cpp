@@ -20,6 +20,8 @@
 
 #include <globjects/base/StringTemplate.h>
 
+#include <widgetzeug/make_unique.hpp>
+
 #include <gloperate/base/RenderTargetType.h>
 
 #include <gloperate/pipeline/AbstractStage.h>
@@ -41,6 +43,8 @@
 #include <gloperate/primitives/Icosahedron.h>
 #include <gloperate/primitives/ScreenAlignedQuad.h>
 
+
+using widgetzeug::make_unique;
 
 class RasterizationStage : public gloperate::AbstractStage
 {
@@ -223,15 +227,19 @@ protected:
 };
 
 PostprocessingPipeline::PostprocessingPipeline()
-: m_rasterization(new RasterizationStage)
-, m_postprocessing(new PostprocessingStage)
-, m_targetFBO(new gloperate::TargetFramebufferCapability)
+: m_targetFBO(new gloperate::TargetFramebufferCapability)
 , m_viewport(new gloperate::ViewportCapability)
 , m_time(new gloperate::VirtualTimeCapability)
 , m_camera(new gloperate::CameraCapability)
 , m_projection(new gloperate::PerspectiveProjectionCapability(m_viewport))
 , m_renderTargets(new gloperate::TypedRenderTargetCapability)
 {
+    auto rasterizationStage = make_unique<RasterizationStage>();
+    auto postprocessingStage = make_unique<PostprocessingStage>();
+
+    m_rasterization = rasterizationStage.get(); 
+    m_postprocessing = postprocessingStage.get(); 
+
     m_targetFBO.data()->changed.connect([this]() {
         m_targetFBO.invalidate();
     });
@@ -266,9 +274,8 @@ PostprocessingPipeline::PostprocessingPipeline()
     });
 
     addStages(
-        m_rasterization,
-        m_postprocessing
-    );
+        std::move(rasterizationStage),
+        std::move(postprocessingStage));
 }
 
 PostprocessingPipeline::~PostprocessingPipeline()
