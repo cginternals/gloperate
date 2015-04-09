@@ -14,8 +14,9 @@
 
 #include <globjects/globjects.h>
 
-#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractDevicePixelRatioCapability.h>
 #include <gloperate/painter/AbstractInputCapability.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/tools/ScreenshotTool.h>
 
@@ -102,14 +103,7 @@ void QtOpenGLWindow::onInitialize()
     // Initialize painter
     if (m_painter)
     {
-        AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
-
-        if (viewportCapability)
-        {
-            qreal factor = QWindow::devicePixelRatio();
-            // Resize painter
-            viewportCapability->setViewport(0, 0, factor * width(), factor * height());
-        }
+        setViewport(width(), height());
 
         m_painter->initialize();
     }
@@ -119,13 +113,7 @@ void QtOpenGLWindow::onResize(QResizeEvent * event)
 {
     if (m_painter)
     {
-        // Check if the painter supports the viewport capability
-        AbstractViewportCapability * viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
-        if (viewportCapability)
-        {
-            // Resize painter
-            viewportCapability->setViewport(0, 0, event->size().width(), event->size().height());
-        }
+        setViewport(event->size().width(), event->size().height());
     }
 }
 
@@ -249,6 +237,28 @@ void QtOpenGLWindow::wheelEvent(QWheelEvent * event)
             event->orientation() == Qt::Vertical ? 0 : event->delta(),
             event->orientation() == Qt::Vertical ? event->delta() : 0
         );
+    }
+}
+
+void QtOpenGLWindow::setViewport(int width, int height)
+{
+    auto viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
+
+    if (viewportCapability)
+    {
+        qreal factor = QWindow::devicePixelRatio();
+
+        auto devicePixelRatioCapability = m_painter->getCapability<AbstractDevicePixelRatioCapability>();
+
+        if (devicePixelRatioCapability)
+        {
+            devicePixelRatioCapability->setDevicePixelRatio(factor);
+            viewportCapability->setViewport(0, 0, width, height);
+        }
+        else
+        {
+            viewportCapability->setViewport(0, 0, factor * width, factor * height);
+        }
     }
 }
 

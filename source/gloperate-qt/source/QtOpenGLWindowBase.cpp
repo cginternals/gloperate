@@ -114,7 +114,7 @@ void QtOpenGLWindowBase::resize(QResizeEvent * event)
 
     m_context->makeCurrent(this);
 
-    QResizeEvent deviceSpecificResizeEvent(event->size() * devicePixelRatio(), event->oldSize() * devicePixelRatio());
+    QResizeEvent deviceSpecificResizeEvent(event->size(), event->oldSize());
 
     onResize(&deviceSpecificResizeEvent);
 
