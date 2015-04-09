@@ -35,7 +35,7 @@ using namespace globjects;
 using gloperate::make_unique;
 
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
-:   Painter{resourceManager}
+:   Painter(resourceManager)
 ,   m_numCubes{25}
 ,   m_animation{true}
 ,   a_vertex{-1}
