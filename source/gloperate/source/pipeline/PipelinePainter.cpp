@@ -6,13 +6,12 @@
 namespace gloperate
 {
 
-PipelinePainter::PipelinePainter(gloperate::ResourceManager & resourceManager, AbstractPipeline & pipeline, const std::string & name)
-: Painter(resourceManager, name)
-, m_pipeline(pipeline)
-{
-}
-
-PipelinePainter::~PipelinePainter()
+PipelinePainter::PipelinePainter(
+    gloperate::ResourceManager & resourceManager, 
+    AbstractPipeline & pipeline, 
+    const std::string & name)
+:   Painter(resourceManager, name)
+,   m_pipeline(pipeline)
 {
 }
 
