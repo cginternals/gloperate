@@ -67,7 +67,7 @@ template <typename T>
 const T & Data<T>::operator=(const T & value)
 {
     m_data = value;
-    invalidated();
+    invalidate();
 
     return value;
 }
@@ -76,7 +76,13 @@ template <typename T>
 void Data<T>::setData(const T & value)
 {
     m_data = value;
-    invalidated();
+    invalidate();
+}
+
+template <typename T>
+std::string Data<T>::type() const 
+{
+    return typeid(T).name(); 
 }
     
 } // namespace gloperate

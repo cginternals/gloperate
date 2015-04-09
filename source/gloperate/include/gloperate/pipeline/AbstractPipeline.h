@@ -72,11 +72,11 @@ public:
     std::set<AbstractData *> unusedParameters();
 
 protected: 
-    void sortDependencies();
+    bool sortDependencies();
     void addStages();
-    void initializeStages();
+    bool initializeStages();
 
-    static void tsort(std::vector<std::unique_ptr<AbstractStage>> & stages);
+    static bool tsort(std::vector<std::unique_ptr<AbstractStage>> & stages);
 
 protected:
     bool m_initialized;

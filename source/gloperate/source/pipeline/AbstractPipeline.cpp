@@ -3,7 +3,7 @@
 #include <cassert>
 #include <string>
 #include <algorithm>
-#include <map>
+#include <set>
 #include <iostream>
 
 #include <gloperate/base/collection.hpp>
@@ -122,11 +122,6 @@ void AbstractPipeline::execute()
         return;
     }
 
-    if (!m_dependenciesSorted)
-    {
-        sortDependencies();
-    }
-
     for (auto & stage: m_stages)
     {
         stage->execute();
@@ -143,51 +138,61 @@ void AbstractPipeline::initialize()
     if (m_initialized)
         return;
 
-    initializeStages();
-
-    m_initialized = true;
+    m_initialized = initializeStages();
 }
 
-void AbstractPipeline::initializeStages()
+bool AbstractPipeline::initializeStages()
 {
     if (!m_dependenciesSorted)
     {
-        sortDependencies();
+        if (!sortDependencies())
+            return false;
     }
 
     for (auto & stage : m_stages)
     {
         stage->initialize();
     }
+
+    return true;
 }
 
-void AbstractPipeline::sortDependencies()
+bool AbstractPipeline::sortDependencies()
 {
     if (m_dependenciesSorted)
-        return;
+        return true;
 
-    tsort(m_stages);
-    m_dependenciesSorted = true;
+    m_dependenciesSorted = tsort(m_stages);
+    return m_dependenciesSorted;
 }
 
 void AbstractPipeline::addStages()
 {
 }
 
-void AbstractPipeline::tsort(std::vector<std::unique_ptr<AbstractStage>> & stages)
+bool AbstractPipeline::tsort(std::vector<std::unique_ptr<AbstractStage>> & stages)
 {
+    auto couldBeSorted = true;
     std::vector<std::unique_ptr<AbstractStage>> sorted;
-    std::map<AbstractStage *, bool> touched;
+    std::set<AbstractStage *> touched;
 
     std::function<void(std::unique_ptr<AbstractStage>)> visit = [&](std::unique_ptr<AbstractStage> stage)
     {
-        if (touched[stage.get()])
+        if (!couldBeSorted)
         {
-            std::cerr << "Pipeline is not a directed acyclic graph" << std::endl;
+            sorted.push_back(std::move(stage));
             return;
         }
 
-        touched[stage.get()] = true;
+        if (touched.count(stage.get()) > 0)
+        {
+            std::cerr << "Pipeline is not a directed acyclic graph" << std::endl;
+            couldBeSorted = false;
+            sorted.push_back(std::move(stage));
+            return;
+        }
+
+        touched.insert(stage.get());
 
         for (auto stageIt = stages.begin(); stageIt != stages.end();)
         {
@@ -205,14 +210,16 @@ void AbstractPipeline::tsort(std::vector<std::unique_ptr<AbstractStage>> & stage
         sorted.push_back(std::move(stage));
     };
 
-    while (stages.empty())
+    while (!stages.empty())
     {
-        auto stage = std::move(stages.back());
-        stages.pop_back();
+        auto stageIt = stages.begin();
+        auto stage = std::move(*stageIt);
+        stages.erase(stageIt);
         visit(std::move(stage));
     }
 
     stages = std::move(sorted);
+    return couldBeSorted;
 }
 
 } // namespace gloperate
