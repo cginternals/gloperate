@@ -21,6 +21,7 @@
 #include <globjects/base/StringTemplate.h>
 
 #include <gloperate/base/RenderTargetType.h>
+#include <gloperate/base/make_unique.hpp>
 
 #include <gloperate/pipeline/AbstractStage.h>
 #include <gloperate/pipeline/Data.h>
@@ -39,6 +40,8 @@
 #include <gloperate/primitives/Icosahedron.h>
 #include <gloperate/primitives/ScreenAlignedQuad.h>
 
+
+using gloperate::make_unique;
 
 class RasterizationStage : public gloperate::AbstractStage
 {
@@ -221,29 +224,31 @@ protected:
 };
 
 PostprocessingPipeline::PostprocessingPipeline()
-: m_rasterization(new RasterizationStage)
-, m_postprocessing(new PostprocessingStage)
+:   m_rasterization(new RasterizationStage)
+,   m_postprocessing(new PostprocessingStage)
 {
-    m_rasterization->camera = camera;
-    m_rasterization->viewport = viewport;
-    m_rasterization->time = time;
-    m_rasterization->projection = projection;
+    auto rasterizationStage = make_unique<RasterizationStage>();
+    auto postprocessingStage = make_unique<PostprocessingStage>();
 
-    m_postprocessing->color = m_rasterization->color;
-    m_postprocessing->normal = m_rasterization->normal;
-    m_postprocessing->geometry = m_rasterization->geometry;
-    m_postprocessing->targetFramebuffer = targetFBO;
+    rasterizationStage->camera = camera;
+    rasterizationStage->viewport = viewport;
+    rasterizationStage->time = time;
+    rasterizationStage->projection = projection;
 
-    m_rasterization->color.invalidated.connect(
+    postprocessingStage->color = m_rasterization->color;
+    postprocessingStage->normal = m_rasterization->normal;
+    postprocessingStage->geometry = m_rasterization->geometry;
+    postprocessingStage->targetFramebuffer = targetFBO;
+
+    rasterizationStage->color.invalidated.connect(
         [this]()
         {
             dynamic_cast<gloperate::TypedRenderTargetCapability *>(renderTargets.data())->setRenderTarget(gloperate::RenderTargetType::Depth, m_rasterization->fbo(), gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
         });
 
     addStages(
-        m_rasterization,
-        m_postprocessing
-    );
+        std::move(rasterizationStage),
+        std::move(postprocessingStage));
 }
 
 PostprocessingPipeline::~PostprocessingPipeline()

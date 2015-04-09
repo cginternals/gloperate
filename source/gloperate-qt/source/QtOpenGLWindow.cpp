@@ -14,8 +14,8 @@
 
 #include <globjects/globjects.h>
 
-#include <widgetzeug/make_unique.hpp>
 
+#include <gloperate/base/make_unique.hpp>
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractInputCapability.h>
 #include <gloperate/resources/ResourceManager.h>
@@ -23,8 +23,6 @@
 
 #include <gloperate-qt/QtEventTransformer.h>
 
-
-using widgetzeug::make_unique;
 
 using namespace gloperate;
 namespace gloperate_qt

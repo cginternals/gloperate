@@ -45,7 +45,7 @@ const T * InputSlot<T>::operator->() const
 template <typename T>
 bool InputSlot<T>::connectTo(const AbstractData & data)
 {
-    const Data<T> * data_ptr = dynamic_cast<const Data<T>*>(&data);
+    const Data<T> * data_ptr = dynamic_cast<const Data<T> *>(&data);
     
     if (!data_ptr)
     {
@@ -61,7 +61,7 @@ bool InputSlot<T>::connectTo(const AbstractData & data)
 template <typename T>
 bool InputSlot<T>::matchType(const AbstractData & data)
 {
-    const Data<T> * data_ptr = dynamic_cast<const Data<T>*>(&data);
+    const Data<T> * data_ptr = dynamic_cast<const Data<T> *>(&data);
 
     return data_ptr != nullptr;
 }
@@ -96,7 +96,7 @@ void InputSlot<T>::connect(const Data<U> & data)
 
     static_assert(std::is_same<T, U>::value || (std::is_pointer<T>::value && std::is_pointer<U>::value && std::is_base_of<Tp, Up>::value), "Types incompatible");
 
-    m_data = reinterpret_cast<const Data<T>*>(&data);
+    m_data = reinterpret_cast<const Data<T> *>(&data);
     m_connection = data.invalidated.connect([this]() { this->changed(); });
     connectionChanged();
     changed();

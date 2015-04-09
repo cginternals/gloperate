@@ -1,10 +1,9 @@
 #include "QtViewerMapping.h"
 
-#include <widgetzeug/make_unique.hpp>
-
 #include <glbinding/gl/enum.h>
 
 #include <gloperate/base/RenderTargetType.h>
+#include <gloperate/base/make_unique.hpp>
 #include <gloperate/painter/Camera.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/AbstractProjectionCapability.h>
@@ -25,7 +24,7 @@
 using namespace gloperate;
 using namespace gloperate_qt;
 
-using widgetzeug::make_unique;
+using gloperate::make_unique;
 
 QtViewerMapping::QtViewerMapping(QtOpenGLWindow * window)
 :   AbstractQtMapping(window)
