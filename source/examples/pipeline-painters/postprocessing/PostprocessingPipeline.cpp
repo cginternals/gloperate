@@ -224,8 +224,6 @@ protected:
 };
 
 PostprocessingPipeline::PostprocessingPipeline()
-:   m_rasterization(new RasterizationStage)
-,   m_postprocessing(new PostprocessingStage)
 {
     auto rasterizationStage = make_unique<RasterizationStage>();
     auto postprocessingStage = make_unique<PostprocessingStage>();
@@ -235,15 +233,15 @@ PostprocessingPipeline::PostprocessingPipeline()
     rasterizationStage->time = time;
     rasterizationStage->projection = projection;
 
-    postprocessingStage->color = m_rasterization->color;
-    postprocessingStage->normal = m_rasterization->normal;
-    postprocessingStage->geometry = m_rasterization->geometry;
+    postprocessingStage->color = rasterizationStage->color;
+    postprocessingStage->normal = rasterizationStage->normal;
+    postprocessingStage->geometry = rasterizationStage->geometry;
     postprocessingStage->targetFramebuffer = targetFBO;
 
     rasterizationStage->color.invalidated.connect(
-        [this]()
+        [this, &rasterizationStage]()
         {
-            dynamic_cast<gloperate::TypedRenderTargetCapability *>(renderTargets.data())->setRenderTarget(gloperate::RenderTargetType::Depth, m_rasterization->fbo(), gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
+            dynamic_cast<gloperate::TypedRenderTargetCapability *>(renderTargets.data())->setRenderTarget(gloperate::RenderTargetType::Depth, rasterizationStage->fbo(), gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
         });
 
     addStages(

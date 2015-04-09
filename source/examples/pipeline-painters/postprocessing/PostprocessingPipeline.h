@@ -30,8 +30,4 @@ public:
     gloperate::Data<gloperate::AbstractCameraCapability *> camera;
     gloperate::Data<gloperate::AbstractProjectionCapability *> projection;
     gloperate::Data<gloperate::AbstractTypedRenderTargetCapability *> renderTargets;
-
-protected:
-    RasterizationStage  * m_rasterization;
-    PostprocessingStage * m_postprocessing;
 };
