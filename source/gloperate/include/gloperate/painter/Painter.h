@@ -1,7 +1,7 @@
 
 #pragma once
 
-
+#include <memory>
 #include <vector>
 
 #include <reflectionzeug/Object.h>
@@ -114,14 +114,17 @@ protected:
     *    Capability
     *
     *  @remarks
-    *    The painter does not take ownership of the capability.
+    *    The painter takes ownership of the capability.
     */
-    void addCapability(AbstractCapability * capability);
+    AbstractCapability * addCapability(std::unique_ptr<AbstractCapability> capability);
+    
+    template <typename Capability>
+    Capability * addCapability(std::unique_ptr<Capability> capability);
 
 
 protected:
-    ResourceManager                  & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
-    std::vector<AbstractCapability *>  m_capabilities;    /**< List of supported capabilities */
+    ResourceManager & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
+    std::vector<std::unique_ptr<AbstractCapability>>  m_capabilities; /**< List of supported capabilities */
 
 };
 

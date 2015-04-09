@@ -24,9 +24,10 @@ void Painter::paint()
     onPaint();
 }
 
-void Painter::addCapability(AbstractCapability * capability)
+AbstractCapability * Painter::addCapability(std::unique_ptr<AbstractCapability> capability)
 {
-    m_capabilities.push_back(capability);
+    m_capabilities.push_back(std::move(capability));
+    return m_capabilities.back().get();
 }
 
 
