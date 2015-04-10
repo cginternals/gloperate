@@ -17,6 +17,9 @@ find_package(Qt5Core    5.1 REQUIRED)
 find_package(Qt5Gui     5.1 REQUIRED)
 find_package(Qt5Widgets 5.1 REQUIRED) # this is also important in order to get uic working
 find_package(Qt5OpenGL  5.1 REQUIRED)
+find_package(glbinding REQUIRED)
+find_package(globjects REQUIRED)
+find_package(libzeug REQUIRED)
 
 find_package(libzeug REQUIRED)
 
@@ -31,8 +34,9 @@ set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 # Includes
 
 include_directories(
-    ${GLBINDING_INCLUDE_DIR}
-    ${GLOBJECTS_INCLUDE_DIR}
+    ${GLBINDING_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
+    ${LIBZEUG_INCLUDES}
     ${GLM_INCLUDE_DIR}
     ${GLOPERATE_QT_INCLUDE_DIR}
     ${LIBZEUG_WIDGET_INCLUDE_DIR}
@@ -53,6 +57,7 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
     ${GLM_LIBRARIES}
     ${LIBZEUG_LIBRARIES} # ${LIBZEUG_WIDGET_LIBRARIES} is empty
     Qt5::Core

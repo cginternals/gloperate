@@ -49,6 +49,7 @@ WorldInHandNavigation::WorldInHandNavigation(
 , m_coordProvider(coordProvider)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
+, m_refPositionValid(false)
 {
     reset();
 }

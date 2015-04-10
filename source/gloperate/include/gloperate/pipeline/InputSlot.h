@@ -2,7 +2,7 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/base/ScopedConnection.h>
+#include <signalzeug/ScopedConnection.h>
 
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/Data.h>
@@ -37,7 +37,7 @@ public:
 
 protected:
     const Data<T>* m_data;
-    gloperate::ScopedConnection m_connection;
+    signalzeug::ScopedConnection m_connection;
 
     static const T s_defaultValue;
 

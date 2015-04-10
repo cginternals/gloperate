@@ -38,6 +38,42 @@ public:
 
     /**
     *  @brief
+    *    Get near plane
+    *
+    *  @return
+    *    Near plane
+    */
+    virtual float zNear() const = 0;
+
+    /**
+    *  @brief
+    *    Set near plane
+    *
+    *  @param[in] zNear
+    *    Near plane
+    */
+    virtual void setZNear(float zNear) = 0;
+
+    /**
+    *  @brief
+    *    Get far plane
+    *
+    *  @return
+    *    Far plane
+    */
+    virtual float zFar() const = 0;
+
+    /**
+    *  @brief
+    *    Set far plane
+    *
+    *  @param[in] zFar
+    *    Far plane
+    */
+    virtual void setZFar(float zFar) = 0;
+
+    /**
+    *  @brief
     *    Get aspect ratio (width / height)
     *
     *  @return

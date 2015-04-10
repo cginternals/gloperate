@@ -49,8 +49,10 @@ public:
     *
     *  @param[in] resourceManager
     *    Resource manager, e.g., to load and save textures
+    *  @param[in] name
+    *    Object name (can be chosen freely, but must not include whitespace)
     */
-    OsgPainter(gloperate::ResourceManager & resourceManager);
+    OsgPainter(gloperate::ResourceManager & resourceManager, const std::string & name = "painter");
 
     /**
     *  @brief

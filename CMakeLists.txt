@@ -28,7 +28,8 @@ project(${META_PROJECT_NAME} C CXX)
 option(OPTION_PORTABLE_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC      "Build static libraries" OFF)
 option(OPTION_BUILD_TESTS       "Build tests (if gmock and gtest are found)" ON)
-option(OPTION_BUILD_EXAMPLES    "Build examples (requires optional module glfw)" OFF)
+option(OPTION_BUILD_EXAMPLES    "Build examples (requires optional module glfw and/or Qt5)" OFF)
+option(OPTION_BUILD_TOOLS       "Build tools (requires optional module Qt5)" OFF)
 
 
 if(OPTION_BUILD_STATIC)
@@ -95,6 +96,8 @@ elseif(WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsGCC.cmake)
 elseif(APPLE)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
+elseif(UNIX AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxClang.cmake)
 elseif(UNIX)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxGCC.cmake)
 else()
@@ -140,26 +143,31 @@ else()
     set(INSTALL_INIT          "/etc/init") # /etc/init (upstart init scripts)
 
     # Adjust target paths for portable installs
-
-    # "<INSTALL_PREFIX>/"
-    
-    if(OPTION_PORTABLE_INSTALL) 
+    if(OPTION_PORTABLE_INSTALL)
         # Put binaries in root directory and keep data directory name
-        set(INSTALL_ROOT           ".")
-        set(INSTALL_EXAMPLES       ".")
-        set(INSTALL_DATA           ".")
-        set(INSTALL_BIN            ".")
-        set(INSTALL_PLUGINS        "./plugins")
-        set(INSTALL_PLUGINS_DEBUG  "./plugins/debug")
+        set(INSTALL_ROOT ".")                   # /<INSTALL_PREFIX>
+        set(INSTALL_DATA ".")                   # /<INSTALL_PREFIX>
+        set(INSTALL_BIN ".")                    # /<INSTALL_PREFIX>
 
         # We have to change the RPATH of binaries to achieve a usable local install.
         # [TODO] For binaries, "$ORIGIN/lib" is right, so that libraries are found in ./lib.
-        #        However, I have not yet tested what happens when libraries use other libraries.
-        #        In that case, they might need the rpath $ORIGIN instead ...
-        set(CMAKE_SKIP_BUILD_RPATH            FALSE)         # Use automatic rpath for build
-        set(CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE)         # Use specific rpath for INSTALL
-        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)         # NO automatic rpath for INSTALL
-        set(CMAKE_INSTALL_RPATH               "$ORIGIN/lib") # Libraries are relative to binary
+        # However, I have not yet tested what happens when libraries use other libraries.
+        # In that case, they might need the rpath $ORIGIN instead ...
+        set(CMAKE_SKIP_BUILD_RPATH FALSE)            # Use automatic rpath for build
+        set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)    # Use specific rpath for INSTALL
+        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE) # NO automatic rpath for INSTALL
+
+        # Libraries are relative to binary
+        if (APPLE)
+            set(CMAKE_INSTALL_RPATH "@executable_path/${INSTALL_LIB}")
+        else()
+            set(CMAKE_INSTALL_RPATH "$ORIGIN/${INSTALL_LIB}")       
+        endif()
+    else()
+        if (APPLE)
+            set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${INSTALL_LIB}") # Add rpath of project libraries
+            set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)                       # Add rpaths of depending libraries
+        endif()
     endif()
 
 endif()

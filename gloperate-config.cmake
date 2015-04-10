@@ -154,11 +154,6 @@ find(gloperate-glfw gloperate-glfw/gloperate-glfw_api.h ${LIB_PATHS})
 find(gloperate-osg gloperate-osg/gloperate-osg_api.h ${LIB_PATHS})
 find(gloperate-qtwidgets gloperate-qtwidgets/gloperate-qtwidgets_api.h ${LIB_PATHS})
 
-# add dependencies
-find_package(globjects REQUIRED)
-list(APPEND GLOPERATE_INCLUDES ${GLOBJECTS_INCLUDES})
-list(APPEND GLOPERATE_LIBRARIES ${GLOBJECTS_LIBRARIES})
-
 # DEBUG
 # message("GLOPERATE_INCLUDES  = ${GLOPERATE_INCLUDES}")
 # message("GLOPERATE_LIBRARIES = ${GLOPERATE_LIBRARIES}")
