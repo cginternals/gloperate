@@ -60,6 +60,10 @@ public:
     */
     virtual ~Painter();
 
+    // Fixes issues with MSVC2013 Update 3
+    Painter(const Painter &) = delete;
+    Painter(Painter &&) = delete;
+
     /**
     *  @brief
     *    Initialize painter
@@ -124,12 +128,7 @@ protected:
 
 protected:
     ResourceManager & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
-    std::vector<std::unique_ptr<AbstractCapability>>  m_capabilities; /**< List of supported capabilities */
-
-private:
-    // Fixes issues with MSVC2013 Update 3
-    Painter(const Painter &) = delete;
-    Painter(Painter &&) = delete;
+    std::vector<std::unique_ptr<AbstractCapability>>  m_capabilities; /**< List of supported capabilities */    
 };
 
 

@@ -24,6 +24,10 @@ public:
     AbstractPipeline(const std::string & name = "");
     virtual ~AbstractPipeline();
 
+    // Fixes issues with MSVC2013 Update 3
+    AbstractPipeline(const AbstractPipeline & rhs) = delete;
+    AbstractPipeline(AbstractPipeline && rhs) = delete;
+
     const std::string & name() const;
     void setName(const std::string & name);
 
@@ -86,11 +90,6 @@ protected:
     std::vector<AbstractData *> m_parameters;
     std::vector<const AbstractData *> m_sharedData;
     bool m_dependenciesSorted;
-
-private:
-    // Fixes issues with MSVC2013 Update 3
-    AbstractPipeline(const AbstractPipeline &) = delete;
-    AbstractPipeline(AbstractPipeline &&) = delete;
 };
 
 } // namespace gloperate
