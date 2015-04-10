@@ -144,7 +144,6 @@ void FileNameTextEdit::keyPressEvent(QKeyEvent *e)
     bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
     
     QString completionPrefix = textUnderCursor();
-    qDebug() << completionPrefix;
 
     if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 1
         || eow.contains(e->text().right(1)))) {
