@@ -47,7 +47,7 @@ signals:
     void filenameChanged();
 
 protected:
-    void handleSave(bool checked);
+    void handleSave(bool);
 
     void restoreSettings();
     void initializeFileNameTextEdit();
@@ -56,7 +56,7 @@ protected:
     void saveFilename();
     std::string replaceTags(const std::string& filename, bool shouldUpdateUiFilename = true);
     std::string buildFileName();
-    void browseDirectory(bool checked);
+    void browseDirectory(bool);
     void updateDirectory();
     void updateFilenamePreview();
     void updateUiFileName();

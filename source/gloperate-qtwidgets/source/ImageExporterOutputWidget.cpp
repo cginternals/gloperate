@@ -1,4 +1,4 @@
-#include <gloperate-qtwidgets/ImageExporterOutputWidget.h>
+ï»¿#include <gloperate-qtwidgets/ImageExporterOutputWidget.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
 #include "ui_ImageExporterOutputWidget.h"
@@ -130,14 +130,14 @@ void ImageExporterOutputWidget::restoreSettings()
     settings.endGroup();
 }
 
-void ImageExporterOutputWidget::handleSave(bool checked)
+void ImageExporterOutputWidget::handleSave(bool)
 {
     m_context->makeCurrent();
     m_imageExporter->save(buildFileName(), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()));
     m_context->doneCurrent();
 }
 
-void ImageExporterOutputWidget::browseDirectory(bool checked)
+void ImageExporterOutputWidget::browseDirectory(bool)
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::Directory);
@@ -188,7 +188,7 @@ std::string ImageExporterOutputWidget::replaceTags(const std::string& filename, 
         size_t position = newFilename.find(m_supportedTags["enum_num"].toStdString());
         newFilename.replace(position, m_supportedTags["enum_num"].length(), "");
 
-        std::string startIndex{ extractEnumNumStartIndex(newFilename, position) };
+        std::string startIndex{ extractEnumNumStartIndex(newFilename, static_cast<int>(position)) };
 
         int index{ atoi(startIndex.c_str()) };
         newFilename.replace(position, startIndex.length() + 1, std::to_string(index));
@@ -233,7 +233,7 @@ void ImageExporterOutputWidget::updateUiFileName()
     QString oldUiFilename{ m_ui->fileNameTextEdit->toPlainText() };
     int positionOfEnumNumIndex{ oldUiFilename.indexOf(m_supportedTags["enum_num"]) + m_supportedTags["enum_num"].length() };
     std::string startIndex{ extractEnumNumStartIndex(oldUiFilename.toStdString(), positionOfEnumNumIndex) };
-    QString newUiFilename{ oldUiFilename.replace(positionOfEnumNumIndex, startIndex.length(), QString::number(atoi(startIndex.c_str()) + 1)) };
+    QString newUiFilename{ oldUiFilename.replace(positionOfEnumNumIndex, static_cast<int>(startIndex.length()), QString::number(atoi(startIndex.c_str()) + 1)) };
 
     bool oldSignalStatus = m_ui->fileNameTextEdit->blockSignals(true);
     m_ui->fileNameTextEdit->setPlainText(newUiFilename);
@@ -259,10 +259,10 @@ void ImageExporterOutputWidget::checkFilename()
             filename.replace(filename.indexOf(it->second), it->second.length(), emp);
     }
     
-    if (filename.indexOf(m_supportedTags["enum_num"]) != std::string::npos)
+    if (filename.indexOf(m_supportedTags["enum_num"]) != static_cast<int>(std::string::npos))
     {
-        size_t position = filename.indexOf(m_supportedTags["enum_num"]);
-        filename.replace(position, m_supportedTags["enum_num"].length(), "");
+        int position = filename.indexOf(m_supportedTags["enum_num"]);
+        filename.replace(position, static_cast<int>(m_supportedTags["enum_num"].length()), "");
 
         std::set<QString> numbers{ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
         bool numberFound{ false }, endFound{ false };
@@ -290,7 +290,7 @@ void ImageExporterOutputWidget::checkFilename()
     
     if (errorMessage == "")
     {
-        QRegExp rx("[A-Za-z0-9_\\-\\!\\§\\$\\%\\&\\(\\)\\=\\`\\´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
+        QRegExp rx("[A-Za-z0-9_\\-\\!\\Â§\\$\\%\\&\\(\\)\\=\\`\\Â´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\Â°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
 
         if (!rx.exactMatch(filename))
             errorMessage = "includes invalid symbols";
