@@ -27,6 +27,8 @@ public:
     // Fixes issues with MSVC2013 Update 3
     AbstractPipeline(const AbstractPipeline & rhs) = delete;
     AbstractPipeline(AbstractPipeline && rhs) = delete;
+    AbstractPipeline & operator=(const AbstractPipeline & rhs) = delete;
+    AbstractPipeline & operator=(AbstractPipeline && rhs) = delete;
 
     const std::string & name() const;
     void setName(const std::string & name);

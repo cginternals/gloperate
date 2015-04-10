@@ -61,8 +61,10 @@ public:
     virtual ~Painter();
 
     // Fixes issues with MSVC2013 Update 3
-    Painter(const Painter &) = delete;
-    Painter(Painter &&) = delete;
+    Painter(const Painter & rhs) = delete;
+    Painter(Painter && rhs) = delete;
+    Painter & operator=(const Painter & rhs) = delete;
+    Painter & operator=(Painter && rhs) = delete;
 
     /**
     *  @brief
