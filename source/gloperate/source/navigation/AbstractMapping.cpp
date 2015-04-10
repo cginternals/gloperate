@@ -7,6 +7,7 @@ namespace gloperate
 {
 
 AbstractMapping::AbstractMapping()
+: m_painter(nullptr)
 {
 }
 
@@ -40,14 +41,14 @@ void AbstractMapping::setPainter(Painter * painter)
 
 void AbstractMapping::addProvider(AbstractEventProvider * provider)
 {
-    m_providers.push_back(provider);
+    m_providers.insert(provider);
     provider->registerMapping(this);
 }
 
 void AbstractMapping::removeProvider(AbstractEventProvider * provider)
 {
     provider->deregisterMapping(this);
-    m_providers.remove(provider);
+    m_providers.erase(provider);
 }
 
 void AbstractMapping::processEvent(AbstractEvent * event)

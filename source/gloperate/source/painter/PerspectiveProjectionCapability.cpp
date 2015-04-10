@@ -1,9 +1,4 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 
 #include <glm/glm.hpp>
@@ -12,13 +7,10 @@
 
 #include <gloperate/painter/AbstractViewportCapability.h>
 
+
 namespace gloperate {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 PerspectiveProjectionCapability::PerspectiveProjectionCapability(AbstractViewportCapability * viewportCapability)
 : AbstractPerspectiveProjectionCapability(viewportCapability)
 , m_dirty(false)
@@ -29,10 +21,6 @@ PerspectiveProjectionCapability::PerspectiveProjectionCapability(AbstractViewpor
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 PerspectiveProjectionCapability::~PerspectiveProjectionCapability()
 {
 }
@@ -93,6 +81,57 @@ float PerspectiveProjectionCapability::aspectRatio() const
     return m_aspect;
 }
 
+const glm::mat4 & PerspectiveProjectionCapability::projection() const
+{
+    if (m_dirty)
+        update();
+
+    if (!m_projection.isValid())
+        m_projection.setValue(projectionForAspectRatio(m_aspect));
+
+    return m_projection.value();
+}
+
+const glm::mat4 & PerspectiveProjectionCapability::projectionInverted() const
+{
+    if (m_dirty)
+        update();
+
+    if (!m_projectionInverted.isValid())
+        m_projectionInverted.setValue(glm::inverse(projection()));
+
+    return m_projectionInverted.value();
+}
+
+glm::mat4 PerspectiveProjectionCapability::projectionForAspectRatio(float ratio) const
+{
+    return glm::perspective(m_fovy, ratio, m_zNear, m_zFar);
+}
+
+void PerspectiveProjectionCapability::update() const
+{
+    if (!m_dirty)
+        return;
+
+    invalidateMatrices();
+
+    m_dirty = false;
+}
+
+void PerspectiveProjectionCapability::dirty(bool update)
+{
+    m_dirty = true;
+
+    if (update)
+        this->update();
+}
+
+void PerspectiveProjectionCapability::invalidateMatrices() const
+{
+    m_projection.invalidate();
+    m_projectionInverted.invalidate();
+}
+
 void PerspectiveProjectionCapability::setAspectRatio(float ratio)
 {
     if (ratio > glm::epsilon<float>())
@@ -112,55 +151,5 @@ void PerspectiveProjectionCapability::setAspectRatio(const glm::ivec2 & viewport
     setChanged(true);
 }
 
-void PerspectiveProjectionCapability::update() const
-{
-    if (!m_dirty)
-        return;
-
-    invalidateMatrices();
-
-    m_dirty = false;
-}
-
-void PerspectiveProjectionCapability::invalidateMatrices() const
-{
-    m_projection.invalidate();
-    m_projectionInverted.invalidate();
-}
-
-void PerspectiveProjectionCapability::dirty(bool update)
-{
-    m_dirty = true;
-
-    if (update)
-        this->update();
-}
-
-const glm::mat4 & PerspectiveProjectionCapability::projection() const
-{
-    if (m_dirty)
-        update();
-
-    if (!m_projection.isValid())
-        m_projection.setValue(projectionForAspectRatio(m_aspect));
-
-    return m_projection.value();
-}
-
-glm::mat4 PerspectiveProjectionCapability::projectionForAspectRatio(float ratio) const
-{
-    return glm::perspective(m_fovy, ratio, m_zNear, m_zFar);
-}
-
-const glm::mat4 & PerspectiveProjectionCapability::projectionInverted() const
-{
-    if (m_dirty)
-        update();
-
-    if (!m_projectionInverted.isValid())
-        m_projectionInverted.setValue(glm::inverse(projection()));
-
-    return m_projectionInverted.value();
-}
 
 } // namespace gloperate

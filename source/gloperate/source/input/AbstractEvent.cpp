@@ -5,6 +5,7 @@ namespace gloperate
 {
 
 AbstractEvent::AbstractEvent()
+: m_sourceType(SourceType::Unknown)
 {
 }
 

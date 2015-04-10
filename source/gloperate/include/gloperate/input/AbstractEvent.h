@@ -8,7 +8,8 @@ namespace gloperate
 
 enum class SourceType : char
 {
-    Keyboard
+    Unknown
+,   Keyboard
 ,   Mouse
 ,   Timer
 ,   Wheel

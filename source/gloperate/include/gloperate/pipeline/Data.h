@@ -14,8 +14,8 @@ template <typename T>
 class Data : public AbstractData
 {
 public:
-    Data();
-    explicit Data(const T & data);
+    template <typename... Args>
+    explicit Data(Args&&... args);
 
     T & data();
     const T & data() const;
@@ -32,7 +32,8 @@ public:
 
     void setData(const T & value);
 
-    virtual std::string type() const override { return typeid(T).name(); }
+    virtual std::string type() const override;
+    
 protected:
     T m_data;
 };

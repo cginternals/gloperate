@@ -1,15 +1,17 @@
+
 #pragma once
 
-#include <gloperate/gloperate_api.h>
 
 #include <globjects/Framebuffer.h>
 #include <globjects/base/ref_ptr.h>
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractTargetFramebufferCapability.h>
 
 
 namespace gloperate
 {
+
 
 /**
 *  @brief
@@ -30,26 +32,14 @@ public:
     */
     virtual ~TargetFramebufferCapability();
 
-    /**
-    *  @brief
-    *    Get framebuffer
-    *
-    *  @return
-    *    Framebuffer, can be nullptr
-    */
+    // Virtual functions from AbstractTargetFramebufferCapability
     virtual globjects::Framebuffer * framebuffer() const override;
-
-    /**
-    *  @brief
-    *    Set framebuffer
-    *
-    *  @param[in] fbo
-    *    Framebuffer, can be nullptr
-    */
     virtual void setFramebuffer(globjects::Framebuffer * fbo) override;
+
 
 protected:
     globjects::ref_ptr<globjects::Framebuffer> m_framebuffer;    /**< Framebuffer used for rendering */
 };
+
 
 } // namespace gloperate

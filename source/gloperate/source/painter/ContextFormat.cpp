@@ -14,6 +14,7 @@ using namespace globjects;
 namespace gloperate
 {
 
+
 ContextFormat::ContextFormat()
 : m_version(glbinding::Version(4, 5))
 , m_profile(Profile::None)
@@ -339,5 +340,6 @@ bool ContextFormat::verifyPixelFormat(
 
     return false;
 }
+
 
 } // namespace gloperate

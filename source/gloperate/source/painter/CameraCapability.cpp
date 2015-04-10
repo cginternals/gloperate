@@ -1,9 +1,4 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the 
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #include <gloperate/painter/CameraCapability.h>
 
 #include <glm/glm.hpp>
@@ -13,31 +8,20 @@
 #include <gloperate/painter/Camera.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
 
+
 namespace gloperate {
 
 
-/**
-*  @brief
-*    Constructor
-*/
-CameraCapability::CameraCapability(
-   const glm::vec3 & eye
-, const glm::vec3 & center
-, const glm::vec3 & up)
+CameraCapability::CameraCapability(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & up)
 : AbstractCameraCapability()
 , m_dirty(false)
 , m_autoUpdate(false)
-
 , m_eye(eye)
 , m_center(center)
 , m_up(up)
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 CameraCapability::~CameraCapability()
 {
 }
@@ -47,9 +31,9 @@ bool CameraCapability::autoUpdating() const
     return m_autoUpdate;
 }
 
-void CameraCapability::setAutoUpdating(bool b)
+void CameraCapability::setAutoUpdating(bool autoUpdate)
 {
-    m_autoUpdate = b;
+    m_autoUpdate = autoUpdate;
 
     if (m_dirty && m_autoUpdate)
     {
@@ -57,19 +41,16 @@ void CameraCapability::setAutoUpdating(bool b)
     }
 }
 
-void CameraCapability::invalidateMatrices() const
+void CameraCapability::update() const
 {
-    m_view.invalidate();
-    m_viewInverted.invalidate();
-    m_normal.invalidate();
-}
+    if (!m_dirty)
+        return;
 
-void CameraCapability::dirty(bool update)
-{
-    m_dirty = true;
+    invalidateMatrices();
 
-    if (update || m_autoUpdate)
-        this->update();
+    m_dirty = false;
+
+    const_cast<CameraCapability*>(this)->changed();
 }
 
 const glm::vec3 & CameraCapability::eye() const
@@ -147,16 +128,20 @@ const glm::mat3 & CameraCapability::normal() const
     return m_normal.value();
 }
 
-void CameraCapability::update() const
+void CameraCapability::dirty(bool update)
 {
-    if (!m_dirty)
-        return;
+    m_dirty = true;
 
-    invalidateMatrices();
-
-    m_dirty = false;
-
-    const_cast<CameraCapability*>(this)->changed();
+    if (update || m_autoUpdate)
+        this->update();
 }
+
+void CameraCapability::invalidateMatrices() const
+{
+    m_view.invalidate();
+    m_viewInverted.invalidate();
+    m_normal.invalidate();
+}
+
 
 } // namespace gloperate

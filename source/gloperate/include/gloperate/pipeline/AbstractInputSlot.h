@@ -4,7 +4,7 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/base/Signal.h>
+#include <signalzeug/Signal.h>
 
 
 namespace gloperate 
@@ -55,7 +55,7 @@ public:
     bool isConnected() const;
 
 public:
-    gloperate::Signal<> connectionChanged;
+    signalzeug::Signal<> connectionChanged;
 
 protected:
     AbstractStage * m_owner;

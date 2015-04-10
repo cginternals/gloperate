@@ -5,16 +5,11 @@
 
 namespace gloperate 
 {
-    
-template <typename T>
-Data<T>::Data()
-: m_data()
-{
-}
 
 template <typename T>
-Data<T>::Data(const T & data)
-: m_data(data)
+template <typename... Args>
+Data<T>::Data(Args&&... args)
+: m_data(std::forward<Args>(args)...)
 {
 }
 
@@ -72,7 +67,7 @@ template <typename T>
 const T & Data<T>::operator=(const T & value)
 {
     m_data = value;
-    invalidated();
+    invalidate();
 
     return value;
 }
@@ -81,7 +76,13 @@ template <typename T>
 void Data<T>::setData(const T & value)
 {
     m_data = value;
-    invalidated();
+    invalidate();
+}
+
+template <typename T>
+std::string Data<T>::type() const 
+{
+    return typeid(T).name(); 
 }
     
 } // namespace gloperate

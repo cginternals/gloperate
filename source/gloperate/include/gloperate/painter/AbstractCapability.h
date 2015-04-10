@@ -4,11 +4,12 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/base/Signal.h>
+#include <signalzeug/Signal.h>
 
 
 namespace gloperate 
 {
+
 
 /**
 *  @brief
@@ -24,8 +25,6 @@ namespace gloperate
 */
 class GLOPERATE_API AbstractCapability
 {
-
-
 public:
     /**
     *  @brief
@@ -65,10 +64,20 @@ public:
     void setChanged(bool changed);
 
 
-    Signal<> changed;
-protected:
-    bool m_changed; /**< Has the capability information been changed? */
+    template <typename T>
+    bool is() const;
 
+    template <typename T>
+    T* as();
+public:
+    signalzeug::Signal<> changed;   /**< Called when the capability information has been changed */
+
+
+protected:
+    bool m_changed;     /**< Has the capability information been changed? */
 };
 
+
 } // namespace gloperate
+
+#include <gloperate/painter/AbstractCapability.hpp>

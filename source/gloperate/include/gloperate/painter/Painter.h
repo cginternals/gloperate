@@ -1,16 +1,21 @@
+
 #pragma once
 
+#include <memory>
 #include <vector>
 
-#include <gloperate/gloperate_api.h>
+#include <reflectionzeug/Object.h>
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>
 
 
 namespace gloperate
 {
 
+
 class ResourceManager;
+
 
 /**
 *  @brief
@@ -29,7 +34,7 @@ class ResourceManager;
 *    use capabilities to describe what kind of functionality and interfaces
 *    it supports. See AbstractCapability for more information on capabilities.
 */
-class GLOPERATE_API Painter
+class GLOPERATE_API Painter : public reflectionzeug::Object
 {
 public:
     /**
@@ -38,14 +43,28 @@ public:
     *
     *  @param[in] resourceManager
     *    Resource manager, e.g., to load and save textures
+    *  @param[in] name
+    *    Object name (can be chosen freely, but must not include whitespace)
+    *
+    *  @remarks
+    *    Do not initialize your graphics object or call any OpenGL functions in the
+    *    constructor, because at this time there may be no valid context active. Instead,
+    *    all OpenGL initialization code should be implemented in initialize().
+    *    Use the constructor to register properties and capabilities.
     */
-    Painter(ResourceManager & resourceManager);
+    Painter(ResourceManager & resourceManager, const std::string & name = "painter");
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~Painter();
+
+    // Fixes issues with MSVC2013 Update 3
+    Painter(const Painter & rhs) = delete;
+    Painter(Painter && rhs) = delete;
+    Painter & operator=(const Painter & rhs) = delete;
+    Painter & operator=(Painter && rhs) = delete;
 
     /**
     *  @brief
@@ -79,6 +98,7 @@ public:
     template <typename Capability>
     Capability * getCapability() const;
 
+
 protected:
     /**
     *  @brief
@@ -92,8 +112,6 @@ protected:
     */
     virtual void onPaint() = 0;
 
-
-protected:
     /**
     *  @brief
     *    Add capability to the painter
@@ -104,13 +122,17 @@ protected:
     *  @remarks
     *    The painter takes ownership of the capability.
     */
-    void addCapability(AbstractCapability * capability);
+    AbstractCapability * addCapability(std::unique_ptr<AbstractCapability> capability);
+    
+    template <typename Capability>
+    Capability * addCapability(std::unique_ptr<Capability> capability);
 
 
 protected:
-    ResourceManager                  & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
-    std::vector<AbstractCapability*>   m_capabilities;    /**< List of supported capabilities */
+    ResourceManager & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
+    std::vector<std::unique_ptr<AbstractCapability>>  m_capabilities; /**< List of supported capabilities */    
 };
+
 
 } // namespace gloperate
 

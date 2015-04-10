@@ -1,4 +1,7 @@
+
 #include <gloperate/tools/WorldExtractor.h>
+
+#include <gloperate/base/RenderTargetType.h>
 
 namespace gloperate
 {

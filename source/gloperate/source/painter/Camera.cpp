@@ -1,3 +1,4 @@
+
 #include <gloperate/painter/Camera.h>
 
 #include <cassert>
@@ -12,17 +13,13 @@ using namespace glm;
 namespace gloperate
 {
 
-Camera::Camera(
-    const vec3 & eye
-,   const vec3 & center
-,   const vec3 & up)
+
+Camera::Camera(const vec3 & eye, const vec3 & center, const vec3 & up)
 : m_dirty(false)
 , m_autoUpdate(false)
-
 , m_eye(eye)
 , m_center(center)
 , m_up(up)
-
 , m_fovy(radians(40.f))
 , m_aspect(1.f)
 , m_zNear(0.1f)
@@ -39,9 +36,9 @@ bool Camera::autoUpdating() const
     return m_autoUpdate;
 }
 
-void Camera::setAutoUpdating(bool b)
+void Camera::setAutoUpdating(bool autoUpdate)
 {
-    m_autoUpdate = b;
+    m_autoUpdate = autoUpdate;
 
     if (m_dirty && m_autoUpdate)
     {
@@ -49,23 +46,16 @@ void Camera::setAutoUpdating(bool b)
     }
 }
 
-void Camera::invalidateMatrices() const
+void Camera::update() const
 {
-    m_view.invalidate();
-    m_viewInverted.invalidate();
-    m_projection.invalidate();
-    m_projectionInverted.invalidate();
-    m_viewProjection.invalidate();
-    m_viewProjectionInverted.invalidate();
-    m_normal.invalidate();
-}
+    if (!m_dirty)
+        return;
 
-void Camera::dirty(bool update)
-{
-    m_dirty = true;
+    invalidateMatrices();
 
-    if (update || m_autoUpdate)
-        this->update();
+    m_dirty = false;
+
+    const_cast<Camera*>(this)->changed();
 }
 
 const vec3 & Camera::eye() const
@@ -177,18 +167,6 @@ void Camera::setAspectRatio(const ivec2 & viewport)
     dirty();
 }
 
-void Camera::update() const
-{
-    if (!m_dirty)
-        return;
-
-    invalidateMatrices();
-
-    m_dirty = false;
-
-    const_cast<Camera*>(this)->changed();
-}
-
 const mat4 & Camera::view() const
 {
     if (m_dirty)
@@ -270,5 +248,25 @@ void Camera::changed()
 {
     invalidated();
 }
+
+void Camera::dirty(bool update)
+{
+    m_dirty = true;
+
+    if (update || m_autoUpdate)
+        this->update();
+}
+
+void Camera::invalidateMatrices() const
+{
+    m_view.invalidate();
+    m_viewInverted.invalidate();
+    m_projection.invalidate();
+    m_projectionInverted.invalidate();
+    m_viewProjection.invalidate();
+    m_viewProjectionInverted.invalidate();
+    m_normal.invalidate();
+}
+
 
 } // namespace gloperate

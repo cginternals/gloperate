@@ -6,7 +6,7 @@
 #include <gloperate/gloperate_api.h>
 
 #include <globjects/base/CachedValue.h>
-#include <gloperate/base/Signal.h>
+#include <signalzeug/Signal.h>
 
 
 namespace gloperate
@@ -57,7 +57,7 @@ public:
     void invalidateOutputs();
 
 public:
-    gloperate::Signal<> dependenciesChanged;
+    signalzeug::Signal<> dependenciesChanged;
 
 protected:
     bool needsToProcess() const;
