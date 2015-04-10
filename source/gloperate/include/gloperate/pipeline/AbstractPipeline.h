@@ -88,7 +88,9 @@ protected:
     bool m_dependenciesSorted;
 
 private:
+    // Fixes issues with MSVC2013 Update 3
     AbstractPipeline(const AbstractPipeline &) = delete;
+    AbstractPipeline(AbstractPipeline &&) = delete;
 };
 
 } // namespace gloperate
