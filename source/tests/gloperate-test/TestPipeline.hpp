@@ -8,6 +8,7 @@
 
 
 using namespace gloperate;
+using gloperate::make_unique;
 
 class TestPipeline : public AbstractPipeline
 {
