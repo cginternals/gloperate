@@ -147,6 +147,7 @@ set(api_includes
     ${include_path}/base/CyclicTime.h
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
+    ${include_path}/base/make_unique.hpp
     
     ${include_path}/gloperate_api.h
     

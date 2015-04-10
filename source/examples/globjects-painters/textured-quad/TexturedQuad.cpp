@@ -5,6 +5,7 @@
 #include <glbinding/gl/gl.h>
 #include <globjects/logging.h>
 
+#include <gloperate/base/make_unique.hpp>
 #include <gloperate/painter/ViewportCapability.h>
 
 
@@ -12,12 +13,13 @@ using namespace gloperate;
 using namespace globjects;
 using namespace gl;
 
+using gloperate::make_unique;
 
 TexturedQuad::TexturedQuad(ResourceManager & resourceManager)
 : Painter(resourceManager)
 , m_viewportCapability(new gloperate::ViewportCapability)
 {
-    addCapability(m_viewportCapability);
+    m_viewportCapability = addCapability(make_unique<gloperate::ViewportCapability>());
 }
 
 TexturedQuad::~TexturedQuad()

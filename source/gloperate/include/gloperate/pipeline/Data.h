@@ -32,7 +32,8 @@ public:
 
     void setData(const T & value);
 
-    virtual std::string type() const override { return typeid(T).name(); }
+    virtual std::string type() const override;
+    
 protected:
     T m_data;
 };

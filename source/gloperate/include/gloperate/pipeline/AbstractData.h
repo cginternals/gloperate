@@ -40,10 +40,11 @@ public:
     virtual std::string type() const = 0;
 
 public:
+    signalzeug::Signal<> invalidated;
+
+protected:
     AbstractStage * m_owner;
     std::string m_name;
-
-    signalzeug::Signal<> invalidated;
 
     void setOwner(AbstractStage * owner);
 };

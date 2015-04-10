@@ -70,7 +70,7 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 
 # Build library
 
-add_library(${target} SHARED ${api_includes} ${sources})
+add_library(${target} SHARED ${headers} ${sources})
 
 target_link_libraries(${target} ${libs})
 

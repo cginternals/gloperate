@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
     pluginManager.scan("painters");
 
     // Choose a painter
-    std::string name = (argc > 1) ? argv[1] : "CubeScape";
+    std::string name = (argc > 1) ? argv[1] : "PostprocessingPipeline";
 
     std::unique_ptr<gloperate::Painter> painter(nullptr);
     Plugin * plugin = pluginManager.plugin(name);
