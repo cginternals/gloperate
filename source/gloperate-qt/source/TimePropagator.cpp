@@ -10,11 +10,11 @@ namespace gloperate_qt
 *  @brief
 *    Constructor
 */
-TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloperate::AbstractVirtualTimeCapability * capability)
-: m_window(window)
-, m_capability(capability)
-, m_timer(new QTimer())
-, m_time(false, true)
+TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase * window)
+:   m_window(window)
+,   m_capability(nullptr)
+,   m_timer(new QTimer())
+,   m_time(false, true)
 {
     // Connect to timer signal
     connect(m_timer.data(), SIGNAL(timeout()), this, SLOT(update()));
@@ -22,7 +22,16 @@ TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloper
     // Start timer
     m_timer->setSingleShot(false);
     m_timer->start(0);
-    m_time.start();
+}
+
+void TimePropagator::setCapability(gloperate::AbstractVirtualTimeCapability * capability)
+{
+    m_capability = capability;
+    
+    if (m_capability)
+        m_time.start();
+    else
+        m_time.stop();
 }
 
 /**
@@ -31,15 +40,22 @@ TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloper
 */
 void TimePropagator::update()
 {
+    if (!m_capability)
+    {
+        m_window->updateGL();
+        return;
+    }
+    
     // Calculate time delta
     float delta = std::chrono::duration_cast<std::chrono::duration<float>>(m_time.elapsed()).count();
     m_time.reset();
-
+    
     // Check if virtual time capability is enabled
-    if (m_capability->enabled()) {
+    if (m_capability->enabled())
+    {
         // Propagate new time
         m_capability->update(delta);
-
+        
         // Update window
         m_window->updateGL();
     }

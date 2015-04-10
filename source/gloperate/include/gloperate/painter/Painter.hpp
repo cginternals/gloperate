@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <gloperate/painter/Painter.h>
+
 
 namespace gloperate
 {
@@ -15,16 +17,24 @@ bool Painter::supports() const
 template <typename Capability>
 Capability * Painter::getCapability() const
 {
-    for (AbstractCapability * capability : m_capabilities)
+    for (auto & capability : m_capabilities)
     {
-        Capability * castCapability = dynamic_cast<Capability*>(capability);
+        Capability * castCapability = dynamic_cast<Capability *>(capability.get());
 
         if (castCapability != nullptr)
         {
             return castCapability;
         }
     }
+
     return nullptr;
+}
+
+template <typename Capability>
+Capability * Painter::addCapability(std::unique_ptr<Capability> capability)
+{
+    auto abstractCapability = std::unique_ptr<AbstractCapability>{std::move(capability)};
+    return static_cast<Capability *>(addCapability(std::move(abstractCapability)));
 }
 
 

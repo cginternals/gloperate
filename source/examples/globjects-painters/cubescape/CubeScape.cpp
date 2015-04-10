@@ -18,6 +18,7 @@
 #include <gloperate/resources/RawFile.h>
 
 #include <gloperate/base/RenderTargetType.h>
+#include <gloperate/base/make_unique.hpp>
 
 #include <gloperate/painter/Camera.h>
 #include <gloperate/painter/TargetFramebufferCapability.h>
@@ -31,31 +32,27 @@ using namespace gl;
 using namespace glm;
 using namespace globjects;
 
+using gloperate::make_unique;
+
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
-: Painter(resourceManager)
-, m_numCubes(25)
-, m_animation(true)
-, m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
-, m_viewportCapability(new gloperate::ViewportCapability)
-, m_projectionCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability))
-, m_typedRenderTargetCapability(new gloperate::TypedRenderTargetCapability())
-, m_cameraCapability(new gloperate::CameraCapability())
-, m_timeCapability(new gloperate::VirtualTimeCapability)
-, a_vertex(-1)
-, u_transform(-1)
-, u_time(-1)
-, u_numcubes(-1)
+:   Painter(resourceManager)
+,   m_numCubes{25}
+,   m_animation{true}
+,   a_vertex{-1}
+,   u_transform{-1}
+,   u_time{-1}
+,   u_numcubes{-1}
 {
+    m_targetFramebufferCapability = addCapability(make_unique<gloperate::TargetFramebufferCapability>());
+    m_viewportCapability = addCapability(make_unique<gloperate::ViewportCapability>());
+    m_projectionCapability = addCapability(make_unique<gloperate::PerspectiveProjectionCapability>(m_viewportCapability));
+    m_typedRenderTargetCapability = addCapability(make_unique<gloperate::TypedRenderTargetCapability>());
+    m_cameraCapability = addCapability(make_unique<gloperate::CameraCapability>());
+    m_timeCapability = addCapability(make_unique<gloperate::VirtualTimeCapability>());
+    
     m_timeCapability->setLoopDuration(20.0f * pi<float>());
 
     m_targetFramebufferCapability->changed.connect([this](){ this->onTargetFramebufferChanged();});
-    
-    addCapability(m_targetFramebufferCapability);
-    addCapability(m_viewportCapability);
-    addCapability(m_projectionCapability);
-    addCapability(m_cameraCapability);
-    addCapability(m_timeCapability);
-    addCapability(m_typedRenderTargetCapability);
 }
 
 CubeScape::~CubeScape()
