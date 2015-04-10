@@ -80,8 +80,6 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
     ${header_path}/gloperate-qtwidgets_api.h
-    ${header_path}/FileNameInputWidget.h
-    ${header_path}/FileNameTagCompleter.h
     ${header_path}/FileNameTextEdit.h
     ${header_path}/ImageExporterWidget.h
     ${header_path}/ImageExporterOutputWidget.h
@@ -90,9 +88,6 @@ set(api_includes
 )
 
 set(sources
-    ${source_path}/FileNameInputWidget.cpp
-    ${source_path}/FileNameInputWidget.ui
-    ${source_path}/FileNameTagCompleter.cpp
     ${source_path}/FileNameTextEdit.cpp
     ${source_path}/ImageExporterWidget.cpp
     ${source_path}/ImageExporterOutputWidget.cpp

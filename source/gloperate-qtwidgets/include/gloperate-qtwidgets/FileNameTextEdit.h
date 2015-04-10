@@ -1,46 +1,43 @@
 #pragma once
 
 #include <gloperate-qt/qt-includes-begin.h>
-#include <QTextEdit>
-#include <memory>
+#include <QPlainTextEdit>
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <gloperate-qtwidgets/gloperate-qtwidgets_api.h>
 
+
+class QCompleter;
 class QKeyEvent;
-class QString;
-class QListWidget;
+class QFocusEvent;
+
 
 namespace gloperate_qtwidgets
 {
 
-class FileNameTagCompleter;
-
-class GLOPERATE_QTWIDGETS_API FileNameTextEdit : public QTextEdit
+class GLOPERATE_QTWIDGETS_API FileNameTextEdit : public QPlainTextEdit
 {
     Q_OBJECT
 
 public:
-    FileNameTextEdit(QWidget * parent = nullptr);
-    virtual ~FileNameTextEdit();
+    FileNameTextEdit(QWidget *parent = 0);
+    ~FileNameTextEdit();
 
-    virtual void setCompleter(std::shared_ptr<FileNameTagCompleter> completer);
-    virtual std::shared_ptr<FileNameTagCompleter> completer();
-    virtual void updateCompletionPrefix();
-    void closeListWidget();
-    virtual void initialize();
+    virtual void setCompleter(QCompleter *c);
+    virtual QCompleter *completer() const;
 
 protected:
-    void textSelected(bool b);
-    virtual void keyPressEvent(QKeyEvent * event);
-    void manageListWidget();
-    void completeTag();
-    void changeListIndex(int direction);
+    virtual void keyPressEvent(QKeyEvent *e);
+    virtual void focusInEvent(QFocusEvent *e);
 
-protected:
-    std::shared_ptr<FileNameTagCompleter> m_completer;
-    bool m_textSelected;
-    std::unique_ptr<QListWidget> m_fileNameListWidget;
+private slots:
+    virtual void insertCompletion(const QString &completion);
+
+private:
+    QString textUnderCursor() const;
+
+private:
+    QCompleter * m_completer;
 };
 
 } //namespace gloperate_qtwidgets

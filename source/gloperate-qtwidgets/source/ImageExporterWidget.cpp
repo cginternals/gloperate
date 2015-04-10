@@ -9,8 +9,6 @@
 #include <gloperate-qt/qt-includes-begin.h>
 #include <gloperate-qt/qt-includes-end.h>
 
-#include <gloperate-qtwidgets/FileNameInputWidget.h>
-#include <gloperate-qtwidgets/FileNameTagCompleter.h>
 #include <gloperate-qtwidgets/ImageExporterOutputWidget.h>
 #include <gloperate-qtwidgets/ImageExporterResolutionWidget.h>
 #include <gloperate-qtwidgets/ImageExporterTilebasedWidget.h>

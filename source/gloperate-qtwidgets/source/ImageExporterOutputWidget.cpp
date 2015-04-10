@@ -1,25 +1,26 @@
 #include <gloperate-qtwidgets/ImageExporterOutputWidget.h>
 
+#include <gloperate-qt/qt-includes-begin.h>
+#include "ui_ImageExporterOutputWidget.h"
+#include <QAbstractButton>
+#include <QCompleter>
+#include <QFile>
+#include <QFileDialog>
+#include <QRegExp>
+#include <QSettings>
+#include <QString>
+#include <QStringListModel>
+#include <QTime>
+#include <QWindow>
+#include <gloperate-qt/qt-includes-end.h>
+
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/painter/Painter.h>
 #include <gloperate/tools/ImageExporter.h>
 
 #include <gloperate-qt/QtOpenGLWindow.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
-#include "ui_ImageExporterOutputWidget.h"
-#include <QAbstractButton>
-#include <QFile>
-#include <QFileDialog>
-#include <QRegExp>
-#include <QSettings>
-#include <QString>
-#include <QTime>
-#include <QWindow>
-#include <gloperate-qt/qt-includes-end.h>
-
-#include <gloperate-qtwidgets/FileNameInputWidget.h>
-#include <gloperate-qtwidgets/FileNameTagCompleter.h>
+#include <gloperate-qtwidgets/FileNameTextEdit.h>
 
 #include <algorithm>
 #include <set>
@@ -35,16 +36,15 @@ ImageExporterOutputWidget::ImageExporterOutputWidget(gloperate::ResourceManager 
 ,	m_resolution(new QSize(1,1))
 {
     m_ui->setupUi(this);
+    initializeFileNameTextEdit();
 
     connect(m_ui->saveButton, &QPushButton::clicked,
         this, &ImageExporterOutputWidget::handleSave);
-    connect(m_ui->filenameEditButton, &QPushButton::clicked,
-        this, &ImageExporterOutputWidget::handleEdit);
     connect(m_ui->openDirectoryButton, &QPushButton::clicked, 
         this, &ImageExporterOutputWidget::browseDirectory);
-    connect(m_ui->fileNameLineEdit, &QLineEdit::textChanged,
+    connect(m_ui->fileNameTextEdit, &FileNameTextEdit::textChanged,
         this, &ImageExporterOutputWidget::checkFilename);
-    connect(m_ui->fileNameLineEdit, &QLineEdit::editingFinished,
+    connect(m_ui->fileNameTextEdit, &FileNameTextEdit::textChanged,
         this, &ImageExporterOutputWidget::saveFilename);
 
     connect(this, &ImageExporterOutputWidget::filenameChanged,
@@ -60,7 +60,33 @@ ImageExporterOutputWidget::ImageExporterOutputWidget(gloperate::ResourceManager 
 
     restoreSettings();
     updateDirectory();
-    checkFilename(m_ui->fileNameLineEdit->text());
+    checkFilename();
+}
+
+void ImageExporterOutputWidget::initializeFileNameTextEdit()
+{
+    auto completer = new QCompleter;
+
+    const QStringList filenameTags = QStringList()
+        << "<width>"
+        << "<height>"
+        << "<enum#"
+        << "<year>"
+        << "<month>"
+        << "<day>"
+        << "<hour>"
+        << "<minute>"
+        << "<second>"
+        << "<millisecond>";
+
+    auto model = new QStringListModel(filenameTags);
+
+    completer->setModel(model);
+    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setWrapAround(false);
+
+    m_ui->fileNameTextEdit->setCompleter(completer);
 }
 
 void ImageExporterOutputWidget::updateResolutionSummaryLabel(const QString& sizeSummary)
@@ -91,7 +117,7 @@ void ImageExporterOutputWidget::saveFilename()
 {
     QSettings settings;
     settings.beginGroup("ImageExporterOutputWidget");
-    settings.setValue("filename", m_ui->fileNameLineEdit->text());
+    settings.setValue("filename", m_ui->fileNameTextEdit->toPlainText());
     settings.endGroup();
 }
 
@@ -100,7 +126,7 @@ void ImageExporterOutputWidget::restoreSettings()
     QSettings settings;
     settings.beginGroup("ImageExporterOutputWidget");
     m_dirName = settings.value("dirname", QDir::homePath()).toString();
-    m_ui->fileNameLineEdit->setText(settings.value("filename", "image").toString());
+    m_ui->fileNameTextEdit->setPlainText(settings.value("filename", "image").toString());
     settings.endGroup();
 }
 
@@ -109,15 +135,6 @@ void ImageExporterOutputWidget::handleSave(bool checked)
     m_context->makeCurrent();
     m_imageExporter->save(buildFileName(), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()));
     m_context->doneCurrent();
-}
-
-void ImageExporterOutputWidget::handleEdit(bool checked)
-{
-    FileNameTagCompleter * fntc{ new FileNameTagCompleter(new QStringList({})) };
-    FileNameInputWidget * fni = new FileNameInputWidget(fntc, m_ui->fileNameLineEdit->text());
-
-    fni->setWindowModality(Qt::ApplicationModal);
-    fni->show();
 }
 
 void ImageExporterOutputWidget::browseDirectory(bool checked)
@@ -134,7 +151,7 @@ void ImageExporterOutputWidget::browseDirectory(bool checked)
     }
 }
 
-std::string ImageExporterOutputWidget::replaceTags(const std::string& filename)
+std::string ImageExporterOutputWidget::replaceTags(const std::string& filename, bool shouldUpdateUiFilename)
 {
     QDateTime time{ QDateTime::currentDateTime() };
     std::string newFilename{ filename };
@@ -176,7 +193,8 @@ std::string ImageExporterOutputWidget::replaceTags(const std::string& filename)
         int index{ atoi(startIndex.c_str()) };
         newFilename.replace(position, startIndex.length() + 1, std::to_string(index));
 
-        updateUiFileName();
+        if (shouldUpdateUiFilename)
+            updateUiFileName();
     }
 
     return newFilename;
@@ -197,7 +215,7 @@ std::string ImageExporterOutputWidget::extractEnumNumStartIndex(const std::strin
 
 std::string ImageExporterOutputWidget::buildFileName()
 {
-    std::string filename{ replaceTags(m_ui->fileNameLineEdit->text().toStdString()) };
+    std::string filename{ replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString()) };
     
     const std::string sep("/");
     const std::string suf(".png");
@@ -212,27 +230,27 @@ std::string ImageExporterOutputWidget::buildFileName()
 
 void ImageExporterOutputWidget::updateUiFileName()
 {
-    QString oldUiFilename{ m_ui->fileNameLineEdit->text() };
+    QString oldUiFilename{ m_ui->fileNameTextEdit->toPlainText() };
     int positionOfEnumNumIndex{ oldUiFilename.indexOf(m_supportedTags["enum_num"]) + m_supportedTags["enum_num"].length() };
     std::string startIndex{ extractEnumNumStartIndex(oldUiFilename.toStdString(), positionOfEnumNumIndex) };
     QString newUiFilename{ oldUiFilename.replace(positionOfEnumNumIndex, startIndex.length(), QString::number(atoi(startIndex.c_str()) + 1)) };
 
-    bool oldSignalStatus = m_ui->fileNameLineEdit->blockSignals(true);
-    m_ui->fileNameLineEdit->setText(newUiFilename);
-    emit filenameChanged(newUiFilename);
+    bool oldSignalStatus = m_ui->fileNameTextEdit->blockSignals(true);
+    m_ui->fileNameTextEdit->setPlainText(newUiFilename);
+    emit filenameChanged();
     saveFilename();
-    m_ui->fileNameLineEdit->blockSignals(oldSignalStatus);
+    m_ui->fileNameTextEdit->blockSignals(oldSignalStatus);
 }
 
-void ImageExporterOutputWidget::updateFilenamePreview(const QString& text)
+void ImageExporterOutputWidget::updateFilenamePreview()
 {
-    m_ui->filenamePeviewLabel->setText(QString::fromStdString(replaceTags(m_ui->fileNameLineEdit->text().toStdString())) + ".png");
+    m_ui->filenamePeviewLabel->setText(QString::fromStdString(replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString(), false)) + ".png");
 }
 
-void ImageExporterOutputWidget::checkFilename(const QString& text)
+void ImageExporterOutputWidget::checkFilename()
 {
     const QString emp("");
-    QString filename(text);
+    QString filename(m_ui->fileNameTextEdit->toPlainText());
     QString errorMessage{ "" };
 
     for (auto it = m_supportedTags.begin(); it != m_supportedTags.end(); it++)
@@ -283,7 +301,7 @@ void ImageExporterOutputWidget::checkFilename(const QString& text)
         if (m_ui->saveButton->isEnabled())
             m_ui->saveButton->setDisabled(true);
         
-        m_ui->fileNameLineEdit->setStyleSheet("background-color:rgb(255,170,127);");
+        m_ui->fileNameTextEdit->setStyleSheet("background-color:rgb(255,170,127);");
         m_ui->filenamePeviewLabel->setText( filename + ".png " + errorMessage);
     }
     else
@@ -291,9 +309,9 @@ void ImageExporterOutputWidget::checkFilename(const QString& text)
         if (!m_ui->saveButton->isEnabled())
             m_ui->saveButton->setDisabled(false);
 
-        m_ui->fileNameLineEdit->setStyleSheet(emp);
+        m_ui->fileNameTextEdit->setStyleSheet(emp);
 
-        emit filenameChanged(text);
+        emit filenameChanged();
     }
 }
 

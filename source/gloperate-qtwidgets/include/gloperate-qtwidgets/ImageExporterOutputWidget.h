@@ -44,21 +44,21 @@ public:
     void updateResolution(const QSize& resolution);
 
 signals:
-    void filenameChanged(const QString& text);
+    void filenameChanged();
 
 protected:
     void handleSave(bool checked);
-    void handleEdit(bool checked);
 
     void restoreSettings();
+    void initializeFileNameTextEdit();
 
-    void checkFilename(const QString& text);
+    void checkFilename();
     void saveFilename();
-    std::string replaceTags(const std::string& filename);
+    std::string replaceTags(const std::string& filename, bool shouldUpdateUiFilename = true);
     std::string buildFileName();
     void browseDirectory(bool checked);
     void updateDirectory();
-    void updateFilenamePreview(const QString& text);
+    void updateFilenamePreview();
     void updateUiFileName();
     std::string extractEnumNumStartIndex(const std::string& filename, int position);
 
