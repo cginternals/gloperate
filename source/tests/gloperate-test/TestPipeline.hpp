@@ -8,30 +8,29 @@
 
 
 using namespace gloperate;
-using gloperate::make_unique;
 
 class TestPipeline : public AbstractPipeline
 {
 public:
     TestPipeline()
     {
-        auto stage0 = make_unique<DummyStage>("", std::vector<std::string>{}, std::vector<std::string>{"output0", "output1"});
-        auto stage1 = make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0"});
-        auto stage2 = make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0"});
-        auto stage3 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1"}, std::vector<std::string>{"output0"});
-        auto stage4 = make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0"});
-        auto stage5 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1"}, std::vector<std::string>{"output0"});
-        auto stage6 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1"}, std::vector<std::string>{"output0"});
-        auto stage7 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1"}, std::vector<std::string>{"output0"});
-        auto stage8 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2"}, std::vector<std::string>{"output0"});
-        auto stage9 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2"}, std::vector<std::string>{"output0"});
-        auto stage10 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2"}, std::vector<std::string>{"output0"});
-        auto stage11 = make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0"});
-        auto stage12 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2"}, std::vector<std::string>{"output0"});
-        auto stage13 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2", "input3", "input4"}, std::vector<std::string>{"output0"});
-        auto stage14 = make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0", "output1", "output2", "output3", "output4"});
-        auto stage15 = make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2", "input3", "input4", "input5"}, std::vector<std::string>{"output0"});
-        auto stage16 = make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{});
+        auto stage0 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{}, std::vector<std::string>{"output0", "output1"});
+        auto stage1 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0"});
+        auto stage2 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0"});
+        auto stage3 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1"}, std::vector<std::string>{"output0"});
+        auto stage4 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0"});
+        auto stage5 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1"}, std::vector<std::string>{"output0"});
+        auto stage6 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1"}, std::vector<std::string>{"output0"});
+        auto stage7 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1"}, std::vector<std::string>{"output0"});
+        auto stage8 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2"}, std::vector<std::string>{"output0"});
+        auto stage9 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2"}, std::vector<std::string>{"output0"});
+        auto stage10 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2"}, std::vector<std::string>{"output0"});
+        auto stage11 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0"});
+        auto stage12 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2"}, std::vector<std::string>{"output0"});
+        auto stage13 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2", "input3", "input4"}, std::vector<std::string>{"output0"});
+        auto stage14 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{"output0", "output1", "output2", "output3", "output4"});
+        auto stage15 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0", "input1", "input2", "input3", "input4", "input5"}, std::vector<std::string>{"output0"});
+        auto stage16 = gloperate::make_unique<DummyStage>("", std::vector<std::string>{"input0"}, std::vector<std::string>{});
 
         stage1->inputs.at("input0") = stage0->outputs.at("output0");
 
