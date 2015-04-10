@@ -72,27 +72,27 @@ void ImageExporterResolutionWidget::updateResolutionSummary()
     if (pixelNumber * 4 < 1024)
     {
         unit = "Byte";
-        byte = pixelNumber * 4;
+        byte = static_cast<double>(pixelNumber) * 4;
     }
-    else if (pixelNumber * 4 < pow<unsigned long long>(1024, 2))
+    else if (pixelNumber * 4 < static_cast<unsigned long long>(pow<unsigned long long>(1024, 2)))
     {
         unit = "KiB";
-        byte = pixelNumber * 4 / 1024;
+        byte = static_cast<double>(pixelNumber) * 4 / 1024;
     }
-    else if (pixelNumber * 4 < pow<unsigned long long>(1024, 3))
+    else if (pixelNumber * 4 < static_cast<unsigned long long>(pow<unsigned long long>(1024, 3)))
     {
         unit = "MiB";
-        byte = pixelNumber * 4 / pow<unsigned long long>(1024, 2);
+        byte = static_cast<double>(pixelNumber) * 4 / pow<unsigned long long>(1024, 2);
     }
-    else if (pixelNumber * 4 < pow<unsigned long long>(1024, 4))
+    else if (pixelNumber * 4 < static_cast<unsigned long long>(pow<unsigned long long>(1024, 4)))
     {
         unit = "GiB";
-        byte = pixelNumber * 4 / pow<unsigned long long>(1024, 3);
+        byte = static_cast<double>(pixelNumber) * 4 / pow<unsigned long long>(1024, 3);
     }
-    else //if (pixelNumber * 4 < pow<unsigned long long>(1024, 5))
+    else //if (pixelNumber * 4 < static_cast<unsigned long long>(pow<unsigned long long>(1024, 5)))
     {
         unit = "TiB";
-        byte = pixelNumber * 4 / pow<unsigned long long>(1024, 4);
+        byte = static_cast<double>(pixelNumber) * 4 / pow<unsigned long long>(1024, 4);
     }
     QString summary{ QString::number(pixelNumber) + " pixels (" + QString::number(std::round(byte * 100) / 100) + " " + unit + " uncompressed)" };
     //m_ui->resolutionSummaryLabel->setText(summary);
