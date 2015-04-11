@@ -49,8 +49,6 @@ QtOpenGLWindowBase::QtOpenGLWindowBase(const QSurfaceFormat & format)
     setSurfaceType(OpenGLSurface);
     create();
 
-    qDebug() << f.version().first;
-
     if (f.version().first < 3)
     {
         m_context->setFormat(f);
