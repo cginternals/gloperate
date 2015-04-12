@@ -32,10 +32,6 @@ OsgPainter::OsgPainter(ResourceManager & resourceManager, const std::string & na
 , m_viewportY(0)
 , m_viewportWidth(0)
 , m_viewportHeight(0)
-, m_viewportCapability(new gloperate::ViewportCapability)
-, m_targetFramebufferCapability(new gloperate::TargetFramebufferCapability)
-, m_inputCapability(new gloperate::InputCapability)
-, m_virtualTimeCapability(new gloperate::VirtualTimeCapability)
 {
     // Register capabilities
     m_viewportCapability = addCapability(make_unique<gloperate::ViewportCapability>());
