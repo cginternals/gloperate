@@ -81,13 +81,10 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
     ${header_path}/gloperate-qtwidgets_api.h
-    ${header_path}/ScreenshotWidget.h
     ${header_path}/PluginWidget.h
 )
 
 set(sources
-    ${source_path}/ScreenshotWidget.cpp
-    ${source_path}/ScreenshotWidget.ui
     ${source_path}/PluginWidget.cpp
     ${source_path}/PluginWidget.ui
 )
