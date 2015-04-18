@@ -24,9 +24,11 @@ Data<T> * AbstractPipeline::addConstantParameter(const T & value)
 {
     auto constant = make_unique<Data<T>>(value);
 
+    auto ptr = constant.get();
+
     m_constantParameters.push_back(std::move(constant));
 
-    return constant.get();
+    return ptr;
 }
 
 template <typename T>
