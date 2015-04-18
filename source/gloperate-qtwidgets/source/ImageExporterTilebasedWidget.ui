@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>ImageExporterTilebasedWidget</class>
  <widget class="QWidget" name="ImageExporterTilebasedWidget">
+  <property name="enabled">
+   <bool>false</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Tiles</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="3" column="1" colspan="2">

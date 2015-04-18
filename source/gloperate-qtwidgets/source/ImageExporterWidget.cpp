@@ -13,6 +13,8 @@
 #include <gloperate-qtwidgets/ImageExporterResolutionWidget.h>
 #include <gloperate-qtwidgets/ImageExporterTilebasedWidget.h>
 
+#include <widgetzeug/DataLinkWidget.h>
+
 
 namespace gloperate_qtwidgets
 {
@@ -22,6 +24,7 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
 ,	m_outputWidget(new ImageExporterOutputWidget(resourceManager, painter, context, this))
 ,	m_resolutionWidget(new ImageExporterResolutionWidget(this))
 ,	m_tilebasedWidget(new ImageExporterTilebasedWidget(this))
+,   m_dataLinkWidget(new widgetzeug::DataLinkWidget(this))
 {
     connect(m_resolutionWidget.get(), &ImageExporterResolutionWidget::resolutionSummaryChanged,
         m_outputWidget.get(), &ImageExporterOutputWidget::updateResolutionSummaryLabel);
@@ -29,9 +32,11 @@ ImageExporterWidget::ImageExporterWidget(gloperate::ResourceManager & resourceMa
     connect(m_resolutionWidget.get(), &ImageExporterResolutionWidget::resolutionChanged,
         m_outputWidget.get(), &ImageExporterOutputWidget::updateResolution);
 
+    addWidget(m_dataLinkWidget.get());
     addWidget(m_outputWidget.get());
     addWidget(m_resolutionWidget.get());
     addWidget(m_tilebasedWidget.get());
+
 
     m_resolutionWidget->updateResolutionSummary();
 }

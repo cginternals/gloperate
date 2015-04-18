@@ -25,6 +25,13 @@ class QtOpenGLWindow;
 
 }
 
+namespace widgetzeug
+{
+
+class DataLinkWidget;
+
+}
+
 namespace gloperate_qtwidgets
 {
 
@@ -44,6 +51,7 @@ private:
     std::unique_ptr<ImageExporterOutputWidget> m_outputWidget;
     std::unique_ptr<ImageExporterResolutionWidget> m_resolutionWidget;
     std::unique_ptr<ImageExporterTilebasedWidget> m_tilebasedWidget;
+    std::unique_ptr<widgetzeug::DataLinkWidget> m_dataLinkWidget;
 };
 
 } //namespace gloperate_qtwidgets

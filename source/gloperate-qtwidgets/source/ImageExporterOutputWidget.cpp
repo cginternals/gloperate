@@ -36,6 +36,8 @@ ImageExporterOutputWidget::ImageExporterOutputWidget(gloperate::ResourceManager 
 ,	m_resolution(new QSize(1,1))
 {
     m_ui->setupUi(this);
+
+    m_ui->fileNameTextEdit->setMaximumHeight(m_ui->directoryLineEdit->height() * 2);
     initializeFileNameTextEdit();
 
     connect(m_ui->saveButton, &QPushButton::clicked,
