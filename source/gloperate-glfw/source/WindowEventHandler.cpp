@@ -81,10 +81,14 @@ void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 
 void WindowEventHandler::paintEvent(PaintEvent & event)
 {
+    event.window()->onPrePaint();
+
     if (event.window()->painter()) {
         // Call painter
         event.window()->painter()->paint();
     }
+
+    event.window()->onPostPaint();
 }
 
 void WindowEventHandler::keyPressEvent(KeyEvent & event)

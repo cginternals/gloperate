@@ -33,9 +33,7 @@ namespace gloperate_qt
 *    Constructor
 */
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
-:   m_resourceManager(resourceManager)
-,   m_painter(nullptr)
-,   m_timePropagator(nullptr)
+:   QtOpenGLWindow(resourceManager, QtOpenGLWindowBase::defaultFormat())
 {
 }
 
@@ -44,11 +42,11 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 *    Constructor
 */
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
-:   QtOpenGLWindowBase(format)
-,   m_resourceManager(resourceManager)
-,   m_painter(nullptr)
+:   AbstractWindow(resourceManager)
+,   QtOpenGLWindowBase(format)
 ,   m_timePropagator(nullptr)
 {
+    onPainterChanged.connect(this, &QtOpenGLWindow::resetPainter);
 }
 
 /**
@@ -59,35 +57,24 @@ QtOpenGLWindow::~QtOpenGLWindow()
 {
 }
 
-/**
-*  @brief
-*    Get used painter
-*/
-Painter * QtOpenGLWindow::painter() const
-{
-    return m_painter;
-}
 
 /**
 *  @brief
 *    Set used painter
 */
-void QtOpenGLWindow::setPainter(Painter * painter)
+void QtOpenGLWindow::resetPainter(Painter * painter)
 {
-    // Save painter
-    m_painter = painter;
-
     // Destroy old time propagator
     m_timePropagator = nullptr;
 
-    if (!m_painter)
+    if (!painter)
         return;
-    
+
     m_timePropagator = make_unique<TimePropagator>(this);
 
     // Check for virtual time capability
-    if (m_painter->supports<AbstractVirtualTimeCapability>())
-        m_timePropagator->setCapability(m_painter->getCapability<AbstractVirtualTimeCapability>());
+    if (painter->supports<AbstractVirtualTimeCapability>())
+        m_timePropagator->setCapability(painter->getCapability<AbstractVirtualTimeCapability>());
 
     m_initialized = false;
 }
@@ -130,7 +117,10 @@ void QtOpenGLWindow::onResize(QResizeEvent * event)
 
 void QtOpenGLWindow::onPaint()
 {
-    if (m_painter) {
+    onPrePaint();
+
+    if (m_painter)
+    {
         // Call painter
         m_painter->paint();
     }
@@ -143,6 +133,8 @@ void QtOpenGLWindow::onPaint()
         gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
     }
+
+    onPostPaint();
 }
 
 void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
