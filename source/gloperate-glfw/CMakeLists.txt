@@ -12,7 +12,7 @@ find_package(libzeug REQUIRED)
 find_package(GLFW)
 
 # Build only if glfw is available
-if(GLFW_FOUND)
+if(NOT GLFW_FOUND)
    message(STATUS "Lib ${target} (disabled because GLFW couldn't be found)")
     return()
 endif()
