@@ -12,7 +12,10 @@
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
 
-#include <gloperate-assimp/PolygonalGeometry.h>
+#include <gloperate/primitives/PolygonalGeometry.h>
+
+
+using namespace gloperate;
 
 
 namespace gloperate_assimp

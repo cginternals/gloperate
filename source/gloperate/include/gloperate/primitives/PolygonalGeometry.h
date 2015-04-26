@@ -6,10 +6,10 @@
 
 #include <glm/fwd.hpp>
 
-#include <gloperate-assimp/gloperate-assimp_api.h>
+#include <gloperate/gloperate_api.h>
 
 
-namespace gloperate_assimp
+namespace gloperate
 {
 
 
@@ -21,7 +21,7 @@ namespace gloperate_assimp
 *    This mesh class contains a list of triangles, stored on the CPU.
 *    To upload on GPU and draw a mesh, use PolygonalDrawable.
 */
-class GLOPERATE_ASSIMP_API PolygonalGeometry
+class GLOPERATE_API PolygonalGeometry
 {
 public:
     /**
@@ -134,4 +134,4 @@ protected:
 };
 
 
-} // namespace gloperate_assimp
+} // namespace gloperate

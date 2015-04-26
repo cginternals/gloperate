@@ -1,5 +1,5 @@
 
-#include <gloperate-assimp/PolygonalDrawable.h>
+#include <gloperate/primitives/PolygonalDrawable.h>
 
 #include <glm/glm.hpp>
 
@@ -11,11 +11,13 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
-#include <gloperate-assimp/PolygonalGeometry.h>
+#include <gloperate/primitives/PolygonalGeometry.h>
 
 
 using namespace gl;
-namespace gloperate_assimp
+
+
+namespace gloperate
 {
 
 
@@ -76,4 +78,4 @@ void PolygonalDrawable::draw()
 }
 
 
-} // namespace gloperate_assimp
+} // namespace gloperate

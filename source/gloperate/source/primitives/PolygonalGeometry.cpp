@@ -1,10 +1,10 @@
 
-#include <gloperate-assimp/PolygonalGeometry.h>
+#include <gloperate/primitives/PolygonalGeometry.h>
 
 #include <glm/glm.hpp>
 
 
-namespace gloperate_assimp
+namespace gloperate
 {
 
 
@@ -67,4 +67,4 @@ void PolygonalGeometry::setNormals(std::vector<glm::vec3> && normals)
 }
 
 
-} // namespace gloperate_assimp
+} // namespace gloperate

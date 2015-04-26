@@ -6,7 +6,7 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <gloperate-assimp/gloperate-assimp_api.h>
+#include <gloperate/gloperate_api.h>
 
 
 namespace globjects
@@ -16,7 +16,7 @@ namespace globjects
 }
 
 
-namespace gloperate_assimp
+namespace gloperate
 {
 
 
@@ -31,7 +31,7 @@ class PolygonalGeometry;
 *    This class is used to upload and draw a triangle mesh on the GPU.
 *    To create or load meshes, see PolygonalGeometry and Loader<PolygonalGeometry>.
 */
-class GLOPERATE_ASSIMP_API PolygonalDrawable
+class GLOPERATE_API PolygonalDrawable
 {
 public:
     /**
@@ -72,4 +72,4 @@ protected:
 };
 
 
-} // namespace gloperate_assimp
+} // namespace gloperate

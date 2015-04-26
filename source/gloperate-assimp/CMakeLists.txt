@@ -75,15 +75,11 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/PolygonalDrawable.cpp
-    ${source_path}/PolygonalGeometry.cpp
     ${source_path}/AssimpLoader.cpp
 )
 
 set(headers
     ${include_path}/gloperate-assimp_api.h
-    ${include_path}/PolygonalDrawable.h
-    ${include_path}/PolygonalGeometry.h
     ${include_path}/AssimpLoader.h
 )
 
