@@ -13,7 +13,6 @@
 #include <assimp/postprocess.h>
 
 #include <gloperate-assimp/PolygonalGeometry.h>
-#include <gloperate-assimp/AssimpProcessing.h>
 
 
 namespace gloperate_assimp
@@ -112,22 +111,76 @@ PolygonalGeometry * AssimpLoader::load(const std::string & filename, std::functi
         return nullptr;
     }
 
-    // Convert scene into mesh
+    // Convert meshes from the scene into gloperate geometries
     PolygonalGeometry * geometry = nullptr;
-    std::vector<PolygonalGeometry> geometries = AssimpProcessing::convertToGeometries(scene);
+    std::vector<PolygonalGeometry *> geometries = convertGeometries(scene, 1);
     if (geometries.size() > 0)
     {
-        // Copy geometry
-        geometry = new PolygonalGeometry();
-        geometry->setIndices (geometries[0].indices());
-        geometry->setVertices(geometries[0].vertices());
-        geometry->setNormals (geometries[0].normals());
+        // Take first geometry
+        geometry = geometries[0];
     }
 
     // Release scene
     aiReleaseImport(scene);
 
     // Return loaded mesh
+    return geometry;
+}
+
+std::vector<PolygonalGeometry *> AssimpLoader::convertGeometries(const aiScene * scene, size_t numMeshes) const
+{
+    // Determine number of meshes that are to be converted
+    size_t maxMeshes = (numMeshes > 0) ? std::min((size_t)scene->mNumMeshes, numMeshes) : scene->mNumMeshes;
+
+    // Convert meshes from the scene
+    std::vector<PolygonalGeometry *> geometries;
+    for (size_t i = 0; i < maxMeshes; ++i)
+    {
+        geometries.push_back(convertGeometry(scene->mMeshes[i]));
+    }
+
+    // Return list of meshes
+    return geometries;
+}
+
+PolygonalGeometry * AssimpLoader::convertGeometry(const aiMesh * mesh) const
+{
+    // Create geometry
+    PolygonalGeometry * geometry = new PolygonalGeometry;
+
+    // Copy index array
+    std::vector<unsigned int> indices;
+    for (size_t i = 0; i < mesh->mNumFaces; ++i)
+    {
+        const auto & face = mesh->mFaces[i];
+        for (auto j = 0u; j < face.mNumIndices; ++j)
+            indices.push_back(face.mIndices[j]);
+    }
+    geometry->setIndices(std::move(indices));
+
+    // Copy vertex array
+    std::vector<glm::vec3> vertices;
+    for (size_t i = 0; i < mesh->mNumVertices; ++i)
+    {
+        const auto & vertex = mesh->mVertices[i];
+        vertices.push_back({ vertex.x, vertex.y, vertex.z });
+    }
+    geometry->setVertices(std::move(vertices));
+
+    // Does the mesh contain normal vectors?
+    if (mesh->HasNormals())
+    {
+        // Copy normal array
+        std::vector<glm::vec3> normals;
+        for (size_t i = 0; i < mesh->mNumVertices; ++i)
+        {
+            const auto & normal = mesh->mNormals[i];
+            normals.push_back({ normal.x, normal.y, normal.z });
+        }
+        geometry->setNormals(std::move(normals));
+    }
+
+    // Return geometry
     return geometry;
 }
 

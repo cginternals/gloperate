@@ -78,7 +78,6 @@ set(sources
     ${source_path}/PolygonalDrawable.cpp
     ${source_path}/PolygonalGeometry.cpp
     ${source_path}/AssimpLoader.cpp
-    ${source_path}/AssimpProcessing.cpp
 )
 
 set(headers
@@ -86,7 +85,6 @@ set(headers
     ${include_path}/PolygonalDrawable.h
     ${include_path}/PolygonalGeometry.h
     ${include_path}/AssimpLoader.h
-    ${include_path}/AssimpProcessing.h
 )
 
 # Group source files
