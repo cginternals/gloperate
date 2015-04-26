@@ -21,10 +21,10 @@ if(MSVC)
     cmake_policy(SET CMP0020 NEW)
 endif()
 
-find_package(Qt5OpenGL  5.1 REQUIRED)
-find_package(Qt5Core    5.1 REQUIRED)
-find_package(Qt5Gui     5.1 REQUIRED)
-find_package(Qt5Widgets 5.1 REQUIRED)
+find_package(Qt5OpenGL  5.1 QUIET)
+find_package(Qt5Core    5.1 QUIET)
+find_package(Qt5Gui     5.1 QUIET)
+find_package(Qt5Widgets 5.1 QUIET)
 
 if (NOT Qt5Core_FOUND)
     message(STATUS "Example ${target} (disabled because Qt5 couldn't be found)")
@@ -75,7 +75,7 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_QT_STATIC")
+    add_definitions("-DGLOPERATE_STATIC")
 else()
     add_definitions("-DGLOPERATE_QT_EXPORTS")
 endif()

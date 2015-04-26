@@ -123,6 +123,8 @@ set(sources
     ${source_path}/primitives/Icosahedron.cpp
     ${source_path}/primitives/Plane3.h
     ${source_path}/primitives/AdaptiveGrid.cpp
+    ${source_path}/primitives/PolygonalGeometry.cpp
+    ${source_path}/primitives/PolygonalDrawable.cpp
     
     ${source_path}/resources/AbstractStorer.cpp
     ${source_path}/resources/AbstractLoader.cpp
@@ -222,6 +224,8 @@ set(api_includes
     ${include_path}/primitives/Icosahedron.h
     ${include_path}/primitives/AxisAlignedBoundingBox.h
     ${include_path}/primitives/UniformGroup.h
+    ${include_path}/primitives/PolygonalGeometry.h
+    ${include_path}/primitives/PolygonalDrawable.h
     
     ${include_path}/resources/ResourceManager.hpp
     ${include_path}/resources/RawFile.h
