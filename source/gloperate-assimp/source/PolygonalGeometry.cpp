@@ -8,6 +8,14 @@ namespace gloperate_assimp
 {
 
 
+PolygonalGeometry::PolygonalGeometry()
+{
+}
+
+PolygonalGeometry::~PolygonalGeometry()
+{
+}
+
 const std::vector<unsigned int> & PolygonalGeometry::indices() const
 {
     return m_indices;

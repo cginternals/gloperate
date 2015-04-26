@@ -21,21 +21,26 @@ namespace gloperate_assimp
 
 PolygonalDrawable::PolygonalDrawable(const PolygonalGeometry & geometry)
 {
-    m_indices = new globjects::Buffer{};
+    // Create and copy index buffer
+    m_indices = new globjects::Buffer;
     m_indices->setData(geometry.indices(), GL_STATIC_DRAW);
 
+    // Save number of elements in index buffer
     m_size = static_cast<gl::GLsizei>(geometry.indices().size());
 
-    m_vertices = new globjects::Buffer{};
+    // Create and copy vertex buffer
+    m_vertices = new globjects::Buffer;
     m_vertices->setData(geometry.vertices(), GL_STATIC_DRAW);
 
+    // Create and copy normal buffer
     if (geometry.hasNormals())
     {
-        m_normals = new globjects::Buffer{};
+        m_normals = new globjects::Buffer;
         m_normals->setData(geometry.normals(), GL_STATIC_DRAW);
     }
 
-    m_vao = new globjects::VertexArray{};
+    // Create vertex array object
+    m_vao = new globjects::VertexArray;
     m_vao->bind();
 
     m_indices->bind(GL_ELEMENT_ARRAY_BUFFER);
@@ -58,8 +63,13 @@ PolygonalDrawable::PolygonalDrawable(const PolygonalGeometry & geometry)
     m_vao->unbind();
 }
 
+PolygonalDrawable::~PolygonalDrawable()
+{
+}
+
 void PolygonalDrawable::draw()
 {
+    // Draw triangles
     m_vao->bind();
     m_vao->drawElements(GL_TRIANGLES, m_size, GL_UNSIGNED_INT, nullptr);
     m_vao->unbind();
