@@ -5,15 +5,28 @@
 #include <iostream>
 #include <string>
 
+#include <glm/glm.hpp>
+
 #include <assimp/scene.h>
 #include <assimp/cimport.h>
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
 
+#include <gloperate-assimp/PolygonalGeometry.h>
+#include <gloperate-assimp/AssimpProcessing.h>
+
 
 namespace gloperate_assimp
 {
 
+
+AssimpLoader::AssimpLoader()
+{
+}
+
+AssimpLoader::~AssimpLoader()
+{
+}
 
 bool AssimpLoader::canLoad(const std::string & ext) const
 {
@@ -82,8 +95,9 @@ std::string AssimpLoader::allLoadingTypes() const
     return string;
 }
 
-aiScene * AssimpLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
+PolygonalGeometry * AssimpLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
 {
+    // Import scene
     auto scene = aiImportFile(
         filename.c_str(),
         aiProcess_Triangulate           |
@@ -91,10 +105,30 @@ aiScene * AssimpLoader::load(const std::string & filename, std::function<void(in
         aiProcess_SortByPType |
         aiProcess_GenNormals);
 
-    if (scene == nullptr)
+    // Check for errors
+    if (!scene)
+    {
         std::cout << aiGetErrorString();
+        return nullptr;
+    }
 
-    return const_cast<aiScene *>(scene);
+    // Convert scene into mesh
+    PolygonalGeometry * geometry = nullptr;
+    std::vector<PolygonalGeometry> geometries = AssimpProcessing::convertToGeometries(scene);
+    if (geometries.size() > 0)
+    {
+        // Copy geometry
+        geometry = new PolygonalGeometry();
+        geometry->setIndices (geometries[0].indices());
+        geometry->setVertices(geometries[0].vertices());
+        geometry->setNormals (geometries[0].normals());
+    }
+
+    // Release scene
+    aiReleaseImport(scene);
+
+    // Return loaded mesh
+    return geometry;
 }
 
 

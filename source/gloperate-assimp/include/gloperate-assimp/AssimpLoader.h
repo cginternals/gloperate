@@ -7,31 +7,37 @@
 #include <gloperate-assimp/gloperate-assimp_api.h>
 
 
-struct aiScene;
-
-
 namespace gloperate_assimp
 {
 
 
+class PolygonalGeometry;
+
+
 /**
 *  @brief
-*    Resource loader for ASSIMP scenes
+*    Loader for meshes (PolygonalGeometry) that uses ASSIMP for import
 */
-class GLOPERATE_ASSIMP_API AssimpLoader : public gloperate::Loader<aiScene>
+class GLOPERATE_ASSIMP_API AssimpLoader : public gloperate::Loader<PolygonalGeometry>
 {
 public:
-    bool canLoad(const std::string & ext) const override;
-
-    std::vector<std::string> loadingTypes() const override;
-
-    std::string allLoadingTypes() const override;
+    /**
+    *  @brief
+    *    Constructor
+    */
+    AssimpLoader();
 
     /**
-     *  @remarks
-     *    Scene must be deleted with `aiReleaseImport(scene)`
-     */
-    aiScene * load(const std::string & filename, std::function<void(int, int)> progress) const override;
+    *  @brief
+    *    Destructor
+    */
+    virtual ~AssimpLoader();
+
+    // Virtual loader methods
+    virtual bool canLoad(const std::string & ext) const override;
+    virtual std::vector<std::string> loadingTypes() const override;
+    virtual std::string allLoadingTypes() const override;
+    virtual PolygonalGeometry * load(const std::string & filename, std::function<void(int, int)> progress) const override;
 };
 
 
