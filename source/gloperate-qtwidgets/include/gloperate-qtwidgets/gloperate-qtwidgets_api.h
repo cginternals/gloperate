@@ -12,8 +12,8 @@
 #    define GLOPERATE_QTWIDGETS_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
 #    define GLOPERATE_QTWIDGETS_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#    define GLOPERATE_QTWIDGETS_API_EXPORT_DECLARATION
-#    define GLOPERATE_QTWIDGETS_API_IMPORT_DECLARATION
+#    define GLOPERATE_QTWIDGETS_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#    define GLOPERATE_QTWIDGETS_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #endif
 
 #ifndef GLOPERATE_STATIC
