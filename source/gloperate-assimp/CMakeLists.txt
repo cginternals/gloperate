@@ -1,7 +1,6 @@
 
 # Target
 set(target gloperate-assimp)
-message(STATUS "Lib ${target}")
 
 
 #
@@ -12,13 +11,16 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
-find_package(ASSIMP)
+find_package(ASSIMP QUIET)
 
 # Build only if ASSIMP is available
 if (NOT ASSIMP_FOUND)
     message("Library ${target} skipped: ASSIMP not found")
     return()
 endif()
+
+
+message(STATUS "Lib ${target}")
 
 
 #
@@ -58,7 +60,7 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_ASSIMP_STATIC")
+    add_definitions("-DGLOPERATE_STATIC")
 else()
     add_definitions("-DGLOPERATE_ASSIMP_EXPORTS")
 endif()
