@@ -28,7 +28,18 @@ AbstractPipeline::AbstractPipeline(const std::string & name)
 {
 }
 
-AbstractPipeline::~AbstractPipeline() = default;
+AbstractPipeline::~AbstractPipeline()
+{
+    for (auto & stage : m_stages)
+    {
+        delete stage;
+    }
+
+    for (auto & constantParameter : m_constantParameters)
+    {
+        delete constantParameter;
+    }
+}
 
 const std::string & AbstractPipeline::name() const
 {
