@@ -1,5 +1,5 @@
 
-#include <gloperate-assimp/AssimpLoader.h>
+#include <gloperate-assimp/AssimpMeshLoader.h>
 
 #include <algorithm>
 #include <iostream>
@@ -22,15 +22,15 @@ namespace gloperate_assimp
 {
 
 
-AssimpLoader::AssimpLoader()
+AssimpMeshLoader::AssimpMeshLoader()
 {
 }
 
-AssimpLoader::~AssimpLoader()
+AssimpMeshLoader::~AssimpMeshLoader()
 {
 }
 
-bool AssimpLoader::canLoad(const std::string & ext) const
+bool AssimpMeshLoader::canLoad(const std::string & ext) const
 {
     if (ext.empty())
         return false;
@@ -41,7 +41,7 @@ bool AssimpLoader::canLoad(const std::string & ext) const
     return supported == AI_TRUE;
 }
 
-std::vector<std::string> AssimpLoader::loadingTypes() const
+std::vector<std::string> AssimpMeshLoader::loadingTypes() const
 {
     return
     {
@@ -87,7 +87,7 @@ std::vector<std::string> AssimpLoader::loadingTypes() const
     };
 }
 
-std::string AssimpLoader::allLoadingTypes() const
+std::string AssimpMeshLoader::allLoadingTypes() const
 {
     auto assimp_string = aiString{};
     aiGetExtensionList(&assimp_string);
@@ -97,7 +97,7 @@ std::string AssimpLoader::allLoadingTypes() const
     return string;
 }
 
-PolygonalGeometry * AssimpLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
+PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
 {
     // Import scene
     auto scene = aiImportFile(
@@ -114,13 +114,10 @@ PolygonalGeometry * AssimpLoader::load(const std::string & filename, std::functi
         return nullptr;
     }
 
-    // Convert meshes from the scene into gloperate geometries
+    // Convert first mesh found in the scene
     PolygonalGeometry * geometry = nullptr;
-    std::vector<PolygonalGeometry *> geometries = convertGeometries(scene, 1);
-    if (geometries.size() > 0)
-    {
-        // Take first geometry
-        geometry = geometries[0];
+    if (scene->mNumMeshes > 0) {
+        geometry = convertGeometry(scene->mMeshes[0]);
     }
 
     // Release scene
@@ -130,23 +127,7 @@ PolygonalGeometry * AssimpLoader::load(const std::string & filename, std::functi
     return geometry;
 }
 
-std::vector<PolygonalGeometry *> AssimpLoader::convertGeometries(const aiScene * scene, size_t numMeshes) const
-{
-    // Determine number of meshes that are to be converted
-    size_t maxMeshes = (numMeshes > 0) ? std::min((size_t)scene->mNumMeshes, numMeshes) : scene->mNumMeshes;
-
-    // Convert meshes from the scene
-    std::vector<PolygonalGeometry *> geometries;
-    for (size_t i = 0; i < maxMeshes; ++i)
-    {
-        geometries.push_back(convertGeometry(scene->mMeshes[i]));
-    }
-
-    // Return list of meshes
-    return geometries;
-}
-
-PolygonalGeometry * AssimpLoader::convertGeometry(const aiMesh * mesh) const
+PolygonalGeometry * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
 {
     // Create geometry
     PolygonalGeometry * geometry = new PolygonalGeometry;

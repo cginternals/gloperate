@@ -77,12 +77,14 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/AssimpLoader.cpp
+    ${source_path}/AssimpMeshLoader.cpp
+    ${source_path}/AssimpSceneLoader.cpp
 )
 
 set(headers
     ${include_path}/gloperate-assimp_api.h
-    ${include_path}/AssimpLoader.h
+    ${include_path}/AssimpMeshLoader.h
+    ${include_path}/AssimpSceneLoader.h
 )
 
 # Group source files
