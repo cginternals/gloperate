@@ -13,7 +13,6 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
-#include <gloperate/base/make_unique.hpp>
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/painter/ViewportCapability.h>
 #include <gloperate/painter/VirtualTimeCapability.h>
@@ -22,8 +21,6 @@
 using namespace globjects;
 using namespace gloperate;
 using namespace gl;
-
-using gloperate::make_unique;
 
 static const char * s_vertexShader = R"(
 #version 140
@@ -60,14 +57,12 @@ void main()
 
 RotatingQuad::RotatingQuad(ResourceManager & resourceManager)
 : Painter(resourceManager)
-, m_viewportCapability(new gloperate::ViewportCapability)
-, m_timeCapability(new gloperate::VirtualTimeCapability)
 , m_angle(0.0f)
 {
-    m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
+    m_viewportCapability = addCapability(new gloperate::ViewportCapability());
+    m_timeCapability = addCapability(new gloperate::VirtualTimeCapability());
 
-    m_viewportCapability = addCapability(make_unique<gloperate::ViewportCapability>());
-    m_timeCapability = addCapability(make_unique<gloperate::VirtualTimeCapability>());
+    m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
 }
 
 RotatingQuad::~RotatingQuad()

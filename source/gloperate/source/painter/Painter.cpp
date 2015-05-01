@@ -12,7 +12,13 @@ Painter::Painter(ResourceManager & resourceManager, const std::string & name)
 {
 }
 
-Painter::~Painter() = default;
+Painter::~Painter()
+{
+    for (auto & capability : m_capabilities)
+    {
+        delete capability;
+    }
+}
 
 void Painter::initialize()
 {
@@ -24,10 +30,11 @@ void Painter::paint()
     onPaint();
 }
 
-AbstractCapability * Painter::addCapability(std::unique_ptr<AbstractCapability> capability)
+AbstractCapability * Painter::addCapability(AbstractCapability * capability)
 {
-    m_capabilities.push_back(std::move(capability));
-    return m_capabilities.back().get();
+    m_capabilities.push_back(capability);
+
+    return capability;
 }
 
 

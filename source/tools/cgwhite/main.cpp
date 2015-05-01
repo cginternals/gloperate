@@ -19,8 +19,8 @@ int main(int argc, char * argv[])
 
     widgetzeug::enableDarkFusionStyle();
 
-    std::unique_ptr<gloperate_qtapplication::Viewer> viewer(new gloperate_qtapplication::Viewer()); // make_unique is C++14
-    viewer->show();
+    gloperate_qtapplication::Viewer viewer;
+    viewer.show();
 
     return app.exec();
 }
