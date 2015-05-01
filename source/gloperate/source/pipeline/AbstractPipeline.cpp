@@ -205,7 +205,7 @@ bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
 
         touched.insert(stage);
 
-        for (auto stageIt = stages.begin(); stageIt != stages.end();)
+        for (auto stageIt = stages.begin(); stageIt != stages.end(); /* nop */)
         {
             if (!stage->requires(*stageIt, false))
             {
@@ -214,8 +214,10 @@ bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
             }
 
             auto nextStage = *stageIt;
-            stageIt = stages.erase(stageIt);
+            stages.erase(stageIt);
             visit(nextStage);
+
+            stageIt = stages.begin();
         }
 
         sorted.push_back(stage);
