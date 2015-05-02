@@ -3,7 +3,6 @@
 
 #include <glm/gtc/constants.hpp>
 
-#include <gloperate/base/make_unique.hpp>
 #include <gloperate/painter/ViewportCapability.h>
 #include <gloperate/painter/VirtualTimeCapability.h>
 #include <gloperate/painter/TargetFramebufferCapability.h>
@@ -12,17 +11,15 @@
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 
 
-using gloperate::make_unique;
-
 Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager)
 :   PipelinePainter(resourceManager, m_pipeline)
 {
-    auto targetFBO = addCapability(make_unique<gloperate::TargetFramebufferCapability>());
-    auto viewport = addCapability(make_unique<gloperate::ViewportCapability>());
-    auto time = addCapability(make_unique<gloperate::VirtualTimeCapability>());
-    auto camera = addCapability(make_unique<gloperate::CameraCapability>());
-    auto projection = addCapability(make_unique<gloperate::PerspectiveProjectionCapability>(viewport));
-    auto renderTargets = addCapability(make_unique<gloperate::TypedRenderTargetCapability>());
+    auto targetFBO = addCapability(new gloperate::TargetFramebufferCapability());
+    auto viewport = addCapability(new gloperate::ViewportCapability());
+    auto time = addCapability(new gloperate::VirtualTimeCapability());
+    auto camera = addCapability(new gloperate::CameraCapability());
+    auto projection = addCapability(new gloperate::PerspectiveProjectionCapability(viewport));
+    auto renderTargets = addCapability(new gloperate::TypedRenderTargetCapability());
 
     m_pipeline.targetFBO.setData(targetFBO);
     m_pipeline.viewport.setData(viewport);

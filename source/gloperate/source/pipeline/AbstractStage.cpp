@@ -152,12 +152,6 @@ bool AbstractStage::requires(const AbstractStage * stage, bool recursive) const
             return true;
     }
 
-    for (AbstractStage * depStage : m_dependencies)
-    {
-        if (depStage == stage || (recursive && depStage->requires(stage)))
-            return true;
-    }
-
     return false;
 }
 
@@ -239,12 +233,6 @@ void AbstractStage::addOptionalInput(const std::string & name, AbstractInputSlot
 {
     input.setOptional(true);
     addInput(name, input);
-}
-
-void AbstractStage::addDependency(AbstractStage * stage)
-{
-    m_dependencies.insert(stage);
-    dependenciesChanged();
 }
 
 } // namespace gloperate
