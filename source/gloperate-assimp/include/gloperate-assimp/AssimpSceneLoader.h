@@ -13,6 +13,7 @@ struct aiScene;
 
 namespace gloperate
 {
+    class Scene;
     class PolygonalGeometry;
 }
 
@@ -25,42 +26,40 @@ namespace gloperate_assimp
 *  @brief
 *    Loader for meshes (PolygonalGeometry) that uses ASSIMP for import
 */
-class GLOPERATE_ASSIMP_API AssimpLoader : public gloperate::Loader<gloperate::PolygonalGeometry>
+class GLOPERATE_ASSIMP_API AssimpSceneLoader : public gloperate::Loader<gloperate::Scene>
 {
 public:
     /**
     *  @brief
     *    Constructor
     */
-    AssimpLoader();
+    AssimpSceneLoader();
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~AssimpLoader();
+    virtual ~AssimpSceneLoader();
 
     // Virtual loader methods
     virtual bool canLoad(const std::string & ext) const override;
     virtual std::vector<std::string> loadingTypes() const override;
     virtual std::string allLoadingTypes() const override;
-    virtual gloperate::PolygonalGeometry * load(const std::string & filename, std::function<void(int, int)> progress) const override;
+    virtual gloperate::Scene * load(const std::string & filename, std::function<void(int, int)> progress) const override;
 
 
 protected:
     /**
     *  @brief
-    *    Convert all meshes from an ASSIMP scene into gloperate meshes
+    *    Convert an ASSIMP scene into a gloperate scene
     *
     *  @param[in] scene
     *    ASSIMP scene (must be valid!)
-    *  @param[in] numMeshes
-    *    Maximum number of meshes that are imported (if 0, all found meshes are imported)
     *
     *  @return
-    *    List of meshes, which must be destroyed by the caller
+    *    Scene
     */
-    std::vector<gloperate::PolygonalGeometry *> convertGeometries(const aiScene * scene, size_t numMeshes = 0) const;
+    gloperate::Scene * convertScene(const aiScene * scene) const;
 
     /**
     *  @brief
