@@ -50,6 +50,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
     ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
     ${CMAKE_SOURCE_DIR}/source/gloperate-qtwidgets/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-assimp/include
 )
 
 
@@ -62,6 +63,7 @@ set(libs
     gloperate
     gloperate-qt
     gloperate-qtwidgets
+    gloperate-assimp
 )
 
 # Compiler definitions
