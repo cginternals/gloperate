@@ -51,6 +51,7 @@ public:
     void addOptionalInput(const std::string & name, AbstractInputSlot & input);
 
     void alwaysProcess(bool on);
+    bool isAlwaysProcess() const;
     void scheduleProcess();
 
     void invalidateOutputs();

@@ -136,6 +136,11 @@ void AbstractStage::alwaysProcess(bool on)
     m_alwaysProcess = on;
 }
 
+bool AbstractStage::isAlwaysProcess() const
+{
+    return m_alwaysProcess;
+}
+
 void AbstractStage::scheduleProcess()
 {
     m_processScheduled = true;
