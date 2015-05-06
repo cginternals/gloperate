@@ -55,6 +55,15 @@ public:
 
     /**
     *  @brief
+    *    Get vertex array
+    *
+    *  @return
+    *    Vertex array
+    */
+    globjects::VertexArray * vertexArray() const;
+
+    /**
+    *  @brief
     *    Draw geometry
     *
     *  @remarks
