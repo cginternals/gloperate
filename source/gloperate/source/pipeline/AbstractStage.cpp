@@ -95,7 +95,7 @@ bool AbstractStage::inputsUsable() const
 
     if (!m_usable.value())
     {
-        std::cout << "Some inputs in " << asPrintable() << " are not be connected: ";
+        std::cout << "Some inputs in " << asPrintable() << " are not connected: ";
         for (AbstractInputSlot * slot : inputs)
             if (!slot->isUsable())
                 std::cout << slot->asPrintable() << ". ";
