@@ -66,5 +66,34 @@ void PolygonalGeometry::setNormals(std::vector<glm::vec3> && normals)
     m_normals = std::move(normals);
 }
 
+bool PolygonalGeometry::hasTextureCoordinates() const
+{
+	return !m_textureCoordinates.empty();
+}
+
+const std::vector<glm::vec3> & PolygonalGeometry::textureCoordinates() const
+{
+	return m_textureCoordinates;
+}
+
+void PolygonalGeometry::setTextureCoordinates(const std::vector<glm::vec3> & textureCoordinates)
+{
+	m_textureCoordinates = textureCoordinates;
+}
+
+void PolygonalGeometry::setTextureCoordinates(std::vector<glm::vec3> && textureCoordinates)
+{
+	m_textureCoordinates = std::move(textureCoordinates);
+}
+
+unsigned PolygonalGeometry::materialIndex() const
+{
+	return m_materialIndex;
+}
+
+void PolygonalGeometry::setMaterialIndex(const unsigned materialIndex)
+{
+	m_materialIndex = materialIndex;
+}
 
 } // namespace gloperate

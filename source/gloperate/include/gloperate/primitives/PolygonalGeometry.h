@@ -126,11 +126,22 @@ public:
     */
     void setNormals(std::vector<glm::vec3> && normals);
 
+	bool hasTextureCoordinates() const;
+	const std::vector<glm::vec3> & textureCoordinates() const;
+
+	void setTextureCoordinates(const std::vector<glm::vec3> & textureCoordinates);
+	void setTextureCoordinates(std::vector<glm::vec3> && textureCoordinates);
+
+	unsigned int materialIndex() const;
+
+	void setMaterialIndex(const unsigned int materialIndex);
 
 protected:
     std::vector<unsigned int> m_indices;    /**< Index array */
     std::vector<glm::vec3>    m_vertices;   /**< Vertex array */
     std::vector<glm::vec3>    m_normals;    /**< Normal array */
+	std::vector<glm::vec3>    m_textureCoordinates;
+	unsigned int              m_materialIndex;
 };
 
 

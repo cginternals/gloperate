@@ -5,6 +5,8 @@
 #include <gloperate/resources/Loader.h>
 
 #include <gloperate-assimp/gloperate-assimp_api.h>
+#include <gloperate/primitives/Bitmap.h>
+#include <vector>
 
 
 struct aiMesh;
