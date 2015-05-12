@@ -126,22 +126,66 @@ public:
     */
     void setNormals(std::vector<glm::vec3> && normals);
 
+	/**
+	*  @brief
+	*    Check if mesh contains texture coordinates
+	*
+	*  @return
+	*    'true' if the mesh contains texture coordinates, otherwise 'false'
+	*/
 	bool hasTextureCoordinates() const;
+
+	/**
+	*  @brief
+	*    Get texture coordinate array
+	*
+	*  @return
+	*    Texture coordinate array
+	*/
 	const std::vector<glm::vec3> & textureCoordinates() const;
 
+	/**
+	*  @brief
+	*    Set texture coordinates
+	*
+	*  @param[in] textureCoordinates
+	*    Texture coordinate array
+	*/
 	void setTextureCoordinates(const std::vector<glm::vec3> & textureCoordinates);
+
+	/**
+	*  @brief
+	*    Set texture coordinates
+	*
+	*  @param[in] textureCoordinates
+	*    Texture coordinate array
+	*/
 	void setTextureCoordinates(std::vector<glm::vec3> && textureCoordinates);
 
+	/**
+	*  @brief
+	*    Get material index
+	*
+	*  @return
+	*    Material index
+	*/
 	unsigned int materialIndex() const;
 
+	/**
+	*  @brief
+	*    Set material index
+	*
+	*  @param[in] materialIndex
+	*    Material index
+	*/
 	void setMaterialIndex(const unsigned int materialIndex);
 
 protected:
-    std::vector<unsigned int> m_indices;    /**< Index array */
-    std::vector<glm::vec3>    m_vertices;   /**< Vertex array */
-    std::vector<glm::vec3>    m_normals;    /**< Normal array */
-	std::vector<glm::vec3>    m_textureCoordinates;
-	unsigned int              m_materialIndex;
+    std::vector<unsigned int> m_indices;              /**< Index array */
+    std::vector<glm::vec3>    m_vertices;             /**< Vertex array */
+    std::vector<glm::vec3>    m_normals;              /**< Normal array */
+	std::vector<glm::vec3>    m_textureCoordinates;   /**< Texture coordinate array */
+	unsigned int              m_materialIndex;        /**< Material index */
 };
 
 
