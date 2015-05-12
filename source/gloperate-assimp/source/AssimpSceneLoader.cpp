@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
-#include <map>
 
 #include <glm/glm.hpp>
 
