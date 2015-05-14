@@ -5,9 +5,15 @@ find_package(Qt5Core    5.1 QUIET)
 find_package(Qt5Gui     5.1 QUIET)
 find_package(Qt5Widgets 5.1 QUIET) # this is important in order to get uic working 
 find_package(Qt5OpenGL  5.1 QUIET)
+find_package(ASSIMP QUIET)
 
 if (NOT Qt5Core_FOUND)
     message(STATUS "Tool ${target} (disabled because Qt5 couldn't be found)")
+    return()
+endif()
+
+if (NOT ASSIMP_FOUND)
+    message(STATUS "Tool ${target} (disabled because Assimp couldn't be found)")
     return()
 endif()
 
