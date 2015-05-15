@@ -178,7 +178,7 @@ public:
 	*  @param[in] materialIndex
 	*    Material index
 	*/
-	void setMaterialIndex(const unsigned int materialIndex);
+	void setMaterialIndex(unsigned int materialIndex);
 
 protected:
     std::vector<unsigned int> m_indices;              /**< Index array */
