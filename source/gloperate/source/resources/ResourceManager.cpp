@@ -10,6 +10,7 @@
 namespace gloperate
 {
 
+
 /**
 *  @brief
 *    Constructor
@@ -92,5 +93,6 @@ std::string ResourceManager::getFileExtension(const std::string & filename) cons
         return "";
     }
 }
+
 
 } // namespace gloperate

@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -124,6 +125,7 @@ protected:
     std::vector<AbstractLoader *> m_loaders;    /**< Available loaders */
     std::vector<AbstractStorer *> m_storers;    /**< Available storers */
 };
+
 
 } // namespace gloperate
 

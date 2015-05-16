@@ -10,7 +10,6 @@
 struct aiMesh;
 struct aiScene;
 
-
 namespace gloperate
 {
     class Scene;

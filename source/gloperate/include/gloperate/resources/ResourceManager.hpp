@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -8,6 +9,7 @@
 
 namespace gloperate
 {
+
 
 /**
 *  @brief
@@ -62,5 +64,6 @@ bool ResourceManager::store(const std::string & filename, T * resource, std::fun
     // No suitable loader found
     return false;
 }
+
 
 } // namespace gloperate
