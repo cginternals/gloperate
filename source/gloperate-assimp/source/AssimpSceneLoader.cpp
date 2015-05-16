@@ -187,6 +187,7 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh) cons
         geometry->setNormals(std::move(normals));
     }
 
+    // Does the mesh contain texture coordinates?
 	if (mesh->HasTextureCoords(0))
 	{
 		// Copy texture cooridinate array
@@ -199,6 +200,7 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh) cons
 		geometry->setTextureCoordinates(std::move(textureCoordinates));
 	}
 
+    // Materials
 	geometry->setMaterialIndex(mesh->mMaterialIndex);
 
     // Return geometry
