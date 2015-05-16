@@ -1,4 +1,7 @@
+
 #include <gloperate/resources/ResourceManager.h>
+
+#include <algorithm>
 
 #include <gloperate/resources/Loader.h>
 #include <gloperate/resources/Storer.h>
@@ -82,7 +85,9 @@ std::string ResourceManager::getFileExtension(const std::string & filename) cons
 
     size_t pos = filename.find_last_of(".");
     if (pos != std::string::npos) {
-        return filename.substr(pos + 1);
+        std::string ext = filename.substr(pos + 1);
+        std::transform(ext.begin(), ext.end(), ext.begin(), tolower);
+        return ext;
     } else {
         return "";
     }

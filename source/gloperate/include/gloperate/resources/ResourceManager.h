@@ -116,7 +116,7 @@ protected:
     *    Path to file (with filename and extension)
     *
     *  @return
-    *    Fielname extension
+    *    Filename extension (lower-case)
     */
     GLOPERATE_API std::string getFileExtension(const std::string & filename) const;
 
