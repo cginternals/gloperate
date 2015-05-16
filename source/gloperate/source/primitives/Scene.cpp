@@ -32,5 +32,14 @@ std::vector<PolygonalGeometry *> & Scene::meshes()
     return m_meshes;
 }
 
+const std::map<unsigned, std::string>& Scene::materials() const
+{
+	return m_materials;
+}
+
+std::map<unsigned, std::string>& Scene::materials()
+{
+	return m_materials;
+}
 
 } // namespace gloperate

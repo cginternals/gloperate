@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <map>
 
 #include <gloperate/gloperate_api.h>
 
@@ -56,9 +57,27 @@ public:
     */
     std::vector<PolygonalGeometry *> & meshes();
 
+	/**
+	*  @brief
+	*    Get materials by material id
+	*
+	*  @return
+	*    Map of materials
+	*/
+	const std::map<unsigned int, std::string> & materials() const;
+
+	/**
+	*  @brief
+	*    Get materials by material id
+	*
+	*  @return
+	*    Map of materials
+	*/
+	std::map<unsigned int, std::string> & materials();
 
 protected:
-    std::vector<PolygonalGeometry *> m_meshes;    /**< Mesh array */
+    std::vector<PolygonalGeometry *> m_meshes;        /**< Mesh array */
+	std::map<unsigned int, std::string> m_materials;  /**< Materials map */
 };
 
 

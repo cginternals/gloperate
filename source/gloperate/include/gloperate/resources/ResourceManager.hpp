@@ -18,6 +18,7 @@ T * ResourceManager::load(const std::string & filename, std::function<void(int, 
 {
     // Get file extension
     std::string ext = getFileExtension(filename);
+	transform(ext.begin(), ext.end(), ext.begin(), tolower);
 
     // Find suitable loader
     for (AbstractLoader * loader : m_loaders) {

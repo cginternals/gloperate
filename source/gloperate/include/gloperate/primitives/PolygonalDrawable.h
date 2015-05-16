@@ -64,11 +64,12 @@ public:
 
 
 protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;       /**< Vertex array object */
-    globjects::ref_ptr<globjects::Buffer>      m_indices;   /**< Index buffer */
-    globjects::ref_ptr<globjects::Buffer>      m_vertices;  /**< Vertex buffer */
-    globjects::ref_ptr<globjects::Buffer>      m_normals;   /**< Normal buffer (may be empty) */
-    gl::GLsizei                                m_size;      /**< Number of elements (m_indices) */
+    globjects::ref_ptr<globjects::VertexArray> m_vao;                 /**< Vertex array object */
+    globjects::ref_ptr<globjects::Buffer>      m_indices;             /**< Index buffer */
+    globjects::ref_ptr<globjects::Buffer>      m_vertices;            /**< Vertex buffer */
+    globjects::ref_ptr<globjects::Buffer>      m_normals;             /**< Normal buffer (may be empty) */
+    globjects::ref_ptr<globjects::Buffer>      m_textureCoordinates;  /**< Texture coordinate buffer (may be empty) */
+    gl::GLsizei                                m_size;                /**< Number of elements (m_indices) */
 };
 
 
