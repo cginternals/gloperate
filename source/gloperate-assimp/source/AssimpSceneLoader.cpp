@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
-#include <map>
 
 #include <glm/glm.hpp>
 
@@ -137,15 +136,15 @@ Scene * AssimpSceneLoader::convertScene(const aiScene * scene) const
         sceneOut->meshes().push_back(convertGeometry(scene->mMeshes[i]));
     }
 
-	for (size_t i = 0; i < scene->mNumMaterials; ++i)
-	{
-		aiString filename;
-		// only fetch texture with index 0
-		if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &filename) == aiReturn_SUCCESS)
-		{
-			sceneOut->materials()[i] = std::string(filename.C_Str());
-		}
-	}
+    for (size_t i = 0; i < scene->mNumMaterials; ++i)
+    {
+        aiString filename;
+        // only fetch texture with index 0
+        if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &filename) == aiReturn_SUCCESS)
+        {
+            sceneOut->materials()[i] = std::string(filename.C_Str());
+        }
+    }
 
     // Return scene
     return sceneOut;
@@ -188,22 +187,25 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh) cons
         geometry->setNormals(std::move(normals));
     }
 
-	if (mesh->HasTextureCoords(0))
-	{
-		// Copy texture cooridinate array
-		std::vector<glm::vec3> textureCoordinates;
-		for (size_t i = 0; i < mesh->mNumVertices; ++i)
-		{
-			const auto & textureCoordinate = mesh->mTextureCoords[0][i];
-			textureCoordinates.push_back({ textureCoordinate.x, textureCoordinate.y, textureCoordinate.z });
-		}
-		geometry->setTextureCoordinates(std::move(textureCoordinates));
-	}
+    // Does the mesh contain texture coordinates?
+    if (mesh->HasTextureCoords(0))
+    {
+        // Copy texture cooridinate array
+        std::vector<glm::vec3> textureCoordinates;
+        for (size_t i = 0; i < mesh->mNumVertices; ++i)
+        {
+            const auto & textureCoordinate = mesh->mTextureCoords[0][i];
+            textureCoordinates.push_back({ textureCoordinate.x, textureCoordinate.y, textureCoordinate.z });
+        }
+        geometry->setTextureCoordinates(std::move(textureCoordinates));
+    }
 
-	geometry->setMaterialIndex(mesh->mMaterialIndex);
+    // Materials
+    geometry->setMaterialIndex(mesh->mMaterialIndex);
 
     // Return geometry
     return geometry;
 }
+
 
 } // namespace gloperate_assimp

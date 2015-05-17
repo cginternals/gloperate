@@ -5,12 +5,10 @@
 #include <gloperate/resources/Loader.h>
 
 #include <gloperate-assimp/gloperate-assimp_api.h>
-#include <vector>
 
 
 struct aiMesh;
 struct aiScene;
-
 
 namespace gloperate
 {

@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -116,7 +117,7 @@ protected:
     *    Path to file (with filename and extension)
     *
     *  @return
-    *    Fielname extension
+    *    Filename extension (lower-case)
     */
     GLOPERATE_API std::string getFileExtension(const std::string & filename) const;
 
@@ -124,6 +125,7 @@ protected:
     std::vector<AbstractLoader *> m_loaders;    /**< Available loaders */
     std::vector<AbstractStorer *> m_storers;    /**< Available storers */
 };
+
 
 } // namespace gloperate
 

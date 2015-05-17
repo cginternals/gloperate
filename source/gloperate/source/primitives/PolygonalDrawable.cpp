@@ -85,11 +85,6 @@ PolygonalDrawable::~PolygonalDrawable()
 {
 }
 
-globjects::VertexArray * PolygonalDrawable::vertexArray() const
-{
-    return m_vao.get();
-}
-
 void PolygonalDrawable::draw()
 {
     // Draw triangles

@@ -6,7 +6,7 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/primitives/AbstractDrawable.h>
 
 
 namespace globjects
@@ -31,7 +31,7 @@ class PolygonalGeometry;
 *    This class is used to upload and draw a triangle mesh on the GPU.
 *    To create or load meshes, see PolygonalGeometry and Loader<PolygonalGeometry>.
 */
-class GLOPERATE_API PolygonalDrawable
+class GLOPERATE_API PolygonalDrawable : public AbstractDrawable
 {
 public:
     /**
@@ -51,16 +51,7 @@ public:
     *  @brief
     *    Destructor
     */
-    ~PolygonalDrawable();
-
-    /**
-    *  @brief
-    *    Get vertex array
-    *
-    *  @return
-    *    Vertex array
-    */
-    globjects::VertexArray * vertexArray() const;
+    virtual ~PolygonalDrawable();
 
     /**
     *  @brief
@@ -69,7 +60,7 @@ public:
     *  @remarks
     *    The geometry is drawn as an indexed geometry of type GL_TRIANGLES.
     */
-    void draw();
+    virtual void draw() override;
 
 
 protected:
@@ -77,7 +68,7 @@ protected:
     globjects::ref_ptr<globjects::Buffer>      m_indices;             /**< Index buffer */
     globjects::ref_ptr<globjects::Buffer>      m_vertices;            /**< Vertex buffer */
     globjects::ref_ptr<globjects::Buffer>      m_normals;             /**< Normal buffer (may be empty) */
-	globjects::ref_ptr<globjects::Buffer>      m_textureCoordinates;  /**< Texture coordinate buffer (may be empty) */
+    globjects::ref_ptr<globjects::Buffer>      m_textureCoordinates;  /**< Texture coordinate buffer (may be empty) */
     gl::GLsizei                                m_size;                /**< Number of elements (m_indices) */
 };
 

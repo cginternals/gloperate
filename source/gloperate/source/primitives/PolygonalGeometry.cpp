@@ -91,7 +91,7 @@ unsigned PolygonalGeometry::materialIndex() const
 	return m_materialIndex;
 }
 
-void PolygonalGeometry::setMaterialIndex(const unsigned materialIndex)
+void PolygonalGeometry::setMaterialIndex(const unsigned int materialIndex)
 {
 	m_materialIndex = materialIndex;
 }

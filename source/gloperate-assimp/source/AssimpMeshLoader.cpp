@@ -164,6 +164,22 @@ PolygonalGeometry * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
         geometry->setNormals(std::move(normals));
     }
 
+    // Does the mesh contain texture coordinates?
+    if (mesh->HasTextureCoords(0))
+    {
+        // Copy texture cooridinate array
+        std::vector<glm::vec3> textureCoordinates;
+        for (size_t i = 0; i < mesh->mNumVertices; ++i)
+        {
+            const auto & textureCoordinate = mesh->mTextureCoords[0][i];
+            textureCoordinates.push_back({ textureCoordinate.x, textureCoordinate.y, textureCoordinate.z });
+        }
+        geometry->setTextureCoordinates(std::move(textureCoordinates));
+    }
+
+    // Materials
+    geometry->setMaterialIndex(mesh->mMaterialIndex);
+
     // Return geometry
     return geometry;
 }
