@@ -1,6 +1,7 @@
 
 #include <gloperate/primitives/Scene.h>
 #include <gloperate/primitives/PolygonalGeometry.h>
+#include <gloperate/primitives/Light.h>
 
 #include <glm/glm.hpp>
 
@@ -40,6 +41,16 @@ const std::map<unsigned, std::string>& Scene::materials() const
 std::map<unsigned, std::string>& Scene::materials()
 {
 	return m_materials;
+}
+
+const std::vector<Light *>& Scene::lights() const
+{
+    return m_lights;
+}
+
+std::vector<Light *>& Scene::lights()
+{
+    return m_lights;
 }
 
 } // namespace gloperate

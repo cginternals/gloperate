@@ -14,6 +14,7 @@ namespace gloperate
 
 
 class PolygonalGeometry;
+class Light;
 
 
 /**
@@ -76,9 +77,28 @@ public:
 	*/
 	std::map<unsigned int, std::string> & materials();
 
+    /**
+    *  @brief
+    *    Get lights
+    *
+    *  @return
+    *    vector of lights
+    */
+    const std::vector<Light *> & lights() const;
+
+    /**
+    *  @brief
+    *    Get lights
+    *
+    *  @return
+    *    vector of lights
+    */
+    std::vector<Light *> & lights();
+
 protected:
     std::vector<PolygonalGeometry *> m_meshes;        /**< Mesh array */
 	std::map<unsigned int, std::string> m_materials;  /**< Materials map */
+    std::vector<Light *> m_lights; /**< Light array */
 };
 
 
