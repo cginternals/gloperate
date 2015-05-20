@@ -11,11 +11,6 @@ if (NOT Qt5Core_FOUND)
     return()
 endif()
 
-if (NOT ASSIMP_FOUND)
-    message(STATUS "Tool ${target} (disabled because Assimp couldn't be found)")
-    return()
-endif()
-
 message(STATUS "Tool ${target}")
 
 # External libraries

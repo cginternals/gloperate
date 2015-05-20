@@ -11,9 +11,8 @@ if (NOT Qt5Core_FOUND)
     return()
 endif()
 
-if (NOT ASSIMP_FOUND)
-    message(STATUS "Lib ${target} (disabled because Assimp couldn't be found)")
-    return()
+if (ASSIMP_FOUND)
+   add_definitions("-DGLOPERATE_ASSIMP_FOUND")
 endif()
 
 message(STATUS "Lib ${target}")
@@ -69,8 +68,11 @@ set(libs
     gloperate
     gloperate-qt
     gloperate-qtwidgets
-    gloperate-assimp
 )
+
+if (ASSIMP_FOUND)
+    list(APPEND libs "gloperate-assimp")
+endif ()
 
 # Compiler definitions
 
