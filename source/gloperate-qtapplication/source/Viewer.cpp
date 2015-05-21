@@ -45,7 +45,10 @@ using namespace widgetzeug;
 
 using namespace gloperate;
 using namespace gloperate_qt;
+
+#ifdef GLOPERATE_ASSIMP_FOUND
 using namespace gloperate_assimp;
+#endif
 
 namespace
 {
