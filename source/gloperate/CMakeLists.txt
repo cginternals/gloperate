@@ -127,6 +127,7 @@ set(sources
     ${source_path}/primitives/PolygonalGeometry.cpp
     ${source_path}/primitives/PolygonalDrawable.cpp
     ${source_path}/primitives/Scene.cpp
+    ${source_path}/primitives/Light.cpp
     
     ${source_path}/resources/AbstractStorer.cpp
     ${source_path}/resources/AbstractLoader.cpp

@@ -9,11 +9,13 @@
 
 struct aiMesh;
 struct aiScene;
+struct aiLight;
 
 namespace gloperate
 {
     class Scene;
     class PolygonalGeometry;
+    class Light;
 }
 
 
@@ -71,6 +73,7 @@ protected:
     *    Mesh, must be destroyed by the caller
     */
     gloperate::PolygonalGeometry * convertGeometry(const aiMesh * mesh) const;
+    gloperate::Light * convertLight(const aiScene * scene, const aiLight * light) const;
 };
 
 

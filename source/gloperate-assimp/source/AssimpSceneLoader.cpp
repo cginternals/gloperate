@@ -9,11 +9,13 @@
 
 #include <assimp/scene.h>
 #include <assimp/cimport.h>
+#include <assimp/matrix4x4.h>
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
 
 #include <gloperate/primitives/PolygonalGeometry.h>
 #include <gloperate/primitives/Scene.h>
+#include <gloperate/primitives/Light.h>
 
 
 using namespace gloperate;
@@ -146,8 +148,50 @@ Scene * AssimpSceneLoader::convertScene(const aiScene * scene) const
         }
     }
 
+    for (size_t i = 0; i < scene->mNumLights; ++i)
+    {
+        sceneOut->lights().push_back(convertLight(scene, scene->mLights[i]));
+    }
+
     // Return scene
     return sceneOut;
+}
+
+gloperate::Light * AssimpSceneLoader::convertLight(const aiScene * scene, const aiLight * light) const
+{
+    auto lightOut = new Light;
+    lightOut->type(static_cast<int>(light->mType));
+    lightOut->name(std::string(light->mName.data));
+
+    auto node = scene->mRootNode->FindNode(light->mName);
+    auto position = light->mPosition;
+    auto dir = light->mDirection;
+    dir.z += 1.f;
+    do
+    {
+        position *= node->mTransformation;
+        dir *= node->mTransformation;
+        node = node->mParent;
+    }while(node != nullptr);
+
+    lightOut->position(glm::vec3(position.x, position.y, position.z));
+    dir -= position;
+    dir.Normalize();
+    lightOut->direction(glm::vec3(dir.x, dir.y, dir.z));
+
+    auto colorDiff = light->mColorDiffuse;
+    lightOut->colorDiffuse(glm::vec3(colorDiff.r, colorDiff.g, colorDiff.b));
+
+    auto colorSpec = light->mColorSpecular;
+    lightOut->colorSpecular(glm::vec3(colorSpec.r, colorSpec.g, colorSpec.b));
+
+    lightOut->attenuationConst(light->mAttenuationConstant);
+    lightOut->attenuationLinear(light->mAttenuationLinear);
+    lightOut->attenuationQuad(light->mAttenuationQuadratic);
+    lightOut->cosinusCutOff(abs(cos(light->mAngleInnerCone)));
+
+    return lightOut;
+
 }
 
 PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh) const
