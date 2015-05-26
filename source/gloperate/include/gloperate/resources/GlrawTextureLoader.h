@@ -34,7 +34,7 @@ public:
     virtual std::string allLoadingTypes() const override;
 
     // Virtual gloperate::Loader<globjects::Texture> functions
-    virtual globjects::Texture * load(const std::string & filename, std::function<void(int, int)> progress) const override;
+    virtual globjects::Texture * load(const std::string & filename, reflectionzeug::Variant options, std::function<void(int, int)> progress) const override;
 };
 
 } // namespace gloperate

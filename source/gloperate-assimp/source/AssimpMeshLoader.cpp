@@ -14,6 +14,8 @@
 
 #include <gloperate/primitives/PolygonalGeometry.h>
 
+#include <reflectionzeug/Variant.h>
+
 
 using namespace gloperate;
 
@@ -97,7 +99,7 @@ std::string AssimpMeshLoader::allLoadingTypes() const
     return string;
 }
 
-PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
+PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, reflectionzeug::Variant /*options*/, std::function<void(int, int)> /*progress*/) const
 {
     // Import scene
     auto scene = aiImportFile(
