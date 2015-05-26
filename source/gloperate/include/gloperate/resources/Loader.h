@@ -38,6 +38,8 @@ public:
     *
     *  @param[in] filename
     *    File name
+    *  @param[in] options
+    *    Options for loading resource (can be empty)
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
