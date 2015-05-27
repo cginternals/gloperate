@@ -85,7 +85,8 @@ public:
     *  @param[in] filename
     *    File name
     *  @param[in] options
-    *    Options for loading resource (can be empty)
+    *    Options for loading resource (can be empty),
+    *    see the specific loader for a description of the options
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
