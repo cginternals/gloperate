@@ -99,7 +99,7 @@ std::string AssimpMeshLoader::allLoadingTypes() const
     return string;
 }
 
-PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, reflectionzeug::Variant options, std::function<void(int, int)> /*progress*/) const
+PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> /*progress*/) const
 {
     auto flags = options.value<MeshLoadOptions>(MeshLoadOptions::None);
     auto normals = (flags & SmoothNormals) ? aiProcess_GenSmoothNormals : aiProcess_GenNormals;

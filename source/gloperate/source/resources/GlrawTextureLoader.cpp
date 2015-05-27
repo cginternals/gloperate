@@ -42,7 +42,7 @@ std::string GlrawTextureLoader::allLoadingTypes() const
     return "*.glraw";
 }
 
-globjects::Texture * GlrawTextureLoader::load(const std::string & /*filename*/, reflectionzeug::Variant /*options*/, std::function<void(int, int)> /*progress*/) const
+globjects::Texture * GlrawTextureLoader::load(const std::string & /*filename*/, const reflectionzeug::Variant & /*options*/, std::function<void(int, int)> /*progress*/) const
 {
     // [TODO] Implement!
     return nullptr;

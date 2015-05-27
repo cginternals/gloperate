@@ -16,7 +16,7 @@ namespace gloperate
 *    Load resource from file
 */
 template <typename T>
-T * ResourceManager::load(const std::string & filename, reflectionzeug::Variant options, std::function<void(int, int)> progress) const
+T * ResourceManager::load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const
 {
     // Get file extension
     std::string ext = getFileExtension(filename);

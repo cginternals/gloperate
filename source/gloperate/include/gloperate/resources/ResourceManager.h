@@ -93,7 +93,7 @@ public:
     *    Loaded resource (can be null)
     */
     template <typename T>
-    T * load(const std::string & filename, reflectionzeug::Variant options = reflectionzeug::Variant(), std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
+    T * load(const std::string & filename, const reflectionzeug::Variant & options = reflectionzeug::Variant(), std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
 
     /**
     *  @brief

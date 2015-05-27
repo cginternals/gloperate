@@ -46,7 +46,7 @@ public:
     *  @return
     *    Loaded resource (can be null)
     */
-    virtual T * load(const std::string & filename, reflectionzeug::Variant options, std::function<void(int, int)> progress) const = 0;
+    virtual T * load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const = 0;
 };
 
 } // namespace gloperate
