@@ -19,6 +19,10 @@ namespace gloperate
 namespace gloperate_assimp
 {
 
+enum MeshLoadOptions {
+    None            = 0x00,
+    SmoothNormals   = 0x01
+};
 
 /**
 *  @brief
