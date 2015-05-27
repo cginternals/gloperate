@@ -99,15 +99,17 @@ std::string AssimpMeshLoader::allLoadingTypes() const
     return string;
 }
 
-PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, reflectionzeug::Variant /*options*/, std::function<void(int, int)> /*progress*/) const
+PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, reflectionzeug::Variant options, std::function<void(int, int)> /*progress*/) const
 {
+    auto map = options.value<std::map<std::string, bool>>();
+    auto normals = map["smoothNormals"] ? aiProcess_GenSmoothNormals : aiProcess_GenNormals;
     // Import scene
     auto scene = aiImportFile(
         filename.c_str(),
         aiProcess_Triangulate           |
         aiProcess_JoinIdenticalVertices |
         aiProcess_SortByPType |
-        aiProcess_GenNormals);
+        normals);
 
     // Check for errors
     if (!scene)
