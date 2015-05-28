@@ -180,10 +180,10 @@ gloperate::Light * AssimpSceneLoader::convertLight(const aiScene * scene, const 
     lightOut->direction(glm::vec3(dir.x, dir.y, dir.z));
 
     auto colorDiff = light->mColorDiffuse;
-    lightOut->colorDiffuse(glm::vec3(colorDiff.r, colorDiff.g, colorDiff.b));
+    lightOut->colorDiffuse(glm::vec3(colorDiff.r, colorDiff.g, colorDiff.b) / 255.f);
 
     auto colorSpec = light->mColorSpecular;
-    lightOut->colorSpecular(glm::vec3(colorSpec.r, colorSpec.g, colorSpec.b));
+    lightOut->colorSpecular(glm::vec3(colorSpec.r, colorSpec.g, colorSpec.b) / 255.f);
 
     lightOut->attenuationConst(light->mAttenuationConstant);
     lightOut->attenuationLinear(light->mAttenuationLinear);
@@ -214,6 +214,7 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh) cons
     for (size_t i = 0; i < mesh->mNumVertices; ++i)
     {
         const auto & vertex = mesh->mVertices[i];
+        //TODO transform vertices
         vertices.push_back({ vertex.x, vertex.y, vertex.z });
     }
     geometry->setVertices(std::move(vertices));

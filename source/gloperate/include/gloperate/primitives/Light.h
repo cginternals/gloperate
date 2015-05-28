@@ -119,19 +119,29 @@ protected:
 
 public:
     Light();
+    Light(const Light & toCopy);
+
+    LightSourceType type() const;
+    std::string name() const;
+    glm::vec3 position() const;
+    glm::vec3 direction() const;
+    glm::vec3 colorDiffuse() const;
+    glm::vec3 colorSpecular() const;
+    float attenuationConst() const;
+    float attenuationLinear() const;
+    float attenuationQuad() const;
+    float cosinusCutOff() const;
 
     void type(int type);
     void name(std::string name);
     void position(glm::vec3 pos);
     void direction(glm::vec3 dir);
-
     void colorDiffuse(glm::vec3 colorDiff);
     void colorSpecular(glm::vec3 colorSpec);
-
     void attenuationLinear(float attLin);
     void attenuationConst(float attConst);
     void attenuationQuad(float attQuad);
-
     void cosinusCutOff(float cosCutOff);
+
 };
 }

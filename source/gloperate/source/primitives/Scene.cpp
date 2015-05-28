@@ -21,6 +21,10 @@ Scene::~Scene()
     {
         delete mesh;
     }
+    for (auto light : m_lights)
+    {
+        delete light;
+    }
 }
 
 const std::vector<PolygonalGeometry *> & Scene::meshes() const
