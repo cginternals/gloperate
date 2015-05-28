@@ -13,6 +13,7 @@ add_subdirectory(gloperate-qt)
 add_subdirectory(gloperate-qtwidgets)
 add_subdirectory(gloperate-qtapplication)
 add_subdirectory(gloperate-assimp)
+add_subdirectory(gloperate-glraw)
 add_subdirectory(gloperate-osg)
 
 # Examples
