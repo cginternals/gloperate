@@ -20,6 +20,30 @@ if (NOT GLRAW_INCLUDE_DIR)
 endif()
 
 
+#
+# Qt5
+#
+
+# good resource: http://www.kdab.com/using-cmake-with-qt-5/
+
+# http://qt-project.org/forums/viewthread/30006/
+if(MSVC)
+    cmake_policy(SET CMP0020 NEW)
+endif()
+
+find_package(Qt5OpenGL  5.1 QUIET)
+find_package(Qt5Core    5.1 QUIET)
+find_package(Qt5Gui     5.1 QUIET)
+find_package(Qt5Widgets 5.1 QUIET)
+
+if (NOT Qt5Core_FOUND)
+    message(STATUS "Example ${target} (disabled because Qt5 couldn't be found)")
+    return()
+endif()
+
+
+set(CMAKE_AUTOMOC ON)
+
 message(STATUS "Lib ${target}")
 
 
@@ -51,6 +75,10 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     ${LIBZEUG_LIBRARIES}
     ${GLRAW_LIBRARIES}
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::OpenGL
     gloperate
 )
 
@@ -75,11 +103,13 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/main.cpp
+    ${source_path}/TextureFilter.cpp
+    ${source_path}/glraw.cpp
 )
 
 set(headers
     ${include_path}/gloperate-glraw_api.h
+    ${include_path}/TextureFilter.h
 )
 
 # Group source files
