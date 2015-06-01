@@ -19,7 +19,8 @@ namespace gloperate
 namespace gloperate_assimp
 {
 
-enum MeshLoadOptions {
+enum class MeshLoadOptions : unsigned int
+{
     /**
     *  @brief
     *    use default options
@@ -31,6 +32,10 @@ enum MeshLoadOptions {
     */
     SmoothNormals   = 0x01
 };
+
+MeshLoadOptions operator&(MeshLoadOptions a, MeshLoadOptions b);
+MeshLoadOptions operator|(MeshLoadOptions a, MeshLoadOptions b);
+MeshLoadOptions operator^(MeshLoadOptions a, MeshLoadOptions b);
 
 /**
 *  @brief
