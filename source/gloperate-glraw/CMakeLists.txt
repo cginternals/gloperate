@@ -89,6 +89,8 @@ set(libs
 
 if (OPTION_BUILD_STATIC)
     add_definitions("-DGLOPERATE_STATIC")
+else()
+    add_definitions("-DGLOPERATE_GLRAW_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5

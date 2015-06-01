@@ -11,7 +11,7 @@ namespace globjects
 
 namespace glraw
 {
-	class ConvertManager;
+	class MemoryProcessor;
 	class AssetInformation;
 }
 
@@ -24,7 +24,7 @@ public:
 	TextureFilter();
 	~TextureFilter();
 
-	void addFilter(const std::string& name, const QVariantMap& options);
+	bool addFilter(const std::string& name, const QVariantMap& options);
 	void resetFilters();
 
 	std::vector<std::string> allAvailableFilters() const;
@@ -36,7 +36,7 @@ private:
 	void transfer(glraw::AssetInformation & info);
 	glraw::AssetInformation generateAssetInformation(const globjects::Texture * const);
 
-	glraw::ConvertManager * m_converter;
+	glraw::MemoryProcessor * m_pipeline;
 	QByteArray m_rawData;
 };
 
