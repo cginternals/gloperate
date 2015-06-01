@@ -35,6 +35,12 @@
 # GLOPERATE_GLFW_BINARIES
 # GLOPERATE_GLFW_BINARY_[RELEASE|DEBUG]
 
+# GLOPERATE_GLRAW_LIBRARIES
+# GLOPERATE_GLRAW_LIBRARY_[RELEASE|DEBUG]
+# GLOPERATE_GLRAW_INCLUDE_DIR
+# GLOPERATE_GLRAW_BINARIES
+# GLOPERATE_GLRAW_BINARY_[RELEASE|DEBUG]
+
 # GLOPERATE_OSG_LIBRARIES
 # GLOPERATE_OSG_LIBRARY_[RELEASE|DEBUG]
 # GLOPERATE_OSG_INCLUDE_DIR
@@ -165,6 +171,7 @@ find(gloperate-qt gloperate-qt/gloperate-qt_api.h ${LIB_PATHS})
 find(gloperate-qtwidgets gloperate-qtwidgets/gloperate-qtwidgets_api.h ${LIB_PATHS})
 find(gloperate-qtapplication gloperate-qtapplication/gloperate-qtapplication_api.h ${LIB_PATHS})
 find(gloperate-glfw gloperate-glfw/gloperate-glfw_api.h ${LIB_PATHS})
+find(gloperate-glraw gloperate-glraw/gloperate-glraw_api.h ${LIB_PATHS})
 find(gloperate-osg gloperate-osg/gloperate-osg_api.h ${LIB_PATHS})
 find(gloperate-assimp gloperate-assimp/gloperate-assimp_api.h ${LIB_PATHS})
 
