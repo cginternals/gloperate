@@ -19,10 +19,10 @@ globjects::Texture * TextureFilter::process(const globjects::Texture * const inp
 	//input->getImage(0, gl::GL_RGBA8, gl::GL_UNSIGNED_BYTE, m_rawData.data());
 	auto x = input->getImage(0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE);
 
-	m_rawData.fromRawData( (const char*)x.data(), x.size());
+	m_rawData = QByteArray::fromRawData((const char*)x.data(), x.size());
 
 	transfer(info);
-	/*
+	
 	if (m_rawData.isNull())
 		return nullptr;
 
@@ -31,8 +31,8 @@ globjects::Texture * TextureFilter::process(const globjects::Texture * const inp
 
 	globjects::Texture * output = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 	output->image2D(0, gl::GL_RGBA8, width, height, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, m_rawData.data());
-	*/
-	return nullptr;
+	
+	return output;
 }
 
 glraw::AssetInformation TextureFilter::generateAssetInformation(const globjects::Texture * const input)
@@ -41,7 +41,7 @@ glraw::AssetInformation TextureFilter::generateAssetInformation(const globjects:
 	const int height = input->getLevelParameter(0, gl::GL_TEXTURE_HEIGHT);
 	const int depth = input->getLevelParameter(0, gl::GL_TEXTURE_DEPTH);
 
-	m_rawData.resize(width * height * depth);
+	//m_rawData.resize(width * height * depth);
 
 	glraw::AssetInformation info;
 	info.setProperty("width", width);
