@@ -1,5 +1,7 @@
 #include <gloperate-glraw/gloperate-glraw_api.h>
 
+#include <memory>
+
 #include <QVariantMap>
 
 #include <glraw/AssetInformation.h>
@@ -7,6 +9,11 @@
 namespace globjects
 {
 	class Texture;
+}
+
+namespace gloperate_qt
+{
+	class QtOpenGLWindow;
 }
 
 namespace glraw
@@ -21,7 +28,7 @@ namespace gloperate_glraw
 class GLOPERATE_GLRAW_API TextureFilter
 {
 public:
-	TextureFilter();
+	TextureFilter(std::unique_ptr<gloperate_qt::QtOpenGLWindow>& canvas);
 	~TextureFilter();
 
 	bool addFilter(const std::string& name, const QVariantMap& options);
@@ -38,6 +45,8 @@ private:
 
 	glraw::MemoryProcessor * m_pipeline;
 	QByteArray m_rawData;
+
+	std::unique_ptr<gloperate_qt::QtOpenGLWindow> & m_canvas;
 };
 
 }

@@ -1,9 +1,14 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include <gloperate/gloperate_api.h>
 
+namespace gloperate_qt
+{
+	class QtOpenGLWindow;
+}
 
 namespace gloperate
 {
@@ -32,7 +37,7 @@ public:
     const char * vendor() const;
     const char * version() const;
 
-    virtual Painter * createPainter(ResourceManager & resourceManager) const = 0;
+	virtual Painter * createPainter(ResourceManager & resourceManager, std::unique_ptr<gloperate_qt::QtOpenGLWindow>& canvas) const = 0;
 
 protected:
     std::string m_type;

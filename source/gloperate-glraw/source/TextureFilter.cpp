@@ -3,9 +3,14 @@
 
 #include <QByteArray>
 
+#include <glbinding/ContextHandle.h>
+#include <glbinding/ContextInfo.h>
 #include <glbinding/gl/enum.h>
 
+#include <globjects/globjects.h>
 #include <globjects/Texture.h>
+
+#include <gloperate-qt/QtOpenGLWindow.h>
 
 namespace gloperate_glraw
 {
@@ -21,8 +26,13 @@ globjects::Texture * TextureFilter::process(const globjects::Texture * const inp
 
 	m_rawData = QByteArray::fromRawData((const char*)x.data(), x.size());
 
+	//auto c = glbinding::getCurrentContext();
+	m_canvas->doneCurrent();
 	transfer(info);
-	
+	m_canvas->makeCurrent();
+	//globjects::setContext(c);
+
+
 	if (m_rawData.isNull())
 		return nullptr;
 

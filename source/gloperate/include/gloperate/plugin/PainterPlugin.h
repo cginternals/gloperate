@@ -19,7 +19,7 @@ public:
     ,   const std::string & version);
     virtual ~PainterPlugin();
 
-    virtual Painter * createPainter(ResourceManager & resourceManager) const;
+	virtual Painter * createPainter(ResourceManager & resourceManager, std::unique_ptr<gloperate_qt::QtOpenGLWindow>& canvas) const;
 };
 
 } // namespace gloperate

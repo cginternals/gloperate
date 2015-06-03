@@ -22,7 +22,7 @@ PainterPlugin<PainterType>::~PainterPlugin()
 }
 
 template <typename PainterType>
-Painter * PainterPlugin<PainterType>::createPainter(ResourceManager & resourceManager) const
+Painter * PainterPlugin<PainterType>::createPainter(ResourceManager & resourceManager, std::unique_ptr<gloperate_qt::QtOpenGLWindow>& canvas) const
 {
     return new PainterType(resourceManager);
 }

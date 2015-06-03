@@ -62,6 +62,7 @@ include_directories(
 include_directories(
     BEFORE
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -80,6 +81,7 @@ set(libs
     Qt5::Widgets
     Qt5::OpenGL
     gloperate
+    gloperate-qt
 )
 
 

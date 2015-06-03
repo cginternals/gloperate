@@ -265,7 +265,7 @@ void Viewer::switchToPainter(bool)
 
     Q_ASSERT(plugin);
 
-    m_currentPainter.reset(plugin->createPainter(*m_resourceManager));
+    m_currentPainter.reset(plugin->createPainter(*m_resourceManager, m_canvas));
 
     // check for painter context format requirements
     // ToDo:

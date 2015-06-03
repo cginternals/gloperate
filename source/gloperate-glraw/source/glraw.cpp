@@ -12,8 +12,9 @@
 namespace gloperate_glraw
 {
 
-TextureFilter::TextureFilter()
+TextureFilter::TextureFilter(std::unique_ptr<gloperate_qt::QtOpenGLWindow>& canvas)
 	: m_pipeline(new glraw::MemoryProcessor())
+	, m_canvas(canvas)
 {
 	m_pipeline->setConverter(new glraw::Converter());
 }
