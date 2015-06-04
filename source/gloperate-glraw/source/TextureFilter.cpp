@@ -26,11 +26,9 @@ globjects::Texture * TextureFilter::process(const globjects::Texture * const inp
 
 	m_rawData = QByteArray::fromRawData((const char*)x.data(), x.size());
 
-	//auto c = glbinding::getCurrentContext();
 	m_canvas->doneCurrent();
 	transfer(info);
 	m_canvas->makeCurrent();
-	//globjects::setContext(c);
 
 
 	if (m_rawData.isNull())

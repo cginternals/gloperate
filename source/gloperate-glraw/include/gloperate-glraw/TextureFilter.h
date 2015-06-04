@@ -20,6 +20,7 @@ namespace glraw
 {
 	class MemoryProcessor;
 	class AssetInformation;
+	class AbstractFilter;
 }
 
 namespace gloperate_glraw
@@ -31,7 +32,8 @@ public:
 	TextureFilter(std::unique_ptr<gloperate_qt::QtOpenGLWindow>& canvas);
 	~TextureFilter();
 
-	bool addFilter(const std::string& name, const QVariantMap& options);
+	bool addFilter(const std::string& name, const QVariantMap& options = QVariantMap());
+	bool addFilter(glraw::AbstractFilter * filter);
 	void resetFilters();
 
 	std::vector<std::string> allAvailableFilters() const;
