@@ -254,8 +254,11 @@ void Viewer::on_pluginPaintersAction_triggered()
 	{
 		gloperate_qtwidgets::PluginWidget * ppw{ new gloperate_qtwidgets::PluginWidget(m_pluginManager) };
 
-	ppw->setWindowModality(Qt::ApplicationModal);
-	ppw->show();
+		connect(ppw, &gloperate_qtwidgets::PluginWidget::pluginChanged,
+			this, &Viewer::switchToPainter);
+
+		ppw->setWindowModality(Qt::ApplicationModal);
+		ppw->show();
 	}
 }
 
@@ -268,8 +271,9 @@ void Viewer::on_showPluginsAction_triggered()
         qDebug("->  %s %s - %s (%s by %s)", plugin->name(), plugin->version(), plugin->description(), plugin->type(), plugin->vendor());
 }
 
-void Viewer::switchToPainter(bool)
+void Viewer::switchToPainter(Plugin &plugin)
 {
+	/*
     QAction * action = dynamic_cast<QAction*>(QObject::sender());
 
     Q_ASSERT(action != nullptr);
@@ -277,8 +281,9 @@ void Viewer::switchToPainter(bool)
     gloperate::Plugin * plugin = reinterpret_cast<gloperate::Plugin * >(action->data().value<qint64>());
 
     Q_ASSERT(plugin);
+	*/
 
-    m_currentPainter.reset(plugin->createPainter(*m_resourceManager));
+    m_currentPainter.reset(plugin.createPainter(*m_resourceManager));
 
     // check for painter context format requirements
     // ToDo:

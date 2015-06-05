@@ -16,6 +16,7 @@ namespace gloperate
 	class ResourceManager;
     class PluginManager;
     class Painter;
+	class Plugin;
 }
 
 namespace gloperate_qt
@@ -55,7 +56,7 @@ protected slots:
 	void on_pluginPaintersAction_triggered();
 	void on_showPluginsAction_triggered();
 
-    void switchToPainter(bool);
+	void switchToPainter(gloperate::Plugin &plugin);
 
 protected:
 	void attachMessageWidgets();
