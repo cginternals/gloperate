@@ -6,10 +6,22 @@
 
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QAbstractButton>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+#include <QString>
+#include <QStringList>
 #include <QWindow>
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <cassert>
+#ifdef WIN32
+const std::string g_ext = "dll";
+#elif __APPLE__
+const std::string g_ext = "dylib";
+#else
+const std::string g_ext = "so";
+#endif
 
 namespace gloperate_qtwidgets
 {
@@ -22,11 +34,23 @@ PluginWidget::PluginWidget(std::shared_ptr<gloperate::PluginManager> pluginManag
 	m_ui->setupUi(this);
 
     initializeListView();
+
+	setAcceptDrops(true);
 }
 
 PluginWidget::~PluginWidget()
 {
 }
+
+void PluginWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+	QString uri = event->mimeData()->data("text/uri-list");
+	int len = uri.length();
+
+	if (uri.mid(len - g_ext.length() - 3).left(g_ext.length() + 1).toLower() == "." + QString::fromStdString(g_ext))
+		event->acceptProposedAction();
+}
+
 
 void PluginWidget::initializeListView()
 {
@@ -60,4 +84,7 @@ void PluginWidget::cellSelected(int nRow, int)
     emit pluginChanged(*m_pluginManager->plugins().at(nRow));
 }
 
+void PluginWidget::dropEvent(QDropEvent * dropEvent)
+{
+}
 } //namespace gloperate_qtwidgets

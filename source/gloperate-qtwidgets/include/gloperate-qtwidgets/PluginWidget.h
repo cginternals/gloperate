@@ -36,6 +36,8 @@ signals:
 protected:
     virtual void initializeListView();
     virtual void cellSelected(int nRow, int);
+	virtual void dragEnterEvent(QDragEnterEvent *event);
+	virtual void dropEvent(QDropEvent * dropEvent);
 
 protected:
 	std::shared_ptr<gloperate::PluginManager> m_pluginManager;
