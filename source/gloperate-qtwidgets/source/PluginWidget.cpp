@@ -12,6 +12,7 @@
 #include <QString>
 #include <QStringList>
 #include <QWindow>
+#include <QDebug>
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <cassert>
@@ -28,8 +29,8 @@ namespace gloperate_qtwidgets
 
 PluginWidget::PluginWidget(std::shared_ptr<gloperate::PluginManager> pluginManager, QWidget *parent)
 :	QWidget(parent)
-,	m_ui(new Ui_PluginWidget)
 ,	m_pluginManager(pluginManager)
+,	m_ui(new Ui_PluginWidget)
 {
 	m_ui->setupUi(this);
 
@@ -46,6 +47,8 @@ void PluginWidget::dragEnterEvent(QDragEnterEvent *event)
 {
 	QString uri = event->mimeData()->data("text/uri-list");
 	int len = uri.length();
+
+    qDebug() << uri;
 
 	if (uri.mid(len - g_ext.length() - 3).left(g_ext.length() + 1).toLower() == "." + QString::fromStdString(g_ext))
 		event->acceptProposedAction();
@@ -84,7 +87,7 @@ void PluginWidget::cellSelected(int nRow, int)
     emit pluginChanged(*m_pluginManager->plugins().at(nRow));
 }
 
-void PluginWidget::dropEvent(QDropEvent * dropEvent)
+void PluginWidget::dropEvent(QDropEvent * /*dropEvent*/)
 {
 }
 } //namespace gloperate_qtwidgets
