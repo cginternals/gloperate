@@ -122,15 +122,15 @@ protected:
     *  @remarks
     *    The painter takes ownership of the capability.
     */
-    AbstractCapability * addCapability(std::unique_ptr<AbstractCapability> capability);
+    AbstractCapability * addCapability(AbstractCapability * capability);
     
     template <typename Capability>
-    Capability * addCapability(std::unique_ptr<Capability> capability);
+    Capability * addCapability(Capability * capability);
 
 
 protected:
     ResourceManager & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
-    std::vector<std::unique_ptr<AbstractCapability>>  m_capabilities; /**< List of supported capabilities */    
+    std::vector<AbstractCapability *>  m_capabilities; /**< List of supported capabilities */
 };
 
 

@@ -2,8 +2,6 @@
 
 #include <gloperate/base/collection.hpp>
 
-#include <gloperate/base/make_unique.hpp>
-
 #include <gloperate/pipeline/AbstractPipeline.h>
 #include <gloperate/pipeline/AbstractData.h>
 #include <gloperate/pipeline/Data.h>
@@ -13,22 +11,20 @@ namespace gloperate
 {
 
 template<typename... Args>
-void AbstractPipeline::addStages(std::unique_ptr<AbstractStage> stage, Args... pipeline)
+void AbstractPipeline::addStages(AbstractStage * stage, Args... pipeline)
 {
-    addStage(std::move(stage));
+    addStage(stage);
     addStages(std::forward<Args>(pipeline)...);
 }
 
 template <typename T>
 Data<T> * AbstractPipeline::addConstantParameter(const T & value)
 {
-    auto constant = make_unique<Data<T>>(value);
+    auto constant = new Data<T>(value);
 
-    auto ptr = constant.get();
+    m_constantParameters.push_back(constant);
 
-    m_constantParameters.push_back(std::move(constant));
-
-    return ptr;
+    return constant;
 }
 
 template <typename T>

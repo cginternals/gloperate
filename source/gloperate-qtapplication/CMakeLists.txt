@@ -4,9 +4,15 @@ set(target gloperate-qtapplication)
 find_package(Qt5Core    5.1 QUIET)
 find_package(Qt5Gui     5.1 QUIET)
 find_package(Qt5Widgets 5.1 QUIET) # this is also important in order to get uic working 
+find_package(ASSIMP QUIET)
 
 if (NOT Qt5Core_FOUND)
-    message(STATUS "Tool ${target} (disabled because Qt5 couldn't be found)")
+    message(STATUS "Lib ${target} (disabled because Qt5 couldn't be found)")
+    return()
+endif()
+
+if (NOT ASSIMP_FOUND)
+    message(STATUS "Lib ${target} (disabled because Assimp couldn't be found)")
     return()
 endif()
 
@@ -50,6 +56,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
     ${CMAKE_SOURCE_DIR}/source/gloperate-qt/include
     ${CMAKE_SOURCE_DIR}/source/gloperate-qtwidgets/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-assimp/include
 )
 
 
@@ -62,6 +69,7 @@ set(libs
     gloperate
     gloperate-qt
     gloperate-qtwidgets
+    gloperate-assimp
 )
 
 # Compiler definitions

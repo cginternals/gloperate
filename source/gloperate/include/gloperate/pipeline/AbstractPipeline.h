@@ -42,7 +42,7 @@ public:
 
     virtual void execute();
 
-    virtual void addStage(std::unique_ptr<AbstractStage> stage);
+    virtual void addStage(AbstractStage * stage);
 
     void addParameter(AbstractData * parameter);
     void addParameter(const std::string & name, AbstractData * parameter);
@@ -70,9 +70,9 @@ public:
     Data<T> * getOutput() const;
 
     template<typename... Args>
-    void addStages(std::unique_ptr<AbstractStage>, Args... pipeline);
+    void addStages(AbstractStage * stage, Args... pipeline);
 
-    std::vector<AbstractStage *> stages() const;
+    const std::vector<AbstractStage *> & stages() const;
     const std::vector<AbstractData *> & parameters() const;
 
     std::set<AbstractData *> unusedParameters();
@@ -82,13 +82,13 @@ protected:
     void addStages();
     bool initializeStages();
 
-    static bool tsort(std::vector<std::unique_ptr<AbstractStage>> & stages);
+    static bool tsort(std::vector<AbstractStage *> &stages);
 
 protected:
     bool m_initialized;
     std::string m_name;
-    std::vector<std::unique_ptr<AbstractStage>> m_stages;
-    std::vector<std::unique_ptr<AbstractData>> m_constantParameters;
+    std::vector<AbstractStage *> m_stages;
+    std::vector<AbstractData *> m_constantParameters;
     std::vector<AbstractData *> m_parameters;
     std::vector<const AbstractData *> m_sharedData;
     bool m_dependenciesSorted;

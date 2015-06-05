@@ -28,7 +28,18 @@ AbstractPipeline::AbstractPipeline(const std::string & name)
 {
 }
 
-AbstractPipeline::~AbstractPipeline() = default;
+AbstractPipeline::~AbstractPipeline()
+{
+    for (auto & stage : m_stages)
+    {
+        delete stage;
+    }
+
+    for (auto & constantParameter : m_constantParameters)
+    {
+        delete constantParameter;
+    }
+}
 
 const std::string & AbstractPipeline::name() const
 {
@@ -56,10 +67,10 @@ std::string AbstractPipeline::asPrintable() const
     return n;
 }
 
-void AbstractPipeline::addStage(std::unique_ptr<AbstractStage> stage)
+void AbstractPipeline::addStage(AbstractStage * stage)
 {
     stage->dependenciesChanged.connect([this]() { m_dependenciesSorted = false; });
-    m_stages.push_back(std::move(stage));
+    m_stages.push_back(stage);
 }
 
 void AbstractPipeline::addParameter(AbstractData * parameter)
@@ -85,9 +96,9 @@ void AbstractPipeline::addParameter(const std::string & name, AbstractData * par
     addParameter(parameter);
 }
 
-std::vector<AbstractStage *> AbstractPipeline::stages() const
+const std::vector<AbstractStage *> & AbstractPipeline::stages() const
 {
-    return collect(m_stages, [](const std::unique_ptr<AbstractStage> & stage) { return stage.get(); });
+    return m_stages;
 }
 
 const std::vector<AbstractData *> & AbstractPipeline::parameters() const
@@ -170,55 +181,58 @@ void AbstractPipeline::addStages()
 {
 }
 
-bool AbstractPipeline::tsort(std::vector<std::unique_ptr<AbstractStage>> & stages)
+bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
 {
     auto couldBeSorted = true;
-    std::vector<std::unique_ptr<AbstractStage>> sorted;
+    std::vector<AbstractStage *> sorted;
     std::set<AbstractStage *> touched;
 
-    std::function<void(std::unique_ptr<AbstractStage>)> visit = [&](std::unique_ptr<AbstractStage> stage)
+    std::function<void(AbstractStage *)> visit = [&](AbstractStage * stage)
     {
         if (!couldBeSorted)
         {
-            sorted.push_back(std::move(stage));
+            sorted.push_back(stage);
             return;
         }
 
-        if (touched.count(stage.get()) > 0)
+        if (touched.count(stage) > 0)
         {
             std::cerr << "Pipeline is not a directed acyclic graph" << std::endl;
             couldBeSorted = false;
-            sorted.push_back(std::move(stage));
+            sorted.push_back(stage);
             return;
         }
 
-        touched.insert(stage.get());
+        touched.insert(stage);
 
-        for (auto stageIt = stages.begin(); stageIt != stages.end();)
+        for (auto stageIt = stages.begin(); stageIt != stages.end(); /* nop */)
         {
-            if (!stage->requires((*stageIt).get(), false))
+            if (!stage->requires(*stageIt, false))
             {
                 ++stageIt;
                 continue;
             }
 
-            auto nextStage = std::move(*stageIt);
-            stageIt = stages.erase(stageIt);
-            visit(std::move(nextStage));
+            auto nextStage = *stageIt;
+            stages.erase(stageIt);
+            visit(nextStage);
+
+            stageIt = stages.begin();
         }
 
-        sorted.push_back(std::move(stage));
+        sorted.push_back(stage);
     };
 
     while (!stages.empty())
     {
         auto stageIt = stages.begin();
-        auto stage = std::move(*stageIt);
+        auto stage = *stageIt;
         stages.erase(stageIt);
-        visit(std::move(stage));
+        visit(stage);
     }
 
-    stages = std::move(sorted);
+    stages = sorted;
+
     return couldBeSorted;
 }
 

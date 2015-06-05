@@ -1,5 +1,7 @@
+
 # Target
-set(target gloperate-osg)
+set(target gloperate-assimp)
+
 
 #
 # External libraries
@@ -9,15 +11,17 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
-find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
+find_package(ASSIMP QUIET)
 
-# Build only if OSG is available
-if(NOT OPENSCENEGRAPH_FOUND)
-    message(STATUS "Lib ${target} (disabled because OSG couldn't be found)")
+# Build only if ASSIMP is available
+if (NOT ASSIMP_FOUND)
+    message("Library ${target} skipped: ASSIMP not found")
     return()
 endif()
 
+
 message(STATUS "Lib ${target}")
+
 
 #
 # Includes
@@ -28,7 +32,7 @@ include_directories(
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
     ${LIBZEUG_INCLUDES}
-    ${OPENSCENEGRAPH_INCLUDE_DIRS}
+    ${ASSIMP_INCLUDE_DIRS}
 )
 
 include_directories(
@@ -36,6 +40,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/source/gloperate/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
 
 #
 # Libraries
@@ -45,9 +50,10 @@ set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
     ${LIBZEUG_LIBRARIES}
-    ${OPENSCENEGRAPH_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
     gloperate
 )
+
 
 #
 # Compiler definitions
@@ -56,11 +62,12 @@ set(libs
 if (OPTION_BUILD_STATIC)
     add_definitions("-DGLOPERATE_STATIC")
 else()
-    add_definitions("-DGLOPERATE_OSG_EXPORTS")
+    add_definitions("-DGLOPERATE_ASSIMP_EXPORTS")
 endif()
 
 # for compatibility between glm 0.9.4 and 0.9.5
 add_definitions("-DGLM_FORCE_RADIANS")
+
 
 #
 # Sources
@@ -70,23 +77,14 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/OsgPainter.cpp
-    ${source_path}/OsgPainter_osg.cpp
-    ${source_path}/OsgRenderStage.cpp
-    ${source_path}/OsgRenderStage_osg.cpp
-    ${source_path}/OsgFboRenderStage.cpp
-    ${source_path}/OsgFboRenderStage_osg.cpp
-    ${source_path}/OsgMouseHandler.cpp
-    ${source_path}/OsgKeyboardHandler.cpp
+    ${source_path}/AssimpMeshLoader.cpp
+    ${source_path}/AssimpSceneLoader.cpp
 )
 
 set(headers
-    ${include_path}/gloperate-osg_api.h
-    ${include_path}/OsgPainter.h
-    ${include_path}/OsgRenderStage.h
-    ${include_path}/OsgFboRenderStage.h
-    ${include_path}/OsgMouseHandler.h
-    ${include_path}/OsgKeyboardHandler.h
+    ${include_path}/gloperate-assimp_api.h
+    ${include_path}/AssimpMeshLoader.h
+    ${include_path}/AssimpSceneLoader.h
 )
 
 # Group source files
@@ -96,6 +94,7 @@ source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$"
     ${header_group} ${headers})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
+
 
 #
 # Build library
@@ -117,6 +116,7 @@ set_target_properties(${target}
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
     INCLUDE_PATH                ${include_path})
+
 
 #
 # Deployment
