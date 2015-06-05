@@ -16,13 +16,20 @@
 #include <gloperate-qt/qt-includes-end.h>
 
 #include <cassert>
+#include <ostream>
+
+namespace
+{
+// Define system specific filename properties
 #ifdef WIN32
+const int RTLD_LAZY(0); // ignore for win32 - see dlopen
 const std::string g_ext = "dll";
 #elif __APPLE__
 const std::string g_ext = "dylib";
 #else
 const std::string g_ext = "so";
 #endif
+}
 
 namespace gloperate_qtwidgets
 {
@@ -47,8 +54,6 @@ void PluginWidget::dragEnterEvent(QDragEnterEvent *event)
 {
 	QString uri = event->mimeData()->data("text/uri-list");
 	int len = uri.length();
-
-    qDebug() << uri;
 
 	if (uri.mid(len - g_ext.length() - 3).left(g_ext.length() + 1).toLower() == "." + QString::fromStdString(g_ext))
 		event->acceptProposedAction();
@@ -87,7 +92,14 @@ void PluginWidget::cellSelected(int nRow, int)
     emit pluginChanged(*m_pluginManager->plugins().at(nRow));
 }
 
-void PluginWidget::dropEvent(QDropEvent * /*dropEvent*/)
+void PluginWidget::dropEvent(QDropEvent * dropEvent)
 {
+	int len = dropEvent->mimeData()->data("text/uri-list").length();
+	QString uri = dropEvent->mimeData()->data("text/uri-list").right(len - 8);
+	QString filename = uri.left(uri.length() - 2);
+	qDebug() << filename;
+	m_pluginManager->loadLibrary(filename.toStdString(), false);
+	m_ui->pluginTableWidget->clear();
+	initializeListView();
 }
 } //namespace gloperate_qtwidgets
