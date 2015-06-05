@@ -21,7 +21,6 @@
 #include <globjects/base/StringTemplate.h>
 
 #include <gloperate/base/RenderTargetType.h>
-#include <gloperate/base/make_unique.hpp>
 
 #include <gloperate/pipeline/AbstractStage.h>
 #include <gloperate/pipeline/Data.h>
@@ -40,8 +39,6 @@
 #include <gloperate/primitives/Icosahedron.h>
 #include <gloperate/primitives/ScreenAlignedQuad.h>
 
-
-using gloperate::make_unique;
 
 class RasterizationStage : public gloperate::AbstractStage
 {
@@ -225,8 +222,8 @@ protected:
 
 PostprocessingPipeline::PostprocessingPipeline()
 {
-    auto rasterizationStage = make_unique<RasterizationStage>();
-    auto postprocessingStage = make_unique<PostprocessingStage>();
+    auto rasterizationStage = new RasterizationStage();
+    auto postprocessingStage = new PostprocessingStage();
 
     rasterizationStage->camera = camera;
     rasterizationStage->viewport = viewport;
@@ -245,8 +242,9 @@ PostprocessingPipeline::PostprocessingPipeline()
         });
 
     addStages(
-        std::move(rasterizationStage),
-        std::move(postprocessingStage));
+        rasterizationStage,
+        postprocessingStage
+    );
 }
 
 PostprocessingPipeline::~PostprocessingPipeline()

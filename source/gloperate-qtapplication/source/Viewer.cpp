@@ -23,6 +23,9 @@
 #include <gloperate-qt/QtMouseEventProvider.h>
 #include <gloperate-qt/QtWheelEventProvider.h>
 
+#include <gloperate-assimp/AssimpMeshLoader.h>
+#include <gloperate-assimp/AssimpSceneLoader.h>
+
 #include <widgetzeug/MessageHandler.h>
 #include <widgetzeug/MessageStatusWidget.h>
 #include <widgetzeug/MessageWidget.h>
@@ -40,6 +43,7 @@ using namespace widgetzeug;
 
 using namespace gloperate;
 using namespace gloperate_qt;
+using namespace gloperate_assimp;
 
 namespace
 {
@@ -69,6 +73,8 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     m_resourceManager.reset(new ResourceManager());
     m_resourceManager->addLoader(new QtTextureLoader());
     m_resourceManager->addStorer(new QtTextureStorer());
+    m_resourceManager->addLoader(new AssimpMeshLoader());
+    m_resourceManager->addLoader(new AssimpSceneLoader());
 
     // setup UI
     attachMessageWidgets(); 

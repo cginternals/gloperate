@@ -68,7 +68,7 @@ set(libs
 # Compiler definitions
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_QTWIDGETS_STATIC")
+    add_definitions("-DGLOPERATE_STATIC")
 else()
     add_definitions("-DGLOPERATE_QTWIDGETS_EXPORTS")
 endif()

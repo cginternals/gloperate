@@ -13,7 +13,7 @@
 
 using namespace gl;
 using namespace gloperate;
-using gloperate::make_unique;
+
 
 namespace gloperate_osg
 {
@@ -34,10 +34,10 @@ OsgPainter::OsgPainter(ResourceManager & resourceManager, const std::string & na
 , m_viewportHeight(0)
 {
     // Register capabilities
-    m_viewportCapability = addCapability(make_unique<gloperate::ViewportCapability>());
-    m_targetFramebufferCapability = addCapability(make_unique<gloperate::TargetFramebufferCapability>());
-    m_inputCapability = addCapability(make_unique<gloperate::InputCapability>());
-    m_virtualTimeCapability = addCapability(make_unique<gloperate::VirtualTimeCapability>());
+    m_viewportCapability = addCapability(new gloperate::ViewportCapability);
+    m_targetFramebufferCapability = addCapability(new gloperate::TargetFramebufferCapability);
+    m_inputCapability = addCapability(new gloperate::InputCapability);
+    m_virtualTimeCapability = addCapability(new gloperate::VirtualTimeCapability);
 }
 
 /**

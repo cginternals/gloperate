@@ -52,6 +52,7 @@ public:
     void addDependency(AbstractStage * stage);
 
     void alwaysProcess(bool on);
+    bool isAlwaysProcess() const;
     void scheduleProcess();
 
     void invalidateOutputs();
@@ -77,7 +78,7 @@ protected:
     std::set<AbstractData*> m_sharedOutputs;
     std::set<AbstractInputSlot*> m_inputs;
     std::set<AbstractInputSlot*> m_sharedInputs;
-    std::set<AbstractStage*> m_dependencies;
+    std::set<AbstractStage*> m_dependencies;    /**< Additional manual dependencies not expressed by data connections */
 
 private:
     AbstractStage(const AbstractStage&) = delete;
