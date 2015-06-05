@@ -23,6 +23,8 @@
 #include <gloperate-qt/QtMouseEventProvider.h>
 #include <gloperate-qt/QtWheelEventProvider.h>
 
+#include <gloperate-qtwidgets/PluginWidget.h>
+
 #include <gloperate-assimp/AssimpMeshLoader.h>
 #include <gloperate-assimp/AssimpSceneLoader.h>
 
@@ -244,6 +246,17 @@ void Viewer::on_colorSchemePresetsAction_triggered()
 
     cspw->setWindowModality(Qt::ApplicationModal);
     cspw->show();*/
+}
+
+void Viewer::on_pluginPaintersAction_triggered()
+{
+	if (m_pluginManager)
+	{
+		gloperate_qtwidgets::PluginWidget * ppw{ new gloperate_qtwidgets::PluginWidget(m_pluginManager) };
+
+	ppw->setWindowModality(Qt::ApplicationModal);
+	ppw->show();
+	}
 }
 
 void Viewer::on_showPluginsAction_triggered()

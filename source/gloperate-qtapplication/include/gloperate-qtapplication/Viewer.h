@@ -52,6 +52,7 @@ public:
 
 protected slots:
     void on_colorSchemePresetsAction_triggered();
+	void on_pluginPaintersAction_triggered();
 	void on_showPluginsAction_triggered();
 
     void switchToPainter(bool);
@@ -70,7 +71,7 @@ protected:
 	//std::make_unqiue gloperate_qt::QtOpenGLWindow * canvas
 
 	std::unique_ptr<gloperate::ResourceManager> m_resourceManager;
-	std::unique_ptr<gloperate::PluginManager>   m_pluginManager;
+	std::shared_ptr<gloperate::PluginManager>   m_pluginManager;
 
     std::unique_ptr<gloperate_qt::QtOpenGLWindow> m_canvas;
     std::unique_ptr<gloperate::Painter> m_currentPainter;
