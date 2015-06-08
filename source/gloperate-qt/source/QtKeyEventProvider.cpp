@@ -20,7 +20,8 @@ namespace gloperate_qt
 *  @brief
 *    Constructor
 */
-QtKeyEventProvider::QtKeyEventProvider()
+QtKeyEventProvider::QtKeyEventProvider(QObject * parent)
+:   QObject{ parent }
 {
 }
 

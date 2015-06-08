@@ -24,7 +24,8 @@ namespace gloperate_qt
 *  @brief
 *    Constructor
 */
-QtMouseEventProvider::QtMouseEventProvider()
+QtMouseEventProvider::QtMouseEventProvider(QObject * parent)
+:   QObject{ parent }
 {
 }
 
@@ -47,7 +48,7 @@ bool QtMouseEventProvider::eventFilter(QObject * obj, QEvent * event)
         auto window = dynamic_cast<QWindow*>(obj);
         if (qMouseEvent && window) {
             auto eventType = QtEventTransformer::mouseTypeFromQtType(qMouseEvent->type());
-            auto position = QtEventTransformer::fromQPoint(qMouseEvent->pos());
+            auto position = QtEventTransformer::fromQPoint(qMouseEvent->pos()) * static_cast<int>(window->devicePixelRatio());
             auto button = QtEventTransformer::fromQtMouseButton(qMouseEvent->button());
             auto buttonMask = QtEventTransformer::fromQtMouseButtons(qMouseEvent->buttons());
             auto modifiers = QtEventTransformer::fromQtKeyboardModifiers(qMouseEvent->modifiers());
@@ -55,7 +56,7 @@ bool QtMouseEventProvider::eventFilter(QObject * obj, QEvent * event)
                     new MouseEvent(eventType,
                                       position,
                                       m_lastPos,
-                                      { window->width(), window->height() },
+                                      glm::ivec2{ window->width(), window->height() } * static_cast<int>(window->devicePixelRatio()),
                                       button,
                                       buttonMask,
                                       modifiers);

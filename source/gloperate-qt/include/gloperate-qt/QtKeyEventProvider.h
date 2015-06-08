@@ -35,7 +35,7 @@ public:
     *  @brief
     *    Constructor
     */
-    QtKeyEventProvider();
+    explicit QtKeyEventProvider(QObject * parent = nullptr);
 
     /**
     *  @brief

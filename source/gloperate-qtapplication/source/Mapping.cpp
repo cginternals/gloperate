@@ -170,7 +170,7 @@ void Mapping::mapMouseEvent(MouseEvent * mouseEvent)
 {
     if (mouseEvent)
     {
-        m_currentMousePosition = mouseEvent->position() * static_cast<int>(m_window->devicePixelRatio());
+        m_currentMousePosition = mouseEvent->position();
     }
 
     if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Press)

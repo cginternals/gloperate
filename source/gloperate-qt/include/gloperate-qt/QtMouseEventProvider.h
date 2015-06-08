@@ -34,7 +34,7 @@ public:
     *  @brief
     *    Constructor
     */
-    QtMouseEventProvider();
+    explicit QtMouseEventProvider(QObject * parent = nullptr);
 
     /**
     *  @brief

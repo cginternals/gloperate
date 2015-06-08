@@ -20,7 +20,8 @@ namespace gloperate_qt
 *  @brief
 *    Constructor
 */
-QtWheelEventProvider::QtWheelEventProvider()
+QtWheelEventProvider::QtWheelEventProvider(QObject * parent)
+:   QObject{ parent }
 {
 }
 

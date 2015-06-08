@@ -34,7 +34,7 @@ public:
     *  @brief
     *    Constructor
     */
-    QtWheelEventProvider();
+    explicit QtWheelEventProvider(QObject * parent = nullptr);
 
     /**
     *  @brief
