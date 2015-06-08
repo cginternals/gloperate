@@ -20,10 +20,10 @@ namespace gloperate_qt
 
 /**
 *  @brief
-*    Tool class to propagate continues time updates to a window
+*    Tool class to propagate continuous time updates to a window
 *
 *  @remarks
-*    This class is used in a window to allow for continues updates (e.g., to
+*    This class is used in a window to allow for continuous updates (e.g., to
 *    implement animations). It take a VirtualTimeCapability of a painter to
 *    propagate the time change to the painter, and automatically triggers
 *    an update of the window containing the painter.
@@ -42,7 +42,9 @@ public:
     *  @param[in] capability
     *    VirtualTimeCapability that is informed about the time change
     */
-    TimePropagator(gloperate_qt::QtOpenGLWindowBase * window, gloperate::AbstractVirtualTimeCapability * capability);
+    TimePropagator(gloperate_qt::QtOpenGLWindowBase * window);
+    
+    void setCapability(gloperate::AbstractVirtualTimeCapability * capability);
 
 protected slots:
     /**
@@ -52,10 +54,10 @@ protected slots:
     void update();
 
 protected:
-    gloperate_qt::QtOpenGLWindowBase          * m_window;        /**< Window that is updated when the timer has elapsed */
-    gloperate::AbstractVirtualTimeCapability * m_capability;    /**< VirtualTimeCapability that is informed about the time change */
-    QScopedPointer<QTimer>                           m_timer;            /**< Qt timer for continues updates */
-    gloperate::ChronoTimer                           m_time;            /**< Time measurement */
+    gloperate_qt::QtOpenGLWindowBase         * m_window;     /**< Window that is updated when the timer has elapsed */
+    gloperate::AbstractVirtualTimeCapability * m_capability; /**< VirtualTimeCapability that is informed about the time change */
+    QScopedPointer<QTimer> m_timer; /**< Qt timer for continuous updates */
+    gloperate::ChronoTimer m_time;  /**< Time measurement */
 };
 
 } // namespace gloperate_qt

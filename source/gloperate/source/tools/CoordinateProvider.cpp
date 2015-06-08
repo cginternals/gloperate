@@ -15,10 +15,10 @@ CoordinateProvider::CoordinateProvider(
     AbstractProjectionCapability * projectionCapability,
     AbstractViewportCapability * viewportCapability,
     AbstractTypedRenderTargetCapability * typedRenderTargetCapability)
-    :   m_cameraCapability(cameraCapability)
-    ,   m_projectionCapability(projectionCapability)
-    ,   m_viewportCapability(viewportCapability)
-    ,   m_typedRenderTargetCapability(typedRenderTargetCapability)
+:   m_cameraCapability(cameraCapability)
+,   m_projectionCapability(projectionCapability)
+,   m_viewportCapability(viewportCapability)
+,   m_typedRenderTargetCapability(typedRenderTargetCapability)
 {
 }
 

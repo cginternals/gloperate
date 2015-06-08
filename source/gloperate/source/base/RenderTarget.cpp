@@ -14,7 +14,9 @@ namespace gloperate
 *    Standard Constructor
 */
 RenderTarget::RenderTarget()
-    :   m_valid(false)
+    :   m_attachment()
+    ,   m_format()
+    ,   m_valid(false)
 {
 }
 

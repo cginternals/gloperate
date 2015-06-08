@@ -7,7 +7,7 @@
 #include <globjects/base/CachedValue.h>
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/base/Signal.h>
+#include <signalzeug/Signal.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 
 

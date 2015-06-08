@@ -138,7 +138,12 @@ std::string Application::baseName(const std::string & filePath)
 {
     auto i = filePath.find_last_of(g_sep);
 
-    std::string fileName = i == filePath.npos ? filePath : filePath.substr(++i);
+    std::string fileName = filePath;
+
+    if (i == std::string::npos)
+    {
+        fileName = filePath.substr(++i);
+    }
 
     while (fileName.length() > 0 && fileName[0] == '.') // note: filename might start with '.'
         fileName = fileName.substr(1);

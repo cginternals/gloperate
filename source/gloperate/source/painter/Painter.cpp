@@ -5,16 +5,17 @@
 namespace gloperate
 {
 
-    
-Painter::Painter(ResourceManager & resourceManager)
-: m_resourceManager(resourceManager)
+
+Painter::Painter(ResourceManager & resourceManager, const std::string & name)
+:   Object(name)
+,   m_resourceManager(resourceManager)
 {
 }
 
 Painter::~Painter()
 {
-    // Destroy capabilities
-    for (AbstractCapability * capability : m_capabilities) {
+    for (auto & capability : m_capabilities)
+    {
         delete capability;
     }
 }
@@ -29,9 +30,11 @@ void Painter::paint()
     onPaint();
 }
 
-void Painter::addCapability(AbstractCapability * capability)
+AbstractCapability * Painter::addCapability(AbstractCapability * capability)
 {
     m_capabilities.push_back(capability);
+
+    return capability;
 }
 
 

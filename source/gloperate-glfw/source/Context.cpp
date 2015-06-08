@@ -38,17 +38,6 @@ glbinding::Version Context::maxSupportedVersion()
 
     glfwWindowHint(GLFW_VISIBLE, false);
 
-#ifdef __APPLE__
-    /*
-    * Using OS X the following hints must be set for proper context initialization
-    * (cf. http://stackoverflow.com/questions/19969937/getting-a-glsl-330-context-on-osx-10-9-mavericks)
-    */
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
-#endif
-
     // create window for version check
     GLFWwindow * window = glfwCreateWindow(1, 1, "VersionCheck", nullptr, nullptr);
 
@@ -62,13 +51,35 @@ glbinding::Version Context::maxSupportedVersion()
         glfwMakeContextCurrent(nullptr);
         glfwDestroyWindow(window);
     }
+
+    if (version <= glbinding::Version(3, 0))
+    {
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+        window = glfwCreateWindow(1, 1, "VersionCheck", nullptr, nullptr);
+
+        if (window)
+        {
+            glfwMakeContextCurrent(window);
+
+            glbinding::Binding::initialize(false);
+            version = retrieveVersion();
+
+            glfwMakeContextCurrent(nullptr);
+            glfwDestroyWindow(window);
+        }
+    }
+
     return version;
 }
 
 GLFWwindow * Context::create(const ContextFormat & format)
 {
     // check if version is valid and supported
-    glbinding::Version version = ContextFormat::validateVersion(format.version(), maxSupportedVersion());
+    glbinding::Version version = format.version() < glbinding::Version(3, 0) ? maxSupportedVersion() : ContextFormat::validateVersion(format.version(), maxSupportedVersion());
 
     /*
     * GLFW3 does not set default hint values on window creation so at least
@@ -131,8 +142,7 @@ Context::Context(GLFWwindow * window)
 : m_format(nullptr)
 , m_window(window)
 {
-    if (!window)
-        return;
+    assert(window);
 
     GLFWwindow * current = glfwGetCurrentContext();
     if (current != m_window)

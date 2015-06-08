@@ -22,7 +22,6 @@ using namespace globjects;
 using namespace gloperate;
 using namespace gl;
 
-
 static const char * s_vertexShader = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
@@ -58,14 +57,12 @@ void main()
 
 RotatingQuad::RotatingQuad(ResourceManager & resourceManager)
 : Painter(resourceManager)
-, m_viewportCapability(new gloperate::ViewportCapability)
-, m_timeCapability(new gloperate::VirtualTimeCapability)
 , m_angle(0.0f)
 {
-    m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
+    m_viewportCapability = addCapability(new gloperate::ViewportCapability());
+    m_timeCapability = addCapability(new gloperate::VirtualTimeCapability());
 
-    addCapability(m_viewportCapability);
-    addCapability(m_timeCapability);
+    m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
 }
 
 RotatingQuad::~RotatingQuad()

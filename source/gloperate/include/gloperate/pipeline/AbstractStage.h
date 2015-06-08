@@ -6,7 +6,7 @@
 #include <gloperate/gloperate_api.h>
 
 #include <globjects/base/CachedValue.h>
-#include <gloperate/base/Signal.h>
+#include <signalzeug/Signal.h>
 
 
 namespace gloperate
@@ -52,12 +52,13 @@ public:
     void addDependency(AbstractStage * stage);
 
     void alwaysProcess(bool on);
+    bool isAlwaysProcess() const;
     void scheduleProcess();
 
     void invalidateOutputs();
 
 public:
-    gloperate::Signal<> dependenciesChanged;
+    signalzeug::Signal<> dependenciesChanged;
 
 protected:
     bool needsToProcess() const;
@@ -77,7 +78,7 @@ protected:
     std::set<AbstractData*> m_sharedOutputs;
     std::set<AbstractInputSlot*> m_inputs;
     std::set<AbstractInputSlot*> m_sharedInputs;
-    std::set<AbstractStage*> m_dependencies;
+    std::set<AbstractStage*> m_dependencies;    /**< Additional manual dependencies not expressed by data connections */
 
 private:
     AbstractStage(const AbstractStage&) = delete;

@@ -12,12 +12,10 @@ using namespace gloperate;
 using namespace globjects;
 using namespace gl;
 
-
 TexturedQuad::TexturedQuad(ResourceManager & resourceManager)
 : Painter(resourceManager)
-, m_viewportCapability(new gloperate::ViewportCapability)
 {
-    addCapability(m_viewportCapability);
+    m_viewportCapability = addCapability(new gloperate::ViewportCapability());
 }
 
 TexturedQuad::~TexturedQuad()

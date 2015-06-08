@@ -3,7 +3,8 @@
 
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/base/Signal.h>
+
+#include <signalzeug/Signal.h>
 
 
 namespace gloperate 
@@ -69,7 +70,7 @@ public:
     template <typename T>
     T* as();
 public:
-    Signal<> changed;   /**< Called when the capability information has been changed */
+    signalzeug::Signal<> changed;   /**< Called when the capability information has been changed */
 
 
 protected:

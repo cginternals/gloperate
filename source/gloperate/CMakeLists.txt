@@ -9,7 +9,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-
+find_package(libzeug REQUIRED)
 
 # Includes
 
@@ -17,6 +17,7 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
@@ -32,6 +33,7 @@ set(libs
     ${OPENGL_LIBRARIES}
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
 )
 
 
@@ -55,14 +57,10 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(sources
     ${source_path}/base/RenderTarget.cpp
     ${source_path}/base/dirent_msvc.h
-    ${source_path}/base/AbstractSignal.cpp
     ${source_path}/base/DirectoryIterator.cpp
-    ${source_path}/base/Connection.cpp
     ${source_path}/base/directorytraversal.cpp
-    ${source_path}/base/ScopedConnection.cpp
     ${source_path}/base/DirectoryIterator.h
     ${source_path}/base/ChronoTimer.cpp
-    ${source_path}/base/ConnectionMap.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/CyclicTime.cpp
     
@@ -105,6 +103,8 @@ set(sources
     ${source_path}/painter/MetaInformationCapability.cpp
     ${source_path}/painter/AbstractOutputCapability.cpp
     ${source_path}/painter/PipelineOutputCapability.cpp
+    ${source_path}/painter/AbstractOrthographicProjectionCapability.cpp
+    ${source_path}/painter/OrthographicProjectionCapability.cpp
     
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/InputSlot.cpp
@@ -116,7 +116,8 @@ set(sources
     ${source_path}/plugin/PluginManager.cpp
     ${source_path}/plugin/Plugin.cpp
     ${source_path}/plugin/PluginLibrary.cpp
-    
+
+    ${source_path}/primitives/AbstractDrawable.cpp
     ${source_path}/primitives/Plane3.cpp
     ${source_path}/primitives/VertexDrawable.cpp
     ${source_path}/primitives/UniformGroup.cpp
@@ -125,6 +126,9 @@ set(sources
     ${source_path}/primitives/Icosahedron.cpp
     ${source_path}/primitives/Plane3.h
     ${source_path}/primitives/AdaptiveGrid.cpp
+    ${source_path}/primitives/PolygonalGeometry.cpp
+    ${source_path}/primitives/PolygonalDrawable.cpp
+    ${source_path}/primitives/Scene.cpp
     
     ${source_path}/resources/AbstractStorer.cpp
     ${source_path}/resources/AbstractLoader.cpp
@@ -143,19 +147,13 @@ set(sources
 )
 
 set(api_includes
-    ${include_path}/base/ScopedConnection.h
-    ${include_path}/base/Signal.h
-    ${include_path}/base/Signal.hpp
     ${include_path}/base/RenderTarget.h
     ${include_path}/base/directorytraversal.h
-    ${include_path}/base/Connection.h
-    ${include_path}/base/ConnectionMap.hpp
-    ${include_path}/base/ConnectionMap.h
     ${include_path}/base/collection.hpp
     ${include_path}/base/CyclicTime.h
     ${include_path}/base/ChronoTimer.h
-    ${include_path}/base/AbstractSignal.h
     ${include_path}/base/AutoTimer.h
+    ${include_path}/base/make_unique.hpp
     
     ${include_path}/gloperate_api.h
     
@@ -202,6 +200,8 @@ set(api_includes
     ${include_path}/painter/AbstractOutputCapability.h
     ${include_path}/painter/AbstractOutputCapability.hpp
     ${include_path}/painter/PipelineOutputCapability.h
+    ${include_path}/painter/AbstractOrthographicProjectionCapability.h
+    ${include_path}/painter/OrthographicProjectionCapability.h
     
     ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/AbstractPipeline.hpp
@@ -209,6 +209,7 @@ set(api_includes
     ${include_path}/pipeline/AbstractStage.h
     ${include_path}/pipeline/InputSlot.h
     ${include_path}/pipeline/PipelinePainter.h
+    ${include_path}/pipeline/PipelinePainter.hpp
     ${include_path}/pipeline/InputSlot.hpp
     ${include_path}/pipeline/AbstractPipeline.h
     ${include_path}/pipeline/Data.h
@@ -221,6 +222,7 @@ set(api_includes
     ${include_path}/plugin/PainterPlugin.h
     ${include_path}/plugin/PluginManager.h
     
+    ${include_path}/primitives/AbstractDrawable.h
     ${include_path}/primitives/UniformGroup.hpp
     ${include_path}/primitives/Interpolation.h
     ${include_path}/primitives/VertexDrawable.h
@@ -229,6 +231,9 @@ set(api_includes
     ${include_path}/primitives/Icosahedron.h
     ${include_path}/primitives/AxisAlignedBoundingBox.h
     ${include_path}/primitives/UniformGroup.h
+    ${include_path}/primitives/PolygonalGeometry.h
+    ${include_path}/primitives/PolygonalDrawable.h
+    ${include_path}/primitives/Scene.h
     
     ${include_path}/resources/ResourceManager.hpp
     ${include_path}/resources/RawFile.h

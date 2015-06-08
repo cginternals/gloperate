@@ -8,7 +8,7 @@
 #include <globjects/base/CachedValue.h>
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/base/Signal.h>
+#include <signalzeug/Signal.h>
 
 
 namespace gloperate
@@ -283,7 +283,7 @@ public:
 
 
 public:
-    Signal<> invalidated;   /**< Called when the camera has been modified */
+    signalzeug::Signal<> invalidated;   /**< Called when the camera has been modified */
 
 
 protected:

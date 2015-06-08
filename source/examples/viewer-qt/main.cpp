@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
     pluginManager.scan("painters");
 
     // Choose a painter
-    std::string name = (argc > 1) ? argv[1] : "CubeScape";
+    std::string name = (argc > 1) ? argv[1] : "PostprocessingPipeline";
 
     std::unique_ptr<gloperate::Painter> painter(nullptr);
     Plugin * plugin = pluginManager.plugin(name);
@@ -76,7 +76,7 @@ int main(int argc, char * argv[])
     QSurfaceFormat format;
     format.setVersion(3, 2);
     format.setProfile(QSurfaceFormat::CoreProfile);
-    format.setDepthBufferSize(24);
+    format.setDepthBufferSize(16);
 
     QtOpenGLWindow * window = new QtOpenGLWindow(resourceManager, format);
     window->setPainter(painter.get());

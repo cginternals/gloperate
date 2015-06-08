@@ -30,10 +30,8 @@
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractVirtualTimeCapability.h>
 #include <gloperate/painter/AbstractTargetFramebufferCapability.h>
-#include <gloperate/painter/ViewportCapability.h>
-#include <gloperate/painter/VirtualTimeCapability.h>
-#include <gloperate/painter/TargetFramebufferCapability.h>
-#include <gloperate/painter/CameraCapability.h>
+#include <gloperate/painter/AbstractProjectionCapability.h>
+#include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 
@@ -223,80 +221,32 @@ protected:
 };
 
 PostprocessingPipeline::PostprocessingPipeline()
-: m_rasterization(new RasterizationStage)
-, m_postprocessing(new PostprocessingStage)
-, m_targetFBO(new gloperate::TargetFramebufferCapability)
-, m_viewport(new gloperate::ViewportCapability)
-, m_time(new gloperate::VirtualTimeCapability)
-, m_camera(new gloperate::CameraCapability)
-, m_projection(new gloperate::PerspectiveProjectionCapability(m_viewport))
-, m_renderTargets(new gloperate::TypedRenderTargetCapability)
 {
-    m_targetFBO.data()->changed.connect([this]() {
-        m_targetFBO.invalidate();
-    });
-    m_viewport.data()->changed.connect([this]() {
-        m_viewport.invalidate();
-    });
-    m_time.data()->changed.connect([this]() {
-        m_time.invalidate();
-    });
+    auto rasterizationStage = new RasterizationStage();
+    auto postprocessingStage = new PostprocessingStage();
 
-    dynamic_cast<gloperate::PerspectiveProjectionCapability*>(m_projection.data())->setZNear(0.1f);
-    dynamic_cast<gloperate::PerspectiveProjectionCapability*>(m_projection.data())->setZFar(16.f);
+    rasterizationStage->camera = camera;
+    rasterizationStage->viewport = viewport;
+    rasterizationStage->time = time;
+    rasterizationStage->projection = projection;
 
-    m_time.data()->setLoopDuration(glm::pi<float>() * 2);
+    postprocessingStage->color = rasterizationStage->color;
+    postprocessingStage->normal = rasterizationStage->normal;
+    postprocessingStage->geometry = rasterizationStage->geometry;
+    postprocessingStage->targetFramebuffer = targetFBO;
 
-    m_rasterization->camera = m_camera;
-    m_rasterization->viewport = m_viewport;
-    m_rasterization->time = m_time;
-    m_rasterization->projection = m_projection;
-
-    m_postprocessing->color = m_rasterization->color;
-    m_postprocessing->normal = m_rasterization->normal;
-    m_postprocessing->geometry = m_rasterization->geometry;
-    m_postprocessing->targetFramebuffer = m_targetFBO;
-
-    m_rasterization->color.invalidated.connect([this]() {
-        dynamic_cast<gloperate::TypedRenderTargetCapability*>(m_renderTargets.data())->setRenderTarget(gloperate::RenderTargetType::Depth, m_rasterization->fbo(), gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
-    });
+    rasterizationStage->color.invalidated.connect(
+        [this, &rasterizationStage]()
+        {
+            dynamic_cast<gloperate::TypedRenderTargetCapability *>(renderTargets.data())->setRenderTarget(gloperate::RenderTargetType::Depth, rasterizationStage->fbo(), gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
+        });
 
     addStages(
-        m_rasterization,
-        m_postprocessing
+        rasterizationStage,
+        postprocessingStage
     );
 }
 
 PostprocessingPipeline::~PostprocessingPipeline()
 {
-}
-
-gloperate::AbstractTargetFramebufferCapability * PostprocessingPipeline::targetFramebufferCapability()
-{
-    return m_targetFBO;
-}
-
-gloperate::AbstractViewportCapability * PostprocessingPipeline::viewportCapability()
-{
-    return m_viewport;
-}
-
-gloperate::AbstractVirtualTimeCapability * PostprocessingPipeline::virtualTimeCapability()
-{
-    return m_time;
-}
-
-gloperate::AbstractCameraCapability * PostprocessingPipeline::cameraCapability()
-{
-    return m_camera;
-}
-
-gloperate::AbstractProjectionCapability * PostprocessingPipeline::projectionCapability()
-{
-    return m_projection;
-}
-
-gloperate::AbstractTypedRenderTargetCapability * PostprocessingPipeline::renderTargetCapability()
-{
-    return m_renderTargets;
 }

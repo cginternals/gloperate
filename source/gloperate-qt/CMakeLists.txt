@@ -8,6 +8,7 @@ set(target gloperate-qt)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(libzeug REQUIRED)
 
 #
 # Qt5
@@ -20,10 +21,10 @@ if(MSVC)
     cmake_policy(SET CMP0020 NEW)
 endif()
 
-find_package(Qt5OpenGL  5.1 REQUIRED)
-find_package(Qt5Core    5.1 REQUIRED)
-find_package(Qt5Gui     5.1 REQUIRED)
-find_package(Qt5Widgets 5.1 REQUIRED)
+find_package(Qt5OpenGL  5.1 QUIET)
+find_package(Qt5Core    5.1 QUIET)
+find_package(Qt5Gui     5.1 QUIET)
+find_package(Qt5Widgets 5.1 QUIET)
 
 if (NOT Qt5Core_FOUND)
     message(STATUS "Example ${target} (disabled because Qt5 couldn't be found)")
@@ -45,6 +46,7 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
@@ -60,6 +62,7 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
@@ -72,7 +75,7 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_QT_STATIC")
+    add_definitions("-DGLOPERATE_STATIC")
 else()
     add_definitions("-DGLOPERATE_QT_EXPORTS")
 endif()
@@ -131,17 +134,6 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 add_library(${target} ${headers} ${sources})
 
 target_link_libraries(${target} ${libs})
-
-
-if(UNIX)
-    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} 
-        -Wtrampolines 
-        -Wfloat-equal 
-        -Wconversion 
-        -Wswitch
-    )
-endif()
-
 
 if(MSVC)
     # -> msvc14 : declaration hides class member (problem in qt)

@@ -1,3 +1,6 @@
+# Target
+set(target gloperate-glfw)
+
 #
 # External libraries
 #
@@ -5,13 +8,15 @@
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(libzeug REQUIRED)
 find_package(GLFW)
 
 # Build only if glfw is available
-if(GLFW_FOUND)
+if(NOT GLFW_FOUND)
+   message(STATUS "Lib ${target} (disabled because GLFW couldn't be found)")
+    return()
+endif()
 
-# Target
-set(target gloperate-glfw)
 message(STATUS "Lib ${target}")
 
 #
@@ -23,6 +28,7 @@ include_directories(
     ${GLFW_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
@@ -38,6 +44,7 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
     ${GLFW_LIBRARY}
     gloperate
 )
@@ -47,7 +54,7 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_GLFW_STATIC")
+    add_definitions("-DGLOPERATE_STATIC")
 else()
     add_definitions("-DGLOPERATE_GLFW_EXPORTS")
 endif()
@@ -128,6 +135,3 @@ install(TARGETS ${target}
 
 # Header files
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
-
-# if GLFW
-endif()
