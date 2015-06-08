@@ -30,7 +30,7 @@ QSurfaceFormat QtOpenGLWindowBase::defaultFormat()
 *    Constructor
 */
 QtOpenGLWindowBase::QtOpenGLWindowBase()
-: QtOpenGLWindowBase(QtOpenGLWindowBase::defaultFormat())
+: QtOpenGLWindowBase(defaultFormat())
 {
 }
 
@@ -49,7 +49,26 @@ QtOpenGLWindowBase::QtOpenGLWindowBase(const QSurfaceFormat & format)
     setSurfaceType(OpenGLSurface);
     create();
 
-    m_context->setFormat(format);
+    if (f.version().first < 3)
+    {
+        m_context->setFormat(f);
+        if (!m_context->create()) {
+            qDebug() << "Could not create intermediate OpenGL context.";
+            QApplication::quit();
+        } else {
+            QSurfaceFormat intermediateFormat = m_context->format();
+            qDebug().nospace() << "Created intermediate OpenGL context " << intermediateFormat.version().first << "." << intermediateFormat.version().second;
+
+            if ((intermediateFormat.version().first == 3 && intermediateFormat.version().second == 0) || intermediateFormat.version().first < 3)
+            {
+                f.setMajorVersion(3);
+                f.setMinorVersion(2);
+                f.setProfile(QSurfaceFormat::CoreProfile);
+            }
+        }
+    }
+
+    m_context->setFormat(f);
     if (!m_context->create()) {
         qDebug() << "Could not create OpenGL context.";
         QApplication::quit();

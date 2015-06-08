@@ -12,7 +12,7 @@ function(add_test_without_ctest target)
     if (TARGET ${target})
         add_dependencies(test ${target})
         add_custom_command(TARGET test POST_BUILD 
-           COMMAND $<TARGET_FILE:${target}> --gtest_output=xml:gtests.xml)
+           COMMAND $<TARGET_FILE:${target}> --gtest_output=xml:gtests-${target}.xml)
     endif()
 
 endfunction()
@@ -40,6 +40,6 @@ if(OPTION_BUILD_TESTS AND GMOCK_FOUND AND GTEST_FOUND)
     add_custom_target(test)
     set_target_properties(test PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD 1)
 
-    # Add tests
+    # Tests
     add_test_without_ctest(gloperate-test)
 endif()

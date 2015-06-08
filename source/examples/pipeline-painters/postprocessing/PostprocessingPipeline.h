@@ -23,22 +23,11 @@ class PostprocessingPipeline : public gloperate::AbstractPipeline
 public:
     PostprocessingPipeline();
     virtual ~PostprocessingPipeline();
-
-    gloperate::AbstractTargetFramebufferCapability * targetFramebufferCapability();
-    gloperate::AbstractViewportCapability * viewportCapability();
-    gloperate::AbstractVirtualTimeCapability * virtualTimeCapability();
-    gloperate::AbstractCameraCapability * cameraCapability();
-    gloperate::AbstractProjectionCapability * projectionCapability();
-    gloperate::AbstractTypedRenderTargetCapability * renderTargetCapability();
-
-protected:
-    RasterizationStage  * m_rasterization;
-    PostprocessingStage * m_postprocessing;
-
-    gloperate::Data<gloperate::AbstractTargetFramebufferCapability *> m_targetFBO;
-    gloperate::Data<gloperate::AbstractViewportCapability *> m_viewport;
-    gloperate::Data<gloperate::AbstractVirtualTimeCapability *> m_time;
-    gloperate::Data<gloperate::AbstractCameraCapability *> m_camera;
-    gloperate::Data<gloperate::AbstractProjectionCapability *> m_projection;
-    gloperate::Data<gloperate::AbstractTypedRenderTargetCapability *> m_renderTargets;
+    
+    gloperate::Data<gloperate::AbstractTargetFramebufferCapability *> targetFBO;
+    gloperate::Data<gloperate::AbstractViewportCapability *> viewport;
+    gloperate::Data<gloperate::AbstractVirtualTimeCapability *> time;
+    gloperate::Data<gloperate::AbstractCameraCapability *> camera;
+    gloperate::Data<gloperate::AbstractProjectionCapability *> projection;
+    gloperate::Data<gloperate::AbstractTypedRenderTargetCapability *> renderTargets;
 };

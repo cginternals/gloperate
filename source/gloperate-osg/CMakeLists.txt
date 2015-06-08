@@ -1,3 +1,6 @@
+# Target
+set(target gloperate-osg)
+
 #
 # External libraries
 #
@@ -5,14 +8,15 @@
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(GLFW)
+find_package(libzeug REQUIRED)
 find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
 
 # Build only if OSG is available
-if(OPENSCENEGRAPH_FOUND)
+if(NOT OPENSCENEGRAPH_FOUND)
+    message(STATUS "Lib ${target} (disabled because OSG couldn't be found)")
+    return()
+endif()
 
-# Target
-set(target gloperate-osg)
 message(STATUS "Lib ${target}")
 
 #
@@ -23,6 +27,7 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
+    ${LIBZEUG_INCLUDES}
     ${OPENSCENEGRAPH_INCLUDE_DIRS}
 )
 
@@ -39,6 +44,7 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
     ${OPENSCENEGRAPH_LIBRARIES}
     gloperate
 )
@@ -48,7 +54,7 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_OSG_STATIC")
+    add_definitions("-DGLOPERATE_STATIC")
 else()
     add_definitions("-DGLOPERATE_OSG_EXPORTS")
 endif()
@@ -125,6 +131,3 @@ install(TARGETS ${target}
 
 # Header files
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
-
-# if OSG
-endif()

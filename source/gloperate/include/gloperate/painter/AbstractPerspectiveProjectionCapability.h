@@ -40,7 +40,7 @@ public:
     *  @return
     *    Near plane
     */
-    virtual float zNear() const = 0;
+    virtual float zNear() const override = 0;
 
     /**
     *  @brief
@@ -49,7 +49,7 @@ public:
     *  @param[in] zNear
     *    Near plane
     */
-    virtual void setZNear(float zNear) = 0;
+    virtual void setZNear(float zNear) override = 0;
 
     /**
     *  @brief
@@ -58,7 +58,7 @@ public:
     *  @return
     *    Far plane
     */
-    virtual float zFar() const = 0;
+    virtual float zFar() const override = 0;
 
     /**
     *  @brief
@@ -67,7 +67,7 @@ public:
     *  @param[in] zFar
     *    Far plane
     */
-    virtual void setZFar(float zFar) = 0;
+    virtual void setZFar(float zFar) override = 0;
 
     /**
     *  @brief
@@ -94,7 +94,7 @@ public:
     *  @return
     *    Aspect ratio
     */
-    virtual float aspectRatio() const = 0;
+    virtual float aspectRatio() const override = 0;
 
 
 protected:

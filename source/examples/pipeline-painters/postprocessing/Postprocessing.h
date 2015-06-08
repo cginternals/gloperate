@@ -9,7 +9,6 @@ class Postprocessing : public gloperate::PipelinePainter
 {
 public:
     Postprocessing(gloperate::ResourceManager & resourceManager);
-    virtual ~Postprocessing();
 
 protected:
     PostprocessingPipeline m_pipeline;

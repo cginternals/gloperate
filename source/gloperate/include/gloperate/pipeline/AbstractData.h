@@ -4,7 +4,7 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/base/Signal.h>
+#include <signalzeug/Signal.h>
 
 
 namespace gloperate 
@@ -40,10 +40,11 @@ public:
     virtual std::string type() const = 0;
 
 public:
+    signalzeug::Signal<> invalidated;
+
+protected:
     AbstractStage * m_owner;
     std::string m_name;
-
-    gloperate::Signal<> invalidated;
 
     void setOwner(AbstractStage * owner);
 };
