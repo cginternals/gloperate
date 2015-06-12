@@ -1,5 +1,10 @@
 
+# Target
+
 set(target cgwhite)
+
+
+# External packages
 
 find_package(Qt5Core    5.1 QUIET)
 find_package(Qt5Gui     5.1 QUIET)
@@ -11,10 +16,6 @@ if (NOT Qt5Core_FOUND)
     message(STATUS "Tool ${target} (disabled because Qt5 couldn't be found)")
     return()
 endif()
-
-message(STATUS "Tool ${target}")
-
-# External libraries
 
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
@@ -34,6 +35,12 @@ set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 # Probably works in the next cmake release -> http://www.cmake.org/Bug/view.php?id=13788
 # What we do not want is automocs beside the project -> http://www.cmake.org/Bug/view.php?id=13688
 set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
+
+
+# Announce target
+
+message(STATUS "Tool ${target}")
+
 
 # Includes
 

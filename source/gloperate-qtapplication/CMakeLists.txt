@@ -1,5 +1,10 @@
 
+# Target
+
 set(target gloperate-qtapplication)
+
+
+# External packages
 
 find_package(Qt5Core    5.1 QUIET)
 find_package(Qt5Gui     5.1 QUIET)
@@ -15,10 +20,6 @@ endif()
 if (ASSIMP_FOUND)
    add_definitions("-DGLOPERATE_ASSIMP_FOUND")
 endif()
-
-message(STATUS "Lib ${target}")
-
-# External libraries
 
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
@@ -38,6 +39,11 @@ set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 # Probably works in the next cmake release -> http://www.cmake.org/Bug/view.php?id=13788
 # What we do not want is automocs beside the project -> http://www.cmake.org/Bug/view.php?id=13688
 set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
+
+
+# Announce target
+message(STATUS "Lib ${target}")
+
 
 # Includes
 
@@ -75,6 +81,7 @@ if (ASSIMP_FOUND)
     list(APPEND libs "gloperate-assimp")
 endif ()
 
+
 # Compiler definitions
 
 if (OPTION_BUILD_STATIC)
@@ -82,6 +89,7 @@ if (OPTION_BUILD_STATIC)
 else()
     add_definitions("-DGLOPERATE_QTAPPLICATION_EXPORTS")
 endif()
+
 
 # Sources
 
@@ -132,6 +140,7 @@ set_target_properties(${target}
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
     INCLUDE_PATH                ${include_path})
+
 
 # Deployment
 
