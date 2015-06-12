@@ -15,6 +15,7 @@
 #include <gloperate/primitives/PolygonalGeometry.h>
 #include <gloperate/primitives/Scene.h>
 
+#include <reflectionzeug/Variant.h>
 
 using namespace gloperate;
 
@@ -98,7 +99,7 @@ std::string AssimpSceneLoader::allLoadingTypes() const
     return string;
 }
 
-Scene * AssimpSceneLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
+Scene * AssimpSceneLoader::load(const std::string & filename, const reflectionzeug::Variant &/*options*/, std::function<void(int, int)> /*progress*/) const
 {
     // Import scene
     auto assimpScene = aiImportFile(

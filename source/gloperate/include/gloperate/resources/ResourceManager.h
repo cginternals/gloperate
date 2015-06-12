@@ -8,6 +8,8 @@
 
 #include <gloperate/gloperate_api.h>
 
+#include <reflectionzeug/Variant.h>
+
 
 namespace globjects 
 {
@@ -82,6 +84,9 @@ public:
     *
     *  @param[in] filename
     *    File name
+    *  @param[in] options
+    *    Options for loading resource (can be empty),
+    *    see the specific loader for a description of the options
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
@@ -89,7 +94,7 @@ public:
     *    Loaded resource (can be null)
     */
     template <typename T>
-    T * load(const std::string & filename, std::function<void(int, int)> progress = std::function<void(int, int)>() ) const;
+    T * load(const std::string & filename, const reflectionzeug::Variant & options = reflectionzeug::Variant(), std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
 
     /**
     *  @brief

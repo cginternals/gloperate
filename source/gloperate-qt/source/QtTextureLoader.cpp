@@ -12,6 +12,8 @@
 
 #include <gloperate-qt/Converter.h>
 
+#include <reflectionzeug/Variant.h>
+
 
 namespace gloperate_qt
 {
@@ -73,7 +75,7 @@ std::string QtTextureLoader::allLoadingTypes() const
     return allTypes;
 }
 
-globjects::Texture * QtTextureLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
+globjects::Texture * QtTextureLoader::load(const std::string & filename, const reflectionzeug::Variant & /*options*/, std::function<void(int, int)> /*progress*/) const
 {
     // Load image
     QImage image;
