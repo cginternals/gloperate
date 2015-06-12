@@ -24,9 +24,11 @@ find_library(ASSIMP_LIBRARIES
     NAMES assimp
     PATHS
     $ENV{ASSIMPDIR}/lib/x${ASSIMP_PF}
+    $ENV{ASSIMPDIR}/lib${ASSIMP_PF}
     $ENV{ASSIMPDIR}/lib
     $ENV{ASSIMPDIR}/lib/.libs
     $ENV{ASSIMP_HOME}/lib/x${ASSIMP_PF}
+    $ENV{ASSIMP_HOME}/lib${ASSIMP_PF}
     $ENV{ASSIMP_HOME}/lib
     $ENV{ASSIMP_HOME}/lib/.libs
     $ENV{ASSIMP_HOME}/build/code
@@ -49,6 +51,7 @@ if(MSVC)
         NAMES assimp.dll "assimp${ASSIMP_PF}.dll"
         PATHS
         $ENV{ASSIMPDIR}/bin/x${ASSIMP_PF}
+        $ENV{ASSIMPDIR}/bin${ASSIMP_PF}
         $ENV{ASSIMPDIR}/bin
         $ENV{ASSIMP_HOME}/bin/x${ASSIMP_PF}
         $ENV{ASSIMP_HOME}/bin
