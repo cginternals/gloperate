@@ -1,6 +1,7 @@
 #include <gloperate/plugin/PluginManager.h>
 
 #include <algorithm>
+#include <sys/stat.h>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -174,6 +175,23 @@ void PluginManager::scan(const std::string & identifier, bool reload)
 
 bool PluginManager::load(const std::string & name, const bool reload)
 {
+	// TODO: Test it!
+	bool isAbsolutePath = false;
+
+#ifdef WIN32
+	isAbsolutePath = name.find(":\\") != std::string::npos || name.find(":/") != std::string::npos || name.find("\\\\") != std::string::npos;
+#else
+	isAbsolutePath = name.at(0) == '/';
+#endif
+
+	struct stat buffer;
+	if (isAbsolutePath
+		&& name.compare(name.length() - g_ext.length() - 1, g_ext.length() + 1, "." + g_ext) == 0
+		&& stat(name.c_str(), &buffer) == 0)
+	{
+		return loadLibrary(name, reload);
+	}
+
     const std::vector<std::string> files = DirectoryIterator::files(m_paths, true);
 
     // compose plugin file name, e.g., on linux: "/" + "lib" + name + ".so"
