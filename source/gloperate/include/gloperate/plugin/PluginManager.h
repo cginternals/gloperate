@@ -59,11 +59,10 @@ public:
 
     /** \brief Print list of available plugins to log
     */
-	void printPlugins() const;
-
-	bool loadLibrary(const std::string & filePath, bool reload);
+    void printPlugins() const;
 
 protected:
+    bool loadLibrary(const std::string & filePath, bool reload);
     void unloadLibrary(PluginLibrary * library) const;
 
 protected:

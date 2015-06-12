@@ -98,7 +98,7 @@ void PluginWidget::dropEvent(QDropEvent * dropEvent)
 	QString uri = dropEvent->mimeData()->data("text/uri-list").right(len - 8);
 	QString filename = uri.left(uri.length() - 2);
 	qDebug() << filename;
-	m_pluginManager->loadLibrary(filename.toStdString(), false);
+	m_pluginManager->load(filename.toStdString(), false);
 	m_ui->pluginTableWidget->clear();
 	initializeListView();
 }
