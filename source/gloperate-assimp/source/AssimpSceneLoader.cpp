@@ -99,15 +99,23 @@ std::string AssimpSceneLoader::allLoadingTypes() const
     return string;
 }
 
-Scene * AssimpSceneLoader::load(const std::string & filename, const reflectionzeug::Variant &/*options*/, std::function<void(int, int)> /*progress*/) const
+Scene * AssimpSceneLoader::load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> /*progress*/) const
 {
+    bool smoothNormals = false;
+
+    // Get options
+    const reflectionzeug::VariantMap * map = options.toMap();
+    if (map) {
+        if (map->count("smoothNormals") > 0) smoothNormals = map->at("smoothNormals").value<bool>();
+    }
+
     // Import scene
     auto assimpScene = aiImportFile(
         filename.c_str(),
         aiProcess_Triangulate           |
         aiProcess_JoinIdenticalVertices |
         aiProcess_SortByPType |
-        aiProcess_GenNormals);
+        smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals);
 
     // Check for errors
     if (!assimpScene)
