@@ -24,6 +24,9 @@ namespace gloperate_assimp
 /**
 *  @brief
 *    Loader for meshes (PolygonalGeometry) that uses ASSIMP for import
+*
+*  Supported options:
+*    "smoothNormals" <bool>: Generate smooth normals
 */
 class GLOPERATE_ASSIMP_API AssimpSceneLoader : public gloperate::Loader<gloperate::Scene>
 {

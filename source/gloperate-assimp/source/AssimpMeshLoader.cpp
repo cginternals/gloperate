@@ -12,9 +12,9 @@
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
 
-#include <gloperate/primitives/PolygonalGeometry.h>
-
 #include <reflectionzeug/Variant.h>
+
+#include <gloperate/primitives/PolygonalGeometry.h>
 
 
 using namespace gloperate;
@@ -22,22 +22,6 @@ using namespace gloperate;
 
 namespace gloperate_assimp
 {
-
-MeshLoadOptions operator&(MeshLoadOptions a, MeshLoadOptions b)
-{
-    return static_cast<MeshLoadOptions>(
-        static_cast<unsigned int>(a) & static_cast<unsigned int>(b));
-}
-MeshLoadOptions operator|(MeshLoadOptions a, MeshLoadOptions b)
-{
-    return static_cast<MeshLoadOptions>(
-        static_cast<unsigned int>(a) | static_cast<unsigned int>(b));
-}
-MeshLoadOptions operator^(MeshLoadOptions a, MeshLoadOptions b)
-{
-    return static_cast<MeshLoadOptions>(
-        static_cast<unsigned int>(a) ^ static_cast<unsigned int>(b));
-}
 
 
 AssimpMeshLoader::AssimpMeshLoader()
@@ -117,16 +101,21 @@ std::string AssimpMeshLoader::allLoadingTypes() const
 
 PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> /*progress*/) const
 {
-    auto flags = options.value<MeshLoadOptions>(MeshLoadOptions::None);
-    bool smoothNormals = (flags & MeshLoadOptions::SmoothNormals) == MeshLoadOptions::SmoothNormals;
-    auto normalsFlag = smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals;
+    bool smoothNormals = false;
+
+    // Get options
+    const reflectionzeug::VariantMap * map = options.toMap();
+    if (map) {
+        if (map->count("smoothNormals") > 0) smoothNormals = map->at("smoothNormals").value<bool>();
+    }
+
     // Import scene
     auto scene = aiImportFile(
         filename.c_str(),
         aiProcess_Triangulate           |
         aiProcess_JoinIdenticalVertices |
         aiProcess_SortByPType |
-        normalsFlag);
+        smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals);
 
     // Check for errors
     if (!scene)

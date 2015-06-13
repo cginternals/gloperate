@@ -15,6 +15,9 @@ namespace gloperate_qt
 /**
 *  @brief
 *    Texture storer based on Qt
+*
+*  Supported options:
+*    none
 */
 class GLOPERATE_QT_API QtTextureStorer : public gloperate::Storer<globjects::Texture> 
 {

@@ -9,9 +9,12 @@
 namespace gloperate
 {
 
-    /**
+/**
 *  @brief
 *    Loader for glraw textures
+*
+*  Supported options:
+*    none
 */
 class GLOPERATE_API GlrawTextureLoader : public Loader<globjects::Texture> 
 {

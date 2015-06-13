@@ -19,6 +19,9 @@ namespace gloperate_qt
 /**
 *  @brief
 *    Texture loader based on Qt
+*
+*  Supported options:
+*    none
 */
 class GLOPERATE_QT_API QtTextureLoader : public gloperate::Loader<globjects::Texture> 
 {
