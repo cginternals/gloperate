@@ -1,7 +1,6 @@
 #include <gloperate/plugin/PluginManager.h>
 
 #include <algorithm>
-#include <sys/stat.h>
 
 #ifdef WIN32
 #include <Windows.h>
