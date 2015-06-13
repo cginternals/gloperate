@@ -85,8 +85,7 @@ public:
     *  @param[in] filename
     *    File name
     *  @param[in] options
-    *    Options for loading resource (can be empty),
-    *    see the specific loader for a description of the options
+    *    Options for loading resource, see documentation of specific loader for supported options
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
@@ -104,6 +103,8 @@ public:
     *    File name
     *  @param[in] resource
     *    The resource object
+    *  @param[in] options
+    *    Options for loading resource, see documentation of specific storer for supported options
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
@@ -111,7 +112,8 @@ public:
     *    'true', if storage was successful, esle 'false'
     */
     template <typename T>
-    bool store(const std::string & filename, T * resource, std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
+    bool store(const std::string & filename, T * resource, const reflectionzeug::Variant & options = reflectionzeug::Variant(), std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
+
 
 protected:
     /**
@@ -125,6 +127,7 @@ protected:
     *    Filename extension (lower-case)
     */
     GLOPERATE_API std::string getFileExtension(const std::string & filename) const;
+
 
 protected:
     std::vector<AbstractLoader *> m_loaders;    /**< Available loaders */

@@ -43,7 +43,7 @@ T * ResourceManager::load(const std::string & filename, const reflectionzeug::Va
 *    Store resource to file
 */
 template <typename T>
-bool ResourceManager::store(const std::string & filename, T * resource, std::function<void(int, int)> progress) const
+bool ResourceManager::store(const std::string & filename, T * resource, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const
 {
     // Get file extension
     std::string ext = getFileExtension(filename);
@@ -56,7 +56,7 @@ bool ResourceManager::store(const std::string & filename, T * resource, std::fun
             // Check if filetype is supported
             if (concreteStorer->canStore(ext)) {
                 // Use store
-                return concreteStorer->store(filename, resource, progress);
+                return concreteStorer->store(filename, resource, options, progress);
             }
         }
     }

@@ -5,12 +5,14 @@
 
 #include <gloperate/resources/AbstractLoader.h>
 
+
 namespace reflectionzeug {
     class Variant;
 }
 
 namespace gloperate
 {
+
 
 /**
 *  @brief
@@ -39,7 +41,7 @@ public:
     *  @param[in] filename
     *    File name
     *  @param[in] options
-    *    Options for loading resource (can be empty)
+    *    Options for loading resource, see documentation of specific loader for supported options
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
@@ -48,6 +50,7 @@ public:
     */
     virtual T * load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const = 0;
 };
+
 
 } // namespace gloperate
 
