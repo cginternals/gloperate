@@ -50,9 +50,9 @@ public:
     */
     void scan(const std::string & identifier = "", bool reload = false);
 
-    /** \param[in] baseName note: do not add 'lib' or '.so'/'.dll', those are added automatically
+    /** \param[in] filePath Filename of the plugin library
     */
-    bool load(const std::string & baseName, bool reload = true);
+    bool load(const std::string & filePath, bool reload = true);
 
     const std::vector<Plugin *> & plugins() const;
     Plugin * plugin(const std::string & name) const;
