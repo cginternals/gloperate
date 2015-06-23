@@ -172,22 +172,10 @@ void PluginManager::scan(const std::string & identifier, bool reload)
     }
 }
 
-bool PluginManager::load(const std::string & name, const bool reload)
+bool PluginManager::load(const std::string & filePath, const bool reload)
 {
-    const std::vector<std::string> files = DirectoryIterator::files(m_paths, true);
-
-    // compose plugin file name, e.g., on linux: "/" + "lib" + name + ".so"
-    const std::string fname = g_sep + g_pre + name + "." + g_ext;
-
-    // search if this is in files
-    for (const std::string & filePath : files)
-    {
-        if (filePath.find(fname) == filePath.npos)
-            continue;
-
-        return loadLibrary(filePath, reload);
-    }    
-    return false;
+    // Load plugin library
+    return loadLibrary(filePath, reload);
 }
 
 bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
