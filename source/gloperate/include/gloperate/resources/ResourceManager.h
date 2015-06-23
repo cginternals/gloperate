@@ -8,7 +8,7 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <reflectionzeug/Variant.h>
+#include <reflectionzeug/variant/Variant.h>
 
 
 namespace globjects 

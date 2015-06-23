@@ -1,6 +1,6 @@
 #include <gloperate/resources/GlrawTextureLoader.h>
 
-#include <reflectionzeug/Variant.h>
+#include <reflectionzeug/variant/Variant.h>
  
 
 namespace gloperate

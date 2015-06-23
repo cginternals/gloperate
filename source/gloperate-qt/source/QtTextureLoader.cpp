@@ -12,7 +12,7 @@
 
 #include <gloperate-qt/Converter.h>
 
-#include <reflectionzeug/Variant.h>
+#include <reflectionzeug/variant/Variant.h>
 
 
 namespace gloperate_qt

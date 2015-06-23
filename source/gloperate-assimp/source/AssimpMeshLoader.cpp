@@ -12,7 +12,7 @@
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
 
-#include <reflectionzeug/Variant.h>
+#include <reflectionzeug/variant/Variant.h>
 
 #include <gloperate/primitives/PolygonalGeometry.h>
 
