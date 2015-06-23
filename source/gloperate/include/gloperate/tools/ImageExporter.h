@@ -18,16 +18,16 @@ class AbstractViewportCapability;
 class AbstractTargetFramebufferCapability;
 
 
-class GLOPERATE_API ScreenshotTool
+class GLOPERATE_API ImageExporter
 {
 public:
-    ScreenshotTool(Painter * painter, ResourceManager & resourceManager);
+	ImageExporter(Painter * painter, ResourceManager & resourceManager);
 
     static bool isApplicableTo(Painter * painter);
 
     void initialize();
 
-    void save(const std::string & filename);
+	void save(const std::string & filename, const int & width = 0, const int & height = 0, const int & renderIterations = 1);
 
 protected:
     Painter * m_painter;

@@ -21,6 +21,8 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
 
+find_package(libzeug REQUIRED)
+
 set(CMAKE_AUTOMOC ON)
 set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 
@@ -37,6 +39,7 @@ include_directories(
     ${GLOBJECTS_INCLUDE_DIRS}
     ${LIBZEUG_INCLUDE_DIRS}
     ${GLOPERATE_QT_INCLUDE_DIR}
+    ${LIBZEUG_WIDGET_INCLUDE_DIR}
 )
 
 include_directories(
@@ -56,6 +59,7 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     ${LIBZEUG_LIBRARIES}
     ${GLM_LIBRARIES}
+    ${LIBZEUG_LIBRARIES} # ${LIBZEUG_WIDGET_LIBRARIES} is empty
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
@@ -81,13 +85,22 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
     ${header_path}/gloperate-qtwidgets_api.h
-    ${header_path}/ScreenshotWidget.h
-
+    ${header_path}/FileNameTextEdit.h
+    ${header_path}/ImageExporterWidget.h
+    ${header_path}/ImageExporterOutputWidget.h
+    ${header_path}/ImageExporterResolutionWidget.h
+    ${header_path}/ImageExporterTilebasedWidget.h
 )
 
 set(sources
-    ${source_path}/ScreenshotWidget.cpp
-    ${source_path}/ScreenshotWidget.ui
+    ${source_path}/FileNameTextEdit.cpp
+    ${source_path}/ImageExporterWidget.cpp
+    ${source_path}/ImageExporterOutputWidget.cpp
+    ${source_path}/ImageExporterOutputWidget.ui
+    ${source_path}/ImageExporterResolutionWidget.cpp
+    ${source_path}/ImageExporterResolutionWidget.ui
+    ${source_path}/ImageExporterTilebasedWidget.cpp
+    ${source_path}/ImageExporterTilebasedWidget.ui
 )
 
 # Group source files

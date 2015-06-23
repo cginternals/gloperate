@@ -23,6 +23,8 @@
 #include <gloperate-qt/QtMouseEventProvider.h>
 #include <gloperate-qt/QtWheelEventProvider.h>
 
+#include <gloperate-qtwidgets/ImageExporterWidget.h>
+
 #ifdef GLOPERATE_ASSIMP_FOUND
     #include <gloperate-assimp/AssimpMeshLoader.h>
     #include <gloperate-assimp/AssimpSceneLoader.h>
@@ -252,6 +254,17 @@ void Viewer::on_colorSchemePresetsAction_triggered()
 
     cspw->setWindowModality(Qt::ApplicationModal);
     cspw->show();*/
+}
+
+void Viewer::on_imageExporterAction_triggered()
+{
+	if (m_currentPainter)
+	{
+		gloperate_qtwidgets::ImageExporterWidget * ie{ new gloperate_qtwidgets::ImageExporterWidget(*m_resourceManager, m_canvas->painter(), m_canvas.get()) };
+
+    ie->setWindowModality(Qt::NonModal);
+	ie->show();
+	}
 }
 
 void Viewer::on_showPluginsAction_triggered()
