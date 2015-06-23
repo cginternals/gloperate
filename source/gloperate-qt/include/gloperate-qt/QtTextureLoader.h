@@ -19,6 +19,9 @@ namespace gloperate_qt
 /**
 *  @brief
 *    Texture loader based on Qt
+*
+*  Supported options:
+*    none
 */
 class GLOPERATE_QT_API QtTextureLoader : public gloperate::Loader<globjects::Texture> 
 {
@@ -41,7 +44,7 @@ public:
     virtual std::string allLoadingTypes() const;
 
     // Virtual gloperate::Loader<globjects::Texture> functions
-    virtual globjects::Texture * load(const std::string & filename, std::function<void(int, int)> progress) const override;
+    virtual globjects::Texture * load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const override;
 
 
 protected:
