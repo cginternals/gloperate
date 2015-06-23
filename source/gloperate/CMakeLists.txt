@@ -135,7 +135,7 @@ set(sources
     ${source_path}/resources/ResourceManager.cpp
     
     ${source_path}/tools/CoordinateProvider.cpp
-    ${source_path}/tools/ScreenshotTool.cpp
+    ${source_path}/tools/ImageExporter.cpp
     ${source_path}/tools/DepthExtractor.cpp
     ${source_path}/tools/WorldExtractor.cpp
     ${source_path}/tools/ObjectIdExtractor.cpp
@@ -243,7 +243,7 @@ set(api_includes
     ${include_path}/resources/Loader.h
     
     ${include_path}/tools/CoordinateProvider.h
-    ${include_path}/tools/ScreenshotTool.h
+    ${include_path}/tools/ImageExporter.h
     ${include_path}/tools/DepthExtractor.h
     ${include_path}/tools/WorldExtractor.h
     ${include_path}/tools/ObjectIdExtractor.h

@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>734</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="canvasMenu">
@@ -105,6 +105,7 @@
      <string>&amp;Widgets</string>
     </property>
     <addaction name="colorSchemePresetsAction"/>
+    <addaction name="imageExporterAction"/>
    </widget>
    <widget class="QMenu" name="pluginsMenu">
     <property name="title">
@@ -438,6 +439,11 @@
   <action name="cubescapeAction">
    <property name="text">
     <string>&amp;Cubescape</string>
+   </property>
+  </action>
+  <action name="imageExporterAction">
+   <property name="text">
+    <string>&amp;Image Exporter</string>
    </property>
   </action>
  </widget>

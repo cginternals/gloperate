@@ -19,7 +19,7 @@
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractInputCapability.h>
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/tools/ScreenshotTool.h>
+#include <gloperate/tools/ImageExporter.h>
 
 #include <gloperate-qt/QtEventTransformer.h>
 
@@ -151,11 +151,11 @@ void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
 
     if (event->key() == Qt::Key_F10)
     {
-        if (ScreenshotTool::isApplicableTo(painter()))
+        if (ImageExporter::isApplicableTo(painter()))
         {
-            ScreenshotTool screenshot(painter(), m_resourceManager);
-            screenshot.initialize();
-            screenshot.save("screenshot.png");
+			ImageExporter image(painter(), m_resourceManager);
+            image.initialize();
+            image.save("image.png");
         }
     }
 

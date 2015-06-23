@@ -12,7 +12,7 @@
 #include <gloperate/painter/AbstractVirtualTimeCapability.h>
 #include <gloperate/painter/AbstractInputCapability.h>
 
-#include <gloperate/tools/ScreenshotTool.h>
+#include <gloperate/tools/ImageExporter.h>
 
 
 using namespace gloperate;
@@ -91,13 +91,13 @@ void WindowEventHandler::keyPressEvent(KeyEvent & event)
 {
     if (event.key() == GLFW_KEY_F10)
     {
-        if (ScreenshotTool::isApplicableTo(event.window()->painter()))
+		if (ImageExporter::isApplicableTo(event.window()->painter()))
         {
-            ScreenshotTool screenshot(event.window()->painter(), event.window()->resourceManager());
+			ImageExporter image(event.window()->painter(), event.window()->resourceManager());
 
-            screenshot.initialize();
+            image.initialize();
 
-            screenshot.save("screenshot.png");
+            image.save("image.png");
         }
     }
 
