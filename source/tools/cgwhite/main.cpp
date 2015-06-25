@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include <gloperate-qtapplication/Viewer.h>
+#include <gloperate-qt/viewer/Viewer.h>
 
 #include <widgetzeug/dark_fusion_style.hpp>
 
@@ -19,7 +19,7 @@ int main(int argc, char * argv[])
 
     widgetzeug::enableDarkFusionStyle();
 
-    gloperate_qtapplication::Viewer viewer;
+    gloperate_qt::Viewer viewer;
     viewer.show();
 
     return app.exec();

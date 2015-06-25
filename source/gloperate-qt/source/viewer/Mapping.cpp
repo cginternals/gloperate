@@ -1,15 +1,19 @@
-#include "QtViewerMapping.h"
+
+#include <gloperate-qt/viewer/Mapping.h>
+
+#include <QTimer>
+#include <QToolTip>
 
 #include <glbinding/gl/enum.h>
 
-#include <gloperate/base/RenderTargetType.h>
 #include <gloperate/base/make_unique.hpp>
-#include <gloperate/painter/Camera.h>
+#include <gloperate/base/RenderTargetType.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/AbstractProjectionCapability.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
-#include <gloperate/painter/TypedRenderTargetCapability.h>
 #include <gloperate/painter/AbstractTargetFramebufferCapability.h>
+#include <gloperate/painter/AbstractMetaInformationCapability.h>
+#include <gloperate/painter/TypedRenderTargetCapability.h>
 #include <gloperate/painter/Painter.h>
 #include <gloperate/input/AbstractEvent.h>
 #include <gloperate/input/KeyboardEvent.h>
@@ -17,30 +21,55 @@
 #include <gloperate/input/WheelEvent.h>
 #include <gloperate/navigation/WorldInHandNavigation.h>
 #include <gloperate/tools/CoordinateProvider.h>
+#include <gloperate/tools/ObjectIdExtractor.h>
 
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
 
 
-using namespace gloperate;
 using namespace gloperate_qt;
+using namespace gloperate;
 
 using gloperate::make_unique;
 
-QtViewerMapping::QtViewerMapping(QtOpenGLWindow * window)
-:   AbstractQtMapping(window)
+namespace
+{
+    const int g_tooltipTimeout = 200;
+}
+
+namespace gloperate_qt
+{
+
+Mapping::Mapping(QtOpenGLWindow * window)
+: AbstractQtMapping(window)
+, m_metaInformationCapability(nullptr)
+, m_viewportCapability(nullptr)
+, m_typedRenderTargetCapability(nullptr)
+, m_timer(new QTimer(this))
+{
+    m_timer->setInterval(g_tooltipTimeout);
+    m_timer->setSingleShot(true);
+    m_timer->stop();
+
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(showTooltip()));
+}
+
+Mapping::~Mapping()
 {
 }
 
-QtViewerMapping::~QtViewerMapping()
-{
-}
-
-void QtViewerMapping::initializeTools()
+void Mapping::initializeTools()
 {
     m_renderTarget = nullptr;
+    m_metaInformationCapability = nullptr;
+    m_viewportCapability = nullptr;
+    m_typedRenderTargetCapability = nullptr;
 
-    if (m_painter && 
-        m_painter->supports<AbstractCameraCapability>() &&
+    if (!m_painter)
+    {
+        return;
+    }
+
+    if (m_painter->supports<AbstractCameraCapability>() &&
         m_painter->supports<AbstractViewportCapability>() &&
         m_painter->supports<AbstractProjectionCapability>() &&
         (m_painter->supports<AbstractTypedRenderTargetCapability>() ||
@@ -48,30 +77,37 @@ void QtViewerMapping::initializeTools()
     {
         auto cameraCapability = m_painter->getCapability<AbstractCameraCapability>();
         auto projectionCapability = m_painter->getCapability<AbstractProjectionCapability>();
-        auto viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
+        m_viewportCapability = m_painter->getCapability<AbstractViewportCapability>();
         
-        auto renderTargetCapability = m_painter->getCapability<AbstractTypedRenderTargetCapability>();
-        if (!renderTargetCapability)
+        m_typedRenderTargetCapability = m_painter->getCapability<TypedRenderTargetCapability>();
+        if (!m_typedRenderTargetCapability)
         {
             m_renderTarget = make_unique<TypedRenderTargetCapability>();
-            renderTargetCapability = m_renderTarget.get();
+            m_typedRenderTargetCapability = m_renderTarget.get();
 
             auto fboCapability = m_painter->getCapability<AbstractTargetFramebufferCapability>();
             fboCapability->changed.connect([this] () { this->onTargetFramebufferChanged(); });
         }
 
         m_coordProvider = make_unique<CoordinateProvider>(
-            cameraCapability, projectionCapability, viewportCapability, renderTargetCapability);
+            cameraCapability, projectionCapability, m_viewportCapability, m_typedRenderTargetCapability);
         m_navigation = make_unique<WorldInHandNavigation>(
-            *cameraCapability, *viewportCapability, *m_coordProvider);
+            *cameraCapability, *m_viewportCapability, *m_coordProvider);
     }
+
+    m_metaInformationCapability = m_painter->getCapability<AbstractMetaInformationCapability>();
 }
 
-void QtViewerMapping::mapEvent(AbstractEvent * event)
+void Mapping::mapEvent(AbstractEvent * event)
 {
+    if (!m_navigation)
+    {
+        return;
+    }
+
     if (m_renderTarget && !m_renderTarget->hasRenderTarget(RenderTargetType::Depth))
         onTargetFramebufferChanged();
-    
+
     switch (event->sourceType())
     {
     case gloperate::SourceType::Keyboard:
@@ -88,7 +124,7 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
     }
 }
 
-void QtViewerMapping::mapKeyboardEvent(KeyboardEvent * event)
+void Mapping::mapKeyboardEvent(KeyboardEvent * event)
 {
     if (event && event->type() == KeyboardEvent::Type::Press)
     {
@@ -130,22 +166,25 @@ void QtViewerMapping::mapKeyboardEvent(KeyboardEvent * event)
     }
 }
 
-void QtViewerMapping::mapMouseEvent(MouseEvent * mouseEvent)
+void Mapping::mapMouseEvent(MouseEvent * mouseEvent)
 {
+    if (mouseEvent)
+    {
+        m_currentMousePosition = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
+    }
+
     if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Press)
     {
-        const auto pos = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
-
         switch (mouseEvent->button())
         {
         case MouseButtonMiddle:
             m_navigation->reset();
             break;
         case MouseButtonLeft:
-            m_navigation->panBegin(pos);
+            m_navigation->panBegin(m_currentMousePosition);
             break;
         case MouseButtonRight:
-            m_navigation->rotateBegin(pos);
+            m_navigation->rotateBegin(m_currentMousePosition);
             break;
         default:
             break;
@@ -153,15 +192,19 @@ void QtViewerMapping::mapMouseEvent(MouseEvent * mouseEvent)
     }
     else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Move)
     {
-        const auto pos = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
+        if (m_metaInformationCapability)
+        {
+            hideTooltip();
+            m_timer->start();
+        }
         
         switch (m_navigation->mode())
         {
         case WorldInHandNavigation::InteractionMode::PanInteraction:
-            m_navigation->panProcess(pos);
+            m_navigation->panProcess(m_currentMousePosition);
             break;
         case WorldInHandNavigation::InteractionMode::RotateInteraction:
-            m_navigation->rotateProcess(pos);
+            m_navigation->rotateProcess(m_currentMousePosition);
             break;
         default:
             break;
@@ -183,7 +226,7 @@ void QtViewerMapping::mapMouseEvent(MouseEvent * mouseEvent)
     }
 }
 
-void QtViewerMapping::mapWheelEvent(WheelEvent * wheelEvent)
+void Mapping::mapWheelEvent(WheelEvent * wheelEvent)
 {
     auto scale = wheelEvent->angleDelta().y;
     scale /= WheelEvent::defaultMouseAngleDelta();
@@ -191,14 +234,44 @@ void QtViewerMapping::mapWheelEvent(WheelEvent * wheelEvent)
     m_navigation->scaleAtMouse(wheelEvent->pos(), scale);
 }
 
-void QtViewerMapping::onTargetFramebufferChanged()
+void Mapping::onTargetFramebufferChanged()
 {
     auto fbo = m_painter->getCapability<AbstractTargetFramebufferCapability>()->framebuffer();
-    
     if (!fbo)
+    {
         fbo = globjects::Framebuffer::defaultFBO();
+    }
 
     m_renderTarget->setRenderTarget(gloperate::RenderTargetType::Depth, fbo,
         gl::GL_DEPTH_ATTACHMENT, gl::GL_DEPTH_COMPONENT);
 }
 
+void Mapping::showTooltip()
+{
+    if (!m_metaInformationCapability)
+    {
+        return;
+    }
+
+    hideTooltip();
+
+    m_window->makeCurrent();
+    int id = gloperate::ObjectIdExtractor(m_viewportCapability, m_typedRenderTargetCapability).get(m_currentMousePosition);
+    m_window->doneCurrent();
+
+    const std::string & string = m_metaInformationCapability->get(id);
+
+    if (string.empty())
+    {
+        return;
+    }
+
+    QToolTip::showText(m_window->mapToGlobal(QPoint(m_currentMousePosition.x, m_currentMousePosition.y)), QString::fromStdString(string));
+}
+
+void Mapping::hideTooltip()
+{
+    QToolTip::showText(QPoint(0, 0), "");
+}
+
+} // namespace gloperate_qt

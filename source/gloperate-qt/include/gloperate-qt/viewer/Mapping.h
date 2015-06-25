@@ -1,30 +1,38 @@
 #pragma once
 
-#include <gloperate-qt/viewer/AbstractQtMapping.h>
-
 #include <memory>
 
+#include <QObject>
 
-namespace globjects
-{ 
-    class Framebuffer;
-}
+#include <glm/glm.hpp>
+
+#include <gloperate-qt/viewer/AbstractQtMapping.h>
+
+
+class QTimer;
 
 namespace gloperate
 {
     class CoordinateProvider;
     class TypedRenderTargetCapability;
+    class AbstractMetaInformationCapability;
+    class AbstractViewportCapability;
     class WorldInHandNavigation;
     class KeyboardEvent;
     class MouseEvent;
     class WheelEvent;
 }
 
-class QtViewerMapping : public gloperate_qt::AbstractQtMapping
+namespace gloperate_qt
 {
+
+class GLOPERATE_QT_API Mapping : public QObject, public gloperate_qt::AbstractQtMapping
+{
+Q_OBJECT
+
 public:
-    QtViewerMapping(gloperate_qt::QtOpenGLWindow * window);
-    virtual ~QtViewerMapping();
+    Mapping(gloperate_qt::QtOpenGLWindow * window);
+    virtual ~Mapping();
 
     virtual void initializeTools() override;
 
@@ -37,8 +45,19 @@ protected:
 
     void onTargetFramebufferChanged();
 
+protected slots:
+    void showTooltip();
+    void hideTooltip();
+
 protected:
     std::unique_ptr<gloperate::WorldInHandNavigation> m_navigation;
     std::unique_ptr<gloperate::CoordinateProvider> m_coordProvider;
     std::unique_ptr<gloperate::TypedRenderTargetCapability> m_renderTarget;
+    gloperate::AbstractMetaInformationCapability * m_metaInformationCapability;
+    gloperate::AbstractViewportCapability * m_viewportCapability;
+    gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
+    QTimer * m_timer;
+    glm::ivec2 m_currentMousePosition;
 };
+
+} // namespace gloperate_qt

@@ -12,12 +12,12 @@
 
 #include <gloperate/resources/ResourceManager.h>
 
-#include <gloperate-qt/QtOpenGLWindow.h>
-#include <gloperate-qt/QtTextureLoader.h>
-#include <gloperate-qt/QtTextureStorer.h>
-#include <gloperate-qt/QtKeyEventProvider.h>
-#include <gloperate-qt/QtMouseEventProvider.h>
-#include <gloperate-qt/QtWheelEventProvider.h>
+#include <gloperate-qt/viewer/QtOpenGLWindow.h>
+#include <gloperate-qt/viewer/QtTextureLoader.h>
+#include <gloperate-qt/viewer/QtTextureStorer.h>
+#include <gloperate-qt/viewer/QtKeyEventProvider.h>
+#include <gloperate-qt/viewer/QtMouseEventProvider.h>
+#include <gloperate-qt/viewer/QtWheelEventProvider.h>
 
 #include <QApplication>
 #include <QCoreApplication>
