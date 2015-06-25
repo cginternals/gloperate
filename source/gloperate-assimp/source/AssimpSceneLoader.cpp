@@ -15,7 +15,7 @@
 #include <gloperate/primitives/PolygonalGeometry.h>
 #include <gloperate/primitives/Scene.h>
 
-#include <reflectionzeug/Variant.h>
+#include <reflectionzeug/variant/Variant.h>
 
 using namespace gloperate;
 
@@ -104,7 +104,7 @@ Scene * AssimpSceneLoader::load(const std::string & filename, const reflectionze
     bool smoothNormals = false;
 
     // Get options
-    const reflectionzeug::VariantMap * map = options.toMap();
+    const reflectionzeug::VariantMap * map = options.asMap();
     if (map) {
         if (map->count("smoothNormals") > 0) smoothNormals = map->at("smoothNormals").value<bool>();
     }
