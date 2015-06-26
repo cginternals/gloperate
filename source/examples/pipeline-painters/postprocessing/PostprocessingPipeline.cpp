@@ -10,22 +10,18 @@
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/File.h>
+#include <globjects/base/StringTemplate.h>
 #include <globjects/logging.h>
-
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 #include <globjects/Renderbuffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
-#include <globjects/base/StringTemplate.h>
-
 #include <gloperate/base/RenderTargetType.h>
-
 #include <gloperate/pipeline/AbstractStage.h>
 #include <gloperate/pipeline/Data.h>
 #include <gloperate/pipeline/InputSlot.h>
-
 #include <gloperate/painter/Camera.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractVirtualTimeCapability.h>
@@ -34,7 +30,6 @@
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 #include <gloperate/painter/TypedRenderTargetCapability.h>
-
 #include <gloperate/primitives/AdaptiveGrid.h>
 #include <gloperate/primitives/Icosahedron.h>
 #include <gloperate/primitives/ScreenAlignedQuad.h>
@@ -97,6 +92,8 @@ public:
         return m_fbo;
     }
 
+
+public:
     gloperate::InputSlot<gloperate::AbstractViewportCapability *> viewport;
     gloperate::InputSlot<gloperate::AbstractVirtualTimeCapability *> time;
     gloperate::InputSlot<gloperate::AbstractCameraCapability *> camera;
@@ -105,6 +102,8 @@ public:
     gloperate::Data<globjects::ref_ptr<globjects::Texture>> color;
     gloperate::Data<globjects::ref_ptr<globjects::Texture>> normal;
     gloperate::Data<globjects::ref_ptr<globjects::Texture>> geometry;
+
+
 protected:
     virtual void process() override
     {
@@ -131,12 +130,15 @@ protected:
 
         m_fbo->unbind(gl::GL_FRAMEBUFFER);
     }
+
+
 protected:
     globjects::ref_ptr<globjects::Framebuffer> m_fbo;
     globjects::ref_ptr<globjects::Renderbuffer> m_depth;
     globjects::ref_ptr<globjects::Program> m_program;
     globjects::ref_ptr<gloperate::Icosahedron> m_icosahedron;
 };
+
 
 class PostprocessingStage : public gloperate::AbstractStage
 {
@@ -180,11 +182,15 @@ public:
         m_quad = new gloperate::ScreenAlignedQuad(program);
     }
 
+
+public:
     gloperate::InputSlot<gloperate::AbstractTargetFramebufferCapability * > targetFramebuffer;
 
     gloperate::InputSlot<globjects::ref_ptr<globjects::Texture>> color;
     gloperate::InputSlot<globjects::ref_ptr<globjects::Texture>> normal;
     gloperate::InputSlot<globjects::ref_ptr<globjects::Texture>> geometry;
+
+
 protected:
     virtual void process() override
     {
@@ -216,9 +222,12 @@ protected:
 
         gl::glEnable(gl::GL_DEPTH_TEST);
     }
+
+
 protected:
     globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
 };
+
 
 PostprocessingPipeline::PostprocessingPipeline()
 {

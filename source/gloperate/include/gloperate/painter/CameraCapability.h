@@ -6,14 +6,15 @@
 #include <glm/glm.hpp>
 #include <gloperate/ext-includes-end.h>
 
+#include <signalzeug/Signal.h>
+
 #include <globjects/base/CachedValue.h>
 
-#include <gloperate/gloperate_api.h>
-#include <signalzeug/Signal.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 /**

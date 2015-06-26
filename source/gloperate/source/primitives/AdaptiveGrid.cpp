@@ -1,9 +1,7 @@
+
 #include <gloperate/primitives/AdaptiveGrid.h>
 
 #include <vector>
-
-#include <glbinding/gl/functions.h>
-#include <glbinding/gl/enum.h>
 
 #include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
@@ -11,9 +9,11 @@
 #include <glm/gtx/transform.hpp>
 #include <gloperate/ext-includes-end.h>
 
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
+
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/StringTemplate.h>
-
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
@@ -102,8 +102,10 @@ void main()
 
 }
 
+
 namespace gloperate
 {
+
 
 AdaptiveGrid::AdaptiveGrid(
     unsigned short segments
@@ -286,5 +288,6 @@ void AdaptiveGrid::draw()
     gl::glDisable(gl::GL_BLEND);
 
 }
+
 
 } // namespace gloperate

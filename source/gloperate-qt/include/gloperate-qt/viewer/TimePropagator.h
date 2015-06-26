@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -17,6 +18,7 @@
 namespace gloperate_qt
 {
 
+
 /**
 *  @brief
 *    Tool class to propagate continuous time updates to a window
@@ -30,6 +32,7 @@ namespace gloperate_qt
 class GLOPERATE_QT_API TimePropagator : public QObject
 {
     Q_OBJECT
+
 
 public:
     /**
@@ -45,6 +48,7 @@ public:
     
     void setCapability(gloperate::AbstractVirtualTimeCapability * capability);
 
+
 protected slots:
     /**
     *  @brief
@@ -52,11 +56,13 @@ protected slots:
     */
     void update();
 
+
 protected:
     gloperate_qt::QtOpenGLWindowBase         * m_window;     /**< Window that is updated when the timer has elapsed */
     gloperate::AbstractVirtualTimeCapability * m_capability; /**< VirtualTimeCapability that is informed about the time change */
     QScopedPointer<QTimer> m_timer; /**< Qt timer for continuous updates */
     gloperate::ChronoTimer m_time;  /**< Time measurement */
 };
+
 
 } // namespace gloperate_qt

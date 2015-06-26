@@ -1,17 +1,25 @@
+
 #pragma once
+
 
 #include <string>
 #include <vector>
 
+
 namespace gloperate
 {
-/** \brief Provides tools for retrieving filepathes within a directory (recursive and non-recursive).
+
+
+/**
+*  @brief
+*    Tools for retrieving filepathes within a directory (recursive and non-recursive)
 */
 class DirectoryIterator
 {
 public:
-
-    /** \brief Creates a list with the file paths of all files of a given path.
+    /**
+    *  @brief
+    *    Get list with the file paths of all files of a given path
     */
     static void files(
         std::vector<std::string> & fpaths
@@ -25,8 +33,6 @@ public:
     ,   bool prependpath = false
     ,   bool recursive = false);
 
-    /** \brief Creates a list with the file paths of all files of a given path.
-    */
     static std::vector<std::string> files(
         const std::string & path
     ,   bool prependpath = false
@@ -37,13 +43,20 @@ public:
     ,   bool prependpath = false
     ,   bool recursive = false);
 
-    /** \brief Returns a substring, starting at the last occurence of ".".
+    /**
+    *  @brief
+    *    Get file extension
+    *
+    *    Returns a substring, starting at the last occurence of ".".
     */
     static std::string extension(const std::string & filename);
 
-    /** \brief Removes trailing path seperators from path
+    /**
+    *  @brief
+    *    Remove trailing path seperators from path
     */
     static std::string truncate(const std::string & path);
 };
+
 
 } // namespace gloperate

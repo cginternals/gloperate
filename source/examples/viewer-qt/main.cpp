@@ -1,15 +1,19 @@
 
 #include <iostream>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/ext-includes-begin.h>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDesktopWidget>
+#include <QString>
+#include <QMainWindow>
 #include <QOpenGLContext>
 #include <gloperate/ext-includes-end.h>
 
+#include <globjects/base/baselogging.h>
+
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
-
 #include <gloperate/resources/ResourceManager.h>
 
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
@@ -19,13 +23,8 @@
 #include <gloperate-qt/viewer/QtMouseEventProvider.h>
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 
-#include <QApplication>
-#include <QCoreApplication>
-#include <QDesktopWidget>
-#include <QString>
-#include <QMainWindow>
-
 #include "QtViewerMapping.h"
+
 
 using namespace gloperate;
 using namespace gloperate_qt;
@@ -38,7 +37,6 @@ int main(int argc, char * argv[])
     ResourceManager resourceManager;
     resourceManager.addLoader(new QtTextureLoader());
     resourceManager.addStorer(new QtTextureStorer());
-
 
     PluginManager::init(QCoreApplication::applicationFilePath().toStdString());
 
@@ -70,7 +68,6 @@ int main(int argc, char * argv[])
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
     QtWheelEventProvider * wheelProvider = new QtWheelEventProvider();
-
 
     // Create OpenGL window
     QSurfaceFormat format;

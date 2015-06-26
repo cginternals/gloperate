@@ -1,8 +1,8 @@
+
 #pragma once
 
 
 #include <gloperate/gloperate_api.h>
-
 #include <gloperate/input/input.h>
 
 
@@ -28,8 +28,6 @@ namespace gloperate
 */
 class GLOPERATE_API MouseInputHandler
 {
-
-
 public:
     /**
     *  @brief
@@ -103,8 +101,6 @@ public:
     *    Y delta
     */
     virtual void onMouseWheel(int dx, int dy);
-
-
 };
 
 

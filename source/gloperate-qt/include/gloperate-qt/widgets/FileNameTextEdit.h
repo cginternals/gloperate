@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <gloperate/ext-includes-begin.h>
 #include <QPlainTextEdit>
@@ -15,9 +17,11 @@ class QFocusEvent;
 namespace gloperate_qt
 {
 
+
 class GLOPERATE_QT_API FileNameTextEdit : public QPlainTextEdit
 {
     Q_OBJECT
+
 
 public:
     FileNameTextEdit(QWidget *parent = 0);
@@ -26,18 +30,23 @@ public:
     virtual void setCompleter(QCompleter *c);
     virtual QCompleter *completer() const;
 
+
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
     virtual void focusInEvent(QFocusEvent *e);
 
+
 private slots:
     virtual void insertCompletion(const QString &completion);
 
+
 private:
     QString textUnderCursor() const;
+
 
 private:
     QCompleter * m_completer;
 };
 
-} //namespace gloperate_qt
+
+} // namespace gloperate_qt

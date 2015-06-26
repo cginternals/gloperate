@@ -98,4 +98,5 @@ void PolygonalGeometry::setMaterialIndex(const unsigned int materialIndex)
 	m_materialIndex = materialIndex;
 }
 
+
 } // namespace gloperate

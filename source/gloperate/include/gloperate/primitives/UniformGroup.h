@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <unordered_map>
 #include <string>
@@ -16,8 +18,10 @@ namespace globjects
     class Program;
 }
 
+
 namespace gloperate
 {
+
 
 class GLOPERATE_API UniformGroup
 {
@@ -34,9 +38,11 @@ public:
     void addUniform(globjects::AbstractUniform * uniform);
     void addToProgram(globjects::Program * program);
 
+
 protected:
     std::unordered_map<std::string, globjects::ref_ptr<globjects::AbstractUniform>> m_uniforms;
 };
+
 
 } // namespace gloperate
 

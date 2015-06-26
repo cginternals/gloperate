@@ -1,3 +1,4 @@
+
 # Generate meta-header
 configure_file(gloperate-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/gloperate-version.h)
 

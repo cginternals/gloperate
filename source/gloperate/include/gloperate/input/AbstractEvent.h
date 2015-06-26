@@ -1,10 +1,13 @@
+
 #pragma once
+
 
 #include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
 {
+
 
 enum class SourceType : char
 {
@@ -15,6 +18,7 @@ enum class SourceType : char
 ,   Wheel
 };
 
+
 class GLOPERATE_API AbstractEvent
 {
 public:
@@ -22,12 +26,14 @@ public:
 
     SourceType sourceType() const;
 
+
 protected:
     AbstractEvent();
 
+
 protected:
     SourceType m_sourceType;
-
 };
+
 
 } // namespace gloperate

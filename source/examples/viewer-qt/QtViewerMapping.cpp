@@ -1,3 +1,4 @@
+
 #include "QtViewerMapping.h"
 
 #include <glbinding/gl/enum.h>
@@ -23,8 +24,8 @@
 
 using namespace gloperate;
 using namespace gloperate_qt;
-
 using gloperate::make_unique;
+
 
 QtViewerMapping::QtViewerMapping(QtOpenGLWindow * window)
 :   AbstractQtMapping(window)
@@ -201,4 +202,3 @@ void QtViewerMapping::onTargetFramebufferChanged()
     m_renderTarget->setRenderTarget(gloperate::RenderTargetType::Depth, fbo,
         gl::GL_DEPTH_ATTACHMENT, gl::GL_DEPTH_COMPONENT);
 }
-

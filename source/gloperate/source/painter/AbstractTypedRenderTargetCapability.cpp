@@ -2,7 +2,8 @@
 #include <gloperate/painter/AbstractTypedRenderTargetCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 AbstractTypedRenderTargetCapability::AbstractTypedRenderTargetCapability()

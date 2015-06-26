@@ -4,34 +4,15 @@
 #include <cassert>
 
 #include <gloperate/ext-includes-begin.h>
+
 #include <QDockWidget>
 #include <QLayout>
 #include <QUrl>
 #include <QDebug>
 #include <QSettings>
 #include <QSizePolicy>
-#include <gloperate/ext-includes-end.h>
 
-#include <gloperate/resources/ResourceManager.h>
-#include <gloperate/plugin/PluginManager.h>
-#include <gloperate/plugin/Plugin.h>
-
-#include <gloperate-qt/viewer/QtOpenGLWindow.h>
-#include <gloperate-qt/viewer/QtTextureLoader.h>
-#include <gloperate-qt/viewer/QtTextureStorer.h>
-#include <gloperate-qt/viewer/QtKeyEventProvider.h>
-#include <gloperate-qt/viewer/QtMouseEventProvider.h>
-#include <gloperate-qt/viewer/QtWheelEventProvider.h>
-
-#include <gloperate-qt/widgets/ImageExporterWidget.h>
-
-#ifdef GLOPERATE_ASSIMP_FOUND
-    #include <gloperate-assimp/AssimpMeshLoader.h>
-    #include <gloperate-assimp/AssimpSceneLoader.h>
-#endif
-
-#include <gloperate/ext-includes-begin.h>
-
+#include <propertyguizeug/PropertyBrowser.h>
 #include <widgetzeug/MessageHandler.h>
 #include <widgetzeug/MessageStatusWidget.h>
 #include <widgetzeug/MessageWidget.h>
@@ -40,23 +21,37 @@
 #include <widgetzeug/ECMA26251_Completer.h>
 #include <widgetzeug/ColorSchemePresetsWidget.h>
 
-#include <propertyguizeug/PropertyBrowser.h>
-
 #include "ui_Viewer.h"
 
 #include <gloperate/ext-includes-end.h>
 
+#include <gloperate/resources/ResourceManager.h>
+#include <gloperate/plugin/PluginManager.h>
+#include <gloperate/plugin/Plugin.h>
+
+#ifdef GLOPERATE_ASSIMP_FOUND
+    #include <gloperate-assimp/AssimpMeshLoader.h>
+    #include <gloperate-assimp/AssimpSceneLoader.h>
+#endif
+
+#include <gloperate-qt/viewer/QtOpenGLWindow.h>
+#include <gloperate-qt/viewer/QtTextureLoader.h>
+#include <gloperate-qt/viewer/QtTextureStorer.h>
+#include <gloperate-qt/viewer/QtKeyEventProvider.h>
+#include <gloperate-qt/viewer/QtMouseEventProvider.h>
+#include <gloperate-qt/viewer/QtWheelEventProvider.h>
 #include <gloperate-qt/viewer/Mapping.h>
+#include <gloperate-qt/widgets/ImageExporterWidget.h>
 
 
 using namespace widgetzeug;
-
 using namespace gloperate;
 using namespace gloperate_qt;
 
 #ifdef GLOPERATE_ASSIMP_FOUND
-using namespace gloperate_assimp;
+    using namespace gloperate_assimp;
 #endif
+
 
 namespace
 {
@@ -64,8 +59,10 @@ namespace
     const QString SETTINGS_STATE("State");
 }
 
+
 namespace gloperate_qt
 {
+
 
 Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 : QMainWindow(parent, flags)
@@ -317,5 +314,6 @@ void Viewer::switchToPainter(bool)
 
     m_canvas->updateGL();
 }
+
 
 } // namespace gloperate_qt

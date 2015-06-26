@@ -1,3 +1,4 @@
+
 #include <gloperate/primitives/Icosahedron.h>
 
 #include <iterator>
@@ -23,6 +24,7 @@ using namespace globjects;
 
 namespace gloperate
 {
+
 
 std::array<vec3, 12> Icosahedron::vertices()
 {
@@ -199,5 +201,6 @@ gl::GLushort Icosahedron::split(
 
     return i;
 }
+
 
 } // namespace gloperate

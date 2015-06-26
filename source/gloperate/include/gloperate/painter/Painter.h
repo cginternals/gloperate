@@ -1,12 +1,12 @@
 
 #pragma once
 
+
 #include <memory>
 #include <vector>
 
 #include <reflectionzeug/Object.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>
 
 
@@ -63,6 +63,7 @@ public:
     // Fixes issues with MSVC2013 Update 3
     Painter(const Painter & rhs) = delete;
     Painter(Painter && rhs) = delete;
+
     Painter & operator=(const Painter & rhs) = delete;
     Painter & operator=(Painter && rhs) = delete;
 
@@ -123,7 +124,7 @@ protected:
     *    The painter takes ownership of the capability.
     */
     AbstractCapability * addCapability(AbstractCapability * capability);
-    
+
     template <typename Capability>
     Capability * addCapability(Capability * capability);
 

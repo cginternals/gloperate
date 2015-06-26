@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -17,10 +18,12 @@ namespace osgViewer
     class Viewer;
     class GraphicsWindowEmbedded;
 }
+
 namespace osg 
 {
     class Node;
 }
+
 namespace gloperate 
 {
     class ViewportCapability;
@@ -40,8 +43,6 @@ namespace gloperate_osg
 */
 class GLOPERATE_OSG_API OsgPainter : public gloperate::Painter
 {
-
-
 public:
     /**
     *  @brief
@@ -126,8 +127,6 @@ protected:
     gloperate::TargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::InputCapability             * m_inputCapability;
     gloperate::VirtualTimeCapability       * m_virtualTimeCapability;
-
-
 };
 
 

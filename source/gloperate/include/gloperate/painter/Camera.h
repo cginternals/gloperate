@@ -6,11 +6,12 @@
 #include <glm/glm.hpp>
 #include <gloperate/ext-includes-end.h>
 
+#include <signalzeug/Signal.h>
+
 #include <globjects/base/Referenced.h>
 #include <globjects/base/CachedValue.h>
 
 #include <gloperate/gloperate_api.h>
-#include <signalzeug/Signal.h>
 
 
 namespace gloperate
@@ -31,6 +32,10 @@ namespace gloperate
 */
 class GLOPERATE_API Camera : public globjects::Referenced
 {
+public:
+    signalzeug::Signal<> invalidated;   /**< Called when the camera has been modified */
+
+
 public:
     /**
     *  @brief
@@ -282,10 +287,6 @@ public:
     *    Emit signal that camera has been modified
     */
     void changed();
-
-
-public:
-    signalzeug::Signal<> invalidated;   /**< Called when the camera has been modified */
 
 
 protected:

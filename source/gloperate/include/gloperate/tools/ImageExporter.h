@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <string>
 
@@ -9,8 +11,10 @@
 
 #include <gloperate/gloperate_api.h>
 
+
 namespace gloperate
 {
+
 
 class Painter;
 class ResourceManager;
@@ -29,6 +33,7 @@ public:
 
 	void save(const std::string & filename, const int & width = 0, const int & height = 0, const int & renderIterations = 1);
 
+
 protected:
     Painter * m_painter;
     ResourceManager & m_resourceManager;
@@ -39,5 +44,6 @@ protected:
     globjects::ref_ptr<globjects::Texture> m_color;
     globjects::ref_ptr<globjects::Renderbuffer> m_depth;
 };
+
 
 } // namespace gloperate

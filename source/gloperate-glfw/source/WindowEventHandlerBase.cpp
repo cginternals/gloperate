@@ -1,3 +1,4 @@
+
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
 #include <gloperate-glfw/events.h>
@@ -5,6 +6,7 @@
 
 namespace gloperate_glfw
 {
+
 
 WindowEventHandlerBase::WindowEventHandlerBase()
 {
@@ -157,5 +159,6 @@ void WindowEventHandlerBase::iconifyEvent(IconifyEvent &)
 void WindowEventHandlerBase::timerEvent(TimerEvent &)
 {
 }
+
 
 } // namespace gloperate_glfw

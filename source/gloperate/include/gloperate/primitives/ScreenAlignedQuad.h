@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -15,6 +16,7 @@
 
 namespace gloperate
 {
+
 
 class GLOPERATE_API ScreenAlignedQuad : public globjects::Referenced
 {
@@ -37,8 +39,10 @@ public:
 
     globjects::VertexArray * vao() const;
 
+
 protected:
     void initialize();
+
 
 protected:
     globjects::ref_ptr<globjects::VertexArray> m_vao;
@@ -53,9 +57,11 @@ protected:
 
     int m_samplerIndex;
 
+
 protected:
     static const char * s_defaultVertexShaderSource;
     static const char * s_defaultFagmentShaderSource;
 };
+
 
 } // namespace gloperate

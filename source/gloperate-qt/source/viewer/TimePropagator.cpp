@@ -1,3 +1,4 @@
+
 #include <gloperate-qt/viewer/TimePropagator.h>
 
 #include <chrono>
@@ -6,10 +7,7 @@
 namespace gloperate_qt
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 TimePropagator::TimePropagator(gloperate_qt::QtOpenGLWindowBase * window)
 :   m_window(window)
 ,   m_capability(nullptr)
@@ -34,10 +32,6 @@ void TimePropagator::setCapability(gloperate::AbstractVirtualTimeCapability * ca
         m_time.stop();
 }
 
-/**
-*  @brief
-*    Called by the timer when the timer has elapsed
-*/
 void TimePropagator::update()
 {
     if (!m_capability)
@@ -60,5 +54,6 @@ void TimePropagator::update()
         m_window->updateGL();
     }
 }
+
 
 } // namespace gloperate_qt

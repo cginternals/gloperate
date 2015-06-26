@@ -1,12 +1,5 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
-#pragma once
 
-#include <gloperate-qt/gloperate-qt_api.h>
+#pragma once
 
 #include <gloperate/ext-includes-begin.h>
 #include <QKeyEvent>
@@ -22,6 +15,9 @@
 #include <gloperate/input/KeyboardEvent.h>
 #include <gloperate/input/MouseEvent.h>
 
+#include <gloperate-qt/gloperate-qt_api.h>
+
+
 namespace gloperate_qt
 {
 
@@ -32,8 +28,6 @@ namespace gloperate_qt
 */
 class GLOPERATE_QT_API QtEventTransformer
 {
-
-
 public:
     /**
     *  @brief
@@ -52,8 +46,6 @@ public:
     static glm::ivec2 fromQPoint(const QPoint point);
     static gloperate::MouseButton fromQtMouseButton(Qt::MouseButton button);
     static gloperate::Key fromQtKeyCode(int key, int mods);
-
-
 };
 
 

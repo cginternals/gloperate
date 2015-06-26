@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <gloperate-qt/viewer/AbstractApplication.h>
 

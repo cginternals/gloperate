@@ -1,10 +1,11 @@
+
+#include <gloperate-version.h>
 #include <gloperate/plugin/plugin_api.h>
 
 #include "textured-quad/TexturedQuad.h"
 #include "rotating-quad/RotatingQuad.h"
 #include "cubescape/CubeScape.h"
 
-#include <gloperate-version.h>
 
 GLOPERATE_PLUGIN_LIBRARY
 

@@ -1,8 +1,10 @@
+
 #include <gloperate/input/KeyboardEvent.h>
 
 
 namespace gloperate
 {
+
 
 KeyboardEvent::KeyboardEvent(Type type, unsigned int character)
 : AbstractEvent()
@@ -50,5 +52,6 @@ unsigned int KeyboardEvent::character() const
 {
     return m_character;
 }
+
 
 } // namespace gloperate

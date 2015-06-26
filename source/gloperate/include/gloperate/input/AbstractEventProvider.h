@@ -1,14 +1,19 @@
+
 #pragma once
+
+
+#include <list>
 
 #include <gloperate/gloperate_api.h>
 
-#include <list>
 
 namespace gloperate
 {
 
+
 class AbstractEvent;
 class AbstractMapping;
+
 
 class GLOPERATE_API AbstractEventProvider
 {
@@ -20,9 +25,10 @@ public:
     virtual void deregisterMapping(AbstractMapping * mapping);
     virtual void passEvent(AbstractEvent * event);
 
+
 protected:
     std::list<AbstractMapping*> m_mappings;
-
 };
+
 
 } // namespace gloperate

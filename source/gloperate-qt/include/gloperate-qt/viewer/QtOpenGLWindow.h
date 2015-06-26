@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -13,10 +14,9 @@
 
 namespace gloperate
 {
-
-class ResourceManager;
-
+    class ResourceManager;
 }
+
 
 namespace gloperate_qt
 {
@@ -28,8 +28,6 @@ namespace gloperate_qt
 */
 class GLOPERATE_QT_API QtOpenGLWindow : public QtOpenGLWindowBase
 {
-
-
 public:
     /**
     *  @brief
@@ -88,7 +86,6 @@ protected:
     gloperate::ResourceManager & m_resourceManager;
     gloperate::Painter * m_painter;                    /**< Currently used painter */
     std::unique_ptr<TimePropagator> m_timePropagator;  /**< Time propagator for continous updates */
-    
 };
 
 

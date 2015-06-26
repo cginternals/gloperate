@@ -1,10 +1,13 @@
+
 #include <gloperate/navigation/AbstractMapping.h>
 
 #include <gloperate/painter/Painter.h>
 #include <gloperate/input/AbstractEventProvider.h>
 
+
 namespace gloperate
 {
+
 
 AbstractMapping::AbstractMapping()
 : m_painter(nullptr)
@@ -55,5 +58,6 @@ void AbstractMapping::processEvent(AbstractEvent * event)
 {
     mapEvent(event);
 }
+
 
 } // namespace gloperate

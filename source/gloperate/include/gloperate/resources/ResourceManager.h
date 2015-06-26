@@ -6,18 +6,20 @@
 #include <vector>
 #include <functional>
 
-#include <gloperate/gloperate_api.h>
-
 #include <reflectionzeug/variant/Variant.h>
 
+#include <gloperate/gloperate_api.h>
 
-namespace globjects 
+
+namespace globjects
 {
     class Texture;
 }
 
+
 namespace gloperate
 {
+
 
 class AbstractLoader;
 class AbstractStorer;

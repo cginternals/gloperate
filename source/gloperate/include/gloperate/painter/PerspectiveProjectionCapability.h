@@ -8,11 +8,11 @@
 
 #include <globjects/base/CachedValue.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractPerspectiveProjectionCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 /**

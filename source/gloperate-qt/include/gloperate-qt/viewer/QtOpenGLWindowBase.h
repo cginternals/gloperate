@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -15,6 +16,7 @@ class QOpenGLContext;
 
 namespace gloperate_qt
 {
+
 
 /**
 *  @brief
@@ -36,6 +38,7 @@ public:
     *    Surface format
     */
     static QSurfaceFormat defaultFormat();
+
 
 public:
     /**
@@ -83,8 +86,8 @@ public:
 	void makeCurrent();
 	void doneCurrent();
 
-protected:
 
+protected:
     /**
     *  @brief
     *    Resize OpenGL scene
@@ -97,6 +100,7 @@ protected:
     */
     void paint();
 
+
 protected:
     virtual void onInitialize();
     virtual void onResize(QResizeEvent * event);
@@ -108,10 +112,12 @@ protected:
     virtual void enterEvent(QEvent * event);
     virtual void leaveEvent(QEvent * event);
 
+
 protected:
     QScopedPointer<QOpenGLContext> m_context;       /**< OpenGL context created and used by the window */
     bool                           m_initialized;   /**< Has the rendering already been initialized? */
     bool                           m_updatePending; /**< Flag to indicate if a redraw has been requested */
 };
+
 
 } // namespace gloperate-qt

@@ -1,18 +1,11 @@
-/******************************************************************************\
-* gloperate
-*
-* Copyright (C) 2014 Computer Graphics Systems Group at the
-* Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
 
 #include <gloperate/base/RenderTarget.h>
 
+
 namespace gloperate
 {
-/**
-*  @brief
-*    Standard Constructor
-*/
+
+
 RenderTarget::RenderTarget()
     :   m_attachment()
     ,   m_format()
@@ -20,10 +13,6 @@ RenderTarget::RenderTarget()
 {
 }
 
-/**
-*  @brief
-*    Constructor
-*/
 RenderTarget::RenderTarget(
     globjects::ref_ptr<globjects::Framebuffer> framebuffer,
     gl::GLenum attachment,   
@@ -35,10 +24,6 @@ RenderTarget::RenderTarget(
 {
 }
 
-/**
-*  @brief
-*    Copy Constructor
-*/
 RenderTarget::RenderTarget(
     const RenderTarget & renderTarget)
     :   m_framebuffer(renderTarget.m_framebuffer)
@@ -48,11 +33,6 @@ RenderTarget::RenderTarget(
 {
 }
 
-
-/**
-*  @brief
-*    Destructor
-*/
 RenderTarget::~RenderTarget()
 {
 }
@@ -76,4 +56,6 @@ gl::GLenum RenderTarget::format() const
 {
     return m_format;
 }
+
+
 } // namespace gloperate

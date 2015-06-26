@@ -1,9 +1,4 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 
 #include <gloperate/input/input.h>
@@ -11,23 +6,18 @@
 
 #include <gloperate-qt/viewer/QtEventTransformer.h>
 
+
 using namespace gloperate;
+
 
 namespace gloperate_qt
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 QtWheelEventProvider::QtWheelEventProvider()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtWheelEventProvider::~QtWheelEventProvider()
 {
 }
@@ -54,5 +44,6 @@ glm::vec2 QtWheelEventProvider::toDegrees(const glm::ivec2 & eigthsOfADegree)
 {
     return glm::vec2(eigthsOfADegree) / 8.f;
 }
+
 
 } // namespace gloperate_qt

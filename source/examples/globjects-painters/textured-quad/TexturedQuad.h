@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
@@ -9,10 +11,9 @@
 
 namespace gloperate
 {
-
-class AbstractViewportCapability;
-
+    class AbstractViewportCapability;
 } // namespace gloperate
+
 
 class TexturedQuad : public gloperate::Painter
 {
@@ -20,13 +21,16 @@ public:
     TexturedQuad(gloperate::ResourceManager & resourceManager);
     virtual ~TexturedQuad();
 
+
 protected:
     virtual void onInitialize();
     virtual void onPaint();
 
+
 protected:
     void createAndSetupTexture();
     void createAndSetupGeometry();
+
 
 protected:
     /* capabilities */

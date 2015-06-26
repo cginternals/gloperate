@@ -11,7 +11,8 @@
 #include <gloperate/painter/AbstractViewportCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 CameraCapability::CameraCapability(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & up)

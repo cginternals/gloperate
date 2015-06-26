@@ -1,16 +1,20 @@
+
 #pragma once
+
 
 #include <set>
 #include <string>
 
-#include <gloperate/gloperate_api.h>
+#include <signalzeug/Signal.h>
 
 #include <globjects/base/CachedValue.h>
-#include <signalzeug/Signal.h>
+
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
 {
+
 
 class AbstractInputSlot;
 class AbstractData;
@@ -18,6 +22,10 @@ class AbstractData;
 
 class GLOPERATE_API AbstractStage
 {
+public:
+    signalzeug::Signal<> dependenciesChanged;
+
+
 public:
     AbstractStage(const std::string & name = "");
     virtual ~AbstractStage();
@@ -57,8 +65,6 @@ public:
 
     void invalidateOutputs();
 
-public:
-    signalzeug::Signal<> dependenciesChanged;
 
 protected:
     bool needsToProcess() const;
@@ -66,6 +72,7 @@ protected:
     void markInputsProcessed();
 
     virtual void process() = 0;
+
 
 protected:
     bool m_enabled;
@@ -80,8 +87,10 @@ protected:
     std::set<AbstractInputSlot*> m_sharedInputs;
     std::set<AbstractStage*> m_dependencies;    /**< Additional manual dependencies not expressed by data connections */
 
+
 private:
     AbstractStage(const AbstractStage&) = delete;
 };
+
 
 } // namespace gloperate

@@ -180,6 +180,7 @@ public:
 	*/
 	void setMaterialIndex(unsigned int materialIndex);
 
+
 protected:
     std::vector<unsigned int> m_indices;              /**< Index array */
     std::vector<glm::vec3>    m_vertices;             /**< Vertex array */

@@ -8,7 +8,6 @@
 
 #include <globjects/base/CachedValue.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractOrthographicProjectionCapability.h>
 
 

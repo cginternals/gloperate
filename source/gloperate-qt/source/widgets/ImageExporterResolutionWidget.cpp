@@ -1,16 +1,20 @@
+
 #include <gloperate-qt/widgets/ImageExporterResolutionWidget.h>
+
+#include <cmath>
 
 #include <gloperate/ext-includes-begin.h>
 #include "ui_ImageExporterResolutionWidget.h"
 #include <gloperate/ext-includes-end.h>
 
-#include <cmath>
 
 #define CM_PER_INCH 2.54
 #define INCH_PER_CM 1 / CM_PER_INCH
 
+
 namespace gloperate_qt
 {
+
 
 const QString ppiString = "ppi";
 const QString pixelsPerCmString = "px/cm";
@@ -18,12 +22,13 @@ const QString pixelString = "pixel";
 const QString inchString = "inch";
 const QString cmString = "cm";
 
-ImageExporterResolutionWidget::ImageExporterResolutionWidget(QWidget *parent)
-:	QWidget(parent)
-,	m_widthState(new ResolutionState(1920.0, pixelString))
-,	m_heightState(new ResolutionState(1080.0, pixelString))
-,	m_resolutionState(new ResolutionState(72, ppiString))
-,	m_ui(new Ui_ImageExporterResolutionWidget)
+
+ImageExporterResolutionWidget::ImageExporterResolutionWidget(QWidget * parent)
+: QWidget(parent)
+, m_widthState(new ResolutionState(1920.0, pixelString))
+, m_heightState(new ResolutionState(1080.0, pixelString))
+, m_resolutionState(new ResolutionState(72, ppiString))
+, m_ui(new Ui_ImageExporterResolutionWidget)
 {
     m_ui->setupUi(this);
 
@@ -343,4 +348,5 @@ ImageExporterResolutionWidget::~ImageExporterResolutionWidget()
 {
 }
 
-} //namespace gloperate_qt
+
+} // namespace gloperate_qt

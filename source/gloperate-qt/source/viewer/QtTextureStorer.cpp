@@ -1,3 +1,4 @@
+
 #include <gloperate-qt/viewer/QtTextureStorer.h>
 
 #include <gloperate/ext-includes-begin.h>
@@ -14,10 +15,7 @@
 namespace gloperate_qt
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 QtTextureStorer::QtTextureStorer()
 : gloperate::Storer<globjects::Texture>()
 {
@@ -38,10 +36,6 @@ QtTextureStorer::QtTextureStorer()
     m_types.push_back(std::string("Qt image formats (") + allTypes + ")");
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtTextureStorer::~QtTextureStorer()
 {
 }
@@ -96,5 +90,6 @@ bool QtTextureStorer::store(const std::string & filename, const globjects::Textu
 
     return image.mirrored().save(QString::fromStdString(filename));
 }
+
 
 } // namespace gloperate_qt

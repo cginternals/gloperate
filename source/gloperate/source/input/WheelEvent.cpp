@@ -1,8 +1,10 @@
+
 #include <gloperate/input/WheelEvent.h>
 
 
 namespace gloperate
 {
+
 
 WheelEvent::WheelEvent(
     const glm::ivec2 & pos, 
@@ -47,5 +49,6 @@ float WheelEvent::defaultMouseAngleDelta()
 {
     return 15.f;
 }
+
 
 } // namespace gloperate

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <memory>
@@ -13,6 +14,7 @@
 
 class QTimer;
 
+
 namespace gloperate
 {
     class CoordinateProvider;
@@ -25,18 +27,22 @@ namespace gloperate
     class WheelEvent;
 }
 
+
 namespace gloperate_qt
 {
 
+
 class GLOPERATE_QT_API Mapping : public QObject, public gloperate_qt::AbstractQtMapping
 {
-Q_OBJECT
+    Q_OBJECT
+
 
 public:
     Mapping(gloperate_qt::QtOpenGLWindow * window);
     virtual ~Mapping();
 
     virtual void initializeTools() override;
+
 
 protected:
     virtual void mapEvent(gloperate::AbstractEvent * event) override;
@@ -47,9 +53,11 @@ protected:
 
     void onTargetFramebufferChanged();
 
+
 protected slots:
     void showTooltip();
     void hideTooltip();
+
 
 protected:
     std::unique_ptr<gloperate::WorldInHandNavigation> m_navigation;
@@ -61,5 +69,6 @@ protected:
     QTimer * m_timer;
     glm::ivec2 m_currentMousePosition;
 };
+
 
 } // namespace gloperate_qt

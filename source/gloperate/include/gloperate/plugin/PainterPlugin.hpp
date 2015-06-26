@@ -1,10 +1,13 @@
+
 #pragma once
+
 
 #include <gloperate/plugin/PainterPlugin.h>
 
 
 namespace gloperate
 {
+
 
 template <typename PainterType>
 PainterPlugin<PainterType>::PainterPlugin(
@@ -26,5 +29,6 @@ Painter * PainterPlugin<PainterType>::createPainter(ResourceManager & resourceMa
 {
     return new PainterType(resourceManager);
 }
+
 
 } // namespace gloperate

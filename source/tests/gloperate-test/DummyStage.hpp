@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <map>
@@ -9,6 +10,7 @@
 
 
 using namespace gloperate;
+
 
 class DummyStage : public AbstractStage
 {
@@ -34,6 +36,8 @@ public:
     {
     }
 
+
+public:
     std::map<std::string, InputSlot<int>> inputs;
     std::map<std::string, Data<int>> outputs;
 };

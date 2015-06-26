@@ -1,3 +1,4 @@
+
 #include "CubeScape.h"
 
 #include <array>
@@ -27,9 +28,11 @@
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 #include <gloperate/painter/VirtualTimeCapability.h>
 
+
 using namespace gl;
 using namespace glm;
 using namespace globjects;
+
 
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 :   Painter(resourceManager)

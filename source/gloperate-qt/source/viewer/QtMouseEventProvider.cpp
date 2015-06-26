@@ -1,9 +1,4 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #include <gloperate-qt/viewer/QtMouseEventProvider.h>
 
 #include <gloperate/input/input.h>
@@ -11,23 +6,18 @@
 
 #include <gloperate-qt/viewer/QtEventTransformer.h>
 
+
 using namespace gloperate;
+
 
 namespace gloperate_qt
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 QtMouseEventProvider::QtMouseEventProvider()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtMouseEventProvider::~QtMouseEventProvider()
 {
 }
@@ -63,7 +53,9 @@ bool QtMouseEventProvider::eventFilter(QObject * obj, QEvent * event)
         passEvent(mouseEvent);
         return false;
     }
+
     return QObject::eventFilter(obj, event);
 }
+
 
 } // namespace gloperate_qt

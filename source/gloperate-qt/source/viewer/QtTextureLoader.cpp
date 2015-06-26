@@ -1,3 +1,4 @@
+
 #include <gloperate-qt/viewer/QtTextureLoader.h>
 
 #include <gloperate/ext-includes-begin.h>
@@ -6,22 +7,19 @@
 #include <QImageReader>
 #include <gloperate/ext-includes-end.h>
 
+#include <reflectionzeug/variant/Variant.h>
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Texture.h>
 
 #include <gloperate-qt/viewer/Converter.h>
 
-#include <reflectionzeug/variant/Variant.h>
-
 
 namespace gloperate_qt
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 QtTextureLoader::QtTextureLoader()
 : gloperate::Loader<globjects::Texture>()
 {
@@ -42,10 +40,6 @@ QtTextureLoader::QtTextureLoader()
     m_types.push_back(std::string("Qt image formats (") + allTypes + ")");
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtTextureLoader::~QtTextureLoader()
 {
 }
@@ -101,5 +95,6 @@ globjects::Texture * QtTextureLoader::load(const std::string & filename, const r
     // Could not load image
     return nullptr;
 }
+
 
 } // namespace gloperate_qt

@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <gloperate/ext-includes-begin.h>
 #include <glm/vec3.hpp>
@@ -8,6 +10,7 @@
 
 namespace gloperate
 {
+
 
 float pointToPlaneDistance(
     const glm::vec3 & location
@@ -28,5 +31,6 @@ const glm::vec3 intersection(
 ,   const glm::vec3 & normal
 ,    const glm::vec3 & rnear
 ,    const glm::vec3 & rfar);
+
 
 } // namespace gloperate

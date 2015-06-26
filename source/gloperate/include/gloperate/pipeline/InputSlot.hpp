@@ -1,13 +1,16 @@
+
 #pragma once
 
-#include <gloperate/pipeline/InputSlot.h>
 
 #include <typeinfo>
 #include <type_traits>
 
+#include <gloperate/pipeline/InputSlot.h>
+
 
 namespace gloperate 
 {
+
 
 template <typename T>
 const T InputSlot<T>::s_defaultValue = T();
@@ -107,5 +110,6 @@ const AbstractData * InputSlot<T>::connectedData() const
 {
     return m_data;
 }
+
 
 } // namespace gloperate

@@ -1,14 +1,15 @@
+
 #pragma once
 
-#include <string>
 
-#include <gloperate/gloperate_api.h>
+#include <string>
 
 #include <gloperate/pipeline/AbstractData.h>
 
 
 namespace gloperate 
 {
+
 
 template <typename T>
 class Data : public AbstractData
@@ -37,6 +38,7 @@ public:
 protected:
     T m_data;
 };
+
 
 } // namespace gloperate
 

@@ -27,7 +27,6 @@
 #	define GLOPERATE_ASSIMP_API
 #endif
 
-
 #ifdef N_DEBUG
 #	define IF_DEBUG(statement)
 #	define IF_NDEBUG(statement) statement

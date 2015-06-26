@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <type_traits>
 #include <cmath>
@@ -12,10 +14,12 @@
 
 namespace gloperate
 {
+
+
     // Several interpolation methods in action: http://sol.gfxile.net/interpolation/
     enum InterpolationType
     {
-        LinearInterpolation
+          LinearInterpolation
         , SmoothStepInterpolation
         , SmoothStep2Interpolation
         , SmoothStep3Interpolation
@@ -29,6 +33,7 @@ namespace gloperate
         , RoofInterpolation
         , SinInterpolation          // strong in, soft out
     };
+
 
     namespace interpolation
     {
@@ -135,6 +140,7 @@ namespace gloperate
         }
     } // namespace interpolation
 
+
     template<typename T>
     inline T interpolate(T t, InterpolationType function = LinearInterpolation, bool invert = false)
     {
@@ -176,4 +182,5 @@ namespace gloperate
         return invert ? static_cast<T>(1.0) - r : r;
     }
 
-} // namespace globjectsutils
+
+} // namespace gloperate

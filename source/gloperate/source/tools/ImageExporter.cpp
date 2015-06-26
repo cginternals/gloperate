@@ -1,3 +1,4 @@
+
 #include <gloperate/tools/ImageExporter.h>
 
 #include <cassert>
@@ -7,12 +8,12 @@
 #include <gloperate/painter/Painter.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractTargetFramebufferCapability.h>
-
 #include <gloperate/resources/ResourceManager.h>
 
 
 namespace gloperate
 {
+
 
 ImageExporter::ImageExporter(Painter * painter, ResourceManager & resourceManager)
     : m_painter(painter)
@@ -63,5 +64,6 @@ void ImageExporter::save(const std::string & filename, const int & width, const 
 	if (width > 0 && height > 0)
 		m_viewportCapability->setViewport(oldX, oldY, oldWidth, oldHeight);
 }
+
 
 } // namespace gloperate

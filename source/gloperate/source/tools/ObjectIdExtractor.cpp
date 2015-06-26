@@ -7,8 +7,10 @@
 
 #include <gloperate/base/RenderTargetType.h>
 
+
 namespace gloperate
 {
+
 
 ObjectIdExtractor::ObjectIdExtractor(
     AbstractViewportCapability * viewportCapability,
@@ -25,5 +27,6 @@ int ObjectIdExtractor::get(const glm::ivec2 & windowCoordinates) const
 {
     return static_cast<int>(glm::floor(GBufferExtractor::get(windowCoordinates).x + 0.5));
 }
+
 
 } // namespace gloperate

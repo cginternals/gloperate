@@ -16,10 +16,11 @@
 
 #include <gloperate/ext-includes-end.h>
 
+#include <reflectionzeug/variant/Variant.h>
+
 #include <gloperate/primitives/PolygonalGeometry.h>
 #include <gloperate/primitives/Scene.h>
 
-#include <reflectionzeug/variant/Variant.h>
 
 using namespace gloperate;
 

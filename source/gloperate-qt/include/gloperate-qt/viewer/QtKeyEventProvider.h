@@ -1,14 +1,5 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #pragma once
-
-#include <gloperate-qt/gloperate-qt_api.h>
-
-#include <gloperate/input/AbstractEventProvider.h>
 
 #include <gloperate/ext-includes-begin.h>
 #include <QObject>
@@ -17,6 +8,10 @@
 
 #include <gloperate/input/input.h>
 #include <gloperate/input/KeyboardEvent.h>
+#include <gloperate/input/AbstractEventProvider.h>
+
+#include <gloperate-qt/gloperate-qt_api.h>
+
 
 namespace gloperate_qt
 {
@@ -29,6 +24,7 @@ namespace gloperate_qt
 class GLOPERATE_QT_API QtKeyEventProvider : public QObject, public gloperate::AbstractEventProvider
 {
     Q_OBJECT
+
 
 public:
     /**
@@ -44,7 +40,7 @@ public:
     virtual ~QtKeyEventProvider();
 
     virtual bool eventFilter(QObject * obj, QEvent * event) override;
-
 };
+
 
 } // namespace gloperate_qt

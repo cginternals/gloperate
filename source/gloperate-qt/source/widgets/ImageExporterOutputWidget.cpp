@@ -1,7 +1,11 @@
-﻿#include <gloperate-qt/widgets/ImageExporterOutputWidget.h>
+﻿
+#include <gloperate-qt/widgets/ImageExporterOutputWidget.h>
+
+#include <algorithm>
+#include <set>
 
 #include <gloperate/ext-includes-begin.h>
-#include "ui_ImageExporterOutputWidget.h"
+
 #include <QAbstractButton>
 #include <QCompleter>
 #include <QFile>
@@ -12,6 +16,9 @@
 #include <QStringListModel>
 #include <QTime>
 #include <QWindow>
+
+#include "ui_ImageExporterOutputWidget.h"
+
 #include <gloperate/ext-includes-end.h>
 
 #include <gloperate/resources/ResourceManager.h>
@@ -19,14 +26,12 @@
 #include <gloperate/tools/ImageExporter.h>
 
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
-
 #include <gloperate-qt/widgets/FileNameTextEdit.h>
 
-#include <algorithm>
-#include <set>
 
 namespace gloperate_qt
 {
+
 
 ImageExporterOutputWidget::ImageExporterOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
 :	QWidget(parent)
@@ -317,4 +322,5 @@ void ImageExporterOutputWidget::checkFilename()
     }
 }
 
-} //namespace gloperate_qt
+
+} // namespace gloperate_qt

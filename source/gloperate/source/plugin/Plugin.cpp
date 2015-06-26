@@ -1,8 +1,10 @@
+
 #include <gloperate/plugin/Plugin.h>
 
 
 namespace gloperate
 {
+
 
 Plugin::Plugin(
     const std::string & type
@@ -46,5 +48,6 @@ const char * Plugin::version() const
 {
     return m_version.c_str();
 }
+
 
 } // namespace gloperate

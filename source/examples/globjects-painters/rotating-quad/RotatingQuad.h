@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -26,14 +27,17 @@ public:
     RotatingQuad(gloperate::ResourceManager & resourceManager);
     virtual ~RotatingQuad();
 
+
 protected:
     virtual void onInitialize();
     virtual void onPaint();
+
 
 protected:
     void createAndSetupCamera();
     void createAndSetupTexture();
     void createAndSetupGeometry();
+
 
 protected:
     /* capabilities */
@@ -48,5 +52,5 @@ protected:
     globjects::ref_ptr<globjects::Shader>       m_fragmentShader;
     globjects::ref_ptr<globjects::Texture>      m_texture;
 
-    float                           m_angle;
+    float m_angle;
 };

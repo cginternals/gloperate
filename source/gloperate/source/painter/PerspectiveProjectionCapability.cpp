@@ -10,7 +10,8 @@
 #include <gloperate/painter/AbstractViewportCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 PerspectiveProjectionCapability::PerspectiveProjectionCapability(AbstractViewportCapability * viewportCapability)

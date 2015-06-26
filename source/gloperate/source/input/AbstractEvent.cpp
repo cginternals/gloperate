@@ -1,8 +1,10 @@
+
 #include <gloperate/input/AbstractEvent.h>
 
 
 namespace gloperate
 {
+
 
 AbstractEvent::AbstractEvent()
 : m_sourceType(SourceType::Unknown)
@@ -17,5 +19,6 @@ SourceType AbstractEvent::sourceType() const
 {
     return m_sourceType;
 }
+
 
 } // namespace gloperate

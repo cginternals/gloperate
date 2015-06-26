@@ -1,40 +1,26 @@
-/******************************************************************************\
- * gloperate
- *
- * Copyright (C) 2014 Computer Graphics Systems Group at the
- * Hasso-Plattner-Institut (HPI), Potsdam, Germany.
-\******************************************************************************/
+
 #include <gloperate-qt/viewer/QtEventTransformer.h>
 
 #include <gloperate/input/input.h>
 #include <gloperate/input/KeyboardEvent.h>
 #include <gloperate/input/MouseEvent.h>
 
+
 using namespace gloperate;
+
 
 namespace gloperate_qt
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 QtEventTransformer::QtEventTransformer()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtEventTransformer::~QtEventTransformer()
 {
 }
 
-/**
-*  @brief
-*    Convert Qt event type into gloperate KeyboardEvent::Type
-*/
 KeyboardEvent::Type QtEventTransformer::keyboardTypeFromQtType(QEvent::Type type)
 {
     // TODO make complete
@@ -49,10 +35,6 @@ KeyboardEvent::Type QtEventTransformer::keyboardTypeFromQtType(QEvent::Type type
     }
 }
 
-/**
-*  @brief
-*    Convert Qt event type into gloperate MouseEvent::Type
-*/
 MouseEvent::Type QtEventTransformer::mouseTypeFromQtType(QEvent::Type type)
 {
     // TODO make complete
@@ -75,19 +57,11 @@ MouseEvent::Type QtEventTransformer::mouseTypeFromQtType(QEvent::Type type)
     }
 }
 
-/**
-*  @brief
-*    Convert QPoint into glm::ivec2
-*/
 glm::ivec2 QtEventTransformer::fromQPoint(const QPoint point)
 {
     return glm::ivec2(point.x(), point.y());
 }
 
-/**
-*  @brief
-*    Convert Qt mouse button into gloperate mouse button
-*/
 MouseButton QtEventTransformer::fromQtMouseButton(Qt::MouseButton button)
 {
     if (button & Qt::LeftButton)
@@ -104,10 +78,6 @@ MouseButton QtEventTransformer::fromQtMouseButton(Qt::MouseButton button)
         return NoMouseButton;
 }
 
-/**
-*  @brief
-*    Convert Qt key code into gloperate key code
-*/
 Key QtEventTransformer::fromQtKeyCode(int key, int mods)
 {
     if (mods & Qt::KeypadModifier) {
@@ -354,5 +324,6 @@ Key QtEventTransformer::fromQtKeyCode(int key, int mods)
         }
     }
 }
+
 
 } // namespace gloperate_qt

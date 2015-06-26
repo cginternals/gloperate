@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -8,6 +9,7 @@
 
 namespace gloperate
 {
+
 
 /**
 *  @brief
@@ -39,5 +41,6 @@ public:
     // Virtual gloperate::Loader<globjects::Texture> functions
     virtual globjects::Texture * load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const override;
 };
+
 
 } // namespace gloperate

@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <gloperate-qt/viewer/AbstractQtMapping.h>
 
@@ -20,6 +22,7 @@ namespace gloperate
     class WheelEvent;
 }
 
+
 class QtViewerMapping : public gloperate_qt::AbstractQtMapping
 {
 public:
@@ -27,6 +30,7 @@ public:
     virtual ~QtViewerMapping();
 
     virtual void initializeTools() override;
+
 
 protected:
     virtual void mapEvent(gloperate::AbstractEvent * event) override;
@@ -36,6 +40,7 @@ protected:
     void mapWheelEvent(gloperate::WheelEvent * event);
 
     void onTargetFramebufferChanged();
+
 
 protected:
     std::unique_ptr<gloperate::WorldInHandNavigation> m_navigation;

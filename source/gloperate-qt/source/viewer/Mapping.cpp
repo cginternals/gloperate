@@ -33,13 +33,16 @@ using namespace gloperate;
 
 using gloperate::make_unique;
 
+
 namespace
 {
     const int g_tooltipTimeout = 200;
 }
 
+
 namespace gloperate_qt
 {
+
 
 Mapping::Mapping(QtOpenGLWindow * window)
 : AbstractQtMapping(window)
@@ -275,5 +278,6 @@ void Mapping::hideTooltip()
 {
     QToolTip::showText(QPoint(0, 0), "");
 }
+
 
 } // namespace gloperate_qt

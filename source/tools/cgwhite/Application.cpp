@@ -1,5 +1,5 @@
-#include "Application.h"
 
+#include "Application.h"
 
 #include <QFileInfo>
 
@@ -7,7 +7,7 @@
 
 
 Application::Application(int & argc, char ** argv)
-:   AbstractApplication(argc, argv)
+: AbstractApplication(argc, argv)
 {
 	const QFileInfo fi(QCoreApplication::applicationFilePath());
 

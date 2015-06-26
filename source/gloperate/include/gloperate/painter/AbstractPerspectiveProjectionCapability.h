@@ -6,11 +6,11 @@
 #include <glm/glm.hpp>
 #include <gloperate/ext-includes-end.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractProjectionCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 /**

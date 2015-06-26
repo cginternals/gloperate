@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -10,6 +11,7 @@
 
 namespace gloperate_qt
 {
+
 
 /**
 *  @brief
@@ -30,5 +32,6 @@ public:
     */
     static QImage convert(const QImage &image);
 };
+
 
 } // namespace gloperate_qt

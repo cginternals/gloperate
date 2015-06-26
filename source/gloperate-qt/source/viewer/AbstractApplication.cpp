@@ -12,6 +12,7 @@
 namespace gloperate_qt
 {
 
+
 AbstractApplication::AbstractApplication(int & argc, char ** argv)
 : QApplication(argc, argv)
 {
@@ -21,5 +22,6 @@ AbstractApplication::AbstractApplication(int & argc, char ** argv)
 AbstractApplication::~AbstractApplication()
 {
 }
+
 
 } // namespace gloperate_qt

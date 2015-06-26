@@ -1,3 +1,4 @@
+
 #include <gloperate-qt/widgets/FileNameTextEdit.h>
 
 #include <gloperate/ext-includes-begin.h>
@@ -8,8 +9,10 @@
 #include <QScrollBar>
 #include <gloperate/ext-includes-end.h>
 
+
 namespace gloperate_qt
 {
+
 
 FileNameTextEdit::FileNameTextEdit(QWidget *parent)
 :   QPlainTextEdit(parent)
@@ -162,4 +165,5 @@ void FileNameTextEdit::keyPressEvent(QKeyEvent *e)
     m_completer->complete(cr); // popup it up!
 }
 
-} //namespace gloperate_qt
+
+} // namespace gloperate_qt

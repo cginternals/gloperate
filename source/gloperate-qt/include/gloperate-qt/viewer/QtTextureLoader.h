@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -5,6 +6,7 @@
 #include <string>
 
 #include <gloperate/resources/Loader.h>
+
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
@@ -13,8 +15,10 @@ namespace globjects
     class Texture;
 }
 
+
 namespace gloperate_qt
 {
+
 
 /**
 *  @brief
@@ -51,5 +55,6 @@ protected:
     std::vector<std::string> m_extensions; /**< List of supported file extensions (e.g., ".bmp") */
     std::vector<std::string> m_types;      /**< List of supported file types (e.g., "bmp image (*.bmp)") */
 };
+
 
 } // namespace gloperate_qt
