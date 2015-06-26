@@ -3,9 +3,11 @@
 #include <iterator>
 #include <algorithm>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/common.hpp>
 #include <glm/exponential.hpp>
 #include <glm/geometric.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>

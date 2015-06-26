@@ -1,13 +1,12 @@
 #pragma once
 
 
-#include <gloperate-qt/qt-includes-begin.h>
-
+#include <gloperate/ext-includes-begin.h>
 #include <QWindow>
 #include <QScopedPointer>
 #include <QSurfaceFormat>
+#include <gloperate/ext-includes-end.h>
 
-#include <gloperate-qt/qt-includes-end.h>
 #include <gloperate-qt/gloperate-qt_api.h>
 
 

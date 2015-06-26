@@ -1,8 +1,8 @@
 #include <gloperate-qt/widgets/ImageExporterResolutionWidget.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include "ui_ImageExporterResolutionWidget.h"
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 #include <cmath>
 
@@ -328,7 +328,7 @@ void ImageExporterResolutionWidget::resolutionUnitChanged(const QString& text)
     else
         m_resolutionState->value = std::ceil(m_resolutionState->value * INCH_PER_CM);
 
-    m_ui->resolutionSpinBox->setValue(m_resolutionState->value);
+    m_ui->resolutionSpinBox->setValue((int)m_resolutionState->value);
     m_resolutionState->type = text;
 }
 

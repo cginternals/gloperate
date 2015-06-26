@@ -5,9 +5,11 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/StringTemplate.h>

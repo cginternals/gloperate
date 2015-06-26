@@ -1,8 +1,8 @@
 #include <gloperate-qt/widgets/ImageExporterTilebasedWidget.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include "ui_ImageExporterTilebasedWidget.h"
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 namespace gloperate_qt
 {

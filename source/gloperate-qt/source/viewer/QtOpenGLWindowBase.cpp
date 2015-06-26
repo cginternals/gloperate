@@ -1,11 +1,11 @@
 #include "gloperate-qt/viewer/QtOpenGLWindowBase.h"
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include <QApplication>
 #include <QDebug>
 #include <QResizeEvent>
 #include <QOpenGLContext>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 
 namespace gloperate_qt

@@ -3,7 +3,9 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/painter/Camera.h>
 #include <gloperate/tools/DepthExtractor.h>

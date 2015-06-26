@@ -5,7 +5,9 @@
 #include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 
 namespace gloperate {

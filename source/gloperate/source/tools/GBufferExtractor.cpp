@@ -1,6 +1,8 @@
 #include <gloperate/tools/GBufferExtractor.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>

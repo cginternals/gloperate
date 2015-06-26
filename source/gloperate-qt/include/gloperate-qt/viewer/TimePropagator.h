@@ -1,12 +1,12 @@
 #pragma once
 
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include <QObject>
 #include <QTimer>
 #include <QScopedPointer>
 #include <QWidget>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/painter/AbstractVirtualTimeCapability.h>
 #include <gloperate/base/ChronoTimer.h>

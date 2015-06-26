@@ -3,7 +3,9 @@
 #include <gloperate/gloperate_api.h>
 #include <gloperate/navigation/AbstractInteraction.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 //#include "AxisAlignedBoundingBox.h"
 

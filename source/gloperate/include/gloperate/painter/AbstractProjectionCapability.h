@@ -2,7 +2,9 @@
 #pragma once
 
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>

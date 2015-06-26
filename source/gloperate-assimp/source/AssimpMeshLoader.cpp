@@ -5,12 +5,16 @@
 #include <iostream>
 #include <string>
 
+#include <gloperate/ext-includes-begin.h>
+
 #include <glm/glm.hpp>
 
 #include <assimp/scene.h>
 #include <assimp/cimport.h>
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
+
+#include <gloperate/ext-includes-end.h>
 
 #include <reflectionzeug/variant/Variant.h>
 

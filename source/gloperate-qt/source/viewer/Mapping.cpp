@@ -1,8 +1,10 @@
 
 #include <gloperate-qt/viewer/Mapping.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <QTimer>
 #include <QToolTip>
+#include <gloperate/ext-includes-end.h>
 
 #include <glbinding/gl/enum.h>
 

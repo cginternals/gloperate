@@ -1,7 +1,9 @@
 
 #include <gloperate/primitives/PolygonalGeometry.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 
 namespace gloperate

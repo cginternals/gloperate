@@ -1,10 +1,10 @@
 #include <gloperate-qt/viewer/QtTextureLoader.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include <QString>
 #include <QImage>
 #include <QImageReader>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 #include <glbinding/gl/gl.h>
 

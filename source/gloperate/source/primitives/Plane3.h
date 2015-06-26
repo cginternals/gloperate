@@ -1,7 +1,9 @@
 #pragma once
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
+#include <gloperate/ext-includes-end.h>
 
 
 namespace gloperate

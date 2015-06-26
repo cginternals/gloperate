@@ -2,8 +2,10 @@
 
 #include <memory>
 
+#include <gloperate/ext-includes-begin.h>
 #include <QScopedPointer>
 #include <QMainWindow>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 

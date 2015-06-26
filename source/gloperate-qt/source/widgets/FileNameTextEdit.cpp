@@ -1,12 +1,12 @@
 #include <gloperate-qt/widgets/FileNameTextEdit.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include <QCompleter>
 #include <QKeyEvent>
 #include <QFocusEvent>
 #include <QAbstractItemView>
 #include <QScrollBar>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 namespace gloperate_qt
 {

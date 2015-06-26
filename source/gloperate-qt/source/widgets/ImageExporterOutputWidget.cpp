@@ -1,6 +1,6 @@
 ﻿#include <gloperate-qt/widgets/ImageExporterOutputWidget.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include "ui_ImageExporterOutputWidget.h"
 #include <QAbstractButton>
 #include <QCompleter>
@@ -12,7 +12,7 @@
 #include <QStringListModel>
 #include <QTime>
 #include <QWindow>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/painter/Painter.h>

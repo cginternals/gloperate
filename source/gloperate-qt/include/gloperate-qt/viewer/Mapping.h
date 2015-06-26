@@ -2,7 +2,9 @@
 
 #include <memory>
 
+#include <gloperate/ext-includes-begin.h>
 #include <QObject>
+#include <gloperate/ext-includes-end.h>
 
 #include <glm/glm.hpp>
 

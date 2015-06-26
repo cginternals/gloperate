@@ -1,8 +1,10 @@
 
 #include <gloperate-qt/viewer/AbstractApplication.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <QApplication>
 #include <QStringList>
+#include <gloperate/ext-includes-end.h>
 
 #include <widgetzeug/MessageHandler.h>
 

@@ -2,8 +2,10 @@
 
 #include <cassert>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <gloperate/ext-includes-end.h>
 
 //#include <gloperate/Camera.h>
 #include <gloperate/painter/AbstractCameraCapability.h>

@@ -3,14 +3,14 @@
 
 #include <cassert>
 
+#include <gloperate/ext-includes-begin.h>
 #include <QDockWidget>
 #include <QLayout>
 #include <QUrl>
 #include <QDebug>
 #include <QSettings>
 #include <QSizePolicy>
-
-#include "ui_Viewer.h"
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/plugin/PluginManager.h>
@@ -30,6 +30,8 @@
     #include <gloperate-assimp/AssimpSceneLoader.h>
 #endif
 
+#include <gloperate/ext-includes-begin.h>
+
 #include <widgetzeug/MessageHandler.h>
 #include <widgetzeug/MessageStatusWidget.h>
 #include <widgetzeug/MessageWidget.h>
@@ -39,6 +41,10 @@
 #include <widgetzeug/ColorSchemePresetsWidget.h>
 
 #include <propertyguizeug/PropertyBrowser.h>
+
+#include "ui_Viewer.h"
+
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate-qt/viewer/Mapping.h>
 

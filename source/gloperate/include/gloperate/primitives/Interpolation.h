@@ -3,7 +3,9 @@
 #include <type_traits>
 #include <cmath>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/gtc/constants.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/gloperate_api.h>
 

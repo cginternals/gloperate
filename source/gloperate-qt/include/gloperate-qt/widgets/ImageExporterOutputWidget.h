@@ -1,10 +1,10 @@
 #pragma once
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include <QWidget>
 #include <QScopedPointer>
 #include <QString>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 

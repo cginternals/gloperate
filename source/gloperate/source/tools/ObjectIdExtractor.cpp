@@ -1,7 +1,9 @@
 
 #include <gloperate/tools/ObjectIdExtractor.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/common.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/base/RenderTargetType.h>
 

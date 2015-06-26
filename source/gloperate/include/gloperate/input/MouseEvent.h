@@ -4,7 +4,9 @@
 
 #include <gloperate/input/AbstractEvent.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/input/input.h>
 

@@ -4,7 +4,9 @@
 #include <array>
 #include <vector>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/vec3.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <globjects/base/Referenced.h>
 #include <globjects/base/ref_ptr.h>

@@ -2,7 +2,9 @@
 
 //#include <cassert>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/gtx/norm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/primitives/AxisAlignedBoundingBox.h>
 

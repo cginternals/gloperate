@@ -3,7 +3,9 @@
 #include <cmath>
 #include <chrono>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/common.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/base/ChronoTimer.h>
 

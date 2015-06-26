@@ -10,10 +10,10 @@
 
 #include <gloperate/input/AbstractEventProvider.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include <QObject>
 #include <QKeyEvent>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/input/input.h>
 #include <gloperate/input/KeyboardEvent.h>

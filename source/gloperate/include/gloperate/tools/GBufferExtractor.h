@@ -1,7 +1,9 @@
 #pragma once
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/gloperate_api.h>
 

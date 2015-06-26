@@ -10,12 +10,14 @@
 
 #include <gloperate/input/AbstractEventProvider.h>
 
+#include <gloperate/ext-includes-begin.h>
+
 #include <glm/glm.hpp>
 
-#include <gloperate-qt/qt-includes-begin.h>
 #include <QObject>
 #include <QWheelEvent>
-#include <gloperate-qt/qt-includes-end.h>
+
+#include <gloperate/ext-includes-end.h>
 
 namespace gloperate_qt
 {

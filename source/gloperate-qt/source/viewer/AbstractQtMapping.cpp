@@ -2,9 +2,9 @@
 
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include <QOpenGLContext>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
 using namespace gloperate;
 
