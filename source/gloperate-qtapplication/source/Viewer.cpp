@@ -23,8 +23,12 @@
 #include <gloperate-qt/QtMouseEventProvider.h>
 #include <gloperate-qt/QtWheelEventProvider.h>
 
-#include <gloperate-assimp/AssimpMeshLoader.h>
-#include <gloperate-assimp/AssimpSceneLoader.h>
+#include <gloperate-qtwidgets/ImageExporterWidget.h>
+
+#ifdef GLOPERATE_ASSIMP_FOUND
+    #include <gloperate-assimp/AssimpMeshLoader.h>
+    #include <gloperate-assimp/AssimpSceneLoader.h>
+#endif
 
 #include <widgetzeug/MessageHandler.h>
 #include <widgetzeug/MessageStatusWidget.h>
@@ -43,7 +47,10 @@ using namespace widgetzeug;
 
 using namespace gloperate;
 using namespace gloperate_qt;
+
+#ifdef GLOPERATE_ASSIMP_FOUND
 using namespace gloperate_assimp;
+#endif
 
 namespace
 {
@@ -73,8 +80,11 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     m_resourceManager.reset(new ResourceManager());
     m_resourceManager->addLoader(new QtTextureLoader());
     m_resourceManager->addStorer(new QtTextureStorer());
+
+#ifdef GLOPERATE_ASSIMP_FOUND
     m_resourceManager->addLoader(new AssimpMeshLoader());
     m_resourceManager->addLoader(new AssimpSceneLoader());
+#endif
 
     // setup UI
     attachMessageWidgets(); 
@@ -244,6 +254,17 @@ void Viewer::on_colorSchemePresetsAction_triggered()
 
     cspw->setWindowModality(Qt::ApplicationModal);
     cspw->show();*/
+}
+
+void Viewer::on_imageExporterAction_triggered()
+{
+	if (m_currentPainter)
+	{
+		gloperate_qtwidgets::ImageExporterWidget * ie{ new gloperate_qtwidgets::ImageExporterWidget(*m_resourceManager, m_canvas->painter(), m_canvas.get()) };
+
+    ie->setWindowModality(Qt::NonModal);
+	ie->show();
+	}
 }
 
 void Viewer::on_showPluginsAction_triggered()
