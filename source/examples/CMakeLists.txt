@@ -7,7 +7,7 @@ if(OPTION_BUILD_EXAMPLES)
     add_subdirectory(osg-painters)
 
     # Example applications
-    add_subdirectory(viewer-glfw)
-    add_subdirectory(viewer-qt)
+    add_subdirectory(minimal-glfw-example)
+    add_subdirectory(minimal-qt-example)
 
 endif()

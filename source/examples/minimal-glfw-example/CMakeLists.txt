@@ -1,5 +1,5 @@
 
-set(target viewer-glfw)
+set(target minimal-glfw-example)
 
 
 # External libraries

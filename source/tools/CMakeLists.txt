@@ -1,6 +1,6 @@
 
 if(OPTION_BUILD_TOOLS)
     
-    add_subdirectory(cgwhite)
+    add_subdirectory(gloperate-viewer)
 
 endif()
