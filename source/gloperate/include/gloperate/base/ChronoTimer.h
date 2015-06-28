@@ -11,6 +11,12 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    High performance timer based on std::chrono
+*
+*  @see AutoTimer
+*/
 class GLOPERATE_API ChronoTimer
 {
 public:

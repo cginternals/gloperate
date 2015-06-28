@@ -17,7 +17,7 @@ class ChronoTimer;
 
 /**
 *  @brief
-*    Basic, scoped performance measurements with minimal interace
+*    Basic, scoped performance measurements with minimal interface
 *
 *    AutoTimer can be used for quick performance measurements.
 *    Just create an instance that, when deleted due to ending
@@ -32,8 +32,10 @@ class ChronoTimer;
 *    
 *    \endcode
 *    
-*    If more control over time measurement is required, condier 
-*    using Timer directly.
+*    If more control over time measurement is required, consider 
+*    using ChronoTimer directly.
+*
+*  @see ChronoTimer
 */
 class GLOPERATE_API AutoTimer
 {
