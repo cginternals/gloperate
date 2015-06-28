@@ -1,5 +1,5 @@
 
-#include <gloperate-qt/viewer/AbstractApplication.h>
+#include <gloperate-qt/viewer/Application.h>
 
 #include <gloperate/ext-includes-begin.h>
 #include <QApplication>
@@ -13,13 +13,13 @@ namespace gloperate_qt
 {
 
 
-AbstractApplication::AbstractApplication(int & argc, char ** argv)
+Application::Application(int & argc, char ** argv)
 : QApplication(argc, argv)
 {
 	qInstallMessageHandler(widgetzeug::globalMessageHandler);
 }
 
-AbstractApplication::~AbstractApplication()
+Application::~Application()
 {
 }
 

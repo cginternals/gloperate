@@ -12,11 +12,11 @@ namespace gloperate_qt
 {
 
 
-class GLOPERATE_QT_API AbstractApplication : public QApplication
+class GLOPERATE_QT_API Application : public QApplication
 {
 public:
-    AbstractApplication(int & argc, char ** argv);
-    virtual ~AbstractApplication();
+    Application(int & argc, char ** argv);
+    virtual ~Application();
 };
 
 

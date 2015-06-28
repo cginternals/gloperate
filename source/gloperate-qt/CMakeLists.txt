@@ -122,8 +122,8 @@ set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${header_path}/viewer/AbstractApplication.h
-    ${header_path}/viewer/Mapping.h
+    ${header_path}/viewer/Application.h
+    ${header_path}/viewer/DefaultMapping.h
     ${header_path}/viewer/Viewer.h
     ${header_path}/viewer/AbstractQtMapping.h
     ${header_path}/viewer/QtEventTransformer.h
@@ -147,8 +147,8 @@ set(headers
 )
 
 set(sources
-    ${source_path}/viewer/AbstractApplication.cpp
-    ${source_path}/viewer/Mapping.cpp
+    ${source_path}/viewer/Application.cpp
+    ${source_path}/viewer/DefaultMapping.cpp
     ${source_path}/viewer/Viewer.cpp
     ${source_path}/viewer/Viewer.ui
     ${source_path}/viewer/AbstractQtMapping.cpp

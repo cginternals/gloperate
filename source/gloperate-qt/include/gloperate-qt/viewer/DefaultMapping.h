@@ -32,14 +32,14 @@ namespace gloperate_qt
 {
 
 
-class GLOPERATE_QT_API Mapping : public QObject, public gloperate_qt::AbstractQtMapping
+class GLOPERATE_QT_API DefaultMapping : public QObject, public gloperate_qt::AbstractQtMapping
 {
     Q_OBJECT
 
 
 public:
-    Mapping(gloperate_qt::QtOpenGLWindow * window);
-    virtual ~Mapping();
+    DefaultMapping(gloperate_qt::QtOpenGLWindow * window);
+    virtual ~DefaultMapping();
 
     virtual void initializeTools() override;
 

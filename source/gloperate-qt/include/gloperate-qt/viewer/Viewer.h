@@ -34,7 +34,7 @@ namespace gloperate_qt
 
 
 class QtOpenGLWindow;
-class Mapping;
+class DefaultMapping;
 
 
 class GLOPERATE_QT_API Viewer : public QMainWindow
@@ -67,14 +67,12 @@ protected:
 protected:
     const QScopedPointer<Ui_Viewer> m_ui;
 
-    //std::make_unqiue gloperate_qt::QtOpenGLWindow * canvas
-
     std::unique_ptr<gloperate::ResourceManager> m_resourceManager;
     std::unique_ptr<gloperate::PluginManager>   m_pluginManager;
 
     std::unique_ptr<gloperate_qt::QtOpenGLWindow> m_canvas;
     std::unique_ptr<gloperate::Painter> m_currentPainter;
-    std::unique_ptr<Mapping> m_mapping;
+    std::unique_ptr<DefaultMapping> m_mapping;
 
     std::unique_ptr<widgetzeug::MessageStatusWidget> m_messagesStatus;
     std::unique_ptr<widgetzeug::MessageWidget>       m_messagesLog;

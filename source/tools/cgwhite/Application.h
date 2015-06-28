@@ -2,10 +2,10 @@
 #pragma once
 
 
-#include <gloperate-qt/viewer/AbstractApplication.h>
+#include <gloperate-qt/viewer/Application.h>
 
 
-class Application : public gloperate_qt::AbstractApplication
+class Application : public gloperate_qt::Application
 {
 public:
     Application(int & argc, char ** argv);

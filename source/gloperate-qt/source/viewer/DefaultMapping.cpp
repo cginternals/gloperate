@@ -1,5 +1,5 @@
 
-#include <gloperate-qt/viewer/Mapping.h>
+#include <gloperate-qt/viewer/DefaultMapping.h>
 
 #include <gloperate/ext-includes-begin.h>
 #include <QTimer>
@@ -44,7 +44,7 @@ namespace gloperate_qt
 {
 
 
-Mapping::Mapping(QtOpenGLWindow * window)
+DefaultMapping::DefaultMapping(QtOpenGLWindow * window)
 : AbstractQtMapping(window)
 , m_metaInformationCapability(nullptr)
 , m_viewportCapability(nullptr)
@@ -58,11 +58,11 @@ Mapping::Mapping(QtOpenGLWindow * window)
     connect(m_timer, SIGNAL(timeout()), this, SLOT(showTooltip()));
 }
 
-Mapping::~Mapping()
+DefaultMapping::~DefaultMapping()
 {
 }
 
-void Mapping::initializeTools()
+void DefaultMapping::initializeTools()
 {
     m_renderTarget = nullptr;
     m_metaInformationCapability = nullptr;
@@ -103,7 +103,7 @@ void Mapping::initializeTools()
     m_metaInformationCapability = m_painter->getCapability<AbstractMetaInformationCapability>();
 }
 
-void Mapping::mapEvent(AbstractEvent * event)
+void DefaultMapping::mapEvent(AbstractEvent * event)
 {
     if (!m_navigation)
     {
@@ -129,7 +129,7 @@ void Mapping::mapEvent(AbstractEvent * event)
     }
 }
 
-void Mapping::mapKeyboardEvent(KeyboardEvent * event)
+void DefaultMapping::mapKeyboardEvent(KeyboardEvent * event)
 {
     if (event && event->type() == KeyboardEvent::Type::Press)
     {
@@ -171,7 +171,7 @@ void Mapping::mapKeyboardEvent(KeyboardEvent * event)
     }
 }
 
-void Mapping::mapMouseEvent(MouseEvent * mouseEvent)
+void DefaultMapping::mapMouseEvent(MouseEvent * mouseEvent)
 {
     if (mouseEvent)
     {
@@ -231,7 +231,7 @@ void Mapping::mapMouseEvent(MouseEvent * mouseEvent)
     }
 }
 
-void Mapping::mapWheelEvent(WheelEvent * wheelEvent)
+void DefaultMapping::mapWheelEvent(WheelEvent * wheelEvent)
 {
     auto scale = wheelEvent->angleDelta().y;
     scale /= WheelEvent::defaultMouseAngleDelta();
@@ -239,7 +239,7 @@ void Mapping::mapWheelEvent(WheelEvent * wheelEvent)
     m_navigation->scaleAtMouse(wheelEvent->pos(), scale);
 }
 
-void Mapping::onTargetFramebufferChanged()
+void DefaultMapping::onTargetFramebufferChanged()
 {
     auto fbo = m_painter->getCapability<AbstractTargetFramebufferCapability>()->framebuffer();
     if (!fbo)
@@ -251,7 +251,7 @@ void Mapping::onTargetFramebufferChanged()
         gl::GL_DEPTH_ATTACHMENT, gl::GL_DEPTH_COMPONENT);
 }
 
-void Mapping::showTooltip()
+void DefaultMapping::showTooltip()
 {
     if (!m_metaInformationCapability)
     {
@@ -274,7 +274,7 @@ void Mapping::showTooltip()
     QToolTip::showText(m_window->mapToGlobal(QPoint(m_currentMousePosition.x, m_currentMousePosition.y)), QString::fromStdString(string));
 }
 
-void Mapping::hideTooltip()
+void DefaultMapping::hideTooltip()
 {
     QToolTip::showText(QPoint(0, 0), "");
 }

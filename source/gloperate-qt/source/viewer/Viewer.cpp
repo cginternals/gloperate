@@ -40,7 +40,7 @@
 #include <gloperate-qt/viewer/QtKeyEventProvider.h>
 #include <gloperate-qt/viewer/QtMouseEventProvider.h>
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
-#include <gloperate-qt/viewer/Mapping.h>
+#include <gloperate-qt/viewer/DefaultMapping.h>
 #include <gloperate-qt/widgets/ImageExporterWidget.h>
 
 
@@ -236,7 +236,7 @@ void Viewer::setupCanvas()
     m_canvas->installEventFilter(mouseProvider);
     m_canvas->installEventFilter(wheelProvider);
 
-    m_mapping.reset(new Mapping(m_canvas.get()));
+    m_mapping.reset(new DefaultMapping(m_canvas.get()));
     m_mapping->addProvider(keyProvider);
     m_mapping->addProvider(mouseProvider);
     m_mapping->addProvider(wheelProvider);
