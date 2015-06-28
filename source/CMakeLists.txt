@@ -14,13 +14,12 @@ add_subdirectory(gloperate-qt)
 add_subdirectory(gloperate-assimp)
 add_subdirectory(gloperate-osg)
 
+# Applications
+add_subdirectory(gloperate-viewer)
+
 # Examples
 set(IDE_FOLDER "Examples")
 add_subdirectory(examples)
-
-# Examples
-set(IDE_FOLDER "Tools")
-add_subdirectory(tools)
 
 # Tests
 set(IDE_FOLDER "Tests")
