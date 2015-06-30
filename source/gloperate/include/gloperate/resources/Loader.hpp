@@ -9,19 +9,11 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
 template <typename T>
 Loader<T>::Loader()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 template <typename T>
 Loader<T>::~Loader()
 {
