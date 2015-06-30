@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <string>
 
@@ -8,11 +10,14 @@
 namespace gloperate
 {
 
+
 class Painter;
 class ResourceManager;
 
 
-/** /brief Describes a plugin that can be loaded dynamically
+/**
+*  @brief
+*    Describes a plugin that can be loaded dynamically
 */
 class GLOPERATE_API Plugin 
 {
@@ -34,6 +39,7 @@ public:
 
     virtual Painter * createPainter(ResourceManager & resourceManager) const = 0;
 
+
 protected:
     std::string m_type;
     std::string m_name;
@@ -41,5 +47,6 @@ protected:
     std::string m_vendor;
     std::string m_version;
 };
+
 
 } // namespace gloperate

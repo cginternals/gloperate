@@ -25,6 +25,7 @@ namespace
 namespace gloperate_glfw
 {
 
+
 Application * Application::s_app(nullptr);
 
 
@@ -158,5 +159,6 @@ std::string Application::path(const std::string & filePath)
     auto i = filePath.find_last_of(g_sep);
     return i == filePath.npos ? "" : filePath.substr(0, i);
 }
+
 
 } // namespace gloperate_glfw

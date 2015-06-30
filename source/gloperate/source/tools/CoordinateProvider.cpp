@@ -1,15 +1,21 @@
+
 #include <gloperate/tools/CoordinateProvider.h>
+
+#include <gloperate/ext-includes-begin.h>
+#include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
-#include <glm/glm.hpp>
-
 #include <gloperate/painter/Camera.h>
 #include <gloperate/tools/DepthExtractor.h>
 
+
 namespace gloperate
 {
+
+
 CoordinateProvider::CoordinateProvider(
     AbstractCameraCapability * cameraCapability,
     AbstractProjectionCapability * projectionCapability,
@@ -56,5 +62,6 @@ glm::vec3 CoordinateProvider::unproject(const glm::ivec2 & windowCoordinates, fl
     const glm::vec4 u = viewProjectionInverted * p;
     return glm::vec3(u) / u.w;
 }
+
 
 } // namespace gloperate

@@ -1,7 +1,9 @@
 
 #include <gloperate/primitives/PolygonalDrawable.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/enum.h>

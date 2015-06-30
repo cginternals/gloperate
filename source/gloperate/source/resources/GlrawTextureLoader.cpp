@@ -1,3 +1,4 @@
+
 #include <gloperate/resources/GlrawTextureLoader.h>
 
 #include <reflectionzeug/variant/Variant.h>
@@ -6,19 +7,12 @@
 namespace gloperate
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 GlrawTextureLoader::GlrawTextureLoader()
 : Loader<globjects::Texture>()
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 GlrawTextureLoader::~GlrawTextureLoader()
 {
 }
@@ -47,5 +41,6 @@ globjects::Texture * GlrawTextureLoader::load(const std::string & /*filename*/, 
     // [TODO] Implement!
     return nullptr;
 }
+
 
 } // namespace gloperate

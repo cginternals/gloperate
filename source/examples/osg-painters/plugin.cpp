@@ -1,3 +1,4 @@
+
 #include <gloperate/plugin/plugin_api.h>
 
 #include "osg-scene/OsgScene.h"

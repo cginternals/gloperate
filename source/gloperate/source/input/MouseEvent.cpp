@@ -1,7 +1,10 @@
+
 #include <gloperate/input/MouseEvent.h>
+
 
 namespace gloperate
 {
+
 
 MouseEvent::MouseEvent(MouseEvent::Type type, const glm::ivec2 & pos, const MouseButton button, const int modifiers)
 : AbstractEvent()
@@ -10,7 +13,7 @@ MouseEvent::MouseEvent(MouseEvent::Type type, const glm::ivec2 & pos, const Mous
 , m_modifiers(modifiers)
 , m_pos(pos)
 {
-    m_sourceType = SourceType::Mouse;
+    m_sourceType = EventType::Mouse;
 }
 
 MouseEvent::Type MouseEvent::type() const
@@ -42,5 +45,6 @@ const glm::ivec2 & MouseEvent::pos() const
 {
     return m_pos;
 }
+
 
 } // namespace gloperate

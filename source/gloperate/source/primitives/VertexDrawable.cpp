@@ -1,3 +1,4 @@
+
 #include <gloperate/primitives/VertexDrawable.h>
 
 #include <globjects/VertexAttributeBinding.h>
@@ -5,6 +6,7 @@
 
 namespace gloperate
 {
+
 
 VertexDrawable::AttributeFormat::AttributeFormat()
 : size(0)
@@ -152,4 +154,5 @@ VertexDrawable::AttributeFormat FormatL(gl::GLint size, gl::GLenum type, gl::GLu
     return VertexDrawable::AttributeFormat(size, type, gl::GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Long);
 }
 
-} // namespace globjectsutils
+
+} // namespace gloperate

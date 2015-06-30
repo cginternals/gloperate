@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <set>
@@ -10,8 +11,6 @@
 
 #include <gloperate/painter/Painter.h>
 
-#include <gloperate-glfw/gloperate-glfw_api.h>
-
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
@@ -19,32 +18,34 @@
 struct GLFWwindow;
 struct GLFWmonitor;
 
+
 namespace gloperate
 {
     class ContextFormat;
+    class ResourceManager;
 }
-
-namespace gloperate
-{
-
-class ResourceManager;
-
-} // namespace gloperate
 
 
 namespace gloperate_glfw
 {
 
+
 class WindowEvent;
 class Context;
 
 
-/** \brief Attach a WindowEventHandlerBase specialization for event handling.
- */
+/**
+*  @brief
+*    Window for rendering
+*
+*  @remarks
+*    Attach a WindowEventHandlerBase specialization for event handling.
+*/
 class GLOPERATE_GLFW_API Window
 {
 public:
     static int init();
+
 
 public:
     Window(gloperate::ResourceManager & resourceManager);
@@ -54,16 +55,22 @@ public:
         const gloperate::ContextFormat & format
     ,   int width  = 1280
     ,   int height =  720);
+
     bool create(
         const gloperate::ContextFormat & format
     ,   const std::string & title = "gloperate"
     ,   int width  = 1280
     ,   int height =  720);
 
-    /** Takes ownership of the given eventhandler and deletes that either on
-        quitting, just before the opengl context gets destroyed, or when
-        reassigning a new, different handler.
-     */
+    /**
+    *  @brief
+    *    Set event handler for this window
+    *
+    *  @remarks
+    *    Takes ownership of the given eventhandler and deletes that either on
+    *    quitting, just before the opengl context gets destroyed, or when
+    *    reassigning a new, different handler.
+    */
     void setEventHandler(WindowEventHandlerBase * eventHandler);
 
     WindowEventHandlerBase * eventHandler();
@@ -83,22 +90,22 @@ public:
     glm::ivec2 position() const;
     glm::ivec2 framebufferSize() const;
 
-
-
-
     int inputMode(int mode) const;
     void setInputMode(int mode, int value);
 
     /**
-     * If enabled, this causes an application wide quit message to be posted
-     * when the window gets destroyed. Hence, the MainLoop will be quit
-     * and all other remaining windows destroyed.
-     */
+    *  @brief
+    *    Set if application shall quit when the window has been destroyed
+    *
+    *  @remarks
+    *    If enabled, this causes an application wide quit message to be posted
+    *    when the window gets destroyed. Hence, the MainLoop will be quit
+    *    and all other remaining windows destroyed.
+    */
     void quitOnDestroy(bool enable);
     bool quitsOnDestroy() const;
 
     Context * context() const;
-
 
     void repaint();
     void idle();
@@ -128,6 +135,7 @@ public:
 
     gloperate::ResourceManager & resourceManager();
     const gloperate::ResourceManager & resourceManager() const;
+
 
 protected:
     bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
@@ -162,8 +170,10 @@ protected:
     gloperate::Painter * m_painter;
     gloperate::ResourceManager & m_resourceManager;
 
+
 private:
     static std::set<Window*> s_instances;
 };
+
 
 } // namespace gloperate_glfw

@@ -1,3 +1,4 @@
+
 #include <gloperate-osg/OsgKeyboardHandler.h>
 
 #include <osgViewer/Viewer>
@@ -7,8 +8,10 @@
 
 
 using namespace gloperate;
+
 namespace gloperate_osg
 {
+
 
 /**
 *  @brief
@@ -170,5 +173,6 @@ void OsgKeyboardHandler::onKeyUp(gloperate::Key key)
 
     if (m_stage) m_stage->scheduleProcess();
 }
+
 
 } // namespace gloperate_osg

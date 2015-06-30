@@ -1,9 +1,13 @@
+
 #pragma once
+
 
 #include <gloperate/pipeline/PipelinePainter.h>
 
+
 namespace gloperate
 {
+
 
 template <typename T>
 reflectionzeug::Property<T> * PipelinePainter::getProperty(const std::string & name) const
@@ -22,5 +26,6 @@ reflectionzeug::Property<T> * PipelinePainter::createProperty(const std::string 
 
     return property;
 }
+
 
 } // namespace gloperate

@@ -2,11 +2,11 @@
 #pragma once
 
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 class RenderTarget;

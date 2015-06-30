@@ -1,8 +1,10 @@
+
 #include "TexturedQuad.h"
 
 #include <random>
 
 #include <glbinding/gl/gl.h>
+
 #include <globjects/logging.h>
 
 #include <gloperate/painter/ViewportCapability.h>
@@ -11,6 +13,7 @@
 using namespace gloperate;
 using namespace globjects;
 using namespace gl;
+
 
 TexturedQuad::TexturedQuad(ResourceManager & resourceManager)
 : Painter(resourceManager)

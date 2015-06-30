@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -9,6 +10,7 @@
 namespace reflectionzeug {
     class Variant;
 }
+
 
 namespace gloperate
 {

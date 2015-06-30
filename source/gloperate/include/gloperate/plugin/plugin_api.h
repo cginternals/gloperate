@@ -1,8 +1,11 @@
+
 #pragma once
+
 
 #include <vector>
 
 #include <gloperate/plugin/PainterPlugin.h>
+
 
 #ifdef _MSC_VER
 #   define GLOPERATE_PLUGIN_API __declspec(dllexport)

@@ -1,3 +1,4 @@
+
 #include <gloperate/pipeline/AbstractInputSlot.h>
 
 #include <sstream>
@@ -8,6 +9,7 @@
 
 namespace gloperate 
 {
+
 
 AbstractInputSlot::AbstractInputSlot(const std::string & name)
 : m_owner(nullptr)
@@ -123,5 +125,6 @@ bool AbstractInputSlot::isConnected() const
 {
     return connectedData() != nullptr;
 }
+
 
 } // namespace gloperate

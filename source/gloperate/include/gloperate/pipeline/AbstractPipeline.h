@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <memory>
@@ -11,9 +12,11 @@
 namespace gloperate
 {
 
+
 class AbstractData;
 class AbstractStage;
 class AbstractInputSlot;
+
 template <typename T>
 class Data;
 
@@ -77,12 +80,14 @@ public:
 
     std::set<AbstractData *> unusedParameters();
 
+
 protected: 
     bool sortDependencies();
     void addStages();
     bool initializeStages();
 
     static bool tsort(std::vector<AbstractStage *> &stages);
+
 
 protected:
     bool m_initialized;
@@ -94,6 +99,8 @@ protected:
     bool m_dependenciesSorted;
 };
 
+
 } // namespace gloperate
+
 
 #include <gloperate/pipeline/AbstractPipeline.hpp>

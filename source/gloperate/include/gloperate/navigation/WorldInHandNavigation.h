@@ -1,18 +1,24 @@
+
 #pragma once
 
-#include <gloperate/gloperate_api.h>
+
+#include <gloperate/ext-includes-begin.h>
+#include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
+
 #include <gloperate/navigation/AbstractInteraction.h>
 
-#include <glm/glm.hpp>
-
 //#include "AxisAlignedBoundingBox.h"
+
 
 namespace gloperate
 {
 
+
 class AbstractCameraCapability;
 class AbstractViewportCapability;
 class CoordinateProvider;
+
 
 class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 {
@@ -24,6 +30,7 @@ public:
 	,	RotateInteraction
 	};
 
+
 public:
     WorldInHandNavigation(
         AbstractCameraCapability & cameraCapability, 
@@ -31,8 +38,8 @@ public:
         CoordinateProvider & coordProvider);
     virtual ~WorldInHandNavigation();
 
-//    void setBoundaryHint(const AxisAlignedBoundingBox & aabb);
-//    void setCoordinateProvider(AbstractCoordinateProvider * provider);
+//  void setBoundaryHint(const AxisAlignedBoundingBox & aabb);
+//  void setCoordinateProvider(AbstractCoordinateProvider * provider);
 
 	virtual void reset();
 
@@ -50,6 +57,7 @@ public:
     void rotate(float hAngle, float vAngle);
 
 	void scaleAtCenter(float scale);
+
     /**
     *  @brief
     *    zoom the camera according to position and scale
@@ -88,12 +96,13 @@ public:
     ,   const glm::vec3 & planePosition
     ,   const glm::vec3 & planeNormal) const;
 
+
 protected:
     AbstractCameraCapability & m_cameraCapability;
     AbstractViewportCapability & m_viewportCapability;
 
     // TODO clean up old
-//    AxisAlignedBoundingBox m_aabb;
+//  AxisAlignedBoundingBox m_aabb;
 
     CoordinateProvider & m_coordProvider;
 
@@ -107,5 +116,6 @@ protected:
     glm::vec3   m_center;
     glm::ivec2   m_m0;
 };
+
 
 } // namespace gloperate

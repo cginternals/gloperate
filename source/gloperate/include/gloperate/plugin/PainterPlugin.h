@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <gloperate/plugin/Plugin.h>
 
@@ -6,7 +8,10 @@
 namespace gloperate
 {
 
-/** /brief Convenience class to describe a plugin for a painter
+
+/**
+*  @brief
+*    Convenience class to describe a plugin for a painter
 */
 template <typename PainterType>
 class PainterPlugin : public Plugin 
@@ -21,6 +26,7 @@ public:
 
     virtual Painter * createPainter(ResourceManager & resourceManager) const;
 };
+
 
 } // namespace gloperate
 

@@ -1,9 +1,11 @@
+
 #include <gmock/gmock.h>
 
 #include "DummyStage.hpp"
 
 
 using namespace gloperate;
+
 
 class AbstractStage_test : public testing::Test
 {
@@ -17,11 +19,13 @@ public:
         stage2.inputs["input0"] = stage1.outputs["output0"];
     }
 
+
 protected:
     DummyStage stage0;
     DummyStage stage1;
     DummyStage stage2;
 };
+
 
 TEST_F(AbstractStage_test, Stage1RequiresStage0NonRecursive)
 {

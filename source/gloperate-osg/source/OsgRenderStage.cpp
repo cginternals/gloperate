@@ -1,3 +1,4 @@
+
 #include <gloperate-osg/OsgRenderStage.h>
 
 #include <glbinding/gl/gl.h>
@@ -11,13 +12,11 @@
 using namespace gl;
 using namespace gloperate;
 
+
 namespace gloperate_osg
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 OsgRenderStage::OsgRenderStage(const std::string & name)
 : AbstractStage(name)
 , m_viewer(nullptr)
@@ -37,55 +36,31 @@ OsgRenderStage::OsgRenderStage(const std::string & name)
     addOutput("viewMatrix",       m_viewMatrix);
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 OsgRenderStage::~OsgRenderStage()
 {
     osg_cleanup();
 }
 
-/**
-*  @brief
-*    Get OSG viewer
-*/
 osgViewer::Viewer * OsgRenderStage::viewer() const
 {
     return m_viewer;
 }
 
-/**
-*  @brief
-*    Get OSG scene
-*/
 osg::Node * OsgRenderStage::scene() const
 {
     return m_scene;
 }
 
-/**
-*  @brief
-*    Load OSG scene
-*/
 void OsgRenderStage::loadScene(const std::string & filename)
 {
     osg_loadScene(filename);
 }
 
-/**
-*  @brief
-*    Set OSG scene
-*/
 void OsgRenderStage::setScene(osg::Node * scene)
 {
     osg_setScene(scene);
 }
 
-/**
-*  @brief
-*    Create keyboard handler to control the wrapped OSG scene
-*/
 OsgKeyboardHandler * OsgRenderStage::createKeyboardHandler()
 {
     if (m_embedded) {
@@ -95,10 +70,6 @@ OsgKeyboardHandler * OsgRenderStage::createKeyboardHandler()
     }
 }
 
-/**
-*  @brief
-*    Create mouse handler to control the wrapped OSG scene
-*/
 OsgMouseHandler * OsgRenderStage::createMouseHandler()
 {
     if (m_embedded) {
@@ -119,20 +90,13 @@ void OsgRenderStage::process()
     osg_process();
 }
 
-/**
-*  @brief
-*    Called when the viewport has been changed
-*/
 void OsgRenderStage::handleViewportChanged()
 {
 }
 
-/**
-*  @brief
-*    Called right after OSG rendering
-*/
 void OsgRenderStage::postOsgRendering()
 {
 }
+
 
 } // namespace gloperate_osg

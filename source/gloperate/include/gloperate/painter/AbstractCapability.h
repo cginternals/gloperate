@@ -2,9 +2,9 @@
 #pragma once
 
 
-#include <gloperate/gloperate_api.h>
-
 #include <signalzeug/Signal.h>
+
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate 
@@ -25,6 +25,10 @@ namespace gloperate
 */
 class GLOPERATE_API AbstractCapability
 {
+public:
+    signalzeug::Signal<> changed;   /**< Called when the capability information has been changed */
+
+
 public:
     /**
     *  @brief
@@ -63,14 +67,11 @@ public:
     */
     void setChanged(bool changed);
 
-
     template <typename T>
     bool is() const;
 
     template <typename T>
     T* as();
-public:
-    signalzeug::Signal<> changed;   /**< Called when the capability information has been changed */
 
 
 protected:
@@ -79,5 +80,6 @@ protected:
 
 
 } // namespace gloperate
+
 
 #include <gloperate/painter/AbstractCapability.hpp>

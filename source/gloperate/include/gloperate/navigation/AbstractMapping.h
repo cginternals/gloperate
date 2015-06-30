@@ -1,15 +1,20 @@
+
 #pragma once
 
-#include <gloperate/gloperate_api.h>
 
 #include <set>
 #include <functional>
 
+#include <gloperate/gloperate_api.h>
+
+
 namespace gloperate {
+
 
 class Painter;
 class AbstractEvent;
 class AbstractEventProvider;
+
 
 class GLOPERATE_API AbstractMapping
 {
@@ -27,12 +32,15 @@ public:
     virtual void initializeTools() = 0;
     virtual void processEvent(AbstractEvent * event);
 
+
 protected:
     virtual void mapEvent(AbstractEvent * event) = 0;
+
 
 protected:
     Painter * m_painter;
     std::set<AbstractEventProvider *> m_providers;
 };
+
 
 } // namespace gloperate

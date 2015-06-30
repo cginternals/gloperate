@@ -1,6 +1,6 @@
+
 #pragma once
 
-#include <gloperate/gloperate_api.h>
 
 #include <signalzeug/ScopedConnection.h>
 
@@ -11,10 +11,12 @@
 namespace gloperate 
 {
 
+
 void GLOPERATE_API printIncompatibleMessage(
     const AbstractInputSlot * slot, 
     const std::string & typeName,
     const AbstractData & data);
+
 
 template <typename T>
 class InputSlot : public AbstractInputSlot
@@ -38,15 +40,19 @@ public:
 
     virtual const AbstractData * connectedData() const override;
 
+
+protected:
+    template <typename U>
+    void connect(const Data<U> & data);
+
+
 protected:
     const Data<T> * m_data;
     signalzeug::ScopedConnection m_connection;
 
     static const T s_defaultValue;
-
-    template <typename U>
-    void connect(const Data<U> & data);
 };
+
 
 } // namespace gloperate
 

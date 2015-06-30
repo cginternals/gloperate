@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <glm/mat4x4.hpp>
 
@@ -10,6 +12,7 @@
 
 #include <gloperate/painter/Painter.h>
 
+
 namespace gloperate 
 {
     class ResourceManager;
@@ -20,6 +23,7 @@ namespace gloperate
     class TypedRenderTargetCapability;
     class AbstractVirtualTimeCapability;
 }
+
 
 class CubeScape : public gloperate::Painter
 {
@@ -37,10 +41,12 @@ public:
     bool animation() const;
     void setAnimation(const bool & enabled);
 
+
 protected:
     virtual void onInitialize();
     virtual void onPaint();
     virtual void onTargetFramebufferChanged();
+
 
 protected:
     /* parameters */

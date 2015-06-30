@@ -12,7 +12,7 @@
 
 
 Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager)
-:   PipelinePainter(resourceManager, m_pipeline)
+: PipelinePainter(resourceManager, m_pipeline)
 {
     auto targetFBO = addCapability(new gloperate::TargetFramebufferCapability());
     auto viewport = addCapability(new gloperate::ViewportCapability());

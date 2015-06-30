@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <unordered_map>
@@ -13,6 +14,7 @@ struct GLFWwindow;
 
 namespace gloperate_glfw
 {
+
 
 class Window;
 class WindowEvent;
@@ -35,6 +37,7 @@ public:
         bool ready() const;
         void reset();
     };
+
     
 public:
     static void registerWindow(Window* window);
@@ -45,6 +48,7 @@ public:
     static void removeTimers(Window* window);
     static void initializeTime();
     static void checkForTimerEvents();
+
    
 private:
     WindowEventDispatcher();
@@ -55,6 +59,7 @@ private:
     static WindowTimerMap s_timers;
     static std::chrono::high_resolution_clock::time_point s_time;
     static std::chrono::high_resolution_clock s_clock;
+
 
 protected:
     static Window* fromGLFW(GLFWwindow* glfwWindow);
@@ -77,5 +82,6 @@ protected:
     static void handleIconify(GLFWwindow* glfwWindow, int iconified);
     static void handleClose(GLFWwindow* glfwWindow);
 };
+
 
 } // namespace gloperate_glfw

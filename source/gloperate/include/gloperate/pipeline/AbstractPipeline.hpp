@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <gloperate/base/collection.hpp>
 
@@ -9,6 +11,7 @@
 
 namespace gloperate
 {
+
 
 template<typename... Args>
 void AbstractPipeline::addStages(AbstractStage * stage, Args... pipeline)
@@ -59,5 +62,6 @@ Data<T> * AbstractPipeline::getOutput() const
 {
     return dynamic_cast<Data<T> *>(collection::detect(allOutputs(), [](AbstractData * data) { return dynamic_cast<Data<T> *>(data) != nullptr; }, nullptr));
 }
+
 
 } // namespace gloperate

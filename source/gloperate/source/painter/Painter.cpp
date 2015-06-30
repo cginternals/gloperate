@@ -7,8 +7,8 @@ namespace gloperate
 
 
 Painter::Painter(ResourceManager & resourceManager, const std::string & name)
-:   Object(name)
-,   m_resourceManager(resourceManager)
+: Object(name)
+, m_resourceManager(resourceManager)
 {
 }
 
@@ -38,4 +38,4 @@ AbstractCapability * Painter::addCapability(AbstractCapability * capability)
 }
 
 
-} // gloperate
+} // namespace gloperate

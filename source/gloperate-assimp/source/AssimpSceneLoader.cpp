@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+#include <gloperate/ext-includes-begin.h>
+
 #include <glm/glm.hpp>
 
 #include <assimp/scene.h>
@@ -12,10 +14,13 @@
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
 
+#include <gloperate/ext-includes-end.h>
+
+#include <reflectionzeug/variant/Variant.h>
+
 #include <gloperate/primitives/PolygonalGeometry.h>
 #include <gloperate/primitives/Scene.h>
 
-#include <reflectionzeug/variant/Variant.h>
 
 using namespace gloperate;
 
@@ -145,7 +150,7 @@ Scene * AssimpSceneLoader::convertScene(const aiScene * scene) const
         sceneOut->meshes().push_back(convertGeometry(scene->mMeshes[i]));
     }
 
-    for (size_t i = 0; i < scene->mNumMaterials; ++i)
+    for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
     {
         aiString filename;
         // only fetch texture with index 0

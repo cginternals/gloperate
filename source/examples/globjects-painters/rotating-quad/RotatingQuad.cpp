@@ -1,3 +1,4 @@
+
 #include "RotatingQuad.h"
 
 #include <random>
@@ -21,6 +22,7 @@
 using namespace globjects;
 using namespace gloperate;
 using namespace gl;
+
 
 static const char * s_vertexShader = R"(
 #version 140

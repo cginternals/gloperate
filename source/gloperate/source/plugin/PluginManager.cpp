@@ -1,3 +1,4 @@
+
 #include <gloperate/plugin/PluginManager.h>
 
 #include <algorithm>
@@ -81,6 +82,7 @@ namespace
 
 namespace gloperate
 {
+
 
 std::string PluginManager::s_applicationPath = "";
 
@@ -255,5 +257,6 @@ void PluginManager::printPlugins() const
         globjects::info();
     }
 }
+
 
 } // namespace gloperate

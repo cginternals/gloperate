@@ -3,6 +3,7 @@
 
 
 #include <gloperate/resources/ResourceManager.h>
+
 #include <gloperate/resources/Loader.h>
 #include <gloperate/resources/Storer.h>
 
@@ -11,10 +12,6 @@ namespace gloperate
 {
 
 
-/**
-*  @brief
-*    Load resource from file
-*/
 template <typename T>
 T * ResourceManager::load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const
 {
@@ -38,10 +35,6 @@ T * ResourceManager::load(const std::string & filename, const reflectionzeug::Va
     return nullptr;
 }
 
-/**
-*  @brief
-*    Store resource to file
-*/
 template <typename T>
 bool ResourceManager::store(const std::string & filename, T * resource, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const
 {
