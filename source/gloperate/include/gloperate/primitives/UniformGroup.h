@@ -23,6 +23,14 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Uniform group helper
+*
+*    A uniform group defines a number of uniforms and their
+*    values and can be used to synchronize common uniforms
+*    between different programs.
+*/
 class GLOPERATE_API UniformGroup
 {
 public:

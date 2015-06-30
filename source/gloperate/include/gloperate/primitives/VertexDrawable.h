@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <vector>
 #include <array>
 #include <string>
@@ -21,6 +22,14 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Configurable vertex based geometry
+*
+*    A vertex drawable defines a geometry on the GPU
+*    that can be rendered. It contains vertex and attribute
+*    buffers and a rendering mode (e.g., GL_TRIANGLES).
+*/
 class GLOPERATE_API VertexDrawable : public globjects::Referenced
 {
 public:

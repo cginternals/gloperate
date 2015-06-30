@@ -22,6 +22,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Icosahedron geometry that can be refined dynamically
+*/
 class GLOPERATE_API Icosahedron : public globjects::Referenced
 {
 public:
