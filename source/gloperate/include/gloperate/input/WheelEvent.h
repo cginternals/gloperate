@@ -14,6 +14,12 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Mouse wheel event
+*
+*    Informs about mouse wheel events
+*/
 class GLOPERATE_API WheelEvent : public AbstractEvent
 {
 public:

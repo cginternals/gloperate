@@ -13,7 +13,7 @@ MouseEvent::MouseEvent(MouseEvent::Type type, const glm::ivec2 & pos, const Mous
 , m_modifiers(modifiers)
 , m_pos(pos)
 {
-    m_sourceType = SourceType::Mouse;
+    m_sourceType = EventType::Mouse;
 }
 
 MouseEvent::Type MouseEvent::type() const

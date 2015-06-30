@@ -14,9 +14,19 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Mouse event
+*
+*    Informs about mouse events such as mouse movement and mouse buttons
+*/
 class GLOPERATE_API MouseEvent : public AbstractEvent
 {
 public:
+    /**
+    *  @brief
+    *    Mouse event type
+    */
     enum class Type : char
     {
         Press

@@ -7,7 +7,7 @@ namespace gloperate
 
 
 AbstractEvent::AbstractEvent()
-: m_sourceType(SourceType::Unknown)
+: m_sourceType(EventType::Unknown)
 {
 }
 
@@ -15,7 +15,7 @@ AbstractEvent::~AbstractEvent()
 {
 }
 
-SourceType AbstractEvent::sourceType() const
+EventType AbstractEvent::sourceType() const
 {
     return m_sourceType;
 }

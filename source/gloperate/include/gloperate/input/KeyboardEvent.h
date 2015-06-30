@@ -10,9 +10,19 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Keyboard event
+*
+*    Informs about key press and release events
+*/
 class GLOPERATE_API KeyboardEvent : public AbstractEvent
 {
 public:
+    /**
+    *  @brief
+    *    Keyboard event type (press or release)
+    */
     enum class Type : char
     {
         Press

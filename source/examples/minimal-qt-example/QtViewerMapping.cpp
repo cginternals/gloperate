@@ -75,13 +75,13 @@ void QtViewerMapping::mapEvent(AbstractEvent * event)
     
     switch (event->sourceType())
     {
-    case gloperate::SourceType::Keyboard:
+    case gloperate::EventType::Keyboard:
         mapKeyboardEvent(static_cast<KeyboardEvent *>(event));
         break;
-    case gloperate::SourceType::Mouse:
+    case gloperate::EventType::Mouse:
         mapMouseEvent(static_cast<MouseEvent *>(event));
         break;
-    case gloperate::SourceType::Wheel:
+    case gloperate::EventType::Wheel:
         mapWheelEvent(static_cast<WheelEvent *>(event));
         break;
     default:

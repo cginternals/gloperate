@@ -16,7 +16,7 @@ WheelEvent::WheelEvent(
     , m_pixelDelta(pixelDelta)
     , m_button(button)
 {
-    m_sourceType = SourceType::Wheel;
+    m_sourceType = EventType::Wheel;
 }
 
 MouseButton WheelEvent::button() const

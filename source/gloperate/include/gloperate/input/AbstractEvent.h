@@ -9,7 +9,18 @@ namespace gloperate
 {
 
 
-enum class SourceType : char
+/**
+*  @brief
+*    Event type
+*
+*    Describes the type of an event, such as
+*    keyboard, mouse, or timer events. This
+*    is used by the event provider system.
+*
+*  @see
+*    AbstractEventProvider
+*/
+enum class EventType : char
 {
     Unknown
 ,   Keyboard
@@ -19,12 +30,19 @@ enum class SourceType : char
 };
 
 
+/**
+*  @brief
+*    Abstract base class for events
+*
+*    Is subclassed to represent specific events,
+*    such as keyboard, mouse, or timer events.
+*/
 class GLOPERATE_API AbstractEvent
 {
 public:
     virtual ~AbstractEvent();
 
-    SourceType sourceType() const;
+    EventType sourceType() const;
 
 
 protected:
@@ -32,7 +50,7 @@ protected:
 
 
 protected:
-    SourceType m_sourceType;
+    EventType m_sourceType;
 };
 
 
