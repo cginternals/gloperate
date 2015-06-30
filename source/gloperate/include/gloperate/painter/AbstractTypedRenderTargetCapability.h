@@ -15,7 +15,7 @@ enum class RenderTargetType : unsigned int;
 
 /**
 *  @brief
-*    
+*    Capability that allows a painter to export render targets (such as color, depth, id)
 */
 class GLOPERATE_API AbstractTypedRenderTargetCapability : public AbstractCapability
 {

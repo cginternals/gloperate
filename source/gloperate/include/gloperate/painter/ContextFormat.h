@@ -14,6 +14,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Description of an OpenGL context format
+*/
 class GLOPERATE_API ContextFormat
 {
 public:
