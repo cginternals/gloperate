@@ -11,8 +11,8 @@
 
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
-#include <gloperate/tools/CoordinateProvider.h>
 #include <gloperate/tools/DepthExtractor.h>
+#include <gloperate/navigation/CoordinateProvider.h>
 #include <gloperate/navigation/navigationmath.h>
 
 

@@ -1,5 +1,5 @@
 
-#include <gloperate/tools/CoordinateProvider.h>
+#include <gloperate/navigation/CoordinateProvider.h>
 
 #include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>

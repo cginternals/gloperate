@@ -76,6 +76,7 @@ set(sources
     ${source_path}/navigation/AbstractInteraction.cpp
     ${source_path}/navigation/navigationmath.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
+    ${source_path}/navigation/CoordinateProvider.cpp
     
     ${source_path}/painter/PerspectiveProjectionCapability.cpp
     ${source_path}/painter/TargetFramebufferCapability.cpp
@@ -134,7 +135,6 @@ set(sources
     ${source_path}/resources/RawFile.cpp
     ${source_path}/resources/ResourceManager.cpp
     
-    ${source_path}/tools/CoordinateProvider.cpp
     ${source_path}/tools/ImageExporter.cpp
     ${source_path}/tools/DepthExtractor.cpp
     ${source_path}/tools/WorldExtractor.cpp
@@ -167,6 +167,7 @@ set(api_includes
     ${include_path}/navigation/WorldInHandNavigation.h
     ${include_path}/navigation/AbstractInteraction.h
     ${include_path}/navigation/AbstractMapping.h
+    ${include_path}/navigation/CoordinateProvider.h
     ${include_path}/navigation/navigationmath.h
     
     ${include_path}/painter/InputCapability.h
@@ -242,7 +243,6 @@ set(api_includes
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/Loader.h
     
-    ${include_path}/tools/CoordinateProvider.h
     ${include_path}/tools/ImageExporter.h
     ${include_path}/tools/DepthExtractor.h
     ${include_path}/tools/WorldExtractor.h

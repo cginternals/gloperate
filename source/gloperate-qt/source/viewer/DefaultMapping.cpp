@@ -22,7 +22,7 @@
 #include <gloperate/input/MouseEvent.h>
 #include <gloperate/input/WheelEvent.h>
 #include <gloperate/navigation/WorldInHandNavigation.h>
-#include <gloperate/tools/CoordinateProvider.h>
+#include <gloperate/navigation/CoordinateProvider.h>
 #include <gloperate/tools/ObjectIdExtractor.h>
 
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
