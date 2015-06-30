@@ -9,6 +9,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Base class for interaction techniques
+*/
 class GLOPERATE_API AbstractInteraction
 {
 public:

@@ -20,9 +20,25 @@ class AbstractViewportCapability;
 class CoordinateProvider;
 
 
+/**
+*  @brief
+*    Camera navigation 'world in hand'
+*
+*    This interaction technique provides a 'world in hand' metaphor
+*    to control a virtual camera. It allows the user to pan, rotate,
+*    and zoom, based on a reference point the camera currently looks at.
+*
+*  @remarks
+*    This interaction technique needs a depth buffer image to work
+*    correctly, which is provided by the specified CoordinateProvider.
+*/
 class GLOPERATE_API WorldInHandNavigation : public AbstractInteraction
 {
 public:
+    /**
+    *  @brief
+    *    Current interaction mode
+    */
 	enum InteractionMode
 	{
 		NoInteraction

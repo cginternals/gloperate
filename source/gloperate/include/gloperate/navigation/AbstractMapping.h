@@ -16,6 +16,19 @@ class AbstractEvent;
 class AbstractEventProvider;
 
 
+/**
+*  @brief
+*    Base class for input mapping
+*
+*    A mapping is used to control interaction in an application.
+*    It maps input events to interaction commands, e.g., to
+*    control an interaction technique.
+*
+*    Mappings are application specific, so instead of using this
+*    class directly, create your own subclass and specify the
+*    mapping of input events to the interaction techniques you want
+*    to use.
+*/
 class GLOPERATE_API AbstractMapping
 {
 public:
