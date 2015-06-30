@@ -18,6 +18,17 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Calculator for world coordinates based on camera and viewport settings
+*
+*    The coordinate provider provides helper functions to calculate
+*    coordinates in a scene based on the camera and viewport settings
+*    and the current depth texture. It is used primarily by interaction
+*    and navigation techniques.
+*
+*  @see AbstractInteraction
+*/
 class GLOPERATE_API CoordinateProvider
 {
 public:

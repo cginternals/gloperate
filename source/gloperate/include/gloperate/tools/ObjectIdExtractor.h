@@ -9,6 +9,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Extract object IDs from G-Buffer
+*/
 class GLOPERATE_API ObjectIdExtractor : protected GBufferExtractor
 {
 public:

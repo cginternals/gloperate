@@ -13,6 +13,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Extract normal vectors from G-Buffer
+*/
 class GLOPERATE_API NormalExtractor : protected GBufferExtractor
 {
 public:

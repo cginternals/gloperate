@@ -9,6 +9,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Extract color values from G-Buffer
+*/
 class GLOPERATE_API ColorExtractor : protected GBufferExtractor
 {
 public:

@@ -22,6 +22,10 @@ class AbstractViewportCapability;
 class AbstractTargetFramebufferCapability;
 
 
+/**
+*  @brief
+*    Tool to export images (screenshots) from a painter
+*/
 class GLOPERATE_API ImageExporter
 {
 public:

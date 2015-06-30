@@ -17,6 +17,15 @@ namespace gloperate
 class AbstractViewportCapability;
 
 
+/**
+*  @brief
+*    G-Buffer data extractor base class
+*
+*    A g-buffer extractor allows to extract specific data
+*    such as color buffers from a g-buffer. It works on a
+*    Painter that has to support the AbstractViewportCapability
+*    and the AbstractTypedRenderTargetCapability.
+*/
 class GLOPERATE_API GBufferExtractor
 {
 public:

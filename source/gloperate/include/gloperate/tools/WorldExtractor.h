@@ -13,6 +13,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Extract world positions from G-Buffer
+*/
 class GLOPERATE_API WorldExtractor : protected GBufferExtractor
 {
 public:

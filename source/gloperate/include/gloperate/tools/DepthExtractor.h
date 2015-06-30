@@ -9,6 +9,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Extract depth values from G-Buffer
+*/
 class GLOPERATE_API DepthExtractor : protected GBufferExtractor
 {
 public:
