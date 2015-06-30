@@ -16,6 +16,13 @@ namespace gloperate
 class AbstractStage;
 
 
+/**
+*  @brief
+*    Base class for typed data containers
+*
+*  @see
+*    Data
+*/
 class GLOPERATE_API AbstractData
 {
     friend class AbstractStage;

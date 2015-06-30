@@ -18,6 +18,18 @@ void GLOPERATE_API printIncompatibleMessage(
     const AbstractData & data);
 
 
+/**
+*  @brief
+*    Typed data input slot
+*
+*    An input slot can be connected to a data container. It is
+*    informed when the connection is changed or the connected
+*    data has been modified.
+*
+*  @see Data
+*  @see AbstractStage
+*  @see AbstractPipeline
+*/
 template <typename T>
 class InputSlot : public AbstractInputSlot
 {

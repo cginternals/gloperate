@@ -17,6 +17,13 @@ class AbstractData;
 class AbstractStage;
 
 
+/**
+*  @brief
+*    Base class for typed input slots
+*
+*  @see
+*    InputSlot
+*/
 class GLOPERATE_API AbstractInputSlot
 {
     friend class AbstractStage;

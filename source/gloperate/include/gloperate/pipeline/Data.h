@@ -11,6 +11,20 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Typed data container
+*
+*    A data container holds a typed data object. It can be
+*    connected to an input slot and helps to identify which
+*    and when data has been modified. It is used in the context
+*    of pipelines to promote data and control the order and
+*    execution of pipeline stages based on data flow.
+*
+*  @see InputSlot
+*  @see AbstractStage
+*  @see AbstractPipeline
+*/
 template <typename T>
 class Data : public AbstractData
 {

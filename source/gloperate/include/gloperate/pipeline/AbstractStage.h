@@ -20,6 +20,18 @@ class AbstractInputSlot;
 class AbstractData;
 
 
+/**
+*  @brief
+*    Rendering stage of a pipeline
+*
+*    A rendering stage is part of a pipeline. It executes a
+*    specific task in a rendering or processing technique and
+*    is executed by the pipeline if needed.
+*
+*  @see AbstractPipeline
+*  @see Data
+*  @see InputSlot
+*/
 class GLOPERATE_API AbstractStage
 {
 public:

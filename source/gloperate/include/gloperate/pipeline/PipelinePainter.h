@@ -19,6 +19,12 @@ template <typename T>
 class Data;
 
 
+/**
+*  @brief
+*    Painter that executed a rendering pipeline
+*
+*  @see AbstractPipeline
+*/
 class GLOPERATE_API PipelinePainter : public gloperate::Painter
 {
 public:
