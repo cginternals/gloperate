@@ -48,9 +48,8 @@ public:
 
 
 protected slots:
-    void on_colorSchemePresetsAction_triggered();
-    void on_showPluginsAction_triggered();
-    void on_imageExporterAction_triggered();
+    void on_managePluginsAction_triggered();
+    void on_captureImageAction_triggered();
 
     void switchToPainter(bool);
 

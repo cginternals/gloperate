@@ -1,3 +1,4 @@
+
 #include "gloperate-qt/viewer/QtOpenGLWindow.h"
 
 #include <gloperate/ext-includes-begin.h>
@@ -81,7 +82,7 @@ void QtOpenGLWindow::setPainter(Painter * painter)
 
     if (!m_painter)
         return;
-    
+
     m_timePropagator = make_unique<TimePropagator>(this);
 
     // Check for virtual time capability

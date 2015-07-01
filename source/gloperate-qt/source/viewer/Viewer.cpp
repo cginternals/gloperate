@@ -19,7 +19,6 @@
 #include <widgetzeug/ScriptPromptWidget.h>
 #include <widgetzeug/ECMA26251_SyntaxHighlighter.h>
 #include <widgetzeug/ECMA26251_Completer.h>
-#include <widgetzeug/ColorSchemePresetsWidget.h>
 
 #include "ui_Viewer.h"
 
@@ -242,41 +241,22 @@ void Viewer::setupCanvas()
     m_mapping->addProvider(wheelProvider);
 }
 
-void Viewer::on_colorSchemePresetsAction_triggered()
+void Viewer::on_captureImageAction_triggered()
 {
-    // ToDo: this is just a temporary test...
-    /*
-    QFile file("data/colorbrewer.json");
-    std::unique_ptr<ColorSchemePresetsWidget> cspw(ColorSchemePresetsWidget::fromJson(file));
-
-    if (!cspw)
+    if (m_currentPainter)
     {
-        qWarning("Could not open color scheme presets from \"%s\".", qPrintable(file.fileName()));
-        cspw.reset(new ColorSchemePresetsWidget());
+        ImageExporterWidget * ie{ new ImageExporterWidget(*m_resourceManager, m_canvas->painter(), m_canvas.get()) };
+
+        ie->setWindowModality(Qt::NonModal);
+        ie->show();
     }
-
-    cspw->setWindowModality(Qt::ApplicationModal);
-    cspw->show();*/
 }
 
-void Viewer::on_imageExporterAction_triggered()
-{
-	if (m_currentPainter)
-	{
-		ImageExporterWidget * ie{ new ImageExporterWidget(*m_resourceManager, m_canvas->painter(), m_canvas.get()) };
-
-    ie->setWindowModality(Qt::NonModal);
-	ie->show();
-	}
-}
-
-void Viewer::on_showPluginsAction_triggered()
+void Viewer::on_managePluginsAction_triggered()
 {
     assert(m_pluginManager);
 
-    qDebug("#%i plugins found:", static_cast<int>(m_pluginManager->plugins().size()));
-    for (auto plugin : m_pluginManager->plugins())
-        qDebug("->  %s %s - %s (%s by %s)", plugin->name(), plugin->version(), plugin->description(), plugin->type(), plugin->vendor());
+    // [TODO] Show plugin manager widget here
 }
 
 void Viewer::switchToPainter(bool)
