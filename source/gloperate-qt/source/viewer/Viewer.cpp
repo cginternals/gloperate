@@ -3,6 +3,8 @@
 
 #include <cassert>
 
+#include <reflectionzeug/Object.h>
+
 #include <gloperate/ext-includes-begin.h>
 
 #include <QDockWidget>
@@ -38,11 +40,14 @@
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 #include <gloperate-qt/viewer/DefaultMapping.h>
 #include <gloperate-qt/widgets/ImageExporterWidget.h>
+#include <gloperate-qt/scripting/SystemApi.h>
+#include <gloperate-qt/scripting/TimerApi.h>
+#include <gloperate-qt/scripting/ViewerApi.h>
+#include <gloperate-qt/scripting/PluginApi.h>
 
 
 using namespace widgetzeug;
 using namespace gloperate;
-using namespace gloperate_qt;
 
 #ifdef GLOPERATE_ASSIMP_FOUND
     using namespace gloperate_assimp;
@@ -64,7 +69,7 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 : QMainWindow(parent, flags)
 , m_ui{new Ui_Viewer}
 , m_resourceManager{nullptr}
-, m_pluginManager {nullptr}
+, m_pluginManager{nullptr}
 , m_canvas{nullptr}
 , m_painter{nullptr}
 , m_mapping{nullptr}
@@ -74,6 +79,10 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 , m_messagLogDockWidget{nullptr}
 , m_scriptPromptDockWidget{nullptr}
 , m_propertyDockWidget{nullptr}
+, m_systemApi{nullptr}
+, m_timerApi{nullptr}
+, m_viewerApi{nullptr}
+, m_pluginApi{nullptr}
 {
     // Initialize resource manager (must be done BEFORE setupCanvas)
     m_resourceManager.reset(new ResourceManager());
@@ -131,6 +140,9 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 
         menu->addAction(action);
     }
+
+    // Setup scripting context
+    setupScripting();
 }
 
 Viewer::~Viewer()
@@ -143,6 +155,68 @@ Viewer::~Viewer()
     // Disconnect message handlers
     MessageHandler::dettach(*m_messagesLog);
     MessageHandler::dettach(*m_messagesStatus);
+}
+
+QtOpenGLWindow * Viewer::canvas() const
+{
+    return m_canvas.get();
+}
+
+void Viewer::loadPainter(const std::string & name)
+{
+    // Get plugin by name
+    Plugin * plugin = m_pluginManager->plugin(name);
+    if (!plugin) {
+        return;
+    }
+
+    // Create new painter
+    m_painter.reset(plugin->createPainter(*m_resourceManager));
+
+    // [TODO] Check for painter context format requirements
+
+    // Setup new painter
+    m_canvas->setPainter(m_painter.get());
+    m_mapping->setPainter(m_painter.get());
+    m_canvas->initialize();
+
+    // Update property browser
+    if (m_painter.get())
+    {
+        QWidget * old = m_propertyDockWidget->widget();
+        delete old;
+
+        m_propertyDockWidget->setWidget(new propertyguizeug::PropertyBrowser(m_painter.get()));
+        m_propertyDockWidget->show();
+    }
+    else
+    {
+        m_propertyDockWidget->hide();
+    }
+
+    // Update rendering
+    m_canvas->updateGL();
+}
+
+const scriptzeug::ScriptContext * Viewer::scriptContext() const
+{
+    return m_scriptContext.get();
+}
+
+scriptzeug::ScriptContext * Viewer::scriptContext()
+{
+    return m_scriptContext.get();
+}
+
+void Viewer::addScriptApi(reflectionzeug::Object * api)
+{
+    // Connect object to scripting engine
+    m_scriptContext->registerObject(api);
+
+    // Register name as extra word for word completion
+    widgetzeug::ScriptCompleter * completer = static_cast<widgetzeug::ScriptCompleter *>(m_scriptPrompt->completer());
+    assert(completer);
+    completer->registerWord(QString::fromStdString(api->name()));
 }
 
 void Viewer::setupMessageWidgets()
@@ -192,12 +266,6 @@ void Viewer::setupCommandPrompt()
     m_scriptPromptDockWidget->setObjectName("ScriptPromptWidget");
     addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, m_scriptPromptDockWidget);
     m_scriptPrompt->setFrameShape(QFrame::NoFrame);
-
-    // Connect to input from scripting console
-    connect(m_scriptPrompt.get(), &widgetzeug::ScriptPromptWidget::evaluate, [this] (const QString & command) {
-        // Execute commands that have been typed on the scripting console
-        qDebug() << "cmd: " << command;
-    });
 }
 
 void Viewer::setupPropertyWidget()
@@ -229,18 +297,18 @@ void Viewer::setupCanvas()
     format.setDepthBufferSize(16);
 
     // Create OpenGL context and window
-    m_canvas.reset(new gloperate_qt::QtOpenGLWindow(*m_resourceManager, format));
+    m_canvas.reset(new QtOpenGLWindow(*m_resourceManager, format));
 
     // Create widget container
     setCentralWidget(QWidget::createWindowContainer(m_canvas.get()));
     centralWidget()->setFocusPolicy(Qt::StrongFocus);
 
     // Setup event provider to rranslate Qt messages into gloperate events
-    gloperate_qt::QtKeyEventProvider * keyProvider = new gloperate_qt::QtKeyEventProvider();
+    QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     keyProvider->setParent(m_canvas.get());
-    gloperate_qt::QtMouseEventProvider * mouseProvider = new gloperate_qt::QtMouseEventProvider();
+    QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
     mouseProvider->setParent(m_canvas.get());
-    gloperate_qt::QtWheelEventProvider * wheelProvider = new gloperate_qt::QtWheelEventProvider();
+    QtWheelEventProvider * wheelProvider = new QtWheelEventProvider();
     wheelProvider->setParent(m_canvas.get());
 
     m_canvas->installEventFilter(keyProvider);
@@ -252,6 +320,100 @@ void Viewer::setupCanvas()
     m_mapping->addProvider(keyProvider);
     m_mapping->addProvider(mouseProvider);
     m_mapping->addProvider(wheelProvider);
+}
+
+void Viewer::setupScripting()
+{
+    // Widgets have to be created beforehand
+    assert(m_scriptPrompt);
+
+    // Create scripting context
+    m_scriptContext.reset(new scriptzeug::ScriptContext("javascript"));
+
+    // Register default scripting APIs
+    m_systemApi.reset(new SystemApi(this));
+    addScriptApi(m_systemApi.get());
+
+    m_timerApi.reset(new TimerApi);
+    addScriptApi(m_timerApi.get());
+
+    m_viewerApi.reset(new ViewerApi(this));
+    addScriptApi(m_viewerApi.get());
+
+    m_pluginApi.reset(new PluginApi(m_pluginManager.get()));
+    addScriptApi(m_pluginApi.get());
+
+    // Connect to input from scripting console
+    connect(m_scriptPrompt.get(), &widgetzeug::ScriptPromptWidget::evaluate, [this] (const QString & cmd) {
+        // Substitute shortcut commands
+        QString command = cmd;
+        if (cmd == "help") {
+            command = "help()";
+        } else if (cmd == "exit" || cmd == "quit") {
+            command = "exit()";
+        }
+
+        // Execute commands that have been typed on the scripting console
+        m_scriptContext->evaluate(command.toStdString());
+    });
+
+    // Connect commands that have been loaded by API functions (e.g., system.load)
+    m_systemApi->command.connect([this] (const std::string & cmd) {
+        // Execute code
+        m_scriptContext->evaluate(cmd);
+    });
+
+    // Connect script output (system.print)
+    m_systemApi->output.connect([this] (const std::string & msg) {
+        // Print message onto the scripting console
+        m_scriptPrompt->print(QString::fromStdString(msg));
+    });
+
+    // Connect keyboard events to scripting api
+    m_canvas->installEventFilter(m_systemApi.get());
+
+    // Add global functions
+    std::string script =
+        "function help() {\n"
+        "  system.print('Available commands:');\n"
+        "  system.print('  help():     Print this help message');\n"
+        "  system.print('  print():    Print the content of a variable');\n"
+        "  system.print('  toString(): Convert a variable into a string');\n"
+        "  system.print('  exit():     Exit the application');\n"
+        "  system.print('');\n"
+        "  system.print('APIs:');\n"
+        "  system.print('  system: System API (e.g., file io, keyboard handling)');\n"
+        "  system.print('  timer:  Timer API');\n"
+        "  system.print('  viewer: Viewer main window control');\n"
+        "  system.print('  plugin: Plugin management');\n"
+        "  system.print('');\n"
+        "  system.print('Examples:');\n"
+        "  system.print('  print(system);');\n"
+        "  system.print('  timer.start(1000, function() { print(\"Hello Scripting World.\"); } );');\n"
+        "  system.print('  timer.stopAll();');\n"
+        "}\n"
+        "\n"
+        "function load(filename) {\n"
+        "  system.load(filename);\n"
+        "}\n"
+        "\n"
+        "function print(value) {\n"
+        "  system.print(value);\n"
+        "};\n"
+        "\n"
+        "function exit() {\n"
+        "  system.exit();\n"
+        "};\n"
+        "\n"
+        "function quit() {\n"
+        "  system.exit();\n"
+        "};\n";
+    m_scriptContext->evaluate(script);
+
+    // Register extra words for word completion
+    widgetzeug::ScriptCompleter * completer = static_cast<widgetzeug::ScriptCompleter *>(m_scriptPrompt->completer());
+    assert(completer);
+    completer->registerWords(QStringList() << "help" << "load" << "print" << "exit");
 }
 
 void Viewer::on_captureImageAction_triggered()
