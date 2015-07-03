@@ -25,6 +25,11 @@ namespace gloperate_qt
 /**
 *  @brief
 *    Qt window that can be used for rendering with gloperate and OpenGL
+*
+*    This is the main rendering widget that displays a gloperate::Painter
+*    within a Qt application. It contains only the rendering widget itself,
+*    no other components. For a fully-fledged application template, see
+*    gloperate_qt::Viewer.
 */
 class GLOPERATE_QT_API QtOpenGLWindow : public QtOpenGLWindowBase
 {
@@ -32,6 +37,9 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] resourceManager
+    *    Manager for loading/saving resources (i.e., textures, scenes)
     */
     QtOpenGLWindow(gloperate::ResourceManager & resourceManager);
 
@@ -39,6 +47,8 @@ public:
     *  @brief
     *    Constructor
     *
+    *  @param[in] resourceManager
+    *    Manager for loading/saving resources (i.e., textures, scenes)
     *  @param[in] format
     *    Surface format
     */
@@ -84,8 +94,8 @@ protected:
 
 protected:
     gloperate::ResourceManager & m_resourceManager;
-    gloperate::Painter * m_painter;                    /**< Currently used painter */
-    std::unique_ptr<TimePropagator> m_timePropagator;  /**< Time propagator for continous updates */
+    gloperate::Painter * m_painter;                    ///< Currently used painter
+    std::unique_ptr<TimePropagator> m_timePropagator;  ///< Time propagator for continous updates
 };
 
 

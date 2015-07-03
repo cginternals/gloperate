@@ -6,11 +6,8 @@
 #include <gloperate/ext-includes-begin.h>
 
 #include <QDockWidget>
-#include <QLayout>
-#include <QUrl>
 #include <QDebug>
 #include <QSettings>
-#include <QSizePolicy>
 
 #include <propertyguizeug/PropertyBrowser.h>
 #include <widgetzeug/MessageHandler.h>
@@ -65,64 +62,63 @@ namespace gloperate_qt
 
 Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 : QMainWindow(parent, flags)
-, m_ui { new Ui_Viewer }
-, m_resourceManager { nullptr }
-, m_pluginManager { nullptr }
-, m_canvas { nullptr }
-, m_currentPainter { nullptr }
-, m_mapping { nullptr }
-, m_messagesStatus { new MessageStatusWidget() } // std::make_unique is C++14
-, m_messagesLog { new MessageWidget() } // make_unique is C++14
-, m_scriptPrompt { new ScriptPromptWidget() } // make_unique is C++14
-, m_messagLogDockWidget { nullptr }
-, m_scriptPromptDockWidget { nullptr }
-, m_propertyDockWidget { nullptr }
+, m_ui{new Ui_Viewer}
+, m_resourceManager{nullptr}
+, m_pluginManager {nullptr}
+, m_canvas{nullptr}
+, m_painter{nullptr}
+, m_mapping{nullptr}
+, m_messagesStatus{new MessageStatusWidget()}
+, m_messagesLog{new MessageWidget()}
+, m_scriptPrompt{new ScriptPromptWidget()}
+, m_messagLogDockWidget{nullptr}
+, m_scriptPromptDockWidget{nullptr}
+, m_propertyDockWidget{nullptr}
 {
-    // initialize resource manager (must be done BEFORE setupCanvas)
+    // Initialize resource manager (must be done BEFORE setupCanvas)
     m_resourceManager.reset(new ResourceManager());
+
+    // Add default texture loaders/storers
     m_resourceManager->addLoader(new QtTextureLoader());
     m_resourceManager->addStorer(new QtTextureStorer());
 
+    // Add assimp loaders (if available)
 #ifdef GLOPERATE_ASSIMP_FOUND
     m_resourceManager->addLoader(new AssimpMeshLoader());
     m_resourceManager->addLoader(new AssimpSceneLoader());
 #endif
 
-    // setup UI
-    attachMessageWidgets(); 
-
+    // Setup UI
     m_ui->setupUi(this);
-
     setupMessageWidgets();
     setupCommandPrompt();
     setupPropertyWidget();
-
-    tabifyDockWidget(m_messagLogDockWidget, m_scriptPromptDockWidget);
-
+    setupDockArea();
     setupCanvas();
 
-    // restore gui related settings
-
+    // Load settings
     QSettings::setDefaultFormat(QSettings::IniFormat);
-    QSettings s;
+    QSettings settings;
 
-    restoreGeometry(s.value(SETTINGS_GEOMETRY).toByteArray());
-    restoreState(s.value(SETTINGS_STATE).toByteArray());
+    // Restore GUI state from settings
+    restoreGeometry(settings.value(SETTINGS_GEOMETRY).toByteArray());
+    restoreState(settings.value(SETTINGS_STATE).toByteArray());
 
-//    setCentralWidget(QWidget::createWindowContainer(m_canvas.get()));
-
-    // initialize plugin manager
+    // Initialize plugin manager
     PluginManager::init(QCoreApplication::applicationFilePath().toStdString());
 
-    m_pluginManager.reset(new PluginManager()); // make_unique is C++14
+    // Add default plugin directories
+    m_pluginManager.reset(new PluginManager());
 #ifdef NDEBUG
     m_pluginManager->addPath("plugins");
 #else
     m_pluginManager->addPath("plugins/debug");
 #endif
 
+    // Scan all plugins with name component 'painter'
     m_pluginManager->scan("painter");
 
+    // Update plugins-menu
     QMenu * menu = m_ui->pluginsMenu;
     for (auto plugin : m_pluginManager->plugins())
     {
@@ -130,8 +126,8 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 
         QAction * action = new QAction(QString::fromStdString(plugin->name()), menu);
         action->setData(reinterpret_cast<qint64>(plugin));
-        connect(action, SIGNAL(toggled(bool)), this, SLOT(switchToPainter(bool)));
-        connect(action, SIGNAL(triggered(bool)), this, SLOT(switchToPainter(bool)));
+        connect(action, SIGNAL(toggled(bool)), this, SLOT(on_painter_selected(bool)));
+        connect(action, SIGNAL(triggered(bool)), this, SLOT(on_painter_selected(bool)));
 
         menu->addAction(action);
     }
@@ -139,91 +135,107 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 
 Viewer::~Viewer()
 {
-    QSettings s;
-    s.setValue(SETTINGS_GEOMETRY, saveGeometry());
-    s.setValue(SETTINGS_STATE, saveState());
+    // Save settings
+    QSettings settings;
+    settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
+    settings.setValue(SETTINGS_STATE, saveState());
 
+    // Disconnect message handlers
     MessageHandler::dettach(*m_messagesLog);
     MessageHandler::dettach(*m_messagesStatus);
 }
 
-void Viewer::attachMessageWidgets()
+void Viewer::setupMessageWidgets()
 {
+    // Widgets have to be created beforehand
     assert(m_messagesStatus);
     assert(m_messagesLog);
 
+    // Attach message handlers to log widgets
     MessageHandler::attach(*m_messagesStatus);
     MessageHandler::attach(*m_messagesLog);
 
+    // Additionally write log to file
     MessageHandler::printsToFile(QtMsgType::QtWarningMsg);
     MessageHandler::printsToFile(QtMsgType::QtCriticalMsg);
     MessageHandler::printsToFile(QtMsgType::QtFatalMsg);
 
+    // Announce log initialization
+    qDebug("Initialize message log.");
     const QString fileLog(QString("Messages are also written to file://%1.").arg(MessageHandler::fileName()));
     qDebug("%s", qPrintable(fileLog));
-}
 
-void Viewer::setupMessageWidgets()
-{
-    assert(m_messagesStatus);
-    assert(m_messagesLog);
-
-    statusBar()->addPermanentWidget(m_messagesStatus.get());
-
+    // Create dock window for message log
     m_messagLogDockWidget = new QDockWidget(tr("Message Log"));
     m_messagLogDockWidget->setWidget(m_messagesLog.get());
     m_messagLogDockWidget->setObjectName("MessageLogDockWidget");
-
     addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, m_messagLogDockWidget);
-    m_messagesStatus->attachWidget(m_messagLogDockWidget);
-
     m_messagesLog->setFrameShape(QFrame::NoFrame);
+
+    // Add item to status bar and connect to window
+    statusBar()->addPermanentWidget(m_messagesStatus.get());
+    m_messagesStatus->attachWidget(m_messagLogDockWidget);
 }
 
 void Viewer::setupCommandPrompt()
 {
+    // Widgets have to be created beforehand
+    assert(m_scriptPrompt);
+
+    // Setup syntax highlighting and auto-completion
     m_scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlight);
     m_scriptPrompt->setCompleter(new ECMA26251Completer);
 
+    // Create dock window for scripting console
     m_scriptPromptDockWidget = new QDockWidget(tr("Script Prompt"));
     m_scriptPromptDockWidget->setWidget(m_scriptPrompt.get());
     m_scriptPromptDockWidget->setObjectName("ScriptPromptWidget");
-
     addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, m_scriptPromptDockWidget);
-
     m_scriptPrompt->setFrameShape(QFrame::NoFrame);
+
+    // Connect to input from scripting console
+    connect(m_scriptPrompt.get(), &widgetzeug::ScriptPromptWidget::evaluate, [this] (const QString & command) {
+        // Execute commands that have been typed on the scripting console
+        qDebug() << "cmd: " << command;
+    });
 }
 
 void Viewer::setupPropertyWidget()
 {
+    // Create dock window for property browser
     m_propertyDockWidget = new QDockWidget("Properties", this);
     m_propertyDockWidget->setObjectName("PropertyDockWidget");
     m_propertyDockWidget->setAllowedAreas(Qt::DockWidgetArea::LeftDockWidgetArea);
-
     addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, m_propertyDockWidget, Qt::Orientation::Horizontal);
+}
 
-    m_propertyDockWidget->show();
-    m_propertyDockWidget->hide();
+void Viewer::setupDockArea()
+{
+    // Define order of widgets in dock area
+    tabifyDockWidget(m_messagLogDockWidget, m_scriptPromptDockWidget);
 }
 
 void Viewer::setupCanvas()
 {
-    // initialized context
+    // Setup OpenGL context format
     QSurfaceFormat format;
-
 #ifdef __APPLE__
+    // Get OpenGL 3.2/4.1 core context
     format.setVersion(3, 2);
 #else
-    //format.setVersion(3, 2);
+    // Get newest available core context
 #endif
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setDepthBufferSize(16);
 
-    m_canvas.reset(new gloperate_qt::QtOpenGLWindow(*m_resourceManager, format)); // make_unique is C++14
+    // Create OpenGL context and window
+    m_canvas.reset(new gloperate_qt::QtOpenGLWindow(*m_resourceManager, format));
 
+    // Create widget container
     setCentralWidget(QWidget::createWindowContainer(m_canvas.get()));
     centralWidget()->setFocusPolicy(Qt::StrongFocus);
 
+    // Setup event provider to rranslate Qt messages into gloperate events
     gloperate_qt::QtKeyEventProvider * keyProvider = new gloperate_qt::QtKeyEventProvider();
     keyProvider->setParent(m_canvas.get());
     gloperate_qt::QtMouseEventProvider * mouseProvider = new gloperate_qt::QtMouseEventProvider();
@@ -235,6 +247,7 @@ void Viewer::setupCanvas()
     m_canvas->installEventFilter(mouseProvider);
     m_canvas->installEventFilter(wheelProvider);
 
+    // Create input mapping for gloperate interaction techniques
     m_mapping.reset(new DefaultMapping(m_canvas.get()));
     m_mapping->addProvider(keyProvider);
     m_mapping->addProvider(mouseProvider);
@@ -243,10 +256,11 @@ void Viewer::setupCanvas()
 
 void Viewer::on_captureImageAction_triggered()
 {
-    if (m_currentPainter)
+    // Screenshot dialog needs an active painter
+    if (m_painter)
     {
+        // Show image exporter dialog
         ImageExporterWidget * ie{ new ImageExporterWidget(*m_resourceManager, m_canvas->painter(), m_canvas.get()) };
-
         ie->setWindowModality(Qt::NonModal);
         ie->show();
     }
@@ -256,35 +270,36 @@ void Viewer::on_managePluginsAction_triggered()
 {
     assert(m_pluginManager);
 
-    // [TODO] Show plugin manager widget here
+    // [TODO] Show plugin manager widget
 }
 
-void Viewer::switchToPainter(bool)
+void Viewer::on_painter_selected(bool /*checked*/)
 {
+    // Get selected menu action
     QAction * action = dynamic_cast<QAction*>(QObject::sender());
-
     Q_ASSERT(action != nullptr);
 
+    // Get plugin that belongs to the menu item
     gloperate::Plugin * plugin = reinterpret_cast<gloperate::Plugin * >(action->data().value<qint64>());
-
     Q_ASSERT(plugin);
 
-    m_currentPainter.reset(plugin->createPainter(*m_resourceManager));
+    // Create new painter
+    m_painter.reset(plugin->createPainter(*m_resourceManager));
 
-    // check for painter context format requirements
-    // ToDo:
+    // [TODO] Check for painter context format requirements
 
-    m_canvas->setPainter(m_currentPainter.get());
-    m_mapping->setPainter(m_currentPainter.get());
-
+    // Setup new painter
+    m_canvas->setPainter(m_painter.get());
+    m_mapping->setPainter(m_painter.get());
     m_canvas->initialize();
 
-    if (m_currentPainter.get())
+    // Update property browser
+    if (m_painter.get())
     {
         QWidget * old = m_propertyDockWidget->widget();
         delete old;
 
-        m_propertyDockWidget->setWidget(new propertyguizeug::PropertyBrowser(m_currentPainter.get()));
+        m_propertyDockWidget->setWidget(new propertyguizeug::PropertyBrowser(m_painter.get()));
         m_propertyDockWidget->show();
     }
     else
@@ -292,6 +307,7 @@ void Viewer::switchToPainter(bool)
         m_propertyDockWidget->hide();
     }
 
+    // Update rendering
     m_canvas->updateGL();
 }
 
