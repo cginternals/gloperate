@@ -49,6 +49,11 @@ protected:
 
 
 protected:
+    // Scripting API
+    void randomize();
+
+
+protected:
     /* Parameters */
     bool m_animation;
     int m_numCubes;

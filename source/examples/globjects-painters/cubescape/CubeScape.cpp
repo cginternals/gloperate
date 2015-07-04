@@ -60,6 +60,9 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
 
     auto * propNumCubes = addProperty<int>("NumCubes", this, &CubeScape::numberOfCubes, &CubeScape::setNumberOfCubes);
     propNumCubes->setOption("minimum", 0);
+
+    // Register scripting functions
+    addFunction("randomize", this, &CubeScape::randomize);
 }
 
 CubeScape::~CubeScape()
@@ -252,4 +255,9 @@ void CubeScape::onTargetFramebufferChanged()
         fbo = globjects::Framebuffer::defaultFBO();
     }
     m_typedRenderTargetCapability->setRenderTarget(gloperate::RenderTargetType::Depth, fbo, gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
+}
+
+void CubeScape::randomize()
+{
+    setNumberOfCubes(rand() % 40 + 1);
 }
