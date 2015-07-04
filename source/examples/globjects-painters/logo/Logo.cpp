@@ -59,7 +59,7 @@ void main()
 
 
 Logo::Logo(ResourceManager & resourceManager)
-: Painter(resourceManager)
+: Painter(resourceManager, "Logo")
 , m_animation(true)
 , m_background(0, 0, 0, 255)
 , m_textureFilename("data/logo/gloperate-logo.png")

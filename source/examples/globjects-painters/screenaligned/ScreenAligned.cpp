@@ -16,7 +16,7 @@ using namespace gl;
 
 
 ScreenAligned::ScreenAligned(ResourceManager & resourceManager)
-: Painter(resourceManager)
+: Painter(resourceManager, "ScreenAligned")
 {
     // Setup painter
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());

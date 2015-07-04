@@ -127,19 +127,8 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     // Scan all plugins with name component 'painter'
     m_pluginManager->scan("painter");
 
-    // Update plugins-menu
-    QMenu * menu = m_ui->pluginsMenu;
-    for (auto plugin : m_pluginManager->plugins())
-    {
-        qDebug("->  %s %s - %s (%s by %s)", plugin->name(), plugin->version(), plugin->description(), plugin->type(), plugin->vendor());
-
-        QAction * action = new QAction(QString::fromStdString(plugin->name()), menu);
-        action->setData(reinterpret_cast<qint64>(plugin));
-        connect(action, SIGNAL(toggled(bool)), this, SLOT(on_painter_selected(bool)));
-        connect(action, SIGNAL(triggered(bool)), this, SLOT(on_painter_selected(bool)));
-
-        menu->addAction(action);
-    }
+    // Update list of painters
+    updatePainterMenu();
 
     // Setup scripting context
     setupScripting();
@@ -179,6 +168,9 @@ void Viewer::loadPainter(const std::string & name)
     m_canvas->setPainter(m_painter.get());
     m_mapping->setPainter(m_painter.get());
     m_canvas->initialize();
+
+    // Register painter in scripting
+    m_scriptContext->registerObject(m_painter.get());
 
     // Update property browser
     if (m_painter.get())
@@ -416,6 +408,23 @@ void Viewer::setupScripting()
     completer->registerWords(QStringList() << "help" << "load" << "print" << "exit");
 }
 
+void Viewer::updatePainterMenu()
+{
+    // Update list of painters
+    QMenu * menu = m_ui->pluginsMenu;
+    for (auto plugin : m_pluginManager->plugins())
+    {
+        qDebug("->  %s %s - %s (%s by %s)", plugin->name(), plugin->version(), plugin->description(), plugin->type(), plugin->vendor());
+
+        QAction * action = new QAction(QString::fromStdString(plugin->name()), menu);
+        action->setData(QString::fromStdString(plugin->name()));
+        connect(action, SIGNAL(toggled(bool)), this, SLOT(on_painter_selected(bool)));
+        connect(action, SIGNAL(triggered(bool)), this, SLOT(on_painter_selected(bool)));
+
+        menu->addAction(action);
+    }
+}
+
 void Viewer::on_captureImageAction_triggered()
 {
     // Screenshot dialog needs an active painter
@@ -441,36 +450,9 @@ void Viewer::on_painter_selected(bool /*checked*/)
     QAction * action = dynamic_cast<QAction*>(QObject::sender());
     Q_ASSERT(action != nullptr);
 
-    // Get plugin that belongs to the menu item
-    gloperate::Plugin * plugin = reinterpret_cast<gloperate::Plugin * >(action->data().value<qint64>());
-    Q_ASSERT(plugin);
-
-    // Create new painter
-    m_painter.reset(plugin->createPainter(*m_resourceManager));
-
-    // [TODO] Check for painter context format requirements
-
-    // Setup new painter
-    m_canvas->setPainter(m_painter.get());
-    m_mapping->setPainter(m_painter.get());
-    m_canvas->initialize();
-
-    // Update property browser
-    if (m_painter.get())
-    {
-        QWidget * old = m_propertyDockWidget->widget();
-        delete old;
-
-        m_propertyDockWidget->setWidget(new propertyguizeug::PropertyBrowser(m_painter.get()));
-        m_propertyDockWidget->show();
-    }
-    else
-    {
-        m_propertyDockWidget->hide();
-    }
-
-    // Update rendering
-    m_canvas->updateGL();
+    // Get painter name
+    QString name = action->data().toString();
+    loadPainter(name.toStdString());
 }
 
 

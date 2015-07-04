@@ -157,6 +157,7 @@ protected:
     void setupDockArea();
     void setupCanvas();
     void setupScripting();
+    void updatePainterMenu();
 
 
 protected slots:
