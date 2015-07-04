@@ -107,51 +107,25 @@ void PluginManager::init(const std::string & applicationFilePath)
     s_applicationPath = dirname(const_cast<char *>(applicationFilePath.c_str()));
 #endif
 
+    // Remove slash
     s_applicationPath = DirectoryIterator::truncate(s_applicationPath);
 }
 
 PluginManager::PluginManager()
 {
+    // Add path to application as plugin search path
     m_paths.push_back(s_applicationPath);
 }
 
 PluginManager::~PluginManager()
 {
-    // note: The plugins do not need to (and must not) be destroyed, because this is done
+    // Note: The plugins do not need to (and must not) be destroyed, because this is done
     // inside the plugin library, when deinitialize() is called.
 
-    for (const std::pair<std::string, PluginLibrary *> & i : m_librariesByFilePath)
-        unloadLibrary(i.second);
-}
-
-void PluginManager::addPath(const std::string & path)
-{
-    const std::string p = DirectoryIterator::truncate(path);
-
-    const std::vector<std::string>::const_iterator i = std::find(m_paths.cbegin(), m_paths.cend(), p);
-    if (i != m_paths.end())
-        return;
-
-    m_paths.push_back(p);
-}
-
-void PluginManager::removePath(const std::string & path)
-{
-    const std::string p = DirectoryIterator::truncate(path);
-
-    const std::vector<std::string>::iterator i = std::find(m_paths.begin(), m_paths.end(), p);
-    if (i == m_paths.end())
-        return;
-
-    m_paths.erase(i);
-}
-
-void PluginManager::setPaths(const std::vector<std::string> & paths)
-{
-    m_paths.clear();
-
-    for (std::string path : paths)
-        m_paths.push_back(DirectoryIterator::truncate(path));
+    // Unload plugin libraries
+    for (const std::pair<std::string, PluginLibrary *> & it : m_librariesByFilePath) {
+        unloadLibrary(it.second);
+    }
 }
 
 const std::vector<std::string> & PluginManager::paths() const
@@ -159,16 +133,56 @@ const std::vector<std::string> & PluginManager::paths() const
     return m_paths;
 }
 
+void PluginManager::setPaths(const std::vector<std::string> & paths)
+{
+    m_paths.clear();
+
+    for (std::string path : paths) {
+        m_paths.push_back(DirectoryIterator::truncate(path));
+    }
+}
+
+void PluginManager::addPath(const std::string & path)
+{
+    // Remove slash
+    const std::string p = DirectoryIterator::truncate(path);
+
+    // Check if search path is already in the list
+    const std::vector<std::string>::const_iterator it = std::find(m_paths.cbegin(), m_paths.cend(), p);
+    if (it != m_paths.end()) {
+        return;
+    }
+
+    // Add search path
+    m_paths.push_back(p);
+}
+
+void PluginManager::removePath(const std::string & path)
+{
+    // Remove slash
+    const std::string p = DirectoryIterator::truncate(path);
+
+    // Check if search path is in the list
+    const std::vector<std::string>::iterator it = std::find(m_paths.begin(), m_paths.end(), p);
+    if (it == m_paths.end()) {
+        return;
+    }
+
+    // Remove search path
+    m_paths.erase(it);
+}
+
 void PluginManager::scan(const std::string & identifier, bool reload)
 {
+    // List all files in all search paths
     const std::vector<std::string> files = DirectoryIterator::files(m_paths, true);
-
     for (const std::string & file : files)
     {
-        // check if path meets search criteria
+        // Check if file is a library
         if (DirectoryIterator::extension(file) != g_ext)
             continue;
 
+        // Check if library name corresponds to search criteria
         if (identifier.empty() || file.find(identifier, file.find_last_of(g_sep)) != std::string::npos)
             loadLibrary(file, reload);
     }
@@ -180,75 +194,27 @@ bool PluginManager::load(const std::string & filePath, const bool reload)
     return loadLibrary(filePath, reload);
 }
 
-bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
-{
-    auto it = m_librariesByFilePath.find(filePath);
-
-    if (it != m_librariesByFilePath.cend() && !reload)
-        return true;
-
-    PluginLibrary * previous(nullptr);
-    if (it != m_librariesByFilePath.cend())
-        previous = it->second; // remember this, in case reloading fails
-
-    PluginLibraryImpl * library = new PluginLibraryImpl(filePath);
-    if (!library->isValid())
-    {
-        globjects::warning() << (previous ? "Reloading" : "loading") << " plugin(s) from '" << filePath << "' failed.";
-        delete library;
-
-        return false;
-    }
-
-    if (previous)
-        unloadLibrary(previous);
-
-    m_librariesByFilePath[filePath] = library; // in case of reload, this overwrites the previous
-
-    library->initialize();
-
-    // Iterate over plugins
-
-    const unsigned int numPlugins = library->numPlugins();
-    for (unsigned int i = 0; i < numPlugins; ++i) 
-    {
-        gloperate::Plugin * plugin = library->plugin(i);
-        if (!plugin)
-            continue;
-
-        m_plugins.push_back(plugin);
-
-        std::string name = plugin->name();
-        m_pluginsByName[name] = plugin;
-    }
-    return true;
-}
-
-void PluginManager::unloadLibrary(PluginLibrary * library) const
-{
-    if (!library)
-        return;
-
-    library->deinitialize();
-    delete library;
-}
-
 const std::vector<Plugin *> & PluginManager::plugins() const
 {
+    // Return list of plugins
     return m_plugins;
 }
 
 Plugin * PluginManager::plugin(const std::string & name) const
 {
-    if (m_pluginsByName.count(name) == 0)
+    // Check if plugin exists
+    if (m_pluginsByName.count(name) == 0) {
         return nullptr;
+    }
 
+    // Return plugin
     return m_pluginsByName.at(name);
 }
 
 void PluginManager::printPlugins() const
 {
-    for (Plugin * plugin : m_plugins) 
+    // Print info about each plugin
+    for (Plugin * plugin : m_plugins)
     {
         globjects::info() << " PLUGIN name: " << plugin->name() << " (" << plugin->type() << ")";
         globjects::info() << " description: " << plugin->description();
@@ -256,6 +222,75 @@ void PluginManager::printPlugins() const
         globjects::info() << "      vendor: " << plugin->vendor();
         globjects::info();
     }
+}
+
+bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
+{
+    // Check if library is already loaded and now reload is requested
+    auto it = m_librariesByFilePath.find(filePath);
+    if (it != m_librariesByFilePath.cend() && !reload) {
+        return true;
+    }
+
+    // If library was already loaded, remember it in case reloading fails
+    PluginLibrary * previous = nullptr;
+    if (it != m_librariesByFilePath.cend()) {
+        previous = it->second;
+    }
+
+    // Open plugin library
+    PluginLibraryImpl * library = new PluginLibraryImpl(filePath);
+    if (!library->isValid())
+    {
+        // Loading failed. Destroy library object and return failure.
+        globjects::warning() << (previous ? "Reloading" : "Loading") << " plugin(s) from '" << filePath << "' failed.";
+
+        delete library;
+        return false;
+    }
+
+    // Library has been loaded. Unload previous incarnation.
+    if (previous) {
+        unloadLibrary(previous);
+    }
+
+    // Add library to list (in case of reload, this overwrites the previous)
+    m_librariesByFilePath[filePath] = library;
+
+    // Initialize plugin library
+    library->initialize();
+
+    // Iterate over plugins
+    const unsigned int numPlugins = library->numPlugins();
+    for (unsigned int i = 0; i < numPlugins; ++i) 
+    {
+        // Get plugin
+        gloperate::Plugin * plugin = library->plugin(i);
+        if (!plugin)
+            continue;
+
+        // Add plugin to list
+        m_plugins.push_back(plugin);
+
+        // Save plugin by name
+        std::string name = plugin->name();
+        m_pluginsByName[name] = plugin;
+    }
+
+    // Return success
+    return true;
+}
+
+void PluginManager::unloadLibrary(PluginLibrary * library)
+{
+    // Check parameters
+    if (!library) {
+        return;
+    }
+
+    // Unload plugin library
+    library->deinitialize();
+    delete library;
 }
 
 
