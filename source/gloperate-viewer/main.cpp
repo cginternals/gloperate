@@ -25,5 +25,7 @@ int main(int argc, char * argv[])
     gloperate_qt::Viewer viewer;
     viewer.show();
 
+    viewer.loadPainter("Logo");
+
     return app.exec();
 }

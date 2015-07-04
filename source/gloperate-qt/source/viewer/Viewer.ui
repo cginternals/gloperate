@@ -30,12 +30,10 @@
     <addaction name="separator"/>
     <addaction name="quitAction"/>
    </widget>
-   <widget class="QMenu" name="pluginsMenu">
+   <widget class="QMenu" name="painterMenu">
     <property name="title">
-     <string>&amp;Plugins</string>
+     <string>&amp;Painter</string>
     </property>
-    <addaction name="managePluginsAction"/>
-    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="canvasMenu">
     <property name="title">
@@ -59,6 +57,8 @@
     <property name="title">
      <string>&amp;Settings</string>
     </property>
+    <addaction name="managePluginsAction"/>
+    <addaction name="separator"/>
     <addaction name="preferencesAction"/>
    </widget>
    <widget class="QMenu" name="helpMenu">
@@ -68,7 +68,7 @@
     <addaction name="aboutAction"/>
    </widget>
    <addaction name="fileMenu"/>
-   <addaction name="pluginsMenu"/>
+   <addaction name="painterMenu"/>
    <addaction name="canvasMenu"/>
    <addaction name="cameraMenu"/>
    <addaction name="settingsMenu"/>
@@ -128,8 +128,11 @@
    </property>
   </action>
   <action name="managePluginsAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
-    <string>Manage &amp;Plugins</string>
+    <string>&amp;Manage Plugins</string>
    </property>
   </action>
  </widget>

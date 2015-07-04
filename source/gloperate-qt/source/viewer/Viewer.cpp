@@ -411,7 +411,9 @@ void Viewer::setupScripting()
 void Viewer::updatePainterMenu()
 {
     // Update list of painters
-    QMenu * menu = m_ui->pluginsMenu;
+    QMenu * menu = m_ui->painterMenu;
+    menu->clear();
+
     for (auto plugin : m_pluginManager->plugins())
     {
         qDebug("->  %s %s - %s (%s by %s)", plugin->name(), plugin->version(), plugin->description(), plugin->type(), plugin->vendor());
