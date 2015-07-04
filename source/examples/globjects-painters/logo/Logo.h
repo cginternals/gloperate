@@ -24,11 +24,11 @@ namespace gloperate
 }
 
 
-class RotatingQuad : public gloperate::Painter
+class Logo : public gloperate::Painter
 {
 public:
-    RotatingQuad(gloperate::ResourceManager & resourceManager);
-    virtual ~RotatingQuad();
+    Logo(gloperate::ResourceManager & resourceManager);
+    virtual ~Logo();
 
     bool animation() const;
     void setAnimation(const bool & enabled);

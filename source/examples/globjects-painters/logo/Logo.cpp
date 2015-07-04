@@ -1,5 +1,5 @@
 
-#include "RotatingQuad.h"
+#include "Logo.h"
 
 #include <random>
 
@@ -58,7 +58,7 @@ void main()
 )";
 
 
-RotatingQuad::RotatingQuad(ResourceManager & resourceManager)
+Logo::Logo(ResourceManager & resourceManager)
 : Painter(resourceManager)
 , m_animation(true)
 , m_background(0, 0, 0, 255)
@@ -72,50 +72,50 @@ RotatingQuad::RotatingQuad(ResourceManager & resourceManager)
     m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
 
     // Register properties
-    addProperty<bool>("Animation", this, &RotatingQuad::animation, &RotatingQuad::setAnimation);
-    addProperty<Color>("BackgroundColor", this, &RotatingQuad::background, &RotatingQuad::setBackground);
-    addProperty<FilePath>("Texture", this, &RotatingQuad::texture, &RotatingQuad::setTexture);
+    addProperty<bool>("Animation", this, &Logo::animation, &Logo::setAnimation);
+    addProperty<Color>("BackgroundColor", this, &Logo::background, &Logo::setBackground);
+    addProperty<FilePath>("Texture", this, &Logo::texture, &Logo::setTexture);
 }
 
-RotatingQuad::~RotatingQuad()
+Logo::~Logo()
 {
 }
 
-bool RotatingQuad::animation() const
+bool Logo::animation() const
 {
     return m_animation;
 }
 
-void RotatingQuad::setAnimation(const bool & enabled)
+void Logo::setAnimation(const bool & enabled)
 {
     m_animation = enabled;
 
     m_timeCapability->setEnabled(m_animation);
 }
 
-Color RotatingQuad::background() const
+Color Logo::background() const
 {
     return m_background;
 }
 
-void RotatingQuad::setBackground(const Color & color)
+void Logo::setBackground(const Color & color)
 {
     m_background = color;
 }
 
-FilePath RotatingQuad::texture() const
+FilePath Logo::texture() const
 {
     return m_textureFilename;
 }
 
-void RotatingQuad::setTexture(const FilePath & filename)
+void Logo::setTexture(const FilePath & filename)
 {
     m_textureFilename = filename;
 
     m_texture = nullptr;
 }
 
-void RotatingQuad::onInitialize()
+void Logo::onInitialize()
 {
 #ifdef __APPLE__
     Shader::clearGlobalReplacements();
@@ -129,7 +129,7 @@ void RotatingQuad::onInitialize()
     createAndSetupGeometry();
 }
 
-void RotatingQuad::onPaint()
+void Logo::onPaint()
 {
     if (m_viewportCapability->hasChanged())
     {
@@ -172,13 +172,13 @@ void RotatingQuad::onPaint()
     }
 }
 
-void RotatingQuad::createAndSetupCamera()
+void Logo::createAndSetupCamera()
 {
     m_camera = new Camera();
     m_camera->setEye(glm::vec3(0.0, 0.0, 12.0));
 }
 
-void RotatingQuad::createAndSetupTexture()
+void Logo::createAndSetupTexture()
 {
     // Try to load texture
     m_texture = m_resourceManager.load<globjects::Texture>(m_textureFilename.toString());
@@ -203,7 +203,7 @@ void RotatingQuad::createAndSetupTexture()
     }
 }
 
-void RotatingQuad::createAndSetupGeometry()
+void Logo::createAndSetupGeometry()
 {
     static const std::array<glm::vec2, 4> raw {
         glm::vec2( +1.f, -1.f ),

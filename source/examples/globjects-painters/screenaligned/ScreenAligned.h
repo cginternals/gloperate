@@ -15,11 +15,11 @@ namespace gloperate
 }
 
 
-class TexturedQuad : public gloperate::Painter
+class ScreenAligned : public gloperate::Painter
 {
 public:
-    TexturedQuad(gloperate::ResourceManager & resourceManager);
-    virtual ~TexturedQuad();
+    ScreenAligned(gloperate::ResourceManager & resourceManager);
+    virtual ~ScreenAligned();
 
 
 protected:
