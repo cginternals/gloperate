@@ -159,6 +159,11 @@ void Viewer::loadPainter(const std::string & name)
         return;
     }
 
+    // Unload old painter
+    if (m_painter.get()) {
+        m_scriptContext->unregisterObject(m_painter.get());
+    }
+
     // Create new painter
     m_painter.reset(plugin->createPainter(*m_resourceManager));
 
