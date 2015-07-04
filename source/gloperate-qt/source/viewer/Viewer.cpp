@@ -415,19 +415,20 @@ void Viewer::setupScripting()
 
 void Viewer::updatePainterMenu()
 {
-    // Update list of painters
+    // Clear painter menu
     QMenu * menu = m_ui->painterMenu;
     menu->clear();
 
+    // Add all loaded plugins
     for (auto plugin : m_pluginManager->plugins())
     {
-        qDebug("->  %s %s - %s (%s by %s)", plugin->name(), plugin->version(), plugin->description(), plugin->type(), plugin->vendor());
-
+        // Add action
         QAction * action = new QAction(QString::fromStdString(plugin->name()), menu);
         action->setData(QString::fromStdString(plugin->name()));
-        connect(action, SIGNAL(toggled(bool)), this, SLOT(on_painter_selected(bool)));
-        connect(action, SIGNAL(triggered(bool)), this, SLOT(on_painter_selected(bool)));
+        connect(action, SIGNAL(toggled(bool)), this, SLOT(onPainterSelected(bool)));
+        connect(action, SIGNAL(triggered(bool)), this, SLOT(onPainterSelected(bool)));
 
+        // Add to menu
         menu->addAction(action);
     }
 }
@@ -451,7 +452,7 @@ void Viewer::on_managePluginsAction_triggered()
     // [TODO] Show plugin manager widget
 }
 
-void Viewer::on_painter_selected(bool /*checked*/)
+void Viewer::onPainterSelected(bool /*checked*/)
 {
     // Get selected menu action
     QAction * action = dynamic_cast<QAction*>(QObject::sender());

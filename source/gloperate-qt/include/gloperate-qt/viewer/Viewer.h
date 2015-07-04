@@ -163,7 +163,7 @@ protected:
 protected slots:
     void on_managePluginsAction_triggered();
     void on_captureImageAction_triggered();
-    void on_painter_selected(bool checked);
+    void onPainterSelected(bool checked);
 
 
 protected:

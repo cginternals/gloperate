@@ -25,7 +25,14 @@ reflectionzeug::Variant PluginApi::list()
     reflectionzeug::Variant plugins = reflectionzeug::Variant::array();
 
     for (auto plugin : m_pluginManager->plugins()) {
-        plugins.asArray()->push_back(plugin->name());
+        reflectionzeug::Variant info = reflectionzeug::Variant::map();
+        (*info.asMap())["Name"]        = plugin->name();
+        (*info.asMap())["Type"]        = plugin->type();
+        (*info.asMap())["Version"]     = plugin->version();
+        (*info.asMap())["Vendor"]      = plugin->vendor();
+        (*info.asMap())["Description"] = plugin->description();
+
+        plugins.asArray()->push_back(info);
     }
 
     return plugins;
