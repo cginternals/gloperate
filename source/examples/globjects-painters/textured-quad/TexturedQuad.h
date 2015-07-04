@@ -12,7 +12,7 @@
 namespace gloperate
 {
     class AbstractViewportCapability;
-} // namespace gloperate
+}
 
 
 class TexturedQuad : public gloperate::Painter
@@ -33,9 +33,10 @@ protected:
 
 
 protected:
-    /* capabilities */
+    /* Capabilities */
     gloperate::AbstractViewportCapability * m_viewportCapability;
 
+    /* Data */
     globjects::ref_ptr<globjects::Texture>           m_texture;
     globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
 };

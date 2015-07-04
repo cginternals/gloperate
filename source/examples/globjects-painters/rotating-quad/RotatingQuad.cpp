@@ -19,6 +19,7 @@
 #include <gloperate/painter/VirtualTimeCapability.h>
 
 
+using namespace reflectionzeug;
 using namespace globjects;
 using namespace gloperate;
 using namespace gl;
@@ -59,16 +60,59 @@ void main()
 
 RotatingQuad::RotatingQuad(ResourceManager & resourceManager)
 : Painter(resourceManager)
+, m_animation(true)
+, m_background(0, 0, 0, 255)
+, m_textureFilename("data/logo/gloperate-logo.png")
 , m_angle(0.0f)
 {
+    // Setup painter
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
     m_timeCapability = addCapability(new gloperate::VirtualTimeCapability());
 
     m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
+
+    // Register properties
+    addProperty<bool>("Animation", this, &RotatingQuad::animation, &RotatingQuad::setAnimation);
+    addProperty<Color>("BackgroundColor", this, &RotatingQuad::background, &RotatingQuad::setBackground);
+    addProperty<FilePath>("Texture", this, &RotatingQuad::texture, &RotatingQuad::setTexture);
 }
 
 RotatingQuad::~RotatingQuad()
 {
+}
+
+bool RotatingQuad::animation() const
+{
+    return m_animation;
+}
+
+void RotatingQuad::setAnimation(const bool & enabled)
+{
+    m_animation = enabled;
+
+    m_timeCapability->setEnabled(m_animation);
+}
+
+Color RotatingQuad::background() const
+{
+    return m_background;
+}
+
+void RotatingQuad::setBackground(const Color & color)
+{
+    m_background = color;
+}
+
+FilePath RotatingQuad::texture() const
+{
+    return m_textureFilename;
+}
+
+void RotatingQuad::setTexture(const FilePath & filename)
+{
+    m_textureFilename = filename;
+
+    m_texture = nullptr;
 }
 
 void RotatingQuad::onInitialize()
@@ -79,8 +123,6 @@ void RotatingQuad::onInitialize()
 
     debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
-
-    gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
     createAndSetupCamera();
     createAndSetupTexture();
@@ -99,6 +141,11 @@ void RotatingQuad::onPaint()
     // [TODO] Add onIdle()/onUpdate() callback and implement framerate independent animation
     m_angle = m_timeCapability->time();
 
+    gl::glClearColor(
+        (float)m_background.red()   / 255.0f,
+        (float)m_background.green() / 255.0f,
+        (float)m_background.blue()  / 255.0f,
+        1.0f);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 model = glm::mat4(1.0);
@@ -106,6 +153,10 @@ void RotatingQuad::onPaint()
 
     m_program->setUniform("viewProjectionMatrix",      m_camera->viewProjection());
     m_program->setUniform("modelViewProjectionMatrix", m_camera->viewProjection() * model);
+
+    if (!m_texture) {
+        createAndSetupTexture();
+    }
 
     if (m_texture) {
         gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
@@ -130,7 +181,7 @@ void RotatingQuad::createAndSetupCamera()
 void RotatingQuad::createAndSetupTexture()
 {
     // Try to load texture
-    m_texture = m_resourceManager.load<globjects::Texture>("data/emblem-important.png");
+    m_texture = m_resourceManager.load<globjects::Texture>(m_textureFilename.toString());
 
     // Check if texture is valid
     if (!m_texture) {

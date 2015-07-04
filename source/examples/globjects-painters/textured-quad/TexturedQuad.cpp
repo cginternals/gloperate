@@ -18,6 +18,7 @@ using namespace gl;
 TexturedQuad::TexturedQuad(ResourceManager & resourceManager)
 : Painter(resourceManager)
 {
+    // Setup painter
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
 }
 

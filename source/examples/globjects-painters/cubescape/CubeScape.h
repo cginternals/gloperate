@@ -35,11 +35,11 @@ public:
 
     void setupProjection();
 
-    int numberOfCubes() const;
-    void setNumberOfCubes(const int & number);
-
     bool animation() const;
     void setAnimation(const bool & enabled);
+
+    int numberOfCubes() const;
+    void setNumberOfCubes(const int & number);
 
 
 protected:
@@ -49,12 +49,11 @@ protected:
 
 
 protected:
-    /* parameters */
-
-    int m_numCubes;
+    /* Parameters */
     bool m_animation;
+    int m_numCubes;
 
-    /* capabilities */
+    /* Capabilities */
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::AbstractPerspectiveProjectionCapability * m_projectionCapability;
@@ -62,8 +61,7 @@ protected:
     gloperate::AbstractCameraCapability * m_cameraCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
-    /* members */
-
+    /* Data */
     gl::GLint a_vertex;
     gl::GLint u_transform;
     gl::GLint u_time;

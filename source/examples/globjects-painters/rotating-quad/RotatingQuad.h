@@ -2,6 +2,9 @@
 #pragma once
 
 
+#include <reflectionzeug/base/FilePath.h>
+#include <reflectionzeug/base/Color.h>
+
 #include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
@@ -27,6 +30,15 @@ public:
     RotatingQuad(gloperate::ResourceManager & resourceManager);
     virtual ~RotatingQuad();
 
+    bool animation() const;
+    void setAnimation(const bool & enabled);
+
+    reflectionzeug::Color background() const;
+    void setBackground(const reflectionzeug::Color & color);
+
+    reflectionzeug::FilePath texture() const;
+    void setTexture(const reflectionzeug::FilePath & filename);
+
 
 protected:
     virtual void onInitialize();
@@ -40,7 +52,12 @@ protected:
 
 
 protected:
-    /* capabilities */
+    /* Parameters */
+    bool                     m_animation;
+    reflectionzeug::Color    m_background;
+    reflectionzeug::FilePath m_textureFilename;
+
+    /* Capabilities */
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
@@ -52,5 +69,6 @@ protected:
     globjects::ref_ptr<globjects::Shader>       m_fragmentShader;
     globjects::ref_ptr<globjects::Texture>      m_texture;
 
+    /* Data */
     float m_angle;
 };
