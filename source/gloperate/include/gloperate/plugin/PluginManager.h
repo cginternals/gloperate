@@ -27,22 +27,6 @@ class GLOPERATE_API PluginManager
 public:
     /**
     *  @brief
-    *    Initialize plugin manager
-    *
-    *  @param[in] applicationPath
-    *    Path to directory containing the application executable
-    *
-    *  @remarks
-    *    This function has to be called to tell the plugin
-    *    manager the path to the current executable, so it can
-    *    determine the default search directory for plugins.
-    */
-    static void init(const std::string & applicationPath = "");
-
-
-public:
-    /**
-    *  @brief
     *    Constructor
     */
     PluginManager();
@@ -174,10 +158,6 @@ protected:
     *    plugins must be remaining.
     */
     void unloadLibrary(PluginLibrary * library);
-
-
-protected:
-    static std::string s_applicationPath;   ///< Default path to look for plugins, by default the path of the executable
 
 
 protected:

@@ -38,9 +38,8 @@ int main(int argc, char * argv[])
     resourceManager.addLoader(new QtTextureLoader());
     resourceManager.addStorer(new QtTextureStorer());
 
-    PluginManager::init(QCoreApplication::applicationFilePath().toStdString());
-
     PluginManager pluginManager;
+    pluginManager.addPath(QCoreApplication::applicationDirPath().toStdString());
 #ifdef NDEBUG
     pluginManager.addPath("plugins");
 #else

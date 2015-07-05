@@ -84,37 +84,8 @@ namespace gloperate
 {
 
 
-std::string PluginManager::s_applicationPath = "";
-
-
-void PluginManager::init(const std::string & applicationFilePath)
-{
-#ifdef WIN32
-    // Set default plugin path to the path of the executable
-    HMODULE appModule = GetModuleHandle(0);
-
-    char szFilename[MAX_PATH];
-    char szDrive[8];
-    char szPath[MAX_PATH];
-
-    if (GetModuleFileNameA(appModule, szFilename, MAX_PATH) > 0) 
-    {
-        _splitpath(szFilename, szDrive, szPath, NULL, NULL);
-        s_applicationPath = std::string(szDrive) + std::string(szPath);
-    }
-#else
-    // Save default plugin path
-    s_applicationPath = dirname(const_cast<char *>(applicationFilePath.c_str()));
-#endif
-
-    // Remove slash
-    s_applicationPath = DirectoryIterator::truncate(s_applicationPath);
-}
-
 PluginManager::PluginManager()
 {
-    // Add path to application as plugin search path
-    m_paths.push_back(s_applicationPath);
 }
 
 PluginManager::~PluginManager()

@@ -114,10 +114,10 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     restoreState(settings.value(SETTINGS_STATE).toByteArray());
 
     // Initialize plugin manager
-    PluginManager::init(QCoreApplication::applicationFilePath().toStdString());
+    m_pluginManager.reset(new PluginManager());
 
     // Add default plugin directories
-    m_pluginManager.reset(new PluginManager());
+    m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
 #ifdef NDEBUG
     m_pluginManager->addPath("plugins");
 #else

@@ -3,6 +3,10 @@
 
 #include <cassert>
 
+#ifdef WIN32
+#include <Windows.h>
+#endif
+
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -36,12 +40,29 @@ Application::Application(int & argc, char ** argv)
     assert(!s_app);
     s_app = this;
 
-    if (argc > 0)
-    {
-        m_filePath = argv[0];
-        m_path = path(m_filePath);
-        m_name = baseName(m_filePath);
-    }
+    // Determine application path (path to executable)
+    #ifdef WIN32
+        // On Windows, it can be queried by using to module handle to the application
+        HMODULE appModule = GetModuleHandle(0);
+
+        char szFilename[MAX_PATH];
+
+        if (GetModuleFileNameA(appModule, szFilename, MAX_PATH) > 0) 
+        {
+            _splitpath(szFilename, szDrive, szPath, NULL, NULL);
+            m_filePath = std::string(szFilename);
+            m_path = path(m_filePath);
+            m_name = baseName(m_filePath);
+        }
+    #else
+        // Given by the first argument on *nix system
+        if (argc > 0)
+        {
+            m_filePath = argv[0];
+            m_path = path(m_filePath);
+            m_name = baseName(m_filePath);
+        }
+    #endif
 }
 
 const std::string & Application::applicationFilePath()
