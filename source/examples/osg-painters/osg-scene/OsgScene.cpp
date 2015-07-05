@@ -11,7 +11,7 @@ using namespace gloperate_osg;
 
 
 OsgScene::OsgScene(gloperate::ResourceManager & resourceManager)
-: OsgPainter(resourceManager)
+: OsgPainter("osgScene", resourceManager)
 {
 }
 

@@ -12,7 +12,7 @@
 
 
 Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager)
-: PipelinePainter(resourceManager, m_pipeline, "Postprocessing")
+: PipelinePainter("Postprocessing", resourceManager, m_pipeline)
 , m_animation(true)
 {
     // Setup painter

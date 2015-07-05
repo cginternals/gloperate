@@ -35,7 +35,7 @@ using namespace globjects;
 
 
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
-: Painter(resourceManager, "CubeScape")
+: Painter("CubeScape", resourceManager)
 , m_animation{true}
 , m_numCubes{25}
 , a_vertex{-1}

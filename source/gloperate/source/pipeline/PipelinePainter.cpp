@@ -9,10 +9,10 @@ namespace gloperate
 
 
 PipelinePainter::PipelinePainter(
-    gloperate::ResourceManager & resourceManager, 
-    AbstractPipeline & pipeline, 
-    const std::string & name)
-:   Painter(resourceManager, name)
+      const std::string & name
+    , gloperate::ResourceManager & resourceManager
+    , AbstractPipeline & pipeline)
+:   Painter(name, resourceManager)
 ,   m_pipeline(pipeline)
 {
 }
