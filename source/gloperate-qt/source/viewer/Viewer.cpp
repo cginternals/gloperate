@@ -115,6 +115,7 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 
     // Initialize plugin manager
     m_pluginManager.reset(new PluginManager());
+    m_pluginManager->pluginsChanged.connect(this, &Viewer::updatePainterMenu);
 
     // Add default plugin directories
     m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
@@ -126,9 +127,6 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 
     // Scan all plugins with name component 'painter'
     m_pluginManager->scan("painter");
-
-    // Update list of painters
-    updatePainterMenu();
 
     // Setup scripting context
     setupScripting();

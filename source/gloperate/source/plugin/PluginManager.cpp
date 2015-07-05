@@ -157,12 +157,20 @@ void PluginManager::scan(const std::string & identifier, bool reload)
         if (identifier.empty() || file.find(identifier, file.find_last_of(g_sep)) != std::string::npos)
             loadLibrary(file, reload);
     }
+
+    // Announce loaded plugins have changed
+    pluginsChanged();
 }
 
 bool PluginManager::load(const std::string & filePath, const bool reload)
 {
     // Load plugin library
-    return loadLibrary(filePath, reload);
+    bool res = loadLibrary(filePath, reload);
+
+    // Announce loaded plugins have changed
+    pluginsChanged();
+
+    return res;
 }
 
 const std::vector<Plugin *> & PluginManager::plugins() const

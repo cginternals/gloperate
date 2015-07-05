@@ -7,6 +7,8 @@
 #include <vector>
 #include <map>
 
+#include <signalzeug/Signal.h>
+
 #include <gloperate/gloperate_api.h>
 
 
@@ -24,6 +26,10 @@ class Plugin;
 */
 class GLOPERATE_API PluginManager
 {
+public:
+    signalzeug::Signal<> pluginsChanged;
+
+
 public:
     /**
     *  @brief
