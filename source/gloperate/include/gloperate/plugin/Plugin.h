@@ -11,10 +11,6 @@ namespace gloperate
 {
 
 
-class Painter;
-class ResourceManager;
-
-
 /**
 *  @brief
 *    Represents a plugin that can be loaded dynamically
@@ -27,7 +23,7 @@ public:
     *    Constructor
     *
     *  @param[in] type
-    *    Plugin type (e.g., "painter")
+    *    Plugin type (e.g., "Painter")
     *  @param[in] name
     *    Plugin name
     *  @param[in] description
@@ -95,21 +91,9 @@ public:
     */
     const char * version() const;
 
-    /**
-    *  @brief
-    *    Create painter
-    *
-    *  @param[in] resourceManager
-    *    Resource manager for the painter to load external data
-    *
-    *  @return
-    *    Pointer to newly created Painter, nullptr on error
-    */
-    virtual Painter * createPainter(ResourceManager & resourceManager) const = 0;
-
 
 protected:
-    std::string m_type;         ///< Plugin type (e.g., "painter")
+    std::string m_type;         ///< Plugin type (e.g., "Painter")
     std::string m_name;         ///< Plugin name
     std::string m_description;  ///< Plugin description
     std::string m_vendor;       ///< Vendor name

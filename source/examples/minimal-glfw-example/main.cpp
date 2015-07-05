@@ -4,7 +4,7 @@
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/plugin/PluginManager.h>
-#include <gloperate/plugin/Plugin.h>
+#include <gloperate/plugin/PainterPlugin.h>
 
 #include <gloperate/resources/ResourceManager.h>
 
@@ -35,11 +35,11 @@ int main(int argc, char * argv[])
     pluginManager.scan("painters");
 
     // Choose a painter
+    std::unique_ptr<gloperate::Painter> painter(nullptr);
+
     std::string name = (argc > 1) ? argv[1] : "CubeScape";
 
-    std::unique_ptr<gloperate::Painter> painter(nullptr);
     Plugin * plugin = pluginManager.plugin(name);
-
     if (!plugin) 
     {
         globjects::fatal() << "Plugin '" << name << "' not found. Listing plugins found:";
@@ -48,7 +48,15 @@ int main(int argc, char * argv[])
         return 1;
     }
 
-    painter.reset(plugin->createPainter(resourceManager));
+    AbstractPainterPlugin * painterPlugin = dynamic_cast<AbstractPainterPlugin *>(plugin);
+    if (!painterPlugin) 
+    {
+        globjects::fatal() << "Plugin '" << name << "' is not a painter plugin.";
+
+        return 1;
+    }
+
+    painter.reset(painterPlugin->createPainter(resourceManager));
 
     Window::init();
 

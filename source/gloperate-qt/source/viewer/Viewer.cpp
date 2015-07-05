@@ -25,7 +25,7 @@
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/plugin/PluginManager.h>
-#include <gloperate/plugin/Plugin.h>
+#include <gloperate/plugin/PainterPlugin.h>
 
 #ifdef GLOPERATE_ASSIMP_FOUND
     #include <gloperate-assimp/AssimpMeshLoader.h>
@@ -180,7 +180,8 @@ void Viewer::loadPainter(const std::string & name)
 {
     // Get plugin by name
     Plugin * plugin = m_pluginManager->plugin(name);
-    if (!plugin) {
+    AbstractPainterPlugin * painterPlugin = plugin ? dynamic_cast<AbstractPainterPlugin *>(plugin) : nullptr;
+    if (!painterPlugin) {
         return;
     }
 
@@ -190,7 +191,7 @@ void Viewer::loadPainter(const std::string & name)
     }
 
     // Create new painter
-    m_painter.reset(plugin->createPainter(*m_resourceManager));
+    m_painter.reset(painterPlugin->createPainter(*m_resourceManager));
 
     // [TODO] Check for painter context format requirements
 

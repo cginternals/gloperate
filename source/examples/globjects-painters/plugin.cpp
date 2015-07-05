@@ -10,25 +10,25 @@
 
 GLOPERATE_PLUGIN_LIBRARY
 
-    GLOPERATE_PLUGIN(Logo
+    GLOPERATE_PAINTER_PLUGIN(Logo
     , "Logo"
     , "Renders a rotating quad, featuring textured, animation, and cameras"
     , GLOPERATE_AUTHOR_ORGANIZATION
     , "v1.0.0" )
 
-    GLOPERATE_PLUGIN(ScreenAligned
+    GLOPERATE_PAINTER_PLUGIN(ScreenAligned
     , "ScreenAligned"
     , "Renders a simple generated texture onto the screen"
     , GLOPERATE_AUTHOR_ORGANIZATION
     , "v1.0.0" )
 
-    GLOPERATE_PLUGIN(CubeScape
+    GLOPERATE_PAINTER_PLUGIN(CubeScape
     , "CubeScape"
     , "Renders a landscape built of cubes"
     , GLOPERATE_AUTHOR_ORGANIZATION
     , "v1.0.0" )
 
-    GLOPERATE_PLUGIN(Postprocessing
+    GLOPERATE_PAINTER_PLUGIN(Postprocessing
     , "PostprocessingPipeline"
     , "Displays a postprocessed Icosahedron using a pipeline"
     , GLOPERATE_AUTHOR_ORGANIZATION

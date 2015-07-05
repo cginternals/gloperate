@@ -6,7 +6,7 @@
 
 GLOPERATE_PLUGIN_LIBRARY
 
-    GLOPERATE_PLUGIN(OsgScene
+    GLOPERATE_PAINTER_PLUGIN(OsgScene
     , "OsgScene"
     , "Load a simple OSG scene"
     , "gloperate team"
