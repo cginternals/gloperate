@@ -232,7 +232,7 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
         // Read plugin info
         VariantMap & map = *(pluginInfo.asMap());
         if (map.count("relDataPath") > 0) {
-            relDataPath = dirPath + g_sep + map["relDataPath"].value<std::string>();
+            relDataPath = dirPath + g_sep + DirectoryIterator::truncate(map["relDataPath"].value<std::string>()) + g_sep;
         }
     }
 

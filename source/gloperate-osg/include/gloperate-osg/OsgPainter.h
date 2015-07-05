@@ -52,8 +52,10 @@ public:
     *    Object name (can be chosen freely, but must not include whitespace)
     *  @param[in] resourceManager
     *    Resource manager, e.g., to load and save textures
+    *  @param[in] relDataPath
+    *    Path to data directory (usually "", unless loaded from plugins)
     */
-    OsgPainter(const std::string & name, gloperate::ResourceManager & resourceManager);
+    OsgPainter(const std::string & name, gloperate::ResourceManager & resourceManager, const std::string & relDataPath);
 
     /**
     *  @brief

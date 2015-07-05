@@ -34,8 +34,8 @@ using namespace glm;
 using namespace globjects;
 
 
-CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
-: Painter("CubeScape", resourceManager)
+CubeScape::CubeScape(gloperate::ResourceManager & resourceManager, const std::string & relDataPath)
+: Painter("CubeScape", resourceManager, relDataPath)
 , m_animation{true}
 , m_numCubes{25}
 , a_vertex{-1}

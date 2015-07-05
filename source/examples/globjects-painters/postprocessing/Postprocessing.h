@@ -10,7 +10,7 @@
 class Postprocessing : public gloperate::PipelinePainter
 {
 public:
-    Postprocessing(gloperate::ResourceManager & resourceManager);
+    Postprocessing(gloperate::ResourceManager & resourceManager, const std::string & relDataPath);
 
     bool animation() const;
     void setAnimation(const bool & enabled);
