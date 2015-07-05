@@ -58,6 +58,25 @@ namespace
 {
     const QString SETTINGS_GEOMETRY("Geometry");
     const QString SETTINGS_STATE("State");
+    const QString SETTINGS_PLUGINS("Plugins");
+
+    QStringList toQStringList(const std::vector<std::string> & list)
+    {
+        QStringList qlist;
+        for (auto s : list) {
+            qlist << QString::fromStdString(s);
+        }
+        return qlist;
+    }
+
+    std::vector<std::string> fromQStringList(const QStringList & qlist)
+    {
+        std::vector<std::string> list;
+        for (QString s : qlist) {
+            list.push_back(s.toStdString());
+        }
+        return list;
+    }
 }
 
 
@@ -117,13 +136,20 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     m_pluginManager.reset(new PluginManager());
     m_pluginManager->pluginsChanged.connect(this, &Viewer::updatePainterMenu);
 
-    // Add default plugin directories
-    m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
-#ifdef NDEBUG
-    m_pluginManager->addPath("plugins");
-#else
-    m_pluginManager->addPath("plugins/debug");
-#endif
+    // Restore plugin paths from settings
+    auto paths = fromQStringList(settings.value(SETTINGS_PLUGINS).toStringList());
+    if (paths.size() > 0) {
+        // Restore plugin paths
+        m_pluginManager->setPaths(paths);
+    } else {
+        // Add default plugin directories
+        m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
+        #ifdef NDEBUG
+            m_pluginManager->addPath("plugins");
+        #else
+            m_pluginManager->addPath("plugins/debug");
+        #endif
+    }
 
     // Scan all plugins with name component 'painter'
     m_pluginManager->scan("painter");
@@ -138,6 +164,7 @@ Viewer::~Viewer()
     QSettings settings;
     settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
     settings.setValue(SETTINGS_STATE, saveState());
+    settings.setValue(SETTINGS_PLUGINS, toQStringList(m_pluginManager->paths()));
 
     // Disconnect message handlers
     MessageHandler::dettach(*m_messagesLog);
