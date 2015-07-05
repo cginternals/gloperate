@@ -28,6 +28,9 @@ template <typename PainterType>
 Painter * PainterPlugin<PainterType>::createPainter(ResourceManager & resourceManager) const
 {
     return new PainterType(resourceManager);
+
+    // [TODO]
+    // return new PainterType(resourceManager, m_relDataPath);
 }
 
 

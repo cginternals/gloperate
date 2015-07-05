@@ -273,6 +273,11 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
         if (!plugin)
             continue;
 
+        // Set relative data path for plugin (if known)
+        if (!relDataPath.empty()) {
+            plugin->setRelDataPath(relDataPath.c_str());
+        }
+
         // Add plugin to list
         m_plugins.push_back(plugin);
 

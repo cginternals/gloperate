@@ -49,5 +49,15 @@ const char * Plugin::version() const
     return m_version.c_str();
 }
 
+const char * Plugin::relDataPath() const
+{
+    return m_relDataPath.c_str();
+}
+
+void Plugin::setRelDataPath(const char * path)
+{
+    m_relDataPath = path;
+}
+
 
 } // namespace gloperate

@@ -91,6 +91,33 @@ public:
     */
     const char * version() const;
 
+    /**
+    *  @brief
+    *    Get relative data path
+    *
+    *  @return
+    *    Path to data relative to the plugin directory, "" by default
+    *
+    *  @remarks
+    *    To set this information, create a file named PluginInfo.json in
+    *    the directory that contains your plugin libraries and define where
+    *    data is found relative to that directory, e.g.:
+    *      { "relDataPath": "../data" }
+    */
+    const char * relDataPath() const;
+
+    /**
+    *  @brief
+    *    Set relative data path
+    *
+    *  @param[in] path
+    *    Path to data relative to the plugin directory, "" by default
+    *
+    *  @remarks
+    *    Do not call this function directly, let PluginManager do the magic
+    */
+    void setRelDataPath(const char * path);
+
 
 protected:
     std::string m_type;         ///< Plugin type (e.g., "Painter")
@@ -98,6 +125,7 @@ protected:
     std::string m_description;  ///< Plugin description
     std::string m_vendor;       ///< Vendor name
     std::string m_version;      ///< Plugin version
+    std::string m_relDataPath;  ///< Relative path to data directory
 };
 
 
