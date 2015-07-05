@@ -11,6 +11,11 @@
 #include <dirent.h>
 #endif
 
+#include <iozeug/filename.h>
+
+#include <reflectionzeug/variant/Variant.h>
+#include <reflectionzeug/tools/SerializerJSON.h>
+
 #include <globjects/logging.h>
 
 #include <gloperate/plugin/PluginLibrary.h>
@@ -78,6 +83,9 @@ namespace
 #endif
     };
 }
+
+
+using namespace reflectionzeug;
 
 
 namespace gloperate
@@ -205,10 +213,27 @@ void PluginManager::printPlugins() const
 
 bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
 {
-    // Check if library is already loaded and now reload is requested
+    // Check if library is already loaded and reload is not requested
     auto it = m_librariesByFilePath.find(filePath);
     if (it != m_librariesByFilePath.cend() && !reload) {
         return true;
+    }
+
+    // Get path to directory containing the plugin library
+    std::string dirPath = DirectoryIterator::truncate(iozeug::getPath(filePath));
+
+    // Initialize plugin info
+    std::string relDataPath = "";
+
+    // Load extra information from "PluginInfo.json" if present
+    Variant pluginInfo;
+    SerializerJSON json;
+    if (json.load(pluginInfo, dirPath + g_sep + "PluginInfo.json")) {
+        // Read plugin info
+        VariantMap & map = *(pluginInfo.asMap());
+        if (map.count("relDataPath") > 0) {
+            relDataPath = dirPath + g_sep + map["relDataPath"].value<std::string>();
+        }
     }
 
     // If library was already loaded, remember it in case reloading fails
