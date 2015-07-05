@@ -313,10 +313,10 @@ void Viewer::setupCanvas()
 #ifdef __APPLE__
     // Get OpenGL 3.2/4.1 core context
     format.setVersion(3, 2);
-#else
-    // Get newest available core context
-#endif
     format.setProfile(QSurfaceFormat::CoreProfile);
+#else
+    // Get newest available compatibility context
+#endif
     format.setDepthBufferSize(16);
 
     // Create OpenGL context and window
@@ -326,7 +326,7 @@ void Viewer::setupCanvas()
     setCentralWidget(QWidget::createWindowContainer(m_canvas.get()));
     centralWidget()->setFocusPolicy(Qt::StrongFocus);
 
-    // Setup event provider to rranslate Qt messages into gloperate events
+    // Setup event provider to translate Qt messages into gloperate events
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     keyProvider->setParent(m_canvas.get());
     QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
