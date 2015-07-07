@@ -32,6 +32,7 @@ public:
         gloperate::ResourceManager & resourceManager, 
         AbstractPipeline & pipeline, 
         const std::string & name = "painter");
+    virtual ~PipelinePainter() = default;
 
     virtual void onInitialize() override;
     virtual void onPaint() override;
