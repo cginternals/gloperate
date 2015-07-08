@@ -15,9 +15,9 @@ find_package(libzeug REQUIRED)
 
 include_directories(
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDES}
-    ${GLOBJECTS_INCLUDES}
-    ${LIBZEUG_INCLUDES}
+    ${GLBINDING_INCLUDE_DIRS}
+    ${GLOBJECTS_INCLUDE_DIRS}
+    ${LIBZEUG_INCLUDE_DIRS}
 )
 
 include_directories(
