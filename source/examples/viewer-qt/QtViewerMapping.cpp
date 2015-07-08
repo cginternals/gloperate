@@ -1,5 +1,7 @@
 #include "QtViewerMapping.h"
 
+#include <iostream>
+
 #include <glbinding/gl/enum.h>
 
 #include <gloperate/base/RenderTargetType.h>
