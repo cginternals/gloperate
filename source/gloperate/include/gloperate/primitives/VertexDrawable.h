@@ -109,7 +109,7 @@ VertexDrawable::VertexDrawable(const std::vector<T> & vertices, gl::GLenum primi
 , m_size(static_cast<gl::GLint>(vertices.size()))
 , m_primitiveMode(primitiveMode)
 {
-    m_vbo->setData(vertices);
+    m_vbo->setData(vertices, gl::GL_STATIC_DRAW);
 }
 
 template <typename T, std::size_t Count>
@@ -128,6 +128,7 @@ template <typename T>
 void VertexDrawable::setVertices(const std::vector<T> & vertices)
 {
     m_vbo->setData(vertices, gl::GL_STATIC_DRAW);
+    m_size = vertices.size();
 }
 
 
