@@ -89,6 +89,12 @@ if(POLICY CMP0043)
     cmake_policy(SET CMP0043 OLD)
 endif()
 
+# This policy was introduced in 3.0.0
+# Policy CMP0028 is not set: Double colon in target name means ALIAS or IMPORTED target.
+if (POLICY CMP0028)
+    cmake_policy(SET CMP0028 NEW)
+endif()
+
 # Setup platform specifics (compile flags, etc., ...)
 if(MSVC)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsMSVC.cmake)
