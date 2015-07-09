@@ -12,8 +12,10 @@
 
 
 Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager)
-: PipelinePainter(resourceManager, m_pipeline)
+: PipelinePainter(resourceManager, m_pipeline, "Postprocessing")
+, m_animation(true)
 {
+    // Setup painter
     auto targetFBO = addCapability(new gloperate::TargetFramebufferCapability());
     auto viewport = addCapability(new gloperate::ViewportCapability());
     auto time = addCapability(new gloperate::VirtualTimeCapability());
@@ -36,4 +38,22 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager)
     projection->setZFar(16.f);
     
     time->setLoopDuration(glm::pi<float>() * 2);
+
+    // Register properties
+    addProperty<bool>("Animation", this, &Postprocessing::animation, &Postprocessing::setAnimation);
+}
+
+bool Postprocessing::animation() const
+{
+    return m_animation;
+}
+
+void Postprocessing::setAnimation(const bool & enabled)
+{
+    m_animation = enabled;
+
+    gloperate::VirtualTimeCapability * timeCapability = getCapability<gloperate::VirtualTimeCapability>();
+    if (timeCapability) {
+        timeCapability->setEnabled(m_animation);
+    }
 }

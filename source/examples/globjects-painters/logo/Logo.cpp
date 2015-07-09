@@ -1,5 +1,5 @@
 
-#include "RotatingQuad.h"
+#include "Logo.h"
 
 #include <random>
 
@@ -19,6 +19,7 @@
 #include <gloperate/painter/VirtualTimeCapability.h>
 
 
+using namespace reflectionzeug;
 using namespace globjects;
 using namespace gloperate;
 using namespace gl;
@@ -57,21 +58,64 @@ void main()
 )";
 
 
-RotatingQuad::RotatingQuad(ResourceManager & resourceManager)
-: Painter(resourceManager)
+Logo::Logo(ResourceManager & resourceManager)
+: Painter(resourceManager, "Logo")
+, m_animation(true)
+, m_background(0, 0, 0, 255)
+, m_textureFilename("data/logo/gloperate-logo.png")
 , m_angle(0.0f)
 {
+    // Setup painter
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
     m_timeCapability = addCapability(new gloperate::VirtualTimeCapability());
 
     m_timeCapability->setLoopDuration(2.0f * glm::pi<float>());
+
+    // Register properties
+    addProperty<bool>("Animation", this, &Logo::animation, &Logo::setAnimation);
+    addProperty<Color>("BackgroundColor", this, &Logo::background, &Logo::setBackground);
+    addProperty<FilePath>("Texture", this, &Logo::texture, &Logo::setTexture);
 }
 
-RotatingQuad::~RotatingQuad()
+Logo::~Logo()
 {
 }
 
-void RotatingQuad::onInitialize()
+bool Logo::animation() const
+{
+    return m_animation;
+}
+
+void Logo::setAnimation(const bool & enabled)
+{
+    m_animation = enabled;
+
+    m_timeCapability->setEnabled(m_animation);
+}
+
+Color Logo::background() const
+{
+    return m_background;
+}
+
+void Logo::setBackground(const Color & color)
+{
+    m_background = color;
+}
+
+FilePath Logo::texture() const
+{
+    return m_textureFilename;
+}
+
+void Logo::setTexture(const FilePath & filename)
+{
+    m_textureFilename = filename;
+
+    m_texture = nullptr;
+}
+
+void Logo::onInitialize()
 {
 #ifdef __APPLE__
     Shader::clearGlobalReplacements();
@@ -80,14 +124,12 @@ void RotatingQuad::onInitialize()
     debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
 
-    gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
     createAndSetupCamera();
     createAndSetupTexture();
     createAndSetupGeometry();
 }
 
-void RotatingQuad::onPaint()
+void Logo::onPaint()
 {
     if (m_viewportCapability->hasChanged())
     {
@@ -99,6 +141,11 @@ void RotatingQuad::onPaint()
     // [TODO] Add onIdle()/onUpdate() callback and implement framerate independent animation
     m_angle = m_timeCapability->time();
 
+    gl::glClearColor(
+        (float)m_background.red()   / 255.0f,
+        (float)m_background.green() / 255.0f,
+        (float)m_background.blue()  / 255.0f,
+        1.0f);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 model = glm::mat4(1.0);
@@ -106,6 +153,10 @@ void RotatingQuad::onPaint()
 
     m_program->setUniform("viewProjectionMatrix",      m_camera->viewProjection());
     m_program->setUniform("modelViewProjectionMatrix", m_camera->viewProjection() * model);
+
+    if (!m_texture) {
+        createAndSetupTexture();
+    }
 
     if (m_texture) {
         gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
@@ -121,16 +172,16 @@ void RotatingQuad::onPaint()
     }
 }
 
-void RotatingQuad::createAndSetupCamera()
+void Logo::createAndSetupCamera()
 {
     m_camera = new Camera();
     m_camera->setEye(glm::vec3(0.0, 0.0, 12.0));
 }
 
-void RotatingQuad::createAndSetupTexture()
+void Logo::createAndSetupTexture()
 {
     // Try to load texture
-    m_texture = m_resourceManager.load<globjects::Texture>("data/emblem-important.png");
+    m_texture = m_resourceManager.load<globjects::Texture>(m_textureFilename.toString());
 
     // Check if texture is valid
     if (!m_texture) {
@@ -152,7 +203,7 @@ void RotatingQuad::createAndSetupTexture()
     }
 }
 
-void RotatingQuad::createAndSetupGeometry()
+void Logo::createAndSetupGeometry()
 {
     static const std::array<glm::vec2, 4> raw {
         glm::vec2( +1.f, -1.f ),

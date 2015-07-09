@@ -137,6 +137,11 @@ set(headers
     ${header_path}/viewer/Converter.h
     ${header_path}/viewer/TimePropagator.h
 
+    ${header_path}/scripting/SystemApi.h
+    ${header_path}/scripting/TimerApi.h
+    ${header_path}/scripting/ViewerApi.h
+    ${header_path}/scripting/PluginApi.h
+
     ${header_path}/widgets/FileNameTextEdit.h
     ${header_path}/widgets/ImageExporterWidget.h
     ${header_path}/widgets/ImageExporterOutputWidget.h
@@ -162,6 +167,11 @@ set(sources
     ${source_path}/viewer/QtWheelEventProvider.cpp
     ${source_path}/viewer/Converter.cpp
     ${source_path}/viewer/TimePropagator.cpp
+
+    ${source_path}/scripting/SystemApi.cpp
+    ${source_path}/scripting/TimerApi.cpp
+    ${source_path}/scripting/ViewerApi.cpp
+    ${source_path}/scripting/PluginApi.cpp
 
     ${source_path}/widgets/FileNameTextEdit.cpp
     ${source_path}/widgets/ImageExporterWidget.cpp

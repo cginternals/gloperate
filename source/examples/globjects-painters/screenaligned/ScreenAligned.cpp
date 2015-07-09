@@ -1,5 +1,5 @@
 
-#include "TexturedQuad.h"
+#include "ScreenAligned.h"
 
 #include <random>
 
@@ -15,17 +15,18 @@ using namespace globjects;
 using namespace gl;
 
 
-TexturedQuad::TexturedQuad(ResourceManager & resourceManager)
-: Painter(resourceManager)
+ScreenAligned::ScreenAligned(ResourceManager & resourceManager)
+: Painter(resourceManager, "ScreenAligned")
 {
+    // Setup painter
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
 }
 
-TexturedQuad::~TexturedQuad()
+ScreenAligned::~ScreenAligned()
 {
 }
 
-void TexturedQuad::onInitialize()
+void ScreenAligned::onInitialize()
 {
 #ifdef __APPLE__
     Shader::clearGlobalReplacements();
@@ -40,7 +41,7 @@ void TexturedQuad::onInitialize()
     createAndSetupGeometry();
 }
 
-void TexturedQuad::onPaint()
+void ScreenAligned::onPaint()
 {
     if (m_viewportCapability->hasChanged())
     {
@@ -54,7 +55,7 @@ void TexturedQuad::onPaint()
     m_quad->draw();
 }
 
-void TexturedQuad::createAndSetupTexture()
+void ScreenAligned::createAndSetupTexture()
 {
     static const int w(256);
     static const int h(256);
@@ -72,7 +73,7 @@ void TexturedQuad::createAndSetupTexture()
     m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
 }
 
-void TexturedQuad::createAndSetupGeometry()
+void ScreenAligned::createAndSetupGeometry()
 {
     m_quad = new gloperate::ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);

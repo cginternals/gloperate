@@ -4,6 +4,8 @@
 
 #include <memory>
 
+#include <scriptzeug/ScriptContext.h>
+
 #include <gloperate/ext-includes-begin.h>
 #include <QScopedPointer>
 #include <QMainWindow>
@@ -13,6 +15,11 @@
 
 
 class Ui_Viewer;
+
+namespace reflectionzeug
+{
+    class Object;
+}
 
 namespace widgetzeug
 {
@@ -35,6 +42,10 @@ namespace gloperate_qt
 
 class QtOpenGLWindow;
 class DefaultMapping;
+class SystemApi;
+class TimerApi;
+class ViewerApi;
+class PluginApi;
 
 
 /**
@@ -48,7 +59,7 @@ class DefaultMapping;
 *    It contains an OpenGL canvas that displays a gloperate::Painter,
 *    a property widget to configure the painter, a console output
 *    window, and a scripting console. The main menu allows for
-*    the selection of the painter from the available plugins,
+*    the selection of a painter from the available plugins,
 *    a choice of the current navigation technique, and additional tools
 *    such as screenshot functionality.
 *
@@ -64,6 +75,7 @@ class GLOPERATE_QT_API Viewer : public QMainWindow
 
 
 public:
+    //@{
     /**
     *  @brief
     *    Constructor
@@ -80,6 +92,62 @@ public:
     *    Destructor
     */
     virtual ~Viewer();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get OpenGL canvas
+    *
+    *  @return
+    *    OpenGL widget (cannot be nullptr)
+    */
+    QtOpenGLWindow * canvas() const;
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Load painter
+    *
+    *  @param[in] name
+    *    Painter name
+    *
+    *  @remarks
+    *    If a painter plugin with this name has been registered,
+    *    the painter is created and loaded into the viewer.
+    *    Otherwise, nothing happens.
+    */
+    void loadPainter(const std::string & name);
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get scripting context
+    *
+    *  @return
+    *    Script context
+    */
+    const scriptzeug::ScriptContext * scriptContext() const;
+    scriptzeug::ScriptContext * scriptContext();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Connect scripting API
+    *
+    *  @param[in] api
+    *    Scripting API
+    *
+    *  @remarks
+    *    This adds an reflectionzeug::Object to the scripting
+    *    context. The name of the object is made available as a
+    *    global variable to access the functions of the object.
+    */
+    void addScriptApi(reflectionzeug::Object * api);
+    //@}
 
 
 protected:
@@ -88,12 +156,14 @@ protected:
     void setupPropertyWidget();
     void setupDockArea();
     void setupCanvas();
+    void setupScripting();
+    void updatePainterMenu();
 
 
 protected slots:
     void on_managePluginsAction_triggered();
     void on_captureImageAction_triggered();
-    void on_painter_selected(bool checked);
+    void onPainterSelected(bool checked);
 
 
 protected:
@@ -101,10 +171,11 @@ protected:
 
     std::unique_ptr<gloperate::ResourceManager> m_resourceManager;
     std::unique_ptr<gloperate::PluginManager>   m_pluginManager;
+    std::unique_ptr<scriptzeug::ScriptContext>  m_scriptContext;
 
-    std::unique_ptr<gloperate_qt::QtOpenGLWindow> m_canvas;
-    std::unique_ptr<gloperate::Painter>           m_painter;
-    std::unique_ptr<DefaultMapping>               m_mapping;
+    std::unique_ptr<QtOpenGLWindow>     m_canvas;
+    std::unique_ptr<gloperate::Painter> m_painter;
+    std::unique_ptr<DefaultMapping>     m_mapping;
 
     std::unique_ptr<widgetzeug::MessageStatusWidget> m_messagesStatus;
     std::unique_ptr<widgetzeug::MessageWidget>       m_messagesLog;
@@ -113,6 +184,11 @@ protected:
     QDockWidget * m_messagLogDockWidget;
     QDockWidget * m_scriptPromptDockWidget;
     QDockWidget * m_propertyDockWidget;
+
+    std::unique_ptr<SystemApi> m_systemApi;
+    std::unique_ptr<TimerApi>  m_timerApi;
+    std::unique_ptr<ViewerApi> m_viewerApi;
+    std::unique_ptr<PluginApi> m_pluginApi;
 };
 
 

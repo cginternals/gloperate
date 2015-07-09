@@ -12,14 +12,14 @@
 namespace gloperate
 {
     class AbstractViewportCapability;
-} // namespace gloperate
+}
 
 
-class TexturedQuad : public gloperate::Painter
+class ScreenAligned : public gloperate::Painter
 {
 public:
-    TexturedQuad(gloperate::ResourceManager & resourceManager);
-    virtual ~TexturedQuad();
+    ScreenAligned(gloperate::ResourceManager & resourceManager);
+    virtual ~ScreenAligned();
 
 
 protected:
@@ -33,9 +33,10 @@ protected:
 
 
 protected:
-    /* capabilities */
+    /* Capabilities */
     gloperate::AbstractViewportCapability * m_viewportCapability;
 
+    /* Data */
     globjects::ref_ptr<globjects::Texture>           m_texture;
     globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
 };

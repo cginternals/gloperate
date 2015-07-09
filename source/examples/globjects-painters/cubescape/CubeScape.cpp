@@ -35,14 +35,15 @@ using namespace globjects;
 
 
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
-:   Painter(resourceManager)
-,   m_numCubes{25}
-,   m_animation{true}
-,   a_vertex{-1}
-,   u_transform{-1}
-,   u_time{-1}
-,   u_numcubes{-1}
+: Painter(resourceManager, "CubeScape")
+, m_animation{true}
+, m_numCubes{25}
+, a_vertex{-1}
+, u_transform{-1}
+, u_time{-1}
+, u_numcubes{-1}
 {
+    // Setup painter
     m_targetFramebufferCapability = addCapability(new gloperate::TargetFramebufferCapability());
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
     m_projectionCapability = addCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability));
@@ -53,6 +54,15 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager)
     m_timeCapability->setLoopDuration(20.0f * pi<float>());
 
     m_targetFramebufferCapability->changed.connect([this](){ this->onTargetFramebufferChanged();});
+
+    // Register properties
+    addProperty<bool>("Animation", this, &CubeScape::animation, &CubeScape::setAnimation);
+
+    auto * propNumCubes = addProperty<int>("NumCubes", this, &CubeScape::numberOfCubes, &CubeScape::setNumberOfCubes);
+    propNumCubes->setOption("minimum", 0);
+
+    // Register scripting functions
+    addFunction("randomize", this, &CubeScape::randomize);
 }
 
 CubeScape::~CubeScape()
@@ -215,16 +225,6 @@ void CubeScape::onPaint()
     globjects::Framebuffer::unbind(GL_FRAMEBUFFER);
 }
 
-int CubeScape::numberOfCubes() const
-{
-    return m_numCubes;
-}
-
-void CubeScape::setNumberOfCubes(const int & number)
-{
-    m_numCubes = number;
-}
-
 bool CubeScape::animation() const
 {
     return m_animation;
@@ -237,6 +237,16 @@ void CubeScape::setAnimation(const bool & enabled)
     m_timeCapability->setEnabled(m_animation);
 }
 
+int CubeScape::numberOfCubes() const
+{
+    return m_numCubes;
+}
+
+void CubeScape::setNumberOfCubes(const int & number)
+{
+    m_numCubes = number;
+}
+
 void CubeScape::onTargetFramebufferChanged()
 {
     globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
@@ -245,4 +255,9 @@ void CubeScape::onTargetFramebufferChanged()
         fbo = globjects::Framebuffer::defaultFBO();
     }
     m_typedRenderTargetCapability->setRenderTarget(gloperate::RenderTargetType::Depth, fbo, gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
+}
+
+void CubeScape::randomize()
+{
+    setNumberOfCubes(rand() % 40 + 1);
 }
