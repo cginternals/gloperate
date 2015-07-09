@@ -49,7 +49,7 @@ Application::Application(int & argc, char ** argv)
 
         if (GetModuleFileNameA(appModule, szFilename, MAX_PATH) > 0) 
         {
-            _splitpath(szFilename, szDrive, szPath, NULL, NULL);
+            _splitpath(szFilename, NULL, NULL, NULL, NULL);
             m_filePath = std::string(szFilename);
             m_path = path(m_filePath);
             m_name = baseName(m_filePath);
