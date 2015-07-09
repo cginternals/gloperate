@@ -13,10 +13,12 @@
 namespace gloperate
 {
     class PluginManager;
+    class Plugin;
 }
 
 
-namespace gloperate_qt {
+namespace gloperate_qt
+{
 
 
 /**
@@ -42,7 +44,18 @@ public:
     virtual ~PluginApi();
 
     // Plugin API
-    reflectionzeug::Variant list();
+    reflectionzeug::Variant paths();
+    void setPaths(const reflectionzeug::Variant & paths);
+    void addPath(const std::string & path);
+    void removePath(const std::string & path);
+    void scan(const std::string & identifier, bool reload);
+    bool load(const std::string & filePath, bool reload);
+    reflectionzeug::Variant plugins();
+    reflectionzeug::Variant plugin(const std::string & name);
+
+
+protected:
+    reflectionzeug::Variant getPluginInfo(gloperate::Plugin * plugin) const;
 
 
 protected:

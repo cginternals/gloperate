@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 #include <reflectionzeug/Object.h>
 
@@ -41,18 +42,27 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] resourceManager
-    *    Resource manager, e.g., to load and save textures
     *  @param[in] name
     *    Object name (can be chosen freely, but must not include whitespace)
+    *  @param[in] resourceManager
+    *    Resource manager, e.g., to load and save textures
+    *  @param[in] relDataPath
+    *    Path to data directory (usually "", unless loaded from plugins)
     *
     *  @remarks
     *    Do not initialize your graphics object or call any OpenGL functions in the
     *    constructor, because at this time there may be no valid context active. Instead,
     *    all OpenGL initialization code should be implemented in initialize().
     *    Use the constructor to register properties and capabilities.
+    *
+    *    When loading external data, always prepend m_relDataPath. While this
+    *    path is usually empty, it can point to the data directory of your plugins,
+    *    if the painter is loaded as part of a plugin library. To define the
+    *    data directory for your plugins, a file named PluginInfo.json is used.
+    *
+    *  @see Plugin::relDataPath
     */
-    Painter(ResourceManager & resourceManager, const std::string & name = "painter");
+    Painter(const std::string & name, ResourceManager & resourceManager, const std::string & relDataPath);
 
     /**
     *  @brief
@@ -130,8 +140,10 @@ protected:
 
 
 protected:
-    ResourceManager & m_resourceManager; /**< Resource manager, e.g., to load and save textures */
-    std::vector<AbstractCapability *>  m_capabilities; /**< List of supported capabilities */
+    ResourceManager & m_resourceManager; ///< Resource manager, e.g., to load and save textures
+    std::string       m_relDataPath;     ///< Path to data directory (usually "", unless loaded from plugins)
+
+    std::vector<AbstractCapability *> m_capabilities; ///< List of supported capabilities
 };
 
 

@@ -113,8 +113,9 @@ set(sources
     ${source_path}/pipeline/AbstractData.cpp
     
     ${source_path}/plugin/PluginManager.cpp
-    ${source_path}/plugin/Plugin.cpp
     ${source_path}/plugin/PluginLibrary.cpp
+    ${source_path}/plugin/Plugin.cpp
+    ${source_path}/plugin/PainterPlugin.cpp
 
     ${source_path}/primitives/AbstractDrawable.cpp
     ${source_path}/primitives/Plane3.cpp
@@ -213,11 +214,11 @@ set(api_includes
     ${include_path}/pipeline/AbstractInputSlot.h
     
     ${include_path}/plugin/plugin_api.h
-    ${include_path}/plugin/Plugin.h
-    ${include_path}/plugin/PainterPlugin.hpp
-    ${include_path}/plugin/PluginLibrary.h
-    ${include_path}/plugin/PainterPlugin.h
     ${include_path}/plugin/PluginManager.h
+    ${include_path}/plugin/PluginLibrary.h
+    ${include_path}/plugin/Plugin.h
+    ${include_path}/plugin/PainterPlugin.h
+    ${include_path}/plugin/PainterPlugin.hpp
     
     ${include_path}/primitives/AbstractDrawable.h
     ${include_path}/primitives/UniformGroup.hpp

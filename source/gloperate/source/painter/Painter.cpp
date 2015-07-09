@@ -6,9 +6,10 @@ namespace gloperate
 {
 
 
-Painter::Painter(ResourceManager & resourceManager, const std::string & name)
+Painter::Painter(const std::string & name, ResourceManager & resourceManager, const std::string & relDataPath)
 : Object(name)
 , m_resourceManager(resourceManager)
+, m_relDataPath(relDataPath)
 {
 }
 

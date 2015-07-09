@@ -29,9 +29,10 @@ class GLOPERATE_API PipelinePainter : public gloperate::Painter
 {
 public:
     PipelinePainter(
-        gloperate::ResourceManager & resourceManager, 
-        AbstractPipeline & pipeline, 
-        const std::string & name = "painter");
+        const std::string & name,
+        gloperate::ResourceManager & resourceManager,
+        const std::string & relDataPath,
+        AbstractPipeline & pipeline);
 
     virtual void onInitialize() override;
     virtual void onPaint() override;

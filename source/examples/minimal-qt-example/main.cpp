@@ -13,7 +13,7 @@
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/plugin/PluginManager.h>
-#include <gloperate/plugin/Plugin.h>
+#include <gloperate/plugin/PainterPlugin.h>
 #include <gloperate/resources/ResourceManager.h>
 
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
@@ -38,9 +38,8 @@ int main(int argc, char * argv[])
     resourceManager.addLoader(new QtTextureLoader());
     resourceManager.addStorer(new QtTextureStorer());
 
-    PluginManager::init(QCoreApplication::applicationFilePath().toStdString());
-
     PluginManager pluginManager;
+    pluginManager.addPath(QCoreApplication::applicationDirPath().toStdString());
 #ifdef NDEBUG
     pluginManager.addPath("plugins");
 #else
@@ -49,11 +48,11 @@ int main(int argc, char * argv[])
     pluginManager.scan("painters");
 
     // Choose a painter
+    std::unique_ptr<gloperate::Painter> painter(nullptr);
+
     std::string name = (argc > 1) ? argv[1] : "PostprocessingPipeline";
 
-    std::unique_ptr<gloperate::Painter> painter(nullptr);
     Plugin * plugin = pluginManager.plugin(name);
-
     if (!plugin)
     {
         globjects::fatal() << "Plugin '" << name << "' not found. Listing plugins found:";
@@ -62,7 +61,15 @@ int main(int argc, char * argv[])
         return 1;
     }
 
-    painter.reset(plugin->createPainter(resourceManager));
+    AbstractPainterPlugin * painterPlugin = dynamic_cast<AbstractPainterPlugin *>(plugin);
+    if (!painterPlugin) 
+    {
+        globjects::fatal() << "Plugin '" << name << "' is not a painter plugin.";
+
+        return 1;
+    }
+
+    painter.reset(painterPlugin->createPainter(resourceManager));
 
     // Create Event Provider
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();

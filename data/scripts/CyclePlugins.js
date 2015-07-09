@@ -1,4 +1,4 @@
-var plugins = plugin.list();
+var plugins = pluginManager.plugins();
 var currentPlugin = -1;
 
 var nextPlugin = function()

@@ -15,8 +15,8 @@ using namespace globjects;
 using namespace gl;
 
 
-ScreenAligned::ScreenAligned(ResourceManager & resourceManager)
-: Painter(resourceManager, "ScreenAligned")
+ScreenAligned::ScreenAligned(ResourceManager & resourceManager, const std::string & relDataPath)
+: Painter("ScreenAligned", resourceManager, relDataPath)
 {
     // Setup painter
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());

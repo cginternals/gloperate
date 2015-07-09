@@ -7,6 +7,8 @@
 #include <vector>
 #include <map>
 
+#include <signalzeug/Signal.h>
+
 #include <gloperate/gloperate_api.h>
 
 
@@ -25,24 +27,39 @@ class Plugin;
 class GLOPERATE_API PluginManager
 {
 public:
-    /**
-    *  @brief
-    *    Initialize plugin manager
-    *
-    *  @param[in] applicationPath
-    *    Path to directory containing the application executable
-    *
-    *  @remarks
-    *    This function has to be called to tell the plugin
-    *    manager the path to the current executable, so it can
-    *    determine the default search directory for plugins.
-    */
-    static void init(const std::string & applicationPath = "");
+    signalzeug::Signal<> pluginsChanged;
 
 
 public:
+    /**
+    *  @brief
+    *    Constructor
+    */
     PluginManager();
+
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~PluginManager();
+
+    /**
+    *  @brief
+    *    Get plugin search paths
+    *
+    *  @return
+    *    List of paths that are searched for plugins
+    */
+    const std::vector<std::string> & paths() const;
+
+    /**
+    *  @brief
+    *    Set plugin search paths
+    *
+    *  @param[in] paths
+    *    List of paths that are searched for plugins
+    */
+    void setPaths(const std::vector<std::string> & paths);
 
     /**
     *  @brief
@@ -66,16 +83,14 @@ public:
     */
     void removePath(const std::string & path);
 
-    void setPaths(const std::vector<std::string> & paths);
-    const std::vector<std::string> & paths() const;
-
     /**
     *  @brief
     *    Scan for plugins and load all found ones
     *
     *  @param[in] identifier
-    *    If set, only libraries with a name containing
-    *    the specified substring are considered.
+    *    Load only plugins with the given identifier as a substring
+    *  @param[in] reload
+    *    Reload plugin libraries that are already loaded?
     */
     void scan(const std::string & identifier = "", bool reload = false);
 
@@ -84,11 +99,34 @@ public:
     *    Load plugin library
     *
     *  @param[in] filePath
-    *    Filename of the plugin library
+    *    Path to the plugin library
+    *  @param[in] reload
+    *    Reload plugin libraries that are already loaded?
+    *
+    *  @return
+    *    'true' if library has been loaded successfully, else 'false'
     */
     bool load(const std::string & filePath, bool reload = true);
 
+    /**
+    *  @brief
+    *    Get list of loaded plugins
+    *
+    *  @return
+    *    List of plugins
+    */
     const std::vector<Plugin *> & plugins() const;
+
+    /**
+    *  @brief
+    *    Get plugin by name
+    *
+    *  @param[in] name
+    *    Plugin name
+    *
+    *  @return
+    *    Pointer to the plugin, nullptr if no plugin with that name exists
+    */
     Plugin * plugin(const std::string & name) const;
 
     /**
@@ -99,12 +137,33 @@ public:
 
 
 protected:
+    /**
+    *  @brief
+    *    Load plugin library and add all contained plugins
+    *
+    *  @param[in] filePath
+    *    Path to library
+    *  @param[in] reload
+    *    Reload plugin libraries that are already loaded?
+    *
+    *  @return
+    *    'true' if library has been loaded successfully, else 'false'
+    */
     bool loadLibrary(const std::string & filePath, bool reload);
-    void unloadLibrary(PluginLibrary * library) const;
 
-
-protected:
-    static std::string s_applicationPath;   ///< Default path to look for plugins, by default the path of the executable
+    /**
+    *  @brief
+    *    Unload plugin library
+    *
+    *  @param[in] library
+    *    Plugin library
+    *
+    *  @remarks
+    *    Before calling the function, it must be made sure that the plugin
+    *    library is not used anymore, i.e., no instances of the contained
+    *    plugins must be remaining.
+    */
+    void unloadLibrary(PluginLibrary * library);
 
 
 protected:

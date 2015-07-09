@@ -25,7 +25,7 @@
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/plugin/PluginManager.h>
-#include <gloperate/plugin/Plugin.h>
+#include <gloperate/plugin/PainterPlugin.h>
 
 #ifdef GLOPERATE_ASSIMP_FOUND
     #include <gloperate-assimp/AssimpMeshLoader.h>
@@ -58,6 +58,25 @@ namespace
 {
     const QString SETTINGS_GEOMETRY("Geometry");
     const QString SETTINGS_STATE("State");
+    const QString SETTINGS_PLUGINS("Plugins");
+
+    QStringList toQStringList(const std::vector<std::string> & list)
+    {
+        QStringList qlist;
+        for (auto s : list) {
+            qlist << QString::fromStdString(s);
+        }
+        return qlist;
+    }
+
+    std::vector<std::string> fromQStringList(const QStringList & qlist)
+    {
+        std::vector<std::string> list;
+        for (QString s : qlist) {
+            list.push_back(s.toStdString());
+        }
+        return list;
+    }
 }
 
 
@@ -114,21 +133,26 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     restoreState(settings.value(SETTINGS_STATE).toByteArray());
 
     // Initialize plugin manager
-    PluginManager::init(QCoreApplication::applicationFilePath().toStdString());
-
-    // Add default plugin directories
     m_pluginManager.reset(new PluginManager());
-#ifdef NDEBUG
-    m_pluginManager->addPath("plugins");
-#else
-    m_pluginManager->addPath("plugins/debug");
-#endif
+    m_pluginManager->pluginsChanged.connect(this, &Viewer::updatePainterMenu);
+
+    // Restore plugin paths from settings
+    auto paths = fromQStringList(settings.value(SETTINGS_PLUGINS).toStringList());
+    if (paths.size() > 0) {
+        // Restore plugin paths
+        m_pluginManager->setPaths(paths);
+    } else {
+        // Add default plugin directories
+        m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
+        #ifdef NDEBUG
+            m_pluginManager->addPath("plugins");
+        #else
+            m_pluginManager->addPath("plugins/debug");
+        #endif
+    }
 
     // Scan all plugins with name component 'painter'
     m_pluginManager->scan("painter");
-
-    // Update list of painters
-    updatePainterMenu();
 
     // Setup scripting context
     setupScripting();
@@ -140,6 +164,7 @@ Viewer::~Viewer()
     QSettings settings;
     settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
     settings.setValue(SETTINGS_STATE, saveState());
+    settings.setValue(SETTINGS_PLUGINS, toQStringList(m_pluginManager->paths()));
 
     // Disconnect message handlers
     MessageHandler::dettach(*m_messagesLog);
@@ -155,7 +180,8 @@ void Viewer::loadPainter(const std::string & name)
 {
     // Get plugin by name
     Plugin * plugin = m_pluginManager->plugin(name);
-    if (!plugin) {
+    AbstractPainterPlugin * painterPlugin = plugin ? dynamic_cast<AbstractPainterPlugin *>(plugin) : nullptr;
+    if (!painterPlugin) {
         return;
     }
 
@@ -165,7 +191,7 @@ void Viewer::loadPainter(const std::string & name)
     }
 
     // Create new painter
-    m_painter.reset(plugin->createPainter(*m_resourceManager));
+    m_painter.reset(painterPlugin->createPainter(*m_resourceManager));
 
     // [TODO] Check for painter context format requirements
 
@@ -287,10 +313,10 @@ void Viewer::setupCanvas()
 #ifdef __APPLE__
     // Get OpenGL 3.2/4.1 core context
     format.setVersion(3, 2);
-#else
-    // Get newest available core context
-#endif
     format.setProfile(QSurfaceFormat::CoreProfile);
+#else
+    // Get newest available compatibility context
+#endif
     format.setDepthBufferSize(16);
 
     // Create OpenGL context and window
@@ -300,7 +326,7 @@ void Viewer::setupCanvas()
     setCentralWidget(QWidget::createWindowContainer(m_canvas.get()));
     centralWidget()->setFocusPolicy(Qt::StrongFocus);
 
-    // Setup event provider to rranslate Qt messages into gloperate events
+    // Setup event provider to translate Qt messages into gloperate events
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     keyProvider->setParent(m_canvas.get());
     QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();

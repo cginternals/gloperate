@@ -11,8 +11,8 @@
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 
 
-Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager)
-: PipelinePainter(resourceManager, m_pipeline, "Postprocessing")
+Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, const std::string & relDataPath)
+: PipelinePainter("Postprocessing", resourceManager, relDataPath, m_pipeline)
 , m_animation(true)
 {
     // Setup painter
