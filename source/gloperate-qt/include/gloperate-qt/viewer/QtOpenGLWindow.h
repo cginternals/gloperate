@@ -22,6 +22,9 @@ namespace gloperate_qt
 {
 
 
+class TimerApi;
+
+
 /**
 *  @brief
 *    Qt window that can be used for rendering with gloperate and OpenGL
@@ -78,6 +81,19 @@ public:
     */
     void setPainter(gloperate::Painter * painter);
 
+    /**
+    *  @brief
+    *    Set scripting timer API
+    *
+    *  @param[in] timerAPI
+    *    Scripting timer API, can be nullptr
+    *
+    *  @remarks
+    *    This is necessary to propagate the
+    *    nextTick-event to the timer API.
+    */
+    void setTimerApi(TimerApi * timerApi);
+
 
 protected:
     virtual void onInitialize() override;
@@ -96,6 +112,7 @@ protected:
     gloperate::ResourceManager & m_resourceManager;
     gloperate::Painter * m_painter;                    ///< Currently used painter
     std::unique_ptr<TimePropagator> m_timePropagator;  ///< Time propagator for continous updates
+    TimerApi * m_timerApi;                             ///< Scripting timer API
 };
 
 

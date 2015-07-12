@@ -366,6 +366,9 @@ void Viewer::setupScripting()
     m_pluginApi.reset(new PluginApi(m_pluginManager.get()));
     addScriptApi(m_pluginApi.get());
 
+    // Promote tick events to scripting
+    m_canvas->setTimerApi(m_timerApi.get());
+
     // Connect to input from scripting console
     connect(m_scriptPrompt.get(), &widgetzeug::ScriptPromptWidget::evaluate, [this] (const QString & cmd) {
         // Substitute shortcut commands

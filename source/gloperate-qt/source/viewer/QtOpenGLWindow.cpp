@@ -22,6 +22,7 @@
 #include <gloperate/tools/ImageExporter.h>
 
 #include <gloperate-qt/viewer/QtEventTransformer.h>
+#include <gloperate-qt/scripting/TimerApi.h>
 
 
 using namespace gloperate;
@@ -33,9 +34,10 @@ namespace gloperate_qt
 *    Constructor
 */
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
-:   m_resourceManager(resourceManager)
-,   m_painter(nullptr)
-,   m_timePropagator(nullptr)
+: m_resourceManager(resourceManager)
+, m_painter(nullptr)
+, m_timePropagator(nullptr)
+, m_timerApi(nullptr)
 {
 }
 
@@ -44,10 +46,11 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 *    Constructor
 */
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
-:   QtOpenGLWindowBase(format)
-,   m_resourceManager(resourceManager)
-,   m_painter(nullptr)
-,   m_timePropagator(nullptr)
+: QtOpenGLWindowBase(format)
+, m_resourceManager(resourceManager)
+, m_painter(nullptr)
+, m_timePropagator(nullptr)
+, m_timerApi(nullptr)
 {
 }
 
@@ -92,6 +95,11 @@ void QtOpenGLWindow::setPainter(Painter * painter)
     m_initialized = false;
 }
 
+void QtOpenGLWindow::setTimerApi(TimerApi * timerApi)
+{
+    m_timerApi = timerApi;
+}
+
 void QtOpenGLWindow::onInitialize()
 {
     // Initialize globjects
@@ -130,6 +138,14 @@ void QtOpenGLWindow::onResize(QResizeEvent * event)
 
 void QtOpenGLWindow::onPaint()
 {
+    // Update script timers
+    if (m_timerApi && m_painter) {
+        AbstractVirtualTimeCapability * virtualTimeCapability = m_painter->getCapability<AbstractVirtualTimeCapability>();
+        if (virtualTimeCapability) {
+            m_timerApi->tickUpdate(virtualTimeCapability->delta());
+        }
+    }
+
     if (m_painter) {
         // Call painter
         m_painter->paint();
