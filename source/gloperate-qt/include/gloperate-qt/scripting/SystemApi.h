@@ -20,7 +20,7 @@
 namespace gloperate_qt {
 
 
-class Viewer;
+class QtOpenGLWindow;
 
 
 /**
@@ -42,10 +42,15 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewer
-    *    Pointer to the main viewer window
+    *  @param[in] openGLWindow
+    *    Pointer to the OpenGL window (can be nullptr)
+    *
+    *  @remarks
+    *    If openGLWindow is set, the context of that window
+    *    is made current before sending key press events
+    *    to the scripting environment.
     */
-    SystemApi(Viewer * viewer);
+    SystemApi(QtOpenGLWindow * openGLWindow);
 
     /**
     *  @brief
@@ -76,7 +81,7 @@ protected:
 
 
 protected:
-    Viewer                                         * m_viewer;            ///< Pointer to the main viewer window
+    QtOpenGLWindow                                 * m_openGLWindow;      ///< Pointer to the OpenGL window
     std::map<int, reflectionzeug::AbstractFunction*> m_keypressCallbacks; ///< List of key-press callbacks
 };
 

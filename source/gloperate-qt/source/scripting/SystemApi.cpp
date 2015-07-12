@@ -16,9 +16,9 @@
 namespace gloperate_qt {
 
 
-SystemApi::SystemApi(Viewer * viewer)
+SystemApi::SystemApi(QtOpenGLWindow * openGLWindow)
 : reflectionzeug::Object("system")
-, m_viewer(viewer)
+, m_openGLWindow(openGLWindow)
 {
     // Register functions
     this->addFunction("load",             this, &SystemApi::load);
@@ -146,7 +146,9 @@ bool SystemApi::eventFilter(QObject * obj, QEvent * event)
 void SystemApi::keyPressed(const QString & key)
 {
     // Make sure the OpenGL context is current
-    m_viewer->canvas()->makeCurrent();
+    if (m_openGLWindow) {
+        m_openGLWindow->makeCurrent();
+    }
 
     // For each connected callback function
     for (std::map<int, reflectionzeug::AbstractFunction*>::iterator it = m_keypressCallbacks.begin(); it != m_keypressCallbacks.end(); ++it) {

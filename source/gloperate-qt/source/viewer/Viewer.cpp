@@ -354,7 +354,7 @@ void Viewer::setupScripting()
     m_scriptContext.reset(new scriptzeug::ScriptContext("javascript"));
 
     // Register default scripting APIs
-    m_systemApi.reset(new SystemApi(this));
+    m_systemApi.reset(new SystemApi(m_canvas.get()));
     addScriptApi(m_systemApi.get());
 
     m_timerApi.reset(new TimerApi);
