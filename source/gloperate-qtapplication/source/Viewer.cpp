@@ -13,6 +13,7 @@
 #include "ui_Viewer.h"
 
 #include <gloperate/resources/ResourceManager.h>
+#include <gloperate/resources/GlrawTextureLoader.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 
@@ -75,6 +76,7 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     m_resourceManager->addStorer(new QtTextureStorer());
     m_resourceManager->addLoader(new AssimpMeshLoader());
     m_resourceManager->addLoader(new AssimpSceneLoader());
+	m_resourceManager->addLoader(new GlrawTextureLoader());
 
     // setup UI
     attachMessageWidgets(); 
