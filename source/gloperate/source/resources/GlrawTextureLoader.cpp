@@ -9,6 +9,7 @@
 
 #include <globjects/Texture.h>
 
+
 namespace
 {
 
@@ -37,30 +38,22 @@ std::string readString(std::ifstream & stream)
 	return ss.str();
 }
 
-enum class PropertyType : uint8_t
-{
-	Unknown = 0,
-	Int = 1,
-	Double = 2,
-	String = 3
-};
-
-const uint16_t GLRawSignature = 0xC6F5;
-
-int32_t getInt(const std::map<std::string, int32_t> & dict, const std::string & key)
+template<typename T>
+T getValue(const std::map<std::string, int32_t> & dict, const std::string & key)
 {
 	auto it = dict.find(key);
 	if(it == dict.end())
 	{
 		throw std::exception();
 	}
-	return it->second;
+	return static_cast<T>(it->second);
 }
 
 }
 
 namespace gloperate
 {
+const uint16_t GlrawTextureLoader::GLRawSignature = 0xC6F5;
 
 GlrawTextureLoader::GlrawTextureLoader()
 	: Loader<globjects::Texture>()
@@ -105,19 +98,17 @@ globjects::Texture * GlrawTextureLoader::load(const std::string & filename, std:
 	offset = read<uint64_t>(ifs);
 
 	std::map<std::string, int32_t> meta = readProperties(ifs, offset);
-	std::vector<char> data = readRawData(ifs, offset);
-
-	return createTexture(meta, data);
+	return createTexture(meta, readRawData(ifs, offset));
 }
 
 globjects::Texture * GlrawTextureLoader::createTexture(const std::map<std::string, int32_t> & meta, const std::vector<char> & image)
 {
 	try
 	{
-		const gl::GLenum format = static_cast<gl::GLenum>(getInt(meta, "format"));
-		const gl::GLenum type	= static_cast<gl::GLenum>(getInt(meta, "type"));
-		const int32_t width  = getInt(meta, "width");
-		const int32_t height = getInt(meta, "height");
+		auto format = getValue<gl::GLenum>(meta, "format");
+		auto type	= getValue<gl::GLenum>(meta, "type");
+		auto width	= getValue<int32_t>(meta, "width");
+		auto height = getValue<int32_t>(meta, "height");
 
 		globjects::Texture * output = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 		output->image2D(0, format, width, height, 0, format, type, image.data());
@@ -172,6 +163,7 @@ std::vector<char> GlrawTextureLoader::readRawData(std::ifstream & ifs, uint64_t 
 	std::vector<char> data(size);
 
 	ifs.read(data.data(), size);
+	ifs.close();
 	return data;
 }
 

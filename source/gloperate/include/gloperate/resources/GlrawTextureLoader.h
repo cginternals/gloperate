@@ -25,7 +25,6 @@ public:
     virtual std::vector<std::string> loadingTypes() const override;
     virtual std::string allLoadingTypes() const override;
 
-
     // Virtual gloperate::Loader<globjects::Texture> functions
     virtual globjects::Texture * load(const std::string & filename, std::function<void(int, int)> progress) const override;
 
@@ -35,6 +34,15 @@ protected:
 	static std::vector<char> readRawData(std::ifstream & ifs, uint64_t rawDataOffset);
 	static globjects::Texture * createTexture(const std::map<std::string, int32_t> & meta, const std::vector<char> & image);
 
+	enum class PropertyType : uint8_t
+	{
+		Unknown = 0,
+		Int = 1,
+		Double = 2,
+		String = 3
+	};
+
+	static const uint16_t GLRawSignature;
 };
 
 } // namespace gloperate
