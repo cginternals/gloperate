@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <string>
 
 #include <glm/fwd.hpp>
 
@@ -162,7 +163,124 @@ public:
 	*/
 	void setTextureCoordinates(std::vector<glm::vec3> && textureCoordinates);
 
-	/**
+    /**
+    *  @brief
+    *    Check if mesh is rigged
+    *
+    *  @return
+    *    'true' if the mesh is rigged, else 'false'
+    */
+    bool isRigged() const;
+
+    /**
+    *  @brief
+    *    Get normal array
+    *
+    *  @return
+    *    Normal array
+    */
+    const std::vector<glm::ivec4> & vertexBoneIndices() const;
+
+    /**
+    *  @brief
+    *    Set vertexBoneIndices array
+    *
+    *  @param[in] vertexBoneIndices
+    *    vertexBoneIndices array
+    */
+    void setVertexBoneIndices(const std::vector<glm::ivec4> & vertexBoneIndices);
+
+    /**
+    *  @brief
+    *    Set normal array
+    *
+    *  @param[in] normals
+    *    Normal array
+    */
+    void setVertexBoneIndices(std::vector<glm::ivec4> && vertexBoneIndices);
+
+    /**
+    *  @brief
+    *    Get normal array
+    *
+    *  @return
+    *    Normal array
+    */
+    const std::vector<glm::vec4> & vertexBoneWeights() const;
+
+    /**
+    *  @brief
+    *    Set normal array
+    *
+    *  @param[in] normals
+    *    Normal array
+    */
+    void setVertexBoneWeights(const std::vector<glm::vec4> & vertexBoneWeights);
+
+    /**
+    *  @brief
+    *    Set normal array
+    *
+    *  @param[in] normals
+    *    Normal array
+    */
+    void setVertexBoneWeights(std::vector<glm::vec4> && vertexBoneWeights);
+
+    /**
+    *  @brief
+    *    Get normal array
+    *
+    *  @return
+    *    Normal array
+    */
+    const std::vector<std::string> & boneMapping() const;
+
+    /**
+    *  @brief
+    *    Set normal array
+    *
+    *  @param[in] normals
+    *    Normal array
+    */
+    void setBoneMapping(const std::vector<std::string> & boneMapping);
+
+    /**
+    *  @brief
+    *    Set normal array
+    *
+    *  @param[in] normals
+    *    Normal array
+    */
+    void setBoneMapping(std::vector<std::string> && boneMapping);
+
+    /**
+    *  @brief
+    *    Get normal array
+    *
+    *  @return
+    *    Normal array
+    */
+    const std::vector<glm::mat4> & bindTransforms() const;
+
+    /**
+    *  @brief
+    *    Set normal array
+    *
+    *  @param[in] normals
+    *    Normal array
+    */
+    void setBindTransforms(const std::vector<glm::mat4> & bindTransforms);
+
+    /**
+    *  @brief
+    *    Set normal array
+    *
+    *  @param[in] normals
+    *    Normal array
+    */
+    void setBindTransforms(std::vector<glm::mat4> &&bindTransforms);
+
+    /**
 	*  @brief
 	*    Get material index
 	*
@@ -184,8 +302,12 @@ protected:
     std::vector<unsigned int> m_indices;              /**< Index array */
     std::vector<glm::vec3>    m_vertices;             /**< Vertex array */
     std::vector<glm::vec3>    m_normals;              /**< Normal array */
-	std::vector<glm::vec3>    m_textureCoordinates;   /**< Texture coordinate array */
-	unsigned int              m_materialIndex;        /**< Material index */
+    std::vector<glm::vec3>    m_textureCoordinates;   /**< Texture coordinate array */
+    std::vector<glm::ivec4>   m_vertexBoneIndices;    /**< Indices per index > */
+    std::vector<glm::vec4>    m_vertexBoneWeights;    /**< Weights per index > */
+    std::vector<std::string>  m_boneMapping;          /**< Mapping from string to boneIndex > */
+    std::vector<glm::mat4>    m_bindTransforms;       /**< bind Matrices per bone > */
+    unsigned int              m_materialIndex;        /**< Material index */
 };
 
 
