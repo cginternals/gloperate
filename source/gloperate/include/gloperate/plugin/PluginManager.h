@@ -56,6 +56,7 @@ public:
 
     const std::vector<Plugin *> & plugins() const;
     Plugin * plugin(const std::string & name) const;
+	const std::map<std::string, PluginLibrary *>  & pluginLibrariesByFilepath() const;
 
     /** \brief Print list of available plugins to log
     */

@@ -245,6 +245,11 @@ Plugin * PluginManager::plugin(const std::string & name) const
     return m_pluginsByName.at(name);
 }
 
+const std::map<std::string, PluginLibrary *> & PluginManager::pluginLibrariesByFilepath() const
+{
+	return m_librariesByFilePath;
+}
+
 void PluginManager::printPlugins() const
 {
     for (Plugin * plugin : m_plugins) 

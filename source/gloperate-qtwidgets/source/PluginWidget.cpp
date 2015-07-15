@@ -3,6 +3,7 @@
 
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
+#include <gloperate/plugin/PluginLibrary.h>
 
 #include <gloperate-qt/qt-includes-begin.h>
 #include <QAbstractButton>
@@ -69,18 +70,24 @@ void PluginWidget::initializeListView()
     m_ui->pluginTableWidget->setRowCount(m_pluginManager->plugins().size());
 
     QStringList tableHeader;
-    tableHeader << "Name" << "Version" << "Description" << "Type" << "Vendor";
+    tableHeader << "Name" << "Version" << "Description" << "Type" << "Vendor" << "Filepath";
     m_ui->pluginTableWidget->setHorizontalHeaderLabels(tableHeader);
 
     int pluginCount = 0;
 
-    for (auto plugin : m_pluginManager->plugins())
+    for (auto libraryWithFilepath : m_pluginManager->pluginLibrariesByFilepath())
     {
-        m_ui->pluginTableWidget->setItem(pluginCount, 0, new QTableWidgetItem(plugin->name()));
-        m_ui->pluginTableWidget->setItem(pluginCount, 1, new QTableWidgetItem(plugin->version()));
-        m_ui->pluginTableWidget->setItem(pluginCount, 2, new QTableWidgetItem(plugin->description()));
-        m_ui->pluginTableWidget->setItem(pluginCount, 3, new QTableWidgetItem(plugin->type()));
-        m_ui->pluginTableWidget->setItem(pluginCount++, 4, new QTableWidgetItem(plugin->vendor()));
+		gloperate::PluginLibrary * library{ libraryWithFilepath.second };
+
+		for (int pluginIndex = 0; pluginIndex < library->numPlugins(); pluginIndex++)
+		{
+			m_ui->pluginTableWidget->setItem(pluginCount, 0, new QTableWidgetItem(library->plugin(pluginIndex)->name()));
+			m_ui->pluginTableWidget->setItem(pluginCount, 1, new QTableWidgetItem(library->plugin(pluginIndex)->version()));
+			m_ui->pluginTableWidget->setItem(pluginCount, 2, new QTableWidgetItem(library->plugin(pluginIndex)->description()));
+			m_ui->pluginTableWidget->setItem(pluginCount, 3, new QTableWidgetItem(library->plugin(pluginIndex)->type()));
+			m_ui->pluginTableWidget->setItem(pluginCount, 4, new QTableWidgetItem(library->plugin(pluginIndex)->vendor()));
+			m_ui->pluginTableWidget->setItem(pluginCount++, 5, new QTableWidgetItem(QString::fromStdString(libraryWithFilepath.first)));
+		}
     }
 
     connect(m_ui->pluginTableWidget, &QTableWidget::cellDoubleClicked,
