@@ -12,18 +12,18 @@ ViewerApi::ViewerApi(Viewer * viewer)
 , m_viewer(viewer)
 {
     // Register functions
-    this->addFunction("loadPainter", this, &ViewerApi::loadPainter);
+    this->addFunction("loadPainterByName", this, &ViewerApi::loadPainterByName);
 }
 
 ViewerApi::~ViewerApi()
 {
 }
 
-void ViewerApi::loadPainter(const std::string & name)
+void ViewerApi::loadPainterByName(const std::string & name)
 {
     assert(m_viewer);
 
-    m_viewer->loadPainter(name);
+    m_viewer->loadPainterByName(name);
 }
 
 

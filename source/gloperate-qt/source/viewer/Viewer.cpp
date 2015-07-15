@@ -177,11 +177,9 @@ QtOpenGLWindow * Viewer::canvas() const
     return m_canvas.get();
 }
 
-void Viewer::loadPainter(const std::string & name)
+void Viewer::loadPainter(Plugin &plugin)
 {
-    // Get plugin by name
-    Plugin * plugin = m_pluginManager->plugin(name);
-    AbstractPainterPlugin * painterPlugin = plugin ? dynamic_cast<AbstractPainterPlugin *>(plugin) : nullptr;
+    AbstractPainterPlugin * painterPlugin = &plugin ? dynamic_cast<AbstractPainterPlugin *>(&plugin) : nullptr;
     if (!painterPlugin) {
         return;
     }
@@ -220,6 +218,14 @@ void Viewer::loadPainter(const std::string & name)
 
     // Update rendering
     m_canvas->updateGL();
+}
+
+void Viewer::loadPainterByName(const std::string & name)
+{
+	// Get plugin by name
+	Plugin * plugin = m_pluginManager->plugin(name);
+	if (plugin)
+		loadPainter(*plugin);
 }
 
 const scriptzeug::ScriptContext * Viewer::scriptContext() const
@@ -415,7 +421,7 @@ void Viewer::setupScripting()
         "  system.print('  timer:         Timer API');\n"
         "  system.print('');\n"
         "  system.print('Examples:');\n"
-        "  system.print('  viewer.loadPainter(\"CubeScape\");');\n"
+        "  system.print('  viewer.loadPainterByName(\"CubeScape\");');\n"
         "  system.print('  print(system);');\n"
         "  system.print('  timer.start(1000, function() { print(\"Hello Scripting World.\"); } );');\n"
         "  system.print('  timer.stopAll();');\n"
@@ -495,7 +501,7 @@ void Viewer::onPainterSelected(bool /*checked*/)
 
     // Get painter name
     QString name = action->data().toString();
-    loadPainter(name.toStdString());
+	loadPainterByName(name.toStdString());
 }
 
 

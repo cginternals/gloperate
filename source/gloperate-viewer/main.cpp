@@ -26,7 +26,7 @@ int main(int argc, char * argv[])
     viewer.show();
 
     std::string painterName = (argc > 1) ? argv[1] : "Logo";
-    viewer.loadPainter(painterName);
+    viewer.loadPainterByName(painterName);
 
     return app.exec();
 }
