@@ -1,11 +1,12 @@
-#include <gloperate-qtwidgets/PluginWidget.h>
-#include "ui_PluginWidget.h"
+
+#include <gloperate-qt/widgets/PluginWidget.h>
 
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
 #include <gloperate/plugin/PluginLibrary.h>
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
+
 #include <QAbstractButton>
 #include <QDragEnterEvent>
 #include <QDropEvent>
@@ -14,7 +15,10 @@
 #include <QStringList>
 #include <QWindow>
 #include <QDebug>
-#include <gloperate-qt/qt-includes-end.h>
+
+#include "ui_PluginWidget.h"
+
+#include <gloperate/ext-includes-end.h>
 
 #include <cassert>
 #include <ostream>
@@ -32,7 +36,7 @@ const std::string g_ext = "so";
 #endif
 }
 
-namespace gloperate_qtwidgets
+namespace gloperate_qt
 {
 
 PluginWidget::PluginWidget(std::shared_ptr<gloperate::PluginManager> pluginManager, QWidget *parent)
@@ -109,4 +113,4 @@ void PluginWidget::dropEvent(QDropEvent * dropEvent)
 	m_ui->pluginTableWidget->clear();
 	initializeListView();
 }
-} //namespace gloperate_qtwidgets
+} //namespace gloperate_qt

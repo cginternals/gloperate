@@ -147,6 +147,7 @@ set(headers
     ${header_path}/widgets/ImageExporterOutputWidget.h
     ${header_path}/widgets/ImageExporterResolutionWidget.h
     ${header_path}/widgets/ImageExporterTilebasedWidget.h
+    ${header_path}/widgets/PluginWidget.h
 
     ${header_path}/gloperate-qt_api.h
 )
@@ -181,6 +182,8 @@ set(sources
     ${source_path}/widgets/ImageExporterResolutionWidget.ui
     ${source_path}/widgets/ImageExporterTilebasedWidget.cpp
     ${source_path}/widgets/ImageExporterTilebasedWidget.ui
+    ${source_path}/widgets/PluginWidget.cpp
+    ${source_path}/widgets/PluginWidget.ui
 )
 
 # Group source files

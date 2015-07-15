@@ -170,7 +170,7 @@ protected:
     const QScopedPointer<Ui_Viewer> m_ui;
 
     std::unique_ptr<gloperate::ResourceManager> m_resourceManager;
-    std::unique_ptr<gloperate::PluginManager>   m_pluginManager;
+    std::shared_ptr<gloperate::PluginManager>   m_pluginManager;
     std::unique_ptr<scriptzeug::ScriptContext>  m_scriptContext;
 
     std::unique_ptr<QtOpenGLWindow>     m_canvas;

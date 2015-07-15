@@ -1,11 +1,11 @@
 #pragma once
 
-#include <gloperate-qt/qt-includes-begin.h>
+#include <gloperate/ext-includes-begin.h>
 #include <QWidget>
 #include <QScopedPointer>
-#include <gloperate-qt/qt-includes-end.h>
+#include <gloperate/ext-includes-end.h>
 
-#include <gloperate-qtwidgets/gloperate-qtwidgets_api.h>
+#include <gloperate-qt/gloperate-qt_api.h>
 
 #include <memory>
 
@@ -19,10 +19,10 @@ class Plugin;
 
 }
 
-namespace gloperate_qtwidgets
+namespace gloperate_qt
 {
 
-class GLOPERATE_QTWIDGETS_API PluginWidget : public QWidget
+class GLOPERATE_QT_API PluginWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -48,4 +48,4 @@ private:
 
 };
 
-} //namespace gloperate_qtwidgets
+} //namespace gloperate_qt
