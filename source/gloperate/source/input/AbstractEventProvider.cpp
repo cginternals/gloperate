@@ -1,10 +1,13 @@
+
 #include <gloperate/input/AbstractEventProvider.h>
 
 #include <gloperate/input/AbstractEvent.h>
 #include <gloperate/navigation/AbstractMapping.h>
 
+
 namespace gloperate
 {
+
 
 AbstractEventProvider::AbstractEventProvider()
 {
@@ -35,5 +38,6 @@ void AbstractEventProvider::passEvent(AbstractEvent * event)
         mapping->processEvent(event);
     }
 }
+
 
 } // namespace gloperate

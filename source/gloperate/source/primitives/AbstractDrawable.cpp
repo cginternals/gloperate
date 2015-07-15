@@ -1,7 +1,7 @@
 
-#include <globjects/VertexArray.h>
-
 #include <gloperate/primitives/AbstractDrawable.h>
+
+#include <globjects/VertexArray.h>
 
 
 namespace gloperate

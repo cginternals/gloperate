@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -12,8 +13,10 @@ namespace globjects
     class Referenced;
 }
 
+
 namespace gloperate
 {
+
 
 /**
 *  @brief
@@ -70,5 +73,6 @@ public:
     */
     virtual std::string allLoadingTypes() const = 0;
 };
+
 
 } // namespace gloperate

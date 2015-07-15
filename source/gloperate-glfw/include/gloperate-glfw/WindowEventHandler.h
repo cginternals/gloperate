@@ -1,10 +1,13 @@
+
 #pragma once
+
 
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
 
 namespace gloperate_glfw
 {
+
 
 class GLOPERATE_GLFW_API WindowEventHandler : public WindowEventHandlerBase
 {
@@ -13,6 +16,7 @@ public:
     virtual ~WindowEventHandler();
 
     virtual void initialize(gloperate_glfw::Window & window) override;
+
 
 protected:
     virtual void framebufferResizeEvent(ResizeEvent & event) override;
@@ -28,5 +32,6 @@ protected:
 
     virtual void timerEvent(TimerEvent & event) override;
 };
+
 
 } // namespace gloperate_glfw

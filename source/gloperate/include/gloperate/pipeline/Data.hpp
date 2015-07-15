@@ -1,10 +1,13 @@
+
 #pragma once
+
 
 #include <gloperate/pipeline/Data.h>
 
 
 namespace gloperate 
 {
+
 
 template <typename T>
 template <typename... Args>
@@ -84,5 +87,6 @@ std::string Data<T>::type() const
 {
     return typeid(T).name(); 
 }
+
     
 } // namespace gloperate

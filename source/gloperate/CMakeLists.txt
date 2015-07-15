@@ -76,6 +76,7 @@ set(sources
     ${source_path}/navigation/AbstractInteraction.cpp
     ${source_path}/navigation/navigationmath.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
+    ${source_path}/navigation/CoordinateProvider.cpp
     
     ${source_path}/painter/PerspectiveProjectionCapability.cpp
     ${source_path}/painter/TargetFramebufferCapability.cpp
@@ -112,8 +113,9 @@ set(sources
     ${source_path}/pipeline/AbstractData.cpp
     
     ${source_path}/plugin/PluginManager.cpp
-    ${source_path}/plugin/Plugin.cpp
     ${source_path}/plugin/PluginLibrary.cpp
+    ${source_path}/plugin/Plugin.cpp
+    ${source_path}/plugin/PainterPlugin.cpp
 
     ${source_path}/primitives/AbstractDrawable.cpp
     ${source_path}/primitives/Plane3.cpp
@@ -134,8 +136,7 @@ set(sources
     ${source_path}/resources/RawFile.cpp
     ${source_path}/resources/ResourceManager.cpp
     
-    ${source_path}/tools/CoordinateProvider.cpp
-    ${source_path}/tools/ScreenshotTool.cpp
+    ${source_path}/tools/ImageExporter.cpp
     ${source_path}/tools/DepthExtractor.cpp
     ${source_path}/tools/WorldExtractor.cpp
     ${source_path}/tools/ObjectIdExtractor.cpp
@@ -167,6 +168,7 @@ set(api_includes
     ${include_path}/navigation/WorldInHandNavigation.h
     ${include_path}/navigation/AbstractInteraction.h
     ${include_path}/navigation/AbstractMapping.h
+    ${include_path}/navigation/CoordinateProvider.h
     ${include_path}/navigation/navigationmath.h
     
     ${include_path}/painter/InputCapability.h
@@ -212,11 +214,11 @@ set(api_includes
     ${include_path}/pipeline/AbstractInputSlot.h
     
     ${include_path}/plugin/plugin_api.h
-    ${include_path}/plugin/Plugin.h
-    ${include_path}/plugin/PainterPlugin.hpp
-    ${include_path}/plugin/PluginLibrary.h
-    ${include_path}/plugin/PainterPlugin.h
     ${include_path}/plugin/PluginManager.h
+    ${include_path}/plugin/PluginLibrary.h
+    ${include_path}/plugin/Plugin.h
+    ${include_path}/plugin/PainterPlugin.h
+    ${include_path}/plugin/PainterPlugin.hpp
     
     ${include_path}/primitives/AbstractDrawable.h
     ${include_path}/primitives/UniformGroup.hpp
@@ -242,8 +244,7 @@ set(api_includes
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/Loader.h
     
-    ${include_path}/tools/CoordinateProvider.h
-    ${include_path}/tools/ScreenshotTool.h
+    ${include_path}/tools/ImageExporter.h
     ${include_path}/tools/DepthExtractor.h
     ${include_path}/tools/WorldExtractor.h
     ${include_path}/tools/ObjectIdExtractor.h

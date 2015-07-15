@@ -1,16 +1,24 @@
+
 #pragma once
 
+
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/gloperate_api.h>
+
 
 namespace gloperate
 {
 
+
 class AxisAlignedBoundingBox;
+
 
 namespace navigationmath
 {
+
 
 //void retrieveNearAndFarPlane(
 //    const glm::vec3 & camera
@@ -78,6 +86,8 @@ GLOPERATE_API float distanceToClosestPoint(
 ,	const glm::vec3 & center
 ,	const glm::vec3 & point);
 
+
 } // namespace navigationmath
+
 
 } // namespace gloperate

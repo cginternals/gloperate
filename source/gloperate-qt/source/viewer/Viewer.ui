@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Viewer</class>
+ <widget class="QMainWindow" name="Viewer">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>734</width>
+    <height>541</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string/>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>734</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="fileMenu">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="quitAction"/>
+   </widget>
+   <widget class="QMenu" name="painterMenu">
+    <property name="title">
+     <string>&amp;Painter</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="canvasMenu">
+    <property name="title">
+     <string>Can&amp;vas</string>
+    </property>
+    <addaction name="captureImageAction"/>
+   </widget>
+   <widget class="QMenu" name="cameraMenu">
+    <property name="title">
+     <string>&amp;Camera</string>
+    </property>
+    <widget class="QMenu" name="selectNavigationMenu">
+     <property name="title">
+      <string>Select &amp;Navigation</string>
+     </property>
+     <addaction name="worldInHandNavigationAction"/>
+    </widget>
+    <addaction name="selectNavigationMenu"/>
+   </widget>
+   <widget class="QMenu" name="settingsMenu">
+    <property name="title">
+     <string>&amp;Settings</string>
+    </property>
+    <addaction name="managePluginsAction"/>
+    <addaction name="separator"/>
+    <addaction name="preferencesAction"/>
+   </widget>
+   <widget class="QMenu" name="helpMenu">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="aboutAction"/>
+   </widget>
+   <addaction name="fileMenu"/>
+   <addaction name="painterMenu"/>
+   <addaction name="canvasMenu"/>
+   <addaction name="cameraMenu"/>
+   <addaction name="settingsMenu"/>
+   <addaction name="helpMenu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="aboutAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>About ...</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
+  </action>
+  <action name="quitAction">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
+  </action>
+  <action name="worldInHandNavigationAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;World in Hand Navigation</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::ApplicationSpecificRole</enum>
+   </property>
+  </action>
+  <action name="preferencesAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Preferences ...</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
+  </action>
+  <action name="captureImageAction">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Capture &amp;Image</string>
+   </property>
+  </action>
+  <action name="managePluginsAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Manage Plugins</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>quitAction</sender>
+   <signal>triggered()</signal>
+   <receiver>Viewer</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>366</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

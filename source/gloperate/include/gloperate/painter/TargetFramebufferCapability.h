@@ -2,10 +2,9 @@
 #pragma once
 
 
-#include <globjects/Framebuffer.h>
 #include <globjects/base/ref_ptr.h>
+#include <globjects/Framebuffer.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractTargetFramebufferCapability.h>
 
 

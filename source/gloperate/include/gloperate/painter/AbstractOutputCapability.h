@@ -1,19 +1,22 @@
+
 #pragma once
 
-#include <gloperate/gloperate_api.h>
-
-#include <gloperate/painter/AbstractCapability.h>
 
 #include <string>
 #include <vector>
+
+#include <gloperate/painter/AbstractCapability.h>
 
 
 namespace gloperate
 {
 
+
 class AbstractData;
 template<typename T>
+
 class Data;
+
 
 /**
 *  @brief
@@ -22,7 +25,6 @@ class Data;
 */
 class GLOPERATE_API AbstractOutputCapability : public gloperate::AbstractCapability
 {
-
 public:
     /**
     *  @brief
@@ -38,7 +40,6 @@ public:
 
     virtual std::vector<gloperate::AbstractData*> findOutputs(const std::string & name) const;
 
-
     template <typename T>
     Data<T> * getOutput(const std::string & name) const;
     template <typename T>
@@ -47,6 +48,8 @@ public:
     virtual std::vector<gloperate::AbstractData*> allOutputs() const = 0;
 };
 
+
 } // namespace gloperate
+
 
 #include <gloperate/painter/AbstractOutputCapability.hpp>

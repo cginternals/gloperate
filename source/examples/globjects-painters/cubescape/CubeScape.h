@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <glm/mat4x4.hpp>
 
@@ -9,6 +11,7 @@
 #include <globjects/VertexArray.h>
 
 #include <gloperate/painter/Painter.h>
+
 
 namespace gloperate 
 {
@@ -21,34 +24,41 @@ namespace gloperate
     class AbstractVirtualTimeCapability;
 }
 
+
 class CubeScape : public gloperate::Painter
 {
 public:
-    CubeScape(gloperate::ResourceManager & resourceManager);
+    CubeScape(gloperate::ResourceManager & resourceManager, const std::string & relDataPath);
     virtual ~CubeScape();
 
     void update(float delta);
 
     void setupProjection();
 
+    bool animation() const;
+    void setAnimation(const bool & enabled);
+
     int numberOfCubes() const;
     void setNumberOfCubes(const int & number);
 
-    bool animation() const;
-    void setAnimation(const bool & enabled);
 
 protected:
     virtual void onInitialize();
     virtual void onPaint();
     virtual void onTargetFramebufferChanged();
 
+
 protected:
-    /* parameters */
+    // Scripting API
+    void randomize();
 
-    int m_numCubes;
+
+protected:
+    /* Parameters */
     bool m_animation;
+    int m_numCubes;
 
-    /* capabilities */
+    /* Capabilities */
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::AbstractPerspectiveProjectionCapability * m_projectionCapability;
@@ -56,8 +66,7 @@ protected:
     gloperate::AbstractCameraCapability * m_cameraCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 
-    /* members */
-
+    /* Data */
     gl::GLint a_vertex;
     gl::GLint u_transform;
     gl::GLint u_time;

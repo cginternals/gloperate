@@ -3,7 +3,9 @@
 
 #include <gloperate/base/RenderTarget.h>
 
-namespace gloperate {
+
+namespace gloperate
+{
 
 
 TypedRenderTargetCapability::TypedRenderTargetCapability()

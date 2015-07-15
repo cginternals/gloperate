@@ -1,9 +1,5 @@
+
 #include <gloperate/base/directorytraversal.h>
-
-#include <globjects/base/File.h>
-
-#include <globjects/logging.h>
-#include <globjects/NamedString.h>
 
 #ifdef _MSC_VER
 #include "windows.h"
@@ -12,8 +8,14 @@
 #include <dirent.h>
 #endif
 
+#include <globjects/base/File.h>
+#include <globjects/logging.h>
+#include <globjects/NamedString.h>
+
+
 namespace
 {
+
 
 void getFiles(const std::string & dirName, bool recursive, std::vector<std::string> & files)
 {
@@ -92,12 +94,16 @@ std::string getExtension(const std::string & filename)
     return filename.substr(pos+1);
 }
 
-}
+
+} // namespace
+
 
 using namespace globjects;
 
+
 namespace gloperate
 {
+
 
 void scanDirectory(const std::string & directory, const std::string & fileExtension, bool recursive)
 {
@@ -111,5 +117,6 @@ void scanDirectory(const std::string & directory, const std::string & fileExtens
         NamedString::create("/"+file, new File(file));
     }
 }
+
 
 } // namespace globjectsutils

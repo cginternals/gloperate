@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <chrono>
 
@@ -8,14 +10,14 @@
 namespace gloperate_glfw
 {
 
+
 class GLOPERATE_GLFW_API Timer
 {
-    using clock = std::chrono::high_resolution_clock;
-    using time_point = clock::time_point;
-
 public:
     using Duration = std::chrono::duration<long long, std::nano>;
 
+
+public:
     Timer(bool start = true, bool autoUpdate = true);
     virtual ~Timer();
 
@@ -32,6 +34,12 @@ public:
     void stop();
     void reset();
 
+
+protected:
+    using clock = std::chrono::high_resolution_clock;
+    using time_point = clock::time_point;
+
+
 protected:
     bool m_paused;
     bool m_auto;
@@ -44,5 +52,6 @@ protected:
     Duration m_offset;
     mutable Duration m_elapsed;
 };
+
 
 } // namespace gloperate_glfw
