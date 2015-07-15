@@ -488,6 +488,10 @@ void Viewer::on_managePluginsAction_triggered()
 	if (m_pluginManager)
 	{
 		PluginWidget * pw{ new PluginWidget(m_pluginManager) };
+
+		connect(pw, &gloperate_qt::PluginWidget::pluginChanged,
+			this, &Viewer::loadPainter);
+
 		pw->setWindowModality(Qt::NonModal);
 		pw->show();
 	}
