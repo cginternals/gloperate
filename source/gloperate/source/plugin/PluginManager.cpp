@@ -188,6 +188,16 @@ const std::vector<Plugin *> & PluginManager::plugins() const
     return m_plugins;
 }
 
+const std::vector<PluginLibrary *> PluginManager::pluginLibraries() const
+{
+    std::vector<PluginLibrary *> pluginLibraries;
+
+    for (auto libraryIterator : m_librariesByFilePath)
+        pluginLibraries.push_back(libraryIterator.second);
+
+    return pluginLibraries;
+}
+
 Plugin * PluginManager::plugin(const std::string & name) const
 {
     // Check if plugin exists
@@ -210,11 +220,6 @@ void PluginManager::printPlugins() const
         globjects::info() << "      vendor: " << plugin->vendor();
         globjects::info();
     }
-}
-
-const std::map<std::string, PluginLibrary *> & PluginManager::pluginLibrariesByFilepath() const
-{
-	return m_librariesByFilePath;
 }
 
 bool PluginManager::loadLibrary(const std::string & filePath, bool reload)

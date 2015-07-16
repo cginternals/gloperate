@@ -119,6 +119,15 @@ public:
 
     /**
     *  @brief
+    *    Get list of loaded plugin libraries
+    *
+    *  @return
+    *    List of plugin libraries
+    */
+    const std::vector<PluginLibrary *> pluginLibraries() const;
+
+    /**
+    *  @brief
     *    Get plugin by name
     *
     *  @param[in] name
@@ -128,7 +137,6 @@ public:
     *    Pointer to the plugin, nullptr if no plugin with that name exists
     */
     Plugin * plugin(const std::string & name) const;
-	const std::map<std::string, PluginLibrary *>  & pluginLibrariesByFilepath() const;
 
     /**
     *  @brief

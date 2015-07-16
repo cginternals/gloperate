@@ -92,25 +92,26 @@ void PluginWidget::updateListView()
 
 	int pluginCount = 0;
 
-	for (auto libraryWithFilepath : m_pluginManager->pluginLibrariesByFilepath())
-	{
-		gloperate::PluginLibrary * library{ libraryWithFilepath.second };
+    std::vector<gloperate::PluginLibrary *> pluginLibraries{ m_pluginManager->pluginLibraries() };
 
-		for (int pluginIndex = 0; pluginIndex < library->numPlugins(); pluginIndex++)
-		{
-			m_ui->pluginTableWidget->setItem(pluginCount, 0, new QTableWidgetItem(library->plugin(pluginIndex)->name()));
-			m_ui->pluginTableWidget->setItem(pluginCount, 1, new QTableWidgetItem(library->plugin(pluginIndex)->version()));
-			m_ui->pluginTableWidget->setItem(pluginCount, 2, new QTableWidgetItem(library->plugin(pluginIndex)->description()));
-			m_ui->pluginTableWidget->setItem(pluginCount, 3, new QTableWidgetItem(library->plugin(pluginIndex)->type()));
-			m_ui->pluginTableWidget->setItem(pluginCount, 4, new QTableWidgetItem(library->plugin(pluginIndex)->vendor()));
-			m_ui->pluginTableWidget->setItem(pluginCount++, 5, new QTableWidgetItem(QString::fromStdString(libraryWithFilepath.first)));
-		}
+    for (auto pluginLibrary : pluginLibraries)
+	{
+        for (int pluginIndex = 0; pluginIndex < pluginLibrary->numPlugins(); pluginIndex++)
+        {
+            m_ui->pluginTableWidget->setItem(pluginCount, 0, new QTableWidgetItem(pluginLibrary->plugin(pluginIndex)->name()));
+            m_ui->pluginTableWidget->setItem(pluginCount, 1, new QTableWidgetItem(pluginLibrary->plugin(pluginIndex)->version()));
+            m_ui->pluginTableWidget->setItem(pluginCount, 2, new QTableWidgetItem(pluginLibrary->plugin(pluginIndex)->description()));
+            m_ui->pluginTableWidget->setItem(pluginCount, 3, new QTableWidgetItem(pluginLibrary->plugin(pluginIndex)->type()));
+            m_ui->pluginTableWidget->setItem(pluginCount, 4, new QTableWidgetItem(pluginLibrary->plugin(pluginIndex)->vendor()));
+            m_ui->pluginTableWidget->setItem(pluginCount++, 5, new QTableWidgetItem(QString::fromStdString(pluginLibrary->filePath())));
+        }
 	}
 }
 
 void PluginWidget::cellSelected(int nRow, int)
 {
-    emit pluginChanged(*m_pluginManager->plugins().at(nRow));
+    gloperate::Plugin * plugin{ m_pluginManager->plugins().at(nRow) };
+    emit painterChanged(*dynamic_cast<gloperate::AbstractPainterPlugin *>(plugin)->createPainter(*m_resourceManager));
 }
 
 void PluginWidget::dropEvent(QDropEvent * dropEvent)
