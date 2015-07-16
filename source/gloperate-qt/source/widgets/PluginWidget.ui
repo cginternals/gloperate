@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="3">
+   <item row="0" column="0" colspan="2">
     <widget class="QTableWidget" name="pluginTableWidget">
      <property name="sizeAdjustPolicy">
       <enum>QAbstractScrollArea::AdjustIgnored</enum>
@@ -37,6 +37,9 @@
      <property name="columnCount">
       <number>6</number>
      </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
@@ -48,24 +51,10 @@
      <column/>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="0" colspan="2">
     <widget class="QPushButton" name="loadButton">
      <property name="text">
       <string>&amp;Show</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QPushButton" name="refreshButton">
-     <property name="text">
-      <string>&amp;Refresh</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="cancelButton">
-     <property name="text">
-      <string>&amp;Close</string>
      </property>
     </widget>
    </item>

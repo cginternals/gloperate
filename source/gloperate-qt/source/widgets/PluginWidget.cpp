@@ -12,7 +12,9 @@
 #include <QAbstractButton>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QHeaderView>
 #include <QMimeData>
+#include <QResizeEvent>
 #include <QString>
 #include <QStringList>
 #include <QWindow>
@@ -54,6 +56,7 @@ PluginWidget::PluginWidget(gloperate::PluginManager * pluginManager, gloperate::
     initializeListView();
 
     setAcceptDrops(true);
+    m_ui->pluginTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::Interactive);
 
     m_pluginManager->pluginsChanged.connect([=](){updateListView(); });
 }
@@ -133,4 +136,24 @@ void PluginWidget::dropEvent(QDropEvent * dropEvent)
 	m_ui->pluginTableWidget->clear();
 	updateListView();
 }
+
+void PluginWidget::resizeEvent(QResizeEvent * resizeEvent)
+{
+    int tableSize = m_ui->pluginTableWidget->width();
+    int numberOfColumns = m_ui->pluginTableWidget->columnCount();
+    int difference = resizeEvent->size().width() - resizeEvent->oldSize().width();
+    int delta = (int)difference / numberOfColumns;
+
+    for (int columnIndex = 0; columnIndex < numberOfColumns - 1; columnIndex++)
+    {
+        m_ui->pluginTableWidget->setColumnWidth(columnIndex, m_ui->pluginTableWidget->columnWidth(columnIndex) + delta);
+        difference -= delta;
+    }
+
+    if (numberOfColumns)
+        m_ui->pluginTableWidget->setColumnWidth(numberOfColumns - 1, m_ui->pluginTableWidget->columnWidth(numberOfColumns - 1) + difference);
+
+    QWidget::resizeEvent(resizeEvent);
+}
+
 } //namespace gloperate_qt

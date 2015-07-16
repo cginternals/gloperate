@@ -10,6 +10,7 @@
 #include <memory>
 
 class Ui_PluginWidget;
+class QResizeEvent;
 
 namespace gloperate
 {
@@ -40,6 +41,8 @@ protected:
     virtual void cellSelected(int nRow, int);
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent * dropEvent);
+
+    virtual void resizeEvent(QResizeEvent * resizeEvent);
 
 protected:
     gloperate::PluginManager * m_pluginManager;
