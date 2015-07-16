@@ -71,16 +71,24 @@ void PluginWidget::initializeListView()
 
     m_ui->pluginTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    m_ui->pluginTableWidget->setRowCount(m_pluginManager->plugins().size());
+	updateListView();
 
-    QStringList tableHeader;
-    tableHeader << "Name" << "Version" << "Description" << "Type" << "Vendor" << "Filepath";
-    m_ui->pluginTableWidget->setHorizontalHeaderLabels(tableHeader);
+    connect(m_ui->pluginTableWidget, &QTableWidget::cellDoubleClicked,
+        this, &PluginWidget::cellSelected);
+}
 
-    int pluginCount = 0;
+void PluginWidget::updateListView()
+{
+	m_ui->pluginTableWidget->setRowCount(m_pluginManager->plugins().size());
 
-    for (auto libraryWithFilepath : m_pluginManager->pluginLibrariesByFilepath())
-    {
+	QStringList tableHeader;
+	tableHeader << "Name" << "Version" << "Description" << "Type" << "Vendor" << "Filepath";
+	m_ui->pluginTableWidget->setHorizontalHeaderLabels(tableHeader);
+
+	int pluginCount = 0;
+
+	for (auto libraryWithFilepath : m_pluginManager->pluginLibrariesByFilepath())
+	{
 		gloperate::PluginLibrary * library{ libraryWithFilepath.second };
 
 		for (int pluginIndex = 0; pluginIndex < library->numPlugins(); pluginIndex++)
@@ -92,10 +100,7 @@ void PluginWidget::initializeListView()
 			m_ui->pluginTableWidget->setItem(pluginCount, 4, new QTableWidgetItem(library->plugin(pluginIndex)->vendor()));
 			m_ui->pluginTableWidget->setItem(pluginCount++, 5, new QTableWidgetItem(QString::fromStdString(libraryWithFilepath.first)));
 		}
-    }
-
-    connect(m_ui->pluginTableWidget, &QTableWidget::cellDoubleClicked,
-        this, &PluginWidget::cellSelected);
+	}
 }
 
 void PluginWidget::cellSelected(int nRow, int)
@@ -111,6 +116,6 @@ void PluginWidget::dropEvent(QDropEvent * dropEvent)
 	qDebug() << filename;
 	m_pluginManager->load(filename.toStdString(), false);
 	m_ui->pluginTableWidget->clear();
-	initializeListView();
+	updateListView();
 }
 } //namespace gloperate_qt

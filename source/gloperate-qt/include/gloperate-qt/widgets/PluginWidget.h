@@ -35,6 +35,7 @@ signals:
 
 protected:
     virtual void initializeListView();
+	virtual void updateListView();
     virtual void cellSelected(int nRow, int);
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent * dropEvent);
