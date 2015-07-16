@@ -33,7 +33,6 @@ namespace gloperate
     class ResourceManager;
     class PluginManager;
     class Painter;
-	class Plugin;
 }
 
 
@@ -111,32 +110,30 @@ public:
     *  @brief
     *    Load painter
     *
-    *  @param[in] plugin
-    *    Painter plugin
+    *  @param[in] name
+    *    Painter name
     *
     *  @remarks
-    *    If the plugin contains a painter,
-    *    the painter is loaded into the viewer.
+    *    If a painter plugin with this name has been registered,
+    *    the painter is created and set.
     *    Otherwise, nothing happens.
     */
-	void loadPainter(gloperate::Plugin & plugin);
+    void loadPainter(const std::string & name);
     //@}
 
-	//@{
-	/**
-	*  @brief
-	*    Load painter by Name
-	*
-	*  @param[in] name
-	*    Painter name
-	*
-	*  @remarks
-	*    If a plugin with this name has been registered,
-	*    loadPainter is called called with this plugin.
-	*    Otherwise, nothing happens.
-	*/
-	void loadPainterByName(const std::string & name);
-	//@}
+    //@{
+    /**
+    *  @brief
+    *    Set painter
+    *
+    *  @param[in] painter
+    *    Painter reference
+    *
+    *  @remarks
+    *    Loads the painter into the viewer.
+    */
+    void setPainter(gloperate::Painter & painter);
+    //@}
 
     //@{
     /**

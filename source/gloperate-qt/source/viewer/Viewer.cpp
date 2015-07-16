@@ -177,20 +177,15 @@ QtOpenGLWindow * Viewer::canvas() const
     return m_canvas.get();
 }
 
-void Viewer::loadPainter(Plugin &plugin)
+void Viewer::setPainter(Painter & painter)
 {
-    AbstractPainterPlugin * painterPlugin = &plugin ? dynamic_cast<AbstractPainterPlugin *>(&plugin) : nullptr;
-    if (!painterPlugin) {
-        return;
-    }
-
     // Unload old painter
     if (m_painter.get()) {
         m_scriptContext->unregisterObject(m_painter.get());
     }
 
     // Create new painter
-    m_painter.reset(painterPlugin->createPainter(*m_resourceManager));
+    m_painter.reset(&painter);
 
     // [TODO] Check for painter context format requirements
 
@@ -220,12 +215,17 @@ void Viewer::loadPainter(Plugin &plugin)
     m_canvas->updateGL();
 }
 
-void Viewer::loadPainterByName(const std::string & name)
+void Viewer::loadPainter(const std::string & name)
 {
-	// Get plugin by name
-	Plugin * plugin = m_pluginManager->plugin(name);
-	if (plugin)
-		loadPainter(*plugin);
+    // Get plugin by name
+    Plugin * plugin = m_pluginManager->plugin(name);
+    AbstractPainterPlugin * painterPlugin = plugin ? dynamic_cast<AbstractPainterPlugin *>(plugin) : nullptr;
+    if (!painterPlugin) {
+        return;
+    }
+
+    // Set new painter
+    setPainter(*painterPlugin->createPainter(*m_resourceManager));
 }
 
 const scriptzeug::ScriptContext * Viewer::scriptContext() const
@@ -421,7 +421,7 @@ void Viewer::setupScripting()
         "  system.print('  timer:         Timer API');\n"
         "  system.print('');\n"
         "  system.print('Examples:');\n"
-        "  system.print('  viewer.loadPainterByName(\"CubeScape\");');\n"
+        "  system.print('  viewer.loadPainter(\"CubeScape\");');\n"
         "  system.print('  print(system);');\n"
         "  system.print('  timer.start(1000, function() { print(\"Hello Scripting World.\"); } );');\n"
         "  system.print('  timer.stopAll();');\n"
@@ -487,10 +487,10 @@ void Viewer::on_managePluginsAction_triggered()
     // PluginWidget needs a plugin manager
 	if (m_pluginManager)
 	{
-		PluginWidget * pw{ new PluginWidget(m_pluginManager) };
+		PluginWidget * pw{ new PluginWidget(m_pluginManager.get(), m_resourceManager.get()) };
 
-		connect(pw, &gloperate_qt::PluginWidget::pluginChanged,
-			this, &Viewer::loadPainter);
+		connect(pw, &gloperate_qt::PluginWidget::painterChanged,
+			this, &Viewer::setPainter);
 
 		pw->setWindowModality(Qt::NonModal);
 		pw->show();
@@ -505,7 +505,7 @@ void Viewer::onPainterSelected(bool /*checked*/)
 
     // Get painter name
     QString name = action->data().toString();
-	loadPainterByName(name.toStdString());
+    loadPainter(name.toStdString());
 }
 
 

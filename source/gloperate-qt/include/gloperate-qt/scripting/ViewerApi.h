@@ -36,7 +36,7 @@ public:
     virtual ~ViewerApi();
 
     // Viewer API
-    void loadPainterByName(const std::string & name);
+    void loadPainter(const std::string & name);
 
 
 protected:

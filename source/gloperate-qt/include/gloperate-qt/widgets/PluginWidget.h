@@ -15,7 +15,8 @@ namespace gloperate
 {
 
 class PluginManager;
-class Plugin;
+class Painter;
+class ResourceManager;
 
 }
 
@@ -27,11 +28,11 @@ class GLOPERATE_QT_API PluginWidget : public QWidget
 	Q_OBJECT
 
 public:
-	PluginWidget(std::shared_ptr<gloperate::PluginManager> pluginManager, QWidget * parent = nullptr);
+	PluginWidget(gloperate::PluginManager * pluginManager, gloperate::ResourceManager * resourceManager, QWidget * parent = nullptr);
 	virtual ~PluginWidget();
 
 signals:
-    void pluginChanged(gloperate::Plugin&);
+    void painterChanged(gloperate::Painter&);
 
 protected:
     virtual void initializeListView();
@@ -41,7 +42,8 @@ protected:
 	virtual void dropEvent(QDropEvent * dropEvent);
 
 protected:
-	std::shared_ptr<gloperate::PluginManager> m_pluginManager;
+    gloperate::PluginManager * m_pluginManager;
+    gloperate::ResourceManager * m_resourceManager;
 
 private:
 	const QScopedPointer<Ui_PluginWidget> m_ui;

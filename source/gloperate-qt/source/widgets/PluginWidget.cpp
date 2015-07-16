@@ -1,8 +1,10 @@
 
 #include <gloperate-qt/widgets/PluginWidget.h>
 
+#include <gloperate/painter/Painter.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/Plugin.h>
+#include <gloperate/plugin/PainterPlugin.h>
 #include <gloperate/plugin/PluginLibrary.h>
 
 #include <gloperate/ext-includes-begin.h>
@@ -39,9 +41,10 @@ const std::string g_ext = "so";
 namespace gloperate_qt
 {
 
-PluginWidget::PluginWidget(std::shared_ptr<gloperate::PluginManager> pluginManager, QWidget *parent)
-:	QWidget(parent)
-,	m_pluginManager(pluginManager)
+PluginWidget::PluginWidget(gloperate::PluginManager * pluginManager, gloperate::ResourceManager * resourceManager, QWidget *parent)
+:   QWidget(parent)
+,   m_pluginManager(pluginManager)
+,   m_resourceManager(resourceManager)
 ,	m_ui(new Ui_PluginWidget)
 {
 	m_ui->setupUi(this);
@@ -79,6 +82,8 @@ void PluginWidget::initializeListView()
 
 void PluginWidget::updateListView()
 {
+    assert (m_pluginManager);
+
 	m_ui->pluginTableWidget->setRowCount(m_pluginManager->plugins().size());
 
 	QStringList tableHeader;
@@ -114,7 +119,7 @@ void PluginWidget::dropEvent(QDropEvent * dropEvent)
 	QString uri = dropEvent->mimeData()->data("text/uri-list").right(len - 8);
 	QString filename = uri.left(uri.length() - 2);
 	qDebug() << filename;
-	m_pluginManager->load(filename.toStdString(), false);
+    m_pluginManager->load(filename.toStdString(), false);
 	m_ui->pluginTableWidget->clear();
 	updateListView();
 }
