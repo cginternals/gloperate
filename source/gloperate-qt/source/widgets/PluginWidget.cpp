@@ -45,13 +45,17 @@ PluginWidget::PluginWidget(gloperate::PluginManager * pluginManager, gloperate::
 :   QWidget(parent)
 ,   m_pluginManager(pluginManager)
 ,   m_resourceManager(resourceManager)
-,	m_ui(new Ui_PluginWidget)
+,   m_ui(new Ui_PluginWidget)
 {
-	m_ui->setupUi(this);
+    assert(m_pluginManager);
+
+    m_ui->setupUi(this);
 
     initializeListView();
 
-	setAcceptDrops(true);
+    setAcceptDrops(true);
+
+    m_pluginManager->pluginsChanged.connect([=](){updateListView(); });
 }
 
 PluginWidget::~PluginWidget()
@@ -110,12 +114,17 @@ void PluginWidget::updateListView()
 
 void PluginWidget::cellSelected(int nRow, int)
 {
+    assert(m_pluginManager);
+    assert(m_resourceManager);
+
     gloperate::Plugin * plugin{ m_pluginManager->plugins().at(nRow) };
     emit painterChanged(*dynamic_cast<gloperate::AbstractPainterPlugin *>(plugin)->createPainter(*m_resourceManager));
 }
 
 void PluginWidget::dropEvent(QDropEvent * dropEvent)
 {
+    assert(m_pluginManager);
+
 	int len = dropEvent->mimeData()->data("text/uri-list").length();
 	QString uri = dropEvent->mimeData()->data("text/uri-list").right(len - 8);
 	QString filename = uri.left(uri.length() - 2);
