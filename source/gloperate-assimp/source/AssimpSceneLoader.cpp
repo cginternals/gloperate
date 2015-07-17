@@ -120,7 +120,7 @@ Scene * AssimpSceneLoader::load(const std::string & filename, const reflectionze
         aiProcess_Triangulate           |
         aiProcess_JoinIdenticalVertices |
         aiProcess_SortByPType |
-        smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals);
+        (smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals));
 
     // Check for errors
     if (!assimpScene)
