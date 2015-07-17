@@ -1,3 +1,4 @@
+
 #include <gloperate-osg/OsgMouseHandler.h>
 
 #include <osgViewer/Viewer>
@@ -7,8 +8,10 @@
 
 
 using namespace gloperate;
+
 namespace gloperate_osg
 {
+
 
 /**
 *  @brief
@@ -84,5 +87,6 @@ void OsgMouseHandler::onMouseWheel(int dx, int dy)
 
     if (m_stage) m_stage->scheduleProcess();
 }
+
 
 } // namespace gloperate_osg

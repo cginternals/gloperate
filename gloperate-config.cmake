@@ -17,18 +17,6 @@
 # GLOPERATE_QT_BINARIES
 # GLOPERATE_QT_BINARY_[RELEASE|DEBUG]
 
-# GLOPERATE_QTWIDGETS_LIBRARIES
-# GLOPERATE_QTWIDGETS_LIBRARY_[RELEASE|DEBUG]
-# GLOPERATE_QTWIDGETS_INCLUDE_DIR
-# GLOPERATE_QTWIDGETS_BINARIES
-# GLOPERATE_QTWIDGETS_BINARY_[RELEASE|DEBUG]
-
-# GLOPERATE_QTAPPLICATION_LIBRARIES
-# GLOPERATE_QTAPPLICATION_LIBRARY_[RELEASE|DEBUG]
-# GLOPERATE_QTAPPLICATION_INCLUDE_DIR
-# GLOPERATE_QTAPPLICATION_BINARIES
-# GLOPERATE_QTAPPLICATION_BINARY_[RELEASE|DEBUG]
-
 # GLOPERATE_GLFW_LIBRARIES
 # GLOPERATE_GLFW_LIBRARY_[RELEASE|DEBUG]
 # GLOPERATE_GLFW_INCLUDE_DIR
@@ -162,8 +150,6 @@ endmacro()
 
 find(gloperate gloperate/gloperate_api.h ${LIB_PATHS})
 find(gloperate-qt gloperate-qt/gloperate-qt_api.h ${LIB_PATHS})
-find(gloperate-qtwidgets gloperate-qtwidgets/gloperate-qtwidgets_api.h ${LIB_PATHS})
-find(gloperate-qtapplication gloperate-qtapplication/gloperate-qtapplication_api.h ${LIB_PATHS})
 find(gloperate-glfw gloperate-glfw/gloperate-glfw_api.h ${LIB_PATHS})
 find(gloperate-osg gloperate-osg/gloperate-osg_api.h ${LIB_PATHS})
 find(gloperate-assimp gloperate-assimp/gloperate-assimp_api.h ${LIB_PATHS})

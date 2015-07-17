@@ -1,10 +1,15 @@
+
 #pragma once
+
 
 #include <utility>
 #include <vector>
 #include <unordered_map>
 
-namespace collection {
+
+namespace collection
+{
+
 
 template <typename InputIterator, typename Mapper>
 auto collect(InputIterator first, InputIterator last, Mapper mapper) -> std::vector<decltype(mapper(std::declval<typename InputIterator::value_type>()))>
@@ -120,5 +125,6 @@ auto detect(const Collection & collection, Detector detector, Default d) -> decl
 {
     return detect(collection.begin(), collection.end(), detector, d);
 }
+
 
 } // namespace collection

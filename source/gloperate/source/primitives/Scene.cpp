@@ -1,9 +1,12 @@
 
 #include <gloperate/primitives/Scene.h>
-#include <gloperate/primitives/PolygonalGeometry.h>
 #include <gloperate/primitives/Light.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
+
+#include <gloperate/primitives/PolygonalGeometry.h>
 
 
 namespace gloperate
@@ -56,5 +59,6 @@ std::vector<Light *>& Scene::lights()
 {
     return m_lights;
 }
+
 
 } // namespace gloperate

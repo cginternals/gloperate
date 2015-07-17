@@ -1,29 +1,23 @@
+
 #include <gloperate/navigation/navigationmath.h>
 
-//#include <cassert>
-
+#include <gloperate/ext-includes-begin.h>
 #include <glm/gtx/norm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/primitives/AxisAlignedBoundingBox.h>
 
+
 using namespace glm;
+
 
 namespace gloperate
 {
 
+
 namespace navigationmath
 {
 
-//void retrieveNearAndFarPlane(
-//    const vec3 & camera
-//,   const vec3 & center
-//,   const Boundary & boundary
-//,   float & zNear
-//,   float & zFar)
-//{
-//    assert(zNear > 0.);
-//    assert(zFar > zNear);
-//}
 
 vec3 rayPlaneIntersection(
 	bool & valid
@@ -226,6 +220,8 @@ float distanceToClosestPoint(
     return theta / m; // distance from camera to closest point c;
 }
 
+
 } // namespace navigationamth
+
 
 } // namespace gloperate

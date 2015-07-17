@@ -1,10 +1,13 @@
 
 #pragma once
 
+
 #include <gloperate/painter/AbstractCapability.h>
+
 
 namespace gloperate
 {
+
 
 template <typename T>
 bool AbstractCapability::is() const
@@ -17,5 +20,6 @@ T* AbstractCapability::as()
 {
     return dynamic_cast<T*>(this);
 }
+
 
 }

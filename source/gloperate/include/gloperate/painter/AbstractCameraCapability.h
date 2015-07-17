@@ -2,13 +2,15 @@
 #pragma once
 
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/ext-includes-begin.h>
+#include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
+
 #include <gloperate/painter/AbstractCapability.h>
 
-#include <glm/glm.hpp>
 
-
-namespace gloperate {
+namespace gloperate
+{
 
 
 class AbstractViewportCapability;

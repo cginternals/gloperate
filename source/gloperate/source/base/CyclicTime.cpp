@@ -1,15 +1,19 @@
+
 #include <gloperate/base/CyclicTime.h>
 
 #include <cmath>
 #include <chrono>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/common.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/base/ChronoTimer.h>
 
 
 namespace gloperate
 {
+
 
 long CyclicTime::systemUtcOffset()
 {
@@ -258,5 +262,6 @@ void CyclicTime::setUtcOffset(const time_t & utcOffset)
 {
     m_utcOffset = utcOffset;
 }
+
 
 } // namespace gloperate

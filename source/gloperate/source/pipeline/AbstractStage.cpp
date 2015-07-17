@@ -1,3 +1,4 @@
+
 #include <gloperate/pipeline/AbstractStage.h>
 
 #include <iostream>
@@ -10,6 +11,7 @@
 
 namespace gloperate
 {
+
 
 AbstractStage::AbstractStage(const std::string & name)
 : m_enabled(true)
@@ -251,5 +253,6 @@ void AbstractStage::addDependency(AbstractStage * stage)
     m_dependencies.insert(stage);
     dependenciesChanged();
 }
+
 
 } // namespace gloperate

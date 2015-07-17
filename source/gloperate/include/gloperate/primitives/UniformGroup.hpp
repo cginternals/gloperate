@@ -1,10 +1,13 @@
+
 #pragma once
+
 
 #include <gloperate/primitives/UniformGroup.h>
 
 
 namespace gloperate
 {
+
 
 template <typename T>
 globjects::Uniform<T> * UniformGroup::uniform(const std::string & name)
@@ -29,5 +32,6 @@ const globjects::Uniform<T> * UniformGroup::uniform(const std::string & name) co
 
     return nullptr;
 }
+
 
 } // namespace gloperate

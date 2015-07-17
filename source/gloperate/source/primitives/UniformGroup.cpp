@@ -1,3 +1,4 @@
+
 #include <gloperate/primitives/UniformGroup.h>
 
 #include <cassert>
@@ -9,8 +10,10 @@
 
 using namespace globjects;
 
+
 namespace gloperate
 {
+
 
 UniformGroup::UniformGroup()
 {
@@ -39,5 +42,6 @@ void UniformGroup::addToProgram(Program * program)
     for (std::pair<std::string, globjects::ref_ptr<AbstractUniform>> pair : m_uniforms)
         program->addUniform(pair.second);
 }
+
 
 } // namespace gloperate

@@ -1,14 +1,17 @@
 
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/painter/AbstractViewportCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 PerspectiveProjectionCapability::PerspectiveProjectionCapability(AbstractViewportCapability * viewportCapability)

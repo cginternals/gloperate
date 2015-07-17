@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <chrono>
@@ -9,6 +10,7 @@
 
 namespace gloperate_glfw
 {
+
 
 class Window;
 
@@ -37,6 +39,8 @@ public:
     ,   Timer
     };
 
+
+public:
     virtual ~WindowEvent();
 
     Type type() const;
@@ -51,8 +55,10 @@ public:
     Window * window() const;
     void setWindow(Window *window);
 
+
 protected:
     WindowEvent(Type type);
+
 
 protected:
     Type m_type;
@@ -73,6 +79,7 @@ public:
     int action() const;
     int modifiers() const;
     unsigned int character() const;
+
 
 protected:
     int m_key;
@@ -97,6 +104,7 @@ public:
 
     int x() const;
     int y() const;
+
 
 protected:
     int m_button;
@@ -129,6 +137,7 @@ public:
     const glm::vec2 & offset() const;
     const glm::ivec2 & pos() const;
 
+
 protected:
     glm::vec2 m_offset;
     glm::ivec2 m_pos;
@@ -145,6 +154,7 @@ public:
     int x() const;
     int y() const;
 
+
 protected:
     glm::ivec2 m_pos;
 };
@@ -159,6 +169,7 @@ public:
 
     int width() const;
     int height() const;
+
 
 protected:
     glm::ivec2 m_size;
@@ -185,6 +196,7 @@ public:
 
     bool hasFocus() const;
 
+
 protected:
     bool m_hasFocus;
 };
@@ -197,6 +209,7 @@ public:
 
     bool isIconified() const;
 
+
 protected:
     bool m_isIconified;
 };
@@ -207,14 +220,18 @@ class GLOPERATE_GLFW_API TimerEvent : public WindowEvent
 public:
     using Duration = std::chrono::duration<double, std::milli>;
 
+
+public:
     TimerEvent(int id, const Duration & elapsed);
 
     int id() const;
     const Duration & elapsed() const;
 
+
 protected:
     int m_id;
     Duration m_elapsed;
 };
+
 
 } // namespace gloperate_glfw
