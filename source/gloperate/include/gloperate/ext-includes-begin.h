@@ -6,4 +6,5 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch"
+#pragma GCC diagnostic ignored "-Wcast-qual"
 #endif
