@@ -68,6 +68,8 @@ void DefaultMapping::initializeTools()
     m_metaInformationCapability = nullptr;
     m_viewportCapability = nullptr;
     m_typedRenderTargetCapability = nullptr;
+    m_coordProvider = nullptr;
+    m_navigation = nullptr;
 
     if (!m_painter)
     {
