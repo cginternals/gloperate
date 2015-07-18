@@ -162,7 +162,8 @@ void PluginManager::scan(const std::string & identifier, bool reload)
             continue;
 
         // Check if library name corresponds to search criteria
-        if (identifier.empty() || file.find(identifier, file.find_last_of(g_sep)) != std::string::npos)
+        std::string query = identifier + "." + g_ext;
+        if (identifier.empty() || file.find(query, file.find_last_of(g_sep)) != std::string::npos)
             loadLibrary(file, reload);
     }
 
