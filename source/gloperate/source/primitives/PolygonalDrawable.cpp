@@ -54,13 +54,15 @@ PolygonalDrawable::PolygonalDrawable(const PolygonalGeometry & geometry)
     m_vao = new globjects::VertexArray;
     m_vao->bind();
 
-    m_indices->bind(GL_ELEMENT_ARRAY_BUFFER);
+	m_indices->bind(GL_ELEMENT_ARRAY_BUFFER);
 
-    auto vertexBinding = m_vao->binding(0);
-    vertexBinding->setAttribute(0);
-    vertexBinding->setBuffer(m_vertices, 0, sizeof(glm::vec3));
-    vertexBinding->setFormat(3, gl::GL_FLOAT);
-    m_vao->enable(0);
+	{
+		auto vertexBinding = m_vao->binding(0);
+		vertexBinding->setAttribute(0);
+		vertexBinding->setBuffer(m_vertices, 0, sizeof(glm::vec3));
+		vertexBinding->setFormat(3, gl::GL_FLOAT);
+		m_vao->enable(0);
+	}
 
     if (geometry.hasNormals())
     {

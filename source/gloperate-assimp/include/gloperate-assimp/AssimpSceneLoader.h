@@ -5,7 +5,7 @@
 #include <gloperate/resources/Loader.h>
 
 #include <gloperate-assimp/gloperate-assimp_api.h>
-
+#include <glm/mat4x2.hpp>
 
 struct aiMesh;
 struct aiScene;
@@ -75,7 +75,7 @@ protected:
     *  @return
     *    Mesh, must be destroyed by the caller
     */
-    gloperate::PolygonalGeometry * convertGeometry(const aiMesh * mesh) const;
+	gloperate::PolygonalGeometry * convertGeometry(const aiMesh * mesh, const glm::mat4 & transformation) const;
     gloperate::Light * convertLight(const aiScene * scene, const aiLight * light) const;
 };
 

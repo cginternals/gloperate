@@ -149,7 +149,29 @@ Scene * AssimpSceneLoader::convertScene(const aiScene * scene) const
     // Convert meshes from the scene
     for (size_t i = 0; i < scene->mNumMeshes; ++i)
     {
-        sceneOut->meshes().push_back(convertGeometry(scene->mMeshes[i]));
+		auto mesh = scene->mMeshes[i];
+		
+		auto node = scene->mRootNode->FindNode(mesh->mName);
+		aiMatrix4x4 transformation;
+		while(node != nullptr)
+		{
+			transformation *= node->mTransformation;
+			node = node->mParent;
+		};
+
+		glm::mat4 glmTransformation;
+		{
+			glmTransformation[0][0] = transformation.a1; glmTransformation[1][0] = transformation.a2;
+			glmTransformation[2][0] = transformation.a3; glmTransformation[3][0] = transformation.a4;
+			glmTransformation[0][1] = transformation.b1; glmTransformation[1][1] = transformation.b2;
+			glmTransformation[2][1] = transformation.b3; glmTransformation[3][1] = transformation.b4;
+			glmTransformation[0][2] = transformation.c1; glmTransformation[1][2] = transformation.c2;
+			glmTransformation[2][2] = transformation.c3; glmTransformation[3][2] = transformation.c4;
+			glmTransformation[0][3] = transformation.d1; glmTransformation[1][3] = transformation.d2;
+			glmTransformation[2][3] = transformation.d3; glmTransformation[3][3] = transformation.d4;
+		}
+
+        sceneOut->meshes().push_back(convertGeometry(scene->mMeshes[i], glmTransformation));
     }
 
     for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
@@ -186,7 +208,7 @@ gloperate::Light * AssimpSceneLoader::convertLight(const aiScene * scene, const 
         position *= node->mTransformation;
         dir *= node->mTransformation;
         node = node->mParent;
-    }while(node != nullptr);
+    } while(node != nullptr);
 
     lightOut->position(glm::vec3(position.x, position.y, position.z));
     dir -= position;
@@ -208,7 +230,7 @@ gloperate::Light * AssimpSceneLoader::convertLight(const aiScene * scene, const 
 
 }
 
-PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh) const
+PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh, const glm::mat4 & transformation) const
 {
     // Create geometry
     PolygonalGeometry * geometry = new PolygonalGeometry;
@@ -228,8 +250,7 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh) cons
     for (size_t i = 0; i < mesh->mNumVertices; ++i)
     {
         const auto & vertex = mesh->mVertices[i];
-        //TODO transform vertices
-        vertices.push_back({ vertex.x, vertex.y, vertex.z });
+		vertices.push_back(glm::vec3(transformation * glm::vec4(vertex.x, vertex.y, vertex.z, 1)));
     }
     geometry->setVertices(std::move(vertices));
 
@@ -240,8 +261,9 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh) cons
         std::vector<glm::vec3> normals;
         for (size_t i = 0; i < mesh->mNumVertices; ++i)
         {
-            const auto & normal = mesh->mNormals[i];
-            normals.push_back({ normal.x, normal.y, normal.z });
+            auto vertexAndNormal = mesh->mNormals[i] + mesh->mVertices[i];
+			auto transformedVertexAndNormal = glm::vec3(transformation * glm::vec4(vertexAndNormal.x, vertexAndNormal.y, vertexAndNormal.z, 1.f));
+			normals.push_back(glm::normalize(transformedVertexAndNormal - geometry->vertices()[i]));
         }
         geometry->setNormals(std::move(normals));
     }
