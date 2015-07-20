@@ -181,10 +181,10 @@ PolygonalGeometry * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
     // Is the mesh rigged?
     if (mesh->HasBones())
     {
-        //TODO: Load the Bones, the mapping and the bind-matrices into the polgeom
+        const int noneValue = -1;
         std::map<std::string,size_t> boneMapping;
         std::vector<glm::mat4> bindTransforms;
-        std::vector<glm::ivec4> vertexBoneIndices(mesh->mNumVertices,glm::ivec4(-1));
+        std::vector<glm::ivec4> vertexBoneIndices(mesh->mNumVertices,glm::ivec4(noneValue));
         std::vector<glm::vec4> vertexBoneWeights(mesh->mNumVertices);
         auto insertWeight = [&](int BoneId, int vertId, float weight)
         {
@@ -192,7 +192,7 @@ PolygonalGeometry * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
             //Only the 4 weights are stored,empty entries are marked with -1 in BoneIndex
             for(size_t i = 0; i < 4; i++)
             {
-                if(vertexBoneIndices[vertId][i] == -1)
+                if(vertexBoneIndices[vertId][i] == noneValue)
                 {
                     vertexBoneIndices[vertId][i] = BoneId;
                     vertexBoneWeights[vertId][i] = weight;

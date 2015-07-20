@@ -149,7 +149,8 @@ Scene * AssimpSceneLoader::convertScene(const aiScene * scene) const
     if (scene->HasAnimations())
     {
         //Get the Bone hierarchy
-        sceneOut->boneHierarchy() = std::shared_ptr<BoneNode>{convertBoneHierarchy(scene->mRootNode)};
+        BoneNode* hierarchy = convertBoneHierarchy(scene->mRootNode);
+        sceneOut->setBoneHierarchy(std::shared_ptr<BoneNode>{hierarchy});
         //Get the animations out of the file
         sceneOut->animations().resize(scene->mNumAnimations);
         for (size_t i = 0; i< scene->mNumAnimations; ++i)
