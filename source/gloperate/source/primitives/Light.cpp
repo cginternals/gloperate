@@ -16,11 +16,11 @@ Light::Light(const Light & other)
     , m_type(other.m_type)
     , m_position(other.m_position)
     , m_direction(other.m_direction)
+    , m_colorDiffuse( other.m_colorDiffuse)
+    , m_colorSpecular( other.m_colorSpecular)
     , m_attenuationConstant(other.m_attenuationConstant)
     , m_attenuationLinear(other.m_attenuationLinear)
     , m_attenuationQuadratic(other.m_attenuationQuadratic)
-    , m_colorDiffuse( other.m_colorDiffuse)
-    , m_colorSpecular( other.m_colorSpecular)
     , m_cosineCutoff(other.m_cosineCutoff)
 {
 }
