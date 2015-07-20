@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <memory>
@@ -11,13 +12,34 @@
 namespace gloperate
 {
 
+
 class AbstractData;
 class AbstractStage;
 class AbstractInputSlot;
+
 template <typename T>
 class Data;
 
 
+/**
+*  @brief
+*    Rendering pipeline
+*
+*    A pipeline describes a rendering or computation process.
+*    It contains a number of stages, which are executed in a
+*    defined order and only when needed.
+*
+*    Rendering stages provide data containers and input
+*    slots, which can be connected to each other. Using
+*    these data objects, a stage announces which input and
+*    output data it needs or provides. Using this, it can be
+*    determined which stage has to be executed and in what order
+*    the stages are processed.
+*
+*  @see AbstractStage
+*  @see Data
+*  @see InputSlot
+*/
 class GLOPERATE_API AbstractPipeline
 {
 public:
@@ -77,12 +99,14 @@ public:
 
     std::set<AbstractData *> unusedParameters();
 
+
 protected: 
     bool sortDependencies();
     void addStages();
     bool initializeStages();
 
     static bool tsort(std::vector<AbstractStage *> &stages);
+
 
 protected:
     bool m_initialized;
@@ -94,6 +118,8 @@ protected:
     bool m_dependenciesSorted;
 };
 
+
 } // namespace gloperate
+
 
 #include <gloperate/pipeline/AbstractPipeline.hpp>

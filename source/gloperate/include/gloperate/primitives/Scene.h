@@ -128,6 +128,7 @@ public:
     std::shared_ptr<BoneNode> boneHierarchy() const;
     void setBoneHierarchy(std::shared_ptr<BoneNode> boneHierarchy);
 
+
 protected:
     std::vector<PolygonalGeometry *> m_meshes;        /**< Mesh array */
     std::map<unsigned int, std::string> m_materials;  /**< Materials map */

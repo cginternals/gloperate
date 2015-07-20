@@ -1,3 +1,4 @@
+
 #include <gloperate/base/AutoTimer.h>
 
 #include <cmath>
@@ -18,10 +19,13 @@ namespace
     const char units[3] = { 'n', 'u', 'm' };
 }
 
+
 namespace gloperate
 {
 
+
 int AutoTimer::s_numActiveInstances = 0;
+
 
 AutoTimer::AutoTimer(const std::string & info)
 :   m_info(info)
@@ -57,5 +61,6 @@ AutoTimer::~AutoTimer()
 
     --s_numActiveInstances;
 }
+
 
 } // namespace gloperate

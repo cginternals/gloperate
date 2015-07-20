@@ -10,8 +10,8 @@ using namespace gloperate;
 using namespace gloperate_osg;
 
 
-OsgScene::OsgScene(gloperate::ResourceManager & resourceManager)
-: OsgPainter(resourceManager)
+OsgScene::OsgScene(gloperate::ResourceManager & resourceManager, const std::string & relDataPath)
+: OsgPainter("osgScene", resourceManager, relDataPath)
 {
 }
 
@@ -23,7 +23,7 @@ void OsgScene::onInitialize()
 {
     OsgPainter::onInitialize();
 
-    setScene(osgDB::readNodeFile("data/osg-scene/cow.osg"));
+    setScene(osgDB::readNodeFile(m_relDataPath + "data/osg-scene/cow.osg"));
 
     viewer()->setCameraManipulator(new osgGA::TrackballManipulator());
 

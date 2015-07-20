@@ -1,3 +1,4 @@
+
 #include <gloperate/pipeline/InputSlot.h>
 
 #include <iostream>
@@ -5,6 +6,7 @@
 
 namespace gloperate 
 {
+
 
 void printIncompatibleMessage(
     const AbstractInputSlot * slot, 
@@ -18,5 +20,6 @@ void printIncompatibleMessage(
         << slot->qualifiedName() << " (" << typeName << ")"
         << std::endl;
 }
+
 
 } // namespace gloperate

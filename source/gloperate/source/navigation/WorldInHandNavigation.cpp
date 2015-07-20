@@ -1,20 +1,20 @@
+
 #include <gloperate/navigation/WorldInHandNavigation.h>
 
 #include <cassert>
+#include <iostream>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <gloperate/ext-includes-end.h>
 
-//#include <gloperate/Camera.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
-#include <gloperate/tools/CoordinateProvider.h>
 #include <gloperate/tools/DepthExtractor.h>
-
-//#include "MathMacros.h"
+#include <gloperate/navigation/CoordinateProvider.h>
 #include <gloperate/navigation/navigationmath.h>
 
-#include <iostream>
 
 namespace
 {
@@ -37,8 +37,10 @@ namespace
     static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * glm::pi<float>();
 }
 
+
 namespace gloperate
 {
+
 
 WorldInHandNavigation::WorldInHandNavigation(
     AbstractCameraCapability & cameraCapability, 
@@ -441,5 +443,6 @@ void WorldInHandNavigation::enforceRotationConstraints(
 //
 //    setDirty();
 //}
+
 
 } // namespace gloperate

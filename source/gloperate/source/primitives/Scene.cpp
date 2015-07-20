@@ -1,8 +1,11 @@
 
 #include <gloperate/primitives/Scene.h>
-#include <gloperate/primitives/PolygonalGeometry.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
+
+#include <gloperate/primitives/PolygonalGeometry.h>
 
 
 namespace gloperate
@@ -65,5 +68,6 @@ std::map<unsigned, std::string>& Scene::materials()
 {
 	return m_materials;
 }
+
 
 } // namespace gloperate

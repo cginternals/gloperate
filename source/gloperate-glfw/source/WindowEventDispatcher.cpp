@@ -1,3 +1,4 @@
+
 #include <gloperate-glfw/WindowEventDispatcher.h>
 
 #include <cassert>
@@ -13,6 +14,12 @@
 
 namespace gloperate_glfw
 {
+
+
+WindowEventDispatcher::WindowTimerMap WindowEventDispatcher::s_timers;
+std::chrono::high_resolution_clock::time_point WindowEventDispatcher::s_time;
+std::chrono::high_resolution_clock WindowEventDispatcher::s_clock;
+
 
 WindowEventDispatcher::Timer::Timer()
 : interval(0)
@@ -37,10 +44,6 @@ void WindowEventDispatcher::Timer::reset()
 {
     elapsed = Duration(0);
 }
-
-WindowEventDispatcher::WindowTimerMap WindowEventDispatcher::s_timers;
-std::chrono::high_resolution_clock::time_point WindowEventDispatcher::s_time;
-std::chrono::high_resolution_clock WindowEventDispatcher::s_clock;
 
 void WindowEventDispatcher::registerWindow(Window* window)
 {

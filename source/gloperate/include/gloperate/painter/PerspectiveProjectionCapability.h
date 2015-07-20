@@ -2,15 +2,17 @@
 #pragma once
 
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <globjects/base/CachedValue.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractPerspectiveProjectionCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 /**

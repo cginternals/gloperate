@@ -29,7 +29,6 @@ option(OPTION_PORTABLE_INSTALL  "Install to a local directory instead of the sys
 option(OPTION_BUILD_STATIC      "Build static libraries" OFF)
 option(OPTION_BUILD_TESTS       "Build tests (if gmock and gtest are found)" ON)
 option(OPTION_BUILD_EXAMPLES    "Build examples (requires optional module glfw and/or Qt5)" OFF)
-option(OPTION_BUILD_TOOLS       "Build tools (requires optional module Qt5)" OFF)
 
 
 if(OPTION_BUILD_STATIC)
@@ -87,6 +86,12 @@ endif()
 # For now the current compile-flag, -definitions, and linker-flags setup shall remain as is.
 if(POLICY CMP0043)
     cmake_policy(SET CMP0043 OLD)
+endif()
+
+# This policy was introduced in 3.0.0
+# Policy CMP0028 is not set: Double colon in target name means ALIAS or IMPORTED target.
+if (POLICY CMP0028)
+    cmake_policy(SET CMP0028 NEW)
 endif()
 
 # Setup platform specifics (compile flags, etc., ...)

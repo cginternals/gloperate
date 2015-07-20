@@ -1,3 +1,4 @@
+
 #include <gloperate/plugin/plugin_api.h>
 
 #include "osg-scene/OsgScene.h"
@@ -5,7 +6,7 @@
 
 GLOPERATE_PLUGIN_LIBRARY
 
-    GLOPERATE_PLUGIN(OsgScene
+    GLOPERATE_PAINTER_PLUGIN(OsgScene
     , "OsgScene"
     , "Load a simple OSG scene"
     , "gloperate team"

@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <unordered_map>
 #include <string>
@@ -16,9 +18,19 @@ namespace globjects
     class Program;
 }
 
+
 namespace gloperate
 {
 
+
+/**
+*  @brief
+*    Uniform group helper
+*
+*    A uniform group defines a number of uniforms and their
+*    values and can be used to synchronize common uniforms
+*    between different programs.
+*/
 class GLOPERATE_API UniformGroup
 {
 public:
@@ -34,9 +46,11 @@ public:
     void addUniform(globjects::AbstractUniform * uniform);
     void addToProgram(globjects::Program * program);
 
+
 protected:
     std::unordered_map<std::string, globjects::ref_ptr<globjects::AbstractUniform>> m_uniforms;
 };
+
 
 } // namespace gloperate
 

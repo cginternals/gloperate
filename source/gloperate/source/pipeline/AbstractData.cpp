@@ -1,3 +1,4 @@
+
 #include <gloperate/pipeline/AbstractData.h>
 
 #include <algorithm>
@@ -8,6 +9,7 @@
 
 namespace gloperate 
 {
+
 
 AbstractData::AbstractData(const std::string & name)
 : m_owner(nullptr)
@@ -83,5 +85,6 @@ bool AbstractData::matchesName(const std::string & name) const
 {
     return this->name() == name;
 }
+
 
 } // namespace gloperate
