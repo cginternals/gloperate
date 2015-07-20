@@ -7,8 +7,6 @@
 
 #include <gloperate/ext-includes-begin.h>
 
-#include <glm/glm.hpp>
-
 #include <assimp/scene.h>
 #include <assimp/cimport.h>
 #include <assimp/matrix4x4.h>
@@ -149,29 +147,10 @@ Scene * AssimpSceneLoader::convertScene(const aiScene * scene) const
     // Convert meshes from the scene
     for (size_t i = 0; i < scene->mNumMeshes; ++i)
     {
-		auto mesh = scene->mMeshes[i];
-		
-		auto node = scene->mRootNode->FindNode(mesh->mName);
-		aiMatrix4x4 transformation;
-		while(node != nullptr)
-		{
-			transformation *= node->mTransformation;
-			node = node->mParent;
-		};
-
-		glm::mat4 glmTransformation;
-		{
-			glmTransformation[0][0] = transformation.a1; glmTransformation[1][0] = transformation.a2;
-			glmTransformation[2][0] = transformation.a3; glmTransformation[3][0] = transformation.a4;
-			glmTransformation[0][1] = transformation.b1; glmTransformation[1][1] = transformation.b2;
-			glmTransformation[2][1] = transformation.b3; glmTransformation[3][1] = transformation.b4;
-			glmTransformation[0][2] = transformation.c1; glmTransformation[1][2] = transformation.c2;
-			glmTransformation[2][2] = transformation.c3; glmTransformation[3][2] = transformation.c4;
-			glmTransformation[0][3] = transformation.d1; glmTransformation[1][3] = transformation.d2;
-			glmTransformation[2][3] = transformation.d3; glmTransformation[3][3] = transformation.d4;
-		}
-
-        sceneOut->meshes().push_back(convertGeometry(scene->mMeshes[i], glmTransformation));
+        auto mesh = scene->mMeshes[i];        
+        auto meshNode = scene->mRootNode->FindNode(mesh->mName);
+        auto transformation = determineTransformation(meshNode);
+        sceneOut->meshes().push_back(convertGeometry(mesh, transformation));
     }
 
     for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
@@ -186,48 +165,32 @@ Scene * AssimpSceneLoader::convertScene(const aiScene * scene) const
 
     for (size_t i = 0; i < scene->mNumLights; ++i)
     {
-        sceneOut->lights().push_back(convertLight(scene, scene->mLights[i]));
+        auto light = scene->mLights[i];
+        auto lightNode = scene->mRootNode->FindNode(light->mName);
+        auto transformation = determineTransformation(lightNode);
+        sceneOut->lights().push_back(convertLight(light, transformation));
     }
 
     // Return scene
     return sceneOut;
 }
 
-gloperate::Light * AssimpSceneLoader::convertLight(const aiScene * scene, const aiLight * light) const
+glm::mat4 AssimpSceneLoader::determineTransformation(const aiNode* node) const
 {
-    auto lightOut = new Light;
-    lightOut->type(static_cast<int>(light->mType));
-    lightOut->name(std::string(light->mName.data));
-
-    auto node = scene->mRootNode->FindNode(light->mName);
-    auto position = light->mPosition;
-    auto dir = light->mDirection;
-    dir.z += 1.f;
-    do
+    aiMatrix4x4 transformation;
+    auto currentNode = node;
+    while (currentNode != nullptr)
     {
-        position *= node->mTransformation;
-        dir *= node->mTransformation;
-        node = node->mParent;
-    } while(node != nullptr);
+        transformation *= currentNode->mTransformation;
+        currentNode = currentNode->mParent;
+    }
 
-    lightOut->position(glm::vec3(position.x, position.y, position.z));
-    dir -= position;
-    dir.Normalize();
-    lightOut->direction(glm::vec3(dir.x, dir.y, dir.z));
-
-    auto colorDiff = light->mColorDiffuse;
-    lightOut->colorDiffuse(glm::vec3(colorDiff.r, colorDiff.g, colorDiff.b) / 255.f);
-
-    auto colorSpec = light->mColorSpecular;
-    lightOut->colorSpecular(glm::vec3(colorSpec.r, colorSpec.g, colorSpec.b) / 255.f);
-
-    lightOut->attenuationConst(light->mAttenuationConstant);
-    lightOut->attenuationLinear(light->mAttenuationLinear);
-    lightOut->attenuationQuad(light->mAttenuationQuadratic);
-    lightOut->cosinusCutOff(abs(cos(light->mAngleInnerCone)));
-
-    return lightOut;
-
+    return glm::mat4{
+        transformation.a1, transformation.b1, transformation.c1, transformation.d1,
+        transformation.a2, transformation.b2, transformation.c2, transformation.d2,
+        transformation.a3, transformation.b3, transformation.c3, transformation.d3,
+        transformation.a4, transformation.b4, transformation.c4, transformation.d4,
+    };
 }
 
 PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh, const glm::mat4 & transformation) const
@@ -250,7 +213,7 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh, cons
     for (size_t i = 0; i < mesh->mNumVertices; ++i)
     {
         const auto & vertex = mesh->mVertices[i];
-		vertices.push_back(glm::vec3(transformation * glm::vec4(vertex.x, vertex.y, vertex.z, 1)));
+        vertices.push_back(glm::vec3(transformation * glm::vec4(vertex.x, vertex.y, vertex.z, 1)));
     }
     geometry->setVertices(std::move(vertices));
 
@@ -262,8 +225,8 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh, cons
         for (size_t i = 0; i < mesh->mNumVertices; ++i)
         {
             auto vertexAndNormal = mesh->mNormals[i] + mesh->mVertices[i];
-			auto transformedVertexAndNormal = glm::vec3(transformation * glm::vec4(vertexAndNormal.x, vertexAndNormal.y, vertexAndNormal.z, 1.f));
-			normals.push_back(glm::normalize(transformedVertexAndNormal - geometry->vertices()[i]));
+            auto transformedVertexAndNormal = glm::vec3(transformation * glm::vec4(vertexAndNormal.x, vertexAndNormal.y, vertexAndNormal.z, 1.f));
+            normals.push_back(glm::normalize(transformedVertexAndNormal - geometry->vertices()[i]));
         }
         geometry->setNormals(std::move(normals));
     }
@@ -288,5 +251,34 @@ PolygonalGeometry * AssimpSceneLoader::convertGeometry(const aiMesh * mesh, cons
     return geometry;
 }
 
+
+Light * AssimpSceneLoader::convertLight(const aiLight * light, const glm::mat4 & transformation) const
+{
+    auto lightOut = new Light;
+    lightOut->setType(static_cast<LightSourceType>(light->mType));
+    lightOut->setName(std::string(light->mName.data));
+
+    auto position = light->mPosition;
+    auto transformedPosition = glm::vec3(transformation * glm::vec4(position.x, position.y, position.z, 1));
+    lightOut->setPosition(transformedPosition);
+
+    auto direction = light->mDirection;
+    auto positionAndDirection = position + direction;
+    auto transformedPositionAndDirection = glm::vec3(transformation * glm::vec4(positionAndDirection.x, positionAndDirection.y, positionAndDirection.z, 1.f));
+    lightOut->setDirection(glm::normalize(transformedPositionAndDirection - transformedPosition));
+
+    auto colorDiffuse = light->mColorDiffuse;
+    lightOut->setColorDiffuse(glm::vec3(colorDiffuse.r, colorDiffuse.g, colorDiffuse.b) / 255.f);
+
+    auto colorSpecular = light->mColorSpecular;
+    lightOut->setColorSpecular(glm::vec3(colorSpecular.r, colorSpecular.g, colorSpecular.b) / 255.f);
+
+    lightOut->setAttenuationConstant(light->mAttenuationConstant);
+    lightOut->setAttenuationLinear(light->mAttenuationLinear);
+    lightOut->setAttenuationQuadratic(light->mAttenuationQuadratic);
+    lightOut->setCosineCutoff(abs(cos(light->mAngleInnerCone)));
+
+    return lightOut;
+}
 
 } // namespace gloperate_assimp

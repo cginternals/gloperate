@@ -1,27 +1,28 @@
 #include <gloperate/primitives/Light.h>
+
 namespace gloperate {
 
 Light::Light()
-    :	m_type                 (UNDIFINED)
-    ,	m_attenuationConstant  (0.f)
-    ,   m_attenuationLinear    (1.f)
-    ,   m_attenuationQuadratic (0.f)
-    ,   m_cosinusCutOff        (0.f)
+    : m_type (LightSourceType::Undefined)
+    , m_attenuationConstant(0.f)
+    , m_attenuationLinear(1.f)
+    , m_attenuationQuadratic(0.f)
+    , m_cosineCutoff(0.f)
 {
 }
 
-Light::Light(const Light & toCopy)
+Light::Light(const Light & other)
+    : m_name(other.m_name)
+    , m_type(other.m_type)
+    , m_position(other.m_position)
+    , m_direction(other.m_direction)
+    , m_attenuationConstant(other.m_attenuationConstant)
+    , m_attenuationLinear(other.m_attenuationLinear)
+    , m_attenuationQuadratic(other.m_attenuationQuadratic)
+    , m_colorDiffuse( other.m_colorDiffuse)
+    , m_colorSpecular( other.m_colorSpecular)
+    , m_cosineCutoff(other.m_cosineCutoff)
 {
-    m_type = toCopy.type();
-    m_name = toCopy.name();
-    m_position = toCopy.position();
-    m_direction = toCopy.direction();
-    m_colorDiffuse = toCopy.colorDiffuse();
-    m_colorSpecular = toCopy.colorSpecular();
-    m_attenuationConstant = toCopy.attenuationConst();
-    m_attenuationLinear = toCopy.attenuationLinear();
-    m_attenuationQuadratic = toCopy.attenuationQuad();
-    m_cosinusCutOff = toCopy.cosinusCutOff();
 }
 
 LightSourceType Light::type() const
@@ -54,7 +55,7 @@ glm::vec3 Light::colorSpecular() const
     return m_colorSpecular;
 }
 
-float Light::attenuationConst() const
+float Light::attenuationConstant() const
 {
     return m_attenuationConstant;
 }
@@ -64,62 +65,64 @@ float Light::attenuationLinear() const
     return m_attenuationLinear;
 }
 
-float Light::attenuationQuad() const
+float Light::attenuationQuadratic() const
 {
     return m_attenuationQuadratic;
 }
 
-float Light::cosinusCutOff() const
+float Light::cosineCutoff() const
 {
-    return m_cosinusCutOff;
+    return m_cosineCutoff;
 }
 
-void Light::type(int type){
-    m_type = LightSourceType(type);
+void Light::setType(LightSourceType type)
+{
+    m_type = type;
 }
 
-void Light::name(std::string name)
+void Light::setName(std::string name)
 {
     m_name = name;
 }
 
-void Light::position(glm::vec3 pos){
-    m_position = pos;
+void Light::setPosition(glm::vec3 position)
+{
+    m_position = position;
 }
 
-void Light::direction(glm::vec3 dir)
+void Light::setDirection(glm::vec3 direction)
 {
-    m_direction = dir;
+    m_direction = direction;
 }
 
-void Light::colorDiffuse(glm::vec3 colorDiff)
+void Light::setColorDiffuse(glm::vec3 colorDiffuse)
 {
-    m_colorDiffuse = colorDiff;
+    m_colorDiffuse = colorDiffuse;
 }
 
-void Light::colorSpecular(glm::vec3 colorSpec)
+void Light::setColorSpecular(glm::vec3 colorSpecular)
 {
-    m_colorSpecular = colorSpec;
+    m_colorSpecular = colorSpecular;
 }
 
-void Light::attenuationLinear(float attLin)
+void Light::setAttenuationLinear(float attenuationLinear)
 {
-    m_attenuationLinear = attLin;
+    m_attenuationLinear = attenuationLinear;
 }
 
-void Light::attenuationConst(float attConst)
+void Light::setAttenuationConstant(float attenuationConstant)
 {
-    m_attenuationConstant = attConst;
+    m_attenuationConstant = attenuationConstant;
 }
 
-void Light::attenuationQuad(float attQuad)
+void Light::setAttenuationQuadratic(float attenuationQuadratic)
 {
-    m_attenuationQuadratic = attQuad;
+    m_attenuationQuadratic = attenuationQuadratic;
 }
 
-void Light::cosinusCutOff(float cosCutOff)
+void Light::setCosineCutoff(float cosineCutoff)
 {
-    m_cosinusCutOff = cosCutOff;
+    m_cosineCutoff = cosineCutoff;
 }
 
 } // namespace gloperate
