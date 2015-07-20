@@ -124,17 +124,17 @@ void PolygonalGeometry::setVertexBoneWeights(std::vector<glm::vec4> && vertexBon
     m_vertexBoneWeights = std::move(vertexBoneWeights);
 }
 
-const std::vector<std::string> & PolygonalGeometry::boneMapping() const
+const std::map<std::string, size_t> & PolygonalGeometry::boneMapping() const
 {
     return m_boneMapping;
 }
 
-void PolygonalGeometry::setBoneMapping(const std::vector<std::string> & boneMapping)
+void PolygonalGeometry::setBoneMapping(const std::map<std::string,size_t> & boneMapping)
 {
     m_boneMapping = boneMapping;
 }
 
-void PolygonalGeometry::setBoneMapping(std::vector<std::string> && boneMapping)
+void PolygonalGeometry::setBoneMapping(std::map<std::string, size_t>&& boneMapping)
 {
     m_boneMapping = std::move(boneMapping);
 }

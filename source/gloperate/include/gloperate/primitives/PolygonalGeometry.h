@@ -1,8 +1,8 @@
-
 #pragma once
 
 
 #include <vector>
+#include <map>
 #include <string>
 
 #include <glm/fwd.hpp>
@@ -233,7 +233,7 @@ public:
     *  @return
     *    Normal array
     */
-    const std::vector<std::string> & boneMapping() const;
+    const std::map<std::string, size_t> & boneMapping() const;
 
     /**
     *  @brief
@@ -242,7 +242,7 @@ public:
     *  @param[in] normals
     *    Normal array
     */
-    void setBoneMapping(const std::vector<std::string> & boneMapping);
+    void setBoneMapping(const std::map<std::string, size_t> &boneMapping);
 
     /**
     *  @brief
@@ -251,7 +251,7 @@ public:
     *  @param[in] normals
     *    Normal array
     */
-    void setBoneMapping(std::vector<std::string> && boneMapping);
+    void setBoneMapping(std::map<std::string, size_t> &&boneMapping);
 
     /**
     *  @brief
@@ -305,7 +305,7 @@ protected:
     std::vector<glm::vec3>    m_textureCoordinates;   /**< Texture coordinate array */
     std::vector<glm::ivec4>   m_vertexBoneIndices;    /**< Indices per index > */
     std::vector<glm::vec4>    m_vertexBoneWeights;    /**< Weights per index > */
-    std::vector<std::string>  m_boneMapping;          /**< Mapping from string to boneIndex > */
+    std::map<std::string, size_t>  m_boneMapping;          /**< Mapping from string to boneIndex > */
     std::vector<glm::mat4>    m_bindTransforms;       /**< bind Matrices per bone > */
     unsigned int              m_materialIndex;        /**< Material index */
 };

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include <map>
 
 #include <glm/glm.hpp>
 
@@ -181,7 +182,7 @@ PolygonalGeometry * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
     if (mesh->HasBones())
     {
         //TODO: Load the Bones, the mapping and the bind-matrices into the polgeom
-        std::vector<std::string> boneMapping;
+        std::map<std::string,size_t> boneMapping;
         std::vector<glm::mat4> bindTransforms;
         std::vector<glm::ivec4> vertexBoneIndices(mesh->mNumVertices,glm::ivec4(-1));
         std::vector<glm::vec4> vertexBoneWeights(mesh->mNumVertices);
@@ -200,47 +201,40 @@ PolygonalGeometry * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
             }
         };
 
+        auto CopyaiMat = [](const aiMatrix4x4 &from, glm::mat4 &to) {
+            to[0][0] = from.a1; to[1][0] = from.a2;
+            to[2][0] = from.a3; to[3][0] = from.a4;
+            to[0][1] = from.b1; to[1][1] = from.b2;
+            to[2][1] = from.b3; to[3][1] = from.b4;
+            to[0][2] = from.c1; to[1][2] = from.c2;
+            to[2][2] = from.c3; to[3][2] = from.c4;
+            to[0][3] = from.d1; to[1][3] = from.d2;
+            to[2][3] = from.d3; to[3][3] = from.d4;
+        };
+
         int numBones = 0;
 
         for (size_t i = 0; i < mesh->mNumBones; i++)
         {
-            size_t BoneIndex = boneMapping.size();
-            std::string BoneName(mesh->mBones[i]->mName.C_Str());
-
-            for(size_t i = 0; i<boneMapping.size(); ++i)
+            std::string boneName(mesh->mBones[i]->mName.C_Str());
+            //Check whether this Bone was already there
+            if(boneMapping.count(boneName) == 1)
             {
-                if(BoneName == boneMapping[i])
-                {
-                    BoneIndex = i;
-                    break;
-                }
+                continue; //No need to process bones double so just save the trouble
             }
 
-            if(BoneIndex == boneMapping.size())
-            {
-                BoneIndex = numBones;
-                boneMapping.push_back(BoneName);
-                numBones++;
-                bindTransforms.push_back(glm::mat4());
-            }
+            //insert a new bone
+            size_t boneIndex = numBones;
+            numBones++;
+            boneMapping[boneName] = boneIndex;
+            bindTransforms.push_back(glm::mat4());
 
-            auto CopyaiMat = [](const aiMatrix4x4 &from, glm::mat4 &to) {
-                to[0][0] = from.a1; to[1][0] = from.a2;
-                to[2][0] = from.a3; to[3][0] = from.a4;
-                to[0][1] = from.b1; to[1][1] = from.b2;
-                to[2][1] = from.b3; to[3][1] = from.b4;
-                to[0][2] = from.c1; to[1][2] = from.c2;
-                to[2][2] = from.c3; to[3][2] = from.c4;
-                to[0][3] = from.d1; to[1][3] = from.d2;
-                to[2][3] = from.d3; to[3][3] = from.d4;
-            };
-
-            CopyaiMat(mesh->mBones[i]->mOffsetMatrix, bindTransforms[BoneIndex]);
+            CopyaiMat(mesh->mBones[i]->mOffsetMatrix, bindTransforms[boneIndex]);
 
             for(size_t j = 0; j < mesh->mBones[i]->mNumWeights; j++)
             {
                 auto curWeight = mesh->mBones[i]->mWeights[j];
-                insertWeight(BoneIndex, curWeight.mVertexId, curWeight.mWeight);
+                insertWeight(boneIndex, curWeight.mVertexId, curWeight.mWeight);
             }
 
         }

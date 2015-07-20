@@ -9,11 +9,15 @@
 
 struct aiMesh;
 struct aiScene;
+struct aiNode;
+struct aiAnimation;
 
 namespace gloperate
 {
     class Scene;
     class PolygonalGeometry;
+    struct RigAnimationTrack;
+    struct BoneNode;
 }
 
 
@@ -71,6 +75,31 @@ protected:
     *    Mesh, must be destroyed by the caller
     */
     gloperate::PolygonalGeometry * convertGeometry(const aiMesh * mesh) const;
+
+    /**
+    *  @brief
+    *    Convert ASSIMP bone hierarchy into gloperate bone hierarchy
+    *
+    *  @param[in] mesh
+    *    ASSIMP nodeHierarchy (must be valid!)
+    *
+    *  @return
+    *    bone hierarchy
+    */
+    gloperate::BoneNode* convertBoneHierarchy(const aiNode * root) const;
+
+    /**
+    *  @brief
+    *    Convert ASSIMP rig-animation into gloperate rig-animation
+    *
+    *  @param[in] mesh
+    *    ASSIMP animation (must be valid!)
+    *
+    *  @return
+    *    Animation Track
+    */
+    gloperate::RigAnimationTrack* convertRigAnimation(const aiAnimation * anim) const;
+
 };
 
 
