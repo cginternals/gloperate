@@ -345,6 +345,24 @@ void Viewer::setupCanvas()
     m_mapping->addProvider(wheelProvider);
 }
 
+void Viewer::show()
+{
+    // Call superclass function
+    QMainWindow::show();
+
+    // Resize window in order to show canvas correct
+    if (width() > 0)
+    {
+        QMainWindow::resize(QSize(width() - 1, height() - 1));
+        QMainWindow::resize(QSize(width() + 1, height() + 1));
+    }
+    else
+    {
+        QMainWindow::resize(QSize(width() + 1, height() + 1));
+        QMainWindow::resize(QSize(width() - 1, height() - 1));
+    }
+}
+
 void Viewer::setupScripting()
 {
     // Widgets have to be created beforehand
