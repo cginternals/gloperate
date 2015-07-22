@@ -66,7 +66,7 @@ void ScreenAligned::createAndSetupTexture()
     std::poisson_distribution<> r(0.2);
 
     for (int i = 0; i < w * h * 4; ++i) {
-        data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
+        data[i] = static_cast<unsigned char>((255 - static_cast<unsigned char>((r(generator) * 255) & 0xFF)) & 0xFF);
     }
 
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
