@@ -147,18 +147,19 @@ void PluginWidget::dropEvent(QDropEvent * dropEvent)
 void PluginWidget::resizeEvent(QResizeEvent * resizeEvent)
 {
     int tableSize = m_ui->pluginTableWidget->width();
+
     int numberOfColumns = m_ui->pluginTableWidget->columnCount();
-    int difference = resizeEvent->size().width() - resizeEvent->oldSize().width();
-    int delta = (int)difference / numberOfColumns;
+    int innerTableSize{ 0 };
+    for (int i = 0; i < numberOfColumns; i++)
+        innerTableSize += m_ui->pluginTableWidget->columnWidth(i);
+
+    int difference = resizeEvent->size().width() - resizeEvent->oldSize().width() + (tableSize - innerTableSize);
+    int delta = std::floor(difference / numberOfColumns);
 
     for (int columnIndex = 0; columnIndex < numberOfColumns - 1; columnIndex++)
     {
         m_ui->pluginTableWidget->setColumnWidth(columnIndex, m_ui->pluginTableWidget->columnWidth(columnIndex) + delta);
-        difference -= delta;
     }
-
-    if (numberOfColumns)
-        m_ui->pluginTableWidget->setColumnWidth(numberOfColumns - 1, m_ui->pluginTableWidget->columnWidth(numberOfColumns - 1) + difference);
 
     QWidget::resizeEvent(resizeEvent);
 }
