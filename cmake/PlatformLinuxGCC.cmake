@@ -43,16 +43,15 @@ set(LINUX_COMPILE_FLAGS
       -Werror       # ->
       
       -Wreturn-type 
-      -Wfloat-equal 
-      -Wcast-qual 
+      -Wno-cast-qual 
       -Wcast-align 
-      -Wconversion 
+      -Wno-conversion 
       -Wno-error=comment
       -Wno-error=strict-aliasing
 
-      -Wno-error=float-equal 
-      -Wno-error=conversion 
+      -Wno-float-equal 
       -Wno-pragmas
+      -Wno-float-conversion
 
     # -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
     # -Wshadow      # -> e.g. when a parameter is named like a member, too many warnings, disabled for now

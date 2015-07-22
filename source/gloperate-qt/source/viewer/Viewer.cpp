@@ -140,20 +140,19 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     // Restore plugin paths from settings
     auto paths = fromQStringList(settings.value(SETTINGS_PLUGINS).toStringList());
     if (paths.size() > 0) {
-        // Restore plugin paths
         m_pluginManager->setPaths(paths);
-    } else {
-        // Add default plugin directories
-        m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
-        #ifdef NDEBUG
-            m_pluginManager->addPath("plugins");
-        #else
-            m_pluginManager->addPath("plugins/debug");
-        #endif
     }
 
-    // Scan all plugins with name component 'painter'
-    m_pluginManager->scan("painter");
+    // Add default plugin directories
+    m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
+    m_pluginManager->addPath("plugins");
+
+    // Scan all plugins with name component 'painters'
+    #ifdef NDEBUG
+        m_pluginManager->scan("painters");
+    #else
+        m_pluginManager->scan("paintersd");
+    #endif
 
     // Setup scripting context
     setupScripting();

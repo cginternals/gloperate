@@ -119,7 +119,7 @@ PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, const r
         aiProcess_Triangulate           |
         aiProcess_JoinIdenticalVertices |
         aiProcess_SortByPType |
-        smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals);
+        (smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals));
 
     // Check for errors
     if (!scene)
