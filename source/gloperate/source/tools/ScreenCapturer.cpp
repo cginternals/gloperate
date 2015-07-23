@@ -1,5 +1,5 @@
 
-#include <gloperate/tools/ImageExporter.h>
+#include <gloperate/tools/ScreenCapturer.h>
 
 #include <cassert>
 
@@ -15,22 +15,22 @@ namespace gloperate
 {
 
 
-ImageExporter::ImageExporter(Painter * painter, ResourceManager & resourceManager)
-    : m_painter(painter)
-    , m_resourceManager(resourceManager)
-    , m_viewportCapability(painter->getCapability<AbstractViewportCapability>())
-    , m_framebufferCapability(painter->getCapability<AbstractTargetFramebufferCapability>())
+ScreenCapturer::ScreenCapturer(Painter * painter, ResourceManager & resourceManager)
+:   m_painter(painter)
+,   m_resourceManager(resourceManager)
+,   m_viewportCapability(painter->getCapability<AbstractViewportCapability>())
+,   m_framebufferCapability(painter->getCapability<AbstractTargetFramebufferCapability>())
 {
     assert(isApplicableTo(painter));
 }
 
-bool ImageExporter::isApplicableTo(Painter * painter)
+bool ScreenCapturer::isApplicableTo(Painter * painter)
 {
     return painter->getCapability<AbstractViewportCapability>() != nullptr
         && painter->getCapability<AbstractTargetFramebufferCapability>() != nullptr;
 }
 
-void ImageExporter::initialize()
+void ScreenCapturer::initialize()
 {
     m_fbo = new globjects::Framebuffer();
     m_color = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
@@ -40,7 +40,7 @@ void ImageExporter::initialize()
     m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 }
 
-void ImageExporter::save(const std::string & filename, const int & width, const int & height, const int & renderIterations)
+void ScreenCapturer::save(const std::string & filename, const int & width, const int & height, const int & renderIterations)
 {
 	const int oldWidth{ m_viewportCapability->width() }, oldHeight{ m_viewportCapability->height() }, oldX{ m_viewportCapability->x() }, oldY{ m_viewportCapability->y() };
 	if (width > 0 && height > 0)

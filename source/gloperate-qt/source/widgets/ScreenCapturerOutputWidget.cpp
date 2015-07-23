@@ -1,5 +1,5 @@
 ﻿
-#include <gloperate-qt/widgets/ImageExporterOutputWidget.h>
+#include <gloperate-qt/widgets/ScreenCapturerOutputWidget.h>
 
 #include <algorithm>
 #include <set>
@@ -17,13 +17,13 @@
 #include <QTime>
 #include <QWindow>
 
-#include "ui_ImageExporterOutputWidget.h"
+#include "ui_ScreenCapturerOutputWidget.h"
 
 #include <gloperate/ext-includes-end.h>
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/painter/Painter.h>
-#include <gloperate/tools/ImageExporter.h>
+#include <gloperate/tools/ScreenCapturer.h>
 
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
 #include <gloperate-qt/widgets/FileNameTextEdit.h>
@@ -33,11 +33,11 @@ namespace gloperate_qt
 {
 
 
-ImageExporterOutputWidget::ImageExporterOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
+ScreenCapturerOutputWidget::ScreenCapturerOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
 :	QWidget(parent)
 ,	m_context(context)
 ,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum_num", "<enum#" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" }, { "millisec", "<millisecond>" } })
-,	m_ui(new Ui_ImageExporterOutputWidget)
+,	m_ui(new Ui_ScreenCapturerOutputWidget)
 ,	m_resolution(new QSize(1,1))
 {
     m_ui->setupUi(this);
@@ -46,23 +46,23 @@ ImageExporterOutputWidget::ImageExporterOutputWidget(gloperate::ResourceManager 
     initializeFileNameTextEdit();
 
     connect(m_ui->saveButton, &QPushButton::clicked,
-        this, &ImageExporterOutputWidget::handleSave);
+        this, &ScreenCapturerOutputWidget::handleSave);
     connect(m_ui->openDirectoryButton, &QPushButton::clicked, 
-        this, &ImageExporterOutputWidget::browseDirectory);
+        this, &ScreenCapturerOutputWidget::browseDirectory);
     connect(m_ui->fileNameTextEdit, &FileNameTextEdit::textChanged,
-        this, &ImageExporterOutputWidget::checkFilename);
+        this, &ScreenCapturerOutputWidget::checkFilename);
     connect(m_ui->fileNameTextEdit, &FileNameTextEdit::textChanged,
-        this, &ImageExporterOutputWidget::saveFilename);
+        this, &ScreenCapturerOutputWidget::saveFilename);
 
-    connect(this, &ImageExporterOutputWidget::filenameChanged,
-        this, &ImageExporterOutputWidget::updateFilenamePreview);
+    connect(this, &ScreenCapturerOutputWidget::filenameChanged,
+        this, &ScreenCapturerOutputWidget::updateFilenamePreview);
     
-    m_imageExporter = new gloperate::ImageExporter(painter, resourceManager);
+    m_screenCapturer = new gloperate::ScreenCapturer(painter, resourceManager);
     context->makeCurrent();
-    m_imageExporter->initialize();
+    m_screenCapturer->initialize();
     context->doneCurrent();
 
-    if (!gloperate::ImageExporter::isApplicableTo(painter))
+    if (!gloperate::ScreenCapturer::isApplicableTo(painter))
         m_ui->saveButton->setDisabled(true);
 
     restoreSettings();
@@ -70,7 +70,7 @@ ImageExporterOutputWidget::ImageExporterOutputWidget(gloperate::ResourceManager 
     checkFilename();
 }
 
-void ImageExporterOutputWidget::initializeFileNameTextEdit()
+void ScreenCapturerOutputWidget::initializeFileNameTextEdit()
 {
     auto completer = new QCompleter;
 
@@ -96,55 +96,55 @@ void ImageExporterOutputWidget::initializeFileNameTextEdit()
     m_ui->fileNameTextEdit->setCompleter(completer);
 }
 
-void ImageExporterOutputWidget::updateResolutionSummaryLabel(const QString& sizeSummary)
+void ScreenCapturerOutputWidget::updateResolutionSummaryLabel(const QString& sizeSummary)
 {
     m_ui->resolutionSummaryLabel->setText(sizeSummary);
 }
 
-void ImageExporterOutputWidget::updateResolution(const QSize& resolution)
+void ScreenCapturerOutputWidget::updateResolution(const QSize& resolution)
 {
     m_resolution->setHeight(resolution.height());
     m_resolution->setWidth(resolution.width());
 }
 
-ImageExporterOutputWidget::~ImageExporterOutputWidget()
+ScreenCapturerOutputWidget::~ScreenCapturerOutputWidget()
 {
 }
 
-void ImageExporterOutputWidget::updateDirectory()
+void ScreenCapturerOutputWidget::updateDirectory()
 {
     m_ui->directoryLineEdit->setText(m_dirName);
     QSettings settings;
-    settings.beginGroup("ImageExporterOutputWidget");
+    settings.beginGroup("ScreenCapturerOutputWidget");
     settings.setValue("dirname", m_dirName);
     settings.endGroup();
 }
 
-void ImageExporterOutputWidget::saveFilename()
+void ScreenCapturerOutputWidget::saveFilename()
 {
     QSettings settings;
-    settings.beginGroup("ImageExporterOutputWidget");
+    settings.beginGroup("ScreenCapturerOutputWidget");
     settings.setValue("filename", m_ui->fileNameTextEdit->toPlainText());
     settings.endGroup();
 }
 
-void ImageExporterOutputWidget::restoreSettings()
+void ScreenCapturerOutputWidget::restoreSettings()
 {
     QSettings settings;
-    settings.beginGroup("ImageExporterOutputWidget");
+    settings.beginGroup("ScreenCapturerOutputWidget");
     m_dirName = settings.value("dirname", QDir::homePath()).toString();
     m_ui->fileNameTextEdit->setPlainText(settings.value("filename", "image").toString());
     settings.endGroup();
 }
 
-void ImageExporterOutputWidget::handleSave(bool)
+void ScreenCapturerOutputWidget::handleSave(bool)
 {
     m_context->makeCurrent();
-    m_imageExporter->save(buildFileName(), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()));
+    m_screenCapturer->save(buildFileName(), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()));
     m_context->doneCurrent();
 }
 
-void ImageExporterOutputWidget::browseDirectory(bool)
+void ScreenCapturerOutputWidget::browseDirectory(bool)
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::Directory);
@@ -158,7 +158,7 @@ void ImageExporterOutputWidget::browseDirectory(bool)
     }
 }
 
-std::string ImageExporterOutputWidget::replaceTags(const std::string& filename, bool shouldUpdateUiFilename)
+std::string ScreenCapturerOutputWidget::replaceTags(const std::string& filename, bool shouldUpdateUiFilename)
 {
     QDateTime time{ QDateTime::currentDateTime() };
     std::string newFilename{ filename };
@@ -207,7 +207,7 @@ std::string ImageExporterOutputWidget::replaceTags(const std::string& filename, 
     return newFilename;
 }
 
-std::string ImageExporterOutputWidget::extractEnumNumStartIndex(const std::string& filename, int position)
+std::string ScreenCapturerOutputWidget::extractEnumNumStartIndex(const std::string& filename, int position)
 {
     std::string startIndex{ "" };
 
@@ -220,7 +220,7 @@ std::string ImageExporterOutputWidget::extractEnumNumStartIndex(const std::strin
     return startIndex;
 }
 
-std::string ImageExporterOutputWidget::buildFileName()
+std::string ScreenCapturerOutputWidget::buildFileName()
 {
     std::string filename{ replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString()) };
     
@@ -235,7 +235,7 @@ std::string ImageExporterOutputWidget::buildFileName()
     return final_filename;
 }
 
-void ImageExporterOutputWidget::updateUiFileName()
+void ScreenCapturerOutputWidget::updateUiFileName()
 {
     QString oldUiFilename{ m_ui->fileNameTextEdit->toPlainText() };
     int positionOfEnumNumIndex{ oldUiFilename.indexOf(m_supportedTags["enum_num"]) + m_supportedTags["enum_num"].length() };
@@ -249,12 +249,12 @@ void ImageExporterOutputWidget::updateUiFileName()
     m_ui->fileNameTextEdit->blockSignals(oldSignalStatus);
 }
 
-void ImageExporterOutputWidget::updateFilenamePreview()
+void ScreenCapturerOutputWidget::updateFilenamePreview()
 {
     m_ui->filenamePeviewLabel->setText(QString::fromStdString(replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString(), false)) + ".png");
 }
 
-void ImageExporterOutputWidget::checkFilename()
+void ScreenCapturerOutputWidget::checkFilename()
 {
     const QString emp("");
     QString filename(m_ui->fileNameTextEdit->toPlainText());

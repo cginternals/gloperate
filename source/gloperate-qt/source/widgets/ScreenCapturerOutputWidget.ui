@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ImageExporterOutputWidget</class>
- <widget class="QWidget" name="ImageExporterOutputWidget">
+ <class>ScreenCapturerOutputWidget</class>
+ <widget class="QWidget" name="ScreenCapturerOutputWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>234</width>
-    <height>185</height>
+    <height>306</height>
    </rect>
   </property>
   <property name="windowTitle">

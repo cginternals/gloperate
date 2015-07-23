@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ImageExporterTilebasedWidget</class>
- <widget class="QWidget" name="ImageExporterTilebasedWidget">
+ <class>ScreenCapturerTilebasedWidget</class>
+ <widget class="QWidget" name="ScreenCapturerTilebasedWidget">
   <property name="enabled">
    <bool>false</bool>
   </property>

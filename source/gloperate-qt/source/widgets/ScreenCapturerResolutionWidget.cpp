@@ -1,10 +1,10 @@
 
-#include <gloperate-qt/widgets/ImageExporterResolutionWidget.h>
+#include <gloperate-qt/widgets/ScreenCapturerResolutionWidget.h>
 
 #include <cmath>
 
 #include <gloperate/ext-includes-begin.h>
-#include "ui_ImageExporterResolutionWidget.h"
+#include "ui_ScreenCapturerResolutionWidget.h"
 #include <gloperate/ext-includes-end.h>
 
 
@@ -23,31 +23,31 @@ const QString inchString = "inch";
 const QString cmString = "cm";
 
 
-ImageExporterResolutionWidget::ImageExporterResolutionWidget(QWidget * parent)
-: QWidget(parent)
-, m_widthState(new ResolutionState(1920.0, pixelString))
-, m_heightState(new ResolutionState(1080.0, pixelString))
-, m_resolutionState(new ResolutionState(72, ppiString))
-, m_ui(new Ui_ImageExporterResolutionWidget)
+ScreenCapturerResolutionWidget::ScreenCapturerResolutionWidget(QWidget * parent)
+:   QWidget(parent)
+,   m_widthState(new ResolutionState(1920.0, pixelString))
+,   m_heightState(new ResolutionState(1080.0, pixelString))
+,   m_resolutionState(new ResolutionState(72, ppiString))
+,   m_ui(new Ui_ScreenCapturerResolutionWidget)
 {
     m_ui->setupUi(this);
 
     void (QComboBox:: *comboBoxCurrentIndexChanged)(const QString &) = &QComboBox::currentIndexChanged;
     connect(m_ui->widthComboBox, comboBoxCurrentIndexChanged,
-        this, &ImageExporterResolutionWidget::widthUnitChanged);
+        this, &ScreenCapturerResolutionWidget::widthUnitChanged);
     connect(m_ui->heightComboBox, comboBoxCurrentIndexChanged,
-        this, &ImageExporterResolutionWidget::heightUnitChanged);
+        this, &ScreenCapturerResolutionWidget::heightUnitChanged);
     connect(m_ui->resolutionComboBox, comboBoxCurrentIndexChanged,
-        this, &ImageExporterResolutionWidget::resolutionUnitChanged);
+        this, &ScreenCapturerResolutionWidget::resolutionUnitChanged);
 
     void (QDoubleSpinBox:: *doubleSpinBoxValueChanged)(double d) = &QDoubleSpinBox::valueChanged;
     void (QSpinBox:: *spinBoxValueChanged)(int i) = &QSpinBox::valueChanged;
     connect(m_ui->widthDoubleSpinBox, doubleSpinBoxValueChanged,
-        this, &ImageExporterResolutionWidget::widthValueChanged);
+        this, &ScreenCapturerResolutionWidget::widthValueChanged);
     connect(m_ui->heightDoubleSpinBox, doubleSpinBoxValueChanged,
-        this, &ImageExporterResolutionWidget::heightValueChanged);
+        this, &ScreenCapturerResolutionWidget::heightValueChanged);
     connect(m_ui->resolutionSpinBox, spinBoxValueChanged,
-        this, &ImageExporterResolutionWidget::resolutionValueChanged);
+        this, &ScreenCapturerResolutionWidget::resolutionValueChanged);
 
     m_ui->widthDoubleSpinBox->setRange(0.01, 100000.0);
     m_ui->heightDoubleSpinBox->setRange(0.01, 100000.0);
@@ -66,7 +66,7 @@ ImageExporterResolutionWidget::ImageExporterResolutionWidget(QWidget * parent)
     m_ui->resolutionSpinBox->blockSignals(oldSpinBoxSignalStatus);
 }
 
-void ImageExporterResolutionWidget::updateResolutionSummary()
+void ScreenCapturerResolutionWidget::updateResolutionSummary()
 {
     // TODO: detect unsigned long long overflow
     int height{ static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type))) };
@@ -106,7 +106,7 @@ void ImageExporterResolutionWidget::updateResolutionSummary()
     emit resolutionSummaryChanged(summary);
 }
 
-double ImageExporterResolutionWidget::inchToPixels(double value)
+double ScreenCapturerResolutionWidget::inchToPixels(double value)
 {
     if (m_resolutionState->type == ppiString)
         value *= m_resolutionState->value;
@@ -116,7 +116,7 @@ double ImageExporterResolutionWidget::inchToPixels(double value)
     return value;
 }
 
-double ImageExporterResolutionWidget::cmToPixels(double value)
+double ScreenCapturerResolutionWidget::cmToPixels(double value)
 {
     if (m_resolutionState->type == ppiString)
         value *= m_resolutionState->value * INCH_PER_CM;
@@ -126,7 +126,7 @@ double ImageExporterResolutionWidget::cmToPixels(double value)
     return value;
 }
 
-double ImageExporterResolutionWidget::toPixels(double value, const QString& type)
+double ScreenCapturerResolutionWidget::toPixels(double value, const QString& type)
 {
     if (type == inchString)
         value = inchToPixels(value);
@@ -136,7 +136,7 @@ double ImageExporterResolutionWidget::toPixels(double value, const QString& type
     return value;
 }
 
-double ImageExporterResolutionWidget::pixelsToCm(double value)
+double ScreenCapturerResolutionWidget::pixelsToCm(double value)
 {
     if (m_resolutionState->type == ppiString)
         value *= CM_PER_INCH / m_resolutionState->value;
@@ -146,7 +146,7 @@ double ImageExporterResolutionWidget::pixelsToCm(double value)
     return value;
 }
 
-double ImageExporterResolutionWidget::pixelsToInch(double value)
+double ScreenCapturerResolutionWidget::pixelsToInch(double value)
 {
     if (m_resolutionState->type == ppiString)
         value /= m_resolutionState->value;
@@ -156,7 +156,7 @@ double ImageExporterResolutionWidget::pixelsToInch(double value)
     return value;
 }
 
-double ImageExporterResolutionWidget::pixelsTo(double value, const QString& type)
+double ScreenCapturerResolutionWidget::pixelsTo(double value, const QString& type)
 {
     if (type == inchString)
         value = pixelsToInch(value);
@@ -166,14 +166,14 @@ double ImageExporterResolutionWidget::pixelsTo(double value, const QString& type
     return value;
 }
 
-void ImageExporterResolutionWidget::setDecimals(QDoubleSpinBox* box, int dec)
+void ScreenCapturerResolutionWidget::setDecimals(QDoubleSpinBox* box, int dec)
 {
     bool old = box->blockSignals(true);
     box->setDecimals(dec);
     box->blockSignals(old);
 }
 
-void ImageExporterResolutionWidget::widthUnitChanged(const QString& text)
+void ScreenCapturerResolutionWidget::widthUnitChanged(const QString& text)
 {
     if (text == pixelString)
     {
@@ -213,7 +213,7 @@ void ImageExporterResolutionWidget::widthUnitChanged(const QString& text)
     m_widthState->type = text;
 }
 
-void ImageExporterResolutionWidget::heightUnitChanged(const QString& text)
+void ScreenCapturerResolutionWidget::heightUnitChanged(const QString& text)
 {
     if (text == pixelString)
     {
@@ -253,7 +253,7 @@ void ImageExporterResolutionWidget::heightUnitChanged(const QString& text)
     m_heightState->type = text;
 }
 
-void ImageExporterResolutionWidget::widthValueChanged(double d)
+void ScreenCapturerResolutionWidget::widthValueChanged(double d)
 {
     if (m_ui->aspectCheckBox->isChecked())
     {
@@ -273,7 +273,7 @@ void ImageExporterResolutionWidget::widthValueChanged(double d)
     updateResolutionSummary();
 }
 
-void ImageExporterResolutionWidget::heightValueChanged(double d)
+void ScreenCapturerResolutionWidget::heightValueChanged(double d)
 {
     if (m_ui->aspectCheckBox->isChecked())
     {
@@ -293,7 +293,7 @@ void ImageExporterResolutionWidget::heightValueChanged(double d)
     updateResolutionSummary();
 }
 
-void ImageExporterResolutionWidget::resolutionValueChanged(int i)
+void ScreenCapturerResolutionWidget::resolutionValueChanged(int i)
 {
     double value;
     bool old;
@@ -326,7 +326,7 @@ void ImageExporterResolutionWidget::resolutionValueChanged(int i)
     updateResolutionSummary();
 }
 
-void ImageExporterResolutionWidget::resolutionUnitChanged(const QString& text)
+void ScreenCapturerResolutionWidget::resolutionUnitChanged(const QString& text)
 {
     if (text == ppiString)
         m_resolutionState->value = std::ceil(m_resolutionState->value * CM_PER_INCH);
@@ -337,14 +337,14 @@ void ImageExporterResolutionWidget::resolutionUnitChanged(const QString& text)
     m_resolutionState->type = text;
 }
 
-void ImageExporterResolutionWidget::enableResolution(bool enable)
+void ScreenCapturerResolutionWidget::enableResolution(bool enable)
 {
     m_ui->resolutionSpinBox->setEnabled(enable);
     m_ui->resolutionComboBox->setEnabled(enable);
     m_ui->resolutionLabel->setEnabled(enable);
 }
 
-ImageExporterResolutionWidget::~ImageExporterResolutionWidget()
+ScreenCapturerResolutionWidget::~ScreenCapturerResolutionWidget()
 {
 }
 

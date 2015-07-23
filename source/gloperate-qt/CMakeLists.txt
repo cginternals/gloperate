@@ -143,10 +143,10 @@ set(headers
     ${header_path}/scripting/PluginApi.h
 
     ${header_path}/widgets/FileNameTextEdit.h
-    ${header_path}/widgets/ImageExporterWidget.h
-    ${header_path}/widgets/ImageExporterOutputWidget.h
-    ${header_path}/widgets/ImageExporterResolutionWidget.h
-    ${header_path}/widgets/ImageExporterTilebasedWidget.h
+    ${header_path}/widgets/ScreenCapturerWidget.h
+    ${header_path}/widgets/ScreenCapturerOutputWidget.h
+    ${header_path}/widgets/ScreenCapturerResolutionWidget.h
+    ${header_path}/widgets/ScreenCapturerTilebasedWidget.h
 
     ${header_path}/gloperate-qt_api.h
 )
@@ -174,13 +174,13 @@ set(sources
     ${source_path}/scripting/PluginApi.cpp
 
     ${source_path}/widgets/FileNameTextEdit.cpp
-    ${source_path}/widgets/ImageExporterWidget.cpp
-    ${source_path}/widgets/ImageExporterOutputWidget.cpp
-    ${source_path}/widgets/ImageExporterOutputWidget.ui
-    ${source_path}/widgets/ImageExporterResolutionWidget.cpp
-    ${source_path}/widgets/ImageExporterResolutionWidget.ui
-    ${source_path}/widgets/ImageExporterTilebasedWidget.cpp
-    ${source_path}/widgets/ImageExporterTilebasedWidget.ui
+    ${source_path}/widgets/ScreenCapturerWidget.cpp
+    ${source_path}/widgets/ScreenCapturerOutputWidget.cpp
+    ${source_path}/widgets/ScreenCapturerOutputWidget.ui
+    ${source_path}/widgets/ScreenCapturerResolutionWidget.cpp
+    ${source_path}/widgets/ScreenCapturerResolutionWidget.ui
+    ${source_path}/widgets/ScreenCapturerTilebasedWidget.cpp
+    ${source_path}/widgets/ScreenCapturerTilebasedWidget.ui
 )
 
 # Group source files

@@ -13,7 +13,7 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
-class Ui_ImageExporterResolutionWidget;
+class Ui_ScreenCapturerResolutionWidget;
 class QDoubleSpinBox;
 
 
@@ -33,14 +33,14 @@ struct ResolutionState {
 };
 
 
-class GLOPERATE_QT_API ImageExporterResolutionWidget : public QWidget
+class GLOPERATE_QT_API ScreenCapturerResolutionWidget : public QWidget
 {
     Q_OBJECT
 
 
 public:
-    ImageExporterResolutionWidget(QWidget * parent = nullptr);
-    virtual ~ImageExporterResolutionWidget();
+    ScreenCapturerResolutionWidget(QWidget * parent = nullptr);
+    virtual ~ScreenCapturerResolutionWidget();
 
     void updateResolutionSummary();
 
@@ -76,7 +76,7 @@ protected:
 
 
 private:
-    const QScopedPointer<Ui_ImageExporterResolutionWidget> m_ui;
+    const QScopedPointer<Ui_ScreenCapturerResolutionWidget> m_ui;
 };
 
 

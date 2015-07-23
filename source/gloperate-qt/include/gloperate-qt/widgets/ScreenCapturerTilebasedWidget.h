@@ -10,25 +10,25 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
-class Ui_ImageExporterTilebasedWidget;
+class Ui_ScreenCapturerTilebasedWidget;
 
 
 namespace gloperate_qt
 {
 
 
-class GLOPERATE_QT_API ImageExporterTilebasedWidget : public QWidget
+class GLOPERATE_QT_API ScreenCapturerTilebasedWidget : public QWidget
 {
     Q_OBJECT
 
 
 public:
-    ImageExporterTilebasedWidget(QWidget * parent = nullptr);
-    virtual ~ImageExporterTilebasedWidget();
+    ScreenCapturerTilebasedWidget(QWidget * parent = nullptr);
+    virtual ~ScreenCapturerTilebasedWidget();
 
 
 private:
-    const QScopedPointer<Ui_ImageExporterTilebasedWidget> m_ui;
+    const QScopedPointer<Ui_ScreenCapturerTilebasedWidget> m_ui;
 };
 
 

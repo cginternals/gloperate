@@ -26,10 +26,10 @@ class AbstractTargetFramebufferCapability;
 *  @brief
 *    Tool to export images (screenshots) from a painter
 */
-class GLOPERATE_API ImageExporter
+class GLOPERATE_API ScreenCapturer
 {
 public:
-	ImageExporter(Painter * painter, ResourceManager & resourceManager);
+    ScreenCapturer(Painter * painter, ResourceManager & resourceManager);
 
     static bool isApplicableTo(Painter * painter);
 

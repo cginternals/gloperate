@@ -39,7 +39,7 @@
 #include <gloperate-qt/viewer/QtMouseEventProvider.h>
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 #include <gloperate-qt/viewer/DefaultMapping.h>
-#include <gloperate-qt/widgets/ImageExporterWidget.h>
+#include <gloperate-qt/widgets/ScreenCapturerWidget.h>
 #include <gloperate-qt/scripting/SystemApi.h>
 #include <gloperate-qt/scripting/TimerApi.h>
 #include <gloperate-qt/scripting/ViewerApi.h>
@@ -469,9 +469,9 @@ void Viewer::on_captureImageAction_triggered()
     if (m_painter)
     {
         // Show image exporter dialog
-        ImageExporterWidget * ie{ new ImageExporterWidget(*m_resourceManager, m_canvas->painter(), m_canvas.get()) };
-        ie->setWindowModality(Qt::NonModal);
-        ie->show();
+        ScreenCapturerWidget * sc{ new ScreenCapturerWidget(*m_resourceManager, m_canvas->painter(), m_canvas.get()) };
+        sc->setWindowModality(Qt::NonModal);
+        sc->show();
     }
 }
 
