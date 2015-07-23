@@ -123,6 +123,10 @@ void PluginManager::setPaths(const std::vector<std::string> & paths)
 
 void PluginManager::addPath(const std::string & path)
 {
+    // Ignore empty path
+    if (path.empty())
+        return;
+
     // Remove slash
     const std::string p = DirectoryIterator::truncate(path);
 
