@@ -57,7 +57,6 @@ protected:
     void restoreSettings();
     void initializeFileNameTextEdit();
 
-    void checkFilename();
     void saveFilename();
     std::string replaceTags(const std::string& filename, bool shouldUpdateUiFilename = true);
     std::string buildFileName();
@@ -66,12 +65,12 @@ protected:
     void updateFilenamePreview();
     void updateUiFileName();
     std::string extractEnumNumStartIndex(const std::string& filename, int position);
+    void checkFilename();
 
 
 protected:
     gloperate::ScreenCapturer * m_screenCapturer;
     gloperate_qt::QtOpenGLWindow * m_context;
-    std::map<const QString, const QString> m_supportedTags;
 
 
 private:

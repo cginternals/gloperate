@@ -35,7 +35,9 @@ public:
 
     void initialize();
 
-	void save(const std::string & filename, const int & width = 0, const int & height = 0, const int & renderIterations = 1);
+    void save(const std::string & filename, const int & width = 0, const int & height = 0, const int & renderIterations = 1);
+    const std::string & checkFilename(const std::string & filename);
+    const std::map<const std::string, const std::string> & supportedTags();
 
 
 protected:
@@ -43,6 +45,7 @@ protected:
     ResourceManager & m_resourceManager;
     AbstractViewportCapability * m_viewportCapability;
     AbstractTargetFramebufferCapability * m_framebufferCapability;
+    std::map<const std::string, const std::string> m_supportedTags;
 
     globjects::ref_ptr<globjects::Framebuffer> m_fbo;
     globjects::ref_ptr<globjects::Texture> m_color;

@@ -2,6 +2,7 @@
 #include <gloperate/tools/ScreenCapturer.h>
 
 #include <cassert>
+#include <set>
 
 #include <glbinding/gl/enum.h>
 
@@ -20,6 +21,7 @@ ScreenCapturer::ScreenCapturer(Painter * painter, ResourceManager & resourceMana
 ,   m_resourceManager(resourceManager)
 ,   m_viewportCapability(painter->getCapability<AbstractViewportCapability>())
 ,   m_framebufferCapability(painter->getCapability<AbstractTargetFramebufferCapability>())
+,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum_num", "<enum#" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" }, { "millisec", "<millisecond>" } })
 {
     assert(isApplicableTo(painter));
 }
@@ -63,6 +65,68 @@ void ScreenCapturer::save(const std::string & filename, const int & width, const
     m_framebufferCapability->setFramebuffer(oldFbo);
 	if (width > 0 && height > 0)
 		m_viewportCapability->setViewport(oldX, oldY, oldWidth, oldHeight);
+}
+
+const std::string & ScreenCapturer::checkFilename(const std::string & fileName)
+{
+    const std::string emp("");
+    std::string fileNameToCheck(fileName);
+    std::string errorMessage{ "" };
+
+    for (auto it = m_supportedTags.begin(); it != m_supportedTags.end(); it++)
+    {
+        if ((fileNameToCheck.find(it->second) != std::string::npos) && it->first != "enum_num")
+            do
+            {
+                int pos = fileNameToCheck.find(it->second);
+                fileNameToCheck.replace(pos, it->second.length(), emp);
+            } while (fileNameToCheck.find(it->second) != std::string::npos);
+    }
+
+    if (fileNameToCheck.find(m_supportedTags["enum_num"]) != std::string::npos)
+    {
+        int position = fileNameToCheck.find(m_supportedTags["enum_num"]);
+        fileNameToCheck.replace(position, static_cast<int>(m_supportedTags["enum_num"].length()), emp);
+
+        std::set<char> numbers{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        bool numberFound{ false }, endFound{ false };
+
+        while (position < fileNameToCheck.length())
+        {
+            if (numbers.find(fileNameToCheck.at(position)) != numbers.end())
+            {
+                fileNameToCheck.replace(position, 1, emp);
+                numberFound = true;
+            }
+            else if (numberFound && fileNameToCheck.at(position) == '>')
+            {
+                fileNameToCheck.replace(position, 1, emp);
+                endFound = true;
+                break;
+            }
+            else
+                break;
+        }
+
+        if (!endFound)
+            errorMessage = "includes an incomplete <enum#> tag";
+    }
+
+    if (errorMessage == "")
+    {
+        std::string rx("[A-Za-z0-9_\\-\\!\\§\\$\\%\\&\\(\\)\\=\\`\\´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
+
+        if (fileNameToCheck.find_first_of("/\\*\":|?<>") != std::string::npos)
+            errorMessage = "includes invalid symbols";
+    }
+
+    return errorMessage;
+}
+
+
+const std::map<const std::string, const std::string> & ScreenCapturer::supportedTags()
+{
+    return m_supportedTags;
 }
 
 

@@ -36,7 +36,6 @@ namespace gloperate_qt
 ScreenCapturerOutputWidget::ScreenCapturerOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
 :	QWidget(parent)
 ,	m_context(context)
-,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum_num", "<enum#" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" }, { "millisec", "<millisecond>" } })
 ,	m_ui(new Ui_ScreenCapturerOutputWidget)
 ,	m_resolution(new QSize(1,1))
 {
@@ -163,37 +162,37 @@ std::string ScreenCapturerOutputWidget::replaceTags(const std::string& filename,
     QDateTime time{ QDateTime::currentDateTime() };
     std::string newFilename{ filename };
 
-    if (newFilename.find(m_supportedTags["width"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["width"].toStdString()), m_supportedTags["width"].toStdString().length(), std::to_string(m_resolution->width()));
+    if (newFilename.find(m_screenCapturer->supportedTags().at("width")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("width")), m_screenCapturer->supportedTags().at("width").length(), std::to_string(m_resolution->width()));
 
-    if (newFilename.find(m_supportedTags["height"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["height"].toStdString()), m_supportedTags["height"].toStdString().length(), std::to_string(m_resolution->height()));
+    if (newFilename.find(m_screenCapturer->supportedTags().at("height")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("height")), m_screenCapturer->supportedTags().at("height").length(), std::to_string(m_resolution->height()));
 
-    if (newFilename.find(m_supportedTags["day"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["day"].toStdString()), m_supportedTags["day"].toStdString().length(), time.toString("dd").toStdString());
+    if (newFilename.find(m_screenCapturer->supportedTags().at("day")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("day")), m_screenCapturer->supportedTags().at("day").length(), time.toString("dd").toStdString());
 
-    if (newFilename.find(m_supportedTags["month"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["month"].toStdString()), m_supportedTags["month"].toStdString().length(), time.toString("MM").toStdString());
+    if (newFilename.find(m_screenCapturer->supportedTags().at("month")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("month")), m_screenCapturer->supportedTags().at("month").length(), time.toString("MM").toStdString());
 
-    if (newFilename.find(m_supportedTags["year"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["year"].toStdString()), m_supportedTags["year"].toStdString().length(), time.toString("yyyy").toStdString());
+    if (newFilename.find(m_screenCapturer->supportedTags().at("year")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("year")), m_screenCapturer->supportedTags().at("year").length(), time.toString("yyyy").toStdString());
 
-    if (newFilename.find(m_supportedTags["hour"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["hour"].toStdString()), m_supportedTags["hour"].toStdString().length(), time.toString("hh").toStdString());
+    if (newFilename.find(m_screenCapturer->supportedTags().at("hour")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("hour")), m_screenCapturer->supportedTags().at("hour").length(), time.toString("hh").toStdString());
 
-    if (newFilename.find(m_supportedTags["minute"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["minute"].toStdString()), m_supportedTags["minute"].toStdString().length(), time.toString("mm").toStdString());
+    if (newFilename.find(m_screenCapturer->supportedTags().at("minute")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("minute")), m_screenCapturer->supportedTags().at("minute").length(), time.toString("mm").toStdString());
 
-    if (newFilename.find(m_supportedTags["second"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["second"].toStdString()), m_supportedTags["second"].toStdString().length(), time.toString("ss").toStdString());
+    if (newFilename.find(m_screenCapturer->supportedTags().at("second")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("second")), m_screenCapturer->supportedTags().at("second").length(), time.toString("ss").toStdString());
 
-    if (newFilename.find(m_supportedTags["millisec"].toStdString()) != std::string::npos)
-        newFilename.replace(newFilename.find(m_supportedTags["millisec"].toStdString()), m_supportedTags["millisec"].toStdString().length(), time.toString("zzz").toStdString());
+    if (newFilename.find(m_screenCapturer->supportedTags().at("millisec")) != std::string::npos)
+        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("millisec")), m_screenCapturer->supportedTags().at("millisec").length(), time.toString("zzz").toStdString());
     
-    if (newFilename.find(m_supportedTags["enum_num"].toStdString()) != std::string::npos)
+    if (newFilename.find(m_screenCapturer->supportedTags().at("enum_num")) != std::string::npos)
     {
-        size_t position = newFilename.find(m_supportedTags["enum_num"].toStdString());
-        newFilename.replace(position, m_supportedTags["enum_num"].length(), "");
+        size_t position = newFilename.find(m_screenCapturer->supportedTags().at("enum_num"));
+        newFilename.replace(position, m_screenCapturer->supportedTags().at("enum_num").length(), "");
 
         std::string startIndex{ extractEnumNumStartIndex(newFilename, static_cast<int>(position)) };
 
@@ -238,7 +237,7 @@ std::string ScreenCapturerOutputWidget::buildFileName()
 void ScreenCapturerOutputWidget::updateUiFileName()
 {
     QString oldUiFilename{ m_ui->fileNameTextEdit->toPlainText() };
-    int positionOfEnumNumIndex{ oldUiFilename.indexOf(m_supportedTags["enum_num"]) + m_supportedTags["enum_num"].length() };
+    int positionOfEnumNumIndex{ oldUiFilename.indexOf(QString::fromStdString(m_screenCapturer->supportedTags().at("enum_num"))) + QString::fromStdString(m_screenCapturer->supportedTags().at("enum_num")).length() };
     std::string startIndex{ extractEnumNumStartIndex(oldUiFilename.toStdString(), positionOfEnumNumIndex) };
     QString newUiFilename{ oldUiFilename.replace(positionOfEnumNumIndex, static_cast<int>(startIndex.length()), QString::number(atoi(startIndex.c_str()) + 1)) };
 
@@ -256,71 +255,24 @@ void ScreenCapturerOutputWidget::updateFilenamePreview()
 
 void ScreenCapturerOutputWidget::checkFilename()
 {
-    const QString emp("");
-    QString filename(m_ui->fileNameTextEdit->toPlainText());
-    QString errorMessage{ "" };
-
-    for (auto it = m_supportedTags.begin(); it != m_supportedTags.end(); it++)
-    {
-        if (filename.contains(it->second) && it->first != "enum_num")
-            filename.replace(filename.indexOf(it->second), it->second.length(), emp);
-    }
-    
-    if (filename.indexOf(m_supportedTags["enum_num"]) != static_cast<int>(std::string::npos))
-    {
-        int position = filename.indexOf(m_supportedTags["enum_num"]);
-        filename.replace(position, static_cast<int>(m_supportedTags["enum_num"].length()), "");
-
-        std::set<QString> numbers{ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-        bool numberFound{ false }, endFound{ false };
-
-        while (position < filename.length())
-        {
-            if (numbers.find(filename.at(position)) != numbers.end())
-            {
-                filename.replace(position, 1, "");
-                numberFound = true;
-            }
-            else if (numberFound && filename.at(position) == '>')
-            {
-                filename.replace(position, 1, "");
-                endFound = true;
-                break;
-            }
-            else
-                break;
-        }
-
-        if (!endFound)
-            errorMessage = "includes an incomplete <enum#> tag";
-    }
-    
-    if (errorMessage == "")
-    {
-        QRegExp rx("[A-Za-z0-9_\\-\\!\\§\\$\\%\\&\\(\\)\\=\\`\\´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
-
-        if (!rx.exactMatch(filename))
-            errorMessage = "includes invalid symbols";
-    }
-
+    QString fileName{ m_ui->fileNameTextEdit->toPlainText() };
+    QString errorMessage{ QString::fromStdString(m_screenCapturer->checkFilename(fileName.toStdString())) };
     if (errorMessage != "")
     {
         if (m_ui->saveButton->isEnabled())
             m_ui->saveButton->setDisabled(true);
-        
+
         m_ui->fileNameTextEdit->setStyleSheet("background-color:rgb(255,170,127);");
-        m_ui->filenamePeviewLabel->setText( filename + ".png " + errorMessage);
+        m_ui->filenamePeviewLabel->setText(fileName + ".png " + errorMessage);
     }
     else
     {
         if (!m_ui->saveButton->isEnabled())
             m_ui->saveButton->setDisabled(false);
 
-        m_ui->fileNameTextEdit->setStyleSheet(emp);
+        m_ui->fileNameTextEdit->setStyleSheet("");
 
         emit filenameChanged();
     }
 }
-
-
 } // namespace gloperate_qt
