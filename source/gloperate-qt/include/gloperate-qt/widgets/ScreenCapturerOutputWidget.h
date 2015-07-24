@@ -58,14 +58,12 @@ protected:
     void initializeFileNameTextEdit();
 
     void saveFilename();
-    std::string replaceTags(const std::string& filename, bool shouldUpdateUiFilename = true);
     std::string buildFileName();
     void browseDirectory(bool);
     void updateDirectory();
     void updateFilenamePreview();
-    void updateUiFileName();
-    std::string extractEnumNumStartIndex(const std::string& filename, int position);
     void checkFilename();
+    void updateUiFileNameEnumIndex();
 
 
 protected:
@@ -75,7 +73,6 @@ protected:
 
 private:
     const QScopedPointer<Ui_ScreenCapturerOutputWidget> m_ui;
-    QString m_dirName;
     QScopedPointer<QSize> m_resolution;
 };
 

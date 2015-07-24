@@ -3,6 +3,9 @@
 
 #include <cassert>
 #include <set>
+#include <ctime>
+#include <sys/stat.h>
+#include <iomanip>
 
 #include <glbinding/gl/enum.h>
 
@@ -21,7 +24,7 @@ ScreenCapturer::ScreenCapturer(Painter * painter, ResourceManager & resourceMana
 ,   m_resourceManager(resourceManager)
 ,   m_viewportCapability(painter->getCapability<AbstractViewportCapability>())
 ,   m_framebufferCapability(painter->getCapability<AbstractTargetFramebufferCapability>())
-,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum_num", "<enum#" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" }, { "millisec", "<millisecond>" } })
+,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum_num", "<enum#" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" } })
 {
     assert(isApplicableTo(painter));
 }
@@ -125,6 +128,103 @@ const std::string ScreenCapturer::checkFilename(const std::string & fileName)
 const std::map<const std::string, const std::string> & ScreenCapturer::supportedTags()
 {
     return m_supportedTags;
+}
+
+std::string ScreenCapturer::dirName()
+{
+    return m_dirName;
+}
+
+void ScreenCapturer::setDirName(const std::string & dirName)
+{
+    m_dirName = dirName;
+}
+
+std::string ScreenCapturer::replaceTags(const std::string& filename, int width, int height, bool shouldUpdateUiFilename)
+{
+    std::time_t now{ 0 };
+    std::tm * time{ localtime(&now) };
+    std::string filenameWithReplacedTags{ filename };
+    std::stringstream day, month, year, hour, minute, second;
+
+    day << std::setw(2) << std::setfill('0') << time->tm_mday;
+    month << std::setw(2) << std::setfill('0') << time->tm_mon;
+    year << std::setw(2) << std::setfill('0') << time->tm_year;
+    hour << std::setw(2) << std::setfill('0') << time->tm_hour;
+    minute << std::setw(2) << std::setfill('0') << time->tm_min;
+    second << std::setw(2) << std::setfill('0') << time->tm_sec;
+
+
+    if (filenameWithReplacedTags.find(m_supportedTags["width"]) != std::string::npos)
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["width"]), m_supportedTags["width"].length(), std::to_string(width));
+
+    if (filenameWithReplacedTags.find(m_supportedTags["height"]) != std::string::npos)
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["height"]), m_supportedTags["height"].length(), std::to_string(height));
+
+    if (filenameWithReplacedTags.find(m_supportedTags["day"]) != std::string::npos)
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["day"]), m_supportedTags["day"].length(), day.str());
+
+    if (filenameWithReplacedTags.find(m_supportedTags["month"]) != std::string::npos)
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["month"]), m_supportedTags["month"].length(), month.str());
+
+    if (filenameWithReplacedTags.find(m_supportedTags["year"]) != std::string::npos)
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["year"]), m_supportedTags["year"].length(), year.str());
+
+    if (filenameWithReplacedTags.find(m_supportedTags["hour"]) != std::string::npos)
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["hour"]), m_supportedTags["hour"].length(), hour.str());
+
+    if (filenameWithReplacedTags.find(m_supportedTags["minute"]) != std::string::npos)
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["minute"]), m_supportedTags["minute"].length(), minute.str());
+
+    if (filenameWithReplacedTags.find(m_supportedTags["second"]) != std::string::npos)
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["second"]), m_supportedTags["second"].length(), second.str());
+
+    if (filenameWithReplacedTags.find(m_supportedTags["enum_num"]) != std::string::npos)
+    {
+        size_t position = filenameWithReplacedTags.find(m_supportedTags["enum_num"]);
+        filenameWithReplacedTags.replace(position, m_supportedTags["enum_num"].length(), "");
+
+        std::string startIndex{ extractEnumNumStartIndex(filenameWithReplacedTags, static_cast<int>(position)) };
+
+        int index{ atoi(startIndex.c_str()) };
+        filenameWithReplacedTags.replace(position, startIndex.length() + 1, std::to_string(index));
+
+        if (shouldUpdateUiFilename)
+            changeUiFilename();
+    }
+
+    return filenameWithReplacedTags;
+}
+
+std::string ScreenCapturer::buildFileName(const std::string & fileNameWithTags, int width, int height)
+{
+    std::string filename{ replaceTags(fileNameWithTags, width, height) };
+
+    const std::string sep("/");
+    const std::string suf(".png");
+
+    std::string finalFilename = m_dirName + sep + filename + suf;
+
+    // Increase duplicate number of fileName if file with the current duplicate count already exists
+    int duplicate_count{ 2 };
+    struct stat buf;
+    while (stat(finalFilename.c_str(), &buf) != -1)
+        finalFilename = m_dirName + sep + filename + " (" + std::to_string(duplicate_count++) + ")" + suf;
+
+    return finalFilename;
+}
+
+std::string ScreenCapturer::extractEnumNumStartIndex(const std::string& filename, int position)
+{
+    std::string startIndex{ "" };
+
+    while (filename.at(position) != '>')
+    {
+        startIndex += filename.at(position);
+        position++;
+    }
+
+    return startIndex;
 }
 
 

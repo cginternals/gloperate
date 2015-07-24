@@ -8,13 +8,10 @@
 
 #include <QAbstractButton>
 #include <QCompleter>
-#include <QFile>
 #include <QFileDialog>
-#include <QRegExp>
 #include <QSettings>
 #include <QString>
 #include <QStringListModel>
-#include <QTime>
 #include <QWindow>
 
 #include "ui_ScreenCapturerOutputWidget.h"
@@ -64,6 +61,8 @@ ScreenCapturerOutputWidget::ScreenCapturerOutputWidget(gloperate::ResourceManage
     if (!gloperate::ScreenCapturer::isApplicableTo(painter))
         m_ui->saveButton->setDisabled(true);
 
+    m_screenCapturer->changeUiFilename.connect(this, &ScreenCapturerOutputWidget::updateUiFileNameEnumIndex);
+
     restoreSettings();
     updateDirectory();
     checkFilename();
@@ -82,8 +81,7 @@ void ScreenCapturerOutputWidget::initializeFileNameTextEdit()
         << "<day>"
         << "<hour>"
         << "<minute>"
-        << "<second>"
-        << "<millisecond>";
+        << "<second>";
 
     auto model = new QStringListModel(filenameTags);
 
@@ -112,10 +110,10 @@ ScreenCapturerOutputWidget::~ScreenCapturerOutputWidget()
 
 void ScreenCapturerOutputWidget::updateDirectory()
 {
-    m_ui->directoryLineEdit->setText(m_dirName);
+    m_ui->directoryLineEdit->setText(QString::fromStdString(m_screenCapturer->dirName()));
     QSettings settings;
     settings.beginGroup("ScreenCapturerOutputWidget");
-    settings.setValue("dirname", m_dirName);
+    settings.setValue("dirname", QString::fromStdString(m_screenCapturer->dirName()));
     settings.endGroup();
 }
 
@@ -131,7 +129,7 @@ void ScreenCapturerOutputWidget::restoreSettings()
 {
     QSettings settings;
     settings.beginGroup("ScreenCapturerOutputWidget");
-    m_dirName = settings.value("dirname", QDir::homePath()).toString();
+    m_screenCapturer->setDirName(settings.value("dirname", QDir::homePath()).toString().toStdString());
     m_ui->fileNameTextEdit->setPlainText(settings.value("filename", "image").toString());
     settings.endGroup();
 }
@@ -139,7 +137,7 @@ void ScreenCapturerOutputWidget::restoreSettings()
 void ScreenCapturerOutputWidget::handleSave(bool)
 {
     m_context->makeCurrent();
-    m_screenCapturer->save(buildFileName(), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()));
+    m_screenCapturer->save(m_screenCapturer->buildFileName(m_ui->fileNameTextEdit->toPlainText().toStdString(), m_resolution->width(), m_resolution->height()), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()));
     m_context->doneCurrent();
 }
 
@@ -148,97 +146,20 @@ void ScreenCapturerOutputWidget::browseDirectory(bool)
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::Directory);
     dialog.setOption(QFileDialog::ShowDirsOnly);
-    dialog.setDirectory(m_dirName);
+    dialog.setDirectory(QString::fromStdString(m_screenCapturer->dirName()));
 
     if (dialog.exec() && !dialog.selectedFiles().empty())
     {
-        m_dirName = dialog.selectedFiles().first();
+        m_screenCapturer->setDirName(dialog.selectedFiles().first().toStdString());
         updateDirectory();
     }
 }
 
-std::string ScreenCapturerOutputWidget::replaceTags(const std::string& filename, bool shouldUpdateUiFilename)
-{
-    QDateTime time{ QDateTime::currentDateTime() };
-    std::string newFilename{ filename };
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("width")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("width")), m_screenCapturer->supportedTags().at("width").length(), std::to_string(m_resolution->width()));
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("height")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("height")), m_screenCapturer->supportedTags().at("height").length(), std::to_string(m_resolution->height()));
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("day")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("day")), m_screenCapturer->supportedTags().at("day").length(), time.toString("dd").toStdString());
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("month")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("month")), m_screenCapturer->supportedTags().at("month").length(), time.toString("MM").toStdString());
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("year")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("year")), m_screenCapturer->supportedTags().at("year").length(), time.toString("yyyy").toStdString());
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("hour")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("hour")), m_screenCapturer->supportedTags().at("hour").length(), time.toString("hh").toStdString());
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("minute")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("minute")), m_screenCapturer->supportedTags().at("minute").length(), time.toString("mm").toStdString());
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("second")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("second")), m_screenCapturer->supportedTags().at("second").length(), time.toString("ss").toStdString());
-
-    if (newFilename.find(m_screenCapturer->supportedTags().at("millisec")) != std::string::npos)
-        newFilename.replace(newFilename.find(m_screenCapturer->supportedTags().at("millisec")), m_screenCapturer->supportedTags().at("millisec").length(), time.toString("zzz").toStdString());
-    
-    if (newFilename.find(m_screenCapturer->supportedTags().at("enum_num")) != std::string::npos)
-    {
-        size_t position = newFilename.find(m_screenCapturer->supportedTags().at("enum_num"));
-        newFilename.replace(position, m_screenCapturer->supportedTags().at("enum_num").length(), "");
-
-        std::string startIndex{ extractEnumNumStartIndex(newFilename, static_cast<int>(position)) };
-
-        int index{ atoi(startIndex.c_str()) };
-        newFilename.replace(position, startIndex.length() + 1, std::to_string(index));
-
-        if (shouldUpdateUiFilename)
-            updateUiFileName();
-    }
-
-    return newFilename;
-}
-
-std::string ScreenCapturerOutputWidget::extractEnumNumStartIndex(const std::string& filename, int position)
-{
-    std::string startIndex{ "" };
-
-    while (filename.at(position) != '>')
-    {
-        startIndex += filename.at(position);
-        position++;
-    }
-
-    return startIndex;
-}
-
-std::string ScreenCapturerOutputWidget::buildFileName()
-{
-    std::string filename{ replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString()) };
-    
-    const std::string sep("/");
-    const std::string suf(".png");
-
-    std::string final_filename = m_dirName.toStdString() + sep + filename + suf;
-    int duplicate_count{ 2 };
-    while (QFile::exists(QString::fromStdString(final_filename)))
-        final_filename = m_dirName.toStdString() + sep + filename + " (" + std::to_string(duplicate_count++) + ")" + suf;
-
-    return final_filename;
-}
-
-void ScreenCapturerOutputWidget::updateUiFileName()
+void ScreenCapturerOutputWidget::updateUiFileNameEnumIndex()
 {
     QString oldUiFilename{ m_ui->fileNameTextEdit->toPlainText() };
     int positionOfEnumNumIndex{ oldUiFilename.indexOf(QString::fromStdString(m_screenCapturer->supportedTags().at("enum_num"))) + QString::fromStdString(m_screenCapturer->supportedTags().at("enum_num")).length() };
-    std::string startIndex{ extractEnumNumStartIndex(oldUiFilename.toStdString(), positionOfEnumNumIndex) };
+    std::string startIndex{ m_screenCapturer->extractEnumNumStartIndex(oldUiFilename.toStdString(), positionOfEnumNumIndex) };
     QString newUiFilename{ oldUiFilename.replace(positionOfEnumNumIndex, static_cast<int>(startIndex.length()), QString::number(atoi(startIndex.c_str()) + 1)) };
 
     bool oldSignalStatus = m_ui->fileNameTextEdit->blockSignals(true);
@@ -250,7 +171,7 @@ void ScreenCapturerOutputWidget::updateUiFileName()
 
 void ScreenCapturerOutputWidget::updateFilenamePreview()
 {
-    m_ui->filenamePeviewLabel->setText(QString::fromStdString(replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString(), false)) + ".png");
+    m_ui->filenamePeviewLabel->setText(QString::fromStdString(m_screenCapturer->replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString(), m_resolution->width(), m_resolution->height(), false)) + ".png");
 }
 
 void ScreenCapturerOutputWidget::checkFilename()

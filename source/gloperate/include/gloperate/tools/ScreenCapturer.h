@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <signalzeug/Signal.h>
+
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
@@ -39,17 +41,29 @@ public:
     const std::string checkFilename(const std::string & filename);
     const std::map<const std::string, const std::string> & supportedTags();
 
+    std::string dirName();
+    void setDirName(const std::string & dirName);
+    std::string replaceTags(const std::string& filename, int width, int height, bool shouldUpdateUiFilename = true);
+    std::string buildFileName(const std::string & fileNameWithTags, int width, int height);
+    std::string extractEnumNumStartIndex(const std::string& filename, int position);
+
+
+public:
+    signalzeug::Signal<> changeUiFilename;
+
 
 protected:
     Painter * m_painter;
     ResourceManager & m_resourceManager;
     AbstractViewportCapability * m_viewportCapability;
     AbstractTargetFramebufferCapability * m_framebufferCapability;
-    std::map<const std::string, const std::string> m_supportedTags;
 
     globjects::ref_ptr<globjects::Framebuffer> m_fbo;
     globjects::ref_ptr<globjects::Texture> m_color;
     globjects::ref_ptr<globjects::Renderbuffer> m_depth;
+
+    std::map<const std::string, const std::string> m_supportedTags;
+    std::string m_dirName;
 };
 
 
