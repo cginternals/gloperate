@@ -36,7 +36,7 @@ public:
     void initialize();
 
     void save(const std::string & filename, const int & width = 0, const int & height = 0, const int & renderIterations = 1);
-    const std::string & checkFilename(const std::string & filename);
+    const std::string checkFilename(const std::string & filename);
     const std::map<const std::string, const std::string> & supportedTags();
 
 

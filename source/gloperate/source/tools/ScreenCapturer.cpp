@@ -67,7 +67,7 @@ void ScreenCapturer::save(const std::string & filename, const int & width, const
 		m_viewportCapability->setViewport(oldX, oldY, oldWidth, oldHeight);
 }
 
-const std::string & ScreenCapturer::checkFilename(const std::string & fileName)
+const std::string ScreenCapturer::checkFilename(const std::string & fileName)
 {
     const std::string emp("");
     std::string fileNameToCheck(fileName);
@@ -114,8 +114,6 @@ const std::string & ScreenCapturer::checkFilename(const std::string & fileName)
 
     if (errorMessage == "")
     {
-        std::string rx("[A-Za-z0-9_\\-\\!\\§\\$\\%\\&\\(\\)\\=\\`\\´\\+\\'\\#\\-\\.\\,\\;\\_\\^\\°\\}\\{\\[\\]\\@\\x00C4\\x00E4\\x00D6\\x00F6\\x00DC\\x00FC\\x00DF\\s]{1,100}");
-
         if (fileNameToCheck.find_first_of("/\\*\":|?<>") != std::string::npos)
             errorMessage = "includes invalid symbols";
     }
