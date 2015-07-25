@@ -21,10 +21,11 @@ globjects::Texture * TextureFilter::process(const globjects::Texture * const inp
 	assert(m_pipeline);
 
 	glraw::AssetInformation info = generateAssetInformation(input);
-	//input->getImage(0, gl::GL_RGBA8, gl::GL_UNSIGNED_BYTE, m_rawData.data());
-	auto x = input->getImage(0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE);
 
-	m_rawData = QByteArray::fromRawData((const char*)x.data(), x.size());
+	
+	auto x = input->getImage(0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE);
+	m_rawData = QByteArray::fromRawData(reinterpret_cast<char*>(x.data()), x.size());
+	
 
 	m_canvas->doneCurrent();
 	transfer(info);
@@ -47,9 +48,6 @@ glraw::AssetInformation TextureFilter::generateAssetInformation(const globjects:
 {
 	const int width = input->getLevelParameter(0, gl::GL_TEXTURE_WIDTH);
 	const int height = input->getLevelParameter(0, gl::GL_TEXTURE_HEIGHT);
-	const int depth = input->getLevelParameter(0, gl::GL_TEXTURE_DEPTH);
-
-	//m_rawData.resize(width * height * depth);
 
 	glraw::AssetInformation info;
 	info.setProperty("width", width);

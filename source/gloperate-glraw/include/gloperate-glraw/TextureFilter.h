@@ -1,5 +1,6 @@
 #include <gloperate-glraw/gloperate-glraw_api.h>
 
+#include <initializer_list>
 #include <memory>
 
 #include <QVariantMap>
@@ -32,6 +33,7 @@ public:
 	TextureFilter(std::unique_ptr<gloperate_qt::QtOpenGLWindow>& canvas);
 	~TextureFilter();
 
+	bool addFilter(std::initializer_list<std::pair<std::string, QVariantMap>> list);
 	bool addFilter(const std::string& name, const QVariantMap& options = QVariantMap());
 	bool addFilter(glraw::AbstractFilter * filter);
 	void resetFilters();

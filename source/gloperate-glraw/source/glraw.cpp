@@ -2,9 +2,6 @@
 
 #include <globjects/logging.h>
 
-// !!!ATTENTION!!!
-// This header also includes GL.h indirectly.
-// Do not use anything from gl namespace.
 #include <glraw/MemoryProcessor.h>
 #include <glraw/Converter.h>
 #include <glraw/filter/Filter.hpp>
@@ -29,32 +26,48 @@ void TextureFilter::transfer(glraw::AssetInformation & info)
 	m_pipeline->process(m_rawData, info);
 }
 
-bool TextureFilter::addFilter(const std::string& name, const QVariantMap& options)
+bool TextureFilter::addFilter(std::initializer_list<std::pair<std::string, QVariantMap>> list)
 {
-	try
+	for( auto filter : list )
 	{
-		auto filter = glraw::Filter::CreateByName(name, options);
-		if (filter)
+		if(!addFilter(filter.first, filter.second))
 		{
-			m_pipeline->appendFilter(filter);
-			return true;
-		}
-		else
-		{
-			globjects::debug() << "Filter: " << name << " not found!" << std::endl;
 			return false;
 		}
 	}
-	catch (std::exception& e)
+	return true;
+}
+
+bool TextureFilter::addFilter(const std::string& name, const QVariantMap& options)
+{
+	auto filter = glraw::Filter::CreateByName(name, options);
+	if (filter)
 	{
-		globjects::debug() << "ERROR @" << name << ": " << e.what() << std::endl;
+		addFilter(filter);
+		return true;
+	}
+	else
+	{
+		globjects::debug() << "Filter: " << name << " not found!" << std::endl;
 		return false;
 	}
 }
 
+bool TextureFilter::addFilter(glraw::AbstractFilter * filter)
+{
+	assert(filter);
+	m_pipeline->appendFilter(filter);
+	return true;
+}
+
 std::vector<std::string> TextureFilter::allAvailableFilters() const
 {
-	return std::vector<std::string>();
+	return glraw::Filter::All();
+}
+
+void TextureFilter::resetFilters()
+{
+	m_pipeline->reset();
 }
 
 }
