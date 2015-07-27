@@ -12,6 +12,7 @@
 namespace gloperate
 {
     class AbstractViewportCapability;
+    class AbstractTargetFramebufferCapability;
 }
 
 
@@ -34,6 +35,7 @@ protected:
 
 protected:
     /* Capabilities */
+    gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
 
     /* Data */

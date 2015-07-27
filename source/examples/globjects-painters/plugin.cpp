@@ -12,7 +12,7 @@ GLOPERATE_PLUGIN_LIBRARY
 
     GLOPERATE_PAINTER_PLUGIN(Logo
     , "Logo"
-    , "Renders a rotating quad, featuring textured, animation, and cameras"
+    , "Renders a rotating quad, featuring textures, animation, and cameras"
     , GLOPERATE_AUTHOR_ORGANIZATION
     , "v1.0.0" )
 
