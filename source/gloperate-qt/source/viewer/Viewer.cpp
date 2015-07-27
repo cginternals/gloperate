@@ -260,6 +260,8 @@ void Viewer::setupMessageWidgets()
     // Add item to status bar and connect to window
     statusBar()->addPermanentWidget(m_messagesStatus.get());
     m_messagesStatus->attachWidget(m_messagLogDockWidget);
+    
+    m_ui->viewMenu->addAction(m_messagLogDockWidget->toggleViewAction());
 }
 
 void Viewer::setupCommandPrompt()
@@ -277,6 +279,8 @@ void Viewer::setupCommandPrompt()
     m_scriptPromptDockWidget->setObjectName("ScriptPromptWidget");
     addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, m_scriptPromptDockWidget);
     m_scriptPrompt->setFrameShape(QFrame::NoFrame);
+
+    m_ui->viewMenu->addAction(m_scriptPromptDockWidget->toggleViewAction());
 }
 
 void Viewer::setupPropertyWidget()
@@ -286,6 +290,8 @@ void Viewer::setupPropertyWidget()
     m_propertyDockWidget->setObjectName("PropertyDockWidget");
     m_propertyDockWidget->setAllowedAreas(Qt::DockWidgetArea::LeftDockWidgetArea);
     addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, m_propertyDockWidget, Qt::Orientation::Horizontal);
+    
+    m_ui->viewMenu->addAction(m_propertyDockWidget->toggleViewAction());
 }
 
 void Viewer::setupDockArea()
