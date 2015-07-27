@@ -70,8 +70,8 @@ protected:
 
 
 protected:
-    std::unique_ptr<ResolutionState> m_widthState;
-    std::unique_ptr<ResolutionState> m_heightState;
+    int m_width;
+    int m_height;
     std::unique_ptr<ResolutionState> m_resolutionState;
 
 

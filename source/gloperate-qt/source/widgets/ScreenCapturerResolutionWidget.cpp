@@ -25,8 +25,8 @@ const QString cmString = "cm";
 
 ScreenCapturerResolutionWidget::ScreenCapturerResolutionWidget(QWidget * parent)
 :   QWidget(parent)
-,   m_widthState(new ResolutionState(1920.0, pixelString))
-,   m_heightState(new ResolutionState(1080.0, pixelString))
+,   m_width(1920)
+,   m_height(1080)
 ,   m_resolutionState(new ResolutionState(72, ppiString))
 ,   m_ui(new Ui_ScreenCapturerResolutionWidget)
 {
@@ -69,11 +69,9 @@ ScreenCapturerResolutionWidget::ScreenCapturerResolutionWidget(QWidget * parent)
 void ScreenCapturerResolutionWidget::updateResolutionSummary()
 {
     // TODO: detect unsigned long long overflow
-    int height{ static_cast<int>(std::round(toPixels(m_heightState->value, m_heightState->type))) };
-    int width{ static_cast<int>(std::round(toPixels(m_widthState->value, m_widthState->type))) };
-    emit resolutionChanged(QSize(width, height));
+    emit resolutionChanged(QSize(m_width, m_height));
 
-    unsigned long long pixelNumber{ static_cast<unsigned long long>(width) * static_cast<unsigned long long>(height) };
+    unsigned long long pixelNumber{ static_cast<unsigned long long>(m_width) * static_cast<unsigned long long>(m_height) };
     QString unit;
     double byte;
     if (pixelNumber * 4 < 1024)
@@ -177,98 +175,54 @@ void ScreenCapturerResolutionWidget::widthUnitChanged(const QString& text)
 {
     if (text == pixelString)
     {
-        m_widthState->value = toPixels(m_widthState->value, m_widthState->type);
-
         if (m_ui->heightComboBox->currentText() == pixelString)
             enableResolution(false);
         
         setDecimals(m_ui->widthDoubleSpinBox, 0);
     }
-    else if (text == inchString)
+    else if (!m_ui->resolutionLabel->isEnabled())
     {
-        if (m_widthState->type == pixelString)
-        {
-            m_widthState->value = pixelsToInch(m_widthState->value);
-
-            setDecimals(m_ui->widthDoubleSpinBox, 2);
-            enableResolution(true);
-        }
-        else if (m_widthState->type == cmString)
-            m_widthState->value = m_widthState->value * INCH_PER_CM;
-    }
-    else
-    {
-        if (m_widthState->type == pixelString)
-        {
-            m_widthState->value = pixelsToCm(m_widthState->value);
-
-            setDecimals(m_ui->widthDoubleSpinBox, 2);
-            enableResolution(true);
-        }
-        else if (m_widthState->type == inchString)
-            m_widthState->value = m_widthState->value * CM_PER_INCH;
+        setDecimals(m_ui->widthDoubleSpinBox, 2);
+        enableResolution(true);
     }
 
-    m_ui->widthDoubleSpinBox->setValue(m_widthState->value);
-    m_widthState->type = text;
+    bool old = m_ui->widthDoubleSpinBox->blockSignals(true);
+    m_ui->widthDoubleSpinBox->setValue(pixelsTo(m_height, m_ui->widthComboBox->currentText()));
+    m_ui->widthDoubleSpinBox->blockSignals(old);
 }
 
 void ScreenCapturerResolutionWidget::heightUnitChanged(const QString& text)
 {
     if (text == pixelString)
     {
-        m_heightState->value = toPixels(m_heightState->value, m_heightState->type);
-
         if (m_ui->widthComboBox->currentText() == pixelString)
             enableResolution(false);
         
         setDecimals(m_ui->heightDoubleSpinBox, 0);
     }
-    else if (text == inchString)
+    else if (!m_ui->resolutionLabel->isEnabled())
     {
-        if (m_heightState->type == pixelString)
-        {
-            m_heightState->value = pixelsToInch(m_heightState->value);
-
-            setDecimals(m_ui->heightDoubleSpinBox, 2);
-            enableResolution(true);
-        }
-        else if (m_heightState->type == cmString)
-            m_heightState->value = m_heightState->value * INCH_PER_CM;
-    }
-    else
-    {
-        if (m_heightState->type == pixelString)
-        {
-            m_heightState->value = pixelsToCm(m_heightState->value);
-            
-            setDecimals(m_ui->heightDoubleSpinBox, 2);
-            enableResolution(true);
-        }
-        else if (m_heightState->type == inchString)
-            m_heightState->value = m_heightState->value * CM_PER_INCH;
+        setDecimals(m_ui->heightDoubleSpinBox, 2);
+        enableResolution(true);
     }
 
-    m_ui->heightDoubleSpinBox->setValue(m_heightState->value);
-    m_heightState->type = text;
+    bool old = m_ui->heightDoubleSpinBox->blockSignals(true);
+    m_ui->heightDoubleSpinBox->setValue(pixelsTo(m_height, m_ui->heightComboBox->currentText()));
+    m_ui->heightDoubleSpinBox->blockSignals(old);
 }
 
 void ScreenCapturerResolutionWidget::widthValueChanged(double d)
 {
     if (m_ui->aspectCheckBox->isChecked())
     {
-        double newValue{ toPixels(d, m_widthState->type) * toPixels(m_heightState->value, m_heightState->type) / toPixels(m_widthState->value, m_widthState->type) };
-        m_heightState->value = pixelsTo(newValue, m_heightState->type);
+        m_height = std::round(toPixels(d, m_ui->widthComboBox->currentText()) * m_height / m_width);
 
         bool old = m_ui->heightDoubleSpinBox->blockSignals(true);
-        if (m_heightState->type == pixelString)
-            m_ui->heightDoubleSpinBox->setValue(std::round(m_heightState->value));
-        else
-            m_ui->heightDoubleSpinBox->setValue(m_heightState->value);
+        m_ui->heightDoubleSpinBox->setValue(pixelsTo(m_height, m_ui->heightComboBox->currentText()));
         m_ui->heightDoubleSpinBox->blockSignals(old);
     }
-    
-    m_widthState->value = d;
+
+    m_width = std::round(toPixels(d, m_ui->widthComboBox->currentText()));
 
     updateResolutionSummary();
 }
@@ -277,18 +231,14 @@ void ScreenCapturerResolutionWidget::heightValueChanged(double d)
 {
     if (m_ui->aspectCheckBox->isChecked())
     {
-        double newValue{ toPixels(d, m_heightState->type) * toPixels(m_widthState->value, m_widthState->type) / toPixels(m_heightState->value, m_heightState->type) };
-        m_widthState->value = pixelsTo(newValue, m_widthState->type);
+        m_width = std::round(toPixels(d, m_ui->heightComboBox->currentText()) * m_width / m_height);
 
         bool old = m_ui->widthDoubleSpinBox->blockSignals(true);
-        if (m_widthState->type == pixelString)
-            m_ui->widthDoubleSpinBox->setValue(std::round(m_widthState->value));
-        else
-            m_ui->widthDoubleSpinBox->setValue(m_widthState->value);
+        m_ui->widthDoubleSpinBox->setValue(pixelsTo(m_height, m_ui->widthComboBox->currentText()));
         m_ui->widthDoubleSpinBox->blockSignals(old);
     }
 
-    m_heightState->value = d;
+    m_height = std::round(toPixels(d, m_ui->heightComboBox->currentText()));
 
     updateResolutionSummary();
 }
@@ -299,24 +249,24 @@ void ScreenCapturerResolutionWidget::resolutionValueChanged(int i)
     bool old;
     if (m_ui->aspectCheckBox->isChecked())
     {
-        if (m_widthState->type == pixelString)
+        if (m_ui->widthComboBox->currentText() == pixelString)
         {
-            value = pixelsTo(m_widthState->value, m_heightState->type);
+            value = pixelsTo(m_width, m_ui->heightComboBox->currentText());
             m_resolutionState->value = i;
-            m_widthState->value = toPixels(value, m_heightState->type);
+            m_width = std::round(toPixels(value, m_ui->heightComboBox->currentText()));
 
             old = m_ui->widthDoubleSpinBox->blockSignals(true);
-            m_ui->widthDoubleSpinBox->setValue(std::round(m_widthState->value));
+            m_ui->widthDoubleSpinBox->setValue(m_width);
             m_ui->widthDoubleSpinBox->blockSignals(old);
         }
-        else if (m_heightState->type == pixelString)
+        else if (m_ui->heightComboBox->currentText() == pixelString)
         {
-            value = pixelsTo(m_heightState->value, m_widthState->type);
+            value = pixelsTo(m_height, m_ui->widthComboBox->currentText());
             m_resolutionState->value = i;
-            m_heightState->value = toPixels(value, m_widthState->type);
+            m_height = std::round(toPixels(value, m_ui->widthComboBox->currentText()));
 
             old = m_ui->heightDoubleSpinBox->blockSignals(true);
-            m_ui->heightDoubleSpinBox->setValue(std::round(m_heightState->value));
+            m_ui->heightDoubleSpinBox->setValue(m_height);
             m_ui->heightDoubleSpinBox->blockSignals(old);
         }
     }
@@ -333,7 +283,9 @@ void ScreenCapturerResolutionWidget::resolutionUnitChanged(const QString& text)
     else
         m_resolutionState->value = std::ceil(m_resolutionState->value * INCH_PER_CM);
 
+    bool old = m_ui->resolutionSpinBox->blockSignals(true);
     m_ui->resolutionSpinBox->setValue((int)m_resolutionState->value);
+    m_ui->resolutionSpinBox->blockSignals(old);
     m_resolutionState->type = text;
 }
 
