@@ -10,7 +10,7 @@ Painter::Painter(const std::string & name, ResourceManager & resourceManager, co
 : Object(name)
 , m_resourceManager(resourceManager)
 , m_relDataPath(relDataPath)
-, m_backgroundColor(1.0, 1.0, 1.0)
+, m_backgroundColor(0.0, 0.0, 0.0)
 {
 }
 
