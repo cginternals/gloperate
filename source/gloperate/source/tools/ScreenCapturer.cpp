@@ -83,6 +83,11 @@ void ScreenCapturer::save(const std::string & filename, const int & width, const
 		m_viewportCapability->setViewport(oldX, oldY, oldWidth, oldHeight);
 }
 
+void ScreenCapturer::save(const std::string & filename, bool, const int & renderIterations)
+{
+    save(filename, std::max(1, m_width), std::max(1, m_height), renderIterations);
+}
+
 const std::string ScreenCapturer::checkFilename(const std::string & fileName)
 {
     const std::string emp("");
@@ -153,7 +158,7 @@ void ScreenCapturer::setDirName(const std::string & dirName)
     m_dirName = dirName;
 }
 
-std::string ScreenCapturer::replaceTags(const std::string& filename, int width, int height, bool shouldUpdateUiFilename)
+std::string ScreenCapturer::replaceTags(const std::string& filename, bool shouldUpdateUiFilename)
 {
     std::time_t now{ 0 };
     std::tm * time{ localtime(&now) };
@@ -169,10 +174,10 @@ std::string ScreenCapturer::replaceTags(const std::string& filename, int width, 
 
 
     if (filenameWithReplacedTags.find(m_supportedTags["width"]) != std::string::npos)
-        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["width"]), m_supportedTags["width"].length(), std::to_string(width));
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["width"]), m_supportedTags["width"].length(), std::to_string(m_width));
 
     if (filenameWithReplacedTags.find(m_supportedTags["height"]) != std::string::npos)
-        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["height"]), m_supportedTags["height"].length(), std::to_string(height));
+        filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["height"]), m_supportedTags["height"].length(), std::to_string(m_height));
 
     if (filenameWithReplacedTags.find(m_supportedTags["day"]) != std::string::npos)
         filenameWithReplacedTags.replace(filenameWithReplacedTags.find(m_supportedTags["day"]), m_supportedTags["day"].length(), day.str());
@@ -209,9 +214,9 @@ std::string ScreenCapturer::replaceTags(const std::string& filename, int width, 
     return filenameWithReplacedTags;
 }
 
-std::string ScreenCapturer::buildFileName(const std::string & fileNameWithTags, int width, int height)
+std::string ScreenCapturer::buildFileName(const std::string & fileNameWithTags)
 {
-    std::string filename{ replaceTags(fileNameWithTags, width, height) };
+    std::string filename{ replaceTags(fileNameWithTags) };
 
     const std::string sep("/");
     const std::string suf(".png");

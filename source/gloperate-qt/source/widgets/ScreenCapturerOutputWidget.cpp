@@ -126,7 +126,7 @@ void ScreenCapturerOutputWidget::restoreSettings()
 void ScreenCapturerOutputWidget::handleSave(bool)
 {
     m_context->makeCurrent();
-    m_screenCapturer->save(m_screenCapturer->buildFileName(m_ui->fileNameTextEdit->toPlainText().toStdString(), m_screenCapturer->width(), m_screenCapturer->height()), std::max(1, m_screenCapturer->width()), std::max(1, m_screenCapturer->height()));
+    m_screenCapturer->save(m_screenCapturer->buildFileName(m_ui->fileNameTextEdit->toPlainText().toStdString()), true);
     m_context->doneCurrent();
 }
 
@@ -160,7 +160,7 @@ void ScreenCapturerOutputWidget::updateUiFileNameEnumIndex()
 
 void ScreenCapturerOutputWidget::updateFilenamePreview()
 {
-    m_ui->filenamePeviewLabel->setText(QString::fromStdString(m_screenCapturer->replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString(), m_screenCapturer->width(), m_screenCapturer->height(), false)) + ".png");
+    m_ui->filenamePeviewLabel->setText(QString::fromStdString(m_screenCapturer->replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString(), false)) + ".png");
 }
 
 void ScreenCapturerOutputWidget::checkFilename()

@@ -50,13 +50,14 @@ public:
     void initialize();
 
     void save(const std::string & filename, const int & width = 0, const int & height = 0, const int & renderIterations = 1);
+    void save(const std::string & filename, bool, const int & renderIterations = 1);
     const std::string checkFilename(const std::string & filename);
     const std::map<const std::string, const std::string> & supportedTags();
 
     std::string dirName();
     void setDirName(const std::string & dirName);
-    std::string replaceTags(const std::string& filename, int width, int height, bool shouldUpdateUiFilename = true);
-    std::string buildFileName(const std::string & fileNameWithTags, int width, int height);
+    std::string replaceTags(const std::string& filename, bool shouldUpdateUiFilename = true);
+    std::string buildFileName(const std::string & fileNameWithTags);
     std::string extractEnumNumStartIndex(const std::string& filename, int position);
 
     int width();
