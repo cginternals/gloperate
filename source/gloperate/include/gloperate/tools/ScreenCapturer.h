@@ -82,9 +82,6 @@ public:
     signalzeug::Signal<> changeUiFilename;
     signalzeug::Signal<const std::string&> resolutionSummaryChanged;
     signalzeug::Signal<const int, const int> resolutionChanged;
-//signals:
-//    void resolutionSummaryChanged(const QString& resolutionSummary);
-//    void resolutionChanged(const QSize& resolution);
 
 
 public:

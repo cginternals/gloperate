@@ -373,8 +373,8 @@ void ScreenCapturer::createResolutionSummary()
         unit = "TiB";
         byte = static_cast<double>(pixelNumber)* 4 / std::pow<int, int>(1024, 4);
     }
+
     std::string summary{ std::to_string(pixelNumber) + " pixels (" + std::to_string(std::round(byte * 100) / 100) + " " + unit + " uncompressed)" };
-    //m_ui->resolutionSummaryLabel->setText(summary);
     resolutionSummaryChanged(summary);
 }
 
