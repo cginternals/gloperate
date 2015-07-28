@@ -51,13 +51,13 @@ public:
     *  @param[in] resourceManager
     *    Resource maanger used by viewer
     *  @param[in] painter
-    *    Painter active in viewer
+    *    Painter active in viewer, null_ptr is not allowed
     *  @param[in] context
-    *    OpenGl context of viewer
+    *    OpenGl context of viewer, null_ptr is not allowed
     *  @param[in] screenCapturer
-    *    ScreenCapturer tool managed by UI
+    *    ScreenCapturer tool managed by UI, null_ptr is not allowed
     *  @param[in] parent
-    *    Parent widget
+    *    Parent widget, null_ptr is allowed
     */
     ScreenCapturerOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, gloperate::ScreenCapturer * screenCapturer, QWidget * parent = nullptr);
     

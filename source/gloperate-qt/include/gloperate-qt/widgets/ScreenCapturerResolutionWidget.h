@@ -25,6 +25,10 @@ class ScreenCapturer;
 }
 
 
+/**
+*  @brief
+*    UI for resolution configuration of image saving.
+*/
 namespace gloperate_qt
 {
 
@@ -35,11 +39,25 @@ class GLOPERATE_QT_API ScreenCapturerResolutionWidget : public QWidget
 
 
 public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] screenCapturer
+    *    ScreenCapturer tool managed by UI, null_ptr is not allowed
+    *  @param[in] parent
+    *    Parent widget, null_ptr is allowed
+    */
     ScreenCapturerResolutionWidget(gloperate::ScreenCapturer * screenCapturer, QWidget * parent = nullptr);
+
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~ScreenCapturerResolutionWidget();
 
 
-protected:
+private:
     void widthUnitChanged(const QString& text);
     void heightUnitChanged(const QString& text);
     void resolutionUnitChanged(const QString& text);
@@ -51,11 +69,8 @@ protected:
     void setDecimals(QDoubleSpinBox* box, int dec);
 
 
-protected:
-    gloperate::ScreenCapturer * m_screenCapturer;
-
-
 private:
+    gloperate::ScreenCapturer * m_screenCapturer;
     const QScopedPointer<Ui_ScreenCapturerResolutionWidget> m_ui;
 };
 
