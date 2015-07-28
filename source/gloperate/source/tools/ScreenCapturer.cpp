@@ -2,8 +2,9 @@
 #include <gloperate/tools/ScreenCapturer.h>
 
 #include <cassert>
-#include <set>
+#include <cmath>
 #include <ctime>
+#include <set>
 #include <sys/stat.h>
 #include <iomanip>
 
@@ -14,9 +15,18 @@
 #include <gloperate/painter/AbstractTargetFramebufferCapability.h>
 #include <gloperate/resources/ResourceManager.h>
 
+#define CM_PER_INCH 2.54
+#define INCH_PER_CM 1 / CM_PER_INCH
 
 namespace gloperate
 {
+
+
+const std::string ScreenCapturer::s_ppiString = "ppi";
+const std::string ScreenCapturer::s_pixelsPerCmString = "px/cm";
+const std::string ScreenCapturer::s_pixelString = "pixel";
+const std::string ScreenCapturer::s_inchString = "inch";
+const std::string ScreenCapturer::s_cmString = "cm";
 
 
 ScreenCapturer::ScreenCapturer(Painter * painter, ResourceManager & resourceManager)
@@ -25,6 +35,9 @@ ScreenCapturer::ScreenCapturer(Painter * painter, ResourceManager & resourceMana
 ,   m_viewportCapability(painter->getCapability<AbstractViewportCapability>())
 ,   m_framebufferCapability(painter->getCapability<AbstractTargetFramebufferCapability>())
 ,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum_num", "<enum#" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" } })
+,   m_width(1920)
+,   m_height(1080)
+,   m_resolutionState(new ResolutionState(72, s_ppiString))
 {
     assert(isApplicableTo(painter));
 }
@@ -225,6 +238,144 @@ std::string ScreenCapturer::extractEnumNumStartIndex(const std::string& filename
     }
 
     return startIndex;
+}
+
+double ScreenCapturer::inchToPixels(double value)
+{
+    if (m_resolutionState->type == s_ppiString)
+        value *= m_resolutionState->value;
+    else if (m_resolutionState->type == s_pixelsPerCmString)
+        value *= m_resolutionState->value * CM_PER_INCH;
+
+    return value;
+}
+
+double ScreenCapturer::cmToPixels(double value)
+{
+    if (m_resolutionState->type == s_ppiString)
+        value *= m_resolutionState->value * INCH_PER_CM;
+    else if (m_resolutionState->type == s_pixelsPerCmString)
+        value *= m_resolutionState->value;
+
+    return value;
+}
+
+double ScreenCapturer::toPixels(double value, const std::string& type)
+{
+    if (type == s_inchString)
+        value = inchToPixels(value);
+    else if (type == s_cmString)
+        value = cmToPixels(value);
+
+    return value;
+}
+
+double ScreenCapturer::pixelsToCm(double value)
+{
+    if (m_resolutionState->type == s_ppiString)
+        value *= CM_PER_INCH / m_resolutionState->value;
+    else if (m_resolutionState->type == s_pixelsPerCmString)
+        value /= m_resolutionState->value;
+
+    return value;
+}
+
+double ScreenCapturer::pixelsToInch(double value)
+{
+    if (m_resolutionState->type == s_ppiString)
+        value /= m_resolutionState->value;
+    else if (m_resolutionState->type == s_pixelsPerCmString)
+        value *= INCH_PER_CM / m_resolutionState->value;
+
+    return value;
+}
+
+double ScreenCapturer::pixelsTo(double value, const std::string& type)
+{
+    if (type == s_inchString)
+        value = pixelsToInch(value);
+    else if (type == s_cmString)
+        value = pixelsToCm(value);
+
+    return value;
+}
+
+int ScreenCapturer::width()
+{
+    return m_width;
+}
+
+int ScreenCapturer::height()
+{
+    return m_height;
+}
+
+void ScreenCapturer::setWidth(int width)
+{
+    m_width = width;
+}
+
+void ScreenCapturer::setHeight(int height)
+{
+    m_height = height;
+}
+
+const ResolutionState & ScreenCapturer::resolutionState()
+{
+    return *m_resolutionState.get();
+}
+
+void ScreenCapturer::setResolutionState(ResolutionState & resolutionState)
+{
+    m_resolutionState.reset(&resolutionState);
+}
+
+void ScreenCapturer::setResolutionValue(double value)
+{
+    m_resolutionState->value = value;
+}
+
+void ScreenCapturer::setResolutionUnit(std::string & unit)
+{
+    m_resolutionState->type = unit;
+}
+
+void ScreenCapturer::createResolutionSummary()
+{
+    // TODO: detect unsigned long long overflow
+    resolutionChanged(m_width, m_height);
+
+    unsigned long long pixelNumber{ static_cast<unsigned long long>(m_width) * static_cast<unsigned long long>(m_height) };
+    std::string unit;
+    double byte;
+    if (pixelNumber * 4 < 1024)
+    {
+        unit = "Byte";
+        byte = static_cast<double>(pixelNumber)* 4;
+    }
+    else if (pixelNumber * 4 < static_cast<unsigned long long>(std::pow<int, int>(1024, 2)))
+    {
+        unit = "KiB";
+        byte = static_cast<double>(pixelNumber)* 4 / 1024;
+    }
+    else if (pixelNumber * 4 < static_cast<unsigned long long>(std::pow<int, int>(1024, 3)))
+    {
+        unit = "MiB";
+        byte = static_cast<double>(pixelNumber)* 4 / std::pow<int, int>(1024, 2);
+    }
+    else if (pixelNumber * 4 < static_cast<unsigned long long>(std::pow<int, int>(1024, 4)))
+    {
+        unit = "GiB";
+        byte = static_cast<double>(pixelNumber)* 4 / std::pow<int, int>(1024, 3);
+    }
+    else //if (pixelNumber * 4 < static_cast<unsigned long long>(std::pow<int, int>(1024, 5)))
+    {
+        unit = "TiB";
+        byte = static_cast<double>(pixelNumber)* 4 / std::pow<int, int>(1024, 4);
+    }
+    std::string summary{ std::to_string(pixelNumber) + " pixels (" + std::to_string(std::round(byte * 100) / 100) + " " + unit + " uncompressed)" };
+    //m_ui->resolutionSummaryLabel->setText(summary);
+    resolutionSummaryChanged(summary);
 }
 
 

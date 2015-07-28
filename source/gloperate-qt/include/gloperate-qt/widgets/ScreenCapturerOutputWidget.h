@@ -40,11 +40,11 @@ class GLOPERATE_QT_API ScreenCapturerOutputWidget : public QWidget
 
 
 public:
-    ScreenCapturerOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
+    ScreenCapturerOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, gloperate::ScreenCapturer * screenCapturer, QWidget * parent = nullptr);
     virtual ~ScreenCapturerOutputWidget();
 
-    void updateResolutionSummaryLabel(const QString& sizeSummary);
-    void updateResolution(const QSize& resolution);
+public slots:
+    void updateResolutionSummaryLabel(const std::string& resolution);
 
 
 signals:
@@ -73,7 +73,6 @@ protected:
 
 private:
     const QScopedPointer<Ui_ScreenCapturerOutputWidget> m_ui;
-    QScopedPointer<QSize> m_resolution;
 };
 
 

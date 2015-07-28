@@ -17,20 +17,16 @@ class Ui_ScreenCapturerResolutionWidget;
 class QDoubleSpinBox;
 
 
-namespace gloperate_qt
+namespace gloperate
 {
 
+class ScreenCapturer;
 
-struct ResolutionState {
-    ResolutionState(double d, QString s)
-    : value{d}
-    , type{s}
-    {
-    }
+}
 
-    double value;
-    QString type;
-};
+
+namespace gloperate_qt
+{
 
 
 class GLOPERATE_QT_API ScreenCapturerResolutionWidget : public QWidget
@@ -39,15 +35,8 @@ class GLOPERATE_QT_API ScreenCapturerResolutionWidget : public QWidget
 
 
 public:
-    ScreenCapturerResolutionWidget(QWidget * parent = nullptr);
+    ScreenCapturerResolutionWidget(gloperate::ScreenCapturer * screenCapturer, QWidget * parent = nullptr);
     virtual ~ScreenCapturerResolutionWidget();
-
-    void updateResolutionSummary();
-
-
-signals:
-    void resolutionSummaryChanged(const QString& resolutionSummary);
-    void resolutionChanged(const QSize& resolution);
 
 
 protected:
@@ -59,20 +48,11 @@ protected:
     void heightValueChanged(double d);
     void resolutionValueChanged(int i);
 
-    double inchToPixels(double value);
-    double cmToPixels(double value);
-    double toPixels(double value, const QString& type);
-    double pixelsToCm(double value);
-    double pixelsToInch(double value);
-    double pixelsTo(double value, const QString& type);
-
     void setDecimals(QDoubleSpinBox* box, int dec);
 
 
 protected:
-    int m_width;
-    int m_height;
-    std::unique_ptr<ResolutionState> m_resolutionState;
+    gloperate::ScreenCapturer * m_screenCapturer;
 
 
 private:

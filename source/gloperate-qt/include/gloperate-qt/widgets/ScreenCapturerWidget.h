@@ -25,6 +25,7 @@ namespace gloperate
 
 class ResourceManager;
 class Painter;
+class ScreenCapturer;
 
 }
 
@@ -54,6 +55,7 @@ private:
     std::unique_ptr<ScreenCapturerResolutionWidget> m_resolutionWidget;
     std::unique_ptr<ScreenCapturerTilebasedWidget> m_tilebasedWidget;
     std::unique_ptr<widgetzeug::DataLinkWidget> m_dataLinkWidget;
+    std::unique_ptr<gloperate::ScreenCapturer> m_screenCapturer;
 };
 
 

@@ -18,6 +18,18 @@ namespace gloperate
 {
 
 
+struct ResolutionState {
+    ResolutionState(double d, std::string s)
+        : value( d )
+        , type( s )
+    {
+    }
+
+    double value;
+    std::string type;
+};
+
+
 class Painter;
 class ResourceManager;
 class AbstractViewportCapability;
@@ -47,9 +59,40 @@ public:
     std::string buildFileName(const std::string & fileNameWithTags, int width, int height);
     std::string extractEnumNumStartIndex(const std::string& filename, int position);
 
+    int width();
+    int height();
+    void setWidth(int width);
+    void setHeight(int height);
+    const ResolutionState & resolutionState();
+    void setResolutionState(ResolutionState & resolutionState);
+    void setResolutionValue(double value);
+    void setResolutionUnit(std::string & unit);
+
+    double inchToPixels(double value);
+    double cmToPixels(double value);
+    double toPixels(double value, const std::string& type);
+    double pixelsToCm(double value);
+    double pixelsToInch(double value);
+    double pixelsTo(double value, const std::string& type);
+
+    void createResolutionSummary();
+
 
 public:
     signalzeug::Signal<> changeUiFilename;
+    signalzeug::Signal<const std::string&> resolutionSummaryChanged;
+    signalzeug::Signal<const int, const int> resolutionChanged;
+//signals:
+//    void resolutionSummaryChanged(const QString& resolutionSummary);
+//    void resolutionChanged(const QSize& resolution);
+
+
+public:
+    static const std::string s_ppiString;
+    static const std::string s_pixelsPerCmString;
+    static const std::string s_pixelString;
+    static const std::string s_inchString;
+    static const std::string s_cmString;
 
 
 protected:
@@ -64,6 +107,10 @@ protected:
 
     std::map<const std::string, const std::string> m_supportedTags;
     std::string m_dirName;
+
+    int m_width;
+    int m_height;
+    std::unique_ptr<ResolutionState> m_resolutionState;
 };
 
 

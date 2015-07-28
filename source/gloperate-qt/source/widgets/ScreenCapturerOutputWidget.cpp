@@ -30,11 +30,11 @@ namespace gloperate_qt
 {
 
 
-ScreenCapturerOutputWidget::ScreenCapturerOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget *parent)
+ScreenCapturerOutputWidget::ScreenCapturerOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, gloperate::ScreenCapturer * screenCapturer, QWidget *parent)
 :	QWidget(parent)
+,	m_screenCapturer(screenCapturer)
 ,	m_context(context)
 ,	m_ui(new Ui_ScreenCapturerOutputWidget)
-,	m_resolution(new QSize(1,1))
 {
     m_ui->setupUi(this);
 
@@ -52,11 +52,6 @@ ScreenCapturerOutputWidget::ScreenCapturerOutputWidget(gloperate::ResourceManage
 
     connect(this, &ScreenCapturerOutputWidget::filenameChanged,
         this, &ScreenCapturerOutputWidget::updateFilenamePreview);
-    
-    m_screenCapturer = new gloperate::ScreenCapturer(painter, resourceManager);
-    context->makeCurrent();
-    m_screenCapturer->initialize();
-    context->doneCurrent();
 
     if (!gloperate::ScreenCapturer::isApplicableTo(painter))
         m_ui->saveButton->setDisabled(true);
@@ -93,15 +88,9 @@ void ScreenCapturerOutputWidget::initializeFileNameTextEdit()
     m_ui->fileNameTextEdit->setCompleter(completer);
 }
 
-void ScreenCapturerOutputWidget::updateResolutionSummaryLabel(const QString& sizeSummary)
+void ScreenCapturerOutputWidget::updateResolutionSummaryLabel(const std::string& sizeSummary)
 {
-    m_ui->resolutionSummaryLabel->setText(sizeSummary);
-}
-
-void ScreenCapturerOutputWidget::updateResolution(const QSize& resolution)
-{
-    m_resolution->setHeight(resolution.height());
-    m_resolution->setWidth(resolution.width());
+    m_ui->resolutionSummaryLabel->setText(QString::fromStdString(sizeSummary));
 }
 
 ScreenCapturerOutputWidget::~ScreenCapturerOutputWidget()
@@ -137,7 +126,7 @@ void ScreenCapturerOutputWidget::restoreSettings()
 void ScreenCapturerOutputWidget::handleSave(bool)
 {
     m_context->makeCurrent();
-    m_screenCapturer->save(m_screenCapturer->buildFileName(m_ui->fileNameTextEdit->toPlainText().toStdString(), m_resolution->width(), m_resolution->height()), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()));
+    m_screenCapturer->save(m_screenCapturer->buildFileName(m_ui->fileNameTextEdit->toPlainText().toStdString(), m_screenCapturer->width(), m_screenCapturer->height()), std::max(1, m_screenCapturer->width()), std::max(1, m_screenCapturer->height()));
     m_context->doneCurrent();
 }
 
@@ -171,13 +160,14 @@ void ScreenCapturerOutputWidget::updateUiFileNameEnumIndex()
 
 void ScreenCapturerOutputWidget::updateFilenamePreview()
 {
-    m_ui->filenamePeviewLabel->setText(QString::fromStdString(m_screenCapturer->replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString(), m_resolution->width(), m_resolution->height(), false)) + ".png");
+    m_ui->filenamePeviewLabel->setText(QString::fromStdString(m_screenCapturer->replaceTags(m_ui->fileNameTextEdit->toPlainText().toStdString(), m_screenCapturer->width(), m_screenCapturer->height(), false)) + ".png");
 }
 
 void ScreenCapturerOutputWidget::checkFilename()
 {
     QString fileName{ m_ui->fileNameTextEdit->toPlainText() };
     QString errorMessage{ QString::fromStdString(m_screenCapturer->checkFilename(fileName.toStdString())) };
+
     if (errorMessage != "")
     {
         if (m_ui->saveButton->isEnabled())
