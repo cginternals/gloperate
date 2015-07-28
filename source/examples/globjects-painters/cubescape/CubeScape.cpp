@@ -48,7 +48,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager, const std::st
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
     m_projectionCapability = addCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability));
     m_typedRenderTargetCapability = addCapability(new gloperate::TypedRenderTargetCapability());
-    m_cameraCapability = addCapability(new gloperate::CameraCapability());
+    m_cameraCapability = addCapability(new gloperate::CameraCapability(glm::vec3(0.0, 2.0, 1.5), glm::vec3(0.0, 0.0, 0.5), glm::vec3(0.0, 1.0, 0.0)));
     m_timeCapability = addCapability(new gloperate::VirtualTimeCapability());
     
     m_timeCapability->setLoopDuration(20.0f * pi<float>());

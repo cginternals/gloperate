@@ -38,6 +38,12 @@ public:
 
     /**
     *  @brief
+    *    Resets the camera to a subclass-defined specific state
+    */
+    virtual void reset() = 0;
+
+    /**
+    *  @brief
     *    Get camera (eye) position
     *
     *  @return
