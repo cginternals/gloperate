@@ -38,7 +38,7 @@ public:
 	bool addFilter(glraw::AbstractFilter * filter);
 	void resetFilters();
 
-	std::vector<std::string> allAvailableFilters() const;
+	static std::map<std::string, std::string> allAvailableFilters();
 
 	globjects::Texture * process(const globjects::Texture * const input);
 

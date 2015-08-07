@@ -103,22 +103,42 @@ globjects::Texture * GlrawTextureLoader::load(const std::string & filename, std:
 
 globjects::Texture * GlrawTextureLoader::createTexture(const std::map<std::string, int32_t> & meta, const std::vector<char> & image)
 {
+	int32_t width, height;
+	try
+	{
+		width = getValue<int32_t>( meta, "width" );
+		height = getValue<int32_t>( meta, "height" );
+	}
+	catch(std::exception&)
+	{
+		return nullptr;
+	}
+
 	try
 	{
 		auto format = getValue<gl::GLenum>(meta, "format");
 		auto type	= getValue<gl::GLenum>(meta, "type");
-		auto width	= getValue<int32_t>(meta, "width");
-		auto height = getValue<int32_t>(meta, "height");
 
 		globjects::Texture * output = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 		output->image2D(0, format, width, height, 0, format, type, image.data());
 
 		return output;
 	}
-	catch(std::exception&)
+	catch(std::exception&) {}
+
+	try
 	{
-		return nullptr;
+		auto compressedFormat = getValue<gl::GLenum>( meta, "compressedFormat" );
+		auto size = getValue<int32_t>( meta, "size" );
+
+		globjects::Texture * output = globjects::Texture::createDefault( gl::GL_TEXTURE_2D );
+		output->compressedImage2D( 0, compressedFormat, width, height, 0, size, image.data() );
+
+		return output;
 	}
+	catch(std::exception&) {}
+
+	return nullptr;
 }
 
 std::map<std::string, int32_t> GlrawTextureLoader::readProperties(std::ifstream & ifs, uint64_t offset)

@@ -60,7 +60,7 @@ bool TextureFilter::addFilter(glraw::AbstractFilter * filter)
 	return true;
 }
 
-std::vector<std::string> TextureFilter::allAvailableFilters() const
+std::map<std::string, std::string> TextureFilter::allAvailableFilters()
 {
 	return glraw::Filter::All();
 }
