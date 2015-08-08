@@ -96,7 +96,7 @@ bool PolygonalGeometry::isRigged() const
             m_vertexBoneIndices.size() == m_vertexBoneWeights.size();
 }
 
-const std::vector<glm::ivec4> & PolygonalGeometry::vertexBoneIndices() const
+const std::vector<glm::ivec4> &PolygonalGeometry::vertexBoneIndices() const
 {
     return m_vertexBoneIndices;
 }

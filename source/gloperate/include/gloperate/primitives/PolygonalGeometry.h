@@ -174,16 +174,16 @@ public:
 
     /**
     *  @brief
-    *    Get normal array
+    *    Get the bone indices of each vertex
     *
     *  @return
-    *    Normal array
+    *    Bone indices of each vertex
     */
-    const std::vector<glm::ivec4> & vertexBoneIndices() const;
+    const std::vector<glm::ivec4> &vertexBoneIndices() const;
 
     /**
     *  @brief
-    *    Set vertexBoneIndices array
+    *    Set the bone indices of each vertex
     *
     *  @param[in] vertexBoneIndices
     *    vertexBoneIndices array
@@ -192,91 +192,91 @@ public:
 
     /**
     *  @brief
-    *    Set normal array
+    *    Set the bone indices of each vertex
     *
-    *  @param[in] normals
-    *    Normal array
+    *  @param[in] vertexBoneIndices
+    *    vertexBoneIndices array
     */
     void setVertexBoneIndices(std::vector<glm::ivec4> && vertexBoneIndices);
 
     /**
     *  @brief
-    *    Get normal array
+    *    Get the bone weights per vertex
     *
     *  @return
-    *    Normal array
+    *    Array of the bone weights per vertex
     */
     const std::vector<glm::vec4> & vertexBoneWeights() const;
 
     /**
     *  @brief
-    *    Set normal array
+    *    Set the bone weights per vertex
     *
-    *  @param[in] normals
-    *    Normal array
+    *  @param[in] vertexBoneWeights
+    *    Array of the bone weights per vertex
     */
     void setVertexBoneWeights(const std::vector<glm::vec4> & vertexBoneWeights);
 
     /**
     *  @brief
-    *    Set normal array
+    *    Set the bone weights per vertex
     *
-    *  @param[in] normals
-    *    Normal array
+    *  @param[in] vertexBoneWeights
+    *    Array of the bone weights per vertex
     */
     void setVertexBoneWeights(std::vector<glm::vec4> && vertexBoneWeights);
 
     /**
     *  @brief
-    *    Get normal array
+    *    Get the bone mapping
     *
     *  @return
-    *    Normal array
+    *    Mapping from bone name to bone index
     */
     const std::map<std::string, size_t> & boneMapping() const;
 
     /**
     *  @brief
-    *    Set normal array
+    *    Set the bone mapping
     *
-    *  @param[in] normals
-    *    Normal array
+    *  @param[in] boneMapping
+    *    Mapping from bone name to bone index
     */
     void setBoneMapping(const std::map<std::string, size_t> &boneMapping);
 
     /**
     *  @brief
-    *    Set normal array
+    *    Set the bone mapping
     *
-    *  @param[in] normals
-    *    Normal array
+    *  @param[in] boneMapping
+    *    Mapping from bone name to bone index
     */
     void setBoneMapping(std::map<std::string, size_t> &&boneMapping);
 
     /**
     *  @brief
-    *    Get normal array
+    *    Get the bind Transforms
     *
     *  @return
-    *    Normal array
+    *    bindTransforms
     */
     const std::vector<glm::mat4> & bindTransforms() const;
 
     /**
     *  @brief
-    *    Set normal array
+    *    Set the bind Transforms
     *
-    *  @param[in] normals
-    *    Normal array
+    *  @param[in] bindTransforms
+    *    Array of bind transforms
     */
     void setBindTransforms(const std::vector<glm::mat4> & bindTransforms);
 
     /**
     *  @brief
-    *    Set normal array
+    *    Set the bind Transforms
     *
-    *  @param[in] normals
-    *    Normal array
+    *  @param[in] bindTransforms
+    *    Array of bind transforms
     */
     void setBindTransforms(std::vector<glm::mat4> &&bindTransforms);
 
@@ -306,7 +306,7 @@ protected:
     std::vector<glm::vec3>    m_textureCoordinates;   /**< Texture coordinate array */
     std::vector<glm::ivec4>   m_vertexBoneIndices;    /**< Indices per index > */
     std::vector<glm::vec4>    m_vertexBoneWeights;    /**< Weights per index > */
-    std::map<std::string, size_t>  m_boneMapping;          /**< Mapping from string to boneIndex > */
+    std::map<std::string, size_t>  m_boneMapping;     /**< Mapping from string to boneIndex > */
     std::vector<glm::mat4>    m_bindTransforms;       /**< bind Matrices per bone > */
     unsigned int              m_materialIndex;        /**< Material index */
 };
