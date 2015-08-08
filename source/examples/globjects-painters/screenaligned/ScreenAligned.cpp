@@ -8,7 +8,7 @@
 #include <globjects/logging.h>
 
 #include <gloperate/painter/ViewportCapability.h>
-
+#include <gloperate/painter/TargetFramebufferCapability.h>
 
 using namespace gloperate;
 using namespace globjects;
@@ -19,6 +19,7 @@ ScreenAligned::ScreenAligned(ResourceManager & resourceManager, const std::strin
 : Painter("ScreenAligned", resourceManager, relDataPath)
 {
     // Setup painter
+    m_targetFramebufferCapability = addCapability(new gloperate::TargetFramebufferCapability());
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
 }
 
@@ -50,9 +51,20 @@ void ScreenAligned::onPaint()
         m_viewportCapability->setChanged(false);
     }
 
+    globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
+
+    if (!fbo)
+    {
+        fbo = globjects::Framebuffer::defaultFBO();
+    }
+
+    fbo->bind(GL_FRAMEBUFFER);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_quad->draw();
+
+    globjects::Framebuffer::unbind(GL_FRAMEBUFFER);
 }
 
 void ScreenAligned::createAndSetupTexture()

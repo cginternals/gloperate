@@ -58,9 +58,19 @@ public:
     */
     virtual ~SystemApi();
 
+    /**
+    *  @brief
+    *    Set help text
+    *
+    *  @param[in] text
+    *    Help text that is displayed on help()
+    */
+    void setHelpText(const std::string & text);
+
     // Script helper functions
-    void load(const std::string & filename);
+    void help();
     void print(const reflectionzeug::Variant & value);
+    void load(const std::string & filename);
 
     // File functions
     std::string readFile(const std::string & filename);
@@ -81,8 +91,9 @@ protected:
 
 
 protected:
-    QtOpenGLWindow                                 * m_openGLWindow;      ///< Pointer to the OpenGL window
+    QtOpenGLWindow                                 * m_openGLWindow;      ///< Pointer to the OpenGL window (can be nullptr)
     std::map<int, reflectionzeug::AbstractFunction*> m_keypressCallbacks; ///< List of key-press callbacks
+    std::string                                      m_helpText;          ///< Help text displyed on help()
 };
 
 

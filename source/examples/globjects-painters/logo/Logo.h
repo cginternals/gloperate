@@ -19,6 +19,7 @@
 namespace gloperate 
 {
     class ResourceManager;
+    class AbstractTargetFramebufferCapability;
     class AbstractViewportCapability;
     class AbstractVirtualTimeCapability;
 }
@@ -58,6 +59,7 @@ protected:
     reflectionzeug::FilePath m_textureFilename;
 
     /* Capabilities */
+    gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::AbstractVirtualTimeCapability * m_timeCapability;
 

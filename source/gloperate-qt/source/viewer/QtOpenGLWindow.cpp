@@ -26,13 +26,12 @@
 
 
 using namespace gloperate;
+
+
 namespace gloperate_qt
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 : m_resourceManager(resourceManager)
 , m_painter(nullptr)
@@ -41,10 +40,6 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager)
 {
 }
 
-/**
-*  @brief
-*    Constructor
-*/
 QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, const QSurfaceFormat & format)
 : QtOpenGLWindowBase(format)
 , m_resourceManager(resourceManager)
@@ -54,27 +49,15 @@ QtOpenGLWindow::QtOpenGLWindow(gloperate::ResourceManager & resourceManager, con
 {
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 QtOpenGLWindow::~QtOpenGLWindow()
 {
 }
 
-/**
-*  @brief
-*    Get used painter
-*/
 Painter * QtOpenGLWindow::painter() const
 {
     return m_painter;
 }
 
-/**
-*  @brief
-*    Set used painter
-*/
 void QtOpenGLWindow::setPainter(Painter * painter)
 {
     // Save painter
@@ -267,4 +250,5 @@ void QtOpenGLWindow::wheelEvent(QWheelEvent * event)
     }
 }
 
-} // namespace gloperate-qt
+
+} // namespace gloperate_qt

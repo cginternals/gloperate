@@ -10,6 +10,7 @@ Painter::Painter(const std::string & name, ResourceManager & resourceManager, co
 : Object(name)
 , m_resourceManager(resourceManager)
 , m_relDataPath(relDataPath)
+, m_backgroundColor(0.0, 0.0, 0.0)
 {
 }
 
@@ -29,6 +30,16 @@ void Painter::initialize()
 void Painter::paint()
 {
     onPaint();
+}
+
+glm::vec3 Painter::backgroundColor() const
+{
+	return m_backgroundColor;
+}
+
+void Painter::setBackgroundColor(const glm::vec3 & color)
+{
+	m_backgroundColor = color;
 }
 
 AbstractCapability * Painter::addCapability(AbstractCapability * capability)

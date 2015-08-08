@@ -21,8 +21,9 @@ SystemApi::SystemApi(QtOpenGLWindow * openGLWindow)
 , m_openGLWindow(openGLWindow)
 {
     // Register functions
-    this->addFunction("load",             this, &SystemApi::load);
+    this->addFunction("help",             this, &SystemApi::help);
     this->addFunction("print",            this, &SystemApi::print);
+    this->addFunction("load",             this, &SystemApi::load);
     this->addFunction("readFile",         this, &SystemApi::readFile);
     this->addFunction("writeFile",        this, &SystemApi::writeFile);
     this->addFunction("onKeyPress",       this, &SystemApi::onKeyPress);
@@ -40,6 +41,21 @@ SystemApi::~SystemApi()
     }
 }
 
+void SystemApi::setHelpText(const std::string & text)
+{
+    m_helpText = text;
+}
+
+void SystemApi::help()
+{
+    this->output(m_helpText);
+}
+
+void SystemApi::print(const reflectionzeug::Variant & value)
+{
+    this->output(value.toJSON());
+}
+
 void SystemApi::load(const std::string & filename)
 {
     std::string code = readFile(filename);
@@ -47,11 +63,6 @@ void SystemApi::load(const std::string & filename)
         // Execute command
         this->command(code);
     }
-}
-
-void SystemApi::print(const reflectionzeug::Variant & value)
-{
-    this->output(value.toJSON());
 }
 
 std::string SystemApi::readFile(const std::string & filename)
