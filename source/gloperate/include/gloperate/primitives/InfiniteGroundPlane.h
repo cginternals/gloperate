@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/Referenced.h>

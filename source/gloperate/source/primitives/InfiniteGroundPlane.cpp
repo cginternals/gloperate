@@ -1,5 +1,8 @@
 #include <gloperate/primitives/InfiniteGroundPlane.h>
 
+#include <glm/vec4.hpp>
+#include <glm/mat4x4.hpp>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
