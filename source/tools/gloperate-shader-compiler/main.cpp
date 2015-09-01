@@ -11,6 +11,21 @@
 
 #include "ShaderCompiler.h"
 
+namespace
+{
+const auto applicationDescription = R"(
+Compiles shaders and prints out compiler errors.
+
+If a shader file is specified, this shader file will get compiled.
+If a directory is specified, each file with the extension 'vert', 'tcs', 'tes', 'geom', 'frag, and 'comp' will get compiled.
+
+The include directories may contain a alias each, separated with ':'.
+The alias directory is the directory the OpenGL NamedString is registered with.
+
+Example:
+./build/gloperate-shader-compiler data/)";
+}
+
 int main(int argc, char * argv[])
 {
     QApplication app(argc, argv);
@@ -18,10 +33,10 @@ int main(int argc, char * argv[])
     QCoreApplication::setApplicationVersion("1.0");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Compiles shaders and prints out compiler errors");
+    parser.setApplicationDescription(applicationDescription);
     parser.addVersionOption();
     parser.addHelpOption();
-    parser.addPositionalArgument("shaderFile", "The shader file to compile", "<shader file>");
+    parser.addPositionalArgument("shaderFile", "The shader file or directory to compile", "<shader file or directory>");
     parser.addPositionalArgument("includePath", "The shader include path", "[include paths...]");
 
     parser.process(app);
@@ -51,10 +66,10 @@ int main(int argc, char * argv[])
         context.setFormat(format);
         if (!context.create()) {
             qDebug() << "Could not create intermediate OpenGL context.";
+
             return 2;
         } else {
             QSurfaceFormat intermediateFormat = context.format();
-            //qDebug().nospace() << "Created intermediate OpenGL context " << intermediateFormat.version().first << "." << intermediateFormat.version().second;
 
             if ((intermediateFormat.version().first == 3 && intermediateFormat.version().second == 0) || intermediateFormat.version().first < 3)
             {
@@ -68,9 +83,8 @@ int main(int argc, char * argv[])
     context.setFormat(format);
     if (!context.create()) {
         qDebug() << "Could not create intermediate OpenGL context.";
+
         return 2;
-    } else {
-        //qDebug().nospace() << "Created OpenGL context " << m_context->format().version().first << "." << m_context->format().version().second;
     }
 
     context.makeCurrent(&window);
