@@ -12,7 +12,7 @@ find_package(Qt5Widgets 5.2 QUIET)
 find_package(Qt5OpenGL 5.2 QUIET)
 
 if (NOT Qt5Core_FOUND)
-    message(STATUS "Application ${target} (disabled because Qt5 couldn't be found)")
+    message(STATUS "Tool ${target} (disabled because Qt5 couldn't be found)")
     return()
 endif()
 

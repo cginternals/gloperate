@@ -13,6 +13,7 @@
 
 namespace
 {
+
 const auto applicationDescription = R"(
 Compiles shaders and prints out compiler errors.
 
@@ -24,6 +25,15 @@ The alias directory is the directory the OpenGL NamedString is registered with.
 
 Example:
 ./build/gloperate-shader-compiler data/)";
+
+enum ShaderCompilerResult
+{
+    Success = 0,
+    CompilationError,
+    ContextCreationError,
+    ShaderFileMissing
+};
+
 }
 
 int main(int argc, char * argv[])
@@ -45,7 +55,7 @@ int main(int argc, char * argv[])
     {
         qDebug() << "No shader file specified";
 
-        return 3;
+        return ShaderFileMissing;
     }
 
     QWindow window;
@@ -67,7 +77,7 @@ int main(int argc, char * argv[])
         if (!context.create()) {
             qDebug() << "Could not create intermediate OpenGL context.";
 
-            return 2;
+            return ContextCreationError;
         } else {
             QSurfaceFormat intermediateFormat = context.format();
 
@@ -84,7 +94,7 @@ int main(int argc, char * argv[])
     if (!context.create()) {
         qDebug() << "Could not create intermediate OpenGL context.";
 
-        return 2;
+        return ContextCreationError;
     }
 
     context.makeCurrent(&window);
@@ -95,5 +105,5 @@ int main(int argc, char * argv[])
 
     context.doneCurrent();
 
-    return success ? 0 : 1;
+    return success ? Success : CompilationError;
 }
