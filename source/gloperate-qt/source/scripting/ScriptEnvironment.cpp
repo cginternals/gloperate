@@ -1,6 +1,8 @@
 
 #include <gloperate-qt/scripting/ScriptEnvironment.h>
 
+#include <iostream>
+
 #include <QObject>
 
 #include <scriptzeug/ScriptContext.h>
@@ -25,6 +27,11 @@ ScriptEnvironment::ScriptEnvironment(QtOpenGLWindow * openGLWindow)
 {
     // Create JavaScript context
     m_scriptContext.reset(new scriptzeug::ScriptContext("javascript"));
+
+    // Output scripting errors to console
+    m_scriptContext->scriptException.connect( [] (const std::string & error) -> void {
+        std::cerr << "Scripting Error: " << error << std::endl;
+    });
 
     // Register default scripting APIs
     m_systemApi.reset(new SystemApi(openGLWindow));
