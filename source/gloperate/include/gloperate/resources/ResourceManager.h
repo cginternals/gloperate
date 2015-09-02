@@ -29,20 +29,20 @@ class AbstractStorer;
 *  @brief
 *    Class to help loading/accessing resources (textures, ...)
 */
-class ResourceManager 
+class GLOPERATE_API ResourceManager
 {
 public:
     /**
     *  @brief
     *    Constructor
     */
-    GLOPERATE_API ResourceManager();
+    ResourceManager();
 
     /**
     *  @brief
     *    Destructor
     */
-    GLOPERATE_API virtual ~ResourceManager();
+    virtual ~ResourceManager();
 
     /**
     *  @brief
@@ -51,7 +51,7 @@ public:
     *  @return
     *    List of loaders
     */
-    GLOPERATE_API const std::vector<AbstractLoader *> & loaders() const;
+    const std::vector<AbstractLoader *> & loaders() const;
 
     /**
     *  @brief
@@ -60,7 +60,7 @@ public:
     *  @return
     *    List of storers
     */
-    GLOPERATE_API const std::vector<AbstractStorer *> & storers() const;
+    const std::vector<AbstractStorer *> & storers() const;
 
     /**
     *  @brief
@@ -69,7 +69,7 @@ public:
     *  @param[in] loader
     *    Resource loader
     */
-    GLOPERATE_API void addLoader(AbstractLoader * loader);
+    void addLoader(AbstractLoader * loader);
 
     /**
     *  @brief
@@ -78,7 +78,7 @@ public:
     *  @param[in] storer
     *    Resource storer
     */
-    GLOPERATE_API void addStorer(AbstractStorer * storer);
+    void addStorer(AbstractStorer * storer);
 
     /**
     *  @brief
@@ -128,7 +128,7 @@ protected:
     *  @return
     *    Filename extension (lower-case)
     */
-    GLOPERATE_API std::string getFileExtension(const std::string & filename) const;
+    std::string getFileExtension(const std::string & filename) const;
 
 
 protected:
