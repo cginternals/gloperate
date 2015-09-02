@@ -1,8 +1,6 @@
 
 #include <gloperate-qt/scripting/ScriptEnvironment.h>
 
-#include <iostream>
-
 #include <QObject>
 
 #include <scriptzeug/ScriptContext.h>
@@ -10,6 +8,8 @@
 #include <widgetzeug/ScriptPromptWidget.h>
 #include <widgetzeug/ECMA26251_SyntaxHighlighter.h>
 #include <widgetzeug/ECMA26251_Completer.h>
+
+#include <loggingzeug/logging.h>
 
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
 #include <gloperate-qt/scripting/SystemApi.h>
@@ -30,7 +30,7 @@ ScriptEnvironment::ScriptEnvironment(QtOpenGLWindow * openGLWindow)
 
     // Output scripting errors to console
     m_scriptContext->scriptException.connect( [] (const std::string & error) -> void {
-        std::cerr << "Scripting Error: " << error << std::endl;
+        loggingzeug::critical() << "Scripting Error: " << error;
     });
 
     // Register default scripting APIs
