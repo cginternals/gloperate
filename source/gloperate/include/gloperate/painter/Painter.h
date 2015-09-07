@@ -6,6 +6,10 @@
 #include <vector>
 #include <string>
 
+#include <gloperate/ext-includes-begin.h>
+#include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
+
 #include <reflectionzeug/Object.h>
 
 #include <gloperate/painter/AbstractCapability.h>
@@ -109,6 +113,28 @@ public:
     template <typename Capability>
     Capability * getCapability() const;
 
+    /**
+    *  @brief
+    *    Get background color
+    *
+    *  @return
+    *    Background color
+    */
+    glm::vec3 backgroundColor() const;
+
+    /**
+    *  @brief
+    *    Set background color
+    *
+    *  @param[in] color
+    *    Background color
+    *
+    *  @remarks
+    *    If the background color is used to clear the background, or used
+    *    at all depends entirely on the implementation of the painter.
+    */
+    void setBackgroundColor(const glm::vec3 & color);
+
 
 protected:
     /**
@@ -144,6 +170,8 @@ protected:
     std::string       m_relDataPath;     ///< Path to data directory (usually "", unless loaded from plugins)
 
     std::vector<AbstractCapability *> m_capabilities; ///< List of supported capabilities
+
+    glm::vec3 m_backgroundColor;    ///< Background color (can be used by derived classes)
 };
 
 

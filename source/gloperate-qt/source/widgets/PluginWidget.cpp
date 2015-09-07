@@ -110,7 +110,7 @@ void PluginWidget::updateListView()
 
     for (auto pluginLibrary : pluginLibraries)
 	{
-        for (int pluginIndex = 0; pluginIndex < pluginLibrary->numPlugins(); pluginIndex++)
+        for (size_t pluginIndex = 0; pluginIndex < pluginLibrary->numPlugins(); pluginIndex++)
         {
             m_ui->pluginTableWidget->setItem(pluginCount, 0, new QTableWidgetItem(pluginLibrary->plugin(pluginIndex)->name()));
             m_ui->pluginTableWidget->setItem(pluginCount, 1, new QTableWidgetItem(pluginLibrary->plugin(pluginIndex)->version()));

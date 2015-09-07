@@ -48,7 +48,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager, const std::st
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
     m_projectionCapability = addCapability(new gloperate::PerspectiveProjectionCapability(m_viewportCapability));
     m_typedRenderTargetCapability = addCapability(new gloperate::TypedRenderTargetCapability());
-    m_cameraCapability = addCapability(new gloperate::CameraCapability());
+    m_cameraCapability = addCapability(new gloperate::CameraCapability(glm::vec3(0.0, 2.0, 1.5), glm::vec3(0.0, 0.0, 0.5), glm::vec3(0.0, 1.0, 0.0)));
     m_timeCapability = addCapability(new gloperate::VirtualTimeCapability());
     
     m_timeCapability->setLoopDuration(20.0f * pi<float>());
@@ -92,9 +92,9 @@ void CubeScape::onInitialize()
 
     m_program = new globjects::Program;
     m_program->attach(
-        globjects::Shader::fromFile(GL_VERTEX_SHADER, "data/cubescape/cubescape.vert"),
-        globjects::Shader::fromFile(GL_GEOMETRY_SHADER, "data/cubescape/cubescape.geom"),
-        globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/cubescape/cubescape.frag")
+        globjects::Shader::fromFile(GL_VERTEX_SHADER,   m_relDataPath + "data/cubescape/cubescape.vert"),
+        globjects::Shader::fromFile(GL_GEOMETRY_SHADER, m_relDataPath + "data/cubescape/cubescape.geom"),
+        globjects::Shader::fromFile(GL_FRAGMENT_SHADER, m_relDataPath + "data/cubescape/cubescape.frag")
     );
 
     // create textures
@@ -112,7 +112,7 @@ void CubeScape::onInitialize()
     }
 
     {
-        gloperate::RawFile terrain("data/cubescape/terrain.512.512.r.ub.raw");
+        gloperate::RawFile terrain(m_relDataPath + "data/cubescape/terrain.512.512.r.ub.raw");
         if (!terrain.isValid())
             std::cout << "warning: loading texture from " << terrain.filePath() << " failed.";
 
@@ -120,7 +120,7 @@ void CubeScape::onInitialize()
     }
 
     {
-        gloperate::RawFile patches("data/cubescape/patches.64.16.rgb.ub.raw");
+        gloperate::RawFile patches(m_relDataPath + "data/cubescape/patches.64.16.rgb.ub.raw");
         if (!patches.isValid())
             std::cout << "warning: loading texture from " << patches.filePath() << " failed.";
 

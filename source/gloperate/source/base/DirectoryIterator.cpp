@@ -124,7 +124,7 @@ std::string DirectoryIterator::extension(const std::string & filename)
 std::string DirectoryIterator::truncate(const std::string & path)
 {
     std::string truncated(path);
-    while (truncated.find_last_of(g_sep) == truncated.size() - 1)
+    while (truncated.size() > 0 && truncated.find_last_of(g_sep) == truncated.size() - 1)
         truncated = truncated.substr(0, truncated.find_last_of(g_sep));
 
     return truncated;

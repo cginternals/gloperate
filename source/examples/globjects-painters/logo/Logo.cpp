@@ -15,6 +15,8 @@
 #include <globjects/VertexAttributeBinding.h>
 
 #include <gloperate/resources/ResourceManager.h>
+
+#include <gloperate/painter/TargetFramebufferCapability.h>
 #include <gloperate/painter/ViewportCapability.h>
 #include <gloperate/painter/VirtualTimeCapability.h>
 
@@ -66,6 +68,7 @@ Logo::Logo(ResourceManager & resourceManager, const std::string & relDataPath)
 , m_angle(0.0f)
 {
     // Setup painter
+    m_targetFramebufferCapability = addCapability(new gloperate::TargetFramebufferCapability());
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
     m_timeCapability = addCapability(new gloperate::VirtualTimeCapability());
 
@@ -138,6 +141,15 @@ void Logo::onPaint()
         m_viewportCapability->setChanged(false);
     }
 
+    globjects::Framebuffer * fbo = m_targetFramebufferCapability->framebuffer();
+
+    if (!fbo)
+    {
+        fbo = globjects::Framebuffer::defaultFBO();
+    }
+
+    fbo->bind(GL_FRAMEBUFFER);
+
     // [TODO] Add onIdle()/onUpdate() callback and implement framerate independent animation
     m_angle = m_timeCapability->time();
 
@@ -170,6 +182,8 @@ void Logo::onPaint()
     if (m_texture) {
         m_texture->unbind();
     }
+
+    globjects::Framebuffer::unbind(GL_FRAMEBUFFER);
 }
 
 void Logo::createAndSetupCamera()

@@ -41,6 +41,7 @@
 #include <gloperate-qt/viewer/DefaultMapping.h>
 #include <gloperate-qt/widgets/ImageExporterWidget.h>
 #include <gloperate-qt/widgets/PluginWidget.h>
+#include <gloperate-qt/scripting/ScriptEnvironment.h>
 #include <gloperate-qt/scripting/SystemApi.h>
 #include <gloperate-qt/scripting/TimerApi.h>
 #include <gloperate-qt/scripting/ViewerApi.h>
@@ -90,19 +91,18 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 , m_ui{new Ui_Viewer}
 , m_resourceManager{nullptr}
 , m_pluginManager{nullptr}
-, m_canvas{nullptr}
+, m_scriptEnvironment{nullptr}
+, m_viewerApi{nullptr}
+, m_pluginApi{nullptr}
 , m_painter{nullptr}
 , m_mapping{nullptr}
+, m_canvas{nullptr}
 , m_messagesStatus{new MessageStatusWidget()}
 , m_messagesLog{new MessageWidget()}
 , m_scriptPrompt{new ScriptPromptWidget()}
 , m_messagLogDockWidget{nullptr}
 , m_scriptPromptDockWidget{nullptr}
 , m_propertyDockWidget{nullptr}
-, m_systemApi{nullptr}
-, m_timerApi{nullptr}
-, m_viewerApi{nullptr}
-, m_pluginApi{nullptr}
 {
     // Initialize resource manager (must be done BEFORE setupCanvas)
     m_resourceManager.reset(new ResourceManager());
@@ -180,7 +180,7 @@ void Viewer::setPainter(Painter & painter)
 {
     // Unload old painter
     if (m_painter.get()) {
-        m_scriptContext->unregisterObject(m_painter.get());
+        m_scriptEnvironment->removeScriptApi(m_painter.get());
     }
 
     // Create new painter
@@ -194,7 +194,7 @@ void Viewer::setPainter(Painter & painter)
     m_canvas->initialize();
 
     // Register painter in scripting
-    m_scriptContext->registerObject(m_painter.get());
+    m_scriptEnvironment->addScriptApi(m_painter.get());
 
     // Update property browser
     if (m_painter.get())
@@ -227,25 +227,14 @@ void Viewer::loadPainter(const std::string & name)
     setPainter(*painterPlugin->createPainter(*m_resourceManager));
 }
 
-const scriptzeug::ScriptContext * Viewer::scriptContext() const
+const ScriptEnvironment * Viewer::scriptEnvironment() const
 {
-    return m_scriptContext.get();
+    return m_scriptEnvironment.get();
 }
 
-scriptzeug::ScriptContext * Viewer::scriptContext()
+ScriptEnvironment * Viewer::scriptEnvironment()
 {
-    return m_scriptContext.get();
-}
-
-void Viewer::addScriptApi(reflectionzeug::Object * api)
-{
-    // Connect object to scripting engine
-    m_scriptContext->registerObject(api);
-
-    // Register name as extra word for word completion
-    widgetzeug::ScriptCompleter * completer = static_cast<widgetzeug::ScriptCompleter *>(m_scriptPrompt->completer());
-    assert(completer);
-    completer->registerWord(QString::fromStdString(api->name()));
+    return m_scriptEnvironment.get();
 }
 
 void Viewer::setupMessageWidgets()
@@ -356,97 +345,39 @@ void Viewer::setupScripting()
     // Widgets have to be created beforehand
     assert(m_scriptPrompt);
 
-    // Create scripting context
-    m_scriptContext.reset(new scriptzeug::ScriptContext("javascript"));
+    // Create scripting environment
+    m_scriptEnvironment.reset(new ScriptEnvironment);
 
-    // Register default scripting APIs
-    m_systemApi.reset(new SystemApi(m_canvas.get()));
-    addScriptApi(m_systemApi.get());
-
-    m_timerApi.reset(new TimerApi);
-    addScriptApi(m_timerApi.get());
-
+    // Register additional scripting APIs
     m_viewerApi.reset(new ViewerApi(this));
-    addScriptApi(m_viewerApi.get());
+    m_scriptEnvironment->addScriptApi(m_viewerApi.get());
 
     m_pluginApi.reset(new PluginApi(m_pluginManager.get()));
-    addScriptApi(m_pluginApi.get());
+    m_scriptEnvironment->addScriptApi(m_pluginApi.get());
 
-    // Promote tick events to scripting
-    m_canvas->setTimerApi(m_timerApi.get());
+    // Connect scripting environment to scripting console
+    m_scriptEnvironment->connectScriptingConsole(m_scriptPrompt.get());
 
-    // Connect to input from scripting console
-    connect(m_scriptPrompt.get(), &widgetzeug::ScriptPromptWidget::evaluate, [this] (const QString & cmd) {
-        // Substitute shortcut commands
-        QString command = cmd;
-        if (cmd == "help") {
-            command = "help()";
-        } else if (cmd == "exit" || cmd == "quit") {
-            command = "exit()";
-        }
-
-        // Execute commands that have been typed on the scripting console
-        m_scriptContext->evaluate(command.toStdString());
-    });
-
-    // Connect commands that have been loaded by API functions (e.g., system.load)
-    m_systemApi->command.connect([this] (const std::string & cmd) {
-        // Execute code
-        m_scriptContext->evaluate(cmd);
-    });
-
-    // Connect script output (system.print)
-    m_systemApi->output.connect([this] (const std::string & msg) {
-        // Print message onto the scripting console
-        m_scriptPrompt->print(QString::fromStdString(msg));
-    });
-
-    // Connect keyboard events to scripting api
-    m_canvas->installEventFilter(m_systemApi.get());
-
-    // Add global functions
-    std::string script =
-        "function help() {\n"
-        "  system.print('Available commands:');\n"
-        "  system.print('  help():     Print this help message');\n"
-        "  system.print('  print():    Print the content of a variable');\n"
-        "  system.print('  toString(): Convert a variable into a string');\n"
-        "  system.print('  exit():     Exit the application');\n"
-        "  system.print('');\n"
-        "  system.print('APIs:');\n"
-        "  system.print('  viewer:        Viewer main window control');\n"
-        "  system.print('  pluginManager: Plugin management');\n"
-        "  system.print('  system:        System API (e.g., file io, keyboard handling)');\n"
-        "  system.print('  timer:         Timer API');\n"
-        "  system.print('');\n"
-        "  system.print('Examples:');\n"
-        "  system.print('  viewer.loadPainter(\"CubeScape\");');\n"
-        "  system.print('  print(system);');\n"
-        "  system.print('  timer.start(1000, function() { print(\"Hello Scripting World.\"); } );');\n"
-        "  system.print('  timer.stopAll();');\n"
-        "}\n"
+    // Set help text
+    std::string helpText =
+        "Available commands:\n"
+        "  help():     Print this help message\n"
+        "  print():    Print the content of a variable\n"
+        "  toString(): Convert a variable into a string\n"
+        "  exit():     Exit the application\n"
         "\n"
-        "function load(filename) {\n"
-        "  system.load(filename);\n"
-        "}\n"
+        "APIs:\n"
+        "  viewer:        Viewer main window control\n"
+        "  pluginManager: Plugin management\n"
+        "  system:        System API (e.g., file io, keyboard handling)\n"
+        "  timer:         Timer API\n"
         "\n"
-        "function print(value) {\n"
-        "  system.print(value);\n"
-        "};\n"
-        "\n"
-        "function exit() {\n"
-        "  system.exit();\n"
-        "};\n"
-        "\n"
-        "function quit() {\n"
-        "  system.exit();\n"
-        "};\n";
-    m_scriptContext->evaluate(script);
-
-    // Register extra words for word completion
-    widgetzeug::ScriptCompleter * completer = static_cast<widgetzeug::ScriptCompleter *>(m_scriptPrompt->completer());
-    assert(completer);
-    completer->registerWords(QStringList() << "help" << "load" << "print" << "exit");
+        "Examples:\n"
+        "  viewer.loadPainter(\"CubeScape\");\n"
+        "  print(system);\n"
+        "  timer.start(1000, function() { print(\"Hello Scripting World.\"); } );\n"
+        "  timer.stopAll();\n";
+    m_scriptEnvironment->setHelpText(helpText);
 }
 
 void Viewer::updatePainterMenu()
