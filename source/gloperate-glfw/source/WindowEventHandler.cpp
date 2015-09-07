@@ -9,7 +9,7 @@
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractVirtualTimeCapability.h>
 #include <gloperate/painter/AbstractInputCapability.h>
-#include <gloperate/tools/ImageExporter.h>
+#include <gloperate/tools/ScreenCapturer.h>
 
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
@@ -96,9 +96,9 @@ void WindowEventHandler::keyPressEvent(KeyEvent & event)
 {
     if (event.key() == GLFW_KEY_F10)
     {
-		if (ImageExporter::isApplicableTo(event.window()->painter()))
+        if (ScreenCapturer::isApplicableTo(event.window()->painter()))
         {
-			ImageExporter image(event.window()->painter(), event.window()->resourceManager());
+            ScreenCapturer image(event.window()->painter(), event.window()->resourceManager());
 
             image.initialize();
 

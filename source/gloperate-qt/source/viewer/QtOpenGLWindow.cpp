@@ -19,7 +19,7 @@
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractInputCapability.h>
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/tools/ImageExporter.h>
+#include <gloperate/tools/ScreenCapturer.h>
 
 #include <gloperate-qt/viewer/QtEventTransformer.h>
 #include <gloperate-qt/scripting/TimerApi.h>
@@ -150,9 +150,9 @@ void QtOpenGLWindow::keyPressEvent(QKeyEvent * event)
 
     if (event->key() == Qt::Key_F10)
     {
-        if (ImageExporter::isApplicableTo(painter()))
+        if (ScreenCapturer::isApplicableTo(painter()))
         {
-			ImageExporter image(painter(), m_resourceManager);
+            ScreenCapturer image(painter(), m_resourceManager);
             image.initialize();
             image.save("image.png");
         }

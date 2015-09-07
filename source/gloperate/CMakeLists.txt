@@ -136,7 +136,7 @@ set(sources
     ${source_path}/resources/RawFile.cpp
     ${source_path}/resources/ResourceManager.cpp
     
-    ${source_path}/tools/ImageExporter.cpp
+    ${source_path}/tools/ScreenCapturer.cpp
     ${source_path}/tools/DepthExtractor.cpp
     ${source_path}/tools/WorldExtractor.cpp
     ${source_path}/tools/ObjectIdExtractor.cpp
@@ -244,7 +244,7 @@ set(api_includes
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/Loader.h
     
-    ${include_path}/tools/ImageExporter.h
+    ${include_path}/tools/ScreenCapturer.h
     ${include_path}/tools/DepthExtractor.h
     ${include_path}/tools/WorldExtractor.h
     ${include_path}/tools/ObjectIdExtractor.h
