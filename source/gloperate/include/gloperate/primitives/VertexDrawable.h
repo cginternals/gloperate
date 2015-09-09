@@ -133,7 +133,7 @@ template <typename T>
 void VertexDrawable::setVertices(const std::vector<T> & vertices)
 {
     m_vbo->setData(vertices, gl::GL_STATIC_DRAW);
-    m_size = static_cast<GLint>(vertices.size());
+    m_size = static_cast<gl::GLint>(vertices.size());
 }
 
 
