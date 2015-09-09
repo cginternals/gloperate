@@ -33,6 +33,12 @@ public:
     PluginPathWidget(gloperate::PluginManager * pluginManager, QWidget * parent = nullptr);
     virtual ~PluginPathWidget();
 
+protected:
+    void addPath(const QString & path);
+    void dragEnterEvent(QDragEnterEvent * event) override;
+    void dropEvent(QDropEvent * event) override;
+
+
 
 private:
     gloperate::PluginManager * m_pluginManager;

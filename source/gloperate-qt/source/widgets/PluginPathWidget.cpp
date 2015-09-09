@@ -14,6 +14,8 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QGridLayout>
+#include <QDragEnterEvent>
+#include <QMimeData>
 #include <gloperate/ext-includes-end.h>
 
 
@@ -40,6 +42,8 @@ PluginPathWidget::PluginPathWidget(gloperate::PluginManager * pluginManager, QWi
     m_browsePathButton->setText("Add");
     m_removePathButton->setText("Remove");
 
+    this->setAcceptDrops(true);
+    
     auto layout = new QGridLayout();
     this->setLayout(layout);
 
@@ -52,11 +56,7 @@ PluginPathWidget::PluginPathWidget(gloperate::PluginManager * pluginManager, QWi
         {
             const auto path = QFileDialog::getExistingDirectory(this, windowTitle(), QString{}, {});
 
-            if (path.isEmpty())
-                return;
-            
-            pluginManager->addPath(path.toStdString());
-            m_listWidget->addItem(path);
+            addPath(path);
         });
 
     QObject::connect(m_removePathButton.get(), &QPushButton::released, [this, pluginManager] () 
@@ -71,6 +71,30 @@ PluginPathWidget::PluginPathWidget(gloperate::PluginManager * pluginManager, QWi
 
 PluginPathWidget::~PluginPathWidget()
 {
+}
+
+
+void PluginPathWidget::addPath(const QString & path)
+{
+    if (path.isEmpty())
+        return;
+    
+    m_pluginManager->addPath(path.toStdString());
+    m_listWidget->addItem(path);
+}
+
+void PluginPathWidget::dragEnterEvent(QDragEnterEvent * event)
+{
+    if (event->mimeData()->hasUrls())
+        event->acceptProposedAction();
+}
+
+void PluginPathWidget::dropEvent(QDropEvent * event)
+{
+    for (auto & url : event->mimeData()->urls())
+        addPath(url.path());
+
+    event->acceptProposedAction();
 }
 
 
