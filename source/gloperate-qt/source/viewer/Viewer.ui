@@ -57,7 +57,7 @@
     <property name="title">
      <string>&amp;Settings</string>
     </property>
-    <addaction name="managePluginsAction"/>
+    <addaction name="pluginConfigAction"/>
     <addaction name="separator"/>
     <addaction name="preferencesAction"/>
    </widget>
@@ -127,12 +127,12 @@
     <string>Capture &amp;Image</string>
    </property>
   </action>
-  <action name="managePluginsAction">
+  <action name="pluginConfigAction">
    <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Manage Plugins</string>
+    <string>&amp;Plugin Config</string>
    </property>
   </action>
  </widget>

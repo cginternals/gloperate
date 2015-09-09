@@ -40,7 +40,7 @@
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 #include <gloperate-qt/viewer/DefaultMapping.h>
 #include <gloperate-qt/widgets/ImageExporterWidget.h>
-#include <gloperate-qt/widgets/PluginWidget.h>
+#include <gloperate-qt/widgets/PluginConfigWidget.h>
 #include <gloperate-qt/scripting/ScriptEnvironment.h>
 #include <gloperate-qt/scripting/SystemApi.h>
 #include <gloperate-qt/scripting/TimerApi.h>
@@ -412,19 +412,16 @@ void Viewer::on_captureImageAction_triggered()
     }
 }
 
-void Viewer::on_managePluginsAction_triggered()
+void Viewer::on_pluginConfigAction_triggered()
 {
     // PluginWidget needs a plugin manager
-	if (m_pluginManager)
-	{
-		PluginWidget * pw{ new PluginWidget(m_pluginManager.get(), m_resourceManager.get()) };
+    if (m_pluginManager)
+    {
+        PluginConfigWidget * pcw {new PluginConfigWidget(m_pluginManager.get(), m_resourceManager.get())};
 
-		connect(pw, &gloperate_qt::PluginWidget::painterChanged,
-			this, &Viewer::setPainter);
-
-		pw->setWindowModality(Qt::NonModal);
-		pw->show();
-	}
+        pcw->setWindowModality(Qt::NonModal);
+        pcw->show();
+    }
 }
 
 void Viewer::onPainterSelected(bool /*checked*/)
