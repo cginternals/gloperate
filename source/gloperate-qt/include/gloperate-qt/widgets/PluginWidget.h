@@ -41,7 +41,6 @@ protected:
     virtual void painterSelected(int nRow, int);
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent * dropEvent);
-	virtual void on_showButton_clicked(bool);
 
     virtual void resizeEvent(QResizeEvent * resizeEvent);
 

@@ -59,18 +59,12 @@ PluginWidget::PluginWidget(gloperate::PluginManager * pluginManager, gloperate::
     m_ui->pluginTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::Interactive);
 
     m_pluginManager->pluginsChanged.connect([=](){updateListView(); });
-    connect(m_ui->showButton, &QPushButton::clicked,
-        this, &PluginWidget::on_showButton_clicked);
 }
 
 PluginWidget::~PluginWidget()
 {
 }
 
-void PluginWidget::on_showButton_clicked(bool)
-{
-    painterSelected(m_ui->pluginTableWidget->currentRow() ? m_ui->pluginTableWidget->currentRow() : 0, 0);
-}
 
 void PluginWidget::dragEnterEvent(QDragEnterEvent *event)
 {
