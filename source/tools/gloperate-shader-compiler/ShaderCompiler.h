@@ -1,16 +1,15 @@
 #pragma once
 
-#include <string>
 
-#include <QList>
-#include <QString>
+class QJsonObject;
+class QSurfaceFormat;
 
 class ShaderCompiler
 {
 public:
-    ShaderCompiler(const QList<QString> & includePathsAndAliases);
-
-    bool compile(const QString & shaderFile);
-protected:
-    bool compileFile(const std::string & shaderFile, const std::string & extension);
+    static bool process(const QJsonObject & config);
+    
+    static QSurfaceFormat parseOpenGLFormat(
+        const QJsonObject & config,
+        bool & ok);
 };

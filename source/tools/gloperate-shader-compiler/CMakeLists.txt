@@ -78,6 +78,8 @@ set(libs
 
 set(sources
     main.cpp
+    ShaderCompiler_old.cpp
+    ShaderCompiler_old.h
     ShaderCompiler.cpp
     ShaderCompiler.h
 )

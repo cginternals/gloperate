@@ -1,119 +1,93 @@
 #include "ShaderCompiler.h"
 
-#include <set>
+#include <QJsonObject>
+#include <QOffscreenSurface>
+#include <QOpenGLContext>
+#include <QSurfaceFormat>
 
-#include <QStringList>
-#include <QFileInfo>
-#include <QDebug>
 
-#include <glbinding/gl/enum.h>
 
-#include <globjects/globjects.h>
-
-#include <iozeug/filename.h>
-#include <iozeug/directorytraversal.h>
-
-#include <gloperate/base/directorytraversal.h>
-
-namespace
+bool ShaderCompiler::process(const QJsonObject & config)
 {
-
-gl::GLenum convertToType(const std::string & type)
-{
-    if (type == "vert")
-    {
-        return gl::GL_VERTEX_SHADER;
-    }
-    else if (type == "tcs")
-    {
-        return gl::GL_TESS_CONTROL_SHADER;
-    }
-    else if (type == "tes")
-    {
-        return gl::GL_TESS_EVALUATION_SHADER;
-    }
-    else if (type == "geom")
-    {
-        return gl::GL_GEOMETRY_SHADER;
-    }
-    else if (type == "frag")
-    {
-        return gl::GL_FRAGMENT_SHADER;
-    }
-    else if (type == "comp")
-    {
-        return gl::GL_COMPUTE_SHADER;
-    }
-
-    return gl::GL_NONE;
-}
-
-}
-
-ShaderCompiler::ShaderCompiler(const QList<QString> & includePathsAndAliases)
-{
-    globjects::init();
-
-    for (const QString & path : includePathsAndAliases)
-    {
-        if (path.contains(':'))
-        {
-            auto list = path.split(':', QString::KeepEmptyParts);
-
-            gloperate::scanDirectory(list[0].toStdString(), list[1].toStdString(), "glsl", true);
-        }
-        else
-        {
-            gloperate::scanDirectory(path.toStdString(), "glsl", true);
-        }
-    }
-}
-
-bool ShaderCompiler::compile(const QString & shaderFile)
-{
-    QFileInfo info(shaderFile);
-
-    if (!info.exists())
-    {
-        qDebug() << "File not found";
-
+    const auto jsonOpenGLConfig = config.value("opengl");
+    
+    if (!jsonOpenGLConfig.isObject())
         return false;
-    }
-
-    if (info.isFile())
-    {
-        return compileFile(shaderFile.toStdString(), iozeug::getExtension(shaderFile.toStdString()));
-    }
-
-    assert(info.isDir());
-
-    auto success = true;
-    const auto extensions = std::set<std::string>{ "vert", "tcs", "tes", "geom", "frag", "comp" };
-    iozeug::scanDirectory(shaderFile.toStdString(), "*", true, [this, & extensions, & success](const std::string & file) {
-        const auto extension = iozeug::getExtension(file);
-
-        if (extensions.count(extension) > 0)
-        {
-            success &= compileFile(file, extension);
-        }
-    });
-
-    return success;
-}
-
-bool ShaderCompiler::compileFile(const std::string & shaderFile, const std::string & extension)
-{
-    qDebug() << "Compile" << shaderFile.c_str();
-
-    auto shaderType = convertToType(extension);
-
-    if (shaderType == gl::GL_NONE)
-    {
-        globjects::debug() << "Shader type not detected";
-
+    
+    bool ok{};
+    const auto format = parseOpenGLFormat(jsonOpenGLConfig.toObject(), ok);
+    
+    if (!ok)
         return false;
+
+    QOpenGLContext context{};
+    context.setFormat(format);
+    
+    if (!context.create())
+        return false;
+    
+    QOffscreenSurface surface{};
+    surface.setFormat(context.format());
+    surface.create();
+    
+    context.makeCurrent(&surface);
+    
+    // TODO: Parse Named Strings and Programs
+    
+    context.doneCurrent();
+    
+    return true;
+}
+
+QSurfaceFormat ShaderCompiler::parseOpenGLFormat(const QJsonObject & config, bool & ok)
+{
+    static const auto hasWrongFormat = -1;
+
+    QSurfaceFormat format{};
+    format.setRenderableType(QSurfaceFormat::OpenGL);
+
+    const auto majorVersion = config.value("major").toInt(hasWrongFormat);
+
+    if (majorVersion == hasWrongFormat)
+    {
+        ok = false;
+        return format;
     }
 
-    globjects::ref_ptr<globjects::Shader> shader = globjects::Shader::fromFile(shaderType, shaderFile);
-    return shader->compile();
+    const auto minorVersion = config.value("minor").toInt(hasWrongFormat);
+
+    if (minorVersion == hasWrongFormat)
+    {
+        ok = false;
+        return format;
+    }
+
+    format.setVersion(majorVersion, minorVersion);
+    
+    if (format.version() >= qMakePair(3, 2))
+    {
+        const auto jsonCoreFlag = config.value("core");
+        const auto profile = jsonCoreFlag.toBool(true) ? QSurfaceFormat::CoreProfile :
+            QSurfaceFormat::CompatibilityProfile;
+        
+        format.setProfile(profile);
+    }
+    
+    if (format.version() >= qMakePair(3, 0))
+    {
+        const auto jsonForwardFlag = config.value("forward");
+        
+        if (jsonForwardFlag.toBool(false))
+            format.setOption(QSurfaceFormat::DeprecatedFunctions);
+    }
+    
+    const auto jsonDebugFlag = config.value("debug");
+    
+    if (jsonDebugFlag.toBool(false))
+        format.setOption(QSurfaceFormat::DebugContext);
+
+    ok = true;
+    return format;
 }
+
+

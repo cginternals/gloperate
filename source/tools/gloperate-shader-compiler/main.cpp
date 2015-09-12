@@ -9,7 +9,7 @@
 
 #include <gloperate-qt/viewer/QtOpenGLWindowBase.h>
 
-#include "ShaderCompiler.h"
+#include "ShaderCompiler_old.h"
 
 namespace
 {
@@ -26,7 +26,7 @@ The alias directory is the directory the OpenGL NamedString is registered with.
 Example:
 ./build/gloperate-shader-compiler data/)";
 
-enum ShaderCompilerResult
+enum ShaderCompiler_oldResult
 {
     Success = 0,
     CompilationError,
@@ -99,7 +99,7 @@ int main(int argc, char * argv[])
 
     context.makeCurrent(&window);
 
-    ShaderCompiler compiler(parser.positionalArguments().mid(1));
+    ShaderCompiler_old compiler(parser.positionalArguments().mid(1));
 
     auto success = compiler.compile(parser.positionalArguments().front());
 
@@ -107,3 +107,5 @@ int main(int argc, char * argv[])
 
     return success ? Success : CompilationError;
 }
+
+
