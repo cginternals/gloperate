@@ -130,7 +130,7 @@ namespace gloperate
         {
             static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
-            return 1 - 2 * std::abs(t - 0.5);
+            return 1 - 2 * std::abs(t - static_cast<T>(0.5));
         }
 
         template <typename T>
@@ -151,32 +151,45 @@ namespace gloperate
         switch (function)
         {
         case SmoothStepInterpolation:
-            r = interpolation::smoothstep(t); break;
+            r = interpolation::smoothstep(t); 
+            break;
         case SmoothStep2Interpolation:
-            r = interpolation::smoothstep2(t); break;
+            r = interpolation::smoothstep2(t); 
+            break;
         case SmoothStep3Interpolation:
-            r = interpolation::smoothstep3(t); break;
+            r = interpolation::smoothstep3(t); 
+            break;
         case SmootherStepInterpolation:
-            r = interpolation::smootherstep(t); break;
+            r = interpolation::smootherstep(t); 
+            break;
         case SquaredInterpolation:
-            r = interpolation::squared(t); break;
+            r = interpolation::squared(t); 
+            break;
         case SquarerootInterpolation:
-            r = interpolation::squareroot(t); break;
+            r = interpolation::squareroot(t); 
+            break;
         case ExponentialInterpolation:
-            r = interpolation::exponential(t, 3); break;
+            r = interpolation::exponential(t, 3); 
+            break;
         case LogarithmicInterpolation:
-            r = interpolation::logarithmic(t, 10); break;
+            r = interpolation::logarithmic(t, 10); 
+            break;
         case CupolaInterpolation:
-            r = interpolation::cupola(t); break;
+            r = interpolation::cupola(t); 
+            break;
         case CubeInterpolation:
-            r = interpolation::cube(t); break;
+            r = interpolation::cube(t); 
+            break;
         case RoofInterpolation:
-            r = interpolation::roof(t); break;
+            r = interpolation::roof(t); 
+            break;
         case SinInterpolation:
-            r = interpolation::sin(t); break;
+            r = interpolation::sin(t); 
+            break;
         case LinearInterpolation:
         default:
-            r = interpolation::linear(t); break;
+            r = interpolation::linear(t); 
+            break;
         }
 
         return invert ? static_cast<T>(1.0) - r : r;
