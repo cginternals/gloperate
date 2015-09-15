@@ -33,5 +33,15 @@ namespace gloperate
 */
 GLOPERATE_API void scanDirectory(const std::string & directory, const std::string & fileExtension, bool recursive = false);
 
+/**
+*  @brief
+*    Makes sure given path ends with (platform specific) separator
+*
+*  @param[in] path
+*    Path to directory or file
+*
+*/
+GLOPERATE_API void ensurePathSeparatorEnding(std::string & path);
+
 
 } // namespace gloperate
