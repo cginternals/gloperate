@@ -71,6 +71,8 @@ set(sources
     ${source_path}/input/MouseInputHandler.cpp
     ${source_path}/input/KeyboardInputHandler.cpp
     ${source_path}/input/MouseEvent.cpp
+	${source_path}/input/InputManager.cpp
+	${source_path}/input/ButtonControl.cpp
     
     ${source_path}/navigation/AbstractMapping.cpp
     ${source_path}/navigation/AbstractInteraction.cpp
@@ -164,6 +166,10 @@ set(api_includes
     ${include_path}/input/KeyboardInputHandler.h
     ${include_path}/input/MouseInputHandler.h
     ${include_path}/input/AbstractEvent.h
+	${include_path}/input/InputManager.h
+    ${include_path}/input/AbstractDevice.h
+    ${include_path}/input/AbstractControl.h
+    ${include_path}/input/ButtonControl.h
     
     ${include_path}/navigation/WorldInHandNavigation.h
     ${include_path}/navigation/AbstractInteraction.h

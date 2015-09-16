@@ -5,7 +5,7 @@
 
 namespace gloperate_hidapi
 {
-	SpaceNavigator::SpaceNavigator()
+    SpaceNavigator::SpaceNavigator()
     {
 		m_pHandle = nullptr;
 		m_pHandle = hid_open_path("/dev/hidraw2");
@@ -59,9 +59,10 @@ namespace gloperate_hidapi
             // Buttons
             case 0x03:
             {
-/*                bool bPressed = ((pInputBuffer[1] & 0x0001) != 0);
-                if (Button0.IsPressed() != bPressed)
-                    Button0.SetPressed(bPressed);
+                bool bPressed = ((buf[1] & 0x0001) != 0);
+                if (m_control.getPressed() != bPressed)
+                    m_control.setPressed(bPressed);
+                /*
                 bPressed = ((pInputBuffer[1] & 0x0002) != 0);
                 if (Button1.IsPressed() != bPressed)
                     Button1.SetPressed(bPressed);
@@ -88,12 +89,14 @@ namespace gloperate_hidapi
                 break;
             }
 
-            std::cout << "Translation\n";
-                break;
-
 			default:
 				break;
 		}
 				
-	}
+    }
+
+    void SpaceNavigator::update()
+    {
+        checkEvents(10);
+    }
 }
