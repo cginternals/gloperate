@@ -13,6 +13,7 @@ add_subdirectory(gloperate-glfw)
 add_subdirectory(gloperate-qt)
 add_subdirectory(gloperate-assimp)
 add_subdirectory(gloperate-osg)
+add_subdirectory(gloperate-hidapi)
 
 # Applications
 add_subdirectory(gloperate-viewer)

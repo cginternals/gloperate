@@ -1,13 +1,21 @@
 #pragma once
 
-#include <gloperate-hid/gloperate-hidapi_api.h>
+#include <gloperate-hidapi/gloperate-hidapi_api.h>
+#include <hidapi/hidapi.h>
+
 
 namespace gloperate_hidapi
 {
 
-class GLOPERTATE_HIDAPI_API SpaceNavigator
+class GLOPERATE_HIDAPI_API SpaceNavigator
 {
 public:
 	SpaceNavigator();
-	void checkEvents(float timeout);
+	~SpaceNavigator();
+	void checkEvents(int timeout);
+
+private:
+	hid_device *m_pHandle;
 };
+
+}

@@ -11,10 +11,10 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
-find_package(hidapi QUIET)
+find_package(HIDAPI REQUIRED)
 
-# Build only if ASSIMP is available
-if (NOT hidapi_FOUND)
+# Build only if hidapi is available
+if (NOT HIDAPI_FOUND)
     message("Library ${target} skipped: hidapi not found")
     return()
 endif()
@@ -77,13 +77,12 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/AssimpSceneLoader.cpp
+	${source_path}/SpaceNavigator.cpp
 )
 
 set(headers
-    ${include_path}/gloperate-assimp_api.h
-    ${include_path}/AssimpMeshLoader.h
-    ${include_path}/AssimpSceneLoader.h
+    ${include_path}/gloperate-hidapi_api.h
+	${include_path}/SpaceNavigator.h
 )
 
 # Group source files
