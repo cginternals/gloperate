@@ -145,6 +145,7 @@ set(headers
 
     ${header_path}/widgets/FileNameTextEdit.h
     ${header_path}/widgets/ImageExporterWidget.h
+    ${header_path}/widgets/ImageExporterMultiFrameWidget.h
     ${header_path}/widgets/ImageExporterOutputWidget.h
     ${header_path}/widgets/ImageExporterResolutionWidget.h
     ${header_path}/widgets/ImageExporterTilebasedWidget.h
@@ -177,6 +178,8 @@ set(sources
 
     ${source_path}/widgets/FileNameTextEdit.cpp
     ${source_path}/widgets/ImageExporterWidget.cpp
+    ${source_path}/widgets/ImageExporterMultiFrameWidget.cpp
+    ${source_path}/widgets/ImageExporterMultiFrameWidget.ui
     ${source_path}/widgets/ImageExporterOutputWidget.cpp
     ${source_path}/widgets/ImageExporterOutputWidget.ui
     ${source_path}/widgets/ImageExporterResolutionWidget.cpp

@@ -39,6 +39,7 @@ ImageExporterOutputWidget::ImageExporterOutputWidget(gloperate::ResourceManager 
 ,	m_supportedTags({ { "width", "<width>" }, { "height", "<height>" }, { "enum_num", "<enum#" }, { "year", "<year>" }, { "month", "<month>" }, { "day", "<day>" }, { "hour", "<hour>" }, { "minute", "<minute>" }, { "second", "<second>" }, { "millisec", "<millisecond>" } })
 ,	m_ui(new Ui_ImageExporterOutputWidget)
 ,	m_resolution(new QSize(1,1))
+,   m_count(1)
 {
     m_ui->setupUi(this);
 
@@ -140,7 +141,7 @@ void ImageExporterOutputWidget::restoreSettings()
 void ImageExporterOutputWidget::handleSave(bool)
 {
     m_context->makeCurrent();
-    m_imageExporter->save(buildFileName(), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()));
+    m_imageExporter->save(buildFileName(), std::max(1, m_resolution->width()), std::max(1, m_resolution->height()), std::max(1, m_count));
     m_context->doneCurrent();
 }
 
@@ -320,6 +321,11 @@ void ImageExporterOutputWidget::checkFilename()
 
         emit filenameChanged();
     }
+}
+
+void ImageExporterOutputWidget::updateFrameCount(int count)
+{
+    m_count = count;
 }
 
 
