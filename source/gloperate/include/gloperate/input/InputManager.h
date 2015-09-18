@@ -32,7 +32,7 @@ public:
 	 *
 	 * @param[in] device
 	 *   A pointer to the device being registered.
-	 *   The pointer will be cleaned up by the Input Manager
+	 *   The device will be cleaned up by the Input Manager
 	 *
 	 */
 	GLOPERATE_API void addDevice(AbstractDevice* device);

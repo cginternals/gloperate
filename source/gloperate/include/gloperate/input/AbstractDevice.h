@@ -3,8 +3,14 @@
 
 #include <gloperate/gloperate_api.h>
 
+#include <vector>
+
+
 namespace gloperate
 {
+
+class AbstractControl;
+
 class AbstractDevice
 {
 public:
@@ -26,6 +32,10 @@ public:
      */
     GLOPERATE_API virtual void update() = 0;
 
+
+
+
+    std::vector<AbstractControl *> m_controls;
 };
 
 }

@@ -73,6 +73,7 @@ set(sources
     ${source_path}/input/MouseEvent.cpp
 	${source_path}/input/InputManager.cpp
 	${source_path}/input/ButtonControl.cpp
+    ${source_path}/input/AxisControl.cpp
     
     ${source_path}/navigation/AbstractMapping.cpp
     ${source_path}/navigation/AbstractInteraction.cpp
@@ -170,6 +171,7 @@ set(api_includes
     ${include_path}/input/AbstractDevice.h
     ${include_path}/input/AbstractControl.h
     ${include_path}/input/ButtonControl.h
+    ${include_path}/input/AxisControl.h
     
     ${include_path}/navigation/WorldInHandNavigation.h
     ${include_path}/navigation/AbstractInteraction.h
