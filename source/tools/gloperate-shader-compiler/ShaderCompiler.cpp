@@ -6,15 +6,16 @@
 
 #include <QJsonArray>
 #include <QJsonObject>
-#include <QOffscreenSurface>
-#include <QOpenGLContext>
-#include <QSurfaceFormat>
 
 #include <iozeug/filename.h>
 #include <iozeug/directorytraversal.h>
 
 #include <globjects/base/File.h>
 #include <globjects/NamedString.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+
+#include "OpenGLContext.h"
 
 
 bool ShaderCompiler::process(const QJsonObject & config)
@@ -26,102 +27,32 @@ bool ShaderCompiler::process(const QJsonObject & config)
     if (!jsonOpenGLConfig.isObject())
         return false;
 
-    const auto format = parseOpenGLFormat(jsonOpenGLConfig.toObject(), ok);
+    auto context = OpenGLContext::fromJsonConfig(jsonOpenGLConfig.toObject(), &ok);
     
     if (!ok)
         return false;
 
-    QOpenGLContext context{};
-    context.setFormat(format);
-    
     if (!context.create())
         return false;
+
+    context.makeCurrent();
+
+    const auto jsonNamedStringPaths = config.value("namedStringPaths");
     
-    QOffscreenSurface surface{};
-    surface.setFormat(context.format());
-    surface.create();
+    if (!jsonNamedStringPaths.isArray())
+        return false;
     
-    ok = makeContextCurrent(context, surface,
-        [&config] ()
-        {
-            const auto jsonNamedStringPaths = config.value("namedStringPaths");
-            
-            if (!jsonNamedStringPaths.isArray())
-                return false;
-            
-            parseNamedStringPaths(jsonNamedStringPaths.toArray());
-            
-            const auto jsonPrograms = config.value("programs");
-            
-            if (!jsonPrograms.isArray())
-                return false;
-            
-            return parsePrograms(jsonPrograms.toArray());;
-        });
+    parseNamedStringPaths(jsonNamedStringPaths.toArray());
     
-    return ok;
-}
-
-QSurfaceFormat ShaderCompiler::parseOpenGLFormat(const QJsonObject & config, bool & ok)
-{
-    static const auto hasWrongFormat = -1;
-
-    QSurfaceFormat format{};
-    format.setRenderableType(QSurfaceFormat::OpenGL);
-
-    const auto majorVersion = config.value("major").toInt(hasWrongFormat);
-
-    if (majorVersion == hasWrongFormat)
-    {
-        ok = false;
-        return format;
-    }
-
-    const auto minorVersion = config.value("minor").toInt(hasWrongFormat);
-
-    if (minorVersion == hasWrongFormat)
-    {
-        ok = false;
-        return format;
-    }
-
-    format.setVersion(majorVersion, minorVersion);
+    const auto jsonPrograms = config.value("programs");
     
-    if (format.version() >= qMakePair(3, 2))
-    {
-        const auto jsonCoreFlag = config.value("core");
-        const auto profile = jsonCoreFlag.toBool(true) ? QSurfaceFormat::CoreProfile :
-            QSurfaceFormat::CompatibilityProfile;
-        
-        format.setProfile(profile);
-    }
+    if (!jsonPrograms.isArray())
+        return false;
     
-    if (format.version() >= qMakePair(3, 0))
-    {
-        const auto jsonForwardFlag = config.value("forward");
-        
-        if (jsonForwardFlag.toBool(false))
-            format.setOption(QSurfaceFormat::DeprecatedFunctions);
-    }
-    
-    const auto jsonDebugFlag = config.value("debug");
-    
-    if (jsonDebugFlag.toBool(false))
-        format.setOption(QSurfaceFormat::DebugContext);
+    ok = parsePrograms(jsonPrograms.toArray());
 
-    ok = true;
-    return format;
-}
-
-bool ShaderCompiler::makeContextCurrent(
-    QOpenGLContext & context,
-    QOffscreenSurface & surface,
-    const std::function<bool ()> & functor)
-{
-    context.makeCurrent(&surface);
-    const auto ok = functor();
     context.doneCurrent();
-    
+
     return ok;
 }
 
@@ -272,11 +203,11 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
     return true;
 }
 
-std::vector<globjects::ref_ptr<globjects::Shaders>> ShaderCompiler::parseShaders(
+std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
     const QJsonArray & shadersArray,
     bool & ok)
 {
-    std::vector<globjects::ref_ptr<globjects::Shaders>> shaders{};
+    std::vector<globjects::ref_ptr<globjects::Shader>> shaders{};
     
     for (const auto & shaderValue : shadersArray)
     {
@@ -286,18 +217,85 @@ std::vector<globjects::ref_ptr<globjects::Shaders>> ShaderCompiler::parseShaders
             return shaders;
         }
         
-        // TODO: continue
+        const auto shaderObject = shaderValue.toObject();
+
+        const auto fileName = shaderObject.value("file").toString();
+
+        if (fileName.isNull())
+        {
+            ok = false;
+            return shaders;
+        }
+
+        const auto type = typeFromString(shaderObject.value("type").toString());
+
+        if (type == gl::GL_NONE)
+        {
+            ok = false;
+            return shaders;
+        }
+
+        // TODO: parse optional name and replacements
+
+        auto shader = globjects::Shader::fromFile(type, fileName.toStdString());
+
+        if (!shader->compile())
+        {
+            ok = false;
+            return shaders;
+        }
+
+        shaders.push_back(globjects::ref_ptr<globjects::Shader>(shader));
     }
     
     ok = true;
     return shaders;
 }
 
-bool ShaderCompiler::createAndLinkProgram(
-    const std::vector<globjects::ref_ptr<globjects::Shaders>> & shaders)
+gl::GLenum ShaderCompiler::typeFromString(const QString & typeString)
 {
-    // TODO: implement
-    return false;
+    if (typeString == "GL_VERTEX_SHADER")
+    {
+        return gl::GL_VERTEX_SHADER;
+    }
+    else if (typeString == "GL_VERTEX_SHADER")
+    {
+        return gl::GL_TESS_CONTROL_SHADER;
+    }
+    else if (typeString == "GL_TESS_EVALUATION_SHADER")
+    {
+        return gl::GL_TESS_EVALUATION_SHADER;
+    }
+    else if (typeString == "GL_GEOMETRY_SHADER")
+    {
+        return gl::GL_GEOMETRY_SHADER;
+    }
+    else if (typeString == "GL_FRAGMENT_SHADER")
+    {
+        return gl::GL_FRAGMENT_SHADER;
+    }
+    else if (typeString == "GL_COMPUTE_SHADER")
+    {
+        return gl::GL_COMPUTE_SHADER;
+    }
+
+    return gl::GL_NONE;
+}
+
+bool ShaderCompiler::createAndLinkProgram(
+    const std::vector<globjects::ref_ptr<globjects::Shader>> & shaders)
+{
+    auto program = globjects::make_ref<globjects::Program>();
+
+    for (auto & shader : shaders)
+        program->attach(shader);
+
+    program->link();
+
+    if (!program->isLinked())
+        return false;
+    
+    return true;
 }
 
 

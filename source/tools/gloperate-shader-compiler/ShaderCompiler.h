@@ -4,9 +4,12 @@
 #include <string>
 #include <vector>
 
+#include <glbinding/gl/enum.h>
+
 #include <globjects/base/ref_ptr.h>
 
 
+class QString;
 class QOffscreenSurface;
 class QOpenGLContext;
 class QJsonArray;
@@ -15,7 +18,7 @@ class QSurfaceFormat;
 
 namespace globjects
 {
-    class Shaders;
+    class Shader;
 }
 
 class ShaderCompiler
@@ -24,15 +27,6 @@ public:
     static bool process(const QJsonObject & config);
     
 private:
-    static QSurfaceFormat parseOpenGLFormat(
-        const QJsonObject & config,
-        bool & ok);
-    
-    static bool makeContextCurrent(
-        QOpenGLContext & context,
-        QOffscreenSurface & surface,
-        const std::function<bool ()> & functor);
-    
     static void parseNamedStringPaths(const QJsonArray & paths);
     
     static std::set<std::string> parseExtensions(
@@ -54,10 +48,12 @@ private:
     
     static bool parsePrograms(const QJsonArray & programs);
     
-    static std::vector<globjects::ref_ptr<globjects::Shaders>> parseShaders(
+    static std::vector<globjects::ref_ptr<globjects::Shader>> parseShaders(
         const QJsonArray & shaders,
         bool & ok);
     
+    static gl::GLenum typeFromString(const QString & typeString);
+
     static bool createAndLinkProgram(
-        const std::vector<globjects::ref_ptr<globjects::Shaders>> & shadersArray);
+        const std::vector<globjects::ref_ptr<globjects::Shader>> & shadersArray);
 };

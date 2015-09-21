@@ -80,6 +80,8 @@ set(sources
     main.cpp
     ShaderCompiler_old.cpp
     ShaderCompiler_old.h
+    OpenGLContext.cpp
+    OpenGLContext.h
     ShaderCompiler.cpp
     ShaderCompiler.h
 )
