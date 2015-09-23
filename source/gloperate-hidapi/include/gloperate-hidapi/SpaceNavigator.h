@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <signalzeug/Signal.h>
 
 #include <gloperate/input/AbstractDevice.h>
@@ -9,6 +11,8 @@
 #include <gloperate-hidapi/gloperate-hidapi_api.h>
 
 #include <hidapi/hidapi.h>
+
+using gloperate::AxisControl;
 
 
 namespace gloperate_hidapi
@@ -37,7 +41,14 @@ public:
     void virtual update();
 
     gloperate::ButtonControl m_control;
-    gloperate::AxisControl m_xAxis;
+    AxisControl m_xTranslation;
+    AxisControl m_yTranslation;
+    AxisControl m_zTranslation;
+    AxisControl m_xRotation;
+    AxisControl m_yRotation;
+    AxisControl m_zRotation;
+
+    //std::vector<AxisControl&> m_Axes;
 
 
 private:

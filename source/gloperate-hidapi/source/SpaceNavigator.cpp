@@ -43,9 +43,11 @@ namespace gloperate_hidapi
                 transY = static_cast<float>(static_cast<int16_t>((buf[3] & 0x000000ff) | (static_cast<int16_t>(buf[4])<<8 & 0xffffff00)));
                 transZ = static_cast<float>(static_cast<int16_t>((buf[5] & 0x000000ff) | (static_cast<int16_t>(buf[6])<<8 & 0xffffff00)));
 
-                m_xAxis.setPosition(transX);
+                m_xTranslation.setPosition(transX);
+                m_yTranslation.setPosition(transY);
+                m_zTranslation.setPosition(transZ);
 
-                std::cout << "Translation " << transX << " " << transY << " " << transZ << std::endl;
+
                 break;
             }
 
