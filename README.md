@@ -2,6 +2,15 @@
 
 C++ library for defining and controlling modern GPU rendering/processing operations
 
+| Service | System | Compiler | Options | Status |
+| ------- | ------ | -------- | ------- | ------ |
+| Jenkins | Ubuntu 14.04 | GCC 4.8 | default | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc4.8&style=plastic)](http://jenkins.hpi3d.de/job/gloperate-linux-gcc4.8)|
+| Jenkins | Ubuntu 14.04 | GCC 4.9 | default | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc4.9&style=plastic)](http://jenkins.hpi3d.de/job/gloperate-linux-gcc4.9)|
+| Jenkins | Ubuntu 14.04 | Clang 3.5 | default | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-clang3.5&style=plastic)](http://jenkins.hpi3d.de/job/gloperate-linux-clang3.5) |
+| Jenkins | OS X 10.10 | Clang 3.5 | default | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-osx-clang3.5&style=plastic)](http://jenkins.hpi3d.de/job/gloperate-osx-clang3.5) |
+| Jenkins | Windows 8.1 | MSVC 2013 Update 3 | default | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-windows-msvc2013&style=plastic)](http://jenkins.hpi3d.de/job/gloperate-windows-msvc2013) |
+| Jenkins | Windows 8.1 | MSVC 2015 | default | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-windows-msvc2015&style=plastic)](http://jenkins.hpi3d.de/job/gloperate-windows-msvc2015) |
+
 ### Dependencies
 
 The following dev-libraries and programs need to be provided for correct CMake configuration:
