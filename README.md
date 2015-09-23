@@ -2,6 +2,8 @@
 
 C++ library for defining and controlling modern GPU rendering/processing operations
 
+## Project Health (master)
+
 | Service | System | Compiler | Options | Status |
 | ------- | ------ | -------- | ------- | ------ |
 | Jenkins | Ubuntu 14.04 | GCC 4.8 | default | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc4.8&style=plastic)](http://jenkins.hpi3d.de/job/gloperate-linux-gcc4.8)|
