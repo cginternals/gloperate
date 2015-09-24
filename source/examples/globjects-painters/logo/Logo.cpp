@@ -28,7 +28,6 @@ using namespace gloperate;
 using namespace gl;
 
 
-
 static const char * s_vertexShader = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
@@ -76,7 +75,7 @@ Logo::Logo(ResourceManager & resourceManager, const reflectionzeug::Variant & pl
         const reflectionzeug::VariantMap & map = *(pluginInfo.asMap());
         if (map.count("dataPath") > 0) {
             dataPath = map.at("dataPath").value<std::string>();
-            gloperate::ensurePathSeparatorEnding(dataPath);
+            dataPath = gloperate::ensurePathSeparatorEnding(dataPath);
         }
     }
     m_textureFilename = dataPath + "data/logo/gloperate-logo.png";

@@ -21,11 +21,12 @@
 
 using gloperate::make_unique;
 
+
 namespace gloperate_qt
 {
 
 
-PluginPathWidget::PluginPathWidget(gloperate::PluginManager * pluginManager, QWidget *parent)
+PluginPathWidget::PluginPathWidget(gloperate::PluginManager * pluginManager, QWidget * parent)
 : QWidget(parent)
 , m_pluginManager(pluginManager)
 , m_listWidget(new QListWidget(this))

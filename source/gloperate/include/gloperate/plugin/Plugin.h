@@ -4,9 +4,7 @@
 
 #include <string>
 
-#include <gloperate/ext-includes-begin.h>
 #include <reflectionzeug/variant/Variant.h>
-#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/gloperate_api.h>
 

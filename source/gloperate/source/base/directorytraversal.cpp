@@ -127,16 +127,18 @@ void scanDirectory(const std::string & directory, const std::string & fileExtens
 }
 
 
-void ensurePathSeparatorEnding(std::string & path)
+std::string ensurePathSeparatorEnding(const std::string & path)
 {
+    auto returnPath = path;
     auto endsWith = [] (const std::string & str, const std::string & ending) { return str.find_last_of(ending) == str.size() - 1; };
 
-    while (path.size() > 0 && (endsWith(path, "/") || endsWith(path, "\\")))
+    while (returnPath.size() > 0 && (endsWith(returnPath, "/") || endsWith(returnPath, "\\")))
     {
-        path = path.substr(0, path.size() - 1);
+        returnPath = returnPath.substr(0, returnPath.size() - 1);
     }
 
-    path += g_sep;
+    returnPath += g_sep;
+    return returnPath;
 }
 
 

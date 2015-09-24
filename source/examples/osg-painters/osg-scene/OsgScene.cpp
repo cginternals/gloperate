@@ -8,10 +8,8 @@
 #include <gloperate/base/directorytraversal.h>
 
 
-
 using namespace gloperate;
 using namespace gloperate_osg;
-
 
 
 OsgScene::OsgScene(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
@@ -24,7 +22,7 @@ OsgScene::OsgScene(gloperate::ResourceManager & resourceManager, const reflectio
         const reflectionzeug::VariantMap & map = *(pluginInfo.asMap());
         if (map.count("dataPath") > 0) {
             m_dataPath = map.at("dataPath").value<std::string>();
-            gloperate::ensurePathSeparatorEnding(m_dataPath);
+            m_dataPath = gloperate::ensurePathSeparatorEnding(m_dataPath);
         }
     }
 }

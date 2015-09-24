@@ -8,9 +8,7 @@
 #include <QTabWidget>
 #include <gloperate/ext-includes-end.h>
 
-
 #include <gloperate-qt/gloperate-qt_api.h>
-
 
 
 namespace gloperate
@@ -19,8 +17,10 @@ namespace gloperate
     class ResourceManager;
 }
 
+
 namespace gloperate_qt
 {
+
 
 class PluginWidget;
 class PluginPathWidget;

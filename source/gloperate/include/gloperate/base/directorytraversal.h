@@ -40,8 +40,10 @@ GLOPERATE_API void scanDirectory(const std::string & directory, const std::strin
 *  @param[in] path
 *    Path to directory or file
 *
+*  @return
+*    Path to directory or file with ensured separator ending
 */
-GLOPERATE_API void ensurePathSeparatorEnding(std::string & path);
+GLOPERATE_API std::string ensurePathSeparatorEnding(const std::string & path);
 
 
 } // namespace gloperate

@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <gloperate/ext-includes-begin.h>
 #include <QWidget>
@@ -8,6 +10,7 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 #include <memory>
+
 
 class Ui_PluginWidget;
 class QResizeEvent;
@@ -21,8 +24,10 @@ class ResourceManager;
 
 }
 
+
 namespace gloperate_qt
 {
+
 
 class GLOPERATE_QT_API PluginWidget : public QWidget
 {
