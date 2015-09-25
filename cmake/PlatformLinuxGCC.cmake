@@ -51,7 +51,6 @@ set(LINUX_COMPILE_FLAGS
 
       -Wno-float-equal 
       -Wno-pragmas
-      -Wno-float-conversion
 
     # -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
     # -Wshadow      # -> e.g. when a parameter is named like a member, too many warnings, disabled for now
@@ -62,7 +61,7 @@ set(LINUX_COMPILE_FLAGS
 if (CMAKE_COMPILER_IS_GNUCXX)
     if (NOT (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "4.9"))
         set(LINUX_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS}
-            -Wno-error=float-conversion
+            -Wno-float-conversion
         )
     endif ()
 endif ()
