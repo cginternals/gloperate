@@ -5,11 +5,10 @@
 
 namespace gloperate_hidapi
 {
-    SpaceNavigator::SpaceNavigator()
+    SpaceNavigator::SpaceNavigator(const std::string& path)
     {
 		m_pHandle = nullptr;
-		m_pHandle = hid_open_path("/dev/hidraw2");
-        m_controls.push_back(&m_control);
+		m_pHandle = hid_open_path(path.c_str());
 	}
 
 	SpaceNavigator::~SpaceNavigator()

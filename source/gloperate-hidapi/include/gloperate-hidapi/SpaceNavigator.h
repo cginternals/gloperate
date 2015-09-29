@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include <signalzeug/Signal.h>
 
@@ -25,7 +26,7 @@ public:
      * @brief 
      *   Constructor
      */
-	SpaceNavigator();
+	SpaceNavigator(const std::string& path);
 
     /**
      * @brief 

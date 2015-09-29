@@ -78,11 +78,13 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
 	${source_path}/SpaceNavigator.cpp
+    ${source_path}/HIDDeviceProvider.cpp
 )
 
 set(headers
     ${include_path}/gloperate-hidapi_api.h
 	${include_path}/SpaceNavigator.h
+    ${include_path}/HIDDeviceProvider.h
 )
 
 # Group source files

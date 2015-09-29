@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <string>
 #include <vector>
 #include <memory>
 
@@ -10,6 +11,7 @@ namespace gloperate
 {
 
 class AbstractDevice;
+class AbstractDeviceProvider;
 
 class InputManager
 {
@@ -26,18 +28,17 @@ public:
 	 */
 	GLOPERATE_API virtual ~InputManager() = default;
 
-	/**
-	 * @brief
-	 *   Register a device
-	 *
-	 * @param[in] device
-	 *   A pointer to the device being registered.
-	 *   The device will be cleaned up by the Input Manager
-	 *
-	 */
-	GLOPERATE_API void addDevice(AbstractDevice* device);
+    /**
+     * @brief
+     *   Register a device provider
+     *
+     * @param[in] provider
+     *   A pointer to the provider being registered.
+     *   The provider will be cleaned up by the Input Manager.
+     */
+    GLOPERATE_API void addDeviceProvider(AbstractDeviceProvider* provider);
 
-	/**
+    /**
 	 * @brief
 	 *   Polls Inputs from all Devices
 	 */
@@ -45,7 +46,7 @@ public:
 
 
 protected:
-	std::vector<std::unique_ptr<AbstractDevice>> m_devices;
+    std::vector<std::unique_ptr<AbstractDeviceProvider>> m_providers;
 };
 
 }

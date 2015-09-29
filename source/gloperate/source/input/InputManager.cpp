@@ -1,21 +1,22 @@
 #include <gloperate/input/InputManager.h>
 
 #include <gloperate/input/AbstractDevice.h>
+#include <gloperate/input/AbstractDeviceProvider.h>
 
 namespace gloperate
 {
 
-    void InputManager::addDevice(AbstractDevice* device)
-	{
-		m_devices.emplace_back(device);
-	}
- 
-	void InputManager::update()
-	{
-		for(auto& device : m_devices)
-		{
-			device->update();
-		}
-	}
+void InputManager::addDeviceProvider(AbstractDeviceProvider* provider)
+{
+    m_providers.emplace_back(provider);
+}
+
+void InputManager::update()
+{
+    for(auto& provider : m_providers)
+    {
+        provider->updateDevices();
+    }
+}
 
 }

@@ -173,6 +173,7 @@ set(api_includes
     ${include_path}/input/AbstractControl.h
     ${include_path}/input/ButtonControl.h
     ${include_path}/input/AxisControl.h
+    ${include_path}/input/AbstractDeviceProvider.h
     
     ${include_path}/navigation/WorldInHandNavigation.h
     ${include_path}/navigation/AbstractInteraction.h
