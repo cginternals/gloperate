@@ -67,10 +67,16 @@
     </property>
     <addaction name="aboutAction"/>
    </widget>
+   <widget class="QMenu" name="viewMenu">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
    <addaction name="fileMenu"/>
    <addaction name="painterMenu"/>
    <addaction name="canvasMenu"/>
    <addaction name="cameraMenu"/>
+   <addaction name="viewMenu"/>
    <addaction name="settingsMenu"/>
    <addaction name="helpMenu"/>
   </widget>
