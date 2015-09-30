@@ -42,7 +42,15 @@ public:
 	 * @brief
 	 *   Polls Inputs from all Devices
 	 */
-	GLOPERATE_API void update();
+    GLOPERATE_API void update();
+
+    /**
+     * @brief
+     *   Lists all connected Devices
+     * @brief
+     *   A vector containing all connected devices
+     */
+    GLOPERATE_API std::vector<std::shared_ptr<AbstractDevice>> listDevices();
 
 
 protected:

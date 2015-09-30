@@ -1,18 +1,26 @@
 
-
 #include <gloperate-hidapi/HIDDeviceProvider.h>
 
 #include <gloperate/input/InputManager.h>
 #include <gloperate-hidapi/SpaceNavigator.h>
 #include <set>
 
+#include <algorithm>
+
 #include <iostream>
+
+using device_ptr = std::shared_ptr<gloperate::AbstractDevice>;
 
 namespace gloperate_hidapi
 {
 
-HIDDeviceProvider::HIDDeviceProvider(gloperate::InputManager* manager)
-    : gloperate::AbstractDeviceProvider(manager)
+
+HIDDeviceProvider::HIDDeviceProvider()
+{
+
+}
+
+HIDDeviceProvider::~HIDDeviceProvider()
 {
 
 }
@@ -30,27 +38,32 @@ void HIDDeviceProvider::updateDevices()
 
         if(m_openDevices.find(deviceID) == m_openDevices.end())
         {
-
             createDevice(cur_dev, deviceID);
-
         }
 
         cur_dev = cur_dev->next;
     }
     hid_free_enumeration(devs);
 
-    for(auto& entry : m_openDevices)
+    for(auto it = begin(m_openDevices); it != end(m_openDevices);)
     {
-        if(foundDevices.find(entry.first) != foundDevices.end())
+        if (foundDevices.find(it->first) == foundDevices.end())
         {
-            m_openDevices.erase(entry.first);
+            it = m_openDevices.erase(it);
+            std::cout << "device removed" << std::endl;
         }
         else
         {
-            entry.second->update();
+            ++it;
         }
     }
+
+    for(auto& entry : m_openDevices)
+    {
+        entry.second->update();
+    }
 }
+
 
 void HIDDeviceProvider::createDevice(hid_device_info* device, const std::wstring& deviceID)
 {
@@ -66,8 +79,19 @@ void HIDDeviceProvider::createDevice(hid_device_info* device, const std::wstring
     if(handler != nullptr)
     {
         m_openDevices.insert(std::make_pair(deviceID, device_ptr(handler)));
-            std::cout << "device added" << std::endl;
+
+        std::cout << "Device Added: ";
+        std::wcout << deviceID << std::endl;
     }
 }
 
+std::vector<device_ptr> HIDDeviceProvider::listDevices()
+{
+    std::vector<device_ptr> connectedDevices;
+    for(auto& entry : m_openDevices)
+    {
+        connectedDevices.push_back(entry.second);
+    }
+    return connectedDevices;
+}
 }
