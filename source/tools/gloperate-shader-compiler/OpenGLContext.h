@@ -22,7 +22,7 @@ public:
 
     bool create();
 
-    void makeCurrent();
+    bool makeCurrent();
     void doneCurrent();
     
 private:

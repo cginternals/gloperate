@@ -10,15 +10,24 @@
 #include <iozeug/filename.h>
 #include <iozeug/directorytraversal.h>
 
+#include <glbinding/gl/functions.h>
+
+#include <globjects/globjects.h>
 #include <globjects/base/File.h>
 #include <globjects/NamedString.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
+#include <globjects/logging.h>
 
 #include "OpenGLContext.h"
 
 
 bool ShaderCompiler::process(const QJsonObject & config)
+{
+    return ShaderCompiler{}.parse(config);
+}
+
+bool ShaderCompiler::parse(const QJsonObject & config)
 {
     bool ok{};
     
@@ -26,23 +35,28 @@ bool ShaderCompiler::process(const QJsonObject & config)
     
     if (!jsonOpenGLConfig.isObject())
         return false;
-
+    
     auto context = OpenGLContext::fromJsonConfig(jsonOpenGLConfig.toObject(), &ok);
     
     if (!ok)
         return false;
-
+    
     if (!context.create())
         return false;
-
-    context.makeCurrent();
-
-    const auto jsonNamedStringPaths = config.value("namedStringPaths");
     
-    if (!jsonNamedStringPaths.isArray())
+    if (!context.makeCurrent())
         return false;
     
-    parseNamedStringPaths(jsonNamedStringPaths.toArray());
+    globjects::init();
+    
+    printDriverInfo();
+    
+    const auto jsonNamedStringPaths = config.value("namedStringPaths");
+    
+    if (jsonNamedStringPaths.isArray())
+    {
+        parseNamedStringPaths(jsonNamedStringPaths.toArray());
+    }
     
     const auto jsonPrograms = config.value("programs");
     
@@ -50,9 +64,11 @@ bool ShaderCompiler::process(const QJsonObject & config)
         return false;
     
     ok = parsePrograms(jsonPrograms.toArray());
-
+    
     context.doneCurrent();
-
+    
+    printFailures();
+    
     return ok;
 }
 
@@ -184,6 +200,9 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
         if (name.isNull())
             return false;
         
+        globjects::info();
+        globjects::info() << "Process " << name.toStdString();
+        
         const auto shadersArray = programObject.value("shaders");
         
         if (!shadersArray.isArray())
@@ -192,12 +211,14 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
         const auto shaders = parseShaders(shadersArray.toArray(), ok);
         
         if (!ok)
-            return false;
+            continue;
+        
+        globjects::info() << "Link " << name.toStdString();
         
         ok = createAndLinkProgram(shaders);
         
         if (!ok)
-            return false;
+            m_linkFailures.push_back(name.toStdString());
     }
     
     return true;
@@ -235,12 +256,18 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
             return shaders;
         }
 
-        // TODO: parse optional name and replacements
+        // TODO: parse optional replacements
 
         auto shader = globjects::Shader::fromFile(type, fileName.toStdString());
 
+        const auto name = shaderObject.value("name").toString();
+        
+        globjects::info() << "Compile " << (!name.isNull() ? name.toStdString() : fileName.toStdString());
+        
         if (!shader->compile())
         {
+            m_compileFailures.push_back(fileName.toStdString());
+            
             ok = false;
             return shaders;
         }
@@ -298,5 +325,27 @@ bool ShaderCompiler::createAndLinkProgram(
     return true;
 }
 
+void ShaderCompiler::printDriverInfo()
+{
+    globjects::info() << "Driver: " << globjects::vendor();
+    globjects::info() << "Renderer: " << globjects::renderer();
+}
 
-
+void ShaderCompiler::printFailures()
+{
+    if (!m_compileFailures.empty())
+    {
+        globjects::info();
+        globjects::info() << "Compile Failures:";
+        for (const auto failure : m_compileFailures)
+            globjects::info() << "    " << failure;
+    }
+    
+    if (!m_linkFailures.empty())
+    {
+        globjects::info();
+        globjects::info() << "Link Failures:";
+        for (const auto failure : m_linkFailures)
+            globjects::info() << "    " << failure;
+    }
+}

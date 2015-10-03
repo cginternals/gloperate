@@ -4,6 +4,8 @@
 #include <QOffscreenSurface>
 #include <QOpenGLContext>
 #include <QSurfaceFormat>
+#include <QStringList>
+#include <QDebug>
 
 #include <gloperate/base/make_unique.hpp>
 
@@ -15,8 +17,11 @@ public:
 
     bool create();
 
-    void makeCurrent();
+    bool makeCurrent();
     void doneCurrent();
+
+private:
+    void printInfo();
 
 private:
     std::unique_ptr<QOpenGLContext> m_context;
@@ -43,18 +48,44 @@ bool OpenGLContext::Private::create()
 
     if (!m_surface->isValid())
         return false;
+    
+    printInfo();
 
     return true;
 }
 
-void OpenGLContext::Private::makeCurrent()
+bool OpenGLContext::Private::makeCurrent()
 {
-    m_context->makeCurrent(m_surface.get());
+    return m_context->makeCurrent(m_surface.get());
 }
 
 void OpenGLContext::Private::doneCurrent()
 {
     m_context->doneCurrent();
+}
+
+void OpenGLContext::Private::printInfo()
+{
+    const auto format = m_context->format();
+    const auto version = format.version();
+    
+    auto options = QStringList{};
+    
+    if (version >= qMakePair(3, 2))
+        options << (format.profile() == QSurfaceFormat::CoreProfile ? "Core" : "Compatibility");
+    
+    if (version >= qMakePair(3, 0))
+    {
+        if (format.testOption(QSurfaceFormat::DeprecatedFunctions))
+            options << "forward compatibility";
+    }
+    
+    if (format.testOption(QSurfaceFormat::DebugContext))
+        options << "debug";
+    
+    qDebug().nospace().noquote() << "OpenGL Version: "
+        << version.first << "." << version.second << " "
+        << "(" << options.join(", ") << ")";
 }
 
 OpenGLContext OpenGLContext::fromJsonConfig(const QJsonObject & config, bool * ok)
@@ -137,9 +168,9 @@ bool OpenGLContext::create()
     return m_p->create();
 }
 
-void OpenGLContext::makeCurrent()
+bool OpenGLContext::makeCurrent()
 {
-    m_p->makeCurrent();
+    return m_p->makeCurrent();
 }
 
 void OpenGLContext::doneCurrent()

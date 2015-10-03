@@ -1,5 +1,8 @@
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QFile>
 
 #include "ShaderCompiler.h"
 
@@ -31,9 +34,34 @@ int main(int argc, char * argv[])
     parser.setApplicationDescription(applicationDescription);
     parser.addVersionOption();
     parser.addHelpOption();
-    parser.addPositionalArgument("<configFile>", "the configuration file");
+    parser.addPositionalArgument("configFile", "the configuration file");
 
     parser.process(app);
-
-    return 0;
+    
+    const auto arguments = parser.positionalArguments();
+    
+    if (arguments.isEmpty())
+        return -1;
+    
+    const auto configPath = arguments.first();
+    
+    if (!QFile::exists(configPath))
+        return -1;
+    
+    QFile jsonFile{configPath};
+    
+    if (!jsonFile.open(QIODevice::ReadOnly))
+        return -1;
+    
+    QJsonParseError error{};
+    
+    const auto jsonDocument = QJsonDocument::fromJson(jsonFile.readAll(), &error);
+    
+    if (error.error != QJsonParseError::NoError)
+        return -1;
+    
+    if (!jsonDocument.isObject())
+        return -1;
+    
+    return ShaderCompiler::process(jsonDocument.object()) ? 0 : -1;
 }
