@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include <vector>
+#include <algorithm>
 
 #include <QJsonArray>
 #include <QJsonObject>
@@ -76,6 +77,8 @@ void ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
 {
     bool ok{};
     
+    std::vector<std::string> namedStrings;
+    
     for (const auto & namedStringPath : paths)
     {
         if (!namedStringPath.isObject())
@@ -100,11 +103,16 @@ void ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
         
         auto files = scanDirectory(pathString.toStdString(), extensions);
         
+        if (files.empty())
+            continue;
+        
         const auto aliasString = pathObject.value("alias").toString();
         
         if (aliasString.isNull())
         {
             createNamedStrings(files, files);
+            
+            std::copy(files.begin(), files.end(), std::back_inserter(namedStrings));
         }
         else
         {
@@ -112,8 +120,17 @@ void ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
                 pathString.toStdString(),
                 aliasString.toStdString());
             
+            std::copy(aliases.begin(), aliases.end(), std::back_inserter(namedStrings));
+            
             createNamedStrings(files, aliases);
         }
+    }
+    
+    if (!namedStrings.empty())
+    {
+        globjects::info() << "Registered Named Strings:";
+        for (const auto string : namedStrings)
+            globjects::info() << "    " << string;
     }
 }
 
