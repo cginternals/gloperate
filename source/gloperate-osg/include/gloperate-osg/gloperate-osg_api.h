@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -25,7 +26,6 @@
 #else
 #	define GLOPERATE_OSG_API
 #endif
-
 
 #ifdef N_DEBUG
 #	define IF_DEBUG(statement)

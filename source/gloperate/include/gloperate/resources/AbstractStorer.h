@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <string>
 #include <vector>
@@ -10,6 +12,7 @@ namespace globjects
 {
     class Referenced;
 }
+
 
 namespace gloperate
 {
@@ -70,5 +73,6 @@ public:
     */
     virtual std::string allStoringTypes() const = 0;
 };
+
 
 } // namespace gloperate

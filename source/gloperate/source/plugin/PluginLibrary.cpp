@@ -1,3 +1,4 @@
+
 #include <gloperate/plugin/PluginLibrary.h>
 
 #include <gloperate/plugin/Plugin.h>
@@ -6,8 +7,9 @@
 namespace gloperate
 {
 
-PluginLibrary::PluginLibrary(const std::string & fileName)
-: m_fileName(fileName)
+
+PluginLibrary::PluginLibrary(const std::string & filePath)
+: m_filePath(filePath)
 , m_initPtr(nullptr)
 , m_deinitPtr(nullptr)
 , m_numPluginsPtr(nullptr)
@@ -19,9 +21,9 @@ PluginLibrary::~PluginLibrary()
 {
 }
 
-const std::string & PluginLibrary::fileName() const
+const std::string & PluginLibrary::filePath() const
 {
-    return m_fileName;
+    return m_filePath;
 }
 
 bool PluginLibrary::isValid() const
@@ -56,5 +58,6 @@ gloperate::Plugin * PluginLibrary::plugin(unsigned int index) const
 
     return nullptr;
 }
+
 
 } // namespace gloperate

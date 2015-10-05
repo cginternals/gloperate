@@ -20,8 +20,10 @@
 
 using namespace gloperate;
 
+
 namespace gloperate_glfw
 {
+
 
 int Window::init()
 {
@@ -494,5 +496,6 @@ const gloperate::ResourceManager & Window::resourceManager() const
 {
     return m_resourceManager;
 }
+
 
 } // namespace gloperate_glfw

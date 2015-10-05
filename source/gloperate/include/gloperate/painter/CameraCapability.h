@@ -2,16 +2,19 @@
 #pragma once
 
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
+
+#include <signalzeug/Signal.h>
 
 #include <globjects/base/CachedValue.h>
 
-#include <gloperate/gloperate_api.h>
-#include <signalzeug/Signal.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 /**
@@ -63,11 +66,26 @@ public:
 
     /**
     *  @brief
+    *    Set the current camera configuration as default for resets.
+    *
+    *  @param[in] eye
+    *    The new eye vector
+    *  @param[in] center
+    *    The new center vector
+    *  @param[in] up
+    *    The new up vector
+    */
+    void setDefault();
+    void setDefault(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & up);
+
+    /**
+    *  @brief
     *    Update camera matrices
     */
     void update() const;
 
     // Virtual functions from AbstractCameraCapability
+    virtual void reset() override;
     virtual const glm::vec3 & eye() const override;
     virtual void setEye(const glm::vec3 & eye) override;
     virtual const glm::vec3 & center() const override;
@@ -108,6 +126,10 @@ protected:
     glm::vec3 m_eye;        /**< Camera position */
     glm::vec3 m_center;     /**< Look-at position */
     glm::vec3 m_up;         /**< Up-vector */
+
+    glm::vec3 m_defaultEye;        /**< Default camera position */
+    glm::vec3 m_defaultCenter;     /**< Default look-at position */
+    glm::vec3 m_defaultUp;         /**< Default up-vector */
 
     // Camera matrices
     globjects::CachedValue<glm::mat4> m_view;           /**< View matrix */

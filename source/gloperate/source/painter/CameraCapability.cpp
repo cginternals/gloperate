@@ -1,15 +1,18 @@
 
 #include <gloperate/painter/CameraCapability.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/painter/Camera.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 CameraCapability::CameraCapability(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & up)
@@ -19,6 +22,9 @@ CameraCapability::CameraCapability(const glm::vec3 & eye, const glm::vec3 & cent
 , m_eye(eye)
 , m_center(center)
 , m_up(up)
+, m_defaultEye(m_eye)
+, m_defaultCenter(m_center)
+, m_defaultUp(m_up)
 {
 }
 
@@ -51,6 +57,29 @@ void CameraCapability::update() const
     m_dirty = false;
 
     const_cast<CameraCapability*>(this)->changed();
+}
+
+void CameraCapability::setDefault()
+{
+    m_defaultCenter = m_center;
+    m_defaultEye = m_eye;
+    m_defaultUp = m_up;
+}
+
+void CameraCapability::setDefault(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & up)
+{
+    m_defaultCenter = center;
+    m_defaultEye = eye;
+    m_defaultUp = up;
+}
+
+void CameraCapability::reset()
+{
+    m_center = m_defaultCenter;
+    m_eye = m_defaultEye;
+    m_up = m_defaultUp;
+
+    dirty();
 }
 
 const glm::vec3 & CameraCapability::eye() const

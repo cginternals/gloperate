@@ -1,10 +1,13 @@
+
 #include <gloperate/input/AbstractEventProvider.h>
 
 #include <gloperate/input/AbstractEvent.h>
 #include <gloperate/navigation/AbstractMapping.h>
 
+
 namespace gloperate
 {
+
 
 AbstractEventProvider::AbstractEventProvider()
 {
@@ -12,8 +15,14 @@ AbstractEventProvider::AbstractEventProvider()
 
 AbstractEventProvider::~AbstractEventProvider()
 {
-    for (AbstractMapping * mapping : m_mappings)
-    {
+    // Unregister from mappings
+
+    // Note: removeProvider calls registerMapping in turn, which removes the mapping
+    // from m_mappings. Therefore, a for-loop would get into trouble, so we iterate
+    // like this until the list is empty.
+
+    while (!m_mappings.empty()) {
+        AbstractMapping * mapping = m_mappings.front();
         mapping->removeProvider(this);
     }
 }
@@ -35,5 +44,6 @@ void AbstractEventProvider::passEvent(AbstractEvent * event)
         mapping->processEvent(event);
     }
 }
+
 
 } // namespace gloperate

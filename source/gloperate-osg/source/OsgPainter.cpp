@@ -1,8 +1,9 @@
 
-#include <glbinding/gl/gl.h>
-#include <globjects/logging.h>
-
 #include <gloperate-osg/OsgPainter.h>
+
+#include <glbinding/gl/gl.h>
+
+#include <globjects/logging.h>
 
 #include <gloperate/base/make_unique.hpp>
 #include <gloperate/painter/ViewportCapability.h>
@@ -19,12 +20,8 @@ namespace gloperate_osg
 {
 
 
-/**
-*  @brief
-*    Constructor
-*/
-OsgPainter::OsgPainter(ResourceManager & resourceManager, const std::string & name)
-: Painter(resourceManager, name)
+OsgPainter::OsgPainter(const std::string & name, ResourceManager & resourceManager, const std::string & relDataPath)
+: Painter(name, resourceManager, relDataPath)
 , m_viewer(nullptr)
 , m_embedded(nullptr)
 , m_scene(nullptr)
@@ -40,46 +37,26 @@ OsgPainter::OsgPainter(ResourceManager & resourceManager, const std::string & na
     m_virtualTimeCapability = addCapability(new gloperate::VirtualTimeCapability);
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 OsgPainter::~OsgPainter()
 {
     osg_cleanup();
 }
 
-/**
-*  @brief
-*    Get OSG viewer
-*/
 osgViewer::Viewer * OsgPainter::viewer() const
 {
     return m_viewer;
 }
 
-/**
-*  @brief
-*    Get OSG scene
-*/
 osg::Node * OsgPainter::scene() const
 {
     return m_scene;
 }
 
-/**
-*  @brief
-*    Set OSG scene
-*/
 void OsgPainter::setScene(osg::Node * scene)
 {
     osg_setScene(scene);
 }
 
-/**
-*  @brief
-*    Load OSG scene
-*/
 void OsgPainter::loadScene(const std::string & filename)
 {
     osg_loadScene(filename);

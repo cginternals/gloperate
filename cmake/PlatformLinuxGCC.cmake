@@ -43,15 +43,13 @@ set(LINUX_COMPILE_FLAGS
       -Werror       # ->
       
       -Wreturn-type 
-      -Wfloat-equal 
-      -Wcast-qual 
+      -Wno-cast-qual 
       -Wcast-align 
-      -Wconversion 
+      -Wno-conversion 
       -Wno-error=comment
       -Wno-error=strict-aliasing
 
-      -Wno-error=float-equal 
-      -Wno-error=conversion 
+      -Wno-float-equal 
       -Wno-pragmas
 
     # -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
@@ -63,7 +61,7 @@ set(LINUX_COMPILE_FLAGS
 if (CMAKE_COMPILER_IS_GNUCXX)
     if (NOT (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "4.9"))
         set(LINUX_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS}
-            -Wno-error=float-conversion
+            -Wno-float-conversion
         )
     endif ()
 endif ()

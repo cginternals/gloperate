@@ -14,6 +14,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Description of an OpenGL context format
+*/
 class GLOPERATE_API ContextFormat
 {
 public:
@@ -34,6 +38,8 @@ public:
     ,   TripleBuffering ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
     };
 
+
+public:
     static const std::string & profileString(Profile profile);
     static const std::string & swapBehaviorString(SwapBehavior swapBehavior);
 
@@ -100,8 +106,6 @@ public:
     SwapBehavior swapBehavior() const;
     void setSwapBehavior(SwapBehavior behavior);
 
-
-public:
     /** Compares the created format against the requested one.
     */
     static bool verify(const ContextFormat & requested, const ContextFormat & created);
@@ -116,7 +120,6 @@ protected:
     /** Compares (logged if erroneous) buffer sizes and more between both formats
     */
     static bool verifyPixelFormat(const ContextFormat & requested, const ContextFormat & current);
-
 
     /** Used as inline by verifyPixelFormat 
     */

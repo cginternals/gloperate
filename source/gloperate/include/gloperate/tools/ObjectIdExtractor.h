@@ -1,12 +1,18 @@
+
 #pragma once
 
-#include <gloperate/gloperate_api.h>
 
 #include <gloperate/tools/GBufferExtractor.h>
+
 
 namespace gloperate
 {
 
+
+/**
+*  @brief
+*    Extract object IDs from G-Buffer
+*/
 class GLOPERATE_API ObjectIdExtractor : protected GBufferExtractor
 {
 public:
@@ -18,5 +24,6 @@ public:
 
     int get(const glm::ivec2 & windowCoordinates) const;
 };
+
 
 } // namespace gloperate

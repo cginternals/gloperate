@@ -1,8 +1,10 @@
+
 #include <gloperate/base/ChronoTimer.h>
 
 
 namespace gloperate
 {
+
 
 ChronoTimer::ChronoTimer(const bool _start, const bool autoUpdate)
 :   m_paused(true)
@@ -88,5 +90,6 @@ bool ChronoTimer::autoUpdating() const
 {
     return m_auto;
 }
+
 
 } // namespace gloperate
