@@ -2,11 +2,11 @@
 #pragma once
 
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 class RenderTarget;
@@ -15,7 +15,7 @@ enum class RenderTargetType : unsigned int;
 
 /**
 *  @brief
-*    
+*    Capability that allows a painter to export render targets (such as color, depth, id)
 */
 class GLOPERATE_API AbstractTypedRenderTargetCapability : public AbstractCapability
 {

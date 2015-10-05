@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <string>
 
@@ -8,7 +10,10 @@
 namespace gloperate_glfw
 {
 
-/** This singleton prothe (main) windows message loop.
+
+/**
+*  @brief
+*    Singleton representing the (main) window's message loop
 */
 class GLOPERATE_GLFW_API Application
 {
@@ -22,6 +27,7 @@ public:
     static int exec();
     static void quit(int code = 0);
 
+
 public:
     Application(int & argc, char ** argv);
 
@@ -31,16 +37,20 @@ public:
     int exitCode();
     bool isRunning() const;
 
+
 protected:
     void pollEvents();
     void processEvents();
+
 
 protected:
     static std::string baseName(const std::string & filePath);
     static std::string path(const std::string & filePath);
 
+
 protected:
     static Application * s_app;
+
 
 protected:
     int m_exitCode;
@@ -50,5 +60,6 @@ protected:
     std::string m_path;
     std::string m_name;
 };
+
 
 } // namespace gloperate_glfw

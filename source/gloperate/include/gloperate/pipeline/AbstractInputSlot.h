@@ -1,22 +1,37 @@
+
 #pragma once
+
 
 #include <string>
 
-#include <gloperate/gloperate_api.h>
-
 #include <signalzeug/Signal.h>
+
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate 
 {
 
+
 class AbstractData;
 class AbstractStage;
 
 
+/**
+*  @brief
+*    Base class for typed input slots
+*
+*  @see
+*    InputSlot
+*/
 class GLOPERATE_API AbstractInputSlot
 {
     friend class AbstractStage;
+
+
+public:
+    signalzeug::Signal<> connectionChanged;
+
 
 public:
     AbstractInputSlot(const std::string & name = "");
@@ -54,8 +69,10 @@ public:
 
     bool isConnected() const;
 
-public:
-    signalzeug::Signal<> connectionChanged;
+
+protected:
+    void setOwner(AbstractStage * owner);
+
 
 protected:
     AbstractStage * m_owner;
@@ -64,8 +81,7 @@ protected:
     bool m_hasChanged;
     bool m_isOptional;
     bool m_isFeedback;
-
-    void setOwner(AbstractStage * owner);
 };
+
 
 } // namespace gloperate

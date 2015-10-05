@@ -1,16 +1,25 @@
+
 #pragma once
 
-#include <gloperate/gloperate_api.h>
+
+#include <gloperate/ext-includes-begin.h>
+#include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/input/AbstractEvent.h>
-
-#include <glm/glm.hpp>
-
 #include <gloperate/input/input.h>
+
 
 namespace gloperate
 {
 
+
+/**
+*  @brief
+*    Mouse wheel event
+*
+*    Informs about mouse wheel events
+*/
 class GLOPERATE_API WheelEvent : public AbstractEvent
 {
 public:
@@ -30,16 +39,17 @@ public:
     
     /**
     *  @brief
-    *    A helpful value when using mouse wheel for scaling.
+    *    A helpful value when using mouse wheel for scaling
     */
     static float defaultMouseAngleDelta();
+
 
 protected:
     glm::ivec2 m_pos;
     glm::vec2 m_angleDelta;
     glm::ivec2 m_pixelDelta;
     MouseButton m_button;
-
 };
+
 
 } // namespace gloperate

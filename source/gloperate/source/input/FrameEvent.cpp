@@ -6,7 +6,7 @@ namespace gloperate
 FrameEvent::FrameEvent(Clock::duration deltaTime)
 : m_deltaTime(deltaTime)
 {
-    m_sourceType = SourceType::Frame;
+    m_sourceType = EventType::Frame;
 }
 
 FrameEvent::Clock::duration FrameEvent::deltaTime() const

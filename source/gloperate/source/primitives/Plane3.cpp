@@ -1,9 +1,12 @@
+
 #include "Plane3.h"
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <gloperate/ext-includes-end.h>
 
 
 using namespace glm;
@@ -11,6 +14,7 @@ using namespace glm;
 
 namespace gloperate
 {
+
 
 float pointToPlaneDistance(
     const vec3 & location
@@ -64,5 +68,6 @@ const vec3 intersection(
 
     return t * r + r0; // retrieve point via the ray
 }
+
 
 } // namespace gloperate

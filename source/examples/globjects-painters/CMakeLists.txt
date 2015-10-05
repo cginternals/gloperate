@@ -52,15 +52,19 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/")
 
 set(sources
-    ${source_path}/textured-quad/TexturedQuad.cpp
-    ${source_path}/rotating-quad/RotatingQuad.cpp
+    ${source_path}/logo/Logo.cpp
+    ${source_path}/screenaligned/ScreenAligned.cpp
     ${source_path}/cubescape/CubeScape.cpp
+    ${source_path}/postprocessing/Postprocessing.cpp
+    ${source_path}/postprocessing/PostprocessingPipeline.cpp
     ${source_path}/plugin.cpp
 )
 
 set(api_includes
-    ${include_path}/textured-quad/TexturedQuad.h
-    ${include_path}/rotating-quad/RotatingQuad.h
+    ${include_path}/logo/Logo.h
+    ${include_path}/screenaligned/ScreenAligned.h
+    ${include_path}/postprocessing/Postprocessing.h
+    ${include_path}/postprocessing/PostprocessingPipeline.h
     ${include_path}/cubescape/CubeScape.h
 )
 

@@ -1,3 +1,4 @@
+
 #include <gloperate-osg/OsgFboRenderStage.h>
 
 #include <glbinding/gl/gl.h>
@@ -8,10 +9,7 @@
 namespace gloperate_osg
 {
 
-/**
-*  @brief
-*    Constructor
-*/
+
 OsgFboRenderStage::OsgFboRenderStage(const std::string & name)
 : OsgRenderStage(name)
 , m_colorTextureOsg(nullptr)
@@ -22,10 +20,6 @@ OsgFboRenderStage::OsgFboRenderStage(const std::string & name)
     addOutput("depthTexture", m_depthTexture);
 }
 
-/**
-*  @brief
-*    Destructor
-*/
 OsgFboRenderStage::~OsgFboRenderStage()
 {
 }
@@ -42,10 +36,6 @@ void OsgFboRenderStage::postOsgRendering()
     updateFbo();
 }
 
-/**
-*  @brief
-*    Called to setup textures for use with gloperate pipeline
-*/
 void OsgFboRenderStage::updateFbo()
 {
     // Update color texture
@@ -62,5 +52,6 @@ void OsgFboRenderStage::updateFbo()
         m_depthTexture.invalidate();
     }
 }
+
 
 } // namespace gloperate_osg

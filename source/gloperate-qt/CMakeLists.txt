@@ -1,18 +1,23 @@
+
+#
 # Target
+#
 set(target gloperate-qt)
+
 
 #
 # External libraries
 #
 
+find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
+find_package(ASSIMP QUIET)
 
-#
+
 # Qt5
-#
 
 # good resource: http://www.kdab.com/using-cmake-with-qt-5/
 
@@ -27,16 +32,26 @@ find_package(Qt5Gui     5.1 QUIET)
 find_package(Qt5Widgets 5.1 QUIET)
 
 if (NOT Qt5Core_FOUND)
-    message(STATUS "Example ${target} (disabled because Qt5 couldn't be found)")
+    message(STATUS "Lib ${target} (disabled because Qt5 couldn't be found)")
     return()
 endif()
-
-
-message(STATUS "Lib ${target}")
 
 # Qt5 options
 
 set(CMAKE_AUTOMOC ON)
+
+if(MSVC)
+    # -> msvc14 : declaration hides class member (problem in qt)
+    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} /wd4458)
+endif()
+
+
+#
+# Announce target
+#
+
+message(STATUS "Lib ${target}")
+
 
 #
 # Includes
@@ -51,9 +66,12 @@ include_directories(
 
 include_directories(
     BEFORE
-    ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate/include
+    ${CMAKE_SOURCE_DIR}/source/gloperate-assimp/include
 )
+
 
 #
 # Libraries
@@ -70,6 +88,13 @@ set(libs
     gloperate
 )
 
+if (ASSIMP_FOUND)
+    list(APPEND libs
+        gloperate-assimp
+    )
+endif ()
+
+
 #
 # Compiler definitions
 #
@@ -80,67 +105,110 @@ else()
     add_definitions("-DGLOPERATE_QT_EXPORTS")
 endif()
 
+# Include assimp specific code
+if (ASSIMP_FOUND)
+   add_definitions("-DGLOPERATE_ASSIMP_FOUND")
+endif()
+
 # for compatibility between glm 0.9.4 and 0.9.5
 add_definitions("-DGLM_FORCE_RADIANS")
+
 
 #
 # Sources
 #
 
-set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
+set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
-set(sources
-    ${source_path}/AbstractQtEventProvider.cpp
-    ${source_path}/QtEventTransformer.cpp
-    ${source_path}/QtFrameEventProvider.cpp
-    ${source_path}/QtKeyEventProvider.cpp
-    ${source_path}/QtMouseEventProvider.cpp
-    ${source_path}/QtOpenGLWindow.cpp
-    ${source_path}/QtOpenGLWindowBase.cpp
-    ${source_path}/QtTextureLoader.cpp
-    ${source_path}/QtTextureStorer.cpp
-    ${source_path}/QtWheelEventProvider.cpp
-    ${source_path}/Converter.cpp
-    ${source_path}/TimePropagator.cpp
+set(headers
+    ${header_path}/viewer/Application.h
+    ${header_path}/viewer/DefaultMapping.h
+    ${header_path}/viewer/Viewer.h
+    ${header_path}/viewer/AbstractQtEventProvider.h
+    ${header_path}/viewer/QtEventTransformer.h
+    ${header_path}/viewer/QtFrameEventProvider.h
+    ${header_path}/viewer/QtKeyEventProvider.h
+    ${header_path}/viewer/QtMouseEventProvider.h
+    ${header_path}/viewer/QtOpenGLWindow.h
+    ${header_path}/viewer/QtOpenGLWindowBase.h
+    ${header_path}/viewer/QtTextureLoader.h
+    ${header_path}/viewer/QtTextureStorer.h
+    ${header_path}/viewer/QtWheelEventProvider.h
+    ${header_path}/viewer/Converter.h
+    ${header_path}/viewer/TimePropagator.h
+
+    ${header_path}/scripting/ScriptEnvironment.h
+    ${header_path}/scripting/SystemApi.h
+    ${header_path}/scripting/TimerApi.h
+    ${header_path}/scripting/ViewerApi.h
+    ${header_path}/scripting/PluginApi.h
+
+    ${header_path}/widgets/FileNameTextEdit.h
+    ${header_path}/widgets/ImageExporterWidget.h
+    ${header_path}/widgets/ImageExporterMultiFrameWidget.h
+    ${header_path}/widgets/ImageExporterOutputWidget.h
+    ${header_path}/widgets/ImageExporterResolutionWidget.h
+    ${header_path}/widgets/ImageExporterTilebasedWidget.h
+
+    ${header_path}/gloperate-qt_api.h
 )
 
-set(headers
-    ${include_path}/AbstractQtEventProvider.h
-    ${include_path}/QtEventTransformer.h
-    ${include_path}/QtFrameEventProvider.h
-    ${include_path}/QtKeyEventProvider.h
-    ${include_path}/QtMouseEventProvider.h
-    ${include_path}/QtOpenGLWindow.h
-    ${include_path}/QtOpenGLWindowBase.h
-    ${include_path}/QtTextureLoader.h
-    ${include_path}/QtTextureStorer.h
-    ${include_path}/QtWheelEventProvider.h
-    ${include_path}/Converter.h
-    ${include_path}/TimePropagator.h
-    ${include_path}/gloperate-qt_api.h
+set(sources
+    ${source_path}/viewer/Application.cpp
+    ${source_path}/viewer/DefaultMapping.cpp
+    ${source_path}/viewer/Viewer.cpp
+    ${source_path}/viewer/Viewer.ui
+    ${source_path}/viewer/AbstractQtEventProvider.cpp
+    ${source_path}/viewer/QtEventTransformer.cpp
+    ${source_path}/viewer/QtFrameEventProvider.cpp
+    ${source_path}/viewer/QtKeyEventProvider.cpp
+    ${source_path}/viewer/QtMouseEventProvider.cpp
+    ${source_path}/viewer/QtOpenGLWindow.cpp
+    ${source_path}/viewer/QtOpenGLWindowBase.cpp
+    ${source_path}/viewer/QtTextureLoader.cpp
+    ${source_path}/viewer/QtTextureStorer.cpp
+    ${source_path}/viewer/QtWheelEventProvider.cpp
+    ${source_path}/viewer/Converter.cpp
+    ${source_path}/viewer/TimePropagator.cpp
+
+    ${source_path}/scripting/ScriptEnvironment.cpp
+    ${source_path}/scripting/SystemApi.cpp
+    ${source_path}/scripting/TimerApi.cpp
+    ${source_path}/scripting/ViewerApi.cpp
+    ${source_path}/scripting/PluginApi.cpp
+
+    ${source_path}/widgets/FileNameTextEdit.cpp
+    ${source_path}/widgets/ImageExporterWidget.cpp
+    ${source_path}/widgets/ImageExporterMultiFrameWidget.cpp
+    ${source_path}/widgets/ImageExporterMultiFrameWidget.ui
+    ${source_path}/widgets/ImageExporterOutputWidget.cpp
+    ${source_path}/widgets/ImageExporterOutputWidget.ui
+    ${source_path}/widgets/ImageExporterResolutionWidget.cpp
+    ${source_path}/widgets/ImageExporterResolutionWidget.ui
+    ${source_path}/widgets/ImageExporterTilebasedWidget.cpp
+    ${source_path}/widgets/ImageExporterTilebasedWidget.ui
 )
 
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
-source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${header_path} "\\\\.h$|\\\\.hpp$" 
     ${header_group} ${headers})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
+
 
 #
 # Build library
 #
 
+list_extract(uis "\\\\.ui$" ${sources})
+qt5_wrap_ui(uihs ${uis})
+
 add_library(${target} ${headers} ${sources})
-
+qt5_use_modules(${target} Core Gui Widgets)
 target_link_libraries(${target} ${libs})
-
-if(MSVC)
-    # -> msvc14 : declaration hides class member (problem in qt)
-    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} /wd4458)
-endif()
 
 target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
 
@@ -148,12 +216,13 @@ set_target_properties(${target}
     PROPERTIES
     LINKER_LANGUAGE              CXX
     FOLDER                      "${IDE_FOLDER}"
-    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG} "
+    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
     COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH                ${include_path})
+    INCLUDE_PATH                ${header_path})
+
 
 #
 # Deployment

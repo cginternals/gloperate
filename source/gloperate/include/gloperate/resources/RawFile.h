@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <cstdint>
 #include <string>
@@ -11,11 +13,11 @@
 namespace gloperate
 {
 
+
 /**
 *  @brief
 *    Raw data file loader
 *
-*  @remarks
 *    This class allows for loading raw data (e.g., textures) from files. You have to exactly know
 *    how to interpret the content of the file, e.g., you need to know the format and size of the
 *    texture, the file does not provide this information. To create raw textures, you can use
@@ -33,15 +35,17 @@ public:
     bool isValid() const;
     const std::string & filePath() const;
 
+
 protected:
     bool readFile();
     void readRawData(std::ifstream & ifs);
 
+
 protected:
     const std::string m_filePath;
     std::vector<char> m_data;
-
-    bool m_valid;
+    bool              m_valid;
 };
+
 
 } // namespace gloperate

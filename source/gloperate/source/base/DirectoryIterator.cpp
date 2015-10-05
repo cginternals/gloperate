@@ -1,9 +1,5 @@
+
 #include "DirectoryIterator.h"
-
-//#include <globjects/base/File.h>
-
-#include <globjects/logging.h>
-#include <globjects/NamedString.h>
 
 #ifdef _MSC_VER
 #include "windows.h"
@@ -11,6 +7,10 @@
 #else
 #include <dirent.h>
 #endif
+
+#include <globjects/logging.h>
+#include <globjects/NamedString.h>
+
 
 namespace
 {
@@ -26,6 +26,7 @@ namespace
 
 namespace gloperate
 {
+
 
 void DirectoryIterator::files(
     std::vector<std::string> & fpaths
@@ -123,10 +124,11 @@ std::string DirectoryIterator::extension(const std::string & filename)
 std::string DirectoryIterator::truncate(const std::string & path)
 {
     std::string truncated(path);
-    while (truncated.find_last_of(g_sep) == truncated.size() - 1)
+    while (truncated.size() > 0 && truncated.find_last_of(g_sep) == truncated.size() - 1)
         truncated = truncated.substr(0, truncated.find_last_of(g_sep));
 
     return truncated;
 }
+
 
 } // namespace gloperate

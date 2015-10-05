@@ -3,8 +3,10 @@
 
 #include <gloperate/base/RenderTargetType.h>
 
+
 namespace gloperate
 {
+
 
 WorldExtractor::WorldExtractor(
     AbstractViewportCapability * viewportCapability,
@@ -21,5 +23,6 @@ glm::vec3 WorldExtractor::get(const glm::ivec2 & windowCoordinates) const
 {
     return glm::vec3(GBufferExtractor::get(windowCoordinates));
 }
+
 
 } // namespace gloperate

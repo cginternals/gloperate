@@ -1,9 +1,13 @@
+
 # Target
 set(target gloperate-osg)
 
 #
 # External libraries
 #
+
+# OSG installs into lib64, so turn on searching in there
+set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS ON)
 
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)

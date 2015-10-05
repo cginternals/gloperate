@@ -1,11 +1,14 @@
+
 #include <gloperate/tools/DepthExtractor.h>
 
 #include <limits>
 
 #include <gloperate/base/RenderTargetType.h>
 
+
 namespace gloperate
 {
+
 
 DepthExtractor::DepthExtractor(
     AbstractViewportCapability * viewportCapability,
@@ -27,5 +30,6 @@ bool DepthExtractor::isValidDepth(const float depth)
 {
     return depth < (1.f - std::numeric_limits<float>::epsilon());
 }
+
 
 } // namespace gloperate

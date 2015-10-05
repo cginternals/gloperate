@@ -9,6 +9,7 @@
 
 using namespace gloperate;
 
+
 class TestPipeline : public AbstractPipeline
 {
 public:
@@ -104,5 +105,4 @@ public:
             stage15,
             stage16);
     }
-
 };

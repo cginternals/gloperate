@@ -1,7 +1,9 @@
 
 #include <gloperate/primitives/PolygonalGeometry.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 
 namespace gloperate
@@ -95,5 +97,6 @@ void PolygonalGeometry::setMaterialIndex(const unsigned int materialIndex)
 {
 	m_materialIndex = materialIndex;
 }
+
 
 } // namespace gloperate

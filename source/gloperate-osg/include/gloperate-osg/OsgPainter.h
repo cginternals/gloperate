@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -17,10 +18,12 @@ namespace osgViewer
     class Viewer;
     class GraphicsWindowEmbedded;
 }
+
 namespace osg 
 {
     class Node;
 }
+
 namespace gloperate 
 {
     class ViewportCapability;
@@ -40,19 +43,19 @@ namespace gloperate_osg
 */
 class GLOPERATE_OSG_API OsgPainter : public gloperate::Painter
 {
-
-
 public:
     /**
     *  @brief
     *    Constructor
     *
-    *  @param[in] resourceManager
-    *    Resource manager, e.g., to load and save textures
     *  @param[in] name
     *    Object name (can be chosen freely, but must not include whitespace)
+    *  @param[in] resourceManager
+    *    Resource manager, e.g., to load and save textures
+    *  @param[in] relDataPath
+    *    Path to data directory (usually "", unless loaded from plugins)
     */
-    OsgPainter(gloperate::ResourceManager & resourceManager, const std::string & name = "painter");
+    OsgPainter(const std::string & name, gloperate::ResourceManager & resourceManager, const std::string & relDataPath);
 
     /**
     *  @brief
@@ -126,8 +129,6 @@ protected:
     gloperate::TargetFramebufferCapability * m_targetFramebufferCapability;
     gloperate::InputCapability             * m_inputCapability;
     gloperate::VirtualTimeCapability       * m_virtualTimeCapability;
-
-
 };
 
 

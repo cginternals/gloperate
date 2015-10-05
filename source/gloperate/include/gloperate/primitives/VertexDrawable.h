@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <vector>
 #include <array>
@@ -9,7 +11,6 @@
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/Referenced.h>
-
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -20,6 +21,15 @@
 namespace gloperate
 {
 
+
+/**
+*  @brief
+*    Configurable vertex based geometry
+*
+*    A vertex drawable defines a geometry on the GPU
+*    that can be rendered. It contains vertex and attribute
+*    buffers and a rendering mode (e.g., GL_TRIANGLES).
+*/
 class GLOPERATE_API VertexDrawable : public globjects::Referenced
 {
 public:
@@ -28,15 +38,21 @@ public:
     public:
         enum FormatType
         {
-            Float,
-            Integer,
-            Long
+            Float
+        ,   Integer
+        ,   Long
         };
 
         AttributeFormat();
-        AttributeFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset, FormatType formatType);
+        AttributeFormat(
+              gl::GLint size
+            , gl::GLenum type
+            , gl::GLboolean normalized
+            , gl::GLuint relativeOffset
+            , FormatType formatType);
 
         void setTo(globjects::VertexAttributeBinding * binding) const;
+
     protected:
         gl::GLint size;
         gl::GLenum type;
@@ -46,9 +62,12 @@ public:
         FormatType formatType;
     };
 
+
+public:
     VertexDrawable(gl::GLenum primitiveMode = gl::GL_TRIANGLES);
     VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
     VertexDrawable(globjects::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
+
     template <typename T>
     VertexDrawable(const std::vector<T> & vertices, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
     template <typename T, std::size_t Count>
@@ -68,6 +87,7 @@ public:
 
     void draw() const;
 
+
 protected:
     globjects::ref_ptr<globjects::VertexArray> m_vao;
     globjects::ref_ptr<globjects::Buffer> m_vbo;
@@ -79,9 +99,11 @@ protected:
     gl::GLenum m_primitiveMode;
 };
 
+
 GLOPERATE_API VertexDrawable::AttributeFormat Format(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset, gl::GLboolean normalized = gl::GL_FALSE);
 GLOPERATE_API VertexDrawable::AttributeFormat FormatI(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset);
 GLOPERATE_API VertexDrawable::AttributeFormat FormatL(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset);
+
 
 template <typename T>
 VertexDrawable::VertexDrawable(const std::vector<T> & vertices, gl::GLenum primitiveMode)
@@ -92,7 +114,7 @@ VertexDrawable::VertexDrawable(const std::vector<T> & vertices, gl::GLenum primi
 , m_size(static_cast<gl::GLint>(vertices.size()))
 , m_primitiveMode(primitiveMode)
 {
-    m_vbo->setData(vertices);
+    m_vbo->setData(vertices, gl::GL_STATIC_DRAW);
 }
 
 template <typename T, std::size_t Count>
@@ -111,6 +133,8 @@ template <typename T>
 void VertexDrawable::setVertices(const std::vector<T> & vertices)
 {
     m_vbo->setData(vertices, gl::GL_STATIC_DRAW);
+    m_size = static_cast<gl::GLint>(vertices.size());
 }
 
-} // namespace globjectsutils
+
+} // namespace gloperate

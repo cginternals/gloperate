@@ -4,7 +4,8 @@
 #include <gloperate/painter/AbstractViewportCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 AbstractProjectionCapability::AbstractProjectionCapability(AbstractViewportCapability * viewportCapability)

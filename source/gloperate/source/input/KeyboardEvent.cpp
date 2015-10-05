@@ -1,8 +1,10 @@
+
 #include <gloperate/input/KeyboardEvent.h>
 
 
 namespace gloperate
 {
+
 
 KeyboardEvent::KeyboardEvent(Type type, unsigned int character)
 : AbstractEvent()
@@ -12,7 +14,7 @@ KeyboardEvent::KeyboardEvent(Type type, unsigned int character)
 , m_modifiers(0)
 , m_character(character)
 {
-    m_sourceType = SourceType::Keyboard;
+    m_sourceType = EventType::Keyboard;
 }
 
 KeyboardEvent::KeyboardEvent(KeyboardEvent::Type type, Key key, int scanCode, int modifiers)
@@ -23,7 +25,7 @@ KeyboardEvent::KeyboardEvent(KeyboardEvent::Type type, Key key, int scanCode, in
 , m_modifiers(modifiers)
 , m_character(0)
 {
-    m_sourceType = SourceType::Keyboard;
+    m_sourceType = EventType::Keyboard;
 }
 
 KeyboardEvent::Type KeyboardEvent::type() const
@@ -50,5 +52,6 @@ unsigned int KeyboardEvent::character() const
 {
     return m_character;
 }
+
 
 } // namespace gloperate

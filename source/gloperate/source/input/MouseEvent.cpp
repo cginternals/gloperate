@@ -1,4 +1,6 @@
+
 #include <gloperate/input/MouseEvent.h>
+
 
 namespace gloperate
 {
@@ -13,7 +15,7 @@ MouseEvent::MouseEvent(MouseEvent::Type type, const glm::ivec2 & pos, const glm:
 , m_lastPos(lastPos)
 , m_screenSize(screenSize)
 {
-    m_sourceType = SourceType::Mouse;
+    m_sourceType = EventType::Mouse;
 }
 
 MouseEvent::Type MouseEvent::type() const
@@ -69,11 +71,12 @@ glm::vec2 MouseEvent::normalizedPositionDelta() const
 glm::vec2 MouseEvent::normalize(const glm::ivec2 & pos) const
 {
     if (m_screenSize == glm::vec2(0))
-    {
+{
         return glm::ivec2(0);
     }
 
     return glm::vec2(pos) / m_screenSize;
 }
+
 
 } // namespace gloperate
