@@ -1,8 +1,10 @@
+
 #include <gloperate/input/WheelEvent.h>
 
 
 namespace gloperate
 {
+
 
 WheelEvent::WheelEvent(
     const glm::ivec2 & pos, 
@@ -14,7 +16,7 @@ WheelEvent::WheelEvent(
     , m_pixelDelta(pixelDelta)
     , m_button(button)
 {
-    m_sourceType = SourceType::Wheel;
+    m_sourceType = EventType::Wheel;
 }
 
 MouseButton WheelEvent::button() const
@@ -47,5 +49,6 @@ float WheelEvent::defaultMouseAngleDelta()
 {
     return 15.f;
 }
+
 
 } // namespace gloperate

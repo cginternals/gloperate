@@ -3,8 +3,10 @@
 
 #include <gloperate/base/RenderTargetType.h>
 
+
 namespace gloperate
 {
+
 
 ColorExtractor::ColorExtractor(
     AbstractViewportCapability * viewportCapability,
@@ -21,5 +23,6 @@ glm::vec4 ColorExtractor::get(const glm::ivec2 & windowCoordinates) const
 {
     return GBufferExtractor::get(windowCoordinates);
 }
+
 
 } // namespace gloperate

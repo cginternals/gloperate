@@ -1,3 +1,4 @@
+
 #include <gmock/gmock.h>
 
 #include <iostream>
@@ -7,15 +8,15 @@
 
 using namespace gloperate;
 
+
 class AbstractPipeline_test : public testing::Test
 {
 public:
     AbstractPipeline_test()
     {
     }
-
-protected:
 };
+
 
 TEST_F(AbstractPipeline_test, PipelineIsSortable)
 {

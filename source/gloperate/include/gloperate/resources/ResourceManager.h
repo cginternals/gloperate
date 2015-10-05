@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -5,16 +6,20 @@
 #include <vector>
 #include <functional>
 
+#include <reflectionzeug/variant/Variant.h>
+
 #include <gloperate/gloperate_api.h>
 
 
-namespace globjects 
+namespace globjects
 {
     class Texture;
 }
 
+
 namespace gloperate
 {
+
 
 class AbstractLoader;
 class AbstractStorer;
@@ -24,20 +29,20 @@ class AbstractStorer;
 *  @brief
 *    Class to help loading/accessing resources (textures, ...)
 */
-class ResourceManager 
+class GLOPERATE_API ResourceManager
 {
 public:
     /**
     *  @brief
     *    Constructor
     */
-    GLOPERATE_API ResourceManager();
+    ResourceManager();
 
     /**
     *  @brief
     *    Destructor
     */
-    GLOPERATE_API virtual ~ResourceManager();
+    virtual ~ResourceManager();
 
     /**
     *  @brief
@@ -46,7 +51,7 @@ public:
     *  @return
     *    List of loaders
     */
-    GLOPERATE_API const std::vector<AbstractLoader *> & loaders() const;
+    const std::vector<AbstractLoader *> & loaders() const;
 
     /**
     *  @brief
@@ -55,7 +60,7 @@ public:
     *  @return
     *    List of storers
     */
-    GLOPERATE_API const std::vector<AbstractStorer *> & storers() const;
+    const std::vector<AbstractStorer *> & storers() const;
 
     /**
     *  @brief
@@ -64,7 +69,7 @@ public:
     *  @param[in] loader
     *    Resource loader
     */
-    GLOPERATE_API void addLoader(AbstractLoader * loader);
+    void addLoader(AbstractLoader * loader);
 
     /**
     *  @brief
@@ -73,7 +78,7 @@ public:
     *  @param[in] storer
     *    Resource storer
     */
-    GLOPERATE_API void addStorer(AbstractStorer * storer);
+    void addStorer(AbstractStorer * storer);
 
     /**
     *  @brief
@@ -81,6 +86,8 @@ public:
     *
     *  @param[in] filename
     *    File name
+    *  @param[in] options
+    *    Options for loading resource, see documentation of specific loader for supported options
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
@@ -88,7 +95,7 @@ public:
     *    Loaded resource (can be null)
     */
     template <typename T>
-    T * load(const std::string & filename, std::function<void(int, int)> progress = std::function<void(int, int)>() ) const;
+    T * load(const std::string & filename, const reflectionzeug::Variant & options = reflectionzeug::Variant(), std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
 
     /**
     *  @brief
@@ -98,6 +105,8 @@ public:
     *    File name
     *  @param[in] resource
     *    The resource object
+    *  @param[in] options
+    *    Options for loading resource, see documentation of specific storer for supported options
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
@@ -105,7 +114,8 @@ public:
     *    'true', if storage was successful, esle 'false'
     */
     template <typename T>
-    bool store(const std::string & filename, T * resource, std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
+    bool store(const std::string & filename, T * resource, const reflectionzeug::Variant & options = reflectionzeug::Variant(), std::function<void(int, int)> progress = std::function<void(int, int)>()) const;
+
 
 protected:
     /**
@@ -116,14 +126,16 @@ protected:
     *    Path to file (with filename and extension)
     *
     *  @return
-    *    Fielname extension
+    *    Filename extension (lower-case)
     */
-    GLOPERATE_API std::string getFileExtension(const std::string & filename) const;
+    std::string getFileExtension(const std::string & filename) const;
+
 
 protected:
     std::vector<AbstractLoader *> m_loaders;    /**< Available loaders */
     std::vector<AbstractStorer *> m_storers;    /**< Available storers */
 };
+
 
 } // namespace gloperate
 

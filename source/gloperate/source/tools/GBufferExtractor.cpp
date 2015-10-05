@@ -1,17 +1,21 @@
+
 #include <gloperate/tools/GBufferExtractor.h>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractTypedRenderTargetCapability.h>
-
 #include <gloperate/base/RenderTarget.h>
+
 
 namespace gloperate
 {
+
 
 GBufferExtractor::GBufferExtractor(
     AbstractViewportCapability * viewportCapability,
@@ -63,5 +67,6 @@ glm::vec4 GBufferExtractor::get(const glm::ivec2 & windowCoordinates) const
 
     return value;
 }
+
 
 } // namespace gloperate

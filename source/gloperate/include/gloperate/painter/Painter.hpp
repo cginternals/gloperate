@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <gloperate/painter/Painter.h>
 
 
@@ -19,7 +20,7 @@ Capability * Painter::getCapability() const
 {
     for (auto & capability : m_capabilities)
     {
-        Capability * castCapability = dynamic_cast<Capability *>(capability.get());
+        Capability * castCapability = dynamic_cast<Capability *>(capability);
 
         if (castCapability != nullptr)
         {
@@ -31,10 +32,9 @@ Capability * Painter::getCapability() const
 }
 
 template <typename Capability>
-Capability * Painter::addCapability(std::unique_ptr<Capability> capability)
+Capability * Painter::addCapability(Capability * capability)
 {
-    auto abstractCapability = std::unique_ptr<AbstractCapability>{std::move(capability)};
-    return static_cast<Capability *>(addCapability(std::move(abstractCapability)));
+    return static_cast<Capability *>(addCapability(static_cast<AbstractCapability *>(capability)));
 }
 
 

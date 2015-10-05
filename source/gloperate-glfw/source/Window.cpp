@@ -20,8 +20,10 @@
 
 using namespace gloperate;
 
+
 namespace gloperate_glfw
 {
+
 
 int Window::init()
 {

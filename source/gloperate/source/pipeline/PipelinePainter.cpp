@@ -1,3 +1,4 @@
+
 #include <gloperate/pipeline/PipelinePainter.h>
 
 #include <gloperate/pipeline/AbstractPipeline.h>
@@ -6,11 +7,13 @@
 namespace gloperate
 {
 
+
 PipelinePainter::PipelinePainter(
-    gloperate::ResourceManager & resourceManager, 
-    AbstractPipeline & pipeline, 
-    const std::string & name)
-:   Painter(resourceManager, name)
+      const std::string & name
+    , gloperate::ResourceManager & resourceManager
+    , const std::string & relDataPath
+    , AbstractPipeline & pipeline)
+:   Painter(name, resourceManager, relDataPath)
 ,   m_pipeline(pipeline)
 {
 }
@@ -38,5 +41,6 @@ reflectionzeug::AbstractProperty * PipelinePainter::property(const std::string &
 {
     return propertyFor(m_pipeline.findParameter(name));
 }
+
 
 } // namespace gloperate

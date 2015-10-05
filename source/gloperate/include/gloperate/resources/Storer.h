@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -6,8 +7,14 @@
 #include <gloperate/resources/AbstractStorer.h>
 
 
+namespace reflectionzeug {
+    class Variant;
+}
+
+
 namespace gloperate
 {
+
 
 /**
 *  @brief
@@ -37,14 +44,17 @@ public:
     *    File name
     *  @param[in] object
     *    Resource
+    *  @param[in] options
+    *    Options for loading resource, see documentation of specific storer for supported options
     *  @param[in] progress
     *    Callback function that is invoked on progress (can be empty)
     *
     *  @return
     *   'true' if storage was successful, else 'false'
     */
-    virtual bool store(const std::string & filename, const T * object, std::function<void(int, int)> progress) const = 0;
+    virtual bool store(const std::string & filename, const T * object, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const = 0;
 };
+
 
 } // namespace gloperate
 

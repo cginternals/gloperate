@@ -3,14 +3,6 @@
 
 #include <cassert>
 
-#include <glbinding/Binding.h>
-#include <glbinding/Version.h>
-#include <glbinding/gl/gl.h>
-
-#include <globjects/base/baselogging.h>
-
-#include <gloperate/painter/ContextFormat.h>
-
 #ifdef WIN32
     #include <windows.h>
 #endif
@@ -19,12 +11,23 @@
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
 
+#include <glbinding/Binding.h>
+#include <glbinding/Version.h>
+#include <glbinding/gl/gl.h>
+
+#include <globjects/base/baselogging.h>
+
+#include <gloperate/painter/ContextFormat.h>
+
+
 using namespace gl;
 using namespace globjects;
 using namespace gloperate;
 
+
 namespace gloperate_glfw
 {
+
 
 glbinding::Version Context::maxSupportedVersion()
 {
@@ -137,7 +140,6 @@ GLFWwindow * Context::create(const ContextFormat & format)
     return window;
 }
 
-
 Context::Context(GLFWwindow * window)
 : m_format(nullptr)
 , m_window(window)
@@ -219,5 +221,6 @@ void Context::doneCurrent() const
     if (m_window && m_window == glfwGetCurrentContext())
         glfwMakeContextCurrent(nullptr);
 }
+
 
 } // namespace gloperate_glfw

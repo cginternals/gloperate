@@ -1,3 +1,4 @@
+
 #include <gloperate/pipeline/AbstractStage.h>
 
 #include <iostream>
@@ -10,6 +11,7 @@
 
 namespace gloperate
 {
+
 
 AbstractStage::AbstractStage(const std::string & name)
 : m_enabled(true)
@@ -95,7 +97,7 @@ bool AbstractStage::inputsUsable() const
 
     if (!m_usable.value())
     {
-        std::cout << "Some inputs in " << asPrintable() << " are not be connected: ";
+        std::cout << "Some inputs in " << asPrintable() << " are not connected: ";
         for (AbstractInputSlot * slot : inputs)
             if (!slot->isUsable())
                 std::cout << slot->asPrintable() << ". ";
@@ -134,6 +136,11 @@ bool AbstractStage::isEnabled() const
 void AbstractStage::alwaysProcess(bool on)
 {
     m_alwaysProcess = on;
+}
+
+bool AbstractStage::isAlwaysProcess() const
+{
+    return m_alwaysProcess;
 }
 
 void AbstractStage::scheduleProcess()
@@ -246,5 +253,6 @@ void AbstractStage::addDependency(AbstractStage * stage)
     m_dependencies.insert(stage);
     dependenciesChanged();
 }
+
 
 } // namespace gloperate

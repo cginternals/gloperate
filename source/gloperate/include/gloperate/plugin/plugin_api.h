@@ -1,8 +1,11 @@
+
 #pragma once
+
 
 #include <vector>
 
 #include <gloperate/plugin/PainterPlugin.h>
+
 
 #ifdef _MSC_VER
 #   define GLOPERATE_PLUGIN_API __declspec(dllexport)
@@ -19,7 +22,7 @@
     extern "C" GLOPERATE_PLUGIN_API void initialize() \
     {
 
-#define GLOPERATE_PLUGIN(CLASS, NAME, DESCRIPTION, VENDOR, VERSION) \
+#define GLOPERATE_PAINTER_PLUGIN(CLASS, NAME, DESCRIPTION, VENDOR, VERSION) \
         g_plugins.push_back(new gloperate::PainterPlugin< CLASS >(NAME, DESCRIPTION, VENDOR, VERSION));
 
 #define GLOPERATE_PLUGIN_LIBRARY_END \

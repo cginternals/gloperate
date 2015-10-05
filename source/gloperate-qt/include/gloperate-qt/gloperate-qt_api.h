@@ -1,3 +1,4 @@
+
 #pragma once
 
 // NOTE: don't export stl stuff (e.g. containers):
@@ -11,8 +12,8 @@
 #    define GLOPERATE_QT_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
 #    define GLOPERATE_QT_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#    define GLOPERATE_QT_API_EXPORT_DECLARATION
-#    define GLOPERATE_QT_API_IMPORT_DECLARATION
+#    define GLOPERATE_QT_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#    define GLOPERATE_QT_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #endif
 
 #ifndef GLOPERATE_STATIC

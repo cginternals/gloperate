@@ -1,3 +1,4 @@
+
 #pragma once
 
 
@@ -16,7 +17,7 @@
 #	define GLOPERATE_OSG_API_IMPORT_DECLARATION
 #endif
 
-#ifndef GLOPERATE_OSG_STATIC
+#ifndef GLOPERATE_STATIC
 #ifdef GLOPERATE_OSG_EXPORTS
 #	define GLOPERATE_OSG_API GLOPERATE_OSG_API_EXPORT_DECLARATION
 #else
@@ -25,7 +26,6 @@
 #else
 #	define GLOPERATE_OSG_API
 #endif
-
 
 #ifdef N_DEBUG
 #	define IF_DEBUG(statement)

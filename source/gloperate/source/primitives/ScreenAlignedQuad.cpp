@@ -1,3 +1,4 @@
+
 #include <gloperate/primitives/ScreenAlignedQuad.h>
 
 #include <cassert>
@@ -7,7 +8,6 @@
 #include <glbinding/gl/functions.h>
 
 #include <globjects/base/StaticStringSource.h>
-
 #include <globjects/Program.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Texture.h>
@@ -18,6 +18,7 @@
 
 
 using namespace globjects;
+
 
 namespace gloperate
 {
@@ -174,4 +175,5 @@ Shader * ScreenAlignedQuad::fragmentShader()
     return m_fragmentShader;
 }
 
-} // gloperate
+
+} // namespace gloperate

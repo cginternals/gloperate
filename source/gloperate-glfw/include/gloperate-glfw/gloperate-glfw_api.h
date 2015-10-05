@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 // NOTE: don't export stl stuff (e.g. containers):
 // http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
@@ -11,11 +13,11 @@
 #    define GLOPERATE_GLFW_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
 #    define GLOPERATE_GLFW_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#    define GLOPERATE_GLFW_API_EXPORT_DECLARATION
-#    define GLOPERATE_GLFW_API_IMPORT_DECLARATION
+#    define GLOPERATE_GLFW_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#    define GLOPERATE_GLFW_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #endif
 
-#ifndef GLOPERATE_GLFW_STATIC
+#ifndef GLOPERATE_STATIC
 #ifdef GLOPERATE_GLFW_EXPORTS
 #    define GLOPERATE_GLFW_API GLOPERATE_GLFW_API_EXPORT_DECLARATION
 #else
@@ -24,7 +26,6 @@
 #else
 #    define GLOPERATE_GLFW_API
 #endif
-
 
 #ifdef N_DEBUG
 #    define IF_DEBUG(statement)

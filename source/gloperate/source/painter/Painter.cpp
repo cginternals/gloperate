@@ -6,13 +6,21 @@ namespace gloperate
 {
 
 
-Painter::Painter(ResourceManager & resourceManager, const std::string & name)
-:   Object(name)
-,   m_resourceManager(resourceManager)
+Painter::Painter(const std::string & name, ResourceManager & resourceManager, const std::string & relDataPath)
+: Object(name)
+, m_resourceManager(resourceManager)
+, m_relDataPath(relDataPath)
+, m_backgroundColor(0.0, 0.0, 0.0)
 {
 }
 
-Painter::~Painter() = default;
+Painter::~Painter()
+{
+    for (auto & capability : m_capabilities)
+    {
+        delete capability;
+    }
+}
 
 void Painter::initialize()
 {
@@ -24,11 +32,22 @@ void Painter::paint()
     onPaint();
 }
 
-AbstractCapability * Painter::addCapability(std::unique_ptr<AbstractCapability> capability)
+glm::vec3 Painter::backgroundColor() const
 {
-    m_capabilities.push_back(std::move(capability));
-    return m_capabilities.back().get();
+	return m_backgroundColor;
+}
+
+void Painter::setBackgroundColor(const glm::vec3 & color)
+{
+	m_backgroundColor = color;
+}
+
+AbstractCapability * Painter::addCapability(AbstractCapability * capability)
+{
+    m_capabilities.push_back(capability);
+
+    return capability;
 }
 
 
-} // gloperate
+} // namespace gloperate

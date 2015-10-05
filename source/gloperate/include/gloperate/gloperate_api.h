@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 // Note: don't export stl stuff (e.g. containers):
 // http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
@@ -11,8 +13,8 @@
 #    define GLOPERATE_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
 #    define GLOPERATE_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#    define GLOPERATE_API_EXPORT_DECLARATION
-#    define GLOPERATE_API_IMPORT_DECLARATION
+#    define GLOPERATE_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#    define GLOPERATE_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #endif
 
 #ifndef GLOPERATE_STATIC
@@ -24,7 +26,6 @@
 #else
 #    define GLOPERATE_API
 #endif
-
 
 #ifdef N_DEBUG
 #    define IF_DEBUG(statement)
