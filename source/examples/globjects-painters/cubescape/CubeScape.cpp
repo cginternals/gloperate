@@ -39,13 +39,13 @@ using namespace globjects;
 
 CubeScape::CubeScape(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
 : Painter("CubeScape", resourceManager, pluginInfo)
-, m_animation{true}
-, m_numCubes{25}
-, m_dataPath{""}
-, a_vertex{-1}
-, u_transform{-1}
-, u_time{-1}
-, u_numcubes{-1}
+, m_animation(true)
+, m_numCubes(25)
+, m_dataPath("")
+, a_vertex(-1)
+, u_transform(-1)
+, u_time(-1)
+, u_numcubes(-1)
 {
     // Get data path
     const reflectionzeug::VariantMap * map = pluginInfo.asMap();
