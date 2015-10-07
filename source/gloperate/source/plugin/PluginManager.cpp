@@ -241,8 +241,8 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
     // Load extra information from "PluginInfo.json" if present
     Variant pluginInfo = Variant();
     SerializerJSON json;
-    if (json.load(pluginInfo, pluginPath + g_sep + "PluginInfo.json")) {
-
+    if (json.load(pluginInfo, pluginPath + g_sep + "PluginInfo.json"))
+    {
         // Replace every occurance of ${PluginPath} with respective path
         std::string jsonString = pluginInfo.toJSON();
         auto from = std::string("${PluginPath}");

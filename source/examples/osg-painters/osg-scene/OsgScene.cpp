@@ -17,13 +17,10 @@ OsgScene::OsgScene(gloperate::ResourceManager & resourceManager, const reflectio
 , m_dataPath{""}
 {
     // Get data path
-    if (!pluginInfo.isNull())
-    {
-        const reflectionzeug::VariantMap & map = *(pluginInfo.asMap());
-        if (map.count("dataPath") > 0) {
-            m_dataPath = map.at("dataPath").value<std::string>();
-            m_dataPath = gloperate::ensurePathSeparatorEnding(m_dataPath);
-        }
+    const reflectionzeug::VariantMap * map = pluginInfo.asMap();
+    if (map && map->count("dataPath") > 0) {
+        m_dataPath = map->at("dataPath").value<std::string>();
+        m_dataPath = gloperate::ensurePathSeparatorEnding(m_dataPath);
     }
 }
 
