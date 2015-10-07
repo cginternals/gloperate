@@ -2,6 +2,7 @@
 #include <gloperate/plugin/PluginManager.h>
 
 #include <algorithm>
+#include <sys/stat.h>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -192,6 +193,16 @@ const std::vector<Plugin *> & PluginManager::plugins() const
     return m_plugins;
 }
 
+const std::vector<PluginLibrary *> PluginManager::pluginLibraries() const
+{
+    std::vector<PluginLibrary *> pluginLibraries;
+
+    for (auto libraryIterator : m_librariesByFilePath)
+        pluginLibraries.push_back(libraryIterator.second);
+
+    return pluginLibraries;
+}
+
 Plugin * PluginManager::plugin(const std::string & name) const
 {
     // Check if plugin exists
@@ -225,20 +236,24 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
     }
 
     // Get path to directory containing the plugin library
-    std::string dirPath = DirectoryIterator::truncate(iozeug::getPath(filePath));
-
-    // Initialize plugin info
-    std::string relDataPath = "";
+    std::string pluginPath = DirectoryIterator::truncate(iozeug::getPath(filePath));
 
     // Load extra information from "PluginInfo.json" if present
-    Variant pluginInfo;
+    Variant pluginInfo = Variant();
     SerializerJSON json;
-    if (json.load(pluginInfo, dirPath + g_sep + "PluginInfo.json")) {
-        // Read plugin info
-        VariantMap & map = *(pluginInfo.asMap());
-        if (map.count("relDataPath") > 0) {
-            relDataPath = dirPath + g_sep + DirectoryIterator::truncate(map["relDataPath"].value<std::string>()) + g_sep;
+    if (json.load(pluginInfo, pluginPath + g_sep + "PluginInfo.json")) {
+
+        // Replace every occurance of ${PluginPath} with respective path
+        std::string jsonString = pluginInfo.toJSON();
+        auto from = std::string("${PluginPath}");
+        size_t start_pos = 0;
+        while((start_pos = jsonString.find(from, start_pos)) != std::string::npos) {
+            jsonString.replace(start_pos, from.length(), pluginPath);
+            start_pos += pluginPath.length();
         }
+
+        // Convert back to JSON Variant
+        json.fromString(pluginInfo, jsonString);
     }
 
     // If library was already loaded, remember it in case reloading fails
@@ -278,9 +293,13 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
         if (!plugin)
             continue;
 
-        // Set relative data path for plugin (if known)
-        if (!relDataPath.empty()) {
-            plugin->setRelDataPath(relDataPath.c_str());
+        // // Set relative data path for plugin (if known)
+        // if (!relDataPath.empty()) {
+        //     plugin->setRelDataPath(relDataPath.c_str());
+        // }
+        if (!pluginInfo.isNull())
+        {
+            plugin->setPluginInfo(pluginInfo);
         }
 
         // Add plugin to list
@@ -306,6 +325,5 @@ void PluginManager::unloadLibrary(PluginLibrary * library)
     library->deinitialize();
     delete library;
 }
-
 
 } // namespace gloperate
