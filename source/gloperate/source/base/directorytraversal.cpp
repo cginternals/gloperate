@@ -16,6 +16,14 @@
 namespace
 {
 
+#ifdef WIN32
+    const std::string g_sep = "\\";
+#elif __APPLE__
+    const std::string g_sep = "/";
+#else
+    const std::string g_sep = "/";
+#endif
+
 
 void getFiles(const std::string & dirName, bool recursive, std::vector<std::string> & files)
 {
@@ -114,8 +122,23 @@ void scanDirectory(const std::string & directory, const std::string & fileExtens
         if (fileExtension != "*" && extension != fileExtension)
             continue;
 
-        NamedString::create("/"+file, new File(file));
+        NamedString::create("/"+file, new File(file, false));
     }
+}
+
+
+std::string ensurePathSeparatorEnding(const std::string & path)
+{
+    auto returnPath = path;
+    auto endsWith = [] (const std::string & str, const std::string & ending) { return str.find_last_of(ending) == str.size() - 1; };
+
+    while (returnPath.size() > 0 && (endsWith(returnPath, "/") || endsWith(returnPath, "\\")))
+    {
+        returnPath = returnPath.substr(0, returnPath.size() - 1);
+    }
+
+    returnPath += g_sep;
+    return returnPath;
 }
 
 
