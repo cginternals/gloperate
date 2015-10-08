@@ -122,7 +122,7 @@ void scanDirectory(const std::string & directory, const std::string & fileExtens
         if (fileExtension != "*" && extension != fileExtension)
             continue;
 
-        NamedString::create("/"+file, new File(file));
+        NamedString::create("/"+file, new File(file, false));
     }
 }
 
