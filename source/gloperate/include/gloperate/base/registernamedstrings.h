@@ -13,7 +13,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    List files in directory
+*    Registers each matching file as a Named String in globjects
 *
 *  @param[in] directory
 *    Path to directory
