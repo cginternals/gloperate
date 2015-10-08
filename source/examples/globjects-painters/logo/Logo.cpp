@@ -8,6 +8,8 @@
 
 #include <glbinding/gl/gl.h>
 
+#include <iozeug/filename.h>
+
 #include <globjects/logging.h>
 #include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>
@@ -73,7 +75,7 @@ Logo::Logo(ResourceManager & resourceManager, const reflectionzeug::Variant & pl
     const reflectionzeug::VariantMap * map = pluginInfo.asMap();
     if (map && map->count("dataPath") > 0) {
         dataPath = map->at("dataPath").value<std::string>();
-        dataPath = gloperate::ensurePathSeparatorEnding(dataPath);
+        dataPath = iozeug::ensurePathSeparatorEnding(dataPath);
     }
     m_textureFilename = dataPath + "data/logo/gloperate-logo.png";
 

@@ -16,6 +16,8 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/VertexAttributeBinding.h>
 
+#include <iozeug/filename.h>
+
 #include <gloperate/resources/RawFile.h>
 
 #include <gloperate/base/RenderTargetType.h>
@@ -51,7 +53,7 @@ CubeScape::CubeScape(gloperate::ResourceManager & resourceManager, const reflect
     const reflectionzeug::VariantMap * map = pluginInfo.asMap();
     if (map && map->count("dataPath") > 0) {
         m_dataPath = map->at("dataPath").value<std::string>();
-        m_dataPath = gloperate::ensurePathSeparatorEnding(m_dataPath);
+        m_dataPath = iozeug::ensurePathSeparatorEnding(m_dataPath);
     }
 
     // Setup painter

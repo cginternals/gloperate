@@ -11,8 +11,6 @@ namespace gloperate
 {
 
 
-// [TODO] Will be removed and replaced by functionality in iozeug
-
 /**
 *  @brief
 *    List files in directory
@@ -36,30 +34,6 @@ namespace gloperate
 */
 GLOPERATE_API void scanDirectory(const std::string & directory, const std::string & fileExtension, bool recursive = false);
 GLOPERATE_API void scanDirectory(const std::string & directory, const std::string & alias, const std::string & fileExtension, bool recursive = false);
-
-/**
-*  @brief
-*    Makes sure given path does not end with (platform specific) separator
-*
-*  @param[in] path
-*    Path to directory or file
-*
-*  @return
-*    Path to directory or file with ensured missing separator ending
-*/
-GLOPERATE_API std::string removeTrailingPathSeparator(const std::string & path);
-
-/**
-*  @brief
-*    Makes sure given path ends with (platform specific) separator
-*
-*  @param[in] path
-*    Path to directory or file
-*
-*  @return
-*    Path to directory or file with ensured separator ending
-*/
-GLOPERATE_API std::string ensurePathSeparatorEnding(const std::string & path);
 
 
 } // namespace gloperate

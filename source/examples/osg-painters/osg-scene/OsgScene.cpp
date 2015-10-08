@@ -5,6 +5,8 @@
 #include <osgViewer/ViewerEventHandlers>
 #include <osgGA/TrackballManipulator>
 
+#include <iozeug/filename.h>
+
 #include <gloperate/base/directorytraversal.h>
 
 
@@ -20,7 +22,7 @@ OsgScene::OsgScene(gloperate::ResourceManager & resourceManager, const reflectio
     const reflectionzeug::VariantMap * map = pluginInfo.asMap();
     if (map && map->count("dataPath") > 0) {
         m_dataPath = map->at("dataPath").value<std::string>();
-        m_dataPath = gloperate::ensurePathSeparatorEnding(m_dataPath);
+        m_dataPath = iozeug::ensurePathSeparatorEnding(m_dataPath);
     }
 }
 
