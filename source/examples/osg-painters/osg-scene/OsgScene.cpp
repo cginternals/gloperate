@@ -7,7 +7,7 @@
 
 #include <iozeug/filename.h>
 
-#include <gloperate/base/directorytraversal.h>
+#include <gloperate/base/registernamedstrings.h>
 
 
 using namespace gloperate;

@@ -13,7 +13,7 @@
 #include <iozeug/filename.h>
 #include <iozeug/directorytraversal.h>
 
-#include <gloperate/base/directorytraversal.h>
+#include <gloperate/base/registernamedstrings.h>
 
 namespace
 {
@@ -60,11 +60,11 @@ ShaderCompiler::ShaderCompiler(const QList<QString> & includePathsAndAliases)
         {
             auto list = path.split(':', QString::KeepEmptyParts);
 
-            gloperate::scanDirectory(list[0].toStdString(), list[1].toStdString(), "glsl", true);
+            gloperate::registerNamedStrings(list[0].toStdString(), list[1].toStdString(), "glsl", true);
         }
         else
         {
-            gloperate::scanDirectory(path.toStdString(), "glsl", true);
+            gloperate::registerNamedStrings(path.toStdString(), "glsl", true);
         }
     }
 }

@@ -17,7 +17,7 @@
 #include <globjects/VertexAttributeBinding.h>
 
 #include <gloperate/resources/ResourceManager.h>
-#include <gloperate/base/directorytraversal.h>
+#include <gloperate/base/registernamedstrings.h>
 
 #include <gloperate/painter/TargetFramebufferCapability.h>
 #include <gloperate/painter/ViewportCapability.h>

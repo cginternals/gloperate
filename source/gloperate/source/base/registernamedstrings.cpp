@@ -1,5 +1,5 @@
 
-#include <gloperate/base/directorytraversal.h>
+#include <gloperate/base/registernamedstrings.h>
 
 #include <globjects/base/File.h>
 #include <globjects/NamedString.h>
@@ -12,14 +12,14 @@ namespace gloperate
 {
 
 
-void scanDirectory(const std::string & directory, const std::string & fileExtension, bool recursive)
+void registerNamedStrings(const std::string & directory, const std::string & fileExtension, bool recursive)
 {
     iozeug::scanDirectory(directory, fileExtension, recursive, [](const std::string & file) {
         globjects::NamedString::create("/"+file, new globjects::File(file));
     });
 }
 
-void scanDirectory(const std::string & directory, const std::string & alias, const std::string & fileExtension, bool recursive)
+void registerNamedStrings(const std::string & directory, const std::string & alias, const std::string & fileExtension, bool recursive)
 {
     const auto sanitizedDirectory = iozeug::removeTrailingPathSeparator(directory);
     const auto sanitizedAlias = iozeug::removeTrailingPathSeparator(alias);
