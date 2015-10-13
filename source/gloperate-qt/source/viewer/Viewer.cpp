@@ -21,6 +21,8 @@
 
 #include "ui_Viewer.h"
 
+#include <globjects/base/File.h>
+
 #include <gloperate/ext-includes-end.h>
 
 #include <gloperate/resources/ResourceManager.h>
@@ -422,6 +424,13 @@ void Viewer::on_pluginConfigAction_triggered()
         pcw->setWindowModality(Qt::NonModal);
         pcw->show();
     }
+}
+
+void Viewer::on_reloadShadersAction_triggered()
+{
+    m_canvas->makeCurrent();
+    globjects::File::reloadAll();
+    m_canvas->doneCurrent();
 }
 
 void Viewer::onPainterSelected(bool /*checked*/)
