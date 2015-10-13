@@ -145,9 +145,13 @@ set(headers
 
     ${header_path}/widgets/FileNameTextEdit.h
     ${header_path}/widgets/ImageExporterWidget.h
+    ${header_path}/widgets/ImageExporterMultiFrameWidget.h
     ${header_path}/widgets/ImageExporterOutputWidget.h
     ${header_path}/widgets/ImageExporterResolutionWidget.h
     ${header_path}/widgets/ImageExporterTilebasedWidget.h
+    ${header_path}/widgets/PluginPathWidget.h
+    ${header_path}/widgets/PluginConfigWidget.h
+    ${header_path}/widgets/PluginWidget.h
 
     ${header_path}/gloperate-qt_api.h
 )
@@ -177,12 +181,18 @@ set(sources
 
     ${source_path}/widgets/FileNameTextEdit.cpp
     ${source_path}/widgets/ImageExporterWidget.cpp
+    ${source_path}/widgets/ImageExporterMultiFrameWidget.cpp
+    ${source_path}/widgets/ImageExporterMultiFrameWidget.ui
     ${source_path}/widgets/ImageExporterOutputWidget.cpp
     ${source_path}/widgets/ImageExporterOutputWidget.ui
     ${source_path}/widgets/ImageExporterResolutionWidget.cpp
     ${source_path}/widgets/ImageExporterResolutionWidget.ui
     ${source_path}/widgets/ImageExporterTilebasedWidget.cpp
     ${source_path}/widgets/ImageExporterTilebasedWidget.ui
+    ${source_path}/widgets/PluginPathWidget.cpp
+    ${source_path}/widgets/PluginConfigWidget.cpp
+    ${source_path}/widgets/PluginWidget.cpp
+    ${source_path}/widgets/PluginWidget.ui
 )
 
 # Group source files

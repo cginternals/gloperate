@@ -28,7 +28,7 @@ namespace gloperate
 class CubeScape : public gloperate::Painter
 {
 public:
-    CubeScape(gloperate::ResourceManager & resourceManager, const std::string & relDataPath);
+    CubeScape(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo);
     virtual ~CubeScape();
 
     void update(float delta);
@@ -57,6 +57,9 @@ protected:
     /* Parameters */
     bool m_animation;
     int m_numCubes;
+
+    /* Data path */
+    std::string m_dataPath;
 
     /* Capabilities */
     gloperate::AbstractTargetFramebufferCapability * m_targetFramebufferCapability;
