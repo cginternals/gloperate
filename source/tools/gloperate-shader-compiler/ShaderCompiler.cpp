@@ -35,18 +35,31 @@ bool ShaderCompiler::parse(const QJsonObject & config)
     const auto jsonOpenGLConfig = config.value("opengl");
     
     if (!jsonOpenGLConfig.isObject())
+    {
+        error(JsonParseError::PropertyNotFoundOrNotAnObject, "opengl");
         return false;
+    }
     
-    auto context = OpenGLContext::fromJsonConfig(jsonOpenGLConfig.toObject(), &ok);
+    auto parseError = JsonParseError{};
+    auto context = OpenGLContext::fromJsonConfig(jsonOpenGLConfig.toObject(), &parseError);
     
-    if (!ok)
+    if (parseError)
+    {
+        error(parseError);
         return false;
+    }
     
     if (!context.create())
+    {
+        error(JsonParseError::ContextCreationFailed);
         return false;
+    }
     
     if (!context.makeCurrent())
+    {
+        error(JsonParseError::ContextActivationFailed);
         return false;
+    }
     
     globjects::init();
     
@@ -56,13 +69,17 @@ bool ShaderCompiler::parse(const QJsonObject & config)
     
     if (jsonNamedStringPaths.isArray())
     {
-        parseNamedStringPaths(jsonNamedStringPaths.toArray());
+        if (!parseNamedStringPaths(jsonNamedStringPaths.toArray()))
+            return false;
     }
     
     const auto jsonPrograms = config.value("programs");
     
     if (!jsonPrograms.isArray())
+    {
+        error(JsonParseError::ArrayNotFoundOrEmpty, "programs");
         return false;
+    }
     
     ok = parsePrograms(jsonPrograms.toArray());
     
@@ -73,7 +90,7 @@ bool ShaderCompiler::parse(const QJsonObject & config)
     return ok;
 }
 
-void ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
+bool ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
 {
     bool ok{};
     
@@ -82,29 +99,44 @@ void ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
     for (const auto & namedStringPath : paths)
     {
         if (!namedStringPath.isObject())
-            continue;
+        {
+            error({ JsonParseError::ElementNotObject, "namedStringPaths" });
+            return false;
+        }
         
         const auto pathObject = namedStringPath.toObject();
         
         const auto pathString = pathObject.value("path").toString();
         
         if (pathString.isNull())
-            continue;
+        {
+            error({ JsonParseError::PropertyNotFoundOrWrongFormat, "path" });
+            return false;
+        }
         
         const auto extensionsArray = pathObject.value("extensions").toArray();
         
         if (extensionsArray.isEmpty())
-            continue;
+        {   
+            error({ JsonParseError::ArrayNotFoundOrEmpty, "extensions" });
+            return false;
+        }
         
         const auto extensions = parseExtensions(extensionsArray, ok);
         
         if (!ok)
-            continue;
+        {
+            error({ JsonParseError::ElementWrongFormat, "extensions" });
+            return false;
+        }
         
         auto files = scanDirectory(pathString.toStdString(), extensions);
         
         if (files.empty())
-            continue;
+        {
+            error({ JsonParseError::NoFilesWithExtensionFound, pathString });
+            return false;
+        }
         
         const auto aliasString = pathObject.value("alias").toString();
         
@@ -132,6 +164,8 @@ void ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
         for (const auto string : namedStrings)
             globjects::info() << "    " << string;
     }
+
+    return true;
 }
 
 std::set<std::string> ShaderCompiler::parseExtensions(
@@ -208,14 +242,20 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
     for (const auto programValue : programs)
     {
         if (!programValue.isObject())
+        {
+            error(JsonParseError::ElementNotObject, "programs");
             return false;
+        }
         
         const auto programObject = programValue.toObject();
         
         const auto name = programObject.value("name").toString();
         
         if (name.isNull())
+        {
+            error(JsonParseError::PropertyNotFoundOrWrongFormat, "name");
             return false;
+        }
         
         globjects::info();
         globjects::info() << "Process " << name.toStdString();
@@ -223,12 +263,18 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
         const auto shadersArray = programObject.value("shaders");
         
         if (!shadersArray.isArray())
+        {
+            error(JsonParseError::ArrayNotFoundOrEmpty, "shaders");
             return false;
+        }
         
         const auto shaders = parseShaders(shadersArray.toArray(), ok);
         
         if (!ok)
+        {
+            m_linkFailures.push_back(name.toStdString());
             continue;
+        }
         
         globjects::info() << "Link " << name.toStdString();
         
@@ -251,6 +297,7 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
     {
         if (!shaderValue.isObject())
         {
+            error(JsonParseError::ElementNotObject, "shaders");
             ok = false;
             return shaders;
         }
@@ -261,14 +308,25 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
 
         if (fileName.isNull())
         {
+            error(JsonParseError::PropertyNotFoundOrWrongFormat, "file");
             ok = false;
             return shaders;
         }
 
-        const auto type = typeFromString(shaderObject.value("type").toString());
+        const auto typeString = shaderObject.value("type").toString();
+        
+        if (typeString.isNull())
+        {
+            error(JsonParseError::PropertyNotFoundOrWrongFormat, "type");
+            ok = false;
+            return shaders;
+        }
+        
+        const auto type = typeFromString(typeString);
 
         if (type == gl::GL_NONE)
         {
+            error(JsonParseError::ShaderTypeNotFound, typeString);
             ok = false;
             return shaders;
         }
@@ -365,4 +423,14 @@ void ShaderCompiler::printFailures()
         for (const auto failure : m_linkFailures)
             globjects::info() << "    " << failure;
     }
+}
+
+void ShaderCompiler::error(JsonParseError error)
+{
+    m_errorLog.error(error);
+}
+
+void ShaderCompiler::error(JsonParseError::Type type, const QString & info)
+{
+    m_errorLog.error({ type, info });
 }

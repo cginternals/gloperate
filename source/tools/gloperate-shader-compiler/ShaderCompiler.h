@@ -10,6 +10,8 @@
 
 #include <globjects/base/ref_ptr.h>
 
+#include "JsonParseErrorLog.h"
+
 
 class QOffscreenSurface;
 class QOpenGLContext;
@@ -30,7 +32,7 @@ public:
 private:    
     bool parse(const QJsonObject & config);
 
-    void parseNamedStringPaths(const QJsonArray & paths);
+    bool parseNamedStringPaths(const QJsonArray & paths);
     
     std::set<std::string> parseExtensions(
         const QJsonArray & extensionsArray,
@@ -64,7 +66,11 @@ private:
     static void printDriverInfo();
     void printFailures();
     
+    void error(JsonParseError error);
+    void error(JsonParseError::Type type, const QString & info);
+    
 private:
     std::vector<std::string> m_compileFailures;
     std::vector<std::string> m_linkFailures;
+    JsonParseErrorLog m_errorLog;
 };

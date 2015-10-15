@@ -78,6 +78,10 @@ set(libs
 
 set(sources
     main.cpp
+    JsonParseError.cpp
+    JsonParseError.h
+    JsonParseErrorLog.cpp
+    JsonParseErrorLog.h
     ShaderCompiler_old.cpp
     ShaderCompiler_old.h
     OpenGLContext.cpp

@@ -6,10 +6,13 @@
 class QJsonObject;
 class QSurfaceFormat;
 
+class JsonParseError;
+
+
 class OpenGLContext
 {
 public:
-    static OpenGLContext fromJsonConfig(const QJsonObject & config, bool * ok);
+    static OpenGLContext fromJsonConfig(const QJsonObject & config, JsonParseError * error);
 
 public:
     OpenGLContext();

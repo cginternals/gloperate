@@ -9,6 +9,8 @@
 
 #include <gloperate/base/make_unique.hpp>
 
+#include "JsonParseError.h"
+
 
 class OpenGLContext::Private
 {
@@ -88,7 +90,7 @@ void OpenGLContext::Private::printInfo()
         << "(" << options.join(", ") << ")";
 }
 
-OpenGLContext OpenGLContext::fromJsonConfig(const QJsonObject & config, bool * ok)
+OpenGLContext OpenGLContext::fromJsonConfig(const QJsonObject & config, JsonParseError * error)
 {
     static const auto hasWrongFormat = -1;
 
@@ -99,8 +101,8 @@ OpenGLContext OpenGLContext::fromJsonConfig(const QJsonObject & config, bool * o
 
     if (majorVersion == hasWrongFormat)
     {
-        if (ok)
-            *ok = false;
+        if (error)
+            *error = { JsonParseError::PropertyNotFoundOrWrongFormat, "major" };
 
         return OpenGLContext{};
     }
@@ -109,8 +111,8 @@ OpenGLContext OpenGLContext::fromJsonConfig(const QJsonObject & config, bool * o
 
     if (minorVersion == hasWrongFormat)
     {
-        if (ok)
-            *ok = false;
+        if (error)
+            *error = { JsonParseError::PropertyNotFoundOrWrongFormat, "minor" };
 
         return OpenGLContext{};
     }
@@ -142,8 +144,8 @@ OpenGLContext OpenGLContext::fromJsonConfig(const QJsonObject & config, bool * o
     auto context = OpenGLContext{};
     context.setFormat(format);
 
-    if (ok)
-        *ok = true;
+    if (error)
+        *error = JsonParseError::NoError;
     
     return context;
 }
