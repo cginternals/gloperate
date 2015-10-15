@@ -149,6 +149,8 @@ protected:
     void setupScripting();
     void updatePainterMenu();
 
+    void deinitializePainter();
+
 
 protected slots:
     void on_pluginConfigAction_triggered();
