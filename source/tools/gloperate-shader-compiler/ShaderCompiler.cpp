@@ -2,9 +2,11 @@
 
 #include <cassert>
 
+#include <iostream>
 #include <vector>
 #include <algorithm>
 
+#include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
 
@@ -29,9 +31,7 @@ bool ShaderCompiler::process(const QJsonObject & config)
 }
 
 bool ShaderCompiler::parse(const QJsonObject & config)
-{
-    bool ok{};
-    
+{   
     const auto jsonOpenGLConfig = config.value("opengl");
     
     if (!jsonOpenGLConfig.isObject())
@@ -63,7 +63,7 @@ bool ShaderCompiler::parse(const QJsonObject & config)
     
     globjects::init();
     
-    printDriverInfo();
+    info(Info::Driver);
     
     const auto jsonNamedStringPaths = config.value("namedStringPaths");
     
@@ -81,11 +81,11 @@ bool ShaderCompiler::parse(const QJsonObject & config)
         return false;
     }
     
-    ok = parsePrograms(jsonPrograms.toArray());
+    auto ok = parsePrograms(jsonPrograms.toArray());
     
     context.doneCurrent();
     
-    printFailures();
+    info(Info::Failures);
     
     return ok;
 }
@@ -160,9 +160,9 @@ bool ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
     
     if (!namedStrings.empty())
     {
-        globjects::info() << "Registered Named Strings:";
-        for (const auto string : namedStrings)
-            globjects::info() << "    " << string;
+        qDebug() << "Registered Named Strings:";
+        for (const auto & namedString : namedStrings)
+            qDebug().nospace() << "    " << QString::fromStdString(namedString);
     }
 
     return true;
@@ -257,8 +257,8 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
             return false;
         }
         
-        globjects::info();
-        globjects::info() << "Process " << name.toStdString();
+        qDebug() << "";
+        qDebug().noquote() << "Process" << name;
         
         const auto shadersArray = programObject.value("shaders");
         
@@ -276,7 +276,7 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
             continue;
         }
         
-        globjects::info() << "Link " << name.toStdString();
+        qDebug().noquote() << "Link" << name;
         
         ok = createAndLinkProgram(shaders);
         
@@ -337,7 +337,10 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
 
         const auto name = shaderObject.value("name").toString();
         
-        globjects::info() << "Compile " << (!name.isNull() ? name.toStdString() : fileName.toStdString());
+        if (name.isNull())
+            qDebug().noquote() << QString{"Compile %1"}.arg(fileName);
+        else
+            qDebug().noquote() << QString{"Compile %1 ('%2')"}.arg(name).arg(fileName);
         
         if (!shader->compile())
         {
@@ -400,29 +403,31 @@ bool ShaderCompiler::createAndLinkProgram(
     return true;
 }
 
-void ShaderCompiler::printDriverInfo()
+void ShaderCompiler::info(Info type)
 {
-    globjects::info() << "Driver: " << globjects::vendor();
-    globjects::info() << "Renderer: " << globjects::renderer();
-}
-
-void ShaderCompiler::printFailures()
-{
-    if (!m_compileFailures.empty())
+    if (type == Info::Driver)
     {
-        globjects::info();
-        globjects::info() << "Compile Failures:";
-        for (const auto failure : m_compileFailures)
-            globjects::info() << "    " << failure;
+        globjects::info() << "Driver: " << globjects::vendor();
+        globjects::info() << "Renderer: " << globjects::renderer();
     }
-    
-    if (!m_linkFailures.empty())
+    else if (type == Info::Failures)
     {
-        globjects::info();
-        globjects::info() << "Link Failures:";
-        for (const auto failure : m_linkFailures)
-            globjects::info() << "    " << failure;
-    }
+        if (!m_compileFailures.empty())
+        {
+            globjects::info();
+            globjects::info() << "Compile Failures:";
+            for (const auto failure : m_compileFailures)
+                globjects::info() << "    " << failure;
+        }
+        
+        if (!m_linkFailures.empty())
+        {
+            globjects::info();
+            globjects::info() << "Link Failures:";
+            for (const auto failure : m_linkFailures)
+                globjects::info() << "    " << failure;
+        }
+    }   
 }
 
 void ShaderCompiler::error(JsonParseError error)

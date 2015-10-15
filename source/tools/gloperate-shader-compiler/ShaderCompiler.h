@@ -63,8 +63,12 @@ private:
         const std::vector<globjects::ref_ptr<globjects::Shader>> & shadersArray);
     
 private:
-    static void printDriverInfo();
-    void printFailures();
+    enum class Info {
+        Driver,
+        Failures
+    };
+
+    void info(Info type);
     
     void error(JsonParseError error);
     void error(JsonParseError::Type type, const QString & info);
