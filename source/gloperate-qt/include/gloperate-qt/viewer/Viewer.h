@@ -154,6 +154,7 @@ protected slots:
     void on_pluginConfigAction_triggered();
     void on_captureImageAction_triggered();
     void onPainterSelected(bool checked);
+    void on_reloadShadersAction_triggered();
 
 
 protected:
