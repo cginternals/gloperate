@@ -21,6 +21,8 @@
 
 #include "ui_Viewer.h"
 
+#include <globjects/base/File.h>
+
 #include <gloperate/ext-includes-end.h>
 
 #include <gloperate/resources/ResourceManager.h>
@@ -160,6 +162,10 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 
 Viewer::~Viewer()
 {
+    m_canvas->makeCurrent();
+    deinitializePainter();
+    m_canvas->doneCurrent();
+
     // Save settings
     QSettings settings;
     settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
@@ -179,9 +185,9 @@ QtOpenGLWindow * Viewer::canvas() const
 void Viewer::setPainter(Painter & painter)
 {
     // Unload old painter
-    if (m_painter.get()) {
-        m_scriptEnvironment->removeScriptApi(m_painter.get());
-    }
+    m_canvas->makeCurrent();
+    deinitializePainter();
+    m_canvas->doneCurrent();
 
     // Create new painter
     m_painter.reset(&painter);
@@ -424,6 +430,13 @@ void Viewer::on_pluginConfigAction_triggered()
     }
 }
 
+void Viewer::on_reloadShadersAction_triggered()
+{
+    m_canvas->makeCurrent();
+    globjects::File::reloadAll();
+    m_canvas->doneCurrent();
+}
+
 void Viewer::onPainterSelected(bool /*checked*/)
 {
     // Get selected menu action
@@ -433,6 +446,16 @@ void Viewer::onPainterSelected(bool /*checked*/)
     // Get painter name
     QString name = action->data().toString();
     loadPainter(name.toStdString());
+}
+
+void Viewer::deinitializePainter()
+{
+    if (m_painter.get())
+    {
+        m_scriptEnvironment->removeScriptApi(m_painter.get());
+    }
+
+    m_painter.reset(nullptr);
 }
 
 
