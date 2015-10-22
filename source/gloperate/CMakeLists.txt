@@ -57,9 +57,7 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(sources
     ${source_path}/base/RenderTarget.cpp
     ${source_path}/base/dirent_msvc.h
-    ${source_path}/base/DirectoryIterator.cpp
     ${source_path}/base/registernamedstrings.cpp
-    ${source_path}/base/DirectoryIterator.h
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/CyclicTime.cpp
