@@ -13,6 +13,8 @@
 #endif
 
 #include <iozeug/filename.h>
+#include <iozeug/directorytraversal.h>
+#include <iozeug/SystemInfo.h>
 
 #include <reflectionzeug/variant/Variant.h>
 #include <reflectionzeug/tools/SerializerJSON.h>
@@ -22,25 +24,11 @@
 #include <gloperate/plugin/PluginLibrary.h>
 #include <gloperate/plugin/Plugin.h>
 
-#include "base/DirectoryIterator.h"
-
 
 namespace
 {
-    // Define system specific filename properties
 #ifdef WIN32
     const int RTLD_LAZY(0); // ignore for win32 - see dlopen
-    const std::string g_sep = "\\";
-    const std::string g_pre = "";
-    const std::string g_ext = "dll";
-#elif __APPLE__
-    const std::string g_sep = "/";
-    const std::string g_pre = "";
-    const std::string g_ext = "dylib";
-#else
-    const std::string g_sep = "/";
-    const std::string g_pre = "lib";
-    const std::string g_ext = "so";
 #endif
 
     class PluginLibraryImpl : public gloperate::PluginLibrary
@@ -118,7 +106,7 @@ void PluginManager::setPaths(const std::vector<std::string> & paths)
     m_paths.clear();
 
     for (std::string path : paths) {
-        m_paths.push_back(DirectoryIterator::truncate(path));
+        m_paths.push_back(iozeug::removeTrailingPathSeparator(path));
     }
 }
 
@@ -129,7 +117,7 @@ void PluginManager::addPath(const std::string & path)
         return;
 
     // Remove slash
-    const std::string p = DirectoryIterator::truncate(path);
+    const std::string p = iozeug::removeTrailingPathSeparator(path);
 
     // Check if search path is already in the list
     const std::vector<std::string>::const_iterator it = std::find(m_paths.cbegin(), m_paths.cend(), p);
@@ -144,7 +132,7 @@ void PluginManager::addPath(const std::string & path)
 void PluginManager::removePath(const std::string & path)
 {
     // Remove slash
-    const std::string p = DirectoryIterator::truncate(path);
+    const std::string p = iozeug::removeTrailingPathSeparator(path);
 
     // Check if search path is in the list
     const std::vector<std::string>::iterator it = std::find(m_paths.begin(), m_paths.end(), p);
@@ -159,16 +147,16 @@ void PluginManager::removePath(const std::string & path)
 void PluginManager::scan(const std::string & identifier, bool reload)
 {
     // List all files in all search paths
-    const std::vector<std::string> files = DirectoryIterator::files(m_paths, true);
+    const std::vector<std::string> files = iozeug::getFiles(m_paths, true);
     for (const std::string & file : files)
     {
         // Check if file is a library
-        if (DirectoryIterator::extension(file) != g_ext)
+        if (iozeug::getExtension(file) != iozeug::SystemInfo::libExtension())
             continue;
 
         // Check if library name corresponds to search criteria
-        std::string query = identifier + "." + g_ext;
-        if (identifier.empty() || file.find(query, file.find_last_of(g_sep)) != std::string::npos)
+        std::string query = identifier + "." + iozeug::SystemInfo::libExtension();
+        if (identifier.empty() || file.find(query, file.find_last_of(iozeug::SystemInfo::pathSeperator())) != std::string::npos)
             loadLibrary(file, reload);
     }
 
@@ -236,12 +224,12 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
     }
 
     // Get path to directory containing the plugin library
-    std::string pluginPath = DirectoryIterator::truncate(iozeug::getPath(filePath));
+    std::string pluginPath = iozeug::removeTrailingPathSeparator(iozeug::getPath(filePath));
 
     // Load extra information from "PluginInfo.json" if present
     Variant pluginInfo = Variant();
     SerializerJSON json;
-    if (json.load(pluginInfo, pluginPath + g_sep + "PluginInfo.json"))
+    if (json.load(pluginInfo, pluginPath + iozeug::SystemInfo::pathSeperator() + "PluginInfo.json"))
     {
         // Replace every occurance of ${PluginPath} with respective path
         std::string jsonString = pluginInfo.toJSON();

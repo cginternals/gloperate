@@ -9,6 +9,8 @@
 #include <widgetzeug/ECMA26251_SyntaxHighlighter.h>
 #include <widgetzeug/ECMA26251_Completer.h>
 
+#include <loggingzeug/logging.h>
+
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
 #include <gloperate-qt/scripting/SystemApi.h>
 #include <gloperate-qt/scripting/SystemApi.h>
@@ -25,6 +27,11 @@ ScriptEnvironment::ScriptEnvironment(QtOpenGLWindow * openGLWindow)
 {
     // Create JavaScript context
     m_scriptContext.reset(new scriptzeug::ScriptContext("javascript"));
+
+    // Output scripting errors to console
+    m_scriptContext->scriptException.connect( [] (const std::string & error) -> void {
+        loggingzeug::critical() << "Scripting Error: " << error;
+    });
 
     // Register default scripting APIs
     m_systemApi.reset(new SystemApi(openGLWindow));
