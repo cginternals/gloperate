@@ -17,6 +17,10 @@ add_subdirectory(gloperate-osg)
 # Applications
 add_subdirectory(gloperate-viewer)
 
+# Tools
+set(IDE_FOLDER "Tools")
+add_subdirectory(tools)
+
 # Examples
 set(IDE_FOLDER "Examples")
 add_subdirectory(examples)

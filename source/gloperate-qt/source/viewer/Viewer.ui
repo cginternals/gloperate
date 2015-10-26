@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>734</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="fileMenu">
@@ -57,7 +57,7 @@
     <property name="title">
      <string>&amp;Settings</string>
     </property>
-    <addaction name="managePluginsAction"/>
+    <addaction name="pluginConfigAction"/>
     <addaction name="separator"/>
     <addaction name="preferencesAction"/>
    </widget>
@@ -67,10 +67,17 @@
     </property>
     <addaction name="aboutAction"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="reloadShadersAction"/>
+   </widget>
    <addaction name="fileMenu"/>
    <addaction name="painterMenu"/>
    <addaction name="canvasMenu"/>
    <addaction name="cameraMenu"/>
+   <addaction name="menuTools"/>
    <addaction name="settingsMenu"/>
    <addaction name="helpMenu"/>
   </widget>
@@ -127,12 +134,17 @@
     <string>Capture &amp;Image</string>
    </property>
   </action>
-  <action name="managePluginsAction">
+  <action name="pluginConfigAction">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Manage Plugins</string>
+    <string>&amp;Plugin Config</string>
+   </property>
+  </action>
+  <action name="reloadShadersAction">
+   <property name="text">
+    <string>Reload Shaders</string>
    </property>
   </action>
  </widget>

@@ -57,9 +57,7 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(sources
     ${source_path}/base/RenderTarget.cpp
     ${source_path}/base/dirent_msvc.h
-    ${source_path}/base/DirectoryIterator.cpp
-    ${source_path}/base/directorytraversal.cpp
-    ${source_path}/base/DirectoryIterator.h
+    ${source_path}/base/registernamedstrings.cpp
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/CyclicTime.cpp
@@ -149,7 +147,7 @@ set(sources
 
 set(api_includes
     ${include_path}/base/RenderTarget.h
-    ${include_path}/base/directorytraversal.h
+    ${include_path}/base/registernamedstrings.h
     ${include_path}/base/collection.hpp
     ${include_path}/base/CyclicTime.h
     ${include_path}/base/ChronoTimer.h
