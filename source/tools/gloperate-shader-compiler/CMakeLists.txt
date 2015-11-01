@@ -82,8 +82,6 @@ set(sources
     JsonParseError.h
     JsonParseErrorLog.cpp
     JsonParseErrorLog.h
-    ShaderCompiler_old.cpp
-    ShaderCompiler_old.h
     OpenGLContext.cpp
     OpenGLContext.h
     ShaderCompiler.cpp
