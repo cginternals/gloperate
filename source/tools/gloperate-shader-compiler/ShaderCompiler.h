@@ -58,6 +58,10 @@ private:
         const QJsonArray & shaders,
         bool & ok);
     
+    bool replaceStrings(
+        const QJsonObject & replacements,
+        globjects::ref_ptr<globjects::AbstractStringSource> & stringSource);
+    
     static gl::GLenum typeFromString(const QString & typeString);
 
     bool createAndLinkProgram(

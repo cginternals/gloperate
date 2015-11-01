@@ -16,6 +16,8 @@ QString JsonParseErrorLog::errorMessage(const JsonParseError & error)
             return QString{"Property '%1' was not found or is not an object."}.arg(error.info());
         case JsonParseError::PropertyNotFoundOrWrongFormat:
             return QString{"Property '%1' was not found or has the wrong format."}.arg(error.info());
+        case JsonParseError::PropertyWrongFormat:
+            return QString{"Property '%1' has the wrong format."}.arg(error.info());
         case JsonParseError::ElementNotObject:
             return QString{"One of the elements of array '%1' is not an object."}.arg(error.info());
         case JsonParseError::ElementWrongFormat:

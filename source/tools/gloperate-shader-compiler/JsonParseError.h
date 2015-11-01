@@ -9,6 +9,7 @@ public:
         NoError,
         PropertyNotFoundOrNotAnObject,
         PropertyNotFoundOrWrongFormat,
+        PropertyWrongFormat,
         ElementNotObject,
         ElementWrongFormat,
         ArrayNotFoundOrEmpty,

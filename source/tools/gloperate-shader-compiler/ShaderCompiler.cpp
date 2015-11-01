@@ -322,6 +322,13 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
             ok = false;
             return shaders;
         }
+        
+        const auto name = shaderObject.value("name").toString();
+        
+        if (name.isNull())
+            qDebug().noquote() << QString{"Compile %1"}.arg(fileName);
+        else
+            qDebug().noquote() << QString{"Compile %1 ('%2')"}.arg(name).arg(fileName);
 
         const auto typeString = shaderObject.value("type").toString();
         
@@ -349,42 +356,21 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
         {
             if (replacementsValue.isObject())
             {
-                const auto replacementsObjects = replacementsValue.toObject();
-                
-                auto sourceTemplate = globjects::make_ref<globjects::StringTemplate>(shaderFile);
-                
-                for (auto it = replacementsObjects.begin(); it != replacementsObjects.end(); ++it)
+                if (!replaceStrings(replacementsValue.toObject(), shaderFile))
                 {
-                    const auto valueString = it.value().toString();
-                    
-                    if (valueString.isNull())
-                    {
-                        error(JsonParseError::ElementWrongFormat, it.key());
-                        ok = false;
-                        return shaders;
-                    }
-                    
-                    sourceTemplate->replace(it.key().toStdString(), valueString.toStdString());
+                    ok = false;
+                    return shaders;
                 }
-                
-                shaderFile = sourceTemplate;
             }
             else
             {
-                error(JsonParseError::ElementNotObject, "replacements");
+                error(JsonParseError::PropertyWrongFormat, "replacements");
                 ok = false;
                 return shaders;
             }
         }
         
         auto shader = globjects::make_ref<globjects::Shader>(type, shaderFile);
-
-        const auto name = shaderObject.value("name").toString();
-        
-        if (name.isNull())
-            qDebug().noquote() << QString{"Compile %1"}.arg(fileName);
-        else
-            qDebug().noquote() << QString{"Compile %1 ('%2')"}.arg(name).arg(fileName);
         
         if (!shader->compile())
         {
@@ -399,6 +385,29 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
     
     ok = true;
     return shaders;
+}
+
+bool ShaderCompiler::replaceStrings(
+    const QJsonObject & replacements,
+    globjects::ref_ptr<globjects::AbstractStringSource> & stringSource)
+{
+    auto sourceTemplate = globjects::make_ref<globjects::StringTemplate>(stringSource);
+    
+    for (auto it = replacements.begin(); it != replacements.end(); ++it)
+    {
+        const auto valueString = it.value().toString();
+        
+        if (valueString.isNull())
+        {
+            error(JsonParseError::PropertyWrongFormat, it.key());
+            return false;
+        }
+        
+        sourceTemplate->replace(it.key().toStdString(), valueString.toStdString());
+    }
+    
+    stringSource = sourceTemplate;
+    return true;
 }
 
 gl::GLenum ShaderCompiler::typeFromString(const QString & typeString)
