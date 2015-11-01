@@ -94,15 +94,13 @@ bool ShaderCompiler::parse(const QJsonObject & config)
 
 bool ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
 {
-    bool ok{};
-    
-    std::vector<std::string> namedStrings;
+    std::vector<std::string> namedStrings{};
     
     for (const auto & namedStringPath : paths)
     {
         if (!namedStringPath.isObject())
         {
-            error({ JsonParseError::ElementNotObject, "namedStringPaths" });
+            error(JsonParseError::ElementNotObject, "namedStringPaths");
             return false;
         }
         
@@ -112,7 +110,7 @@ bool ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
         
         if (pathString.isNull())
         {
-            error({ JsonParseError::PropertyNotFoundOrWrongFormat, "path" });
+            error(JsonParseError::PropertyNotFoundOrWrongFormat, "path");
             return false;
         }
         
@@ -120,15 +118,16 @@ bool ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
         
         if (extensionsArray.isEmpty())
         {   
-            error({ JsonParseError::ArrayNotFoundOrEmpty, "extensions" });
+            error(JsonParseError::ArrayNotFoundOrEmpty, "extensions" );
             return false;
         }
         
+        bool ok{};
         const auto extensions = parseExtensions(extensionsArray, ok);
         
         if (!ok)
         {
-            error({ JsonParseError::ElementWrongFormat, "extensions" });
+            error(JsonParseError::ElementWrongFormat, "extensions");
             return false;
         }
         
@@ -136,36 +135,29 @@ bool ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
         
         if (files.empty())
         {
-            error({ JsonParseError::NoFilesWithExtensionFound, pathString });
+            error(JsonParseError::NoFilesWithExtensionFound, pathString);
             return false;
         }
         
         const auto aliasString = pathObject.value("alias").toString();
         
-        if (aliasString.isNull())
+        auto aliases = files;
+        
+        if (!aliasString.isNull())
         {
-            createNamedStrings(files, files);
-            
-            std::copy(files.begin(), files.end(), std::back_inserter(namedStrings));
-        }
-        else
-        {
-            const auto aliases = createAliases(files,
+            aliases = createAliases(files,
                 pathString.toStdString(),
                 aliasString.toStdString());
-            
-            std::copy(aliases.begin(), aliases.end(), std::back_inserter(namedStrings));
-            
-            createNamedStrings(files, aliases);
         }
+        
+        std::copy(aliases.begin(), aliases.end(), std::back_inserter(namedStrings));
+        
+        createNamedStrings(files, aliases);
     }
     
-    if (!namedStrings.empty())
-    {
-        qDebug() << "Registered Named Strings:";
-        for (const auto & namedString : namedStrings)
-            qDebug().nospace() << "    " << QString::fromStdString(namedString);
-    }
+    qDebug() << "Registered Named Strings:";
+    for (const auto & namedString : namedStrings)
+        qDebug().nospace() << "    " << QString::fromStdString(namedString);
 
     return true;
 }
@@ -221,7 +213,10 @@ std::vector<std::string> ShaderCompiler::createAliases(
     for (const auto & file : files)
     {
         auto aliasedFile = alias;
+        
+        assert(file.size() >= path.size());
         std::copy(file.begin() + path.size(), file.end(), std::back_inserter(aliasedFile));
+        
         aliasedFiles.push_back(aliasedFile);
     }
 
