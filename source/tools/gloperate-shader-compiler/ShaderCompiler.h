@@ -22,6 +22,7 @@ class QSurfaceFormat;
 namespace globjects
 {
     class Shader;
+    class AbstractStringSource;
 }
 
 class ShaderCompiler

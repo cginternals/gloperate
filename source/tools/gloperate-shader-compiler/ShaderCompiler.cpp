@@ -21,6 +21,8 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/logging.h>
+#include <globjects/base/File.h>
+#include <globjects/base/StringTemplate.h>
 
 #include "OpenGLContext.h"
 
@@ -339,9 +341,43 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
             return shaders;
         }
 
-        // TODO: parse optional replacements
+        globjects::ref_ptr<globjects::AbstractStringSource> shaderFile = new globjects::File{fileName.toStdString()};
 
-        auto shader = globjects::Shader::fromFile(type, fileName.toStdString());
+        const auto replacementsValue = shaderObject.value("replacements");
+        
+        if (!replacementsValue.isUndefined())
+        {
+            if (replacementsValue.isObject())
+            {
+                const auto replacementsObjects = replacementsValue.toObject();
+                
+                auto sourceTemplate = globjects::make_ref<globjects::StringTemplate>(shaderFile);
+                
+                for (auto it = replacementsObjects.begin(); it != replacementsObjects.end(); ++it)
+                {
+                    const auto valueString = it.value().toString();
+                    
+                    if (valueString.isNull())
+                    {
+                        error(JsonParseError::ElementWrongFormat, it.key());
+                        ok = false;
+                        return shaders;
+                    }
+                    
+                    sourceTemplate->replace(it.key().toStdString(), valueString.toStdString());
+                }
+                
+                shaderFile = sourceTemplate;
+            }
+            else
+            {
+                error(JsonParseError::ElementNotObject, "replacements");
+                ok = false;
+                return shaders;
+            }
+        }
+        
+        auto shader = globjects::make_ref<globjects::Shader>(type, shaderFile);
 
         const auto name = shaderObject.value("name").toString();
         
