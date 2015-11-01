@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QJsonDocument>
 
 #include <iozeug/filename.h>
 #include <iozeug/directorytraversal.h>
@@ -27,13 +28,20 @@
 #include "OpenGLContext.h"
 
 
-bool ShaderCompiler::process(const QJsonObject & config)
+bool ShaderCompiler::process(const QJsonDocument & configDocument)
 {
-    return ShaderCompiler{}.parse(config);
+    return ShaderCompiler{}.parse(configDocument);
 }
 
-bool ShaderCompiler::parse(const QJsonObject & config)
-{   
+bool ShaderCompiler::parse(const QJsonDocument & configDocument)
+{
+    if (!configDocument.isObject())
+    {
+        error(JsonParseError::DocumentNotAnObject);
+        return false;
+    }
+
+    const auto config = configDocument.object();
     const auto jsonOpenGLConfig = config.value("opengl");
     
     if (!jsonOpenGLConfig.isObject())

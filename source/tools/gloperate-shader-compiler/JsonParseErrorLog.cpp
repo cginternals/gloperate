@@ -12,6 +12,8 @@ QString JsonParseErrorLog::errorMessage(const JsonParseError & error)
 {
     switch (error.type())
     {
+        case JsonParseError::DocumentNotAnObject:
+            return QString{"The document is not an object."};
         case JsonParseError::PropertyNotFoundOrNotAnObject:
             return QString{"Property '%1' was not found or is not an object."}.arg(error.info());
         case JsonParseError::PropertyNotFoundOrWrongFormat:

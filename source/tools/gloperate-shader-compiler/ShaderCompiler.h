@@ -17,6 +17,7 @@ class QOffscreenSurface;
 class QOpenGLContext;
 class QJsonArray;
 class QJsonObject;
+class QJsonDocument;
 class QSurfaceFormat;
 
 namespace globjects
@@ -28,10 +29,10 @@ namespace globjects
 class ShaderCompiler
 {
 public:
-    static bool process(const QJsonObject & config);
+    static bool process(const QJsonDocument & configDocument);
     
 private:    
-    bool parse(const QJsonObject & config);
+    bool parse(const QJsonDocument & configDocument);
 
     bool parseNamedStringPaths(const QJsonArray & paths);
     

@@ -7,6 +7,7 @@ class JsonParseError {
 public:
     enum Type {
         NoError,
+        DocumentNotAnObject,
         PropertyNotFoundOrNotAnObject,
         PropertyNotFoundOrWrongFormat,
         PropertyWrongFormat,
