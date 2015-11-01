@@ -216,7 +216,7 @@ std::vector<std::string> ShaderCompiler::createAliases(
     const std::string & path,
     const std::string & alias)
 {
-    std::vector<std::string> aliasedFiles{};
+    std::vector<std::string> aliases{};
 
     for (const auto & file : files)
     {
@@ -225,10 +225,10 @@ std::vector<std::string> ShaderCompiler::createAliases(
         assert(file.size() >= path.size());
         std::copy(file.begin() + path.size(), file.end(), std::back_inserter(aliasedFile));
         
-        aliasedFiles.push_back(aliasedFile);
+        aliases.push_back(aliasedFile);
     }
 
-    return aliasedFiles;
+    return aliases;
 }
 
 void ShaderCompiler::createNamedStrings(
