@@ -34,7 +34,7 @@ int main(int argc, char * argv[])
     
     if (arguments.isEmpty())
     {
-        qDebug() << "No configuration file specified.";
+        qDebug() << "ERROR: No configuration file specified.";
         return 1;
     }
     
@@ -42,7 +42,7 @@ int main(int argc, char * argv[])
     
     if (!QFile::exists(configPath))
     {
-        qDebug() << "Configuration file could not be found.";
+        qDebug() << "ERROR: Configuration file could not be found.";
         return 1;
     }
     
@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
     
     if (!jsonFile.open(QIODevice::ReadOnly))
     {
-        qDebug() << "Configurationa file could not be opened.";
+        qDebug() << "ERROR: Configurationa file could not be opened.";
         return 1;
     }
     
@@ -60,7 +60,7 @@ int main(int argc, char * argv[])
     
     if (error.error != QJsonParseError::NoError)
     {
-        qDebug() << "Error parsing document:" << error.errorString();
+        qDebug() << "ERROR: parsing document failed:" << error.errorString();
         return 1;
     }
     
