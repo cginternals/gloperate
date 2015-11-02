@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
     
     if (!jsonFile.open(QIODevice::ReadOnly))
     {
-        qDebug() << "ERROR: Configurationa file could not be opened.";
+        qDebug() << "ERROR: Configuration file could not be opened.";
         return 1;
     }
     

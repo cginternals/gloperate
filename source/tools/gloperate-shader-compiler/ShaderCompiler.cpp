@@ -35,68 +35,99 @@ bool ShaderCompiler::process(const QJsonDocument & configDocument)
 
 bool ShaderCompiler::parse(const QJsonDocument & configDocument)
 {
-    if (!configDocument.isObject())
+    if (configDocument.isObject())
     {
-        error(JsonParseError::DocumentNotAnObject);
+        return parse(configDocument.object());
+    }
+    else if (configDocument.isArray())
+    {
+        return parse(configDocument.array());
+    }
+    else
+    {
+        error(JsonParseError::DocumentNotAnObjectOrArray);
+
         return false;
     }
+}
 
-    const auto config = configDocument.object();
+bool ShaderCompiler::parse(const QJsonArray & config)
+{
+    for (const auto & value : config)
+    {
+        if (!value.isObject())
+        {
+            error(JsonParseError::ElementNotObject);
+
+            return false;
+        }
+
+        if (!parse(value.toObject()))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool ShaderCompiler::parse(const QJsonObject & config)
+{
     const auto jsonOpenGLConfig = config.value("opengl");
-    
+
     if (!jsonOpenGLConfig.isObject())
     {
         error(JsonParseError::PropertyNotFoundOrNotAnObject, "opengl");
         return false;
     }
-    
+
     auto parseError = JsonParseError{};
     auto context = OpenGLContext::fromJsonConfig(jsonOpenGLConfig.toObject(), &parseError);
-    
+
     if (parseError)
     {
         error(parseError);
         return false;
     }
-    
+
     if (!context.create())
     {
         error(JsonParseError::ContextCreationFailed);
         return false;
     }
-    
+
     if (!context.makeCurrent())
     {
         error(JsonParseError::ContextActivationFailed);
         return false;
     }
-    
+
     globjects::init();
-    
+
     info(Info::Driver);
-    
+
     const auto jsonNamedStringPaths = config.value("namedStringPaths");
-    
+
     if (jsonNamedStringPaths.isArray())
     {
         if (!parseNamedStringPaths(jsonNamedStringPaths.toArray()))
             return false;
     }
-    
+
     const auto jsonPrograms = config.value("programs");
-    
+
     if (!jsonPrograms.isArray())
     {
         error(JsonParseError::ArrayNotFoundOrEmpty, "programs");
         return false;
     }
-    
+
     auto ok = parsePrograms(jsonPrograms.toArray());
-    
+
     context.doneCurrent();
-    
+
     info(Info::Failures);
-    
+
     return ok;
 }
 

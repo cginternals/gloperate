@@ -33,6 +33,8 @@ public:
     
 private:    
     bool parse(const QJsonDocument & configDocument);
+    bool parse(const QJsonArray & config);
+    bool parse(const QJsonObject & config);
 
     bool parseNamedStringPaths(const QJsonArray & paths);
     
