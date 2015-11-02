@@ -20,8 +20,8 @@ namespace gloperate_osg
 {
 
 
-OsgPainter::OsgPainter(const std::string & name, ResourceManager & resourceManager, const std::string & relDataPath)
-: Painter(name, resourceManager, relDataPath)
+OsgPainter::OsgPainter(const std::string & name, ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
+: Painter(name, resourceManager, pluginInfo)
 , m_viewer(nullptr)
 , m_embedded(nullptr)
 , m_scene(nullptr)

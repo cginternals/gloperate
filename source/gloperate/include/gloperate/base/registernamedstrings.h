@@ -11,11 +11,9 @@ namespace gloperate
 {
 
 
-// [TODO] Will be removed and replaced by functionality in iozeug
-
 /**
 *  @brief
-*    List files in directory
+*    Registers each matching file as a Named String in globjects
 *
 *  @param[in] directory
 *    Path to directory
@@ -34,8 +32,8 @@ namespace gloperate
 *  @see globjects::File
 *  @see globjects::FileRegistry
 */
-GLOPERATE_API void scanDirectory(const std::string & directory, const std::string & fileExtension, bool recursive = false);
-GLOPERATE_API void scanDirectory(const std::string & directory, const std::string & alias, const std::string & fileExtension, bool recursive = false);
+GLOPERATE_API void registerNamedStrings(const std::string & directory, const std::string & fileExtension, bool recursive = false);
+GLOPERATE_API void registerNamedStrings(const std::string & directory, const std::string & alias, const std::string & fileExtension, bool recursive = false);
 
 
 } // namespace gloperate

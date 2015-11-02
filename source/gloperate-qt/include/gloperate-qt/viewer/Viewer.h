@@ -107,10 +107,24 @@ public:
     *
     *  @remarks
     *    If a painter plugin with this name has been registered,
-    *    the painter is created and loaded into the viewer.
+    *    the painter is created and set.
     *    Otherwise, nothing happens.
     */
     void loadPainter(const std::string & name);
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Set painter
+    *
+    *  @param[in] painter
+    *    Painter reference
+    *
+    *  @remarks
+    *    Loads the painter into the viewer.
+    */
+    void setPainter(gloperate::Painter & painter);
     //@}
 
     //@{
@@ -135,11 +149,14 @@ protected:
     void setupScripting();
     void updatePainterMenu();
 
+    void deinitializePainter();
+
 
 protected slots:
-    void on_managePluginsAction_triggered();
+    void on_pluginConfigAction_triggered();
     void on_captureImageAction_triggered();
     void onPainterSelected(bool checked);
+    void on_reloadShadersAction_triggered();
 
 
 protected:

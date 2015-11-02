@@ -157,8 +157,8 @@ OpenGLContext::OpenGLContext()
 
 OpenGLContext::~OpenGLContext() = default;
 
-OpenGLContext::OpenGLContext(OpenGLContext && context) = default;
-OpenGLContext & OpenGLContext::operator=(OpenGLContext && rhs) = default;
+OpenGLContext::OpenGLContext(OpenGLContext && /*context*/) = default;
+OpenGLContext & OpenGLContext::operator=(OpenGLContext && /*rhs*/) = default;
 
 void OpenGLContext::setFormat(const QSurfaceFormat & format)
 {

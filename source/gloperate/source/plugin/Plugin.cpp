@@ -49,14 +49,14 @@ const char * Plugin::version() const
     return m_version.c_str();
 }
 
-const char * Plugin::relDataPath() const
+const reflectionzeug::Variant & Plugin::pluginInfo() const
 {
-    return m_relDataPath.c_str();
+    return m_pluginInfo;
 }
 
-void Plugin::setRelDataPath(const char * path)
+void Plugin::setPluginInfo(const reflectionzeug::Variant & pluginInfo)
 {
-    m_relDataPath = path;
+    m_pluginInfo = pluginInfo;
 }
 
 

@@ -54,7 +54,7 @@ int main(int argc, char * argv[])
         return 1;
     }
     
-    QJsonParseError error{};
+    QJsonParseError error;
     
     const auto jsonDocument = QJsonDocument::fromJson(jsonFile.readAll(), &error);
     
