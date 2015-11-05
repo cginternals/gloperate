@@ -151,7 +151,7 @@ OpenGLContext OpenGLContext::fromJsonConfig(const QJsonObject & config, JsonPars
 }
 
 OpenGLContext::OpenGLContext()
-:   m_p(gloperate::make_unique<Private>())
+: m_p(gloperate::make_unique<Private>())
 {
 }
 

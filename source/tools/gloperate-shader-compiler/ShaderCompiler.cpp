@@ -11,6 +11,8 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
+#include <glbinding/gl/enum.h>
+
 #include <iozeug/filename.h>
 #include <iozeug/directorytraversal.h>
 
@@ -26,11 +28,12 @@
 #include <globjects/base/StringTemplate.h>
 
 #include "OpenGLContext.h"
+#include "JsonParseErrorLog.h"
 
 
 bool ShaderCompiler::process(const QJsonDocument & configDocument)
 {
-    return ShaderCompiler{}.parse(configDocument);
+    return ShaderCompiler().parse(configDocument);
 }
 
 bool ShaderCompiler::parse(const QJsonDocument & configDocument)
@@ -133,7 +136,7 @@ bool ShaderCompiler::parse(const QJsonObject & config)
 
 bool ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
 {
-    std::vector<std::string> namedStrings{};
+    auto namedStrings = std::vector<std::string>();
     
     for (const auto & namedStringPath : paths)
     {
@@ -161,7 +164,7 @@ bool ShaderCompiler::parseNamedStringPaths(const QJsonArray & paths)
             return false;
         }
         
-        bool ok{};
+        auto ok = false;
         const auto extensions = parseExtensions(extensionsArray, ok);
         
         if (!ok)
@@ -205,7 +208,7 @@ std::set<std::string> ShaderCompiler::parseExtensions(
     const QJsonArray & extensionsArray,
     bool & ok)
 {
-    auto extensions = std::set<std::string>{};
+    auto extensions = std::set<std::string>();
     
     for (const auto & extensionValue : extensionsArray)
     {
@@ -226,17 +229,17 @@ std::vector<std::string> ShaderCompiler::scanDirectory(
     const std::string & path,
     const std::set<std::string> & extensions)
 {
-    auto files = std::vector<std::string>{};
+    auto files = std::vector<std::string>();
     
     iozeug::scanDirectory(path, "*", true,
         [&extensions, &files] (const std::string & fileName)
         {
-          const auto fileExtension = iozeug::getExtension(fileName);
+            const auto fileExtension = iozeug::getExtension(fileName);
           
-          if (!extensions.count(fileExtension))
-              return;
+            if (!extensions.count(fileExtension))
+                return;
           
-          files.push_back(fileName);
+            files.push_back(fileName);
         });
 
     return files;
@@ -247,7 +250,7 @@ std::vector<std::string> ShaderCompiler::createAliases(
     const std::string & path,
     const std::string & alias)
 {
-    std::vector<std::string> aliases{};
+    auto aliases = std::vector<std::string>();
 
     for (const auto & file : files)
     {
@@ -268,21 +271,17 @@ void ShaderCompiler::createNamedStrings(
 {
     assert(files.size() == aliases.size());
     
-    for (auto i = 0u; i < files.size(); ++i)
+    for (auto i = size_t(0); i < files.size(); ++i)
     {
-        const auto file = files[i];
-        const auto alias = aliases[i];
-        
-        const auto fileObject = new globjects::File(file);
-        
-        globjects::NamedString::create(alias, fileObject);
+        const auto & file = files[i];
+        const auto & alias = aliases[i];
+
+        globjects::NamedString::create(alias, new globjects::File(file));
     }
 }
 
 bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
 {
-    bool ok{};
-
     for (const auto programValue : programs)
     {
         if (!programValue.isObject())
@@ -312,6 +311,7 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
             return false;
         }
         
+        auto ok = false;
         const auto shaders = parseShaders(shadersArray.toArray(), ok);
         
         if (!ok)
@@ -335,7 +335,7 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
     const QJsonArray & shadersArray,
     bool & ok)
 {
-    std::vector<globjects::ref_ptr<globjects::Shader>> shaders{};
+    auto shaders = std::vector<globjects::ref_ptr<globjects::Shader>>();
     
     for (const auto & shaderValue : shadersArray)
     {
@@ -382,7 +382,7 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
             return shaders;
         }
 
-        globjects::ref_ptr<globjects::AbstractStringSource> shaderFile = new globjects::File{fileName.toStdString()};
+        globjects::ref_ptr<globjects::AbstractStringSource> shaderFile = new globjects::File(fileName.toStdString());
 
         const auto replacementsValue = shaderObject.value("replacements");
         
@@ -519,10 +519,10 @@ void ShaderCompiler::info(Info type)
 
 void ShaderCompiler::error(JsonParseError error)
 {
-    m_errorLog.error(error);
+    JsonParseErrorLog::error(error);
 }
 
 void ShaderCompiler::error(JsonParseError::Type type, const QString & info)
 {
-    m_errorLog.error({ type, info });
+    JsonParseErrorLog::error({ type, info });
 }

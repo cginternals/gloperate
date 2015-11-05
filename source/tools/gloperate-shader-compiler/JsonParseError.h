@@ -1,11 +1,12 @@
 #pragma once
 
-#include "QString"
+#include <QString>
 
-
-class JsonParseError {
+class JsonParseError
+{
 public:
-    enum Type {
+    enum Type
+    {
         NoError,
         DocumentNotAnObjectOrArray,
         PropertyNotFoundOrNotAnObject,
@@ -26,11 +27,12 @@ public:
     JsonParseError(Type type, const QString & info);
 
     Type type() const;
-    QString info() const;
+    const QString & info() const;
 
+    // @returns true iff it is an actual error
     operator bool() const;     
 
-private:
+protected:
     Type m_type;
     QString m_info;
 };

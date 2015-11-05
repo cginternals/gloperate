@@ -2,16 +2,15 @@
 
 #include <QString>
 
-#include "JsonParseError.h"
-
+class JsonParseError;
 
 class JsonParseErrorLog
 {
 public:
-    JsonParseErrorLog() = default;
+    static void error(const JsonParseError & error);
 
-    void error(const JsonParseError & error);
+protected:
+    JsonParseErrorLog();
 
-private:
-    QString errorMessage(const JsonParseError & error);
+    static QString errorMessage(const JsonParseError & error);
 };

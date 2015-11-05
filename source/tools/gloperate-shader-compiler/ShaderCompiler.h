@@ -6,11 +6,11 @@
 
 #include <QString>
 
-#include <glbinding/gl/enum.h>
+#include <glbinding/gl/types.h>
 
 #include <globjects/base/ref_ptr.h>
 
-#include "JsonParseErrorLog.h"
+#include "JsonParseError.h"
 
 
 class QOffscreenSurface;
@@ -22,8 +22,10 @@ class QSurfaceFormat;
 
 namespace globjects
 {
-    class Shader;
-    class AbstractStringSource;
+
+class Shader;
+class AbstractStringSource;
+
 }
 
 class ShaderCompiler
@@ -71,7 +73,8 @@ private:
         const std::vector<globjects::ref_ptr<globjects::Shader>> & shadersArray);
     
 private:
-    enum class Info {
+    enum class Info
+    {
         Driver,
         Failures
     };
@@ -84,5 +87,4 @@ private:
 private:
     std::vector<std::string> m_compileFailures;
     std::vector<std::string> m_linkFailures;
-    JsonParseErrorLog m_errorLog;
 };
