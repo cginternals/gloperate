@@ -65,7 +65,7 @@ protected:
     void updateDirectory();
     void updateFilenamePreview();
     void updateUiFileName();
-    std::string extractEnumNumStartIndex(const std::string& filename, int position);
+    std::string extractEnumNumStartIndex(const std::string& filename, size_t position);
 
 
 protected:

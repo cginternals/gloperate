@@ -98,13 +98,19 @@ int SystemApi::onKeyPress(const reflectionzeug::Variant & func)
     // Check if a function has been passed
     if (func.canConvert<reflectionzeug::AbstractFunction*>()) {
         // Get callback function and make a persistent copy
-        reflectionzeug::AbstractFunction * function = func.value<reflectionzeug::AbstractFunction*>()->clone();
 
-        // Add function to list of callbacks
-        m_keypressCallbacks.insert(std::pair<int, reflectionzeug::AbstractFunction*>(nextID, function));
+        auto function = func.value<reflectionzeug::AbstractFunction*>();
 
-        // Return ID
-        return nextID;
+        if (function != nullptr)
+        {
+            auto functionCopy = function->clone();
+
+            // Add function to list of callbacks
+            m_keypressCallbacks.insert(std::pair<int, reflectionzeug::AbstractFunction*>(nextID, functionCopy));
+
+            // Return ID
+            return nextID;
+        }
     }
 
     // Invalid

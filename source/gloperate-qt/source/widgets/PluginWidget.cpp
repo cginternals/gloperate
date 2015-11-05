@@ -121,8 +121,13 @@ void PluginWidget::painterSelected(int nRow, int)
     assert(m_pluginManager);
     assert(m_resourceManager);
 
-    gloperate::Plugin * plugin{ m_pluginManager->plugins().at(nRow) };
-    emit painterChanged(*dynamic_cast<gloperate::AbstractPainterPlugin *>(plugin)->createPainter(*m_resourceManager));
+    gloperate::Plugin * plugin = m_pluginManager->plugins().at(nRow);
+    gloperate::AbstractPainterPlugin * painterPlugin = dynamic_cast<gloperate::AbstractPainterPlugin *>(plugin);
+
+    if (painterPlugin)
+    {
+        emit painterChanged(*painterPlugin->createPainter(*m_resourceManager));
+    }
 }
 
 void PluginWidget::dropEvent(QDropEvent * dropEvent)
