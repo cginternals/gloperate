@@ -16,7 +16,7 @@ using namespace gloperate_osg;
 
 OsgScene::OsgScene(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
 : OsgPainter("osgScene", resourceManager, pluginInfo)
-, m_dataPath{""}
+, m_dataPath("")
 {
     // Get data path
     const reflectionzeug::VariantMap * map = pluginInfo.asMap();
