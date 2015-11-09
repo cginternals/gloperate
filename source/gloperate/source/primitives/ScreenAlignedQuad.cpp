@@ -4,6 +4,8 @@
 #include <cassert>
 #include <array>
 
+#include <glm/vec2.hpp>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 

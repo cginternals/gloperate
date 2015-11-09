@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/random.hpp>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
@@ -272,5 +273,5 @@ void CubeScape::onTargetFramebufferChanged()
 
 void CubeScape::randomize()
 {
-    setNumberOfCubes(rand() % 40 + 1);
+    setNumberOfCubes(static_cast<int>(glm::linearRand(1.0f, 40.0f)));
 }

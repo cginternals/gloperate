@@ -156,7 +156,7 @@ void PluginManager::scan(const std::string & identifier, bool reload)
 
         // Check if library name corresponds to search criteria
         std::string query = identifier + "." + iozeug::SystemInfo::libExtension();
-        if (identifier.empty() || file.find(query, file.find_last_of(iozeug::SystemInfo::pathSeperator())) != std::string::npos)
+        if (identifier.empty() || file.find(query, file.find_last_of('/')) != std::string::npos)
             loadLibrary(file, reload);
     }
 

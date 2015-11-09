@@ -11,6 +11,7 @@ namespace gloperate
 
 
 PolygonalGeometry::PolygonalGeometry()
+: m_materialIndex(0)
 {
 }
 
