@@ -1,8 +1,9 @@
-
 #pragma once
 
 
 #include <vector>
+#include <map>
+#include <string>
 
 #include <glm/fwd.hpp>
 
@@ -162,7 +163,124 @@ public:
 	*/
 	void setTextureCoordinates(std::vector<glm::vec3> && textureCoordinates);
 
-	/**
+    /**
+    *  @brief
+    *    Check if mesh is rigged
+    *
+    *  @return
+    *    'true' if the mesh is rigged, else 'false'
+    */
+    bool isRigged() const;
+
+    /**
+    *  @brief
+    *    Get the bone indices of each vertex
+    *
+    *  @return
+    *    Bone indices of each vertex
+    */
+    const std::vector<glm::ivec4> &vertexBoneIndices() const;
+
+    /**
+    *  @brief
+    *    Set the bone indices of each vertex
+    *
+    *  @param[in] vertexBoneIndices
+    *    vertexBoneIndices array
+    */
+    void setVertexBoneIndices(const std::vector<glm::ivec4> & vertexBoneIndices);
+
+    /**
+    *  @brief
+    *    Set the bone indices of each vertex
+    *
+    *  @param[in] vertexBoneIndices
+    *    vertexBoneIndices array
+    */
+    void setVertexBoneIndices(std::vector<glm::ivec4> && vertexBoneIndices);
+
+    /**
+    *  @brief
+    *    Get the bone weights per vertex
+    *
+    *  @return
+    *    Array of the bone weights per vertex
+    */
+    const std::vector<glm::vec4> & vertexBoneWeights() const;
+
+    /**
+    *  @brief
+    *    Set the bone weights per vertex
+    *
+    *  @param[in] vertexBoneWeights
+    *    Array of the bone weights per vertex
+    */
+    void setVertexBoneWeights(const std::vector<glm::vec4> & vertexBoneWeights);
+
+    /**
+    *  @brief
+    *    Set the bone weights per vertex
+    *
+    *  @param[in] vertexBoneWeights
+    *    Array of the bone weights per vertex
+    */
+    void setVertexBoneWeights(std::vector<glm::vec4> && vertexBoneWeights);
+
+    /**
+    *  @brief
+    *    Get the bone mapping
+    *
+    *  @return
+    *    Mapping from bone name to bone index
+    */
+    const std::map<std::string, size_t> & boneMapping() const;
+
+    /**
+    *  @brief
+    *    Set the bone mapping
+    *
+    *  @param[in] boneMapping
+    *    Mapping from bone name to bone index
+    */
+    void setBoneMapping(const std::map<std::string, size_t> &boneMapping);
+
+    /**
+    *  @brief
+    *    Set the bone mapping
+    *
+    *  @param[in] boneMapping
+    *    Mapping from bone name to bone index
+    */
+    void setBoneMapping(std::map<std::string, size_t> &&boneMapping);
+
+    /**
+    *  @brief
+    *    Get the bind Transforms
+    *
+    *  @return
+    *    bindTransforms
+    */
+    const std::vector<glm::mat4> & bindTransforms() const;
+
+    /**
+    *  @brief
+    *    Set the bind Transforms
+    *
+    *  @param[in] bindTransforms
+    *    Array of bind transforms
+    */
+    void setBindTransforms(const std::vector<glm::mat4> & bindTransforms);
+
+    /**
+    *  @brief
+    *    Set the bind Transforms
+    *
+    *  @param[in] bindTransforms
+    *    Array of bind transforms
+    */
+    void setBindTransforms(std::vector<glm::mat4> &&bindTransforms);
+
+    /**
 	*  @brief
 	*    Get material index
 	*
@@ -185,8 +303,12 @@ protected:
     std::vector<unsigned int> m_indices;              /**< Index array */
     std::vector<glm::vec3>    m_vertices;             /**< Vertex array */
     std::vector<glm::vec3>    m_normals;              /**< Normal array */
-	std::vector<glm::vec3>    m_textureCoordinates;   /**< Texture coordinate array */
-	unsigned int              m_materialIndex;        /**< Material index */
+    std::vector<glm::vec3>    m_textureCoordinates;   /**< Texture coordinate array */
+    std::vector<glm::ivec4>   m_vertexBoneIndices;    /**< Indices per index > */
+    std::vector<glm::vec4>    m_vertexBoneWeights;    /**< Weights per index > */
+    std::map<std::string, size_t>  m_boneMapping;     /**< Mapping from string to boneIndex > */
+    std::vector<glm::mat4>    m_bindTransforms;       /**< bind Matrices per bone > */
+    unsigned int              m_materialIndex;        /**< Material index */
 };
 
 

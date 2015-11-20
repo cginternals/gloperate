@@ -35,6 +35,11 @@
 # GLOPERATE_ASSIMP_BINARIES
 # GLOPERATE_ASSIMP_BINARY_[RELEASE|DEBUG]
 
+# GLOPERATE_HIDAPI_LIBRARIES
+# GLOPERATE_HIDAPI_LIBRARY_[RELEASE|DEBUG]
+# GLOPERATE_HIDAPI_INCLUDE_DIR
+# GLOPERATE_HIDAPI_BINARIES
+# GLOPERATE_HIDAPI_BINARY_[RELEASE|DEBUG]
 
 include(FindPackageHandleStandardArgs)
 
@@ -153,6 +158,7 @@ find(gloperate-qt gloperate-qt/gloperate-qt_api.h ${LIB_PATHS})
 find(gloperate-glfw gloperate-glfw/gloperate-glfw_api.h ${LIB_PATHS})
 find(gloperate-osg gloperate-osg/gloperate-osg_api.h ${LIB_PATHS})
 find(gloperate-assimp gloperate-assimp/gloperate-assimp_api.h ${LIB_PATHS})
+find(gloperate-hidapi gloperate-assimp/gloperate-hidapi_api.h ${LIB_PATHS})
 
 # DEBUG
 # message("GLOPERATE_INCLUDE_DIRS  = ${GLOPERATE_INCLUDE_DIRS}")
