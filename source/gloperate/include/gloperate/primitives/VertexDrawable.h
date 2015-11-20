@@ -38,13 +38,18 @@ public:
     public:
         enum FormatType
         {
-            Float,
-            Integer,
-            Long
+            Float
+        ,   Integer
+        ,   Long
         };
 
         AttributeFormat();
-        AttributeFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset, FormatType formatType);
+        AttributeFormat(
+              gl::GLint size
+            , gl::GLenum type
+            , gl::GLboolean normalized
+            , gl::GLuint relativeOffset
+            , FormatType formatType);
 
         void setTo(globjects::VertexAttributeBinding * binding) const;
 
@@ -81,6 +86,7 @@ public:
     void enableAll();
 
     void draw() const;
+    void draw(gl::GLenum primitiveMode) const;
 
 
 protected:
@@ -128,7 +134,7 @@ template <typename T>
 void VertexDrawable::setVertices(const std::vector<T> & vertices)
 {
     m_vbo->setData(vertices, gl::GL_STATIC_DRAW);
-    m_size = vertices.size();
+    m_size = static_cast<gl::GLint>(vertices.size());
 }
 
 

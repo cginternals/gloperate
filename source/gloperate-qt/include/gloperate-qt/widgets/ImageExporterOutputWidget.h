@@ -41,8 +41,10 @@ public:
     ImageExporterOutputWidget(gloperate::ResourceManager & resourceManager, gloperate::Painter * painter, gloperate_qt::QtOpenGLWindow * context, QWidget * parent = nullptr);
     virtual ~ImageExporterOutputWidget();
 
+public slots:
     void updateResolutionSummaryLabel(const QString& sizeSummary);
     void updateResolution(const QSize& resolution);
+    void updateFrameCount(int count);
 
 
 signals:
@@ -63,7 +65,7 @@ protected:
     void updateDirectory();
     void updateFilenamePreview();
     void updateUiFileName();
-    std::string extractEnumNumStartIndex(const std::string& filename, int position);
+    std::string extractEnumNumStartIndex(const std::string& filename, size_t position);
 
 
 protected:
@@ -76,6 +78,7 @@ private:
     const QScopedPointer<Ui_ImageExporterOutputWidget> m_ui;
     QString m_dirName;
     QScopedPointer<QSize> m_resolution;
+    int m_count;
 };
 
 

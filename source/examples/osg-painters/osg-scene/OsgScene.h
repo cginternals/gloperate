@@ -7,10 +7,14 @@
 class OsgScene : public gloperate_osg::OsgPainter
 {
 public:
-    OsgScene(gloperate::ResourceManager & resourceManager, const std::string & relDataPath);
+    OsgScene(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo);
     virtual ~OsgScene();
 
 
 protected:
     virtual void onInitialize() override;
+
+protected:
+    /* Data path */
+    std::string m_dataPath;
 };

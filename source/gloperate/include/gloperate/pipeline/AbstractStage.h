@@ -7,7 +7,7 @@
 
 #include <signalzeug/Signal.h>
 
-#include <globjects/base/CachedValue.h>
+#include <gloperate/base/CachedValue.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -91,7 +91,7 @@ protected:
     bool m_alwaysProcess;
     bool m_processScheduled;
     std::string m_name;
-    globjects::CachedValue<bool> m_usable;
+    gloperate::CachedValue<bool> m_usable;
 
     std::set<AbstractData*> m_outputs;
     std::set<AbstractData*> m_sharedOutputs;

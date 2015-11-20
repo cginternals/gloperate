@@ -30,6 +30,7 @@ namespace gloperate_qt
 
 
 class QtOpenGLWindow;
+class ImageExporterMultiFrameWidget;
 class ImageExporterOutputWidget;
 class ImageExporterResolutionWidget;
 class ImageExporterTilebasedWidget;
@@ -48,6 +49,7 @@ public:
 private:
     std::unique_ptr<ImageExporterOutputWidget> m_outputWidget;
     std::unique_ptr<ImageExporterResolutionWidget> m_resolutionWidget;
+    std::unique_ptr<ImageExporterMultiFrameWidget> m_multiFrameWidget;
     std::unique_ptr<ImageExporterTilebasedWidget> m_tilebasedWidget;
     std::unique_ptr<widgetzeug::DataLinkWidget> m_dataLinkWidget;
 };

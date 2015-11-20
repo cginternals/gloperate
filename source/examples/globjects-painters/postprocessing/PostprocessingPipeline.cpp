@@ -247,7 +247,12 @@ PostprocessingPipeline::PostprocessingPipeline()
     rasterizationStage->color.invalidated.connect(
         [this, &rasterizationStage]()
         {
-            dynamic_cast<gloperate::TypedRenderTargetCapability *>(renderTargets.data())->setRenderTarget(gloperate::RenderTargetType::Depth, rasterizationStage->fbo(), gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
+            auto typedRenderTargetCapability = dynamic_cast<gloperate::TypedRenderTargetCapability *>(renderTargets.data());
+
+            if (typedRenderTargetCapability != nullptr)
+            {
+                typedRenderTargetCapability->setRenderTarget(gloperate::RenderTargetType::Depth, rasterizationStage->fbo(), gl::GLenum::GL_DEPTH_ATTACHMENT, gl::GLenum::GL_DEPTH_COMPONENT);
+            }
         });
 
     addStages(
