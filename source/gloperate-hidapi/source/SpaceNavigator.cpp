@@ -7,20 +7,20 @@ namespace gloperate_hidapi
 {
     SpaceNavigator::SpaceNavigator(const std::string& path)
     {
-		m_pHandle = nullptr;
-		m_pHandle = hid_open_path(path.c_str());
-	}
+        m_pHandle = nullptr;
+        m_pHandle = hid_open_path(path.c_str());
+    }
 
-	SpaceNavigator::~SpaceNavigator()
-	{
-		if(m_pHandle != nullptr)
-		{
-			hid_close(m_pHandle);
-		}
-	}
+    SpaceNavigator::~SpaceNavigator()
+    {
+        if(m_pHandle != nullptr)
+        {
+            hid_close(m_pHandle);
+        }
+    }
 
     void SpaceNavigator::update()
-	{
+    {
         unsigned char buf[65];
         if(m_pHandle)
         {
@@ -28,14 +28,14 @@ namespace gloperate_hidapi
         }
 
         float transX = 0;
-		float transY = 0;
+        float transY = 0;
         float transZ = 0;
         float rotX = 0;
         float rotY = 0;
         float rotZ = 0;
 
-		switch(buf[0])
-		{
+        switch(buf[0])
+        {
             case 0x01:
             {
                 transX = static_cast<float>(static_cast<int16_t>((buf[1] & 0x000000ff) | (static_cast<int16_t>(buf[2])<<8 & 0xffffff00)));
@@ -91,9 +91,9 @@ namespace gloperate_hidapi
                 break;
             }
 
-			default:
-				break;
-		}
-				
+            default:
+                break;
+        }
+
     }
 }
