@@ -120,6 +120,7 @@ set(sources
     ${source_path}/primitives/VertexDrawable.cpp
     ${source_path}/primitives/UniformGroup.cpp
     ${source_path}/primitives/ScreenAlignedQuad.cpp
+    ${source_path}/primitives/TexturedObject.cpp
     ${source_path}/primitives/AxisAlignedBoundingBox.cpp
     ${source_path}/primitives/Icosahedron.cpp
     ${source_path}/primitives/Plane3.h
@@ -141,6 +142,8 @@ set(sources
     ${source_path}/tools/ColorExtractor.cpp
     ${source_path}/tools/NormalExtractor.cpp
     ${source_path}/tools/GBufferExtractor.cpp
+    ${source_path}/tools/DistanceMap.cpp
+    ${source_path}/tools/MasksTableGenerator.cpp
 )
 
 set(api_includes
@@ -226,6 +229,7 @@ set(api_includes
     ${include_path}/primitives/VertexDrawable.h
     ${include_path}/primitives/AdaptiveGrid.h
     ${include_path}/primitives/ScreenAlignedQuad.h
+    ${include_path}/primitives/TexturedObject.h
     ${include_path}/primitives/Icosahedron.h
     ${include_path}/primitives/AxisAlignedBoundingBox.h
     ${include_path}/primitives/UniformGroup.h
@@ -251,6 +255,8 @@ set(api_includes
     ${include_path}/tools/ColorExtractor.h
     ${include_path}/tools/NormalExtractor.h
     ${include_path}/tools/GBufferExtractor.h
+    ${include_path}/tools/DistanceMap.h
+    ${include_path}/tools/MasksTableGenerator.h
 )
 
 # Group source files
