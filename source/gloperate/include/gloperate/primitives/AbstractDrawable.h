@@ -43,22 +43,10 @@ public:
 
     /**
     *  @brief
-    *    Get vertex array
-    *
-    *  @return
-    *    Vertex array
-    */
-    globjects::VertexArray * vertexArray() const;
-
-    /**
-    *  @brief
     *    Draw geometry
     */
     virtual void draw() = 0;
 
-
-protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;       /**< Vertex array object */
 };
 
 
