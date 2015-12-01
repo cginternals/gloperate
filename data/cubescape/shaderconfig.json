@@ -14,17 +14,17 @@
                     {
                         "name": "Cubescape Vertex Shader",
                         "type": "GL_VERTEX_SHADER",
-                        "file": "data/cubescape/cubescape.vert"
+                        "file": "cubescape.vert"
                     },
                     {
                         "name": "Cubescape Geometry Shader",
                         "type": "GL_GEOMETRY_SHADER",
-                        "file": "data/cubescape/cubescape.geom"
+                        "file": "cubescape.geom"
                     },
                     {
                         "name": "Cubescape Fragment Shader",
                         "type": "GL_FRAGMENT_SHADER",
-                        "file": "data/cubescape/cubescape.frag"
+                        "file": "cubescape.frag"
                     }
                 ]
             }

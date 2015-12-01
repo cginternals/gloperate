@@ -31,9 +31,11 @@ class AbstractStringSource;
 class ShaderCompiler
 {
 public:
-    static bool process(const QJsonDocument & configDocument);
+    ShaderCompiler(const QString & basePath);
+
+    static bool process(const QString & basePath, const QJsonDocument & configDocument);
     
-private:    
+private:
     bool parse(const QJsonDocument & configDocument);
     bool parse(const QJsonArray & config);
     bool parse(const QJsonObject & config);
@@ -85,6 +87,7 @@ private:
     void error(JsonParseError::Type type, const QString & info);
     
 private:
+    QString m_basePath;
     std::vector<std::string> m_compileFailures;
     std::vector<std::string> m_linkFailures;
 };

@@ -10,6 +10,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QFileInfo>
 
 #include <glbinding/gl/enum.h>
 
@@ -30,10 +31,14 @@
 #include "OpenGLContext.h"
 #include "JsonParseErrorLog.h"
 
-
-bool ShaderCompiler::process(const QJsonDocument & configDocument)
+ShaderCompiler::ShaderCompiler(const QString & basePath)
+: m_basePath(basePath)
 {
-    return ShaderCompiler().parse(configDocument);
+}
+
+bool ShaderCompiler::process(const QString & basePath, const QJsonDocument & configDocument)
+{
+    return ShaderCompiler(basePath).parse(configDocument);
 }
 
 bool ShaderCompiler::parse(const QJsonDocument & configDocument)
@@ -348,7 +353,7 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
         
         const auto shaderObject = shaderValue.toObject();
 
-        const auto fileName = shaderObject.value("file").toString();
+        auto fileName = shaderObject.value("file").toString();
 
         if (fileName.isNull())
         {
@@ -380,6 +385,12 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
             error(JsonParseError::ShaderTypeNotFound, typeString);
             ok = false;
             return shaders;
+        }
+
+        QFileInfo info(fileName);
+        if (info.isRelative())
+        {
+            fileName = m_basePath + "/" + fileName;
         }
 
         globjects::ref_ptr<globjects::AbstractStringSource> shaderFile = new globjects::File(fileName.toStdString());

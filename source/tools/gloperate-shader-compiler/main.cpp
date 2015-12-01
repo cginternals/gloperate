@@ -4,6 +4,8 @@
 #include <QJsonObject>
 #include <QFile>
 #include <QDebug>
+#include <QFileInfo>
+#include <QDir>
 
 #include "ShaderCompiler.h"
 
@@ -63,6 +65,6 @@ int main(int argc, char * argv[])
         qDebug() << "ERROR: parsing document failed:" << error.errorString();
         return 1;
     }
-    
-    return ShaderCompiler::process(jsonDocument) ? 0 : 1;
+
+    return ShaderCompiler::process(QFileInfo(configPath).absoluteDir().path(), jsonDocument) ? 0 : 1;
 }

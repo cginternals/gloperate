@@ -14,12 +14,12 @@
                     {
                         "name": "Cubescape Vertex Shader",
                         "type": "GL_VERTEX_SHADER",
-                        "file": "data/postprocessing/sphere.vert"
+                        "file": "sphere.vert"
                     },
                     {
                         "name": "Cubescape Fragment Shader",
                         "type": "GL_FRAGMENT_SHADER",
-                        "file": "data/postprocessing/sphere.frag"
+                        "file": "sphere.frag"
                     }
                 ]
             },
@@ -29,12 +29,12 @@
                     {
                         "name": "Postprocessing Vertex Shader",
                         "type": "GL_VERTEX_SHADER",
-                        "file": "data/postprocessing/phong.vert"
+                        "file": "phong.vert"
                     },
                     {
                         "name": "Postprocessing Fragment Shader",
                         "type": "GL_FRAGMENT_SHADER",
-                        "file": "data/postprocessing/phong.frag"
+                        "file": "phong.frag"
                     }
                 ]
             }
