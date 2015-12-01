@@ -193,12 +193,12 @@ std::string ImageExporterOutputWidget::replaceTags(const std::string& filename, 
     
     if (newFilename.find(m_supportedTags["enum_num"].toStdString()) != std::string::npos)
     {
-        size_t position = newFilename.find(m_supportedTags["enum_num"].toStdString());
+        auto position = newFilename.find(m_supportedTags["enum_num"].toStdString());
         newFilename.replace(position, m_supportedTags["enum_num"].length(), "");
 
-        std::string startIndex{ extractEnumNumStartIndex(newFilename, static_cast<int>(position)) };
+        auto startIndex = extractEnumNumStartIndex(newFilename, position);
 
-        int index{ atoi(startIndex.c_str()) };
+        int index = atoi(startIndex.c_str());
         newFilename.replace(position, startIndex.length() + 1, std::to_string(index));
 
         if (shouldUpdateUiFilename)
@@ -208,9 +208,9 @@ std::string ImageExporterOutputWidget::replaceTags(const std::string& filename, 
     return newFilename;
 }
 
-std::string ImageExporterOutputWidget::extractEnumNumStartIndex(const std::string& filename, int position)
+std::string ImageExporterOutputWidget::extractEnumNumStartIndex(const std::string& filename, size_t position)
 {
-    std::string startIndex{ "" };
+    auto startIndex = std::string("");
 
     while (filename.at(position) != '>')
     {
@@ -239,7 +239,7 @@ std::string ImageExporterOutputWidget::buildFileName()
 void ImageExporterOutputWidget::updateUiFileName()
 {
     QString oldUiFilename{ m_ui->fileNameTextEdit->toPlainText() };
-    int positionOfEnumNumIndex{ oldUiFilename.indexOf(m_supportedTags["enum_num"]) + m_supportedTags["enum_num"].length() };
+    size_t positionOfEnumNumIndex = oldUiFilename.indexOf(m_supportedTags["enum_num"]) + m_supportedTags["enum_num"].length();
     std::string startIndex{ extractEnumNumStartIndex(oldUiFilename.toStdString(), positionOfEnumNumIndex) };
     QString newUiFilename{ oldUiFilename.replace(positionOfEnumNumIndex, static_cast<int>(startIndex.length()), QString::number(atoi(startIndex.c_str()) + 1)) };
 

@@ -9,10 +9,10 @@
 #include <signalzeug/Signal.h>
 
 #include <globjects/base/Referenced.h>
-#include <globjects/base/CachedValue.h>
 
 #include <gloperate/gloperate_api.h>
 
+#include <gloperate/base/CachedValue.h>
 
 namespace gloperate
 {
@@ -324,13 +324,13 @@ protected:
     float     m_zFar;       /**< Far plane */
 
     // Camera matrices
-    globjects::CachedValue<glm::mat4> m_view;                   /**< View matrix */
-    globjects::CachedValue<glm::mat4> m_viewInverted;           /**< Inverted view matrix */
-    globjects::CachedValue<glm::mat4> m_projection;             /**< Projection matrix */
-    globjects::CachedValue<glm::mat4> m_projectionInverted;     /**< Inverted projection matrix */
-    globjects::CachedValue<glm::mat4> m_viewProjection;         /**< View-projection matrix */
-    globjects::CachedValue<glm::mat4> m_viewProjectionInverted; /**< Invertex view-projection matrix */
-    globjects::CachedValue<glm::mat3> m_normal;                 /**< Normal matrix */
+    gloperate::CachedValue<glm::mat4> m_view;                   /**< View matrix */
+    gloperate::CachedValue<glm::mat4> m_viewInverted;           /**< Inverted view matrix */
+    gloperate::CachedValue<glm::mat4> m_projection;             /**< Projection matrix */
+    gloperate::CachedValue<glm::mat4> m_projectionInverted;     /**< Inverted projection matrix */
+    gloperate::CachedValue<glm::mat4> m_viewProjection;         /**< View-projection matrix */
+    gloperate::CachedValue<glm::mat4> m_viewProjectionInverted; /**< Invertex view-projection matrix */
+    gloperate::CachedValue<glm::mat3> m_normal;                 /**< Normal matrix */
 };
 
 

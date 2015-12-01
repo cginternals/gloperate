@@ -49,23 +49,30 @@ void TimerApi::tickUpdate(float delta)
 int TimerApi::start(int msec, const reflectionzeug::Variant & func)
 {
     // Check if a function has been passed
-    if (func.canConvert<reflectionzeug::AbstractFunction*>()) {
+    if (func.canConvert<reflectionzeug::AbstractFunction*>())
+    {
         // Find a free timer
         int id = findFreeTimer();
-        if (id >= 0) {
+        if (id >= 0)
+        {
             // Reset timer callbacks
             m_timer[id].clear();
 
             // Get callback function and make a persistent copy
-            reflectionzeug::AbstractFunction * function = func.value<reflectionzeug::AbstractFunction*>()->clone();
+            auto function = func.value<reflectionzeug::AbstractFunction*>();
 
-            // Add callback
-            m_timer[id].addCallback(function);
+            if (function != nullptr)
+            {
+                reflectionzeug::AbstractFunction * functionCopy = function->clone();
 
-            // Start timer
-            m_timer[id].setSingleShot(false);
-            m_timer[id].start(msec);
-            return id;
+                // Add callback
+                m_timer[id].addCallback(functionCopy);
+
+                // Start timer
+                m_timer[id].setSingleShot(false);
+                m_timer[id].start(msec);
+                return id;
+            }
         }
     }
 
@@ -76,23 +83,31 @@ int TimerApi::start(int msec, const reflectionzeug::Variant & func)
 int TimerApi::once(int msec, const reflectionzeug::Variant & func)
 {
     // Check if a function has been passed
-    if (func.canConvert<reflectionzeug::AbstractFunction*>()) {
+    if (func.canConvert<reflectionzeug::AbstractFunction*>())
+    {
         // Find a free timer
         int id = findFreeTimer();
-        if (id >= 0) {
+        if (id >= 0)
+        {
             // Reset timer callbacks
             m_timer[id].clear();
 
             // Get callback function and make a persistent copy
-            reflectionzeug::AbstractFunction * function = func.value<reflectionzeug::AbstractFunction*>()->clone();
+            auto function = func.value<reflectionzeug::AbstractFunction*>();
 
-            // Add callback
-            m_timer[id].addCallback(function);
+            if (function != nullptr)
+            {
+                auto functionCopy = function->clone();
 
-            // Start timer
-            m_timer[id].setSingleShot(true);
-            m_timer[id].start(msec);
-            return id;
+                // Add callback
+                m_timer[id].addCallback(functionCopy);
+
+                // Start timer
+                m_timer[id].setSingleShot(true);
+                m_timer[id].start(msec);
+
+                return id;
+            }
         }
     }
 
@@ -120,12 +135,18 @@ void TimerApi::stopAll()
 void TimerApi::nextTick(const reflectionzeug::Variant & func)
 {
     // Check if a function has been passed
-    if (func.canConvert<reflectionzeug::AbstractFunction*>()) {
+    if (func.canConvert<reflectionzeug::AbstractFunction*>())
+    {
         // Get callback function and make a persistent copy
-        reflectionzeug::AbstractFunction * function = func.value<reflectionzeug::AbstractFunction*>()->clone();
+        auto function = func.value<reflectionzeug::AbstractFunction*>();
 
-        // Add function to list of callbacks
-        m_tickCallbacks.push_back(function);
+        if (function != nullptr)
+        {
+            auto functionCopy = function->clone();
+
+            // Add function to list of callbacks
+            m_tickCallbacks.push_back(functionCopy);
+        }
     }
 }
 
