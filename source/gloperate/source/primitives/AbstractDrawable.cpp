@@ -5,6 +5,7 @@
 namespace gloperate
 {
 
+
 AbstractDrawable::AbstractDrawable()
 {
 }
@@ -12,5 +13,6 @@ AbstractDrawable::AbstractDrawable()
 AbstractDrawable::~AbstractDrawable()
 {
 }
+
 
 } // namespace gloperate

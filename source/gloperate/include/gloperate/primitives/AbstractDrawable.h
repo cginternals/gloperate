@@ -1,16 +1,7 @@
 
 #pragma once
 
-
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/gloperate_api.h>
-
-
-namespace globjects
-{
-    class VertexArray;
-}
 
 
 namespace gloperate
@@ -22,9 +13,8 @@ namespace gloperate
 *    Base class for drawables
 *
 *    A drawable is any kind of geometry that can be
-*    rendered on the GPU. It stores its geometry
-*    as a vertex array object and provides a paint
-*    method that executes the actual rendering.
+*    rendered on the GPU. Subclasses should provide
+*    a paint method that executes the actual rendering.
 */
 class GLOPERATE_API AbstractDrawable
 {
