@@ -10,6 +10,8 @@
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 
+#include <gloperate/base/ColorGradient.h>
+
 
 Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
 : PipelinePainter("Postprocessing", resourceManager, pluginInfo, m_pipeline)
@@ -39,8 +41,40 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, con
     
     time->setLoopDuration(glm::pi<float>() * 2);
 
+    gloperate::ColorGradientList & gradients = m_pipeline.gradients.data();
+    gradients.add(new gloperate::StaticGradient("Static Light Gray", reflectionzeug::Color(233, 233, 233)));
+    gradients.add(new gloperate::StaticGradient("Static Light Red", reflectionzeug::Color(233, 200, 200)));
+    gradients.add(new gloperate::StaticGradient("Static Light Green", reflectionzeug::Color(200, 233, 200)));
+    gradients.add(new gloperate::StaticGradient("Static Light Blue", reflectionzeug::Color(200, 200, 233)));
+
     // Register properties
     addProperty<bool>("Animation", this, &Postprocessing::animation, &Postprocessing::setAnimation);
+    reflectionzeug::Property<std::string> * backgroundProperty = createProperty("Background", m_pipeline.gradientName);
+
+    std::vector<std::vector<unsigned char>> pixmaps;
+    std::vector<std::string> names;
+
+    for (const auto & pair : gradients.gradients())
+    {
+        const gloperate::ColorGradient * gradient = pair.second;
+
+        std::vector<unsigned char> gradientData = gradient->pixelData(16);
+        gradientData.resize(16 * gradientData.size());
+
+        for (size_t i = 1; i < 16; ++i)
+        {
+            std::copy(gradientData.begin(), gradientData.begin()+16*sizeof(std::uint32_t), gradientData.begin()+(i*16*sizeof(std::uint32_t)));
+        }
+
+        pixmaps.push_back(gradientData);
+        names.push_back(pair.first);
+    }
+
+    backgroundProperty->setOption("pixmapSize", reflectionzeug::Variant::fromValue(std::pair<std::uint32_t, std::uint32_t>(16, 16)));
+    backgroundProperty->setOption("choices", reflectionzeug::Variant::fromValue(names));
+    backgroundProperty->setOption("pixmaps", reflectionzeug::Variant::fromValue(pixmaps));
+
+    addProperty(backgroundProperty);
 }
 
 bool Postprocessing::animation() const
