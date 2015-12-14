@@ -21,7 +21,6 @@ class ColorGradientList;
 
 class GLOPERATE_API ColorGradient
 {
-    friend class ColorGradientList;
 public:
     explicit ColorGradient(const std::string & name);
 
@@ -35,11 +34,10 @@ public:
     template <size_t numPixels>
     std::array<unsigned char, numPixels * sizeof(std::uint32_t)> pixelData() const;
 
-    globjects::Texture * generateTexture(size_t numPixels) const;
-
-protected:
     virtual void fillPixelData(unsigned char * data, size_t numPixels) const;
     virtual reflectionzeug::Color colorAt(float position) const = 0;
+
+    globjects::Texture * generateTexture(size_t numPixels) const;
 
 protected:
     std::string m_name;

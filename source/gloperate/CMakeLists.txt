@@ -136,6 +136,8 @@ set(sources
     ${source_path}/resources/RawFile.cpp
     ${source_path}/resources/ResourceManager.cpp
     
+    ${source_path}/stages/ColorGradientPreparationStage.cpp
+    
     ${source_path}/tools/ImageExporter.cpp
     ${source_path}/tools/DepthExtractor.cpp
     ${source_path}/tools/WorldExtractor.cpp
@@ -143,6 +145,7 @@ set(sources
     ${source_path}/tools/ColorExtractor.cpp
     ${source_path}/tools/NormalExtractor.cpp
     ${source_path}/tools/GBufferExtractor.cpp
+    ${source_path}/tools/ColorGradientPreparation.cpp
 )
 
 set(api_includes
@@ -250,6 +253,8 @@ set(api_includes
     ${include_path}/resources/GlrawTextureLoader.h
     ${include_path}/resources/Loader.h
     
+    ${include_path}/stages/ColorGradientPreparationStage.h
+    
     ${include_path}/tools/ImageExporter.h
     ${include_path}/tools/DepthExtractor.h
     ${include_path}/tools/WorldExtractor.h
@@ -257,6 +262,7 @@ set(api_includes
     ${include_path}/tools/ColorExtractor.h
     ${include_path}/tools/NormalExtractor.h
     ${include_path}/tools/GBufferExtractor.h
+    ${include_path}/tools/ColorGradientPreparation.h
 )
 
 # Group source files
