@@ -23,8 +23,8 @@ void ColorGradientPreparationStage::process()
 {
     ColorGradientPreparation preparation(gradients.data(), pixmapSize.data());
 
-    names.data() = preparation.names();
-    pixmaps.data() = preparation.pixmaps();
+    preparation.fillNames(names.data());
+    preparation.fillPixmaps(pixmaps.data());
 
     invalidateOutputs();
 }
