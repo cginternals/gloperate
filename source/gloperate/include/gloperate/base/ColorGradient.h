@@ -56,6 +56,19 @@ protected:
     virtual reflectionzeug::Color colorAt(float position) const override;
 };
 
+class GLOPERATE_API LinearGradient : public ColorGradient
+{
+public:
+    LinearGradient(const std::string & name, const reflectionzeug::Color & color1, const reflectionzeug::Color & color2);
+
+protected:
+    reflectionzeug::Color m_color1;
+    reflectionzeug::Color m_color2;
+
+protected:
+    virtual reflectionzeug::Color colorAt(float position) const override;
+};
+
 } // namespace reflectionzeug
 
 #include <gloperate/base/ColorGradient.hpp>

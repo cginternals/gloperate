@@ -47,6 +47,7 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, con
     gradients.add(new gloperate::StaticGradient("Static Light Red", reflectionzeug::Color(233, 180, 180)));
     gradients.add(new gloperate::StaticGradient("Static Light Green", reflectionzeug::Color(180, 233, 180)));
     gradients.add(new gloperate::StaticGradient("Static Light Blue", reflectionzeug::Color(180, 180, 233)));
+    gradients.add(new gloperate::LinearGradient("Light Blue to Light Green", reflectionzeug::Color(180, 180, 233), reflectionzeug::Color(180, 233, 180)));
 
     // Register properties
     addProperty<bool>("Animation", this, &Postprocessing::animation, &Postprocessing::setAnimation);

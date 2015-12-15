@@ -82,4 +82,16 @@ reflectionzeug::Color StaticGradient::colorAt(float /*position*/) const
     return m_color;
 }
 
+LinearGradient::LinearGradient(const std::string & name, const reflectionzeug::Color & color1, const reflectionzeug::Color & color2)
+: ColorGradient(name)
+, m_color1(color1)
+, m_color2(color2)
+{
+}
+
+reflectionzeug::Color LinearGradient::colorAt(float position) const
+{
+    return m_color1.interpolate(m_color2, position);
+}
+
 } // namespace gloperate
