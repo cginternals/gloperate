@@ -34,6 +34,9 @@
 #include <gloperate/primitives/Icosahedron.h>
 #include <gloperate/primitives/ScreenAlignedQuad.h>
 
+#include <gloperate/stages/ColorGradientSelectionStage.h>
+#include <gloperate/stages/ColorGradientTextureStage.h>
+
 
 class RasterizationStage : public gloperate::AbstractStage
 {
@@ -45,6 +48,8 @@ public:
         addInput("camera", camera);
         addInput("projection", projection);
         addInput("time", time);
+        addInput("gradientsTexture", gradientsTexture);
+        addInput("gradientIndex", gradientIndex);
 
         addOutput("color", color);
         addOutput("normal", normal);
@@ -71,10 +76,12 @@ public:
 
         globjects::StringTemplate* sphereVertexShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/sphere.vert"));
         globjects::StringTemplate* sphereFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/sphere.frag"));
+        globjects::StringTemplate* backgroundFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/background.frag"));
 
         #ifdef __APPLE__
             sphereVertexShader->replace("#version 140", "#version 150");
             sphereFragmentShader->replace("#version 140", "#version 150");
+            backgroundFragmentShader->replace("#version 140", "#version 150");
         #endif
 
         m_program = new globjects::Program;
@@ -83,6 +90,8 @@ public:
             new globjects::Shader(gl::GL_VERTEX_SHADER, sphereVertexShader),
             new globjects::Shader(gl::GL_FRAGMENT_SHADER, sphereFragmentShader)
         );
+
+        m_background = new gloperate::ScreenAlignedQuad(new globjects::Shader(gl::GL_FRAGMENT_SHADER, backgroundFragmentShader));
 
         m_icosahedron = new gloperate::Icosahedron(2);
     }
@@ -98,6 +107,8 @@ public:
     gloperate::InputSlot<gloperate::AbstractVirtualTimeCapability *> time;
     gloperate::InputSlot<gloperate::AbstractCameraCapability *> camera;
     gloperate::InputSlot<gloperate::AbstractProjectionCapability *> projection;
+    gloperate::InputSlot<globjects::ref_ptr<globjects::Texture>> gradientsTexture;
+    gloperate::InputSlot<size_t> gradientIndex;
 
     gloperate::Data<globjects::ref_ptr<globjects::Texture>> color;
     gloperate::Data<globjects::ref_ptr<globjects::Texture>> normal;
@@ -121,8 +132,26 @@ protected:
         m_fbo->bind(gl::GL_FRAMEBUFFER);
         m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1, gl::GL_COLOR_ATTACHMENT2 });
 
-        gl::glClearColor(1.0, 1.0, 1.0, 0.0);
+        gl::glClearDepth(1.0);
+        gl::glClearColor(1.0, 1.0, 1.0, 1.0);
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+
+        gradientsTexture.data()->bindActive(1);
+
+        gl::glDisable(gl::GL_DEPTH_TEST);
+        gl::glDepthMask(gl::GL_FALSE);
+
+        m_background->program()->setUniform("gradients", 1);
+        m_background->program()->setUniform("gradientIndex", static_cast<int>(gradientIndex.data()));
+        m_background->draw();
+
+        gl::glEnable(gl::GL_DEPTH_TEST);
+        gl::glDepthMask(gl::GL_TRUE);
+
+        gradientsTexture.data()->unbindActive(1);
+
+        //gl::glClearColor(1.0, 1.0, 1.0, 0.0);
+        //gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
         m_program->use();
         m_icosahedron->draw();
@@ -131,12 +160,13 @@ protected:
         m_fbo->unbind(gl::GL_FRAMEBUFFER);
     }
 
-
 protected:
     globjects::ref_ptr<globjects::Framebuffer> m_fbo;
     globjects::ref_ptr<globjects::Renderbuffer> m_depth;
     globjects::ref_ptr<globjects::Program> m_program;
     globjects::ref_ptr<gloperate::Icosahedron> m_icosahedron;
+
+    globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_background;
 };
 
 
@@ -230,14 +260,25 @@ protected:
 
 
 PostprocessingPipeline::PostprocessingPipeline()
+: gradientsTextureWidth(512)
 {
+    auto gradientTextureStage = new gloperate::ColorGradientTextureStage();
+    auto gradientSelectionStage = new gloperate::ColorGradientSelectionStage();
     auto rasterizationStage = new RasterizationStage();
     auto postprocessingStage = new PostprocessingStage();
+
+    gradientTextureStage->gradients = gradients;
+    gradientTextureStage->textureWidth = gradientsTextureWidth;
+
+    gradientSelectionStage->gradients = gradients;
+    gradientSelectionStage->gradientName = gradientName;
 
     rasterizationStage->camera = camera;
     rasterizationStage->viewport = viewport;
     rasterizationStage->time = time;
     rasterizationStage->projection = projection;
+    rasterizationStage->gradientsTexture = gradientTextureStage->gradientTexture;
+    rasterizationStage->gradientIndex = gradientSelectionStage->gradientIndex;
 
     postprocessingStage->color = rasterizationStage->color;
     postprocessingStage->normal = rasterizationStage->normal;
@@ -256,6 +297,8 @@ PostprocessingPipeline::PostprocessingPipeline()
         });
 
     addStages(
+        gradientTextureStage,
+        gradientSelectionStage,
         rasterizationStage,
         postprocessingStage
     );

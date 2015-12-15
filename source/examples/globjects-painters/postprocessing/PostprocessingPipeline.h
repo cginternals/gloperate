@@ -40,7 +40,7 @@ public:
     gloperate::Data<gloperate::AbstractProjectionCapability *> projection;
     gloperate::Data<gloperate::AbstractTypedRenderTargetCapability *> renderTargets;
 
+    gloperate::Data<size_t> gradientsTextureWidth;
     gloperate::Data<std::string> gradientName;
     gloperate::Data<gloperate::ColorGradientList> gradients;
-    gloperate::Data<globjects::ref_ptr<globjects::Texture>> gradientsTexture;
 };

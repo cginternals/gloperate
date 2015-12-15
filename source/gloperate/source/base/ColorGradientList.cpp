@@ -100,7 +100,7 @@ globjects::Texture * ColorGradientList::generateTexture(size_t numPixels) const
 
     std::vector<unsigned char> data = pixelData(numPixels);
 
-    texture->image2D(0, gl::GL_RGBA, numPixels, m_gradients.size(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data.data());
+    texture->image2D(0, gl::GL_RGBA, numPixels, m_gradients.size(), 0, gl::GL_BGRA, gl::GL_UNSIGNED_BYTE, data.data());
 
     return texture;
 }

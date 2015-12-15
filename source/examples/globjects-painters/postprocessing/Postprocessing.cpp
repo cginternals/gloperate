@@ -44,9 +44,9 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, con
 
     gloperate::ColorGradientList & gradients = m_pipeline.gradients.data();
     gradients.add(new gloperate::StaticGradient("Static Light Gray", reflectionzeug::Color(233, 233, 233)));
-    gradients.add(new gloperate::StaticGradient("Static Light Red", reflectionzeug::Color(233, 200, 200)));
-    gradients.add(new gloperate::StaticGradient("Static Light Green", reflectionzeug::Color(200, 233, 200)));
-    gradients.add(new gloperate::StaticGradient("Static Light Blue", reflectionzeug::Color(200, 200, 233)));
+    gradients.add(new gloperate::StaticGradient("Static Light Red", reflectionzeug::Color(233, 180, 180)));
+    gradients.add(new gloperate::StaticGradient("Static Light Green", reflectionzeug::Color(180, 233, 180)));
+    gradients.add(new gloperate::StaticGradient("Static Light Blue", reflectionzeug::Color(180, 180, 233)));
 
     // Register properties
     addProperty<bool>("Animation", this, &Postprocessing::animation, &Postprocessing::setAnimation);
@@ -57,8 +57,7 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, con
     backgroundProperty->setOption("pixmapSize", reflectionzeug::Variant::fromValue(gradientsTool.iconSize()));
     backgroundProperty->setOption("choices", reflectionzeug::Variant::fromValue(gradientsTool.names()));
     backgroundProperty->setOption("pixmaps", reflectionzeug::Variant::fromValue(gradientsTool.pixmaps()));
-
-    m_pipeline.gradientsTexture.data() = gradients.generateTexture(512);
+    backgroundProperty->setValue(gradientsTool.names().front());
 
     addProperty(backgroundProperty);
 }
