@@ -43,7 +43,7 @@ void ColorGradient::fillPixelData(unsigned char * data, size_t numPixels) const
     {
         const float position = i / float(numPixels-1);
         const reflectionzeug::Color color = colorAt(position);
-        const std::uint32_t encodedColor = color.rgba();
+        const std::uint32_t encodedColor = color.bgra();
 
         std::memmove(&data[i * sizeof(std::uint32_t)], &encodedColor, sizeof(std::uint32_t));
     }
@@ -69,7 +69,7 @@ StaticGradient::StaticGradient(const std::string & name, const reflectionzeug::C
 
 void StaticGradient::fillPixelData(unsigned char * data, size_t numPixels) const
 {
-    const std::uint32_t encodedColor = m_color.rgba();
+    const std::uint32_t encodedColor = m_color.bgra();
 
     for (size_t i = 0; i < numPixels; ++i)
     {

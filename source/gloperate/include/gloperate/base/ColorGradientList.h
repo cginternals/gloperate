@@ -2,6 +2,10 @@
 
 #include <map>
 
+#include <gloperate/gloperate_api.h>
+
+#include <gloperate/base/ColorGradient.h>
+
 namespace globjects
 {
 
@@ -9,9 +13,6 @@ class Texture;
 
 }
 
-#include <gloperate/gloperate_api.h>
-
-#include <gloperate/base/ColorGradient.h>
 
 namespace gloperate
 {

@@ -53,7 +53,7 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, con
     addProperty<bool>("Animation", this, &Postprocessing::animation, &Postprocessing::setAnimation);
     reflectionzeug::Property<std::string> * backgroundProperty = createProperty("Background", m_pipeline.gradientName);
 
-    gloperate::ColorGradientPreparation gradientsTool(gradients, { 16, 16 });
+    gloperate::ColorGradientPreparation gradientsTool(gradients, { 80, 20 });
 
     backgroundProperty->setOption("pixmapSize", reflectionzeug::Variant::fromValue(gradientsTool.iconSize()));
     backgroundProperty->setOption("choices", reflectionzeug::Variant::fromValue(gradientsTool.names()));
