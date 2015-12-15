@@ -70,7 +70,7 @@ ColorGradient * ColorGradientList::at(const std::string & name)
     return iterator->second;
 }
 
-size_t ColorGradientList::indexOf(const std::string & name)
+size_t ColorGradientList::indexOf(const std::string & name) const
 {
     auto iterator = m_gradients.find(name);
 

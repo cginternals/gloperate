@@ -137,6 +137,7 @@ set(sources
     ${source_path}/resources/ResourceManager.cpp
     
     ${source_path}/stages/ColorGradientPreparationStage.cpp
+    ${source_path}/stages/ColorGradientSelectionStage.cpp
     
     ${source_path}/tools/ImageExporter.cpp
     ${source_path}/tools/DepthExtractor.cpp
@@ -254,6 +255,7 @@ set(api_includes
     ${include_path}/resources/Loader.h
     
     ${include_path}/stages/ColorGradientPreparationStage.h
+    ${include_path}/stages/ColorGradientSelectionStage.h
     
     ${include_path}/tools/ImageExporter.h
     ${include_path}/tools/DepthExtractor.h

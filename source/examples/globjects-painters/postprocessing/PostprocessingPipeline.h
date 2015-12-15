@@ -3,6 +3,9 @@
 
 #include <reflectionzeug/base/Color.h>
 
+#include <globjects/base/ref_ptr.h>
+#include <globjects/Texture.h>
+
 #include <gloperate/pipeline/AbstractPipeline.h>
 #include <gloperate/pipeline/Data.h>
 
@@ -39,4 +42,5 @@ public:
 
     gloperate::Data<std::string> gradientName;
     gloperate::Data<gloperate::ColorGradientList> gradients;
+    gloperate::Data<globjects::ref_ptr<globjects::Texture>> gradientsTexture;
 };

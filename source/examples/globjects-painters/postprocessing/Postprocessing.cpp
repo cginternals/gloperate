@@ -58,6 +58,8 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, con
     backgroundProperty->setOption("choices", reflectionzeug::Variant::fromValue(gradientsTool.names()));
     backgroundProperty->setOption("pixmaps", reflectionzeug::Variant::fromValue(gradientsTool.pixmaps()));
 
+    m_pipeline.gradientsTexture.data() = gradients.generateTexture(512);
+
     addProperty(backgroundProperty);
 }
 

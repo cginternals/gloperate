@@ -34,7 +34,8 @@ public:
     void add(ColorGradient * gradient);
     const ColorGradient * at(const std::string & name) const;
     ColorGradient * at(const std::string & name);
-    size_t indexOf(const std::string & name);
+
+    size_t indexOf(const std::string & name) const;
 
     std::vector<unsigned char> pixelData(size_t numPixels) const;
 
