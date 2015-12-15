@@ -55,8 +55,9 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-    ${source_path}/base/ColorGradient.cpp
+    ${source_path}/base/AbstractColorGradient.cpp
     ${source_path}/base/ColorGradientList.cpp
+    ${source_path}/base/ExplicitEquidistantColorGradient.cpp
     ${source_path}/base/RenderTarget.cpp
     ${source_path}/base/dirent_msvc.h
     ${source_path}/base/registernamedstrings.cpp
@@ -151,10 +152,12 @@ set(sources
 )
 
 set(api_includes
-    ${include_path}/base/ColorGradient.h
-    ${include_path}/base/ColorGradient.hpp
+    ${include_path}/base/AbstractColorGradient.h
+    ${include_path}/base/AbstractColorGradient.hpp
     ${include_path}/base/ColorGradientList.h
     ${include_path}/base/ColorGradientList.hpp
+    ${include_path}/base/ExplicitEquidistantColorGradient.h
+    ${include_path}/base/ExplicitEquidistantColorGradient.hpp
     ${include_path}/base/RenderTarget.h
     ${include_path}/base/registernamedstrings.h
     ${include_path}/base/collection.hpp

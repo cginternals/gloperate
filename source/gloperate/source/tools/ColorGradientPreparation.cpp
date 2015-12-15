@@ -1,6 +1,6 @@
 #include <gloperate/tools/ColorGradientPreparation.h>
 
-#include <gloperate/base/ColorGradient.h>
+#include <gloperate/base/AbstractColorGradient.h>
 #include <gloperate/base/ColorGradientList.h>
 
 
@@ -58,7 +58,7 @@ void ColorGradientPreparation::fillPixmaps(std::vector<std::vector<unsigned char
 
     for (const auto & pair : m_gradients.gradients())
     {
-        const gloperate::ColorGradient * gradient = pair.second;
+        const gloperate::AbstractColorGradient * gradient = pair.second;
 
         std::vector<unsigned char> gradientData(m_iconSize.first * m_iconSize.second * sizeof(std::uint32_t));
 

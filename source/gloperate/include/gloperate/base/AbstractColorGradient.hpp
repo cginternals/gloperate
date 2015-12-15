@@ -1,12 +1,14 @@
 #pragma once
 
-#include <gloperate/base/ColorGradient.h>
+#include <gloperate/base/AbstractColorGradient.h>
+
 
 namespace gloperate
 {
 
+
 template <size_t numPixels>
-std::array<unsigned char, numPixels * sizeof(std::uint32_t)> ColorGradient::pixelData() const
+std::array<unsigned char, numPixels * sizeof(std::uint32_t)> AbstractColorGradient::pixelData() const
 {
     std::array<unsigned char, numPixels * sizeof(std::uint32_t)> data;
 
@@ -14,5 +16,6 @@ std::array<unsigned char, numPixels * sizeof(std::uint32_t)> ColorGradient::pixe
 
     return data;
 }
+
 
 } // namespace gloperate

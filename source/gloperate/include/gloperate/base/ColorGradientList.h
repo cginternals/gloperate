@@ -4,7 +4,7 @@
 
 #include <gloperate/gloperate_api.h>
 
-#include <gloperate/base/ColorGradient.h>
+#include <gloperate/base/AbstractColorGradient.h>
 
 namespace globjects
 {
@@ -21,20 +21,20 @@ class GLOPERATE_API ColorGradientList
 {
 public:
     ColorGradientList();
-    ColorGradientList(std::initializer_list<ColorGradient*> gradients);
+    ColorGradientList(std::initializer_list<AbstractColorGradient*> gradients);
 
     template <typename... Args>
-    ColorGradientList(ColorGradient * gradient, Args... args);
+    ColorGradientList(AbstractColorGradient * gradient, Args... args);
 
     virtual ~ColorGradientList();
 
     size_t size() const;
 
-    const std::map<std::string, const ColorGradient *> & gradients() const;
+    const std::map<std::string, const AbstractColorGradient *> & gradients() const;
 
-    void add(ColorGradient * gradient);
-    const ColorGradient * at(const std::string & name) const;
-    ColorGradient * at(const std::string & name);
+    void add(AbstractColorGradient * gradient);
+    const AbstractColorGradient * at(const std::string & name) const;
+    AbstractColorGradient * at(const std::string & name);
 
     size_t indexOf(const std::string & name) const;
 
@@ -43,7 +43,7 @@ public:
     globjects::Texture * generateTexture(size_t numPixels) const;
 
 protected:
-    std::map<std::string, ColorGradient *> m_gradients;
+    std::map<std::string, AbstractColorGradient *> m_gradients;
 };
 
 } // namespace gloperate

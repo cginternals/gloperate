@@ -6,7 +6,7 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/base/ColorGradient.h>
+#include <gloperate/base/AbstractColorGradient.h>
 
 namespace gloperate
 {
@@ -15,7 +15,7 @@ ColorGradientList::ColorGradientList()
 {
 }
 
-ColorGradientList::ColorGradientList(std::initializer_list<ColorGradient*> gradients)
+ColorGradientList::ColorGradientList(std::initializer_list<AbstractColorGradient*> gradients)
 {
     for (auto gradient : gradients)
     {
@@ -36,17 +36,17 @@ size_t ColorGradientList::size() const
     return m_gradients.size();
 }
 
-const std::map<std::string, const ColorGradient *> & ColorGradientList::gradients() const
+const std::map<std::string, const AbstractColorGradient *> & ColorGradientList::gradients() const
 {
-    return reinterpret_cast<const std::map<std::string, const ColorGradient *> &>(m_gradients);
+    return reinterpret_cast<const std::map<std::string, const AbstractColorGradient *> &>(m_gradients);
 }
 
-void ColorGradientList::add(ColorGradient * gradient)
+void ColorGradientList::add(AbstractColorGradient * gradient)
 {
     m_gradients.emplace(gradient->name(), gradient);
 }
 
-const ColorGradient * ColorGradientList::at(const std::string & name) const
+const AbstractColorGradient * ColorGradientList::at(const std::string & name) const
 {
     auto iterator = m_gradients.find(name);
 
@@ -58,7 +58,7 @@ const ColorGradient * ColorGradientList::at(const std::string & name) const
     return iterator->second;
 }
 
-ColorGradient * ColorGradientList::at(const std::string & name)
+AbstractColorGradient * ColorGradientList::at(const std::string & name)
 {
     auto iterator = m_gradients.find(name);
 
@@ -84,7 +84,7 @@ std::vector<unsigned char> ColorGradientList::pixelData(size_t numPixels) const
     size_t i = 0;
     for (const auto & pair : m_gradients)
     {
-        const ColorGradient * gradient = pair.second;
+        const AbstractColorGradient * gradient = pair.second;
 
         gradient->fillPixelData(&data[i * numPixels * sizeof(std::uint32_t)], numPixels);
 

@@ -10,7 +10,7 @@
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 
-#include <gloperate/base/ColorGradient.h>
+#include <gloperate/base/ExplicitEquidistantColorGradient.h>
 #include <gloperate/tools/ColorGradientPreparation.h>
 
 
@@ -43,11 +43,45 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, con
     time->setLoopDuration(glm::pi<float>() * 2);
 
     gloperate::ColorGradientList & gradients = m_pipeline.gradients.data();
-    gradients.add(new gloperate::StaticGradient("Static Light Gray", reflectionzeug::Color(233, 233, 233)));
-    gradients.add(new gloperate::StaticGradient("Static Light Red", reflectionzeug::Color(233, 180, 180)));
-    gradients.add(new gloperate::StaticGradient("Static Light Green", reflectionzeug::Color(180, 233, 180)));
-    gradients.add(new gloperate::StaticGradient("Static Light Blue", reflectionzeug::Color(180, 180, 233)));
-    gradients.add(new gloperate::LinearGradient("Light Blue to Light Green", reflectionzeug::Color(180, 180, 233), reflectionzeug::Color(180, 233, 180)));
+    gradients.add(new gloperate::ExplicitEquidistantColorGradient("Sequential Single-Hue Discrete", true,
+        reflectionzeug::Color(239,243,255),
+        reflectionzeug::Color(189,215,231),
+        reflectionzeug::Color(107,174,214),
+        reflectionzeug::Color(49,130,189),
+        reflectionzeug::Color(8,81,156)
+    ));
+    gradients.add(new gloperate::ExplicitEquidistantColorGradient("Sequential Multi-Hue Interpolated", false,
+        reflectionzeug::Color(255,255,204),
+        reflectionzeug::Color(194,230,153),
+        reflectionzeug::Color(120,198,121),
+        reflectionzeug::Color(49,163,84),
+        reflectionzeug::Color(0,104,55)
+    ));
+    gradients.add(new gloperate::ExplicitEquidistantColorGradient("Diverging Discrete", true,
+        reflectionzeug::Color(202,0,32),
+        reflectionzeug::Color(244,165,130),
+        reflectionzeug::Color(247,247,247),
+        reflectionzeug::Color(146,197,222),
+        reflectionzeug::Color(5,113,176)
+    ));
+    gradients.add(new gloperate::ExplicitEquidistantColorGradient("Diverging Interpolated", false,
+        reflectionzeug::Color(202,0,32),
+        reflectionzeug::Color(244,165,130),
+        reflectionzeug::Color(247,247,247),
+        reflectionzeug::Color(146,197,222),
+        reflectionzeug::Color(5,113,176)
+    ));
+    gradients.add(new gloperate::ExplicitEquidistantColorGradient("Qualitative", true,
+        reflectionzeug::Color(251,180,174),
+        reflectionzeug::Color(179,205,227),
+        reflectionzeug::Color(204,235,197),
+        reflectionzeug::Color(222,203,228),
+        reflectionzeug::Color(254,217,166),
+        reflectionzeug::Color(255,255,204),
+        reflectionzeug::Color(229,216,189),
+        reflectionzeug::Color(253,218,236),
+        reflectionzeug::Color(242,242,242)
+    ));
 
     // Register properties
     addProperty<bool>("Animation", this, &Postprocessing::animation, &Postprocessing::setAnimation);

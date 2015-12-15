@@ -6,7 +6,7 @@ namespace gloperate
 {
 
 template <typename... Args>
-ColorGradientList::ColorGradientList(ColorGradient * gradient, Args... args)
+ColorGradientList::ColorGradientList(AbstractColorGradient * gradient, Args... args)
 : ColorGradientList(args...)
 {
     add(gradient);
