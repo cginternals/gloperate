@@ -58,7 +58,7 @@ public:
     globjects::Texture * generateTexture(size_t numPixels) const;
 
 protected:
-    std::string m_name;
+    std::string m_name; /// The identifier of a color gradient which is currently used as output string.
 };
 
 

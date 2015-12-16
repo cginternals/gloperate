@@ -17,6 +17,13 @@ class Texture;
 namespace gloperate
 {
 
+/**
+ * @brief The ColorGradientList represents and manages a list of AbstractColorGradients.
+ *
+ * The color gradients are stored and sorted by their names, requiring a lookup by name.
+ *
+ * A texture containing all gradients can be created. For a lookup in this texture it is useful to query the texture index of the current gradient by the indexOf method.
+ */
 class GLOPERATE_API ColorGradientList
 {
 public:
@@ -43,7 +50,7 @@ public:
     globjects::Texture * generateTexture(size_t numPixels) const;
 
 protected:
-    std::map<std::string, AbstractColorGradient *> m_gradients;
+    std::map<std::string, AbstractColorGradient *> m_gradients; /// The list of gradients with their name as lookup key
 };
 
 } // namespace gloperate
