@@ -1,5 +1,7 @@
 #include <gloperate/tools/ColorGradientPreparation.h>
 
+#include <reflectionzeug/property/AbstractProperty.h>
+
 #include <gloperate/base/AbstractColorGradient.h>
 #include <gloperate/base/ColorGradientList.h>
 
@@ -69,6 +71,13 @@ void ColorGradientPreparation::fillPixmaps(std::vector<std::vector<unsigned char
 
         pixmaps.push_back(gradientData);
     }
+}
+
+void ColorGradientPreparation::configureProperty(reflectionzeug::AbstractProperty * property) const
+{
+    property->setOption("pixmapSize", reflectionzeug::Variant::fromValue(iconSize()));
+    property->setOption("choices", reflectionzeug::Variant::fromValue(names()));
+    property->setOption("pixmaps", reflectionzeug::Variant::fromValue(pixmaps()));
 }
 
 

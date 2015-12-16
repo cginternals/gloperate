@@ -89,9 +89,7 @@ Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, con
 
     gloperate::ColorGradientPreparation gradientsTool(gradients, { 80, 20 });
 
-    backgroundProperty->setOption("pixmapSize", reflectionzeug::Variant::fromValue(gradientsTool.iconSize()));
-    backgroundProperty->setOption("choices", reflectionzeug::Variant::fromValue(gradientsTool.names()));
-    backgroundProperty->setOption("pixmaps", reflectionzeug::Variant::fromValue(gradientsTool.pixmaps()));
+    gradientsTool.configureProperty(backgroundProperty);
     backgroundProperty->setValue(gradientsTool.names().front());
 
     addProperty(backgroundProperty);
