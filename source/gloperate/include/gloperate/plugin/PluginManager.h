@@ -119,6 +119,15 @@ public:
 
     /**
     *  @brief
+    *    Get list of loaded plugin libraries
+    *
+    *  @return
+    *    List of plugin libraries
+    */
+    const std::vector<PluginLibrary *> pluginLibraries() const;
+
+    /**
+    *  @brief
     *    Get plugin by name
     *
     *  @param[in] name

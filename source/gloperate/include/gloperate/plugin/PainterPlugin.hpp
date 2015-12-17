@@ -27,7 +27,7 @@ PainterPlugin<PainterType>::~PainterPlugin()
 template <typename PainterType>
 Painter * PainterPlugin<PainterType>::createPainter(ResourceManager & resourceManager) const
 {
-    return new PainterType(resourceManager, m_relDataPath);
+    return new PainterType(resourceManager, m_pluginInfo);
 }
 
 

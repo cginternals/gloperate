@@ -86,6 +86,7 @@ public:
     void enableAll();
 
     void draw() const;
+    void draw(gl::GLenum primitiveMode) const;
 
 
 protected:

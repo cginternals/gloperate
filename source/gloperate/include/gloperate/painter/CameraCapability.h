@@ -8,7 +8,7 @@
 
 #include <signalzeug/Signal.h>
 
-#include <globjects/base/CachedValue.h>
+#include <gloperate/base/CachedValue.h>
 
 #include <gloperate/painter/AbstractCameraCapability.h>
 
@@ -132,9 +132,9 @@ protected:
     glm::vec3 m_defaultUp;         /**< Default up-vector */
 
     // Camera matrices
-    globjects::CachedValue<glm::mat4> m_view;           /**< View matrix */
-    globjects::CachedValue<glm::mat4> m_viewInverted;   /**< Inverted view matrix */
-    globjects::CachedValue<glm::mat3> m_normal;         /**< Normal matrix */
+    gloperate::CachedValue<glm::mat4> m_view;           /**< View matrix */
+    gloperate::CachedValue<glm::mat4> m_viewInverted;   /**< Inverted view matrix */
+    gloperate::CachedValue<glm::mat3> m_normal;         /**< Normal matrix */
 };
 
 
