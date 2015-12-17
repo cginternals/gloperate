@@ -1,7 +1,7 @@
 
 set(target osg-painters)
 
-find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgQt osgParticle osgText osgVolume)
+find_package(OpenSceneGraph QUIET COMPONENTS osgDB osgUtil osgViewer osgGA osgParticle osgText osgVolume)
 
 if(NOT OPENSCENEGRAPH_FOUND)
     message("Example ${target} skipped: OSG not found")
