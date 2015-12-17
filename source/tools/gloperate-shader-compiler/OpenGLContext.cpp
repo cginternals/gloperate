@@ -155,10 +155,21 @@ OpenGLContext::OpenGLContext()
 {
 }
 
-OpenGLContext::~OpenGLContext() = default;
+OpenGLContext::~OpenGLContext()
+{
+}
 
-OpenGLContext::OpenGLContext(OpenGLContext && /*context*/) = default;
-OpenGLContext & OpenGLContext::operator=(OpenGLContext && /*rhs*/) = default;
+OpenGLContext::OpenGLContext(OpenGLContext && other)
+: m_p(std::move(other.m_p))
+{
+}
+
+OpenGLContext & OpenGLContext::operator=(OpenGLContext && other)
+{
+    m_p = std::move(other.m_p);
+
+    return *this;
+}
 
 void OpenGLContext::setFormat(const QSurfaceFormat & format)
 {
