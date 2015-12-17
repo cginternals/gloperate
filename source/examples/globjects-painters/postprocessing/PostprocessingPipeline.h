@@ -1,10 +1,15 @@
 
 #pragma once
 
+#include <reflectionzeug/base/Color.h>
+
+#include <globjects/base/ref_ptr.h>
+#include <globjects/Texture.h>
 
 #include <gloperate/pipeline/AbstractPipeline.h>
 #include <gloperate/pipeline/Data.h>
 
+#include <gloperate/base/ColorGradientList.h>
 
 namespace gloperate
 {
@@ -34,4 +39,8 @@ public:
     gloperate::Data<gloperate::AbstractCameraCapability *> camera;
     gloperate::Data<gloperate::AbstractProjectionCapability *> projection;
     gloperate::Data<gloperate::AbstractTypedRenderTargetCapability *> renderTargets;
+
+    gloperate::Data<size_t> gradientsTextureWidth;
+    gloperate::Data<std::string> gradientName;
+    gloperate::Data<gloperate::ColorGradientList> gradients;
 };
