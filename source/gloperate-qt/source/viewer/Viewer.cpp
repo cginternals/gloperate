@@ -21,6 +21,8 @@
 
 #include "ui_Viewer.h"
 
+#include <globjects/base/File.h>
+
 #include <gloperate/ext-includes-end.h>
 
 #include <gloperate/resources/ResourceManager.h>
@@ -40,6 +42,7 @@
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 #include <gloperate-qt/viewer/DefaultMapping.h>
 #include <gloperate-qt/widgets/ImageExporterWidget.h>
+#include <gloperate-qt/widgets/PluginConfigWidget.h>
 #include <gloperate-qt/scripting/ScriptEnvironment.h>
 #include <gloperate-qt/scripting/SystemApi.h>
 #include <gloperate-qt/scripting/TimerApi.h>
@@ -159,6 +162,10 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 
 Viewer::~Viewer()
 {
+    m_canvas->makeCurrent();
+    deinitializePainter();
+    m_canvas->doneCurrent();
+
     // Save settings
     QSettings settings;
     settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
@@ -175,22 +182,15 @@ QtOpenGLWindow * Viewer::canvas() const
     return m_canvas.get();
 }
 
-void Viewer::loadPainter(const std::string & name)
+void Viewer::setPainter(Painter & painter)
 {
-    // Get plugin by name
-    Plugin * plugin = m_pluginManager->plugin(name);
-    AbstractPainterPlugin * painterPlugin = plugin ? dynamic_cast<AbstractPainterPlugin *>(plugin) : nullptr;
-    if (!painterPlugin) {
-        return;
-    }
-
     // Unload old painter
-    if (m_painter.get()) {
-        m_scriptEnvironment->removeScriptApi(m_painter.get());
-    }
+    m_canvas->makeCurrent();
+    deinitializePainter();
+    m_canvas->doneCurrent();
 
     // Create new painter
-    m_painter.reset(painterPlugin->createPainter(*m_resourceManager));
+    m_painter.reset(&painter);
 
     // [TODO] Check for painter context format requirements
 
@@ -218,6 +218,19 @@ void Viewer::loadPainter(const std::string & name)
 
     // Update rendering
     m_canvas->updateGL();
+}
+
+void Viewer::loadPainter(const std::string & name)
+{
+    // Get plugin by name
+    Plugin * plugin = m_pluginManager->plugin(name);
+    AbstractPainterPlugin * painterPlugin = plugin ? dynamic_cast<AbstractPainterPlugin *>(plugin) : nullptr;
+    if (!painterPlugin) {
+        return;
+    }
+
+    // Set new painter
+    setPainter(*painterPlugin->createPainter(*m_resourceManager));
 }
 
 const ScriptEnvironment * Viewer::scriptEnvironment() const
@@ -405,11 +418,23 @@ void Viewer::on_captureImageAction_triggered()
     }
 }
 
-void Viewer::on_managePluginsAction_triggered()
+void Viewer::on_pluginConfigAction_triggered()
 {
-    assert(m_pluginManager);
+    // PluginWidget needs a plugin manager
+    if (m_pluginManager)
+    {
+        PluginConfigWidget * pcw {new PluginConfigWidget(m_pluginManager.get(), m_resourceManager.get())};
 
-    // [TODO] Show plugin manager widget
+        pcw->setWindowModality(Qt::NonModal);
+        pcw->show();
+    }
+}
+
+void Viewer::on_reloadShadersAction_triggered()
+{
+    m_canvas->makeCurrent();
+    globjects::File::reloadAll();
+    m_canvas->doneCurrent();
 }
 
 void Viewer::onPainterSelected(bool /*checked*/)
@@ -421,6 +446,16 @@ void Viewer::onPainterSelected(bool /*checked*/)
     // Get painter name
     QString name = action->data().toString();
     loadPainter(name.toStdString());
+}
+
+void Viewer::deinitializePainter()
+{
+    if (m_painter.get())
+    {
+        m_scriptEnvironment->removeScriptApi(m_painter.get());
+    }
+
+    m_painter.reset(nullptr);
 }
 
 

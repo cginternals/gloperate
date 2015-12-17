@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/random.hpp>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
@@ -16,9 +17,12 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/VertexAttributeBinding.h>
 
+#include <iozeug/filename.h>
+
 #include <gloperate/resources/RawFile.h>
 
 #include <gloperate/base/RenderTargetType.h>
+#include <gloperate/base/registernamedstrings.h>
 
 #include <gloperate/painter/Camera.h>
 #include <gloperate/painter/TargetFramebufferCapability.h>
@@ -28,21 +32,31 @@
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 #include <gloperate/painter/VirtualTimeCapability.h>
 
+#include <reflectionzeug/variant/Variant.h>
+
 
 using namespace gl;
 using namespace glm;
 using namespace globjects;
 
 
-CubeScape::CubeScape(gloperate::ResourceManager & resourceManager, const std::string & relDataPath)
-: Painter("CubeScape", resourceManager, relDataPath)
-, m_animation{true}
-, m_numCubes{25}
-, a_vertex{-1}
-, u_transform{-1}
-, u_time{-1}
-, u_numcubes{-1}
+CubeScape::CubeScape(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
+: Painter("CubeScape", resourceManager, pluginInfo)
+, m_animation(true)
+, m_numCubes(25)
+, m_dataPath("")
+, a_vertex(-1)
+, u_transform(-1)
+, u_time(-1)
+, u_numcubes(-1)
 {
+    // Get data path
+    const reflectionzeug::VariantMap * map = pluginInfo.asMap();
+    if (map && map->count("dataPath") > 0) {
+        m_dataPath = map->at("dataPath").value<std::string>();
+        m_dataPath = iozeug::ensurePathSeparatorEnding(m_dataPath);
+    }
+
     // Setup painter
     m_targetFramebufferCapability = addCapability(new gloperate::TargetFramebufferCapability());
     m_viewportCapability = addCapability(new gloperate::ViewportCapability());
@@ -92,9 +106,9 @@ void CubeScape::onInitialize()
 
     m_program = new globjects::Program;
     m_program->attach(
-        globjects::Shader::fromFile(GL_VERTEX_SHADER,   m_relDataPath + "data/cubescape/cubescape.vert"),
-        globjects::Shader::fromFile(GL_GEOMETRY_SHADER, m_relDataPath + "data/cubescape/cubescape.geom"),
-        globjects::Shader::fromFile(GL_FRAGMENT_SHADER, m_relDataPath + "data/cubescape/cubescape.frag")
+        globjects::Shader::fromFile(GL_VERTEX_SHADER,   m_dataPath + "data/cubescape/cubescape.vert"),
+        globjects::Shader::fromFile(GL_GEOMETRY_SHADER, m_dataPath + "data/cubescape/cubescape.geom"),
+        globjects::Shader::fromFile(GL_FRAGMENT_SHADER, m_dataPath + "data/cubescape/cubescape.frag")
     );
 
     // create textures
@@ -112,7 +126,7 @@ void CubeScape::onInitialize()
     }
 
     {
-        gloperate::RawFile terrain(m_relDataPath + "data/cubescape/terrain.512.512.r.ub.raw");
+        gloperate::RawFile terrain(m_dataPath + "data/cubescape/terrain.512.512.r.ub.raw");
         if (!terrain.isValid())
             std::cout << "warning: loading texture from " << terrain.filePath() << " failed.";
 
@@ -120,7 +134,7 @@ void CubeScape::onInitialize()
     }
 
     {
-        gloperate::RawFile patches(m_relDataPath + "data/cubescape/patches.64.16.rgb.ub.raw");
+        gloperate::RawFile patches(m_dataPath + "data/cubescape/patches.64.16.rgb.ub.raw");
         if (!patches.isValid())
             std::cout << "warning: loading texture from " << patches.filePath() << " failed.";
 
@@ -259,5 +273,5 @@ void CubeScape::onTargetFramebufferChanged()
 
 void CubeScape::randomize()
 {
-    setNumberOfCubes(rand() % 40 + 1);
+    setNumberOfCubes(static_cast<int>(glm::linearRand(1.0f, 40.0f)));
 }
