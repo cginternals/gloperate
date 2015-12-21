@@ -1,3 +1,4 @@
+#include <iostream>
 
 #include <gloperate/primitives/PolygonalGeometry.h>
 
@@ -87,6 +88,73 @@ void PolygonalGeometry::setTextureCoordinates(const std::vector<glm::vec3> & tex
 void PolygonalGeometry::setTextureCoordinates(std::vector<glm::vec3> && textureCoordinates)
 {
 	m_textureCoordinates = std::move(textureCoordinates);
+}
+
+bool PolygonalGeometry::isRigged() const
+{
+    return !m_vertexBoneIndices.empty() &&
+            !m_vertexBoneWeights.empty() &&
+            m_vertexBoneIndices.size() == m_vertexBoneWeights.size();
+}
+
+const std::vector<glm::ivec4> &PolygonalGeometry::vertexBoneIndices() const
+{
+    return m_vertexBoneIndices;
+}
+
+void PolygonalGeometry::setVertexBoneIndices(const std::vector<glm::ivec4> & vertexBoneIndices)
+{
+    m_vertexBoneIndices = vertexBoneIndices;
+}
+
+void PolygonalGeometry::setVertexBoneIndices(std::vector<glm::ivec4> && vertexBoneIndices)
+{
+    m_vertexBoneIndices = std::move(vertexBoneIndices);
+}
+
+const std::vector<glm::vec4> & PolygonalGeometry::vertexBoneWeights() const
+{
+    return m_vertexBoneWeights;
+}
+
+void PolygonalGeometry::setVertexBoneWeights(const std::vector<glm::vec4> & vertexBoneWeights)
+{
+    m_vertexBoneWeights = vertexBoneWeights;
+}
+
+void PolygonalGeometry::setVertexBoneWeights(std::vector<glm::vec4> && vertexBoneWeights)
+{
+    m_vertexBoneWeights = std::move(vertexBoneWeights);
+}
+
+const std::map<std::string, size_t> & PolygonalGeometry::boneMapping() const
+{
+    return m_boneMapping;
+}
+
+void PolygonalGeometry::setBoneMapping(const std::map<std::string,size_t> & boneMapping)
+{
+    m_boneMapping = boneMapping;
+}
+
+void PolygonalGeometry::setBoneMapping(std::map<std::string, size_t>&& boneMapping)
+{
+    m_boneMapping = std::move(boneMapping);
+}
+
+const std::vector<glm::mat4> & PolygonalGeometry::bindTransforms() const
+{
+    return m_bindTransforms;
+}
+
+void PolygonalGeometry::setBindTransforms(const std::vector<glm::mat4> & bindTransforms)
+{
+    m_bindTransforms = bindTransforms;
+}
+
+void PolygonalGeometry::setBindTransforms(std::vector<glm::mat4> && bindTransforms)
+{
+    m_bindTransforms = std::move(bindTransforms);
 }
 
 unsigned PolygonalGeometry::materialIndex() const

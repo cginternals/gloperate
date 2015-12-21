@@ -72,12 +72,16 @@ set(sources
     ${source_path}/input/MouseInputHandler.cpp
     ${source_path}/input/KeyboardInputHandler.cpp
     ${source_path}/input/MouseEvent.cpp
+	${source_path}/input/InputManager.cpp
+	${source_path}/input/ButtonControl.cpp
+    ${source_path}/input/AxisControl.cpp
     
     ${source_path}/navigation/AbstractMapping.cpp
     ${source_path}/navigation/AbstractInteraction.cpp
     ${source_path}/navigation/navigationmath.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
     ${source_path}/navigation/CoordinateProvider.cpp
+    ${source_path}/navigation/FlyNavigation.cpp
     
     ${source_path}/painter/PerspectiveProjectionCapability.cpp
     ${source_path}/painter/TargetFramebufferCapability.cpp
@@ -178,12 +182,19 @@ set(api_includes
     ${include_path}/input/KeyboardInputHandler.h
     ${include_path}/input/MouseInputHandler.h
     ${include_path}/input/AbstractEvent.h
+	${include_path}/input/InputManager.h
+    ${include_path}/input/AbstractDevice.h
+    ${include_path}/input/AbstractControl.h
+    ${include_path}/input/ButtonControl.h
+    ${include_path}/input/AxisControl.h
+    ${include_path}/input/AbstractDeviceProvider.h
     
     ${include_path}/navigation/WorldInHandNavigation.h
     ${include_path}/navigation/AbstractInteraction.h
     ${include_path}/navigation/AbstractMapping.h
     ${include_path}/navigation/CoordinateProvider.h
     ${include_path}/navigation/navigationmath.h
+    ${include_path}/navigation/FlyNavigation.h
     
     ${include_path}/painter/InputCapability.h
     ${include_path}/painter/AbstractInputCapability.h
