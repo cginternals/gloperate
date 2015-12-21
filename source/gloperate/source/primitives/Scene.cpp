@@ -1,5 +1,6 @@
 
 #include <gloperate/primitives/Scene.h>
+#include <gloperate/primitives/Light.h>
 
 #include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
@@ -23,6 +24,10 @@ Scene::~Scene()
     {
         delete mesh;
     }
+    for (auto light : m_lights)
+    {
+        delete light;
+    }
 }
 
 const std::vector<PolygonalGeometry *> & Scene::meshes() const
@@ -43,6 +48,16 @@ const std::map<unsigned, std::string>& Scene::materials() const
 std::map<unsigned, std::string>& Scene::materials()
 {
 	return m_materials;
+}
+
+const std::vector<Light *>& Scene::lights() const
+{
+    return m_lights;
+}
+
+std::vector<Light *>& Scene::lights()
+{
+    return m_lights;
 }
 
 
