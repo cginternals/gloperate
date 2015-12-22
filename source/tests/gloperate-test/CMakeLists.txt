@@ -64,8 +64,6 @@ target_include_directories(${target}
     PRIVATE
     ${DEFAULT_INCLUDE_DIRECTORIES}
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_BINARY_DIR}/source/include
 )
@@ -79,9 +77,9 @@ target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LIBRARIES}
     ${OPENGL_LIBRARIES}
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
     libzeug::signalzeug
+    glbinding::glbinding
+    globjects::globjects
     ${META_PROJECT_NAME}::gloperate
     gmock-dev
 )

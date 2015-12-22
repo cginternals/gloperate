@@ -88,8 +88,6 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_BINARY_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
     ${PROJECT_BINARY_DIR}/source/include
@@ -103,12 +101,12 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LIBRARIES}
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
     libzeug::widgetzeug
+    glbinding::glbinding
+    globjects::globjects
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-qt
 )

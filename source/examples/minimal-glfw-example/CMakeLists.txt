@@ -69,8 +69,6 @@ target_include_directories(${target}
     ${DEFAULT_INCLUDE_DIRECTORIES}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-glfw/include
 )
@@ -83,10 +81,10 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LIBRARIES}
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
     libzeug::signalzeug
     libzeug::reflectionzeug
+    glbinding::glbinding
+    globjects::globjects
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-glfw
 )

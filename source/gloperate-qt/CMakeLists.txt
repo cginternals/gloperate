@@ -179,18 +179,16 @@ set_target_properties(${target}
 
 target_include_directories(${target}
     PRIVATE
+    ${DEFAULT_INCLUDE_DIRECTORIES}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-assimp/include
+    ${GLM_INCLUDE_DIR}
 
     PUBLIC
-    ${DEFAULT_INCLUDE_DIRECTORIES}
-    ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
 
     INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -205,8 +203,6 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
@@ -217,6 +213,8 @@ target_link_libraries(${target}
     libzeug::scriptzeug
     libzeug::widgetzeug
     libzeug::propertyguizeug
+    glbinding::glbinding
+    globjects::globjects
     ${META_PROJECT_NAME}::gloperate
     $<$<BOOL:${ASSIMP_FOUND}>:${META_PROJECT_NAME}::gloperate-assimp>
 

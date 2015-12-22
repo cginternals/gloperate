@@ -300,15 +300,13 @@ set_target_properties(${target}
 
 target_include_directories(${target}
     PRIVATE
+    ${DEFAULT_INCLUDE_DIRECTORIES}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
+    ${GLM_INCLUDE_DIR}
 
     PUBLIC
-    ${DEFAULT_INCLUDE_DIRECTORIES}
-    ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
 
     INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -324,10 +322,10 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${OPENGL_LIBRARIES}
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
     libzeug::reflectionzeug
     libzeug::iozeug
+    glbinding::glbinding
+    globjects::globjects
 
     PUBLIC
     ${DEFAULT_LIBRARIES}

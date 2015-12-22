@@ -110,17 +110,15 @@ set_target_properties(${target}
 
 target_include_directories(${target}
     PRIVATE
+    ${DEFAULT_INCLUDE_DIRECTORIES}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
+    ${GLM_INCLUDE_DIR}
+    ${OPENSCENEGRAPH_INCLUDE_DIRS}
 
     PUBLIC
-    ${DEFAULT_INCLUDE_DIRECTORIES}
-    ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
-    ${OPENSCENEGRAPH_INCLUDE_DIRS}
 
     INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -135,10 +133,10 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
-    libzeug::reflectionzeug
     ${OPENSCENEGRAPH_LIBRARIES}
+    libzeug::reflectionzeug
+    glbinding::glbinding
+    globjects::globjects
     ${META_PROJECT_NAME}::gloperate
 
     PUBLIC
