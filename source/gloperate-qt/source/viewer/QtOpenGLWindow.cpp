@@ -87,7 +87,7 @@ void QtOpenGLWindow::onInitialize()
 {
     // Initialize globjects
     globjects::init();
-#ifdef _DEBUG
+#ifndef N_DEBUG
     globjects::DebugMessage::enable(true);
 #endif
 
