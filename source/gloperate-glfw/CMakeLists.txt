@@ -39,8 +39,6 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/gloperate-glfw_api.h
-
     ${include_path}/Application.h
     ${include_path}/Context.h
     ${include_path}/events.h

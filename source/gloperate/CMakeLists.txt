@@ -49,9 +49,7 @@ set(headers
     ${include_path}/base/make_unique.hpp
     ${include_path}/base/CachedValue.h
     ${include_path}/base/CachedValue.hpp
-    
-    ${include_path}/gloperate_api.h
-    
+        
     ${include_path}/input/MouseEvent.h
     ${include_path}/input/KeyboardEvent.h
     ${include_path}/input/WheelEvent.h

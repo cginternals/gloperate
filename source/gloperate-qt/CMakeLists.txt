@@ -87,8 +87,6 @@ set(headers
     ${include_path}/widgets/PluginPathWidget.h
     ${include_path}/widgets/PluginConfigWidget.h
     ${include_path}/widgets/PluginWidget.h
-
-    ${include_path}/gloperate-qt_api.h
 )
 
 set(sources

@@ -39,8 +39,6 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/gloperate-assimp_api.h
-
     ${include_path}/AssimpMeshLoader.h
     ${include_path}/AssimpSceneLoader.h
 )
@@ -103,6 +101,7 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/source/gloperate/include
     ${GLM_INCLUDE_DIR}
     ${ASSIMP_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
@@ -126,6 +125,7 @@ target_link_libraries(${target}
     libzeug::reflectionzeug
     glbinding::glbinding
     globjects::globjects
+    ${META_PROJECT_NAME}::gloperate
 
     PUBLIC
     ${DEFAULT_LIBRARIES}

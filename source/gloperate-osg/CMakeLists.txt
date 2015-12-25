@@ -42,7 +42,6 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/gloperate-osg_api.h
     ${include_path}/OsgPainter.h
     ${include_path}/OsgRenderStage.h
     ${include_path}/OsgFboRenderStage.h
