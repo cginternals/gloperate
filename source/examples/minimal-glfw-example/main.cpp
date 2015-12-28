@@ -26,11 +26,11 @@ int main(int argc, char * argv[])
 
     // Setup plugin manager
     PluginManager pluginManager;
-    pluginManager.addPath(app.applicationPath());
+    pluginManager.addSearchPath(app.applicationPath());
 #ifdef NDEBUG
-    pluginManager.addPath("plugins");
+    pluginManager.addSearchPath("plugins");
 #else
-    pluginManager.addPath("plugins/debug");
+    pluginManager.addSearchPath("plugins/debug");
 #endif
     pluginManager.scan("painters");
 

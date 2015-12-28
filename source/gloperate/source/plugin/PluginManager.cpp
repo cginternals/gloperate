@@ -35,8 +35,8 @@ namespace
     {
     public:
         PluginLibraryImpl(const std::string & filename)
-            : gloperate::PluginLibrary(filename)
-            , m_handle(0)
+        : gloperate::PluginLibrary(filename)
+        , m_handle(0)
         {
             m_handle = dlopen(filename.c_str(), RTLD_LAZY);
             if (!m_handle)
@@ -96,12 +96,12 @@ PluginManager::~PluginManager()
     }
 }
 
-const std::vector<std::string> & PluginManager::paths() const
+const std::vector<std::string> & PluginManager::searchPaths() const
 {
     return m_paths;
 }
 
-void PluginManager::setPaths(const std::vector<std::string> & paths)
+void PluginManager::setSearchPaths(const std::vector<std::string> & paths)
 {
     m_paths.clear();
 
@@ -110,7 +110,7 @@ void PluginManager::setPaths(const std::vector<std::string> & paths)
     }
 }
 
-void PluginManager::addPath(const std::string & path)
+void PluginManager::addSearchPath(const std::string & path)
 {
     // Ignore empty path
     if (path.empty())
@@ -129,7 +129,7 @@ void PluginManager::addPath(const std::string & path)
     m_paths.push_back(p);
 }
 
-void PluginManager::removePath(const std::string & path)
+void PluginManager::removeSearchPath(const std::string & path)
 {
     // Remove slash
     const std::string p = iozeug::removeTrailingPathSeparator(path);
