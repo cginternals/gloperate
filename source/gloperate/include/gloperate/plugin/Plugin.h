@@ -36,11 +36,11 @@ public:
     *    Plugin version
     */
     Plugin(
-        const std::string & type
-    ,   const std::string & name
-    ,   const std::string & description
-    ,   const std::string & vendor
-    ,   const std::string & version);
+      const std::string & type
+    , const std::string & name
+    , const std::string & description
+    , const std::string & vendor
+    , const std::string & version);
 
     /**
     *  @brief

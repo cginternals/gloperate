@@ -176,12 +176,10 @@ protected:
 
 
 protected:
-    std::vector<std::string> m_paths;
-
-    std::map<std::string, PluginLibrary *> m_librariesByFilePath;
-
-    std::vector<Plugin *> m_plugins;
-    std::map<std::string, Plugin *> m_pluginsByName;
+    std::vector<std::string>               m_paths;               ///< Search paths for plugins
+    std::vector<Plugin *>                  m_plugins;             ///< Loaded plugins
+    std::map<std::string, PluginLibrary *> m_librariesByFilePath; ///< Loaded plugins by path
+    std::map<std::string, Plugin *>        m_pluginsByName;       ///< Loaded plugins by name
 };
 
 
