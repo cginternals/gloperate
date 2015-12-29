@@ -3,6 +3,8 @@
 
 #include <random>
 
+#include <cpplocate/ModuleInfo.h>
+
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/constants.hpp>
 

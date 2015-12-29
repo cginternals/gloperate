@@ -1,6 +1,8 @@
 
 #include "OsgScene.h"
 
+#include <cpplocate/ModuleInfo.h>
+
 #include <osgDB/ReadFile>
 #include <osgViewer/ViewerEventHandlers>
 #include <osgGA/TrackballManipulator>

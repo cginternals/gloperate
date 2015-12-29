@@ -6,9 +6,8 @@ namespace gloperate
 {
 
 
-Painter::Painter(const std::string & name, ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo)
+Painter::Painter(const std::string & name, ResourceManager & resourceManager, const cpplocate::ModuleInfo & /*moduleInfo*/)
 : Object(name)
-, m_moduleInfo(moduleInfo)
 , m_resourceManager(resourceManager)
 , m_backgroundColor(0.0, 0.0, 0.0)
 {

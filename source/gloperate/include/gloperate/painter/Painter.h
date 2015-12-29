@@ -6,8 +6,6 @@
 #include <vector>
 #include <string>
 
-#include <cpplocate/ModuleInfo.h>
-
 #include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
 #include <gloperate/ext-includes-end.h>
@@ -15,6 +13,12 @@
 #include <reflectionzeug/Object.h>
 
 #include <gloperate/painter/AbstractCapability.h>
+
+
+namespace cpplocate
+{
+    class ModuleInfo;
+}
 
 
 namespace gloperate
@@ -169,8 +173,6 @@ protected:
 
 
 protected:
-    cpplocate::ModuleInfo m_moduleInfo;  ///< Module information (if loaded as plugin)
-
     ResourceManager & m_resourceManager; ///< Resource manager, e.g., to load and save textures
 
     std::vector<AbstractCapability *> m_capabilities; ///< List of supported capabilities
