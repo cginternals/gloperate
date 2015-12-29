@@ -55,7 +55,7 @@ public:
     *  @param[in] relDataPath
     *    Path to data directory (usually "", unless loaded from plugins)
     */
-    OsgPainter(const std::string & name, gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo);
+    OsgPainter(const std::string & name, gloperate::ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo);
 
     /**
     *  @brief

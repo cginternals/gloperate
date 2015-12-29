@@ -19,7 +19,7 @@ namespace gloperate
 class ScreenAligned : public gloperate::Painter
 {
 public:
-    ScreenAligned(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo);
+    ScreenAligned(gloperate::ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo);
     virtual ~ScreenAligned();
 
 

@@ -133,6 +133,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${OPENSCENEGRAPH_LIBRARIES}
+    cpplocate::cpplocate
     libzeug::reflectionzeug
     glbinding::glbinding
     globjects::globjects

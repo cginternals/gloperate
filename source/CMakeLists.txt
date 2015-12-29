@@ -19,10 +19,10 @@ generate_module_info(${META_PROJECT_NAME}
     author      "${META_AUTHOR_ORGANIZATION}"
 
     BUILD_VALUES
-    dataDir     "${PROJECT_SOURCE_DIR}/data"
+    dataPath    "${PROJECT_SOURCE_DIR}/data"
 
     INSTALL_VALUES
-    dataDir     "\${ModulePath}/data"
+    dataPath    "\${ModulePath}/data"
 )
 
 # Create modinfo file in build directory

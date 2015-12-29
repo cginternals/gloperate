@@ -205,6 +205,7 @@ target_link_libraries(${target}
     Qt5::Gui
     Qt5::Widgets
     Qt5::OpenGL
+    cpplocate::cpplocate
     libzeug::reflectionzeug
     libzeug::signalzeug
     libzeug::loggingzeug

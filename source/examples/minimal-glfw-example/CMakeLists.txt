@@ -81,6 +81,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LIBRARIES}
+    cpplocate::cpplocate
     libzeug::signalzeug
     libzeug::reflectionzeug
     glbinding::glbinding

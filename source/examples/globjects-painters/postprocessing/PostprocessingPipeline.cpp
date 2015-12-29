@@ -3,6 +3,10 @@
 
 #include <glm/gtc/constants.hpp>
 
+#include <cpplocate/ModuleInfo.h>
+
+#include <iozeug/FilePath.h>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/boolean.h>
@@ -33,7 +37,6 @@
 #include <gloperate/primitives/AdaptiveGrid.h>
 #include <gloperate/primitives/Icosahedron.h>
 #include <gloperate/primitives/ScreenAlignedQuad.h>
-
 #include <gloperate/stages/ColorGradientSelectionStage.h>
 #include <gloperate/stages/ColorGradientTextureStage.h>
 
@@ -41,8 +44,9 @@
 class RasterizationStage : public gloperate::AbstractStage
 {
 public:
-    RasterizationStage()
+    RasterizationStage(const std::string & dataPath)
     : AbstractStage("Rasterization")
+    , m_dataPath(dataPath)
     {
         addInput("viewport", viewport);
         addInput("camera", camera);
@@ -74,9 +78,9 @@ public:
         m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT2, geometry.data());
         m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 
-        globjects::StringTemplate* sphereVertexShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/sphere.vert"));
-        globjects::StringTemplate* sphereFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/sphere.frag"));
-        globjects::StringTemplate* backgroundFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/background.frag"));
+        globjects::StringTemplate* sphereVertexShader = new globjects::StringTemplate(new globjects::File(m_dataPath + "postprocessing/sphere.vert"));
+        globjects::StringTemplate* sphereFragmentShader = new globjects::StringTemplate(new globjects::File(m_dataPath + "postprocessing/sphere.frag"));
+        globjects::StringTemplate* backgroundFragmentShader = new globjects::StringTemplate(new globjects::File(m_dataPath + "postprocessing/background.frag"));
 
         #ifdef __APPLE__
             sphereVertexShader->replace("#version 140", "#version 150");
@@ -165,16 +169,18 @@ protected:
     globjects::ref_ptr<globjects::Renderbuffer> m_depth;
     globjects::ref_ptr<globjects::Program> m_program;
     globjects::ref_ptr<gloperate::Icosahedron> m_icosahedron;
-
     globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_background;
+
+    std::string m_dataPath;
 };
 
 
 class PostprocessingStage : public gloperate::AbstractStage
 {
 public:
-    PostprocessingStage()
+    PostprocessingStage(const std::string & dataPath)
     : AbstractStage("Postprocessing")
+    , m_dataPath(dataPath)
     {
         addInput("targetFBO", targetFramebuffer);
         addInput("color", color);
@@ -190,8 +196,8 @@ public:
 
     virtual void initialize() override
     {
-        globjects::StringTemplate* phongVertexShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/phong.vert"));
-        globjects::StringTemplate* phongFragmentShader = new globjects::StringTemplate(new globjects::File("data/postprocessing/phong.frag"));
+        globjects::StringTemplate* phongVertexShader = new globjects::StringTemplate(new globjects::File(m_dataPath + "postprocessing/phong.vert"));
+        globjects::StringTemplate* phongFragmentShader = new globjects::StringTemplate(new globjects::File(m_dataPath + "postprocessing/phong.frag"));
 
         #ifdef __APPLE__
             phongVertexShader->replace("#version 140", "#version 150");
@@ -256,16 +262,24 @@ protected:
 
 protected:
     globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
+
+    std::string m_dataPath;
 };
 
 
-PostprocessingPipeline::PostprocessingPipeline()
+PostprocessingPipeline::PostprocessingPipeline(const cpplocate::ModuleInfo & moduleInfo)
 : gradientsTextureWidth(512)
 {
+    // Get data path
+    m_dataPath = moduleInfo.value("dataPath");
+    m_dataPath = iozeug::FilePath(m_dataPath).path();
+    if (m_dataPath.size() > 0) m_dataPath = m_dataPath + "/";
+    else                       m_dataPath = "data/";
+
     auto gradientTextureStage = new gloperate::ColorGradientTextureStage();
     auto gradientSelectionStage = new gloperate::ColorGradientSelectionStage();
-    auto rasterizationStage = new RasterizationStage();
-    auto postprocessingStage = new PostprocessingStage();
+    auto rasterizationStage = new RasterizationStage(m_dataPath);
+    auto postprocessingStage = new PostprocessingStage(m_dataPath);
 
     gradientTextureStage->gradients = gradients;
     gradientTextureStage->textureWidth = gradientsTextureWidth;

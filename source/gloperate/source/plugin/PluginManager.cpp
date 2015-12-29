@@ -12,12 +12,12 @@
 #include <dirent.h>
 #endif
 
+#include <cpplocate/ModuleInfo.h>
+
 #include <iozeug/filename.h>
+#include <iozeug/FilePath.h>
 #include <iozeug/directorytraversal.h>
 #include <iozeug/SystemInfo.h>
-
-#include <reflectionzeug/variant/Variant.h>
-#include <reflectionzeug/tools/SerializerJSON.h>
 
 #include <globjects/logging.h>
 
@@ -72,9 +72,6 @@ namespace
 #endif
     };
 }
-
-
-using namespace reflectionzeug;
 
 
 namespace gloperate
@@ -223,26 +220,12 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
         return true;
     }
 
-    // Get path to directory containing the plugin library
-    std::string pluginPath = iozeug::removeTrailingPathSeparator(iozeug::getPath(filePath));
-
-    // Load extra information from "PluginInfo.json" if present
-    Variant pluginInfo = Variant();
-    SerializerJSON json;
-    if (json.load(pluginInfo, pluginPath + iozeug::SystemInfo::pathSeperator() + "PluginInfo.json"))
-    {
-        // Replace every occurance of ${PluginPath} with respective path
-        std::string jsonString = pluginInfo.toJSON();
-        auto from = std::string("${PluginPath}");
-        size_t start_pos = 0;
-        while((start_pos = jsonString.find(from, start_pos)) != std::string::npos) {
-            jsonString.replace(start_pos, from.length(), pluginPath);
-            start_pos += pluginPath.length();
-        }
-
-        // Convert back to JSON Variant
-        json.fromString(pluginInfo, jsonString);
-    }
+    // Load module information file, if present
+    std::string pluginPath = iozeug::FilePath(filePath).directoryPath();
+    if (pluginPath == "") pluginPath = "./";
+    std::string modInfoPath = pluginPath + iozeug::FilePath(filePath).baseName() + ".modinfo";
+    cpplocate::ModuleInfo modInfo;
+    modInfo.load(modInfoPath);
 
     // If library was already loaded, remember it in case reloading fails
     PluginLibrary * previous = nullptr;
@@ -281,13 +264,10 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
         if (!plugin)
             continue;
 
-        // // Set relative data path for plugin (if known)
-        // if (!relDataPath.empty()) {
-        //     plugin->setRelDataPath(relDataPath.c_str());
-        // }
-        if (!pluginInfo.isNull())
+        // Set module information
+        if (!modInfo.empty())
         {
-            plugin->setPluginInfo(pluginInfo);
+            plugin->setModuleInfo(modInfo);
         }
 
         // Add plugin to list
@@ -313,5 +293,6 @@ void PluginManager::unloadLibrary(PluginLibrary * library)
     library->deinitialize();
     delete library;
 }
+
 
 } // namespace gloperate

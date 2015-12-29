@@ -105,6 +105,7 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
+    cpplocate::cpplocate
     libzeug::iozeug
     libzeug::reflectionzeug
     glbinding::glbinding
@@ -174,10 +175,10 @@ generate_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
     author      "${META_AUTHOR_ORGANIZATION}"
 
     BUILD_VALUES
-    dataDir     "${PROJECT_SOURCE_DIR}/data"
+    dataPath    "${PROJECT_SOURCE_DIR}/data"
 
     INSTALL_VALUES
-    dataDir     "\${ModulePath}/../data"
+    dataPath    "\${ModulePath}/../data"
 )
 
 export_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
