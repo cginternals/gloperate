@@ -6,10 +6,9 @@ namespace gloperate
 {
 
 
-Painter::Painter(const std::string & name, ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
+Painter::Painter(const std::string & name, ResourceManager & resourceManager, const cpplocate::ModuleInfo & /*moduleInfo*/)
 : Object(name)
 , m_resourceManager(resourceManager)
-, m_pluginInfo(pluginInfo)
 , m_backgroundColor(0.0, 0.0, 0.0)
 {
 }

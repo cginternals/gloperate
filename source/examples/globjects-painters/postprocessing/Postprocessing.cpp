@@ -9,13 +9,13 @@
 #include <gloperate/painter/CameraCapability.h>
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 #include <gloperate/painter/TypedRenderTargetCapability.h>
-
 #include <gloperate/base/ExplicitEquidistantColorGradient.h>
 #include <gloperate/tools/ColorGradientPreparation.h>
 
 
-Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
-: PipelinePainter("Postprocessing", resourceManager, pluginInfo, m_pipeline)
+Postprocessing::Postprocessing(gloperate::ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo)
+: PipelinePainter("Postprocessing", resourceManager, moduleInfo, m_pipeline)
+, m_pipeline(moduleInfo)
 , m_animation(true)
 {
     // Setup painter

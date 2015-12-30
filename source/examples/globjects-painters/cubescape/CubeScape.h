@@ -28,7 +28,7 @@ namespace gloperate
 class CubeScape : public gloperate::Painter
 {
 public:
-    CubeScape(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo);
+    CubeScape(gloperate::ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo);
     virtual ~CubeScape();
 
     void update(float delta);

@@ -28,7 +28,7 @@ namespace gloperate
 class Logo : public gloperate::Painter
 {
 public:
-    Logo(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo);
+    Logo(gloperate::ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo);
     virtual ~Logo();
 
     bool animation() const;

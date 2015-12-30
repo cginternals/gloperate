@@ -39,11 +39,11 @@ int main(int argc, char * argv[])
     resourceManager.addStorer(new QtTextureStorer());
 
     PluginManager pluginManager;
-    pluginManager.addPath(QCoreApplication::applicationDirPath().toStdString());
+    pluginManager.addSearchPath(QCoreApplication::applicationDirPath().toStdString());
 #ifdef NDEBUG
-    pluginManager.addPath("plugins");
+    pluginManager.addSearchPath("plugins");
 #else
-    pluginManager.addPath("plugins/debug");
+    pluginManager.addSearchPath("plugins/debug");
 #endif
     pluginManager.scan("painters");
 

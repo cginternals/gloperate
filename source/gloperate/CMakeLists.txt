@@ -320,6 +320,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${OPENGL_LIBRARIES}
+    cpplocate::cpplocate
     libzeug::reflectionzeug
     libzeug::iozeug
     glbinding::glbinding

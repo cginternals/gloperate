@@ -109,6 +109,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${OPENSCENEGRAPH_LIBRARIES}
+    cpplocate::cpplocate
     libzeug::iozeug
     libzeug::reflectionzeug
     glbinding::glbinding
@@ -168,18 +169,40 @@ target_link_libraries(${target}
 
 
 # 
+# Module information file
+# 
+
+generate_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
+    VALUES
+    name        "${target}"
+    version     "${META_VERSION}"
+    description "${META_PROJECT_DESCRIPTION}"
+    author      "${META_AUTHOR_ORGANIZATION}"
+
+    BUILD_VALUES
+    dataPath    "${PROJECT_SOURCE_DIR}/data"
+
+    INSTALL_VALUES
+    dataPath    "\${ModulePath}/../data"
+)
+
+export_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
+    TARGET ${target}
+    FOLDER "ModuleInfo"
+)
+
+install_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
+    DESTINATION ${INSTALL_PLUGINS}
+    COMPONENT runtime
+)
+
+
+# 
 # Deployment
 # 
 
-# Plugin library (release)
-#install(TARGETS ${target}
-#    RUNTIME DESTINATION ${INSTALL_PLUGINS}       CONFIGURATIONS Release
-#    LIBRARY DESTINATION ${INSTALL_PLUGINS}       CONFIGURATIONS Release
-#    ARCHIVE DESTINATION ${INSTALL_LIB}
-#)
-
-# Plugin library (debug)
-#install(TARGETS ${target}
-#    RUNTIME DESTINATION ${INSTALL_PLUGINS_DEBUG} CONFIGURATIONS Debug
-#    LIBRARY DESTINATION ${INSTALL_PLUGINS_DEBUG} CONFIGURATIONS Debug
-#)
+# Plugin library
+install(TARGETS ${target}
+    RUNTIME DESTINATION ${INSTALL_PLUGINS} COMPONENT runtime
+    LIBRARY DESTINATION ${INSTALL_PLUGINS} COMPONENT runtime
+)
