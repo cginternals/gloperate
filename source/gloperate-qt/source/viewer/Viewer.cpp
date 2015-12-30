@@ -147,7 +147,7 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 
     // Add default plugin directories
     m_pluginManager->addSearchPath(QCoreApplication::applicationDirPath().toStdString());
-    m_pluginManager->addSearchPath("plugins");
+    m_pluginManager->addSearchPath(QCoreApplication::applicationDirPath().toStdString() + "/plugins");
 
     // Scan all plugins with name component 'painters'
     #ifdef NDEBUG
