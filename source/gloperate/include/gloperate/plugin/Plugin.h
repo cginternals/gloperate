@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include <reflectionzeug/variant/Variant.h>
+#include <cpplocate/ModuleInfo.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -36,11 +36,11 @@ public:
     *    Plugin version
     */
     Plugin(
-        const std::string & type
-    ,   const std::string & name
-    ,   const std::string & description
-    ,   const std::string & vendor
-    ,   const std::string & version);
+      const std::string & type
+    , const std::string & name
+    , const std::string & description
+    , const std::string & vendor
+    , const std::string & version);
 
     /**
     *  @brief
@@ -95,39 +95,40 @@ public:
 
     /**
     *  @brief
-    *    Get plugin info
+    *    Get module info
     *
     *  @return
-    *    Custom plugin info in JSON format, e.g. path to data relative to the plugin directory, "" by default
+    *    Module information, read from modinfo file (if present)
     *
     *  @remarks
-    *    To set this information, create a file named PluginInfo.json in
-    *    the directory that contains your plugin libraries and define all
-    *    necessary information. For the path where data is found relative to that directory, e.g.:
-    *      { "relDataPath": "../data" }
+    *    To set this information, create a file named <libname>.modinfo in the same
+    *    directory that contains your plugin libraries and define all necessary information.
+    *    (libmyplugin.so -> libmyplugin.modinfo, or myplugin.dll -> myplugin.modinfo).
+    *    For example, you should define the data path relative to that directory:
+    *      { "dataPath": "${ModulePath}/../data" }
     */
-    const reflectionzeug::Variant & pluginInfo() const;
+    const cpplocate::ModuleInfo & moduleInfo() const;
 
     /**
     *  @brief
-    *    Set plugin info
+    *    Set module info
     *
-    *  @param[in] pluginInfo
-    *    Variant containing JSON object with custom plugin info
+    *  @param[in] modInfo
+    *    Module information found next to the plugin library
     *
     *  @remarks
     *    Do not call this function directly, let PluginManager do the magic
     */
-    void setPluginInfo(const reflectionzeug::Variant & pluginInfo);
+    void setModuleInfo(const cpplocate::ModuleInfo & moduleInfo);
 
 
 protected:
-    std::string             m_type;         ///< Plugin type (e.g., "Painter")
-    std::string             m_name;         ///< Plugin name
-    std::string             m_description;  ///< Plugin description
-    std::string             m_vendor;       ///< Vendor name
-    std::string             m_version;      ///< Plugin version
-    reflectionzeug::Variant m_pluginInfo;   ///< Plugin info, like relative data path
+    std::string           m_type;         ///< Plugin type (e.g., "Painter")
+    std::string           m_name;         ///< Plugin name
+    std::string           m_description;  ///< Plugin description
+    std::string           m_vendor;       ///< Vendor name
+    std::string           m_version;      ///< Plugin version
+    cpplocate::ModuleInfo m_moduleInfo;   ///< Module information for the plugin library
 };
 
 

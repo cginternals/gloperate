@@ -34,19 +34,25 @@ bool PluginLibrary::isValid() const
 void PluginLibrary::initialize()
 {
     if (m_initPtr != nullptr)
+    {
         (*m_initPtr)();
+    }
 }
 
 void PluginLibrary::deinitialize()
 {
     if (m_deinitPtr != nullptr)
+    {
         (*m_deinitPtr)();
+    }
 }
 
 unsigned int PluginLibrary::numPlugins() const
 {
     if (m_numPluginsPtr != nullptr)
+    {
         return (*m_numPluginsPtr)();
+    }
 
     return 0;
 }
@@ -54,7 +60,9 @@ unsigned int PluginLibrary::numPlugins() const
 gloperate::Plugin * PluginLibrary::plugin(unsigned int index) const
 {
     if (m_pluginPtr != nullptr)
+    {
         return (*m_pluginPtr)(index);
+    }
 
     return nullptr;
 }

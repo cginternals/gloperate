@@ -1,160 +1,93 @@
 
-#
-# Target
-#
-set(target gloperate-qt)
-
-
-#
-# External libraries
-#
+# 
+# External dependencies
+# 
 
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
-find_package(ASSIMP QUIET)
-
+find_package(ASSIMP)
 
 # Qt5
+find_package(Qt5OpenGL  5.1)
+find_package(Qt5Core    5.1)
+find_package(Qt5Gui     5.1)
+find_package(Qt5Widgets 5.1)
 
-# good resource: http://www.kdab.com/using-cmake-with-qt-5/
+# Enable automoc
+set(CMAKE_AUTOMOC ON)
+SET(CMAKE_AUTOUIC ON)
+set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
+set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 
-# http://qt-project.org/forums/viewthread/30006/
-if(MSVC)
+# ENABLE CMP0020: Automatically link Qt executables to qtmain target on Windows.
+if (POLICY CMP0020)
     cmake_policy(SET CMP0020 NEW)
 endif()
 
-find_package(Qt5OpenGL  5.1 QUIET)
-find_package(Qt5Core    5.1 QUIET)
-find_package(Qt5Gui     5.1 QUIET)
-find_package(Qt5Widgets 5.1 QUIET)
 
+# 
+# Library name and options
+# 
+
+# Target name
+set(target gloperate-qt)
+
+# Exit here if required dependencies are not met
 if (NOT Qt5Core_FOUND)
-    message(STATUS "Lib ${target} (disabled because Qt5 couldn't be found)")
+    message("Lib ${target} skipped: Qt5 not found")
     return()
-endif()
-
-# Qt5 options
-
-set(CMAKE_AUTOMOC ON)
-
-if(MSVC)
-    # -> msvc14 : declaration hides class member (problem in qt)
-    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} /wd4458)
-endif()
-
-
-#
-# Announce target
-#
-
-message(STATUS "Lib ${target}")
-
-
-#
-# Includes
-#
-
-include_directories(
-    ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
-    ${LIBZEUG_INCLUDE_DIRS}
-)
-
-include_directories(
-    BEFORE
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/source/gloperate/include
-    ${CMAKE_SOURCE_DIR}/source/gloperate-assimp/include
-)
-
-
-#
-# Libraries
-#
-
-set(libs
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
-    ${LIBZEUG_LIBRARIES}
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::OpenGL
-    gloperate
-)
-
-if (ASSIMP_FOUND)
-    list(APPEND libs
-        gloperate-assimp
-    )
-endif ()
-
-
-#
-# Compiler definitions
-#
-
-if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOPERATE_STATIC")
 else()
-    add_definitions("-DGLOPERATE_QT_EXPORTS")
+    message(STATUS "Lib ${target}")
 endif()
 
-# Include assimp specific code
-if (ASSIMP_FOUND)
-   add_definitions("-DGLOPERATE_ASSIMP_FOUND")
-endif()
-
-# for compatibility between glm 0.9.4 and 0.9.5
-add_definitions("-DGLM_FORCE_RADIANS")
+# Set API export file and macro
+string(TOUPPER ${target} target_upper)
+set(export_file  "include/${target}/${target}_api.h")
+set(export_macro "${target_upper}_API")
 
 
-#
+# 
 # Sources
-#
+# 
 
-set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
-set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
+set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${header_path}/viewer/Application.h
-    ${header_path}/viewer/DefaultMapping.h
-    ${header_path}/viewer/Viewer.h
-    ${header_path}/viewer/AbstractQtEventProvider.h
-    ${header_path}/viewer/QtEventTransformer.h
-    ${header_path}/viewer/QtFrameEventProvider.h
-    ${header_path}/viewer/QtKeyEventProvider.h
-    ${header_path}/viewer/QtMouseEventProvider.h
-    ${header_path}/viewer/QtOpenGLWindow.h
-    ${header_path}/viewer/QtOpenGLWindowBase.h
-    ${header_path}/viewer/QtTextureLoader.h
-    ${header_path}/viewer/QtTextureStorer.h
-    ${header_path}/viewer/QtWheelEventProvider.h
-    ${header_path}/viewer/Converter.h
-    ${header_path}/viewer/TimePropagator.h
+    ${include_path}/viewer/Application.h
+    ${include_path}/viewer/DefaultMapping.h
+    ${include_path}/viewer/Viewer.h
+    ${include_path}/viewer/QtEventTransformer.h
+    ${include_path}/viewer/QtKeyEventProvider.h
+    ${include_path}/viewer/QtMouseEventProvider.h
+    ${include_path}/viewer/QtOpenGLWindow.h
+    ${include_path}/viewer/QtOpenGLWindowBase.h
+    ${include_path}/viewer/QtTextureLoader.h
+    ${include_path}/viewer/QtTextureStorer.h
+    ${include_path}/viewer/QtWheelEventProvider.h
+    ${include_path}/viewer/Converter.h
+    ${include_path}/viewer/TimePropagator.h
+    ${include_path}/viewer/AbstractQtEventProvider.h
+    ${include_path}/viewer/QtFrameEventProvider.h
 
-    ${header_path}/scripting/ScriptEnvironment.h
-    ${header_path}/scripting/SystemApi.h
-    ${header_path}/scripting/TimerApi.h
-    ${header_path}/scripting/ViewerApi.h
-    ${header_path}/scripting/PluginApi.h
+    ${include_path}/scripting/ScriptEnvironment.h
+    ${include_path}/scripting/SystemApi.h
+    ${include_path}/scripting/TimerApi.h
+    ${include_path}/scripting/ViewerApi.h
+    ${include_path}/scripting/PluginApi.h
 
-    ${header_path}/widgets/FileNameTextEdit.h
-    ${header_path}/widgets/ImageExporterWidget.h
-    ${header_path}/widgets/ImageExporterMultiFrameWidget.h
-    ${header_path}/widgets/ImageExporterOutputWidget.h
-    ${header_path}/widgets/ImageExporterResolutionWidget.h
-    ${header_path}/widgets/ImageExporterTilebasedWidget.h
-    ${header_path}/widgets/PluginPathWidget.h
-    ${header_path}/widgets/PluginConfigWidget.h
-    ${header_path}/widgets/PluginWidget.h
-
-    ${header_path}/gloperate-qt_api.h
+    ${include_path}/widgets/FileNameTextEdit.h
+    ${include_path}/widgets/ImageExporterWidget.h
+    ${include_path}/widgets/ImageExporterMultiFrameWidget.h
+    ${include_path}/widgets/ImageExporterOutputWidget.h
+    ${include_path}/widgets/ImageExporterResolutionWidget.h
+    ${include_path}/widgets/ImageExporterTilebasedWidget.h
+    ${include_path}/widgets/PluginPathWidget.h
+    ${include_path}/widgets/PluginConfigWidget.h
+    ${include_path}/widgets/PluginWidget.h
 )
 
 set(sources
@@ -162,9 +95,7 @@ set(sources
     ${source_path}/viewer/DefaultMapping.cpp
     ${source_path}/viewer/Viewer.cpp
     ${source_path}/viewer/Viewer.ui
-    ${source_path}/viewer/AbstractQtEventProvider.cpp
     ${source_path}/viewer/QtEventTransformer.cpp
-    ${source_path}/viewer/QtFrameEventProvider.cpp
     ${source_path}/viewer/QtKeyEventProvider.cpp
     ${source_path}/viewer/QtMouseEventProvider.cpp
     ${source_path}/viewer/QtOpenGLWindow.cpp
@@ -174,6 +105,8 @@ set(sources
     ${source_path}/viewer/QtWheelEventProvider.cpp
     ${source_path}/viewer/Converter.cpp
     ${source_path}/viewer/TimePropagator.cpp
+    ${source_path}/viewer/AbstractQtEventProvider.cpp
+    ${source_path}/viewer/QtFrameEventProvider.cpp
 
     ${source_path}/scripting/ScriptEnvironment.cpp
     ${source_path}/scripting/SystemApi.cpp
@@ -200,47 +133,171 @@ set(sources
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
-source_group_by_path(${header_path} "\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
     ${header_group} ${headers})
-source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
 
-#
+# 
+# Create library
+# 
+
 # Build library
-#
+add_library(${target}
+    ${sources}
+    ${headers}
+)
 
-list_extract(uis "\\\\.ui$" ${sources})
-qt5_wrap_ui(uihs ${uis})
+# Create namespaced alias
+add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
-add_library(${target} ${headers} ${sources})
-qt5_use_modules(${target} Core Gui Widgets)
-target_link_libraries(${target} ${libs})
+# Export library for downstream projects
+export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
 
-target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
+# Create API export header
+generate_export_header(${target}
+    EXPORT_FILE_NAME  ${export_file}
+    EXPORT_MACRO_NAME ${export_macro}
+)
+
+
+# 
+# Project options
+# 
 
 set_target_properties(${target}
     PROPERTIES
-    LINKER_LANGUAGE              CXX
-    FOLDER                      "${IDE_FOLDER}"
-    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
-    COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
-    LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
-    LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
-    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH                ${header_path})
+    ${DEFAULT_PROJECT_OPTIONS}
+    FOLDER "${IDE_FOLDER}"
+)
 
 
-#
+# 
+# Include directories
+# 
+
+target_include_directories(${target}
+    PRIVATE
+    ${DEFAULT_INCLUDE_DIRECTORIES}
+    ${PROJECT_BINARY_DIR}/source/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_BINARY_DIR}/include
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${PROJECT_SOURCE_DIR}/source/gloperate/include
+    ${PROJECT_SOURCE_DIR}/source/gloperate-assimp/include
+    ${GLM_INCLUDE_DIR}
+
+    PUBLIC
+
+    INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+
+# 
+# Libraries
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::OpenGL
+    cpplocate::cpplocate
+    libzeug::reflectionzeug
+    libzeug::signalzeug
+    libzeug::loggingzeug
+    libzeug::scriptzeug
+    libzeug::widgetzeug
+    libzeug::propertyguizeug
+    glbinding::glbinding
+    globjects::globjects
+    ${META_PROJECT_NAME}::gloperate
+    $<$<BOOL:${ASSIMP_FOUND}>:${META_PROJECT_NAME}::gloperate-assimp>
+
+    PUBLIC
+    ${DEFAULT_LIBRARIES}
+
+    INTERFACE
+)
+
+
+# 
+# Compile definitions
+# 
+
+target_compile_definitions(${target}
+    PRIVATE
+
+    PUBLIC
+    $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_upper}_STATIC_DEFINE>
+    ${DEFAULT_COMPILE_DEFINITIONS}
+    $<$<BOOL:${ASSIMP_FOUND}>:GLOPERATE_ASSIMP_FOUND>
+    GLM_FORCE_RADIANS
+
+    INTERFACE
+)
+
+
+# 
+# Compile options
+# 
+
+target_compile_options(${target}
+    PRIVATE
+
+    PUBLIC
+    ${DEFAULT_COMPILE_OPTIONS}
+
+    INTERFACE
+)
+
+
+# 
+# Linker options
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+
+    PUBLIC
+    ${DEFAULT_LINKER_OPTIONS}
+
+    INTERFACE
+)
+
+
+# 
 # Deployment
-#
+# 
 
 # Library
 install(TARGETS ${target}
-    RUNTIME DESTINATION ${INSTALL_BIN}
-    LIBRARY DESTINATION ${INSTALL_SHARED}
-    ARCHIVE DESTINATION ${INSTALL_LIB}
+    EXPORT  "${target}-export"            COMPONENT dev
+    RUNTIME DESTINATION ${INSTALL_BIN}    COMPONENT runtime
+    LIBRARY DESTINATION ${INSTALL_SHARED} COMPONENT runtime
+    ARCHIVE DESTINATION ${INSTALL_LIB}    COMPONENT dev
 )
 
 # Header files
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
+install(DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE}
+    COMPONENT dev
+)
+
+# Generated header files
+install(DIRECTORY
+    ${CMAKE_CURRENT_BINARY_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE}
+    COMPONENT dev
+)
+
+# CMake config
+install(EXPORT ${target}-export
+    NAMESPACE   ${META_PROJECT_NAME}::
+    DESTINATION ${INSTALL_CMAKE}/${target}
+    COMPONENT   dev
+)

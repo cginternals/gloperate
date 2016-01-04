@@ -90,21 +90,21 @@ namespace gloperate_qt
 
 Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 : QMainWindow(parent, flags)
-, m_ui{new Ui_Viewer}
-, m_resourceManager{nullptr}
-, m_pluginManager{nullptr}
-, m_scriptEnvironment{nullptr}
-, m_viewerApi{nullptr}
-, m_pluginApi{nullptr}
-, m_painter{nullptr}
-, m_mapping{nullptr}
-, m_canvas{nullptr}
+, m_ui(new Ui_Viewer)
+, m_resourceManager(nullptr)
+, m_pluginManager(nullptr)
+, m_scriptEnvironment(nullptr)
+, m_viewerApi(nullptr)
+, m_pluginApi(nullptr)
+, m_painter(nullptr)
+, m_mapping(nullptr)
+, m_canvas(nullptr)
 , m_messagesStatus{new MessageStatusWidget()}
 , m_messagesLog{new MessageWidget()}
 , m_scriptPrompt{new ScriptPromptWidget()}
-, m_messagLogDockWidget{nullptr}
-, m_scriptPromptDockWidget{nullptr}
-, m_propertyDockWidget{nullptr}
+, m_messagLogDockWidget(nullptr)
+, m_scriptPromptDockWidget(nullptr)
+, m_propertyDockWidget(nullptr)
 {
     // Initialize resource manager (must be done BEFORE setupCanvas)
     m_resourceManager.reset(new ResourceManager());
@@ -139,15 +139,15 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     m_pluginManager.reset(new PluginManager());
     m_pluginManager->pluginsChanged.connect(this, &Viewer::updatePainterMenu);
 
-    // Restore plugin paths from settings
+    // Restore plugin search paths from settings
     auto paths = fromQStringList(settings.value(SETTINGS_PLUGINS).toStringList());
     if (paths.size() > 0) {
-        m_pluginManager->setPaths(paths);
+        m_pluginManager->setSearchPaths(paths);
     }
 
     // Add default plugin directories
-    m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
-    m_pluginManager->addPath("plugins");
+    m_pluginManager->addSearchPath(QCoreApplication::applicationDirPath().toStdString());
+    m_pluginManager->addSearchPath(QCoreApplication::applicationDirPath().toStdString() + "/plugins");
 
     // Scan all plugins with name component 'painters'
     #ifdef NDEBUG
@@ -170,7 +170,7 @@ Viewer::~Viewer()
     QSettings settings;
     settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
     settings.setValue(SETTINGS_STATE, saveState());
-    settings.setValue(SETTINGS_PLUGINS, toQStringList(m_pluginManager->paths()));
+    settings.setValue(SETTINGS_PLUGINS, toQStringList(m_pluginManager->searchPaths()));
 
     // Disconnect message handlers
     MessageHandler::dettach(*m_messagesLog);

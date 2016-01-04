@@ -13,32 +13,32 @@ PluginApi::PluginApi(gloperate::PluginManager * pluginManager)
 , m_pluginManager(pluginManager)
 {
     // Register functions
-    this->addFunction("paths",      this, &PluginApi::paths);
-    this->addFunction("setPaths",   this, &PluginApi::setPaths);
-    this->addFunction("addPath",    this, &PluginApi::addPath);
-    this->addFunction("removePath", this, &PluginApi::removePath);
-    this->addFunction("scan",       this, &PluginApi::scan);
-    this->addFunction("load",       this, &PluginApi::load);
-    this->addFunction("plugins",    this, &PluginApi::plugins);
-    this->addFunction("plugin",     this, &PluginApi::plugin);
+    this->addFunction("searchPaths",      this, &PluginApi::searchPaths);
+    this->addFunction("setSearchPaths",   this, &PluginApi::setSearchPaths);
+    this->addFunction("addSearchPath",    this, &PluginApi::addSearchPath);
+    this->addFunction("removeSearchPath", this, &PluginApi::removeSearchPath);
+    this->addFunction("scan",             this, &PluginApi::scan);
+    this->addFunction("load",             this, &PluginApi::load);
+    this->addFunction("plugins",          this, &PluginApi::plugins);
+    this->addFunction("plugin",           this, &PluginApi::plugin);
 }
 
 PluginApi::~PluginApi()
 {
 }
 
-reflectionzeug::Variant PluginApi::paths()
+reflectionzeug::Variant PluginApi::searchPaths()
 {
     reflectionzeug::Variant paths = reflectionzeug::Variant::array();
 
-    for (auto path : m_pluginManager->paths()) {
+    for (auto path : m_pluginManager->searchPaths()) {
         paths.asArray()->push_back(path);
     }
 
     return paths;
 }
 
-void PluginApi::setPaths(const reflectionzeug::Variant & paths)
+void PluginApi::setSearchPaths(const reflectionzeug::Variant & paths)
 {
     // Argument must be an array
     if (!paths.isArray()) {
@@ -52,17 +52,17 @@ void PluginApi::setPaths(const reflectionzeug::Variant & paths)
     }
 
     // Set new search paths
-    m_pluginManager->setPaths(searchPaths);
+    m_pluginManager->setSearchPaths(searchPaths);
 }
 
-void PluginApi::addPath(const std::string & path)
+void PluginApi::addSearchPath(const std::string & path)
 {
-    m_pluginManager->addPath(path);
+    m_pluginManager->addSearchPath(path);
 }
 
-void PluginApi::removePath(const std::string & path)
+void PluginApi::removeSearchPath(const std::string & path)
 {
-    m_pluginManager->removePath(path);
+    m_pluginManager->removeSearchPath(path);
 }
 
 void PluginApi::scan(const std::string & identifier, bool reload)

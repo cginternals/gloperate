@@ -31,7 +31,7 @@ public:
     PipelinePainter(
         const std::string & name,
         gloperate::ResourceManager & resourceManager,
-        const reflectionzeug::Variant & pluginInfo,
+        const cpplocate::ModuleInfo & moduleInfo,
         AbstractPipeline & pipeline);
 
     virtual void onInitialize() override;

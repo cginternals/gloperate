@@ -22,7 +22,6 @@
 #include <gloperate-qt/viewer/QtKeyEventProvider.h>
 #include <gloperate-qt/viewer/QtMouseEventProvider.h>
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
-#include <gloperate-qt/viewer/QtFrameEventProvider.h>
 
 #include "QtViewerMapping.h"
 
@@ -40,14 +39,13 @@ int main(int argc, char * argv[])
     resourceManager.addStorer(new QtTextureStorer());
 
     PluginManager pluginManager;
-    pluginManager.addPath(QCoreApplication::applicationDirPath().toStdString());
-#ifdef NDEBUG
-    pluginManager.addPath("plugins");
-    pluginManager.scan("painters");
-#else
-    pluginManager.addPath("plugins/debug");
-    pluginManager.scan("paintersd");
-#endif
+    pluginManager.addSearchPath(QCoreApplication::applicationDirPath().toStdString());
+    pluginManager.addSearchPath(QCoreApplication::applicationDirPath().toStdString() + "/plugins");
+    #ifdef NDEBUG
+        pluginManager.scan("painters");
+    #else
+        pluginManager.scan("paintersd");
+    #endif
 
     // Choose a painter
     std::unique_ptr<gloperate::Painter> painter(nullptr);
@@ -77,7 +75,6 @@ int main(int argc, char * argv[])
     QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
     QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
     QtWheelEventProvider * wheelProvider = new QtWheelEventProvider();
-    QtFrameEventProvider * frameProvider = new QtFrameEventProvider();
 
     // Create OpenGL window
     QSurfaceFormat format;
@@ -90,7 +87,6 @@ int main(int argc, char * argv[])
     window->installEventFilter(keyProvider);
     window->installEventFilter(mouseProvider);
     window->installEventFilter(wheelProvider);
-    window->installEventFilter(frameProvider);
     
     // Create Mapping
     QtViewerMapping * mapping = new QtViewerMapping(window);

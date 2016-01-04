@@ -10,13 +10,14 @@
 #include <gloperate/painter/ViewportCapability.h>
 #include <gloperate/painter/TargetFramebufferCapability.h>
 
+
 using namespace gloperate;
 using namespace globjects;
 using namespace gl;
 
 
-ScreenAligned::ScreenAligned(ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
-: Painter("ScreenAligned", resourceManager, pluginInfo)
+ScreenAligned::ScreenAligned(ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo)
+: Painter("ScreenAligned", resourceManager, moduleInfo)
 {
     // Setup painter
     m_targetFramebufferCapability = addCapability(new gloperate::TargetFramebufferCapability());
