@@ -18,7 +18,7 @@ find_package(Qt5Widgets 5.1)
 
 # Enable automoc
 set(CMAKE_AUTOMOC ON)
-SET(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOUIC ON)
 set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 
@@ -34,6 +34,7 @@ endif()
 
 # Target name
 set(target gloperate-qt)
+set(target_upper GLOPERATE_QT)
 
 # Exit here if required dependencies are not met
 if (NOT Qt5Core_FOUND)
@@ -44,7 +45,7 @@ else()
 endif()
 
 # Set API export file and macro
-string(TOUPPER ${target} target_upper)
+set(feature_file "include/${target}/${target}_features.h")
 set(export_file  "include/${target}/${target}_api.h")
 set(export_macro "${target_upper}_API")
 
@@ -154,6 +155,16 @@ add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
 # Export library for downstream projects
 export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
+
+# Create feature detection header
+# Compilers: https://cmake.org/cmake/help/v3.1/variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_%3CLANG%3E_COMPILER_ID
+# Feature: https://cmake.org/cmake/help/v3.1/prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html
+write_compiler_detection_header(
+    FILE ${feature_file}
+    PREFIX ${target_upper}
+    COMPILERS AppleClang Clang GNU MSVC
+    FEATURES cxx_alignas cxx_alignof cxx_constexpr cxx_final cxx_noexcept cxx_nullptr cxx_sizeof_member cxx_thread_local
+)
 
 # Create API export header
 generate_export_header(${target}
