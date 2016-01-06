@@ -75,6 +75,7 @@ public:
     // File functions
     std::string readFile(const std::string & filename);
     void writeFile(const std::string & filename, const reflectionzeug::Variant & value);
+    void appendFile(const std::string & filename, const reflectionzeug::Variant & value);
 
     // Keyboard functions
     int  onKeyPress(const reflectionzeug::Variant & func);
