@@ -1,23 +1,43 @@
+
 #pragma once
+
 
 #include <set>
 #include <string>
 
-#include <gloperate/gloperate_api.h>
-
-#include <globjects/base/CachedValue.h>
 #include <signalzeug/Signal.h>
+
+#include <gloperate/base/CachedValue.h>
+
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
 {
 
+
 class AbstractInputSlot;
 class AbstractData;
 
 
+/**
+*  @brief
+*    Rendering stage of a pipeline
+*
+*    A rendering stage is part of a pipeline. It executes a
+*    specific task in a rendering or processing technique and
+*    is executed by the pipeline if needed.
+*
+*  @see AbstractPipeline
+*  @see Data
+*  @see InputSlot
+*/
 class GLOPERATE_API AbstractStage
 {
+public:
+    signalzeug::Signal<> dependenciesChanged;
+
+
 public:
     AbstractStage(const std::string & name = "");
     virtual ~AbstractStage();
@@ -57,8 +77,6 @@ public:
 
     void invalidateOutputs();
 
-public:
-    signalzeug::Signal<> dependenciesChanged;
 
 protected:
     bool needsToProcess() const;
@@ -67,12 +85,13 @@ protected:
 
     virtual void process() = 0;
 
+
 protected:
     bool m_enabled;
     bool m_alwaysProcess;
     bool m_processScheduled;
     std::string m_name;
-    globjects::CachedValue<bool> m_usable;
+    gloperate::CachedValue<bool> m_usable;
 
     std::set<AbstractData*> m_outputs;
     std::set<AbstractData*> m_sharedOutputs;
@@ -80,8 +99,10 @@ protected:
     std::set<AbstractInputSlot*> m_sharedInputs;
     std::set<AbstractStage*> m_dependencies;    /**< Additional manual dependencies not expressed by data connections */
 
+
 private:
     AbstractStage(const AbstractStage&) = delete;
 };
+
 
 } // namespace gloperate

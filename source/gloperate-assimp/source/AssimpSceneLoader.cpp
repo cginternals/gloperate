@@ -5,12 +5,18 @@
 #include <iostream>
 #include <string>
 
+#include <gloperate/ext-includes-begin.h>
+
 #include <glm/glm.hpp>
 
 #include <assimp/scene.h>
 #include <assimp/cimport.h>
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
+
+#include <gloperate/ext-includes-end.h>
+
+#include <reflectionzeug/variant/Variant.h>
 
 #include <gloperate/primitives/PolygonalGeometry.h>
 #include <gloperate/primitives/Scene.h>
@@ -98,15 +104,23 @@ std::string AssimpSceneLoader::allLoadingTypes() const
     return string;
 }
 
-Scene * AssimpSceneLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
+Scene * AssimpSceneLoader::load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> /*progress*/) const
 {
+    bool smoothNormals = false;
+
+    // Get options
+    const reflectionzeug::VariantMap * map = options.asMap();
+    if (map) {
+        if (map->count("smoothNormals") > 0) smoothNormals = map->at("smoothNormals").value<bool>();
+    }
+
     // Import scene
     auto assimpScene = aiImportFile(
         filename.c_str(),
         aiProcess_Triangulate           |
         aiProcess_JoinIdenticalVertices |
         aiProcess_SortByPType |
-        aiProcess_GenNormals);
+        (smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals));
 
     // Check for errors
     if (!assimpScene)
@@ -136,7 +150,7 @@ Scene * AssimpSceneLoader::convertScene(const aiScene * scene) const
         sceneOut->meshes().push_back(convertGeometry(scene->mMeshes[i]));
     }
 
-    for (size_t i = 0; i < scene->mNumMaterials; ++i)
+    for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
     {
         aiString filename;
         // only fetch texture with index 0

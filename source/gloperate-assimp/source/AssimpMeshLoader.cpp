@@ -5,12 +5,18 @@
 #include <iostream>
 #include <string>
 
+#include <gloperate/ext-includes-begin.h>
+
 #include <glm/glm.hpp>
 
 #include <assimp/scene.h>
 #include <assimp/cimport.h>
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
+
+#include <gloperate/ext-includes-end.h>
+
+#include <reflectionzeug/variant/Variant.h>
 
 #include <gloperate/primitives/PolygonalGeometry.h>
 
@@ -97,15 +103,23 @@ std::string AssimpMeshLoader::allLoadingTypes() const
     return string;
 }
 
-PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, std::function<void(int, int)> /*progress*/) const
+PolygonalGeometry * AssimpMeshLoader::load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> /*progress*/) const
 {
+    bool smoothNormals = false;
+
+    // Get options
+    const reflectionzeug::VariantMap * map = options.asMap();
+    if (map) {
+        if (map->count("smoothNormals") > 0) smoothNormals = map->at("smoothNormals").value<bool>();
+    }
+
     // Import scene
     auto scene = aiImportFile(
         filename.c_str(),
         aiProcess_Triangulate           |
         aiProcess_JoinIdenticalVertices |
         aiProcess_SortByPType |
-        aiProcess_GenNormals);
+        (smoothNormals ? aiProcess_GenSmoothNormals : aiProcess_GenNormals));
 
     // Check for errors
     if (!scene)

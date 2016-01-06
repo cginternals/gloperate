@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <globjects/base/Referenced.h>
 
@@ -8,8 +10,8 @@
 namespace gloperate_glfw
 {
 
-class Window;
 
+class Window;
 class WindowEvent;
 class KeyEvent;
 class MouseEvent;
@@ -24,9 +26,12 @@ class MoveEvent;
 class TimerEvent;
 
 
-/** \brief Objects of this class can be attached to a window to handle events.
-
-    The window's context is made current before calling any methods and done current afterwards.
+/**
+*  @brief
+*    Objects of this class can be attached to a window to handle events
+*
+*  @remarks
+*    The window's context is made current before calling any methods and done current afterwards.
 */
 class GLOPERATE_GLFW_API WindowEventHandlerBase : public globjects::Referenced
 {
@@ -36,17 +41,33 @@ public:
 
     virtual void handleEvent(WindowEvent & event);
 
-    /** initialize is called only once when starting to run a window.
+    /**
+    *  @brief
+    *    Initialize event handler
+    *
+    *  @remarks
+    *    'initialize' is called only once when starting to run a window.
     */
     virtual void initialize(Window & window);
     
-    /** finalize is called only once, just before a window returns from running.
+    /**
+    *  @brief
+    *    Finalize event handler
+    *
+    *  @remarks
+    *    'finalize' is called only once, just before a window returns from running.
     */
     virtual void finalize(Window & window);
 
-    /** idle is called when no events were queued in the current iteration of the main loop.
+    /**
+    *  @brief
+    *    Called on idle
+    *
+    *  @remarks
+    *    'idle' is called when no events were queued in the current iteration of the main loop.
     */
     virtual void idle(Window & window);
+
 
 protected:
     virtual void resizeEvent(ResizeEvent & event);
@@ -54,7 +75,12 @@ protected:
 
     virtual void moveEvent(MoveEvent & event);
 
-    /** Swap buffers gets called afterwards.
+    /**
+    *  @brief
+    *    Paint window
+    *
+    *  @remarks
+    *    'swapBuffers' gets called afterwards.
     */
     virtual void paintEvent(PaintEvent & event);
 
@@ -75,5 +101,6 @@ protected:
 
     virtual void timerEvent(TimerEvent & event);
 };
+
 
 } // namespace gloperate_glfw

@@ -1,3 +1,4 @@
+
 #include <gloperate/primitives/AxisAlignedBoundingBox.h>
 
 #include <cfloat>
@@ -8,6 +9,7 @@ using namespace glm;
 
 namespace gloperate
 {
+
 
 AxisAlignedBoundingBox::AxisAlignedBoundingBox()
 : m_urb(vec3(-FLT_MAX, -FLT_MAX, -FLT_MAX))
@@ -98,5 +100,6 @@ bool AxisAlignedBoundingBox::outside(const vec3 & vertex) const
 {
     return !inside(vertex);
 }
+
 
 } // namespace gloperate

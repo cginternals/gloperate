@@ -1,8 +1,10 @@
+
 #include <gloperate-glfw/Timer.h>
 
 
 namespace gloperate_glfw
 {
+
 
 Timer::Timer(bool _start, bool autoUpdate)
 :   m_paused(true)
@@ -88,5 +90,6 @@ bool Timer::autoUpdating() const
 {
     return m_auto;
 }
+
 
 } // namespace gloperate_glfw

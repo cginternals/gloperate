@@ -1,3 +1,4 @@
+
 #include <gloperate-glfw/events.h>
 
 #define GLFW_INCLUDE_NONE
@@ -6,6 +7,7 @@
 
 namespace gloperate_glfw
 {
+
 
 WindowEvent::WindowEvent(Type type)
 : m_type(type)

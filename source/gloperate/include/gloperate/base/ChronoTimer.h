@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <chrono>
 
@@ -8,13 +10,20 @@
 namespace gloperate
 {
 
+
+/**
+*  @brief
+*    High performance timer based on std::chrono
+*
+*  @see AutoTimer
+*/
 class GLOPERATE_API ChronoTimer
 {
-    using clock = std::chrono::high_resolution_clock;
-    using time_point = clock::time_point;
 public:
     using Duration = std::chrono::duration<long long, std::nano>;
 
+
+public:
     ChronoTimer(bool start = true, bool autoUpdate = true);
     virtual ~ChronoTimer();
 
@@ -31,11 +40,16 @@ public:
     void stop();
     void reset();
 
+
+protected:
+    using clock = std::chrono::high_resolution_clock;
+    using time_point = clock::time_point;
+
+
 protected:
     bool m_paused;
     bool m_auto;
 
-protected:
     time_point m_t0;
     time_point m_tp; // time_point of last pausing
 
@@ -44,5 +58,6 @@ protected:
     Duration m_offset;
     mutable Duration m_elapsed;
 };
+
 
 } // namespace gloperate

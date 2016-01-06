@@ -4,11 +4,11 @@
 
 #include <unordered_map>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractMetaInformationCapability.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
 
 
 class AbstractViewportCapability;

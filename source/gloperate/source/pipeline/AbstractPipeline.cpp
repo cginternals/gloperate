@@ -1,3 +1,4 @@
+
 #include <gloperate/pipeline/AbstractPipeline.h>
 
 #include <cassert>
@@ -20,6 +21,7 @@ using namespace collection;
 
 namespace gloperate
 {
+
 
 AbstractPipeline::AbstractPipeline(const std::string & name)
 :   m_initialized(false)
@@ -235,5 +237,6 @@ bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
 
     return couldBeSorted;
 }
+
 
 } // namespace gloperate

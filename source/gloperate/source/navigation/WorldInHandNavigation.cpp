@@ -1,27 +1,23 @@
+
 #include <gloperate/navigation/WorldInHandNavigation.h>
 
 #include <cassert>
+#include <iostream>
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <gloperate/ext-includes-end.h>
 
-//#include <gloperate/Camera.h>
 #include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/AbstractViewportCapability.h>
-#include <gloperate/tools/CoordinateProvider.h>
 #include <gloperate/tools/DepthExtractor.h>
-
-//#include "MathMacros.h"
+#include <gloperate/navigation/CoordinateProvider.h>
 #include <gloperate/navigation/navigationmath.h>
 
-#include <iostream>
 
 namespace
 {
-    static const glm::vec3 DEFAULT_EYE    = glm::vec3(0.f, 0.8f, -2.0f);
-    static const glm::vec3 DEFAULT_CENTER = glm::vec3(0.f, -1.2f, 0.0f);
-    static const glm::vec3 DEFAULT_UP     = glm::vec3(0.f, 1.0f, 0.0f);
-
     static const float DEFAULT_SCALE_STEP = 0.1f;
     static const float DEFAULT_DISTANCE   = 2.0f;
     static const float DEFAULT_DIST_MIN   = 0.1f;
@@ -37,8 +33,10 @@ namespace
     static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * glm::pi<float>();
 }
 
+
 namespace gloperate
 {
+
 
 WorldInHandNavigation::WorldInHandNavigation(
     AbstractCameraCapability & cameraCapability, 
@@ -75,9 +73,7 @@ WorldInHandNavigation::InteractionMode WorldInHandNavigation::mode() const
 
 void WorldInHandNavigation::reset()
 {
-    m_cameraCapability.setEye(DEFAULT_EYE);
-    m_cameraCapability.setCenter(DEFAULT_CENTER);
-    m_cameraCapability.setUp(DEFAULT_UP);
+    m_cameraCapability.reset();
 
     m_mode = NoInteraction;
 
@@ -441,5 +437,6 @@ void WorldInHandNavigation::enforceRotationConstraints(
 //
 //    setDirty();
 //}
+
 
 } // namespace gloperate

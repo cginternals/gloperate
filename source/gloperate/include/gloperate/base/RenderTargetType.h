@@ -1,13 +1,17 @@
+
 #pragma once
+
 
 namespace gloperate
 {
 
+
 /**
 *  @brief
-*    Type of data provided by the render target
+*    Type of data provided by a render target
 */
-enum class RenderTargetType : unsigned int {
+enum class RenderTargetType : unsigned int
+{
     Color,
     Depth,
     Normal,
@@ -15,5 +19,6 @@ enum class RenderTargetType : unsigned int {
     TextureCoord,
     ObjectID
 };
+
 
 } // namespace gloperate

@@ -2,11 +2,12 @@
 #pragma once
 
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
-#include <globjects/base/CachedValue.h>
+#include <gloperate/base/CachedValue.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/painter/AbstractOrthographicProjectionCapability.h>
 
 
@@ -92,8 +93,8 @@ protected:
     float m_zFar;           /**< Far plane */
 
     // Projection matrices
-    globjects::CachedValue<glm::mat4> m_projection;         /**< Projection matrix */
-    globjects::CachedValue<glm::mat4> m_projectionInverted; /**< Inverted projection matrix */
+    gloperate::CachedValue<glm::mat4> m_projection;         /**< Projection matrix */
+    gloperate::CachedValue<glm::mat4> m_projectionInverted; /**< Inverted projection matrix */
 };
 
 

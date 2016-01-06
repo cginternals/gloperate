@@ -1,3 +1,4 @@
+
 #include <gloperate/primitives/VertexDrawable.h>
 
 #include <globjects/VertexAttributeBinding.h>
@@ -5,6 +6,7 @@
 
 namespace gloperate
 {
+
 
 VertexDrawable::AttributeFormat::AttributeFormat()
 : size(0)
@@ -42,6 +44,7 @@ void VertexDrawable::AttributeFormat::setTo(globjects::VertexAttributeBinding * 
 
 VertexDrawable::VertexDrawable(gl::GLenum primitiveMode)
 : m_vao(new globjects::VertexArray)
+, m_vbo(new globjects::Buffer)
 , m_baseOffset(0)
 , m_stride(0)
 , m_size(0)
@@ -51,6 +54,7 @@ VertexDrawable::VertexDrawable(gl::GLenum primitiveMode)
 
 VertexDrawable::VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenum primitiveMode)
 : m_vao(new globjects::VertexArray)
+, m_vbo(new globjects::Buffer)
 , m_baseOffset(baseOffset)
 , m_stride(stride)
 , m_size(0)
@@ -137,6 +141,14 @@ void VertexDrawable::draw() const
     m_vao->drawArrays(m_primitiveMode, 0, m_size);
 }
 
+void VertexDrawable::draw(gl::GLenum primitiveMode) const
+{
+    if (!m_vbo || m_size <= 0)
+        return;
+
+    m_vao->drawArrays(primitiveMode, 0, m_size);
+}
+
 VertexDrawable::AttributeFormat Format(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset, gl::GLboolean normalized)
 {
     return VertexDrawable::AttributeFormat(size, type, normalized, relativeOffset, VertexDrawable::AttributeFormat::Float);
@@ -152,4 +164,5 @@ VertexDrawable::AttributeFormat FormatL(gl::GLint size, gl::GLenum type, gl::GLu
     return VertexDrawable::AttributeFormat(size, type, gl::GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Long);
 }
 
-} // namespace globjectsutils
+
+} // namespace gloperate

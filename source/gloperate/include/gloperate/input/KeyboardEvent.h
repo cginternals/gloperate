@@ -1,32 +1,45 @@
+
 #pragma once
 
-#include <gloperate/gloperate_api.h>
 
 #include <gloperate/input/AbstractEvent.h>
-
 #include <gloperate/input/input.h>
+
 
 namespace gloperate
 {
 
+
+/**
+*  @brief
+*    Keyboard event
+*
+*    Informs about key press and release events
+*/
 class GLOPERATE_API KeyboardEvent : public AbstractEvent
 {
-
 public:
+    /**
+    *  @brief
+    *    Keyboard event type (press or release)
+    */
     enum class Type : char
     {
         Press
     ,   Release
     };
 
+
+public:
     KeyboardEvent(Type type, Key key, int scanCode, int modifiers = 0);
-    explicit KeyboardEvent(Type type, unsigned int character);
+    KeyboardEvent(Type type, unsigned int character);
 
     Type type() const;
     Key key() const;
     int scanCode() const;
     int modifiers() const;
     unsigned int character() const;
+
 
 protected:
     Type m_type;

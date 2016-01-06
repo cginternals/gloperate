@@ -1,3 +1,4 @@
+
 #include <gloperate/resources/RawFile.h>
 
 #include <fstream>
@@ -6,6 +7,7 @@
 
 namespace gloperate
 {
+
 
 RawFile::RawFile(const std::string & filePath)
 : m_filePath(filePath)
@@ -65,5 +67,6 @@ void RawFile::readRawData(std::ifstream & ifs)
     ifs.seekg(0, std::ios::beg);
     ifs.read(m_data.data(), size);
 }
+
 
 } // namespace gloperate

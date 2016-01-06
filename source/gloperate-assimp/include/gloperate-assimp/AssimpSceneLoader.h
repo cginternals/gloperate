@@ -24,6 +24,9 @@ namespace gloperate_assimp
 /**
 *  @brief
 *    Loader for meshes (PolygonalGeometry) that uses ASSIMP for import
+*
+*  Supported options:
+*    "smoothNormals" <bool>: Generate smooth normals
 */
 class GLOPERATE_ASSIMP_API AssimpSceneLoader : public gloperate::Loader<gloperate::Scene>
 {
@@ -44,7 +47,7 @@ public:
     virtual bool canLoad(const std::string & ext) const override;
     virtual std::vector<std::string> loadingTypes() const override;
     virtual std::string allLoadingTypes() const override;
-    virtual gloperate::Scene * load(const std::string & filename, std::function<void(int, int)> progress) const override;
+    virtual gloperate::Scene * load(const std::string & filename, const reflectionzeug::Variant & options, std::function<void(int, int)> progress) const override;
 
 
 protected:

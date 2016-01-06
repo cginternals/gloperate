@@ -1,7 +1,10 @@
-﻿#pragma once
+﻿
+#pragma once
 
 
+#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
+#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -9,24 +12,27 @@
 namespace gloperate
 {
 
-/** \brief Axis aligned rectangular bounding volume spanned by lower left front and upper right back points.
 
-    The AxisAlignedBoundingBox is a simple util providing additional functionality 
-    to this common bounding volume. The specification of the box is intended to be 
-    indirect, by extending the box vertex by vertex. The box itself keeps track of 
-    its extents and provides a center of gravity, a radius, as well as inside/outside
-    testes for vertices.
-
-    Typeical usage of the AxisAlignedBoundingBox:
-    \code{.cpp}
-
-        for (vec3 vertex, vertices)
-            aabb->extend(vertex);
-
-        if(aabb->inside(otherVertex))
-            ...
-
-    \endcode
+/**
+*  @brief
+*    Axis aligned rectangular bounding volume spanned by lower left front and upper right back points
+*
+*    The AxisAlignedBoundingBox is a simple util providing additional functionality 
+*    to this common bounding volume. The specification of the box is intended to be 
+*    indirect, by extending the box vertex by vertex. The box itself keeps track of 
+*    its extents and provides a center of gravity, a radius, as well as inside/outside
+*    testes for vertices.
+*
+*    Typeical usage of the AxisAlignedBoundingBox:
+*    \code{.cpp}
+*
+*        for (vec3 vertex, vertices)
+*            aabb->extend(vertex);
+*
+*        if(aabb->inside(otherVertex))
+*            ...
+*
+*    \endcode
 */
 class GLOPERATE_API AxisAlignedBoundingBox
 {
@@ -45,13 +51,14 @@ public:
 
     bool inside(const glm::vec3 & vertex) const;
     bool outside(const glm::vec3 & vertex) const;
-    
+
+
 protected:
     glm::vec3 m_urb;
     glm::vec3 m_llf;
-
     glm::vec3 m_center;
     float m_radius;
 };
+
 
 } // namespace gloperate
