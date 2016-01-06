@@ -1,9 +1,7 @@
 
-set(target gloperate-test)
-message(STATUS "Test ${target}")
-
-
-# External libraries
+# 
+# External dependencies
+# 
 
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
@@ -11,34 +9,19 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
 
-# Includes
 
-include_directories(   
-    BEFORE
-    ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
-    ${LIBZEUG_INCLUDE_DIRS}
-)
+# 
+# Executable name and options
+# 
 
-include_directories(
-    BEFORE
-    ${CMAKE_SOURCE_DIR}/source/gloperate/include
-)
+# Target name
+set(target gloperate-test)
+message(STATUS "Test ${target}")
 
-# Libraries
 
-set(libs
-    ${GMOCK_LIBRARIES}
-    ${GTEST_LIBRARIES}
-    ${OPENGL_LIBRARIES}
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
-    ${LIBZEUG_LIBRARIES}
-    gloperate
-)
-
+# 
 # Sources
+# 
 
 set(sources
     main.cpp
@@ -48,20 +31,85 @@ set(sources
     DummyStage.hpp
 )
 
+
+# 
+# Create executable
+# 
+
 # Build executable
+add_executable(${target}
+    ${sources}
+)
 
-add_executable(${target} ${sources})
+# Create namespaced alias
+add_executable(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
-target_link_libraries(${target} ${libs})
 
-target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
+# 
+# Project options
+# 
 
 set_target_properties(${target}
     PROPERTIES
-    LINKER_LANGUAGE              CXX
-    FOLDER                      "${IDE_FOLDER}"
-    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
-    COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
-    LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
-    LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
-    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
+    ${DEFAULT_PROJECT_OPTIONS}
+    FOLDER "${IDE_FOLDER}"
+)
+
+
+# 
+# Include directories
+# 
+
+target_include_directories(${target}
+    PRIVATE
+    ${DEFAULT_INCLUDE_DIRECTORIES}
+    ${GLM_INCLUDE_DIR}
+    ${PROJECT_SOURCE_DIR}/source/gloperate/include
+    ${PROJECT_BINARY_DIR}/source/include
+)
+
+
+# 
+# Libraries
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+    ${DEFAULT_LIBRARIES}
+    ${OPENGL_LIBRARIES}
+    libzeug::signalzeug
+    glbinding::glbinding
+    globjects::globjects
+    ${META_PROJECT_NAME}::gloperate
+    gmock-dev
+)
+
+
+# 
+# Compile definitions
+# 
+
+target_compile_definitions(${target}
+    PRIVATE
+    ${DEFAULT_COMPILE_DEFINITIONS}
+)
+
+
+# 
+# Compile options
+# 
+
+target_compile_options(${target}
+    PRIVATE
+    ${DEFAULT_COMPILE_OPTIONS}
+)
+
+
+# 
+# Linker options
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+    ${DEFAULT_LINKER_OPTIONS}
+)

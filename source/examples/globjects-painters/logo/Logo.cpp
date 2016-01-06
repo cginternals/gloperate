@@ -3,12 +3,14 @@
 
 #include <random>
 
+#include <cpplocate/ModuleInfo.h>
+
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/constants.hpp>
 
 #include <glbinding/gl/gl.h>
 
-#include <iozeug/filename.h>
+#include <iozeug/FilePath.h>
 
 #include <globjects/logging.h>
 #include <globjects/base/StringTemplate.h>
@@ -18,7 +20,6 @@
 
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/base/registernamedstrings.h>
-
 #include <gloperate/painter/TargetFramebufferCapability.h>
 #include <gloperate/painter/ViewportCapability.h>
 #include <gloperate/painter/VirtualTimeCapability.h>
@@ -63,21 +64,21 @@ void main()
 )";
 
 
-Logo::Logo(ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo)
-: Painter("Logo", resourceManager, pluginInfo)
+Logo::Logo(ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo)
+: Painter("Logo", resourceManager, moduleInfo)
 , m_animation(true)
 , m_background(0, 0, 0, 255)
 , m_textureFilename("")
 , m_angle(0.0f)
 {
     // Get data path
-    std::string dataPath = "";
-    const reflectionzeug::VariantMap * map = pluginInfo.asMap();
-    if (map && map->count("dataPath") > 0) {
-        dataPath = map->at("dataPath").value<std::string>();
-        dataPath = iozeug::ensurePathSeparatorEnding(dataPath);
-    }
-    m_textureFilename = dataPath + "data/logo/gloperate-logo.png";
+    std::string dataPath = moduleInfo.value("dataPath");
+    dataPath = iozeug::FilePath(dataPath).path();
+    if (dataPath.size() > 0) dataPath = dataPath + "/";
+    else                     dataPath = "data/";
+
+    // Get texture filename
+    m_textureFilename = dataPath + "logo/gloperate-logo.png";
 
     // Setup painter
     m_targetFramebufferCapability = addCapability(new gloperate::TargetFramebufferCapability());

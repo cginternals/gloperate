@@ -83,7 +83,16 @@ public:
     */
     void initialize();
 
+    /**
+    *  @brief
+    *    Make associated OpenGL context current
+    */
 	void makeCurrent();
+
+    /**
+    *  @brief
+    *    Release associated OpenGL context
+    */
 	void doneCurrent();
 
 
@@ -102,10 +111,25 @@ protected:
 
 
 protected:
+    /**
+    *  @brief
+    *    Called once after OpenGL has been initialized
+    */
     virtual void onInitialize();
+
+    /**
+    *  @brief
+    *    Called whenever the window has been resized
+    */
     virtual void onResize(QResizeEvent * event);
+
+    /**
+    *  @brief
+    *    Called to redraw the OpenGL scene
+    */
     virtual void onPaint();
 
+    // Qt event callbacks
     virtual bool event(QEvent * event) override;
     virtual void resizeEvent(QResizeEvent * event) override;
     virtual void exposeEvent(QExposeEvent * event) override;
@@ -114,9 +138,9 @@ protected:
 
 
 protected:
-    QScopedPointer<QOpenGLContext> m_context;       /**< OpenGL context created and used by the window */
-    bool                           m_initialized;   /**< Has the rendering already been initialized? */
-    bool                           m_updatePending; /**< Flag to indicate if a redraw has been requested */
+    QScopedPointer<QOpenGLContext> m_context;       ///< OpenGL context created and used by the window
+    bool                           m_initialized;   ///< Has the rendering already been initialized?
+    bool                           m_updatePending; ///< Flag to indicate if a redraw has been requested
 };
 
 
