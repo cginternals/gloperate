@@ -26,13 +26,13 @@ int main(int argc, char * argv[])
 
     // Setup plugin manager
     PluginManager pluginManager;
-    pluginManager.addPath(app.applicationPath());
-#ifdef NDEBUG
-    pluginManager.addPath("plugins");
-#else
-    pluginManager.addPath("plugins/debug");
-#endif
-    pluginManager.scan("painters");
+    pluginManager.addSearchPath(app.applicationPath());
+    pluginManager.addSearchPath(app.applicationPath() + "/plugins");
+    #ifdef NDEBUG
+        pluginManager.scan("painters");
+    #else
+        pluginManager.scan("paintersd");
+    #endif
 
     // Choose a painter
     std::unique_ptr<gloperate::Painter> painter(nullptr);

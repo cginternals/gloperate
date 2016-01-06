@@ -3,7 +3,7 @@
 
 #include <QFileInfo>
 
-#include "gloperate-version.h"
+#include "gloperate/gloperate-version.h"
 
 
 Application::Application(int & argc, char ** argv)

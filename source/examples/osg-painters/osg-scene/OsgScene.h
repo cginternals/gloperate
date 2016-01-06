@@ -7,7 +7,7 @@
 class OsgScene : public gloperate_osg::OsgPainter
 {
 public:
-    OsgScene(gloperate::ResourceManager & resourceManager, const reflectionzeug::Variant & pluginInfo);
+    OsgScene(gloperate::ResourceManager & resourceManager, const cpplocate::ModuleInfo & moduleInfo);
     virtual ~OsgScene();
 
 
