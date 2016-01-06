@@ -1,5 +1,5 @@
 
-#include <gloperate-version.h>
+#include <gloperate/gloperate-version.h>
 #include <gloperate/plugin/plugin_api.h>
 
 #include "logo/Logo.h"

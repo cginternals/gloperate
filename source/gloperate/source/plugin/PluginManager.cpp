@@ -12,12 +12,12 @@
 #include <dirent.h>
 #endif
 
+#include <cpplocate/ModuleInfo.h>
+
 #include <iozeug/filename.h>
+#include <iozeug/FilePath.h>
 #include <iozeug/directorytraversal.h>
 #include <iozeug/SystemInfo.h>
-
-#include <reflectionzeug/variant/Variant.h>
-#include <reflectionzeug/tools/SerializerJSON.h>
 
 #include <globjects/logging.h>
 
@@ -35,8 +35,8 @@ namespace
     {
     public:
         PluginLibraryImpl(const std::string & filename)
-            : gloperate::PluginLibrary(filename)
-            , m_handle(0)
+        : gloperate::PluginLibrary(filename)
+        , m_handle(0)
         {
             m_handle = dlopen(filename.c_str(), RTLD_LAZY);
             if (!m_handle)
@@ -74,9 +74,6 @@ namespace
 }
 
 
-using namespace reflectionzeug;
-
-
 namespace gloperate
 {
 
@@ -96,12 +93,12 @@ PluginManager::~PluginManager()
     }
 }
 
-const std::vector<std::string> & PluginManager::paths() const
+const std::vector<std::string> & PluginManager::searchPaths() const
 {
     return m_paths;
 }
 
-void PluginManager::setPaths(const std::vector<std::string> & paths)
+void PluginManager::setSearchPaths(const std::vector<std::string> & paths)
 {
     m_paths.clear();
 
@@ -110,7 +107,7 @@ void PluginManager::setPaths(const std::vector<std::string> & paths)
     }
 }
 
-void PluginManager::addPath(const std::string & path)
+void PluginManager::addSearchPath(const std::string & path)
 {
     // Ignore empty path
     if (path.empty())
@@ -129,7 +126,7 @@ void PluginManager::addPath(const std::string & path)
     m_paths.push_back(p);
 }
 
-void PluginManager::removePath(const std::string & path)
+void PluginManager::removeSearchPath(const std::string & path)
 {
     // Remove slash
     const std::string p = iozeug::removeTrailingPathSeparator(path);
@@ -223,26 +220,12 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
         return true;
     }
 
-    // Get path to directory containing the plugin library
-    std::string pluginPath = iozeug::removeTrailingPathSeparator(iozeug::getPath(filePath));
-
-    // Load extra information from "PluginInfo.json" if present
-    Variant pluginInfo = Variant();
-    SerializerJSON json;
-    if (json.load(pluginInfo, pluginPath + iozeug::SystemInfo::pathSeperator() + "PluginInfo.json"))
-    {
-        // Replace every occurance of ${PluginPath} with respective path
-        std::string jsonString = pluginInfo.toJSON();
-        auto from = std::string("${PluginPath}");
-        size_t start_pos = 0;
-        while((start_pos = jsonString.find(from, start_pos)) != std::string::npos) {
-            jsonString.replace(start_pos, from.length(), pluginPath);
-            start_pos += pluginPath.length();
-        }
-
-        // Convert back to JSON Variant
-        json.fromString(pluginInfo, jsonString);
-    }
+    // Load module information file, if present
+    std::string pluginPath = iozeug::FilePath(filePath).directoryPath();
+    if (pluginPath == "") pluginPath = "./";
+    std::string modInfoPath = pluginPath + iozeug::FilePath(filePath).baseName() + ".modinfo";
+    cpplocate::ModuleInfo modInfo;
+    modInfo.load(modInfoPath);
 
     // If library was already loaded, remember it in case reloading fails
     PluginLibrary * previous = nullptr;
@@ -281,13 +264,10 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
         if (!plugin)
             continue;
 
-        // // Set relative data path for plugin (if known)
-        // if (!relDataPath.empty()) {
-        //     plugin->setRelDataPath(relDataPath.c_str());
-        // }
-        if (!pluginInfo.isNull())
+        // Set module information
+        if (!modInfo.empty())
         {
-            plugin->setPluginInfo(pluginInfo);
+            plugin->setModuleInfo(modInfo);
         }
 
         // Add plugin to list
@@ -313,5 +293,6 @@ void PluginManager::unloadLibrary(PluginLibrary * library)
     library->deinitialize();
     delete library;
 }
+
 
 } // namespace gloperate

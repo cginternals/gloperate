@@ -44,10 +44,10 @@ public:
     virtual ~PluginApi();
 
     // Plugin API
-    reflectionzeug::Variant paths();
-    void setPaths(const reflectionzeug::Variant & paths);
-    void addPath(const std::string & path);
-    void removePath(const std::string & path);
+    reflectionzeug::Variant searchPaths();
+    void setSearchPaths(const reflectionzeug::Variant & paths);
+    void addSearchPath(const std::string & path);
+    void removeSearchPath(const std::string & path);
     void scan(const std::string & identifier, bool reload);
     bool load(const std::string & filePath, bool reload);
     reflectionzeug::Variant plugins();

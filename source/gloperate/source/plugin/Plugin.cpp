@@ -49,14 +49,14 @@ const char * Plugin::version() const
     return m_version.c_str();
 }
 
-const reflectionzeug::Variant & Plugin::pluginInfo() const
+const cpplocate::ModuleInfo & Plugin::moduleInfo() const
 {
-    return m_pluginInfo;
+    return m_moduleInfo;
 }
 
-void Plugin::setPluginInfo(const reflectionzeug::Variant & pluginInfo)
+void Plugin::setModuleInfo(const cpplocate::ModuleInfo & moduleInfo)
 {
-    m_pluginInfo = pluginInfo;
+    m_moduleInfo = moduleInfo;
 }
 
 

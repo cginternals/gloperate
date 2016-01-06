@@ -34,10 +34,10 @@ public:
     *    Plugin version
     */
     AbstractPainterPlugin(
-        const std::string & name
-    ,   const std::string & description
-    ,   const std::string & vendor
-    ,   const std::string & version);
+      const std::string & name
+    , const std::string & description
+    , const std::string & vendor
+    , const std::string & version);
 
     /**
     *  @brief
@@ -81,10 +81,10 @@ public:
     *    Plugin version
     */
     PainterPlugin(
-        const std::string & name
-    ,   const std::string & description
-    ,   const std::string & vendor
-    ,   const std::string & version);
+      const std::string & name
+    , const std::string & description
+    , const std::string & vendor
+    , const std::string & version);
 
     /**
     *  @brief
