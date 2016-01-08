@@ -26,6 +26,7 @@ namespace gloperate
     class ResourceManager;
     class PluginManager;
     class Painter;
+    class ImageExporter;
 }
 
 
@@ -139,6 +140,7 @@ public:
     ScriptEnvironment * scriptEnvironment();
     //@}
 
+    void makeScreenshot(const std::string &filename, int width, int height, int frames);
 
 protected:
     void setupMessageWidgets();
@@ -175,10 +177,12 @@ protected:
     std::unique_ptr<widgetzeug::MessageStatusWidget> m_messagesStatus;
     std::unique_ptr<widgetzeug::MessageWidget>       m_messagesLog;
     std::unique_ptr<widgetzeug::ScriptPromptWidget>  m_scriptPrompt;
+    std::unique_ptr<gloperate::ImageExporter>        m_imageExporter;
 
     QDockWidget                                    * m_messagLogDockWidget;
     QDockWidget                                    * m_scriptPromptDockWidget;
     QDockWidget                                    * m_propertyDockWidget;
+
 };
 
 

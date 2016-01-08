@@ -28,6 +28,7 @@
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/PainterPlugin.h>
+#include <gloperate/tools/ImageExporter.h>
 
 #ifdef GLOPERATE_ASSIMP_FOUND
     #include <gloperate-assimp/AssimpMeshLoader.h>
@@ -102,6 +103,7 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 , m_messagesStatus{new MessageStatusWidget()}
 , m_messagesLog{new MessageWidget()}
 , m_scriptPrompt{new ScriptPromptWidget()}
+, m_imageExporter{nullptr}
 , m_messagLogDockWidget(nullptr)
 , m_scriptPromptDockWidget(nullptr)
 , m_propertyDockWidget(nullptr)
@@ -218,6 +220,13 @@ void Viewer::setPainter(Painter & painter)
 
     // Update rendering
     m_canvas->updateGL();
+
+    // Update image exporting
+    m_imageExporter.reset(new gloperate::ImageExporter(m_canvas->painter(), *m_resourceManager));
+
+    m_canvas.get()->makeCurrent();
+    m_imageExporter->initialize();
+    m_canvas.get()->doneCurrent();
 }
 
 void Viewer::loadPainter(const std::string & name)
@@ -241,6 +250,13 @@ const ScriptEnvironment * Viewer::scriptEnvironment() const
 ScriptEnvironment * Viewer::scriptEnvironment()
 {
     return m_scriptEnvironment.get();
+}
+
+void Viewer::makeScreenshot(const std::string & filename, int width, int height, int frames)
+{
+    m_canvas.get()->makeCurrent();
+    m_imageExporter->save(filename, width, height, frames);
+    m_canvas.get()->doneCurrent();
 }
 
 void Viewer::setupMessageWidgets()
