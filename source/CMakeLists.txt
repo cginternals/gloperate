@@ -29,9 +29,15 @@ generate_module_info(${META_PROJECT_NAME}
     dataPath    "\${ModulePath}/data"
 )
 
-export_module_info(${META_PROJECT_NAME} TARGET ${META_PROJECT_NAME} FOLDER "cmake")
+export_module_info(${META_PROJECT_NAME}
+    TARGET ${META_PROJECT_NAME}
+    FOLDER "ModuleInfo"
+)
 
-install_module_info(${META_PROJECT_NAME} DESTINATION ${INSTALL_ROOT} COMPONENT dev)
+install_module_info(${META_PROJECT_NAME}
+    DESTINATION ${INSTALL_ROOT}
+    COMPONENT runtime
+)
 
 
 # 
