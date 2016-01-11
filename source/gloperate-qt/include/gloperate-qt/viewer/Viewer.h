@@ -142,6 +142,21 @@ public:
 
     void makeScreenshot(const std::string &filename, int width, int height, int frames);
 
+public slots:
+    //@{
+    /**
+    *  @brief
+    *    Extends QWindow::show() to resize Canvas on startup
+    *
+    *  @remarks
+    *    Not all plattforms send resize events on QWindow startup.
+    *    YOu have to resize the window in order to show the canvas
+    *    correct.
+    */
+    virtual void show();
+    //@}
+
+
 protected:
     void setupMessageWidgets();
     void setupCommandPrompt();
