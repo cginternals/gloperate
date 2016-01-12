@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <gloperate-text/gloperate-text_api.h>
 

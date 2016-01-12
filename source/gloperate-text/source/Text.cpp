@@ -14,14 +14,14 @@ Text::~Text()
 {
 }
 
-const std::string & Text::string() const
+const std::string & Text::characters() const
 {
-    return m_string;
+    return m_data;
 }
 
-void Text::setString(const std::string & string)
+void Text::setCharacters(const std::string & characters)
 {
-    m_string = string;
+    m_data = characters;
 }
 
 

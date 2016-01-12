@@ -27,15 +27,15 @@ namespace gloperate_text
 {
 
 
-class GlyphVertexCloud;
+class IndirectGlyphVertexCloud;
 
-class GLOPERATE_TEXT_API GlyphRenderStage : public gloperate::AbstractStage
+class GLOPERATE_TEXT_API IndirectGlyphRenderStage : public gloperate::AbstractStage
 {
 public:
-    GlyphRenderStage();
-    virtual ~GlyphRenderStage();
+    IndirectGlyphRenderStage();
+    virtual ~IndirectGlyphRenderStage();
 
-    gloperate::AbstractInputSlot<GlyphVertexCloud> vertices;
+    gloperate::AbstractInputSlot<IndirectGlyphVertexCloud> vertices;
 
     gloperate::InputSlot<gloperate::AbstractViewportCapability *> viewport;
     gloperate::InputSlot<gloperate::AbstractCameraCapability *> camera;

@@ -37,13 +37,18 @@ set(headers
     ${include_path}/FontImporter.h
     ${include_path}/Glyph.h
     ${include_path}/GlyphRenderer.h
-    ${include_path}/GlyphVertexCloud.h
-    ${include_path}/IndirectGlyphVertexCloud.h
+    ${include_path}/IndirectGlyphRenderer.h
     ${include_path}/Text.h
     ${include_path}/TextManager.h
     
+    ${include_path}/geometry/GlyphVertex.h
+    ${include_path}/geometry/GlyphVertexCloud.h
+    ${include_path}/geometry/IndirectGlyphVertex.h
+    ${include_path}/geometry/IndirectGlyphVertexCloud.h
+    
     ${include_path}/stages/TextPreparationStage.h
     ${include_path}/stages/GlyphRenderStage.h
+    ${include_path}/stages/IndirectGlyphRenderStage.h
     ${include_path}/stages/FontImporterStage.h
 )
 
@@ -52,14 +57,19 @@ set(sources
     ${source_path}/FontImporter.cpp
     ${source_path}/Glyph.cpp
     ${source_path}/GlyphRenderer.cpp
-    ${source_path}/GlyphVertexCloud.cpp
-    ${source_path}/IndirectGlyphVertexCloud.cpp
+    ${source_path}/IndirectGlyphRenderer.cpp
     ${source_path}/Text.cpp
     ${source_path}/TextManager.cpp
+    
+    ${source_path}/geometry/GlyphVertex.cpp
+    ${source_path}/geometry/GlyphVertexCloud.cpp
+    ${source_path}/geometry/IndirectGlyphVertex.cpp
+    ${source_path}/geometry/IndirectGlyphVertexCloud.cpp
     
     ${source_path}/stages/FontImporterStage.cpp
     ${source_path}/stages/TextPreparationStage.cpp
     ${source_path}/stages/GlyphRenderStage.cpp
+    ${source_path}/stages/IndirectGlyphRenderStage.cpp
 )
 
 # Group source files

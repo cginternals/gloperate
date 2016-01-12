@@ -12,17 +12,17 @@ namespace gloperate_text
 {
 
 
-class GlyphVertexCloud;
+class IndirectGlyphVertexCloud;
 
-class GLOPERATE_TEXT_API GlyphRenderer
+class GLOPERATE_TEXT_API IndirectGlyphRenderer
 {
 public:
-    GlyphRenderer();
-    GlyphRenderer(const globjects::Shader * fragmentShader);
-    GlyphRenderer(const globjects::Program * program);
-    virtual ~GlyphRenderer();
+    IndirectGlyphRenderer();
+    IndirectGlyphRenderer(const globjects::Shader * fragmentShader);
+    IndirectGlyphRenderer(const globjects::Program * program);
+    virtual ~IndirectGlyphRenderer();
 
-    void render(const GlyphVertexCloud & vertexCloud) const;
+    void render(const IndirectGlyphVertexCloud & vertexCloud) const;
 
     globjects::Program * program();
     const globjects::Program * program() const;

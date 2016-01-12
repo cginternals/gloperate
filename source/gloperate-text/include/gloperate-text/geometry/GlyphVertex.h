@@ -9,10 +9,10 @@ namespace gloperate_text
 {
 
 
-class GLOPERATE_TEXT_API GlyphVertexCloud
+class GLOPERATE_TEXT_API GlyphVertex
 {
 public:
-    GlyphVertexCloud();
+    GlyphVertex();
 
 public:
     glm::vec3 worldLlf;

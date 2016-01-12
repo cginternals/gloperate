@@ -23,6 +23,14 @@ public:
     virtual ~Font();
 
     const globjects::Texture * glyphTexture() const;
+    void setGlyphTexture(globjects::Texture * texture);
+
+    const std::string & configuration(const std::string & key, const std::string & defaultValue = "") const;
+    void setConfiguration(const std::string & key, const std::string & value);
+
+    Glyph & glyph(size_t index);
+    const Glyph & glyph(size_t index) const;
+    void addGlyph(size_t index, const Glyph & glyph);
 
 protected:
     globjects::ref_ptr<globjects::Texture> m_glyphs;

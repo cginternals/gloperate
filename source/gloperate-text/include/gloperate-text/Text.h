@@ -16,11 +16,11 @@ public:
     Text();
     virtual ~Text();
 
-    const std::string & string() const;
-    void setString(const std::string & string);
+    const std::string & characters() const;
+    void setCharacters(const std::string & characters);
 
 protected:
-    std::string m_string;
+    std::string m_data;
 };
 
 
