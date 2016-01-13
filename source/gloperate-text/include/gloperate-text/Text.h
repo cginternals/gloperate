@@ -14,13 +14,14 @@ class GLOPERATE_TEXT_API Text
 {
 public:
     Text();
+    Text(const std::u32string & characters);
     virtual ~Text();
 
-    const std::string & characters() const;
-    void setCharacters(const std::string & characters);
+    const std::u32string & characters() const;
+    void setCharacters(const std::u32string & characters);
 
 protected:
-    std::string m_data;
+    std::u32string m_data;
 };
 
 

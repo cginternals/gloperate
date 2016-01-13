@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <cstddef>
+#include <cstdint>
 
 #include <gloperate-text/gloperate-text_api.h>
 
@@ -16,34 +16,35 @@ public:
     Glyph();
     virtual ~Glyph();
 
-    size_t id() const;
-    void setId(size_t id);
+    std::uint32_t index() const;
+    void setIndex(std::uint32_t index);
 
-    size_t x() const;
-    void setX(size_t x);
+    std::uint32_t x() const;
+    void setX(std::uint32_t x);
 
-    size_t y() const;
-    void setY(size_t y);
+    std::uint32_t y() const;
+    void setY(std::uint32_t y);
 
-    size_t width() const;
-    void setWidth(size_t width);
+    std::uint32_t width() const;
+    void setWidth(std::uint32_t width);
 
-    size_t height() const;
-    void setHeight(size_t height);
+    std::uint32_t height() const;
+    void setHeight(std::uint32_t height);
 
-    size_t xOffset() const;
-    void setXOffset(size_t xOffset);
+    std::uint32_t xOffset() const;
+    void setXOffset(std::uint32_t xOffset);
+
 protected:
-    size_t m_id;
-    size_t m_x;
-    size_t m_y;
-    size_t m_width;
-    size_t m_height;
-    size_t m_xOffset;
-    size_t m_yOffset;
-    size_t m_xAdvance;
-    //size_t m_page;
-    //size_t m_channel;
+    std::uint32_t m_index;
+    std::uint32_t m_x;
+    std::uint32_t m_y;
+    std::uint32_t m_width;
+    std::uint32_t m_height;
+    std::uint32_t m_xOffset;
+    std::uint32_t m_yOffset;
+    std::uint32_t m_xAdvance;
+    //std::uint32_t m_page;
+    //std::uint32_t m_channel;
 };
 
 
