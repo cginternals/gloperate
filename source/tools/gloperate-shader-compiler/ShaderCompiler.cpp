@@ -306,7 +306,7 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
         }
         
         qDebug() << "";
-        qDebug().noquote() << "Process" << name;
+        qDebug() << "Process" << name;
         
         const auto shadersArray = programObject.value("shaders");
         
@@ -325,7 +325,7 @@ bool ShaderCompiler::parsePrograms(const QJsonArray & programs)
             continue;
         }
         
-        qDebug().noquote() << "Link" << name;
+        qDebug() << "Link" << name;
         
         ok = createAndLinkProgram(shaders);
         
@@ -365,9 +365,9 @@ std::vector<globjects::ref_ptr<globjects::Shader>> ShaderCompiler::parseShaders(
         const auto name = shaderObject.value("name").toString();
         
         if (name.isNull())
-            qDebug().noquote() << QString{"Compile %1"}.arg(fileName);
+            qDebug() << QString{"Compile %1"}.arg(fileName);
         else
-            qDebug().noquote() << QString{"Compile %1 ('%2')"}.arg(name).arg(fileName);
+            qDebug() << QString{"Compile %1 ('%2')"}.arg(name).arg(fileName);
 
         const auto typeString = shaderObject.value("type").toString();
         
