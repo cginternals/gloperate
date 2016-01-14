@@ -33,12 +33,14 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/Font.h
+    ${include_path}/Encoding.h
+    ${include_path}/FontFace.h
     ${include_path}/FontImporter.h
     ${include_path}/Glyph.h
     ${include_path}/GlyphRenderer.h
     ${include_path}/IndirectGlyphRenderer.h
     ${include_path}/Text.h
+    ${include_path}/TextConverter.h
     ${include_path}/TextManager.h
     
     ${include_path}/geometry/GlyphVertex.h
@@ -53,12 +55,13 @@ set(headers
 )
 
 set(sources
-    ${source_path}/Font.cpp
+    ${source_path}/FontFace.cpp
     ${source_path}/FontImporter.cpp
     ${source_path}/Glyph.cpp
     ${source_path}/GlyphRenderer.cpp
     ${source_path}/IndirectGlyphRenderer.cpp
     ${source_path}/Text.cpp
+    ${source_path}/TextConverter.cpp
     ${source_path}/TextManager.cpp
     
     ${source_path}/geometry/GlyphVertex.cpp
@@ -146,6 +149,7 @@ target_link_libraries(${target}
     cpplocate::cpplocate
     libzeug::reflectionzeug
     libzeug::iozeug
+    libzeug::loggingzeug
     glbinding::glbinding
     globjects::globjects
     gloperate::gloperate

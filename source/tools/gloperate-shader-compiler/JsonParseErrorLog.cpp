@@ -10,7 +10,7 @@ JsonParseErrorLog::JsonParseErrorLog()
 
 void JsonParseErrorLog::error(const JsonParseError & error)
 {
-    qDebug().noquote() << "ERROR: " << errorMessage(error);
+    qDebug() << "ERROR: " << errorMessage(error);
 }
 
 QString JsonParseErrorLog::errorMessage(const JsonParseError & error)

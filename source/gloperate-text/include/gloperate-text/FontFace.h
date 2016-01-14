@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <map>
 #include <unordered_map>
 #include <string>
 
@@ -16,11 +17,11 @@ namespace gloperate_text
 {
 
 
-class GLOPERATE_TEXT_API Font
+class GLOPERATE_TEXT_API FontFace
 {
 public:
-    Font();
-    virtual ~Font();
+    FontFace();
+    virtual ~FontFace();
 
     const globjects::Texture * glyphTexture() const;
     void setGlyphTexture(globjects::Texture * texture);
@@ -28,14 +29,18 @@ public:
     const std::string & configuration(const std::string & key, const std::string & defaultValue = "") const;
     void setConfiguration(const std::string & key, const std::string & value);
 
-    Glyph & glyph(size_t index);
-    const Glyph & glyph(size_t index) const;
-    void addGlyph(size_t index, const Glyph & glyph);
+    Glyph & glyph(std::uint32_t index);
+    const Glyph & glyph(std::uint32_t index) const;
+    void addGlyph(const Glyph & glyph);
+
+    int kerning(std::uint32_t glyph1, std::uint32_t glyph2) const;
+    void setKerning(std::uint32_t glyph1, std::uint32_t glyph2, int kerning);
 
 protected:
-    globjects::ref_ptr<globjects::Texture> m_glyphs;
+    globjects::ref_ptr<globjects::Texture> m_glyphTexture;
     std::unordered_map<std::string, std::string> m_configuration;
-    std::unordered_map<size_t, Glyph> m_glyphConfiguration;
+    std::unordered_map<std::uint32_t, Glyph> m_glyphConfiguration;
+    std::map<std::pair<std::uint32_t, std::uint32_t>, int> m_kernings;
 };
 
 

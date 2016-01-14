@@ -42,10 +42,10 @@ public:
     gloperate::InputSlot<gloperate::AbstractProjectionCapability *> projection;
     gloperate::InputSlot<gloperate::AbstractTypedRenderTargetCapability *> typedRenderTarget;
 
-    gloperate::AbstractData<globjects::Texture *> colorTexture;
-    gloperate::AbstractData<globjects::Texture *> idTexture;
-    gloperate::AbstractData<globjects::Texture *> normalTexture;
-    gloperate::AbstractData<globjects::Texture *> depthTexture;
+    gloperate::Data<globjects::Texture *> colorTexture;
+    gloperate::Data<globjects::Texture *> idTexture;
+    gloperate::Data<globjects::Texture *> normalTexture;
+    gloperate::Data<globjects::Texture *> depthTexture;
 
 protected:
     virtual void initialize() override;
