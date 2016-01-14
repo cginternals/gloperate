@@ -14,16 +14,69 @@ FontFace::~FontFace()
 {
 }
 
-/*
-const globjects::Texture * glyphTexture() const;
-void setGlyphTexture(globjects::Texture * texture);
+const globjects::Texture * FontFace::glyphTexture() const
+{
+    return m_glyphTexture;
+}
 
-const std::string & configuration(const std::string & key, const std::string & defaultValue = "") const;
-void setConfiguration(const std::string & key, const std::string & value);
+void FontFace::setGlyphTexture(globjects::Texture * texture)
+{
+    m_glyphTexture = texture;
+}
 
-Glyph & glyph(std::uint32_t index);
-const Glyph & glyph(std::uint32_t index) const;
-void addGlyph(std::uint32_t index, const Glyph & glyph);
-*/
+const std::string & FontFace::configuration(const std::string & key, const std::string & defaultValue) const
+{
+    if (!m_configuration.count(key))
+    {
+        return defaultValue;
+    }
+
+    return m_configuration.at(key);
+}
+
+void FontFace::setConfiguration(const std::string & key, const std::string & value)
+{
+    m_configuration.emplace(key, value);
+}
+
+Glyph & FontFace::glyph(std::uint32_t index)
+{
+    return m_glyphConfiguration.at(index);
+}
+
+const Glyph & FontFace::glyph(std::uint32_t index) const
+{
+    return m_glyphConfiguration.at(index);
+}
+
+void FontFace::addGlyph(const Glyph & glyph)
+{
+    m_glyphConfiguration.emplace(glyph.index(), glyph);
+}
+
+int FontFace::kerning(std::uint32_t glyph1, std::uint32_t glyph2) const
+{
+    std::pair<std::uint32_t, std::uint32_t> key(std::min(glyph1, glyph2), std::max(glyph1, glyph2));
+
+    if (m_kernings.count(key) == 0)
+    {
+        return 0;
+    }
+
+    return m_kernings.at(key);
+}
+
+void FontFace::setKerning(std::uint32_t glyph1, std::uint32_t glyph2, int kerning)
+{
+    if (kerning == 0)
+    {
+        return;
+    }
+
+    std::pair<std::uint32_t, std::uint32_t> key(std::min(glyph1, glyph2), std::max(glyph1, glyph2));
+
+    m_kernings.emplace(key, kerning);
+}
+
 
 } // namespace gloperate_text

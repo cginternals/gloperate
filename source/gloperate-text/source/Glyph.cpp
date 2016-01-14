@@ -82,5 +82,45 @@ void Glyph::setXOffset(std::uint32_t xOffset)
     m_xOffset = xOffset;
 }
 
+std::uint32_t Glyph::yOffset() const
+{
+    return m_yOffset;
+}
+
+void Glyph::setYOffset(std::uint32_t yOffset)
+{
+    m_yOffset = yOffset;
+}
+
+std::uint32_t Glyph::xAdvance() const
+{
+    return m_xAdvance;
+}
+
+void Glyph::setXAdvance(std::uint32_t xAdvance)
+{
+    m_xAdvance = xAdvance;
+}
+
+std::uint32_t Glyph::page() const
+{
+    return m_page;
+}
+
+void Glyph::setPage(std::uint32_t page)
+{
+    m_page = page;
+}
+
+std::uint32_t Glyph::channel() const
+{
+    return m_channel;
+}
+
+void Glyph::setChannel(std::uint32_t channel)
+{
+    m_channel = channel;
+}
+
 
 } // namespace gloperate_text

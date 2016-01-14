@@ -34,6 +34,18 @@ public:
     std::uint32_t xOffset() const;
     void setXOffset(std::uint32_t xOffset);
 
+    std::uint32_t yOffset() const;
+    void setYOffset(std::uint32_t yOffset);
+
+    std::uint32_t xAdvance() const;
+    void setXAdvance(std::uint32_t xAdvance);
+
+    std::uint32_t page() const;
+    void setPage(std::uint32_t page);
+
+    std::uint32_t channel() const;
+    void setChannel(std::uint32_t channel);
+
 protected:
     std::uint32_t m_index;
     std::uint32_t m_x;
@@ -43,8 +55,8 @@ protected:
     std::uint32_t m_xOffset;
     std::uint32_t m_yOffset;
     std::uint32_t m_xAdvance;
-    //std::uint32_t m_page;
-    //std::uint32_t m_channel;
+    std::uint32_t m_page;
+    std::uint32_t m_channel;
 };
 
 

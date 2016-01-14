@@ -5,10 +5,16 @@
 #include <sstream>
 #include <string>
 #include <functional>
+#include <set>
+#include <algorithm>
 
 #include <loggingzeug/logging.h>
 
-#include <stringzeug/regex.h>
+#include <stringzeug/conversion.h>
+
+#include <iozeug/FilePath.h>
+
+#include <gloperate/resources/ResourceManager.h>
 
 #include <gloperate-text/FontFace.h>
 
@@ -33,12 +39,26 @@ void extractKeyValuePairs(std::stringstream & stream, std::function<void(const s
     }
 }
 
+std::string stripped(const std::string & string, const std::set<char> & blacklist)
+{
+    std::string result = string;
+
+    result.erase(std::remove_if(result.begin(), result.end(), [&blacklist] (char x) { return blacklist.count(x) > 0; } ), result.end());
+
+    return result;
+}
+
 } // namespace
 
 
 namespace gloperate_text
 {
 
+
+FontImporter::FontImporter(gloperate::ResourceManager & resourceManager)
+: m_resourceManager(resourceManager)
+{
+}
 
 FontFace * FontImporter::loadFont(const std::string & filename)
 {
@@ -55,29 +75,10 @@ FontFace * FontImporter::loadFont(const std::string & filename)
     std::string identifier;
     while (std::getline(in, line))
     {
-        /*
-        std::vector<std::string> identifiers = stringzeug::extract(line, "^([^ ]+)");
-        std::vector<std::vector<std::string>> kvPairs = stringzeug::extractMultiple(line, "([a-z]+)=([a-zA-Z0-9]+)"); // \"\,\-
-
-        assert(identifiers.size() == 1);
-
-        const std::string & identifier = identifiers[0];
-
-        for (const auto & match : kvPairs)
-        {
-            assert(match.size() == 2);
-
-            const std::string & key = match[0];
-            const std::string & value = match[1];
-        }*/
-
         std::stringstream ss(line);
 
         if (std::getline(ss, identifier, ' '))
         {
-            extractKeyValuePairs(ss, [](const std::string & key, const std::string & value) {
-                loggingzeug::debug() << key << " = " << value;
-            });
             if (identifier == "info")
             {
                 handleInfo(ss, font);
@@ -88,7 +89,7 @@ FontFace * FontImporter::loadFont(const std::string & filename)
             }
             else if (identifier == "page")
             {
-                handlePage(ss, font);
+                handlePage(ss, font, filename);
             }
             else if (identifier == "chars")
             {
@@ -122,32 +123,98 @@ FontFace * FontImporter::loadFont(const std::string & filename)
 
 void FontImporter::handleInfo(std::stringstream & stream, FontFace * font)
 {
-
+    extractKeyValuePairs(stream, [font](const std::string & key, const std::string & value) {
+        font->setConfiguration(key, value);
+    });
 }
 
 void FontImporter::handleCommon(std::stringstream & stream, FontFace * font)
 {
-
+    extractKeyValuePairs(stream, [font](const std::string & key, const std::string & value) {
+        font->setConfiguration(key, value);
+    });
 }
 
-void FontImporter::handlePage(std::stringstream & stream, FontFace * font)
+void FontImporter::handlePage(std::stringstream & stream, FontFace * font, const std::string & filename)
 {
+    const std::string path = iozeug::FilePath(filename).directoryPath();
+    extractKeyValuePairs(stream, [this, font, &path](const std::string & key, const std::string & value) {
+        if (key == "file")
+        {
+            std::string filename = stripped(value, { '"' });
 
+            //font->setGlyphTexture(m_resourceManager.load<globjects::Texture>(path + "/" + filename));
+        }
+        else if (key == "id")
+        {
+            // nothing for now
+        }
+    });
 }
 
 void FontImporter::handleChars(std::stringstream & stream, FontFace * font)
 {
-
+    // nothing
 }
 
 void FontImporter::handleChar(std::stringstream & stream, FontFace * font)
 {
+    Glyph glyph;
 
+    extractKeyValuePairs(stream, [&glyph](const std::string & key, const std::string & value) {
+        std::uint32_t number = stringzeug::fromString<std::uint32_t>(value);
+
+        if (key == "id")
+        {
+            glyph.setIndex(number);
+        }
+        else if (key == "x")
+        {
+            glyph.setX(number);
+        }
+        else if (key == "y")
+        {
+            glyph.setY(number);
+        }
+        else if (key == "width")
+        {
+            glyph.setWidth(number);
+        }
+        else if (key == "height")
+        {
+            glyph.setHeight(number);
+        }
+        else if (key == "xoffset")
+        {
+            glyph.setXOffset(number);
+        }
+        else if (key == "yoffset")
+        {
+            glyph.setYOffset(number);
+        }
+        else if (key == "xadvance")
+        {
+            glyph.setXAdvance(number);
+        }
+        else if (key == "page")
+        {
+            glyph.setPage(number);
+        }
+        else if (key == "chnl")
+        {
+            glyph.setChannel(number);
+        }
+    });
+
+    if (glyph.index() > 0)
+    {
+        font->addGlyph(glyph);
+    }
 }
 
 void FontImporter::handleKernings(std::stringstream & stream, FontFace * font)
 {
-
+    // nothing
 }
 
 void FontImporter::handleKerning(std::stringstream & stream, FontFace * font)

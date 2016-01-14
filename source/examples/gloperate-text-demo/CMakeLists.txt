@@ -89,6 +89,7 @@ target_link_libraries(${target}
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-glfw
     ${META_PROJECT_NAME}::gloperate-text
+    ${META_PROJECT_NAME}::gloperate-qt
 )
 
 
