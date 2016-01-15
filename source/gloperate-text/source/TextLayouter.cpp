@@ -3,7 +3,7 @@
 
 #include <stringzeug/conversion.h>
 
-//#include <glm/gtc/random.hpp>
+#include <glm/vec3.hpp>
 
 #include <gloperate-text/geometry/GlyphVertexCloud.h>
 #include <gloperate-text/geometry/GlyphVertex.h>
@@ -23,53 +23,44 @@ TextLayouter::~TextLayouter()
 {
 }
 
-void TextLayouter::layout(Text & text, FontFace * font, GlyphVertexCloud & vertexCloud)
+void TextLayouter::layout(const Text & text, FontFace * font, GlyphVertexCloud & vertexCloud)
 {
-    const std::u32string & characters = text.characters();
-
-    //vertexCloud.vertices.resize(32 * 32 * characters.size());
-    vertexCloud.vertices.resize(characters.size());
-
-    float width = 2.0 / characters.size();
-
-    std::uint32_t glyphTextureWidth = stringzeug::fromString<std::uint32_t>(font->configuration("scaleW", "0"));
-    //std::uint32_t glyphTextureHeight = stringzeug::fromString<std::uint32_t>(font->configuration("scaleH", "0"));
-
-    //for (size_t y = 0; y < 32; ++y)
-    //{
-        //for (size_t x = 0; x < 32; ++x)
-        //{
-            //glm::vec3 start = glm::vec3(x / 32.0 * 2.0 - 1.0, y / 32.0 * 2.0 - 1.0, 0);
-            //glm::vec3 end = glm::vec3((x+1) / 32.0 * 2.0 - 1.0, (y+1) / 32.0 * 2.0 - 1.0, 0);
-
-            for (size_t i = 0; i < characters.size(); ++i)
-            {
-                //Glyph & glyph = font->glyph(static_cast<int>(glm::linearRand(65.0, 80.0)));
-                Glyph & glyph = font->glyph(characters[i]);
-                //GlyphVertex & vertex = vertexCloud.vertices[i * 32 * 32 + x * 32 + y];
-                GlyphVertex & vertex = vertexCloud.vertices[i];
-
-                vertex.coord = glm::vec3(i * width - 1.0, -0.5, 0.0);
-                vertex.tangent = glm::vec3(width, 0.0, 0.0);
-                vertex.bitangent = glm::vec3(0.0, 1.0, 0.0);
-                vertex.glyphStart = glm::vec2(glyph.x(), 0.0) / glm::vec2(glyphTextureWidth, 1.0);
-                vertex.glyphEnd = glm::vec2(glyph.x() + glyph.width(), 1.0) / glm::vec2(glyphTextureWidth, 1.0);
-
-                //vertex.coord = start + ((vertex.coord + glm::vec3(1.0, 1.0, 0.0)) / glm::vec3(2.0)) * (end - start);
-                //vertex.tangent = glm::vec3(vertex.tangent.x / 32.0, vertex.tangent.y / 32.0, vertex.tangent.z);
-                //vertex.bitangent = glm::vec3(vertex.bitangent.x / 32.0, vertex.bitangent.y / 32.0, vertex.bitangent.z);
-            }
-        //}
-    //}
+    vertexCloud.vertices.resize(text.characters().size());
 
     vertexCloud.glyphTexture = font->glyphTexture();
+
+    basicLayout(text, font, &vertexCloud.vertices[0], glm::vec3(-1.0, -1.0, 0.0), glm::vec3(1.0, 1.0, 0.0));
 
     vertexCloud.verticesChanged();
 }
 
-void TextLayouter::layout(TextManager & manager, FontFace * font, GlyphVertexCloud & vertexCloud)
+void TextLayouter::layout(const TextManager & manager, FontFace * font, GlyphVertexCloud & vertexCloud)
 {
     assert(false);
+}
+
+void TextLayouter::basicLayout(const Text & text, FontFace * font, GlyphVertex * startVertex, const glm::vec3 & start, const glm::vec3 & end)
+{
+    std::uint32_t glyphTextureWidth = stringzeug::fromString<std::uint32_t>(font->configuration("scaleW", "0"));
+    //std::uint32_t glyphTextureHeight = stringzeug::fromString<std::uint32_t>(font->configuration("scaleH", "0"));
+
+    float width = 2.0 / text.characters().size();
+
+    for (size_t i = 0; i < text.characters().size(); ++i)
+    {
+        Glyph & glyph = font->glyph(text.characters()[i]);
+        GlyphVertex & vertex = *(startVertex + i);
+
+        vertex.coord = glm::vec3(i * width - 1.0, -0.5, 0.0);
+        vertex.tangent = glm::vec3(width, 0.0, 0.0);
+        vertex.bitangent = glm::vec3(0.0, 1.0, 0.0);
+        vertex.glyphStart = glm::vec2(glyph.x(), 0.0) / glm::vec2(glyphTextureWidth, 1.0);
+        vertex.glyphEnd = glm::vec2(glyph.x() + glyph.width(), 1.0) / glm::vec2(glyphTextureWidth, 1.0);
+
+        vertex.coord = start + ((vertex.coord + glm::vec3(1.0, 1.0, 0.0)) / glm::vec3(2.0)) * (end - start);
+        vertex.tangent = glm::vec3(vertex.tangent.x / 32.0, vertex.tangent.y / 32.0, vertex.tangent.z);
+        vertex.bitangent = glm::vec3(vertex.bitangent.x / 32.0, vertex.bitangent.y / 32.0, vertex.bitangent.z);
+    }
 }
 
 

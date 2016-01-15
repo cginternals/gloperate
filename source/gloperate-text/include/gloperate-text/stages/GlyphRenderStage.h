@@ -16,9 +16,7 @@ namespace gloperate
 {
 
 class AbstractViewportCapability;
-class AbstractCameraCapability;
-class AbstractProjectionCapability;
-class AbstractTypedRenderTargetCapability;
+class AbstractTargetFramebufferCapability;
 
 } // namespace gloperate
 
@@ -35,24 +33,13 @@ public:
     GlyphRenderStage();
     virtual ~GlyphRenderStage();
 
-    gloperate::AbstractInputSlot<GlyphVertexCloud> vertices;
+    gloperate::InputSlot<GlyphVertexCloud> vertices;
 
     gloperate::InputSlot<gloperate::AbstractViewportCapability *> viewport;
-    gloperate::InputSlot<gloperate::AbstractCameraCapability *> camera;
-    gloperate::InputSlot<gloperate::AbstractProjectionCapability *> projection;
-    gloperate::InputSlot<gloperate::AbstractTypedRenderTargetCapability *> typedRenderTarget;
-
-    gloperate::Data<globjects::Texture *> colorTexture;
-    gloperate::Data<globjects::Texture *> idTexture;
-    gloperate::Data<globjects::Texture *> normalTexture;
-    gloperate::Data<globjects::Texture *> depthTexture;
-
+    gloperate::InputSlot<gloperate::AbstractTargetFramebufferCapability *> targetFramebuffer;
 protected:
     virtual void initialize() override;
     virtual void process() override;
-
-protected:
-    globjects::ref_ptr<globjects::Framebuffer> m_fbo;
 };
 
 

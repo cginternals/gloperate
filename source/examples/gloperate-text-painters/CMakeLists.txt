@@ -29,10 +29,21 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
     ${include_path}/textrendering/TextRendering.h
+    
+    ${include_path}/textrenderingpipeline/TextRenderingPipeline.h
+    ${include_path}/textrenderingpipeline/TextRenderingPainter.h
+    ${include_path}/textrenderingpipeline/TextGenerationAlgorithm.h
+    ${include_path}/textrenderingpipeline/TextGenerationStage.h
+    ${include_path}/textrenderingpipeline/TextPreparationStage.h
 )
 
 set(sources
     ${source_path}/textrendering/TextRendering.cpp
+    
+    ${source_path}/textrenderingpipeline/TextRenderingPipeline.cpp
+    ${source_path}/textrenderingpipeline/TextRenderingPainter.cpp
+    ${source_path}/textrenderingpipeline/TextGenerationStage.cpp
+    ${source_path}/textrenderingpipeline/TextPreparationStage.cpp
     
     ${source_path}/plugin.cpp
 )

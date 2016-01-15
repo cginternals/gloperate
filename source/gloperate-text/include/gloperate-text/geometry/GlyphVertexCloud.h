@@ -32,8 +32,6 @@ public:
 
 protected:
     globjects::ref_ptr<gloperate::VertexDrawable> m_drawable;
-
-    void updateDrawable();
 };
 
 

@@ -21,6 +21,11 @@ Text::~Text()
 {
 }
 
+std::u32string & Text::characters()
+{
+    return m_data;
+}
+
 const std::u32string & Text::characters() const
 {
     return m_data;

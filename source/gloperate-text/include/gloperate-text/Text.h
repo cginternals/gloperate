@@ -17,6 +17,7 @@ public:
     Text(const std::u32string & characters);
     virtual ~Text();
 
+    std::u32string & characters();
     const std::u32string & characters() const;
     void setCharacters(const std::u32string & characters);
 
