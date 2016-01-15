@@ -11,5 +11,5 @@ void main()
 {
     float distanceValue = texture(glyphs, g_glyphCoordinate).r;
     
-    out_color = glm::vec4(glm::vec3(mix(0.0, 1.0, step(distanceValue, 0.7))), 1.0);
+    out_color = vec4(vec3(mix(0.0, 1.0, step(distanceValue, 0.7))), 1.0);
 }
