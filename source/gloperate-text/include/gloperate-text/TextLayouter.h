@@ -12,7 +12,7 @@ class GlyphVertexCloud;
 class Text;
 class TextManager;
 
-class TextLayouter
+class GLOPERATE_TEXT_API TextLayouter
 {
 public:
     TextLayouter();

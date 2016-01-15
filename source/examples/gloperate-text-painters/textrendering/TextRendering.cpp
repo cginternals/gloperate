@@ -1,9 +1,13 @@
 
 #include "TextRendering.h"
 
+#include <chrono>
+
 #include <cpplocate/ModuleInfo.h>
 
 #include <iozeug/FilePath.h>
+
+#include <loggingzeug/logging.h>
 
 #include <gloperate/painter/ViewportCapability.h>
 #include <gloperate/painter/TargetFramebufferCapability.h>
@@ -45,11 +49,14 @@ TextRendering::~TextRendering()
 
 void TextRendering::onInitialize()
 {
+    //auto start = std::chrono::high_resolution_clock::now();
+
     gloperate_text::FontImporter importer(m_resourceManager);
 
     m_fontFace = importer.loadFont(m_dataPath + "gloperate-text/fonts/test.txt");
 
     m_renderer = new gloperate_text::GlyphRenderer;
+    m_renderer->program()->use();
 
     gloperate_text::TextLayouter layouter;
 
@@ -58,6 +65,10 @@ void TextRendering::onInitialize()
 
     gloperate_text::Text text(string);
     layouter.layout(text, m_fontFace, m_vertexCloud);
+
+    //auto end = std::chrono::high_resolution_clock::now();
+
+    //loggingzeug::debug() << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms";
 }
 
 void TextRendering::onPaint()

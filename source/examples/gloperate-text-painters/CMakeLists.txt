@@ -100,6 +100,7 @@ target_link_libraries(${target}
     cpplocate::cpplocate
     libzeug::iozeug
     libzeug::reflectionzeug
+    libzeug::loggingzeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

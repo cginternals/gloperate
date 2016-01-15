@@ -15,9 +15,9 @@ public:
     GlyphVertex();
 
 public:
-    glm::vec3 worldLlf;
-    glm::vec3 worldUrb;
-    glm::vec3 normal;
+    glm::vec3 coord;
+    glm::vec3 tangent;
+    glm::vec3 bitangent;
     glm::vec2 glyphStart;
     glm::vec2 glyphEnd;
 };

@@ -18,8 +18,8 @@ class GLOPERATE_TEXT_API GlyphRenderer
 {
 public:
     GlyphRenderer();
-    GlyphRenderer(const globjects::Shader * fragmentShader);
-    GlyphRenderer(const globjects::Program * program);
+    GlyphRenderer(globjects::Shader * fragmentShader);
+    GlyphRenderer(globjects::Program * program);
     virtual ~GlyphRenderer();
 
     void render(const GlyphVertexCloud & vertexCloud) const;
