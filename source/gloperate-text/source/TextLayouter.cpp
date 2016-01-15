@@ -3,7 +3,7 @@
 
 #include <stringzeug/conversion.h>
 
-#include <glm/gtx/random.hpp>
+//#include <glm/gtc/random.hpp>
 
 #include <gloperate-text/geometry/GlyphVertexCloud.h>
 #include <gloperate-text/geometry/GlyphVertex.h>
