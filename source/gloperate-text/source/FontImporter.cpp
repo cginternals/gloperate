@@ -143,7 +143,7 @@ void FontImporter::handlePage(std::stringstream & stream, FontFace * font, const
         {
             std::string filename = stripped(value, { '"' });
 
-            //font->setGlyphTexture(m_resourceManager.load<globjects::Texture>(path + "/" + filename));
+            font->setGlyphTexture(m_resourceManager.load<globjects::Texture>(path + "/" + filename));
         }
         else if (key == "id")
         {

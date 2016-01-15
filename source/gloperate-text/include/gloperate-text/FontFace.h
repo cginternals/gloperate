@@ -6,6 +6,7 @@
 #include <string>
 
 #include <globjects/base/ref_ptr.h>
+#include <globjects/base/Referenced.h>
 #include <globjects/Texture.h>
 
 #include <gloperate-text/gloperate-text_api.h>
@@ -17,7 +18,7 @@ namespace gloperate_text
 {
 
 
-class GLOPERATE_TEXT_API FontFace
+class GLOPERATE_TEXT_API FontFace : public globjects::Referenced
 {
 public:
     FontFace();

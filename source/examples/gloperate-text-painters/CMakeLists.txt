@@ -14,7 +14,7 @@ find_package(libzeug REQUIRED)
 # 
 
 # Target name
-set(target globjects-painters)
+set(target gloperate-text-painters)
 
 # Exit here if required dependencies are not met
 message(STATUS "Plugin ${target}")
@@ -28,19 +28,12 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
-    ${include_path}/logo/Logo.h
-    ${include_path}/screenaligned/ScreenAligned.h
-    ${include_path}/postprocessing/Postprocessing.h
-    ${include_path}/postprocessing/PostprocessingPipeline.h
-    ${include_path}/cubescape/CubeScape.h
+    ${include_path}/textrendering/TextRendering.h
 )
 
 set(sources
-    ${source_path}/logo/Logo.cpp
-    ${source_path}/screenaligned/ScreenAligned.cpp
-    ${source_path}/cubescape/CubeScape.cpp
-    ${source_path}/postprocessing/Postprocessing.cpp
-    ${source_path}/postprocessing/PostprocessingPipeline.cpp
+    ${source_path}/textrendering/TextRendering.cpp
+    
     ${source_path}/plugin.cpp
 )
 
@@ -110,6 +103,7 @@ target_link_libraries(${target}
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
+    ${META_PROJECT_NAME}::gloperate-text
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
