@@ -8,6 +8,8 @@
 #include <gloperate/painter/Painter.h>
 #include <gloperate/primitives/ScreenAlignedQuad.h>
 
+#include <gloperate-text/geometry/GlyphVertexCloud.h>
+
 
 namespace gloperate
 {
@@ -19,6 +21,7 @@ namespace gloperate
 namespace gloperate_text
 {
     class FontFace;
+    class GlyphRenderer;
 }
 
 
@@ -44,4 +47,6 @@ protected:
 
     /* Data */
     globjects::ref_ptr<gloperate_text::FontFace> m_fontFace;
+    gloperate_text::GlyphRenderer * m_renderer;
+    gloperate_text::GlyphVertexCloud m_vertexCloud;
 };

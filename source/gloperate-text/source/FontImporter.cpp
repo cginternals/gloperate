@@ -219,7 +219,25 @@ void FontImporter::handleKernings(std::stringstream & stream, FontFace * font)
 
 void FontImporter::handleKerning(std::stringstream & stream, FontFace * font)
 {
+    std::uint32_t first = 0;
+    std::uint32_t second = 0;
+    int amount = 0;
 
+    extractKeyValuePairs(stream, [this, font, &first, &second, &amount](const std::string & key, const std::string & value) {
+        if (key == "first")
+        {
+            first = stringzeug::fromString<std::uint32_t>(value);
+        }
+        else if (key == "second")
+        {
+            second = stringzeug::fromString<std::uint32_t>(value);
+        }
+        else if (key == "amount")
+        {
+            // nothing for now
+            amount = stringzeug::fromString<int>(value);
+        }
+    });
 }
 
 
