@@ -46,7 +46,6 @@ set(headers
     ${include_path}/geometry/GlyphVertex.h
     ${include_path}/geometry/GlyphVertexCloud.h
     
-    ${include_path}/stages/TextPreparationStage.h
     ${include_path}/stages/GlyphRenderStage.h
     ${include_path}/stages/FontImporterStage.h
 )
@@ -65,7 +64,6 @@ set(sources
     ${source_path}/geometry/GlyphVertexCloud.cpp
     
     ${source_path}/stages/FontImporterStage.cpp
-    ${source_path}/stages/TextPreparationStage.cpp
     ${source_path}/stages/GlyphRenderStage.cpp
 )
 
