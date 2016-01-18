@@ -13,6 +13,7 @@ C++ library for defining and controlling modern GPU rendering/processing operati
 | Jenkins | OS X 10.10 | Clang 3.5 | - | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-osx-clang3.5)](http://jenkins.hpi3d.de/job/gloperate-osx-clang3.5) |
 | Jenkins | Windows 8.1 | MSVC 2013 Update 5 | all, test, install | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-windows-msvc2013)](http://jenkins.hpi3d.de/job/gloperate-windows-msvc2013) |
 | Jenkins | Windows 8.1 | MSVC 2015 Update 1 | all, test, install | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-windows-msvc2015)](http://jenkins.hpi3d.de/job/gloperate-windows-msvc2015) |
+| [Coverity](https://scan.coverity.com/projects/6829?tab=overview) | Ubuntu | GCC 4.8 | all| [![Coverity Status](https://scan.coverity.com/projects/6829/badge.svg)](https://scan.coverity.com/projects/6829) |
 
 ### Dependencies
 
