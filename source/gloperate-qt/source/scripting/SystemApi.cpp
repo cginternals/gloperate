@@ -26,6 +26,7 @@ SystemApi::SystemApi(QtOpenGLWindow * openGLWindow)
     this->addFunction("load",             this, &SystemApi::load);
     this->addFunction("readFile",         this, &SystemApi::readFile);
     this->addFunction("writeFile",        this, &SystemApi::writeFile);
+    this->addFunction("appendFile",       this, &SystemApi::appendFile);
     this->addFunction("onKeyPress",       this, &SystemApi::onKeyPress);
     this->addFunction("clearKeyPress",    this, &SystemApi::clearKeyPress);
     this->addFunction("clearAllKeyPress", this, &SystemApi::clearAllKeyPress);
@@ -84,6 +85,15 @@ std::string SystemApi::readFile(const std::string & filename)
 void SystemApi::writeFile(const std::string & filename, const reflectionzeug::Variant & value)
 {
     std::ofstream f(filename);
+    if (f.is_open()) {
+        f << value.value<std::string>();
+        f.close();
+    }
+}
+
+void SystemApi::appendFile(const std::string & filename, const reflectionzeug::Variant & value)
+{
+    std::ofstream f(filename, std::ios_base::app);
     if (f.is_open()) {
         f << value.value<std::string>();
         f.close();

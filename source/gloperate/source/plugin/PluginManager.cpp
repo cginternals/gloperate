@@ -221,11 +221,8 @@ bool PluginManager::loadLibrary(const std::string & filePath, bool reload)
     }
 
     // Load module information file, if present
-    std::string pluginPath = iozeug::FilePath(filePath).directoryPath();
-    if (pluginPath == "") pluginPath = "./";
-    std::string modInfoPath = pluginPath + iozeug::FilePath(filePath).baseName() + ".modinfo";
     cpplocate::ModuleInfo modInfo;
-    modInfo.load(modInfoPath);
+    modInfo.load(filePath + ".modinfo");
 
     // If library was already loaded, remember it in case reloading fails
     PluginLibrary * previous = nullptr;
