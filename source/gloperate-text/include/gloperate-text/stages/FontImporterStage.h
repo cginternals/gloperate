@@ -9,6 +9,8 @@
 #include <gloperate/pipeline/InputSlot.h>
 #include <gloperate/pipeline/Data.h>
 
+#include <gloperate-text/gloperate-text_api.h>
+
 
 namespace gloperate
 {
@@ -23,7 +25,7 @@ namespace gloperate_text
 class FontFace;
 class FontImporter;
 
-class FontImporterStage : public gloperate::AbstractStage
+class GLOPERATE_TEXT_API FontImporterStage : public gloperate::AbstractStage
 {
 public:
     FontImporterStage();

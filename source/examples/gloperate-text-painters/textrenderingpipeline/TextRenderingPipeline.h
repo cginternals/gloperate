@@ -44,7 +44,7 @@ public:
     gloperate::Data<gloperate::AbstractVirtualTimeCapability *> time;
     gloperate::Data<std::uint32_t> xRepeat;
     gloperate::Data<std::uint32_t> yRepeat;
-    gloperate::Data<std::uint32_t> jitterRadius;
+    gloperate::Data<std::uint32_t> jiggleRadius;
 
     gloperate::Data<gloperate::AbstractTargetFramebufferCapability *> targetFBO;
     gloperate::Data<gloperate::AbstractViewportCapability *> viewport;

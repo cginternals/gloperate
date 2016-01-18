@@ -22,7 +22,7 @@ TextRenderingPipeline::TextRenderingPipeline()
 , time(nullptr)
 , xRepeat(1)
 , yRepeat(1)
-, jitterRadius(0)
+, jiggleRadius(0)
 , targetFBO(nullptr)
 , viewport(nullptr)
 , fontColor(reflectionzeug::Color(255, 255, 255))
@@ -46,11 +46,13 @@ TextRenderingPipeline::TextRenderingPipeline()
     textPreparation->time = time;
     textPreparation->xRepeat = xRepeat;
     textPreparation->yRepeat = yRepeat;
-    textPreparation->jitterRadius = jitterRadius;
+    textPreparation->jitterRadius = jiggleRadius;
 
     textRendering->vertices = textPreparation->vertexCloud;
     textRendering->viewport = viewport;
     textRendering->targetFramebuffer = targetFBO;
+    textRendering->fontColor = fontColor;
+    textRendering->distanceThreshold = distanceThreshold;
 
     addStages(
         fontImport,

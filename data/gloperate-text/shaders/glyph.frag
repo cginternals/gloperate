@@ -1,6 +1,8 @@
 #version 330
 
 uniform sampler2D glyphs;
+uniform vec4 fontColor;
+uniform float distanceThreshold;
 
 in vec2 g_glyphCoordinate;
 flat in vec3 g_normal;
@@ -11,5 +13,12 @@ void main()
 {
     float distanceValue = texture(glyphs, g_glyphCoordinate).r;
     
-    out_color = vec4(vec3(mix(0.0, 1.0, step(distanceValue, 0.7))), 1.0);
+    if (step(distanceValue, distanceThreshold) > 0.0)
+    {
+        out_color = fontColor;
+    }
+    else
+    {
+        discard;
+    }
 }
