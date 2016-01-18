@@ -47,21 +47,29 @@ endif()
 # Package components
 # 
 
-set(CPACK_COMPONENTS_ALL runtime dev examples docs)
-
-set(CPACK_COMPONENT_RUNTIME_DISPLAY_NAME "Template library")
-set(CPACK_COMPONENT_RUNTIME_DESCRIPTION "Runtime components for template library")
+set(CPACK_COMPONENT_RUNTIME_DISPLAY_NAME "${META_PROJECT_NAME} library")
+set(CPACK_COMPONENT_RUNTIME_DESCRIPTION "Runtime components for ${META_PROJECT_NAME} library")
 
 set(CPACK_COMPONENT_DEV_DISPLAY_NAME "C/C++ development files")
-set(CPACK_COMPONENT_DEV_DESCRIPTION "Development files for template library")
+set(CPACK_COMPONENT_DEV_DESCRIPTION "Development files for ${META_PROJECT_NAME} library")
 set(CPACK_COMPONENT_DEV_DEPENDS runtime)
 
-set(CPACK_COMPONENT_EXAMPLES_DISPLAY_NAME "Example applications")
-set(CPACK_COMPONENT_EXAMPLES_DESCRIPTION "Example applications for template library")
-set(CPACK_COMPONENT_EXAMPLES_DEPENDS runtime)
+set(CPACK_COMPONENTS_ALL runtime dev)
 
-set(CPACK_COMPONENT_DOCS_DISPLAY_NAME "Documentation")
-set(CPACK_COMPONENT_DOCS_DESCRIPTION "Documentation of template library")
+if (OPTION_BUILD_EXAMPLES)
+    set(CPACK_COMPONENT_EXAMPLES_DISPLAY_NAME "Example applications")
+    set(CPACK_COMPONENT_EXAMPLES_DESCRIPTION "Example applications for ${META_PROJECT_NAME} library")
+    set(CPACK_COMPONENT_EXAMPLES_DEPENDS runtime)
+
+    set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} examples)
+endif()
+
+if (OPTION_BUILD_DOCS)
+    set(CPACK_COMPONENT_DOCS_DISPLAY_NAME "Documentation")
+    set(CPACK_COMPONENT_DOCS_DESCRIPTION "Documentation of ${META_PROJECT_NAME} library")
+
+    set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} docs)
+endif()
 
 
 # 
@@ -122,7 +130,7 @@ set(CPACK_RESOURCE_FILE_LICENSE                "${PROJECT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README                 "${PROJECT_SOURCE_DIR}/README.md")
 set(CPACK_RESOURCE_FILE_WELCOME                "${PROJECT_SOURCE_DIR}/README.md")
 set(CPACK_PACKAGE_DESCRIPTION_FILE             "${PROJECT_SOURCE_DIR}/README.md")
-set(CPACK_PACKAGE_ICON                         "")
+set(CPACK_PACKAGE_ICON                         "${PROJECT_SOURCE_DIR}/deploy/images/logo.bmp")
 set(CPACK_PACKAGE_FILE_NAME                    "${package_name}-${CPACK_PACKAGE_VERSION}")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY            "${package_name}")
 set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY         "${package_name}")
@@ -155,8 +163,8 @@ endif()
 
 # Package options
 #set(CPACK_NSIS_DISPLAY_NAME "${package_name}-${META_VERSION}")
-set(CPACK_NSIS_MUI_ICON      "")
-set(CPACK_NSIS_MUI_UNIICON   "")
+set(CPACK_NSIS_MUI_ICON      "${PROJECT_SOURCE_DIR}/deploy/images/logo.ico")
+set(CPACK_NSIS_MUI_UNIICON   "${PROJECT_SOURCE_DIR}/deploy/images/logo.ico")
 
 # Optional Preliminaries (i.e., silent Visual Studio Redistributable install)
 if(NOT INSTALL_MSVC_REDIST_FILEPATH)

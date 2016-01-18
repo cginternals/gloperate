@@ -37,6 +37,7 @@ public:
 
     // Viewer API
     void loadPainter(const std::string & name);
+    void makeScreenshot(const std::string & filename, int width, int height, int frames);
 
 
 protected:

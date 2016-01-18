@@ -142,7 +142,7 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    ${GLFW_LIBRARY}
+    ${GLFW_LIBRARIES}
     cpplocate::cpplocate
     libzeug::reflectionzeug
     glbinding::glbinding

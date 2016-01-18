@@ -85,7 +85,7 @@ void OpenGLContext::Private::printInfo()
     if (format.testOption(QSurfaceFormat::DebugContext))
         options << "debug";
     
-    qDebug().nospace().noquote() << "OpenGL Version: "
+    qDebug().nospace() << "OpenGL Version: "
         << version.first << "." << version.second << " "
         << "(" << options.join(", ") << ")";
 }

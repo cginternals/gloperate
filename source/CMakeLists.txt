@@ -10,7 +10,11 @@ find_package(cpplocate REQUIRED)
 string(TOUPPER ${META_PROJECT_NAME} META_PROJECT_NAME_UPPER)
 configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/${META_PROJECT_NAME}/${META_PROJECT_NAME}-version.h)
 
-# Generate module information file
+
+# 
+# Module information file
+# 
+
 generate_module_info(${META_PROJECT_NAME}
     VALUES
     name        "${META_PROJECT_NAME}"
@@ -25,11 +29,15 @@ generate_module_info(${META_PROJECT_NAME}
     dataPath    "\${ModulePath}/data"
 )
 
-# Create modinfo file in build directory
-export_module_info(${META_PROJECT_NAME} TARGET ${META_PROJECT_NAME} FOLDER "cmake")
+export_module_info(${META_PROJECT_NAME}
+    TARGET ${META_PROJECT_NAME}
+    FOLDER "ModuleInfo"
+)
 
-# Install modinfo file to target path
-install_module_info(${META_PROJECT_NAME} DESTINATION ${INSTALL_ROOT} COMPONENT dev)
+install_module_info(${META_PROJECT_NAME}
+    DESTINATION ${INSTALL_ROOT}
+    COMPONENT runtime
+)
 
 
 # 
