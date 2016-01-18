@@ -25,6 +25,11 @@ TextGenerationStage::~TextGenerationStage()
 
 void TextGenerationStage::process()
 {
+    if (textGenerationAlgorithm.hasChanged())
+    {
+        alwaysProcess(textGenerationAlgorithm.data() == TextGenerationAlgorithm::Random);
+    }
+
     switch (textGenerationAlgorithm.data())
     {
     case TextGenerationAlgorithm::Incrementing:
@@ -43,9 +48,11 @@ void TextGenerationStage::process()
             text.data().characters() = std::u32string();
             text.data().characters().resize(length.data());
 
+            const auto maxIndex = staticText.data().size()-1;
+
             for (size_t i = 0; i < length.data(); ++i)
             {
-                text.data().characters()[i] = static_cast<char32_t>(glm::linearRand(33.0f, 126.0f));
+                text.data().characters()[i] = staticText.data().at(static_cast<char32_t>(glm::linearRand(0.0, 1.0) * maxIndex));
             }
         }
         break;

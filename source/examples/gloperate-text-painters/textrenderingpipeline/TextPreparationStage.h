@@ -12,7 +12,7 @@
 
 namespace gloperate
 {
-    class AbstractVirtualTimeCapability;
+    class AbstractViewportCapability;
 }
 
 namespace gloperate_text
@@ -35,7 +35,7 @@ public:
 public:
     gloperate::InputSlot<gloperate_text::FontFace *> font;
     gloperate::InputSlot<gloperate_text::Text> text;
-    gloperate::InputSlot<gloperate::AbstractVirtualTimeCapability *> time;
+    gloperate::InputSlot<gloperate::AbstractViewportCapability *> viewport;
     gloperate::InputSlot<std::uint32_t> xRepeat;
     gloperate::InputSlot<std::uint32_t> yRepeat;
     gloperate::InputSlot<std::uint32_t> jitterRadius;

@@ -44,22 +44,18 @@ void TextLayouter::basicLayout(const Text & text, FontFace * font, GlyphVertex *
     std::uint32_t glyphTextureWidth = stringzeug::fromString<std::uint32_t>(font->configuration("scaleW", "0"));
     //std::uint32_t glyphTextureHeight = stringzeug::fromString<std::uint32_t>(font->configuration("scaleH", "0"));
 
-    float width = 2.0 / text.characters().size();
+    float width = 1.0 / text.characters().size();
 
     for (size_t i = 0; i < text.characters().size(); ++i)
     {
         Glyph & glyph = font->glyph(text.characters()[i]);
         GlyphVertex & vertex = *(startVertex + i);
 
-        vertex.coord = glm::vec3(i * width - 1.0, -0.5, 0.0);
-        vertex.tangent = glm::vec3(width, 0.0, 0.0);
-        vertex.bitangent = glm::vec3(0.0, 1.0, 0.0);
+        vertex.coord = start + glm::vec3(i * width, 0.0, 0.0) * (end - start);
+        vertex.tangent = glm::vec3(width * (end.x - start.x), 0.0, 0.0);
+        vertex.bitangent = glm::vec3(0.0, end.y - start.y, 0.0);
         vertex.glyphStart = glm::vec2(glyph.x(), 0.0) / glm::vec2(glyphTextureWidth, 1.0);
         vertex.glyphEnd = glm::vec2(glyph.x() + glyph.width(), 1.0) / glm::vec2(glyphTextureWidth, 1.0);
-
-        vertex.coord = start + ((vertex.coord + glm::vec3(1.0, 1.0, 0.0)) / glm::vec3(2.0)) * (end - start);
-        vertex.tangent = glm::vec3(vertex.tangent.x / 32.0, vertex.tangent.y / 32.0, vertex.tangent.z);
-        vertex.bitangent = glm::vec3(vertex.bitangent.x / 32.0, vertex.bitangent.y / 32.0, vertex.bitangent.z);
     }
 }
 

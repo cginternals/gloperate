@@ -43,7 +43,7 @@ TextRenderingPipeline::TextRenderingPipeline()
 
     textPreparation->font = fontImport->font;
     textPreparation->text = textGeneration->text;
-    textPreparation->time = time;
+    textPreparation->viewport = viewport;
     textPreparation->xRepeat = xRepeat;
     textPreparation->yRepeat = yRepeat;
     textPreparation->jitterRadius = jiggleRadius;

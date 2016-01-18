@@ -43,7 +43,7 @@ TextRenderingPainter::TextRenderingPainter(gloperate::ResourceManager & resource
     textGeneration->addProperty(createProperty("Algorithm", m_pipeline.textGenerationAlgorithm));
     textGeneration->addProperty(createProperty("StaticText", m_pipeline.staticText));
     textGeneration->addProperty(createProperty("Length", m_pipeline.length));
-    textGeneration->addProperty(createProperty("Encoding", m_pipeline.encoding));
+    //textGeneration->addProperty(createProperty("Encoding", m_pipeline.encoding));
     textGeneration->addProperty(createProperty("XRepeat", m_pipeline.xRepeat));
     textGeneration->addProperty(createProperty("YRepeat", m_pipeline.yRepeat));
     textGeneration->addProperty(createProperty("JiggleRadius", m_pipeline.jiggleRadius));

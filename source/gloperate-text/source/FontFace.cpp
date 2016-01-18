@@ -2,6 +2,12 @@
 #include <gloperate-text/FontFace.h>
 
 
+namespace
+{
+    const gloperate_text::Glyph emptyGlyph;
+} // namespace
+
+
 namespace gloperate_text
 {
 
@@ -41,11 +47,24 @@ void FontFace::setConfiguration(const std::string & key, const std::string & val
 
 Glyph & FontFace::glyph(std::uint32_t index)
 {
+    if (m_glyphConfiguration.count(index) == 0)
+    {
+        Glyph glyph;
+        glyph.setIndex(index);
+
+        addGlyph(glyph);
+    }
+
     return m_glyphConfiguration.at(index);
 }
 
 const Glyph & FontFace::glyph(std::uint32_t index) const
 {
+    if (m_glyphConfiguration.count(index) == 0)
+    {
+        return emptyGlyph;
+    }
+
     return m_glyphConfiguration.at(index);
 }
 
