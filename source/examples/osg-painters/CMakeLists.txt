@@ -172,7 +172,7 @@ target_link_libraries(${target}
 # Module information file
 # 
 
-generate_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
+generate_module_info(${target}
     VALUES
     name        "${target}"
     version     "${META_VERSION}"
@@ -186,13 +186,15 @@ generate_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
     dataPath    "\${ModulePath}/../data"
 )
 
-export_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
+export_module_info(${target}
     TARGET ${target}
     FOLDER "ModuleInfo"
+    RENAME "$<TARGET_FILE_NAME:${target}>.modinfo"
 )
 
-install_module_info(${CMAKE_SHARED_LIBRARY_PREFIX}${target}
+install_module_info(${target}
     DESTINATION ${INSTALL_PLUGINS}
+    RENAME "$<TARGET_FILE_NAME:${target}>.modinfo"
     COMPONENT runtime
 )
 
