@@ -8,7 +8,7 @@
 #include <memory>
 
 #include <gloperate/ext-includes-begin.h>
-#include <widgetzeug/dark_fusion_style.hpp>
+#include <widgetzeug/dark_fusion_style.h>
 #include <gloperate/ext-includes-end.h>
 
 #include <gloperate-qt/viewer/Viewer.h>
