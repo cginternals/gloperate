@@ -24,7 +24,7 @@ public:
     FontFace();
     virtual ~FontFace();
 
-    globjects::Texture * glyphTexture();
+    globjects::Texture * glyphTexture() const;
     void setGlyphTexture(globjects::Texture * texture);
 
     const std::string & configuration(const std::string & key, const std::string & defaultValue = "") const;

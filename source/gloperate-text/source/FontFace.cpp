@@ -20,7 +20,7 @@ FontFace::~FontFace()
 {
 }
 
-globjects::Texture * FontFace::glyphTexture()
+globjects::Texture * FontFace::glyphTexture() const
 {
     return m_glyphTexture;
 }

@@ -32,6 +32,8 @@ void FontImporterStage::initialize()
 void FontImporterStage::process()
 {
     FontFace * newFont = m_importer->loadFont(fontFilePath.data().toString());
+    
+    assert(newFont != nullptr);
 
     if (newFont == nullptr)
     {
