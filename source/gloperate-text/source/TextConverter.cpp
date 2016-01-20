@@ -2,6 +2,7 @@
 #include <gloperate-text/TextConverter.h>
 
 #include <algorithm>
+#include <iterator>
 
 #include <gloperate-text/Encoding.h>
 
@@ -35,7 +36,7 @@ void TextConverter::encode(const std::u16string & input, Encoding encoding, std:
     assert(false);
 }
 
-void TextConverter::encode(const char * input, ssize_t size, Encoding encoding, std::u32string & output)
+void TextConverter::encode(const char * input, size_t size, Encoding encoding, std::u32string & output)
 {
     assert(false);
 }
@@ -55,7 +56,7 @@ void TextConverter::decode(const std::u32string & input, std::u16string & output
     assert(false);
 }
 
-void TextConverter::decode(const std::u32string & input, const char * & output, ssize_t size, Encoding encoding)
+void TextConverter::decode(const std::u32string & input, const char * & output, size_t size, Encoding encoding)
 {
     assert(false);
 }
