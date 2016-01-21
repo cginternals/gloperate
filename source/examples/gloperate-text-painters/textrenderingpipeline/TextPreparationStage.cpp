@@ -52,13 +52,13 @@ void TextPreparationStage::process()
     {
         for (size_t x = 0; x < xRepeat.data(); ++x)
         {
-            glm::vec3 start = glm::vec3(x / float(xRepeat.data()) * 2.0 - 1.0, y / float(yRepeat.data()) * 2.0 - 1.0, 0);
-            glm::vec3 end = glm::vec3((x+1) / float(xRepeat.data()) * 2.0 - 1.0, (y+1) / float(yRepeat.data()) * 2.0 - 1.0, 0);
+            glm::vec2 start = glm::vec2(x / float(xRepeat.data()) * 2.0 - 1.0, y / float(yRepeat.data()) * 2.0 - 1.0);
+            glm::vec2 end = glm::vec2((x+1) / float(xRepeat.data()) * 2.0 - 1.0, (y+1) / float(yRepeat.data()) * 2.0 - 1.0);
 
             if (jitterRadius.data() > 0.0)
             {
-                start += glm::vec3(glm::diskRand(float(jitterRadius.data())) / glm::vec2(viewport.data()->width(), viewport.data()->height()), 0.0);
-                end += glm::vec3(glm::diskRand(float(jitterRadius.data())) / glm::vec2(viewport.data()->width(), viewport.data()->height()), 0.0);
+                start += glm::vec2(glm::diskRand(float(jitterRadius.data())) / glm::vec2(viewport.data()->width(), viewport.data()->height()));
+                end += glm::vec2(glm::diskRand(float(jitterRadius.data())) / glm::vec2(viewport.data()->width(), viewport.data()->height()));
             }
 
             m_layouter->basicLayout(text.data(), font.data(), &vertexCloud.data().vertices[(xRepeat.data() * y + x) * textSize], start, end);
