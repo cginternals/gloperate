@@ -9,11 +9,16 @@
 namespace gloperate_text
 {
 
-
+/**
+*  @brief
+*    The used encoding of a passed std::string.
+*
+*    This enum is mainly used to support the conversion of strings or a collections of characters to UTF-32, which is internally used by gloperate-text.
+*/
 enum class Encoding : unsigned int
 {
     ANSI,
-    ASCII = Encoding::ANSI,
+    ASCII = Encoding::ANSI, // for both ANSI and ASCII you use 1 byte in a std::string or char to encode it
     Utf8
 };
 
@@ -47,8 +52,8 @@ struct EnumDefaultStrings<gloperate_text::Encoding>
     {
         return {
             { gloperate_text::Encoding::ASCII, "ASCII" },
-            { gloperate_text::Encoding::ANSI, "ANSI" },
-            { gloperate_text::Encoding::Utf8, "Utf-8" }
+            { gloperate_text::Encoding::ANSI,  "ANSI"  },
+            { gloperate_text::Encoding::Utf8,  "Utf-8" }
         };
     }
 };
