@@ -118,6 +118,13 @@ FontFace * FontImporter::loadFont(const std::string & filename)
         }
     }
 
+    if (!font->glyphTexture())
+    {
+        delete font;
+
+        return nullptr;
+    }
+
     return font;
 }
 
