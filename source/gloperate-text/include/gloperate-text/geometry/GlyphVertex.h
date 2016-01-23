@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
 
 #include <gloperate-text/gloperate-text_api.h>
 
@@ -15,9 +14,8 @@ public:
     GlyphVertex();
 
 public:
-    glm::vec3 coord;
-    glm::vec3 tangent;
-    glm::vec3 bitangent;
+    glm::vec2 worldStart;
+    glm::vec2 worldEnd;
     glm::vec2 glyphStart;
     glm::vec2 glyphEnd;
 };

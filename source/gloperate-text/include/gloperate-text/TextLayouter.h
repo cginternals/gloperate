@@ -24,7 +24,7 @@ public:
     void layout(const Text & text, FontFace * font, GlyphVertexCloud & vertexCloud);
     void layout(const TextManager & manager, FontFace * font, GlyphVertexCloud & vertexCloud);
 
-    void basicLayout(const Text & text, FontFace * font, GlyphVertex * startVertex, const glm::vec3 & start, const glm::vec3 & end);
+    void basicLayout(const Text & text, FontFace * font, GlyphVertex * startVertex, const glm::vec2 & start, const glm::vec2 & end);
 };
 
 

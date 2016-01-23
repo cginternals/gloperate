@@ -21,14 +21,13 @@ void GlyphVertexCloud::verticesChanged()
         m_drawable = new gloperate::VertexDrawable(std::vector<GlyphVertex>(), gl::GL_POINTS);
 
         m_drawable->setFormats({
-            gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(GlyphVertex, coord)),
-            gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(GlyphVertex, tangent)),
-            gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(GlyphVertex, bitangent)),
+            gloperate::Format(2, gl::GL_FLOAT, GLOPERATE_OFFSETOF(GlyphVertex, worldStart)),
+            gloperate::Format(2, gl::GL_FLOAT, GLOPERATE_OFFSETOF(GlyphVertex, worldEnd)),
             gloperate::Format(2, gl::GL_FLOAT, GLOPERATE_OFFSETOF(GlyphVertex, glyphStart)),
             gloperate::Format(2, gl::GL_FLOAT, GLOPERATE_OFFSETOF(GlyphVertex, glyphEnd))
         });
 
-        m_drawable->bindAttributes({ 0, 1, 2, 3, 4 });
+        m_drawable->bindAttributes({ 0, 1, 2, 3 });
 
         m_drawable->enableAll();
     }
