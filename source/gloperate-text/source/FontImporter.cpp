@@ -75,7 +75,8 @@ FontFace * FontImporter::loadFont(const std::string & filename)
     std::string identifier;
     while (std::getline(in, line))
     {
-        std::stringstream ss(line);
+        auto ss = std::stringstream();
+        ss << line;
 
         if (std::getline(ss, identifier, ' '))
         {
@@ -148,7 +149,7 @@ void FontImporter::handlePage(std::stringstream & stream, FontFace * font, const
     extractKeyValuePairs(stream, [this, font, &path](const std::string & key, const std::string & value) {
         if (key == "file")
         {
-            std::string filename = stripped(value, { '"' });
+            std::string filename = stripped(value, { '"', '\r' });
 
             font->setGlyphTexture(m_resourceManager.load<globjects::Texture>(path + "/" + filename));
         }
