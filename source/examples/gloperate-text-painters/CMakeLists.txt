@@ -112,6 +112,7 @@ target_link_libraries(${target}
     libzeug::iozeug
     libzeug::reflectionzeug
     libzeug::loggingzeug
+    libzeug::threadingzeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

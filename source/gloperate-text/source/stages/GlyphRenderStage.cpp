@@ -24,6 +24,8 @@ GlyphRenderStage::GlyphRenderStage()
 
     addInput("viewport", viewport);
     addInput("targetFramebuffer", targetFramebuffer);
+
+    alwaysProcess(true);
 }
 
 GlyphRenderStage::~GlyphRenderStage()
@@ -63,7 +65,7 @@ void GlyphRenderStage::process()
 
     m_renderer->render(vertices.data());
 
-    globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+    fbo->unbind(gl::GL_FRAMEBUFFER);
 }
 
 

@@ -24,6 +24,8 @@ TextPreparationStage::TextPreparationStage()
     addInput("jitterRadius", jitterRadius);
 
     addOutput("vertexCloud", vertexCloud);
+
+    alwaysProcess(true);
 }
 
 TextPreparationStage::~TextPreparationStage()
