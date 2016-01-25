@@ -114,7 +114,7 @@ target_include_directories(${target}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${PROJECT_BINARY_DIR}/source/gloperate/include
     ${GLM_INCLUDE_DIR}
-    ${ASSIMP_INCLUDE_DIRS}
+    ${ASSIMP_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
 
     PUBLIC
