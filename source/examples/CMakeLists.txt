@@ -6,6 +6,7 @@ endif()
 
 # Example plugins
 add_subdirectory(globjects-painters)
+add_subdirectory(gloperate-text-painters)
 add_subdirectory(osg-painters)
 
 # Example applications

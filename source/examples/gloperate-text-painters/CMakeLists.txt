@@ -14,7 +14,7 @@ find_package(libzeug REQUIRED)
 # 
 
 # Target name
-set(target globjects-painters)
+set(target gloperate-text-painters)
 
 # Exit here if required dependencies are not met
 message(STATUS "Plugin ${target}")
@@ -28,19 +28,23 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
-    ${include_path}/logo/Logo.h
-    ${include_path}/screenaligned/ScreenAligned.h
-    ${include_path}/postprocessing/Postprocessing.h
-    ${include_path}/postprocessing/PostprocessingPipeline.h
-    ${include_path}/cubescape/CubeScape.h
+    ${include_path}/textrendering/TextRendering.h
+    
+    ${include_path}/textrenderingpipeline/TextRenderingPipeline.h
+    ${include_path}/textrenderingpipeline/TextRenderingPainter.h
+    ${include_path}/textrenderingpipeline/TextGenerationAlgorithm.h
+    ${include_path}/textrenderingpipeline/TextGenerationStage.h
+    ${include_path}/textrenderingpipeline/TextPreparationStage.h
 )
 
 set(sources
-    ${source_path}/logo/Logo.cpp
-    ${source_path}/screenaligned/ScreenAligned.cpp
-    ${source_path}/cubescape/CubeScape.cpp
-    ${source_path}/postprocessing/Postprocessing.cpp
-    ${source_path}/postprocessing/PostprocessingPipeline.cpp
+    ${source_path}/textrendering/TextRendering.cpp
+    
+    ${source_path}/textrenderingpipeline/TextRenderingPipeline.cpp
+    ${source_path}/textrenderingpipeline/TextRenderingPainter.cpp
+    ${source_path}/textrenderingpipeline/TextGenerationStage.cpp
+    ${source_path}/textrenderingpipeline/TextPreparationStage.cpp
+    
     ${source_path}/plugin.cpp
 )
 
@@ -107,9 +111,12 @@ target_link_libraries(${target}
     cpplocate::cpplocate
     libzeug::iozeug
     libzeug::reflectionzeug
+    libzeug::loggingzeug
+    libzeug::threadingzeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
+    ${META_PROJECT_NAME}::gloperate-text
 
     PUBLIC
     ${DEFAULT_LIBRARIES}

@@ -12,7 +12,7 @@
 #elif __GNUC__
 #   define GLOPERATE_PLUGIN_API __attribute__ ((visibility ("default")))
 #else
-#   define GLOPERATE_PLUGIN_API
+#   define GLOPERATE_PLUGIN_API __attribute__ ((visibility ("default")))
 #endif
 
 

@@ -7,7 +7,6 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
-find_package(ASSIMP)
 
 
 # 
@@ -15,19 +14,13 @@ find_package(ASSIMP)
 # 
 
 # Target name
-set(target gloperate-assimp)
-set(target_upper GLOPERATE_ASSIMP)
+set(target gloperate-text)
 
 # Exit here if required dependencies are not met
-if (NOT ASSIMP_FOUND)
-    message("Lib ${target} skipped: ASSIMP not found")
-    return()
-else()
-    message(STATUS "Lib ${target}")
-endif()
+message(STATUS "Lib ${target}")
 
 # Set API export file and macro
-set(feature_file "include/${target}/${target}_features.h")
+string(TOUPPER ${target} target_upper)
 set(export_file  "include/${target}/${target}_api.h")
 set(export_macro "${target_upper}_API")
 
@@ -40,13 +33,38 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/AssimpMeshLoader.h
-    ${include_path}/AssimpSceneLoader.h
+    ${include_path}/Encoding.h
+    ${include_path}/FontFace.h
+    ${include_path}/FontImporter.h
+    ${include_path}/Glyph.h
+    ${include_path}/GlyphRenderer.h
+    ${include_path}/Text.h
+    ${include_path}/TextConverter.h
+    ${include_path}/TextLayouter.h
+    ${include_path}/TextManager.h
+    
+    ${include_path}/geometry/GlyphVertex.h
+    ${include_path}/geometry/GlyphVertexCloud.h
+    
+    ${include_path}/stages/GlyphRenderStage.h
+    ${include_path}/stages/FontImporterStage.h
 )
 
 set(sources
-    ${source_path}/AssimpMeshLoader.cpp
-    ${source_path}/AssimpSceneLoader.cpp
+    ${source_path}/FontFace.cpp
+    ${source_path}/FontImporter.cpp
+    ${source_path}/Glyph.cpp
+    ${source_path}/GlyphRenderer.cpp
+    ${source_path}/Text.cpp
+    ${source_path}/TextConverter.cpp
+    ${source_path}/TextLayouter.cpp
+    ${source_path}/TextManager.cpp
+    
+    ${source_path}/geometry/GlyphVertex.cpp
+    ${source_path}/geometry/GlyphVertexCloud.cpp
+    
+    ${source_path}/stages/FontImporterStage.cpp
+    ${source_path}/stages/GlyphRenderStage.cpp
 )
 
 # Group source files
@@ -73,16 +91,6 @@ add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
 # Export library for downstream projects
 export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
-
-# Create feature detection header
-# Compilers: https://cmake.org/cmake/help/v3.1/variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_%3CLANG%3E_COMPILER_ID
-# Feature: https://cmake.org/cmake/help/v3.1/prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html
-write_compiler_detection_header(
-    FILE ${feature_file}
-    PREFIX ${target_upper}
-    COMPILERS AppleClang Clang GNU MSVC
-    FEATURES cxx_alignas cxx_alignof cxx_constexpr cxx_final cxx_noexcept cxx_nullptr cxx_sizeof_member cxx_thread_local
-)
 
 # Create API export header
 generate_export_header(${target}
@@ -112,10 +120,7 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
-    ${PROJECT_BINARY_DIR}/source/gloperate/include
     ${GLM_INCLUDE_DIR}
-    ${ASSIMP_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/source/gloperate/include
 
     PUBLIC
 
@@ -132,12 +137,14 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    ${ASSIMP_LIBRARIES}
+    ${OPENGL_LIBRARIES}
     cpplocate::cpplocate
     libzeug::reflectionzeug
+    libzeug::iozeug
+    libzeug::loggingzeug
     glbinding::glbinding
     globjects::globjects
-    ${META_PROJECT_NAME}::gloperate
+    gloperate::gloperate
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
