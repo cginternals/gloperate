@@ -49,24 +49,24 @@ set(IDE_FOLDER "")
 add_subdirectory(gloperate)
 add_subdirectory(gloperate-glfw)
 add_subdirectory(gloperate-qt)
-add_subdirectory(gloperate-assimp)
-add_subdirectory(gloperate-osg)
-add_subdirectory(gloperate-text)
+#add_subdirectory(gloperate-assimp)
+#add_subdirectory(gloperate-osg)
+#add_subdirectory(gloperate-text)
 
 # Applications
 add_subdirectory(gloperate-viewer)
 
 # Tools
-set(IDE_FOLDER "Tools")
-add_subdirectory(tools)
+#set(IDE_FOLDER "Tools")
+#add_subdirectory(tools)
 
 # Examples
 set(IDE_FOLDER "Examples")
 add_subdirectory(examples)
 
 # Tests
-set(IDE_FOLDER "Tests")
-add_subdirectory(tests)
+#set(IDE_FOLDER "Tests")
+#add_subdirectory(tests)
 
 
 # 

@@ -9,7 +9,7 @@
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/painter/ContextFormat.h>
-#include <gloperate/painter/AbstractVirtualTimeCapability.h>
+//#include <gloperate/painter/AbstractVirtualTimeCapability.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
@@ -480,11 +480,11 @@ void Window::setPainter(gloperate::Painter * painter)
     if (!m_painter)
         return;
 
-    gloperate::AbstractVirtualTimeCapability * timeCapability = 
-        m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>();
+//    gloperate::AbstractVirtualTimeCapability * timeCapability = 
+//        m_painter->getCapability<gloperate::AbstractVirtualTimeCapability>();
 
-    if (timeCapability)
-        addTimer(0, 0, false);
+//    if (timeCapability)
+//        addTimer(0, 0, false);
 }
 
 gloperate::ResourceManager & Window::resourceManager()

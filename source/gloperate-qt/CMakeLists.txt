@@ -8,7 +8,6 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
-find_package(ASSIMP)
 
 # Qt5
 find_package(Qt5OpenGL  5.1)
@@ -58,75 +57,9 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/viewer/Application.h
-    ${include_path}/viewer/DefaultMapping.h
-    ${include_path}/viewer/Viewer.h
-    ${include_path}/viewer/AbstractQtMapping.h
-    ${include_path}/viewer/QtEventTransformer.h
-    ${include_path}/viewer/QtKeyEventProvider.h
-    ${include_path}/viewer/QtMouseEventProvider.h
-    ${include_path}/viewer/QtOpenGLWindow.h
-    ${include_path}/viewer/QtOpenGLWindowBase.h
-    ${include_path}/viewer/QtTextureLoader.h
-    ${include_path}/viewer/QtTextureStorer.h
-    ${include_path}/viewer/QtWheelEventProvider.h
-    ${include_path}/viewer/Converter.h
-    ${include_path}/viewer/TimePropagator.h
-
-    ${include_path}/scripting/ScriptEnvironment.h
-    ${include_path}/scripting/SystemApi.h
-    ${include_path}/scripting/TimerApi.h
-    ${include_path}/scripting/ViewerApi.h
-    ${include_path}/scripting/PluginApi.h
-
-    ${include_path}/widgets/FileNameTextEdit.h
-    ${include_path}/widgets/ImageExporterWidget.h
-    ${include_path}/widgets/ImageExporterMultiFrameWidget.h
-    ${include_path}/widgets/ImageExporterOutputWidget.h
-    ${include_path}/widgets/ImageExporterResolutionWidget.h
-    ${include_path}/widgets/ImageExporterTilebasedWidget.h
-    ${include_path}/widgets/PluginPathWidget.h
-    ${include_path}/widgets/PluginConfigWidget.h
-    ${include_path}/widgets/PluginWidget.h
 )
 
 set(sources
-    ${source_path}/viewer/Application.cpp
-    ${source_path}/viewer/DefaultMapping.cpp
-    ${source_path}/viewer/Viewer.cpp
-    ${source_path}/viewer/Viewer.ui
-    ${source_path}/viewer/AbstractQtMapping.cpp
-    ${source_path}/viewer/QtEventTransformer.cpp
-    ${source_path}/viewer/QtKeyEventProvider.cpp
-    ${source_path}/viewer/QtMouseEventProvider.cpp
-    ${source_path}/viewer/QtOpenGLWindow.cpp
-    ${source_path}/viewer/QtOpenGLWindowBase.cpp
-    ${source_path}/viewer/QtTextureLoader.cpp
-    ${source_path}/viewer/QtTextureStorer.cpp
-    ${source_path}/viewer/QtWheelEventProvider.cpp
-    ${source_path}/viewer/Converter.cpp
-    ${source_path}/viewer/TimePropagator.cpp
-
-    ${source_path}/scripting/ScriptEnvironment.cpp
-    ${source_path}/scripting/SystemApi.cpp
-    ${source_path}/scripting/TimerApi.cpp
-    ${source_path}/scripting/ViewerApi.cpp
-    ${source_path}/scripting/PluginApi.cpp
-
-    ${source_path}/widgets/FileNameTextEdit.cpp
-    ${source_path}/widgets/ImageExporterWidget.cpp
-    ${source_path}/widgets/ImageExporterMultiFrameWidget.cpp
-    ${source_path}/widgets/ImageExporterMultiFrameWidget.ui
-    ${source_path}/widgets/ImageExporterOutputWidget.cpp
-    ${source_path}/widgets/ImageExporterOutputWidget.ui
-    ${source_path}/widgets/ImageExporterResolutionWidget.cpp
-    ${source_path}/widgets/ImageExporterResolutionWidget.ui
-    ${source_path}/widgets/ImageExporterTilebasedWidget.cpp
-    ${source_path}/widgets/ImageExporterTilebasedWidget.ui
-    ${source_path}/widgets/PluginPathWidget.cpp
-    ${source_path}/widgets/PluginConfigWidget.cpp
-    ${source_path}/widgets/PluginWidget.cpp
-    ${source_path}/widgets/PluginWidget.ui
 )
 
 # Group source files
@@ -194,7 +127,6 @@ target_include_directories(${target}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
-    ${PROJECT_SOURCE_DIR}/source/gloperate-assimp/include
     ${GLM_INCLUDE_DIR}
 
     PUBLIC
@@ -226,7 +158,6 @@ target_link_libraries(${target}
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
-    $<$<BOOL:${ASSIMP_FOUND}>:${META_PROJECT_NAME}::gloperate-assimp>
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
@@ -245,7 +176,6 @@ target_compile_definitions(${target}
     PUBLIC
     $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_upper}_STATIC_DEFINE>
     ${DEFAULT_COMPILE_DEFINITIONS}
-    $<$<BOOL:${ASSIMP_FOUND}>:GLOPERATE_ASSIMP_FOUND>
     GLM_FORCE_RADIANS
 
     INTERFACE

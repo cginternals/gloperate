@@ -6,10 +6,12 @@
 
 #include <globjects/globjects.h>
 
+/*
 #include <gloperate/painter/AbstractViewportCapability.h>
 #include <gloperate/painter/AbstractVirtualTimeCapability.h>
 #include <gloperate/painter/AbstractInputCapability.h>
 #include <gloperate/tools/ImageExporter.h>
+*/
 
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/events.h>
@@ -26,6 +28,7 @@ namespace gloperate_glfw
 *  @brief
 *    Convert GLFW mouse button into gloperate mouse button
 */
+/*
 static gloperate::MouseButton fromGLFWMouseButton(int button)
 {
     switch (button) 
@@ -41,16 +44,19 @@ static gloperate::MouseButton fromGLFWMouseButton(int button)
     default:                  return NoMouseButton;
     }
 }
+*/
 
 /**
 *  @brief
 *    Convert GLFW key code into gloperate key code
 */
+/*
 static gloperate::Key fromGLFWKeyCode(int key)
 {
     // We are using the same key code table as GLFW
     return static_cast<gloperate::Key>(key);
 }
+*/
 
 
 WindowEventHandler::WindowEventHandler()
@@ -68,12 +74,15 @@ void WindowEventHandler::initialize(Window & window)
     globjects::DebugMessage::enable(true);
 #endif
 
+    /*
     if (window.painter())
         window.painter()->initialize();
-    }
+    */
+}
 
 void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 {
+    /*
     if (event.window()->painter()) {
         // Check if the painter supports the viewport capability
         AbstractViewportCapability * viewportCapability = event.window()->painter()->getCapability<AbstractViewportCapability>();
@@ -84,18 +93,23 @@ void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
             viewportCapability->setViewport(0, 0, event.width(), event.height());
         }
     }
+    */
 }
 
 void WindowEventHandler::paintEvent(PaintEvent & event)
 {
-    if (event.window()->painter()) {
+    /*
+    if (event.window()->painter())
+    {
         // Call painter
         event.window()->painter()->paint();
     }
+    */
 }
 
 void WindowEventHandler::keyPressEvent(KeyEvent & event)
 {
+    /*
     if (event.key() == GLFW_KEY_F10)
     {
 		if (ImageExporter::isApplicableTo(event.window()->painter()))
@@ -115,10 +129,12 @@ void WindowEventHandler::keyPressEvent(KeyEvent & event)
             fromGLFWKeyCode(event.key())
         );
     }
+    */
 }
 
 void WindowEventHandler::keyReleaseEvent(KeyEvent & event)
 {
+    /*
     // Check for input capability
     if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
         // Propagate event
@@ -126,10 +142,12 @@ void WindowEventHandler::keyReleaseEvent(KeyEvent & event)
             fromGLFWKeyCode(event.key())
         );
     }
+    */
 }
 
 void WindowEventHandler::mouseMoveEvent(MouseEvent & event)
 {
+    /*
     // Check for input capability
     if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
         // Propagate event
@@ -138,10 +156,12 @@ void WindowEventHandler::mouseMoveEvent(MouseEvent & event)
             event.y()
         );
     }
+    */
 }
 
 void WindowEventHandler::mousePressEvent(MouseEvent & event)
 {
+    /*
     // Check for input capability
     if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
         // Propagate event
@@ -151,10 +171,12 @@ void WindowEventHandler::mousePressEvent(MouseEvent & event)
             fromGLFWMouseButton(event.button())
         );
     }
-    }
+    */
+}
 
 void WindowEventHandler::mouseReleaseEvent(MouseEvent & event)
 {
+    /*
     // Check for input capability
     if (event.window()->painter() && event.window()->painter()->supports<gloperate::AbstractInputCapability>()) {
         // Propagate event
@@ -164,10 +186,12 @@ void WindowEventHandler::mouseReleaseEvent(MouseEvent & event)
             fromGLFWMouseButton(event.button())
         );
     }
+    */
 }
 
 void WindowEventHandler::timerEvent(TimerEvent & event)
 {
+    /*
     if (!event.window()->painter())
         return;
 
@@ -178,6 +202,7 @@ void WindowEventHandler::timerEvent(TimerEvent & event)
         timeCapability->update(std::chrono::duration_cast<std::chrono::duration<float>>(event.elapsed()).count());
         event.window()->repaint();
     }
+    */
 }
 
 

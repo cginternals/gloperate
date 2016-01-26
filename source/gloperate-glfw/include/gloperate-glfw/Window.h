@@ -9,8 +9,6 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <gloperate/painter/Painter.h>
-
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
@@ -23,6 +21,7 @@ namespace gloperate
 {
     class ContextFormat;
     class ResourceManager;
+    class Painter;
 }
 
 

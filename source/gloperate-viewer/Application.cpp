@@ -7,7 +7,7 @@
 
 
 Application::Application(int & argc, char ** argv)
-: gloperate_qt::Application(argc, argv)
+: QApplication(argc, argv)
 {
 	const QFileInfo fi(QCoreApplication::applicationFilePath());
 
