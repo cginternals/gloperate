@@ -2,7 +2,11 @@
 #include "TextRenderingPipeline.h"
 
 #include <gloperate/gloperate.h>
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractTargetFramebufferCapability.h>
+#include <gloperate/resources/ResourceManager.h>
 
+#include <gloperate-text/FontFace.h>
 #include <gloperate-text/stages/FontImporterStage.h>
 #include <gloperate-text/stages/GlyphRenderStage.h>
 #include <gloperate-text/Encoding.h>
