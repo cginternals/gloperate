@@ -2,13 +2,13 @@
 #pragma once
 
 #include <string>
+#include <cstdint>
 
 #include <reflectionzeug/base/FilePath.h>
 #include <reflectionzeug/base/Color.h>
 
 #include <gloperate/pipeline/AbstractPipeline.h>
 #include <gloperate/pipeline/Data.h>
-
 
 namespace gloperate
 {

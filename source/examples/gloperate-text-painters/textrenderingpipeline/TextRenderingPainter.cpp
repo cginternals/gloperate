@@ -10,7 +10,6 @@
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 #include <gloperate/base/ExplicitEquidistantColorGradient.h>
-#include <gloperate/tools/ColorGradientPreparation.h>
 
 #include <gloperate-text/Encoding.h>
 
