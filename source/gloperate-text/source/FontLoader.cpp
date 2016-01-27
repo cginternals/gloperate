@@ -104,11 +104,6 @@ FontFace * FontLoader::load(const std::string & filename
 void FontLoader::handleInfo(std::stringstream & stream, FontFace & fontFace, float & fontSize) const
 {
     auto pairs = readKeyValuePairs(stream, { "size", "padding" });
-    if (pairs.empty())
-    {
-        assert(false);
-        return;
-    }        
   
     fontSize = stringzeug::fromString<float>(pairs.at("size"));
 
@@ -127,11 +122,6 @@ void FontLoader::handleInfo(std::stringstream & stream, FontFace & fontFace, flo
 void FontLoader::handleCommon(std::stringstream & stream, FontFace & fontFace, const float fontSize) const
 {
     auto pairs = readKeyValuePairs(stream, { "lineHeight", "base", "scaleW", "scaleH" });
-    if (pairs.empty())
-    {
-        assert(false);
-        return;
-    }
 
     fontFace.setAscent(stringzeug::fromString<float>(pairs.at("base")));
     fontFace.setDescent(fontFace.ascent() - fontSize);
@@ -147,11 +137,6 @@ void FontLoader::handleCommon(std::stringstream & stream, FontFace & fontFace, c
 void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, const std::string & filename) const
 {
     auto pairs = readKeyValuePairs(stream, { "file" });
-    if (pairs.empty())
-    {
-        assert(false);
-        return;
-    }
 
     const auto path = iozeug::FilePath(filename).directoryPath();
     const auto file = stringzeug::stripped(pairs.at("file"), { '"', '\r' });
@@ -162,12 +147,6 @@ void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, con
 void FontLoader::handleChar(std::stringstream & stream, FontFace & fontFace) const
 {
     auto pairs = readKeyValuePairs(stream, { "id", "x", "y", "width", "height", "xoffset", "yoffset", "xadvance" });
-
-    if (pairs.empty())
-    {
-        assert(false);
-        return;
-    }
 
     auto index = stringzeug::fromString<GlyphIndex>(pairs.at("id"));
     assert(index > 0);
@@ -198,12 +177,6 @@ void FontLoader::handleChar(std::stringstream & stream, FontFace & fontFace) con
 void FontLoader::handleKerning(std::stringstream & stream, FontFace & fontFace) const
 {
     auto pairs = readKeyValuePairs(stream, { "first", "second", "amount" });
-
-    if (pairs.empty())
-    {
-        assert(false);
-        return;
-    }
 
     auto first = stringzeug::fromString<GlyphIndex>(pairs.at("first"));
     assert(first > 0);
