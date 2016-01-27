@@ -23,7 +23,7 @@ namespace gloperate_text
 
 
 class FontFace;
-class FontImporter;
+class FontLoader;
 
 class GLOPERATE_TEXT_API FontImporterStage : public gloperate::AbstractStage
 {
@@ -41,7 +41,7 @@ public:
     gloperate::Data<FontFace *> font;
 
 protected:
-    std::unique_ptr<FontImporter> m_importer;
+    std::unique_ptr<FontLoader> m_importer;
     globjects::ref_ptr<FontFace> m_font;
 };
 

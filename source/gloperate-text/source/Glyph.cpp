@@ -7,14 +7,8 @@ namespace gloperate_text
 
 
 Glyph::Glyph()
-: m_index(0)
-, m_x(0)
-, m_y(0)
-, m_width(0)
-, m_height(0)
-, m_xOffset(0)
-, m_yOffset(0)
-, m_xAdvance(0)
+: m_index  (0u)
+, m_advance(0)
 {
 }
 
@@ -22,104 +16,81 @@ Glyph::~Glyph()
 {
 }
 
-std::uint32_t Glyph::index() const
+GlyphIndex Glyph::index() const
 {
     return m_index;
 }
 
-void Glyph::setIndex(std::uint32_t index)
+void Glyph::setIndex(const GlyphIndex index)
 {
     m_index = index;
 }
 
-std::uint32_t Glyph::x() const
+const glm::vec2 Glyph::subTextureOrigin() const
 {
-    return m_x;
+    return m_subtextureOrigin;
 }
 
-void Glyph::setX(std::uint32_t x)
+void Glyph::setSubTextureOrigin(const glm::vec2 & origin)
 {
-    m_x = x;
+    assert(origin.x >= 0.f);
+    assert(origin.x <= 1.f);
+    assert(origin.y >= 0.f);
+    assert(origin.y <= 1.f);
+
+    m_subtextureOrigin = origin;
 }
 
-std::uint32_t Glyph::y() const
+const glm::vec2 Glyph::subTextureExtent() const
 {
-    return m_y;
+    return m_subtextureExtent;
 }
 
-void Glyph::setY(std::uint32_t y)
+void Glyph::setSubTextureExtent(const glm::vec2 & extent)
 {
-    m_y = y;
+    assert(extent.x <= 1.f);
+    assert(extent.y <= 1.f);
+
+    m_subtextureExtent = extent;
 }
 
-std::uint32_t Glyph::width() const
+const glm::vec2 Glyph::bearing() const
 {
-    return m_width;
+    return m_bearing;
 }
 
-void Glyph::setWidth(std::uint32_t width)
+void Glyph::setBearing(const glm::vec2 & bearing)
 {
-    m_width = width;
+    m_bearing = bearing;
 }
 
-std::uint32_t Glyph::height() const
+void Glyph::setBearing(const float fontAscent, const float xOffset, const float yOffset)
 {
-    return m_height;
+    m_bearing.x = xOffset;
+    m_bearing.y = fontAscent - yOffset;
 }
 
-void Glyph::setHeight(std::uint32_t height)
+float Glyph::advance() const
 {
-    m_height = height;
+    return m_advance;
 }
 
-std::uint32_t Glyph::xOffset() const
+void Glyph::setAdvance(const float advance)
 {
-    return m_xOffset;
+    m_advance = advance;
 }
 
-void Glyph::setXOffset(std::uint32_t xOffset)
+float Glyph::kerning(GlyphIndex subsequentIndex) const
 {
-    m_xOffset = xOffset;
+    if (m_kernings.find(subsequentIndex) == m_kernings.cend())
+        return 0.f;
+
+    return m_kernings.at(subsequentIndex);
 }
 
-std::uint32_t Glyph::yOffset() const
+void Glyph::setKerning(GlyphIndex subsequentIndex, const float kerning)
 {
-    return m_yOffset;
-}
-
-void Glyph::setYOffset(std::uint32_t yOffset)
-{
-    m_yOffset = yOffset;
-}
-
-std::uint32_t Glyph::xAdvance() const
-{
-    return m_xAdvance;
-}
-
-void Glyph::setXAdvance(std::uint32_t xAdvance)
-{
-    m_xAdvance = xAdvance;
-}
-
-std::uint32_t Glyph::page() const
-{
-    return m_page;
-}
-
-void Glyph::setPage(std::uint32_t page)
-{
-    m_page = page;
-}
-
-std::uint32_t Glyph::channel() const
-{
-    return m_channel;
-}
-
-void Glyph::setChannel(std::uint32_t channel)
-{
-    m_channel = channel;
+    m_kernings[subsequentIndex] = kerning;
 }
 
 

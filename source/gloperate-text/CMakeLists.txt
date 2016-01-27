@@ -35,7 +35,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/Encoding.h
     ${include_path}/FontFace.h
-    ${include_path}/FontImporter.h
+    ${include_path}/FontLoader.h
     ${include_path}/Glyph.h
     ${include_path}/GlyphRenderer.h
     ${include_path}/Text.h
@@ -52,7 +52,7 @@ set(headers
 
 set(sources
     ${source_path}/FontFace.cpp
-    ${source_path}/FontImporter.cpp
+    ${source_path}/FontLoader.cpp
     ${source_path}/Glyph.cpp
     ${source_path}/GlyphRenderer.cpp
     ${source_path}/Text.cpp

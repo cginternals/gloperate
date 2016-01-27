@@ -3,7 +3,9 @@
 
 #include <stringzeug/conversion.h>
 
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 #include <gloperate-text/geometry/GlyphVertexCloud.h>
 #include <gloperate-text/geometry/GlyphVertex.h>
@@ -29,7 +31,35 @@ void TextLayouter::layout(const Text & text, FontFace * font, GlyphVertexCloud &
 
     vertexCloud.glyphTexture = font->glyphTexture();
 
-    basicLayout(text, font, &vertexCloud.vertices[0], glm::vec2(-1.0, -1.0), glm::vec2(1.0, 1.0));
+    //basicLayout(text, font, &vertexCloud.vertices[0], glm::vec2(-1.0, -1.0), glm::vec2(1.0, 1.0));
+
+    //std::uint32_t glyphTextureWidth = stringzeug::fromString<std::uint32_t>(font->configuration("scaleW", "0"));
+    ////std::uint32_t glyphTextureHeight = stringzeug::fromString<std::uint32_t>(font->configuration("scaleH", "0"));
+
+    //float width = 1.0 / text.characters().size();
+
+    //for (size_t i = 0; i < text.characters().size(); ++i)
+    //{
+    //    Glyph & glyph = font->glyph(text.characters()[i]);
+    //    GlyphVertex & vertex = *(startVertex + i);
+
+    //    vertex.worldStart = start + glm::vec2(i * width, 0.0) * (end - start);
+    //    vertex.worldEnd = vertex.worldStart + glm::vec2(width * (end.x - start.x), end.y - start.y);
+    //    vertex.glyphStart = glm::vec2(glyph.x(), 0.0) / glm::vec2(glyphTextureWidth, 1.0);
+    //    vertex.glyphEnd = glm::vec2(glyph.x() + glyph.width(), 1.0) / glm::vec2(glyphTextureWidth, 1.0);
+    //}
+
+    auto penPosition =  0.f;
+    auto screenDPI   = 72.f;
+    //auto padding = glm::vec4(font->padding());
+
+    for (const auto c : text.characters())
+    {
+        const auto glyph = font->glyph(c);
+      //  glyph.
+
+    }
+
 
     vertexCloud.verticesChanged();
 }
@@ -39,23 +69,28 @@ void TextLayouter::layout(const TextManager & manager, FontFace * font, GlyphVer
     assert(false);
 }
 
-void TextLayouter::basicLayout(const Text & text, FontFace * font, GlyphVertex * startVertex, const glm::vec2 & start, const glm::vec2 & end)
+void TextLayouter::basicLayout(
+    const Text & text
+,   FontFace * font
+,   GlyphVertex * startVertex
+,   const glm::vec2 & start
+,   const glm::vec2 & end)
 {
-    std::uint32_t glyphTextureWidth = stringzeug::fromString<std::uint32_t>(font->configuration("scaleW", "0"));
-    //std::uint32_t glyphTextureHeight = stringzeug::fromString<std::uint32_t>(font->configuration("scaleH", "0"));
+    //std::uint32_t glyphTextureWidth = stringzeug::fromString<std::uint32_t>(font->configuration("scaleW", "0"));
+    ////std::uint32_t glyphTextureHeight = stringzeug::fromString<std::uint32_t>(font->configuration("scaleH", "0"));
 
-    float width = 1.0 / text.characters().size();
+    //float width = 1.0 / text.characters().size();
 
-    for (size_t i = 0; i < text.characters().size(); ++i)
-    {
-        Glyph & glyph = font->glyph(text.characters()[i]);
-        GlyphVertex & vertex = *(startVertex + i);
+    //for (size_t i = 0; i < text.characters().size(); ++i)
+    //{
+    //    Glyph & glyph = font->glyph(text.characters()[i]);
+    //    GlyphVertex & vertex = *(startVertex + i);
 
-        vertex.worldStart = start + glm::vec2(i * width, 0.0) * (end - start);
-        vertex.worldEnd = vertex.worldStart + glm::vec2(width * (end.x - start.x), end.y - start.y);
-        vertex.glyphStart = glm::vec2(glyph.x(), 0.0) / glm::vec2(glyphTextureWidth, 1.0);
-        vertex.glyphEnd = glm::vec2(glyph.x() + glyph.width(), 1.0) / glm::vec2(glyphTextureWidth, 1.0);
-    }
+    //    vertex.worldStart = start + glm::vec2(i * width, 0.0) * (end - start);
+    //    vertex.worldEnd = vertex.worldStart + glm::vec2(width * (end.x - start.x), end.y - start.y);
+    //    vertex.glyphStart = glm::vec2(glyph.x(), 0.0) / glm::vec2(glyphTextureWidth, 1.0);
+    //    vertex.glyphEnd = glm::vec2(glyph.x() + glyph.width(), 1.0) / glm::vec2(glyphTextureWidth, 1.0);
+    //}
 }
 
 
