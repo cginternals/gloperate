@@ -37,15 +37,17 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/gloperate.h
 
-    ${include_path}/painter/AbstractContext.h
-    ${include_path}/painter/ContextFormat.h
+    ${include_path}/viewer/ViewerContext.h
+    ${include_path}/viewer/AbstractContext.h
+    ${include_path}/viewer/ContextFormat.h
 )
 
 set(sources
     ${source_path}/gloperate.cpp
 
-    ${source_path}/painter/AbstractContext.cpp
-    ${source_path}/painter/ContextFormat.cpp
+    ${source_path}/viewer/ViewerContext.cpp
+    ${source_path}/viewer/AbstractContext.cpp
+    ${source_path}/viewer/ContextFormat.cpp
 )
 
 # Group source files

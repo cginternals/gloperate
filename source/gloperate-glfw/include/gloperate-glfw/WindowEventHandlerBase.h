@@ -71,6 +71,7 @@ public:
 
 protected:
     virtual void resizeEvent(ResizeEvent & event);
+
     virtual void framebufferResizeEvent(ResizeEvent & event);
 
     virtual void moveEvent(MoveEvent & event);
@@ -85,18 +86,23 @@ protected:
     virtual void paintEvent(PaintEvent & event);
 
     virtual void keyPressEvent(KeyEvent & event);
+
     virtual void keyReleaseEvent(KeyEvent & event);
 
     virtual void mousePressEvent(MouseEvent & event);
+
     virtual void mouseMoveEvent(MouseEvent & event);
+
     virtual void mouseReleaseEvent(MouseEvent & event);
 
     virtual void mouseEnterEvent(MouseEnterEvent & event);
+
     virtual void mouseLeaveEvent(MouseLeaveEvent & event);
 
     virtual void scrollEvent(ScrollEvent & event);
 
     virtual void focusEvent(FocusEvent & event);
+
     virtual void iconifyEvent(IconifyEvent & event);
 
     virtual void timerEvent(TimerEvent & event);

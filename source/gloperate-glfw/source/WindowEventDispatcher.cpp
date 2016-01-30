@@ -9,7 +9,7 @@
 #include <GLFW/glfw3.h>
 
 #include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/events.h>
+#include <gloperate-glfw/WindowEvent.h>
 
 
 namespace gloperate_glfw

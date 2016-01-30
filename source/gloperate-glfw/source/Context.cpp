@@ -17,7 +17,7 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/painter/ContextFormat.h>
+#include <gloperate/viewer/ContextFormat.h>
 
 
 using namespace gl;

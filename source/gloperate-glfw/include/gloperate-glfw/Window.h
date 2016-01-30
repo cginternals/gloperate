@@ -44,6 +44,7 @@ class GLOPERATE_GLFW_API Window
 {
 public:
     static int init();
+    static const std::set<Window*>& instances();
 
 
 public:
@@ -75,10 +76,9 @@ public:
     WindowEventHandlerBase * eventHandler();
     const WindowEventHandlerBase * eventHandler() const;
 
-    void close();
-
     void show();
     void hide();
+    void close();
 
     void setTitle(const std::string & title);
     const std::string & title() const;
@@ -121,8 +121,6 @@ public:
     bool hasPendingEvents();
     void processEvents();
 
-    static const std::set<Window*>& instances();
-
     void addTimer(int id, int interval, bool singleShot = false);
     void removeTimer(int id);
 
@@ -149,6 +147,14 @@ protected:
 
 
 protected:
+    enum Mode
+    {
+        WindowMode
+    ,   FullScreenMode
+    };
+
+
+protected:
     Context * m_context;
     GLFWwindow * m_window;
 
@@ -157,12 +163,6 @@ protected:
     glm::ivec2 m_windowedModeSize;
 
     bool m_quitOnDestroy;
-
-    enum Mode
-    {
-        WindowMode
-    ,   FullScreenMode
-    };
 
     Mode m_mode;
 

@@ -1,7 +1,7 @@
 
 #include <gloperate-glfw/WindowEventHandlerBase.h>
 
-#include <gloperate-glfw/events.h>
+#include <gloperate-glfw/WindowEvent.h>
 
 
 namespace gloperate_glfw

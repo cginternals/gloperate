@@ -1,5 +1,5 @@
 
-#include <gloperate/painter/AbstractContext.h>
+#include <gloperate/viewer/AbstractContext.h>
 
 #include <cassert>
 #include <map>

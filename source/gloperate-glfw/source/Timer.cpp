@@ -7,16 +7,18 @@ namespace gloperate_glfw
 
 
 Timer::Timer(bool _start, bool autoUpdate)
-:   m_paused(true)
-,   m_auto(autoUpdate)
-,   m_t0(clock::now())
-,   m_tp(m_t0)
-,   m_t1(m_t0)
-,   m_offset(Duration::zero())
-,   m_elapsed(Duration::zero())
+: m_paused(true)
+, m_auto(autoUpdate)
+, m_t0(clock::now())
+, m_tp(m_t0)
+, m_t1(m_t0)
+, m_offset(Duration::zero())
+, m_elapsed(Duration::zero())
 {
-    if(_start)
+    if (_start)
+    {
         start();
+    }
 }
 
 Timer::~Timer()
@@ -38,8 +40,10 @@ bool Timer::paused() const
 
 void Timer::start()
 {
-    if(!m_paused)
+    if (!m_paused)
+    {
         return;
+    }
 
     const time_point t2 = clock::now();
     m_offset -= t2 - m_tp;
@@ -50,8 +54,10 @@ void Timer::start()
 
 void Timer::pause()
 {
-    if(m_paused)
+    if (m_paused)
+    {
         return;
+    }
 
     m_tp = clock::now();
     m_paused = true;
@@ -75,8 +81,10 @@ void Timer::reset()
 
 Timer::Duration Timer::elapsed() const
 {
-    if(m_auto)
+    if (m_auto)
+    {
         update();
+    }
 
     return m_elapsed;
 }

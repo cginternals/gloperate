@@ -8,7 +8,7 @@
 #include <glbinding/ContextHandle.h>
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/painter/ContextFormat.h>
+#include <gloperate/viewer/ContextFormat.h>
 
 
 namespace gloperate
@@ -204,7 +204,7 @@ protected:
 
 
 protected:
-    SwapInterval m_swapInterval; /**< Swap interval option */
+    SwapInterval m_swapInterval; ///< Swap interval option
 };
 
 

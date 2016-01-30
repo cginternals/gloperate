@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include <gloperate/painter/AbstractContext.h>
+#include <gloperate/viewer/AbstractContext.h>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 

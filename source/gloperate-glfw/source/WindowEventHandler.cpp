@@ -14,7 +14,7 @@
 */
 
 #include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/events.h>
+#include <gloperate-glfw/WindowEvent.h>
 
 
 using namespace gloperate;
