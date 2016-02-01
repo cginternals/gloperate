@@ -6,7 +6,7 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <gloperate-glfw/Window.h>
+#include <gloperate-glfw/WindowBase.h>
 #include <gloperate-glfw/WindowEventDispatcher2.h>
 
 
@@ -99,7 +99,7 @@ void Application::pollEvents()
 void Application::processEvents()
 {
     // Get messages for all windows
-    for (Window * window : Window::instances())
+    for (WindowBase * window : WindowBase::instances())
     {
         if (window->hasPendingEvents()) {
             window->processEvents();

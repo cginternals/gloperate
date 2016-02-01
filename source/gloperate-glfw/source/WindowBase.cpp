@@ -12,7 +12,6 @@
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
-#include <gloperate-glfw/WindowEventHandlerBase.h>
 #include <gloperate-glfw/WindowEventDispatcher2.h>
 #include <gloperate-glfw/WindowEvent.h>
 

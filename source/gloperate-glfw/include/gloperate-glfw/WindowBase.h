@@ -7,7 +7,7 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate-glfw/Window.h>
+#include <gloperate-glfw/gloperate-glfw_api.h>
 
 
 struct GLFWwindow;
@@ -356,6 +356,8 @@ public:
     */
     void handleEvent(WindowEvent & event);
 
+    void idle();
+
 
 protected:
     // Event handlers, to be overwritten in derived classes
@@ -417,8 +419,6 @@ protected:
     void clearEventQueue();
     void processEvent(WindowEvent & event);
     void postprocessEvent(WindowEvent & event);
-
-    void idle();
 
 
 protected:
