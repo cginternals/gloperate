@@ -304,14 +304,6 @@ void WindowBase::swap()
     glfwSwapBuffers(m_window);
 }
 
-void WindowBase::idle()
-{
-    if (m_eventHandler)
-    {
-        m_eventHandler->idle(*this);
-    }
-}
-
 void WindowBase::addTimer(int id, int interval, bool singleShot)
 {
     WindowEventDispatcher2::addTimer(this, id, interval, singleShot);
@@ -348,7 +340,7 @@ void WindowBase::processEvents()
 
     while (!m_eventQueue.empty())
     {
-        WindowEvent* event = m_eventQueue.front();
+        WindowEvent * event = m_eventQueue.front();
         m_eventQueue.pop();
         event->setWindow(this);
 
@@ -480,6 +472,14 @@ void WindowBase::postprocessEvent(WindowEvent & event)
 
         default:
             break;
+    }
+}
+
+void WindowBase::idle()
+{
+    if (m_eventHandler)
+    {
+        m_eventHandler->idle(*this);
     }
 }
 

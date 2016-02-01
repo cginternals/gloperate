@@ -36,6 +36,13 @@ class Context;
 class GLOPERATE_GLFW_API WindowBase
 {
 public:
+    /**
+    *  @brief
+    *    Get list of windows
+    *
+    *  @return
+    *    List of open windows
+    */
     static const std::set<WindowBase*> & instances();
 
 
@@ -267,21 +274,100 @@ public:
     */
     void setQuitOnDestroy(bool quitOnDestroy);
 
+    /**
+    *  @brief
+    *    Schedule a repaint on the window
+    *
+    *  @remarks
+    *    When calling this function, a redraw-event will be sent to the
+    *    message queue, causing the window to be repainted within the
+    *    next event processing.
+    */
     void repaint();
+
+    /**
+    *  @brief
+    *    Swap front and back buffer
+    */
     void swap();
 
-    void idle();
-
+    /**
+    *  @brief
+    *    Create timer on window
+    *
+    *  @param[in] id
+    *    Timer ID
+    *  @param[in] interval
+    *    Timer interval (in milliseconds)
+    *  @param[in] singleShot
+    *    If 'true', the timer fires only once, otherwise periodically
+    */
     void addTimer(int id, int interval, bool singleShot = false);
+
+    /**
+    *  @brief
+    *    Remove timer from window
+    *
+    *  @param[in] id
+    *    Timer ID
+    */
     void removeTimer(int id);
 
+    /**
+    *  @brief
+    *    Add event to the window's event queue
+    *
+    *  @param[in] event
+    *    Event (can be nullptr)
+    */
     void queueEvent(WindowEvent * event);
+
+    /**
+    *  @brief
+    *    Check if window has events waiting
+    *
+    *  @return
+    *    'true' if events are waiting in the window's event queue, else 'false'
+    */
     bool hasPendingEvents();
+
+    /**
+    *  @brief
+    *    Process all waiting events and dispatch them to event handling
+    */
     void processEvents();
 
 
 protected:
+    /**
+    *  @brief
+    *    Create OpenGL context (and window)
+    *
+    *  @param[in] format
+    *    The desired OpenGL context format
+    *  @param[in] width
+    *    Window width (in pixels)
+    *  @param[in] height
+    *    Window height (in pixels)
+    *  @param[in] monitor
+    *    GLWF monitor handle, can be nullptr
+    *
+    *  @return
+    *    'true' if context could be created, else 'false'
+    *
+    *  @remarks
+    *    This function will actually create a new window with the given context
+    *    format, so any previously obtained window IDs will be rendered invalid.
+    */
     bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
+
+    /**
+    *  @brief
+    *    Destroy OpenGL context (and window)
+    *
+    *  @remarks
+    *    This function will actually destroy the current window.
+    */
     void destroyContext();
 
     void initializeEventHandler();
@@ -290,6 +376,8 @@ protected:
     void clearEventQueue();
     void processEvent(WindowEvent & event);
     void postprocessEvent(WindowEvent & event);
+
+    void idle();
 
 
 protected:

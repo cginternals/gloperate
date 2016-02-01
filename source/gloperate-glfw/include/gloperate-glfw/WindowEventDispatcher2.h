@@ -65,7 +65,7 @@ public:
 
     /**
     *  @brief
-    *    Remove timer on window
+    *    Remove timer from window
     *
     *  @param[in] window
     *    Window (must be valid!)
@@ -76,7 +76,7 @@ public:
 
     /**
     *  @brief
-    *    Remove all timers on window
+    *    Remove all timers from window
     *
     *  @param[in] window
     *    Window (must be valid!)
