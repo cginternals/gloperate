@@ -8,7 +8,6 @@
 #include <glm/glm.hpp>
 
 #include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/WindowEventHandlerBase.h>
 
 
 struct GLFWwindow;
@@ -25,8 +24,19 @@ namespace gloperate_glfw
 {
 
 
-class WindowEvent;
 class Context;
+class WindowEvent;
+class KeyEvent;
+class MouseEvent;
+class MouseEnterEvent;
+class MouseLeaveEvent;
+class ScrollEvent;
+class ResizeEvent;
+class PaintEvent;
+class FocusEvent;
+class IconifyEvent;
+class MoveEvent;
+class TimerEvent;
 
 
 /**
@@ -337,6 +347,37 @@ public:
     */
     void processEvents();
 
+    /**
+    *  @brief
+    *    Handle window event
+    *
+    *  @param[in] event
+    *    Window event
+    */
+    void handleEvent(WindowEvent & event);
+
+
+protected:
+    // Event handlers, to be overwritten in derived classes
+    virtual void onInitialize();
+    virtual void onFinalize();
+    virtual void onIdle();
+    virtual void onResize(ResizeEvent & event);
+    virtual void onFramebufferResize(ResizeEvent & event);
+    virtual void onMove(MoveEvent & event);
+    virtual void onPaint(PaintEvent & event);
+    virtual void onKeyPress(KeyEvent & event);
+    virtual void onKeyRelease(KeyEvent & event);
+    virtual void onMousePress(MouseEvent & event);
+    virtual void onMouseMove(MouseEvent & event);
+    virtual void onMouseRelease(MouseEvent & event);
+    virtual void onMouseEnter(MouseEnterEvent & event);
+    virtual void onMouseLeave(MouseLeaveEvent & event);
+    virtual void onScroll(ScrollEvent & event);
+    virtual void onFocus(FocusEvent & event);
+    virtual void onIconify(IconifyEvent & event);
+    virtual void onTimer(TimerEvent & event);
+
 
 protected:
     /**
@@ -401,8 +442,6 @@ protected:
     std::string  m_title;            ///< Window title
 
     std::queue<WindowEvent*> m_eventQueue;  ///< List of events to be processed by the window
-
-    globjects::ref_ptr<WindowEventHandlerBase> m_eventHandler;
 
 
 private:

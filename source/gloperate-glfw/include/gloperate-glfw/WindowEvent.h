@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <chrono>
 
 #include <glm/glm.hpp>
@@ -12,7 +13,7 @@ namespace gloperate_glfw
 {
 
 
-class Window;
+class WindowBase;
 
 
 class GLOPERATE_GLFW_API WindowEvent
@@ -21,22 +22,22 @@ public:
     enum class Type
     {
         KeyPress
-    ,   KeyRelease
-    ,   KeyTyped
-    ,   MousePress
-    ,   MouseRelease
-    ,   MouseMove
-    ,   MouseEnter
-    ,   MouseLeave
-    ,   Scroll
-    ,   Resize
-    ,   FrameBufferResize
-    ,   Move
-    ,   Close
-    ,   Focus
-    ,   Iconify
-    ,   Paint
-    ,   Timer
+      , KeyRelease
+      , KeyTyped
+      , MousePress
+      , MouseRelease
+      , MouseMove
+      , MouseEnter
+      , MouseLeave
+      , Scroll
+      , Resize
+      , FrameBufferResize
+      , Move
+      , Close
+      , Focus
+      , Iconify
+      , Paint
+      , Timer
     };
 
 
@@ -52,8 +53,8 @@ public:
     void accept();
     void ignore();
 
-    Window * window() const;
-    void setWindow(Window *window);
+    WindowBase * window() const;
+    void setWindow(WindowBase * window);
 
 
 protected:
@@ -64,7 +65,7 @@ protected:
     Type m_type;
     bool m_accepted;
 
-    Window * m_window;
+    WindowBase * m_window;
 };
 
 

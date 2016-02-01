@@ -268,7 +268,7 @@ int WindowBase::inputMode(int mode) const
 {
     if (!m_window)
     {
-        return;
+        return 0;
     }
 
     return glfwGetInputMode(m_window, mode);
@@ -391,13 +391,8 @@ void WindowBase::destroyContext()
 
 void WindowBase::initializeEventHandler()
 {
-    if (!m_eventHandler)
-    {
-        return;
-    }
-
     glfwMakeContextCurrent(m_window);
-    m_eventHandler->initialize(*this);
+    onInitialize();
     glfwMakeContextCurrent(nullptr);
 
     queueEvent(new ResizeEvent(size()));
@@ -406,34 +401,9 @@ void WindowBase::initializeEventHandler()
 
 void WindowBase::finalizeEventHandler()
 {
-    if (m_eventHandler)
-    {
-        glfwMakeContextCurrent(m_window);
-        m_eventHandler->finalize(*this);
-        glfwMakeContextCurrent(nullptr);
-    }
-}
-
-void WindowBase::setEventHandler(WindowEventHandlerBase * eventHandler)
-{
-    if (eventHandler == m_eventHandler)
-    {
-        return;
-    }
-
-    m_eventHandler = eventHandler;
-
-    if (!m_eventHandler)
-    {
-        return;
-    }
-
-    if (!m_context)
-    {
-        return;
-    }
-
-    initializeEventHandler();
+    glfwMakeContextCurrent(m_window);
+    onFinalize();
+    glfwMakeContextCurrent(nullptr);
 }
 
 void WindowBase::clearEventQueue()
@@ -447,12 +417,156 @@ void WindowBase::clearEventQueue()
 
 void WindowBase::processEvent(WindowEvent & event)
 {
-    if (m_eventHandler)
+    handleEvent(event);
+    postprocessEvent(event);
+}
+
+void WindowBase::handleEvent(WindowEvent & event)
+{
+    // Check that event is meant for this window
+    if (event.window() != this)
     {
-        m_eventHandler->handleEvent(event);
+        return;
     }
 
-    postprocessEvent(event);
+    // Dispatch event
+    switch (event.type())
+    {
+        case WindowEvent::Type::Resize:
+            onResize(static_cast<ResizeEvent &>(event));
+            break;
+
+        case WindowEvent::Type::FrameBufferResize:
+            onFramebufferResize(static_cast<ResizeEvent &>(event));
+            break;
+
+        case WindowEvent::Type::Move:
+            onMove(static_cast<MoveEvent &>(event));
+            break;
+
+        case WindowEvent::Type::Paint:
+            onPaint(static_cast<PaintEvent &>(event));
+            break;
+
+        case WindowEvent::Type::KeyPress:
+            onKeyPress(static_cast<KeyEvent &>(event));
+            break;
+
+        case WindowEvent::Type::KeyRelease:
+            onKeyRelease(static_cast<KeyEvent &>(event));
+            break;
+
+        case WindowEvent::Type::MousePress:
+            onMousePress(static_cast<MouseEvent &>(event));
+            break;
+
+        case WindowEvent::Type::MouseRelease:
+            onMouseRelease(static_cast<MouseEvent &>(event));
+            break;
+
+        case WindowEvent::Type::MouseMove:
+            onMouseMove(static_cast<MouseEvent &>(event));
+            break;
+
+        case WindowEvent::Type::MouseEnter:
+            onMouseEnter(static_cast<MouseEnterEvent &>(event));
+            break;
+
+        case WindowEvent::Type::MouseLeave:
+            onMouseLeave(static_cast<MouseLeaveEvent &>(event));
+            break;
+
+        case WindowEvent::Type::Scroll:
+            onScroll(static_cast<ScrollEvent &>(event));
+            break;
+
+        case WindowEvent::Type::Focus:
+            onFocus(static_cast<FocusEvent &>(event));
+            break;
+
+        case WindowEvent::Type::Iconify:
+            onIconify(static_cast<IconifyEvent &>(event));
+            break;
+
+        case WindowEvent::Type::Timer:
+            onTimer(static_cast<TimerEvent &>(event));
+            break;
+
+        default:
+            break;
+    }
+}
+
+void WindowBase::onInitialize()
+{
+}
+
+void WindowBase::onFinalize()
+{
+}
+
+void WindowBase::onIdle()
+{
+}
+
+void WindowBase::onResize(ResizeEvent &)
+{
+}
+
+void WindowBase::onFramebufferResize(ResizeEvent &)
+{
+}
+
+void WindowBase::onMove(MoveEvent &)
+{
+}
+
+void WindowBase::onPaint(PaintEvent &)
+{
+}
+
+void WindowBase::onKeyPress(KeyEvent &)
+{
+}
+
+void WindowBase::onKeyRelease(KeyEvent &)
+{
+}
+
+void WindowBase::onMousePress(MouseEvent &)
+{
+}
+
+void WindowBase::onMouseMove(MouseEvent &)
+{
+}
+
+void WindowBase::onMouseRelease(MouseEvent &)
+{
+}
+
+void WindowBase::onMouseEnter(MouseEnterEvent &)
+{
+}
+
+void WindowBase::onMouseLeave(MouseLeaveEvent &)
+{
+}
+
+void WindowBase::onScroll(ScrollEvent &)
+{
+}
+
+void WindowBase::onFocus(FocusEvent &)
+{
+}
+
+void WindowBase::onIconify(IconifyEvent &)
+{
+}
+
+void WindowBase::onTimer(TimerEvent &)
+{
 }
 
 void WindowBase::postprocessEvent(WindowEvent & event)
@@ -477,10 +591,7 @@ void WindowBase::postprocessEvent(WindowEvent & event)
 
 void WindowBase::idle()
 {
-    if (m_eventHandler)
-    {
-        m_eventHandler->idle(*this);
-    }
+    onIdle();
 }
 
 
