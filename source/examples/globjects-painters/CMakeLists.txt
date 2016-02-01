@@ -91,7 +91,6 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${GLM_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/source/gloperate/include
 
     PUBLIC
 

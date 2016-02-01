@@ -1,17 +1,24 @@
 
 # ASSIMP_FOUND
-# ASSIMP_INCLUDE_DIRS
+# ASSIMP_INCLUDE_DIR
+# ASSIMP_LIBRARY_RELEASE
+# ASSIMP_LIBRARY_DEBUG
 # ASSIMP_LIBRARIES
-# ASSIMP_BINARY
+# ASSIMP_BINARY (win32 only)
 
-find_path(ASSIMP_INCLUDE_DIRS assimp/Importer.hpp
-    $ENV{ASSIMPDIR}/include
-    $ENV{ASSIMP_HOME}/include
-    $ENV{PROGRAMFILES}/ASSIMP/include
-    /usr/include
-    /usr/local/include
-    /sw/include
-    /opt/local/include
+find_path(ASSIMP_INCLUDE_DIR assimp/Importer.hpp
+
+    PATHS
+    $ENV{ASSIMP_DIR}
+    $ENV{PROGRAMFILES}/Assimp
+    /usr
+    /usr/local
+    /sw
+    /opt/local
+
+    PATH_SUFFIXES
+    /include
+
     DOC "The directory where assimp/Importer.hpp etc. resides")
 
 if(MSVC AND X64)
@@ -20,45 +27,74 @@ else()
     set(ASSIMP_PF "86")
 endif()
 
-find_library(ASSIMP_LIBRARIES
-    NAMES assimp
+find_library(ASSIMP_LIBRARY_RELEASE NAMES assimp
+    
+    HINTS
+    ${ASSIMP_INCLUDE_DIR}/..
+    
     PATHS
-    $ENV{ASSIMPDIR}/lib/x${ASSIMP_PF}
-    $ENV{ASSIMPDIR}/lib${ASSIMP_PF}
-    $ENV{ASSIMPDIR}/lib
-    $ENV{ASSIMPDIR}/lib/.libs
-    $ENV{ASSIMP_HOME}/lib/x${ASSIMP_PF}
-    $ENV{ASSIMP_HOME}/lib${ASSIMP_PF}
-    $ENV{ASSIMP_HOME}/lib
-    $ENV{ASSIMP_HOME}/lib/.libs
-    $ENV{ASSIMP_HOME}/build/code
-    $ENV{ASSIMP_HOME}/build-debug/code
-    $ENV{ASSIMPDIR}
-    $ENV{ASSIMP_HOME}
-    /usr/lib64
-    /usr/local/lib64
-    /sw/lib64
-    /opt/local/lib64
-    /usr/lib
-    /usr/local/lib
-    /sw/lib
-    /opt/local/lib
-    DOC "The Assimp library")
+    $ENV{ASSIMP_DIR}
+    /usr
+    /usr/local
+    /sw
+    /opt/local
 
-if(MSVC)
+    PATH_SUFFIXES
+    /lib
+    /lib${ASSIMP_PF}
+    /build/code
+    /build-debug/code
 
-    find_file(ASSIMP_BINARY
-        NAMES assimp.dll "assimp${ASSIMP_PF}.dll"
+    DOC "The Assimp library (release)")
+
+find_library(ASSIMP_LIBRARY_DEBUG NAMES assimpd
+    
+    HINTS
+    ${ASSIMP_INCLUDE_DIR}/..
+
+    PATHS
+    $ENV{ASSIMP_DIR}
+    /usr
+    /usr/local
+    /sw
+    /opt/local
+
+    PATH_SUFFIXES
+    /lib
+    /lib${ASSIMP_PF}
+    /build/code
+    /build-debug/code
+
+    DOC "The Assimp library (debug)")
+
+set(ASSIMP_LIBRARIES "")
+if(ASSIMP_LIBRARY_RELEASE AND ASSIMP_LIBRARY_DEBUG)
+    set(ASSIMP_LIBRARIES 
+        optimized   ${ASSIMP_LIBRARY_RELEASE}
+        debug       ${ASSIMP_LIBRARY_DEBUG})
+elseif(ASSIMP_LIBRARY_RELEASE)
+    set(ASSIMP_LIBRARIES ${ASSIMP_LIBRARY_RELEASE})
+elseif(ASSIMP_LIBRARY_DEBUG)
+    set(ASSIMP_LIBRARIES ${ASSIMP_LIBRARY_DEBUG})
+endif()
+
+if(WIN32)
+
+    find_file(ASSIMP_BINARY NAMES assimp.dll "assimp${ASSIMP_PF}.dll"
+
+        HINTS
+        ${ASSIMP_INCLUDE_DIR}/..
+        
         PATHS
-        $ENV{ASSIMPDIR}/bin/x${ASSIMP_PF}
-        $ENV{ASSIMPDIR}/bin${ASSIMP_PF}
-        $ENV{ASSIMPDIR}/bin
-        $ENV{ASSIMP_HOME}/bin/x${ASSIMP_PF}
-        $ENV{ASSIMP_HOME}/bin
+        $ENV{ASSIMP_DIR}
+
+        PATH_SUFFIXES
+        /bin
+        /bin${ASSIMP_PF}
+
         DOC "The Assimp binary")
 
 endif()
 
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(ASSIMP REQUIRED_VARS ASSIMP_INCLUDE_DIRS ASSIMP_LIBRARIES)
-mark_as_advanced(ASSIMP_INCLUDE_DIRS ASSIMP_LIBRARIES)
+find_package_handle_standard_args(ASSIMP DEFAULT_MSG ASSIMP_LIBRARIES ASSIMP_INCLUDE_DIR)
+mark_as_advanced(ASSIMP_FOUND ASSIMP_INCLUDE_DIR ASSIMP_LIBRARIES)

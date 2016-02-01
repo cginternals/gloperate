@@ -1,8 +1,9 @@
 
 # GLFW_FOUND
 # GLFW_INCLUDE_DIR
-# GLFW_LIBRARY
-
+# GLFW_LIBRARY_RELEASE
+# GLFW_LIBRARY_DEBUG
+# GLFW_LIBRARIES
 # GLFW_BINARY (win32 only)
 
 
@@ -24,6 +25,9 @@ find_path(GLFW_INCLUDE_DIR GLFW/glfw3.h
     DOC "The directory where GLFW/glfw.h resides")
 
 find_library(GLFW_LIBRARY_RELEASE NAMES glfw3 glfw glfw3dll glfwdll
+
+    HINTS
+    ${GLFW_INCLUDE_DIR}/..
 
     PATHS
     $ENV{GLFW_DIR}
@@ -48,6 +52,9 @@ find_library(GLFW_LIBRARY_RELEASE NAMES glfw3 glfw glfw3dll glfwdll
     DOC "The GLFW library")
 
 find_library(GLFW_LIBRARY_DEBUG NAMES glfw3d glfwd glfw3ddll glfwddll
+
+    HINTS
+    ${GLFW_INCLUDE_DIR}/..
 
     PATHS
     $ENV{GLFW_DIR}
