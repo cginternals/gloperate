@@ -35,6 +35,9 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
+    ${include_path}/gloperate.h
+    ${include_path}/offsetof.h
+    
     ${include_path}/base/AbstractColorGradient.h
     ${include_path}/base/AbstractColorGradient.hpp
     ${include_path}/base/ColorGradientList.h
@@ -156,6 +159,8 @@ set(headers
 )
 
 set(sources
+    ${source_path}/gloperate.cpp
+    
     ${source_path}/base/AbstractColorGradient.cpp
     ${source_path}/base/ColorGradientList.cpp
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp

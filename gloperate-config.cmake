@@ -12,6 +12,7 @@ set(MODULE_NAMES
     gloperate-glfw
     gloperate-osg
     gloperate-assimp
+    gloperate-text
 )
 
 
