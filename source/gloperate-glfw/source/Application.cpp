@@ -7,7 +7,7 @@
 #include <GLFW/glfw3.h>
 
 #include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/WindowEventDispatcher.h>
+#include <gloperate-glfw/WindowEventDispatcher2.h>
 
 
 namespace gloperate_glfw
@@ -16,6 +16,11 @@ namespace gloperate_glfw
 
 Application * Application::s_app = nullptr;
 
+
+int Application::init()
+{
+    return glfwInit();
+}
 
 void Application::quit(int code)
 {
@@ -37,12 +42,14 @@ Application::Application(int &, char **)
 
 Application::~Application()
 {
+    // Deregister application
+    s_app = nullptr;
 }
 
 int Application::run()
 {
     // Abort if application is already running
-    if (s_app->isRunning())
+    if (m_running)
     {
         return 1;
     }
@@ -50,7 +57,7 @@ int Application::run()
     // Start application
     m_running  = true;
     m_exitCode = 0;
-    WindowEventDispatcher::initializeTime();
+    WindowEventDispatcher2::initializeTime();
 
     // Execute main loop
     while (m_running)
@@ -86,7 +93,7 @@ int Application::exitCode()
 void Application::pollEvents()
 {
     glfwPollEvents();
-    WindowEventDispatcher::checkForTimerEvents();
+    WindowEventDispatcher2::checkForTimerEvents();
 }
 
 void Application::processEvents()

@@ -3,10 +3,10 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/plugin/PluginManager.h>
-#include <gloperate/plugin/PainterPlugin.h>
+//#include <gloperate/plugin/PluginManager.h>
+//#include <gloperate/plugin/PainterPlugin.h>
 
-#include <gloperate/resources/ResourceManager.h>
+//#include <gloperate/resources/ResourceManager.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
@@ -22,6 +22,7 @@ int main(int argc, char * argv[])
 {
     Application app(argc, argv);
 
+    /*
     ResourceManager resourceManager;
 
     // Setup plugin manager
@@ -57,18 +58,21 @@ int main(int argc, char * argv[])
     }
 
     painter.reset(painterPlugin->createPainter(resourceManager));
+    */
 
     Window::init();
 
-    Window window(resourceManager);
-    window.setPainter(painter.get());
+    Window window; //(resourceManager);
+    //window.setPainter(painter.get());
     window.setEventHandler(new WindowEventHandler());
 
     ContextFormat format;
     format.setVersion(3, 2);
 
     if (!window.create(format, "gloperate viewer"))
+    {
         return 1;
+    }
 
     window.context()->makeCurrent();
     window.context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
@@ -81,5 +85,5 @@ int main(int argc, char * argv[])
     window.context()->doneCurrent();
     window.show();
 
-    return app.exec();
+    return app.run();
 }

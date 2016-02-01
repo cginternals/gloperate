@@ -40,12 +40,12 @@ public:
 
     
 public:
-    static void registerWindow(Window* window);
-    static void deregisterWindow(Window* window);
+    static void registerWindow(Window * window);
+    static void deregisterWindow(Window * window);
 
-    static void addTimer(Window* window, int id, int interval, bool singleShot);
-    static void removeTimer(Window* window, int id);
-    static void removeTimers(Window* window);
+    static void addTimer(Window * window, int id, int interval, bool singleShot);
+    static void removeTimer(Window * window, int id);
+    static void removeTimers(Window * window);
     static void initializeTime();
     static void checkForTimerEvents();
 
@@ -62,25 +62,25 @@ private:
 
 
 protected:
-    static Window* fromGLFW(GLFWwindow* glfwWindow);
-    static glm::ivec2 mousePosition(GLFWwindow* glfwWindow);
+    static Window* fromGLFW(GLFWwindow * glfwWindow);
+    static glm::ivec2 mousePosition(GLFWwindow * glfwWindow);
 
-    static void dispatchEvent(GLFWwindow* glfwWindow, WindowEvent* event);
-    static void dispatchEvent(Window* window, WindowEvent* event);
+    static void dispatchEvent(GLFWwindow * glfwWindow, WindowEvent * event);
+    static void dispatchEvent(Window * window, WindowEvent * event);
 
-    static void handleRefresh(GLFWwindow* glfwWindow);
-    static void handleKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers);
-    static void handleChar(GLFWwindow* glfwWindow, unsigned int character);
-    static void handleMouse(GLFWwindow* glfwWindow, int button, int action, int modifiers);
-    static void handleCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos);
-    static void handleCursorEnter(GLFWwindow* glfwWindow, int entered);
-    static void handleScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset);
-    static void handleResize(GLFWwindow* glfwWindow, int width, int height);
-    static void handleFramebufferResize(GLFWwindow* glfwWindow, int width, int height);
-    static void handleMove(GLFWwindow* glfwWindow, int x, int y);
-    static void handleFocus(GLFWwindow* glfwWindow, int focused);
-    static void handleIconify(GLFWwindow* glfwWindow, int iconified);
-    static void handleClose(GLFWwindow* glfwWindow);
+    static void handleRefresh(GLFWwindow * glfwWindow);
+    static void handleKey(GLFWwindow * glfwWindow, int key, int scanCode, int action, int modifiers);
+    static void handleChar(GLFWwindow * glfwWindow, unsigned int character);
+    static void handleMouse(GLFWwindow * glfwWindow, int button, int action, int modifiers);
+    static void handleCursorPos(GLFWwindow * glfwWindow, double xPos, double yPos);
+    static void handleCursorEnter(GLFWwindow * glfwWindow, int entered);
+    static void handleScroll(GLFWwindow * glfwWindow, double xOffset, double yOffset);
+    static void handleResize(GLFWwindow * glfwWindow, int width, int height);
+    static void handleFramebufferResize(GLFWwindow * glfwWindow, int width, int height);
+    static void handleMove(GLFWwindow * glfwWindow, int x, int y);
+    static void handleFocus(GLFWwindow * glfwWindow, int focused);
+    static void handleIconify(GLFWwindow * glfwWindow, int iconified);
+    static void handleClose(GLFWwindow * glfwWindow);
 };
 
 

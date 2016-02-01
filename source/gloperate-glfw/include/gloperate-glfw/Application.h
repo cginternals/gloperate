@@ -25,10 +25,19 @@ class GLOPERATE_GLFW_API Application
 public:
     /**
     *  @brief
+    *    Initialize GLFW
+    *
+    *  @param[in] code
+    *    Return code (0 for no error, > 0 for error)
+    */
+    static int init();
+
+    /**
+    *  @brief
     *    Quit the currently running application
     *
     *  @param[in] code
-    *    Exit code (0 for no error, >0 for error)
+    *    Exit code (0 for no error, > 0 for error)
     *
     *  @remarks
     *    Stops the application that is currently running.
@@ -65,7 +74,7 @@ public:
     *    be called on the Application object.
     *
     *  @return
-    *    Exit code (0 for no error, >0 for error)
+    *    Exit code (0 for no error, > 0 for error)
     */
     int run();
 
@@ -74,7 +83,7 @@ public:
     *    Stop the application
     *
     *  @param[in] code
-    *    Exit code (0 for no error, >0 for error)
+    *    Exit code (0 for no error, > 0 for error)
     */
     void stop(int code = 0);
 
@@ -92,7 +101,7 @@ public:
     *    Get exit code that has currently been set
     *
     *  @return
-    *    Exit code (0 for no error, >0 for error)
+    *    Exit code (0 for no error, > 0 for error)
     */
     int exitCode();
 
@@ -117,7 +126,7 @@ protected:
 
 protected:
     bool m_running;  ///< 'true' if application is currently running, else 'false'
-    int  m_exitCode; ///< Exit code (0 for no error, >0 for error)
+    int  m_exitCode; ///< Exit code (0 for no error, > 0 for error)
 };
 
 
