@@ -13,7 +13,7 @@ namespace gloperate_glfw
 {
 
 
-class WindowBase;
+class Window;
 
 
 class GLOPERATE_GLFW_API WindowEvent
@@ -53,8 +53,8 @@ public:
     void accept();
     void ignore();
 
-    WindowBase * window() const;
-    void setWindow(WindowBase * window);
+    Window * window() const;
+    void setWindow(Window * window);
 
 
 protected:
@@ -65,7 +65,7 @@ protected:
     Type m_type;
     bool m_accepted;
 
-    WindowBase * m_window;
+    Window * m_window;
 };
 
 

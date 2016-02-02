@@ -6,8 +6,8 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <gloperate-glfw/WindowBase.h>
-#include <gloperate-glfw/WindowEventDispatcher2.h>
+#include <gloperate-glfw/Window.h>
+#include <gloperate-glfw/WindowEventDispatcher.h>
 
 
 namespace gloperate_glfw
@@ -57,7 +57,7 @@ int Application::run()
     // Start application
     m_running  = true;
     m_exitCode = 0;
-    WindowEventDispatcher2::initializeTime();
+    WindowEventDispatcher::initializeTime();
 
     // Execute main loop
     while (m_running)
@@ -93,13 +93,13 @@ int Application::exitCode()
 void Application::pollEvents()
 {
     glfwPollEvents();
-    WindowEventDispatcher2::checkForTimerEvents();
+    WindowEventDispatcher::checkForTimerEvents();
 }
 
 void Application::processEvents()
 {
     // Get messages for all windows
-    for (WindowBase * window : WindowBase::instances())
+    for (Window * window : Window::instances())
     {
         if (window->hasPendingEvents()) {
             window->processEvents();

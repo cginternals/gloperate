@@ -41,20 +41,20 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/Application.h
+    ${include_path}/WindowEventDispatcher.h
+    ${include_path}/WindowEvent.h
+    ${include_path}/Window.h
     ${include_path}/Context.h
     ${include_path}/Timer.h
-    ${include_path}/WindowBase.h
-    ${include_path}/WindowEventDispatcher2.h
-    ${include_path}/WindowEvent.h
 )
 
 set(sources
     ${source_path}/Application.cpp
+    ${source_path}/WindowEventDispatcher.cpp
+    ${source_path}/WindowEvent.cpp
+    ${source_path}/Window.cpp
     ${source_path}/Context.cpp
     ${source_path}/Timer.cpp
-    ${source_path}/WindowBase.cpp
-    ${source_path}/WindowEventDispatcher2.cpp
-    ${source_path}/WindowEvent.cpp
 )
 
 # Group source files

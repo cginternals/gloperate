@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/WindowEventDispatcher2.h>
+#include <gloperate-glfw/WindowEventDispatcher.h>
 
 #include <cassert>
 #include <cmath>
@@ -8,7 +8,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include <gloperate-glfw/WindowBase.h>
+#include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEvent.h>
 
 
@@ -16,36 +16,36 @@ namespace gloperate_glfw
 {
 
 
-WindowEventDispatcher2::WindowTimerMap         WindowEventDispatcher2::s_timers;
-std::chrono::high_resolution_clock::time_point WindowEventDispatcher2::s_time;
-std::chrono::high_resolution_clock             WindowEventDispatcher2::s_clock;
+WindowEventDispatcher::WindowTimerMap          WindowEventDispatcher::s_timers;
+std::chrono::high_resolution_clock::time_point WindowEventDispatcher::s_time;
+std::chrono::high_resolution_clock             WindowEventDispatcher::s_clock;
 
 
-WindowEventDispatcher2::Timer::Timer()
+WindowEventDispatcher::Timer::Timer()
 : interval(0)
 , singleShot(false)
 {
     reset();
 }
 
-WindowEventDispatcher2::Timer::Timer(int interval, bool singleShot)
+WindowEventDispatcher::Timer::Timer(int interval, bool singleShot)
 : interval(interval)
 , singleShot(singleShot)
 {
     reset();
 }
 
-bool WindowEventDispatcher2::Timer::ready() const
+bool WindowEventDispatcher::Timer::ready() const
 {
     return elapsed >= interval;
 }
 
-void WindowEventDispatcher2::Timer::reset()
+void WindowEventDispatcher::Timer::reset()
 {
     elapsed = Duration(0);
 }
 
-void WindowEventDispatcher2::registerWindow(WindowBase * window)
+void WindowEventDispatcher::registerWindow(Window * window)
 {
     assert(window != nullptr);
 
@@ -75,7 +75,7 @@ void WindowEventDispatcher2::registerWindow(WindowBase * window)
     glfwSetWindowCloseCallback(glfwWindow, handleClose);
 }
 
-void WindowEventDispatcher2::deregisterWindow(WindowBase * window)
+void WindowEventDispatcher::deregisterWindow(Window * window)
 {
     // Window pointer must be valid
     assert(window != nullptr);
@@ -106,30 +106,30 @@ void WindowEventDispatcher2::deregisterWindow(WindowBase * window)
     removeAllTimers(window);
 }
 
-void WindowEventDispatcher2::addTimer(WindowBase * window, int id, int interval, bool singleShot)
+void WindowEventDispatcher::addTimer(Window * window, int id, int interval, bool singleShot)
 {
     // Create timer
     s_timers[window][id] = Timer(interval, singleShot);
 }
 
-void WindowEventDispatcher2::removeTimer(WindowBase * window, int id)
+void WindowEventDispatcher::removeTimer(Window * window, int id)
 {
     // Remove timer
     s_timers[window].erase(id);
 }
 
-void WindowEventDispatcher2::removeAllTimers(WindowBase * window)
+void WindowEventDispatcher::removeAllTimers(Window * window)
 {
     // Remove all timers belonging to that window
     s_timers.erase(window);
 }
 
-void WindowEventDispatcher2::initializeTime()
+void WindowEventDispatcher::initializeTime()
 {
     s_time = s_clock.now();
 }
 
-void WindowEventDispatcher2::checkForTimerEvents()
+void WindowEventDispatcher::checkForTimerEvents()
 {
     // Get current time and calculate time difference since last call
     auto now = s_clock.now();
@@ -137,11 +137,11 @@ void WindowEventDispatcher2::checkForTimerEvents()
     s_time = now;
 
     // Update all timers of all windows
-    std::vector<std::pair<WindowBase *, int>> discarded;
+    std::vector<std::pair<Window *, int>> discarded;
     for (auto & timerMapPair : s_timers)
     {
         // Get window
-        WindowBase * window = timerMapPair.first;
+        Window * window = timerMapPair.first;
         for (auto & timerPair : timerMapPair.second)
         {
             // Get timer
@@ -177,13 +177,13 @@ void WindowEventDispatcher2::checkForTimerEvents()
     }
 }
 
-void WindowEventDispatcher2::dispatchEvent(GLFWwindow * glfwWindow, WindowEvent * event)
+void WindowEventDispatcher::dispatchEvent(GLFWwindow * glfwWindow, WindowEvent * event)
 {
     // Find window object from GLFW window, dispatch event
     dispatchEvent(fromGLFW(glfwWindow), event);
 }
 
-void WindowEventDispatcher2::dispatchEvent(WindowBase * window, WindowEvent * event)
+void WindowEventDispatcher::dispatchEvent(Window * window, WindowEvent * event)
 {
     // Check if event is valid
     if (!event)
@@ -202,16 +202,16 @@ void WindowEventDispatcher2::dispatchEvent(WindowBase * window, WindowEvent * ev
     window->queueEvent(event);
 }
 
-WindowBase * WindowEventDispatcher2::fromGLFW(GLFWwindow * glfwWindow)
+Window * WindowEventDispatcher::fromGLFW(GLFWwindow * glfwWindow)
 {
     if (glfwWindow) {
-        return static_cast<WindowBase*>(glfwGetWindowUserPointer(glfwWindow));
+        return static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
     } else {
         return nullptr;
     }
 }
 
-glm::ivec2 WindowEventDispatcher2::mousePosition(GLFWwindow * glfwWindow)
+glm::ivec2 WindowEventDispatcher::mousePosition(GLFWwindow * glfwWindow)
 {
     if (glfwWindow)
     {
@@ -226,32 +226,32 @@ glm::ivec2 WindowEventDispatcher2::mousePosition(GLFWwindow * glfwWindow)
     }
 }
 
-void WindowEventDispatcher2::handleRefresh(GLFWwindow * glfwWindow)
+void WindowEventDispatcher::handleRefresh(GLFWwindow * glfwWindow)
 {
     dispatchEvent(glfwWindow, new PaintEvent);
 }
 
-void WindowEventDispatcher2::handleKey(GLFWwindow * glfwWindow, int key, int scanCode, int action, int modifiers)
+void WindowEventDispatcher::handleKey(GLFWwindow * glfwWindow, int key, int scanCode, int action, int modifiers)
 {
     dispatchEvent(glfwWindow, new KeyEvent(key, scanCode, action, modifiers));
 }
 
-void WindowEventDispatcher2::handleChar(GLFWwindow * glfwWindow, unsigned int character)
+void WindowEventDispatcher::handleChar(GLFWwindow * glfwWindow, unsigned int character)
 {
     dispatchEvent(glfwWindow, new KeyEvent(character));
 }
 
-void WindowEventDispatcher2::handleMouse(GLFWwindow * glfwWindow, int button, int action, int modifiers)
+void WindowEventDispatcher::handleMouse(GLFWwindow * glfwWindow, int button, int action, int modifiers)
 {
     dispatchEvent(glfwWindow, new MouseEvent(mousePosition(glfwWindow), button, action, modifiers));
 }
 
-void WindowEventDispatcher2::handleCursorPos(GLFWwindow * glfwWindow, double xPos, double yPos)
+void WindowEventDispatcher::handleCursorPos(GLFWwindow * glfwWindow, double xPos, double yPos)
 {
     dispatchEvent(glfwWindow, new MouseEvent(glm::ivec2(std::floor(xPos), std::floor(yPos))));
 }
 
-void WindowEventDispatcher2::handleCursorEnter(GLFWwindow * glfwWindow, int entered)
+void WindowEventDispatcher::handleCursorEnter(GLFWwindow * glfwWindow, int entered)
 {
     if (entered == GL_TRUE)
     {
@@ -263,37 +263,37 @@ void WindowEventDispatcher2::handleCursorEnter(GLFWwindow * glfwWindow, int ente
     }
 }
 
-void WindowEventDispatcher2::handleScroll(GLFWwindow * glfwWindow, double xOffset, double yOffset)
+void WindowEventDispatcher::handleScroll(GLFWwindow * glfwWindow, double xOffset, double yOffset)
 {
     dispatchEvent(glfwWindow, new ScrollEvent(glm::vec2(xOffset, yOffset), mousePosition(glfwWindow)));
 }
 
-void WindowEventDispatcher2::handleResize(GLFWwindow * glfwWindow, int width, int height)
+void WindowEventDispatcher::handleResize(GLFWwindow * glfwWindow, int width, int height)
 {
     dispatchEvent(glfwWindow, new ResizeEvent(glm::ivec2(width, height)));
 }
 
-void WindowEventDispatcher2::handleFramebufferResize(GLFWwindow * glfwWindow, int width, int height)
+void WindowEventDispatcher::handleFramebufferResize(GLFWwindow * glfwWindow, int width, int height)
 {
     dispatchEvent(glfwWindow, new ResizeEvent(glm::ivec2(width, height), true));
 }
 
-void WindowEventDispatcher2::handleMove(GLFWwindow * glfwWindow, int x, int y)
+void WindowEventDispatcher::handleMove(GLFWwindow * glfwWindow, int x, int y)
 {
     dispatchEvent(glfwWindow, new MoveEvent(glm::ivec2(x, y)));
 }
 
-void WindowEventDispatcher2::handleFocus(GLFWwindow * glfwWindow, int focused)
+void WindowEventDispatcher::handleFocus(GLFWwindow * glfwWindow, int focused)
 {
     dispatchEvent(glfwWindow, new FocusEvent(focused == GL_TRUE));
 }
 
-void WindowEventDispatcher2::handleIconify(GLFWwindow * glfwWindow, int iconified)
+void WindowEventDispatcher::handleIconify(GLFWwindow * glfwWindow, int iconified)
 {
     dispatchEvent(glfwWindow, new IconifyEvent(iconified == GL_TRUE));
 }
 
-void WindowEventDispatcher2::handleClose(GLFWwindow * glfwWindow)
+void WindowEventDispatcher::handleClose(GLFWwindow * glfwWindow)
 {
     dispatchEvent(glfwWindow, new CloseEvent);
 }

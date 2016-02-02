@@ -50,12 +50,12 @@ void WindowEvent::ignore()
     m_accepted = false;
 }
 
-WindowBase * WindowEvent::window() const
+Window * WindowEvent::window() const
 {
     return m_window;
 }
 
-void WindowEvent::setWindow(WindowBase * window)
+void WindowEvent::setWindow(Window * window)
 {
     m_window = window;
 }

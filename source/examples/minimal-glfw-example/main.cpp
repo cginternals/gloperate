@@ -11,7 +11,7 @@
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/WindowEventHandler.h>
+//#include <gloperate-glfw/WindowEventHandler.h>
 
 
 using namespace gloperate;
@@ -60,11 +60,11 @@ int main(int argc, char * argv[])
     painter.reset(painterPlugin->createPainter(resourceManager));
     */
 
-    Window::init();
+    Application::init();
 
     Window window; //(resourceManager);
     //window.setPainter(painter.get());
-    window.setEventHandler(new WindowEventHandler());
+    //window.setEventHandler(new WindowEventHandler());
 
     ContextFormat format;
     format.setVersion(3, 2);

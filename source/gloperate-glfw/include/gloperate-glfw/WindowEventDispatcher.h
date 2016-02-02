@@ -16,7 +16,7 @@ namespace gloperate_glfw
 {
 
 
-class WindowBase;
+class Window;
 class WindowEvent;
 
 
@@ -27,7 +27,7 @@ class WindowEvent;
 *    Static class that handles the dispatching of
 *    GLWF events to windows.
 */
-class GLOPERATE_GLFW_API WindowEventDispatcher2
+class GLOPERATE_GLFW_API WindowEventDispatcher
 {
 public:
     /**
@@ -37,7 +37,7 @@ public:
     *  @param[in] window
     *    Window (must be valid!)
     */
-    static void registerWindow(WindowBase * window);
+    static void registerWindow(Window * window);
 
     /**
     *  @brief
@@ -46,7 +46,7 @@ public:
     *  @param[in] window
     *    Window (must be valid!)
     */
-    static void deregisterWindow(WindowBase * window);
+    static void deregisterWindow(Window * window);
 
     /**
     *  @brief
@@ -61,7 +61,7 @@ public:
     *  @param[in] singleShot
     *    If 'true', the timer fires only once, otherwise periodically
     */
-    static void addTimer(WindowBase * window, int id, int interval, bool singleShot);
+    static void addTimer(Window * window, int id, int interval, bool singleShot);
 
     /**
     *  @brief
@@ -72,7 +72,7 @@ public:
     *  @param[in] id
     *    Timer ID
     */
-    static void removeTimer(WindowBase * window, int id);
+    static void removeTimer(Window * window, int id);
 
     /**
     *  @brief
@@ -81,7 +81,7 @@ public:
     *  @param[in] window
     *    Window (must be valid!)
     */
-    static void removeAllTimers(WindowBase * window);
+    static void removeAllTimers(Window * window);
 
     /**
     *  @brief
@@ -123,7 +123,7 @@ protected:
     *  @remarks
     *    The event object will be destroyed after dispatching.
     */
-    static void dispatchEvent(WindowBase * window, WindowEvent * event);
+    static void dispatchEvent(Window * window, WindowEvent * event);
 
     /**
     *  @brief
@@ -135,7 +135,7 @@ protected:
     *  @return
     *    Window (can be nullptr)
     */
-    static WindowBase * fromGLFW(GLFWwindow * glfwWindow);
+    static Window * fromGLFW(GLFWwindow * glfwWindow);
 
     /**
     *  @brief
@@ -170,7 +170,7 @@ private:
     *  @brief
     *    Constructor
     */
-    WindowEventDispatcher2();
+    WindowEventDispatcher();
 
 
 private:
@@ -195,7 +195,7 @@ private:
 
     // Convenience data types
     using TimerMap = std::unordered_map<int, Timer>;
-    using WindowTimerMap = std::unordered_map<WindowBase*, TimerMap>;
+    using WindowTimerMap = std::unordered_map<Window*, TimerMap>;
 
 
 private:

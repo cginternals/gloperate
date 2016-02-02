@@ -43,7 +43,7 @@ class TimerEvent;
 *  @brief
 *    Window with OpenGL context
 */
-class GLOPERATE_GLFW_API WindowBase
+class GLOPERATE_GLFW_API Window
 {
 public:
     /**
@@ -53,7 +53,7 @@ public:
     *  @return
     *    List of open windows
     */
-    static const std::set<WindowBase*> & instances();
+    static const std::set<Window*> & instances();
 
 
 public:
@@ -61,13 +61,13 @@ public:
     *  @brief
     *    Constructor
     */
-    WindowBase();
+    Window();
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~WindowBase();
+    virtual ~Window();
 
     /**
     *  @brief
@@ -445,7 +445,7 @@ protected:
 
 
 private:
-    static std::set<WindowBase*> s_instances;   ///< List of window instances
+    static std::set<Window*> s_instances;   ///< List of window instances
 };
 
 
