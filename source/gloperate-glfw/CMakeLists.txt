@@ -46,7 +46,6 @@ set(headers
     ${include_path}/Window.h
     ${include_path}/RenderWindow.h
     ${include_path}/Context.h
-    ${include_path}/Timer.h
 )
 
 set(sources
@@ -56,7 +55,6 @@ set(sources
     ${source_path}/Window.cpp
     ${source_path}/RenderWindow.cpp
     ${source_path}/Context.cpp
-    ${source_path}/Timer.cpp
 )
 
 # Group source files

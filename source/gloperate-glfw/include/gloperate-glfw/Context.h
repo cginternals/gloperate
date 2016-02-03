@@ -22,6 +22,10 @@ namespace gloperate_glfw
 {
 
 
+/**
+*  @brief
+*    OpenGL context implementation based on GLFW
+*/
 class GLOPERATE_GLFW_API Context : public gloperate::AbstractContext
 {
 protected:

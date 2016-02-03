@@ -16,6 +16,10 @@ namespace gloperate_glfw
 class Window;
 
 
+/**
+*  @brief
+*    Base class for window events
+*/
 class GLOPERATE_GLFW_API WindowEvent
 {
 public:
@@ -69,6 +73,10 @@ protected:
 };
 
 
+/**
+*  @brief
+*    Representation of a keyboard event
+*/
 class GLOPERATE_GLFW_API KeyEvent : public WindowEvent
 {
 public:
@@ -91,6 +99,10 @@ protected:
 };
 
 
+/**
+*  @brief
+*    Representation of a mouse event
+*/
 class GLOPERATE_GLFW_API MouseEvent : public WindowEvent
 {
 public:
@@ -116,6 +128,10 @@ protected:
 };
 
 
+/**
+*  @brief
+*    Representation of a mouse event (cursor enters the window)
+*/
 class GLOPERATE_GLFW_API MouseEnterEvent : public WindowEvent
 {
 public:
@@ -123,6 +139,10 @@ public:
 };
 
 
+/**
+*  @brief
+*    Representation of a mouse event (cursor leaves the window)
+*/
 class GLOPERATE_GLFW_API MouseLeaveEvent : public WindowEvent
 {
 public:
@@ -130,6 +150,10 @@ public:
 };
 
 
+/**
+*  @brief
+*    Representation of a mouse scroll event
+*/
 class GLOPERATE_GLFW_API ScrollEvent : public WindowEvent
 {
 public:
@@ -145,6 +169,10 @@ protected:
 };
 
 
+/**
+*  @brief
+*    Representation of a window move event (window has been moved)
+*/
 class GLOPERATE_GLFW_API MoveEvent : public WindowEvent
 {
 public:
@@ -161,6 +189,10 @@ protected:
 };
 
 
+/**
+*  @brief
+*    Representation of a window resize event (window has been resized)
+*/
 class GLOPERATE_GLFW_API ResizeEvent : public WindowEvent
 {
 public:
@@ -177,6 +209,10 @@ protected:
 };
 
 
+/**
+*  @brief
+*    Representation of a paint event (window has to be redrawn)
+*/
 class GLOPERATE_GLFW_API PaintEvent : public WindowEvent
 {
 public:
@@ -184,6 +220,10 @@ public:
 };
 
 
+/**
+*  @brief
+*    Representation of a window close event (window has been closed)
+*/
 class GLOPERATE_GLFW_API CloseEvent : public WindowEvent
 {
 public:
@@ -191,6 +231,10 @@ public:
 };
 
 
+/**
+*  @brief
+*    Representation of a focus event (window has received or lost the keyboard focus)
+*/
 class GLOPERATE_GLFW_API FocusEvent : public WindowEvent
 {
 public:
@@ -204,6 +248,10 @@ protected:
 };
 
 
+/**
+*  @brief
+*    Representation of a window iconify event (window has been minimized)
+*/
 class GLOPERATE_GLFW_API IconifyEvent : public WindowEvent
 {
 public:
@@ -217,6 +265,10 @@ protected:
 };
 
 
+/**
+*  @brief
+*    Representation of a timer event (a timer on the window has fired)
+*/
 class GLOPERATE_GLFW_API TimerEvent : public WindowEvent
 {
 public:
