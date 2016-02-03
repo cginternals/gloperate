@@ -61,6 +61,12 @@ public:
 
     /**
     *  @brief
+    *    Called when the viewer is in idle mode (no more messages to process)
+    */
+    virtual void onIdle();
+
+    /**
+    *  @brief
     *    Resize framebuffer
     *
     *    This function is called when the framebuffer size has been changed,
@@ -89,9 +95,9 @@ public:
     *    This function is called when a key has been pressed inside the viewer.
     *
     *  @param[in] key
-    *    Virtual Key Code
+    *    Virtual Key Code (see gloperate::Key)
     */
-    virtual void onKeyPressed(int key);
+    virtual void onKeyPress(int key);
 
     /**
     *  @brief
@@ -100,9 +106,9 @@ public:
     *    This function is called when a key has been released inside the viewer.
     *
     *  @param[in] key
-    *    Virtual Key Code
+    *    Virtual Key Code (see gloperate::Key)
     */
-    virtual void onKeyReleased(int key);
+    virtual void onKeyRelease(int key);
 
     /**
     *  @brief
@@ -115,7 +121,7 @@ public:
     *  @param[in] y
     *    Mouse Y-position (real device coordinates)
     */
-    virtual void onMouseMoved(int x, int y);
+    virtual void onMouseMove(int x, int y);
 
     /**
     *  @brief
@@ -124,13 +130,13 @@ public:
     *    This function is called when a mouse button has been pressed inside the viewer.
     *
     *  @param[in] button
-    *    Mouse button
+    *    Mouse button (see gloperate::MouseButton)
     *  @param[in] x
     *    Mouse X-position (real device coordinates)
     *  @param[in] y
     *    Mouse Y-position (real device coordinates)
     */
-    virtual void onMousePressed(int button, int x, int y);
+    virtual void onMousePress(int button, int x, int y);
 
     /**
     *  @brief
@@ -139,13 +145,13 @@ public:
     *    This function is called when a mouse button has been released inside the viewer.
     *
     *  @param[in] button
-    *    Mouse button
+    *    Mouse button (see gloperate::MouseButton)
     *  @param[in] x
     *    Mouse X-position (real device coordinates)
     *  @param[in] y
     *    Mouse Y-position (real device coordinates)
     */
-    virtual void onMouseReleased(int button, int x, int y);
+    virtual void onMouseRelease(int button, int x, int y);
 
     /**
     *  @brief

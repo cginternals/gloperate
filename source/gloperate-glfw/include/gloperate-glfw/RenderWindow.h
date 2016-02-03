@@ -36,8 +36,8 @@ public:
 
 protected:
     // Virtual Window functions
-    virtual void onInitialize() override;
-    virtual void onFinalize() override;
+    virtual void onContextInit() override;
+    virtual void onContextDeinit() override;
     virtual void onIdle() override;
     virtual void onResize(ResizeEvent & event) override;
     virtual void onFramebufferResize(ResizeEvent & event) override;

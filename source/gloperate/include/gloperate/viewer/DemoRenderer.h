@@ -31,13 +31,14 @@ public:
     // Virtual RenderHandler functions
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
+    virtual void onIdle() override;
     virtual void onResize(int width, int height) override;
     virtual void onRender() override;
-    virtual void onKeyPressed(int key) override;
-    virtual void onKeyReleased(int key) override;
-    virtual void onMouseMoved(int x, int y) override;
-    virtual void onMousePressed(int button, int x, int y) override;
-    virtual void onMouseReleased(int button, int x, int y) override;
+    virtual void onKeyPress(int key) override;
+    virtual void onKeyRelease(int key) override;
+    virtual void onMouseMove(int x, int y) override;
+    virtual void onMousePress(int button, int x, int y) override;
+    virtual void onMouseRelease(int button, int x, int y) override;
     virtual void onTimer(int id) override;
 };
 

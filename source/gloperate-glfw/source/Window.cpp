@@ -391,7 +391,7 @@ void Window::destroyContext()
 void Window::initializeEventHandler()
 {
     glfwMakeContextCurrent(m_window);
-    onInitialize();
+    onContextInit();
     glfwMakeContextCurrent(nullptr);
 
     queueEvent(new ResizeEvent(size()));
@@ -401,7 +401,7 @@ void Window::initializeEventHandler()
 void Window::finalizeEventHandler()
 {
     glfwMakeContextCurrent(m_window);
-    onFinalize();
+    onContextDeinit();
     glfwMakeContextCurrent(nullptr);
 }
 
@@ -496,11 +496,11 @@ void Window::handleEvent(WindowEvent & event)
     }
 }
 
-void Window::onInitialize()
+void Window::onContextInit()
 {
 }
 
-void Window::onFinalize()
+void Window::onContextDeinit()
 {
 }
 

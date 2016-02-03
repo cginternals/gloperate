@@ -361,8 +361,8 @@ public:
 
 protected:
     // Event handlers, to be overwritten in derived classes
-    virtual void onInitialize();
-    virtual void onFinalize();
+    virtual void onContextInit();
+    virtual void onContextDeinit();
     virtual void onIdle();
     virtual void onResize(ResizeEvent & event);
     virtual void onFramebufferResize(ResizeEvent & event);

@@ -22,7 +22,11 @@ void RenderHandler::onContextDeinit()
 {
 }
 
-void RenderHandler::onResize(int width, int height)
+void RenderHandler::onIdle()
+{
+}
+
+void RenderHandler::onResize(int, int)
 {
 }
 
@@ -30,27 +34,27 @@ void RenderHandler::onRender()
 {
 }
 
-void RenderHandler::onKeyPressed(int key)
+void RenderHandler::onKeyPress(int)
 {
 }
 
-void RenderHandler::onKeyReleased(int key)
+void RenderHandler::onKeyRelease(int)
 {
 }
 
-void RenderHandler::onMouseMoved(int x, int y)
+void RenderHandler::onMouseMove(int, int)
 {
 }
 
-void RenderHandler::onMousePressed(int button, int x, int y)
+void RenderHandler::onMousePress(int, int, int)
 {
 }
 
-void RenderHandler::onMouseReleased(int button, int x, int y)
+void RenderHandler::onMouseRelease(int, int, int)
 {
 }
 
-void RenderHandler::onTimer(int id)
+void RenderHandler::onTimer(int)
 {
 }
 

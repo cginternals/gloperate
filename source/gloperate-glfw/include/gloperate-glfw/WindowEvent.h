@@ -190,6 +190,7 @@ public:
     CloseEvent();
 };
 
+
 class GLOPERATE_GLFW_API FocusEvent : public WindowEvent
 {
 public:
