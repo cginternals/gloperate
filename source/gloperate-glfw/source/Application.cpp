@@ -104,7 +104,7 @@ void Application::processEvents()
         if (window->hasPendingEvents()) {
             window->processEvents();
         } else {
-            window->idle();
+            window->onIdle();
         }
     }
 }

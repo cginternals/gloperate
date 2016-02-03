@@ -45,6 +45,10 @@ class TimerEvent;
 */
 class GLOPERATE_GLFW_API Window
 {
+friend class Application;
+friend class WindowEventDispatcher;
+
+
 public:
     /**
     *  @brief
@@ -323,6 +327,8 @@ public:
     */
     void removeTimer(int id);
 
+
+protected:
     /**
     *  @brief
     *    Add event to the window's event queue
@@ -356,32 +362,12 @@ public:
     */
     void handleEvent(WindowEvent & event);
 
-    void idle();
+    /**
+    *  @brief
+    *    Remove all waiting events from the queue
+    */
+    void clearEventQueue();
 
-
-protected:
-    // Event handlers, to be overwritten in derived classes
-    virtual void onContextInit();
-    virtual void onContextDeinit();
-    virtual void onIdle();
-    virtual void onResize(ResizeEvent & event);
-    virtual void onFramebufferResize(ResizeEvent & event);
-    virtual void onMove(MoveEvent & event);
-    virtual void onPaint(PaintEvent & event);
-    virtual void onKeyPress(KeyEvent & event);
-    virtual void onKeyRelease(KeyEvent & event);
-    virtual void onMousePress(MouseEvent & event);
-    virtual void onMouseMove(MouseEvent & event);
-    virtual void onMouseRelease(MouseEvent & event);
-    virtual void onMouseEnter(MouseEnterEvent & event);
-    virtual void onMouseLeave(MouseLeaveEvent & event);
-    virtual void onScroll(ScrollEvent & event);
-    virtual void onFocus(FocusEvent & event);
-    virtual void onIconify(IconifyEvent & event);
-    virtual void onTimer(TimerEvent & event);
-
-
-protected:
     /**
     *  @brief
     *    Create OpenGL context (and window)
@@ -413,12 +399,37 @@ protected:
     */
     void destroyContext();
 
-    void initializeEventHandler();
-    void finalizeEventHandler();
+    /**
+    *  @brief
+    *    Send signal for initializing OpenGL context
+    */
+    void initializeContext();
 
-    void clearEventQueue();
-    void processEvent(WindowEvent & event);
-    void postprocessEvent(WindowEvent & event);
+    /**
+    *  @brief
+    *    Send signal for deinitializing OpenGL context
+    */
+    void deinitializeContext();
+
+    // Event handlers, to be overwritten in derived classes
+    virtual void onContextInit();
+    virtual void onContextDeinit();
+    virtual void onIdle();
+    virtual void onResize(ResizeEvent & event);
+    virtual void onFramebufferResize(ResizeEvent & event);
+    virtual void onMove(MoveEvent & event);
+    virtual void onPaint(PaintEvent & event);
+    virtual void onKeyPress(KeyEvent & event);
+    virtual void onKeyRelease(KeyEvent & event);
+    virtual void onMousePress(MouseEvent & event);
+    virtual void onMouseMove(MouseEvent & event);
+    virtual void onMouseRelease(MouseEvent & event);
+    virtual void onMouseEnter(MouseEnterEvent & event);
+    virtual void onMouseLeave(MouseLeaveEvent & event);
+    virtual void onScroll(ScrollEvent & event);
+    virtual void onFocus(FocusEvent & event);
+    virtual void onIconify(IconifyEvent & event);
+    virtual void onTimer(TimerEvent & event);
 
 
 protected:

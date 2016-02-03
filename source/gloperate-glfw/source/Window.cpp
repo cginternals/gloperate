@@ -48,7 +48,7 @@ Window::~Window()
 
     if (m_context)
     {
-        finalizeEventHandler();
+        deinitializeContext();
         WindowEventDispatcher::deregisterWindow(this);
         destroyContext();
     }
@@ -85,7 +85,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
     }
 
     WindowEventDispatcher::registerWindow(this);
-    initializeEventHandler();
+    initializeContext();
 
     m_windowedModeSize = glm::ivec2(width, height);
 
@@ -94,7 +94,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
 
 void Window::destroy()
 {
-    finalizeEventHandler();
+    deinitializeContext();
     destroyContext();
 
     if (m_quitOnDestroy)
@@ -162,14 +162,14 @@ void Window::setFullscreen(bool fullscreen)
 
         ContextFormat format = m_context->format();
 
-        finalizeEventHandler();
+        deinitializeContext();
         WindowEventDispatcher::deregisterWindow(this);
         destroyContext();
 
         if (createContext(format, w, h, monitor))
         {
             WindowEventDispatcher::registerWindow(this);
-            initializeEventHandler();
+            initializeContext();
 
             m_windowMode = FullscreenMode;
         }
@@ -183,14 +183,14 @@ void Window::setFullscreen(bool fullscreen)
 
         ContextFormat format = m_context->format();
 
-        finalizeEventHandler();
+        deinitializeContext();
         WindowEventDispatcher::deregisterWindow(this);
         destroyContext();
 
         if (createContext(format, w, h, nullptr))
         {
             WindowEventDispatcher::registerWindow(this);
-            initializeEventHandler();
+            initializeContext();
 
             m_windowMode = WindowedMode;
         }
@@ -343,7 +343,7 @@ void Window::processEvents()
         m_eventQueue.pop();
         event->setWindow(this);
 
-        processEvent(*event);
+        handleEvent(*event);
 
         delete event;
 
@@ -355,69 +355,6 @@ void Window::processEvents()
     }
 
     glfwMakeContextCurrent(nullptr);
-}
-
-bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
-{
-    assert(nullptr == m_context);
-    if (m_context)
-    {
-        return false;
-    }
-
-    m_window = Context::create(format);
-    if (!m_window)
-    {
-        return false;
-    }
-
-    glfwSetWindowSize(m_window, width, height);
-
-    m_context = new Context(m_window);
-    m_context->format().verify(format);
-
-    return true;
-}
-
-void Window::destroyContext()
-{
-    delete m_context;
-    glfwDestroyWindow(m_window);
-
-    m_context = nullptr;
-    m_window = nullptr;
-}
-
-void Window::initializeEventHandler()
-{
-    glfwMakeContextCurrent(m_window);
-    onContextInit();
-    glfwMakeContextCurrent(nullptr);
-
-    queueEvent(new ResizeEvent(size()));
-    queueEvent(new ResizeEvent(framebufferSize(), true));
-}
-
-void Window::finalizeEventHandler()
-{
-    glfwMakeContextCurrent(m_window);
-    onContextDeinit();
-    glfwMakeContextCurrent(nullptr);
-}
-
-void Window::clearEventQueue()
-{
-    while (!m_eventQueue.empty())
-    {
-        delete m_eventQueue.front();
-        m_eventQueue.pop();
-    }
-}
-
-void Window::processEvent(WindowEvent & event)
-{
-    handleEvent(event);
-    postprocessEvent(event);
 }
 
 void Window::handleEvent(WindowEvent & event)
@@ -445,6 +382,7 @@ void Window::handleEvent(WindowEvent & event)
 
         case WindowEvent::Type::Paint:
             onPaint(static_cast<PaintEvent &>(event));
+            swap();
             break;
 
         case WindowEvent::Type::KeyPress:
@@ -491,9 +429,73 @@ void Window::handleEvent(WindowEvent & event)
             onTimer(static_cast<TimerEvent &>(event));
             break;
 
+        case WindowEvent::Type::Close:
+            if (!event.isAccepted())
+            {
+                destroy();
+            }
+            break;
+
         default:
             break;
     }
+}
+
+void Window::clearEventQueue()
+{
+    while (!m_eventQueue.empty())
+    {
+        delete m_eventQueue.front();
+        m_eventQueue.pop();
+    }
+}
+
+bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
+{
+    assert(nullptr == m_context);
+    if (m_context)
+    {
+        return false;
+    }
+
+    m_window = Context::create(format);
+    if (!m_window)
+    {
+        return false;
+    }
+
+    glfwSetWindowSize(m_window, width, height);
+
+    m_context = new Context(m_window);
+    m_context->format().verify(format);
+
+    return true;
+}
+
+void Window::destroyContext()
+{
+    delete m_context;
+    glfwDestroyWindow(m_window);
+
+    m_context = nullptr;
+    m_window = nullptr;
+}
+
+void Window::initializeContext()
+{
+    glfwMakeContextCurrent(m_window);
+    onContextInit();
+    glfwMakeContextCurrent(nullptr);
+
+    queueEvent(new ResizeEvent(size()));
+    queueEvent(new ResizeEvent(framebufferSize(), true));
+}
+
+void Window::deinitializeContext()
+{
+    glfwMakeContextCurrent(m_window);
+    onContextDeinit();
+    glfwMakeContextCurrent(nullptr);
 }
 
 void Window::onContextInit()
@@ -566,31 +568,6 @@ void Window::onIconify(IconifyEvent &)
 
 void Window::onTimer(TimerEvent &)
 {
-}
-
-void Window::postprocessEvent(WindowEvent & event)
-{
-    switch (event.type())
-    {
-        case WindowEvent::Type::Paint:
-            swap();
-            break;
-
-        case WindowEvent::Type::Close:
-            if (!event.isAccepted())
-            {
-                destroy();
-            }
-            break;
-
-        default:
-            break;
-    }
-}
-
-void Window::idle()
-{
-    onIdle();
 }
 
 

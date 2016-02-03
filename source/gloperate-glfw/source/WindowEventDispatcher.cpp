@@ -37,7 +37,7 @@ WindowEventDispatcher::Timer::Timer(int interval, bool singleShot)
 
 bool WindowEventDispatcher::Timer::ready() const
 {
-    return elapsed >= interval;
+    return (elapsed >= interval);
 }
 
 void WindowEventDispatcher::Timer::reset()

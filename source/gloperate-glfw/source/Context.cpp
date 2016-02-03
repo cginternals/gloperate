@@ -33,17 +33,15 @@ glbinding::Version Context::maxSupportedVersion()
 {
     glbinding::Version version;
 
-    /* GLFW3 does not set default hint values on window creation so at least
-        the default values must be set before glfwCreateWindow can be called.
-        cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
-    */
+    // GLFW3 does not set default hint values on window creation so at least
+    // the default values must be set before glfwCreateWindow can be called.
+    // cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
     glfwDefaultWindowHints();
 
     glfwWindowHint(GLFW_VISIBLE, false);
 
-    // create window for version check
+    // Create window for version check
     GLFWwindow * window = glfwCreateWindow(1, 1, "VersionCheck", nullptr, nullptr);
-
     if (window)
     {
         glfwMakeContextCurrent(window);
@@ -63,7 +61,6 @@ glbinding::Version Context::maxSupportedVersion()
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
         window = glfwCreateWindow(1, 1, "VersionCheck", nullptr, nullptr);
-
         if (window)
         {
             glfwMakeContextCurrent(window);
@@ -84,11 +81,9 @@ GLFWwindow * Context::create(const ContextFormat & format)
     // check if version is valid and supported
     glbinding::Version version = format.version() < glbinding::Version(3, 0) ? maxSupportedVersion() : ContextFormat::validateVersion(format.version(), maxSupportedVersion());
 
-    /*
-    * GLFW3 does not set default hint values on window creation so at least
-    * the default values must be set before glfwCreateWindow can be called.
-    * cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
-    */
+    // GLFW3 does not set default hint values on window creation so at least
+    // the default values must be set before glfwCreateWindow can be called.
+    // cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
     glfwDefaultWindowHints();
 
     glfwWindowHint(GLFW_VISIBLE, false);
@@ -173,7 +168,7 @@ const ContextFormat & Context::format() const
     if (m_format)
         return *m_format;
 
-    // create and retrive format if not done already
+    // Create and retrieve format if not done already
 
     m_format = new ContextFormat();
 
