@@ -10,7 +10,7 @@
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
-#include <gloperate-glfw/Window.h>
+#include <gloperate-glfw/RenderWindow.h>
 //#include <gloperate-glfw/WindowEventHandler.h>
 
 
@@ -62,7 +62,7 @@ int main(int argc, char * argv[])
 
     Application::init();
 
-    Window window; //(resourceManager);
+    RenderWindow window; //(resourceManager);
     //window.setPainter(painter.get());
     //window.setEventHandler(new WindowEventHandler());
 

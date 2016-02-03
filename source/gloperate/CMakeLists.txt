@@ -40,6 +40,8 @@ set(headers
     ${include_path}/viewer/ViewerContext.h
     ${include_path}/viewer/AbstractContext.h
     ${include_path}/viewer/ContextFormat.h
+    ${include_path}/viewer/RenderHandler.h
+    ${include_path}/viewer/DemoRenderer.h
 )
 
 set(sources
@@ -48,6 +50,8 @@ set(sources
     ${source_path}/viewer/ViewerContext.cpp
     ${source_path}/viewer/AbstractContext.cpp
     ${source_path}/viewer/ContextFormat.cpp
+    ${source_path}/viewer/RenderHandler.cpp
+    ${source_path}/viewer/DemoRenderer.cpp
 )
 
 # Group source files

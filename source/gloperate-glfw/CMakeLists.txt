@@ -44,6 +44,7 @@ set(headers
     ${include_path}/WindowEventDispatcher.h
     ${include_path}/WindowEvent.h
     ${include_path}/Window.h
+    ${include_path}/RenderWindow.h
     ${include_path}/Context.h
     ${include_path}/Timer.h
 )
@@ -53,6 +54,7 @@ set(sources
     ${source_path}/WindowEventDispatcher.cpp
     ${source_path}/WindowEvent.cpp
     ${source_path}/Window.cpp
+    ${source_path}/RenderWindow.cpp
     ${source_path}/Context.cpp
     ${source_path}/Timer.cpp
 )
