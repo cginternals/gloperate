@@ -16,7 +16,7 @@ namespace gloperate_glfw
 
 /**
 *  @brief
-*    Window with OpenGL context
+*    Default rendering window for gloperate scenes
 */
 class GLOPERATE_GLFW_API RenderWindow : public Window
 {
