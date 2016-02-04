@@ -28,6 +28,7 @@
 #include <gloperate/resources/ResourceManager.h>
 #include <gloperate/plugin/PluginManager.h>
 #include <gloperate/plugin/PainterPlugin.h>
+#include <gloperate/tools/ImageExporter.h>
 
 #ifdef GLOPERATE_ASSIMP_FOUND
     #include <gloperate-assimp/AssimpMeshLoader.h>
@@ -90,21 +91,22 @@ namespace gloperate_qt
 
 Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
 : QMainWindow(parent, flags)
-, m_ui{new Ui_Viewer}
-, m_resourceManager{nullptr}
-, m_pluginManager{nullptr}
-, m_scriptEnvironment{nullptr}
-, m_viewerApi{nullptr}
-, m_pluginApi{nullptr}
-, m_painter{nullptr}
-, m_mapping{nullptr}
-, m_canvas{nullptr}
+, m_ui(new Ui_Viewer)
+, m_resourceManager(nullptr)
+, m_pluginManager(nullptr)
+, m_scriptEnvironment(nullptr)
+, m_viewerApi(nullptr)
+, m_pluginApi(nullptr)
+, m_painter(nullptr)
+, m_mapping(nullptr)
+, m_canvas(nullptr)
 , m_messagesStatus{new MessageStatusWidget()}
 , m_messagesLog{new MessageWidget()}
 , m_scriptPrompt{new ScriptPromptWidget()}
-, m_messagLogDockWidget{nullptr}
-, m_scriptPromptDockWidget{nullptr}
-, m_propertyDockWidget{nullptr}
+, m_imageExporter{nullptr}
+, m_messagLogDockWidget(nullptr)
+, m_scriptPromptDockWidget(nullptr)
+, m_propertyDockWidget(nullptr)
 {
     // Initialize resource manager (must be done BEFORE setupCanvas)
     m_resourceManager.reset(new ResourceManager());
@@ -139,15 +141,11 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     m_pluginManager.reset(new PluginManager());
     m_pluginManager->pluginsChanged.connect(this, &Viewer::updatePainterMenu);
 
-    // Restore plugin paths from settings
+    // Restore plugin search paths from settings
     auto paths = fromQStringList(settings.value(SETTINGS_PLUGINS).toStringList());
     if (paths.size() > 0) {
-        m_pluginManager->setPaths(paths);
+        m_pluginManager->setSearchPaths(paths);
     }
-
-    // Add default plugin directories
-    m_pluginManager->addPath(QCoreApplication::applicationDirPath().toStdString());
-    m_pluginManager->addPath("plugins");
 
     // Scan all plugins with name component 'painters'
     #ifdef NDEBUG
@@ -170,7 +168,7 @@ Viewer::~Viewer()
     QSettings settings;
     settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
     settings.setValue(SETTINGS_STATE, saveState());
-    settings.setValue(SETTINGS_PLUGINS, toQStringList(m_pluginManager->paths()));
+    settings.setValue(SETTINGS_PLUGINS, toQStringList(m_pluginManager->searchPaths()));
 
     // Disconnect message handlers
     MessageHandler::dettach(*m_messagesLog);
@@ -218,6 +216,13 @@ void Viewer::setPainter(Painter & painter)
 
     // Update rendering
     m_canvas->updateGL();
+
+    // Update image exporting
+    m_imageExporter.reset(new gloperate::ImageExporter(m_canvas->painter(), *m_resourceManager));
+
+    m_canvas.get()->makeCurrent();
+    m_imageExporter->initialize();
+    m_canvas.get()->doneCurrent();
 }
 
 void Viewer::loadPainter(const std::string & name)
@@ -241,6 +246,13 @@ const ScriptEnvironment * Viewer::scriptEnvironment() const
 ScriptEnvironment * Viewer::scriptEnvironment()
 {
     return m_scriptEnvironment.get();
+}
+
+void Viewer::makeScreenshot(const std::string & filename, int width, int height, int frames)
+{
+    m_canvas.get()->makeCurrent();
+    m_imageExporter->save(filename, width, height, frames);
+    m_canvas.get()->doneCurrent();
 }
 
 void Viewer::setupMessageWidgets()

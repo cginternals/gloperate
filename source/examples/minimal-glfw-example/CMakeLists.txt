@@ -1,85 +1,132 @@
 
-set(target minimal-glfw-example)
-
-
-# External libraries
+# 
+# External dependencies
+# 
 
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
+find_package(GLFW)
 
-find_package(GLFW QUIET)
 
+# 
+# Executable name and options
+# 
+
+# Target name
+set(target minimal-glfw-example)
+
+# Exit here if required dependencies are not met
 if (NOT GLFW_FOUND)
-    message(STATUS "Example ${target} (disabled because GLFW couldn't be found)")
+    message(STATUS "Example ${target} skipped: GLFW not found")
     return()
+else()
+    message(STATUS "Example ${target}")
 endif()
 
-message(STATUS "Example ${target}")
 
-
-# Includes
-
-include_directories(
-    ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-    ${GLOBJECTS_INCLUDE_DIRS}
-    ${LIBZEUG_INCLUDE_DIRS}
-)
-
-include_directories(
-    BEFORE
-    ${CMAKE_SOURCE_DIR}/source/gloperate/include
-    ${CMAKE_SOURCE_DIR}/source/gloperate-glfw/include
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-
-# Libraries
-
-set(libs
-    ${GLBINDING_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
-    ${LIBZEUG_LIBRARIES}
-    gloperate
-    gloperate-glfw
-)
-
-
+# 
 # Sources
+# 
 
-set(headers
-)
 set(sources
     main.cpp
 )
 
 
+# 
+# Create executable
+# 
+
 # Build executable
+add_executable(${target}
+    MACOSX_BUNDLE
+    ${sources}
+)
 
-add_executable(${target} ${headers} ${sources})
+# Create namespaced alias
+add_executable(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
-target_link_libraries(${target} ${libs})
 
-target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
+# 
+# Project options
+# 
 
 set_target_properties(${target}
     PROPERTIES
-    LINKER_LANGUAGE              CXX
-    FOLDER                      "${IDE_FOLDER}"
-    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
-    COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
-    LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
-    LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
-    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
+    ${DEFAULT_PROJECT_OPTIONS}
+    FOLDER "${IDE_FOLDER}"
+)
 
 
+# 
+# Include directories
+# 
+
+target_include_directories(${target}
+    PRIVATE
+    ${DEFAULT_INCLUDE_DIRECTORIES}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${GLM_INCLUDE_DIR}
+    ${PROJECT_SOURCE_DIR}/source/gloperate/include
+    ${PROJECT_SOURCE_DIR}/source/gloperate-glfw/include
+)
+
+
+# 
+# Libraries
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+    ${DEFAULT_LIBRARIES}
+    cpplocate::cpplocate
+    libzeug::signalzeug
+    libzeug::reflectionzeug
+    glbinding::glbinding
+    globjects::globjects
+    ${META_PROJECT_NAME}::gloperate
+    ${META_PROJECT_NAME}::gloperate-glfw
+)
+
+
+# 
+# Compile definitions
+# 
+
+target_compile_definitions(${target}
+    PRIVATE
+    ${DEFAULT_COMPILE_DEFINITIONS}
+)
+
+
+# 
+# Compile options
+# 
+
+target_compile_options(${target}
+    PRIVATE
+    ${DEFAULT_COMPILE_OPTIONS}
+)
+
+
+# 
+# Linker options
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+    ${DEFAULT_LINKER_OPTIONS}
+)
+
+
+# 
 # Deployment
+# 
 
+# Executable
 install(TARGETS ${target}
-    RUNTIME DESTINATION ${INSTALL_EXAMPLES}
-#   LIBRARY DESTINATION ${INSTALL_SHARED}
-#   ARCHIVE DESTINATION ${INSTALL_LIB}
+    RUNTIME DESTINATION ${INSTALL_BIN} COMPONENT runtime
+    BUNDLE  DESTINATION ${INSTALL_BIN} COMPONENT runtime
 )

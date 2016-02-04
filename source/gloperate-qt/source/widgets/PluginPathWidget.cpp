@@ -35,7 +35,7 @@ PluginPathWidget::PluginPathWidget(gloperate::PluginManager * pluginManager, QWi
 {
     m_listWidget->setWindowTitle("Plugin search paths");
     m_listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    for (auto & path : m_pluginManager->paths())
+    for (auto & path : m_pluginManager->searchPaths())
     {
         m_listWidget->addItem(QString::fromStdString(path));
     }
@@ -64,7 +64,7 @@ PluginPathWidget::PluginPathWidget(gloperate::PluginManager * pluginManager, QWi
         {
             for (auto & item : m_listWidget->selectedItems())
             {
-                pluginManager->removePath(item->text().toStdString());
+                pluginManager->removeSearchPath(item->text().toStdString());
                 item->setHidden(true);
             }
         });
@@ -80,7 +80,7 @@ void PluginPathWidget::addPath(const QString & path)
     if (path.isEmpty())
         return;
     
-    m_pluginManager->addPath(path.toStdString());
+    m_pluginManager->addSearchPath(path.toStdString());
     m_listWidget->addItem(path);
 }
 

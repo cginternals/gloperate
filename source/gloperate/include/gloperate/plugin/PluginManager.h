@@ -50,7 +50,7 @@ public:
     *  @return
     *    List of paths that are searched for plugins
     */
-    const std::vector<std::string> & paths() const;
+    const std::vector<std::string> & searchPaths() const;
 
     /**
     *  @brief
@@ -59,7 +59,7 @@ public:
     *  @param[in] paths
     *    List of paths that are searched for plugins
     */
-    void setPaths(const std::vector<std::string> & paths);
+    void setSearchPaths(const std::vector<std::string> & paths);
 
     /**
     *  @brief
@@ -72,7 +72,7 @@ public:
     *    If path is empty or already in the path list, the path list is not changed.
     *    If no plugin path is provided, the default application path is used.
     */
-    void addPath(const std::string & path);
+    void addSearchPath(const std::string & path);
 
     /**
     *  @brief
@@ -81,7 +81,7 @@ public:
     *  @param[in] path
     *    Plugin search path
     */
-    void removePath(const std::string & path);
+    void removeSearchPath(const std::string & path);
 
     /**
     *  @brief
@@ -176,12 +176,10 @@ protected:
 
 
 protected:
-    std::vector<std::string> m_paths;
-
-    std::map<std::string, PluginLibrary *> m_librariesByFilePath;
-
-    std::vector<Plugin *> m_plugins;
-    std::map<std::string, Plugin *> m_pluginsByName;
+    std::vector<std::string>               m_paths;               ///< Search paths for plugins
+    std::vector<Plugin *>                  m_plugins;             ///< Loaded plugins
+    std::map<std::string, PluginLibrary *> m_librariesByFilePath; ///< Loaded plugins by path
+    std::map<std::string, Plugin *>        m_pluginsByName;       ///< Loaded plugins by name
 };
 
 

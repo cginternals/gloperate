@@ -64,7 +64,9 @@ WindowEventHandler::~WindowEventHandler()
 void WindowEventHandler::initialize(Window & window)
 {
     globjects::init();
-    IF_DEBUG(globjects::DebugMessage::enable(true);)
+#ifndef N_DEBUG
+    globjects::DebugMessage::enable(true);
+#endif
 
     if (window.painter())
         window.painter()->initialize();
