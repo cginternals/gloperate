@@ -70,6 +70,7 @@ void RenderWindow::onContextDeinit()
 
 void RenderWindow::onIdle()
 {
+    m_renderHandler->onIdle();
 }
 
 void RenderWindow::onResize(ResizeEvent &)

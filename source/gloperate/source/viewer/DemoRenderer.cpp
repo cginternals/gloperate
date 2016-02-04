@@ -28,6 +28,7 @@ void DemoRenderer::onContextDeinit()
 
 void DemoRenderer::onIdle()
 {
+    std::cout << "onIdle()" << std::endl;
 }
 
 void DemoRenderer::onResize(int width, int height)
