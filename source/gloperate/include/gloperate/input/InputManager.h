@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <unordered_map>
 
 #include <gloperate/gloperate_api.h>
 
@@ -15,6 +16,8 @@ class AbstractDeviceProvider;
 
 class InputManager
 {
+    using device_ptr = std::shared_ptr<gloperate::AbstractDevice>;
+    using DeviceMap = std::unordered_map<std::wstring,device_ptr>;
 public:
 	/**
 	 * @brief
@@ -47,14 +50,27 @@ public:
     /**
      * @brief
      *   Lists all connected Devices
-     * @brief
+     * @return
      *   A vector containing all connected devices
      */
-    GLOPERATE_API std::vector<std::shared_ptr<AbstractDevice>> listDevices();
+    GLOPERATE_API std::vector<std::weak_ptr<AbstractDevice>> listDevices();
+
+    /**
+     * @brief
+     *   Registers a Device with the Input Manager
+     */
+    GLOPERATE_API void registerDevice(std::wstring deviceId, device_ptr device);
+
+    /**
+     * @brief
+     *   Removes a Device from the Input Manager
+     */
+    GLOPERATE_API void deregisterDevice(std::wstring deviceId);
 
 
 protected:
     std::vector<std::unique_ptr<AbstractDeviceProvider>> m_providers;
+    DeviceMap m_devices;
 };
 
 }

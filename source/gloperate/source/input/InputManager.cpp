@@ -21,16 +21,32 @@ void InputManager::update()
     }
 }
 
-std::vector<std::shared_ptr<AbstractDevice>> InputManager::listDevices()
+std::vector<std::weak_ptr<AbstractDevice>> InputManager::listDevices()
 {
-
-    std::vector<std::shared_ptr<AbstractDevice>> devices;
-    /*for(auto& provider : m_providers)
+    std::vector<std::weak_ptr<AbstractDevice>> devices;
+    for(auto& entry : m_devices)
     {
-        auto providedDevices = provider->listDevices();
-        std::move(providedDevices.begin(), providedDevices.end(), std::back_inserter(devices));
-    }*/
+        devices.push_back(std::weak_ptr{entry.second});
+    }
     return devices;
+}
+
+void InputManager::registerDevice(std::wstring deviceId, device_ptr device)
+{
+    if(m_devices.find(deviceID) == m_devices.end())
+    {
+        m_devices.emplace({deviceId, device});
+    }
+}
+
+void InputManager::deregisterDevice(std::wstring deviceId)
+{
+    auto deviceIterator = m_devices.find(deviceId);
+    if(deviceIterator == m_devices.end())
+    {
+        return;
+    }
+    m_devices.erase(deviceIterator);
 }
 
 }
