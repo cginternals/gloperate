@@ -53,7 +53,7 @@ public:
 
 
 private:
-	hid_device *m_pHandle;
+    hid_device * m_pHandle;
     static const int m_timeout = 10;
 };
 

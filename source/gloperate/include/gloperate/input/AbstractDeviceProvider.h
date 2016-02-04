@@ -40,7 +40,7 @@ public:
     virtual std::vector<std::shared_ptr<AbstractDevice>> listDevices() = 0;
 
 protected:
-    InputManager* m_pinputManager;
+    InputManager * m_pinputManager;
 
 };
 

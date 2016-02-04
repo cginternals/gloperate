@@ -57,7 +57,7 @@ public:
 
 private:
 
-    void createDevice(hid_device_info* device, const std::wstring &deviceID);
+    void createDevice(hid_device_info * device, const std::wstring &deviceID);
 
     DeviceMap m_openDevices;
 };

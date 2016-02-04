@@ -36,7 +36,7 @@ public:
      *   A pointer to the provider being registered.
      *   The provider will be cleaned up by the Input Manager.
      */
-    GLOPERATE_API void addDeviceProvider(AbstractDeviceProvider* provider);
+    GLOPERATE_API void addDeviceProvider(AbstractDeviceProvider * provider);
 
     /**
 	 * @brief

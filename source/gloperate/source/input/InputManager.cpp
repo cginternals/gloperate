@@ -8,7 +8,7 @@
 namespace gloperate
 {
 
-void InputManager::addDeviceProvider(AbstractDeviceProvider* provider)
+void InputManager::addDeviceProvider(AbstractDeviceProvider * provider)
 {
     m_providers.emplace_back(provider);
 }
