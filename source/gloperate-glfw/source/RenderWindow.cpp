@@ -8,6 +8,7 @@
 #include <gloperate/viewer/DemoRenderer.h>
 
 #include <gloperate-glfw/WindowEvent.h>
+#include <gloperate-glfw/Context.h>
 
 
 using namespace gloperate;
@@ -60,12 +61,12 @@ RenderWindow::~RenderWindow()
 
 void RenderWindow::onContextInit()
 {
-    m_surface->onContextInit();
+    m_surface->setOpenGLContext(m_context);
 }
 
 void RenderWindow::onContextDeinit()
 {
-    m_surface->onContextDeinit();
+    m_surface->setOpenGLContext(nullptr);
 }
 
 void RenderWindow::onIdle()

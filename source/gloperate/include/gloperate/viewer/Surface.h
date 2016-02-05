@@ -10,6 +10,7 @@ namespace gloperate
 
 
 class ViewerContext;
+class OpenGLContext;
 
 
 /**
@@ -47,6 +48,38 @@ public:
     *    Viewer context to which the surface belongs (must NOT be null!)
     */
     ViewerContext * viewerContext() const;
+
+    /**
+    *  @brief
+    *    Get OpenGL context
+    *
+    *  @return
+    *    OpenGL context used for rendering on the surface (can be null)
+    *
+    *  @remarks
+    *    The returned context can be null if the surface has not been
+    *    initialized yet, or the method is called between onContextDeinit()
+    *    and onContextInit() when the context has been changed.
+    *    Aside from that, there should always be a valid OpenGL context
+    *    attached to the surface.
+    */
+    OpenGLContext * openGLContext() const;
+
+    /**
+    *  @brief
+    *    Set OpenGL context
+    *
+    *  @param[in] context
+    *    OpenGL context used for rendering on the surface (can be null)
+    *
+    *  @remarks
+    *    This function should only be called by the windowing backend.
+    *    If the surface still has a valid context, onContextDeinit()
+    *    will be called and the context pointer will be set to nullptr.
+    *    Then, if the new context is valid, the context pointer will be
+    *    set to that new context and onContextInit() will be invoked.
+    */
+    void setOpenGLContext(OpenGLContext * context);
 
     /**
     *  @brief
@@ -181,7 +214,9 @@ public:
 
 
 protected:
-    ViewerContext * m_viewerContext;
+    ViewerContext * m_viewerContext; ///< Viewer context to which the surface belongs
+    OpenGLContext * m_openGLContext; ///< OpenGL context used for rendering on the surface
+
 
 
 };

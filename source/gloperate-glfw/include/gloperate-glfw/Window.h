@@ -45,8 +45,8 @@ class TimerEvent;
 */
 class GLOPERATE_GLFW_API Window
 {
-friend class Application;
-friend class WindowEventDispatcher;
+    friend class Application;
+    friend class WindowEventDispatcher;
 
 
 public:
