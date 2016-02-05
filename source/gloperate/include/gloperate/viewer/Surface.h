@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/base/ContextFormat.h>
 
 
 namespace gloperate
@@ -82,6 +82,24 @@ public:
     *    set to that new context and onContextInit() will be invoked.
     */
     void setOpenGLContext(OpenGLContext * context);
+
+    /**
+    *  @brief
+    *    Negotiate OpenGL context format
+    *
+    *  @return
+    *    OpenGL context format expected by the surface
+    *
+    *  @remarks
+    *    This function should return the format of the OpenGL context
+    *    the surface expects/needs to have. The viewer will then try to
+    *    create a context that fits the request as best as possible
+    *    and call setOpenGLContext() with the created context.
+    *    The surface will then receive a call to onContextInit() in
+    *    which it can initialize its OpenGL objects or abort, if the
+    *    created context is not suitable.
+    */
+    virtual ContextFormat negotiateContext() const;
 
     /**
     *  @brief
