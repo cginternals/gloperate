@@ -5,6 +5,12 @@
 #include <gloperate-qt/viewer/OpenGLWindow.h>
 
 
+namespace gloperate {
+    class ViewerContext;
+    class Surface;
+}
+
+
 namespace gloperate_qt
 {
 
@@ -19,17 +25,22 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] viewerContext
+    *    Viewer context to which the surface belongs (must NOT be null!)
     */
-    RenderWindow();
+    RenderWindow(gloperate::ViewerContext * viewerContext);
 
     /**
     *  @brief
     *    Constructor
     *
+    *  @param[in] viewerContext
+    *    Viewer context to which the surface belongs (must NOT be null!)
     *  @param[in] format
     *    Surface format
     */
-    RenderWindow(const QSurfaceFormat & format);
+    RenderWindow(gloperate::ViewerContext * viewerContext, const QSurfaceFormat & format);
 
     /**
     *  @brief

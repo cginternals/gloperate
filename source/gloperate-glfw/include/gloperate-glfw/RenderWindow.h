@@ -6,6 +6,7 @@
 
 
 namespace gloperate {
+    class ViewerContext;
     class Surface;
 }
 
@@ -24,8 +25,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] viewerContext
+    *    Viewer context to which the surface belongs (must NOT be null!)
     */
-    RenderWindow();
+    RenderWindow(gloperate::ViewerContext * viewerContext);
 
     /**
     *  @brief

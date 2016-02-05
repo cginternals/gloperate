@@ -8,7 +8,8 @@ namespace gloperate
 {
 
 
-DemoRenderer::DemoRenderer()
+DemoRenderer::DemoRenderer(ViewerContext * viewerContext)
+: Surface(viewerContext)
 {
 }
 

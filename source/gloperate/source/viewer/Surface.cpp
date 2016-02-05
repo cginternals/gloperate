@@ -6,12 +6,18 @@ namespace gloperate
 {
 
 
-Surface::Surface()
+Surface::Surface(ViewerContext * viewerContext)
+: m_viewerContext(viewerContext)
 {
 }
 
 Surface::~Surface()
 {
+}
+
+ViewerContext * Surface::viewerContext() const
+{
+    return m_viewerContext;
 }
 
 void Surface::onContextInit()

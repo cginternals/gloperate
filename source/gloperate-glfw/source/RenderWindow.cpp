@@ -48,8 +48,8 @@ static gloperate::Key fromGLFWKeyCode(int key)
 }
 
 
-RenderWindow::RenderWindow()
-: m_surface(new gloperate::DemoRenderer)
+RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
+: m_surface(new gloperate::DemoRenderer(viewerContext))
 {
 }
 

@@ -19,8 +19,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] viewerContext
+    *    Viewer context to which the surface belongs (must NOT be null!)
     */
-    DemoRenderer();
+    DemoRenderer(ViewerContext * viewerContext);
 
     /**
     *  @brief

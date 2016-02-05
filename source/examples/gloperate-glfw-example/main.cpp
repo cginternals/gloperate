@@ -8,6 +8,8 @@
 
 //#include <gloperate/resources/ResourceManager.h>
 
+#include <gloperate/viewer/ViewerContext.h>
+
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/RenderWindow.h>
@@ -21,6 +23,9 @@ using namespace gloperate_glfw;
 int main(int argc, char * argv[])
 {
     Application app(argc, argv);
+
+    // Create viewer context
+    ViewerContext viewerContext;
 
     /*
     ResourceManager resourceManager;
@@ -62,7 +67,7 @@ int main(int argc, char * argv[])
 
     Application::init();
 
-    RenderWindow window; //(resourceManager);
+    RenderWindow window(&viewerContext);
     //window.setPainter(painter.get());
     //window.setEventHandler(new WindowEventHandler());
 

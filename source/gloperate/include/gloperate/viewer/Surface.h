@@ -9,6 +9,9 @@ namespace gloperate
 {
 
 
+class ViewerContext;
+
+
 /**
 *  @brief
 *    Representation of a surface into which can be rendered
@@ -24,14 +27,26 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] viewerContext
+    *    Viewer context to which the surface belongs (must NOT be null!)
     */
-    Surface();
+    Surface(ViewerContext * viewerContext);
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~Surface();
+
+    /**
+    *  @brief
+    *    Get viewer context
+    *
+    *  @return
+    *    Viewer context to which the surface belongs (must NOT be null!)
+    */
+    ViewerContext * viewerContext() const;
 
     /**
     *  @brief
@@ -163,6 +178,12 @@ public:
     *    Timer ID
     */
     virtual void onTimer(int id);
+
+
+protected:
+    ViewerContext * m_viewerContext;
+
+
 };
 
 

@@ -6,12 +6,12 @@ namespace gloperate_qt
 {
 
 
-RenderWindow::RenderWindow()
+RenderWindow::RenderWindow(gloperate::ViewerContext *)
 : OpenGLWindow()
 {
 }
 
-RenderWindow::RenderWindow(const QSurfaceFormat & format)
+RenderWindow::RenderWindow(gloperate::ViewerContext *, const QSurfaceFormat & format)
 : OpenGLWindow(format)
 {
 }

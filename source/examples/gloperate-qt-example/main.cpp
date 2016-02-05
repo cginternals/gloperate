@@ -10,6 +10,8 @@
 //#include <gloperate/plugin/PainterPlugin.h>
 //#include <gloperate/resources/ResourceManager.h>
 
+#include <gloperate/viewer/ViewerContext.h>
+
 #include <gloperate-qt/viewer/RenderWindow.h>
 //#include <gloperate-qt/viewer/QtTextureLoader.h>
 //#include <gloperate-qt/viewer/QtTextureStorer.h>
@@ -20,12 +22,16 @@
 //#include "QtViewerMapping.h"
 
 
+using namespace gloperate;
 using namespace gloperate_qt;
 
 
 int main(int argc, char * argv[])
 {
     QApplication app(argc, argv);
+
+    // Create viewer context
+    ViewerContext viewerContext;
 
     /*
     ResourceManager resourceManager;
@@ -77,7 +83,7 @@ int main(int argc, char * argv[])
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setDepthBufferSize(16);
 
-    RenderWindow * window = new RenderWindow(format);
+    RenderWindow * window = new RenderWindow(&viewerContext, format);
 
     /*
     // Put painter into window
