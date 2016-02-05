@@ -51,10 +51,6 @@ static gloperate::Key fromGLFWKeyCode(int key)
 
 RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
 : m_surface(new gloperate::DemoRenderer(viewerContext))
-, m_deviceWidth(0)
-, m_deviceHeight(0)
-, m_virtualWidth(0)
-, m_virtualHeight(0)
 {
 }
 
@@ -80,28 +76,16 @@ void RenderWindow::onIdle()
 
 void RenderWindow::onResize(ResizeEvent & event)
 {
-    m_virtualWidth  = event.width();
-    m_virtualHeight = event.height();
+    m_virtualSize = event.size();
 
-    m_surface->onResize(
-        m_virtualWidth
-      , m_virtualHeight
-      , m_deviceWidth
-      , m_deviceHeight
-    );
+    m_surface->onResize(m_deviceSize, m_virtualSize);
 }
 
 void RenderWindow::onFramebufferResize(ResizeEvent & event)
 {
-    m_deviceWidth  = event.width();
-    m_deviceHeight = event.height();
+    m_deviceSize = event.size();
 
-    m_surface->onResize(
-        m_virtualWidth
-      , m_virtualHeight
-      , m_deviceWidth
-      , m_deviceHeight
-    );
+    m_surface->onResize(m_deviceSize, m_virtualSize);
 }
 
 void RenderWindow::onMove(MoveEvent &)
@@ -131,8 +115,7 @@ void RenderWindow::onMousePress(MouseEvent & event)
 {
     m_surface->onMousePress(
         fromGLFWMouseButton(event.button())
-      , event.x()
-      , event.y()
+      , event.pos()
     );
 }
 
@@ -140,17 +123,13 @@ void RenderWindow::onMouseRelease(MouseEvent & event)
 {
     m_surface->onMouseRelease(
         fromGLFWMouseButton(event.button())
-      , event.x()
-      , event.y()
+      , event.pos()
     );
 }
 
 void RenderWindow::onMouseMove(MouseEvent & event)
 {
-    m_surface->onMouseMove(
-        event.x()
-      , event.y()
-    );
+    m_surface->onMouseMove(event.pos());
 }
 
 void RenderWindow::onMouseEnter(MouseEnterEvent &)
@@ -163,14 +142,9 @@ void RenderWindow::onMouseLeave(MouseLeaveEvent &)
 
 void RenderWindow::onScroll(ScrollEvent & event)
 {
-    glm::vec2  ofs = event.offset();
-    glm::ivec2 pos = event.pos();
-
     m_surface->onMouseWheel(
-        ofs.x
-      , ofs.y
-      , pos.x
-      , pos.y
+        event.offset()
+      , event.pos()
     );
 }
 

@@ -32,9 +32,9 @@ void DemoRenderer::onIdle()
 //  std::cout << "onIdle()" << std::endl;
 }
 
-void DemoRenderer::onResize(int deviceWidth, int deviceHeight, int virtualWidth, int virtualHeight)
+void DemoRenderer::onResize(const glm::ivec2 & deviceSize, const glm::ivec2 & virtualSize)
 {
-    std::cout << "onResize(" << deviceWidth << ", " << deviceHeight << ", " << virtualWidth << ", " << virtualHeight << ")" << std::endl;
+    std::cout << "onResize(" << deviceSize.x << ", " << deviceSize.y << ", " << virtualSize.x << ", " << virtualSize.y << ")" << std::endl;
 }
 
 void DemoRenderer::onRender()
@@ -52,24 +52,24 @@ void DemoRenderer::onKeyRelease(int key)
     std::cout << "onKeyReleased(" << key << ")" << std::endl;
 }
 
-void DemoRenderer::onMouseMove(int x, int y)
+void DemoRenderer::onMouseMove(const glm::ivec2 & pos)
 {
-    std::cout << "onMouseMoved(" << x << ", " << y << ")" << std::endl;
+    std::cout << "onMouseMoved(" << pos.x << ", " << pos.y << ")" << std::endl;
 }
 
-void DemoRenderer::onMousePress(int button, int x, int y)
+void DemoRenderer::onMousePress(int button, const glm::ivec2 & pos)
 {
-    std::cout << "onMousePressed(" << button << ", " << x << ", " << y << ")" << std::endl;
+    std::cout << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")" << std::endl;
 }
 
-void DemoRenderer::onMouseRelease(int button, int x, int y)
+void DemoRenderer::onMouseRelease(int button, const glm::ivec2 & pos)
 {
-    std::cout << "onMouseReleased(" << button << ", " << x << ", " << y << ")" << std::endl;
+    std::cout << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")" << std::endl;
 }
 
-void DemoRenderer::onMouseWheel(float dx, float dy, int x, int y)
+void DemoRenderer::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
-    std::cout << "onMouseWheel(" << dx << ", " << dy << ", " << x << ", " << y << ")" << std::endl;
+    std::cout << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")" << std::endl;
 }
 
 void DemoRenderer::onTimer(int id)

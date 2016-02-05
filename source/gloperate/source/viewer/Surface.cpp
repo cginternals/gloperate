@@ -57,7 +57,7 @@ void Surface::onIdle()
 {
 }
 
-void Surface::onResize(int, int, int, int)
+void Surface::onResize(const glm::ivec2 &, const glm::ivec2 &)
 {
 }
 
@@ -73,19 +73,19 @@ void Surface::onKeyRelease(int)
 {
 }
 
-void Surface::onMouseMove(int, int)
+void Surface::onMouseMove(const glm::ivec2 &)
 {
 }
 
-void Surface::onMousePress(int, int, int)
+void Surface::onMousePress(int, const glm::ivec2 &)
 {
 }
 
-void Surface::onMouseRelease(int, int, int)
+void Surface::onMouseRelease(int, const glm::ivec2 &)
 {
 }
 
-void Surface::onMouseWheel(float, float, int, int)
+void Surface::onMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
 }
 

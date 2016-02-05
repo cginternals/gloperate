@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <glm/glm.hpp>
+
 #include <gloperate-glfw/Window.h>
 
 
@@ -62,10 +64,8 @@ protected:
 
 protected:
     gloperate::Surface * m_surface;
-    int                  m_deviceWidth;
-    int                  m_deviceHeight;
-    int                  m_virtualWidth;
-    int                  m_virtualHeight;
+    glm::ivec2           m_deviceSize;
+    glm::ivec2           m_virtualSize;
 };
 
 

@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <glm/glm.hpp>
+
 #include <gloperate/gloperate_api.h>
 
 
@@ -120,14 +122,10 @@ public:
     *    This function is called when the framebuffer size has been changed,
     *    e.g., due to a resize of the window.
     *
-    *  @param[in] deviceWidth
-    *    Width (actual device pixels)
-    *  @param[in] deviceHeight
-    *    Height (actual device pixels)
-    *  @param[in] virtualWidth
-    *    Width (virtual pixels)
-    *  @param[in] virtualHeight
-    *    Height (virtual pixels)
+    *  @param[in] deviceSize
+    *    Size (actual device pixels)
+    *  @param[in] virtualSize
+    *    Size (virtual pixels)
     *
     *  @remarks
     *    On low-res devices, device size and virtual size will be equal.
@@ -138,7 +136,9 @@ public:
     *    the actual framebuffer size only for blitting onto the output device
     *    to improve rendering performance on high-resolution devices.
     */
-    virtual void onResize(int deviceWidth, int deviceHeight, int virtualWidth, int virtualHeight);
+    virtual void onResize(
+        const glm::ivec2 & deviceSize
+      , const glm::ivec2 & virtualSize);
 
     /**
     *  @brief
@@ -177,12 +177,10 @@ public:
     *
     *    This function is called when the mouse has been moved inside the viewer.
     *
-    *  @param[in] x
-    *    Mouse X-position (real device coordinates)
-    *  @param[in] y
-    *    Mouse Y-position (real device coordinates)
+    *  @param[in] pos
+    *    Mouse position (real device coordinates)
     */
-    virtual void onMouseMove(int x, int y);
+    virtual void onMouseMove(const glm::ivec2 & pos);
 
     /**
     *  @brief
@@ -192,12 +190,10 @@ public:
     *
     *  @param[in] button
     *    Mouse button (see gloperate::MouseButton)
-    *  @param[in] x
-    *    Mouse X-position (real device coordinates)
-    *  @param[in] y
-    *    Mouse Y-position (real device coordinates)
+    *  @param[in] pos
+    *    Mouse position (real device coordinates)
     */
-    virtual void onMousePress(int button, int x, int y);
+    virtual void onMousePress(int button, const glm::ivec2 & pos);
 
     /**
     *  @brief
@@ -207,12 +203,10 @@ public:
     *
     *  @param[in] button
     *    Mouse button (see gloperate::MouseButton)
-    *  @param[in] x
-    *    Mouse X-position (real device coordinates)
-    *  @param[in] y
-    *    Mouse Y-position (real device coordinates)
+    *  @param[in] pos
+    *    Mouse position (real device coordinates)
     */
-    virtual void onMouseRelease(int button, int x, int y);
+    virtual void onMouseRelease(int button, const glm::ivec2 & pos);
 
     /**
     *  @brief
@@ -220,16 +214,12 @@ public:
     *
     *    This function is called when the mouse wheel has been scrolled.
     *
-    *  @param[in] dx
-    *    Delta in X-direction
-    *  @param[in] dy
-    *    Delta in Y-direction
-    *  @param[in] x
-    *    Mouse X-position (real device coordinates)
-    *  @param[in] y
-    *    Mouse Y-position (real device coordinates)
+    *  @param[in] delta
+    *    Wheel delta
+    *  @param[in] pos
+    *    Mouse position (real device coordinates)
     */
-    virtual void onMouseWheel(float dx, float dy, int x, int y);
+    virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
 
     /**
     *  @brief
