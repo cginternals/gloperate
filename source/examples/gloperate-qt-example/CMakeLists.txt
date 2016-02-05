@@ -46,8 +46,6 @@ endif()
 
 set(sources
     main.cpp
-    QtViewerMapping.cpp
-    QtViewerMapping.h
 )
 
 
