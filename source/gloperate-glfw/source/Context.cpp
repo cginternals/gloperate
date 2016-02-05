@@ -76,7 +76,7 @@ glbinding::Version Context::maxSupportedVersion()
     return version;
 }
 
-GLFWwindow * Context::create(const ContextFormat & format)
+GLFWwindow * Context::createWindow(const ContextFormat & format)
 {
     // check if version is valid and supported
     glbinding::Version version = format.version() < glbinding::Version(3, 0) ? maxSupportedVersion() : ContextFormat::validateVersion(format.version(), maxSupportedVersion());
@@ -196,7 +196,7 @@ const ContextFormat & Context::format() const
     m_format->setAlphaBufferSize(i);
     i = -1; glGetIntegerv(GLenum::GL_SAMPLES, &i);
     m_format->setSamples(i);
-    b = GL_FALSE;  glGetBooleanv(GLenum::GL_STEREO, &b);
+    b = GL_FALSE; glGetBooleanv(GLenum::GL_STEREO, &b);
     m_format->setStereo(b == GL_TRUE);
 
     if (current != m_window)

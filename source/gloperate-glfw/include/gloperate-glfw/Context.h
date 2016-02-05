@@ -41,7 +41,7 @@ public:
     *  @remarks
     *    Requires that glfw::init was previously called
     */
-    static GLFWwindow * create(const gloperate::ContextFormat & format);
+    static GLFWwindow * createWindow(const gloperate::ContextFormat & format);
 
 
 public:

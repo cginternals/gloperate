@@ -60,12 +60,15 @@ set(headers
     ${include_path}/viewer/Application.h
     ${include_path}/viewer/OpenGLWindow.h
     ${include_path}/viewer/RenderWindow.h
+    ${include_path}/viewer/Context.h
 )
 
 set(sources
     ${source_path}/viewer/Application.cpp
     ${source_path}/viewer/OpenGLWindow.cpp
     ${source_path}/viewer/RenderWindow.cpp
+    ${source_path}/viewer/Context.cpp
+    ${source_path}/viewer/Context_qt.cpp
 )
 
 # Group source files

@@ -458,7 +458,7 @@ bool Window::createContext(const ContextFormat & format, int width, int height, 
         return false;
     }
 
-    m_window = Context::create(format);
+    m_window = Context::createWindow(format);
     if (!m_window)
     {
         return false;
