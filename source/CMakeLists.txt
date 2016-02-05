@@ -53,8 +53,13 @@ add_subdirectory(gloperate-qt)
 #add_subdirectory(gloperate-osg)
 #add_subdirectory(gloperate-text)
 
+# Plugins
+set(IDE_FOLDER "Plugins")
+add_subdirectory(plugins)
+
 # Applications
-add_subdirectory(gloperate-viewer)
+set(IDE_FOLDER "Applications")
+add_subdirectory(applications)
 
 # Tools
 #set(IDE_FOLDER "Tools")
