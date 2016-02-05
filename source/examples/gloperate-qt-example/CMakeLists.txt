@@ -29,7 +29,7 @@ endif()
 # 
 
 # Target name
-set(target minimal-qt-example)
+set(target gloperate-qt-example)
 
 # Exit here if required dependencies are not met
 if (NOT Qt5Core_FOUND)

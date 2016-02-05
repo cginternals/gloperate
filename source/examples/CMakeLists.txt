@@ -10,5 +10,5 @@ endif()
 #add_subdirectory(osg-painters)
 
 # Example applications
-add_subdirectory(minimal-glfw-example)
-#add_subdirectory(minimal-qt-example)
+add_subdirectory(gloperate-glfw-example)
+#add_subdirectory(gloperate-qt-example)

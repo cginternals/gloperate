@@ -15,7 +15,7 @@ find_package(GLFW)
 # 
 
 # Target name
-set(target minimal-glfw-example)
+set(target gloperate-glfw-example)
 
 # Exit here if required dependencies are not met
 if (NOT GLFW_FOUND)
