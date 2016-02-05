@@ -2,11 +2,9 @@
 #pragma once
 
 
-#include <gloperate/ext-includes-begin.h>
 #include <QWindow>
 #include <QScopedPointer>
 #include <QSurfaceFormat>
-#include <gloperate/ext-includes-end.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 
@@ -25,9 +23,9 @@ namespace gloperate_qt
 *  @remarks
 *    This base class is for general use of OpenGL and does not depend on
 *    using gloperate for rendering. When using gloperate, the derived
-*    class QtOpenGLWindow should be used.
+*    class RenderWindow should be used.
 */
-class GLOPERATE_QT_API QtOpenGLWindowBase : public QWindow
+class GLOPERATE_QT_API OpenGLWindow : public QWindow
 {
 public:
     /**
@@ -45,7 +43,7 @@ public:
     *  @brief
     *    Constructor
     */
-    QtOpenGLWindowBase();
+    OpenGLWindow();
 
     /**
     *  @brief
@@ -54,13 +52,13 @@ public:
     *  @param[in] format
     *    Surface format
     */
-    QtOpenGLWindowBase(const QSurfaceFormat & format);
+    OpenGLWindow(const QSurfaceFormat & format);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~QtOpenGLWindowBase();
+    virtual ~OpenGLWindow();
 
     /**
     *  @brief

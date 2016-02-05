@@ -1,19 +1,17 @@
 
-#include "gloperate-qt/viewer/QtOpenGLWindowBase.h"
+#include "gloperate-qt/viewer/OpenGLWindow.h"
 
-#include <gloperate/ext-includes-begin.h>
 #include <QApplication>
 #include <QDebug>
 #include <QResizeEvent>
 #include <QOpenGLContext>
-#include <gloperate/ext-includes-end.h>
 
 
 namespace gloperate_qt
 {
 
 
-QSurfaceFormat QtOpenGLWindowBase::defaultFormat()
+QSurfaceFormat OpenGLWindow::defaultFormat()
 {
     QSurfaceFormat format;
     format.setProfile(QSurfaceFormat::CoreProfile);
@@ -23,12 +21,12 @@ QSurfaceFormat QtOpenGLWindowBase::defaultFormat()
     return format;
 }
 
-QtOpenGLWindowBase::QtOpenGLWindowBase()
-: QtOpenGLWindowBase(defaultFormat())
+OpenGLWindow::OpenGLWindow()
+: OpenGLWindow(defaultFormat())
 {
 }
 
-QtOpenGLWindowBase::QtOpenGLWindowBase(const QSurfaceFormat & format)
+OpenGLWindow::OpenGLWindow(const QSurfaceFormat & format)
 : m_context(new QOpenGLContext)
 , m_initialized(false)
 , m_updatePending(false)
@@ -67,16 +65,16 @@ QtOpenGLWindowBase::QtOpenGLWindowBase(const QSurfaceFormat & format)
     }
 }
 
-QtOpenGLWindowBase::~QtOpenGLWindowBase()
+OpenGLWindow::~OpenGLWindow()
 {
 }
 
-QOpenGLContext *QtOpenGLWindowBase::context() const
+QOpenGLContext * OpenGLWindow::context() const
 {
     return m_context.data();
 }
 
-void QtOpenGLWindowBase::updateGL()
+void OpenGLWindow::updateGL()
 {
     if (!m_updatePending) {
         m_updatePending = true;
@@ -84,7 +82,7 @@ void QtOpenGLWindowBase::updateGL()
     }
 }
 
-void QtOpenGLWindowBase::initialize()
+void OpenGLWindow::initialize()
 {
     m_context->makeCurrent(this);
 
@@ -95,7 +93,7 @@ void QtOpenGLWindowBase::initialize()
     m_initialized = true;
 }
 
-void QtOpenGLWindowBase::resize(QResizeEvent * event)
+void OpenGLWindow::resize(QResizeEvent * event)
 {
     if (!m_initialized) {
         initialize();
@@ -110,7 +108,7 @@ void QtOpenGLWindowBase::resize(QResizeEvent * event)
     m_context->doneCurrent();
 }
 
-void QtOpenGLWindowBase::paint()
+void OpenGLWindow::paint()
 {
     if (!m_initialized) {
         initialize();
@@ -131,19 +129,19 @@ void QtOpenGLWindowBase::paint()
     m_context->doneCurrent();
 }
 
-void QtOpenGLWindowBase::onInitialize()
+void OpenGLWindow::onInitialize()
 {
 }
 
-void QtOpenGLWindowBase::onResize(QResizeEvent * )
+void OpenGLWindow::onResize(QResizeEvent * )
 {
 }
 
-void QtOpenGLWindowBase::onPaint()
+void OpenGLWindow::onPaint()
 {
 }
 
-bool QtOpenGLWindowBase::event(QEvent * event)
+bool OpenGLWindow::event(QEvent * event)
 {
     switch (event->type()) {
         case QEvent::UpdateRequest:
@@ -160,31 +158,31 @@ bool QtOpenGLWindowBase::event(QEvent * event)
     }
 }
 
-void QtOpenGLWindowBase::resizeEvent(QResizeEvent * event)
+void OpenGLWindow::resizeEvent(QResizeEvent * event)
 {
     resize(event);
     paint();
 }
 
-void QtOpenGLWindowBase::exposeEvent(QExposeEvent * )
+void OpenGLWindow::exposeEvent(QExposeEvent * )
 {
     paint();
 }
 
-void QtOpenGLWindowBase::enterEvent(QEvent *)
+void OpenGLWindow::enterEvent(QEvent *)
 {
 }
 
-void QtOpenGLWindowBase::leaveEvent(QEvent *)
+void OpenGLWindow::leaveEvent(QEvent *)
 {
 }
 
-void QtOpenGLWindowBase::makeCurrent()
+void OpenGLWindow::makeCurrent()
 {
     m_context->makeCurrent(this);
 }
 
-void QtOpenGLWindowBase::doneCurrent()
+void OpenGLWindow::doneCurrent()
 {
     m_context->doneCurrent();
 }

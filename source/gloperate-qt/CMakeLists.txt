@@ -57,9 +57,15 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
+    ${include_path}/viewer/Application.h
+    ${include_path}/viewer/OpenGLWindow.h
+    ${include_path}/viewer/RenderWindow.h
 )
 
 set(sources
+    ${source_path}/viewer/Application.cpp
+    ${source_path}/viewer/OpenGLWindow.cpp
+    ${source_path}/viewer/RenderWindow.cpp
 )
 
 # Group source files
