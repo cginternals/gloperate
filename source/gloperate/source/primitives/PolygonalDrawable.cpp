@@ -87,7 +87,7 @@ PolygonalDrawable::~PolygonalDrawable()
 {
 }
 
-void PolygonalDrawable::draw()
+void PolygonalDrawable::draw() const
 {
     // Draw triangles
     m_vao->bind();

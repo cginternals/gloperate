@@ -35,7 +35,7 @@ public:
     *  @brief
     *    Draw geometry
     */
-    virtual void draw() = 0;
+    virtual void draw() const = 0;
 
 };
 
