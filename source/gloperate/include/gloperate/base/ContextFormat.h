@@ -25,17 +25,17 @@ public:
     enum class Profile
     {
         Core          ///< Functionality deprecated in OpenGL version 3.0 is not available.
-    ,   Compatibility ///< Functionality from earlier OpenGL versions is available.
-    ,   None
+      , Compatibility ///< Functionality from earlier OpenGL versions is available.
+      , None
     };
 
     // This is based on QSurfaceFormat::SwapBehavior
     enum class SwapBehavior
     {
         Default         ///< The default swap behaviour (of the platform).
-    ,   SingleBuffering ///< Might result in flickering when is done directly to screen without an intermediate offscreen buffer.
-    ,   DoubleBuffering ///< Rendering is done to the back buffer, which is then swapped with the front buffer.
-    ,   TripleBuffering ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
+      , SingleBuffering ///< Might result in flickering when is done directly to screen without an intermediate offscreen buffer.
+      , DoubleBuffering ///< Rendering is done to the back buffer, which is then swapped with the front buffer.
+      , TripleBuffering ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
     };
 
 
@@ -49,24 +49,24 @@ public:
     virtual ~ContextFormat();
 
     // 24 by default
-    int    depthBufferSize() const;
+    int  depthBufferSize() const;
     void setDepthBufferSize(int size);
 
-    int    redBufferSize() const;
+    int  redBufferSize() const;
     void setRedBufferSize(int size);
 
-    int    greenBufferSize() const;
+    int  greenBufferSize() const;
     void setGreenBufferSize(int size);
 
-    int    blueBufferSize() const;
+    int  blueBufferSize() const;
     void setBlueBufferSize(int size);
 
     // disabled by default
-    int    alphaBufferSize() const;
+    int  alphaBufferSize() const;
     void setAlphaBufferSize(int size);
 
     // disabled by default
-    int    samples() const;
+    int  samples() const;
     void setSamples(int samples);
 
     /** For major and minor parameters only valid version pairs are allowed,

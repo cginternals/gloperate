@@ -39,6 +39,15 @@ public:
     */
     virtual ~RenderWindow();
 
+    /**
+    *  @brief
+    *    Get surface that is rendered into the window
+    *
+    *  @return
+    *    Surface (cannot be null)
+    */
+    gloperate::Surface * surface() const;
+
 
 protected:
     // Virtual Window functions

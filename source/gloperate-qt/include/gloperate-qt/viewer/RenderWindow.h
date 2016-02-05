@@ -33,20 +33,22 @@ public:
 
     /**
     *  @brief
-    *    Constructor
-    *
-    *  @param[in] viewerContext
-    *    Viewer context to which the surface belongs (must NOT be null!)
-    *  @param[in] format
-    *    Surface format
-    */
-    RenderWindow(gloperate::ViewerContext * viewerContext, const QSurfaceFormat & format);
-
-    /**
-    *  @brief
     *    Destructor
     */
     virtual ~RenderWindow();
+
+    /**
+    *  @brief
+    *    Get surface that is rendered into the window
+    *
+    *  @return
+    *    Surface (cannot be null)
+    */
+    gloperate::Surface * surface() const;
+
+
+protected:
+    gloperate::Surface * m_surface;
 };
 
 

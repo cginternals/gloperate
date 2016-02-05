@@ -3,17 +3,12 @@
 
 #include <globjects/base/baselogging.h>
 
-//#include <gloperate/plugin/PluginManager.h>
-//#include <gloperate/plugin/PainterPlugin.h>
-
-//#include <gloperate/resources/ResourceManager.h>
-
 #include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/viewer/Surface.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/RenderWindow.h>
-//#include <gloperate-glfw/WindowEventHandler.h>
 
 
 using namespace gloperate;
@@ -22,73 +17,32 @@ using namespace gloperate_glfw;
 
 int main(int argc, char * argv[])
 {
+    // Initialize GLFW
+    Application::init();
     Application app(argc, argv);
 
     // Create viewer context
     ViewerContext viewerContext;
 
-    /*
-    ResourceManager resourceManager;
-
-    // Setup plugin manager
-    PluginManager pluginManager;
-    pluginManager.addSearchPath(app.applicationPath());
-    pluginManager.addSearchPath(app.applicationPath() + "/plugins");
-    #ifdef NDEBUG
-        pluginManager.scan("painters");
-    #else
-        pluginManager.scan("paintersd");
-    #endif
-
-    // Choose a painter
-    std::unique_ptr<gloperate::Painter> painter(nullptr);
-
-    std::string name = (argc > 1) ? argv[1] : "CubeScape";
-
-    Plugin * plugin = pluginManager.plugin(name);
-    if (!plugin) 
-    {
-        globjects::fatal() << "Plugin '" << name << "' not found. Listing plugins found:";
-        pluginManager.printPlugins();
-
-        return 1;
-    }
-
-    AbstractPainterPlugin * painterPlugin = dynamic_cast<AbstractPainterPlugin *>(plugin);
-    if (!painterPlugin) 
-    {
-        globjects::fatal() << "Plugin '" << name << "' is not a painter plugin.";
-
-        return 1;
-    }
-
-    painter.reset(painterPlugin->createPainter(resourceManager));
-    */
-
-    Application::init();
-
+    // Create render window
     RenderWindow window(&viewerContext);
-    //window.setPainter(painter.get());
-    //window.setEventHandler(new WindowEventHandler());
-
-    ContextFormat format;
-    format.setVersion(3, 2);
-
-    if (!window.create(format, "gloperate viewer"))
+    if (!window.create(window.surface()->negotiateContext(), "gloperate viewer"))
     {
         return 1;
     }
 
+    // Initialize context, print context info
     window.context()->use();
     window.context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
-
     globjects::info() << std::endl
         << "OpenGL Version:  " << window.context()->version() << std::endl
         << "OpenGL Vendor:   " << window.context()->vendor() << std::endl
         << "OpenGL Renderer: " << window.context()->renderer() << std::endl;
-
     window.context()->release();
+
+    // Display window
     window.show();
 
+    // Run main loop
     return app.run();
 }

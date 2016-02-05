@@ -11,6 +11,11 @@
 
 class QOpenGLContext;
 
+namespace gloperate
+{
+    class ContextFormat;
+}
+
 
 namespace gloperate_qt
 {
@@ -30,35 +35,41 @@ class GLOPERATE_QT_API OpenGLWindow : public QWindow
 public:
     /**
     *  @brief
-    *    Get default OpenGL format
-    *
-    *  @return
-    *    Surface format
-    */
-    static QSurfaceFormat defaultFormat();
-
-
-public:
-    /**
-    *  @brief
     *    Constructor
     */
     OpenGLWindow();
 
     /**
     *  @brief
-    *    Constructor
-    *
-    *  @param[in] format
-    *    Surface format
-    */
-    OpenGLWindow(const QSurfaceFormat & format);
-
-    /**
-    *  @brief
     *    Destructor
     */
     virtual ~OpenGLWindow();
+
+    /**
+    *  @brief
+    *    Set desired context format for the window
+    *
+    *  @param[in] format
+    *    Context format
+    *
+    *  @remarks
+    *    Use this function to set the context format from a
+    *    gloperate format description.
+    */
+    void setContextFormat(const gloperate::ContextFormat & format);
+
+    /**
+    *  @brief
+    *    Set desired context format for the window
+    *
+    *  @param[in] format
+    *    Surface format
+    *
+    *  @remarks
+    *    Use this function to set the context format from a
+    *    Qt surface format description.
+    */
+    void setContextFormat(const QSurfaceFormat & format);
 
     /**
     *  @brief

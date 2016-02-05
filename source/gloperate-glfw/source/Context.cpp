@@ -78,7 +78,7 @@ glbinding::Version Context::maxSupportedVersion()
 
 GLFWwindow * Context::createWindow(const ContextFormat & format)
 {
-    // check if version is valid and supported
+    // Check if version is valid and supported
     glbinding::Version version = format.version() < glbinding::Version(3, 0) ? maxSupportedVersion() : ContextFormat::validateVersion(format.version(), maxSupportedVersion());
 
     // GLFW3 does not set default hint values on window creation so at least
@@ -132,6 +132,7 @@ GLFWwindow * Context::createWindow(const ContextFormat & format)
         glfwSwapInterval(static_cast<int>(format.swapBehavior()));
         glfwMakeContextCurrent(nullptr);
     }
+
     return window;
 }
 

@@ -1,6 +1,8 @@
 
 #include "gloperate-qt/viewer/OpenGLWindow.h"
 
+#include <gloperate/base/ContextFormat.h>
+
 #include <QApplication>
 #include <QDebug>
 #include <QResizeEvent>
@@ -11,26 +13,55 @@ namespace gloperate_qt
 {
 
 
-QSurfaceFormat OpenGLWindow::defaultFormat()
-{
-    QSurfaceFormat format;
-    format.setProfile(QSurfaceFormat::CoreProfile);
-    #ifndef NDEBUG
-        format.setOption(QSurfaceFormat::DebugContext);
-    #endif
-    return format;
-}
-
 OpenGLWindow::OpenGLWindow()
-: OpenGLWindow(defaultFormat())
-{
-}
-
-OpenGLWindow::OpenGLWindow(const QSurfaceFormat & format)
-: m_context(new QOpenGLContext)
+: m_context(nullptr)
 , m_initialized(false)
 , m_updatePending(false)
 {
+}
+
+void OpenGLWindow::setContextFormat(const gloperate::ContextFormat & format)
+{
+    QSurfaceFormat qFormat;
+
+    // Set OpenGL version
+    glbinding::Version version = format.version();
+    qFormat.setVersion(version.m_major, version.m_minor);
+
+    // Set OpenGL profile
+    switch (format.profile())
+    {
+        case gloperate::ContextFormat::Profile::Core:
+            qFormat.setProfile(QSurfaceFormat::CoreProfile);
+            break;
+
+        case gloperate::ContextFormat::Profile::Compatibility:
+            qFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+            break;
+
+        default:
+            qFormat.setProfile(QSurfaceFormat::NoProfile);
+            break;
+    }
+
+    // Set buffer options
+    qFormat.setDepthBufferSize(format.depthBufferSize());
+    qFormat.setStencilBufferSize(format.stencilBufferSize());
+    qFormat.setRedBufferSize(format.redBufferSize());
+    qFormat.setGreenBufferSize(format.greenBufferSize());
+    qFormat.setBlueBufferSize(format.blueBufferSize());
+    qFormat.setAlphaBufferSize(format.alphaBufferSize());
+    qFormat.setStereo(format.stereo());
+    qFormat.setSamples(format.samples());
+
+    // Set context format
+    setContextFormat(qFormat);
+}
+
+void OpenGLWindow::setContextFormat(const QSurfaceFormat & format)
+{
+    m_context.reset(new QOpenGLContext);
+
     QSurfaceFormat f(format);
     f.setRenderableType(QSurfaceFormat::OpenGL);
 

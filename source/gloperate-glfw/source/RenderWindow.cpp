@@ -59,6 +59,11 @@ RenderWindow::~RenderWindow()
     delete m_surface;
 }
 
+gloperate::Surface * RenderWindow::surface() const
+{
+    return m_surface;
+}
+
 void RenderWindow::onContextInit()
 {
     m_surface->setOpenGLContext(m_context);
