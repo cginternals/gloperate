@@ -37,20 +37,24 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/gloperate.h
 
+    ${include_path}/base/AbstractContext.h
+    ${include_path}/base/OpenGLContext.h
+    ${include_path}/base/ContextFormat.h
+
     ${include_path}/viewer/ViewerContext.h
-    ${include_path}/viewer/AbstractContext.h
-    ${include_path}/viewer/ContextFormat.h
-    ${include_path}/viewer/RenderHandler.h
+    ${include_path}/viewer/Surface.h
     ${include_path}/viewer/DemoRenderer.h
 )
 
 set(sources
     ${source_path}/gloperate.cpp
 
+    ${source_path}/base/AbstractContext.cpp
+    ${source_path}/base/OpenGLContext.cpp
+    ${source_path}/base/ContextFormat.cpp
+
     ${source_path}/viewer/ViewerContext.cpp
-    ${source_path}/viewer/AbstractContext.cpp
-    ${source_path}/viewer/ContextFormat.cpp
-    ${source_path}/viewer/RenderHandler.cpp
+    ${source_path}/viewer/Surface.cpp
     ${source_path}/viewer/DemoRenderer.cpp
 )
 

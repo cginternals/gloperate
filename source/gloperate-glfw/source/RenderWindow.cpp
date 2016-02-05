@@ -49,28 +49,28 @@ static gloperate::Key fromGLFWKeyCode(int key)
 
 
 RenderWindow::RenderWindow()
-: m_renderHandler(new gloperate::DemoRenderer)
+: m_surface(new gloperate::DemoRenderer)
 {
 }
 
 RenderWindow::~RenderWindow()
 {
-    delete m_renderHandler;
+    delete m_surface;
 }
 
 void RenderWindow::onContextInit()
 {
-    m_renderHandler->onContextInit();
+    m_surface->onContextInit();
 }
 
 void RenderWindow::onContextDeinit()
 {
-    m_renderHandler->onContextDeinit();
+    m_surface->onContextDeinit();
 }
 
 void RenderWindow::onIdle()
 {
-    m_renderHandler->onIdle();
+    m_surface->onIdle();
 }
 
 void RenderWindow::onResize(ResizeEvent &)
@@ -79,7 +79,7 @@ void RenderWindow::onResize(ResizeEvent &)
 
 void RenderWindow::onFramebufferResize(ResizeEvent & event)
 {
-    m_renderHandler->onResize(
+    m_surface->onResize(
         event.width()
       , event.height()
     );
@@ -91,26 +91,26 @@ void RenderWindow::onMove(MoveEvent &)
 
 void RenderWindow::onPaint(PaintEvent &)
 {
-    m_renderHandler->onRender();
+    m_surface->onRender();
 }
 
 void RenderWindow::onKeyPress(KeyEvent & event)
 {
-    m_renderHandler->onKeyPress(
+    m_surface->onKeyPress(
         fromGLFWKeyCode(event.key())
     );
 }
 
 void RenderWindow::onKeyRelease(KeyEvent & event)
 {
-    m_renderHandler->onKeyRelease(
+    m_surface->onKeyRelease(
         fromGLFWKeyCode(event.key())
     );
 }
 
 void RenderWindow::onMousePress(MouseEvent & event)
 {
-    m_renderHandler->onMousePress(
+    m_surface->onMousePress(
         fromGLFWMouseButton(event.button())
       , event.x()
       , event.y()
@@ -119,7 +119,7 @@ void RenderWindow::onMousePress(MouseEvent & event)
 
 void RenderWindow::onMouseRelease(MouseEvent & event)
 {
-    m_renderHandler->onMouseRelease(
+    m_surface->onMouseRelease(
         fromGLFWMouseButton(event.button())
       , event.x()
       , event.y()
@@ -128,7 +128,7 @@ void RenderWindow::onMouseRelease(MouseEvent & event)
 
 void RenderWindow::onMouseMove(MouseEvent & event)
 {
-    m_renderHandler->onMouseMove(
+    m_surface->onMouseMove(
         event.x()
       , event.y()
     );

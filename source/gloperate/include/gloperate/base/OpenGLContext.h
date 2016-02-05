@@ -8,7 +8,8 @@
 #include <glbinding/ContextHandle.h>
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/viewer/ContextFormat.h>
+#include <gloperate/base/ContextFormat.h>
+#include <gloperate/base/AbstractContext.h>
 
 
 namespace gloperate
@@ -24,7 +25,7 @@ namespace gloperate
 *    windowing framework that was used to create the OpenGL context and/or window.
 *    Have a look at gloperate-qt or gloperate-glfw to find default implementations for the respective framework.
 */
-class GLOPERATE_API AbstractContext
+class GLOPERATE_API OpenGLContext : public AbstractContext
 {
 public:
     /**
@@ -108,13 +109,13 @@ public:
     *  @brief
     *    Constructor
     */
-    AbstractContext();
+    OpenGLContext();
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~AbstractContext();
+    virtual ~OpenGLContext();
 
     /**
     *  @brief
@@ -174,18 +175,6 @@ public:
     *    - Requires active context.
     */
     virtual bool setSwapInterval(SwapInterval interval);
-
-    /**
-    *  @brief
-    *    Make context current
-    */
-    virtual void makeCurrent() const = 0;
-
-    /**
-    *  @brief
-    *    Release context
-    */
-    virtual void doneCurrent() const = 0;
 
 
 protected:

@@ -1,5 +1,5 @@
 
-#include <gloperate/viewer/ContextFormat.h>
+#include <gloperate/base/ContextFormat.h>
 
 #include <cassert>
 #include <sstream>

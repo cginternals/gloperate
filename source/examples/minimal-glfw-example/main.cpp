@@ -74,7 +74,7 @@ int main(int argc, char * argv[])
         return 1;
     }
 
-    window.context()->makeCurrent();
+    window.context()->use();
     window.context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
 
     globjects::info() << std::endl
@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
         << "OpenGL Vendor:   " << window.context()->vendor() << std::endl
         << "OpenGL Renderer: " << window.context()->renderer() << std::endl;
 
-    window.context()->doneCurrent();
+    window.context()->release();
     window.show();
 
     return app.run();

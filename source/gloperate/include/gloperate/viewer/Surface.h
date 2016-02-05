@@ -11,27 +11,27 @@ namespace gloperate
 
 /**
 *  @brief
-*    Handler that controls the actual rendering into a context
+*    Representation of a surface into which can be rendered
 *
-*    A render handler is attached to a window or offscreen context and handles
-*    the actual rendering. It should be embedded by the windowing backend
-*    and receives state changes from the outside (such as window size, or mouse and keyboard
-*    events) and passes them on to the rendering components.
+*    A surface is attached to a window or offscreen context and handles the
+*    actual rendering. It should be embedded by the windowing backend and
+*    receives state changes from the outside (such as window size, mouse, or
+*    keyboard events) and passes them on to the rendering components.
 */
-class GLOPERATE_API RenderHandler
+class GLOPERATE_API Surface
 {
 public:
     /**
     *  @brief
     *    Constructor
     */
-    RenderHandler();
+    Surface();
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~RenderHandler();
+    virtual ~Surface();
 
     /**
     *  @brief

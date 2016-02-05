@@ -1,5 +1,5 @@
 
-#include <gloperate/viewer/AbstractContext.h>
+#include <gloperate/base/OpenGLContext.h>
 
 #include <cassert>
 #include <map>
@@ -20,7 +20,7 @@ namespace gloperate
 {
 
 
-glbinding::Version AbstractContext::retrieveVersion()
+glbinding::Version OpenGLContext::retrieveVersion()
 {
     assert(0 != glbinding::getCurrentContext());
 
@@ -47,7 +47,7 @@ glbinding::Version AbstractContext::retrieveVersion()
     return glbinding::Version(major, minor);
 }
 
-const std::string & AbstractContext::swapIntervalString(const SwapInterval interval)
+const std::string & OpenGLContext::swapIntervalString(const SwapInterval interval)
 {
     static const std::map<SwapInterval, std::string> swapiIdentifier = {
         { SwapInterval::NoVerticalSyncronization,       "NoVerticalSyncronization" }
@@ -57,45 +57,45 @@ const std::string & AbstractContext::swapIntervalString(const SwapInterval inter
     return swapiIdentifier.at(interval);
 }
 
-std::string AbstractContext::version()
+std::string OpenGLContext::version()
 {
     assert(0 != glbinding::getCurrentContext());
     return glbinding::ContextInfo::version().toString();
 }
 
-std::string AbstractContext::vendor()
+std::string OpenGLContext::vendor()
 {
     assert(0 != glbinding::getCurrentContext());
     return glbinding::ContextInfo::vendor();
 }
 
-std::string AbstractContext::renderer()
+std::string OpenGLContext::renderer()
 {
     assert(0 != glbinding::getCurrentContext());
     return glbinding::ContextInfo::renderer();
 }
 
 
-AbstractContext::AbstractContext()
+OpenGLContext::OpenGLContext()
 : m_swapInterval(SwapInterval::NoVerticalSyncronization)
 {
 }
 
-AbstractContext::~AbstractContext()
+OpenGLContext::~OpenGLContext()
 {
 }
 
-bool AbstractContext::isValid() const
+bool OpenGLContext::isValid() const
 {
     return 0 < handle();
 }
 
-AbstractContext::SwapInterval AbstractContext::swapInterval() const
+OpenGLContext::SwapInterval OpenGLContext::swapInterval() const
 {
     return m_swapInterval;
 }
 
-bool AbstractContext::setSwapInterval(const SwapInterval interval)
+bool OpenGLContext::setSwapInterval(const SwapInterval interval)
 {
     if (interval == m_swapInterval)
         return true;
@@ -145,7 +145,7 @@ bool AbstractContext::setSwapInterval(const SwapInterval interval)
     return result;
 }
 
-glbinding::ContextHandle AbstractContext::tryFetchHandle()
+glbinding::ContextHandle OpenGLContext::tryFetchHandle()
 {
     const glbinding::ContextHandle handle = glbinding::getCurrentContext();
 

@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/viewer/RenderHandler.h>
+#include <gloperate/viewer/Surface.h>
 
 
 namespace gloperate
@@ -13,7 +13,7 @@ namespace gloperate
 *  @brief
 *    Demo renderer handler that renders a simplen OpenGL scene
 */
-class GLOPERATE_API DemoRenderer : public RenderHandler
+class GLOPERATE_API DemoRenderer : public Surface
 {
 public:
     /**
@@ -28,7 +28,7 @@ public:
     */
     virtual ~DemoRenderer();
 
-    // Virtual RenderHandler functions
+    // Virtual Surface functions
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
     virtual void onIdle() override;

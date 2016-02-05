@@ -17,7 +17,7 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/viewer/ContextFormat.h>
+#include <gloperate/base/ContextFormat.h>
 
 
 using namespace gl;
@@ -205,16 +205,20 @@ const ContextFormat & Context::format() const
     return *m_format;
 }
 
-void Context::makeCurrent() const
+void Context::use() const
 {
     if (m_window)
+    {
         glfwMakeContextCurrent(m_window);
+    }
 }
 
-void Context::doneCurrent() const
+void Context::release() const
 {
     if (m_window && m_window == glfwGetCurrentContext())
+    {
         glfwMakeContextCurrent(nullptr);
+    }
 }
 
 

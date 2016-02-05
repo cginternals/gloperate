@@ -8,7 +8,7 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/viewer/ContextFormat.h>
+#include <gloperate/base/ContextFormat.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/Context.h>

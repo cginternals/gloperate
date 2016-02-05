@@ -6,7 +6,7 @@
 
 
 namespace gloperate {
-    class RenderHandler;
+    class Surface;
 }
 
 
@@ -57,7 +57,7 @@ protected:
 
 
 protected:
-    gloperate::RenderHandler * m_renderHandler;
+    gloperate::Surface * m_surface;
 };
 
 
