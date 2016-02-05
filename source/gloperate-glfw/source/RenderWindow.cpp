@@ -51,6 +51,10 @@ static gloperate::Key fromGLFWKeyCode(int key)
 
 RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
 : m_surface(new gloperate::DemoRenderer(viewerContext))
+, m_deviceWidth(0)
+, m_deviceHeight(0)
+, m_virtualWidth(0)
+, m_virtualHeight(0)
 {
 }
 
@@ -74,15 +78,29 @@ void RenderWindow::onIdle()
     m_surface->onIdle();
 }
 
-void RenderWindow::onResize(ResizeEvent &)
+void RenderWindow::onResize(ResizeEvent & event)
 {
+    m_virtualWidth  = event.width();
+    m_virtualHeight = event.height();
+
+    m_surface->onResize(
+        m_virtualWidth
+      , m_virtualHeight
+      , m_deviceWidth
+      , m_deviceHeight
+    );
 }
 
 void RenderWindow::onFramebufferResize(ResizeEvent & event)
 {
+    m_deviceWidth  = event.width();
+    m_deviceHeight = event.height();
+
     m_surface->onResize(
-        event.width()
-      , event.height()
+        m_virtualWidth
+      , m_virtualHeight
+      , m_deviceWidth
+      , m_deviceHeight
     );
 }
 
@@ -143,8 +161,17 @@ void RenderWindow::onMouseLeave(MouseLeaveEvent &)
 {
 }
 
-void RenderWindow::onScroll(ScrollEvent &)
+void RenderWindow::onScroll(ScrollEvent & event)
 {
+    glm::vec2  ofs = event.offset();
+    glm::ivec2 pos = event.pos();
+
+    m_surface->onMouseWheel(
+        ofs.x
+      , ofs.y
+      , pos.x
+      , pos.y
+    );
 }
 
 void RenderWindow::onFocus(FocusEvent &)

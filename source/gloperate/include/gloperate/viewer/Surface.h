@@ -120,12 +120,25 @@ public:
     *    This function is called when the framebuffer size has been changed,
     *    e.g., due to a resize of the window.
     *
-    *  @param[in] width
+    *  @param[in] deviceWidth
     *    Width (actual device pixels)
-    *  @param[in] height
+    *  @param[in] deviceHeight
     *    Height (actual device pixels)
+    *  @param[in] virtualWidth
+    *    Width (virtual pixels)
+    *  @param[in] virtualHeight
+    *    Height (virtual pixels)
+    *
+    *  @remarks
+    *    On low-res devices, device size and virtual size will be equal.
+    *    On high-res devices (e.g., retina displays), the device size will
+    *    contain the actual framebuffer size in pixels, while the virtual
+    *    size will be a smaller (virtual) pixel size. This can be facilitated
+    *    for example by rendering complex scenes in the lower size and using
+    *    the actual framebuffer size only for blitting onto the output device
+    *    to improve rendering performance on high-resolution devices.
     */
-    virtual void onResize(int width, int height);
+    virtual void onResize(int deviceWidth, int deviceHeight, int virtualWidth, int virtualHeight);
 
     /**
     *  @brief
@@ -200,6 +213,23 @@ public:
     *    Mouse Y-position (real device coordinates)
     */
     virtual void onMouseRelease(int button, int x, int y);
+
+    /**
+    *  @brief
+    *    Mouse wheel event
+    *
+    *    This function is called when the mouse wheel has been scrolled.
+    *
+    *  @param[in] dx
+    *    Delta in X-direction
+    *  @param[in] dy
+    *    Delta in Y-direction
+    *  @param[in] x
+    *    Mouse X-position (real device coordinates)
+    *  @param[in] y
+    *    Mouse Y-position (real device coordinates)
+    */
+    virtual void onMouseWheel(float dx, float dy, int x, int y);
 
     /**
     *  @brief

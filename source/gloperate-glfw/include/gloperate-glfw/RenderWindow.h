@@ -62,6 +62,10 @@ protected:
 
 protected:
     gloperate::Surface * m_surface;
+    int                  m_deviceWidth;
+    int                  m_deviceHeight;
+    int                  m_virtualWidth;
+    int                  m_virtualHeight;
 };
 
 

@@ -29,12 +29,12 @@ void DemoRenderer::onContextDeinit()
 
 void DemoRenderer::onIdle()
 {
-    std::cout << "onIdle()" << std::endl;
+//  std::cout << "onIdle()" << std::endl;
 }
 
-void DemoRenderer::onResize(int width, int height)
+void DemoRenderer::onResize(int deviceWidth, int deviceHeight, int virtualWidth, int virtualHeight)
 {
-    std::cout << "onResize(" << width << ", " << height << ")" << std::endl;
+    std::cout << "onResize(" << deviceWidth << ", " << deviceHeight << ", " << virtualWidth << ", " << virtualHeight << ")" << std::endl;
 }
 
 void DemoRenderer::onRender()
@@ -65,6 +65,11 @@ void DemoRenderer::onMousePress(int button, int x, int y)
 void DemoRenderer::onMouseRelease(int button, int x, int y)
 {
     std::cout << "onMouseReleased(" << button << ", " << x << ", " << y << ")" << std::endl;
+}
+
+void DemoRenderer::onMouseWheel(float dx, float dy, int x, int y)
+{
+    std::cout << "onMouseWheel(" << dx << ", " << dy << ", " << x << ", " << y << ")" << std::endl;
 }
 
 void DemoRenderer::onTimer(int id)

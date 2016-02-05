@@ -57,7 +57,7 @@ void Surface::onIdle()
 {
 }
 
-void Surface::onResize(int, int)
+void Surface::onResize(int, int, int, int)
 {
 }
 
@@ -82,6 +82,10 @@ void Surface::onMousePress(int, int, int)
 }
 
 void Surface::onMouseRelease(int, int, int)
+{
+}
+
+void Surface::onMouseWheel(float, float, int, int)
 {
 }
 
