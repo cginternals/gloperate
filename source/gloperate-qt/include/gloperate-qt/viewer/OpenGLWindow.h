@@ -9,8 +9,6 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
-class QOpenGLContext;
-
 namespace gloperate
 {
     class ContextFormat;
@@ -19,6 +17,9 @@ namespace gloperate
 
 namespace gloperate_qt
 {
+
+
+class Context;
 
 
 /**
@@ -78,7 +79,7 @@ public:
     *  @return
     *    OpenGL context
     */
-    QOpenGLContext * context() const;
+    Context * context() const;
 
     /**
     *  @brief
@@ -147,7 +148,8 @@ protected:
 
 
 protected:
-    QScopedPointer<QOpenGLContext> m_context;       ///< OpenGL context created and used by the window
+    QScopedPointer<QOpenGLContext> m_qContext;      ///< OpenGL context created and used by the window
+    mutable Context                      * m_context;
     bool                           m_initialized;   ///< Has the rendering already been initialized?
     bool                           m_updatePending; ///< Flag to indicate if a redraw has been requested
 };

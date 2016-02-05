@@ -1,8 +1,7 @@
 
 #include <gloperate-qt/viewer/Context.h>
 
-//#include <glbinding/Binding.h>
-//#include <glbinding/Version.h>
+#include <glbinding/Binding.h>
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/baselogging.h>
@@ -30,6 +29,8 @@ Context::Context(OpenGLWindow * window, QOpenGLContext * context)
     assert(context);
 
     Context::makeCurrent(m_context, m_window);
+
+    glbinding::Binding::initialize(false);
 
     m_handle = tryFetchHandle();
 
