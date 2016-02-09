@@ -7,7 +7,7 @@ namespace gloperate_text
 
 
 Glyph::Glyph()
-: m_index  (0u)
+: m_index(0u)
 , m_advance(0)
 {
 }
@@ -26,22 +26,22 @@ void Glyph::setIndex(const GlyphIndex index)
     m_index = index;
 }
 
-const glm::vec2 Glyph::subTextureOrigin() const
+const glm::vec2 & Glyph::subTextureOrigin() const
 {
     return m_subtextureOrigin;
 }
 
 void Glyph::setSubTextureOrigin(const glm::vec2 & origin)
 {
-    assert(origin.x >= 0.f);
-    assert(origin.x <= 1.f);
-    assert(origin.y >= 0.f);
-    assert(origin.y <= 1.f);
+    //assert(origin.x >= 0.f);
+    //assert(origin.x <= 1.f);
+    //assert(origin.y >= 0.f);
+    //assert(origin.y <= 1.f);
 
     m_subtextureOrigin = origin;
 }
 
-const glm::vec2 Glyph::subTextureExtent() const
+const glm::vec2 & Glyph::subTextureExtent() const
 {
     return m_subtextureExtent;
 }
@@ -54,7 +54,12 @@ void Glyph::setSubTextureExtent(const glm::vec2 & extent)
     m_subtextureExtent = extent;
 }
 
-const glm::vec2 Glyph::bearing() const
+bool Glyph::depictable() const
+{
+    return m_subtextureExtent.x > 0.f && m_subtextureExtent.y > 0.f;
+}
+
+const glm::vec2 & Glyph::bearing() const
 {
     return m_bearing;
 }
@@ -70,6 +75,16 @@ void Glyph::setBearing(const float fontAscent, const float xOffset, const float 
     m_bearing.y = fontAscent - yOffset;
 }
 
+const glm::vec2 & Glyph::extent() const
+{
+    return m_extent;
+}
+
+void Glyph::setExtent(const glm::vec2 & extent)
+{
+    m_extent = extent;
+}
+
 float Glyph::advance() const
 {
     return m_advance;
@@ -82,10 +97,11 @@ void Glyph::setAdvance(const float advance)
 
 float Glyph::kerning(GlyphIndex subsequentIndex) const
 {
-    if (m_kernings.find(subsequentIndex) == m_kernings.cend())
+    auto it = m_kernings.find(subsequentIndex);
+    if (it == m_kernings.cend())
         return 0.f;
 
-    return m_kernings.at(subsequentIndex);
+    return it->second;
 }
 
 void Glyph::setKerning(GlyphIndex subsequentIndex, const float kerning)

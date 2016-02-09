@@ -26,9 +26,9 @@ class AbstractTargetFramebufferCapability;
 namespace gloperate_text
 {
 
-
-class GlyphVertexCloud;
 class GlyphRenderer;
+class GlyphVertexCloud;
+
 
 class GLOPERATE_TEXT_API GlyphRenderStage : public gloperate::AbstractStage
 {
@@ -36,16 +36,17 @@ public:
     GlyphRenderStage();
     virtual ~GlyphRenderStage();
 
-    gloperate::InputSlot<GlyphVertexCloud> vertices;
-    gloperate::InputSlot<reflectionzeug::Color> fontColor;
-    gloperate::InputSlot<float> distanceThreshold;
+    gloperate::InputSlot<GlyphVertexCloud> vertexCloud;
+    gloperate::InputSlot<float> pixelPerInch;
 
     gloperate::InputSlot<gloperate::AbstractViewportCapability *> viewport;
     gloperate::InputSlot<gloperate::AbstractTargetFramebufferCapability *> targetFramebuffer;
+
 protected:
     virtual void initialize() override;
     virtual void process() override;
 
+protected:
     std::unique_ptr<GlyphRenderer> m_renderer;
 };
 

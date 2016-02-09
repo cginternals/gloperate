@@ -9,6 +9,7 @@
 #include <map>
 #include <algorithm>
 
+#include <glbinding/gl/enum.h>
 #include <loggingzeug/logging.h>
 
 #include <stringzeug/conversion.h>
@@ -142,6 +143,8 @@ void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, con
     const auto file = stringzeug::stripped(pairs.at("file"), { '"', '\r' });
 
     fontFace.setGlyphTexture(m_resourceManager.load<globjects::Texture>(path + "/" + file));
+    fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_CLAMP_TO_EDGE);
+    fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_CLAMP_TO_EDGE);
 }
 
 void FontLoader::handleChar(std::stringstream & stream, FontFace & fontFace) const
@@ -156,18 +159,20 @@ void FontLoader::handleChar(std::stringstream & stream, FontFace & fontFace) con
     glyph.setIndex(index);
 
     const auto extentScale = 1.f / glm::vec2(fontFace.glyphTextureExtent());
+    const auto extent = glm::vec2(
+        stringzeug::fromString<float>(pairs.at("width")),
+        stringzeug::fromString<float>(pairs.at("height")));
 
     glyph.setSubTextureOrigin({
         stringzeug::fromString<float>(pairs.at("x")) * extentScale.x,
-        stringzeug::fromString<float>(pairs.at("y")) * extentScale.y });
+        1.f - (stringzeug::fromString<float>(pairs.at("y")) + extent.y) * extentScale.y});
 
-    glyph.setSubTextureExtent({
-        stringzeug::fromString<float>(pairs.at("width"))  * extentScale.x,
-        stringzeug::fromString<float>(pairs.at("height")) * extentScale.y });
+    glyph.setExtent(extent);
+    glyph.setSubTextureExtent(extent * extentScale);
 
     glyph.setBearing(fontFace.ascent(), 
-        stringzeug::fromString<float>(pairs.at("xoffset")),
-        stringzeug::fromString<float>(pairs.at("yoffset")));
+        stringzeug::fromString<float>(pairs.at("xoffset")) - fontFace.glyphTexturePadding()[3],
+        stringzeug::fromString<float>(pairs.at("yoffset")) - fontFace.glyphTexturePadding()[0]);
 
     glyph.setAdvance(stringzeug::fromString<float>(pairs.at("xadvance")));
 

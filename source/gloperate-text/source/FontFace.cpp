@@ -126,21 +126,22 @@ bool FontFace::hasGlyph(const GlyphIndex index) const
 
 Glyph & FontFace::glyph(const GlyphIndex index)
 {
-    if (m_glyphs.find(index) != m_glyphs.cend())
-        return m_glyphs.at(index);
+    const auto existing = m_glyphs.find(index);
+    if (existing != m_glyphs.cend())
+        return existing->second;
 
     auto glyph = Glyph();
     glyph.setIndex(index);
 
-    addGlyph(glyph);
-
-    return m_glyphs.at(index);
+    const auto inserted = m_glyphs.emplace(glyph.index(), glyph);
+    return inserted.first->second;
 }
 
 const Glyph & FontFace::glyph(const GlyphIndex index) const
 {
-    if (m_glyphs.find(index) != m_glyphs.cend())
-        return m_glyphs.at(index);
+    const auto existing = m_glyphs.find(index);
+    if (existing != m_glyphs.cend())
+        return existing->second;
 
     static const auto empty = Glyph();
     return empty;
@@ -153,23 +154,30 @@ void FontFace::addGlyph(const Glyph & glyph)
     m_glyphs.emplace(glyph.index(), glyph);
 }
 
+bool FontFace::depictable(const GlyphIndex index) const
+{
+    return glyph(index).depictable();
+}
+
 float FontFace::kerning(const GlyphIndex index, const GlyphIndex subsequentIndex) const
 {
-    if (!hasGlyph(index) || !hasGlyph(subsequentIndex))
+    const auto it = m_glyphs.find(index);
+    if (it == m_glyphs.cend())
         return 0.f;
 
-    return glyph(index).kerning(subsequentIndex);
+    return it->second.kerning(subsequentIndex);
 }
 
 void FontFace::setKerning(const GlyphIndex index, const GlyphIndex subsequentIndex, const float kerning)
 {
-    if (!hasGlyph(index) || !hasGlyph(subsequentIndex))
+    const auto it = m_glyphs.find(index);
+    if (it == m_glyphs.cend() || !hasGlyph(subsequentIndex))
     {
         assert(false);
         return;
     }
 
-    glyph(index).setKerning(subsequentIndex, kerning);
+    it->second.setKerning(subsequentIndex, kerning);
 }
 
 

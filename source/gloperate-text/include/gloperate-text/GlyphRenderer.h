@@ -14,20 +14,24 @@ namespace gloperate_text
 
 class GlyphVertexCloud;
 
+
 class GLOPERATE_TEXT_API GlyphRenderer
 {
+
 public:
+
     GlyphRenderer();
     GlyphRenderer(globjects::Shader * fragmentShader);
     GlyphRenderer(globjects::Program * program);
     virtual ~GlyphRenderer();
 
-    void render(const GlyphVertexCloud & vertexCloud) const;
-
     globjects::Program * program();
     const globjects::Program * program() const;
 
+    void render(const GlyphVertexCloud & vertexCloud) const;
+
 protected:
+
     globjects::ref_ptr<globjects::Program> m_program;
 };
 

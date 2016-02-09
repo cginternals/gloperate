@@ -322,6 +322,23 @@ public:
 
     /**
     * @brief
+    *   Check if a glyph is depictable/renderable
+    *
+    *   If the glyph's subtexture vertical or horizontal extent is 
+    *   zero the glyph does not need to be depicted/rendered. E.g.,
+    *   spaces, line feeds, other control sequences as well as 
+    *   unknown glyphs do not need to be processed for rendering.
+    *
+    * @param[in] index
+    *   Index of the glyph to access.
+    *
+    * @return
+    *   Returns true if the glyph needs to be depicted/rendered.
+    */
+    bool depictable(GlyphIndex index) const;
+
+    /**
+    * @brief
     *   Kerning for a glyph and a subsequent glyph in pt.
     *
     *   If the glyph or the subsequent glyph are unknown to this font

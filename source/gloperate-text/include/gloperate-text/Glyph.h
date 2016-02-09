@@ -2,7 +2,7 @@
 #pragma once
 
 #include <cstdint>
-#include <map>
+#include <unordered_map>
 
 #include <glm/vec2.hpp>
 
@@ -46,7 +46,7 @@ public:
     *   Normalized coordinates pointing to the upper left texel of
     *   the glyph's sub-texture.
     */
-    const glm::vec2 subTextureOrigin() const;
+    const glm::vec2 & subTextureOrigin() const;
 
     /**
     * @brief
@@ -74,7 +74,7 @@ public:
     * @return
     *   Normalized width and height of the glyph's sub-texture.
     */
-    const glm::vec2 subTextureExtent() const;
+    const glm::vec2 & subTextureExtent() const;
 
     /**
     * @brief
@@ -91,27 +91,41 @@ public:
 
     /**
     * @brief
+    *   Check if a glyph is depictable/renderable
+    *
+    *   If the glyph's subtexture vertical or horizontal extent is
+    *   zero the glyph does not need to be depicted/rendered. E.g.,
+    *   spaces, line feeds, other control sequences as well as
+    *   unknown glyphs do not need to be processed for rendering.
+    *
+    * @return
+    *   Returns true if the glyph needs to be depicted/rendered.
+    */
+    bool depictable() const;
+
+    /**
+    * @brief
     *   The x and y offsets w.r.t. to the pen-position on the baseline.
     *
-    *   The horizontal bearing comprises the glyph-texture's padding
-    *   provided by the owning font face (see FontFace).
-    *   The vertical bearing also comprises the glyph-texture's padding
-    *   and is the measured w.r.t. baseline.
+    *   The horizontal bearing does not comprise the glyph-texture's
+    *   padding provided by the owning font face (see FontFace).
+    *   The vertical bearing also does not comprises the glyph-
+    *   texture's padding and is the measured w.r.t. baseline.
     *
     * @return
     *   The horizontal and vertical bearing based on the glyphs origin or 
     *   the pen-position placed on the baseline in pt.
     */
-    const glm::vec2 bearing() const;
+    const glm::vec2 & bearing() const;
 
     /**
     * @brief
     *   Set the x and y offsets w.r.t. to the pen-position on the baseline.
     *
-    *   The horizontal bearing comprises the glyph-texture's padding
-    *   provided by the owning font face (see FontFace).
-    *   The vertical bearing also comprises the glyph-texture's padding
-    *   and is the measured w.r.t. baseline.
+    *   The horizontal bearing does not comprise the glyph-texture's 
+    *   padding provided by the owning font face (see FontFace).
+    *   The vertical bearing also does not comprises the glyph-
+    *   texture's padding and is the measured w.r.t. baseline.
     *
     * @param[in] bearing
     *   The horizontal and vertical bearing based on the glyphs origin or
@@ -123,32 +137,50 @@ public:
     * @brief
     *   Convenience setter for the x and y bearings.
     *
-    *   The horizontal bearing comprises the glyph-texture's padding
-    *   provided by the owning font face (see FontFace).
-    *   The vertical bearing also comprises the glyph-texture's padding
-    *   and is the measured w.r.t. baseline.
+    *   The horizontal bearing does not comprise the glyph-texture's
+    *   padding provided by the owning font face (see FontFace).
+    *   The vertical bearing also does not comprise the glyph-
+    *   texture's padding and is the measured w.r.t. baseline.
     *
     *   The vertical bearing is computed as follows:
-    *       bearingY = fontAscent - yOffset
+    *       bearingY = fontAscent - (yOffset - top padding)
     *   The horizontal bearing equals the xOffset:
-    *       bearingX = xOffset:
+    *       bearingX = xOffset - left padding:
     *
     * @param[in] fontAscent
     *   The font face's (FontFace) ascent in pt.
     * @param[in] xOffset
-    *   The glyphs horizotnal offset including left padding.
+    *   The glyphs horizotnal offset without left padding.
     * @param[in] yOffset
     *   The glyphs vertical offset w.r.t. the font's topmost 
-    *   descendends, including the font's top padding in pt.
+    *   descendends, without the font's top padding in pt.
     */
     void setBearing(float fontAscent, float xOffset, float yOffset);
+
+    /**
+    * @brief
+    *   Width and height of the glyph in pt.
+    *
+    * @return
+    *   The glyph's extent by means of width and height in pt.
+    */
+    const glm::vec2 & extent() const;
+
+    /**
+    * @brief
+    *   Set width and height of the glyph in pt.
+    *
+    * @param[in] extent
+    *   The glyph's extent (width and height) in pt.
+    */
+    void setExtent(const glm::vec2 & extent);
 
     /**
     * @brief
     *   The glyph's horizontal overall advance in pt.
     *
     *   The horizontal advance comprises the font face's left and 
-    *   right padding, the the glyphs (inner) width as well as the 
+    *   right padding, the glyphs (inner) width as well as the 
     *   horizontal bearing (and often a glyph specific gap). E.g.:
     *       advance = subtextureExtent_width + xOffset (+ gap)
     *   or alternatively:
@@ -164,7 +196,7 @@ public:
     *   Set the glyph's horizontal overall advance in pt.
     *
     *   The horizontal advance comprises the font face's left and
-    *   right padding, the the glyphs (inner) width as well as the
+    *   right padding, the glyphs (inner) width as well as the
     *   horizontal bearing (and often a glyph specific gap). E.g.:
     *       advance = subtextureExtent_width + xOffset (+ gap)
     *   or alternatively:
@@ -218,13 +250,14 @@ protected:
 
     GlyphIndex m_index;
 
-    glm::vec2  m_subtextureOrigin;
-    glm::vec2  m_subtextureExtent;
+    glm::vec2 m_subtextureOrigin;
+    glm::vec2 m_subtextureExtent;
 
-    glm::vec2  m_bearing;
-    float      m_advance;
+    glm::vec2 m_bearing;
+    float     m_advance;
+    glm::vec2 m_extent;
 
-    using KerningBySubsequentGlyphIndex = std::map<GlyphIndex, float>;
+    using KerningBySubsequentGlyphIndex = std::unordered_map<GlyphIndex, float>;
     KerningBySubsequentGlyphIndex m_kernings;
 };
 
