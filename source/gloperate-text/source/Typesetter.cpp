@@ -90,17 +90,16 @@ glm::vec2 Typesetter::typeset(
         }
     }
 
-    if (!dryrun) // transform glyphs in vertex cloud
-        typeset_transform(sequence, fontFace, begin);
+    if (!dryrun)
+    {
+//        origin_transform()
 
-    // ToDo: refine to support 3D transforms
-    auto ll = glm::vec4(0.f, 0.f, 0.f, 1.f);
-    auto ur = ll + glm::vec4(extent, 0.f, 0.f);
+        // transform glyphs in vertex cloud
+        vertex_transform(sequence.transform(), begin, vertex);
 
-    ll = sequence.transform() * ll;
-    ur = sequence.transform() * ur;
+    }
 
-    return glm::vec2(ur.x - ll.x, ur.y - ll.y);
+    return extent_transform(sequence, extent);
 }
 
 inline bool Typesetter::typeset_wordwrap(
@@ -188,7 +187,7 @@ inline void Typesetter::typeset_extent(
     auto lineWidth = pen.x;
 
     // on line feed, if last/preceding glyph is not depictable
-    // revert its advance (important for horizontal alignment).
+    // revert its advance (important for text alignment).
     auto precedingGlyph = fontFace.glyph(*(preceding));
     if (!precedingGlyph.depictable())
         lineWidth -= precedingGlyph.advance();
@@ -199,16 +198,16 @@ inline void Typesetter::typeset_extent(
 
 inline void Typesetter::typeset_align(
     const glm::vec2 & pen
-,   const HorizontalAlignment alignment
+,   const Alignment alignment
 ,   const GlyphVertexCloud::Vertices::iterator & begin
 ,   const GlyphVertexCloud::Vertices::iterator & end)
 {
-    if (alignment == HorizontalAlignment::Left)
+    if (alignment == Alignment::LeftAligned)
         return;
 
     auto penOffset = -pen.x;
 
-    if (alignment == HorizontalAlignment::Center)
+    if (alignment == Alignment::Centered)
         penOffset *= 0.5f;
 
     // origin is expected to be in 'font face space' (not transformed)
@@ -216,35 +215,39 @@ inline void Typesetter::typeset_align(
         v->origin.x += penOffset;
 }
 
-inline void Typesetter::typeset_transform(
-    const GlyphSequence & sequence
-,   const FontFace & fontFace
-,   const GlyphVertexCloud::Vertices::iterator & begin)
+inline void Typesetter::vertex_transform(
+    const glm::mat4 & transform
+,   const GlyphVertexCloud::Vertices::iterator & begin
+,   const GlyphVertexCloud::Vertices::iterator & end)
 {
-    auto vertex = begin;
-
-    const auto iEnd = sequence.string().cend();
-    for (auto i = sequence.string().cbegin(); i != iEnd; ++i)
+    for (auto v = begin; v != end; ++v)
     {
-        if (!fontFace.depictable(*i))
-            continue;
+        auto ll = glm::vec4(v->origin, 0.f, 1.f);
+        auto ur = ll + glm::vec4(v->extent, 0.f, 0.f);
 
-        // ToDo: refine to support 3D transforms
+        ll = transform * ll;
+        ur = transform * ur;
 
-        auto ll = glm::vec4(vertex->origin, 0.f, 1.f);
-        auto ur = ll + glm::vec4(vertex->extent, 0.f, 0.f);
-
-        ll = sequence.transform() * ll;
-        ur = sequence.transform() * ur;
-
-        vertex->origin.x = ll.x;
-        vertex->origin.y = ll.y;
+        v->origin.x = ll.x;
+        v->origin.y = ll.y;
         // transform back to extent
-        vertex->extent.x = ur.x - ll.x;
-        vertex->extent.y = ur.y - ll.y;
-
-        ++vertex;
+        v->extent.x = ur.x - ll.x;
+        v->extent.y = ur.y - ll.y;
     }
+}
+
+inline glm::vec2 Typesetter::extent_transform(
+    const GlyphSequence & sequence
+,   const glm::vec2 & extent)
+{
+    // ToDo: refine to support 3D transforms
+    auto ll = glm::vec4(0.f, 0.f, 0.f, 1.f);
+    auto ur = ll + glm::vec4(extent, 0.f, 0.f);
+
+    ll = sequence.transform() * ll;
+    ur = sequence.transform() * ur;
+
+    return glm::vec2(ur.x - ll.x, ur.y - ll.y);
 }
 
 

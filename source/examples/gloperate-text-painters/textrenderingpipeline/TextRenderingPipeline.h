@@ -23,8 +23,7 @@ namespace gloperate
 
 namespace gloperate_text
 {
-    enum class HorizontalAlignment : unsigned char;
-    enum class VerticalAlignment : unsigned char;
+    enum class Alignment : unsigned char;
 }
 
 
@@ -55,7 +54,7 @@ public:
     gloperate::Data<bool> wordWrap;
     gloperate::Data<float> lineWidth;
 
-    gloperate::Data<gloperate_text::HorizontalAlignment> alignment;
+    gloperate::Data<gloperate_text::Alignment> alignment;
 
     gloperate::Data<gloperate::AbstractTargetFramebufferCapability *> targetFBO;
     gloperate::Data<gloperate::AbstractViewportCapability *> viewport;

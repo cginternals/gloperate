@@ -43,8 +43,8 @@ public:
     ,   float fontSize
     ,   const FontFace & fontFace);
 
-    HorizontalAlignment alignment() const;
-    void setAlignment(HorizontalAlignment alginment);
+    Alignment alignment() const;
+    void setAlignment(Alignment alginment);
 
     const glm::mat4 & transform() const;
     void setTransform(const glm::mat4 & transform);
@@ -69,7 +69,7 @@ protected:
     bool m_wordWrap;
     float m_lineWidth;
 
-    HorizontalAlignment m_alignment;
+    Alignment m_alignment;
 
     glm::mat4 m_transform;
 };

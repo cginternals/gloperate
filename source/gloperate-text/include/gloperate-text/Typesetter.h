@@ -10,7 +10,7 @@
 
 namespace gloperate_text
 {
-enum class HorizontalAlignment : unsigned char;
+enum class Alignment : unsigned char;
 
 class GlyphSequence;
 class FontFace;
@@ -38,7 +38,7 @@ public:
 
 private:
 
-    inline static bool typeset_wordwrap(
+    static bool typeset_wordwrap(
         const GlyphSequence & sequence
     ,   const FontFace & fontFace
     ,   const glm::vec2 & pen
@@ -46,33 +46,37 @@ private:
     ,   const std::u32string::const_iterator & index
     ,   std::u32string::const_iterator & safe_forward);
 
-    inline static std::u32string::const_iterator typeset_forward(
+    static std::u32string::const_iterator typeset_forward(
         const GlyphSequence & sequence
     ,   const FontFace & fontFace
     ,   const std::u32string::const_iterator & begin
     ,   float & width);
 
-    inline static void typeset_glyph(
+    static void typeset_glyph(
         const glm::vec2 & pen
     ,   const Glyph & glyph
     ,   const GlyphVertexCloud::Vertices::iterator & vertex);
 
-    inline static void typeset_extent(
+    static void typeset_extent(
         const FontFace & fontFace
     ,   const std::u32string::const_iterator & preceding
     ,   const glm::vec2 & pen
     ,   glm::vec2 & extent);
 
-    inline static void typeset_align(
+    static void typeset_align(
         const glm::vec2 & pen
-    ,   const HorizontalAlignment alignment
+    ,   const Alignment alignment
     ,   const GlyphVertexCloud::Vertices::iterator & begin
     ,   const GlyphVertexCloud::Vertices::iterator & end);
 
-    inline static void typeset_transform(
+    static void vertex_transform(
+        const glm::mat4 & sequence
+    ,   const GlyphVertexCloud::Vertices::iterator & begin
+    ,   const GlyphVertexCloud::Vertices::iterator & end);
+
+    static glm::vec2 extent_transform(
         const GlyphSequence & sequence
-    ,   const FontFace & fontFace
-    ,   const GlyphVertexCloud::Vertices::iterator & begin);
+    ,   const glm::vec2 & extent);
 };
 
 

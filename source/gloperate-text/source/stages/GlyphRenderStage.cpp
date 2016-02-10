@@ -43,12 +43,17 @@ void GlyphRenderStage::process()
     {
         fbo = globjects::Framebuffer::defaultFBO();
     }
-
     fbo->bind(gl::GL_FRAMEBUFFER);
 
-    glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+    gl::glClearColor(1.f, 1.f, 1.f, 1.f);
+    gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+
+    gl::glEnable(gl::GL_BLEND);
+    gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
     m_renderer->render(vertexCloud.data());
+
+    gl::glDisable(gl::GL_BLEND);
 
     fbo->unbind(gl::GL_FRAMEBUFFER);
 }

@@ -21,8 +21,7 @@ namespace gloperate
 
 namespace gloperate_text
 {
-    enum class HorizontalAlignment : unsigned char;
-    enum class VerticalAlignment : unsigned char;
+    enum class Alignment : unsigned char;
 
     class FontFace;
     class GlyphSequence;
@@ -51,7 +50,7 @@ public:
     gloperate::InputSlot<glm::vec4> margins;
     gloperate::InputSlot<bool> wordWrap;
     gloperate::InputSlot<float> lineWidth;
-    gloperate::InputSlot<gloperate_text::HorizontalAlignment> alignment;
+    gloperate::InputSlot<gloperate_text::Alignment> alignment;
 
     gloperate::Data<std::vector<gloperate_text::GlyphSequence>> sequences;
 };

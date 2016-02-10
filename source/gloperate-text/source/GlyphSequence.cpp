@@ -17,7 +17,7 @@ namespace gloperate_text
 GlyphSequence::GlyphSequence()
 : m_wordWrap(false)
 , m_lineWidth(0.f)
-, m_alignment(HorizontalAlignment::Left)
+, m_alignment(Alignment::LeftAligned)
 {
 }
 
@@ -79,12 +79,12 @@ void GlyphSequence::setLineWidth(
     m_lineWidth = glm::max(lineWidth * fontFace.size() / fontSize, 0.f);
 }
 
-HorizontalAlignment GlyphSequence::alignment() const
+Alignment GlyphSequence::alignment() const
 {
     return m_alignment;
 }
 
-void GlyphSequence::setAlignment(const HorizontalAlignment alignment)
+void GlyphSequence::setAlignment(const Alignment alignment)
 {
     m_alignment = alignment;
 }

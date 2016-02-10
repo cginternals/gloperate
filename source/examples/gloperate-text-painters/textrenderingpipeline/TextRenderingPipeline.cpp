@@ -33,11 +33,11 @@ TextRenderingPipeline::TextRenderingPipeline()
 //, time(nullptr)
 , pixelPerInch(72.f)
 , fontSize(16.f)
-, origin(0.f, 1.f)
+, origin(-1.f, 1.f)
 , margins(64.f, 32.f, 64.f, 32.f) // t r b l
 , wordWrap(true)
 , lineWidth(756.f)
-, alignment(gloperate_text::HorizontalAlignment::Right)
+, alignment(gloperate_text::Alignment::LeftAligned)
 , targetFBO(nullptr)
 , viewport(nullptr)
 {

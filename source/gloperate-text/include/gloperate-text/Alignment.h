@@ -11,16 +11,10 @@
 namespace gloperate_text
 {
 
-enum class GLOPERATE_TEXT_API HorizontalAlignment : unsigned char
+enum class GLOPERATE_TEXT_API Alignment : unsigned char
 {
-    Left, Center, Right
+    LeftAligned, Centered, RightAligned
 };
-
-enum class GLOPERATE_TEXT_API VerticalAlignment : unsigned char
-{
-    Ascent, Center, Baseline, Descent
-};
-
 
 } // namespace gloperate_text
 
@@ -29,21 +23,10 @@ namespace std
 {
 
 template<>
-struct hash<gloperate_text::HorizontalAlignment>
+struct hash<gloperate_text::Alignment>
 {
     std::hash<unsigned char>::result_type operator()(
-        const gloperate_text::HorizontalAlignment & arg) const
-    {
-        std::hash<unsigned char> hasher;
-        return hasher(static_cast<unsigned char>(arg));
-    }
-};
-
-template<>
-struct hash<gloperate_text::VerticalAlignment>
-{
-    std::hash<unsigned char>::result_type operator()(
-        const gloperate_text::VerticalAlignment & arg) const
+        const gloperate_text::Alignment & arg) const
     {
         std::hash<unsigned char> hasher;
         return hasher(static_cast<unsigned char>(arg));
@@ -56,28 +39,14 @@ namespace reflectionzeug
 {
 
 template<>
-struct EnumDefaultStrings<gloperate_text::HorizontalAlignment>
+struct EnumDefaultStrings<gloperate_text::Alignment>
 {
-    std::map<gloperate_text::HorizontalAlignment, std::string> operator()()
+    std::map<gloperate_text::Alignment, std::string> operator()()
     {
         return{
-            { gloperate_text::HorizontalAlignment::Left,   "Left" },
-            { gloperate_text::HorizontalAlignment::Center, "Center" },
-            { gloperate_text::HorizontalAlignment::Right,  "Right" }
-        };
-    }
-};
-
-template<>
-struct EnumDefaultStrings<gloperate_text::VerticalAlignment>
-{
-    std::map<gloperate_text::VerticalAlignment, std::string> operator()()
-    {
-        return{
-            { gloperate_text::VerticalAlignment::Ascent,   "Ascent" },
-            { gloperate_text::VerticalAlignment::Center,   "Center" },
-            { gloperate_text::VerticalAlignment::Baseline, "Baseline" },
-            { gloperate_text::VerticalAlignment::Descent,  "Descent" },
+            { gloperate_text::Alignment::LeftAligned, "LeftAligned" },
+            { gloperate_text::Alignment::Centered, "Centered" },
+            { gloperate_text::Alignment::RightAligned, "RightAligned" }
         };
     }
 };
