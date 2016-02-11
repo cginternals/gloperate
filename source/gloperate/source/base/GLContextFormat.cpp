@@ -76,14 +76,6 @@ glbinding::Version GLContextFormat::validateVersion(
     }
 }
 
-bool GLContextFormat::verify(
-    const GLContextFormat & requested
-  , const GLContextFormat & created)
-{
-    return (verifyVersionAndProfile(requested, created) &&
-            verifyPixelFormat(requested, created) );
-}
-
 GLContextFormat::GLContextFormat()
 : m_version(glbinding::Version(4, 5))
 , m_profile(Profile::None)
@@ -227,9 +219,9 @@ bool GLContextFormat::stereo() const
     return m_stereo;
 }
 
-void GLContextFormat::setStereo(const bool enable)
+void GLContextFormat::setStereo(const bool on)
 {
-    m_stereo = enable;
+    m_stereo = on;
 }
 
 int GLContextFormat::samples() const
@@ -254,108 +246,130 @@ void GLContextFormat::setSwapBehavior(const GLContextFormat::SwapBehavior behavi
 
 bool GLContextFormat::verify(const GLContextFormat & requested) const
 {
-    return verify(requested, *this);
+   return verifyVersionAndProfile(requested)
+             && verifyPixelFormat(requested);
 }
 
-bool GLContextFormat::verifyVersionAndProfile(const GLContextFormat & requested, const GLContextFormat & created)
+bool GLContextFormat::verifyVersionAndProfile(const GLContextFormat & requested) const
 {
-    const bool sameProfiles(requested.profile() == created.profile());
+    bool sameProfiles = (requested.profile() == profile());
 
     if (!sameProfiles)
     {
         warning() << "Profile mismatch for the current context: "
             << profileString(requested.profile()) << " requested, "
-            << profileString(created.profile())   << " created.";
+            << profileString(profile())           << " created.";
     }
 
-    if (requested.version() != created.version())
+    if (requested.version() != version())
     {
         warning() << "Version mismatch for the current context: "
             << requested.version().toString() << " requested, "
-            << created.version().toString()   << " created.";
+            << version().toString()           << " created.";
 
         if (requested.profile() == Profile::Core)
+        {
             return false;
+        }
     }
+
     return sameProfiles;
 }
 
-inline void GLContextFormat::verifyBufferSize(
-    const unsigned int sizeRequested
-,   const unsigned int sizeInitialized
-,   const std::string & warning
-,   std::vector<std::string> & issues)
-{
-    if (sizeRequested == sizeInitialized)
-        return;
-
-    std::stringstream ss;
-    ss << warning << " size mismatch: " << sizeRequested << " requested, " << sizeInitialized << " created.";
-
-    issues.push_back(ss.str());
-}
-
-bool GLContextFormat::verifyPixelFormat(
-    const GLContextFormat & requested
-,   const GLContextFormat & created)
+bool GLContextFormat::verifyPixelFormat(const GLContextFormat & requested) const
 {
     std::vector<std::string> issues;
 
-    const bool sameSwapBehaviors(requested.swapBehavior() == created.swapBehavior());
+    bool sameSwapBehaviors = (requested.swapBehavior() == swapBehavior());
 
     if (!sameSwapBehaviors)
     {
         warning() << "Swap behavior mismatch for the current context: "
             << swapBehaviorString(requested.swapBehavior()) << " requested, "
-            << swapBehaviorString(created.swapBehavior())   << " created.";
+            << swapBehaviorString(swapBehavior())           << " created.";
     }
 
     if (requested.depthBufferSize())
     {
-        if (!created.depthBufferSize())
+        if (!depthBufferSize())
+        {
             issues.push_back("- Depth Buffer requested, but none created.");
+        }
         else
-            verifyBufferSize(requested.depthBufferSize(), created.depthBufferSize()
-                , "- Depth Buffer", issues);
+        {
+            verifyBufferSize(requested.depthBufferSize(), depthBufferSize(),
+                "- Depth Buffer", issues
+            );
+        }
     }
 
-    verifyBufferSize(requested.redBufferSize(),   created.redBufferSize()
-        , "- Red Buffer", issues);
-    verifyBufferSize(requested.greenBufferSize(), created.greenBufferSize()
-        , "- Green Buffer", issues);
-    verifyBufferSize(requested.blueBufferSize(),  created.blueBufferSize()
-        , "- Blue Buffer", issues);
-    verifyBufferSize(requested.alphaBufferSize(), created.alphaBufferSize()
-        , "- Alpha Buffer", issues);
+    verifyBufferSize(requested.redBufferSize(),   redBufferSize(),
+        "- Red Buffer", issues);
+    verifyBufferSize(requested.greenBufferSize(), greenBufferSize(),
+        "- Green Buffer", issues);
+    verifyBufferSize(requested.blueBufferSize(),  blueBufferSize(),
+        "- Blue Buffer", issues);
+    verifyBufferSize(requested.alphaBufferSize(), alphaBufferSize(),
+        "- Alpha Buffer", issues);
 
     if (requested.stencilBufferSize())
     {
-        if (!created.stencilBufferSize())
+        if (!stencilBufferSize())
+        {
             issues.push_back("- Stencil Buffer requested, but none created.");
+        }
         else
-            verifyBufferSize(requested.stencilBufferSize(), created.stencilBufferSize()
-                , "- Stencil Buffer", issues);
+        {
+            verifyBufferSize(requested.stencilBufferSize(), stencilBufferSize(),
+                "- Stencil Buffer", issues);
+        }
     }
 
-    if (requested.stereo() && !created.stereo())
+    if (requested.stereo() && !stereo())
+    {
         issues.push_back("- Stereo Buffering requested, but not initialized.");
+    }
 
     if (requested.samples())
     {
-        if (!created.samples())
+        if (!samples())
+        {
             issues.push_back("- Sample Buffers requested, but none initialized.");
+        }
         else
-            verifyBufferSize(requested.samples(), created.samples(), "- Samples ", issues);
+        {
+            verifyBufferSize(requested.samples(), samples(), "- Samples ", issues);
+        }
     }
 
     if (issues.empty())
+    {
         return true;
+    }
 
     warning() << "Pixelformat mismatch for the current context:";
-    for(const std::string & issue : issues)
+    for (const std::string & issue : issues)
+    {
         warning() << issue;
+    }
 
     return false;
+}
+
+void GLContextFormat::verifyBufferSize(
+    const unsigned int sizeRequested
+  , const unsigned int sizeInitialized
+  , const std::string & warning
+  , std::vector<std::string> & issues) const
+{
+    if (sizeRequested == sizeInitialized)
+    {
+        return;
+    }
+
+    std::stringstream ss;
+    ss << warning << " size mismatch: " << sizeRequested << " requested, " << sizeInitialized << " created.";
+    issues.push_back(ss.str());
 }
 
 

@@ -85,31 +85,12 @@ public:
     *  @remarks
     *    If the requested version is not valid, the nearest valid
     *    version is tried to be found. The function will then return
-    *    the requested version if it is lower or equal to the
-    *    maximum version, or else the maximum version.
+    *    the requested version, if it is lower or equal to the
+    *    maximum version. Otherwise, the maximum version is returned.
     */
     static glbinding::Version validateVersion(
         const glbinding::Version & requested
       , const glbinding::Version & maximum);
-
-    /**
-    *  @brief
-    *    Compare OpenGL context version against a request version
-    *
-    *  @param[in] requested
-    *    OpenGL version
-    *  @param[in] created
-    *    OpenGL version
-    *
-    *  @return
-    *    'true' if context versions are equal, else 'false'
-    *
-    *  @remarks
-    *    This function compares the OpenGL context version, profile,
-    *    options, and pixel formats. Any found issues are logged to
-    *    globjects::warning.
-    */
-    static bool verify(const GLContextFormat & requested, const GLContextFormat & created);
 
 
 public:
@@ -186,79 +167,312 @@ public:
     */
     void setVersion(unsigned int majorVersion, unsigned int minorVersion);
 
+    /**
+    *  @brief
+    *    Get OpenGL profile
+    *
+    *  @return
+    *    OpenGL profile (default: None)
+    */
     Profile profile() const;
+
+    /**
+    *  @brief
+    *    Set OpenGL profile
+    *
+    *  @param[in] profile
+    *    OpenGL profile
+    */
     void setProfile(Profile profile);
 
+    /**
+    *  @brief
+    *    Get forward compatibility mode
+    *
+    *  @return
+    *    Forward compatibility mode (default: false)
+    */
     bool forwardCompatible() const;
+
+    /**
+    *  @brief
+    *    Set forward compatibility mode
+    *
+    *  @param[in] on
+    *    Forward compatibility mode
+    */
     void setForwardCompatible(bool on);
 
+    /**
+    *  @brief
+    *    Get debug context mode
+    *
+    *  @return
+    *    Debug context mode (default: false)
+    */
     bool debugContext() const;
+
+    /**
+    *  @brief
+    *    Set debug context mode
+    *
+    *  @param[in] on
+    *    Debug context mode
+    */
     void setDebugContext(bool on);
 
+    /**
+    *  @brief
+    *    Get buffer size for red color channel
+    *
+    *  @return
+    *    Buffer size (default: 8)
+    */
     int redBufferSize() const;
+
+    /**
+    *  @brief
+    *    Set buffer size for red color channel
+    *
+    *  @param[in] size
+    *    Buffer size
+    */
     void setRedBufferSize(int size);
 
+    /**
+    *  @brief
+    *    Get buffer size for green color channel
+    *
+    *  @return
+    *    Buffer size (default: 8)
+    */
     int greenBufferSize() const;
+
+    /**
+    *  @brief
+    *    Set buffer size for green color channel
+    *
+    *  @param[in] size
+    *    Buffer size
+    */
     void setGreenBufferSize(int size);
 
+    /**
+    *  @brief
+    *    Get buffer size for blue color channel
+    *
+    *  @return
+    *    Buffer size (default: 8)
+    */
     int blueBufferSize() const;
+
+    /**
+    *  @brief
+    *    Set buffer size for blue color channel
+    *
+    *  @param[in] size
+    *    Buffer size
+    */
     void setBlueBufferSize(int size);
 
+    /**
+    *  @brief
+    *    Get buffer size for alpha color channel
+    *
+    *  @return
+    *    Buffer size (default: 8)
+    */
     int alphaBufferSize() const;
+
+    /**
+    *  @brief
+    *    Set buffer size for alpha color channel
+    *
+    *  @param[in] size
+    *    Buffer size
+    */
     void setAlphaBufferSize(int size);
 
+    /**
+    *  @brief
+    *    Get depth buffer size
+    *
+    *  @return
+    *    Buffer size (default: 24)
+    */
     int depthBufferSize() const;
+
+    /**
+    *  @brief
+    *    Set depth buffer size
+    *
+    *  @param[in] size
+    *    Buffer size
+    */
     void setDepthBufferSize(int size);
 
+    /**
+    *  @brief
+    *    Get stencil buffer size
+    *
+    *  @return
+    *    Buffer size (default: 0)
+    */
     int stencilBufferSize() const;
+
+    /**
+    *  @brief
+    *    Set stencil buffer size
+    *
+    *  @param[in] size
+    *    Buffer size
+    */
     void setStencilBufferSize(int size);
 
+    /**
+    *  @brief
+    *    Get stereo mode
+    *
+    *  @return
+    *    Stereo mode (default: false)
+    */
     bool stereo() const;
-    void setStereo(bool enable);
 
+    /**
+    *  @brief
+    *    Set stereo mode
+    *
+    *  @param[in] on
+    *    Stereo mode
+    */
+    void setStereo(bool on);
+
+    /**
+    *  @brief
+    *    Get samples
+    *
+    *  @return
+    *    Number of samples (default: 0)
+    */
     int samples() const;
+
+    /**
+    *  @brief
+    *    Set samples
+    *
+    *  @param[in] samples
+    *    Number of samples
+    */
     void setSamples(int samples);
 
+    /**
+    *  @brief
+    *    Get swap behavior
+    *
+    *  @return
+    *    Swap behavior (default: DoubleBuffering)
+    */
     SwapBehavior swapBehavior() const;
+
+    /**
+    *  @brief
+    *    Set swap behavior
+    *
+    *  @param[in] behavior
+    *    Swap behavior
+    */
     void setSwapBehavior(SwapBehavior behavior);
 
+    /**
+    *  @brief
+    *    Compare OpenGL context formats against a requested format
+    *
+    *  @param[in] requested
+    *    OpenGL context format
+    *
+    *  @return
+    *    'true' if context formats are equal, else 'false'
+    *
+    *  @remarks
+    *    This function compares the OpenGL context version, profile,
+    *    options, and pixel formats. Any found issues are logged to
+    *    globjects::warning.
+    */
     bool verify(const GLContextFormat & requested) const;
 
 
 protected:
-    /** Compares (logged if erroneous) version and profile between both formats
+    /**
+    *  @brief
+    *    Compare OpenGL context version and profile against a requested format
+    *
+    *  @param[in] requested
+    *    OpenGL context format
+    *
+    *  @return
+    *    'true' if context versions and profiles are equal, else 'false'
+    *
+    *  @remarks
+    *    Any found issues are logged to globjects::warning.
     */
-    static bool verifyVersionAndProfile(const GLContextFormat & requested, const GLContextFormat & current);
+    bool verifyVersionAndProfile(const GLContextFormat & requested) const;
 
-    /** Compares (logged if erroneous) buffer sizes and more between both formats
+    /**
+    *  @brief
+    *    Compare buffer sizes and options against a requested format
+    *
+    *  @param[in] requested
+    *    OpenGL context format
+    *
+    *  @return
+    *    'true' if context options are equal, else 'false'
+    *
+    *  @remarks
+    *    Any found issues are logged to globjects::warning.
     */
-    static bool verifyPixelFormat(const GLContextFormat & requested, const GLContextFormat & current);
+    bool verifyPixelFormat(const GLContextFormat & requested) const;
 
-    /** Used as inline by verifyPixelFormat 
+    /**
+    *  @brief
+    *    Compare buffer sizes
+    *
+    *  @param[in] sizeRequested
+    *    Requested buffer size
+    *  @param[in] sizeInitialized
+    *    Found buffer size
+    *  @param[in] warning
+    *    Warning message that is issued when buffer sizes are not equal
+    *  @param[out] issues
+    *    List of warnings
+    *
+    *  @remarks
+    *    If the requested and found sizes are not equal, the function will
+    *    add the specified warning to the output list of warnings.
     */
-    static void verifyBufferSize(
+    void verifyBufferSize(
         unsigned int sizeRequested
       , unsigned int sizeInitialized
       , const std::string & warning
-      , std::vector<std::string> & issues);
+      , std::vector<std::string> & issues) const;
 
 
 protected:
-    glbinding::Version m_version;
-    Profile m_profile;
-    bool m_forwardCompatibility;
-    bool m_debugContext;
+    glbinding::Version m_version;       ///< OpenGL version (major, minor)
+    Profile            m_profile;       ///< OpenGL profile (core, compatibility, none)
 
-    unsigned int m_redBufferSize;
-    unsigned int m_greenBufferSize;
-    unsigned int m_blueBufferSize;
-    unsigned int m_alphaBufferSize;
-    unsigned int m_depthBufferSize;
-    unsigned int m_stencilBufferSize;
-    bool         m_stereo;
-    unsigned int m_samples;
+    bool m_forwardCompatibility;        ///< Forward compatibility mode
+    bool m_debugContext;                ///< Debug context mode
 
-    SwapBehavior m_swapBehavior;
+    unsigned int m_redBufferSize;       ///< Buffer size for red color channel
+    unsigned int m_greenBufferSize;     ///< Buffer size for green color channel
+    unsigned int m_blueBufferSize;      ///< Buffer size for blue color channel
+    unsigned int m_alphaBufferSize;     ///< Buffer size for alpha color channel
+    unsigned int m_depthBufferSize;     ///< Depth buffer size
+    unsigned int m_stencilBufferSize;   ///< Stencil buffer size
+    bool         m_stereo;              ///< Stereo mode
+    unsigned int m_samples;             ///< Number of samples
+
+    SwapBehavior m_swapBehavior;        ///< Swap behavior
 };
 
 
