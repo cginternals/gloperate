@@ -63,7 +63,6 @@ TextRenderingPipeline::TextRenderingPipeline()
     glyphPreparation->font = fontImport->font;
     glyphPreparation->sequences = demo->sequences;
 
-    glyphRendering->pixelPerInch = pixelPerInch;
     glyphRendering->vertexCloud = glyphPreparation->vertexCloud;
     glyphRendering->viewport = viewport;
     glyphRendering->targetFramebuffer = targetFBO;

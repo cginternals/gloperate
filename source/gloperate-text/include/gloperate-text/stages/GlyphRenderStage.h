@@ -37,7 +37,6 @@ public:
     virtual ~GlyphRenderStage();
 
     gloperate::InputSlot<GlyphVertexCloud> vertexCloud;
-    gloperate::InputSlot<float> pixelPerInch;
 
     gloperate::InputSlot<gloperate::AbstractViewportCapability *> viewport;
     gloperate::InputSlot<gloperate::AbstractTargetFramebufferCapability *> targetFramebuffer;
