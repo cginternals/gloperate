@@ -21,15 +21,21 @@ namespace gloperate
 class GLOPERATE_API GLContextFormat
 {
 public:
-    // This is based on QSurfaceFormat::OpenGLContextProfile
+    /**
+    *  @brief
+    *    OpenGL profile
+    */
     enum class Profile
     {
         Core          ///< Functionality deprecated in OpenGL version 3.0 is not available.
       , Compatibility ///< Functionality from earlier OpenGL versions is available.
-      , None
+      , None          ///< Version < 3.2, otherwise identical to Core
     };
 
-    // This is based on QSurfaceFormat::SwapBehavior
+    /**
+    *  @brief
+    *    Buffer swap behavior
+    */
     enum class SwapBehavior
     {
         Default         ///< The default swap behaviour (of the platform).
@@ -40,75 +46,182 @@ public:
 
 
 public:
+    /**
+    *  @brief
+    *    Get OpenGL profile as string
+    *
+    *  @param[in] profile
+    *    Profile
+    *
+    *  @return
+    *    String representation
+    */
     static const std::string & profileString(Profile profile);
+
+    /**
+    *  @brief
+    *    Get swap behaviour as string
+    *
+    *  @param[in] swapBehavior
+    *    Swap behavior
+    *
+    *  @return
+    *    String representation
+    */
     static const std::string & swapBehaviorString(SwapBehavior swapBehavior);
+
+    /**
+    *  @brief
+    *    Validate OpenGL context version against a maximum version
+    *
+    *  @param[in] requested
+    *    OpenGL version
+    *  @param[in] maximum
+    *    OpenGL version
+    *
+    *  @return
+    *    OpenGL version
+    *
+    *  @remarks
+    *    If the requested version is not valid, the nearest valid
+    *    version is tried to be found. The function will then return
+    *    the requested version if it is lower or equal to the
+    *    maximum version, or else the maximum version.
+    */
+    static glbinding::Version validateVersion(
+        const glbinding::Version & requested
+      , const glbinding::Version & maximum);
+
+    /**
+    *  @brief
+    *    Compare OpenGL context version against a request version
+    *
+    *  @param[in] requested
+    *    OpenGL version
+    *  @param[in] created
+    *    OpenGL version
+    *
+    *  @return
+    *    'true' if context versions are equal, else 'false'
+    *
+    *  @remarks
+    *    This function compares the OpenGL context version, profile,
+    *    options, and pixel formats. Any found issues are logged to
+    *    globjects::warning.
+    */
+    static bool verify(const GLContextFormat & requested, const GLContextFormat & created);
 
 
 public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @remarks
+    *    Will create a default context format (4.5 Core)
+    */
     GLContextFormat();
-    virtual ~GLContextFormat();
 
-    // 24 by default
-    int  depthBufferSize() const;
-    void setDepthBufferSize(int size);
+    /**
+    *  @brief
+    *    Destructor
+    *
+    *  @remarks
+    *    Will create a default context format (4.5 Core)
+    */
+    ~GLContextFormat();
 
-    int  redBufferSize() const;
-    void setRedBufferSize(int size);
+    /**
+    *  @brief
+    *    Get OpenGL version
+    *
+    *  @return
+    *    OpenGL version
+    */
+    const glbinding::Version & version() const;
 
-    int  greenBufferSize() const;
-    void setGreenBufferSize(int size);
+    /**
+    *  @brief
+    *    Get OpenGL major version
+    *
+    *  @return
+    *    Major version
+    */
+    int majorVersion() const;
 
-    int  blueBufferSize() const;
-    void setBlueBufferSize(int size);
+    /**
+    *  @brief
+    *    Get OpenGL minor version
+    *
+    *  @return
+    *    Minor version
+    */
+    int minorVersion() const;
 
-    // disabled by default
-    int  alphaBufferSize() const;
-    void setAlphaBufferSize(int size);
-
-    // disabled by default
-    int  samples() const;
-    void setSamples(int samples);
-
-    /** For major and minor parameters only valid version pairs are allowed,
-        on invalid pairs, nearest major and minor are set.
+    /**
+    *  @brief
+    *    Set OpenGL version
+    *
+    *  @param[in] version
+    *    OpenGL version
+    *
+    *  @remarks
+    *    For major and minor parameters only valid version pairs are allowed.
+    *    On invalid pairs, the nearest major and minor are set.
     */
     void setVersion(const glbinding::Version & version);
-    void setVersion(unsigned int majorVersion, unsigned int minorVersion);
 
-    /** Validates requested version itself and clamps to maximum 
+    /**
+    *  @brief
+    *    Set OpenGL version
+    *
+    *  @param[in] majorVersion
+    *    OpenGL major version
+    *  @param[in] minorVersion
+    *    OpenGL minor version
+    *
+    *  @remarks
+    *    For major and minor parameters only valid version pairs are allowed.
+    *    On invalid pairs, the nearest major and minor are set.
     */
-    static glbinding::Version validateVersion(
-        const glbinding::Version & requestedVersion
-    ,   const glbinding::Version & maximumVersion);
-
-    int majorVersion() const;
-    int minorVersion() const;
-    const glbinding::Version & version() const;
+    void setVersion(unsigned int majorVersion, unsigned int minorVersion);
 
     Profile profile() const;
     void setProfile(Profile profile);
 
-    bool debugContext() const;
-    void setDebugContext(bool on);
-
     bool forwardCompatible() const;
     void setForwardCompatible(bool on);
 
-    // disabled by default
-    int    stencilBufferSize() const;
+    bool debugContext() const;
+    void setDebugContext(bool on);
+
+    int redBufferSize() const;
+    void setRedBufferSize(int size);
+
+    int greenBufferSize() const;
+    void setGreenBufferSize(int size);
+
+    int blueBufferSize() const;
+    void setBlueBufferSize(int size);
+
+    int alphaBufferSize() const;
+    void setAlphaBufferSize(int size);
+
+    int depthBufferSize() const;
+    void setDepthBufferSize(int size);
+
+    int stencilBufferSize() const;
     void setStencilBufferSize(int size);
 
-    // disabled by default
     bool stereo() const;
     void setStereo(bool enable);
 
-    // default: SwapBehavior::DoubleBuffering
+    int samples() const;
+    void setSamples(int samples);
+
     SwapBehavior swapBehavior() const;
     void setSwapBehavior(SwapBehavior behavior);
 
-    /** Compares the created format against the requested one.
-    */
-    static bool verify(const GLContextFormat & requested, const GLContextFormat & created);
     bool verify(const GLContextFormat & requested) const;
 
 
@@ -125,31 +238,27 @@ protected:
     */
     static void verifyBufferSize(
         unsigned int sizeRequested
-    ,   unsigned int sizeInitialized
-    ,   const std::string & warning
-    ,   std::vector<std::string> & issues);
+      , unsigned int sizeInitialized
+      , const std::string & warning
+      , std::vector<std::string> & issues);
 
 
 protected:
     glbinding::Version m_version;
-
     Profile m_profile;
-
-    bool m_debugContext;
     bool m_forwardCompatibility;
+    bool m_debugContext;
 
-    unsigned int  m_redBufferSize;
-    unsigned int  m_greenBufferSize;
-    unsigned int  m_blueBufferSize;
-    unsigned int  m_alphaBufferSize;
-
-    unsigned int  m_depthBufferSize;
-    unsigned int  m_stencilBufferSize;
-
-    bool m_stereo;
+    unsigned int m_redBufferSize;
+    unsigned int m_greenBufferSize;
+    unsigned int m_blueBufferSize;
+    unsigned int m_alphaBufferSize;
+    unsigned int m_depthBufferSize;
+    unsigned int m_stencilBufferSize;
+    bool         m_stereo;
+    unsigned int m_samples;
 
     SwapBehavior m_swapBehavior;
-    unsigned int m_samples;
 };
 
 

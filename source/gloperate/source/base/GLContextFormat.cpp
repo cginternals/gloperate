@@ -15,45 +15,40 @@ namespace gloperate
 {
 
 
-GLContextFormat::GLContextFormat()
-: m_version(glbinding::Version(4, 5))
-, m_profile(Profile::None)
-, m_debugContext(false)
-, m_forwardCompatibility(false)
-, m_redBufferSize(8)
-, m_greenBufferSize(8)
-, m_blueBufferSize(8)
-, m_alphaBufferSize(8)
-, m_depthBufferSize(24)
-, m_stencilBufferSize(0)
-, m_stereo(false)
-, m_swapBehavior(SwapBehavior::DoubleBuffering)
-, m_samples(0)
+const std::string & GLContextFormat::profileString(const Profile profile)
 {
+    static const std::map<Profile, std::string> profileIdentifier =
+    {
+        { Profile::Core,          "Core" }
+      , { Profile::Compatibility, "Compatibility" } 
+      , { Profile::None,          "None" }
+    };
+
+    return profileIdentifier.at(profile);
 }
 
-GLContextFormat::~GLContextFormat()
+const std::string & GLContextFormat::swapBehaviorString(const SwapBehavior swapBehavior)
 {
+    static const std::map<SwapBehavior, std::string> swapbIdentifier =
+    {
+        { SwapBehavior::Default,         "Default" }
+      , { SwapBehavior::DoubleBuffering, "DoubleBuffering" }
+      , { SwapBehavior::SingleBuffering, "SingleBuffering" } 
+      , { SwapBehavior::TripleBuffering, "TripleBuffering" }
+    };
+
+    return swapbIdentifier.at(swapBehavior);
 }
 
-void GLContextFormat::setVersion(
-    const unsigned int majorVersion
-,   const unsigned int minorVersion)
+glbinding::Version GLContextFormat::validateVersion(
+    const glbinding::Version & requested
+  , const glbinding::Version & maximum)
 {
-    setVersion(glbinding::Version(majorVersion, minorVersion));
-}
-
-void GLContextFormat::setVersion(const glbinding::Version & version)
-{
-    m_version = version;
-}
-
-glbinding::Version GLContextFormat::validateVersion(const glbinding::Version &requestedVersion
-,   const glbinding::Version &_maximumVersion)
-{
-    glbinding::Version maximumVersion = _maximumVersion;
+    // Determine maximum version
+    glbinding::Version maximumVersion = maximum;
     if (maximumVersion.isNull())
     {
+        // [TODO] Why these?
 #ifdef __APPLE__
         maximumVersion = glbinding::Version(3, 2);
 #else
@@ -61,15 +56,58 @@ glbinding::Version GLContextFormat::validateVersion(const glbinding::Version &re
 #endif
     }
 
-    if (requestedVersion.isNull() || requestedVersion > maximumVersion)
-        return maximumVersion;
-
-    if (!requestedVersion.isValid())
+    // Use maximum version if specified version is not suitable
+    if (requested.isNull() || requested > maximumVersion)
     {
-        glbinding::Version nearest = requestedVersion.nearest();
+        return maximumVersion;
+    }
+
+    // If specified version in invalid, try to find the nearest version
+    else if (!requested.isValid())
+    {
+        glbinding::Version nearest = requested.nearest();
         return nearest > maximumVersion ? maximumVersion : nearest;
     }
-    return requestedVersion;
+
+    // Otherwise, use specified version
+    else
+    {
+        return requested;
+    }
+}
+
+bool GLContextFormat::verify(
+    const GLContextFormat & requested
+  , const GLContextFormat & created)
+{
+    return (verifyVersionAndProfile(requested, created) &&
+            verifyPixelFormat(requested, created) );
+}
+
+GLContextFormat::GLContextFormat()
+: m_version(glbinding::Version(4, 5))
+, m_profile(Profile::None)
+, m_forwardCompatibility(false)
+, m_debugContext(false)
+, m_redBufferSize(8)
+, m_greenBufferSize(8)
+, m_blueBufferSize(8)
+, m_alphaBufferSize(8)
+, m_depthBufferSize(24)
+, m_stencilBufferSize(0)
+, m_stereo(false)
+, m_samples(0)
+, m_swapBehavior(SwapBehavior::DoubleBuffering)
+{
+}
+
+GLContextFormat::~GLContextFormat()
+{
+}
+
+const glbinding::Version & GLContextFormat::version() const
+{
+    return m_version;
 }
 
 int GLContextFormat::majorVersion() const
@@ -82,9 +120,16 @@ int GLContextFormat::minorVersion() const
     return m_version.m_minor;
 }
 
-const glbinding::Version & GLContextFormat::version() const
+void GLContextFormat::setVersion(const glbinding::Version & version)
 {
-    return m_version;
+    m_version = version;
+}
+
+void GLContextFormat::setVersion(
+    const unsigned int majorVersion
+  , const unsigned int minorVersion)
+{
+    setVersion(glbinding::Version(majorVersion, minorVersion));
 }
 
 GLContextFormat::Profile GLContextFormat::profile() const
@@ -97,16 +142,6 @@ void GLContextFormat::setProfile(const GLContextFormat::Profile profile)
     m_profile = profile;
 }
 
-bool GLContextFormat::debugContext() const
-{
-    return m_debugContext;
-}
-
-void GLContextFormat::setDebugContext(const bool on)
-{
-    m_debugContext = on;
-}
-
 bool GLContextFormat::forwardCompatible() const
 {
     return m_forwardCompatibility;
@@ -115,6 +150,16 @@ bool GLContextFormat::forwardCompatible() const
 void GLContextFormat::setForwardCompatible(const bool on)
 {
     m_forwardCompatibility = on;
+}
+
+bool GLContextFormat::debugContext() const
+{
+    return m_debugContext;
+}
+
+void GLContextFormat::setDebugContext(const bool on)
+{
+    m_debugContext = on;
 }
 
 int GLContextFormat::redBufferSize() const
@@ -177,16 +222,6 @@ void GLContextFormat::setStencilBufferSize(const int size)
     m_stencilBufferSize = size;
 }
 
-GLContextFormat::SwapBehavior GLContextFormat::swapBehavior() const
-{
-    return m_swapBehavior;
-}
-
-void GLContextFormat::setSwapBehavior(const GLContextFormat::SwapBehavior behavior)
-{
-    m_swapBehavior = behavior;
-}
-
 bool GLContextFormat::stereo() const
 {
     return m_stereo;
@@ -207,32 +242,14 @@ void GLContextFormat::setSamples(const int samples)
     m_samples = samples;
 }
 
-const std::string & GLContextFormat::profileString(const Profile profile)
+GLContextFormat::SwapBehavior GLContextFormat::swapBehavior() const
 {
-    static const std::map<Profile, std::string> profileIdentifier = {
-        { Profile::Core,          "Core" }
-    ,   { Profile::Compatibility, "Compatibility" } 
-    ,   { Profile::None,          "None" } };
-
-    return profileIdentifier.at(profile);
+    return m_swapBehavior;
 }
 
-const std::string & GLContextFormat::swapBehaviorString(const SwapBehavior swapBehavior)
+void GLContextFormat::setSwapBehavior(const GLContextFormat::SwapBehavior behavior)
 {
-    static const std::map<SwapBehavior, std::string> swapbIdentifier = {
-        { SwapBehavior::Default,         "Default" }
-    ,   { SwapBehavior::DoubleBuffering, "DoubleBuffering" }
-    ,   { SwapBehavior::SingleBuffering, "SingleBuffering" } 
-    ,   { SwapBehavior::TripleBuffering, "TripleBuffering" } };
-
-    return swapbIdentifier.at(swapBehavior);
-}
-
-bool GLContextFormat::verify(const GLContextFormat & requested, const GLContextFormat & created)
-{
-    return
-        verifyVersionAndProfile(requested, created) &&
-        verifyPixelFormat(requested, created);
+    m_swapBehavior = behavior;
 }
 
 bool GLContextFormat::verify(const GLContextFormat & requested) const
