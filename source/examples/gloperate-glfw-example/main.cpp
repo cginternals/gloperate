@@ -33,11 +33,13 @@ int main(int argc, char * argv[])
 
     // Initialize context, print context info
     window.context()->use();
+    /*
     window.context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
     globjects::info() << std::endl
         << "OpenGL Version:  " << window.context()->version() << std::endl
         << "OpenGL Vendor:   " << window.context()->vendor() << std::endl
         << "OpenGL Renderer: " << window.context()->renderer() << std::endl;
+    */
     window.context()->release();
 
     // Display window

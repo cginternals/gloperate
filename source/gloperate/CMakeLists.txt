@@ -39,6 +39,7 @@ set(headers
 
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/OpenGLContext.h
+    ${include_path}/base/OpenGLContextUtils.h
     ${include_path}/base/ContextFormat.h
 
     ${include_path}/viewer/ViewerContext.h
@@ -51,6 +52,7 @@ set(sources
 
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/OpenGLContext.cpp
+    ${source_path}/base/OpenGLContextUtils.cpp
     ${source_path}/base/ContextFormat.cpp
 
     ${source_path}/viewer/ViewerContext.cpp

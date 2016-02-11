@@ -17,6 +17,7 @@
 
 #include <globjects/base/baselogging.h>
 
+#include <gloperate/base/OpenGLContextUtils.h>
 #include <gloperate/base/ContextFormat.h>
 
 
@@ -47,7 +48,7 @@ glbinding::Version Context::maxSupportedVersion()
         glfwMakeContextCurrent(window);
 
         glbinding::Binding::initialize(false);
-        version = retrieveVersion();
+        version = OpenGLContextUtils::retrieveVersion();
 
         glfwMakeContextCurrent(nullptr);
         glfwDestroyWindow(window);
@@ -66,7 +67,7 @@ glbinding::Version Context::maxSupportedVersion()
             glfwMakeContextCurrent(window);
 
             glbinding::Binding::initialize(false);
-            version = retrieveVersion();
+            version = OpenGLContextUtils::retrieveVersion();
 
             glfwMakeContextCurrent(nullptr);
             glfwDestroyWindow(window);
@@ -146,7 +147,7 @@ Context::Context(GLFWwindow * window)
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
 
-    m_handle = tryFetchHandle();
+    m_handle = OpenGLContextUtils::tryFetchHandle();
 
     if (current != m_window)
         glfwMakeContextCurrent(current);
@@ -177,7 +178,7 @@ const ContextFormat & Context::format() const
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
 
-    m_format->setVersion(retrieveVersion());
+    m_format->setVersion(OpenGLContextUtils::retrieveVersion());
 
     GLint i;
     GLboolean b;

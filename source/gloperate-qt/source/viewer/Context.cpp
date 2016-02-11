@@ -6,6 +6,7 @@
 
 #include <globjects/base/baselogging.h>
 
+#include <gloperate/base/OpenGLContextUtils.h>
 #include <gloperate/base/ContextFormat.h>
 
 #include <gloperate-qt/viewer/OpenGLWindow.h>
@@ -32,7 +33,7 @@ Context::Context(OpenGLWindow * window, QOpenGLContext * context)
 
     glbinding::Binding::initialize(false);
 
-    m_handle = tryFetchHandle();
+    m_handle = OpenGLContextUtils::tryFetchHandle();
 
     Context::doneCurrent(m_context);
 }
@@ -61,7 +62,7 @@ const ContextFormat & Context::format() const
 
     Context::makeCurrent(m_context, m_window);
 
-    m_format->setVersion(retrieveVersion());
+    m_format->setVersion(OpenGLContextUtils::retrieveVersion());
 
     GLint i;
     GLboolean b;
