@@ -5,16 +5,15 @@
 #include <reflectionzeug/property/PropertyEnum.h>
 
 
-#include <gloperate-text/gloperate-text_api.h>
-
-
 namespace gloperate_text
 {
 
-enum class GLOPERATE_TEXT_API Alignment : unsigned char
+
+enum class Alignment : unsigned char
 {
     LeftAligned, Centered, RightAligned
 };
+
 
 } // namespace gloperate_text
 
