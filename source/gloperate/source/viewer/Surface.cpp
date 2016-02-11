@@ -21,12 +21,12 @@ ViewerContext * Surface::viewerContext() const
     return m_viewerContext;
 }
 
-OpenGLContext * Surface::openGLContext() const
+AbstractGLContext * Surface::openGLContext() const
 {
     return m_openGLContext;
 }
 
-void Surface::setOpenGLContext(OpenGLContext * context)
+void Surface::setOpenGLContext(AbstractGLContext * context)
 {
     // Deinitialize renderer in old context
     if (m_openGLContext)
@@ -45,9 +45,9 @@ void Surface::setOpenGLContext(OpenGLContext * context)
     }
 }
 
-ContextFormat Surface::negotiateContext() const
+GLContextFormat Surface::negotiateContext() const
 {
-    return ContextFormat();
+    return GLContextFormat();
 }
 
 void Surface::onContextInit()

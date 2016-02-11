@@ -7,8 +7,8 @@
 #include <gloperate/viewer/Surface.h>
 
 #include <gloperate-glfw/Application.h>
-#include <gloperate-glfw/Context.h>
 #include <gloperate-glfw/RenderWindow.h>
+#include <gloperate-glfw/GLContext.h>
 
 
 using namespace gloperate;

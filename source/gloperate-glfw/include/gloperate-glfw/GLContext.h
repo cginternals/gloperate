@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include <gloperate/base/OpenGLContext.h>
+#include <gloperate/base/AbstractGLContext.h>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
@@ -14,7 +14,7 @@ struct GLFWwindow;
 
 namespace gloperate
 {
-    class ContextFormat;
+    class GLContextFormat;
 }
 
 
@@ -26,7 +26,7 @@ namespace gloperate_glfw
 *  @brief
 *    OpenGL context implementation based on GLFW
 */
-class GLOPERATE_GLFW_API Context : public gloperate::OpenGLContext
+class GLOPERATE_GLFW_API GLContext : public gloperate::AbstractGLContext
 {
 protected:
     // note: requires that glfw::init was previously called 
@@ -41,27 +41,27 @@ public:
     *  @remarks
     *    Requires that glfw::init was previously called
     */
-    static GLFWwindow * createWindow(const gloperate::ContextFormat & format);
+    static GLFWwindow * createWindow(const gloperate::GLContextFormat & format);
 
 
 public:
-    Context(GLFWwindow * window);
-    virtual ~Context();
+    GLContext(GLFWwindow * window);
+    virtual ~GLContext();
 
     virtual glbinding::ContextHandle handle() const override;
 
-    virtual const gloperate::ContextFormat & format() const override;
+    virtual const gloperate::GLContextFormat & format() const override;
 
     virtual void use() const override;
     virtual void release() const override;
 
 
 protected:
-    Context();
+    GLContext();
 
 
 protected:
-    mutable gloperate::ContextFormat * m_format;
+    mutable gloperate::GLContextFormat * m_format;
 
     GLFWwindow * m_window;
     glbinding::ContextHandle m_handle;

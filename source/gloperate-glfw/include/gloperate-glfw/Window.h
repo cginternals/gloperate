@@ -16,7 +16,7 @@ struct GLFWmonitor;
 
 namespace gloperate
 {
-    class ContextFormat;
+    class GLContextFormat;
 }
 
 
@@ -24,7 +24,7 @@ namespace gloperate_glfw
 {
 
 
-class Context;
+class GLContext;
 class WindowEvent;
 class KeyEvent;
 class MouseEvent;
@@ -91,7 +91,7 @@ public:
     *    If the window has already been created, this function will fail
     */
     bool create(
-        const gloperate::ContextFormat & format
+        const gloperate::GLContextFormat & format
       , int width  = 1280
       , int height = 720);
 
@@ -115,7 +115,7 @@ public:
     *    If the window has already been created, this function will fail
     */
     bool create(
-        const gloperate::ContextFormat & format
+        const gloperate::GLContextFormat & format
       , const std::string & title = "gloperate"
       , int width  = 1280
       , int height =  720);
@@ -142,7 +142,7 @@ public:
     *  @return
     *    OpenGL context, can be nullptr
     */
-    Context * context() const;
+    GLContext * context() const;
 
     /**
     *  @brief
@@ -388,7 +388,7 @@ protected:
     *    This function will actually create a new window with the given context
     *    format, so any previously obtained window IDs will be rendered invalid.
     */
-    bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
+    bool createContext(const gloperate::GLContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
 
     /**
     *  @brief
@@ -446,7 +446,7 @@ protected:
 
 protected:
     GLFWwindow * m_window;           ///< GLFW window (can be nullptr)
-    Context    * m_context;          ///< OpenGL context (can be nullptr)
+    GLContext  * m_context;          ///< OpenGL context (can be nullptr)
     WindowMode   m_windowMode;       ///< Window mode (windowed or fullscreen)
     glm::ivec2   m_windowedModeSize; ///< Size of window when returned from fullscreen mode
     bool         m_quitOnDestroy;    ///< Quit application when window is closed?

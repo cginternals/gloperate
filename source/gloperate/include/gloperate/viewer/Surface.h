@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate/base/ContextFormat.h>
+#include <gloperate/base/GLContextFormat.h>
 
 
 namespace gloperate
@@ -12,7 +12,7 @@ namespace gloperate
 
 
 class ViewerContext;
-class OpenGLContext;
+class AbstractGLContext;
 
 
 /**
@@ -65,7 +65,7 @@ public:
     *    Aside from that, there should always be a valid OpenGL context
     *    attached to the surface.
     */
-    OpenGLContext * openGLContext() const;
+    AbstractGLContext * openGLContext() const;
 
     /**
     *  @brief
@@ -81,7 +81,7 @@ public:
     *    Then, if the new context is valid, the context pointer will be
     *    set to that new context and onContextInit() will be invoked.
     */
-    void setOpenGLContext(OpenGLContext * context);
+    void setOpenGLContext(AbstractGLContext * context);
 
     /**
     *  @brief
@@ -99,7 +99,7 @@ public:
     *    which it can initialize its OpenGL objects or abort, if the
     *    created context is not suitable.
     */
-    virtual ContextFormat negotiateContext() const;
+    virtual GLContextFormat negotiateContext() const;
 
     /**
     *  @brief
@@ -252,8 +252,8 @@ public:
 
 
 protected:
-    ViewerContext * m_viewerContext; ///< Viewer context to which the surface belongs
-    OpenGLContext * m_openGLContext; ///< OpenGL context used for rendering on the surface
+    ViewerContext     * m_viewerContext; ///< Viewer context to which the surface belongs
+    AbstractGLContext * m_openGLContext; ///< OpenGL context used for rendering on the surface
 
 
 

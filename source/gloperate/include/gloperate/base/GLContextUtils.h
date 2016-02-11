@@ -24,7 +24,7 @@ namespace gloperate
 *    current context. Therefore, the functions are independent from how a
 *    context is created or managed (e.g., by Qt, GLFW, or any other method).
 */
-class GLOPERATE_API OpenGLContextUtils
+class GLOPERATE_API GLContextUtils
 {
 public:
     /**

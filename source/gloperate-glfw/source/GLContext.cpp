@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/Context.h>
+#include <gloperate-glfw/GLContext.h>
 
 #include <cassert>
 
@@ -17,8 +17,8 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/base/OpenGLContextUtils.h>
-#include <gloperate/base/ContextFormat.h>
+#include <gloperate/base/GLContextUtils.h>
+#include <gloperate/base/GLContextFormat.h>
 
 
 using namespace gl;
@@ -30,7 +30,7 @@ namespace gloperate_glfw
 {
 
 
-glbinding::Version Context::maxSupportedVersion()
+glbinding::Version GLContext::maxSupportedVersion()
 {
     glbinding::Version version;
 
@@ -48,7 +48,7 @@ glbinding::Version Context::maxSupportedVersion()
         glfwMakeContextCurrent(window);
 
         glbinding::Binding::initialize(false);
-        version = OpenGLContextUtils::retrieveVersion();
+        version = GLContextUtils::retrieveVersion();
 
         glfwMakeContextCurrent(nullptr);
         glfwDestroyWindow(window);
@@ -67,7 +67,7 @@ glbinding::Version Context::maxSupportedVersion()
             glfwMakeContextCurrent(window);
 
             glbinding::Binding::initialize(false);
-            version = OpenGLContextUtils::retrieveVersion();
+            version = GLContextUtils::retrieveVersion();
 
             glfwMakeContextCurrent(nullptr);
             glfwDestroyWindow(window);
@@ -77,10 +77,10 @@ glbinding::Version Context::maxSupportedVersion()
     return version;
 }
 
-GLFWwindow * Context::createWindow(const ContextFormat & format)
+GLFWwindow * GLContext::createWindow(const GLContextFormat & format)
 {
     // Check if version is valid and supported
-    glbinding::Version version = format.version() < glbinding::Version(3, 0) ? maxSupportedVersion() : ContextFormat::validateVersion(format.version(), maxSupportedVersion());
+    glbinding::Version version = format.version() < glbinding::Version(3, 0) ? maxSupportedVersion() : GLContextFormat::validateVersion(format.version(), maxSupportedVersion());
 
     // GLFW3 does not set default hint values on window creation so at least
     // the default values must be set before glfwCreateWindow can be called.
@@ -107,8 +107,8 @@ GLFWwindow * Context::createWindow(const ContextFormat & format)
 
     if (version >= glbinding::Version(3, 2))
     {
-        glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == ContextFormat::Profile::Core ? GLFW_OPENGL_CORE_PROFILE :
-           (format.profile() == ContextFormat::Profile::Compatibility? GLFW_OPENGL_COMPAT_PROFILE : GLFW_OPENGL_ANY_PROFILE));
+        glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == GLContextFormat::Profile::Core ? GLFW_OPENGL_CORE_PROFILE :
+           (format.profile() == GLContextFormat::Profile::Compatibility? GLFW_OPENGL_COMPAT_PROFILE : GLFW_OPENGL_ANY_PROFILE));
     }
 
 #endif
@@ -137,7 +137,7 @@ GLFWwindow * Context::createWindow(const ContextFormat & format)
     return window;
 }
 
-Context::Context(GLFWwindow * window)
+GLContext::GLContext(GLFWwindow * window)
 : m_format(nullptr)
 , m_window(window)
 {
@@ -147,23 +147,23 @@ Context::Context(GLFWwindow * window)
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
 
-    m_handle = OpenGLContextUtils::tryFetchHandle();
+    m_handle = GLContextUtils::tryFetchHandle();
 
     if (current != m_window)
         glfwMakeContextCurrent(current);
 }
 
-Context::~Context()
+GLContext::~GLContext()
 {
     delete m_format;
 }
 
-glbinding::ContextHandle Context::handle() const
+glbinding::ContextHandle GLContext::handle() const
 {
     return m_handle;
 }
 
-const ContextFormat & Context::format() const
+const GLContextFormat & GLContext::format() const
 {
     assert(isValid());
 
@@ -172,13 +172,13 @@ const ContextFormat & Context::format() const
 
     // Create and retrieve format if not done already
 
-    m_format = new ContextFormat();
+    m_format = new GLContextFormat();
 
     GLFWwindow * current = glfwGetCurrentContext();
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
 
-    m_format->setVersion(OpenGLContextUtils::retrieveVersion());
+    m_format->setVersion(GLContextUtils::retrieveVersion());
 
     GLint i;
     GLboolean b;
@@ -207,7 +207,7 @@ const ContextFormat & Context::format() const
     return *m_format;
 }
 
-void Context::use() const
+void GLContext::use() const
 {
     if (m_window)
     {
@@ -215,7 +215,7 @@ void Context::use() const
     }
 }
 
-void Context::release() const
+void GLContext::release() const
 {
     if (m_window && m_window == glfwGetCurrentContext())
     {

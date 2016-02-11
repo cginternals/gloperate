@@ -8,10 +8,10 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/base/ContextFormat.h>
+#include <gloperate/base/GLContextFormat.h>
 
 #include <gloperate-glfw/Application.h>
-#include <gloperate-glfw/Context.h>
+#include <gloperate-glfw/GLContext.h>
 #include <gloperate-glfw/WindowEventDispatcher.h>
 #include <gloperate-glfw/WindowEvent.h>
 
@@ -59,7 +59,7 @@ Window::~Window()
     }
 }
 
-bool Window::create(const ContextFormat & format, const std::string & title, int width, int height)
+bool Window::create(const GLContextFormat & format, const std::string & title, int width, int height)
 {
     if (!create(format, width, height))
     {
@@ -70,7 +70,7 @@ bool Window::create(const ContextFormat & format, const std::string & title, int
     return true;
 }
 
-bool Window::create(const ContextFormat & format, int width, int height)
+bool Window::create(const GLContextFormat & format, int width, int height)
 {
     assert(nullptr == m_context);
     if (m_context)
@@ -108,7 +108,7 @@ GLFWwindow * Window::internalWindow() const
     return m_window;
 }
 
-Context * Window::context() const
+GLContext * Window::context() const
 {
     return m_context;
 }
@@ -160,7 +160,7 @@ void Window::setFullscreen(bool fullscreen)
         int w = mode->width;
         int h = mode->height;
 
-        ContextFormat format = m_context->format();
+        GLContextFormat format = m_context->format();
 
         deinitializeContext();
         WindowEventDispatcher::deregisterWindow(this);
@@ -181,7 +181,7 @@ void Window::setFullscreen(bool fullscreen)
         int w = m_windowedModeSize.x;
         int h = m_windowedModeSize.y;
 
-        ContextFormat format = m_context->format();
+        GLContextFormat format = m_context->format();
 
         deinitializeContext();
         WindowEventDispatcher::deregisterWindow(this);
@@ -450,7 +450,7 @@ void Window::clearEventQueue()
     }
 }
 
-bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
+bool Window::createContext(const GLContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
 {
     assert(nullptr == m_context);
     if (m_context)
@@ -458,7 +458,7 @@ bool Window::createContext(const ContextFormat & format, int width, int height, 
         return false;
     }
 
-    m_window = Context::createWindow(format);
+    m_window = GLContext::createWindow(format);
     if (!m_window)
     {
         return false;
@@ -466,7 +466,7 @@ bool Window::createContext(const ContextFormat & format, int width, int height, 
 
     glfwSetWindowSize(m_window, width, height);
 
-    m_context = new Context(m_window);
+    m_context = new GLContext(m_window);
     m_context->format().verify(format);
 
     return true;

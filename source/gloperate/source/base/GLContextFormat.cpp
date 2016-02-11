@@ -1,5 +1,5 @@
 
-#include <gloperate/base/ContextFormat.h>
+#include <gloperate/base/GLContextFormat.h>
 
 #include <cassert>
 #include <sstream>
@@ -15,7 +15,7 @@ namespace gloperate
 {
 
 
-ContextFormat::ContextFormat()
+GLContextFormat::GLContextFormat()
 : m_version(glbinding::Version(4, 5))
 , m_profile(Profile::None)
 , m_debugContext(false)
@@ -32,23 +32,23 @@ ContextFormat::ContextFormat()
 {
 }
 
-ContextFormat::~ContextFormat()
+GLContextFormat::~GLContextFormat()
 {
 }
 
-void ContextFormat::setVersion(
+void GLContextFormat::setVersion(
     const unsigned int majorVersion
 ,   const unsigned int minorVersion)
 {
     setVersion(glbinding::Version(majorVersion, minorVersion));
 }
 
-void ContextFormat::setVersion(const glbinding::Version & version)
+void GLContextFormat::setVersion(const glbinding::Version & version)
 {
     m_version = version;
 }
 
-glbinding::Version ContextFormat::validateVersion(const glbinding::Version &requestedVersion
+glbinding::Version GLContextFormat::validateVersion(const glbinding::Version &requestedVersion
 ,   const glbinding::Version &_maximumVersion)
 {
     glbinding::Version maximumVersion = _maximumVersion;
@@ -72,142 +72,142 @@ glbinding::Version ContextFormat::validateVersion(const glbinding::Version &requ
     return requestedVersion;
 }
 
-int ContextFormat::majorVersion() const
+int GLContextFormat::majorVersion() const
 {
     return m_version.m_major;
 }
 
-int ContextFormat::minorVersion() const
+int GLContextFormat::minorVersion() const
 {
     return m_version.m_minor;
 }
 
-const glbinding::Version & ContextFormat::version() const
+const glbinding::Version & GLContextFormat::version() const
 {
     return m_version;
 }
 
-ContextFormat::Profile ContextFormat::profile() const
+GLContextFormat::Profile GLContextFormat::profile() const
 {
     return m_profile;
 }
 
-void ContextFormat::setProfile(const ContextFormat::Profile profile)
+void GLContextFormat::setProfile(const GLContextFormat::Profile profile)
 {
     m_profile = profile;
 }
 
-bool ContextFormat::debugContext() const
+bool GLContextFormat::debugContext() const
 {
     return m_debugContext;
 }
 
-void ContextFormat::setDebugContext(const bool on)
+void GLContextFormat::setDebugContext(const bool on)
 {
     m_debugContext = on;
 }
 
-bool ContextFormat::forwardCompatible() const
+bool GLContextFormat::forwardCompatible() const
 {
     return m_forwardCompatibility;
 }
 
-void ContextFormat::setForwardCompatible(const bool on)
+void GLContextFormat::setForwardCompatible(const bool on)
 {
     m_forwardCompatibility = on;
 }
 
-int ContextFormat::redBufferSize() const
+int GLContextFormat::redBufferSize() const
 {
     return m_redBufferSize;
 }
 
-void ContextFormat::setRedBufferSize(const int size)
+void GLContextFormat::setRedBufferSize(const int size)
 {
     m_redBufferSize = size;
 }
 
-int ContextFormat::greenBufferSize() const
+int GLContextFormat::greenBufferSize() const
 {
     return m_greenBufferSize;
 }
 
-void ContextFormat::setGreenBufferSize(const int size)
+void GLContextFormat::setGreenBufferSize(const int size)
 {
     m_greenBufferSize = size;
 }
 
-int  ContextFormat::blueBufferSize() const
+int  GLContextFormat::blueBufferSize() const
 {
     return m_blueBufferSize;
 }
 
-void ContextFormat::setBlueBufferSize(const int size)
+void GLContextFormat::setBlueBufferSize(const int size)
 {
     m_blueBufferSize = size;
 }
 
-int ContextFormat::alphaBufferSize() const
+int GLContextFormat::alphaBufferSize() const
 {
     return m_alphaBufferSize;
 }
 
-void ContextFormat::setAlphaBufferSize(const int size)
+void GLContextFormat::setAlphaBufferSize(const int size)
 {
     m_alphaBufferSize = size;
 }
 
-int ContextFormat::depthBufferSize() const
+int GLContextFormat::depthBufferSize() const
 {
     return m_depthBufferSize;
 }
 
-void ContextFormat::setDepthBufferSize(const int size)
+void GLContextFormat::setDepthBufferSize(const int size)
 {
     m_depthBufferSize = size;
 }
 
-int ContextFormat::stencilBufferSize() const
+int GLContextFormat::stencilBufferSize() const
 {
     return m_stencilBufferSize;
 }
 
-void ContextFormat::setStencilBufferSize(const int size)
+void GLContextFormat::setStencilBufferSize(const int size)
 {
     m_stencilBufferSize = size;
 }
 
-ContextFormat::SwapBehavior ContextFormat::swapBehavior() const
+GLContextFormat::SwapBehavior GLContextFormat::swapBehavior() const
 {
     return m_swapBehavior;
 }
 
-void ContextFormat::setSwapBehavior(const ContextFormat::SwapBehavior behavior)
+void GLContextFormat::setSwapBehavior(const GLContextFormat::SwapBehavior behavior)
 {
     m_swapBehavior = behavior;
 }
 
-bool ContextFormat::stereo() const
+bool GLContextFormat::stereo() const
 {
     return m_stereo;
 }
 
-void ContextFormat::setStereo(const bool enable)
+void GLContextFormat::setStereo(const bool enable)
 {
     m_stereo = enable;
 }
 
-int ContextFormat::samples() const
+int GLContextFormat::samples() const
 {
     return m_samples;
 }
 
-void ContextFormat::setSamples(const int samples)
+void GLContextFormat::setSamples(const int samples)
 {
     m_samples = samples;
 }
 
-const std::string & ContextFormat::profileString(const Profile profile)
+const std::string & GLContextFormat::profileString(const Profile profile)
 {
     static const std::map<Profile, std::string> profileIdentifier = {
         { Profile::Core,          "Core" }
@@ -217,7 +217,7 @@ const std::string & ContextFormat::profileString(const Profile profile)
     return profileIdentifier.at(profile);
 }
 
-const std::string & ContextFormat::swapBehaviorString(const SwapBehavior swapBehavior)
+const std::string & GLContextFormat::swapBehaviorString(const SwapBehavior swapBehavior)
 {
     static const std::map<SwapBehavior, std::string> swapbIdentifier = {
         { SwapBehavior::Default,         "Default" }
@@ -228,19 +228,19 @@ const std::string & ContextFormat::swapBehaviorString(const SwapBehavior swapBeh
     return swapbIdentifier.at(swapBehavior);
 }
 
-bool ContextFormat::verify(const ContextFormat & requested, const ContextFormat & created)
+bool GLContextFormat::verify(const GLContextFormat & requested, const GLContextFormat & created)
 {
     return
         verifyVersionAndProfile(requested, created) &&
         verifyPixelFormat(requested, created);
 }
 
-bool ContextFormat::verify(const ContextFormat & requested) const
+bool GLContextFormat::verify(const GLContextFormat & requested) const
 {
     return verify(requested, *this);
 }
 
-bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, const ContextFormat & created)
+bool GLContextFormat::verifyVersionAndProfile(const GLContextFormat & requested, const GLContextFormat & created)
 {
     const bool sameProfiles(requested.profile() == created.profile());
 
@@ -263,7 +263,7 @@ bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, con
     return sameProfiles;
 }
 
-inline void ContextFormat::verifyBufferSize(
+inline void GLContextFormat::verifyBufferSize(
     const unsigned int sizeRequested
 ,   const unsigned int sizeInitialized
 ,   const std::string & warning
@@ -278,9 +278,9 @@ inline void ContextFormat::verifyBufferSize(
     issues.push_back(ss.str());
 }
 
-bool ContextFormat::verifyPixelFormat(
-    const ContextFormat & requested
-,   const ContextFormat & created)
+bool GLContextFormat::verifyPixelFormat(
+    const GLContextFormat & requested
+,   const GLContextFormat & created)
 {
     std::vector<std::string> issues;
 

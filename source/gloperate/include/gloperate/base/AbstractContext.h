@@ -2,13 +2,7 @@
 #pragma once
 
 
-#include <string>
-#include <vector>
-
-#include <glbinding/ContextHandle.h>
-
 #include <gloperate/gloperate_api.h>
-#include <gloperate/base/ContextFormat.h>
 
 
 namespace gloperate

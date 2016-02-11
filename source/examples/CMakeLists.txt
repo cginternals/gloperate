@@ -11,4 +11,4 @@ endif()
 
 # Example applications
 add_subdirectory(gloperate-glfw-example)
-add_subdirectory(gloperate-qt-example)
+#add_subdirectory(gloperate-qt-example)

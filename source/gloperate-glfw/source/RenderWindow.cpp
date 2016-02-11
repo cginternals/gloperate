@@ -8,7 +8,7 @@
 #include <gloperate/viewer/DemoRenderer.h>
 
 #include <gloperate-glfw/WindowEvent.h>
-#include <gloperate-glfw/Context.h>
+#include <gloperate-glfw/GLContext.h>
 
 
 using namespace gloperate;

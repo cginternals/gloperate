@@ -18,7 +18,7 @@ namespace gloperate
 *  @brief
 *    Description of an OpenGL context format
 */
-class GLOPERATE_API ContextFormat
+class GLOPERATE_API GLContextFormat
 {
 public:
     // This is based on QSurfaceFormat::OpenGLContextProfile
@@ -45,8 +45,8 @@ public:
 
 
 public:
-    ContextFormat();
-    virtual ~ContextFormat();
+    GLContextFormat();
+    virtual ~GLContextFormat();
 
     // 24 by default
     int  depthBufferSize() const;
@@ -108,18 +108,18 @@ public:
 
     /** Compares the created format against the requested one.
     */
-    static bool verify(const ContextFormat & requested, const ContextFormat & created);
-    bool verify(const ContextFormat & requested) const;
+    static bool verify(const GLContextFormat & requested, const GLContextFormat & created);
+    bool verify(const GLContextFormat & requested) const;
 
 
 protected:
     /** Compares (logged if erroneous) version and profile between both formats
     */
-    static bool verifyVersionAndProfile(const ContextFormat & requested, const ContextFormat & current);
+    static bool verifyVersionAndProfile(const GLContextFormat & requested, const GLContextFormat & current);
 
     /** Compares (logged if erroneous) buffer sizes and more between both formats
     */
-    static bool verifyPixelFormat(const ContextFormat & requested, const ContextFormat & current);
+    static bool verifyPixelFormat(const GLContextFormat & requested, const GLContextFormat & current);
 
     /** Used as inline by verifyPixelFormat 
     */

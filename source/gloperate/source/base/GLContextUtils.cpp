@@ -1,5 +1,5 @@
 
-#include <gloperate/base/OpenGLContextUtils.h>
+#include <gloperate/base/GLContextUtils.h>
 
 #include <cassert>
 
@@ -16,12 +16,12 @@ namespace gloperate
 {
 
 
-bool OpenGLContextUtils::isValid()
+bool GLContextUtils::isValid()
 {
     return (tryFetchHandle() > 0);
 }
 
-glbinding::ContextHandle OpenGLContextUtils::tryFetchHandle()
+glbinding::ContextHandle GLContextUtils::tryFetchHandle()
 {
     const glbinding::ContextHandle handle = glbinding::getCurrentContext();
 
@@ -33,7 +33,7 @@ glbinding::ContextHandle OpenGLContextUtils::tryFetchHandle()
     return handle;
 }
 
-glbinding::Version OpenGLContextUtils::retrieveVersion()
+glbinding::Version GLContextUtils::retrieveVersion()
 {
     assert(0 != glbinding::getCurrentContext());
 
@@ -63,21 +63,21 @@ glbinding::Version OpenGLContextUtils::retrieveVersion()
     return glbinding::Version(major, minor);
 }
 
-std::string OpenGLContextUtils::version()
+std::string GLContextUtils::version()
 {
     assert(0 != glbinding::getCurrentContext());
 
     return glbinding::ContextInfo::version().toString();
 }
 
-std::string OpenGLContextUtils::vendor()
+std::string GLContextUtils::vendor()
 {
     assert(0 != glbinding::getCurrentContext());
 
     return glbinding::ContextInfo::vendor();
 }
 
-std::string OpenGLContextUtils::renderer()
+std::string GLContextUtils::renderer()
 {
     assert(0 != glbinding::getCurrentContext());
 
