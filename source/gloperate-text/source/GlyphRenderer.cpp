@@ -46,6 +46,11 @@ GlyphRenderer::~GlyphRenderer()
 
 void GlyphRenderer::render(const GlyphVertexCloud & vertexCloud) const
 {
+    if (vertexCloud.vertices().empty())
+    {
+        return;
+    }
+
     m_program->use();
 
     vertexCloud.texture()->bindActive(0);
