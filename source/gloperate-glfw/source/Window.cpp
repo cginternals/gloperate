@@ -489,19 +489,22 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
     }
 
     // Create GLFW window with OpenGL context
-    m_window = GLContextFactory::createWindow(format);
-    if (!m_window)
+    GLContextFactory factory;
+    m_context = static_cast<GLContext*>(factory.createContext(format));
+    if (!m_context)
     {
         return false;
     }
 
+    // Check OpenGL format
+    m_context->format().verify(format);
+
+    // Get internal window
+    m_window = m_context->window();
+
     // Set window size and title
     glfwSetWindowSize (m_window, width, height);
     glfwSetWindowTitle(m_window, m_title.c_str());
-
-    // Create wrapper for OpenGL context
-    m_context = new GLContext(m_window);
-    m_context->format().verify(format);
 
     // Register window for event processing
     WindowEventDispatcher::registerWindow(this);

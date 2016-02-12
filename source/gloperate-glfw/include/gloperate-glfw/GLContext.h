@@ -24,6 +24,8 @@ public:
     GLContext(GLFWwindow * window);
     virtual ~GLContext();
 
+    GLFWwindow * window() const;
+
     virtual void use() const override;
     virtual void release() const override;
 

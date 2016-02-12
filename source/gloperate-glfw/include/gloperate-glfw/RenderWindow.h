@@ -29,7 +29,7 @@ public:
     *    Constructor
     *
     *  @param[in] viewerContext
-    *    Viewer context to which the surface belongs (must NOT be null!)
+    *    Viewer context to which the window belongs (must NOT be null)
     */
     RenderWindow(gloperate::ViewerContext * viewerContext);
 
@@ -38,6 +38,15 @@ public:
     *    Destructor
     */
     virtual ~RenderWindow();
+
+    /**
+    *  @brief
+    *    Get viewer context
+    *
+    *  @return
+    *    Viewer context (cannot be null)
+    */
+    gloperate::ViewerContext * viewerContext() const;
 
     /**
     *  @brief
@@ -72,9 +81,10 @@ protected:
 
 
 protected:
-    gloperate::Surface * m_surface;     ///< Surface that control the rendering on the window
-    glm::ivec2           m_deviceSize;  ///< Window size (real device pixels)
-    glm::ivec2           m_virtualSize; ///< Window size (virtual pixel size)
+    gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
+    gloperate::Surface       * m_surface;       ///< Surface that control the rendering on the window
+    glm::ivec2                 m_deviceSize;    ///< Window size (real device pixels)
+    glm::ivec2                 m_virtualSize;   ///< Window size (virtual pixel size)
 };
 
 

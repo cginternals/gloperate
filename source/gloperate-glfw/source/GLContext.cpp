@@ -52,6 +52,11 @@ GLContext::~GLContext()
 {
 }
 
+GLFWwindow * GLContext::window() const
+{
+    return m_window;
+}
+
 void GLContext::use() const
 {
     if (m_window)

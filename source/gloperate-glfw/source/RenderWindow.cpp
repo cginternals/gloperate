@@ -50,13 +50,19 @@ static gloperate::Key fromGLFWKeyCode(int key)
 
 
 RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
-: m_surface(new gloperate::DemoRenderer(viewerContext))
+: m_viewerContext(viewerContext)
+, m_surface(new gloperate::DemoRenderer(viewerContext))
 {
 }
 
 RenderWindow::~RenderWindow()
 {
     delete m_surface;
+}
+
+gloperate::ViewerContext * RenderWindow::viewerContext() const
+{
+    return m_viewerContext;
 }
 
 gloperate::Surface * RenderWindow::surface() const

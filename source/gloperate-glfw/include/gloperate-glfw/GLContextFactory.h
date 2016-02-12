@@ -33,18 +33,8 @@ public:
     virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) override;
 
 
-public:
-    // note: requires that glfw::init was previously called 
+private:
     static glbinding::Version maxSupportedVersion();
-
-    /**
-    *  @brief
-    *    Create a hidden window of extend 1x1 with the provided format
-    *
-    *  @remarks
-    *    Requires that glfw::init was previously called
-    */
-    static GLFWwindow * createWindow(const gloperate::GLContextFormat & format);
 };
 
 

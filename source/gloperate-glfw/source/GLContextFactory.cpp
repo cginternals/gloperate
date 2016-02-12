@@ -14,6 +14,8 @@
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
 
+#include <gloperate-glfw/GLContext.h>
+
 
 using namespace gloperate;
 
@@ -32,7 +34,67 @@ GLContextFactory::~GLContextFactory()
 
 gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::GLContextFormat & format)
 {
-    return nullptr;
+    // Check if version is valid and supported
+    glbinding::Version version =
+        (format.version() < glbinding::Version(3, 0)) ?
+            maxSupportedVersion() :
+            GLContextFormat::validateVersion(format.version(), maxSupportedVersion());
+
+    // GLFW3 does not set default hint values on window creation so at least
+    // the default values must be set before glfwCreateWindow can be called.
+    // cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
+    glfwDefaultWindowHints();
+
+    glfwWindowHint(GLFW_VISIBLE, false);
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.m_major);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.m_minor);
+
+#ifdef __APPLE__
+
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#else
+
+    if (version >= glbinding::Version(3, 0))
+    {
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, format.forwardCompatible());
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, format.debugContext());
+    }
+
+    if (version >= glbinding::Version(3, 2))
+    {
+        glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == GLContextFormat::Profile::Core ? GLFW_OPENGL_CORE_PROFILE :
+           (format.profile() == GLContextFormat::Profile::Compatibility? GLFW_OPENGL_COMPAT_PROFILE : GLFW_OPENGL_ANY_PROFILE));
+    }
+
+#endif
+
+    glfwWindowHint(GLFW_DEPTH_BITS,   format.depthBufferSize());
+    glfwWindowHint(GLFW_STENCIL_BITS, format.stencilBufferSize());
+
+    glfwWindowHint(GLFW_RED_BITS,     format.redBufferSize());
+    glfwWindowHint(GLFW_GREEN_BITS,   format.greenBufferSize());
+    glfwWindowHint(GLFW_BLUE_BITS,    format.blueBufferSize());
+    glfwWindowHint(GLFW_ALPHA_BITS,   format.alphaBufferSize());
+
+    glfwWindowHint(GLFW_STEREO, format.stereo());
+    glfwWindowHint(GLFW_SAMPLES, format.samples());
+
+    // Create window
+    GLFWwindow * window = glfwCreateWindow(1, 1, "", nullptr, nullptr);
+    if (window)
+    {
+        glfwMakeContextCurrent(window);
+        glbinding::Binding::initialize(false);
+        glfwSwapInterval(static_cast<int>(format.swapBehavior()));
+        glfwMakeContextCurrent(nullptr);
+    }
+
+    // Create context wrapper
+    GLContext * context = new GLContext(window);
+    return context;
 }
 
 glbinding::Version GLContextFactory::maxSupportedVersion()
@@ -80,66 +142,6 @@ glbinding::Version GLContextFactory::maxSupportedVersion()
     }
 
     return version;
-}
-
-GLFWwindow * GLContextFactory::createWindow(const GLContextFormat & format)
-{
-    // Check if version is valid and supported
-    glbinding::Version version = format.version() < glbinding::Version(3, 0) ? maxSupportedVersion() : GLContextFormat::validateVersion(format.version(), maxSupportedVersion());
-
-    // GLFW3 does not set default hint values on window creation so at least
-    // the default values must be set before glfwCreateWindow can be called.
-    // cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
-    glfwDefaultWindowHints();
-
-    glfwWindowHint(GLFW_VISIBLE, false);
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.m_major);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.m_minor);
-
-#ifdef __APPLE__
-
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#else
-
-    if (version >= glbinding::Version(3, 0))
-    {
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, format.forwardCompatible());
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, format.debugContext());
-    }
-
-    if (version >= glbinding::Version(3, 2))
-    {
-        glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == GLContextFormat::Profile::Core ? GLFW_OPENGL_CORE_PROFILE :
-           (format.profile() == GLContextFormat::Profile::Compatibility? GLFW_OPENGL_COMPAT_PROFILE : GLFW_OPENGL_ANY_PROFILE));
-    }
-
-#endif
-
-    glfwWindowHint(GLFW_DEPTH_BITS,   format.depthBufferSize());
-    glfwWindowHint(GLFW_STENCIL_BITS, format.stencilBufferSize());
-
-    glfwWindowHint(GLFW_RED_BITS,     format.redBufferSize());
-    glfwWindowHint(GLFW_GREEN_BITS,   format.greenBufferSize());
-    glfwWindowHint(GLFW_BLUE_BITS,    format.blueBufferSize());
-    glfwWindowHint(GLFW_ALPHA_BITS,   format.alphaBufferSize());
-
-    glfwWindowHint(GLFW_STEREO, format.stereo());
-    glfwWindowHint(GLFW_SAMPLES, format.samples());
-
-    GLFWwindow * window = glfwCreateWindow(1, 1, "", nullptr, nullptr);
-
-    if (window)
-    {
-        glfwMakeContextCurrent(window);
-        glbinding::Binding::initialize(false);
-        glfwSwapInterval(static_cast<int>(format.swapBehavior()));
-        glfwMakeContextCurrent(nullptr);
-    }
-
-    return window;
 }
 
 
