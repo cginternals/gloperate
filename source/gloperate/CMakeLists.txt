@@ -39,6 +39,7 @@ set(headers
 
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
+    ${include_path}/base/AbstractGLContextFactory.h
     ${include_path}/base/GLContextFormat.h
     ${include_path}/base/GLContextUtils.h
 
@@ -52,6 +53,7 @@ set(sources
 
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractGLContext.cpp
+    ${source_path}/base/AbstractGLContextFactory.cpp
     ${source_path}/base/GLContextFormat.cpp
     ${source_path}/base/GLContextUtils.cpp
 

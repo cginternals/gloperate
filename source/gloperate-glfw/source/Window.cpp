@@ -12,6 +12,7 @@
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/GLContext.h>
+#include <gloperate-glfw/GLContextFactory.h>
 #include <gloperate-glfw/WindowEventDispatcher.h>
 #include <gloperate-glfw/WindowEvent.h>
 
@@ -452,7 +453,7 @@ bool Window::createContext(const GLContextFormat & format, int width, int height
         return false;
     }
 
-    m_window = GLContext::createWindow(format);
+    m_window = GLContextFactory::createWindow(format);
     if (!m_window)
     {
         return false;

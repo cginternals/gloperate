@@ -10,6 +10,7 @@
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/RenderWindow.h>
 #include <gloperate-glfw/GLContext.h>
+#include <gloperate-glfw/GLContextFactory.h>
 
 
 using namespace gloperate;
@@ -22,8 +23,11 @@ int main(int argc, char * argv[])
     Application::init();
     Application app(argc, argv);
 
+    // Create context factory
+    GLContextFactory contextFactory;
+
     // Create viewer context
-    ViewerContext viewerContext;
+    ViewerContext viewerContext(contextFactory);
 
     // Create render window
     RenderWindow window(&viewerContext);

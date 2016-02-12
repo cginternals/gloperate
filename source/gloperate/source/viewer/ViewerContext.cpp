@@ -6,12 +6,18 @@ namespace gloperate
 {
 
 
-ViewerContext::ViewerContext()
+ViewerContext::ViewerContext(AbstractGLContextFactory & contextFactory)
+: m_contextFactory(contextFactory)
 {
 }
 
 ViewerContext::~ViewerContext()
 {
+}
+
+AbstractGLContextFactory & ViewerContext::contextFactory()
+{
+    return m_contextFactory;
 }
 
 
