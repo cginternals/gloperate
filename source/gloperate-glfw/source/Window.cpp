@@ -33,12 +33,18 @@ const std::set<Window*> & Window::instances()
 }
 
 
-Window::Window()
+Window::Window(
+    const std::string & title
+  , int width
+  , int height
+  , const gloperate::GLContextFormat & format)
 : m_window(nullptr)
 , m_context(nullptr)
 , m_windowMode(WindowedMode)
-, m_windowedModeSize(0, 0)
+, m_windowedModeSize(width, height)
 , m_quitOnDestroy(true)
+, m_title(title)
+, m_format(format)
 {
     // Register window
     s_instances.insert(this);
@@ -62,7 +68,19 @@ Window::~Window()
     }
 }
 
-bool Window::create(const GLContextFormat & format, const std::string & title, int width, int height)
+bool Window::setContextFormat(const gloperate::GLContextFormat & format)
+{
+    if (m_context != nullptr)
+    {
+        return false;
+    }
+
+    m_format = format;
+
+    return true;
+}
+
+bool Window::create()
 {
     assert(nullptr == m_context);
 
@@ -71,7 +89,7 @@ bool Window::create(const GLContextFormat & format, const std::string & title, i
         return false;
     }
 
-    if (!createContext(format, width, height))
+    if (!createContext(m_format, m_windowedModeSize.x, m_windowedModeSize.y))
     {
         globjects::fatal() << "Creating native window with OpenGL context failed.";
         return false;
@@ -80,9 +98,9 @@ bool Window::create(const GLContextFormat & format, const std::string & title, i
     WindowEventDispatcher::registerWindow(this);
     initializeContext();
 
-    m_windowedModeSize = glm::ivec2(width, height);
+    m_windowedModeSize = glm::ivec2(m_windowedModeSize.x, m_windowedModeSize.y);
 
-    setTitle(title);
+    setTitle(m_title);
 
     return true;
 }
@@ -218,8 +236,10 @@ glm::ivec2 Window::size() const
     return glm::ivec2(w, h);
 }
 
-void Window::resize(int width, int height)
+void Window::setSize(int width, int height)
 {
+    m_windowedModeSize = glm::ivec2(width, height);
+
     if (!m_window)
     {
         return;
@@ -248,14 +268,14 @@ const std::string & Window::title() const
 
 void Window::setTitle(const std::string & title)
 {
+    m_title = title;
+
     if (!m_window)
     {
         return;
     }
 
     glfwSetWindowTitle(m_window, title.c_str());
-
-    m_title = title;
 }
 
 int Window::inputMode(int mode) const

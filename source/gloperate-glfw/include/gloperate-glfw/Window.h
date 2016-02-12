@@ -7,6 +7,8 @@
 
 #include <glm/glm.hpp>
 
+#include <gloperate/base/GLContextFormat.h>
+
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
 
@@ -64,8 +66,20 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] title
+    *    Window title
+    *  @param[in] width
+    *    Window width (in pixels)
+    *  @param[in] height
+    *    Window height (in pixels)
+    *  @param[in] format
+    *    The desired OpenGL context format
     */
-    Window();
+    Window(const std::string & title = "gloperate",
+           int width  = 1280,
+           int height =  720,
+           const gloperate::GLContextFormat & format = gloperate::GLContextFormat());
 
     /**
     *  @brief
@@ -75,16 +89,24 @@ public:
 
     /**
     *  @brief
-    *    Create window
+    *    Set OpenGL context format
     *
     *  @param[in] format
     *    The desired OpenGL context format
-    *  @param[in] title
-    *    Window title
-    *  @param[in] width
-    *    Window width (in pixels)
-    *  @param[in] height
-    *    Window height (in pixels)
+    *
+    *  @return
+    *    'true' if the format could be set, else 'false'
+    *
+    *  @remarks
+    *    The context format can only be set before the window
+    *    has been created. Afterwards, the function will fail
+    *    and the context format will not be changed.
+    */
+    bool setContextFormat(const gloperate::GLContextFormat & format);
+
+    /**
+    *  @brief
+    *    Create window
     *
     *  @return
     *    'true' if window could be created, else 'false'
@@ -92,11 +114,7 @@ public:
     *  @remarks
     *    If the window has already been created, this function will fail
     */
-    bool create(
-        const gloperate::GLContextFormat & format
-      , const std::string & title = "gloperate"
-      , int width  = 1280
-      , int height =  720);
+    bool create();
 
     /**
     *  @brief
@@ -185,7 +203,7 @@ public:
     *  @param[in] height
     *    Window height (in pixels)
     */
-    void resize(int width, int height);
+    void setSize(int width, int height);
 
     /**
     *  @brief
@@ -429,6 +447,8 @@ protected:
     glm::ivec2   m_windowedModeSize; ///< Size of window when returned from fullscreen mode
     bool         m_quitOnDestroy;    ///< Quit application when window is closed?
     std::string  m_title;            ///< Window title
+
+    gloperate::GLContextFormat m_format;    ///< The desired OpenGL context format
 
     std::queue<WindowEvent*> m_eventQueue;  ///< List of events to be processed by the window
 
