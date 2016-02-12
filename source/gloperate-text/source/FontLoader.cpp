@@ -171,8 +171,8 @@ void FontLoader::handleChar(std::stringstream & stream, FontFace & fontFace) con
     glyph.setSubTextureExtent(extent * extentScale);
 
     glyph.setBearing(fontFace.ascent(), 
-        stringzeug::fromString<float>(pairs.at("xoffset")) - fontFace.glyphTexturePadding()[3],
-        stringzeug::fromString<float>(pairs.at("yoffset")) - fontFace.glyphTexturePadding()[0]);
+        stringzeug::fromString<float>(pairs.at("xoffset")),
+        stringzeug::fromString<float>(pairs.at("yoffset")));
 
     glyph.setAdvance(stringzeug::fromString<float>(pairs.at("xadvance")));
 

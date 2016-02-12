@@ -83,7 +83,7 @@ public:
     * @param[in] extent
     *   The extent, in combination with the sub-texture offset
     *   (subTextureOffset), implictily specifies the sub-texture
-    *   rectangle innormalized texture coordinates.
+    *   rectangle in normalized texture coordinates.
     *
     *   Note: the extent comprises the font face's padding.
     */

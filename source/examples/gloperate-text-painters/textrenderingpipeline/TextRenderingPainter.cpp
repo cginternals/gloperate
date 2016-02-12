@@ -44,6 +44,7 @@ TextRenderingPainter::TextRenderingPainter(gloperate::ResourceManager & resource
     addProperty(createProperty("WordWrap", m_pipeline.wordWrap));
     addProperty(createProperty("LineWidth", m_pipeline.lineWidth));
     addProperty(createProperty("Alignment", m_pipeline.alignment));
+    addProperty(createProperty("Quality", m_pipeline.quality));
 
     auto screen = QApplication::primaryScreen();
     assert(screen);

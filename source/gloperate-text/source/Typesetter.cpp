@@ -5,6 +5,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/geometric.hpp>
 
 #include <gloperate-text/Alignment.h>
 #include <gloperate-text/FontFace.h>
@@ -35,6 +36,8 @@ glm::vec2 Typesetter::typeset(
 ,   const GlyphVertexCloud::Vertices::iterator & begin
 ,   bool dryrun)
 {
+    //const auto & padding = fontFace.glyphTexturePadding();
+
     auto pen = glm::vec2(0.f);
     auto vertex = begin;
     auto extent = glm::vec2(0.f);
@@ -60,7 +63,7 @@ glm::vec2 Typesetter::typeset(
         if (feedLine)
         {
             assert(i != iBegin);
-            typeset_extent(fontFace, i - 1, pen, extent);
+            typeset_extent(fontFace, i - 1, iBegin, pen, extent);
 
             // handle alignment (when line feed occurs)
             if (!dryrun)
@@ -77,13 +80,13 @@ glm::vec2 Typesetter::typeset(
 
         // typeset glyphs in vertex cloud (only if renderable)
         if (!dryrun && glyph.depictable())
-            typeset_glyph(pen, glyph, vertex++);
+            typeset_glyph(fontFace, pen, glyph, vertex++);
 
         pen.x += glyph.advance();
 
         if (i + 1 == iEnd) // handle alignment (when last line of sequence is processed)
         {
-            typeset_extent(fontFace, i - 1, pen, extent);
+            typeset_extent(fontFace, i, iBegin, pen, extent);
 
             if (!dryrun)
                 typeset_align(pen, sequence.alignment(), feedVertex, vertex);
@@ -96,7 +99,6 @@ glm::vec2 Typesetter::typeset(
 
         // transform glyphs in vertex cloud
         vertex_transform(sequence.transform(), begin, vertex);
-
     }
 
     return extent_transform(sequence, extent);
@@ -112,19 +114,21 @@ inline bool Typesetter::typeset_wordwrap(
 {
     assert(sequence.wordWrap());
 
+    const auto lineWidth = sequence.lineWidth();
     auto width_forward = 0.f;
 
-    if (index >= safe_forward)
-        safe_forward = typeset_forward(sequence, fontFace, index, width_forward);
-
-    const auto pen_forward = pen.x + width_forward;
     const auto pen_glyph = pen.x + glyph.advance()
         + (index != sequence.string().cbegin() ? fontFace.kerning(*(index - 1), *index) : 0.f);
 
-    const auto lineWidth = sequence.lineWidth();
-    const auto wrap_forward = width_forward <= lineWidth && pen_forward > lineWidth;
-    const auto wrap_glyph = pen_glyph > lineWidth 
+    const auto wrap_glyph = glyph.depictable() && pen_glyph > lineWidth
         && (glyph.advance() <= lineWidth || pen.x > 0.f);
+
+    auto wrap_forward = false;
+    if (!wrap_glyph && index >= safe_forward)
+    {
+        safe_forward = typeset_forward(sequence, fontFace, index, width_forward);
+        wrap_forward = width_forward <= lineWidth && (pen.x + width_forward) > lineWidth;
+    }
 
     return wrap_forward || wrap_glyph;
 }
@@ -154,45 +158,50 @@ inline std::u32string::const_iterator Typesetter::typeset_forward(
 
         width += fontFace.glyph(*i++).advance();
     }
-    while (i != iEnd && delimiters.find(*i) != delimiters.npos)
-    {
-        if (i != iBegin)
-            width += fontFace.kerning(*(i - 1), *i);
-
-        width += fontFace.glyph(*i++).advance();
-    }
     return i;
 }
 
 inline void Typesetter::typeset_glyph(
-    const glm::vec2 & pen
+    const FontFace & fontFace
+,   const glm::vec2 & pen
 ,   const Glyph & glyph
 ,   const GlyphVertexCloud::Vertices::iterator & vertex)
 {
-    vertex->origin = pen + glm::vec2(
-        glyph.bearing().x, glyph.bearing().y - glyph.extent().y);
+    const auto & padding = fontFace.glyphTexturePadding();
+    vertex->origin    = pen;
+    vertex->origin.x += glyph.bearing().x - padding[3];
+    vertex->origin.y += glyph.bearing().y - glyph.extent().y - padding[2];
 
-    vertex->extent = glyph.extent();
+    vertex->extent    = glyph.extent();
+    vertex->extent.x += padding[1] + padding[3];
+    vertex->extent.y += padding[0] + padding[2];
 
-    vertex->uvRect = glm::vec4(
-        glyph.subTextureOrigin(), glyph.subTextureOrigin() + glyph.subTextureExtent());
+    const auto extentScale = 1.f / glm::vec2(fontFace.glyphTextureExtent());
+    const auto ll = glyph.subTextureOrigin() 
+        - glm::vec2(padding[3], padding[2]) * extentScale;
+    const auto ur = glyph.subTextureOrigin() + glyph.subTextureExtent() 
+        + glm::vec2(padding[1], padding[0]) * extentScale;
+    vertex->uvRect = glm::vec4(ll, ur);
 }
 
 inline void Typesetter::typeset_extent(
     const FontFace & fontFace
-,   const std::u32string::const_iterator & preceding
-,   const glm::vec2 & pen
+,   std::u32string::const_iterator index
+,   const std::u32string::const_iterator & begin
+,   glm::vec2 & pen
 ,   glm::vec2 & extent)
 {
-    auto lineWidth = pen.x;
+    // on line feed, revert advance of preceding, not depictable glyphs
+    while (index > begin)
+    {
+        auto precedingGlyph = fontFace.glyph(*index);
+        if (precedingGlyph.depictable())
+            break;
 
-    // on line feed, if last/preceding glyph is not depictable
-    // revert its advance (important for text alignment).
-    auto precedingGlyph = fontFace.glyph(*(preceding));
-    if (!precedingGlyph.depictable())
-        lineWidth -= precedingGlyph.advance();
-
-    extent.x = glm::max(lineWidth, extent.x);
+        pen.x -= precedingGlyph.advance();
+        --index;
+    }
+    extent.x = glm::max(pen.x, extent.x);
     extent.y += fontFace.lineHeight();
 }
 
@@ -240,14 +249,11 @@ inline glm::vec2 Typesetter::extent_transform(
     const GlyphSequence & sequence
 ,   const glm::vec2 & extent)
 {
-    // ToDo: refine to support 3D transforms
-    auto ll = glm::vec4(0.f, 0.f, 0.f, 1.f);
-    auto ur = ll + glm::vec4(extent, 0.f, 0.f);
+    auto ll = sequence.transform() * glm::vec4(     0.f,      0.f, 0.f, 1.f);
+    auto lr = sequence.transform() * glm::vec4(extent.x,      0.f, 0.f, 1.f);
+    auto ul = sequence.transform() * glm::vec4(     0.f, extent.y, 0.f, 1.f);
 
-    ll = sequence.transform() * ll;
-    ur = sequence.transform() * ur;
-
-    return glm::vec2(ur.x - ll.x, ur.y - ll.y);
+    return glm::vec2(glm::distance(lr, ll), glm::distance(ul, ll));
 }
 
 

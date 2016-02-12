@@ -53,14 +53,16 @@ private:
     ,   float & width);
 
     static void typeset_glyph(
-        const glm::vec2 & pen
+        const FontFace & fontFace
+    ,   const glm::vec2 & pen
     ,   const Glyph & glyph
     ,   const GlyphVertexCloud::Vertices::iterator & vertex);
 
     static void typeset_extent(
         const FontFace & fontFace
-    ,   const std::u32string::const_iterator & preceding
-    ,   const glm::vec2 & pen
+    ,   std::u32string::const_iterator index
+    ,   const std::u32string::const_iterator & begin
+    ,   glm::vec2 & pen
     ,   glm::vec2 & extent);
 
     static void typeset_align(
