@@ -3,17 +3,8 @@
 
 
 #include <gloperate/base/AbstractGLContextFactory.h>
-#include <gloperate/base/AbstractGLContext.h>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
-
-
-struct GLFWwindow;
-
-namespace gloperate
-{
-    class GLContextFormat;
-}
 
 
 namespace gloperate_glfw
@@ -27,9 +18,19 @@ namespace gloperate_glfw
 class GLOPERATE_GLFW_API GLContextFactory : public gloperate::AbstractGLContextFactory
 {
 public:
+    /**
+    *  @brief
+    *    Constructor
+    */
     GLContextFactory();
+
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~GLContextFactory();
 
+    // Virtual gloperate::AbstractGLContextFactory functions
     virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) override;
 
 

@@ -25,9 +25,28 @@ class GLContextFormat;
 class GLOPERATE_API AbstractGLContextFactory
 {
 public:
+    /**
+    *  @brief
+    *    Constructor
+    */
     AbstractGLContextFactory();
+
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~AbstractGLContextFactory();
 
+    /**
+    *  @brief
+    *    Create OpenGL context with the given format
+    *
+    *  @param[in] format
+    *    Desired OpenGL format
+    *
+    *  @return
+    *    OpenGL context
+    */
     virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) = 0;
 };
 
