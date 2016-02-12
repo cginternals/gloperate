@@ -55,7 +55,7 @@ public:
     gloperate::Data<float> lineWidth;
 
     gloperate::Data<gloperate_text::Alignment> alignment;
-    
+
     gloperate::Data<int> quality;
 
     gloperate::Data<gloperate::AbstractTargetFramebufferCapability *> targetFBO;

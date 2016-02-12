@@ -30,20 +30,22 @@ ExplicitEquidistantColorGradient::ExplicitEquidistantColorGradient(const std::st
 
 reflectionzeug::Color ExplicitEquidistantColorGradient::colorAt(float position) const
 {
-    float offset = position * float(m_colors.size());
-
     if (m_discrete)
     {
+        float offset = position * float(m_colors.size());
+
         int index = glm::min(int(glm::floor(offset)), int(m_colors.size()-1));
 
         return m_colors.at(index);
     }
     else
     {
-        int lower = glm::min(int(glm::floor(offset)), int(m_colors.size()-1));
-        int upper = glm::min(int(glm::ceil(offset)), int(m_colors.size()-1));
+        float offset = position * float(m_colors.size()-1);
 
-        return m_colors.at(lower).interpolate(m_colors.at(upper), glm::fract(offset));
+        int lowerIndex = glm::min(int(glm::floor(offset)), int(m_colors.size()-1));
+        int upperIndex = glm::min(int(glm::ceil(offset)), int(m_colors.size()-1));
+
+        return m_colors.at(lowerIndex).interpolate(m_colors.at(upperIndex), glm::fract(offset));
     }
 }
 

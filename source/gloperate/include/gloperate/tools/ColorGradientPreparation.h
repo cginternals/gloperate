@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <set>
 
 #include <gloperate/gloperate_api.h>
 
@@ -33,7 +34,18 @@ class ColorGradientList;
 class GLOPERATE_API ColorGradientPreparation
 {
 public:
+    /**
+     * @brief ColorGradientPreparation
+     *   The constructor
+     * @param gradients [in]
+     *  The list of gradients to operate on.
+     * @param iconSize [in]
+     *  The size of the pixmaps that should get generated and configured as the pixmaps for a property.
+     * @param whitelist [in]
+     *  An optional list of gradients names to consider while processing the gradient list. If the list is empty, all gradients get processed.
+     */
     ColorGradientPreparation(const ColorGradientList & gradients, const std::pair<std::uint32_t, std::uint32_t> & iconSize);
+    ColorGradientPreparation(const ColorGradientList & gradients, const std::pair<std::uint32_t, std::uint32_t> & iconSize, const std::set<std::string> & whitelist);
 
     /**
      * @brief Returns the passed gradient list from the constructor.
@@ -78,6 +90,7 @@ public:
 protected:
     const ColorGradientList & m_gradients; /// The gradient list to operate on
     std::pair<std::uint32_t, std::uint32_t> m_iconSize; /// The icon size used for all generated pixmaps
+    std::set<std::string> m_whitelist; /// The names of the gradients to include into the property
 };
 
 

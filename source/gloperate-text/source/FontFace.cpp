@@ -36,7 +36,7 @@ void FontFace::setAscent(const float ascent)
 
 float FontFace::descent() const
 {
-    return m_ascent;
+    return m_descent;
 }
 
 void FontFace::setDescent(const float descent)
