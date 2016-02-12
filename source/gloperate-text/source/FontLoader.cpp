@@ -99,7 +99,7 @@ FontFace * FontLoader::load(const std::string & filename
         return fontFace;
 
     delete fontFace;
-    return nullptr;    
+    return nullptr; 
 }
 
 void FontLoader::handleInfo(std::stringstream & stream, FontFace & fontFace, float & fontSize) const

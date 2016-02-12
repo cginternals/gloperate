@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
 #include <globjects/base/ref_ptr.h>
@@ -22,8 +23,9 @@ class GLOPERATE_TEXT_API GlyphVertexCloud
 public:
     struct Vertex
     {
-        glm::vec2 origin;
-        glm::vec2 extent;
+        glm::vec3 origin;
+        glm::vec3 vtan;
+        glm::vec3 vbitan;
 
         // vec2 lowerLeft and vec2 upperRight in glyph texture (uv)
         glm::vec4 uvRect;

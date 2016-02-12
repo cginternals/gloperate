@@ -99,6 +99,7 @@ glm::vec2 Typesetter::typeset(
 
         // transform glyphs in vertex cloud
         vertex_transform(sequence.transform(), begin, vertex);
+        
     }
 
     return extent_transform(sequence, extent);
@@ -168,13 +169,12 @@ inline void Typesetter::typeset_glyph(
 ,   const GlyphVertexCloud::Vertices::iterator & vertex)
 {
     const auto & padding = fontFace.glyphTexturePadding();
-    vertex->origin    = pen;
+    vertex->origin    = glm::vec3(pen, 0.f);
     vertex->origin.x += glyph.bearing().x - padding[3];
     vertex->origin.y += glyph.bearing().y - glyph.extent().y - padding[2];
 
-    vertex->extent    = glyph.extent();
-    vertex->extent.x += padding[1] + padding[3];
-    vertex->extent.y += padding[0] + padding[2];
+    vertex->vtan   = glm::vec3(glyph.extent().x + padding[1] + padding[3], 0.f, 0.f);
+    vertex->vbitan = glm::vec3(0.f, glyph.extent().y + padding[0] + padding[2], 0.f);
 
     const auto extentScale = 1.f / glm::vec2(fontFace.glyphTextureExtent());
     const auto ll = glyph.subTextureOrigin() 
@@ -231,17 +231,13 @@ inline void Typesetter::vertex_transform(
 {
     for (auto v = begin; v != end; ++v)
     {
-        auto ll = glm::vec4(v->origin, 0.f, 1.f);
-        auto ur = ll + glm::vec4(v->extent, 0.f, 0.f);
+        auto ll = transform * glm::vec4(v->origin, 1.f);
+        auto lr = transform * glm::vec4(v->origin + v->vtan, 1.f);
+        auto ul = transform * glm::vec4(v->origin + v->vbitan, 1.f);
 
-        ll = transform * ll;
-        ur = transform * ur;
-
-        v->origin.x = ll.x;
-        v->origin.y = ll.y;
-        // transform back to extent
-        v->extent.x = ur.x - ll.x;
-        v->extent.y = ur.y - ll.y;
+        v->origin = glm::vec3(ll);
+        v->vtan   = glm::vec3(lr - ll);
+        v->vbitan = glm::vec3(ul - ll);
     }
 }
 

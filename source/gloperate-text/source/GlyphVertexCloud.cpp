@@ -51,8 +51,9 @@ gloperate::VertexDrawable * GlyphVertexCloud::createDrawable()
     auto drawable = new gloperate::VertexDrawable(Vertices(), gl::GL_POINTS);
 
     drawable->setFormats({
-        gloperate::Format(2, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, origin)),
-        gloperate::Format(2, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, extent)),
+        gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, origin)),
+        gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, vtan)),
+        gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, vbitan)),
         gloperate::Format(4, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, uvRect)),
     });
 
