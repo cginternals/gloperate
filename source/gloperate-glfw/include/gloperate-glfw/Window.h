@@ -366,7 +366,7 @@ protected:
 
     /**
     *  @brief
-    *    Create OpenGL context (and window)
+    *    Create internal window and OpenGL context
     *
     *  @param[in] format
     *    The desired OpenGL context format
@@ -384,28 +384,16 @@ protected:
     *    This function will actually create a new window with the given context
     *    format, so any previously obtained window IDs will be rendered invalid.
     */
-    bool createContext(const gloperate::GLContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
+    bool createInternalWindow(const gloperate::GLContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
 
     /**
     *  @brief
-    *    Destroy OpenGL context (and window)
+    *    Destroy internal window and OpenGL context
     *
     *  @remarks
     *    This function will actually destroy the current window.
     */
-    void destroyContext();
-
-    /**
-    *  @brief
-    *    Send signal for initializing OpenGL context
-    */
-    void initializeContext();
-
-    /**
-    *  @brief
-    *    Send signal for deinitializing OpenGL context
-    */
-    void deinitializeContext();
+    void destroyInternalWindow();
 
     // Event handlers, to be overwritten in derived classes
     virtual void onContextInit();
@@ -441,12 +429,12 @@ protected:
 
 
 protected:
-    GLFWwindow * m_window;           ///< GLFW window (can be nullptr)
-    GLContext  * m_context;          ///< OpenGL context (can be nullptr)
-    WindowMode   m_windowMode;       ///< Window mode (windowed or fullscreen)
-    glm::ivec2   m_windowedModeSize; ///< Size of window when returned from fullscreen mode
-    bool         m_quitOnDestroy;    ///< Quit application when window is closed?
-    std::string  m_title;            ///< Window title
+    GLFWwindow * m_window;                  ///< GLFW window (can be nullptr)
+    GLContext  * m_context;                 ///< OpenGL context (can be nullptr)
+    WindowMode   m_windowMode;              ///< Window mode (windowed or fullscreen)
+    glm::ivec2   m_windowedModeSize;        ///< Size of window when returned from fullscreen mode
+    bool         m_quitOnDestroy;           ///< Quit application when window is closed?
+    std::string  m_title;                   ///< Window title
 
     gloperate::GLContextFormat m_format;    ///< The desired OpenGL context format
 

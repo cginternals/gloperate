@@ -81,20 +81,11 @@ bool Window::create()
     }
 
     // Create internal window
-    if (!createContext(m_format, m_windowedModeSize.x, m_windowedModeSize.y))
+    if (!createInternalWindow(m_format, m_windowedModeSize.x, m_windowedModeSize.y))
     {
         globjects::fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
-
-    // Register window for event processing
-    WindowEventDispatcher::registerWindow(this);
-
-    // Initialize rendering components with new context
-    initializeContext();
-
-    // Refresh title
-    setTitle(m_title);
 
     return true;
 }
@@ -104,9 +95,7 @@ void Window::destroy()
     // Destroy internal window
     if (m_context)
     {
-        deinitializeContext();
-        WindowEventDispatcher::deregisterWindow(this);
-        destroyContext();
+        destroyInternalWindow();
     }
 
     // Quit application?
@@ -186,19 +175,12 @@ void Window::setFullscreen(bool fullscreen)
         int w = mode->width;
         int h = mode->height;
 
-        //GLContextFormat format = m_context->format();
-
         // Destroy internal window
-        deinitializeContext();
-        WindowEventDispatcher::deregisterWindow(this);
-        destroyContext();
+        destroyInternalWindow();
 
         // Create new internal window
-        if (createContext(m_format, w, h, monitor))
+        if (createInternalWindow(m_format, w, h, monitor))
         {
-            WindowEventDispatcher::registerWindow(this);
-            initializeContext();
-
             // Save fullscreen mode
             m_windowMode = FullscreenMode;
         }
@@ -210,19 +192,12 @@ void Window::setFullscreen(bool fullscreen)
         int w = m_windowedModeSize.x;
         int h = m_windowedModeSize.y;
 
-//        GLContextFormat format = m_context->format();
-
         // Destroy internal window
-        deinitializeContext();
-        WindowEventDispatcher::deregisterWindow(this);
-        destroyContext();
+        destroyInternalWindow();
 
         // Create new internal window
-        if (createContext(m_format, w, h, nullptr))
+        if (createInternalWindow(m_format, w, h, nullptr))
         {
-            WindowEventDispatcher::registerWindow(this);
-            initializeContext();
-
             // Save windowed mode
             m_windowMode = WindowedMode;
         }
@@ -504,52 +479,68 @@ void Window::clearEventQueue()
     }
 }
 
-bool Window::createContext(const GLContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
+bool Window::createInternalWindow(const GLContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
 {
+    // Abort if window is already created
     assert(nullptr == m_context);
     if (m_context)
     {
         return false;
     }
 
+    // Create GLFW window with OpenGL context
     m_window = GLContextFactory::createWindow(format);
     if (!m_window)
     {
         return false;
     }
 
-    glfwSetWindowSize(m_window, width, height);
+    // Set window size and title
+    glfwSetWindowSize (m_window, width, height);
+    glfwSetWindowTitle(m_window, m_title.c_str());
 
+    // Create wrapper for OpenGL context
     m_context = new GLContext(m_window);
     m_context->format().verify(format);
 
-    return true;
-}
+    // Register window for event processing
+    WindowEventDispatcher::registerWindow(this);
 
-void Window::destroyContext()
-{
-    delete m_context;
-    glfwDestroyWindow(m_window);
-
-    m_context = nullptr;
-    m_window = nullptr;
-}
-
-void Window::initializeContext()
-{
+    // Initialize rendering components with new context
     glfwMakeContextCurrent(m_window);
     onContextInit();
     glfwMakeContextCurrent(nullptr);
 
+    // Promote current size
     queueEvent(new ResizeEvent(size()));
     queueEvent(new ResizeEvent(framebufferSize(), true));
+
+    return true;
 }
 
-void Window::deinitializeContext()
+void Window::destroyInternalWindow()
 {
+    // Abort if window has not been created
+    if (!m_context)
+    {
+        return;
+    }
+
+    // Deinitialize rendering components from old context
     glfwMakeContextCurrent(m_window);
     onContextDeinit();
     glfwMakeContextCurrent(nullptr);
+
+    // Unregister window from event processing
+    WindowEventDispatcher::deregisterWindow(this);
+
+    // Destroy GLFW window and OpenGL context
+    delete m_context;
+    glfwDestroyWindow(m_window);
+
+    // Reset internal pointers
+    m_context = nullptr;
+    m_window = nullptr;
 }
 
 void Window::onContextInit()
