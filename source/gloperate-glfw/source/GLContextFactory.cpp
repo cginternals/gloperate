@@ -71,29 +71,33 @@ gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::
 
 #endif
 
-    glfwWindowHint(GLFW_DEPTH_BITS,   format.depthBufferSize());
-    glfwWindowHint(GLFW_STENCIL_BITS, format.stencilBufferSize());
-
     glfwWindowHint(GLFW_RED_BITS,     format.redBufferSize());
     glfwWindowHint(GLFW_GREEN_BITS,   format.greenBufferSize());
     glfwWindowHint(GLFW_BLUE_BITS,    format.blueBufferSize());
     glfwWindowHint(GLFW_ALPHA_BITS,   format.alphaBufferSize());
-
-    glfwWindowHint(GLFW_STEREO, format.stereo());
-    glfwWindowHint(GLFW_SAMPLES, format.samples());
+    glfwWindowHint(GLFW_DEPTH_BITS,   format.depthBufferSize());
+    glfwWindowHint(GLFW_STENCIL_BITS, format.stencilBufferSize());
+    glfwWindowHint(GLFW_STEREO,       format.stereo());
+    glfwWindowHint(GLFW_SAMPLES,      format.samples());
 
     // Create window
     GLFWwindow * window = glfwCreateWindow(1, 1, "", nullptr, nullptr);
-    if (window)
+    if (!window)
     {
-        glfwMakeContextCurrent(window);
-        glbinding::Binding::initialize(false);
-        glfwSwapInterval(static_cast<int>(format.swapBehavior()));
-        glfwMakeContextCurrent(nullptr);
+        return nullptr;
     }
+
+    // Activate context
+    glfwMakeContextCurrent(window);
+    glbinding::Binding::initialize(false);
+    glfwSwapInterval(static_cast<int>(format.swapBehavior()));
 
     // Create context wrapper
     GLContext * context = new GLContext(window);
+
+    // Deactivate context
+    glfwMakeContextCurrent(nullptr);
+
     return context;
 }
 
