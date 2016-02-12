@@ -112,7 +112,7 @@ public:
     *    'true' if window could be created, else 'false'
     *
     *  @remarks
-    *    If the window has already been created, this function will fail
+    *    If the window has already been created, this function will fail.
     */
     bool create();
 
@@ -124,19 +124,10 @@ public:
 
     /**
     *  @brief
-    *    Get GLFW window handle
-    *
-    *  @return
-    *    GLFW window, can be nullptr
-    */
-    GLFWwindow * internalWindow() const;
-
-    /**
-    *  @brief
     *    Get OpenGL context
     *
     *  @return
-    *    OpenGL context, can be nullptr
+    *    OpenGL context (can be nullptr)
     */
     GLContext * context() const;
 
@@ -325,6 +316,15 @@ public:
 
 
 protected:
+    /**
+    *  @brief
+    *    Get GLFW window handle
+    *
+    *  @return
+    *    GLFW window, can be nullptr
+    */
+    GLFWwindow * internalWindow() const;
+
     /**
     *  @brief
     *    Add event to the window's event queue

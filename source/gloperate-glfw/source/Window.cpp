@@ -55,51 +55,45 @@ Window::~Window()
     // Unregister window
     s_instances.erase(this);
 
-    if (m_context)
-    {
-        deinitializeContext();
-        WindowEventDispatcher::deregisterWindow(this);
-        destroyContext();
-    }
-
-    if (s_instances.empty())
-    {
-        Application::quit(0);
-    }
+    // Destroy window
+    destroy();
 }
 
 bool Window::setContextFormat(const gloperate::GLContextFormat & format)
 {
+    // If window has already been created, the context format cannot be changed anymore
     if (m_context != nullptr)
     {
         return false;
     }
 
+    // Save new context format
     m_format = format;
-
     return true;
 }
 
 bool Window::create()
 {
-    assert(nullptr == m_context);
-
+    // Abort, if the window has already been created
     if (m_context)
     {
         return false;
     }
 
+    // Create internal window
     if (!createContext(m_format, m_windowedModeSize.x, m_windowedModeSize.y))
     {
         globjects::fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
 
+    // Register window for event processing
     WindowEventDispatcher::registerWindow(this);
+
+    // Initialize rendering components with new context
     initializeContext();
 
-    m_windowedModeSize = glm::ivec2(m_windowedModeSize.x, m_windowedModeSize.y);
-
+    // Refresh title
     setTitle(m_title);
 
     return true;
@@ -107,18 +101,19 @@ bool Window::create()
 
 void Window::destroy()
 {
-    deinitializeContext();
-    destroyContext();
+    // Destroy internal window
+    if (m_context)
+    {
+        deinitializeContext();
+        WindowEventDispatcher::deregisterWindow(this);
+        destroyContext();
+    }
 
+    // Quit application?
     if (m_quitOnDestroy)
     {
         Application::quit(0);
     }
-}
-
-GLFWwindow * Window::internalWindow() const
-{
-    return m_window;
 }
 
 GLContext * Window::context() const
@@ -148,42 +143,63 @@ void Window::hide()
 
 void Window::close()
 {
+    if (!m_window)
+    {
+        return;
+    }
+
     queueEvent(new CloseEvent);
 }
 
 bool Window::isFullscreen() const
 {
+    if (!m_window)
+    {
+        return false;
+    }
+
     return (m_windowMode == FullscreenMode);
 }
 
 void Window::setFullscreen(bool fullscreen)
 {
+    if (!m_window)
+    {
+        return;
+    }
+
     // Switch to fullscreen-mode
     if (fullscreen && m_windowMode != FullscreenMode)
     {
+        // Get monitor on which fullscreen mode is requested
         GLFWmonitor * monitor = glfwGetPrimaryMonitor();
         if (!monitor)
         {
             return;
         }
 
+        // Remember old window size
         m_windowedModeSize = size();
 
+        // Set window size to monitor size
         const GLFWvidmode * mode = glfwGetVideoMode(monitor);
         int w = mode->width;
         int h = mode->height;
 
-        GLContextFormat format = m_context->format();
+        //GLContextFormat format = m_context->format();
 
+        // Destroy internal window
         deinitializeContext();
         WindowEventDispatcher::deregisterWindow(this);
         destroyContext();
 
-        if (createContext(format, w, h, monitor))
+        // Create new internal window
+        if (createContext(m_format, w, h, monitor))
         {
             WindowEventDispatcher::registerWindow(this);
             initializeContext();
 
+            // Save fullscreen mode
             m_windowMode = FullscreenMode;
         }
     }
@@ -194,17 +210,20 @@ void Window::setFullscreen(bool fullscreen)
         int w = m_windowedModeSize.x;
         int h = m_windowedModeSize.y;
 
-        GLContextFormat format = m_context->format();
+//        GLContextFormat format = m_context->format();
 
+        // Destroy internal window
         deinitializeContext();
         WindowEventDispatcher::deregisterWindow(this);
         destroyContext();
 
-        if (createContext(format, w, h, nullptr))
+        // Create new internal window
+        if (createContext(m_format, w, h, nullptr))
         {
             WindowEventDispatcher::registerWindow(this);
             initializeContext();
 
+            // Save windowed mode
             m_windowMode = WindowedMode;
         }
     }
@@ -310,11 +329,21 @@ void Window::setQuitOnDestroy(bool quitOnDestroy)
 
 void Window::repaint()
 {
+    if (!m_window)
+    {
+        return;
+    }
+
     queueEvent(new PaintEvent);
 }
 
 void Window::swap()
 {
+    if (!m_window)
+    {
+        return;
+    }
+
     glfwSwapBuffers(m_window);
 }
 
@@ -326,6 +355,11 @@ void Window::addTimer(int id, int interval, bool singleShot)
 void Window::removeTimer(int id)
 {
     WindowEventDispatcher::removeTimer(this, id);
+}
+
+GLFWwindow * Window::internalWindow() const
+{
+    return m_window;
 }
 
 void Window::queueEvent(WindowEvent * event)
@@ -340,12 +374,17 @@ void Window::queueEvent(WindowEvent * event)
 
 bool Window::hasPendingEvents()
 {
+    if (!m_window)
+    {
+        return false;
+    }
+
     return !m_eventQueue.empty();
 }
 
 void Window::processEvents()
 {
-    if (m_eventQueue.empty() || !m_context)
+    if (m_eventQueue.empty() || !m_window)
     {
         return;
     }

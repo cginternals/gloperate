@@ -31,9 +31,9 @@ int main(int argc, char * argv[])
 
     // Create render window
     RenderWindow window(&viewerContext);
-//    window.setTitle("gloperate viewer");
-//    window.setSize(1280, 720);
-//    window.setFormat(window.surface()->negotiateContext());
+    window.setTitle("gloperate viewer");
+    window.setSize(1280, 720);
+    window.setContextFormat(window.surface()->negotiateContext());
     if (!window.create())
     {
         return 1;
