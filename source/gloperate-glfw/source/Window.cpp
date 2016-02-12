@@ -39,11 +39,13 @@ Window::Window()
 , m_windowedModeSize(0, 0)
 , m_quitOnDestroy(true)
 {
+    // Register window
     s_instances.insert(this);
 }
 
 Window::~Window()
 {
+    // Unregister window
     s_instances.erase(this);
 
     if (m_context)
