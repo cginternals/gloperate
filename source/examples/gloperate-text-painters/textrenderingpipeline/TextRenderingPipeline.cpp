@@ -24,8 +24,9 @@ R"(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirm
 
 TextRenderingPipeline::TextRenderingPipeline()
 : resourceManager(nullptr)
-, fontFilename(gloperate::dataPath() + "/gloperate-text/fonts/opensansr56.fnt")
+, fontFilename(gloperate::dataPath() + "/gloperate-text/fonts/opensansr36.fnt")
 , string(lorem)
+, numChars(0)
 //, time(nullptr)
 , pixelPerInch(72.f)
 , fontSize(16.f)
@@ -33,8 +34,8 @@ TextRenderingPipeline::TextRenderingPipeline()
 , margins(0.f, 0.f, 0.f, 0.f) // t r b l
 , wordWrap(true)
 , lineWidth(400.f)
-, alignment(gloperate_text::Alignment::RightAligned)
-, quality(1)
+, alignment(gloperate_text::Alignment::Centered)
+, optimized(true)
 , targetFBO(nullptr)
 , viewport(nullptr)
 {
@@ -47,6 +48,7 @@ TextRenderingPipeline::TextRenderingPipeline()
     fontImport->fontFilePath = fontFilename;
 
     demo->string = string;
+    demo->numChars = numChars;
     demo->font = fontImport->font;
     demo->fontSize = fontSize;
     demo->pixelPerInch = pixelPerInch;
@@ -59,12 +61,12 @@ TextRenderingPipeline::TextRenderingPipeline()
 
     glyphPreparation->font = fontImport->font;
     glyphPreparation->sequences = demo->sequences;
+    glyphPreparation->optimized = optimized;
 
     //glyphRendering->pixelPerInch = pixelPerInch;
     glyphRendering->vertexCloud = glyphPreparation->vertexCloud;
     glyphRendering->viewport = viewport;
     glyphRendering->targetFramebuffer = targetFBO;
-    glyphRendering->quality = quality;
 
     addStages(
         fontImport

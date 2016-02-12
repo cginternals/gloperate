@@ -41,6 +41,7 @@ public:
 
     //gloperate::Data<TextGenerationAlgorithm> textGenerationAlgorithm;
     gloperate::Data<std::string> string;
+    gloperate::Data<uint32_t> numChars;
     //gloperate::Data<std::uint32_t> length;
 
     gloperate::Data<gloperate::AbstractVirtualTimeCapability *> time;
@@ -55,8 +56,7 @@ public:
     gloperate::Data<float> lineWidth;
 
     gloperate::Data<gloperate_text::Alignment> alignment;
-
-    gloperate::Data<int> quality;
+    gloperate::Data<bool> optimized;
 
     gloperate::Data<gloperate::AbstractTargetFramebufferCapability *> targetFBO;
     gloperate::Data<gloperate::AbstractViewportCapability *> viewport;

@@ -38,13 +38,14 @@ TextRenderingPainter::TextRenderingPainter(gloperate::ResourceManager & resource
 
     addProperty(createProperty("Filename", m_pipeline.fontFilename));
     addProperty(createProperty("Size", m_pipeline.fontSize));
+    addProperty(createProperty("NumChars", m_pipeline.numChars));
     addProperty(createProperty("PixelPerInch", m_pipeline.pixelPerInch));
     addProperty(createProperty("Origin", m_pipeline.origin));
     addProperty(createProperty("Margins", m_pipeline.margins));
     addProperty(createProperty("WordWrap", m_pipeline.wordWrap));
     addProperty(createProperty("LineWidth", m_pipeline.lineWidth));
     addProperty(createProperty("Alignment", m_pipeline.alignment));
-    addProperty(createProperty("Quality", m_pipeline.quality));
+    addProperty(createProperty("L1-Cache-Optimized", m_pipeline.optimized));
 
     auto screen = QApplication::primaryScreen();
     assert(screen);

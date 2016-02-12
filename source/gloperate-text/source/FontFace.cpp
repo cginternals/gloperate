@@ -154,6 +154,15 @@ void FontFace::addGlyph(const Glyph & glyph)
     m_glyphs.emplace(glyph.index(), glyph);
 }
 
+std::vector<GlyphIndex> FontFace::glyphs() const
+{
+    auto glyphs = std::vector<GlyphIndex>();
+    for (const auto & i : m_glyphs)
+        glyphs.push_back(i.first);
+
+    return glyphs;
+}
+
 bool FontFace::depictable(const GlyphIndex index) const
 {
     return glyph(index).depictable();

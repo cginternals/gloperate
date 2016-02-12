@@ -35,6 +35,7 @@ public:
     gloperate::InputSlot<FontFace *> font;
 
     gloperate::InputSlot<std::vector<GlyphSequence>> sequences;
+    gloperate::InputSlot<bool> optimized;
 
     gloperate::Data<GlyphVertexCloud> vertexCloud;
 };

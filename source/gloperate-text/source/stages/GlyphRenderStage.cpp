@@ -1,9 +1,9 @@
 
 #include <gloperate-text/stages/GlyphRenderStage.h>
 
-#include <chrono>
-#include <iostream>
-#include <fstream>
+//#include <chrono>
+//#include <iostream>
+//#include <fstream>
 
 #include <glbinding/gl/gl.h>
 
@@ -25,8 +25,6 @@ GlyphRenderStage::GlyphRenderStage()
     addInput("viewport", viewport);
     addInput("targetFramebuffer", targetFramebuffer);
 
-    addInput("quality", quality);
-
     alwaysProcess(true);
 }
 
@@ -44,9 +42,6 @@ uint32_t n = 0;
 
 void GlyphRenderStage::process()
 {
-    if (quality.hasChanged())
-        m_renderer->program()->setUniform("quality", quality.data());
-
     gl::glViewport(viewport.data()->x(), viewport.data()->y(), viewport.data()->width(), viewport.data()->height());
 
     globjects::Framebuffer * fbo = targetFramebuffer.data()->framebuffer();
@@ -64,32 +59,32 @@ void GlyphRenderStage::process()
     gl::glEnable(gl::GL_BLEND);
     gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
-    gl::glFinish();
-    const auto t0 = std::chrono::high_resolution_clock::now();
+    //gl::glFinish();
+    //const auto t0 = std::chrono::high_resolution_clock::now();
 
     m_renderer->render(vertexCloud.data());
     
-    gl::glFinish();
-    const auto t1 = std::chrono::high_resolution_clock::now();
+    //gl::glFinish();
+    //const auto t1 = std::chrono::high_resolution_clock::now();
 
-    using nano = std::chrono::duration<double, std::micro>;
+    //using nano = std::chrono::duration<double, std::micro>;
 
-    ++n;
-    auto last = std::chrono::duration_cast<nano>(t1 - t0).count();
-    avg += last;
+    //++n;
+    //auto last = std::chrono::duration_cast<nano>(t1 - t0).count();
+    //avg += last;
 
-    if (n == 1000)
-    {
-        std::ofstream glyphlog;
-        glyphlog.open("glyph.log", std::ios::out | std::ios::ate);
-        glyphlog << "average:  " << avg / static_cast<double>(n) << "탎 per frame (" << n << " frames)" << std::endl;
-        glyphlog << "   last:  " << last << "탎" << std::endl;
-        glyphlog.flush();
-        glyphlog.close();
+    //if (n == 1000)
+    //{
+    //    std::ofstream glyphlog;
+    //    glyphlog.open("glyph.log", std::ios::out | std::ios::ate);
+    //    glyphlog << "average:  " << avg / static_cast<double>(n) << "탎 per frame (" << n << " frames)" << std::endl;
+    //    glyphlog << "   last:  " << last << "탎" << std::endl;
+    //    glyphlog.flush();
+    //    glyphlog.close();
 
-        avg = 0.0;
-        n = 0;
-    }
+    //    avg = 0.0;
+    //    n = 0;
+    //}
 
     gl::glDisable(gl::GL_CULL_FACE);
     gl::glDisable(gl::GL_BLEND);

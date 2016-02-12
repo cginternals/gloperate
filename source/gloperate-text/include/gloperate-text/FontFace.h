@@ -2,6 +2,7 @@
 #pragma once
 
 #include <map>
+#include <vector>
 #include <unordered_map>
 #include <string>
 
@@ -319,6 +320,15 @@ public:
     *   The glyph to add to the set of glyphs.
     */
     void addGlyph(const Glyph & glyph);
+
+    /**
+    * @brief
+    *   Generates a vector of all comprised glyph indices.
+    *
+    * @return
+    *   A vector of all glyph indices available to this font face.
+    */
+    std::vector<GlyphIndex> glyphs() const;
 
     /**
     * @brief

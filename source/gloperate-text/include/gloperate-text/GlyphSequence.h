@@ -34,6 +34,12 @@ public:
     const std::u32string & string() const;
     void setString(const std::u32string & string);
 
+    const std::vector<char32_t> & chars(
+        std::vector<char32_t> & allChars) const;
+    const std::vector<char32_t> & chars(
+        std::vector<char32_t> & allChars
+    ,   const FontFace & fontFace) const;
+
     bool wordWrap() const;
     void setWordWrap(bool enable);
 

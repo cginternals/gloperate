@@ -17,6 +17,7 @@
 
 #include <iozeug/FilePath.h>
 
+#include <gloperate/resources/RawFile.h>
 #include <gloperate/resources/ResourceManager.h>
 
 #include <gloperate-text/FontFace.h>
@@ -142,7 +143,27 @@ void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, con
     const auto path = iozeug::FilePath(filename).directoryPath();
     const auto file = stringzeug::stripped(pairs.at("file"), { '"', '\r' });
 
-    fontFace.setGlyphTexture(m_resourceManager.load<globjects::Texture>(path + "/" + file));
+    if (stringzeug::hasSuffix(file, ".raw"))
+    {
+        auto texture = new globjects::Texture(gl::GL_TEXTURE_2D);
+        auto raw = gloperate::RawFile(path + "/" + file);
+
+        if (!raw.isValid())
+        {
+            assert(false);
+            return;
+        }
+
+        texture->image2D(0, gl::GL_R8, fontFace.glyphTextureExtent(), 0
+            , gl::GL_RED, gl::GL_UNSIGNED_BYTE, raw.data());
+
+        fontFace.setGlyphTexture(texture);
+    }
+    else
+        fontFace.setGlyphTexture(m_resourceManager.load<globjects::Texture>(path + "/" + file));
+
+    fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_LINEAR);
+    fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_LINEAR);
     fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_CLAMP_TO_EDGE);
     fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_CLAMP_TO_EDGE);
 }

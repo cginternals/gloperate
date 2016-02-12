@@ -17,6 +17,9 @@
 namespace gloperate_text
 {
 
+class FontFace;
+class GlyphSequence;
+
 
 class GLOPERATE_TEXT_API GlyphVertexCloud
 {
@@ -26,7 +29,6 @@ public:
         glm::vec3 origin;
         glm::vec3 vtan;
         glm::vec3 vbitan;
-
         // vec2 lowerLeft and vec2 upperRight in glyph texture (uv)
         glm::vec4 uvRect;
     };
@@ -47,6 +49,12 @@ public:
     const Vertices & vertices() const;
 
     void update();
+    // allows for volatile optimizations
+    void update(const Vertices & vertices);
+
+    void optimize(
+        const std::vector<GlyphSequence> & sequences
+    ,   const FontFace & fontFace);
 
 protected:
     static gloperate::VertexDrawable * createDrawable();

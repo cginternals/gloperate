@@ -17,6 +17,7 @@ GlyphPreparationStage::GlyphPreparationStage()
 {
     addInput("font", font);
     addInput("sequences", sequences);
+    addInput("optimized", optimized);
 
     addOutput("vertexCloud", vertexCloud);
 }
@@ -47,8 +48,13 @@ void GlyphPreparationStage::process()
         index += sequence.size(*font.data());
     }
 
-    vc.update(); // update drawable
-    vc.setTexture(font.data()->glyphTexture());
+    if(optimized.data())
+        vc.optimize(sequences.data(), *font.data()); // optimize and update drawable
+    else
+        vc.update(); // update drawable
+
+    if(font.hasChanged())
+        vc.setTexture(font.data()->glyphTexture());
 
     invalidateOutputs();
 }

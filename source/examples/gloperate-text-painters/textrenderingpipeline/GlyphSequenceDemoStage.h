@@ -39,6 +39,7 @@ public:
 
 public:
     gloperate::InputSlot<std::string> string;
+    gloperate::InputSlot<uint32_t> numChars;
 
     gloperate::InputSlot<gloperate_text::FontFace *> font;
 

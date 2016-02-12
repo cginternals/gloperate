@@ -1,6 +1,8 @@
 
 #include "GlyphSequenceDemoStage.h"
 
+#include <random>
+
 #include <stringzeug/conversion.h>
 
 #include <gloperate/painter/AbstractViewportCapability.h>
@@ -13,6 +15,7 @@ GlyphSequenceDemoStage::GlyphSequenceDemoStage()
 : AbstractStage("GlyphSequenceDemoStage")
 {
     addInput("string", string);
+    addInput("numChars", numChars);
     addInput("font", font);
     addInput("fontSize", fontSize);
     addInput("pixelPerInch", pixelPerInch);
@@ -37,7 +40,20 @@ void GlyphSequenceDemoStage::process()
 
     //font.data()->setLinespace(1.25f);
 
-    sequences.data()[0].setString(stringzeug::encode(string.data(), stringzeug::Encoding::UTF8));
+    if(numChars.data() == 0)
+        sequences.data()[0].setString(stringzeug::encode(string.data(), stringzeug::Encoding::UTF8));
+    else
+    {
+        const auto glyphs = font.data()->glyphs();
+
+        auto s = std::u32string();
+        for (auto i = 0u; i < numChars.data(); ++i)
+        {
+            s += glyphs[std::rand() % glyphs.size()];
+        }
+        sequences.data()[0].setString(s);
+    }
+
     sequences.data()[0].setWordWrap(wordWrap.data());
     sequences.data()[0].setLineWidth(lineWidth.data(), fontSize.data(), *font.data());
     sequences.data()[0].setAlignment(alignment.data());

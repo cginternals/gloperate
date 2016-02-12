@@ -54,6 +54,31 @@ void GlyphSequence::setString(const std::u32string & string)
     m_string = string;
 }
 
+const std::vector<char32_t> & GlyphSequence::chars(
+    std::vector<char32_t> & allChars) const
+{
+    allChars.reserve(allChars.size() + size());
+
+    for (const auto & c : m_string)
+        allChars.push_back(c);
+
+    return allChars;
+}
+
+const std::vector<char32_t> & GlyphSequence::chars(
+    std::vector<char32_t> & depictableChars
+,   const FontFace & fontFace) const
+{
+    depictableChars.reserve(depictableChars.size() + size(fontFace));
+
+    for (const auto & c : m_string)
+    {
+        if(fontFace.depictable(c))
+            depictableChars.push_back(c);
+    }
+    return depictableChars;
+}
+
 bool GlyphSequence::wordWrap() const
 {
     return m_wordWrap;
