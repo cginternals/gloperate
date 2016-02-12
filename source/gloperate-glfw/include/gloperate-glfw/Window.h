@@ -79,28 +79,6 @@ public:
     *
     *  @param[in] format
     *    The desired OpenGL context format
-    *  @param[in] width
-    *    Window width (in pixels)
-    *  @param[in] height
-    *    Window height (in pixels)
-    *
-    *  @return
-    *    'true' if window could be created, else 'false'
-    *
-    *  @remarks
-    *    If the window has already been created, this function will fail
-    */
-    bool create(
-        const gloperate::GLContextFormat & format
-      , int width  = 1280
-      , int height = 720);
-
-    /**
-    *  @brief
-    *    Create window
-    *
-    *  @param[in] format
-    *    The desired OpenGL context format
     *  @param[in] title
     *    Window title
     *  @param[in] width

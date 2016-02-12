@@ -61,18 +61,8 @@ Window::~Window()
 
 bool Window::create(const GLContextFormat & format, const std::string & title, int width, int height)
 {
-    if (!create(format, width, height))
-    {
-        return false;
-    }
-
-    setTitle(title);
-    return true;
-}
-
-bool Window::create(const GLContextFormat & format, int width, int height)
-{
     assert(nullptr == m_context);
+
     if (m_context)
     {
         return false;
@@ -88,6 +78,8 @@ bool Window::create(const GLContextFormat & format, int width, int height)
     initializeContext();
 
     m_windowedModeSize = glm::ivec2(width, height);
+
+    setTitle(title);
 
     return true;
 }
