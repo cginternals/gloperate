@@ -12,6 +12,7 @@
 #include <gloperate/painter/TypedRenderTargetCapability.h>
 
 #include <gloperate-text/Alignment.h>
+#include <gloperate-text/LineAnchor.h>
 
 #include <QtWidgets/qapplication.h>
 #include <QtGui/qscreen.h>
@@ -45,6 +46,7 @@ TextRenderingPainter::TextRenderingPainter(gloperate::ResourceManager & resource
     addProperty(createProperty("WordWrap", m_pipeline.wordWrap));
     addProperty(createProperty("LineWidth", m_pipeline.lineWidth));
     addProperty(createProperty("Alignment", m_pipeline.alignment));
+    addProperty(createProperty("LineAnchor", m_pipeline.lineAnchor));
     addProperty(createProperty("L1-Cache-Optimized", m_pipeline.optimized));
 
     auto screen = QApplication::primaryScreen();

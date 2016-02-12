@@ -18,6 +18,7 @@ GlyphSequence::GlyphSequence()
 : m_wordWrap(false)
 , m_lineWidth(0.f)
 , m_alignment(Alignment::LeftAligned)
+, m_anchor(LineAnchor::Baseline)
 {
 }
 
@@ -112,6 +113,16 @@ Alignment GlyphSequence::alignment() const
 void GlyphSequence::setAlignment(const Alignment alignment)
 {
     m_alignment = alignment;
+}
+
+LineAnchor GlyphSequence::lineAnchor() const
+{
+    return m_anchor;
+}
+
+void GlyphSequence::setLineAnchor(const LineAnchor anchor)
+{
+    m_anchor = anchor;
 }
 
 const char32_t & GlyphSequence::lineFeed()

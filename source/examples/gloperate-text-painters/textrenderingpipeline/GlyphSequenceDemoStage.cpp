@@ -25,6 +25,7 @@ GlyphSequenceDemoStage::GlyphSequenceDemoStage()
     addInput("wordWrap", wordWrap);
     addInput("lineWidth", lineWidth);
     addInput("alignment", alignment);
+    addInput("lineAnchor", lineAnchor);
 
     addOutput("sequences", sequences);
 }
@@ -57,6 +58,7 @@ void GlyphSequenceDemoStage::process()
     sequences.data()[0].setWordWrap(wordWrap.data());
     sequences.data()[0].setLineWidth(lineWidth.data(), fontSize.data(), *font.data());
     sequences.data()[0].setAlignment(alignment.data());
+    sequences.data()[0].setLineAnchor(lineAnchor.data());
 
     sequences.data()[0].setTransform(origin.data(), fontSize.data(), *font.data()
         , { viewport.data()->width(), viewport.data()->height() }, pixelPerInch.data(), margins.data());

@@ -6,6 +6,7 @@
 #include <gloperate/gloperate.h>
 
 #include <gloperate-text/Alignment.h>
+#include <gloperate-text/LineAnchor.h>
 #include <gloperate-text/stages/FontImporterStage.h>
 #include <gloperate-text/stages/GlyphPreparationStage.h>
 #include <gloperate-text/stages/GlyphRenderStage.h>
@@ -35,6 +36,7 @@ TextRenderingPipeline::TextRenderingPipeline()
 , wordWrap(true)
 , lineWidth(400.f)
 , alignment(gloperate_text::Alignment::Centered)
+, lineAnchor(gloperate_text::LineAnchor::Baseline)
 , optimized(true)
 , targetFBO(nullptr)
 , viewport(nullptr)
@@ -58,6 +60,7 @@ TextRenderingPipeline::TextRenderingPipeline()
     demo->wordWrap = wordWrap;
     demo->lineWidth = lineWidth;
     demo->alignment = alignment;
+    demo->lineAnchor = lineAnchor;
 
     glyphPreparation->font = fontImport->font;
     glyphPreparation->sequences = demo->sequences;

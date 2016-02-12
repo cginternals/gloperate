@@ -71,6 +71,12 @@ private:
     ,   const GlyphVertexCloud::Vertices::iterator & begin
     ,   const GlyphVertexCloud::Vertices::iterator & end);
 
+    static void anchor_transform(
+        const GlyphSequence & sequence
+    ,   const FontFace & fontFace
+    ,   const GlyphVertexCloud::Vertices::iterator & begin
+    ,   const GlyphVertexCloud::Vertices::iterator & end);
+
     static void vertex_transform(
         const glm::mat4 & sequence
     ,   const GlyphVertexCloud::Vertices::iterator & begin

@@ -95,11 +95,8 @@ glm::vec2 Typesetter::typeset(
 
     if (!dryrun)
     {
-//        origin_transform()
-
-        // transform glyphs in vertex cloud
+        anchor_transform(sequence, fontFace, begin, vertex);
         vertex_transform(sequence.transform(), begin, vertex);
-        
     }
 
     return extent_transform(sequence, extent);
@@ -224,6 +221,34 @@ inline void Typesetter::typeset_align(
         v->origin.x += penOffset;
 }
 
+inline void Typesetter::anchor_transform(
+    const GlyphSequence & sequence
+,   const FontFace & fontFace
+,   const GlyphVertexCloud::Vertices::iterator & begin
+,   const GlyphVertexCloud::Vertices::iterator & end)
+{
+    auto offset = 0.f;
+
+    switch (sequence.lineAnchor())
+    {
+    case LineAnchor::Ascent:
+        offset = fontFace.ascent();
+        break;
+    case LineAnchor::Center:
+        offset = fontFace.size() * 0.5f + fontFace.descent();
+        break;
+    case LineAnchor::Descent:
+        offset = fontFace.descent();
+        break;
+    case LineAnchor::Baseline:
+    default:
+        return;
+    }
+
+    for (auto v = begin; v != end; ++v)
+        v->origin.y -= offset;
+}
+
 inline void Typesetter::vertex_transform(
     const glm::mat4 & transform
 ,   const GlyphVertexCloud::Vertices::iterator & begin
@@ -251,6 +276,7 @@ inline glm::vec2 Typesetter::extent_transform(
 
     return glm::vec2(glm::distance(lr, ll), glm::distance(ul, ll));
 }
+
 
 
 } // namespace gloperate_text

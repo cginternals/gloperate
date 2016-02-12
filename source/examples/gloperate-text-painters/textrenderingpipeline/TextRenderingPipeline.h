@@ -24,6 +24,7 @@ namespace gloperate
 namespace gloperate_text
 {
     enum class Alignment : unsigned char;
+    enum class LineAnchor : unsigned char;
 }
 
 
@@ -56,6 +57,7 @@ public:
     gloperate::Data<float> lineWidth;
 
     gloperate::Data<gloperate_text::Alignment> alignment;
+    gloperate::Data<gloperate_text::LineAnchor> lineAnchor;
     gloperate::Data<bool> optimized;
 
     gloperate::Data<gloperate::AbstractTargetFramebufferCapability *> targetFBO;

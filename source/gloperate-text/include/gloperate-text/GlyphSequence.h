@@ -9,6 +9,7 @@
 #include <globjects/base/ref_ptr.h>
 
 #include <gloperate-text/Alignment.h>
+#include <gloperate-text/LineAnchor.h>
 
 #include <gloperate-text/gloperate-text_api.h>
 
@@ -52,6 +53,9 @@ public:
     Alignment alignment() const;
     void setAlignment(Alignment alginment);
 
+    LineAnchor lineAnchor() const;
+    void setLineAnchor(const LineAnchor anchor);
+
     const glm::mat4 & transform() const;
     void setTransform(const glm::mat4 & transform);
 
@@ -76,6 +80,7 @@ protected:
     float m_lineWidth;
 
     Alignment m_alignment;
+    LineAnchor m_anchor;
 
     glm::mat4 m_transform;
 };

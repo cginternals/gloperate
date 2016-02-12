@@ -34,6 +34,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/Alignment.h
+    ${include_path}/LineAnchor.h
     ${include_path}/FontFace.h
     ${include_path}/FontLoader.h
     ${include_path}/Glyph.h
