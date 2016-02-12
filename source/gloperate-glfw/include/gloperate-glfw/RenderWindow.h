@@ -72,9 +72,9 @@ protected:
 
 
 protected:
-    gloperate::Surface * m_surface;
-    glm::ivec2           m_deviceSize;
-    glm::ivec2           m_virtualSize;
+    gloperate::Surface * m_surface;     ///< Surface that control the rendering on the window
+    glm::ivec2           m_deviceSize;  ///< Window size (real device pixels)
+    glm::ivec2           m_virtualSize; ///< Window size (virtual pixel size)
 };
 
 
