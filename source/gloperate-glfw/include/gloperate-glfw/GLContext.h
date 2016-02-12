@@ -48,10 +48,6 @@ public:
     GLContext(GLFWwindow * window);
     virtual ~GLContext();
 
-    virtual glbinding::ContextHandle handle() const override;
-
-    virtual const gloperate::GLContextFormat & format() const override;
-
     virtual void use() const override;
     virtual void release() const override;
 
@@ -61,10 +57,7 @@ protected:
 
 
 protected:
-    mutable gloperate::GLContextFormat * m_format;
-
     GLFWwindow * m_window;
-    glbinding::ContextHandle m_handle;
 };
 
 

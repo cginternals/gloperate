@@ -42,8 +42,14 @@ public:
     *
     *  @return
     *    OpenGL context handle
+    *
+    *  @remarks
+    *    Note for derived classes:
+    *    The data member m_handle has to be initialized to
+    *    the correct value when creating a context.
+    *    It is not retrieved automatically by this function.
     */
-    virtual glbinding::ContextHandle handle() const = 0;
+    glbinding::ContextHandle handle() const;
 
     /**
     *  @brief
@@ -51,8 +57,19 @@ public:
     *
     *  @return
     *    OpenGL context format
+    *
+    *  @remarks
+    *    Note for derived classes:
+    *    The data member m_format has to be initialized to
+    *    the correct value when creating a context.
+    *    It is not retrieved automatically by this function.
     */
-    virtual const GLContextFormat & format() const = 0; 
+    const GLContextFormat & format() const;
+
+
+protected:
+    glbinding::ContextHandle m_handle;  ///< OpenGL context handle
+    GLContextFormat          m_format;  ///< OpenGL context format
 };
 
 

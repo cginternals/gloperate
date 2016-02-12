@@ -136,41 +136,9 @@ GLFWwindow * GLContext::createWindow(const GLContextFormat & format)
 }
 
 GLContext::GLContext(GLFWwindow * window)
-: m_format(nullptr)
-, m_window(window)
+: m_window(window)
 {
     assert(window);
-
-    GLFWwindow * current = glfwGetCurrentContext();
-    if (current != m_window)
-        glfwMakeContextCurrent(m_window);
-
-    m_handle = GLContextUtils::tryFetchHandle();
-
-    if (current != m_window)
-        glfwMakeContextCurrent(current);
-}
-
-GLContext::~GLContext()
-{
-    delete m_format;
-}
-
-glbinding::ContextHandle GLContext::handle() const
-{
-    return m_handle;
-}
-
-const GLContextFormat & GLContext::format() const
-{
-    // Return format if already retrieved
-    if (m_format)
-    {
-        return *m_format;
-    }
-
-    // Create and retrieve format if not done already
-    m_format = new GLContextFormat();
 
     // Activate context
     GLFWwindow * current = glfwGetCurrentContext();
@@ -179,18 +147,22 @@ const GLContextFormat & GLContext::format() const
         glfwMakeContextCurrent(m_window);
     }
 
+    // Read context handle
+    m_handle = GLContextUtils::tryFetchHandle();
+
     // Read context format
     assert(isValid());
-    *m_format = GLContextUtils::retrieveFormat();
+    m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context
     if (current != m_window)
     {
         glfwMakeContextCurrent(current);
     }
+}
 
-    // Return format description
-    return *m_format;
+GLContext::~GLContext()
+{
 }
 
 void GLContext::use() const
