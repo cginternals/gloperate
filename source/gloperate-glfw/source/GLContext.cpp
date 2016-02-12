@@ -12,8 +12,6 @@
                         // which requires APIENTRY in windows..
 
 #include <glbinding/Binding.h>
-#include <glbinding/Version.h>
-#include <glbinding/gl/gl.h>
 
 #include <globjects/base/baselogging.h>
 
@@ -165,45 +163,33 @@ glbinding::ContextHandle GLContext::handle() const
 
 const GLContextFormat & GLContext::format() const
 {
-    assert(isValid());
-
+    // Return format if already retrieved
     if (m_format)
+    {
         return *m_format;
+    }
 
     // Create and retrieve format if not done already
-
     m_format = new GLContextFormat();
 
+    // Activate context
     GLFWwindow * current = glfwGetCurrentContext();
     if (current != m_window)
+    {
         glfwMakeContextCurrent(m_window);
+    }
 
-    m_format->setVersion(GLContextUtils::retrieveVersion());
+    // Read context format
+    assert(isValid());
+    *m_format = GLContextUtils::retrieveFormat();
 
-    GLint i;
-    GLboolean b;
-
-    i = -1; glGetIntegerv(GLenum::GL_DEPTH_BITS, &i);
-    m_format->setDepthBufferSize(i);
-    i = -1; glGetIntegerv(GLenum::GL_STENCIL_BITS, &i);
-    m_format->setStencilBufferSize(i);
-    i = -1; glGetIntegerv(GLenum::GL_RED_BITS, &i);
-
-    m_format->setRedBufferSize(i);
-    i = -1; glGetIntegerv(GLenum::GL_GREEN_BITS, &i);
-    m_format->setGreenBufferSize(i);
-    i = -1; glGetIntegerv(GLenum::GL_BLUE_BITS, &i);
-    m_format->setBlueBufferSize(i);
-    i = -1; glGetIntegerv(GLenum::GL_ALPHA_BITS, &i);
-    m_format->setAlphaBufferSize(i);
-    i = -1; glGetIntegerv(GLenum::GL_SAMPLES, &i);
-    m_format->setSamples(i);
-    b = GL_FALSE; glGetBooleanv(GLenum::GL_STEREO, &b);
-    m_format->setStereo(b == GL_TRUE);
-
+    // Deactivate context
     if (current != m_window)
+    {
         glfwMakeContextCurrent(current);
+    }
 
+    // Return format description
     return *m_format;
 }
 

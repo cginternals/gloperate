@@ -7,7 +7,7 @@
 #include <glbinding/ContextHandle.h>
 #include <glbinding/Version.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/base/GLContextFormat.h>
 
 
 namespace gloperate
@@ -42,12 +42,27 @@ public:
     *
     *  @return
     *    Context handle
+    *
+    *  @notes
+    *    - Requires active context
     */
     static glbinding::ContextHandle tryFetchHandle();
 
     /**
     *  @brief
-    *    Get OpenGL version
+    *    Read context format from current context
+    *
+    *  @return
+    *    OpenGL context format
+    *
+    *  @notes
+    *    - Requires active context
+    */
+    static gloperate::GLContextFormat retrieveFormat();
+
+    /**
+    *  @brief
+    *    Read OpenGL version from current context
     *
     *  @notes
     *    - Requires active context
