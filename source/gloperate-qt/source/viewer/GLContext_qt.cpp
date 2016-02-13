@@ -1,5 +1,5 @@
 
-#include <gloperate-qt/viewer/Context.h>
+#include <gloperate-qt/viewer/GLContext.h>
 
 #include <QOpenGLContext>
 
@@ -10,12 +10,12 @@ namespace gloperate_qt
 {
 
 
-void Context::makeCurrent(QOpenGLContext * context, OpenGLWindow * window)
+void GLContext::makeCurrent(QOpenGLContext * context, OpenGLWindow * window)
 {
     context->makeCurrent(window);
 }
 
-void Context::doneCurrent(QOpenGLContext * context)
+void GLContext::doneCurrent(QOpenGLContext * context)
 {
     context->doneCurrent();
 }

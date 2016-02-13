@@ -19,7 +19,7 @@ namespace gloperate_qt
 {
 
 
-class Context;
+class GLContext;
 
 
 /**
@@ -81,7 +81,7 @@ public:
     *  @return
     *    OpenGL context
     */
-    Context * context() const;
+    GLContext * context() const;
 
     /**
     *  @brief
@@ -152,7 +152,7 @@ protected:
 protected:
     QSurfaceFormat                   m_format;        ///< Desired OpenGL format
     QScopedPointer<QOpenGLContext>   m_qContext;      ///< OpenGL context created and used by the window
-    Context                        * m_context;       ///< Context wrapper for gloperate
+    GLContext                      * m_context;       ///< Context wrapper for gloperate
     bool                             m_initialized;   ///< Has the rendering already been initialized?
     bool                             m_updatePending; ///< Flag to indicate if a redraw has been requested
 };

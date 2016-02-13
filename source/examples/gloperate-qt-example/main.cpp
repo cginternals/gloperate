@@ -9,7 +9,7 @@
 #include <gloperate/viewer/Surface.h>
 
 #include <gloperate-qt/viewer/RenderWindow.h>
-#include <gloperate-qt/viewer/Context.h>
+#include <gloperate-qt/viewer/GLContext.h>
 
 
 using namespace gloperate;

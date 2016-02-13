@@ -21,11 +21,11 @@ class OpenGLWindow;
 *  @brief
 *    OpenGL context implementation based on Qt
 */
-class GLOPERATE_QT_API Context : public gloperate::AbstractGLContext
+class GLOPERATE_QT_API GLContext : public gloperate::AbstractGLContext
 {
 public:
-    Context(OpenGLWindow * window, QOpenGLContext * context);
-    virtual ~Context();
+    GLContext(OpenGLWindow * window, QOpenGLContext * context);
+    virtual ~GLContext();
 
     virtual void use() const override;
     virtual void release() const override;

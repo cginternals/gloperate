@@ -1,5 +1,5 @@
 
-#include <gloperate-qt/viewer/Context.h>
+#include <gloperate-qt/viewer/GLContext.h>
 
 #include <cassert>
 
@@ -19,7 +19,7 @@ namespace gloperate_qt
 {
 
 
-Context::Context(OpenGLWindow * window, QOpenGLContext * context)
+GLContext::GLContext(OpenGLWindow * window, QOpenGLContext * context)
 : m_window(window)
 , m_context(context)
 {
@@ -27,7 +27,7 @@ Context::Context(OpenGLWindow * window, QOpenGLContext * context)
     assert(context);
 
     // Activate context
-    Context::makeCurrent(m_context, m_window);
+    GLContext::makeCurrent(m_context, m_window);
 
     // Initialize glbinding in that context
     glbinding::Binding::initialize(false);
@@ -40,26 +40,26 @@ Context::Context(OpenGLWindow * window, QOpenGLContext * context)
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context
-    Context::doneCurrent(m_context);
+    GLContext::doneCurrent(m_context);
 }
 
-Context::~Context()
+GLContext::~GLContext()
 {
 }
 
-void Context::use() const
+void GLContext::use() const
 {
     if (m_window && m_context)
     {
-        Context::makeCurrent(m_context, m_window);
+        GLContext::makeCurrent(m_context, m_window);
     }
 }
 
-void Context::release() const
+void GLContext::release() const
 {
     if (m_context)
     {
-        Context::doneCurrent(m_context);
+        GLContext::doneCurrent(m_context);
     }
 }
 

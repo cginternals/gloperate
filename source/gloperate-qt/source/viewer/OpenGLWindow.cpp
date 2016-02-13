@@ -8,7 +8,7 @@
 
 #include <gloperate/base/GLContextFormat.h>
 
-#include <gloperate-qt/viewer/Context.h>
+#include <gloperate-qt/viewer/GLContext.h>
 
 
 namespace gloperate_qt
@@ -114,10 +114,10 @@ void OpenGLWindow::doIt()
         qDebug() << "Created OpenGL context " << m_qContext->format().version().first << "." << m_qContext->format().version().second;
     }
 
-    m_context = new Context(this, &(*m_qContext));
+    m_context = new GLContext(this, &(*m_qContext));
 }
 
-Context * OpenGLWindow::context() const
+GLContext * OpenGLWindow::context() const
 {
     return m_context;
 }

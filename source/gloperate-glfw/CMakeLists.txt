@@ -45,8 +45,8 @@ set(headers
     ${include_path}/WindowEvent.h
     ${include_path}/Window.h
     ${include_path}/RenderWindow.h
-    ${include_path}/GLContextFactory.h
     ${include_path}/GLContext.h
+    ${include_path}/GLContextFactory.h
 )
 
 set(sources
@@ -55,8 +55,8 @@ set(sources
     ${source_path}/WindowEvent.cpp
     ${source_path}/Window.cpp
     ${source_path}/RenderWindow.cpp
-    ${source_path}/GLContextFactory.cpp
     ${source_path}/GLContext.cpp
+    ${source_path}/GLContextFactory.cpp
 )
 
 # Group source files
