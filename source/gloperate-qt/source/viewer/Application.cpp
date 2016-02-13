@@ -2,7 +2,6 @@
 #include <gloperate-qt/viewer/Application.h>
 
 #include <QApplication>
-#include <QStringList>
 
 #include <widgetzeug/MessageHandler.h>
 

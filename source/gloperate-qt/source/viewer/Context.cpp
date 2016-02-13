@@ -1,10 +1,10 @@
 
 #include <gloperate-qt/viewer/Context.h>
 
+#include <cassert>
+
 #include <glbinding/Binding.h>
 #include <glbinding/gl/gl.h>
-
-#include <globjects/base/baselogging.h>
 
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
@@ -12,8 +12,6 @@
 #include <gloperate-qt/viewer/OpenGLWindow.h>
 
 
-using namespace gl;
-using namespace globjects;
 using namespace gloperate;
 
 

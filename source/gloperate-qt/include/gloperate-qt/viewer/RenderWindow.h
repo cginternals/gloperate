@@ -27,7 +27,7 @@ public:
     *    Constructor
     *
     *  @param[in] viewerContext
-    *    Viewer context to which the surface belongs (must NOT be null!)
+    *    Viewer context to which the window belongs (must NOT be null!)
     */
     RenderWindow(gloperate::ViewerContext * viewerContext);
 
