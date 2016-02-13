@@ -39,6 +39,15 @@ public:
 
     /**
     *  @brief
+    *    Get viewer context
+    *
+    *  @return
+    *    Viewer context (cannot be null)
+    */
+    gloperate::ViewerContext * viewerContext() const;
+
+    /**
+    *  @brief
     *    Get surface that is rendered into the window
     *
     *  @return
@@ -48,18 +57,12 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Constructor
-    *
-    *  @param[in] surface
-    *    Surface (must NOT be null!)
-    */
-    RenderWindow(gloperate::Surface * surface);
+    RenderWindow(gloperate::ViewerContext * viewerContext, gloperate::Surface * surface);
 
 
 protected:
-    gloperate::Surface * m_surface; ///< Surface that renders on the window (must NOT be null)
+    gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
+    gloperate::Surface       * m_surface;       ///< Surface that renders on the window (must NOT be null)
 };
 
 

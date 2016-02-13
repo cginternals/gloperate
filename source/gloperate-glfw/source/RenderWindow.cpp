@@ -49,9 +49,12 @@ static gloperate::Key fromGLFWKeyCode(int key)
 }
 
 
-RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
-, m_surface(new gloperate::DemoRenderer(viewerContext))
+RenderWindow::RenderWindow(
+    gloperate::ViewerContext * viewerContext
+  , const std::string & title
+  , int width
+  , int height)
+: RenderWindow(viewerContext, title, width, height, new gloperate::DemoRenderer(viewerContext))
 {
 }
 
@@ -68,6 +71,18 @@ gloperate::ViewerContext * RenderWindow::viewerContext() const
 gloperate::Surface * RenderWindow::surface() const
 {
     return m_surface;
+}
+
+RenderWindow::RenderWindow(
+    gloperate::ViewerContext * viewerContext
+  , const std::string & title
+  , int width
+  , int height
+  , gloperate::Surface * surface)
+: Window(title, width, height, surface->negotiateContext())
+, m_viewerContext(viewerContext)
+, m_surface(surface)
+{
 }
 
 void RenderWindow::onContextInit()

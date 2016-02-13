@@ -3,7 +3,6 @@
 
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/Surface.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/RenderWindow.h>
@@ -24,10 +23,7 @@ int main(int argc, char * argv[])
     ViewerContext viewerContext;
 
     // Create render window
-    RenderWindow window(&viewerContext);
-    window.setTitle("gloperate viewer");
-    window.setSize(1280, 720);
-    window.setContextFormat(window.surface()->negotiateContext());
+    RenderWindow window(&viewerContext, "gloperate viewer", 1280, 720);
     if (!window.create())
     {
         return 1;

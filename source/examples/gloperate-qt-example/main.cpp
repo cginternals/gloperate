@@ -6,7 +6,6 @@
 
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/Surface.h>
 
 #include <gloperate-qt/viewer/RenderWindow.h>
 #include <gloperate-qt/viewer/GLContext.h>
