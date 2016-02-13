@@ -4,7 +4,6 @@
 #include <cassert>
 
 #include <glbinding/Binding.h>
-#include <glbinding/gl/gl.h>
 
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
@@ -29,9 +28,6 @@ GLContext::GLContext(OpenGLWindow * window, QOpenGLContext * context)
     // Activate context
     GLContext::makeCurrent(m_context, m_window);
 
-    // Initialize glbinding in that context
-    glbinding::Binding::initialize(false);
-
     // Read context handle
     m_handle = GLContextUtils::tryFetchHandle();
 
@@ -45,6 +41,7 @@ GLContext::GLContext(OpenGLWindow * window, QOpenGLContext * context)
 
 GLContext::~GLContext()
 {
+    destroyContext();
 }
 
 void GLContext::use() const
@@ -61,6 +58,11 @@ void GLContext::release() const
     {
         GLContext::doneCurrent(m_context);
     }
+}
+
+void GLContext::initGLBinding()
+{
+    glbinding::Binding::initialize(false);
 }
 
 

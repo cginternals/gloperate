@@ -10,6 +10,16 @@ namespace gloperate_qt
 {
 
 
+QOpenGLContext * GLContext::qtContext() const
+{
+    return m_context;
+}
+
+void GLContext::destroyContext()
+{
+    delete m_context;
+}
+
 void GLContext::makeCurrent(QOpenGLContext * context, OpenGLWindow * window)
 {
     context->makeCurrent(window);

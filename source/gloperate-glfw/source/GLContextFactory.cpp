@@ -89,8 +89,10 @@ gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::
 
     // Activate context
     glfwMakeContextCurrent(window);
-    glbinding::Binding::initialize(false);
     glfwSwapInterval(static_cast<int>(format.swapBehavior()));
+
+    // Initialize glbinding in that context
+    glbinding::Binding::initialize(false);
 
     // Create context wrapper
     GLContext * context = new GLContext(window);

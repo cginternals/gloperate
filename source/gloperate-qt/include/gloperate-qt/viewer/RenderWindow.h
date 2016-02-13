@@ -48,7 +48,18 @@ public:
 
 
 protected:
-    gloperate::Surface * m_surface;
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] surface
+    *    Surface (must NOT be null!)
+    */
+    RenderWindow(gloperate::Surface * surface);
+
+
+protected:
+    gloperate::Surface * m_surface; ///< Surface that renders on the window (must NOT be null)
 };
 
 

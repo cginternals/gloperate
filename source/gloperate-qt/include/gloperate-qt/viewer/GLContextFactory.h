@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <QSurfaceFormat>
+
 #include <gloperate/base/AbstractGLContextFactory.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
@@ -9,6 +11,9 @@
 
 namespace gloperate_qt
 {
+
+
+class OpenGLWindow;
 
 
 /**
@@ -21,8 +26,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] window
+    *    Surface on which contexts are created (must NOT be null)
     */
-    GLContextFactory();
+    GLContextFactory(OpenGLWindow * window);
 
     /**
     *  @brief
@@ -32,6 +40,14 @@ public:
 
     // Virtual gloperate::AbstractGLContextFactory functions
     virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) override;
+
+
+protected:
+    QSurfaceFormat toQSurfaceFormat(const gloperate::GLContextFormat & format) const;
+
+
+protected:
+    OpenGLWindow * m_window; ///< Surface on which contexts are created
 };
 
 

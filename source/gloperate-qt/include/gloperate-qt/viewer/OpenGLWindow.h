@@ -3,16 +3,10 @@
 
 
 #include <QWindow>
-#include <QScopedPointer>
-#include <QSurfaceFormat>
+
+#include <gloperate/base/GLContextFormat.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
-
-
-namespace gloperate
-{
-    class GLContextFormat;
-}
 
 
 namespace gloperate_qt
@@ -24,7 +18,7 @@ class GLContext;
 
 /**
 *  @brief
-*    Qt window that initializes an OpenGL context for rendering
+*    Qt window that contains an OpenGL context for rendering
 *
 *  @remarks
 *    This base class is for general use of OpenGL and does not depend on
@@ -37,42 +31,17 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] format
+    *    OpenGL context format
     */
-    OpenGLWindow();
+    OpenGLWindow(const gloperate::GLContextFormat & format);
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~OpenGLWindow();
-
-    /**
-    *  @brief
-    *    Set desired context format for the window
-    *
-    *  @param[in] format
-    *    Context format
-    *
-    *  @remarks
-    *    Use this function to set the context format from a
-    *    gloperate format description.
-    */
-    void setContextFormat(const gloperate::GLContextFormat & format);
-
-    /**
-    *  @brief
-    *    Set desired context format for the window
-    *
-    *  @param[in] format
-    *    Surface format
-    *
-    *  @remarks
-    *    Use this function to set the context format from a
-    *    Qt surface format description.
-    */
-    void setContextFormat(const QSurfaceFormat & format);
-
-    void doIt();
 
     /**
     *  @brief
@@ -89,26 +58,46 @@ public:
     */
     void updateGL();
 
-    /**
-    *  @brief
-    *    Initialize OpenGL rendering
-    */
-    void initialize();
-
-    /**
-    *  @brief
-    *    Make associated OpenGL context current
-    */
-	void makeCurrent();
-
-    /**
-    *  @brief
-    *    Release associated OpenGL context
-    */
-	void doneCurrent();
-
 
 protected:
+    /**
+    *  @brief
+    *    Set desired context format for the window
+    *
+    *  @param[in] format
+    *    OpenGL context format
+    *
+    *  @remarks
+    *    If the window has already been created, the context
+    *    will not be changed automatically. Call createContext()
+    *    to create a context with the new format.
+    */
+    void setContextFormat(const gloperate::GLContextFormat & format);
+
+    /**
+    *  @brief
+    *    Create OpenGL context
+    *
+    *  @remarks
+    *    Will create a new OpenGL context with the currently set
+    *    context format. If a context was already active, it will
+    *    be destroyed, a new context will be set, and the appropriate
+    *    context initialization/deinitialization events will be triggered.
+    */
+    void createContext();
+
+    /**
+    *  @brief
+    *    Initialize OpenGL context
+    */
+    void initializeContext();
+
+    /**
+    *  @brief
+    *    De-initialize OpenGL context
+    */
+    void deinitializeContext();
+
     /**
     *  @brief
     *    Resize OpenGL scene
@@ -125,9 +114,15 @@ protected:
 protected:
     /**
     *  @brief
-    *    Called once after OpenGL has been initialized
+    *    Called when a new OpenGL context has been initialized
     */
-    virtual void onInitialize();
+    virtual void onContextInit();
+
+    /**
+    *  @brief
+    *    Called when the OpenGL context is about to be deinitialized
+    */
+    virtual void onContextDeinit();
 
     /**
     *  @brief
@@ -150,11 +145,10 @@ protected:
 
 
 protected:
-    QSurfaceFormat                   m_format;        ///< Desired OpenGL format
-    QScopedPointer<QOpenGLContext>   m_qContext;      ///< OpenGL context created and used by the window
-    GLContext                      * m_context;       ///< Context wrapper for gloperate
-    bool                             m_initialized;   ///< Has the rendering already been initialized?
-    bool                             m_updatePending; ///< Flag to indicate if a redraw has been requested
+    gloperate::GLContextFormat   m_format;        ///< Desired OpenGL format
+    GLContext                  * m_context;       ///< Context wrapper for gloperate
+    bool                         m_initialized;   ///< Has the rendering already been initialized?
+    bool                         m_updatePending; ///< Flag to indicate if a redraw has been requested
 };
 
 

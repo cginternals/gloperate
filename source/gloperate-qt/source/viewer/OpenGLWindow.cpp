@@ -2,119 +2,38 @@
 #include "gloperate-qt/viewer/OpenGLWindow.h"
 
 #include <QApplication>
-#include <QDebug>
 #include <QResizeEvent>
 #include <QOpenGLContext>
 
 #include <gloperate/base/GLContextFormat.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
+#include <gloperate-qt/viewer/GLContextFactory.h>
 
 
 namespace gloperate_qt
 {
 
 
-OpenGLWindow::OpenGLWindow()
-: m_qContext(nullptr)
-, m_context(nullptr)
+OpenGLWindow::OpenGLWindow(const gloperate::GLContextFormat & format)
+: m_context(nullptr)
 , m_initialized(false)
 , m_updatePending(false)
 {
+    // Create window with OpenGL capability
     setSurfaceType(OpenGLSurface);
     create();
+
+    // Set desired OpenGL context format
+    setContextFormat(format);
+
+    // Create an OpenGL context
+    createContext();
 }
 
 OpenGLWindow::~OpenGLWindow()
 {
     delete m_context;
-}
-
-void OpenGLWindow::setContextFormat(const gloperate::GLContextFormat & format)
-{
-    QSurfaceFormat qFormat;
-    qFormat.setVersion(3, 2);
-    qFormat.setProfile(QSurfaceFormat::CoreProfile);
-    qFormat.setDepthBufferSize(16);
-
-    // Set OpenGL version
-    glbinding::Version version = format.version();
-    qFormat.setVersion(version.m_major, version.m_minor);
-
-    // Set OpenGL profile
-    switch (format.profile())
-    {
-        case gloperate::GLContextFormat::Profile::Core:
-            qFormat.setProfile(QSurfaceFormat::CoreProfile);
-            break;
-
-        case gloperate::GLContextFormat::Profile::Compatibility:
-            qFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
-            break;
-
-        default:
-            qFormat.setProfile(QSurfaceFormat::NoProfile);
-            break;
-    }
-
-    // Set buffer options
-    qFormat.setRedBufferSize(format.redBufferSize());
-    qFormat.setGreenBufferSize(format.greenBufferSize());
-    qFormat.setBlueBufferSize(format.blueBufferSize());
-
-    // [TODO] [BUG] When alphaBufferSize is set to 8, the context is not created.
-//  qFormat.setAlphaBufferSize(format.alphaBufferSize());
-    qFormat.setAlphaBufferSize(16);
-
-    qFormat.setDepthBufferSize(format.depthBufferSize());
-    qFormat.setStencilBufferSize(format.stencilBufferSize());
-    qFormat.setStereo(format.stereo());
-    qFormat.setSamples(format.samples());
-
-    // Create Qt context
-    setContextFormat(qFormat);
-}
-
-void OpenGLWindow::setContextFormat(const QSurfaceFormat & format)
-{
-    m_format = format;
-}
-
-void OpenGLWindow::doIt()
-{
-    m_qContext.reset(new QOpenGLContext);
-
-    QSurfaceFormat format(m_format);
-    format.setRenderableType(QSurfaceFormat::OpenGL);
-
-    if (format.version().first < 3)
-    {
-        m_qContext->setFormat(format);
-        if (!m_qContext->create()) {
-            qDebug() << "Could not create intermediate OpenGL context.";
-            QApplication::quit();
-        } else {
-            QSurfaceFormat intermediateFormat = m_qContext->format();
-            qDebug() << "Created intermediate OpenGL context " << intermediateFormat.version().first << "." << intermediateFormat.version().second;
-
-            if ((intermediateFormat.version().first == 3 && intermediateFormat.version().second == 0) || intermediateFormat.version().first < 3)
-            {
-                format.setMajorVersion(3);
-                format.setMinorVersion(2);
-                format.setProfile(QSurfaceFormat::CoreProfile);
-            }
-        }
-    }
-
-    m_qContext->setFormat(format);
-    if (!m_qContext->create()) {
-        qDebug() << "Could not create OpenGL context.";
-        QApplication::quit();
-    } else {
-        qDebug() << "Created OpenGL context " << m_qContext->format().version().first << "." << m_qContext->format().version().second;
-    }
-
-    m_context = new GLContext(this, &(*m_qContext));
 }
 
 GLContext * OpenGLWindow::context() const
@@ -130,36 +49,74 @@ void OpenGLWindow::updateGL()
     }
 }
 
-void OpenGLWindow::initialize()
+void OpenGLWindow::setContextFormat(const gloperate::GLContextFormat & format)
 {
-    m_qContext->makeCurrent(this);
+    m_format = format;
+}
 
-    onInitialize();
+void OpenGLWindow::createContext()
+{
+    // Destroy old context
+    if (m_context)
+    {
+        deinitializeContext();
+        delete m_context;
+    }
 
-    m_qContext->doneCurrent();
+    // Create OpenGL context
+    GLContextFactory factory(this);
+    m_context = static_cast<GLContext*>(factory.createContext(m_format));
+
+    // Initialize new context
+    initializeContext();
+}
+
+void OpenGLWindow::initializeContext()
+{
+    if (m_initialized)
+    {
+        return;
+    }
+
+    m_context->qtContext()->makeCurrent(this);
+    onContextInit();
+    m_context->qtContext()->doneCurrent();
 
     m_initialized = true;
+}
+
+void OpenGLWindow::deinitializeContext()
+{
+    if (!m_initialized)
+    {
+        return;
+    }
+
+    m_context->qtContext()->makeCurrent(this);
+    onContextDeinit();
+    m_context->qtContext()->doneCurrent();
+
+    m_initialized = false;
 }
 
 void OpenGLWindow::resize(QResizeEvent * event)
 {
     if (!m_initialized) {
-        initialize();
+        initializeContext();
     }
 
-    m_qContext->makeCurrent(this);
+    m_context->qtContext()->makeCurrent(this);
 
     QResizeEvent deviceSpecificResizeEvent(event->size() * devicePixelRatio(), event->oldSize() * devicePixelRatio());
-
     onResize(&deviceSpecificResizeEvent);
 
-    m_qContext->doneCurrent();
+    m_context->qtContext()->doneCurrent();
 }
 
 void OpenGLWindow::paint()
 {
     if (!m_initialized) {
-        initialize();
+        initializeContext();
     }
 
     if (!isExposed()) {
@@ -168,16 +125,19 @@ void OpenGLWindow::paint()
 
     m_updatePending = false;
 
-    m_qContext->makeCurrent(this);
+    m_context->qtContext()->makeCurrent(this);
 
     onPaint();
+    m_context->qtContext()->swapBuffers(this);
 
-    m_qContext->swapBuffers(this);
-
-    m_qContext->doneCurrent();
+    m_context->qtContext()->doneCurrent();
 }
 
-void OpenGLWindow::onInitialize()
+void OpenGLWindow::onContextInit()
+{
+}
+
+void OpenGLWindow::onContextDeinit()
 {
 }
 
@@ -227,16 +187,6 @@ void OpenGLWindow::enterEvent(QEvent *)
 
 void OpenGLWindow::leaveEvent(QEvent *)
 {
-}
-
-void OpenGLWindow::makeCurrent()
-{
-    m_qContext->makeCurrent(this);
-}
-
-void OpenGLWindow::doneCurrent()
-{
-    m_qContext->doneCurrent();
 }
 
 

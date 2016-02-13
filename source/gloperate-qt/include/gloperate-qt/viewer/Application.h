@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <QApplication>
 
 #include <gloperate-qt/gloperate-qt_api.h>

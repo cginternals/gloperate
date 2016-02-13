@@ -9,13 +9,19 @@ namespace gloperate_qt
 
 
 RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
-: m_surface(new gloperate::DemoRenderer(viewerContext))
+: RenderWindow(new gloperate::DemoRenderer(viewerContext))
 {
 }
 
 RenderWindow::~RenderWindow()
 {
     delete m_surface;
+}
+
+RenderWindow::RenderWindow(gloperate::Surface * surface)
+: OpenGLWindow(surface->negotiateContext())
+, m_surface(surface)
+{
 }
 
 gloperate::Surface * RenderWindow::surface() const
