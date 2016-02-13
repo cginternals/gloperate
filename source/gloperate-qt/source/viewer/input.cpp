@@ -1,9 +1,7 @@
 
-#include <gloperate-qt/viewer/QtEventTransformer.h>
+#include <gloperate-qt/viewer/input.h>
 
-#include <gloperate/input/input.h>
-#include <gloperate/input/KeyboardEvent.h>
-#include <gloperate/input/MouseEvent.h>
+#include <gloperate/viewer/input.h>
 
 
 using namespace gloperate;
@@ -13,56 +11,12 @@ namespace gloperate_qt
 {
 
 
-QtEventTransformer::QtEventTransformer()
-{
-}
-
-QtEventTransformer::~QtEventTransformer()
-{
-}
-
-KeyboardEvent::Type QtEventTransformer::keyboardTypeFromQtType(QEvent::Type type)
-{
-    // TODO make complete
-    switch(type)
-    {
-    case QEvent::KeyPress:
-        return KeyboardEvent::Type::Press;
-    case QEvent::KeyRelease:
-        return KeyboardEvent::Type::Release;
-    default:
-        return KeyboardEvent::Type::Press;
-    }
-}
-
-MouseEvent::Type QtEventTransformer::mouseTypeFromQtType(QEvent::Type type)
-{
-    // TODO make complete
-    switch(type)
-    {
-    case QEvent::MouseButtonPress:
-        return MouseEvent::Type::Press;
-    case QEvent::MouseButtonRelease:
-        return MouseEvent::Type::Release;
-    case QEvent::MouseButtonDblClick:
-        return MouseEvent::Type::DoubleClick;
-    case QEvent::MouseMove:
-        return MouseEvent::Type::Move;
-    case QEvent::Enter:
-        return MouseEvent::Type::Enter;
-    case QEvent::Leave:
-        return MouseEvent::Type::Leave;
-    default:
-        return MouseEvent::Type::Press;
-    }
-}
-
-glm::ivec2 QtEventTransformer::fromQPoint(const QPoint point)
+glm::ivec2 fromQPoint(const QPoint point)
 {
     return glm::ivec2(point.x(), point.y());
 }
 
-MouseButton QtEventTransformer::fromQtMouseButton(Qt::MouseButton button)
+MouseButton fromQtMouseButton(Qt::MouseButton button)
 {
     if (button & Qt::LeftButton)
         return MouseButtonLeft;
@@ -78,7 +32,7 @@ MouseButton QtEventTransformer::fromQtMouseButton(Qt::MouseButton button)
         return NoMouseButton;
 }
 
-Key QtEventTransformer::fromQtKeyCode(int key, int mods)
+Key fromQtKeyCode(int key, int mods)
 {
     if (mods & Qt::KeypadModifier) {
         switch (key)

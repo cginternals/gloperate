@@ -128,7 +128,7 @@ protected:
     *  @brief
     *    Called whenever the window has been resized
     */
-    virtual void onResize(QResizeEvent * event);
+    virtual void onResize(const QSize & deviceSize, const QSize & virtualSize);
 
     /**
     *  @brief

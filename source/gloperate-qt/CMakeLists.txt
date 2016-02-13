@@ -62,6 +62,7 @@ set(headers
     ${include_path}/viewer/RenderWindow.h
     ${include_path}/viewer/GLContext.h
     ${include_path}/viewer/GLContextFactory.h
+    ${include_path}/viewer/input.h
 )
 
 set(sources
@@ -71,6 +72,7 @@ set(sources
     ${source_path}/viewer/GLContext.cpp
     ${source_path}/viewer/GLContext_qt.cpp
     ${source_path}/viewer/GLContextFactory.cpp
+    ${source_path}/viewer/input.cpp
 )
 
 # Group source files

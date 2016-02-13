@@ -107,8 +107,9 @@ void OpenGLWindow::resize(QResizeEvent * event)
 
     m_context->qtContext()->makeCurrent(this);
 
-    QResizeEvent deviceSpecificResizeEvent(event->size() * devicePixelRatio(), event->oldSize() * devicePixelRatio());
-    onResize(&deviceSpecificResizeEvent);
+    QSize deviceSize  = event->size() * devicePixelRatio();
+    QSize virtualSize = event->size();
+    onResize(deviceSize, virtualSize);
 
     m_context->qtContext()->doneCurrent();
 }
@@ -126,10 +127,8 @@ void OpenGLWindow::paint()
     m_updatePending = false;
 
     m_context->qtContext()->makeCurrent(this);
-
     onPaint();
     m_context->qtContext()->swapBuffers(this);
-
     m_context->qtContext()->doneCurrent();
 }
 
@@ -141,7 +140,7 @@ void OpenGLWindow::onContextDeinit()
 {
 }
 
-void OpenGLWindow::onResize(QResizeEvent * )
+void OpenGLWindow::onResize(const QSize &, const QSize &)
 {
 }
 
@@ -173,7 +172,6 @@ bool OpenGLWindow::event(QEvent * event)
 void OpenGLWindow::resizeEvent(QResizeEvent * event)
 {
     resize(event);
-    paint();
 }
 
 void OpenGLWindow::exposeEvent(QExposeEvent * )

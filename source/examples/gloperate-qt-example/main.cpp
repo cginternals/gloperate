@@ -28,6 +28,7 @@ int main(int argc, char * argv[])
 
     // Create main window
     QMainWindow mainWindow;
+    mainWindow.resize(1280, 720);
     mainWindow.setCentralWidget(QWidget::createWindowContainer(window));
     mainWindow.centralWidget()->setFocusPolicy(Qt::StrongFocus);
     mainWindow.show();

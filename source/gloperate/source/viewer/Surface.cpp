@@ -45,7 +45,7 @@ void Surface::setOpenGLContext(AbstractGLContext * context)
     }
 }
 
-GLContextFormat Surface::negotiateContext() const
+GLContextFormat Surface::requiredFormat() const
 {
     return GLContextFormat();
 }

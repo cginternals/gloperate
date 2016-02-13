@@ -11,9 +11,9 @@ namespace gloperate
 
 /**
 *  @brief
-*    Demo renderer handler that renders a simplen OpenGL scene
+*    Default surface renderer for gloperate
 */
-class GLOPERATE_API DemoRenderer : public Surface
+class GLOPERATE_API RenderSurface : public Surface
 {
 public:
     /**
@@ -23,13 +23,13 @@ public:
     *  @param[in] viewerContext
     *    Viewer context to which the surface belongs (must NOT be null!)
     */
-    DemoRenderer(ViewerContext * viewerContext);
+    RenderSurface(ViewerContext * viewerContext);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoRenderer();
+    virtual ~RenderSurface();
 
     // Virtual Surface functions
     virtual void onContextInit() override;

@@ -61,6 +61,22 @@ protected:
 
 
 protected:
+    // Virtual OpenGLWindow functions
+    virtual void onContextInit() override;
+    virtual void onContextDeinit() override;
+    virtual void onResize(const QSize & deviceSize, const QSize & virtualSize) override;
+    virtual void onPaint() override;
+
+    // Qt event functions
+    virtual void keyPressEvent(QKeyEvent * event) override;
+    virtual void keyReleaseEvent(QKeyEvent * event) override;
+    virtual void mouseMoveEvent(QMouseEvent * event) override;
+    virtual void mousePressEvent(QMouseEvent * event) override;
+    virtual void mouseReleaseEvent(QMouseEvent * event) override;
+    virtual void wheelEvent(QWheelEvent * event) override;
+
+
+protected:
     gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
     gloperate::Surface       * m_surface;       ///< Surface that renders on the window (must NOT be null)
 };
