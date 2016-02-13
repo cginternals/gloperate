@@ -11,7 +11,7 @@
 
 namespace gloperate
 {
-    class ContextFormat;
+    class GLContextFormat;
 }
 
 
@@ -57,7 +57,7 @@ public:
     *    Use this function to set the context format from a
     *    gloperate format description.
     */
-    void setContextFormat(const gloperate::ContextFormat & format);
+    void setContextFormat(const gloperate::GLContextFormat & format);
 
     /**
     *  @brief
@@ -71,6 +71,8 @@ public:
     *    Qt surface format description.
     */
     void setContextFormat(const QSurfaceFormat & format);
+
+    void doIt();
 
     /**
     *  @brief
@@ -148,10 +150,11 @@ protected:
 
 
 protected:
-    QScopedPointer<QOpenGLContext> m_qContext;      ///< OpenGL context created and used by the window
-    mutable Context                      * m_context;
-    bool                           m_initialized;   ///< Has the rendering already been initialized?
-    bool                           m_updatePending; ///< Flag to indicate if a redraw has been requested
+    QSurfaceFormat                   m_format;        ///< Desired OpenGL format
+    QScopedPointer<QOpenGLContext>   m_qContext;      ///< OpenGL context created and used by the window
+    Context                        * m_context;       ///< Context wrapper for gloperate
+    bool                             m_initialized;   ///< Has the rendering already been initialized?
+    bool                             m_updatePending; ///< Flag to indicate if a redraw has been requested
 };
 
 

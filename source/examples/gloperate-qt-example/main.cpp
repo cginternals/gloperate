@@ -1,6 +1,4 @@
 
-#include <iostream>
-
 #include <QApplication>
 #include <QMainWindow>
 
@@ -29,6 +27,7 @@ int main(int argc, char * argv[])
     // Create render window
     RenderWindow * window = new RenderWindow(&viewerContext);
     window->setContextFormat(window->surface()->negotiateContext());
+    window->doIt();
 
     // Create main window
     QMainWindow mainWindow;
@@ -37,13 +36,13 @@ int main(int argc, char * argv[])
     mainWindow.show();
 
     // Initialize context, print context info
-    window.context()->use();
-//  window.context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
+    window->context()->use();
+//  window->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
     globjects::info() << std::endl
         << "OpenGL Version:  " << GLContextUtils::version() << std::endl
         << "OpenGL Vendor:   " << GLContextUtils::vendor() << std::endl
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
-    window.context()->release();
+    window->context()->release();
 
     // Run main loop
     return app.exec();

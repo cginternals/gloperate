@@ -1,6 +1,4 @@
 
-#include <iostream>
-
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/base/GLContextUtils.h>

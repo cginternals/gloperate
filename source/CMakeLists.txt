@@ -48,7 +48,7 @@ install_module_info(${META_PROJECT_NAME}
 set(IDE_FOLDER "")
 add_subdirectory(gloperate)
 add_subdirectory(gloperate-glfw)
-#add_subdirectory(gloperate-qt)
+add_subdirectory(gloperate-qt)
 #add_subdirectory(gloperate-assimp)
 #add_subdirectory(gloperate-osg)
 #add_subdirectory(gloperate-text)
