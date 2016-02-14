@@ -91,6 +91,11 @@ void RenderSurface::onResize(const glm::ivec2 & deviceSize, const glm::ivec2 & v
 void RenderSurface::onRender()
 {
     globjects::info() << "onRender()";
+
+    if (m_renderStage)
+    {
+        m_renderStage->process(m_openGLContext);
+    }
 }
 
 void RenderSurface::onKeyPress(int key)
