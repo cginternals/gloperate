@@ -490,7 +490,7 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
 
     // Create GLFW window with OpenGL context
     GLContextFactory factory;
-    m_context = static_cast<GLContext*>(factory.createContext(format));
+    m_context = static_cast<GLContext*>(factory.createBestContext(format));
     if (!m_context)
     {
         return false;

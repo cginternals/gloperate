@@ -65,7 +65,7 @@ void OpenGLWindow::createContext()
 
     // Create OpenGL context
     GLContextFactory factory(this);
-    m_context = static_cast<GLContext*>(factory.createContext(m_format));
+    m_context = static_cast<GLContext*>(factory.createBestContext(m_format));
 
     // Initialize new context
     initializeContext();

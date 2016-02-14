@@ -39,6 +39,23 @@ public:
 
     /**
     *  @brief
+    *    Create best possible OpenGL context for a given format
+    *
+    *  @param[in] format
+    *    Desired OpenGL format
+    *
+    *  @return
+    *    OpenGL context
+    *
+    *  @remarks
+    *    This function tries to create a context that fits the desired
+    *    format as good as possible. It internally uses createContext()
+    *    to create the actual contexts, determine maximum versions etc.
+    */
+    gloperate::AbstractGLContext * createBestContext(const gloperate::GLContextFormat & format);
+
+    /**
+    *  @brief
     *    Create OpenGL context with the given format
     *
     *  @param[in] format
