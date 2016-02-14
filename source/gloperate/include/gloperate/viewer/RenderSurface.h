@@ -9,6 +9,9 @@ namespace gloperate
 {
 
 
+class Stage;
+
+
 /**
 *  @brief
 *    Default surface renderer for gloperate
@@ -22,14 +25,38 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the surface belongs (must NOT be null!)
+    *  @param[in] renderStage
+    *    Stage that renders into the surface (can be null)
     */
-    RenderSurface(ViewerContext * viewerContext);
+    RenderSurface(ViewerContext * viewerContext, Stage * stage = nullptr);
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~RenderSurface();
+
+    /**
+    *  @brief
+    *    Get render stage
+    *
+    *  @return
+    *    Render stage that renders into the current context (can be null)
+    */
+    Stage * renderStage() const;
+
+    /**
+    *  @brief
+    *    Set render stage
+    *
+    *  @param[in] stage
+    *    Render stage that renders into the current context (can be null)
+    *
+    *  @remarks
+    *    When setting a new render stage, the old render stage is destroyed.
+    *    The surface takes ownership over the stage.
+    */
+    void setRenderStage(Stage * stage);
 
     // Virtual Surface functions
     virtual void onContextInit() override;
@@ -44,6 +71,10 @@ public:
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos) override;
     virtual void onTimer(int id) override;
+
+
+protected:
+    Stage * m_renderStage;  ///< Render stage that renders into the current context (can be null)
 };
 
 

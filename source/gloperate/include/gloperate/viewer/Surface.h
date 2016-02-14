@@ -103,27 +103,26 @@ public:
 
     /**
     *  @brief
-    *    Initialize renderer in context
+    *    Initialize in OpenGL context
     *
-    *    This function is called when the renderer needs to initialize
-    *    its rendering objects, i.e., whenever the OpenGL context has changed.
-    *    This occurs not only when the window is created, but can also happen
+    *    This function is called whenever the OpenGL context has changed.
+    *    This occurs not only when the viewer is created, but can also happen
     *    for example when switching between window and fullscreen mode.
-    *
-    *    Therefore, the renderer must be aware that initialize() and deinitialize()
-    *    can be called multiple times over its lifetime and must be able to
-    *    restore/re-create all necessary OpenGL objects, such as textures and geometries.
+    *    Therefore, the object must be aware that onContextInit() and
+    *    onContextDeinit() can be called multiple times over its lifetime and
+    *    must be able to create/restore all necessary OpenGL objects, such as
+    *    textures and geometries, in this function.
     */
     virtual void onContextInit();
 
     /**
     *  @brief
-    *    De-Initialize renderer in context
+    *    De-Initialize in OpenGL context
     *
-    *    This function is called when the OpenGL context of this renderer
-    *    is destroyed. The renderer must release its OpenGL objects at this point.
+    *    This function is called when the OpenGL context is destroyed.
+    *    The object must release its OpenGL objects at this point.
     *
-    *  @see initialize()
+    *  @see onContextInit()
     */
     virtual void onContextDeinit();
 

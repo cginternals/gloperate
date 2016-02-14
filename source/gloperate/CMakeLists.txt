@@ -46,6 +46,8 @@ set(headers
     ${include_path}/viewer/ViewerContext.h
     ${include_path}/viewer/Surface.h
     ${include_path}/viewer/RenderSurface.h
+
+    ${include_path}/pipeline/Stage.h
 )
 
 set(sources
@@ -60,6 +62,8 @@ set(sources
     ${source_path}/viewer/ViewerContext.cpp
     ${source_path}/viewer/Surface.cpp
     ${source_path}/viewer/RenderSurface.cpp
+
+    ${source_path}/pipeline/Stage.cpp
 )
 
 # Group source files
