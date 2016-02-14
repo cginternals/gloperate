@@ -59,6 +59,7 @@ public:
     void setRenderStage(Stage * stage);
 
     // Virtual Surface functions
+    virtual const GLContextFormat & requiredFormat() const override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
     virtual void onIdle() override;

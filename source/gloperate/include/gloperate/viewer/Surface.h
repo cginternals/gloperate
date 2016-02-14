@@ -99,7 +99,7 @@ public:
     *    which it can initialize its OpenGL objects or abort, if the
     *    created context is not suitable.
     */
-    virtual GLContextFormat requiredFormat() const;
+    virtual const GLContextFormat & requiredFormat() const;
 
     /**
     *  @brief

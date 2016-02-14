@@ -47,6 +47,15 @@ void RenderSurface::setRenderStage(Stage * stage)
     }
 }
 
+const GLContextFormat & RenderSurface::requiredFormat() const
+{
+    if (m_renderStage) {
+        return m_renderStage->requiredFormat();
+    } else {
+        return Surface::requiredFormat();
+    }
+}
+
 void RenderSurface::onContextInit()
 {
     globjects::info() << "onContextInit()";

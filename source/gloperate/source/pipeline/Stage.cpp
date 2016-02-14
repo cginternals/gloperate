@@ -20,6 +20,14 @@ ViewerContext * Stage::viewerContext() const
     return m_viewerContext;
 }
 
+const GLContextFormat & Stage::requiredFormat() const
+{
+    static GLContextFormat format;
+
+    format.setVersion(3, 3);
+    return format;
+}
+
 void Stage::initContext(AbstractGLContext * context)
 {
     onContextInit(context);

@@ -45,9 +45,11 @@ void Surface::setOpenGLContext(AbstractGLContext * context)
     }
 }
 
-GLContextFormat Surface::requiredFormat() const
+const GLContextFormat & Surface::requiredFormat() const
 {
-    return GLContextFormat();
+    static GLContextFormat defaultFormat;
+
+    return defaultFormat;
 }
 
 void Surface::onContextInit()
