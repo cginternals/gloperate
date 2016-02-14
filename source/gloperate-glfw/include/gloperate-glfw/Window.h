@@ -67,19 +67,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] title
-    *    Window title
-    *  @param[in] width
-    *    Window width (in pixels)
-    *  @param[in] height
-    *    Window height (in pixels)
     *  @param[in] format
     *    The desired OpenGL context format
     */
-    Window(const std::string & title = "gloperate",
-           int width  = 1280,
-           int height =  720,
-           const gloperate::GLContextFormat & format = gloperate::GLContextFormat());
+    Window(const gloperate::GLContextFormat & format = gloperate::GLContextFormat());
 
     /**
     *  @brief

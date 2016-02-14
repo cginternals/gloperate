@@ -30,17 +30,8 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the window belongs (must NOT be null)
-    *  @param[in] title
-    *    Window title
-    *  @param[in] width
-    *    Window width (in pixels)
-    *  @param[in] height
-    *    Window height (in pixels)
     */
-    RenderWindow(gloperate::ViewerContext * viewerContext,
-                 const std::string & title = "gloperate",
-                 int width  = 1280,
-                 int height =  720);
+    RenderWindow(gloperate::ViewerContext * viewerContext);
 
     /**
     *  @brief
@@ -69,9 +60,6 @@ public:
 
 protected:
     RenderWindow(gloperate::ViewerContext * viewerContext,
-                 const std::string & title,
-                 int width,
-                 int height,
                  gloperate::Surface * surface);
 
     // Virtual Window functions

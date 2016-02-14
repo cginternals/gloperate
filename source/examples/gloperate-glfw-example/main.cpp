@@ -23,7 +23,9 @@ int main(int argc, char * argv[])
     ViewerContext viewerContext;
 
     // Create render window
-    RenderWindow window(&viewerContext, "gloperate viewer", 1280, 720);
+    RenderWindow window(&viewerContext);
+    window.setTitle("gloperate viewer");
+    window.setSize(1280, 720);
     if (!window.create())
     {
         return 1;

@@ -19,12 +19,8 @@ namespace gloperate_glfw
 {
 
 
-RenderWindow::RenderWindow(
-    gloperate::ViewerContext * viewerContext
-  , const std::string & title
-  , int width
-  , int height)
-: RenderWindow(viewerContext, title, width, height, new gloperate::RenderSurface(viewerContext))
+RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
+: RenderWindow(viewerContext, new gloperate::RenderSurface(viewerContext))
 {
 }
 
@@ -45,11 +41,8 @@ gloperate::Surface * RenderWindow::surface() const
 
 RenderWindow::RenderWindow(
     gloperate::ViewerContext * viewerContext
-  , const std::string & title
-  , int width
-  , int height
   , gloperate::Surface * surface)
-: Window(title, width, height, surface->requiredFormat())
+: Window(surface->requiredFormat())
 , m_viewerContext(viewerContext)
 , m_surface(surface)
 {
