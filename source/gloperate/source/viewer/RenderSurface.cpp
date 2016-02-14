@@ -40,9 +40,11 @@ void RenderSurface::setRenderStage(Stage * stage)
 
     // Set new render stage
     m_renderStage = stage;
-
-    // Initialize render stage
-    m_renderStage->initContext(m_openGLContext);
+    if (m_renderStage)
+    {
+        // Initialize render stage
+        m_renderStage->initContext(m_openGLContext);
+    }
 }
 
 void RenderSurface::onContextInit()

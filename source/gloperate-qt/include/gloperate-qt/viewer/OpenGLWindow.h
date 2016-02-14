@@ -71,10 +71,21 @@ public:
 
     /**
     *  @brief
+    *    Destroy OpenGL context
+    *
+    *  @remarks
+    *    Will destroy the current OpenGL context. If a context was active,
+    *    it will be deinitialized first and the destroyed. Afterwards,
+    *    the window has no context set until createContext() is called.
+    */
+    void destroyContext();
+
+    /**
+    *  @brief
     *    Get OpenGL context
     *
     *  @return
-    *    OpenGL context
+    *    OpenGL context (can be null)
     */
     GLContext * context() const;
 
@@ -146,7 +157,7 @@ protected:
 
 protected:
     gloperate::GLContextFormat   m_format;        ///< Desired OpenGL format
-    GLContext                  * m_context;       ///< Context wrapper for gloperate
+    GLContext                  * m_context;       ///< Context wrapper for gloperate (can be null)
     bool                         m_initialized;   ///< Has the rendering already been initialized?
     bool                         m_updatePending; ///< Flag to indicate if a redraw has been requested
 };

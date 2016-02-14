@@ -9,7 +9,8 @@
 
 namespace gloperate {
     class ViewerContext;
-    class Surface;
+    class RenderSurface;
+    class Stage;
 }
 
 
@@ -30,8 +31,13 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the window belongs (must NOT be null)
+    *  @param[in] renderStage
+    *    Stage that renders into the surface (can be null)
     */
-    RenderWindow(gloperate::ViewerContext * viewerContext);
+    RenderWindow(
+        gloperate::ViewerContext * viewerContext
+      , gloperate::Stage * renderStage = nullptr
+    );
 
     /**
     *  @brief
@@ -50,17 +56,30 @@ public:
 
     /**
     *  @brief
-    *    Get surface that is rendered into the window
+    *    Get render stage
     *
     *  @return
-    *    Surface (cannot be null)
+    *    Render stage that renders into the window (can be null)
     */
-    gloperate::Surface * surface() const;
+    gloperate::Stage * renderStage() const;
+
+    /**
+    *  @brief
+    *    Set render stage
+    *
+    *  @param[in] stage
+    *    Render stage that renders into the window (can be null)
+    *
+    *  @remarks
+    *    When setting a new render stage, the old render stage is destroyed.
+    *    The window takes ownership over the stage.
+    */
+    void setRenderStage(gloperate::Stage * stage);
 
 
 protected:
     RenderWindow(gloperate::ViewerContext * viewerContext,
-                 gloperate::Surface * surface);
+                 gloperate::RenderSurface * surface);
 
     // Virtual Window functions
     virtual void onContextInit() override;
@@ -85,7 +104,7 @@ protected:
 
 protected:
     gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
-    gloperate::Surface       * m_surface;       ///< Surface that control the rendering on the window
+    gloperate::RenderSurface * m_surface;       ///< Surface that control the rendering on the window
     glm::ivec2                 m_deviceSize;    ///< Window size (real device pixels)
     glm::ivec2                 m_virtualSize;   ///< Window size (virtual pixel size)
 };

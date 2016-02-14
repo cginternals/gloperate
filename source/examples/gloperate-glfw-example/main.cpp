@@ -3,6 +3,7 @@
 
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/RenderWindow.h>
@@ -22,8 +23,11 @@ int main(int argc, char * argv[])
     // Create viewer context
     ViewerContext viewerContext;
 
+    // Create render stage
+    Stage * renderStage = new Stage(&viewerContext);
+
     // Create render window
-    RenderWindow window(&viewerContext);
+    RenderWindow window(&viewerContext, renderStage);
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);
     if (!window.create())

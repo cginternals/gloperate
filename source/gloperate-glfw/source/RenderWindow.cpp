@@ -19,8 +19,10 @@ namespace gloperate_glfw
 {
 
 
-RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
-: RenderWindow(viewerContext, new gloperate::RenderSurface(viewerContext))
+RenderWindow::RenderWindow(
+    gloperate::ViewerContext * viewerContext
+  , gloperate::Stage * renderStage)
+: RenderWindow(viewerContext, new gloperate::RenderSurface(viewerContext, renderStage))
 {
 }
 
@@ -34,14 +36,29 @@ gloperate::ViewerContext * RenderWindow::viewerContext() const
     return m_viewerContext;
 }
 
-gloperate::Surface * RenderWindow::surface() const
+gloperate::Stage * RenderWindow::renderStage() const
 {
-    return m_surface;
+    return m_surface->renderStage();
+}
+
+void RenderWindow::setRenderStage(gloperate::Stage * stage)
+{
+    // De-initialize and destroy old render stage
+    m_surface->setRenderStage(nullptr);
+
+    // Create new context for render stage and initialize render stage
+    if (stage)
+    {
+        destroy();
+        m_surface->setRenderStage(stage);
+        setContextFormat(m_surface->requiredFormat());
+        create();
+    }
 }
 
 RenderWindow::RenderWindow(
     gloperate::ViewerContext * viewerContext
-  , gloperate::Surface * surface)
+  , gloperate::RenderSurface * surface)
 : Window(surface->requiredFormat())
 , m_viewerContext(viewerContext)
 , m_surface(surface)

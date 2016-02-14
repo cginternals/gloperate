@@ -60,6 +60,20 @@ void OpenGLWindow::createContext()
     initializeContext();
 }
 
+void OpenGLWindow::destroyContext()
+{
+    // Destroy old context
+    if (!m_context)
+    {
+        return;
+    }
+
+    deinitializeContext();
+
+    delete m_context;
+    m_context = nullptr;
+}
+
 void OpenGLWindow::updateGL()
 {
     if (!m_updatePending) {
