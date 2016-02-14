@@ -95,6 +95,11 @@ void RenderWindow::onPaint(PaintEvent &)
 
 void RenderWindow::onKeyPress(KeyEvent & event)
 {
+    if (event.key() == GLFW_KEY_F11)
+    {
+      setFullscreen(!isFullscreen());
+    }
+
     m_surface->onKeyPress(
         fromGLFWKeyCode(event.key())
     );
