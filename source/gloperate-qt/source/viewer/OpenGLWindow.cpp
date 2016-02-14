@@ -26,9 +26,6 @@ OpenGLWindow::OpenGLWindow(const gloperate::GLContextFormat & format)
 
     // Set desired OpenGL context format
     setContextFormat(format);
-
-    // Create an OpenGL context
-    createContext();
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -36,22 +33,14 @@ OpenGLWindow::~OpenGLWindow()
     delete m_context;
 }
 
-GLContext * OpenGLWindow::context() const
-{
-    return m_context;
-}
-
-void OpenGLWindow::updateGL()
-{
-    if (!m_updatePending) {
-        m_updatePending = true;
-        QCoreApplication::postEvent(this, new QEvent(QEvent::UpdateRequest));
-    }
-}
-
 void OpenGLWindow::setContextFormat(const gloperate::GLContextFormat & format)
 {
     m_format = format;
+}
+
+GLContext * OpenGLWindow::context() const
+{
+    return m_context;
 }
 
 void OpenGLWindow::createContext()
@@ -69,6 +58,14 @@ void OpenGLWindow::createContext()
 
     // Initialize new context
     initializeContext();
+}
+
+void OpenGLWindow::updateGL()
+{
+    if (!m_updatePending) {
+        m_updatePending = true;
+        QCoreApplication::postEvent(this, new QEvent(QEvent::UpdateRequest));
+    }
 }
 
 void OpenGLWindow::initializeContext()

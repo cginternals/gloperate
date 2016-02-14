@@ -25,6 +25,7 @@ int main(int argc, char * argv[])
 
     // Create render window
     RenderWindow * window = new RenderWindow(&viewerContext);
+    window->createContext();
 
     // Create main window
     QMainWindow mainWindow;

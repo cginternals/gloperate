@@ -45,23 +45,6 @@ public:
 
     /**
     *  @brief
-    *    Get OpenGL context
-    *
-    *  @return
-    *    OpenGL context
-    */
-    GLContext * context() const;
-
-    /**
-    *  @brief
-    *    Request update (repaint) of the window
-    */
-    void updateGL();
-
-
-protected:
-    /**
-    *  @brief
     *    Set desired context format for the window
     *
     *  @param[in] format
@@ -86,6 +69,23 @@ protected:
     */
     void createContext();
 
+    /**
+    *  @brief
+    *    Get OpenGL context
+    *
+    *  @return
+    *    OpenGL context
+    */
+    GLContext * context() const;
+
+    /**
+    *  @brief
+    *    Request update (repaint) of the window
+    */
+    void updateGL();
+
+
+protected:
     /**
     *  @brief
     *    Initialize OpenGL context
