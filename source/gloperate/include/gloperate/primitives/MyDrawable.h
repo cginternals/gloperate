@@ -4,13 +4,11 @@
 #include <vector>
 #include <unordered_map>
 #include <array>
-#include <type_traits>
 #include <cstdint>
 
 #include <glbinding/gl/types.h>
 
 #include <globjects/Buffer.h>
-#include <globjects/Texture.h>
 #include <globjects/VertexArray.h>
 #include <globjects/base/Referenced.h>
 #include <globjects/base/ref_ptr.h>
@@ -217,81 +215,6 @@ public:
     void setBuffer(size_t index, globjects::Buffer * buffer);
 
     /**
-     * @return the OpenGL texture object at the given index
-     * @param index the active texture index
-     *
-     * The indices don't need to be continuous.
-     * If an OpenGL texture at the given index doesn't exist a new one will be created
-     */
-    globjects::Texture * texture(size_t index);
-
-    /**
-     * @return the OpenGL texture object at the given index
-     * @param index the active texture index
-     *
-     * The indices don't need to be continuous.
-     * If an OpenGL texture at the given index doesn't exist an exception is thrown
-     */
-    globjects::Texture * texture(size_t index) const;
-
-    /**
-     * @return the OpenGL texture object at the given active texture index
-     * @param activeTextureIndex the active texture index as GLenum
-     *
-     * Note: The index is normalized to a size_t so the texture is also available using the size_t interface.
-     *
-     * The indices don't need to be continuous.
-     * If an OpenGL texture at the given index doesn't exist a new one will be created
-     */
-    globjects::Texture * texture(gl::GLenum activeTextureIndex);
-
-    /**
-     * @return the OpenGL texture object at the given active texture index
-     * @param activeTextureIndex the active texture index as GLenum
-     *
-     * Note: The index is normalized to a size_t so the texture is also available using the size_t interface.
-     *
-     * The indices don't need to be continuous.
-     * If an OpenGL texture at the given index doesn't exist an exception is thrown
-     */
-    globjects::Texture * texture(gl::GLenum activeTextureIndex) const;
-
-    /**
-     * @brief updates a texture that is to be bound active during the draw calls
-     * @param index the active texture index
-     * @param texture the texture to be bound
-     *
-     * Hint: To exclude a texture from getting bound active during draw calls, use removeTexture.
-     */
-    void setTexture(size_t index, globjects::Texture * texture);
-
-    /**
-     * @brief updates a texture that is to be bound active during the draw calls
-     * @param activeTextureIndex the active texture index as GLenum
-     * @param texture the texture to be bound
-     *
-     * Note: The index is normalized to a size_t so the texture is also available using the size_t interface.
-     * Hint: To exclude a texture from getting bound active during draw calls, use removeTexture.
-     */
-    void setTexture(gl::GLenum activeTextureIndex, globjects::Texture * texture);
-
-    /**
-     * @brief excludes the texture identified through index from being bound active during the draw calls.
-     * @param index the active texture index
-     * @return the former texture object associated with this index
-     */
-    globjects::Texture * removeTexture(size_t index);
-
-    /**
-     * @brief excludes the texture identified through index from being bound active during the draw calls.
-     * @param activeTextureIndex the active texture index as GLenum
-     * @return the former texture object associated with this index
-     *
-     * Note: The index is normalized to a size_t so a texture configured through the size_t interface is also affected.
-     */
-    globjects::Texture * removeTexture(gl::GLenum activeTextureIndex);
-
-    /**
      * @return the index buffer.
      *
      * The return value may be a null pointer
@@ -411,7 +334,8 @@ public:
 protected:
     globjects::ref_ptr<globjects::VertexArray> m_vao; /// The VertexArray used for the vertex shader input specification and draw call triggering
     std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_buffers; /// The collection of all buffers associated with this geometry. (Note: this class can be used without storing actual buffers here)
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Texture>> m_textures; /// The collection of all textures associated with this geometry. The key is used as the active texture binding.
+    // Bindless Vertex Buffers?
+    // Static Vertes Shader Inputs?
 
     DrawMode m_drawMode; /// The configured draw mode that is used if no specific draw mode is passed in the draw method.
     gl::GLsizei m_size; /// The configured vertex count that is used if no specific vertex range is passed in the draw method.
@@ -420,8 +344,6 @@ protected:
     globjects::ref_ptr<globjects::Buffer> m_indexBuffer; /// The configured GPU index buffer that is used if no specific index buffer in passed in the draw method.
     std::vector<std::uint32_t> m_indices; /// The configured CPU index buffer that is used if no specific index buffer in passed in the draw method (Note: implied GL_UNSIGNED_INT as index buffer type).
 
-protected:
-    void bindTextures() const;
 };
 
 

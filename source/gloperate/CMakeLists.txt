@@ -132,6 +132,7 @@ set(headers
     ${include_path}/primitives/PolygonalGeometry.h
     ${include_path}/primitives/PolygonalDrawable.h
     ${include_path}/primitives/Scene.h
+    ${include_path}/primitives/RenderPass.h
     
     ${include_path}/resources/ResourceManager.hpp
     ${include_path}/resources/RawFile.h
@@ -237,6 +238,7 @@ set(sources
     ${source_path}/primitives/PolygonalGeometry.cpp
     ${source_path}/primitives/PolygonalDrawable.cpp
     ${source_path}/primitives/Scene.cpp
+    ${source_path}/primitives/RenderPass.cpp
     
     ${source_path}/resources/AbstractStorer.cpp
     ${source_path}/resources/AbstractLoader.cpp
