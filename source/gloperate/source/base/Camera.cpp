@@ -1,12 +1,8 @@
 
-#include <gloperate/painter/Camera.h>
+#include <gloperate/base/Camera.h>
 
-#include <cassert>
-
-#include <gloperate/ext-includes-begin.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
-#include <gloperate/ext-includes-end.h>
 
 
 using namespace glm;

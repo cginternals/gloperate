@@ -3,7 +3,7 @@
 
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/pipeline/Stage.h>
+#include <gloperate/stages/DemoStage.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/RenderWindow.h>
@@ -24,7 +24,7 @@ int main(int argc, char * argv[])
     ViewerContext viewerContext;
 
     // Create render stage
-    Stage * renderStage = new Stage(&viewerContext);
+    DemoStage * renderStage = new DemoStage(&viewerContext);
 
     // Create render window
     RenderWindow window(&viewerContext, renderStage);

@@ -42,12 +42,17 @@ set(headers
     ${include_path}/base/AbstractGLContextFactory.h
     ${include_path}/base/GLContextFormat.h
     ${include_path}/base/GLContextUtils.h
+    ${include_path}/base/Camera.h
+    ${include_path}/base/CachedValue.h
+    ${include_path}/base/CachedValue.hpp
 
     ${include_path}/viewer/ViewerContext.h
     ${include_path}/viewer/Surface.h
     ${include_path}/viewer/RenderSurface.h
 
     ${include_path}/pipeline/Stage.h
+
+    ${include_path}/stages/DemoStage.h
 )
 
 set(sources
@@ -58,12 +63,15 @@ set(sources
     ${source_path}/base/AbstractGLContextFactory.cpp
     ${source_path}/base/GLContextFormat.cpp
     ${source_path}/base/GLContextUtils.cpp
+    ${source_path}/base/Camera.cpp
 
     ${source_path}/viewer/ViewerContext.cpp
     ${source_path}/viewer/Surface.cpp
     ${source_path}/viewer/RenderSurface.cpp
 
     ${source_path}/pipeline/Stage.cpp
+
+    ${source_path}/stages/DemoStage.cpp
 )
 
 # Group source files

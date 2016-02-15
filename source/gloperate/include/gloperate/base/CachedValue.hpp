@@ -1,12 +1,16 @@
+
 #pragma once
+
 
 #include <gloperate/base/CachedValue.h>
 
 #include <memory>
 #include <cassert>
 
+
 namespace gloperate
 {
+
 
 template <typename T>
 CachedValue<T>::CachedValue()
@@ -74,5 +78,6 @@ void CachedValue<T>::invalidate() const
 {
     m_valid = false;
 }
+
 
 } // namespace gloperate
