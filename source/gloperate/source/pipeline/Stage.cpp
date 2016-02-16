@@ -43,6 +43,22 @@ void Stage::process(AbstractGLContext * context)
     onProcess(context);
 }
 
+void Stage::setDeviceViewport(int x, int y, int w, int h)
+{
+    m_deviceViewport.x = x;
+    m_deviceViewport.y = y;
+    m_deviceViewport.z = w;
+    m_deviceViewport.w = h;
+}
+
+void Stage::setVirtualViewport(int x, int y, int w, int h)
+{
+    m_virtualViewport.x = x;
+    m_virtualViewport.y = y;
+    m_virtualViewport.z = w;
+    m_virtualViewport.w = h;
+}
+
 void Stage::onContextInit(AbstractGLContext *)
 {
 }

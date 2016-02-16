@@ -79,7 +79,12 @@ void DemoStage::onContextDeinit(AbstractGLContext *)
 void DemoStage::onProcess(AbstractGLContext *)
 {
     // Update viewport
-    gl::glViewport(0, 0, 1024, 768);
+    gl::glViewport(
+        m_deviceViewport.x,
+        m_deviceViewport.y,
+        m_deviceViewport.z,
+        m_deviceViewport.w
+    );
 
     // Bind FBO
     globjects::Framebuffer * fbo = globjects::Framebuffer::defaultFBO();

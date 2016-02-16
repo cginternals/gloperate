@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <glm/glm.hpp>
+
 #include <gloperate/base/GLContextFormat.h>
 
 
@@ -90,6 +92,12 @@ public:
     */
     void process(AbstractGLContext * context);
 
+    // Input data
+    // This interface is only a placeholder and will be replaced
+    // by input/data-slots
+    void setDeviceViewport(int x, int y, int w, int h);
+    void setVirtualViewport(int x, int y, int w, int h);
+
 
 protected:
     /**
@@ -146,7 +154,9 @@ protected:
 
 
 protected:
-    ViewerContext * m_viewerContext; ///< Viewer context to which the stage belongs
+    ViewerContext * m_viewerContext;    ///< Viewer context to which the stage belongs
+    glm::ivec4      m_deviceViewport;   ///< Viewport (in real device coordinates)
+    glm::ivec4      m_virtualViewport;  ///< Viewport (in virtual coordinates)
 };
 
 
