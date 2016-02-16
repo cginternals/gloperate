@@ -55,6 +55,7 @@ void GlyphRenderStage::process()
     gl::glClearColor(1.f, 1.f, 1.f, 1.f);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
+    gl::glDepthMask(gl::GL_FALSE);
     gl::glEnable(gl::GL_CULL_FACE);
     gl::glEnable(gl::GL_BLEND);
     gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
@@ -86,6 +87,7 @@ void GlyphRenderStage::process()
     //    n = 0;
     //}
 
+    gl::glDepthMask(gl::GL_TRUE);
     gl::glDisable(gl::GL_CULL_FACE);
     gl::glDisable(gl::GL_BLEND);
 
