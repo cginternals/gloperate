@@ -342,6 +342,19 @@ protected:
 
     /**
     *  @brief
+    *    Check for repaint event
+    *
+    *  @remarks
+    *    If repaint() has been called on the window, a repaint event
+    *    will be added to the window's event queue. This needs to be
+    *    done as a separate call to avoid event processing to get stuck
+    *    in an endless loop. Make sure to call Application::pollEvents()
+    *    and updateRepaintEvent() in turn.
+    */
+    void updateRepaintEvent();
+
+    /**
+    *  @brief
     *    Handle window event
     *
     *  @param[in] event
@@ -430,6 +443,7 @@ protected:
     gloperate::GLContextFormat m_format;    ///< The desired OpenGL context format
 
     std::queue<WindowEvent*> m_eventQueue;  ///< List of events to be processed by the window
+    bool m_needsRepaint;                    ///< Has a repaint be scheduled?
 
 
 private:

@@ -76,7 +76,8 @@ void OpenGLWindow::destroyContext()
 
 void OpenGLWindow::updateGL()
 {
-    if (!m_updatePending) {
+    if (!m_updatePending)
+    {
         m_updatePending = true;
         QCoreApplication::postEvent(this, new QEvent(QEvent::UpdateRequest));
     }

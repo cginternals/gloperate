@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+#include <signalzeug/Signal.h>
+
 #include <gloperate/base/GLContextFormat.h>
 
 
@@ -92,11 +94,19 @@ public:
     */
     void process(AbstractGLContext * context);
 
-    // Input data
     // This interface is only a placeholder and will be replaced
     // by input/data-slots
+
+    // Signals
+    signalzeug::Signal<> outputInvalidated;
+    void invalidateOutput();
+
+    // Input data
     void setDeviceViewport(int x, int y, int w, int h);
     void setVirtualViewport(int x, int y, int w, int h);
+    void setFrameCounter(int frame);
+    void setTime(float time);
+    void setTimeDelta(float delta);
 
 
 protected:
@@ -157,6 +167,9 @@ protected:
     ViewerContext * m_viewerContext;    ///< Viewer context to which the stage belongs
     glm::ivec4      m_deviceViewport;   ///< Viewport (in real device coordinates)
     glm::ivec4      m_virtualViewport;  ///< Viewport (in virtual coordinates)
+    unsigned long   m_frame;            ///< Frame counter
+    float           m_time;             ///< Virtual time (in seconds)
+    float           m_timeDelta;        ///< Time since last update (in seconds)
 };
 
 

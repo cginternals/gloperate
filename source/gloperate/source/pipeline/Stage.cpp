@@ -8,6 +8,9 @@ namespace gloperate
 
 Stage::Stage(ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
+, m_frame(0)
+, m_time(0.0f)
+, m_timeDelta(0.0f)
 {
 }
 
@@ -43,6 +46,11 @@ void Stage::process(AbstractGLContext * context)
     onProcess(context);
 }
 
+void Stage::invalidateOutput()
+{
+    outputInvalidated();
+}
+
 void Stage::setDeviceViewport(int x, int y, int w, int h)
 {
     m_deviceViewport.x = x;
@@ -57,6 +65,21 @@ void Stage::setVirtualViewport(int x, int y, int w, int h)
     m_virtualViewport.y = y;
     m_virtualViewport.z = w;
     m_virtualViewport.w = h;
+}
+
+void Stage::setFrameCounter(int frame)
+{
+    m_frame = frame;
+}
+
+void Stage::setTime(float time)
+{
+    m_time = time;
+}
+
+void Stage::setTimeDelta(float delta)
+{
+    m_timeDelta = delta;
 }
 
 void Stage::onContextInit(AbstractGLContext *)

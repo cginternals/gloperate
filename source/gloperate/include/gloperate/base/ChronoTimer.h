@@ -16,9 +16,9 @@ namespace gloperate
 *    High performance timer based on std::chrono
 *
 *    This timer class is for time measurement, not for
-*    automated execution. See ViewerContext for an
-*    interface to automatically trigger events based
-*    on timers.
+*    automated execution of tasks. See ViewerContext
+*    for an interface to automatically trigger events
+*    based on timers.
 */
 class GLOPERATE_API ChronoTimer
 {
@@ -70,7 +70,7 @@ public:
     *    Update timer
     *
     *    Updates the current time stamp and calculates the elapsed time
-    *    since the last call to update(). The elapsed time can be retrieved
+    *    since the start of the timer. The elapsed time can be retrieved
     *    by calling elapsed() and will not change until the next call
     *    to update(). If auto-updating is on, elapsed() automatically
     *    calls update() afterwards.
@@ -79,7 +79,7 @@ public:
 
     /**
     *  @brief
-    *    Get elapsed time since last update
+    *    Get elapsed time since start
     *
     *  @return
     *    Elapsed time (in nano seconds)

@@ -91,9 +91,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Update animation
-//  m_angle = globalTime;
-    float two_pi = glm::pi<float>() * 2.0f;
-    m_angle += 0.1f; if (m_angle > two_pi) m_angle -= two_pi;
+    m_angle = m_time;
 
     // Clear background
     gl::glClearColor(
@@ -134,6 +132,9 @@ void DemoStage::onProcess(AbstractGLContext *)
 
     // Unbind FBO
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+
+    // Redraw right away
+    invalidateOutput();
 }
 
 void DemoStage::createAndSetupCamera()

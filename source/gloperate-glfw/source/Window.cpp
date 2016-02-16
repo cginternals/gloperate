@@ -41,6 +41,7 @@ Window::Window(const gloperate::GLContextFormat & format)
 , m_quitOnDestroy(true)
 , m_title("")
 , m_format(format)
+, m_needsRepaint(false)
 {
     // Register window
     s_instances.insert(this);
@@ -305,7 +306,7 @@ void Window::repaint()
         return;
     }
 
-    queueEvent(new PaintEvent);
+    m_needsRepaint = true;
 }
 
 void Window::swap()
@@ -341,6 +342,16 @@ void Window::queueEvent(WindowEvent * event)
     }
 
     m_eventQueue.push(event);
+}
+
+void Window::updateRepaintEvent()
+{
+    if (m_needsRepaint)
+    {
+        m_needsRepaint = false;
+
+        queueEvent(new PaintEvent);
+    }
 }
 
 bool Window::hasPendingEvents()

@@ -3,6 +3,7 @@
 
 
 #include <gloperate/viewer/Surface.h>
+#include <gloperate/base/ChronoTimer.h>
 
 
 namespace gloperate
@@ -75,7 +76,10 @@ public:
 
 
 protected:
-    Stage * m_renderStage;  ///< Render stage that renders into the current context (can be null)
+    Stage                  * m_renderStage; ///< Render stage that renders into the current context (can be null)
+    gloperate::ChronoTimer   m_timer;       ///< Time measurement
+    float                    m_time;        ///< Virtual time (in seconds)
+    unsigned long            m_frame;       ///< Frame counter
 };
 
 

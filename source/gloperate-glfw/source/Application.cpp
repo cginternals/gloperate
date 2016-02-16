@@ -101,6 +101,8 @@ void Application::processEvents()
     // Get messages for all windows
     for (Window * window : Window::instances())
     {
+        window->updateRepaintEvent();
+
         if (window->hasPendingEvents()) {
             window->processEvents();
         } else {

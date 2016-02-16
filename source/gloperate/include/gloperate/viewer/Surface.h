@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+#include <signalzeug/Signal.h>
+
 #include <gloperate/base/GLContextFormat.h>
 
 
@@ -26,6 +28,10 @@ class AbstractGLContext;
 */
 class GLOPERATE_API Surface
 {
+public:
+    signalzeug::Signal<> redrawNeeded;
+
+
 public:
     /**
     *  @brief
