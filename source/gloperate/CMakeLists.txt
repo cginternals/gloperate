@@ -45,6 +45,8 @@ set(headers
     ${include_path}/base/Camera.h
     ${include_path}/base/CachedValue.h
     ${include_path}/base/CachedValue.hpp
+    ${include_path}/base/ChronoTimer.h
+    ${include_path}/base/AutoTimer.h
 
     ${include_path}/viewer/ViewerContext.h
     ${include_path}/viewer/Surface.h
@@ -64,6 +66,8 @@ set(sources
     ${source_path}/base/GLContextFormat.cpp
     ${source_path}/base/GLContextUtils.cpp
     ${source_path}/base/Camera.cpp
+    ${source_path}/base/ChronoTimer.cpp
+    ${source_path}/base/AutoTimer.cpp
 
     ${source_path}/viewer/ViewerContext.cpp
     ${source_path}/viewer/Surface.cpp

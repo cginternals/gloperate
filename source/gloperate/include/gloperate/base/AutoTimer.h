@@ -40,7 +40,19 @@ class ChronoTimer;
 class GLOPERATE_API AutoTimer
 {
 public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] info
+    *    Information that is printed with the debug message
+    */
     AutoTimer(const std::string & info);
+
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~AutoTimer();
 
 

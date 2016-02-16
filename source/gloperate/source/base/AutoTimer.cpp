@@ -2,11 +2,8 @@
 #include <gloperate/base/AutoTimer.h>
 
 #include <cmath>
-#include <cassert>
 #include <algorithm>
 #include <chrono>
-#include <iomanip>
-#include <iostream>
 
 #include <globjects/base/baselogging.h>
 
@@ -28,9 +25,9 @@ int AutoTimer::s_numActiveInstances = 0;
 
 
 AutoTimer::AutoTimer(const std::string & info)
-:   m_info(info)
-,   m_index(++s_numActiveInstances)
-,   m_timer(new ChronoTimer(false))
+: m_info(info)
+, m_index(++s_numActiveInstances)
+, m_timer(new ChronoTimer(false))
 {
     m_timer->start();
 }

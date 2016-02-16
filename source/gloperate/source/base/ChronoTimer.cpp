@@ -7,23 +7,25 @@ namespace gloperate
 
 
 ChronoTimer::ChronoTimer(const bool _start, const bool autoUpdate)
-:   m_paused(true)
-,   m_auto(autoUpdate)
-,   m_t0(clock::now())
-,   m_tp(m_t0)
-,   m_t1(m_t0)
-,   m_offset(Duration::zero())
-,   m_elapsed(Duration::zero())
+: m_paused(true)
+, m_autoUpdate(autoUpdate)
+, m_t0(clock::now())
+, m_tp(m_t0)
+, m_t1(m_t0)
+, m_offset(Duration::zero())
+, m_elapsed(Duration::zero())
 {
-    if(_start)
+    if (_start)
+    {
         start();
+    }
 }
 
 ChronoTimer::~ChronoTimer()
 {
 }
 
-void ChronoTimer::update() const
+void ChronoTimer::update()
 {
     m_t1 = m_paused ? m_tp : clock::now();
 
@@ -38,8 +40,10 @@ bool ChronoTimer::paused() const
 
 void ChronoTimer::start()
 {
-    if(!m_paused)
+    if (!m_paused)
+    {
         return;
+    }
 
     const time_point t2 = clock::now();
     m_offset -= t2 - m_tp;
@@ -50,8 +54,10 @@ void ChronoTimer::start()
 
 void ChronoTimer::pause()
 {
-    if(m_paused)
+    if (m_paused)
+    {
         return;
+    }
 
     m_tp = clock::now();
     m_paused = true;
@@ -65,7 +71,7 @@ void ChronoTimer::stop()
 
 void ChronoTimer::reset()
 {
-    m_offset = Duration::zero();
+    m_offset  = Duration::zero();
     m_elapsed = Duration::zero();
 
     m_t0 = clock::now();
@@ -75,20 +81,22 @@ void ChronoTimer::reset()
 
 ChronoTimer::Duration ChronoTimer::elapsed() const
 {
-    if(m_auto)
-        update();
+    if (m_autoUpdate)
+    {
+        const_cast<ChronoTimer*>(this)->update();
+    }
 
     return m_elapsed;
 }
 
-void ChronoTimer::setAutoUpdating(const bool auto_update)
+void ChronoTimer::setAutoUpdating(bool autoUpdate)
 {
-    m_auto = auto_update;
+    m_autoUpdate = autoUpdate;
 }
 
 bool ChronoTimer::autoUpdating() const
 {
-    return m_auto;
+    return m_autoUpdate;
 }
 
 
