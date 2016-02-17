@@ -156,10 +156,5 @@ void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos
     globjects::info() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 }
 
-void RenderSurface::onTimer(int id)
-{
-    globjects::info() << "onTimer(" << id << ")";
-}
-
 
 } // namespace gloperate

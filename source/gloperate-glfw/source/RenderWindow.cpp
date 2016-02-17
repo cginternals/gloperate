@@ -170,9 +170,5 @@ void RenderWindow::onIconify(IconifyEvent &)
 {
 }
 
-void RenderWindow::onTimer(TimerEvent &)
-{
-}
-
 
 } // namespace gloperate_glfw

@@ -57,7 +57,6 @@ int Application::run()
     // Start application
     m_running  = true;
     m_exitCode = 0;
-    WindowEventDispatcher::initializeTime();
 
     // Execute main loop
     while (m_running)
@@ -93,7 +92,6 @@ int Application::exitCode()
 void Application::pollEvents()
 {
     glfwPollEvents();
-    WindowEventDispatcher::checkForTimerEvents();
 }
 
 void Application::processEvents()

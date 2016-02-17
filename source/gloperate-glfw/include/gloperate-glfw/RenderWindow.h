@@ -99,7 +99,6 @@ protected:
     virtual void onScroll(ScrollEvent & event) override;
     virtual void onFocus(FocusEvent & event) override;
     virtual void onIconify(IconifyEvent & event) override;
-    virtual void onTimer(TimerEvent & event) override;
 
 
 protected:

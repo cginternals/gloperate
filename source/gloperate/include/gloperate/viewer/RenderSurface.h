@@ -72,7 +72,6 @@ public:
     virtual void onMousePress(int button, const glm::ivec2 & pos) override;
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos) override;
-    virtual void onTimer(int id) override;
 
 
 protected:

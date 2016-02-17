@@ -57,9 +57,10 @@ RenderWindow::RenderWindow(
 , m_viewerContext(viewerContext)
 , m_surface(surface)
 {
-    m_surface->redrawNeeded.connect([this] () {
+    m_surface->redrawNeeded.connect([this] ()
+    {
         this->updateGL();
-    });
+    } );
 }
 
 void RenderWindow::onContextInit()

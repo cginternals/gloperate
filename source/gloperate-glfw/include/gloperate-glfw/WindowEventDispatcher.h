@@ -48,53 +48,6 @@ public:
     */
     static void deregisterWindow(Window * window);
 
-    /**
-    *  @brief
-    *    Create timer on window
-    *
-    *  @param[in] window
-    *    Window (must be valid!)
-    *  @param[in] id
-    *    Timer ID
-    *  @param[in] interval
-    *    Timer interval (in milliseconds)
-    *  @param[in] singleShot
-    *    If 'true', the timer fires only once, otherwise periodically
-    */
-    static void addTimer(Window * window, int id, int interval, bool singleShot);
-
-    /**
-    *  @brief
-    *    Remove timer from window
-    *
-    *  @param[in] window
-    *    Window (must be valid!)
-    *  @param[in] id
-    *    Timer ID
-    */
-    static void removeTimer(Window * window, int id);
-
-    /**
-    *  @brief
-    *    Remove all timers from window
-    *
-    *  @param[in] window
-    *    Window (must be valid!)
-    */
-    static void removeAllTimers(Window * window);
-
-    /**
-    *  @brief
-    *    Initialize clock for timers
-    */
-    static void initializeTime();
-
-    /**
-    *  @brief
-    *    Update timers and generate timer events
-    */
-    static void checkForTimerEvents();
-
 
 protected:
     /**
@@ -173,35 +126,6 @@ private:
     WindowEventDispatcher();
 
 
-private:
-    /**
-    *  @brief
-    *    Timer to dispatch periodic events
-    */
-    struct Timer
-    {
-        using Duration = std::chrono::duration<double, std::milli>;
-
-        Timer();
-        Timer(int interval, bool singleShot);
-
-        bool ready() const;
-        void reset();
-
-        std::chrono::milliseconds interval;
-        Duration elapsed;
-        bool singleShot;
-    };
-
-    // Convenience data types
-    using TimerMap = std::unordered_map<int, Timer>;
-    using WindowTimerMap = std::unordered_map<Window*, TimerMap>;
-
-
-private:
-    static WindowTimerMap                                 s_timers; ///< Map window -> list of timers
-    static std::chrono::high_resolution_clock::time_point s_time;   ///< Current time
-    static std::chrono::high_resolution_clock             s_clock;  ///< Time measurement
 };
 
 

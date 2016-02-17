@@ -41,7 +41,6 @@ public:
       , Focus
       , Iconify
       , Paint
-      , Timer
     };
 
 
@@ -262,29 +261,6 @@ public:
 
 protected:
     bool m_isIconified;
-};
-
-
-/**
-*  @brief
-*    Representation of a timer event (a timer on the window has fired)
-*/
-class GLOPERATE_GLFW_API TimerEvent : public WindowEvent
-{
-public:
-    using Duration = std::chrono::duration<double, std::milli>;
-
-
-public:
-    TimerEvent(int id, const Duration & elapsed);
-
-    int id() const;
-    const Duration & elapsed() const;
-
-
-protected:
-    int m_id;
-    Duration m_elapsed;
 };
 
 

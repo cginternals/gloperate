@@ -266,22 +266,5 @@ bool IconifyEvent::isIconified() const
 }
 
 
-TimerEvent::TimerEvent(int id, const Duration & elapsed)
-: WindowEvent(Type::Timer)
-, m_id(id)
-, m_elapsed(elapsed)
-{
-}
-
-int TimerEvent::id() const
-{
-    return m_id;
-}
-
-const TimerEvent::Duration & TimerEvent::elapsed() const
-{
-    return m_elapsed;
-}
-
 
 } // namespace gloperate_glfw

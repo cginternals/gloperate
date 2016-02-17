@@ -319,16 +319,6 @@ void Window::swap()
     glfwSwapBuffers(m_window);
 }
 
-void Window::addTimer(int id, int interval, bool singleShot)
-{
-    WindowEventDispatcher::addTimer(this, id, interval, singleShot);
-}
-
-void Window::removeTimer(int id)
-{
-    WindowEventDispatcher::removeTimer(this, id);
-}
-
 GLFWwindow * Window::internalWindow() const
 {
     return m_window;
@@ -459,10 +449,6 @@ void Window::handleEvent(WindowEvent & event)
 
         case WindowEvent::Type::Iconify:
             onIconify(static_cast<IconifyEvent &>(event));
-            break;
-
-        case WindowEvent::Type::Timer:
-            onTimer(static_cast<TimerEvent &>(event));
             break;
 
         case WindowEvent::Type::Close:
@@ -618,10 +604,6 @@ void Window::onFocus(FocusEvent &)
 }
 
 void Window::onIconify(IconifyEvent &)
-{
-}
-
-void Window::onTimer(TimerEvent &)
 {
 }
 

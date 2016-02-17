@@ -38,7 +38,6 @@ class PaintEvent;
 class FocusEvent;
 class IconifyEvent;
 class MoveEvent;
-class TimerEvent;
 
 
 /**
@@ -283,28 +282,6 @@ public:
     */
     void swap();
 
-    /**
-    *  @brief
-    *    Create timer on window
-    *
-    *  @param[in] id
-    *    Timer ID
-    *  @param[in] interval
-    *    Timer interval (in milliseconds)
-    *  @param[in] singleShot
-    *    If 'true', the timer fires only once, otherwise periodically
-    */
-    void addTimer(int id, int interval, bool singleShot = false);
-
-    /**
-    *  @brief
-    *    Remove timer from window
-    *
-    *  @param[in] id
-    *    Timer ID
-    */
-    void removeTimer(int id);
-
 
 protected:
     /**
@@ -417,7 +394,6 @@ protected:
     virtual void onScroll(ScrollEvent & event);
     virtual void onFocus(FocusEvent & event);
     virtual void onIconify(IconifyEvent & event);
-    virtual void onTimer(TimerEvent & event);
 
 
 protected:

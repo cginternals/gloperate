@@ -96,9 +96,5 @@ void Surface::onMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
 }
 
-void Surface::onTimer(int)
-{
-}
-
 
 } // namespace gloperate

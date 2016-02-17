@@ -244,17 +244,6 @@ public:
     */
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
 
-    /**
-    *  @brief
-    *    Timer event
-    *
-    *    This function is called when a timer has fired.
-    *
-    *  @param[in] id
-    *    Timer ID
-    */
-    virtual void onTimer(int id);
-
 
 protected:
     ViewerContext     * m_viewerContext; ///< Viewer context to which the surface belongs

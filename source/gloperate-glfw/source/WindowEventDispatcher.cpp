@@ -16,35 +16,6 @@ namespace gloperate_glfw
 {
 
 
-WindowEventDispatcher::WindowTimerMap          WindowEventDispatcher::s_timers;
-std::chrono::high_resolution_clock::time_point WindowEventDispatcher::s_time;
-std::chrono::high_resolution_clock             WindowEventDispatcher::s_clock;
-
-
-WindowEventDispatcher::Timer::Timer()
-: interval(0)
-, singleShot(false)
-{
-    reset();
-}
-
-WindowEventDispatcher::Timer::Timer(int interval, bool singleShot)
-: interval(interval)
-, singleShot(singleShot)
-{
-    reset();
-}
-
-bool WindowEventDispatcher::Timer::ready() const
-{
-    return (elapsed >= interval);
-}
-
-void WindowEventDispatcher::Timer::reset()
-{
-    elapsed = Duration(0);
-}
-
 void WindowEventDispatcher::registerWindow(Window * window)
 {
     assert(window != nullptr);
@@ -101,80 +72,6 @@ void WindowEventDispatcher::deregisterWindow(Window * window)
     glfwSetWindowPosCallback(glfwWindow, nullptr);
     glfwSetWindowIconifyCallback(glfwWindow, nullptr);
     glfwSetWindowCloseCallback(glfwWindow, nullptr);
-
-    // Destroy open timers
-    removeAllTimers(window);
-}
-
-void WindowEventDispatcher::addTimer(Window * window, int id, int interval, bool singleShot)
-{
-    // Create timer
-    s_timers[window][id] = Timer(interval, singleShot);
-}
-
-void WindowEventDispatcher::removeTimer(Window * window, int id)
-{
-    // Remove timer
-    s_timers[window].erase(id);
-}
-
-void WindowEventDispatcher::removeAllTimers(Window * window)
-{
-    // Remove all timers belonging to that window
-    s_timers.erase(window);
-}
-
-void WindowEventDispatcher::initializeTime()
-{
-    s_time = s_clock.now();
-}
-
-void WindowEventDispatcher::checkForTimerEvents()
-{
-    // Get current time and calculate time difference since last call
-    auto now = s_clock.now();
-    Timer::Duration delta = std::chrono::duration_cast<Timer::Duration>(now - s_time);
-    s_time = now;
-
-    // Update all timers of all windows
-    std::vector<std::pair<Window *, int>> discarded;
-    for (auto & timerMapPair : s_timers)
-    {
-        // Get window
-        Window * window = timerMapPair.first;
-        for (auto & timerPair : timerMapPair.second)
-        {
-            // Get timer
-            int id = timerPair.first;
-            Timer & timer = timerPair.second;
-
-            // Update timer
-            timer.elapsed += delta;
-
-            // Check if timer is active
-            if (timer.ready())
-            {
-                // Send timer event to window
-                dispatchEvent(window, new TimerEvent(id, timer.elapsed));
-
-                // Reset timer (if continuous) or delete timer (if single-shot)
-                if (timer.singleShot)
-                {
-                    discarded.emplace_back(window, id);
-                }
-                else
-                {
-                    timer.reset();
-                }
-            }
-        }
-    }
-
-    // Remove all discarded timers
-    for (const auto & pair : discarded)
-    {
-        removeTimer(pair.first, pair.second);
-    }
 }
 
 void WindowEventDispatcher::dispatchEvent(GLFWwindow * glfwWindow, WindowEvent * event)
