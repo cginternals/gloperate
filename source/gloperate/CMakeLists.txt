@@ -51,6 +51,8 @@ set(headers
     ${include_path}/viewer/ViewerContext.h
     ${include_path}/viewer/Surface.h
     ${include_path}/viewer/RenderSurface.h
+    ${include_path}/viewer/TimeManager.h
+    ${include_path}/viewer/Timer.h
 
     ${include_path}/pipeline/Stage.h
 
@@ -72,6 +74,8 @@ set(sources
     ${source_path}/viewer/ViewerContext.cpp
     ${source_path}/viewer/Surface.cpp
     ${source_path}/viewer/RenderSurface.cpp
+    ${source_path}/viewer/TimeManager.cpp
+    ${source_path}/viewer/Timer.cpp
 
     ${source_path}/pipeline/Stage.cpp
 

@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/viewer/TimeManager.h>
 
 
 namespace gloperate
@@ -25,6 +25,7 @@ namespace gloperate
 class GLOPERATE_API ViewerContext
 {
 public:
+    //@{
     /**
     *  @brief
     *    Constructor
@@ -36,6 +37,23 @@ public:
     *    Destructor
     */
     ~ViewerContext();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get time manager
+    *
+    *  @return
+    *    Time manager (must NOT be null)
+    */
+    const TimeManager * timeManager() const;
+    TimeManager * timeManager();
+    //@}
+
+
+protected:
+    TimeManager m_timeManager; ///< Manager for virtual time and timers
 };
 
 
