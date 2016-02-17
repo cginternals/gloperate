@@ -31,6 +31,11 @@ void Application::quit(int code)
     s_app->stop(code);
 }
 
+void Application::wakeup()
+{
+    glfwPostEmptyEvent();
+}
+
 Application::Application(int &, char **)
 : m_running(false)
 , m_exitCode(0)
@@ -61,7 +66,10 @@ int Application::run()
     // Execute main loop
     while (m_running)
     {
-        pollEvents();
+        // Wait until events arrive.
+        // To unlock the main loop, call wakeup().
+        glfwWaitEvents();
+
         processEvents();
     }
 
@@ -87,11 +95,6 @@ bool Application::isRunning() const
 int Application::exitCode()
 {
     return m_exitCode;
-}
-
-void Application::pollEvents()
-{
-    glfwPollEvents();
 }
 
 void Application::processEvents()

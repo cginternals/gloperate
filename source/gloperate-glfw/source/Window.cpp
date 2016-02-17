@@ -307,6 +307,8 @@ void Window::repaint()
     }
 
     m_needsRepaint = true;
+
+    Application::wakeup();
 }
 
 void Window::swap()

@@ -45,6 +45,12 @@ public:
     */
     static void quit(int code = 0);
 
+    /**
+    *  @brief
+    *    Wakeup main loop
+    */
+    static void wakeup();
+
 
 public:
     /**
@@ -107,12 +113,6 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Wait for new events
-    */
-    void pollEvents();
-
     /**
     *  @brief
     *    Process events that have been received

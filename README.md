@@ -26,7 +26,7 @@ The following dev-libraries and programs need to be provided for correct CMake c
 
 ### Optional Dependencies
 
-* Window and Context creation (GLFW 3.0): http://www.glfw.org/
+* Window and Context creation (GLFW 3.1): http://www.glfw.org/
 * Qt (>=5.2): http://qt-project.org/
 
 ### Development Notes
