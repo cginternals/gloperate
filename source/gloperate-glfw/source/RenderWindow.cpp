@@ -78,11 +78,6 @@ void RenderWindow::onContextDeinit()
     m_surface->setOpenGLContext(nullptr);
 }
 
-void RenderWindow::onIdle()
-{
-    m_surface->onIdle();
-}
-
 void RenderWindow::onResize(ResizeEvent & event)
 {
     m_virtualSize = event.size();

@@ -60,10 +60,6 @@ void Surface::onContextDeinit()
 {
 }
 
-void Surface::onIdle()
-{
-}
-
 void Surface::onResize(const glm::ivec2 &, const glm::ivec2 &)
 {
 }

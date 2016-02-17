@@ -134,12 +134,6 @@ public:
 
     /**
     *  @brief
-    *    Called when the viewer is in idle mode (no more messages to process)
-    */
-    virtual void onIdle();
-
-    /**
-    *  @brief
     *    Resize framebuffer
     *
     *    This function is called when the framebuffer size has been changed,

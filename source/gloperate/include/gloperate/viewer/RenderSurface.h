@@ -63,7 +63,6 @@ public:
     virtual const GLContextFormat & requiredFormat() const override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
-    virtual void onIdle() override;
     virtual void onResize(const glm::ivec2 & deviceSize, const glm::ivec2 & virtualSize) override;
     virtual void onRender() override;
     virtual void onKeyPress(int key) override;

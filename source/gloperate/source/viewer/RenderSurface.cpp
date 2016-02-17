@@ -90,11 +90,6 @@ void RenderSurface::onContextDeinit()
     }
 }
 
-void RenderSurface::onIdle()
-{
-//  globjects::info() << "onIdle()";
-}
-
 void RenderSurface::onResize(const glm::ivec2 & deviceSize, const glm::ivec2 & virtualSize)
 {
     globjects::info() << "onResize(" << deviceSize.x << ", " << deviceSize.y << ", " << virtualSize.x << ", " << virtualSize.y << ")";

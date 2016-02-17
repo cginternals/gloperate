@@ -84,7 +84,6 @@ protected:
     // Virtual Window functions
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
-    virtual void onIdle() override;
     virtual void onResize(ResizeEvent & event) override;
     virtual void onFramebufferResize(ResizeEvent & event) override;
     virtual void onMove(MoveEvent & event) override;
