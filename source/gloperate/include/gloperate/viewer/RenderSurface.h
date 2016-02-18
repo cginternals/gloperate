@@ -3,7 +3,6 @@
 
 
 #include <gloperate/viewer/Surface.h>
-#include <gloperate/base/ChronoTimer.h>
 
 
 namespace gloperate
@@ -61,6 +60,7 @@ public:
 
     // Virtual Surface functions
     virtual const GLContextFormat & requiredFormat() const override;
+    virtual bool onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
     virtual void onResize(const glm::ivec2 & deviceSize, const glm::ivec2 & virtualSize) override;
@@ -74,10 +74,8 @@ public:
 
 
 protected:
-    Stage                  * m_renderStage; ///< Render stage that renders into the current context (can be null)
-    gloperate::ChronoTimer   m_timer;       ///< Time measurement
-    float                    m_time;        ///< Virtual time (in seconds)
-    unsigned long            m_frame;       ///< Frame counter
+    Stage         * m_renderStage; ///< Render stage that renders into the current context (can be null)
+    unsigned long   m_frame;       ///< Frame counter
 };
 
 

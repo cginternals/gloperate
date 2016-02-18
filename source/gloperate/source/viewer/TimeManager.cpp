@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#include <globjects/base/baselogging.h>
+
 #include <gloperate/viewer/Timer.h>
 
 
@@ -12,6 +14,8 @@ namespace gloperate
 
 TimeManager::TimeManager(ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
+, m_activeTimers(0)
+, m_timeDelta(0.0f)
 {
 }
 
@@ -19,12 +23,27 @@ TimeManager::~TimeManager()
 {
 }
 
-void TimeManager::update(unsigned int delta)
+bool TimeManager::update()
 {
+    auto duration = m_clock.elapsed();
+    m_clock.reset();
+
+    m_timeDelta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
+
     for (Timer * timer : m_timers)
     {
-        timer->update(delta);
+        if (timer->isActive())
+        {
+            timer->update(m_timeDelta);
+        }
     }
+
+    return m_activeTimers > 0;
+}
+
+float TimeManager::timeDelta() const
+{
+    return m_timeDelta;
 }
 
 void TimeManager::registerTimer(Timer * timer)
@@ -35,6 +54,24 @@ void TimeManager::registerTimer(Timer * timer)
 void TimeManager::unregisterTimer(Timer * timer)
 {
     m_timers.erase(std::find(m_timers.begin(), m_timers.end(), timer));
+}
+
+void TimeManager::activateTimer()
+{
+    if (m_activeTimers == 0)
+    {
+        m_clock.reset();
+    }
+
+    m_activeTimers++;
+}
+
+void TimeManager::deactivateTimer()
+{
+    if (m_activeTimers > 0)
+    {
+        m_activeTimers--;
+    }
 }
 
 

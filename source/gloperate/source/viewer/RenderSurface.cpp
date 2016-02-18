@@ -3,6 +3,8 @@
 
 #include <globjects/base/baselogging.h>
 
+#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/viewer/TimeManager.h>
 #include <gloperate/pipeline/Stage.h>
 
 
@@ -13,7 +15,6 @@ namespace gloperate
 RenderSurface::RenderSurface(ViewerContext * viewerContext, Stage * stage)
 : Surface(viewerContext)
 , m_renderStage(nullptr)
-, m_time(0.0f)
 , m_frame(0)
 {
     setRenderStage(stage);
@@ -68,6 +69,20 @@ const GLContextFormat & RenderSurface::requiredFormat() const
     }
 }
 
+bool RenderSurface::onUpdate()
+{
+    globjects::info() << "onUpdate()";
+
+    bool moreUpdates = m_viewerContext->timeManager()->update();
+
+    if (m_renderStage)
+    {
+        m_renderStage->setTimeDelta(m_viewerContext->timeManager()->timeDelta());
+    }
+
+    return moreUpdates;
+}
+
 void RenderSurface::onContextInit()
 {
     globjects::info() << "onContextInit()";
@@ -101,19 +116,12 @@ void RenderSurface::onRender()
 {
     m_frame++;
 
-    float delta = std::chrono::duration_cast<std::chrono::duration<float>>(m_timer.elapsed()).count();
-    m_timer.reset();
-
-    m_time += delta;
-
     if (m_renderStage)
     {
         m_renderStage->setFrameCounter(m_frame);
-        m_renderStage->setTime(m_time);
-        m_renderStage->setTimeDelta(delta);
     }
 
-    globjects::info() << "onRender(): delta = " << delta;
+    globjects::info() << "onRender()";
 
     if (m_renderStage)
     {

@@ -377,9 +377,9 @@ protected:
     void destroyInternalWindow();
 
     // Event handlers, to be overwritten in derived classes
+    virtual bool onUpdate();
     virtual void onContextInit();
     virtual void onContextDeinit();
-    virtual void onIdle();
     virtual void onResize(ResizeEvent & event);
     virtual void onFramebufferResize(ResizeEvent & event);
     virtual void onMove(MoveEvent & event);
@@ -394,7 +394,6 @@ protected:
     virtual void onScroll(ScrollEvent & event);
     virtual void onFocus(FocusEvent & event);
     virtual void onIconify(IconifyEvent & event);
-
 
 protected:
     /**

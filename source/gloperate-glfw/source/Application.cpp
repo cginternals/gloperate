@@ -69,7 +69,6 @@ int Application::run()
         // Wait until events arrive.
         // To unlock the main loop, call wakeup().
         glfwWaitEvents();
-
         processEvents();
     }
 
@@ -99,6 +98,8 @@ int Application::exitCode()
 
 void Application::processEvents()
 {
+    bool needUpdate = false;
+
     // Get messages for all windows
     for (Window * window : Window::instances())
     {
@@ -106,9 +107,15 @@ void Application::processEvents()
 
         if (window->hasPendingEvents()) {
             window->processEvents();
-        } else {
-            window->onIdle();
         }
+
+        needUpdate |= window->onUpdate();
+    }
+
+    // If someone wants another main loop iteration, wake it up
+    if (needUpdate)
+    {
+        wakeup();
     }
 }
 

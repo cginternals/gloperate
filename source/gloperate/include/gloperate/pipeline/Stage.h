@@ -105,7 +105,6 @@ public:
     void setDeviceViewport(int x, int y, int w, int h);
     void setVirtualViewport(int x, int y, int w, int h);
     void setFrameCounter(int frame);
-    void setTime(float time);
     void setTimeDelta(float delta);
 
 
@@ -168,7 +167,6 @@ protected:
     glm::ivec4      m_deviceViewport;   ///< Viewport (in real device coordinates)
     glm::ivec4      m_virtualViewport;  ///< Viewport (in virtual coordinates)
     unsigned long   m_frame;            ///< Frame counter
-    float           m_time;             ///< Virtual time (in seconds)
     float           m_timeDelta;        ///< Time since last update (in seconds)
 };
 

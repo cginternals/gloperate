@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <gloperate/pipeline/Stage.h>
-
 #include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
@@ -11,6 +9,8 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
+#include <gloperate/pipeline/Stage.h>
+#include <gloperate/viewer/Timer.h>
 #include <gloperate/base/Camera.h>
 
 
@@ -63,7 +63,11 @@ protected:
     globjects::ref_ptr<globjects::Shader>      m_vertexShader;
     globjects::ref_ptr<globjects::Shader>      m_fragmentShader;
 
+    // Tools
+    Timer m_timer;
+
     // Status
+    float m_time;   ///< Virtual time (in seconds)
     float m_angle;
 };
 

@@ -52,6 +52,11 @@ const GLContextFormat & Surface::requiredFormat() const
     return defaultFormat;
 }
 
+bool Surface::onUpdate()
+{
+    return false;
+}
+
 void Surface::onContextInit()
 {
 }

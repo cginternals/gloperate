@@ -9,7 +9,6 @@ namespace gloperate
 Stage::Stage(ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
 , m_frame(0)
-, m_time(0.0f)
 , m_timeDelta(0.0f)
 {
 }
@@ -70,11 +69,6 @@ void Stage::setVirtualViewport(int x, int y, int w, int h)
 void Stage::setFrameCounter(int frame)
 {
     m_frame = frame;
-}
-
-void Stage::setTime(float time)
-{
-    m_time = time;
 }
 
 void Stage::setTimeDelta(float delta)

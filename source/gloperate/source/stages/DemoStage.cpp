@@ -55,8 +55,20 @@ namespace gloperate
 
 DemoStage::DemoStage(ViewerContext * viewerContext)
 : Stage(viewerContext)
+, m_timer(viewerContext)
+, m_time(0.0f)
 , m_angle(0.0f)
 {
+    m_timer.fired.connect([this] ()
+    {
+        // Update virtual time
+        m_time += m_timeDelta;
+
+        // Redraw
+        invalidateOutput();
+    });
+
+    m_timer.start(0.0f);
 }
 
 DemoStage::~DemoStage()
@@ -132,9 +144,6 @@ void DemoStage::onProcess(AbstractGLContext *)
 
     // Unbind FBO
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
-
-    // Redraw right away
-    invalidateOutput();
 }
 
 void DemoStage::createAndSetupCamera()

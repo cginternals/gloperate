@@ -4,7 +4,7 @@
 
 #include <list>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/base/ChronoTimer.h>
 
 
 namespace gloperate
@@ -21,6 +21,9 @@ class Timer;
 */
 class GLOPERATE_API TimeManager
 {
+    friend class Timer;
+
+
 public:
     /**
     *  @brief
@@ -41,10 +44,19 @@ public:
     *  @brief
     *    Update timing
     *
-    *  @param[in] delta
-    *    Time delta (in milliseconds)
+    *  @return
+    *    'true' if there are any timers active, 'false' if not
     */
-    void update(unsigned int delta);
+    bool update();
+
+    /**
+    *  @brief
+    *    Get time since last update
+    *
+    *  @return
+    *    Time delta (in seconds)
+    */
+    float timeDelta() const;
 
 
 protected:
@@ -71,10 +83,33 @@ protected:
     */
     void unregisterTimer(Timer * timer);
 
+    /**
+    *  @brief
+    *    Inform manager about activation of a timer
+    *
+    *  @remarks
+    *    Used to keep track of the number of active timers.
+    *    If no timer was active before, the clock will be reset
+    *    in order to avoid large time deltas after resuming updates.
+    */
+    void activateTimer();
+
+    /**
+    *  @brief
+    *    Inform manager about de-activation of a timer
+    *
+    *  @remarks
+    *    Used to keep track of the number of active timers.
+    */
+    void deactivateTimer();
+
 
 protected:
-    ViewerContext      * m_viewerContext; ///< Viewer context to which the manager belongs
-    std::list<Timer *>   m_timers;        ///< List of registered timers
+    ViewerContext          * m_viewerContext; ///< Viewer context to which the manager belongs
+    unsigned int             m_activeTimers;  ///< Number of active timers
+    std::list<Timer *>       m_timers;        ///< List of registered timers
+    gloperate::ChronoTimer   m_clock;         ///< Time measurement
+    float                    m_timeDelta;     ///< Time delta since last update (in seconds)
 };
 
 

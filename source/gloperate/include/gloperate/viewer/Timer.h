@@ -54,11 +54,11 @@ public:
     *    Start timer
     *
     *  @param[in] interval
-    *    Interval (in milliseconds)
+    *    Interval (in seconds, 0.0 for continuous update in each main loop iteration)
     *  @param[in] singleShot
     *    If 'true', the timer fires only once, otherwise it will be restarted continously
     */
-    void start(unsigned int interval, bool singleShot = false);
+    void start(float interval, bool singleShot = false);
 
     /**
     *  @brief
@@ -71,35 +71,35 @@ public:
     *    Get interval
     *
     *  @return
-    *    Interval (in milliseconds)
+    *    Interval (in seconds)
     */
-    unsigned int interval() const;
+    float interval() const;
 
     /**
     *  @brief
     *    Get remaining time
     *
     *  @return
-    *    Remaining time (in milliseconds)
+    *    Remaining time (in seconds)
     */
-    unsigned int remainingTime() const;
+    float remainingTime() const;
 
     /**
     *  @brief
     *    Update timer
     *
     *  @param[in] delta
-    *    Time delta (in milliseconds)
+    *    Time delta (in seconds)
     */
-    void update(unsigned int delta);
+    void update(float delta);
 
 
 protected:
     ViewerContext * m_viewerContext; ///< Viewer context to which the timer belongs
     bool            m_active;        ///< 'true' if timer is active, else 'false'
     bool            m_singleShot;    ///< 'true' if timer fires only once, else 'false'
-    unsigned int    m_interval;      ///< Interval (in milliseconds)
-    unsigned int    m_remaining;     ///< Remaining time (in milliseconds)
+    float           m_interval;      ///< Interval (in seconds)
+    float           m_remaining;     ///< Remaining time (in seconds)
 
 
 };
