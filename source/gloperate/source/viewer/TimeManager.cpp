@@ -28,7 +28,14 @@ bool TimeManager::update()
     auto duration = m_clock.elapsed();
     m_clock.reset();
 
-    m_timeDelta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
+    float delta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
+
+    return update(delta);
+}
+
+bool TimeManager::update(float delta)
+{
+    m_timeDelta = delta;
 
     for (Timer * timer : m_timers)
     {

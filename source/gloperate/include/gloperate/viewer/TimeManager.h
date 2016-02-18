@@ -46,8 +46,29 @@ public:
     *
     *  @return
     *    'true' if there are any timers active, 'false' if not
+    *
+    *  @remarks
+    *    This signature measures the time since the last call
+    *    for the time delta. It should usually be used in
+    *    interactive applications.
     */
     bool update();
+
+    /**
+    *  @brief
+    *    Update timing
+    *
+    *  @param[in] delta
+    *    Time delta (in seconds)
+    *
+    *  @return
+    *    'true' if there are any timers active, 'false' if not
+    *
+    *  @remarks
+    *    This signature can be used to provide a specific time delta,
+    *    e.g., when rendering videos with a fixed FPS.
+    */
+    bool update(float delta);
 
     /**
     *  @brief
