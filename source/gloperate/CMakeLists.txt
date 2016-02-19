@@ -57,6 +57,13 @@ set(headers
     ${include_path}/pipeline/Stage.h
 
     ${include_path}/stages/DemoStage.h
+
+    ${include_path}/input/InputManager.h
+    ${include_path}/input/InputManager.h
+    ${include_path}/input/AbstractEventConsumer.h
+    ${include_path}/input/AbstractDeviceProvider.h
+    ${include_path}/input/AbstractDevice.h
+    ${include_path}/input/InputEvent.h
 )
 
 set(sources
@@ -80,6 +87,12 @@ set(sources
     ${source_path}/pipeline/Stage.cpp
 
     ${source_path}/stages/DemoStage.cpp
+
+    ${source_path}/input/InputManager.cpp
+    ${source_path}/input/AbstractEventConsumer.cpp
+    ${source_path}/input/AbstractDeviceProvider.cpp
+    ${source_path}/input/AbstractDevice.cpp
+    ${source_path}/input/InputEvent.cpp
 )
 
 # Group source files
