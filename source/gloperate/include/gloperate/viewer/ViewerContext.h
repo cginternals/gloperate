@@ -3,6 +3,7 @@
 
 
 #include <gloperate/viewer/TimeManager.h>
+#include <gloperate/input/InputManager.h>
 
 
 namespace gloperate
@@ -54,6 +55,7 @@ public:
 
 protected:
     TimeManager m_timeManager; ///< Manager for virtual time and timers
+    InputManager m_inputManager;
 };
 
 
