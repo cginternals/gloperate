@@ -58,6 +58,13 @@ set(headers
     ${include_path}/rendering/Camera.h
 
     ${include_path}/stages/demos/DemoStage.h
+
+    ${include_path}/input/InputManager.h
+    ${include_path}/input/InputManager.h
+    ${include_path}/input/AbstractEventConsumer.h
+    ${include_path}/input/AbstractDeviceProvider.h
+    ${include_path}/input/AbstractDevice.h
+    ${include_path}/input/InputEvent.h
 )
 
 set(sources
@@ -79,9 +86,21 @@ set(sources
 
     ${source_path}/pipeline/Stage.cpp
 
+<<<<<<< 58d09b8869ef4276e902644ccd3dc39bc1b48692
     ${source_path}/rendering/Camera.cpp
 
     ${source_path}/stages/demos/DemoStage.cpp
+||||||| merged common ancestors
+    ${source_path}/stages/DemoStage.cpp
+=======
+    ${source_path}/stages/DemoStage.cpp
+
+    ${source_path}/input/InputManager.cpp
+    ${source_path}/input/AbstractEventConsumer.cpp
+    ${source_path}/input/AbstractDeviceProvider.cpp
+    ${source_path}/input/AbstractDevice.cpp
+    ${source_path}/input/InputEvent.cpp
+>>>>>>> adding interfaces for input handling
 )
 
 # Group source files
