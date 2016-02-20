@@ -3,6 +3,7 @@
 
 
 #include <QQuickView>
+#include <QTimer>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -11,8 +12,13 @@ class QOpenGLContext;
 
 namespace gloperate {
     class ViewerContext;
+    class Surface;
     class RenderSurface;
     class Stage;
+}
+
+namespace gloperate_qt {
+    class GLContext;
 }
 
 
@@ -61,6 +67,15 @@ public:
 
     /**
     *  @brief
+    *    Get surface
+    *
+    *  @return
+    *    Surface that renders on the window (must NOT be null)
+    */
+    gloperate::Surface * surface() const;
+
+    /**
+    *  @brief
     *    Get render stage
     *
     *  @return
@@ -81,21 +96,32 @@ public:
     */
     void setRenderStage(gloperate::Stage * stage);
 
+    /**
+    *  @brief
+    *    Get OpenGL context
+    *
+    *  @return
+    *    OpenGL context (can be null)
+    */
+    gloperate_qt::GLContext * context() const;
+
 
 protected:
     QuickView(gloperate::ViewerContext * viewerContext,
               gloperate::RenderSurface * surface);
 
-
-protected:
     void onSceneGraphInitialized();
-    void onOpenglContextCreated(QOpenGLContext * context);
+
+
+protected slots:
+    void onUpdate();
 
 
 protected:
     gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
     gloperate::RenderSurface * m_surface;       ///< Surface that renders on the window (must NOT be null)
-//  QTimer                     m_timer;         ///< Timer for continuous update
+    gloperate_qt::GLContext  * m_context;       ///< Context wrapper for gloperate (can be null)
+    QTimer                     m_timer;         ///< Timer for continuous update
 };
 
 

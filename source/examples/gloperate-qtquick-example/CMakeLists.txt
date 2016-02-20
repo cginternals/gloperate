@@ -84,6 +84,7 @@ target_include_directories(${target}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${GLM_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
+    ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qtquick/include
 )
 
@@ -105,6 +106,7 @@ target_link_libraries(${target}
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
+    ${META_PROJECT_NAME}::gloperate-qt
     ${META_PROJECT_NAME}::gloperate-qtquick
 )
 

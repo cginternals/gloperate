@@ -36,7 +36,7 @@ public:
     *  @param[in] takeOwnership
     *    If 'true', the wrapper takes ownership over the Qt context, else 'false'
     */
-    GLContext(QWindow * window, QOpenGLContext * context, bool takeOwnership = false);
+    GLContext(QWindow * window, QOpenGLContext * context, bool takeOwnership = true);
 
     /**
     *  @brief

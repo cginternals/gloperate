@@ -71,7 +71,7 @@ const GLContextFormat & RenderSurface::requiredFormat() const
 
 bool RenderSurface::onUpdate()
 {
-    globjects::info() << "onUpdate()";
+//  globjects::info() << "onUpdate()";
 
     bool moreUpdates = m_viewerContext->timeManager()->update();
 
@@ -114,17 +114,12 @@ void RenderSurface::onResize(const glm::ivec2 & deviceSize, const glm::ivec2 & v
 
 void RenderSurface::onRender()
 {
-    m_frame++;
+//  globjects::info() << "onRender()";
 
     if (m_renderStage)
     {
+        m_frame++;
         m_renderStage->setFrameCounter(m_frame);
-    }
-
-    globjects::info() << "onRender()";
-
-    if (m_renderStage)
-    {
         m_renderStage->process(m_openGLContext);
     }
 }
