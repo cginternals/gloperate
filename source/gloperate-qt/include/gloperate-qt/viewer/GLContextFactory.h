@@ -9,11 +9,11 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
+class QWindow;
+
+
 namespace gloperate_qt
 {
-
-
-class OpenGLWindow;
 
 
 /**
@@ -25,12 +25,26 @@ class GLOPERATE_QT_API GLContextFactory : public gloperate::AbstractGLContextFac
 public:
     /**
     *  @brief
+    *    Convert context format description into Qt version
+    *
+    *  @param[in] format
+    *    OpenGL context format description (gloperate version)
+    *
+    *  @return
+    *    OpenGL context format description (Qt version)
+    */
+    static QSurfaceFormat toQSurfaceFormat(const gloperate::GLContextFormat & format);
+
+
+public:
+    /**
+    *  @brief
     *    Constructor
     *
     *  @param[in] window
     *    Surface on which contexts are created (must NOT be null)
     */
-    GLContextFactory(OpenGLWindow * window);
+    GLContextFactory(QWindow * window);
 
     /**
     *  @brief
@@ -43,11 +57,7 @@ public:
 
 
 protected:
-    QSurfaceFormat toQSurfaceFormat(const gloperate::GLContextFormat & format) const;
-
-
-protected:
-    OpenGLWindow * m_window; ///< Surface on which contexts are created
+    QWindow * m_window; ///< Surface on which contexts are created
 };
 
 

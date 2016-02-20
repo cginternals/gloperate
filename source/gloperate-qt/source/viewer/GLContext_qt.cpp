@@ -1,9 +1,8 @@
 
 #include <gloperate-qt/viewer/GLContext.h>
 
+#include <QWindow>
 #include <QOpenGLContext>
-
-#include <gloperate-qt/viewer/OpenGLWindow.h>
 
 
 namespace gloperate_qt
@@ -17,10 +16,15 @@ QOpenGLContext * GLContext::qtContext() const
 
 void GLContext::destroyContext()
 {
-    delete m_context;
+    if (m_ownsContext)
+    {
+        delete m_context;
+    }
+
+    m_context = nullptr;
 }
 
-void GLContext::makeCurrent(QOpenGLContext * context, OpenGLWindow * window)
+void GLContext::makeCurrent(QOpenGLContext * context, QWindow * window)
 {
     context->makeCurrent(window);
 }
