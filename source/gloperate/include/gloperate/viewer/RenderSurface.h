@@ -63,7 +63,7 @@ public:
     virtual bool onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
-    virtual void onResize(const glm::ivec2 & deviceSize, const glm::ivec2 & virtualSize) override;
+    virtual void onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport) override;
     virtual void onRender() override;
     virtual void onKeyPress(int key) override;
     virtual void onKeyRelease(int key) override;

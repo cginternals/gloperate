@@ -151,15 +151,15 @@ public:
 
     /**
     *  @brief
-    *    Resize framebuffer
+    *    Viewport changed
     *
-    *    This function is called when the framebuffer size has been changed,
+    *    This function is called when the viewport has been changed,
     *    e.g., due to a resize of the window.
     *
-    *  @param[in] deviceSize
-    *    Size (actual device pixels)
-    *  @param[in] virtualSize
-    *    Size (virtual pixels)
+    *  @param[in] deviceViewport
+    *    Viewport (actual device pixels)
+    *  @param[in] virtualViewport
+    *    Viewport (virtual pixels)
     *
     *  @remarks
     *    On low-res devices, device size and virtual size will be equal.
@@ -170,9 +170,9 @@ public:
     *    the actual framebuffer size only for blitting onto the output device
     *    to improve rendering performance on high-resolution devices.
     */
-    virtual void onResize(
-        const glm::ivec2 & deviceSize
-      , const glm::ivec2 & virtualSize);
+    virtual void onViewport(
+        const glm::ivec4 & deviceViewport
+      , const glm::ivec4 & virtualViewport);
 
     /**
     *  @brief

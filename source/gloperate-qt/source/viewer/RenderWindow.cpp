@@ -90,9 +90,9 @@ void RenderWindow::onContextDeinit()
 
 void RenderWindow::onResize(const QSize & deviceSize, const QSize & virtualSize)
 {
-    m_surface->onResize(
-        glm::ivec2(deviceSize.width(),  deviceSize.height())
-      , glm::ivec2(virtualSize.width(), virtualSize.height())
+    m_surface->onViewport(
+        glm::ivec4(0, 0, deviceSize.width(),  deviceSize.height())
+      , glm::ivec4(0, 0, virtualSize.width(), virtualSize.height())
     );
 }
 

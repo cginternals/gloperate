@@ -16,8 +16,9 @@ Item
 
     RenderItem
     {
-        anchors.top:    title.bottom
-        anchors.bottom: parent.bottom
-        width:          parent.width
+        x:      300
+        y:      parent.height / 4.0
+        width:  700
+        height: parent.height / 2.0
     }
 }

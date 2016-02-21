@@ -85,12 +85,19 @@ void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldG
         return;
     }
 
-    float width  = newGeometry.width();
-    float height = newGeometry.height();
+    float virtX      = newGeometry.x();
+    float virtY      = newGeometry.y();
+    float virtWidth  = newGeometry.width();
+    float virtHeight = newGeometry.height();
 
-    m_surface->onResize(
-        glm::ivec2(width * m_devicePixelRatio, height * m_devicePixelRatio),
-        glm::ivec2(width, height)
+    float devX       = virtX * m_devicePixelRatio;
+    float devY       = virtY * m_devicePixelRatio;
+    float devWidth   = virtWidth * m_devicePixelRatio;
+    float devHeight  = virtHeight * m_devicePixelRatio;
+
+    m_surface->onViewport(
+        glm::ivec4(virtX, virtY, virtWidth, virtHeight)
+      , glm::ivec4(devX,  devY,  devWidth,  devHeight)
     );
 }
 

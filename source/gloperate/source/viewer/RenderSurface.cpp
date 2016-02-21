@@ -105,11 +105,21 @@ void RenderSurface::onContextDeinit()
     }
 }
 
-void RenderSurface::onResize(const glm::ivec2 & deviceSize, const glm::ivec2 & virtualSize)
+void RenderSurface::onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport)
 {
-    globjects::info() << "onResize(" << deviceSize.x << ", " << deviceSize.y << ", " << virtualSize.x << ", " << virtualSize.y << ")";
+    m_renderStage->setDeviceViewport(
+        deviceViewport.x
+      , deviceViewport.y
+      , deviceViewport.z
+      , deviceViewport.w
+    );
 
-    m_renderStage->setDeviceViewport(0, 0, deviceSize.x, deviceSize.y);
+    m_renderStage->setVirtualViewport(
+        virtualViewport.x
+      , virtualViewport.y
+      , virtualViewport.z
+      , virtualViewport.w
+    );
 }
 
 void RenderSurface::onRender()

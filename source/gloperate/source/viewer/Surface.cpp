@@ -65,7 +65,7 @@ void Surface::onContextDeinit()
 {
 }
 
-void Surface::onResize(const glm::ivec2 &, const glm::ivec2 &)
+void Surface::onViewport(const glm::ivec4 &, const glm::ivec4 &)
 {
 }
 
