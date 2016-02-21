@@ -16,9 +16,23 @@ Item
 
     RenderItem
     {
-        x:      300
-        y:      parent.height / 4.0
+        x:      0
+        y:      0
         width:  700
         height: parent.height / 2.0
+
+        MouseArea
+        {
+            anchors.fill: parent
+            drag.target:  parent
+        }
+
+        Rectangle
+        {
+            anchors.fill: parent
+            color:        'transparent'
+            border.width: 1
+            border.color: 'black'
+        }
     }
 }
