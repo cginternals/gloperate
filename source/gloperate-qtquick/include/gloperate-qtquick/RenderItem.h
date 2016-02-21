@@ -3,6 +3,7 @@
 
 
 #include <QQuickItem>
+#include <QTimer>
 
 
 class QQuickWindow;
@@ -44,6 +45,10 @@ protected:
     void onBeforeRendering();
 
 
+protected slots:
+    void onUpdate();
+
+
 protected:
     virtual void geometryChanged(const QRectF & newGeometry, const QRectF & oldGeometry) override;
     virtual void keyPressEvent(QKeyEvent * event) override;
@@ -57,6 +62,8 @@ protected:
 protected:
     gloperate::Surface * m_surface;          ///< Surface that renders into the item (must NOT be null)
     float                m_devicePixelRatio; ///< Number of device pixels per virtual pixel
+    bool                 m_initialized;      ///< 'true' if the surface has been initialized, else 'false'
+    QTimer               m_timer;            ///< Timer for continuous update
 };
 
 

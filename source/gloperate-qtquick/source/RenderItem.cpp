@@ -5,9 +5,11 @@
 
 #include <gloperate/viewer/Surface.h>
 
+#include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/input.h>
 
 #include <gloperate-qtquick/QuickView.h>
+#include <gloperate-qtquick/Utils.h>
 
 
 using namespace gloperate_qt;
@@ -20,10 +22,11 @@ namespace gloperate_qtquick
 RenderItem::RenderItem()
 : m_surface(nullptr)
 , m_devicePixelRatio(1.0f)
+, m_initialized(false)
 {
+    // Set input modes
     setAcceptedMouseButtons(Qt::AllButtons);
     setFlag(ItemAcceptsInputMethod, true);
-    setFlag(ItemHasContents, true);
 
     // Connect to event when the window into which is rendered has changed
     connect(
@@ -31,10 +34,23 @@ RenderItem::RenderItem()
         this, &RenderItem::onWindowChanged,
         Qt::DirectConnection
     );
+
+    // Connect update timer
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(onUpdate()));
+    m_timer.setSingleShot(true);
+    m_timer.start(0);
 }
 
 RenderItem::~RenderItem()
 {
+}
+
+void RenderItem::onUpdate()
+{
+    if (m_surface && m_surface->onUpdate())
+    {
+        m_timer.start(0);
+    }
 }
 
 void RenderItem::onWindowChanged(QQuickWindow * window)
@@ -48,12 +64,18 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
     // Get device/pixel-ratio
     m_devicePixelRatio = window->effectiveDevicePixelRatio();
 
-    // Get surface from window
+    // Create render surface and render stage
     QuickView * view = static_cast<QuickView*>(window);
     if (view)
     {
-        m_surface = view->surface();
+        m_surface = Utils::createSurface(view->viewerContext(), Utils::createRenderStage(view->viewerContext()));
     }
+
+    // Repaint window when surface needs to be updated
+    m_surface->redrawNeeded.connect([this] ()
+    {
+        this->window()->update();
+    } );
 
     // Do not clear surface when rendering Qml, because we render our content first
     window->setClearBeforeRendering(false);
@@ -64,6 +86,9 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
         this, &RenderItem::onBeforeRendering,
         Qt::DirectConnection
     );
+
+    // Start update timer
+    m_timer.start(0);
 }
 
 void RenderItem::onBeforeRendering()
@@ -73,7 +98,20 @@ void RenderItem::onBeforeRendering()
         return;
     }
 
+    // Initialize surface before rendering the first time
+    if (!m_initialized)
+    {
+        QuickView * view = static_cast<QuickView*>(this->window());
+        m_surface->setOpenGLContext(view->context());
+
+        m_initialized = true;
+    }
+
+    // Render into item
     m_surface->onRender();
+
+    // Reset OpenGL state
+    window()->resetOpenGLState();
 }
 
 void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldGeometry)
