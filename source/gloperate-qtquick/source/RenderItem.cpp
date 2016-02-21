@@ -205,8 +205,8 @@ void RenderItem::wheelEvent(QWheelEvent * event)
     if (m_surface)
     {
         m_surface->onMouseWheel(
-            glm::ivec2( event->orientation() == Qt::Vertical ? 0 : event->delta(),
-                        event->orientation() == Qt::Vertical ? event->delta() : 0 ),
+            glm::vec2( event->orientation() == Qt::Vertical ? 0.0f : (float)event->delta(),
+                       event->orientation() == Qt::Vertical ? (float)event->delta() : 0.0f ),
             glm::ivec2( (int)(event->x() * m_devicePixelRatio),
                         (int)(event->y() * m_devicePixelRatio) )
         );
