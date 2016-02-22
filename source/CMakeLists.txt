@@ -47,6 +47,7 @@ install_module_info(${META_PROJECT_NAME}
 # Libraries
 set(IDE_FOLDER "")
 add_subdirectory(gloperate)
+add_subdirectory(gloperate-ffmpeg)
 add_subdirectory(gloperate-glfw)
 add_subdirectory(gloperate-qt)
 add_subdirectory(gloperate-qtquick)
