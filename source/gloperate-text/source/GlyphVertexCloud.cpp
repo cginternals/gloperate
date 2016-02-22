@@ -2,6 +2,7 @@
 #include <gloperate-text/GlyphVertexCloud.h>
 
 #include <numeric>
+#include <algorithm>
 
 #include <gloperate/offsetof.h>
 
@@ -16,7 +17,7 @@ namespace
 template <typename T, typename Compare>
 std::vector<std::size_t> sort_permutation(
     const std::vector<T> & vec
-,   Compare & compare)
+,   const Compare & compare)
 {
     std::vector<std::size_t> p(vec.size());
 
