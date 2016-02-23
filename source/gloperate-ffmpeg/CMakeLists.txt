@@ -110,8 +110,6 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
-    ${GLM_INCLUDE_DIR}
-    ${GLFW_INCLUDE_DIR}
 
     PUBLIC
 
@@ -130,7 +128,7 @@ target_link_libraries(${target}
     PRIVATE
     ${FFMPEG_LIBRARIES}
     cpplocate::cpplocate
-    # libzeug::reflectionzeug
+    # libzeug::iozeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

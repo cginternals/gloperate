@@ -136,19 +136,19 @@ void VideoEncoder::createVideoEncoder(const std::string & filename)
     avpicture_fill((AVPicture *)m_frame, picture_buf, m_videoStream->codec->pix_fmt, m_videoStream->codec->width, m_videoStream->codec->height);
 
     // Output to file
-    /*
+    
     if (!(format->flags & AVFMT_NOFILE)) {
         if (avio_open(&m_context->pb, filename.c_str(), AVIO_FLAG_WRITE) < 0) {
             critical() << "Could not open  " << filename;
             return;
         }
     }
-    */
+    
 
     // Output to stream
-    if (avio_open_dyn_buf(&m_context->pb)) {
-        debug() << "Could not create output stream";
-    }
+    // if (avio_open_dyn_buf(&m_context->pb)) {
+    //     debug() << "Could not create output stream";
+    // }
 
     // Write video header
     avformat_write_header(m_context, NULL);
@@ -217,19 +217,6 @@ void VideoEncoder::putFrame(char * data, int width, int height)
         critical() << "Error while writing video frame";
         return;
     }
-
-    // Give back buffer
-    /*
-    auto freeBuffer = [] (char * data, void * hint)
-    {
-        // Log::log(Log::Message, "Free video frame buffer.");
-        // QByteArray * byteArray = reinterpret_cast<QByteArray *>(hint);
-        // delete byteArray;
-    };
-
-    v8::Local<v8::Object> bufferObj = node::Buffer::New(isolate, (char*)packet.data, packet.size, freeBuffer, &packet);
-    args.GetReturnValue().Set(scope.Escape(bufferObj));
-    */
 
     // Destroy packet
     av_free_packet(&packet);
