@@ -38,7 +38,7 @@ GLContext::GLContext(GLFWwindow * window)
     m_handle = GLContextUtils::tryFetchHandle();
 
     // Read context format
-    assert(isValid());
+    assert(GLContextUtils::isValid());
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context
