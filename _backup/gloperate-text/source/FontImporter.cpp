@@ -75,8 +75,7 @@ FontFace * FontImporter::loadFont(const std::string & filename)
     std::string identifier;
     while (std::getline(in, line))
     {
-        auto ss = std::stringstream();
-        ss << line;
+        std::stringstream ss(line);
 
         if (std::getline(ss, identifier, ' '))
         {

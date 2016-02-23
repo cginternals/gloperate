@@ -12,6 +12,7 @@
 namespace gloperate
 {
 
+class AbstractColorGradient;
 class ColorGradientList;
 
 class GLOPERATE_API ColorGradientSelectionStage : public gloperate::AbstractStage
@@ -24,6 +25,7 @@ public:
     InputSlot<ColorGradientList> gradients;
     InputSlot<std::string> gradientName;
 
+    Data<const AbstractColorGradient *> gradient;
     Data<size_t> gradientIndex;
 
 protected:
