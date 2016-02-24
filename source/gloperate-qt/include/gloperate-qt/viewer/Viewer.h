@@ -142,6 +142,7 @@ public:
 
     void makeScreenshot(const std::string &filename, int width, int height, int frames);
 
+    gloperate::ResourceManager * resourceManager();
 protected:
     void setupMessageWidgets();
     void setupCommandPrompt();
