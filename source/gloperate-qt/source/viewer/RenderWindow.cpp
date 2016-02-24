@@ -4,9 +4,12 @@
 #include <glm/glm.hpp>
 
 #include <gloperate/viewer/RenderSurface.h>
+#include <gloperate/viewer/ViewerContext.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/input.h>
+
+#include <gloperate/input/InputEvent.h>
 
 
 namespace gloperate_qt
@@ -103,6 +106,13 @@ void RenderWindow::onPaint()
 
 void RenderWindow::keyPressEvent(QKeyEvent * event)
 {
+    gloperate::InputEvent inputEvent{
+        gloperate::KeyModifier(0),
+        fromQtKeyCode(event->key(), event->modifiers()),
+        gloperate::EventType::Press
+    };
+
+    m_viewerContext->inputManager()->onEvent(inputEvent);
     m_surface->onKeyPress(
         fromQtKeyCode(event->key(), event->modifiers())
     );
@@ -110,6 +120,12 @@ void RenderWindow::keyPressEvent(QKeyEvent * event)
 
 void RenderWindow::keyReleaseEvent(QKeyEvent * event)
 {
+    gloperate::InputEvent inputEvent{
+        fromQtModifiers(event->modifiers()),
+        fromQtKeyCode(event->key(), event->modifiers()),
+        gloperate::EventType::Release
+    };
+
     m_surface->onKeyRelease(
         fromQtKeyCode(event->key(), event->modifiers())
     );
