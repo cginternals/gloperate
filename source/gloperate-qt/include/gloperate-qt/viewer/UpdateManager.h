@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QTime>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 
@@ -64,6 +65,7 @@ protected:
 protected:
     gloperate::ViewerContext * m_viewerContext; ///< Viewer context
     QTimer                     m_timer;         ///< Timer for continuous update
+    QTime                      m_time;          ///< Time measurement
 };
 
 
