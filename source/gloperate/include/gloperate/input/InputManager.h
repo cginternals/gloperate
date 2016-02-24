@@ -2,7 +2,13 @@
 #pragma once
 
 #include <list>
+#include <memory>
+
 #include <gloperate/input/InputEvent.h>
+#include <gloperate/input/AbstractDeviceProvider.h>
+#include <gloperate/input/AbstractDevice.h>
+
+#include <gloperate/gloperate_api.h>
 
 namespace gloperate
 {
@@ -23,13 +29,13 @@ public:
     *  @brief
     *    Constructor
     */
-    InputManager();
+    InputManager() = default;
 
     /**
     *  @brief
     *    Destructor
     */
-    ~InputManager();
+    ~InputManager() = default;
 
     /**
     *  @brief
