@@ -72,10 +72,12 @@ RenderWindow::RenderWindow(
 
 void RenderWindow::onUpdate()
 {
+    /*
     if (m_surface->onUpdate())
     {
         m_timer.start(0);
     }
+    */
 }
 
 void RenderWindow::onContextInit()

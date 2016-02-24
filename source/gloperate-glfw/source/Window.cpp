@@ -541,9 +541,8 @@ void Window::destroyInternalWindow()
     m_window = nullptr;
 }
 
-bool Window::onUpdate()
+void Window::onUpdate()
 {
-    return false;
 }
 
 void Window::onContextInit()

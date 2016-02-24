@@ -63,14 +63,15 @@ RenderWindow::RenderWindow(
 , m_viewerContext(viewerContext)
 , m_surface(surface)
 {
-    m_surface->redrawNeeded.connect([this] () {
+    m_surface->redrawNeeded.connect([this] ()
+    {
         repaint();
-    });
+    } );
 }
 
-bool RenderWindow::onUpdate()
+void RenderWindow::onUpdate()
 {
-    return m_surface->onUpdate();
+    m_surface->onUpdate();
 }
 
 void RenderWindow::onContextInit()

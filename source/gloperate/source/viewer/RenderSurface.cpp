@@ -69,18 +69,12 @@ const GLContextFormat & RenderSurface::requiredFormat() const
     }
 }
 
-bool RenderSurface::onUpdate()
+void RenderSurface::onUpdate()
 {
-//  globjects::info() << "onUpdate()";
-
-    bool moreUpdates = m_viewerContext->timeManager()->update();
-
     if (m_renderStage)
     {
         m_renderStage->setTimeDelta(m_viewerContext->timeManager()->timeDelta());
     }
-
-    return moreUpdates;
 }
 
 void RenderSurface::onContextInit()

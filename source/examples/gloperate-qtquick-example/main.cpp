@@ -9,11 +9,14 @@
 #include <gloperate/viewer/ViewerContext.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
+#include <gloperate-qt/viewer/UpdateManager.h>
 
 #include <gloperate-qtquick/QuickView.h>
 
 
 using namespace gloperate;
+using namespace gloperate_qt;
+using namespace gloperate_qtquick;
 
 
 int main(int argc, char * argv[])
@@ -26,11 +29,10 @@ int main(int argc, char * argv[])
 
     // Create viewer context
     ViewerContext viewerContext;
+    UpdateManager updateManager(&viewerContext);
 
     // Load and show QML
-    gloperate_qtquick::QuickView * window = new gloperate_qtquick::QuickView(
-        &viewerContext
-    );
+    QuickView * window = new QuickView(&viewerContext);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
     window->engine()->addImportPath(qmlPath);
     window->setSource(QUrl(qmlPath + "/Main.qml"));

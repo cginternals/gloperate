@@ -7,6 +7,12 @@
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
 
+namespace gloperate
+{
+    class ViewerContext;
+}
+
+
 namespace gloperate_glfw
 {
 
@@ -57,12 +63,14 @@ public:
     *  @brief
     *    Constructor
     *
+    *  @param[in] viewerContext
+    *    Viewer context to which the surface belongs (must NOT be null!)
     *  @param[in] argc
     *    Argument count (pass on parameter from the main function)
     *  @param[in] argv
     *    Argument list (pass on parameter from the main function)
     */
-    Application(int & argc, char ** argv);
+    Application(gloperate::ViewerContext * viewerContext, int & argc, char ** argv);
 
     /**
     *  @brief
@@ -125,8 +133,9 @@ protected:
 
 
 protected:
-    bool m_running;  ///< 'true' if application is currently running, else 'false'
-    int  m_exitCode; ///< Exit code (0 for no error, > 0 for error)
+    gloperate::ViewerContext * m_viewerContext; ///< Viewer context
+    bool                       m_running;       ///< 'true' if application is currently running, else 'false'
+    int                        m_exitCode;      ///< Exit code (0 for no error, > 0 for error)
 };
 
 

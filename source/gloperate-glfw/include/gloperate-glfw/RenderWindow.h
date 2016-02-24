@@ -82,7 +82,7 @@ protected:
                  gloperate::RenderSurface * surface);
 
     // Virtual Window functions
-    virtual bool onUpdate() override;
+    virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
     virtual void onResize(ResizeEvent & event) override;
