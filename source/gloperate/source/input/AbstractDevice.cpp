@@ -7,14 +7,15 @@
 
 namespace gloperate{
 
-AbstractDevice::AbstractDevice(InputManager *inputManager) :
-    m_inputManager{inputManager}
+AbstractDevice::AbstractDevice(InputManager *inputManager)
+: m_inputManager{inputManager}
 {
     assert(m_inputManager != nullptr);
 }
 
 AbstractDevice::~AbstractDevice()
 {
-    m_inputManager->deregisterConsumer(this);
+
 }
-}
+
+} // namespace gloperate

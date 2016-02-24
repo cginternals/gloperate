@@ -2,9 +2,7 @@
 #include <cassert>
 
 #include <gloperate/input/InputManager.h>
-
-#include <algorithm>
-
+#include <gloperate/input/AbstractEventConsumer.h>
 
 
 namespace gloperate {
@@ -18,11 +16,7 @@ void InputManager::registerConsumer(AbstractEventConsumer * const consumer)
 void InputManager::deregisterConsumer(AbstractEventConsumer * const consumer)
 {
     assert(consumer != nullptr);
-    auto consumerPos = std::find(m_consumers.begin(), m_consumers.end(), consumer);
-    if(!consumerPos == m_consumers.end())
-    {
-        consumerPos;
-    }
+    m_consumers.remove(consumer);
 }
 
 void InputManager::onEvent(const InputEvent &event)
@@ -32,4 +26,5 @@ void InputManager::onEvent(const InputEvent &event)
         consumer->onEvent(event);
     }
 }
-}
+
+} // namespace gloperate
