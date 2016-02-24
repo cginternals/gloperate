@@ -106,14 +106,11 @@ void DemoStage::onProcess(AbstractGLContext *)
     m_angle = m_time;
 
     // Clear background
-    /*
-    gl::glClearColor(
-        (float)0.0f,
-        (float)0.0f,
-        (float)0.5f,
-        1.0f);
+    gl::glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    gl::glScissor(m_deviceViewport.x, m_deviceViewport.y, m_deviceViewport.z, m_deviceViewport.w);
+    gl::glEnable(gl::GL_SCISSOR_TEST);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
-    */
+    gl::glDisable(gl::GL_SCISSOR_TEST);
 
     // Get model matrix
     glm::mat4 model = glm::mat4(1.0);
