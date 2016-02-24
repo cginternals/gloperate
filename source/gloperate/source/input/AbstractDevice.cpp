@@ -1,4 +1,3 @@
-
 #include <cassert>
 
 #include <gloperate/input/AbstractDevice.h>

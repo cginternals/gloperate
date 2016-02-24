@@ -75,10 +75,12 @@ RenderWindow::RenderWindow(
 
 void RenderWindow::onUpdate()
 {
+    /*
     if (m_surface->onUpdate())
     {
         m_timer.start(0);
     }
+    */
 }
 
 void RenderWindow::onContextInit()
@@ -93,9 +95,9 @@ void RenderWindow::onContextDeinit()
 
 void RenderWindow::onResize(const QSize & deviceSize, const QSize & virtualSize)
 {
-    m_surface->onResize(
-        glm::ivec2(deviceSize.width(),  deviceSize.height())
-      , glm::ivec2(virtualSize.width(), virtualSize.height())
+    m_surface->onViewport(
+        glm::ivec4(0, 0, deviceSize.width(),  deviceSize.height())
+      , glm::ivec4(0, 0, virtualSize.width(), virtualSize.height())
     );
 }
 
@@ -160,8 +162,8 @@ void RenderWindow::mouseReleaseEvent(QMouseEvent * event)
 void RenderWindow::wheelEvent(QWheelEvent * event)
 {
     m_surface->onMouseWheel(
-        glm::ivec2( event->orientation() == Qt::Vertical ? 0 : event->delta(),
-                    event->orientation() == Qt::Vertical ? event->delta() : 0 ),
+        glm::vec2( event->orientation() == Qt::Vertical ? 0.0f : (float)event->delta(),
+                   event->orientation() == Qt::Vertical ? (float)event->delta() : 0.0f ),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),
                     (int)(event->y() * devicePixelRatio()) )
     );

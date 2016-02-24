@@ -1,19 +1,57 @@
 
 #include <gloperate-qt/viewer/GLContextFactory.h>
 
+#include <QWindow>
 #include <QOpenGLContext>
 
 #include <globjects/base/baselogging.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
-#include <gloperate-qt/viewer/OpenGLWindow.h>
 
 
 namespace gloperate_qt
 {
 
 
-GLContextFactory::GLContextFactory(OpenGLWindow * window)
+QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextFormat & format)
+{
+    QSurfaceFormat qFormat;
+
+    // Set OpenGL version
+    glbinding::Version version = format.version();
+    qFormat.setVersion(version.m_major, version.m_minor);
+
+    // Set OpenGL profile
+    switch (format.profile())
+    {
+        case gloperate::GLContextFormat::Profile::Core:
+            qFormat.setProfile(QSurfaceFormat::CoreProfile);
+            break;
+
+        case gloperate::GLContextFormat::Profile::Compatibility:
+            qFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+            break;
+
+        default:
+            qFormat.setProfile(QSurfaceFormat::NoProfile);
+            break;
+    }
+
+    // Set buffer options
+    qFormat.setRedBufferSize(format.redBufferSize());
+    qFormat.setGreenBufferSize(format.greenBufferSize());
+    qFormat.setBlueBufferSize(format.blueBufferSize());
+    qFormat.setAlphaBufferSize(format.alphaBufferSize());
+    qFormat.setDepthBufferSize(format.depthBufferSize());
+    qFormat.setStencilBufferSize(format.stencilBufferSize());
+    qFormat.setStereo(format.stereo());
+    qFormat.setSamples(format.samples());
+
+    // Return format description
+    return qFormat;
+}
+
+GLContextFactory::GLContextFactory(QWindow * window)
 : m_window(window)
 {
 }
@@ -72,48 +110,6 @@ gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::
     GLContext::doneCurrent(qContext);
 
     return context;
-}
-
-QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextFormat & format) const
-{
-    QSurfaceFormat qFormat;
-
-    // Set OpenGL version
-    glbinding::Version version = format.version();
-    qFormat.setVersion(version.m_major, version.m_minor);
-
-    // Set OpenGL profile
-    switch (format.profile())
-    {
-        case gloperate::GLContextFormat::Profile::Core:
-            qFormat.setProfile(QSurfaceFormat::CoreProfile);
-            break;
-
-        case gloperate::GLContextFormat::Profile::Compatibility:
-            qFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
-            break;
-
-        default:
-            qFormat.setProfile(QSurfaceFormat::NoProfile);
-            break;
-    }
-
-    // Set buffer options
-    qFormat.setRedBufferSize(format.redBufferSize());
-    qFormat.setGreenBufferSize(format.greenBufferSize());
-    qFormat.setBlueBufferSize(format.blueBufferSize());
-
-    // [TODO] [BUG] When alphaBufferSize is set to 8, the context is not created.
-//  qFormat.setAlphaBufferSize(format.alphaBufferSize());
-    qFormat.setAlphaBufferSize(16);
-
-    qFormat.setDepthBufferSize(format.depthBufferSize());
-    qFormat.setStencilBufferSize(format.stencilBufferSize());
-    qFormat.setStereo(format.stereo());
-    qFormat.setSamples(format.samples());
-
-    // Return format description
-    return qFormat;
 }
 
 

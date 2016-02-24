@@ -63,14 +63,15 @@ RenderWindow::RenderWindow(
 , m_viewerContext(viewerContext)
 , m_surface(surface)
 {
-    m_surface->redrawNeeded.connect([this] () {
+    m_surface->redrawNeeded.connect([this] ()
+    {
         repaint();
-    });
+    } );
 }
 
-bool RenderWindow::onUpdate()
+void RenderWindow::onUpdate()
 {
-    return m_surface->onUpdate();
+    m_surface->onUpdate();
 }
 
 void RenderWindow::onContextInit()
@@ -87,14 +88,20 @@ void RenderWindow::onResize(ResizeEvent & event)
 {
     m_virtualSize = event.size();
 
-    m_surface->onResize(m_deviceSize, m_virtualSize);
+    m_surface->onViewport(
+        glm::ivec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
+      , glm::ivec4(0, 0, m_virtualSize.x, m_virtualSize.y)
+    );
 }
 
 void RenderWindow::onFramebufferResize(ResizeEvent & event)
 {
     m_deviceSize = event.size();
 
-    m_surface->onResize(m_deviceSize, m_virtualSize);
+    m_surface->onViewport(
+        glm::ivec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
+      , glm::ivec4(0, 0, m_virtualSize.x, m_virtualSize.y)
+    );
 }
 
 void RenderWindow::onMove(MoveEvent &)

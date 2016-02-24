@@ -226,7 +226,7 @@ public:
     *    Get buffer size for red color channel
     *
     *  @return
-    *    Buffer size (default: 8)
+    *    Buffer size (default: -1)
     */
     int redBufferSize() const;
 
@@ -244,7 +244,7 @@ public:
     *    Get buffer size for green color channel
     *
     *  @return
-    *    Buffer size (default: 8)
+    *    Buffer size (default: -1)
     */
     int greenBufferSize() const;
 
@@ -262,7 +262,7 @@ public:
     *    Get buffer size for blue color channel
     *
     *  @return
-    *    Buffer size (default: 8)
+    *    Buffer size (default: -1)
     */
     int blueBufferSize() const;
 
@@ -280,7 +280,7 @@ public:
     *    Get buffer size for alpha color channel
     *
     *  @return
-    *    Buffer size (default: 8)
+    *    Buffer size (default: -1)
     */
     int alphaBufferSize() const;
 
@@ -352,7 +352,7 @@ public:
     *    Get samples
     *
     *  @return
-    *    Number of samples (default: 0)
+    *    Number of samples (default: -1)
     */
     int samples() const;
 

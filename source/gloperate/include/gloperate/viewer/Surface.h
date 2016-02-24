@@ -110,19 +110,8 @@ public:
     /**
     *  @brief
     *    Update call once per main loop iteration
-    *
-    *  @return
-    *    'true' to request an immediate new update (next mainloop iteration),
-    *    'false' to halt the mainloop if no more messages are in the queue
-    *
-    *  @remarks
-    *    This function is called once per main loop iteration.
-    *    Use the return value to control if more updates are required,
-    *    or if the main loop can go to sleep until more messages arrive.
-    *    In the standard implementation, the main loop will sleep as long
-    *    as there are no timers currently active.
     */
-    virtual bool onUpdate();
+    virtual void onUpdate();
 
     /**
     *  @brief
@@ -151,15 +140,15 @@ public:
 
     /**
     *  @brief
-    *    Resize framebuffer
+    *    Viewport changed
     *
-    *    This function is called when the framebuffer size has been changed,
+    *    This function is called when the viewport has been changed,
     *    e.g., due to a resize of the window.
     *
-    *  @param[in] deviceSize
-    *    Size (actual device pixels)
-    *  @param[in] virtualSize
-    *    Size (virtual pixels)
+    *  @param[in] deviceViewport
+    *    Viewport (actual device pixels)
+    *  @param[in] virtualViewport
+    *    Viewport (virtual pixels)
     *
     *  @remarks
     *    On low-res devices, device size and virtual size will be equal.
@@ -170,9 +159,9 @@ public:
     *    the actual framebuffer size only for blitting onto the output device
     *    to improve rendering performance on high-resolution devices.
     */
-    virtual void onResize(
-        const glm::ivec2 & deviceSize
-      , const glm::ivec2 & virtualSize);
+    virtual void onViewport(
+        const glm::ivec4 & deviceViewport
+      , const glm::ivec4 & virtualViewport);
 
     /**
     *  @brief

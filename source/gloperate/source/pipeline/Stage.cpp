@@ -26,7 +26,7 @@ const GLContextFormat & Stage::requiredFormat() const
 {
     static GLContextFormat format;
 
-    format.setVersion(3, 3);
+    format.setVersion(4, 4);
     return format;
 }
 

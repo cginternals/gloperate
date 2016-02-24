@@ -10,10 +10,11 @@ find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
 
 # Qt5
-find_package(Qt5OpenGL  5.1)
 find_package(Qt5Core    5.1)
 find_package(Qt5Gui     5.1)
 find_package(Qt5Widgets 5.1)
+find_package(Qt5Quick   5.1)
+find_package(Qt5OpenGL  5.1)
 
 # Enable automoc
 set(CMAKE_AUTOMOC ON)
@@ -32,8 +33,8 @@ endif()
 # 
 
 # Target name
-set(target gloperate-qt)
-set(target_upper GLOPERATE_QT)
+set(target gloperate-qtquick)
+set(target_upper GLOPERATE_QTQUICK)
 
 # Exit here if required dependencies are not met
 if (NOT Qt5Core_FOUND)
@@ -57,24 +58,15 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/viewer/Application.h
-    ${include_path}/viewer/UpdateManager.h
-    ${include_path}/viewer/OpenGLWindow.h
-    ${include_path}/viewer/RenderWindow.h
-    ${include_path}/viewer/GLContext.h
-    ${include_path}/viewer/GLContextFactory.h
-    ${include_path}/viewer/input.h
+    ${include_path}/QuickView.h
+    ${include_path}/RenderItem.h
+    ${include_path}/Utils.h
 )
 
 set(sources
-    ${source_path}/viewer/Application.cpp
-    ${source_path}/viewer/UpdateManager.cpp
-    ${source_path}/viewer/OpenGLWindow.cpp
-    ${source_path}/viewer/RenderWindow.cpp
-    ${source_path}/viewer/GLContext.cpp
-    ${source_path}/viewer/GLContext_qt.cpp
-    ${source_path}/viewer/GLContextFactory.cpp
-    ${source_path}/viewer/input.cpp
+    ${source_path}/QuickView.cpp
+    ${source_path}/RenderItem.cpp
+    ${source_path}/Utils.cpp
 )
 
 # Group source files
@@ -142,6 +134,7 @@ target_include_directories(${target}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
+    ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
     ${GLM_INCLUDE_DIR}
 
     PUBLIC
@@ -162,6 +155,7 @@ target_link_libraries(${target}
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
+    Qt5::Quick
     Qt5::OpenGL
     cpplocate::cpplocate
     libzeug::reflectionzeug
@@ -173,6 +167,7 @@ target_link_libraries(${target}
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
+    ${META_PROJECT_NAME}::gloperate-qt
 
     PUBLIC
     ${DEFAULT_LIBRARIES}

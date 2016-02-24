@@ -13,7 +13,7 @@ namespace gloperate_qt
 Application::Application(int & argc, char ** argv)
 : QApplication(argc, argv)
 {
-	qInstallMessageHandler(widgetzeug::globalMessageHandler);
+    qInstallMessageHandler(widgetzeug::globalMessageHandler);
 }
 
 Application::~Application()

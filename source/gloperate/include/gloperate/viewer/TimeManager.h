@@ -66,7 +66,7 @@ public:
     *
     *  @remarks
     *    This signature can be used to provide a specific time delta,
-    *    e.g., when rendering videos with a fixed FPS.
+    *    e.g., when rendering videos at a fixed frame rate.
     */
     bool update(float delta);
 

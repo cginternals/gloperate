@@ -8,8 +8,9 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/stages/DemoStage.h>
 
-#include <gloperate-qt/viewer/RenderWindow.h>
 #include <gloperate-qt/viewer/GLContext.h>
+#include <gloperate-qt/viewer/UpdateManager.h>
+#include <gloperate-qt/viewer/RenderWindow.h>
 
 
 using namespace gloperate;
@@ -23,6 +24,7 @@ int main(int argc, char * argv[])
 
     // Create viewer context
     ViewerContext viewerContext;
+    UpdateManager updateManager(&viewerContext);
 
     // Create render stage
     DemoStage * renderStage = new DemoStage(&viewerContext);

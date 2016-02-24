@@ -106,12 +106,14 @@ void DemoStage::onProcess(AbstractGLContext *)
     m_angle = m_time;
 
     // Clear background
+    /*
     gl::glClearColor(
         (float)0.0f,
         (float)0.0f,
         (float)0.5f,
         1.0f);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+    */
 
     // Get model matrix
     glm::mat4 model = glm::mat4(1.0);

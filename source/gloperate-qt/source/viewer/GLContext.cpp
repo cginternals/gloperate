@@ -3,12 +3,12 @@
 
 #include <cassert>
 
+#include <QWindow>
+
 #include <glbinding/Binding.h>
 
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
-
-#include <gloperate-qt/viewer/OpenGLWindow.h>
 
 
 using namespace gloperate;
@@ -18,9 +18,10 @@ namespace gloperate_qt
 {
 
 
-GLContext::GLContext(OpenGLWindow * window, QOpenGLContext * context)
+GLContext::GLContext(QWindow * window, QOpenGLContext * context, bool takeOwnership)
 : m_window(window)
 , m_context(context)
+, m_ownsContext(takeOwnership)
 {
     assert(window);
     assert(context);

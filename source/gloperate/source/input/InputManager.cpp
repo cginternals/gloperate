@@ -28,3 +28,4 @@ void InputManager::onEvent(const InputEvent &event)
 }
 
 } // namespace gloperate
+

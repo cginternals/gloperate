@@ -1,6 +1,8 @@
 
 #include <gloperate/viewer/Surface.h>
 
+#include <gloperate/viewer/ViewerContext.h>
+
 
 namespace gloperate
 {
@@ -10,10 +12,12 @@ Surface::Surface(ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
 , m_openGLContext(nullptr)
 {
+    m_viewerContext->registerSurface(this);
 }
 
 Surface::~Surface()
 {
+    m_viewerContext->unregisterSurface(this);
 }
 
 ViewerContext * Surface::viewerContext() const
@@ -52,9 +56,8 @@ const GLContextFormat & Surface::requiredFormat() const
     return defaultFormat;
 }
 
-bool Surface::onUpdate()
+void Surface::onUpdate()
 {
-    return false;
 }
 
 void Surface::onContextInit()
@@ -65,7 +68,7 @@ void Surface::onContextDeinit()
 {
 }
 
-void Surface::onResize(const glm::ivec2 &, const glm::ivec2 &)
+void Surface::onViewport(const glm::ivec4 &, const glm::ivec4 &)
 {
 }
 

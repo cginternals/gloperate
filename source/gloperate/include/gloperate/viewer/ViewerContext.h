@@ -2,12 +2,17 @@
 #pragma once
 
 
+#include <vector>
+
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/input/InputManager.h>
 
 
 namespace gloperate
 {
+
+
+class Surface;
 
 
 /**
@@ -25,6 +30,9 @@ namespace gloperate
 */
 class GLOPERATE_API ViewerContext
 {
+    friend class Surface;
+
+
 public:
     //@{
     /**
@@ -64,10 +72,62 @@ public:
     InputManager * inputManager();
     //@}
 
+    /**
+    *  @brief
+    *    Update timing
+    *
+    *  @return
+    *    'true' if there are any timers active, 'false' if not
+    *
+    *  @remarks
+    *    This signature measures the time since the last call
+    *    for the time delta. It should usually be used in
+    *    interactive applications.
+    */
+    bool update();
+
+    /**
+    *  @brief
+    *    Update timing
+    *
+    *  @param[in] delta
+    *    Time delta (in seconds)
+    *
+    *  @return
+    *    'true' if there are any timers active, 'false' if not
+    *
+    *  @remarks
+    *    This signature can be used to provide a specific time delta,
+    *    e.g., when rendering videos at a fixed frame rate.
+    */
+    bool update(float delta);
+
 
 protected:
-    TimeManager m_timeManager; ///< Manager for virtual time and timers
-    InputManager m_inputManager;
+    //@{
+    /**
+    *  @brief
+    *    Register render surface
+    *
+    *  @param[in] surface
+    *    Render surface (must NOT be null!)
+    */
+    void registerSurface(Surface * surface);
+
+    /**
+    *  @brief
+    *    Un-register render surface
+    *
+    *  @param[in] surface
+    *    Render surface (must NOT be null!)
+    */
+    void unregisterSurface(Surface * surface);
+    //@}
+
+protected:
+    TimeManager            m_timeManager; ///< Manager for virtual time and timers
+    std::vector<Surface *> m_surfaces;    ///< List of active surfaces
+    InputManager           m_inputManager;
 };
 
 

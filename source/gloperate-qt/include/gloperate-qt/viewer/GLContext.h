@@ -7,14 +7,12 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
+class QWindow;
 class QOpenGLContext;
 
 
 namespace gloperate_qt
 {
-
-
-class OpenGLWindow;
 
 
 /**
@@ -35,8 +33,10 @@ public:
     *    Qt window that contains the context
     *  @param[in] context
     *    Qt OpenGL context
+    *  @param[in] takeOwnership
+    *    If 'true', the wrapper takes ownership over the Qt context, else 'false'
     */
-    GLContext(OpenGLWindow * window, QOpenGLContext * context);
+    GLContext(QWindow * window, QOpenGLContext * context, bool takeOwnership = true);
 
     /**
     *  @brief
@@ -59,8 +59,9 @@ public:
 
 
 protected:
-    OpenGLWindow   * m_window;  ///< Qt window that contains the context
-    QOpenGLContext * m_context; ///< Qt OpenGL context
+    QWindow        * m_window;      ///< Qt window that contains the context
+    QOpenGLContext * m_context;     ///< Qt OpenGL context
+    bool             m_ownsContext; ///< If 'true', the wrapper owns the Qt context, else 'false'
 
 
 protected:
@@ -68,7 +69,7 @@ protected:
 
 
 private:
-    static void makeCurrent(QOpenGLContext * context, OpenGLWindow * window);
+    static void makeCurrent(QOpenGLContext * context, QWindow * window);
     static void doneCurrent(QOpenGLContext * context);
     static void initGLBinding();
 };
