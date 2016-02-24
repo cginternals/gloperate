@@ -8,6 +8,7 @@ namespace gloperate
 
 ViewerContext::ViewerContext()
 : m_timeManager(this)
+, m_inputManager()
 {
 }
 
@@ -23,6 +24,17 @@ const TimeManager * ViewerContext::timeManager() const
 TimeManager * ViewerContext::timeManager()
 {
     return &m_timeManager;
+}
+
+const InputManager *ViewerContext::inputManager() const
+{
+    return &m_inputManager;
+}
+
+InputManager *ViewerContext::inputManager()
+{
+    return &m_inputManager;
+
 }
 
 

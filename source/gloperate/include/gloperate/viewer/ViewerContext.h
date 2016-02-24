@@ -52,6 +52,18 @@ public:
     TimeManager * timeManager();
     //@}
 
+    //@{
+    /**
+    *  @brief
+    *    Get input manager
+    *
+    *  @return
+    *    Input manager (must NOT be null)
+    */
+    const InputManager * inputManager() const;
+    InputManager * inputManager();
+    //@}
+
 
 protected:
     TimeManager m_timeManager; ///< Manager for virtual time and timers
