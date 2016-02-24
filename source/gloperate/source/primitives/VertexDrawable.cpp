@@ -72,6 +72,17 @@ VertexDrawable::VertexDrawable(globjects::Buffer* vbo, gl::GLint baseOffset, gl:
 {
 }
 
+globjects::VertexArray * VertexDrawable::vao()
+{
+    return m_vao;
+}
+
+const globjects::VertexArray * VertexDrawable::vao() const
+{
+
+    return m_vao;
+}
+
 void VertexDrawable::setBuffer(globjects::Buffer* vbo, gl::GLint size)
 {
     m_size = size;
