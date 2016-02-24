@@ -470,5 +470,10 @@ void Viewer::deinitializePainter()
     m_painter.reset(nullptr);
 }
 
+gloperate::ResourceManager * Viewer::resourceManager()
+{
+    return m_resourceManager.get();
+}
+
 
 } // namespace gloperate_qt
