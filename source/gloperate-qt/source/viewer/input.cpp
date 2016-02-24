@@ -279,5 +279,17 @@ Key fromQtKeyCode(int key, int mods)
     }
 }
 
+gloperate::KeyModifier fromQtModifiers(int mod)
+{
+    gloperate::KeyModifier modifier{gloperate::ModNone};
+
+    modifier |= (Qt::ShiftModifier & mod) ? gloperate::ModShift : gloperate::ModNone;
+    modifier |= (Qt::ControlModifier & mod) ? gloperate::ModControl : gloperate::ModNone;
+    modifier |= (Qt::AltModifier & mod) ? gloperate::ModAlt : ModNone;
+    modifier |= (Qt::MetaModifier & mod) ? gloperate::ModSuper : ModNone;
+
+    return modifier;
+}
+
 
 } // namespace gloperate_qt
