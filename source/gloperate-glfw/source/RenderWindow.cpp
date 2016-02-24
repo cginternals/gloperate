@@ -69,11 +69,6 @@ RenderWindow::RenderWindow(
     } );
 }
 
-void RenderWindow::onUpdate()
-{
-    m_surface->onUpdate();
-}
-
 void RenderWindow::onContextInit()
 {
     m_surface->setOpenGLContext(m_context);

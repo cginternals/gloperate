@@ -48,9 +48,6 @@ void RenderWindow::setRenderStage(gloperate::Stage * stage)
         setContextFormat(m_surface->requiredFormat());
         createContext();
     }
-
-    // Start update timer
-    m_timer.start(0);
 }
 
 RenderWindow::RenderWindow(
@@ -64,20 +61,6 @@ RenderWindow::RenderWindow(
     {
         this->updateGL();
     } );
-
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(onUpdate()));
-    m_timer.setSingleShot(true);
-    m_timer.start(0);
-}
-
-void RenderWindow::onUpdate()
-{
-    /*
-    if (m_surface->onUpdate())
-    {
-        m_timer.start(0);
-    }
-    */
 }
 
 void RenderWindow::onContextInit()
