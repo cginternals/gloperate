@@ -1,11 +1,12 @@
 
 import QtQuick 2.0
-import GLOperate 1.0
+import GLOperate.Rendering 1.0
+import GLOperate.Ui 1.0
 
 
 Item
 {
-    Text
+    Label
     {
         id: title
 

@@ -1,0 +1,7 @@
+
+module GLOperate.Ui
+
+
+singleton Style 1.0 Style.qml
+
+Label 1.0 Label.qml
