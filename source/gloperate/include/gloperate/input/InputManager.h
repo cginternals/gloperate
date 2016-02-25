@@ -43,7 +43,7 @@ public:
     *  @param[in] consumer
     *    The consumer to register to the InputManager (must NOT be null)
     */
-    void registerConsumer(AbstractEventConsumer * const consumer);
+    void registerConsumer(AbstractEventConsumer * consumer);
 
     /**
     *  @brief
@@ -51,7 +51,7 @@ public:
     *  @param[in] consumer
     *    The consumer to deregister from the InputManager (must NOT be null)
     */
-    void deregisterConsumer(AbstractEventConsumer * const consumer);
+    void deregisterConsumer(AbstractEventConsumer * consumer);
 
     /**
      * @brief onEvent

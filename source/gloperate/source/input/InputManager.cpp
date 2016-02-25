@@ -7,13 +7,13 @@
 
 namespace gloperate {
 
-void InputManager::registerConsumer(AbstractEventConsumer * const consumer)
+void InputManager::registerConsumer(AbstractEventConsumer * consumer)
 {
     assert(consumer != nullptr);
     m_consumers.push_back(consumer);
 }
 
-void InputManager::deregisterConsumer(AbstractEventConsumer * const consumer)
+void InputManager::deregisterConsumer(AbstractEventConsumer * consumer)
 {
     assert(consumer != nullptr);
     m_consumers.remove(consumer);
