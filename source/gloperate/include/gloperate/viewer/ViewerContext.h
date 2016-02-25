@@ -125,9 +125,9 @@ protected:
     //@}
 
 protected:
-    TimeManager            m_timeManager; ///< Manager for virtual time and timers
-    std::vector<Surface *> m_surfaces;    ///< List of active surfaces
-    InputManager           m_inputManager;
+    TimeManager            m_timeManager;  ///< Manager for virtual time and timers
+    std::vector<Surface *> m_surfaces;     ///< List of active surfaces
+    InputManager           m_inputManager; ///< Manager for Devices, -Providers and InputEvents
 };
 
 
