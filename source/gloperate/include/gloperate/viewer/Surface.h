@@ -181,7 +181,7 @@ public:
     *  @param[in] key
     *    Virtual Key Code (see gloperate::Key)
     */
-    virtual void onKeyPress(int key);
+    virtual void onKeyPress(int key, int modifier);
 
     /**
     *  @brief
@@ -192,7 +192,7 @@ public:
     *  @param[in] key
     *    Virtual Key Code (see gloperate::Key)
     */
-    virtual void onKeyRelease(int key);
+    virtual void onKeyRelease(int key, int modifier);
 
     /**
     *  @brief

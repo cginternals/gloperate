@@ -128,13 +128,27 @@ void RenderSurface::onRender()
     }
 }
 
-void RenderSurface::onKeyPress(int key)
+void RenderSurface::onKeyPress(int key, int modifier)
 {
+    auto inputEvent = new gloperate::ButtonEvent{
+        gloperate::InputEvent::Type::ButtonPress,
+        std::to_string(key) + ":" + std::to_string(modifier)
+    };
+
+    m_viewerContext->inputManager()->onEvent(inputEvent);
+
     globjects::info() << "onKeyPressed(" << key << ")";
 }
 
-void RenderSurface::onKeyRelease(int key)
+void RenderSurface::onKeyRelease(int key, int modifier)
 {
+    auto inputEvent = new gloperate::ButtonEvent{
+        gloperate::InputEvent::Type::ButtonRelease,
+        std::to_string(key) + ":" + std::to_string(modifier)
+    };
+
+    m_viewerContext->inputManager()->onEvent(inputEvent);
+
     globjects::info() << "onKeyReleased(" << key << ")";
 }
 

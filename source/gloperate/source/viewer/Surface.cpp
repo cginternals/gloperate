@@ -76,11 +76,11 @@ void Surface::onRender()
 {
 }
 
-void Surface::onKeyPress(int)
+void Surface::onKeyPress(int, int)
 {
 }
 
-void Surface::onKeyRelease(int)
+void Surface::onKeyRelease(int, int)
 {
 }
 

@@ -65,8 +65,8 @@ public:
     virtual void onContextDeinit() override;
     virtual void onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport) override;
     virtual void onRender() override;
-    virtual void onKeyPress(int key) override;
-    virtual void onKeyRelease(int key) override;
+    virtual void onKeyPress(int key, int modifier) override;
+    virtual void onKeyRelease(int key, int modifier) override;
     virtual void onMouseMove(const glm::ivec2 & pos) override;
     virtual void onMousePress(int button, const glm::ivec2 & pos) override;
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
