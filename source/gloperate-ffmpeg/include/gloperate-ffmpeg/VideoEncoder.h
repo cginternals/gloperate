@@ -18,7 +18,7 @@ namespace gloperate_ffmpeg
 
 /**
 *  @brief
-*    
+*    Class for encoding single frames into a video using FFMPEG
 */
 class GLOPERATE_FFMPEG_API VideoEncoder
 {
@@ -37,21 +37,33 @@ public:
 
     /**
     *  @brief
-    *    Create video encoder
+    *    Initialize, and open file for video encoding
+    *
+    *  @param[in] filename
+    *    Filename for video file output
     */
-    void createVideoEncoder(const std::string & filename);
+    void initEncoding(const std::string & filename);
 
     /**
     *  @brief
     *    Put frame into video
+    *
+    *  @param[in] data
+    *    Byte data of single frame, format RGB24
+    *
+    *  @param[in] width
+    *    Frame pixel width
+    *
+    *  @param[in] height
+    *    Frame pixel height
     */
     void putFrame(char * data, int width, int height);
 
     /**
     *  @brief
-    *    Close video encoder
+    *    Finalize encoding and close video file
     */
-    void closeVideoEncoder();
+    void finishEncoding();
 
 
 protected:

@@ -13,12 +13,10 @@ using namespace gloperate_ffmpeg;
 int main(int /*argc*/, char ** /*argv[]*/)
 {
     VideoEncoder * encoder = new VideoEncoder();
-    encoder->createVideoEncoder("gloperate-ffmpeg-example_out.avi");
+    encoder->initEncoding("gloperate-ffmpeg-example_out.avi");
 
     for (int i = 0; i < 100; ++i)
     {
-        debug() << i;
-
         // Create procedural texture
         static const int w(256);
         static const int h(256);
@@ -35,7 +33,7 @@ int main(int /*argc*/, char ** /*argv[]*/)
         encoder->putFrame(data, 256, 256);
     }
 
-    encoder->closeVideoEncoder();
+    encoder->finishEncoding();
     delete encoder;
 
     return 0;

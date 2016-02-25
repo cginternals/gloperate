@@ -54,7 +54,7 @@ VideoEncoder::~VideoEncoder()
 {
 }
 
-void VideoEncoder::createVideoEncoder(const std::string & filename)
+void VideoEncoder::initEncoding(const std::string & filename)
 {
     // Choose video format from file name
     AVOutputFormat * format = av_guess_format(NULL, filename.c_str(), NULL);
@@ -222,7 +222,7 @@ void VideoEncoder::putFrame(char * data, int width, int height)
     av_free_packet(&packet);
 }
 
-void VideoEncoder::closeVideoEncoder()
+void VideoEncoder::finishEncoding()
 {
     // Write end of video file
     av_write_trailer(m_context);
