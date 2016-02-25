@@ -22,7 +22,7 @@ public:
 
     virtual ~AbstractEventConsumer();
 
-    virtual void onEvent(const InputEvent& event) = 0;
+    virtual void onEvent(const InputEvent * event) = 0;
 
 private:
     InputManager * m_inputManager;

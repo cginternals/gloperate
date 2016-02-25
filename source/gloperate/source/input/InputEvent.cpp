@@ -5,60 +5,52 @@
 
 namespace gloperate{
 
-InputEvent::InputEvent(MouseButton _mouseButton, int _xPos, int _yPos, EventType _action) :
-  m_type(InputEventType::MouseEvent)
-, mouseContent{_mouseButton, _xPos, _yPos}
-, m_action(_action)
+InputEvent::InputEvent(Type type)
+:  m_type(type)
 {
 
 }
 
-
-InputEvent::InputEvent(KeyModifier _keyModifier, Key _key, EventType _action) :
-  m_type(InputEventType::KeyboardEvent)
-, keyboardContent{_keyModifier, _key}
-, m_action(_action)
+InputEvent::~InputEvent()
 {
 
 }
 
-InputEventType InputEvent::type() const
+InputEvent::Type InputEvent::type() const
 {
     return m_type;
 }
 
-EventType InputEvent::action() const
+
+MouseMoveEvent::MouseMoveEvent(Type type, glm::ivec2 pos)
+: InputEvent(type)
+, m_pos(pos)
 {
-    return m_action;
+
 }
 
-MouseButton InputEvent::mouseButton() const
+MouseMoveEvent::MouseMoveEvent(Type type, int x, int y)
+: MouseMoveEvent(type, glm::ivec2(x,y))
 {
-    assert(m_type == InputEventType::MouseEvent);
-    return mouseContent.mouseButton;
+
 }
 
-int InputEvent::xPos() const
+int MouseMoveEvent::x() const
 {
-    assert(m_type == InputEventType::MouseEvent);
-    return mouseContent.xPos;
+    return m_pos.x;
 }
 
-int InputEvent::yPos() const
+int MouseMoveEvent::y() const
 {
-    assert(m_type == InputEventType::MouseEvent);
-    return mouseContent.yPos;
+    return m_pos.y;
 }
 
-KeyModifier InputEvent::keyModifier() const
-{
-    assert(m_type == InputEventType::KeyboardEvent);
-    return keyboardContent.keyModifier;
-}
 
-Key InputEvent::key() const
+ButtonEvent::ButtonEvent(Type type,const std::string & description)
+: InputEvent(type)
+, m_description(description)
 {
-    return keyboardContent.key;
+
 }
 
 } //namespace gloperate

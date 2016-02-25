@@ -139,7 +139,8 @@ void RenderItem::keyPressEvent(QKeyEvent * event)
     if (m_surface)
     {
         m_surface->onKeyPress(
-            fromQtKeyCode(event->key(), event->modifiers())
+            fromQtKeyCode(event->key(), event->modifiers()),
+            fromQtModifiers(event->modifiers())
         );
     }
 }
@@ -149,7 +150,8 @@ void RenderItem::keyReleaseEvent(QKeyEvent * event)
     if (m_surface)
     {
         m_surface->onKeyRelease(
-            fromQtKeyCode(event->key(), event->modifiers())
+            fromQtKeyCode(event->key(), event->modifiers()),
+            fromQtModifiers(event->modifiers())
         );
     }
 }

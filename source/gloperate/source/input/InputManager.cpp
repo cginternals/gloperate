@@ -19,8 +19,9 @@ void InputManager::deregisterConsumer(AbstractEventConsumer * consumer)
     m_consumers.remove(consumer);
 }
 
-void InputManager::onEvent(const InputEvent &event)
+void InputManager::onEvent(InputEvent * event)
 {
+    m_events.emplace_back(std::unique_ptr<InputEvent>(event));
     for(auto consumer : m_consumers)
     {
         consumer->onEvent(event);

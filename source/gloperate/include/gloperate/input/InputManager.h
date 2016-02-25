@@ -59,12 +59,13 @@ public:
      * @param event
      *   The Event to forward
      */
-    void onEvent(const InputEvent& event);
+    void onEvent(InputEvent * event);
 
 protected:
     std::list<AbstractEventConsumer *> m_consumers;
     std::list<std::unique_ptr<AbstractDeviceProvider>> m_deviceProviders;
     std::list<std::unique_ptr<AbstractDevice>> m_devices;
+    std::list<std::unique_ptr<InputEvent>> m_events;
 };
 
 
