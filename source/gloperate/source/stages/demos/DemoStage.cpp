@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/DemoStage.h>
+#include <gloperate/stages/demos/DemoStage.h>
 
 #include <random>
 

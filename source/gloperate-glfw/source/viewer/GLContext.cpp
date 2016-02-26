@@ -11,8 +11,8 @@
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
 
-#include <gloperate/base/GLContextUtils.h>
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 
 using namespace gloperate;

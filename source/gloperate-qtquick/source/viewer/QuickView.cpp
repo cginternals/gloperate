@@ -8,8 +8,8 @@
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/base/GLContextUtils.h>
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/GLContextFactory.h>

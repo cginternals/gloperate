@@ -6,8 +6,8 @@
 
 #include <globjects/globjects.h>
 
-#include <gloperate/stages/DemoStage.h>
 #include <gloperate/viewer/RenderSurface.h>
+#include <gloperate/stages/demos/DemoStage.h>
 
     
 namespace gloperate_qtquick

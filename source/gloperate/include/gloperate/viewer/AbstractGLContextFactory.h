@@ -2,9 +2,7 @@
 #pragma once
 
 
-#include <gloperate/base/AbstractGLContext.h>
-
-#include <gloperate/gloperate_api.h>
+#include <gloperate/viewer/AbstractGLContext.h>
 
 
 namespace gloperate

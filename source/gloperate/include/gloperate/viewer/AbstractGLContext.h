@@ -4,8 +4,8 @@
 
 #include <glbinding/ContextHandle.h>
 
-#include <gloperate/base/GLContextFormat.h>
-#include <gloperate/base/AbstractContext.h>
+#include <gloperate/viewer/AbstractContext.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 
 namespace gloperate

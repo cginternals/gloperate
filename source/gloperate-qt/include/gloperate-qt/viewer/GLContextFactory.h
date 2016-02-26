@@ -4,7 +4,7 @@
 
 #include <QSurfaceFormat>
 
-#include <gloperate/base/AbstractGLContextFactory.h>
+#include <gloperate/viewer/AbstractGLContextFactory.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 

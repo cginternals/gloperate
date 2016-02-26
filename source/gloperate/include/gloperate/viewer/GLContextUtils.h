@@ -7,7 +7,7 @@
 #include <glbinding/ContextHandle.h>
 #include <glbinding/Version.h>
 
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 
 namespace gloperate

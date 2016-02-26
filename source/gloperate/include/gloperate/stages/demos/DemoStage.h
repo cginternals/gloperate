@@ -11,7 +11,7 @@
 
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/viewer/Timer.h>
-#include <gloperate/base/Camera.h>
+#include <gloperate/rendering/Camera.h>
 
 
 namespace gloperate

@@ -1,6 +1,8 @@
 
 #include <gloperate/pipeline/Stage.h>
 
+#include <gloperate/viewer/GLContextFormat.h>
+
 
 namespace gloperate
 {

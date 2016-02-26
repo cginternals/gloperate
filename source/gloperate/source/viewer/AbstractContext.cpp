@@ -1,5 +1,5 @@
 
-#include <gloperate/base/AbstractContext.h>
+#include <gloperate/viewer/AbstractContext.h>
 
 
 namespace gloperate
