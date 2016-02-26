@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <QTimer>
-
 #include <gloperate-qt/viewer/OpenGLWindow.h>
 
 
@@ -24,9 +22,6 @@ namespace gloperate_qt
 */
 class GLOPERATE_QT_API RenderWindow : public OpenGLWindow
 {
-    Q_OBJECT
-
-
 public:
     /**
     *  @brief
@@ -84,12 +79,6 @@ protected:
     RenderWindow(gloperate::ViewerContext * viewerContext,
                  gloperate::RenderSurface * surface);
 
-
-protected slots:
-    void onUpdate();
-
-
-protected:
     // Virtual OpenGLWindow functions
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
@@ -108,7 +97,6 @@ protected:
 protected:
     gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
     gloperate::RenderSurface * m_surface;       ///< Surface that renders on the window (must NOT be null)
-    QTimer                     m_timer;         ///< Timer for continuous update
 };
 
 

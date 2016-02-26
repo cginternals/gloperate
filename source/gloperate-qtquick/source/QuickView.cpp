@@ -3,9 +3,11 @@
 
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
+#include <QQmlEngine>
 
 #include <globjects/base/baselogging.h>
 
+#include <gloperate/gloperate.h>
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
 
@@ -25,7 +27,7 @@ QuickView::QuickView(gloperate::ViewerContext * viewerContext)
 , m_context(nullptr)
 {
     // Register QML types
-    qmlRegisterType<RenderItem>("GLOperate", 1, 0, "RenderItem");
+    qmlRegisterType<RenderItem>("GLOperate.Rendering", 1, 0, "RenderItem");
 
     // Connect to context creation and scene graph initialization
     connect(
@@ -47,6 +49,10 @@ QuickView::QuickView(gloperate::ViewerContext * viewerContext)
         format
     );
     setFormat(qFormat);
+
+    // Add gloperate qml-libraries
+    std::string importPath = gloperate::dataPath() + "/gloperate/qml/GLOperate/Ui";
+    engine()->addImportPath(QString::fromStdString(importPath));
 }
 
 QuickView::~QuickView()

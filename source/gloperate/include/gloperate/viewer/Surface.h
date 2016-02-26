@@ -110,19 +110,8 @@ public:
     /**
     *  @brief
     *    Update call once per main loop iteration
-    *
-    *  @return
-    *    'true' to request an immediate new update (next mainloop iteration),
-    *    'false' to halt the mainloop if no more messages are in the queue
-    *
-    *  @remarks
-    *    This function is called once per main loop iteration.
-    *    Use the return value to control if more updates are required,
-    *    or if the main loop can go to sleep until more messages arrive.
-    *    In the standard implementation, the main loop will sleep as long
-    *    as there are no timers currently active.
     */
-    virtual bool onUpdate();
+    virtual void onUpdate();
 
     /**
     *  @brief

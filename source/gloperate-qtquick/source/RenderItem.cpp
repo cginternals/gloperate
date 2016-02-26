@@ -34,23 +34,15 @@ RenderItem::RenderItem()
         this, &RenderItem::onWindowChanged,
         Qt::DirectConnection
     );
-
-    // Connect update timer
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(onUpdate()));
-    m_timer.setSingleShot(true);
-    m_timer.start(0);
 }
 
 RenderItem::~RenderItem()
 {
 }
 
-void RenderItem::onUpdate()
+gloperate::Surface * RenderItem::surface() const
 {
-    if (m_surface && m_surface->onUpdate())
-    {
-        m_timer.start(0);
-    }
+    return m_surface;
 }
 
 void RenderItem::onWindowChanged(QQuickWindow * window)
@@ -86,9 +78,6 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
         this, &RenderItem::onBeforeRendering,
         Qt::DirectConnection
     );
-
-    // Start update timer
-    m_timer.start(0);
 }
 
 void RenderItem::onBeforeRendering()

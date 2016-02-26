@@ -58,6 +58,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/viewer/Application.h
+    ${include_path}/viewer/UpdateManager.h
     ${include_path}/viewer/OpenGLWindow.h
     ${include_path}/viewer/RenderWindow.h
     ${include_path}/viewer/GLContext.h
@@ -67,6 +68,7 @@ set(headers
 
 set(sources
     ${source_path}/viewer/Application.cpp
+    ${source_path}/viewer/UpdateManager.cpp
     ${source_path}/viewer/OpenGLWindow.cpp
     ${source_path}/viewer/RenderWindow.cpp
     ${source_path}/viewer/GLContext.cpp

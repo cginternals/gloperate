@@ -60,7 +60,7 @@ public:
 
     // Virtual Surface functions
     virtual const GLContextFormat & requiredFormat() const override;
-    virtual bool onUpdate() override;
+    virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
     virtual void onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport) override;

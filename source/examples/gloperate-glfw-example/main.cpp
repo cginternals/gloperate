@@ -16,12 +16,12 @@ using namespace gloperate_glfw;
 
 int main(int argc, char * argv[])
 {
-    // Initialize GLFW
-    Application::init();
-    Application app(argc, argv);
-
     // Create viewer context
     ViewerContext viewerContext;
+
+    // Initialize GLFW
+    Application::init();
+    Application app(&viewerContext, argc, argv);
 
     // Create render stage
     DemoStage * renderStage = new DemoStage(&viewerContext);

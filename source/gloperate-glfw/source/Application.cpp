@@ -6,6 +6,8 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+#include <gloperate/viewer/ViewerContext.h>
+
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventDispatcher.h>
 
@@ -36,8 +38,9 @@ void Application::wakeup()
     glfwPostEmptyEvent();
 }
 
-Application::Application(int &, char **)
-: m_running(false)
+Application::Application(gloperate::ViewerContext * viewerContext, int &, char **)
+: m_viewerContext(viewerContext)
+, m_running(false)
 , m_exitCode(0)
 {
     // Make sure that no application object has already been instanciated
@@ -98,8 +101,6 @@ int Application::exitCode()
 
 void Application::processEvents()
 {
-    bool needUpdate = false;
-
     // Get messages for all windows
     for (Window * window : Window::instances())
     {
@@ -108,13 +109,12 @@ void Application::processEvents()
         if (window->hasPendingEvents()) {
             window->processEvents();
         }
-
-        needUpdate |= window->onUpdate();
     }
 
-    // If someone wants another main loop iteration, wake it up
-    if (needUpdate)
+    // Update timing
+    if (m_viewerContext->update())
     {
+        // If someone wants another main loop iteration, wake it up
         wakeup();
     }
 }
