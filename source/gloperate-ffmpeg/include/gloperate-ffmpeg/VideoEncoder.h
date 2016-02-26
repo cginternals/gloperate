@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <globjects/base/Referenced.h>
+
 #include <gloperate/base/Image.h>
 
 #include <gloperate-ffmpeg/gloperate-ffmpeg_api.h>
@@ -22,7 +24,7 @@ namespace gloperate_ffmpeg
 *  @brief
 *    Class for encoding single frames into a video using FFMPEG
 */
-class GLOPERATE_FFMPEG_API VideoEncoder
+class GLOPERATE_FFMPEG_API VideoEncoder : public globjects::Referenced
 {
 public:
     /**
