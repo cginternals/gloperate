@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/Window.h>
+#include <gloperate-glfw/viewer/Window.h>
 
 #include <cassert>
 
@@ -10,11 +10,11 @@
 
 #include <gloperate/base/GLContextFormat.h>
 
-#include <gloperate-glfw/Application.h>
-#include <gloperate-glfw/GLContext.h>
-#include <gloperate-glfw/GLContextFactory.h>
-#include <gloperate-glfw/WindowEventDispatcher.h>
-#include <gloperate-glfw/WindowEvent.h>
+#include <gloperate-glfw/viewer/Application.h>
+#include <gloperate-glfw/viewer/GLContext.h>
+#include <gloperate-glfw/viewer/GLContextFactory.h>
+#include <gloperate-glfw/viewer/WindowEventDispatcher.h>
+#include <gloperate-glfw/viewer/WindowEvent.h>
 
 
 using namespace gloperate;

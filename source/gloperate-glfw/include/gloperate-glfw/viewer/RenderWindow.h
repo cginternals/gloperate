@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate-glfw/Window.h>
+#include <gloperate-glfw/viewer/Window.h>
 
 
 namespace gloperate {

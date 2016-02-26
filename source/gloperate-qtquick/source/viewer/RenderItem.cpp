@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/RenderItem.h>
+#include <gloperate-qtquick/viewer/RenderItem.h>
 
 #include <globjects/base/baselogging.h>
 
@@ -8,8 +8,8 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/input.h>
 
-#include <gloperate-qtquick/QuickView.h>
-#include <gloperate-qtquick/Utils.h>
+#include <gloperate-qtquick/viewer/QuickView.h>
+#include <gloperate-qtquick/viewer/Utils.h>
 
 
 using namespace gloperate_qt;

@@ -11,7 +11,7 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 
-#include <gloperate-qtquick/QuickView.h>
+#include <gloperate-qtquick/viewer/QuickView.h>
 
 
 using namespace gloperate;

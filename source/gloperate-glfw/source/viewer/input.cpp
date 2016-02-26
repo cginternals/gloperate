@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/input.h>
+#include <gloperate-glfw/viewer/input.h>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>

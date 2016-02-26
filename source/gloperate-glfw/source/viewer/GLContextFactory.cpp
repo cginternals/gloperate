@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/GLContextFactory.h>
+#include <gloperate-glfw/viewer/GLContextFactory.h>
 
 #ifdef WIN32
     #include <windows.h>
@@ -14,7 +14,7 @@
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
 
-#include <gloperate-glfw/GLContext.h>
+#include <gloperate-glfw/viewer/GLContext.h>
 
 
 using namespace gloperate;

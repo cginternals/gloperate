@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/WindowEventDispatcher.h>
+#include <gloperate-glfw/viewer/WindowEventDispatcher.h>
 
 #include <cassert>
 #include <cmath>
@@ -8,8 +8,8 @@
 
 #include <GLFW/glfw3.h>
 
-#include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/WindowEvent.h>
+#include <gloperate-glfw/viewer/Window.h>
+#include <gloperate-glfw/viewer/WindowEvent.h>
 
 
 namespace gloperate_glfw

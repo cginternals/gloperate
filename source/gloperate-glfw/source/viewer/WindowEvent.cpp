@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/WindowEvent.h>
+#include <gloperate-glfw/viewer/WindowEvent.h>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>

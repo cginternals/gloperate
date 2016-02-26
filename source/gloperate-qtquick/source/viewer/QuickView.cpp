@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/QuickView.h>
+#include <gloperate-qtquick/viewer/QuickView.h>
 
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
@@ -14,8 +14,8 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/GLContextFactory.h>
 
-#include <gloperate-qtquick/RenderItem.h>
-#include <gloperate-qtquick/Utils.h>
+#include <gloperate-qtquick/viewer/RenderItem.h>
+#include <gloperate-qtquick/viewer/Utils.h>
 
     
 namespace gloperate_qtquick

@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/RenderWindow.h>
+#include <gloperate-glfw/viewer/RenderWindow.h>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -7,9 +7,9 @@
 #include <gloperate/viewer/input.h>
 #include <gloperate/viewer/RenderSurface.h>
 
-#include <gloperate-glfw/WindowEvent.h>
-#include <gloperate-glfw/GLContext.h>
-#include <gloperate-glfw/input.h>
+#include <gloperate-glfw/viewer/WindowEvent.h>
+#include <gloperate-glfw/viewer/GLContext.h>
+#include <gloperate-glfw/viewer/input.h>
 
 
 using namespace gloperate;

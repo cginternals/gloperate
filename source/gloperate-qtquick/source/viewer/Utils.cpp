@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/Utils.h>
+#include <gloperate-qtquick/viewer/Utils.h>
 
 #include <glbinding/Binding.h>
 #include <glbinding/gl/gl.h>
