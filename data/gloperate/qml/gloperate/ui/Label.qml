@@ -1,6 +1,6 @@
 
 import QtQuick 2.0
-import GLOperate.Ui 1.0
+import gloperate.ui 1.0
 
 
 /**

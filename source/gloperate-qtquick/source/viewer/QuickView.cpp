@@ -27,7 +27,7 @@ QuickView::QuickView(gloperate::ViewerContext * viewerContext)
 , m_context(nullptr)
 {
     // Register QML types
-    qmlRegisterType<RenderItem>("GLOperate.Rendering", 1, 0, "RenderItem");
+    qmlRegisterType<RenderItem>("gloperate.rendering", 1, 0, "RenderItem");
 
     // Connect to context creation and scene graph initialization
     connect(

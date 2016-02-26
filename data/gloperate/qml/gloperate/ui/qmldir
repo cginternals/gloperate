@@ -1,5 +1,5 @@
 
-module GLOperate.Ui
+module gloperate.ui
 
 
 singleton Style 1.0 Style.qml
