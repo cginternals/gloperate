@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <gloperate/base/Image.h>
+
 #include <gloperate-ffmpeg/gloperate-ffmpeg_api.h>
 
 
@@ -43,6 +45,15 @@ public:
     *    Filename for video file output
     */
     void initEncoding(const std::string & filename);
+
+    /**
+    *  @brief
+    *    Put frame into video
+    *
+    *  @param[in] image
+    *    Frame as gloperate::Image
+    */
+    void putFrame(gloperate::Image image);
 
     /**
     *  @brief
