@@ -23,7 +23,7 @@ int main(int /*argc*/, char ** /*argv[]*/)
         static const int w(256);
         static const int h(256);
 
-        gloperate::Image image(gloperate::Image::Format::RGB24, w, h);
+        gloperate::Image image(w, h, gloperate::Image::Format::RGB24);
 
         std::random_device rd;
         std::mt19937 generator(rd());
