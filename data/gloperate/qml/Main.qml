@@ -4,7 +4,7 @@ import gloperate.rendering 1.0
 import gloperate.ui 1.0
 
 
-Item
+Background
 {
     Label
     {

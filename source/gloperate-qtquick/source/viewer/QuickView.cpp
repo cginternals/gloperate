@@ -4,6 +4,8 @@
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
 #include <QQmlEngine>
+#include <QVariant>
+#include <QColor>
 
 #include <globjects/base/baselogging.h>
 
@@ -26,6 +28,9 @@ QuickView::QuickView(gloperate::ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
 , m_context(nullptr)
 {
+    // Do not clear surface when rendering Qml, because we render our content first
+    setClearBeforeRendering(false);
+
     // Register QML types
     qmlRegisterType<RenderItem>("gloperate.rendering", 1, 0, "RenderItem");
 
@@ -90,7 +95,12 @@ void QuickView::onSceneGraphInitialized()
 
 void QuickView::onBeforeRendering()
 {
-    Utils::clearScreen();
+    // Get background color
+    QVariant var = rootObject()->property("backgroundColor");
+    QColor color = var.value<QColor>();
+
+    // Clear screen
+    Utils::clearScreen(color.redF(), color.greenF(), color.blueF());
 }
 
 

@@ -69,9 +69,6 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
         this->window()->update();
     } );
 
-    // Do not clear surface when rendering Qml, because we render our content first
-    window->setClearBeforeRendering(false);
-
     // Connect to window draw event
     connect(
         window, &QQuickWindow::beforeRendering,
