@@ -6,7 +6,7 @@
 
 #include <signalzeug/Signal.h>
 
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 
 namespace gloperate

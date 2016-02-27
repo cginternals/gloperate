@@ -4,7 +4,7 @@
 
 #include <QWindow>
 
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 

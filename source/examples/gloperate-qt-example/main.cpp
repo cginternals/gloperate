@@ -4,9 +4,9 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/stages/DemoStage.h>
+#include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/stages/demos/DemoStage.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>

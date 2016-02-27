@@ -5,7 +5,7 @@
 #include <QResizeEvent>
 #include <QOpenGLContext>
 
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/GLContextFactory.h>

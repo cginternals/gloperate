@@ -7,8 +7,8 @@
 
 #include <glbinding/Binding.h>
 
-#include <gloperate/base/GLContextUtils.h>
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 
 using namespace gloperate;

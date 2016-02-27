@@ -5,13 +5,13 @@
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/viewer/GLContextUtils.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 
-#include <gloperate-qtquick/QuickView.h>
+#include <gloperate-qtquick/viewer/QuickView.h>
 
 
 using namespace gloperate;

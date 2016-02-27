@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/base/AbstractGLContext.h>
+#include <gloperate/viewer/AbstractGLContext.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 

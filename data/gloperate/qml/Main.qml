@@ -1,10 +1,10 @@
 
 import QtQuick 2.0
-import GLOperate.Rendering 1.0
-import GLOperate.Ui 1.0
+import gloperate.rendering 1.0
+import gloperate.ui 1.0
 
 
-Item
+Background
 {
     Label
     {

@@ -6,7 +6,7 @@
 
 #include <signalzeug/Signal.h>
 
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
@@ -15,6 +15,7 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
+class GLContextFormat;
 
 
 /**
