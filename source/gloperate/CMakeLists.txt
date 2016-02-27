@@ -64,6 +64,8 @@ set(headers
     ${include_path}/input/AbstractDeviceProvider.h
     ${include_path}/input/AbstractDevice.h
     ${include_path}/input/InputEvent.h
+    ${include_path}/input/MouseDevice.h
+    ${include_path}/input/KeyboardDevice.h
 )
 
 set(sources
@@ -93,6 +95,8 @@ set(sources
     ${source_path}/input/AbstractDeviceProvider.cpp
     ${source_path}/input/AbstractDevice.cpp
     ${source_path}/input/InputEvent.cpp
+    ${source_path}/input/MouseDevice.cpp
+    ${source_path}/input/KeyboardDevice.cpp
 )
 
 # Group source files
