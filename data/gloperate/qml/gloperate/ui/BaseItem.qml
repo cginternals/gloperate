@@ -8,11 +8,21 @@ import gloperate.ui 1.0
 *
 *  Base class for items (adds debug capabilities)
 */
-Rectangle
+Item
 {
-    property bool debug: Ui.debug
+    id: item
 
-    color:       'transparent'
-    border.color: debug ? 'red' : 'transparent'
-    border.width: debug ? 1 : 0
+    // Debug mode enabled? (displays borders around items)
+    property bool debugMode: Ui.debugMode
+
+    Rectangle
+    {
+        id: debugBorder
+
+        anchors.fill: parent
+        z:            10
+        color:        'transparent'
+        border.color: debugMode ? Ui.style.debugColor : 'transparent'
+        border.width: debugMode ? 1 : 0
+    }
 }

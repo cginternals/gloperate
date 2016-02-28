@@ -4,62 +4,69 @@ import gloperate.rendering 1.0
 import gloperate.ui 1.0
 
 
-Background
+Page
 {
-    Label
-    {
-        id: title
-
-        anchors.top:              parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        text:                     'Hello World'
-    }
+    id: page
 
     RenderItem
     {
-        id: item1
+        id: render
 
-        x:      0
-        y:      0
-        width:  700
-        height: parent.height / 2.0
+        anchors.fill: parent
+    }
 
-        MouseArea
+    Dropdown
+    {
+        id: button1
+
+        anchors.left:    render.left
+        anchors.top:     parent.top
+        anchors.margins: Ui.style.pagePadding
+
+        text: 'DemoStage'
+        icon: '0190-menu.png'
+
+        items: [
+            { name: 'painter',    text: 'Choose Painter', icon: '0092-tv.png' },
+            { name: 'screenshot', text: 'Screenshot',     icon: '0040-file-picture.png' },
+            { name: 'video',      text: 'Video',          icon: '0021-video-camera.png' }
+        ];
+
+        onItemClicked:
         {
-            anchors.fill: parent
-            drag.target:  parent
-        }
-
-        Rectangle
-        {
-            anchors.fill: parent
-            color:        'transparent'
-            border.width: 1
-            border.color: 'black'
+            if (name === 'painter')
+            {
+            }
         }
     }
 
-    RenderItem
+    Button
     {
-        id: item2
+        id: button2
 
-        x:      100
-        y:      100
-        width:  700
-        height: parent.height / 2.0
+        anchors.right:   parent.right
+        anchors.top:     parent.top
+        anchors.margins: Ui.style.pagePadding
 
-        MouseArea
+        text: 'Debug'
+        icon: '0153-aid-kit.png'
+
+        onClicked:
         {
-            anchors.fill: parent
-            drag.target:  parent
+            Ui.debugMode = !Ui.debugMode;
         }
+    }
 
-        Rectangle
-        {
-            anchors.fill: parent
-            color:        'transparent'
-            border.width: 1
-            border.color: 'black'
-        }
+    Button
+    {
+        id: button3
+
+        anchors.right:   button2.left
+        anchors.top:     parent.top
+        anchors.margins: Ui.style.pagePadding
+
+        text:    'Settings'
+        icon:    '0149-cog.png'
+        enabled: false
     }
 }

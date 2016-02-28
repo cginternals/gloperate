@@ -17,7 +17,7 @@ Item
     property Item style: styleDefault
 
     // Debug mode
-    property bool debug: false
+    property bool debugMode: false
 
 
     // Styles

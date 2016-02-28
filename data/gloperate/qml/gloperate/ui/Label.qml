@@ -8,23 +8,26 @@ import gloperate.ui 1.0
 *
 *  Displays a text with default style
 */
-BaseItem
+Control
 {
     id: item
 
+    property alias text:  label.text
+    property alias color: label.color
+    property alias size:  label.font.pixelSize
+
     implicitWidth:  label.implicitWidth
     implicitHeight: label.implicitHeight
-
-    property alias text: label.text
 
     Text
     {
         id: label
 
-        anchors.fill:   parent
+        anchors.fill: parent
 
-        color:          Ui.style.pageTextColor
-        font.pixelSize: Ui.style.pageTextSize
-        wrapMode:       Text.Wrap
+        color:             Ui.style.pageTextColor
+        font.pixelSize:    Ui.style.pageTextSize
+        verticalAlignment: Text.AlignVCenter
+        wrapMode:          Text.Wrap
     }
 }

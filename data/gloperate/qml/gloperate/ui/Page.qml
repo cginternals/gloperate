@@ -4,7 +4,7 @@ import gloperate.ui 1.0
 
 
 /**
-*  Background
+*  Page
 *
 *  Root item for qml-based gloperate viewers.
 *  Sets the background color for the window (only works as root!)
