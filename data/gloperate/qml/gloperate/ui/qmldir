@@ -16,3 +16,4 @@ Label     1.0 Label.qml
 Icon      1.0 Icon.qml
 Button    1.0 Button.qml
 Dropdown  1.0 Dropdown.qml
+TabBar    1.0 TabBar.qml

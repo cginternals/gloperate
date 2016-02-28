@@ -15,58 +15,72 @@ Page
         anchors.fill: parent
     }
 
-    Dropdown
+    Row
     {
-        id: button1
-
         anchors.left:    render.left
         anchors.top:     parent.top
         anchors.margins: Ui.style.pagePadding
+        spacing:         Ui.style.pageSpacing
 
-        text: 'DemoStage'
-        icon: '0190-menu.png'
-
-        items: [
-            { name: 'painter',    text: 'Choose Painter', icon: '0092-tv.png' },
-            { name: 'screenshot', text: 'Screenshot',     icon: '0040-file-picture.png' },
-            { name: 'video',      text: 'Video',          icon: '0021-video-camera.png' }
-        ];
-
-        onItemClicked:
+        Dropdown
         {
-            if (name === 'painter')
+            text: 'DemoStage'
+            icon: '0190-menu.png'
+
+            items: [
+                { name: 'painter',    text: 'Choose Painter', icon: '0092-tv.png' },
+                { name: 'screenshot', text: 'Screenshot',     icon: '0040-file-picture.png' },
+                { name: 'video',      text: 'Video',          icon: '0021-video-camera.png' }
+            ];
+
+            onItemClicked:
             {
+                if (name === 'painter')
+                {
+                }
             }
         }
     }
 
-    Button
+    Row
     {
-        id: button2
-
         anchors.right:   parent.right
         anchors.top:     parent.top
         anchors.margins: Ui.style.pagePadding
+        spacing:         Ui.style.pageSpacing
 
-        text: 'Debug'
-        icon: '0153-aid-kit.png'
-
-        onClicked:
+        Dropdown
         {
-            Ui.debugMode = !Ui.debugMode;
+            text: 'Settings'
+            icon: '0149-cog.png'
+
+            items: [
+                { name: 'preferences', text: 'Preferences', icon: '0150-cogs.png' },
+                { name: 'debug',       text: 'Debug',       icon: '0153-aid-kit.png' }
+            ];
+
+            onItemClicked:
+            {
+                if (name === 'debug')
+                {
+                    Ui.debugMode = !Ui.debugMode;
+                }
+            }
         }
-    }
 
-    Button
-    {
-        id: button3
+        Dropdown
+        {
+            text: 'Theme'
+            icon: '0207-eye.png'
 
-        anchors.right:   button2.left
-        anchors.top:     parent.top
-        anchors.margins: Ui.style.pagePadding
+            items: [
+                { name: 'default', text: 'Default', icon: '0218-star-full.png' },
+                { name: 'dark',    text: 'Dark',    icon: '0218-star-full.png' }
+            ];
 
-        text:    'Settings'
-        icon:    '0149-cog.png'
-        enabled: false
+            onItemClicked:
+            {
+            }
+        }
     }
 }

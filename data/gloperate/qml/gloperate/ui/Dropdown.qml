@@ -19,6 +19,8 @@ Button
     // Called when one of the items has been clicked
     signal itemClicked(string name)
 
+    implicitWidth: column.implicitWidth
+
     Column
     {
         id: column

@@ -35,7 +35,7 @@ int main(int argc, char * argv[])
     QuickView * window = new QuickView(&viewerContext);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
     window->engine()->addImportPath(qmlPath);
-    window->setSource(QUrl(qmlPath + "/ExampleViewer.qml"));
+    window->setSource(QUrl(qmlPath + "/Viewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
     window->show();
 
