@@ -21,6 +21,8 @@ Control
     implicitWidth:  row.implicitWidth  + 2 * Ui.style.ctrlPadding
     implicitHeight: row.implicitHeight + 2 * Ui.style.ctrlPadding
 
+    readonly property real buttonWidth: row.implicitWidth  + 2 * Ui.style.ctrlPadding
+
     Rectangle
     {
         id: background

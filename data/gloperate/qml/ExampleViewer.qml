@@ -70,16 +70,29 @@ Page
 
         Dropdown
         {
-            text: 'Theme'
-            icon: '0207-eye.png'
+            text:  'Theme'
+            icon:  '0207-eye.png'
+            items: getStyles();
 
-            items: [
-                { name: 'default', text: 'Default', icon: '0218-star-full.png' },
-                { name: 'dark',    text: 'Dark',    icon: '0218-star-full.png' }
-            ];
+            function getStyles()
+            {
+                var styles = [];
+
+                for (var i=0; i<Ui.styles.length; i++)
+                {
+                    styles.push({
+                        name: Ui.styles[i],
+                        text: Ui.styles[i],
+                        icon: '0218-star-full.png'
+                    } );
+                }
+
+                return styles;
+            }
 
             onItemClicked:
             {
+                Ui.setStyle(name);
             }
         }
     }

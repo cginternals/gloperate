@@ -106,7 +106,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     m_angle = m_time;
 
     // Clear background
-    gl::glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    gl::glClearColor(m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, 1.0f);
     gl::glScissor(m_deviceViewport.x, m_deviceViewport.y, m_deviceViewport.z, m_deviceViewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);

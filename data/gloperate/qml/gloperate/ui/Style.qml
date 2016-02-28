@@ -20,6 +20,7 @@ Item
     property color disabledColor:   '#999999'
 
     property color backgroundColor: '#44aaaaaa'
+    property color windowColor:     '#44aaaaaa'
 
     property color controlColor:    '#ffffff'
     property color controlColorHov: '#f0f0f0'
@@ -77,7 +78,7 @@ Item
     property int   pageIconSize:               64             // Page icon size
 
     // Panel
-    property color panelColor:                 backgroundColor// x Panel background
+    property color panelColor:                 windowColor    // x Panel background
     property color panelBorderColor:           borderColor    // x Panel border color
     property int   panelBorderWidth:           borderWidth    // x Panel border width
     property real  panelPadding:               paddingMedium  // x Panel padding
