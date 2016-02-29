@@ -13,136 +13,105 @@ Item
     // Abstract style definition (to be used by the generic options)
     //
 
-    // Colors
+    // Main colors
     property color primaryColor:    '#ffffff'
-    property color secondaryColor:  '#cccccc'
-
+    property color secondaryColor:  '#fd971f'
+    property color pressedColor:    '#ffffd9'
     property color disabledColor:   '#999999'
 
-    property color backgroundColor: '#444444'
+    // Panels and controls
+    property color backgroundColor: '#1a1d23'
     property color windowColor:     '#444444'
-
     property color controlColor:    '#1a1d23'
-    property color controlColorHov: '#1a1d23'
-    property color controlColorHl:  '#1a1d23'
-    property color controlTextColor:'#ffffff'
 
-    property color highlightColor:  '#fd971f'
-    property color activeColor:     '#ffffd9'
-
+    // Borders
     property color borderColor:     '#1a1d23'
     property int   borderWidth:     0
-
-    property real  borderRadius:    3
+    property real  borderRadius:    0
 
     // Fonts
-//  property int   fontSizeHuge:    32
-//  property int   fontSizeLarge:   20
+    property int   fontSizeHuge:    32
+    property int   fontSizeLarge:   20
     property int   fontSizeMedium:  16
     property int   fontSizeSmall:   14
-//  property int   fontSizeTiny:    12
+    property int   fontSizeTiny:    12
 
     // Padding sizes
-//  property real  paddingLarge:    12
-    property real  paddingMedium:   4
-    property real  paddingSmall:    2
+    property real  paddingLarge:    12
+    property real  paddingMedium:   8
+    property real  paddingSmall:    4
+
+    // Icon sizes
+    property real  iconSizeLarge:   64
+    property real  iconSizeMedium:  32
+    property real  iconSizeSmall:   16
 
 
     //
-    // Generic style definition (to be used by specific items)
+    // Generic style definition (to be used by items)
     //
+
+    // Misc
+    property color debugColor:                 '#00bb00'        // Debug color
 
     // Main page
-    property color pageColor:                  '#1a1d23'      // x Page background
-    property real  pagePadding:                paddingMedium  // x Page padding
-    property real  pageSpacing:                paddingMedium  // Page spacing
+    property color pageColor:                  backgroundColor  // Page background color
+    property real  pagePadding:                paddingSmall     // Page padding (space between border and page)
+    property real  pageSpacing:                paddingSmall     // Page spacing (space between items on the page)
 
-    property color pageTextColor:              primaryColor   // Page text color (default)
-    property color pageTextColorSecondary:     secondaryColor // Page text color (secondary texts)
-    property color pageTextColorTitle:         primaryColor   // Page text color (title texts)
-    property color pageTextColorDisabled:      '#000000'      // Page text color (disabled texts)
-    property color pageTextColorEmphasized:    '#000000'      // Page text color (emphasized texts)
-
-    property int   pageTextSize:               fontSizeMedium // Page text size (default)
-    property int   pageTextSizeSecondary:      fontSizeMedium // Page text size (secondary texts)
-    property int   pageTextSizeTitle:          fontSizeMedium // Page text size (title texts)
-    property int   pageTextSizeDisabled:       fontSizeMedium // Page text size (disabled texts)
-    property int   pageTextSizeEmphasized:     fontSizeMedium // Page text size (emphasized texts)
-
-    property color pageLinkColor:              primaryColor   // Page link color (default)
-    property color pageLinkColorDisabled:      primaryColor   // Page link color (disabled)
-    property color pageLinkColorHover:         primaryColor   // Page link color (hovered)
-    property color pageLinkColorPressed:       primaryColor   // Page link color (pressed)
-
-    property color pageIconColor:              primaryColor   // Page icon color
-    property int   pageIconSize:               64             // Page icon size
-
-    // Panel
-    property color panelColor:                 windowColor    // x Panel background
-    property color panelBorderColor:           borderColor    // x Panel border color
-    property int   panelBorderWidth:           borderWidth    // x Panel border width
-    property real  panelPadding:               paddingMedium  // x Panel padding
-    property real  panelSpacing:               paddingMedium  // Panel spacing
-    property real  panelRadius:                borderRadius   // x Panel radius (round edges)
-
-    property color panelTextColor:             primaryColor   // Panel text color (default)
-    property color panelTextColorSecondary:    secondaryColor // Panel text color (secondary texts)
-    property color panelTextColorTitle:        primaryColor   // Panel text color (title texts)
-    property color panelTextColorDisabled:     '#000000'      // Panel text color (disabled texts)
-    property color panelTextColorEmphasized:   '#000000'      // Panel text color (emphasized texts)
-
-    property int   panelTextSize:              fontSizeMedium // Panel text size (default)
-    property int   panelTextSecondary:         fontSizeMedium // Panel text size (secondary texts)
-    property int   panelTextTitle:             fontSizeMedium // Panel text size (title texts)
-    property int   panelTextDisabled:          fontSizeMedium // Panel text size (disabled texts)
-    property int   panelTextEmphasized:        fontSizeMedium // Panel text size (emphasized texts)
-
-    property color panelLinkColor:             primaryColor   // Panel link color (default)
-    property color panelLinkColorDisabled:     primaryColor   // Panel link color (disabled)
-    property color panelLinkColorHover:        primaryColor   // Panel link color (hovered)
-    property color panelLinkColorPressed:      primaryColor   // Panel link color (pressed)
-
-    property color panelIconColor:             controlTextColor // Panel icon color
-    property int   panelIconSize:              64               // Panel icon size
+    // Panels
+    property color panelColor:                 windowColor      // Panel background color
+    property color panelBorderColor:           borderColor      // Panel border color
+    property int   panelBorderWidth:           borderWidth      // Panel border width
+    property real  panelBorderRadius:          borderRadius     // Panel border radius (round edges)
+    property real  panelPadding:               paddingSmall     // Panel padding (space between border and items)
+    property real  panelSpacing:               paddingSmall     // Panel spacing (space between items on a panel)
 
     // Controls
-    property real  ctrlPadding:                paddingMedium  // x Control padding
-    property real  ctrlSpacing:                paddingMedium  // Control padding
-    property real  ctrlRadius:                 borderRadius   // x Control radius (round edges)
+    property color ctrlColor:                  controlColor     // Control background color (default)
+    property color ctrlColorDisabled:          controlColor     // Control background color (disabled)
+    property color ctrlColorHighlighted:       controlColor     // Control background color (highlighted)
+    property color ctrlColorHover:             controlColor     // Control background color (hovered)
+    property color ctrlColorPressed:           controlColor     // Control background color (pressed)
 
-    property color ctrlColor:                  controlColor   // x Control background color (default)
-    property color ctrlColorDisabled:          controlColor   // Control background color (disabled)
-    property color ctrlColorHighlighted:       controlColorHl // Control background color (highlighted)
-    property color ctrlColorHover:             controlColorHov// Control background color (hovered)
-    property color ctrlColorPressed:           controlColorHov// Control background color (pressed)
+    property color ctrlBorderColor:            borderColor      // Control border color (default)
+    property color ctrlBorderColorDisabled:    borderColor      // Control border color (disabled)
+    property color ctrlBorderColorHighlighted: borderColor      // Control border color (highlighted)
+    property color ctrlBorderColorHover:       borderColor      // Control border color (hovered)
+    property color ctrlBorderColorPressed:     borderColor      // Control border color (pressed)
 
-    property color ctrlBorderColor:            borderColor    // x Control border color (default)
-    property color ctrlBorderColorDisabled:    borderColor    // Control border color (disabled)
-    property color ctrlBorderColorHighlighted: borderColor    // Control border color (highlighted)
-    property color ctrlBorderColorHover:       borderColor    // Control border color (hovered)
-    property color ctrlBorderColorPressed:     borderColor    // Control border color (pressed)
-    property int   ctrlBorderWidth:            borderWidth    // x Control border width
+    property int   ctrlBorderWidth:            borderWidth      // Control border width
+    property real  ctrlRadius:                 borderRadius     // Control border radius (round edges)
+    property real  ctrlPadding:                paddingSmall     // Control padding (space between border and items)
+    property real  ctrlSpacing:                paddingSmall     // Control spacing (space between items on the control)
 
-    property color ctrlTextColor:              controlTextColor // x Control text color (default)
-    property color ctrlTextColorDisabled:      disabledColor  // x Control text color (disabled)
-    property color ctrlTextColorHighlighted:   controlTextColor // Control text color (highlighted)
-    property color ctrlTextColorHover:         highlightColor // x Control text color (hovered)
-    property color ctrlTextColorPressed:       activeColor    // x Control text color (pressed)
-    property int   ctrlTextSize:               fontSizeSmall  // x Control text size
+    property color ctrlTextColor:              primaryColor     // Control text color (default)
+    property color ctrlTextColorDisabled:      disabledColor    // Control text color (disabled)
+    property color ctrlTextColorHighlighted:   secondaryColor   // Control text color (highlighted)
+    property color ctrlTextColorHover:         secondaryColor   // Control text color (hovered)
+    property color ctrlTextColorPressed:       pressedColor     // Control text color (pressed)
+    property int   ctrlTextSize:               fontSizeMedium   // Control text size
 
-    property color ctrlIconColor:              highlightColor   // Control icon color (default)
+    property color ctrlIconColor:              secondaryColor   // Control icon color (default)
     property color ctrlIconColorDisabled:      disabledColor    // Control icon color (disabled)
-    property color ctrlIconColorHighlighted:   controlTextColor // Control icon color (highlighted)
-    property color ctrlIconColorHover:         highlightColor   // Control icon color (hovered)
-    property color ctrlIconColorPressed:       activeColor      // Control icon color (pressed)
-    property int   ctrlIconSize:               16               // Control icon size
+    property color ctrlIconColorHighlighted:   secondaryColor   // Control icon color (highlighted)
+    property color ctrlIconColorHover:         secondaryColor   // Control icon color (hovered)
+    property color ctrlIconColorPressed:       pressedColor     // Control icon color (pressed)
+    property int   ctrlIconSize:               iconSizeSmall    // Control icon size
 
+    // Text
+    property color textColor:                  primaryColor     // Text color (default)
+    property color textColorSecondary:         secondaryColor   // Text color (secondary texts)
+    property color textColorTitle:             secondaryColor   // Text color (title texts)
+    property int   textSize:                   fontSizeMedium   // Text size (default)
+    property int   textSizeSecondary:          fontSizeMedium   // Text size (secondary texts)
+    property int   textSizeTitle:              fontSizeMedium   // Text size (title texts)
 
-    //
-    // Misc
-    //
-
-    property color debugColor: '#00bb00'
+    // Links
+    property color linkColor:                  secondaryColor   // Link color (default)
+    property color linkColorDisabled:          disabledColor    // Link color (disabled)
+    property color linkColorHover:             primaryColor     // Link color (hovered)
+    property color linkColorPressed:           pressedColor     // Link color (pressed)
 
 
     //
@@ -183,5 +152,13 @@ Item
         else if (hover)       return ctrlIconColorHover;
         else if (highlighted) return ctrlIconColorHighlighted;
         else                  return ctrlIconColor;
+    }
+
+    function getLinkColor(enabled, hover, pressed)
+    {
+             if (!enabled)    return linkColorDisabled;
+        else if (pressed)     return linkColorPressed;
+        else if (hover)       return linkColorHover;
+        else                  return linkColor;
     }
 }

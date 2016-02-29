@@ -25,8 +25,8 @@ Control
 
         anchors.fill: parent
 
-        color:             Ui.style.pageTextColor
-        font.pixelSize:    Ui.style.pageTextSize
+        color:             Ui.style.textColor
+        font.pixelSize:    Ui.style.textSize
         verticalAlignment: Text.AlignVCenter
         wrapMode:          Text.Wrap
     }

@@ -17,6 +17,6 @@ BaseItem
         color:        Ui.style.panelColor
         border.color: Ui.style.panelBorderColor
         border.width: Ui.style.panelBorderWidth
-        radius:       Ui.style.panelRadius
+        radius:       Ui.style.panelBorderRadius
     }
 }
