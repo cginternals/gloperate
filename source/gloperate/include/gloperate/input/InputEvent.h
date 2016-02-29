@@ -27,7 +27,6 @@ public:
     };
 
 public:
-    InputEvent(Type type);
     InputEvent(Type type, AbstractDevice * dispatchingDevice);
     virtual ~InputEvent();
 
@@ -57,13 +56,11 @@ protected:
 class GLOPERATE_API ButtonEvent : public InputEvent
 {
 public:
-    ButtonEvent(Type type, const std::string & description);
     ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const std::string & description);
     std::string description() const;
 
 protected:
     std::string m_description;
-
 };
 
 } //namespace gloperate
