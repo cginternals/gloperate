@@ -20,6 +20,7 @@ Button
     signal itemClicked(string name)
 
     implicitWidth: Math.max(buttonWidth, column.maxWidth)
+    clip:          false
 
     Column
     {

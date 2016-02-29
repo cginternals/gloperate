@@ -15,6 +15,8 @@ Item
     // Debug mode enabled? (displays borders around items)
     property bool debugMode: Ui.debugMode
 
+    clip: true
+
     Rectangle
     {
         id: debugBorder
