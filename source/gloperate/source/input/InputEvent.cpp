@@ -5,10 +5,11 @@
 
 namespace gloperate{
 
-InputEvent::InputEvent(Type type)
-:  m_type(type)
+InputEvent::InputEvent(Type type, AbstractDevice * dispatchingDevice)
+: m_type(type)
+, m_dispatchingDevice(dispatchingDevice)
 {
-
+    assert(dispatchingDevice != nullptr);
 }
 
 InputEvent::~InputEvent()
@@ -22,32 +23,34 @@ InputEvent::Type InputEvent::type() const
 }
 
 
-MouseMoveEvent::MouseMoveEvent(Type type, glm::ivec2 pos)
-: InputEvent(type)
+
+MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, int button)
+: InputEvent(type, dispatchingDevice)
 , m_pos(pos)
 {
 
 }
 
-MouseMoveEvent::MouseMoveEvent(Type type, int x, int y)
-: MouseMoveEvent(type, glm::ivec2(x,y))
+MouseEvent::MouseEvent(InputEvent::Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::vec2 wheelDelta)
+: InputEvent(type, dispatchingDevice)
+, m_pos(pos)
 {
 
 }
 
-int MouseMoveEvent::x() const
+int MouseEvent::x() const
 {
     return m_pos.x;
 }
 
-int MouseMoveEvent::y() const
+int MouseEvent::y() const
 {
     return m_pos.y;
 }
 
 
-ButtonEvent::ButtonEvent(Type type,const std::string & description)
-: InputEvent(type)
+ButtonEvent::ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const std::string & description)
+: InputEvent(type, dispatchingDevice)
 , m_description(description)
 {
 
