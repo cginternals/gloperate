@@ -1,13 +1,13 @@
 
 #pragma once
 
-#include <gloperate/input/InputEvent.h>
-#include <gloperate/input/InputManager.h>
+#include <gloperate/gloperate_api.h>
 
 namespace gloperate
 {
 
 class InputManager;
+class InputEvent;
 
 /**
 *  @brief:
@@ -22,9 +22,9 @@ public:
 
     virtual ~AbstractEventConsumer();
 
-    virtual void onEvent(const InputEvent * event) = 0;
+    virtual void onEvent(InputEvent * event) = 0;
 
-private:
+protected:
     InputManager * m_inputManager;
 };
 
