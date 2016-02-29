@@ -3,6 +3,7 @@
 
 
 #include <gloperate/viewer/Surface.h>
+#include <gloperate/viewer/input.h>
 
 
 namespace gloperate
@@ -10,6 +11,8 @@ namespace gloperate
 
 
 class Stage;
+class MouseDevice;
+class KeyboardDevice;
 
 
 /**
@@ -74,8 +77,10 @@ public:
 
 
 protected:
-    Stage         * m_renderStage; ///< Render stage that renders into the current context (can be null)
-    unsigned long   m_frame;       ///< Frame counter
+    Stage          * m_renderStage;    ///< Render stage that renders into the current context (can be null)
+    unsigned long    m_frame;          ///< Frame counter
+    MouseDevice    * m_mouseDevice;    ///< Device for Mouse Events
+    KeyboardDevice * m_keyboardDevice; ///< Device for Keyboard Events
 };
 
 

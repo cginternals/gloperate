@@ -6,6 +6,8 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/pipeline/Stage.h>
+#include <gloperate/input/MouseDevice.h>
+#include <gloperate/input/KeyboardDevice.h>
 
 
 namespace gloperate
@@ -16,6 +18,8 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext, Stage * stage)
 : Surface(viewerContext)
 , m_renderStage(nullptr)
 , m_frame(0)
+, m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
+, m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 {
     setRenderStage(stage);
 }
@@ -130,45 +134,37 @@ void RenderSurface::onRender()
 
 void RenderSurface::onKeyPress(int key, int modifier)
 {
-    auto inputEvent = new gloperate::ButtonEvent{
-        gloperate::InputEvent::Type::ButtonPress,
-        std::to_string(key) + ":" + std::to_string(modifier)
-    };
-
-    m_viewerContext->inputManager()->onEvent(inputEvent);
-
+    m_keyboardDevice->keyPress(key, modifier);
     globjects::info() << "onKeyPressed(" << key << ")";
 }
 
 void RenderSurface::onKeyRelease(int key, int modifier)
 {
-    auto inputEvent = new gloperate::ButtonEvent{
-        gloperate::InputEvent::Type::ButtonRelease,
-        std::to_string(key) + ":" + std::to_string(modifier)
-    };
-
-    m_viewerContext->inputManager()->onEvent(inputEvent);
-
+    m_keyboardDevice->keyRelease(key, modifier);
     globjects::info() << "onKeyReleased(" << key << ")";
 }
 
 void RenderSurface::onMouseMove(const glm::ivec2 & pos)
 {
+    m_mouseDevice->move(pos);
     globjects::info() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMousePress(int button, const glm::ivec2 & pos)
 {
+    m_mouseDevice->buttonPress(button, pos);
     globjects::info() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMouseRelease(int button, const glm::ivec2 & pos)
 {
+    m_mouseDevice->buttonRelease(button, pos);
     globjects::info() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
+    m_mouseDevice->wheelScroll(delta, pos);
     globjects::info() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 }
 
