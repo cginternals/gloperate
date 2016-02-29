@@ -4,9 +4,9 @@ import gloperate.ui 1.0
 
 
 /**
-*  TabBar
+*  ButtonBar
 *
-*  Container that displays a list of tabs
+*  Horizontal list of buttons
 */
 BaseItem
 {
@@ -16,21 +16,12 @@ BaseItem
     //   [ {name: 'customId', text: 'Displayed text', icon: 'icon.png', enabled: true}, ... ]
     property variant items: []
 
-    // Name of the currently selected item
-    property string selectedItem: ''
-
-    // Called when a tab has been selected
-    signal tabSelected(string name)
-
-    // Set currently selected tab
-    function selectTab(name)
-    {
-        selectedItem = name;
-        tabSelected(name);
-    }
+    // Called when one of the items has been clicked
+    signal itemClicked(string menu, string name)
 
     implicitWidth:  row.implicitWidth
     implicitHeight: row.implicitHeight
+    clip:           false
 
     Row
     {
@@ -44,18 +35,25 @@ BaseItem
         {
             model: item.items.length
 
-            Button
+            Dropdown
             {
+                id: subMenu
+
                 property string name: item.items[index].name
 
-                text:        item.items[index].text
-                icon:        item.items[index].icon
-                enabled:     item.items[index].hasOwnProperty('enabled') ? item.items[index].enabled : true
-                highlighted: selectedItem == name
+                text:    item.items[index].text
+                icon:    item.items[index].icon
+                enabled: item.items[index].hasOwnProperty('enabled') ? item.items[index].enabled : true
+                items:   item.items[index].hasOwnProperty('items')   ? item.items[index].items   : []
 
                 onClicked:
                 {
-                    item.selectTab(name);
+                    item.itemClicked(subMenu.name, '');
+                }
+
+                onItemClicked:
+                {
+                    item.itemClicked(subMenu.name, name);
                 }
             }
         }

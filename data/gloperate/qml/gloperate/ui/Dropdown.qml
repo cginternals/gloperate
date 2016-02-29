@@ -13,7 +13,7 @@ Button
     id: item
 
     // List of items that will be displayed:
-    //   [ { name: 'customId', text: 'Displayed text', icon: 'icon.png' }, ... ]
+    //   [ {name: 'customId', text: 'Displayed text', icon: 'icon.png', enabled: true}, ... ]
     property variant items: []
 
     // Called when one of the items has been clicked
@@ -26,7 +26,7 @@ Button
     {
         id: column
 
-        visible: false
+        visible: item.highlighted
 
         anchors.top:       parent.bottom
         anchors.left:      parent.left
@@ -52,9 +52,10 @@ Button
 
             Button
             {
-                width: item.width
-                text:  item.items[index].text
-                icon:  item.items[index].icon
+                width:   item.width
+                text:    item.items[index].text
+                icon:    item.items[index].icon
+                enabled: item.items[index].hasOwnProperty('enabled') ? item.items[index].enabled : true
 
                 onClicked:
                 {
@@ -66,7 +67,9 @@ Button
 
     onClicked:
     {
-        column.visible = !column.visible;
-        item.highlighted = column.visible;
+        if (items.length > 0)
+        {
+            item.highlighted = !item.highlighted;
+        }
     }
 }
