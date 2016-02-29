@@ -54,6 +54,14 @@ public:
     void deregisterConsumer(AbstractEventConsumer * consumer);
 
     /**
+    *  @brief
+    *    Add a device to the InputManager
+    *  @param[in] device
+    *    The device to add to the InputManager (must NOT be null)
+    */
+    void addDevice(AbstractDevice * device);
+
+    /**
      * @brief onEvent
      *   Forwards the Event to all registered Consumers
      * @param event
