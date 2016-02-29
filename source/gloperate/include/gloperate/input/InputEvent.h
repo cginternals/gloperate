@@ -21,6 +21,9 @@ public:
         ButtonPress
       , ButtonRelease
       , MouseMove
+      , MouseButtonPress
+      , MouseButtonRelease
+      , MouseWheelScroll
     };
 
 public:
@@ -35,19 +38,20 @@ protected:
     AbstractDevice * m_dispatchingDevice;
 };
 
-class GLOPERATE_API MouseMoveEvent : public InputEvent
 class GLOPERATE_API MouseEvent : public InputEvent
 {
 public:
-    MouseMoveEvent(Type type, int x, int y);
-    MouseMoveEvent(Type type, glm::ivec2 pos);
     MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, int button = 0);
     MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::vec2 wheelDelta);
     int x() const;
     int y() const;
+    int button() const;
+    glm::vec2 wheelDelta() const;
 
 protected:
     glm::ivec2 m_pos;
+    int m_button;
+    glm::vec2 m_wheelDelta;
 };
 
 class GLOPERATE_API ButtonEvent : public InputEvent

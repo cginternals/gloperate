@@ -27,6 +27,8 @@ InputEvent::Type InputEvent::type() const
 MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, int button)
 : InputEvent(type, dispatchingDevice)
 , m_pos(pos)
+, m_button(button)
+, m_wheelDelta(glm::vec2(.0f, .0f))
 {
 
 }
@@ -34,6 +36,8 @@ MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2
 MouseEvent::MouseEvent(InputEvent::Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::vec2 wheelDelta)
 : InputEvent(type, dispatchingDevice)
 , m_pos(pos)
+, m_button(0)
+, m_wheelDelta(wheelDelta)
 {
 
 }
@@ -46,6 +50,16 @@ int MouseEvent::x() const
 int MouseEvent::y() const
 {
     return m_pos.y;
+}
+
+int MouseEvent::button() const
+{
+    return m_button;
+}
+
+glm::vec2 MouseEvent::wheelDelta() const
+{
+    return m_wheelDelta;
 }
 
 
