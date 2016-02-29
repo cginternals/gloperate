@@ -2,6 +2,7 @@
 #pragma once
 
 #include <gloperate/input/AbstractEventConsumer.h>
+#include <gloperate/input/InputManager.h>
 
 namespace gloperate{
 
