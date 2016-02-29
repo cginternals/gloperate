@@ -10,7 +10,6 @@
 
 namespace gloperate{
 
-
     class AbstractDevice;
 
 class GLOPERATE_API InputEvent
@@ -31,6 +30,7 @@ public:
     virtual ~InputEvent();
 
     Type type() const;
+    virtual std::string asString() const;
 
 protected:
     Type m_type;
@@ -46,6 +46,7 @@ public:
     int y() const;
     int button() const;
     glm::vec2 wheelDelta() const;
+    virtual std::string asString() const override;
 
 protected:
     glm::ivec2 m_pos;
@@ -58,6 +59,7 @@ class GLOPERATE_API ButtonEvent : public InputEvent
 public:
     ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const std::string & description);
     std::string description() const;
+    virtual std::string asString() const override;
 
 protected:
     std::string m_description;

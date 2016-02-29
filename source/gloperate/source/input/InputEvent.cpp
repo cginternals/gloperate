@@ -22,6 +22,10 @@ InputEvent::Type InputEvent::type() const
     return m_type;
 }
 
+std::string InputEvent::asString() const
+{
+    return std::to_string(static_cast<int>(m_type));
+}
 
 
 MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, int button)
@@ -62,12 +66,22 @@ glm::vec2 MouseEvent::wheelDelta() const
     return m_wheelDelta;
 }
 
+std::string MouseEvent::asString() const
+{
+    return std::to_string(static_cast<int>(m_type));
+}
+
 
 ButtonEvent::ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const std::string & description)
 : InputEvent(type, dispatchingDevice)
 , m_description(description)
 {
 
+}
+
+std::string ButtonEvent::asString() const
+{
+    return m_description;
 }
 
 } //namespace gloperate
