@@ -2,6 +2,7 @@
 #pragma once
 
 #include <gloperate/gloperate_api.h>
+#include <string>
 
 namespace gloperate
 {
@@ -18,7 +19,7 @@ public:
      * @param[in] inputManager
      *   A pointer to the inputManager (must NOT be null)
      */
-    AbstractDevice(InputManager * inputManager);
+    AbstractDevice(InputManager * inputManager, const std::string & deviceDescriptor);
 
     /**
      * @brief
@@ -32,8 +33,17 @@ public:
      */
     virtual void update() = 0;
 
-private:
+    /**
+     * @brief
+     *   get the deviceDescriptor as a string
+     * @return
+     *   the deviceDescriptor as a string
+     */
+    virtual const std::string& deviceDescriptor() const;
+
+protected:
     InputManager * m_inputManager;
+    std::string m_deviceDescriptor;
 };
 
 }
