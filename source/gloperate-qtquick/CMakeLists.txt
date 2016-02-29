@@ -58,15 +58,15 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/QuickView.h
-    ${include_path}/RenderItem.h
-    ${include_path}/Utils.h
+    ${include_path}/viewer/QuickView.h
+    ${include_path}/viewer/RenderItem.h
+    ${include_path}/viewer/Utils.h
 )
 
 set(sources
-    ${source_path}/QuickView.cpp
-    ${source_path}/RenderItem.cpp
-    ${source_path}/Utils.cpp
+    ${source_path}/viewer/QuickView.cpp
+    ${source_path}/viewer/RenderItem.cpp
+    ${source_path}/viewer/Utils.cpp
 )
 
 # Group source files

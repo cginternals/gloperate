@@ -3,16 +3,14 @@
 # External dependencies
 # 
 
-find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
 find_package(Qt5Core    5.1)
 find_package(Qt5Gui     5.1)
-find_package(Qt5Widgets 5.1) # this is important in order to get uic working 
-find_package(Qt5OpenGL  5.1)
-find_package(ASSIMP)
+find_package(Qt5Widgets 5.1)
+find_package(Qt5Quick   5.1)
 
 # Enable automoc
 set(CMAKE_AUTOMOC ON)
@@ -48,8 +46,6 @@ endif()
 
 set(sources
     main.cpp
-    Application.cpp
-    Application.h
 )
 
 
@@ -85,12 +81,11 @@ set_target_properties(${target}
 target_include_directories(${target}
     PRIVATE
     ${DEFAULT_INCLUDE_DIRECTORIES}
-    ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_BINARY_DIR}
     ${GLM_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
-    ${PROJECT_BINARY_DIR}/source/include
+    ${PROJECT_SOURCE_DIR}/source/gloperate-qtquick/include
 )
 
 
@@ -105,11 +100,14 @@ target_link_libraries(${target}
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
-    libzeug::widgetzeug
+    Qt5::Quick
+    libzeug::signalzeug
+    libzeug::reflectionzeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-qt
+    ${META_PROJECT_NAME}::gloperate-qtquick
 )
 
 

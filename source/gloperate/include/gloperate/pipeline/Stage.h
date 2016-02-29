@@ -6,7 +6,7 @@
 
 #include <signalzeug/Signal.h>
 
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
@@ -15,6 +15,7 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
+class GLContextFormat;
 
 
 /**
@@ -104,6 +105,7 @@ public:
     // Input data
     void setDeviceViewport(int x, int y, int w, int h);
     void setVirtualViewport(int x, int y, int w, int h);
+    void setBackgroundColor(float red, float green, float blue);
     void setFrameCounter(int frame);
     void setTimeDelta(float delta);
 
@@ -166,6 +168,7 @@ protected:
     ViewerContext * m_viewerContext;    ///< Viewer context to which the stage belongs
     glm::ivec4      m_deviceViewport;   ///< Viewport (in real device coordinates)
     glm::ivec4      m_virtualViewport;  ///< Viewport (in virtual coordinates)
+    glm::vec3       m_backgroundColor;  ///< Background color
     unsigned long   m_frame;            ///< Frame counter
     float           m_timeDelta;        ///< Time since last update (in seconds)
 };

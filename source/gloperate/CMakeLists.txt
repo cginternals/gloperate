@@ -37,17 +37,16 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/gloperate.h
 
-    ${include_path}/base/AbstractContext.h
-    ${include_path}/base/AbstractGLContext.h
-    ${include_path}/base/AbstractGLContextFactory.h
-    ${include_path}/base/GLContextFormat.h
-    ${include_path}/base/GLContextUtils.h
-    ${include_path}/base/Camera.h
     ${include_path}/base/CachedValue.h
     ${include_path}/base/CachedValue.hpp
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
 
+    ${include_path}/viewer/AbstractContext.h
+    ${include_path}/viewer/AbstractGLContext.h
+    ${include_path}/viewer/AbstractGLContextFactory.h
+    ${include_path}/viewer/GLContextFormat.h
+    ${include_path}/viewer/GLContextUtils.h
     ${include_path}/viewer/ViewerContext.h
     ${include_path}/viewer/Surface.h
     ${include_path}/viewer/RenderSurface.h
@@ -56,7 +55,9 @@ set(headers
 
     ${include_path}/pipeline/Stage.h
 
-    ${include_path}/stages/DemoStage.h
+    ${include_path}/rendering/Camera.h
+    
+    ${include_path}/stages/demos/DemoStage.h
 
     ${include_path}/input/InputManager.h
     ${include_path}/input/InputManager.h
@@ -71,15 +72,14 @@ set(headers
 set(sources
     ${source_path}/gloperate.cpp
 
-    ${source_path}/base/AbstractContext.cpp
-    ${source_path}/base/AbstractGLContext.cpp
-    ${source_path}/base/AbstractGLContextFactory.cpp
-    ${source_path}/base/GLContextFormat.cpp
-    ${source_path}/base/GLContextUtils.cpp
-    ${source_path}/base/Camera.cpp
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
 
+    ${source_path}/viewer/AbstractContext.cpp
+    ${source_path}/viewer/AbstractGLContext.cpp
+    ${source_path}/viewer/AbstractGLContextFactory.cpp
+    ${source_path}/viewer/GLContextFormat.cpp
+    ${source_path}/viewer/GLContextUtils.cpp
     ${source_path}/viewer/ViewerContext.cpp
     ${source_path}/viewer/Surface.cpp
     ${source_path}/viewer/RenderSurface.cpp
@@ -88,7 +88,9 @@ set(sources
 
     ${source_path}/pipeline/Stage.cpp
 
-    ${source_path}/stages/DemoStage.cpp
+    ${source_path}/rendering/Camera.cpp
+
+    ${source_path}/stages/demos/DemoStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp

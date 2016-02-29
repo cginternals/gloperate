@@ -67,6 +67,7 @@ public:
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
     virtual void onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport) override;
+    virtual void onBackgroundColor(float red, float green, float blue) override;
     virtual void onRender() override;
     virtual void onKeyPress(int key, int modifier) override;
     virtual void onKeyRelease(int key, int modifier) override;

@@ -6,7 +6,7 @@
 
 #include <signalzeug/Signal.h>
 
-#include <gloperate/base/GLContextFormat.h>
+#include <gloperate/viewer/GLContextFormat.h>
 
 
 namespace gloperate
@@ -162,6 +162,22 @@ public:
     virtual void onViewport(
         const glm::ivec4 & deviceViewport
       , const glm::ivec4 & virtualViewport);
+
+    /**
+    *  @brief
+    *    Background color changed
+    *
+    *    This function is called when the viewer has changed its background,
+    *    e.g., because a new theme is being applied.
+    *
+    *  @param[in] red
+    *    Red color component (0..1)
+    *  @param[in] green
+    *    Green color component (0..1)
+    *  @param[in] blue
+    *    Blue color component (0..1)
+    */
+    virtual void onBackgroundColor(float red, float green, float blue);
 
     /**
     *  @brief
