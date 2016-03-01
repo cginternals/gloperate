@@ -23,6 +23,7 @@ Item
     // Panels and controls
     property color backgroundColor: '#ffffff'
     property color windowColor:     '#dddddd'
+    property color windowColorAlt:  '#d0d0d0'
     property color controlColor:    '#ffffff'
     property color controlColorHov: '#f0f0f0'
     property color controlColorHl:  '#d0d0d0'
@@ -64,6 +65,7 @@ Item
 
     // Panels
     property color panelColor:                 windowColor      // Panel background color
+    property color panelColorAlt:              windowColorAlt   // Panel alternative background color
     property color panelBorderColor:           borderColor      // Panel border color
     property int   panelBorderWidth:           borderWidth      // Panel border width
     property real  panelBorderRadius:          borderRadius     // Panel border radius (round edges)
