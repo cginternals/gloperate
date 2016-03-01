@@ -1,3 +1,3 @@
 
 # Applications
-#add_subdirectory(gloperate-viewer)
+add_subdirectory(gloperate-viewer)

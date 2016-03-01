@@ -10,6 +10,7 @@ namespace gloperate
 
 Stage::Stage(ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
+, m_backgroundColor(0.0f, 0.0f, 0.0f)
 , m_frame(0)
 , m_timeDelta(0.0f)
 {
@@ -66,6 +67,13 @@ void Stage::setVirtualViewport(int x, int y, int w, int h)
     m_virtualViewport.y = y;
     m_virtualViewport.z = w;
     m_virtualViewport.w = h;
+}
+
+void Stage::setBackgroundColor(float red, float green, float blue)
+{
+    m_backgroundColor.r = red;
+    m_backgroundColor.g = green;
+    m_backgroundColor.b = blue;
 }
 
 void Stage::setFrameCounter(int frame)

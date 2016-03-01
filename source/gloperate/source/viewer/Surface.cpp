@@ -72,6 +72,10 @@ void Surface::onViewport(const glm::ivec4 &, const glm::ivec4 &)
 {
 }
 
+void Surface::onBackgroundColor(float, float, float)
+{
+}
+
 void Surface::onRender()
 {
 }

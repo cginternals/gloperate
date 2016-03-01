@@ -1,6 +1,9 @@
 
 #include <gloperate-qtquick/viewer/RenderItem.h>
 
+#include <QVariant>
+#include <QColor>
+
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/viewer/Surface.h>
@@ -92,6 +95,12 @@ void RenderItem::onBeforeRendering()
 
         m_initialized = true;
     }
+
+    // Get background color    
+    QuickView * view = static_cast<QuickView*>(this->window());
+    QVariant var = view->rootObject()->property("backgroundColor");
+    QColor color = var.value<QColor>();
+    m_surface->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
 
     // Render into item
     m_surface->onRender();

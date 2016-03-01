@@ -116,6 +116,11 @@ void RenderSurface::onViewport(const glm::ivec4 & deviceViewport, const glm::ive
     );
 }
 
+void RenderSurface::onBackgroundColor(float red, float green, float blue)
+{
+    m_renderStage->setBackgroundColor(red, green, blue);
+}
+
 void RenderSurface::onRender()
 {
 //  globjects::info() << "onRender()";
