@@ -19,5 +19,6 @@ Button     1.0 Button.qml
 Dropdown   1.0 Dropdown.qml
 TabBar     1.0 TabBar.qml
 ButtonBar  1.0 ButtonBar.qml
+PanelItem  1.0 PanelItem.qml
 
 LogView    1.0 LogView.qml

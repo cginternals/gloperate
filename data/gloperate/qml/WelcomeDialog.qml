@@ -6,31 +6,38 @@ import gloperate.ui 1.0
 /**
 *  WelcomeDialog
 *
-*  Dialoge displaying a senseless welcome message.
+*  Dialog displaying a senseless welcome message.
 */
 DockPanel
 {
-    contentHeight: content.height
+    id: panel
 
     iconClosed: '0270-cancel-circle.png'
     iconOpen:   '0270-cancel-circle.png'
 
-    Row
+    ScrollArea
     {
-        id: content
+        anchors.fill:      parent
+        anchors.topMargin: panel.iconHeight + 2 * Ui.style.panelPadding
 
-        anchors.left:    parent.left
-        anchors.right:   parent.right
-        anchors.top:     parent.top
-        anchors.margins: Ui.style.panelPadding
+        contentHeight: content.height
 
-        Label
+        Column
         {
-            id: text
+            id: content
 
-            width: content.width
+            anchors.left:    parent.left
+            anchors.right:   parent.right
+            anchors.top:     parent.top
+            anchors.margins: Ui.style.panelPadding
 
-            text: "
+            Label
+            {
+                id: text
+
+                width: content.width
+
+                text: "
 <h3>C++ Locator Library</h3>
 
 <p>
@@ -56,6 +63,7 @@ To help resolve these problems, cpplocate provides the following features:
 Learn more at <a href=\"https://github.com/cginternals/cpplocate\">GitHub</a>.
 </p>
         "
+            }
         }
     }
 }

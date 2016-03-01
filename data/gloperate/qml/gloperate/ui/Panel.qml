@@ -12,26 +12,25 @@ import gloperate.ui 1.0
 */
 BaseItem
 {
-    default property alias data: scroll.data
-
-    property alias contentHeight: scroll.contentHeight
+    default property alias data: content.data
 
     Rectangle
     {
+        id: rect
+
         anchors.fill: parent
 
         color:        Ui.style.panelColor
         border.color: Ui.style.panelBorderColor
         border.width: Ui.style.panelBorderWidth
         radius:       Ui.style.panelBorderRadius
-    }
 
-    ScrollArea
-    {
-        id: scroll
+        Item
+        {
+            id: content
 
-        anchors.fill: parent
-
-        contentHeight: parent.height
+            anchors.fill:    parent
+            anchors.margins: rect.border.width
+        }
     }
 }

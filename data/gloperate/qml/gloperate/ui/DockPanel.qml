@@ -17,7 +17,9 @@ Panel
     property string iconClosed: ''
     property real   openTime:   600
 
-    readonly property bool open: (status > 0.0)
+    readonly property bool open:       (status > 0.0)
+    readonly property real iconWidth:  icon.implicitWidth
+    readonly property real iconHeight: icon.implicitHeight
 
     function openPanel()
     {
