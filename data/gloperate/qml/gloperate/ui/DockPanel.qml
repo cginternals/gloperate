@@ -46,6 +46,7 @@ Panel
         anchors.right:   parent.right
         anchors.top:     parent.top
         anchors.margins: Ui.style.panelPadding
+        z:               100
         icon:            panel ? iconOpen : iconClosed
 
         onClicked:

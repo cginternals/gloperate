@@ -22,7 +22,7 @@ Item
 
     // Panels and controls
     property color backgroundColor: '#ffffff'
-    property color windowColor:     '#44aaaaaa'
+    property color windowColor:     '#dddddd'
     property color controlColor:    '#ffffff'
     property color controlColorHov: '#f0f0f0'
     property color controlColorHl:  '#d0d0d0'

@@ -14,7 +14,7 @@ import gloperate.ui 1.0
 Item
 {
     // Style
-    property Item style: styleDark
+    property Item style: styleLight
 
     // Available styles
     readonly property var styles: [
