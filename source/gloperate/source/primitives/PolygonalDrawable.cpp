@@ -24,7 +24,11 @@ namespace gloperate
 
 
 PolygonalDrawable::PolygonalDrawable(const PolygonalGeometry & geometry)
+: m_materialIndex(0)
 {
+    // Copy material index
+    m_materialIndex = geometry.materialIndex();
+
     // Create and copy index buffer
     m_indices = new globjects::Buffer;
     m_indices->setData(geometry.indices(), GL_STATIC_DRAW);
@@ -93,6 +97,11 @@ void PolygonalDrawable::draw()
     m_vao->bind();
     m_vao->drawElements(GL_TRIANGLES, m_size, GL_UNSIGNED_INT, nullptr);
     m_vao->unbind();
+}
+
+unsigned int PolygonalDrawable::materialIndex() const
+{
+    return m_materialIndex;
 }
 
 
