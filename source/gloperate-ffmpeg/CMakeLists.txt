@@ -6,7 +6,7 @@
 # find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-# find_package(libzeug REQUIRED)
+find_package(libzeug REQUIRED)
 find_package(FFMPEG)
 
 
@@ -41,10 +41,12 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/VideoEncoder.h
+    ${include_path}/VideoTool.h
 )
 
 set(sources
     ${source_path}/VideoEncoder.cpp
+    ${source_path}/VideoTool.cpp
 )
 
 # Group source files
@@ -128,7 +130,7 @@ target_link_libraries(${target}
     PRIVATE
     ${FFMPEG_LIBRARIES}
     cpplocate::cpplocate
-    # libzeug::iozeug
+    libzeug::signalzeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
