@@ -34,7 +34,9 @@ MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2
 , m_button(button)
 , m_wheelDelta(glm::vec2(.0f, .0f))
 {
-
+    assert(type == Type::MouseMove ||
+           type == Type::MouseButtonPress ||
+           type == Type::MouseButtonRelease);
 }
 
 MouseEvent::MouseEvent(InputEvent::Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::vec2 wheelDelta)
@@ -43,7 +45,7 @@ MouseEvent::MouseEvent(InputEvent::Type type, AbstractDevice * dispatchingDevice
 , m_button(0)
 , m_wheelDelta(wheelDelta)
 {
-
+    assert(type == Type::MouseWheelScroll);
 }
 
 int MouseEvent::x() const
@@ -76,6 +78,8 @@ ButtonEvent::ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const st
 : InputEvent(type, dispatchingDevice)
 , m_description(description)
 {
+    assert(type == Type::ButtonPress ||
+           type == Type::ButtonRelease);
 
 }
 
