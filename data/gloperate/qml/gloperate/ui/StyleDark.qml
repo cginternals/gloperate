@@ -22,12 +22,16 @@ Item
     // Panels and controls
     property color backgroundColor: '#1a1d23'
     property color windowColor:     '#444444'
+    property color windowColorAlt:  '#2a2d33'
     property color controlColor:    '#1a1d23'
 
     // Borders
-    property color borderColor:     '#1a1d23'
-    property int   borderWidth:     0
+    property color borderColor:     '#000000'
+    property int   borderWidth:     1
     property real  borderRadius:    0
+
+    // Forms
+    property real  formHeight:      24
 
     // Fonts
     property int   fontSizeHuge:    32
@@ -37,6 +41,7 @@ Item
     property int   fontSizeTiny:    12
 
     // Padding sizes
+    property real  paddingHuge:     50
     property real  paddingLarge:    12
     property real  paddingMedium:   8
     property real  paddingSmall:    4
@@ -58,14 +63,23 @@ Item
     property color pageColor:                  backgroundColor  // Page background color
     property real  pagePadding:                paddingSmall     // Page padding (space between border and page)
     property real  pageSpacing:                paddingSmall     // Page spacing (space between items on the page)
+    property real  dialogPadding:              paddingHuge      // Padding between page and dialog
 
     // Panels
     property color panelColor:                 windowColor      // Panel background color
+    property color panelColorAlt:              windowColorAlt   // Panel alternative background color
     property color panelBorderColor:           borderColor      // Panel border color
     property int   panelBorderWidth:           borderWidth      // Panel border width
     property real  panelBorderRadius:          borderRadius     // Panel border radius (round edges)
     property real  panelPadding:               paddingSmall     // Panel padding (space between border and items)
     property real  panelSpacing:               paddingSmall     // Panel spacing (space between items on a panel)
+
+    // Panel items
+    property color panelItemColor:             windowColorAlt   // Panel item color (default)
+    property color panelItemColorDisabled:     controlColor     // Panel item color (disabled)
+    property color panelItemColorHighlighted:  controlColor     // Panel item color (highlighted)
+    property color panelItemColorHover:        controlColor     // Panel item color (hovered)
+    property color panelItemColorPressed:      controlColor     // Panel item color (pressed)
 
     // Controls
     property color ctrlColor:                  controlColor     // Control background color (default)
@@ -80,7 +94,7 @@ Item
     property color ctrlBorderColorHover:       borderColor      // Control border color (hovered)
     property color ctrlBorderColorPressed:     borderColor      // Control border color (pressed)
 
-    property int   ctrlBorderWidth:            borderWidth      // Control border width
+    property int   ctrlBorderWidth:            0                // Control border width
     property real  ctrlRadius:                 borderRadius     // Control border radius (round edges)
     property real  ctrlPadding:                paddingSmall     // Control padding (space between border and items)
     property real  ctrlSpacing:                paddingSmall     // Control spacing (space between items on the control)
@@ -113,10 +127,22 @@ Item
     property color linkColorHover:             primaryColor     // Link color (hovered)
     property color linkColorPressed:           pressedColor     // Link color (pressed)
 
+    // Forms
+    property real  formControlHeight:          formHeight       // Height of form controls (e.g., input fields)
+
 
     //
     // Functions
     //
+
+    function getPanelItemColor(enabled, highlighted, hover, pressed)
+    {
+             if (!enabled)    return panelItemColorDisabled;
+        else if (pressed)     return panelItemColorPressed;
+        else if (hover)       return panelItemColorHover;
+        else if (highlighted) return panelItemColorHighlighted;
+        else                  return panelItemColor;
+    }
 
     function getControlColor(enabled, highlighted, hover, pressed)
     {

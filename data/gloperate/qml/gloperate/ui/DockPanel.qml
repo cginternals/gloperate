@@ -12,11 +12,14 @@ Panel
 {
     id: panel
 
-    property bool   open:       true
     property real   status:     1.0
     property string iconOpen:   ''
     property string iconClosed: ''
     property real   openTime:   600
+
+    readonly property bool open:       (status > 0.0)
+    readonly property real iconWidth:  icon.implicitWidth
+    readonly property real iconHeight: icon.implicitHeight
 
     function openPanel()
     {
@@ -46,14 +49,13 @@ Panel
         anchors.right:   parent.right
         anchors.top:     parent.top
         anchors.margins: Ui.style.panelPadding
+        z:               100
         icon:            panel ? iconOpen : iconClosed
 
         onClicked:
         {
-            panel.open = !panel.open;
-
-            if (panel.open) panel.openPanel();
-            else            panel.hidePanel();
+            if (panel.open) panel.hidePanel();
+            else            panel.openPanel();
         }
     }
 }
