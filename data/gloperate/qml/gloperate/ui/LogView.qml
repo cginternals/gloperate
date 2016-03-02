@@ -10,7 +10,12 @@ import gloperate.ui 1.0
 */
 ScrollArea
 {
-    contentHeight: content.height
+    id: panel
+
+    property var log: [ 'Log', 'Log', 'Log', 'Log', 'Log', 'Log', 'Log', 'Log',
+                        'Log', 'Log', 'Log', 'Log', 'Log', 'Log', 'Log', 'Log' ]
+
+    contentHeight: content.height + 2 * Ui.style.ctrlPadding
 
     Rectangle
     {
@@ -30,16 +35,14 @@ ScrollArea
 
         Repeater
         {
-            model: 200
-            width: parent.width
-            height: 32
+            model: panel.log.length
 
             Label
             {
                 id: text
 
-                width: content.width
-                text:  "Log Message"
+                width: parent.width
+                text:  panel.log[index]
             }
         }
     }

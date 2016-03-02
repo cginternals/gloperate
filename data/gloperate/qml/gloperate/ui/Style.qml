@@ -34,6 +34,9 @@ Item
     property int   borderWidth:     1
     property real  borderRadius:    3
 
+    // Forms
+    property real  formHeight:      24
+
     // Fonts
     property int   fontSizeHuge:    32
     property int   fontSizeLarge:   20
@@ -127,6 +130,9 @@ Item
     property color linkColorDisabled:          disabledColor    // Link color (disabled)
     property color linkColorHover:             highlightColor   // Link color (hovered)
     property color linkColorPressed:           pressedColor     // Link color (pressed)
+
+    // Forms
+    property real  formControlHeight:          formHeight       // Height of form controls (e.g., input fields)
 
 
     //

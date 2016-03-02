@@ -12,6 +12,8 @@ Item
 {
     id: panel
 
+    property var log: []
+
     Rectangle
     {
         anchors.top:          parent.top
@@ -40,14 +42,14 @@ Item
                 {
                     width: parent.width
 
-                    model: 200
+                    model: panel.log.length
 
                     Label
                     {
                         id: text
 
                         width: content.width
-                        text:  "Command"
+                        text:  panel.log[index]
                     }
                 }
             }
@@ -60,6 +62,15 @@ Item
 
         anchors.bottom:  parent.bottom
         width:           parent.width
-        height:          24
+        height:          Ui.style.formControlHeight
+
+        onAccepted:
+        {
+            var log = panel.log;
+            log.push(text);
+            panel.log = log;
+
+            text = '';
+        }
     }
 }

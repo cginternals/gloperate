@@ -14,6 +14,7 @@ Item
     id: textInput
 
     signal textEdited(string text)
+    signal accepted()
 
     property string text:            ''
     property string placeholderText: ''
@@ -38,6 +39,11 @@ Item
                 textEdited(text);
                 textInput.text = text;
             }
+        }
+
+        onAccepted:
+        {
+            textInput.accepted();
         }
     }
 }
