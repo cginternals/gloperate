@@ -23,6 +23,7 @@ public:
       , MouseButtonPress
       , MouseButtonRelease
       , MouseWheelScroll
+      , SpatialAxis
     };
 
 public:
@@ -63,6 +64,17 @@ public:
 
 protected:
     std::string m_description;
+};
+
+class GLOPERATE_API AxisEvent : public InputEvent
+{
+public:
+    AxisEvent(Type type, AbstractDevice * dispatchingDevice, glm::mat3 value);
+    const glm::mat3& value() const;
+    virtual std::string asString() const override;
+
+protected:
+    glm::mat3 m_value;
 };
 
 } //namespace gloperate
