@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include <vector>
-#include <memory>
+#include <gloperate/gloperate_api.h>
 
 namespace gloperate
 {
