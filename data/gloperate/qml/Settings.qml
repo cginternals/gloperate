@@ -4,9 +4,9 @@ import gloperate.ui 1.0
 
 
 /**
-*  ConfigDialog
+*  Settings
 *
-*  Configuration dialog
+*  Settings dialog
 */
 DockPanel
 {
@@ -23,9 +23,10 @@ DockPanel
 
     property int selected: 0
 
+    // Left pane
     Rectangle
     {
-        id: left
+        id: leftPane
 
         anchors.left:   parent.left
         anchors.top:    parent.top
@@ -38,11 +39,11 @@ DockPanel
         {
             anchors.fill: parent
 
-            contentHeight: col.height
+            contentHeight: leftCol.height
 
             Column
             {
-                id: col
+                id: leftCol
 
                 anchors.left:  parent.left
                 anchors.right: parent.right
@@ -69,5 +70,47 @@ DockPanel
                 }
             }
         }
+    }
+
+    // Page 'General'
+    SettingsGeneral
+    {
+        id: pageGeneral
+
+        anchors.left:   leftPane.right
+        anchors.right:  parent.right
+        anchors.top:    parent.top
+        anchors.bottom: parent.bottom
+
+        visible:   panel.pages[panel.selected].text == 'General'
+        topMargin: panel.iconHeight + 2 * Ui.style.panelPadding
+    }
+
+    // Page 'Input'
+    SettingsInput
+    {
+        id: pageInput
+
+        anchors.left:   leftPane.right
+        anchors.right:  parent.right
+        anchors.top:    parent.top
+        anchors.bottom: parent.bottom
+
+        visible:   panel.pages[panel.selected].text == 'Input'
+        topMargin: panel.iconHeight + 2 * Ui.style.panelPadding
+    }
+
+    // Page 'Plugins'
+    SettingsPlugins
+    {
+        id: pagePlugins
+
+        anchors.left:   leftPane.right
+        anchors.right:  parent.right
+        anchors.top:    parent.top
+        anchors.bottom: parent.bottom
+
+        visible:   panel.pages[panel.selected].text == 'Plugins'
+        topMargin: panel.iconHeight + 2 * Ui.style.panelPadding
     }
 }

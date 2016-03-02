@@ -37,11 +37,15 @@ Page
               { name: 'worldinhand', text: 'WorldInHand', icon: '0021-video-camera.png', enabled: false },
               { name: 'orbiter',     text: 'Orbiter',     icon: '0021-video-camera.png', enabled: false },
               { name: 'flight',      text: 'Flight',      icon: '0021-video-camera.png', enabled: false }
-            ] }
+            ] },
+          { name: 'test', text: 'Test', icon: '0023-pacman.png', enabled: true }
         ];
 
         onItemClicked: // (menu, name)
         {
+            if (menu == 'test') {
+                welcome.openPanel();
+            }
         }
     }
 
@@ -57,7 +61,7 @@ Page
         items: [
           { name: 'settings', text: 'Settings', icon: '0149-cog.png', enabled: true,
             items: [
-              { name: 'preferences', text: 'Preferences', icon: '0150-cogs.png', enabled: false },
+              { name: 'preferences', text: 'Preferences', icon: '0150-cogs.png', enabled: true },
               { name: 'debug',       text: 'Debug',       icon: '0153-aid-kit.png' }
             ] },
           { name: 'theme', text: 'Theme', icon: '0207-eye.png', enabled: true,
@@ -69,6 +73,11 @@ Page
             if (menu == 'settings' && name == 'debug')
             {
                 Ui.debugMode = !Ui.debugMode;
+            }
+
+            if (menu == 'settings' && name == 'preferences')
+            {
+                settings.openPanel();
             }
 
             if (menu == 'theme' && name != '')
@@ -92,5 +101,29 @@ Page
 
             return styles;
         }
+    }
+
+    // Welcome dialog
+    WelcomeDialog
+    {
+        id: welcome
+
+        anchors.fill:    parent
+        anchors.margins: Ui.style.dialogPadding
+
+        visible: open
+        status:  0.0
+    }
+
+    // Settings dialog
+    Settings
+    {
+        id: settings
+
+        anchors.fill:    parent
+        anchors.margins: Ui.style.dialogPadding
+
+        visible: open
+        status:  0.0
     }
 }
