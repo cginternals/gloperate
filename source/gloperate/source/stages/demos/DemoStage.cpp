@@ -75,8 +75,10 @@ DemoStage::~DemoStage()
 {
 }
 
-void DemoStage::onContextInit(AbstractGLContext *)
+void DemoStage::onContextInit(AbstractGLContext * context)
 {
+    if (!context) return;
+    
     globjects::init();
 
     createAndSetupCamera();
