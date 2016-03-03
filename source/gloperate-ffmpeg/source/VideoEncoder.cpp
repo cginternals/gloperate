@@ -154,7 +154,7 @@ void VideoEncoder::initEncoding(const std::string & filename)
     avformat_write_header(m_context, NULL);
 }
 
-void VideoEncoder::putFrame(gloperate::Image image)
+void VideoEncoder::putFrame(const gloperate::Image & image)
 {
     if (image.format() == gloperate::Image::Format::RGB24)
     {
@@ -164,7 +164,7 @@ void VideoEncoder::putFrame(gloperate::Image image)
     }
 }
 
-void VideoEncoder::putFrame(char * data, int width, int height)
+void VideoEncoder::putFrame(const char * data, int width, int height)
 {
     // Put input image into picture structure
     AVPicture inputPicture;

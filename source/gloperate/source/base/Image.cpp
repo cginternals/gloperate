@@ -25,7 +25,7 @@ Image::Image()
 Image::Image(const Image & other)
 : Image()
 {
-    setData(other.cdata(), other.width(), other.height(), other.format());
+    setData(other.data(), other.width(), other.height(), other.format());
 }
 
 Image::Image(Image && other)
@@ -34,19 +34,19 @@ Image::Image(Image && other)
     swap(*this, other);
 }
 
-Image::Image(const int width, const int height, const Image::Format format)
+Image::Image(int width, int height, Image::Format format)
 : Image()
 {
     createBuffer(width, height, format);
 }
 
-Image::Image(const char * data, const int width, const int height, const Image::Format format)
+Image::Image(const char * data, int width, int height, Image::Format format)
 : Image()
 {
     setData(data, width, height, format);
 }
 
-Image::Image(char * data, const int width, const int height, const Image::Format format)
+Image::Image(char * data, int width, int height, Image::Format format)
 : Image()
 {
     setData(data, width, height, format);
@@ -64,7 +64,7 @@ Image& Image::operator=(Image other)
     return *this;
 }
 
-void Image::createBuffer(const int width, const int height, const Image::Format format)
+void Image::createBuffer(int width, int height, Image::Format format)
 {
     if (m_data) delete[] m_data;
 
@@ -79,7 +79,7 @@ void Image::createBuffer(const int width, const int height, const Image::Format 
     m_data = new char[m_dataSize];
 }
 
-void Image::setData(const char * data, const int width, const int height, const Image::Format format)
+void Image::setData(const char * data, int width, int height, Image::Format format)
 {
     if (m_data) delete[] m_data;
 
@@ -94,7 +94,7 @@ void Image::setData(const char * data, const int width, const int height, const 
     std::copy_n(data, m_dataSize, m_data);
 }
 
-void Image::setData(char * data, const int width, const int height, const Image::Format format)
+void Image::setData(char * data, int width, int height, Image::Format format)
 {
     if (m_data) delete[] m_data;
 
@@ -103,7 +103,7 @@ void Image::setData(char * data, const int width, const int height, const Image:
     m_data = m_dataSize ? data : nullptr;
 }
 
-void Image::setImageData(const int width, const int height, const Image::Format format)
+void Image::setImageData(int width, int height, Image::Format format)
 {
     m_dataSize = computeDataSize(width, height, format);
     m_width = width;
@@ -111,7 +111,7 @@ void Image::setImageData(const int width, const int height, const Image::Format 
     m_format = format;
 }
 
-int Image::computeDataSize(const int width, const int height, const Image::Format format)
+int Image::computeDataSize(int width, int height, Image::Format format)
 {
     if (width <= 0 || height <= 0)
     {
@@ -138,12 +138,12 @@ Image::Format Image::format() const
     return m_format;
 }
 
-char * Image::data() const
+char * Image::data()
 {
     return m_data;
 }
 
-const char * Image::cdata() const
+const char * Image::data() const
 {
     return m_data;
 }

@@ -49,6 +49,5 @@ int main(int argc, char * argv[])
     VideoTool videoTool("gloperate-videotool-example_out.avi", renderStage, window.context(), 30, 5, 1600, 900);
     videoTool.createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
 
-    // Run main loop
     return 0;
 }

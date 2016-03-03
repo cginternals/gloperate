@@ -55,7 +55,7 @@ public:
     *  @param[in] image
     *    Frame as gloperate::Image
     */
-    void putFrame(gloperate::Image image);
+    void putFrame(const gloperate::Image & image);
 
     /**
     *  @brief
@@ -70,7 +70,7 @@ public:
     *  @param[in] height
     *    Frame pixel height
     */
-    void putFrame(char * data, int width, int height);
+    void putFrame(const char * data, int width, int height);
 
     /**
     *  @brief

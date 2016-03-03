@@ -22,7 +22,7 @@ public:
     {
         Invalid,
         RGB24
-    };
+    }; // glbinding enum
 
 public:
     /**
@@ -54,7 +54,7 @@ public:
     *  @param[in] format
     *    Image format
     */
-    Image(const int width, const int height, const Image::Format format);
+    Image(int width, int height, Image::Format format);
 
     /**
     *  @brief
@@ -73,7 +73,7 @@ public:
     *    This allocates own memory, and copies the content of \p data.
     *    The ownership of \p data remains at the caller.
     */
-    Image(const char * data, const int width, const int height, const Image::Format format);
+    Image(const char * data, int width, int height, Image::Format format);
 
     /**
     *  @brief
@@ -92,7 +92,7 @@ public:
     *    This does NOT allocate own memory.
     *    The ownership of \p data is transferred to the Image object.
     */
-    Image(char * data, const int width, const int height, const Image::Format format);
+    Image(char * data, int width, int height, Image::Format format);
 
     /**
     *  @brief
@@ -123,7 +123,7 @@ public:
     *  @remarks
     *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand
     */
-    void createBuffer(const int width, const int height, const Image::Format format);
+    void createBuffer(int width, int height, Image::Format format);
 
     /**
     *  @brief
@@ -143,7 +143,7 @@ public:
     *    The ownership of \p data remains at the caller.
     *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand.
     */
-    void setData(const char * data, const int width, const int height, const Image::Format format);
+    void setData(const char * data, int width, int height, Image::Format format);
 
     /**
     *  @brief
@@ -163,7 +163,7 @@ public:
     *    The ownership of \p data is transferred to the Image object.
     *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand.
     */
-    void setData(char * data, const int width, const int height, const Image::Format format);
+    void setData(char * data, int width, int height, Image::Format format);
 
     // copy constructor, copy operator
 
@@ -192,7 +192,7 @@ public:
     *  @return
     *    Data pointer of stored image data (can be nullptr)
     */
-    char * data() const;
+    char * data();
 
     /**
     *  @brief
@@ -201,7 +201,7 @@ public:
     *  @return
     *    Const data pointer of stored image data (can be nullptr)
     */
-    const char * cdata() const;
+    const char * data() const;
 
     /**
     *  @brief
@@ -232,8 +232,8 @@ public:
 
 
 protected:
-    void setImageData(const int width, const int height, const Image::Format format);
-    static int computeDataSize(const int width, const int height, const Image::Format format);
+    void setImageData(int width, int height, Image::Format format);
+    static int computeDataSize(int width, int height, Image::Format format);
 
 
 protected:
