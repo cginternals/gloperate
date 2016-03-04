@@ -35,6 +35,11 @@ VideoTool::VideoTool(const std::string & filename, Stage * stage, AbstractGLCont
     auto vp = glm::ivec4(0, 0, m_width, m_height);
 
     m_surface = new RenderSurface(m_context, m_stage);
+
+    m_glContext->use();
+    m_surface->setOpenGLContext(m_glContext);
+    m_glContext->release();
+    
     m_surface->onViewport(vp, vp);
 }
 

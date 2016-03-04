@@ -30,7 +30,7 @@ int main(int argc, char * argv[])
     DemoStage * renderStage = new DemoStage(&viewerContext);
 
     // Create window
-    RenderWindow window(&viewerContext, renderStage);
+    RenderWindow window(&viewerContext);
     window.setTitle("gloperate viewer");
     window.setSize(1600, 900);
     if (!window.create())
