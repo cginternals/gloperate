@@ -51,7 +51,7 @@ std::string FontLoader::allLoadingTypes() const
 FontFace * FontLoader::load(const std::string & filename
     , const reflectionzeug::Variant &, const std::function<void(int, int)>) const
 {
-    auto in = std::ifstream(filename, std::ios::in | std::ios::binary);
+    std::ifstream in(filename, std::ios::in | std::ios::binary);
 
     if (!in)
         return nullptr;
@@ -65,7 +65,7 @@ FontFace * FontLoader::load(const std::string & filename
 
     while (std::getline(in, line))
     {
-        auto ss = std::stringstream();
+        std::stringstream ss;
         ss << line;
 
         if (!std::getline(ss, identifier, ' '))
