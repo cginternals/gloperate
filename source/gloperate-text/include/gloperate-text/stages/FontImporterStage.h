@@ -10,7 +10,7 @@
 #include <gloperate/pipeline/Data.h>
 
 #include <gloperate-text/gloperate-text_api.h>
-
+#include <gloperate-text/FontFace.h>
 
 namespace gloperate
 {
@@ -21,9 +21,7 @@ namespace gloperate
 namespace gloperate_text
 {
 
-
-class FontFace;
-class FontLoader;
+	class FontLoader;
 
 class GLOPERATE_TEXT_API FontImporterStage : public gloperate::AbstractStage
 {
