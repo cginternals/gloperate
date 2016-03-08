@@ -9,16 +9,15 @@
 #include <reflectionzeug/base/FilePath.h>
 //#include <reflectionzeug/base/Color.h>
 
+#include <gloperate/painter/AbstractViewportCapability.h>
+#include <gloperate/painter/AbstractTargetFramebufferCapability.h>
 #include <gloperate/pipeline/AbstractPipeline.h>
 #include <gloperate/pipeline/Data.h>
-
+#include <gloperate/resources/ResourceManager.h>
 
 namespace gloperate
 {
-    class AbstractTargetFramebufferCapability;
-    class AbstractViewportCapability;
     class AbstractVirtualTimeCapability;
-    class ResourceManager;
 }
 
 namespace gloperate_text

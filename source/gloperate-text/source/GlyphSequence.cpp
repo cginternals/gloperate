@@ -127,7 +127,7 @@ void GlyphSequence::setLineAnchor(const LineAnchor anchor)
 
 const char32_t & GlyphSequence::lineFeed()
 {
-    static const auto LF = static_cast<char32_t>('\u000A');
+    static const auto LF = static_cast<char32_t>('\0A');
     return LF;
 }
 
