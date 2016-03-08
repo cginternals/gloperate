@@ -17,7 +17,7 @@ namespace gloperate_text
 
 const char32_t & Typesetter::lineFeed()
 {
-    static const auto LF = static_cast<char32_t>('\0A');
+    static const auto LF = static_cast<char32_t>('\x0A');
     return LF;
 }
 
@@ -140,7 +140,7 @@ inline std::u32string::const_iterator Typesetter::typeset_forward(
     // setup common delimiters 
     // Note: u32string::find outperforms set::count here (tested)
 
-	static const auto delimiters = std::u32string({ '\0A', ' ', ',', '.', '-', '/', '(', ')', '[', ']', '<', '>' });
+	static const auto delimiters = std::u32string({ '\x0A', ' ', ',', '.', '-', '/', '(', ')', '[', ']', '<', '>' });
 
     const auto iBegin = sequence.string().cbegin();
     const auto iEnd = sequence.string().cend();
