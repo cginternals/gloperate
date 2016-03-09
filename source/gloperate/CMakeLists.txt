@@ -65,6 +65,9 @@ set(headers
     ${include_path}/input/AbstractDeviceProvider.h
     ${include_path}/input/AbstractDevice.h
     ${include_path}/input/InputEvent.h
+    ${include_path}/input/MouseEvent.h
+    ${include_path}/input/ButtonEvent.h
+    ${include_path}/input/AxisEvent.h
     ${include_path}/input/MouseDevice.h
     ${include_path}/input/KeyboardDevice.h
 )
@@ -97,6 +100,9 @@ set(sources
     ${source_path}/input/AbstractDeviceProvider.cpp
     ${source_path}/input/AbstractDevice.cpp
     ${source_path}/input/InputEvent.cpp
+    ${source_path}/input/MouseEvent.cpp
+    ${source_path}/input/ButtonEvent.cpp
+    ${source_path}/input/AxisEvent.cpp
     ${source_path}/input/MouseDevice.cpp
     ${source_path}/input/KeyboardDevice.cpp
 )
