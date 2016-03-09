@@ -9,6 +9,13 @@ namespace gloperate
 
 class InputManager;
 
+
+/**
+*  @brief
+*    An Interface for devices
+*
+*    This is a virtual interface for Devices (to be held by an InputManager)
+*/
 class GLOPERATE_API AbstractDevice
 {
 public:
@@ -29,7 +36,7 @@ public:
 
     /**
      * @brief
-     *   Poll the current state of the Device and fire appropriate Signals
+     *   Polls the current state of the Device and dispatches appropriate Events
      */
     virtual void update() = 0;
 
