@@ -39,6 +39,7 @@ public:
     /**
     *  @brief
     *    Register an eventConsumer to the InputManager
+    *
     *  @param[in] consumer
     *    The consumer to register to the InputManager (must NOT be null)
     */
@@ -47,6 +48,7 @@ public:
     /**
     *  @brief
     *    Deregister an eventConsumer from the InputManager
+    *
     *  @param[in] consumer
     *    The consumer to deregister from the InputManager (must NOT be null)
     */
@@ -55,14 +57,16 @@ public:
     /**
     *  @brief
     *    Add a device to the InputManager
+    *
     *  @param[in] device
     *    The device to add to the InputManager (must NOT be null)
     */
     void addDevice(AbstractDevice * device);
 
     /**
-     * @brief onEvent
-     *   Forwards the Event to all registered Consumers
+     * @brief
+     *   Forwards an Event to all registered Consumers
+     *
      * @param event
      *   The Event to forward
      */

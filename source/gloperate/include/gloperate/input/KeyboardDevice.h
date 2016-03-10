@@ -31,7 +31,29 @@ public:
      */
     virtual void update() override;
 
+    /**
+     * @brief
+     *   Generate a ButtonEvent of type ButtonPress
+     *
+     * @param[in] key
+     *   The key that was pressed
+     *
+     * @param[in] modifier
+     *   The modifiers that apply to the key
+     */
     void keyPress(int key, int modifier);
+
+
+    /**
+     * @brief
+     *   Generate a ButtonEvent of type ButtonRelease
+     *
+     * @param[in] key
+     *   The key that was released
+     *
+     * @param[in] modifier
+     *   The modifiers that apply to the key
+     */
     void keyRelease(int key, int modifier);
 };
 

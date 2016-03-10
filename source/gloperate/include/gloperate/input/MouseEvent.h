@@ -14,16 +14,16 @@ public:
      *   Constructor
      *
      * @param[in] type
-     *   The type of the AxisEvent (must be either of InputEvent::Type::MouseButtonPress,
+     *   The type of the MouseEvent (must be either of InputEvent::Type::MouseButtonPress,
      *   InputEvent::Type::MouseButtonRelease or InputEvent::Type::MouseMove)
      *
      * @param[in] dispatchingDevice
      *   Pointer to the device that generated the event (must NOT be null)
      *
-     * @param pos
+     * @param[in] pos
      *   The current position of the Mouse
      *
-     * @param button
+     * @param[in] button
      *   The button that was pressed or released (according to gloperate::MouseButton)
      */
     MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, int button = 0);
@@ -38,10 +38,10 @@ public:
      * @param[in] dispatchingDevice
      *   Pointer to the device that generated the event (must NOT be null)
      *
-     * @param pos
+     * @param[in] pos
      *   The current position of the Mouse
      *
-     * @param wheelDelta
+     * @param[in] wheelDelta
      *   The delta of the mouse wheel
      */
     MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::vec2 wheelDelta);
@@ -72,7 +72,7 @@ public:
 
 
     /**
-     * @brief asString
+     * @brief
      *   A getter for the description of the Event as a string
      * @return
      *   A string describing the event

@@ -14,7 +14,7 @@ public:
      *   Constructor
      *
      * @param[in] type
-     *   The type of the Event (must be either of InputEvent::Type::ButtonPress or InputEvent::Type::ButtonRelease)
+     *   The type of the ButtonEvent (must be either of InputEvent::Type::ButtonPress or InputEvent::Type::ButtonRelease)
      *
      * @param[in] dispatchingDevice
      *   Pointer to the device that generated the event (must NOT be null)
@@ -26,7 +26,7 @@ public:
 
     /**
      * @brief
-     *   a getter for the description of the event
+     *   A getter for the description of the event
      *
      * @return
      *   A string decribing the pressed button
@@ -36,6 +36,7 @@ public:
     /**
      * @brief asString
      *   A getter for the description of the Event as a string
+     *
      * @return
      *   A string describing the event
      */
