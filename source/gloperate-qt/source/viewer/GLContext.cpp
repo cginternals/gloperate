@@ -33,7 +33,6 @@ GLContext::GLContext(QWindow * window, QOpenGLContext * context, bool takeOwners
     m_handle = GLContextUtils::tryFetchHandle();
 
     // Read context format
-    assert(isValid());
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context
