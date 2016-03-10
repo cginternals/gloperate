@@ -8,12 +8,88 @@ Page
 {
     id: page
 
-    // Renderer
-    RenderItem
+    // Left panel
+    DockPanel
     {
-        id: render
+        id: panelLeft
 
-        anchors.fill: parent
+        anchors.top:          page.top
+        anchors.bottom:       panelBottom.top
+        anchors.left:         page.left
+        anchors.topMargin:    Ui.style.pagePadding
+        anchors.bottomMargin: Ui.style.pagePadding
+        anchors.leftMargin:   Ui.style.pagePadding * status + (24 - width) * (1.0 - status)
+        width:                300
+
+        iconClosed: '0323-circle-right.png'
+        iconOpen:   '0325-circle-left.png'
+    }
+
+    // Bottom panel
+    DockPanel
+    {
+        id: panelBottom
+
+        anchors.left:         page.left
+        anchors.right:        page.right
+        anchors.bottom:       page.bottom
+        anchors.leftMargin:   Ui.style.pagePadding
+        anchors.rightMargin:  Ui.style.pagePadding
+        anchors.bottomMargin: Ui.style.pagePadding * status + (36 - height) * (1.0 - status)
+        height:               page.height / 3
+
+        iconClosed: '0322-circle-up.png'
+        iconOpen:   '0324-circle-down.png'
+
+        TabBar
+        {
+            id: tabs
+
+            anchors.top:     parent.top
+            anchors.left:    parent.left
+            anchors.margins: Ui.style.panelPadding
+
+            items: [
+                { name: 'output',    text: 'Output',    icon: '0035-file-text.png' },
+                { name: 'scripting', text: 'Scripting', icon: '0086-keyboard.png' }
+            ]
+
+            selectedItem: 'output'
+        }
+
+        LogView
+        {
+            anchors.left:    parent.left
+            anchors.right:   parent.right
+            anchors.top:     tabs.bottom
+            anchors.bottom:  parent.bottom
+            anchors.margins: Ui.style.panelPadding
+
+            visible: tabs.selectedItem == 'output'
+        }
+
+        ScriptConsole
+        {
+            anchors.left:    parent.left
+            anchors.right:   parent.right
+            anchors.top:     tabs.bottom
+            anchors.bottom:  parent.bottom
+            anchors.margins: Ui.style.panelPadding
+
+            visible: tabs.selectedItem == 'scripting'
+        }
+    }
+
+    // Main area
+    Item
+    {
+        id: main
+
+        anchors.left:    panelLeft.right
+        anchors.right:   page.right
+        anchors.top:     page.top
+        anchors.bottom:  panelBottom.top
+        anchors.margins: Ui.style.pagePadding
     }
 
     // Top-left menu
@@ -21,9 +97,9 @@ Page
     {
         id: menuLeft
 
-        anchors.left:    render.left
-        anchors.top:     parent.top
-        anchors.margins: Ui.style.pagePadding
+        anchors.left:    main.left
+        anchors.top:     main.top
+        anchors.margins: Ui.style.panelPadding
 
         items: [
           { name: 'stage', text: 'DemoStage', icon: '0190-menu.png', enabled: true,
@@ -54,8 +130,8 @@ Page
     {
         id: menuRight
 
-        anchors.right:   parent.right
-        anchors.top:     parent.top
+        anchors.right:   main.right
+        anchors.top:     main.top
         anchors.margins: Ui.style.pagePadding
 
         items: [
@@ -108,7 +184,7 @@ Page
     {
         id: welcome
 
-        anchors.fill:    parent
+        anchors.fill:    main
         anchors.margins: Ui.style.dialogPadding
 
         visible: open
@@ -120,10 +196,19 @@ Page
     {
         id: settings
 
-        anchors.fill:    parent
+        anchors.fill:    main
         anchors.margins: Ui.style.dialogPadding
 
         visible: open
         status:  0.0
+    }
+
+    // Renderer
+    RenderItem
+    {
+        id: render
+
+        anchors.fill: main
+        z:            -1
     }
 }

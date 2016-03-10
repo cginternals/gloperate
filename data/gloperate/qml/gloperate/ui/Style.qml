@@ -14,23 +14,28 @@ Item
     //
 
     // Main colors
-    property color primaryColor:    '#000000'
-    property color secondaryColor:  '#cccccc'
-    property color highlightColor:  '#4078c0'
-    property color pressedColor:    '#6098e0'
-    property color disabledColor:   '#999999'
+    property color primaryColor:     '#000000'
+    property color secondaryColor:   '#cccccc'
+    property color highlightColor:   '#4078c0'
+    property color pressedColor:     '#6098e0'
+    property color disabledColor:    '#999999'
 
     // Panels and controls
-    property color backgroundColor: '#ffffff'
-    property color windowColor:     '#44aaaaaa'
-    property color controlColor:    '#ffffff'
-    property color controlColorHov: '#f0f0f0'
-    property color controlColorHl:  '#d0d0d0'
+    property color backgroundColor:  '#ffffff'
+    property color windowColor:      '#dddddd'
+    property color windowColorAlt:   '#aaaaaa'
+    property color controlColor:     '#ffffff'
+    property color controlColorHov:  '#f0f0f0'
+    property color controlColorHl:   '#d0d0d0'
+    property color controlTextColor: '#222222'
 
     // Borders
     property color borderColor:     '#888888'
     property int   borderWidth:     1
     property real  borderRadius:    3
+
+    // Forms
+    property real  formHeight:      24
 
     // Fonts
     property int   fontSizeHuge:    32
@@ -40,6 +45,7 @@ Item
     property int   fontSizeTiny:    12
 
     // Padding sizes
+    property real  paddingHuge:     50
     property real  paddingLarge:    12
     property real  paddingMedium:   8
     property real  paddingSmall:    4
@@ -61,14 +67,23 @@ Item
     property color pageColor:                  backgroundColor  // Page background color
     property real  pagePadding:                paddingSmall     // Page padding (space between border and page)
     property real  pageSpacing:                paddingSmall     // Page spacing (space between items on the page)
+    property real  dialogPadding:              paddingHuge      // Padding between page and dialog
 
     // Panels
     property color panelColor:                 windowColor      // Panel background color
+    property color panelColorAlt:              windowColorAlt   // Panel alternative background color
     property color panelBorderColor:           borderColor      // Panel border color
     property int   panelBorderWidth:           borderWidth      // Panel border width
     property real  panelBorderRadius:          borderRadius     // Panel border radius (round edges)
     property real  panelPadding:               paddingSmall     // Panel padding (space between border and items)
     property real  panelSpacing:               paddingSmall     // Panel spacing (space between items on a panel)
+
+    // Panel items
+    property color panelItemColor:             windowColorAlt   // Panel item color (default)
+    property color panelItemColorDisabled:     controlColor     // Panel item color (disabled)
+    property color panelItemColorHighlighted:  controlColorHl   // Panel item color (highlighted)
+    property color panelItemColorHover:        controlColorHov  // Panel item color (hovered)
+    property color panelItemColorPressed:      controlColorHl   // Panel item color (pressed)
 
     // Controls
     property color ctrlColor:                  controlColor     // Control background color (default)
@@ -88,7 +103,7 @@ Item
     property real  ctrlPadding:                paddingSmall     // Control padding (space between border and items)
     property real  ctrlSpacing:                paddingSmall     // Control spacing (space between items on the control)
 
-    property color ctrlTextColor:              primaryColor     // Control text color (default)
+    property color ctrlTextColor:              controlTextColor // Control text color (default)
     property color ctrlTextColorDisabled:      disabledColor    // Control text color (disabled)
     property color ctrlTextColorHighlighted:   primaryColor     // Control text color (highlighted)
     property color ctrlTextColorHover:         highlightColor   // Control text color (hovered)
@@ -116,10 +131,22 @@ Item
     property color linkColorHover:             highlightColor   // Link color (hovered)
     property color linkColorPressed:           pressedColor     // Link color (pressed)
 
+    // Forms
+    property real  formControlHeight:          formHeight       // Height of form controls (e.g., input fields)
+
 
     //
     // Functions
     //
+
+    function getPanelItemColor(enabled, highlighted, hover, pressed)
+    {
+             if (!enabled)    return panelItemColorDisabled;
+        else if (pressed)     return panelItemColorPressed;
+        else if (hover)       return panelItemColorHover;
+        else if (highlighted) return panelItemColorHighlighted;
+        else                  return panelItemColor;
+    }
 
     function getControlColor(enabled, highlighted, hover, pressed)
     {

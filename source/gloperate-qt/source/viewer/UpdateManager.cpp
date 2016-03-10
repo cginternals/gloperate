@@ -22,7 +22,7 @@ UpdateManager::UpdateManager(gloperate::ViewerContext * viewerContext)
     );
 
     // Setup timer
-    m_timer.setSingleShot(true);
+    m_timer.setSingleShot(false);
     m_timer.start(0);
 
     // Start time measurement
@@ -45,9 +45,9 @@ void UpdateManager::onTimer()
     m_time.restart();
 
     // Update timing
-    if (m_viewerContext->update(delta))
+    if (!m_viewerContext->update(delta))
     {
-        m_timer.start(0);
+        m_timer.stop();
     }
 }
 

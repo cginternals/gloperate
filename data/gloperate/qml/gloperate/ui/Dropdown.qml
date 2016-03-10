@@ -60,6 +60,7 @@ Button
                 onClicked:
                 {
                     item.itemClicked(item.items[index].name);
+                    item.highlighted = false;
                 }
             }
         }

@@ -61,12 +61,14 @@ set(headers
     ${include_path}/viewer/QuickView.h
     ${include_path}/viewer/RenderItem.h
     ${include_path}/viewer/Utils.h
+    ${include_path}/viewer/ScriptContext.h
 )
 
 set(sources
     ${source_path}/viewer/QuickView.cpp
     ${source_path}/viewer/RenderItem.cpp
     ${source_path}/viewer/Utils.cpp
+    ${source_path}/viewer/ScriptContext.cpp
 )
 
 # Group source files
