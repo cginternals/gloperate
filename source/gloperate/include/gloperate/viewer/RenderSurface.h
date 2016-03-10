@@ -3,6 +3,7 @@
 
 
 #include <gloperate/viewer/Surface.h>
+#include <gloperate/viewer/input.h>
 
 
 namespace gloperate
@@ -10,6 +11,8 @@ namespace gloperate
 
 
 class Stage;
+class MouseDevice;
+class KeyboardDevice;
 
 
 /**
@@ -66,8 +69,8 @@ public:
     virtual void onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport) override;
     virtual void onBackgroundColor(float red, float green, float blue) override;
     virtual void onRender() override;
-    virtual void onKeyPress(int key) override;
-    virtual void onKeyRelease(int key) override;
+    virtual void onKeyPress(int key, int modifier) override;
+    virtual void onKeyRelease(int key, int modifier) override;
     virtual void onMouseMove(const glm::ivec2 & pos) override;
     virtual void onMousePress(int button, const glm::ivec2 & pos) override;
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
@@ -75,8 +78,10 @@ public:
 
 
 protected:
-    Stage         * m_renderStage; ///< Render stage that renders into the current context (can be null)
-    unsigned long   m_frame;       ///< Frame counter
+    Stage          * m_renderStage;    ///< Render stage that renders into the current context (can be null)
+    unsigned long    m_frame;          ///< Frame counter
+    MouseDevice    * m_mouseDevice;    ///< Device for Mouse Events
+    KeyboardDevice * m_keyboardDevice; ///< Device for Keyboard Events
 };
 
 

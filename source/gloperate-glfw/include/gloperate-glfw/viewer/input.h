@@ -22,5 +22,11 @@ GLOPERATE_GLFW_API gloperate::MouseButton fromGLFWMouseButton(int button);
 */
 GLOPERATE_GLFW_API gloperate::Key fromGLFWKeyCode(int key);
 
+/**
+*  @brief
+*    Convert GLFW modifier code into gloperate modifier code
+*/
+GLOPERATE_GLFW_API gloperate::KeyModifier fromGLFWModifier(int modifier);
+
 
 } // namespace gloperate_glfw

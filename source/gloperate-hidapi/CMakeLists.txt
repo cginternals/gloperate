@@ -1,110 +1,48 @@
 
-# 
-# External dependencies
-# 
+#
+# External libraries
+#
 
-find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
+find_package(HIDAPI REQUIRED)
 
 
-# 
-# Library name and options
-# 
+# Target Name
+set(target gloperate-hidapi)
+set(target_upper GLOPERATE_HIDAPI)
 
-# Target name
-set(target gloperate)
+# Build only if hidapi is available
+if (NOT HIDAPI_FOUND)
+    message("Library ${target} skipped: hidapi not found")
+    return()
+endif()
 
-# Exit here if required dependencies are not met
+
 message(STATUS "Lib ${target}")
 
-# Set API export file and macro
-string(TOUPPER ${target} target_upper)
+# SET API export file and macro
 set(feature_file "include/${target}/${target}_features.h")
-set(export_file  "include/${target}/${target}_api.h")
+set(export_file "include/${target}/${target}_api.h")
 set(export_macro "${target_upper}_API")
 
-
-# 
+#
 # Sources
-# 
+#
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
-set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
+set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/gloperate.h
-
-    ${include_path}/base/CachedValue.h
-    ${include_path}/base/CachedValue.hpp
-    ${include_path}/base/ChronoTimer.h
-    ${include_path}/base/AutoTimer.h
-
-    ${include_path}/viewer/AbstractContext.h
-    ${include_path}/viewer/AbstractGLContext.h
-    ${include_path}/viewer/AbstractGLContextFactory.h
-    ${include_path}/viewer/GLContextFormat.h
-    ${include_path}/viewer/GLContextUtils.h
-    ${include_path}/viewer/ViewerContext.h
-    ${include_path}/viewer/Surface.h
-    ${include_path}/viewer/RenderSurface.h
-    ${include_path}/viewer/TimeManager.h
-    ${include_path}/viewer/Timer.h
-
-    ${include_path}/pipeline/Stage.h
-
-    ${include_path}/rendering/Camera.h
-    
-    ${include_path}/stages/demos/DemoStage.h
-
-    ${include_path}/input/InputManager.h
-    ${include_path}/input/InputManager.h
-    ${include_path}/input/AbstractEventConsumer.h
-    ${include_path}/input/AbstractDeviceProvider.h
-    ${include_path}/input/AbstractDevice.h
-    ${include_path}/input/InputEvent.h
-    ${include_path}/input/MouseEvent.h
-    ${include_path}/input/ButtonEvent.h
-    ${include_path}/input/AxisEvent.h
-    ${include_path}/input/MouseDevice.h
-    ${include_path}/input/KeyboardDevice.h
+	${include_path}/SpaceNavigator.h
+    ${include_path}/HIDDeviceProvider.h
 )
 
 set(sources
-    ${source_path}/gloperate.cpp
-
-    ${source_path}/base/ChronoTimer.cpp
-    ${source_path}/base/AutoTimer.cpp
-
-    ${source_path}/viewer/AbstractContext.cpp
-    ${source_path}/viewer/AbstractGLContext.cpp
-    ${source_path}/viewer/AbstractGLContextFactory.cpp
-    ${source_path}/viewer/GLContextFormat.cpp
-    ${source_path}/viewer/GLContextUtils.cpp
-    ${source_path}/viewer/ViewerContext.cpp
-    ${source_path}/viewer/Surface.cpp
-    ${source_path}/viewer/RenderSurface.cpp
-    ${source_path}/viewer/TimeManager.cpp
-    ${source_path}/viewer/Timer.cpp
-
-    ${source_path}/pipeline/Stage.cpp
-
-    ${source_path}/rendering/Camera.cpp
-
-    ${source_path}/stages/demos/DemoStage.cpp
-
-    ${source_path}/input/InputManager.cpp
-    ${source_path}/input/AbstractEventConsumer.cpp
-    ${source_path}/input/AbstractDeviceProvider.cpp
-    ${source_path}/input/AbstractDevice.cpp
-    ${source_path}/input/InputEvent.cpp
-    ${source_path}/input/MouseEvent.cpp
-    ${source_path}/input/ButtonEvent.cpp
-    ${source_path}/input/AxisEvent.cpp
-    ${source_path}/input/MouseDevice.cpp
-    ${source_path}/input/KeyboardDevice.cpp
+	${source_path}/SpaceNavigator.cpp
+    ${source_path}/HIDDeviceProvider.cpp
 )
 
 # Group source files
@@ -112,7 +50,7 @@ set(header_group "Header Files (API)")
 set(source_group "Source Files")
 source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
     ${header_group} ${headers})
-source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
 
@@ -170,7 +108,8 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
-    ${GLM_INCLUDE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${PROJECT_SOURCE_DIR}/source/gloperate/include
 
     PUBLIC
 
@@ -187,12 +126,8 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    ${OPENGL_LIBRARIES}
-    cpplocate::cpplocate
-    libzeug::reflectionzeug
-    libzeug::iozeug
-    glbinding::glbinding
-    globjects::globjects
+    libzeug::signalzeug
+    ${META_PROJECT_NAME}::gloperate
 
     PUBLIC
     ${DEFAULT_LIBRARIES}

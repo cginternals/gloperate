@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <gloperate/viewer/TimeManager.h>
+#include <gloperate/input/InputManager.h>
 
 
 namespace gloperate
@@ -59,6 +60,18 @@ public:
     TimeManager * timeManager();
     //@}
 
+    //@{
+    /**
+    *  @brief
+    *    Get input manager
+    *
+    *  @return
+    *    Input manager (must NOT be null)
+    */
+    const InputManager * inputManager() const;
+    InputManager * inputManager();
+    //@}
+
     /**
     *  @brief
     *    Update timing
@@ -111,10 +124,10 @@ protected:
     void unregisterSurface(Surface * surface);
     //@}
 
-
 protected:
-    TimeManager            m_timeManager; ///< Manager for virtual time and timers
-    std::vector<Surface *> m_surfaces;    ///< List of active surfaces
+    TimeManager            m_timeManager;  ///< Manager for virtual time and timers
+    std::vector<Surface *> m_surfaces;     ///< List of active surfaces
+    InputManager           m_inputManager; ///< Manager for Devices, -Providers and InputEvents
 };
 
 

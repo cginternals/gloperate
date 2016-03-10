@@ -12,6 +12,7 @@ namespace gloperate
 
 ViewerContext::ViewerContext()
 : m_timeManager(this)
+, m_inputManager()
 {
 }
 
@@ -69,5 +70,15 @@ bool ViewerContext::update(float delta)
     return activeTimers;
 }
 
+const InputManager *ViewerContext::inputManager() const
+{
+    return &m_inputManager;
+}
+
+InputManager *ViewerContext::inputManager()
+{
+    return &m_inputManager;
+
+}
 
 } // namespace gloperate

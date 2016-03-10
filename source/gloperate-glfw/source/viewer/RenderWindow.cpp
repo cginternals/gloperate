@@ -116,14 +116,16 @@ void RenderWindow::onKeyPress(KeyEvent & event)
     }
 
     m_surface->onKeyPress(
-        fromGLFWKeyCode(event.key())
+        fromGLFWKeyCode(event.key()),
+        fromGLFWModifier(event.modifiers())
     );
 }
 
 void RenderWindow::onKeyRelease(KeyEvent & event)
 {
     m_surface->onKeyRelease(
-        fromGLFWKeyCode(event.key())
+        fromGLFWKeyCode(event.key()),
+        fromGLFWModifier(event.modifiers())
     );
 }
 
