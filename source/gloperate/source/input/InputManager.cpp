@@ -1,11 +1,22 @@
 
+#include <gloperate/input/InputManager.h>
+
 #include <cassert>
 
-#include <gloperate/input/InputManager.h>
 #include <gloperate/input/AbstractEventConsumer.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
+
+
+InputManager::InputManager()
+{
+}
+
+InputManager::~InputManager()
+{
+}
 
 void InputManager::registerConsumer(AbstractEventConsumer * consumer)
 {
@@ -29,11 +40,12 @@ void InputManager::onEvent(InputEvent * event)
 {
     assert(event != nullptr);
     m_events.emplace_back(std::unique_ptr<InputEvent>(event));
+
     for(auto consumer : m_consumers)
     {
         consumer->onEvent(event);
     }
 }
 
-} // namespace gloperate
 
+} // namespace gloperate

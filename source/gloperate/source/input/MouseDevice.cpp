@@ -1,28 +1,31 @@
 
 #include <gloperate/input/MouseDevice.h>
+
 #include <gloperate/input/MouseEvent.h>
 #include <gloperate/input/InputManager.h>
 
-gloperate::MouseDevice::MouseDevice(InputManager * inputManager, const std::string & deviceDescriptor)
+
+namespace gloperate
+{
+
+
+MouseDevice::MouseDevice(InputManager * inputManager, const std::string & deviceDescriptor)
 : AbstractDevice(inputManager, deviceDescriptor)
 {
-
 }
 
-gloperate::MouseDevice::~MouseDevice()
+MouseDevice::~MouseDevice()
 {
-
 }
 
-void gloperate::MouseDevice::update()
+void MouseDevice::update()
 {
-
 }
 
-void gloperate::MouseDevice::move(const glm::ivec2 & pos)
+void MouseDevice::move(const glm::ivec2 & pos)
 {
-    auto inputEvent = new gloperate::MouseEvent{
-        gloperate::InputEvent::Type::MouseButtonPress,
+    auto inputEvent = new MouseEvent{
+        InputEvent::Type::MouseButtonPress,
         this,
         pos
     };
@@ -30,41 +33,41 @@ void gloperate::MouseDevice::move(const glm::ivec2 & pos)
     m_inputManager->onEvent(inputEvent);
 }
 
-void gloperate::MouseDevice::buttonPress(int button, const glm::ivec2 & pos)
+void MouseDevice::buttonPress(int button, const glm::ivec2 & pos)
 {
-    auto inputEvent = new gloperate::MouseEvent{
-        gloperate::InputEvent::Type::MouseButtonPress,
+    auto inputEvent = new MouseEvent{
+        InputEvent::Type::MouseButtonPress,
         this,
         pos,
         button
     };
 
     m_inputManager->onEvent(inputEvent);
-
 }
 
-void gloperate::MouseDevice::buttonRelease(int button, const glm::ivec2 & pos)
+void MouseDevice::buttonRelease(int button, const glm::ivec2 & pos)
 {
-    auto inputEvent = new gloperate::MouseEvent{
-        gloperate::InputEvent::Type::MouseButtonRelease,
+    auto inputEvent = new MouseEvent{
+        InputEvent::Type::MouseButtonRelease,
         this,
         pos,
         button
     };
 
     m_inputManager->onEvent(inputEvent);
-
 }
 
-void gloperate::MouseDevice::wheelScroll(const glm::vec2 & delta, const glm::ivec2 & pos)
+void MouseDevice::wheelScroll(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
-    auto inputEvent = new gloperate::MouseEvent{
-        gloperate::InputEvent::Type::MouseWheelScroll,
+    auto inputEvent = new MouseEvent{
+        InputEvent::Type::MouseWheelScroll,
         this,
         pos,
         delta
     };
 
     m_inputManager->onEvent(inputEvent);
-
 }
+
+
+} // namespace gloperate

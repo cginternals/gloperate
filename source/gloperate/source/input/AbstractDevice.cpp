@@ -1,10 +1,14 @@
-#include <cassert>
 
 #include <gloperate/input/AbstractDevice.h>
 
+#include <cassert>
+
 #include <gloperate/input/InputManager.h>
 
-namespace gloperate{
+
+namespace gloperate
+{
+
 
 AbstractDevice::AbstractDevice(InputManager * inputManager, const std::string & deviceDescriptor)
 : m_inputManager(inputManager)
@@ -16,12 +20,12 @@ AbstractDevice::AbstractDevice(InputManager * inputManager, const std::string & 
 
 AbstractDevice::~AbstractDevice()
 {
-
 }
 
-const std::string &AbstractDevice::deviceDescriptor() const
+const std::string & AbstractDevice::deviceDescriptor() const
 {
     return m_deviceDescriptor;
 }
+
 
 } // namespace gloperate

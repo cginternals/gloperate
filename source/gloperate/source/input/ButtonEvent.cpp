@@ -1,7 +1,10 @@
 
 #include <gloperate/input/ButtonEvent.h>
 
-namespace gloperate{
+
+namespace gloperate
+{
+
 
 ButtonEvent::ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const std::string & description)
 : InputEvent(type, dispatchingDevice)
@@ -9,7 +12,6 @@ ButtonEvent::ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const st
 {
     assert(type == Type::ButtonPress ||
            type == Type::ButtonRelease);
-
 }
 
 std::string ButtonEvent::asString() const
@@ -17,4 +19,5 @@ std::string ButtonEvent::asString() const
     return m_description;
 }
 
-} //namespace gloperate
+
+} // namespace gloperate
