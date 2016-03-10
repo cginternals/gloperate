@@ -12,14 +12,14 @@ ScrollArea
 {
     id: panel
 
-    property var log: [ 'Log', 'Log', 'Log', 'Log', 'Log', 'Log', 'Log', 'Log',
-                        'Log', 'Log', 'Log', 'Log', 'Log', 'Log', 'Log', 'Log' ]
+    property var log: []
 
     contentHeight: content.height + 2 * Ui.style.ctrlPadding
 
     Rectangle
     {
-        anchors.fill: parent
+        width:  panel.width
+        height: Math.max(panel.height, parent.height)
 
         color: Ui.style.panelColorAlt
     }
