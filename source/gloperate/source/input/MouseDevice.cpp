@@ -1,6 +1,6 @@
 
 #include <gloperate/input/MouseDevice.h>
-#include <gloperate/input/InputEvent.h>
+#include <gloperate/input/MouseEvent.h>
 #include <gloperate/input/InputManager.h>
 
 gloperate::MouseDevice::MouseDevice(InputManager * inputManager, const std::string & deviceDescriptor)

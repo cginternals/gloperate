@@ -1,6 +1,6 @@
 
 #include <gloperate/input/KeyboardDevice.h>
-#include <gloperate/input/InputEvent.h>
+#include <gloperate/input/ButtonEvent.h>
 #include <gloperate/input/InputManager.h>
 
 gloperate::KeyboardDevice::KeyboardDevice(InputManager * inputManager, const std::string & deviceDescriptor)
