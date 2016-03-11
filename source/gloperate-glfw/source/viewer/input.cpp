@@ -36,5 +36,10 @@ gloperate::Key fromGLFWKeyCode(int key)
     return static_cast<gloperate::Key>(key);
 }
 
+gloperate::KeyModifier fromGLFWModifier(int modifier)
+{
+    //We are using the same modifier code table as GLFW
+    return static_cast<gloperate::KeyModifier>(modifier);
+}
 
 } // namespace gloperate_glfw

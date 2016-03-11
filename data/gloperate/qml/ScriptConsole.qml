@@ -67,7 +67,7 @@ Item
         onAccepted:
         {
             var log = panel.log;
-            log.push(text);
+            log.push(eval(text));
             panel.log = log;
 
             text = '';

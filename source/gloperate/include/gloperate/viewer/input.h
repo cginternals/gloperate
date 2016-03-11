@@ -31,6 +31,7 @@ enum MouseButton {
 *    Keyboard modifier keys
 */
 enum KeyModifier {
+    ModNone = 0x0000,
     ModShift = 0x0001,
     ModControl = 0x0002,
     ModAlt = 0x0004,
