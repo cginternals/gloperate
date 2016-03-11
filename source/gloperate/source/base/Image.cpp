@@ -6,6 +6,7 @@
 #include <algorithm>
 
 
+using namespace gl;
 using namespace globjects;
 
 
@@ -18,14 +19,17 @@ Image::Image()
 , m_dataSize(0)
 , m_width(0)
 , m_height(0)
-, m_format(Image::Format::Invalid)
+, m_channels(0)
+, m_typeSize(0)
+, m_format(GL_INVALID_ENUM)
+, m_type(GL_INVALID_ENUM)
 {
 }
 
 Image::Image(const Image & other)
 : Image()
 {
-    setData(other.data(), other.width(), other.height(), other.format());
+    setData(other.data(), other.width(), other.height(), other.format(), other.type());
 }
 
 Image::Image(Image && other)
@@ -34,22 +38,22 @@ Image::Image(Image && other)
     swap(*this, other);
 }
 
-Image::Image(int width, int height, Image::Format format)
+Image::Image(int width, int height, GLenum format, GLenum type)
 : Image()
 {
-    createBuffer(width, height, format);
+    createBuffer(width, height, format, type);
 }
 
-Image::Image(const char * data, int width, int height, Image::Format format)
+Image::Image(const char * data, int width, int height, GLenum format, GLenum type)
 : Image()
 {
-    setData(data, width, height, format);
+    setData(data, width, height, format, type);
 }
 
-Image::Image(char * data, int width, int height, Image::Format format)
+Image::Image(char * data, int width, int height, GLenum format, GLenum type)
 : Image()
 {
-    setData(data, width, height, format);
+    setData(data, width, height, format, type);
 }
 
 Image::~Image()
@@ -64,11 +68,11 @@ Image& Image::operator=(Image other)
     return *this;
 }
 
-void Image::createBuffer(int width, int height, Image::Format format)
+void Image::createBuffer(int width, int height, GLenum format, GLenum type)
 {
     if (m_data) delete[] m_data;
 
-    setImageData(width, height, format);
+    setImageData(width, height, format, type);
 
     if (m_dataSize == 0)
     {
@@ -79,11 +83,11 @@ void Image::createBuffer(int width, int height, Image::Format format)
     m_data = new char[m_dataSize];
 }
 
-void Image::setData(const char * data, int width, int height, Image::Format format)
+void Image::setData(const char * data, int width, int height, GLenum format, GLenum type)
 {
     if (m_data) delete[] m_data;
 
-    createBuffer(width, height, format);
+    createBuffer(width, height, format, type);
 
     if (m_data == nullptr)
     {
@@ -94,37 +98,54 @@ void Image::setData(const char * data, int width, int height, Image::Format form
     std::copy_n(data, m_dataSize, m_data);
 }
 
-void Image::setData(char * data, int width, int height, Image::Format format)
+void Image::setData(char * data, int width, int height, GLenum format, GLenum type)
 {
     if (m_data) delete[] m_data;
 
-    setImageData(width, height, format);
+    setImageData(width, height, format, type);
 
     m_data = m_dataSize ? data : nullptr;
 }
 
-void Image::setImageData(int width, int height, Image::Format format)
+void Image::setImageData(int width, int height, GLenum format, GLenum type)
 {
-    m_dataSize = computeDataSize(width, height, format);
     m_width = width;
     m_height = height;
+    m_channels = channels(format);
+    m_typeSize = typeSize(type);
+    m_dataSize = m_width * m_height * m_channels * m_typeSize;
     m_format = format;
+    m_type = type;
 }
 
-int Image::computeDataSize(int width, int height, Image::Format format)
+int Image::channels(GLenum format)
 {
-    if (width <= 0 || height <= 0)
+    switch (format)
     {
-        warning() << "Image dimensions invalid. computeDataSize() returns 0.";
-        return 0;
-    }
+        case GL_RGB:
+            return 3;
+        case GL_RGBA:
+            return 4;
 
-    if (format == Image::Format::RGB24)
+        default:
+        {
+            warning() << "Image format not supported. Using channel size 0.";
+            return 0;
+        }
+    }
+}
+
+int Image::typeSize(GLenum type)
+{
+    switch (type)
     {
-        return width * height * 3;
-    } else {
-        warning() << "Image format invalid. computeDataSize() returns 0.";
-        return 0;
+        case GL_UNSIGNED_BYTE: return 8;
+
+        default:
+        {
+            warning() << "Image type not supported. Using type size 0.";
+            return 0;
+        }
     }
 }
 
@@ -133,9 +154,14 @@ bool Image::isNull() const
     return m_data == nullptr;
 }
 
-Image::Format Image::format() const
+GLenum Image::format() const
 {
     return m_format;
+}
+
+GLenum Image::type() const
+{
+    return m_type;
 }
 
 char * Image::data()
@@ -158,6 +184,16 @@ int Image::height() const
     return m_height;
 }
 
+int Image::channels() const
+{
+    return m_channels;
+}
+
+int Image::typeSize() const
+{
+    return m_typeSize;
+}
+
 void swap(Image & first, Image & second) noexcept
 {
     using std::swap;
@@ -166,7 +202,10 @@ void swap(Image & first, Image & second) noexcept
     swap(first.m_dataSize, second.m_dataSize);
     swap(first.m_width, second.m_width);
     swap(first.m_height, second.m_height);
+    swap(first.m_channels, second.m_channels);
+    swap(first.m_typeSize, second.m_typeSize);
     swap(first.m_format, second.m_format);
+    swap(first.m_type, second.m_type);
 }
 
 

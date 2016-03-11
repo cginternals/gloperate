@@ -23,13 +23,13 @@ int main(int /*argc*/, char ** /*argv[]*/)
         static const int w(256);
         static const int h(256);
 
-        gloperate::Image image(w, h, gloperate::Image::Format::RGB24);
+        gloperate::Image image(w, h, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
         std::random_device rd;
         std::mt19937 generator(rd());
         std::poisson_distribution<> r(0.2);
 
-        for (int i = 0; i < w * h * 3; ++i) {
+        for (int i = 0; i < w * h * image.channels() * image.typeSize(); ++i) {
             image.data()[i] = static_cast<char>(255 - static_cast<char>(r(generator) * 255));
         }
 

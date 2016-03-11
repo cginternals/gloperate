@@ -44,7 +44,7 @@ void VideoTool::createVideo(std::function<void(int, int)> progress)
 {
     auto length = m_length * m_fps;
     
-    Image image(m_width, m_height, Image::Format::RGB24);
+    Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
     m_glContext->use();
     m_videoEncoder->initEncoding(m_filename);
@@ -54,7 +54,7 @@ void VideoTool::createVideo(std::function<void(int, int)> progress)
         m_context->update(m_timeDelta);
         m_surface->onRender();
 
-        gl::glReadPixels(0, 0, m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE, image.data());
+        gl::glReadPixels(0, 0, m_width, m_height, image.format(), image.type(), image.data());
     
         m_videoEncoder->putFrame(image);
         progress(i, length);

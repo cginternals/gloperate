@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <glbinding/gl/enum.h>
+
 #include <gloperate/gloperate_api.h>
 
 
@@ -17,13 +19,6 @@ namespace gloperate
 */
 class GLOPERATE_API Image
 {
-public:
-    enum Format
-    {
-        Invalid,
-        RGB24
-    }; // glbinding enum
-
 public:
     /**
     *  @brief
@@ -53,8 +48,10 @@ public:
     *    Image height
     *  @param[in] format
     *    Image format
+    *  @param[in] type
+    *    Image type
     */
-    Image(int width, int height, Image::Format format);
+    Image(int width, int height, gl::GLenum format, gl::GLenum type);
 
     /**
     *  @brief
@@ -68,12 +65,14 @@ public:
     *    Image height
     *  @param[in] format
     *    Image format
+    *  @param[in] type
+    *    Image type
     *
     *  @remarks
     *    This allocates own memory, and copies the content of \p data.
     *    The ownership of \p data remains at the caller.
     */
-    Image(const char * data, int width, int height, Image::Format format);
+    Image(const char * data, int width, int height, gl::GLenum format, gl::GLenum type);
 
     /**
     *  @brief
@@ -87,12 +86,14 @@ public:
     *    Image height
     *  @param[in] format
     *    Image format
+    *  @param[in] type
+    *    Image type
     *
     *  @remarks
     *    This does NOT allocate own memory.
     *    The ownership of \p data is transferred to the Image object.
     */
-    Image(char * data, int width, int height, Image::Format format);
+    Image(char * data, int width, int height, gl::GLenum format, gl::GLenum type);
 
     /**
     *  @brief
@@ -119,11 +120,13 @@ public:
     *    Image height
     *  @param[in] format
     *    Image format
+    *  @param[in] type
+    *    Image type
     *
     *  @remarks
     *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand
     */
-    void createBuffer(int width, int height, Image::Format format);
+    void createBuffer(int width, int height, gl::GLenum format, gl::GLenum type);
 
     /**
     *  @brief
@@ -137,13 +140,15 @@ public:
     *    Image height
     *  @param[in] format
     *    Image format
+    *  @param[in] type
+    *    Image type
     *
     *  @remarks
     *    This allocates own memory, and copies the content of \p data.
     *    The ownership of \p data remains at the caller.
     *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand.
     */
-    void setData(const char * data, int width, int height, Image::Format format);
+    void setData(const char * data, int width, int height, gl::GLenum format, gl::GLenum type);
 
     /**
     *  @brief
@@ -157,13 +162,15 @@ public:
     *    Image height
     *  @param[in] format
     *    Image format
+    *  @param[in] type
+    *    Image type
     *
     *  @remarks
     *    This does NOT allocate own memory.
     *    The ownership of \p data is transferred to the Image object.
     *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand.
     */
-    void setData(char * data, int width, int height, Image::Format format);
+    void setData(char * data, int width, int height, gl::GLenum format, gl::GLenum type);
 
     // copy constructor, copy operator
 
@@ -183,7 +190,16 @@ public:
     *  @return
     *    Format of stored image data
     */
-    Format format() const;
+    gl::GLenum format() const;
+
+    /**
+    *  @brief
+    *    Type getter
+    *
+    *  @return
+    *    Type of stored image data
+    */
+    gl::GLenum type() const;
 
     /**
     *  @brief
@@ -223,6 +239,24 @@ public:
 
     /**
     *  @brief
+    *    Get Number of channels
+    *
+    *  @return
+    *    Number of channels of stored image
+    */
+    int channels() const;
+
+    /**
+    *  @brief
+    *    Type size getter
+    *
+    *  @return
+    *    Size of the data type of stored image
+    */
+    int typeSize() const;
+
+    /**
+    *  @brief
     *    Swap function for copy-and-swap idiom
     *
     *  @remarks
@@ -232,16 +266,20 @@ public:
 
 
 protected:
-    void setImageData(int width, int height, Image::Format format);
-    static int computeDataSize(int width, int height, Image::Format format);
+    void setImageData(int width, int height, gl::GLenum format, gl::GLenum type);
+    static int channels(gl::GLenum format);
+    static int typeSize(gl::GLenum type);
 
 
 protected:
-    char * m_data;
-    int    m_dataSize;
-    int    m_width;
-    int    m_height;
-    Format m_format;
+    char *     m_data;
+    int        m_dataSize;
+    int        m_width;
+    int        m_height;
+    int        m_channels;
+    int        m_typeSize;
+    gl::GLenum m_format;
+    gl::GLenum m_type;
 };
 
 

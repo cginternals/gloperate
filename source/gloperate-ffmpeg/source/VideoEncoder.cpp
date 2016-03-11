@@ -156,11 +156,11 @@ void VideoEncoder::initEncoding(const std::string & filename)
 
 void VideoEncoder::putFrame(const gloperate::Image & image)
 {
-    if (image.format() == gloperate::Image::Format::RGB24)
+    if (image.format() == gl::GL_RGB)
     {
         putFrame(image.data(), image.width(), image.height());
     } else {
-        critical() << "Image format not supported";
+        critical() << "Image format not supported.";
     }
 }
 
