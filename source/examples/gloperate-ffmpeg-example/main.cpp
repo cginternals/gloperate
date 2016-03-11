@@ -29,7 +29,7 @@ int main(int /*argc*/, char ** /*argv[]*/)
         std::mt19937 generator(rd());
         std::poisson_distribution<> r(0.2);
 
-        for (int i = 0; i < w * h * image.channels() * image.typeSize(); ++i) {
+        for (int i = 0; i < w * h * image.channels() * image.bytes(); ++i) {
             image.data()[i] = static_cast<char>(255 - static_cast<char>(r(generator) * 255));
         }
 

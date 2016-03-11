@@ -248,12 +248,12 @@ public:
 
     /**
     *  @brief
-    *    Type size getter
+    *    Bytes getter
     *
     *  @return
-    *    Size of the data type of stored image
+    *    Number of bytes per channel
     */
-    int typeSize() const;
+    int bytes() const;
 
     /**
     *  @brief
@@ -268,7 +268,7 @@ public:
 protected:
     void setImageData(int width, int height, gl::GLenum format, gl::GLenum type);
     static int channels(gl::GLenum format);
-    static int typeSize(gl::GLenum type);
+    static int bytes(gl::GLenum type);
 
 
 protected:
@@ -277,7 +277,7 @@ protected:
     int        m_width;
     int        m_height;
     int        m_channels;
-    int        m_typeSize;
+    int        m_bytes;
     gl::GLenum m_format;
     gl::GLenum m_type;
 };

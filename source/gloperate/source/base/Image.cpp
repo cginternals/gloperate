@@ -20,7 +20,7 @@ Image::Image()
 , m_width(0)
 , m_height(0)
 , m_channels(0)
-, m_typeSize(0)
+, m_bytes(0)
 , m_format(GL_INVALID_ENUM)
 , m_type(GL_INVALID_ENUM)
 {
@@ -112,8 +112,8 @@ void Image::setImageData(int width, int height, GLenum format, GLenum type)
     m_width = width;
     m_height = height;
     m_channels = channels(format);
-    m_typeSize = typeSize(type);
-    m_dataSize = m_width * m_height * m_channels * m_typeSize;
+    m_bytes = bytes(type);
+    m_dataSize = m_width * m_height * m_channels * m_bytes;
     m_format = format;
     m_type = type;
 }
@@ -135,15 +135,15 @@ int Image::channels(GLenum format)
     }
 }
 
-int Image::typeSize(GLenum type)
+int Image::bytes(GLenum type)
 {
     switch (type)
     {
-        case GL_UNSIGNED_BYTE: return 8;
+        case GL_UNSIGNED_BYTE: return 1;
 
         default:
         {
-            warning() << "Image type not supported. Using type size 0.";
+            warning() << "Image type not supported. Using bytes per channel: 0.";
             return 0;
         }
     }
@@ -189,9 +189,9 @@ int Image::channels() const
     return m_channels;
 }
 
-int Image::typeSize() const
+int Image::bytes() const
 {
-    return m_typeSize;
+    return m_bytes;
 }
 
 void swap(Image & first, Image & second) noexcept
@@ -203,7 +203,7 @@ void swap(Image & first, Image & second) noexcept
     swap(first.m_width, second.m_width);
     swap(first.m_height, second.m_height);
     swap(first.m_channels, second.m_channels);
-    swap(first.m_typeSize, second.m_typeSize);
+    swap(first.m_bytes, second.m_bytes);
     swap(first.m_format, second.m_format);
     swap(first.m_type, second.m_type);
 }
