@@ -1,22 +1,23 @@
 
 #pragma once
 
+
 #include <gloperate/gloperate_api.h>
 
 namespace gloperate
 {
 
+
 class InputManager;
 class InputEvent;
+
 
 /**
 *  @brief:
 *     A Consumer of Events
 */
-
 class GLOPERATE_API AbstractEventConsumer
 {
-
 public:
     /**
      * @brief
@@ -50,4 +51,4 @@ protected:
 };
 
 
-} //namespace gloperate
+} // namespace gloperate

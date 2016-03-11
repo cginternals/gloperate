@@ -1,16 +1,20 @@
 
 #pragma once
 
+
 #include <string>
+
+#include <glm/glm.hpp>
 
 #include <gloperate/gloperate_api.h>
 #include <gloperate/viewer/input.h>
 
-#include <glm/glm.hpp>
 
 namespace gloperate{
 
+
 class AbstractDevice;
+
 
 /**
  * @brief
@@ -31,7 +35,6 @@ public:
     };
 
 public:
-
     /**
      * @brief
      *   Constructor
@@ -75,4 +78,4 @@ protected:
 };
 
 
-} //namespace gloperate
+} // namespace gloperate

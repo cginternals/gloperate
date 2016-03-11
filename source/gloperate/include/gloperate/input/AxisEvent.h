@@ -1,14 +1,17 @@
 
 #pragma once
 
+
 #include <gloperate/input/InputEvent.h>
 
-namespace gloperate{
+
+namespace gloperate
+{
+
 
 class GLOPERATE_API AxisEvent : public InputEvent
 {
 public:
-
     /**
      * @brief
      *   Constructor

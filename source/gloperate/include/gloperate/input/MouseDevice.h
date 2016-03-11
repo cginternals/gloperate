@@ -1,11 +1,16 @@
 
 #pragma once
 
-#include <gloperate/input/AbstractDevice.h>
-#include <gloperate/gloperate_api.h>
+
 #include <glm/glm.hpp>
 
-namespace gloperate{
+#include <gloperate/input/AbstractDevice.h>
+#include <gloperate/gloperate_api.h>
+
+
+namespace gloperate
+{
+
 
 class GLOPERATE_API MouseDevice : public AbstractDevice
 {
@@ -31,7 +36,6 @@ public:
      */
     virtual void update() override;
 
-
     /**
      * @brief
      *   Generate a MouseEvent of type MouseMove
@@ -40,7 +44,6 @@ public:
      *   The new position of the mouse
      */
     void move(const glm::ivec2 & pos);
-
 
     /**
      * @brief
@@ -79,4 +82,4 @@ public:
     void wheelScroll(const glm::vec2 & delta, const glm::ivec2 & pos);
 };
 
-} //namespace gloperate
+} // namespace gloperate

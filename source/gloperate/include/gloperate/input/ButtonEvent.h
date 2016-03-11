@@ -1,14 +1,17 @@
 
 #pragma once
 
+
 #include <gloperate/input/InputEvent.h>
 
-namespace gloperate{
+
+namespace gloperate
+{
+
 
 class GLOPERATE_API ButtonEvent : public InputEvent
 {
 public:
-
     /**
      * @brief
      *   Constructor
@@ -46,4 +49,4 @@ protected:
     std::string m_description;
 };
 
-} //namespace gloperate
+} // namespace gloperate

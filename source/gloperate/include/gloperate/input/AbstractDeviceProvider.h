@@ -1,13 +1,16 @@
 
 #pragma once
 
+
 #include <gloperate/gloperate_api.h>
 
 namespace gloperate
 {
 
+
 class AbstractDevice;
 class InputManager;
+
 
 class GLOPERATE_API AbstractDeviceProvider
 {
@@ -32,7 +35,6 @@ public:
 
 protected:
     InputManager * m_inputManager;
-
 };
 
-}
+} // namespace gloperate

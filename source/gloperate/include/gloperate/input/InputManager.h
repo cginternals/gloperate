@@ -12,9 +12,11 @@
 namespace gloperate
 {
 
+
 class AbstractEventConsumer;
 class AbstractDeviceProvider;
 class AbstractDevice;
+
 
 /**
 *  @brief
@@ -22,7 +24,6 @@ class AbstractDevice;
 */
 class GLOPERATE_API InputManager
 {
-
 public:
     /**
     *  @brief

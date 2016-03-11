@@ -1,14 +1,17 @@
 
 #pragma once
 
+
 #include <gloperate/input/InputEvent.h>
 
-namespace gloperate{
+
+namespace gloperate
+{
+
 
 class GLOPERATE_API MouseEvent : public InputEvent
 {
 public:
-
     /**
      * @brief
      *   Constructor
@@ -70,7 +73,6 @@ public:
      */
     glm::vec2 wheelDelta() const;
 
-
     /**
      * @brief
      *   A getter for the description of the Event as a string
@@ -85,4 +87,4 @@ protected:
     glm::vec2 m_wheelDelta;
 };
 
-} //namespace gloperate
+} // namespace gloperate

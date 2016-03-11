@@ -1,11 +1,15 @@
 
 #pragma once
 
-#include <gloperate/gloperate_api.h>
+
 #include <string>
+
+#include <gloperate/gloperate_api.h>
+
 
 namespace gloperate
 {
+
 
 class InputManager;
 
@@ -49,8 +53,10 @@ public:
     virtual const std::string& deviceDescriptor() const;
 
 protected:
-    InputManager * m_inputManager;
     std::string m_deviceDescriptor;
+
+    InputManager * m_inputManager;
+
 };
 
 }
