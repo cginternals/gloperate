@@ -18,7 +18,16 @@ class GLOPERATE_HIDAPI_API SpaceNavigator : public gloperate::AbstractDevice
 public:
     /**
      * @brief
-     *   Constructor
+     *   Constructor, this should only be invoked by the HIDDeviceProvider
+     *
+     * @param[in] inputManager
+     *   A pointer to the input manager that will relay the events
+     *
+     * @param deviceDescriptor
+     *   A string describing the device
+     *
+     * @param path
+     *   The path for HIDAPI to open the device
      */
     SpaceNavigator(gloperate::InputManager * inputManager, const std::string & deviceDescriptor, const std::string& path);
 
