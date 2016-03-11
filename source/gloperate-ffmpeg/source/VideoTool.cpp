@@ -4,7 +4,7 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/viewer/AbstractGLContext.h>
-#include <gloperate/pipeline/Stage.h>
+// #include <gloperate/pipeline/Stage.h>
 
 #include <globjects/base/baselogging.h>
 
@@ -19,12 +19,11 @@ namespace gloperate_ffmpeg
 {
 
 
-VideoTool::VideoTool(const std::string & filename, Stage * stage, AbstractGLContext * glContext, uint fps, uint length, uint width, uint height)
+VideoTool::VideoTool(const std::string & filename, RenderSurface * surface, uint fps, uint length, uint width, uint height)
 : m_videoEncoder(new VideoEncoder())
-, m_context(stage->viewerContext())
-, m_stage(stage)
-, m_surface(nullptr)
-, m_glContext(glContext)
+, m_context(surface->viewerContext())
+, m_surface(surface)
+, m_glContext(surface->openGLContext())
 , m_filename(filename)
 , m_fps(fps)
 , m_length(length)
@@ -34,18 +33,11 @@ VideoTool::VideoTool(const std::string & filename, Stage * stage, AbstractGLCont
 {
     auto vp = glm::ivec4(0, 0, m_width, m_height);
 
-    m_surface = new RenderSurface(m_context, m_stage);
-
-    m_glContext->use();
-    m_surface->setOpenGLContext(m_glContext);
-    m_glContext->release();
-    
     m_surface->onViewport(vp, vp);
 }
 
 VideoTool::~VideoTool()
 {
-    delete m_surface;
 }
 
 void VideoTool::createVideo(std::function<void(int, int)> progress)

@@ -15,7 +15,6 @@
 
 
 namespace gloperate {
-    class Stage;
     class ViewerContext;
     class RenderSurface;
     class AbstractGLContext;
@@ -53,8 +52,7 @@ public:
     *    Height (in pixels) of output video
     */
     VideoTool(const std::string & filename,
-              gloperate::Stage * stage,
-              gloperate::AbstractGLContext * glContext,
+              gloperate::RenderSurface * surface,
               uint fps,
               uint length,
               uint width,
@@ -79,7 +77,6 @@ public:
 protected:
     globjects::ref_ptr<VideoEncoder>  m_videoEncoder;
     gloperate::ViewerContext        * m_context;
-    gloperate::Stage                * m_stage;
     gloperate::RenderSurface        * m_surface;
     gloperate::AbstractGLContext    * m_glContext;
     std::string                       m_filename;

@@ -63,6 +63,15 @@ public:
     */
     gloperate::Stage * renderStage() const;
 
+     /**
+    *  @brief
+    *    Get render surface
+    *
+    *  @return
+    *    Render surface that is rendered into
+    */
+    gloperate::RenderSurface * renderSurface() const;
+
     /**
     *  @brief
     *    Set render stage

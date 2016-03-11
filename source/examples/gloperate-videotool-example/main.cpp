@@ -30,7 +30,7 @@ int main(int argc, char * argv[])
     DemoStage * renderStage = new DemoStage(&viewerContext);
 
     // Create window
-    RenderWindow window(&viewerContext);
+    RenderWindow window(&viewerContext, renderStage);
     window.setTitle("gloperate viewer");
     window.setSize(1600, 900);
     if (!window.create())
@@ -46,7 +46,7 @@ int main(int argc, char * argv[])
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
     window.context()->release();
 
-    VideoTool videoTool("gloperate-videotool-example_out.avi", renderStage, window.context(), 30, 5, 1600, 900);
+    VideoTool videoTool("gloperate-videotool-example_out.avi", window.renderSurface(), 30, 5, 1600, 900);
     videoTool.createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
 
     return 0;
