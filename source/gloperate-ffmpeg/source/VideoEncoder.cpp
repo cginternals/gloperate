@@ -26,12 +26,6 @@ extern "C" {
 #endif
 
 
-static const int C_STREAM_DURATION          = 5.0;
-static const int C_STREAM_FRAME_RATE        = 25;
-static const int C_STREAM_NB_FRAMES         = ((int)(C_STREAM_DURATION * C_STREAM_FRAME_RATE));
-static const AVPixelFormat C_STREAM_PIX_FMT = AV_PIX_FMT_YUV420P;
-
-
 using namespace globjects;
 
 
@@ -54,7 +48,7 @@ VideoEncoder::~VideoEncoder()
 {
 }
 
-void VideoEncoder::initEncoding(const std::string & filename)
+void VideoEncoder::initEncoding(const std::string & filename, int width, int height, int fps)
 {
     // Choose video format from file name
     AVOutputFormat * format = av_guess_format(NULL, filename.c_str(), NULL);
@@ -88,12 +82,12 @@ void VideoEncoder::initEncoding(const std::string & filename)
     m_videoStream->codec->codec_type    = AVMEDIA_TYPE_VIDEO;
     m_videoStream->codec->codec_id      = format->video_codec;
     m_videoStream->codec->bit_rate      = 400000;
-    m_videoStream->codec->width         = 352;
-    m_videoStream->codec->height        = 288;
+    m_videoStream->codec->width         = width;
+    m_videoStream->codec->height        = height;
     m_videoStream->codec->time_base.num = 1;
-    m_videoStream->codec->time_base.den = C_STREAM_FRAME_RATE;
+    m_videoStream->codec->time_base.den = fps;
     m_videoStream->codec->gop_size      = 12;
-    m_videoStream->codec->pix_fmt       = C_STREAM_PIX_FMT;
+    m_videoStream->codec->pix_fmt       = AV_PIX_FMT_YUV420P;
 
     // Some formats want stream headers to be separate
     if (m_context->oformat->flags & AVFMT_GLOBALHEADER) {

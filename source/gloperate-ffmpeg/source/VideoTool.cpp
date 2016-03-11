@@ -4,7 +4,6 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/viewer/AbstractGLContext.h>
-// #include <gloperate/pipeline/Stage.h>
 
 #include <globjects/base/baselogging.h>
 
@@ -47,7 +46,7 @@ void VideoTool::createVideo(std::function<void(int, int)> progress)
     Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
     m_glContext->use();
-    m_videoEncoder->initEncoding(m_filename);
+    m_videoEncoder->initEncoding(m_filename, m_width, m_height, m_fps);
     
     for (uint i = 0; i < length; ++i)
     {

@@ -46,7 +46,7 @@ public:
     *  @param[in] filename
     *    Filename for video file output
     */
-    void initEncoding(const std::string & filename);
+    void initEncoding(const std::string & filename, int width, int height, int fps);
 
     /**
     *  @brief

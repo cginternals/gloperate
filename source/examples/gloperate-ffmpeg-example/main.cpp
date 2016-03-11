@@ -14,15 +14,15 @@ using namespace gloperate_ffmpeg;
 
 int main(int /*argc*/, char ** /*argv[]*/)
 {
+    static const int w(256);
+    static const int h(256);
+        
     VideoEncoder * encoder = new VideoEncoder();
-    encoder->initEncoding("gloperate-ffmpeg-example_out.avi");
+    encoder->initEncoding("gloperate-ffmpeg-example_out.avi", w, h, 25);
 
     for (int i = 0; i < 100; ++i)
     {
         // Create procedural texture
-        static const int w(256);
-        static const int h(256);
-
         gloperate::Image image(w, h, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
         std::random_device rd;
