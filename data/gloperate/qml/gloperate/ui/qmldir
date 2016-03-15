@@ -21,6 +21,3 @@ TabBar        1.0 TabBar.qml
 ButtonBar     1.0 ButtonBar.qml
 PanelItem     1.0 PanelItem.qml
 TextField     1.0 TextField.qml
-
-LogView       1.0 LogView.qml
-ScriptConsole 1.0 ScriptConsole.qml

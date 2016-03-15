@@ -10,7 +10,9 @@
 #include <gloperate/viewer/input.h>
 
 
-namespace gloperate{
+namespace gloperate
+{
+
 
 
 class AbstractDevice;
@@ -36,44 +38,43 @@ public:
 
 public:
     /**
-     * @brief
-     *   Constructor
-     *
-     * @param[in] type
-     *   The type of the InputEvent
-     *
-     * @param[in] dispatchingDevice
-     *   Pointer to the device that generated the event (must NOT be null)
-     *
-     */
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] type
+    *    The type of the InputEvent
+    *  @param[in] dispatchingDevice
+    *    Pointer to the device that generated the event (must NOT be null)
+    */
     InputEvent(Type type, AbstractDevice * dispatchingDevice);
 
     /**
-     * @brief
-     *   Destructor
-     */
+    *  @brief
+    *    Destructor
+    */
     virtual ~InputEvent();
 
     /**
-     * @brief
-     *   A getter for the type of the event
-     *
-     * @return
-     *   The type of the Event
-     */
+    *  @brief
+    *    A getter for the type of the event
+    *
+    *  @return
+    *    The type of the Event
+    */
     Type type() const;
 
     /**
-     * @brief asString
-     *   A getter for the description of the Event as a string
-     *
-     * @return
-     *   A string describing the event
-     */
+    *  @brief
+    *    A getter for the description of the Event as a string
+    *
+    *  @return
+    *    A string describing the event
+    */
     virtual std::string asString() const;
 
+
 protected:
-    Type m_type;
+    Type             m_type;
     AbstractDevice * m_dispatchingDevice;
 };
 

@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <list>
 #include <memory>
@@ -7,7 +9,6 @@
 #include <gloperate/input/AbstractDeviceProvider.h>
 #include <gloperate/input/AbstractDevice.h>
 
-#include <gloperate/gloperate_api.h>
 
 namespace gloperate
 {
@@ -29,13 +30,13 @@ public:
     *  @brief
     *    Constructor
     */
-    InputManager() = default;
+    InputManager();
 
     /**
     *  @brief
     *    Destructor
     */
-    ~InputManager() = default;
+    ~InputManager();
 
     /**
     *  @brief
@@ -65,19 +66,20 @@ public:
     void addDevice(AbstractDevice * device);
 
     /**
-     * @brief
-     *   Forwards an Event to all registered Consumers
-     *
-     * @param event
-     *   The Event to forward
-     */
+    *  @brief
+    *    Forwards an Event to all registered Consumers
+    *
+    *  @param event
+    *    The Event to forward
+    */
     void onEvent(InputEvent * event);
 
+
 protected:
-    std::list<AbstractEventConsumer *> m_consumers;
+    std::list<AbstractEventConsumer *>                 m_consumers;
     std::list<std::unique_ptr<AbstractDeviceProvider>> m_deviceProviders;
-    std::list<std::unique_ptr<AbstractDevice>> m_devices;
-    std::list<std::unique_ptr<InputEvent>> m_events;
+    std::list<std::unique_ptr<AbstractDevice>>         m_devices;
+    std::list<std::unique_ptr<InputEvent>>             m_events;
 };
 
 

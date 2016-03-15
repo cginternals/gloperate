@@ -1,11 +1,14 @@
 
-#include <cassert>
-
 #include <gloperate/input/InputEvent.h>
+
+#include <cassert>
 
 #include <glm/gtx/string_cast.hpp>
 
-namespace gloperate{
+
+namespace gloperate
+{
+
 
 InputEvent::InputEvent(Type type, AbstractDevice * dispatchingDevice)
 : m_type(type)
@@ -16,7 +19,6 @@ InputEvent::InputEvent(Type type, AbstractDevice * dispatchingDevice)
 
 InputEvent::~InputEvent()
 {
-
 }
 
 InputEvent::Type InputEvent::type() const
@@ -29,4 +31,5 @@ std::string InputEvent::asString() const
     return std::to_string(static_cast<int>(m_type));
 }
 
-} //namespace gloperate
+
+} // namespace gloperate

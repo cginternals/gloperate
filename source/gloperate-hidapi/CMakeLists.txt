@@ -7,7 +7,7 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
-find_package(HIDAPI REQUIRED)
+find_package(HIDAPI)
 
 
 # Target Name

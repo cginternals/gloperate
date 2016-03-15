@@ -1,7 +1,10 @@
 
 #include <gloperate/input/MouseEvent.h>
 
-namespace gloperate{
+
+namespace gloperate
+{
+
 
 MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, int button)
 : InputEvent(type, dispatchingDevice)
@@ -42,5 +45,6 @@ std::string MouseEvent::asString() const
 {
     return std::to_string(static_cast<int>(m_type));
 }
+
 
 } // namespace gloperate
