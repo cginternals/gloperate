@@ -65,7 +65,6 @@ set(DEFAULT_COMPILE_OPTIONS)
 
 # MSVC compiler options
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
-
     set(DEFAULT_COMPILE_OPTIONS ${DEFAULT_COMPILE_OPTIONS}
         /MP           # -> build with multiple processes
         /W4           # -> warning level 4
@@ -86,6 +85,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
         /GL           # -> whole program optimization: enable link-time code generation (disables Zi)
         /GF           # -> enable string pooling
         >
+        
+        # No manual c++11 enable for MSVC as all supported MSVC versions for cmake-init have C++11 implicitly enabled (MSVC >=2013)
     )
 endif ()
 
@@ -123,6 +124,11 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCH
         
         $<$<PLATFORM_ID:Darwin>:
             -pthread
+        >
+        
+        # Required for CMake < 3.1; should be removed if minimum required CMake version is raised.
+        $<$<VERSION_LESS:${CMAKE_VERSION},3.1>:
+            -std=c++11
         >
     )
 endif ()
