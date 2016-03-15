@@ -11,8 +11,8 @@ namespace gloperate
 
 
 AbstractDevice::AbstractDevice(InputManager * inputManager, const std::string & deviceDescriptor)
-: m_deviceDescriptor{deviceDescriptor}
-, m_inputManager(inputManager)
+: m_inputManager(inputManager)
+, m_deviceDescriptor{deviceDescriptor}
 {
     assert(m_inputManager != nullptr);
     m_inputManager->addDevice(this);
