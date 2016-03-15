@@ -6,9 +6,10 @@ namespace gloperate
 {
 
 
-MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, int button)
+MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::ivec2 deltaPos, int button)
 : InputEvent(type, dispatchingDevice)
 , m_pos(pos)
+, m_deltaPos(deltaPos)
 , m_button(button)
 , m_wheelDelta(glm::vec2(.0f, .0f))
 {
@@ -17,9 +18,10 @@ MouseEvent::MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2
            type == Type::MouseButtonRelease);
 }
 
-MouseEvent::MouseEvent(InputEvent::Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::vec2 wheelDelta)
+MouseEvent::MouseEvent(InputEvent::Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::ivec2 deltaPos, glm::vec2 wheelDelta)
 : InputEvent(type, dispatchingDevice)
 , m_pos(pos)
+, m_deltaPos(deltaPos)
 , m_button(0)
 , m_wheelDelta(wheelDelta)
 {
@@ -29,6 +31,11 @@ MouseEvent::MouseEvent(InputEvent::Type type, AbstractDevice * dispatchingDevice
 glm::ivec2 MouseEvent::pos() const
 {
     return m_pos;
+}
+
+glm::ivec2 MouseEvent::deltaPos() const
+{
+    return m_deltaPos;
 }
 
 int MouseEvent::button() const

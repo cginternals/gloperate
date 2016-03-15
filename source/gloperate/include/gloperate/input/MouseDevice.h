@@ -76,6 +76,9 @@ public:
     *    The position of the mouse at this point in time
     */
     void wheelScroll(const glm::vec2 & delta, const glm::ivec2 & pos);
+
+private:
+    glm::ivec2 m_lastPos;
 };
 
 } // namespace gloperate

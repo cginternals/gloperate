@@ -23,7 +23,7 @@ public:
     *  @param[in] value
     *    The 3x3 matrix to be held by the event
     */
-    AxisEvent(Type type, AbstractDevice * dispatchingDevice, glm::mat3 value);
+    AxisEvent(Type type, AbstractDevice * dispatchingDevice, glm::mat3 value, glm::mat3 delta);
 
     /**
     *  @brief
@@ -33,6 +33,15 @@ public:
     *    The value held by the event
     */
     const glm::mat3 & value() const;
+
+    /**
+    *  @brief
+    *    A getter for the delta value of the event
+    *
+    *  @return
+    *    The delta value held by the event
+    */
+    const glm::mat3 & delta() const;
 
     /**
     *  @brief
@@ -46,6 +55,7 @@ public:
 
 protected:
     glm::mat3 m_value;
+    glm::mat3 m_delta;
 };
 
 

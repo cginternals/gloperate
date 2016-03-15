@@ -27,10 +27,13 @@ void MouseDevice::move(const glm::ivec2 & pos)
     auto inputEvent = new MouseEvent{
         InputEvent::Type::MouseButtonPress,
         this,
-        pos
+        pos,
+        pos-m_lastPos
     };
 
     m_inputManager->onEvent(inputEvent);
+
+    m_lastPos = pos;
 }
 
 void MouseDevice::buttonPress(int button, const glm::ivec2 & pos)
@@ -39,10 +42,13 @@ void MouseDevice::buttonPress(int button, const glm::ivec2 & pos)
         InputEvent::Type::MouseButtonPress,
         this,
         pos,
+        pos-m_lastPos,
         button
     };
 
     m_inputManager->onEvent(inputEvent);
+
+    m_lastPos = pos;
 }
 
 void MouseDevice::buttonRelease(int button, const glm::ivec2 & pos)
@@ -51,10 +57,13 @@ void MouseDevice::buttonRelease(int button, const glm::ivec2 & pos)
         InputEvent::Type::MouseButtonRelease,
         this,
         pos,
+        pos-m_lastPos,
         button
     };
 
     m_inputManager->onEvent(inputEvent);
+
+    m_lastPos = pos;
 }
 
 void MouseDevice::wheelScroll(const glm::vec2 & delta, const glm::ivec2 & pos)
@@ -63,10 +72,13 @@ void MouseDevice::wheelScroll(const glm::vec2 & delta, const glm::ivec2 & pos)
         InputEvent::Type::MouseWheelScroll,
         this,
         pos,
+        pos-m_lastPos,
         delta
     };
 
     m_inputManager->onEvent(inputEvent);
+
+    m_lastPos = pos;
 }
 
 
