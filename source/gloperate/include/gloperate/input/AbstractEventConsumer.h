@@ -14,7 +14,7 @@ class InputEvent;
 
 
 /**
-*  @brief:
+*  @brief
 *     A Consumer of Events
 */
 class GLOPERATE_API AbstractEventConsumer
