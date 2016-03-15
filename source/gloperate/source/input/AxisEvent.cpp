@@ -1,6 +1,8 @@
 
 #include <gloperate/input/AxisEvent.h>
 
+#include <glm/ext.hpp>
+
 
 namespace gloperate
 {
@@ -26,7 +28,7 @@ const glm::mat3 &AxisEvent::delta() const
 
 std::string AxisEvent::asString() const
 {
-    return std::to_string(static_cast<int>(m_type));
+    return typeToString(m_type) + " " + glm::to_string(m_value);
 }
 
 

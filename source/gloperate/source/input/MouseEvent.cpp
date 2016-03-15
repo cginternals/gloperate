@@ -1,6 +1,8 @@
 
 #include <gloperate/input/MouseEvent.h>
 
+#include <glm/ext.hpp>
+
 
 namespace gloperate
 {
@@ -50,7 +52,7 @@ glm::vec2 MouseEvent::wheelDelta() const
 
 std::string MouseEvent::asString() const
 {
-    return std::to_string(static_cast<int>(m_type));
+    return typeToString(m_type) + " " + glm::to_string(m_pos);
 }
 
 

@@ -16,7 +16,7 @@ ButtonEvent::ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const st
 
 std::string ButtonEvent::asString() const
 {
-    return m_description;
+    return typeToString(m_type) + " " + m_description;
 }
 
 
