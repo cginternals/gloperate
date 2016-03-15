@@ -36,6 +36,8 @@ public:
       , SpatialAxis
     };
 
+    static std::string typeToString(Type type);
+
 public:
     /**
     *  @brief
