@@ -68,6 +68,9 @@ public:
     VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
     VertexDrawable(globjects::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
 
+    globjects::VertexArray * vao();
+    const globjects::VertexArray * vao() const;
+
     template <typename T>
     VertexDrawable(const std::vector<T> & vertices, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
     template <typename T, std::size_t Count>

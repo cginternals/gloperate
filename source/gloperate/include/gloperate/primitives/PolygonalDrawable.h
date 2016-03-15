@@ -62,6 +62,15 @@ public:
     */
     virtual void draw() const override;
 
+    /**
+    *  @brief
+    *    Get material index
+    *
+    *  @return
+    *    Material index
+    */
+    unsigned int materialIndex() const;
+
 
 protected:
     globjects::ref_ptr<globjects::VertexArray> m_vao;                 /**< Vertex array object */
@@ -70,6 +79,7 @@ protected:
     globjects::ref_ptr<globjects::Buffer>      m_normals;             /**< Normal buffer (may be empty) */
     globjects::ref_ptr<globjects::Buffer>      m_textureCoordinates;  /**< Texture coordinate buffer (may be empty) */
     gl::GLsizei                                m_size;                /**< Number of elements (m_indices) */
+    unsigned int                               m_materialIndex;       /**< Index of the material */
 };
 
 
