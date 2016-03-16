@@ -65,11 +65,8 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] format
-    *    The desired OpenGL context format
     */
-    Window(const gloperate::GLContextFormat & format = gloperate::GLContextFormat());
+    Window();
 
     /**
     *  @brief

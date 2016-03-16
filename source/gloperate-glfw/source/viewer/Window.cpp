@@ -33,14 +33,14 @@ const std::set<Window*> & Window::instances()
 }
 
 
-Window::Window(const gloperate::GLContextFormat & format)
+Window::Window()
 : m_window(nullptr)
 , m_context(nullptr)
 , m_windowMode(WindowedMode)
 , m_windowedModeSize(100, 100)
 , m_quitOnDestroy(true)
 , m_title("")
-, m_format(format)
+, m_format()
 , m_needsRepaint(false)
 {
     // Register window

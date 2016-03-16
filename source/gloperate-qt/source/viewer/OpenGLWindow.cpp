@@ -15,7 +15,7 @@ namespace gloperate_qt
 {
 
 
-OpenGLWindow::OpenGLWindow(const gloperate::GLContextFormat & format)
+OpenGLWindow::OpenGLWindow()
 : m_context(nullptr)
 , m_initialized(false)
 , m_updatePending(false)
@@ -23,9 +23,6 @@ OpenGLWindow::OpenGLWindow(const gloperate::GLContextFormat & format)
     // Create window with OpenGL capability
     setSurfaceType(OpenGLSurface);
     create();
-
-    // Set desired OpenGL context format
-    setContextFormat(format);
 }
 
 OpenGLWindow::~OpenGLWindow()

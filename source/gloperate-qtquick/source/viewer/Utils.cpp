@@ -35,7 +35,9 @@ gloperate::Stage * Utils::createRenderStage(gloperate::ViewerContext * viewerCon
 
 gloperate::Surface * Utils::createSurface(gloperate::ViewerContext * viewerContext, gloperate::Stage * renderStage)
 {
-    return new gloperate::RenderSurface(viewerContext, renderStage);
+    gloperate::RenderSurface * renderSurface = new gloperate::RenderSurface(viewerContext);
+    renderSurface->setRenderStage(renderStage);
+    return renderSurface;
 }
 
 
