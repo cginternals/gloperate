@@ -11,14 +11,14 @@ namespace gloperate
 {
 
 
-class InputManager;
+class InputManager
 
 
 /**
 *  @brief
 *    An Interface for devices
 *
-*    This is a virtual interface for Devices (to be held by an InputManager)
+*    This is a virtual interface for devices (to be held by an InputManager)
 */
 class GLOPERATE_API AbstractDevice
 {
@@ -27,16 +27,8 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the stage belongs (must NOT be null!)
-    */
-
-    /**
-    *  @brief
-    *    Constructor
-    *
     *  @param[in] inputManager
-    *    A pointer to the inputManager (must NOT be null)
+    *    A pointer to the input manager (must NOT be null)
     *  @param[in] deviceDescriptor
     *    [TODO] What is a device descriptor?
     */
@@ -50,13 +42,13 @@ public:
 
     /**
     *  @brief
-    *    Polls the current state of the Device and dispatches appropriate Events
+    *    Poll the current state of the device and dispatche appropriate events
     */
     virtual void update() = 0;
 
     /**
     *  @brief
-    *    Get the deviceDescriptor as a string
+    *    Get device descriptor as a string
     *
     *  @return
     *    [TODO] What is a device descriptor
