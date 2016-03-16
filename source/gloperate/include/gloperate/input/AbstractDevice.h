@@ -11,7 +11,7 @@ namespace gloperate
 {
 
 
-class InputManager
+class InputManager;
 
 
 /**
