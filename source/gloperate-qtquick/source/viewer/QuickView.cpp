@@ -16,6 +16,7 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/GLContextFactory.h>
 
+#include <gloperate-qtquick/controls/TextController.h>
 #include <gloperate-qtquick/viewer/RenderItem.h>
 #include <gloperate-qtquick/viewer/Utils.h>
 
@@ -32,7 +33,8 @@ QuickView::QuickView(gloperate::ViewerContext * viewerContext)
     setClearBeforeRendering(false);
 
     // Register QML types
-    qmlRegisterType<RenderItem>("gloperate.rendering", 1, 0, "RenderItem");
+    qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
+    qmlRegisterType<TextController>("gloperate.ui",        1, 0, "TextController");
 
     // Connect to context creation and scene graph initialization
     connect(

@@ -56,6 +56,7 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
+    ${include_path}/controls/TextController.h
     ${include_path}/viewer/QuickView.h
     ${include_path}/viewer/RenderItem.h
     ${include_path}/viewer/Utils.h
@@ -63,6 +64,7 @@ set(headers
 )
 
 set(sources
+    ${source_path}/controls/TextController.cpp
     ${source_path}/viewer/QuickView.cpp
     ${source_path}/viewer/RenderItem.cpp
     ${source_path}/viewer/Utils.cpp

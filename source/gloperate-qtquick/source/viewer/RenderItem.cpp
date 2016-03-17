@@ -22,8 +22,9 @@ namespace gloperate_qtquick
 {
 
 
-RenderItem::RenderItem()
-: m_surface(nullptr)
+RenderItem::RenderItem(QQuickItem * parent)
+: QQuickItem(parent)
+, m_surface(nullptr)
 , m_devicePixelRatio(1.0f)
 , m_initialized(false)
 {
