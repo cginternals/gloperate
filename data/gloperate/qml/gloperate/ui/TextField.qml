@@ -63,11 +63,20 @@ Rectangle
             textInput.accepted();
         }
 
-/*
+        /*
+          Without this code, the editor respects the original distinction between Return
+          and Enter: Return creates a new line, while Enter executes the code.
+          However, this behaviour may be unfamiliar to most user. Uncomment this to
+          enable the alternative mapping: Shift-Return creates a new line, Return and Enter
+          execute the code.
+        */
         Keys.onReturnPressed:
         {
-            textInput.accepted();
+            if ((event.modifiers & Qt.ShiftModifier) == 0) {
+                textInput.accepted();
+            } else {
+                event.accepted = false;
+            }
         }
-*/
     }
 }

@@ -7,6 +7,9 @@
 #include <QVariant>
 #include <QColor>
 
+#include <QQmlContext>
+#include <QDebug>
+
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/gloperate.h>
@@ -35,6 +38,12 @@ QuickView::QuickView(gloperate::ViewerContext * viewerContext)
     // Register QML types
     qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
     qmlRegisterType<TextController>("gloperate.ui",        1, 0, "TextController");
+
+    // Register global functions and properties
+    rootContext()->setContextObject(this);
+
+    // Create global object 'global'
+    m_global = engine()->newObject();
 
     // Connect to context creation and scene graph initialization
     connect(
@@ -103,6 +112,21 @@ void QuickView::onBeforeRendering()
 
     // Clear screen
     Utils::clearScreen(color.redF(), color.greenF(), color.blueF());
+}
+
+QJSValue QuickView::execute(const QString & cmd)
+{
+    return engine()->evaluate(cmd);
+}
+
+const QJSValue & QuickView::global() const
+{
+    return m_global;
+}
+
+void QuickView::setGlobal(const QJSValue & obj)
+{
+    m_global = obj;
 }
 
 

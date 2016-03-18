@@ -22,6 +22,8 @@ Item
 
     ScrollArea
     {
+        id: scrollArea
+
         anchors.fill:  parent
         contentHeight: content.height + 2 * Ui.style.ctrlPadding
 
@@ -54,12 +56,18 @@ Item
 
                 onAccepted:
                 {
+                    var cmd = text;
+                    text = '';
+
                     var log = panel.log;
-                    log += '\n' + text;
-//                  log += eval(text) + '\n';
+
+                    log += '\n> ' + cmd;
                     panel.log = log;
 
-                    text = '';
+                    log += '\n' + eval(cmd) + '\n';
+                    panel.log = log;
+
+                    scrollArea.contentY = scrollArea.contentHeight;
                 }
             }
         }
