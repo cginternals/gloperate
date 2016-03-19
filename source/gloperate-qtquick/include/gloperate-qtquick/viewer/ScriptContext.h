@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <vector>
+
 #include <reflectionzeug/variant/Variant.h>
 
 #include <scriptzeug/backend/AbstractScriptContext.h>
@@ -14,6 +16,7 @@ namespace gloperate_qtquick
 
 
 class QmlEngine;
+class ObjectWrapper;
 
 
 /**
@@ -47,7 +50,8 @@ public:
 
 
 protected:
-    QmlEngine * m_engine; ///< Qml engine with gloperate integration
+    QmlEngine                   * m_engine;         ///< Qml engine with gloperate integration
+    std::vector<ObjectWrapper*>   m_wrappedObjects; ///< List of wrapped objects owned by the script context
 };
 
 

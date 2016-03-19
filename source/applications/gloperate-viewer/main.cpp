@@ -28,9 +28,9 @@ using namespace gloperate_qtquick;
 class TestApi : public reflectionzeug::Object
 {
 public:
-    TestApi()
-    : reflectionzeug::Object("test")
-    , m_value(42)
+    TestApi(const std::string & name, int value)
+    : reflectionzeug::Object(name)
+    , m_value(value)
     {
         addProperty<int>("value", this, &TestApi::value, &TestApi::setValue);
 
@@ -90,7 +90,10 @@ int main(int argc, char * argv[])
     scriptzeug::ScriptContext scriptContext(
         new gloperate_qtquick::ScriptContext(&scriptContext, &qmlEngine)
     );
-    scriptContext.registerObject(new TestApi);
+    TestApi * test1 = new TestApi("test1", 42);
+    TestApi * test2 = new TestApi("test2", 23);
+    test1->addProperty(test2);
+    scriptContext.registerObject(test1);
 
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);

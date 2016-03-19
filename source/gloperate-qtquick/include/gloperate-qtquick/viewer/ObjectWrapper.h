@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <vector>
+
 #include <QObject>
 #include <QJSValue>
 
@@ -19,6 +21,7 @@ namespace gloperate_qtquick
 
 
 class QmlEngine;
+class ObjectWrapper;
 
 
 /**
@@ -40,17 +43,6 @@ public:
     *
     *  @param[in] engine
     *    Qml engine
-    *  @param[in] object
-    *    Wrapper object (must NOT be nullptr)
-    */
-    ObjectWrapper(QmlEngine * engine, reflectionzeug::Object * object);
-
-    /**
-    *  @brief
-    *    Constructor
-    *
-    *  @param[in] engine
-    *    Qml engine
     *  @param[in] group
     *    Property group (must NOT be nullptr)
     */
@@ -61,6 +53,8 @@ public:
     *    Destructor
     */
     virtual ~ObjectWrapper();
+
+    QJSValue wrapObject();
 
 
 protected:
@@ -100,9 +94,10 @@ protected:
 
 
 protected:
-    QmlEngine                     * m_engine; ///< Qml engine with gloperate integration
-    reflectionzeug::PropertyGroup * m_group;  ///< Wrapped property group (must NOT be null)
-    reflectionzeug::Object        * m_object; ///< Wrapped object (can be null)
+    QmlEngine                     * m_engine;         ///< Qml engine with gloperate integration
+    reflectionzeug::PropertyGroup * m_group;          ///< Wrapped property group (must NOT be null)
+    reflectionzeug::Object        * m_object;         ///< Wrapped object (can be null)
+    std::vector<ObjectWrapper *>    m_wrappedObjects; ///< List of wrapped sub-objects
 };
 
 
