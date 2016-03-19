@@ -101,6 +101,7 @@ target_link_libraries(${target}
     Qt5::Quick
     libzeug::signalzeug
     libzeug::reflectionzeug
+    libzeug::scriptzeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

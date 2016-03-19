@@ -3,7 +3,6 @@
 
 
 #include <QQuickView>
-#include <QJSValue>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -21,25 +20,26 @@ namespace gloperate_qtquick
 {
 
 
+class QmlEngine;
+
+
 /**
 *  @brief
-*    Qt quick window with support for gloperate
+*    Qt quick window with support for gloperate rendering
 */
 class GLOPERATE_QTQUICK_API QuickView : public QQuickView
 {
-Q_OBJECT
-Q_PROPERTY(QJSValue global READ global WRITE setGlobal)
-
-
 public:
     /**
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the window belongs (must NOT be null!)
+    *  @param[in] engine
+    *    Qml engine with gloperate integration (must NOT be null!)
+    *  @param[in] parent
+    *    Parent window (can be null)
     */
-    QuickView(gloperate::ViewerContext * viewerContext);
+    QuickView(QmlEngine * engine, QWindow * parent = nullptr);
 
     /**
     *  @brief
@@ -72,18 +72,8 @@ protected:
 
 
 protected:
-    // Script functions
-    Q_INVOKABLE QJSValue execute(const QString & cmd);
-
-    // Property accessors
-    const QJSValue & global() const;
-    void setGlobal(const QJSValue & obj);
-
-
-protected:
     gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
     gloperate_qt::GLContext  * m_context;       ///< Context wrapper for gloperate (can be null)
-    QJSValue                   m_global;        ///< Object 'global', can be used to store global values
 };
 
 

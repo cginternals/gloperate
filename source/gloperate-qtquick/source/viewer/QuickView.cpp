@@ -3,24 +3,19 @@
 
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
-#include <QQmlEngine>
 #include <QVariant>
 #include <QColor>
-
-#include <QQmlContext>
-#include <QDebug>
+#include <QQuickItem>
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/gloperate.h>
 #include <gloperate/viewer/GLContextUtils.h>
 #include <gloperate/viewer/GLContextFormat.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/GLContextFactory.h>
 
-#include <gloperate-qtquick/controls/TextController.h>
-#include <gloperate-qtquick/viewer/RenderItem.h>
+#include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/Utils.h>
 
     
@@ -28,22 +23,13 @@ namespace gloperate_qtquick
 {
 
 
-QuickView::QuickView(gloperate::ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+QuickView::QuickView(QmlEngine * engine, QWindow * parent)
+: QQuickView(engine, parent)
+, m_viewerContext(engine->viewerContext())
 , m_context(nullptr)
 {
     // Do not clear surface when rendering Qml, because we render our content first
     setClearBeforeRendering(false);
-
-    // Register QML types
-    qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
-    qmlRegisterType<TextController>("gloperate.ui",        1, 0, "TextController");
-
-    // Register global functions and properties
-    rootContext()->setContextObject(this);
-
-    // Create global object 'global'
-    m_global = engine()->newObject();
 
     // Connect to context creation and scene graph initialization
     connect(
@@ -65,10 +51,6 @@ QuickView::QuickView(gloperate::ViewerContext * viewerContext)
         format
     );
     setFormat(qFormat);
-
-    // Add gloperate qml-libraries
-    std::string importPath = gloperate::dataPath() + "/gloperate/qml/GLOperate/Ui";
-    engine()->addImportPath(QString::fromStdString(importPath));
 }
 
 QuickView::~QuickView()
@@ -112,21 +94,6 @@ void QuickView::onBeforeRendering()
 
     // Clear screen
     Utils::clearScreen(color.redF(), color.greenF(), color.blueF());
-}
-
-QJSValue QuickView::execute(const QString & cmd)
-{
-    return engine()->evaluate(cmd);
-}
-
-const QJSValue & QuickView::global() const
-{
-    return m_global;
-}
-
-void QuickView::setGlobal(const QJSValue & obj)
-{
-    m_global = obj;
 }
 
 
