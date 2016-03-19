@@ -30,7 +30,7 @@ class TestApi : public reflectionzeug::Object
 public:
     TestApi()
     : reflectionzeug::Object("test")
-    , m_value(23)
+    , m_value(42)
     {
         addProperty<int>("value", this, &TestApi::value, &TestApi::setValue);
 
@@ -43,17 +43,25 @@ public:
 
     int value() const
     {
+        globjects::info() << "value()";
+
         return m_value;
     }
 
     void setValue(int v)
     {
+        globjects::info() << "setValue()";
+
         m_value = v;
     }
 
-    void sayHello()
+    void sayHello(const std::string & msg, int count)
     {
-        globjects::info() << "Hello!";
+        int num = (count > 0) ? count : 1;
+
+        for (int i=0; i<num; i++) {
+            globjects::info() << msg;
+        }
     }
 
 

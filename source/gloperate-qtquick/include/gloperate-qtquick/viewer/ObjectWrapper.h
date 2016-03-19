@@ -9,6 +9,7 @@
 
 
 namespace reflectionzeug {
+    class PropertyGroup;
     class Object;
 }
 
@@ -43,6 +44,17 @@ public:
     *    Wrapper object (must NOT be nullptr)
     */
     ObjectWrapper(QmlEngine * engine, reflectionzeug::Object * object);
+
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] engine
+    *    Qml engine
+    *  @param[in] group
+    *    Property group (must NOT be nullptr)
+    */
+    ObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyGroup * group);
 
     /**
     *  @brief
@@ -88,8 +100,9 @@ protected:
 
 
 protected:
-    QmlEngine              * m_engine; ///< Qml engine with gloperate integration
-    reflectionzeug::Object * m_object; ///< Wrapped object
+    QmlEngine                     * m_engine; ///< Qml engine with gloperate integration
+    reflectionzeug::PropertyGroup * m_group;  ///< Wrapped property group (must NOT be null)
+    reflectionzeug::Object        * m_object; ///< Wrapped object (can be null)
 };
 
 

@@ -31,8 +31,9 @@ QmlEngine::QmlEngine(gloperate::ViewerContext * viewerContext)
     // Register global functions and properties
     rootContext()->setContextObject(this);
 
-    // Create global object 'global'
-    m_global = newObject();
+    // Create global objects
+    m_global    = newObject();
+    m_gloperate = newObject();
 }
 
 QmlEngine::~QmlEngine()
@@ -220,6 +221,16 @@ const QJSValue & QmlEngine::global() const
 void QmlEngine::setGlobal(const QJSValue & obj)
 {
     m_global = obj;
+}
+
+const QJSValue & QmlEngine::gloperate() const
+{
+    return m_gloperate;
+}
+
+void QmlEngine::setGloperate(const QJSValue & obj)
+{
+    m_gloperate = obj;
 }
 
 

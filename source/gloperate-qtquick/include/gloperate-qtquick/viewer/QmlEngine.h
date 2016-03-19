@@ -32,7 +32,8 @@ namespace gloperate_qtquick
 class GLOPERATE_QTQUICK_API QmlEngine : public QQmlEngine
 {
 Q_OBJECT
-Q_PROPERTY(QJSValue global READ global WRITE setGlobal)
+Q_PROPERTY(QJSValue global    READ global    WRITE setGlobal)
+Q_PROPERTY(QJSValue gloperate READ gloperate WRITE setGloperate)
 
 
 public:
@@ -96,16 +97,47 @@ public:
     */
     QJSValue toScriptValue(const reflectionzeug::Variant & var);
 
-
-protected:
-    // Property accessors
+    /**
+    *  @brief
+    *    Get object 'global'
+    *
+    *  @return
+    *    Object
+    */
     const QJSValue & global() const;
+
+    /**
+    *  @brief
+    *    Set object 'global'
+    *
+    *  @param[in] obj
+    *    Object
+    */
     void setGlobal(const QJSValue & obj);
+
+    /**
+    *  @brief
+    *    Get object 'gloperate'
+    *
+    *  @return
+    *    Object
+    */
+    const QJSValue & gloperate() const;
+
+    /**
+    *  @brief
+    *    Set object 'gloperate'
+    *
+    *  @param[in] obj
+    *    Object
+    */
+    void setGloperate(const QJSValue & obj);
 
 
 protected:
     gloperate::ViewerContext * m_viewerContext; ///< Viewer context (must NOT be null)
     QJSValue                   m_global;        ///< Object 'global', can be used to store global values
+    QJSValue                   m_gloperate;     ///< Object 'gloperate', contains exposed API functions from gloperate
 };
 
 
