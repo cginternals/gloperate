@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <vector>
+
 #include <reflectionzeug/variant/Variant.h>
 
 #include <scriptzeug/backend/AbstractScriptContext.h>
@@ -9,12 +11,12 @@
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
-class QJSEngine;
-class QJSValue;
-
-
 namespace gloperate_qtquick
 {
+
+
+class QmlEngine;
+class ObjectWrapper;
 
 
 /**
@@ -31,9 +33,9 @@ public:
     *  @param[in] scriptContext
     *    Script context that owns the backend (must NOT be null)
     *  @param[in] engine
-    *    Qt javascript engine used as backend
+    *    Qml engine
     */
-    ScriptContext(scriptzeug::ScriptContext * scriptContext, QJSEngine * engine);
+    ScriptContext(scriptzeug::ScriptContext * scriptContext, QmlEngine * engine);
 
     /**
     *  @brief
@@ -46,13 +48,10 @@ public:
     virtual void unregisterObject(reflectionzeug::PropertyGroup * obj) override;
     virtual reflectionzeug::Variant evaluate(const std::string & code) override;
 
-    // Helper functions
-    reflectionzeug::Variant fromScriptValue(const QJSValue & value);
-    QJSValue toScriptValue(const reflectionzeug::Variant & var);
-
 
 protected:
-    QJSEngine * m_engine; ///< Qt javascript engine used as backend
+    QmlEngine                   * m_engine;         ///< Qml engine with gloperate integration
+    std::vector<ObjectWrapper*>   m_wrappedObjects; ///< List of wrapped objects owned by the script context
 };
 
 

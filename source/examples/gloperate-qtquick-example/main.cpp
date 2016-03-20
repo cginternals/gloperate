@@ -11,6 +11,7 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 
+#include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/QuickView.h>
 
 
@@ -31,10 +32,13 @@ int main(int argc, char * argv[])
     ViewerContext viewerContext;
     UpdateManager updateManager(&viewerContext);
 
+    // Create QML engine
+    QmlEngine qmlEngine(&viewerContext);
+    qmlEngine.addImportPath(qmlPath);
+
     // Load and show QML
-    QuickView * window = new QuickView(&viewerContext);
+    QuickView * window = new QuickView(&qmlEngine);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->engine()->addImportPath(qmlPath);
     window->setSource(QUrl(qmlPath + "/ExampleViewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
     window->show();

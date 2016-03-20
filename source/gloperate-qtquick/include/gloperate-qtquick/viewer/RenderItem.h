@@ -26,8 +26,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] parent
+    *    Parent item (can be null)
     */
-    RenderItem();
+    RenderItem(QQuickItem * parent = nullptr);
 
     /**
     *  @brief

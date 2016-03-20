@@ -6,7 +6,7 @@
 
 #include <signalzeug/Signal.h>
 
-#include <gloperate/viewer/GLContextFormat.h>
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
@@ -88,24 +88,6 @@ public:
     *    set to that new context and onContextInit() will be invoked.
     */
     void setOpenGLContext(AbstractGLContext * context);
-
-    /**
-    *  @brief
-    *    Get required OpenGL context format
-    *
-    *  @return
-    *    OpenGL context format expected by the surface
-    *
-    *  @remarks
-    *    This function should return the format of the OpenGL context
-    *    the surface expects/needs to have. The viewer will then try to
-    *    create a context that fits the request as best as possible
-    *    and call setOpenGLContext() with the created context.
-    *    The surface will then receive a call to onContextInit() in
-    *    which it can initialize its OpenGL objects or abort, if the
-    *    created context is not suitable.
-    */
-    virtual const GLContextFormat & requiredFormat() const;
 
     /**
     *  @brief
@@ -264,9 +246,6 @@ public:
 protected:
     ViewerContext     * m_viewerContext; ///< Viewer context to which the surface belongs
     AbstractGLContext * m_openGLContext; ///< OpenGL context used for rendering on the surface
-
-
-
 };
 
 

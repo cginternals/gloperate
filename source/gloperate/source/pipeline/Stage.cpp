@@ -1,8 +1,6 @@
 
 #include <gloperate/pipeline/Stage.h>
 
-#include <gloperate/viewer/GLContextFormat.h>
-
 
 namespace gloperate
 {
@@ -23,14 +21,6 @@ Stage::~Stage()
 ViewerContext * Stage::viewerContext() const
 {
     return m_viewerContext;
-}
-
-const GLContextFormat & Stage::requiredFormat() const
-{
-    static GLContextFormat format;
-
-    format.setVersion(4, 4);
-    return format;
 }
 
 void Stage::initContext(AbstractGLContext * context)

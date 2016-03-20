@@ -30,7 +30,8 @@ int main(int argc, char * argv[])
     DemoStage * renderStage = new DemoStage(&viewerContext);
 
     // Create render window
-    RenderWindow * window = new RenderWindow(&viewerContext, renderStage);
+    RenderWindow * window = new RenderWindow(&viewerContext);
+    window->setRenderStage(renderStage);
     window->createContext();
 
     // Create main window

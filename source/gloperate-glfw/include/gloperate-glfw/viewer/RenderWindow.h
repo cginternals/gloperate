@@ -31,13 +31,8 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the window belongs (must NOT be null)
-    *  @param[in] renderStage
-    *    Stage that renders into the surface (can be null)
     */
-    RenderWindow(
-        gloperate::ViewerContext * viewerContext
-      , gloperate::Stage * renderStage = nullptr
-    );
+    RenderWindow(gloperate::ViewerContext * viewerContext);
 
     /**
     *  @brief
@@ -87,9 +82,6 @@ public:
 
 
 protected:
-    RenderWindow(gloperate::ViewerContext * viewerContext,
-                 gloperate::RenderSurface * surface);
-
     // Virtual Window functions
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
@@ -111,7 +103,7 @@ protected:
 
 protected:
     gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
-    gloperate::RenderSurface * m_surface;       ///< Surface that control the rendering on the window
+    gloperate::RenderSurface * m_surface;       ///< Surface that control the rendering on the window (must NOT be null)
     glm::ivec2                 m_deviceSize;    ///< Window size (real device pixels)
     glm::ivec2                 m_virtualSize;   ///< Window size (virtual pixel size)
 };

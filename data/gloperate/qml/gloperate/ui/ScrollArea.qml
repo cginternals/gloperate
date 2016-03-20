@@ -12,6 +12,8 @@ import QtQuick.Controls 1.1
 */
 ScrollView
 {
+    id: scrollArea
+
     default property alias data:  flick.flickableData
 
     property alias contentWidth:  flick.contentWidth

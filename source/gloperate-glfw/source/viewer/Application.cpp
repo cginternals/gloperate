@@ -104,8 +104,10 @@ void Application::processEvents()
     // Get messages for all windows
     for (Window * window : Window::instances())
     {
+        // If window needs updating, let it send an udate event
         window->updateRepaintEvent();
 
+        // Process all events for the window
         if (window->hasPendingEvents()) {
             window->processEvents();
         }

@@ -23,9 +23,7 @@ set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 
 # ENABLE CMP0020: Automatically link Qt executables to qtmain target on Windows.
-if (POLICY CMP0020)
-    cmake_policy(SET CMP0020 NEW)
-endif()
+cmake_policy(SET CMP0020 NEW)
 
 
 # 
@@ -58,17 +56,25 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
+    ${include_path}/controls/TextController.h
+    ${include_path}/viewer/QmlEngine.h
     ${include_path}/viewer/QuickView.h
     ${include_path}/viewer/RenderItem.h
     ${include_path}/viewer/Utils.h
     ${include_path}/viewer/ScriptContext.h
+    ${include_path}/viewer/ObjectWrapper.h
+    ${include_path}/viewer/ScriptFunction.h
 )
 
 set(sources
+    ${source_path}/controls/TextController.cpp
+    ${source_path}/viewer/QmlEngine.cpp
     ${source_path}/viewer/QuickView.cpp
     ${source_path}/viewer/RenderItem.cpp
     ${source_path}/viewer/Utils.cpp
     ${source_path}/viewer/ScriptContext.cpp
+    ${source_path}/viewer/ObjectWrapper.cpp
+    ${source_path}/viewer/ScriptFunction.cpp
 )
 
 # Group source files
@@ -95,16 +101,6 @@ add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
 # Export library for downstream projects
 export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
-
-# Create feature detection header
-# Compilers: https://cmake.org/cmake/help/v3.1/variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_%3CLANG%3E_COMPILER_ID
-# Feature: https://cmake.org/cmake/help/v3.1/prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html
-write_compiler_detection_header(
-    FILE ${feature_file}
-    PREFIX ${target_upper}
-    COMPILERS AppleClang Clang GNU MSVC
-    FEATURES cxx_alignas cxx_alignof cxx_constexpr cxx_final cxx_noexcept cxx_nullptr cxx_sizeof_member cxx_thread_local
-)
 
 # Create API export header
 generate_export_header(${target}
