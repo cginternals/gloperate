@@ -6,6 +6,7 @@
 #include <gloperate/viewer/AbstractGLContext.h>
 
 #include <globjects/base/baselogging.h>
+#include <globjects/Framebuffer.h>
 
 #include <glbinding/gl/gl.h>
 
@@ -20,6 +21,7 @@ namespace gloperate_ffmpeg
 
 VideoTool::VideoTool(const std::string & filename, RenderSurface * surface, uint fps, uint length, uint width, uint height)
 : m_videoEncoder(new VideoEncoder())
+, m_fbo(new Framebuffer())
 , m_context(surface->viewerContext())
 , m_surface(surface)
 , m_glContext(surface->openGLContext())
@@ -42,10 +44,11 @@ VideoTool::~VideoTool()
 void VideoTool::createVideo(std::function<void(int, int)> progress)
 {
     auto length = m_length * m_fps;
-    
+
     Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
     m_glContext->use();
+    m_fbo->bind();
     m_videoEncoder->initEncoding(m_filename, m_width, m_height, m_fps);
     
     for (uint i = 0; i < length; ++i)
@@ -60,6 +63,7 @@ void VideoTool::createVideo(std::function<void(int, int)> progress)
     }
 
     m_videoEncoder->finishEncoding();
+    m_fbo->unbind();
     m_glContext->release();
 }
 

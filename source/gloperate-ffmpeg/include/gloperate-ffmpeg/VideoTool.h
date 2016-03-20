@@ -20,6 +20,10 @@ namespace gloperate {
     class AbstractGLContext;
 }
 
+namespace globjects {
+    class Framebuffer;
+}
+
 
 namespace gloperate_ffmpeg
 {
@@ -73,16 +77,17 @@ public:
 
 
 protected:
-    globjects::ref_ptr<VideoEncoder>  m_videoEncoder;
-    gloperate::ViewerContext        * m_context;
-    gloperate::RenderSurface        * m_surface;
-    gloperate::AbstractGLContext    * m_glContext;
-    std::string                       m_filename;
-    uint                              m_fps;
-    uint                              m_length;
-    uint                              m_width;
-    uint                              m_height;
-    float                             m_timeDelta;
+    globjects::ref_ptr<VideoEncoder>             m_videoEncoder;
+    globjects::ref_ptr<globjects::Framebuffer>   m_fbo;
+    gloperate::ViewerContext                   * m_context;
+    gloperate::RenderSurface                   * m_surface;
+    gloperate::AbstractGLContext               * m_glContext;
+    std::string                                  m_filename;
+    uint                                         m_fps;
+    uint                                         m_length;
+    uint                                         m_width;
+    uint                                         m_height;
+    float                                        m_timeDelta;
 };
 
 
