@@ -38,10 +38,8 @@ public:
     *
     *  @param[in] filename
     *    Name of output video file
-    *  @param[in] stage
-    *    The stage that will be rendered into a video
-    *  @param[in] glContext
-    *    A valid OpenGL context
+    *  @param[in] surface
+    *    The surface that will be rendered into a video
     *  @param[in] fps
     *    Frames per second of output video
     *  @param[in] length
