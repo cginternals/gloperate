@@ -10,7 +10,7 @@
 
 #include <gloperate-qtquick/controls/TextController.h>
 #include <gloperate-qtquick/viewer/RenderItem.h>
-#include <gloperate-qtquick/viewer/ScriptFunction.h>
+#include <gloperate-qtquick/viewer/QmlScriptFunction.h>
 
     
 namespace gloperate_qtquick
@@ -110,7 +110,7 @@ reflectionzeug::Variant QmlEngine::fromScriptValue(const QJSValue & value)
         //        it would be hard to determine the right use of function-variants.
         //        The script context could of course manage a list of created functions an delete them on destruction,
         //        but that would not solve the problem of "memory leak" while the program is running.
-        ScriptFunction * function = new ScriptFunction(this, value);
+        QmlScriptFunction * function = new QmlScriptFunction(this, value);
         return reflectionzeug::Variant::fromValue<reflectionzeug::AbstractFunction *>(function);
     }
 

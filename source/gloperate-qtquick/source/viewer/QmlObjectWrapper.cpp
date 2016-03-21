@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/viewer/ObjectWrapper.h>
+#include <gloperate-qtquick/viewer/QmlObjectWrapper.h>
 
 #include <globjects/base/baselogging.h>
 
@@ -16,7 +16,7 @@ namespace gloperate_qtquick
 {
 
 
-ObjectWrapper::ObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyGroup * group)
+QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyGroup * group)
 : QObject(engine)
 , m_engine(engine)
 , m_group(group)
@@ -26,16 +26,16 @@ ObjectWrapper::ObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyGroup *
     m_object = dynamic_cast<reflectionzeug::Object *>(m_group);
 }
 
-ObjectWrapper::~ObjectWrapper()
+QmlObjectWrapper::~QmlObjectWrapper()
 {
     // Clear wrapped objects
-    for (ObjectWrapper * obj : m_wrappedObjects)
+    for (QmlObjectWrapper * obj : m_wrappedObjects)
     {
         delete obj;
     }
 }
 
-QJSValue ObjectWrapper::wrapObject()
+QJSValue QmlObjectWrapper::wrapObject()
 {
     // Create a nice javascript wrapper object
     QJSValue obj = m_engine->newObject();
@@ -56,7 +56,7 @@ QJSValue ObjectWrapper::wrapObject()
         if (property->isGroup()) {
             // Add group wrapper
             PropertyGroup * group = property->asGroup();
-            ObjectWrapper * wrapper = new ObjectWrapper(m_engine, group);
+            QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, group);
             m_wrappedObjects.push_back(wrapper);
             QJSValue groupObj = wrapper->wrapObject();
             obj.setProperty(group->name().c_str(), groupObj);
@@ -88,7 +88,7 @@ QJSValue ObjectWrapper::wrapObject()
     return obj;
 }
 
-QJSValue ObjectWrapper::getProp(const QString & name)
+QJSValue QmlObjectWrapper::getProp(const QString & name)
 {
     reflectionzeug::Variant value;
 
@@ -100,7 +100,7 @@ QJSValue ObjectWrapper::getProp(const QString & name)
     return m_engine->toScriptValue(value);
 }
 
-void ObjectWrapper::setProp(const QString & name, const QJSValue & value)
+void QmlObjectWrapper::setProp(const QString & name, const QJSValue & value)
 {
     reflectionzeug::AbstractProperty * prop = m_group->property(name.toStdString());
     if (prop) {
@@ -108,7 +108,7 @@ void ObjectWrapper::setProp(const QString & name, const QJSValue & value)
     }
 }
 
-QJSValue ObjectWrapper::callFunc(const QString & name, const QJSValue & args)
+QJSValue QmlObjectWrapper::callFunc(const QString & name, const QJSValue & args)
 {
     // Must wrap a valid object
     if (!m_object)

@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/viewer/ScriptFunction.h>
+#include <gloperate-qtquick/viewer/QmlScriptFunction.h>
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 
@@ -8,23 +8,23 @@ namespace gloperate_qtquick
 {
 
 
-ScriptFunction::ScriptFunction(QmlEngine * engine, QJSValue func)
+QmlScriptFunction::QmlScriptFunction(QmlEngine * engine, QJSValue func)
 : reflectionzeug::AbstractFunction("")
 , m_engine(engine)
 , m_function(func)
 {
 }
 
-ScriptFunction::~ScriptFunction()
+QmlScriptFunction::~QmlScriptFunction()
 {
 }
 
-reflectionzeug::AbstractFunction * ScriptFunction::clone()
+reflectionzeug::AbstractFunction * QmlScriptFunction::clone()
 {
-    return new ScriptFunction(m_engine, m_function);
+    return new QmlScriptFunction(m_engine, m_function);
 }
 
-reflectionzeug::Variant ScriptFunction::call(const std::vector<reflectionzeug::Variant> & args)
+reflectionzeug::Variant QmlScriptFunction::call(const std::vector<reflectionzeug::Variant> & args)
 {
     QJSValueList argv;
 

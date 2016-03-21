@@ -17,7 +17,7 @@
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/QuickView.h>
-#include <gloperate-qtquick/viewer/ScriptContext.h>
+#include <gloperate-qtquick/viewer/QmlScriptContext.h>
 
 
 using namespace gloperate;
@@ -88,7 +88,7 @@ int main(int argc, char * argv[])
 
     // Create scripting context
     scriptzeug::ScriptContext scriptContext(
-        new gloperate_qtquick::ScriptContext(&scriptContext, &qmlEngine)
+        new gloperate_qtquick::QmlScriptContext(&qmlEngine)
     );
     TestApi * test1 = new TestApi("test1", 42);
     TestApi * test2 = new TestApi("test2", 23);

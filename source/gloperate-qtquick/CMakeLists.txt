@@ -61,9 +61,9 @@ set(headers
     ${include_path}/viewer/QuickView.h
     ${include_path}/viewer/RenderItem.h
     ${include_path}/viewer/Utils.h
-    ${include_path}/viewer/ScriptContext.h
-    ${include_path}/viewer/ObjectWrapper.h
-    ${include_path}/viewer/ScriptFunction.h
+    ${include_path}/viewer/QmlScriptContext.h
+    ${include_path}/viewer/QmlScriptFunction.h
+    ${include_path}/viewer/QmlObjectWrapper.h
 )
 
 set(sources
@@ -72,9 +72,9 @@ set(sources
     ${source_path}/viewer/QuickView.cpp
     ${source_path}/viewer/RenderItem.cpp
     ${source_path}/viewer/Utils.cpp
-    ${source_path}/viewer/ScriptContext.cpp
-    ${source_path}/viewer/ObjectWrapper.cpp
-    ${source_path}/viewer/ScriptFunction.cpp
+    ${source_path}/viewer/QmlScriptContext.cpp
+    ${source_path}/viewer/QmlScriptFunction.cpp
+    ${source_path}/viewer/QmlObjectWrapper.cpp
 )
 
 # Group source files
