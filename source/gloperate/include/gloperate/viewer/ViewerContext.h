@@ -30,7 +30,7 @@ class Surface;
 */
 class GLOPERATE_API ViewerContext
 {
-    friend class Surface;
+friend class Surface;
 
 
 public:
@@ -123,6 +123,7 @@ protected:
     */
     void unregisterSurface(Surface * surface);
     //@}
+
 
 protected:
     TimeManager            m_timeManager;  ///< Manager for virtual time and timers

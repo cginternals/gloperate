@@ -30,6 +30,16 @@ TimeManager * ViewerContext::timeManager()
     return &m_timeManager;
 }
 
+const InputManager * ViewerContext::inputManager() const
+{
+    return &m_inputManager;
+}
+
+InputManager * ViewerContext::inputManager()
+{
+    return &m_inputManager;
+}
+
 void ViewerContext::registerSurface(Surface * surface)
 {
     m_surfaces.push_back(surface);
@@ -70,15 +80,5 @@ bool ViewerContext::update(float delta)
     return activeTimers;
 }
 
-const InputManager *ViewerContext::inputManager() const
-{
-    return &m_inputManager;
-}
-
-InputManager *ViewerContext::inputManager()
-{
-    return &m_inputManager;
-
-}
 
 } // namespace gloperate
