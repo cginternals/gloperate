@@ -1,9 +1,10 @@
 
 #include <gloperate/viewer/ViewerContext.h>
 
-#include <gloperate/viewer/Surface.h>
-
 #include <algorithm>
+
+#include <gloperate/viewer/Surface.h>
+#include <gloperate/scripting/ScriptEnvironment.h>
 
 
 namespace gloperate
@@ -38,6 +39,16 @@ const InputManager * ViewerContext::inputManager() const
 InputManager * ViewerContext::inputManager()
 {
     return &m_inputManager;
+}
+
+const ScriptEnvironment * ViewerContext::scriptEnvironment() const
+{
+    return &m_scriptEnvironment;
+}
+
+ScriptEnvironment * ViewerContext::scriptEnvironment()
+{
+    return &m_scriptEnvironment;
 }
 
 void ViewerContext::registerSurface(Surface * surface)

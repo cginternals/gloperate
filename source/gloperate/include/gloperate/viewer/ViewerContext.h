@@ -6,6 +6,7 @@
 
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/input/InputManager.h>
+#include <gloperate/scripting/ScriptEnvironment.h>
 
 
 namespace gloperate
@@ -72,6 +73,18 @@ public:
     InputManager * inputManager();
     //@}
 
+    //@{
+    /**
+    *  @brief
+    *    Get scripting environment
+    *
+    *  @return
+    *    Scripting environment (must NOT be null)
+    */
+    const ScriptEnvironment * scriptEnvironment() const;
+    ScriptEnvironment * scriptEnvironment();
+    //@}
+
     /**
     *  @brief
     *    Update timing
@@ -126,9 +139,10 @@ protected:
 
 
 protected:
-    TimeManager            m_timeManager;  ///< Manager for virtual time and timers
-    std::vector<Surface *> m_surfaces;     ///< List of active surfaces
-    InputManager           m_inputManager; ///< Manager for Devices, -Providers and InputEvents
+    TimeManager            m_timeManager;       ///< Manager for virtual time and timers
+    std::vector<Surface *> m_surfaces;          ///< List of active surfaces
+    InputManager           m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
+    ScriptEnvironment      m_scriptEnvironment; ///< Scripting environment
 };
 
 
