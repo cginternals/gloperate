@@ -3,7 +3,7 @@
 
 #include <gloperate/resources/ResourceManager.h>
 
-#include <gloperate-text/FontImporter.h>
+#include <gloperate-text/FontLoader.h>
 #include <gloperate-text/FontFace.h>
 
 
@@ -26,14 +26,12 @@ FontImporterStage::~FontImporterStage()
 
 void FontImporterStage::initialize()
 {
-    m_importer.reset(new gloperate_text::FontImporter(*resourceManager.data()));
+    m_importer.reset(new gloperate_text::FontLoader(*resourceManager.data()));
 }
 
 void FontImporterStage::process()
 {
-    FontFace * newFont = m_importer->loadFont(fontFilePath.data().toString());
-    
-    assert(newFont != nullptr);
+    FontFace * newFont = m_importer->load(fontFilePath.data().toString());
 
     if (newFont == nullptr)
     {

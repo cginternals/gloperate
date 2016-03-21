@@ -33,37 +33,32 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/Encoding.h
+    ${include_path}/Alignment.h
+    ${include_path}/LineAnchor.h
     ${include_path}/FontFace.h
-    ${include_path}/FontImporter.h
+    ${include_path}/FontLoader.h
     ${include_path}/Glyph.h
     ${include_path}/GlyphRenderer.h
-    ${include_path}/Text.h
-    ${include_path}/TextConverter.h
-    ${include_path}/TextLayouter.h
-    ${include_path}/TextManager.h
-    
-    ${include_path}/geometry/GlyphVertex.h
-    ${include_path}/geometry/GlyphVertexCloud.h
-    
-    ${include_path}/stages/GlyphRenderStage.h
+    ${include_path}/GlyphSequence.h
+    ${include_path}/GlyphVertexCloud.h
+    ${include_path}/Typesetter.h
+ 
     ${include_path}/stages/FontImporterStage.h
+    ${include_path}/stages/GlyphPreparationStage.h
+    ${include_path}/stages/GlyphRenderStage.h
 )
 
 set(sources
     ${source_path}/FontFace.cpp
-    ${source_path}/FontImporter.cpp
+    ${source_path}/FontLoader.cpp
     ${source_path}/Glyph.cpp
     ${source_path}/GlyphRenderer.cpp
-    ${source_path}/Text.cpp
-    ${source_path}/TextConverter.cpp
-    ${source_path}/TextLayouter.cpp
-    ${source_path}/TextManager.cpp
-    
-    ${source_path}/geometry/GlyphVertex.cpp
-    ${source_path}/geometry/GlyphVertexCloud.cpp
-    
+    ${source_path}/GlyphSequence.cpp
+    ${source_path}/GlyphVertexCloud.cpp
+    ${source_path}/Typesetter.cpp
+
     ${source_path}/stages/FontImporterStage.cpp
+    ${source_path}/stages/GlyphPreparationStage.cpp
     ${source_path}/stages/GlyphRenderStage.cpp
 )
 

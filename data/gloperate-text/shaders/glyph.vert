@@ -1,20 +1,19 @@
 #version 330
 
-layout (location=0) in vec2 in_worldStart;
-layout (location=1) in vec2 in_worldEnd;
-layout (location=2) in vec2 in_glyphStart;
-layout (location=3) in vec2 in_glyphEnd;
+layout (location = 0) in vec3 in_origin;
+layout (location = 1) in vec3 in_vtan;
+layout (location = 2) in vec3 in_vbitan;
+layout (location = 3) in vec4 in_uvRect;  // vec2 lowerLeft and vec2 upperRight in glyph texture (uv)
 
-out vec3 v_tangent;
-out vec3 v_bitangent;
-out vec2 v_glyphStart;
-out vec2 v_glyphEnd;
+out vec4 v_tangent;
+out vec4 v_bitangent;
+out vec4 v_uvRect;
 
 void main()
 {
-    gl_Position = vec4(in_worldStart, 0.0, 1.0);
-    v_tangent = vec3(in_worldEnd.x - in_worldStart.x, 0.0, 0.0);
-    v_bitangent = vec3(0.0, in_worldEnd.y - in_worldStart.y, 0.0);
-    v_glyphStart = in_glyphStart;
-    v_glyphEnd = in_glyphEnd;
+    gl_Position = vec4(in_origin, 1.0);
+
+    v_tangent   = vec4(in_vtan,   0.0);
+    v_bitangent = vec4(in_vbitan, 0.0);
+    v_uvRect    = in_uvRect;
 }
