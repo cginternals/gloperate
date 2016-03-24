@@ -16,11 +16,14 @@ namespace gloperate_qt
 {
 
 
-RenderWindow::RenderWindow(
-    gloperate::ViewerContext * viewerContext
-  , gloperate::Stage * renderStage)
-: RenderWindow(viewerContext, new gloperate::RenderSurface(viewerContext, renderStage))
+RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
+: m_viewerContext(viewerContext)
+, m_surface(new gloperate::RenderSurface(viewerContext))
 {
+    m_surface->redrawNeeded.connect([this] ()
+    {
+        this->updateGL();
+    } );
 }
 
 RenderWindow::~RenderWindow()
@@ -40,30 +43,7 @@ gloperate::Stage * RenderWindow::renderStage() const
 
 void RenderWindow::setRenderStage(gloperate::Stage * stage)
 {
-    // De-initialize and destroy old render stage
-    m_surface->setRenderStage(nullptr);
-
-    // Create new context for render stage and initialize render stage
-    if (stage)
-    {
-        destroyContext();
-        m_surface->setRenderStage(stage);
-        setContextFormat(m_surface->requiredFormat());
-        createContext();
-    }
-}
-
-RenderWindow::RenderWindow(
-    gloperate::ViewerContext * viewerContext
-  , gloperate::RenderSurface * surface)
-: OpenGLWindow(surface->requiredFormat())
-, m_viewerContext(viewerContext)
-, m_surface(surface)
-{
-    m_surface->redrawNeeded.connect([this] ()
-    {
-        this->updateGL();
-    } );
+    m_surface->setRenderStage(stage);
 }
 
 void RenderWindow::onContextInit()

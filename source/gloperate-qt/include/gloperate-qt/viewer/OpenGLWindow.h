@@ -31,11 +31,8 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] format
-    *    OpenGL context format
     */
-    OpenGLWindow(const gloperate::GLContextFormat & format);
+    OpenGLWindow();
 
     /**
     *  @brief

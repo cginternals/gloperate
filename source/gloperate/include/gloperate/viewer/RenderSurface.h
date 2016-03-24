@@ -28,10 +28,8 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the surface belongs (must NOT be null!)
-    *  @param[in] renderStage
-    *    Stage that renders into the surface (can be null)
     */
-    RenderSurface(ViewerContext * viewerContext, Stage * stage = nullptr);
+    RenderSurface(ViewerContext * viewerContext);
 
     /**
     *  @brief
@@ -62,7 +60,6 @@ public:
     void setRenderStage(Stage * stage);
 
     // Virtual Surface functions
-    virtual const GLContextFormat & requiredFormat() const override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;

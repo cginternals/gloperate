@@ -12,65 +12,64 @@ Item
 {
     id: panel
 
-    property var log: []
+    property string log: 'Welcome to scripting.\n'
 
     Rectangle
     {
-        anchors.top:          parent.top
-        anchors.bottom:       input.top
-        anchors.bottomMargin: Ui.style.panelSpacing
-        width:                parent.width
-
-        color: Ui.style.panelColorAlt
-
-        ScrollArea
-        {
-            anchors.fill: parent
-
-            contentHeight: content.height
-
-            Column
-            {
-                id: content
-
-                anchors.left:    parent.left
-                anchors.right:   parent.right
-                anchors.top:     parent.top
-                anchors.margins: Ui.style.ctrlPadding
-
-                Repeater
-                {
-                    width: parent.width
-
-                    model: panel.log.length
-
-                    Label
-                    {
-                        id: text
-
-                        width: content.width
-                        text:  panel.log[index]
-                    }
-                }
-            }
-        }
+        anchors.fill: parent
+        color:        Ui.style.panelColorAlt
     }
 
-    TextField
+    ScrollArea
     {
-        id: input
+        id: scrollArea
 
-        anchors.bottom:  parent.bottom
-        width:           parent.width
-        height:          Ui.style.formControlHeight
+        anchors.fill:  parent
+        contentHeight: content.height + 2 * Ui.style.ctrlPadding
 
-        onAccepted:
+        Column
         {
-            var log = panel.log;
-            log.push(eval(text));
-            panel.log = log;
+            id: content
 
-            text = '';
+            anchors.left:    parent.left
+            anchors.right:   parent.right
+            anchors.top:     parent.top
+            anchors.margins: Ui.style.ctrlPadding
+            spacing:         Ui.style.ctrlPadding
+
+            TextField
+            {
+                id: output
+
+                width:           parent.width
+                backgroundColor: Ui.style.panelColorAlt
+                text:            panel.log
+                readOnly:        true
+            }
+
+            TextField
+            {
+                id: input
+
+                width:           parent.width
+                backgroundColor: Ui.style.ctrlBorderColorPressed
+
+                onAccepted:
+                {
+                    var cmd = text;
+                    text = '';
+
+                    var log = panel.log;
+
+                    log += '\n> ' + cmd;
+                    panel.log = log;
+
+                    log += '\n' + eval(cmd) + '\n';
+                    panel.log = log;
+
+                    scrollArea.contentY = scrollArea.contentHeight;
+                }
+            }
         }
     }
 }

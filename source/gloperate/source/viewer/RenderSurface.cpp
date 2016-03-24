@@ -14,14 +14,13 @@ namespace gloperate
 {
 
 
-RenderSurface::RenderSurface(ViewerContext * viewerContext, Stage * stage)
+RenderSurface::RenderSurface(ViewerContext * viewerContext)
 : Surface(viewerContext)
 , m_renderStage(nullptr)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 {
-    setRenderStage(stage);
 }
 
 RenderSurface::~RenderSurface()
@@ -40,9 +39,11 @@ void RenderSurface::setRenderStage(Stage * stage)
     if (m_renderStage)
     {
         // De-initialize render stage
-        m_renderStage->deinitContext(m_openGLContext);
+        if (m_openGLContext) {
+            m_renderStage->deinitContext(m_openGLContext);
+        }
 
-        // Disconnect from events
+        // [TODO] Disconnect from events
 //      m_renderStage->outputInvalidated.disconnect(this);
 
         // Destroy render stage
@@ -60,16 +61,9 @@ void RenderSurface::setRenderStage(Stage * stage)
         });
 
         // Initialize render stage
-        m_renderStage->initContext(m_openGLContext);
-    }
-}
-
-const GLContextFormat & RenderSurface::requiredFormat() const
-{
-    if (m_renderStage) {
-        return m_renderStage->requiredFormat();
-    } else {
-        return Surface::requiredFormat();
+        if (m_openGLContext) {
+            m_renderStage->initContext(m_openGLContext);
+        }
     }
 }
 

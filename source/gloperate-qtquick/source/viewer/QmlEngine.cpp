@@ -1,114 +1,83 @@
 
-#include <gloperate-qtquick/viewer/ScriptContext.h>
+#include <gloperate-qtquick/viewer/QmlEngine.h>
 
-#include <QString>
-#include <QJSEngine>
-#include <QJSValue>
+#include <QQmlContext>
 #include <QJSValueIterator>
 
 #include <reflectionzeug/property/Property.h>
-#include <reflectionzeug/function/Function.h>
-#include <reflectionzeug/variant/Variant.h>
-#include <reflectionzeug/Object.h>
 
+#include <gloperate/gloperate.h>
 
-using namespace reflectionzeug;
+#include <gloperate-qtquick/controls/TextController.h>
+#include <gloperate-qtquick/viewer/RenderItem.h>
+#include <gloperate-qtquick/viewer/QmlScriptFunction.h>
 
-
+    
 namespace gloperate_qtquick
 {
 
 
-class ScriptFunction : public reflectionzeug::AbstractFunction
+QmlEngine::QmlEngine(gloperate::ViewerContext * viewerContext)
+: m_viewerContext(viewerContext)
 {
-public:
-    ScriptFunction(ScriptContext * scriptContext, QJSValue func)
-    : AbstractFunction("")
-    , m_scriptContext(scriptContext)
-    , m_function(func)
-    {
-    }
+    // Register QML types
+    qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
+    qmlRegisterType<TextController>("gloperate.ui",        1, 0, "TextController");
 
-    virtual AbstractFunction * clone()
-    {
-        return new ScriptFunction(m_scriptContext, m_function);
-    }
+    // Add gloperate qml-libraries
+    std::string importPath = gloperate::dataPath() + "/gloperate/qml/GLOperate/Ui";
+    addImportPath(QString::fromStdString(importPath));
 
-    virtual Variant call(const std::vector<Variant> & args)
-    {
-        QJSValueList argv;
+    // Register global functions and properties
+    rootContext()->setContextObject(this);
 
-        for (Variant var : args)
-        {
-            argv.append(m_scriptContext->toScriptValue(var));
-        }
+    // Create global objects
+    m_global    = newObject();
+    m_gloperate = newObject();
+}
 
-        if (m_function.isCallable()) {
-            return m_scriptContext->fromScriptValue(m_function.call(argv));
-        } else {
-            return Variant();
-        }
-    }
-
-protected:
-    ScriptContext * m_scriptContext;
-    QJSValue        m_function;
-};
-
-
-ScriptContext::ScriptContext(scriptzeug::ScriptContext * scriptContext, QJSEngine * engine)
-: scriptzeug::AbstractScriptContext(scriptContext)
-, m_engine(engine)
+QmlEngine::~QmlEngine()
 {
 }
 
-ScriptContext::~ScriptContext()
+gloperate::ViewerContext * QmlEngine::viewerContext() const
 {
+    return m_viewerContext;
 }
 
-void ScriptContext::registerObject(PropertyGroup *)
+QJSValue QmlEngine::execute(const QString & code)
 {
-    // [TODO]
+    return evaluate(code);
 }
 
-void ScriptContext::unregisterObject(PropertyGroup *)
-{
-    // [TODO]
-}
-
-Variant ScriptContext::evaluate(const std::string & code)
-{
-    return fromScriptValue(m_engine->evaluate(QString::fromStdString(code)));
-}
-
-Variant ScriptContext::fromScriptValue(const QJSValue & value)
+reflectionzeug::Variant QmlEngine::fromScriptValue(const QJSValue & value)
 {
     if (value.isBool()) {
-        return Variant(value.toBool());
+        return reflectionzeug::Variant(value.toBool());
     }
 
     else if (value.isNumber()) {
-        return Variant(value.toNumber());
+        return reflectionzeug::Variant(value.toNumber());
     }
 
     else if (value.isString()) {
-        return Variant(value.toString().toStdString());
+        return reflectionzeug::Variant(value.toString().toStdString());
     }
 
     else if (value.isRegExp()) {
-        return Variant(value.toString().toStdString());
+        return reflectionzeug::Variant(value.toString().toStdString());
     }
 
     else if (value.isError()) {
-        return Variant(value.toString().toStdString());
+        return reflectionzeug::Variant(value.toString().toStdString());
     }
 
     else if (value.isDate()) {
-        return Variant(value.toString().toStdString());
+        return reflectionzeug::Variant(value.toString().toStdString());
     }
 
     else if (value.isArray()) {
-        VariantArray array;
+        reflectionzeug::VariantArray array;
 
         QJSValueIterator it(value);
         while (it.next())
@@ -123,7 +92,7 @@ Variant ScriptContext::fromScriptValue(const QJSValue & value)
     }
 
     else if (value.isObject()) {
-        VariantMap obj;
+        reflectionzeug::VariantMap obj;
 
         QJSValueIterator it(value);
         while (it.next())
@@ -141,16 +110,16 @@ Variant ScriptContext::fromScriptValue(const QJSValue & value)
         //        it would be hard to determine the right use of function-variants.
         //        The script context could of course manage a list of created functions an delete them on destruction,
         //        but that would not solve the problem of "memory leak" while the program is running.
-        ScriptFunction * function = new ScriptFunction(this, value);
-        return Variant::fromValue<AbstractFunction *>(function);
+        QmlScriptFunction * function = new QmlScriptFunction(this, value);
+        return reflectionzeug::Variant::fromValue<reflectionzeug::AbstractFunction *>(function);
     }
 
     else {
-        return Variant();
+        return reflectionzeug::Variant();
     }
 }
 
-QJSValue ScriptContext::toScriptValue(const Variant & var)
+QJSValue QmlEngine::toScriptValue(const reflectionzeug::Variant & var)
 {
     if (var.hasType<char>()) {
         return QJSValue(var.value<char>());
@@ -212,14 +181,14 @@ QJSValue ScriptContext::toScriptValue(const Variant & var)
         return QJSValue(var.value<bool>());
     }
 
-    else if (var.hasType<FilePath>()) {
-        return QJSValue(var.value<FilePath>().toString().c_str());
+    else if (var.hasType<reflectionzeug::FilePath>()) {
+        return QJSValue(var.value<reflectionzeug::FilePath>().toString().c_str());
     }
 
-    else if (var.hasType<VariantArray>()) {
-        QJSValue array = m_engine->newArray();
+    else if (var.hasType<reflectionzeug::VariantArray>()) {
+        QJSValue array = newArray();
 
-        VariantArray variantArray = var.value<VariantArray>();
+        reflectionzeug::VariantArray variantArray = var.value<reflectionzeug::VariantArray>();
         for (unsigned int i=0; i<variantArray.size(); i++) {
             array.setProperty(i, toScriptValue(variantArray.at(i)));
         }
@@ -227,11 +196,11 @@ QJSValue ScriptContext::toScriptValue(const Variant & var)
         return array;
     }
 
-    else if (var.hasType<VariantMap>()) {
-        QJSValue obj = m_engine->newObject();
+    else if (var.hasType<reflectionzeug::VariantMap>()) {
+        QJSValue obj = newObject();
 
-        VariantMap variantMap = var.value<VariantMap>();
-        for (const std::pair<std::string, Variant> & pair : variantMap)
+        reflectionzeug::VariantMap variantMap = var.value<reflectionzeug::VariantMap>();
+        for (const std::pair<std::string, reflectionzeug::Variant> & pair : variantMap)
         {
             obj.setProperty(pair.first.c_str(), toScriptValue(pair.second));
         }
@@ -242,6 +211,26 @@ QJSValue ScriptContext::toScriptValue(const Variant & var)
     else {
         return QJSValue();
     }
+}
+
+const QJSValue & QmlEngine::global() const
+{
+    return m_global;
+}
+
+void QmlEngine::setGlobal(const QJSValue & obj)
+{
+    m_global = obj;
+}
+
+const QJSValue & QmlEngine::gloperate() const
+{
+    return m_gloperate;
+}
+
+void QmlEngine::setGloperate(const QJSValue & obj)
+{
+    m_gloperate = obj;
 }
 
 

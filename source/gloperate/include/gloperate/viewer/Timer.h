@@ -100,8 +100,6 @@ protected:
     bool            m_singleShot;    ///< 'true' if timer fires only once, else 'false'
     float           m_interval;      ///< Interval (in seconds)
     float           m_remaining;     ///< Remaining time (in seconds)
-
-
 };
 
 

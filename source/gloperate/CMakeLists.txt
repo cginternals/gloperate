@@ -53,6 +53,9 @@ set(headers
     ${include_path}/viewer/TimeManager.h
     ${include_path}/viewer/Timer.h
 
+    ${include_path}/scripting/ScriptEnvironment.h
+    ${include_path}/scripting/TestApi.h
+
     ${include_path}/pipeline/Stage.h
 
     ${include_path}/rendering/Camera.h
@@ -88,6 +91,9 @@ set(sources
     ${source_path}/viewer/RenderSurface.cpp
     ${source_path}/viewer/TimeManager.cpp
     ${source_path}/viewer/Timer.cpp
+
+    ${source_path}/scripting/ScriptEnvironment.cpp
+    ${source_path}/scripting/TestApi.cpp
 
     ${source_path}/pipeline/Stage.cpp
 
@@ -131,16 +137,6 @@ add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
 # Export library for downstream projects
 export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
-
-# Create feature detection header
-# Compilers: https://cmake.org/cmake/help/v3.1/variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_%3CLANG%3E_COMPILER_ID
-# Feature: https://cmake.org/cmake/help/v3.1/prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html
-write_compiler_detection_header(
-    FILE ${feature_file}
-    PREFIX ${target_upper}
-    COMPILERS AppleClang Clang GNU MSVC
-    FEATURES cxx_alignas cxx_alignof cxx_constexpr cxx_final cxx_noexcept cxx_nullptr cxx_sizeof_member cxx_thread_local
-)
 
 # Create API export header
 generate_export_header(${target}
@@ -190,6 +186,7 @@ target_link_libraries(${target}
     ${OPENGL_LIBRARIES}
     cpplocate::cpplocate
     libzeug::reflectionzeug
+    libzeug::scriptzeug
     libzeug::iozeug
     glbinding::glbinding
     globjects::globjects

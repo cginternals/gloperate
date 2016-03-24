@@ -29,13 +29,8 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the window belongs (must NOT be null!)
-    *  @param[in] renderStage
-    *    Stage that renders into the surface (can be null)
     */
-    RenderWindow(
-        gloperate::ViewerContext * viewerContext
-      , gloperate::Stage * renderStage = nullptr
-    );
+    RenderWindow(gloperate::ViewerContext * viewerContext);
 
     /**
     *  @brief
@@ -76,9 +71,6 @@ public:
 
 
 protected:
-    RenderWindow(gloperate::ViewerContext * viewerContext,
-                 gloperate::RenderSurface * surface);
-
     // Virtual OpenGLWindow functions
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;

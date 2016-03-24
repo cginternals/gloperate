@@ -15,7 +15,6 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
-class GLContextFormat;
 
 
 /**
@@ -52,15 +51,6 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     */
     ViewerContext * viewerContext() const;
-
-    /**
-    *  @brief
-    *    Get required OpenGL context format
-    *
-    *  @return
-    *    OpenGL context format expected by the stage
-    */
-    const GLContextFormat & requiredFormat() const;
 
     /**
     *  @brief

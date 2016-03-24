@@ -20,24 +20,26 @@ namespace gloperate_qtquick
 {
 
 
+class QmlEngine;
+
+
 /**
 *  @brief
-*    Qt quick window with support for gloperate
+*    Qt quick window with support for gloperate rendering
 */
 class GLOPERATE_QTQUICK_API QuickView : public QQuickView
 {
-    Q_OBJECT
-
-
 public:
     /**
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the window belongs (must NOT be null!)
+    *  @param[in] engine
+    *    Qml engine with gloperate integration (must NOT be null!)
+    *  @param[in] parent
+    *    Parent window (can be null)
     */
-    QuickView(gloperate::ViewerContext * viewerContext);
+    QuickView(QmlEngine * engine, QWindow * parent = nullptr);
 
     /**
     *  @brief
