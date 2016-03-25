@@ -46,12 +46,6 @@ int main(int argc, char * argv[])
     viewerContext.scriptEnvironment()->setupScripting(
         new gloperate_qtquick::QmlScriptContext(&qmlEngine)
     );
-    /*
-    TestApi * test1 = new TestApi("test1", 42);
-    TestApi * test2 = new TestApi("test2", 23);
-    test1->addProperty(test2);
-    viewerContext.scriptEnvironment()->addApi(test1);
-    */
 
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);

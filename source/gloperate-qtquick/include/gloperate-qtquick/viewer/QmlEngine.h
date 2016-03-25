@@ -11,6 +11,8 @@
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
+class QVariant;
+
 namespace gloperate {
     class ViewerContext;
 }
@@ -71,7 +73,7 @@ public:
     *  @return
     *    Return value of the script
     */
-    Q_INVOKABLE QJSValue execute(const QString & code);
+    Q_INVOKABLE QString execute(const QString & code);
 
     /**
     *  @brief
@@ -96,6 +98,18 @@ public:
     *    Script value
     */
     QJSValue toScriptValue(const reflectionzeug::Variant & var);
+
+    /**
+    *  @brief
+    *    Convert QVariant to variant
+    *
+    *  @param[in] value
+    *    QVariant
+    *
+    *  @return
+    *    Variant value
+    */
+    reflectionzeug::Variant fromQVariant(const QVariant & value);
 
     /**
     *  @brief

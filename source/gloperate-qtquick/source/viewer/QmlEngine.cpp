@@ -1,12 +1,15 @@
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 
+#include <QVariant>
 #include <QQmlContext>
 #include <QJSValueIterator>
 
 #include <reflectionzeug/property/Property.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/scripting/ScriptEnvironment.h>
 
 #include <gloperate-qtquick/controls/TextController.h>
 #include <gloperate-qtquick/viewer/RenderItem.h>
@@ -45,9 +48,11 @@ gloperate::ViewerContext * QmlEngine::viewerContext() const
     return m_viewerContext;
 }
 
-QJSValue QmlEngine::execute(const QString & code)
+QString QmlEngine::execute(const QString & code)
 {
-    return evaluate(code);
+    return QString::fromStdString(
+        m_viewerContext->scriptEnvironment()->execute(code.toStdString()).value<std::string>()
+    );
 }
 
 reflectionzeug::Variant QmlEngine::fromScriptValue(const QJSValue & value)
@@ -210,6 +215,82 @@ QJSValue QmlEngine::toScriptValue(const reflectionzeug::Variant & var)
 
     else {
         return QJSValue();
+    }
+}
+
+reflectionzeug::Variant QmlEngine::fromQVariant(const QVariant & value)
+{
+    if (value.type() == QVariant::Bool) {
+        return reflectionzeug::Variant(value.toBool());
+    }
+
+    else if (value.type() == QVariant::Char || value.type() == QVariant::Int) {
+        return reflectionzeug::Variant(value.toInt());
+    }
+
+    else if (value.type() == QVariant::UInt) {
+        return reflectionzeug::Variant(value.toUInt());
+    }
+
+    else if (value.type() == QVariant::LongLong) {
+        return reflectionzeug::Variant(value.toLongLong());
+    }
+
+    else if (value.type() == QVariant::ULongLong) {
+        return reflectionzeug::Variant(value.toULongLong());
+    }
+
+    else if (value.type() == QVariant::Double) {
+        return reflectionzeug::Variant(value.toDouble());
+    }
+
+    else if (value.type() == QVariant::StringList)
+    {
+        reflectionzeug::VariantArray array;
+
+        QStringList list = value.toStringList();
+        for (QStringList::iterator it = list.begin(); it != list.end(); ++it)
+        {
+            array.push_back( reflectionzeug::Variant((*it).toStdString()) );
+        }
+
+        return array;
+    }
+
+    else if (value.type() == QVariant::List)
+    {
+        reflectionzeug::VariantArray array;
+
+        QList<QVariant> list = value.toList();
+        for (QList<QVariant>::iterator it = list.begin(); it != list.end(); ++it)
+        {
+            array.push_back(fromQVariant(*it));
+        }
+
+        return array;
+    }
+
+    else if (value.type() == QVariant::Map)
+    {
+        reflectionzeug::VariantMap obj;
+
+        QMap<QString, QVariant> map = value.toMap();
+        for (QMap<QString, QVariant>::iterator it = map.begin(); it != map.end(); ++it)
+        {
+            std::string key = it.key().toStdString();
+            obj[key] = fromQVariant(it.value());
+        }
+
+        return obj;
+    }
+
+    else if (value.type() == QVariant::String || value.canConvert(QVariant::String))
+    {
+        return reflectionzeug::Variant(value.toString().toStdString());
+    }
+
+    else {
+        return reflectionzeug::Variant();
     }
 }
 

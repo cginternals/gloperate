@@ -3,8 +3,10 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <QString>
 #include <QQmlContext>
+#include <QQmlExpression>
+#include <QString>
+#include <QVariant>
 #include <QJSValue>
 
 #include <reflectionzeug/Object.h>
@@ -27,11 +29,6 @@ QmlScriptContext::QmlScriptContext(QmlEngine * engine)
 
 QmlScriptContext::~QmlScriptContext()
 {
-    // Clear wrapped objects
-    for (QmlObjectWrapper * obj : m_wrappedObjects)
-    {
-        delete obj;
-    }
 }
 
 void QmlScriptContext::initialize(scriptzeug::ScriptContext * scriptContext)
@@ -61,7 +58,11 @@ void QmlScriptContext::unregisterObject(PropertyGroup *)
 
 Variant QmlScriptContext::evaluate(const std::string & code)
 {
-    return m_engine->fromScriptValue(m_engine->evaluate(QString::fromStdString(code)));
+    QQmlExpression expr(m_engine->rootContext(), nullptr, QString::fromStdString(code));
+
+    return m_engine->fromQVariant(
+        expr.evaluate()
+    );
 }
 
 

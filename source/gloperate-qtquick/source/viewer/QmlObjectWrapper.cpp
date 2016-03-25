@@ -28,11 +28,6 @@ QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyG
 
 QmlObjectWrapper::~QmlObjectWrapper()
 {
-    // Clear wrapped objects
-    for (QmlObjectWrapper * obj : m_wrappedObjects)
-    {
-        delete obj;
-    }
 }
 
 QJSValue QmlObjectWrapper::wrapObject()
@@ -45,8 +40,8 @@ QJSValue QmlObjectWrapper::wrapObject()
     obj.setProperty("_obj", internal);
 
     // Helper script for adding properties and functions
-    QJSValue registerProperty = m_engine->execute("(function(obj, name) { obj.__defineGetter__(name, function() { return obj._obj.getProp(name); }); obj.__defineSetter__(name, function(v) { obj._obj.setProp(name, v); }); })");
-    QJSValue registerFunction = m_engine->execute("(function(obj, name) { obj[name] = function() { var args = []; for (var i=0; i<arguments.length; i++) { args.push(arguments[i]); } return obj._obj.callFunc(name, args); }; })");
+    QJSValue registerProperty = m_engine->evaluate("(function(obj, name) { obj.__defineGetter__(name, function() { return obj._obj.getProp(name); }); obj.__defineSetter__(name, function(v) { obj._obj.setProp(name, v); }); })");
+    QJSValue registerFunction = m_engine->evaluate("(function(obj, name) { obj[name] = function() { var args = []; for (var i=0; i<arguments.length; i++) { args.push(arguments[i]); } return obj._obj.callFunc(name, args); }; })");
 
     // Add properties to object
     for (unsigned int i=0; i<m_group->count(); i++)
