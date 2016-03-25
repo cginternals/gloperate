@@ -121,6 +121,7 @@ target_link_libraries(${target}
     ${FFMPEG_LIBRARIES}
     cpplocate::cpplocate
     libzeug::signalzeug
+    libzeug::reflectionzeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
