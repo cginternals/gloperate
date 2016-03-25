@@ -54,6 +54,9 @@ set(headers
     ${include_path}/viewer/TimeManager.h
     ${include_path}/viewer/Timer.h
 
+    ${include_path}/scripting/ScriptEnvironment.h
+    ${include_path}/scripting/TestApi.h
+
     ${include_path}/pipeline/Stage.h
 
     ${include_path}/rendering/Camera.h
@@ -90,6 +93,9 @@ set(sources
     ${source_path}/viewer/RenderSurface.cpp
     ${source_path}/viewer/TimeManager.cpp
     ${source_path}/viewer/Timer.cpp
+
+    ${source_path}/scripting/ScriptEnvironment.cpp
+    ${source_path}/scripting/TestApi.cpp
 
     ${source_path}/pipeline/Stage.cpp
 
@@ -182,6 +188,7 @@ target_link_libraries(${target}
     ${OPENGL_LIBRARIES}
     cpplocate::cpplocate
     libzeug::reflectionzeug
+    libzeug::scriptzeug
     libzeug::iozeug
     glbinding::glbinding
     globjects::globjects

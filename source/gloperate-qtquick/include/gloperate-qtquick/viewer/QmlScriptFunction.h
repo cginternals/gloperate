@@ -24,7 +24,7 @@ class QmlEngine;
 *    This class represents a function inside the scripting environment
 *    and makes it available to the reflectionzeug meta object system.
 */
-class GLOPERATE_QTQUICK_API ScriptFunction : public reflectionzeug::AbstractFunction
+class GLOPERATE_QTQUICK_API QmlScriptFunction : public reflectionzeug::AbstractFunction
 {
 public:
     /**
@@ -36,13 +36,13 @@ public:
     *  @param[in] func
     *    The wrapped function object
     */
-    ScriptFunction(QmlEngine * engine, QJSValue func);
+    QmlScriptFunction(QmlEngine * engine, QJSValue func);
 
     /**
     *  @brief
     *    Destructor
     */
-    ~ScriptFunction();
+    ~QmlScriptFunction();
 
     // Virtual reflectionzeug::AbstractFunction functions
     virtual reflectionzeug::AbstractFunction * clone() override;

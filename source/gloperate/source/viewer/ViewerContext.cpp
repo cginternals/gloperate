@@ -1,9 +1,10 @@
 
 #include <gloperate/viewer/ViewerContext.h>
 
-#include <gloperate/viewer/Surface.h>
-
 #include <algorithm>
+
+#include <gloperate/viewer/Surface.h>
+#include <gloperate/scripting/ScriptEnvironment.h>
 
 
 namespace gloperate
@@ -28,6 +29,26 @@ const TimeManager * ViewerContext::timeManager() const
 TimeManager * ViewerContext::timeManager()
 {
     return &m_timeManager;
+}
+
+const InputManager * ViewerContext::inputManager() const
+{
+    return &m_inputManager;
+}
+
+InputManager * ViewerContext::inputManager()
+{
+    return &m_inputManager;
+}
+
+const ScriptEnvironment * ViewerContext::scriptEnvironment() const
+{
+    return &m_scriptEnvironment;
+}
+
+ScriptEnvironment * ViewerContext::scriptEnvironment()
+{
+    return &m_scriptEnvironment;
 }
 
 void ViewerContext::registerSurface(Surface * surface)
@@ -70,15 +91,5 @@ bool ViewerContext::update(float delta)
     return activeTimers;
 }
 
-const InputManager *ViewerContext::inputManager() const
-{
-    return &m_inputManager;
-}
-
-InputManager *ViewerContext::inputManager()
-{
-    return &m_inputManager;
-
-}
 
 } // namespace gloperate

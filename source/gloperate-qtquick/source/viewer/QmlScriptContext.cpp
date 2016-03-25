@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/viewer/ScriptContext.h>
+#include <gloperate-qtquick/viewer/QmlScriptContext.h>
 
 #include <globjects/base/baselogging.h>
 
@@ -10,7 +10,7 @@
 #include <reflectionzeug/Object.h>
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
-#include <gloperate-qtquick/viewer/ObjectWrapper.h>
+#include <gloperate-qtquick/viewer/QmlObjectWrapper.h>
 
 
 using namespace reflectionzeug;
@@ -20,28 +20,32 @@ namespace gloperate_qtquick
 {
 
 
-ScriptContext::ScriptContext(scriptzeug::ScriptContext * scriptContext, QmlEngine * engine)
-: scriptzeug::AbstractScriptContext(scriptContext)
-, m_engine(engine)
+QmlScriptContext::QmlScriptContext(QmlEngine * engine)
+: m_engine(engine)
 {
 }
 
-ScriptContext::~ScriptContext()
+QmlScriptContext::~QmlScriptContext()
 {
     // Clear wrapped objects
-    for (ObjectWrapper * obj : m_wrappedObjects)
+    for (QmlObjectWrapper * obj : m_wrappedObjects)
     {
         delete obj;
     }
 }
 
-void ScriptContext::registerObject(PropertyGroup * group)
+void QmlScriptContext::initialize(scriptzeug::ScriptContext * scriptContext)
+{
+    m_scriptContext = scriptContext;
+}
+
+void QmlScriptContext::registerObject(PropertyGroup * group)
 {
     // Check arguments
     if (!group) return;
 
     // Create object wrapper
-    ObjectWrapper * wrapper = new ObjectWrapper(m_engine, group);
+    QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, group);
     m_wrappedObjects.push_back(wrapper);
 
     // Add object to global object 'gloperate'
@@ -50,12 +54,12 @@ void ScriptContext::registerObject(PropertyGroup * group)
     m_engine->setGloperate(gloperate);
 }
 
-void ScriptContext::unregisterObject(PropertyGroup *)
+void QmlScriptContext::unregisterObject(PropertyGroup *)
 {
     // [TODO]
 }
 
-Variant ScriptContext::evaluate(const std::string & code)
+Variant QmlScriptContext::evaluate(const std::string & code)
 {
     return m_engine->fromScriptValue(m_engine->evaluate(QString::fromStdString(code)));
 }

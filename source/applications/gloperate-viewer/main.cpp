@@ -7,6 +7,7 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/scripting/ScriptEnvironment.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
@@ -17,57 +18,12 @@
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/QuickView.h>
-#include <gloperate-qtquick/viewer/ScriptContext.h>
+#include <gloperate-qtquick/viewer/QmlScriptContext.h>
 
 
 using namespace gloperate;
 using namespace gloperate_qt;
 using namespace gloperate_qtquick;
-
-
-class TestApi : public reflectionzeug::Object
-{
-public:
-    TestApi(const std::string & name, int value)
-    : reflectionzeug::Object(name)
-    , m_value(value)
-    {
-        addProperty<int>("value", this, &TestApi::value, &TestApi::setValue);
-
-        addFunction("sayHello", this, &TestApi::sayHello);
-    }
-
-    ~TestApi()
-    {
-    }
-
-    int value() const
-    {
-        globjects::info() << "value()";
-
-        return m_value;
-    }
-
-    void setValue(int v)
-    {
-        globjects::info() << "setValue()";
-
-        m_value = v;
-    }
-
-    void sayHello(const std::string & msg, int count)
-    {
-        int num = (count > 0) ? count : 1;
-
-        for (int i=0; i<num; i++) {
-            globjects::info() << msg;
-        }
-    }
-
-
-protected:
-    int m_value;
-};
 
 
 int main(int argc, char * argv[])
@@ -86,14 +42,16 @@ int main(int argc, char * argv[])
     QmlEngine qmlEngine(&viewerContext);
     qmlEngine.addImportPath(qmlPath);
 
-    // Create scripting context
-    scriptzeug::ScriptContext scriptContext(
-        new gloperate_qtquick::ScriptContext(&scriptContext, &qmlEngine)
+    // Create scripting context backend
+    viewerContext.scriptEnvironment()->setupScripting(
+        new gloperate_qtquick::QmlScriptContext(&qmlEngine)
     );
+    /*
     TestApi * test1 = new TestApi("test1", 42);
     TestApi * test2 = new TestApi("test2", 23);
     test1->addProperty(test2);
-    scriptContext.registerObject(test1);
+    viewerContext.scriptEnvironment()->addApi(test1);
+    */
 
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);

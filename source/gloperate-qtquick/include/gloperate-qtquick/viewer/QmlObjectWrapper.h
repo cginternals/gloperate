@@ -21,7 +21,6 @@ namespace gloperate_qtquick
 
 
 class QmlEngine;
-class ObjectWrapper;
 
 
 /**
@@ -31,7 +30,7 @@ class ObjectWrapper;
 *    This class is used to expose a libzeug::Object trough
 *    a QObject interface into a QML scripting environment.
 */
-class GLOPERATE_QTQUICK_API ObjectWrapper : public QObject
+class GLOPERATE_QTQUICK_API QmlObjectWrapper : public QObject
 {
 Q_OBJECT
 
@@ -46,14 +45,21 @@ public:
     *  @param[in] group
     *    Property group (must NOT be nullptr)
     */
-    ObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyGroup * group);
+    QmlObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyGroup * group);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~ObjectWrapper();
+    virtual ~QmlObjectWrapper();
 
+    /**
+    *  @brief
+    *    Create wrapper object in the scripting environment
+    *
+    *  @return
+    *    Script value wrapping the object
+    */
     QJSValue wrapObject();
 
 
@@ -94,10 +100,10 @@ protected:
 
 
 protected:
-    QmlEngine                     * m_engine;         ///< Qml engine with gloperate integration
-    reflectionzeug::PropertyGroup * m_group;          ///< Wrapped property group (must NOT be null)
-    reflectionzeug::Object        * m_object;         ///< Wrapped object (can be null)
-    std::vector<ObjectWrapper *>    m_wrappedObjects; ///< List of wrapped sub-objects
+    QmlEngine                       * m_engine;         ///< Qml engine with gloperate integration
+    reflectionzeug::PropertyGroup   * m_group;          ///< Wrapped property group (must NOT be null)
+    reflectionzeug::Object          * m_object;         ///< Wrapped object (can be null)
+    std::vector<QmlObjectWrapper *>   m_wrappedObjects; ///< List of wrapped sub-objects
 };
 
 
