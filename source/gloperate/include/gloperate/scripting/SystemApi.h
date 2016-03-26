@@ -38,6 +38,11 @@ public:
 
 
 protected:
+    // Scripting functions
+    void load(const std::string & filename);
+    std::string readFile(const std::string & filename);
+    void writeFile(const std::string & filename, const reflectionzeug::Variant & value);
+    void appendFile(const std::string & filename, const reflectionzeug::Variant & value);
     void exit(int exitCode);
 
 

@@ -145,6 +145,7 @@ protected:
     std::unique_ptr<SystemApi>                   m_systemApi;     ///< System function (files, print)
     std::unique_ptr<TimerApi>                    m_timerApi;      ///< Timer functions
     std::list<reflectionzeug::Object *>          m_apis;          ///< List of connected APIs
+    std::string                                  m_helpText;      ///< Text that is displayed on 'help'
 };
 
 

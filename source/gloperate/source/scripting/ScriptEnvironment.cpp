@@ -19,6 +19,19 @@ namespace gloperate
 ScriptEnvironment::ScriptEnvironment(ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
 {
+    // Set help text
+    m_helpText =
+        "Available commands:\n"
+        "  help: Print this help message\n"
+        "  exit: Exit the application\n"
+        "\n"
+        "APIs:\n"
+        "  gloperate.system: System API (IO, keyboard handling, ...)\n"
+        "  gloperate.timer:  Timer API\n"
+        "\n"
+        "Examples:\n"
+        "  gloperate.timer.start(1000, function() { print(\"Hello Scripting World.\"); } );\n"
+        "  gloperate.timer.stopAll();\n";
 }
 
 ScriptEnvironment::~ScriptEnvironment()
@@ -72,7 +85,7 @@ void ScriptEnvironment::removeApi(reflectionzeug::Object * api)
 
 void ScriptEnvironment::setHelpText(const std::string & text)
 {
-//  m_systemApi->setHelpText(text);
+    m_helpText = text;
 }
 
 reflectionzeug::Variant ScriptEnvironment::execute(const std::string & code)
@@ -80,9 +93,12 @@ reflectionzeug::Variant ScriptEnvironment::execute(const std::string & code)
     // Substitute shortcut commands
     std::string cmd = code;
     if (cmd == "help") {
-        cmd = "help()";
+        // Print help text
+        globjects::info() << m_helpText;
+        return reflectionzeug::Variant();
     } else if (cmd == "exit" || cmd == "quit") {
-        cmd = "exit()";
+        // Exit application
+        cmd = "gloperate.system.exit()";
     }
 
     // Execute command
@@ -114,37 +130,6 @@ void ScriptEnvironment::initialize()
     TestApi * test2 = new TestApi("test2", 42);
     test1->addProperty(test2);
     addApi(test1);
-
-    // Connect commands that have been loaded by API functions (e.g., system.load)
-    /*
-    m_systemApi->command.connect([this] (const std::string & cmd) {
-        // Execute code
-        execute(cmd);
-    } );
-    */
-
-    // Add global functions
-    std::string script =
-        "function help() {\n"
-        "  system.help();\n"
-        "}\n"
-        "\n"
-        "function load(filename) {\n"
-        "  system.load(filename);\n"
-        "}\n"
-        "\n"
-        "function print(value) {\n"
-        "  system.print(value);\n"
-        "}\n"
-        "\n"
-        "function exit() {\n"
-        "  system.exit();\n"
-        "}\n"
-        "\n"
-        "function quit() {\n"
-        "  system.exit();\n"
-        "}\n";
-    execute(script);
 }
 
 
