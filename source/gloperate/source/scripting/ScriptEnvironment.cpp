@@ -7,8 +7,8 @@
 
 #include <scriptzeug/ScriptContext.h>
 
-//#include <gloperate/scripting/SystemApi.h>
-//#include <gloperate/scripting/TimerApi.h>
+#include <gloperate/scripting/SystemApi.h>
+#include <gloperate/scripting/TimerApi.h>
 #include <gloperate/scripting/TestApi.h>
 
 
@@ -16,7 +16,8 @@ namespace gloperate
 {
 
 
-ScriptEnvironment::ScriptEnvironment()
+ScriptEnvironment::ScriptEnvironment(ViewerContext * viewerContext)
+: m_viewerContext(viewerContext)
 {
 }
 
@@ -102,17 +103,15 @@ void ScriptEnvironment::initialize()
     });
 
     // Register default scripting APIs
-    /*
-    m_systemApi.reset(new SystemApi(openGLWindow));
+    m_systemApi.reset(new SystemApi(m_viewerContext));
     addApi(m_systemApi.get());
 
     m_timerApi.reset(new TimerApi);
     addApi(m_timerApi.get());
-    */
 
     // Register test API
-    TestApi * test1 = new TestApi("test1", 1);
-    TestApi * test2 = new TestApi("test2", 2);
+    TestApi * test1 = new TestApi("test1", 23);
+    TestApi * test2 = new TestApi("test2", 42);
     test1->addProperty(test2);
     addApi(test1);
 

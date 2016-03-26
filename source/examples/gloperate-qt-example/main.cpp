@@ -8,6 +8,7 @@
 #include <gloperate/viewer/GLContextUtils.h>
 #include <gloperate/stages/demos/DemoStage.h>
 
+#include <gloperate-qt/viewer/Application.h>
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 #include <gloperate-qt/viewer/RenderWindow.h>
@@ -19,11 +20,11 @@ using namespace gloperate_qt;
 
 int main(int argc, char * argv[])
 {
-    // Initialize Qt application
-    QApplication app(argc, argv);
-
     // Create viewer context
     ViewerContext viewerContext;
+
+    // Initialize Qt application
+    gloperate_qt::Application app(&viewerContext, argc, argv);
     UpdateManager updateManager(&viewerContext);
 
     // Create render stage
