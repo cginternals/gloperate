@@ -57,7 +57,6 @@ set(headers
     ${include_path}/scripting/SystemApi.h
     ${include_path}/scripting/TimerApi.h
     ${include_path}/scripting/ScriptTimer.h
-    ${include_path}/scripting/TestApi.h
 
     ${include_path}/pipeline/Stage.h
 
@@ -99,7 +98,6 @@ set(sources
     ${source_path}/scripting/SystemApi.cpp
     ${source_path}/scripting/TimerApi.cpp
     ${source_path}/scripting/ScriptTimer.cpp
-    ${source_path}/scripting/TestApi.cpp
 
     ${source_path}/pipeline/Stage.cpp
 

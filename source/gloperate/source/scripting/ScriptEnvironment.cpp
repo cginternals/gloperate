@@ -9,7 +9,6 @@
 
 #include <gloperate/scripting/SystemApi.h>
 #include <gloperate/scripting/TimerApi.h>
-#include <gloperate/scripting/TestApi.h>
 
 
 namespace gloperate
@@ -124,12 +123,6 @@ void ScriptEnvironment::initialize()
 
     m_timerApi.reset(new TimerApi(m_viewerContext));
     addApi(m_timerApi.get());
-
-    // Register test API
-    TestApi * test1 = new TestApi("test1", 23);
-    TestApi * test2 = new TestApi("test2", 42);
-    test1->addProperty(test2);
-    addApi(test1);
 }
 
 
