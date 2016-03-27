@@ -60,7 +60,7 @@ public:
     *  @param[in] backendName
     *    Name of scripting backend to use (default: 'javascript')
     */
-    void setupScripting(const std::string & backendName);
+    void setupScripting(const std::string & backendName = "");
 
     /**
     *  @brief
