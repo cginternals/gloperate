@@ -36,6 +36,12 @@ void QmlScriptContext::initialize(scriptzeug::ScriptContext * scriptContext)
     m_scriptContext = scriptContext;
 }
 
+void QmlScriptContext::setGlobalNamespace(const std::string &)
+{
+    // This backend automatically uses the namespace 'gloperate'
+    // and does not support any other global namespace.
+}
+
 void QmlScriptContext::registerObject(PropertyGroup * group)
 {
     // Check arguments

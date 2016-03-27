@@ -111,6 +111,9 @@ void ScriptEnvironment::initialize()
         return;
     }
 
+    // Use the global namespace 'gloperate'
+    m_scriptContext->setGlobalNamespace("gloperate");
+
     // Output scripting errors to console
     m_scriptContext->scriptException.connect( [] (const std::string & error) -> void
     {

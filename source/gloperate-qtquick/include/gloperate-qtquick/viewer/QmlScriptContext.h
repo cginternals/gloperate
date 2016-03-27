@@ -43,6 +43,7 @@ public:
 
     // Virtual AbstractScriptContext functions
     virtual void initialize(scriptzeug::ScriptContext * scriptContext) override;
+    virtual void setGlobalNamespace(const std::string & name) override;
     virtual void registerObject(reflectionzeug::PropertyGroup * obj) override;
     virtual void unregisterObject(reflectionzeug::PropertyGroup * obj) override;
     virtual reflectionzeug::Variant evaluate(const std::string & code) override;
