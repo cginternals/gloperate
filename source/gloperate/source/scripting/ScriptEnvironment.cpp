@@ -122,7 +122,7 @@ void ScriptEnvironment::initialize()
     m_systemApi.reset(new SystemApi(m_viewerContext));
     addApi(m_systemApi.get());
 
-    m_timerApi.reset(new TimerApi);
+    m_timerApi.reset(new TimerApi(m_viewerContext));
     addApi(m_timerApi.get());
 
     // Register test API
