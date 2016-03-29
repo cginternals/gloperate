@@ -9,7 +9,8 @@ namespace gloperate
 
 
 Surface::Surface(ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+: reflectionzeug::Object("surface")
+, m_viewerContext(viewerContext)
 , m_openGLContext(nullptr)
 {
     m_viewerContext->registerSurface(this);

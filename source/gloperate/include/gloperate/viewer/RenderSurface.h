@@ -59,6 +59,12 @@ public:
     */
     void setRenderStage(Stage * stage);
 
+    /**
+    *  @brief
+    *
+    */
+    void createVideo();
+
     // Virtual Surface functions
     virtual void onUpdate() override;
     virtual void onContextInit() override;

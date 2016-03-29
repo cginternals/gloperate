@@ -21,6 +21,8 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 {
+    addFunction("createVideo", this, &RenderSurface::createVideo);
+    m_viewerContext->scriptEnvironment()->addApi(this);
 }
 
 RenderSurface::~RenderSurface()
@@ -65,6 +67,11 @@ void RenderSurface::setRenderStage(Stage * stage)
             m_renderStage->initContext(m_openGLContext);
         }
     }
+}
+
+void RenderSurface::createVideo()
+{
+    globjects::debug() << "Create Video";
 }
 
 void RenderSurface::onUpdate()
