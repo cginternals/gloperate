@@ -106,7 +106,7 @@ Page
             items: [
               { name: 'painter',    text: 'Choose Painter', icon: '0092-tv.png', enabled: false },
               { name: 'screenshot', text: 'Screenshot',     icon: '0040-file-picture.png', enabled: false },
-              { name: 'video',      text: 'Video',          icon: '0021-video-camera.png', enabled: false }
+              { name: 'video',      text: 'Video',          icon: '0021-video-camera.png', enabled: true }
             ] },
           { name: 'navigation', text: 'WorldInHand', icon: '0021-video-camera.png', enabled: true,
             items: [
@@ -121,6 +121,10 @@ Page
         {
             if (menu == 'test') {
                 welcome.openPanel();
+            }
+
+            if (menu == 'stage' && name == 'video') {
+                video.openPanel();
             }
         }
     }
@@ -210,5 +214,17 @@ Page
 
         anchors.fill: main
         z:            -1
+    }
+
+    // Video capture dialog
+    VideoDialog
+    {
+        id: video
+
+        anchors.fill:    main
+        anchors.margins: Ui.style.dialogPadding
+
+        visible: open
+        status:  0.0
     }
 }
