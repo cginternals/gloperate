@@ -74,12 +74,12 @@ glbinding::Version ContextFormat::validateVersion(const glbinding::Version &requ
 
 int ContextFormat::majorVersion() const
 {
-    return m_version.m_major;
+    return m_version.majorVersion();
 }
 
 int ContextFormat::minorVersion() const
 {
-    return m_version.m_minor;
+    return m_version.minorVersion();
 }
 
 const glbinding::Version & ContextFormat::version() const
