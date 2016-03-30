@@ -78,7 +78,6 @@ void MyDrawable::drawArrays(gl::GLint first, gl::GLsizei count) const
 
 void MyDrawable::drawArrays(gl::GLenum mode, gl::GLint first, gl::GLsizei count) const
 {
-    bindTextures();
     m_vao->drawArrays(mode, first, count);
 }
 
@@ -102,14 +101,14 @@ void MyDrawable::drawElements(gl::GLenum mode) const
 void MyDrawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices) const
 {
     globjects::Buffer::unbind(gl::GL_ELEMENT_ARRAY_BUFFER);
-    bindTextures();
+
     m_vao->drawElements(mode, count, type, indices);
 }
 
 void MyDrawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, globjects::Buffer * indices) const
 {
     indices->bind(gl::GL_ELEMENT_ARRAY_BUFFER);
-    bindTextures();
+
     m_vao->drawElements(mode, count, type, nullptr);
 }
 
@@ -151,66 +150,6 @@ globjects::Buffer * MyDrawable::buffer(size_t index) const
 void MyDrawable::setBuffer(size_t index, globjects::Buffer * buffer)
 {
     m_buffers.emplace(index, buffer);
-}
-
-globjects::Texture * MyDrawable::texture(size_t index)
-{
-    if (m_textures.count(index) == 0)
-    {
-        setTexture(index, new globjects::Texture);
-    }
-
-    return m_textures.at(index);
-}
-
-globjects::Texture * MyDrawable::texture(size_t index) const
-{
-    return m_textures.at(index);
-}
-
-globjects::Texture * MyDrawable::texture(gl::GLenum activeTextureIndex)
-{
-    assert(activeTextureIndex >= gl::GL_TEXTURE0);
-
-    return texture(static_cast<size_t>(activeTextureIndex) - static_cast<size_t>(gl::GL_TEXTURE0));
-}
-
-globjects::Texture * MyDrawable::texture(gl::GLenum activeTextureIndex) const
-{
-    assert(activeTextureIndex >= gl::GL_TEXTURE0);
-
-    return texture(static_cast<size_t>(activeTextureIndex) - static_cast<size_t>(gl::GL_TEXTURE0));
-}
-
-void MyDrawable::setTexture(size_t index, globjects::Texture * texture)
-{
-    m_textures.emplace(index, texture);
-}
-
-void MyDrawable::setTexture(gl::GLenum activeTextureIndex, globjects::Texture * texture)
-{
-    assert(activeTextureIndex >= gl::GL_TEXTURE0);
-
-    return setTexture(static_cast<size_t>(activeTextureIndex) - static_cast<size_t>(gl::GL_TEXTURE0), texture);
-}
-
-globjects::Texture * MyDrawable::removeTexture(size_t index)
-{
-    if (m_textures.count(index) == 0)
-    {
-        return nullptr;
-    }
-
-    globjects::Texture * texture = m_textures.at(index);
-
-    m_textures.erase(index);
-
-    return texture;
-}
-
-globjects::Texture * MyDrawable::removeTexture(gl::GLenum activeTextureIndex)
-{
-    return removeTexture(static_cast<size_t>(activeTextureIndex) - static_cast<size_t>(gl::GL_TEXTURE0));
 }
 
 globjects::Buffer * MyDrawable::indexBuffer() const
@@ -304,19 +243,6 @@ void MyDrawable::enableAllAttributeBindings()
     for (const globjects::VertexAttributeBinding * binding : m_vao->bindings())
     {
         m_vao->enable(binding->attributeIndex());
-    }
-}
-
-void MyDrawable::bindTextures() const
-{
-    for (const auto & pair : m_textures)
-    {
-        if (pair.second == nullptr)
-        {
-            continue;
-        }
-
-        pair.second->bindActive(pair.first);
     }
 }
 
