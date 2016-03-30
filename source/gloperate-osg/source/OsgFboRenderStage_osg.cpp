@@ -1,6 +1,9 @@
 
 #include <gloperate-osg/OsgFboRenderStage.h>
 
+#undef __gl_h_ // dirtiest hack imaginale
+// TODO: find a solution for GL/gl.h and glbinding/gl/gl.h
+
 #include <osgViewer/Viewer>
 #include <osgViewer/Renderer>
 
