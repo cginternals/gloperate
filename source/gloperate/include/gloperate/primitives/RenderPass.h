@@ -3,6 +3,9 @@
 
 #include <unordered_map>
 #include <cstdint>
+#include <cstddef>
+
+#include <glbinding/gl/types.h>
 
 #include <globjects/base/Referenced.h>
 #include <globjects/base/ref_ptr.h>
@@ -13,8 +16,11 @@
 namespace globjects
 {
 
+class Buffer;
 class Framebuffer;
 class Program;
+class ProgramPipeline;
+class Sampler;
 class Texture;
 
 } // namespace globjects
@@ -109,31 +115,45 @@ public:
     globjects::Program * program() const;
     void setProgram(globjects::Program * program) const;
 
-    // Program Pipeline
-    // Uniform Buffer
-    // Uniform Group
-    // Atomic Counter Buffer
-    // Shader Storage Buffer
-    // Global State / Capabilities
-    // Framebuffer Attachments (Textures / Renderbuffers / ?)
-    // Textures / Images / Samplers / Texture Views
-    // Bindless Textures?
-    // Queries?
-    // Command Lists?
+    globjects::ProgramPipeline * programPipeline() const;
+    void setProgramPipeline(globjects::ProgramPipeline * programPipeline) const;
+
+    globjects::Texture * sampler(size_t index);
+    globjects::Texture * sampler(size_t index) const;
+    void setSampler(size_t index, globjects::Texture * texture);
+    globjects::Texture * removeSampler(size_t index);
+
+    globjects::Texture * uniformBuffer(size_t index);
+    globjects::Texture * uniformBuffer(size_t index) const;
+    void setUniformBuffers(size_t index, globjects::Texture * texture);
+    globjects::Texture * removeUniformBuffer(size_t index);
+
+    globjects::Texture * atomicCounterBuffer(size_t index);
+    globjects::Texture * atomicCounterBuffer(size_t index) const;
+    void setAtomicCounterBuffer(size_t index, globjects::Texture * texture);
+    globjects::Texture * removeAtomicCounterBuffer(size_t index);
+
+    globjects::Texture * shaderStorageBuffer(size_t index);
+    globjects::Texture * shaderStorageBuffer(size_t index) const;
+    void setShaderStorageBuffer(size_t index, globjects::Texture * texture);
+    globjects::Texture * removeShaderStorageBuffer(size_t index);
 
 protected:
     globjects::ref_ptr<globjects::Framebuffer> m_fbo;
     globjects::ref_ptr<MyDrawable> m_geometry;
     globjects::ref_ptr<globjects::Program> m_program;
+    globjects::ref_ptr<globjects::ProgramPipeline> m_programPipeline;
 
     std::unordered_map<size_t, globjects::ref_ptr<globjects::Texture>> m_textures; /// The collection of all textures associated with this render pass. The key is used as the active texture binding.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Sampler>> m_samplers;
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_uniformBuffers;
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_atomicCounterBuffers;
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_shaderStorageBuffers;
 
 protected:
     void bindTextures() const;
 
 };
-
-// TODO: Compute pass? Superclass of RenderPass? common superclass named GPUPass?
 
 
 } // namespace gloperate
