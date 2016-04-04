@@ -22,6 +22,7 @@ class Program;
 class ProgramPipeline;
 class Sampler;
 class Texture;
+class TransformFeedback;
 
 } // namespace globjects
 
@@ -36,122 +37,197 @@ class GLOPERATE_API RenderPass : public globjects::Referenced
 {
 public:
     RenderPass();
+    virtual ~RenderPass();
+
+    void draw() const;
+
+    globjects::Framebuffer * framebuffer() const;
+    void setFramebuffer(globjects::Framebuffer * framebuffer);
+
+    MyDrawable * geometry() const;
+    void setGeometry(MyDrawable * geometry);
+
+    globjects::TransformFeedback * recordTransformFeedback() const;
+    void setRecordTransformFeedback(globjects::TransformFeedback * transformFeedback);
+
+    gl::GLenum recordTransformFeedbackMode() const;
+    void setRecordTransformFeedbackMode(gl::GLenum mode);
+
+    globjects::TransformFeedback * drawTransformFeedback() const;
+    void setDrawTransformFeedback(globjects::TransformFeedback * transformFeedback);
+
+    gl::GLenum drawTransformFeedbackMode() const;
+    void setDrawTransformFeedbackMode(gl::GLenum mode);
 
     /**
-     * @return the OpenGL texture object at the given index
-     * @param index the active texture index
+     * @brief
+     *   Accessor for the program used for drawing.
      *
-     * The indices don't need to be continuous.
-     * If an OpenGL texture at the given index doesn't exist a new one will be created
+     * @return
+     *   The program.
      */
-    globjects::Texture * texture(size_t index);
+    globjects::Program * program() const;
 
     /**
-     * @return the OpenGL texture object at the given index
-     * @param index the active texture index
+     * @brief
+     *   Updates the program used for drawing.
      *
-     * The indices don't need to be continuous.
-     * If an OpenGL texture at the given index doesn't exist an exception is thrown
+     * @param[in] program
+     *   The new program to use.
+     *
+     * @remarks
+     *   The passed program is partially owned by this RenderPass.
+     *   If both a program and a program pipeline is configured, the program is preferred during rendering.
+     */
+    void setProgram(globjects::Program * program);
+
+    /**
+     * @brief
+     *   Accessor for the program pipeline used for drawing.
+     *
+     * @return
+     *   The program pipeline.
+     */
+    globjects::ProgramPipeline * programPipeline() const;
+
+    /**
+     * @brief
+     *   Updates the program pipeline used for drawing.
+     *
+     * @param[in] programPipeline
+     *   The new program pipeline to use.
+     *
+     * @remarks
+     *   The passed program pipeline is partially owned by this RenderPass.
+     *   If both a program and a program pipeline is configured, the program is preferred during rendering.
+     */
+    void setProgramPipeline(globjects::ProgramPipeline * programPipeline);
+
+    /**
+     * @brief
+     *   Accessor for the OpenGL texture object at the given index.
+     *
+     * @param[in] index
+     *   The active texture index.
+     *
+     * @return
+     *   The OpenGL texture object at the given index (nullptr if missing).
+     *
+     * @remarks
+     *   The indices don't need to be continuous.
      */
     globjects::Texture * texture(size_t index) const;
 
     /**
-     * @return the OpenGL texture object at the given active texture index
-     * @param activeTextureIndex the active texture index as GLenum
+     * @brief
+     *   Accessor for the OpenGL texture object at the given index.
      *
-     * Note: The index is normalized to a size_t so the texture is also available using the size_t interface.
+     * @param[in] index
+     *   The active texture index as GLenum.
      *
-     * The indices don't need to be continuous.
-     * If an OpenGL texture at the given index doesn't exist a new one will be created
-     */
-    globjects::Texture * texture(gl::GLenum activeTextureIndex);
-
-    /**
-     * @return the OpenGL texture object at the given active texture index
-     * @param activeTextureIndex the active texture index as GLenum
+     * @return
+     *   The OpenGL texture object at the given index (nullptr if missing).
      *
-     * Note: The index is normalized to a size_t so the texture is also available using the size_t interface.
-     *
-     * The indices don't need to be continuous.
-     * If an OpenGL texture at the given index doesn't exist an exception is thrown
+     * @remarks
+     *   The indices don't need to be continuous.
      */
     globjects::Texture * texture(gl::GLenum activeTextureIndex) const;
 
     /**
-     * @brief updates a texture that is to be bound active during the draw calls
-     * @param index the active texture index
-     * @param texture the texture to be bound
+     * @brief
+     *   Updates a texture that is to be bound active during the draw calls.
      *
-     * Hint: To exclude a texture from getting bound active during draw calls, use removeTexture.
+     * @param[in] index
+     *   The active texture index.
+     * @param[in] texture
+     *   The texture to be bound.
+     *
+     * @remarks
+     *   To exclude a texture from getting bound active during draw calls, use removeTexture.
      */
     void setTexture(size_t index, globjects::Texture * texture);
 
     /**
-     * @brief updates a texture that is to be bound active during the draw calls
-     * @param activeTextureIndex the active texture index as GLenum
-     * @param texture the texture to be bound
+     * @brief
+     *   Updates a texture that is to be bound active during the draw calls.
      *
-     * Note: The index is normalized to a size_t so the texture is also available using the size_t interface.
-     * Hint: To exclude a texture from getting bound active during draw calls, use removeTexture.
+     * @param[in] activeTextureIndex
+     *   The active texture index as GLenum.
+     * @param[in] texture
+     *   The texture to be bound.
+     *
+     * @remarks
+     *   The index is normalized to a size_t so the texture is also available using the size_t interface.
+     *   To exclude a texture from getting bound active during draw calls, use removeTexture.
      */
     void setTexture(gl::GLenum activeTextureIndex, globjects::Texture * texture);
 
     /**
-     * @brief excludes the texture identified through index from being bound active during the draw calls.
-     * @param index the active texture index
-     * @return the former texture object associated with this index
+     * @brief
+     *   Excludes the texture identified through index from being bound active during the draw calls.
+     *
+     * @param[in] index
+     *   The active texture index.
+     *
+     * @return
+     *   The former texture object associated with this index (may be nullptr).
      */
     globjects::Texture * removeTexture(size_t index);
 
     /**
-     * @brief excludes the texture identified through index from being bound active during the draw calls.
-     * @param activeTextureIndex the active texture index as GLenum
-     * @return the former texture object associated with this index
+     * @brief
+     *   Excludes the texture identified through index from being bound active during the draw calls.
      *
-     * Note: The index is normalized to a size_t so a texture configured through the size_t interface is also affected.
+     * @param[in] index
+     *   The active texture index as GLenum.
+     *
+     * @return
+     *   The former texture object associated with this index (may be nullptr).
+     *
+     * @remarks
+     *   The index is converted to a size_t so a texture configured through the size_t interface is also affected.
      */
     globjects::Texture * removeTexture(gl::GLenum activeTextureIndex);
 
-    globjects::Program * program() const;
-    void setProgram(globjects::Program * program) const;
+    globjects::Sampler * sampler(size_t index) const;
+    void setSampler(size_t index, globjects::Sampler * texture);
+    globjects::Sampler * removeSampler(size_t index);
 
-    globjects::ProgramPipeline * programPipeline() const;
-    void setProgramPipeline(globjects::ProgramPipeline * programPipeline) const;
+    globjects::Buffer * uniformBuffer(size_t index) const;
+    void setUniformBuffers(size_t index, globjects::Buffer * texture);
+    globjects::Buffer * removeUniformBuffer(size_t index);
 
-    globjects::Texture * sampler(size_t index);
-    globjects::Texture * sampler(size_t index) const;
-    void setSampler(size_t index, globjects::Texture * texture);
-    globjects::Texture * removeSampler(size_t index);
+    globjects::Buffer * atomicCounterBuffer(size_t index) const;
+    void setAtomicCounterBuffer(size_t index, globjects::Buffer * texture);
+    globjects::Buffer * removeAtomicCounterBuffer(size_t index);
 
-    globjects::Texture * uniformBuffer(size_t index);
-    globjects::Texture * uniformBuffer(size_t index) const;
-    void setUniformBuffers(size_t index, globjects::Texture * texture);
-    globjects::Texture * removeUniformBuffer(size_t index);
+    globjects::Buffer * shaderStorageBuffer(size_t index) const;
+    void setShaderStorageBuffer(size_t index, globjects::Buffer * texture);
+    globjects::Buffer * removeShaderStorageBuffer(size_t index);
 
-    globjects::Texture * atomicCounterBuffer(size_t index);
-    globjects::Texture * atomicCounterBuffer(size_t index) const;
-    void setAtomicCounterBuffer(size_t index, globjects::Texture * texture);
-    globjects::Texture * removeAtomicCounterBuffer(size_t index);
-
-    globjects::Texture * shaderStorageBuffer(size_t index);
-    globjects::Texture * shaderStorageBuffer(size_t index) const;
-    void setShaderStorageBuffer(size_t index, globjects::Texture * texture);
-    globjects::Texture * removeShaderStorageBuffer(size_t index);
+    globjects::Buffer * transformFeedbackBuffer(size_t index) const;
+    void setTransformFeedbackBuffer(size_t index, globjects::Buffer * texture);
+    globjects::Buffer * removeTransformFeedbackBuffer(size_t index);
 
 protected:
     globjects::ref_ptr<globjects::Framebuffer> m_fbo;
     globjects::ref_ptr<MyDrawable> m_geometry;
     globjects::ref_ptr<globjects::Program> m_program;
     globjects::ref_ptr<globjects::ProgramPipeline> m_programPipeline;
+    globjects::ref_ptr<globjects::TransformFeedback> m_recordTransformFeedback;
+    gl::GLenum m_recordTransformFeedbackMode;
+    globjects::ref_ptr<globjects::TransformFeedback> m_drawTransformFeedback;
+    gl::GLenum m_drawTransformFeedbackMode;
 
     std::unordered_map<size_t, globjects::ref_ptr<globjects::Texture>> m_textures; /// The collection of all textures associated with this render pass. The key is used as the active texture binding.
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Sampler>> m_samplers;
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_uniformBuffers;
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_atomicCounterBuffers;
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_shaderStorageBuffers;
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Sampler>> m_samplers; /// The collection of all samplers associated with this render pass. The key is used as the sampler binding index.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_uniformBuffers; /// The collection of all uniform buffers associated with this render pass. The key is used as the uniform buffer binding index.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_atomicCounterBuffers; /// The collection of all atomic counter buffers associated with this render pass. The key is used as the atomic counter buffer binding index.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_shaderStorageBuffers; /// The collection of all shader storage buffers associated with this render pass. The key is used as the shader storage buffer binding index.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_transformFeedbackBuffers; /// The collection of all transform feedback buffers associated with this render pass. The key is used as the transform feedback buffer binding index.
 
 protected:
-    void bindTextures() const;
+    void bindResources() const;
 
 };
 
