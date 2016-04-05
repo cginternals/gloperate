@@ -212,6 +212,8 @@ Page
     {
         id: render
 
+        objectName: "renderItem"
+
         anchors.fill: main
         z:            -1
     }

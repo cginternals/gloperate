@@ -84,6 +84,7 @@ target_include_directories(${target}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qtquick/include
+    ${PROJECT_SOURCE_DIR}/source/gloperate-ffmpeg/include
 )
 
 
@@ -107,6 +108,7 @@ target_link_libraries(${target}
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-qt
     ${META_PROJECT_NAME}::gloperate-qtquick
+    ${META_PROJECT_NAME}::gloperate-ffmpeg
 )
 
 

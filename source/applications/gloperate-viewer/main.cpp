@@ -7,6 +7,7 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/scripting/ScriptEnvironment.h>
 
 #include <gloperate-qt/viewer/Application.h>
@@ -17,14 +18,19 @@
 
 #include <scriptzeug/ScriptContext.h>
 
+#include <gloperate-ffmpeg/VideoTool.h>
+
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/QuickView.h>
 #include <gloperate-qtquick/viewer/QmlScriptContext.h>
+#include <gloperate-qtquick/viewer/RenderItem.h>
+
 
 
 using namespace gloperate;
 using namespace gloperate_qt;
 using namespace gloperate_qtquick;
+using namespace gloperate_ffmpeg;
 
 
 int main(int argc, char * argv[])
@@ -53,6 +59,25 @@ int main(int argc, char * argv[])
     window->setResizeMode(QQuickView::SizeRootObjectToView);
     window->setSource(QUrl(qmlPath + "/Viewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
+
+
+    QQuickItem * item = window->rootObject();
+    QQuickItem * qmlRenderItem = item->findChild<QQuickItem*>("renderItem");
+    
+    RenderItem * renderItem = static_cast<RenderItem *>(qmlRenderItem);
+    Surface * surface = renderItem->surface();
+    RenderSurface * renderSurface = static_cast<RenderSurface *>(surface);
+    
+    if (!renderSurface)
+    {
+        printf("NO\n");
+    }
+    
+    // VideoTool * video = new VideoTool("output-video.mp4", renderSurface, 30, 5, 1600, 900);
+    VideoTool * video = new VideoTool();
+    renderSurface->setVideoTool(video);
+
+
     window->show();
 
     // Run main loop

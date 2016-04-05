@@ -4,6 +4,8 @@
 
 #include <QQuickItem>
 
+#include <gloperate-qtquick/gloperate-qtquick_api.h>
+
 
 class QQuickWindow;
 
@@ -20,7 +22,7 @@ namespace gloperate_qtquick
 *  @brief
 *    Qt quick item for displaying a gloperate render stage
 */
-class RenderItem : public QQuickItem
+class GLOPERATE_QTQUICK_API RenderItem : public QQuickItem
 {
 public:
     /**

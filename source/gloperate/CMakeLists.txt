@@ -76,6 +76,8 @@ set(headers
     ${include_path}/input/AxisEvent.h
     ${include_path}/input/MouseDevice.h
     ${include_path}/input/KeyboardDevice.h
+
+    ${include_path}/output/AbstractVideoTool.h
 )
 
 set(sources
@@ -117,6 +119,8 @@ set(sources
     ${source_path}/input/AxisEvent.cpp
     ${source_path}/input/MouseDevice.cpp
     ${source_path}/input/KeyboardDevice.cpp
+
+    ${source_path}/output/AbstractVideoTool.cpp
 )
 
 # Group source files

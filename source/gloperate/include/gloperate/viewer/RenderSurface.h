@@ -13,6 +13,7 @@ namespace gloperate
 class Stage;
 class MouseDevice;
 class KeyboardDevice;
+class AbstractVideoTool;
 
 
 /**
@@ -63,6 +64,12 @@ public:
     *  @brief
     *
     */
+    void setVideoTool(AbstractVideoTool * video);
+
+    /**
+    *  @brief
+    *
+    */
     void createVideo();
 
     // Virtual Surface functions
@@ -81,10 +88,11 @@ public:
 
 
 protected:
-    Stage          * m_renderStage;    ///< Render stage that renders into the current context (can be null)
-    unsigned long    m_frame;          ///< Frame counter
-    MouseDevice    * m_mouseDevice;    ///< Device for Mouse Events
-    KeyboardDevice * m_keyboardDevice; ///< Device for Keyboard Events
+    Stage             * m_renderStage;    ///< Render stage that renders into the current context (can be null)
+    unsigned long       m_frame;          ///< Frame counter
+    MouseDevice       * m_mouseDevice;    ///< Device for Mouse Events
+    KeyboardDevice    * m_keyboardDevice; ///< Device for Keyboard Events
+    AbstractVideoTool * m_video;          ///< Tool for rendering surface to video file
 };
 
 

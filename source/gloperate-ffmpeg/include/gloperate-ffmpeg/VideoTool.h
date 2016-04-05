@@ -9,6 +9,8 @@
 
 #include <globjects/base/ref_ptr.h>
 
+#include <gloperate/output/AbstractVideoTool.h>
+
 #include <gloperate-ffmpeg/VideoEncoder.h>
 
 #include <gloperate-ffmpeg/gloperate-ffmpeg_api.h>
@@ -33,9 +35,15 @@ namespace gloperate_ffmpeg
 *  @brief
 *    A tool which renders a given Stage into an output video file.
 */
-class GLOPERATE_FFMPEG_API VideoTool
+class GLOPERATE_FFMPEG_API VideoTool : public gloperate::AbstractVideoTool
 {
 public:
+    /**
+    *  @brief
+    *    Constructor
+    */
+    VideoTool();
+
     /**
     *  @brief
     *    Constructor
@@ -66,6 +74,8 @@ public:
     */
     virtual ~VideoTool();
 
+    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint fps, uint length, uint width, uint height);
+
     /**
     *  @brief
     *    Actual call to start video creation
@@ -73,7 +83,7 @@ public:
     *  @param[in] progress
     *    Progress callback function
     */
-    void createVideo(std::function<void(int, int)> progress);
+    virtual void createVideo(std::function<void(int, int)> progress);
 
 
 protected:

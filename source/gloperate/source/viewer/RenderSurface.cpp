@@ -8,6 +8,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
+#include <gloperate/output/AbstractVideoTool.h>
 
 
 namespace gloperate
@@ -69,9 +70,16 @@ void RenderSurface::setRenderStage(Stage * stage)
     }
 }
 
+void RenderSurface::setVideoTool(AbstractVideoTool * video)
+{
+    m_video = video;
+    m_video->init("output-video.mp4", this, 30, 5, 1600, 900);
+}
+
 void RenderSurface::createVideo()
 {
-    globjects::debug() << "Create Video";
+    globjects::debug() << "<----- Creating Video ----->";
+    m_video->createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
 }
 
 void RenderSurface::onUpdate()
