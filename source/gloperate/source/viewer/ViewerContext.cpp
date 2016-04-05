@@ -14,6 +14,7 @@ namespace gloperate
 ViewerContext::ViewerContext()
 : m_timeManager(this)
 , m_inputManager()
+, m_scriptEnvironment(this)
 {
 }
 
@@ -89,6 +90,12 @@ bool ViewerContext::update(float delta)
 
     // Return indicator if any more timers are running
     return activeTimers;
+}
+
+void ViewerContext::exit(int exitCode)
+{
+    // Emit signal
+    this->exitApplication(exitCode);
 }
 
 

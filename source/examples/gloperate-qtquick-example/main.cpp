@@ -8,6 +8,7 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
 
+#include <gloperate-qt/viewer/Application.h>
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 
@@ -22,14 +23,14 @@ using namespace gloperate_qtquick;
 
 int main(int argc, char * argv[])
 {
-    // Initialize Qt application
-    QApplication app(argc, argv);
-
     // Determine data paths
     QString qmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
 
     // Create viewer context
     ViewerContext viewerContext;
+
+    // Initialize Qt application
+    gloperate_qt::Application app(&viewerContext, argc, argv);
     UpdateManager updateManager(&viewerContext);
 
     // Create QML engine

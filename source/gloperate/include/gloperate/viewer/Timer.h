@@ -21,7 +21,7 @@ class ViewerContext;
 class GLOPERATE_API Timer
 {
 public:
-    signalzeug::Signal<> fired; ///< Called when the timer interval has elapsed
+    signalzeug::Signal<> elapsed; ///< Called when the timer has elapsed
 
 
 public:
@@ -92,6 +92,18 @@ public:
     *    Time delta (in seconds)
     */
     void update(float delta);
+
+
+protected:
+    /**
+    *  @brief
+    *    Called when the timer has elapsed
+    *
+    *  @remarks
+    *    In the default implementation, the signal elapsed() is emitted.
+    *    This behavior can be overriden by derived classes.
+    */
+    virtual void onElapsed();
 
 
 protected:
