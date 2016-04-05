@@ -25,6 +25,7 @@ namespace gloperate
 {
 
 
+class ViewerContext;
 class SystemApi;
 class TimerApi;
 
@@ -40,8 +41,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] viewerContext
+    *    Viewer context (must NOT be null!)
     */
-    ScriptEnvironment();
+    ScriptEnvironment(ViewerContext * viewerContext);
 
     /**
     *  @brief
@@ -56,7 +60,7 @@ public:
     *  @param[in] backendName
     *    Name of scripting backend to use (default: 'javascript')
     */
-    void setupScripting(const std::string & backendName);
+    void setupScripting(const std::string & backendName = "");
 
     /**
     *  @brief
@@ -136,10 +140,12 @@ protected:
 
 
 protected:
-    std::unique_ptr<scriptzeug::ScriptContext> m_scriptContext; ///< JavaScript scripting context
-//  std::unique_ptr<SystemApi>                 m_systemApi;     ///< System function (files, print)
-//  std::unique_ptr<TimerApi>                  m_timerApi;      ///< Timer functions
-    std::list<reflectionzeug::Object *>        m_apis;          ///< List of connected APIs
+    ViewerContext                              * m_viewerContext; ///< Viewer context (must NOT be null!)
+    std::unique_ptr<scriptzeug::ScriptContext>   m_scriptContext; ///< JavaScript scripting context
+    std::unique_ptr<SystemApi>                   m_systemApi;     ///< System function (files, print)
+    std::unique_ptr<TimerApi>                    m_timerApi;      ///< Timer functions
+    std::list<reflectionzeug::Object *>          m_apis;          ///< List of connected APIs
+    std::string                                  m_helpText;      ///< Text that is displayed on 'help'
 };
 
 

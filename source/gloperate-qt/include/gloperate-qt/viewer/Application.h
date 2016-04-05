@@ -7,6 +7,11 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
+namespace gloperate {
+    class ViewerContext;
+}
+
+
 namespace gloperate_qt
 {
 
@@ -25,12 +30,14 @@ public:
     *  @brief
     *    Constructor
     *
+    *  @param[in] viewerContext
+    *    Viewer context (must NOT be null!)
     *  @param[in] argc
     *    Argument count
     *  @param[in] argv
     *    Argument list
     */
-    Application(int & argc, char ** argv);
+    Application(gloperate::ViewerContext * viewerContext, int & argc, char ** argv);
 
     /**
     *  @brief

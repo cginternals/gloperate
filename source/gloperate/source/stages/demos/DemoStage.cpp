@@ -59,7 +59,7 @@ DemoStage::DemoStage(ViewerContext * viewerContext)
 , m_time(0.0f)
 , m_angle(0.0f)
 {
-    m_timer.fired.connect([this] ()
+    m_timer.elapsed.connect([this] ()
     {
         // Update virtual time
         m_time += m_timeDelta;

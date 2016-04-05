@@ -79,8 +79,8 @@ void Timer::update(float delta)
         }
         else
         {
-            // Timer fired
-            this->fired();
+            // Timer elapsed
+            onElapsed();
 
             // Reset timer
             if (m_singleShot)
@@ -96,6 +96,12 @@ void Timer::update(float delta)
             }
         }
     }
+}
+
+void Timer::onElapsed()
+{
+    // Emit signal
+    this->elapsed();
 }
 
 

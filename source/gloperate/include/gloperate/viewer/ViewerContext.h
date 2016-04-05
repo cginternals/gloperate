@@ -4,6 +4,8 @@
 
 #include <vector>
 
+#include <signalzeug/Signal.h>
+
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/input/InputManager.h>
 #include <gloperate/scripting/ScriptEnvironment.h>
@@ -32,6 +34,10 @@ class Surface;
 class GLOPERATE_API ViewerContext
 {
 friend class Surface;
+
+
+public:
+    signalzeug::Signal<int> exitApplication;   ///< Called when application shall exit
 
 
 public:
@@ -85,6 +91,7 @@ public:
     ScriptEnvironment * scriptEnvironment();
     //@}
 
+    //@{
     /**
     *  @brief
     *    Update timing
@@ -114,6 +121,20 @@ public:
     *    e.g., when rendering videos at a fixed frame rate.
     */
     bool update(float delta);
+
+    /**
+    *  @brief
+    *    Exit application
+    *
+    *    This function emits the signal 'exitApplication'.
+    *    Windowing backends are expected to connect to that signal
+    *    and exit the application when receiving the signal.
+    *
+    *  @param[in] exitCode
+    *    Exit code (default: 0)
+    */
+    void exit(int exitCode = 0);
+    //@}
 
 
 protected:

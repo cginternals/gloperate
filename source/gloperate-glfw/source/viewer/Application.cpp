@@ -46,6 +46,12 @@ Application::Application(gloperate::ViewerContext * viewerContext, int &, char *
     // Make sure that no application object has already been instanciated
     assert(!s_app);
     s_app = this;
+
+    // Connect to exit-signal
+    viewerContext->exitApplication.connect([] (int exitCode)
+    {
+        Application::quit(exitCode);
+    });
 }
 
 Application::~Application()

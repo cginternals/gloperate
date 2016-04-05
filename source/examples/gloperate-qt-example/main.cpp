@@ -1,29 +1,38 @@
 
 #include <QApplication>
 #include <QMainWindow>
+#include <QDockWidget>
 
 #include <globjects/base/baselogging.h>
 
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/scripting/ScriptEnvironment.h>
 #include <gloperate/stages/demos/DemoStage.h>
 
+#include <gloperate-qt/viewer/Application.h>
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 #include <gloperate-qt/viewer/RenderWindow.h>
 
+#include <widgetzeug/ScriptPromptWidget.h>
+#include <widgetzeug/ECMA26251_SyntaxHighlighter.h>
+#include <widgetzeug/ECMA26251_Completer.h>
+
 
 using namespace gloperate;
 using namespace gloperate_qt;
+using namespace widgetzeug;
 
 
 int main(int argc, char * argv[])
 {
-    // Initialize Qt application
-    QApplication app(argc, argv);
-
     // Create viewer context
     ViewerContext viewerContext;
+    viewerContext.scriptEnvironment()->setupScripting();
+
+    // Initialize Qt application
+    gloperate_qt::Application app(&viewerContext, argc, argv);
     UpdateManager updateManager(&viewerContext);
 
     // Create render stage
@@ -41,6 +50,29 @@ int main(int argc, char * argv[])
     mainWindow.setCentralWidget(QWidget::createWindowContainer(window));
     mainWindow.centralWidget()->setFocusPolicy(Qt::StrongFocus);
     mainWindow.show();
+
+    // Create script console
+    ScriptPromptWidget * scriptPrompt = new ScriptPromptWidget(&mainWindow);
+    scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlight);
+    scriptPrompt->setCompleter(new ECMA26251Completer);
+    scriptPrompt->setFrameShape(QFrame::NoFrame);
+    QObject::connect(scriptPrompt, &widgetzeug::ScriptPromptWidget::evaluate,
+        [&viewerContext, scriptPrompt] (const QString & cmd)
+        {
+            // Execute script code
+            std::string code = cmd.toStdString();
+            reflectionzeug::Variant res = viewerContext.scriptEnvironment()->execute(code);
+
+            // Output result
+            scriptPrompt->print(QString::fromStdString(res.value<std::string>()));
+        }
+    );
+
+    // Create dock window for scripting console
+    QDockWidget * scriptPromptDockWidget = new QDockWidget("Script Prompt");
+    scriptPromptDockWidget->setWidget(scriptPrompt);
+    scriptPromptDockWidget->setObjectName("ScriptPromptWidget");
+    mainWindow.addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, scriptPromptDockWidget);
 
     // Initialize context, print context info
     window->context()->use();
