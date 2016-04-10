@@ -29,6 +29,8 @@ int main(int argc, char * argv[])
     // Create render stage
     DemoStage * renderStage = new DemoStage(&viewerContext);
 
+    viewerContext.scriptEnvironment()->setupScripting();
+
     // Create window
     RenderWindow window(&viewerContext);
     window.setRenderStage(renderStage);
