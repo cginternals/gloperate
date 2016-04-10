@@ -93,6 +93,7 @@ protected:
     MouseDevice       * m_mouseDevice;    ///< Device for Mouse Events
     KeyboardDevice    * m_keyboardDevice; ///< Device for Keyboard Events
     AbstractVideoTool * m_video;          ///< Tool for rendering surface to video file
+    bool                m_requestVideo;
 };
 
 

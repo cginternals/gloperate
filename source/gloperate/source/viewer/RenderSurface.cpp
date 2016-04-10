@@ -21,6 +21,8 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
+, m_video(nullptr)
+, m_requestVideo(false)
 {
     addFunction("createVideo", this, &RenderSurface::createVideo);
     m_viewerContext->scriptEnvironment()->addApi(this);
@@ -73,13 +75,16 @@ void RenderSurface::setRenderStage(Stage * stage)
 void RenderSurface::setVideoTool(AbstractVideoTool * video)
 {
     m_video = video;
-    m_video->init("output-video.mp4", this, 30, 5, 1600, 900);
+    // m_video->init("output-video.mp4", this, 30, 5, 1600, 900);
 }
 
 void RenderSurface::createVideo()
 {
     globjects::debug() << "<----- Creating Video ----->";
-    m_video->createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
+
+    m_video->init("output-video.avi", this, 30, 5, 1280, 720);
+    m_requestVideo = true;
+    // m_video->createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
 }
 
 void RenderSurface::onUpdate()
@@ -136,7 +141,12 @@ void RenderSurface::onBackgroundColor(float red, float green, float blue)
 
 void RenderSurface::onRender()
 {
-//  globjects::info() << "onRender()";
+ // globjects::info() << "onRender()";
+    if (m_requestVideo)
+    {
+        m_requestVideo = false;
+        m_video->createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
+    }
 
     if (m_renderStage)
     {

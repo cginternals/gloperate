@@ -59,6 +59,7 @@ int main(int argc, char * argv[])
     window->setResizeMode(QQuickView::SizeRootObjectToView);
     window->setSource(QUrl(qmlPath + "/Viewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
+    window->show();
 
 
     QQuickItem * item = window->rootObject();
@@ -70,7 +71,7 @@ int main(int argc, char * argv[])
     
     if (!renderSurface)
     {
-        printf("NO\n");
+        printf("No valid RenderSurface.\n");
     }
     
     // VideoTool * video = new VideoTool("output-video.mp4", renderSurface, 30, 5, 1600, 900);
@@ -78,7 +79,6 @@ int main(int argc, char * argv[])
     renderSurface->setVideoTool(video);
 
 
-    window->show();
 
     // Run main loop
     return app.exec();
