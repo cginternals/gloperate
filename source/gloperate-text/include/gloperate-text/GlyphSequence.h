@@ -66,6 +66,12 @@ public:
     ,   const glm::uvec2 & viewportExtent);
 
     void setTransform(
+        const glm::vec3 & origin
+    ,   const float fontSize
+    ,   const FontFace& fontFace
+    ,   const glm::mat4 rotation);
+
+    void setTransform(
         const glm::vec2 & origin
     ,   float fontSize
     ,   const FontFace & fontFace
