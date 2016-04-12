@@ -70,7 +70,7 @@ public:
     *  @brief
     *
     */
-    virtual void createVideo(std::string filename, int fps, int seconds, int width, int height);
+    void createVideo(std::string filename, int fps, int seconds, int width, int height);
 
     // Virtual Surface functions
     virtual void onUpdate() override;

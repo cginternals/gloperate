@@ -13,8 +13,6 @@ DockPanel
     iconClosed: '0270-cancel-circle.png'
     iconOpen:   '0270-cancel-circle.png'
 
-    signal createVideo(string filename, int fps, int seconds, int width, int height)
-
     property string video_filename: "output-video.avi"
     property int video_fps: 30
     property int video_length: 5
@@ -63,7 +61,7 @@ DockPanel
         text: "Create Video"
         onClicked: {
             video.hidePanel();
-            video.createVideo(video_filename, video_fps, video_length, video_width, video_height);
+            gloperate.surface.createVideo(video_filename, video_fps, video_length, video_width, video_height);
         }
     }
 }

@@ -223,8 +223,6 @@ Page
     {
         id: video
 
-        objectName: "video"
-
         anchors.fill:    main
         anchors.margins: Ui.style.dialogPadding
 

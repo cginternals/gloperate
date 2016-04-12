@@ -64,15 +64,10 @@ int main(int argc, char * argv[])
 
     QQuickItem * item = window->rootObject();
     QQuickItem * qmlRenderItem = item->findChild<QQuickItem*>("renderItem");
-    QQuickItem * videoDialog = item->findChild<QQuickItem*>("video");
     
     RenderItem * renderItem = static_cast<RenderItem *>(qmlRenderItem);
     RenderSurface * renderSurface = static_cast<RenderSurface *>(renderItem->surface());
     
-    QObject::connect(videoDialog, SIGNAL(createVideo(QString, int, int, int, int)),
-                      renderItem, SLOT(onCreateVideo(QString, int, int, int, int)));
-    
-    // VideoTool * videoTool = new VideoTool("output-video.mp4", renderSurface, 30, 5, 1600, 900);
     VideoTool * videoTool = new VideoTool();
     renderSurface->setVideoTool(videoTool);
 
