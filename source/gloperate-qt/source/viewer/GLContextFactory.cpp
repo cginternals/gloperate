@@ -19,7 +19,7 @@ QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextForm
 
     // Set OpenGL version
     glbinding::Version version = format.version();
-    qFormat.setVersion(version.m_major, version.m_minor);
+    qFormat.setVersion(version.majorVersion(), version.minorVersion());
 
     // Set OpenGL profile
     switch (format.profile())

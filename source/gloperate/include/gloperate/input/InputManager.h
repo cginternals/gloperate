@@ -76,10 +76,10 @@ public:
 
 
 protected:
-    std::list<AbstractEventConsumer *>                 m_consumers;
-    std::list<std::unique_ptr<AbstractDeviceProvider>> m_deviceProviders;
-    std::list<std::unique_ptr<AbstractDevice>>         m_devices;
-    std::list<std::unique_ptr<InputEvent>>             m_events;
+    std::list<AbstractEventConsumer *>  m_consumers;
+    std::list<AbstractDeviceProvider *> m_deviceProviders;
+    std::list<AbstractDevice *>         m_devices;
+    std::list<InputEvent *>             m_events;
 };
 
 
