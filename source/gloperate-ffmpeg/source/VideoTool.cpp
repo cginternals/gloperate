@@ -37,9 +37,6 @@ VideoTool::VideoTool(const std::string & filename, RenderSurface * surface, uint
 , m_height(height)
 , m_timeDelta(1.f / static_cast<float>(fps))
 {
-    auto vp = glm::ivec4(0, 0, m_width, m_height);
-
-    m_surface->onViewport(vp, vp);
 }
 
 VideoTool::~VideoTool()
@@ -61,18 +58,20 @@ void VideoTool::init(const std::string & filename, gloperate::RenderSurface * su
     m_width = width;
     m_height = height;
     m_timeDelta = 1.f/static_cast<float>(fps);
-
-    auto vp = glm::ivec4(0, 0, m_width, m_height);
-    m_surface->onViewport(vp, vp);
 }
 
 void VideoTool::createVideo(std::function<void(int, int)> progress)
 {
+    auto deviceViewport = m_surface->deviceViewport();
+    auto virtualViewport = m_surface->virtualViewport();
+    auto vp = glm::ivec4(0, 0, m_width, m_height);
     auto length = m_length * m_fps;
+
+    m_surface->onViewport(vp, vp);
 
     Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
-    m_glContext->use();
+    // m_glContext->use();
     // m_fbo->bind();
     m_videoEncoder->initEncoding(m_filename, m_width, m_height, m_fps);
     
@@ -89,7 +88,9 @@ void VideoTool::createVideo(std::function<void(int, int)> progress)
 
     m_videoEncoder->finishEncoding();
     // m_fbo->unbind();
-    m_glContext->release();
+    // m_glContext->release();
+
+    m_surface->onViewport(deviceViewport, virtualViewport);
 }
 
 

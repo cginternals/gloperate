@@ -72,7 +72,10 @@ public:
     */
     void createVideo(std::string filename, int fps, int seconds, int width, int height);
 
+
     // Virtual Surface functions
+    virtual glm::ivec4 deviceViewport() override;
+    virtual glm::ivec4 virtualViewport() override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
@@ -93,7 +96,9 @@ protected:
     MouseDevice       * m_mouseDevice;    ///< Device for Mouse Events
     KeyboardDevice    * m_keyboardDevice; ///< Device for Keyboard Events
     AbstractVideoTool * m_video;          ///< Tool for rendering surface to video file
-    bool                m_requestVideo;
+    bool                m_requestVideo;   ///< Flag to request a videoTool call during next render step
+    glm::ivec4          m_deviceViewport; ///< Device vieport of the render stage
+    glm::ivec4          m_virtualViewport;///< Virtual viewport of the render stage
 };
 
 

@@ -92,6 +92,24 @@ public:
 
     /**
     *  @brief
+    *    Get device viewport
+    *
+    *  @return
+    *    Device viewport (actual device pixels)
+    */
+    virtual glm::ivec4 deviceViewport();
+
+    /**
+    *  @brief
+    *    Get virtual viewport
+    *
+    *  @return
+    *    Virtual viewport (virtual pixels)
+    */
+    virtual glm::ivec4 virtualViewport();
+
+    /**
+    *  @brief
     *    Update call once per main loop iteration
     */
     virtual void onUpdate();

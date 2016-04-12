@@ -23,9 +23,15 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_video(nullptr)
 , m_requestVideo(false)
+, m_deviceViewport(0)
+, m_virtualViewport(0)
 {
     addFunction("createVideo", this, &RenderSurface::createVideo);
-    m_viewerContext->scriptEnvironment()->addApi(this);
+
+    if (m_viewerContext->scriptEnvironment())
+    {
+        m_viewerContext->scriptEnvironment()->addApi(this);
+    }
 }
 
 RenderSurface::~RenderSurface()
@@ -85,6 +91,16 @@ void RenderSurface::createVideo(std::string filename, int fps, int seconds, int 
     m_requestVideo = true;
 }
 
+glm::ivec4 RenderSurface::deviceViewport()
+{
+    return m_deviceViewport;
+}
+
+glm::ivec4 RenderSurface::virtualViewport()
+{
+    return m_virtualViewport;
+}
+
 void RenderSurface::onUpdate()
 {
     if (m_renderStage)
@@ -130,6 +146,9 @@ void RenderSurface::onViewport(const glm::ivec4 & deviceViewport, const glm::ive
       , virtualViewport.z
       , virtualViewport.w
     );
+
+    m_deviceViewport = deviceViewport;
+    m_virtualViewport = virtualViewport;
 }
 
 void RenderSurface::onBackgroundColor(float red, float green, float blue)
