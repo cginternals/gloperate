@@ -75,16 +75,14 @@ void RenderSurface::setRenderStage(Stage * stage)
 void RenderSurface::setVideoTool(AbstractVideoTool * video)
 {
     m_video = video;
-    // m_video->init("output-video.mp4", this, 30, 5, 1600, 900);
 }
 
-void RenderSurface::createVideo()
+void RenderSurface::createVideo(std::string filename, int fps, int seconds, int width, int height)
 {
     globjects::debug() << "<----- Creating Video ----->";
 
-    m_video->init("output-video.avi", this, 30, 5, 1280, 720);
+    m_video->init(filename, this, fps, seconds, width, height);
     m_requestVideo = true;
-    // m_video->createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
 }
 
 void RenderSurface::onUpdate()

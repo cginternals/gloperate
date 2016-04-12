@@ -100,7 +100,7 @@ void Surface::onMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
 }
 
-void Surface::createVideo()
+void Surface::createVideo(std::string /*filename*/, int /*fps*/, int /*seconds*/, int /*width*/, int /*height*/)
 {
     globjects::critical() << "createVideo() not implemented in Surface base class.";
 }

@@ -211,9 +211,9 @@ void RenderItem::wheelEvent(QWheelEvent * event)
     }
 }
 
-void RenderItem::onCreateVideo()
+void RenderItem::onCreateVideo(QString filename, int fps, int seconds, int width, int height)
 {
-    m_surface->createVideo();
+    m_surface->createVideo(filename.toStdString(), fps, seconds, width, height);
 }
 
 

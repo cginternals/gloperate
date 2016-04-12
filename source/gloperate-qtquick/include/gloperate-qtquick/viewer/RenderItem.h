@@ -27,7 +27,7 @@ class GLOPERATE_QTQUICK_API RenderItem : public QQuickItem
 Q_OBJECT
 
 public slots:
-    void onCreateVideo();
+    void onCreateVideo(QString filename, int fps, int seconds, int width, int height);
 
 public:
     /**

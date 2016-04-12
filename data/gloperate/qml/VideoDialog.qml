@@ -13,13 +13,13 @@ DockPanel
     iconClosed: '0270-cancel-circle.png'
     iconOpen:   '0270-cancel-circle.png'
 
-    signal createVideo()
+    signal createVideo(string filename, int fps, int seconds, int width, int height)
 
-    property string video_filename: "output_video.mp4"
+    property string video_filename: "output-video.avi"
     property int video_fps: 30
-    property int video_length: 10
-    property int video_width: 1600
-    property int video_height: 900
+    property int video_length: 5
+    property int video_width: 1280
+    property int video_height: 720
 
     RowLayout {
         id: layout
@@ -63,7 +63,7 @@ DockPanel
         text: "Create Video"
         onClicked: {
             video.hidePanel();
-            video.createVideo();
+            video.createVideo(video_filename, video_fps, video_length, video_width, video_height);
         }
     }
 }
