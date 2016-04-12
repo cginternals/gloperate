@@ -24,6 +24,11 @@ namespace gloperate_qtquick
 */
 class GLOPERATE_QTQUICK_API RenderItem : public QQuickItem
 {
+Q_OBJECT
+
+public slots:
+    void onCreateVideo();
+
 public:
     /**
     *  @brief

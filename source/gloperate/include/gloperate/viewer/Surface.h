@@ -243,6 +243,8 @@ public:
     */
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
 
+    virtual void createVideo();
+
 
 protected:
     ViewerContext     * m_viewerContext; ///< Viewer context to which the surface belongs

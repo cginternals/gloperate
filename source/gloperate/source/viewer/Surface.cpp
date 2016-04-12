@@ -1,4 +1,6 @@
 
+#include <globjects/base/baselogging.h>
+
 #include <gloperate/viewer/Surface.h>
 
 #include <gloperate/viewer/ViewerContext.h>
@@ -96,6 +98,11 @@ void Surface::onMouseRelease(int, const glm::ivec2 &)
 
 void Surface::onMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
+}
+
+void Surface::createVideo()
+{
+    globjects::critical() << "createVideo() not implemented in Surface base class.";
 }
 
 

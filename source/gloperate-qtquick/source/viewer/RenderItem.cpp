@@ -211,5 +211,10 @@ void RenderItem::wheelEvent(QWheelEvent * event)
     }
 }
 
+void RenderItem::onCreateVideo()
+{
+    m_surface->createVideo();
+}
+
 
 } // namespace gloperate_qtquick

@@ -64,20 +64,16 @@ int main(int argc, char * argv[])
 
     QQuickItem * item = window->rootObject();
     QQuickItem * qmlRenderItem = item->findChild<QQuickItem*>("renderItem");
+    QQuickItem * videoDialog = item->findChild<QQuickItem*>("video");
     
     RenderItem * renderItem = static_cast<RenderItem *>(qmlRenderItem);
-    Surface * surface = renderItem->surface();
-    RenderSurface * renderSurface = static_cast<RenderSurface *>(surface);
+    RenderSurface * renderSurface = static_cast<RenderSurface *>(renderItem->surface());
     
-    if (!renderSurface)
-    {
-        printf("No valid RenderSurface.\n");
-    }
+    QObject::connect(videoDialog, SIGNAL(createVideo()), renderItem, SLOT(onCreateVideo()));
     
-    // VideoTool * video = new VideoTool("output-video.mp4", renderSurface, 30, 5, 1600, 900);
-    VideoTool * video = new VideoTool();
-    renderSurface->setVideoTool(video);
-
+    // VideoTool * videoTool = new VideoTool("output-video.mp4", renderSurface, 30, 5, 1600, 900);
+    VideoTool * videoTool = new VideoTool();
+    renderSurface->setVideoTool(videoTool);
 
 
     // Run main loop

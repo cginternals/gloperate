@@ -70,7 +70,7 @@ public:
     *  @brief
     *
     */
-    void createVideo();
+    virtual void createVideo();
 
     // Virtual Surface functions
     virtual void onUpdate() override;
