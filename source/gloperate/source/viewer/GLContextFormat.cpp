@@ -104,12 +104,12 @@ const glbinding::Version & GLContextFormat::version() const
 
 int GLContextFormat::majorVersion() const
 {
-    return m_version.m_major;
+    return m_version.majorVersion();
 }
 
 int GLContextFormat::minorVersion() const
 {
-    return m_version.m_minor;
+    return m_version.minorVersion();
 }
 
 void GLContextFormat::setVersion(const glbinding::Version & version)
