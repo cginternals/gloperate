@@ -166,20 +166,11 @@ void GlyphSequence::setTransform(
 ,   const glm::mat4 rotation)
 {
     m_transform = glm::mat4();
-
-    // translate to lower left in NDC
-    //m_transform = glm::translate(m_transform, glm::vec3(-1.f, -1.f, 0.f));
-    // translate to origin in screen space
     m_transform = glm::translate(m_transform, origin);
-    // scale glyphs of font face to target normalized size
     m_transform = glm::scale(m_transform, glm::vec3(0.001));
     m_transform = glm::scale(m_transform, glm::vec3(fontSize / fontFace.size()));
-    //m_transform = glm::scale(m_transform, glm::vec3(0.0005));
-    //m_transform = glm::rotate(m_transform, yRotation, glm::vec3(0.f, 1.f, 0.f));
-    //m_transform = glm::rotate(m_transform, xRotation, glm::vec3(1.f, 0.f, 0.f));
+
     m_transform = m_transform * rotation;
-    // scale glyphs to NDC size
-    //m_transform = glm::scale(m_transform, 2.f / glm::vec3(viewportExtent.x, viewportExtent.y, 1.f));
 }
 
 void GlyphSequence::setTransform(
