@@ -323,13 +323,16 @@ void Viewer::setupCanvas()
 {
     // Setup OpenGL context format
     QSurfaceFormat format;
-//#ifdef __APPLE__
-    // Get OpenGL 3.2/4.1 core context
-    format.setVersion(4, 5);
+
     format.setProfile(QSurfaceFormat::CoreProfile);
-//#else
-    // Get newest available compatibility context
-//#endif
+
+#ifdef __APPLE__
+    // Get OpenGL 3.2/4.1 core context
+    format.setVersion(3, 2);
+#else
+    // Get newest available core context
+#endif
+
     format.setDepthBufferSize(16);
 
     // Create OpenGL context and window
