@@ -29,7 +29,7 @@ namespace
     static const float ROTATION_KEY_SCALE = 1.0f;
 
     //static const float NAV_CONSTRAINT_PAN_CIRCLE_R = 2.83;
-    static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * glm::pi<float>();
+    static const float CONSTRAINT_ROT_MAX_V_UP = 0.001f * glm::pi<float>();
     static const float CONSTRAINT_ROT_MAX_V_LO = 0.48f * glm::pi<float>();
 }
 
@@ -176,9 +176,10 @@ void WorldInHandNavigation::rotateBegin(const glm::ivec2 & mouse)
     m_mode = RotateInteraction;
 
     bool intersects = false;
-    m_referencePosition = mouseRayPlaneIntersection(intersects, mouse);
+    glm::ivec2 middle(m_viewportCapability.width()/2, m_viewportCapability.height()/2);
+    m_referencePosition = mouseRayPlaneIntersection(intersects, middle);
 
-    const float depth = m_coordProvider.depthAt(mouse);
+    const float depth = m_coordProvider.depthAt(middle);
     m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
 
     m_m0 = mouse;
