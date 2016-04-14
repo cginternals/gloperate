@@ -60,7 +60,7 @@ void VideoTool::init(const std::string & filename, gloperate::RenderSurface * su
     m_timeDelta = 1.f/static_cast<float>(fps);
 }
 
-void VideoTool::createVideo(std::function<void(int, int)> progress)
+void VideoTool::createVideo(std::function<void(int, int)> progress, bool glContextActive)
 {
     auto deviceViewport = m_surface->deviceViewport();
     auto virtualViewport = m_surface->virtualViewport();
@@ -71,7 +71,11 @@ void VideoTool::createVideo(std::function<void(int, int)> progress)
 
     Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
-    // m_glContext->use();
+    if (!glContextActive)
+    {
+        m_glContext->use();
+    }
+
     // m_fbo->bind();
     m_videoEncoder->initEncoding(m_filename, m_width, m_height, m_fps);
     
@@ -88,7 +92,11 @@ void VideoTool::createVideo(std::function<void(int, int)> progress)
 
     m_videoEncoder->finishEncoding();
     // m_fbo->unbind();
-    // m_glContext->release();
+
+    if (!glContextActive)
+    {
+        m_glContext->release();
+    }
 
     m_surface->onViewport(deviceViewport, virtualViewport);
 }

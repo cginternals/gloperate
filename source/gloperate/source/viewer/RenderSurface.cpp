@@ -162,7 +162,7 @@ void RenderSurface::onRender()
     if (m_requestVideo)
     {
         m_requestVideo = false;
-        m_video->createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
+        m_video->createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; }, true);
     }
 
     if (m_renderStage)

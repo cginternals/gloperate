@@ -74,7 +74,7 @@ public:
     */
     virtual ~VideoTool();
 
-    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint fps, uint length, uint width, uint height);
+    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint fps, uint length, uint width, uint height) override;
 
     /**
     *  @brief
@@ -83,7 +83,7 @@ public:
     *  @param[in] progress
     *    Progress callback function
     */
-    virtual void createVideo(std::function<void(int, int)> progress);
+    virtual void createVideo(std::function<void(int, int)> progress, bool glContextActive = false) override;
 
 
 protected:
