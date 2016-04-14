@@ -10,8 +10,11 @@ namespace gloperate
 {
 
 
+static int s_surfaces = 0;
+
+
 Surface::Surface(ViewerContext * viewerContext)
-: reflectionzeug::Object("surface")
+: reflectionzeug::Object("surface" + std::to_string(s_surfaces++))
 , m_viewerContext(viewerContext)
 , m_openGLContext(nullptr)
 {

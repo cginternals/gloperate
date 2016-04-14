@@ -63,7 +63,7 @@ Dialog {
     onButtonClicked: {
         if (clickedButton==StandardButton.Ok) {
             close();
-            gloperate.surface.createVideo(filename.text, fps.text, seconds.text, width.text, height.text);
+            gloperate.surface0.createVideo(filename.text, fps.text, seconds.text, width.text, height.text);
         }
     }
 
