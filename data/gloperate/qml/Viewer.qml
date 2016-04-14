@@ -124,7 +124,8 @@ Page
             }
 
             if (menu == 'stage' && name == 'video') {
-                video.openPanel();
+                // video.openPanel();
+                video.open();
             }
         }
     }
@@ -223,10 +224,10 @@ Page
     {
         id: video
 
-        anchors.fill:    main
-        anchors.margins: Ui.style.dialogPadding
+        // anchors.fill:    main
+        // anchors.margins: Ui.style.dialogPadding
 
-        visible: open
-        status:  0.0
+        // visible: open
+        // status:  0.0
     }
 }

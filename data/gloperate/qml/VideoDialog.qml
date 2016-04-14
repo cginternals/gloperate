@@ -6,111 +6,126 @@ import QtQuick.Layouts 1.0
 import gloperate.ui 1.0
 
 
-DockPanel
-{
+Dialog {
     id: video
-
-    iconClosed: '0270-cancel-circle.png'
-    iconOpen:   '0270-cancel-circle.png'
-
-    property string video_filename: "output-video.avi"
-    property int video_fps: 30
-    property int video_length: 5
-    property int video_width: 1280
-    property int video_height: 720
+    title: qsTr("Videocapture")
+    standardButtons: StandardButton.Ok | StandardButton.Cancel
 
     RowLayout {
-        id: layout
-        anchors.fill: parent
-
-        Item {
-            width: 10
-            height: 1
+        ColumnLayout {
+            Row { Label {text: qsTr("Filename:")} }
+            Row { Label {text: qsTr("FPS:")} }
+            Row { Label {text: qsTr("Seconds:")} }
+            Row { Label {text: qsTr("Width:")} }
+            Row { Label {text: qsTr("Height:")} }
         }
 
-        GridLayout {
-            columns: 2
-            rowSpacing: 10
-
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-
-            Text {
-                text: "Hello world? "
+        ColumnLayout {
+            Row {
+                id: rowFilename
+                TextField {
+                    id:filename
+                    text: "output-video.avi"
+                }
+                // Label {text: ".avi"}
             }
-            Text {
-                text: "Hello world!"
+            Row {
+                id: rowFps
+                TextField {
+                    id:fps
+                    text: "30"
+                }
             }
-
-            Text {
-                text: "Goodbye world? "
+            Row {
+                id: rowSeconds
+                TextField {
+                    id:seconds
+                    text: "5"
+                }
             }
-            Text {
-                text: "Goodbye world!"
+            Row {
+                id: rowWidth
+                TextField {
+                    id:width
+                    text: "1280"
+                }
             }
-
-        }
-
-        Item {
-            width: 10
-            height: 10
+            Row {
+                id: rowHeight
+                TextField {
+                    id:height
+                    text: "720"
+                }
+            }
         }
     }
 
-    Button {
-        text: "Create Video"
-        onClicked: {
-            video.hidePanel();
-            gloperate.surface.createVideo(video_filename, video_fps, video_length, video_width, video_height);
+    onButtonClicked: {
+        if (clickedButton==StandardButton.Ok) {
+            close();
+            gloperate.surface.createVideo(filename.text, fps.text, seconds.text, width.text, height.text);
         }
     }
+
+    // Component.onCompleted: open()
 }
 
-// Dialog {
+// DockPanel
+// {
 //     id: video
-//     // visible: true
-//     title: "Videocapture"
 
-//     standardButtons: StandardButton.Ok | StandardButton.Cancel
+//     iconClosed: '0270-cancel-circle.png'
+//     iconOpen:   '0270-cancel-circle.png'
 
-//     property string returnValue: ""
+//     property string video_filename: "output-video.avi"
+//     property int video_fps: 30
+//     property int video_length: 5
+//     property int video_width: 1280
+//     property int video_height: 720
 
-//     contentItem: Rectangle {
-//         implicitWidth: 600
-//         implicitHeight: 400
+//     RowLayout {
+//         id: layout
+//         anchors.fill: parent
 
+//         Item {
+//             width: 10
+//             height: 1
+//         }
 
-//         ColumnLayout {
-//             anchors.fill: parent
-//             anchors.margins: 10
+//         GridLayout {
+//             columns: 2
+//             rowSpacing: 10
 
-//             ComboBox {
-//                 id: comboBox
-//                 currentIndex: 2
-//                 activeFocusOnPress: true
+//             Layout.fillHeight: true
+//             Layout.fillWidth: true
 
-//                 model: ListModel {
-//                     id: cbItems
-//                     ListElement { text: "Banana" }
-//                     ListElement { text: "Apple" }
-//                     ListElement { text: "Coconut" }
-//                 }
-
-//                 width: 200
+//             Text {
+//                 text: "Hello world? "
+//             }
+//             Text {
+//                 text: "Hello world!"
 //             }
 
-//             Rectangle {
-//                 height: 30
-//                 Layout.fillWidth: true
-//                 Button {
-//                     text: "Ok"
-//                     anchors.centerIn: parent
-//                     onClicked: {
-//                         returnValue = comboBox.currentText;
-//                         video.close();
-//                     }
-//                 }
+//             Text {
+//                 text: "Goodbye world? "
 //             }
+//             Text {
+//                 text: "Goodbye world!"
+//             }
+
+//         }
+
+//         Item {
+//             width: 10
+//             height: 10
+//         }
+//     }
+
+//     Button {
+//         text: "Create Video"
+//         onClicked: {
+//             video.hidePanel();
+//             gloperate.surface.createVideo(video_filename, video_fps, video_length, video_width, video_height);
 //         }
 //     }
 // }
