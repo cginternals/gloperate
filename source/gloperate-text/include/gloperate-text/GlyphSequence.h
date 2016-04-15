@@ -73,7 +73,7 @@ public:
 
     void setTransform(
         const glm::vec2 & origin
-    ,   float fontSize
+    ,   float fontSizeInWorld
     ,   const FontFace & fontFace
     ,   const glm::uvec2 & viewportExtent
     ,   float pixelPerInch

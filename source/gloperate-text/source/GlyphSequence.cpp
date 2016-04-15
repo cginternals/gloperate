@@ -161,14 +161,13 @@ void GlyphSequence::setTransform(
 
 void GlyphSequence::setTransform(
     const glm::vec3 & origin
-,   const float fontSize
+,   const float fontSizeInWorld
 ,   const FontFace& fontFace
 ,   const glm::mat4 rotation)
 {
     m_transform = glm::mat4();
     m_transform = glm::translate(m_transform, origin);
-    m_transform = glm::scale(m_transform, glm::vec3(0.001));
-    m_transform = glm::scale(m_transform, glm::vec3(fontSize / fontFace.size()));
+    m_transform = glm::scale(m_transform, glm::vec3(fontSizeInWorld / fontFace.size()));
 
     m_transform = m_transform * rotation;
 }
