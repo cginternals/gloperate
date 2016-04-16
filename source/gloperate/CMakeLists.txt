@@ -121,9 +121,8 @@ set(headers
     ${include_path}/primitives/AbstractDrawable.h
     ${include_path}/primitives/UniformGroup.hpp
     ${include_path}/primitives/Interpolation.h
-    ${include_path}/primitives/VertexDrawable.h
-    ${include_path}/primitives/MyDrawable.h
-    ${include_path}/primitives/MyDrawable.hpp
+    ${include_path}/primitives/Drawable.h
+    ${include_path}/primitives/Drawable.hpp
     ${include_path}/primitives/AdaptiveGrid.h
     ${include_path}/primitives/ScreenAlignedQuad.h
     ${include_path}/primitives/Icosahedron.h
@@ -227,8 +226,7 @@ set(sources
 
     ${source_path}/primitives/AbstractDrawable.cpp
     ${source_path}/primitives/Plane3.cpp
-    ${source_path}/primitives/VertexDrawable.cpp
-    ${source_path}/primitives/MyDrawable.cpp
+    ${source_path}/primitives/Drawable.cpp
     ${source_path}/primitives/UniformGroup.cpp
     ${source_path}/primitives/ScreenAlignedQuad.cpp
     ${source_path}/primitives/AxisAlignedBoundingBox.cpp
