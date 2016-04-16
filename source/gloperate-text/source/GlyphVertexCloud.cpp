@@ -95,6 +95,8 @@ gloperate::Drawable * GlyphVertexCloud::createDrawable()
     drawable->setMode(gl::GL_POINTS);
     drawable->setDrawMode(gloperate::DrawMode::Arrays);
 
+    drawable->bindAttributes({ 0, 1, 2, 3 });
+
     globjects::Buffer * vertexBuffer = new globjects::Buffer;
     drawable->setBuffer(0, vertexBuffer);
     drawable->setAttributeBindingBuffer(0, vertexBuffer, 0, sizeof(Vertex));
@@ -107,7 +109,6 @@ gloperate::Drawable * GlyphVertexCloud::createDrawable()
     drawable->setAttributeBindingFormat(2, 3, gl::GL_FLOAT, gl::GL_FALSE, gloperate::offset(&Vertex::vbitan));
     drawable->setAttributeBindingFormat(3, 4, gl::GL_FLOAT, gl::GL_FALSE, gloperate::offset(&Vertex::uvRect));
 
-    drawable->bindAttributes({ 0, 1, 2, 3 });
     drawable->enableAllAttributeBindings();
 
     return drawable;
