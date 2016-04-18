@@ -29,7 +29,7 @@ namespace
     static const float ROTATION_KEY_SCALE = 1.0f;
 
     //static const float NAV_CONSTRAINT_PAN_CIRCLE_R = 2.83;
-    static const float CONSTRAINT_ROT_MAX_V_UP = 0.001f * glm::pi<float>();
+    static const float CONSTRAINT_ROT_MAX_V_UP = 0.01f * glm::pi<float>();
     static const float CONSTRAINT_ROT_MAX_V_LO = 0.48f * glm::pi<float>();
 }
 
