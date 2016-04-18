@@ -8,6 +8,9 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
 
+find_package(Qt5Core 5.1 REQUIRED)
+find_package(Qt5Gui 5.1 REQUIRED)
+find_package(Qt5Widgets 5.1 REQUIRED)
 
 # 
 # Library name and options
@@ -27,23 +30,16 @@ message(STATUS "Plugin ${target}")
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(headers
-    ${include_path}/textrendering/TextRendering.h
-    
+set(headers  
+    ${include_path}/textrenderingpipeline/GlyphSequenceDemoStage.h
     ${include_path}/textrenderingpipeline/TextRenderingPipeline.h
     ${include_path}/textrenderingpipeline/TextRenderingPainter.h
-    ${include_path}/textrenderingpipeline/TextGenerationAlgorithm.h
-    ${include_path}/textrenderingpipeline/TextGenerationStage.h
-    ${include_path}/textrenderingpipeline/TextPreparationStage.h
 )
 
 set(sources
-    ${source_path}/textrendering/TextRendering.cpp
-    
+    ${source_path}/textrenderingpipeline/GlyphSequenceDemoStage.cpp
     ${source_path}/textrenderingpipeline/TextRenderingPipeline.cpp
     ${source_path}/textrenderingpipeline/TextRenderingPainter.cpp
-    ${source_path}/textrenderingpipeline/TextGenerationStage.cpp
-    ${source_path}/textrenderingpipeline/TextPreparationStage.cpp
     
     ${source_path}/plugin.cpp
 )
@@ -117,6 +113,9 @@ target_link_libraries(${target}
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-text
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
 
     PUBLIC
     ${DEFAULT_LIBRARIES}

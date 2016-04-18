@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include <glbinding/gl/enum.h>
+#include <glbinding/gl/boolean.h>
 
 #include <GLFW/glfw3.h>
 
@@ -221,7 +222,7 @@ void WindowEventDispatcher::handleCursorPos(GLFWwindow* glfwWindow, double xPos,
 
 void WindowEventDispatcher::handleCursorEnter(GLFWwindow* glfwWindow, int entered)
 {
-    if (entered == GL_TRUE)
+    if (entered == static_cast<int>(GL_TRUE))
     {
         dispatchEvent(glfwWindow, new MouseEnterEvent);
     }
@@ -253,12 +254,12 @@ void WindowEventDispatcher::handleMove(GLFWwindow* glfwWindow, int x, int y)
 
 void WindowEventDispatcher::handleFocus(GLFWwindow* glfwWindow, int focused)
 {
-    dispatchEvent(glfwWindow, new FocusEvent(focused == GL_TRUE));
+    dispatchEvent(glfwWindow, new FocusEvent(focused == static_cast<int>(GL_TRUE)));
 }
 
 void WindowEventDispatcher::handleIconify(GLFWwindow* glfwWindow, int iconified)
 {
-    dispatchEvent(glfwWindow, new IconifyEvent(iconified == GL_TRUE));
+    dispatchEvent(glfwWindow, new IconifyEvent(iconified == static_cast<int>(GL_TRUE)));
 }
 
 void WindowEventDispatcher::handleClose(GLFWwindow* glfwWindow)
