@@ -47,8 +47,8 @@ gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::
 
     glfwWindowHint(GLFW_VISIBLE, false);
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.m_major);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.m_minor);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.majorVersion());
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.minorVersion());
 
 #ifdef __APPLE__
 
