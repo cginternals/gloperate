@@ -24,7 +24,6 @@ void main()
     g_uv = v_uvRect[0].zy;
     //g_normal = normal;
     gl_Position = viewProjection * gl_Position;
-    gl_Position /= gl_Position.w;
     EmitVertex();
     
     // upper right
@@ -32,7 +31,6 @@ void main()
     g_uv = v_uvRect[0].zw;
     //g_normal = normal;
     gl_Position = viewProjection * gl_Position;
-    gl_Position /= gl_Position.w;
     EmitVertex();
     
     // lower left
@@ -40,7 +38,6 @@ void main()
     g_uv = v_uvRect[0].xy;
     //g_normal = normal;
     gl_Position = viewProjection * gl_Position;
-    gl_Position /= gl_Position.w;
     EmitVertex();
 
     // upper left
@@ -48,7 +45,6 @@ void main()
     g_uv = v_uvRect[0].xw;
     //g_normal = normal;
     gl_Position = viewProjection * gl_Position;
-    gl_Position /= gl_Position.w;
     EmitVertex();
 
     EndPrimitive();
