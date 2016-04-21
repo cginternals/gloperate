@@ -334,8 +334,6 @@ void TreeNavigation::scaleAtCenter(float scale)
     if (!intersects)
         return;
 
-    //enforceScaleConstraints(scale, i);
-
     m_cameraCapability.setEye(ln + scale * (ln - i));
     m_cameraCapability.setCenter(lf + scale * (lf - i));
 }
