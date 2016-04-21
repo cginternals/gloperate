@@ -77,6 +77,7 @@ protected:
     */
     void invalidateMatrices() const;
 
+public:
     // Virtual functions from AbstractProjectionCapability
     virtual void setAspectRatio(float ratio) override;
     virtual void setAspectRatio(const glm::ivec2 & viewport) override;

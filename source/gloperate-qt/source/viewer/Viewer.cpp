@@ -42,6 +42,7 @@
 #include <gloperate-qt/viewer/QtMouseEventProvider.h>
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 #include <gloperate-qt/viewer/DefaultMapping.h>
+#include <gloperate-qt/viewer/TreeNavigationMapping.h>
 #include <gloperate-qt/widgets/ImageExporterWidget.h>
 #include <gloperate-qt/widgets/PluginConfigWidget.h>
 #include <gloperate-qt/scripting/ScriptEnvironment.h>
@@ -355,7 +356,7 @@ void Viewer::setupCanvas()
     m_canvas->installEventFilter(wheelProvider);
 
     // Create input mapping for gloperate interaction techniques
-    m_mapping.reset(new DefaultMapping(m_canvas.get()));
+    m_mapping.reset(new TreeNavigationMapping(m_canvas.get()));
     m_mapping->addProvider(keyProvider);
     m_mapping->addProvider(mouseProvider);
     m_mapping->addProvider(wheelProvider);

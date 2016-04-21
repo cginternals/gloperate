@@ -98,6 +98,7 @@ set(headers
     ${include_path}/painter/PipelineOutputCapability.h
     ${include_path}/painter/AbstractOrthographicProjectionCapability.h
     ${include_path}/painter/OrthographicProjectionCapability.h
+    ${include_path}/painter/CombinedProjectionCapability.h
     
     ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/AbstractPipeline.hpp
@@ -209,6 +210,7 @@ set(sources
     ${source_path}/painter/PipelineOutputCapability.cpp
     ${source_path}/painter/AbstractOrthographicProjectionCapability.cpp
     ${source_path}/painter/OrthographicProjectionCapability.cpp
+    ${source_path}/painter/CombinedProjectionCapability.cpp
     
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/InputSlot.cpp
