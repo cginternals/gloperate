@@ -32,7 +32,6 @@ namespace
 
     static const float ROTATION_KEY_SCALE = 1.0f;
 
-    //static const float NAV_CONSTRAINT_PAN_CIRCLE_R = 2.83;
     static const float PROJECTION_TWEENING_THRESH = 0.03f * glm::pi<float>();
     static const float CONSTRAINT_ROT_MAX_V_UP    = 0.01f * glm::pi<float>();
     static const float CONSTRAINT_ROT_MAX_V_LO    = 0.48f * glm::pi<float>();
@@ -73,8 +72,6 @@ void TreeNavigation::reset()
     m_cameraCapability.reset();
 
     m_mode = NoInteraction;
-
-//    enforceWholeMapVisible();
 }
 
 
@@ -212,10 +209,7 @@ void TreeNavigation::rotateProcess(const glm::ivec2 & mouse)
     // setup the degree of freedom for vertical rotation within a single action
     const float wDeltaY = delta.y / static_cast<float>(m_viewportCapability.height());
     
-
     rotate(wDeltaX, wDeltaY);
-    
-
   
     auto combCapability = dynamic_cast<CombinedProjectionCapability *>(m_projectionCapability);
     if(combCapability != nullptr)
@@ -238,20 +232,9 @@ void TreeNavigation::rotateProcess(const glm::ivec2 & mouse)
         
         auto tween_va = (va - CONSTRAINT_ROT_MAX_V_UP) / PROJECTION_TWEENING_THRESH;
         tween_va = glm::clamp(tween_va, 0.0f, 1.0f);
-        //tween_va = tween_va < 0.5f ? 0.0f : 1.0f;
         
         combCapability->setMix(tween_va);
-                
-        /*if(va < PROJECTION_TWEENING_THRESH)
-        {
-            combCapability->setMix(0.0);
-        }
-        else
-        {
-            combCapability->setMix(1.0);
-        }*/
-    }
-    
+    }  
 }
 
 void TreeNavigation::pan(glm::vec3 t)
@@ -369,13 +352,6 @@ void TreeNavigation::enforceRotationConstraints(
 
     auto ha = acosf(glm::dot(m_cardinalDirection, horizontalDir));
     auto hDist = CONSTRAINT_ROT_MAX_H-ha;
-    /*if(std::signbit(hDist))
-        hAngle = glm::clamp(hAngle, hDist, CONSTRAINT_ROT_MAX_H);
-    else
-        hAngle = glm::clamp(hAngle, -CONSTRAINT_ROT_MAX_H, hDist); */
-
-
-
 
     auto va = acosf(glm::dot(viewDir, up));
     vAngle = glm::clamp(vAngle, CONSTRAINT_ROT_MAX_V_UP - va, CONSTRAINT_ROT_MAX_V_LO - va);

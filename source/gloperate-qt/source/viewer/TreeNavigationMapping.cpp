@@ -37,6 +37,7 @@ using gloperate::make_unique;
 namespace
 {
     const int g_tooltipTimeout = 200;
+    const float SCALE_FACTOR = 0.01f;
 }
 
 namespace gloperate_qt{
@@ -72,12 +73,15 @@ void TreeNavigationMapping::initializeTools()
     {
         return;
     }
+    
+    bool supportsCameraViewProjection = (m_painter->supports<AbstractCameraCapability>() &&
+                                          m_painter->supports<AbstractViewportCapability>() &&
+                                          m_painter->supports<AbstractProjectionCapability>());
+                                          
+    bool supportsRenderTarget = (m_painter->supports<AbstractTypedRenderTargetCapability>() ||
+                                 m_painter->supports<AbstractTargetFramebufferCapability>());
 
-    if (m_painter->supports<AbstractCameraCapability>() &&
-        m_painter->supports<AbstractViewportCapability>() &&
-        m_painter->supports<AbstractProjectionCapability>() &&
-        (m_painter->supports<AbstractTypedRenderTargetCapability>() ||
-         m_painter->supports<AbstractTargetFramebufferCapability>()))
+    if (supportsRenderTarget && supportsCameraViewProjection)
     {
         auto cameraCapability = m_painter->getCapability<AbstractCameraCapability>();
         auto projectionCapability = m_painter->getCapability<AbstractProjectionCapability>();
@@ -130,44 +134,7 @@ void TreeNavigationMapping::mapEvent(AbstractEvent * event)
 
 void TreeNavigationMapping::mapKeyboardEvent(KeyboardEvent * event)
 {
-    if (event && event->type() == KeyboardEvent::Type::Press)
-    {
-        switch (event->key())
-        {
-        // WASD move camera
-        case KeyW:
-            m_navigation->pan(glm::vec3(0, 0, 1));
-            break;
-        case KeyA:
-            m_navigation->pan(glm::vec3(1, 0, 0));
-            break;
-        case KeyS:
-            m_navigation->pan(glm::vec3(0, 0, -1));
-            break;
-        case KeyD:
-            m_navigation->pan(glm::vec3(-1, 0, 0));
-            break;
-        // Reset camera position
-        case KeyR:
-            m_navigation->reset();
-            break;
-        // Arrows rotate camera
-        case KeyUp:
-            m_navigation->rotate(0.0f, glm::radians(-10.0f));
-            break;
-        case KeyLeft:
-            m_navigation->rotate(glm::radians(10.0f), 0.0f);
-            break;
-        case KeyDown:
-            m_navigation->rotate(0.0f, glm::radians(10.0f));
-            break;
-        case KeyRight:
-            m_navigation->rotate(glm::radians(-10.0f), 0.0f);
-            break;
-        default:
-            break;
-        }
-    }
+    // No Keyboard Interaction as of yet, as the old one is choppy
 }
 
 void TreeNavigationMapping::mapMouseEvent(MouseEvent * mouseEvent)
@@ -234,7 +201,7 @@ void TreeNavigationMapping::mapWheelEvent(WheelEvent * wheelEvent)
 {
     auto scale = wheelEvent->angleDelta().y;
     scale /= WheelEvent::defaultMouseAngleDelta();
-    scale *= 0.1f; // smoother (slower) scaling
+    scale *= SCALE_FACTOR; // smoother (slower) scaling
     m_navigation->scaleAtMouse(wheelEvent->pos(), scale);
 }
 

@@ -18,10 +18,8 @@ CombinedProjectionCapability::CombinedProjectionCapability(gloperate::AbstractVi
 , m_orthoCapability(viewportCapability)
 , m_perspectiveCapability(viewportCapability)
 , m_mix(1.0f)
-{
-    
-}
-    
+{ 
+}  
 
 CombinedProjectionCapability::~CombinedProjectionCapability()
 {
@@ -54,7 +52,7 @@ void CombinedProjectionCapability::setZFar(const float zFar)
     update();
 
     m_projection = interpolate(m_orthoCapability.projection(), m_perspectiveCapability.projection());
-    m_invertedProjection = glm::inverse(m_projection); //interpolate(m_orthoCapability.projectionInverted(), m_perspectiveCapability.projectionInverted());
+    m_invertedProjection = glm::inverse(m_projection);
 }
 
 float CombinedProjectionCapability::aspectRatio() const
@@ -74,7 +72,6 @@ const glm::mat4 & CombinedProjectionCapability::projectionInverted() const
 
 glm::mat4 CombinedProjectionCapability::projectionForAspectRatio(float ratio) const
 {
-    //m_projection = ;
     return interpolate(m_orthoCapability.projectionForAspectRatio(ratio), m_perspectiveCapability.projectionForAspectRatio(ratio));
 }
 

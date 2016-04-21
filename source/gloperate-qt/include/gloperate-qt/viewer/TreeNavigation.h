@@ -86,17 +86,10 @@ public:
     void scaleAtMouse(const glm::ivec2 & mouse,	float scale);
     void resetScaleAtMouse(const glm::ivec2 & mouse);
 
-//	void enforceWholeMapVisible(const float offset = 0.08);
-
     // constraints
-
-//	void enforceTranslationConstraints(glm::vec3 & p) const;
     void enforceRotationConstraints(
         float & hAngle
     ,	float & vAngle) const;
-//	void enforceScaleConstraints(
-//		float & scale
-//	,	glm::vec3 & i) const;
 
     // math
 
