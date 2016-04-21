@@ -35,7 +35,7 @@ namespace gloperate_qt
 
 
 class QtOpenGLWindow;
-class DefaultMapping;
+class TreeNavigationMapping;
 class ScriptEnvironment;
 class ViewerApi;
 class PluginApi;
@@ -172,7 +172,7 @@ protected:
     std::unique_ptr<PluginApi>                       m_pluginApi;
 
     std::unique_ptr<gloperate::Painter>              m_painter;
-    std::unique_ptr<DefaultMapping>                  m_mapping;
+    std::unique_ptr<TreeNavigationMapping>                  m_mapping;
 
     std::unique_ptr<QtOpenGLWindow>                  m_canvas;
     std::unique_ptr<widgetzeug::MessageStatusWidget> m_messagesStatus;
