@@ -154,7 +154,6 @@ target_link_libraries(${target}
     Qt5::OpenGL
     cpplocate::cpplocate
     cppexpose::cppexpose
-    libzeug::loggingzeug
     libzeug::widgetzeug
     libzeug::propertyguizeug
     glbinding::glbinding

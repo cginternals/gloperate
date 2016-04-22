@@ -9,6 +9,7 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
 find_package(cppexpose REQUIRED)
+find_package(cppassist REQUIRED)
 
 # Qt5
 find_package(Qt5Core    5.1)
@@ -158,10 +159,9 @@ target_link_libraries(${target}
     Qt5::OpenGL
     cpplocate::cpplocate
     cppexpose::cppexpose
-    libzeug::loggingzeug
+    cppassist::cppassist
     libzeug::widgetzeug
     libzeug::propertyguizeug
-    libzeug::iozeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

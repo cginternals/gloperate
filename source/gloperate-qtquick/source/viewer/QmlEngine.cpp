@@ -7,7 +7,7 @@
 
 #include <cppexpose/reflection/Property.h>
 
-#include <iozeug/FilePath.h>
+#include <cppassist/io/FilePath.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
@@ -188,8 +188,8 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         return QJSValue(var.value<bool>());
     }
 
-    else if (var.hasType<iozeug::FilePath>()) {
-        return QJSValue(var.value<iozeug::FilePath>().path().c_str());
+    else if (var.hasType<cppassist::FilePath>()) {
+        return QJSValue(var.value<cppassist::FilePath>().path().c_str());
     }
 
     else if (var.hasType<cppexpose::VariantArray>()) {

@@ -9,6 +9,7 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(libzeug REQUIRED)
 find_package(cppexpose REQUIRED)
+find_package(cppassist REQUIRED)
 
 
 # 
@@ -191,7 +192,7 @@ target_link_libraries(${target}
     ${OPENGL_LIBRARIES}
     cpplocate::cpplocate
     cppexpose::cppexpose
-    libzeug::iozeug
+    cppassist::cppassist
     glbinding::glbinding
     globjects::globjects
 
