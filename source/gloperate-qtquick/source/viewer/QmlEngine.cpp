@@ -6,6 +6,7 @@
 #include <QJSValueIterator>
 
 #include <cppexpose/reflection/Property.h>
+#include <cppexpose/typed/DirectValue.h>
 
 #include <cppassist/io/FilePath.h>
 
