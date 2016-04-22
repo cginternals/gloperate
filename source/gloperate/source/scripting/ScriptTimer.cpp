@@ -3,15 +3,15 @@
 
 #include <vector>
 
-#include <reflectionzeug/function/Function.h>
-#include <reflectionzeug/variant/Variant.h>
+#include <cppexpose/function/AbstractFunction.h>
+#include <cppexpose/variant/Variant.h>
 
 
 namespace gloperate
 {
 
 
-ScriptTimer::ScriptTimer(ViewerContext * viewerContext, reflectionzeug::AbstractFunction * func)
+ScriptTimer::ScriptTimer(ViewerContext * viewerContext, cppexpose::AbstractFunction * func)
 : Timer(viewerContext)
 , m_func(func)
 {
@@ -26,8 +26,8 @@ void ScriptTimer::onElapsed()
 {
     // Invoke function
     if (m_func) {
-        std::vector<reflectionzeug::Variant> params;
-        reflectionzeug::Variant res = m_func->call(params);
+        std::vector<cppexpose::Variant> params;
+        cppexpose::Variant res = m_func->call(params);
     }
 }
 

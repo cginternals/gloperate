@@ -4,8 +4,8 @@
 
 #include <QJSValue>
 
-#include <reflectionzeug/variant/Variant.h>
-#include <reflectionzeug/function/Function.h>
+#include <cppexpose/variant/Variant.h>
+#include <cppexpose/function/AbstractFunction.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -22,9 +22,9 @@ class QmlEngine;
 *    Script function wrapper
 *
 *    This class represents a function inside the scripting environment
-*    and makes it available to the reflectionzeug meta object system.
+*    and makes it available to the reflection meta object system.
 */
-class GLOPERATE_QTQUICK_API QmlScriptFunction : public reflectionzeug::AbstractFunction
+class GLOPERATE_QTQUICK_API QmlScriptFunction : public cppexpose::AbstractFunction
 {
 public:
     /**
@@ -44,9 +44,9 @@ public:
     */
     ~QmlScriptFunction();
 
-    // Virtual reflectionzeug::AbstractFunction functions
-    virtual reflectionzeug::AbstractFunction * clone() override;
-    virtual reflectionzeug::Variant call(const std::vector<reflectionzeug::Variant> & args) override;
+    // Virtual cppexpose::AbstractFunction functions
+    virtual cppexpose::AbstractFunction * clone() override;
+    virtual cppexpose::Variant call(const std::vector<cppexpose::Variant> & args) override;
 
 
 protected:

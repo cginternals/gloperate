@@ -5,7 +5,7 @@
 #include <gloperate/viewer/Timer.h>
 
 
-namespace reflectionzeug
+namespace cppexpose
 {
     class AbstractFunction;
 }
@@ -34,7 +34,7 @@ public:
     *  @param[in] func
     *    Callback function
     */
-    ScriptTimer(ViewerContext * viewerContext, reflectionzeug::AbstractFunction * func);
+    ScriptTimer(ViewerContext * viewerContext, cppexpose::AbstractFunction * func);
 
     /**
     *  @brief
@@ -48,7 +48,7 @@ protected:
 
 
 protected:
-    reflectionzeug::AbstractFunction * m_func;  ///< Script function that is called when timer elapses
+    cppexpose::AbstractFunction * m_func;  ///< Script function that is called when timer elapses
 };
 
 

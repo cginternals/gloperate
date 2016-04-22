@@ -6,7 +6,7 @@
 #include <QJSValue>
 #include <QString>
 
-#include <reflectionzeug/variant/Variant.h>
+#include <cppexpose/variant/Variant.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -85,7 +85,7 @@ public:
     *  @return
     *    Variant value
     */
-    reflectionzeug::Variant fromScriptValue(const QJSValue & value);
+    cppexpose::Variant fromScriptValue(const QJSValue & value);
 
     /**
     *  @brief
@@ -97,7 +97,7 @@ public:
     *  @return
     *    Script value
     */
-    QJSValue toScriptValue(const reflectionzeug::Variant & var);
+    QJSValue toScriptValue(const cppexpose::Variant & var);
 
     /**
     *  @brief
@@ -109,7 +109,7 @@ public:
     *  @return
     *    Variant value
     */
-    reflectionzeug::Variant fromQVariant(const QVariant & value);
+    cppexpose::Variant fromQVariant(const QVariant & value);
 
     /**
     *  @brief

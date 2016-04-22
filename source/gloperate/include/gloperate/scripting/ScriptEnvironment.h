@@ -6,18 +6,15 @@
 #include <memory>
 #include <list>
 
-#include <reflectionzeug/variant/Variant.h>
+#include <cppexpose/variant/Variant.h>
 
 #include <gloperate/gloperate_api.h>
 
 
-namespace reflectionzeug {
+namespace cppexpose {
     class Object;
-}
-
-namespace scriptzeug {
     class ScriptContext;
-    class AbstractScriptContext;
+    class AbstractScriptBackend;
 }
 
 
@@ -69,7 +66,7 @@ public:
     *  @param[in] backend
     *    Scripting backend to use (must NOT be null)
     */
-    void setupScripting(scriptzeug::AbstractScriptContext * backend);
+    void setupScripting(cppexpose::AbstractScriptBackend * backend);
     //@}
 
     //@{
@@ -80,8 +77,8 @@ public:
     *  @return
     *    Script context (can be null)
     */
-    const scriptzeug::ScriptContext * scriptContext() const;
-    scriptzeug::ScriptContext * scriptContext();
+    const cppexpose::ScriptContext * scriptContext() const;
+    cppexpose::ScriptContext * scriptContext();
     //@}
 
     //@{
@@ -93,11 +90,11 @@ public:
     *    Scripting API
     *
     *  @remarks
-    *    This adds an reflectionzeug::Object to the scripting context.
+    *    This adds an cppexpose::Object to the scripting context.
     *    It is made available via the global object 'gloperate',
     *    e.g., 'gloperate.test' if the object's name is 'test'.
     */
-    void addApi(reflectionzeug::Object * api);
+    void addApi(cppexpose::Object * api);
 
     /**
     *  @brief
@@ -106,7 +103,7 @@ public:
     *  @param[in] api
     *    Scripting API
     */
-    void removeApi(reflectionzeug::Object * api);
+    void removeApi(cppexpose::Object * api);
 
     /**
     *  @brief
@@ -127,7 +124,7 @@ public:
     *  @return
     *    Return value from the scripting context
     */
-    reflectionzeug::Variant execute(const std::string & code);
+    cppexpose::Variant execute(const std::string & code);
     //@}
 
 
@@ -141,10 +138,10 @@ protected:
 
 protected:
     ViewerContext                              * m_viewerContext; ///< Viewer context (must NOT be null!)
-    std::unique_ptr<scriptzeug::ScriptContext>   m_scriptContext; ///< JavaScript scripting context
+    std::unique_ptr<cppexpose::ScriptContext>   m_scriptContext; ///< JavaScript scripting context
     std::unique_ptr<SystemApi>                   m_systemApi;     ///< System function (files, print)
     std::unique_ptr<TimerApi>                    m_timerApi;      ///< Timer functions
-    std::list<reflectionzeug::Object *>          m_apis;          ///< List of connected APIs
+    std::list<cppexpose::Object *>          m_apis;          ///< List of connected APIs
     std::string                                  m_helpText;      ///< Text that is displayed on 'help'
 };
 

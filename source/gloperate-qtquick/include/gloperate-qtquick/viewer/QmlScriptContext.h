@@ -4,9 +4,9 @@
 
 #include <vector>
 
-#include <reflectionzeug/variant/Variant.h>
+#include <cppexpose/variant/Variant.h>
 
-#include <scriptzeug/backend/AbstractScriptContext.h>
+#include <cppexpose/scripting/AbstractScriptBackend.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -23,7 +23,7 @@ class QmlObjectWrapper;
 *  @brief
 *    Scripting backend for use in conjunction with Qt quick
 */
-class GLOPERATE_QTQUICK_API QmlScriptContext : public scriptzeug::AbstractScriptContext
+class GLOPERATE_QTQUICK_API QmlScriptContext : public cppexpose::AbstractScriptBackend
 {
 public:
     /**
@@ -41,12 +41,12 @@ public:
     */
     virtual ~QmlScriptContext();
 
-    // Virtual AbstractScriptContext functions
-    virtual void initialize(scriptzeug::ScriptContext * scriptContext) override;
+    // Virtual AbstractScriptBackend functions
+    virtual void initialize(cppexpose::ScriptContext * scriptContext) override;
     virtual void setGlobalNamespace(const std::string & name) override;
-    virtual void registerObject(reflectionzeug::PropertyGroup * obj) override;
-    virtual void unregisterObject(reflectionzeug::PropertyGroup * obj) override;
-    virtual reflectionzeug::Variant evaluate(const std::string & code) override;
+    virtual void registerObject(cppexpose::PropertyGroup * obj) override;
+    virtual void unregisterObject(cppexpose::PropertyGroup * obj) override;
+    virtual cppexpose::Variant evaluate(const std::string & code) override;
 
 
 protected:

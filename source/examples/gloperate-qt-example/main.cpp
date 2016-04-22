@@ -61,7 +61,7 @@ int main(int argc, char * argv[])
         {
             // Execute script code
             std::string code = cmd.toStdString();
-            reflectionzeug::Variant res = viewerContext.scriptEnvironment()->execute(code);
+            cppexpose::Variant res = viewerContext.scriptEnvironment()->execute(code);
 
             // Output result
             scriptPrompt->print(QString::fromStdString(res.value<std::string>()));
