@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <gloperate/ext-includes-end.h>
 
+#include <gloperate-qt/gloperate-qt_api.h>
 #include <gloperate/navigation/AbstractInteraction.h>
 
 
@@ -32,7 +33,7 @@ class CoordinateProvider;
 *    This interaction technique needs a depth buffer image to work
 *    correctly, which is provided by the specified CoordinateProvider.
 */
-class GLOPERATE_API TreeNavigation : public gloperate::AbstractInteraction
+class GLOPERATE_QT_API TreeNavigation : public gloperate::AbstractInteraction
 {
 public:
     /**
