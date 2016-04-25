@@ -10,11 +10,15 @@ in vec4 v_bitangent[];
 
 in vec4 v_uvRect[];
 
+in vec3 v_fontColor[];
+
 out vec2 g_uv;
+out vec3 g_fontColor;
 //flat out vec3 g_normal;
 
 void main()
 {
+    g_fontColor = v_fontColor[0];
     vec4 origin = gl_in[0].gl_Position;
     //vec3 normal = normalize(cross(normalize(v_tangent[0].xyz)
     //    , normalize(v_bitangent[0].xyz)));

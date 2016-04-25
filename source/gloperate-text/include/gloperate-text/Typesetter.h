@@ -79,6 +79,7 @@ private:
 
     static void vertex_transform(
         const glm::mat4 & sequence
+    ,   const glm::vec3 & fontColor
     ,   const GlyphVertexCloud::Vertices::iterator & begin
     ,   const GlyphVertexCloud::Vertices::iterator & end);
 

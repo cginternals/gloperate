@@ -5,6 +5,7 @@
 
 #include <glm/fwd.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 
 #include <globjects/base/ref_ptr.h>
 
@@ -56,6 +57,9 @@ public:
     LineAnchor lineAnchor() const;
     void setLineAnchor(const LineAnchor anchor);
 
+    const glm::vec3 & fontColor() const;
+    void setFontColor(glm::vec3 fontColor);
+
     const glm::mat4 & transform() const;
     void setTransform(const glm::mat4 & transform);
 
@@ -89,6 +93,7 @@ protected:
     LineAnchor m_anchor;
 
     glm::mat4 m_transform;
+    glm::vec3 m_fontColor;
 };
 
 

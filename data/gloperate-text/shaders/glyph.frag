@@ -5,6 +5,7 @@ uniform vec4 color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform vec2 offset = vec2(0.0, 0.0);
 
 in vec2 g_uv;
+in vec3 g_fontColor;
 //flat in vec3 g_normal;
 
 layout (location = 0) out vec4 out_color;
@@ -120,7 +121,7 @@ void main()
 	float f = dFdx(g_uv.x);
 	float x = sign(g_uv.x) * f / 3.0;
 
-	vec4 fc = vec4(vec3(0.0), 1.0);
+	vec4 fc = vec4(g_fontColor, 1.0);
 	vec4 bc = vec4(vec3(1.0), 0.0);
 
 	// subpixel variations

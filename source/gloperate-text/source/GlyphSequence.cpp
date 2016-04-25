@@ -19,6 +19,7 @@ GlyphSequence::GlyphSequence()
 , m_lineWidth(0.f)
 , m_alignment(Alignment::LeftAligned)
 , m_anchor(LineAnchor::Baseline)
+, m_fontColor(glm::vec3(0.f))
 {
 }
 
@@ -123,6 +124,16 @@ LineAnchor GlyphSequence::lineAnchor() const
 void GlyphSequence::setLineAnchor(const LineAnchor anchor)
 {
     m_anchor = anchor;
+}
+
+const glm::vec3 & GlyphSequence::fontColor() const
+{
+    return m_fontColor;
+}
+
+void GlyphSequence::setFontColor(glm::vec3 fontColor)
+{
+    m_fontColor = fontColor;
 }
 
 const char32_t & GlyphSequence::lineFeed()
