@@ -9,6 +9,7 @@
 namespace gloperate_qt
 {
 
+
 ScriptSyntaxHighlighter::ScriptSyntaxHighlighter()
 : QSyntaxHighlighter(static_cast<QTextDocument*>(nullptr))
 {
@@ -20,7 +21,7 @@ ScriptSyntaxHighlighter::~ScriptSyntaxHighlighter()
 
 void ScriptSyntaxHighlighter::addPattern(
     const QString & pattern
-,   const QTextCharFormat & format)
+  , const QTextCharFormat & format)
 {
     QRegExp re(pattern);
     assert(re.isValid());
@@ -30,8 +31,8 @@ void ScriptSyntaxHighlighter::addPattern(
 
 void ScriptSyntaxHighlighter::addMultiLinePattern(
     const QString & begin
-,   const QString & end
-,   const QTextCharFormat & format)
+  , const QString & end
+  , const QTextCharFormat & format)
 {
     QRegExp re;
 
@@ -66,8 +67,9 @@ void ScriptSyntaxHighlighter::highlightBlock(const QString & text)
         QRegExp re1(mlp.end);
 
         int i0 = 0;
-        if (1 != previousBlockState())
+        if (1 != previousBlockState()) {
             i0 = text.indexOf(re0);
+        }
 
         while (i0 >= 0)
         {
@@ -80,12 +82,15 @@ void ScriptSyntaxHighlighter::highlightBlock(const QString & text)
                 length = text.length() - i0;
             }
             else
+            {
                 length = i1 - i0 + re1.matchedLength();
+            }
 
             setFormat(i0, length, mlp.format);
             i0 = text.indexOf(re0, i0 + length);
         }
     }
 }
+
 
 } // namespace gloperate_qt

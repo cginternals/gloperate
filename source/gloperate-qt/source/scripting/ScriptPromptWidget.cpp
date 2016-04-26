@@ -13,9 +13,6 @@
 #include <QScrollBar>
 
 
-namespace gloperate_qt
-{
-
 namespace
 {
     const QString ROW_PREFIX("> ");
@@ -23,9 +20,14 @@ namespace
 
     const Qt::TextInteractionFlags READ_INTERACTION_FLAGS = 
         Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard;
+
     const Qt::TextInteractionFlags WRITE_INTERACTION_FLAGS =
         Qt::TextEditorInteraction;
 }
+
+
+namespace gloperate_qt
+{
 
 
 ScriptPromptWidget::ScriptPromptWidget(QWidget * parent)
@@ -47,11 +49,174 @@ ScriptPromptWidget::ScriptPromptWidget(QWidget * parent)
 
 ScriptPromptWidget::~ScriptPromptWidget()
 {
-    if (m_syntaxHighlighter)
+    delete m_syntaxHighlighter;
+    delete m_completer;
+}
+
+bool ScriptPromptWidget::multiLinePaste() const
+{
+    return m_multiLinePaste;
+}
+
+void ScriptPromptWidget::setMultiLinePaste(const bool enable)
+{
+    m_multiLinePaste = enable;
+}
+
+QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter() const
+{
+    return m_syntaxHighlighter;
+}
+
+void ScriptPromptWidget::setSyntaxHighlighter(QSyntaxHighlighter * syntaxHighlighter)
+{
+    if (m_syntaxHighlighter != syntaxHighlighter)
         delete m_syntaxHighlighter;
 
-    if (m_completer)
+    m_syntaxHighlighter = syntaxHighlighter;
+
+    if (m_syntaxHighlighter)
+        syntaxHighlighter->setDocument(document());
+}
+
+QCompleter * ScriptPromptWidget::completer() const
+{
+    return m_completer;
+}
+
+void ScriptPromptWidget::setCompleter(QCompleter * completer)
+{
+    if (m_completer != completer && m_completer)
         delete m_completer;
+
+    m_completer = completer;
+
+    if (m_completer)
+    {
+        connect(m_completer, SIGNAL(activated(QString)), this, SLOT(complete(QString)));
+
+        m_completer->setWidget(this);
+        m_completer->popup()->setFont(font());
+    }
+}
+
+const QString & ScriptPromptWidget::urisPasteDelimiter() const
+{
+    return m_urisPasteDelimiter;
+}
+
+void ScriptPromptWidget::setUrisPasteDelimiter(const QString & delimiter)
+{
+    m_urisPasteDelimiter = delimiter;
+}
+
+bool ScriptPromptWidget::urisPasteQuotMarks() const
+{
+    return m_urisPasteQuotMarks;
+}
+
+void ScriptPromptWidget::setUrisPasteQuotMarks(bool enable)
+{
+    m_urisPasteQuotMarks = enable;
+}
+
+void ScriptPromptWidget::print(const QString & message)
+{
+    const int pos = position();
+
+    moveCursor(QTextCursor::StartOfLine);
+    textCursor().insertText(message + "\n");
+
+    const int offset(message.length() + 1);
+    m_lastRowPos += offset;
+    setPosition(pos + offset);
+}
+
+void ScriptPromptWidget::process()
+{
+    const QString command = toPlainText().mid(m_lastRowPos);
+
+    blockSignals(true);
+    moveCursor(QTextCursor::MoveOperation::End);
+    blockSignals(false);
+
+    updateLastInHistory();
+    m_history.append(""); // add new slot for upcomming command
+
+    if (isReadOnly())
+        setReadOnly(false);
+
+    blockSignals(true);
+    moveCursor(QTextCursor::MoveOperation::End);
+    textCursor().insertText("\n" + ROW_PREFIX);
+    blockSignals(false);
+
+    emit evaluate(command); // might trigger calls to print slot
+
+    ensureCursorVisible();
+
+    resetUndoRedo();
+
+    m_lastRowPos = position();
+    m_rows = row();
+
+    updateLastInHistory();
+}
+
+void ScriptPromptWidget::cls()
+{
+    const int newPosition = qMax(ROW_PREFIX_LENGTH, position() - m_lastRowPos + ROW_PREFIX_LENGTH);
+
+    setPlainText(toPlainText().mid(m_lastRowPos - ROW_PREFIX_LENGTH));
+
+    m_lastRowPos = ROW_PREFIX_LENGTH;
+    m_rows = 1;
+
+    setPosition(newPosition);
+}
+
+inline int ScriptPromptWidget::row() const
+{
+    return toPlainText().left(textCursor().position()).count("\n") + 1;
+}
+
+inline int ScriptPromptWidget::column() const
+{
+    return textCursor().columnNumber();
+}
+
+inline int ScriptPromptWidget::anchor() const
+{
+    return textCursor().anchor();
+}
+
+QString ScriptPromptWidget::wordUnderCursor() const
+{
+    QTextCursor tc(textCursor());
+
+    tc.select(QTextCursor::WordUnderCursor);
+    return tc.selectedText();
+}
+
+inline int ScriptPromptWidget::position() const
+{
+    return textCursor().position();
+}
+
+inline void ScriptPromptWidget::setPosition(
+    const int position
+  , const QTextCursor::MoveMode mode)
+{
+    QTextCursor tc(textCursor());
+    tc.setPosition(position, mode);
+
+    setTextCursor(tc);
+}
+
+inline void ScriptPromptWidget::resetUndoRedo()
+{
+    setUndoRedoEnabled(false);
+    setUndoRedoEnabled(true);
 }
 
 void ScriptPromptWidget::keyPressEvent(QKeyEvent * e)
@@ -154,31 +319,6 @@ void ScriptPromptWidget::completerKeyPressEvent(QKeyEvent * e)
     m_completer->complete(cr);
 }
 
-void ScriptPromptWidget::updateLastInHistory()
-{
-    if (!m_history.isEmpty())
-        m_history.removeLast();
-
-    m_history.append(toPlainText().mid(m_lastRowPos));
-
-    m_historyIt = m_history.constEnd();
-    --m_historyIt;
-}
-
-void ScriptPromptWidget::setCommandFromHistory()
-{
-    if (m_history.constEnd() == m_historyIt)
-        --m_historyIt;
-
-    QTextCursor tc(textCursor());
-    tc.setPosition(m_lastRowPos);
-    tc.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
-    tc.removeSelectedText();
-    tc.insertText(*m_historyIt);
-    tc.movePosition(QTextCursor::End);
-    setTextCursor(tc);
-}
-
 void ScriptPromptWidget::insertFromMimeData(const QMimeData * source)
 {
     assert(source);
@@ -228,59 +368,29 @@ void ScriptPromptWidget::insertTextFromMimeData(const QMimeData * source)
     }
 }
 
-void ScriptPromptWidget::process()
+void ScriptPromptWidget::updateLastInHistory()
 {
-    const QString command = toPlainText().mid(m_lastRowPos);
+    if (!m_history.isEmpty())
+        m_history.removeLast();
 
-    blockSignals(true);
-    moveCursor(QTextCursor::MoveOperation::End);
-    blockSignals(false);
+    m_history.append(toPlainText().mid(m_lastRowPos));
 
-    updateLastInHistory();
-    m_history.append(""); // add new slot for upcomming command
-
-    if (isReadOnly())
-        setReadOnly(false);
-
-    blockSignals(true);
-    moveCursor(QTextCursor::MoveOperation::End);
-    textCursor().insertText("\n" + ROW_PREFIX);
-    blockSignals(false);
-
-    emit evaluate(command); // might trigger calls to print slot
-
-    ensureCursorVisible();
-
-    resetUndoRedo();
-
-    m_lastRowPos = position();
-    m_rows = row();
-
-    updateLastInHistory();
+    m_historyIt = m_history.constEnd();
+    --m_historyIt;
 }
 
-void ScriptPromptWidget::print(const QString & message)
+void ScriptPromptWidget::setCommandFromHistory()
 {
-    const int pos = position();
+    if (m_history.constEnd() == m_historyIt)
+        --m_historyIt;
 
-    moveCursor(QTextCursor::StartOfLine);
-    textCursor().insertText(message + "\n");
-
-    const int offset(message.length() + 1);
-    m_lastRowPos += offset;
-    setPosition(pos + offset);
-}
-
-void ScriptPromptWidget::cls()
-{
-    const int newPosition = qMax(ROW_PREFIX_LENGTH, position() - m_lastRowPos + ROW_PREFIX_LENGTH);
-
-    setPlainText(toPlainText().mid(m_lastRowPos - ROW_PREFIX_LENGTH));
-
-    m_lastRowPos = ROW_PREFIX_LENGTH;
-    m_rows = 1;
-
-    setPosition(newPosition);
+    QTextCursor tc(textCursor());
+    tc.setPosition(m_lastRowPos);
+    tc.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+    tc.removeSelectedText();
+    tc.insertText(*m_historyIt);
+    tc.movePosition(QTextCursor::End);
+    setTextCursor(tc);
 }
 
 void ScriptPromptWidget::onCursorPositionChanged()
@@ -301,118 +411,6 @@ void ScriptPromptWidget::complete(const QString & text)
 
     setTextCursor(tc);
     updateLastInHistory();
-}
-
-inline int ScriptPromptWidget::row() const
-{
-    return toPlainText().left(textCursor().position()).count("\n") + 1;
-}
-
-inline int ScriptPromptWidget::column() const
-{
-    return textCursor().columnNumber();
-}
-
-inline void ScriptPromptWidget::setPosition(
-    const int position
-,   const QTextCursor::MoveMode mode)
-{
-    QTextCursor tc(textCursor());
-    tc.setPosition(position, mode);
-
-    setTextCursor(tc);
-}
-
-inline int ScriptPromptWidget::position() const
-{
-    return textCursor().position();
-}
-
-inline int ScriptPromptWidget::anchor() const
-{
-    return textCursor().anchor();
-}
-
-QString ScriptPromptWidget::wordUnderCursor() const
-{
-    QTextCursor tc(textCursor());
-
-    tc.select(QTextCursor::WordUnderCursor);
-    return tc.selectedText();
-}
-
-
-inline void ScriptPromptWidget::resetUndoRedo()
-{
-    setUndoRedoEnabled(false);
-    setUndoRedoEnabled(true);
-}
-
-void ScriptPromptWidget::setMultiLinePaste(const bool enable)
-{
-    m_multiLinePaste = enable;
-}
-
-bool ScriptPromptWidget::multiLinePaste() const
-{
-    return m_multiLinePaste;
-}
-
-void ScriptPromptWidget::setCompleter(QCompleter * completer)
-{
-    if (m_completer != completer && m_completer)
-        delete m_completer;
-
-    m_completer = completer;
-
-    if (m_completer)
-    {
-        connect(m_completer, SIGNAL(activated(QString)), this, SLOT(complete(QString)));
-
-        m_completer->setWidget(this);
-        m_completer->popup()->setFont(font());
-    }
-}
-
-QCompleter * ScriptPromptWidget::completer()
-{
-    return m_completer;
-}
-
-void ScriptPromptWidget::setSyntaxHighlighter(QSyntaxHighlighter * syntaxHighlighter)
-{
-    if (m_syntaxHighlighter != syntaxHighlighter)
-        delete m_syntaxHighlighter;
-
-    m_syntaxHighlighter = syntaxHighlighter;
-
-    if (m_syntaxHighlighter)
-        syntaxHighlighter->setDocument(document());
-}
-
-QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter()
-{
-    return m_syntaxHighlighter;
-}
-
-void ScriptPromptWidget::setUrisPasteDelimiter(const QString & delimiter)
-{
-    m_urisPasteDelimiter = delimiter;
-}
-
-const QString & ScriptPromptWidget::urisPasteDelimiter() const
-{
-    return m_urisPasteDelimiter;
-}
-
-void ScriptPromptWidget::setUrisPasteQuotMarks(bool enable)
-{
-    m_urisPasteQuotMarks = enable;
-}
-
-bool ScriptPromptWidget::urisPasteQuotMarks() const
-{
-    return m_urisPasteQuotMarks;
 }
 
 

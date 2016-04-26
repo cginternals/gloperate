@@ -4,13 +4,15 @@
 #include <QString>
 
 
-namespace gloperate_qt
-{
-
 namespace 
 {
-    // http://www.ecma-international.org/ecma-262/5.1/
-
+    /**
+    *  @brief
+    *    JavaScript keywords
+    *
+    *  @see
+    *    http://www.ecma-international.org/ecma-262/5.1/
+    */
     const QString ECMA_Keywords = (
         "\\b("
         "break|"
@@ -41,6 +43,10 @@ namespace
         "with"
         ")\\b");
 
+    /**
+    *  @brief
+    *    JavaScript future reserved words
+    */
     const QString ECMA_FutureReservedWords = (
         "\\b("
         "class|"
@@ -52,6 +58,11 @@ namespace
         "super"
         ")\\b");
 }
+
+
+namespace gloperate_qt
+{
+
 
 ECMA26251SyntaxHighlighter::ECMA26251SyntaxHighlighter()
 {
@@ -74,5 +85,6 @@ ECMA26251SyntaxHighlighter::ECMA26251SyntaxHighlighter()
 ECMA26251SyntaxHighlighter::~ECMA26251SyntaxHighlighter()
 {
 }
+
 
 } // namespace gloperate_qt

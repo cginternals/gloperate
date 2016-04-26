@@ -3,13 +3,16 @@
 
 #include <QString>
 
-namespace gloperate_qt
-{
 
 namespace
 {
-    // http://www.ecma-international.org/ecma-262/5.1/
-
+    /**
+    *  @brief
+    *    JavaScript keywords
+    *
+    *  @see
+    *    http://www.ecma-international.org/ecma-262/5.1/
+    */
     const QStringList ECMA_Keywords = QStringList() 
         << "break"
         << "case"
@@ -39,6 +42,11 @@ namespace
         << "with";
 }
 
+
+namespace gloperate_qt
+{
+
+
 ECMA26251Completer::ECMA26251Completer()
 {
     registerWords(ECMA_Keywords);
@@ -47,5 +55,6 @@ ECMA26251Completer::ECMA26251Completer()
 ECMA26251Completer::~ECMA26251Completer()
 {
 }
+
 
 } // namespace gloperate_qt
