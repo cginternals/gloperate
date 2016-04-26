@@ -1,5 +1,5 @@
 
-#include <gloperate/primitives/MyDrawable.h>
+#include <gloperate/primitives/Drawable.h>
 
 #include <cassert>
 
@@ -13,7 +13,7 @@ namespace gloperate
 {
 
 
-MyDrawable::MyDrawable()
+Drawable::Drawable()
 : m_vao(new globjects::VertexArray)
 , m_drawMode(DrawMode::Arrays)
 , m_size(0)
@@ -22,31 +22,31 @@ MyDrawable::MyDrawable()
 {
 }
 
-MyDrawable::~MyDrawable()
+Drawable::~Drawable()
 {
 }
 
-globjects::VertexArray * MyDrawable::vao() const
+globjects::VertexArray * Drawable::vao() const
 {
     return m_vao;
 }
 
-DrawMode MyDrawable::drawMode() const
+DrawMode Drawable::drawMode() const
 {
     return m_drawMode;
 }
 
-void MyDrawable::setDrawMode(DrawMode drawMode)
+void Drawable::setDrawMode(DrawMode drawMode)
 {
     m_drawMode = drawMode;
 }
 
-void MyDrawable::draw() const
+void Drawable::draw() const
 {
     draw(m_drawMode);
 }
 
-void MyDrawable::draw(DrawMode drawMode) const
+void Drawable::draw(DrawMode drawMode) const
 {
     switch (drawMode)
     {
@@ -61,32 +61,32 @@ void MyDrawable::draw(DrawMode drawMode) const
     }
 }
 
-void MyDrawable::drawArrays() const
+void Drawable::drawArrays() const
 {
     drawArrays(m_mode, 0, m_size);
 }
 
-void MyDrawable::drawArrays(gl::GLenum mode) const
+void Drawable::drawArrays(gl::GLenum mode) const
 {
     drawArrays(mode, 0, m_size);
 }
 
-void MyDrawable::drawArrays(gl::GLint first, gl::GLsizei count) const
+void Drawable::drawArrays(gl::GLint first, gl::GLsizei count) const
 {
     drawArrays(m_mode, first, count);
 }
 
-void MyDrawable::drawArrays(gl::GLenum mode, gl::GLint first, gl::GLsizei count) const
+void Drawable::drawArrays(gl::GLenum mode, gl::GLint first, gl::GLsizei count) const
 {
     m_vao->drawArrays(mode, first, count);
 }
 
-void MyDrawable::drawElements() const
+void Drawable::drawElements() const
 {
     drawElements(m_mode);
 }
 
-void MyDrawable::drawElements(gl::GLenum mode) const
+void Drawable::drawElements(gl::GLenum mode) const
 {
     if (m_drawMode == DrawMode::ElementsIndices)
     {
@@ -98,41 +98,41 @@ void MyDrawable::drawElements(gl::GLenum mode) const
     }
 }
 
-void MyDrawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices) const
+void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices) const
 {
     globjects::Buffer::unbind(gl::GL_ELEMENT_ARRAY_BUFFER);
 
     m_vao->drawElements(mode, count, type, indices);
 }
 
-void MyDrawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, globjects::Buffer * indices) const
+void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, globjects::Buffer * indices) const
 {
     indices->bind(gl::GL_ELEMENT_ARRAY_BUFFER);
 
     m_vao->drawElements(mode, count, type, nullptr);
 }
 
-gl::GLsizei MyDrawable::size() const
+gl::GLsizei Drawable::size() const
 {
     return m_size;
 }
 
-void MyDrawable::setSize(gl::GLsizei size)
+void Drawable::setSize(gl::GLsizei size)
 {
     m_size = size;
 }
 
-gl::GLenum MyDrawable::mode() const
+gl::GLenum Drawable::mode() const
 {
     return m_mode;
 }
 
-void MyDrawable::setMode(gl::GLenum mode)
+void Drawable::setMode(gl::GLenum mode)
 {
     m_mode = mode;
 }
 
-globjects::Buffer * MyDrawable::buffer(size_t index)
+globjects::Buffer * Drawable::buffer(size_t index)
 {
     if (m_buffers.count(index) == 0)
     {
@@ -142,90 +142,90 @@ globjects::Buffer * MyDrawable::buffer(size_t index)
     return m_buffers.at(index);
 }
 
-globjects::Buffer * MyDrawable::buffer(size_t index) const
+globjects::Buffer * Drawable::buffer(size_t index) const
 {
     return m_buffers.at(index);
 }
 
-void MyDrawable::setBuffer(size_t index, globjects::Buffer * buffer)
+void Drawable::setBuffer(size_t index, globjects::Buffer * buffer)
 {
     m_buffers.emplace(index, buffer);
 }
 
-globjects::Buffer * MyDrawable::indexBuffer() const
+globjects::Buffer * Drawable::indexBuffer() const
 {
     return m_indexBuffer;
 }
 
-void MyDrawable::setIndexBuffer(globjects::Buffer * buffer)
+void Drawable::setIndexBuffer(globjects::Buffer * buffer)
 {
     m_indexBuffer = buffer;
 }
 
-void MyDrawable::setIndexBuffer(globjects::Buffer * buffer, gl::GLenum bufferType)
+void Drawable::setIndexBuffer(globjects::Buffer * buffer, gl::GLenum bufferType)
 {
     setIndexBuffer(buffer);
     setIndexBufferType(bufferType);
 }
 
-gl::GLenum MyDrawable::indexBufferType() const
+gl::GLenum Drawable::indexBufferType() const
 {
     return m_indexBufferType;
 }
 
-void MyDrawable::setIndexBufferType(gl::GLenum bufferType)
+void Drawable::setIndexBufferType(gl::GLenum bufferType)
 {
     m_indexBufferType = bufferType;
 }
 
-const std::vector<std::uint32_t> & MyDrawable::indices() const
+const std::vector<std::uint32_t> & Drawable::indices() const
 {
     return m_indices;
 }
 
-void MyDrawable::setIndices(const std::vector<std::uint32_t> & indices)
+void Drawable::setIndices(const std::vector<std::uint32_t> & indices)
 {
     m_indices = indices;
 }
 
-globjects::VertexAttributeBinding * MyDrawable::attributeBinding(size_t index) const
+globjects::VertexAttributeBinding * Drawable::attributeBinding(size_t index) const
 {
     return m_vao->binding(index);
 }
 
-void MyDrawable::setAttributeBindingBuffer(size_t bindingIndex, globjects::Buffer * buffer, gl::GLint baseOffset, gl::GLint stride)
+void Drawable::setAttributeBindingBuffer(size_t bindingIndex, globjects::Buffer * buffer, gl::GLint baseOffset, gl::GLint stride)
 {
     m_vao->binding(bindingIndex)->setBuffer(buffer, baseOffset, stride);
 }
 
-void MyDrawable::setAttributeBindingBuffer(size_t bindingIndex, size_t bufferIndex, gl::GLint baseOffset, gl::GLint stride)
+void Drawable::setAttributeBindingBuffer(size_t bindingIndex, size_t bufferIndex, gl::GLint baseOffset, gl::GLint stride)
 {
     assert(m_buffers.count(bufferIndex) > 0);
 
     m_vao->binding(bindingIndex)->setBuffer(m_buffers.at(bufferIndex), baseOffset, stride);
 }
 
-void MyDrawable::setAttributeBindingFormat(size_t bindingIndex, gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset)
+void Drawable::setAttributeBindingFormat(size_t bindingIndex, gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset)
 {
     m_vao->binding(bindingIndex)->setFormat(size, type, normalized, relativeOffset);
 }
 
-void MyDrawable::setAttributeBindingFormatI(size_t bindingIndex, gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset)
+void Drawable::setAttributeBindingFormatI(size_t bindingIndex, gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset)
 {
     m_vao->binding(bindingIndex)->setIFormat(size, type, relativeOffset);
 }
 
-void MyDrawable::setAttributeBindingFormatL(size_t bindingIndex, gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset)
+void Drawable::setAttributeBindingFormatL(size_t bindingIndex, gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset)
 {
     m_vao->binding(bindingIndex)->setLFormat(size, type, relativeOffset);
 }
 
-void MyDrawable::bindAttribute(size_t bindingIndex, gl::GLint attributeIndex)
+void Drawable::bindAttribute(size_t bindingIndex, gl::GLint attributeIndex)
 {
     m_vao->binding(bindingIndex)->setAttribute(attributeIndex);
 }
 
-void MyDrawable::bindAttributes(const std::vector<gl::GLint> & attributeIndices)
+void Drawable::bindAttributes(const std::vector<gl::GLint> & attributeIndices)
 {
     for (size_t i = 0; i < attributeIndices.size(); ++i)
     {
@@ -233,12 +233,12 @@ void MyDrawable::bindAttributes(const std::vector<gl::GLint> & attributeIndices)
     }
 }
 
-void MyDrawable::enableAttributeBinding(size_t bindingIndex)
+void Drawable::enableAttributeBinding(size_t bindingIndex)
 {
     m_vao->enable(m_vao->binding(bindingIndex)->attributeIndex());
 }
 
-void MyDrawable::enableAllAttributeBindings()
+void Drawable::enableAllAttributeBindings()
 {
     for (const globjects::VertexAttributeBinding * binding : m_vao->bindings())
     {

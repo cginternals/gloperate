@@ -24,7 +24,7 @@ namespace gloperate
  * @brief
  *   The DrawMode enum
  *
- *   Used to specify the draw mode used in the MyDrawable class.
+ *   Used to specify the draw mode used in the Drawable class.
  */
 enum class DrawMode : unsigned int
 {
@@ -35,7 +35,7 @@ enum class DrawMode : unsigned int
 
 /**
  * @brief
- *   The MyDrawable class wraps the setup and drawing routine for Vertex Arrays, Vertex Attribute Bindings and Buffers.
+ *   The Drawable class wraps the setup and drawing routine for Vertex Arrays, Vertex Attribute Bindings and Buffers.
  *
  *   Supported drawing types:
  *    * glDrawArrays
@@ -48,21 +48,21 @@ enum class DrawMode : unsigned int
  *
  *   Note: most configurable parameters (as DrawMode, primitive mode, draw count, index buffer source, ...) can be temporarily overwritten for each draw call.
  */
-class MyDrawable : public globjects::Referenced, gloperate::AbstractDrawable
+class GLOPERATE_API Drawable : public globjects::Referenced, gloperate::AbstractDrawable
 {
 public:
     /**
      * @brief
-     *   Constructor of MyDrawable
+     *   Constructor of Drawable
      *   Creates OpenGL objects, thus, a current context is required.
      */
-    MyDrawable();
+    Drawable();
 
     /**
       * @brief
       *   Destructor
       */
-    ~MyDrawable();
+    ~Drawable();
 
     /**
      * @brief
@@ -524,4 +524,4 @@ protected:
 } // namespace gloperate
 
 
-#include <gloperate/primitives/MyDrawable.hpp>
+#include <gloperate/primitives/Drawable.hpp>

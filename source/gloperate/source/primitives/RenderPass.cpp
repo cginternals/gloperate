@@ -13,7 +13,7 @@
 #include <globjects/ProgramPipeline.h>
 #include <globjects/TransformFeedback.h>
 
-#include <gloperate/primitives/MyDrawable.h>
+#include <gloperate/primitives/Drawable.h>
 
 
 namespace gloperate
@@ -88,12 +88,12 @@ void RenderPass::setFramebuffer(globjects::Framebuffer * framebuffer)
     m_fbo = framebuffer;
 }
 
-MyDrawable * RenderPass::geometry() const
+Drawable * RenderPass::geometry() const
 {
     return m_geometry;
 }
 
-void RenderPass::setGeometry(MyDrawable * geometry)
+void RenderPass::setGeometry(Drawable * geometry)
 {
     m_geometry = geometry;
 }

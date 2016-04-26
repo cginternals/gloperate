@@ -30,7 +30,7 @@ class TransformFeedback;
 namespace gloperate
 {
 
-class MyDrawable;
+class Drawable;
 
 
 class GLOPERATE_API RenderPass : public globjects::Referenced
@@ -44,8 +44,8 @@ public:
     globjects::Framebuffer * framebuffer() const;
     void setFramebuffer(globjects::Framebuffer * framebuffer);
 
-    MyDrawable * geometry() const;
-    void setGeometry(MyDrawable * geometry);
+    Drawable * geometry() const;
+    void setGeometry(Drawable * geometry);
 
     globjects::TransformFeedback * recordTransformFeedback() const;
     void setRecordTransformFeedback(globjects::TransformFeedback * transformFeedback);
@@ -211,7 +211,7 @@ public:
 
 protected:
     globjects::ref_ptr<globjects::Framebuffer> m_fbo;
-    globjects::ref_ptr<MyDrawable> m_geometry;
+    globjects::ref_ptr<Drawable> m_geometry;
     globjects::ref_ptr<globjects::Program> m_program;
     globjects::ref_ptr<globjects::ProgramPipeline> m_programPipeline;
     globjects::ref_ptr<globjects::TransformFeedback> m_recordTransformFeedback;
