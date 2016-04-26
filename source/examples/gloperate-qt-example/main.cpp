@@ -14,8 +14,8 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 #include <gloperate-qt/viewer/RenderWindow.h>
-#include <gloperate-qt/scripting/ECMA26251_SyntaxHighlighter.h>
-#include <gloperate-qt/scripting/ECMA26251_Completer.h>
+#include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
+#include <gloperate-qt/scripting/ECMA26251Completer.h>
 #include <gloperate-qt/scripting/ScriptPromptWidget.h>
 
 

@@ -1,5 +1,5 @@
 
-#include <gloperate-qt/scripting/ECMA26251_Completer.h>
+#include <gloperate-qt/scripting/ECMA26251Completer.h>
 
 #include <QString>
 

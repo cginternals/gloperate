@@ -63,8 +63,8 @@ set(headers
     ${include_path}/viewer/GLContextFactory.h
     ${include_path}/viewer/input.h
 
-    ${include_path}/scripting/ECMA26251_Completer.h
-    ${include_path}/scripting/ECMA26251_SyntaxHighlighter.h
+    ${include_path}/scripting/ECMA26251Completer.h
+    ${include_path}/scripting/ECMA26251SyntaxHighlighter.h
     ${include_path}/scripting/ScriptCompleter.h
     ${include_path}/scripting/ScriptPromptWidget.h
     ${include_path}/scripting/ScriptSyntaxHighlighter.h
@@ -80,8 +80,8 @@ set(sources
     ${source_path}/viewer/GLContextFactory.cpp
     ${source_path}/viewer/input.cpp
     
-    ${source_path}/scripting/ECMA26251_Completer.cpp
-    ${source_path}/scripting/ECMA26251_SyntaxHighlighter.cpp
+    ${source_path}/scripting/ECMA26251Completer.cpp
+    ${source_path}/scripting/ECMA26251SyntaxHighlighter.cpp
     ${source_path}/scripting/ScriptCompleter.cpp
     ${source_path}/scripting/ScriptPromptWidget.cpp
     ${source_path}/scripting/ScriptSyntaxHighlighter.cpp

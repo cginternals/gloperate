@@ -5,7 +5,7 @@
 #include <QTextDocument>
 #include <QDebug>
 
-#include <gloperate-qt/scripting/ECMA26251_SyntaxHighlighter.h>
+#include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
 
 
 using namespace gloperate_qt;

@@ -1,5 +1,5 @@
 
-#include <gloperate-qt/scripting/ECMA26251_SyntaxHighlighter.h>
+#include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
 
 #include <QString>
 
