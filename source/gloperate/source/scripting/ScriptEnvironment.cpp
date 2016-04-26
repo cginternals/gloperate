@@ -3,9 +3,9 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <reflectionzeug/Object.h>
+#include <cppexpose/reflection/Object.h>
 
-#include <scriptzeug/ScriptContext.h>
+#include <cppexpose/scripting/ScriptContext.h>
 
 #include <gloperate/scripting/SystemApi.h>
 #include <gloperate/scripting/TimerApi.h>
@@ -41,33 +41,33 @@ void ScriptEnvironment::setupScripting(const std::string & backendName)
 {
     m_apis.clear();
 
-    m_scriptContext.reset(new scriptzeug::ScriptContext(
+    m_scriptContext.reset(new cppexpose::ScriptContext(
         backendName.length() > 0 ? backendName : "javascript"
     ) );
 
     initialize();
 }
 
-void ScriptEnvironment::setupScripting(scriptzeug::AbstractScriptContext * backend)
+void ScriptEnvironment::setupScripting(cppexpose::AbstractScriptBackend * backend)
 {
     m_apis.clear();
 
-    m_scriptContext.reset(new scriptzeug::ScriptContext(backend));
+    m_scriptContext.reset(new cppexpose::ScriptContext(backend));
 
     initialize();
 }
 
-const scriptzeug::ScriptContext * ScriptEnvironment::scriptContext() const
+const cppexpose::ScriptContext * ScriptEnvironment::scriptContext() const
 {
     return m_scriptContext.get();
 }
 
-scriptzeug::ScriptContext * ScriptEnvironment::scriptContext()
+cppexpose::ScriptContext * ScriptEnvironment::scriptContext()
 {
     return m_scriptContext.get();
 }
 
-void ScriptEnvironment::addApi(reflectionzeug::Object * api)
+void ScriptEnvironment::addApi(cppexpose::Object * api)
 {
     // Add script API to list
     m_apis.push_back(api);
@@ -76,7 +76,7 @@ void ScriptEnvironment::addApi(reflectionzeug::Object * api)
     m_scriptContext->registerObject(api);
 }
 
-void ScriptEnvironment::removeApi(reflectionzeug::Object * api)
+void ScriptEnvironment::removeApi(cppexpose::Object * api)
 {
     // Unregister object from scripting engine
     m_scriptContext->unregisterObject(api);
@@ -87,14 +87,14 @@ void ScriptEnvironment::setHelpText(const std::string & text)
     m_helpText = text;
 }
 
-reflectionzeug::Variant ScriptEnvironment::execute(const std::string & code)
+cppexpose::Variant ScriptEnvironment::execute(const std::string & code)
 {
     // Substitute shortcut commands
     std::string cmd = code;
     if (cmd == "help") {
         // Print help text
         globjects::info() << m_helpText;
-        return reflectionzeug::Variant();
+        return cppexpose::Variant();
     } else if (cmd == "exit" || cmd == "quit") {
         // Exit application
         cmd = "gloperate.system.exit()";

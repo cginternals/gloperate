@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <signalzeug/Signal.h>
+#include <cppexpose/signal/Signal.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -89,7 +89,7 @@ public:
     // by input/data-slots
 
     // Signals
-    signalzeug::Signal<> outputInvalidated;
+    cppexpose::Signal<> outputInvalidated;
     void invalidateOutput();
 
     // Input data

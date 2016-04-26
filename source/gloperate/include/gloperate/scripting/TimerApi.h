@@ -4,12 +4,12 @@
 
 #include <map>
 
-#include <reflectionzeug/Object.h>
+#include <cppexpose/reflection/Object.h>
 
 #include <gloperate/gloperate_api.h>
 
 
-namespace reflectionzeug {
+namespace reflection {
     class Variant;
 }
 
@@ -26,7 +26,7 @@ class ScriptTimer;
 *  @brief
 *    Scripting API for accessing timer functions
 */
-class GLOPERATE_API TimerApi : public reflectionzeug::Object
+class GLOPERATE_API TimerApi : public cppexpose::Object
 {
 public:
     /**
@@ -47,14 +47,14 @@ public:
 
 protected:
     // Scripting functions
-    int  start(int msec, const reflectionzeug::Variant & func);
-    int  once(int msec, const reflectionzeug::Variant & func);
+    int  start(int msec, const cppexpose::Variant & func);
+    int  once(int msec, const cppexpose::Variant & func);
     void stop(int id);
     void stopAll();
-    int  nextTick(const reflectionzeug::Variant & func);
+    int  nextTick(const cppexpose::Variant & func);
 
     // Helper functions
-    int startTimer(const reflectionzeug::Variant & func, int msec, bool singleShot);
+    int startTimer(const cppexpose::Variant & func, int msec, bool singleShot);
 
 
 protected:

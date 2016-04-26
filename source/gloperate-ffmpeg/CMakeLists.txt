@@ -6,7 +6,7 @@
 # find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
+find_package(cppexpose REQUIRED)
 find_package(FFMPEG)
 
 
@@ -120,8 +120,7 @@ target_link_libraries(${target}
     PRIVATE
     ${FFMPEG_LIBRARIES}
     cpplocate::cpplocate
-    libzeug::signalzeug
-    libzeug::reflectionzeug
+    cppexpose::cppexpose
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

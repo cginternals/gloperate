@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <signalzeug/Signal.h>
+#include <cppexpose/signal/Signal.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -21,7 +21,7 @@ class ViewerContext;
 class GLOPERATE_API Timer
 {
 public:
-    signalzeug::Signal<> elapsed; ///< Called when the timer has elapsed
+    cppexpose::Signal<> elapsed; ///< Called when the timer has elapsed
 
 
 public:

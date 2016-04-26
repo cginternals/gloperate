@@ -4,8 +4,8 @@
 
 #include <glm/glm.hpp>
 
-#include <reflectionzeug/Object.h>
-#include <signalzeug/Signal.h>
+#include <cppexpose/signal/Signal.h>
+#include <cppexpose/reflection/Object.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -27,10 +27,10 @@ class AbstractGLContext;
 *    receives state changes from the outside (such as window size, mouse, or
 *    keyboard events) and passes them on to the rendering components.
 */
-class GLOPERATE_API Surface : public reflectionzeug::Object
+class GLOPERATE_API Surface : public cppexpose::Object
 {
 public:
-    signalzeug::Signal<> redrawNeeded;
+    cppexpose::Signal<> redrawNeeded;
 
 
 public:

@@ -14,9 +14,9 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 
-#include <reflectionzeug/Object.h>
+#include <cppexpose/reflection/Object.h>
 
-#include <scriptzeug/ScriptContext.h>
+#include <cppexpose/scripting/ScriptContext.h>
 
 #include <gloperate-ffmpeg/VideoTool.h>
 
