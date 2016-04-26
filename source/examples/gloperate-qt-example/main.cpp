@@ -55,7 +55,7 @@ int main(int argc, char * argv[])
     scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlighter);
     scriptPrompt->setCompleter(new ECMA26251Completer);
     scriptPrompt->setFrameShape(QFrame::NoFrame);
-    QObject::connect(scriptPrompt, &widgetzeug::ScriptPromptWidget::evaluate,
+    QObject::connect(scriptPrompt, &ScriptPromptWidget::evaluate,
         [&viewerContext, scriptPrompt] (const QString & cmd)
         {
             // Execute script code
