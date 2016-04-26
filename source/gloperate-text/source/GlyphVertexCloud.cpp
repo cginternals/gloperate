@@ -94,9 +94,10 @@ gloperate::VertexDrawable * GlyphVertexCloud::createDrawable()
         gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, vtan)),
         gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, vbitan)),
         gloperate::Format(4, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, uvRect)),
+        gloperate::Format(4, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, fontColor)),
     });
 
-    drawable->bindAttributes({ 0, 1, 2, 3 });
+    drawable->bindAttributes({ 0, 1, 2, 3, 4});
     drawable->enableAll();
 
     return drawable;
