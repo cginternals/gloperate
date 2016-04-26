@@ -7,7 +7,6 @@ find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
 

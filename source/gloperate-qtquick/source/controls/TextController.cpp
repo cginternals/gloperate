@@ -5,10 +5,10 @@
 #include <QTextDocument>
 #include <QDebug>
 
-#include <widgetzeug/ECMA26251_SyntaxHighlighter.h>
+#include <gloperate-qt/scripting/ECMA26251_SyntaxHighlighter.h>
 
 
-using namespace widgetzeug;
+using namespace gloperate_qt;
 
 
 namespace gloperate_qtquick
@@ -55,7 +55,7 @@ void TextController::setTarget(QQuickItem * target)
             m_textDocument = textDocument->textDocument();
 
             // Create syntax highlighter
-            m_highlighter = new ECMA26251SyntaxHighlight;
+            m_highlighter = new ECMA26251SyntaxHighlighter;
             m_highlighter->setDocument(m_textDocument);
         }
     }
