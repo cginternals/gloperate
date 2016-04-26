@@ -7,7 +7,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
+find_package(cppexpose REQUIRED)
 
 # Qt5
 find_package(Qt5OpenGL  5.1)
@@ -62,6 +62,12 @@ set(headers
     ${include_path}/viewer/GLContext.h
     ${include_path}/viewer/GLContextFactory.h
     ${include_path}/viewer/input.h
+
+    ${include_path}/scripting/ECMA26251_Completer.h
+    ${include_path}/scripting/ECMA26251_SyntaxHighlighter.h
+    ${include_path}/scripting/ScriptCompleter.h
+    ${include_path}/scripting/ScriptPromptWidget.h
+    ${include_path}/scripting/ScriptSyntaxHighlighter.h
 )
 
 set(sources
@@ -73,6 +79,12 @@ set(sources
     ${source_path}/viewer/GLContext_qt.cpp
     ${source_path}/viewer/GLContextFactory.cpp
     ${source_path}/viewer/input.cpp
+    
+    ${source_path}/scripting/ECMA26251_Completer.cpp
+    ${source_path}/scripting/ECMA26251_SyntaxHighlighter.cpp
+    ${source_path}/scripting/ScriptCompleter.cpp
+    ${source_path}/scripting/ScriptPromptWidget.cpp
+    ${source_path}/scripting/ScriptSyntaxHighlighter.cpp
 )
 
 # Group source files
@@ -152,12 +164,7 @@ target_link_libraries(${target}
     Qt5::Widgets
     Qt5::OpenGL
     cpplocate::cpplocate
-    libzeug::reflectionzeug
-    libzeug::signalzeug
-    libzeug::loggingzeug
-    libzeug::scriptzeug
-    libzeug::widgetzeug
-    libzeug::propertyguizeug
+    cppexpose::cppexpose
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

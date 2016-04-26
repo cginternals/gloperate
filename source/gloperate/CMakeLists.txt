@@ -7,7 +7,8 @@ find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
+find_package(cppexpose REQUIRED)
+find_package(cppassist REQUIRED)
 
 
 # 
@@ -189,9 +190,8 @@ target_link_libraries(${target}
     PRIVATE
     ${OPENGL_LIBRARIES}
     cpplocate::cpplocate
-    libzeug::reflectionzeug
-    libzeug::scriptzeug
-    libzeug::iozeug
+    cppexpose::cppexpose
+    cppassist::cppassist
     glbinding::glbinding
     globjects::globjects
 

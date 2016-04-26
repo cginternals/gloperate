@@ -20,7 +20,7 @@ namespace gloperate
 
 
 TimerApi::TimerApi(ViewerContext * viewerContext)
-: reflectionzeug::Object("timer")
+: cppexpose::Object("timer")
 , m_viewerContext(viewerContext)
 , m_nextId(1)
 {
@@ -42,12 +42,12 @@ TimerApi::~TimerApi()
     }
 }
 
-int TimerApi::start(int msec, const reflectionzeug::Variant & func)
+int TimerApi::start(int msec, const cppexpose::Variant & func)
 {
     return startTimer(func, msec, false);
 }
 
-int TimerApi::once(int msec, const reflectionzeug::Variant & func)
+int TimerApi::once(int msec, const cppexpose::Variant & func)
 {
     return startTimer(func, msec, true);
 }
@@ -75,21 +75,21 @@ void TimerApi::stopAll()
     }
 }
 
-int TimerApi::nextTick(const reflectionzeug::Variant & func)
+int TimerApi::nextTick(const cppexpose::Variant & func)
 {
     return startTimer(func, 0, true);
 }
 
-int TimerApi::startTimer(const reflectionzeug::Variant & func, int msec, bool singleShot)
+int TimerApi::startTimer(const cppexpose::Variant & func, int msec, bool singleShot)
 {
     // Check if a function has been passed
-    if (!func.canConvert<reflectionzeug::AbstractFunction*>())
+    if (!func.canConvert<cppexpose::AbstractFunction*>())
     {
         return -1;
     }
 
     // Get callback function
-    auto function = func.value<reflectionzeug::AbstractFunction*>();
+    auto function = func.value<cppexpose::AbstractFunction*>();
     if (!function)
     {
         return -1;

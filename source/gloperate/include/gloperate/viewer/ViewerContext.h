@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include <signalzeug/Signal.h>
+#include <cppexpose/signal/Signal.h>
 
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/input/InputManager.h>
@@ -37,7 +37,7 @@ friend class Surface;
 
 
 public:
-    signalzeug::Signal<int> exitApplication;   ///< Called when application shall exit
+    cppexpose::Signal<int> exitApplication;   ///< Called when application shall exit
 
 
 public:

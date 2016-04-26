@@ -14,15 +14,14 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 #include <gloperate-qt/viewer/RenderWindow.h>
+#include <gloperate-qt/scripting/ECMA26251_SyntaxHighlighter.h>
+#include <gloperate-qt/scripting/ECMA26251_Completer.h>
+#include <gloperate-qt/scripting/ScriptPromptWidget.h>
 
-#include <widgetzeug/ScriptPromptWidget.h>
-#include <widgetzeug/ECMA26251_SyntaxHighlighter.h>
-#include <widgetzeug/ECMA26251_Completer.h>
 
 
 using namespace gloperate;
 using namespace gloperate_qt;
-using namespace widgetzeug;
 
 
 int main(int argc, char * argv[])
@@ -53,7 +52,7 @@ int main(int argc, char * argv[])
 
     // Create script console
     ScriptPromptWidget * scriptPrompt = new ScriptPromptWidget(&mainWindow);
-    scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlight);
+    scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlighter);
     scriptPrompt->setCompleter(new ECMA26251Completer);
     scriptPrompt->setFrameShape(QFrame::NoFrame);
     QObject::connect(scriptPrompt, &widgetzeug::ScriptPromptWidget::evaluate,
@@ -61,7 +60,7 @@ int main(int argc, char * argv[])
         {
             // Execute script code
             std::string code = cmd.toStdString();
-            reflectionzeug::Variant res = viewerContext.scriptEnvironment()->execute(code);
+            cppexpose::Variant res = viewerContext.scriptEnvironment()->execute(code);
 
             // Output result
             scriptPrompt->print(QString::fromStdString(res.value<std::string>()));

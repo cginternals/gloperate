@@ -13,7 +13,7 @@ namespace gloperate
 
 
 SystemApi::SystemApi(ViewerContext * viewerContext)
-: reflectionzeug::Object("system")
+: cppexpose::Object("system")
 , m_viewerContext(viewerContext)
 {
     // Register functions
@@ -53,7 +53,7 @@ std::string SystemApi::readFile(const std::string & filename)
     return txt;
 }
 
-void SystemApi::writeFile(const std::string & filename, const reflectionzeug::Variant & value)
+void SystemApi::writeFile(const std::string & filename, const cppexpose::Variant & value)
 {
     std::ofstream f(filename);
     if (f.is_open()) {
@@ -62,7 +62,7 @@ void SystemApi::writeFile(const std::string & filename, const reflectionzeug::Va
     }
 }
 
-void SystemApi::appendFile(const std::string & filename, const reflectionzeug::Variant & value)
+void SystemApi::appendFile(const std::string & filename, const cppexpose::Variant & value)
 {
     std::ofstream f(filename, std::ios_base::app);
     if (f.is_open()) {

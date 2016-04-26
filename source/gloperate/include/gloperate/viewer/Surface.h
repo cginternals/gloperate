@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <signalzeug/Signal.h>
+#include <cppexpose/signal/Signal.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -29,7 +29,7 @@ class AbstractGLContext;
 class GLOPERATE_API Surface
 {
 public:
-    signalzeug::Signal<> redrawNeeded;
+    cppexpose::Signal<> redrawNeeded;
 
 
 public:

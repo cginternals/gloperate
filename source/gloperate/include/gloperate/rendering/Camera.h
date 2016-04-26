@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <signalzeug/Signal.h>
+#include <cppexpose/signal/Signal.h>
 
 #include <globjects/base/Referenced.h>
 
@@ -30,7 +30,7 @@ namespace gloperate
 class GLOPERATE_API Camera : public globjects::Referenced
 {
 public:
-    signalzeug::Signal<> invalidated;   /**< Called when the camera has been modified */
+    cppexpose::Signal<> invalidated;   /**< Called when the camera has been modified */
 
 
 public:
