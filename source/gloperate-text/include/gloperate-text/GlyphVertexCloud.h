@@ -31,7 +31,7 @@ public:
         glm::vec3 vbitan;
         // vec2 lowerLeft and vec2 upperRight in glyph texture (uv)
         glm::vec4 uvRect;
-        glm::vec3 fontColor;
+        glm::vec4 fontColor;
     };
 
     using Vertices = std::vector<Vertex>;

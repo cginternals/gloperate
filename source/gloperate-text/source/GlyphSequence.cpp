@@ -19,7 +19,7 @@ GlyphSequence::GlyphSequence()
 , m_lineWidth(0.f)
 , m_alignment(Alignment::LeftAligned)
 , m_anchor(LineAnchor::Baseline)
-, m_fontColor(glm::vec3(0.f))
+, m_fontColor(glm::vec4(0.f, 0.f, 0.f, 1.0))
 {
 }
 
@@ -126,12 +126,12 @@ void GlyphSequence::setLineAnchor(const LineAnchor anchor)
     m_anchor = anchor;
 }
 
-const glm::vec3 & GlyphSequence::fontColor() const
+const glm::vec4 & GlyphSequence::fontColor() const
 {
     return m_fontColor;
 }
 
-void GlyphSequence::setFontColor(glm::vec3 fontColor)
+void GlyphSequence::setFontColor(glm::vec4 fontColor)
 {
     m_fontColor = fontColor;
 }

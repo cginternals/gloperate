@@ -10,10 +10,10 @@ in vec4 v_bitangent[];
 
 in vec4 v_uvRect[];
 
-in vec3 v_fontColor[];
+in vec4 v_fontColor[];
 
 out vec2 g_uv;
-out vec3 g_fontColor;
+out vec4 g_fontColor;
 //flat out vec3 g_normal;
 
 void main()

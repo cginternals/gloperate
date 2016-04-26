@@ -57,8 +57,8 @@ public:
     LineAnchor lineAnchor() const;
     void setLineAnchor(const LineAnchor anchor);
 
-    const glm::vec3 & fontColor() const;
-    void setFontColor(glm::vec3 fontColor);
+    const glm::vec4 & fontColor() const;
+    void setFontColor(glm::vec4 fontColor);
 
     const glm::mat4 & transform() const;
     void setTransform(const glm::mat4 & transform);
@@ -93,7 +93,7 @@ protected:
     LineAnchor m_anchor;
 
     glm::mat4 m_transform;
-    glm::vec3 m_fontColor;
+    glm::vec4 m_fontColor;
 };
 
 

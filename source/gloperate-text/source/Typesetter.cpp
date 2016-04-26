@@ -252,7 +252,7 @@ inline void Typesetter::anchor_transform(
 
 inline void Typesetter::vertex_transform(
     const glm::mat4 & transform
-,   const glm::vec3 & fontColor
+,   const glm::vec4 & fontColor
 ,   const GlyphVertexCloud::Vertices::iterator & begin
 ,   const GlyphVertexCloud::Vertices::iterator & end)
 {
