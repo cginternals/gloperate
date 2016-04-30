@@ -1,8 +1,6 @@
 
 #include <gloperate-qtquick/viewer/QmlScriptContext.h>
 
-#include <globjects/base/baselogging.h>
-
 #include <QQmlContext>
 #include <QQmlExpression>
 #include <QString>

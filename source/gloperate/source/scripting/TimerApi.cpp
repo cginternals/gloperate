@@ -1,8 +1,6 @@
 
 #include <gloperate/scripting/TimerApi.h>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/viewer/Timer.h>
 #include <gloperate/scripting/ScriptTimer.h>
 

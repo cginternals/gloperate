@@ -7,6 +7,7 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
+find_package(cppassist REQUIRED)
 find_package(HIDAPI)
 
 
@@ -117,6 +118,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     cppexpose::cppexpose
+    cppassist::cppassist
     ${META_PROJECT_NAME}::gloperate
 
     PUBLIC

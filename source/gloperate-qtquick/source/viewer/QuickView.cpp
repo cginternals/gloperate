@@ -7,7 +7,7 @@
 #include <QColor>
 #include <QQuickItem>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/viewer/GLContextUtils.h>
 #include <gloperate/viewer/GLContextFormat.h>
@@ -77,7 +77,7 @@ void QuickView::onSceneGraphInitialized()
     Utils::initContext();
 
     // Print context info
-    globjects::info() << std::endl
+    cppassist::info() << std::endl
         << "OpenGL Version:  " << gloperate::GLContextUtils::version() << std::endl
         << "OpenGL Vendor:   " << gloperate::GLContextUtils::vendor() << std::endl
         << "OpenGL Renderer: " << gloperate::GLContextUtils::renderer() << std::endl;

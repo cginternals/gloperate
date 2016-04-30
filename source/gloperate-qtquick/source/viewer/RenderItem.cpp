@@ -4,8 +4,6 @@
 #include <QVariant>
 #include <QColor>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/viewer/Surface.h>
 
 #include <gloperate-qt/viewer/GLContext.h>

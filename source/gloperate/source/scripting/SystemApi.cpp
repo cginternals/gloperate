@@ -3,8 +3,6 @@
 
 #include <fstream>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/viewer/ViewerContext.h>
 
 

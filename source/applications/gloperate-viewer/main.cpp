@@ -2,8 +2,6 @@
 #include <QApplication>
 #include <QQmlEngine>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
