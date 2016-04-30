@@ -188,6 +188,26 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         return QJSValue(var.value<cppassist::FilePath>().path().c_str());
     }
 
+    else if (var.isBool()) {
+        return QJSValue(var.toBool());
+    }
+
+    else if (var.isUnsignedIntegral()) {
+        return QJSValue((unsigned int)var.toULongLong());
+    }
+
+    else if (var.isSignedIntegral() || var.isIntegral()) {
+        return QJSValue((int)var.toLongLong());
+    }
+
+    else if (var.isFloatingPoint()) {
+        return QJSValue(var.toDouble());
+    }
+
+    else if (var.isString()) {
+        return QJSValue(var.toString().c_str());
+    }
+
     else if (var.hasType<cppexpose::VariantArray>()) {
         QJSValue array = newArray();
 
