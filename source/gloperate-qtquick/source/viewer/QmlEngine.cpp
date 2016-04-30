@@ -7,6 +7,7 @@
 
 #include <cppexpose/reflection/Property.h>
 #include <cppexpose/typed/DirectValue.h>
+#include <cppexpose/function/Function.h>
 
 #include <cppassist/io/FilePath.h>
 
@@ -85,14 +86,8 @@ cppexpose::Variant QmlEngine::fromScriptValue(const QJSValue & value)
     }
 
     else if (value.isCallable()) {
-        // [TODO] This produces a memory leak, since the pointer to the function object will never be deleted.
-        //        A solution would be to wrap a ref_ptr into the variant, but since there are also function objects
-        //        which are not memory-managed (e.g., a C-function that has been passed to the scripting engine),
-        //        it would be hard to determine the right use of function-variants.
-        //        The script context could of course manage a list of created functions an delete them on destruction,
-        //        but that would not solve the problem of "memory leak" while the program is running.
-        QmlScriptFunction * function = new QmlScriptFunction(this, value);
-        return cppexpose::Variant::fromValue<cppexpose::AbstractFunction *>(function);
+        cppexpose::Function function("", new QmlScriptFunction(this, value));
+        return cppexpose::Variant::fromValue<cppexpose::Function>(function);
     }
 
     else if (value.isArray()) {
