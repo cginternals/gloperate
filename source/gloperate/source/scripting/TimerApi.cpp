@@ -81,23 +81,16 @@ int TimerApi::nextTick(const cppexpose::Variant & func)
 int TimerApi::startTimer(const cppexpose::Variant & func, int msec, bool singleShot)
 {
     // Check if a function has been passed
-    if (!func.canConvert<cppexpose::AbstractFunction*>())
+    if (!func.hasType<cppexpose::Function>())
     {
         return -1;
     }
 
     // Get callback function
-    auto function = func.value<cppexpose::AbstractFunction*>();
-    if (!function)
-    {
-        return -1;
-    }
-
-    // Make a persistent copy of the callback function
-    auto functionCopy = function->clone();
+    cppexpose::Function function = func.value<cppexpose::Function>();
 
     // Create and start timer
-    ScriptTimer * timer = new ScriptTimer(m_viewerContext, functionCopy);
+    ScriptTimer * timer = new ScriptTimer(m_viewerContext, function);
     timer->start(msec / 1000.0f, singleShot);
 
     // Store timer
