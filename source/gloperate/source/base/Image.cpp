@@ -1,13 +1,13 @@
 
 #include <gloperate/base/Image.h>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <algorithm>
 
 
 using namespace gl;
-using namespace globjects;
+using namespace cppassist;
 
 
 namespace gloperate
