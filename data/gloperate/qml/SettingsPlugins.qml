@@ -8,7 +8,7 @@ import gloperate.ui 1.0
 *
 *  Settings page 'Plugins'
 */
-Panel
+Background
 {
     property real topMargin: 0
 
@@ -27,16 +27,6 @@ Panel
             anchors.left:    parent.left
             anchors.right:   parent.right
             anchors.margins: Ui.style.panelPadding
-
-            Repeater
-            {
-                model: 40
-
-                Label
-                {
-                    text: 'Plugins'
-                }
-            }
         }
     }
 }

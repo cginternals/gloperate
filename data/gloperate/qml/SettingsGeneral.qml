@@ -1,5 +1,6 @@
 
 import QtQuick 2.0
+import QtQuick.Controls 1.1
 import gloperate.ui 1.0
 
 
@@ -8,7 +9,7 @@ import gloperate.ui 1.0
 *
 *  Settings page 'General'
 */
-Panel
+Background
 {
     property real topMargin: 0
 
@@ -28,13 +29,64 @@ Panel
             anchors.right:   parent.right
             anchors.margins: Ui.style.panelPadding
 
-            Repeater
-            {
-                model: 40
+            spacing: Ui.style.panelSpacing
 
-                Label
+            GroupBox
+            {
+                title: "Theme"
+                width: parent.width
+
+                ExclusiveGroup
                 {
-                    text: 'General'
+                    id: themeGroup
+                }
+
+                Column
+                {
+                    spacing: Ui.style.panelSpacing
+
+                    Repeater
+                    {
+                        model: Ui.styles.length
+
+                        CheckBox
+                        {
+                            exclusiveGroup: themeGroup
+                            text:           Ui.styles[index]
+                            checked:        Ui.styleName == Ui.styles[index]
+
+                            onClicked:
+                            {
+                                if (checked) {
+                                    Ui.setStyle(text);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            GroupBox
+            {
+                title: "Debug"
+                width: parent.width
+
+                Column
+                {
+                    width:   parent.width
+                    spacing: Ui.style.panelSpacing
+
+                    Switch
+                    {
+                        width:   parent.width
+                        checked: false
+                        text:    'Enable debug mode'
+
+                        onClicked:
+                        {
+                            Ui.debugMode = checked;
+                        }
+                    }
                 }
             }
         }

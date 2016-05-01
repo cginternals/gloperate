@@ -8,12 +8,9 @@ import gloperate.ui 1.0
 *
 *  Settings dialog
 */
-DockPanel
+Background
 {
     id: panel
-
-    iconClosed: '0270-cancel-circle.png'
-    iconOpen:   '0270-cancel-circle.png'
 
     property var pages: [
         { text: 'General', icon: '0147-equalizer.png' },
@@ -82,8 +79,7 @@ DockPanel
         anchors.top:    parent.top
         anchors.bottom: parent.bottom
 
-        visible:   panel.pages[panel.selected].text == 'General'
-        topMargin: panel.iconHeight + 2 * Ui.style.panelPadding
+        visible: panel.pages[panel.selected].text == 'General'
     }
 
     // Page 'Input'
@@ -96,8 +92,7 @@ DockPanel
         anchors.top:    parent.top
         anchors.bottom: parent.bottom
 
-        visible:   panel.pages[panel.selected].text == 'Input'
-        topMargin: panel.iconHeight + 2 * Ui.style.panelPadding
+        visible: panel.pages[panel.selected].text == 'Input'
     }
 
     // Page 'Plugins'
@@ -110,7 +105,6 @@ DockPanel
         anchors.top:    parent.top
         anchors.bottom: parent.bottom
 
-        visible:   panel.pages[panel.selected].text == 'Plugins'
-        topMargin: panel.iconHeight + 2 * Ui.style.panelPadding
+        visible: panel.pages[panel.selected].text == 'Plugins'
     }
 }
