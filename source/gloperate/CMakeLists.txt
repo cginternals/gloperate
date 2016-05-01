@@ -42,6 +42,7 @@ set(headers
     ${include_path}/base/CachedValue.hpp
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
+    ${include_path}/base/Image.h
 
     ${include_path}/viewer/AbstractContext.h
     ${include_path}/viewer/AbstractGLContext.h
@@ -83,6 +84,7 @@ set(sources
 
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
+    ${source_path}/base/Image.cpp
 
     ${source_path}/viewer/AbstractContext.cpp
     ${source_path}/viewer/AbstractGLContext.cpp
