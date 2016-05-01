@@ -1,8 +1,6 @@
 
 #include <gloperate-qtquick/viewer/QmlObjectWrapper.h>
 
-#include <globjects/base/baselogging.h>
-
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/variant/Variant.h>
 

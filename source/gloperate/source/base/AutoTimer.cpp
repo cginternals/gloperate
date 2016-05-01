@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <chrono>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/base/ChronoTimer.h>
 
@@ -52,7 +52,7 @@ AutoTimer::~AutoTimer()
     // shorten the time to nearest time unit
     double deltaf = static_cast<double>(delta.count()) / pow(1000.0, unitPrecision);
 
-    globjects::debug() << m_info << " took "
+    cppassist::debug() << m_info << " took "
         << std::setprecision(4) << deltaf << unit
         << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
 

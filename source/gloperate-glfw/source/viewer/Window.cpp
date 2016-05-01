@@ -6,7 +6,7 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/viewer/GLContextFormat.h>
 
@@ -80,7 +80,7 @@ bool Window::create()
     // Create internal window
     if (!createInternalWindow(m_format, m_windowedModeSize.x, m_windowedModeSize.y))
     {
-        globjects::fatal() << "Creating native window with OpenGL context failed.";
+        cppassist::fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
 

@@ -5,8 +5,6 @@
 
 #include <gloperate/viewer/ViewerContext.h>
 
-#include <globjects/base/baselogging.h>
-
 
 namespace gloperate_qt
 {

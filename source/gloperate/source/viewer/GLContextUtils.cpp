@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <glbinding/ContextInfo.h>
 #include <glbinding/gl/gl.h>
@@ -27,7 +27,7 @@ glbinding::ContextHandle GLContextUtils::tryFetchHandle()
 
     if (handle == 0)
     {
-        globjects::critical("Acquiring OpenGL context handle failed.");
+        cppassist::critical("Acquiring OpenGL context handle failed.");
     }
 
     return handle;

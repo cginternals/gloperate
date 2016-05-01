@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include <cppexpose/function/AbstractFunction.h>
 #include <cppexpose/variant/Variant.h>
 
 
@@ -11,7 +10,7 @@ namespace gloperate
 {
 
 
-ScriptTimer::ScriptTimer(ViewerContext * viewerContext, cppexpose::AbstractFunction * func)
+ScriptTimer::ScriptTimer(ViewerContext * viewerContext, cppexpose::Function func)
 : Timer(viewerContext)
 , m_func(func)
 {
@@ -19,16 +18,13 @@ ScriptTimer::ScriptTimer(ViewerContext * viewerContext, cppexpose::AbstractFunct
 
 ScriptTimer::~ScriptTimer()
 {
-    delete m_func;
 }
 
 void ScriptTimer::onElapsed()
 {
     // Invoke function
-    if (m_func) {
-        std::vector<cppexpose::Variant> params;
-        cppexpose::Variant res = m_func->call(params);
-    }
+    std::vector<cppexpose::Variant> params;
+    cppexpose::Variant res = m_func.call(params);
 }
 
 

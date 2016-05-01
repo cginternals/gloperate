@@ -1,7 +1,7 @@
 
 #include <gloperate/scripting/ScriptEnvironment.h>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <cppexpose/reflection/Object.h>
 
@@ -93,7 +93,7 @@ cppexpose::Variant ScriptEnvironment::execute(const std::string & code)
     std::string cmd = code;
     if (cmd == "help") {
         // Print help text
-        globjects::info() << m_helpText;
+        cppassist::info() << m_helpText;
         return cppexpose::Variant();
     } else if (cmd == "exit" || cmd == "quit") {
         // Exit application
@@ -117,7 +117,7 @@ void ScriptEnvironment::initialize()
     // Output scripting errors to console
     m_scriptContext->scriptException.connect( [] (const std::string & error) -> void
     {
-        globjects::critical() << "Scripting Error: " << error;
+        cppassist::critical() << "Scripting Error: " << error;
     });
 
     // Register default scripting APIs

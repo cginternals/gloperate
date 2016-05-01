@@ -1,7 +1,7 @@
 
 #include <gloperate/viewer/RenderSurface.h>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/TimeManager.h>
@@ -111,7 +111,7 @@ void RenderSurface::onUpdate()
 
 void RenderSurface::onContextInit()
 {
-    globjects::info() << "onContextInit()";
+    cppassist::info() << "onContextInit()";
 
     // Initialize render stage in new context
     if (m_renderStage)
@@ -122,7 +122,7 @@ void RenderSurface::onContextInit()
 
 void RenderSurface::onContextDeinit()
 {
-    globjects::info() << "onContextDeinit()";
+    cppassist::info() << "onContextDeinit()";
 
     // De-initialize render stage in old context
     if (m_renderStage)
@@ -158,7 +158,7 @@ void RenderSurface::onBackgroundColor(float red, float green, float blue)
 
 void RenderSurface::onRender()
 {
- // globjects::info() << "onRender()";
+//  cppassist::info() << "onRender()";
     if (m_requestVideo)
     {
         m_requestVideo = false;
@@ -176,37 +176,37 @@ void RenderSurface::onRender()
 void RenderSurface::onKeyPress(int key, int modifier)
 {
     m_keyboardDevice->keyPress(key, modifier);
-    globjects::info() << "onKeyPressed(" << key << ")";
+    cppassist::info() << "onKeyPressed(" << key << ")";
 }
 
 void RenderSurface::onKeyRelease(int key, int modifier)
 {
     m_keyboardDevice->keyRelease(key, modifier);
-    globjects::info() << "onKeyReleased(" << key << ")";
+    cppassist::info() << "onKeyReleased(" << key << ")";
 }
 
 void RenderSurface::onMouseMove(const glm::ivec2 & pos)
 {
     m_mouseDevice->move(pos);
-    globjects::info() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
+    cppassist::info() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMousePress(int button, const glm::ivec2 & pos)
 {
     m_mouseDevice->buttonPress(button, pos);
-    globjects::info() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::info() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMouseRelease(int button, const glm::ivec2 & pos)
 {
     m_mouseDevice->buttonRelease(button, pos);
-    globjects::info() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::info() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
     m_mouseDevice->wheelScroll(delta, pos);
-    globjects::info() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::info() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 }
 
 

@@ -137,12 +137,12 @@ protected:
 
 
 protected:
-    ViewerContext                              * m_viewerContext; ///< Viewer context (must NOT be null!)
+    ViewerContext                             * m_viewerContext; ///< Viewer context (must NOT be null!)
     std::unique_ptr<cppexpose::ScriptContext>   m_scriptContext; ///< JavaScript scripting context
-    std::unique_ptr<SystemApi>                   m_systemApi;     ///< System function (files, print)
-    std::unique_ptr<TimerApi>                    m_timerApi;      ///< Timer functions
-    std::list<cppexpose::Object *>          m_apis;          ///< List of connected APIs
-    std::string                                  m_helpText;      ///< Text that is displayed on 'help'
+    std::unique_ptr<SystemApi>                  m_systemApi;     ///< System function (files, print)
+    std::unique_ptr<TimerApi>                   m_timerApi;      ///< Timer functions
+    std::list<cppexpose::Object *>              m_apis;          ///< List of connected APIs
+    std::string                                 m_helpText;      ///< Text that is displayed on 'help'
 };
 
 

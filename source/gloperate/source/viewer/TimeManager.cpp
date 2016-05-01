@@ -3,8 +3,6 @@
 
 #include <algorithm>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/viewer/Timer.h>
 
 

@@ -3,8 +3,6 @@
 
 #include <QApplication>
 
-#include <widgetzeug/MessageHandler.h>
-
 #include <gloperate/viewer/ViewerContext.h>
 
 
@@ -20,9 +18,6 @@ Application::Application(gloperate::ViewerContext * viewerContext, int & argc, c
     {
         QApplication::exit(exitCode);
     });
-
-    // [TODO] What is this good for, what does it do?
-    // qInstallMessageHandler(widgetzeug::globalMessageHandler);
 }
 
 Application::~Application()

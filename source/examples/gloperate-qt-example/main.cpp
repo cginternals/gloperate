@@ -3,7 +3,7 @@
 #include <QMainWindow>
 #include <QDockWidget>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
@@ -14,15 +14,14 @@
 #include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 #include <gloperate-qt/viewer/RenderWindow.h>
+#include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
+#include <gloperate-qt/scripting/ECMA26251Completer.h>
+#include <gloperate-qt/scripting/ScriptPromptWidget.h>
 
-#include <widgetzeug/ScriptPromptWidget.h>
-#include <widgetzeug/ECMA26251_SyntaxHighlighter.h>
-#include <widgetzeug/ECMA26251_Completer.h>
 
 
 using namespace gloperate;
 using namespace gloperate_qt;
-using namespace widgetzeug;
 
 
 int main(int argc, char * argv[])
@@ -53,10 +52,10 @@ int main(int argc, char * argv[])
 
     // Create script console
     ScriptPromptWidget * scriptPrompt = new ScriptPromptWidget(&mainWindow);
-    scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlight);
+    scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlighter);
     scriptPrompt->setCompleter(new ECMA26251Completer);
     scriptPrompt->setFrameShape(QFrame::NoFrame);
-    QObject::connect(scriptPrompt, &widgetzeug::ScriptPromptWidget::evaluate,
+    QObject::connect(scriptPrompt, &ScriptPromptWidget::evaluate,
         [&viewerContext, scriptPrompt] (const QString & cmd)
         {
             // Execute script code
@@ -77,7 +76,7 @@ int main(int argc, char * argv[])
     // Initialize context, print context info
     window->context()->use();
 //  window->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
-    globjects::info() << std::endl
+    cppassist::info() << std::endl
         << "OpenGL Version:  " << GLContextUtils::version() << std::endl
         << "OpenGL Vendor:   " << GLContextUtils::vendor() << std::endl
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
