@@ -8,7 +8,7 @@ import gloperate.ui 1.0
 *
 *  Dialog displaying a senseless welcome message.
 */
-DockPanel
+Panel
 {
     id: panel
 

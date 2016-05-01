@@ -14,12 +14,6 @@ Item
 
     property string log: 'Welcome to scripting.\n'
 
-    Rectangle
-    {
-        anchors.fill: parent
-        color:        Ui.style.panelColorAlt
-    }
-
     ScrollArea
     {
         id: scrollArea
@@ -31,20 +25,18 @@ Item
         {
             id: content
 
-            anchors.left:    parent.left
-            anchors.right:   parent.right
-            anchors.top:     parent.top
-            anchors.margins: Ui.style.ctrlPadding
-            spacing:         Ui.style.ctrlPadding
+            anchors.left:  parent.left
+            anchors.right: parent.right
+            anchors.top:   parent.top
+            spacing:       Ui.style.ctrlPadding
 
             TextField
             {
                 id: output
 
-                width:           parent.width
-                backgroundColor: Ui.style.panelColorAlt
-                text:            panel.log
-                readOnly:        true
+                width:    parent.width
+                text:     panel.log
+                readOnly: true
             }
 
             TextField
@@ -52,7 +44,7 @@ Item
                 id: input
 
                 width:           parent.width
-                backgroundColor: Ui.style.ctrlBorderColorPressed
+                backgroundColor: Ui.style.panelColorAlt
 
                 onAccepted:
                 {

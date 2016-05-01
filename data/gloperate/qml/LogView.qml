@@ -12,17 +12,30 @@ ScrollArea
 {
     id: panel
 
-    property var log: []
+    property var log: [
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.',
+        'Lorem ipsum dolor sit amet.'
+    ]
 
     contentHeight: content.height + 2 * Ui.style.ctrlPadding
-
-    Rectangle
-    {
-        width:  panel.width
-        height: Math.max(panel.height, parent.height)
-
-        color: Ui.style.panelColorAlt
-    }
 
     Column
     {

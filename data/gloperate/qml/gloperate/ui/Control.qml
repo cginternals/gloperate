@@ -21,8 +21,11 @@ BaseItem
     // Is a mouse button currently pressed over the item?
     property alias pressed: mouseArea.pressed
 
-    // Called when a mouse button has been clicked on the item
+    // Called when the left mouse button has been clicked on the item
     signal clicked()
+
+    // Called when the right mouse button has been clicked on the item
+    signal rightClicked()
 
     MouseArea
     {
@@ -32,9 +35,14 @@ BaseItem
         anchors.fill: parent
         hoverEnabled: true
 
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+
         onClicked:
         {
-            item.clicked();
+            if (mouse.button == Qt.RightButton)
+                item.rightClicked();
+            else
+                item.clicked();
         }
     }
 }

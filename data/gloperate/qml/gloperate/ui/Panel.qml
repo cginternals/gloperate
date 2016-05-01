@@ -7,8 +7,6 @@ import gloperate.ui 1.0
 *  Panel
 *
 *  Container on a page.
-*  Automatically adds scroll bars if its content is
-*  larger than the panel itself.
 */
 BaseItem
 {

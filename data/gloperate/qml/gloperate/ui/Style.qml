@@ -76,7 +76,7 @@ Item
     property int   panelBorderWidth:           borderWidth      // Panel border width
     property real  panelBorderRadius:          borderRadius     // Panel border radius (round edges)
     property real  panelPadding:               paddingSmall     // Panel padding (space between border and items)
-    property real  panelSpacing:               paddingSmall     // Panel spacing (space between items on a panel)
+    property real  panelSpacing:               paddingMedium    // Panel spacing (space between items on a panel)
 
     // Panel items
     property color panelItemColor:             windowColorAlt   // Panel item color (default)

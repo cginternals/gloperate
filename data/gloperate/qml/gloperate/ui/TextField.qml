@@ -25,11 +25,7 @@ Rectangle
     implicitWidth:  input.implicitWidth
     implicitHeight: input.implicitHeight
 
-    Rectangle
-    {
-        anchors.fill: parent
-        color:        textInput.backgroundColor
-    }
+    color: backgroundColor
 
     TextController
     {

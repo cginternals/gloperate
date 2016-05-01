@@ -13,22 +13,29 @@ import gloperate.ui 1.0
 */
 Item
 {
-    // Style
-    property Item style: styleLight
+    // Debug mode
+    property bool debugMode: false
 
     // Available styles
     readonly property var styles: [
         'Light', 'Dark'
     ]
 
-    // Debug mode
-    property bool debugMode: false
+    // Style selection
+    property string styleName: 'Light';
 
-    // Set style
     function setStyle(name)
     {
-        if (name == 'Light') style = styleLight;
-        else                 style = styleDark;
+        styleName = name;
+    }
+
+    // Style
+    readonly property Item style: getStyle(styleName)
+
+    function getStyle(name)
+    {
+        if (name == 'Light') return styleLight;
+        else                 return styleDark;
     }
 
     // Styles

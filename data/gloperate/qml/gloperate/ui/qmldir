@@ -8,10 +8,10 @@ Style         1.0 Style.qml
 StyleDark     1.0 StyleDark.qml
 
 BaseItem      1.0 BaseItem.qml
+Background    1.0 Background.qml
 ScrollArea    1.0 ScrollArea.qml
 Page          1.0 Page.qml
 Panel         1.0 Panel.qml
-DockPanel     1.0 DockPanel.qml
 Control       1.0 Control.qml
 Label         1.0 Label.qml
 Icon          1.0 Icon.qml
@@ -21,3 +21,6 @@ TabBar        1.0 TabBar.qml
 ButtonBar     1.0 ButtonBar.qml
 PanelItem     1.0 PanelItem.qml
 TextField     1.0 TextField.qml
+GroupBox      1.0 GroupBox.qml
+CheckBox      1.0 CheckBox.qml
+Switch        1.0 Switch.qml
