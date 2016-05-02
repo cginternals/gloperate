@@ -13,7 +13,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    gloperate image class, that holds image data and information.
+*    Image class that holds image data and information
 *
 *    Currently supports format RGB24.
 */
@@ -22,82 +22,125 @@ class GLOPERATE_API Image
 public:
     /**
     *  @brief
-    *    Constructor. Constructs a null image (\see{isNull})
+    *    Get number of color channels for given image format
+    *
+    *  @param[in] format
+    *    Format (OpenGL definition)
+    *
+    *  @return
+    *    Number of color channels
+    */
+    static int channels(gl::GLenum format);
+
+    /**
+    *  @brief
+    *    Get number of bytes for a given data type
+    *
+    *  @param[in] type
+    *    Data type (OpenGL definition)
+    *
+    *  @return
+    *    Number of bytes per element
+    */
+    static int bytes(gl::GLenum type);
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *    Constructs an empty image
+    *
+    *  @see empty()
     */
     Image();
 
     /**
     *  @brief
-    *    Copy-Constructor
-    */
-    Image(const Image & other);
-
-    /**
-    *  @brief
-    *    Move-Constructor
-    */
-    Image(Image && other);
-
-    /**
-    *  @brief
-    *    Constructor. Allocates data memory (\see{createBuffer})
+    *    Constructor
     *
     *  @param[in] width
     *    Image width
     *  @param[in] height
     *    Image height
     *  @param[in] format
-    *    Image format
+    *    Image format (OpenGL definition)
     *  @param[in] type
-    *    Image type
+    *    Data type (OpenGL definition)
+    *
+    *  @remarks
+    *    Allocates the necessary image data memory.
+    *
+    *  @see createBuffer
     */
     Image(int width, int height, gl::GLenum format, gl::GLenum type);
 
     /**
     *  @brief
-    *    Constructor. Allocates data memory (\see{createBuffer}) fills it with content of \p data
+    *    Constructor
     *
-    *  @param[in] data
-    *    Const pointer to image data
     *  @param[in] width
     *    Image width
     *  @param[in] height
     *    Image height
     *  @param[in] format
-    *    Image format
+    *    Image format (OpenGL definition)
     *  @param[in] type
-    *    Image type
+    *    Data type (OpenGL definition)
+    *  @param[in] data
+    *    Pointer to image data (must NOT be nullptr!)
     *
     *  @remarks
-    *    This allocates own memory, and copies the content of \p data.
+    *    This allocates new image memory and copies the content of \p data.
     *    The ownership of \p data remains at the caller.
+    *
+    *  @see createBuffer
     */
-    Image(const char * data, int width, int height, gl::GLenum format, gl::GLenum type);
+    Image(int width, int height, gl::GLenum format, gl::GLenum type, const char * data);
 
     /**
     *  @brief
-    *    Constructor. Takes over the ownership of \p data
+    *    Constructor
     *
-    *  @param[in] data
-    *    Pointer to image data
     *  @param[in] width
     *    Image width
     *  @param[in] height
     *    Image height
     *  @param[in] format
-    *    Image format
+    *    Image format (OpenGL definition)
     *  @param[in] type
-    *    Image type
+    *    Data type (OpenGL definition)
+    *  @param[in] data
+    *    Pointer to image data (must NOT be nullptr!)
     *
     *  @remarks
     *    This does NOT allocate own memory.
     *    The ownership of \p data is transferred to the Image object.
     */
-    Image(char * data, int width, int height, gl::GLenum format, gl::GLenum type);
+    Image(int width, int height, gl::GLenum format, gl::GLenum type, char * data);
 
     /**
     *  @brief
-    *    Destructor. Frees the memory associated with \a m_data
+    *    Copy constructor
+    *
+    *  @param[in] other
+    *    Source image
+    */
+    Image(const Image & other);
+
+    /**
+    *  @brief
+    *    Move constructor
+    *
+    *  @param[in] other
+    *    Source image
+    */
+    Image(Image && other);
+
+    /**
+    *  @brief
+    *    Destructor
     */
     virtual ~Image();
 
@@ -105,159 +148,182 @@ public:
     *  @brief
     *    Assignment operator
     *
-    *  @remarks
-    *    \see https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+    *  @param[in] other
+    *    Source image
+    *
+    *  @return
+    *    Reference to this object
+
+    *  @see
+    *    https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
     */
-    Image& operator=(Image other);
+    Image & operator=(Image other);
 
     /**
     *  @brief
-    *    Allocates memory for image data
+    *    Check if image is empty
     *
-    *  @param[in] width
+    *  @return
+    *    'true' if the image is empty, else 'false'
+    *
+    *  @remarks
+    *    An empty image has all parameters set to zero and no allocated data.
+    */
+    bool empty() const;
+
+    /**
+    *  @brief
+    *    Get width
+    *
+    *  @return
     *    Image width
-    *  @param[in] height
-    *    Image height
-    *  @param[in] format
-    *    Image format
-    *  @param[in] type
-    *    Image type
-    *
-    *  @remarks
-    *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand
-    */
-    void createBuffer(int width, int height, gl::GLenum format, gl::GLenum type);
-
-    /**
-    *  @brief
-    *    Allocates data memory (\see{createBuffer}) fills it with content of \p data
-    *
-    *  @param[in] data
-    *    Const pointer to image data
-    *  @param[in] width
-    *    Image width
-    *  @param[in] height
-    *    Image height
-    *  @param[in] format
-    *    Image format
-    *  @param[in] type
-    *    Image type
-    *
-    *  @remarks
-    *    This allocates own memory, and copies the content of \p data.
-    *    The ownership of \p data remains at the caller.
-    *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand.
-    */
-    void setData(const char * data, int width, int height, gl::GLenum format, gl::GLenum type);
-
-    /**
-    *  @brief
-    *    Takes over the ownership of \p data
-    *
-    *  @param[in] data
-    *    Pointer to image data
-    *  @param[in] width
-    *    Image width
-    *  @param[in] height
-    *    Image height
-    *  @param[in] format
-    *    Image format
-    *  @param[in] type
-    *    Image type
-    *
-    *  @remarks
-    *    This does NOT allocate own memory.
-    *    The ownership of \p data is transferred to the Image object.
-    *    If \a m_data is an existing memory buffer, this buffer is deleted beforehand.
-    */
-    void setData(char * data, int width, int height, gl::GLenum format, gl::GLenum type);
-
-    // copy constructor, copy operator
-
-    /**
-    *  @brief
-    *    Returns true if it is a null image, otherwise returns false
-    *
-    *  @remarks
-    *    A null image has all parameters set to zero and no allocated data
-    */
-    bool isNull() const;
-
-    /**
-    *  @brief
-    *    Format getter
-    *
-    *  @return
-    *    Format of stored image data
-    */
-    gl::GLenum format() const;
-
-    /**
-    *  @brief
-    *    Type getter
-    *
-    *  @return
-    *    Type of stored image data
-    */
-    gl::GLenum type() const;
-
-    /**
-    *  @brief
-    *    Getter for image data pointer (can be nullptr)
-    *
-    *  @return
-    *    Data pointer of stored image data (can be nullptr)
-    */
-    char * data();
-
-    /**
-    *  @brief
-    *    Const getter for image data pointer (can be nullptr)
-    *
-    *  @return
-    *    Const data pointer of stored image data (can be nullptr)
-    */
-    const char * data() const;
-
-    /**
-    *  @brief
-    *    Width getter
-    *
-    *  @return
-    *    Width of stored image
     */
     int width() const;
 
     /**
     *  @brief
-    *    Height getter
+    *    Get height
     *
     *  @return
-    *    Height of stored image
+    *    Image height
     */
     int height() const;
 
     /**
     *  @brief
-    *    Get Number of channels
+    *    Get image format
     *
     *  @return
-    *    Number of channels of stored image
+    *    Image format (OpenGL definition)
+    */
+    gl::GLenum format() const;
+
+    /**
+    *  @brief
+    *    Get data type
+    *
+    *  @return
+    *    Data type (OpenGL definition)
+    */
+    gl::GLenum type() const;
+
+    /**
+    *  @brief
+    *    Get number of color channels
+    *
+    *  @return
+    *    Number of color channels
     */
     int channels() const;
 
     /**
     *  @brief
-    *    Bytes getter
+    *    Get number of bytes per element
     *
     *  @return
-    *    Number of bytes per channel
+    *    Number of bytes per element
     */
     int bytes() const;
 
     /**
     *  @brief
+    *    Get image data
+    *
+    *  @return
+    *    Pointer to raw image data (can be null)
+    */
+    const char * data() const;
+
+    /**
+    *  @brief
+    *    Get image data
+    *
+    *  @return
+    *    Pointer to raw image data (can be null)
+    */
+    char * data();
+
+    /**
+    *  @brief
+    *    Clear image
+    *
+    *  @remarks
+    *    Releases all data and resets to an empty image.
+    *
+    *  @see empty()
+    */
+    void clear();
+
+    /**
+    *  @brief
+    *    Allocate image memory
+    *
+    *  @param[in] width
+    *    Image width
+    *  @param[in] height
+    *    Image height
+    *  @param[in] format
+    *    Image format (OpenGL definition)
+    *  @param[in] type
+    *    Data type (OpenGL definition)
+    *
+    *  @remarks
+    *    Any existing image data is deleted.
+    */
+    void allocate(int width, int height, gl::GLenum format, gl::GLenum type);
+
+    /**
+    *  @brief
+    *    Create image from existing image data
+    *
+    *  @param[in] width
+    *    Image width
+    *  @param[in] height
+    *    Image height
+    *  @param[in] format
+    *    Image format (OpenGL definition)
+    *  @param[in] type
+    *    Data type (OpenGL definition)
+    *  @param[in] data
+    *    Pointer to image data (must NOT be nullptr!)
+    *
+    *  @remarks
+    *    This allocates new image memory and copies the content of \p data.
+    *    The ownership of \p data remains at the caller.
+    *    Any existing image data is deleted.
+    */
+    void copyImage(int width, int height, gl::GLenum format, gl::GLenum type, const char * data);
+
+    /**
+    *  @brief
+    *    Set image data
+    *
+    *  @param[in] width
+    *    Image width
+    *  @param[in] height
+    *    Image height
+    *  @param[in] format
+    *    Image format (OpenGL definition)
+    *  @param[in] type
+    *    Data type (OpenGL definition)
+    *  @param[in] data
+    *    Pointer to image data (must NOT be nullptr!)
+    *
+    *  @remarks
+    *    This does NOT allocate own memory.
+    *    The ownership of \p data is transferred to the Image object.
+    *    Any existing image data is deleted.
+    */
+    void setData(int width, int height, gl::GLenum format, gl::GLenum type, char * data);
+
+    /**
+    *  @brief
     *    Swap function for copy-and-swap idiom
+    *
+    *  @param[in] first
+    *    Image
+    *  @param[in] second
+    *    Image
     *
     *  @remarks
     *    See https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
@@ -266,20 +332,35 @@ public:
 
 
 protected:
-    void setImageData(int width, int height, gl::GLenum format, gl::GLenum type);
-    static int channels(gl::GLenum format);
-    static int bytes(gl::GLenum type);
+    /**
+    *  @brief
+    *    Set image information
+    *
+    *  @param[in] width
+    *    Image width
+    *  @param[in] height
+    *    Image height
+    *  @param[in] format
+    *    Image format (OpenGL definition)
+    *  @param[in] type
+    *    Data type (OpenGL definition)
+    *
+    *  @remarks
+    *    This function only sets the image information, it does not
+    *    allocate or set the image data.
+    */
+    void initializeImage(int width, int height, gl::GLenum format, gl::GLenum type);
 
 
 protected:
-    char *     m_data;
-    int        m_dataSize;
-    int        m_width;
-    int        m_height;
-    int        m_channels;
-    int        m_bytes;
-    gl::GLenum m_format;
-    gl::GLenum m_type;
+    int        m_width;     ///< Image width (0 if empty)
+    int        m_height;    ///< Image height (0 if empty)
+    gl::GLenum m_format;    ///< Image format (OpenGL definition, GL_INVALID_ENUM if empty)
+    gl::GLenum m_type;      ///< Data type (OpenGL definition, GL_INVALID_ENUM if empty)
+    int        m_channels;  ///< Number of color channels (0 if empty)
+    int        m_bytes;     ///< Bytes per element (0 if empty)
+    int        m_dataSize;  ///< Size of image data (0 if empty)
+    char *     m_data;      ///< Image data (can be null)
 };
 
 

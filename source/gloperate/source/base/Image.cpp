@@ -14,110 +14,6 @@ namespace gloperate
 {
 
 
-Image::Image()
-: m_data(nullptr)
-, m_dataSize(0)
-, m_width(0)
-, m_height(0)
-, m_channels(0)
-, m_bytes(0)
-, m_format(GL_INVALID_ENUM)
-, m_type(GL_INVALID_ENUM)
-{
-}
-
-Image::Image(const Image & other)
-: Image()
-{
-    setData(other.data(), other.width(), other.height(), other.format(), other.type());
-}
-
-Image::Image(Image && other)
-: Image()
-{
-    swap(*this, other);
-}
-
-Image::Image(int width, int height, GLenum format, GLenum type)
-: Image()
-{
-    createBuffer(width, height, format, type);
-}
-
-Image::Image(const char * data, int width, int height, GLenum format, GLenum type)
-: Image()
-{
-    setData(data, width, height, format, type);
-}
-
-Image::Image(char * data, int width, int height, GLenum format, GLenum type)
-: Image()
-{
-    setData(data, width, height, format, type);
-}
-
-Image::~Image()
-{
-    delete[] m_data;
-}
-
-Image& Image::operator=(Image other)
-{
-    swap(*this, other);
-
-    return *this;
-}
-
-void Image::createBuffer(int width, int height, GLenum format, GLenum type)
-{
-    if (m_data) delete[] m_data;
-
-    setImageData(width, height, format, type);
-
-    if (m_dataSize == 0)
-    {
-        critical() << "Buffer creation failed.";
-        return;
-    }
-
-    m_data = new char[m_dataSize];
-}
-
-void Image::setData(const char * data, int width, int height, GLenum format, GLenum type)
-{
-    if (m_data) delete[] m_data;
-
-    createBuffer(width, height, format, type);
-
-    if (m_data == nullptr)
-    {
-        critical() << "Data buffer invalid.";
-        return;
-    }
-
-    std::copy_n(data, m_dataSize, m_data);
-}
-
-void Image::setData(char * data, int width, int height, GLenum format, GLenum type)
-{
-    if (m_data) delete[] m_data;
-
-    setImageData(width, height, format, type);
-
-    m_data = m_dataSize ? data : nullptr;
-}
-
-void Image::setImageData(int width, int height, GLenum format, GLenum type)
-{
-    m_width = width;
-    m_height = height;
-    m_channels = channels(format);
-    m_bytes = bytes(type);
-    m_dataSize = m_width * m_height * m_channels * m_bytes;
-    m_format = format;
-    m_type = type;
-}
-
 int Image::channels(GLenum format)
 {
     switch (format)
@@ -126,12 +22,8 @@ int Image::channels(GLenum format)
             return 3;
         case GL_RGBA:
             return 4;
-
         default:
-        {
-            warning() << "Image format not supported. Using channel size 0.";
             return 0;
-        }
     }
 }
 
@@ -147,38 +39,67 @@ int Image::bytes(GLenum type)
         case GL_UNSIGNED_INT:   return 4;
         case GL_FLOAT:          return 4;
         case GL_DOUBLE:         return 8;
-
-        default:
-        {
-            warning() << "Image type not supported. Using bytes per channel: 0.";
-            return 0;
-        }
+        default:                return 0;
     }
 }
 
-bool Image::isNull() const
+Image::Image()
+: m_width(0)
+, m_height(0)
+, m_format(GL_INVALID_ENUM)
+, m_type(GL_INVALID_ENUM)
+, m_channels(0)
+, m_bytes(0)
+, m_dataSize(0)
+, m_data(nullptr)
+{
+}
+
+Image::Image(int width, int height, GLenum format, GLenum type)
+: Image()
+{
+    allocate(width, height, format, type);
+}
+
+Image::Image(int width, int height, GLenum format, GLenum type, const char * data)
+: Image()
+{
+    copyImage(width, height, format, type, data);
+}
+
+Image::Image(int width, int height, GLenum format, GLenum type, char * data)
+: Image()
+{
+    setData(width, height, format, type, data);
+}
+
+Image::Image(const Image & other)
+: Image()
+{
+    copyImage(other.width(), other.height(), other.format(), other.type(), other.data());
+}
+
+Image::Image(Image && other)
+: Image()
+{
+    swap(*this, other);
+}
+
+Image::~Image()
+{
+    delete [] m_data;
+}
+
+Image & Image::operator=(Image other)
+{
+    swap(*this, other);
+
+    return *this;
+}
+
+bool Image::empty() const
 {
     return m_data == nullptr;
-}
-
-GLenum Image::format() const
-{
-    return m_format;
-}
-
-GLenum Image::type() const
-{
-    return m_type;
-}
-
-char * Image::data()
-{
-    return m_data;
-}
-
-const char * Image::data() const
-{
-    return m_data;
 }
 
 int Image::width() const
@@ -191,6 +112,16 @@ int Image::height() const
     return m_height;
 }
 
+GLenum Image::format() const
+{
+    return m_format;
+}
+
+GLenum Image::type() const
+{
+    return m_type;
+}
+
 int Image::channels() const
 {
     return m_channels;
@@ -199,6 +130,73 @@ int Image::channels() const
 int Image::bytes() const
 {
     return m_bytes;
+}
+
+const char * Image::data() const
+{
+    return m_data;
+}
+
+char * Image::data()
+{
+    return m_data;
+}
+
+void Image::clear()
+{
+    // Release image data
+    if (m_data) {
+        delete [] m_data;
+    }
+
+    // Reset image
+    m_width    = 0;
+    m_height   = 0;
+    m_format   = GL_INVALID_ENUM;
+    m_type     = GL_INVALID_ENUM;
+    m_channels = 0;
+    m_bytes    = 0;
+    m_dataSize = 0;
+    m_data     = nullptr;
+}
+
+void Image::allocate(int width, int height, GLenum format, GLenum type)
+{
+    clear();
+
+    initializeImage(width, height, format, type);
+
+    if (m_dataSize == 0)
+    {
+        critical() << "Image buffer creation failed.";
+        return;
+    }
+
+    m_data = new char[m_dataSize];
+}
+
+void Image::copyImage(int width, int height, GLenum format, GLenum type, const char * data)
+{
+    clear();
+
+    allocate(width, height, format, type);
+
+    if (m_data == nullptr)
+    {
+        critical() << "Image buffer creation failed.";
+        return;
+    }
+
+    std::copy_n(data, m_dataSize, m_data);
+}
+
+void Image::setData(int width, int height, GLenum format, GLenum type, char * data)
+{
+    clear();
+
+    initializeImage(width, height, format, type);
+
+    m_data = m_dataSize ? data : nullptr;
 }
 
 void swap(Image & first, Image & second) noexcept
@@ -213,6 +211,17 @@ void swap(Image & first, Image & second) noexcept
     swap(first.m_bytes, second.m_bytes);
     swap(first.m_format, second.m_format);
     swap(first.m_type, second.m_type);
+}
+
+void Image::initializeImage(int width, int height, GLenum format, GLenum type)
+{
+    m_width    = width;
+    m_height   = height;
+    m_channels = channels(format);
+    m_bytes    = bytes(type);
+    m_dataSize = m_width * m_height * m_channels * m_bytes;
+    m_format   = format;
+    m_type     = type;
 }
 
 
