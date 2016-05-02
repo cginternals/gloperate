@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <cppexpose/signal/Signal.h>
+#include <cppexpose/plugin/ComponentManager.h>
 
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/input/InputManager.h>
@@ -94,6 +95,18 @@ public:
     //@{
     /**
     *  @brief
+    *    Get component manager
+    *
+    *  @return
+    *    Component manager (must NOT be null)
+    */
+    const cppexpose::ComponentManager * componentManager() const;
+    cppexpose::ComponentManager * componentManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
     *    Update timing
     *
     *  @return
@@ -160,10 +173,11 @@ protected:
 
 
 protected:
-    TimeManager            m_timeManager;       ///< Manager for virtual time and timers
-    std::vector<Surface *> m_surfaces;          ///< List of active surfaces
-    InputManager           m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
-    ScriptEnvironment      m_scriptEnvironment; ///< Scripting environment
+    TimeManager                 m_timeManager;       ///< Manager for virtual time and timers
+    std::vector<Surface *>      m_surfaces;          ///< List of active surfaces
+    InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
+    ScriptEnvironment           m_scriptEnvironment; ///< Scripting environment
+    cppexpose::ComponentManager m_componentManager;  ///< Manager for plugin libraries and components
 };
 
 

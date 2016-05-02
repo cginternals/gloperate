@@ -81,6 +81,7 @@ target_include_directories(${target}
     ${DEFAULT_INCLUDE_DIRECTORIES}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${GLM_INCLUDE_DIR}
+    ${PROJECT_BINARY_DIR}/source/include
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qtquick/include

@@ -9,6 +9,7 @@
 
 #include <gloperate/scripting/SystemApi.h>
 #include <gloperate/scripting/TimerApi.h>
+#include <gloperate/scripting/ComponentsApi.h>
 
 
 namespace gloperate
@@ -126,6 +127,9 @@ void ScriptEnvironment::initialize()
 
     m_timerApi.reset(new TimerApi(m_viewerContext));
     addApi(m_timerApi.get());
+
+    m_componentsApi.reset(new ComponentsApi(m_viewerContext));
+    addApi(m_componentsApi.get());
 }
 
 

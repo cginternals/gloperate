@@ -25,6 +25,7 @@ namespace gloperate
 class ViewerContext;
 class SystemApi;
 class TimerApi;
+class ComponentsApi;
 
 
 /**
@@ -141,6 +142,7 @@ protected:
     std::unique_ptr<cppexpose::ScriptContext>   m_scriptContext; ///< JavaScript scripting context
     std::unique_ptr<SystemApi>                  m_systemApi;     ///< System function (files, print)
     std::unique_ptr<TimerApi>                   m_timerApi;      ///< Timer functions
+    std::unique_ptr<ComponentsApi>              m_componentsApi; ///< Component manager functions
     std::list<cppexpose::Object *>              m_apis;          ///< List of connected APIs
     std::string                                 m_helpText;      ///< Text that is displayed on 'help'
 };

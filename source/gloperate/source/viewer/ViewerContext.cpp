@@ -52,6 +52,16 @@ ScriptEnvironment * ViewerContext::scriptEnvironment()
     return &m_scriptEnvironment;
 }
 
+const cppexpose::ComponentManager * ViewerContext::componentManager() const
+{
+    return &m_componentManager;
+}
+
+cppexpose::ComponentManager * ViewerContext::componentManager()
+{
+    return &m_componentManager;
+}
+
 void ViewerContext::registerSurface(Surface * surface)
 {
     m_surfaces.push_back(surface);

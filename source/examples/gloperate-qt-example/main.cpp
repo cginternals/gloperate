@@ -5,6 +5,7 @@
 
 #include <cppassist/logging/logging.h>
 
+#include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
 #include <gloperate/scripting/ScriptEnvironment.h>
@@ -19,7 +20,6 @@
 #include <gloperate-qt/scripting/ScriptPromptWidget.h>
 
 
-
 using namespace gloperate;
 using namespace gloperate_qt;
 
@@ -29,6 +29,12 @@ int main(int argc, char * argv[])
     // Create viewer context
     ViewerContext viewerContext;
     viewerContext.scriptEnvironment()->setupScripting();
+
+    // Configure and load plugins
+    viewerContext.componentManager()->addSearchPath(
+        gloperate::pluginPath(), cppexpose::SearchPathType::Internal
+    );
+    viewerContext.componentManager()->scan("plugins");
 
     // Initialize Qt application
     gloperate_qt::Application app(&viewerContext, argc, argv);
