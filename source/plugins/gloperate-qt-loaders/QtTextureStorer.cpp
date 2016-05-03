@@ -12,7 +12,7 @@
 #include <gloperate/gloperate-version.h>
 
 
-QtTextureStorer::QtTextureStorer()
+QtTextureStorer::QtTextureStorer(const cpplocate::ModuleInfo &)
 : gloperate::Storer<globjects::Texture>()
 {
     // Get list of supported file formats

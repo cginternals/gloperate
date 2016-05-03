@@ -10,8 +10,11 @@
 #include <gloperate/base/Loader.h>
 
 
-namespace globjects
-{
+namespace cpplocate {
+    class ModuleInfo;
+}
+
+namespace globjects {
     class Texture;
 }
 
@@ -32,8 +35,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] moduleInfo
+    *    Module info of the plugin library containing the component (if any)
     */
-    QtTextureLoader();
+    QtTextureLoader(const cpplocate::ModuleInfo & moduleInfo);
 
     /**
     *  @brief

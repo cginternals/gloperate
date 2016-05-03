@@ -7,8 +7,11 @@
 #include <gloperate/base/Storer.h>
 
 
-namespace globjects
-{
+namespace cpplocate {
+    class ModuleInfo;
+}
+
+namespace globjects {
     class Texture;
 }
 
@@ -29,8 +32,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] moduleInfo
+    *    Module info of the plugin library containing the component (if any)
     */
-    QtTextureStorer();
+    QtTextureStorer(const cpplocate::ModuleInfo & moduleInfo);
 
     /**
     *  @brief
