@@ -2,6 +2,13 @@
 #pragma once
 
 
+#ifndef _MSC_VER
+    #define NOEXCEPT noexcept
+#else
+    #define NOEXCEPT
+#endif
+
+
 #include <glbinding/gl/enum.h>
 
 #include <gloperate/gloperate_api.h>
@@ -328,7 +335,7 @@ public:
     *  @remarks
     *    See https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
     */
-    friend void swap(Image & first, Image & second) noexcept;
+    friend void swap(Image & first, Image & second) NOEXCEPT;
 
 
 protected:

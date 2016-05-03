@@ -199,7 +199,7 @@ void Image::setData(int width, int height, GLenum format, GLenum type, char * da
     m_data = m_dataSize ? data : nullptr;
 }
 
-void swap(Image & first, Image & second) noexcept
+void swap(Image & first, Image & second) NOEXCEPT
 {
     using std::swap;
 
