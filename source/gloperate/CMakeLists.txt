@@ -43,6 +43,14 @@ set(headers
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
     ${include_path}/base/Image.h
+    ${include_path}/base/ResourceManager.h
+    ${include_path}/base/ResourceManager.hpp
+    ${include_path}/base/AbstractLoader.h
+    ${include_path}/base/AbstractStorer.h
+    ${include_path}/base/Loader.h
+    ${include_path}/base/Loader.hpp
+    ${include_path}/base/Storer.h
+    ${include_path}/base/Storer.hpp
 
     ${include_path}/viewer/AbstractContext.h
     ${include_path}/viewer/AbstractGLContext.h
@@ -86,6 +94,9 @@ set(sources
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/Image.cpp
+    ${source_path}/base/ResourceManager.cpp
+    ${source_path}/base/AbstractLoader.cpp
+    ${source_path}/base/AbstractStorer.cpp
 
     ${source_path}/viewer/AbstractContext.cpp
     ${source_path}/viewer/AbstractGLContext.cpp

@@ -7,6 +7,7 @@
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/plugin/ComponentManager.h>
 
+#include <gloperate/base/ResourceManager.h>
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/input/InputManager.h>
 #include <gloperate/scripting/ScriptEnvironment.h>
@@ -107,6 +108,18 @@ public:
     //@{
     /**
     *  @brief
+    *    Get resource manager
+    *
+    *  @return
+    *    Resource manager (must NOT be null)
+    */
+    const ResourceManager * resourceManager() const;
+    ResourceManager * resourceManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
     *    Update timing
     *
     *  @return
@@ -178,6 +191,7 @@ protected:
     InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
     ScriptEnvironment           m_scriptEnvironment; ///< Scripting environment
     cppexpose::ComponentManager m_componentManager;  ///< Manager for plugin libraries and components
+    ResourceManager             m_resourceManager;   ///< Resource manager for loaders/storers
 };
 
 

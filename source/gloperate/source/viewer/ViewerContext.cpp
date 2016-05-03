@@ -15,6 +15,7 @@ ViewerContext::ViewerContext()
 : m_timeManager(this)
 , m_inputManager()
 , m_scriptEnvironment(this)
+, m_resourceManager(this)
 {
 }
 
@@ -60,6 +61,16 @@ const cppexpose::ComponentManager * ViewerContext::componentManager() const
 cppexpose::ComponentManager * ViewerContext::componentManager()
 {
     return &m_componentManager;
+}
+
+const ResourceManager * ViewerContext::resourceManager() const
+{
+    return &m_resourceManager;
+}
+
+ResourceManager * ViewerContext::resourceManager()
+{
+    return &m_resourceManager;
 }
 
 void ViewerContext::registerSurface(Surface * surface)
