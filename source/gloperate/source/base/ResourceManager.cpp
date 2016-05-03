@@ -42,7 +42,7 @@ void ResourceManager::updateComponents() const
     clearComponents();
 
     // Get available loader components
-    auto & loaders = m_viewerContext->componentManager()->components<AbstractLoader>();
+    auto loaders = m_viewerContext->componentManager()->components<AbstractLoader>();
     for (auto component : loaders) {
         // Create loader
         AbstractLoader * loader = component->createInstance();
@@ -50,7 +50,7 @@ void ResourceManager::updateComponents() const
     }
 
     // Get available storer components
-    auto & storers = m_viewerContext->componentManager()->components<AbstractStorer>();
+    auto storers = m_viewerContext->componentManager()->components<AbstractStorer>();
     for (auto component : storers) {
         // Create storer
         AbstractStorer * storer = component->createInstance();
