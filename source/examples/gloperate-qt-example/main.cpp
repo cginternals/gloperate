@@ -31,10 +31,10 @@ int main(int argc, char * argv[])
     viewerContext.scriptEnvironment()->setupScripting();
 
     // Configure and load plugins
-    viewerContext.componentManager()->addSearchPath(
-        gloperate::pluginPath(), cppexpose::SearchPathType::Internal
+    viewerContext.componentManager()->addPluginPath(
+        gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    viewerContext.componentManager()->scan("plugins");
+    viewerContext.componentManager()->scanPlugins("plugins");
 
     // Initialize Qt application
     gloperate_qt::Application app(&viewerContext, argc, argv);

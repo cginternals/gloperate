@@ -57,7 +57,7 @@ int main(int argc, char * argv[])
         QStringList paths = settings.value(SETTINGS_PLUGINS).toStringList();
         for (auto path : paths)
         {
-            viewerContext.componentManager()->addSearchPath(
+            viewerContext.componentManager()->addPluginPath(
                 path.toStdString()
             );
         }
@@ -76,10 +76,10 @@ int main(int argc, char * argv[])
     );
 
     // Configure and load plugins
-    viewerContext.componentManager()->addSearchPath(
-        gloperate::pluginPath(), cppexpose::SearchPathType::Internal
+    viewerContext.componentManager()->addPluginPath(
+        gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    viewerContext.componentManager()->scan("plugins");
+    viewerContext.componentManager()->scanPlugins("plugins");
 
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);
@@ -96,7 +96,7 @@ int main(int argc, char * argv[])
         QSettings settings;
 
         QStringList paths;
-        for (auto path : viewerContext.componentManager()->searchPaths())
+        for (auto path : viewerContext.componentManager()->pluginPaths())
         {
             paths << QString::fromStdString(path);
         }

@@ -45,10 +45,10 @@ public:
 
 protected:
     // Scripting functions
-    cppexpose::Variant searchPaths();
-    void addSearchPath(const std::string & path);
-    void removeSearchPath(const std::string & path);
-    void scan(const std::string & identifier);
+    cppexpose::Variant pluginPaths();
+    void addPluginPath(const std::string & path);
+    void removePluginPath(const std::string & path);
+    void scanPlugins(const std::string & identifier);
 
 
 protected:

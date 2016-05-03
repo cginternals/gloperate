@@ -17,19 +17,19 @@ ComponentsApi::ComponentsApi(ViewerContext * viewerContext)
 , m_viewerContext(viewerContext)
 {
     // Register functions
-    addFunction("searchPaths",      this, &ComponentsApi::searchPaths);
-    addFunction("addSearchPath",    this, &ComponentsApi::addSearchPath);
-    addFunction("removeSearchPath", this, &ComponentsApi::removeSearchPath);
-    addFunction("scan",             this, &ComponentsApi::scan);
+    addFunction("pluginPaths",      this, &ComponentsApi::pluginPaths);
+    addFunction("addPluginPath",    this, &ComponentsApi::addPluginPath);
+    addFunction("removePluginPath", this, &ComponentsApi::removePluginPath);
+    addFunction("scanPlugins",      this, &ComponentsApi::scanPlugins);
 }
 
 ComponentsApi::~ComponentsApi()
 {
 }
 
-cppexpose::Variant ComponentsApi::searchPaths()
+cppexpose::Variant ComponentsApi::pluginPaths()
 {
-    std::vector<std::string> paths = m_viewerContext->componentManager()->searchPaths();
+    std::vector<std::string> paths = m_viewerContext->componentManager()->pluginPaths();
 
     cppexpose::Variant lst = cppexpose::Variant::array();
     for (auto path : paths) {
@@ -39,19 +39,19 @@ cppexpose::Variant ComponentsApi::searchPaths()
     return lst;
 }
 
-void ComponentsApi::addSearchPath(const std::string & path)
+void ComponentsApi::addPluginPath(const std::string & path)
 {
-    m_viewerContext->componentManager()->addSearchPath(path);
+    m_viewerContext->componentManager()->addPluginPath(path);
 }
 
-void ComponentsApi::removeSearchPath(const std::string & path)
+void ComponentsApi::removePluginPath(const std::string & path)
 {
-    m_viewerContext->componentManager()->removeSearchPath(path);
+    m_viewerContext->componentManager()->removePluginPath(path);
 }
 
-void ComponentsApi::scan(const std::string & identifier)
+void ComponentsApi::scanPlugins(const std::string & identifier)
 {
-    m_viewerContext->componentManager()->scan(identifier);
+    m_viewerContext->componentManager()->scanPlugins(identifier);
 }
 
 
