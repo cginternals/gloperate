@@ -34,7 +34,10 @@ void RenderPass::draw() const
 {
     bindResources();
 
-    m_fbo->bind(gl::GL_FRAMEBUFFER);
+    if (m_fbo)
+    {
+        m_fbo->bind(gl::GL_FRAMEBUFFER);
+    }
 
     if (m_recordTransformFeedback)
     {
