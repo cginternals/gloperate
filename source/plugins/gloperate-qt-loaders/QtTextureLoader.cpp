@@ -19,7 +19,7 @@
 using namespace gloperate_qt;
 
 
-QtTextureLoader::QtTextureLoader(const cpplocate::ModuleInfo &)
+QtTextureLoader::QtTextureLoader()
 : gloperate::Loader<globjects::Texture>()
 {
     // Get list of supported file formats
