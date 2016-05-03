@@ -69,6 +69,8 @@ set(headers
     ${include_path}/scripting/ScriptCompleter.h
     ${include_path}/scripting/ScriptPromptWidget.h
     ${include_path}/scripting/ScriptSyntaxHighlighter.h
+
+    ${include_path}/utils/Converter.h
 )
 
 set(sources
@@ -86,6 +88,8 @@ set(sources
     ${source_path}/scripting/ScriptCompleter.cpp
     ${source_path}/scripting/ScriptPromptWidget.cpp
     ${source_path}/scripting/ScriptSyntaxHighlighter.cpp
+
+    ${source_path}/utils/Converter.cpp
 )
 
 # Group source files

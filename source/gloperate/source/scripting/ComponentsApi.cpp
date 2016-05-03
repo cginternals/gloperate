@@ -21,6 +21,8 @@ ComponentsApi::ComponentsApi(ViewerContext * viewerContext)
     addFunction("addPluginPath",    this, &ComponentsApi::addPluginPath);
     addFunction("removePluginPath", this, &ComponentsApi::removePluginPath);
     addFunction("scanPlugins",      this, &ComponentsApi::scanPlugins);
+    addFunction("components",       this, &ComponentsApi::components);
+    addFunction("printComponents",  this, &ComponentsApi::printComponents);
 }
 
 ComponentsApi::~ComponentsApi()
@@ -52,6 +54,35 @@ void ComponentsApi::removePluginPath(const std::string & path)
 void ComponentsApi::scanPlugins(const std::string & identifier)
 {
     m_viewerContext->componentManager()->scanPlugins(identifier);
+}
+
+cppexpose::Variant ComponentsApi::components()
+{
+    cppexpose::Variant lst = cppexpose::Variant::array();
+
+    auto & components = m_viewerContext->componentManager()->components();
+    for (auto * component : components) {
+        cppexpose::Variant obj = cppexpose::Variant::map();
+        cppexpose::VariantMap & map = *obj.asMap();
+
+        map["name"]        = cppexpose::Variant(component->name());
+        map["description"] = cppexpose::Variant(component->description());
+        map["type"]        = cppexpose::Variant(component->type());
+        map["subtype"]     = cppexpose::Variant(component->subtype());
+        map["icon"]        = cppexpose::Variant(component->icon());
+        map["annotations"] = cppexpose::Variant(component->annotations());
+        map["vendor"]      = cppexpose::Variant(component->vendor());
+        map["version"]     = cppexpose::Variant(component->version());
+
+        lst.asArray()->push_back(obj);
+    }
+
+    return lst;
+}
+
+void ComponentsApi::printComponents()
+{
+    m_viewerContext->componentManager()->printComponents();
 }
 
 

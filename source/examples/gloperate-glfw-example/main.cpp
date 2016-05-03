@@ -24,7 +24,8 @@ int main(int argc, char * argv[])
     viewerContext.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    viewerContext.componentManager()->scanPlugins("plugins");
+    viewerContext.componentManager()->scanPlugins("loaders");
+    viewerContext.componentManager()->scanPlugins("stages");
 
     // Initialize GLFW
     Application::init();

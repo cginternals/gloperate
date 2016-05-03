@@ -49,6 +49,8 @@ protected:
     void addPluginPath(const std::string & path);
     void removePluginPath(const std::string & path);
     void scanPlugins(const std::string & identifier);
+    cppexpose::Variant components();
+    void printComponents();
 
 
 protected:
