@@ -13,6 +13,8 @@ import gloperate.ui 1.0
 */
 Item
 {
+    id: item
+
     // Debug mode
     property bool debugMode: false
 
@@ -24,18 +26,23 @@ Item
     // Style selection
     property string styleName: 'Light';
 
-    function setStyle(name)
-    {
-        styleName = name;
-    }
-
-    // Style
     readonly property Item style: getStyle(styleName)
 
     function getStyle(name)
     {
         if (name == 'Light') return styleLight;
         else                 return styleDark;
+    }
+
+    function setStyle(name)
+    {
+        styleName = name;
+
+        // Update config
+        if (typeof(config) !== 'undefined')
+        {
+            config.style = name;
+        }
     }
 
     // Styles
@@ -47,5 +54,17 @@ Item
     StyleDark
     {
         id: styleDark
+    }
+
+    // Initialize from config
+    Component.onCompleted:
+    {
+        if (typeof(config) !== 'undefined')
+        {
+            if (config.style)
+            {
+                item.styleName = config.style;
+            }
+        }
     }
 }

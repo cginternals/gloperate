@@ -1,10 +1,9 @@
 
 #include <QApplication>
-#include <QSettings>
 #include <QFileInfo>
 #include <QString>
-#include <QStringList>
 #include <QQmlEngine>
+#include <QQmlContext>
 
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/scripting/ScriptContext.h>
@@ -23,13 +22,12 @@
 #include <gloperate-qtquick/viewer/QuickView.h>
 #include <gloperate-qtquick/viewer/QmlScriptContext.h>
 
+#include "Config.h"
+
 
 using namespace gloperate;
 using namespace gloperate_qt;
 using namespace gloperate_qtquick;
-
-
-const QString SETTINGS_PLUGINS("Plugins");
 
 
 int main(int argc, char * argv[])
@@ -50,18 +48,7 @@ int main(int argc, char * argv[])
     QApplication::setOrganizationDomain(GLOPERATE_AUTHOR_DOMAIN);
 
     // Load configuration
-    {
-        QSettings::setDefaultFormat(QSettings::IniFormat);
-        QSettings settings;
-
-        QStringList paths = settings.value(SETTINGS_PLUGINS).toStringList();
-        for (auto path : paths)
-        {
-            viewerContext.componentManager()->addPluginPath(
-                path.toStdString()
-            );
-        }
-    }
+    Config config(viewerContext);
 
     // Configure update manager
     UpdateManager updateManager(&viewerContext);
@@ -69,6 +56,7 @@ int main(int argc, char * argv[])
     // Create QML engine
     QmlEngine qmlEngine(&viewerContext);
     qmlEngine.addImportPath(qmlPath);
+    qmlEngine.rootContext()->setContextProperty("config", &config);
 
     // Create scripting context backend
     viewerContext.scriptEnvironment()->setupScripting(
@@ -91,19 +79,5 @@ int main(int argc, char * argv[])
 
     // Run main loop
     int res = app.exec();
-
-    // Save configuration
-    {
-        QSettings settings;
-
-        QStringList paths;
-        for (auto path : viewerContext.componentManager()->pluginPaths())
-        {
-            paths << QString::fromStdString(path);
-        }
-        settings.setValue(SETTINGS_PLUGINS, paths);
-    }
-
-    // Return
     return res;
 }
