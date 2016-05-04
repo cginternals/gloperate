@@ -118,7 +118,7 @@ Page
             NumberAnimation
             {
                 easing.type: Easing.InOutQuad
-                duration:    1000
+                duration:    600
             }
         }
 
