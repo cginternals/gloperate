@@ -37,7 +37,7 @@ using gloperate::make_unique;
 namespace
 {
     const int g_tooltipTimeout = 200;
-    const float SCALE_FACTOR = 0.01f;
+    const float SCALE_FACTOR = 0.1f;
 }
 
 namespace gloperate_qt{
