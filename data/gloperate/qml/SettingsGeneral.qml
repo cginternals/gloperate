@@ -49,7 +49,7 @@ Background
                     {
                         model: Ui.styles.length
 
-                        CheckBox
+                        RadioButton
                         {
                             exclusiveGroup: themeGroup
                             text:           Ui.styles[index]
