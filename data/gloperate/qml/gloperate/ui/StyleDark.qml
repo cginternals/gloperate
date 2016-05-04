@@ -24,6 +24,8 @@ Item
     property color windowColor:     '#444444'
     property color windowColorAlt:  '#2a2d33'
     property color controlColor:    '#1a1d23'
+    property color controlColorHl:  '#444444'
+    property color controlColorHov: '#555555'
 
     // Borders
     property color borderColor:     '#000000'
@@ -77,9 +79,9 @@ Item
     // Panel items
     property color panelItemColor:             windowColorAlt   // Panel item color (default)
     property color panelItemColorDisabled:     controlColor     // Panel item color (disabled)
-    property color panelItemColorHighlighted:  controlColor     // Panel item color (highlighted)
-    property color panelItemColorHover:        controlColor     // Panel item color (hovered)
-    property color panelItemColorPressed:      controlColor     // Panel item color (pressed)
+    property color panelItemColorHighlighted:  controlColorHl   // Panel item color (highlighted)
+    property color panelItemColorHover:        controlColorHov  // Panel item color (hovered)
+    property color panelItemColorPressed:      controlColorHl   // Panel item color (pressed)
 
     // Controls
     property color ctrlColor:                  controlColor     // Control background color (default)

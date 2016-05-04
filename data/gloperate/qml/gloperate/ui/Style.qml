@@ -25,8 +25,8 @@ Item
     property color windowColor:      '#dddddd'
     property color windowColorAlt:   '#aaaaaa'
     property color controlColor:     '#ffffff'
-    property color controlColorHov:  '#f0f0f0'
     property color controlColorHl:   '#d0d0d0'
+    property color controlColorHov:  '#f0f0f0'
     property color controlTextColor: '#222222'
 
     // Borders
