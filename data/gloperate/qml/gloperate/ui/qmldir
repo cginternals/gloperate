@@ -3,7 +3,6 @@ module gloperate.ui
 
 
 singleton Ui  1.0 Ui.qml
-
 Style         1.0 Style.qml
 StyleDark     1.0 StyleDark.qml
 
@@ -25,3 +24,10 @@ GroupBox      1.0 GroupBox.qml
 CheckBox      1.0 CheckBox.qml
 RadioButton   1.0 RadioButton.qml
 Switch        1.0 Switch.qml
+
+Settings        1.0 Settings.qml
+SettingsGeneral 1.0 SettingsGeneral.qml
+SettingsInput   1.0 SettingsInput.qml
+SettingsPlugins 1.0 SettingsPlugins.qml
+LogView         1.0 LogView.qml
+ScriptConsole   1.0 ScriptConsole.qml
