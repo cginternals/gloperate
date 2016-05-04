@@ -86,7 +86,7 @@ cppexpose::Variant QmlEngine::fromScriptValue(const QJSValue & value)
     }
 
     else if (value.isCallable()) {
-        cppexpose::Function function("", new QmlScriptFunction(this, value));
+        cppexpose::Function function(new QmlScriptFunction(this, value));
         return cppexpose::Variant::fromValue<cppexpose::Function>(function);
     }
 
