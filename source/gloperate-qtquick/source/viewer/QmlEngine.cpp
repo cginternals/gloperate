@@ -31,10 +31,6 @@ QmlEngine::QmlEngine(gloperate::ViewerContext * viewerContext)
     qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
     qmlRegisterType<TextController>("gloperate.ui",        1, 0, "TextController");
 
-    // Add gloperate qml-libraries
-    std::string importPath = gloperate::dataPath() + "/gloperate/qml/GLOperate/Ui";
-    addImportPath(QString::fromStdString(importPath));
-
     // Register global functions and properties
     rootContext()->setContextObject(this);
 
