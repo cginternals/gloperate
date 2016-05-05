@@ -29,7 +29,7 @@ QmlEngine::QmlEngine(gloperate::ViewerContext * viewerContext)
 {
     // Register QML types
     qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
-    qmlRegisterType<TextController>("gloperate.ui",        1, 0, "TextController");
+    qmlRegisterType<TextController>("gloperate.base",      1, 0, "TextController");
 
     // Register global functions and properties
     rootContext()->setContextObject(this);
