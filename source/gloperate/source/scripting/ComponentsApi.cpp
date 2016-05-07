@@ -68,7 +68,7 @@ cppexpose::Variant ComponentsApi::components()
         map["name"]        = cppexpose::Variant(component->name());
         map["description"] = cppexpose::Variant(component->description());
         map["type"]        = cppexpose::Variant(component->type());
-        map["subtype"]     = cppexpose::Variant(component->subtype());
+        map["tags"]        = cppexpose::Variant(component->tags());
         map["icon"]        = cppexpose::Variant(component->icon());
         map["annotations"] = cppexpose::Variant(component->annotations());
         map["vendor"]      = cppexpose::Variant(component->vendor());
