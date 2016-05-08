@@ -55,6 +55,7 @@ public:
 
     virtual void fillPixelData(unsigned char * data, size_t numPixels) const;
     virtual reflectionzeug::Color colorAt(float position) const = 0;
+    virtual size_t numberOfColors() const = 0;
 
     globjects::Texture * generateTexture(size_t numPixels) const;
 
