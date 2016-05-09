@@ -110,4 +110,11 @@ glm::mat4 CombinedProjectionCapability::interpolate(const glm::mat4 &first, cons
     return glm::mix(first, second, m_mix);
 }
 
+void CombinedProjectionCapability::setOrthoFOV(float z)
+{
+    auto alpha = m_perspectiveCapability.fovy();
+    auto fovy = glm::tan(alpha) * z * 0.9f;
+    m_orthoCapability.setHeight(std::max(fovy, 0.1f));
+}
+
 } // namespace gloperate

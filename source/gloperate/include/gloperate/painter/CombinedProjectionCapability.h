@@ -57,6 +57,7 @@ public:
     
     float mix() const;
     void setMix(float mix);
+    void setOrthoFOV(float z);
 
 
 protected:
