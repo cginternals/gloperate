@@ -36,7 +36,6 @@ using gloperate::make_unique;
 
 namespace
 {
-    const int g_tooltipTimeout = 200;
     const float SCALE_FACTOR = 0.1f;
 }
 
@@ -44,16 +43,9 @@ namespace gloperate_qt{
 
 TreeNavigationMapping::TreeNavigationMapping(QtOpenGLWindow * window)
 : AbstractQtMapping(window)
-, m_metaInformationCapability(nullptr)
 , m_viewportCapability(nullptr)
 , m_typedRenderTargetCapability(nullptr)
-, m_timer(new QTimer(this))
 {
-    m_timer->setInterval(g_tooltipTimeout);
-    m_timer->setSingleShot(true);
-    m_timer->stop();
-
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(showTooltip()));
 }
 
 TreeNavigationMapping::~TreeNavigationMapping()
@@ -63,7 +55,6 @@ TreeNavigationMapping::~TreeNavigationMapping()
 void TreeNavigationMapping::initializeTools()
 {
     m_renderTarget = nullptr;
-    m_metaInformationCapability = nullptr;
     m_viewportCapability = nullptr;
     m_typedRenderTargetCapability = nullptr;
     m_coordProvider = nullptr;
@@ -102,8 +93,6 @@ void TreeNavigationMapping::initializeTools()
         m_navigation = make_unique<TreeNavigation>(
             *cameraCapability, *m_viewportCapability, *m_coordProvider, projectionCapability);
     }
-
-    m_metaInformationCapability = m_painter->getCapability<AbstractMetaInformationCapability>();
 }
 
 void TreeNavigationMapping::mapEvent(AbstractEvent * event)
@@ -163,12 +152,6 @@ void TreeNavigationMapping::mapMouseEvent(MouseEvent * mouseEvent)
     }
     else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Move)
     {
-        if (m_metaInformationCapability)
-        {
-            hideTooltip();
-            m_timer->start();
-        }
-
         switch (m_navigation->mode())
         {
         case TreeNavigation::InteractionMode::PanInteraction:
@@ -215,34 +198,6 @@ void TreeNavigationMapping::onTargetFramebufferChanged()
 
     m_renderTarget->setRenderTarget(gloperate::RenderTargetType::Depth, fbo,
         gl::GL_DEPTH_ATTACHMENT, gl::GL_DEPTH_COMPONENT);
-}
-
-void TreeNavigationMapping::showTooltip()
-{
-    if (!m_metaInformationCapability)
-    {
-        return;
-    }
-
-    hideTooltip();
-
-    m_window->makeCurrent();
-    int id = gloperate::ObjectIdExtractor(m_viewportCapability, m_typedRenderTargetCapability).get(m_currentMousePosition);
-    m_window->doneCurrent();
-
-    const std::string & string = m_metaInformationCapability->get(id);
-
-    if (string.empty())
-    {
-        return;
-    }
-
-    QToolTip::showText(m_window->mapToGlobal(QPoint(m_currentMousePosition.x, m_currentMousePosition.y)), QString::fromStdString(string));
-}
-
-void TreeNavigationMapping::hideTooltip()
-{
-    QToolTip::showText(QPoint(0, 0), "");
 }
 
 }
