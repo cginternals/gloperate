@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <memory>
@@ -10,10 +9,11 @@
 #include <glm/glm.hpp>
 
 #include <gloperate-qt/viewer/AbstractQtMapping.h>
+#include <gloperate/navigation/AbstractEventRoutingCapability.h>
+#include <gloperate/input/input.h>
 
 
 class QTimer;
-
 
 namespace gloperate
 {
@@ -32,14 +32,28 @@ namespace gloperate_qt
 {
 
 
-class GLOPERATE_QT_API DefaultMapping : public QObject, public gloperate_qt::AbstractQtMapping
+class GLOPERATE_QT_API EventRoutingMapping :public gloperate_qt::AbstractQtMapping
 {
-    Q_OBJECT
+    
+enum InteractionState
+{
+    NoDrag
+    , DragStarted
+};
+
+struct InteractionData
+{
+    gloperate::AbstractInteraction * reciever = nullptr;
+    InteractionState state;
+    glm::ivec2 startPosition;
+    InteractionData(gloperate::AbstractInteraction* reciever = nullptr, glm::ivec2 startPosition = glm::ivec2(0.0)) :
+        reciever(reciever), state(NoDrag), startPosition(startPosition) {};
+};
 
 
 public:
-    DefaultMapping(gloperate_qt::QtOpenGLWindow * window);
-    virtual ~DefaultMapping();
+    EventRoutingMapping(gloperate_qt::QtOpenGLWindow * window);
+    virtual ~EventRoutingMapping();
 
     virtual void initializeTools() override;
 
@@ -49,25 +63,22 @@ protected:
 
     void mapKeyboardEvent(gloperate::KeyboardEvent * event);
     void mapMouseEvent(gloperate::MouseEvent * event);
+    void handleMouseMoveEvent();
+    void handleMouseReleaseEvent(int value);
     void mapWheelEvent(gloperate::WheelEvent * event);
 
     void onTargetFramebufferChanged();
 
-
-protected slots:
-    void showTooltip();
-    void hideTooltip();
-
-
 protected:
-    std::unique_ptr<gloperate::WorldInHandNavigation> m_navigation;
-    std::unique_ptr<gloperate::CoordinateProvider> m_coordProvider;
+    gloperate::AbstractInteraction* mapToReciever(gloperate::RoutingEventType type, int value) const;
     std::unique_ptr<gloperate::TypedRenderTargetCapability> m_renderTarget;
-    gloperate::AbstractMetaInformationCapability * m_metaInformationCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
-    QTimer * m_timer;
+    gloperate::AbstractEventRoutingCapability * m_eventRoutingCapability;
     glm::ivec2 m_currentMousePosition;
+    int m_currentId;
+    std::unordered_map<gloperate::MouseButton, InteractionData> m_eventReciever;
+    std::set<gloperate::MouseButton> pressedButtons;
 };
 
 

@@ -58,6 +58,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/viewer/Application.h
     ${include_path}/viewer/DefaultMapping.h
+	${include_path}/viewer/EventRoutingMapping.h
     ${include_path}/viewer/Viewer.h
     ${include_path}/viewer/AbstractQtMapping.h
     ${include_path}/viewer/QtEventTransformer.h
@@ -93,6 +94,7 @@ set(headers
 set(sources
     ${source_path}/viewer/Application.cpp
     ${source_path}/viewer/DefaultMapping.cpp
+	${source_path}/viewer/EventRoutingMapping.cpp
     ${source_path}/viewer/Viewer.cpp
     ${source_path}/viewer/Viewer.ui
     ${source_path}/viewer/AbstractQtMapping.cpp

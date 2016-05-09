@@ -50,6 +50,7 @@
 #include <gloperate-qt/scripting/TimerApi.h>
 #include <gloperate-qt/scripting/ViewerApi.h>
 #include <gloperate-qt/scripting/PluginApi.h>
+#include <gloperate-qt/viewer/EventRoutingMapping.h>
 
 
 using namespace widgetzeug;
@@ -356,7 +357,7 @@ void Viewer::setupCanvas()
     m_canvas->installEventFilter(wheelProvider);
 
     // Create input mapping for gloperate interaction techniques
-    m_mapping.reset(new DefaultMapping(m_canvas.get()));
+    m_mapping.reset(new EventRoutingMapping(m_canvas.get()));
     //m_mapping.reset(new TreeNavigationMapping(m_canvas.get()));
     m_mapping->addProvider(keyProvider);
     m_mapping->addProvider(mouseProvider);

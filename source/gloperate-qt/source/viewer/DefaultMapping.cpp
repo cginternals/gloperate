@@ -46,9 +46,16 @@ namespace gloperate_qt
 
 DefaultMapping::DefaultMapping(QtOpenGLWindow * window)
 : AbstractQtMapping(window)
+, m_metaInformationCapability(nullptr)
 , m_viewportCapability(nullptr)
 , m_typedRenderTargetCapability(nullptr)
+, m_timer(new QTimer(this))
 {
+    m_timer->setInterval(g_tooltipTimeout);
+    m_timer->setSingleShot(true);
+    m_timer->stop();
+
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(showTooltip()));
 }
 
 DefaultMapping::~DefaultMapping()
@@ -58,8 +65,11 @@ DefaultMapping::~DefaultMapping()
 void DefaultMapping::initializeTools()
 {
     m_renderTarget = nullptr;
+    m_metaInformationCapability = nullptr;
     m_viewportCapability = nullptr;
     m_typedRenderTargetCapability = nullptr;
+    m_coordProvider = nullptr;
+    m_navigation = nullptr;
 
     if (!m_painter)
     {
@@ -85,19 +95,23 @@ void DefaultMapping::initializeTools()
             auto fboCapability = m_painter->getCapability<AbstractTargetFramebufferCapability>();
             fboCapability->changed.connect([this] () { this->onTargetFramebufferChanged(); });
         }
+
+        m_coordProvider = make_unique<CoordinateProvider>(
+            cameraCapability, projectionCapability, m_viewportCapability, m_typedRenderTargetCapability);
+        m_navigation = make_unique<WorldInHandNavigation>(
+            *cameraCapability, *m_viewportCapability, *m_coordProvider);
     }
-    if (m_painter->supports<AbstractEventRoutingCapability>())
-    {
-        m_eventRoutingCapability = m_painter->getCapability<AbstractEventRoutingCapability>();
-    }
-    else
-    {
-        m_eventRoutingCapability = nullptr;
-    }
+
+    m_metaInformationCapability = m_painter->getCapability<AbstractMetaInformationCapability>();
 }
 
 void DefaultMapping::mapEvent(AbstractEvent * event)
 {
+    if (!m_navigation)
+    {
+        return;
+    }
+
     if (m_renderTarget && !m_renderTarget->hasRenderTarget(RenderTargetType::Depth))
         onTargetFramebufferChanged();
 
@@ -121,82 +135,110 @@ void DefaultMapping::mapKeyboardEvent(KeyboardEvent * event)
 {
     if (event && event->type() == KeyboardEvent::Type::Press)
     {
-        auto curReciever = mapToReciever(RoutingEventType::Keyboard, static_cast<int>(RoutingEventValue::Any));
-        curReciever->keyPress(KeyboardInteractionArgs(event->key(), event->scanCode(), event->modifiers()));
+        switch (event->key())
+        {
+        // WASD move camera
+        case KeyW:
+            m_navigation->pan(glm::vec3(0, 0, 1));
+            break;
+        case KeyA:
+            m_navigation->pan(glm::vec3(1, 0, 0));
+            break;
+        case KeyS:
+            m_navigation->pan(glm::vec3(0, 0, -1));
+            break;
+        case KeyD:
+            m_navigation->pan(glm::vec3(-1, 0, 0));
+            break;
+        // Reset camera position
+        case KeyR:
+            m_navigation->reset();
+            break;
+        // Arrows rotate camera
+        case KeyUp:
+            m_navigation->rotate(0.0f, glm::radians(-10.0f));
+            break;
+        case KeyLeft:
+            m_navigation->rotate(glm::radians(10.0f), 0.0f);
+            break;
+        case KeyDown:
+            m_navigation->rotate(0.0f, glm::radians(10.0f));
+            break;
+        case KeyRight:
+            m_navigation->rotate(glm::radians(-10.0f), 0.0f);
+            break;
+        default:
+            break;
+        }
     }
 }
 
 void DefaultMapping::mapMouseEvent(MouseEvent * mouseEvent)
 {
-    if (!mouseEvent) return;
-
-    m_currentMousePosition = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
-    m_currentId = ObjectIdExtractor(m_viewportCapability, m_typedRenderTargetCapability).get(m_currentMousePosition);
-
-    if (mouseEvent->type() == MouseEvent::Type::Press)
+    if (mouseEvent)
     {
-        gloperate::MouseButton curButton = mouseEvent->button();
-        pressedButtons.insert(curButton);
-        auto curReciever = mapToReciever(RoutingEventType::MouseButton, curButton);
-    
-        if (!curReciever || m_eventReciever.count(curButton))
-            return;
-    
-        m_eventReciever[curButton] = InteractionData(curReciever, m_currentMousePosition);
+        m_currentMousePosition = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
     }
-    else if (mouseEvent->type() == MouseEvent::Type::Move)
+
+    if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Press)
     {
-        handleMouseMoveEvent();
-    }
-    else if (mouseEvent->type() == MouseEvent::Type::Release)
-    {
-        gloperate::MouseButton curButton = mouseEvent->button();
-        pressedButtons.erase(curButton);
-
-        if (!m_eventReciever.count(curButton)) return;
-
-        handleMouseReleaseEvent(curButton);
-        m_eventReciever.erase(curButton);
-    }
-}
-
-void DefaultMapping::handleMouseMoveEvent()
-{
-    for (auto btn = pressedButtons.begin(); btn != pressedButtons.end(); ++btn) {
-        if (!m_eventReciever.count(*btn)) continue;
-        InteractionData &reciever = m_eventReciever.at(*btn);
-        glm::ivec2 delta = m_currentMousePosition - m_eventReciever.at(*btn).startPosition;
-        if (reciever.state != DragStarted) {
-            reciever.reciever->dragStart(MouseInteractionArgs(reciever.startPosition, *btn));
-            reciever.state = DragStarted;
+        switch (mouseEvent->button())
+        {
+        case MouseButtonMiddle:
+            m_navigation->reset();
+            break;
+        case MouseButtonLeft:
+            m_navigation->panBegin(m_currentMousePosition);
+            break;
+        case MouseButtonRight:
+            m_navigation->rotateBegin(m_currentMousePosition);
+            break;
+        default:
+            break;
         }
-        auto hoverReciever = mapToReciever(RoutingEventType::Any, static_cast<int>(RoutingEventValue::Any));
-        AbstractInteraction* hoverElement = reciever.reciever != hoverReciever ? hoverReciever : nullptr;
-        reciever.reciever->dragDelta(MouseInteractionDragDeltaArgs(m_currentMousePosition, *btn, hoverElement, delta, reciever.startPosition));
     }
-}
-
-void DefaultMapping::handleMouseReleaseEvent(int value)
-{
-    InteractionData curReciever = mapToReciever(RoutingEventType::MouseButton, value);
-    glm::ivec2 delta = m_currentMousePosition - curReciever.startPosition;
-    if (delta == glm::ivec2(0, 0))
+    else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Move)
     {
-        curReciever.reciever->click(MouseInteractionArgs(m_currentMousePosition, static_cast<MouseButton>(value)));
+        if (m_metaInformationCapability)
+        {
+            hideTooltip();
+            m_timer->start();
+        }
+        
+        switch (m_navigation->mode())
+        {
+        case WorldInHandNavigation::InteractionMode::PanInteraction:
+            m_navigation->panProcess(m_currentMousePosition);
+            break;
+        case WorldInHandNavigation::InteractionMode::RotateInteraction:
+            m_navigation->rotateProcess(m_currentMousePosition);
+            break;
+        default:
+            break;
+        }
     }
-    else
+    else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Release)
     {
-        curReciever.reciever->dragEnd(MouseInteractionArgs(m_currentMousePosition, static_cast<MouseButton>(value)));
+        switch (mouseEvent->button())
+        {
+        case MouseButtonLeft:
+            m_navigation->panEnd();
+            break;
+        case MouseButtonRight:
+            m_navigation->rotateEnd();
+            break;
+        default:
+            break;
+        }
     }
 }
 
 void DefaultMapping::mapWheelEvent(WheelEvent * wheelEvent)
 {
-    m_currentMousePosition = wheelEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
-    auto reciever = mapToReciever(RoutingEventType::MouseWheel, static_cast<int>(RoutingEventValue::Any));
-    if (reciever) {
-        reciever->mouseWheel(MouseInteractionWheelArgs(m_currentMousePosition, wheelEvent->angleDelta()));
-    }
+    auto scale = wheelEvent->angleDelta().y;
+    scale /= WheelEvent::defaultMouseAngleDelta();
+    scale *= 0.1f; // smoother (slower) scaling
+    m_navigation->scaleAtMouse(wheelEvent->pos(), scale);
 }
 
 void DefaultMapping::onTargetFramebufferChanged()
@@ -211,11 +253,33 @@ void DefaultMapping::onTargetFramebufferChanged()
         gl::GL_DEPTH_ATTACHMENT, gl::GL_DEPTH_COMPONENT);
 }
 
-gloperate::AbstractInteraction* DefaultMapping::mapToReciever(gloperate::RoutingEventType type, int value) const
+void DefaultMapping::showTooltip()
 {
-    AbstractInteraction* curReciever = m_eventRoutingCapability ? m_eventRoutingCapability->mapID(m_currentId, type, value) : nullptr;
-    if (!curReciever)
-        curReciever = m_eventRoutingCapability->getNavigation();
-    return curReciever;
+    if (!m_metaInformationCapability)
+    {
+        return;
+    }
+
+    hideTooltip();
+
+    m_window->makeCurrent();
+    int id = gloperate::ObjectIdExtractor(m_viewportCapability, m_typedRenderTargetCapability).get(m_currentMousePosition);
+    m_window->doneCurrent();
+
+    const std::string & string = m_metaInformationCapability->get(id);
+
+    if (string.empty())
+    {
+        return;
+    }
+
+    QToolTip::showText(m_window->mapToGlobal(QPoint(m_currentMousePosition.x, m_currentMousePosition.y)), QString::fromStdString(string));
 }
+
+void DefaultMapping::hideTooltip()
+{
+    QToolTip::showText(QPoint(0, 0), "");
+}
+
+
 } // namespace gloperate_qt
