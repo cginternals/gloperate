@@ -156,10 +156,10 @@ void TreeNavigation::panProcess(const glm::ivec2 & mouse)
         glm::clamp(mouse.y, 0, m_viewportCapability.height()));
 
     bool intersects = false;
-    m_modifiedPosition = mouseRayPlaneIntersection(intersects, clamped, m_referencePosition, glm::vec3(0.f, 1.f, 0.f));
+    auto modifiedPosition = mouseRayPlaneIntersection(intersects, clamped, m_referencePosition, glm::vec3(0.f, 1.f, 0.f));
 
     if (intersects)
-        pan(m_referencePosition - m_modifiedPosition);
+        pan(m_referencePosition - modifiedPosition);
 }
 
 void TreeNavigation::panEnd()

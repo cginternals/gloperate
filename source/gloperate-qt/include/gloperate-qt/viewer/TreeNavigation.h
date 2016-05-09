@@ -116,7 +116,6 @@ protected:
     InteractionMode m_mode;
 
     glm::vec3   m_referencePosition;
-    glm::vec3   m_modifiedPosition;
     bool        m_refPositionValid; // stores if initial interaction pick yielded valid depth
     glm::vec3   m_eye;
     glm::vec3   m_center;
