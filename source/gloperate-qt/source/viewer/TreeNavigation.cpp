@@ -240,6 +240,7 @@ void TreeNavigation::rotateProcess(const glm::ivec2 & mouse)
 
 void TreeNavigation::pan(glm::vec3 t)
 {
+    enforceTranslationConstraints(t);
     m_cameraCapability.setEye(t + m_cameraCapability.eye());
     m_cameraCapability.setCenter(t + m_cameraCapability.center());
 }
@@ -354,5 +355,14 @@ void TreeNavigation::enforceRotationConstraints(
 
     auto va = acosf(glm::dot(viewDir, up));
     vAngle = glm::clamp(vAngle, CONSTRAINT_ROT_MAX_V_UP - va, CONSTRAINT_ROT_MAX_V_LO - va);
+}
+
+void TreeNavigation::enforceTranslationConstraints(glm::vec3 &delta)
+{
+    //make sure the camera does not veer into infinity
+    auto eyePos = m_cameraCapability.eye();
+    
+    auto newPos = glm::clamp(eyePos + delta, glm::vec3(-MAP_EXTENT_X*2,0,-MAP_EXTENT_Z*2), glm::vec3(MAP_EXTENT_X*2,2,MAP_EXTENT_Z*2));
+    delta = newPos- eyePos;
 }
 

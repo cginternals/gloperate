@@ -91,6 +91,8 @@ public:
     void enforceRotationConstraints(
         float & hAngle
     ,	float & vAngle) const;
+    
+    void enforceTranslationConstraints(glm::vec3 & delta);
 
     // math
 
