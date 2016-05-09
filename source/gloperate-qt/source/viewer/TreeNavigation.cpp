@@ -39,6 +39,11 @@ namespace
     
     static const float MAP_EXTENT_X = 0.5f;
     static const float MAP_EXTENT_Z = 0.5f;
+    static const float MAP_EXTENT = std::max(MAP_EXTENT_X, MAP_EXTENT_Z);
+    
+    static const float TRANSLATION_FREEDOM = 2.f;
+    
+    static const float CAM_SIZE = 0.01f;
 }
 
 
@@ -360,9 +365,22 @@ void TreeNavigation::enforceRotationConstraints(
 void TreeNavigation::enforceTranslationConstraints(glm::vec3 &delta)
 {
     //make sure the camera does not veer into infinity
+    auto tf = TRANSLATION_FREEDOM;
     auto eyePos = m_cameraCapability.eye();
+    auto center = m_cameraCapability.center();
     
-    auto newPos = glm::clamp(eyePos + delta, glm::vec3(-MAP_EXTENT_X*2,0,-MAP_EXTENT_Z*2), glm::vec3(MAP_EXTENT_X*2,2,MAP_EXTENT_Z*2));
-    delta = newPos- eyePos;
+    auto newPos = glm::clamp(eyePos + delta, glm::vec3(-MAP_EXTENT_X*tf,0,-MAP_EXTENT_Z*tf), glm::vec3(MAP_EXTENT_X*tf,1+1*tf,MAP_EXTENT_Z*tf));
+    delta = newPos-eyePos;
+    
+    //make sure at that the center is always "on" the map
+    bool intersects;
+    const glm::vec3 intersection(navigationmath::rayPlaneIntersection(intersects, eyePos+delta, center+delta));
+    const glm::vec2 flatIntersect(intersection.x, intersection.z);
+    
+    if (navigationmath::insideSquare(flatIntersect, MAP_EXTENT))
+        return;
+
+    const glm::vec2 i = navigationmath::raySquareIntersection(flatIntersect, MAP_EXTENT);
+    delta = glm::vec3(i.x, 0., i.y) - center;
 }
 
