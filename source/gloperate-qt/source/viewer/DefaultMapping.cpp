@@ -170,8 +170,8 @@ void DefaultMapping::handleMouseMoveEvent()
             reciever.reciever->dragStart(MouseInteractionArgs(reciever.startPosition, *btn));
             reciever.state = DragStarted;
         }
-        //curReciever is the Element under the mouse no matter what interaction is possible on
-        AbstractInteraction* hoverElement = /*reciever.reciever != curReciever ? curReciever : */ nullptr;
+        auto hoverReciever = mapToReciever(RoutingEventType::Any, static_cast<int>(RoutingEventValue::Any));
+        AbstractInteraction* hoverElement = reciever.reciever != hoverReciever ? hoverReciever : nullptr;
         reciever.reciever->dragDelta(MouseInteractionDragDeltaArgs(m_currentMousePosition, *btn, hoverElement, delta, reciever.startPosition));
     }
 }
