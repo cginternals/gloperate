@@ -14,7 +14,6 @@ namespace gloperate
 template <typename T>
 InputSlot<T>::InputSlot(cppexpose::PropertyGroup * parent, const std::string & name, const T & defaultValue)
 : cppexpose::TypedProperty<T>(parent, name)
-, m_feedback(false)
 , m_defaultValue(defaultValue)
 , m_source(nullptr)
 {
@@ -23,41 +22,6 @@ InputSlot<T>::InputSlot(cppexpose::PropertyGroup * parent, const std::string & n
 template <typename T>
 InputSlot<T>::~InputSlot()
 {
-}
-
-template <typename T>
-bool InputSlot<T>::isCompatible(const cppexpose::AbstractProperty * property) const
-{
-    if (property) {
-        return static_cast<cppexpose::AbstractTyped *>(this)->type() == property->asTyped()->type();
-    } else {
-        return nullptr;
-    }
-}
-
-template <typename T>
-bool InputSlot<T>::isConnected() const
-{
-    return false;
-}
-
-template <typename T>
-const Data<T> * InputSlot<T>::source() const
-{
-    return m_source;
-}
-
-template <typename T>
-bool InputSlot<T>::connect(const cppexpose::AbstractProperty * source)
-{
-    // Check if source is valid and compatible data container
-    if (!source || !isCompatible(source))
-    {
-        return false;
-    }
-
-    // Connect to source data
-    return connect(dynamic_cast< Data<T> * >(source));
 }
 
 template <typename T>
@@ -86,6 +50,35 @@ bool InputSlot<T>::connect(const Data<T> * source)
 }
 
 template <typename T>
+bool InputSlot<T>::isCompatible(const cppexpose::AbstractProperty * source) const
+{
+    if (source) {
+        return this->type() == source->asTyped()->type();
+    } else {
+        return false;
+    }
+}
+
+template <typename T>
+const cppexpose::AbstractProperty * InputSlot<T>::source() const
+{
+    return m_source;
+}
+
+template <typename T>
+bool InputSlot<T>::connect(const cppexpose::AbstractProperty * source)
+{
+    // Check if source is valid and compatible data container
+    if (!source || !isCompatible(source))
+    {
+        return false;
+    }
+
+    // Connect to source data
+    return connect(dynamic_cast< const Data<T> * >(source));
+}
+
+template <typename T>
 void InputSlot<T>::disconnect()
 {
     // Reset source property
@@ -95,18 +88,6 @@ void InputSlot<T>::disconnect()
     // Emit events
     this->connectionChanged();
     this->valueChanged(m_defaultValue);
-}
-
-template <typename T>
-bool InputSlot<T>::isFeedback() const
-{
-    return m_feedback;
-}
-
-template <typename T>
-void InputSlot<T>::setFeedback(bool feedback)
-{
-    m_feedback = feedback;
 }
 
 template <typename T>

@@ -6,8 +6,7 @@
 
 #include <cppexpose/reflection/Object.h>
 
-#include <gloperate/pipeline/Data.h>
-#include <gloperate/pipeline/InputSlot.h>
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
@@ -16,6 +15,12 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
+
+template <typename T>
+class InputSlot;
+
+template <typename T>
+class Data;
 
 
 /**
@@ -34,18 +39,6 @@ public:
 
     template <typename T>
     using Data = gloperate::Data<T>;
-
-
-public:
-    // Inputs
-    InputSlot<glm::vec4> deviceViewport;  ///< Viewport (in real device coordinates)
-    InputSlot<glm::vec4> virtualViewport; ///< Viewport (in virtual coordinates)
-    InputSlot<glm::vec3> backgroundColor; ///< Background color (RGB)
-    InputSlot<int>       frameCounter;    ///< Frame counter (number of frames)
-    InputSlot<float>     timeDelta;       ///< Time delta since last frame (in seconds)
-
-    // Outputs
-    Data<bool>           redrawNeeded;    ///< 'true' if stage needs redrawing
 
 
 public:

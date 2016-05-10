@@ -10,13 +10,7 @@ namespace gloperate
 
 
 Stage::Stage(ViewerContext * viewerContext)
-: deviceViewport (this, "deviceViewport")
-, virtualViewport(this, "virtualViewport")
-, backgroundColor(this, "backgroundColor")
-, frameCounter   (this, "frameCounter")
-, timeDelta      (this, "timeDelta")
-, redrawNeeded   (this, "redrawNeeded")
-, m_viewerContext(viewerContext)
+: m_viewerContext(viewerContext)
 {
 }
 

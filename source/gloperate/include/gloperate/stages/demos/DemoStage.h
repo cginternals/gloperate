@@ -9,9 +9,11 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
-#include <gloperate/pipeline/Stage.h>
 #include <gloperate/viewer/Timer.h>
 #include <gloperate/rendering/Camera.h>
+#include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/InputSlot.h>
 
 
 namespace gloperate
@@ -24,6 +26,18 @@ namespace gloperate
 */
 class GLOPERATE_API DemoStage : public Stage
 {
+public:
+    // Inputs
+    InputSlot<glm::vec4> deviceViewport;  ///< Viewport (in real device coordinates)
+    InputSlot<glm::vec4> virtualViewport; ///< Viewport (in virtual coordinates)
+    InputSlot<glm::vec3> backgroundColor; ///< Background color (RGB)
+    InputSlot<int>       frameCounter;    ///< Frame counter (number of frames)
+    InputSlot<float>     timeDelta;       ///< Time delta since last frame (in seconds)
+
+    // Outputs
+    Data<bool>           redrawNeeded;    ///< 'true' if stage needs redrawing
+
+
 public:
     /**
     *  @brief

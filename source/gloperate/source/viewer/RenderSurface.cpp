@@ -51,11 +51,11 @@ void RenderSurface::setRenderStage(Stage * stage)
     if (m_renderStage)
     {
         // Disconnect inputs and outputs from former render stage
-        m_renderStage->deviceViewport.disconnect();
-        m_renderStage->virtualViewport.disconnect();
-        m_renderStage->backgroundColor.disconnect();
-        m_renderStage->frameCounter.disconnect();
-        m_renderStage->timeDelta.disconnect();
+        disconnect(m_renderStage, "deviceViewport");
+        disconnect(m_renderStage, "virtualViewport");
+        disconnect(m_renderStage, "backgroundColor");
+        disconnect(m_renderStage, "frameCounter");
+        disconnect(m_renderStage, "timeDelta");
         redrawNeeded.disconnect();
 
         // De-initialize render stage
@@ -71,13 +71,13 @@ void RenderSurface::setRenderStage(Stage * stage)
     m_renderStage = stage;
     if (m_renderStage)
     {
-        // Disconnect inputs and outputs of render stage
-        m_renderStage->deviceViewport.connect(&this->deviceViewport);
-        m_renderStage->virtualViewport.connect(&this->virtualViewport);
-        m_renderStage->backgroundColor.connect(&this->backgroundColor);
-        m_renderStage->frameCounter.connect(&this->frameCounter);
-        m_renderStage->timeDelta.connect(&this->timeDelta);
-        redrawNeeded.connect(&m_renderStage->redrawNeeded);
+        // Connect inputs and outputs of render stage
+        connect(m_renderStage, "deviceViewport",  &this->deviceViewport);
+        connect(m_renderStage, "virtualViewport", &this->virtualViewport);
+        connect(m_renderStage, "backgroundColor", &this->backgroundColor);
+        connect(m_renderStage, "frameCounter",    &this->frameCounter);
+        connect(m_renderStage, "timeDelta",       &this->timeDelta);
+        connect(&this->redrawNeeded, m_renderStage, "redrawNeeded");
 
         // Initialize render stage
         if (m_openGLContext) {
@@ -175,6 +175,52 @@ void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos
 {
     m_mouseDevice->wheelScroll(delta, pos);
     cppassist::info() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+}
+
+void RenderSurface::connect(Stage * stage, const std::string & name, const cppexpose::AbstractProperty * source)
+{
+    // Check source data
+    if (!source) {
+        return;
+    }
+
+    // Get input slot
+    AbstractInputSlot * input = dynamic_cast<AbstractInputSlot *>(stage->property(name));
+    if (!input) {
+        return;
+    }
+
+    // Connect input slot
+    input->connect(source);
+}
+
+void RenderSurface::connect(AbstractInputSlot * input, Stage * stage, const std::string & name)
+{
+    // Check input slot
+    if (!input) {
+        return;
+    }
+
+    // Get data container
+    const cppexpose::AbstractProperty * source = stage->property(name);
+    if (!source) {
+        return;
+    }
+
+    // Connect input slot
+    input->connect(source);
+}
+
+void RenderSurface::disconnect(Stage * stage, const std::string & name)
+{
+    // Get input slot
+    AbstractInputSlot * input = dynamic_cast<AbstractInputSlot *>(stage->property(name));
+    if (!input) {
+        return;
+    }
+
+    // Disconnect input slot
+    input->disconnect();
 }
 
 
