@@ -1,6 +1,9 @@
 
 #include <gloperate/pipeline/Stage.h>
 
+#include <gloperate/pipeline/InputSlot.h>
+#include <gloperate/pipeline/Data.h>
+
 
 namespace gloperate
 {

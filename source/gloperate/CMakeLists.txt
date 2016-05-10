@@ -70,9 +70,13 @@ set(headers
     ${include_path}/scripting/ComponentsApi.h
 
     ${include_path}/pipeline/Stage.h
+    ${include_path}/pipeline/InputSlot.h
+    ${include_path}/pipeline/InputSlot.hpp
+    ${include_path}/pipeline/Data.h
+    ${include_path}/pipeline/Data.hpp
 
     ${include_path}/rendering/Camera.h
-    
+
     ${include_path}/stages/demos/DemoStage.h
 
     ${include_path}/input/InputManager.h
