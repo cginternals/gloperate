@@ -168,7 +168,7 @@ Page
             items: [
               { name: 'choose',     text: 'Choose Pipeline', icon: '0092-tv.png', enabled: false },
               { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: false },
-              { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: false },
+              { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: true },
               { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: false }
             ]
           }
@@ -176,6 +176,9 @@ Page
 
         onItemClicked: // (menu, name)
         {
+            if (menu == 'pipeline' && name == 'screenshot') {
+                screenshot.visible = true;
+            }
         }
     }
 
@@ -225,6 +228,43 @@ Page
             anchors.fill: parent
         }
     }
+
+    // Screenshot dialog
+    Screenshot
+    {
+        id: screenshot
+
+        // title:   "Screenshot"
+        visible: false
+        width:   400
+        // height:  300
+    }
+
+    // // Screenshot dialog
+    // ApplicationWindow
+    // {
+    //     id: screenshot
+
+    //     title:   "Screenshot"
+    //     visible: false
+    //     width:   400
+    //     // height:  300
+
+    //     property int margin: 11
+    //     // width: screenshotItem.layout.implicitWidth + 2 * margin
+    //     height: screenshotItem.layout.implicitHeight + 2 * margin
+    //     minimumWidth: screenshotItem.layout.Layout.minimumWidth + 2 * margin
+    //     minimumHeight: screenshotItem.layout.Layout.minimumHeight + 2 * margin
+
+    //     Screenshot
+    //     {
+    //         id: screenshotItem
+
+    //         margin: screenshot.margin
+    //         anchors.fill: parent
+    //         // anchors.margins: 11
+    //     }
+    // }
 
     // Log window
     Component
