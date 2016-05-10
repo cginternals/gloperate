@@ -9,6 +9,7 @@
 #include <gloperate/base/CachedValue.h>
 
 #include <gloperate/painter/AbstractProjectionCapability.h>
+#include <gloperate/painter/AbstractCameraCapability.h>
 #include <gloperate/painter/OrthographicProjectionCapability.h>
 #include <gloperate/painter/PerspectiveProjectionCapability.h>
 
@@ -57,7 +58,7 @@ public:
     
     float mix() const;
     void setMix(float mix);
-    void setOrthoFOV(float z);
+    void setOrthoFOV(const glm::vec3 & eye, const glm::vec3 & focus);
 
 
 protected:

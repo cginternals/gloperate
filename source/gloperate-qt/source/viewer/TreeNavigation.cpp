@@ -238,7 +238,7 @@ void TreeNavigation::rotateProcess(const glm::ivec2 & mouse)
         auto tween_va = (va - CONSTRAINT_ROT_MAX_V_UP) / PROJECTION_TWEENING_THRESH;
         tween_va = glm::clamp(tween_va, 0.0f, 1.0f);
         
-        combCapability->setOrthoFOV(m_eye.y);
+        combCapability->setOrthoFOV(m_eye, m_referencePosition);
         combCapability->setMix(tween_va);
     }  
 }

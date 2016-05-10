@@ -110,10 +110,10 @@ glm::mat4 CombinedProjectionCapability::interpolate(const glm::mat4 &first, cons
     return glm::mix(first, second, m_mix);
 }
 
-void CombinedProjectionCapability::setOrthoFOV(float z)
+void CombinedProjectionCapability::setOrthoFOV(const glm::vec3 & eye, const glm::vec3 & focus)
 {
     auto alpha = m_perspectiveCapability.fovy();
-    auto fovy = glm::tan(alpha) * z * 0.9f;
+    auto fovy = glm::tan(alpha) * glm::length(eye-focus) * 0.9f;
     m_orthoCapability.setHeight(std::max(fovy, 0.1f));
 }
 
