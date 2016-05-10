@@ -2,11 +2,10 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
-
 #include <cppexpose/reflection/Object.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/InputSlot.h>
 
 
 namespace gloperate
@@ -15,12 +14,6 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
-
-template <typename T>
-class InputSlot;
-
-template <typename T>
-class Data;
 
 
 /**

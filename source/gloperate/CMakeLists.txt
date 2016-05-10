@@ -70,6 +70,7 @@ set(headers
     ${include_path}/scripting/ComponentsApi.h
 
     ${include_path}/pipeline/Stage.h
+    ${include_path}/pipeline/RenderStage.h
     ${include_path}/pipeline/AbstractInputSlot.h
     ${include_path}/pipeline/InputSlot.h
     ${include_path}/pipeline/InputSlot.hpp
@@ -121,6 +122,7 @@ set(sources
     ${source_path}/scripting/ComponentsApi.cpp
 
     ${source_path}/pipeline/Stage.cpp
+    ${source_path}/pipeline/RenderStage.cpp
     ${source_path}/pipeline/AbstractInputSlot.cpp
 
     ${source_path}/rendering/Camera.cpp

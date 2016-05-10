@@ -58,13 +58,7 @@ namespace gloperate
 
 
 DemoStage::DemoStage(ViewerContext * viewerContext)
-: Stage(viewerContext)
-, deviceViewport (this, "deviceViewport")
-, virtualViewport(this, "virtualViewport")
-, backgroundColor(this, "backgroundColor")
-, frameCounter   (this, "frameCounter")
-, timeDelta      (this, "timeDelta")
-, redrawNeeded   (this, "redrawNeeded")
+: RenderStage(viewerContext)
 , m_timer(viewerContext)
 , m_time(0.0f)
 , m_angle(0.0f)

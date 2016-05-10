@@ -11,9 +11,7 @@
 
 #include <gloperate/viewer/Timer.h>
 #include <gloperate/rendering/Camera.h>
-#include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/Data.h>
-#include <gloperate/pipeline/InputSlot.h>
+#include <gloperate/pipeline/RenderStage.h>
 
 
 namespace gloperate
@@ -24,20 +22,8 @@ namespace gloperate
 *  @brief
 *    Demo stage that renders a simple triangle onto the screen
 */
-class GLOPERATE_API DemoStage : public Stage
+class GLOPERATE_API DemoStage : public RenderStage
 {
-public:
-    // Inputs
-    InputSlot<glm::vec4> deviceViewport;  ///< Viewport (in real device coordinates)
-    InputSlot<glm::vec4> virtualViewport; ///< Viewport (in virtual coordinates)
-    InputSlot<glm::vec3> backgroundColor; ///< Background color (RGB)
-    InputSlot<int>       frameCounter;    ///< Frame counter (number of frames)
-    InputSlot<float>     timeDelta;       ///< Time delta since last frame (in seconds)
-
-    // Outputs
-    Data<bool>           redrawNeeded;    ///< 'true' if stage needs redrawing
-
-
 public:
     /**
     *  @brief
