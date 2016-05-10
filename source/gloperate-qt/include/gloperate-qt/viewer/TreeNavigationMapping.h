@@ -52,20 +52,12 @@ protected:
 
     void onTargetFramebufferChanged();
 
-
-protected slots:
-    void showTooltip();
-    void hideTooltip();
-
-
 protected:
     std::unique_ptr<TreeNavigation> m_navigation;
     std::unique_ptr<gloperate::CoordinateProvider> m_coordProvider;
     std::unique_ptr<gloperate::TypedRenderTargetCapability> m_renderTarget;
-    gloperate::AbstractMetaInformationCapability * m_metaInformationCapability;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
-    QTimer * m_timer;
     glm::ivec2 m_currentMousePosition;
 };
 
