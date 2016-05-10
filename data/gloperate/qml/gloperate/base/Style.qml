@@ -14,21 +14,25 @@ Item
     //
 
     // Main colors
-    property color primaryColor:    '#ffffff'
-    property color secondaryColor:  '#fd971f'
-    property color pressedColor:    '#ffffd9'
-    property color disabledColor:   '#999999'
+    property color primaryColor:     '#000000'
+    property color secondaryColor:   '#cccccc'
+    property color highlightColor:   '#4078c0'
+    property color pressedColor:     '#6098e0'
+    property color disabledColor:    '#999999'
 
     // Panels and controls
-    property color backgroundColor: '#1a1d23'
-    property color windowColor:     '#444444'
-    property color windowColorAlt:  '#2a2d33'
-    property color controlColor:    '#1a1d23'
+    property color backgroundColor:  '#ffffff'
+    property color windowColor:      '#dddddd'
+    property color windowColorAlt:   '#aaaaaa'
+    property color controlColor:     '#ffffff'
+    property color controlColorHl:   '#d0d0d0'
+    property color controlColorHov:  '#f0f0f0'
+    property color controlTextColor: '#222222'
 
     // Borders
-    property color borderColor:     '#000000'
+    property color borderColor:     '#888888'
     property int   borderWidth:     1
-    property real  borderRadius:    0
+    property real  borderRadius:    3
 
     // Forms
     property real  formHeight:      24
@@ -77,16 +81,16 @@ Item
     // Panel items
     property color panelItemColor:             windowColorAlt   // Panel item color (default)
     property color panelItemColorDisabled:     controlColor     // Panel item color (disabled)
-    property color panelItemColorHighlighted:  controlColor     // Panel item color (highlighted)
-    property color panelItemColorHover:        controlColor     // Panel item color (hovered)
-    property color panelItemColorPressed:      controlColor     // Panel item color (pressed)
+    property color panelItemColorHighlighted:  controlColorHl   // Panel item color (highlighted)
+    property color panelItemColorHover:        controlColorHov  // Panel item color (hovered)
+    property color panelItemColorPressed:      controlColorHl   // Panel item color (pressed)
 
     // Controls
     property color ctrlColor:                  controlColor     // Control background color (default)
     property color ctrlColorDisabled:          controlColor     // Control background color (disabled)
-    property color ctrlColorHighlighted:       controlColor     // Control background color (highlighted)
-    property color ctrlColorHover:             controlColor     // Control background color (hovered)
-    property color ctrlColorPressed:           controlColor     // Control background color (pressed)
+    property color ctrlColorHighlighted:       controlColorHl   // Control background color (highlighted)
+    property color ctrlColorHover:             controlColorHov  // Control background color (hovered)
+    property color ctrlColorPressed:           controlColorHl   // Control background color (pressed)
 
     property color ctrlBorderColor:            borderColor      // Control border color (default)
     property color ctrlBorderColorDisabled:    borderColor      // Control border color (disabled)
@@ -94,37 +98,37 @@ Item
     property color ctrlBorderColorHover:       borderColor      // Control border color (hovered)
     property color ctrlBorderColorPressed:     borderColor      // Control border color (pressed)
 
-    property int   ctrlBorderWidth:            0                // Control border width
+    property int   ctrlBorderWidth:            borderWidth      // Control border width
     property real  ctrlRadius:                 borderRadius     // Control border radius (round edges)
     property real  ctrlPadding:                paddingSmall     // Control padding (space between border and items)
     property real  ctrlSpacing:                paddingSmall     // Control spacing (space between items on the control)
 
-    property color ctrlTextColor:              primaryColor     // Control text color (default)
+    property color ctrlTextColor:              controlTextColor // Control text color (default)
     property color ctrlTextColorDisabled:      disabledColor    // Control text color (disabled)
-    property color ctrlTextColorHighlighted:   secondaryColor   // Control text color (highlighted)
-    property color ctrlTextColorHover:         secondaryColor   // Control text color (hovered)
+    property color ctrlTextColorHighlighted:   primaryColor     // Control text color (highlighted)
+    property color ctrlTextColorHover:         highlightColor   // Control text color (hovered)
     property color ctrlTextColorPressed:       pressedColor     // Control text color (pressed)
     property int   ctrlTextSize:               fontSizeMedium   // Control text size
 
-    property color ctrlIconColor:              secondaryColor   // Control icon color (default)
+    property color ctrlIconColor:              primaryColor     // Control icon color (default)
     property color ctrlIconColorDisabled:      disabledColor    // Control icon color (disabled)
-    property color ctrlIconColorHighlighted:   secondaryColor   // Control icon color (highlighted)
-    property color ctrlIconColorHover:         secondaryColor   // Control icon color (hovered)
+    property color ctrlIconColorHighlighted:   primaryColor     // Control icon color (highlighted)
+    property color ctrlIconColorHover:         highlightColor   // Control icon color (hovered)
     property color ctrlIconColorPressed:       pressedColor     // Control icon color (pressed)
     property int   ctrlIconSize:               iconSizeSmall    // Control icon size
 
     // Text
     property color textColor:                  primaryColor     // Text color (default)
     property color textColorSecondary:         secondaryColor   // Text color (secondary texts)
-    property color textColorTitle:             secondaryColor   // Text color (title texts)
+    property color textColorTitle:             highlightColor   // Text color (title texts)
     property int   textSize:                   fontSizeMedium   // Text size (default)
     property int   textSizeSecondary:          fontSizeMedium   // Text size (secondary texts)
     property int   textSizeTitle:              fontSizeMedium   // Text size (title texts)
 
     // Links
-    property color linkColor:                  secondaryColor   // Link color (default)
+    property color linkColor:                  primaryColor     // Link color (default)
     property color linkColorDisabled:          disabledColor    // Link color (disabled)
-    property color linkColorHover:             primaryColor     // Link color (hovered)
+    property color linkColorHover:             highlightColor   // Link color (hovered)
     property color linkColorPressed:           pressedColor     // Link color (pressed)
 
     // Forms

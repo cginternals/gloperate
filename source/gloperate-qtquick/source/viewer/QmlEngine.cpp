@@ -29,11 +29,7 @@ QmlEngine::QmlEngine(gloperate::ViewerContext * viewerContext)
 {
     // Register QML types
     qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
-    qmlRegisterType<TextController>("gloperate.ui",        1, 0, "TextController");
-
-    // Add gloperate qml-libraries
-    std::string importPath = gloperate::dataPath() + "/gloperate/qml/GLOperate/Ui";
-    addImportPath(QString::fromStdString(importPath));
+    qmlRegisterType<TextController>("gloperate.base",      1, 0, "TextController");
 
     // Register global functions and properties
     rootContext()->setContextObject(this);
@@ -86,7 +82,7 @@ cppexpose::Variant QmlEngine::fromScriptValue(const QJSValue & value)
     }
 
     else if (value.isCallable()) {
-        cppexpose::Function function("", new QmlScriptFunction(this, value));
+        cppexpose::Function function(new QmlScriptFunction(this, value));
         return cppexpose::Variant::fromValue<cppexpose::Function>(function);
     }
 

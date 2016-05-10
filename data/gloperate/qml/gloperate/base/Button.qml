@@ -1,12 +1,12 @@
 
 import QtQuick 2.0
-import gloperate.ui 1.0
+import gloperate.base 1.0
 
 
 /**
-*  PanelItem
+*  Button
 *
-*  An item on a panel that can be selected
+*  A push button with a label and an optional icon
 */
 Control
 {
@@ -18,18 +18,21 @@ Control
     // Button text
     property string text: ''
 
-    // Actual width of the item
-    readonly property real buttonWidth: row.implicitWidth  + 2 * Ui.style.panelPadding
+    // Actual width of the button
+    readonly property real buttonWidth: row.implicitWidth  + 2 * Ui.style.ctrlPadding
 
-    implicitWidth:  row.implicitWidth  + 2 * Ui.style.panelPadding
-    implicitHeight: row.implicitHeight + 2 * Ui.style.panelPadding
+    implicitWidth:  row.implicitWidth  + 2 * Ui.style.ctrlPadding
+    implicitHeight: row.implicitHeight + 2 * Ui.style.ctrlPadding
 
     Rectangle
     {
         id: background
 
         anchors.fill: parent
-        color:        Ui.style.getPanelItemColor(item.enabled, item.highlighted, item.hovered, item.pressed)
+        color:        Ui.style.getControlColor(item.enabled, item.highlighted, item.hovered, item.pressed)
+        border.color: Ui.style.getControlBorderColor(item.enabled, item.highlighted, item.hovered, item.pressed)
+        border.width: Ui.style.ctrlBorderWidth
+        radius:       Ui.style.ctrlRadius
     }
 
     Row
@@ -37,8 +40,8 @@ Control
         id: row
 
         anchors.fill:    parent
-        anchors.margins: Ui.style.panelPadding
-        spacing:         Ui.style.panelSpacing
+        anchors.margins: Ui.style.ctrlPadding
+        spacing:         Ui.style.ctrlSpacing
 
         Icon
         {

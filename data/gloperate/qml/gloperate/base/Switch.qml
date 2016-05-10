@@ -1,7 +1,7 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.1 as Controls
-import gloperate.ui 1.0
+import gloperate.base 1.0
 
 
 /**

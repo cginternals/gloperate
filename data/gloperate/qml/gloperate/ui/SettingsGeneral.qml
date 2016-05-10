@@ -1,7 +1,7 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.1
-import gloperate.ui 1.0
+import gloperate.base 1.0
 
 
 /**
@@ -49,7 +49,7 @@ Background
                     {
                         model: Ui.styles.length
 
-                        CheckBox
+                        RadioButton
                         {
                             exclusiveGroup: themeGroup
                             text:           Ui.styles[index]
