@@ -4,6 +4,8 @@
 
 #include <gloperate/viewer/Surface.h>
 #include <gloperate/viewer/input.h>
+#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/InputSlot.h>
 
 
 namespace gloperate
@@ -21,6 +23,18 @@ class KeyboardDevice;
 */
 class GLOPERATE_API RenderSurface : public Surface
 {
+public:
+    // Render stage inputs
+    Data<glm::vec4> deviceViewport;  ///< Viewport (in real device coordinates)
+    Data<glm::vec4> virtualViewport; ///< Viewport (in virtual coordinates)
+    Data<glm::vec3> backgroundColor; ///< Background color (RGB)
+    Data<int>       frameCounter;    ///< Frame counter (number of frames)
+    Data<float>     timeDelta;       ///< Time delta since last frame (in seconds)
+
+    // Render stage outputs
+    InputSlot<bool> redrawNeeded;    ///< 'true' if stage needs redrawing
+
+
 public:
     /**
     *  @brief
@@ -63,7 +77,7 @@ public:
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
-    virtual void onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport) override;
+    virtual void onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport) override;
     virtual void onBackgroundColor(float red, float green, float blue) override;
     virtual void onRender() override;
     virtual void onKeyPress(int key, int modifier) override;

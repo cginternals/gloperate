@@ -4,9 +4,10 @@
 
 #include <glm/glm.hpp>
 
-#include <cppexpose/signal/Signal.h>
+#include <cppexpose/reflection/Object.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/InputSlot.h>
 
 
 namespace gloperate
@@ -25,8 +26,28 @@ class AbstractGLContext;
 *    and depends on a certain set of inputs. It can either be part of a pipeline
 *    or stand on its own.
 */
-class GLOPERATE_API Stage
+class GLOPERATE_API Stage : public cppexpose::Object
 {
+public:
+    template <typename T>
+    using InputSlot = gloperate::InputSlot<T>;
+
+    template <typename T>
+    using Data = gloperate::Data<T>;
+
+
+public:
+    // Inputs
+    InputSlot<glm::vec4> deviceViewport;  ///< Viewport (in real device coordinates)
+    InputSlot<glm::vec4> virtualViewport; ///< Viewport (in virtual coordinates)
+    InputSlot<glm::vec3> backgroundColor; ///< Background color (RGB)
+    InputSlot<int>       frameCounter;    ///< Frame counter (number of frames)
+    InputSlot<float>     timeDelta;       ///< Time delta since last frame (in seconds)
+
+    // Outputs
+    Data<bool>           redrawNeeded;    ///< 'true' if stage needs redrawing
+
+
 public:
     /**
     *  @brief
@@ -85,20 +106,6 @@ public:
     */
     void process(AbstractGLContext * context);
 
-    // This interface is only a placeholder and will be replaced
-    // by input/data-slots
-
-    // Signals
-    cppexpose::Signal<> outputInvalidated;
-    void invalidateOutput();
-
-    // Input data
-    void setDeviceViewport(int x, int y, int w, int h);
-    void setVirtualViewport(int x, int y, int w, int h);
-    void setBackgroundColor(float red, float green, float blue);
-    void setFrameCounter(int frame);
-    void setTimeDelta(float delta);
-
 
 protected:
     /**
@@ -155,12 +162,7 @@ protected:
 
 
 protected:
-    ViewerContext * m_viewerContext;    ///< Viewer context to which the stage belongs
-    glm::ivec4      m_deviceViewport;   ///< Viewport (in real device coordinates)
-    glm::ivec4      m_virtualViewport;  ///< Viewport (in virtual coordinates)
-    glm::vec3       m_backgroundColor;  ///< Background color
-    unsigned long   m_frame;            ///< Frame counter
-    float           m_timeDelta;        ///< Time since last update (in seconds)
+    ViewerContext * m_viewerContext; ///< Viewer context to which the stage belongs
 };
 
 

@@ -23,7 +23,7 @@ RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
 , m_surface(new RenderSurface(viewerContext))
 {
-    m_surface->redrawNeeded.connect([this] ()
+    m_surface->redraw.connect([this] ()
     {
         repaint();
     } );
@@ -64,8 +64,8 @@ void RenderWindow::onResize(ResizeEvent & event)
     m_virtualSize = event.size();
 
     m_surface->onViewport(
-        glm::ivec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
-      , glm::ivec4(0, 0, m_virtualSize.x, m_virtualSize.y)
+        glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
+      , glm::vec4(0, 0, m_virtualSize.x, m_virtualSize.y)
     );
 }
 
@@ -74,8 +74,8 @@ void RenderWindow::onFramebufferResize(ResizeEvent & event)
     m_deviceSize = event.size();
 
     m_surface->onViewport(
-        glm::ivec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
-      , glm::ivec4(0, 0, m_virtualSize.x, m_virtualSize.y)
+        glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
+      , glm::vec4(0, 0, m_virtualSize.x, m_virtualSize.y)
     );
 }
 

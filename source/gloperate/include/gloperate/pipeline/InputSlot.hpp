@@ -79,7 +79,7 @@ bool InputSlot<T>::connect(const Data<T> * source)
 
     // Emit events
     this->connectionChanged();
-    this->changed(m_source->value());
+    this->valueChanged(m_source->value());
 
     // Success
     return true;
@@ -94,7 +94,7 @@ void InputSlot<T>::disconnect()
 
     // Emit events
     this->connectionChanged();
-    this->changed(m_defaultValue);
+    this->valueChanged(m_defaultValue);
 }
 
 template <typename T>
@@ -144,11 +144,7 @@ const T * InputSlot<T>::ptr() const
 template <typename T>
 T * InputSlot<T>::ptr()
 {
-    if (m_source) {
-        return m_source->ptr();
-    } else {
-        return nullptr;
-    }
+    return nullptr;
 }
 
 template <typename T>

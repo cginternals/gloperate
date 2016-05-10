@@ -24,7 +24,7 @@ template <typename T>
 class InputSlot : public cppexpose::TypeSelector<T>::Type, public cppexpose::TypedProperty<T>
 {
 public:
-    cppexpose::Signal<const T &> connectionChanged;  ///< Called when the connection has been changed
+    cppexpose::Signal<> connectionChanged;  ///< Called when the connection has been changed
 
 
 public:
@@ -36,6 +36,8 @@ public:
     *    Parent object (must NOT be null!)
     *  @param[in] name
     *    Property name
+    *  @param[in] defaultValue
+    *    Default value
     *
     *  @remarks
     *    The input slot is created and added to the given parent object.
@@ -159,7 +161,7 @@ public:
 protected:
     bool                          m_feedback;     ///< Does the input slot contain a feedback connection?
     T                             m_defaultValue; ///< Default value that is returned if unconnected
-    Data<T>                     * m_source;       ///< Connected source (can be null)
+    const Data<T>               * m_source;       ///< Connected source (can be null)
     cppexpose::ScopedConnection   m_connection;   ///< Connection to changed-signal of source property
 };
 

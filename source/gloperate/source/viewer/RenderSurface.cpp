@@ -16,11 +16,23 @@ namespace gloperate
 
 RenderSurface::RenderSurface(ViewerContext * viewerContext)
 : Surface(viewerContext)
+, deviceViewport (this, "deviceViewport",  glm::vec4(0, 0, 0, 0))
+, virtualViewport(this, "virtualViewport", glm::vec4(0, 0, 0, 0))
+, backgroundColor(this, "backgroundColor", glm::vec3(1.0, 1.0, 1.0))
+, frameCounter   (this, "frameCounter",    0)
+, timeDelta      (this, "timeDelta",       0.0f)
+, redrawNeeded   (this, "redrawNeeded")
 , m_renderStage(nullptr)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 {
+    redrawNeeded.valueChanged.connect([this] (bool needRedraw)
+    {
+        if (needRedraw) {
+            this->redraw();
+        }
+    });
 }
 
 RenderSurface::~RenderSurface()
@@ -38,13 +50,18 @@ void RenderSurface::setRenderStage(Stage * stage)
     // Destroy old render stage
     if (m_renderStage)
     {
+        // Disconnect inputs and outputs from former render stage
+        m_renderStage->deviceViewport.disconnect();
+        m_renderStage->virtualViewport.disconnect();
+        m_renderStage->backgroundColor.disconnect();
+        m_renderStage->frameCounter.disconnect();
+        m_renderStage->timeDelta.disconnect();
+        redrawNeeded.disconnect();
+
         // De-initialize render stage
         if (m_openGLContext) {
             m_renderStage->deinitContext(m_openGLContext);
         }
-
-        // [TODO] Disconnect from events
-//      m_renderStage->outputInvalidated.disconnect(this);
 
         // Destroy render stage
         delete m_renderStage;
@@ -54,11 +71,13 @@ void RenderSurface::setRenderStage(Stage * stage)
     m_renderStage = stage;
     if (m_renderStage)
     {
-        // Connect to events
-        m_renderStage->outputInvalidated.connect([this] ()
-        {
-            redrawNeeded();
-        });
+        // Disconnect inputs and outputs of render stage
+        m_renderStage->deviceViewport.connect(&this->deviceViewport);
+        m_renderStage->virtualViewport.connect(&this->virtualViewport);
+        m_renderStage->backgroundColor.connect(&this->backgroundColor);
+        m_renderStage->frameCounter.connect(&this->frameCounter);
+        m_renderStage->timeDelta.connect(&this->timeDelta);
+        redrawNeeded.connect(&m_renderStage->redrawNeeded);
 
         // Initialize render stage
         if (m_openGLContext) {
@@ -71,7 +90,7 @@ void RenderSurface::onUpdate()
 {
     if (m_renderStage)
     {
-        m_renderStage->setTimeDelta(m_viewerContext->timeManager()->timeDelta());
+        timeDelta.setValue(m_viewerContext->timeManager()->timeDelta());
     }
 }
 
@@ -97,26 +116,15 @@ void RenderSurface::onContextDeinit()
     }
 }
 
-void RenderSurface::onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport)
+void RenderSurface::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
-    m_renderStage->setDeviceViewport(
-        deviceViewport.x
-      , deviceViewport.y
-      , deviceViewport.z
-      , deviceViewport.w
-    );
-
-    m_renderStage->setVirtualViewport(
-        virtualViewport.x
-      , virtualViewport.y
-      , virtualViewport.z
-      , virtualViewport.w
-    );
+    this->deviceViewport.setValue(deviceViewport);
+    this->virtualViewport.setValue(virtualViewport);
 }
 
 void RenderSurface::onBackgroundColor(float red, float green, float blue)
 {
-    m_renderStage->setBackgroundColor(red, green, blue);
+    this->backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
 void RenderSurface::onRender()
@@ -126,7 +134,9 @@ void RenderSurface::onRender()
     if (m_renderStage)
     {
         m_frame++;
-        m_renderStage->setFrameCounter(m_frame);
+
+        frameCounter.setValue(m_frame);
+
         m_renderStage->process(m_openGLContext);
     }
 }

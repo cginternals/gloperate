@@ -10,8 +10,8 @@ namespace gloperate
 
 
 template <typename T>
-Data<T>::Data(cppexpose::PropertyGroup * parent, const std::string & name)
-: cppexpose::DynamicProperty<T>(parent, name)
+Data<T>::Data(cppexpose::PropertyGroup * parent, const std::string & name, const T & value)
+: cppexpose::DynamicProperty<T>(parent, name, value)
 , m_required(false)
 {
 }

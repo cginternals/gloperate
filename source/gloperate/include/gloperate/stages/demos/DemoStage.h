@@ -42,6 +42,12 @@ public:
 
 
 protected:
+    /**
+    *  @brief
+    *    Mark output as invalid (causing viewer to repaint the stage)
+    */
+    void invalidateOutput();
+
     // Virtual Stage functions
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
@@ -68,7 +74,7 @@ protected:
 
     // Status
     float m_time;   ///< Virtual time (in seconds)
-    float m_angle;
+    float m_angle;  ///< Current angle of rotating triangle (in radians)
 };
 
 
