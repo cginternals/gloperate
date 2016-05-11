@@ -90,6 +90,7 @@ protected:
     bool m_enabled;
     bool m_alwaysProcess;
     bool m_processScheduled;
+    bool m_scheduledManually;
     std::string m_name;
     gloperate::CachedValue<bool> m_usable;
 
