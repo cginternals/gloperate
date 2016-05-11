@@ -14,6 +14,9 @@ namespace gloperate
 {
 
 
+class Stage;
+
+
 /**
 *  @brief
 *    Input slot that can be connected to a data source
@@ -40,6 +43,22 @@ public:
     *    The input slot is created and added to the given parent object.
     */
     InputSlot(cppexpose::PropertyGroup * parent, const std::string & name, const T & defaultValue = T());
+
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] parent
+    *    Parent stage (must NOT be null!)
+    *  @param[in] name
+    *    Property name
+    *  @param[in] defaultValue
+    *    Default value
+    *
+    *  @remarks
+    *    The input slot is created and added to the given stage.
+    */
+    InputSlot(Stage * parent, const std::string & name, const T & defaultValue = T());
 
     /**
     *  @brief

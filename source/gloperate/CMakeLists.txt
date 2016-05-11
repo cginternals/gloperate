@@ -74,6 +74,7 @@ set(headers
     ${include_path}/pipeline/AbstractInputSlot.h
     ${include_path}/pipeline/InputSlot.h
     ${include_path}/pipeline/InputSlot.hpp
+    ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/Data.h
     ${include_path}/pipeline/Data.hpp
 
@@ -124,6 +125,7 @@ set(sources
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/RenderStage.cpp
     ${source_path}/pipeline/AbstractInputSlot.cpp
+    ${source_path}/pipeline/AbstractData.cpp
 
     ${source_path}/rendering/Camera.cpp
 

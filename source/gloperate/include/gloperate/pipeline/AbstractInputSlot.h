@@ -16,11 +16,14 @@ namespace gloperate
 {
 
 
+class Stage;
+
+
 /**
 *  @brief
 *    Base class for input slots
 */
-class AbstractInputSlot
+class GLOPERATE_API AbstractInputSlot
 {
 public:
     cppexpose::Signal<> connectionChanged;  ///< Called when the connection has been changed
@@ -30,8 +33,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] parent
+    *    Parent stage (can be null)
     */
-    AbstractInputSlot();
+    AbstractInputSlot(Stage * parent = nullptr);
 
     /**
     *  @brief

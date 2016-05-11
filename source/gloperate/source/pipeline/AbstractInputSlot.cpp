@@ -1,14 +1,19 @@
 
 #include <gloperate/pipeline/AbstractInputSlot.h>
 
+#include <gloperate/pipeline/Stage.h>
+
 
 namespace gloperate
 {
 
 
-AbstractInputSlot::AbstractInputSlot()
+AbstractInputSlot::AbstractInputSlot(Stage * parent)
 : m_feedback(false)
 {
+    if (parent) {
+        parent->registerInput(this);
+    }
 }
 
 AbstractInputSlot::~AbstractInputSlot()

@@ -39,6 +39,62 @@ void Stage::process(AbstractGLContext * context)
     onProcess(context);
 }
 
+const std::vector<AbstractInputSlot *> & Stage::inputs() const
+{
+    return m_inputs;
+}
+
+const AbstractInputSlot * Stage::input(const std::string & name) const
+{
+    return m_inputsMap.at(name);
+}
+
+const std::vector<AbstractData *> & Stage::outputs() const
+{
+    return m_outputs;
+}
+
+const AbstractData * Stage::output(const std::string & name) const
+{
+    return m_outputsMap.at(name);
+}
+
+void Stage::registerInput(AbstractInputSlot * input)
+{
+    // Check parameters
+    if (!input) {
+        return;
+    }
+
+    // Add input
+    m_inputs.push_back(input);
+
+    // [TODO]
+    /*
+    if (input->name() != "") {
+        m_inputsMap.insert(std::make_pair(input->name(), input));        
+    }
+    */
+}
+
+void Stage::registerOutput(AbstractData * output)
+{
+    // Check parameters
+    if (!output) {
+        return;
+    }
+
+    // Add output
+    m_outputs.push_back(output);
+
+    // [TODO]
+    /*
+    if (output->name() != "") {
+        m_outputsMap.insert(std::make_pair(output->name(), output));        
+    }
+    */
+}
+
 void Stage::onContextInit(AbstractGLContext *)
 {
 }

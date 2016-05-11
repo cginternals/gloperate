@@ -2,10 +2,13 @@
 #pragma once
 
 
+#include <vector>
+#include <unordered_map>
+#include <string>
+
 #include <cppexpose/reflection/Object.h>
 
-#include <gloperate/pipeline/Data.h>
-#include <gloperate/pipeline/InputSlot.h>
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
@@ -14,6 +17,14 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
+class AbstractData;
+class AbstractInputSlot;
+
+template <typename T>
+class Data;
+
+template <typename T>
+class InputSlot;
 
 
 /**
@@ -26,6 +37,10 @@ class AbstractGLContext;
 */
 class GLOPERATE_API Stage : public cppexpose::Object
 {
+friend class AbstractInputSlot;
+friend class AbstractData;
+
+
 public:
     // Import data types into local namespace
     template <typename T>
@@ -95,8 +110,77 @@ public:
     */
     void process(AbstractGLContext * context);
 
+    /**
+    *  @brief
+    *    Get inputs
+    *
+    *  @return
+    *    List of inputs on the stage
+    */
+    const std::vector<AbstractInputSlot *> & inputs() const;
+
+    /**
+    *  @brief
+    *    Get input by name
+    *
+    *  @param[in] name
+    *    Name of input
+    *
+    *  @return
+    *    Input slot (can be null)
+    */
+    const AbstractInputSlot * input(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Get outputs
+    *
+    *  @return
+    *    List of outputs on the stage
+    */
+    const std::vector<AbstractData *> & outputs() const;
+
+    /**
+    *  @brief
+    *    Get output by name
+    *
+    *  @param[in] name
+    *    Name of output
+    *
+    *  @return
+    *    Output data (can be null)
+    */
+    const AbstractData * output(const std::string & name) const;
+
 
 protected:
+    /**
+    *  @brief
+    *    Register input slot
+    *
+    *  @param[in] input
+    *    Input slot (must NOT null!)
+    *
+    *  @remarks
+    *    Although input slots and output data are already registered
+    *    at the stage as properties, we keep a separate list of them
+    *    to simplify accessing inputs and outputs directly and without
+    *    type casts.
+    */
+    void registerInput(AbstractInputSlot * input);
+
+    /**
+    *  @brief
+    *    Register output data
+    *
+    *  @param[in] output
+    *    Output data (must NOT null!)
+    *
+    *  @see
+    *    registerInput
+    */
+    void registerOutput(AbstractData * output);
+
     /**
     *  @brief
     *    Initialize in OpenGL context
@@ -152,6 +236,12 @@ protected:
 
 protected:
     ViewerContext * m_viewerContext; ///< Viewer context to which the stage belongs
+
+    std::vector<AbstractInputSlot *>                     m_inputs;    ///< List of inputs
+    std::unordered_map<std::string, AbstractInputSlot *> m_inputsMap; ///< Map of names and inputs
+
+    std::vector<AbstractData *>                     m_outputs;    ///< List of outputs
+    std::unordered_map<std::string, AbstractData *> m_outputsMap; ///< Map of names and outputs
 };
 
 
