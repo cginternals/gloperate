@@ -6,8 +6,8 @@ namespace gloperate
 {
 
 
-RenderStage::RenderStage(ViewerContext * viewerContext)
-: Stage(viewerContext)
+RenderStage::RenderStage(ViewerContext * viewerContext, Stage * parent)
+: Stage(viewerContext, parent)
 , deviceViewport (this, "deviceViewport")
 , virtualViewport(this, "virtualViewport")
 , backgroundColor(this, "backgroundColor")

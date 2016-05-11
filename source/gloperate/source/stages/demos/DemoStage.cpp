@@ -57,8 +57,8 @@ namespace gloperate
 {
 
 
-DemoStage::DemoStage(ViewerContext * viewerContext)
-: RenderStage(viewerContext)
+DemoStage::DemoStage(ViewerContext * viewerContext, Stage * parent)
+: RenderStage(viewerContext, parent)
 , m_timer(viewerContext)
 , m_time(0.0f)
 , m_angle(0.0f)

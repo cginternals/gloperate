@@ -27,6 +27,7 @@ class AbstractGLContext;
 class GLOPERATE_API Stage : public cppexpose::Object
 {
 public:
+    // Import data types into local namespace
     template <typename T>
     using InputSlot = gloperate::InputSlot<T>;
 
@@ -41,8 +42,10 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] parent
+    *    Parent stage
     */
-    Stage(ViewerContext * viewerContext);
+    Stage(ViewerContext * viewerContext, Stage * parent = nullptr);
 
     /**
     *  @brief

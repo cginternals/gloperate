@@ -9,8 +9,9 @@ namespace gloperate
 {
 
 
-Stage::Stage(ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+Stage::Stage(ViewerContext * viewerContext, Stage * parent)
+: cppexpose::Object("", parent)
+, m_viewerContext(viewerContext)
 {
 }
 

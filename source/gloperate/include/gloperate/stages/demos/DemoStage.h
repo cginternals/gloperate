@@ -31,8 +31,10 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] parent
+    *    Parent stage
     */
-    DemoStage(ViewerContext * viewerContext);
+    DemoStage(ViewerContext * viewerContext, Stage * parent = nullptr);
 
     /**
     *  @brief
