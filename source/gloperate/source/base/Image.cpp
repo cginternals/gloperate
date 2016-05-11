@@ -18,12 +18,33 @@ int Image::channels(GLenum format)
 {
     switch (format)
     {
-        case GL_RGB:
-            return 3;
-        case GL_RGBA:
-            return 4;
-        default:
-            return 0;
+        case GL_RED:                                    return 1;
+        case GL_GREEN:                                  return 1;
+        case GL_BLUE:                                   return 1;
+        case GL_RED_INTEGER:                            return 1;
+        case GL_GREEN_INTEGER:                          return 1;
+        case GL_BLUE_INTEGER:                           return 1;
+        case GL_DEPTH_COMPONENT:                        return 1;
+        case GL_STENCIL_INDEX:                          return 1;
+        case GL_COLOR_INDEX:                            return 1;
+        case GL_LUMINANCE:                              return 1;
+      
+        case GL_RG:                                     return 2;
+        case GL_RG_INTEGER:                             return 2;
+        case GL_DEPTH_STENCIL:                          return 2;
+        case GL_LUMINANCE_ALPHA:                        return 2;
+                       
+        case GL_RGB:                                    return 3;
+        case GL_BGR:                                    return 3;
+        case GL_RGB_INTEGER:                            return 3;
+        case GL_BGR_INTEGER:                            return 3;
+                       
+        case GL_RGBA:                                   return 4;
+        case GL_BGRA:                                   return 4;
+        case GL_RGBA_INTEGER:                           return 4;
+        case GL_BGRA_INTEGER:                           return 4;
+                       
+        default:                                        return 0;
     }
 }
 
