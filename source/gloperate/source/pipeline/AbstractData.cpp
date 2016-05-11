@@ -8,12 +8,9 @@ namespace gloperate
 {
 
 
-AbstractData::AbstractData(Stage * parent)
+AbstractData::AbstractData()
 : m_required(false)
 {
-    if (parent) {
-        parent->registerOutput(this);
-    }
 }
 
 AbstractData::~AbstractData()
@@ -28,6 +25,13 @@ bool AbstractData::required() const
 void AbstractData::setRequired(bool required)
 {
     m_required = required;
+}
+
+void AbstractData::initData(Stage * parent)
+{
+    if (parent) {
+        parent->registerOutput(this);
+    }
 }
 
 

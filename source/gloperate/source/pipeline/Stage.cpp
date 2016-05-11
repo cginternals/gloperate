@@ -68,13 +68,9 @@ void Stage::registerInput(AbstractInputSlot * input)
 
     // Add input
     m_inputs.push_back(input);
-
-    // [TODO]
-    /*
     if (input->name() != "") {
         m_inputsMap.insert(std::make_pair(input->name(), input));        
     }
-    */
 }
 
 void Stage::registerOutput(AbstractData * output)
@@ -86,13 +82,9 @@ void Stage::registerOutput(AbstractData * output)
 
     // Add output
     m_outputs.push_back(output);
-
-    // [TODO]
-    /*
     if (output->name() != "") {
         m_outputsMap.insert(std::make_pair(output->name(), output));        
     }
-    */
 }
 
 void Stage::onContextInit(AbstractGLContext *)

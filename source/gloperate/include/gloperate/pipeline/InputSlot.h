@@ -2,8 +2,8 @@
 #pragma once
 
 
-#include <cppexpose/reflection/TypedProperty.h>
-#include <cppexpose/typed/TypeSelector.h>
+#include <cppexpose/typed/GetTyped.h>
+#include <cppexpose/signal/Signal.h>
 #include <cppexpose/signal/ScopedConnection.h>
 
 #include <gloperate/pipeline/AbstractInputSlot.h>
@@ -25,8 +25,12 @@ class Stage;
 *    Data
 */
 template <typename T>
-class InputSlot : public cppexpose::TypeSelector<T>::Type, public cppexpose::TypedProperty<T>, public AbstractInputSlot
+class InputSlot : public cppexpose::GetTyped<T, AbstractInputSlot>::Type
 {
+public:
+    cppexpose::Signal<const T &> valueChanged;  ///< Called when the value has been changed
+
+
 public:
     /**
     *  @brief
@@ -94,9 +98,12 @@ public:
     virtual T * ptr() override;
 
     // Virtual AbstractProperty interface
-    virtual cppexpose::AbstractTyped * asTyped() override;
-    virtual const cppexpose::AbstractTyped * asTyped() const override;
     virtual bool isGroup() const override;
+
+
+protected:
+    // Virtual Typed<T> interface
+    virtual void onValueChanged(const T & value) override;
 
 
 protected:

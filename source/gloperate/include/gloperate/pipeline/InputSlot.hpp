@@ -13,20 +13,20 @@ namespace gloperate
 
 template <typename T>
 InputSlot<T>::InputSlot(cppexpose::PropertyGroup * parent, const std::string & name, const T & defaultValue)
-: cppexpose::TypedProperty<T>(parent, name)
-, AbstractInputSlot()
-, m_defaultValue(defaultValue)
+: m_defaultValue(defaultValue)
 , m_source(nullptr)
 {
+    this->initProperty(parent, name);
+    this->initInputSlot(nullptr);
 }
 
 template <typename T>
 InputSlot<T>::InputSlot(Stage * parent, const std::string & name, const T & defaultValue)
-: cppexpose::TypedProperty<T>(parent, name)
-, AbstractInputSlot(parent)
-, m_defaultValue(defaultValue)
+: m_defaultValue(defaultValue)
 , m_source(nullptr)
 {
+    this->initProperty(parent, name);
+    this->initInputSlot(parent);
 }
 
 template <typename T>
@@ -63,7 +63,7 @@ template <typename T>
 bool InputSlot<T>::isCompatible(const cppexpose::AbstractProperty * source) const
 {
     if (source) {
-        return this->type() == source->asTyped()->type();
+        return this->type() == source->type();
     } else {
         return false;
     }
@@ -139,21 +139,15 @@ T * InputSlot<T>::ptr()
 }
 
 template <typename T>
-cppexpose::AbstractTyped * InputSlot<T>::asTyped()
-{
-    return static_cast<cppexpose::AbstractTyped *>(this);
-}
-
-template <typename T>
-const cppexpose::AbstractTyped * InputSlot<T>::asTyped() const
-{
-    return static_cast<const cppexpose::AbstractTyped *>(this);
-}
-
-template <typename T>
 bool InputSlot<T>::isGroup() const
 {
     return false;
+}
+
+template <typename T>
+void InputSlot<T>::onValueChanged(const T & value)
+{
+    this->valueChanged(value);
 }
 
 

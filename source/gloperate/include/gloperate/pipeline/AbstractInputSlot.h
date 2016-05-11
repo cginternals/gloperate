@@ -3,13 +3,9 @@
 
 
 #include <cppexpose/signal/Signal.h>
+#include <cppexpose/reflection/AbstractProperty.h>
 
 #include <gloperate/gloperate_api.h>
-
-
-namespace cppexpose {
-    class AbstractProperty;
-}
 
 
 namespace gloperate
@@ -23,7 +19,7 @@ class Stage;
 *  @brief
 *    Base class for input slots
 */
-class GLOPERATE_API AbstractInputSlot
+class GLOPERATE_API AbstractInputSlot : public cppexpose::AbstractProperty
 {
 public:
     cppexpose::Signal<> connectionChanged;  ///< Called when the connection has been changed
@@ -33,11 +29,8 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] parent
-    *    Parent stage (can be null)
     */
-    AbstractInputSlot(Stage * parent = nullptr);
+    AbstractInputSlot();
 
     /**
     *  @brief
@@ -126,6 +119,17 @@ public:
     *    isFeedback
     */
     void setFeedback(bool feedback);
+
+
+protected:
+    /**
+    *  @brief
+    *    Initialize input slot
+    *
+    *  @param[in] parent
+    *    Parent stage (can be null)
+    */
+    void initInputSlot(Stage * parent);
 
 
 protected:

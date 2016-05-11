@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppexpose/reflection/AbstractProperty.h>
+
 #include <gloperate/gloperate_api.h>
 
 
@@ -16,17 +18,14 @@ class Stage;
 *  @brief
 *    Base class for data containers
 */
-class GLOPERATE_API AbstractData
+class GLOPERATE_API AbstractData : public cppexpose::AbstractProperty
 {
 public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] parent
-    *    Parent stage (can be null)
     */
-    AbstractData(Stage * parent = nullptr);
+    AbstractData();
 
     /**
     *  @brief
@@ -62,6 +61,17 @@ public:
     *    pipeline and determines which stages will be executed.
     */
     void setRequired(bool required);
+
+
+protected:
+    /**
+    *  @brief
+    *    Initialize data container
+    *
+    *  @param[in] parent
+    *    Parent stage (can be null)
+    */
+    void initData(Stage * parent);
 
 
 protected:

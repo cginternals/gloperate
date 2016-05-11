@@ -88,7 +88,7 @@ QJSValue QmlObjectWrapper::getProp(const QString & name)
 
     cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
     if (prop) {
-        value = prop->asTyped()->toVariant();
+        value = prop->toVariant();
     }
 
     return m_engine->toScriptValue(value);
@@ -98,7 +98,7 @@ void QmlObjectWrapper::setProp(const QString & name, const QJSValue & value)
 {
     cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
     if (prop) {
-        prop->asTyped()->fromVariant(m_engine->fromScriptValue(value));
+        prop->fromVariant(m_engine->fromScriptValue(value));
     }
 }
 

@@ -8,12 +8,9 @@ namespace gloperate
 {
 
 
-AbstractInputSlot::AbstractInputSlot(Stage * parent)
+AbstractInputSlot::AbstractInputSlot()
 : m_feedback(false)
 {
-    if (parent) {
-        parent->registerInput(this);
-    }
 }
 
 AbstractInputSlot::~AbstractInputSlot()
@@ -33,6 +30,13 @@ bool AbstractInputSlot::isFeedback() const
 void AbstractInputSlot::setFeedback(bool feedback)
 {
     m_feedback = feedback;
+}
+
+void AbstractInputSlot::initInputSlot(Stage * parent)
+{
+    if (parent) {
+        parent->registerInput(this);
+    }
 }
 
 

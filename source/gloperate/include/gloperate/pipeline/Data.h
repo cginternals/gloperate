@@ -16,7 +16,7 @@ namespace gloperate
 *    Container for data objects in a pipeline
 */
 template <typename T>
-class Data : public cppexpose::DynamicProperty<T>, public AbstractData
+class Data : public cppexpose::DynamicProperty<T, AbstractData>
 {
 public:
     /**
