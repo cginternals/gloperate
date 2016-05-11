@@ -18,7 +18,6 @@ out vec4 g_fontColor;
 
 void main()
 {
-    g_fontColor = v_fontColor[0];
     vec4 origin = gl_in[0].gl_Position;
     //vec3 normal = normalize(cross(normalize(v_tangent[0].xyz)
     //    , normalize(v_bitangent[0].xyz)));
@@ -28,7 +27,8 @@ void main()
     g_uv = v_uvRect[0].zy;
     //g_normal = normal;
     gl_Position = viewProjection * gl_Position;
-    gl_Position /= gl_Position.w;
+    g_fontColor = v_fontColor[0];
+
     EmitVertex();
     
     // upper right
@@ -36,7 +36,8 @@ void main()
     g_uv = v_uvRect[0].zw;
     //g_normal = normal;
     gl_Position = viewProjection * gl_Position;
-    gl_Position /= gl_Position.w;
+    g_fontColor = v_fontColor[0];
+
     EmitVertex();
     
     // lower left
@@ -44,7 +45,8 @@ void main()
     g_uv = v_uvRect[0].xy;
     //g_normal = normal;
     gl_Position = viewProjection * gl_Position;
-    gl_Position /= gl_Position.w;
+    g_fontColor = v_fontColor[0];
+
     EmitVertex();
 
     // upper left
@@ -52,7 +54,8 @@ void main()
     g_uv = v_uvRect[0].xw;
     //g_normal = normal;
     gl_Position = viewProjection * gl_Position;
-    gl_Position /= gl_Position.w;
+    g_fontColor = v_fontColor[0];
+
     EmitVertex();
 
     EndPrimitive();
