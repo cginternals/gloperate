@@ -120,7 +120,7 @@ void EventRoutingMapping::mapKeyboardEvent(KeyboardEvent * event)
     if (event && event->type() == KeyboardEvent::Type::Press)
     {
         auto curReciever = mapEventToReciever(RoutingEventType::Keyboard, static_cast<int>(RoutingEventValue::Any));
-        curReciever->keyPress(KeyboardInteractionArgs{ event->key(), event->scanCode(), event->modifiers() });
+        curReciever->keyPress(KeyboardInteractionArgs{m_currentId, event->key(), event->scanCode(), event->modifiers() });
     }
 }
 
@@ -170,12 +170,12 @@ void EventRoutingMapping::handleMouseMoveEvent()
         InteractionData &reciever = m_eventReciever.at(*btn);
         glm::ivec2 delta = m_currentMousePosition - m_eventReciever.at(*btn).startPosition;
         if (reciever.state != DragStarted) {
-            reciever.reciever->dragStart(MouseInteractionArgs{ reciever.startPosition, *btn });
+            reciever.reciever->dragStart(MouseInteractionArgs{m_currentId, reciever.startPosition, *btn });
             reciever.state = DragStarted;
         }
         auto hoverReciever = mapEventToReciever(RoutingEventType::Any, static_cast<int>(RoutingEventValue::Any));
         AbstractInteraction* hoverElement = reciever.reciever != hoverReciever ? hoverReciever : nullptr;
-        reciever.reciever->dragDelta(MouseInteractionDragDeltaArgs{ m_currentMousePosition, *btn, hoverElement, delta, reciever.startPosition });
+        reciever.reciever->dragDelta(MouseInteractionDragDeltaArgs{m_currentId, m_currentMousePosition, *btn, hoverElement, delta, reciever.startPosition });
     }
 }
 
@@ -187,11 +187,11 @@ void EventRoutingMapping::handleMouseReleaseEvent(MouseButton value)
     glm::ivec2 delta = m_currentMousePosition - curReciever.startPosition;
     if (delta == glm::ivec2(0, 0))
     {
-        curReciever.reciever->click(MouseInteractionArgs{ m_currentMousePosition, static_cast<MouseButton>(value) });
+        curReciever.reciever->click(MouseInteractionArgs{m_currentId, m_currentMousePosition, static_cast<MouseButton>(value) });
     }
     else
     {
-        curReciever.reciever->dragEnd(MouseInteractionArgs{ m_currentMousePosition, static_cast<MouseButton>(value) });
+        curReciever.reciever->dragEnd(MouseInteractionArgs{m_currentId, m_currentMousePosition, static_cast<MouseButton>(value) });
     }
 }
 
@@ -200,7 +200,7 @@ void EventRoutingMapping::mapWheelEvent(WheelEvent * wheelEvent)
     m_currentMousePosition = wheelEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
     auto reciever = mapEventToReciever(RoutingEventType::MouseWheel, static_cast<int>(RoutingEventValue::Any));
     if (reciever) {
-        reciever->mouseWheel(MouseInteractionWheelArgs{ m_currentMousePosition, wheelEvent->angleDelta() });
+        reciever->mouseWheel(MouseInteractionWheelArgs{m_currentId, m_currentMousePosition, wheelEvent->angleDelta() });
     }
 }
 

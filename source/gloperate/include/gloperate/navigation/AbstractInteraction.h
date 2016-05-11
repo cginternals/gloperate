@@ -12,17 +12,20 @@ namespace gloperate
 class AbstractInteraction;
 
 struct GLOPERATE_API KeyboardInteractionArgs {
+    int id;
     Key key;
     int scanCode;
     int modifiers;
 };
 
 struct GLOPERATE_API MouseInteractionArgs {
+    int id;
     glm::ivec2 position;
     MouseButton button;
 };
 
 struct GLOPERATE_API MouseInteractionDragDeltaArgs {
+    int id;
     glm::ivec2 position;
     MouseButton button;
     AbstractInteraction *hoverElement;
@@ -31,6 +34,7 @@ struct GLOPERATE_API MouseInteractionDragDeltaArgs {
 };
 
 struct GLOPERATE_API MouseInteractionWheelArgs {
+    int id;
     glm::ivec2 position;
     glm::vec2 angleDelta;
 };
