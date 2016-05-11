@@ -43,11 +43,9 @@ enum InteractionState
 
 struct InteractionData
 {
-    gloperate::AbstractInteraction * reciever = nullptr;
-    InteractionState state;
+    gloperate::AbstractInteraction * reciever;
     glm::ivec2 startPosition;
-    InteractionData(gloperate::AbstractInteraction* reciever = nullptr, glm::ivec2 startPosition = glm::ivec2(0.0)) :
-        reciever(reciever), state(NoDrag), startPosition(startPosition) {};
+    InteractionState state;
 };
 
 
@@ -64,13 +62,14 @@ protected:
     void mapKeyboardEvent(gloperate::KeyboardEvent * event);
     void mapMouseEvent(gloperate::MouseEvent * event);
     void handleMouseMoveEvent();
-    void handleMouseReleaseEvent(int value);
+    void handleMouseReleaseEvent(gloperate::MouseButton value);
     void mapWheelEvent(gloperate::WheelEvent * event);
 
     void onTargetFramebufferChanged();
 
 protected:
-    gloperate::AbstractInteraction* mapToReciever(gloperate::RoutingEventType type, int value) const;
+    gloperate::AbstractInteraction* mapEventToReciever(gloperate::RoutingEventType eventType, int eventValue) const;
+    
     std::unique_ptr<gloperate::TypedRenderTargetCapability> m_renderTarget;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;

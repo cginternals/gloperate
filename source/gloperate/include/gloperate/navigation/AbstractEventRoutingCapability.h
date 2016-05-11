@@ -42,7 +42,7 @@ public:
     */
     virtual ~AbstractEventRoutingCapability();
 
-    virtual AbstractInteraction * mapID(int id, RoutingEventType type, int value) = 0;
+    virtual AbstractInteraction * mapEventToReciever(int id, RoutingEventType type, int eventValue) = 0;
     virtual AbstractInteraction * getNavigation() = 0;
 };
 

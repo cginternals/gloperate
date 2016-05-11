@@ -15,41 +15,24 @@ struct GLOPERATE_API KeyboardInteractionArgs {
     Key key;
     int scanCode;
     int modifiers;
-    KeyboardInteractionArgs(Key key, int scanCode, int modifiers) : key(key), scanCode(scanCode), modifiers(modifiers) {};
 };
 
-struct GLOPERATE_API InteractionArgs {
+struct GLOPERATE_API MouseInteractionArgs {
     glm::ivec2 position;
-    InteractionArgs(glm::ivec2 position) : position(position){};
-};
-
-struct GLOPERATE_API MouseInteractionArgs : public InteractionArgs {
     MouseButton button;
-    MouseInteractionArgs(glm::ivec2 position, MouseButton button) : InteractionArgs(position), button{button} {};
 };
 
-struct GLOPERATE_API MouseInteractionDragArgs : public MouseInteractionArgs
-{
+struct GLOPERATE_API MouseInteractionDragDeltaArgs {
+    glm::ivec2 position;
+    MouseButton button;
     AbstractInteraction *hoverElement;
-    MouseInteractionDragArgs(glm::ivec2 position, MouseButton button, AbstractInteraction *hoverElement)
-        : MouseInteractionArgs(position, button),
-        hoverElement(hoverElement)
-    {};
-};
-
-struct GLOPERATE_API MouseInteractionDragDeltaArgs: public MouseInteractionDragArgs {
     glm::ivec2 cummulativeDelta;
     glm::ivec2 startPosition;
-    MouseInteractionDragDeltaArgs(glm::ivec2 position, MouseButton button, AbstractInteraction *hoverElement, glm::ivec2 cummulativeDelta, glm::ivec2 startPosition) 
-        : MouseInteractionDragArgs(position, button, hoverElement),
-        cummulativeDelta(cummulativeDelta),
-        startPosition(startPosition)
-    {};
 };
 
-struct GLOPERATE_API MouseInteractionWheelArgs : public InteractionArgs {
+struct GLOPERATE_API MouseInteractionWheelArgs {
+    glm::ivec2 position;
     glm::vec2 angleDelta;
-    MouseInteractionWheelArgs(glm::ivec2 position, glm::vec2 angleDelta) : InteractionArgs(position), angleDelta(angleDelta) {};
 };
 
 /**

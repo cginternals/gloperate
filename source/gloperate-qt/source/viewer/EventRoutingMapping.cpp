@@ -27,7 +27,6 @@
 #include <gloperate-qt/viewer/QtOpenGLWindow.h>
 
 
-using namespace gloperate_qt;
 using namespace gloperate;
 
 using gloperate::make_unique;
@@ -102,13 +101,13 @@ void EventRoutingMapping::mapEvent(AbstractEvent * event)
 
     switch (event->sourceType())
     {
-    case gloperate::EventType::Keyboard:
+    case EventType::Keyboard:
         mapKeyboardEvent(static_cast<KeyboardEvent *>(event));
         break;
-    case gloperate::EventType::Mouse:
+    case EventType::Mouse:
         mapMouseEvent(static_cast<MouseEvent *>(event));
         break;
-    case gloperate::EventType::Wheel:
+    case EventType::Wheel:
         mapWheelEvent(static_cast<WheelEvent *>(event));
         break;
     default:
@@ -120,8 +119,8 @@ void EventRoutingMapping::mapKeyboardEvent(KeyboardEvent * event)
 {
     if (event && event->type() == KeyboardEvent::Type::Press)
     {
-        auto curReciever = mapToReciever(RoutingEventType::Keyboard, static_cast<int>(RoutingEventValue::Any));
-        curReciever->keyPress(KeyboardInteractionArgs(event->key(), event->scanCode(), event->modifiers()));
+        auto curReciever = mapEventToReciever(RoutingEventType::Keyboard, static_cast<int>(RoutingEventValue::Any));
+        curReciever->keyPress(KeyboardInteractionArgs{ event->key(), event->scanCode(), event->modifiers() });
     }
 }
 
@@ -134,14 +133,17 @@ void EventRoutingMapping::mapMouseEvent(MouseEvent * mouseEvent)
 
     if (mouseEvent->type() == MouseEvent::Type::Press)
     {
-        gloperate::MouseButton curButton = mouseEvent->button();
+        MouseButton curButton = mouseEvent->button();
+        //mark button as pressed
         pressedButtons.insert(curButton);
-        auto curReciever = mapToReciever(RoutingEventType::MouseButton, curButton);
-    
+        
+        auto curReciever = mapEventToReciever(RoutingEventType::MouseButton, curButton);
+        //nobody subcribed for this event
         if (!curReciever || m_eventReciever.count(curButton))
             return;
-    
-        m_eventReciever[curButton] = InteractionData(curReciever, m_currentMousePosition);
+
+        //remember the reciever for this button
+        m_eventReciever[curButton] = InteractionData{ curReciever, m_currentMousePosition };
     }
     else if (mouseEvent->type() == MouseEvent::Type::Move)
     {
@@ -149,12 +151,14 @@ void EventRoutingMapping::mapMouseEvent(MouseEvent * mouseEvent)
     }
     else if (mouseEvent->type() == MouseEvent::Type::Release)
     {
-        gloperate::MouseButton curButton = mouseEvent->button();
+        MouseButton curButton = mouseEvent->button();
+        //mark button as released
         pressedButtons.erase(curButton);
 
         if (!m_eventReciever.count(curButton)) return;
 
         handleMouseReleaseEvent(curButton);
+
         m_eventReciever.erase(curButton);
     }
 }
@@ -166,35 +170,37 @@ void EventRoutingMapping::handleMouseMoveEvent()
         InteractionData &reciever = m_eventReciever.at(*btn);
         glm::ivec2 delta = m_currentMousePosition - m_eventReciever.at(*btn).startPosition;
         if (reciever.state != DragStarted) {
-            reciever.reciever->dragStart(MouseInteractionArgs(reciever.startPosition, *btn));
+            reciever.reciever->dragStart(MouseInteractionArgs{ reciever.startPosition, *btn });
             reciever.state = DragStarted;
         }
-        auto hoverReciever = mapToReciever(RoutingEventType::Any, static_cast<int>(RoutingEventValue::Any));
+        auto hoverReciever = mapEventToReciever(RoutingEventType::Any, static_cast<int>(RoutingEventValue::Any));
         AbstractInteraction* hoverElement = reciever.reciever != hoverReciever ? hoverReciever : nullptr;
-        reciever.reciever->dragDelta(MouseInteractionDragDeltaArgs(m_currentMousePosition, *btn, hoverElement, delta, reciever.startPosition));
+        reciever.reciever->dragDelta(MouseInteractionDragDeltaArgs{ m_currentMousePosition, *btn, hoverElement, delta, reciever.startPosition });
     }
 }
 
-void EventRoutingMapping::handleMouseReleaseEvent(int value)
+void EventRoutingMapping::handleMouseReleaseEvent(MouseButton value)
 {
-    InteractionData curReciever = mapToReciever(RoutingEventType::MouseButton, value);
+    if (!m_eventReciever.count(value)) return;
+
+    InteractionData curReciever = m_eventReciever[value];
     glm::ivec2 delta = m_currentMousePosition - curReciever.startPosition;
     if (delta == glm::ivec2(0, 0))
     {
-        curReciever.reciever->click(MouseInteractionArgs(m_currentMousePosition, static_cast<MouseButton>(value)));
+        curReciever.reciever->click(MouseInteractionArgs{ m_currentMousePosition, static_cast<MouseButton>(value) });
     }
     else
     {
-        curReciever.reciever->dragEnd(MouseInteractionArgs(m_currentMousePosition, static_cast<MouseButton>(value)));
+        curReciever.reciever->dragEnd(MouseInteractionArgs{ m_currentMousePosition, static_cast<MouseButton>(value) });
     }
 }
 
 void EventRoutingMapping::mapWheelEvent(WheelEvent * wheelEvent)
 {
     m_currentMousePosition = wheelEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
-    auto reciever = mapToReciever(RoutingEventType::MouseWheel, static_cast<int>(RoutingEventValue::Any));
+    auto reciever = mapEventToReciever(RoutingEventType::MouseWheel, static_cast<int>(RoutingEventValue::Any));
     if (reciever) {
-        reciever->mouseWheel(MouseInteractionWheelArgs(m_currentMousePosition, wheelEvent->angleDelta()));
+        reciever->mouseWheel(MouseInteractionWheelArgs{ m_currentMousePosition, wheelEvent->angleDelta() });
     }
 }
 
@@ -206,14 +212,17 @@ void EventRoutingMapping::onTargetFramebufferChanged()
         fbo = globjects::Framebuffer::defaultFBO();
     }
 
-    m_renderTarget->setRenderTarget(gloperate::RenderTargetType::Depth, fbo,
+    m_renderTarget->setRenderTarget(RenderTargetType::Depth, fbo,
         gl::GL_DEPTH_ATTACHMENT, gl::GL_DEPTH_COMPONENT);
 }
 
-gloperate::AbstractInteraction* EventRoutingMapping::mapToReciever(gloperate::RoutingEventType type, int value) const
+AbstractInteraction* EventRoutingMapping::mapEventToReciever(RoutingEventType eventType, int eventValue) const
 {
-    AbstractInteraction* curReciever = m_eventRoutingCapability ? m_eventRoutingCapability->mapID(m_currentId, type, value) : nullptr;
+    // request registered eventReciever
+    AbstractInteraction* curReciever = m_eventRoutingCapability ? m_eventRoutingCapability->mapEventToReciever(m_currentId, eventType, eventValue) : nullptr;
+    
     if (!curReciever)
+        // forward event to navigation
         curReciever = m_eventRoutingCapability->getNavigation();
     return curReciever;
 }
