@@ -178,8 +178,7 @@ Page
         onItemClicked: // (menu, name)
         {
             if (name == 'edit') {
-                pipeline.visible = true;
-                pipeline.raise();
+                pipelineWindow.createObject(page, {});
             }
         }
     }
@@ -226,22 +225,6 @@ Page
         height:  600
 
         Settings
-        {
-            anchors.fill: parent
-        }
-    }
-
-    // Pipeline editor
-    ApplicationWindow
-    {
-        id: pipeline
-
-        title:   "Pipeline"
-        visible: true
-        width:   800
-        height:  600
-
-        PipelineEditor
         {
             anchors.fill: parent
         }
@@ -294,6 +277,25 @@ Page
                     anchors.fill:    parent
                     anchors.margins: Ui.style.panelPadding
                 }
+            }
+        }
+    }
+
+    // Pipeline editor
+    Component
+    {
+        id: pipelineWindow
+
+        ApplicationWindow
+        {
+            title:   "Pipeline"
+            visible: true
+            width:   800
+            height:  600
+
+            PipelineEditor
+            {
+                anchors.fill: parent
             }
         }
     }

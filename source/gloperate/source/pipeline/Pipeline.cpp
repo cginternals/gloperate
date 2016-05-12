@@ -6,8 +6,8 @@ namespace gloperate
 {
 
 
-Pipeline::Pipeline(ViewerContext * viewerContext, Pipeline * parent)
-: Stage(viewerContext, parent)
+Pipeline::Pipeline(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
+: Stage(viewerContext, name, parent)
 {
 }
 

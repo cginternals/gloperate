@@ -34,7 +34,7 @@ Background
 
             Repeater
             {
-                model: 3
+                model: 1
 
                 delegate: ColumnLayout
                 {
@@ -44,14 +44,9 @@ Background
                     {
                         Layout.fillWidth: true
 
-                        name: 'Stage'
-                    }
-
-                    Stage
-                    {
-                        Layout.fillWidth: true
-
-                        name: 'AwsomeStage'
+                        name:        gloperate.pipeline.getName()
+                        inputNames:  gloperate.pipeline.getInputs()
+                        outputNames: gloperate.pipeline.getOutputs()
                     }
                 }
             }

@@ -10,8 +10,8 @@ namespace gloperate
 {
 
 
-Stage::Stage(ViewerContext * viewerContext, Pipeline * parent)
-: cppexpose::Object("", parent)
+Stage::Stage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
+: cppexpose::Object(name, parent)
 , m_viewerContext(viewerContext)
 , m_parentPipeline(parent)
 {

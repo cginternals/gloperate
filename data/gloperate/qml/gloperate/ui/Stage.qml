@@ -15,8 +15,8 @@ BaseItem
     id: stage
 
     property string name: 'Stage'
-    property var inputNames:  [ 'InputOne', 'InputTwo', 'InputThree', 'InputFour' ]
-    property var outputNames: [ 'OutputOne', 'OutputTwo', 'AwsomeExceedinglyLongOutput', 'OutputFour' ]
+    property var inputNames:  []
+    property var outputNames: []
 
     implicitWidth:  inputs.implicitWidth + body.implicitWidth + outputs.implicitWidth
     implicitHeight: Math.max(Math.max(inputs.implicitHeight, body.implicitHeight), outputs.implicitHeight)

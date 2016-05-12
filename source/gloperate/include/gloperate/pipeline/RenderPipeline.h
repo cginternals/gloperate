@@ -42,10 +42,12 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
     *  @param[in] parent
     *    Parent pipeline (can be null)
     */
-    RenderPipeline(ViewerContext * viewerContext, Pipeline * parent = nullptr);
+    RenderPipeline(ViewerContext * viewerContext, const std::string & name = "RenderPipeline", Pipeline * parent = nullptr);
 
     /**
     *  @brief

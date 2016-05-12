@@ -83,6 +83,16 @@ void ViewerContext::unregisterSurface(Surface * surface)
     m_surfaces.erase(std::find(m_surfaces.begin(), m_surfaces.end(), surface));
 }
 
+const std::vector<Surface *> & ViewerContext::surfaces() const
+{
+    return m_surfaces;
+}
+
+std::vector<Surface *> & ViewerContext::surfaces()
+{
+    return m_surfaces;
+}
+
 bool ViewerContext::update()
 {
     // Update timing and timers

@@ -68,6 +68,7 @@ set(headers
     ${include_path}/scripting/TimerApi.h
     ${include_path}/scripting/ScriptTimer.h
     ${include_path}/scripting/ComponentsApi.h
+    ${include_path}/scripting/PipelineApi.h
 
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/RenderStage.h
@@ -123,6 +124,7 @@ set(sources
     ${source_path}/scripting/TimerApi.cpp
     ${source_path}/scripting/ScriptTimer.cpp
     ${source_path}/scripting/ComponentsApi.cpp
+    ${source_path}/scripting/PipelineApi.cpp
 
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/RenderStage.cpp
