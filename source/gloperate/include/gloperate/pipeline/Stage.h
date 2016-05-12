@@ -19,6 +19,7 @@ class ViewerContext;
 class AbstractGLContext;
 class AbstractData;
 class AbstractInputSlot;
+class Pipeline;
 
 template <typename T>
 class Data;
@@ -58,9 +59,9 @@ public:
     *  @param[in] viewerContext
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] parent
-    *    Parent stage
+    *    Parent pipeline (can be null)
     */
-    Stage(ViewerContext * viewerContext, Stage * parent = nullptr);
+    Stage(ViewerContext * viewerContext, Pipeline * parent = nullptr);
 
     /**
     *  @brief
@@ -76,6 +77,15 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     */
     ViewerContext * viewerContext() const;
+
+    /**
+    *  @brief
+    *    Get parent pipeline
+    *
+    *  @return
+    *    Pipeline to which the stage belongs (can be null)
+    */
+    Pipeline * parentPipeline() const;
 
     /**
     *  @brief
@@ -235,7 +245,8 @@ protected:
 
 
 protected:
-    ViewerContext * m_viewerContext; ///< Viewer context to which the stage belongs
+    ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
+    Pipeline      * m_parentPipeline; ///< Pipeline to which the stage belongs (can be null)
 
     std::vector<AbstractInputSlot *>                     m_inputs;    ///< List of inputs
     std::unordered_map<std::string, AbstractInputSlot *> m_inputsMap; ///< Map of names and inputs

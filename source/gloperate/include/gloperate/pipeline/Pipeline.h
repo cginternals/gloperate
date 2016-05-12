@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <vector>
+
 #include <gloperate/pipeline/Stage.h>
 
 
@@ -40,15 +42,39 @@ public:
     *  @param[in] viewerContext
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] parent
-    *    Parent stage
+    *    Parent pipeline (can be null)
     */
-    Pipeline(ViewerContext * viewerContext, Stage * parent = nullptr);
+    Pipeline(ViewerContext * viewerContext, Pipeline * parent = nullptr);
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~Pipeline();
+
+    /**
+    *  @brief
+    *    Get stages
+    *
+    *  @return
+    *    List of stages in the pipeline
+    */
+    const std::vector<Stage *> stages() const;
+
+
+protected:
+    /**
+    *  @brief
+    *    Register stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    */
+    void registerStage(Stage * stage);
+
+
+protected:
+    std::vector<Stage *> m_stages; ///< List of stages in the pipeline
 };
 
 

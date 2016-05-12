@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/Pipeline.h>
 
 #include <gloperate/pipeline/InputSlot.h>
 #include <gloperate/pipeline/Data.h>
@@ -16,18 +16,12 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that can be used as a rendering stage for a viewer
+*    Pipeline that can be used as a rendering stage for a viewer
 *
-*    A render stage is a stage that renders into the current framebuffer
-*    and can therefore be assigned to a viewer. It supports a specific
-*    interface via input and output slots which is accessed by the viewer.
-*
-*    For convenience, this class may be used as a base class to create
-*    rendering stages. However, it is not necessary to use this class:
-*    any stage can be used as a rendering stage by adding the same input
-*    and output slots as specified in this class.
+*  @see
+*    RenderStage
 */
-class GLOPERATE_API RenderStage : public Stage
+class GLOPERATE_API RenderPipeline : public Pipeline
 {
 public:
     // Inputs
@@ -51,13 +45,13 @@ public:
     *  @param[in] parent
     *    Parent pipeline (can be null)
     */
-    RenderStage(ViewerContext * viewerContext, Pipeline * parent = nullptr);
+    RenderPipeline(ViewerContext * viewerContext, Pipeline * parent = nullptr);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~RenderStage();
+    virtual ~RenderPipeline();
 };
 
 

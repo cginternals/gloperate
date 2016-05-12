@@ -72,6 +72,7 @@ set(headers
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/RenderStage.h
     ${include_path}/pipeline/Pipeline.h
+    ${include_path}/pipeline/RenderPipeline.h
     ${include_path}/pipeline/AbstractInputSlot.h
     ${include_path}/pipeline/InputSlot.h
     ${include_path}/pipeline/InputSlot.hpp
@@ -126,6 +127,7 @@ set(sources
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/RenderStage.cpp
     ${source_path}/pipeline/Pipeline.cpp
+    ${source_path}/pipeline/RenderPipeline.cpp
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/AbstractData.cpp
 

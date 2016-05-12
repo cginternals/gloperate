@@ -1,6 +1,7 @@
 
 #include <gloperate/pipeline/Stage.h>
 
+#include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/InputSlot.h>
 #include <gloperate/pipeline/Data.h>
 
@@ -9,9 +10,10 @@ namespace gloperate
 {
 
 
-Stage::Stage(ViewerContext * viewerContext, Stage * parent)
+Stage::Stage(ViewerContext * viewerContext, Pipeline * parent)
 : cppexpose::Object("", parent)
 , m_viewerContext(viewerContext)
+, m_parentPipeline(parent)
 {
 }
 
@@ -22,6 +24,11 @@ Stage::~Stage()
 ViewerContext * Stage::viewerContext() const
 {
     return m_viewerContext;
+}
+
+Pipeline * Stage::parentPipeline() const
+{
+    return m_parentPipeline;
 }
 
 void Stage::initContext(AbstractGLContext * context)
