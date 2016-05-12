@@ -136,17 +136,19 @@ void EventRoutingMapping::mapMouseEvent(MouseEvent * mouseEvent)
         MouseButton curButton = mouseEvent->button();
         //mark button as pressed
         pressedButtons.insert(curButton);
-        
-        auto curReciever = mapEventToReciever(RoutingEventType::MouseButton, curButton);
-        //nobody subcribed for this event
-        if (!curReciever || m_eventReciever.count(curButton))
-            return;
-
-        //remember the reciever for this button
-        m_eventReciever[curButton] = InteractionData{ curReciever, m_currentMousePosition };
     }
     else if (mouseEvent->type() == MouseEvent::Type::Move)
     {
+        // for every pressed button without reciever, ask for a drag-reciever
+        for (auto btn : pressedButtons)
+        {
+            if (!m_eventReciever.count(btn))
+            {
+                auto curReciever = mapEventToReciever(RoutingEventType::MouseDrag, btn);
+                if (curReciever)
+                    m_eventReciever[btn] = InteractionData{ curReciever, m_currentMousePosition };
+            }
+        }
         handleMouseMoveEvent();
     }
     else if (mouseEvent->type() == MouseEvent::Type::Release)
@@ -155,7 +157,12 @@ void EventRoutingMapping::mapMouseEvent(MouseEvent * mouseEvent)
         //mark button as released
         pressedButtons.erase(curButton);
 
-        if (!m_eventReciever.count(curButton)) return;
+        if (!m_eventReciever.count(curButton)) {
+            //if there is no (drag-)reciever yet, then ask for a click-reciever
+            auto curReciever = mapEventToReciever(RoutingEventType::MouseClick, curButton);
+            if (curReciever)
+                m_eventReciever[curButton] = InteractionData{ curReciever, m_currentMousePosition };
+        }    
 
         handleMouseReleaseEvent(curButton);
 
@@ -165,17 +172,17 @@ void EventRoutingMapping::mapMouseEvent(MouseEvent * mouseEvent)
 
 void EventRoutingMapping::handleMouseMoveEvent()
 {
-    for (auto btn = pressedButtons.begin(); btn != pressedButtons.end(); ++btn) {
-        if (!m_eventReciever.count(*btn)) continue;
-        InteractionData &reciever = m_eventReciever.at(*btn);
-        glm::ivec2 delta = m_currentMousePosition - m_eventReciever.at(*btn).startPosition;
+    for (auto btn : pressedButtons) {
+        if (!m_eventReciever.count(btn)) continue;
+        InteractionData &reciever = m_eventReciever.at(btn);
+        glm::ivec2 delta = m_currentMousePosition - m_eventReciever.at(btn).startPosition;
         if (reciever.state != DragStarted) {
-            reciever.reciever->dragStart(MouseInteractionArgs{m_currentId, reciever.startPosition, *btn });
+            reciever.reciever->dragStart(MouseInteractionArgs{m_currentId, reciever.startPosition, btn });
             reciever.state = DragStarted;
         }
         auto hoverReciever = mapEventToReciever(RoutingEventType::Any, static_cast<int>(RoutingEventValue::Any));
         AbstractInteraction* hoverElement = reciever.reciever != hoverReciever ? hoverReciever : nullptr;
-        reciever.reciever->dragDelta(MouseInteractionDragDeltaArgs{m_currentId, m_currentMousePosition, *btn, hoverElement, delta, reciever.startPosition });
+        reciever.reciever->dragDelta(MouseInteractionDragDeltaArgs{m_currentId, m_currentMousePosition, btn, hoverElement, delta, reciever.startPosition });
     }
 }
 
@@ -184,8 +191,7 @@ void EventRoutingMapping::handleMouseReleaseEvent(MouseButton value)
     if (!m_eventReciever.count(value)) return;
 
     InteractionData curReciever = m_eventReciever[value];
-    glm::ivec2 delta = m_currentMousePosition - curReciever.startPosition;
-    if (delta == glm::ivec2(0, 0))
+    if (m_currentMousePosition == curReciever.startPosition)
     {
         curReciever.reciever->click(MouseInteractionArgs{m_currentId, m_currentMousePosition, static_cast<MouseButton>(value) });
     }
@@ -218,8 +224,10 @@ void EventRoutingMapping::onTargetFramebufferChanged()
 
 AbstractInteraction* EventRoutingMapping::mapEventToReciever(RoutingEventType eventType, int eventValue) const
 {
+    if (!m_eventRoutingCapability)
+        return nullptr;
     // request registered eventReciever
-    AbstractInteraction* curReciever = m_eventRoutingCapability ? m_eventRoutingCapability->mapEventToReciever(m_currentId, eventType, eventValue) : nullptr;
+    AbstractInteraction* curReciever = m_eventRoutingCapability->mapEventToReciever(m_currentId, eventType, eventValue);
     
     if (!curReciever)
         // forward event to navigation

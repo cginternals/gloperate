@@ -10,9 +10,10 @@ namespace gloperate
     enum class RoutingEventType
     {
         Any = -1,
-        MouseButton = 0,
-        MouseWheel = 1,
-        Keyboard = 2,
+        MouseClick = 0,
+        MouseDrag,
+        MouseWheel,
+        Keyboard,
     };
 
     enum class RoutingEventValue
