@@ -168,7 +168,7 @@ Page
           { name: 'pipeline', text: 'Demo', icon: '0190-menu.png', enabled: true,
             items: [
               { name: 'choose',     text: 'Choose Pipeline', icon: '0092-tv.png', enabled: false },
-              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: false },
+              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: true },
               { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: false },
               { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: false }
             ]
@@ -177,6 +177,10 @@ Page
 
         onItemClicked: // (menu, name)
         {
+            if (name == 'edit') {
+                pipeline.visible = true;
+                pipeline.raise();
+            }
         }
     }
 
@@ -222,6 +226,22 @@ Page
         height:  600
 
         Settings
+        {
+            anchors.fill: parent
+        }
+    }
+
+    // Pipeline editor
+    ApplicationWindow
+    {
+        id: pipeline
+
+        title:   "Pipeline"
+        visible: true
+        width:   800
+        height:  600
+
+        PipelineEditor
         {
             anchors.fill: parent
         }

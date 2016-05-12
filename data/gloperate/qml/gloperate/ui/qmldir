@@ -3,7 +3,13 @@ module gloperate.ui
 
 LogView         1.0 LogView.qml
 ScriptConsole   1.0 ScriptConsole.qml
+
 Settings        1.0 Settings.qml
 SettingsGeneral 1.0 SettingsGeneral.qml
 SettingsInput   1.0 SettingsInput.qml
 SettingsPlugins 1.0 SettingsPlugins.qml
+
+PipelineEditor  1.0 PipelineEditor.qml
+Stage           1.0 Stage.qml
+StageInput      1.0 StageInput.qml
+StageOutput     1.0 StageOutput.qml
