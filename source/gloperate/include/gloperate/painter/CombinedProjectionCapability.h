@@ -67,6 +67,8 @@ protected:
     virtual void setAspectRatio(const glm::ivec2 & viewport) override;
     
     glm::mat4 interpolate(const glm::mat4& first, const glm::mat4& second) const;
+    
+    virtual void invalidateMatrices();
 
 
 protected:
@@ -75,8 +77,10 @@ protected:
     
     float m_mix;
     
-    glm::mat4 m_projection;
-    glm::mat4 m_invertedProjection;
+    
+    
+    gloperate::CachedValue<glm::mat4> m_projection;
+    gloperate::CachedValue<glm::mat4> m_invertedProjection;
 };
 
 } // namespace gloperate
