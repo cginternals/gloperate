@@ -11,6 +11,9 @@
 
 #include <gloperate-qt/gloperate-qt_api.h>
 #include "AbstractQtMapping.h"
+#include "QtKeyEventProvider.h"
+#include "QtMouseEventProvider.h"
+#include "QtWheelEventProvider.h"
 
 
 class Ui_Viewer;
@@ -149,7 +152,9 @@ protected:
     void setupCommandPrompt();
     void setupPropertyWidget();
     void setupDockArea();
+    void setupEventProvider();
     void setupCanvas();
+    void setupMapping();
     void setupScripting();
     void updatePainterMenu();
 
@@ -180,6 +185,10 @@ protected:
     std::unique_ptr<widgetzeug::MessageWidget>       m_messagesLog;
     std::unique_ptr<widgetzeug::ScriptPromptWidget>  m_scriptPrompt;
     std::unique_ptr<gloperate::ImageExporter>        m_imageExporter;
+
+    std::unique_ptr<QtKeyEventProvider>              m_keyProvider;
+    std::unique_ptr<QtMouseEventProvider>            m_mouseProvider;
+    std::unique_ptr<QtWheelEventProvider>            m_wheelProvider;
 
     QDockWidget                                    * m_messagLogDockWidget;
     QDockWidget                                    * m_scriptPromptDockWidget;
