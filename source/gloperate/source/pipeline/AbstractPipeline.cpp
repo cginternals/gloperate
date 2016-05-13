@@ -140,15 +140,7 @@ void AbstractPipeline::execute()
 
     for (auto & stage: m_stages)
     {
-        auto start = std::chrono::high_resolution_clock::now();
-
         stage->execute();
-
-        const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
-        if (ms > 50)
-        {
-            std::cout << stage->name() << " " << ms << "ms" << std::endl;
-        }
     }
 }
 
