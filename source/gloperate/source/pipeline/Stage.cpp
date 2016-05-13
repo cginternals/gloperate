@@ -1,6 +1,8 @@
 
 #include <gloperate/pipeline/Stage.h>
 
+#include <algorithm>
+
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/InputSlot.h>
 #include <gloperate/pipeline/Data.h>
@@ -15,10 +17,16 @@ Stage::Stage(ViewerContext * viewerContext, const std::string & name, Pipeline *
 , m_viewerContext(viewerContext)
 , m_parentPipeline(parent)
 {
+    if (parent) {
+        parent->registerStage(this);
+    }
 }
 
 Stage::~Stage()
 {
+    if (m_parentPipeline) {
+        m_parentPipeline->unregisterStage(this);
+    }
 }
 
 ViewerContext * Stage::viewerContext() const
@@ -78,6 +86,28 @@ void Stage::registerInput(AbstractInputSlot * input)
     if (input->name() != "") {
         m_inputsMap.insert(std::make_pair(input->name(), input));        
     }
+
+    // Emit signal
+    inputAdded(input);
+}
+
+void Stage::unregisterInput(AbstractInputSlot * input)
+{
+    // Check parameters
+    if (!input)
+    {
+        return;
+    }
+
+    // Find input
+    auto it = std::find(m_inputs.begin(), m_inputs.end(), input);
+    if (it != m_inputs.end())
+    {
+        // Remove input
+        m_inputs.erase(it);
+        m_inputsMap.erase(input->name());
+        inputRemoved(input);
+    }
 }
 
 void Stage::registerOutput(AbstractData * output)
@@ -91,6 +121,28 @@ void Stage::registerOutput(AbstractData * output)
     m_outputs.push_back(output);
     if (output->name() != "") {
         m_outputsMap.insert(std::make_pair(output->name(), output));        
+    }
+
+    // Emit signal
+    outputAdded(output);
+}
+
+void Stage::unregisterOutput(AbstractData * output)
+{
+    // Check parameters
+    if (!output)
+    {
+        return;
+    }
+
+    // Find output
+    auto it = std::find(m_outputs.begin(), m_outputs.end(), output);
+    if (it != m_outputs.end())
+    {
+        // Remove output
+        m_outputs.erase(it);
+        m_outputsMap.erase(output->name());
+        outputRemoved(output);
     }
 }
 

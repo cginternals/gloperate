@@ -34,6 +34,14 @@ namespace gloperate
 */
 class GLOPERATE_API Pipeline : public Stage
 {
+friend class Stage;
+
+
+public:
+    cppexpose::Signal<Stage *> stageAdded;   ///< Called when a new stage has been added
+    cppexpose::Signal<Stage *> stageRemoved; ///< Called when a stage has been removed
+
+
 public:
     /**
     *  @brief
@@ -73,6 +81,15 @@ protected:
     *    Stage (must NOT be null!)
     */
     void registerStage(Stage * stage);
+
+    /**
+    *  @brief
+    *    Unregister stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    */
+    void unregisterStage(Stage * stage);
 
 
 protected:

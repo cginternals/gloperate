@@ -18,6 +18,9 @@ AbstractData::AbstractData()
 
 AbstractData::~AbstractData()
 {
+    if (m_owner) {
+        m_owner->unregisterOutput(this);
+    }
 }
 
 Stage * AbstractData::owner() const

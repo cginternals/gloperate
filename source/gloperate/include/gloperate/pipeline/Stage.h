@@ -52,6 +52,13 @@ public:
 
 
 public:
+    cppexpose::Signal<AbstractInputSlot *> inputAdded;    ///< Called when an input slot has been added
+    cppexpose::Signal<AbstractInputSlot *> inputRemoved;  ///< Called when an input slot has been removed
+    cppexpose::Signal<AbstractData *>      outputAdded;   ///< Called when an output has been added
+    cppexpose::Signal<AbstractData *>      outputRemoved; ///< Called when an output has been removed
+
+
+public:
     /**
     *  @brief
     *    Constructor
@@ -183,6 +190,15 @@ protected:
 
     /**
     *  @brief
+    *    Unregister input slot
+    *
+    *  @param[in] input
+    *    Input slot (must NOT null!)
+    */
+    void unregisterInput(AbstractInputSlot * input);
+
+    /**
+    *  @brief
     *    Register output data
     *
     *  @param[in] output
@@ -192,6 +208,15 @@ protected:
     *    registerInput
     */
     void registerOutput(AbstractData * output);
+
+    /**
+    *  @brief
+    *    Unregister output data
+    *
+    *  @param[in] output
+    *    Output data (must NOT null!)
+    */
+    void unregisterOutput(AbstractData * output);
 
     /**
     *  @brief

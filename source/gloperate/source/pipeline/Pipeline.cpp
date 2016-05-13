@@ -28,6 +28,23 @@ void Pipeline::registerStage(Stage * stage)
     }
 
     m_stages.push_back(stage);
+
+    stageAdded(stage);
+}
+
+void Pipeline::unregisterStage(Stage * stage)
+{
+    if (!stage)
+    {
+        return;
+    }
+
+    auto it = std::find(m_stages.begin(), m_stages.end(), stage);
+    if (it != m_stages.end())
+    {
+        m_stages.erase(it);
+        stageRemoved(stage);
+    }
 }
 
 

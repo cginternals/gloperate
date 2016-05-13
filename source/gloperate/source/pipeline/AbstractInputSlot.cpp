@@ -16,6 +16,9 @@ AbstractInputSlot::AbstractInputSlot()
 
 AbstractInputSlot::~AbstractInputSlot()
 {
+    if (m_owner) {
+        m_owner->unregisterInput(this);
+    }
 }
 
 Stage * AbstractInputSlot::owner() const
