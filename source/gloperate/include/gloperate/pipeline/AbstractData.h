@@ -35,6 +35,24 @@ public:
 
     /**
     *  @brief
+    *    Get owner stage
+    *
+    *  @return
+    *    Stage that owns the data container (can be null)
+    */
+    Stage * owner() const;
+
+    /**
+    *  @brief
+    *    Get qualified name
+    *
+    *  @return
+    *    Name with all parent names, separated by '.'
+    */
+    std::string qualifiedName() const;
+
+    /**
+    *  @brief
     *    Check if data is required
     *
     *  @return
@@ -68,14 +86,15 @@ protected:
     *  @brief
     *    Initialize data container
     *
-    *  @param[in] parent
-    *    Parent stage (can be null)
+    *  @param[in] owner
+    *    Owner stage (can be null)
     */
-    void initData(Stage * parent);
+    void initData(Stage * owner);
 
 
 protected:
-    bool m_required; ///< Is the (output) data required?
+    Stage * m_owner;    ///< Stage that owns the data container (can be null)
+    bool    m_required; ///< Is the (output) data required?
 };
 
 

@@ -40,6 +40,24 @@ public:
 
     /**
     *  @brief
+    *    Get owner stage
+    *
+    *  @return
+    *    Stage that owns the input slot (can be null)
+    */
+    Stage * owner() const;
+
+    /**
+    *  @brief
+    *    Get qualified name
+    *
+    *  @return
+    *    Name with all parent names, separated by '.'
+    */
+    std::string qualifiedName() const;
+
+    /**
+    *  @brief
     *    Check if input slot is compatible to source data
     *
     *  @param[in] source
@@ -126,14 +144,15 @@ protected:
     *  @brief
     *    Initialize input slot
     *
-    *  @param[in] parent
-    *    Parent stage (can be null)
+    *  @param[in] owner
+    *    Owner stage (can be null)
     */
-    void initInputSlot(Stage * parent);
+    void initInputSlot(Stage * owner);
 
 
 protected:
-    bool m_feedback; ///< Does the input slot contain a feedback connection?
+    Stage * m_owner;    ///< Stage that owns the input slot (can be null)
+    bool    m_feedback; ///< Does the input slot contain a feedback connection?
 };
 
 

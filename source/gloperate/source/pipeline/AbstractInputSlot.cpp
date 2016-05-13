@@ -9,12 +9,32 @@ namespace gloperate
 
 
 AbstractInputSlot::AbstractInputSlot()
-: m_feedback(false)
+: m_owner(nullptr)
+, m_feedback(false)
 {
 }
 
 AbstractInputSlot::~AbstractInputSlot()
 {
+}
+
+Stage * AbstractInputSlot::owner() const
+{
+    return m_owner;
+}
+
+std::string AbstractInputSlot::qualifiedName() const
+{
+    std::stringstream ss;
+
+    if (m_owner)
+    {
+        ss << m_owner->name() << ".";
+    }
+
+    ss << name();
+
+    return ss.str();
 }
 
 bool AbstractInputSlot::isConnected() const
@@ -32,10 +52,11 @@ void AbstractInputSlot::setFeedback(bool feedback)
     m_feedback = feedback;
 }
 
-void AbstractInputSlot::initInputSlot(Stage * parent)
+void AbstractInputSlot::initInputSlot(Stage * owner)
 {
-    if (parent) {
-        parent->registerInput(this);
+    if (owner) {
+        m_owner = owner;
+        owner->registerInput(this);
     }
 }
 
