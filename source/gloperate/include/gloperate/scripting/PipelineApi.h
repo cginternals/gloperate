@@ -18,6 +18,7 @@ namespace gloperate
 
 
 class ViewerContext;
+class Stage;
 
 
 /**
@@ -45,9 +46,13 @@ public:
 
 protected:
     // Scripting functions
-    std::string getName();
-    cppexpose::Variant getInputs();
-    cppexpose::Variant getOutputs();
+    std::string getName(const std::string & name);
+    cppexpose::Variant getStages(const std::string & name);
+    cppexpose::Variant getInputs(const std::string & name);
+    cppexpose::Variant getOutputs(const std::string & name);
+
+    // Helper functions
+    Stage * getStage(const std::string & name);
 
 
 protected:

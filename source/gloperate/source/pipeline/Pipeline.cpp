@@ -20,6 +20,16 @@ const std::vector<Stage *> Pipeline::stages() const
     return m_stages;
 }
 
+Stage * Pipeline::stage(const std::string & name) const
+{
+    return m_stagesMap.at(name);
+}
+
+bool Pipeline::isPipeline() const
+{
+    return true;
+}
+
 void Pipeline::registerStage(Stage * stage)
 {
     if (!stage)
@@ -28,6 +38,9 @@ void Pipeline::registerStage(Stage * stage)
     }
 
     m_stages.push_back(stage);
+    if (stage->name() != "") {
+        m_stagesMap.insert(std::make_pair(stage->name(), stage));        
+    }
 
     stageAdded(stage);
 }
@@ -43,6 +56,7 @@ void Pipeline::unregisterStage(Stage * stage)
     if (it != m_stages.end())
     {
         m_stages.erase(it);
+        m_stagesMap.erase(stage->name());
         stageRemoved(stage);
     }
 }

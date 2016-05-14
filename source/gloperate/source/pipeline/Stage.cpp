@@ -29,6 +29,11 @@ Stage::~Stage()
     }
 }
 
+bool Stage::isPipeline() const
+{
+    return false;
+}
+
 ViewerContext * Stage::viewerContext() const
 {
     return m_viewerContext;

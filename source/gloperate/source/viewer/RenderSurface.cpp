@@ -33,6 +33,11 @@ RenderSurface::~RenderSurface()
 {
 }
 
+Pipeline * RenderSurface::rootPipeline() const
+{
+    return static_cast<Pipeline *>(const_cast<ViewerContainer *>(&m_viewer));
+}
+
 Stage * RenderSurface::renderStage() const
 {
     return m_viewer.renderStage();

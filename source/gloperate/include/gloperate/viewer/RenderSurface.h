@@ -40,6 +40,15 @@ public:
 
     /**
     *  @brief
+    *    Get root pipeline
+    *
+    *  @return
+    *    Root pipeline (never null)
+    */
+    Pipeline * rootPipeline() const;
+
+    /**
+    *  @brief
     *    Get render stage
     *
     *  @return

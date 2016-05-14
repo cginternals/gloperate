@@ -3,6 +3,8 @@
 
 
 #include <vector>
+#include <unordered_map>
+#include <string>
 
 #include <gloperate/pipeline/Stage.h>
 
@@ -71,6 +73,21 @@ public:
     */
     const std::vector<Stage *> stages() const;
 
+    /**
+    *  @brief
+    *    Get stage by name
+    *
+    *  @param[in] name
+    *    Name of stage
+    *
+    *  @return
+    *    Stage (can be null)
+    */
+    Stage * stage(const std::string & name) const;
+
+    // Virtual Stage interface
+    virtual bool isPipeline() const override;
+
 
 protected:
     /**
@@ -93,7 +110,8 @@ protected:
 
 
 protected:
-    std::vector<Stage *> m_stages; ///< List of stages in the pipeline
+    std::vector<Stage *>                     m_stages;    ///< List of stages in the pipeline
+    std::unordered_map<std::string, Stage *> m_stagesMap; ///< Map of names -> stages
 };
 
 

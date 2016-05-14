@@ -80,6 +80,15 @@ public:
 
     /**
     *  @brief
+    *    Check if stage is a pipeline
+    *
+    *  @return
+    *    'true' if stage is a pipeline, else 'false'
+    */
+    virtual bool isPipeline() const;
+
+    /**
+    *  @brief
     *    Get viewer context
     *
     *  @return

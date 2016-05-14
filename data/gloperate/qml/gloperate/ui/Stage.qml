@@ -12,9 +12,11 @@ import gloperate.ui 1.0
 */
 BaseItem
 {
-    id: stage
+    id: item
 
-    property string name: 'Stage'
+    property string source: ''
+
+    property string name:     ''
     property var inputNames:  []
     property var outputNames: []
 
@@ -33,13 +35,13 @@ BaseItem
 
         Repeater
         {
-            model: stage.inputNames.length
+            model: item.inputNames.length
 
             delegate: StageInput
             {
                 Layout.fillWidth: true
 
-                name: stage.inputNames[index]
+                name: item.inputNames[index]
             }
         }
     }
@@ -67,7 +69,7 @@ BaseItem
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter:   parent.verticalCenter
 
-            text:  stage.name
+            text:  item.name
             color: 'black'
         }
     }
@@ -82,14 +84,21 @@ BaseItem
 
         Repeater
         {
-            model: stage.outputNames.length
+            model: item.outputNames.length
 
             delegate: StageOutput
             {
                 Layout.fillWidth: true
 
-                name: stage.outputNames[index]
+                name: item.outputNames[index]
             }
         }
+    }
+
+    onSourceChanged:
+    {
+        item.name        = gloperate.pipeline.getName(item.source);
+        item.inputNames  = gloperate.pipeline.getInputs(item.source);
+        item.outputNames = gloperate.pipeline.getOutputs(item.source);
     }
 }
