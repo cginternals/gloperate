@@ -39,6 +39,20 @@ Pipeline * Stage::parentPipeline() const
     return m_parentPipeline;
 }
 
+void Stage::transferStage(Pipeline * parent)
+{
+    // Abort if the parent pipeline is already set or parameter is empty
+    if (m_parentPipeline || !parent) {
+        return;
+    }
+
+    // Set new parent
+    m_parentPipeline = parent;
+    m_parentPipeline->registerStage(this);
+    initProperty(m_parentPipeline, m_name);
+    parent->takeOwnership(m_parentPipeline);
+}
+
 void Stage::initContext(AbstractGLContext * context)
 {
     onContextInit(context);

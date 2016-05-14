@@ -98,6 +98,22 @@ public:
 
     /**
     *  @brief
+    *    Set parent pipeline
+    *
+    *  @param[in] parent
+    *    Parent pipeline
+    *
+    *  @remarks
+    *    Sets up the stage to be owned by the specified pipeline.
+    *    Will set both the owner pipeline and the parent property
+    *    to the pipeline and transfer ownership to the pipeline.
+    *    Does only work, if the stage did not have a parent
+    *    before. Otherwise, the function will just return.
+    */
+    void transferStage(Pipeline * parent);
+
+    /**
+    *  @brief
     *    Initialize in OpenGL context
     *
     *  @param[in] context

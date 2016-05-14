@@ -45,6 +45,38 @@ public:
     *    Destructor
     */
     virtual ~ViewerContainer();
+
+    /**
+    *  @brief
+    *    Get render stage
+    *
+    *  @return
+    *    Render stage that renders into the current context (can be null)
+    */
+    Stage * renderStage() const;
+
+    /**
+    *  @brief
+    *    Set render stage
+    *
+    *  @param[in] stage
+    *    Render stage that renders into the current context (can be null)
+    *
+    *  @remarks
+    *    When setting a new render stage, the old render stage is destroyed.
+    *    The surface takes ownership over the stage.
+    */
+    void setRenderStage(Stage * stage);
+
+
+protected:
+    void connect(Stage * stage, const std::string & name, const cppexpose::AbstractProperty * source);
+    void connect(AbstractInputSlot * input, Stage * stage, const std::string & name);
+    void disconnect(Stage * stage, const std::string & name);
+
+
+protected:
+    Stage * m_renderStage; ///< Render stage that renders into the current context (can be null)
 };
 
 

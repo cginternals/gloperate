@@ -76,14 +76,7 @@ public:
 
 
 protected:
-    void connect(Stage * stage, const std::string & name, const cppexpose::AbstractProperty * source);
-    void connect(AbstractInputSlot * input, Stage * stage, const std::string & name);
-    void disconnect(Stage * stage, const std::string & name);
-
-
-protected:
     ViewerContainer  m_viewer;         ///< Container for the rendering stage or pipeline
-    Stage          * m_renderStage;    ///< Render stage that renders into the current context (can be null)
     unsigned long    m_frame;          ///< Frame counter
     MouseDevice    * m_mouseDevice;    ///< Device for Mouse Events
     KeyboardDevice * m_keyboardDevice; ///< Device for Keyboard Events
