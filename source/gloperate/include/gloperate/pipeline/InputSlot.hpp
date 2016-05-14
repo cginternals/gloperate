@@ -12,15 +12,6 @@ namespace gloperate
 
 
 template <typename T>
-InputSlot<T>::InputSlot(cppexpose::PropertyGroup * parent, const std::string & name, const T & defaultValue)
-: m_defaultValue(defaultValue)
-, m_source(nullptr)
-{
-    this->initProperty(parent, name);
-    this->initInputSlot(nullptr);
-}
-
-template <typename T>
 InputSlot<T>::InputSlot(Stage * parent, const std::string & name, const T & defaultValue)
 : m_defaultValue(defaultValue)
 , m_source(nullptr)

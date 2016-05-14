@@ -24,22 +24,6 @@ public:
     *    Constructor
     *
     *  @param[in] parent
-    *    Parent object (must NOT be null!)
-    *  @param[in] name
-    *    Property name
-    *  @param[in] value
-    *    Default value
-    *
-    *  @remarks
-    *    The data container is created and added to the given parent object.
-    */
-    Data(cppexpose::PropertyGroup * parent, const std::string & name, const T & value = T());
-
-    /**
-    *  @brief
-    *    Constructor
-    *
-    *  @param[in] parent
     *    Parent stage (must NOT be null!)
     *  @param[in] name
     *    Property name
