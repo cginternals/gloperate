@@ -16,18 +16,13 @@ namespace gloperate
 
 RenderSurface::RenderSurface(ViewerContext * viewerContext)
 : Surface(viewerContext)
-, deviceViewport (this, "deviceViewport",  glm::vec4(0, 0, 0, 0))
-, virtualViewport(this, "virtualViewport", glm::vec4(0, 0, 0, 0))
-, backgroundColor(this, "backgroundColor", glm::vec3(1.0, 1.0, 1.0))
-, frameCounter   (this, "frameCounter",    0)
-, timeDelta      (this, "timeDelta",       0.0f)
-, redrawNeeded   (this, "redrawNeeded")
+, m_viewer(viewerContext)
 , m_renderStage(nullptr)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 {
-    redrawNeeded.valueChanged.connect([this] (bool needRedraw)
+    m_viewer.outputs.redrawNeeded.valueChanged.connect([this] (bool needRedraw)
     {
         if (needRedraw) {
             this->redraw();
@@ -56,7 +51,7 @@ void RenderSurface::setRenderStage(Stage * stage)
         disconnect(m_renderStage, "backgroundColor");
         disconnect(m_renderStage, "frameCounter");
         disconnect(m_renderStage, "timeDelta");
-        redrawNeeded.disconnect();
+        m_viewer.outputs.redrawNeeded.disconnect();
 
         // De-initialize render stage
         if (m_openGLContext) {
@@ -72,12 +67,12 @@ void RenderSurface::setRenderStage(Stage * stage)
     if (m_renderStage)
     {
         // Connect inputs and outputs of render stage
-        connect(m_renderStage, "deviceViewport",  &this->deviceViewport);
-        connect(m_renderStage, "virtualViewport", &this->virtualViewport);
-        connect(m_renderStage, "backgroundColor", &this->backgroundColor);
-        connect(m_renderStage, "frameCounter",    &this->frameCounter);
-        connect(m_renderStage, "timeDelta",       &this->timeDelta);
-        connect(&this->redrawNeeded, m_renderStage, "redrawNeeded");
+        connect(m_renderStage, "deviceViewport",  &m_viewer.inputs.deviceViewport);
+        connect(m_renderStage, "virtualViewport", &m_viewer.inputs.virtualViewport);
+        connect(m_renderStage, "backgroundColor", &m_viewer.inputs.backgroundColor);
+        connect(m_renderStage, "frameCounter",    &m_viewer.inputs.frameCounter);
+        connect(m_renderStage, "timeDelta",       &m_viewer.inputs.timeDelta);
+        connect(&m_viewer.outputs.redrawNeeded, m_renderStage, "redrawNeeded");
 
         // Initialize render stage
         if (m_openGLContext) {
@@ -90,13 +85,13 @@ void RenderSurface::onUpdate()
 {
     if (m_renderStage)
     {
-        timeDelta.setValue(m_viewerContext->timeManager()->timeDelta());
+        m_viewer.inputs.timeDelta.setValue(m_viewerContext->timeManager()->timeDelta());
     }
 }
 
 void RenderSurface::onContextInit()
 {
-    cppassist::info() << "onContextInit()";
+    cppassist::details() << "onContextInit()";
 
     // Initialize render stage in new context
     if (m_renderStage)
@@ -107,7 +102,7 @@ void RenderSurface::onContextInit()
 
 void RenderSurface::onContextDeinit()
 {
-    cppassist::info() << "onContextDeinit()";
+    cppassist::details() << "onContextDeinit()";
 
     // De-initialize render stage in old context
     if (m_renderStage)
@@ -118,24 +113,24 @@ void RenderSurface::onContextDeinit()
 
 void RenderSurface::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
-    this->deviceViewport.setValue(deviceViewport);
-    this->virtualViewport.setValue(virtualViewport);
+    m_viewer.inputs.deviceViewport.setValue(deviceViewport);
+    m_viewer.inputs.virtualViewport.setValue(virtualViewport);
 }
 
 void RenderSurface::onBackgroundColor(float red, float green, float blue)
 {
-    this->backgroundColor.setValue(glm::vec3(red, green, blue));
+    m_viewer.inputs.backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
 void RenderSurface::onRender()
 {
-//  cppassist::info() << "onRender()";
+    cppassist::details() << "onRender()";
 
     if (m_renderStage)
     {
         m_frame++;
 
-        frameCounter.setValue(m_frame);
+        m_viewer.inputs.frameCounter.setValue(m_frame);
 
         m_renderStage->process(m_openGLContext);
     }
@@ -143,38 +138,44 @@ void RenderSurface::onRender()
 
 void RenderSurface::onKeyPress(int key, int modifier)
 {
+    cppassist::details() << "onKeyPressed(" << key << ")";
+
     m_keyboardDevice->keyPress(key, modifier);
-    cppassist::info() << "onKeyPressed(" << key << ")";
 }
 
 void RenderSurface::onKeyRelease(int key, int modifier)
 {
+    cppassist::details() << "onKeyReleased(" << key << ")";
+
     m_keyboardDevice->keyRelease(key, modifier);
-    cppassist::info() << "onKeyReleased(" << key << ")";
 }
 
 void RenderSurface::onMouseMove(const glm::ivec2 & pos)
 {
+    cppassist::details() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
+
     m_mouseDevice->move(pos);
-    cppassist::info() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMousePress(int button, const glm::ivec2 & pos)
 {
+    cppassist::details() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+
     m_mouseDevice->buttonPress(button, pos);
-    cppassist::info() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMouseRelease(int button, const glm::ivec2 & pos)
 {
+    cppassist::details() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+
     m_mouseDevice->buttonRelease(button, pos);
-    cppassist::info() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
+    cppassist::details() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+
     m_mouseDevice->wheelScroll(delta, pos);
-    cppassist::info() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::connect(Stage * stage, const std::string & name, const cppexpose::AbstractProperty * source)

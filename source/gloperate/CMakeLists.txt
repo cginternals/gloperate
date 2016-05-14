@@ -80,6 +80,9 @@ set(headers
     ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/Data.h
     ${include_path}/pipeline/Data.hpp
+    ${include_path}/pipeline/ViewerContainer.h
+    ${include_path}/pipeline/ViewerInputs.h
+    ${include_path}/pipeline/ViewerOutputs.h
 
     ${include_path}/rendering/Camera.h
 
@@ -132,6 +135,9 @@ set(sources
     ${source_path}/pipeline/RenderPipeline.cpp
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/AbstractData.cpp
+    ${source_path}/pipeline/ViewerContainer.cpp
+    ${source_path}/pipeline/ViewerInputs.cpp
+    ${source_path}/pipeline/ViewerOutputs.cpp
 
     ${source_path}/rendering/Camera.cpp
 

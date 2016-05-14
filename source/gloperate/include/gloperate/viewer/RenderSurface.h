@@ -4,8 +4,7 @@
 
 #include <gloperate/viewer/Surface.h>
 #include <gloperate/viewer/input.h>
-#include <gloperate/pipeline/Data.h>
-#include <gloperate/pipeline/InputSlot.h>
+#include <gloperate/pipeline/ViewerContainer.h>
 
 
 namespace gloperate
@@ -23,18 +22,6 @@ class KeyboardDevice;
 */
 class GLOPERATE_API RenderSurface : public Surface
 {
-public:
-    // Render stage inputs
-    Data<glm::vec4> deviceViewport;  ///< Viewport (in real device coordinates)
-    Data<glm::vec4> virtualViewport; ///< Viewport (in virtual coordinates)
-    Data<glm::vec3> backgroundColor; ///< Background color (RGB)
-    Data<int>       frameCounter;    ///< Frame counter (number of frames)
-    Data<float>     timeDelta;       ///< Time delta since last frame (in seconds)
-
-    // Render stage outputs
-    InputSlot<bool> redrawNeeded;    ///< 'true' if stage needs redrawing
-
-
 public:
     /**
     *  @brief
@@ -95,6 +82,7 @@ protected:
 
 
 protected:
+    ViewerContainer  m_viewer;         ///< Container for the rendering stage or pipeline
     Stage          * m_renderStage;    ///< Render stage that renders into the current context (can be null)
     unsigned long    m_frame;          ///< Frame counter
     MouseDevice    * m_mouseDevice;    ///< Device for Mouse Events
