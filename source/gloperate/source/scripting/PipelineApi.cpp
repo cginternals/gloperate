@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <iostream>
 
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
@@ -23,6 +24,7 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
     addFunction("getStages",  this, &PipelineApi::getStages);
     addFunction("getInputs",  this, &PipelineApi::getInputs);
     addFunction("getOutputs", this, &PipelineApi::getOutputs);
+    addFunction("getValue",   this, &PipelineApi::getValue);
 }
 
 PipelineApi::~PipelineApi()
@@ -81,6 +83,16 @@ cppexpose::Variant PipelineApi::getOutputs(const std::string & name)
     return lst;
 }
 
+std::string PipelineApi::getValue(const std::string & path)
+{
+    cppexpose::AbstractProperty * property = getProperty(path);
+    if (property) {
+        return property->toString();
+    } else {
+        return "";
+    }
+}
+
 Stage * PipelineApi::getStage(const std::string & name)
 {
     // Get render surface
@@ -119,6 +131,55 @@ Stage * PipelineApi::getStage(const std::string & name)
     }
 
     return stage;
+}
+
+cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
+{
+    // Get render surface
+    if (m_viewerContext->surfaces().size() == 0) {
+        return nullptr;
+    }
+
+    RenderSurface * surface = static_cast<RenderSurface *>(m_viewerContext->surfaces()[0]);
+    if (!surface) {
+        return nullptr;
+    }
+
+    // Split name by '.'
+    std::vector<std::string> names;
+    std::istringstream ss(name);
+    std::string subname;
+    while (std::getline(ss, subname, '.')) {
+        names.push_back(subname);
+    }
+
+    // Begin with root pipeline
+    Stage * stage = surface->rootPipeline();
+    for (size_t i=0; i<names.size(); i++)
+    {
+        // Get next token
+        std::string subname = names[i];
+
+        // If this is the last token, return property from current stage
+        if (i == names.size() - 1)
+        {
+            return stage->property(subname);
+        }
+
+        // Get sub-stage
+        if (stage->isPipeline()) {
+            stage = static_cast<Pipeline *>(stage)->stage(subname);
+        } else {
+            stage = nullptr;
+        }
+
+        // Abort if child was not found
+        if (!stage) {
+            return nullptr;
+        }
+    }
+
+    return nullptr;
 }
 
 

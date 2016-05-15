@@ -16,9 +16,10 @@ BaseItem
 
     property string source: ''
 
-    property string name:     ''
-    property var inputNames:  []
-    property var outputNames: []
+    property string name:      ''
+    property var inputNames:   []
+    property var outputNames:  []
+    property var outputValues: []
 
     implicitWidth:  inputs.implicitWidth + body.implicitWidth + outputs.implicitWidth
     implicitHeight: Math.max(Math.max(inputs.implicitHeight, body.implicitHeight), outputs.implicitHeight)
@@ -90,7 +91,8 @@ BaseItem
             {
                 Layout.fillWidth: true
 
-                name: item.outputNames[index]
+                name:  item.outputNames[index]
+                value: item.outputValues[index]
             }
         }
     }
@@ -100,5 +102,13 @@ BaseItem
         item.name        = gloperate.pipeline.getName(item.source);
         item.inputNames  = gloperate.pipeline.getInputs(item.source);
         item.outputNames = gloperate.pipeline.getOutputs(item.source);
+
+        var values = [];
+        for (var i=0; i<item.outputNames.length; i++) {
+            values.push(
+                gloperate.pipeline.getValue(item.source + '.' + item.outputNames[i])
+            );
+        }
+        item.outputValues = values;
     }
 }

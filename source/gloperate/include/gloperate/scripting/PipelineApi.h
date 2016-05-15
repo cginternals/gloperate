@@ -50,9 +50,11 @@ protected:
     cppexpose::Variant getStages(const std::string & name);
     cppexpose::Variant getInputs(const std::string & name);
     cppexpose::Variant getOutputs(const std::string & name);
+    std::string getValue(const std::string & path);
 
     // Helper functions
     Stage * getStage(const std::string & name);
+    cppexpose::AbstractProperty * getProperty(const std::string & name);
 
 
 protected:
