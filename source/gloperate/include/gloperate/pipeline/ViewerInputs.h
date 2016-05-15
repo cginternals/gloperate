@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+#include <gloperate/base/GlmProperties.h>
+
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Data.h>
 

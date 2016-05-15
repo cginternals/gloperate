@@ -51,6 +51,7 @@ set(headers
     ${include_path}/base/Loader.hpp
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.hpp
+    ${include_path}/base/GlmProperties.h
 
     ${include_path}/viewer/AbstractContext.h
     ${include_path}/viewer/AbstractGLContext.h
