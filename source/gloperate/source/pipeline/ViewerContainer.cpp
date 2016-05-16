@@ -33,7 +33,7 @@ void ViewerContainer::setRenderStage(Stage * stage)
         disconnect(m_renderStage, "backgroundColor");
         disconnect(m_renderStage, "frameCounter");
         disconnect(m_renderStage, "timeDelta");
-        outputs.redrawNeeded.disconnect();
+        outputs.rendered.disconnect();
 
         // Destroy render stage
         destroyProperty(m_renderStage);
@@ -55,7 +55,7 @@ void ViewerContainer::setRenderStage(Stage * stage)
     connect(m_renderStage, "backgroundColor", &inputs.backgroundColor);
     connect(m_renderStage, "frameCounter",    &inputs.frameCounter);
     connect(m_renderStage, "timeDelta",       &inputs.timeDelta);
-    connect(&outputs.redrawNeeded, m_renderStage, "redrawNeeded");
+    connect(&outputs.rendered, m_renderStage, "rendered");
 }
 
 void ViewerContainer::connect(Stage * stage, const std::string & name, const cppexpose::AbstractProperty * source)

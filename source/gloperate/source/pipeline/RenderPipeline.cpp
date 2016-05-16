@@ -13,7 +13,7 @@ RenderPipeline::RenderPipeline(ViewerContext * viewerContext, const std::string 
 , backgroundColor(this, "backgroundColor")
 , frameCounter   (this, "frameCounter")
 , timeDelta      (this, "timeDelta")
-, redrawNeeded   (this, "redrawNeeded")
+, rendered       (this, "rendered")
 {
 }
 
