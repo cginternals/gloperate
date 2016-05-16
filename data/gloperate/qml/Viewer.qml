@@ -3,6 +3,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
 import gloperate.rendering 1.0
+import gloperate.base 1.0
 import gloperate.ui 1.0
 
 
@@ -118,7 +119,7 @@ Page
             NumberAnimation
             {
                 easing.type: Easing.InOutQuad
-                duration:    1000
+                duration:    600
             }
         }
 
@@ -167,8 +168,8 @@ Page
           { name: 'pipeline', text: 'Demo', icon: '0190-menu.png', enabled: true,
             items: [
               { name: 'choose',     text: 'Choose Pipeline', icon: '0092-tv.png', enabled: false },
-              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: false },
               { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: true },
+              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: true },
               { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: false }
             ]
           }
@@ -178,6 +179,9 @@ Page
         {
             if (menu == 'pipeline' && name == 'screenshot') {
                 screenshot.visible = true;
+            }
+            if (name == 'edit') {
+                pipelineWindow.createObject(page, {});
             }
         }
     }
@@ -298,6 +302,25 @@ Page
                     anchors.fill:    parent
                     anchors.margins: Ui.style.panelPadding
                 }
+            }
+        }
+    }
+
+    // Pipeline editor
+    Component
+    {
+        id: pipelineWindow
+
+        ApplicationWindow
+        {
+            title:   "Pipeline"
+            visible: true
+            width:   800
+            height:  600
+
+            PipelineEditor
+            {
+                anchors.fill: parent
             }
         }
     }

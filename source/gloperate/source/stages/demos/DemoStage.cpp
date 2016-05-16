@@ -57,8 +57,8 @@ namespace gloperate
 {
 
 
-DemoStage::DemoStage(ViewerContext * viewerContext)
-: Stage(viewerContext)
+DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
+: RenderStage(viewerContext, name, parent)
 , m_timer(viewerContext)
 , m_time(0.0f)
 , m_angle(0.0f)
@@ -67,7 +67,7 @@ DemoStage::DemoStage(ViewerContext * viewerContext)
     m_timer.elapsed.connect([this] ()
     {
         // Update virtual time
-        m_time += m_timeDelta;
+        m_time += timeDelta.value();
 
         // Redraw
         invalidateOutput();
@@ -78,6 +78,11 @@ DemoStage::DemoStage(ViewerContext * viewerContext)
 
 DemoStage::~DemoStage()
 {
+}
+
+void DemoStage::invalidateOutput()
+{
+    redrawNeeded.setValue(true);
 }
 
 void DemoStage::onContextInit(AbstractGLContext *)
@@ -97,12 +102,15 @@ void DemoStage::onContextDeinit(AbstractGLContext *)
 
 void DemoStage::onProcess(AbstractGLContext *)
 {
+    // Get viewport
+    glm::vec4 viewport = deviceViewport.value();
+
     // Update viewport
     gl::glViewport(
-        m_deviceViewport.x,
-        m_deviceViewport.y,
-        m_deviceViewport.z,
-        m_deviceViewport.w
+        viewport.x,
+        viewport.y,
+        viewport.z,
+        viewport.w
     );
 
     // Bind FBO
@@ -113,8 +121,9 @@ void DemoStage::onProcess(AbstractGLContext *)
     m_angle = m_time;
 
     // Clear background
-    gl::glClearColor(m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, 1.0f);
-    gl::glScissor(m_deviceViewport.x, m_deviceViewport.y, m_deviceViewport.z, m_deviceViewport.w);
+    glm::vec3 color = backgroundColor.value();
+    gl::glClearColor(color.r, color.g, color.b, 1.0f);
+    gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
     gl::glDisable(gl::GL_SCISSOR_TEST);

@@ -45,6 +45,10 @@ endif()
 
 set(sources
     main.cpp
+    Application.cpp
+    Application.h
+    Config.cpp
+    Config.h
 )
 
 

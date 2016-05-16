@@ -20,7 +20,7 @@ RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
 : m_viewerContext(viewerContext)
 , m_surface(new gloperate::RenderSurface(viewerContext))
 {
-    m_surface->redrawNeeded.connect([this] ()
+    m_surface->redraw.connect([this] ()
     {
         this->updateGL();
     } );
@@ -59,8 +59,8 @@ void RenderWindow::onContextDeinit()
 void RenderWindow::onResize(const QSize & deviceSize, const QSize & virtualSize)
 {
     m_surface->onViewport(
-        glm::ivec4(0, 0, deviceSize.width(),  deviceSize.height())
-      , glm::ivec4(0, 0, virtualSize.width(), virtualSize.height())
+        glm::vec4(0, 0, deviceSize.width(),  deviceSize.height())
+      , glm::vec4(0, 0, virtualSize.width(), virtualSize.height())
     );
 }
 

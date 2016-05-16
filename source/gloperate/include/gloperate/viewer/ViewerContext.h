@@ -120,6 +120,18 @@ public:
     //@{
     /**
     *  @brief
+    *    Get surfaces
+    *
+    *  @return
+    *    List of registered surfaces (must NOT be null)
+    */
+    const std::vector<Surface *> & surfaces() const;
+    std::vector<Surface *> & surfaces();
+    //@}
+
+    //@{
+    /**
+    *  @brief
     *    Update timing
     *
     *  @return

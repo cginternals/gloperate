@@ -66,7 +66,7 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
     }
 
     // Repaint window when surface needs to be updated
-    m_surface->redrawNeeded.connect([this] ()
+    m_surface->redraw.connect([this] ()
     {
         this->window()->update();
     } );
@@ -134,8 +134,8 @@ void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldG
     float devHeight  = virtHeight * m_devicePixelRatio;
 
     m_surface->onViewport(
-        glm::ivec4(devX,  devY,  devWidth,  devHeight)
-      , glm::ivec4(virtX, virtY, virtWidth, virtHeight)
+        glm::vec4(devX,  devY,  devWidth,  devHeight)
+      , glm::vec4(virtX, virtY, virtWidth, virtHeight)
     );
 }
 
