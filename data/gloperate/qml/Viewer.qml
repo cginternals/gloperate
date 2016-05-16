@@ -230,41 +230,26 @@ Page
     }
 
     // Screenshot dialog
-    Screenshot
+    ApplicationWindow
     {
         id: screenshot
+        title:   "Screenshot"
 
-        // title:   "Screenshot"
-        visible: false
-        width:   400
-        // height:  300
+        property int margin: Ui.style.paddingMedium
+
+        width: screenshotItem.layout.implicitWidth + 15 * margin
+        height: screenshotItem.layout.implicitHeight + 2 * margin
+        minimumWidth: screenshotItem.layout.Layout.minimumWidth + 2 * margin
+        minimumHeight: screenshotItem.layout.Layout.minimumHeight + 2 * margin
+
+        Screenshot
+        {
+            id: screenshotItem
+
+            margin: screenshot.margin
+            anchors.fill: parent
+        }
     }
-
-    // // Screenshot dialog
-    // ApplicationWindow
-    // {
-    //     id: screenshot
-
-    //     title:   "Screenshot"
-    //     visible: false
-    //     width:   400
-    //     // height:  300
-
-    //     property int margin: 11
-    //     // width: screenshotItem.layout.implicitWidth + 2 * margin
-    //     height: screenshotItem.layout.implicitHeight + 2 * margin
-    //     minimumWidth: screenshotItem.layout.Layout.minimumWidth + 2 * margin
-    //     minimumHeight: screenshotItem.layout.Layout.minimumHeight + 2 * margin
-
-    //     Screenshot
-    //     {
-    //         id: screenshotItem
-
-    //         margin: screenshot.margin
-    //         anchors.fill: parent
-    //         // anchors.margins: 11
-    //     }
-    // }
 
     // Log window
     Component

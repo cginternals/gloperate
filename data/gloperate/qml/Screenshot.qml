@@ -2,32 +2,13 @@ import QtQuick 2.2
 import QtQuick.Controls 1.2 as Controls
 import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
-// import gloperate.ui 1.0
+import gloperate.ui 1.0
 
-// Background {
-//     id: screenshot
-
-//     property int margin: 0
-//     property alias layout: mainLayout
-Controls.ApplicationWindow {
+Background {
     id: screenshot
-    visible: true
-    property int margin: 11
-    width: mainLayout.implicitWidth + 2 * margin
-    height: mainLayout.implicitHeight + 2 * margin
-    minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
-    minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
 
-    signal fileChosen
-
-    onFileChosen: {
-        var path = fileDialog.fileUrl.toString();
-        // remove prefixed "file:///"
-        path = path.replace(/^(file:\/{3})/,"");
-        // unescape html codes like '%23' for '#'
-        path = decodeURIComponent(path);
-        filepath.text = path;
-    }
+    property int margin: 0
+    property alias layout: mainLayout
 
     ColumnLayout {
         id: mainLayout
@@ -44,19 +25,8 @@ Controls.ApplicationWindow {
                     id: filepath
                     placeholderText: "e.g. /home/user/images/screen.jpg"
                     Layout.fillWidth: true
-                    // style: TextFieldStyle {
-                    //         textColor: Ui.style.textColor
-                    //         background: Rectangle {
-                    //             color: Ui.style.backgroundColor
-                    //             radius: 2
-                    //             implicitWidth: 100
-                    //             implicitHeight: 24
-                    //             // border.color: "#333"
-                    //             border.width: 1
-                    //         }
-                    //     }
                 }
-                Controls.Button {
+                Button {
                     text: "Browse"
 
                     onClicked: {
@@ -130,9 +100,11 @@ Controls.ApplicationWindow {
             }
         }
 
-        Controls.Button {
+        Button {
             text: "Take Screenshot"
             anchors.right: parent.right
+
+            icon: '0040-file-picture.png'
 
             onClicked: {
                 // Validate filename
@@ -154,8 +126,14 @@ Controls.ApplicationWindow {
         selectMultiple: false
 
         onAccepted: {
+            var path = fileUrl.toString();
+            // remove prefixed "file:///"
+            path = path.replace(/^(file:\/{3})/,"");
+            // unescape html codes like '%23' for '#'
+            path = decodeURIComponent(path);
+            filepath.text = path;
+            
             close();
-            screenshot.fileChosen();
         }
         onRejected: {
             close();
