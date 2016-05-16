@@ -2,7 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.2 as Controls
 import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
-import gloperate.ui 1.0
+import gloperate.base 1.0
 
 Background {
     id: screenshot

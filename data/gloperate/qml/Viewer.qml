@@ -243,8 +243,6 @@ Page
 
         width: screenshotItem.layout.implicitWidth + 15 * margin
         height: screenshotItem.layout.implicitHeight + 2 * margin
-        minimumWidth: screenshotItem.layout.Layout.minimumWidth + 2 * margin
-        minimumHeight: screenshotItem.layout.Layout.minimumHeight + 2 * margin
 
         Screenshot
         {
