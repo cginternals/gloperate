@@ -2,6 +2,7 @@
 #include <gloperate-qtquick/viewer/QmlObjectWrapper.h>
 
 #include <cppexpose/reflection/Object.h>
+#include <cppexpose/reflection/Method.h>
 #include <cppexpose/variant/Variant.h>
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
@@ -65,10 +66,10 @@ QJSValue QmlObjectWrapper::wrapObject()
     // Add functions to object
     if (m_object)
     {
-        const std::vector<Function> funcs = m_object->functions();
-        for (std::vector<Function>::const_iterator it = funcs.begin(); it != funcs.end(); ++it)
+        const std::vector<Method> funcs = m_object->functions();
+        for (std::vector<Method>::const_iterator it = funcs.begin(); it != funcs.end(); ++it)
         {
-            Function func = *it;
+            const Method & func = *it;
 
             QJSValueList args;
             args << obj;
@@ -87,7 +88,7 @@ QJSValue QmlObjectWrapper::getProp(const QString & name)
 
     cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
     if (prop) {
-        value = prop->asTyped()->toVariant();
+        value = prop->toVariant();
     }
 
     return m_engine->toScriptValue(value);
@@ -97,7 +98,7 @@ void QmlObjectWrapper::setProp(const QString & name, const QJSValue & value)
 {
     cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
     if (prop) {
-        prop->asTyped()->fromVariant(m_engine->fromScriptValue(value));
+        prop->fromVariant(m_engine->fromScriptValue(value));
     }
 }
 
@@ -112,7 +113,7 @@ QJSValue QmlObjectWrapper::callFunc(const QString & name, const QJSValue & args)
     // Get function
     // [TODO] Fast lookup
     cppexpose::Function function;
-    for (cppexpose::Function func : m_object->functions())
+    for (const cppexpose::Method & func : m_object->functions())
     {
         if (func.name() == name.toStdString())
         {

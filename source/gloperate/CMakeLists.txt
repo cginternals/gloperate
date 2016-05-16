@@ -43,6 +43,15 @@ set(headers
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
     ${include_path}/base/Image.h
+    ${include_path}/base/ResourceManager.h
+    ${include_path}/base/ResourceManager.hpp
+    ${include_path}/base/AbstractLoader.h
+    ${include_path}/base/AbstractStorer.h
+    ${include_path}/base/Loader.h
+    ${include_path}/base/Loader.hpp
+    ${include_path}/base/Storer.h
+    ${include_path}/base/Storer.hpp
+    ${include_path}/base/GlmProperties.h
 
     ${include_path}/viewer/AbstractContext.h
     ${include_path}/viewer/AbstractGLContext.h
@@ -59,11 +68,25 @@ set(headers
     ${include_path}/scripting/SystemApi.h
     ${include_path}/scripting/TimerApi.h
     ${include_path}/scripting/ScriptTimer.h
+    ${include_path}/scripting/ComponentsApi.h
+    ${include_path}/scripting/PipelineApi.h
 
     ${include_path}/pipeline/Stage.h
+    ${include_path}/pipeline/RenderStage.h
+    ${include_path}/pipeline/Pipeline.h
+    ${include_path}/pipeline/RenderPipeline.h
+    ${include_path}/pipeline/AbstractInputSlot.h
+    ${include_path}/pipeline/InputSlot.h
+    ${include_path}/pipeline/InputSlot.hpp
+    ${include_path}/pipeline/AbstractData.h
+    ${include_path}/pipeline/Data.h
+    ${include_path}/pipeline/Data.hpp
+    ${include_path}/pipeline/ViewerContainer.h
+    ${include_path}/pipeline/ViewerInputs.h
+    ${include_path}/pipeline/ViewerOutputs.h
 
     ${include_path}/rendering/Camera.h
-    
+
     ${include_path}/stages/demos/DemoStage.h
 
     ${include_path}/input/InputManager.h
@@ -87,6 +110,9 @@ set(sources
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/Image.cpp
+    ${source_path}/base/ResourceManager.cpp
+    ${source_path}/base/AbstractLoader.cpp
+    ${source_path}/base/AbstractStorer.cpp
 
     ${source_path}/viewer/AbstractContext.cpp
     ${source_path}/viewer/AbstractGLContext.cpp
@@ -103,8 +129,18 @@ set(sources
     ${source_path}/scripting/SystemApi.cpp
     ${source_path}/scripting/TimerApi.cpp
     ${source_path}/scripting/ScriptTimer.cpp
+    ${source_path}/scripting/ComponentsApi.cpp
+    ${source_path}/scripting/PipelineApi.cpp
 
     ${source_path}/pipeline/Stage.cpp
+    ${source_path}/pipeline/RenderStage.cpp
+    ${source_path}/pipeline/Pipeline.cpp
+    ${source_path}/pipeline/RenderPipeline.cpp
+    ${source_path}/pipeline/AbstractInputSlot.cpp
+    ${source_path}/pipeline/AbstractData.cpp
+    ${source_path}/pipeline/ViewerContainer.cpp
+    ${source_path}/pipeline/ViewerInputs.cpp
+    ${source_path}/pipeline/ViewerOutputs.cpp
 
     ${source_path}/rendering/Camera.cpp
 

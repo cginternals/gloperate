@@ -1,6 +1,7 @@
 
 #include <cppassist/logging/logging.h>
 
+#include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
 #include <gloperate/stages/demos/DemoStage.h>
@@ -18,6 +19,13 @@ int main(int argc, char * argv[])
 {
     // Create viewer context
     ViewerContext viewerContext;
+
+    // Configure and load plugins
+    viewerContext.componentManager()->addPluginPath(
+        gloperate::pluginPath(), cppexpose::PluginPathType::Internal
+    );
+    viewerContext.componentManager()->scanPlugins("loaders");
+    viewerContext.componentManager()->scanPlugins("stages");
 
     // Initialize GLFW
     Application::init();

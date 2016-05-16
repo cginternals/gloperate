@@ -24,9 +24,11 @@ generate_module_info(${META_PROJECT_NAME}
 
     BUILD_VALUES
     dataPath    "${PROJECT_SOURCE_DIR}/data"
+    pluginPath  "${PROJECT_BINARY_DIR}"
 
     INSTALL_VALUES
     dataPath    "\${ModulePath}/data"
+    pluginPath  "\${ModulePath}/plugins"
 )
 
 export_module_info(${META_PROJECT_NAME}

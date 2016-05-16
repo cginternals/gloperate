@@ -55,11 +55,11 @@ void Surface::setOpenGLContext(AbstractGLContext * context)
     }
 }
 
-glm::ivec4 Surface::deviceViewport()
+glm::vec4 Surface::deviceViewport()
 {
 }
 
-glm::ivec4 Surface::virtualViewport()
+glm::vec4 Surface::virtualViewport()
 {
 }
 
@@ -75,7 +75,7 @@ void Surface::onContextDeinit()
 {
 }
 
-void Surface::onViewport(const glm::ivec4 &, const glm::ivec4 &)
+void Surface::onViewport(const glm::vec4 &, const glm::vec4 &)
 {
 }
 

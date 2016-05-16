@@ -4,6 +4,7 @@
 
 #include <gloperate/viewer/Surface.h>
 #include <gloperate/viewer/input.h>
+#include <gloperate/pipeline/ViewerContainer.h>
 
 
 namespace gloperate
@@ -37,6 +38,15 @@ public:
     *    Destructor
     */
     virtual ~RenderSurface();
+
+    /**
+    *  @brief
+    *    Get root pipeline
+    *
+    *  @return
+    *    Root pipeline (never null)
+    */
+    Pipeline * rootPipeline() const;
 
     /**
     *  @brief
@@ -74,12 +84,12 @@ public:
 
 
     // Virtual Surface functions
-    virtual glm::ivec4 deviceViewport() override;
-    virtual glm::ivec4 virtualViewport() override;
+    virtual glm::vec4 deviceViewport() override;
+    virtual glm::vec4 virtualViewport() override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
-    virtual void onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport) override;
+    virtual void onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport) override;
     virtual void onBackgroundColor(float red, float green, float blue) override;
     virtual void onRender() override;
     virtual void onKeyPress(int key, int modifier) override;
@@ -91,14 +101,12 @@ public:
 
 
 protected:
-    Stage             * m_renderStage;    ///< Render stage that renders into the current context (can be null)
+    ViewerContainer     m_viewer;         ///< Container for the rendering stage or pipeline
     unsigned long       m_frame;          ///< Frame counter
     MouseDevice       * m_mouseDevice;    ///< Device for Mouse Events
     KeyboardDevice    * m_keyboardDevice; ///< Device for Keyboard Events
     AbstractVideoTool * m_video;          ///< Tool for rendering surface to video file
     bool                m_requestVideo;   ///< Flag to request a videoTool call during next render step
-    glm::ivec4          m_deviceViewport; ///< Device vieport of the render stage
-    glm::ivec4          m_virtualViewport;///< Virtual viewport of the render stage
 };
 
 

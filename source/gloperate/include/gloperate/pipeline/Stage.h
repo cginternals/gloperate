@@ -2,9 +2,11 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
+#include <vector>
+#include <unordered_map>
+#include <string>
 
-#include <cppexpose/signal/Signal.h>
+#include <cppexpose/reflection/Object.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -15,6 +17,15 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
+class AbstractData;
+class AbstractInputSlot;
+class Pipeline;
+
+template <typename T>
+class Data;
+
+template <typename T>
+class InputSlot;
 
 
 /**
@@ -25,8 +36,28 @@ class AbstractGLContext;
 *    and depends on a certain set of inputs. It can either be part of a pipeline
 *    or stand on its own.
 */
-class GLOPERATE_API Stage
+class GLOPERATE_API Stage : public cppexpose::Object
 {
+friend class AbstractInputSlot;
+friend class AbstractData;
+
+
+public:
+    // Import data types into local namespace
+    template <typename T>
+    using InputSlot = gloperate::InputSlot<T>;
+
+    template <typename T>
+    using Data = gloperate::Data<T>;
+
+
+public:
+    cppexpose::Signal<AbstractInputSlot *> inputAdded;    ///< Called when an input slot has been added
+    cppexpose::Signal<AbstractInputSlot *> inputRemoved;  ///< Called when an input slot has been removed
+    cppexpose::Signal<AbstractData *>      outputAdded;   ///< Called when an output has been added
+    cppexpose::Signal<AbstractData *>      outputRemoved; ///< Called when an output has been removed
+
+
 public:
     /**
     *  @brief
@@ -34,8 +65,12 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    *  @param[in] parent
+    *    Parent pipeline (can be null)
     */
-    Stage(ViewerContext * viewerContext);
+    Stage(ViewerContext * viewerContext, const std::string & name = "Stage", Pipeline * parent = nullptr);
 
     /**
     *  @brief
@@ -45,12 +80,46 @@ public:
 
     /**
     *  @brief
+    *    Check if stage is a pipeline
+    *
+    *  @return
+    *    'true' if stage is a pipeline, else 'false'
+    */
+    virtual bool isPipeline() const;
+
+    /**
+    *  @brief
     *    Get viewer context
     *
     *  @return
     *    Viewer context to which the stage belongs (must NOT be null!)
     */
     ViewerContext * viewerContext() const;
+
+    /**
+    *  @brief
+    *    Get parent pipeline
+    *
+    *  @return
+    *    Pipeline to which the stage belongs (can be null)
+    */
+    Pipeline * parentPipeline() const;
+
+    /**
+    *  @brief
+    *    Set parent pipeline
+    *
+    *  @param[in] parent
+    *    Parent pipeline
+    *
+    *  @remarks
+    *    Sets up the stage to be owned by the specified pipeline.
+    *    Will set both the owner pipeline and the parent property
+    *    to the pipeline and transfer ownership to the pipeline.
+    *    Does only work, if the stage did not have a parent
+    *    before. Otherwise, the function will just return.
+    */
+    void transferStage(Pipeline * parent);
 
     /**
     *  @brief
@@ -85,22 +154,95 @@ public:
     */
     void process(AbstractGLContext * context);
 
-    // This interface is only a placeholder and will be replaced
-    // by input/data-slots
+    /**
+    *  @brief
+    *    Get inputs
+    *
+    *  @return
+    *    List of inputs on the stage
+    */
+    const std::vector<AbstractInputSlot *> & inputs() const;
 
-    // Signals
-    cppexpose::Signal<> outputInvalidated;
-    void invalidateOutput();
+    /**
+    *  @brief
+    *    Get input by name
+    *
+    *  @param[in] name
+    *    Name of input
+    *
+    *  @return
+    *    Input slot (can be null)
+    */
+    const AbstractInputSlot * input(const std::string & name) const;
 
-    // Input data
-    void setDeviceViewport(int x, int y, int w, int h);
-    void setVirtualViewport(int x, int y, int w, int h);
-    void setBackgroundColor(float red, float green, float blue);
-    void setFrameCounter(int frame);
-    void setTimeDelta(float delta);
+    /**
+    *  @brief
+    *    Get outputs
+    *
+    *  @return
+    *    List of outputs on the stage
+    */
+    const std::vector<AbstractData *> & outputs() const;
+
+    /**
+    *  @brief
+    *    Get output by name
+    *
+    *  @param[in] name
+    *    Name of output
+    *
+    *  @return
+    *    Output data (can be null)
+    */
+    const AbstractData * output(const std::string & name) const;
 
 
 protected:
+    /**
+    *  @brief
+    *    Register input slot
+    *
+    *  @param[in] input
+    *    Input slot (must NOT null!)
+    *
+    *  @remarks
+    *    Although input slots and output data are already registered
+    *    at the stage as properties, we keep a separate list of them
+    *    to simplify accessing inputs and outputs directly and without
+    *    type casts.
+    */
+    void registerInput(AbstractInputSlot * input);
+
+    /**
+    *  @brief
+    *    Unregister input slot
+    *
+    *  @param[in] input
+    *    Input slot (must NOT null!)
+    */
+    void unregisterInput(AbstractInputSlot * input);
+
+    /**
+    *  @brief
+    *    Register output data
+    *
+    *  @param[in] output
+    *    Output data (must NOT null!)
+    *
+    *  @see
+    *    registerInput
+    */
+    void registerOutput(AbstractData * output);
+
+    /**
+    *  @brief
+    *    Unregister output data
+    *
+    *  @param[in] output
+    *    Output data (must NOT null!)
+    */
+    void unregisterOutput(AbstractData * output);
+
     /**
     *  @brief
     *    Initialize in OpenGL context
@@ -155,12 +297,14 @@ protected:
 
 
 protected:
-    ViewerContext * m_viewerContext;    ///< Viewer context to which the stage belongs
-    glm::ivec4      m_deviceViewport;   ///< Viewport (in real device coordinates)
-    glm::ivec4      m_virtualViewport;  ///< Viewport (in virtual coordinates)
-    glm::vec3       m_backgroundColor;  ///< Background color
-    unsigned long   m_frame;            ///< Frame counter
-    float           m_timeDelta;        ///< Time since last update (in seconds)
+    ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
+    Pipeline      * m_parentPipeline; ///< Pipeline to which the stage belongs (can be null)
+
+    std::vector<AbstractInputSlot *>                     m_inputs;    ///< List of inputs
+    std::unordered_map<std::string, AbstractInputSlot *> m_inputsMap; ///< Map of names and inputs
+
+    std::vector<AbstractData *>                     m_outputs;    ///< List of outputs
+    std::unordered_map<std::string, AbstractData *> m_outputsMap; ///< Map of names and outputs
 };
 
 

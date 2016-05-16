@@ -64,7 +64,7 @@ void VideoTool::createVideo(std::function<void(int, int)> progress, bool glConte
 {
     auto deviceViewport = m_surface->deviceViewport();
     auto virtualViewport = m_surface->virtualViewport();
-    auto vp = glm::ivec4(0, 0, m_width, m_height);
+    auto vp = glm::vec4(0, 0, m_width, m_height);
     auto length = m_length * m_fps;
 
     m_surface->onViewport(vp, vp);

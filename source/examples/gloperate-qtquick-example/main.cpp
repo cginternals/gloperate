@@ -27,6 +27,13 @@ int main(int argc, char * argv[])
     // Create viewer context
     ViewerContext viewerContext;
 
+    // Configure and load plugins
+    viewerContext.componentManager()->addPluginPath(
+        gloperate::pluginPath(), cppexpose::PluginPathType::Internal
+    );
+    viewerContext.componentManager()->scanPlugins("loaders");
+    viewerContext.componentManager()->scanPlugins("stages");
+
     // Initialize Qt application
     gloperate_qt::Application app(&viewerContext, argc, argv);
     UpdateManager updateManager(&viewerContext);

@@ -9,9 +9,9 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
-#include <gloperate/pipeline/Stage.h>
 #include <gloperate/viewer/Timer.h>
 #include <gloperate/rendering/Camera.h>
+#include <gloperate/pipeline/RenderStage.h>
 
 
 namespace gloperate
@@ -22,7 +22,7 @@ namespace gloperate
 *  @brief
 *    Demo stage that renders a simple triangle onto the screen
 */
-class GLOPERATE_API DemoStage : public Stage
+class GLOPERATE_API DemoStage : public RenderStage
 {
 public:
     /**
@@ -31,8 +31,12 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    *  @param[in] parent
+    *    Parent pipeline (can be null)
     */
-    DemoStage(ViewerContext * viewerContext);
+    DemoStage(ViewerContext * viewerContext, const std::string & name = "DemoStage", Pipeline * parent = nullptr);
 
     /**
     *  @brief
@@ -42,6 +46,12 @@ public:
 
 
 protected:
+    /**
+    *  @brief
+    *    Mark output as invalid (causing viewer to repaint the stage)
+    */
+    void invalidateOutput();
+
     // Virtual Stage functions
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
@@ -68,7 +78,7 @@ protected:
 
     // Status
     float m_time;   ///< Virtual time (in seconds)
-    float m_angle;
+    float m_angle;  ///< Current angle of rotating triangle (in radians)
 };
 
 
