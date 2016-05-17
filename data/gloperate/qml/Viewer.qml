@@ -1,5 +1,6 @@
 
 import QtQuick 2.0
+import QtQuick.Window 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
 import gloperate.rendering 1.0
@@ -240,8 +241,8 @@ Page
         }
     }
 
-    // Screenshot dialog
-    ApplicationWindow
+    // Screenshot window
+    Window
     {
         id: screenshot
         title:   "Screenshot"
@@ -260,8 +261,8 @@ Page
         }
     }
 
-    // Video capture dialog
-    ApplicationWindow
+    // Video capture window
+    Window
     {
         id: video
         title:   "Video"
