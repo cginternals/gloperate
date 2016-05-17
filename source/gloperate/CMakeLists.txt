@@ -64,6 +64,7 @@ set(headers
     ${include_path}/input/AbstractEvent.h
     
     ${include_path}/navigation/WorldInHandNavigation.h
+    ${include_path}/navigation/TreeMapNavigation.h
     ${include_path}/navigation/AbstractInteraction.h
     ${include_path}/navigation/AbstractMapping.h
     ${include_path}/navigation/CoordinateProvider.h
@@ -183,6 +184,7 @@ set(sources
     ${source_path}/navigation/AbstractInteraction.cpp
     ${source_path}/navigation/navigationmath.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
+    ${source_path}/navigation/TreeMapNavigation.cpp
     ${source_path}/navigation/CoordinateProvider.cpp
 	${source_path}/navigation/AbstractEventRoutingCapability.cpp
     

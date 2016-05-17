@@ -72,7 +72,6 @@ set(headers
     ${include_path}/viewer/Converter.h
     ${include_path}/viewer/TimePropagator.h
     ${include_path}/viewer/TreeNavigationMapping.h
-    ${include_path}/viewer/TreeNavigation.h
 
     ${include_path}/scripting/ScriptEnvironment.h
     ${include_path}/scripting/SystemApi.h
@@ -109,7 +108,6 @@ set(sources
     ${source_path}/viewer/Converter.cpp
     ${source_path}/viewer/TimePropagator.cpp
     ${source_path}/viewer/TreeNavigationMapping.cpp
-    ${source_path}/viewer/TreeNavigation.cpp
 
     ${source_path}/scripting/ScriptEnvironment.cpp
     ${source_path}/scripting/SystemApi.cpp
