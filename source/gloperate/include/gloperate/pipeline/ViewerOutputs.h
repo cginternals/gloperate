@@ -20,7 +20,7 @@ class GLOPERATE_API ViewerOutputs : public Stage
 {
 public:
     // Render stage outputs
-    InputSlot<bool> redrawNeeded;    ///< 'true' if stage needs redrawing
+    InputSlot<bool> rendered; ///< 'true' if output has been rendered
 
 
 public:

@@ -82,7 +82,7 @@ DemoStage::~DemoStage()
 
 void DemoStage::invalidateOutput()
 {
-    redrawNeeded.setValue(true);
+    rendered.setValue(false);
 }
 
 void DemoStage::onContextInit(AbstractGLContext *)
@@ -159,6 +159,9 @@ void DemoStage::onProcess(AbstractGLContext *)
 
     // Unbind FBO
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+
+    // Signal that output is valid
+    rendered.setValue(true);
 }
 
 void DemoStage::createAndSetupCamera()

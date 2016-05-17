@@ -34,9 +34,9 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
         m_viewerContext->scriptEnvironment()->addApi(this);
     }
 
-    m_viewer.outputs.redrawNeeded.valueChanged.connect([this] (bool needRedraw)
+    m_viewer.outputs.rendered.valueChanged.connect([this] (bool rendered)
     {
-        if (needRedraw) {
+        if (!rendered) {
             this->redraw();
         }
     });

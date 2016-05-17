@@ -8,7 +8,7 @@ namespace gloperate
 
 ViewerOutputs::ViewerOutputs(ViewerContext * viewerContext, Pipeline * parent)
 : Stage(viewerContext, "Output", parent)
-, redrawNeeded(this, "redrawNeeded", false)
+, rendered(this, "rendered", false)
 {
 }
 

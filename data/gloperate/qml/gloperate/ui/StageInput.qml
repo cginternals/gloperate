@@ -14,6 +14,7 @@ BaseItem
     id: item
 
     property string name:       'Input'
+    property string value:      ''
     property real   circleSize: Ui.style.formControlHeight
     property color  lineColor:  Ui.style.pipelineLineColor
     property color  fillColor:  'green'
@@ -61,5 +62,16 @@ BaseItem
         anchors.margins: Ui.style.ctrlPadding
 
         text: item.name
+    }
+
+    Label
+    {
+        id: labelValue
+
+        anchors.right:   parent.right
+        anchors.bottom:  parent.verticalCenter
+        anchors.margins: Ui.style.ctrlPadding
+
+        text: item.value
     }
 }

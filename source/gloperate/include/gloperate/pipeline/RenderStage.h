@@ -38,7 +38,7 @@ public:
     InputSlot<float>     timeDelta;       ///< Time delta since last frame (in seconds)
 
     // Outputs
-    Data<bool>           redrawNeeded;    ///< 'true' if stage needs redrawing
+    Data<bool>           rendered;        ///< 'true' if output has been rendered
 
 
 public:

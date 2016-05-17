@@ -18,6 +18,7 @@ BaseItem
 
     property string name:      ''
     property var inputNames:   []
+    property var inputValues:  []
     property var outputNames:  []
     property var outputValues: []
 
@@ -103,12 +104,20 @@ BaseItem
         item.inputNames  = gloperate.pipeline.getInputs(item.source);
         item.outputNames = gloperate.pipeline.getOutputs(item.source);
 
-        var values = [];
+        var inputValues = [];
+        for (var i=0; i<item.inputNames.length; i++) {
+            inputValues.push(
+                gloperate.pipeline.getValue(item.source + '.' + item.inputNames[i])
+            );
+        }
+        item.inputValues = inputValues;
+
+        var outputValues = [];
         for (var i=0; i<item.outputNames.length; i++) {
-            values.push(
+            outputValues.push(
                 gloperate.pipeline.getValue(item.source + '.' + item.outputNames[i])
             );
         }
-        item.outputValues = values;
+        item.outputValues = outputValues;
     }
 }
