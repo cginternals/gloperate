@@ -10,6 +10,11 @@
 #include <gloperate/gloperate_api.h>
 
 
+namespace globjects {
+    class Framebuffer;
+}
+
+
 namespace gloperate
 {
 
@@ -168,8 +173,11 @@ public:
     *
     *    This function is called when the viewer needs to redraw its content.
     *    Use it to render the actual scene you want to display.
+    *
+    *  @param[in] targetFBO
+    *    Target FBO (can be null)
     */
-    virtual void onRender();
+    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr);
 
     /**
     *  @brief

@@ -75,7 +75,7 @@ public:
     virtual void onContextDeinit() override;
     virtual void onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport) override;
     virtual void onBackgroundColor(float red, float green, float blue) override;
-    virtual void onRender() override;
+    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
     virtual void onKeyPress(int key, int modifier) override;
     virtual void onKeyRelease(int key, int modifier) override;
     virtual void onMouseMove(const glm::ivec2 & pos) override;
