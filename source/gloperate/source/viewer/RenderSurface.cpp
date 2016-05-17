@@ -9,6 +9,7 @@
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
 #include <gloperate/output/AbstractVideoTool.h>
+#include <gloperate/tools/ImageExporter.h>
 
 
 namespace gloperate
@@ -22,9 +23,11 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_video(nullptr)
+, m_imageExporter(nullptr)
 , m_requestVideo(false)
 {
     addFunction("createVideo", this, &RenderSurface::createVideo);
+    addFunction("exportImage", this, &RenderSurface::exportImage);
 
     if (m_viewerContext->scriptEnvironment())
     {
@@ -41,6 +44,7 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 
 RenderSurface::~RenderSurface()
 {
+    delete m_imageExporter;
 }
 
 Pipeline * RenderSurface::rootPipeline() const
@@ -84,6 +88,12 @@ void RenderSurface::createVideo(std::string filename, int fps, int seconds, int 
     m_requestVideo = true;
 }
 
+void RenderSurface::exportImage(std::string filename, int width, int height, int renderIterations)
+{
+    m_imageExporter->init(filename, width, height, renderIterations);
+    m_requestImage = true;
+}
+
 glm::vec4 RenderSurface::deviceViewport()
 {
     return m_viewer.inputs.deviceViewport.value();
@@ -107,6 +117,11 @@ void RenderSurface::onContextInit()
     if (m_viewer.renderStage())
     {
         m_viewer.renderStage()->initContext(m_openGLContext);
+    }
+
+    if (!m_imageExporter)
+    {
+        m_imageExporter = new ImageExporter(this);
     }
 }
 
@@ -140,6 +155,12 @@ void RenderSurface::onRender()
     {
         m_requestVideo = false;
         m_video->createVideo([] (int x, int y) { cppassist::debug() << "Progress: " << x*100/y <<"%"; }, true);
+    }
+
+    if (m_requestImage)
+    {
+        m_requestImage = false;
+        m_imageExporter->save(true);
     }
 
     if (m_viewer.renderStage())

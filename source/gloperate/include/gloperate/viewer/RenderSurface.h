@@ -15,6 +15,7 @@ class Stage;
 class MouseDevice;
 class KeyboardDevice;
 class AbstractVideoTool;
+class ImageExporter;
 
 
 /**
@@ -82,6 +83,8 @@ public:
     */
     void createVideo(std::string filename, int fps, int seconds, int width, int height);
 
+    void exportImage(std::string filename, int width, int height, int renderIterations);
+
 
     // Virtual Surface functions
     virtual glm::vec4 deviceViewport() override;
@@ -106,7 +109,9 @@ protected:
     MouseDevice       * m_mouseDevice;    ///< Device for Mouse Events
     KeyboardDevice    * m_keyboardDevice; ///< Device for Keyboard Events
     AbstractVideoTool * m_video;          ///< Tool for rendering surface to video file
+    ImageExporter     * m_imageExporter;  ///< Tool for exporting an image from surface
     bool                m_requestVideo;   ///< Flag to request a videoTool call during next render step
+    bool                m_requestImage;   ///< Flag to request a ImageExporter call during next render step
 };
 
 

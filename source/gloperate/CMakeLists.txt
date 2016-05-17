@@ -102,6 +102,7 @@ set(headers
     ${include_path}/input/KeyboardDevice.h
 
     ${include_path}/output/AbstractVideoTool.h
+    ${include_path}/tools/ImageExporter.h
 )
 
 set(sources
@@ -158,6 +159,7 @@ set(sources
     ${source_path}/input/KeyboardDevice.cpp
 
     ${source_path}/output/AbstractVideoTool.cpp
+    ${source_path}/tools/ImageExporter.cpp
 )
 
 # Group source files

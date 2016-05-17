@@ -113,6 +113,8 @@ Background {
                 console.log(width.editText);
                 console.log(height.editText);
                 console.log(iterations.editText);
+
+                gloperate.surface0.exportImage(filepath.text, width.editText, height.editText, iterations.editText);
             }
         }
     }
