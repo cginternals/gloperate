@@ -120,7 +120,8 @@ void EventRoutingMapping::mapKeyboardEvent(KeyboardEvent * event)
     if (event && event->type() == KeyboardEvent::Type::Press)
     {
         auto curReciever = mapEventToReciever(RoutingEventType::Keyboard, static_cast<int>(RoutingEventValue::Any));
-        curReciever->keyPress(KeyboardInteractionArgs{m_currentId, event->key(), event->scanCode(), event->modifiers() });
+        if (curReciever)
+            curReciever->keyPress(KeyboardInteractionArgs{m_currentId, event->key(), event->scanCode(), event->modifiers() });
     }
 }
 
