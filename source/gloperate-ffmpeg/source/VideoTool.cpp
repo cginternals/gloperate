@@ -43,7 +43,7 @@ VideoTool::~VideoTool()
 {
 }
 
-void VideoTool::init(const std::string & filename, gloperate::RenderSurface * surface, uint fps, uint length, uint width, uint height)
+void VideoTool::init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length)
 {
     m_videoEncoder = new VideoEncoder();
     // m_fbo = new Framebuffer();

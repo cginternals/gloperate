@@ -182,7 +182,7 @@ Page
             }
 
             else if (name == 'video') {
-                video.open();
+                video.visible = true;
             }
 
             else if (name == 'edit') {
@@ -260,6 +260,26 @@ Page
         }
     }
 
+    // Video capture dialog
+    ApplicationWindow
+    {
+        id: video
+        title:   "Video"
+
+        property int margin: Ui.style.paddingMedium
+
+        width: videoItem.layout.implicitWidth + 15 * margin
+        height: videoItem.layout.implicitHeight + 2 * margin
+
+        VideoDialog
+        {
+            id: videoItem
+
+            margin: screenshot.margin
+            anchors.fill: parent
+        }
+    }
+
     // Log window
     Component
     {
@@ -328,17 +348,5 @@ Page
                 anchors.fill: parent
             }
         }
-    }
-
-    // Video capture dialog
-    VideoDialog
-    {
-        id: video
-
-        // anchors.fill:    main
-        // anchors.margins: Ui.style.dialogPadding
-
-        // visible: open
-        // status:  0.0
     }
 }

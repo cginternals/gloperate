@@ -74,7 +74,7 @@ public:
     */
     virtual ~VideoTool();
 
-    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint fps, uint length, uint width, uint height) override;
+    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length) override;
 
     /**
     *  @brief

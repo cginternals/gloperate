@@ -80,11 +80,11 @@ void RenderSurface::setVideoTool(AbstractVideoTool * video)
     m_video = video;
 }
 
-void RenderSurface::createVideo(std::string filename, int fps, int seconds, int width, int height)
+void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds)
 {
     cppassist::debug() << "<----- Creating Video ----->";
 
-    m_video->init(filename, this, fps, seconds, width, height);
+    m_video->init(filename, this, width, height, fps, seconds);
     m_requestVideo = true;
 }
 

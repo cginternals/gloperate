@@ -81,7 +81,7 @@ public:
     *  @brief
     *
     */
-    void createVideo(std::string filename, int fps, int seconds, int width, int height);
+    void createVideo(std::string filename, int width, int height, int fps, int seconds);
 
     void exportImage(std::string filename, int width, int height, int renderIterations);
 

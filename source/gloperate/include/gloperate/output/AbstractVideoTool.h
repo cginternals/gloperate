@@ -31,7 +31,7 @@ public:
     /**
     *  @brief
     */
-    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint fps, uint length, uint width, uint height) = 0;
+    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length) = 0;
 
     /**
     *  @brief

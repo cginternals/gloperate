@@ -1,131 +1,151 @@
-
-import QtQuick 2.0
-import QtQuick.Controls 1.2
+import QtQuick 2.2
+import QtQuick.Controls 1.2 as Controls
+import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.0
-import gloperate.ui 1.0
+import gloperate.base 1.0
 
-
-Dialog {
+Background {
     id: video
-    title: qsTr("Videocapture")
-    standardButtons: StandardButton.Ok | StandardButton.Cancel
 
-    RowLayout {
-        ColumnLayout {
-            Row { Label {text: qsTr("Filename:")} }
-            Row { Label {text: qsTr("FPS:")} }
-            Row { Label {text: qsTr("Seconds:")} }
-            Row { Label {text: qsTr("Width:")} }
-            Row { Label {text: qsTr("Height:")} }
+    property int margin: 0
+    property alias layout: mainLayout
+
+    ColumnLayout {
+        id: mainLayout
+        anchors.fill: parent
+        anchors.margins: margin
+        Controls.GroupBox {
+            id: rowBox
+            title: "Save as"
+            Layout.fillWidth: true
+
+            RowLayout {
+                anchors.fill: parent
+                Controls.TextField {
+                    id: filepath
+                    placeholderText: "e.g. /home/user/videos/video.avi"
+                    Layout.fillWidth: true
+                }
+                Button {
+                    text: "Browse"
+
+                    onClicked: {
+                        fileDialog.open();
+                    }
+                }
+            }
         }
 
-        ColumnLayout {
-            Row {
-                id: rowFilename
-                TextField {
-                    id:filename
-                    text: "output-video.avi"
+        Controls.GroupBox {
+            title: "Settings"
+            Layout.fillWidth: true
+
+            GridLayout {
+                id: gridLayout
+                rows: 4
+                flow: GridLayout.TopToBottom
+                anchors.fill: parent
+
+                Controls.Label { text: "Width" }
+                Controls.Label { text: "Height" }
+                Controls.Label { text: "FPS" }
+                Controls.Label { text: "Duration (sec)" }
+
+                Controls.ComboBox {
+                    editable: true
+                    id: width
+                    model: ListModel {
+                        ListElement { text: "800" }
+                        ListElement { text: "1024" }
+                        ListElement { text: "1152" }
+                        ListElement { text: "1280" }
+                        ListElement { text: "1360" }
+                        ListElement { text: "1440" }
+                        ListElement { text: "1600" }
+                        ListElement { text: "1680" }
+                        ListElement { text: "1920" }
+                        ListElement { text: "2560" }
+                    }
                 }
-                // Label {text: ".avi"}
+                
+                Controls.ComboBox {
+                    editable: true
+                    id: height
+                    model: ListModel {
+                        ListElement { text: "600" }
+                        ListElement { text: "720" }
+                        ListElement { text: "768" }
+                        ListElement { text: "800" }
+                        ListElement { text: "864" }
+                        ListElement { text: "900" }
+                        ListElement { text: "1024" }
+                        ListElement { text: "1050" }
+                        ListElement { text: "1200" }
+                        ListElement { text: "1440" }
+                        ListElement { text: "1600" }
+                    }
+                }
+
+                Controls.ComboBox {
+                    editable: true
+                    id: fps
+                    model: ListModel {
+                        ListElement { text: "30" }
+                        ListElement { text: "60" }
+                    }
+                }
+
+                Controls.ComboBox {
+                    editable: true
+                    id: duration
+                    model: ListModel {
+                        ListElement { text: "5" }
+                        ListElement { text: "10" }
+                        ListElement { text: "60" }
+                    }
+                }
+
             }
-            Row {
-                id: rowFps
-                TextField {
-                    id:fps
-                    text: "30"
-                }
-            }
-            Row {
-                id: rowSeconds
-                TextField {
-                    id:seconds
-                    text: "5"
-                }
-            }
-            Row {
-                id: rowWidth
-                TextField {
-                    id:width
-                    text: "1280"
-                }
-            }
-            Row {
-                id: rowHeight
-                TextField {
-                    id:height
-                    text: "720"
-                }
+        }
+
+        Button {
+            text: "Record Video"
+            anchors.right: parent.right
+
+            icon: '0016-camera.png'
+
+            onClicked: {
+                console.log(filepath.text);
+                console.log(width.editText);
+                console.log(height.editText);
+                console.log(fps.editText);
+                console.log(duration.editText);
+
+                gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText);
             }
         }
     }
 
-    onButtonClicked: {
-        if (clickedButton==StandardButton.Ok) {
+    FileDialog {
+        id: fileDialog
+        title: "Please choose an export location and filename"
+        folder: shortcuts.home
+        selectFolder: false
+        selectExisting: false
+        selectMultiple: false
+
+        onAccepted: {
+            var path = fileUrl.toString();
+            // remove prefixed "file:///"
+            path = path.replace(/^(file:\/{3})/,"");
+            // unescape html codes like '%23' for '#'
+            path = decodeURIComponent(path);
+            filepath.text = path;
+            
             close();
-            gloperate.surface0.createVideo(filename.text, fps.text, seconds.text, width.text, height.text);
+        }
+        onRejected: {
+            close();
         }
     }
-
-    // Component.onCompleted: open()
 }
-
-// DockPanel
-// {
-//     id: video
-
-//     iconClosed: '0270-cancel-circle.png'
-//     iconOpen:   '0270-cancel-circle.png'
-
-//     property string video_filename: "output-video.avi"
-//     property int video_fps: 30
-//     property int video_length: 5
-//     property int video_width: 1280
-//     property int video_height: 720
-
-//     RowLayout {
-//         id: layout
-//         anchors.fill: parent
-
-//         Item {
-//             width: 10
-//             height: 1
-//         }
-
-//         GridLayout {
-//             columns: 2
-//             rowSpacing: 10
-
-//             Layout.fillHeight: true
-//             Layout.fillWidth: true
-
-//             Text {
-//                 text: "Hello world? "
-//             }
-//             Text {
-//                 text: "Hello world!"
-//             }
-
-//             Text {
-//                 text: "Goodbye world? "
-//             }
-//             Text {
-//                 text: "Goodbye world!"
-//             }
-
-//         }
-
-//         Item {
-//             width: 10
-//             height: 10
-//         }
-//     }
-
-//     Button {
-//         text: "Create Video"
-//         onClicked: {
-//             video.hidePanel();
-//             gloperate.surface.createVideo(video_filename, video_fps, video_length, video_width, video_height);
-//         }
-//     }
-// }

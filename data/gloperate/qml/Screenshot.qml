@@ -94,6 +94,9 @@ Background {
                         ListElement { text: "4" }
                         ListElement { text: "8" }
                         ListElement { text: "16" }
+                        ListElement { text: "32" }
+                        ListElement { text: "64" }
+                        ListElement { text: "128" }
                     }
                 }
 
@@ -115,6 +118,8 @@ Background {
                 console.log(iterations.editText);
 
                 gloperate.surface0.exportImage(filepath.text, width.editText, height.editText, iterations.editText);
+
+                screenshot.visible = false;
             }
         }
     }
