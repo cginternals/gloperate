@@ -83,7 +83,7 @@ void Surface::onBackgroundColor(float, float, float)
 {
 }
 
-void Surface::onRender()
+void Surface::onRender(globjects::Framebuffer *)
 {
 }
 

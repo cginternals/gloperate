@@ -10,6 +10,11 @@
 #include <gloperate/pipeline/Data.h>
 
 
+namespace globjects {
+    class Framebuffer;
+}
+
+
 namespace gloperate
 {
 
@@ -29,6 +34,7 @@ public:
     Data<glm::vec3> backgroundColor; ///< Background color (RGB)
     Data<int>       frameCounter;    ///< Frame counter (number of frames)
     Data<float>     timeDelta;       ///< Time delta since last frame (in seconds)
+    Data<globjects::Framebuffer *> fbo;
 
 
 public:

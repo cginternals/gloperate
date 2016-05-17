@@ -147,7 +147,7 @@ void RenderSurface::onBackgroundColor(float red, float green, float blue)
     m_viewer.inputs.backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
-void RenderSurface::onRender()
+void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
 {
     cppassist::details() << "onRender()";
 
@@ -168,6 +168,7 @@ void RenderSurface::onRender()
         m_frame++;
 
         m_viewer.inputs.frameCounter.setValue(m_frame);
+        m_viewer.inputs.fbo.setValue(targetFBO);
 
         m_viewer.renderStage()->process(m_openGLContext);
     }
