@@ -21,7 +21,7 @@ Background {
 
             RowLayout {
                 anchors.fill: parent
-                Controls.TextField {
+                TextField {
                     id: filepath
                     placeholderText: "e.g. /home/user/videos/video.avi"
                     Layout.fillWidth: true
@@ -51,7 +51,7 @@ Background {
                 Controls.Label { text: "FPS" }
                 Controls.Label { text: "Duration (sec)" }
 
-                Controls.ComboBox {
+                ComboBox {
                     editable: true
                     id: width
                     model: ListModel {
@@ -68,7 +68,7 @@ Background {
                     }
                 }
                 
-                Controls.ComboBox {
+                ComboBox {
                     editable: true
                     id: height
                     model: ListModel {
@@ -86,7 +86,7 @@ Background {
                     }
                 }
 
-                Controls.ComboBox {
+                ComboBox {
                     editable: true
                     id: fps
                     model: ListModel {
@@ -95,7 +95,7 @@ Background {
                     }
                 }
 
-                Controls.ComboBox {
+                ComboBox {
                     editable: true
                     id: duration
                     model: ListModel {

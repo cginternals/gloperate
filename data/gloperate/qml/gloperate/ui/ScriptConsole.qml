@@ -30,7 +30,7 @@ Item
             anchors.top:   parent.top
             spacing:       Ui.style.ctrlPadding
 
-            TextField
+            TextEdit
             {
                 id: output
 
@@ -39,7 +39,7 @@ Item
                 readOnly: true
             }
 
-            TextField
+            TextEdit
             {
                 id: input
 

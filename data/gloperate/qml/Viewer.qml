@@ -249,7 +249,7 @@ Page
 
         property int margin: Ui.style.paddingMedium
 
-        width: screenshotItem.layout.implicitWidth + 15 * margin
+        width: screenshotItem.layout.implicitWidth + 20 * margin
         height: screenshotItem.layout.implicitHeight + 2 * margin
 
         Screenshot
@@ -269,7 +269,7 @@ Page
 
         property int margin: Ui.style.paddingMedium
 
-        width: videoItem.layout.implicitWidth + 15 * margin
+        width: videoItem.layout.implicitWidth + 20 * margin
         height: videoItem.layout.implicitHeight + 2 * margin
 
         VideoDialog

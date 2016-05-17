@@ -21,7 +21,7 @@ Background {
 
             RowLayout {
                 anchors.fill: parent
-                Controls.TextField {
+                TextField {
                     id: filepath
                     placeholderText: "e.g. /home/user/images/screen.jpg"
                     Layout.fillWidth: true
@@ -50,7 +50,7 @@ Background {
                 Controls.Label { text: "Height" }
                 Controls.Label { text: "Renderiterations" }
 
-                Controls.ComboBox {
+                ComboBox {
                     editable: true
                     id: width
                     model: ListModel {
@@ -67,7 +67,7 @@ Background {
                     }
                 }
                 
-                Controls.ComboBox {
+                ComboBox {
                     editable: true
                     id: height
                     model: ListModel {
@@ -85,7 +85,7 @@ Background {
                     }
                 }
 
-                Controls.ComboBox {
+                ComboBox {
                     editable: true
                     id: iterations
                     model: ListModel {
