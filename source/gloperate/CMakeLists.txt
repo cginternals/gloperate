@@ -71,16 +71,28 @@ set(headers
     ${include_path}/scripting/ComponentsApi.h
     ${include_path}/scripting/PipelineApi.h
 
+    ${include_path}/pipeline/AbstractData.h
+    ${include_path}/pipeline/AbstractInputSlot.h
+    ${include_path}/pipeline/AbstractParameter.h
+    ${include_path}/pipeline/AbstractInput.h
+    ${include_path}/pipeline/AbstractOutput.h
+    ${include_path}/pipeline/AbstractProxyOutput.h
+    ${include_path}/pipeline/Data.h
+    ${include_path}/pipeline/Data.hpp
+    ${include_path}/pipeline/InputSlot.h
+    ${include_path}/pipeline/InputSlot.hpp
+    ${include_path}/pipeline/Parameter.h
+    ${include_path}/pipeline/Parameter.hpp
+    ${include_path}/pipeline/Input.h
+    ${include_path}/pipeline/Input.hpp
+    ${include_path}/pipeline/Output.h
+    ${include_path}/pipeline/Output.hpp
+    ${include_path}/pipeline/ProxyOutput.h
+    ${include_path}/pipeline/ProxyOutput.hpp
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/RenderStage.h
     ${include_path}/pipeline/Pipeline.h
     ${include_path}/pipeline/RenderPipeline.h
-    ${include_path}/pipeline/AbstractInputSlot.h
-    ${include_path}/pipeline/InputSlot.h
-    ${include_path}/pipeline/InputSlot.hpp
-    ${include_path}/pipeline/AbstractData.h
-    ${include_path}/pipeline/Data.h
-    ${include_path}/pipeline/Data.hpp
     ${include_path}/pipeline/ViewerContainer.h
     ${include_path}/pipeline/ViewerInputs.h
     ${include_path}/pipeline/ViewerOutputs.h
@@ -130,12 +142,16 @@ set(sources
     ${source_path}/scripting/ComponentsApi.cpp
     ${source_path}/scripting/PipelineApi.cpp
 
+    ${source_path}/pipeline/AbstractData.cpp
+    ${source_path}/pipeline/AbstractInputSlot.cpp
+    ${source_path}/pipeline/AbstractParameter.cpp
+    ${source_path}/pipeline/AbstractInput.cpp
+    ${source_path}/pipeline/AbstractOutput.cpp
+    ${source_path}/pipeline/AbstractProxyOutput.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/RenderStage.cpp
     ${source_path}/pipeline/Pipeline.cpp
     ${source_path}/pipeline/RenderPipeline.cpp
-    ${source_path}/pipeline/AbstractInputSlot.cpp
-    ${source_path}/pipeline/AbstractData.cpp
     ${source_path}/pipeline/ViewerContainer.cpp
     ${source_path}/pipeline/ViewerInputs.cpp
     ${source_path}/pipeline/ViewerOutputs.cpp

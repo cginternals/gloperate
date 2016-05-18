@@ -9,6 +9,8 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/AbstractInputSlot.h>
+#include <gloperate/pipeline/AbstractData.h>
 
 
 namespace gloperate

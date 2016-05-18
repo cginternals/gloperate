@@ -22,10 +22,16 @@ class AbstractInputSlot;
 class Pipeline;
 
 template <typename T>
-class Data;
+class Input;
 
 template <typename T>
-class InputSlot;
+class Output;
+
+template <typename T>
+class Parameter;
+
+template <typename T>
+class ProxyOutput;
 
 
 /**
@@ -45,10 +51,16 @@ friend class AbstractData;
 public:
     // Import data types into local namespace
     template <typename T>
-    using InputSlot = gloperate::InputSlot<T>;
+    using Input = gloperate::Input<T>;
 
     template <typename T>
-    using Data = gloperate::Data<T>;
+    using Output = gloperate::Output<T>;
+
+    template <typename T>
+    using Parameter = gloperate::Parameter<T>;
+
+    template <typename T>
+    using ProxyOutput = gloperate::ProxyOutput<T>;
 
 
 public:

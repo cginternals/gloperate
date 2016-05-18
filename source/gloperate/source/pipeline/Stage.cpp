@@ -4,8 +4,8 @@
 #include <algorithm>
 
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/pipeline/InputSlot.h>
-#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/AbstractInputSlot.h>
+#include <gloperate/pipeline/AbstractData.h>
 
 
 namespace gloperate

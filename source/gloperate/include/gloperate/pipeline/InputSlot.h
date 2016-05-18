@@ -6,8 +6,7 @@
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/signal/ScopedConnection.h>
 
-#include <gloperate/pipeline/AbstractInputSlot.h>
-#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/Output.h>
 
 
 namespace gloperate
@@ -24,8 +23,8 @@ class Stage;
 *  @see
 *    Data
 */
-template <typename T>
-class InputSlot : public cppexpose::GetTyped<T, AbstractInputSlot>::Type
+template <typename T, typename BASE>
+class InputSlot : public cppexpose::GetTyped<T, BASE>::Type
 {
 public:
     cppexpose::Signal<const T &> valueChanged;  ///< Called when the value has been changed
@@ -56,15 +55,15 @@ public:
 
     /**
     *  @brief
-    *    Connect input slot to data source
+    *    Connect input slot to output data
     *
     *  @param[in] source
-    *    Data source (can be null)
+    *    Output (can be null)
     *
     *  @return
     *    'true' if input slot could be connected, else 'false'
     */
-    bool connect(const Data<T> * source);
+    bool connect(const Output<T> * source);
 
     // Virtual AbstractInputSlot interface
     virtual bool isCompatible(const cppexpose::AbstractProperty * source) const override;
@@ -92,7 +91,7 @@ protected:
 
 protected:
     T                             m_defaultValue; ///< Default value that is returned if unconnected
-    const Data<T>               * m_source;       ///< Connected source (can be null)
+    const Output<T>             * m_source;       ///< Connected source (can be null)
     cppexpose::ScopedConnection   m_connection;   ///< Connection to changed-signal of source property
 };
 

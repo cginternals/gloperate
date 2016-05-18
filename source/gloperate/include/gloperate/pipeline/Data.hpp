@@ -9,15 +9,15 @@ namespace gloperate
 {
 
 
-template <typename T>
-Data<T>::Data(Stage * parent, const std::string & name, const T & value)
-: cppexpose::DynamicProperty<T, AbstractData>(parent, name, value)
+template <typename T, typename BASE>
+Data<T, BASE>::Data(Stage * parent, const std::string & name, const T & value)
+: cppexpose::DynamicProperty<T, BASE>(parent, name, value)
 {
     this->initData(parent);
 }
 
-template <typename T>
-Data<T>::~Data()
+template <typename T, typename BASE>
+Data<T, BASE>::~Data()
 {
 }
 

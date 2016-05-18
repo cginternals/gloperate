@@ -11,8 +11,8 @@ namespace gloperate
 {
 
 
-template <typename T>
-InputSlot<T>::InputSlot(Stage * parent, const std::string & name, const T & defaultValue)
+template <typename T, typename BASE>
+InputSlot<T, BASE>::InputSlot(Stage * parent, const std::string & name, const T & defaultValue)
 : m_defaultValue(defaultValue)
 , m_source(nullptr)
 {
@@ -20,13 +20,13 @@ InputSlot<T>::InputSlot(Stage * parent, const std::string & name, const T & defa
     this->initInputSlot(parent);
 }
 
-template <typename T>
-InputSlot<T>::~InputSlot()
+template <typename T, typename BASE>
+InputSlot<T, BASE>::~InputSlot()
 {
 }
 
-template <typename T>
-bool InputSlot<T>::connect(const Data<T> * source)
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::connect(const Output<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -50,8 +50,8 @@ bool InputSlot<T>::connect(const Data<T> * source)
     return true;
 }
 
-template <typename T>
-bool InputSlot<T>::isCompatible(const cppexpose::AbstractProperty * source) const
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::isCompatible(const cppexpose::AbstractProperty * source) const
 {
     if (source) {
         return this->type() == source->type();
@@ -60,14 +60,14 @@ bool InputSlot<T>::isCompatible(const cppexpose::AbstractProperty * source) cons
     }
 }
 
-template <typename T>
-const cppexpose::AbstractProperty * InputSlot<T>::source() const
+template <typename T, typename BASE>
+const cppexpose::AbstractProperty * InputSlot<T, BASE>::source() const
 {
     return m_source;
 }
 
-template <typename T>
-bool InputSlot<T>::connect(const cppexpose::AbstractProperty * source)
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::connect(const cppexpose::AbstractProperty * source)
 {
     // Check if source is valid and compatible data container
     if (!source || !isCompatible(source))
@@ -76,11 +76,11 @@ bool InputSlot<T>::connect(const cppexpose::AbstractProperty * source)
     }
 
     // Connect to source data
-    return connect(dynamic_cast< const Data<T> * >(source));
+    return connect(dynamic_cast< const Output<T> * >(source));
 }
 
-template <typename T>
-void InputSlot<T>::disconnect()
+template <typename T, typename BASE>
+void InputSlot<T, BASE>::disconnect()
 {
     // Reset source property
     m_source     = nullptr;
@@ -91,14 +91,14 @@ void InputSlot<T>::disconnect()
     this->valueChanged(m_defaultValue);
 }
 
-template <typename T>
-cppexpose::AbstractTyped * InputSlot<T>::clone() const
+template <typename T, typename BASE>
+cppexpose::AbstractTyped * InputSlot<T, BASE>::clone() const
 {
     return nullptr;
 }
 
-template <typename T>
-T InputSlot<T>::value() const
+template <typename T, typename BASE>
+T InputSlot<T, BASE>::value() const
 {
     if (m_source) {
         return m_source->value();
@@ -107,14 +107,14 @@ T InputSlot<T>::value() const
     }
 }
 
-template <typename T>
-void InputSlot<T>::setValue(const T &)
+template <typename T, typename BASE>
+void InputSlot<T, BASE>::setValue(const T &)
 {
     // Not supported for input slots!
 }
 
-template <typename T>
-const T * InputSlot<T>::ptr() const
+template <typename T, typename BASE>
+const T * InputSlot<T, BASE>::ptr() const
 {
     if (m_source) {
         return m_source->ptr();
@@ -123,20 +123,20 @@ const T * InputSlot<T>::ptr() const
     }
 }
 
-template <typename T>
-T * InputSlot<T>::ptr()
+template <typename T, typename BASE>
+T * InputSlot<T, BASE>::ptr()
 {
     return nullptr;
 }
 
-template <typename T>
-bool InputSlot<T>::isGroup() const
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::isGroup() const
 {
     return false;
 }
 
-template <typename T>
-void InputSlot<T>::onValueChanged(const T & value)
+template <typename T, typename BASE>
+void InputSlot<T, BASE>::onValueChanged(const T & value)
 {
     this->valueChanged(value);
 }
