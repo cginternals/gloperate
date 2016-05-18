@@ -128,8 +128,10 @@ void EventRoutingMapping::mapKeyboardEvent(KeyboardEvent * event)
 void EventRoutingMapping::mapMouseEvent(MouseEvent * mouseEvent)
 {
     if (!mouseEvent) return;
+    
     if (mouseEvent->pos() != glm::ivec2())
         m_currentMousePosition =  mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
+
     m_currentId = ObjectIdExtractor(m_viewportCapability, m_typedRenderTargetCapability).get(m_currentMousePosition);
 
     if (mouseEvent->type() == MouseEvent::Type::Press)
