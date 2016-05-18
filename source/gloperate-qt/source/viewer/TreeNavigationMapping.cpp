@@ -1,6 +1,6 @@
 
 #include <gloperate-qt/viewer/TreeNavigationMapping.h>
-#include <gloperate-qt/viewer/TreeNavigation.h>
+#include <gloperate/navigation/TreeMapNavigation.h>
 
 #include <gloperate/ext-includes-begin.h>
 #include <QTimer>
@@ -90,7 +90,7 @@ void TreeNavigationMapping::initializeTools()
 
         m_coordProvider = make_unique<CoordinateProvider>(
             cameraCapability, projectionCapability, m_viewportCapability, m_typedRenderTargetCapability);
-        m_navigation = make_unique<TreeNavigation>(
+        m_navigation = make_unique<gloperate::TreeMapNavigation>(
             *cameraCapability, *m_viewportCapability, *m_coordProvider, projectionCapability);
     }
 }
@@ -142,9 +142,11 @@ void TreeNavigationMapping::mapMouseEvent(MouseEvent * mouseEvent)
             break;
         case MouseButtonLeft:
             m_navigation->panBegin(m_currentMousePosition);
+            m_interactionMode = InteractionMode::PanInteraction;
             break;
         case MouseButtonRight:
             m_navigation->rotateBegin(m_currentMousePosition);
+            m_interactionMode = InteractionMode::RotateInteraction;
             break;
         default:
             break;
@@ -152,12 +154,12 @@ void TreeNavigationMapping::mapMouseEvent(MouseEvent * mouseEvent)
     }
     else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Move)
     {
-        switch (m_navigation->mode())
+        switch (m_interactionMode)
         {
-        case TreeNavigation::InteractionMode::PanInteraction:
+        case InteractionMode::PanInteraction:
             m_navigation->panProcess(m_currentMousePosition);
             break;
-        case TreeNavigation::InteractionMode::RotateInteraction:
+        case InteractionMode::RotateInteraction:
             m_navigation->rotateProcess(m_currentMousePosition);
             break;
         default:
@@ -166,17 +168,7 @@ void TreeNavigationMapping::mapMouseEvent(MouseEvent * mouseEvent)
     }
     else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Release)
     {
-        switch (mouseEvent->button())
-        {
-        case MouseButtonLeft:
-            m_navigation->panEnd();
-            break;
-        case MouseButtonRight:
-            m_navigation->rotateEnd();
-            break;
-        default:
-            break;
-        }
+        m_interactionMode = InteractionMode::NoInteraction;
     }
 }
 
@@ -200,4 +192,4 @@ void TreeNavigationMapping::onTargetFramebufferChanged()
         gl::GL_DEPTH_ATTACHMENT, gl::GL_DEPTH_COMPONENT);
 }
 
-}
+} // namespace gloperate_qt

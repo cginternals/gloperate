@@ -6,9 +6,7 @@
 #include <glm/glm.hpp>
 #include <gloperate/ext-includes-end.h>
 
-#include <gloperate-qt/gloperate-qt_api.h>
-#include <gloperate/navigation/AbstractInteraction.h>
-
+#include <gloperate/gloperate_api.h>
 
 namespace gloperate
 {
@@ -18,54 +16,36 @@ class AbstractViewportCapability;
 class AbstractProjectionCapability;
 class CoordinateProvider;
 
-}
-
 
 /**
 *  @brief
-*    Camera navigation 'world in hand'
+*    Camera navigation 'TreeMapNavigation'
 *
-*    This interaction technique provides a 'world in hand' metaphor
+*    This interaction technique is based on the 'world in hand' metaphor
 *    to control a virtual camera. It allows the user to pan, rotate,
 *    and zoom, based on a reference point the camera currently looks at.
+*    It is specialised to interact with Treemaps and can drive a CombinedProjectionCapability
 *
 *  @remarks
 *    This interaction technique needs a depth buffer image to work
 *    correctly, which is provided by the specified CoordinateProvider.
 */
-class GLOPERATE_QT_API TreeNavigation : public gloperate::AbstractInteraction
+class GLOPERATE_API TreeMapNavigation
 {
 public:
-    /**
-    *  @brief
-    *    Current interaction mode
-    */
-    enum InteractionMode
-    {
-        NoInteraction
-    ,	PanInteraction
-    ,	RotateInteraction
-    };
-
-
-public:
-    TreeNavigation(gloperate::AbstractCameraCapability & cameraCapability,
+    TreeMapNavigation(gloperate::AbstractCameraCapability & cameraCapability,
         gloperate::AbstractViewportCapability & viewportCapability,
         gloperate::CoordinateProvider & coordProvider, 
         gloperate::AbstractProjectionCapability * projectionCapability);
-    virtual ~TreeNavigation();
+    virtual ~TreeMapNavigation();
 
     virtual void reset();
 
-    InteractionMode mode() const;
-
     void panBegin(const glm::ivec2 & mouse);
     void panProcess(const glm::ivec2 & mouse);
-    void panEnd();
 
     void rotateBegin(const glm::ivec2 & mouse);
     void rotateProcess(const glm::ivec2 & mouse);
-    void rotateEnd();
 
     void pan(glm::vec3 t);
     void rotate(float hAngle, float vAngle);
@@ -106,17 +86,13 @@ public:
     ,   const glm::vec3 & planeNormal) const;
     const glm::vec3 clampPointToMap(glm::vec3 point) const;
 
-
 protected:
     gloperate::AbstractCameraCapability & m_cameraCapability;
     gloperate::AbstractViewportCapability & m_viewportCapability;
     gloperate::AbstractProjectionCapability * m_projectionCapability;
 
     gloperate::CoordinateProvider & m_coordProvider;
-
-    bool m_rotationHappened;
-    InteractionMode m_mode;
-
+    
     glm::vec3   m_referencePosition;
     bool        m_refPositionValid; // stores if initial interaction pick yielded valid depth
     glm::vec3   m_eye;
@@ -124,3 +100,5 @@ protected:
     glm::ivec2  m_m0;
     glm::vec3   m_cardinalDirection;
 };
+
+} // namespace gloperate

@@ -25,15 +25,22 @@ namespace gloperate
     class KeyboardEvent;
     class MouseEvent;
     class WheelEvent;
+    class TreeMapNavigation;
 }
 
-class TreeNavigation;
 
 namespace gloperate_qt{
 
 class GLOPERATE_QT_API TreeNavigationMapping : public QObject, public gloperate_qt::AbstractQtMapping
 {
     Q_OBJECT
+    
+    enum InteractionMode
+	{
+		NoInteraction
+	,	PanInteraction
+	,	RotateInteraction
+	};
 
 
 public:
@@ -53,12 +60,13 @@ protected:
     void onTargetFramebufferChanged();
 
 protected:
-    std::unique_ptr<TreeNavigation> m_navigation;
+    std::unique_ptr<gloperate::TreeMapNavigation> m_navigation;
     std::unique_ptr<gloperate::CoordinateProvider> m_coordProvider;
     std::unique_ptr<gloperate::TypedRenderTargetCapability> m_renderTarget;
     gloperate::AbstractViewportCapability * m_viewportCapability;
     gloperate::TypedRenderTargetCapability * m_typedRenderTargetCapability;
     glm::ivec2 m_currentMousePosition;
+    InteractionMode m_interactionMode;
 };
 
 }
