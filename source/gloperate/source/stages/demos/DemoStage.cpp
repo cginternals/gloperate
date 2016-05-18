@@ -114,7 +114,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = this->fbo.value();
+    globjects::Framebuffer * fbo = targetFBO.value();
     if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 

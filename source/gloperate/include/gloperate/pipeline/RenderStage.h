@@ -36,15 +36,15 @@ class GLOPERATE_API RenderStage : public Stage
 {
 public:
     // Inputs
-    InputSlot<glm::vec4> deviceViewport;  ///< Viewport (in real device coordinates)
-    InputSlot<glm::vec4> virtualViewport; ///< Viewport (in virtual coordinates)
-    InputSlot<glm::vec3> backgroundColor; ///< Background color (RGB)
-    InputSlot<int>       frameCounter;    ///< Frame counter (number of frames)
-    InputSlot<float>     timeDelta;       ///< Time delta since last frame (in seconds)
-    InputSlot<globjects::Framebuffer *> fbo;
+    InputSlot<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
+    InputSlot<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
+    InputSlot<glm::vec3>                backgroundColor; ///< Background color (RGB)
+    InputSlot<int>                      frameCounter;    ///< Frame counter (number of frames)
+    InputSlot<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
+    InputSlot<globjects::Framebuffer *> targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
 
     // Outputs
-    Data<bool>           rendered;        ///< 'true' if output has been rendered
+    Data<bool> rendered; ///< 'true' if output has been rendered
 
 
 public:

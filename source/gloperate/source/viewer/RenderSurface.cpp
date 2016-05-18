@@ -108,7 +108,7 @@ void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
         m_frame++;
 
         m_viewer.inputs.frameCounter.setValue(m_frame);
-        m_viewer.inputs.fbo.setValue(targetFBO);
+        m_viewer.inputs.targetFBO.setValue(targetFBO);
 
         m_viewer.renderStage()->process(m_openGLContext);
     }

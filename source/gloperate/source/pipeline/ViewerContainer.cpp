@@ -33,7 +33,7 @@ void ViewerContainer::setRenderStage(Stage * stage)
         disconnect(m_renderStage, "backgroundColor");
         disconnect(m_renderStage, "frameCounter");
         disconnect(m_renderStage, "timeDelta");
-        disconnect(m_renderStage, "fbo");
+        disconnect(m_renderStage, "targetFBO");
         outputs.rendered.disconnect();
 
         // Destroy render stage
@@ -56,7 +56,7 @@ void ViewerContainer::setRenderStage(Stage * stage)
     connect(m_renderStage, "backgroundColor", &inputs.backgroundColor);
     connect(m_renderStage, "frameCounter",    &inputs.frameCounter);
     connect(m_renderStage, "timeDelta",       &inputs.timeDelta);
-    connect(m_renderStage, "fbo",             &inputs.fbo);
+    connect(m_renderStage, "targetFBO",       &inputs.targetFBO);
     connect(&outputs.rendered, m_renderStage, "rendered");
 }
 
