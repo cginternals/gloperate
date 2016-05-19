@@ -117,12 +117,6 @@ Background {
             icon: '0021-video-camera.png'
 
             onClicked: {
-                console.log(filepath.text);
-                console.log(width.editText);
-                console.log(height.editText);
-                console.log(fps.editText);
-                console.log(duration.editText);
-
                 gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText);
 
                 close();

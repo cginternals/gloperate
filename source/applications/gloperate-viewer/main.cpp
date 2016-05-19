@@ -23,7 +23,9 @@
 
 #include <cppexpose/scripting/ScriptContext.h>
 
+#ifdef USE_FFMPEG
 #include <gloperate-ffmpeg/VideoTool.h>
+#endif
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/QuickView.h>
@@ -37,7 +39,10 @@
 using namespace gloperate;
 using namespace gloperate_qt;
 using namespace gloperate_qtquick;
+
+#ifdef USE_FFMPEG
 using namespace gloperate_ffmpeg;
+#endif
 
 
 int main(int argc, char * argv[])
@@ -87,7 +92,7 @@ int main(int argc, char * argv[])
     window->setGeometry(100, 100, 1280, 720);
     window->show();
 
-
+#ifdef USE_FFMPEG
     QQuickItem * item = window->rootObject();
     QQuickItem * qmlRenderItem = item->findChild<QQuickItem*>("renderItem");
     
@@ -96,7 +101,7 @@ int main(int argc, char * argv[])
     
     VideoTool * videoTool = new VideoTool();
     renderSurface->setVideoTool(videoTool);
-
+#endif
 
     // Run main loop
     int res = app.exec();

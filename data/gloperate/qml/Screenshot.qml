@@ -112,13 +112,6 @@ Background {
             icon: '0040-file-picture.png'
 
             onClicked: {
-                // Validate filename
-                console.log(filepath.text);
-                // Validate that the rest are numbers
-                console.log(width.editText);
-                console.log(height.editText);
-                console.log(iterations.editText);
-
                 gloperate.surface0.exportImage(filepath.text, width.editText, height.editText, iterations.editText);
 
                 close();

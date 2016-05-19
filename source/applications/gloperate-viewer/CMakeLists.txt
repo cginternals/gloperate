@@ -12,6 +12,8 @@ find_package(Qt5Core    5.1)
 find_package(Qt5Gui     5.1)
 find_package(Qt5Widgets 5.1)
 find_package(Qt5Quick   5.1)
+find_package(FFMPEG)
+
 
 # Enable automoc
 set(CMAKE_AUTOMOC ON)
@@ -90,8 +92,14 @@ target_include_directories(${target}
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qtquick/include
-    ${PROJECT_SOURCE_DIR}/source/gloperate-ffmpeg/include
 )
+
+if (FFMPEG_FOUND)
+    target_include_directories(${target}
+        PRIVATE
+    ${PROJECT_SOURCE_DIR}/source/gloperate-ffmpeg/include
+    )
+endif()
 
 
 # 
@@ -113,8 +121,14 @@ target_link_libraries(${target}
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-qt
     ${META_PROJECT_NAME}::gloperate-qtquick
-    ${META_PROJECT_NAME}::gloperate-ffmpeg
 )
+
+if (FFMPEG_FOUND)
+    target_link_libraries(${target}
+        PRIVATE
+        ${META_PROJECT_NAME}::gloperate-ffmpeg
+    )
+endif()
 
 
 # 
