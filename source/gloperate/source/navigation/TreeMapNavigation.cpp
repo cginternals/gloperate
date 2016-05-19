@@ -34,13 +34,13 @@ namespace
     static const float CONSTRAINT_ROT_MAX_V_UP    = 0.001f * glm::pi<float>();
     static const float CONSTRAINT_ROT_MAX_V_LO    = 0.48f * glm::pi<float>();
     static const float CONSTRAINT_ROT_MAX_H       = 0.2f  * glm::pi<float>();
-    
+
     static const float MAP_EXTENT_X = 0.5f;
     static const float MAP_EXTENT_Z = 0.5f;
     static const float MAP_EXTENT = std::max(MAP_EXTENT_X, MAP_EXTENT_Z);
-    
+
     static const float TRANSLATION_FREEDOM = 2.f;
-    
+
     static const float CAM_SIZE = 0.01f;
 }
 
@@ -77,7 +77,7 @@ const glm::vec3 TreeMapNavigation::mouseRayPlaneIntersection(
 {
     // build a ray in object space from screen space mouse position and get
     // intersection with near and far planes.
-    
+
     const glm::vec3 pointNear = m_coordProvider.unproject(mouse, 0.0);
     const glm::vec3 pointFar = m_coordProvider.unproject(mouse, 1.0);
 
@@ -96,7 +96,7 @@ const glm::vec3 TreeMapNavigation::mouseRayPlaneIntersection(
         return mouseRayPlaneIntersection(intersects, mouse, m_cameraCapability.center(), glm::vec3(0.f, 1.f, 0.f));
 
     intersects = true;
-    
+
     return m_coordProvider.unproject(mouse, depth);
 }
 
@@ -170,39 +170,39 @@ void TreeMapNavigation::rotateProcess(const glm::ivec2 & mouse)
     const float wDeltaX = delta.x / static_cast<float>(m_viewportCapability.width());
     // setup the degree of freedom for vertical rotation within a single action
     const float wDeltaY = delta.y / static_cast<float>(m_viewportCapability.height());
-    
+
     rotate(wDeltaX, wDeltaY);
-  
+
     auto combCapability = dynamic_cast<CombinedProjectionCapability *>(m_projectionCapability);
     if(combCapability != nullptr)
     {
         bool intersects = false;
         glm::ivec2 middle(m_viewportCapability.width()/2, m_viewportCapability.height()/2);
         m_referencePosition = clampPointToMap(mouseRayPlaneIntersection(intersects, middle));
-    
+
         const float depth = m_coordProvider.depthAt(middle);
         m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
-    
+
         m_m0 = mouse;
-    
+
         m_eye = m_cameraCapability.eye();
         m_center = m_cameraCapability.center();
-        
+
         auto up = m_cameraCapability.up();
         auto viewDir = glm::normalize(m_eye - m_center);
         auto va = acosf(glm::dot(viewDir, up));
-        
+
         auto tween_va = (va - CONSTRAINT_ROT_MAX_V_UP) / PROJECTION_TWEENING_THRESH;
         tween_va = glm::clamp(tween_va, 0.0f, 1.0f);
-        
+
         combCapability->setOrthoFOV(m_eye, m_referencePosition);
         combCapability->setMix(tween_va);
-    }  
+    }
 }
 
 void TreeMapNavigation::pan(glm::vec3 t)
 {
-    enforceTranslationConstraints(t);
+    //enforceTranslationConstraints(t);
     m_cameraCapability.setEye(t + m_cameraCapability.eye());
     m_cameraCapability.setCenter(t + m_cameraCapability.center());
 }
@@ -284,7 +284,7 @@ void TreeMapNavigation::resetScaleAtMouse(const glm::ivec2 & mouse)
 
     m_cameraCapability.setEye(i - scale * (i - ln));
     m_cameraCapability.setCenter(i - scale * (i - lf));
-    
+
     auto combCapability = dynamic_cast<CombinedProjectionCapability *>(m_projectionCapability);
     if(combCapability != nullptr)
     {
@@ -306,7 +306,7 @@ void TreeMapNavigation::scaleAtCenter(float scale)
 
     m_cameraCapability.setEye(ln + scale * (ln - i));
     m_cameraCapability.setCenter(lf + scale * (lf - i));
-    
+
     auto combCapability = dynamic_cast<CombinedProjectionCapability *>(m_projectionCapability);
     if(combCapability != nullptr)
     {
@@ -333,26 +333,28 @@ void TreeMapNavigation::enforceRotationConstraints(
     vAngle = glm::clamp(vAngle, CONSTRAINT_ROT_MAX_V_UP - va, CONSTRAINT_ROT_MAX_V_LO - va);
 }
 
-void TreeMapNavigation::enforceTranslationConstraints(glm::vec3 &delta)
+/*
+ * void TreeMapNavigation::enforceTranslationConstraints(glm::vec3 &delta)
 {
     //make sure the camera does not veer into infinity
     auto tf = TRANSLATION_FREEDOM;
     auto eyePos = m_cameraCapability.eye();
     auto center = m_cameraCapability.center();
-    
+
     auto newPos = glm::clamp(eyePos + delta, glm::vec3(-MAP_EXTENT_X*tf,0,-MAP_EXTENT_Z*tf), glm::vec3(MAP_EXTENT_X*tf,1+1*tf,MAP_EXTENT_Z*tf));
     delta = newPos-eyePos;
-    
+
     //make sure at that the center is always "on" the map
     bool intersects;
     const glm::vec3 intersection(navigationmath::rayPlaneIntersection(intersects, eyePos+delta, center+delta));
     const glm::vec2 flatIntersect(intersection.x, intersection.z);
-    
+
     if (navigationmath::insideSquare(flatIntersect, MAP_EXTENT))
         return;
 
     const glm::vec2 i = navigationmath::raySquareIntersection(flatIntersect, MAP_EXTENT);
     delta = glm::vec3(i.x, 0., i.y) - center;
 }
+*/
 
 } // namespace gloperate

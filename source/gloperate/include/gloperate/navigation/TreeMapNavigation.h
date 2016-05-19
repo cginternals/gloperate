@@ -35,7 +35,7 @@ class GLOPERATE_API TreeMapNavigation
 public:
     TreeMapNavigation(gloperate::AbstractCameraCapability & cameraCapability,
         gloperate::AbstractViewportCapability & viewportCapability,
-        gloperate::CoordinateProvider & coordProvider, 
+        gloperate::CoordinateProvider & coordProvider,
         gloperate::AbstractProjectionCapability * projectionCapability);
     virtual ~TreeMapNavigation();
 
@@ -71,8 +71,8 @@ public:
     void enforceRotationConstraints(
         float & hAngle
     ,	float & vAngle) const;
-    
-    void enforceTranslationConstraints(glm::vec3 & delta);
+
+    //void enforceTranslationConstraints(glm::vec3 & delta);
 
     // math
 
@@ -92,7 +92,7 @@ protected:
     gloperate::AbstractProjectionCapability * m_projectionCapability;
 
     gloperate::CoordinateProvider & m_coordProvider;
-    
+
     glm::vec3   m_referencePosition;
     bool        m_refPositionValid; // stores if initial interaction pick yielded valid depth
     glm::vec3   m_eye;
