@@ -7,6 +7,8 @@ import gloperate.base 1.0
 Background {
     id: screenshot
 
+    signal close()
+
     property int margin: 0
     property alias layout: mainLayout
 
@@ -119,7 +121,7 @@ Background {
 
                 gloperate.surface0.exportImage(filepath.text, width.editText, height.editText, iterations.editText);
 
-                screenshot.visible = false;
+                close();
             }
         }
     }

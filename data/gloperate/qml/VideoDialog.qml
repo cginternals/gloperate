@@ -7,6 +7,8 @@ import gloperate.base 1.0
 Background {
     id: video
 
+    signal close();
+
     property int margin: 0
     property alias layout: mainLayout
 
@@ -122,6 +124,8 @@ Background {
                 console.log(duration.editText);
 
                 gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText);
+
+                close();
             }
         }
     }

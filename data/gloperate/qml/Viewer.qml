@@ -258,6 +258,10 @@ Page
 
             margin: screenshot.margin
             anchors.fill: parent
+
+            onClose: {
+                screenshot.close();
+            }
         }
     }
 
@@ -278,6 +282,10 @@ Page
 
             margin: screenshot.margin
             anchors.fill: parent
+
+            onClose: {
+                video.close();
+            }
         }
     }
 
