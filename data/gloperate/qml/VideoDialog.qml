@@ -114,7 +114,7 @@ Background {
             text: "Record Video"
             anchors.right: parent.right
 
-            icon: '0016-camera.png'
+            icon: '0021-video-camera.png'
 
             onClicked: {
                 console.log(filepath.text);

@@ -22,10 +22,6 @@ namespace gloperate {
     class AbstractGLContext;
 }
 
-namespace globjects {
-    class Framebuffer;
-}
-
 
 namespace gloperate_ffmpeg
 {
@@ -52,14 +48,14 @@ public:
     *    Name of output video file
     *  @param[in] surface
     *    The surface that will be rendered into a video
-    *  @param[in] fps
-    *    Frames per second of output video
-    *  @param[in] length
-    *    Length (in seconds) of output video
     *  @param[in] width
     *    Width (in pixels) of output video
     *  @param[in] height
     *    Height (in pixels) of output video
+    *  @param[in] fps
+    *    Frames per second of output video
+    *  @param[in] length
+    *    Length (in seconds) of output video
     */
     VideoTool(const std::string & filename,
               gloperate::RenderSurface * surface,
@@ -74,6 +70,23 @@ public:
     */
     virtual ~VideoTool();
 
+    /**
+    *  @brief
+    *    Initialize
+    *
+    *  @param[in] filename
+    *    Name of output video file
+    *  @param[in] surface
+    *    The surface that will be rendered into a video
+    *  @param[in] width
+    *    Width (in pixels) of output video
+    *  @param[in] height
+    *    Height (in pixels) of output video
+    *  @param[in] fps
+    *    Frames per second of output video
+    *  @param[in] length
+    *    Length (in seconds) of output video
+    */
     virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length) override;
 
     /**
@@ -82,13 +95,14 @@ public:
     *
     *  @param[in] progress
     *    Progress callback function
+    *  @param[in] glContextActive
+    *    Indicator whether an openGLContext already is active and does not have to be activated by the VideoTool
     */
     virtual void createVideo(std::function<void(int, int)> progress, bool glContextActive = false) override;
 
 
 protected:
     globjects::ref_ptr<VideoEncoder>             m_videoEncoder;
-    globjects::ref_ptr<globjects::Framebuffer>   m_fbo;
     gloperate::ViewerContext                   * m_context;
     gloperate::RenderSurface                   * m_surface;
     gloperate::AbstractGLContext               * m_glContext;

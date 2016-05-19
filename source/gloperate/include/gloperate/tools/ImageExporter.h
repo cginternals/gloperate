@@ -31,8 +31,28 @@ class GLOPERATE_API ImageExporter
 public:
     ImageExporter(RenderSurface * surface);
 
+    /**
+    *  @brief
+    *    Initialize
+    *
+    *  @param[in] filename
+    *    Name of output image file
+    *  @param[in] width
+    *    Width (in pixels) of output image
+    *  @param[in] height
+    *    Height (in pixels) of output image
+    *  @param[in] length
+    *    Number of render iterations
+    */
     void init(const std::string & filename, int width = 0, int height = 0, int renderIterations = 1);
 
+    /**
+    *  @brief
+    *    Actual call to export image creation
+    *
+    *  @param[in] glContextActive
+    *    Indicator whether an openGLContext already is active and does not have to be activated by the ImageExporter
+    */
     void save(bool glContextActive = false);
 
 

@@ -25,8 +25,6 @@ VideoTool::VideoTool()
 
 VideoTool::VideoTool(const std::string & filename, RenderSurface * surface, uint fps, uint length, uint width, uint height)
 : m_videoEncoder(new VideoEncoder())
-// , m_fbo(new Framebuffer())
-, m_fbo(nullptr)
 , m_context(surface->viewerContext())
 , m_surface(surface)
 , m_glContext(surface->openGLContext())
@@ -46,9 +44,6 @@ VideoTool::~VideoTool()
 void VideoTool::init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length)
 {
     m_videoEncoder = new VideoEncoder();
-    // m_fbo = new Framebuffer();
-    // m_fbo = Framebuffer::defaultFBO();
-    m_fbo = nullptr;
     m_context = surface->viewerContext();
     m_surface = surface;
     m_glContext = surface->openGLContext();
@@ -76,7 +71,6 @@ void VideoTool::createVideo(std::function<void(int, int)> progress, bool glConte
         m_glContext->use();
     }
 
-    // m_fbo->bind();
     m_videoEncoder->initEncoding(m_filename, m_width, m_height, m_fps);
     
     for (uint i = 0; i < length; ++i)
@@ -91,7 +85,6 @@ void VideoTool::createVideo(std::function<void(int, int)> progress, bool glConte
     }
 
     m_videoEncoder->finishEncoding();
-    // m_fbo->unbind();
 
     if (!glContextActive)
     {
