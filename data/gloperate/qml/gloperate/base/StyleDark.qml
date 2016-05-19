@@ -133,11 +133,15 @@ Item
     property real  formControlHeight:          formHeight       // Height of form controls (e.g., input fields)
 
     // General geometry
-    property color pipelineStageColor:         backgroundColor  // Background color of stages
-    property color pipelineTextColor:          primaryColor     // Color of texts in stages
-    property color pipelineLineColor:          primaryColor     // Color of lines, connections, etc.
+    property color pipelineStageColor:         '#ffffff'        // Background color of stages
+    property color pipelineSlotColor:          '#dddddd'        // Background color of slots
+    property color pipelineTextColor:          '#000000'        // Color of texts in stages
+    property color pipelineSecondaryTextColor: '#666666'        // Color of values in stages
+    property color pipelineLineColor:          '#000000'        // Color of lines, connections, etc.
     property int   pipelineLineWidth:          borderWidth      // Width of lines
     property int   pipelineStageRadius:        10               // Radius of stage rectangle
+    property real  pipelineSlotSize:           formControlHeight * 1.2
+    property real  pipelineConnectorSize:      formControlHeight * 0.6
 
 
     //
