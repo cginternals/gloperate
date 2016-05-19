@@ -82,17 +82,6 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Initialize data container
-    *
-    *  @param[in] owner
-    *    Owner stage (can be null)
-    */
-    void initData(Stage * owner);
-
-
-protected:
     Stage * m_owner;    ///< Stage that owns the data container (can be null)
     bool    m_required; ///< Is the (output) data required?
 };

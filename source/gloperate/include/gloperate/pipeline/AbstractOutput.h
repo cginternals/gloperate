@@ -27,6 +27,17 @@ public:
     *    Destructor
     */
     virtual ~AbstractOutput();
+
+
+protected:
+    /**
+    *  @brief
+    *    Initialize output
+    *
+    *  @param[in] owner
+    *    Owner stage (can be null)
+    */
+    void initOutput(Stage * owner);
 };
 
 

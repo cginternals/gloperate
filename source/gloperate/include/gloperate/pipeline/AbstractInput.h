@@ -27,6 +27,17 @@ public:
     *    Destructor
     */
     virtual ~AbstractInput();
+
+
+protected:
+    /**
+    *  @brief
+    *    Initialize input
+    *
+    *  @param[in] owner
+    *    Owner stage (can be null)
+    */
+    void initInput(Stage * owner);
 };
 
 

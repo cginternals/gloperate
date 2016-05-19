@@ -16,9 +16,6 @@ AbstractInputSlot::AbstractInputSlot()
 
 AbstractInputSlot::~AbstractInputSlot()
 {
-    if (m_owner) {
-        m_owner->unregisterInput(this);
-    }
 }
 
 Stage * AbstractInputSlot::owner() const
@@ -53,14 +50,6 @@ bool AbstractInputSlot::isFeedback() const
 void AbstractInputSlot::setFeedback(bool feedback)
 {
     m_feedback = feedback;
-}
-
-void AbstractInputSlot::initInputSlot(Stage * owner)
-{
-    if (owner) {
-        m_owner = owner;
-        owner->registerInput(this);
-    }
 }
 
 

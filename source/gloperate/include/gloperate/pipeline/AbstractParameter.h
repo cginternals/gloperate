@@ -27,6 +27,17 @@ public:
     *    Destructor
     */
     virtual ~AbstractParameter();
+
+
+protected:
+    /**
+    *  @brief
+    *    Initialize parameter
+    *
+    *  @param[in] owner
+    *    Owner stage (can be null)
+    */
+    void initParameter(Stage * owner);
 };
 
 

@@ -17,7 +17,6 @@ InputSlot<T, BASE>::InputSlot(Stage * parent, const std::string & name, const T 
 , m_source(nullptr)
 {
     this->initProperty(parent, name);
-    this->initInputSlot(parent);
 }
 
 template <typename T, typename BASE>

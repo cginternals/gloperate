@@ -4,8 +4,10 @@
 #include <algorithm>
 
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/pipeline/AbstractInputSlot.h>
-#include <gloperate/pipeline/AbstractData.h>
+#include <gloperate/pipeline/AbstractInput.h>
+#include <gloperate/pipeline/AbstractParameter.h>
+#include <gloperate/pipeline/AbstractOutput.h>
+#include <gloperate/pipeline/AbstractProxyOutput.h>
 
 
 namespace gloperate
@@ -73,27 +75,47 @@ void Stage::process(AbstractGLContext * context)
     onProcess(context);
 }
 
-const std::vector<AbstractInputSlot *> & Stage::inputs() const
+const std::vector<AbstractInput *> & Stage::inputs() const
 {
     return m_inputs;
 }
 
-const AbstractInputSlot * Stage::input(const std::string & name) const
+const AbstractInput * Stage::input(const std::string & name) const
 {
     return m_inputsMap.at(name);
 }
 
-const std::vector<AbstractData *> & Stage::outputs() const
+const std::vector<AbstractParameter *> & Stage::parameters() const
+{
+    return m_parameters;
+}
+
+const AbstractParameter * Stage::parameter(const std::string & name) const
+{
+    return m_parametersMap.at(name);
+}
+
+const std::vector<AbstractOutput *> & Stage::outputs() const
 {
     return m_outputs;
 }
 
-const AbstractData * Stage::output(const std::string & name) const
+const AbstractOutput * Stage::output(const std::string & name) const
 {
     return m_outputsMap.at(name);
 }
 
-void Stage::registerInput(AbstractInputSlot * input)
+const std::vector<AbstractProxyOutput *> & Stage::proxyOutputs() const
+{
+    return m_proxyOutputs;
+}
+
+const AbstractProxyOutput * Stage::proxyOutput(const std::string & name) const
+{
+    return m_proxyOutputsMap.at(name);
+}
+
+void Stage::registerInput(AbstractInput * input)
 {
     // Check parameters
     if (!input) {
@@ -110,7 +132,7 @@ void Stage::registerInput(AbstractInputSlot * input)
     inputAdded(input);
 }
 
-void Stage::unregisterInput(AbstractInputSlot * input)
+void Stage::unregisterInput(AbstractInput * input)
 {
     // Check parameters
     if (!input)
@@ -129,7 +151,43 @@ void Stage::unregisterInput(AbstractInputSlot * input)
     }
 }
 
-void Stage::registerOutput(AbstractData * output)
+void Stage::registerParameter(AbstractParameter * parameter)
+{
+    // Check parameters
+    if (!parameter) {
+        return;
+    }
+
+    // Add parameter
+    m_parameters.push_back(parameter);
+    if (parameter->name() != "") {
+        m_parametersMap.insert(std::make_pair(parameter->name(), parameter));        
+    }
+
+    // Emit signal
+    parameterAdded(parameter);
+}
+
+void Stage::unregisterParameter(AbstractParameter * parameter)
+{
+    // Check parameters
+    if (!parameter)
+    {
+        return;
+    }
+
+    // Find parameter
+    auto it = std::find(m_parameters.begin(), m_parameters.end(), parameter);
+    if (it != m_parameters.end())
+    {
+        // Remove parameter
+        m_parameters.erase(it);
+        m_parametersMap.erase(parameter->name());
+        parameterRemoved(parameter);
+    }
+}
+
+void Stage::registerOutput(AbstractOutput * output)
 {
     // Check parameters
     if (!output) {
@@ -146,7 +204,7 @@ void Stage::registerOutput(AbstractData * output)
     outputAdded(output);
 }
 
-void Stage::unregisterOutput(AbstractData * output)
+void Stage::unregisterOutput(AbstractOutput * output)
 {
     // Check parameters
     if (!output)
@@ -162,6 +220,42 @@ void Stage::unregisterOutput(AbstractData * output)
         m_outputs.erase(it);
         m_outputsMap.erase(output->name());
         outputRemoved(output);
+    }
+}
+
+void Stage::registerProxyOutput(AbstractProxyOutput * proxyOutput)
+{
+    // Check parameters
+    if (!proxyOutput) {
+        return;
+    }
+
+    // Add proxy output
+    m_proxyOutputs.push_back(proxyOutput);
+    if (proxyOutput->name() != "") {
+        m_proxyOutputsMap.insert(std::make_pair(proxyOutput->name(), proxyOutput));        
+    }
+
+    // Emit signal
+    proxyOutputAdded(proxyOutput);
+}
+
+void Stage::unregisterProxyOutput(AbstractProxyOutput * proxyOutput)
+{
+    // Check parameters
+    if (!proxyOutput)
+    {
+        return;
+    }
+
+    // Find proxy output
+    auto it = std::find(m_proxyOutputs.begin(), m_proxyOutputs.end(), proxyOutput);
+    if (it != m_proxyOutputs.end())
+    {
+        // Remove proxy output
+        m_proxyOutputs.erase(it);
+        m_proxyOutputsMap.erase(proxyOutput->name());
+        proxyOutputRemoved(proxyOutput);
     }
 }
 

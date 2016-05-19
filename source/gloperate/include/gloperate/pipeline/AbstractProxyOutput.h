@@ -27,6 +27,17 @@ public:
     *    Destructor
     */
     virtual ~AbstractProxyOutput();
+
+
+protected:
+    /**
+    *  @brief
+    *    Initialize proxy output
+    *
+    *  @param[in] owner
+    *    Owner stage (can be null)
+    */
+    void initProxyOutput(Stage * owner);
 };
 
 

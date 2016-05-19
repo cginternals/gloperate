@@ -18,9 +18,6 @@ AbstractData::AbstractData()
 
 AbstractData::~AbstractData()
 {
-    if (m_owner) {
-        m_owner->unregisterOutput(this);
-    }
 }
 
 Stage * AbstractData::owner() const
@@ -50,14 +47,6 @@ bool AbstractData::required() const
 void AbstractData::setRequired(bool required)
 {
     m_required = required;
-}
-
-void AbstractData::initData(Stage * owner)
-{
-    if (owner) {
-        m_owner = owner;
-        owner->registerOutput(this);
-    }
 }
 
 

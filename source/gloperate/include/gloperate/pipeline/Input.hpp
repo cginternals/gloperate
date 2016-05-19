@@ -13,6 +13,7 @@ template <typename T>
 Input<T>::Input(Stage * parent, const std::string & name, const T & value)
 : InputSlot<T, AbstractInput>(parent, name, value)
 {
+    this->initInput(parent);
 }
 
 template <typename T>

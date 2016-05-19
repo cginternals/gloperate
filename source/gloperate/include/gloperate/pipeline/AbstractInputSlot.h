@@ -140,17 +140,6 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Initialize input slot
-    *
-    *  @param[in] owner
-    *    Owner stage (can be null)
-    */
-    void initInputSlot(Stage * owner);
-
-
-protected:
     Stage * m_owner;    ///< Stage that owns the input slot (can be null)
     bool    m_feedback; ///< Does the input slot contain a feedback connection?
 };
