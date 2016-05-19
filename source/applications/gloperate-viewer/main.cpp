@@ -33,14 +33,15 @@ using namespace gloperate_qtquick;
 int main(int argc, char * argv[])
 {
     // Determine data paths
-    QString qmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
+    const auto qmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
 
     // Create viewer context
-    ViewerContext viewerContext;
+    auto viewerContext = ViewerContext();
 
     // Initialize Qt application
     gloperate_qt::Application app(&viewerContext, argc, argv);
-    const QFileInfo fi(QCoreApplication::applicationFilePath());
+    const auto fi = QFileInfo(QCoreApplication::applicationFilePath());
+
     QApplication::setApplicationDisplayName(fi.baseName());
     QApplication::setApplicationName(GLOPERATE_PROJECT_NAME);
     QApplication::setApplicationVersion(GLOPERATE_VERSION);
@@ -48,7 +49,7 @@ int main(int argc, char * argv[])
     QApplication::setOrganizationDomain(GLOPERATE_AUTHOR_DOMAIN);
 
     // Load configuration
-    Config config(viewerContext);
+    const Config config(viewerContext);
 
     // Configure update manager
     UpdateManager updateManager(&viewerContext);
@@ -56,7 +57,7 @@ int main(int argc, char * argv[])
     // Create QML engine
     QmlEngine qmlEngine(&viewerContext);
     qmlEngine.addImportPath(qmlPath);
-    qmlEngine.rootContext()->setContextProperty("config", &config);
+    qmlEngine.rootContext()->setContextProperty("config", std::addressof(config));
 
     // Create scripting context backend
     viewerContext.scriptEnvironment()->setupScripting(
@@ -71,7 +72,7 @@ int main(int argc, char * argv[])
     viewerContext.componentManager()->scanPlugins("stages");
 
     // Load and show QML
-    QuickView * window = new QuickView(&qmlEngine);
+    auto * window = new QuickView(&qmlEngine);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
     window->setSource(QUrl::fromLocalFile(qmlPath + "/Viewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
@@ -79,5 +80,6 @@ int main(int argc, char * argv[])
 
     // Run main loop
     int res = app.exec();
+
     return res;
 }

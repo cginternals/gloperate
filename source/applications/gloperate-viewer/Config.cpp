@@ -45,7 +45,7 @@ Config::~Config()
     settings.setValue(SETTINGS_PLUGINS, paths);
 }
 
-QString Config::style() const
+const QString & Config::style() const
 {
     return m_style;
 }

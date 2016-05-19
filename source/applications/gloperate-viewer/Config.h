@@ -14,15 +14,14 @@ namespace gloperate {
 
 class Config : public QObject
 {
-Q_OBJECT
-Q_PROPERTY(QString style READ style WRITE setStyle)
-
+    Q_OBJECT
+    Q_PROPERTY(QString style READ style WRITE setStyle)
 
 public:
     Config(gloperate::ViewerContext & viewerContext);
     virtual ~Config();
 
-    QString style() const;
+    const QString & style() const;
     void setStyle(const QString & style);
 
 

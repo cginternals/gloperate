@@ -23,6 +23,16 @@ ViewerContext::~ViewerContext()
 {
 }
 
+ViewerContext::ViewerContext(ViewerContext && other)
+: m_timeManager(std::move(other.m_timeManager))
+, m_surfaces(std::move(other.m_surfaces))
+, m_inputManager(std::move(other.m_inputManager))
+, m_scriptEnvironment(std::move(other.m_scriptEnvironment))
+, m_componentManager(std::move(other.m_componentManager))
+, m_resourceManager(std::move(other.m_resourceManager))
+{
+}
+
 const TimeManager * ViewerContext::timeManager() const
 {
     return &m_timeManager;
@@ -127,6 +137,18 @@ void ViewerContext::exit(int exitCode)
 {
     // Emit signal
     this->exitApplication(exitCode);
+}
+
+ViewerContext & ViewerContext::operator=(ViewerContext && other)
+{
+    m_timeManager = std::move(other.m_timeManager);
+    m_surfaces = std::move(other.m_surfaces);
+    m_inputManager = std::move(other.m_inputManager);
+    m_scriptEnvironment = std::move(other.m_scriptEnvironment);
+    m_componentManager = std::move(other.m_componentManager);
+    m_resourceManager = std::move(other.m_resourceManager);
+
+    return *this;
 }
 
 
