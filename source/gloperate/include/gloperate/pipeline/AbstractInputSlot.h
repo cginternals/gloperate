@@ -3,9 +3,8 @@
 
 
 #include <cppexpose/signal/Signal.h>
-#include <cppexpose/reflection/AbstractProperty.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/pipeline/AbstractSlot.h>
 
 
 namespace gloperate
@@ -19,7 +18,7 @@ class Stage;
 *  @brief
 *    Base class for input slots
 */
-class GLOPERATE_API AbstractInputSlot : public cppexpose::AbstractProperty
+class GLOPERATE_API AbstractInputSlot : public AbstractSlot
 {
 public:
     cppexpose::Signal<> connectionChanged;  ///< Called when the connection has been changed
@@ -29,48 +28,17 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] type
+    *    Slot type
     */
-    AbstractInputSlot();
+    AbstractInputSlot(SlotType type);
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~AbstractInputSlot();
-
-    /**
-    *  @brief
-    *    Get owner stage
-    *
-    *  @return
-    *    Stage that owns the input slot (can be null)
-    */
-    Stage * owner() const;
-
-    /**
-    *  @brief
-    *    Get qualified name
-    *
-    *  @return
-    *    Name with all parent names, separated by '.'
-    */
-    std::string qualifiedName() const;
-
-    /**
-    *  @brief
-    *    Check if input slot is compatible to source data
-    *
-    *  @param[in] source
-    *    Data source (can be null)
-    *
-    *  @return
-    *    'true' if data can be connected to input slot, else 'false'
-    *
-    *  @remarks
-    *    To be compatible, the input property must be an instance of Data
-    *    and use the same type as the input slot.
-    */
-    virtual bool isCompatible(const cppexpose::AbstractProperty * source) const = 0;
 
     /**
     *  @brief
@@ -83,24 +51,39 @@ public:
 
     /**
     *  @brief
-    *    Get currently connection data source
+    *    Get currently connected slot
     *
     *  @return
-    *    Data source (can be null)
+    *    Source slot (can be null)
     */
-    virtual const cppexpose::AbstractProperty * source() const = 0;
+    virtual const AbstractSlot * source() const = 0;
 
     /**
     *  @brief
-    *    Connect input slot to data source
+    *    Check if input slot is compatible to source slot
     *
     *  @param[in] source
-    *    Data source (can be null)
+    *    Source slot (can be null)
+    *
+    *  @return
+    *    'true' if slot can be connected to input slot, else 'false'
+    *
+    *  @remarks
+    *    To be compatible, the source must use the same type as the input slot.
+    */
+    virtual bool isCompatible(const AbstractSlot * source) const = 0;
+
+    /**
+    *  @brief
+    *    Connect input slot to source slot
+    *
+    *  @param[in] source
+    *    Source slot (can be null)
     *
     *  @return
     *    'true' if input slot could be connected, else 'false'
     */
-    virtual bool connect(const cppexpose::AbstractProperty * source) = 0;
+    virtual bool connect(const AbstractSlot * source) = 0;
 
     /**
     *  @brief
@@ -140,19 +123,7 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Initialize input slot
-    *
-    *  @param[in] owner
-    *    Owner stage (can be null)
-    */
-    void initInputSlot(Stage * owner);
-
-
-protected:
-    Stage * m_owner;    ///< Stage that owns the input slot (can be null)
-    bool    m_feedback; ///< Does the input slot contain a feedback connection?
+    bool m_feedback; ///< Does the input slot contain a feedback connection?
 };
 
 

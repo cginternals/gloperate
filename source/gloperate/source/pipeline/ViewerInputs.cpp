@@ -13,7 +13,7 @@ ViewerInputs::ViewerInputs(ViewerContext * viewerContext, Pipeline * parent)
 , backgroundColor(this, "backgroundColor", glm::vec3(1.0, 1.0, 1.0))
 , frameCounter   (this, "frameCounter",    0)
 , timeDelta      (this, "timeDelta",       0.0f)
-, fbo            (this, "fbo",             nullptr)
+, targetFBO      (this, "targetFBO",       nullptr)
 {
 }
 

@@ -6,27 +6,31 @@
 
 #include <cppexpose/typed/Typed.h>
 
+#include <gloperate/pipeline/Input.h>
+#include <gloperate/pipeline/Parameter.h>
+#include <gloperate/pipeline/Output.h>
+#include <gloperate/pipeline/ProxyOutput.h>
+
 
 namespace gloperate
 {
 
 
-template <typename T>
-InputSlot<T>::InputSlot(Stage * parent, const std::string & name, const T & defaultValue)
+template <typename T, typename BASE>
+InputSlot<T, BASE>::InputSlot(Stage * parent, const std::string & name, const T & defaultValue)
 : m_defaultValue(defaultValue)
-, m_source(nullptr)
+, m_sourceType(SlotType::Empty)
 {
     this->initProperty(parent, name);
-    this->initInputSlot(parent);
 }
 
-template <typename T>
-InputSlot<T>::~InputSlot()
+template <typename T, typename BASE>
+InputSlot<T, BASE>::~InputSlot()
 {
 }
 
-template <typename T>
-bool InputSlot<T>::connect(const Data<T> * source)
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::connect(const Input<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -34,24 +38,115 @@ bool InputSlot<T>::connect(const Data<T> * source)
     }
 
     // Get source data
-    m_source = source;
+    m_source.input = source;
+    m_sourceType = SlotType::Input;
 
     // Connect to data container
-    m_connection = m_source->valueChanged.connect([this] (const T & value)
+    m_connection = m_source.input->valueChanged.connect([this] (const T & value)
     {
         this->valueChanged(value);
     } );
 
     // Emit events
     this->connectionChanged();
-    this->valueChanged(m_source->value());
+    this->valueChanged(m_source.input->value());
 
     // Success
     return true;
 }
 
-template <typename T>
-bool InputSlot<T>::isCompatible(const cppexpose::AbstractProperty * source) const
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::connect(const Parameter<T> * source)
+{
+    // Check if source is valid
+    if (!source) {
+        return false;
+    }
+
+    // Get source data
+    m_source.parameter = source;
+    m_sourceType = SlotType::Parameter;
+
+    // Connect to data container
+    m_connection = m_source.parameter->valueChanged.connect([this] (const T & value)
+    {
+        this->valueChanged(value);
+    } );
+
+    // Emit events
+    this->connectionChanged();
+    this->valueChanged(m_source.parameter->value());
+
+    // Success
+    return true;
+}
+
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::connect(const Output<T> * source)
+{
+    // Check if source is valid
+    if (!source) {
+        return false;
+    }
+
+    // Get source data
+    m_source.output = source;
+    m_sourceType = SlotType::Output;
+
+    // Connect to data container
+    m_connection = m_source.output->valueChanged.connect([this] (const T & value)
+    {
+        this->valueChanged(value);
+    } );
+
+    // Emit events
+    this->connectionChanged();
+    this->valueChanged(m_source.output->value());
+
+    // Success
+    return true;
+}
+
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::connect(const ProxyOutput<T> * source)
+{
+    // Check if source is valid
+    if (!source) {
+        return false;
+    }
+
+    // Get source data
+    m_source.proxyOutput = source;
+    m_sourceType = SlotType::ProxyOutput;
+
+    // Connect to data container
+    m_connection = m_source.proxyOutput->valueChanged.connect([this] (const T & value)
+    {
+        this->valueChanged(value);
+    } );
+
+    // Emit events
+    this->connectionChanged();
+    this->valueChanged(m_source.proxyOutput->value());
+
+    // Success
+    return true;
+}
+
+template <typename T, typename BASE>
+const AbstractSlot * InputSlot<T, BASE>::source() const
+{
+    switch (m_sourceType) {
+        case SlotType::Input:       return m_source.input;
+        case SlotType::Parameter:   return m_source.parameter;
+        case SlotType::Output:      return m_source.output;
+        case SlotType::ProxyOutput: return m_source.proxyOutput;
+        default:                    return nullptr;
+    }
+}
+
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::isCompatible(const AbstractSlot * source) const
 {
     if (source) {
         return this->type() == source->type();
@@ -60,15 +155,11 @@ bool InputSlot<T>::isCompatible(const cppexpose::AbstractProperty * source) cons
     }
 }
 
-template <typename T>
-const cppexpose::AbstractProperty * InputSlot<T>::source() const
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::connect(const AbstractSlot * source)
 {
-    return m_source;
-}
+    // [TODO]
 
-template <typename T>
-bool InputSlot<T>::connect(const cppexpose::AbstractProperty * source)
-{
     // Check if source is valid and compatible data container
     if (!source || !isCompatible(source))
     {
@@ -76,67 +167,90 @@ bool InputSlot<T>::connect(const cppexpose::AbstractProperty * source)
     }
 
     // Connect to source data
-    return connect(dynamic_cast< const Data<T> * >(source));
+    switch (source->slotType())
+    {
+        case SlotType::Input:
+            return connect(static_cast< const Input<T> * >(source));
+
+        case SlotType::Parameter:
+            return connect(static_cast< const Parameter<T> * >(source));
+
+        case SlotType::Output:
+            return connect(static_cast< const Output<T> * >(source));
+
+        case SlotType::ProxyOutput:
+            return connect(static_cast< const ProxyOutput<T> * >(source));
+
+        default:
+            return false;
+    }
 }
 
-template <typename T>
-void InputSlot<T>::disconnect()
+template <typename T, typename BASE>
+void InputSlot<T, BASE>::disconnect()
 {
     // Reset source property
-    m_source     = nullptr;
-    m_connection = cppexpose::ScopedConnection();
+    m_source.input       = nullptr;
+    m_source.parameter   = nullptr;
+    m_source.output      = nullptr;
+    m_source.proxyOutput = nullptr;
+    m_connection         = cppexpose::ScopedConnection();
 
     // Emit events
     this->connectionChanged();
     this->valueChanged(m_defaultValue);
 }
 
-template <typename T>
-cppexpose::AbstractTyped * InputSlot<T>::clone() const
+template <typename T, typename BASE>
+cppexpose::AbstractTyped * InputSlot<T, BASE>::clone() const
 {
     return nullptr;
 }
 
-template <typename T>
-T InputSlot<T>::value() const
+template <typename T, typename BASE>
+T InputSlot<T, BASE>::value() const
 {
-    if (m_source) {
-        return m_source->value();
-    } else {
-        return m_defaultValue;
+    switch (m_sourceType) {
+        case SlotType::Input:       return m_source.input->value();
+        case SlotType::Parameter:   return m_source.parameter->value();
+        case SlotType::Output:      return m_source.output->value();
+        case SlotType::ProxyOutput: return m_source.proxyOutput->value();
+        default:                    return m_defaultValue;
     }
 }
 
-template <typename T>
-void InputSlot<T>::setValue(const T &)
+template <typename T, typename BASE>
+void InputSlot<T, BASE>::setValue(const T &)
 {
     // Not supported for input slots!
 }
 
-template <typename T>
-const T * InputSlot<T>::ptr() const
+template <typename T, typename BASE>
+const T * InputSlot<T, BASE>::ptr() const
 {
-    if (m_source) {
-        return m_source->ptr();
-    } else {
-        return nullptr;
+    switch (m_sourceType) {
+        case SlotType::Input:       return m_source.input->ptr();
+        case SlotType::Parameter:   return m_source.parameter->ptr();
+        case SlotType::Output:      return m_source.output->ptr();
+        case SlotType::ProxyOutput: return m_source.proxyOutput->ptr();
+        default:                    return nullptr;
     }
 }
 
-template <typename T>
-T * InputSlot<T>::ptr()
+template <typename T, typename BASE>
+T * InputSlot<T, BASE>::ptr()
 {
     return nullptr;
 }
 
-template <typename T>
-bool InputSlot<T>::isGroup() const
+template <typename T, typename BASE>
+bool InputSlot<T, BASE>::isGroup() const
 {
     return false;
 }
 
-template <typename T>
-void InputSlot<T>::onValueChanged(const T & value)
+template <typename T, typename BASE>
+void InputSlot<T, BASE>::onValueChanged(const T & value)
 {
     this->valueChanged(value);
 }

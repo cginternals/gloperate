@@ -13,7 +13,7 @@ RenderStage::RenderStage(ViewerContext * viewerContext, const std::string & name
 , backgroundColor(this, "backgroundColor")
 , frameCounter   (this, "frameCounter")
 , timeDelta      (this, "timeDelta")
-, fbo            (this, "fbo")
+, targetFBO      (this, "targetFBO")
 , rendered       (this, "rendered")
 {
 }

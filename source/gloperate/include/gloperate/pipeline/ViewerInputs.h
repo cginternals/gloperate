@@ -7,7 +7,7 @@
 #include <gloperate/base/GlmProperties.h>
 
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/Parameter.h>
 
 
 namespace globjects {
@@ -29,12 +29,12 @@ class GLOPERATE_API ViewerInputs : public Stage
 {
 public:
     // Render stage inputs
-    Data<glm::vec4> deviceViewport;  ///< Viewport (in real device coordinates)
-    Data<glm::vec4> virtualViewport; ///< Viewport (in virtual coordinates)
-    Data<glm::vec3> backgroundColor; ///< Background color (RGB)
-    Data<int>       frameCounter;    ///< Frame counter (number of frames)
-    Data<float>     timeDelta;       ///< Time delta since last frame (in seconds)
-    Data<globjects::Framebuffer *> fbo;
+    Parameter<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
+    Parameter<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
+    Parameter<glm::vec3>                backgroundColor; ///< Background color (RGB)
+    Parameter<int>                      frameCounter;    ///< Frame counter (number of frames)
+    Parameter<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
+    Parameter<globjects::Framebuffer *> targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
 
 
 public:

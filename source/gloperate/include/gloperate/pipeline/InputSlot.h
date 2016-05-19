@@ -6,8 +6,7 @@
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/signal/ScopedConnection.h>
 
-#include <gloperate/pipeline/AbstractInputSlot.h>
-#include <gloperate/pipeline/Data.h>
+#include <gloperate/pipeline/AbstractSlot.h>
 
 
 namespace gloperate
@@ -15,6 +14,18 @@ namespace gloperate
 
 
 class Stage;
+
+template <typename T>
+class Input;
+
+template <typename T>
+class Parameter;
+
+template <typename T>
+class Output;
+
+template <typename T>
+class ProxyOutput;
 
 
 /**
@@ -24,8 +35,8 @@ class Stage;
 *  @see
 *    Data
 */
-template <typename T>
-class InputSlot : public cppexpose::GetTyped<T, AbstractInputSlot>::Type
+template <typename T, typename BASE>
+class InputSlot : public cppexpose::GetTyped<T, BASE>::Type
 {
 public:
     cppexpose::Signal<const T &> valueChanged;  ///< Called when the value has been changed
@@ -56,20 +67,56 @@ public:
 
     /**
     *  @brief
-    *    Connect input slot to data source
+    *    Connect input slot to input
     *
     *  @param[in] source
-    *    Data source (can be null)
+    *    Input (can be null)
     *
     *  @return
     *    'true' if input slot could be connected, else 'false'
     */
-    bool connect(const Data<T> * source);
+    bool connect(const Input<T> * source);
+
+    /**
+    *  @brief
+    *    Connect input slot to parameter
+    *
+    *  @param[in] source
+    *    Parameter (can be null)
+    *
+    *  @return
+    *    'true' if input slot could be connected, else 'false'
+    */
+    bool connect(const Parameter<T> * source);
+
+    /**
+    *  @brief
+    *    Connect input slot to output
+    *
+    *  @param[in] source
+    *    Output (can be null)
+    *
+    *  @return
+    *    'true' if input slot could be connected, else 'false'
+    */
+    bool connect(const Output<T> * source);
+
+    /**
+    *  @brief
+    *    Connect input slot to proxy output
+    *
+    *  @param[in] source
+    *    Proxy output (can be null)
+    *
+    *  @return
+    *    'true' if input slot could be connected, else 'false'
+    */
+    bool connect(const ProxyOutput<T> * source);
 
     // Virtual AbstractInputSlot interface
-    virtual bool isCompatible(const cppexpose::AbstractProperty * source) const override;
-    virtual const cppexpose::AbstractProperty * source() const override;
-    virtual bool connect(const cppexpose::AbstractProperty * source) override;
+    virtual const AbstractSlot * source() const override;
+    virtual bool isCompatible(const AbstractSlot * source) const override;
+    virtual bool connect(const AbstractSlot * source) override;
     virtual void disconnect() override;
 
     // Virtual AbstractTyped interface
@@ -92,7 +139,13 @@ protected:
 
 protected:
     T                             m_defaultValue; ///< Default value that is returned if unconnected
-    const Data<T>               * m_source;       ///< Connected source (can be null)
+    union {
+        const Input<T>          * input;          ///< Connected input (can be null)
+        const Parameter<T>      * parameter;      ///< Connected parameter (can be null)
+        const Output<T>         * output;         ///< Connected output (can be null)
+        const ProxyOutput<T>    * proxyOutput;    ///< Connected proxy output (can be null)
+    } m_source;
+    SlotType                      m_sourceType;   ///< Contains to which kind of data the input slot is connected
     cppexpose::ScopedConnection   m_connection;   ///< Connection to changed-signal of source property
 };
 

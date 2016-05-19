@@ -3,7 +3,7 @@
 
 
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/InputSlot.h>
+#include <gloperate/pipeline/Input.h>
 
 
 namespace gloperate
@@ -20,7 +20,7 @@ class GLOPERATE_API ViewerOutputs : public Stage
 {
 public:
     // Render stage outputs
-    InputSlot<bool> rendered; ///< 'true' if output has been rendered
+    Input<bool> rendered; ///< 'true' if output has been rendered
 
 
 public:

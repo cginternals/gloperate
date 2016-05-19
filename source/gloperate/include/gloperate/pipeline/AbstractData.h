@@ -4,7 +4,7 @@
 
 #include <cppexpose/reflection/AbstractProperty.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/pipeline/AbstractSlot.h>
 
 
 namespace gloperate
@@ -18,38 +18,23 @@ class Stage;
 *  @brief
 *    Base class for data containers
 */
-class GLOPERATE_API AbstractData : public cppexpose::AbstractProperty
+class GLOPERATE_API AbstractData : public AbstractSlot
 {
 public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] type
+    *    Slot type
     */
-    AbstractData();
+    AbstractData(SlotType type);
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~AbstractData();
-
-    /**
-    *  @brief
-    *    Get owner stage
-    *
-    *  @return
-    *    Stage that owns the data container (can be null)
-    */
-    Stage * owner() const;
-
-    /**
-    *  @brief
-    *    Get qualified name
-    *
-    *  @return
-    *    Name with all parent names, separated by '.'
-    */
-    std::string qualifiedName() const;
 
     /**
     *  @brief
@@ -82,19 +67,7 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Initialize data container
-    *
-    *  @param[in] owner
-    *    Owner stage (can be null)
-    */
-    void initData(Stage * owner);
-
-
-protected:
-    Stage * m_owner;    ///< Stage that owns the data container (can be null)
-    bool    m_required; ///< Is the (output) data required?
+    bool m_required; ///< Is the (output) data required?
 };
 
 

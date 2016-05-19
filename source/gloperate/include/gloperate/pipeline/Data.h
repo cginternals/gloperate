@@ -4,7 +4,7 @@
 
 #include <cppexpose/reflection/DynamicProperty.h>
 
-#include <gloperate/pipeline/AbstractData.h>
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
@@ -15,8 +15,8 @@ namespace gloperate
 *  @brief
 *    Container for data objects in a pipeline
 */
-template <typename T>
-class Data : public cppexpose::DynamicProperty<T, AbstractData>
+template <typename T, typename BASE>
+class Data : public cppexpose::DynamicProperty<T, BASE>
 {
 public:
     /**
