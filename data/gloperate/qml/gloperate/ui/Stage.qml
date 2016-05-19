@@ -22,8 +22,8 @@ BaseItem
     property var outputNames:  []
     property var outputValues: []
 
-    implicitWidth:  inputs.implicitWidth + body.implicitWidth + outputs.implicitWidth
-    implicitHeight: Math.max(Math.max(inputs.implicitHeight, body.implicitHeight), outputs.implicitHeight)
+    implicitWidth:  inputs.implicitWidth * 0.5 + body.implicitWidth + outputs.implicitWidth * 0.5
+    implicitHeight: Math.max(Math.max(inputs.implicitHeight, body.implicitHeight), outputs.implicitHeight) + 2 * inputs.anchors.topMargin
 
     clip: true
 
@@ -31,19 +31,24 @@ BaseItem
     {
         id: inputs
 
-        anchors.top:  parent.top
-        anchors.left: parent.left
-        spacing:      Ui.style.ctrlSpacing
+        anchors.top:       parent.top
+        anchors.left:      parent.left
+        anchors.topMargin: 2 * Ui.style.panelPadding
+        z:                 1
+
+        spacing: Ui.style.ctrlSpacing
 
         Repeater
         {
             model: item.inputNames.length
 
-            delegate: StageInput
+            delegate: Slot
             {
                 Layout.fillWidth: true
 
-                name: item.inputNames[index]
+                name:     item.inputNames[index]
+                value:    item.inputValues[index]
+                switched: true
             }
         }
     }
@@ -54,10 +59,11 @@ BaseItem
 
         anchors.top:    parent.top
         anchors.bottom: parent.bottom
-        anchors.left:   inputs.right
-        anchors.right:  outputs.left
-        implicitWidth:  label.implicitWidth  + 2 * Ui.style.panelPadding
+        anchors.left:   inputs.horizontalCenter
+        anchors.right:  outputs.horizontalCenter
+        implicitWidth:  inputs.implicitWidth * 0.5 + outputs.implicitWidth * 0.5 + label.implicitWidth + 2 * Ui.style.panelPadding
         implicitHeight: label.implicitHeight + 2 * Ui.style.panelPadding
+        z:              0
 
         color:        Ui.style.pipelineStageColor
         radius:       Ui.style.pipelineStageRadius
@@ -68,11 +74,12 @@ BaseItem
         {
             id: label
 
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter:   parent.verticalCenter
+            anchors.left:           parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin:     inputs.implicitWidth * 0.5 + Ui.style.panelPadding
 
             text:  item.name
-            color: 'black'
+            color: Ui.style.pipelineTextColor
         }
     }
 
@@ -80,15 +87,18 @@ BaseItem
     {
         id: outputs
 
-        anchors.top:   parent.top
-        anchors.right: parent.right
-        spacing:       Ui.style.ctrlSpacing
+        anchors.top:       parent.top
+        anchors.right:     parent.right
+        anchors.topMargin: 2 * Ui.style.panelPadding
+        z:                 1
+
+        spacing: Ui.style.ctrlSpacing
 
         Repeater
         {
             model: item.outputNames.length
 
-            delegate: StageOutput
+            delegate: Slot
             {
                 Layout.fillWidth: true
 
