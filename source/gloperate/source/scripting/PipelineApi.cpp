@@ -70,6 +70,11 @@ cppexpose::Variant PipelineApi::getInputs(const std::string & name)
         lst.asArray()->push_back(input->name());
     }
 
+    for (auto * parameter : stage->parameters())
+    {
+        lst.asArray()->push_back(parameter->name());
+    }
+
     return lst;
 }
 
@@ -78,10 +83,17 @@ cppexpose::Variant PipelineApi::getOutputs(const std::string & name)
     Stage * stage = getStage(name);
 
     cppexpose::Variant lst = cppexpose::Variant::array();
+
     for (auto * output : stage->outputs())
     {
         lst.asArray()->push_back(output->name());
     }
+
+    for (auto * proxyOutput : stage->proxyOutputs())
+    {
+        lst.asArray()->push_back(proxyOutput->name());
+    }
+
     return lst;
 }
 
