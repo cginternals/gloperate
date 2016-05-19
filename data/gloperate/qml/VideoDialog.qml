@@ -28,7 +28,7 @@ Background {
                     placeholderText: "e.g. /home/user/videos/video.avi"
                     Layout.fillWidth: true
                 }
-                Button {
+                DialogButton {
                     text: "Browse"
 
                     onClicked: {
@@ -110,7 +110,7 @@ Background {
             }
         }
 
-        Button {
+        DialogButton {
             text: "Record Video"
             anchors.right: parent.right
 

@@ -28,7 +28,7 @@ Background {
                     placeholderText: "e.g. /home/user/images/screen.jpg"
                     Layout.fillWidth: true
                 }
-                Button {
+                DialogButton {
                     text: "Browse"
 
                     onClicked: {
@@ -105,7 +105,7 @@ Background {
             }
         }
 
-        Button {
+        DialogButton {
             text: "Take Screenshot"
             anchors.right: parent.right
 

@@ -12,6 +12,7 @@ ButtonBar     1.0 ButtonBar.qml
 CheckBox      1.0 CheckBox.qml
 ComboBox      1.0 ComboBox.qml
 Control       1.0 Control.qml
+DialogButton  1.0 DialogButton.qml
 Dropdown      1.0 Dropdown.qml
 GroupBox      1.0 GroupBox.qml
 Icon          1.0 Icon.qml
