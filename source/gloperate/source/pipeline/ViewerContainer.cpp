@@ -60,7 +60,7 @@ void ViewerContainer::setRenderStage(Stage * stage)
     connect(&outputs.rendered, m_renderStage, "rendered");
 }
 
-void ViewerContainer::connect(Stage * stage, const std::string & name, const cppexpose::AbstractProperty * source)
+void ViewerContainer::connect(Stage * stage, const std::string & name, const AbstractSlot * source)
 {
     // Check source data
     if (!source) {
@@ -85,7 +85,7 @@ void ViewerContainer::connect(AbstractInputSlot * input, Stage * stage, const st
     }
 
     // Get data container
-    const cppexpose::AbstractProperty * source = stage->property(name);
+    const AbstractSlot * source = static_cast<const AbstractSlot *>(stage->property(name));
     if (!source) {
         return;
     }

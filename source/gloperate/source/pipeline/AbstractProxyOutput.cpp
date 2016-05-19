@@ -9,6 +9,7 @@ namespace gloperate
 
 
 AbstractProxyOutput::AbstractProxyOutput()
+: AbstractInputSlot(SlotType::ProxyOutput)
 {
 }
 

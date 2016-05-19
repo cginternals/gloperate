@@ -71,6 +71,7 @@ set(headers
     ${include_path}/scripting/ComponentsApi.h
     ${include_path}/scripting/PipelineApi.h
 
+    ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractData.h
     ${include_path}/pipeline/AbstractInputSlot.h
     ${include_path}/pipeline/AbstractParameter.h
@@ -142,6 +143,7 @@ set(sources
     ${source_path}/scripting/ComponentsApi.cpp
     ${source_path}/scripting/PipelineApi.cpp
 
+    ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/AbstractData.cpp
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/AbstractParameter.cpp

@@ -70,7 +70,7 @@ public:
 
 
 protected:
-    void connect(Stage * stage, const std::string & name, const cppexpose::AbstractProperty * source);
+    void connect(Stage * stage, const std::string & name, const AbstractSlot * source);
     void connect(AbstractInputSlot * input, Stage * stage, const std::string & name);
     void disconnect(Stage * stage, const std::string & name);
 

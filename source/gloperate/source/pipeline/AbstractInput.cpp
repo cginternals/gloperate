@@ -9,6 +9,7 @@ namespace gloperate
 
 
 AbstractInput::AbstractInput()
+: AbstractInputSlot(SlotType::Input)
 {
 }
 

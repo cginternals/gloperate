@@ -9,6 +9,7 @@ namespace gloperate
 
 
 AbstractOutput::AbstractOutput()
+: AbstractData(SlotType::Output)
 {
 }
 
