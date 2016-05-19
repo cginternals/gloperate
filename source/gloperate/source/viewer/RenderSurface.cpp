@@ -8,7 +8,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
-#include <gloperate/output/AbstractVideoTool.h>
+#include <gloperate/tools/AbstractVideoExporter.h>
 #include <gloperate/tools/ImageExporter.h>
 
 
@@ -75,7 +75,7 @@ void RenderSurface::setRenderStage(Stage * stage)
     }
 }
 
-void RenderSurface::setVideoTool(AbstractVideoTool * video)
+void RenderSurface::setVideoTool(AbstractVideoExporter * video)
 {
     m_video = video;
 }

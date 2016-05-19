@@ -18,7 +18,7 @@ class RenderSurface;
 /**
 *  @brief
 */
-class GLOPERATE_API AbstractVideoTool
+class GLOPERATE_API AbstractVideoExporter
 {
 public:
 
@@ -26,7 +26,7 @@ public:
     *  @brief
     *    Destructor
     */
-    virtual ~AbstractVideoTool();
+    virtual ~AbstractVideoExporter();
 
     /**
     *  @brief

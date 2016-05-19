@@ -9,7 +9,7 @@
 #include <gloperate-glfw/viewer/RenderWindow.h>
 #include <gloperate-glfw/viewer/GLContext.h>
 
-#include <gloperate-ffmpeg/VideoTool.h>
+#include <gloperate-ffmpeg/FFMPEGVideoExporter.h>
 
 
 using namespace gloperate;
@@ -49,8 +49,8 @@ int main(int argc, char * argv[])
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
     window.context()->release();
 
-    VideoTool videoTool("gloperate-videotool-example_out.avi", window.renderSurface(), 30, 5, 1600, 900);
-    videoTool.createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
+    FFMPEGVideoExporter videoExporter("gloperate-videotool-example_out.avi", window.renderSurface(), 30, 5, 1600, 900);
+    videoExporter.createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
 
     return 0;
 }

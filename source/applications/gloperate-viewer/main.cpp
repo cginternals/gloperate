@@ -24,7 +24,7 @@
 #include <cppexpose/scripting/ScriptContext.h>
 
 #ifdef USE_FFMPEG
-#include <gloperate-ffmpeg/VideoTool.h>
+#include <gloperate-ffmpeg/FFMPEGVideoExporter.h>
 #endif
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
@@ -99,8 +99,8 @@ int main(int argc, char * argv[])
     RenderItem * renderItem = static_cast<RenderItem *>(qmlRenderItem);
     RenderSurface * renderSurface = static_cast<RenderSurface *>(renderItem->surface());
     
-    VideoTool * videoTool = new VideoTool();
-    renderSurface->setVideoTool(videoTool);
+    FFMPEGVideoExporter * videoExporter = new FFMPEGVideoExporter();
+    renderSurface->setVideoTool(videoExporter);
 #endif
 
     // Run main loop

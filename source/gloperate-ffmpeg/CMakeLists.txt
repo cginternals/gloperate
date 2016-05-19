@@ -42,12 +42,12 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/VideoEncoder.h
-    ${include_path}/VideoTool.h
+    ${include_path}/FFMPEGVideoExporter.h
 )
 
 set(sources
     ${source_path}/VideoEncoder.cpp
-    ${source_path}/VideoTool.cpp
+    ${source_path}/FFMPEGVideoExporter.cpp
 )
 
 # Group source files

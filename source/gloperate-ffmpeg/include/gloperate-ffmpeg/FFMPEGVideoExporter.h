@@ -9,7 +9,7 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <gloperate/output/AbstractVideoTool.h>
+#include <gloperate/tools/AbstractVideoExporter.h>
 
 #include <gloperate-ffmpeg/VideoEncoder.h>
 
@@ -31,14 +31,14 @@ namespace gloperate_ffmpeg
 *  @brief
 *    A tool which renders a given Stage into an output video file.
 */
-class GLOPERATE_FFMPEG_API VideoTool : public gloperate::AbstractVideoTool
+class GLOPERATE_FFMPEG_API FFMPEGVideoExporter : public gloperate::AbstractVideoExporter
 {
 public:
     /**
     *  @brief
     *    Constructor
     */
-    VideoTool();
+    FFMPEGVideoExporter();
 
     /**
     *  @brief
@@ -57,7 +57,7 @@ public:
     *  @param[in] length
     *    Length (in seconds) of output video
     */
-    VideoTool(const std::string & filename,
+    FFMPEGVideoExporter(const std::string & filename,
               gloperate::RenderSurface * surface,
               uint fps,
               uint length,
@@ -68,7 +68,7 @@ public:
     *  @brief
     *    Destructor
     */
-    virtual ~VideoTool();
+    virtual ~FFMPEGVideoExporter();
 
     /**
     *  @brief
@@ -96,7 +96,7 @@ public:
     *  @param[in] progress
     *    Progress callback function
     *  @param[in] glContextActive
-    *    Indicator whether an openGLContext already is active and does not have to be activated by the VideoTool
+    *    Indicator whether an openGLContext already is active and does not have to be activated by the FFMPEGVideoExporter
     */
     virtual void createVideo(std::function<void(int, int)> progress, bool glContextActive = false) override;
 

@@ -12,11 +12,11 @@ find_package(FFMPEG)
 #add_subdirectory(osg-painters)
 
 # Example applications
-add_subdirectory(gloperate-ffmpeg-example)
 add_subdirectory(gloperate-glfw-example)
 add_subdirectory(gloperate-qt-example)
 add_subdirectory(gloperate-qtquick-example)
 
 if (FFMPEG_FOUND)
+    add_subdirectory(gloperate-ffmpeg-example)
     add_subdirectory(gloperate-videotool-example)
 endif()

@@ -1,5 +1,5 @@
 
-#include <gloperate-ffmpeg/VideoTool.h>
+#include <gloperate-ffmpeg/FFMPEGVideoExporter.h>
 
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
@@ -19,11 +19,11 @@ namespace gloperate_ffmpeg
 {
 
 
-VideoTool::VideoTool()
+FFMPEGVideoExporter::FFMPEGVideoExporter()
 {
 }
 
-VideoTool::VideoTool(const std::string & filename, RenderSurface * surface, uint fps, uint length, uint width, uint height)
+FFMPEGVideoExporter::FFMPEGVideoExporter(const std::string & filename, RenderSurface * surface, uint fps, uint length, uint width, uint height)
 : m_videoEncoder(new VideoEncoder())
 , m_context(surface->viewerContext())
 , m_surface(surface)
@@ -37,11 +37,11 @@ VideoTool::VideoTool(const std::string & filename, RenderSurface * surface, uint
 {
 }
 
-VideoTool::~VideoTool()
+FFMPEGVideoExporter::~FFMPEGVideoExporter()
 {
 }
 
-void VideoTool::init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length)
+void FFMPEGVideoExporter::init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length)
 {
     m_videoEncoder = new VideoEncoder();
     m_context = surface->viewerContext();
@@ -55,7 +55,7 @@ void VideoTool::init(const std::string & filename, gloperate::RenderSurface * su
     m_timeDelta = 1.f/static_cast<float>(fps);
 }
 
-void VideoTool::createVideo(std::function<void(int, int)> progress, bool glContextActive)
+void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bool glContextActive)
 {
     auto deviceViewport = m_surface->deviceViewport();
     auto virtualViewport = m_surface->virtualViewport();

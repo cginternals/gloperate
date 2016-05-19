@@ -14,7 +14,7 @@ namespace gloperate
 class Stage;
 class MouseDevice;
 class KeyboardDevice;
-class AbstractVideoTool;
+class AbstractVideoExporter;
 class ImageExporter;
 
 
@@ -75,7 +75,7 @@ public:
     *  @brief
     *
     */
-    void setVideoTool(AbstractVideoTool * video);
+    void setVideoTool(AbstractVideoExporter * video);
 
     /**
     *  @brief
@@ -104,14 +104,14 @@ public:
 
 
 protected:
-    ViewerContainer     m_viewer;         ///< Container for the rendering stage or pipeline
-    unsigned long       m_frame;          ///< Frame counter
-    MouseDevice       * m_mouseDevice;    ///< Device for Mouse Events
-    KeyboardDevice    * m_keyboardDevice; ///< Device for Keyboard Events
-    AbstractVideoTool * m_video;          ///< Tool for rendering surface to video file
-    ImageExporter     * m_imageExporter;  ///< Tool for exporting an image from surface
-    bool                m_requestVideo;   ///< Flag to request a videoTool call during next render step
-    bool                m_requestImage;   ///< Flag to request a ImageExporter call during next render step
+    ViewerContainer         m_viewer;         ///< Container for the rendering stage or pipeline
+    unsigned long           m_frame;          ///< Frame counter
+    MouseDevice           * m_mouseDevice;    ///< Device for Mouse Events
+    KeyboardDevice        * m_keyboardDevice; ///< Device for Keyboard Events
+    AbstractVideoExporter * m_video;          ///< Tool for rendering surface to video file
+    ImageExporter         * m_imageExporter;  ///< Tool for exporting an image from surface
+    bool                    m_requestVideo;   ///< Flag to request a videoTool call during next render step
+    bool                    m_requestImage;   ///< Flag to request a ImageExporter call during next render step
 };
 
 

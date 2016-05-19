@@ -114,7 +114,7 @@ set(headers
     ${include_path}/input/MouseDevice.h
     ${include_path}/input/KeyboardDevice.h
 
-    ${include_path}/output/AbstractVideoTool.h
+    ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
 )
 
@@ -176,7 +176,7 @@ set(sources
     ${source_path}/input/MouseDevice.cpp
     ${source_path}/input/KeyboardDevice.cpp
 
-    ${source_path}/output/AbstractVideoTool.cpp
+    ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
 )
 
