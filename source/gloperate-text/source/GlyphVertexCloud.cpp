@@ -4,6 +4,9 @@
 #include <numeric>
 #include <algorithm>
 
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/boolean.h>
+
 #include <gloperate/offsetof.h>
 
 #include <gloperate-text/GlyphSequence.h>
@@ -65,12 +68,12 @@ void GlyphVertexCloud::setTexture(globjects::Texture * texture)
     m_texture = texture;
 }
 
-gloperate::VertexDrawable * GlyphVertexCloud::drawable()
+gloperate::Drawable * GlyphVertexCloud::drawable()
 {
     return m_drawable;
 }
 
-const gloperate::VertexDrawable * GlyphVertexCloud::drawable() const
+const gloperate::Drawable * GlyphVertexCloud::drawable() const
 {
     return m_drawable;
 }
@@ -85,20 +88,29 @@ const GlyphVertexCloud::Vertices & GlyphVertexCloud::vertices() const
     return m_vertices;
 }
 
-gloperate::VertexDrawable * GlyphVertexCloud::createDrawable()
+gloperate::Drawable * GlyphVertexCloud::createDrawable()
 {
-    auto drawable = new gloperate::VertexDrawable(Vertices(), gl::GL_POINTS);
+    auto drawable = new gloperate::Drawable();
 
-    drawable->setFormats({
-        gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, origin)),
-        gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, vtan)),
-        gloperate::Format(3, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, vbitan)),
-        gloperate::Format(4, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, uvRect)),
-        gloperate::Format(4, gl::GL_FLOAT, GLOPERATE_OFFSETOF(Vertex, fontColor)),
-    });
+    drawable->setMode(gl::GL_POINTS);
+    drawable->setDrawMode(gloperate::DrawMode::Arrays);
+    drawable->bindAttributes({ 0, 1, 2, 3, 4 });
 
-    drawable->bindAttributes({ 0, 1, 2, 3, 4});
-    drawable->enableAll();
+    globjects::Buffer * vertexBuffer = new globjects::Buffer;
+    drawable->setBuffer(0, vertexBuffer);
+    drawable->setAttributeBindingBuffer(0, vertexBuffer, 0, sizeof(Vertex));
+    drawable->setAttributeBindingBuffer(1, vertexBuffer, 0, sizeof(Vertex));
+    drawable->setAttributeBindingBuffer(2, vertexBuffer, 0, sizeof(Vertex));
+    drawable->setAttributeBindingBuffer(3, vertexBuffer, 0, sizeof(Vertex));
+    drawable->setAttributeBindingBuffer(4, vertexBuffer, 0, sizeof(Vertex));
+
+    drawable->setAttributeBindingFormat(0, 3, gl::GL_FLOAT, gl::GL_FALSE, gloperate::offset(&Vertex::origin));
+    drawable->setAttributeBindingFormat(1, 3, gl::GL_FLOAT, gl::GL_FALSE, gloperate::offset(&Vertex::vtan));
+    drawable->setAttributeBindingFormat(2, 3, gl::GL_FLOAT, gl::GL_FALSE, gloperate::offset(&Vertex::vbitan));
+    drawable->setAttributeBindingFormat(3, 4, gl::GL_FLOAT, gl::GL_FALSE, gloperate::offset(&Vertex::uvRect));
+    drawable->setAttributeBindingFormat(4, 4, gl::GL_FLOAT, gl::GL_FALSE, gloperate::offset(&Vertex::fontColor));
+
+    drawable->enableAllAttributeBindings();
 
     return drawable;
 }
@@ -108,7 +120,8 @@ void GlyphVertexCloud::update()
     if (!m_drawable)
         m_drawable = createDrawable();
 
-    m_drawable->setVertices(m_vertices);
+    m_drawable->buffer(0)->setData(m_vertices, gl::GL_STATIC_DRAW);
+    m_drawable->setSize(m_vertices.size());
 }
 
 void GlyphVertexCloud::update(const Vertices & vertices)
@@ -116,7 +129,8 @@ void GlyphVertexCloud::update(const Vertices & vertices)
     if (!m_drawable)
         m_drawable = createDrawable();
 
-    m_drawable->setVertices(vertices);
+    m_drawable->buffer(0)->setData(vertices, gl::GL_STATIC_DRAW);
+    m_drawable->setSize(vertices.size());
 }
 
 void GlyphVertexCloud::optimize(

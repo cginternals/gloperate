@@ -9,7 +9,7 @@
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
-#include <gloperate/primitives/VertexDrawable.h>
+#include <gloperate/primitives/Drawable.h>
 
 #include <gloperate-text/gloperate-text_api.h>
 
@@ -43,8 +43,8 @@ public:
     const globjects::Texture * texture() const;
     void setTexture(globjects::Texture * texture);
 
-    gloperate::VertexDrawable * drawable();
-    const gloperate::VertexDrawable * drawable() const;
+    gloperate::Drawable * drawable();
+    const gloperate::Drawable * drawable() const;
 
     Vertices & vertices();
     const Vertices & vertices() const;
@@ -58,12 +58,12 @@ public:
     ,   const FontFace & fontFace);
 
 protected:
-    static gloperate::VertexDrawable * createDrawable();
+    static gloperate::Drawable * createDrawable();
 
 protected:
     Vertices m_vertices;
 
-    globjects::ref_ptr<gloperate::VertexDrawable> m_drawable;
+    globjects::ref_ptr<gloperate::Drawable> m_drawable;
     globjects::ref_ptr<globjects::Texture> m_texture;
 };
 

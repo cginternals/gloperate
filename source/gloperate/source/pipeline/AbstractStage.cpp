@@ -17,6 +17,7 @@ AbstractStage::AbstractStage(const std::string & name)
 : m_enabled(true)
 , m_alwaysProcess(false)
 , m_processScheduled(false)
+, m_scheduledManually(false)
 , m_name(name)
 {
     dependenciesChanged.connect([this]() { m_usable.invalidate(); });
@@ -61,8 +62,11 @@ bool AbstractStage::execute()
         return false;
 
     if (needsToProcess()) {
+        m_scheduledManually = m_processScheduled;
         m_processScheduled = false;
+
         process();
+        m_scheduledManually = false;
     } else {
         return false;
     }

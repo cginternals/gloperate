@@ -60,7 +60,7 @@ public:
     *  @remarks
     *    The geometry is drawn as an indexed geometry of type GL_TRIANGLES.
     */
-    virtual void draw() override;
+    virtual void draw() const override;
 
     /**
     *  @brief

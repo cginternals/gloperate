@@ -7,6 +7,9 @@
 #include <set>
 #include <iostream>
 
+#include <chrono>
+#include <iostream>
+
 #include <gloperate/base/collection.hpp>
 
 #include <gloperate/pipeline/AbstractStage.h>

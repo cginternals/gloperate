@@ -224,7 +224,7 @@ void WorldInHandNavigation::rotate(
 {
     m_rotationHappened = true;
 
-    const glm::vec3 ray(glm::normalize(m_cameraCapability.center() - m_eye));
+    const glm::vec3 ray(glm::normalize(m_center - m_eye));
     const glm::vec3 rotAxis(glm::cross(ray, m_cameraCapability.up()));
 
     hAngle *= ROTATION_HOR_DOF;
@@ -232,14 +232,13 @@ void WorldInHandNavigation::rotate(
 
     enforceRotationConstraints(hAngle, vAngle);
 
-    glm::vec3 t = m_refPositionValid ? m_referencePosition : m_center;;
+    glm::vec3 t = m_refPositionValid ? m_referencePosition : m_center;
 
     glm::mat4x4 transform = glm::mat4x4();
     transform = glm::translate(transform, t);
     transform = glm::rotate(transform, hAngle, m_cameraCapability.up());
     transform = glm::rotate(transform, vAngle, rotAxis);
     transform = glm::translate(transform, -t);
-
 
     glm::vec4 newEye = transform * glm::vec4(m_eye, 1.0f);
     glm::vec4 newCenter = transform * glm::vec4(m_center, 1.0f);
