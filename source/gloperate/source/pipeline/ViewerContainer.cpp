@@ -8,8 +8,13 @@ namespace gloperate
 
 ViewerContainer::ViewerContainer(ViewerContext * viewerContext)
 : Pipeline(viewerContext, "Root", nullptr)
-, inputs(viewerContext, this)
-, outputs(viewerContext, this)
+, deviceViewport (this, "deviceViewport",  glm::vec4(0, 0, 0, 0))
+, virtualViewport(this, "virtualViewport", glm::vec4(0, 0, 0, 0))
+, backgroundColor(this, "backgroundColor", glm::vec3(1.0, 1.0, 1.0))
+, frameCounter   (this, "frameCounter",    0)
+, timeDelta      (this, "timeDelta",       0.0f)
+, targetFBO      (this, "targetFBO",       nullptr)
+, rendered       (this, "rendered",        false)
 , m_renderStage(nullptr)
 {
 }
@@ -34,7 +39,7 @@ void ViewerContainer::setRenderStage(Stage * stage)
         disconnect(m_renderStage, "frameCounter");
         disconnect(m_renderStage, "timeDelta");
         disconnect(m_renderStage, "targetFBO");
-        outputs.rendered.disconnect();
+        rendered.disconnect();
 
         // Destroy render stage
         destroyProperty(m_renderStage);
@@ -51,13 +56,13 @@ void ViewerContainer::setRenderStage(Stage * stage)
     m_renderStage->transferStage(this);
 
     // Connect inputs and outputs of render stage
-    connect(m_renderStage, "deviceViewport",  &inputs.deviceViewport);
-    connect(m_renderStage, "virtualViewport", &inputs.virtualViewport);
-    connect(m_renderStage, "backgroundColor", &inputs.backgroundColor);
-    connect(m_renderStage, "frameCounter",    &inputs.frameCounter);
-    connect(m_renderStage, "timeDelta",       &inputs.timeDelta);
-    connect(m_renderStage, "targetFBO",       &inputs.targetFBO);
-    connect(&outputs.rendered, m_renderStage, "rendered");
+    connect(m_renderStage, "deviceViewport",  &deviceViewport);
+    connect(m_renderStage, "virtualViewport", &virtualViewport);
+    connect(m_renderStage, "backgroundColor", &backgroundColor);
+    connect(m_renderStage, "frameCounter",    &frameCounter);
+    connect(m_renderStage, "timeDelta",       &timeDelta);
+    connect(m_renderStage, "targetFBO",       &targetFBO);
+    connect(&rendered, m_renderStage, "rendered");
 }
 
 void ViewerContainer::connect(Stage * stage, const std::string & name, const AbstractSlot * source)
