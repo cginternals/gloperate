@@ -14,7 +14,7 @@ BaseItem
 {
     id: item
 
-    property string source: 'empty'
+    property string targetStage: ''
 
     implicitWidth:  row.width  + 2 * row.anchors.margins
     implicitHeight: row.height + 2 * row.anchors.margins
@@ -44,15 +44,15 @@ BaseItem
         }
     }
 
-    onSourceChanged:
+    onTargetStageChanged:
     {
         var lst = [];
 
-        var stages = gloperate.pipeline.getStages(item.source);
+        var stages = gloperate.pipeline.getStages(item.targetStage);
         for (var i=0; i<stages.length; i++) {
             var stage = stages[i];
-            if (item.source.length > 0) {
-                stage = item.source.length + '.' + stage;
+            if (item.targetStage.length > 0) {
+                stage = item.targetStage + '.' + stage;
             }
 
             lst.push({

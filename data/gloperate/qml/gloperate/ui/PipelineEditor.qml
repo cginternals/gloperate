@@ -21,11 +21,11 @@ Background
         contentWidth:  pipeline.width
         contentHeight: pipeline.height
 
-        Pipeline
+        Stage
         {
             id: pipeline
 
-            source: ''
+            targetStage: 'Root'
         }
     }
 }

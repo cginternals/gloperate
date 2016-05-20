@@ -14,7 +14,7 @@ BaseItem
 {
     id: item
 
-    property string source: ''
+    property string targetStage: ''
 
     property string name:      ''
     property var inputNames:   []
@@ -33,7 +33,7 @@ BaseItem
 
         anchors.top:       parent.top
         anchors.left:      parent.left
-        anchors.topMargin: 2 * Ui.style.panelPadding
+        anchors.topMargin: label.implicitHeight + 2 * Ui.style.panelPadding
         z:                 1
 
         spacing: Ui.style.ctrlSpacing
@@ -61,8 +61,8 @@ BaseItem
         anchors.bottom: parent.bottom
         anchors.left:   inputs.horizontalCenter
         anchors.right:  outputs.horizontalCenter
-        implicitWidth:  inputs.implicitWidth * 0.5 + outputs.implicitWidth * 0.5 + label.implicitWidth + 2 * Ui.style.panelPadding
-        implicitHeight: label.implicitHeight + 2 * Ui.style.panelPadding
+        implicitWidth:  pipeline.implicitWidth + inputs.implicitWidth * 0.5 + outputs.implicitWidth * 0.5 + 8 * Ui.style.panelPadding
+        implicitHeight: pipeline.implicitHeight + label.implicitHeight + 2 * Ui.style.panelPadding
         z:              0
 
         color:        Ui.style.pipelineStageColor
@@ -74,12 +74,26 @@ BaseItem
         {
             id: label
 
-            anchors.left:           parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin:     inputs.implicitWidth * 0.5 + Ui.style.panelPadding
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top:              parent.top
+            anchors.leftMargin:       inputs.implicitWidth * 0.5 + Ui.style.panelPadding
+            anchors.topMargin:        Ui.style.panelPadding
 
             text:  item.name
             color: Ui.style.pipelineTextColor
+        }
+
+        Item
+        {
+            id: pipeline
+
+            anchors.top:     label.top
+            anchors.bottom:  parent.bottom
+            anchors.left:    parent.right
+            anchors.right:   parent.left
+            anchors.margins: Ui.style.panelPadding
+
+            //targetStage: item.targetStage
         }
     }
 
@@ -89,7 +103,7 @@ BaseItem
 
         anchors.top:       parent.top
         anchors.right:     parent.right
-        anchors.topMargin: 2 * Ui.style.panelPadding
+        anchors.topMargin: label.implicitHeight + 2 * Ui.style.panelPadding
         z:                 1
 
         spacing: Ui.style.ctrlSpacing
@@ -108,16 +122,16 @@ BaseItem
         }
     }
 
-    onSourceChanged:
+    onTargetStageChanged:
     {
-        item.name        = gloperate.pipeline.getName(item.source);
-        item.inputNames  = gloperate.pipeline.getInputs(item.source);
-        item.outputNames = gloperate.pipeline.getOutputs(item.source);
+        item.name        = gloperate.pipeline.getName(item.targetStage);
+        item.inputNames  = gloperate.pipeline.getInputs(item.targetStage);
+        item.outputNames = gloperate.pipeline.getOutputs(item.targetStage);
 
         var inputValues = [];
         for (var i=0; i<item.inputNames.length; i++) {
             inputValues.push(
-                gloperate.pipeline.getValue(item.source + '.' + item.inputNames[i])
+                gloperate.pipeline.getValue(item.targetStage + '.' + item.inputNames[i])
             );
         }
         item.inputValues = inputValues;
@@ -125,7 +139,7 @@ BaseItem
         var outputValues = [];
         for (var i=0; i<item.outputNames.length; i++) {
             outputValues.push(
-                gloperate.pipeline.getValue(item.source + '.' + item.outputNames[i])
+                gloperate.pipeline.getValue(item.targetStage + '.' + item.outputNames[i])
             );
         }
         item.outputValues = outputValues;

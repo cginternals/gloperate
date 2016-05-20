@@ -56,6 +56,7 @@ cppexpose::Variant PipelineApi::getStages(const std::string & name)
     {
         lst.asArray()->push_back(subStage->name());
     }
+
     return lst;
 }
 
@@ -127,12 +128,14 @@ Stage * PipelineApi::getStage(const std::string & name)
         names.push_back(subname);
     }
 
-    // Begin with root pipeline
-    Stage * stage = surface->rootPipeline();
+    // Find stage in pipeline
+    Stage * stage = nullptr;
     for (std::string subname : names)
     {
         // Get sub-stage
-        if (stage->isPipeline()) {
+        if (!stage && subname == "Root") {
+            stage = surface->rootPipeline();
+        } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
         } else {
             stage = nullptr;
@@ -167,8 +170,8 @@ cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
         names.push_back(subname);
     }
 
-    // Begin with root pipeline
-    Stage * stage = surface->rootPipeline();
+    // Find stage in pipeline
+    Stage * stage = nullptr;
     for (size_t i=0; i<names.size(); i++)
     {
         // Get next token
@@ -181,7 +184,9 @@ cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
         }
 
         // Get sub-stage
-        if (stage->isPipeline()) {
+        if (!stage && subname == "Root") {
+            stage = surface->rootPipeline();
+        } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
         } else {
             stage = nullptr;
