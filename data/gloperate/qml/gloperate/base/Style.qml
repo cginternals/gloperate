@@ -144,6 +144,7 @@ Item
     property int   pipelineStageRadius:        10               // Radius of stage rectangle
     property real  pipelineSlotSize:           formControlHeight * 1.2
     property real  pipelineConnectorSize:      formControlHeight * 0.6
+    property real  pipelinePadding:            50
 
 
     //

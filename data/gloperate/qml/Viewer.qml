@@ -290,8 +290,6 @@ Page
         {
             title:   "Pipeline"
             visible: true
-            width:   800
-            height:  600
 
             PipelineEditor
             {

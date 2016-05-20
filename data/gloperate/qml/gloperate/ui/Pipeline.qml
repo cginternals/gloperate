@@ -14,7 +14,8 @@ BaseItem
 {
     id: item
 
-    property string targetStage: ''
+    property Component stageDelegate: null
+    property string    targetStage:   ''
 
     implicitWidth:  row.width  + 2 * row.anchors.margins
     implicitHeight: row.height + 2 * row.anchors.margins
@@ -25,7 +26,7 @@ BaseItem
 
         anchors.left:    parent.left
         anchors.top:     parent.top
-        anchors.margins: 16
+        anchors.margins: Ui.style.pipelinePadding
 
         spacing: 32
 
@@ -33,14 +34,7 @@ BaseItem
         {
             id: repeater
 
-            property var stages: []
-
-            model: stages.length
-
-            delegate: Stage
-            {
-                source: repeater.stages[index].name
-            }
+            delegate: stageDelegate
         }
     }
 
@@ -55,11 +49,9 @@ BaseItem
                 stage = item.targetStage + '.' + stage;
             }
 
-            lst.push({
-                name: stage
-            });
+            lst.push(stage);
         }
 
-        repeater.stages = lst;
+        repeater.model = lst;
     }
 }

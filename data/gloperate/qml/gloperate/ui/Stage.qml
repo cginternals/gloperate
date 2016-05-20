@@ -14,7 +14,8 @@ BaseItem
 {
     id: item
 
-    property string targetStage: ''
+    property Component stageDelegate: null
+    property string    targetStage:   ''
 
     property string name:      ''
     property var inputNames:   []
@@ -22,21 +23,54 @@ BaseItem
     property var outputNames:  []
     property var outputValues: []
 
-    implicitWidth:  inputs.implicitWidth * 0.5 + body.implicitWidth + outputs.implicitWidth * 0.5
-    implicitHeight: Math.max(Math.max(inputs.implicitHeight, body.implicitHeight), outputs.implicitHeight) + 2 * inputs.anchors.topMargin
+    implicitWidth:  inputs.implicitWidth + outputs.implicitWidth + pipeline.implicitWidth + 2 * Ui.style.panelPadding
+    implicitHeight: label.implicitHeight + Math.max(Math.max(inputs.implicitHeight, outputs.implicitHeight), pipeline.implicitHeight) + 6 * Ui.style.panelPadding
 
     clip: true
+
+    Rectangle
+    {
+        id: body
+
+        anchors.top:     parent.top
+        anchors.bottom:  parent.bottom
+        anchors.left:    inputs.horizontalCenter
+        anchors.right:   outputs.horizontalCenter
+        anchors.margins: Ui.style.panelPadding
+
+        color:        Ui.style.pipelineStageColor
+        radius:       Ui.style.pipelineStageRadius
+        border.color: Ui.style.pipelineLineColor
+        border.width: Ui.style.pipelineLineWidth
+
+        z: 0
+    }
+
+    Label
+    {
+        id: label
+
+        anchors.horizontalCenter: body.horizontalCenter
+        anchors.top:              body.top
+        anchors.topMargin:        Ui.style.panelPadding
+
+        text:  item.name
+        color: Ui.style.pipelineTextColor
+
+        z: 1
+    }
 
     ColumnLayout
     {
         id: inputs
 
-        anchors.top:       parent.top
+        anchors.top:       label.bottom
         anchors.left:      parent.left
-        anchors.topMargin: label.implicitHeight + 2 * Ui.style.panelPadding
-        z:                 1
+        anchors.topMargin: Ui.style.panelPadding
 
         spacing: Ui.style.ctrlSpacing
+
+        z: 1
 
         Repeater
         {
@@ -53,59 +87,27 @@ BaseItem
         }
     }
 
-    Rectangle
+    Pipeline
     {
-        id: body
+        id: pipeline
 
-        anchors.top:    parent.top
-        anchors.bottom: parent.bottom
-        anchors.left:   inputs.horizontalCenter
-        anchors.right:  outputs.horizontalCenter
-        implicitWidth:  pipeline.implicitWidth + inputs.implicitWidth * 0.5 + outputs.implicitWidth * 0.5 + 8 * Ui.style.panelPadding
-        implicitHeight: pipeline.implicitHeight + label.implicitHeight + 2 * Ui.style.panelPadding
-        z:              0
+        anchors.left:    inputs.right
+        anchors.top:     label.bottom
+        anchors.margins: Ui.style.panelPadding
 
-        color:        Ui.style.pipelineStageColor
-        radius:       Ui.style.pipelineStageRadius
-        border.color: Ui.style.pipelineLineColor
-        border.width: Ui.style.pipelineLineWidth
-
-        Label
-        {
-            id: label
-
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top:              parent.top
-            anchors.leftMargin:       inputs.implicitWidth * 0.5 + Ui.style.panelPadding
-            anchors.topMargin:        Ui.style.panelPadding
-
-            text:  item.name
-            color: Ui.style.pipelineTextColor
-        }
-
-        Item
-        {
-            id: pipeline
-
-            anchors.top:     label.top
-            anchors.bottom:  parent.bottom
-            anchors.left:    parent.right
-            anchors.right:   parent.left
-            anchors.margins: Ui.style.panelPadding
-
-            //targetStage: item.targetStage
-        }
+        stageDelegate: item.stageDelegate
+        targetStage:   item.targetStage
     }
 
     ColumnLayout
     {
         id: outputs
 
-        anchors.top:       parent.top
-        anchors.right:     parent.right
-        anchors.topMargin: label.implicitHeight + 2 * Ui.style.panelPadding
-        z:                 1
+        anchors.top:     label.bottom
+        anchors.left:    pipeline.right
+        anchors.margins: Ui.style.panelPadding
 
+        z:       1
         spacing: Ui.style.ctrlSpacing
 
         Repeater
