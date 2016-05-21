@@ -133,7 +133,7 @@ Stage * PipelineApi::getStage(const std::string & name)
     for (std::string subname : names)
     {
         // Get sub-stage
-        if (!stage && subname == "Root") {
+        if (!stage && subname == "Viewer") {
             stage = surface->rootPipeline();
         } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
@@ -184,7 +184,7 @@ cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
         }
 
         // Get sub-stage
-        if (!stage && subname == "Root") {
+        if (!stage && subname == "Viewer") {
             stage = surface->rootPipeline();
         } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);

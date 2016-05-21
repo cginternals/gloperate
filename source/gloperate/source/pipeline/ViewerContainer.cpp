@@ -7,7 +7,7 @@ namespace gloperate
 
 
 ViewerContainer::ViewerContainer(ViewerContext * viewerContext)
-: Pipeline(viewerContext, "Root", nullptr)
+: Pipeline(viewerContext, "Viewer", nullptr)
 , deviceViewport (this, "deviceViewport",  glm::vec4(0, 0, 0, 0))
 , virtualViewport(this, "virtualViewport", glm::vec4(0, 0, 0, 0))
 , backgroundColor(this, "backgroundColor", glm::vec3(1.0, 1.0, 1.0))

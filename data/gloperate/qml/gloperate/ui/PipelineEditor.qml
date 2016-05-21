@@ -43,7 +43,7 @@ Background
             anchors.top:     parent.top
             anchors.margins: Ui.style.pipelinePadding
             stageDelegate:   stageComponent
-            targetStage:     'Root'
+            targetStage:     'Viewer'
         }
     }
 }
