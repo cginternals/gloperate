@@ -67,7 +67,7 @@ DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name, Pi
     m_timer.elapsed.connect([this] ()
     {
         // Update virtual time
-        m_time += timeDelta.value();
+        m_time += *timeDelta;
 
         // Redraw
         invalidateOutput();
@@ -103,7 +103,7 @@ void DemoStage::onContextDeinit(AbstractGLContext *)
 void DemoStage::onProcess(AbstractGLContext *)
 {
     // Get viewport
-    glm::vec4 viewport = deviceViewport.value();
+    glm::vec4 viewport = *deviceViewport;
 
     // Update viewport
     gl::glViewport(
@@ -114,7 +114,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = targetFBO.value();
+    globjects::Framebuffer * fbo = *targetFBO;
     if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
@@ -122,7 +122,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     m_angle = m_time;
 
     // Clear background
-    glm::vec3 color = backgroundColor.value();
+    glm::vec3 color = *backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);

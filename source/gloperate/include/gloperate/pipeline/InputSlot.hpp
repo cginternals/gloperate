@@ -134,6 +134,46 @@ bool InputSlot<T, BASE>::connect(ProxyOutput<T> * source)
 }
 
 template <typename T, typename BASE>
+InputSlot<T, BASE> & InputSlot<T, BASE>::operator<<(Input<T> & source)
+{
+    this->connect(&source);
+    return *this;
+}
+
+template <typename T, typename BASE>
+InputSlot<T, BASE> & InputSlot<T, BASE>::operator<<(Parameter<T> & source)
+{
+    this->connect(&source);
+    return *this;
+}
+
+template <typename T, typename BASE>
+InputSlot<T, BASE> & InputSlot<T, BASE>::operator<<(Output<T> & source)
+{
+    this->connect(&source);
+    return *this;
+}
+
+template <typename T, typename BASE>
+InputSlot<T, BASE> & InputSlot<T, BASE>::operator<<(ProxyOutput<T> & source)
+{
+    this->connect(&source);
+    return *this;
+}
+
+template <typename T, typename BASE>
+const T & InputSlot<T, BASE>::operator*() const
+{
+    return *this->ptr();
+}
+
+template <typename T, typename BASE>
+T * InputSlot<T, BASE>::operator->()
+{
+    return this->ptr();
+}
+
+template <typename T, typename BASE>
 const AbstractSlot * InputSlot<T, BASE>::source() const
 {
     switch (m_sourceType) {
@@ -231,7 +271,7 @@ const T * InputSlot<T, BASE>::ptr() const
         case SlotType::Parameter:   return m_source.parameter->ptr();
         case SlotType::Output:      return m_source.output->ptr();
         case SlotType::ProxyOutput: return m_source.proxyOutput->ptr();
-        default:                    return nullptr;
+        default:                    return &m_defaultValue;
     }
 }
 
@@ -243,7 +283,7 @@ T * InputSlot<T, BASE>::ptr()
         case SlotType::Parameter:   return m_source.parameter->ptr();
         case SlotType::Output:      return m_source.output->ptr();
         case SlotType::ProxyOutput: return m_source.proxyOutput->ptr();
-        default:                    return nullptr;
+        default:                    return &m_defaultValue;
     }
 }
 

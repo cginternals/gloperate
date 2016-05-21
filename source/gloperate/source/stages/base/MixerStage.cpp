@@ -89,14 +89,12 @@ void MixerStage::onProcess(AbstractGLContext *)
     }
 
     // Activate FBO
-    globjects::Framebuffer * fbo = targetFBO.value();
+    globjects::Framebuffer * fbo = *targetFBO;
     fbo = fbo ? fbo : globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Set viewport
-    if (viewport.ptr()) {
-        gl::glViewport(viewport.ptr()->x, viewport.ptr()->y, viewport.ptr()->z, viewport.ptr()->w);
-    }
+    gl::glViewport(viewport->x, viewport->y, viewport->z, viewport->w);
 
     // Disable depth test for screen-aligned quad
     gl::glDisable(gl::GL_DEPTH_TEST);
@@ -108,9 +106,9 @@ void MixerStage::onProcess(AbstractGLContext *)
     gl::glEnable(gl::GL_DEPTH_TEST);
 
     // Bind texture
-    if (texture.value()) {
+    if (*texture) {
         gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-        texture.value()->bind();
+        (*texture)->bind();
     }
 
     // Draw screen-aligned quad
@@ -120,13 +118,13 @@ void MixerStage::onProcess(AbstractGLContext *)
     m_program->release();
 
     // Unbind texture
-    if (texture.value()) {
-        texture.value()->unbind();
+    if (*texture) {
+        (*texture)->unbind();
     }
 
     // Unbind FBO, bind default FBO
-    if (targetFBO.value()) {
-        targetFBO.value()->unbind(gl::GL_FRAMEBUFFER);
+    if (*targetFBO) {
+        (*targetFBO)->unbind(gl::GL_FRAMEBUFFER);
         globjects::Framebuffer::defaultFBO()->bind(gl::GL_FRAMEBUFFER);
     }
 

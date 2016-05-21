@@ -31,7 +31,7 @@ void Utils::clearScreen(float red, float green, float blue, float alpha, bool cl
 
 gloperate::Stage * Utils::createRenderStage(gloperate::ViewerContext * viewerContext)
 {
-//    return new gloperate::DemoStage(viewerContext);
+//  return new gloperate::DemoStage(viewerContext);
     return new gloperate::DemoPipeline(viewerContext);
 }
 

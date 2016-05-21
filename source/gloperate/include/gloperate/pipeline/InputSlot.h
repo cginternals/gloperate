@@ -43,6 +43,7 @@ public:
 
 
 public:
+    //@{
     /**
     *  @brief
     *    Constructor
@@ -112,6 +113,44 @@ public:
     *    'true' if input slot could be connected, else 'false'
     */
     bool connect(ProxyOutput<T> * source);
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Connect input slot by stream operator
+    *
+    *  @param[in] source
+    *    Source input, parameter, output, or proxy output
+    *
+    *  @return
+    *    Reference to this input slot
+    */
+    InputSlot<T, BASE> & operator<<(Input<T> & source);
+    InputSlot<T, BASE> & operator<<(Parameter<T> & source);
+    InputSlot<T, BASE> & operator<<(Output<T> & source);
+    InputSlot<T, BASE> & operator<<(ProxyOutput<T> & source);
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Dereference pointer operator
+    *
+    *  @return
+    *    Reference to the stored data object
+    */
+    const T & operator*() const;
+
+    /**
+    *  @brief
+    *    Dereference pointer operator
+    *
+    *  @return
+    *    Pointer to the stored data object (can be null)
+    */
+    T * operator->();
+    //@}
 
     // Virtual AbstractInputSlot interface
     virtual const AbstractSlot * source() const override;

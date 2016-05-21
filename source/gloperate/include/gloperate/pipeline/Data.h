@@ -19,6 +19,7 @@ template <typename T, typename BASE>
 class Data : public cppexpose::DynamicProperty<T, BASE>
 {
 public:
+    //@{
     /**
     *  @brief
     *    Constructor
@@ -40,6 +41,31 @@ public:
     *    Destructor
     */
     virtual ~Data();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Dereference pointer operator
+    *
+    *  @return
+    *    Reference to the stored data object
+    */
+    T & operator*();
+    const T & operator*() const;
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Dereference pointer operator
+    *
+    *  @return
+    *    Pointer to the stored data object (never null)
+    */
+    T * operator->();
+    const T * operator->() const;
+    //@}
 };
 
 

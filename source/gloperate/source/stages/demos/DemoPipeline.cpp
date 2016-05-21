@@ -22,13 +22,13 @@ DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & na
 
     // Texture loader stage
     takeOwnership(m_textureLoadStage);
-    m_textureLoadStage->filename.setValue(dataPath + "gloperate/textures/gloperate-logo.png");
+    *m_textureLoadStage->filename = dataPath + "gloperate/textures/gloperate-logo.png";
 
     // Mixer stage
     takeOwnership(m_mixerStage);
-    m_mixerStage->viewport.connect(&this->deviceViewport);
-    m_mixerStage->targetFBO.connect(&this->targetFBO);
-    m_mixerStage->texture.connect(&m_textureLoadStage->texture);
+    m_mixerStage->viewport  << this->deviceViewport;
+    m_mixerStage->targetFBO << this->targetFBO;
+    m_mixerStage->texture   << m_textureLoadStage->texture;
 }
 
 DemoPipeline::~DemoPipeline()
