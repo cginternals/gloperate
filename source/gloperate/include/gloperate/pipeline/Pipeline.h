@@ -19,13 +19,13 @@ namespace gloperate
 *
 *    A pipeline consists of several stages which are executed by the order
 *    of their mutual dependencies. The pipeline itself is a stage and can
-*    be used in the same way as simple stages, e.g., it can be part of
+*    be used in the same way as any other stage, e.g., it can be part of
 *    other pipelines.
 *
 *    The pipeline concept is that of a pull-pipeline:
 *    - Output data can be marked as 'required'. Any stage will try to produce
 *      all required output data, so if a stage has an output that is required
-*      and invalid, it will be executed in order to produce that output.
+*      but invalid, it will be executed in order to produce that output.
 *    - If output data is 'required', all input slots from that stage are also
 *      marked as 'required'. This determines which stages will be executed
 *      on a pipeline.
@@ -36,7 +36,7 @@ namespace gloperate
 */
 class GLOPERATE_API Pipeline : public Stage
 {
-friend class Stage;
+    friend class Stage;
 
 
 public:
@@ -107,6 +107,11 @@ protected:
     *    Stage (must NOT be null!)
     */
     void unregisterStage(Stage * stage);
+
+    // Virtual Stage interface
+    virtual void onContextInit(AbstractGLContext * context) override;
+    virtual void onContextDeinit(AbstractGLContext * context) override;
+    virtual void onProcess(AbstractGLContext * context) override;
 
 
 protected:

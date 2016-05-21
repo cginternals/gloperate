@@ -99,7 +99,10 @@ set(headers
 
     ${include_path}/rendering/Camera.h
 
+    ${include_path}/stages/base/TextureLoadStage.h
+    ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/demos/DemoStage.h
+    ${include_path}/stages/demos/DemoPipeline.h
 
     ${include_path}/input/InputManager.h
     ${include_path}/input/InputManager.h
@@ -158,7 +161,10 @@ set(sources
 
     ${source_path}/rendering/Camera.cpp
 
+    ${source_path}/stages/base/TextureLoadStage.cpp
+    ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
+    ${source_path}/stages/demos/DemoPipeline.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp

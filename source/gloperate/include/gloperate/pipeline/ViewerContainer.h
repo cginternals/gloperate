@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
-
 #include <gloperate/base/GlmProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Parameter.h>
@@ -84,7 +82,7 @@ public:
 
 
 protected:
-    void connect(Stage * stage, const std::string & name, const AbstractSlot * source);
+    void connect(Stage * stage, const std::string & name, AbstractSlot * source);
     void connect(AbstractInputSlot * input, Stage * stage, const std::string & name);
     void disconnect(Stage * stage, const std::string & name);
 

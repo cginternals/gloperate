@@ -46,10 +46,10 @@ class ProxyOutput;
 */
 class GLOPERATE_API Stage : public cppexpose::Object
 {
-friend class AbstractInput;
-friend class AbstractParameter;
-friend class AbstractOutput;
-friend class AbstractProxyOutput;
+    friend class AbstractInput;
+    friend class AbstractParameter;
+    friend class AbstractOutput;
+    friend class AbstractProxyOutput;
 
 
 public:

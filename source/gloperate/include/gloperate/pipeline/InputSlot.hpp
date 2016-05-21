@@ -30,7 +30,7 @@ InputSlot<T, BASE>::~InputSlot()
 }
 
 template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(const Input<T> * source)
+bool InputSlot<T, BASE>::connect(Input<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -56,7 +56,7 @@ bool InputSlot<T, BASE>::connect(const Input<T> * source)
 }
 
 template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(const Parameter<T> * source)
+bool InputSlot<T, BASE>::connect(Parameter<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -82,7 +82,7 @@ bool InputSlot<T, BASE>::connect(const Parameter<T> * source)
 }
 
 template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(const Output<T> * source)
+bool InputSlot<T, BASE>::connect(Output<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -108,7 +108,7 @@ bool InputSlot<T, BASE>::connect(const Output<T> * source)
 }
 
 template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(const ProxyOutput<T> * source)
+bool InputSlot<T, BASE>::connect(ProxyOutput<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -156,10 +156,8 @@ bool InputSlot<T, BASE>::isCompatible(const AbstractSlot * source) const
 }
 
 template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(const AbstractSlot * source)
+bool InputSlot<T, BASE>::connect(AbstractSlot * source)
 {
-    // [TODO]
-
     // Check if source is valid and compatible data container
     if (!source || !isCompatible(source))
     {
@@ -170,16 +168,16 @@ bool InputSlot<T, BASE>::connect(const AbstractSlot * source)
     switch (source->slotType())
     {
         case SlotType::Input:
-            return connect(static_cast< const Input<T> * >(source));
+            return connect(static_cast< Input<T> * >(source));
 
         case SlotType::Parameter:
-            return connect(static_cast< const Parameter<T> * >(source));
+            return connect(static_cast< Parameter<T> * >(source));
 
         case SlotType::Output:
-            return connect(static_cast< const Output<T> * >(source));
+            return connect(static_cast< Output<T> * >(source));
 
         case SlotType::ProxyOutput:
-            return connect(static_cast< const ProxyOutput<T> * >(source));
+            return connect(static_cast< ProxyOutput<T> * >(source));
 
         default:
             return false;
@@ -240,7 +238,13 @@ const T * InputSlot<T, BASE>::ptr() const
 template <typename T, typename BASE>
 T * InputSlot<T, BASE>::ptr()
 {
-    return nullptr;
+    switch (m_sourceType) {
+        case SlotType::Input:       return m_source.input->ptr();
+        case SlotType::Parameter:   return m_source.parameter->ptr();
+        case SlotType::Output:      return m_source.output->ptr();
+        case SlotType::ProxyOutput: return m_source.proxyOutput->ptr();
+        default:                    return nullptr;
+    }
 }
 
 template <typename T, typename BASE>

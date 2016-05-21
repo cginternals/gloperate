@@ -8,6 +8,7 @@
 
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/stages/demos/DemoStage.h>
+#include <gloperate/stages/demos/DemoPipeline.h>
 
     
 namespace gloperate_qtquick
@@ -30,7 +31,8 @@ void Utils::clearScreen(float red, float green, float blue, float alpha, bool cl
 
 gloperate::Stage * Utils::createRenderStage(gloperate::ViewerContext * viewerContext)
 {
-    return new gloperate::DemoStage(viewerContext);
+//    return new gloperate::DemoStage(viewerContext);
+    return new gloperate::DemoPipeline(viewerContext);
 }
 
 gloperate::Surface * Utils::createSurface(gloperate::ViewerContext * viewerContext, gloperate::Stage * renderStage)

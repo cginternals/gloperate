@@ -61,5 +61,29 @@ void Pipeline::unregisterStage(Stage * stage)
     }
 }
 
+void Pipeline::onContextInit(AbstractGLContext * context)
+{
+    for (auto stage : m_stages)
+    {
+        stage->initContext(context);
+    }
+}
+
+void Pipeline::onContextDeinit(AbstractGLContext * context)
+{
+    for (auto stage : m_stages)
+    {
+        stage->deinitContext(context);
+    }
+}
+
+void Pipeline::onProcess(AbstractGLContext * context)
+{
+    for (auto stage : m_stages)
+    {
+        stage->process(context);
+    }
+}
+
 
 } // namespace gloperate
