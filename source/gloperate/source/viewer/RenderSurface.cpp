@@ -63,7 +63,9 @@ void RenderSurface::setRenderStage(Stage * stage)
 
 void RenderSurface::onUpdate()
 {
-    m_viewer.timeDelta.setValue(m_viewerContext->timeManager()->timeDelta());
+    float timeDelta = m_viewerContext->timeManager()->timeDelta();
+
+    m_viewer.timeDelta.setValue(timeDelta);
 }
 
 void RenderSurface::onContextInit()

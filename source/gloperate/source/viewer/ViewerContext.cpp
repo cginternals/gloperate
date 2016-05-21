@@ -7,10 +7,14 @@
 #include <gloperate/scripting/ScriptEnvironment.h>
 
 // Local components
+#include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/TextureLoadStage.h>
+#include <gloperate/stages/base/ProceduralTextureStage.h>
 #include <gloperate/stages/base/MixerStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
 #include <gloperate/stages/demos/DemoStage.h>
+#include <gloperate/stages/demos/DemoTriangleStage.h>
+#include <gloperate/stages/demos/DemoTimerStage.h>
 
 
 namespace gloperate
@@ -92,10 +96,14 @@ ResourceManager * ViewerContext::resourceManager()
 
 void ViewerContext::registerLocalPlugins()
 {
+    m_componentManager.addComponent(&BasicFramebufferStage::Component);
     m_componentManager.addComponent(&TextureLoadStage::Component);
+    m_componentManager.addComponent(&ProceduralTextureStage::Component);
     m_componentManager.addComponent(&MixerStage::Component);
     m_componentManager.addComponent(&DemoPipeline::Component);
     m_componentManager.addComponent(&DemoStage::Component);
+    m_componentManager.addComponent(&DemoTriangleStage::Component);
+    m_componentManager.addComponent(&DemoTimerStage::Component);
 }
 
 void ViewerContext::registerSurface(Surface * surface)

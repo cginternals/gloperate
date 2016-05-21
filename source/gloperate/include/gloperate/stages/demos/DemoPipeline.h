@@ -12,7 +12,10 @@ namespace gloperate
 
 
 class TextureLoadStage;
+class ProceduralTextureStage;
 class MixerStage;
+class DemoTimerStage;
+class DemoTriangleStage;
 
 
 /**
@@ -46,8 +49,12 @@ public:
 
 
 protected:
-    TextureLoadStage * m_textureLoadStage;
-    MixerStage       * m_mixerStage;
+    // Stages
+    TextureLoadStage       * m_textureLoadStage;
+    ProceduralTextureStage * m_proceduralTextureStage;
+    DemoTimerStage         * m_timerStage;
+    DemoTriangleStage      * m_triangleStage;
+    MixerStage             * m_mixerStage;
 };
 
 
