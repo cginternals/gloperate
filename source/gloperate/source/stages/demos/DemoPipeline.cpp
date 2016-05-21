@@ -2,6 +2,7 @@
 #include <gloperate/stages/demos/DemoPipeline.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/gloperate-version.h>
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/MixerStage.h>
 
@@ -34,6 +35,17 @@ DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & na
 DemoPipeline::~DemoPipeline()
 {
 }
+
+
+CPPEXPOSE_COMPONENT(
+    DemoPipeline, gloperate::Stage
+  , "RenderStage"   // Tags
+  , ""              // Icon
+  , ""              // Annotations
+  , "Demo pipeline displaying a rotating logo"
+  , GLOPERATE_AUTHOR_ORGANIZATION
+  , "v1.0.0"
+)
 
 
 } // namespace gloperate

@@ -2,6 +2,7 @@
 #pragma once
 
 
+#include <QString>
 #include <QQuickItem>
 
 
@@ -22,6 +23,10 @@ namespace gloperate_qtquick
 */
 class RenderItem : public QQuickItem
 {
+Q_OBJECT
+Q_PROPERTY(QString stage READ stage WRITE setStage)
+
+
 public:
     /**
     *  @brief
@@ -49,6 +54,8 @@ public:
 
 
 protected:
+    QString stage() const;
+    void setStage(const QString & name);
     void onWindowChanged(QQuickWindow * window);
     void onBeforeRendering();
 
@@ -67,6 +74,7 @@ protected:
     gloperate::Surface * m_surface;          ///< Surface that renders into the item (must NOT be null)
     float                m_devicePixelRatio; ///< Number of device pixels per virtual pixel
     bool                 m_initialized;      ///< 'true' if the surface has been initialized, else 'false'
+    QString              m_stage;            ///< Name of the render stage to use
 };
 
 

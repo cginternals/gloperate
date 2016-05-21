@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppexpose/plugin/plugin_api.h>
+
 #include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
@@ -24,6 +26,9 @@ namespace gloperate
 */
 class GLOPERATE_API DemoStage : public RenderStage
 {
+    CPPEXPOSE_DECLARE_COMPONENT(DemoStage, gloperate::Stage)
+
+
 public:
     /**
     *  @brief

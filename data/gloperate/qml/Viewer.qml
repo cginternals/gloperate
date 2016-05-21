@@ -212,6 +212,8 @@ Page
 
         anchors.fill: main
         z:            -1
+
+        stage: 'DemoPipeline'
     }
 
     // Settings dialog

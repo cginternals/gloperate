@@ -97,11 +97,11 @@ globjects::Texture * QtTextureLoader::load(const std::string & filename, const c
 
 
 CPPEXPOSE_COMPONENT(
-    QtTextureLoader, gloperate::AbstractLoader,
-    "", // Subtype
-    "", // Icon
-    "", // Annotations
-    "Load textures using the Qt image functionality",
-    GLOPERATE_AUTHOR_ORGANIZATION,
-    "v1.0.0"
+    QtTextureLoader, gloperate::AbstractLoader
+  , "" // Tags
+  , "" // Icon
+  , "" // Annotations
+  , "Load textures using the Qt image functionality"
+  , GLOPERATE_AUTHOR_ORGANIZATION
+  , "v1.0.0"
 )

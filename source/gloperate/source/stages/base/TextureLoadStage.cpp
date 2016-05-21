@@ -1,6 +1,7 @@
 
 #include <gloperate/stages/base/TextureLoadStage.h>
 
+#include <gloperate/gloperate-version.h>
 #include <gloperate/viewer/ViewerContext.h>
 
 
@@ -45,6 +46,17 @@ void TextureLoadStage::loadTexture()
         *filename
     );
 }
+
+
+CPPEXPOSE_COMPONENT(
+    TextureLoadStage, gloperate::Stage
+  , ""   // Tags
+  , ""   // Icon
+  , ""   // Annotations
+  , "Stage that loads a texture from a file"
+  , GLOPERATE_AUTHOR_ORGANIZATION
+  , "v1.0.0"
+)
 
 
 } // namespace gloperate

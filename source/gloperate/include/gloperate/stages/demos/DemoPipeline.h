@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppexpose/plugin/plugin_api.h>
+
 #include <gloperate/pipeline/RenderPipeline.h>
 
 
@@ -19,6 +21,9 @@ class MixerStage;
 */
 class GLOPERATE_API DemoPipeline : public RenderPipeline
 {
+    CPPEXPOSE_DECLARE_COMPONENT(DemoPipeline, gloperate::Stage)
+
+
 public:
     /**
     *  @brief

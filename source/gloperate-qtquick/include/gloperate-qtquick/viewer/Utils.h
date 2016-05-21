@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <string>
+
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
@@ -48,7 +50,7 @@ public:
     static void clearScreen(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f, bool clearDepthBuffer = true);
 
     // [TODO] Only for testing
-    static gloperate::Stage * createRenderStage(gloperate::ViewerContext * viewerContext);
+    static gloperate::Stage * createRenderStage(gloperate::ViewerContext * viewerContext, const std::string & name);
     static gloperate::Surface * createSurface(gloperate::ViewerContext * viewerContext, gloperate::Stage * renderStage);
 };
 

@@ -195,6 +195,12 @@ protected:
     //@{
     /**
     *  @brief
+    *    Register local plugins (contained in gloperate itself)
+    */
+    void registerLocalPlugins();
+
+    /**
+    *  @brief
     *    Register render surface
     *
     *  @param[in] surface

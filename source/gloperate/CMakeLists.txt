@@ -96,6 +96,8 @@ set(headers
     ${include_path}/pipeline/RenderPipeline.h
     ${include_path}/pipeline/ViewerContainer.h
     ${include_path}/pipeline/RenderInterface.h
+    ${include_path}/pipeline/StageComponent.h
+    ${include_path}/pipeline/StageComponent.hpp
 
     ${include_path}/rendering/Camera.h
 
@@ -158,6 +160,7 @@ set(sources
     ${source_path}/pipeline/RenderPipeline.cpp
     ${source_path}/pipeline/ViewerContainer.cpp
     ${source_path}/pipeline/RenderInterface.cpp
+    ${source_path}/pipeline/StageComponent.cpp
 
     ${source_path}/rendering/Camera.cpp
 

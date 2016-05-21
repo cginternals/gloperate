@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <cppexpose/plugin/plugin_api.h>
+
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
@@ -22,6 +24,9 @@ namespace gloperate
 */
 class GLOPERATE_API TextureLoadStage : public Stage
 {
+    CPPEXPOSE_DECLARE_COMPONENT(TextureLoadStage, gloperate::Stage)
+
+
 public:
     // Parameters
     Parameter<std::string>       filename; ///< Texture filename

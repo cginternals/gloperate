@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+#include <cppexpose/plugin/plugin_api.h>
+
 #include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
@@ -31,6 +33,9 @@ namespace gloperate
 */
 class GLOPERATE_API MixerStage : public Stage
 {
+    CPPEXPOSE_DECLARE_COMPONENT(MixerStage, gloperate::Stage)
+
+
 public:
     // Inputs
     Input<glm::vec4>                 viewport;  ///< Viewport

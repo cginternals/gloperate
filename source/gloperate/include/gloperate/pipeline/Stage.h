@@ -10,6 +10,9 @@
 
 #include <gloperate/gloperate_api.h>
 
+// Include Component<Stage> specialization for downstream plugins
+#include <gloperate/pipeline/StageComponent.h>
+
 
 namespace gloperate
 {
