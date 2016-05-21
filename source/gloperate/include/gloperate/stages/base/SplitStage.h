@@ -29,18 +29,19 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that renders and mixes textures into a full-screen quad
+*    Stage that splits the view into two
 */
-class GLOPERATE_API MixerStage : public Stage
+class GLOPERATE_API SplitStage : public Stage
 {
-    CPPEXPOSE_DECLARE_COMPONENT(MixerStage, gloperate::Stage)
+    CPPEXPOSE_DECLARE_COMPONENT(SplitStage, gloperate::Stage)
 
 
 public:
     // Inputs
     Input<glm::vec4>                 viewport;  ///< Viewport
     Input<globjects::Framebuffer *>  targetFBO; ///< Target FBO into which to render
-    Input<globjects::Texture *>      texture;   ///< Color texture
+    Input<globjects::Texture *>      texture1;  ///< Color texture #1
+    Input<globjects::Texture *>      texture2;  ///< Color texture #2
 
     // Parameters
     Parameter<std::string>           vertexShader;   ///< Vertex shader filename
@@ -64,13 +65,13 @@ public:
     *  @param[in] parent
     *    Parent pipeline (can be null)
     */
-    MixerStage(ViewerContext * viewerContext, const std::string & name = "MixerStage", Pipeline * parent = nullptr);
+    SplitStage(ViewerContext * viewerContext, const std::string & name = "SplitStage", Pipeline * parent = nullptr);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~MixerStage();
+    virtual ~SplitStage();
 
 
 protected:

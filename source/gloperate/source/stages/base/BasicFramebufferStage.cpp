@@ -13,7 +13,7 @@ namespace gloperate
 
 BasicFramebufferStage::BasicFramebufferStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
-, size        (this, "size")
+, viewport    (this, "viewport")
 , fbo         (this, "fbo")
 , colorTexture(this, "colorTexture")
 , depthTexture(this, "depthTexture")
@@ -43,7 +43,7 @@ void BasicFramebufferStage::onProcess(AbstractGLContext *)
 void BasicFramebufferStage::rebuildFBO()
 {
     // Get texture size
-    glm::ivec2 size = *this->size;
+    glm::ivec2 size = glm::ivec2((*this->viewport).z, (*this->viewport).w);
 
     // Create color texture
     m_texColor = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);

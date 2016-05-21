@@ -30,8 +30,8 @@ class GLOPERATE_API BasicFramebufferStage : public Stage
 
 
 public:
-    // Parameters
-    Input<glm::vec2>                 size;          ///< Texture size
+    // Input
+    Input<glm::vec4>                 viewport;      ///< Texture size
 
     // Outputs
     Output<globjects::Framebuffer *> fbo;           ///< Framebuffer

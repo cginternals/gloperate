@@ -11,9 +11,11 @@ namespace gloperate
 {
 
 
+class BasicFramebufferStage;
 class TextureLoadStage;
 class ProceduralTextureStage;
 class MixerStage;
+class SplitStage;
 class DemoTimerStage;
 class DemoTriangleStage;
 
@@ -52,9 +54,11 @@ protected:
     // Stages
     TextureLoadStage       * m_textureLoadStage;
     ProceduralTextureStage * m_proceduralTextureStage;
+    BasicFramebufferStage  * m_framebufferStage;
     DemoTimerStage         * m_timerStage;
     DemoTriangleStage      * m_triangleStage;
     MixerStage             * m_mixerStage;
+    SplitStage             * m_splitStage;
 };
 
 

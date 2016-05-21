@@ -3,9 +3,11 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/gloperate-version.h>
-#include <gloperate/stages/base/ProceduralTextureStage.h>
 #include <gloperate/stages/base/TextureLoadStage.h>
+#include <gloperate/stages/base/ProceduralTextureStage.h>
+#include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/MixerStage.h>
+#include <gloperate/stages/base/SplitStage.h>
 #include <gloperate/stages/demos/DemoTimerStage.h>
 #include <gloperate/stages/demos/DemoTriangleStage.h>
 
@@ -18,22 +20,27 @@ DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & na
 : RenderPipeline(viewerContext, name, parent)
 , m_textureLoadStage(new TextureLoadStage(viewerContext, "TextureLoadStage", this))
 , m_proceduralTextureStage(new ProceduralTextureStage(viewerContext, "ProceduralTextureStage", this))
+, m_framebufferStage(new BasicFramebufferStage(viewerContext, "FramebufferStage", this))
 , m_timerStage(new DemoTimerStage(viewerContext, "TimerStage", this))
 , m_triangleStage(new DemoTriangleStage(viewerContext, "TriangleStage", this))
-//, m_mixerStage(new MixerStage(viewerContext, "MixerStage", this))
-, m_mixerStage(nullptr)
+, m_mixerStage(new MixerStage(viewerContext, "MixerStage", this))
+, m_splitStage(new SplitStage(viewerContext, "SplitStage", this))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
     if (dataPath.size() > 0) dataPath = dataPath + "/";
     else                     dataPath = "data/";
 
-    // Procedural texture stage
-    takeOwnership(m_proceduralTextureStage);
-
     // Texture loader stage
     takeOwnership(m_textureLoadStage);
     *m_textureLoadStage->filename = dataPath + "gloperate/textures/gloperate-logo.png";
+
+    // Procedural texture stage
+    takeOwnership(m_proceduralTextureStage);
+
+    // Framebuffer stage
+    takeOwnership(m_framebufferStage);
+    m_framebufferStage->viewport << this->deviceViewport;
 
     // Timer stage
     takeOwnership(m_timerStage);
@@ -42,19 +49,28 @@ DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & na
     // Triangle stage
     takeOwnership(m_triangleStage);
     m_triangleStage->deviceViewport  << this->deviceViewport;
-    m_triangleStage->targetFBO       << this->targetFBO;
+    m_triangleStage->targetFBO       << m_framebufferStage->fbo;
     m_triangleStage->backgroundColor << this->backgroundColor;
     m_triangleStage->texture         << m_textureLoadStage->texture;
     m_triangleStage->angle           << m_timerStage->virtualTime;
-    this->rendered                   << m_triangleStage->rendered;
 
-    /*
+/*
     // Mixer stage
     takeOwnership(m_mixerStage);
     m_mixerStage->viewport  << this->deviceViewport;
     m_mixerStage->targetFBO << this->targetFBO;
-    m_mixerStage->texture   << m_textureLoadStage->texture;
-    */
+    m_mixerStage->texture   << m_framebufferStage->colorTexture;
+*/
+
+    // Split stage
+    takeOwnership(m_splitStage);
+    m_splitStage->viewport  << this->deviceViewport;
+    m_splitStage->targetFBO << this->targetFBO;
+    m_splitStage->texture1  << m_framebufferStage->colorTexture;
+    m_splitStage->texture2  << m_proceduralTextureStage->texture;
+
+    // Outputs
+    this->rendered << m_triangleStage->rendered;
 }
 
 DemoPipeline::~DemoPipeline()

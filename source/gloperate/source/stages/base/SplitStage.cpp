@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/base/MixerStage.h>
+#include <gloperate/stages/base/SplitStage.h>
 
 #include <glbinding/gl/gl.h>
 
@@ -41,11 +41,12 @@ namespace gloperate
 {
 
 
-MixerStage::MixerStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
+SplitStage::SplitStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
 , viewport      (this, "viewport")
 , targetFBO     (this, "targetFBO")
-, texture       (this, "texture")
+, texture1      (this, "texture1")
+, texture2      (this, "texture2")
 , vertexShader  (this, "vertexShader")
 , geometryShader(this, "geometryShader")
 , fragmentShader(this, "fragmentShader")
@@ -63,19 +64,19 @@ MixerStage::MixerStage(ViewerContext * viewerContext, const std::string & name, 
     fragmentShader.setValue(dataPath + "gloperate/shaders/Mixer/Mixer.frag");
 }
 
-MixerStage::~MixerStage()
+SplitStage::~SplitStage()
 {
 }
 
-void MixerStage::onContextInit(AbstractGLContext *)
+void SplitStage::onContextInit(AbstractGLContext *)
 {
 }
 
-void MixerStage::onContextDeinit(AbstractGLContext *)
+void SplitStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void MixerStage::onProcess(AbstractGLContext *)
+void SplitStage::onProcess(AbstractGLContext *)
 {
     // Check if geometry needs to be built
     if (!m_vao.get())
@@ -94,22 +95,17 @@ void MixerStage::onProcess(AbstractGLContext *)
     fbo = fbo ? fbo : globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
-    // Set viewport
-    gl::glViewport(viewport->x, viewport->y, viewport->z, viewport->w);
-
-    // Disable depth test for screen-aligned quad
+    // Set OpenGL states
     gl::glDisable(gl::GL_DEPTH_TEST);
-
-    // Enable blending
     gl::glEnable(gl::GL_BLEND);
 
-    // Restore OpenGL states
-    gl::glEnable(gl::GL_DEPTH_TEST);
+    // Set viewport for texture #1
+    gl::glViewport(0, viewport->w / 4, viewport->z / 2, viewport->w / 2);
 
-    // Bind texture
-    if (*texture) {
+    // Bind texture #1
+    if (*texture1) {
         gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-        (*texture)->bind();
+        (*texture1)->bind();
     }
 
     // Draw screen-aligned quad
@@ -118,10 +114,34 @@ void MixerStage::onProcess(AbstractGLContext *)
     m_vao->unbind();
     m_program->release();
 
-    // Unbind texture
-    if (*texture) {
-        (*texture)->unbind();
+    // Unbind texture #1
+    if (*texture1) {
+        (*texture1)->unbind();
     }
+
+    // Set viewport for texture #2
+    gl::glViewport(viewport->z / 2, viewport->w / 4, viewport->z / 2, viewport->w / 2);
+
+    // Bind texture #2
+    if (*texture2) {
+        gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
+        (*texture2)->bind();
+    }
+
+    // Draw screen-aligned quad
+    m_program->use();
+    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
+    m_vao->unbind();
+    m_program->release();
+
+    // Unbind texture #2
+    if (*texture2) {
+        (*texture2)->unbind();
+    }
+
+    // Restore OpenGL states
+    gl::glEnable(gl::GL_DEPTH_TEST);
+    gl::glDisable(gl::GL_BLEND);
 
     // Unbind FBO, bind default FBO
     if (*targetFBO) {
@@ -136,7 +156,7 @@ void MixerStage::onProcess(AbstractGLContext *)
     rendered.setValue(true);
 }
 
-void MixerStage::buildGeometry()
+void SplitStage::buildGeometry()
 {
     // Static vertices
     static const std::array<glm::vec2, 4> vertices { {
@@ -159,7 +179,7 @@ void MixerStage::buildGeometry()
     m_vao->enable(0);
 }
 
-void MixerStage::buildProgram()
+void SplitStage::buildProgram()
 {
     // Create program and load shaders
     m_program = new globjects::Program;
@@ -182,11 +202,11 @@ void MixerStage::buildProgram()
 
 
 CPPEXPOSE_COMPONENT(
-    MixerStage, gloperate::Stage
+    SplitStage, gloperate::Stage
   , ""   // Tags
   , ""   // Icon
   , ""   // Annotations
-  , "Stage that renders and mixes textures into a full-screen quad"
+  , "Stage that splits the view into two"
   , GLOPERATE_AUTHOR_ORGANIZATION
   , "v1.0.0"
 )
