@@ -87,16 +87,25 @@ BaseItem
         }
     }
 
-    Pipeline
+    Item
     {
         id: pipeline
 
         anchors.left:    inputs.right
         anchors.top:     label.bottom
         anchors.margins: Ui.style.panelPadding
+        implicitWidth:   Math.max(realPipeline.implicitWidth,  label.implicitWidth)
+        implicitHeight:  Math.max(realPipeline.implicitHeight, label.implicitHeight)
 
-        stageDelegate: item.stageDelegate
-        targetStage:   item.targetStage
+        Pipeline
+        {
+            id: realPipeline
+
+            anchors.fill: parent
+
+            stageDelegate: item.stageDelegate
+            targetStage:   item.targetStage
+        }
     }
 
     ColumnLayout
