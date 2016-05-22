@@ -22,11 +22,13 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
 , m_viewerContext(viewerContext)
 {
     // Register functions
-    addFunction("getName",    this, &PipelineApi::getName);
-    addFunction("getStages",  this, &PipelineApi::getStages);
-    addFunction("getInputs",  this, &PipelineApi::getInputs);
-    addFunction("getOutputs", this, &PipelineApi::getOutputs);
-    addFunction("getValue",   this, &PipelineApi::getValue);
+    addFunction("getName",         this, &PipelineApi::getName);
+    addFunction("getStages",       this, &PipelineApi::getStages);
+    addFunction("getInputs",       this, &PipelineApi::getInputs);
+    addFunction("getParameters",   this, &PipelineApi::getParameters);
+    addFunction("getOutputs",      this, &PipelineApi::getOutputs);
+    addFunction("getProxyOutputs", this, &PipelineApi::getProxyOutputs);
+    addFunction("getValue",        this, &PipelineApi::getValue);
 }
 
 PipelineApi::~PipelineApi()
@@ -71,6 +73,15 @@ cppexpose::Variant PipelineApi::getInputs(const std::string & name)
         lst.asArray()->push_back(input->name());
     }
 
+    return lst;
+}
+
+cppexpose::Variant PipelineApi::getParameters(const std::string & name)
+{
+    Stage * stage = getStage(name);
+
+    cppexpose::Variant lst = cppexpose::Variant::array();
+
     for (auto * parameter : stage->parameters())
     {
         lst.asArray()->push_back(parameter->name());
@@ -89,6 +100,15 @@ cppexpose::Variant PipelineApi::getOutputs(const std::string & name)
     {
         lst.asArray()->push_back(output->name());
     }
+
+    return lst;
+}
+
+cppexpose::Variant PipelineApi::getProxyOutputs(const std::string & name)
+{
+    Stage * stage = getStage(name);
+
+    cppexpose::Variant lst = cppexpose::Variant::array();
 
     for (auto * proxyOutput : stage->proxyOutputs())
     {

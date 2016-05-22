@@ -15,9 +15,10 @@ BaseItem
 
     property string name:      'Slot'
     property string value:     ''
+    property bool   switched:  false
     property bool   hasInput:  true
     property bool   hasOutput: true
-    property bool   switched:  false
+    property bool   showValue: false
 
     implicitWidth:  body.implicitWidth + Ui.style.pipelineConnectorSize
     implicitHeight: body.implicitHeight
@@ -49,7 +50,7 @@ BaseItem
         anchors.bottom: parent.bottom
         z:              0
 
-        implicitWidth:  labelName.implicitWidth + labelValue.implicitWidth + Ui.style.pipelineConnectorSize + 4 * Ui.style.ctrlPadding
+        implicitWidth:  labelName.implicitWidth + (labelValue.visible ? labelValue.implicitWidth : 0) + Ui.style.pipelineConnectorSize + 4 * Ui.style.ctrlPadding
         implicitHeight: Ui.style.pipelineSlotSize
 
         color:        Ui.style.pipelineSlotColor
@@ -81,8 +82,9 @@ BaseItem
             anchors.leftMargin:     Ui.style.ctrlPadding + Ui.style.pipelineConnectorSize * 0.5
             anchors.rightMargin:    Ui.style.ctrlPadding + Ui.style.pipelineConnectorSize * 0.5
 
-            text:  item.value
-            color: Ui.style.pipelineSecondaryTextColor
+            visible: item.showValue
+            text:    item.value
+            color:   Ui.style.pipelineSecondaryTextColor
         }
     }
 

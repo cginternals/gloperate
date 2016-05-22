@@ -49,7 +49,9 @@ protected:
     std::string getName(const std::string & name);
     cppexpose::Variant getStages(const std::string & name);
     cppexpose::Variant getInputs(const std::string & name);
+    cppexpose::Variant getParameters(const std::string & name);
     cppexpose::Variant getOutputs(const std::string & name);
+    cppexpose::Variant getProxyOutputs(const std::string & name);
     std::string getValue(const std::string & path);
 
     // Helper functions

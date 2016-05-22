@@ -18,10 +18,8 @@ BaseItem
     property string    targetStage:   ''
 
     property string name:      ''
-    property var inputNames:   []
-    property var inputValues:  []
-    property var outputNames:  []
-    property var outputValues: []
+    property var inputs:       []
+    property var outputs:      []
 
     implicitWidth:  inputs.implicitWidth + outputs.implicitWidth + pipeline.implicitWidth + 2 * Ui.style.panelPadding
     implicitHeight: label.implicitHeight + Math.max(Math.max(inputs.implicitHeight, outputs.implicitHeight), pipeline.implicitHeight) + 6 * Ui.style.panelPadding
@@ -74,15 +72,18 @@ BaseItem
 
         Repeater
         {
-            model: item.inputNames.length
+            model: item.inputs.length
 
             delegate: Slot
             {
                 Layout.fillWidth: true
 
-                name:     item.inputNames[index]
-                value:    item.inputValues[index]
-                switched: true
+                name:      item.inputs[index].name
+                value:     item.inputs[index].value
+                switched:  true
+                hasInput:  !item.inputs[index].hasOwnData
+                hasOutput: true
+                showValue: item.inputs[index].hasOwnData
             }
         }
     }
@@ -121,38 +122,82 @@ BaseItem
 
         Repeater
         {
-            model: item.outputNames.length
+            model: item.outputs.length
 
             delegate: Slot
             {
                 Layout.fillWidth: true
 
-                name:  item.outputNames[index]
-                value: item.outputValues[index]
+                name:      item.outputs[index].name
+                value:     item.outputs[index].value
+                hasInput:  !item.outputs[index].hasOwnData
+                hasOutput: true
+                showValue: item.outputs[index].hasOwnData
             }
         }
     }
 
     onTargetStageChanged:
     {
-        item.name        = gloperate.pipeline.getName(item.targetStage);
-        item.inputNames  = gloperate.pipeline.getInputs(item.targetStage);
-        item.outputNames = gloperate.pipeline.getOutputs(item.targetStage);
+        // Update stage name
+        item.name = gloperate.pipeline.getName(item.targetStage);
 
-        var inputValues = [];
-        for (var i=0; i<item.inputNames.length; i++) {
-            inputValues.push(
-                gloperate.pipeline.getValue(item.targetStage + '.' + item.inputNames[i])
-            );
-        }
-        item.inputValues = inputValues;
+        // List inputs
+        var inputs = [];
 
-        var outputValues = [];
-        for (var i=0; i<item.outputNames.length; i++) {
-            outputValues.push(
-                gloperate.pipeline.getValue(item.targetStage + '.' + item.outputNames[i])
-            );
+        var inputNames = gloperate.pipeline.getInputs(item.targetStage);
+        for (var i=0; i<inputNames.length; i++)
+        {
+            var name = inputNames[i];
+
+            inputs.push({
+                name:       name,
+                value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                hasOwnData: false
+            });
         }
-        item.outputValues = outputValues;
+
+        var parameterNames = gloperate.pipeline.getParameters(item.targetStage);
+        for (var i=0; i<parameterNames.length; i++)
+        {
+            var name = parameterNames[i];
+
+            inputs.push({
+                name:      name,
+                value:     gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                hasOwnData: true
+            });
+        }
+
+        item.inputs = inputs;
+
+        // List outputs
+        var outputs = [];
+
+        var outputNames = gloperate.pipeline.getOutputs(item.targetStage);
+        for (var i=0; i<outputNames.length; i++)
+        {
+            var name = outputNames[i];
+
+            outputs.push({
+                name:       name,
+                value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                hasOwnData: true
+            });
+        }
+
+        var proxyOutputNames = gloperate.pipeline.getProxyOutputs(item.targetStage);
+        for (var i=0; i<proxyOutputNames.length; i++)
+        {
+            var name = proxyOutputNames[i];
+
+            outputs.push({
+                name:       name,
+                value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                hasOwnData: false
+            });
+        }
+
+        item.outputs = outputs;
     }
 }
