@@ -134,15 +134,17 @@ Item
 
     // Pipeline editor
     property color pipelineStageColor:         '#ffffff'        // Background color of stages
-    property color pipelineSlotColor:          '#dddddd'        // Background color of slots
+    property int   pipelineStageRadius:        10               // Radius of stage rectangle
     property color pipelineTextColor:          '#000000'        // Color of texts in stages
     property color pipelineSecondaryTextColor: '#666666'        // Color of values in stages
     property color pipelineLineColor:          '#000000'        // Color of lines, connections, etc.
     property int   pipelineLineWidth:          borderWidth      // Width of lines
-    property int   pipelineStageRadius:        10               // Radius of stage rectangle
-    property real  pipelineSlotSize:           formControlHeight * 1.2
-    property real  pipelineConnectorSize:      formControlHeight * 0.6
-    property real  pipelinePadding:            50
+    property color pipelineSlotColor:          '#dddddd'        // Background color of slots
+    property real  pipelineSlotSize:           formHeight * 1.2 // Height of input/output slots
+    property real  pipelineConnectorSize:      formHeight * 0.6 // Diameter of connectors
+    property color pipelineConnectorColorIn:   backgroundColor  // Color of input connectors
+    property color pipelineConnectorColorOut:  backgroundColor  // Color of output connectors
+    property real  pipelinePadding:            50               // Space between outer and inner pipelines
 
 
     //

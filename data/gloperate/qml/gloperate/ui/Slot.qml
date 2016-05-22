@@ -32,7 +32,7 @@ BaseItem
         height:                 Ui.style.pipelineConnectorSize
 
         visible:      item.hasInput
-        color:        'blue'
+        color:        Ui.style.pipelineConnectorColorIn
         radius:       Ui.style.pipelineConnectorSize / 2.0
         border.color: Ui.style.pipelineLineColor
         border.width: Ui.style.pipelineLineWidth
@@ -97,7 +97,7 @@ BaseItem
         z:                      1
 
         visible:      item.hasOutput
-        color:        'red'
+        color:        Ui.style.pipelineConnectorColorOut
         radius:       Ui.style.pipelineConnectorSize / 2.0
         border.color: Ui.style.pipelineLineColor
         border.width: Ui.style.pipelineLineWidth
