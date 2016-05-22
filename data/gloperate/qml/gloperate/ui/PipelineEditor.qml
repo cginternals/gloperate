@@ -46,4 +46,31 @@ Background
             targetStage:     'Viewer'
         }
     }
+
+    Component.onCompleted:
+    {
+        /*
+        gloperate.pipeline.registerWatcher(function()
+        {
+            // [TODO]
+            Update only the item that has been changed
+        });
+        */
+    }
+
+    // [TODO] After a while, this crashes (the faster, the sooner)
+    //        Check if this happens also with qml-only operations,
+    //        or if something in e.g. the qml-cppexpose-bridge
+    //        causes a memory leak
+    Timer
+    {
+        interval: 200
+        running:  true
+        repeat:   true
+
+        onTriggered:
+        {
+            pipeline.update();
+        }
+    }
 }

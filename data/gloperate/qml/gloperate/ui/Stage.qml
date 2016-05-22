@@ -139,6 +139,11 @@ BaseItem
 
     onTargetStageChanged:
     {
+        update();
+    }
+
+    function update()
+    {
         // Update stage name
         item.name = gloperate.pipeline.getName(item.targetStage);
 

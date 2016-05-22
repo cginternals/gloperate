@@ -40,6 +40,11 @@ BaseItem
 
     onTargetStageChanged:
     {
+        update();
+    }
+
+    function update()
+    {
         var lst = [];
 
         var stages = gloperate.pipeline.getStages(item.targetStage);
