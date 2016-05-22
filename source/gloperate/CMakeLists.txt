@@ -70,6 +70,7 @@ set(headers
     ${include_path}/scripting/ScriptTimer.h
     ${include_path}/scripting/ComponentsApi.h
     ${include_path}/scripting/PipelineApi.h
+    ${include_path}/scripting/PipelineApiWatcher.h
 
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractData.h
@@ -98,6 +99,8 @@ set(headers
     ${include_path}/pipeline/RenderInterface.h
     ${include_path}/pipeline/StageComponent.h
     ${include_path}/pipeline/StageComponent.hpp
+    ${include_path}/pipeline/PipelineWatcher.h
+    ${include_path}/pipeline/PipelineEvent.h
 
     ${include_path}/rendering/Camera.h
 
@@ -151,6 +154,7 @@ set(sources
     ${source_path}/scripting/ScriptTimer.cpp
     ${source_path}/scripting/ComponentsApi.cpp
     ${source_path}/scripting/PipelineApi.cpp
+    ${source_path}/scripting/PipelineApiWatcher.cpp
 
     ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/AbstractData.cpp
@@ -166,6 +170,8 @@ set(sources
     ${source_path}/pipeline/ViewerContainer.cpp
     ${source_path}/pipeline/RenderInterface.cpp
     ${source_path}/pipeline/StageComponent.cpp
+    ${source_path}/pipeline/PipelineWatcher.cpp
+    ${source_path}/pipeline/PipelineEvent.cpp
 
     ${source_path}/rendering/Camera.cpp
 

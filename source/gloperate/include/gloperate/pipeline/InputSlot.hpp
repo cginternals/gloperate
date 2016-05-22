@@ -44,12 +44,12 @@ bool InputSlot<T, BASE>::connect(Input<T> * source)
     // Connect to data container
     m_connection = m_source.input->valueChanged.connect([this] (const T & value)
     {
-        this->valueChanged(value);
+        this->onValueChanged(value);
     } );
 
     // Emit events
     this->connectionChanged();
-    this->valueChanged(m_source.input->value());
+    this->onValueChanged(m_source.input->value());
 
     // Success
     return true;
@@ -70,12 +70,12 @@ bool InputSlot<T, BASE>::connect(Parameter<T> * source)
     // Connect to data container
     m_connection = m_source.parameter->valueChanged.connect([this] (const T & value)
     {
-        this->valueChanged(value);
+        this->onValueChanged(value);
     } );
 
     // Emit events
     this->connectionChanged();
-    this->valueChanged(m_source.parameter->value());
+    this->onValueChanged(m_source.parameter->value());
 
     // Success
     return true;
@@ -96,12 +96,12 @@ bool InputSlot<T, BASE>::connect(Output<T> * source)
     // Connect to data container
     m_connection = m_source.output->valueChanged.connect([this] (const T & value)
     {
-        this->valueChanged(value);
+        this->onValueChanged(value);
     } );
 
     // Emit events
     this->connectionChanged();
-    this->valueChanged(m_source.output->value());
+    this->onValueChanged(m_source.output->value());
 
     // Success
     return true;
@@ -122,12 +122,12 @@ bool InputSlot<T, BASE>::connect(ProxyOutput<T> * source)
     // Connect to data container
     m_connection = m_source.proxyOutput->valueChanged.connect([this] (const T & value)
     {
-        this->valueChanged(value);
+        this->onValueChanged(value);
     } );
 
     // Emit events
     this->connectionChanged();
-    this->valueChanged(m_source.proxyOutput->value());
+    this->onValueChanged(m_source.proxyOutput->value());
 
     // Success
     return true;
@@ -236,7 +236,7 @@ void InputSlot<T, BASE>::disconnect()
 
     // Emit events
     this->connectionChanged();
-    this->valueChanged(m_defaultValue);
+    this->onValueChanged(m_defaultValue);
 }
 
 template <typename T, typename BASE>

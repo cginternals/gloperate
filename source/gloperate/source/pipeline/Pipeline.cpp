@@ -1,6 +1,8 @@
 
 #include <gloperate/pipeline/Pipeline.h>
 
+#include <gloperate/pipeline/PipelineEvent.h>
+
 
 namespace gloperate
 {
@@ -43,6 +45,10 @@ void Pipeline::registerStage(Stage * stage)
     }
 
     stageAdded(stage);
+
+    promotePipelineEvent(
+        PipelineEvent(PipelineEvent::StageAdded, this, stage)
+    );
 }
 
 void Pipeline::unregisterStage(Stage * stage)
@@ -57,7 +63,12 @@ void Pipeline::unregisterStage(Stage * stage)
     {
         m_stages.erase(it);
         m_stagesMap.erase(stage->name());
+
         stageRemoved(stage);
+
+        promotePipelineEvent(
+            PipelineEvent(PipelineEvent::StageRemoved, this, stage)
+        );
     }
 }
 
@@ -83,6 +94,11 @@ void Pipeline::onProcess(AbstractGLContext * context)
     {
         stage->process(context);
     }
+}
+
+void Pipeline::onPipelineEvent(const PipelineEvent &)
+{
+    // [TODO]
 }
 
 

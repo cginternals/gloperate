@@ -25,6 +25,8 @@ class AbstractParameter;
 class AbstractOutput;
 class AbstractProxyOutput;
 class Pipeline;
+class PipelineWatcher;
+class PipelineEvent;
 
 template <typename T>
 class Input;
@@ -261,6 +263,42 @@ public:
     */
     const AbstractProxyOutput * proxyOutput(const std::string & name) const;
 
+    /**
+    *  @brief
+    *    Get pipeline watchers
+    *
+    *  @return
+    *    List of connected pipeline watchers
+    */
+    const std::vector<PipelineWatcher *> & watchers() const;
+
+    /**
+    *  @brief
+    *    Add pipeline watcher
+    *
+    *  @param[in] watcher
+    *    Pipeline watcher (must NOT be null!)
+    */
+    void addWatcher(PipelineWatcher * watcher);
+
+    /**
+    *  @brief
+    *    Remove pipeline watcher
+    *
+    *  @param[in] watcher
+    *    Pipeline watcher (must NOT be null!)
+    */
+    void removeWatcher(PipelineWatcher * watcher);
+
+    /**
+    *  @brief
+    *    Promote pipeline event
+    *
+    *  @param[in] event
+    *    Pipeline event
+    */
+    void promotePipelineEvent(const PipelineEvent & event);
+
 
 protected:
     /**
@@ -401,6 +439,15 @@ protected:
     */
     virtual void onProcess(AbstractGLContext * context);
 
+    /**
+    *  @brief
+    *    Called when a pipeline event has occured
+    *
+    *  @param[in] event
+    *    Pipeline event
+    */
+    virtual void onPipelineEvent(const PipelineEvent & event);
+
 
 protected:
     ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
@@ -414,6 +461,8 @@ protected:
     std::unordered_map<std::string, AbstractOutput *>      m_outputsMap;      ///< Map of names and outputs
     std::vector<AbstractProxyOutput *>                     m_proxyOutputs;    ///< List of proxy outputs
     std::unordered_map<std::string, AbstractProxyOutput *> m_proxyOutputsMap; ///< Map of names and proxy outputs
+
+    std::vector<PipelineWatcher *> m_watchers;  ///< List of connected pipeline watchers
 };
 
 

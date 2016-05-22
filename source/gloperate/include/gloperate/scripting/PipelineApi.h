@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <vector>
+
 #include <cppexpose/reflection/Object.h>
 
 #include <gloperate/gloperate_api.h>
@@ -19,6 +21,7 @@ namespace gloperate
 
 class ViewerContext;
 class Stage;
+class PipelineApiWatcher;
 
 
 /**
@@ -53,6 +56,7 @@ protected:
     cppexpose::Variant getOutputs(const std::string & name);
     cppexpose::Variant getProxyOutputs(const std::string & name);
     std::string getValue(const std::string & path);
+    void registerWatcher(const cppexpose::Variant & func);
 
     // Helper functions
     Stage * getStage(const std::string & name);
@@ -60,7 +64,8 @@ protected:
 
 
 protected:
-    ViewerContext * m_viewerContext; ///< Viewer context (must NOT be null!)
+    ViewerContext                     * m_viewerContext; ///< Viewer context (must NOT be null!)
+    std::vector<PipelineApiWatcher *>   m_watchers;      ///< List of watchers for pipeline events
 };
 
 

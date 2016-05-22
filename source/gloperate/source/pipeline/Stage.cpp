@@ -4,6 +4,8 @@
 #include <algorithm>
 
 #include <gloperate/pipeline/Pipeline.h>
+#include <gloperate/pipeline/PipelineEvent.h>
+#include <gloperate/pipeline/PipelineWatcher.h>
 #include <gloperate/pipeline/AbstractInput.h>
 #include <gloperate/pipeline/AbstractParameter.h>
 #include <gloperate/pipeline/AbstractOutput.h>
@@ -115,6 +117,53 @@ const AbstractProxyOutput * Stage::proxyOutput(const std::string & name) const
     return m_proxyOutputsMap.at(name);
 }
 
+const std::vector<PipelineWatcher *> & Stage::watchers() const
+{
+    return m_watchers;
+}
+
+void Stage::addWatcher(PipelineWatcher * watcher)
+{
+    if (!watcher || std::find(m_watchers.begin(), m_watchers.end(), watcher) != m_watchers.end())
+    {
+        return;
+    }
+
+    m_watchers.push_back(watcher);
+}
+
+void Stage::removeWatcher(PipelineWatcher * watcher)
+{
+    if (!watcher)
+    {
+        return;
+    }
+
+    auto it = std::find(m_watchers.begin(), m_watchers.end(), watcher);
+    if (it != m_watchers.end())
+    {
+        m_watchers.erase(it);
+    }
+}
+
+void Stage::promotePipelineEvent(const PipelineEvent & event)
+{
+    // Inform the stage itself
+    onPipelineEvent(event);
+
+    // Inform registered pipeline watchers
+    for (auto watcher : m_watchers)
+    {
+        watcher->onPipelineEvent(event);
+    }
+
+    // Inform parent pipeline
+    if (m_parentPipeline)
+    {
+        m_parentPipeline->onPipelineEvent(event);
+    }
+}
+
 void Stage::registerInput(AbstractInput * input)
 {
     // Check parameters
@@ -130,6 +179,10 @@ void Stage::registerInput(AbstractInput * input)
 
     // Emit signal
     inputAdded(input);
+
+    promotePipelineEvent(
+        PipelineEvent(PipelineEvent::InputAdded, this, input)
+    );
 }
 
 void Stage::unregisterInput(AbstractInput * input)
@@ -147,7 +200,13 @@ void Stage::unregisterInput(AbstractInput * input)
         // Remove input
         m_inputs.erase(it);
         m_inputsMap.erase(input->name());
+
+        // Emit signal
         inputRemoved(input);
+
+        promotePipelineEvent(
+            PipelineEvent(PipelineEvent::InputRemoved, this, input)
+        );
     }
 }
 
@@ -166,6 +225,10 @@ void Stage::registerParameter(AbstractParameter * parameter)
 
     // Emit signal
     parameterAdded(parameter);
+
+    promotePipelineEvent(
+        PipelineEvent(PipelineEvent::ParameterAdded, this, parameter)
+    );
 }
 
 void Stage::unregisterParameter(AbstractParameter * parameter)
@@ -183,7 +246,13 @@ void Stage::unregisterParameter(AbstractParameter * parameter)
         // Remove parameter
         m_parameters.erase(it);
         m_parametersMap.erase(parameter->name());
+
+        // Emit signal
         parameterRemoved(parameter);
+
+        promotePipelineEvent(
+            PipelineEvent(PipelineEvent::ParameterRemoved, this, parameter)
+        );
     }
 }
 
@@ -202,6 +271,10 @@ void Stage::registerOutput(AbstractOutput * output)
 
     // Emit signal
     outputAdded(output);
+
+    promotePipelineEvent(
+        PipelineEvent(PipelineEvent::OutputAdded, this, output)
+    );
 }
 
 void Stage::unregisterOutput(AbstractOutput * output)
@@ -219,7 +292,13 @@ void Stage::unregisterOutput(AbstractOutput * output)
         // Remove output
         m_outputs.erase(it);
         m_outputsMap.erase(output->name());
+
+        // Emit signal
         outputRemoved(output);
+
+        promotePipelineEvent(
+            PipelineEvent(PipelineEvent::OutputRemoved, this, output)
+        );
     }
 }
 
@@ -238,6 +317,10 @@ void Stage::registerProxyOutput(AbstractProxyOutput * proxyOutput)
 
     // Emit signal
     proxyOutputAdded(proxyOutput);
+
+    promotePipelineEvent(
+        PipelineEvent(PipelineEvent::ProxyOutputAdded, this, proxyOutput)
+    );
 }
 
 void Stage::unregisterProxyOutput(AbstractProxyOutput * proxyOutput)
@@ -255,7 +338,13 @@ void Stage::unregisterProxyOutput(AbstractProxyOutput * proxyOutput)
         // Remove proxy output
         m_proxyOutputs.erase(it);
         m_proxyOutputsMap.erase(proxyOutput->name());
+
+        // Emit signal
         proxyOutputRemoved(proxyOutput);
+
+        promotePipelineEvent(
+            PipelineEvent(PipelineEvent::ProxyOutputRemoved, this, proxyOutput)
+        );
     }
 }
 
@@ -268,6 +357,10 @@ void Stage::onContextDeinit(AbstractGLContext *)
 }
 
 void Stage::onProcess(AbstractGLContext *)
+{
+}
+
+void Stage::onPipelineEvent(const PipelineEvent &)
 {
 }
 
