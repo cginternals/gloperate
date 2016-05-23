@@ -12,8 +12,7 @@ namespace gloperate
 TextureLoadStage::TextureLoadStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
 , filename(this, "filename")
-, tex     (this, "tex")
-, m_reloadTexture(false)
+, texture (this, "texture")
 {
 }
 
@@ -31,11 +30,14 @@ void TextureLoadStage::onContextDeinit(AbstractGLContext *)
 
 void TextureLoadStage::onProcess(AbstractGLContext *)
 {
-    if (!m_texture.get() || m_reloadTexture)
+    // Check if texture needs to be rebuilt
+    if (!texture.isValid())
     {
+        // Load texture
         loadTexture();
 
-        tex.setValue(m_texture.get());
+        // Update outputs
+        texture.setValue(m_texture.get());
     }
 }
 

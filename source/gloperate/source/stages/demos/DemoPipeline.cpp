@@ -51,7 +51,7 @@ DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & na
     m_triangleStage->deviceViewport  << this->deviceViewport;
     m_triangleStage->targetFBO       << m_framebufferStage->fbo;
     m_triangleStage->backgroundColor << this->backgroundColor;
-    m_triangleStage->texture         << m_textureLoadStage->tex;
+    m_triangleStage->texture         << m_textureLoadStage->texture;
     m_triangleStage->angle           << m_timerStage->virtualTime;
 
 /*

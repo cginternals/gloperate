@@ -32,12 +32,15 @@ void ProceduralTextureStage::onContextDeinit(AbstractGLContext *)
 
 void ProceduralTextureStage::onProcess(AbstractGLContext *)
 {
-    if (!m_texture.get())
+    // Check if texture needs to be rebuilt
+    if (!texture.isValid())
     {
+        // Create texture
         createTexture();
-    }
 
-    texture.setValue(m_texture.get());
+        // Update outputs
+        texture.setValue(m_texture.get());
+    }
 }
 
 void ProceduralTextureStage::createTexture()

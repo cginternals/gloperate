@@ -34,9 +34,16 @@ void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
 
 void BasicFramebufferStage::onProcess(AbstractGLContext *)
 {
-    // Check if FBO has to be rebuilt
-    if (!m_fbo.get()) {
+    // Check if FBO needs to be rebuilt
+    if (!fbo.isValid())
+    {
+        // Rebuild FBO (and textures)
         rebuildFBO();
+
+        // Update outputs
+        this->fbo.setValue(m_fbo);
+        this->colorTexture.setValue(m_texColor);
+        this->depthTexture.setValue(m_texDepth);
     }
 }
 
@@ -58,11 +65,6 @@ void BasicFramebufferStage::rebuildFBO()
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
     m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_texColor.get());
     m_fbo->attachTexture(gl::GL_DEPTH_ATTACHMENT,  m_texDepth.get());
-
-    // Update outputs
-    this->fbo.setValue(m_fbo);
-    this->colorTexture.setValue(m_texColor);
-    this->depthTexture.setValue(m_texDepth);
 }
 
 

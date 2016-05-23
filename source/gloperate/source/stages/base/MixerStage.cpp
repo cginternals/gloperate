@@ -136,6 +136,18 @@ void MixerStage::onProcess(AbstractGLContext *)
     rendered.setValue(true);
 }
 
+void MixerStage::onInputValueChanged(AbstractSlot * slot)
+{
+    // Rebuild program when shader files have changed
+    if (slot == &vertexShader || slot == &fragmentShader)
+    {
+        m_rebuildProgram = true;
+    }
+
+    // Invalidate all outputs
+    invalidateOutputs();
+}
+
 void MixerStage::buildGeometry()
 {
     // Static vertices

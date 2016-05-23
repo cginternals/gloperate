@@ -83,8 +83,6 @@ DemoStage::~DemoStage()
 
 void DemoStage::onContextInit(AbstractGLContext *)
 {
-    globjects::warning() << "onContextInit()";
-
     globjects::init();
 
     createAndSetupCamera();

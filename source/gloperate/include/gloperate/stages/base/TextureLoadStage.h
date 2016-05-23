@@ -32,7 +32,7 @@ public:
     Parameter<std::string>       filename; ///< Texture filename
 
     // Outputs
-    Output<globjects::Texture *> tex;  ///< Texture object
+    Output<globjects::Texture *> texture;  ///< Texture object
 
 
 public:
@@ -68,8 +68,7 @@ protected:
 
 protected:
     // Data
-    globjects::ref_ptr<globjects::Texture> m_texture;       ///< Texture
-    bool                                   m_reloadTexture; ///< 'true' if texture needs to be reloaded
+    globjects::ref_ptr<globjects::Texture> m_texture; ///< Texture
 };
 
 
