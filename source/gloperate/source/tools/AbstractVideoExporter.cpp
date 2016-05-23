@@ -10,4 +10,9 @@ AbstractVideoExporter::~AbstractVideoExporter()
 {
 }
 
+int AbstractVideoExporter::progress() const
+{
+    return 0;
+}
+
 } // namespace gloperate

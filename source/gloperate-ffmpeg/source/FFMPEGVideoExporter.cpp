@@ -20,6 +20,7 @@ namespace gloperate_ffmpeg
 
 
 FFMPEGVideoExporter::FFMPEGVideoExporter()
+: m_progress(0)
 {
 }
 
@@ -34,6 +35,7 @@ FFMPEGVideoExporter::FFMPEGVideoExporter(const std::string & filename, RenderSur
 , m_width(width)
 , m_height(height)
 , m_timeDelta(1.f / static_cast<float>(fps))
+, m_progress(0)
 {
 }
 
@@ -81,6 +83,8 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
         gl::glReadPixels(0, 0, m_width, m_height, image.format(), image.type(), image.data());
     
         m_videoEncoder->putFrame(image);
+
+        m_progress = i*100/length;
         progress(i, length);
     }
 
@@ -92,8 +96,15 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
     }
 
     m_surface->onViewport(deviceViewport, virtualViewport);
+
+    progress(1, 1);
+    m_progress = 100;
 }
 
+int FFMPEGVideoExporter::progress() const
+{
+    return m_progress;
+}
 
 
 } // namespace gloperate_ffmpeg

@@ -28,6 +28,7 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 {
     addFunction("createVideo", this, &RenderSurface::createVideo);
     addFunction("exportImage", this, &RenderSurface::exportImage);
+    addFunction("exportProgress", this, &RenderSurface::exportProgress);
 
     if (m_viewerContext->scriptEnvironment())
     {
@@ -94,6 +95,13 @@ void RenderSurface::exportImage(std::string filename, int width, int height, int
 {
     m_imageExporter->init(filename, width, height, renderIterations);
     m_requestImage = true;
+}
+
+int RenderSurface::exportProgress()
+{
+    if (!m_video) return 0;
+
+    return m_video->progress();
 }
 
 glm::vec4 RenderSurface::deviceViewport()

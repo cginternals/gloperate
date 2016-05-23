@@ -1,7 +1,8 @@
 import QtQuick 2.2
-import QtQuick.Controls 1.2 as Controls
+import QtQuick.Controls 1.4 as Controls
 import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
+import QtQml 2.2
 import gloperate.base 1.0
 
 Background {
@@ -110,6 +111,15 @@ Background {
             }
         }
 
+        Controls.ProgressBar {
+            id: progressBar
+            Layout.fillWidth: true
+
+            minimumValue: 0
+            maximumValue: 100
+            value: 0
+        }
+
         DialogButton {
             text: "Record Video"
             anchors.right: parent.right
@@ -117,8 +127,29 @@ Background {
             icon: '0021-video-camera.png'
 
             onClicked: {
-                gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText);
+                progressTimer.restart();
 
+                gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText);
+            }
+        }
+    }
+
+    Timer {
+        id: progressTimer
+
+        interval: 50
+        repeat: true
+        triggeredOnStart: true
+
+        property int progress: 0
+
+        onTriggered: {
+            progress = gloperate.surface0.exportProgress();
+            progressBar.value = progress;
+            print(progress);
+
+            if (progress >= 100) {
+                stop();
                 close();
             }
         }

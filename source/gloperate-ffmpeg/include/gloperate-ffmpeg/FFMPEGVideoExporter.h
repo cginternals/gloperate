@@ -100,6 +100,15 @@ public:
     */
     virtual void createVideo(std::function<void(int, int)> progress, bool glContextActive = false) override;
 
+    /**
+    *  @brief
+    *    Get progress in percent, ranging from 0 (no progress) to 100 (complete)
+    *
+    *  @return
+    *    Progress in percent
+    */
+    virtual int progress() const override;
+
 
 protected:
     globjects::ref_ptr<VideoEncoder>             m_videoEncoder;
@@ -112,6 +121,7 @@ protected:
     uint                                         m_width;
     uint                                         m_height;
     float                                        m_timeDelta;
+    int                                          m_progress;
 };
 
 

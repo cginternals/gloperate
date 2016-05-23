@@ -37,6 +37,11 @@ public:
     *  @brief
     */
     virtual void createVideo(std::function<void(int, int)> progress, bool glContextActive) = 0;
+
+    /**
+    *  @brief
+    */
+    virtual int progress() const;
 };
 
 

@@ -85,6 +85,8 @@ public:
 
     void exportImage(std::string filename, int width, int height, int renderIterations);
 
+    int exportProgress();
+
 
     // Virtual Surface functions
     virtual glm::vec4 deviceViewport() override;
