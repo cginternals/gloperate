@@ -35,6 +35,27 @@ Background
             }
         }
 
+        Row
+        {
+            id: topBar
+
+            anchors.top:     parent.top
+            anchors.left:    parent.left
+            anchors.margins: Ui.style.pagePadding
+            spacing:         Ui.style.pageSpacing
+
+            Button
+            {
+                icon: '0133-spinner11.png'
+                text: 'Update'
+
+                onClicked:
+                {
+                    pipeline.update();
+                }
+            }
+        }
+
         Stage
         {
             id: pipeline
@@ -62,6 +83,7 @@ Background
     //        Check if this happens also with qml-only operations,
     //        or if something in e.g. the qml-cppexpose-bridge
     //        causes a memory leak
+    /*
     Timer
     {
         interval: 200
@@ -73,4 +95,5 @@ Background
             pipeline.update();
         }
     }
+    */
 }

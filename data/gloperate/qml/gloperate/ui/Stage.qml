@@ -76,7 +76,7 @@ BaseItem
 
             model: item.inputs
 
-            delegate: Slot
+            delegate: EditableSlot
             {
                 Layout.fillWidth: true
 
@@ -88,6 +88,13 @@ BaseItem
                 showValue: item.inputs[index].hasOwnData
                 valid:     item.inputs[index].valid
                 required:  item.inputs[index].required
+
+                onValueEdited:
+                {
+                    var source = item.targetStage + '.' + name;
+                    console.log('SET ' + source + ' = ' + value);
+                    gloperate.pipeline.setValue(source, value);
+                }
             }
         }
     }

@@ -13,3 +13,4 @@ PipelineEditor  1.0 PipelineEditor.qml
 Pipeline        1.0 Pipeline.qml
 Stage           1.0 Stage.qml
 Slot            1.0 Slot.qml
+EditableSlot    1.0 EditableSlot.qml

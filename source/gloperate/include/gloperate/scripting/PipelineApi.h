@@ -57,6 +57,7 @@ protected:
     cppexpose::Variant getOutputs(const std::string & name);
     cppexpose::Variant getProxyOutputs(const std::string & name);
     std::string getValue(const std::string & path);
+    void setValue(const std::string & path, const std::string & value);
     bool isValid(const std::string & path);
     bool isRequired(const std::string & path);
     void registerWatcher(const cppexpose::Variant & func);

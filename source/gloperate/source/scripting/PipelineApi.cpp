@@ -30,6 +30,7 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
     addFunction("getOutputs",      this, &PipelineApi::getOutputs);
     addFunction("getProxyOutputs", this, &PipelineApi::getProxyOutputs);
     addFunction("getValue",        this, &PipelineApi::getValue);
+    addFunction("setValue",        this, &PipelineApi::setValue);
     addFunction("isValid",         this, &PipelineApi::isValid);
     addFunction("isRequired",      this, &PipelineApi::isRequired);
     addFunction("registerWatcher", this, &PipelineApi::registerWatcher);
@@ -134,6 +135,14 @@ std::string PipelineApi::getValue(const std::string & path)
         return slot->toString();
     } else {
         return "";
+    }
+}
+
+void PipelineApi::setValue(const std::string & path, const std::string & value)
+{
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        slot->fromString(value);
     }
 }
 
