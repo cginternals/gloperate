@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#include <cppassist/logging/logging.h>
+
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/PipelineEvent.h>
 #include <gloperate/pipeline/PipelineWatcher.h>
@@ -10,6 +12,9 @@
 #include <gloperate/pipeline/AbstractParameter.h>
 #include <gloperate/pipeline/AbstractOutput.h>
 #include <gloperate/pipeline/AbstractProxyOutput.h>
+
+
+using namespace cppassist;
 
 
 namespace gloperate
@@ -75,6 +80,14 @@ void Stage::deinitContext(AbstractGLContext * context)
 void Stage::process(AbstractGLContext * context)
 {
     onProcess(context);
+}
+
+void Stage::invalidateOutputs()
+{
+    for (auto output : m_outputs)
+    {
+        output->invalidate();
+    }
 }
 
 const std::vector<AbstractInput *> & Stage::inputs() const
@@ -360,8 +373,33 @@ void Stage::onProcess(AbstractGLContext *)
 {
 }
 
-void Stage::onPipelineEvent(const PipelineEvent &)
+void Stage::onInputValueChanged(AbstractSlot *)
 {
+    // Invalidate all outputs
+    invalidateOutputs();
+}
+
+void Stage::onPipelineEvent(const PipelineEvent & event)
+{
+    // Ignore events from sub-stages
+    if (event.stage() != this)
+    {
+        return;
+    }
+
+    // Value of a slot has changed
+    if (event.type() == PipelineEvent::ValueChanged)
+    {
+        // Get slot
+        AbstractSlot * slot = event.slot();
+
+        // Check if this is either an input or parameter
+        if (std::find(m_inputs.begin(), m_inputs.end(), slot) != m_inputs.end() ||
+            std::find(m_parameters.begin(), m_parameters.end(), slot) != m_parameters.end())
+        {
+            onInputValueChanged(slot);
+        }
+    }
 }
 
 

@@ -39,6 +39,21 @@ public:
     *    Destructor
     */
     virtual ~Output();
+
+    // Virtual AbstractOutput interface
+    virtual void invalidate() override;
+
+    // Virtual AbstractSlot interface
+    virtual bool isValid() const override;
+
+
+protected:
+    // Virtual Typed<T> interface
+    virtual void onValueChanged(const T & value) override;
+
+
+protected:
+    bool m_valid; ///< Does the output have a valid value?
 };
 
 

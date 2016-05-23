@@ -67,9 +67,6 @@ public:
     const T * operator->() const;
     //@}
 
-    // Virtual AbstractSlot interface
-    virtual bool isValid() const override;
-
 
 protected:
     // Virtual Typed<T> interface

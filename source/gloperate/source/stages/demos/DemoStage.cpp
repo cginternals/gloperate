@@ -71,7 +71,7 @@ DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name, Pi
         m_time += *timeDelta;
 
         // Redraw
-        invalidateOutput();
+        invalidateOutputs();
     });
 
     m_timer.start(0.0f);
@@ -79,11 +79,6 @@ DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name, Pi
 
 DemoStage::~DemoStage()
 {
-}
-
-void DemoStage::invalidateOutput()
-{
-    rendered.setValue(false);
 }
 
 void DemoStage::onContextInit(AbstractGLContext *)

@@ -17,9 +17,9 @@ BaseItem
     property Component stageDelegate: null
     property string    targetStage:   ''
 
-    property string name:      ''
-    property var inputs:       []
-    property var outputs:      []
+    property string name: ''
+    property var inputs:  []
+    property var outputs: []
 
     implicitWidth:  inputs.implicitWidth + outputs.implicitWidth + pipeline.implicitWidth + 2 * Ui.style.panelPadding
     implicitHeight: label.implicitHeight + Math.max(Math.max(inputs.implicitHeight, outputs.implicitHeight), pipeline.implicitHeight) + 6 * Ui.style.panelPadding
@@ -72,7 +72,9 @@ BaseItem
 
         Repeater
         {
-            model: item.inputs.length
+            id: inputsRepeater
+
+            model: item.inputs
 
             delegate: Slot
             {
@@ -124,7 +126,9 @@ BaseItem
 
         Repeater
         {
-            model: item.outputs.length
+            id: outputsRepeater
+
+            model: item.outputs
 
             delegate: Slot
             {
@@ -216,5 +220,7 @@ BaseItem
         }
 
         item.outputs = outputs;
+
+        realPipeline.update();
     }
 }

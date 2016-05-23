@@ -60,12 +60,6 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Mark output as invalid (causing viewer to repaint the stage)
-    */
-    void invalidateOutput();
-
     // Virtual Stage functions
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;

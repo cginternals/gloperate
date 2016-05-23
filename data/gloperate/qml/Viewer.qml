@@ -11,12 +11,16 @@ Page
 {
     id: page
 
-    focus: true
+    // Stage
+    property string stage: 'DemoPipeline'
+//  property string stage: 'DemoStage'
 
     // UI status
     property real uiStatus: 1.0
 
     readonly property bool uiEnabled: uiStatus > 0.0
+
+    focus: true
 
     Behavior on uiStatus
     {
@@ -213,7 +217,7 @@ Page
         anchors.fill: main
         z:            -1
 
-        stage: 'DemoPipeline'
+        stage: page.stage
     }
 
     // Settings dialog
@@ -291,6 +295,8 @@ Page
         ApplicationWindow
         {
             title:   "Pipeline"
+            width:   1024
+            height:  800
             visible: true
 
             PipelineEditor

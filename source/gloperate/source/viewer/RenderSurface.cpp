@@ -21,9 +21,9 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 {
-    m_viewer.rendered.valueChanged.connect([this] (bool rendered)
+    m_viewer.rendered.valueChanged.connect([this] (bool)
     {
-        if (!rendered) {
+        if (!m_viewer.rendered.isValid()) {
             this->redraw();
         }
     });

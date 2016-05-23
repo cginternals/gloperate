@@ -20,6 +20,7 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
+class AbstractSlot;
 class AbstractInput;
 class AbstractParameter;
 class AbstractOutput;
@@ -178,6 +179,12 @@ public:
     *  @see onProcess
     */
     void process(AbstractGLContext * context);
+
+    /**
+    *  @brief
+    *    Invalidate all outputs
+    */
+    void invalidateOutputs();
 
     /**
     *  @brief
@@ -441,10 +448,35 @@ protected:
 
     /**
     *  @brief
+    *    Called when an input value has changed
+    *
+    *  @param[in] slot
+    *    Data slot (either input or parameter)
+    *
+    *  @remarks
+    *    The default implementation invalidates all outputs whenever
+    *    an input and parameter has been changed. This method can
+    *    be overridden to refine that logic, e.g., invalidate only
+    *    certain outputs on certain inputs.
+    *
+    *    IMPORTANT: Do not make any OpenGL calls in this function,
+    *    because there is no OpenGL context active at the time this
+    *    function is called. Use it only for invalidating outputs and
+    *    implement everything else in onProcess().
+    */
+    virtual void onInputValueChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
     *    Called when a pipeline event has occured
     *
     *  @param[in] event
     *    Pipeline event
+    *
+    *  @remarks
+    *    The default implementation takes care of promoting changes
+    *    through the pipeline. Therefore, if this method is overridden,
+    *    make sure to call the base implementation.
     */
     virtual void onPipelineEvent(const PipelineEvent & event);
 

@@ -78,11 +78,6 @@ DemoTriangleStage::~DemoTriangleStage()
 {
 }
 
-void DemoTriangleStage::invalidateOutput()
-{
-    rendered.setValue(false);
-}
-
 void DemoTriangleStage::onContextInit(AbstractGLContext *)
 {
     setupGeometry();
@@ -148,10 +143,7 @@ void DemoTriangleStage::onProcess(AbstractGLContext *)
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    //rendered.setValue(true);
-
-    // Trigger immediate redraw
-    invalidateOutput();
+    rendered.setValue(true);
 }
 
 void DemoTriangleStage::setupGeometry()

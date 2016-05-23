@@ -58,5 +58,9 @@ BaseItem
         }
 
         repeater.model = lst;
+
+        for (var i=0; i<row.children.length; i++) {
+            row.children[i].update();
+        }
     }
 }

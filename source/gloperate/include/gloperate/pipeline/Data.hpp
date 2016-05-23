@@ -47,12 +47,6 @@ const T * Data<T, BASE>::operator->() const
 }
 
 template <typename T, typename BASE>
-bool Data<T, BASE>::isValid() const
-{
-    return true;
-}
-
-template <typename T, typename BASE>
 void Data<T, BASE>::onValueChanged(const T & value)
 {
     this->valueChanged(value);

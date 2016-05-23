@@ -32,7 +32,7 @@ public:
     Parameter<std::string>       filename; ///< Texture filename
 
     // Outputs
-    Output<globjects::Texture *> texture;  ///< Texture object
+    Output<globjects::Texture *> tex;  ///< Texture object
 
 
 public:

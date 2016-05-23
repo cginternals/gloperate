@@ -96,9 +96,10 @@ void Pipeline::onProcess(AbstractGLContext * context)
     }
 }
 
-void Pipeline::onPipelineEvent(const PipelineEvent &)
+void Pipeline::onInputValueChanged(AbstractSlot *)
 {
-    // [TODO]
+    // The pipeline does not need to react on input value changes
+    // as they should be connected to stages inside the pipeline
 }
 
 
