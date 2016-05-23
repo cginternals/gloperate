@@ -98,8 +98,12 @@ void Pipeline::onProcess(AbstractGLContext * context)
 
 void Pipeline::onInputValueChanged(AbstractSlot *)
 {
-    // The pipeline does not need to react on input value changes
-    // as they should be connected to stages inside the pipeline
+    // Not necessary for pipelines (handled by inner connections)
+}
+
+void Pipeline::onOutputRequiredChanged(AbstractSlot *)
+{
+    // Not necessary for pipelines (handled by inner connections)
 }
 
 

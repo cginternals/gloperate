@@ -60,6 +60,7 @@ protected:
     void setValue(const std::string & path, const std::string & value);
     bool isValid(const std::string & path);
     bool isRequired(const std::string & path);
+    void setRequired(const std::string & path, bool required);
     void registerWatcher(const cppexpose::Variant & func);
 
     // Helper functions

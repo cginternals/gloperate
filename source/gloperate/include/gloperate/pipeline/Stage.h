@@ -468,6 +468,26 @@ protected:
 
     /**
     *  @brief
+    *    Called when an output value's required-state has changed
+    *
+    *  @param[in] slot
+    *    Output slot (either input or parameter)
+    *
+    *  @remarks
+    *    The default implementation is to require all input slots
+    *    if any output slot is required. This method can be
+    *    overridden to refine that logic, e.g., require only
+    *    certain inputs on certain required outputs.
+    *
+    *    IMPORTANT: Do not make any OpenGL calls in this function,
+    *    because there is no OpenGL context active at the time this
+    *    function is called. Use it only for invalidating outputs and
+    *    implement everything else in onProcess().
+    */
+    virtual void onOutputRequiredChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
     *    Called when a pipeline event has occured
     *
     *  @param[in] event

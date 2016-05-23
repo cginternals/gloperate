@@ -21,6 +21,8 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 {
+    // Mark render output as required and redraw when it is invalidated
+    m_viewer.rendered.setRequired(true);
     m_viewer.rendered.valueChanged.connect([this] (bool)
     {
         if (!m_viewer.rendered.isValid()) {

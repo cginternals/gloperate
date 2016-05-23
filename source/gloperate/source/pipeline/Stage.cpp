@@ -379,6 +379,27 @@ void Stage::onInputValueChanged(AbstractSlot *)
     invalidateOutputs();
 }
 
+void Stage::onOutputRequiredChanged(AbstractSlot *)
+{
+    // By default, assume nothing is required
+    bool required = false;
+
+    // Check if any output is required
+    for (auto output : m_outputs)
+    {
+        if (output->isRequired()) {
+            required = true;
+            break;
+        }
+    }
+
+    // Update all inputs
+    for (auto input : m_inputs)
+    {
+        input->setRequired(required);
+    }
+}
+
 void Stage::onPipelineEvent(const PipelineEvent & event)
 {
     // Ignore events from sub-stages
@@ -398,6 +419,19 @@ void Stage::onPipelineEvent(const PipelineEvent & event)
             std::find(m_parameters.begin(), m_parameters.end(), slot) != m_parameters.end())
         {
             onInputValueChanged(slot);
+        }
+    }
+
+    // Required-state of a slot has changed
+    if (event.type() == PipelineEvent::RequiredChanged)
+    {
+        // Get slot
+        AbstractSlot * slot = event.slot();
+
+        // Check if this is an output
+        if (std::find(m_outputs.begin(), m_outputs.end(), slot) != m_outputs.end())
+        {
+            onOutputRequiredChanged(slot);
         }
     }
 }

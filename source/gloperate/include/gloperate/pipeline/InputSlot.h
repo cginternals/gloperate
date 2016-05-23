@@ -169,6 +169,7 @@ public:
 
     // Virtual AbstractSlot interface
     virtual bool isValid() const override;
+    virtual void onRequiredChanged() override;
 
     // Virtual AbstractProperty interface
     virtual bool isGroup() const override;
@@ -177,6 +178,10 @@ public:
 protected:
     // Virtual Typed<T> interface
     virtual void onValueChanged(const T & value) override;
+
+
+protected:
+    void promoteRequired();
 
 
 protected:

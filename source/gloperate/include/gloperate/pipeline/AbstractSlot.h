@@ -121,6 +121,12 @@ public:
     */
     virtual bool isValid() const = 0;
 
+    /**
+    *  @brief
+    *    Called when required-flag has been changed
+    */
+    virtual void onRequiredChanged();
+
 
 protected:
     SlotType   m_slotType; ///< Slot type

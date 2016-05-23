@@ -50,6 +50,7 @@ bool InputSlot<T, BASE>::connect(Input<T> * source)
 
     // Emit events
     this->connectionChanged();
+    this->promoteRequired();
     this->onValueChanged(m_source.input->value());
 
     // Success
@@ -76,6 +77,7 @@ bool InputSlot<T, BASE>::connect(Parameter<T> * source)
 
     // Emit events
     this->connectionChanged();
+    this->promoteRequired();
     this->onValueChanged(m_source.parameter->value());
 
     // Success
@@ -102,6 +104,7 @@ bool InputSlot<T, BASE>::connect(Output<T> * source)
 
     // Emit events
     this->connectionChanged();
+    this->promoteRequired();
     this->onValueChanged(m_source.output->value());
 
     // Success
@@ -128,6 +131,7 @@ bool InputSlot<T, BASE>::connect(ProxyOutput<T> * source)
 
     // Emit events
     this->connectionChanged();
+    this->promoteRequired();
     this->onValueChanged(m_source.proxyOutput->value());
 
     // Success
@@ -301,6 +305,14 @@ bool InputSlot<T, BASE>::isValid() const
 }
 
 template <typename T, typename BASE>
+void InputSlot<T, BASE>::onRequiredChanged()
+{
+    promoteRequired();
+
+    AbstractSlot::onRequiredChanged();
+}
+
+template <typename T, typename BASE>
 bool InputSlot<T, BASE>::isGroup() const
 {
     return false;
@@ -314,6 +326,18 @@ void InputSlot<T, BASE>::onValueChanged(const T & value)
     this->m_owner->promotePipelineEvent(
         PipelineEvent(PipelineEvent::ValueChanged, this->m_owner, this)
     );
+}
+
+template <typename T, typename BASE>
+void InputSlot<T, BASE>::promoteRequired()
+{
+    switch (m_sourceType) {
+        case SlotType::Input:       m_source.input->setRequired(this->m_required); break;
+        case SlotType::Parameter:   m_source.parameter->setRequired(this->m_required); break;
+        case SlotType::Output:      m_source.output->setRequired(this->m_required); break;
+        case SlotType::ProxyOutput: m_source.proxyOutput->setRequired(this->m_required); break;
+        default:                    break;
+    }
 }
 
 

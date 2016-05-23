@@ -33,6 +33,7 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
     addFunction("setValue",        this, &PipelineApi::setValue);
     addFunction("isValid",         this, &PipelineApi::isValid);
     addFunction("isRequired",      this, &PipelineApi::isRequired);
+    addFunction("setRequired",     this, &PipelineApi::setRequired);
     addFunction("registerWatcher", this, &PipelineApi::registerWatcher);
 }
 
@@ -163,6 +164,14 @@ bool PipelineApi::isRequired(const std::string & path)
         return slot->isRequired();
     } else {
         return false;
+    }
+}
+
+void PipelineApi::setRequired(const std::string & path, bool required)
+{
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        return slot->setRequired(required);
     }
 }
 

@@ -112,7 +112,8 @@ protected:
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
     virtual void onProcess(AbstractGLContext * context) override;
-    virtual void onInputValueChanged(AbstractSlot * slot);
+    virtual void onInputValueChanged(AbstractSlot * slot) override;
+    virtual void onOutputRequiredChanged(AbstractSlot * slot) override;
 
 
 protected:

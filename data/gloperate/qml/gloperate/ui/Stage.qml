@@ -92,8 +92,9 @@ BaseItem
                 onValueEdited:
                 {
                     var source = item.targetStage + '.' + name;
-                    console.log('SET ' + source + ' = ' + value);
                     gloperate.pipeline.setValue(source, value);
+
+                    item.update();
                 }
             }
         }
@@ -148,6 +149,14 @@ BaseItem
                 showValue: item.outputs[index].hasOwnData
                 valid:     item.outputs[index].valid
                 required:  item.outputs[index].required
+
+                onClicked:
+                {
+                    var source = item.targetStage + '.' + name;
+                    gloperate.pipeline.setRequired(source, !required);
+
+                    item.update();
+                }
             }
         }
     }

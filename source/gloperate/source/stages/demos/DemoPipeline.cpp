@@ -70,7 +70,7 @@ DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & na
     m_splitStage->texture2  << m_proceduralTextureStage->texture;
 
     // Outputs
-    this->rendered << m_triangleStage->rendered;
+    this->rendered << m_splitStage->rendered;
 }
 
 DemoPipeline::~DemoPipeline()

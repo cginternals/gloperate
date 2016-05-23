@@ -13,6 +13,8 @@ BaseItem
 {
     id: item
 
+    signal clicked();
+
     property string name:      'Slot'
     property string value:     ''
     property bool   switched:  false
@@ -105,5 +107,15 @@ BaseItem
         radius:       Ui.style.pipelineConnectorSize / 2.0
         border.color: Ui.style.pipelineLineColor
         border.width: Ui.style.pipelineLineWidth
+    }
+
+    MouseArea
+    {
+        anchors.fill: parent
+
+        onClicked:
+        {
+            item.clicked();
+        }
     }
 }
