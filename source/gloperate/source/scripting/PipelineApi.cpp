@@ -8,6 +8,7 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/AbstractSlot.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractData.h>
 #include <gloperate/scripting/PipelineApiWatcher.h>
@@ -29,6 +30,8 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
     addFunction("getOutputs",      this, &PipelineApi::getOutputs);
     addFunction("getProxyOutputs", this, &PipelineApi::getProxyOutputs);
     addFunction("getValue",        this, &PipelineApi::getValue);
+    addFunction("isValid",         this, &PipelineApi::isValid);
+    addFunction("isRequired",      this, &PipelineApi::isRequired);
     addFunction("registerWatcher", this, &PipelineApi::registerWatcher);
 }
 
@@ -126,11 +129,31 @@ cppexpose::Variant PipelineApi::getProxyOutputs(const std::string & name)
 
 std::string PipelineApi::getValue(const std::string & path)
 {
-    cppexpose::AbstractProperty * property = getProperty(path);
-    if (property) {
-        return property->toString();
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        return slot->toString();
     } else {
         return "";
+    }
+}
+
+bool PipelineApi::isValid(const std::string & path)
+{
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        return slot->isValid();
+    } else {
+        return false;
+    }
+}
+
+bool PipelineApi::isRequired(const std::string & path)
+{
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        return slot->isRequired();
+    } else {
+        return false;
     }
 }
 
@@ -201,7 +224,7 @@ Stage * PipelineApi::getStage(const std::string & name)
     return stage;
 }
 
-cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
+AbstractSlot * PipelineApi::getSlot(const std::string & name)
 {
     // Get render surface
     if (m_viewerContext->surfaces().size() == 0) {
@@ -231,7 +254,9 @@ cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
         // If this is the last token, return property from current stage
         if (i == names.size() - 1)
         {
-            return stage->property(subname);
+            AbstractProperty * property = stage->property(subname);
+            AbstractSlot * slot = property ? static_cast<AbstractSlot *>(property) : nullptr;
+            return slot;
         }
 
         // Get sub-stage

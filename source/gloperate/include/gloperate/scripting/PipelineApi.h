@@ -22,6 +22,7 @@ namespace gloperate
 class ViewerContext;
 class Stage;
 class PipelineApiWatcher;
+class AbstractSlot;
 
 
 /**
@@ -56,11 +57,13 @@ protected:
     cppexpose::Variant getOutputs(const std::string & name);
     cppexpose::Variant getProxyOutputs(const std::string & name);
     std::string getValue(const std::string & path);
+    bool isValid(const std::string & path);
+    bool isRequired(const std::string & path);
     void registerWatcher(const cppexpose::Variant & func);
 
     // Helper functions
     Stage * getStage(const std::string & name);
-    cppexpose::AbstractProperty * getProperty(const std::string & name);
+    AbstractSlot * getSlot(const std::string & name);
 
 
 protected:

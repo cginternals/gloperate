@@ -167,6 +167,9 @@ public:
     virtual const T * ptr() const override;
     virtual T * ptr() override;
 
+    // Virtual AbstractSlot interface
+    virtual bool isValid() const override;
+
     // Virtual AbstractProperty interface
     virtual bool isGroup() const override;
 

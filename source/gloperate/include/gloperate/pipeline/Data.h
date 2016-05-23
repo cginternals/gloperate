@@ -66,6 +66,9 @@ public:
     T * operator->();
     const T * operator->() const;
     //@}
+
+    // Virtual AbstractSlot interface
+    virtual bool isValid() const override;
 };
 
 

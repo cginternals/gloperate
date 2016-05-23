@@ -44,5 +44,11 @@ const T * Data<T, BASE>::operator->() const
     return this->ptr();
 }
 
+template <typename T, typename BASE>
+bool Data<T, BASE>::isValid() const
+{
+    return true;
+}
+
 
 } // namespace gloperate

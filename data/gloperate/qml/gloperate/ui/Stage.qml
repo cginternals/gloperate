@@ -84,6 +84,8 @@ BaseItem
                 hasInput:  !item.inputs[index].hasOwnData
                 hasOutput: true
                 showValue: item.inputs[index].hasOwnData
+                valid:     item.inputs[index].valid
+                required:  item.inputs[index].required
             }
         }
     }
@@ -133,6 +135,8 @@ BaseItem
                 hasInput:  !item.outputs[index].hasOwnData
                 hasOutput: true
                 showValue: item.outputs[index].hasOwnData
+                valid:     item.outputs[index].valid
+                required:  item.outputs[index].required
             }
         }
     }
@@ -158,6 +162,8 @@ BaseItem
             inputs.push({
                 name:       name,
                 value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                valid:      gloperate.pipeline.isValid(item.targetStage + '.' + name),
+                required:   gloperate.pipeline.isRequired(item.targetStage + '.' + name),
                 hasOwnData: false
             });
         }
@@ -168,8 +174,10 @@ BaseItem
             var name = parameterNames[i];
 
             inputs.push({
-                name:      name,
-                value:     gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                name:       name,
+                value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                valid:      gloperate.pipeline.isValid(item.targetStage + '.' + name),
+                required:   gloperate.pipeline.isRequired(item.targetStage + '.' + name),
                 hasOwnData: true
             });
         }
@@ -187,6 +195,8 @@ BaseItem
             outputs.push({
                 name:       name,
                 value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                valid:      gloperate.pipeline.isValid(item.targetStage + '.' + name),
+                required:   gloperate.pipeline.isRequired(item.targetStage + '.' + name),
                 hasOwnData: true
             });
         }
@@ -199,6 +209,8 @@ BaseItem
             outputs.push({
                 name:       name,
                 value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
+                valid:      gloperate.pipeline.isValid(item.targetStage + '.' + name),
+                required:   gloperate.pipeline.isRequired(item.targetStage + '.' + name),
                 hasOwnData: false
             });
         }

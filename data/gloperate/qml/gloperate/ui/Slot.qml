@@ -19,6 +19,8 @@ BaseItem
     property bool   hasInput:  true
     property bool   hasOutput: true
     property bool   showValue: false
+    property bool   valid:     true
+    property bool   required:  false
 
     implicitWidth:  body.implicitWidth + Ui.style.pipelineConnectorSize
     implicitHeight: body.implicitHeight
@@ -53,10 +55,10 @@ BaseItem
         implicitWidth:  labelName.implicitWidth + (labelValue.visible ? labelValue.implicitWidth : 0) + Ui.style.pipelineConnectorSize + 4 * Ui.style.ctrlPadding
         implicitHeight: Ui.style.pipelineSlotSize
 
-        color:        Ui.style.pipelineSlotColor
+        color:        item.valid ? Ui.style.pipelineSlotColor : Ui.style.pipelineSlotInvalidColor
         radius:       Ui.style.pipelineStageRadius
-        border.color: Ui.style.pipelineLineColor
-        border.width: Ui.style.pipelineLineWidth
+        border.color: item.required ? Ui.style.pipelineSlotRequiredColor : Ui.style.pipelineLineColor
+        border.width: item.required ? Ui.style.pipelineSlotRequiredBorder : Ui.style.pipelineLineWidth
 
         Label
         {

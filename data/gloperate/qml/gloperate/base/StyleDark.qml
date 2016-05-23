@@ -140,6 +140,9 @@ Item
     property color pipelineLineColor:          '#000000'        // Color of lines, connections, etc.
     property int   pipelineLineWidth:          borderWidth      // Width of lines
     property color pipelineSlotColor:          '#dddddd'        // Background color of slots
+    property color pipelineSlotInvalidColor:   '#ff8888'        // Background color of invalid slots
+    property color pipelineSlotRequiredColor:  '#00ff00'        // Line color of required slots
+    property int   pipelineSlotRequiredBorder: 2                // Border width of required slots
     property real  pipelineSlotSize:           formHeight * 1.2 // Height of input/output slots
     property real  pipelineConnectorSize:      formHeight * 0.6 // Diameter of connectors
     property color pipelineConnectorColorIn:   backgroundColor  // Color of input connectors

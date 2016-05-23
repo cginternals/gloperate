@@ -288,6 +288,18 @@ T * InputSlot<T, BASE>::ptr()
 }
 
 template <typename T, typename BASE>
+bool InputSlot<T, BASE>::isValid() const
+{
+    switch (m_sourceType) {
+        case SlotType::Input:       return m_source.input->isValid();
+        case SlotType::Parameter:   return m_source.parameter->isValid();
+        case SlotType::Output:      return m_source.output->isValid();
+        case SlotType::ProxyOutput: return m_source.proxyOutput->isValid();
+        default:                    return false;
+    }
+}
+
+template <typename T, typename BASE>
 bool InputSlot<T, BASE>::isGroup() const
 {
     return false;

@@ -13,6 +13,7 @@ namespace gloperate
 AbstractSlot::AbstractSlot(SlotType type)
 : m_slotType(type)
 , m_owner(nullptr)
+, m_required(true)
 {
 }
 
@@ -42,6 +43,16 @@ std::string AbstractSlot::qualifiedName() const
     ss << name();
 
     return ss.str();
+}
+
+bool AbstractSlot::isRequired() const
+{
+    return m_required;
+}
+
+void AbstractSlot::setRequired(bool required)
+{
+    m_required = required;
 }
 
 
