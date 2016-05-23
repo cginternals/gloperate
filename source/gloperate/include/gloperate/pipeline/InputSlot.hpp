@@ -6,6 +6,7 @@
 
 #include <cppexpose/typed/Typed.h>
 
+#include <gloperate/pipeline/PipelineEvent.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Parameter.h>
 #include <gloperate/pipeline/Output.h>
@@ -309,6 +310,10 @@ template <typename T, typename BASE>
 void InputSlot<T, BASE>::onValueChanged(const T & value)
 {
     this->valueChanged(value);
+
+    this->m_owner->promotePipelineEvent(
+        PipelineEvent(PipelineEvent::ValueChanged, this->m_owner, this)
+    );
 }
 
 

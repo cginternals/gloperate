@@ -53,7 +53,7 @@ Background
         gloperate.pipeline.registerWatcher(function()
         {
             // [TODO]
-            Update only the item that has been changed
+            // Update only the item that has been changed
         });
         */
     }

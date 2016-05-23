@@ -42,6 +42,7 @@ public:
       , OutputRemoved
       , ProxyOutputAdded
       , ProxyOutputRemoved
+      , ValueChanged
     };
 
 

@@ -4,6 +4,8 @@
 
 #include <gloperate/pipeline/Data.h>
 
+#include <gloperate/pipeline/PipelineEvent.h>
+
 
 namespace gloperate
 {
@@ -48,6 +50,16 @@ template <typename T, typename BASE>
 bool Data<T, BASE>::isValid() const
 {
     return true;
+}
+
+template <typename T, typename BASE>
+void Data<T, BASE>::onValueChanged(const T & value)
+{
+    this->valueChanged(value);
+
+    this->m_owner->promotePipelineEvent(
+        PipelineEvent(PipelineEvent::ValueChanged, this->m_owner, this)
+    );
 }
 
 

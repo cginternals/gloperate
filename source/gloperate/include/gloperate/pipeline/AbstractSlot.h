@@ -79,21 +79,6 @@ public:
 
     /**
     *  @brief
-    *    Check if slot has valid data
-    *
-    *  @return
-    *    'true' if data is valid, else 'false'
-    *
-    *  @remarks
-    *    This status is important for the pipeline to work.
-    *    If output data is invalid, the pipeline tries to produce
-    *    it, otherwise, the pipeline is not run. This function
-    *    indicates whether data needs to be updated.
-    */
-    virtual bool isValid() const = 0;
-
-    /**
-    *  @brief
     *    Check if data is required
     *
     *  @return
@@ -120,6 +105,21 @@ public:
     *    pipeline and determines which stages will be executed.
     */
     void setRequired(bool required);
+
+    /**
+    *  @brief
+    *    Check if slot has valid data
+    *
+    *  @return
+    *    'true' if data is valid, else 'false'
+    *
+    *  @remarks
+    *    This status is important for the pipeline to work.
+    *    If output data is invalid, the pipeline tries to produce
+    *    it, otherwise, the pipeline is not run. This function
+    *    indicates whether data needs to be updated.
+    */
+    virtual bool isValid() const = 0;
 
 
 protected:

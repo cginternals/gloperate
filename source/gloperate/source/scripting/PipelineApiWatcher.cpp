@@ -29,11 +29,10 @@ PipelineApiWatcher::~PipelineApiWatcher()
     info() << "PipelineApiWatcher destroyed.";
 }
 
-void PipelineApiWatcher::onPipelineEvent(const PipelineEvent &)
+void PipelineApiWatcher::onPipelineEvent(const PipelineEvent & event)
 {
     // [TODO]
 
-    /*
     if (event.type() == PipelineEvent::ValueChanged)
     {
         info()
@@ -43,7 +42,6 @@ void PipelineApiWatcher::onPipelineEvent(const PipelineEvent &)
         << event.slot()->toString()
         << ")";
     }
-    */
 
     /*
     std::vector<cppexpose::Variant> params;
