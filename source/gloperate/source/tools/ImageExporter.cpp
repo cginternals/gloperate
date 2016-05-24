@@ -20,16 +20,16 @@ namespace gloperate
 
 
 ImageExporter::ImageExporter(RenderSurface * surface)
-    : m_surface(surface)
-    , m_context(surface->viewerContext())
-    , m_glContext(surface->openGLContext())
-    , m_fbo(new globjects::Framebuffer())
-    , m_color(globjects::Texture::createDefault(gl::GL_TEXTURE_2D))
-    , m_depth(new globjects::Renderbuffer())
-    , m_filename()
-    , m_width(0)
-    , m_height(0)
-    , m_renderIterations(0)
+: m_surface(surface)
+, m_context(surface->viewerContext())
+, m_glContext(surface->openGLContext())
+, m_fbo(new globjects::Framebuffer())
+, m_color(globjects::Texture::createDefault(gl::GL_TEXTURE_2D))
+, m_depth(new globjects::Renderbuffer())
+, m_filename()
+, m_width(0)
+, m_height(0)
+, m_renderIterations(0)
 {
     m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color);
     m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);

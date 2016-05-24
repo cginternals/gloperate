@@ -24,7 +24,7 @@ class ResourceManager;
 
 /**
 *  @brief
-*    Tool to export images (screenshots) from a painter
+*    Tool to export images (screenshots) from a RenderSurface
 */
 class GLOPERATE_API ImageExporter
 {
@@ -41,7 +41,7 @@ public:
     *    Width (in pixels) of output image
     *  @param[in] height
     *    Height (in pixels) of output image
-    *  @param[in] length
+    *  @param[in] renderIterations
     *    Number of render iterations
     */
     void init(const std::string & filename, int width = 0, int height = 0, int renderIterations = 1);

@@ -76,7 +76,7 @@ void RenderSurface::setRenderStage(Stage * stage)
     }
 }
 
-void RenderSurface::setVideoTool(AbstractVideoExporter * video)
+void RenderSurface::setVideoExporter(AbstractVideoExporter * video)
 {
     m_video = video;
 }
@@ -161,12 +161,15 @@ void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
 {
     cppassist::details() << "onRender()";
 
+    // [TODO] This is necessary, because the actual render call (which will be called from the video/image exporter)
+    // has to come from within the render thread.
     if (m_requestVideo)
     {
         m_requestVideo = false;
         m_video->createVideo([] (int x, int y) { cppassist::debug() << "Progress: " << x*100/y <<"%"; }, true);
     }
 
+    // [TODO] see above
     if (m_requestImage)
     {
         m_requestImage = false;

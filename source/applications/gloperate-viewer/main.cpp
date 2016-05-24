@@ -100,7 +100,7 @@ int main(int argc, char * argv[])
     RenderSurface * renderSurface = static_cast<RenderSurface *>(renderItem->surface());
     
     FFMPEGVideoExporter * videoExporter = new FFMPEGVideoExporter();
-    renderSurface->setVideoTool(videoExporter);
+    renderSurface->setVideoExporter(videoExporter);
 #endif
 
     // Run main loop

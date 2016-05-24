@@ -73,18 +73,52 @@ public:
 
     /**
     *  @brief
+    *    Set video exporter
     *
+    *  @param[in] video
+    *    Pointer to a derived AbstractVideoExporter instance
     */
-    void setVideoTool(AbstractVideoExporter * video);
+    void setVideoExporter(AbstractVideoExporter * video);
 
     /**
     *  @brief
+    *    Request to render this surface to a video
     *
+    *  @param[in] filename
+    *    Name of output video file
+    *  @param[in] width
+    *    Width (in pixels) of output video
+    *  @param[in] height
+    *    Height (in pixels) of output video
+    *  @param[in] fps
+    *    Frames per second of output video
+    *  @param[in] length
+    *    Length (in seconds) of output video
     */
     void createVideo(std::string filename, int width, int height, int fps, int seconds);
 
+    /**
+    *  @brief
+    *    Request to render this surface to an image
+    *
+    *  @param[in] filename
+    *    Name of output image file
+    *  @param[in] width
+    *    Width (in pixels) of output image
+    *  @param[in] height
+    *    Height (in pixels) of output image
+    *  @param[in] renderIterations
+    *    Number of render iterations
+    */
     void exportImage(std::string filename, int width, int height, int renderIterations);
 
+    /**
+    *  @brief
+    *    Getter of the current video export progress in percent
+    *
+    *  @return
+    *    Percent of the current video export progress. When nothing is being exported, it returns 0.
+    */
     int exportProgress();
 
 
