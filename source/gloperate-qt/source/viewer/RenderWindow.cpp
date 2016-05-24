@@ -3,6 +3,8 @@
 
 #include <glm/glm.hpp>
 
+#include <QCoreApplication>
+
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/viewer/ViewerContext.h>
 
@@ -23,6 +25,12 @@ RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
     m_surface->redraw.connect([this] ()
     {
         this->updateGL();
+    } );
+
+    m_surface->wakeup.connect([] ()
+    {
+        printf("wakeup\n");
+        QCoreApplication::instance()->processEvents();
     } );
 }
 

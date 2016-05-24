@@ -166,7 +166,10 @@ void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
     if (m_requestVideo)
     {
         m_requestVideo = false;
-        m_video->createVideo([] (int x, int y) { cppassist::debug() << "Progress: " << x*100/y <<"%"; }, true);
+        m_video->createVideo([this] (int, int)
+        {
+            this->wakeup();
+        }, true);
     }
 
     // [TODO] see above

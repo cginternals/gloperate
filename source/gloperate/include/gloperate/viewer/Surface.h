@@ -37,6 +37,7 @@ class GLOPERATE_API Surface : public cppexpose::Object
 {
 public:
     cppexpose::Signal<> redraw; ///< Called when the surface needs to be redrawn
+    cppexpose::Signal<> wakeup; ///< Called when the main loop need to wake up
 
 
 public:
