@@ -111,7 +111,7 @@ public:
 
 
 protected:
-    globjects::ref_ptr<VideoEncoder>             m_videoEncoder;
+    VideoEncoder                               * m_videoEncoder;
     gloperate::ViewerContext                   * m_context;
     gloperate::RenderSurface                   * m_surface;
     gloperate::AbstractGLContext               * m_glContext;

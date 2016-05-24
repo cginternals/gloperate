@@ -41,6 +41,7 @@ FFMPEGVideoExporter::FFMPEGVideoExporter(const std::string & filename, RenderSur
 
 FFMPEGVideoExporter::~FFMPEGVideoExporter()
 {
+    delete m_videoEncoder;
 }
 
 void FFMPEGVideoExporter::init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length)

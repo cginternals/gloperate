@@ -24,7 +24,7 @@ namespace gloperate_ffmpeg
 *  @brief
 *    Class for encoding single frames into a video using FFMPEG
 */
-class GLOPERATE_FFMPEG_API VideoEncoder : public globjects::Referenced
+class GLOPERATE_FFMPEG_API VideoEncoder
 {
 public:
     /**
