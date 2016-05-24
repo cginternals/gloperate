@@ -111,13 +111,13 @@ Background {
             }
         }
 
-        Controls.ProgressBar {
+        ProgressBar {
             id: progressBar
             Layout.fillWidth: true
 
             minimumValue: 0
             maximumValue: 100
-            value: 0
+            value: 35
         }
 
         DialogButton {

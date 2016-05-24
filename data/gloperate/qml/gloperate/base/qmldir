@@ -20,6 +20,7 @@ Label         1.0 Label.qml
 Page          1.0 Page.qml
 Panel         1.0 Panel.qml
 PanelItem     1.0 PanelItem.qml
+ProgressBar   1.0 ProgressBar.qml
 RadioButton   1.0 RadioButton.qml
 ScrollArea    1.0 ScrollArea.qml
 Switch        1.0 Switch.qml
