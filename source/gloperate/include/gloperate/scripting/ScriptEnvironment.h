@@ -47,12 +47,6 @@ public:
     ScriptEnvironment(ViewerContext * viewerContext);
 
     /**
-     *  @brief
-     *    Move Constructor
-     */
-    ScriptEnvironment(ScriptEnvironment && other);
-
-    /**
     *  @brief
     *    Destructor
     */
@@ -134,17 +128,6 @@ public:
     */
     cppexpose::Variant execute(const std::string & code);
     //@}
-
-    /**
-     * @brief Move Assignment operator
-     *
-     * @param other
-     *   The instance to move the data from
-     *
-     * @return
-     *   The reference to this
-     */
-    ScriptEnvironment & operator=(ScriptEnvironment && other);
 
 
 protected:

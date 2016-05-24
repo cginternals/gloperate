@@ -36,7 +36,7 @@ int main(int argc, char * argv[])
     const auto qmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
 
     // Create viewer context
-    auto viewerContext = ViewerContext();
+    ViewerContext viewerContext;
 
     // Initialize Qt application
     gloperate_qt::Application app(&viewerContext, argc, argv);
@@ -49,7 +49,7 @@ int main(int argc, char * argv[])
     QApplication::setOrganizationDomain(GLOPERATE_AUTHOR_DOMAIN);
 
     // Load configuration
-    const Config config(viewerContext);
+    Config config(viewerContext);
 
     // Configure update manager
     UpdateManager updateManager(&viewerContext);
@@ -57,7 +57,7 @@ int main(int argc, char * argv[])
     // Create QML engine
     QmlEngine qmlEngine(&viewerContext);
     qmlEngine.addImportPath(qmlPath);
-    qmlEngine.rootContext()->setContextProperty("config", std::addressof(config));
+    qmlEngine.rootContext()->setContextProperty("config", &config);
 
     // Create scripting context backend
     viewerContext.scriptEnvironment()->setupScripting(
