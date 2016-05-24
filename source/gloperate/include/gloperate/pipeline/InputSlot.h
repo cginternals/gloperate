@@ -181,6 +181,7 @@ protected:
 
 
 protected:
+    void promoteConnection();
     void promoteRequired();
 
 

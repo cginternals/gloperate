@@ -44,6 +44,7 @@ public:
       , ProxyOutputRemoved
       , ValueChanged
       , RequiredChanged
+      , ConnectionChanged
     };
 
 

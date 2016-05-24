@@ -49,7 +49,7 @@ bool InputSlot<T, BASE>::connect(Input<T> * source)
     } );
 
     // Emit events
-    this->connectionChanged();
+    this->promoteConnection();
     this->promoteRequired();
     this->onValueChanged(m_source.input->value());
 
@@ -76,7 +76,7 @@ bool InputSlot<T, BASE>::connect(Parameter<T> * source)
     } );
 
     // Emit events
-    this->connectionChanged();
+    this->promoteConnection();
     this->promoteRequired();
     this->onValueChanged(m_source.parameter->value());
 
@@ -103,7 +103,7 @@ bool InputSlot<T, BASE>::connect(Output<T> * source)
     } );
 
     // Emit events
-    this->connectionChanged();
+    this->promoteConnection();
     this->promoteRequired();
     this->onValueChanged(m_source.output->value());
 
@@ -130,7 +130,7 @@ bool InputSlot<T, BASE>::connect(ProxyOutput<T> * source)
     } );
 
     // Emit events
-    this->connectionChanged();
+    this->promoteConnection();
     this->promoteRequired();
     this->onValueChanged(m_source.proxyOutput->value());
 
@@ -240,7 +240,7 @@ void InputSlot<T, BASE>::disconnect()
     m_connection         = cppexpose::ScopedConnection();
 
     // Emit events
-    this->connectionChanged();
+    this->promoteConnection();
     this->onValueChanged(m_defaultValue);
 }
 
@@ -325,6 +325,16 @@ void InputSlot<T, BASE>::onValueChanged(const T & value)
 
     this->m_owner->promotePipelineEvent(
         PipelineEvent(PipelineEvent::ValueChanged, this->m_owner, this)
+    );
+}
+
+template <typename T, typename BASE>
+void InputSlot<T, BASE>::promoteConnection()
+{
+    this->connectionChanged();
+
+    this->m_owner->promotePipelineEvent(
+        PipelineEvent(PipelineEvent::ConnectionChanged, this->m_owner, this)
     );
 }
 
