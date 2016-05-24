@@ -1,7 +1,12 @@
 
 #include <gloperate/stages/demos/DemoTimerStage.h>
 
+#include <cppassist/logging/logging.h>
+
 #include <gloperate/gloperate-version.h>
+
+
+using namespace cppassist;
 
 
 namespace gloperate

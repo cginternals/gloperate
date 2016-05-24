@@ -22,6 +22,10 @@ InputSlot<T, BASE>::InputSlot(Stage * parent, const std::string & name, const T 
 : m_defaultValue(defaultValue)
 , m_sourceType(SlotType::Empty)
 {
+    m_source.input = nullptr;
+    m_source.parameter = nullptr;
+    m_source.output = nullptr;
+    m_source.proxyOutput = nullptr;
     this->initProperty(parent, name);
 }
 

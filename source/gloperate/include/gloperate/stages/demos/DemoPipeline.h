@@ -52,13 +52,15 @@ public:
 
 protected:
     // Stages
-    TextureLoadStage       * m_textureLoadStage;
-    ProceduralTextureStage * m_proceduralTextureStage;
-    BasicFramebufferStage  * m_framebufferStage;
-    DemoTimerStage         * m_timerStage;
-    DemoTriangleStage      * m_triangleStage;
     MixerStage             * m_mixerStage;
     SplitStage             * m_splitStage;
+
+    DemoTimerStage         * m_timerStage;
+    DemoTriangleStage      * m_triangleStage;
+
+    BasicFramebufferStage  * m_framebufferStage;
+    TextureLoadStage       * m_textureLoadStage;
+    ProceduralTextureStage * m_proceduralTextureStage;
 };
 
 

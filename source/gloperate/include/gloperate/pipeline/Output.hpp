@@ -25,15 +25,11 @@ Output<T>::~Output()
 template <typename T>
 void Output<T>::invalidate()
 {
-    // Only invalidate if not already invalidated (avoid binding loops!)
-    if (m_valid)
-    {
-        // Set state to invalid
-        m_valid = false;
+    // Set state to invalid
+    m_valid = false;
 
-        // Promote changed-event
-        this->Data<T, AbstractOutput>::onValueChanged(this->m_value);
-    }
+    // Promote changed-event
+    this->Data<T, AbstractOutput>::onValueChanged(this->m_value);
 }
 
 template <typename T>

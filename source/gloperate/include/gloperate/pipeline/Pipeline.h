@@ -108,17 +108,25 @@ protected:
     */
     void unregisterStage(Stage * stage);
 
+    /**
+    *  @brief
+    *    Sort stages by their dependencies
+    */
+    void sortStages();
+
     // Virtual Stage interface
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
     virtual void onProcess(AbstractGLContext * context) override;
     virtual void onInputValueChanged(AbstractSlot * slot) override;
     virtual void onOutputRequiredChanged(AbstractSlot * slot) override;
+    virtual void onPipelineEvent(const PipelineEvent & event) override;
 
 
 protected:
     std::vector<Stage *>                     m_stages;    ///< List of stages in the pipeline
     std::unordered_map<std::string, Stage *> m_stagesMap; ///< Map of names -> stages
+    bool                                     m_sorted;    ///< Have the stages of the pipeline already been sorted?
 };
 
 

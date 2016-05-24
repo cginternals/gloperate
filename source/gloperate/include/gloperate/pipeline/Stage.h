@@ -133,6 +133,20 @@ public:
 
     /**
     *  @brief
+    *    Get if this stage depends on another stage
+    *
+    *  @param[in] stage
+    *    Stage
+    *  @param[in] recursive
+    *    If 'true', check recursively, else only direct dependencies are checked
+    *
+    *  @return
+    *    'true' if stage depends on the other stage, else 'false'
+    */
+    bool requires(const Stage * stage, bool recursive = true) const;
+
+    /**
+    *  @brief
     *    Set parent pipeline
     *
     *  @param[in] parent
@@ -179,6 +193,52 @@ public:
     *  @see onProcess
     */
     void process(AbstractGLContext * context);
+
+    /**
+    *  @brief
+    *    Check if stage needs to be processed
+    *
+    *  @return
+    *    'true' if stage needs processing, else 'false'
+    *
+    *  @remarks
+    *    A stage needs to be processed when it has output
+    *    data that is marked as required, but is currently
+    *    invalid. Also, if a stage is marked as 'alwaysProcess',
+    *    it will always return 'true'.
+    */
+    bool needsProcessing() const;
+
+    /**
+    *  @brief
+    *    Check if stage is always processed
+    *
+    *  @return
+    *    'true' if stage is always processed, else 'false'
+    *
+    *  @remarks
+    *    A stage that is marked 'alwaysProcess' will be
+    *    executed each time its parent pipeline is executed.
+    *    This should be used with great care. Usually, only
+    *    blit stages should be marked 'alwaysProcess', as
+    *    they need to be executed whenever a redraw occurs
+    *    to recreate the image even if nothing has changed
+    *    in the pipeline. Everything else should be managed
+    *    by using data connections.
+    */
+    bool alwaysProcessed() const;
+
+    /**
+    *  @brief
+    *    Check if stage is always processed
+    *
+    *  @param[in] alwaysProcess
+    *    'true' if stage is always processed, else 'false'
+    *
+    *  @see
+    *    alwaysProcessed()
+    */
+    void setAlwaysProcessed(bool alwaysProcess);
 
     /**
     *  @brief
@@ -504,6 +564,7 @@ protected:
 protected:
     ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
     Pipeline      * m_parentPipeline; ///< Pipeline to which the stage belongs (can be null)
+    bool            m_alwaysProcess;  ///< Is the stage always processed?
 
     std::vector<AbstractInput *>                           m_inputs;          ///< List of inputs
     std::unordered_map<std::string, AbstractInput *>       m_inputsMap;       ///< Map of names and inputs

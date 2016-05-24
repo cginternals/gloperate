@@ -25,6 +25,7 @@ Stage::Stage(ViewerContext * viewerContext, const std::string & name, Pipeline *
 : cppexpose::Object(name, parent)
 , m_viewerContext(viewerContext)
 , m_parentPipeline(parent)
+, m_alwaysProcess(false)
 {
     if (parent) {
         parent->registerStage(this);
@@ -51,6 +52,20 @@ ViewerContext * Stage::viewerContext() const
 Pipeline * Stage::parentPipeline() const
 {
     return m_parentPipeline;
+}
+
+bool Stage::requires(const Stage * stage, bool recursive) const
+{
+    for (AbstractInputSlot * slot : m_inputs)
+    {
+        if (slot->isFeedback() || !slot->isConnected())
+            continue;
+
+        if (slot->source()->owner() == stage || (recursive && slot->source()->owner()->requires(stage)))
+            return true;
+    }
+
+    return false;
 }
 
 void Stage::transferStage(Pipeline * parent)
@@ -80,6 +95,37 @@ void Stage::deinitContext(AbstractGLContext * context)
 void Stage::process(AbstractGLContext * context)
 {
     onProcess(context);
+}
+
+bool Stage::needsProcessing() const
+{
+    if (m_alwaysProcess) {
+        return true;
+    }
+
+    for (auto output : m_outputs) {
+        if (output->isRequired() && !output->isValid()) {
+            return true;
+        }
+    }
+
+    for (auto output : m_proxyOutputs) {
+        if (output->isRequired() && !output->isValid()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Stage::alwaysProcessed() const
+{
+    return m_alwaysProcess;
+}
+
+void Stage::setAlwaysProcessed(bool alwaysProcess)
+{
+    m_alwaysProcess = alwaysProcess;
 }
 
 void Stage::invalidateOutputs()

@@ -10,6 +10,9 @@
 #include <gloperate/input/KeyboardDevice.h>
 
 
+using namespace cppassist;
+
+
 namespace gloperate
 {
 

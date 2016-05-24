@@ -34,8 +34,13 @@ class GLOPERATE_API DemoTriangleStage : public RenderStage
 
 public:
     // Inputs
-    Input<globjects::Texture *> texture;  ///< Texture object
-    Input<float>                angle;    ///< Current angle of rotating triangle (in radians)
+    Input<globjects::Texture *> texture;      ///< Texture object
+    Input<float>                angle;        ///< Current angle of rotating triangle (in radians)
+    Input<globjects::Texture *> colorTexture; ///< Target color texture
+
+    // Outputs
+    Output<globjects::Framebuffer *> fboOut;          ///< Pass through of target FBO
+    Output<globjects::Texture *>     colorTextureOut; ///< Pass through of target color texture
 
 
 public:

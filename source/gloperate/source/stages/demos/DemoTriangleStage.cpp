@@ -69,8 +69,11 @@ namespace gloperate
 
 DemoTriangleStage::DemoTriangleStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : RenderStage(viewerContext, name, parent)
-, texture(this, "texture", nullptr)
-, angle  (this, "angle",   0.0f)
+, texture        (this, "texture",         nullptr)
+, angle          (this, "angle",           0.0f)
+, colorTexture   (this, "colorTexture",    nullptr)
+, fboOut         (this, "fboOut",          nullptr)
+, colorTextureOut(this, "colorTextureOut", nullptr)
 {
 }
 
@@ -141,6 +144,10 @@ void DemoTriangleStage::onProcess(AbstractGLContext *)
 
     // Unbind FBO
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+
+    // Indicate change to the output FBO and texture
+    fboOut.setValue(fbo);
+    colorTextureOut.setValue(*colorTexture);
 
     // Signal that output is valid
     rendered.setValue(true);
