@@ -15,6 +15,7 @@ AbstractDevice::AbstractDevice(InputManager * inputManager, const std::string & 
 , m_deviceDescriptor(deviceDescriptor)
 {
     assert(m_inputManager != nullptr);
+
     m_inputManager->addDevice(this);
 }
 

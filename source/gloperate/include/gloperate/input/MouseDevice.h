@@ -18,8 +18,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] descriptor
-    *    the device descriptor
+    *  @param[in] inputManager
+    *    A pointer to the inputManager (must NOT be null)
+    *  @param[in] deviceDescriptor
+    *    [TODO] What is a device descriptor?
     */
     MouseDevice(InputManager * InputManager, const std::string & deviceDescriptor);
 
@@ -28,12 +30,6 @@ public:
     *    Destructor
     */
     virtual ~MouseDevice();
-
-    /**
-    *  @brief
-    *    Poll the current state of the device and fire appropriate Signals
-    */
-    virtual void update() override;
 
     /**
     *  @brief
@@ -76,6 +72,9 @@ public:
     *    The position of the mouse at this point in time
     */
     void wheelScroll(const glm::vec2 & delta, const glm::ivec2 & pos);
+
+    // Virtual AbstractDevice interface
+    virtual void update() override;
 };
 
 

@@ -6,13 +6,16 @@
 #include <gloperate/input/InputEvent.h>
 
 
+using namespace cppassist;
+
+
 namespace gloperate
 {
 
 
 void PrintLineConsumer::onEvent(gloperate::InputEvent * event)
 {
-    cppassist::info() << event->asString();
+    info() << event->asString();
 }
 
 

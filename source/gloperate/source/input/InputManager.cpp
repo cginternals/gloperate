@@ -20,14 +20,17 @@ InputManager::~InputManager()
 	{
 		delete ptr;
 	}
+
 	for (const auto ptr : m_deviceProviders)
 	{
 		delete ptr;
 	}
+
 	for (const auto ptr : m_devices)
 	{
 		delete ptr;
 	}
+
 	for (const auto ptr : m_events)
 	{
 		delete ptr;
@@ -57,7 +60,7 @@ void InputManager::onEvent(InputEvent * event)
     assert(event != nullptr);
     m_events.emplace_back(event);
 
-    for(auto consumer : m_consumers)
+    for (auto consumer : m_consumers)
     {
         consumer->onEvent(event);
     }
