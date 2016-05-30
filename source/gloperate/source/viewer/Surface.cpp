@@ -1,4 +1,6 @@
 
+#include <globjects/base/baselogging.h>
+
 #include <gloperate/viewer/Surface.h>
 
 #include <gloperate/viewer/ViewerContext.h>
@@ -8,8 +10,12 @@ namespace gloperate
 {
 
 
+static int s_surfaces = 0;
+
+
 Surface::Surface(ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+: cppexpose::Object("surface" + std::to_string(s_surfaces++))
+, m_viewerContext(viewerContext)
 , m_openGLContext(nullptr)
 {
     m_viewerContext->registerSurface(this);
@@ -47,6 +53,14 @@ void Surface::setOpenGLContext(AbstractGLContext * context)
 
         onContextInit();
     }
+}
+
+glm::vec4 Surface::deviceViewport()
+{
+}
+
+glm::vec4 Surface::virtualViewport()
+{
 }
 
 void Surface::onUpdate()

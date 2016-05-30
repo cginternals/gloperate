@@ -6,6 +6,8 @@
 # ASSIMP_LIBRARIES
 # ASSIMP_BINARY (win32 only)
 
+include(FindPackageHandleStandardArgs)
+
 find_path(ASSIMP_INCLUDE_DIR assimp/Importer.hpp
 
     PATHS

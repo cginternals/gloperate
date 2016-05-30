@@ -6,6 +6,7 @@
 
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/signal/Signal.h>
+#include <cppexpose/reflection/Object.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -36,6 +37,7 @@ class GLOPERATE_API Surface : public cppexpose::Object
 {
 public:
     cppexpose::Signal<> redraw; ///< Called when the surface needs to be redrawn
+    cppexpose::Signal<> wakeup; ///< Called when the main loop need to wake up
 
 
 public:
@@ -94,6 +96,24 @@ public:
     *    set to that new context and onContextInit() will be invoked.
     */
     void setOpenGLContext(AbstractGLContext * context);
+
+    /**
+    *  @brief
+    *    Get device viewport
+    *
+    *  @return
+    *    Device viewport (actual device pixels)
+    */
+    virtual glm::vec4 deviceViewport();
+
+    /**
+    *  @brief
+    *    Get virtual viewport
+    *
+    *  @return
+    *    Virtual viewport (virtual pixels)
+    */
+    virtual glm::vec4 virtualViewport();
 
     /**
     *  @brief

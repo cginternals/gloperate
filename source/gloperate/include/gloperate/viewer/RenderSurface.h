@@ -14,6 +14,8 @@ namespace gloperate
 class Stage;
 class MouseDevice;
 class KeyboardDevice;
+class AbstractVideoExporter;
+class ImageExporter;
 
 
 /**
@@ -69,7 +71,60 @@ public:
     */
     void setRenderStage(Stage * stage);
 
+    /**
+    *  @brief
+    *    Set video exporter
+    *
+    *  @param[in] video
+    *    Pointer to a derived AbstractVideoExporter instance
+    */
+    void setVideoExporter(AbstractVideoExporter * video);
+
+    /**
+    *  @brief
+    *    Request to render this surface to a video
+    *
+    *  @param[in] filename
+    *    Name of output video file
+    *  @param[in] width
+    *    Width (in pixels) of output video
+    *  @param[in] height
+    *    Height (in pixels) of output video
+    *  @param[in] fps
+    *    Frames per second of output video
+    *  @param[in] length
+    *    Length (in seconds) of output video
+    */
+    void createVideo(std::string filename, int width, int height, int fps, int seconds);
+
+    /**
+    *  @brief
+    *    Request to render this surface to an image
+    *
+    *  @param[in] filename
+    *    Name of output image file
+    *  @param[in] width
+    *    Width (in pixels) of output image
+    *  @param[in] height
+    *    Height (in pixels) of output image
+    *  @param[in] renderIterations
+    *    Number of render iterations
+    */
+    void exportImage(std::string filename, int width, int height, int renderIterations);
+
+    /**
+    *  @brief
+    *    Getter of the current video export progress in percent
+    *
+    *  @return
+    *    Percent of the current video export progress. When nothing is being exported, it returns 0.
+    */
+    int exportProgress();
+
+
     // Virtual Surface functions
+    virtual glm::vec4 deviceViewport() override;
+    virtual glm::vec4 virtualViewport() override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
@@ -85,10 +140,14 @@ public:
 
 
 protected:
-    ViewerContainer  m_viewer;         ///< Container for the rendering stage or pipeline
-    unsigned long    m_frame;          ///< Frame counter
-    MouseDevice    * m_mouseDevice;    ///< Device for Mouse Events
-    KeyboardDevice * m_keyboardDevice; ///< Device for Keyboard Events
+    ViewerContainer         m_viewer;         ///< Container for the rendering stage or pipeline
+    unsigned long           m_frame;          ///< Frame counter
+    MouseDevice           * m_mouseDevice;    ///< Device for Mouse Events
+    KeyboardDevice        * m_keyboardDevice; ///< Device for Keyboard Events
+    AbstractVideoExporter * m_video;          ///< Tool for rendering surface to video file
+    ImageExporter         * m_imageExporter;  ///< Tool for exporting an image from surface
+    bool                    m_requestVideo;   ///< Flag to request a videoTool call during next render step
+    bool                    m_requestImage;   ///< Flag to request a ImageExporter call during next render step
 };
 
 

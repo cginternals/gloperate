@@ -44,6 +44,11 @@ gloperate::Stage * RenderWindow::renderStage() const
     return m_surface->renderStage();
 }
 
+gloperate::RenderSurface * RenderWindow::renderSurface() const
+{
+    return m_surface;
+}
+
 void RenderWindow::setRenderStage(gloperate::Stage * stage)
 {
     m_surface->setRenderStage(stage);

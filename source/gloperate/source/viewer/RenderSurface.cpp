@@ -8,6 +8,8 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
+#include <gloperate/tools/AbstractVideoExporter.h>
+#include <gloperate/tools/ImageExporter.h>
 
 
 namespace gloperate
@@ -20,7 +22,19 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
+, m_video(nullptr)
+, m_imageExporter(nullptr)
+, m_requestVideo(false)
 {
+    addFunction("createVideo", this, &RenderSurface::createVideo);
+    addFunction("exportImage", this, &RenderSurface::exportImage);
+    addFunction("exportProgress", this, &RenderSurface::exportProgress);
+
+    if (m_viewerContext->scriptEnvironment())
+    {
+        m_viewerContext->scriptEnvironment()->addApi(this);
+    }
+
     m_viewer.outputs.rendered.valueChanged.connect([this] (bool rendered)
     {
         if (!rendered) {
@@ -31,6 +45,7 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 
 RenderSurface::~RenderSurface()
 {
+    delete m_imageExporter;
 }
 
 Pipeline * RenderSurface::rootPipeline() const
@@ -61,6 +76,44 @@ void RenderSurface::setRenderStage(Stage * stage)
     }
 }
 
+void RenderSurface::setVideoExporter(AbstractVideoExporter * video)
+{
+    m_video = video;
+}
+
+void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds)
+{
+    if (!m_video) return;
+    
+    cppassist::debug() << "<----- Creating Video ----->";
+
+    m_video->init(filename, this, width, height, fps, seconds);
+    m_requestVideo = true;
+}
+
+void RenderSurface::exportImage(std::string filename, int width, int height, int renderIterations)
+{
+    m_imageExporter->init(filename, width, height, renderIterations);
+    m_requestImage = true;
+}
+
+int RenderSurface::exportProgress()
+{
+    if (!m_video) return 0;
+
+    return m_video->progress();
+}
+
+glm::vec4 RenderSurface::deviceViewport()
+{
+    return m_viewer.inputs.deviceViewport.value();
+}
+
+glm::vec4 RenderSurface::virtualViewport()
+{
+    return m_viewer.inputs.virtualViewport.value();
+}
+
 void RenderSurface::onUpdate()
 {
     m_viewer.inputs.timeDelta.setValue(m_viewerContext->timeManager()->timeDelta());
@@ -74,6 +127,11 @@ void RenderSurface::onContextInit()
     if (m_viewer.renderStage())
     {
         m_viewer.renderStage()->initContext(m_openGLContext);
+    }
+
+    if (!m_imageExporter)
+    {
+        m_imageExporter = new ImageExporter(this);
     }
 }
 
@@ -102,6 +160,24 @@ void RenderSurface::onBackgroundColor(float red, float green, float blue)
 void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
 {
     cppassist::details() << "onRender()";
+
+    // [TODO] This is necessary, because the actual render call (which will be called from the video/image exporter)
+    // has to come from within the render thread.
+    if (m_requestVideo)
+    {
+        m_requestVideo = false;
+        m_video->createVideo([this] (int, int)
+        {
+            this->wakeup();
+        }, true);
+    }
+
+    // [TODO] see above
+    if (m_requestImage)
+    {
+        m_requestImage = false;
+        m_imageExporter->save(true);
+    }
 
     if (m_viewer.renderStage())
     {
