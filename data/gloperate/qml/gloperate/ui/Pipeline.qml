@@ -14,7 +14,8 @@ BaseItem
 {
     id: item
 
-    property string source: 'empty'
+    property Component stageDelegate: null
+    property string    targetStage:   ''
 
     implicitWidth:  row.width  + 2 * row.anchors.margins
     implicitHeight: row.height + 2 * row.anchors.margins
@@ -25,7 +26,7 @@ BaseItem
 
         anchors.left:    parent.left
         anchors.top:     parent.top
-        anchors.margins: 16
+        anchors.margins: Ui.style.pipelinePadding
 
         spacing: 32
 
@@ -33,33 +34,33 @@ BaseItem
         {
             id: repeater
 
-            property var stages: []
-
-            model: stages.length
-
-            delegate: Stage
-            {
-                source: repeater.stages[index].name
-            }
+            delegate: stageDelegate
         }
     }
 
-    onSourceChanged:
+    onTargetStageChanged:
+    {
+        update();
+    }
+
+    function update()
     {
         var lst = [];
 
-        var stages = gloperate.pipeline.getStages(item.source);
+        var stages = gloperate.pipeline.getStages(item.targetStage);
         for (var i=0; i<stages.length; i++) {
             var stage = stages[i];
-            if (item.source.length > 0) {
-                stage = item.source.length + '.' + stage;
+            if (item.targetStage.length > 0) {
+                stage = item.targetStage + '.' + stage;
             }
 
-            lst.push({
-                name: stage
-            });
+            lst.push(stage);
         }
 
-        repeater.stages = lst;
+        repeater.model = lst;
+
+        for (var i=0; i<row.children.length; i++) {
+            row.children[i].update();
+        }
     }
 }

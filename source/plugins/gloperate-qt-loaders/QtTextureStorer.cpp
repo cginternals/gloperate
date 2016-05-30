@@ -89,11 +89,11 @@ bool QtTextureStorer::store(const std::string & filename, const globjects::Textu
 
 
 CPPEXPOSE_COMPONENT(
-    QtTextureStorer, gloperate::AbstractStorer,
-    "", // Subtype
-    "", // Icon
-    "", // Annotations
-    "Store textures using the Qt image functionality",
-    GLOPERATE_AUTHOR_ORGANIZATION,
-    "v1.0.0"
+    QtTextureStorer, gloperate::AbstractStorer
+  , "" // Tags
+  , "" // Icon
+  , "" // Annotations
+  , "Store textures using the Qt image functionality"
+  , GLOPERATE_AUTHOR_ORGANIZATION
+  , "v1.0.0"
 )

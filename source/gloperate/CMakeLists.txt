@@ -70,6 +70,7 @@ set(headers
     ${include_path}/scripting/ScriptTimer.h
     ${include_path}/scripting/ComponentsApi.h
     ${include_path}/scripting/PipelineApi.h
+    ${include_path}/scripting/PipelineApiWatcher.h
 
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractData.h
@@ -95,13 +96,23 @@ set(headers
     ${include_path}/pipeline/Pipeline.h
     ${include_path}/pipeline/RenderPipeline.h
     ${include_path}/pipeline/ViewerContainer.h
-    ${include_path}/pipeline/ViewerInputs.h
-    ${include_path}/pipeline/ViewerOutputs.h
     ${include_path}/pipeline/RenderInterface.h
+    ${include_path}/pipeline/StageComponent.h
+    ${include_path}/pipeline/StageComponent.hpp
+    ${include_path}/pipeline/PipelineWatcher.h
+    ${include_path}/pipeline/PipelineEvent.h
 
     ${include_path}/rendering/Camera.h
 
+    ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/TextureLoadStage.h
+    ${include_path}/stages/base/ProceduralTextureStage.h
+    ${include_path}/stages/base/MixerStage.h
+    ${include_path}/stages/base/SplitStage.h
     ${include_path}/stages/demos/DemoStage.h
+    ${include_path}/stages/demos/DemoPipeline.h
+    ${include_path}/stages/demos/DemoTriangleStage.h
+    ${include_path}/stages/demos/DemoTimerStage.h
 
     ${include_path}/input/InputManager.h
     ${include_path}/input/InputManager.h
@@ -146,6 +157,7 @@ set(sources
     ${source_path}/scripting/ScriptTimer.cpp
     ${source_path}/scripting/ComponentsApi.cpp
     ${source_path}/scripting/PipelineApi.cpp
+    ${source_path}/scripting/PipelineApiWatcher.cpp
 
     ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/AbstractData.cpp
@@ -159,13 +171,22 @@ set(sources
     ${source_path}/pipeline/Pipeline.cpp
     ${source_path}/pipeline/RenderPipeline.cpp
     ${source_path}/pipeline/ViewerContainer.cpp
-    ${source_path}/pipeline/ViewerInputs.cpp
-    ${source_path}/pipeline/ViewerOutputs.cpp
     ${source_path}/pipeline/RenderInterface.cpp
+    ${source_path}/pipeline/StageComponent.cpp
+    ${source_path}/pipeline/PipelineWatcher.cpp
+    ${source_path}/pipeline/PipelineEvent.cpp
 
     ${source_path}/rendering/Camera.cpp
 
+    ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/TextureLoadStage.cpp
+    ${source_path}/stages/base/ProceduralTextureStage.cpp
+    ${source_path}/stages/base/MixerStage.cpp
+    ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
+    ${source_path}/stages/demos/DemoPipeline.cpp
+    ${source_path}/stages/demos/DemoTriangleStage.cpp
+    ${source_path}/stages/demos/DemoTimerStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp

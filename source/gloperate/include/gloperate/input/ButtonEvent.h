@@ -21,7 +21,7 @@ public:
     *  @param[in] dispatchingDevice
     *    Pointer to the device that generated the event (must NOT be null)
     *  @param[in] description
-    *    The 3x3 matrix to be held by the event
+    *    A string decribing the pressed button
     */
     ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const std::string & description);
 
@@ -34,13 +34,7 @@ public:
     */
     std::string description() const;
 
-    /**
-    *  @brief
-    *    A getter for the description of the Event as a string
-    *
-    *  @return
-    *    A string describing the event
-    */
+    // Virtual InputEvent interface
     virtual std::string asString() const override;
 
 

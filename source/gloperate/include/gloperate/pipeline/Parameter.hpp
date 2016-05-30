@@ -21,5 +21,12 @@ Parameter<T>::~Parameter()
 {
 }
 
+template <typename T>
+bool Parameter<T>::isValid() const
+{
+    // Parameters are always valid
+    return true;
+}
+
 
 } // namespace gloperate

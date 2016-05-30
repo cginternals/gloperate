@@ -13,6 +13,7 @@ RenderPipeline::RenderPipeline(ViewerContext * viewerContext, const std::string 
 , backgroundColor(this, "backgroundColor")
 , frameCounter   (this, "frameCounter")
 , timeDelta      (this, "timeDelta")
+, targetFBO      (this, "targetFBO")
 , rendered       (this, "rendered")
 {
 }

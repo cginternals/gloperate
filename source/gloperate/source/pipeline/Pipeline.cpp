@@ -1,6 +1,16 @@
 
 #include <gloperate/pipeline/Pipeline.h>
 
+#include <vector>
+#include <set>
+
+#include <cppassist/logging/logging.h>
+
+#include <gloperate/pipeline/PipelineEvent.h>
+
+
+using namespace cppassist;
+
 
 namespace gloperate
 {
@@ -8,6 +18,7 @@ namespace gloperate
 
 Pipeline::Pipeline(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
+, m_sorted(false)
 {
 }
 
@@ -43,6 +54,10 @@ void Pipeline::registerStage(Stage * stage)
     }
 
     stageAdded(stage);
+
+    promotePipelineEvent(
+        PipelineEvent(PipelineEvent::StageAdded, this, stage)
+    );
 }
 
 void Pipeline::unregisterStage(Stage * stage)
@@ -57,7 +72,127 @@ void Pipeline::unregisterStage(Stage * stage)
     {
         m_stages.erase(it);
         m_stagesMap.erase(stage->name());
+
         stageRemoved(stage);
+
+        promotePipelineEvent(
+            PipelineEvent(PipelineEvent::StageRemoved, this, stage)
+        );
+    }
+}
+
+void Pipeline::sortStages()
+{
+    auto couldBeSorted = true;
+    std::vector<Stage *> sorted;
+    std::set<Stage *> touched;
+
+    std::function<void(Stage *)> visit = [&] (Stage * stage)
+    {
+        if (!couldBeSorted)
+        {
+            sorted.push_back(stage);
+            return;
+        }
+
+        if (touched.count(stage) > 0)
+        {
+            critical() << "Pipeline is not a directed acyclic graph" << std::endl;
+            couldBeSorted = false;
+            sorted.push_back(stage);
+            return;
+        }
+
+        touched.insert(stage);
+
+        for (auto stageIt = m_stages.begin(); stageIt != m_stages.end(); /* nop */)
+        {
+            if (!stage->requires(*stageIt, false))
+            {
+                ++stageIt;
+                continue;
+            }
+
+            auto nextStage = *stageIt;
+            m_stages.erase(stageIt);
+            visit(nextStage);
+
+            stageIt = m_stages.begin();
+        }
+
+        sorted.push_back(stage);
+    };
+
+    while (!m_stages.empty())
+    {
+        auto stageIt = m_stages.begin();
+        auto stage = *stageIt;
+        m_stages.erase(stageIt);
+        visit(stage);
+    }
+
+    m_stages = sorted;
+    m_sorted = couldBeSorted;
+}
+
+void Pipeline::onContextInit(AbstractGLContext * context)
+{
+    for (auto stage : m_stages)
+    {
+        stage->initContext(context);
+    }
+}
+
+void Pipeline::onContextDeinit(AbstractGLContext * context)
+{
+    for (auto stage : m_stages)
+    {
+        stage->deinitContext(context);
+    }
+}
+
+void Pipeline::onProcess(AbstractGLContext * context)
+{
+    if (!m_sorted) {
+        sortStages();
+    }
+
+    for (auto stage : m_stages)
+    {
+        if (stage->needsProcessing()) {
+            stage->process(context);
+        }
+    }
+}
+
+void Pipeline::onInputValueChanged(AbstractSlot *)
+{
+    // Not necessary for pipelines (handled by inner connections)
+}
+
+void Pipeline::onOutputRequiredChanged(AbstractSlot *)
+{
+    // Not necessary for pipelines (handled by inner connections)
+}
+
+void Pipeline::onPipelineEvent(const PipelineEvent & event)
+{
+    // Process stage events
+    Stage::onPipelineEvent(event);
+
+    // Reorder stage if stages have been added or removed,
+    // or if connection on child-stages have been changed.
+    if ( ( event.pipeline() == this && (
+             event.type() == PipelineEvent::StageAdded ||
+             event.type() == PipelineEvent::StageRemoved )
+          ) ||
+          ( event.stage()->parentPipeline() == this &&
+            event.type() == PipelineEvent::ConnectionChanged
+          )
+       )
+    {
+        // Re-order stages
+        m_sorted = false;
     }
 }
 

@@ -56,7 +56,7 @@ public:
 
     /**
     *  @brief
-    *    A getter for the type of the event
+    *    Get event type
     *
     *  @return
     *    The type of the Event
@@ -65,7 +65,7 @@ public:
 
     /**
     *  @brief
-    *    A getter for the description of the Event as a string
+    *    Get event description as string
     *
     *  @return
     *    A string describing the event

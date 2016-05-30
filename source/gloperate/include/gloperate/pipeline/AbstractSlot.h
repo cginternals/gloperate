@@ -77,10 +77,61 @@ public:
     */
     std::string qualifiedName() const;
 
+    /**
+    *  @brief
+    *    Check if data is required
+    *
+    *  @return
+    *    'true' if data is required, else 'false'
+    *
+    *  @see
+    *    setRequired
+    */
+    bool isRequired() const;
+
+    /**
+    *  @brief
+    *    Set if data is required
+    *
+    *  @param[in] required
+    *    'true' if data is required, else 'false'
+    *
+    *  @remarks
+    *    This flag plays a role during the execution of pipelines.
+    *    If an output data is flagged as required, the owning stage
+    *    will be activated in order to produce that output. In turn,
+    *    the stage will flag the input slots it needs to create that
+    *    output as required, too. This propagates through the entire
+    *    pipeline and determines which stages will be executed.
+    */
+    void setRequired(bool required);
+
+    /**
+    *  @brief
+    *    Check if slot has valid data
+    *
+    *  @return
+    *    'true' if data is valid, else 'false'
+    *
+    *  @remarks
+    *    This status is important for the pipeline to work.
+    *    If output data is invalid, the pipeline tries to produce
+    *    it, otherwise, the pipeline is not run. This function
+    *    indicates whether data needs to be updated.
+    */
+    virtual bool isValid() const = 0;
+
+    /**
+    *  @brief
+    *    Called when required-flag has been changed
+    */
+    virtual void onRequiredChanged();
+
 
 protected:
     SlotType   m_slotType; ///< Slot type
     Stage    * m_owner;    ///< Stage that owns the slot (can be null)
+    bool       m_required; ///< Is the data required?
 };
 
 

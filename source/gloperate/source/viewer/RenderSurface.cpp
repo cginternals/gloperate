@@ -12,6 +12,9 @@
 #include <gloperate/tools/ImageExporter.h>
 
 
+using namespace cppassist;
+
+
 namespace gloperate
 {
 
@@ -35,9 +38,11 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
         m_viewerContext->scriptEnvironment()->addApi(this);
     }
 
-    m_viewer.outputs.rendered.valueChanged.connect([this] (bool rendered)
+    // Mark render output as required and redraw when it is invalidated
+    m_viewer.rendered.setRequired(true);
+    m_viewer.rendered.valueChanged.connect([this] (bool)
     {
-        if (!rendered) {
+        if (!m_viewer.rendered.isValid()) {
             this->redraw();
         }
     });
@@ -106,17 +111,19 @@ int RenderSurface::exportProgress()
 
 glm::vec4 RenderSurface::deviceViewport()
 {
-    return m_viewer.inputs.deviceViewport.value();
+    return m_viewer.deviceViewport.value();
 }
 
 glm::vec4 RenderSurface::virtualViewport()
 {
-    return m_viewer.inputs.virtualViewport.value();
+    return m_viewer.virtualViewport.value();
 }
 
 void RenderSurface::onUpdate()
 {
-    m_viewer.inputs.timeDelta.setValue(m_viewerContext->timeManager()->timeDelta());
+    float timeDelta = m_viewerContext->timeManager()->timeDelta();
+
+    m_viewer.timeDelta.setValue(timeDelta);
 }
 
 void RenderSurface::onContextInit()
@@ -148,13 +155,13 @@ void RenderSurface::onContextDeinit()
 
 void RenderSurface::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
-    m_viewer.inputs.deviceViewport.setValue(deviceViewport);
-    m_viewer.inputs.virtualViewport.setValue(virtualViewport);
+    m_viewer.deviceViewport.setValue(deviceViewport);
+    m_viewer.virtualViewport.setValue(virtualViewport);
 }
 
 void RenderSurface::onBackgroundColor(float red, float green, float blue)
 {
-    m_viewer.inputs.backgroundColor.setValue(glm::vec3(red, green, blue));
+    m_viewer.backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
 void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
@@ -183,8 +190,8 @@ void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
     {
         m_frame++;
 
-        m_viewer.inputs.frameCounter.setValue(m_frame);
-        m_viewer.inputs.targetFBO.setValue(targetFBO);
+        m_viewer.frameCounter.setValue(m_frame);
+        m_viewer.targetFBO.setValue(targetFBO);
 
         m_viewer.renderStage()->process(m_openGLContext);
     }

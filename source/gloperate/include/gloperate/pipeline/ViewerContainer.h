@@ -2,10 +2,15 @@
 #pragma once
 
 
+#include <gloperate/base/GlmProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
+#include <gloperate/pipeline/Parameter.h>
+#include <gloperate/pipeline/ProxyOutput.h>
 
-#include <gloperate/pipeline/ViewerInputs.h>
-#include <gloperate/pipeline/ViewerOutputs.h>
+
+namespace globjects {
+    class Framebuffer;
+}
 
 
 namespace gloperate
@@ -25,9 +30,16 @@ namespace gloperate
 class GLOPERATE_API ViewerContainer : public Pipeline
 {
 public:
-    // Stages
-    ViewerInputs  inputs;  ///< Viewer inputs
-    ViewerOutputs outputs; ///< Viewer outputs
+    // Render stage inputs
+    Parameter<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
+    Parameter<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
+    Parameter<glm::vec3>                backgroundColor; ///< Background color (RGB)
+    Parameter<int>                      frameCounter;    ///< Frame counter (number of frames)
+    Parameter<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
+    Parameter<globjects::Framebuffer *> targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
+
+    // Render stage outputs
+    ProxyOutput<bool>                   rendered;        ///< 'true' if output has been rendered
 
 
 public:
@@ -70,7 +82,7 @@ public:
 
 
 protected:
-    void connect(Stage * stage, const std::string & name, const AbstractSlot * source);
+    void connect(Stage * stage, const std::string & name, AbstractSlot * source);
     void connect(AbstractInputSlot * input, Stage * stage, const std::string & name);
     void disconnect(Stage * stage, const std::string & name);
 

@@ -34,13 +34,7 @@ public:
     */
     const glm::mat3 & value() const;
 
-    /**
-    *  @brief
-    *    A getter for the description of the Event as a string
-    *
-    *  @return
-    *    A string describing the event
-    */
+    // Virtual InputEvent interface
     virtual std::string asString() const override;
 
 

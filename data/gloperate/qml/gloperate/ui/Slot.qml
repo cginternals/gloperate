@@ -13,11 +13,16 @@ BaseItem
 {
     id: item
 
+    signal clicked();
+
     property string name:      'Slot'
     property string value:     ''
+    property bool   switched:  false
     property bool   hasInput:  true
     property bool   hasOutput: true
-    property bool   switched:  false
+    property bool   showValue: false
+    property bool   valid:     true
+    property bool   required:  false
 
     implicitWidth:  body.implicitWidth + Ui.style.pipelineConnectorSize
     implicitHeight: body.implicitHeight
@@ -32,7 +37,7 @@ BaseItem
         height:                 Ui.style.pipelineConnectorSize
 
         visible:      item.hasInput
-        color:        'blue'
+        color:        Ui.style.pipelineConnectorColorIn
         radius:       Ui.style.pipelineConnectorSize / 2.0
         border.color: Ui.style.pipelineLineColor
         border.width: Ui.style.pipelineLineWidth
@@ -49,13 +54,13 @@ BaseItem
         anchors.bottom: parent.bottom
         z:              0
 
-        implicitWidth:  labelName.implicitWidth + labelValue.implicitWidth + Ui.style.pipelineConnectorSize + 4 * Ui.style.ctrlPadding
+        implicitWidth:  labelName.implicitWidth + (labelValue.visible ? labelValue.implicitWidth : 0) + Ui.style.pipelineConnectorSize + 4 * Ui.style.ctrlPadding
         implicitHeight: Ui.style.pipelineSlotSize
 
-        color:        Ui.style.pipelineSlotColor
+        color:        item.valid ? Ui.style.pipelineSlotColor : Ui.style.pipelineSlotInvalidColor
         radius:       Ui.style.pipelineStageRadius
-        border.color: Ui.style.pipelineLineColor
-        border.width: Ui.style.pipelineLineWidth
+        border.color: item.required ? Ui.style.pipelineSlotRequiredColor : Ui.style.pipelineLineColor
+        border.width: item.required ? Ui.style.pipelineSlotRequiredBorder : Ui.style.pipelineLineWidth
 
         Label
         {
@@ -81,8 +86,9 @@ BaseItem
             anchors.leftMargin:     Ui.style.ctrlPadding + Ui.style.pipelineConnectorSize * 0.5
             anchors.rightMargin:    Ui.style.ctrlPadding + Ui.style.pipelineConnectorSize * 0.5
 
-            text:  item.value
-            color: Ui.style.pipelineSecondaryTextColor
+            visible: item.showValue
+            text:    item.value
+            color:   Ui.style.pipelineSecondaryTextColor
         }
     }
 
@@ -97,9 +103,19 @@ BaseItem
         z:                      1
 
         visible:      item.hasOutput
-        color:        'red'
+        color:        Ui.style.pipelineConnectorColorOut
         radius:       Ui.style.pipelineConnectorSize / 2.0
         border.color: Ui.style.pipelineLineColor
         border.width: Ui.style.pipelineLineWidth
+    }
+
+    MouseArea
+    {
+        anchors.fill: parent
+
+        onClicked:
+        {
+            item.clicked();
+        }
     }
 }

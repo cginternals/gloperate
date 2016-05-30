@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <vector>
+
 #include <cppexpose/reflection/Object.h>
 
 #include <gloperate/gloperate_api.h>
@@ -19,6 +21,8 @@ namespace gloperate
 
 class ViewerContext;
 class Stage;
+class PipelineApiWatcher;
+class AbstractSlot;
 
 
 /**
@@ -49,16 +53,24 @@ protected:
     std::string getName(const std::string & name);
     cppexpose::Variant getStages(const std::string & name);
     cppexpose::Variant getInputs(const std::string & name);
+    cppexpose::Variant getParameters(const std::string & name);
     cppexpose::Variant getOutputs(const std::string & name);
+    cppexpose::Variant getProxyOutputs(const std::string & name);
     std::string getValue(const std::string & path);
+    void setValue(const std::string & path, const std::string & value);
+    bool isValid(const std::string & path);
+    bool isRequired(const std::string & path);
+    void setRequired(const std::string & path, bool required);
+    void registerWatcher(const cppexpose::Variant & func);
 
     // Helper functions
     Stage * getStage(const std::string & name);
-    cppexpose::AbstractProperty * getProperty(const std::string & name);
+    AbstractSlot * getSlot(const std::string & name);
 
 
 protected:
-    ViewerContext * m_viewerContext; ///< Viewer context (must NOT be null!)
+    ViewerContext                     * m_viewerContext; ///< Viewer context (must NOT be null!)
+    std::vector<PipelineApiWatcher *>   m_watchers;      ///< List of watchers for pipeline events
 };
 
 

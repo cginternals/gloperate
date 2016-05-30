@@ -10,6 +10,9 @@
 
 #include <gloperate/gloperate_api.h>
 
+// Include Component<Stage> specialization for downstream plugins
+#include <gloperate/pipeline/StageComponent.h>
+
 
 namespace gloperate
 {
@@ -17,11 +20,14 @@ namespace gloperate
 
 class ViewerContext;
 class AbstractGLContext;
+class AbstractSlot;
 class AbstractInput;
 class AbstractParameter;
 class AbstractOutput;
 class AbstractProxyOutput;
 class Pipeline;
+class PipelineWatcher;
+class PipelineEvent;
 
 template <typename T>
 class Input;
@@ -46,10 +52,10 @@ class ProxyOutput;
 */
 class GLOPERATE_API Stage : public cppexpose::Object
 {
-friend class AbstractInput;
-friend class AbstractParameter;
-friend class AbstractOutput;
-friend class AbstractProxyOutput;
+    friend class AbstractInput;
+    friend class AbstractParameter;
+    friend class AbstractOutput;
+    friend class AbstractProxyOutput;
 
 
 public:
@@ -127,6 +133,20 @@ public:
 
     /**
     *  @brief
+    *    Get if this stage depends on another stage
+    *
+    *  @param[in] stage
+    *    Stage
+    *  @param[in] recursive
+    *    If 'true', check recursively, else only direct dependencies are checked
+    *
+    *  @return
+    *    'true' if stage depends on the other stage, else 'false'
+    */
+    bool requires(const Stage * stage, bool recursive = true) const;
+
+    /**
+    *  @brief
     *    Set parent pipeline
     *
     *  @param[in] parent
@@ -173,6 +193,58 @@ public:
     *  @see onProcess
     */
     void process(AbstractGLContext * context);
+
+    /**
+    *  @brief
+    *    Check if stage needs to be processed
+    *
+    *  @return
+    *    'true' if stage needs processing, else 'false'
+    *
+    *  @remarks
+    *    A stage needs to be processed when it has output
+    *    data that is marked as required, but is currently
+    *    invalid. Also, if a stage is marked as 'alwaysProcess',
+    *    it will always return 'true'.
+    */
+    bool needsProcessing() const;
+
+    /**
+    *  @brief
+    *    Check if stage is always processed
+    *
+    *  @return
+    *    'true' if stage is always processed, else 'false'
+    *
+    *  @remarks
+    *    A stage that is marked 'alwaysProcess' will be
+    *    executed each time its parent pipeline is executed.
+    *    This should be used with great care. Usually, only
+    *    blit stages should be marked 'alwaysProcess', as
+    *    they need to be executed whenever a redraw occurs
+    *    to recreate the image even if nothing has changed
+    *    in the pipeline. Everything else should be managed
+    *    by using data connections.
+    */
+    bool alwaysProcessed() const;
+
+    /**
+    *  @brief
+    *    Check if stage is always processed
+    *
+    *  @param[in] alwaysProcess
+    *    'true' if stage is always processed, else 'false'
+    *
+    *  @see
+    *    alwaysProcessed()
+    */
+    void setAlwaysProcessed(bool alwaysProcess);
+
+    /**
+    *  @brief
+    *    Invalidate all outputs
+    */
+    void invalidateOutputs();
 
     /**
     *  @brief
@@ -257,6 +329,42 @@ public:
     *    Proxy output (can be null)
     */
     const AbstractProxyOutput * proxyOutput(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Get pipeline watchers
+    *
+    *  @return
+    *    List of connected pipeline watchers
+    */
+    const std::vector<PipelineWatcher *> & watchers() const;
+
+    /**
+    *  @brief
+    *    Add pipeline watcher
+    *
+    *  @param[in] watcher
+    *    Pipeline watcher (must NOT be null!)
+    */
+    void addWatcher(PipelineWatcher * watcher);
+
+    /**
+    *  @brief
+    *    Remove pipeline watcher
+    *
+    *  @param[in] watcher
+    *    Pipeline watcher (must NOT be null!)
+    */
+    void removeWatcher(PipelineWatcher * watcher);
+
+    /**
+    *  @brief
+    *    Promote pipeline event
+    *
+    *  @param[in] event
+    *    Pipeline event
+    */
+    void promotePipelineEvent(const PipelineEvent & event);
 
 
 protected:
@@ -398,10 +506,65 @@ protected:
     */
     virtual void onProcess(AbstractGLContext * context);
 
+    /**
+    *  @brief
+    *    Called when an input value has changed
+    *
+    *  @param[in] slot
+    *    Data slot (either input or parameter)
+    *
+    *  @remarks
+    *    The default implementation invalidates all outputs whenever
+    *    an input and parameter has been changed. This method can
+    *    be overridden to refine that logic, e.g., invalidate only
+    *    certain outputs on certain inputs.
+    *
+    *    IMPORTANT: Do not make any OpenGL calls in this function,
+    *    because there is no OpenGL context active at the time this
+    *    function is called. Use it only for invalidating outputs and
+    *    implement everything else in onProcess().
+    */
+    virtual void onInputValueChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
+    *    Called when an output value's required-state has changed
+    *
+    *  @param[in] slot
+    *    Output slot (either input or parameter)
+    *
+    *  @remarks
+    *    The default implementation is to require all input slots
+    *    if any output slot is required. This method can be
+    *    overridden to refine that logic, e.g., require only
+    *    certain inputs on certain required outputs.
+    *
+    *    IMPORTANT: Do not make any OpenGL calls in this function,
+    *    because there is no OpenGL context active at the time this
+    *    function is called. Use it only for invalidating outputs and
+    *    implement everything else in onProcess().
+    */
+    virtual void onOutputRequiredChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
+    *    Called when a pipeline event has occured
+    *
+    *  @param[in] event
+    *    Pipeline event
+    *
+    *  @remarks
+    *    The default implementation takes care of promoting changes
+    *    through the pipeline. Therefore, if this method is overridden,
+    *    make sure to call the base implementation.
+    */
+    virtual void onPipelineEvent(const PipelineEvent & event);
+
 
 protected:
     ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
     Pipeline      * m_parentPipeline; ///< Pipeline to which the stage belongs (can be null)
+    bool            m_alwaysProcess;  ///< Is the stage always processed?
 
     std::vector<AbstractInput *>                           m_inputs;          ///< List of inputs
     std::unordered_map<std::string, AbstractInput *>       m_inputsMap;       ///< Map of names and inputs
@@ -411,6 +574,8 @@ protected:
     std::unordered_map<std::string, AbstractOutput *>      m_outputsMap;      ///< Map of names and outputs
     std::vector<AbstractProxyOutput *>                     m_proxyOutputs;    ///< List of proxy outputs
     std::unordered_map<std::string, AbstractProxyOutput *> m_proxyOutputsMap; ///< Map of names and proxy outputs
+
+    std::vector<PipelineWatcher *> m_watchers;  ///< List of connected pipeline watchers
 };
 
 

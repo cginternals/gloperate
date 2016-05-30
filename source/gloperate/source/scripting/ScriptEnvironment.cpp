@@ -39,18 +39,6 @@ ScriptEnvironment::~ScriptEnvironment()
 {
 }
 
-ScriptEnvironment::ScriptEnvironment(ScriptEnvironment && other)
-: m_viewerContext(std::move(other.m_viewerContext))
-, m_scriptContext(std::move(other.m_scriptContext))
-, m_systemApi(std::move(other.m_systemApi))
-, m_timerApi(std::move(other.m_timerApi))
-, m_componentsApi(std::move(other.m_componentsApi))
-, m_pipelineApi(std::move(other.m_pipelineApi))
-, m_apis(std::move(other.m_apis))
-, m_helpText(std::move(other.m_helpText))
-{
-}
-
 void ScriptEnvironment::setupScripting(const std::string & backendName)
 {
     m_apis.clear();
@@ -146,20 +134,6 @@ void ScriptEnvironment::initialize()
 
     m_pipelineApi.reset(new PipelineApi(m_viewerContext));
     addApi(m_pipelineApi.get());
-}
-
-ScriptEnvironment & ScriptEnvironment::operator=(ScriptEnvironment && other)
-{
-    m_viewerContext = std::move(other.m_viewerContext);
-    m_scriptContext = std::move(other.m_scriptContext);
-    m_systemApi     = std::move(other.m_systemApi);
-    m_timerApi      = std::move(other.m_timerApi);
-    m_componentsApi = std::move(other.m_componentsApi);
-    m_pipelineApi   = std::move(other.m_pipelineApi);
-    m_apis          = std::move(other.m_apis);
-    m_helpText      = std::move(other.m_helpText);
-
-    return *this;
 }
 
 

@@ -55,12 +55,6 @@ public:
     *    Destructor
     */
     ~ViewerContext();
-
-    /**
-     *  @brief
-     *    Move Constructor
-     */
-    ViewerContext(ViewerContext && other);
     //@}
 
     //@{
@@ -180,19 +174,15 @@ public:
     void exit(int exitCode = 0);
     //@}
 
-    /**
-     * @brief Move Assignment operator
-     *
-     * @param other
-     *   The instance to move the data from
-     *
-     * @return
-     *   The reference to this
-     */
-    ViewerContext & operator=(ViewerContext && other);
 
 protected:
     //@{
+    /**
+    *  @brief
+    *    Register local plugins (contained in gloperate itself)
+    */
+    void registerLocalPlugins();
+
     /**
     *  @brief
     *    Register render surface

@@ -39,6 +39,9 @@ public:
     *    Destructor
     */
     virtual ~Parameter();
+
+    // Virtual AbstractSlot interface
+    virtual bool isValid() const override;
 };
 
 

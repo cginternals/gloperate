@@ -209,6 +209,8 @@ Page
 
         anchors.fill: main
         z:            -1
+
+        stage: 'DemoStage'
     }
 
     // Settings dialog

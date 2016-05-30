@@ -16,6 +16,7 @@
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/gloperate-version.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/base/ResourceManager.h>
 
@@ -67,10 +68,10 @@ DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name, Pi
     m_timer.elapsed.connect([this] ()
     {
         // Update virtual time
-        m_time += timeDelta.value();
+        m_time += *timeDelta;
 
         // Redraw
-        invalidateOutput();
+        invalidateOutputs();
     });
 
     m_timer.start(0.0f);
@@ -80,15 +81,8 @@ DemoStage::~DemoStage()
 {
 }
 
-void DemoStage::invalidateOutput()
-{
-    rendered.setValue(false);
-}
-
 void DemoStage::onContextInit(AbstractGLContext *)
 {
-    globjects::warning() << "onContextInit()";
-
     globjects::init();
 
     createAndSetupCamera();
@@ -103,7 +97,7 @@ void DemoStage::onContextDeinit(AbstractGLContext *)
 void DemoStage::onProcess(AbstractGLContext *)
 {
     // Get viewport
-    glm::vec4 viewport = deviceViewport.value();
+    glm::vec4 viewport = *deviceViewport;
 
     // Update viewport
     gl::glViewport(
@@ -114,7 +108,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = targetFBO.value();
+    globjects::Framebuffer * fbo = *targetFBO;
     if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
@@ -122,7 +116,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     m_angle = m_time;
 
     // Clear background
-    glm::vec3 color = backgroundColor.value();
+    glm::vec3 color = *backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -203,11 +197,11 @@ void DemoStage::createAndSetupTexture()
 
 void DemoStage::createAndSetupGeometry()
 {
-    static const std::array<glm::vec2, 4> raw {
+    static const std::array<glm::vec2, 4> raw { {
         glm::vec2( +1.f, -1.f ),
         glm::vec2( +1.f, +1.f ),
         glm::vec2( -1.f, -1.f ),
-        glm::vec2( -1.f, +1.f ) };
+        glm::vec2( -1.f, +1.f ) } };
 
     m_vao = new globjects::VertexArray;
     m_buffer = new globjects::Buffer();
@@ -234,6 +228,17 @@ void DemoStage::createAndSetupGeometry()
 
     m_program->setUniform("source", 0);
 }
+
+
+CPPEXPOSE_COMPONENT(
+    DemoStage, gloperate::Stage
+  , "RenderStage"   // Tags
+  , ""              // Icon
+  , ""              // Annotations
+  , "Demo stage that renders a simple triangle onto the screen"
+  , GLOPERATE_AUTHOR_ORGANIZATION
+  , "v1.0.0"
+)
 
 
 } // namespace gloperate

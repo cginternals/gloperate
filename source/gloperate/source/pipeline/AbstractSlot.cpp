@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/PipelineEvent.h>
 
 
 namespace gloperate
@@ -13,6 +14,7 @@ namespace gloperate
 AbstractSlot::AbstractSlot(SlotType type)
 : m_slotType(type)
 , m_owner(nullptr)
+, m_required(false)
 {
 }
 
@@ -42,6 +44,28 @@ std::string AbstractSlot::qualifiedName() const
     ss << name();
 
     return ss.str();
+}
+
+bool AbstractSlot::isRequired() const
+{
+    return m_required;
+}
+
+void AbstractSlot::setRequired(bool required)
+{
+    if (m_required != required)
+    {
+        m_required = required;
+
+        onRequiredChanged();
+    }
+}
+
+void AbstractSlot::onRequiredChanged()
+{
+    m_owner->promotePipelineEvent(
+        PipelineEvent(PipelineEvent::RequiredChanged, m_owner, this)
+    );
 }
 
 

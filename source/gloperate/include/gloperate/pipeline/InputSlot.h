@@ -43,6 +43,7 @@ public:
 
 
 public:
+    //@{
     /**
     *  @brief
     *    Constructor
@@ -75,7 +76,7 @@ public:
     *  @return
     *    'true' if input slot could be connected, else 'false'
     */
-    bool connect(const Input<T> * source);
+    bool connect(Input<T> * source);
 
     /**
     *  @brief
@@ -87,7 +88,7 @@ public:
     *  @return
     *    'true' if input slot could be connected, else 'false'
     */
-    bool connect(const Parameter<T> * source);
+    bool connect(Parameter<T> * source);
 
     /**
     *  @brief
@@ -99,7 +100,7 @@ public:
     *  @return
     *    'true' if input slot could be connected, else 'false'
     */
-    bool connect(const Output<T> * source);
+    bool connect(Output<T> * source);
 
     /**
     *  @brief
@@ -111,12 +112,50 @@ public:
     *  @return
     *    'true' if input slot could be connected, else 'false'
     */
-    bool connect(const ProxyOutput<T> * source);
+    bool connect(ProxyOutput<T> * source);
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Connect input slot by stream operator
+    *
+    *  @param[in] source
+    *    Source input, parameter, output, or proxy output
+    *
+    *  @return
+    *    Reference to this input slot
+    */
+    InputSlot<T, BASE> & operator<<(Input<T> & source);
+    InputSlot<T, BASE> & operator<<(Parameter<T> & source);
+    InputSlot<T, BASE> & operator<<(Output<T> & source);
+    InputSlot<T, BASE> & operator<<(ProxyOutput<T> & source);
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Dereference pointer operator
+    *
+    *  @return
+    *    Reference to the stored data object
+    */
+    const T & operator*() const;
+
+    /**
+    *  @brief
+    *    Dereference pointer operator
+    *
+    *  @return
+    *    Pointer to the stored data object (can be null)
+    */
+    T * operator->();
+    //@}
 
     // Virtual AbstractInputSlot interface
     virtual const AbstractSlot * source() const override;
     virtual bool isCompatible(const AbstractSlot * source) const override;
-    virtual bool connect(const AbstractSlot * source) override;
+    virtual bool connect(AbstractSlot * source) override;
     virtual void disconnect() override;
 
     // Virtual AbstractTyped interface
@@ -128,6 +167,10 @@ public:
     virtual const T * ptr() const override;
     virtual T * ptr() override;
 
+    // Virtual AbstractSlot interface
+    virtual bool isValid() const override;
+    virtual void onRequiredChanged() override;
+
     // Virtual AbstractProperty interface
     virtual bool isGroup() const override;
 
@@ -138,12 +181,17 @@ protected:
 
 
 protected:
+    void promoteConnection();
+    void promoteRequired();
+
+
+protected:
     T                             m_defaultValue; ///< Default value that is returned if unconnected
     union {
-        const Input<T>          * input;          ///< Connected input (can be null)
-        const Parameter<T>      * parameter;      ///< Connected parameter (can be null)
-        const Output<T>         * output;         ///< Connected output (can be null)
-        const ProxyOutput<T>    * proxyOutput;    ///< Connected proxy output (can be null)
+        Input<T>                * input;          ///< Connected input (can be null)
+        Parameter<T>            * parameter;      ///< Connected parameter (can be null)
+        Output<T>               * output;         ///< Connected output (can be null)
+        ProxyOutput<T>          * proxyOutput;    ///< Connected proxy output (can be null)
     } m_source;
     SlotType                      m_sourceType;   ///< Contains to which kind of data the input slot is connected
     cppexpose::ScopedConnection   m_connection;   ///< Connection to changed-signal of source property

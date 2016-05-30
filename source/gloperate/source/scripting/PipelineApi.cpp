@@ -4,13 +4,14 @@
 #include <vector>
 #include <sstream>
 #include <string>
-#include <iostream>
 
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/AbstractSlot.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractData.h>
+#include <gloperate/scripting/PipelineApiWatcher.h>
 
 
 namespace gloperate
@@ -22,15 +23,27 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
 , m_viewerContext(viewerContext)
 {
     // Register functions
-    addFunction("getName",    this, &PipelineApi::getName);
-    addFunction("getStages",  this, &PipelineApi::getStages);
-    addFunction("getInputs",  this, &PipelineApi::getInputs);
-    addFunction("getOutputs", this, &PipelineApi::getOutputs);
-    addFunction("getValue",   this, &PipelineApi::getValue);
+    addFunction("getName",         this, &PipelineApi::getName);
+    addFunction("getStages",       this, &PipelineApi::getStages);
+    addFunction("getInputs",       this, &PipelineApi::getInputs);
+    addFunction("getParameters",   this, &PipelineApi::getParameters);
+    addFunction("getOutputs",      this, &PipelineApi::getOutputs);
+    addFunction("getProxyOutputs", this, &PipelineApi::getProxyOutputs);
+    addFunction("getValue",        this, &PipelineApi::getValue);
+    addFunction("setValue",        this, &PipelineApi::setValue);
+    addFunction("isValid",         this, &PipelineApi::isValid);
+    addFunction("isRequired",      this, &PipelineApi::isRequired);
+    addFunction("setRequired",     this, &PipelineApi::setRequired);
+    addFunction("registerWatcher", this, &PipelineApi::registerWatcher);
 }
 
 PipelineApi::~PipelineApi()
 {
+    // Destroy all watchers
+    for (auto watcher : m_watchers)
+    {
+        delete watcher;
+    }
 }
 
 std::string PipelineApi::getName(const std::string & name)
@@ -56,6 +69,7 @@ cppexpose::Variant PipelineApi::getStages(const std::string & name)
     {
         lst.asArray()->push_back(subStage->name());
     }
+
     return lst;
 }
 
@@ -69,6 +83,15 @@ cppexpose::Variant PipelineApi::getInputs(const std::string & name)
     {
         lst.asArray()->push_back(input->name());
     }
+
+    return lst;
+}
+
+cppexpose::Variant PipelineApi::getParameters(const std::string & name)
+{
+    Stage * stage = getStage(name);
+
+    cppexpose::Variant lst = cppexpose::Variant::array();
 
     for (auto * parameter : stage->parameters())
     {
@@ -89,6 +112,15 @@ cppexpose::Variant PipelineApi::getOutputs(const std::string & name)
         lst.asArray()->push_back(output->name());
     }
 
+    return lst;
+}
+
+cppexpose::Variant PipelineApi::getProxyOutputs(const std::string & name)
+{
+    Stage * stage = getStage(name);
+
+    cppexpose::Variant lst = cppexpose::Variant::array();
+
     for (auto * proxyOutput : stage->proxyOutputs())
     {
         lst.asArray()->push_back(proxyOutput->name());
@@ -99,12 +131,73 @@ cppexpose::Variant PipelineApi::getOutputs(const std::string & name)
 
 std::string PipelineApi::getValue(const std::string & path)
 {
-    cppexpose::AbstractProperty * property = getProperty(path);
-    if (property) {
-        return property->toString();
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        return slot->toString();
     } else {
         return "";
     }
+}
+
+void PipelineApi::setValue(const std::string & path, const std::string & value)
+{
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        slot->fromString(value);
+    }
+}
+
+bool PipelineApi::isValid(const std::string & path)
+{
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        return slot->isValid();
+    } else {
+        return false;
+    }
+}
+
+bool PipelineApi::isRequired(const std::string & path)
+{
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        return slot->isRequired();
+    } else {
+        return false;
+    }
+}
+
+void PipelineApi::setRequired(const std::string & path, bool required)
+{
+    AbstractSlot * slot = getSlot(path);
+    if (slot) {
+        return slot->setRequired(required);
+    }
+}
+
+void PipelineApi::registerWatcher(const cppexpose::Variant & func)
+{
+    // Get render surface and pipeline
+    if (m_viewerContext->surfaces().size() == 0) {
+        return;
+    }
+
+    RenderSurface * surface = static_cast<RenderSurface *>(m_viewerContext->surfaces()[0]);
+    if (!surface) {
+        return;
+    }
+
+    auto * rootPipeline = surface->rootPipeline();
+    if (!rootPipeline) {
+        return;
+    }
+
+    // Add pipeline watcher to root pipeline
+    auto * watcher = new PipelineApiWatcher(func);
+    rootPipeline->addWatcher(watcher);
+
+    // Store pointer to watcher for later destruction
+    m_watchers.push_back(watcher);
 }
 
 Stage * PipelineApi::getStage(const std::string & name)
@@ -127,12 +220,14 @@ Stage * PipelineApi::getStage(const std::string & name)
         names.push_back(subname);
     }
 
-    // Begin with root pipeline
-    Stage * stage = surface->rootPipeline();
+    // Find stage in pipeline
+    Stage * stage = nullptr;
     for (std::string subname : names)
     {
         // Get sub-stage
-        if (stage->isPipeline()) {
+        if (!stage && subname == "Viewer") {
+            stage = surface->rootPipeline();
+        } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
         } else {
             stage = nullptr;
@@ -147,7 +242,7 @@ Stage * PipelineApi::getStage(const std::string & name)
     return stage;
 }
 
-cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
+AbstractSlot * PipelineApi::getSlot(const std::string & name)
 {
     // Get render surface
     if (m_viewerContext->surfaces().size() == 0) {
@@ -167,8 +262,8 @@ cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
         names.push_back(subname);
     }
 
-    // Begin with root pipeline
-    Stage * stage = surface->rootPipeline();
+    // Find stage in pipeline
+    Stage * stage = nullptr;
     for (size_t i=0; i<names.size(); i++)
     {
         // Get next token
@@ -177,11 +272,15 @@ cppexpose::AbstractProperty * PipelineApi::getProperty(const std::string & name)
         // If this is the last token, return property from current stage
         if (i == names.size() - 1)
         {
-            return stage->property(subname);
+            AbstractProperty * property = stage->property(subname);
+            AbstractSlot * slot = property ? static_cast<AbstractSlot *>(property) : nullptr;
+            return slot;
         }
 
         // Get sub-stage
-        if (stage->isPipeline()) {
+        if (!stage && subname == "Viewer") {
+            stage = surface->rootPipeline();
+        } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
         } else {
             stage = nullptr;

@@ -83,7 +83,7 @@ public:
     *  @return
     *    'true' if input slot could be connected, else 'false'
     */
-    virtual bool connect(const AbstractSlot * source) = 0;
+    virtual bool connect(AbstractSlot * source) = 0;
 
     /**
     *  @brief
