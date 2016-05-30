@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/pipeline/AbstractData.h>
+#include <gloperate/pipeline/AbstractDataSlot.h>
 
 
 namespace gloperate
@@ -13,7 +13,7 @@ namespace gloperate
 *  @brief
 *    Base class for stage parameters
 */
-class GLOPERATE_API AbstractParameter : public AbstractData
+class GLOPERATE_API AbstractParameter : public AbstractDataSlot
 {
 public:
     /**

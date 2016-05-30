@@ -1,5 +1,5 @@
 
-#include <gloperate/pipeline/AbstractData.h>
+#include <gloperate/pipeline/AbstractDataSlot.h>
 
 #include <sstream>
 
@@ -10,12 +10,12 @@ namespace gloperate
 {
 
 
-AbstractData::AbstractData(SlotType type)
+AbstractDataSlot::AbstractDataSlot(SlotType type)
 : AbstractSlot(type)
 {
 }
 
-AbstractData::~AbstractData()
+AbstractDataSlot::~AbstractDataSlot()
 {
 }
 

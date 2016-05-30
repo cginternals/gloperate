@@ -9,7 +9,7 @@ namespace gloperate
 
 
 AbstractParameter::AbstractParameter()
-: AbstractData(SlotType::Parameter)
+: AbstractDataSlot(SlotType::Parameter)
 {
 }
 

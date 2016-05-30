@@ -16,9 +16,13 @@ class Stage;
 
 /**
 *  @brief
-*    Base class for data containers
+*    Base class for data slots
+*
+*    Data slots are slots that contain actual data.
+*    In the current pipeline architecture, there are two
+*    types of data slots: outputs and parameters.
 */
-class GLOPERATE_API AbstractData : public AbstractSlot
+class GLOPERATE_API AbstractDataSlot : public AbstractSlot
 {
 public:
     /**
@@ -28,13 +32,13 @@ public:
     *  @param[in] type
     *    Slot type
     */
-    AbstractData(SlotType type);
+    AbstractDataSlot(SlotType type);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~AbstractData();
+    virtual ~AbstractDataSlot();
 };
 
 

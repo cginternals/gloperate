@@ -73,7 +73,7 @@ set(headers
     ${include_path}/scripting/PipelineApiWatcher.h
 
     ${include_path}/pipeline/AbstractSlot.h
-    ${include_path}/pipeline/AbstractData.h
+    ${include_path}/pipeline/AbstractDataSlot.h
     ${include_path}/pipeline/AbstractInputSlot.h
     ${include_path}/pipeline/AbstractParameter.h
     ${include_path}/pipeline/AbstractInput.h
@@ -157,7 +157,7 @@ set(sources
     ${source_path}/scripting/PipelineApiWatcher.cpp
 
     ${source_path}/pipeline/AbstractSlot.cpp
-    ${source_path}/pipeline/AbstractData.cpp
+    ${source_path}/pipeline/AbstractDataSlot.cpp
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/AbstractParameter.cpp
     ${source_path}/pipeline/AbstractInput.cpp
