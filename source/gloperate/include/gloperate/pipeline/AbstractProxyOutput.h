@@ -34,10 +34,12 @@ protected:
     *  @brief
     *    Initialize proxy output
     *
-    *  @param[in] owner
-    *    Owner stage (can be null)
+    *  @param[in] parent
+    *    Parent stage (can be null)
+    *  @param[in] ownership
+    *    Property ownership
     */
-    void initProxyOutput(Stage * owner);
+    void initProxyOutput(Stage * parent, cppexpose::PropertyOwnership ownership);
 };
 
 

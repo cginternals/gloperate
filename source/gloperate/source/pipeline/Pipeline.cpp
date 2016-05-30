@@ -36,17 +36,14 @@ Stage * Pipeline::stage(const std::string & name) const
     return m_stagesMap.at(name);
 }
 
-bool Pipeline::isPipeline() const
-{
-    return true;
-}
-
-void Pipeline::registerStage(Stage * stage)
+void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
 {
     if (!stage)
     {
         return;
     }
+
+    addProperty(stage, ownership);
 
     m_stages.push_back(stage);
     if (stage->name() != "") {
@@ -60,7 +57,7 @@ void Pipeline::registerStage(Stage * stage)
     );
 }
 
-void Pipeline::unregisterStage(Stage * stage)
+void Pipeline::removeStage(Stage * stage)
 {
     if (!stage)
     {
@@ -79,6 +76,13 @@ void Pipeline::unregisterStage(Stage * stage)
             PipelineEvent(PipelineEvent::StageRemoved, this, stage)
         );
     }
+
+    removeProperty(stage);
+}
+
+bool Pipeline::isPipeline() const
+{
+    return true;
 }
 
 void Pipeline::sortStages()

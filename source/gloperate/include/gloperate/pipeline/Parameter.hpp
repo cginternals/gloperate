@@ -10,10 +10,14 @@ namespace gloperate
 
 
 template <typename T>
-Parameter<T>::Parameter(Stage * parent, const std::string & name, const T & value)
-: Data<T, AbstractParameter>(parent, name, value)
+Parameter<T>::Parameter(const std::string & name, Stage * parent, const T & value)
+: Data<T, AbstractParameter>(value)
 {
-    this->initParameter(parent);
+    // Do not add property to group yet, only initialize the property itself
+    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+
+    // Register parameter, will also add parameter as a property
+    this->initParameter(parent, cppexpose::PropertyOwnership::None);
 }
 
 template <typename T>

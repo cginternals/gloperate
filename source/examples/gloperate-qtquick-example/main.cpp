@@ -50,5 +50,9 @@ int main(int argc, char * argv[])
     window->show();
 
     // Run main loop
-    return app.exec();
+    int res = app.exec();
+
+    // Clean up
+    delete window;
+    return res;
 }

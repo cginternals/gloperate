@@ -34,10 +34,12 @@ protected:
     *  @brief
     *    Initialize parameter
     *
-    *  @param[in] owner
-    *    Owner stage (can be null)
+    *  @param[in] parent
+    *    Parent stage (can be null)
+    *  @param[in] ownership
+    *    Property ownership
     */
-    void initParameter(Stage * owner);
+    void initParameter(Stage * parent, cppexpose::PropertyOwnership ownership);
 };
 
 

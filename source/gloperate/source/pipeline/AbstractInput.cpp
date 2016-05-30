@@ -15,16 +15,17 @@ AbstractInput::AbstractInput()
 
 AbstractInput::~AbstractInput()
 {
-    if (m_owner) {
-        m_owner->unregisterInput(this);
+    Stage * stage = parentStage();
+    if (stage) {
+        stage->removeInput(this);
     }
 }
 
-void AbstractInput::initInput(Stage * owner)
+void AbstractInput::initInput(Stage * parent, cppexpose::PropertyOwnership ownership)
 {
-    if (owner) {
-        m_owner = owner;
-        owner->registerInput(this);
+    if (parent)
+    {
+        parent->addInput(this, ownership);
     }
 }
 

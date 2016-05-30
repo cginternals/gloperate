@@ -13,7 +13,6 @@ namespace gloperate
 
 AbstractSlot::AbstractSlot(SlotType type)
 : m_slotType(type)
-, m_owner(nullptr)
 , m_required(false)
 {
 }
@@ -27,18 +26,20 @@ SlotType AbstractSlot::slotType() const
     return m_slotType;
 }
 
-Stage * AbstractSlot::owner() const
+Stage * AbstractSlot::parentStage() const
 {
-    return m_owner;
+    return static_cast<Stage *>(parent());
 }
 
 std::string AbstractSlot::qualifiedName() const
 {
     std::stringstream ss;
 
-    if (m_owner)
+    Stage * stage = parentStage();
+
+    if (stage)
     {
-        ss << m_owner->name() << ".";
+        ss << stage->name() << ".";
     }
 
     ss << name();
@@ -63,9 +64,14 @@ void AbstractSlot::setRequired(bool required)
 
 void AbstractSlot::onRequiredChanged()
 {
-    m_owner->promotePipelineEvent(
-        PipelineEvent(PipelineEvent::RequiredChanged, m_owner, this)
-    );
+    Stage * stage = parentStage();
+
+    if (stage)
+    {
+        stage->promotePipelineEvent(
+            PipelineEvent(PipelineEvent::RequiredChanged, stage, this)
+        );
+    }
 }
 
 

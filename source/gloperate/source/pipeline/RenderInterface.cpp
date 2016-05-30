@@ -9,13 +9,13 @@ namespace gloperate
 
 
 RenderInterface::RenderInterface(Stage * stage)
-: deviceViewport (stage, "deviceViewport")
-, virtualViewport(stage, "virtualViewport")
-, backgroundColor(stage, "backgroundColor")
-, frameCounter   (stage, "frameCounter")
-, timeDelta      (stage, "timeDelta")
-, targetFBO      (stage, "targetFBO")
-, rendered       (stage, "rendered")
+: deviceViewport ("deviceViewport", stage)
+, virtualViewport("virtualViewport", stage)
+, backgroundColor("backgroundColor", stage)
+, frameCounter   ("frameCounter", stage)
+, timeDelta      ("timeDelta", stage)
+, targetFBO      ("targetFBO", stage)
+, rendered       ("rendered", stage)
 {
 }
 

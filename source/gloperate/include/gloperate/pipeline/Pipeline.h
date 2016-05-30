@@ -85,29 +85,31 @@ public:
     */
     Stage * stage(const std::string & name) const;
 
+    /**
+    *  @brief
+    *    Add stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addStage(Stage * stage, cppexpose::PropertyOwnership ownership = cppexpose::PropertyOwnership::Parent);
+
+    /**
+    *  @brief
+    *    Remove stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    */
+    void removeStage(Stage * stage);
+
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
 
 protected:
-    /**
-    *  @brief
-    *    Register stage
-    *
-    *  @param[in] stage
-    *    Stage (must NOT be null!)
-    */
-    void registerStage(Stage * stage);
-
-    /**
-    *  @brief
-    *    Unregister stage
-    *
-    *  @param[in] stage
-    *    Stage (must NOT be null!)
-    */
-    void unregisterStage(Stage * stage);
-
     /**
     *  @brief
     *    Sort stages by their dependencies

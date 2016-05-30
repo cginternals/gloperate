@@ -4,6 +4,7 @@
 
 #include <gloperate/pipeline/Data.h>
 
+#include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/PipelineEvent.h>
 
 
@@ -12,8 +13,8 @@ namespace gloperate
 
 
 template <typename T, typename BASE>
-Data<T, BASE>::Data(Stage * parent, const std::string & name, const T & value)
-: cppexpose::DynamicProperty<T, BASE>(parent, name, value)
+Data<T, BASE>::Data(const T & value)
+: cppexpose::DirectValue<T, BASE>(value)
 {
 }
 
@@ -47,13 +48,22 @@ const T * Data<T, BASE>::operator->() const
 }
 
 template <typename T, typename BASE>
+bool Data<T, BASE>::isGroup() const
+{
+    return false;
+}
+
+template <typename T, typename BASE>
 void Data<T, BASE>::onValueChanged(const T & value)
 {
     this->valueChanged(value);
 
-    this->m_owner->promotePipelineEvent(
-        PipelineEvent(PipelineEvent::ValueChanged, this->m_owner, this)
-    );
+    if (Stage * stage = this->parentStage())
+    {
+        stage->promotePipelineEvent(
+            PipelineEvent(PipelineEvent::ValueChanged, stage, this)
+        );
+    }
 }
 
 

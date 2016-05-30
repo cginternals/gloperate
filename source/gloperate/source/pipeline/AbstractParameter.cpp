@@ -15,16 +15,17 @@ AbstractParameter::AbstractParameter()
 
 AbstractParameter::~AbstractParameter()
 {
-    if (m_owner) {
-        m_owner->unregisterParameter(this);
+    Stage * stage = parentStage();
+    if (stage) {
+        stage->removeParameter(this);
     }
 }
 
-void AbstractParameter::initParameter(Stage * owner)
+void AbstractParameter::initParameter(Stage * parent, cppexpose::PropertyOwnership ownership)
 {
-    if (owner) {
-        m_owner = owner;
-        owner->registerParameter(this);
+    if (parent)
+    {
+        parent->addParameter(this, ownership);
     }
 }
 

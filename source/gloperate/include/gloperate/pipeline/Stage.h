@@ -147,22 +147,6 @@ public:
 
     /**
     *  @brief
-    *    Set parent pipeline
-    *
-    *  @param[in] parent
-    *    Parent pipeline
-    *
-    *  @remarks
-    *    Sets up the stage to be owned by the specified pipeline.
-    *    Will set both the owner pipeline and the parent property
-    *    to the pipeline and transfer ownership to the pipeline.
-    *    Does only work if the stage did not have a parent
-    *    before. Otherwise, the function will just return.
-    */
-    void transferStage(Pipeline * parent);
-
-    /**
-    *  @brief
     *    Initialize in OpenGL context
     *
     *  @param[in] context
@@ -269,6 +253,26 @@ public:
 
     /**
     *  @brief
+    *    Add input
+    *
+    *  @param[in] input
+    *    Input (must NOT null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addInput(AbstractInput * input, cppexpose::PropertyOwnership ownership);
+
+    /**
+    *  @brief
+    *    Remove input
+    *
+    *  @param[in] input
+    *    Input (must NOT null!)
+    */
+    void removeInput(AbstractInput * input);
+
+    /**
+    *  @brief
     *    Get parameters
     *
     *  @return
@@ -287,6 +291,26 @@ public:
     *    Parameter (can be null)
     */
     const AbstractParameter * parameter(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Add parameter
+    *
+    *  @param[in] parameter
+    *    Parameter (must NOT null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addParameter(AbstractParameter * parameter, cppexpose::PropertyOwnership ownership);
+
+    /**
+    *  @brief
+    *    Remove parameter
+    *
+    *  @param[in] parameter
+    *    Parameter (must NOT null!)
+    */
+    void removeParameter(AbstractParameter * parameter);
 
     /**
     *  @brief
@@ -311,6 +335,26 @@ public:
 
     /**
     *  @brief
+    *    Add output
+    *
+    *  @param[in] output
+    *    Output (must NOT null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addOutput(AbstractOutput * output, cppexpose::PropertyOwnership ownership);
+
+    /**
+    *  @brief
+    *    Remove output
+    *
+    *  @param[in] output
+    *    Output (must NOT null!)
+    */
+    void removeOutput(AbstractOutput * output);
+
+    /**
+    *  @brief
     *    Get proxy outputs
     *
     *  @return
@@ -329,6 +373,26 @@ public:
     *    Proxy output (can be null)
     */
     const AbstractProxyOutput * proxyOutput(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Add proxy output
+    *
+    *  @param[in] proxyOutput
+    *    Proxy output (must NOT null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addProxyOutput(AbstractProxyOutput * proxyOutput, cppexpose::PropertyOwnership ownership);
+
+    /**
+    *  @brief
+    *    Remove proxy output
+    *
+    *  @param[in] proxyOutput
+    *    Proxy output (must NOT null!)
+    */
+    void removeProxyOutput(AbstractProxyOutput * proxyOutput);
 
     /**
     *  @brief
@@ -368,92 +432,6 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Register input
-    *
-    *  @param[in] input
-    *    Input (must NOT null!)
-    *
-    *  @remarks
-    *    Although inputs and outputs are already registered at the stage
-    *    as properties, we keep a separate list of them to simplify
-    *    accessing inputs and outputs directly and without type casts.
-    */
-    void registerInput(AbstractInput * input);
-
-    /**
-    *  @brief
-    *    Unregister input
-    *
-    *  @param[in] input
-    *    Input (must NOT null!)
-    */
-    void unregisterInput(AbstractInput * input);
-
-    /**
-    *  @brief
-    *    Register parameter
-    *
-    *  @param[in] parameter
-    *    Parameter (must NOT null!)
-    *
-    *  @see
-    *    registerInput
-    */
-    void registerParameter(AbstractParameter * parameter);
-
-    /**
-    *  @brief
-    *    Unregister parameter
-    *
-    *  @param[in] parameter
-    *    Parameter (must NOT null!)
-    */
-    void unregisterParameter(AbstractParameter * parameter);
-
-    /**
-    *  @brief
-    *    Register output
-    *
-    *  @param[in] output
-    *    Output (must NOT null!)
-    *
-    *  @see
-    *    registerInput
-    */
-    void registerOutput(AbstractOutput * output);
-
-    /**
-    *  @brief
-    *    Unregister output
-    *
-    *  @param[in] output
-    *    Output (must NOT null!)
-    */
-    void unregisterOutput(AbstractOutput * output);
-
-    /**
-    *  @brief
-    *    Register proxy output
-    *
-    *  @param[in] proxyOutput
-    *    Proxy output (must NOT null!)
-    *
-    *  @see
-    *    registerInput
-    */
-    void registerProxyOutput(AbstractProxyOutput * proxyOutput);
-
-    /**
-    *  @brief
-    *    Unregister proxy output
-    *
-    *  @param[in] proxyOutput
-    *    Proxy output (must NOT null!)
-    */
-    void unregisterProxyOutput(AbstractProxyOutput * proxyOutput);
-
     /**
     *  @brief
     *    Initialize in OpenGL context
@@ -563,7 +541,6 @@ protected:
 
 protected:
     ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
-    Pipeline      * m_parentPipeline; ///< Pipeline to which the stage belongs (can be null)
     bool            m_alwaysProcess;  ///< Is the stage always processed?
 
     std::vector<AbstractInput *>                           m_inputs;          ///< List of inputs

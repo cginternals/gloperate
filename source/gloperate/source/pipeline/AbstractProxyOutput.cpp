@@ -15,16 +15,17 @@ AbstractProxyOutput::AbstractProxyOutput()
 
 AbstractProxyOutput::~AbstractProxyOutput()
 {
-    if (m_owner) {
-        m_owner->unregisterProxyOutput(this);
+    Stage * stage = parentStage();
+    if (stage) {
+        stage->removeProxyOutput(this);
     }
 }
 
-void AbstractProxyOutput::initProxyOutput(Stage * owner)
+void AbstractProxyOutput::initProxyOutput(Stage * parent, cppexpose::PropertyOwnership ownership)
 {
-    if (owner) {
-        m_owner = owner;
-        owner->registerProxyOutput(this);
+    if (parent)
+    {
+        parent->addProxyOutput(this, ownership);
     }
 }
 

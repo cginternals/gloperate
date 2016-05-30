@@ -10,11 +10,15 @@ namespace gloperate
 
 
 template <typename T>
-Output<T>::Output(Stage * parent, const std::string & name, const T & value)
-: Data<T, AbstractOutput>(parent, name, value)
+Output<T>::Output(const std::string & name, Stage * parent, const T & value)
+: Data<T, AbstractOutput>(value)
 , m_valid(false)
 {
-    this->initOutput(parent);
+    // Do not add property to group yet, only initialize the property itself
+    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+
+    // Register output, will also add output as a property
+    this->initOutput(parent, cppexpose::PropertyOwnership::None);
 }
 
 template <typename T>

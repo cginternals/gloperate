@@ -15,8 +15,8 @@ namespace gloperate
 
 DemoTimerStage::DemoTimerStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
-, timeDelta(  this, "timeDelta",   0.0f)
-, virtualTime(this, "virtualTime", 0.0f)
+, timeDelta  ("timeDelta",   this, 0.0f)
+, virtualTime("virtualTime", this, 0.0f)
 , m_timer(viewerContext)
 , m_time(0.0f)
 {

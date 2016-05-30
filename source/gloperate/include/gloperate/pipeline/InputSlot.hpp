@@ -6,6 +6,7 @@
 
 #include <cppexpose/typed/Typed.h>
 
+#include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/PipelineEvent.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Parameter.h>
@@ -18,15 +19,14 @@ namespace gloperate
 
 
 template <typename T, typename BASE>
-InputSlot<T, BASE>::InputSlot(Stage * parent, const std::string & name, const T & defaultValue)
-: m_defaultValue(defaultValue)
+InputSlot<T, BASE>::InputSlot(const T & value)
+: m_defaultValue(value)
 , m_sourceType(SlotType::Empty)
 {
     m_source.input = nullptr;
     m_source.parameter = nullptr;
     m_source.output = nullptr;
     m_source.proxyOutput = nullptr;
-    this->initProperty(parent, name);
 }
 
 template <typename T, typename BASE>
@@ -327,9 +327,12 @@ void InputSlot<T, BASE>::onValueChanged(const T & value)
 {
     this->valueChanged(value);
 
-    this->m_owner->promotePipelineEvent(
-        PipelineEvent(PipelineEvent::ValueChanged, this->m_owner, this)
-    );
+    if (Stage * stage = this->parentStage())
+    {
+        stage->promotePipelineEvent(
+            PipelineEvent(PipelineEvent::ValueChanged, stage, this)
+        );
+    }
 }
 
 template <typename T, typename BASE>
@@ -337,9 +340,12 @@ void InputSlot<T, BASE>::promoteConnection()
 {
     this->connectionChanged();
 
-    this->m_owner->promotePipelineEvent(
-        PipelineEvent(PipelineEvent::ConnectionChanged, this->m_owner, this)
-    );
+    if (Stage * stage = this->parentStage())
+    {
+        stage->promotePipelineEvent(
+            PipelineEvent(PipelineEvent::ConnectionChanged, stage, this)
+        );
+    }
 }
 
 template <typename T, typename BASE>

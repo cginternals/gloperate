@@ -22,17 +22,17 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] parent
-    *    Parent stage (must NOT be null!)
     *  @param[in] name
     *    Property name
+    *  @param[in] parent
+    *    Parent stage (must NOT be null!)
     *  @param[in] value
     *    Default value
     *
     *  @remarks
     *    The output is created and added to the given stage.
     */
-    Output(Stage * parent, const std::string & name, const T & defaultValue = T());
+    Output(const std::string & name, Stage * parent, const T & defaultValue = T());
 
     /**
     *  @brief

@@ -8,13 +8,13 @@ namespace gloperate
 
 ViewerContainer::ViewerContainer(ViewerContext * viewerContext)
 : Pipeline(viewerContext, "Viewer", nullptr)
-, deviceViewport (this, "deviceViewport",  glm::vec4(0, 0, 0, 0))
-, virtualViewport(this, "virtualViewport", glm::vec4(0, 0, 0, 0))
-, backgroundColor(this, "backgroundColor", glm::vec3(1.0, 1.0, 1.0))
-, frameCounter   (this, "frameCounter",    0)
-, timeDelta      (this, "timeDelta",       0.0f)
-, targetFBO      (this, "targetFBO",       nullptr)
-, rendered       (this, "rendered",        false)
+, deviceViewport ("deviceViewport",  this, glm::vec4(0, 0, 0, 0))
+, virtualViewport("virtualViewport", this, glm::vec4(0, 0, 0, 0))
+, backgroundColor("backgroundColor", this, glm::vec3(1.0, 1.0, 1.0))
+, frameCounter   ("frameCounter",    this, 0)
+, timeDelta      ("timeDelta",       this, 0.0f)
+, targetFBO      ("targetFBO",       this, nullptr)
+, rendered       ("rendered",        this, false)
 , m_renderStage(nullptr)
 {
 }
@@ -52,8 +52,8 @@ void ViewerContainer::setRenderStage(Stage * stage)
     }
 
     // Set new render stage
+    this->addStage(stage);
     m_renderStage = stage;
-    m_renderStage->transferStage(this);
 
     // Connect inputs and outputs of render stage
     connect(m_renderStage, "deviceViewport",  &deviceViewport);

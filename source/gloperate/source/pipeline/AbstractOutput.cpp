@@ -15,16 +15,17 @@ AbstractOutput::AbstractOutput()
 
 AbstractOutput::~AbstractOutput()
 {
-    if (m_owner) {
-        m_owner->unregisterOutput(this);
+    Stage * stage = parentStage();
+    if (stage) {
+        stage->removeOutput(this);
     }
 }
 
-void AbstractOutput::initOutput(Stage * owner)
+void AbstractOutput::initOutput(Stage * parent, cppexpose::PropertyOwnership ownership)
 {
-    if (owner) {
-        m_owner = owner;
-        owner->registerOutput(this);
+    if (parent)
+    {
+        parent->addOutput(this, ownership);
     }
 }
 

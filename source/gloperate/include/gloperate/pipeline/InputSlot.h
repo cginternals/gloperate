@@ -48,17 +48,13 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] parent
-    *    Parent stage (must NOT be null!)
-    *  @param[in] name
-    *    Property name
-    *  @param[in] defaultValue
+    *  @param[in] value
     *    Default value
     *
     *  @remarks
     *    The input slot is created and added to the given stage.
     */
-    InputSlot(Stage * parent, const std::string & name, const T & defaultValue = T());
+    InputSlot(const T & value = T());
 
     /**
     *  @brief

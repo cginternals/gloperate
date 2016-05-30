@@ -61,12 +61,12 @@ public:
 
     /**
     *  @brief
-    *    Get owner stage
+    *    Get parent stage
     *
     *  @return
-    *    Stage that owns the data container (can be null)
+    *    Stage that contains the slot (can be null)
     */
-    Stage * owner() const;
+    Stage * parentStage() const;
 
     /**
     *  @brief
@@ -129,9 +129,8 @@ public:
 
 
 protected:
-    SlotType   m_slotType; ///< Slot type
-    Stage    * m_owner;    ///< Stage that owns the slot (can be null)
-    bool       m_required; ///< Is the data required?
+    SlotType m_slotType; ///< Slot type
+    bool     m_required; ///< Is the data required?
 };
 
 

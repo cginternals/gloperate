@@ -34,10 +34,12 @@ protected:
     *  @brief
     *    Initialize input
     *
-    *  @param[in] owner
-    *    Owner stage (can be null)
+    *  @param[in] parent
+    *    Parent stage (can be null)
+    *  @param[in] ownership
+    *    Property ownership
     */
-    void initInput(Stage * owner);
+    void initInput(Stage * parent, cppexpose::PropertyOwnership ownership);
 };
 
 
