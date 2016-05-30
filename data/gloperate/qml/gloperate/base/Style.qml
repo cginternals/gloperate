@@ -15,7 +15,7 @@ Item
 
     // Main colors
     property color primaryColor:     '#000000'
-    property color secondaryColor:   '#cccccc'
+    property color secondaryColor:   '#777777'
     property color highlightColor:   '#4078c0'
     property color pressedColor:     '#6098e0'
     property color disabledColor:    '#999999'
@@ -137,10 +137,14 @@ Item
 
     // Pipeline editor
     property color pipelineStageColor:         backgroundColor  // Background color of stages
+    property color pipelineSlotColor:          panelColor       // Background color of slots
     property color pipelineTextColor:          primaryColor     // Color of texts in stages
+    property color pipelineSecondaryTextColor: secondaryColor   // Color of values in stages
     property color pipelineLineColor:          primaryColor     // Color of lines, connections, etc.
     property int   pipelineLineWidth:          borderWidth      // Width of lines
     property int   pipelineStageRadius:        10               // Radius of stage rectangle
+    property real  pipelineSlotSize:           formControlHeight * 1.2
+    property real  pipelineConnectorSize:      formControlHeight * 0.6
 
 
     //

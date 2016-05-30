@@ -47,6 +47,12 @@ public:
     ScriptEnvironment(ViewerContext * viewerContext);
 
     /**
+     *  @brief
+     *    Move Constructor
+     */
+    ScriptEnvironment(ScriptEnvironment && other);
+
+    /**
     *  @brief
     *    Destructor
     */
@@ -129,6 +135,17 @@ public:
     cppexpose::Variant execute(const std::string & code);
     //@}
 
+    /**
+     * @brief Move Assignment operator
+     *
+     * @param other
+     *   The instance to move the data from
+     *
+     * @return
+     *   The reference to this
+     */
+    ScriptEnvironment & operator=(ScriptEnvironment && other);
+
 
 protected:
     /**
@@ -145,7 +162,7 @@ protected:
     std::unique_ptr<TimerApi>                   m_timerApi;      ///< Timer functions
     std::unique_ptr<ComponentsApi>              m_componentsApi; ///< Component manager functions
     std::unique_ptr<PipelineApi>                m_pipelineApi;   ///< Access to rendering pipeline
-    std::list<cppexpose::Object *>              m_apis;          ///< List of connected APIs
+    std::vector<cppexpose::Object *>            m_apis;          ///< Collection of connected APIs
     std::string                                 m_helpText;      ///< Text that is displayed on 'help'
 };
 
