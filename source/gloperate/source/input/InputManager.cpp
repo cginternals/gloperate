@@ -3,7 +3,10 @@
 
 #include <cassert>
 
+#include <gloperate/input/AbstractDeviceProvider.h>
+#include <gloperate/input/AbstractDevice.h>
 #include <gloperate/input/AbstractEventConsumer.h>
+#include <gloperate/input/InputEvent.h>
 
 
 namespace gloperate
