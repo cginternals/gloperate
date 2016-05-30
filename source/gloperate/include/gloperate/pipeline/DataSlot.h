@@ -5,7 +5,7 @@
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/signal/Signal.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/pipeline/AbstractDataSlot.h>
 
 
 namespace gloperate
@@ -14,10 +14,10 @@ namespace gloperate
 
 /**
 *  @brief
-*    Container for data objects in a pipeline
+*    Container for data slots in a pipeline
 */
-template <typename T, typename BASE>
-class Data : public cppexpose::DirectValue<T, BASE>
+template <typename T>
+class DataSlot : public cppexpose::DirectValue<T, AbstractDataSlot>
 {
 public:
     cppexpose::Signal<const T &> valueChanged;  ///< Called when the value has been changed
@@ -35,13 +35,13 @@ public:
     *  @remarks
     *    The data container is created and added to the given stage.
     */
-    Data(const T & value = T());
+    DataSlot(const T & value = T());
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~Data();
+    virtual ~DataSlot();
     //@}
 
     //@{
@@ -81,4 +81,4 @@ protected:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/Data.hpp>
+#include <gloperate/pipeline/DataSlot.hpp>

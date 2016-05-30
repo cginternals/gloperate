@@ -75,12 +75,8 @@ set(headers
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractDataSlot.h
     ${include_path}/pipeline/AbstractInputSlot.h
-    ${include_path}/pipeline/AbstractParameter.h
-    ${include_path}/pipeline/AbstractInput.h
-    ${include_path}/pipeline/AbstractOutput.h
-    ${include_path}/pipeline/AbstractProxyOutput.h
-    ${include_path}/pipeline/Data.h
-    ${include_path}/pipeline/Data.hpp
+    ${include_path}/pipeline/DataSlot.h
+    ${include_path}/pipeline/DataSlot.hpp
     ${include_path}/pipeline/InputSlot.h
     ${include_path}/pipeline/InputSlot.hpp
     ${include_path}/pipeline/Parameter.h
@@ -159,10 +155,6 @@ set(sources
     ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/AbstractDataSlot.cpp
     ${source_path}/pipeline/AbstractInputSlot.cpp
-    ${source_path}/pipeline/AbstractParameter.cpp
-    ${source_path}/pipeline/AbstractInput.cpp
-    ${source_path}/pipeline/AbstractOutput.cpp
-    ${source_path}/pipeline/AbstractProxyOutput.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/RenderStage.cpp
     ${source_path}/pipeline/Pipeline.cpp

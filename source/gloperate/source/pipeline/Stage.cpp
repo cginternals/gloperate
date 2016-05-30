@@ -8,10 +8,8 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/PipelineEvent.h>
 #include <gloperate/pipeline/PipelineWatcher.h>
-#include <gloperate/pipeline/AbstractInput.h>
-#include <gloperate/pipeline/AbstractParameter.h>
-#include <gloperate/pipeline/AbstractOutput.h>
-#include <gloperate/pipeline/AbstractProxyOutput.h>
+#include <gloperate/pipeline/AbstractInputSlot.h>
+#include <gloperate/pipeline/AbstractDataSlot.h>
 
 
 using namespace cppassist;
@@ -124,17 +122,17 @@ void Stage::invalidateOutputs()
     }
 }
 
-const std::vector<AbstractInput *> & Stage::inputs() const
+const std::vector<AbstractInputSlot *> & Stage::inputs() const
 {
     return m_inputs;
 }
 
-const AbstractInput * Stage::input(const std::string & name) const
+const AbstractInputSlot * Stage::input(const std::string & name) const
 {
     return m_inputsMap.at(name);
 }
 
-void Stage::addInput(AbstractInput * input, cppexpose::PropertyOwnership ownership)
+void Stage::addInput(AbstractInputSlot * input, cppexpose::PropertyOwnership ownership)
 {
     // Check parameters
     if (!input) {
@@ -159,7 +157,7 @@ void Stage::addInput(AbstractInput * input, cppexpose::PropertyOwnership ownersh
     );
 }
 
-void Stage::removeInput(AbstractInput * input)
+void Stage::removeInput(AbstractInputSlot * input)
 {
     // Check parameters
     if (!input)
@@ -187,17 +185,17 @@ void Stage::removeInput(AbstractInput * input)
     removeProperty(input);
 }
 
-const std::vector<AbstractParameter *> & Stage::parameters() const
+const std::vector<AbstractDataSlot *> & Stage::parameters() const
 {
     return m_parameters;
 }
 
-const AbstractParameter * Stage::parameter(const std::string & name) const
+const AbstractDataSlot * Stage::parameter(const std::string & name) const
 {
     return m_parametersMap.at(name);
 }
 
-void Stage::addParameter(AbstractParameter * parameter, cppexpose::PropertyOwnership ownership)
+void Stage::addParameter(AbstractDataSlot * parameter, cppexpose::PropertyOwnership ownership)
 {
     // Check parameters
     if (!parameter) {
@@ -221,7 +219,7 @@ void Stage::addParameter(AbstractParameter * parameter, cppexpose::PropertyOwner
     );
 }
 
-void Stage::removeParameter(AbstractParameter * parameter)
+void Stage::removeParameter(AbstractDataSlot * parameter)
 {
     // Check parameters
     if (!parameter)
@@ -249,17 +247,17 @@ void Stage::removeParameter(AbstractParameter * parameter)
     removeProperty(parameter);
 }
 
-const std::vector<AbstractOutput *> & Stage::outputs() const
+const std::vector<AbstractDataSlot *> & Stage::outputs() const
 {
     return m_outputs;
 }
 
-const AbstractOutput * Stage::output(const std::string & name) const
+const AbstractDataSlot * Stage::output(const std::string & name) const
 {
     return m_outputsMap.at(name);
 }
 
-void Stage::addOutput(AbstractOutput * output, cppexpose::PropertyOwnership ownership)
+void Stage::addOutput(AbstractDataSlot * output, cppexpose::PropertyOwnership ownership)
 {
     // Check parameters
     if (!output) {
@@ -283,7 +281,7 @@ void Stage::addOutput(AbstractOutput * output, cppexpose::PropertyOwnership owne
     );
 }
 
-void Stage::removeOutput(AbstractOutput * output)
+void Stage::removeOutput(AbstractDataSlot * output)
 {
     // Check parameters
     if (!output)
@@ -311,17 +309,17 @@ void Stage::removeOutput(AbstractOutput * output)
     removeProperty(output);
 }
 
-const std::vector<AbstractProxyOutput *> & Stage::proxyOutputs() const
+const std::vector<AbstractInputSlot *> & Stage::proxyOutputs() const
 {
     return m_proxyOutputs;
 }
 
-const AbstractProxyOutput * Stage::proxyOutput(const std::string & name) const
+const AbstractInputSlot * Stage::proxyOutput(const std::string & name) const
 {
     return m_proxyOutputsMap.at(name);
 }
 
-void Stage::addProxyOutput(AbstractProxyOutput * proxyOutput, cppexpose::PropertyOwnership ownership)
+void Stage::addProxyOutput(AbstractInputSlot * proxyOutput, cppexpose::PropertyOwnership ownership)
 {
     // Check parameters
     if (!proxyOutput) {
@@ -345,7 +343,7 @@ void Stage::addProxyOutput(AbstractProxyOutput * proxyOutput, cppexpose::Propert
     );
 }
 
-void Stage::removeProxyOutput(AbstractProxyOutput * proxyOutput)
+void Stage::removeProxyOutput(AbstractInputSlot * proxyOutput)
 {
     // Check parameters
     if (!proxyOutput)

@@ -33,11 +33,8 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] type
-    *    Slot type
     */
-    AbstractInputSlot(SlotType type);
+    AbstractInputSlot();
 
     /**
     *  @brief
@@ -125,6 +122,21 @@ public:
     *    isFeedback
     */
     void setFeedback(bool feedback);
+
+
+protected:
+    /**
+    *  @brief
+    *    Initialize input slot
+    *
+    *  @param[in] type
+    *    Slot type
+    *  @param[in] parent
+    *    Parent stage (can be null)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void initInputSlot(SlotType type, Stage * parent, cppexpose::PropertyOwnership ownership);
 
 
 protected:

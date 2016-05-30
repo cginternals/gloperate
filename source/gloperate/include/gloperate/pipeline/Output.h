@@ -2,8 +2,7 @@
 #pragma once
 
 
-#include <gloperate/pipeline/Data.h>
-#include <gloperate/pipeline/AbstractOutput.h>
+#include <gloperate/pipeline/DataSlot.h>
 
 
 namespace gloperate
@@ -12,10 +11,10 @@ namespace gloperate
 
 /**
 *  @brief
-*    Data output of a stage
+*    Output of a stage
 */
 template <typename T>
-class Output : public Data<T, AbstractOutput>
+class Output : public DataSlot<T>
 {
 public:
     /**
@@ -40,7 +39,7 @@ public:
     */
     virtual ~Output();
 
-    // Virtual AbstractOutput interface
+    // Virtual AbstractDataSlot interface
     virtual void invalidate() override;
 
     // Virtual AbstractSlot interface

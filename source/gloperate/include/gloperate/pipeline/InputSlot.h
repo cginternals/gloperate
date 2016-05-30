@@ -6,7 +6,7 @@
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/signal/ScopedConnection.h>
 
-#include <gloperate/pipeline/AbstractSlot.h>
+#include <gloperate/pipeline/AbstractInputSlot.h>
 
 
 namespace gloperate
@@ -33,10 +33,10 @@ class ProxyOutput;
 *    Input slot that can be connected to a data source
 *
 *  @see
-*    Data
+*    DataSlot
 */
-template <typename T, typename BASE>
-class InputSlot : public cppexpose::GetTyped<T, BASE>::Type
+template <typename T>
+class InputSlot : public cppexpose::GetTyped<T, AbstractInputSlot>::Type
 {
 public:
     cppexpose::Signal<const T &> valueChanged;  ///< Called when the value has been changed
@@ -122,10 +122,10 @@ public:
     *  @return
     *    Reference to this input slot
     */
-    InputSlot<T, BASE> & operator<<(Input<T> & source);
-    InputSlot<T, BASE> & operator<<(Parameter<T> & source);
-    InputSlot<T, BASE> & operator<<(Output<T> & source);
-    InputSlot<T, BASE> & operator<<(ProxyOutput<T> & source);
+    InputSlot<T> & operator<<(Input<T> & source);
+    InputSlot<T> & operator<<(Parameter<T> & source);
+    InputSlot<T> & operator<<(Output<T> & source);
+    InputSlot<T> & operator<<(ProxyOutput<T> & source);
     //@}
 
     //@{

@@ -38,11 +38,8 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] type
-    *    Slot type
     */
-    AbstractSlot(SlotType type);
+    AbstractSlot();
 
     /**
     *  @brief

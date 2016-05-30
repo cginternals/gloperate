@@ -11,8 +11,8 @@ namespace gloperate
 {
 
 
-AbstractSlot::AbstractSlot(SlotType type)
-: m_slotType(type)
+AbstractSlot::AbstractSlot()
+: m_slotType(SlotType::Empty)
 , m_required(false)
 {
 }

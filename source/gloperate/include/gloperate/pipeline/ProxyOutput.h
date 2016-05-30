@@ -3,7 +3,6 @@
 
 
 #include <gloperate/pipeline/InputSlot.h>
-#include <gloperate/pipeline/AbstractProxyOutput.h>
 
 
 namespace gloperate
@@ -15,7 +14,7 @@ namespace gloperate
 *    Proxy output of a stage
 */
 template <typename T>
-class ProxyOutput : public InputSlot<T, AbstractProxyOutput>
+class ProxyOutput : public InputSlot<T>
 {
 public:
     /**

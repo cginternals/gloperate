@@ -2,8 +2,7 @@
 #pragma once
 
 
-#include <gloperate/pipeline/Data.h>
-#include <gloperate/pipeline/AbstractParameter.h>
+#include <gloperate/pipeline/DataSlot.h>
 
 
 namespace gloperate
@@ -15,7 +14,7 @@ namespace gloperate
 *    Parameter of a stage
 */
 template <typename T>
-class Parameter : public Data<T, AbstractParameter>
+class Parameter : public DataSlot<T>
 {
 public:
     /**

@@ -3,7 +3,6 @@
 
 
 #include <gloperate/pipeline/InputSlot.h>
-#include <gloperate/pipeline/AbstractInput.h>
 
 
 namespace gloperate
@@ -15,7 +14,7 @@ namespace gloperate
 *    Data input of a stage
 */
 template <typename T>
-class Input : public InputSlot<T, AbstractInput>
+class Input : public InputSlot<T>
 {
 public:
     /**
