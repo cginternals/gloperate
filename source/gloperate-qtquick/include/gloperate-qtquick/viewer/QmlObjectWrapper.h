@@ -62,8 +62,6 @@ public:
     */
     QJSValue wrapObject();
 
-    void updateObject();
-
 
 protected:
     /**

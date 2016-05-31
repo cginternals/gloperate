@@ -102,6 +102,8 @@ QJSValue QmlObjectWrapper::wrapObject()
             args << m_obj;
             args << QString::fromStdString(property->name());
             registerProperty.call(args);
+
+            m_wrappedObjects.push_back(nullptr);
         }
     }
 
@@ -120,70 +122,57 @@ QJSValue QmlObjectWrapper::wrapObject()
         }
     }
 
-    // Return wrapper object
-    return m_obj;
-}
+    // register callbacks for script engine update
+    m_group->beforeDestroy.connect([this](cppexpose::AbstractProperty * property) {
+        // Clear wrapper object
+        assert(property == m_group);
 
-void QmlObjectWrapper::updateObject()
-{
-    std::cout << m_objName << ".updateObject()\n";
-
-    // Clear wrapper object
-    QJSValueIterator it(m_obj);
-    while (it.hasNext()) {
-        it.next();
-        m_obj.deleteProperty(it.name());
-    }
-
-    // Make internal object wrapper available as '_obj'
-    QJSValue internal = m_engine->newQObject(this);
-    m_obj.setProperty("_obj", internal);
-
-    // Helper script for adding properties and functions
-    QJSValue registerProperty = m_engine->evaluate(s_registerProperty);
-    QJSValue registerFunction = m_engine->evaluate(s_registerFunction);
-
-    // Add properties to object
-    for (unsigned int i=0; i<m_group->numSubValues(); i++)
-    {
-        AbstractProperty * property = m_group->property(i);
-
-        if (property->isGroup()) {
+        // [TODO] How to detect the point in execution where m_obj gets invalid?
+        QJSValueIterator it(m_obj);
+        while (it.hasNext()) {
+            it.next();
+            m_obj.deleteProperty(it.name());
+        }
+    });
+    m_group->afterAdd.connect([this, & registerProperty](size_t index, cppexpose::AbstractProperty * property) {
+        // Add property to object
+        if (property->isGroup())
+        {
             // Add group wrapper
             PropertyGroup * group = dynamic_cast<PropertyGroup *>(property);
             QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, group);
+
+            assert(m_wrappedObjects.size() == index);
+
             m_wrappedObjects.push_back(wrapper);
             QJSValue groupObj = wrapper->wrapObject();
             m_obj.setProperty(group->name().c_str(), groupObj);
-        } else {
+        }
+        else
+        {
             // Add property
             QJSValueList args;
             args << m_obj;
             args << QString::fromStdString(property->name());
             registerProperty.call(args);
-        }
-    }
 
-    // Add functions to object
-    if (m_object)
-    {
-        const std::vector<Method> funcs = m_object->functions();
-        for (std::vector<Method>::const_iterator it = funcs.begin(); it != funcs.end(); ++it)
-        {
-            const Method & func = *it;
-
-            QJSValueList args;
-            args << m_obj;
-            args << QString::fromStdString(func.name());
-            registerFunction.call(args);
+            m_wrappedObjects.push_back(nullptr);
         }
-    }
+    });
+    m_group->beforeRemove.connect([this](size_t index, cppexpose::AbstractProperty * property) {
+        // Remove object
+        m_obj.deleteProperty(QString::fromStdString(property->name()));
+        m_wrappedObjects.erase(m_wrappedObjects.begin() + index);
+
+        // [TODO] remove object wrapper from parent wrapper? -> currently a memory leak
+    });
+
+    // Return wrapper object
+    return m_obj;
 }
 
 QJSValue QmlObjectWrapper::getProp(const QString & name)
 {
-    updateObject();
-
     cppexpose::Variant value;
 
     cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
@@ -196,8 +185,6 @@ QJSValue QmlObjectWrapper::getProp(const QString & name)
 
 void QmlObjectWrapper::setProp(const QString & name, const QJSValue & value)
 {
-    updateObject();
-
     cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
     if (prop) {
         prop->fromVariant(m_engine->fromScriptValue(value));
@@ -206,8 +193,6 @@ void QmlObjectWrapper::setProp(const QString & name, const QJSValue & value)
 
 QJSValue QmlObjectWrapper::callFunc(const QString & name, const QJSValue & args)
 {
-    updateObject();
-
     // Must wrap a valid object
     if (!m_object)
     {
