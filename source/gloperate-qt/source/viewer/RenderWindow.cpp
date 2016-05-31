@@ -26,12 +26,6 @@ RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
     {
         this->updateGL();
     } );
-
-    m_surface->wakeup.connect([] ()
-    {
-        printf("wakeup\n");
-        QCoreApplication::instance()->processEvents();
-    } );
 }
 
 RenderWindow::~RenderWindow()
