@@ -32,7 +32,7 @@ class QmlEngine;
 */
 class GLOPERATE_QTQUICK_API QmlObjectWrapper : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 
 
 public:
@@ -61,6 +61,8 @@ public:
     *    Script value wrapping the object
     */
     QJSValue wrapObject();
+
+    void updateObject();
 
 
 protected:
@@ -101,9 +103,12 @@ protected:
 
 protected:
     QmlEngine                       * m_engine;         ///< Qml engine with gloperate integration
-    cppexpose::PropertyGroup   * m_group;          ///< Wrapped property group (must NOT be null)
-    cppexpose::Object          * m_object;         ///< Wrapped object (can be null)
+    cppexpose::PropertyGroup        * m_group;          ///< Wrapped property group (must NOT be null)
+    cppexpose::Object               * m_object;         ///< Wrapped object (can be null)
     std::vector<QmlObjectWrapper *>   m_wrappedObjects; ///< List of wrapped sub-objects
+
+    std::string m_objName;
+    QJSValue m_obj;
 };
 
 
