@@ -7,6 +7,8 @@
 #include <QObject>
 #include <QJSValue>
 
+#include <cppexpose/signal/ScopedConnection.h>
+
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
@@ -107,6 +109,10 @@ protected:
 
     std::string m_objName;
     QJSValue m_obj;
+
+    cppexpose::ScopedConnection m_beforeDestroyConnection;
+    cppexpose::ScopedConnection m_afterAddConnection;
+    cppexpose::ScopedConnection m_beforeRemoveConnection;
 };
 
 

@@ -1,8 +1,6 @@
 
 #include <gloperate-qtquick/viewer/QmlObjectWrapper.h>
 
-#include <iostream>
-
 #include <QJSValueIterator>
 
 #include <cppexpose/reflection/Object.h>
@@ -53,7 +51,7 @@ namespace gloperate_qtquick
 
 
 QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::PropertyGroup * group)
-: QObject(engine)
+: QObject(nullptr)
 , m_engine(engine)
 , m_group(group)
 , m_object(nullptr)
@@ -69,6 +67,12 @@ QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::PropertyGroup 
 
 QmlObjectWrapper::~QmlObjectWrapper()
 {
+    // Is already done by someone else
+    // Hints about identity welcome!
+    //for (auto * wrappedObject : m_wrappedObjects)
+    //{
+        //delete wrappedObject;
+    //}
 }
 
 QJSValue QmlObjectWrapper::wrapObject()
@@ -123,7 +127,7 @@ QJSValue QmlObjectWrapper::wrapObject()
     }
 
     // register callbacks for script engine update
-    m_group->beforeDestroy.connect([this](cppexpose::AbstractProperty * property) {
+    m_beforeDestroyConnection = m_group->beforeDestroy.connect([this](cppexpose::AbstractProperty * property) {
         // Clear wrapper object
         assert(property == m_group);
 
@@ -134,7 +138,7 @@ QJSValue QmlObjectWrapper::wrapObject()
             m_obj.deleteProperty(it.name());
         }
     });
-    m_group->afterAdd.connect([this, & registerProperty](size_t index, cppexpose::AbstractProperty * property) {
+    m_afterAddConnection = m_group->afterAdd.connect([this, & registerProperty](size_t index, cppexpose::AbstractProperty * property) {
         // Add property to object
         if (property->isGroup())
         {
@@ -159,9 +163,10 @@ QJSValue QmlObjectWrapper::wrapObject()
             m_wrappedObjects.push_back(nullptr);
         }
     });
-    m_group->beforeRemove.connect([this](size_t index, cppexpose::AbstractProperty * property) {
+    m_beforeRemoveConnection = m_group->beforeRemove.connect([this](size_t index, cppexpose::AbstractProperty * property) {
         // Remove object
         m_obj.deleteProperty(QString::fromStdString(property->name()));
+        delete *(m_wrappedObjects.begin() + index);
         m_wrappedObjects.erase(m_wrappedObjects.begin() + index);
 
         // [TODO] remove object wrapper from parent wrapper? -> currently a memory leak
