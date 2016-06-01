@@ -1,29 +1,28 @@
 
 #include <gloperate-qtquick/viewer/QmlObjectWrapper.h>
 
-#include <globjects/base/baselogging.h>
-
-#include <reflectionzeug/Object.h>
-#include <reflectionzeug/variant/Variant.h>
+#include <cppexpose/reflection/Object.h>
+#include <cppexpose/reflection/Method.h>
+#include <cppexpose/variant/Variant.h>
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 
 
-using namespace reflectionzeug;
+using namespace cppexpose;
 
 
 namespace gloperate_qtquick
 {
 
 
-QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyGroup * group)
+QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::PropertyGroup * group)
 : QObject(engine)
 , m_engine(engine)
 , m_group(group)
 , m_object(nullptr)
 {
     // Check if a property group or an object has been provided
-    m_object = dynamic_cast<reflectionzeug::Object *>(m_group);
+    m_object = dynamic_cast<cppexpose::Object *>(m_group);
 }
 
 QmlObjectWrapper::~QmlObjectWrapper()
@@ -44,13 +43,13 @@ QJSValue QmlObjectWrapper::wrapObject()
     QJSValue registerFunction = m_engine->evaluate("(function(obj, name) { obj[name] = function() { var args = []; for (var i=0; i<arguments.length; i++) { args.push(arguments[i]); } return obj._obj.callFunc(name, args); }; })");
 
     // Add properties to object
-    for (unsigned int i=0; i<m_group->count(); i++)
+    for (unsigned int i=0; i<m_group->numSubValues(); i++)
     {
-        AbstractProperty * property = m_group->at(i);
+        AbstractProperty * property = m_group->property(i);
 
         if (property->isGroup()) {
             // Add group wrapper
-            PropertyGroup * group = property->asGroup();
+            PropertyGroup * group = dynamic_cast<PropertyGroup *>(property);
             QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, group);
             m_wrappedObjects.push_back(wrapper);
             QJSValue groupObj = wrapper->wrapObject();
@@ -67,14 +66,14 @@ QJSValue QmlObjectWrapper::wrapObject()
     // Add functions to object
     if (m_object)
     {
-        const std::vector<AbstractFunction *> & funcs = m_object->functions();
-        for (std::vector<AbstractFunction *>::const_iterator it = funcs.begin(); it != funcs.end(); ++it)
+        const std::vector<Method> funcs = m_object->functions();
+        for (std::vector<Method>::const_iterator it = funcs.begin(); it != funcs.end(); ++it)
         {
-            AbstractFunction * func = *it;
+            const Method & func = *it;
 
             QJSValueList args;
             args << obj;
-            args << QString::fromStdString(func->name());
+            args << QString::fromStdString(func.name());
             registerFunction.call(args);
         }
     }
@@ -85,9 +84,9 @@ QJSValue QmlObjectWrapper::wrapObject()
 
 QJSValue QmlObjectWrapper::getProp(const QString & name)
 {
-    reflectionzeug::Variant value;
+    cppexpose::Variant value;
 
-    reflectionzeug::AbstractProperty * prop = m_group->property(name.toStdString());
+    cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
     if (prop) {
         value = prop->toVariant();
     }
@@ -97,7 +96,7 @@ QJSValue QmlObjectWrapper::getProp(const QString & name)
 
 void QmlObjectWrapper::setProp(const QString & name, const QJSValue & value)
 {
-    reflectionzeug::AbstractProperty * prop = m_group->property(name.toStdString());
+    cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
     if (prop) {
         prop->fromVariant(m_engine->fromScriptValue(value));
     }
@@ -113,32 +112,26 @@ QJSValue QmlObjectWrapper::callFunc(const QString & name, const QJSValue & args)
 
     // Get function
     // [TODO] Fast lookup
-    reflectionzeug::AbstractFunction * function = nullptr;
-    for (reflectionzeug::AbstractFunction * func : m_object->functions())
+    cppexpose::Function function;
+    for (const cppexpose::Method & func : m_object->functions())
     {
-        if (func->name() == name.toStdString())
+        if (func.name() == name.toStdString())
         {
             function = func;
             break;
         }
     }
 
-    // Check if function has been found
-    if (!function)
-    {
-        return QJSValue();
-    }
-
     // Get function arguments as array
-    reflectionzeug::VariantArray emptyArgs;
-    reflectionzeug::Variant value = m_engine->fromScriptValue(args);
-    reflectionzeug::VariantArray * argList = value.asArray();
+    cppexpose::VariantArray emptyArgs;
+    cppexpose::Variant value = m_engine->fromScriptValue(args);
+    cppexpose::VariantArray * argList = value.asArray();
     if (!argList) {
         argList = &emptyArgs;
     }
 
     // Call function
-    return m_engine->toScriptValue(function->call(*argList));
+    return m_engine->toScriptValue(function.call(*argList));
 }
 
 

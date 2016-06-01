@@ -1,6 +1,9 @@
 
 import QtQuick 2.0
+import QtQuick.Controls 1.1
+import QtQuick.Dialogs 1.2
 import gloperate.rendering 1.0
+import gloperate.base 1.0
 import gloperate.ui 1.0
 
 
@@ -8,12 +11,145 @@ Page
 {
     id: page
 
-    // Renderer
-    RenderItem
-    {
-        id: render
+    focus: true
 
-        anchors.fill: parent
+    // UI status
+    property real uiStatus: 1.0
+
+    readonly property bool uiEnabled: uiStatus > 0.0
+
+    Behavior on uiStatus
+    {
+        NumberAnimation
+        {
+            easing.type: Easing.InOutQuad
+            duration:    1000
+        }
+    }
+
+    // Hide all UI elements on Escape
+    Keys.onPressed:
+    {
+        if (event.key == Qt.Key_Escape)
+        {
+            // Show/hide UI elements
+            if (uiStatus > 0.0) {
+                uiStatus = 0.0;
+                tabs.selected = '';
+            } else {
+                uiStatus = 1.0;
+            }
+        }
+    }
+
+    // Bottom icons
+    Row
+    {
+        id: tabs
+
+        anchors.bottom:  panelBottom.top
+        anchors.left:    parent.left
+        anchors.margins: Ui.style.panelPadding
+        spacing:         Ui.style.pageSpacing
+
+        visible: page.uiEnabled
+        opacity: page.uiStatus
+
+        property string selected: ''
+
+        Button
+        {
+            property string title: 'log'
+
+            icon:        '0035-file-text.png'
+            highlighted: tabs.selected == title
+
+            onClicked:
+            {
+                if (tabs.selected != title) tabs.selected = title;
+                else                        tabs.selected = '';
+            }
+
+            onRightClicked:
+            {
+                logWindow.createObject(page, {});
+            }
+        }
+
+        Button
+        {
+            property string title: 'script'
+
+            icon:        '0086-keyboard.png'
+            highlighted: tabs.selected == title
+
+            onClicked:
+            {
+                if (tabs.selected != title) tabs.selected = title;
+                else                        tabs.selected = '';
+            }
+
+            onRightClicked:
+            {
+                scriptWindow.createObject(page, {});
+            }
+        }
+    }
+
+    // Bottom panel
+    Panel
+    {
+        id: panelBottom
+
+        anchors.left:         page.left
+        anchors.right:        page.right
+        anchors.bottom:       page.bottom
+        anchors.leftMargin:   Ui.style.pagePadding
+        anchors.rightMargin:  Ui.style.pagePadding
+        anchors.bottomMargin: status * (height + Ui.style.pagePadding) - height
+        height:               page.height / 3
+
+        visible: page.uiEnabled
+        opacity: page.uiStatus
+
+        property real status: (tabs.selected != '') ? 1.0 : 0.0
+
+        Behavior on status
+        {
+            NumberAnimation
+            {
+                easing.type: Easing.InOutQuad
+                duration:    600
+            }
+        }
+
+        LogView
+        {
+            anchors.fill:    parent
+            anchors.margins: Ui.style.panelPadding
+
+            visible: tabs.selected == 'log'
+        }
+
+        ScriptConsole
+        {
+            anchors.fill:    parent
+            anchors.margins: Ui.style.panelPadding
+
+            visible: tabs.selected == 'script'
+        }
+    }
+
+    // Main area
+    Item
+    {
+        id: main
+
+        anchors.left:    page.left
+        anchors.right:   page.right
+        anchors.top:     page.top
+        anchors.bottom:  panelBottom.top
+        anchors.margins: Ui.style.pagePadding
     }
 
     // Top-left menu
@@ -21,31 +157,26 @@ Page
     {
         id: menuLeft
 
-        anchors.left:    render.left
-        anchors.top:     parent.top
-        anchors.margins: Ui.style.pagePadding
+        anchors.left:    main.left
+        anchors.top:     main.top
+        anchors.margins: Ui.style.panelPadding
+
+        visible: page.uiEnabled
+        opacity: page.uiStatus
 
         items: [
-          { name: 'stage', text: 'DemoStage', icon: '0190-menu.png', enabled: true,
+          { name: 'pipeline', text: 'Demo', icon: '0190-menu.png', enabled: true,
             items: [
-              { name: 'painter',    text: 'Choose Painter', icon: '0092-tv.png', enabled: false },
-              { name: 'screenshot', text: 'Screenshot',     icon: '0040-file-picture.png', enabled: false },
-              { name: 'video',      text: 'Video',          icon: '0021-video-camera.png', enabled: false }
-            ] },
-          { name: 'navigation', text: 'WorldInHand', icon: '0021-video-camera.png', enabled: true,
-            items: [
-              { name: 'worldinhand', text: 'WorldInHand', icon: '0021-video-camera.png', enabled: false },
-              { name: 'orbiter',     text: 'Orbiter',     icon: '0021-video-camera.png', enabled: false },
-              { name: 'flight',      text: 'Flight',      icon: '0021-video-camera.png', enabled: false }
-            ] },
-          { name: 'test', text: 'Test', icon: '0023-pacman.png', enabled: true }
+              { name: 'choose',     text: 'Choose Pipeline', icon: '0092-tv.png', enabled: false },
+              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: false },
+              { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: false },
+              { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: false }
+            ]
+          }
         ];
 
         onItemClicked: // (menu, name)
         {
-            if (menu == 'test') {
-                welcome.openPanel();
-            }
         }
     }
 
@@ -54,76 +185,98 @@ Page
     {
         id: menuRight
 
-        anchors.right:   parent.right
-        anchors.top:     parent.top
+        anchors.right:   main.right
+        anchors.top:     main.top
         anchors.margins: Ui.style.pagePadding
 
+        visible: page.uiEnabled
+        opacity: page.uiStatus
+
         items: [
-          { name: 'settings', text: 'Settings', icon: '0149-cog.png', enabled: true,
-            items: [
-              { name: 'preferences', text: 'Preferences', icon: '0150-cogs.png', enabled: true },
-              { name: 'debug',       text: 'Debug',       icon: '0153-aid-kit.png' }
-            ] },
-          { name: 'theme', text: 'Theme', icon: '0207-eye.png', enabled: true,
-            items: getStyles() }
+            { name: 'settings', text: 'Settings', icon: '0149-cog.png', enabled: true }
         ];
 
         onItemClicked: // (menu, name)
         {
-            if (menu == 'settings' && name == 'debug')
-            {
-                Ui.debugMode = !Ui.debugMode;
-            }
-
-            if (menu == 'settings' && name == 'preferences')
-            {
-                settings.openPanel();
-            }
-
-            if (menu == 'theme' && name != '')
-            {
-                Ui.setStyle(name);
-            }
-        }
-
-        function getStyles()
-        {
-            var styles = [];
-
-            for (var i=0; i<Ui.styles.length; i++)
-            {
-                styles.push({
-                    name: Ui.styles[i],
-                    text: Ui.styles[i],
-                    icon: '0218-star-full.png'
-                } );
-            }
-
-            return styles;
+            settings.visible = true;
         }
     }
 
-    // Welcome dialog
-    WelcomeDialog
+    // Renderer
+    RenderItem
     {
-        id: welcome
+        id: render
 
-        anchors.fill:    parent
-        anchors.margins: Ui.style.dialogPadding
+        anchors.fill: main
+        z:            -1
 
-        visible: open
-        status:  0.0
+        stage: 'DemoStage'
     }
 
     // Settings dialog
-    Settings
+    ApplicationWindow
     {
         id: settings
 
-        anchors.fill:    parent
-        anchors.margins: Ui.style.dialogPadding
+        title:   "Settings"
+        visible: false
+        width:   800
+        height:  600
 
-        visible: open
-        status:  0.0
+        Settings
+        {
+            anchors.fill: parent
+        }
+    }
+
+    // Log window
+    Component
+    {
+        id: logWindow
+
+        ApplicationWindow
+        {
+
+            title:   "Log"
+            visible: true
+            width:   600
+            height:  800
+
+            Background
+            {
+                anchors.fill: parent
+
+                LogView
+                {
+                    anchors.fill:    parent
+                    anchors.margins: Ui.style.panelPadding
+                }
+            }
+        }
+    }
+
+    // Scripting console window
+    Component
+    {
+        id: scriptWindow
+
+        ApplicationWindow
+        {
+            title:   "Scripting console"
+            visible: true
+            width:   600
+            height:  800
+
+            Background
+            {
+                anchors.fill: parent
+
+                ScriptConsole
+                {
+                    anchors.fill:    parent
+                    anchors.margins: Ui.style.panelPadding
+                }
+            }
+        }
     }
 }

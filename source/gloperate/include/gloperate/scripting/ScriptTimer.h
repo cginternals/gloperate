@@ -2,13 +2,9 @@
 #pragma once
 
 
+#include <cppexpose/function/Function.h>
+
 #include <gloperate/viewer/Timer.h>
-
-
-namespace reflectionzeug
-{
-    class AbstractFunction;
-}
 
 
 namespace gloperate
@@ -34,7 +30,7 @@ public:
     *  @param[in] func
     *    Callback function
     */
-    ScriptTimer(ViewerContext * viewerContext, reflectionzeug::AbstractFunction * func);
+    ScriptTimer(ViewerContext * viewerContext, cppexpose::Function func);
 
     /**
     *  @brief
@@ -48,7 +44,7 @@ protected:
 
 
 protected:
-    reflectionzeug::AbstractFunction * m_func;  ///< Script function that is called when timer elapses
+    cppexpose::Function m_func;  ///< Script function that is called when timer elapses
 };
 
 

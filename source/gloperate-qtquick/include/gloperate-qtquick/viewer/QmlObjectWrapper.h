@@ -10,7 +10,7 @@
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
-namespace reflectionzeug {
+namespace cppexpose {
     class PropertyGroup;
     class Object;
 }
@@ -25,9 +25,9 @@ class QmlEngine;
 
 /**
 *  @brief
-*    QObject representation of a libzeug::Object
+*    QObject representation of a cppexpose::Object
 *
-*    This class is used to expose a libzeug::Object trough
+*    This class is used to expose a cppexpose::Object trough
 *    a QObject interface into a QML scripting environment.
 */
 class GLOPERATE_QTQUICK_API QmlObjectWrapper : public QObject
@@ -45,7 +45,7 @@ public:
     *  @param[in] group
     *    Property group (must NOT be nullptr)
     */
-    QmlObjectWrapper(QmlEngine * engine, reflectionzeug::PropertyGroup * group);
+    QmlObjectWrapper(QmlEngine * engine, cppexpose::PropertyGroup * group);
 
     /**
     *  @brief
@@ -101,8 +101,8 @@ protected:
 
 protected:
     QmlEngine                       * m_engine;         ///< Qml engine with gloperate integration
-    reflectionzeug::PropertyGroup   * m_group;          ///< Wrapped property group (must NOT be null)
-    reflectionzeug::Object          * m_object;         ///< Wrapped object (can be null)
+    cppexpose::PropertyGroup   * m_group;          ///< Wrapped property group (must NOT be null)
+    cppexpose::Object          * m_object;         ///< Wrapped object (can be null)
     std::vector<QmlObjectWrapper *>   m_wrappedObjects; ///< List of wrapped sub-objects
 };
 

@@ -2,8 +2,6 @@
 #include <QApplication>
 #include <QQmlEngine>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
@@ -29,6 +27,13 @@ int main(int argc, char * argv[])
     // Create viewer context
     ViewerContext viewerContext;
 
+    // Configure and load plugins
+    viewerContext.componentManager()->addPluginPath(
+        gloperate::pluginPath(), cppexpose::PluginPathType::Internal
+    );
+    viewerContext.componentManager()->scanPlugins("loaders");
+    viewerContext.componentManager()->scanPlugins("stages");
+
     // Initialize Qt application
     gloperate_qt::Application app(&viewerContext, argc, argv);
     UpdateManager updateManager(&viewerContext);
@@ -40,10 +45,14 @@ int main(int argc, char * argv[])
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl(qmlPath + "/ExampleViewer.qml"));
+    window->setSource(QUrl::fromLocalFile(qmlPath + "/ExampleViewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
     window->show();
 
     // Run main loop
-    return app.exec();
+    int res = app.exec();
+
+    // Clean up
+    delete window;
+    return res;
 }

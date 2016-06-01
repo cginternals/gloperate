@@ -6,6 +6,17 @@
 #include <gloperate/viewer/Surface.h>
 #include <gloperate/scripting/ScriptEnvironment.h>
 
+// Local components
+#include <gloperate/stages/base/BasicFramebufferStage.h>
+#include <gloperate/stages/base/TextureLoadStage.h>
+#include <gloperate/stages/base/ProceduralTextureStage.h>
+#include <gloperate/stages/base/MixerStage.h>
+#include <gloperate/stages/base/SplitStage.h>
+#include <gloperate/stages/demos/DemoPipeline.h>
+#include <gloperate/stages/demos/DemoStage.h>
+#include <gloperate/stages/demos/DemoTriangleStage.h>
+#include <gloperate/stages/demos/DemoTimerStage.h>
+
 
 namespace gloperate
 {
@@ -15,7 +26,9 @@ ViewerContext::ViewerContext()
 : m_timeManager(this)
 , m_inputManager()
 , m_scriptEnvironment(this)
+, m_resourceManager(this)
 {
+    registerLocalPlugins();
 }
 
 ViewerContext::~ViewerContext()
@@ -52,6 +65,39 @@ ScriptEnvironment * ViewerContext::scriptEnvironment()
     return &m_scriptEnvironment;
 }
 
+const cppexpose::ComponentManager * ViewerContext::componentManager() const
+{
+    return &m_componentManager;
+}
+
+cppexpose::ComponentManager * ViewerContext::componentManager()
+{
+    return &m_componentManager;
+}
+
+const ResourceManager * ViewerContext::resourceManager() const
+{
+    return &m_resourceManager;
+}
+
+ResourceManager * ViewerContext::resourceManager()
+{
+    return &m_resourceManager;
+}
+
+void ViewerContext::registerLocalPlugins()
+{
+    m_componentManager.addComponent(&BasicFramebufferStage::Component);
+    m_componentManager.addComponent(&TextureLoadStage::Component);
+    m_componentManager.addComponent(&ProceduralTextureStage::Component);
+    m_componentManager.addComponent(&MixerStage::Component);
+    m_componentManager.addComponent(&SplitStage::Component);
+    m_componentManager.addComponent(&DemoPipeline::Component);
+    m_componentManager.addComponent(&DemoStage::Component);
+    m_componentManager.addComponent(&DemoTriangleStage::Component);
+    m_componentManager.addComponent(&DemoTimerStage::Component);
+}
+
 void ViewerContext::registerSurface(Surface * surface)
 {
     m_surfaces.push_back(surface);
@@ -60,6 +106,16 @@ void ViewerContext::registerSurface(Surface * surface)
 void ViewerContext::unregisterSurface(Surface * surface)
 {
     m_surfaces.erase(std::find(m_surfaces.begin(), m_surfaces.end(), surface));
+}
+
+const std::vector<Surface *> & ViewerContext::surfaces() const
+{
+    return m_surfaces;
+}
+
+std::vector<Surface *> & ViewerContext::surfaces()
+{
+    return m_surfaces;
 }
 
 bool ViewerContext::update()

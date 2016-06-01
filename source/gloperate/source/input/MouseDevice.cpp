@@ -18,10 +18,6 @@ MouseDevice::~MouseDevice()
 {
 }
 
-void MouseDevice::update()
-{
-}
-
 void MouseDevice::move(const glm::ivec2 & pos)
 {
     auto inputEvent = new MouseEvent{
@@ -79,6 +75,10 @@ void MouseDevice::wheelScroll(const glm::vec2 & delta, const glm::ivec2 & pos)
     m_inputManager->onEvent(inputEvent);
 
     m_lastPos = pos;
+}
+
+void MouseDevice::update()
+{
 }
 
 

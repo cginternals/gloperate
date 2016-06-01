@@ -5,10 +5,7 @@
 #include <sstream>
 #include <map>
 
-#include <globjects/base/baselogging.h>
-
-
-using namespace globjects;
+#include <cppassist/logging/logging.h>
 
 
 namespace gloperate
@@ -104,12 +101,12 @@ const glbinding::Version & GLContextFormat::version() const
 
 int GLContextFormat::majorVersion() const
 {
-    return m_version.m_major;
+    return m_version.majorVersion();
 }
 
 int GLContextFormat::minorVersion() const
 {
-    return m_version.m_minor;
+    return m_version.minorVersion();
 }
 
 void GLContextFormat::setVersion(const glbinding::Version & version)
@@ -256,14 +253,14 @@ bool GLContextFormat::verifyVersionAndProfile(const GLContextFormat & requested)
 
     if (!sameProfiles)
     {
-        warning() << "Profile mismatch for the current context: "
+        cppassist::warning() << "Profile mismatch for the current context: "
             << profileString(requested.profile()) << " requested, "
             << profileString(profile())           << " created.";
     }
 
     if (requested.version() != version())
     {
-        warning() << "Version mismatch for the current context: "
+        cppassist::warning() << "Version mismatch for the current context: "
             << requested.version().toString() << " requested, "
             << version().toString()           << " created.";
 
@@ -284,7 +281,7 @@ bool GLContextFormat::verifyPixelFormat(const GLContextFormat & requested) const
 
     if (!sameSwapBehaviors)
     {
-        warning() << "Swap behavior mismatch for the current context: "
+        cppassist::warning() << "Swap behavior mismatch for the current context: "
             << swapBehaviorString(requested.swapBehavior()) << " requested, "
             << swapBehaviorString(swapBehavior())           << " created.";
     }
@@ -347,10 +344,10 @@ bool GLContextFormat::verifyPixelFormat(const GLContextFormat & requested) const
         return true;
     }
 
-    warning() << "Pixelformat mismatch for the current context:";
+    cppassist::warning() << "Pixelformat mismatch for the current context:";
     for (const std::string & issue : issues)
     {
-        warning() << issue;
+        cppassist::warning() << issue;
     }
 
     return false;

@@ -61,7 +61,7 @@ void Surface::onContextDeinit()
 {
 }
 
-void Surface::onViewport(const glm::ivec4 &, const glm::ivec4 &)
+void Surface::onViewport(const glm::vec4 &, const glm::vec4 &)
 {
 }
 
@@ -69,7 +69,7 @@ void Surface::onBackgroundColor(float, float, float)
 {
 }
 
-void Surface::onRender()
+void Surface::onRender(globjects::Framebuffer *)
 {
 }
 

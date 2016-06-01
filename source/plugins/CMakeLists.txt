@@ -1,6 +1,6 @@
 
 # Resource loaders
-#add_subdirectory(gloperate-qt-loaders)
+add_subdirectory(gloperate-qt-loaders)
 #add_subdirectory(gloperate-assimp-loaders)
 
 # Pipelines and stages

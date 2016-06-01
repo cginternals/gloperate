@@ -4,6 +4,7 @@
 
 #include <gloperate/viewer/Surface.h>
 #include <gloperate/viewer/input.h>
+#include <gloperate/pipeline/ViewerContainer.h>
 
 
 namespace gloperate
@@ -39,6 +40,15 @@ public:
 
     /**
     *  @brief
+    *    Get root pipeline
+    *
+    *  @return
+    *    Root pipeline (never null)
+    */
+    Pipeline * rootPipeline() const;
+
+    /**
+    *  @brief
     *    Get render stage
     *
     *  @return
@@ -63,9 +73,9 @@ public:
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
-    virtual void onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport) override;
+    virtual void onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport) override;
     virtual void onBackgroundColor(float red, float green, float blue) override;
-    virtual void onRender() override;
+    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
     virtual void onKeyPress(int key, int modifier) override;
     virtual void onKeyRelease(int key, int modifier) override;
     virtual void onMouseMove(const glm::ivec2 & pos) override;
@@ -75,7 +85,7 @@ public:
 
 
 protected:
-    Stage          * m_renderStage;    ///< Render stage that renders into the current context (can be null)
+    ViewerContainer  m_viewer;         ///< Container for the rendering stage or pipeline
     unsigned long    m_frame;          ///< Frame counter
     MouseDevice    * m_mouseDevice;    ///< Device for Mouse Events
     KeyboardDevice * m_keyboardDevice; ///< Device for Keyboard Events

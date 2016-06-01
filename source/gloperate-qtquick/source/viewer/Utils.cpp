@@ -6,8 +6,9 @@
 
 #include <globjects/globjects.h>
 
+#include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
-#include <gloperate/stages/demos/DemoStage.h>
+#include <gloperate/pipeline/Stage.h>
 
     
 namespace gloperate_qtquick
@@ -28,10 +29,16 @@ void Utils::clearScreen(float red, float green, float blue, float alpha, bool cl
     else                  gl::glClear(gl::GL_COLOR_BUFFER_BIT);
 }
 
-gloperate::Stage * Utils::createRenderStage(gloperate::ViewerContext * viewerContext)
+gloperate::Stage * Utils::createRenderStage(gloperate::ViewerContext * viewerContext, const std::string & name)
 {
-    return new gloperate::DemoStage(viewerContext);
+    auto component = viewerContext->componentManager()->component<gloperate::Stage>(name);
+    if (component) {
+        return component->createInstance(viewerContext);
+    }
+
+    return new gloperate::Stage(viewerContext);
 }
+
 
 gloperate::Surface * Utils::createSurface(gloperate::ViewerContext * viewerContext, gloperate::Stage * renderStage)
 {

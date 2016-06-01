@@ -4,8 +4,6 @@
 #include <QVariant>
 #include <QColor>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/viewer/Surface.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
@@ -27,6 +25,7 @@ RenderItem::RenderItem(QQuickItem * parent)
 , m_surface(nullptr)
 , m_devicePixelRatio(1.0f)
 , m_initialized(false)
+, m_stage("")
 {
     // Set input modes
     setAcceptedMouseButtons(Qt::AllButtons);
@@ -49,6 +48,16 @@ gloperate::Surface * RenderItem::surface() const
     return m_surface;
 }
 
+QString RenderItem::stage() const
+{
+    return m_stage;
+}
+
+void RenderItem::setStage(const QString & name)
+{
+    m_stage = name;
+}
+
 void RenderItem::onWindowChanged(QQuickWindow * window)
 {
     // Check if window is valid
@@ -64,11 +73,14 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
     QuickView * view = static_cast<QuickView*>(window);
     if (view)
     {
-        m_surface = Utils::createSurface(view->viewerContext(), Utils::createRenderStage(view->viewerContext()));
+        m_surface = Utils::createSurface(
+            view->viewerContext(),
+            Utils::createRenderStage(view->viewerContext(), m_stage.toStdString())
+        );
     }
 
     // Repaint window when surface needs to be updated
-    m_surface->redrawNeeded.connect([this] ()
+    m_surface->redraw.connect([this] ()
     {
         this->window()->update();
     } );
@@ -136,8 +148,8 @@ void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldG
     float devHeight  = virtHeight * m_devicePixelRatio;
 
     m_surface->onViewport(
-        glm::ivec4(devX,  devY,  devWidth,  devHeight)
-      , glm::ivec4(virtX, virtY, virtWidth, virtHeight)
+        glm::vec4(devX,  devY,  devWidth,  devHeight)
+      , glm::vec4(virtX, virtY, virtWidth, virtHeight)
     );
 }
 

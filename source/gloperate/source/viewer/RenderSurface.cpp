@@ -1,7 +1,7 @@
 
 #include <gloperate/viewer/RenderSurface.h>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/TimeManager.h>
@@ -10,161 +10,157 @@
 #include <gloperate/input/KeyboardDevice.h>
 
 
+using namespace cppassist;
+
+
 namespace gloperate
 {
 
 
 RenderSurface::RenderSurface(ViewerContext * viewerContext)
 : Surface(viewerContext)
-, m_renderStage(nullptr)
+, m_viewer(viewerContext)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
 {
+    // Mark render output as required and redraw when it is invalidated
+    m_viewer.rendered.setRequired(true);
+    m_viewer.rendered.valueChanged.connect([this] (bool)
+    {
+        if (!m_viewer.rendered.isValid()) {
+            this->redraw();
+        }
+    });
 }
 
 RenderSurface::~RenderSurface()
 {
-    delete m_renderStage;
+}
+
+Pipeline * RenderSurface::rootPipeline() const
+{
+    return static_cast<Pipeline *>(const_cast<ViewerContainer *>(&m_viewer));
 }
 
 Stage * RenderSurface::renderStage() const
 {
-    return m_renderStage;
+    return m_viewer.renderStage();
 }
 
 void RenderSurface::setRenderStage(Stage * stage)
 {
-    // Destroy old render stage
-    if (m_renderStage)
+    // De-initialize render stage
+    if (m_viewer.renderStage() && m_openGLContext)
     {
-        // De-initialize render stage
-        if (m_openGLContext) {
-            m_renderStage->deinitContext(m_openGLContext);
-        }
-
-        // [TODO] Disconnect from events
-//      m_renderStage->outputInvalidated.disconnect(this);
-
-        // Destroy render stage
-        delete m_renderStage;
+        m_viewer.renderStage()->deinitContext(m_openGLContext);
     }
 
     // Set new render stage
-    m_renderStage = stage;
-    if (m_renderStage)
-    {
-        // Connect to events
-        m_renderStage->outputInvalidated.connect([this] ()
-        {
-            redrawNeeded();
-        });
+    m_viewer.setRenderStage(stage);
 
-        // Initialize render stage
-        if (m_openGLContext) {
-            m_renderStage->initContext(m_openGLContext);
-        }
+    // Initialize new render stage
+    if (m_viewer.renderStage() && m_openGLContext)
+    {
+        m_viewer.renderStage()->initContext(m_openGLContext);
     }
 }
 
 void RenderSurface::onUpdate()
 {
-    if (m_renderStage)
-    {
-        m_renderStage->setTimeDelta(m_viewerContext->timeManager()->timeDelta());
-    }
+    float timeDelta = m_viewerContext->timeManager()->timeDelta();
+
+    m_viewer.timeDelta.setValue(timeDelta);
 }
 
 void RenderSurface::onContextInit()
 {
-    globjects::info() << "onContextInit()";
+    cppassist::details() << "onContextInit()";
 
     // Initialize render stage in new context
-    if (m_renderStage)
+    if (m_viewer.renderStage())
     {
-        m_renderStage->initContext(m_openGLContext);
+        m_viewer.renderStage()->initContext(m_openGLContext);
     }
 }
 
 void RenderSurface::onContextDeinit()
 {
-    globjects::info() << "onContextDeinit()";
+    cppassist::details() << "onContextDeinit()";
 
     // De-initialize render stage in old context
-    if (m_renderStage)
+    if (m_viewer.renderStage())
     {
-        m_renderStage->deinitContext(m_openGLContext);
+        m_viewer.renderStage()->deinitContext(m_openGLContext);
     }
 }
 
-void RenderSurface::onViewport(const glm::ivec4 & deviceViewport, const glm::ivec4 & virtualViewport)
+void RenderSurface::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
-    m_renderStage->setDeviceViewport(
-        deviceViewport.x
-      , deviceViewport.y
-      , deviceViewport.z
-      , deviceViewport.w
-    );
-
-    m_renderStage->setVirtualViewport(
-        virtualViewport.x
-      , virtualViewport.y
-      , virtualViewport.z
-      , virtualViewport.w
-    );
+    m_viewer.deviceViewport.setValue(deviceViewport);
+    m_viewer.virtualViewport.setValue(virtualViewport);
 }
 
 void RenderSurface::onBackgroundColor(float red, float green, float blue)
 {
-    m_renderStage->setBackgroundColor(red, green, blue);
+    m_viewer.backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
-void RenderSurface::onRender()
+void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
 {
-//  globjects::info() << "onRender()";
+    cppassist::details() << "onRender()";
 
-    if (m_renderStage)
+    if (m_viewer.renderStage())
     {
         m_frame++;
-        m_renderStage->setFrameCounter(m_frame);
-        m_renderStage->process(m_openGLContext);
+
+        m_viewer.frameCounter.setValue(m_frame);
+        m_viewer.targetFBO.setValue(targetFBO);
+
+        m_viewer.renderStage()->process(m_openGLContext);
     }
 }
 
 void RenderSurface::onKeyPress(int key, int modifier)
 {
+    cppassist::details() << "onKeyPressed(" << key << ")";
+
     m_keyboardDevice->keyPress(key, modifier);
-    globjects::info() << "onKeyPressed(" << key << ")";
 }
 
 void RenderSurface::onKeyRelease(int key, int modifier)
 {
+    cppassist::details() << "onKeyReleased(" << key << ")";
+
     m_keyboardDevice->keyRelease(key, modifier);
-    globjects::info() << "onKeyReleased(" << key << ")";
 }
 
 void RenderSurface::onMouseMove(const glm::ivec2 & pos)
 {
+    cppassist::details() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
+
     m_mouseDevice->move(pos);
-    globjects::info() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMousePress(int button, const glm::ivec2 & pos)
 {
+    cppassist::details() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+
     m_mouseDevice->buttonPress(button, pos);
-    globjects::info() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMouseRelease(int button, const glm::ivec2 & pos)
 {
+    cppassist::details() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+
     m_mouseDevice->buttonRelease(button, pos);
-    globjects::info() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 }
 
 void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
+    cppassist::details() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+
     m_mouseDevice->wheelScroll(delta, pos);
-    globjects::info() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 }
 
 

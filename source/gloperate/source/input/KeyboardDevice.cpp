@@ -18,10 +18,6 @@ KeyboardDevice::~KeyboardDevice()
 {
 }
 
-void KeyboardDevice::update()
-{
-}
-
 void KeyboardDevice::keyPress(int key, int modifier)
 {
     auto inputEvent = new ButtonEvent{
@@ -42,6 +38,10 @@ void KeyboardDevice::keyRelease(int key, int modifier)
     };
 
     m_inputManager->onEvent(inputEvent);
+}
+
+void KeyboardDevice::update()
+{
 }
 
 

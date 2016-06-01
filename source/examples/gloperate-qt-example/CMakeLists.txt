@@ -6,7 +6,8 @@
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
+find_package(cppexpose REQUIRED)
+find_package(cppassist REQUIRED)
 find_package(Qt5Core    5.1)
 find_package(Qt5Gui     5.1)
 find_package(Qt5Widgets 5.1)
@@ -98,9 +99,8 @@ target_link_libraries(${target}
     Qt5::Gui
     Qt5::Widgets
     Qt5::OpenGL
-    libzeug::signalzeug
-    libzeug::reflectionzeug
-    libzeug::widgetzeug
+    cppexpose::cppexpose
+    cppassist::cppassist
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

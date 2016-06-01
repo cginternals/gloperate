@@ -4,9 +4,15 @@
 
 #include <glm/glm.hpp>
 
-#include <signalzeug/Signal.h>
+#include <cppexpose/reflection/Object.h>
+#include <cppexpose/signal/Signal.h>
 
 #include <gloperate/gloperate_api.h>
+
+
+namespace globjects {
+    class Framebuffer;
+}
 
 
 namespace gloperate
@@ -26,10 +32,10 @@ class AbstractGLContext;
 *    receives state changes from the outside (such as window size, mouse, or
 *    keyboard events) and passes them on to the rendering components.
 */
-class GLOPERATE_API Surface
+class GLOPERATE_API Surface : public cppexpose::Object
 {
 public:
-    signalzeug::Signal<> redrawNeeded;
+    cppexpose::Signal<> redraw; ///< Called when the surface needs to be redrawn
 
 
 public:
@@ -142,8 +148,8 @@ public:
     *    to improve rendering performance on high-resolution devices.
     */
     virtual void onViewport(
-        const glm::ivec4 & deviceViewport
-      , const glm::ivec4 & virtualViewport);
+        const glm::vec4 & deviceViewport
+      , const glm::vec4 & virtualViewport);
 
     /**
     *  @brief
@@ -167,8 +173,11 @@ public:
     *
     *    This function is called when the viewer needs to redraw its content.
     *    Use it to render the actual scene you want to display.
+    *
+    *  @param[in] targetFBO
+    *    Target FBO (can be null)
     */
-    virtual void onRender();
+    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr);
 
     /**
     *  @brief

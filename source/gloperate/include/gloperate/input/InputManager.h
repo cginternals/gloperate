@@ -5,9 +5,7 @@
 #include <list>
 #include <memory>
 
-#include <gloperate/input/InputEvent.h>
-#include <gloperate/input/AbstractDeviceProvider.h>
-#include <gloperate/input/AbstractDevice.h>
+#include <gloperate/gloperate_api.h>
 
 
 namespace gloperate
@@ -17,11 +15,12 @@ namespace gloperate
 class AbstractEventConsumer;
 class AbstractDeviceProvider;
 class AbstractDevice;
+class InputEvent;
 
 
 /**
 *  @brief
-*    Manager for Input and Devices
+*    Manager for input device and consumers
 */
 class GLOPERATE_API InputManager
 {
@@ -40,28 +39,28 @@ public:
 
     /**
     *  @brief
-    *    Register an eventConsumer to the InputManager
+    *    Register an event consumer at the input manager
     *
     *  @param[in] consumer
-    *    The consumer to register to the InputManager (must NOT be null)
+    *    Event consumer (must NOT be null)
     */
     void registerConsumer(AbstractEventConsumer * consumer);
 
     /**
     *  @brief
-    *    Deregister an eventConsumer from the InputManager
+    *    Deregister an event consumer from the input manager
     *
     *  @param[in] consumer
-    *    The consumer to deregister from the InputManager (must NOT be null)
+    *    Event consumer (must NOT be null)
     */
     void deregisterConsumer(AbstractEventConsumer * consumer);
 
     /**
     *  @brief
-    *    Add a device to the InputManager
+    *    Add a device to the input manager
     *
     *  @param[in] device
-    *    The device to add to the InputManager (must NOT be null)
+    *    Input device (must NOT be null)
     */
     void addDevice(AbstractDevice * device);
 
@@ -76,10 +75,10 @@ public:
 
 
 protected:
-    std::list<AbstractEventConsumer *>                 m_consumers;
-    std::list<std::unique_ptr<AbstractDeviceProvider>> m_deviceProviders;
-    std::list<std::unique_ptr<AbstractDevice>>         m_devices;
-    std::list<std::unique_ptr<InputEvent>>             m_events;
+    std::list<AbstractEventConsumer *>  m_consumers;
+    std::list<AbstractDeviceProvider *> m_deviceProviders;
+    std::list<AbstractDevice *>         m_devices;
+    std::list<InputEvent *>             m_events;
 };
 
 

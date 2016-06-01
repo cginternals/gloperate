@@ -1,8 +1,6 @@
 
 #include <gloperate/viewer/Timer.h>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/TimeManager.h>
 

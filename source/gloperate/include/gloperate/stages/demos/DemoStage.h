@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppexpose/plugin/plugin_api.h>
+
 #include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
@@ -9,9 +11,9 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
-#include <gloperate/pipeline/Stage.h>
 #include <gloperate/viewer/Timer.h>
 #include <gloperate/rendering/Camera.h>
+#include <gloperate/pipeline/RenderStage.h>
 
 
 namespace gloperate
@@ -22,8 +24,11 @@ namespace gloperate
 *  @brief
 *    Demo stage that renders a simple triangle onto the screen
 */
-class GLOPERATE_API DemoStage : public Stage
+class GLOPERATE_API DemoStage : public RenderStage
 {
+    CPPEXPOSE_DECLARE_COMPONENT(DemoStage, gloperate::Stage)
+
+
 public:
     /**
     *  @brief
@@ -31,8 +36,12 @@ public:
     *
     *  @param[in] viewerContext
     *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    *  @param[in] parent
+    *    Parent pipeline (can be null)
     */
-    DemoStage(ViewerContext * viewerContext);
+    DemoStage(ViewerContext * viewerContext, const std::string & name = "DemoStage", Pipeline * parent = nullptr);
 
     /**
     *  @brief
@@ -68,7 +77,7 @@ protected:
 
     // Status
     float m_time;   ///< Virtual time (in seconds)
-    float m_angle;
+    float m_angle;  ///< Current angle of rotating triangle (in radians)
 };
 
 

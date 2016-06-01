@@ -4,7 +4,7 @@
 #include <QWindow>
 #include <QOpenGLContext>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate-qt/viewer/GLContext.h>
 
@@ -19,7 +19,7 @@ QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextForm
 
     // Set OpenGL version
     glbinding::Version version = format.version();
-    qFormat.setVersion(version.m_major, version.m_minor);
+    qFormat.setVersion(version.majorVersion(), version.minorVersion());
 
     // Set OpenGL profile
     switch (format.profile())
@@ -74,11 +74,11 @@ gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::
         qContext->setFormat(qFormat);
 
         if (!qContext->create()) {
-            globjects::warning() << "Could not create intermediate OpenGL context.";
+            cppassist::warning() << "Could not create intermediate OpenGL context.";
             return nullptr;
         } else {
             QSurfaceFormat intermediateFormat = qContext->format();
-            globjects::info() << "Created intermediate OpenGL context " << intermediateFormat.version().first << "." << intermediateFormat.version().second;
+            cppassist::info() << "Created intermediate OpenGL context " << intermediateFormat.version().first << "." << intermediateFormat.version().second;
 
             if ((intermediateFormat.version().first == 3 && intermediateFormat.version().second == 0) || intermediateFormat.version().first < 3)
             {
@@ -91,10 +91,10 @@ gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::
 
     qContext->setFormat(qFormat);
     if (!qContext->create()) {
-        globjects::warning() << "Could not create OpenGL context.";
+        cppassist::warning() << "Could not create OpenGL context.";
         return nullptr;
     } else {
-        globjects::info() << "Created OpenGL context " << qContext->format().version().first << "." << qContext->format().version().second;
+        cppassist::info() << "Created OpenGL context " << qContext->format().version().first << "." << qContext->format().version().second;
     }
 
     // Activate context

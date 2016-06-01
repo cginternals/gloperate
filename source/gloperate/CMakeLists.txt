@@ -7,7 +7,8 @@ find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
+find_package(cppexpose REQUIRED)
+find_package(cppassist REQUIRED)
 
 
 # 
@@ -41,6 +42,16 @@ set(headers
     ${include_path}/base/CachedValue.hpp
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
+    ${include_path}/base/Image.h
+    ${include_path}/base/ResourceManager.h
+    ${include_path}/base/ResourceManager.hpp
+    ${include_path}/base/AbstractLoader.h
+    ${include_path}/base/AbstractStorer.h
+    ${include_path}/base/Loader.h
+    ${include_path}/base/Loader.hpp
+    ${include_path}/base/Storer.h
+    ${include_path}/base/Storer.hpp
+    ${include_path}/base/GlmProperties.h
 
     ${include_path}/viewer/AbstractContext.h
     ${include_path}/viewer/AbstractGLContext.h
@@ -57,12 +68,47 @@ set(headers
     ${include_path}/scripting/SystemApi.h
     ${include_path}/scripting/TimerApi.h
     ${include_path}/scripting/ScriptTimer.h
+    ${include_path}/scripting/ComponentsApi.h
+    ${include_path}/scripting/PipelineApi.h
+    ${include_path}/scripting/PipelineApiWatcher.h
 
+    ${include_path}/pipeline/AbstractSlot.h
+    ${include_path}/pipeline/AbstractDataSlot.h
+    ${include_path}/pipeline/AbstractInputSlot.h
+    ${include_path}/pipeline/DataSlot.h
+    ${include_path}/pipeline/DataSlot.hpp
+    ${include_path}/pipeline/InputSlot.h
+    ${include_path}/pipeline/InputSlot.hpp
+    ${include_path}/pipeline/Parameter.h
+    ${include_path}/pipeline/Parameter.hpp
+    ${include_path}/pipeline/Input.h
+    ${include_path}/pipeline/Input.hpp
+    ${include_path}/pipeline/Output.h
+    ${include_path}/pipeline/Output.hpp
+    ${include_path}/pipeline/ProxyOutput.h
+    ${include_path}/pipeline/ProxyOutput.hpp
     ${include_path}/pipeline/Stage.h
+    ${include_path}/pipeline/RenderStage.h
+    ${include_path}/pipeline/Pipeline.h
+    ${include_path}/pipeline/RenderPipeline.h
+    ${include_path}/pipeline/ViewerContainer.h
+    ${include_path}/pipeline/RenderInterface.h
+    ${include_path}/pipeline/StageComponent.h
+    ${include_path}/pipeline/StageComponent.hpp
+    ${include_path}/pipeline/PipelineWatcher.h
+    ${include_path}/pipeline/PipelineEvent.h
 
     ${include_path}/rendering/Camera.h
-    
+
+    ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/TextureLoadStage.h
+    ${include_path}/stages/base/ProceduralTextureStage.h
+    ${include_path}/stages/base/MixerStage.h
+    ${include_path}/stages/base/SplitStage.h
     ${include_path}/stages/demos/DemoStage.h
+    ${include_path}/stages/demos/DemoPipeline.h
+    ${include_path}/stages/demos/DemoTriangleStage.h
+    ${include_path}/stages/demos/DemoTimerStage.h
 
     ${include_path}/input/InputManager.h
     ${include_path}/input/InputManager.h
@@ -82,6 +128,10 @@ set(sources
 
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
+    ${source_path}/base/Image.cpp
+    ${source_path}/base/ResourceManager.cpp
+    ${source_path}/base/AbstractLoader.cpp
+    ${source_path}/base/AbstractStorer.cpp
 
     ${source_path}/viewer/AbstractContext.cpp
     ${source_path}/viewer/AbstractGLContext.cpp
@@ -98,12 +148,34 @@ set(sources
     ${source_path}/scripting/SystemApi.cpp
     ${source_path}/scripting/TimerApi.cpp
     ${source_path}/scripting/ScriptTimer.cpp
+    ${source_path}/scripting/ComponentsApi.cpp
+    ${source_path}/scripting/PipelineApi.cpp
+    ${source_path}/scripting/PipelineApiWatcher.cpp
 
+    ${source_path}/pipeline/AbstractSlot.cpp
+    ${source_path}/pipeline/AbstractDataSlot.cpp
+    ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/Stage.cpp
+    ${source_path}/pipeline/RenderStage.cpp
+    ${source_path}/pipeline/Pipeline.cpp
+    ${source_path}/pipeline/RenderPipeline.cpp
+    ${source_path}/pipeline/ViewerContainer.cpp
+    ${source_path}/pipeline/RenderInterface.cpp
+    ${source_path}/pipeline/StageComponent.cpp
+    ${source_path}/pipeline/PipelineWatcher.cpp
+    ${source_path}/pipeline/PipelineEvent.cpp
 
     ${source_path}/rendering/Camera.cpp
 
+    ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/TextureLoadStage.cpp
+    ${source_path}/stages/base/ProceduralTextureStage.cpp
+    ${source_path}/stages/base/MixerStage.cpp
+    ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
+    ${source_path}/stages/demos/DemoPipeline.cpp
+    ${source_path}/stages/demos/DemoTriangleStage.cpp
+    ${source_path}/stages/demos/DemoTimerStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp
@@ -189,9 +261,8 @@ target_link_libraries(${target}
     PRIVATE
     ${OPENGL_LIBRARIES}
     cpplocate::cpplocate
-    libzeug::reflectionzeug
-    libzeug::scriptzeug
-    libzeug::iozeug
+    cppexpose::cppexpose
+    cppassist::cppassist
     glbinding::glbinding
     globjects::globjects
 

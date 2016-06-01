@@ -4,8 +4,10 @@
 
 #include <vector>
 
-#include <signalzeug/Signal.h>
+#include <cppexpose/signal/Signal.h>
+#include <cppexpose/plugin/ComponentManager.h>
 
+#include <gloperate/base/ResourceManager.h>
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/input/InputManager.h>
 #include <gloperate/scripting/ScriptEnvironment.h>
@@ -37,7 +39,7 @@ friend class Surface;
 
 
 public:
-    signalzeug::Signal<int> exitApplication;   ///< Called when application shall exit
+    cppexpose::Signal<int> exitApplication;   ///< Called when application shall exit
 
 
 public:
@@ -94,6 +96,42 @@ public:
     //@{
     /**
     *  @brief
+    *    Get component manager
+    *
+    *  @return
+    *    Component manager (must NOT be null)
+    */
+    const cppexpose::ComponentManager * componentManager() const;
+    cppexpose::ComponentManager * componentManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get resource manager
+    *
+    *  @return
+    *    Resource manager (must NOT be null)
+    */
+    const ResourceManager * resourceManager() const;
+    ResourceManager * resourceManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get surfaces
+    *
+    *  @return
+    *    List of registered surfaces (must NOT be null)
+    */
+    const std::vector<Surface *> & surfaces() const;
+    std::vector<Surface *> & surfaces();
+    //@}
+
+    //@{
+    /**
+    *  @brief
     *    Update timing
     *
     *  @return
@@ -141,6 +179,12 @@ protected:
     //@{
     /**
     *  @brief
+    *    Register local plugins (contained in gloperate itself)
+    */
+    void registerLocalPlugins();
+
+    /**
+    *  @brief
     *    Register render surface
     *
     *  @param[in] surface
@@ -160,10 +204,12 @@ protected:
 
 
 protected:
-    TimeManager            m_timeManager;       ///< Manager for virtual time and timers
-    std::vector<Surface *> m_surfaces;          ///< List of active surfaces
-    InputManager           m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
-    ScriptEnvironment      m_scriptEnvironment; ///< Scripting environment
+    TimeManager                 m_timeManager;       ///< Manager for virtual time and timers
+    std::vector<Surface *>      m_surfaces;          ///< List of active surfaces
+    InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
+    ScriptEnvironment           m_scriptEnvironment; ///< Scripting environment
+    cppexpose::ComponentManager m_componentManager;  ///< Manager for plugin libraries and components
+    ResourceManager             m_resourceManager;   ///< Resource manager for loaders/storers
 };
 
 

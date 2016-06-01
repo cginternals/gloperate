@@ -19,6 +19,8 @@ public:
     *
     *  @param[in] inputManager
     *    A pointer to the inputManager (must NOT be null)
+    *  @param[in] deviceDescriptor
+    *    [TODO] What is a device descriptor?
     */
     KeyboardDevice(InputManager * inputManager, const std::string & deviceDescriptor);
 
@@ -27,12 +29,6 @@ public:
     *    Destructor
     */
     virtual ~KeyboardDevice();
-
-    /**
-    *  @brief
-    *    Poll the current state of the Device and fire appropriate Signals
-    */
-    virtual void update() override;
 
     /**
     *  @brief
@@ -56,6 +52,9 @@ public:
     *    The modifiers that apply to the key
     */
     void keyRelease(int key, int modifier);
+
+    // Virtual AbstractDevice interface
+    virtual void update() override;
 };
 
 } // namespace gloperate

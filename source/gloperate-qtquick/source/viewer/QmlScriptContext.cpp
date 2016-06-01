@@ -1,21 +1,19 @@
 
 #include <gloperate-qtquick/viewer/QmlScriptContext.h>
 
-#include <globjects/base/baselogging.h>
-
 #include <QQmlContext>
 #include <QQmlExpression>
 #include <QString>
 #include <QVariant>
 #include <QJSValue>
 
-#include <reflectionzeug/Object.h>
+#include <cppexpose/reflection/Object.h>
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/QmlObjectWrapper.h>
 
 
-using namespace reflectionzeug;
+using namespace cppexpose;
 
 
 namespace gloperate_qtquick
@@ -31,7 +29,7 @@ QmlScriptContext::~QmlScriptContext()
 {
 }
 
-void QmlScriptContext::initialize(scriptzeug::ScriptContext * scriptContext)
+void QmlScriptContext::initialize(cppexpose::ScriptContext * scriptContext)
 {
     m_scriptContext = scriptContext;
 }

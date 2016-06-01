@@ -1,9 +1,12 @@
 
 #include <gloperate/input/PrintLineConsumer.h>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/input/InputEvent.h>
+
+
+using namespace cppassist;
 
 
 namespace gloperate
@@ -12,7 +15,7 @@ namespace gloperate
 
 void PrintLineConsumer::onEvent(gloperate::InputEvent * event)
 {
-    globjects::info() << event->asString();
+    info() << event->asString();
 }
 
 

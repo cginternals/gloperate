@@ -6,7 +6,8 @@
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
+find_package(cppexpose REQUIRED)
+find_package(cppassist REQUIRED)
 find_package(Qt5Core    5.1)
 find_package(Qt5Gui     5.1)
 find_package(Qt5Widgets 5.1)
@@ -44,6 +45,10 @@ endif()
 
 set(sources
     main.cpp
+    Application.cpp
+    Application.h
+    Config.cpp
+    Config.h
 )
 
 
@@ -81,6 +86,7 @@ target_include_directories(${target}
     ${DEFAULT_INCLUDE_DIRECTORIES}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${GLM_INCLUDE_DIR}
+    ${PROJECT_BINARY_DIR}/source/include
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
     ${PROJECT_SOURCE_DIR}/source/gloperate-qtquick/include
@@ -99,9 +105,8 @@ target_link_libraries(${target}
     Qt5::Gui
     Qt5::Widgets
     Qt5::Quick
-    libzeug::signalzeug
-    libzeug::reflectionzeug
-    libzeug::scriptzeug
+    cppassist::cppassist
+    cppexpose::cppexpose
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate

@@ -1,8 +1,6 @@
 
 #include <gloperate/scripting/TimerApi.h>
 
-#include <globjects/base/baselogging.h>
-
 #include <gloperate/viewer/Timer.h>
 #include <gloperate/scripting/ScriptTimer.h>
 
@@ -20,7 +18,7 @@ namespace gloperate
 
 
 TimerApi::TimerApi(ViewerContext * viewerContext)
-: reflectionzeug::Object("timer")
+: cppexpose::Object("timer")
 , m_viewerContext(viewerContext)
 , m_nextId(1)
 {
@@ -42,12 +40,12 @@ TimerApi::~TimerApi()
     }
 }
 
-int TimerApi::start(int msec, const reflectionzeug::Variant & func)
+int TimerApi::start(int msec, const cppexpose::Variant & func)
 {
     return startTimer(func, msec, false);
 }
 
-int TimerApi::once(int msec, const reflectionzeug::Variant & func)
+int TimerApi::once(int msec, const cppexpose::Variant & func)
 {
     return startTimer(func, msec, true);
 }
@@ -75,31 +73,24 @@ void TimerApi::stopAll()
     }
 }
 
-int TimerApi::nextTick(const reflectionzeug::Variant & func)
+int TimerApi::nextTick(const cppexpose::Variant & func)
 {
     return startTimer(func, 0, true);
 }
 
-int TimerApi::startTimer(const reflectionzeug::Variant & func, int msec, bool singleShot)
+int TimerApi::startTimer(const cppexpose::Variant & func, int msec, bool singleShot)
 {
     // Check if a function has been passed
-    if (!func.canConvert<reflectionzeug::AbstractFunction*>())
+    if (!func.hasType<cppexpose::Function>())
     {
         return -1;
     }
 
     // Get callback function
-    auto function = func.value<reflectionzeug::AbstractFunction*>();
-    if (!function)
-    {
-        return -1;
-    }
-
-    // Make a persistent copy of the callback function
-    auto functionCopy = function->clone();
+    cppexpose::Function function = func.value<cppexpose::Function>();
 
     // Create and start timer
-    ScriptTimer * timer = new ScriptTimer(m_viewerContext, functionCopy);
+    ScriptTimer * timer = new ScriptTimer(m_viewerContext, function);
     timer->start(msec / 1000.0f, singleShot);
 
     // Store timer
