@@ -72,7 +72,12 @@ public:
         float & hAngle
     ,	float & vAngle) const;
 
-    //void enforceTranslationConstraints(glm::vec3 & delta);
+    void enforceTranslationConstraints(glm::vec3 & delta);
+
+    void enforceRotationConstraints();
+    void enforceTranslationConstraints();
+
+
 
     // math
 
@@ -95,8 +100,6 @@ protected:
 
     glm::vec3   m_referencePosition;
     bool        m_refPositionValid; // stores if initial interaction pick yielded valid depth
-    glm::vec3   m_eye;
-    glm::vec3   m_center;
     glm::ivec2  m_m0;
     glm::vec3   m_cardinalDirection;
 };

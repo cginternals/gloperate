@@ -39,9 +39,19 @@ namespace
     static const float MAP_EXTENT_Z = 0.5f;
     static const float MAP_EXTENT = std::max(MAP_EXTENT_X, MAP_EXTENT_Z);
 
-    static const float TRANSLATION_FREEDOM = 2.f;
+    static const float TRANSLATION_FREEDOM = 10.f;
 
     static const float CAM_SIZE = 0.01f;
+
+    float clampWithGrace(float x, float min, float max, float grace)
+    {
+        if(x < min)
+            x = min + grace;
+        if(x > max)
+            x = max - grace;
+
+        return x;
+    }
 }
 
 namespace gloperate{
@@ -118,9 +128,6 @@ void TreeMapNavigation::panBegin(const glm::ivec2 & mouse)
         const float depth = m_coordProvider.depthAt(mouse);
         m_refPositionValid = DepthExtractor::isValidDepth(depth);
     }
-
-    m_eye = m_cameraCapability.eye();
-    m_center = m_cameraCapability.center();
 }
 
 void TreeMapNavigation::panProcess(const glm::ivec2 & mouse)
@@ -158,14 +165,12 @@ void TreeMapNavigation::rotateBegin(const glm::ivec2 & mouse)
     m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
 
     m_m0 = mouse;
-
-    m_eye = m_cameraCapability.eye();
-    m_center = m_cameraCapability.center();
 }
 
 void TreeMapNavigation::rotateProcess(const glm::ivec2 & mouse)
 {
     const glm::vec2 delta(m_m0 - mouse);
+    m_m0 = mouse;
     // setup the degree of freedom for horizontal rotation within a single action
     const float wDeltaX = delta.x / static_cast<float>(m_viewportCapability.width());
     // setup the degree of freedom for vertical rotation within a single action
@@ -183,26 +188,26 @@ void TreeMapNavigation::rotateProcess(const glm::ivec2 & mouse)
         const float depth = m_coordProvider.depthAt(middle);
         m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
 
-        m_m0 = mouse;
-
-        m_eye = m_cameraCapability.eye();
-        m_center = m_cameraCapability.center();
+        const auto eye = m_cameraCapability.eye();
+        const auto center = m_cameraCapability.center();
 
         auto up = m_cameraCapability.up();
-        auto viewDir = glm::normalize(m_eye - m_center);
+        auto viewDir = glm::normalize(eye - center);
         auto va = acosf(glm::dot(viewDir, up));
 
         auto tween_va = (va - CONSTRAINT_ROT_MAX_V_UP) / PROJECTION_TWEENING_THRESH;
         tween_va = glm::clamp(tween_va, 0.0f, 1.0f);
 
-        combCapability->setOrthoFOV(m_eye, m_referencePosition);
+        combCapability->setOrthoFOV(eye, m_referencePosition);
         combCapability->setMix(tween_va);
     }
+
+
 }
 
 void TreeMapNavigation::pan(glm::vec3 t)
 {
-    //enforceTranslationConstraints(t);
+    enforceTranslationConstraints(t);
     m_cameraCapability.setEye(t + m_cameraCapability.eye());
     m_cameraCapability.setCenter(t + m_cameraCapability.center());
 }
@@ -211,7 +216,10 @@ void TreeMapNavigation::rotate(
     float hAngle
 ,   float vAngle)
 {
-    const glm::vec3 ray(glm::normalize(m_cameraCapability.center() - m_eye));
+    const auto eye = m_cameraCapability.eye();
+    const auto center = m_cameraCapability.center();
+
+    const glm::vec3 ray(glm::normalize(center - eye));
     const glm::vec3 rotAxis(glm::cross(ray, m_cameraCapability.up()));
 
     hAngle *= ROTATION_HOR_DOF;
@@ -219,7 +227,7 @@ void TreeMapNavigation::rotate(
 
     enforceRotationConstraints(hAngle, vAngle);
 
-    glm::vec3 t = m_refPositionValid ? m_referencePosition : m_center;;
+    glm::vec3 t = m_refPositionValid ? m_referencePosition : center;;
 
     glm::mat4x4 transform = glm::mat4x4();
     transform = glm::translate(transform, t);
@@ -227,8 +235,8 @@ void TreeMapNavigation::rotate(
     transform = glm::rotate(transform, vAngle, rotAxis);
     transform = glm::translate(transform, -t);
 
-    glm::vec4 newEye = transform * glm::vec4(m_eye, 1.0f);
-    glm::vec4 newCenter = transform * glm::vec4(m_center, 1.0f);
+    glm::vec4 newEye = transform * glm::vec4(eye, 1.0f);
+    glm::vec4 newCenter = transform * glm::vec4(center, 1.0f);
 
     m_cameraCapability.setEye(glm::vec3(newEye));
     m_cameraCapability.setCenter(glm::vec3(newCenter));
@@ -270,49 +278,49 @@ void TreeMapNavigation::scaleAtMouse(
 
 void TreeMapNavigation::resetScaleAtMouse(const glm::ivec2 & mouse)
 {
-    const glm::vec3 ln = m_cameraCapability.eye();
-    const glm::vec3 lf = m_cameraCapability.center();
+    const glm::vec3 eye = m_cameraCapability.eye();
+    const glm::vec3 center = m_cameraCapability.center();
 
     // set the distance between pointed position in the scene and camera to
     // default distance
     bool intersects = false;
-    glm::vec3 i = mouseRayPlaneIntersection(intersects, mouse);
+    glm::vec3 intersect = mouseRayPlaneIntersection(intersects, mouse);
     if (!intersects && !DepthExtractor::isValidDepth(m_coordProvider.depthAt(mouse)))
         return;
 
-    float scale = (DEFAULT_DISTANCE / static_cast<float>((ln - i).length()));
+    float scale = (DEFAULT_DISTANCE / static_cast<float>((eye - intersect).length()));
 
-    m_cameraCapability.setEye(i - scale * (i - ln));
-    m_cameraCapability.setCenter(i - scale * (i - lf));
+    m_cameraCapability.setEye(intersect - scale * (intersect - eye));
+    m_cameraCapability.setCenter(intersect - scale * (intersect - center));
 
     auto combCapability = dynamic_cast<CombinedProjectionCapability *>(m_projectionCapability);
     if(combCapability != nullptr)
     {
         glm::ivec2 middle(m_viewportCapability.width()/2, m_viewportCapability.height()/2);
         m_referencePosition = clampPointToMap(mouseRayPlaneIntersection(intersects, middle));
-        combCapability->setOrthoFOV(m_eye, m_referencePosition);
+        combCapability->setOrthoFOV(eye, m_referencePosition);
     }
 }
 
 void TreeMapNavigation::scaleAtCenter(float scale)
 {
-    const glm::vec3 ln = m_cameraCapability.eye();
-    const glm::vec3 lf = m_cameraCapability.center();
+    const glm::vec3 eye = m_cameraCapability.eye();
+    const glm::vec3 center = m_cameraCapability.center();
 
     bool intersects = true;
-    glm::vec3 i = navigationmath::rayPlaneIntersection(intersects, ln, lf);
+    glm::vec3 i = navigationmath::rayPlaneIntersection(intersects, eye, center);
     if (!intersects)
         return;
 
-    m_cameraCapability.setEye(ln + scale * (ln - i));
-    m_cameraCapability.setCenter(lf + scale * (lf - i));
+    m_cameraCapability.setEye(eye + scale * (eye - i));
+    m_cameraCapability.setCenter(center + scale * (center - i));
 
     auto combCapability = dynamic_cast<CombinedProjectionCapability *>(m_projectionCapability);
     if(combCapability != nullptr)
     {
         glm::ivec2 middle(m_viewportCapability.width()/2, m_viewportCapability.height()/2);
         m_referencePosition = clampPointToMap(mouseRayPlaneIntersection(intersects, middle));
-        combCapability->setOrthoFOV(m_eye, m_referencePosition);
+        combCapability->setOrthoFOV(eye, m_referencePosition);
     }
 }
 
@@ -322,19 +330,28 @@ void TreeMapNavigation::enforceRotationConstraints(
 {
     // retrieve the angle between camera-center to up and test how much closer
     // to up/down it can be rotated and clamp if required.
+    auto eye = m_cameraCapability.eye();
+    auto center = m_cameraCapability.center();
     auto up = m_cameraCapability.up();
-    auto viewDir = glm::normalize(m_eye - m_center);
+    auto viewDir = glm::normalize(eye - center);
+
     auto horizontalDir = glm::normalize(viewDir - (up * glm::dot(viewDir, up)));
 
-    auto ha = acosf(glm::dot(m_cardinalDirection, horizontalDir));
-    auto hDist = CONSTRAINT_ROT_MAX_H-ha;
+    auto ha = acosf(glm::dot(m_cardinalDirection, horizontalDir)); // TODO: make this signed
+
+    ha = std::copysign(ha, glm::dot(glm::cross(m_cardinalDirection, horizontalDir), up));
+
+    auto targetHAngle = ha + hAngle;
+    targetHAngle = glm::clamp(targetHAngle, -CONSTRAINT_ROT_MAX_H, CONSTRAINT_ROT_MAX_H);
+    hAngle = targetHAngle - ha;
+
 
     auto va = acosf(glm::dot(viewDir, up));
     vAngle = glm::clamp(vAngle, CONSTRAINT_ROT_MAX_V_UP - va, CONSTRAINT_ROT_MAX_V_LO - va);
+
 }
 
-/*
- * void TreeMapNavigation::enforceTranslationConstraints(glm::vec3 &delta)
+void TreeMapNavigation::enforceTranslationConstraints(glm::vec3 &delta)
 {
     //make sure the camera does not veer into infinity
     auto tf = TRANSLATION_FREEDOM;
@@ -352,9 +369,30 @@ void TreeMapNavigation::enforceRotationConstraints(
     if (navigationmath::insideSquare(flatIntersect, MAP_EXTENT))
         return;
 
-    const glm::vec2 i = navigationmath::raySquareIntersection(flatIntersect, MAP_EXTENT);
-    delta = glm::vec3(i.x, 0., i.y) - center;
+    // const glm::vec2 i = navigationmath::raySquareIntersection(flatIntersect, MAP_EXTENT);
+    // delta = glm::vec3(i.x, 0., i.y) - center;
 }
-*/
+
+void TreeMapNavigation::enforceRotationConstraints()
+{
+    /*auto eye = m_cameraCapability.eye();
+    auto center = m_cameraCapability.center();
+    auto up = m_cameraCapability.up();
+    auto viewDir = glm::normalize(eye - center);
+
+    auto horizontalDir = glm::normalize(viewDir - (up * glm::dot(viewDir, up)));
+
+    auto ha = acosf(glm::dot(m_cardinalDirection, horizontalDir));
+    hAngle = glm::clamp(hAngle, (CONSTRAINT_ROT_MAX_H - ha), -(CONSTRAINT_ROT_MAX_H - ha));
+    //auto hDist = CONSTRAINT_ROT_MAX_H-ha;
+
+    auto va = acosf(glm::dot(viewDir, up));
+    vAngle = glm::clamp(vAngle, CONSTRAINT_ROT_MAX_V_UP - va, CONSTRAINT_ROT_MAX_V_LO - va); */
+}
+
+void TreeMapNavigation::enforceTranslationConstraints()
+{
+
+}
 
 } // namespace gloperate
