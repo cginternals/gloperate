@@ -181,6 +181,7 @@ void TreeMapNavigation::rotateProcess(const glm::ivec2 & mouse)
     auto combCapability = dynamic_cast<CombinedProjectionCapability *>(m_projectionCapability);
     if(combCapability != nullptr)
     {
+
         const auto eye = m_cameraCapability.eye();
         const auto center = m_cameraCapability.center();
         const auto up = m_cameraCapability.up();
@@ -191,17 +192,7 @@ void TreeMapNavigation::rotateProcess(const glm::ivec2 & mouse)
         tween_va = glm::clamp(tween_va, 0.0f, 1.0f);
 
         combCapability->setOrthoFOV(eye, m_referencePosition);
-        if(combCapability->mix() != tween_va)
-        {
-            combCapability->setMix(tween_va);
-
-            bool intersects = false;
-            glm::ivec2 middle(m_viewportCapability.width()/2, m_viewportCapability.height()/2);
-            m_referencePosition = clampPointToMap(mouseRayPlaneIntersection(intersects, middle));
-
-            const float depth = m_coordProvider.depthAt(middle);
-            m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
-        }
+        combCapability->setMix(tween_va);
     }
 
 
@@ -337,7 +328,7 @@ void TreeMapNavigation::enforceRotationConstraints(
     auto up = m_cameraCapability.up();
     auto viewDir = glm::normalize(eye - center);
 
-    auto horizontalDir = glm::normalize(viewDir - (up * glm::dot(viewDir, up)));
+    /* auto horizontalDir = glm::normalize(viewDir - (up * glm::dot(viewDir, up)));
 
     auto ha = acosf(glm::dot(m_cardinalDirection, horizontalDir)); // TODO: make this signed
 
@@ -345,7 +336,7 @@ void TreeMapNavigation::enforceRotationConstraints(
 
     auto targetHAngle = ha + hAngle;
     targetHAngle = glm::clamp(targetHAngle, -CONSTRAINT_ROT_MAX_H, CONSTRAINT_ROT_MAX_H);
-    hAngle = targetHAngle - ha;
+    hAngle = targetHAngle - ha; */
 
 
     auto va = acosf(glm::dot(viewDir, up));
