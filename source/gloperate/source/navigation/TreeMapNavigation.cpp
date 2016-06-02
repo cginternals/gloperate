@@ -181,25 +181,27 @@ void TreeMapNavigation::rotateProcess(const glm::ivec2 & mouse)
     auto combCapability = dynamic_cast<CombinedProjectionCapability *>(m_projectionCapability);
     if(combCapability != nullptr)
     {
-        bool intersects = false;
-        glm::ivec2 middle(m_viewportCapability.width()/2, m_viewportCapability.height()/2);
-        m_referencePosition = clampPointToMap(mouseRayPlaneIntersection(intersects, middle));
-
-        const float depth = m_coordProvider.depthAt(middle);
-        m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
-
         const auto eye = m_cameraCapability.eye();
         const auto center = m_cameraCapability.center();
-
-        auto up = m_cameraCapability.up();
-        auto viewDir = glm::normalize(eye - center);
-        auto va = acosf(glm::dot(viewDir, up));
+        const auto up = m_cameraCapability.up();
+        const auto viewDir = glm::normalize(eye - center);
+        const auto va = acosf(glm::dot(viewDir, up));
 
         auto tween_va = (va - CONSTRAINT_ROT_MAX_V_UP) / PROJECTION_TWEENING_THRESH;
         tween_va = glm::clamp(tween_va, 0.0f, 1.0f);
 
         combCapability->setOrthoFOV(eye, m_referencePosition);
-        combCapability->setMix(tween_va);
+        if(combCapability->mix() != tween_va)
+        {
+            combCapability->setMix(tween_va);
+
+            bool intersects = false;
+            glm::ivec2 middle(m_viewportCapability.width()/2, m_viewportCapability.height()/2);
+            m_referencePosition = clampPointToMap(mouseRayPlaneIntersection(intersects, middle));
+
+            const float depth = m_coordProvider.depthAt(middle);
+            m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
+        }
     }
 
 
