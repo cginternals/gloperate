@@ -57,27 +57,43 @@ void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
     );
 }
 
-void Pipeline::removeStage(Stage * stage)
+bool Pipeline::removeStage(Stage * stage)
 {
     if (!stage)
     {
-        return;
+        return false;
     }
 
     auto it = std::find(m_stages.begin(), m_stages.end(), stage);
-    if (it != m_stages.end())
+    if (it == m_stages.end())
     {
-        m_stages.erase(it);
-        m_stagesMap.erase(stage->name());
-
-        stageRemoved(stage);
-
-        promotePipelineEvent(
-            PipelineEvent(PipelineEvent::StageRemoved, this, stage)
-        );
+        return false;
     }
 
+    m_stages.erase(it);
+    m_stagesMap.erase(stage->name());
+
+    stageRemoved(stage);
+
+    promotePipelineEvent(
+        PipelineEvent(PipelineEvent::StageRemoved, this, stage)
+    );
+
     removeProperty(stage);
+
+    return true;
+}
+
+bool Pipeline::destroyStage(Stage * stage)
+{
+    if (!removeStage(stage))
+    {
+        return false;
+    }
+
+    delete stage;
+
+    return true;
 }
 
 bool Pipeline::isPipeline() const

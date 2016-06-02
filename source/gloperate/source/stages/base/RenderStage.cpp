@@ -1,13 +1,13 @@
 
-#include <gloperate/pipeline/RenderPipeline.h>
+#include <gloperate/stages/base/RenderStage.h>
 
 
 namespace gloperate
 {
 
 
-RenderPipeline::RenderPipeline(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: Pipeline(viewerContext, name, parent)
+RenderStage::RenderStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
+: Stage(viewerContext, name, parent)
 , deviceViewport ("deviceViewport", this)
 , virtualViewport("virtualViewport", this)
 , backgroundColor("backgroundColor", this)
@@ -18,7 +18,7 @@ RenderPipeline::RenderPipeline(ViewerContext * viewerContext, const std::string 
 {
 }
 
-RenderPipeline::~RenderPipeline()
+RenderStage::~RenderStage()
 {
 }
 

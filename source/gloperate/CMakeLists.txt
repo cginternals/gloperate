@@ -88,11 +88,8 @@ set(headers
     ${include_path}/pipeline/ProxyOutput.h
     ${include_path}/pipeline/ProxyOutput.hpp
     ${include_path}/pipeline/Stage.h
-    ${include_path}/pipeline/RenderStage.h
     ${include_path}/pipeline/Pipeline.h
-    ${include_path}/pipeline/RenderPipeline.h
-    ${include_path}/pipeline/ViewerContainer.h
-    ${include_path}/pipeline/RenderInterface.h
+    ${include_path}/pipeline/OutputTypeSelector.h
     ${include_path}/pipeline/StageComponent.h
     ${include_path}/pipeline/StageComponent.hpp
     ${include_path}/pipeline/PipelineWatcher.h
@@ -105,6 +102,11 @@ set(headers
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/base/SplitStage.h
+    ${include_path}/stages/base/ViewerContainer.h
+    ${include_path}/stages/base/RenderInterface.h
+    ${include_path}/stages/base/RenderInterface.hpp
+    ${include_path}/stages/base/RenderStage.h
+    ${include_path}/stages/base/RenderPipeline.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/DemoTriangleStage.h
@@ -156,11 +158,7 @@ set(sources
     ${source_path}/pipeline/AbstractDataSlot.cpp
     ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/Stage.cpp
-    ${source_path}/pipeline/RenderStage.cpp
     ${source_path}/pipeline/Pipeline.cpp
-    ${source_path}/pipeline/RenderPipeline.cpp
-    ${source_path}/pipeline/ViewerContainer.cpp
-    ${source_path}/pipeline/RenderInterface.cpp
     ${source_path}/pipeline/StageComponent.cpp
     ${source_path}/pipeline/PipelineWatcher.cpp
     ${source_path}/pipeline/PipelineEvent.cpp
@@ -172,6 +170,9 @@ set(sources
     ${source_path}/stages/base/ProceduralTextureStage.cpp
     ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/base/SplitStage.cpp
+    ${source_path}/stages/base/ViewerContainer.cpp
+    ${source_path}/stages/base/RenderStage.cpp
+    ${source_path}/stages/base/RenderPipeline.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
     ${source_path}/stages/demos/DemoTriangleStage.cpp

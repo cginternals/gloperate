@@ -4,7 +4,7 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <gloperate/pipeline/RenderPipeline.h>
+#include <gloperate/stages/base/RenderPipeline.h>
 
 
 namespace gloperate

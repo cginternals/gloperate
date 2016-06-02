@@ -1,5 +1,5 @@
 
-#include <gloperate/pipeline/ViewerContainer.h>
+#include <gloperate/stages/base/ViewerContainer.h>
 
 
 namespace gloperate
@@ -42,11 +42,13 @@ void ViewerContainer::setRenderStage(Stage * stage)
         rendered.disconnect();
 
         // Destroy render stage
-        destroyProperty(m_renderStage);
+        destroyStage(m_renderStage);
+
         m_renderStage = nullptr;
     }
 
     // Check parameters
+    // [TODO] may also be reasonable on the start of the method
     if (!stage) {
         return;
     }
@@ -62,7 +64,7 @@ void ViewerContainer::setRenderStage(Stage * stage)
     connect(m_renderStage, "frameCounter",    &frameCounter);
     connect(m_renderStage, "timeDelta",       &timeDelta);
     connect(m_renderStage, "targetFBO",       &targetFBO);
-    connect(&rendered, m_renderStage, "rendered");
+    connect(&rendered,     m_renderStage,     "rendered");
 }
 
 void ViewerContainer::connect(Stage * stage, const std::string & name, AbstractSlot * source)

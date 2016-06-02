@@ -138,8 +138,7 @@ void DemoStage::onProcess(AbstractGLContext *)
 
     // Bind texture
     if (m_texture) {
-        gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-        m_texture->bind();
+        m_texture->bindActive(0);
     }
 
     // Draw geometry
@@ -149,7 +148,7 @@ void DemoStage::onProcess(AbstractGLContext *)
 
     // Unbind texture
     if (m_texture) {
-        m_texture->unbind();
+        m_texture->unbindActive(0);
     }
 
     // Unbind FBO

@@ -102,8 +102,27 @@ public:
     *
     *  @param[in] stage
     *    Stage (must NOT be null!)
+    *
+    *  @return
+    *    'true' if the stage was removed, else 'false'
+    *
+    *  If the stage is not part of the pipeline, nothing happens
     */
-    void removeStage(Stage * stage);
+    bool removeStage(Stage * stage);
+
+    /**
+    *  @brief
+    *    Remove and destroy stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    *
+    *  @return
+    *    'true' if the stage was removed and destroyed, else 'false'
+    *
+    *  If the stage is not part of the pipeline, nothing happens
+    */
+    bool destroyStage(Stage * stage);
 
     // Virtual Stage interface
     virtual bool isPipeline() const override;
@@ -126,7 +145,7 @@ protected:
 
 
 protected:
-    std::vector<Stage *>                     m_stages;    ///< List of stages in the pipeline
+    std::vector<Stage *>                     m_stages;    ///< List of topologically sorted stages in the pipeline
     std::unordered_map<std::string, Stage *> m_stagesMap; ///< Map of names -> stages
     bool                                     m_sorted;    ///< Have the stages of the pipeline already been sorted?
 };

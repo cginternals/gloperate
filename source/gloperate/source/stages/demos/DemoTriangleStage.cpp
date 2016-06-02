@@ -128,8 +128,7 @@ void DemoTriangleStage::onProcess(AbstractGLContext *)
 
     // Bind texture
     if (*texture) {
-        gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-        (*texture)->bind();
+        (*texture)->bindActive(0);
     }
 
     // Draw geometry
@@ -139,7 +138,7 @@ void DemoTriangleStage::onProcess(AbstractGLContext *)
 
     // Unbind texture
     if (*texture) {
-        (*texture)->unbind();
+        (*texture)->unbindActive(0);
     }
 
     // Unbind FBO

@@ -1,14 +1,15 @@
 
-#include <gloperate/pipeline/RenderInterface.h>
+#pragma once
 
-#include <gloperate/pipeline/Stage.h>
+
+#include <gloperate/stages/base/RenderInterface.h>
 
 
 namespace gloperate
 {
 
-
-RenderInterface::RenderInterface(Stage * stage)
+template <typename StageType>
+RenderInterface<StageType>::RenderInterface(Stage * stage)
 : deviceViewport ("deviceViewport", stage)
 , virtualViewport("virtualViewport", stage)
 , backgroundColor("backgroundColor", stage)
@@ -19,7 +20,8 @@ RenderInterface::RenderInterface(Stage * stage)
 {
 }
 
-RenderInterface::~RenderInterface()
+template <typename StageType>
+RenderInterface<StageType>::~RenderInterface()
 {
 }
 
