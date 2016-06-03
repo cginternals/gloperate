@@ -398,7 +398,7 @@ void RenderPass::bindResources() const
 
     for (const auto & pair : m_shaderStorageBuffers)
     {
-        pair.second->bindBase(gl::GL_SHADER_STORAGE_BLOCK, pair.first);
+        pair.second->bindBase(gl::GL_SHADER_STORAGE_BUFFER, pair.first);
     }
 
     for (const auto & pair : m_transformFeedbackBuffers)
