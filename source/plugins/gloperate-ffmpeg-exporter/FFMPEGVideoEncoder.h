@@ -8,36 +8,30 @@
 
 #include <gloperate/base/Image.h>
 
-#include <gloperate-ffmpeg/gloperate-ffmpeg_api.h>
-
 
 class AVFormatContext;
 class AVStream;
 class AVFrame;
 
 
-namespace gloperate_ffmpeg
-{
-
-
 /**
 *  @brief
 *    Class for encoding single frames into a video using FFMPEG
 */
-class GLOPERATE_FFMPEG_API VideoEncoder
+class FFMPEGVideoEncoder
 {
 public:
     /**
     *  @brief
     *    Constructor
     */
-    VideoEncoder();
+    FFMPEGVideoEncoder();
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~VideoEncoder();
+    virtual ~FFMPEGVideoEncoder();
 
     /**
     *  @brief
@@ -85,6 +79,3 @@ protected:
     AVFrame         * m_frame;
     int               m_frameCounter;
 };
-
-
-} // namespace gloperate_ffmpeg

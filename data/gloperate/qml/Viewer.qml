@@ -188,6 +188,7 @@ Page
 
             else if (name == 'video') {
                 video.visible = true;
+                videoDialog.update();
             }
 
             else if (name == 'edit') {
@@ -222,8 +223,6 @@ Page
     RenderItem
     {
         id: render
-
-        objectName: "renderItem"
 
         anchors.fill: main
         z:            -1
@@ -279,12 +278,12 @@ Page
 
         property int margin: Ui.style.paddingMedium
 
-        width: videoItem.layout.implicitWidth + 20 * margin
-        height: videoItem.layout.implicitHeight + 2 * margin
+        width: videoDialog.layout.implicitWidth + 20 * margin
+        height: videoDialog.layout.implicitHeight + 2 * margin
 
         VideoDialog
         {
-            id: videoItem
+            id: videoDialog
 
             margin: screenshot.margin
             anchors.fill: parent

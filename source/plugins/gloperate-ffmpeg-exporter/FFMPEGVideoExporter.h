@@ -7,13 +7,13 @@
 #include <string>
 #include <functional>
 
+#include <cppexpose/plugin/plugin_api.h>
+
 #include <globjects/base/ref_ptr.h>
 
 #include <gloperate/tools/AbstractVideoExporter.h>
 
-#include <gloperate-ffmpeg/VideoEncoder.h>
-
-#include <gloperate-ffmpeg/gloperate-ffmpeg_api.h>
+#include "FFMPEGVideoEncoder.h"
 
 
 namespace gloperate {
@@ -23,16 +23,14 @@ namespace gloperate {
 }
 
 
-namespace gloperate_ffmpeg
-{
-
-
 /**
 *  @brief
 *    A tool which renders a given Stage into an output video file.
 */
-class GLOPERATE_FFMPEG_API FFMPEGVideoExporter : public gloperate::AbstractVideoExporter
+class FFMPEGVideoExporter : public gloperate::AbstractVideoExporter
 {
+CPPEXPOSE_DECLARE_COMPONENT(FFMPEGVideoExporter, gloperate::AbstractVideoExporter)
+
 public:
     /**
     *  @brief
@@ -111,7 +109,7 @@ public:
 
 
 protected:
-    VideoEncoder                               * m_videoEncoder;
+    FFMPEGVideoEncoder                         * m_videoEncoder;
     gloperate::ViewerContext                   * m_context;
     gloperate::RenderSurface                   * m_surface;
     gloperate::AbstractGLContext               * m_glContext;
@@ -123,6 +121,3 @@ protected:
     float                                        m_timeDelta;
     int                                          m_progress;
 };
-
-
-} // namespace gloperate_ffmpeg

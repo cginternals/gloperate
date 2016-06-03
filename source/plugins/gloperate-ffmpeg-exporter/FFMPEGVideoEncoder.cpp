@@ -1,5 +1,5 @@
 
-#include <gloperate-ffmpeg/VideoEncoder.h>
+#include "FFMPEGVideoEncoder.h"
 
 #include <globjects/base/baselogging.h>
 
@@ -29,11 +29,7 @@ extern "C" {
 using namespace globjects;
 
 
-namespace gloperate_ffmpeg
-{
-
-
-VideoEncoder::VideoEncoder()
+FFMPEGVideoEncoder::FFMPEGVideoEncoder()
 : m_context(nullptr)
 , m_videoStream(nullptr)
 , m_frame(nullptr)
@@ -44,11 +40,11 @@ VideoEncoder::VideoEncoder()
     av_register_all();
 }
 
-VideoEncoder::~VideoEncoder()
+FFMPEGVideoEncoder::~FFMPEGVideoEncoder()
 {
 }
 
-void VideoEncoder::initEncoding(const std::string & filename, int width, int height, int fps)
+void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, int height, int fps)
 {
     // Choose video format from file name
     AVOutputFormat * format = av_guess_format(NULL, filename.c_str(), NULL);
@@ -148,7 +144,7 @@ void VideoEncoder::initEncoding(const std::string & filename, int width, int hei
     avformat_write_header(m_context, NULL);
 }
 
-void VideoEncoder::putFrame(const gloperate::Image & image)
+void FFMPEGVideoEncoder::putFrame(const gloperate::Image & image)
 {
     if (image.format() == gl::GL_RGB)
     {
@@ -158,7 +154,7 @@ void VideoEncoder::putFrame(const gloperate::Image & image)
     }
 }
 
-void VideoEncoder::putFrame(const char * data, int width, int height)
+void FFMPEGVideoEncoder::putFrame(const char * data, int width, int height)
 {
     // Put input image into picture structure
     AVPicture inputPicture;
@@ -226,7 +222,7 @@ void VideoEncoder::putFrame(const char * data, int width, int height)
     av_free_packet(&packet);
 }
 
-void VideoEncoder::finishEncoding()
+void FFMPEGVideoEncoder::finishEncoding()
 {
     // Write end of video file
     av_write_trailer(m_context);
@@ -256,6 +252,3 @@ void VideoEncoder::finishEncoding()
     // Release context
     av_free(m_context);
 }
-
-
-} // namespace gloperate_ffmpeg

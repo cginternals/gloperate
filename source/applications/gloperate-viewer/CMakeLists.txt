@@ -123,13 +123,6 @@ target_link_libraries(${target}
     ${META_PROJECT_NAME}::gloperate-qtquick
 )
 
-if (FFMPEG_FOUND)
-    target_link_libraries(${target}
-        PRIVATE
-        ${META_PROJECT_NAME}::gloperate-ffmpeg
-    )
-endif()
-
 
 # 
 # Compile definitions

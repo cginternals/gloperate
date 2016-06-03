@@ -32,6 +32,7 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
     addFunction("createVideo", this, &RenderSurface::createVideo);
     addFunction("exportImage", this, &RenderSurface::exportImage);
     addFunction("exportProgress", this, &RenderSurface::exportProgress);
+    addFunction("videoExporterPlugins", this, &RenderSurface::videoExporterPlugins);
 
     if (m_viewerContext->scriptEnvironment())
     {
@@ -50,6 +51,7 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 
 RenderSurface::~RenderSurface()
 {
+    if (m_video) delete m_video;
     delete m_imageExporter;
 }
 
@@ -81,16 +83,13 @@ void RenderSurface::setRenderStage(Stage * stage)
     }
 }
 
-void RenderSurface::setVideoExporter(AbstractVideoExporter * video)
+void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
 {
-    m_video = video;
-}
+    auto component = m_viewerContext->componentManager()->component<AbstractVideoExporter>(backend);
+    if (!component) return;
 
-void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds)
-{
-    if (!m_video) return;
-    
-    cppassist::debug() << "<----- Creating Video ----->";
+    if (m_video) delete m_video;
+    m_video = component->createInstance();
 
     m_video->init(filename, this, width, height, fps, seconds);
     m_requestVideo = true;
@@ -107,6 +106,19 @@ int RenderSurface::exportProgress()
     if (!m_video) return 0;
 
     return m_video->progress();
+}
+
+cppexpose::VariantArray RenderSurface::videoExporterPlugins()
+{
+    cppexpose::VariantArray plugins;
+    for (auto component : m_viewerContext->componentManager()->components())
+    {
+        if (strcmp(component->type(), "gloperate::AbstractVideoExporter") == 0)
+        {
+            plugins.push_back(cppexpose::Variant(component->name()));
+        }
+    }
+    return plugins;
 }
 
 glm::vec4 RenderSurface::deviceViewport()

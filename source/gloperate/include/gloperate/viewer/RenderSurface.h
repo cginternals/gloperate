@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppexpose/variant/Variant.h>
+
 #include <gloperate/viewer/Surface.h>
 #include <gloperate/viewer/input.h>
 #include <gloperate/pipeline/ViewerContainer.h>
@@ -73,15 +75,6 @@ public:
 
     /**
     *  @brief
-    *    Set video exporter
-    *
-    *  @param[in] video
-    *    Pointer to a derived AbstractVideoExporter instance
-    */
-    void setVideoExporter(AbstractVideoExporter * video);
-
-    /**
-    *  @brief
     *    Request to render this surface to a video
     *
     *  @param[in] filename
@@ -95,7 +88,7 @@ public:
     *  @param[in] length
     *    Length (in seconds) of output video
     */
-    void createVideo(std::string filename, int width, int height, int fps, int seconds);
+    void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoEncoder");
 
     /**
     *  @brief
@@ -120,6 +113,15 @@ public:
     *    Percent of the current video export progress. When nothing is being exported, it returns 0.
     */
     int exportProgress();
+
+    /**
+    *  @brief
+    *    Get the available plugin names for video export backends.
+    *
+    *  @return
+    *    Vector of the available plugin names for video export backends.
+    */
+    cppexpose::VariantArray videoExporterPlugins();
 
 
     // Virtual Surface functions

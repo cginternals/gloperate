@@ -13,6 +13,13 @@ Background {
     property int margin: 0
     property alias layout: mainLayout
 
+    function update() {
+        var plugins = gloperate.surface0.videoExporterPlugins();
+        plugins.forEach(function(entry) {
+            backends.append({text: entry});
+        })
+    }
+
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
@@ -45,7 +52,7 @@ Background {
 
             GridLayout {
                 id: gridLayout
-                rows: 4
+                rows: 5
                 flow: GridLayout.TopToBottom
                 anchors.fill: parent
 
@@ -53,6 +60,7 @@ Background {
                 Controls.Label { text: "Height" }
                 Controls.Label { text: "FPS" }
                 Controls.Label { text: "Duration (sec)" }
+                Controls.Label { text: "Backend" }
 
                 ComboBox {
                     editable: true
@@ -108,6 +116,14 @@ Background {
                     }
                 }
 
+                ComboBox {
+                    editable: false
+                    id: backend
+                    model: ListModel {
+                        id: backends
+                    }
+                }
+
             }
         }
 
@@ -129,7 +145,7 @@ Background {
             onClicked: {
                 progressTimer.restart();
 
-                gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText);
+                gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
             }
         }
     }
@@ -146,7 +162,6 @@ Background {
         onTriggered: {
             progress = gloperate.surface0.exportProgress();
             progressBar.value = progress;
-            print(progress);
 
             if (progress >= 100) {
                 stop();

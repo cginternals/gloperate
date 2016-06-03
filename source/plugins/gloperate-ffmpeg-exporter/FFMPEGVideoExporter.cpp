@@ -1,22 +1,30 @@
 
-#include <gloperate-ffmpeg/FFMPEGVideoExporter.h>
+#include "FFMPEGVideoExporter.h"
 
-#include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/RenderSurface.h>
-#include <gloperate/viewer/AbstractGLContext.h>
+#include <glbinding/gl/gl.h>
 
 #include <globjects/base/baselogging.h>
 #include <globjects/Framebuffer.h>
 
-#include <glbinding/gl/gl.h>
+#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/viewer/RenderSurface.h>
+#include <gloperate/viewer/AbstractGLContext.h>
+#include <gloperate/gloperate-version.h>
 
 
 using namespace globjects;
 using namespace gloperate;
 
 
-namespace gloperate_ffmpeg
-{
+CPPEXPOSE_COMPONENT(
+    FFMPEGVideoExporter, gloperate::AbstractVideoExporter
+  , "" // Tags
+  , "" // Icon
+  , "" // Annotations
+  , "Export the RenderSurface to video using FFMPEG"
+  , GLOPERATE_AUTHOR_ORGANIZATION
+  , "v1.0.0"
+)
 
 
 FFMPEGVideoExporter::FFMPEGVideoExporter()
@@ -25,7 +33,7 @@ FFMPEGVideoExporter::FFMPEGVideoExporter()
 }
 
 FFMPEGVideoExporter::FFMPEGVideoExporter(const std::string & filename, RenderSurface * surface, uint fps, uint length, uint width, uint height)
-: m_videoEncoder(new VideoEncoder())
+: m_videoEncoder(new FFMPEGVideoEncoder())
 , m_context(surface->viewerContext())
 , m_surface(surface)
 , m_glContext(surface->openGLContext())
@@ -46,7 +54,7 @@ FFMPEGVideoExporter::~FFMPEGVideoExporter()
 
 void FFMPEGVideoExporter::init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length)
 {
-    m_videoEncoder = new VideoEncoder();
+    m_videoEncoder = new FFMPEGVideoEncoder();
     m_context = surface->viewerContext();
     m_surface = surface;
     m_glContext = surface->openGLContext();
@@ -106,6 +114,3 @@ int FFMPEGVideoExporter::progress() const
 {
     return m_progress;
 }
-
-
-} // namespace gloperate_ffmpeg
