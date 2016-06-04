@@ -27,6 +27,7 @@ Item
     property color controlColorHl:  '#444444'
     property color controlColorHov: '#555555'
     property color fieldColor:      '#ffffff'
+    property color progressColor:   '#ADD8E6'
 
     // Borders
     property color borderColor:     '#000000'

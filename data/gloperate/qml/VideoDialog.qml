@@ -133,7 +133,7 @@ Background {
 
             minimumValue: 0
             maximumValue: 100
-            value: 35
+            value: 0
         }
 
         DialogButton {

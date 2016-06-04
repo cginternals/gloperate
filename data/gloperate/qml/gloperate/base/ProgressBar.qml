@@ -24,7 +24,7 @@ Controls.ProgressBar
 
         progress: Rectangle {
             radius: Ui.style.panelBorderRadius
-            color: Ui.style.primaryColor
+            color: Ui.style.progressColor
             border.color: Ui.style.getControlTextColor(item.enabled, item.highlighted, item.hovered, item.pressed)
         }
     }
