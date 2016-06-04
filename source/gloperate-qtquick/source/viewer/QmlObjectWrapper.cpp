@@ -58,17 +58,14 @@ QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::PropertyGroup 
 {
     // Check if a property group or an object has been provided
     m_object = dynamic_cast<cppexpose::Object *>(m_group);
-
-    if (m_object)
-    {
-        m_objName = m_object->name();
-    }
 }
 
 QmlObjectWrapper::~QmlObjectWrapper()
 {
-    // Is already done by someone else
+    // [TODO]
+    // This is already done by someone else
     // Hints about identity welcome!
+
     //for (auto * wrappedObject : m_wrappedObjects)
     //{
         //delete wrappedObject;
@@ -126,11 +123,14 @@ QJSValue QmlObjectWrapper::wrapObject()
         }
     }
 
-    // register callbacks for script engine update
-    m_beforeDestroyConnection = m_group->beforeDestroy.connect([this](cppexpose::AbstractProperty * property) {
-        // Clear wrapper object
+    // Register callbacks for script engine update
+    m_beforeDestroyConnection = m_group->beforeDestroy.connect([this](cppexpose::AbstractProperty * property)
+    {
+        // [TODO] Provide an UNUSED() macro in cppassist
         assert(property == m_group);
+        (void)(property);
 
+        // Clear wrapper object
         // [TODO] How to detect the point in execution where m_obj gets invalid?
         QJSValueIterator it(m_obj);
         while (it.hasNext()) {
@@ -138,7 +138,12 @@ QJSValue QmlObjectWrapper::wrapObject()
             m_obj.deleteProperty(it.name());
         }
     });
-    m_afterAddConnection = m_group->afterAdd.connect([this, & registerProperty](size_t index, cppexpose::AbstractProperty * property) {
+
+    m_afterAddConnection = m_group->afterAdd.connect([this, & registerProperty](size_t index, cppexpose::AbstractProperty * property)
+    {
+        // [TODO] Provide an UNUSED() macro in cppassist
+        (void)(index);
+
         // Add property to object
         if (property->isGroup())
         {
@@ -163,7 +168,9 @@ QJSValue QmlObjectWrapper::wrapObject()
             m_wrappedObjects.push_back(nullptr);
         }
     });
-    m_beforeRemoveConnection = m_group->beforeRemove.connect([this](size_t index, cppexpose::AbstractProperty * property) {
+
+    m_beforeRemoveConnection = m_group->beforeRemove.connect([this](size_t index, cppexpose::AbstractProperty * property)
+    {
         // Remove object
         m_obj.deleteProperty(QString::fromStdString(property->name()));
         delete *(m_wrappedObjects.begin() + index);

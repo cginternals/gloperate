@@ -105,11 +105,10 @@ protected:
     QmlEngine                       * m_engine;         ///< Qml engine with gloperate integration
     cppexpose::PropertyGroup        * m_group;          ///< Wrapped property group (must NOT be null)
     cppexpose::Object               * m_object;         ///< Wrapped object (can be null)
+    QJSValue                          m_obj;            ///< Javascript object representing the cppexpose object
     std::vector<QmlObjectWrapper *>   m_wrappedObjects; ///< List of wrapped sub-objects
 
-    std::string m_objName;
-    QJSValue m_obj;
-
+    // Connections to the wrapped object
     cppexpose::ScopedConnection m_beforeDestroyConnection;
     cppexpose::ScopedConnection m_afterAddConnection;
     cppexpose::ScopedConnection m_beforeRemoveConnection;
