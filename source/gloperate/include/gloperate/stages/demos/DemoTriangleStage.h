@@ -12,7 +12,7 @@
 #include <globjects/Texture.h>
 
 #include <gloperate/rendering/Camera.h>
-#include <gloperate/pipeline/RenderStage.h>
+#include <gloperate/stages/base/RenderStage.h>
 #include <gloperate/pipeline/Input.h>
 
 

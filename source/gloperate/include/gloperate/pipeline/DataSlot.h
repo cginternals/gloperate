@@ -2,9 +2,10 @@
 #pragma once
 
 
-#include <cppexpose/reflection/DynamicProperty.h>
+#include <cppexpose/typed/DirectValue.h>
+#include <cppexpose/signal/Signal.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/pipeline/AbstractDataSlot.h>
 
 
 namespace gloperate
@@ -13,34 +14,34 @@ namespace gloperate
 
 /**
 *  @brief
-*    Container for data objects in a pipeline
+*    Container for data slots in a pipeline
 */
-template <typename T, typename BASE>
-class Data : public cppexpose::DynamicProperty<T, BASE>
+template <typename T>
+class DataSlot : public cppexpose::DirectValue<T, AbstractDataSlot>
 {
+public:
+    cppexpose::Signal<const T &> valueChanged;  ///< Called when the value has been changed
+
+
 public:
     //@{
     /**
     *  @brief
     *    Constructor
     *
-    *  @param[in] parent
-    *    Parent stage (must NOT be null!)
-    *  @param[in] name
-    *    Property name
     *  @param[in] value
     *    Default value
     *
     *  @remarks
     *    The data container is created and added to the given stage.
     */
-    Data(Stage * parent, const std::string & name, const T & defaultValue = T());
+    DataSlot(const T & value = T());
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~Data();
+    virtual ~DataSlot();
     //@}
 
     //@{
@@ -67,6 +68,9 @@ public:
     const T * operator->() const;
     //@}
 
+    // Virtual AbstractProperty interface
+    virtual bool isGroup() const override;
+
 
 protected:
     // Virtual Typed<T> interface
@@ -77,4 +81,4 @@ protected:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/Data.hpp>
+#include <gloperate/pipeline/DataSlot.hpp>

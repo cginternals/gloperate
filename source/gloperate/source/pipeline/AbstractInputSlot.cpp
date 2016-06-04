@@ -8,14 +8,25 @@ namespace gloperate
 {
 
 
-AbstractInputSlot::AbstractInputSlot(SlotType type)
-: AbstractSlot(type)
-, m_feedback(false)
+AbstractInputSlot::AbstractInputSlot()
+: m_feedback(false)
 {
 }
 
 AbstractInputSlot::~AbstractInputSlot()
 {
+    Stage * stage = parentStage();
+
+    if (!stage)
+    {
+        if (m_slotType == SlotType::Input) {
+            stage->removeInput(this);
+        }
+
+        if (m_slotType == SlotType::ProxyOutput) {
+            stage->removeProxyOutput(this);
+        }
+    }
 }
 
 bool AbstractInputSlot::isConnected() const
@@ -31,6 +42,21 @@ bool AbstractInputSlot::isFeedback() const
 void AbstractInputSlot::setFeedback(bool feedback)
 {
     m_feedback = feedback;
+}
+
+void AbstractInputSlot::initInputSlot(SlotType type, Stage * parent, cppexpose::PropertyOwnership ownership)
+{
+    m_slotType = type;
+
+    if (parent && m_slotType == SlotType::Input)
+    {
+        parent->addInput(this, ownership);
+    }
+
+    else if (parent && m_slotType == SlotType::ProxyOutput)
+    {
+        parent->addProxyOutput(this, ownership);
+    }
 }
 
 

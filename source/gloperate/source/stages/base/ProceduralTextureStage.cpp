@@ -14,7 +14,7 @@ namespace gloperate
 
 ProceduralTextureStage::ProceduralTextureStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
-, texture (this, "texture", nullptr)
+, texture("texture", this, nullptr)
 {
 }
 

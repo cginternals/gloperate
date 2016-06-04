@@ -17,6 +17,11 @@ class Stage;
 /**
 *  @brief
 *    Base class for input slots
+*
+*    Input slots are slots that do not contain data themselves,
+*    but can be connected to data slots which contain the actual
+*    data. In the current pipeline architecture, there are two
+*    types of input slots: inputs and proxy outputs.
 */
 class GLOPERATE_API AbstractInputSlot : public AbstractSlot
 {
@@ -28,11 +33,8 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] type
-    *    Slot type
     */
-    AbstractInputSlot(SlotType type);
+    AbstractInputSlot();
 
     /**
     *  @brief
@@ -120,6 +122,21 @@ public:
     *    isFeedback
     */
     void setFeedback(bool feedback);
+
+
+protected:
+    /**
+    *  @brief
+    *    Initialize input slot
+    *
+    *  @param[in] type
+    *    Slot type
+    *  @param[in] parent
+    *    Parent stage (can be null)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void initInputSlot(SlotType type, Stage * parent, cppexpose::PropertyOwnership ownership);
 
 
 protected:

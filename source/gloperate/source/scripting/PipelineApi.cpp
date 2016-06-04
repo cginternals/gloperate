@@ -8,9 +8,8 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/AbstractSlot.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
-#include <gloperate/pipeline/AbstractData.h>
+#include <gloperate/pipeline/AbstractDataSlot.h>
 #include <gloperate/scripting/PipelineApiWatcher.h>
 
 

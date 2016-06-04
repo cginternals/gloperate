@@ -89,5 +89,7 @@ int main(int argc, char * argv[])
     // Run main loop
     int res = app.exec();
 
+    // Clean up
+    delete window;
     return res;
 }

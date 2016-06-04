@@ -6,6 +6,7 @@
 
 #include <cppexpose/typed/Typed.h>
 
+#include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/PipelineEvent.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Parameter.h>
@@ -17,25 +18,24 @@ namespace gloperate
 {
 
 
-template <typename T, typename BASE>
-InputSlot<T, BASE>::InputSlot(Stage * parent, const std::string & name, const T & defaultValue)
-: m_defaultValue(defaultValue)
+template <typename T>
+InputSlot<T>::InputSlot(const T & value)
+: m_defaultValue(value)
 , m_sourceType(SlotType::Empty)
 {
     m_source.input = nullptr;
     m_source.parameter = nullptr;
     m_source.output = nullptr;
     m_source.proxyOutput = nullptr;
-    this->initProperty(parent, name);
 }
 
-template <typename T, typename BASE>
-InputSlot<T, BASE>::~InputSlot()
+template <typename T>
+InputSlot<T>::~InputSlot()
 {
 }
 
-template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(Input<T> * source)
+template <typename T>
+bool InputSlot<T>::connect(Input<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -61,8 +61,8 @@ bool InputSlot<T, BASE>::connect(Input<T> * source)
     return true;
 }
 
-template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(Parameter<T> * source)
+template <typename T>
+bool InputSlot<T>::connect(Parameter<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -88,8 +88,8 @@ bool InputSlot<T, BASE>::connect(Parameter<T> * source)
     return true;
 }
 
-template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(Output<T> * source)
+template <typename T>
+bool InputSlot<T>::connect(Output<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -115,8 +115,8 @@ bool InputSlot<T, BASE>::connect(Output<T> * source)
     return true;
 }
 
-template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(ProxyOutput<T> * source)
+template <typename T>
+bool InputSlot<T>::connect(ProxyOutput<T> * source)
 {
     // Check if source is valid
     if (!source) {
@@ -142,48 +142,48 @@ bool InputSlot<T, BASE>::connect(ProxyOutput<T> * source)
     return true;
 }
 
-template <typename T, typename BASE>
-InputSlot<T, BASE> & InputSlot<T, BASE>::operator<<(Input<T> & source)
+template <typename T>
+InputSlot<T> & InputSlot<T>::operator<<(Input<T> & source)
 {
     this->connect(&source);
     return *this;
 }
 
-template <typename T, typename BASE>
-InputSlot<T, BASE> & InputSlot<T, BASE>::operator<<(Parameter<T> & source)
+template <typename T>
+InputSlot<T> & InputSlot<T>::operator<<(Parameter<T> & source)
 {
     this->connect(&source);
     return *this;
 }
 
-template <typename T, typename BASE>
-InputSlot<T, BASE> & InputSlot<T, BASE>::operator<<(Output<T> & source)
+template <typename T>
+InputSlot<T> & InputSlot<T>::operator<<(Output<T> & source)
 {
     this->connect(&source);
     return *this;
 }
 
-template <typename T, typename BASE>
-InputSlot<T, BASE> & InputSlot<T, BASE>::operator<<(ProxyOutput<T> & source)
+template <typename T>
+InputSlot<T> & InputSlot<T>::operator<<(ProxyOutput<T> & source)
 {
     this->connect(&source);
     return *this;
 }
 
-template <typename T, typename BASE>
-const T & InputSlot<T, BASE>::operator*() const
+template <typename T>
+const T & InputSlot<T>::operator*() const
 {
     return *this->ptr();
 }
 
-template <typename T, typename BASE>
-T * InputSlot<T, BASE>::operator->()
+template <typename T>
+T * InputSlot<T>::operator->()
 {
     return this->ptr();
 }
 
-template <typename T, typename BASE>
-const AbstractSlot * InputSlot<T, BASE>::source() const
+template <typename T>
+const AbstractSlot * InputSlot<T>::source() const
 {
     switch (m_sourceType) {
         case SlotType::Input:       return m_source.input;
@@ -194,8 +194,8 @@ const AbstractSlot * InputSlot<T, BASE>::source() const
     }
 }
 
-template <typename T, typename BASE>
-bool InputSlot<T, BASE>::isCompatible(const AbstractSlot * source) const
+template <typename T>
+bool InputSlot<T>::isCompatible(const AbstractSlot * source) const
 {
     if (source) {
         return this->type() == source->type();
@@ -204,8 +204,8 @@ bool InputSlot<T, BASE>::isCompatible(const AbstractSlot * source) const
     }
 }
 
-template <typename T, typename BASE>
-bool InputSlot<T, BASE>::connect(AbstractSlot * source)
+template <typename T>
+bool InputSlot<T>::connect(AbstractSlot * source)
 {
     // Check if source is valid and compatible data container
     if (!source || !isCompatible(source))
@@ -233,8 +233,8 @@ bool InputSlot<T, BASE>::connect(AbstractSlot * source)
     }
 }
 
-template <typename T, typename BASE>
-void InputSlot<T, BASE>::disconnect()
+template <typename T>
+void InputSlot<T>::disconnect()
 {
     // Reset source property
     m_source.input       = nullptr;
@@ -248,14 +248,14 @@ void InputSlot<T, BASE>::disconnect()
     this->onValueChanged(m_defaultValue);
 }
 
-template <typename T, typename BASE>
-cppexpose::AbstractTyped * InputSlot<T, BASE>::clone() const
+template <typename T>
+cppexpose::AbstractTyped * InputSlot<T>::clone() const
 {
     return nullptr;
 }
 
-template <typename T, typename BASE>
-T InputSlot<T, BASE>::value() const
+template <typename T>
+T InputSlot<T>::value() const
 {
     switch (m_sourceType) {
         case SlotType::Input:       return m_source.input->value();
@@ -266,14 +266,14 @@ T InputSlot<T, BASE>::value() const
     }
 }
 
-template <typename T, typename BASE>
-void InputSlot<T, BASE>::setValue(const T &)
+template <typename T>
+void InputSlot<T>::setValue(const T &)
 {
     // Not supported for input slots!
 }
 
-template <typename T, typename BASE>
-const T * InputSlot<T, BASE>::ptr() const
+template <typename T>
+const T * InputSlot<T>::ptr() const
 {
     switch (m_sourceType) {
         case SlotType::Input:       return m_source.input->ptr();
@@ -284,8 +284,8 @@ const T * InputSlot<T, BASE>::ptr() const
     }
 }
 
-template <typename T, typename BASE>
-T * InputSlot<T, BASE>::ptr()
+template <typename T>
+T * InputSlot<T>::ptr()
 {
     switch (m_sourceType) {
         case SlotType::Input:       return m_source.input->ptr();
@@ -296,8 +296,8 @@ T * InputSlot<T, BASE>::ptr()
     }
 }
 
-template <typename T, typename BASE>
-bool InputSlot<T, BASE>::isValid() const
+template <typename T>
+bool InputSlot<T>::isValid() const
 {
     switch (m_sourceType) {
         case SlotType::Input:       return m_source.input->isValid();
@@ -308,42 +308,48 @@ bool InputSlot<T, BASE>::isValid() const
     }
 }
 
-template <typename T, typename BASE>
-void InputSlot<T, BASE>::onRequiredChanged()
+template <typename T>
+void InputSlot<T>::onRequiredChanged()
 {
     promoteRequired();
 
     AbstractSlot::onRequiredChanged();
 }
 
-template <typename T, typename BASE>
-bool InputSlot<T, BASE>::isGroup() const
+template <typename T>
+bool InputSlot<T>::isGroup() const
 {
     return false;
 }
 
-template <typename T, typename BASE>
-void InputSlot<T, BASE>::onValueChanged(const T & value)
+template <typename T>
+void InputSlot<T>::onValueChanged(const T & value)
 {
     this->valueChanged(value);
 
-    this->m_owner->promotePipelineEvent(
-        PipelineEvent(PipelineEvent::ValueChanged, this->m_owner, this)
-    );
+    if (Stage * stage = this->parentStage())
+    {
+        stage->promotePipelineEvent(
+            PipelineEvent(PipelineEvent::ValueChanged, stage, this)
+        );
+    }
 }
 
-template <typename T, typename BASE>
-void InputSlot<T, BASE>::promoteConnection()
+template <typename T>
+void InputSlot<T>::promoteConnection()
 {
     this->connectionChanged();
 
-    this->m_owner->promotePipelineEvent(
-        PipelineEvent(PipelineEvent::ConnectionChanged, this->m_owner, this)
-    );
+    if (Stage * stage = this->parentStage())
+    {
+        stage->promotePipelineEvent(
+            PipelineEvent(PipelineEvent::ConnectionChanged, stage, this)
+        );
+    }
 }
 
-template <typename T, typename BASE>
-void InputSlot<T, BASE>::promoteRequired()
+template <typename T>
+void InputSlot<T>::promoteRequired()
 {
     switch (m_sourceType) {
         case SlotType::Input:       m_source.input->setRequired(this->m_required); break;

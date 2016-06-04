@@ -43,14 +43,14 @@ namespace gloperate
 
 MixerStage::MixerStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
-, viewport      (this, "viewport")
-, targetFBO     (this, "targetFBO")
-, texture       (this, "texture")
-, vertexShader  (this, "vertexShader")
-, geometryShader(this, "geometryShader")
-, fragmentShader(this, "fragmentShader")
-, rendered (this, "rendered")
-, fboOut   (this, "fboOut")
+, viewport      ("viewport", this)
+, targetFBO     ("targetFBO", this)
+, texture       ("texture", this)
+, vertexShader  ("vertexShader", this)
+, geometryShader("geometryShader", this)
+, fragmentShader("fragmentShader", this)
+, rendered      ("rendered", this)
+, fboOut        ("fboOut", this)
 , m_rebuildProgram(false)
 {
     // Get data path

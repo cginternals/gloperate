@@ -10,10 +10,14 @@ namespace gloperate
 
 
 template <typename T>
-ProxyOutput<T>::ProxyOutput(Stage * parent, const std::string & name, const T & value)
-: InputSlot<T, AbstractProxyOutput>(parent, name, value)
+ProxyOutput<T>::ProxyOutput(const std::string & name, Stage * parent, const T & value)
+: InputSlot<T>(value)
 {
-    this->initProxyOutput(parent);
+    // Do not add property to group yet, only initialize the property itself
+    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+
+    // Register proxy output, will also add proxy output as a property
+    this->initInputSlot(SlotType::ProxyOutput, parent, cppexpose::PropertyOwnership::None);
 }
 
 template <typename T>

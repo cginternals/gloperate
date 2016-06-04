@@ -10,11 +10,15 @@ namespace gloperate
 
 
 template <typename T>
-Output<T>::Output(Stage * parent, const std::string & name, const T & value)
-: Data<T, AbstractOutput>(parent, name, value)
+Output<T>::Output(const std::string & name, Stage * parent, const T & value)
+: DataSlot<T>(value)
 , m_valid(false)
 {
-    this->initOutput(parent);
+    // Do not add property to group yet, only initialize the property itself
+    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+
+    // Register output, will also add output as a property
+    this->initDataSlot(SlotType::Output, parent, cppexpose::PropertyOwnership::None);
 }
 
 template <typename T>
@@ -29,7 +33,7 @@ void Output<T>::invalidate()
     m_valid = false;
 
     // Promote changed-event
-    this->Data<T, AbstractOutput>::onValueChanged(this->m_value);
+    this->DataSlot<T>::onValueChanged(this->m_value);
 }
 
 template <typename T>
@@ -45,7 +49,7 @@ void Output<T>::onValueChanged(const T & value)
     m_valid = true;
 
     // Promote changed-event
-    Data<T, AbstractOutput>::onValueChanged(value);
+    DataSlot<T>::onValueChanged(value);
 }
 
 

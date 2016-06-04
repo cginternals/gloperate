@@ -85,29 +85,50 @@ public:
     */
     Stage * stage(const std::string & name) const;
 
+    /**
+    *  @brief
+    *    Add stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addStage(Stage * stage, cppexpose::PropertyOwnership ownership = cppexpose::PropertyOwnership::Parent);
+
+    /**
+    *  @brief
+    *    Remove stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    *
+    *  @return
+    *    'true' if the stage was removed, else 'false'
+    *
+    *  If the stage is not part of the pipeline, nothing happens
+    */
+    bool removeStage(Stage * stage);
+
+    /**
+    *  @brief
+    *    Remove and destroy stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    *
+    *  @return
+    *    'true' if the stage was removed and destroyed, else 'false'
+    *
+    *  If the stage is not part of the pipeline, nothing happens
+    */
+    bool destroyStage(Stage * stage);
+
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
 
 protected:
-    /**
-    *  @brief
-    *    Register stage
-    *
-    *  @param[in] stage
-    *    Stage (must NOT be null!)
-    */
-    void registerStage(Stage * stage);
-
-    /**
-    *  @brief
-    *    Unregister stage
-    *
-    *  @param[in] stage
-    *    Stage (must NOT be null!)
-    */
-    void unregisterStage(Stage * stage);
-
     /**
     *  @brief
     *    Sort stages by their dependencies
@@ -124,7 +145,7 @@ protected:
 
 
 protected:
-    std::vector<Stage *>                     m_stages;    ///< List of stages in the pipeline
+    std::vector<Stage *>                     m_stages;    ///< List of topologically sorted stages in the pipeline
     std::unordered_map<std::string, Stage *> m_stagesMap; ///< Map of names -> stages
     bool                                     m_sorted;    ///< Have the stages of the pipeline already been sorted?
 };

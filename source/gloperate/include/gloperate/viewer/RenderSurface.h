@@ -6,7 +6,7 @@
 
 #include <gloperate/viewer/Surface.h>
 #include <gloperate/viewer/input.h>
-#include <gloperate/pipeline/ViewerContainer.h>
+#include <gloperate/stages/base/ViewerContainer.h>
 
 
 namespace gloperate

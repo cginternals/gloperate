@@ -11,8 +11,8 @@ namespace gloperate
 
 TextureLoadStage::TextureLoadStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
-, filename(this, "filename")
-, texture (this, "texture")
+, filename("filename", this)
+, texture ("texture", this)
 {
 }
 

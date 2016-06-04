@@ -43,15 +43,15 @@ namespace gloperate
 
 SplitStage::SplitStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
 : Stage(viewerContext, name, parent)
-, viewport      (this, "viewport")
-, targetFBO     (this, "targetFBO")
-, texture1      (this, "texture1")
-, texture2      (this, "texture2")
-, vertexShader  (this, "vertexShader")
-, geometryShader(this, "geometryShader")
-, fragmentShader(this, "fragmentShader")
-, rendered (this, "rendered")
-, fboOut   (this, "fboOut")
+, viewport      ("viewport", this)
+, targetFBO     ("targetFBO", this)
+, texture1      ("texture1", this)
+, texture2      ("texture2", this)
+, vertexShader  ("vertexShader", this)
+, geometryShader("geometryShader", this)
+, fragmentShader("fragmentShader", this)
+, rendered      ("rendered", this)
+, fboOut        ("fboOut", this)
 , m_rebuildProgram(false)
 {
     // Get data path
@@ -104,8 +104,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Bind texture #1
     if (*texture1) {
-        gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-        (*texture1)->bind();
+        (*texture1)->bindActive(0);
     }
 
     // Draw screen-aligned quad
@@ -116,7 +115,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Unbind texture #1
     if (*texture1) {
-        (*texture1)->unbind();
+        (*texture1)->unbindActive(0);
     }
 
     // Set viewport for texture #2
@@ -124,8 +123,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Bind texture #2
     if (*texture2) {
-        gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-        (*texture2)->bind();
+        (*texture2)->bindActive(0);
     }
 
     // Draw screen-aligned quad
@@ -136,7 +134,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Unbind texture #2
     if (*texture2) {
-        (*texture2)->unbind();
+        (*texture2)->unbindActive(0);
     }
 
     // Restore OpenGL states

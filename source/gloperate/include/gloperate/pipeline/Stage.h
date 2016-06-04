@@ -21,10 +21,8 @@ namespace gloperate
 class ViewerContext;
 class AbstractGLContext;
 class AbstractSlot;
-class AbstractInput;
-class AbstractParameter;
-class AbstractOutput;
-class AbstractProxyOutput;
+class AbstractInputSlot;
+class AbstractDataSlot;
 class Pipeline;
 class PipelineWatcher;
 class PipelineEvent;
@@ -52,12 +50,6 @@ class ProxyOutput;
 */
 class GLOPERATE_API Stage : public cppexpose::Object
 {
-    friend class AbstractInput;
-    friend class AbstractParameter;
-    friend class AbstractOutput;
-    friend class AbstractProxyOutput;
-
-
 public:
     // Import data types into local namespace
     template <typename T>
@@ -74,14 +66,14 @@ public:
 
 
 public:
-    cppexpose::Signal<AbstractInput *>       inputAdded;         ///< Called when an input has been added
-    cppexpose::Signal<AbstractInput *>       inputRemoved;       ///< Called when an input has been removed
-    cppexpose::Signal<AbstractParameter *>   parameterAdded;     ///< Called when a parameter has been added
-    cppexpose::Signal<AbstractParameter *>   parameterRemoved;   ///< Called when a parameter has been removed
-    cppexpose::Signal<AbstractOutput *>      outputAdded;        ///< Called when an output has been added
-    cppexpose::Signal<AbstractOutput *>      outputRemoved;      ///< Called when an output has been removed
-    cppexpose::Signal<AbstractProxyOutput *> proxyOutputAdded;   ///< Called when a proxy output has been added
-    cppexpose::Signal<AbstractProxyOutput *> proxyOutputRemoved; ///< Called when a proxy output has been removed
+    cppexpose::Signal<AbstractInputSlot *> inputAdded;         ///< Called when an input has been added
+    cppexpose::Signal<AbstractInputSlot *> inputRemoved;       ///< Called when an input has been removed
+    cppexpose::Signal<AbstractDataSlot *>  parameterAdded;     ///< Called when a parameter has been added
+    cppexpose::Signal<AbstractDataSlot *>  parameterRemoved;   ///< Called when a parameter has been removed
+    cppexpose::Signal<AbstractDataSlot *>  outputAdded;        ///< Called when an output has been added
+    cppexpose::Signal<AbstractDataSlot *>  outputRemoved;      ///< Called when an output has been removed
+    cppexpose::Signal<AbstractInputSlot *> proxyOutputAdded;   ///< Called when a proxy output has been added
+    cppexpose::Signal<AbstractInputSlot *> proxyOutputRemoved; ///< Called when a proxy output has been removed
 
 
 public:
@@ -144,22 +136,6 @@ public:
     *    'true' if stage depends on the other stage, else 'false'
     */
     bool requires(const Stage * stage, bool recursive = true) const;
-
-    /**
-    *  @brief
-    *    Set parent pipeline
-    *
-    *  @param[in] parent
-    *    Parent pipeline
-    *
-    *  @remarks
-    *    Sets up the stage to be owned by the specified pipeline.
-    *    Will set both the owner pipeline and the parent property
-    *    to the pipeline and transfer ownership to the pipeline.
-    *    Does only work if the stage did not have a parent
-    *    before. Otherwise, the function will just return.
-    */
-    void transferStage(Pipeline * parent);
 
     /**
     *  @brief
@@ -253,7 +229,7 @@ public:
     *  @return
     *    List of inputs on the stage
     */
-    const std::vector<AbstractInput *> & inputs() const;
+    const std::vector<AbstractInputSlot *> & inputs() const;
 
     /**
     *  @brief
@@ -265,7 +241,27 @@ public:
     *  @return
     *    Input (can be null)
     */
-    const AbstractInput * input(const std::string & name) const;
+    const AbstractInputSlot * input(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Add input
+    *
+    *  @param[in] input
+    *    Input (must NOT null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addInput(AbstractInputSlot * input, cppexpose::PropertyOwnership ownership);
+
+    /**
+    *  @brief
+    *    Remove input
+    *
+    *  @param[in] input
+    *    Input (must NOT null!)
+    */
+    void removeInput(AbstractInputSlot * input);
 
     /**
     *  @brief
@@ -274,7 +270,7 @@ public:
     *  @return
     *    List of parameters on the stage
     */
-    const std::vector<AbstractParameter *> & parameters() const;
+    const std::vector<AbstractDataSlot *> & parameters() const;
 
     /**
     *  @brief
@@ -286,7 +282,27 @@ public:
     *  @return
     *    Parameter (can be null)
     */
-    const AbstractParameter * parameter(const std::string & name) const;
+    const AbstractDataSlot * parameter(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Add parameter
+    *
+    *  @param[in] parameter
+    *    Parameter (must NOT null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addParameter(AbstractDataSlot * parameter, cppexpose::PropertyOwnership ownership);
+
+    /**
+    *  @brief
+    *    Remove parameter
+    *
+    *  @param[in] parameter
+    *    Parameter (must NOT null!)
+    */
+    void removeParameter(AbstractDataSlot * parameter);
 
     /**
     *  @brief
@@ -295,7 +311,7 @@ public:
     *  @return
     *    List of outputs on the stage
     */
-    const std::vector<AbstractOutput *> & outputs() const;
+    const std::vector<AbstractDataSlot *> & outputs() const;
 
     /**
     *  @brief
@@ -307,7 +323,27 @@ public:
     *  @return
     *    Output (can be null)
     */
-    const AbstractOutput * output(const std::string & name) const;
+    const AbstractDataSlot * output(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Add output
+    *
+    *  @param[in] output
+    *    Output (must NOT null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addOutput(AbstractDataSlot * output, cppexpose::PropertyOwnership ownership);
+
+    /**
+    *  @brief
+    *    Remove output
+    *
+    *  @param[in] output
+    *    Output (must NOT null!)
+    */
+    void removeOutput(AbstractDataSlot * output);
 
     /**
     *  @brief
@@ -316,7 +352,7 @@ public:
     *  @return
     *    List of proxy outputs on the stage
     */
-    const std::vector<AbstractProxyOutput *> & proxyOutputs() const;
+    const std::vector<AbstractInputSlot *> & proxyOutputs() const;
 
     /**
     *  @brief
@@ -328,7 +364,27 @@ public:
     *  @return
     *    Proxy output (can be null)
     */
-    const AbstractProxyOutput * proxyOutput(const std::string & name) const;
+    const AbstractInputSlot * proxyOutput(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Add proxy output
+    *
+    *  @param[in] proxyOutput
+    *    Proxy output (must NOT null!)
+    *  @param[in] ownership
+    *    Property ownership
+    */
+    void addProxyOutput(AbstractInputSlot * proxyOutput, cppexpose::PropertyOwnership ownership);
+
+    /**
+    *  @brief
+    *    Remove proxy output
+    *
+    *  @param[in] proxyOutput
+    *    Proxy output (must NOT null!)
+    */
+    void removeProxyOutput(AbstractInputSlot * proxyOutput);
 
     /**
     *  @brief
@@ -368,92 +424,6 @@ public:
 
 
 protected:
-    /**
-    *  @brief
-    *    Register input
-    *
-    *  @param[in] input
-    *    Input (must NOT null!)
-    *
-    *  @remarks
-    *    Although inputs and outputs are already registered at the stage
-    *    as properties, we keep a separate list of them to simplify
-    *    accessing inputs and outputs directly and without type casts.
-    */
-    void registerInput(AbstractInput * input);
-
-    /**
-    *  @brief
-    *    Unregister input
-    *
-    *  @param[in] input
-    *    Input (must NOT null!)
-    */
-    void unregisterInput(AbstractInput * input);
-
-    /**
-    *  @brief
-    *    Register parameter
-    *
-    *  @param[in] parameter
-    *    Parameter (must NOT null!)
-    *
-    *  @see
-    *    registerInput
-    */
-    void registerParameter(AbstractParameter * parameter);
-
-    /**
-    *  @brief
-    *    Unregister parameter
-    *
-    *  @param[in] parameter
-    *    Parameter (must NOT null!)
-    */
-    void unregisterParameter(AbstractParameter * parameter);
-
-    /**
-    *  @brief
-    *    Register output
-    *
-    *  @param[in] output
-    *    Output (must NOT null!)
-    *
-    *  @see
-    *    registerInput
-    */
-    void registerOutput(AbstractOutput * output);
-
-    /**
-    *  @brief
-    *    Unregister output
-    *
-    *  @param[in] output
-    *    Output (must NOT null!)
-    */
-    void unregisterOutput(AbstractOutput * output);
-
-    /**
-    *  @brief
-    *    Register proxy output
-    *
-    *  @param[in] proxyOutput
-    *    Proxy output (must NOT null!)
-    *
-    *  @see
-    *    registerInput
-    */
-    void registerProxyOutput(AbstractProxyOutput * proxyOutput);
-
-    /**
-    *  @brief
-    *    Unregister proxy output
-    *
-    *  @param[in] proxyOutput
-    *    Proxy output (must NOT null!)
-    */
-    void unregisterProxyOutput(AbstractProxyOutput * proxyOutput);
-
     /**
     *  @brief
     *    Initialize in OpenGL context
@@ -511,7 +481,7 @@ protected:
     *    Called when an input value has changed
     *
     *  @param[in] slot
-    *    Data slot (either input or parameter)
+    *    Input slot (either input or parameter)
     *
     *  @remarks
     *    The default implementation invalidates all outputs whenever
@@ -563,17 +533,16 @@ protected:
 
 protected:
     ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
-    Pipeline      * m_parentPipeline; ///< Pipeline to which the stage belongs (can be null)
     bool            m_alwaysProcess;  ///< Is the stage always processed?
 
-    std::vector<AbstractInput *>                           m_inputs;          ///< List of inputs
-    std::unordered_map<std::string, AbstractInput *>       m_inputsMap;       ///< Map of names and inputs
-    std::vector<AbstractParameter *>                       m_parameters;      ///< List of parameters
-    std::unordered_map<std::string, AbstractParameter *>   m_parametersMap;   ///< Map of names and parameters
-    std::vector<AbstractOutput *>                          m_outputs;         ///< List of outputs
-    std::unordered_map<std::string, AbstractOutput *>      m_outputsMap;      ///< Map of names and outputs
-    std::vector<AbstractProxyOutput *>                     m_proxyOutputs;    ///< List of proxy outputs
-    std::unordered_map<std::string, AbstractProxyOutput *> m_proxyOutputsMap; ///< Map of names and proxy outputs
+    std::vector<AbstractInputSlot *>                     m_inputs;          ///< List of inputs
+    std::unordered_map<std::string, AbstractInputSlot *> m_inputsMap;       ///< Map of names and inputs
+    std::vector<AbstractDataSlot *>                      m_parameters;      ///< List of parameters
+    std::unordered_map<std::string, AbstractDataSlot *>  m_parametersMap;   ///< Map of names and parameters
+    std::vector<AbstractDataSlot *>                      m_outputs;         ///< List of outputs
+    std::unordered_map<std::string, AbstractDataSlot *>  m_outputsMap;      ///< Map of names and outputs
+    std::vector<AbstractInputSlot *>                     m_proxyOutputs;    ///< List of proxy outputs
+    std::unordered_map<std::string, AbstractInputSlot *> m_proxyOutputsMap; ///< Map of names and proxy outputs
 
     std::vector<PipelineWatcher *> m_watchers;  ///< List of connected pipeline watchers
 };

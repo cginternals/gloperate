@@ -33,19 +33,20 @@ class Stage;
 *    and it will add the inputs and outputs directly to the stage (the interface
 *    itself is not an object in the hierarchy).
 */
+template <typename StageType>
 class GLOPERATE_API RenderInterface
 {
 public:
     // Inputs
-    Input<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
-    Input<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
-    Input<glm::vec3>                backgroundColor; ///< Background color (RGB)
-    Input<int>                      frameCounter;    ///< Frame counter (number of frames)
-    Input<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
-    Input<globjects::Framebuffer *> targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
+    Input<glm::vec4>                          deviceViewport;  ///< Viewport (in real device coordinates)
+    Input<glm::vec4>                          virtualViewport; ///< Viewport (in virtual coordinates)
+    Input<glm::vec3>                          backgroundColor; ///< Background color (RGB)
+    Input<int>                                frameCounter;    ///< Frame counter (number of frames)
+    Input<float>                              timeDelta;       ///< Time delta since last frame (in seconds)
+    Input<globjects::Framebuffer *>           targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
 
     // Outputs
-    Output<bool>                    rendered;        ///< 'true' if output has been rendered
+    OutputTypeSelector<bool, StageType>::type rendered;        ///< 'true' if output has been rendered
 
 
 public:
@@ -67,3 +68,6 @@ public:
 
 
 } // namespace gloperate
+
+
+#include <gloperate/stages/base/RenderInterface.hpp>

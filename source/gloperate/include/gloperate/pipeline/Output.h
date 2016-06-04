@@ -2,8 +2,7 @@
 #pragma once
 
 
-#include <gloperate/pipeline/Data.h>
-#include <gloperate/pipeline/AbstractOutput.h>
+#include <gloperate/pipeline/DataSlot.h>
 
 
 namespace gloperate
@@ -12,27 +11,27 @@ namespace gloperate
 
 /**
 *  @brief
-*    Data output of a stage
+*    Output of a stage
 */
 template <typename T>
-class Output : public Data<T, AbstractOutput>
+class Output : public DataSlot<T>
 {
 public:
     /**
     *  @brief
     *    Constructor
     *
-    *  @param[in] parent
-    *    Parent stage (must NOT be null!)
     *  @param[in] name
     *    Property name
+    *  @param[in] parent
+    *    Parent stage (must NOT be null!)
     *  @param[in] value
     *    Default value
     *
     *  @remarks
     *    The output is created and added to the given stage.
     */
-    Output(Stage * parent, const std::string & name, const T & defaultValue = T());
+    Output(const std::string & name, Stage * parent, const T & defaultValue = T());
 
     /**
     *  @brief
@@ -40,7 +39,7 @@ public:
     */
     virtual ~Output();
 
-    // Virtual AbstractOutput interface
+    // Virtual AbstractDataSlot interface
     virtual void invalidate() override;
 
     // Virtual AbstractSlot interface

@@ -3,7 +3,6 @@
 
 
 #include <gloperate/pipeline/InputSlot.h>
-#include <gloperate/pipeline/AbstractInput.h>
 
 
 namespace gloperate
@@ -15,24 +14,24 @@ namespace gloperate
 *    Data input of a stage
 */
 template <typename T>
-class Input : public InputSlot<T, AbstractInput>
+class Input : public InputSlot<T>
 {
 public:
     /**
     *  @brief
     *    Constructor
     *
-    *  @param[in] parent
-    *    Parent stage (must NOT be null!)
     *  @param[in] name
     *    Property name
+    *  @param[in] parent
+    *    Parent stage (must NOT be null!)
     *  @param[in] value
     *    Default value
     *
     *  @remarks
     *    The input is created and added to the given stage.
     */
-    Input(Stage * parent, const std::string & name, const T & defaultValue = T());
+    Input(const std::string & name, Stage * parent, const T & defaultValue = T());
 
     /**
     *  @brief

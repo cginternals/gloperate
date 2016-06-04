@@ -10,6 +10,7 @@
 #include <gloperate/viewer/GLContextUtils.h>
 #include <gloperate/scripting/ScriptEnvironment.h>
 #include <gloperate/stages/demos/DemoStage.h>
+#include <gloperate/stages/demos/DemoPipeline.h>
 
 #include <gloperate-qt/viewer/Application.h>
 #include <gloperate-qt/viewer/GLContext.h>
@@ -42,7 +43,7 @@ int main(int argc, char * argv[])
     UpdateManager updateManager(&viewerContext);
 
     // Create render stage
-    DemoStage * renderStage = new DemoStage(&viewerContext);
+    auto * renderStage = new DemoStage(&viewerContext);
 
     // Create render window
     RenderWindow * window = new RenderWindow(&viewerContext);
