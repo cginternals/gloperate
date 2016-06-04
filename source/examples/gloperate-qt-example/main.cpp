@@ -37,6 +37,7 @@ int main(int argc, char * argv[])
     );
     viewerContext.componentManager()->scanPlugins("loaders");
     viewerContext.componentManager()->scanPlugins("stages");
+    viewerContext.componentManager()->scanPlugins("exporter");
 
     // Initialize Qt application
     gloperate_qt::Application app(&viewerContext, argc, argv);
