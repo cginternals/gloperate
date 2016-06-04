@@ -76,6 +76,8 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
     m_surface->onViewport(vp, vp);
 
     Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
+    int bytesPerRow = image.width() * image.bytes() * image.channels();
+    char * tempData = new char[bytesPerRow * image.height()];
 
     if (!glContextActive)
     {
@@ -89,8 +91,16 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
         m_context->update(m_timeDelta);
         m_surface->onRender();
 
-        gl::glReadPixels(0, 0, m_width, m_height, image.format(), image.type(), image.data());
-    
+        gl::glReadPixels(0, 0, m_width, m_height, image.format(), image.type(), tempData);
+
+        // Flip image vertically
+        for (int y = 0; y < image.height(); ++y)
+        {
+            memcpy(image.data() + (y * bytesPerRow),
+                tempData + ((image.height() - y) * bytesPerRow),
+                bytesPerRow);
+        }
+
         m_videoEncoder->putFrame(image);
 
         m_progress = i*100/length;
@@ -103,6 +113,8 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
     {
         m_glContext->release();
     }
+
+    delete [] tempData;
 
     m_surface->onViewport(deviceViewport, virtualViewport);
 
