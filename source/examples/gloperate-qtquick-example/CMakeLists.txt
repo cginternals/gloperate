@@ -45,8 +45,6 @@ endif()
 
 set(sources
     main.cpp
-    TreeNode.h
-    TreeNode.cpp
 )
 
 
