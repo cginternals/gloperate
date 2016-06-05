@@ -51,8 +51,8 @@ int main(int argc, char * argv[])
     );
 
     // [DEBUG]
-    cppexpose::TreeNode root("root");
-    viewerContext.scriptEnvironment()->addApi(&root);
+    cppexpose::TreeNode tree("tree");
+    viewerContext.scriptEnvironment()->addApi(&tree);
 
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);

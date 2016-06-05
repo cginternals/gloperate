@@ -6,6 +6,7 @@
 #include <memory>
 #include <list>
 
+#include <cppexpose/reflection/Object.h>
 #include <cppexpose/variant/Variant.h>
 
 #include <gloperate/gloperate_api.h>
@@ -33,7 +34,7 @@ class PipelineApi;
 *  @brief
 *    Scripting environment that handles a scripting context, scripting APIs, etc.
 */
-class GLOPERATE_API ScriptEnvironment
+class GLOPERATE_API ScriptEnvironment : public cppexpose::Object
 {
 public:
     //@{
@@ -97,15 +98,6 @@ public:
     *    e.g., 'gloperate.test' if the object's name is 'test'.
     */
     void addApi(cppexpose::Object * api);
-
-    /**
-    *  @brief
-    *    Disconnect scripting API
-    *
-    *  @param[in] api
-    *    Scripting API
-    */
-    void removeApi(cppexpose::Object * api);
 
     /**
     *  @brief
