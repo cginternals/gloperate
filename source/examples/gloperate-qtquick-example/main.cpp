@@ -11,7 +11,10 @@
 #include <gloperate-qt/viewer/UpdateManager.h>
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
+#include <gloperate-qtquick/viewer/QmlScriptContext.h>
 #include <gloperate-qtquick/viewer/QuickView.h>
+
+#include "TreeNode.h"
 
 
 using namespace gloperate;
@@ -41,6 +44,15 @@ int main(int argc, char * argv[])
     // Create QML engine
     QmlEngine qmlEngine(&viewerContext);
     qmlEngine.addImportPath(qmlPath);
+
+    // Create scripting context backend
+    viewerContext.scriptEnvironment()->setupScripting(
+        new gloperate_qtquick::QmlScriptContext(&qmlEngine)
+    );
+
+    // [DEBUG]
+    TreeNode root("root");
+    viewerContext.scriptEnvironment()->addApi(&root);
 
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);

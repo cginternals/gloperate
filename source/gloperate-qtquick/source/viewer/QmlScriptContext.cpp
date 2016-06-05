@@ -27,6 +27,12 @@ QmlScriptContext::QmlScriptContext(QmlEngine * engine)
 
 QmlScriptContext::~QmlScriptContext()
 {
+    // Is already done by someone else
+    // Hints about identity welcome!
+    //for (auto * wrappedObject : m_wrappedObjects)
+    //{
+        //delete wrappedObject;
+    //}
 }
 
 void QmlScriptContext::initialize(cppexpose::ScriptContext * scriptContext)
