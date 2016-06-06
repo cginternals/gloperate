@@ -62,10 +62,8 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
-    *  @param[in] parent
-    *    Parent pipeline (can be null)
     */
-    SplitStage(ViewerContext * viewerContext, const std::string & name = "SplitStage", Pipeline * parent = nullptr);
+    SplitStage(ViewerContext * viewerContext, const std::string & name = "SplitStage");
 
     /**
     *  @brief

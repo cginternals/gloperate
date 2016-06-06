@@ -41,8 +41,8 @@ namespace gloperate
 {
 
 
-SplitStage::SplitStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: Stage(viewerContext, name, parent)
+SplitStage::SplitStage(ViewerContext * viewerContext, const std::string & name)
+: Stage(viewerContext, name)
 , viewport      ("viewport", this)
 , targetFBO     ("targetFBO", this)
 , texture1      ("texture1", this)

@@ -11,8 +11,8 @@ namespace gloperate
 {
 
 
-BasicFramebufferStage::BasicFramebufferStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: Stage(viewerContext, name, parent)
+BasicFramebufferStage::BasicFramebufferStage(ViewerContext * viewerContext, const std::string & name)
+: Stage(viewerContext, name)
 , viewport    ("viewport", this)
 , fbo         ("fbo", this)
 , colorTexture("colorTexture", this)

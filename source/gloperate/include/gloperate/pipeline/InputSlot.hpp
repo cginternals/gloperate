@@ -317,7 +317,7 @@ void InputSlot<T>::onRequiredChanged()
 }
 
 template <typename T>
-bool InputSlot<T>::isGroup() const
+bool InputSlot<T>::isObject() const
 {
     return false;
 }

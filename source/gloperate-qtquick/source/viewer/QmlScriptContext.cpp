@@ -43,7 +43,7 @@ void QmlScriptContext::initialize(cppexpose::ScriptContext * scriptContext)
     m_scriptContext = scriptContext;
 }
 
-void QmlScriptContext::setGlobalObject(cppexpose::PropertyGroup * obj)
+void QmlScriptContext::setGlobalObject(cppexpose::Object * obj)
 {
     // Check arguments
     if (!obj) return;

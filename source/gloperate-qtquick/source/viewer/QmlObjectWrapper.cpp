@@ -50,14 +50,11 @@ namespace gloperate_qtquick
 {
 
 
-QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::PropertyGroup * group)
+QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::Object * obj)
 : QObject(nullptr)
 , m_engine(engine)
-, m_group(group)
-, m_object(nullptr)
+, m_object(obj)
 {
-    // Check if a property group or an object has been provided
-    m_object = dynamic_cast<cppexpose::Object *>(m_group);
 }
 
 QmlObjectWrapper::~QmlObjectWrapper()
@@ -86,17 +83,19 @@ QJSValue QmlObjectWrapper::wrapObject()
     QJSValue registerFunction = m_engine->evaluate(s_registerFunction);
 
     // Add properties to object
-    for (unsigned int i=0; i<m_group->numSubValues(); i++)
+    for (unsigned int i=0; i<m_object->numSubValues(); i++)
     {
-        AbstractProperty * property = m_group->property(i);
+        AbstractProperty * property = m_object->property(i);
 
-        if (property->isGroup()) {
-            // Add group wrapper
-            PropertyGroup * group = dynamic_cast<PropertyGroup *>(property);
-            QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, group);
+        if (property->isObject()) {
+            // Add object wrapper
+            Object * obj = static_cast<Object *>(property);
+
+            QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, obj);
             m_wrappedObjects.push_back(wrapper);
-            QJSValue groupObj = wrapper->wrapObject();
-            m_obj.setProperty(group->name().c_str(), groupObj);
+
+            QJSValue wrapObj = wrapper->wrapObject();
+            m_obj.setProperty(obj->name().c_str(), wrapObj);
         } else {
             // Add property
             QJSValueList args;
@@ -109,25 +108,22 @@ QJSValue QmlObjectWrapper::wrapObject()
     }
 
     // Add functions to object
-    if (m_object)
+    const std::vector<Method> funcs = m_object->functions();
+    for (std::vector<Method>::const_iterator it = funcs.begin(); it != funcs.end(); ++it)
     {
-        const std::vector<Method> funcs = m_object->functions();
-        for (std::vector<Method>::const_iterator it = funcs.begin(); it != funcs.end(); ++it)
-        {
-            const Method & func = *it;
+        const Method & func = *it;
 
-            QJSValueList args;
-            args << m_obj;
-            args << QString::fromStdString(func.name());
-            registerFunction.call(args);
-        }
+        QJSValueList args;
+        args << m_obj;
+        args << QString::fromStdString(func.name());
+        registerFunction.call(args);
     }
 
     // Register callbacks for script engine update
-    m_beforeDestroyConnection = m_group->beforeDestroy.connect([this](cppexpose::AbstractProperty * property)
+    m_beforeDestroyConnection = m_object->beforeDestroy.connect([this](cppexpose::AbstractProperty * property)
     {
         // [TODO] Provide an UNUSED() macro in cppassist
-        assert(property == m_group);
+        assert(property == m_object);
         (void)(property);
 
         // Clear wrapper object
@@ -139,23 +135,24 @@ QJSValue QmlObjectWrapper::wrapObject()
         }
     });
 
-    m_afterAddConnection = m_group->afterAdd.connect([this, & registerProperty](size_t index, cppexpose::AbstractProperty * property)
+    m_afterAddConnection = m_object->afterAdd.connect([this, & registerProperty](size_t index, cppexpose::AbstractProperty * property)
     {
         // [TODO] Provide an UNUSED() macro in cppassist
         (void)(index);
 
         // Add property to object
-        if (property->isGroup())
+        if (property->isObject())
         {
-            // Add group wrapper
-            PropertyGroup * group = dynamic_cast<PropertyGroup *>(property);
-            QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, group);
+            // Add object wrapper
+            Object * obj = static_cast<Object *>(property);
+            QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, obj);
 
             assert(m_wrappedObjects.size() == index);
 
             m_wrappedObjects.push_back(wrapper);
-            QJSValue groupObj = wrapper->wrapObject();
-            m_obj.setProperty(group->name().c_str(), groupObj);
+
+            QJSValue wrapObj = wrapper->wrapObject();
+            m_obj.setProperty(obj->name().c_str(), wrapObj);
         }
         else
         {
@@ -169,7 +166,7 @@ QJSValue QmlObjectWrapper::wrapObject()
         }
     });
 
-    m_beforeRemoveConnection = m_group->beforeRemove.connect([this](size_t index, cppexpose::AbstractProperty * property)
+    m_beforeRemoveConnection = m_object->beforeRemove.connect([this](size_t index, cppexpose::AbstractProperty * property)
     {
         // Remove object
         m_obj.deleteProperty(QString::fromStdString(property->name()));
@@ -187,7 +184,7 @@ QJSValue QmlObjectWrapper::getProp(const QString & name)
 {
     cppexpose::Variant value;
 
-    cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
+    cppexpose::AbstractProperty * prop = m_object->property(name.toStdString());
     if (prop) {
         value = prop->toVariant();
     }
@@ -197,7 +194,7 @@ QJSValue QmlObjectWrapper::getProp(const QString & name)
 
 void QmlObjectWrapper::setProp(const QString & name, const QJSValue & value)
 {
-    cppexpose::AbstractProperty * prop = m_group->property(name.toStdString());
+    cppexpose::AbstractProperty * prop = m_object->property(name.toStdString());
     if (prop) {
         prop->fromVariant(m_engine->fromScriptValue(value));
     }
@@ -205,12 +202,6 @@ void QmlObjectWrapper::setProp(const QString & name, const QJSValue & value)
 
 QJSValue QmlObjectWrapper::callFunc(const QString & name, const QJSValue & args)
 {
-    // Must wrap a valid object
-    if (!m_object)
-    {
-        return QJSValue();
-    }
-
     // Get function
     // [TODO] Fast lookup
     cppexpose::Function function;

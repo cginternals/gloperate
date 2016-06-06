@@ -48,7 +48,7 @@ const T * DataSlot<T>::operator->() const
 }
 
 template <typename T>
-bool DataSlot<T>::isGroup() const
+bool DataSlot<T>::isObject() const
 {
     return false;
 }

@@ -16,8 +16,8 @@ namespace gloperate
 {
 
 
-DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: RenderPipeline(viewerContext, name, parent)
+DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & name)
+: RenderPipeline(viewerContext, name)
 , m_mixerStage(new MixerStage(viewerContext, "MixerStage"))
 , m_splitStage(new SplitStage(viewerContext, "SplitStage"))
 , m_timerStage(new DemoTimerStage(viewerContext, "TimerStage"))

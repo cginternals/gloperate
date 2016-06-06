@@ -13,7 +13,7 @@ template <typename T>
 Parameter<T>::Parameter(const std::string & name, Stage * parent, const T & value)
 : DataSlot<T>(value)
 {
-    // Do not add property to group yet, only initialize the property itself
+    // Do not add property to object, yet. Just initialize the property itself
     this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
 
     // Register parameter, will also add parameter as a property

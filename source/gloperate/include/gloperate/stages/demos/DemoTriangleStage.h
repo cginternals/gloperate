@@ -52,10 +52,8 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
-    *  @param[in] parent
-    *    Parent pipeline (can be null)
     */
-    DemoTriangleStage(ViewerContext * viewerContext, const std::string & name = "DemoTriangleStage", Pipeline * parent = nullptr);
+    DemoTriangleStage(ViewerContext * viewerContext, const std::string & name = "DemoTriangleStage");
 
     /**
     *  @brief

@@ -44,10 +44,8 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
-    *  @param[in] parent
-    *    Parent pipeline (can be null)
     */
-    TextureLoadStage(ViewerContext * viewerContext, const std::string & name = "TextureLoadStage", Pipeline * parent = nullptr);
+    TextureLoadStage(ViewerContext * viewerContext, const std::string & name = "TextureLoadStage");
 
     /**
     *  @brief

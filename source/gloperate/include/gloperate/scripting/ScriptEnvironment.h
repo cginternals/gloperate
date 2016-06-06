@@ -13,7 +13,6 @@
 
 
 namespace cppexpose {
-    class Object;
     class ScriptContext;
     class AbstractScriptBackend;
 }
