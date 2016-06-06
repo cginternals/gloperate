@@ -3,7 +3,6 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <cppexpose/reflection/Object.h>
 #include <cppexpose/scripting/ScriptContext.h>
 
 #include <gloperate/scripting/SystemApi.h>

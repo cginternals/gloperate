@@ -13,7 +13,6 @@
 
 
 namespace cppexpose {
-    class PropertyGroup;
     class Object;
 }
 
@@ -44,10 +43,10 @@ public:
     *
     *  @param[in] engine
     *    Qml engine
-    *  @param[in] group
-    *    Property group (must NOT be nullptr)
+    *  @param[in] obj
+    *    Object (must NOT be null!)
     */
-    QmlObjectWrapper(QmlEngine * engine, cppexpose::PropertyGroup * group);
+    QmlObjectWrapper(QmlEngine * engine, cppexpose::Object * obj);
 
     /**
     *  @brief
@@ -103,8 +102,7 @@ protected:
 
 protected:
     QmlEngine                       * m_engine;         ///< Qml engine with gloperate integration
-    cppexpose::PropertyGroup        * m_group;          ///< Wrapped property group (must NOT be null)
-    cppexpose::Object               * m_object;         ///< Wrapped object (can be null)
+    cppexpose::Object               * m_object;         ///< Wrapped object (must NOT be null)
     QJSValue                          m_obj;            ///< Javascript object representing the cppexpose object
     std::vector<QmlObjectWrapper *>   m_wrappedObjects; ///< List of wrapped sub-objects
 

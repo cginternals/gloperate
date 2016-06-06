@@ -14,7 +14,7 @@ Output<T>::Output(const std::string & name, Stage * parent, const T & value)
 : DataSlot<T>(value)
 , m_valid(false)
 {
-    // Do not add property to group yet, only initialize the property itself
+    // Do not add property to object, yet. Just initialize the property itself
     this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
 
     // Register output, will also add output as a property

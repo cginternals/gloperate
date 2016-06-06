@@ -9,7 +9,6 @@
 
 #include <cppassist/string/conversion.h>
 
-#include <cppexpose/reflection/Object.h>
 #include <cppexpose/scripting/ScriptContext.h>
 #include <cppexpose/reflection/Property.h>
 

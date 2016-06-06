@@ -43,7 +43,7 @@ public:
 
     // Virtual AbstractScriptBackend functions
     virtual void initialize(cppexpose::ScriptContext * scriptContext) override;
-    virtual void setGlobalObject(cppexpose::PropertyGroup * obj) override;
+    virtual void setGlobalObject(cppexpose::Object * obj) override;
     virtual cppexpose::Variant evaluate(const std::string & code) override;
 
 

@@ -168,7 +168,7 @@ public:
     virtual void onRequiredChanged() override;
 
     // Virtual AbstractProperty interface
-    virtual bool isGroup() const override;
+    virtual bool isObject() const override;
 
 
 protected:
