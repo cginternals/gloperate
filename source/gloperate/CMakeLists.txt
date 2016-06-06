@@ -121,6 +121,10 @@ set(headers
     ${include_path}/input/AxisEvent.h
     ${include_path}/input/MouseDevice.h
     ${include_path}/input/KeyboardDevice.h
+    ${include_path}/input/Control.h
+    ${include_path}/input/Metaphor.h
+    ${include_path}/input/Metaphor.hpp
+    ${include_path}/input/Mapping.h
 )
 
 set(sources
@@ -187,6 +191,8 @@ set(sources
     ${source_path}/input/AxisEvent.cpp
     ${source_path}/input/MouseDevice.cpp
     ${source_path}/input/KeyboardDevice.cpp
+    ${source_path}/input/Control.cpp
+    ${source_path}/input/Mapping.cpp
 )
 
 # Group source files
