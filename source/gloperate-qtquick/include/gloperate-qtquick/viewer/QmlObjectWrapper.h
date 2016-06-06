@@ -7,6 +7,8 @@
 #include <QObject>
 #include <QJSValue>
 
+#include <cppexpose/signal/ScopedConnection.h>
+
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
@@ -32,7 +34,7 @@ class QmlEngine;
 */
 class GLOPERATE_QTQUICK_API QmlObjectWrapper : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 
 
 public:
@@ -101,9 +103,15 @@ protected:
 
 protected:
     QmlEngine                       * m_engine;         ///< Qml engine with gloperate integration
-    cppexpose::PropertyGroup   * m_group;          ///< Wrapped property group (must NOT be null)
-    cppexpose::Object          * m_object;         ///< Wrapped object (can be null)
+    cppexpose::PropertyGroup        * m_group;          ///< Wrapped property group (must NOT be null)
+    cppexpose::Object               * m_object;         ///< Wrapped object (can be null)
+    QJSValue                          m_obj;            ///< Javascript object representing the cppexpose object
     std::vector<QmlObjectWrapper *>   m_wrappedObjects; ///< List of wrapped sub-objects
+
+    // Connections to the wrapped object
+    cppexpose::ScopedConnection m_beforeDestroyConnection;
+    cppexpose::ScopedConnection m_afterAddConnection;
+    cppexpose::ScopedConnection m_beforeRemoveConnection;
 };
 
 

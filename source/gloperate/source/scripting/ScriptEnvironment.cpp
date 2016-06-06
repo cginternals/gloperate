@@ -4,7 +4,6 @@
 #include <cppassist/logging/logging.h>
 
 #include <cppexpose/reflection/Object.h>
-
 #include <cppexpose/scripting/ScriptContext.h>
 
 #include <gloperate/scripting/SystemApi.h>
@@ -13,12 +12,16 @@
 #include <gloperate/scripting/PipelineApi.h>
 
 
+using namespace cppassist;
+
+
 namespace gloperate
 {
 
 
 ScriptEnvironment::ScriptEnvironment(ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+: cppexpose::Object("gloperate")
+, m_viewerContext(viewerContext)
 {
     // Set help text
     m_helpText =
@@ -47,6 +50,8 @@ void ScriptEnvironment::setupScripting(const std::string & backendName)
         backendName.length() > 0 ? backendName : "javascript"
     ) );
 
+    m_scriptContext->setGlobalObject(this);
+
     initialize();
 }
 
@@ -55,6 +60,8 @@ void ScriptEnvironment::setupScripting(cppexpose::AbstractScriptBackend * backen
     m_apis.clear();
 
     m_scriptContext.reset(new cppexpose::ScriptContext(backend));
+
+    m_scriptContext->setGlobalObject(this);
 
     initialize();
 }
@@ -75,13 +82,7 @@ void ScriptEnvironment::addApi(cppexpose::Object * api)
     m_apis.push_back(api);
 
     // Connect object to scripting engine
-    m_scriptContext->registerObject(api);
-}
-
-void ScriptEnvironment::removeApi(cppexpose::Object * api)
-{
-    // Unregister object from scripting engine
-    m_scriptContext->unregisterObject(api);
+    addProperty(api);
 }
 
 void ScriptEnvironment::setHelpText(const std::string & text)
@@ -112,9 +113,6 @@ void ScriptEnvironment::initialize()
     if (!m_scriptContext.get()) {
         return;
     }
-
-    // Use the global namespace 'gloperate'
-    m_scriptContext->setGlobalNamespace("gloperate");
 
     // Output scripting errors to console
     m_scriptContext->scriptException.connect( [] (const std::string & error) -> void

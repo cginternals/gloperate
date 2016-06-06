@@ -2,6 +2,8 @@
 #include <QApplication>
 #include <QQmlEngine>
 
+#include <cppexpose/scripting/example/TreeNode.h>
+
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
@@ -11,6 +13,7 @@
 #include <gloperate-qt/viewer/UpdateManager.h>
 
 #include <gloperate-qtquick/viewer/QmlEngine.h>
+#include <gloperate-qtquick/viewer/QmlScriptContext.h>
 #include <gloperate-qtquick/viewer/QuickView.h>
 
 
@@ -41,6 +44,15 @@ int main(int argc, char * argv[])
     // Create QML engine
     QmlEngine qmlEngine(&viewerContext);
     qmlEngine.addImportPath(qmlPath);
+
+    // Create scripting context backend
+    viewerContext.scriptEnvironment()->setupScripting(
+        new gloperate_qtquick::QmlScriptContext(&qmlEngine)
+    );
+
+    // [DEBUG]
+    cppexpose::TreeNode tree("tree");
+    viewerContext.scriptEnvironment()->addApi(&tree);
 
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);

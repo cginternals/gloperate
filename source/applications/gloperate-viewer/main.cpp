@@ -1,12 +1,17 @@
- 
+
+#include <iostream>
+
 #include <QApplication>
 #include <QFileInfo>
 #include <QString>
 #include <QQmlEngine>
 #include <QQmlContext>
 
+#include <cppassist/string/conversion.h>
+
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/scripting/ScriptContext.h>
+#include <cppexpose/reflection/Property.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/gloperate.h>

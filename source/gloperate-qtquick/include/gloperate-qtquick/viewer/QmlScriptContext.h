@@ -43,15 +43,13 @@ public:
 
     // Virtual AbstractScriptBackend functions
     virtual void initialize(cppexpose::ScriptContext * scriptContext) override;
-    virtual void setGlobalNamespace(const std::string & name) override;
-    virtual void registerObject(cppexpose::PropertyGroup * obj) override;
-    virtual void unregisterObject(cppexpose::PropertyGroup * obj) override;
+    virtual void setGlobalObject(cppexpose::PropertyGroup * obj) override;
     virtual cppexpose::Variant evaluate(const std::string & code) override;
 
 
 protected:
-    QmlEngine                      * m_engine;         ///< Qml engine with gloperate integration
-    std::vector<QmlObjectWrapper*>   m_wrappedObjects; ///< List of wrapped objects owned by the script context
+    QmlEngine        * m_engine;           ///< Qml engine with gloperate integration
+    QmlObjectWrapper * m_globalObjWrapper; ///< Global object wrapper (can be null)
 };
 
 
