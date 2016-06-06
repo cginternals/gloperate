@@ -16,8 +16,8 @@ namespace gloperate
 {
 
 
-Pipeline::Pipeline(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: Stage(viewerContext, name, parent)
+Pipeline::Pipeline(ViewerContext * viewerContext, const std::string & name)
+: Stage(viewerContext, name)
 , m_sorted(false)
 {
 }

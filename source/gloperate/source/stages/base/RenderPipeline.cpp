@@ -6,8 +6,8 @@ namespace gloperate
 {
 
 
-RenderPipeline::RenderPipeline(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: Pipeline(viewerContext, name, parent)
+RenderPipeline::RenderPipeline(ViewerContext * viewerContext, const std::string & name)
+: Pipeline(viewerContext, name)
 , deviceViewport ("deviceViewport", this)
 , virtualViewport("virtualViewport", this)
 , backgroundColor("backgroundColor", this)

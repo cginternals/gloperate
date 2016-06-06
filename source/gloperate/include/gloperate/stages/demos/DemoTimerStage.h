@@ -43,10 +43,8 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
-    *  @param[in] parent
-    *    Parent pipeline (can be null)
     */
-    DemoTimerStage(ViewerContext * viewerContext, const std::string & name = "DemoTimerStage", Pipeline * parent = nullptr);
+    DemoTimerStage(ViewerContext * viewerContext, const std::string & name = "DemoTimerStage");
 
     /**
     *  @brief

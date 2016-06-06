@@ -85,10 +85,8 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
-    *  @param[in] parent
-    *    Parent pipeline (can be null)
     */
-    Stage(ViewerContext * viewerContext, const std::string & name = "Stage", Pipeline * parent = nullptr);
+    Stage(ViewerContext * viewerContext, const std::string & name = "Stage");
 
     /**
     *  @brief

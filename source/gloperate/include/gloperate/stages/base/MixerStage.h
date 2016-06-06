@@ -61,10 +61,8 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
-    *  @param[in] parent
-    *    Parent pipeline (can be null)
     */
-    MixerStage(ViewerContext * viewerContext, const std::string & name = "MixerStage", Pipeline * parent = nullptr);
+    MixerStage(ViewerContext * viewerContext, const std::string & name = "MixerStage");
 
     /**
     *  @brief

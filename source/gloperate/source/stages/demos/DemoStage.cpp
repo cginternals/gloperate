@@ -58,8 +58,8 @@ namespace gloperate
 {
 
 
-DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: RenderStage(viewerContext, name, parent)
+DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name)
+: RenderStage(viewerContext, name)
 , m_timer(viewerContext)
 , m_time(0.0f)
 , m_angle(0.0f)

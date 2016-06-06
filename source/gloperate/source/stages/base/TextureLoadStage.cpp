@@ -9,8 +9,8 @@ namespace gloperate
 {
 
 
-TextureLoadStage::TextureLoadStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: Stage(viewerContext, name, parent)
+TextureLoadStage::TextureLoadStage(ViewerContext * viewerContext, const std::string & name)
+: Stage(viewerContext, name)
 , filename("filename", this)
 , texture ("texture", this)
 {

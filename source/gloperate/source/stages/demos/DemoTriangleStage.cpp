@@ -67,8 +67,8 @@ namespace gloperate
 {
 
 
-DemoTriangleStage::DemoTriangleStage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: RenderStage(viewerContext, name, parent)
+DemoTriangleStage::DemoTriangleStage(ViewerContext * viewerContext, const std::string & name)
+: RenderStage(viewerContext, name)
 , texture        ("texture",         this, nullptr)
 , angle          ("angle",           this, 0.0f)
 , colorTexture   ("colorTexture",    this, nullptr)

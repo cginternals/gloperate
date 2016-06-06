@@ -38,10 +38,8 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
-    *  @param[in] parent
-    *    Parent pipeline (can be null)
     */
-    DemoPipeline(ViewerContext * viewerContext, const std::string & name = "DemoPipeline", Pipeline * parent = nullptr);
+    DemoPipeline(ViewerContext * viewerContext, const std::string & name = "DemoPipeline");
 
     /**
     *  @brief

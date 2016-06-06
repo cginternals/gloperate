@@ -38,10 +38,8 @@ public:
     *    Viewer context to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
-    *  @param[in] parent
-    *    Parent pipeline (can be null)
     */
-    ProceduralTextureStage(ViewerContext * viewerContext, const std::string & name = "ProceduralTextureStage", Pipeline * parent = nullptr);
+    ProceduralTextureStage(ViewerContext * viewerContext, const std::string & name = "ProceduralTextureStage");
 
     /**
     *  @brief

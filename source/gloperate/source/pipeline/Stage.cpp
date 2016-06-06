@@ -19,14 +19,11 @@ namespace gloperate
 {
 
 
-Stage::Stage(ViewerContext * viewerContext, const std::string & name, Pipeline * parent)
-: cppexpose::Object(name, nullptr)
+Stage::Stage(ViewerContext * viewerContext, const std::string & name)
+: cppexpose::Object(name)
 , m_viewerContext(viewerContext)
 , m_alwaysProcess(false)
 {
-    if (parent) {
-        parent->addStage(this, cppexpose::PropertyOwnership::None);
-    }
 }
 
 Stage::~Stage()
