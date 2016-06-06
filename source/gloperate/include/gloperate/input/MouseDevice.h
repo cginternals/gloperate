@@ -75,6 +75,9 @@ public:
 
     // Virtual AbstractDevice interface
     virtual void update() override;
+
+protected:
+    glm::ivec2 m_lastPos;
 };
 
 } // namespace gloperate
