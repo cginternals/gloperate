@@ -51,22 +51,14 @@ namespace gloperate_qtquick
 
 
 QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::Object * obj)
-: QObject(nullptr)
-, m_engine(engine)
+: m_engine(engine)
 , m_object(obj)
 {
 }
 
 QmlObjectWrapper::~QmlObjectWrapper()
 {
-    // [TODO]
-    // This is already done by someone else
-    // Hints about identity welcome!
-
-    //for (auto * wrappedObject : m_wrappedObjects)
-    //{
-        //delete wrappedObject;
-    //}
+    // Wrapped objects are deleted through the Qt object hierarchy
 }
 
 QJSValue QmlObjectWrapper::wrapObject()
