@@ -7,6 +7,7 @@
 #include <gloperate/input/AbstractDevice.h>
 #include <gloperate/input/AbstractEventConsumer.h>
 #include <gloperate/input/InputEvent.h>
+#include <gloperate/input/Control.h>
 
 
 namespace gloperate

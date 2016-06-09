@@ -23,7 +23,7 @@ MouseDevice::~MouseDevice()
 void MouseDevice::move(const glm::ivec2 & pos)
 {
     auto inputEvent = new MouseEvent{
-        InputEvent::Type::MouseButtonPress,
+        InputEvent::Type::MouseMove,
         this,
         pos,
         pos-m_lastPos
