@@ -3,9 +3,11 @@
 
 
 #include <list>
+#include <vector>
 #include <memory>
 
 #include <gloperate/gloperate_api.h>
+#include <gloperate/input/Mapping.h>
 
 
 namespace gloperate
@@ -16,6 +18,7 @@ class AbstractEventConsumer;
 class AbstractDeviceProvider;
 class AbstractDevice;
 class InputEvent;
+class Control;
 
 
 /**
@@ -66,12 +69,33 @@ public:
 
     /**
     *  @brief
+    *    Add a mapping to the input manager
+    *
+    *  @param[in] mapping
+    *    mapping (must NOT be null)
+    */
+    void addMapping(Mapping * mapping);
+
+    /**
+    *  @brief
     *    Forwards an Event to all registered Consumers
     *
-    *  @param event
+    *  @param[in] event
     *    The Event to forward
     */
     void onEvent(InputEvent * event);
+
+    /**
+    *  @brief
+    *    Forwards an Event to all listening metaphors
+    *
+    * @param[in] control
+    *    The dispatching control
+    *
+    *  @param[in] event
+    *    The Event to forward
+    */
+    void onControlEvent(Control * control, InputEvent * event);
 
 
 protected:
@@ -79,6 +103,7 @@ protected:
     std::list<AbstractDeviceProvider *> m_deviceProviders;
     std::list<AbstractDevice *>         m_devices;
     std::list<InputEvent *>             m_events;
+    std::vector<Mapping *>              m_mappings;
 };
 
 

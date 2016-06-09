@@ -65,6 +65,10 @@ public:
 protected:
     InputManager * m_inputManager;     ///< Input manager that owns the device (must NOT be null!)
     std::string    m_deviceDescriptor; ///< [TODO] What is a device descriptor
+    unsigned int   m_deviceId;
+
+    static unsigned int generateDeviceId();
+    static unsigned int maxDeviceId;
 };
 
 

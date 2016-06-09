@@ -14,4 +14,9 @@ void Mapping::onEvent(unsigned int controlId, InputEvent * event)
     }
 }
 
+void Mapping::addConnection(unsigned int controlId, AbstractMetaphor * metaphor)
+{
+    m_mapping.emplace(controlId, metaphor);
+}
+
 } // namespace gloperate

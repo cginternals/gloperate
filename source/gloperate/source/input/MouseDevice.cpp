@@ -11,6 +11,8 @@ namespace gloperate
 
 MouseDevice::MouseDevice(InputManager * inputManager, const std::string & deviceDescriptor)
 : AbstractDevice(inputManager, deviceDescriptor)
+, m_moveControl(m_deviceId, 0, inputManager)
+, m_clickControl(m_deviceId, 1, inputManager)
 {
 }
 
@@ -29,6 +31,8 @@ void MouseDevice::move(const glm::ivec2 & pos)
 
     m_inputManager->onEvent(inputEvent);
 
+    m_moveControl.dispatch(inputEvent);
+
     m_lastPos = pos;
 }
 
@@ -43,6 +47,8 @@ void MouseDevice::buttonPress(int button, const glm::ivec2 & pos)
     };
 
     m_inputManager->onEvent(inputEvent);
+
+    m_clickControl.dispatch(inputEvent);
 
     m_lastPos = pos;
 }

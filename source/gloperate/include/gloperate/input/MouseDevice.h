@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include <gloperate/input/AbstractDevice.h>
+#include <gloperate/input/Control.h>
 
 
 namespace gloperate
@@ -78,6 +79,8 @@ public:
 
 protected:
     glm::ivec2 m_lastPos;
+    Control m_moveControl;
+    Control m_clickControl;
 };
 
 } // namespace gloperate

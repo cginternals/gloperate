@@ -18,14 +18,15 @@ public:
 template <typename T>
 class GLOPERATE_API Metaphor : public AbstractMetaphor
 {
-    using handlerType = int; //void (T::*)(event);
+    using handlerType = void (T::*)(InputEvent *);
 
 public:
-    Metaphor(std::set<InputEvent::Type> types, handlerType handler);
+    Metaphor(std::set<InputEvent::Type> types, handlerType handler, T * object);
     virtual void onEvent(InputEvent * event) override;
 
 private:
     handlerType m_handler;
+    T * m_object;
     std::set<InputEvent::Type> m_types;
 };
 

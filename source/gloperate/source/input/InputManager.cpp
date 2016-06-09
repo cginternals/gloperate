@@ -58,6 +58,11 @@ void InputManager::addDevice(AbstractDevice * device)
     m_devices.emplace_back(device);
 }
 
+void InputManager::addMapping(Mapping * mapping)
+{
+    m_mappings.push_back(mapping);
+}
+
 void InputManager::onEvent(InputEvent * event)
 {
     assert(event != nullptr);
@@ -66,6 +71,14 @@ void InputManager::onEvent(InputEvent * event)
     for (auto consumer : m_consumers)
     {
         consumer->onEvent(event);
+    }
+}
+
+void InputManager::onControlEvent(Control * control, InputEvent * event)
+{
+    for(auto& mapping : m_mappings)
+    {
+        mapping->onEvent(control->id(), event);
     }
 }
 

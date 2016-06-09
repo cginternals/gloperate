@@ -13,10 +13,12 @@ class AbstractMetaphor;
 
 class GLOPERATE_API Mapping
 {
+public:
     void onEvent(unsigned int controlId, InputEvent * event);
+    void addConnection(unsigned int controlId, AbstractMetaphor * metaphor);
 
 protected:
-    std::unordered_map<unsigned int, AbstractMetaphor *> m_mapping;
+    std::unordered_multimap<unsigned int, AbstractMetaphor *> m_mapping;
 
 };
 
