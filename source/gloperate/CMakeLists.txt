@@ -97,16 +97,14 @@ set(headers
 
     ${include_path}/rendering/Camera.h
 
+    ${include_path}/stages/interfaces/RenderInterface.h
+    ${include_path}/stages/interfaces/RenderInterface.hpp
     ${include_path}/stages/base/BasicFramebufferStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/base/SplitStage.h
     ${include_path}/stages/base/ViewerContainer.h
-    ${include_path}/stages/base/RenderInterface.h
-    ${include_path}/stages/base/RenderInterface.hpp
-    ${include_path}/stages/base/RenderStage.h
-    ${include_path}/stages/base/RenderPipeline.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/DemoTriangleStage.h
@@ -171,8 +169,6 @@ set(sources
     ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/base/ViewerContainer.cpp
-    ${source_path}/stages/base/RenderStage.cpp
-    ${source_path}/stages/base/RenderPipeline.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
     ${source_path}/stages/demos/DemoTriangleStage.cpp

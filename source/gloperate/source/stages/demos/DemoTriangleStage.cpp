@@ -68,7 +68,8 @@ namespace gloperate
 
 
 DemoTriangleStage::DemoTriangleStage(ViewerContext * viewerContext, const std::string & name)
-: RenderStage(viewerContext, name)
+: Stage(viewerContext, name)
+, renderInterface(this)
 , texture        ("texture",         this, nullptr)
 , angle          ("angle",           this, 0.0f)
 , colorTexture   ("colorTexture",    this, nullptr)
@@ -95,7 +96,7 @@ void DemoTriangleStage::onContextDeinit(AbstractGLContext *)
 void DemoTriangleStage::onProcess(AbstractGLContext *)
 {
     // Get viewport
-    glm::vec4 viewport = *deviceViewport;
+    glm::vec4 viewport = *renderInterface.deviceViewport;
 
     // Update viewport
     gl::glViewport(
@@ -106,12 +107,12 @@ void DemoTriangleStage::onProcess(AbstractGLContext *)
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *targetFBO;
+    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
     if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    glm::vec3 color = *backgroundColor;
+    glm::vec3 color = *renderInterface.backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -149,7 +150,7 @@ void DemoTriangleStage::onProcess(AbstractGLContext *)
     colorTextureOut.setValue(*colorTexture);
 
     // Signal that output is valid
-    rendered.setValue(true);
+    renderInterface.rendered.setValue(true);
 }
 
 void DemoTriangleStage::setupGeometry()

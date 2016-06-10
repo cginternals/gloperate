@@ -4,7 +4,8 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <gloperate/stages/base/RenderPipeline.h>
+#include <gloperate/pipeline/Pipeline.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
 
 
 namespace gloperate
@@ -24,9 +25,14 @@ class DemoTriangleStage;
 *  @brief
 *    Demo pipeline displaying a rotating logo
 */
-class GLOPERATE_API DemoPipeline : public RenderPipeline
+class GLOPERATE_API DemoPipeline : public Pipeline
 {
     CPPEXPOSE_DECLARE_COMPONENT(DemoPipeline, gloperate::Stage)
+
+
+public:
+    // Interfaces
+    RenderInterface<Pipeline> renderInterface; ///< Interface for rendering into a viewer
 
 
 public:

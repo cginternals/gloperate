@@ -2,11 +2,12 @@
 #pragma once
 
 
-#include <gloperate/stages/base/RenderInterface.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
 
 
 namespace gloperate
 {
+
 
 template <typename StageType>
 RenderInterface<StageType>::RenderInterface(Stage * stage)
