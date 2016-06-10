@@ -67,7 +67,7 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
     }
 
     // Get device/pixel-ratio
-    m_devicePixelRatio = window->effectiveDevicePixelRatio();
+    m_devicePixelRatio = window->devicePixelRatio();
 
     // Create render surface and render stage
     QuickView * view = static_cast<QuickView*>(window);

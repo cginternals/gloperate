@@ -20,7 +20,6 @@ Control
     property alias activeFocusOnPress: button.activeFocusOnPress
     property alias checked:            button.checked
     property alias exclusiveGroup:     button.exclusiveGroup
-    property alias pressed:            button.pressed
     property alias style:              button.style
 
     implicitWidth:  row.implicitWidth  + 2 * Ui.style.ctrlPadding
@@ -53,7 +52,7 @@ Control
             anchors.right:          parent.right
             anchors.verticalCenter: parent.verticalCenter
 
-            onClicked:
+            onCheckedChanged:
             {
                 item.clicked();
             }
