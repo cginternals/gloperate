@@ -68,7 +68,7 @@ DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name)
     m_timer.elapsed.connect([this] ()
     {
         // Update virtual time
-        m_time += *timeDelta;
+        m_time += *renderInterface.timeDelta;
 
         // Redraw
         invalidateOutputs();
@@ -97,7 +97,7 @@ void DemoStage::onContextDeinit(AbstractGLContext *)
 void DemoStage::onProcess(AbstractGLContext *)
 {
     // Get viewport
-    glm::vec4 viewport = *deviceViewport;
+    glm::vec4 viewport = *renderInterface.deviceViewport;
 
     // Update viewport
     gl::glViewport(
@@ -108,7 +108,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *targetFBO;
+    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
     if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
@@ -116,7 +116,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     m_angle = m_time;
 
     // Clear background
-    glm::vec3 color = *backgroundColor;
+    glm::vec3 color = *renderInterface.backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -155,7 +155,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    rendered.setValue(true);
+    renderInterface.rendered.setValue(true);
 }
 
 void DemoStage::createAndSetupCamera()

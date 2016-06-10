@@ -2,10 +2,8 @@
 #pragma once
 
 
-#include <gloperate/base/GlmProperties.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/Input.h>
-#include <gloperate/pipeline/Output.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
 
 
 namespace globjects {
@@ -33,16 +31,8 @@ namespace gloperate
 class GLOPERATE_API RenderStage : public Stage
 {
 public:
-    // Inputs
-    Input<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
-    Input<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
-    Input<glm::vec3>                backgroundColor; ///< Background color (RGB)
-    Input<int>                      frameCounter;    ///< Frame counter (number of frames)
-    Input<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
-    Input<globjects::Framebuffer *> targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
-
-    // Outputs
-    Output<bool>                    rendered;        ///< 'true' if output has been rendered
+    // Interfaces
+    RenderInterface<Stage> renderInterface; ///< Interface for rendering into a viewer
 
 
 public:

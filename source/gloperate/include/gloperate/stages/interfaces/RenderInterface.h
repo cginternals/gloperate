@@ -2,8 +2,7 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
-
+#include <gloperate/base/GlmProperties.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 #include <gloperate/pipeline/OutputTypeSelector.h>
@@ -77,4 +76,4 @@ public:
 } // namespace gloperate
 
 
-#include <gloperate/stages/base/RenderInterface.hpp>
+#include <gloperate/stages/interfaces/RenderInterface.hpp>
