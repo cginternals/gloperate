@@ -18,7 +18,10 @@
 #include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/Utils.h>
 
-    
+
+using namespace cppassist;
+
+
 namespace gloperate_qtquick
 {
 
@@ -77,7 +80,7 @@ void QuickView::onSceneGraphInitialized()
     Utils::initContext();
 
     // Print context info
-    cppassist::info() << std::endl
+    info() << std::endl
         << "OpenGL Version:  " << gloperate::GLContextUtils::version() << std::endl
         << "OpenGL Vendor:   " << gloperate::GLContextUtils::vendor() << std::endl
         << "OpenGL Renderer: " << gloperate::GLContextUtils::renderer() << std::endl;
@@ -88,6 +91,12 @@ void QuickView::onSceneGraphInitialized()
 
 void QuickView::onBeforeRendering()
 {
+    // Check if view is still valid (this may fail on shutdown)
+    if (!rootObject())
+    {
+        return;
+    }
+
     // Get background color
     QVariant var = rootObject()->property("backgroundColor");
     QColor color = var.value<QColor>();

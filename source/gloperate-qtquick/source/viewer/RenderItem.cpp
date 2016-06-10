@@ -82,7 +82,10 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
     // Repaint window when surface needs to be updated
     m_surface->redraw.connect([this] ()
     {
-        this->window()->update();
+        if (this->window())
+        {
+            this->window()->update();
+        }
     } );
 
     // Connect to window draw event
@@ -95,25 +98,29 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
 
 void RenderItem::onBeforeRendering()
 {
-    if (!m_surface)
+    if (!m_surface || !this->window())
     {
         return;
     }
 
+    // Get qml view
+    QuickView * view = static_cast<QuickView*>(this->window());
+
     // Initialize surface before rendering the first time
     if (!m_initialized)
     {
-        QuickView * view = static_cast<QuickView*>(this->window());
         m_surface->setOpenGLContext(view->context());
 
         m_initialized = true;
     }
 
     // Get background color    
-    QuickView * view = static_cast<QuickView*>(this->window());
-    QVariant var = view->rootObject()->property("backgroundColor");
-    QColor color = var.value<QColor>();
-    m_surface->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
+    if (view->rootObject())
+    {
+        QVariant var = view->rootObject()->property("backgroundColor");
+        QColor color = var.value<QColor>();
+        m_surface->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
+    }
 
     // Render into item
     m_surface->onRender();

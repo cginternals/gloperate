@@ -33,9 +33,9 @@ namespace gloperate_qtquick
 */
 class GLOPERATE_QTQUICK_API QmlEngine : public QQmlEngine
 {
-Q_OBJECT
-Q_PROPERTY(QJSValue global    READ global    WRITE setGlobal)
-Q_PROPERTY(QJSValue gloperate READ gloperate WRITE setGloperate)
+    Q_OBJECT
+    Q_PROPERTY(QJSValue global    READ global    WRITE setGlobal)
+    Q_PROPERTY(QJSValue gloperate READ gloperate WRITE setGloperate)
 
 
 public:
