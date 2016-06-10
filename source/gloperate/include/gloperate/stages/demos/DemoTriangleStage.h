@@ -11,9 +11,9 @@
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
 
+#include <gloperate/pipeline/Stage.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
-#include <gloperate/stages/base/RenderStage.h>
-#include <gloperate/pipeline/Input.h>
 
 
 namespace gloperate
@@ -27,16 +27,19 @@ namespace gloperate
 *  @remarks
 *    This stage is part of the DemoPipeline
 */
-class GLOPERATE_API DemoTriangleStage : public RenderStage
+class GLOPERATE_API DemoTriangleStage : public Stage
 {
     CPPEXPOSE_DECLARE_COMPONENT(DemoTriangleStage, gloperate::Stage)
 
 
 public:
+    // Interfaces
+    RenderInterface<Stage>           renderInterface; ///< Interface for rendering into a viewer
+
     // Inputs
-    Input<globjects::Texture *> texture;      ///< Texture object
-    Input<float>                angle;        ///< Current angle of rotating triangle (in radians)
-    Input<globjects::Texture *> colorTexture; ///< Target color texture
+    Input<globjects::Texture *>      texture;         ///< Texture object
+    Input<float>                     angle;           ///< Current angle of rotating triangle (in radians)
+    Input<globjects::Texture *>      colorTexture;    ///< Target color texture
 
     // Outputs
     Output<globjects::Framebuffer *> fboOut;          ///< Pass through of target FBO

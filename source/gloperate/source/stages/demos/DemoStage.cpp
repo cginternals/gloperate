@@ -59,7 +59,8 @@ namespace gloperate
 
 
 DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name)
-: RenderStage(viewerContext, name)
+: Stage(viewerContext, name)
+, renderInterface(this)
 , m_timer(viewerContext)
 , m_time(0.0f)
 , m_angle(0.0f)
