@@ -6,6 +6,7 @@
 
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+#include <gloperate/pipeline/OutputTypeSelector.h>
 
 
 namespace globjects {
@@ -37,16 +38,22 @@ template <typename StageType>
 class GLOPERATE_API RenderInterface
 {
 public:
+    // Type alias for output type
+    template <typename T>
+    using OutputType = gloperate::OutputType<T, StageType>;
+
+
+public:
     // Inputs
-    Input<glm::vec4>                          deviceViewport;  ///< Viewport (in real device coordinates)
-    Input<glm::vec4>                          virtualViewport; ///< Viewport (in virtual coordinates)
-    Input<glm::vec3>                          backgroundColor; ///< Background color (RGB)
-    Input<int>                                frameCounter;    ///< Frame counter (number of frames)
-    Input<float>                              timeDelta;       ///< Time delta since last frame (in seconds)
-    Input<globjects::Framebuffer *>           targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
+    Input<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
+    Input<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
+    Input<glm::vec3>                backgroundColor; ///< Background color (RGB)
+    Input<int>                      frameCounter;    ///< Frame counter (number of frames)
+    Input<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
+    Input<globjects::Framebuffer *> targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
 
     // Outputs
-    OutputTypeSelector<bool, StageType>::type rendered;        ///< 'true' if output has been rendered
+    OutputType<bool>                rendered;        ///< 'true' if output has been rendered
 
 
 public:

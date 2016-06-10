@@ -8,6 +8,7 @@
 namespace gloperate
 {
 
+
 template <typename StageType>
 RenderInterface<StageType>::RenderInterface(Stage * stage)
 : deviceViewport ("deviceViewport", stage)
