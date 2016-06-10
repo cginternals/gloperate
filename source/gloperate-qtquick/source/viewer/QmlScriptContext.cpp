@@ -25,6 +25,7 @@ namespace gloperate_qtquick
 
 QmlScriptContext::QmlScriptContext(QmlEngine * engine)
 : m_engine(engine)
+, m_globalObjWrapper(nullptr)
 {
 }
 
