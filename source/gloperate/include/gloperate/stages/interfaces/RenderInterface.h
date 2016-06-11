@@ -34,7 +34,7 @@ class Stage;
 *    itself is not an object in the hierarchy).
 */
 template <typename StageType>
-class GLOPERATE_API RenderInterface
+class RenderInterface
 {
 public:
     // Type alias for output type
