@@ -11,6 +11,7 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
+#include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/viewer/Timer.h>
@@ -27,7 +28,16 @@ namespace gloperate
 */
 class GLOPERATE_API DemoStage : public Stage
 {
-    CPPEXPOSE_DECLARE_COMPONENT(DemoStage, gloperate::Stage)
+public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        DemoStage, gloperate::Stage
+      , "RenderStage"   // Tags
+      , ""              // Icon
+      , ""              // Annotations
+      , "Demo stage that renders a simple triangle onto the screen"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
 
 
 public:

@@ -16,7 +16,6 @@
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/gloperate-version.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/base/ResourceManager.h>
 
@@ -56,6 +55,9 @@ static const char * s_fragmentShader = R"(
 
 namespace gloperate
 {
+
+
+CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
 
 
 DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name)
@@ -228,17 +230,6 @@ void DemoStage::createAndSetupGeometry()
 
     m_program->setUniform("source", 0);
 }
-
-
-CPPEXPOSE_COMPONENT(
-    DemoStage, gloperate::Stage
-  , "RenderStage"   // Tags
-  , ""              // Icon
-  , ""              // Annotations
-  , "Demo stage that renders a simple triangle onto the screen"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)
 
 
 } // namespace gloperate

@@ -14,7 +14,6 @@
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/gloperate-version.h>
 
 
 /**
@@ -39,6 +38,9 @@ static void loadShader(globjects::Program * program, const gl::GLenum type, cons
 
 namespace gloperate
 {
+
+
+CPPEXPOSE_COMPONENT(SplitStage, gloperate::Stage)
 
 
 SplitStage::SplitStage(ViewerContext * viewerContext, const std::string & name)
@@ -209,17 +211,6 @@ void SplitStage::buildProgram()
     // Program has been built
     m_rebuildProgram = false;
 }
-
-
-CPPEXPOSE_COMPONENT(
-    SplitStage, gloperate::Stage
-  , ""   // Tags
-  , ""   // Icon
-  , ""   // Annotations
-  , "Stage that splits the view into two"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)
 
 
 } // namespace gloperate

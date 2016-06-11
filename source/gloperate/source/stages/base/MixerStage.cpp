@@ -14,7 +14,6 @@
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/gloperate-version.h>
 
 
 /**
@@ -39,6 +38,9 @@ static void loadShader(globjects::Program * program, const gl::GLenum type, cons
 
 namespace gloperate
 {
+
+
+CPPEXPOSE_COMPONENT(MixerStage, gloperate::Stage)
 
 
 MixerStage::MixerStage(ViewerContext * viewerContext, const std::string & name)
@@ -191,17 +193,6 @@ void MixerStage::buildProgram()
     // Program has been built
     m_rebuildProgram = false;
 }
-
-
-CPPEXPOSE_COMPONENT(
-    MixerStage, gloperate::Stage
-  , ""   // Tags
-  , ""   // Icon
-  , ""   // Annotations
-  , "Stage that renders and mixes textures into a full-screen quad"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)
 
 
 } // namespace gloperate

@@ -4,6 +4,7 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
+#include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
@@ -27,7 +28,16 @@ class DemoTriangleStage;
 */
 class GLOPERATE_API DemoPipeline : public Pipeline
 {
-    CPPEXPOSE_DECLARE_COMPONENT(DemoPipeline, gloperate::Stage)
+public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        DemoPipeline, gloperate::Stage
+      , "RenderStage"   // Tags
+      , ""              // Icon
+      , ""              // Annotations
+      , "Demo pipeline displaying a rotating logo"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
 
 
 public:
