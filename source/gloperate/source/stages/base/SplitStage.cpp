@@ -58,12 +58,10 @@ SplitStage::SplitStage(ViewerContext * viewerContext, const std::string & name)
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
-    if (dataPath.size() > 0) dataPath = dataPath + "/";
-    else                     dataPath = "data/";
 
     // Set default values
-    vertexShader  .setValue(dataPath + "gloperate/shaders/Mixer/Mixer.vert");
-    fragmentShader.setValue(dataPath + "gloperate/shaders/Mixer/Mixer.frag");
+    vertexShader  .setValue(dataPath + "/gloperate/shaders/Mixer/Mixer.vert");
+    fragmentShader.setValue(dataPath + "/gloperate/shaders/Mixer/Mixer.frag");
 }
 
 SplitStage::~SplitStage()

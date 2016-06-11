@@ -31,12 +31,10 @@ DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & na
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
-    if (dataPath.size() > 0) dataPath = dataPath + "/";
-    else                     dataPath = "data/";
 
     // Texture loader stage
     addStage(m_textureLoadStage);
-    *m_textureLoadStage->filename = dataPath + "gloperate/textures/gloperate-logo.png";
+    *m_textureLoadStage->filename = dataPath + "/gloperate/textures/gloperate-logo.png";
 
     // Procedural texture stage
     addStage(m_proceduralTextureStage);

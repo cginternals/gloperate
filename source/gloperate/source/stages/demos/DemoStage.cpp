@@ -170,11 +170,8 @@ void DemoStage::createAndSetupCamera()
 void DemoStage::createAndSetupTexture()
 {
     // Load texture from file
-    std::string dataPath = gloperate::dataPath();
-    if (dataPath.size() > 0) dataPath = dataPath + "/";
-    else                     dataPath = "data/";
     m_texture = m_viewerContext->resourceManager()->load<globjects::Texture>(
-        dataPath + "gloperate/textures/gloperate-logo.png"
+        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.png"
     );
 
     // Create procedural texture if texture couldn't be found
