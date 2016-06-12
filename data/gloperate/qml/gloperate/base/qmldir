@@ -2,7 +2,7 @@
 module gloperate.base
 
 singleton Ui  1.0 Ui.qml
-Style         1.0 Style.qml
+StyleLight    1.0 StyleLight.qml
 StyleDark     1.0 StyleDark.qml
 
 Background    1.0 Background.qml

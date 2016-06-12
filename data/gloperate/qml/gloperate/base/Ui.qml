@@ -46,7 +46,7 @@ Item
     }
 
     // Styles
-    Style
+    StyleLight
     {
         id: styleLight
     }
