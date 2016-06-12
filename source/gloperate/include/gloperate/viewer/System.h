@@ -16,9 +16,9 @@ class ViewerContext;
 
 /**
 *  @brief
-*    Scripting API for system functions (loading files, exit application, ...)
+*    System functions for scripting
 */
-class GLOPERATE_API SystemApi : public cppexpose::Object
+class GLOPERATE_API System : public cppexpose::Object
 {
 public:
     /**
@@ -28,13 +28,13 @@ public:
     *  @param[in] viewerContext
     *    Viewer context (must NOT be null!)
     */
-    SystemApi(ViewerContext * viewerContext);
+    System(ViewerContext * viewerContext);
 
     /**
     *  @brief
     *    Destructor
     */
-    ~SystemApi();
+    virtual ~System();
 
 
 protected:

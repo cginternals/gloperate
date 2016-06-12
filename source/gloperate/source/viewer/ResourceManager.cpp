@@ -1,5 +1,5 @@
 
-#include <gloperate/base/ResourceManager.h>
+#include <gloperate/viewer/ResourceManager.h>
 
 #include <algorithm>
 
@@ -15,7 +15,8 @@ namespace gloperate
 
 
 ResourceManager::ResourceManager(ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+: cppexpose::Object("resources")
+, m_viewerContext(viewerContext)
 {
 }
 

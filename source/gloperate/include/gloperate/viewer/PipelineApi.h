@@ -25,6 +25,9 @@ class PipelineApiWatcher;
 class AbstractSlot;
 
 
+// [TODO] Remove the entire class, access pipeline through cppexpose object hierarchy
+
+
 /**
 *  @brief
 *    Pipeline API for accessing the rendering pipeline

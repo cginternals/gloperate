@@ -1,5 +1,5 @@
 
-#include <gloperate/scripting/ScriptTimer.h>
+#include <gloperate/viewer/ScriptTimer.h>
 
 #include <vector>
 

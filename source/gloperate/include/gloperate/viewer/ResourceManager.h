@@ -6,6 +6,7 @@
 #include <vector>
 #include <functional>
 
+#include <cppexpose/reflection/Object.h>
 #include <cppexpose/variant/Variant.h>
 
 #include <gloperate/gloperate_api.h>
@@ -24,7 +25,7 @@ class AbstractStorer;
 *  @brief
 *    Class to help loading/accessing resources (textures, ...)
 */
-class GLOPERATE_API ResourceManager
+class GLOPERATE_API ResourceManager : public cppexpose::Object
 {
 public:
     /**
@@ -121,4 +122,4 @@ protected:
 } // namespace gloperate
 
 
-#include <gloperate/base/ResourceManager.hpp>
+#include <gloperate/viewer/ResourceManager.hpp>

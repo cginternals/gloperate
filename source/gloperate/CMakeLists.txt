@@ -43,8 +43,6 @@ set(headers
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
     ${include_path}/base/Image.h
-    ${include_path}/base/ResourceManager.h
-    ${include_path}/base/ResourceManager.hpp
     ${include_path}/base/AbstractLoader.h
     ${include_path}/base/AbstractStorer.h
     ${include_path}/base/Loader.h
@@ -59,17 +57,17 @@ set(headers
     ${include_path}/viewer/GLContextFormat.h
     ${include_path}/viewer/GLContextUtils.h
     ${include_path}/viewer/ViewerContext.h
+    ${include_path}/viewer/ComponentManager.h
+    ${include_path}/viewer/ResourceManager.h
+    ${include_path}/viewer/ResourceManager.hpp
     ${include_path}/viewer/Surface.h
     ${include_path}/viewer/RenderSurface.h
     ${include_path}/viewer/TimeManager.h
     ${include_path}/viewer/Timer.h
-
-    ${include_path}/scripting/SystemApi.h
-    ${include_path}/scripting/TimerApi.h
-    ${include_path}/scripting/ScriptTimer.h
-    ${include_path}/scripting/ComponentsApi.h
-    ${include_path}/scripting/PipelineApi.h
-    ${include_path}/scripting/PipelineApiWatcher.h
+    ${include_path}/viewer/ScriptTimer.h
+    ${include_path}/viewer/System.h
+    ${include_path}/viewer/PipelineApi.h
+    ${include_path}/viewer/PipelineApiWatcher.h
 
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractDataSlot.h
@@ -128,7 +126,6 @@ set(sources
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/Image.cpp
-    ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
 
@@ -138,17 +135,16 @@ set(sources
     ${source_path}/viewer/GLContextFormat.cpp
     ${source_path}/viewer/GLContextUtils.cpp
     ${source_path}/viewer/ViewerContext.cpp
+    ${source_path}/viewer/ComponentManager.cpp
+    ${source_path}/viewer/ResourceManager.cpp
     ${source_path}/viewer/Surface.cpp
     ${source_path}/viewer/RenderSurface.cpp
     ${source_path}/viewer/TimeManager.cpp
     ${source_path}/viewer/Timer.cpp
-
-    ${source_path}/scripting/SystemApi.cpp
-    ${source_path}/scripting/TimerApi.cpp
-    ${source_path}/scripting/ScriptTimer.cpp
-    ${source_path}/scripting/ComponentsApi.cpp
-    ${source_path}/scripting/PipelineApi.cpp
-    ${source_path}/scripting/PipelineApiWatcher.cpp
+    ${source_path}/viewer/ScriptTimer.cpp
+    ${source_path}/viewer/System.cpp
+    ${source_path}/viewer/PipelineApi.cpp
+    ${source_path}/viewer/PipelineApiWatcher.cpp
 
     ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/AbstractDataSlot.cpp

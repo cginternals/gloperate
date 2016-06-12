@@ -3,6 +3,9 @@
 
 
 #include <list>
+#include <map>
+
+#include <cppexpose/reflection/Object.h>
 
 #include <gloperate/base/ChronoTimer.h>
 
@@ -13,13 +16,14 @@ namespace gloperate
 
 class ViewerContext;
 class Timer;
+class ScriptTimer;
 
 
 /**
 *  @brief
 *    Manager for virtual time and timers
 */
-class GLOPERATE_API TimeManager
+class GLOPERATE_API TimeManager : public cppexpose::Object
 {
     friend class Timer;
 
@@ -126,11 +130,29 @@ protected:
 
 
 protected:
-    ViewerContext          * m_viewerContext; ///< Viewer context to which the manager belongs
-    unsigned int             m_activeTimers;  ///< Number of active timers
-    std::list<Timer *>       m_timers;        ///< List of registered timers
-    gloperate::ChronoTimer   m_clock;         ///< Time measurement
-    float                    m_timeDelta;     ///< Time delta since last update (in seconds)
+    // Scripting functions
+    int  start(int msec, const cppexpose::Variant & func);
+    int  once(int msec, const cppexpose::Variant & func);
+    void stop(int id);
+    void stopAll();
+    int  nextTick(const cppexpose::Variant & func);
+
+    // Helper functions
+    int startTimer(const cppexpose::Variant & func, int msec, bool singleShot);
+
+
+protected:
+    ViewerContext              * m_viewerContext; ///< Viewer context to which the manager belongs
+
+    // General timers
+    unsigned int                 m_activeTimers;  ///< Number of active timers
+    std::list<Timer *>           m_timers;        ///< List of registered timers
+    gloperate::ChronoTimer       m_clock;         ///< Time measurement
+    float                        m_timeDelta;     ///< Time delta since last update (in seconds)
+
+    // Scripting timers
+    std::map<int, ScriptTimer *> m_scriptTimers;  ///< List of activated scripting timers
+    int                          m_nextId;        ///< Next scripting timer ID
 };
 
 

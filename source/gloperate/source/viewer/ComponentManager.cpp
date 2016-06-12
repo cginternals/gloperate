@@ -1,5 +1,5 @@
 
-#include <gloperate/scripting/ComponentsApi.h>
+#include <gloperate/viewer/ComponentManager.h>
 
 #include <fstream>
 
@@ -12,24 +12,24 @@ namespace gloperate
 {
 
 
-ComponentsApi::ComponentsApi(ViewerContext * viewerContext)
+ComponentManager::ComponentManager(ViewerContext * viewerContext)
 : cppexpose::Object("components")
 , m_viewerContext(viewerContext)
 {
     // Register functions
-    addFunction("pluginPaths",      this, &ComponentsApi::pluginPaths);
-    addFunction("addPluginPath",    this, &ComponentsApi::addPluginPath);
-    addFunction("removePluginPath", this, &ComponentsApi::removePluginPath);
-    addFunction("scanPlugins",      this, &ComponentsApi::scanPlugins);
-    addFunction("components",       this, &ComponentsApi::components);
-    addFunction("printComponents",  this, &ComponentsApi::printComponents);
+    addFunction("pluginPaths",      this, &ComponentManager::script_pluginPaths);
+    addFunction("addPluginPath",    this, &ComponentManager::script_addPluginPath);
+    addFunction("removePluginPath", this, &ComponentManager::script_removePluginPath);
+    addFunction("scanPlugins",      this, &ComponentManager::script_scanPlugins);
+    addFunction("components",       this, &ComponentManager::script_components);
+    addFunction("printComponents",  this, &ComponentManager::script_printComponents);
 }
 
-ComponentsApi::~ComponentsApi()
+ComponentManager::~ComponentManager()
 {
 }
 
-cppexpose::Variant ComponentsApi::pluginPaths()
+cppexpose::Variant ComponentManager::script_pluginPaths()
 {
     std::vector<std::string> paths = m_viewerContext->componentManager()->pluginPaths();
 
@@ -41,22 +41,22 @@ cppexpose::Variant ComponentsApi::pluginPaths()
     return lst;
 }
 
-void ComponentsApi::addPluginPath(const std::string & path)
+void ComponentManager::script_addPluginPath(const std::string & path)
 {
     m_viewerContext->componentManager()->addPluginPath(path);
 }
 
-void ComponentsApi::removePluginPath(const std::string & path)
+void ComponentManager::script_removePluginPath(const std::string & path)
 {
     m_viewerContext->componentManager()->removePluginPath(path);
 }
 
-void ComponentsApi::scanPlugins(const std::string & identifier)
+void ComponentManager::script_scanPlugins(const std::string & identifier)
 {
     m_viewerContext->componentManager()->scanPlugins(identifier);
 }
 
-cppexpose::Variant ComponentsApi::components()
+cppexpose::Variant ComponentManager::script_components()
 {
     cppexpose::Variant lst = cppexpose::Variant::array();
 
@@ -80,7 +80,7 @@ cppexpose::Variant ComponentsApi::components()
     return lst;
 }
 
-void ComponentsApi::printComponents()
+void ComponentManager::script_printComponents()
 {
     m_viewerContext->componentManager()->printComponents();
 }

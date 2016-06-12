@@ -17,7 +17,7 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/base/ResourceManager.h>
+#include <gloperate/viewer/ResourceManager.h>
 
 
 // Geometry describing the triangle

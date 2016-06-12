@@ -1,5 +1,5 @@
 
-#include <gloperate/scripting/PipelineApi.h>
+#include <gloperate/viewer/PipelineApi.h>
 
 #include <vector>
 #include <sstream>
@@ -10,7 +10,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractDataSlot.h>
-#include <gloperate/scripting/PipelineApiWatcher.h>
+#include <gloperate/viewer/PipelineApiWatcher.h>
 
 
 namespace gloperate

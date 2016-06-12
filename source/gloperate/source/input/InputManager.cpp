@@ -13,7 +13,9 @@ namespace gloperate
 {
 
 
-InputManager::InputManager()
+InputManager::InputManager(ViewerContext * viewerContext)
+: cppexpose::Object("input")
+, m_viewerContext(viewerContext)
 {
 }
 

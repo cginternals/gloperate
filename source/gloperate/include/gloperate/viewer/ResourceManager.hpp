@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/base/ResourceManager.h>
+#include <gloperate/viewer/ResourceManager.h>
 
 #include <cppassist/io/FilePath.h>
 

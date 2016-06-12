@@ -12,6 +12,9 @@ namespace gloperate
 {
 
 
+// [TODO] Remove the entire class, access pipeline through cppexpose object hierarchy
+
+
 /**
 *  @brief
 *    Pipeline watcher for scripting

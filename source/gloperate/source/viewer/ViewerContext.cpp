@@ -27,18 +27,52 @@ namespace gloperate
 
 ViewerContext::ViewerContext()
 : cppexpose::Object("gloperate")
-, m_timeManager(this)
-, m_inputManager()
+, m_componentManager(this)
 , m_resourceManager(this)
+, m_timeManager(this)
+, m_system(this)
+, m_pipeline(this)
+, m_inputManager(this)
 , m_tree("tree")
+, m_scriptContext(nullptr)
 {
-    registerLocalPlugins();
-
+    addProperty(&m_componentManager);
+    addProperty(&m_resourceManager);
+    addProperty(&m_timeManager);
+    addProperty(&m_system);
+    addProperty(&m_pipeline);
+    addProperty(&m_inputManager);
     addProperty(&m_tree);
+
+    registerLocalPlugins();
 }
 
 ViewerContext::~ViewerContext()
 {
+    if (m_scriptContext)
+    {
+        delete m_scriptContext;
+    }
+}
+
+const ComponentManager * ViewerContext::componentManager() const
+{
+    return &m_componentManager;
+}
+
+ComponentManager * ViewerContext::componentManager()
+{
+    return &m_componentManager;
+}
+
+const ResourceManager * ViewerContext::resourceManager() const
+{
+    return &m_resourceManager;
+}
+
+ResourceManager * ViewerContext::resourceManager()
+{
+    return &m_resourceManager;
 }
 
 const TimeManager * ViewerContext::timeManager() const
@@ -61,36 +95,6 @@ InputManager * ViewerContext::inputManager()
     return &m_inputManager;
 }
 
-const cppexpose::ScriptContext * ViewerContext::scriptContext() const
-{
-    return m_scriptContext.get();
-}
-
-cppexpose::ScriptContext * ViewerContext::scriptContext()
-{
-    return m_scriptContext.get();
-}
-
-const cppexpose::ComponentManager * ViewerContext::componentManager() const
-{
-    return &m_componentManager;
-}
-
-cppexpose::ComponentManager * ViewerContext::componentManager()
-{
-    return &m_componentManager;
-}
-
-const ResourceManager * ViewerContext::resourceManager() const
-{
-    return &m_resourceManager;
-}
-
-ResourceManager * ViewerContext::resourceManager()
-{
-    return &m_resourceManager;
-}
-
 const std::vector<Surface *> & ViewerContext::surfaces() const
 {
     return m_surfaces;
@@ -101,32 +105,36 @@ std::vector<Surface *> & ViewerContext::surfaces()
     return m_surfaces;
 }
 
+const cppexpose::ScriptContext * ViewerContext::scriptContext() const
+{
+    return m_scriptContext;
+}
+
+cppexpose::ScriptContext * ViewerContext::scriptContext()
+{
+    return m_scriptContext;
+}
+
 void ViewerContext::setupScripting(const std::string & backendName)
 {
-//  m_apis.clear();
-
-    m_scriptContext.reset(new cppexpose::ScriptContext(
+    initializeScripting(new cppexpose::ScriptContext(
         backendName.length() > 0 ? backendName : "javascript"
     ) );
-
-    m_scriptContext->setGlobalObject(this);
-
-    initializeScripting();
 }
 
 void ViewerContext::setupScripting(cppexpose::AbstractScriptBackend * backend)
 {
-//  m_apis.clear();
-
-    m_scriptContext.reset(new cppexpose::ScriptContext(backend));
-
-    m_scriptContext->setGlobalObject(this);
-
-    initializeScripting();
+    initializeScripting(new cppexpose::ScriptContext(backend));
 }
 
 cppexpose::Variant ViewerContext::executeScript(const std::string & code)
 {
+    // There must be a valid scripting context
+    if (!m_scriptContext)
+    {
+        return cppexpose::Variant();
+    }
+
     // Substitute shortcut commands
     std::string cmd = code;
     if (cmd == "help") {
@@ -191,12 +199,25 @@ void ViewerContext::registerLocalPlugins()
     m_componentManager.addComponent(&DemoTimerStage::Component);
 }
 
-void ViewerContext::initializeScripting()
+void ViewerContext::initializeScripting(cppexpose::ScriptContext * scriptContext)
 {
-    // There must be a valid scripting context
-    if (!m_scriptContext.get()) {
+    // Check parameters
+    if (!scriptContext)
+    {
         return;
     }
+
+    // Destroy old script context
+    if (m_scriptContext)
+    {
+        delete m_scriptContext;
+    }
+
+    // Set new script context
+    m_scriptContext = scriptContext;
+
+    // Set global object
+    m_scriptContext->setGlobalObject(this);
 
     // Output scripting errors to console
     m_scriptContext->scriptException.connect( [] (const std::string & error) -> void
@@ -217,21 +238,6 @@ void ViewerContext::initializeScripting()
         "Examples:\n"
         "  gloperate.timer.start(1000, function() { print(\"Hello Scripting World.\"); } );\n"
         "  gloperate.timer.stopAll();\n";
-
-    /*
-    // Register default scripting APIs
-    m_systemApi.reset(new SystemApi(m_viewerContext));
-    addApi(m_systemApi.get());
-
-    m_timerApi.reset(new TimerApi(m_viewerContext));
-    addApi(m_timerApi.get());
-
-    m_componentsApi.reset(new ComponentsApi(m_viewerContext));
-    addApi(m_componentsApi.get());
-
-    m_pipelineApi.reset(new PipelineApi(m_viewerContext));
-    addApi(m_pipelineApi.get());
-    */
 }
 
 void ViewerContext::registerSurface(Surface * surface)

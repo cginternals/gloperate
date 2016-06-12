@@ -1,5 +1,5 @@
 
-#include <gloperate/scripting/PipelineApiWatcher.h>
+#include <gloperate/viewer/PipelineApiWatcher.h>
 
 #include <cppassist/logging/logging.h>
 

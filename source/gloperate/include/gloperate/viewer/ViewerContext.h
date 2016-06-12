@@ -2,21 +2,22 @@
 #pragma once
 
 
-#include <memory>
 #include <vector>
 #include <string>
 
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/variant/Variant.h>
 #include <cppexpose/signal/Signal.h>
-#include <cppexpose/plugin/ComponentManager.h>
+
+#include <gloperate/viewer/ComponentManager.h>
+#include <gloperate/viewer/ResourceManager.h>
+#include <gloperate/viewer/TimeManager.h>
+#include <gloperate/viewer/System.h>
+#include <gloperate/viewer/PipelineApi.h>
+#include <gloperate/input/InputManager.h>
 
 // [DEBUG]
 #include <cppexpose/scripting/example/TreeNode.h>
-
-#include <gloperate/base/ResourceManager.h>
-#include <gloperate/viewer/TimeManager.h>
-#include <gloperate/input/InputManager.h>
 
 
 namespace cppexpose {
@@ -72,6 +73,30 @@ public:
     //@{
     /**
     *  @brief
+    *    Get component manager
+    *
+    *  @return
+    *    Component manager (must NOT be null)
+    */
+    const ComponentManager * componentManager() const;
+    ComponentManager * componentManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get resource manager
+    *
+    *  @return
+    *    Resource manager (must NOT be null)
+    */
+    const ResourceManager * resourceManager() const;
+    ResourceManager * resourceManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
     *    Get time manager
     *
     *  @return
@@ -96,42 +121,6 @@ public:
     //@{
     /**
     *  @brief
-    *    Get scripting context
-    *
-    *  @return
-    *    Script context (can be null)
-    */
-    const cppexpose::ScriptContext * scriptContext() const;
-    cppexpose::ScriptContext * scriptContext();
-    //@}
-
-    //@{
-    /**
-    *  @brief
-    *    Get component manager
-    *
-    *  @return
-    *    Component manager (must NOT be null)
-    */
-    const cppexpose::ComponentManager * componentManager() const;
-    cppexpose::ComponentManager * componentManager();
-    //@}
-
-    //@{
-    /**
-    *  @brief
-    *    Get resource manager
-    *
-    *  @return
-    *    Resource manager (must NOT be null)
-    */
-    const ResourceManager * resourceManager() const;
-    ResourceManager * resourceManager();
-    //@}
-
-    //@{
-    /**
-    *  @brief
     *    Get surfaces
     *
     *  @return
@@ -139,6 +128,18 @@ public:
     */
     const std::vector<Surface *> & surfaces() const;
     std::vector<Surface *> & surfaces();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get scripting context
+    *
+    *  @return
+    *    Script context (can be null)
+    */
+    const cppexpose::ScriptContext * scriptContext() const;
+    cppexpose::ScriptContext * scriptContext();
     //@}
 
     //@{
@@ -230,8 +231,15 @@ protected:
     /**
     *  @brief
     *    Initialize scripting environment
+    *
+    *  @param[in] scriptContext
+    *    New script context (must NOT be nullptr!)
+    *
+    *  @remarks
+    *    If there is a script context already active, it will be deleted
+    *    before the new one is initialized.
     */
-    void initializeScripting();
+    void initializeScripting(cppexpose::ScriptContext * scriptContext);
 
     /**
     *  @brief
@@ -254,18 +262,18 @@ protected:
 
 
 protected:
-    // Scripting functions
-
-
-protected:
-    TimeManager                 m_timeManager;       ///< Manager for virtual time and timers
-    std::vector<Surface *>      m_surfaces;          ///< List of active surfaces
-    InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
-    cppexpose::ComponentManager m_componentManager;  ///< Manager for plugin libraries and components
+    ComponentManager            m_componentManager;  ///< Manager for plugin libraries and components
     ResourceManager             m_resourceManager;   ///< Resource manager for loaders/storers
+    TimeManager                 m_timeManager;       ///< Manager for virtual time and timers
+    System                      m_system;            ///< System functions for scripting
+    PipelineApi                 m_pipeline;          ///< Pipeline API for scripting
+    InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
+
+    std::vector<Surface *>      m_surfaces;          ///< List of active surfaces
+
     cppexpose::TreeNode         m_tree;              ///< Test object for scripting
 
-    std::unique_ptr<cppexpose::ScriptContext> m_scriptContext; ///< Scripting context
+    cppexpose::ScriptContext  * m_scriptContext;     ///< Scripting context
 
     std::string                 m_helpText;          ///< Text that is displayed on 'help'
 };
