@@ -1,5 +1,5 @@
 
-#include <gloperate-qt/viewer/GLContext.h>
+#include <gloperate-qt/base/GLContext.h>
 
 #include <QWindow>
 #include <QOpenGLContext>

@@ -8,11 +8,11 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <gloperate/viewer/GLContextFormat.h>
+#include <gloperate/base/GLContextFormat.h>
 
+#include <gloperate-glfw/base/GLContext.h>
+#include <gloperate-glfw/base/GLContextFactory.h>
 #include <gloperate-glfw/viewer/Application.h>
-#include <gloperate-glfw/viewer/GLContext.h>
-#include <gloperate-glfw/viewer/GLContextFactory.h>
 #include <gloperate-glfw/viewer/WindowEventDispatcher.h>
 #include <gloperate-glfw/viewer/WindowEvent.h>
 

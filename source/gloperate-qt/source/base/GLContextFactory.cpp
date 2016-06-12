@@ -1,12 +1,12 @@
 
-#include <gloperate-qt/viewer/GLContextFactory.h>
+#include <gloperate-qt/base/GLContextFactory.h>
 
 #include <QWindow>
 #include <QOpenGLContext>
 
 #include <cppassist/logging/logging.h>
 
-#include <gloperate-qt/viewer/GLContext.h>
+#include <gloperate-qt/base/GLContext.h>
 
 
 namespace gloperate_qt

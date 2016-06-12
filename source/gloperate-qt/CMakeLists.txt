@@ -56,12 +56,14 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
+    ${include_path}/base/GLContext.h
+    ${include_path}/base/GLContextFactory.h
+    ${include_path}/base/Converter.h
+
     ${include_path}/viewer/Application.h
     ${include_path}/viewer/UpdateManager.h
     ${include_path}/viewer/OpenGLWindow.h
     ${include_path}/viewer/RenderWindow.h
-    ${include_path}/viewer/GLContext.h
-    ${include_path}/viewer/GLContextFactory.h
     ${include_path}/viewer/input.h
 
     ${include_path}/scripting/ECMA26251Completer.h
@@ -69,18 +71,18 @@ set(headers
     ${include_path}/scripting/ScriptCompleter.h
     ${include_path}/scripting/ScriptPromptWidget.h
     ${include_path}/scripting/ScriptSyntaxHighlighter.h
-
-    ${include_path}/utils/Converter.h
 )
 
 set(sources
+    ${source_path}/base/GLContext.cpp
+    ${source_path}/base/GLContext_qt.cpp
+    ${source_path}/base/GLContextFactory.cpp
+    ${source_path}/base/Converter.cpp
+
     ${source_path}/viewer/Application.cpp
     ${source_path}/viewer/UpdateManager.cpp
     ${source_path}/viewer/OpenGLWindow.cpp
     ${source_path}/viewer/RenderWindow.cpp
-    ${source_path}/viewer/GLContext.cpp
-    ${source_path}/viewer/GLContext_qt.cpp
-    ${source_path}/viewer/GLContextFactory.cpp
     ${source_path}/viewer/input.cpp
     
     ${source_path}/scripting/ECMA26251Completer.cpp
@@ -88,8 +90,6 @@ set(sources
     ${source_path}/scripting/ScriptCompleter.cpp
     ${source_path}/scripting/ScriptPromptWidget.cpp
     ${source_path}/scripting/ScriptSyntaxHighlighter.cpp
-
-    ${source_path}/utils/Converter.cpp
 )
 
 # Group source files

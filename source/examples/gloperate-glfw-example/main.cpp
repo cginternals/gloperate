@@ -2,13 +2,13 @@
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/GLContextUtils.h>
 #include <gloperate/stages/demos/DemoStage.h>
 
+#include <gloperate-glfw/base/GLContext.h>
 #include <gloperate-glfw/viewer/Application.h>
 #include <gloperate-glfw/viewer/RenderWindow.h>
-#include <gloperate-glfw/viewer/GLContext.h>
 
 
 using namespace gloperate;

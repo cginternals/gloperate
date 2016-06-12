@@ -1,5 +1,5 @@
 
-#include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/base/GLContextUtils.h>
 
 #include <cassert>
 

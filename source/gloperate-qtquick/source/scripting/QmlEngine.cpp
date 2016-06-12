@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/viewer/QmlEngine.h>
+#include <gloperate-qtquick/scripting/QmlEngine.h>
 
 #include <QVariant>
 #include <QQmlContext>
@@ -16,7 +16,7 @@
 
 #include <gloperate-qtquick/controls/TextController.h>
 #include <gloperate-qtquick/viewer/RenderItem.h>
-#include <gloperate-qtquick/viewer/QmlScriptFunction.h>
+#include <gloperate-qtquick/scripting/QmlScriptFunction.h>
 
     
 namespace gloperate_qtquick

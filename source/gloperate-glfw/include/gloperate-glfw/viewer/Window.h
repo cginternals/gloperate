@@ -7,7 +7,7 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate/viewer/GLContextFormat.h>
+#include <gloperate/base/GLContextFormat.h>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 

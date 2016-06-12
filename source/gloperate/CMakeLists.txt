@@ -38,6 +38,11 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/gloperate.h
 
+    ${include_path}/base/AbstractContext.h
+    ${include_path}/base/AbstractGLContext.h
+    ${include_path}/base/AbstractGLContextFactory.h
+    ${include_path}/base/GLContextFormat.h
+    ${include_path}/base/GLContextUtils.h
     ${include_path}/base/CachedValue.h
     ${include_path}/base/CachedValue.hpp
     ${include_path}/base/ChronoTimer.h
@@ -51,11 +56,6 @@ set(headers
     ${include_path}/base/Storer.hpp
     ${include_path}/base/GlmProperties.h
 
-    ${include_path}/viewer/AbstractContext.h
-    ${include_path}/viewer/AbstractGLContext.h
-    ${include_path}/viewer/AbstractGLContextFactory.h
-    ${include_path}/viewer/GLContextFormat.h
-    ${include_path}/viewer/GLContextUtils.h
     ${include_path}/viewer/ViewerContext.h
     ${include_path}/viewer/ComponentManager.h
     ${include_path}/viewer/ResourceManager.h
@@ -123,17 +123,17 @@ set(headers
 set(sources
     ${source_path}/gloperate.cpp
 
+    ${source_path}/base/AbstractContext.cpp
+    ${source_path}/base/AbstractGLContext.cpp
+    ${source_path}/base/AbstractGLContextFactory.cpp
+    ${source_path}/base/GLContextFormat.cpp
+    ${source_path}/base/GLContextUtils.cpp
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/Image.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
 
-    ${source_path}/viewer/AbstractContext.cpp
-    ${source_path}/viewer/AbstractGLContext.cpp
-    ${source_path}/viewer/AbstractGLContextFactory.cpp
-    ${source_path}/viewer/GLContextFormat.cpp
-    ${source_path}/viewer/GLContextUtils.cpp
     ${source_path}/viewer/ViewerContext.cpp
     ${source_path}/viewer/ComponentManager.cpp
     ${source_path}/viewer/ResourceManager.cpp

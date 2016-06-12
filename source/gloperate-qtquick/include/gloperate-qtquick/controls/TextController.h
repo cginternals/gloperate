@@ -19,8 +19,8 @@ namespace gloperate_qtquick
 */
 class TextController : public QQuickItem
 {
-Q_OBJECT
-Q_PROPERTY(QQuickItem* target READ target WRITE setTarget)
+    Q_OBJECT
+    Q_PROPERTY(QQuickItem* target READ target WRITE setTarget)
 
 
 public:

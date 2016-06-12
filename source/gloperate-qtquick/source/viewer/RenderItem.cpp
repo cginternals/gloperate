@@ -6,7 +6,7 @@
 
 #include <gloperate/viewer/Surface.h>
 
-#include <gloperate-qt/viewer/GLContext.h>
+#include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/viewer/input.h>
 
 #include <gloperate-qtquick/viewer/QuickView.h>

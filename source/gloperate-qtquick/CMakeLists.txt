@@ -58,24 +58,28 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/controls/TextController.h
-    ${include_path}/viewer/QmlEngine.h
+
+    ${include_path}/scripting/QmlEngine.h
+    ${include_path}/scripting/QmlScriptContext.h
+    ${include_path}/scripting/QmlScriptFunction.h
+    ${include_path}/scripting/QmlObjectWrapper.h
+
     ${include_path}/viewer/QuickView.h
     ${include_path}/viewer/RenderItem.h
     ${include_path}/viewer/Utils.h
-    ${include_path}/viewer/QmlScriptContext.h
-    ${include_path}/viewer/QmlScriptFunction.h
-    ${include_path}/viewer/QmlObjectWrapper.h
 )
 
 set(sources
     ${source_path}/controls/TextController.cpp
-    ${source_path}/viewer/QmlEngine.cpp
+
+    ${source_path}/scripting/QmlEngine.cpp
+    ${source_path}/scripting/QmlScriptContext.cpp
+    ${source_path}/scripting/QmlScriptFunction.cpp
+    ${source_path}/scripting/QmlObjectWrapper.cpp
+
     ${source_path}/viewer/QuickView.cpp
     ${source_path}/viewer/RenderItem.cpp
     ${source_path}/viewer/Utils.cpp
-    ${source_path}/viewer/QmlScriptContext.cpp
-    ${source_path}/viewer/QmlScriptFunction.cpp
-    ${source_path}/viewer/QmlObjectWrapper.cpp
 )
 
 # Group source files

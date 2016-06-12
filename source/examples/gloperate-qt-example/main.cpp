@@ -6,13 +6,13 @@
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/GLContextUtils.h>
 #include <gloperate/stages/demos/DemoStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
 
+#include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/viewer/Application.h>
-#include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 #include <gloperate-qt/viewer/RenderWindow.h>
 #include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>

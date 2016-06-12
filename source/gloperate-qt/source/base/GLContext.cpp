@@ -1,5 +1,5 @@
 
-#include <gloperate-qt/viewer/GLContext.h>
+#include <gloperate-qt/base/GLContext.h>
 
 #include <cassert>
 
@@ -7,8 +7,8 @@
 
 #include <glbinding/Binding.h>
 
-#include <gloperate/viewer/GLContextUtils.h>
-#include <gloperate/viewer/GLContextFormat.h>
+#include <gloperate/base/GLContextUtils.h>
+#include <gloperate/base/GLContextFormat.h>
 
 
 using namespace gloperate;

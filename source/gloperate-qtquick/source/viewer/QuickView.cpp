@@ -9,13 +9,13 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <gloperate/viewer/GLContextUtils.h>
-#include <gloperate/viewer/GLContextFormat.h>
+#include <gloperate/base/GLContextUtils.h>
+#include <gloperate/base/GLContextFormat.h>
 
-#include <gloperate-qt/viewer/GLContext.h>
-#include <gloperate-qt/viewer/GLContextFactory.h>
+#include <gloperate-qt/base/GLContext.h>
+#include <gloperate-qt/base/GLContextFactory.h>
 
-#include <gloperate-qtquick/viewer/QmlEngine.h>
+#include <gloperate-qtquick/scripting/QmlEngine.h>
 #include <gloperate-qtquick/viewer/Utils.h>
 
 

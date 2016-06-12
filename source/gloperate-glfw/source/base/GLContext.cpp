@@ -1,5 +1,5 @@
 
-#include <gloperate-glfw/viewer/GLContext.h>
+#include <gloperate-glfw/base/GLContext.h>
 
 #include <cassert>
 
@@ -11,8 +11,8 @@
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
 
-#include <gloperate/viewer/GLContextUtils.h>
-#include <gloperate/viewer/GLContextFormat.h>
+#include <gloperate/base/GLContextUtils.h>
+#include <gloperate/base/GLContextFormat.h>
 
 
 using namespace gloperate;

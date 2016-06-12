@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/viewer/QmlScriptContext.h>
+#include <gloperate-qtquick/scripting/QmlScriptContext.h>
 
 #include <QQmlContext>
 #include <QQmlExpression>
@@ -11,8 +11,8 @@
 
 #include <cppexpose/reflection/Object.h>
 
-#include <gloperate-qtquick/viewer/QmlEngine.h>
-#include <gloperate-qtquick/viewer/QmlObjectWrapper.h>
+#include <gloperate-qtquick/scripting/QmlEngine.h>
+#include <gloperate-qtquick/scripting/QmlObjectWrapper.h>
 
 
 using namespace cppassist;

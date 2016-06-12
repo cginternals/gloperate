@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/viewer/AbstractGLContextFactory.h>
+#include <gloperate/base/AbstractGLContextFactory.h>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 

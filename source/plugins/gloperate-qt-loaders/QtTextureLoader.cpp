@@ -11,7 +11,7 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate-qt/utils/Converter.h>
+#include <gloperate-qt/base/Converter.h>
 
 
 using namespace gloperate_qt;
