@@ -76,7 +76,7 @@ BaseItem
             color: Ui.style.pipelineTextColor
         }
 
-        TextField
+        LineEdit
         {
             id: labelValue
 

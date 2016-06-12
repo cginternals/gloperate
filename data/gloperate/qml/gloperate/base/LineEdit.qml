@@ -4,7 +4,7 @@ import gloperate.base 1.0
 
 
 /**
-*  TextField
+*  LineEdit
 *
 *  Single-line editable text
 */
