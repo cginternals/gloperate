@@ -17,61 +17,62 @@ BaseItem
     property string title: ''
 
     implicitWidth:  rect.implicitWidth
-    implicitHeight: rect.implicitHeight + label.implicitHeight/2.0
+    implicitHeight: rect.implicitHeight + label.implicitHeight / 2.0
 
     Label
     {
-		id:                     label
-		text:  					item.title
-		weight:                 Font.Bold
-		anchors.horizontalCenter: labelBackground.horizontalCenter
-		anchors.verticalCenter:  labelBackground.verticalCenter
-		z:                      2
+        id: label
+
+        anchors.horizontalCenter: labelBackground.horizontalCenter
+        anchors.verticalCenter:   labelBackground.verticalCenter
+        z:                        2
+
+        text:   item.title
+        weight: Font.Bold
     }
-	
-	Rectangle
-	{
-	    id:                     labelBackground
-		color:                  rect.color
-		width:                  label.width + 2 * Ui.style.paddingSmall
-		height:                 label.height
-		anchors.left:           parent.left
-		anchors.top:            parent.top
-		anchors.leftMargin:     Ui.style.paddingMedium
-		z:                      1
-	}
-	
-	Rectangle
-	{
-		id: rect
+    
+    Rectangle
+    {
+        id: labelBackground
 
-		width:          parent.width
-		implicitWidth:  content.implicitWidth
-		implicitHeight: content.implicitHeight + content.anchors.topMargin
+        anchors.left:       parent.left
+        anchors.top:        parent.top
+        anchors.leftMargin: Ui.style.dialogPadding
+        width:              label.width + 2 * Ui.style.ctrlPadding
+        height:             label.height
+        z:                  1
 
-		color:        Ui.style.pageColor
-		border.color: Ui.style.panelBorderColor
-		border.width: Ui.style.panelBorderWidth
-		radius:       Ui.style.panelBorderRadius
+        color: rect.color
+    }
+    
+    Rectangle
+    {
+        id: rect
 
-		anchors.left:  parent.left
-		anchors.right: parent.right
-		anchors.top:   label.verticalCenter
-		anchors.bottom: parent.bottom
-		
-		Item
-		{
-			id: content
+        anchors.left:   parent.left
+        anchors.right:  parent.right
+        anchors.top:    label.verticalCenter
+        anchors.bottom: parent.bottom
+        width:          parent.width
 
-			anchors.fill:      parent
-			anchors.margins:   Ui.style.panelPadding + rect.border.width
-			anchors.topMargin: label.height/2.0
+        implicitWidth:  content.implicitWidth
+        implicitHeight: content.implicitHeight + content.anchors.topMargin
 
-			implicitWidth:   childrenRect.width  + 2 * anchors.margins
-			implicitHeight:  childrenRect.height + 2 * anchors.margins
-		}
-	}
-	
-	
+        color:        Ui.style.pageColor
+        border.color: Ui.style.panelBorderColor
+        border.width: Ui.style.panelBorderWidth
+        radius:       Ui.style.panelBorderRadius
+        
+        Item
+        {
+            id: content
 
+            anchors.fill:      parent
+            anchors.margins:   Ui.style.panelPadding + rect.border.width
+            anchors.topMargin: label.height/2.0
+
+            implicitWidth:     childrenRect.width  + 2 * anchors.margins
+            implicitHeight:    childrenRect.height + 2 * anchors.margins
+        }
+    }
 }
