@@ -38,12 +38,11 @@ void UpdateManager::wakeTimer()
 
 void UpdateManager::onTimer()
 {
-    // Get time delta
-    float delta = m_time.elapsed() / 1000.0f;
+    // Restart timer
     m_time.restart();
 
     // Update timing
-    if (!m_viewerContext->update(delta))
+    if (!m_viewerContext->update())
     {
         m_timer.stop();
     }
