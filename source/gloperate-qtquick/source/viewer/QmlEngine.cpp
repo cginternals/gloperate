@@ -13,7 +13,6 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/scripting/ScriptEnvironment.h>
 
 #include <gloperate-qtquick/controls/TextController.h>
 #include <gloperate-qtquick/viewer/RenderItem.h>
@@ -51,7 +50,7 @@ gloperate::ViewerContext * QmlEngine::viewerContext() const
 QString QmlEngine::execute(const QString & code)
 {
     return QString::fromStdString(
-        m_viewerContext->scriptEnvironment()->execute(code.toStdString()).value<std::string>()
+        m_viewerContext->executeScript(code.toStdString()).value<std::string>()
     );
 }
 

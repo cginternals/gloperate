@@ -8,7 +8,6 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
-#include <gloperate/scripting/ScriptEnvironment.h>
 #include <gloperate/stages/demos/DemoStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
 
@@ -29,7 +28,7 @@ int main(int argc, char * argv[])
 {
     // Create viewer context
     ViewerContext viewerContext;
-    viewerContext.scriptEnvironment()->setupScripting();
+    viewerContext.setupScripting();
 
     // Configure and load plugins
     viewerContext.componentManager()->addPluginPath(
@@ -68,7 +67,7 @@ int main(int argc, char * argv[])
         {
             // Execute script code
             std::string code = cmd.toStdString();
-            cppexpose::Variant res = viewerContext.scriptEnvironment()->execute(code);
+            cppexpose::Variant res = viewerContext.executeScript(code);
 
             // Output result
             scriptPrompt->print(QString::fromStdString(res.value<std::string>()));

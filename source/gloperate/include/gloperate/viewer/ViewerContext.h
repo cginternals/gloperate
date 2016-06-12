@@ -2,15 +2,27 @@
 #pragma once
 
 
+#include <memory>
 #include <vector>
+#include <string>
 
+#include <cppexpose/reflection/Object.h>
+#include <cppexpose/variant/Variant.h>
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/plugin/ComponentManager.h>
+
+// [DEBUG]
+#include <cppexpose/scripting/example/TreeNode.h>
 
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/viewer/TimeManager.h>
 #include <gloperate/input/InputManager.h>
-#include <gloperate/scripting/ScriptEnvironment.h>
+
+
+namespace cppexpose {
+    class ScriptContext;
+    class AbstractScriptBackend;
+}
 
 
 namespace gloperate
@@ -33,9 +45,9 @@ class Surface;
 *    A viewer context is independend from windows and OpenGL contexts and should be
 *    initialized before creating actual viewers and their OpenGL contexts.
 */
-class GLOPERATE_API ViewerContext
+class GLOPERATE_API ViewerContext : public cppexpose::Object
 {
-friend class Surface;
+    friend class Surface;
 
 
 public:
@@ -84,13 +96,13 @@ public:
     //@{
     /**
     *  @brief
-    *    Get scripting environment
+    *    Get scripting context
     *
     *  @return
-    *    Scripting environment (must NOT be null)
+    *    Script context (can be null)
     */
-    const ScriptEnvironment * scriptEnvironment() const;
-    ScriptEnvironment * scriptEnvironment();
+    const cppexpose::ScriptContext * scriptContext() const;
+    cppexpose::ScriptContext * scriptContext();
     //@}
 
     //@{
@@ -127,6 +139,38 @@ public:
     */
     const std::vector<Surface *> & surfaces() const;
     std::vector<Surface *> & surfaces();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Setup scripting environment
+    *
+    *  @param[in] backendName
+    *    Name of scripting backend to use (default: 'javascript')
+    */
+    void setupScripting(const std::string & backendName = "");
+
+    /**
+    *  @brief
+    *    Setup scripting environment
+    *
+    *  @param[in] backend
+    *    Scripting backend to use (must NOT be null)
+    */
+    void setupScripting(cppexpose::AbstractScriptBackend * backend);
+
+    /**
+    *  @brief
+    *    Execute script code
+    *
+    *  @param[in] code
+    *    Script code
+    *
+    *  @return
+    *    Return value from the scripting context
+    */
+    cppexpose::Variant executeScript(const std::string & code);
     //@}
 
     //@{
@@ -185,6 +229,12 @@ protected:
 
     /**
     *  @brief
+    *    Initialize scripting environment
+    */
+    void initializeScripting();
+
+    /**
+    *  @brief
     *    Register render surface
     *
     *  @param[in] surface
@@ -204,12 +254,20 @@ protected:
 
 
 protected:
+    // Scripting functions
+
+
+protected:
     TimeManager                 m_timeManager;       ///< Manager for virtual time and timers
     std::vector<Surface *>      m_surfaces;          ///< List of active surfaces
     InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
-    ScriptEnvironment           m_scriptEnvironment; ///< Scripting environment
     cppexpose::ComponentManager m_componentManager;  ///< Manager for plugin libraries and components
     ResourceManager             m_resourceManager;   ///< Resource manager for loaders/storers
+    cppexpose::TreeNode         m_tree;              ///< Test object for scripting
+
+    std::unique_ptr<cppexpose::ScriptContext> m_scriptContext; ///< Scripting context
+
+    std::string                 m_helpText;          ///< Text that is displayed on 'help'
 };
 
 

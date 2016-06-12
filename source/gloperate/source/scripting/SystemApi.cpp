@@ -31,7 +31,7 @@ void SystemApi::load(const std::string & filename)
     std::string code = readFile(filename);
     if (!code.empty()) {
         // Execute command
-        m_viewerContext->scriptEnvironment()->execute(code);
+        m_viewerContext->executeScript(code);
     }
 }
 

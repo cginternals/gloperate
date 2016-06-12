@@ -64,7 +64,6 @@ set(headers
     ${include_path}/viewer/TimeManager.h
     ${include_path}/viewer/Timer.h
 
-    ${include_path}/scripting/ScriptEnvironment.h
     ${include_path}/scripting/SystemApi.h
     ${include_path}/scripting/TimerApi.h
     ${include_path}/scripting/ScriptTimer.h
@@ -144,7 +143,6 @@ set(sources
     ${source_path}/viewer/TimeManager.cpp
     ${source_path}/viewer/Timer.cpp
 
-    ${source_path}/scripting/ScriptEnvironment.cpp
     ${source_path}/scripting/SystemApi.cpp
     ${source_path}/scripting/TimerApi.cpp
     ${source_path}/scripting/ScriptTimer.cpp

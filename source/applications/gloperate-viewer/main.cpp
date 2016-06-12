@@ -16,7 +16,6 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/GLContextUtils.h>
-#include <gloperate/scripting/ScriptEnvironment.h>
 
 #include <gloperate-qt/viewer/Application.h>
 #include <gloperate-qt/viewer/GLContext.h>
@@ -64,7 +63,7 @@ int main(int argc, char * argv[])
     qmlEngine.rootContext()->setContextProperty("config", &config);
 
     // Create scripting context backend
-    viewerContext.scriptEnvironment()->setupScripting(
+    viewerContext.setupScripting(
         new gloperate_qtquick::QmlScriptContext(&qmlEngine)
     );
 
