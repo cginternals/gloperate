@@ -18,6 +18,11 @@ Surface::Surface(ViewerContext * viewerContext)
 , m_viewerContext(viewerContext)
 , m_openGLContext(nullptr)
 {
+    addFunction("createVideo", this, &Surface::createVideo);
+    addFunction("exportImage", this, &Surface::exportImage);
+    addFunction("exportProgress", this, &Surface::exportProgress);
+    addFunction("videoExporterPlugins", this, &Surface::videoExporterPlugins);
+
     m_viewerContext->registerSurface(this);
 }
 
@@ -109,6 +114,24 @@ void Surface::onMouseRelease(int, const glm::ivec2 &)
 
 void Surface::onMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
+}
+
+void Surface::createVideo(std::string, int, int, int, int, std::string)
+{
+}
+
+void Surface::exportImage(std::string, int, int, int)
+{
+}
+
+int Surface::exportProgress()
+{
+    return 0;
+}
+
+cppexpose::VariantArray Surface::videoExporterPlugins()
+{
+    return cppexpose::VariantArray();
 }
 
 

@@ -7,6 +7,7 @@
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/reflection/Object.h>
+#include <cppexpose/variant/Variant.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -270,6 +271,56 @@ public:
     *    Mouse position (real device coordinates)
     */
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
+
+    /**
+    *  @brief
+    *    Request to render this surface to a video
+    *
+    *  @param[in] filename
+    *    Name of output video file
+    *  @param[in] width
+    *    Width (in pixels) of output video
+    *  @param[in] height
+    *    Height (in pixels) of output video
+    *  @param[in] fps
+    *    Frames per second of output video
+    *  @param[in] length
+    *    Length (in seconds) of output video
+    */
+    virtual void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoEncoder");
+
+    /**
+    *  @brief
+    *    Request to render this surface to an image
+    *
+    *  @param[in] filename
+    *    Name of output image file
+    *  @param[in] width
+    *    Width (in pixels) of output image
+    *  @param[in] height
+    *    Height (in pixels) of output image
+    *  @param[in] renderIterations
+    *    Number of render iterations
+    */
+    virtual void exportImage(std::string filename, int width, int height, int renderIterations);
+
+    /**
+    *  @brief
+    *    Getter of the current video export progress in percent
+    *
+    *  @return
+    *    Percent of the current video export progress. When nothing is being exported, it returns 0.
+    */
+    virtual int exportProgress();
+
+    /**
+    *  @brief
+    *    Get the available plugin names for video export backends.
+    *
+    *  @return
+    *    Vector of the available plugin names for video export backends.
+    */
+    virtual cppexpose::VariantArray videoExporterPlugins();
 
 
 protected:

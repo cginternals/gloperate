@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <cppexpose/variant/Variant.h>
-
 #include <gloperate/viewer/Surface.h>
 #include <gloperate/viewer/input.h>
 #include <gloperate/stages/base/ViewerContainer.h>
@@ -73,56 +71,6 @@ public:
     */
     void setRenderStage(Stage * stage);
 
-    /**
-    *  @brief
-    *    Request to render this surface to a video
-    *
-    *  @param[in] filename
-    *    Name of output video file
-    *  @param[in] width
-    *    Width (in pixels) of output video
-    *  @param[in] height
-    *    Height (in pixels) of output video
-    *  @param[in] fps
-    *    Frames per second of output video
-    *  @param[in] length
-    *    Length (in seconds) of output video
-    */
-    void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoEncoder");
-
-    /**
-    *  @brief
-    *    Request to render this surface to an image
-    *
-    *  @param[in] filename
-    *    Name of output image file
-    *  @param[in] width
-    *    Width (in pixels) of output image
-    *  @param[in] height
-    *    Height (in pixels) of output image
-    *  @param[in] renderIterations
-    *    Number of render iterations
-    */
-    void exportImage(std::string filename, int width, int height, int renderIterations);
-
-    /**
-    *  @brief
-    *    Getter of the current video export progress in percent
-    *
-    *  @return
-    *    Percent of the current video export progress. When nothing is being exported, it returns 0.
-    */
-    int exportProgress();
-
-    /**
-    *  @brief
-    *    Get the available plugin names for video export backends.
-    *
-    *  @return
-    *    Vector of the available plugin names for video export backends.
-    */
-    cppexpose::VariantArray videoExporterPlugins();
-
 
     // Virtual Surface functions
     virtual glm::vec4 deviceViewport() override;
@@ -139,6 +87,10 @@ public:
     virtual void onMousePress(int button, const glm::ivec2 & pos) override;
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos) override;
+    virtual void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoEncoder") override;
+    virtual void exportImage(std::string filename, int width, int height, int renderIterations) override;
+    virtual int exportProgress() override;
+    virtual cppexpose::VariantArray videoExporterPlugins() override;
 
 
 protected:

@@ -29,16 +29,6 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_imageExporter(nullptr)
 , m_requestVideo(false)
 {
-    addFunction("createVideo", this, &RenderSurface::createVideo);
-    addFunction("exportImage", this, &RenderSurface::exportImage);
-    addFunction("exportProgress", this, &RenderSurface::exportProgress);
-    addFunction("videoExporterPlugins", this, &RenderSurface::videoExporterPlugins);
-
-    if (m_viewerContext->scriptEnvironment())
-    {
-        m_viewerContext->scriptEnvironment()->addApi(this);
-    }
-
     // Mark render output as required and redraw when it is invalidated
     m_viewer.rendered.setRequired(true);
     m_viewer.rendered.valueChanged.connect([this] (bool)
@@ -81,44 +71,6 @@ void RenderSurface::setRenderStage(Stage * stage)
     {
         m_viewer.renderStage()->initContext(m_openGLContext);
     }
-}
-
-void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
-{
-    auto component = m_viewerContext->componentManager()->component<AbstractVideoExporter>(backend);
-    if (!component) return;
-
-    if (m_video) delete m_video;
-    m_video = component->createInstance();
-
-    m_video->init(filename, this, width, height, fps, seconds);
-    m_requestVideo = true;
-}
-
-void RenderSurface::exportImage(std::string filename, int width, int height, int renderIterations)
-{
-    m_imageExporter->init(filename, width, height, renderIterations);
-    m_requestImage = true;
-}
-
-int RenderSurface::exportProgress()
-{
-    if (!m_video) return 0;
-
-    return m_video->progress();
-}
-
-cppexpose::VariantArray RenderSurface::videoExporterPlugins()
-{
-    cppexpose::VariantArray plugins;
-    for (auto component : m_viewerContext->componentManager()->components())
-    {
-        if (strcmp(component->type(), "gloperate::AbstractVideoExporter") == 0)
-        {
-            plugins.push_back(cppexpose::Variant(component->name()));
-        }
-    }
-    return plugins;
 }
 
 glm::vec4 RenderSurface::deviceViewport()
@@ -249,6 +201,44 @@ void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos
     cppassist::details() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->wheelScroll(delta, pos);
+}
+
+void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
+{
+    auto component = m_viewerContext->componentManager()->component<AbstractVideoExporter>(backend);
+    if (!component) return;
+
+    if (m_video) delete m_video;
+    m_video = component->createInstance();
+
+    m_video->init(filename, this, width, height, fps, seconds);
+    m_requestVideo = true;
+}
+
+void RenderSurface::exportImage(std::string filename, int width, int height, int renderIterations)
+{
+    m_imageExporter->init(filename, width, height, renderIterations);
+    m_requestImage = true;
+}
+
+int RenderSurface::exportProgress()
+{
+    if (!m_video) return 0;
+
+    return m_video->progress();
+}
+
+cppexpose::VariantArray RenderSurface::videoExporterPlugins()
+{
+    cppexpose::VariantArray plugins;
+    for (auto component : m_viewerContext->componentManager()->components())
+    {
+        if (strcmp(component->type(), "gloperate::AbstractVideoExporter") == 0)
+        {
+            plugins.push_back(cppexpose::Variant(component->name()));
+        }
+    }
+    return plugins;
 }
 
 

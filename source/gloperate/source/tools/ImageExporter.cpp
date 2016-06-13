@@ -7,9 +7,9 @@
 
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/AbstractGLContext.h>
+#include <gloperate/viewer/ResourceManager.h>
 
-#include <gloperate/base/ResourceManager.h>
+#include <gloperate/base/AbstractGLContext.h>
 #include <gloperate/base/Image.h>
 
 #include <globjects/Framebuffer.h>

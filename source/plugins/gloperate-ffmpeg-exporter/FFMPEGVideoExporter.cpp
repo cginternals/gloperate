@@ -4,27 +4,18 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/baselogging.h>
+#include <gloperate/base/AbstractGLContext.h>
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/viewer/RenderSurface.h>
-#include <gloperate/viewer/AbstractGLContext.h>
-#include <gloperate/gloperate-version.h>
 
 
 using namespace globjects;
 using namespace gloperate;
 
 
-CPPEXPOSE_COMPONENT(
-    FFMPEGVideoExporter, gloperate::AbstractVideoExporter
-  , "" // Tags
-  , "" // Icon
-  , "" // Annotations
-  , "Export the RenderSurface to video using FFMPEG"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)
+CPPEXPOSE_COMPONENT(FFMPEGVideoExporter, gloperate::AbstractVideoExporter)
 
 
 FFMPEGVideoExporter::FFMPEGVideoExporter()

@@ -13,6 +13,8 @@
 
 #include <gloperate/tools/AbstractVideoExporter.h>
 
+#include <gloperate/gloperate-version.h>
+
 #include "FFMPEGVideoEncoder.h"
 
 
@@ -29,7 +31,16 @@ namespace gloperate {
 */
 class FFMPEGVideoExporter : public gloperate::AbstractVideoExporter
 {
-CPPEXPOSE_DECLARE_COMPONENT(FFMPEGVideoExporter, gloperate::AbstractVideoExporter)
+public:
+CPPEXPOSE_DECLARE_COMPONENT(
+    FFMPEGVideoExporter, gloperate::AbstractVideoExporter
+  , "" // Tags
+  , "" // Icon
+  , "" // Annotations
+  , "Export the RenderSurface to video using FFMPEG"
+  , GLOPERATE_AUTHOR_ORGANIZATION
+  , "v1.0.0"
+)
 
 public:
     /**

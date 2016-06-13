@@ -1,8 +1,6 @@
 
 import QtQuick 2.0
 import gloperate.base 1.0
-import QtQuick.Controls 1.2 as Controls
-import QtQuick.Controls.Styles 1.4
 
 
 /**
@@ -10,15 +8,71 @@ import QtQuick.Controls.Styles 1.4
 *
 *  Single-line editable text
 */
-Controls.TextField
+Rectangle
 {
-    font.pixelSize:  Ui.style.ctrlTextSize
+    id: textInput
 
-    style: TextFieldStyle {
-        background: Rectangle {
-            radius: Ui.style.panelBorderRadius
-            color: Ui.style.fieldColor
-            border.color: Ui.style.getControlTextColor(item.enabled, item.highlighted, item.hovered, item.pressed)
+    signal textEdited(string text)
+    signal accepted()
+
+    property string text:            ''
+    property string placeholderText: ''
+    property bool   readOnly:        false
+    property bool   selectByMouse:   true
+    property color  backgroundColor: 'transparent'
+    property color  textColor:       Ui.style.textColor
+
+    implicitWidth:  input.implicitWidth
+    implicitHeight: input.implicitHeight
+
+    color: backgroundColor
+
+    TextController
+    {
+        id: controller
+
+        target: input
+    }
+
+    TextEdit
+    {
+        id: input
+
+        width:           parent.width
+        font.pixelSize:  Ui.style.ctrlTextSize
+        text:            textInput.text
+        readOnly:        textInput.readOnly
+        selectByMouse:   textInput.selectByMouse
+        color:           textInput.textColor
+
+        onTextChanged:
+        {
+            if (text != textInput.text)
+            {
+                textEdited(text);
+                textInput.text = text;
+            }
+        }
+
+        Keys.onEnterPressed:
+        {
+            textInput.accepted();
+        }
+
+        /*
+          Without this code, the editor respects the original distinction between Return
+          and Enter: Return creates a new line, while Enter executes the code.
+          However, this behaviour may be unfamiliar to most user. Uncomment this to
+          enable the alternative mapping: Shift-Return creates a new line, Return and Enter
+          execute the code.
+        */
+        Keys.onReturnPressed:
+        {
+            if ((event.modifiers & Qt.ShiftModifier) == 0) {
+                textInput.accepted();
+            } else {
+                event.accepted = false;
+            }
         }
     }
 }
