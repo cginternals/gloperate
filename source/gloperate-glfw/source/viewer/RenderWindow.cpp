@@ -7,8 +7,8 @@
 #include <gloperate/viewer/input.h>
 #include <gloperate/viewer/RenderSurface.h>
 
+#include <gloperate-glfw/base/GLContext.h>
 #include <gloperate-glfw/viewer/WindowEvent.h>
-#include <gloperate-glfw/viewer/GLContext.h>
 #include <gloperate-glfw/viewer/input.h>
 
 

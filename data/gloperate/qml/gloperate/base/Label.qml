@@ -19,6 +19,7 @@ Control
     property alias wrapMode:            label.wrapMode
     property alias verticalAlignment:   label.verticalAlignment
     property alias horizontalAlignment: label.horizontalAlignment
+    property alias weight:              label.font.weight
 
     implicitWidth:  label.implicitWidth
     implicitHeight: label.implicitHeight

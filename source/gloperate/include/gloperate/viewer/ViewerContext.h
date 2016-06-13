@@ -3,14 +3,27 @@
 
 
 #include <vector>
+#include <string>
 
+#include <cppexpose/reflection/Object.h>
+#include <cppexpose/variant/Variant.h>
 #include <cppexpose/signal/Signal.h>
-#include <cppexpose/plugin/ComponentManager.h>
 
-#include <gloperate/base/ResourceManager.h>
+#include <gloperate/viewer/ComponentManager.h>
+#include <gloperate/viewer/ResourceManager.h>
 #include <gloperate/viewer/TimeManager.h>
+#include <gloperate/viewer/System.h>
+#include <gloperate/viewer/PipelineApi.h>
 #include <gloperate/input/InputManager.h>
-#include <gloperate/scripting/ScriptEnvironment.h>
+
+// [DEBUG]
+#include <cppexpose/scripting/example/TreeNode.h>
+
+
+namespace cppexpose {
+    class ScriptContext;
+    class AbstractScriptBackend;
+}
 
 
 namespace gloperate
@@ -33,9 +46,9 @@ class Surface;
 *    A viewer context is independend from windows and OpenGL contexts and should be
 *    initialized before creating actual viewers and their OpenGL contexts.
 */
-class GLOPERATE_API ViewerContext
+class GLOPERATE_API ViewerContext : public cppexpose::Object
 {
-friend class Surface;
+    friend class Surface;
 
 
 public:
@@ -55,6 +68,30 @@ public:
     *    Destructor
     */
     ~ViewerContext();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get component manager
+    *
+    *  @return
+    *    Component manager (must NOT be null)
+    */
+    const ComponentManager * componentManager() const;
+    ComponentManager * componentManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get resource manager
+    *
+    *  @return
+    *    Resource manager (must NOT be null)
+    */
+    const ResourceManager * resourceManager() const;
+    ResourceManager * resourceManager();
     //@}
 
     //@{
@@ -84,42 +121,6 @@ public:
     //@{
     /**
     *  @brief
-    *    Get scripting environment
-    *
-    *  @return
-    *    Scripting environment (must NOT be null)
-    */
-    const ScriptEnvironment * scriptEnvironment() const;
-    ScriptEnvironment * scriptEnvironment();
-    //@}
-
-    //@{
-    /**
-    *  @brief
-    *    Get component manager
-    *
-    *  @return
-    *    Component manager (must NOT be null)
-    */
-    const cppexpose::ComponentManager * componentManager() const;
-    cppexpose::ComponentManager * componentManager();
-    //@}
-
-    //@{
-    /**
-    *  @brief
-    *    Get resource manager
-    *
-    *  @return
-    *    Resource manager (must NOT be null)
-    */
-    const ResourceManager * resourceManager() const;
-    ResourceManager * resourceManager();
-    //@}
-
-    //@{
-    /**
-    *  @brief
     *    Get surfaces
     *
     *  @return
@@ -127,6 +128,50 @@ public:
     */
     const std::vector<Surface *> & surfaces() const;
     std::vector<Surface *> & surfaces();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get scripting context
+    *
+    *  @return
+    *    Script context (can be null)
+    */
+    const cppexpose::ScriptContext * scriptContext() const;
+    cppexpose::ScriptContext * scriptContext();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Setup scripting environment
+    *
+    *  @param[in] backendName
+    *    Name of scripting backend to use (default: 'javascript')
+    */
+    void setupScripting(const std::string & backendName = "");
+
+    /**
+    *  @brief
+    *    Setup scripting environment
+    *
+    *  @param[in] backend
+    *    Scripting backend to use (must NOT be null)
+    */
+    void setupScripting(cppexpose::AbstractScriptBackend * backend);
+
+    /**
+    *  @brief
+    *    Execute script code
+    *
+    *  @param[in] code
+    *    Script code
+    *
+    *  @return
+    *    Return value from the scripting context
+    */
+    cppexpose::Variant executeScript(const std::string & code);
     //@}
 
     //@{
@@ -185,6 +230,19 @@ protected:
 
     /**
     *  @brief
+    *    Initialize scripting environment
+    *
+    *  @param[in] scriptContext
+    *    New script context (must NOT be nullptr!)
+    *
+    *  @remarks
+    *    If there is a script context already active, it will be deleted
+    *    before the new one is initialized.
+    */
+    void initializeScripting(cppexpose::ScriptContext * scriptContext);
+
+    /**
+    *  @brief
     *    Register render surface
     *
     *  @param[in] surface
@@ -204,12 +262,20 @@ protected:
 
 
 protected:
-    TimeManager                 m_timeManager;       ///< Manager for virtual time and timers
-    std::vector<Surface *>      m_surfaces;          ///< List of active surfaces
-    InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
-    ScriptEnvironment           m_scriptEnvironment; ///< Scripting environment
-    cppexpose::ComponentManager m_componentManager;  ///< Manager for plugin libraries and components
+    ComponentManager            m_componentManager;  ///< Manager for plugin libraries and components
     ResourceManager             m_resourceManager;   ///< Resource manager for loaders/storers
+    TimeManager                 m_timeManager;       ///< Manager for virtual time and timers
+    System                      m_system;            ///< System functions for scripting
+    PipelineApi                 m_pipeline;          ///< Pipeline API for scripting
+    InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
+
+    std::vector<Surface *>      m_surfaces;          ///< List of active surfaces
+
+    cppexpose::TreeNode         m_tree;              ///< Test object for scripting
+
+    cppexpose::ScriptContext  * m_scriptContext;     ///< Scripting context
+
+    std::string                 m_helpText;          ///< Text that is displayed on 'help'
 };
 
 

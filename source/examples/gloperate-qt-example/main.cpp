@@ -6,14 +6,13 @@
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/GLContextUtils.h>
-#include <gloperate/scripting/ScriptEnvironment.h>
 #include <gloperate/stages/demos/DemoStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
 
+#include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/viewer/Application.h>
-#include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 #include <gloperate-qt/viewer/RenderWindow.h>
 #include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
@@ -29,7 +28,7 @@ int main(int argc, char * argv[])
 {
     // Create viewer context
     ViewerContext viewerContext;
-    viewerContext.scriptEnvironment()->setupScripting();
+    viewerContext.setupScripting();
 
     // Configure and load plugins
     viewerContext.componentManager()->addPluginPath(
@@ -69,7 +68,7 @@ int main(int argc, char * argv[])
         {
             // Execute script code
             std::string code = cmd.toStdString();
-            cppexpose::Variant res = viewerContext.scriptEnvironment()->execute(code);
+            cppexpose::Variant res = viewerContext.executeScript(code);
 
             // Output result
             scriptPrompt->print(QString::fromStdString(res.value<std::string>()));

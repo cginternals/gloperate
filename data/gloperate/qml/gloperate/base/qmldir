@@ -2,7 +2,7 @@
 module gloperate.base
 
 singleton Ui  1.0 Ui.qml
-Style         1.0 Style.qml
+StyleLight    1.0 StyleLight.qml
 StyleDark     1.0 StyleDark.qml
 
 Background    1.0 Background.qml
@@ -14,7 +14,6 @@ ComboBox      1.0 ComboBox.qml
 Control       1.0 Control.qml
 DialogButton  1.0 DialogButton.qml
 Dropdown      1.0 Dropdown.qml
-GroupBox      1.0 GroupBox.qml
 Icon          1.0 Icon.qml
 Label         1.0 Label.qml
 Page          1.0 Page.qml
@@ -22,8 +21,9 @@ Panel         1.0 Panel.qml
 PanelItem     1.0 PanelItem.qml
 ProgressBar   1.0 ProgressBar.qml
 RadioButton   1.0 RadioButton.qml
-ScrollArea    1.0 ScrollArea.qml
 Switch        1.0 Switch.qml
 TabBar        1.0 TabBar.qml
 TextEdit      1.0 TextEdit.qml
 TextField     1.0 TextField.qml
+ScrollArea    1.0 ScrollArea.qml
+LineEdit      1.0 LineEdit.qml

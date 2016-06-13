@@ -67,7 +67,6 @@ Item
     property color pageColor:                  backgroundColor  // Page background color
     property real  pagePadding:                paddingSmall     // Page padding (space between border and page)
     property real  pageSpacing:                paddingSmall     // Page spacing (space between items on the page)
-    property real  dialogPadding:              paddingHuge      // Padding between page and dialog
 
     // Panels
     property color panelColor:                 windowColor      // Panel background color
@@ -130,6 +129,9 @@ Item
     property color linkColorDisabled:          disabledColor    // Link color (disabled)
     property color linkColorHover:             primaryColor     // Link color (hovered)
     property color linkColorPressed:           pressedColor     // Link color (pressed)
+
+    // Dialogs
+    property real  dialogPadding:              paddingMedium    // Padding between window and content
 
     // Forms
     property real  formControlHeight:          formHeight       // Height of form controls (e.g., input fields)

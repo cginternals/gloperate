@@ -4,6 +4,7 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
+#include <gloperate/gloperate-version.h>
 #include <gloperate/base/Storer.h>
 
 
@@ -22,7 +23,16 @@ namespace globjects
 */
 class QtTextureStorer : public gloperate::Storer<globjects::Texture> 
 {
-CPPEXPOSE_DECLARE_COMPONENT(QtTextureStorer, gloperate::AbstractStorer)
+public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        QtTextureStorer, gloperate::AbstractStorer
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
+      , "Store textures using the Qt image functionality"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
 
 
 public:

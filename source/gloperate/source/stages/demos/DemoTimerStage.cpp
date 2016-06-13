@@ -3,14 +3,15 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <gloperate/gloperate-version.h>
-
 
 using namespace cppassist;
 
 
 namespace gloperate
 {
+
+
+CPPEXPOSE_COMPONENT(DemoTimerStage, gloperate::Stage)
 
 
 DemoTimerStage::DemoTimerStage(ViewerContext * viewerContext, const std::string & name)
@@ -46,17 +47,6 @@ void DemoTimerStage::onContextDeinit(AbstractGLContext *)
 void DemoTimerStage::onProcess(AbstractGLContext *)
 {
 }
-
-
-CPPEXPOSE_COMPONENT(
-    DemoTimerStage, gloperate::Stage
-  , ""   // Tags
-  , ""   // Icon
-  , ""   // Annotations
-  , "Demo stage that creates a constant timer"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)
 
 
 } // namespace gloperate

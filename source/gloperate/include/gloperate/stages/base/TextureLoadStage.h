@@ -9,6 +9,7 @@
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
+#include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Parameter.h>
 #include <gloperate/pipeline/Output.h>
@@ -24,7 +25,16 @@ namespace gloperate
 */
 class GLOPERATE_API TextureLoadStage : public Stage
 {
-    CPPEXPOSE_DECLARE_COMPONENT(TextureLoadStage, gloperate::Stage)
+public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        TextureLoadStage, gloperate::Stage
+      , ""   // Tags
+      , ""   // Icon
+      , ""   // Annotations
+      , "Stage that loads a texture from a file"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
 
 
 public:

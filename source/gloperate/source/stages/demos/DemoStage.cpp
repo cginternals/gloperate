@@ -16,9 +16,8 @@
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/gloperate-version.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/base/ResourceManager.h>
+#include <gloperate/viewer/ResourceManager.h>
 
 
 static const char * s_vertexShader = R"(
@@ -58,8 +57,12 @@ namespace gloperate
 {
 
 
+CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
+
+
 DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name)
-: RenderStage(viewerContext, name)
+: Stage(viewerContext, name)
+, renderInterface(this)
 , m_timer(viewerContext)
 , m_time(0.0f)
 , m_angle(0.0f)
@@ -68,7 +71,7 @@ DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name)
     m_timer.elapsed.connect([this] ()
     {
         // Update virtual time
-        m_time += *timeDelta;
+        m_time += *renderInterface.timeDelta;
 
         // Redraw
         invalidateOutputs();
@@ -97,7 +100,7 @@ void DemoStage::onContextDeinit(AbstractGLContext *)
 void DemoStage::onProcess(AbstractGLContext *)
 {
     // Get viewport
-    glm::vec4 viewport = *deviceViewport;
+    glm::vec4 viewport = *renderInterface.deviceViewport;
 
     // Update viewport
     gl::glViewport(
@@ -108,7 +111,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *targetFBO;
+    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
     if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
@@ -116,7 +119,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     m_angle = m_time;
 
     // Clear background
-    glm::vec3 color = *backgroundColor;
+    glm::vec3 color = *renderInterface.backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -155,7 +158,7 @@ void DemoStage::onProcess(AbstractGLContext *)
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    rendered.setValue(true);
+    renderInterface.rendered.setValue(true);
 }
 
 void DemoStage::createAndSetupCamera()
@@ -167,11 +170,8 @@ void DemoStage::createAndSetupCamera()
 void DemoStage::createAndSetupTexture()
 {
     // Load texture from file
-    std::string dataPath = gloperate::dataPath();
-    if (dataPath.size() > 0) dataPath = dataPath + "/";
-    else                     dataPath = "data/";
     m_texture = m_viewerContext->resourceManager()->load<globjects::Texture>(
-        dataPath + "gloperate/textures/gloperate-logo.png"
+        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.png"
     );
 
     // Create procedural texture if texture couldn't be found
@@ -227,17 +227,6 @@ void DemoStage::createAndSetupGeometry()
 
     m_program->setUniform("source", 0);
 }
-
-
-CPPEXPOSE_COMPONENT(
-    DemoStage, gloperate::Stage
-  , "RenderStage"   // Tags
-  , ""              // Icon
-  , ""              // Annotations
-  , "Demo stage that renders a simple triangle onto the screen"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)
 
 
 } // namespace gloperate

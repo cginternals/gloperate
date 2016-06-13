@@ -30,7 +30,7 @@ Item
             anchors.top:   parent.top
             spacing:       Ui.style.ctrlPadding
 
-            TextEdit
+            LineEdit
             {
                 id: output
 
@@ -39,7 +39,7 @@ Item
                 readOnly: true
             }
 
-            TextEdit
+            LineEdit
             {
                 id: input
 

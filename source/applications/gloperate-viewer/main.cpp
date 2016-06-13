@@ -14,24 +14,16 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/gloperate.h>
+#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/GLContextUtils.h>
-#include <gloperate/viewer/RenderSurface.h>
-#include <gloperate/scripting/ScriptEnvironment.h>
 
+#include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/viewer/Application.h>
-#include <gloperate-qt/viewer/GLContext.h>
 #include <gloperate-qt/viewer/UpdateManager.h>
 
-#include <cppexpose/reflection/Object.h>
-
-#include <cppexpose/scripting/ScriptContext.h>
-
-#include <gloperate-qtquick/viewer/QmlEngine.h>
 #include <gloperate-qtquick/viewer/QuickView.h>
-#include <gloperate-qtquick/viewer/QmlScriptContext.h>
-#include <gloperate-qtquick/viewer/RenderItem.h>
-
+#include <gloperate-qtquick/scripting/QmlEngine.h>
+#include <gloperate-qtquick/scripting/QmlScriptContext.h>
 
 #include "Config.h"
 
@@ -71,7 +63,7 @@ int main(int argc, char * argv[])
     qmlEngine.rootContext()->setContextProperty("config", &config);
 
     // Create scripting context backend
-    viewerContext.scriptEnvironment()->setupScripting(
+    viewerContext.setupScripting(
         new gloperate_qtquick::QmlScriptContext(&qmlEngine)
     );
 

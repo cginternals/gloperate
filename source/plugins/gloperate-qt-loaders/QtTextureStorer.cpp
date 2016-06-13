@@ -9,7 +9,8 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/gloperate-version.h>
+
+CPPEXPOSE_COMPONENT(QtTextureStorer, gloperate::AbstractStorer)
 
 
 QtTextureStorer::QtTextureStorer()
@@ -86,14 +87,3 @@ bool QtTextureStorer::store(const std::string & filename, const globjects::Textu
 
     return image.mirrored().save(QString::fromStdString(filename));
 }
-
-
-CPPEXPOSE_COMPONENT(
-    QtTextureStorer, gloperate::AbstractStorer
-  , "" // Tags
-  , "" // Icon
-  , "" // Annotations
-  , "Store textures using the Qt image functionality"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)

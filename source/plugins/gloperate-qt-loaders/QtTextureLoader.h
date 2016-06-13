@@ -7,6 +7,7 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
+#include <gloperate/gloperate-version.h>
 #include <gloperate/base/Loader.h>
 
 
@@ -25,7 +26,16 @@ namespace globjects
 */
 class QtTextureLoader : public gloperate::Loader<globjects::Texture> 
 {
-CPPEXPOSE_DECLARE_COMPONENT(QtTextureLoader, gloperate::AbstractLoader)
+public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        QtTextureLoader, gloperate::AbstractLoader
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
+      , "Load textures using the Qt image functionality"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
 
 
 public:

@@ -1,0 +1,7 @@
+
+module gloperate.controls
+
+GroupBox      1.0 GroupBox.qml
+CheckBox      1.0 CheckBox.qml
+RadioButton   1.0 RadioButton.qml
+Switch        1.0 Switch.qml

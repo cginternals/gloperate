@@ -5,6 +5,8 @@
 #include <list>
 #include <memory>
 
+#include <cppexpose/reflection/Object.h>
+
 #include <gloperate/gloperate_api.h>
 
 
@@ -12,6 +14,7 @@ namespace gloperate
 {
 
 
+class ViewerContext;
 class AbstractEventConsumer;
 class AbstractDeviceProvider;
 class AbstractDevice;
@@ -22,14 +25,17 @@ class InputEvent;
 *  @brief
 *    Manager for input device and consumers
 */
-class GLOPERATE_API InputManager
+class GLOPERATE_API InputManager : public cppexpose::Object
 {
 public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] viewerContext
+    *    Viewer context to which the manager belongs (must NOT be null!)
     */
-    InputManager();
+    InputManager(ViewerContext * viewerContext);
 
     /**
     *  @brief
@@ -75,10 +81,11 @@ public:
 
 
 protected:
-    std::list<AbstractEventConsumer *>  m_consumers;
-    std::list<AbstractDeviceProvider *> m_deviceProviders;
-    std::list<AbstractDevice *>         m_devices;
-    std::list<InputEvent *>             m_events;
+    ViewerContext                       * m_viewerContext; ///< Viewer context to which the manager belongs
+    std::list<AbstractEventConsumer *>    m_consumers;
+    std::list<AbstractDeviceProvider *>   m_deviceProviders;
+    std::list<AbstractDevice *>           m_devices;
+    std::list<InputEvent *>               m_events;
 };
 
 

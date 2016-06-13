@@ -2,6 +2,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
 import gloperate.base 1.0
+import gloperate.controls 1.0
 
 
 /**

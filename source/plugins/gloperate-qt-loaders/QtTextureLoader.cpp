@@ -11,12 +11,13 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/gloperate-version.h>
-
-#include <gloperate-qt/utils/Converter.h>
+#include <gloperate-qt/base/Converter.h>
 
 
 using namespace gloperate_qt;
+
+
+CPPEXPOSE_COMPONENT(QtTextureLoader, gloperate::AbstractLoader)
 
 
 QtTextureLoader::QtTextureLoader()
@@ -94,14 +95,3 @@ globjects::Texture * QtTextureLoader::load(const std::string & filename, const c
     // Could not load image
     return nullptr;
 }
-
-
-CPPEXPOSE_COMPONENT(
-    QtTextureLoader, gloperate::AbstractLoader
-  , "" // Tags
-  , "" // Icon
-  , "" // Annotations
-  , "Load textures using the Qt image functionality"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)

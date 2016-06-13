@@ -28,7 +28,7 @@ cmake_policy(SET CMP0020 NEW)
 # 
 
 # Target name
-set(target qt-texture-loaders)
+set(target gloperate-qt-loaders)
 
 # Exit here if required dependencies are not met
 if (NOT Qt5Core_FOUND)
