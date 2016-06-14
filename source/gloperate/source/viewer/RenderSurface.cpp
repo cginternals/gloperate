@@ -25,7 +25,7 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
-, m_video(nullptr)
+, m_videoExporter(nullptr)
 , m_imageExporter(nullptr)
 , m_requestVideo(false)
 {
@@ -41,8 +41,8 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 
 RenderSurface::~RenderSurface()
 {
-    if (m_video) delete m_video;
-    delete m_imageExporter;
+    if (m_videoExporter) delete m_videoExporter;
+    if (m_imageExporter) delete m_imageExporter;
 }
 
 Pipeline * RenderSurface::rootPipeline() const
@@ -137,7 +137,7 @@ void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
     if (m_requestVideo)
     {
         m_requestVideo = false;
-        m_video->createVideo([this] (int, int)
+        m_videoExporter->createVideo([this] (int, int)
         {
             this->wakeup();
         }, true);
@@ -208,10 +208,10 @@ void RenderSurface::createVideo(std::string filename, int width, int height, int
     auto component = m_viewerContext->componentManager()->component<AbstractVideoExporter>(backend);
     if (!component) return;
 
-    if (m_video) delete m_video;
-    m_video = component->createInstance();
+    if (m_videoExporter) delete m_videoExporter;
+    m_videoExporter = component->createInstance();
 
-    m_video->init(filename, this, width, height, fps, seconds);
+    m_videoExporter->init(filename, this, width, height, fps, seconds);
     m_requestVideo = true;
 }
 
@@ -223,9 +223,9 @@ void RenderSurface::exportImage(std::string filename, int width, int height, int
 
 int RenderSurface::exportProgress()
 {
-    if (!m_video) return 0;
+    if (!m_videoExporter) return 0;
 
-    return m_video->progress();
+    return m_videoExporter->progress();
 }
 
 cppexpose::VariantArray RenderSurface::videoExporterPlugins()

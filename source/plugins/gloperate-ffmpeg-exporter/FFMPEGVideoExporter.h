@@ -10,6 +10,10 @@
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <globjects/base/ref_ptr.h>
+#include <globjects/Texture.h>
+#include <globjects/Framebuffer.h>
+#include <globjects/Renderbuffer.h>
+#include <globjects/Program.h>
 
 #include <gloperate/tools/AbstractVideoExporter.h>
 
@@ -124,6 +128,12 @@ protected:
     gloperate::ViewerContext                   * m_context;
     gloperate::RenderSurface                   * m_surface;
     gloperate::AbstractGLContext               * m_glContext;
+
+    globjects::ref_ptr<globjects::Framebuffer>   m_fbo;
+    globjects::ref_ptr<globjects::Texture>       m_color;
+    globjects::ref_ptr<globjects::Renderbuffer>  m_depth;
+    globjects::ref_ptr<globjects::Program>       m_program;
+
     std::string                                  m_filename;
     uint                                         m_fps;
     uint                                         m_length;

@@ -287,7 +287,7 @@ public:
     *  @param[in] length
     *    Length (in seconds) of output video
     */
-    virtual void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoEncoder");
+    virtual void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoExporter");
 
     /**
     *  @brief
