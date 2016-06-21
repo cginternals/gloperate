@@ -144,29 +144,7 @@ Background {
             icon: '0021-video-camera.png'
 
             onClicked: {
-                progressTimer.restart();
-
                 gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
-            }
-        }
-    }
-
-    Timer {
-        id: progressTimer
-
-        interval: 50
-        repeat: true
-        triggeredOnStart: true
-
-        property int progress: 0
-
-        onTriggered: {
-            progress = gloperate.surface0.exportProgress();
-            progressBar.value = progress;
-
-            if (progress >= 100) {
-                stop();
-                close();
             }
         }
     }
