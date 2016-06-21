@@ -9,6 +9,13 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
+#include <globjects/base/ref_ptr.h>
+#include <globjects/Texture.h>
+#include <globjects/Framebuffer.h>
+#include <globjects/Renderbuffer.h>
+#include <globjects/VertexArray.h>
+#include <globjects/Program.h>
+
 #include <gloperate/tools/AbstractVideoExporter.h>
 
 #include <gloperate/gloperate-version.h>
@@ -118,10 +125,24 @@ public:
 
 
 protected:
+    void createAndSetupGeometry();
+    void createAndSetupShader();
+
+
+protected:
     FFMPEGVideoEncoder                         * m_videoEncoder;
     gloperate::ViewerContext                   * m_context;
     gloperate::RenderSurface                   * m_surface;
     gloperate::AbstractGLContext               * m_glContext;
+
+    globjects::ref_ptr<globjects::Framebuffer>   m_fbo;
+    globjects::ref_ptr<globjects::Texture>       m_color;
+    globjects::ref_ptr<globjects::Renderbuffer>  m_depth;
+    globjects::ref_ptr<globjects::Framebuffer>   m_fbo_quad;
+    globjects::ref_ptr<globjects::Texture>       m_color_quad;
+    globjects::ref_ptr<globjects::Renderbuffer>  m_depth_quad;
+    globjects::ref_ptr<globjects::VertexArray>   m_vao;
+    globjects::ref_ptr<globjects::Program>       m_program;
 
     std::string                                  m_filename;
     uint                                         m_fps;
