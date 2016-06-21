@@ -117,6 +117,7 @@ Background {
                 }
 
                 ComboBox {
+                    Layout.fillWidth: true
                     editable: false
                     id: backend
                     model: ListModel {
