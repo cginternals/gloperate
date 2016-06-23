@@ -32,8 +32,7 @@ void Output<T>::invalidate()
     // Set state to invalid
     m_valid = false;
 
-    // Promote changed-event
-    this->DataSlot<T>::onValueChanged(this->m_value);
+    this->valueChanged(this->m_value);
 }
 
 template <typename T>
