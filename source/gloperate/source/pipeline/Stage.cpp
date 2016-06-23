@@ -6,8 +6,6 @@
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/pipeline/PipelineEvent.h>
-#include <gloperate/pipeline/PipelineWatcher.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractDataSlot.h>
 
@@ -149,9 +147,7 @@ void Stage::addInput(AbstractInputSlot * input, cppexpose::PropertyOwnership own
     // Emit signal
     inputAdded(input);
 
-    promotePipelineEvent(
-        PipelineEvent(PipelineEvent::InputAdded, this, input)
-    );
+    // [TODO] Propagate change
 }
 
 void Stage::removeInput(AbstractInputSlot * input)
@@ -173,9 +169,7 @@ void Stage::removeInput(AbstractInputSlot * input)
         // Emit signal
         inputRemoved(input);
 
-        promotePipelineEvent(
-            PipelineEvent(PipelineEvent::InputRemoved, this, input)
-        );
+        // [TODO] Propagate change
     }
 
     // Remove property
@@ -211,9 +205,7 @@ void Stage::addParameter(AbstractDataSlot * parameter, cppexpose::PropertyOwners
     // Emit signal
     parameterAdded(parameter);
 
-    promotePipelineEvent(
-        PipelineEvent(PipelineEvent::ParameterAdded, this, parameter)
-    );
+    // [TODO] Propagate change
 }
 
 void Stage::removeParameter(AbstractDataSlot * parameter)
@@ -235,9 +227,7 @@ void Stage::removeParameter(AbstractDataSlot * parameter)
         // Emit signal
         parameterRemoved(parameter);
 
-        promotePipelineEvent(
-            PipelineEvent(PipelineEvent::ParameterRemoved, this, parameter)
-        );
+        // [TODO] Propagate change
     }
 
     // Remove property
@@ -273,9 +263,7 @@ void Stage::addOutput(AbstractDataSlot * output, cppexpose::PropertyOwnership ow
     // Emit signal
     outputAdded(output);
 
-    promotePipelineEvent(
-        PipelineEvent(PipelineEvent::OutputAdded, this, output)
-    );
+    // [TODO] Propagate change
 }
 
 void Stage::removeOutput(AbstractDataSlot * output)
@@ -297,9 +285,7 @@ void Stage::removeOutput(AbstractDataSlot * output)
         // Emit signal
         outputRemoved(output);
 
-        promotePipelineEvent(
-            PipelineEvent(PipelineEvent::OutputRemoved, this, output)
-        );
+        // [TODO] Propagate change
     }
 
     // Remove property
@@ -335,9 +321,7 @@ void Stage::addProxyOutput(AbstractInputSlot * proxyOutput, cppexpose::PropertyO
     // Emit signal
     proxyOutputAdded(proxyOutput);
 
-    promotePipelineEvent(
-        PipelineEvent(PipelineEvent::ProxyOutputAdded, this, proxyOutput)
-    );
+    // [TODO] Propagate change
 }
 
 void Stage::removeProxyOutput(AbstractInputSlot * proxyOutput)
@@ -359,60 +343,11 @@ void Stage::removeProxyOutput(AbstractInputSlot * proxyOutput)
         // Emit signal
         proxyOutputRemoved(proxyOutput);
 
-        promotePipelineEvent(
-            PipelineEvent(PipelineEvent::ProxyOutputRemoved, this, proxyOutput)
-        );
+        // [TODO] Propagate change
     }
 
     // Remove property
     removeProperty(proxyOutput);
-}
-
-const std::vector<PipelineWatcher *> & Stage::watchers() const
-{
-    return m_watchers;
-}
-
-void Stage::addWatcher(PipelineWatcher * watcher)
-{
-    if (!watcher || std::find(m_watchers.begin(), m_watchers.end(), watcher) != m_watchers.end())
-    {
-        return;
-    }
-
-    m_watchers.push_back(watcher);
-}
-
-void Stage::removeWatcher(PipelineWatcher * watcher)
-{
-    if (!watcher)
-    {
-        return;
-    }
-
-    auto it = std::find(m_watchers.begin(), m_watchers.end(), watcher);
-    if (it != m_watchers.end())
-    {
-        m_watchers.erase(it);
-    }
-}
-
-void Stage::promotePipelineEvent(const PipelineEvent & event)
-{
-    // Inform the stage itself
-    onPipelineEvent(event);
-
-    // Inform registered pipeline watchers
-    for (auto watcher : m_watchers)
-    {
-        watcher->onPipelineEvent(event);
-    }
-
-    // Inform parent pipeline
-    if (Pipeline * parent = parentPipeline())
-    {
-        parent->onPipelineEvent(event);
-    }
 }
 
 void Stage::onContextInit(AbstractGLContext *)
@@ -451,42 +386,6 @@ void Stage::onOutputRequiredChanged(AbstractSlot *)
     for (auto input : m_inputs)
     {
         input->setRequired(required);
-    }
-}
-
-void Stage::onPipelineEvent(const PipelineEvent & event)
-{
-    // Ignore events from sub-stages
-    if (event.stage() != this)
-    {
-        return;
-    }
-
-    // Value of a slot has changed
-    if (event.type() == PipelineEvent::ValueChanged)
-    {
-        // Get slot
-        AbstractSlot * slot = event.slot();
-
-        // Check if this is either an input or parameter
-        if (std::find(m_inputs.begin(), m_inputs.end(), slot) != m_inputs.end() ||
-            std::find(m_parameters.begin(), m_parameters.end(), slot) != m_parameters.end())
-        {
-            onInputValueChanged(slot);
-        }
-    }
-
-    // Required-state of a slot has changed
-    if (event.type() == PipelineEvent::RequiredChanged)
-    {
-        // Get slot
-        AbstractSlot * slot = event.slot();
-
-        // Check if this is an output
-        if (std::find(m_outputs.begin(), m_outputs.end(), slot) != m_outputs.end())
-        {
-            onOutputRequiredChanged(slot);
-        }
     }
 }
 

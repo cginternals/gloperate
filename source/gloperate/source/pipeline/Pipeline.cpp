@@ -6,8 +6,6 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <gloperate/pipeline/PipelineEvent.h>
-
 
 using namespace cppassist;
 
@@ -52,9 +50,7 @@ void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
 
     stageAdded(stage);
 
-    promotePipelineEvent(
-        PipelineEvent(PipelineEvent::StageAdded, this, stage)
-    );
+    // [TODO] Propagate change
 }
 
 bool Pipeline::removeStage(Stage * stage)
@@ -75,9 +71,7 @@ bool Pipeline::removeStage(Stage * stage)
 
     stageRemoved(stage);
 
-    promotePipelineEvent(
-        PipelineEvent(PipelineEvent::StageRemoved, this, stage)
-    );
+    // [TODO] Propagate change
 
     removeProperty(stage);
 
@@ -193,27 +187,6 @@ void Pipeline::onInputValueChanged(AbstractSlot *)
 void Pipeline::onOutputRequiredChanged(AbstractSlot *)
 {
     // Not necessary for pipelines (handled by inner connections)
-}
-
-void Pipeline::onPipelineEvent(const PipelineEvent & event)
-{
-    // Process stage events
-    Stage::onPipelineEvent(event);
-
-    // Reorder stage if stages have been added or removed,
-    // or if connection on child-stages have been changed.
-    if ( ( event.pipeline() == this && (
-             event.type() == PipelineEvent::StageAdded ||
-             event.type() == PipelineEvent::StageRemoved )
-          ) ||
-          ( event.stage()->parentPipeline() == this &&
-            event.type() == PipelineEvent::ConnectionChanged
-          )
-       )
-    {
-        // Re-order stages
-        m_sorted = false;
-    }
 }
 
 

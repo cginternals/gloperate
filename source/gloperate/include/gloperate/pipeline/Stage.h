@@ -393,34 +393,6 @@ public:
     */
     const std::vector<PipelineWatcher *> & watchers() const;
 
-    /**
-    *  @brief
-    *    Add pipeline watcher
-    *
-    *  @param[in] watcher
-    *    Pipeline watcher (must NOT be null!)
-    */
-    void addWatcher(PipelineWatcher * watcher);
-
-    /**
-    *  @brief
-    *    Remove pipeline watcher
-    *
-    *  @param[in] watcher
-    *    Pipeline watcher (must NOT be null!)
-    */
-    void removeWatcher(PipelineWatcher * watcher);
-
-    /**
-    *  @brief
-    *    Promote pipeline event
-    *
-    *  @param[in] event
-    *    Pipeline event
-    */
-    void promotePipelineEvent(const PipelineEvent & event);
-
-
 protected:
     /**
     *  @brief
@@ -514,20 +486,6 @@ protected:
     */
     virtual void onOutputRequiredChanged(AbstractSlot * slot);
 
-    /**
-    *  @brief
-    *    Called when a pipeline event has occured
-    *
-    *  @param[in] event
-    *    Pipeline event
-    *
-    *  @remarks
-    *    The default implementation takes care of promoting changes
-    *    through the pipeline. Therefore, if this method is overridden,
-    *    make sure to call the base implementation.
-    */
-    virtual void onPipelineEvent(const PipelineEvent & event);
-
 
 protected:
     ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
@@ -541,8 +499,6 @@ protected:
     std::unordered_map<std::string, AbstractDataSlot *>  m_outputsMap;      ///< Map of names and outputs
     std::vector<AbstractInputSlot *>                     m_proxyOutputs;    ///< List of proxy outputs
     std::unordered_map<std::string, AbstractInputSlot *> m_proxyOutputsMap; ///< Map of names and proxy outputs
-
-    std::vector<PipelineWatcher *> m_watchers;  ///< List of connected pipeline watchers
 };
 
 

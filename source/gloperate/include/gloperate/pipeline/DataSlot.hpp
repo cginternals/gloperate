@@ -5,7 +5,6 @@
 #include <gloperate/pipeline/DataSlot.h>
 
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/PipelineEvent.h>
 
 
 namespace gloperate
@@ -60,9 +59,7 @@ void DataSlot<T>::onValueChanged(const T & value)
 
     if (Stage * stage = this->parentStage())
     {
-        stage->promotePipelineEvent(
-            PipelineEvent(PipelineEvent::ValueChanged, stage, this)
-        );
+        // [TODO] Propagate change
     }
 }
 

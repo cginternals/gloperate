@@ -10,7 +10,6 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractDataSlot.h>
-#include <gloperate/viewer/PipelineApiWatcher.h>
 
 
 namespace gloperate
@@ -192,11 +191,13 @@ void PipelineApi::registerWatcher(const cppexpose::Variant & func)
     }
 
     // Add pipeline watcher to root pipeline
+    /*
     auto * watcher = new PipelineApiWatcher(func);
     rootPipeline->addWatcher(watcher);
+    */
 
     // Store pointer to watcher for later destruction
-    m_watchers.push_back(watcher);
+    //m_watchers.push_back(watcher);
 }
 
 Stage * PipelineApi::getStage(const std::string & name)

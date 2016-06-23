@@ -7,7 +7,6 @@
 #include <cppexpose/typed/Typed.h>
 
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/PipelineEvent.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Parameter.h>
 #include <gloperate/pipeline/Output.h>
@@ -329,9 +328,7 @@ void InputSlot<T>::onValueChanged(const T & value)
 
     if (Stage * stage = this->parentStage())
     {
-        stage->promotePipelineEvent(
-            PipelineEvent(PipelineEvent::ValueChanged, stage, this)
-        );
+        // [TODO] Propagate change
     }
 }
 
@@ -342,9 +339,7 @@ void InputSlot<T>::promoteConnection()
 
     if (Stage * stage = this->parentStage())
     {
-        stage->promotePipelineEvent(
-            PipelineEvent(PipelineEvent::ConnectionChanged, stage, this)
-        );
+        // [TODO] Propagate change
     }
 }
 
