@@ -7,7 +7,6 @@
 #include <cppexpose/typed/Typed.h>
 
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/PipelineEvent.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Parameter.h>
 #include <gloperate/pipeline/Output.h>
@@ -23,10 +22,7 @@ InputSlot<T>::InputSlot(const T & value)
 : m_defaultValue(value)
 , m_sourceType(SlotType::Empty)
 {
-    m_source.input = nullptr;
-    m_source.parameter = nullptr;
-    m_source.output = nullptr;
-    m_source.proxyOutput = nullptr;
+    m_source.slot = nullptr;
 }
 
 template <typename T>
@@ -185,13 +181,7 @@ T * InputSlot<T>::operator->()
 template <typename T>
 const AbstractSlot * InputSlot<T>::source() const
 {
-    switch (m_sourceType) {
-        case SlotType::Input:       return m_source.input;
-        case SlotType::Parameter:   return m_source.parameter;
-        case SlotType::Output:      return m_source.output;
-        case SlotType::ProxyOutput: return m_source.proxyOutput;
-        default:                    return nullptr;
-    }
+    return m_source.slot;
 }
 
 template <typename T>
@@ -237,11 +227,8 @@ template <typename T>
 void InputSlot<T>::disconnect()
 {
     // Reset source property
-    m_source.input       = nullptr;
-    m_source.parameter   = nullptr;
-    m_source.output      = nullptr;
-    m_source.proxyOutput = nullptr;
-    m_connection         = cppexpose::ScopedConnection();
+    m_source.slot = nullptr;
+    m_connection  = cppexpose::ScopedConnection();
 
     // Emit events
     this->promoteConnection();
@@ -299,21 +286,18 @@ T * InputSlot<T>::ptr()
 template <typename T>
 bool InputSlot<T>::isValid() const
 {
-    switch (m_sourceType) {
-        case SlotType::Input:       return m_source.input->isValid();
-        case SlotType::Parameter:   return m_source.parameter->isValid();
-        case SlotType::Output:      return m_source.output->isValid();
-        case SlotType::ProxyOutput: return m_source.proxyOutput->isValid();
-        default:                    return false;
+    if (m_sourceType == SlotType::Empty)
+    {
+        return false;
     }
+
+    return m_source.slot->isValid();
 }
 
 template <typename T>
 void InputSlot<T>::onRequiredChanged()
 {
     promoteRequired();
-
-    AbstractSlot::onRequiredChanged();
 }
 
 template <typename T>
@@ -323,41 +307,23 @@ bool InputSlot<T>::isObject() const
 }
 
 template <typename T>
-void InputSlot<T>::onValueChanged(const T & value)
-{
-    this->valueChanged(value);
-
-    if (Stage * stage = this->parentStage())
-    {
-        stage->promotePipelineEvent(
-            PipelineEvent(PipelineEvent::ValueChanged, stage, this)
-        );
-    }
-}
-
-template <typename T>
 void InputSlot<T>::promoteConnection()
 {
+    // Emit signal
     this->connectionChanged();
-
-    if (Stage * stage = this->parentStage())
-    {
-        stage->promotePipelineEvent(
-            PipelineEvent(PipelineEvent::ConnectionChanged, stage, this)
-        );
-    }
 }
 
 template <typename T>
 void InputSlot<T>::promoteRequired()
 {
-    switch (m_sourceType) {
-        case SlotType::Input:       m_source.input->setRequired(this->m_required); break;
-        case SlotType::Parameter:   m_source.parameter->setRequired(this->m_required); break;
-        case SlotType::Output:      m_source.output->setRequired(this->m_required); break;
-        case SlotType::ProxyOutput: m_source.proxyOutput->setRequired(this->m_required); break;
-        default:                    break;
+    // Check if input slot is connected
+    if (m_sourceType == SlotType::Empty)
+    {
+        return;
     }
+
+    // Promote required-flag to connected slot
+    m_source.slot->setRequired(this->m_required);
 }
 
 

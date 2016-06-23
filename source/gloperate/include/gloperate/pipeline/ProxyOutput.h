@@ -38,6 +38,11 @@ public:
     *    Destructor
     */
     virtual ~ProxyOutput();
+
+
+protected:
+    // Virtual Typed<T> interface
+    virtual void onValueChanged(const T & value) override;
 };
 
 

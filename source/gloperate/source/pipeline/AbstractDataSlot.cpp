@@ -16,22 +16,21 @@ AbstractDataSlot::AbstractDataSlot()
 
 AbstractDataSlot::~AbstractDataSlot()
 {
+    // Get parent stage
     Stage * stage = parentStage();
-
     if (!stage)
     {
-        if (m_slotType == SlotType::Parameter) {
-            stage->removeParameter(this);
-        }
-
-        if (m_slotType == SlotType::Output) {
-            stage->removeOutput(this);
-        }
+        return;
     }
-}
 
-void AbstractDataSlot::invalidate()
-{
+    // Remove slot from stage
+    if (m_slotType == SlotType::Parameter) {
+        stage->removeParameter(this);
+    }
+
+    if (m_slotType == SlotType::Output) {
+        stage->removeOutput(this);
+    }
 }
 
 void AbstractDataSlot::initDataSlot(SlotType type, Stage * parent, cppexpose::PropertyOwnership ownership)

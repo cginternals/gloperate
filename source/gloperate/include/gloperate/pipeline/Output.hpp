@@ -32,8 +32,8 @@ void Output<T>::invalidate()
     // Set state to invalid
     m_valid = false;
 
-    // Promote changed-event
-    this->DataSlot<T>::onValueChanged(this->m_value);
+    // Emit signal
+    this->valueChanged(this->m_value);
 }
 
 template <typename T>
@@ -43,13 +43,23 @@ bool Output<T>::isValid() const
 }
 
 template <typename T>
+void Output<T>::onRequiredChanged()
+{
+    // Inform parent stage
+    if (Stage * stage = this->parentStage())
+    {
+        stage->outputRequiredChanged(this);
+    }
+}
+
+template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
     // Set state to valid
     m_valid = true;
 
-    // Promote changed-event
-    DataSlot<T>::onValueChanged(value);
+    // Emit signal
+    this->valueChanged(value);
 }
 
 

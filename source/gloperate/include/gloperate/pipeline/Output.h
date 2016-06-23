@@ -47,6 +47,9 @@ public:
 
 
 protected:
+    // Virtual AbstractSlot interface
+    virtual void onRequiredChanged() override;
+
     // Virtual Typed<T> interface
     virtual void onValueChanged(const T & value) override;
 

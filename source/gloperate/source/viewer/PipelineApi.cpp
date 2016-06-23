@@ -10,7 +10,6 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractDataSlot.h>
-#include <gloperate/viewer/PipelineApiWatcher.h>
 
 
 namespace gloperate
@@ -33,16 +32,10 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
     addFunction("isValid",         this, &PipelineApi::isValid);
     addFunction("isRequired",      this, &PipelineApi::isRequired);
     addFunction("setRequired",     this, &PipelineApi::setRequired);
-    addFunction("registerWatcher", this, &PipelineApi::registerWatcher);
 }
 
 PipelineApi::~PipelineApi()
 {
-    // Destroy all watchers
-    for (auto watcher : m_watchers)
-    {
-        delete watcher;
-    }
 }
 
 std::string PipelineApi::getName(const std::string & name)
@@ -172,31 +165,6 @@ void PipelineApi::setRequired(const std::string & path, bool required)
     if (slot) {
         return slot->setRequired(required);
     }
-}
-
-void PipelineApi::registerWatcher(const cppexpose::Variant & func)
-{
-    // Get render surface and pipeline
-    if (m_viewerContext->surfaces().size() == 0) {
-        return;
-    }
-
-    RenderSurface * surface = static_cast<RenderSurface *>(m_viewerContext->surfaces()[0]);
-    if (!surface) {
-        return;
-    }
-
-    auto * rootPipeline = surface->rootPipeline();
-    if (!rootPipeline) {
-        return;
-    }
-
-    // Add pipeline watcher to root pipeline
-    auto * watcher = new PipelineApiWatcher(func);
-    rootPipeline->addWatcher(watcher);
-
-    // Store pointer to watcher for later destruction
-    m_watchers.push_back(watcher);
 }
 
 Stage * PipelineApi::getStage(const std::string & name)

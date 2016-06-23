@@ -139,7 +139,6 @@ protected:
     virtual void onProcess(AbstractGLContext * context) override;
     virtual void onInputValueChanged(AbstractSlot * slot) override;
     virtual void onOutputRequiredChanged(AbstractSlot * slot) override;
-    virtual void onPipelineEvent(const PipelineEvent & event) override;
 
 
 protected:

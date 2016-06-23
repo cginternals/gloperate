@@ -95,7 +95,7 @@ public:
     *
     *  @remarks
     *    This flag plays a role during the execution of pipelines.
-    *    If an output data is flagged as required, the owning stage
+    *    If an output slot is flagged as required, the owning stage
     *    will be activated in order to produce that output. In turn,
     *    the stage will flag the input slots it needs to create that
     *    output as required, too. This propagates through the entire
@@ -122,7 +122,7 @@ public:
     *  @brief
     *    Called when required-flag has been changed
     */
-    virtual void onRequiredChanged();
+    virtual void onRequiredChanged() = 0;
 
 
 protected:

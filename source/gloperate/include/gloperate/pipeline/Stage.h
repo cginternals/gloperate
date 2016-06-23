@@ -24,8 +24,6 @@ class AbstractSlot;
 class AbstractInputSlot;
 class AbstractDataSlot;
 class Pipeline;
-class PipelineWatcher;
-class PipelineEvent;
 
 template <typename T>
 class Input;
@@ -123,10 +121,10 @@ public:
 
     /**
     *  @brief
-    *    Get if this stage depends on another stage
+    *    Check if this stage depends on another stage
     *
     *  @param[in] stage
-    *    Stage
+    *    Stage (must NOT be null!)
     *  @param[in] recursive
     *    If 'true', check recursively, else only direct dependencies are checked
     *
@@ -182,6 +180,34 @@ public:
     *    it will always return 'true'.
     */
     bool needsProcessing() const;
+
+    /**
+    *  @brief
+    *    Update the required-state of the stage's input slots
+    *
+    *  @param[in] slot
+    *    Output slot which has changed its required-state
+    *
+    *  @remarks
+    *    By default, all input slots of a stage are marked as required,
+    *    if at least one output slot is required. This behavior can
+    *    be overridden with the onOutputRequiredChanged method.
+    */
+    void outputRequiredChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
+    *    Update the validity of the stage's output slots
+    *
+    *  @param[in] slot
+    *    Input slot which has changed its value
+    *
+    *  @remarks
+    *    By default, all outputs are invalidated when any input
+    *    value of the stage has changed. This behavior can
+    *    be overridden with the onInputValueChanged method.
+    */
+    void inputValueChanged(AbstractSlot * slot);
 
     /**
     *  @brief
@@ -384,42 +410,6 @@ public:
     */
     void removeProxyOutput(AbstractInputSlot * proxyOutput);
 
-    /**
-    *  @brief
-    *    Get pipeline watchers
-    *
-    *  @return
-    *    List of connected pipeline watchers
-    */
-    const std::vector<PipelineWatcher *> & watchers() const;
-
-    /**
-    *  @brief
-    *    Add pipeline watcher
-    *
-    *  @param[in] watcher
-    *    Pipeline watcher (must NOT be null!)
-    */
-    void addWatcher(PipelineWatcher * watcher);
-
-    /**
-    *  @brief
-    *    Remove pipeline watcher
-    *
-    *  @param[in] watcher
-    *    Pipeline watcher (must NOT be null!)
-    */
-    void removeWatcher(PipelineWatcher * watcher);
-
-    /**
-    *  @brief
-    *    Promote pipeline event
-    *
-    *  @param[in] event
-    *    Pipeline event
-    */
-    void promotePipelineEvent(const PipelineEvent & event);
-
 
 protected:
     /**
@@ -499,7 +489,7 @@ protected:
     *    Called when an output value's required-state has changed
     *
     *  @param[in] slot
-    *    Output slot (either input or parameter)
+    *    Output slot (either output or proxy output)
     *
     *  @remarks
     *    The default implementation is to require all input slots
@@ -514,20 +504,6 @@ protected:
     */
     virtual void onOutputRequiredChanged(AbstractSlot * slot);
 
-    /**
-    *  @brief
-    *    Called when a pipeline event has occured
-    *
-    *  @param[in] event
-    *    Pipeline event
-    *
-    *  @remarks
-    *    The default implementation takes care of promoting changes
-    *    through the pipeline. Therefore, if this method is overridden,
-    *    make sure to call the base implementation.
-    */
-    virtual void onPipelineEvent(const PipelineEvent & event);
-
 
 protected:
     ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
@@ -541,8 +517,6 @@ protected:
     std::unordered_map<std::string, AbstractDataSlot *>  m_outputsMap;      ///< Map of names and outputs
     std::vector<AbstractInputSlot *>                     m_proxyOutputs;    ///< List of proxy outputs
     std::unordered_map<std::string, AbstractInputSlot *> m_proxyOutputsMap; ///< Map of names and proxy outputs
-
-    std::vector<PipelineWatcher *> m_watchers;  ///< List of connected pipeline watchers
 };
 
 

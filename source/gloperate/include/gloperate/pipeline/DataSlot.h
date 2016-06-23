@@ -70,11 +70,6 @@ public:
 
     // Virtual AbstractProperty interface
     virtual bool isObject() const override;
-
-
-protected:
-    // Virtual Typed<T> interface
-    virtual void onValueChanged(const T & value) override;
 };
 
 

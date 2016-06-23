@@ -4,7 +4,6 @@
 #include <sstream>
 
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/PipelineEvent.h>
 
 
 namespace gloperate
@@ -59,18 +58,6 @@ void AbstractSlot::setRequired(bool required)
         m_required = required;
 
         onRequiredChanged();
-    }
-}
-
-void AbstractSlot::onRequiredChanged()
-{
-    Stage * stage = parentStage();
-
-    if (stage)
-    {
-        stage->promotePipelineEvent(
-            PipelineEvent(PipelineEvent::RequiredChanged, stage, this)
-        );
     }
 }
 

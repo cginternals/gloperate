@@ -44,7 +44,7 @@ public:
     *    This marks the output value as invalid.
     *    The state will remain until a new value is set.
     */
-    virtual void invalidate();
+    virtual void invalidate() = 0;
 
 
 protected:

@@ -5,7 +5,6 @@
 #include <gloperate/pipeline/DataSlot.h>
 
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/PipelineEvent.h>
 
 
 namespace gloperate
@@ -51,19 +50,6 @@ template <typename T>
 bool DataSlot<T>::isObject() const
 {
     return false;
-}
-
-template <typename T>
-void DataSlot<T>::onValueChanged(const T & value)
-{
-    this->valueChanged(value);
-
-    if (Stage * stage = this->parentStage())
-    {
-        stage->promotePipelineEvent(
-            PipelineEvent(PipelineEvent::ValueChanged, stage, this)
-        );
-    }
 }
 
 

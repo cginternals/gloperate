@@ -21,7 +21,6 @@ namespace gloperate
 
 class ViewerContext;
 class Stage;
-class PipelineApiWatcher;
 class AbstractSlot;
 
 
@@ -64,7 +63,6 @@ protected:
     bool isValid(const std::string & path);
     bool isRequired(const std::string & path);
     void setRequired(const std::string & path, bool required);
-    void registerWatcher(const cppexpose::Variant & func);
 
     // Helper functions
     Stage * getStage(const std::string & name);
@@ -73,7 +71,6 @@ protected:
 
 protected:
     ViewerContext                     * m_viewerContext; ///< Viewer context (must NOT be null!)
-    std::vector<PipelineApiWatcher *>   m_watchers;      ///< List of watchers for pipeline events
 };
 
 
