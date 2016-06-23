@@ -309,22 +309,20 @@ bool InputSlot<T>::isObject() const
 template <typename T>
 void InputSlot<T>::promoteConnection()
 {
+    // Emit signal
     this->connectionChanged();
-
-    if (Stage * stage = this->parentStage())
-    {
-        // [TODO] Propagate change
-    }
 }
 
 template <typename T>
 void InputSlot<T>::promoteRequired()
 {
+    // Check if input slot is connected
     if (m_sourceType == SlotType::Empty)
     {
         return;
     }
 
+    // Promote required-flag to connected slot
     m_source.slot->setRequired(this->m_required);
 }
 

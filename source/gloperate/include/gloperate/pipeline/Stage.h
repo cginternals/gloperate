@@ -123,10 +123,10 @@ public:
 
     /**
     *  @brief
-    *    Get if this stage depends on another stage
+    *    Check if this stage depends on another stage
     *
     *  @param[in] stage
-    *    Stage
+    *    Stage (must NOT be null!)
     *  @param[in] recursive
     *    If 'true', check recursively, else only direct dependencies are checked
     *
@@ -185,26 +185,28 @@ public:
 
     /**
     *  @brief
-    *    Updates the required states of inputs
+    *    Update the required-state of the stage's input slots
     *
     *  @param[in] slot
-    *    The output with changed required state
+    *    Output slot which has changed its required-state
     *
     *  @remarks
-    *    The specific input required flagging behavior can
+    *    By default, all input slots of a stage are marked as required,
+    *    if at least one output slot is required. This behavior can
     *    be overridden with the onOutputRequiredChanged method.
     */
     void outputRequiredChanged(AbstractSlot * slot);
 
     /**
     *  @brief
-    *    Propagates the input change to its outputs
+    *    Update the validity of the stage's output slots
     *
     *  @param[in] slot
-    *    The changed input
+    *    Input slot which has changed its value
     *
     *  @remarks
-    *    The specific input change behavior can
+    *    By default, all outputs are invalidated when any input
+    *    value of the stage has changed. This behavior can
     *    be overridden with the onInputValueChanged method.
     */
     void inputValueChanged(AbstractSlot * slot);
@@ -418,6 +420,7 @@ public:
     *    List of connected pipeline watchers
     */
     const std::vector<PipelineWatcher *> & watchers() const;
+
 
 protected:
     /**

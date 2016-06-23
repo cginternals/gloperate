@@ -51,6 +51,11 @@ Pipeline * Stage::parentPipeline() const
 
 bool Stage::requires(const Stage * stage, bool recursive) const
 {
+    if (!stage)
+    {
+        return false;
+    }
+
     for (AbstractInputSlot * slot : m_inputs)
     {
         if (slot->isFeedback() || !slot->isConnected())
@@ -146,8 +151,6 @@ void Stage::addInput(AbstractInputSlot * input, cppexpose::PropertyOwnership own
 
     // Emit signal
     inputAdded(input);
-
-    // [TODO] Propagate change
 }
 
 void Stage::removeInput(AbstractInputSlot * input)
@@ -168,8 +171,6 @@ void Stage::removeInput(AbstractInputSlot * input)
 
         // Emit signal
         inputRemoved(input);
-
-        // [TODO] Propagate change
     }
 
     // Remove property
@@ -204,8 +205,6 @@ void Stage::addParameter(AbstractDataSlot * parameter, cppexpose::PropertyOwners
 
     // Emit signal
     parameterAdded(parameter);
-
-    // [TODO] Propagate change
 }
 
 void Stage::removeParameter(AbstractDataSlot * parameter)
@@ -226,8 +225,6 @@ void Stage::removeParameter(AbstractDataSlot * parameter)
 
         // Emit signal
         parameterRemoved(parameter);
-
-        // [TODO] Propagate change
     }
 
     // Remove property
@@ -262,8 +259,6 @@ void Stage::addOutput(AbstractDataSlot * output, cppexpose::PropertyOwnership ow
 
     // Emit signal
     outputAdded(output);
-
-    // [TODO] Propagate change
 }
 
 void Stage::removeOutput(AbstractDataSlot * output)
@@ -284,8 +279,6 @@ void Stage::removeOutput(AbstractDataSlot * output)
 
         // Emit signal
         outputRemoved(output);
-
-        // [TODO] Propagate change
     }
 
     // Remove property
@@ -320,8 +313,6 @@ void Stage::addProxyOutput(AbstractInputSlot * proxyOutput, cppexpose::PropertyO
 
     // Emit signal
     proxyOutputAdded(proxyOutput);
-
-    // [TODO] Propagate change
 }
 
 void Stage::removeProxyOutput(AbstractInputSlot * proxyOutput)
@@ -342,8 +333,6 @@ void Stage::removeProxyOutput(AbstractInputSlot * proxyOutput)
 
         // Emit signal
         proxyOutputRemoved(proxyOutput);
-
-        // [TODO] Propagate change
     }
 
     // Remove property

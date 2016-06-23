@@ -16,6 +16,7 @@ namespace gloperate
 
 // [TODO] invalidate sorting when stages or connections change
 
+
 Pipeline::Pipeline(ViewerContext * viewerContext, const std::string & name)
 : Stage(viewerContext, name)
 , m_sorted(false)
@@ -51,8 +52,6 @@ void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
     }
 
     stageAdded(stage);
-
-    // [TODO] Propagate change
 }
 
 bool Pipeline::removeStage(Stage * stage)
@@ -72,8 +71,6 @@ bool Pipeline::removeStage(Stage * stage)
     m_stagesMap.erase(stage->name());
 
     stageRemoved(stage);
-
-    // [TODO] Propagate change
 
     removeProperty(stage);
 
