@@ -185,6 +185,19 @@ public:
 
     /**
     *  @brief
+    *    Updates the required states of inputs
+    *
+    *  @param[in] slot
+    *    The output with changed required state
+    *
+    *  @remarks
+    *    The specific input required flagging behavior can
+    *    be overridden with the onOutputRequiredChanged method.
+    */
+    void outputRequiredChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
     *    Check if stage is always processed
     *
     *  @return
@@ -471,7 +484,7 @@ protected:
     *    Called when an output value's required-state has changed
     *
     *  @param[in] slot
-    *    Output slot (either input or parameter)
+    *    Output slot (either output or proxy output)
     *
     *  @remarks
     *    The default implementation is to require all input slots

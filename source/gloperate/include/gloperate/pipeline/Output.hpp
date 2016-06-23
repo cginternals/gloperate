@@ -52,5 +52,16 @@ void Output<T>::onValueChanged(const T & value)
     DataSlot<T>::onValueChanged(value);
 }
 
+template <typename T>
+void Output<T>::onRequiredChanged()
+{
+    Stage * stage = this->parentStage();
+
+    if (stage)
+    {
+        stage->outputRequiredChanged(this);
+    }
+}
+
 
 } // namespace gloperate

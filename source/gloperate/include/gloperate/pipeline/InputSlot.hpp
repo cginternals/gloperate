@@ -311,8 +311,6 @@ template <typename T>
 void InputSlot<T>::onRequiredChanged()
 {
     promoteRequired();
-
-    AbstractSlot::onRequiredChanged();
 }
 
 template <typename T>
@@ -346,12 +344,9 @@ void InputSlot<T>::promoteConnection()
 template <typename T>
 void InputSlot<T>::promoteRequired()
 {
-    switch (m_sourceType) {
-        case SlotType::Input:       m_source.input->setRequired(this->m_required); break;
-        case SlotType::Parameter:   m_source.parameter->setRequired(this->m_required); break;
-        case SlotType::Output:      m_source.output->setRequired(this->m_required); break;
-        case SlotType::ProxyOutput: m_source.proxyOutput->setRequired(this->m_required); break;
-        default:                    break;
+    if (m_sourceType != SlotType::Empty)
+    {
+        m_source.slot->setRequired(this->m_required);
     }
 }
 

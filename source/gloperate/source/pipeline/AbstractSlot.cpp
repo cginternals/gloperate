@@ -61,15 +61,5 @@ void AbstractSlot::setRequired(bool required)
     }
 }
 
-void AbstractSlot::onRequiredChanged()
-{
-    Stage * stage = parentStage();
-
-    if (stage)
-    {
-        // [TODO] Propagate change
-    }
-}
-
 
 } // namespace gloperate

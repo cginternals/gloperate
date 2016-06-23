@@ -122,7 +122,7 @@ public:
     *  @brief
     *    Called when required-flag has been changed
     */
-    virtual void onRequiredChanged();
+    virtual void onRequiredChanged() = 0;
 
 
 protected:

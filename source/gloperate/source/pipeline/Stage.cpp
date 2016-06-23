@@ -350,6 +350,11 @@ void Stage::removeProxyOutput(AbstractInputSlot * proxyOutput)
     removeProperty(proxyOutput);
 }
 
+void Stage::outputRequiredChanged(AbstractSlot *slot)
+{
+    onOutputRequiredChanged(slot);
+}
+
 void Stage::onContextInit(AbstractGLContext *)
 {
 }

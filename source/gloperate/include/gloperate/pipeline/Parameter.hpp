@@ -32,5 +32,11 @@ bool Parameter<T>::isValid() const
     return true;
 }
 
+template <typename T>
+void Parameter<T>::onRequiredChanged()
+{
+    // Doesn't need to propagate change
+}
+
 
 } // namespace gloperate

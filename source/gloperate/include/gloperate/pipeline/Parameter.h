@@ -41,6 +41,9 @@ public:
 
     // Virtual AbstractSlot interface
     virtual bool isValid() const override;
+
+protected:
+    virtual void onRequiredChanged() override;
 };
 
 
