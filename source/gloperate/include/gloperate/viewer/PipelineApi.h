@@ -63,7 +63,6 @@ protected:
     bool isValid(const std::string & path);
     bool isRequired(const std::string & path);
     void setRequired(const std::string & path, bool required);
-    void registerWatcher(const cppexpose::Variant & func);
 
     // Helper functions
     Stage * getStage(const std::string & name);

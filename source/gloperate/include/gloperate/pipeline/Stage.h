@@ -24,8 +24,6 @@ class AbstractSlot;
 class AbstractInputSlot;
 class AbstractDataSlot;
 class Pipeline;
-class PipelineWatcher;
-class PipelineEvent;
 
 template <typename T>
 class Input;
@@ -411,15 +409,6 @@ public:
     *    Proxy output (must NOT null!)
     */
     void removeProxyOutput(AbstractInputSlot * proxyOutput);
-
-    /**
-    *  @brief
-    *    Get pipeline watchers
-    *
-    *  @return
-    *    List of connected pipeline watchers
-    */
-    const std::vector<PipelineWatcher *> & watchers() const;
 
 
 protected:

@@ -32,7 +32,6 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
     addFunction("isValid",         this, &PipelineApi::isValid);
     addFunction("isRequired",      this, &PipelineApi::isRequired);
     addFunction("setRequired",     this, &PipelineApi::setRequired);
-    addFunction("registerWatcher", this, &PipelineApi::registerWatcher);
 }
 
 PipelineApi::~PipelineApi()
@@ -165,24 +164,6 @@ void PipelineApi::setRequired(const std::string & path, bool required)
     AbstractSlot * slot = getSlot(path);
     if (slot) {
         return slot->setRequired(required);
-    }
-}
-
-void PipelineApi::registerWatcher(const cppexpose::Variant & func)
-{
-    // Get render surface and pipeline
-    if (m_viewerContext->surfaces().size() == 0) {
-        return;
-    }
-
-    RenderSurface * surface = static_cast<RenderSurface *>(m_viewerContext->surfaces()[0]);
-    if (!surface) {
-        return;
-    }
-
-    auto * rootPipeline = surface->rootPipeline();
-    if (!rootPipeline) {
-        return;
     }
 }
 
