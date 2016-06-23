@@ -39,11 +39,18 @@ public:
     */
     virtual ~Parameter();
 
+    // Virtual AbstractDataSlot interface
+    virtual void invalidate() override;
+
     // Virtual AbstractSlot interface
     virtual bool isValid() const override;
 
+
 protected:
+    // Virtual AbstractSlot interface
     virtual void onRequiredChanged() override;
+
+    // Virtual Typed<T> interface
     virtual void onValueChanged(const T & value) override;
 };
 

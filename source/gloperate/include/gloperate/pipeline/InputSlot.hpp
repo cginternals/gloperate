@@ -22,10 +22,7 @@ InputSlot<T>::InputSlot(const T & value)
 : m_defaultValue(value)
 , m_sourceType(SlotType::Empty)
 {
-    m_source.input = nullptr;
-    m_source.parameter = nullptr;
-    m_source.output = nullptr;
-    m_source.proxyOutput = nullptr;
+    m_source.slot = nullptr;
 }
 
 template <typename T>
@@ -184,13 +181,7 @@ T * InputSlot<T>::operator->()
 template <typename T>
 const AbstractSlot * InputSlot<T>::source() const
 {
-    switch (m_sourceType) {
-        case SlotType::Input:       return m_source.input;
-        case SlotType::Parameter:   return m_source.parameter;
-        case SlotType::Output:      return m_source.output;
-        case SlotType::ProxyOutput: return m_source.proxyOutput;
-        default:                    return nullptr;
-    }
+    return m_source.slot;
 }
 
 template <typename T>
@@ -236,11 +227,8 @@ template <typename T>
 void InputSlot<T>::disconnect()
 {
     // Reset source property
-    m_source.input       = nullptr;
-    m_source.parameter   = nullptr;
-    m_source.output      = nullptr;
-    m_source.proxyOutput = nullptr;
-    m_connection         = cppexpose::ScopedConnection();
+    m_source.slot = nullptr;
+    m_connection  = cppexpose::ScopedConnection();
 
     // Emit events
     this->promoteConnection();

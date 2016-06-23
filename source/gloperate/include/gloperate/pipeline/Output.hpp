@@ -32,6 +32,7 @@ void Output<T>::invalidate()
     // Set state to invalid
     m_valid = false;
 
+    // Emit signal
     this->valueChanged(this->m_value);
 }
 
@@ -42,23 +43,23 @@ bool Output<T>::isValid() const
 }
 
 template <typename T>
+void Output<T>::onRequiredChanged()
+{
+    // Inform parent stage
+    if (Stage * stage = this->parentStage())
+    {
+        stage->outputRequiredChanged(this);
+    }
+}
+
+template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
     // Set state to valid
     m_valid = true;
 
+    // Emit signal
     this->valueChanged(value);
-}
-
-template <typename T>
-void Output<T>::onRequiredChanged()
-{
-    Stage * stage = this->parentStage();
-
-    if (stage)
-    {
-        stage->outputRequiredChanged(this);
-    }
 }
 
 

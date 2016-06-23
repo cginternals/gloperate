@@ -70,8 +70,6 @@ public:
 
     // Virtual AbstractProperty interface
     virtual bool isObject() const override;
-
-
 };
 
 

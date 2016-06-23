@@ -15,17 +15,20 @@ AbstractInputSlot::AbstractInputSlot()
 
 AbstractInputSlot::~AbstractInputSlot()
 {
+    // Get parent stage
     Stage * stage = parentStage();
-
     if (!stage)
     {
-        if (m_slotType == SlotType::Input) {
-            stage->removeInput(this);
-        }
+        return;
+    }
 
-        if (m_slotType == SlotType::ProxyOutput) {
-            stage->removeProxyOutput(this);
-        }
+    // Remove slot from stage
+    if (m_slotType == SlotType::Input) {
+        stage->removeInput(this);
+    }
+
+    if (m_slotType == SlotType::ProxyOutput) {
+        stage->removeProxyOutput(this);
     }
 }
 

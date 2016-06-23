@@ -26,6 +26,12 @@ Parameter<T>::~Parameter()
 }
 
 template <typename T>
+void Parameter<T>::invalidate()
+{
+    // Parameters are always valid
+}
+
+template <typename T>
 bool Parameter<T>::isValid() const
 {
     // Parameters are always valid
@@ -41,8 +47,10 @@ void Parameter<T>::onRequiredChanged()
 template <typename T>
 void Parameter<T>::onValueChanged(const T & value)
 {
+    // Emit signal
     this->valueChanged(value);
 
+    // Inform parent stage
     if (Stage * stage = this->parentStage())
     {
         stage->inputValueChanged(this);

@@ -106,7 +106,7 @@ public:
     *    pipeline, which introduces a cyclic dependency between
     *    the stages. Therefore, an input slot can be flagged as
     *    a feedback connection, indicating that the connection
-    *    shall be ignored when calucating the dependency graph
+    *    shall be ignored when calculating the dependency graph
     *    (and order of execution) of the pipeline.
     */
     bool isFeedback() const;
