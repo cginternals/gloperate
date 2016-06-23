@@ -172,11 +172,6 @@ public:
 
 
 protected:
-    // Virtual Typed<T> interface
-    virtual void onValueChanged(const T & value) override;
-
-
-protected:
     void promoteConnection();
     void promoteRequired();
 

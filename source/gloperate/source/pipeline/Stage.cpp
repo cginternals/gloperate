@@ -355,6 +355,11 @@ void Stage::outputRequiredChanged(AbstractSlot *slot)
     onOutputRequiredChanged(slot);
 }
 
+void Stage::inputValueChanged(AbstractSlot *slot)
+{
+    onInputValueChanged(slot);
+}
+
 void Stage::onContextInit(AbstractGLContext *)
 {
 }

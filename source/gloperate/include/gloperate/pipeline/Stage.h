@@ -198,6 +198,19 @@ public:
 
     /**
     *  @brief
+    *    Propagates the input change to its outputs
+    *
+    *  @param[in] slot
+    *    The changed input
+    *
+    *  @remarks
+    *    The specific input change behavior can
+    *    be overridden with the onInputValueChanged method.
+    */
+    void inputValueChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
     *    Check if stage is always processed
     *
     *  @return

@@ -44,6 +44,7 @@ public:
 
 protected:
     virtual void onRequiredChanged() override;
+    virtual void onValueChanged(const T & value) override;
 };
 
 

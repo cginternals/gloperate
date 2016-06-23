@@ -21,7 +21,6 @@ namespace gloperate
 
 class ViewerContext;
 class Stage;
-class PipelineApiWatcher;
 class AbstractSlot;
 
 
@@ -73,7 +72,6 @@ protected:
 
 protected:
     ViewerContext                     * m_viewerContext; ///< Viewer context (must NOT be null!)
-    std::vector<PipelineApiWatcher *>   m_watchers;      ///< List of watchers for pipeline events
 };
 
 

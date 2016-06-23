@@ -37,11 +37,6 @@ PipelineApi::PipelineApi(ViewerContext * viewerContext)
 
 PipelineApi::~PipelineApi()
 {
-    // Destroy all watchers
-    for (auto watcher : m_watchers)
-    {
-        delete watcher;
-    }
 }
 
 std::string PipelineApi::getName(const std::string & name)
@@ -189,15 +184,6 @@ void PipelineApi::registerWatcher(const cppexpose::Variant & func)
     if (!rootPipeline) {
         return;
     }
-
-    // Add pipeline watcher to root pipeline
-    /*
-    auto * watcher = new PipelineApiWatcher(func);
-    rootPipeline->addWatcher(watcher);
-    */
-
-    // Store pointer to watcher for later destruction
-    //m_watchers.push_back(watcher);
 }
 
 Stage * PipelineApi::getStage(const std::string & name)

@@ -52,16 +52,5 @@ bool DataSlot<T>::isObject() const
     return false;
 }
 
-template <typename T>
-void DataSlot<T>::onValueChanged(const T & value)
-{
-    this->valueChanged(value);
-
-    if (Stage * stage = this->parentStage())
-    {
-        // [TODO] Propagate change
-    }
-}
-
 
 } // namespace gloperate

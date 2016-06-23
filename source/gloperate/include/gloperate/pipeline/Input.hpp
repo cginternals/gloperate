@@ -25,5 +25,16 @@ Input<T>::~Input()
 {
 }
 
+template <typename T>
+void Input<T>::onValueChanged(const T & value)
+{
+    this->valueChanged(value);
+
+    if (Stage * stage = this->parentStage())
+    {
+        stage->inputValueChanged(this);
+    }
+}
+
 
 } // namespace gloperate

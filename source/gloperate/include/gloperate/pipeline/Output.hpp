@@ -48,8 +48,7 @@ void Output<T>::onValueChanged(const T & value)
     // Set state to valid
     m_valid = true;
 
-    // Promote changed-event
-    DataSlot<T>::onValueChanged(value);
+    this->valueChanged(value);
 }
 
 template <typename T>

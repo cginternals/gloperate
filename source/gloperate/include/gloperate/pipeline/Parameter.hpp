@@ -38,5 +38,16 @@ void Parameter<T>::onRequiredChanged()
     // Doesn't need to propagate change
 }
 
+template <typename T>
+void Parameter<T>::onValueChanged(const T & value)
+{
+    this->valueChanged(value);
+
+    if (Stage * stage = this->parentStage())
+    {
+        stage->inputValueChanged(this);
+    }
+}
+
 
 } // namespace gloperate

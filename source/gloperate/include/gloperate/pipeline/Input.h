@@ -38,6 +38,10 @@ public:
     *    Destructor
     */
     virtual ~Input();
+
+
+protected:
+    virtual void onValueChanged(const T & value) override;
 };
 
 

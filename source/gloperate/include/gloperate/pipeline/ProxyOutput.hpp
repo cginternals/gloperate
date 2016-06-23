@@ -25,5 +25,12 @@ ProxyOutput<T>::~ProxyOutput()
 {
 }
 
+template <typename T>
+void ProxyOutput<T>::onValueChanged(const T & value)
+{
+    // Promote changed-event
+    this->valueChanged(value);
+}
+
 
 } // namespace gloperate

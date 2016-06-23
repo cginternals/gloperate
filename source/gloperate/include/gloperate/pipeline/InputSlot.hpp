@@ -298,13 +298,12 @@ T * InputSlot<T>::ptr()
 template <typename T>
 bool InputSlot<T>::isValid() const
 {
-    switch (m_sourceType) {
-        case SlotType::Input:       return m_source.input->isValid();
-        case SlotType::Parameter:   return m_source.parameter->isValid();
-        case SlotType::Output:      return m_source.output->isValid();
-        case SlotType::ProxyOutput: return m_source.proxyOutput->isValid();
-        default:                    return false;
+    if (m_sourceType == SlotType::Empty)
+    {
+        return false;
     }
+
+    return m_source.slot->isValid();
 }
 
 template <typename T>
@@ -317,17 +316,6 @@ template <typename T>
 bool InputSlot<T>::isObject() const
 {
     return false;
-}
-
-template <typename T>
-void InputSlot<T>::onValueChanged(const T & value)
-{
-    this->valueChanged(value);
-
-    if (Stage * stage = this->parentStage())
-    {
-        // [TODO] Propagate change
-    }
 }
 
 template <typename T>
@@ -344,10 +332,12 @@ void InputSlot<T>::promoteConnection()
 template <typename T>
 void InputSlot<T>::promoteRequired()
 {
-    if (m_sourceType != SlotType::Empty)
+    if (m_sourceType == SlotType::Empty)
     {
-        m_source.slot->setRequired(this->m_required);
+        return;
     }
+
+    m_source.slot->setRequired(this->m_required);
 }
 
 
