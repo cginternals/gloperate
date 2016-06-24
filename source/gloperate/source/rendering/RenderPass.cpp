@@ -1,5 +1,5 @@
 
-#include <gloperate/primitives/RenderPass.h>
+#include <gloperate/rendering/RenderPass.h>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
@@ -7,13 +7,12 @@
 #include <globjects/Texture.h>
 #include <globjects/Sampler.h>
 #include <globjects/Buffer.h>
-#include <globjects/Framebuffer.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 #include <globjects/ProgramPipeline.h>
 #include <globjects/TransformFeedback.h>
 
-#include <gloperate/primitives/Drawable.h>
+#include <gloperate/rendering/Drawable.h>
 
 
 namespace gloperate
@@ -33,11 +32,6 @@ RenderPass::~RenderPass()
 void RenderPass::draw() const
 {
     bindResources();
-
-    if (m_fbo)
-    {
-        m_fbo->bind(gl::GL_FRAMEBUFFER);
-    }
 
     if (m_recordTransformFeedback)
     {
@@ -79,16 +73,6 @@ void RenderPass::draw() const
 
         gl::glDisable(gl::GL_RASTERIZER_DISCARD);
     }
-}
-
-globjects::Framebuffer * RenderPass::framebuffer() const
-{
-    return m_fbo;
-}
-
-void RenderPass::setFramebuffer(globjects::Framebuffer * framebuffer)
-{
-    m_fbo = framebuffer;
 }
 
 Drawable * RenderPass::geometry() const

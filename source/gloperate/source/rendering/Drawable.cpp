@@ -1,5 +1,5 @@
 
-#include <gloperate/primitives/Drawable.h>
+#include <gloperate/rendering/Drawable.h>
 
 #include <cassert>
 
@@ -17,7 +17,7 @@ Drawable::Drawable()
 : m_vao(new globjects::VertexArray)
 , m_drawMode(DrawMode::Arrays)
 , m_size(0)
-, m_mode(gl::GL_TRIANGLES)
+, m_primitiveMode(gl::GL_TRIANGLES)
 , m_indexBufferType(gl::GL_UNSIGNED_INT)
 {
 }
@@ -63,7 +63,7 @@ void Drawable::draw(DrawMode drawMode) const
 
 void Drawable::drawArrays() const
 {
-    drawArrays(m_mode, 0, m_size);
+    drawArrays(m_primitiveMode, 0, m_size);
 }
 
 void Drawable::drawArrays(gl::GLenum mode) const
@@ -73,7 +73,7 @@ void Drawable::drawArrays(gl::GLenum mode) const
 
 void Drawable::drawArrays(gl::GLint first, gl::GLsizei count) const
 {
-    drawArrays(m_mode, first, count);
+    drawArrays(m_primitiveMode, first, count);
 }
 
 void Drawable::drawArrays(gl::GLenum mode, gl::GLint first, gl::GLsizei count) const
@@ -83,7 +83,7 @@ void Drawable::drawArrays(gl::GLenum mode, gl::GLint first, gl::GLsizei count) c
 
 void Drawable::drawElements() const
 {
-    drawElements(m_mode);
+    drawElements(m_primitiveMode);
 }
 
 void Drawable::drawElements(gl::GLenum mode) const
@@ -122,14 +122,14 @@ void Drawable::setSize(gl::GLsizei size)
     m_size = size;
 }
 
-gl::GLenum Drawable::mode() const
+gl::GLenum Drawable::primitiveMode() const
 {
-    return m_mode;
+    return m_primitiveMode;
 }
 
-void Drawable::setMode(gl::GLenum mode)
+void Drawable::setPrimitiveMode(gl::GLenum mode)
 {
-    m_mode = mode;
+    m_primitiveMode = mode;
 }
 
 globjects::Buffer * Drawable::buffer(size_t index)

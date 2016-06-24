@@ -41,9 +41,6 @@ public:
 
     void draw() const;
 
-    globjects::Framebuffer * framebuffer() const;
-    void setFramebuffer(globjects::Framebuffer * framebuffer);
-
     Drawable * geometry() const;
     void setGeometry(Drawable * geometry);
 
@@ -210,7 +207,6 @@ public:
     globjects::Buffer * removeTransformFeedbackBuffer(size_t index);
 
 protected:
-    globjects::ref_ptr<globjects::Framebuffer> m_fbo;
     globjects::ref_ptr<Drawable> m_geometry;
     globjects::ref_ptr<globjects::Program> m_program;
     globjects::ref_ptr<globjects::ProgramPipeline> m_programPipeline;

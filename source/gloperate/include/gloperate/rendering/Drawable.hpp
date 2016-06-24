@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <gloperate/primitives/Drawable.h>
+#include <gloperate/rendering/Drawable.h>
 
 
 namespace gloperate
