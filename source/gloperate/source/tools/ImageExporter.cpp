@@ -60,7 +60,7 @@ void ImageExporter::save(bool glContextActive)
 
     m_color->image2D(0, gl::GL_RGBA, m_width, m_height, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
     m_depth->storage(gl::GL_DEPTH_COMPONENT32, m_width, m_height);
-    
+
     for (int i = 0; i < m_renderIterations; ++i)
     {
         m_context->update(1.f/30.f);

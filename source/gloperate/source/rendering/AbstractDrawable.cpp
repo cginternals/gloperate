@@ -1,5 +1,5 @@
 
-#include <gloperate/primitives/AbstractDrawable.h>
+#include <gloperate/rendering/AbstractDrawable.h>
 
 
 namespace gloperate
