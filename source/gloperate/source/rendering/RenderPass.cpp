@@ -238,7 +238,7 @@ globjects::Buffer * RenderPass::uniformBuffer(size_t index) const
     return it->second;
 }
 
-void RenderPass::setUniformBuffers(size_t index, globjects::Buffer * texture)
+void RenderPass::setUniformBuffer(size_t index, globjects::Buffer * texture)
 {
     m_uniformBuffers.emplace(index, texture);
 }

@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <unordered_map>
 #include <cstdint>
 #include <cstddef>
@@ -15,35 +16,73 @@
 
 namespace globjects
 {
-
-class Buffer;
-class Framebuffer;
-class Program;
-class ProgramPipeline;
-class Sampler;
-class Texture;
-class TransformFeedback;
-
-} // namespace globjects
+    class Buffer;
+    class Framebuffer;
+    class Program;
+    class ProgramPipeline;
+    class Sampler;
+    class Texture;
+    class TransformFeedback;
+}
 
 
 namespace gloperate
 {
 
+
 class Drawable;
 
 
+/**
+*  @brief
+*    Render pass that renders a geometry with a given set of states and modes
+*
+*    A render pass encapsulates the rendering of a geometry together
+*    with a configuration of OpenGL states and modes which are set before
+*    rendering, such as the binding of shader programs, textures, and buffers.
+*    Once configured, a call to draw() will activate the specified configuration
+*    and then draw the associated geometry of the render pass.
+*/
 class GLOPERATE_API RenderPass : public globjects::Referenced
 {
 public:
+    /**
+    *  @brief
+    *    Constructor
+    */
     RenderPass();
+
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~RenderPass();
 
+    /**
+    *  @brief
+    *    Execute render pass
+    */
     void draw() const;
 
+    /**
+    *  @brief
+    *    Get geometry that is drawn by the render pass
+    *
+    *  @return
+    *    Geometry (can be null)
+    */
     Drawable * geometry() const;
+
+    /**
+    *  @brief
+    *    Set geometry that is drawn by the render pass
+    *
+    *  @param[in] geometry
+    *    Geometry (can be null)
+    */
     void setGeometry(Drawable * geometry);
 
+    // [TODO] Comment
     globjects::TransformFeedback * recordTransformFeedback() const;
     void setRecordTransformFeedback(globjects::TransformFeedback * transformFeedback);
 
@@ -57,174 +96,349 @@ public:
     void setDrawTransformFeedbackMode(gl::GLenum mode);
 
     /**
-     * @brief
-     *   Accessor for the program used for drawing.
-     *
-     * @return
-     *   The program.
-     */
+    *  @brief
+    *    Get shader program used by the render pass
+    *
+    *  @return
+    *    Shader program (can be null)
+    */
     globjects::Program * program() const;
 
     /**
-     * @brief
-     *   Updates the program used for drawing.
-     *
-     * @param[in] program
-     *   The new program to use.
-     *
-     * @remarks
-     *   The passed program is partially owned by this RenderPass.
-     *   If both a program and a program pipeline is configured, the program is preferred during rendering.
-     */
+    *  @brief
+    *    Set shader program used by the render pass
+    *
+    *  @param[in] program
+    *    Shader program (can be null)
+    *
+    *  @notes
+    *  - The render pass partially owns the program (increasing its reference counter)
+    *  - If both a program and a program pipeline are configured, the program is preferred
+    *    during rendering.
+    */
     void setProgram(globjects::Program * program);
 
     /**
-     * @brief
-     *   Accessor for the program pipeline used for drawing.
-     *
-     * @return
-     *   The program pipeline.
-     */
+    *  @brief
+    *    Get program pipeline used by the render pass
+    *
+    *  @return
+    *    Program pipeline (can be null)
+    */
     globjects::ProgramPipeline * programPipeline() const;
 
     /**
-     * @brief
-     *   Updates the program pipeline used for drawing.
-     *
-     * @param[in] programPipeline
-     *   The new program pipeline to use.
-     *
-     * @remarks
-     *   The passed program pipeline is partially owned by this RenderPass.
-     *   If both a program and a program pipeline is configured, the program is preferred during rendering.
-     */
+    *  @brief
+    *    Set program pipeline used by the render pass
+    *
+    *  @param[in] program
+    *    Program pipeline (can be null)
+    *
+    *  @notes
+    *  - The render pass partially owns the program pipeline (increasing its reference counter)
+    *  - If both a program and a program pipeline are configured, the program is preferred
+    *    during rendering.
+    */
     void setProgramPipeline(globjects::ProgramPipeline * programPipeline);
 
     /**
-     * @brief
-     *   Accessor for the OpenGL texture object at the given index.
-     *
-     * @param[in] index
-     *   The active texture index.
-     *
-     * @return
-     *   The OpenGL texture object at the given index (nullptr if missing).
-     *
-     * @remarks
-     *   The indices don't need to be continuous.
-     */
+    *  @brief
+    *    Get texture used by the render pass
+    *
+    *  @param[in] index
+    *    Texture index (does not need to be continuous)
+    *
+    *  @return
+    *    Texture (can be null)
+    */
     globjects::Texture * texture(size_t index) const;
 
     /**
-     * @brief
-     *   Accessor for the OpenGL texture object at the given index.
-     *
-     * @param[in] index
-     *   The active texture index as GLenum.
-     *
-     * @return
-     *   The OpenGL texture object at the given index (nullptr if missing).
-     *
-     * @remarks
-     *   The indices don't need to be continuous.
-     */
+    *  @brief
+    *    Get texture used by the render pass
+    *
+    *  @param[in] index
+    *    Texture index (does not need to be continuous)
+    *
+    *  @return
+    *    Texture (can be null)
+    */
     globjects::Texture * texture(gl::GLenum activeTextureIndex) const;
 
     /**
-     * @brief
-     *   Updates a texture that is to be bound active during the draw calls.
-     *
-     * @param[in] index
-     *   The active texture index.
-     * @param[in] texture
-     *   The texture to be bound.
-     *
-     * @remarks
-     *   To exclude a texture from getting bound active during draw calls, use removeTexture.
-     */
+    *  @brief
+    *    Set texture used by the render pass
+    *
+    *  @param[in] index
+    *    Texture index (does not need to be continuous)
+    *  @param[in] texture
+    *    Texture (must NOT be null!)
+    *
+    *  @notes
+    *  - To exclude a texture from getting bound active during draw calls,
+    *    use removeTexture.
+    */
     void setTexture(size_t index, globjects::Texture * texture);
 
     /**
-     * @brief
-     *   Updates a texture that is to be bound active during the draw calls.
-     *
-     * @param[in] activeTextureIndex
-     *   The active texture index as GLenum.
-     * @param[in] texture
-     *   The texture to be bound.
-     *
-     * @remarks
-     *   The index is normalized to a size_t so the texture is also available using the size_t interface.
-     *   To exclude a texture from getting bound active during draw calls, use removeTexture.
-     */
+    *  @brief
+    *    Set texture used by the render pass
+    *
+    *  @param[in] index
+    *    Texture index (does not need to be continuous)
+    *  @param[in] texture
+    *    Texture (must NOT be null!)
+    *
+    *  @notes
+    *  - The index is normalized to a size_t, so the texture is also available
+    *    using the size_t interface.
+    *  - To exclude a texture from getting bound active during draw calls,
+    *    use removeTexture.
+    */
     void setTexture(gl::GLenum activeTextureIndex, globjects::Texture * texture);
 
     /**
-     * @brief
-     *   Excludes the texture identified through index from being bound active during the draw calls.
-     *
-     * @param[in] index
-     *   The active texture index.
-     *
-     * @return
-     *   The former texture object associated with this index (may be nullptr).
-     */
+    *  @brief
+    *    Remove texture from being used by the render pass
+    *
+    *  @param[in] index
+    *    Texture index (does not need to be continuous)
+    *
+    *  @return
+    *    Texture that was formerly associated with this index (can be null)
+    */
     globjects::Texture * removeTexture(size_t index);
 
     /**
-     * @brief
-     *   Excludes the texture identified through index from being bound active during the draw calls.
-     *
-     * @param[in] index
-     *   The active texture index as GLenum.
-     *
-     * @return
-     *   The former texture object associated with this index (may be nullptr).
-     *
-     * @remarks
-     *   The index is converted to a size_t so a texture configured through the size_t interface is also affected.
-     */
-    globjects::Texture * removeTexture(gl::GLenum activeTextureIndex);
+    *  @brief
+    *    Remove texture from being used by the render pass
+    *
+    *  @param[in] index
+    *    Texture index (does not need to be continuous)
+    *
+    *  @return
+    *    Texture that was formerly associated with this index (can be null)
+    *
+    *  @notes
+    *  - The index is converted to a size_t, so a texture configured through
+    *    the size_t interface is also affected.
+    */
+    globjects::Texture * removeTexture(gl::GLenum index);
 
+    /**
+    *  @brief
+    *    Get sampler used by the render pass
+    *
+    *  @param[in] index
+    *    Sampler index (does not need to be continuous)
+    *
+    *  @return
+    *    Sampler (can be null)
+    */
     globjects::Sampler * sampler(size_t index) const;
-    void setSampler(size_t index, globjects::Sampler * texture);
+
+    /**
+    *  @brief
+    *    Set sampler used by the render pass
+    *
+    *  @param[in] index
+    *    Sampler index (does not need to be continuous)
+    *  @param[in] sampler
+    *    Sampler (must NOT be null!)
+    *
+    *  @notes
+    *  - Use removeSampler() to remove a sampler from the render pass.
+    */
+    void setSampler(size_t index, globjects::Sampler * sampler);
+
+    /**
+    *  @brief
+    *    Remove sampler from being used by the render pass
+    *
+    *  @param[in] index
+    *    Sampler index (does not need to be continuous)
+    *
+    *  @return
+    *    Sampler that was formerly bound to this index (can be null)
+    */
     globjects::Sampler * removeSampler(size_t index);
 
+    /**
+    *  @brief
+    *    Get uniform buffer used by the render pass
+    *
+    *  @param[in] index
+    *    Uniform buffer index (does not need to be continuous)
+    *
+    *  @return
+    *    Uniform buffer (can be null)
+    */
     globjects::Buffer * uniformBuffer(size_t index) const;
-    void setUniformBuffers(size_t index, globjects::Buffer * texture);
+
+    /**
+    *  @brief
+    *    Set uniform buffer used by the render pass
+    *
+    *  @param[in] index
+    *    Uniform buffer index (does not need to be continuous)
+    *  @param[in] buffer
+    *    Uniform buffer (must NOT be null!)
+    *
+    *  @notes
+    *  - Use removeUniformBuffer() to remove a uniform buffer from the render pass.
+    */
+    void setUniformBuffer(size_t index, globjects::Buffer * buffer);
+
+    /**
+    *  @brief
+    *    Remove uniform buffer from being used by the render pass
+    *
+    *  @param[in] index
+    *    Uniform buffer index (does not need to be continuous)
+    *
+    *  @return
+    *    Uniform buffer that was formerly bound to this index (can be null)
+    */
     globjects::Buffer * removeUniformBuffer(size_t index);
 
+    /**
+    *  @brief
+    *    Get atomic counter buffer used by the render pass
+    *
+    *  @param[in] index
+    *    Atomic counter buffer index (does not need to be continuous)
+    *
+    *  @return
+    *    Atomic counter buffer (can be null)
+    */
     globjects::Buffer * atomicCounterBuffer(size_t index) const;
-    void setAtomicCounterBuffer(size_t index, globjects::Buffer * texture);
+
+    /**
+    *  @brief
+    *    Set atomic counter buffer used by the render pass
+    *
+    *  @param[in] index
+    *    Atomic counter buffer index (does not need to be continuous)
+    *  @param[in] buffer
+    *    Atomic counter buffer (must NOT be null!)
+    *
+    *  @notes
+    *  - Use removeAtomicCounterBuffer() to remove an atomic counter buffer from the render pass.
+    */
+    void setAtomicCounterBuffer(size_t index, globjects::Buffer * buffer);
+
+    /**
+    *  @brief
+    *    Remove atomic counter buffer from being used by the render pass
+    *
+    *  @param[in] index
+    *    Atomic counter buffer index (does not need to be continuous)
+    *
+    *  @return
+    *    Atomic counter buffer that was formerly bound to this index (can be null)
+    */
     globjects::Buffer * removeAtomicCounterBuffer(size_t index);
 
+    /**
+    *  @brief
+    *    Get shader storage buffer used by the render pass
+    *
+    *  @param[in] index
+    *    Shader storage buffer index (does not need to be continuous)
+    *
+    *  @return
+    *    Shader storage buffer (can be null)
+    */
     globjects::Buffer * shaderStorageBuffer(size_t index) const;
-    void setShaderStorageBuffer(size_t index, globjects::Buffer * texture);
+
+    /**
+    *  @brief
+    *    Set shader storage buffer used by the render pass
+    *
+    *  @param[in] index
+    *    Shader storage buffer index (does not need to be continuous)
+    *  @param[in] buffer
+    *    Shader storage buffer (must NOT be null!)
+    *
+    *  @notes
+    *  - Use removeShaderStorageBuffer() to remove a shader storage buffer from the render pass.
+    */
+    void setShaderStorageBuffer(size_t index, globjects::Buffer * buffer);
+
+    /**
+    *  @brief
+    *    Remove shader storage buffer from being used by the render pass
+    *
+    *  @param[in] index
+    *    Shader storage buffer index (does not need to be continuous)
+    *
+    *  @return
+    *    Shader storage buffer that was formerly bound to this index (can be null)
+    */
     globjects::Buffer * removeShaderStorageBuffer(size_t index);
 
+    /**
+    *  @brief
+    *    Get transform feedback buffer used by the render pass
+    *
+    *  @param[in] index
+    *    Transform feedback buffer index (does not need to be continuous)
+    *
+    *  @return
+    *    Transform feedback buffer (can be null)
+    */
     globjects::Buffer * transformFeedbackBuffer(size_t index) const;
-    void setTransformFeedbackBuffer(size_t index, globjects::Buffer * texture);
+
+    /**
+    *  @brief
+    *    Set transform feedback buffer used by the render pass
+    *
+    *  @param[in] index
+    *    Transform feedback buffer index (does not need to be continuous)
+    *  @param[in] buffer
+    *    Transform feedback buffer (must NOT be null!)
+    *
+    *  @notes
+    *  - Use removeTransformFeedbackBuffer() to remove a transform feedback buffer from the render pass.
+    */
+    void setTransformFeedbackBuffer(size_t index, globjects::Buffer * buffer);
+
+    /**
+    *  @brief
+    *    Remove transform feedback buffer from being used by the render pass
+    *
+    *  @param[in] index
+    *    Transform feedback buffer index (does not need to be continuous)
+    *
+    *  @return
+    *    Transform feedback buffer that was formerly bound to this index (can be null)
+    */
     globjects::Buffer * removeTransformFeedbackBuffer(size_t index);
 
-protected:
-    globjects::ref_ptr<Drawable> m_geometry;
-    globjects::ref_ptr<globjects::Program> m_program;
-    globjects::ref_ptr<globjects::ProgramPipeline> m_programPipeline;
-    globjects::ref_ptr<globjects::TransformFeedback> m_recordTransformFeedback;
-    gl::GLenum m_recordTransformFeedbackMode;
-    globjects::ref_ptr<globjects::TransformFeedback> m_drawTransformFeedback;
-    gl::GLenum m_drawTransformFeedbackMode;
-
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Texture>> m_textures; /// The collection of all textures associated with this render pass. The key is used as the active texture binding.
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Sampler>> m_samplers; /// The collection of all samplers associated with this render pass. The key is used as the sampler binding index.
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_uniformBuffers; /// The collection of all uniform buffers associated with this render pass. The key is used as the uniform buffer binding index.
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_atomicCounterBuffers; /// The collection of all atomic counter buffers associated with this render pass. The key is used as the atomic counter buffer binding index.
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_shaderStorageBuffers; /// The collection of all shader storage buffers associated with this render pass. The key is used as the shader storage buffer binding index.
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_transformFeedbackBuffers; /// The collection of all transform feedback buffers associated with this render pass. The key is used as the transform feedback buffer binding index.
 
 protected:
+    /**
+    *  @brief
+    *    Bind all configured resources before rendering
+    */
     void bindResources() const;
 
+
+protected:
+    globjects::ref_ptr<Drawable>                     m_geometry;                    ///< Geometry rendered by the render pass
+    globjects::ref_ptr<globjects::Program>           m_program;                     ///< Program used for rendering
+    globjects::ref_ptr<globjects::ProgramPipeline>   m_programPipeline;             ///< Program pipeline used for rendering
+    globjects::ref_ptr<globjects::TransformFeedback> m_recordTransformFeedback;     ///< [TODO]
+    gl::GLenum                                       m_recordTransformFeedbackMode; ///< [TODO]
+    globjects::ref_ptr<globjects::TransformFeedback> m_drawTransformFeedback;       ///< [TODO]
+    gl::GLenum                                       m_drawTransformFeedbackMode;   ///< [TODO]
+
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Texture>> m_textures;                 /// Collection of all textures associated with this render pass. The key is used as the active texture binding.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Sampler>> m_samplers;                 /// Collection of all samplers associated with this render pass. The key is used as the sampler binding index.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>>  m_uniformBuffers;           /// Collection of all uniform buffers associated with this render pass. The key is used as the uniform buffer binding index.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>>  m_atomicCounterBuffers;     /// Collection of all atomic counter buffers associated with this render pass. The key is used as the atomic counter buffer binding index.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>>  m_shaderStorageBuffers;     /// Collection of all shader storage buffers associated with this render pass. The key is used as the shader storage buffer binding index.
+    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>>  m_transformFeedbackBuffers; /// Collection of all transform feedback buffers associated with this render pass. The key is used as the transform feedback buffer binding index.
 };
 
 
