@@ -78,7 +78,7 @@ protected:
 
 protected:
     // Rendering objects
-    globjects::ref_ptr<gloperate::Camera>      m_camera;
+    gloperate::Camera                          m_camera;
     globjects::ref_ptr<globjects::VertexArray> m_vao;
     globjects::ref_ptr<globjects::Buffer>      m_buffer;
     globjects::ref_ptr<globjects::Texture>     m_texture;

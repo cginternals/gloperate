@@ -6,8 +6,6 @@
 
 #include <cppexpose/signal/Signal.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <gloperate/base/CachedValue.h>
 
 
@@ -27,7 +25,7 @@ namespace gloperate
 *    The class relies on lazy computation of all matrices, causing less recomputations
 *    of, e.g., matrices and inverse matrices requested on an irregular basis.
 */
-class GLOPERATE_API Camera : public globjects::Referenced
+class GLOPERATE_API Camera
 {
 public:
     cppexpose::Signal<> invalidated;   /**< Called when the camera has been modified */

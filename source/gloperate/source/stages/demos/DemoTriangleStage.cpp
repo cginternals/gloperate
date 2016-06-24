@@ -126,8 +126,8 @@ void DemoTriangleStage::onProcess(AbstractGLContext *)
     model = glm::rotate(model, *angle, glm::vec3(0.0, 1.0, 0.0));
 
     // Update model-view-projection matrix
-    m_program->setUniform("viewProjectionMatrix",      m_camera->viewProjection());
-    m_program->setUniform("modelViewProjectionMatrix", m_camera->viewProjection() * model);
+    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
+    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
 
     // Bind texture
     if (*texture) {
@@ -170,8 +170,7 @@ void DemoTriangleStage::setupGeometry()
 
 void DemoTriangleStage::setupCamera()
 {
-    m_camera = new Camera();
-    m_camera->setEye(glm::vec3(0.0, 0.0, 12.0));
+    m_camera.setEye(glm::vec3(0.0, 0.0, 12.0));
 }
 
 void DemoTriangleStage::setupProgram()
