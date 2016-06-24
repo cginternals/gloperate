@@ -18,7 +18,6 @@ Page
 
     // UI status
     property real uiStatus: 1.0
-
     readonly property bool uiEnabled: uiStatus > 0.0
 
     focus: true
@@ -250,11 +249,11 @@ Page
     Window
     {
         id: screenshot
-        title:   "Screenshot"
 
         property int margin: Ui.style.paddingMedium
 
-        width: screenshotItem.layout.implicitWidth + 20 * margin
+        title:  "Screenshot"
+        width:  screenshotItem.layout.implicitWidth + 20 * margin
         height: screenshotItem.layout.implicitHeight + 2 * margin
 
         Screenshot
@@ -274,19 +273,19 @@ Page
     Window
     {
         id: video
-        title:   "Video"
 
         property int margin: Ui.style.paddingMedium
 
-        width: videoDialog.layout.implicitWidth + 20 * margin
+        title:  "Video"
+        width:  videoDialog.layout.implicitWidth + 20 * margin
         height: videoDialog.layout.implicitHeight + 2 * margin
 
         VideoDialog
         {
             id: videoDialog
 
-            margin: screenshot.margin
             anchors.fill: parent
+            margin:       screenshot.margin
 
             onClose: {
                 video.close();
