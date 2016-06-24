@@ -40,7 +40,7 @@ enum class DrawMode : unsigned int
 *    Drawable geometry
 *
 *    The Drawable class wraps the setup and drawing routine for vertex arrays,
-*    vertex attribute bindings and buffers. It can be used to define and render
+*    vertex attribute bindings, and buffers. It can be used to define and render
 *    geometries on the GPU.
 *
 *    Supported drawing types:
@@ -308,6 +308,9 @@ public:
     *  @param[in] index
     *    Vertex buffer index
     *
+    *  @return
+    *    Vertex buffer (never null)
+    *
     *  @remarks
     *    The indices don't need to be continuous.
     *    If an OpenGL buffer at the given index doesn't exist, a new one will be created.
@@ -321,9 +324,11 @@ public:
     *  @param[in] index
     *    Vertex buffer index
     *
+    *  @return
+    *    Vertex buffer (can be null)
+    *
     *  @remarks
     *    The indices don't need to be continuous.
-    *    If an OpenGL buffer at the given index doesn't exist, a new one will be created.
     */
     globjects::Buffer * buffer(size_t index) const;
 
@@ -435,21 +440,6 @@ public:
     *    Difference in bytes between two adjacent vertices
     */
     void setAttributeBindingBuffer(size_t bindingIndex, size_t bufferIndex, gl::GLint baseOffset, gl::GLint stride);
-
-    /**
-    *  @brief
-    *    Set vertex attribute binding
-    *
-    *  @param[in] bindingIndex
-    *    Binding index
-    * @param[in] buffer
-    *    OpenGL buffer
-    *  @param[in] baseOffset
-    *    The base offset into the buffer for all vertices
-    *  @param[in] stride
-    *    Difference in bytes between two adjacent vertices
-    */
-    void setAttributeBindingBuffer(size_t bindingIndex, globjects::Buffer * buffer, gl::GLint baseOffset, gl::GLint stride);
 
     /**
     *  @brief

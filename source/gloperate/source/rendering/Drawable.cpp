@@ -193,11 +193,6 @@ globjects::VertexAttributeBinding * Drawable::attributeBinding(size_t index) con
     return m_vao->binding(index);
 }
 
-void Drawable::setAttributeBindingBuffer(size_t bindingIndex, globjects::Buffer * buffer, gl::GLint baseOffset, gl::GLint stride)
-{
-    m_vao->binding(bindingIndex)->setBuffer(buffer, baseOffset, stride);
-}
-
 void Drawable::setAttributeBindingBuffer(size_t bindingIndex, size_t bufferIndex, gl::GLint baseOffset, gl::GLint stride)
 {
     assert(m_buffers.count(bufferIndex) > 0);
