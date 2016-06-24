@@ -26,3 +26,4 @@ TabBar        1.0 TabBar.qml
 TextField     1.0 TextField.qml
 ScrollArea    1.0 ScrollArea.qml
 LineEdit      1.0 LineEdit.qml
+TextField     1.0 TextField.qml

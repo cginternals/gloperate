@@ -62,10 +62,12 @@ void Surface::setOpenGLContext(AbstractGLContext * context)
 
 glm::vec4 Surface::deviceViewport()
 {
+    return glm::vec4();
 }
 
 glm::vec4 Surface::virtualViewport()
 {
+    return glm::vec4();
 }
 
 void Surface::onUpdate()

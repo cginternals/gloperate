@@ -1,8 +1,9 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.2 as Controls
-import QtQuick.Layouts 1.2
-import QtQuick.Dialogs 1.2
+import QtQuick 2.0
+import QtQuick.Controls 1.0 as Controls
+import QtQuick.Layouts 1.0
+import QtQuick.Dialogs 1.0
 import gloperate.base 1.0
+
 
 Background {
     id: screenshot
@@ -122,7 +123,7 @@ Background {
     FileDialog {
         id: fileDialog
         title: "Please choose an export location and filename"
-        folder: shortcuts.home
+//      folder: shortcuts.home
         selectFolder: false
         selectExisting: false
         selectMultiple: false

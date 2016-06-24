@@ -6,8 +6,8 @@
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(libzeug REQUIRED)
 find_package(GLFW)
+find_package(FFMPEG)
 
 
 # 
@@ -86,8 +86,6 @@ target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LIBRARIES}
     cpplocate::cpplocate
-    libzeug::signalzeug
-    libzeug::reflectionzeug
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
