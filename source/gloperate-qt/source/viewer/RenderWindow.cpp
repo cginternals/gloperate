@@ -3,6 +3,8 @@
 
 #include <glm/glm.hpp>
 
+#include <QCoreApplication>
+
 #include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/viewer/ViewerContext.h>
 

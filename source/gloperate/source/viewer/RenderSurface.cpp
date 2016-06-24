@@ -8,6 +8,8 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
+#include <gloperate/tools/AbstractVideoExporter.h>
+#include <gloperate/tools/ImageExporter.h>
 
 
 using namespace cppassist;
@@ -23,6 +25,9 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
+, m_videoExporter(nullptr)
+, m_imageExporter(nullptr)
+, m_requestVideo(false)
 {
     // Mark render output as required and redraw when it is invalidated
     m_viewer.rendered.setRequired(true);
@@ -36,6 +41,8 @@ RenderSurface::RenderSurface(ViewerContext * viewerContext)
 
 RenderSurface::~RenderSurface()
 {
+    if (m_videoExporter) delete m_videoExporter;
+    if (m_imageExporter) delete m_imageExporter;
 }
 
 Pipeline * RenderSurface::rootPipeline() const
@@ -66,6 +73,16 @@ void RenderSurface::setRenderStage(Stage * stage)
     }
 }
 
+glm::vec4 RenderSurface::deviceViewport()
+{
+    return m_viewer.deviceViewport.value();
+}
+
+glm::vec4 RenderSurface::virtualViewport()
+{
+    return m_viewer.virtualViewport.value();
+}
+
 void RenderSurface::onUpdate()
 {
     float timeDelta = m_viewerContext->timeManager()->timeDelta();
@@ -81,6 +98,11 @@ void RenderSurface::onContextInit()
     if (m_viewer.renderStage())
     {
         m_viewer.renderStage()->initContext(m_openGLContext);
+    }
+
+    if (!m_imageExporter)
+    {
+        m_imageExporter = new ImageExporter(this);
     }
 }
 
@@ -109,6 +131,24 @@ void RenderSurface::onBackgroundColor(float red, float green, float blue)
 void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
 {
     cppassist::details() << "onRender()";
+
+    // [TODO] This is necessary, because the actual render call (which will be called from the video/image exporter)
+    // has to come from within the render thread.
+    if (m_requestVideo)
+    {
+        m_requestVideo = false;
+        m_videoExporter->createVideo([this] (int, int)
+        {
+            this->wakeup();
+        }, true);
+    }
+
+    // [TODO] see above
+    if (m_requestImage)
+    {
+        m_requestImage = false;
+        m_imageExporter->save(true);
+    }
 
     if (m_viewer.renderStage())
     {
@@ -161,6 +201,44 @@ void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos
     cppassist::details() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->wheelScroll(delta, pos);
+}
+
+void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
+{
+    auto component = m_viewerContext->componentManager()->component<AbstractVideoExporter>(backend);
+    if (!component) return;
+
+    if (m_videoExporter) delete m_videoExporter;
+    m_videoExporter = component->createInstance();
+
+    m_videoExporter->init(filename, this, width, height, fps, seconds);
+    m_requestVideo = true;
+}
+
+void RenderSurface::exportImage(std::string filename, int width, int height, int renderIterations)
+{
+    m_imageExporter->init(filename, width, height, renderIterations);
+    m_requestImage = true;
+}
+
+int RenderSurface::exportProgress()
+{
+    if (!m_videoExporter) return 0;
+
+    return m_videoExporter->progress();
+}
+
+cppexpose::VariantArray RenderSurface::videoExporterPlugins()
+{
+    cppexpose::VariantArray plugins;
+    for (auto component : m_viewerContext->componentManager()->components())
+    {
+        if (strcmp(component->type(), "gloperate::AbstractVideoExporter") == 0)
+        {
+            plugins.push_back(cppexpose::Variant(component->name()));
+        }
+    }
+    return plugins;
 }
 
 

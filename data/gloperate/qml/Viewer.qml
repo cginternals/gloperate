@@ -1,5 +1,6 @@
 
 import QtQuick 2.0
+import QtQuick.Window 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
 import gloperate.rendering 1.0
@@ -172,16 +173,25 @@ Page
           { name: 'pipeline', text: 'Demo', icon: '0190-menu.png', enabled: true,
             items: [
               { name: 'choose',     text: 'Choose Pipeline', icon: '0092-tv.png', enabled: false },
-              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: true },
-              { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: false },
-              { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: false }
+              { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: true },
+              { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: true },
+              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: true }
             ]
           }
         ];
 
         onItemClicked: // (menu, name)
         {
-            if (name == 'edit') {
+            if (name == 'screenshot') {
+                screenshot.visible = true;
+            }
+
+            else if (name == 'video') {
+                video.visible = true;
+                videoDialog.update();
+            }
+
+            else if (name == 'edit') {
                 pipelineWindow.createObject(page, {});
             }
         }
@@ -233,6 +243,54 @@ Page
         Settings
         {
             anchors.fill: parent
+        }
+    }
+
+    // Screenshot window
+    Window
+    {
+        id: screenshot
+        title:   "Screenshot"
+
+        property int margin: Ui.style.paddingMedium
+
+        width: screenshotItem.layout.implicitWidth + 20 * margin
+        height: screenshotItem.layout.implicitHeight + 2 * margin
+
+        Screenshot
+        {
+            id: screenshotItem
+
+            margin: screenshot.margin
+            anchors.fill: parent
+
+            onClose: {
+                screenshot.close();
+            }
+        }
+    }
+
+    // Video capture window
+    Window
+    {
+        id: video
+        title:   "Video"
+
+        property int margin: Ui.style.paddingMedium
+
+        width: videoDialog.layout.implicitWidth + 20 * margin
+        height: videoDialog.layout.implicitHeight + 2 * margin
+
+        VideoDialog
+        {
+            id: videoDialog
+
+            margin: screenshot.margin
+            anchors.fill: parent
+
+            onClose: {
+                video.close();
+            }
         }
     }
 

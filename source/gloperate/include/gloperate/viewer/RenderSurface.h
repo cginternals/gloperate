@@ -14,6 +14,8 @@ namespace gloperate
 class Stage;
 class MouseDevice;
 class KeyboardDevice;
+class AbstractVideoExporter;
+class ImageExporter;
 
 
 /**
@@ -69,7 +71,10 @@ public:
     */
     void setRenderStage(Stage * stage);
 
+
     // Virtual Surface functions
+    virtual glm::vec4 deviceViewport() override;
+    virtual glm::vec4 virtualViewport() override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
@@ -82,13 +87,21 @@ public:
     virtual void onMousePress(int button, const glm::ivec2 & pos) override;
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos) override;
+    virtual void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoExporter") override;
+    virtual void exportImage(std::string filename, int width, int height, int renderIterations) override;
+    virtual int exportProgress() override;
+    virtual cppexpose::VariantArray videoExporterPlugins() override;
 
 
 protected:
-    ViewerContainer  m_viewer;         ///< Container for the rendering stage or pipeline
-    unsigned long    m_frame;          ///< Frame counter
-    MouseDevice    * m_mouseDevice;    ///< Device for Mouse Events
-    KeyboardDevice * m_keyboardDevice; ///< Device for Keyboard Events
+    ViewerContainer         m_viewer;         ///< Container for the rendering stage or pipeline
+    unsigned long           m_frame;          ///< Frame counter
+    MouseDevice           * m_mouseDevice;    ///< Device for Mouse Events
+    KeyboardDevice        * m_keyboardDevice; ///< Device for Keyboard Events
+    AbstractVideoExporter * m_videoExporter;  ///< Tool for rendering surface to video file
+    ImageExporter         * m_imageExporter;  ///< Tool for exporting an image from surface
+    bool                    m_requestVideo;   ///< Flag to request a videoTool call during next render step
+    bool                    m_requestImage;   ///< Flag to request a ImageExporter call during next render step
 };
 
 

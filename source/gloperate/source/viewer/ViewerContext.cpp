@@ -243,10 +243,12 @@ void ViewerContext::initializeScripting(cppexpose::ScriptContext * scriptContext
 void ViewerContext::registerSurface(Surface * surface)
 {
     m_surfaces.push_back(surface);
+    addProperty(surface);
 }
 
 void ViewerContext::unregisterSurface(Surface * surface)
 {
+    removeProperty(surface);
     m_surfaces.erase(std::find(m_surfaces.begin(), m_surfaces.end(), surface));
 }
 

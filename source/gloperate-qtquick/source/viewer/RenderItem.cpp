@@ -88,6 +88,11 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
         }
     } );
 
+    m_surface->wakeup.connect([] ()
+    {
+        QCoreApplication::instance()->processEvents();
+    } );
+
     // Connect to window draw event
     connect(
         window, &QQuickWindow::beforeRendering,

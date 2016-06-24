@@ -73,6 +73,7 @@ int main(int argc, char * argv[])
     );
     viewerContext.componentManager()->scanPlugins("loaders");
     viewerContext.componentManager()->scanPlugins("stages");
+    viewerContext.componentManager()->scanPlugins("exporter");
 
     // Load and show QML
     auto * window = new QuickView(&qmlEngine);

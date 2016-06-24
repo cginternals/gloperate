@@ -28,6 +28,8 @@ Item
     property color controlColorHl:   '#d0d0d0'
     property color controlColorHov:  '#f0f0f0'
     property color controlTextColor: '#222222'
+    property color fieldColor:       '#ffffff'
+    property color progressColor:    '#ADD8E6'
 
     // Borders
     property color borderColor:     '#888888'

@@ -1,4 +1,6 @@
 
+#include <globjects/base/baselogging.h>
+
 #include <gloperate/viewer/Surface.h>
 
 #include <gloperate/viewer/ViewerContext.h>
@@ -8,10 +10,19 @@ namespace gloperate
 {
 
 
+static int s_surfaces = 0;
+
+
 Surface::Surface(ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+: cppexpose::Object("surface" + std::to_string(s_surfaces++))
+, m_viewerContext(viewerContext)
 , m_openGLContext(nullptr)
 {
+    addFunction("createVideo", this, &Surface::createVideo);
+    addFunction("exportImage", this, &Surface::exportImage);
+    addFunction("exportProgress", this, &Surface::exportProgress);
+    addFunction("videoExporterPlugins", this, &Surface::videoExporterPlugins);
+
     m_viewerContext->registerSurface(this);
 }
 
@@ -47,6 +58,14 @@ void Surface::setOpenGLContext(AbstractGLContext * context)
 
         onContextInit();
     }
+}
+
+glm::vec4 Surface::deviceViewport()
+{
+}
+
+glm::vec4 Surface::virtualViewport()
+{
 }
 
 void Surface::onUpdate()
@@ -95,6 +114,24 @@ void Surface::onMouseRelease(int, const glm::ivec2 &)
 
 void Surface::onMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
+}
+
+void Surface::createVideo(std::string, int, int, int, int, std::string)
+{
+}
+
+void Surface::exportImage(std::string, int, int, int)
+{
+}
+
+int Surface::exportProgress()
+{
+    return 0;
+}
+
+cppexpose::VariantArray Surface::videoExporterPlugins()
+{
+    return cppexpose::VariantArray();
 }
 
 
