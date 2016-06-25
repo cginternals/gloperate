@@ -82,17 +82,86 @@ public:
     */
     void setGeometry(Drawable * geometry);
 
-    // [TODO] Comment
+    /**
+    *  @brief
+    *    Get recording transform feedback object
+    *
+    *  @return
+    *    Transform feedback object (can be null)
+    */
     globjects::TransformFeedback * recordTransformFeedback() const;
+
+    /**
+    *  @brief
+    *    Set recording transform feedback object
+    *
+    *  @param[in] transformFeedback
+    *    Transform feedback object (can be null)
+    *
+    *  @remarks
+    *    If set, the render pass geometry output will be recorded into the specified
+    *    transform feedback object, rasterization to screen is disabled.
+    */
     void setRecordTransformFeedback(globjects::TransformFeedback * transformFeedback);
 
+    /**
+    *  @brief
+    *    Get recording transform feedback primitive mode
+    *
+    *  @return
+    *    Primitive mode (e.g., GL_POINTS, GL_TRIANGLES, ...)
+    */
     gl::GLenum recordTransformFeedbackMode() const;
+
+    /**
+    *  @brief
+    *    Set recording transform feedback primitive mode
+    *
+    *  @param[in] mode
+    *    Primitive mode (e.g., GL_POINTS, GL_TRIANGLES, ...)
+    */
     void setRecordTransformFeedbackMode(gl::GLenum mode);
 
+    /**
+    *  @brief
+    *    Get playback transform feedback object
+    *
+    *  @return
+    *    Transform feedback object (can be null)
+    */
     globjects::TransformFeedback * drawTransformFeedback() const;
+
+    /**
+    *  @brief
+    *    Set playback transform feedback object
+    *
+    *  @param[in] transformFeedback
+    *    Transform feedback object (can be null)
+    *
+    *  @remarks
+    *    If set, the render pass will draw the geometry from the transform
+    *    feedback object instead of rendering the associated drawable.
+    *    A recording transform feedback object can be active at the same time, but
+    *    must not share the same buffer with the transform feedback playback object.
+    */
     void setDrawTransformFeedback(globjects::TransformFeedback * transformFeedback);
 
+    /**
+    *  @brief
+    *    Get playback transform feedback primitive mode
+    *
+    *  @return
+    *    Primitive mode (e.g., GL_POINTS, GL_TRIANGLES, ...)
+    */
     gl::GLenum drawTransformFeedbackMode() const;
+
+    /**
+    *  @brief
+    *    Set playback transform feedback primitive mode
+    *
+    *  @param[in] mode
+    *    Primitive mode (e.g., GL_POINTS, GL_TRIANGLES, ...)
+    */
     void setDrawTransformFeedbackMode(gl::GLenum mode);
 
     /**
@@ -428,10 +497,10 @@ protected:
     globjects::ref_ptr<Drawable>                     m_geometry;                    ///< Geometry rendered by the render pass
     globjects::ref_ptr<globjects::Program>           m_program;                     ///< Program used for rendering
     globjects::ref_ptr<globjects::ProgramPipeline>   m_programPipeline;             ///< Program pipeline used for rendering
-    globjects::ref_ptr<globjects::TransformFeedback> m_recordTransformFeedback;     ///< [TODO]
-    gl::GLenum                                       m_recordTransformFeedbackMode; ///< [TODO]
-    globjects::ref_ptr<globjects::TransformFeedback> m_drawTransformFeedback;       ///< [TODO]
-    gl::GLenum                                       m_drawTransformFeedbackMode;   ///< [TODO]
+    globjects::ref_ptr<globjects::TransformFeedback> m_recordTransformFeedback;     ///< Transform feedback object for recording (can be null)
+    gl::GLenum                                       m_recordTransformFeedbackMode; ///< Primitive mode for recording transform feedback
+    globjects::ref_ptr<globjects::TransformFeedback> m_drawTransformFeedback;       ///< Transform feedback object for playback (can be null)
+    gl::GLenum                                       m_drawTransformFeedbackMode;   ///< Primitive mode for playback transform feedback
 
     std::unordered_map<size_t, globjects::ref_ptr<globjects::Texture>> m_textures;                 /// Collection of all textures associated with this render pass. The key is used as the active texture binding.
     std::unordered_map<size_t, globjects::ref_ptr<globjects::Sampler>> m_samplers;                 /// Collection of all samplers associated with this render pass. The key is used as the sampler binding index.
