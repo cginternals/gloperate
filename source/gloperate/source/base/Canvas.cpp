@@ -45,9 +45,9 @@ Canvas::~Canvas()
     if (m_imageExporter) delete m_imageExporter;
 }
 
-Pipeline * Canvas::rootPipeline() const
+PipelineContainer * Canvas::pipelineContainer() const
 {
-    return static_cast<Pipeline *>(const_cast<PipelineContainer *>(&m_pipelineContainer));
+    return const_cast<PipelineContainer *>(&m_pipelineContainer);
 }
 
 Stage * Canvas::renderStage() const

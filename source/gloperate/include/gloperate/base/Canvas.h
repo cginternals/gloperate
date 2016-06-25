@@ -42,12 +42,12 @@ public:
 
     /**
     *  @brief
-    *    Get root pipeline
+    *    Get pipeline container
     *
     *  @return
-    *    Root pipeline (never null)
+    *    Pipeline container (never null)
     */
-    Pipeline * rootPipeline() const;
+    PipelineContainer * pipelineContainer() const;
 
     /**
     *  @brief

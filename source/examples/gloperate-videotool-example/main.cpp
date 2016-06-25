@@ -49,7 +49,7 @@ int main(int argc, char * argv[])
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
     window.context()->release();
 
-    FFMPEGVideoExporter videoExporter("gloperate-videotool-example_out.avi", window.renderSurface(), 30, 5, 1600, 900);
+    FFMPEGVideoExporter videoExporter("gloperate-videotool-example_out.avi", window.canvas(), 30, 5, 1600, 900);
     videoExporter.createVideo([] (int x, int y) { globjects::debug() << "Progress: " << x*100/y <<"%"; });
 
     return 0;

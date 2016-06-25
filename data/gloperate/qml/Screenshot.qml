@@ -114,7 +114,7 @@ Background {
             icon: '0040-file-picture.png'
 
             onClicked: {
-                gloperate.surface0.exportImage(filepath.text, width.editText, height.editText, iterations.editText);
+                gloperate.canvas0.exportImage(filepath.text, width.editText, height.editText, iterations.editText);
 
                 close();
             }

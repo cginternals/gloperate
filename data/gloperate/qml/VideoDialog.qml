@@ -16,7 +16,7 @@ Background {
     property alias layout: mainLayout
 
     function update() {
-        var plugins = gloperate.surface0.videoExporterPlugins();
+        var plugins = gloperate.canvas0.videoExporterPlugins();
         plugins.forEach(function(entry) {
             backends.append({text: entry});
         })
@@ -146,7 +146,7 @@ Background {
             icon: '0021-video-camera.png'
 
             onClicked: {
-                gloperate.surface0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
+                gloperate.canvas0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
             }
         }
     }

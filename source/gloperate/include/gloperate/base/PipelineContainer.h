@@ -21,10 +21,10 @@ namespace gloperate
 *  @brief
 *    Pipeline container
 *
-*    The class is used as an interface between the RenderSurface and
-*    the current rendering stage or pipeline. It is itself a pipeline
+*    The class is used as an interface between the canvas and the
+*    current rendering stage or pipeline. It is itself a pipeline
 *    and as such at the root of the parent chain. It defines the
-*    inputs and outputs that connect the render surface to the rendering
+*    inputs and outputs that connect the canvas to the rendering
 *    stage or pipeline it contains.
 */
 class GLOPERATE_API PipelineContainer : public Pipeline
@@ -76,7 +76,7 @@ public:
     *
     *  @remarks
     *    When setting a new render stage, the old render stage is destroyed.
-    *    The surface takes ownership over the stage.
+    *    The canvas takes ownership over the stage.
     */
     void setRenderStage(Stage * stage);
 

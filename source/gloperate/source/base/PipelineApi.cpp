@@ -193,7 +193,7 @@ Stage * PipelineApi::getStage(const std::string & name)
     {
         // Get sub-stage
         if (!stage && subname == "Viewer") {
-            stage = canvas->rootPipeline();
+            stage = canvas->pipelineContainer();
         } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
         } else {
@@ -246,7 +246,7 @@ AbstractSlot * PipelineApi::getSlot(const std::string & name)
 
         // Get sub-stage
         if (!stage && subname == "Viewer") {
-            stage = canvas->rootPipeline();
+            stage = canvas->pipelineContainer();
         } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
         } else {
