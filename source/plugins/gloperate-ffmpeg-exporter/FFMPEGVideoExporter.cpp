@@ -9,14 +9,14 @@
 #include <globjects/base/File.h>
 #include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>
-#include <gloperate/base/AbstractGLContext.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/RenderSurface.h>
+#include <gloperate/base/Canvas.h>
+#include <gloperate/base/AbstractGLContext.h>
 
 
 using namespace globjects;
@@ -63,11 +63,11 @@ FFMPEGVideoExporter::FFMPEGVideoExporter()
 {
 }
 
-FFMPEGVideoExporter::FFMPEGVideoExporter(const std::string & filename, RenderSurface * surface, uint fps, uint length, uint width, uint height)
+FFMPEGVideoExporter::FFMPEGVideoExporter(const std::string & filename, gloperate::Canvas * canvas, uint fps, uint length, uint width, uint height)
 : m_videoEncoder(new FFMPEGVideoEncoder())
-, m_environment(surface->environment())
-, m_surface(surface)
-, m_glContext(surface->openGLContext())
+, m_environment(canvas->environment())
+, m_canvas(canvas)
+, m_glContext(canvas->openGLContext())
 , m_filename(filename)
 , m_fps(fps)
 , m_length(length)
@@ -83,12 +83,12 @@ FFMPEGVideoExporter::~FFMPEGVideoExporter()
     delete m_videoEncoder;
 }
 
-void FFMPEGVideoExporter::init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length)
+void FFMPEGVideoExporter::init(const std::string & filename, gloperate::Canvas * canvas, uint width, uint height, uint fps, uint length)
 {
     m_videoEncoder = new FFMPEGVideoEncoder();
-    m_environment = surface->environment();
-    m_surface = surface;
-    m_glContext = surface->openGLContext();
+    m_environment = canvas->environment();
+    m_canvas = canvas;
+    m_glContext = canvas->openGLContext();
     m_filename = filename;
     m_fps = fps;
     m_length = length;
@@ -100,15 +100,15 @@ void FFMPEGVideoExporter::init(const std::string & filename, gloperate::RenderSu
 
 void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bool glContextActive)
 {
-    auto deviceViewport = m_surface->deviceViewport();
-    auto virtualViewport = m_surface->virtualViewport();
+    auto deviceViewport = m_canvas->deviceViewport();
+    auto virtualViewport = m_canvas->virtualViewport();
     auto vp = glm::vec4(0, 0, m_width, m_height);
     auto length = m_length * m_fps;
 
     createAndSetupGeometry();
     createAndSetupShader();
 
-    m_surface->onViewport(vp, vp);
+    m_canvas->onViewport(vp, vp);
 
     Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
@@ -128,7 +128,7 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
         m_depth_quad->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
 
         m_environment->update(m_timeDelta);
-        m_surface->onRender(m_fbo);
+        m_canvas->onRender(m_fbo);
 
 
         m_fbo_quad->bind(gl::GL_FRAMEBUFFER);
@@ -169,7 +169,7 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
         m_glContext->release();
     }
 
-    m_surface->onViewport(deviceViewport, virtualViewport);
+    m_canvas->onViewport(deviceViewport, virtualViewport);
 
     progress(1, 1);
     m_progress = 100;

@@ -4,7 +4,7 @@
 #include <QVariant>
 #include <QColor>
 
-#include <gloperate/base/Surface.h>
+#include <gloperate/base/AbstractCanvas.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/input.h>
@@ -22,7 +22,7 @@ namespace gloperate_qtquick
 
 RenderItem::RenderItem(QQuickItem * parent)
 : QQuickItem(parent)
-, m_surface(nullptr)
+, m_canvas(nullptr)
 , m_devicePixelRatio(1.0f)
 , m_initialized(false)
 , m_stage("")
@@ -43,9 +43,9 @@ RenderItem::~RenderItem()
 {
 }
 
-gloperate::Surface * RenderItem::surface() const
+gloperate::AbstractCanvas * RenderItem::canvas() const
 {
-    return m_surface;
+    return m_canvas;
 }
 
 QString RenderItem::stage() const
@@ -69,18 +69,18 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
     // Get device/pixel-ratio
     m_devicePixelRatio = window->devicePixelRatio();
 
-    // Create render surface and render stage
+    // Create canvas and render stage
     QuickView * view = static_cast<QuickView*>(window);
     if (view)
     {
-        m_surface = Utils::createSurface(
+        m_canvas = Utils::createCanvas(
             view->environment(),
             Utils::createRenderStage(view->environment(), m_stage.toStdString())
         );
     }
 
-    // Repaint window when surface needs to be updated
-    m_surface->redraw.connect([this] ()
+    // Repaint window when canvas needs to be updated
+    m_canvas->redraw.connect([this] ()
     {
         if (this->window())
         {
@@ -88,7 +88,7 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
         }
     } );
 
-    m_surface->wakeup.connect([] ()
+    m_canvas->wakeup.connect([] ()
     {
         QCoreApplication::instance()->processEvents();
     } );
@@ -103,7 +103,7 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
 
 void RenderItem::onBeforeRendering()
 {
-    if (!m_surface || !this->window())
+    if (!m_canvas || !this->window())
     {
         return;
     }
@@ -111,10 +111,10 @@ void RenderItem::onBeforeRendering()
     // Get qml view
     QuickView * view = static_cast<QuickView*>(this->window());
 
-    // Initialize surface before rendering the first time
+    // Initialize canvas before rendering the first time
     if (!m_initialized)
     {
-        m_surface->setOpenGLContext(view->context());
+        m_canvas->setOpenGLContext(view->context());
 
         m_initialized = true;
     }
@@ -124,11 +124,11 @@ void RenderItem::onBeforeRendering()
     {
         QVariant var = view->rootObject()->property("backgroundColor");
         QColor color = var.value<QColor>();
-        m_surface->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
+        m_canvas->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
     }
 
     // Render into item
-    m_surface->onRender();
+    m_canvas->onRender();
 
     // Reset OpenGL state
     window()->resetOpenGLState();
@@ -138,7 +138,7 @@ void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldG
 {
     QQuickItem::geometryChanged(newGeometry, oldGeometry);
 
-    if (!m_surface)
+    if (!m_canvas)
     {
         return;
     }
@@ -159,7 +159,7 @@ void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldG
     float devWidth   = virtWidth  * m_devicePixelRatio;
     float devHeight  = virtHeight * m_devicePixelRatio;
 
-    m_surface->onViewport(
+    m_canvas->onViewport(
         glm::vec4(devX,  devY,  devWidth,  devHeight)
       , glm::vec4(virtX, virtY, virtWidth, virtHeight)
     );
@@ -167,9 +167,9 @@ void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldG
 
 void RenderItem::keyPressEvent(QKeyEvent * event)
 {
-    if (m_surface)
+    if (m_canvas)
     {
-        m_surface->onKeyPress(
+        m_canvas->onKeyPress(
             fromQtKeyCode(event->key(), event->modifiers()),
             fromQtModifiers(event->modifiers())
         );
@@ -178,9 +178,9 @@ void RenderItem::keyPressEvent(QKeyEvent * event)
 
 void RenderItem::keyReleaseEvent(QKeyEvent * event)
 {
-    if (m_surface)
+    if (m_canvas)
     {
-        m_surface->onKeyRelease(
+        m_canvas->onKeyRelease(
             fromQtKeyCode(event->key(), event->modifiers()),
             fromQtModifiers(event->modifiers())
         );
@@ -189,9 +189,9 @@ void RenderItem::keyReleaseEvent(QKeyEvent * event)
 
 void RenderItem::mouseMoveEvent(QMouseEvent * event)
 {
-    if (m_surface)
+    if (m_canvas)
     {
-        m_surface->onMouseMove(glm::ivec2(
+        m_canvas->onMouseMove(glm::ivec2(
             (int)(event->x() * m_devicePixelRatio),
             (int)(event->y() * m_devicePixelRatio))
         );
@@ -200,9 +200,9 @@ void RenderItem::mouseMoveEvent(QMouseEvent * event)
 
 void RenderItem::mousePressEvent(QMouseEvent * event)
 {
-    if (m_surface)
+    if (m_canvas)
     {
-        m_surface->onMousePress(
+        m_canvas->onMousePress(
             fromQtMouseButton(event->button()),
             glm::ivec2( (int)(event->x() * m_devicePixelRatio),
                         (int)(event->y() * m_devicePixelRatio) )
@@ -212,9 +212,9 @@ void RenderItem::mousePressEvent(QMouseEvent * event)
 
 void RenderItem::mouseReleaseEvent(QMouseEvent * event)
 {
-    if (m_surface)
+    if (m_canvas)
     {
-        m_surface->onMouseRelease(
+        m_canvas->onMouseRelease(
             fromQtMouseButton(event->button()),
             glm::ivec2( (int)(event->x() * m_devicePixelRatio),
                         (int)(event->y() * m_devicePixelRatio) )
@@ -224,9 +224,9 @@ void RenderItem::mouseReleaseEvent(QMouseEvent * event)
 
 void RenderItem::wheelEvent(QWheelEvent * event)
 {
-    if (m_surface)
+    if (m_canvas)
     {
-        m_surface->onMouseWheel(
+        m_canvas->onMouseWheel(
             glm::vec2( event->orientation() == Qt::Vertical ? 0.0f : (float)event->delta(),
                        event->orientation() == Qt::Vertical ? (float)event->delta() : 0.0f ),
             glm::ivec2( (int)(event->x() * m_devicePixelRatio),

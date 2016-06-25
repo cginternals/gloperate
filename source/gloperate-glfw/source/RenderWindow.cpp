@@ -4,7 +4,7 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <gloperate/base/RenderSurface.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/input/constants.h>
 
 #include <gloperate-glfw/GLContext.h>
@@ -21,9 +21,9 @@ namespace gloperate_glfw
 
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
-, m_surface(new RenderSurface(environment))
+, m_canvas(new Canvas(environment))
 {
-    m_surface->redraw.connect([this] ()
+    m_canvas->redraw.connect([this] ()
     {
         repaint();
     } );
@@ -31,7 +31,7 @@ RenderWindow::RenderWindow(gloperate::Environment * environment)
 
 RenderWindow::~RenderWindow()
 {
-    delete m_surface;
+    delete m_canvas;
 }
 
 gloperate::Environment * RenderWindow::environment() const
@@ -41,34 +41,34 @@ gloperate::Environment * RenderWindow::environment() const
 
 gloperate::Stage * RenderWindow::renderStage() const
 {
-    return m_surface->renderStage();
+    return m_canvas->renderStage();
 }
 
-gloperate::RenderSurface * RenderWindow::renderSurface() const
+gloperate::Canvas * RenderWindow::canvas() const
 {
-    return m_surface;
+    return m_canvas;
 }
 
 void RenderWindow::setRenderStage(gloperate::Stage * stage)
 {
-    m_surface->setRenderStage(stage);
+    m_canvas->setRenderStage(stage);
 }
 
 void RenderWindow::onContextInit()
 {
-    m_surface->setOpenGLContext(m_context);
+    m_canvas->setOpenGLContext(m_context);
 }
 
 void RenderWindow::onContextDeinit()
 {
-    m_surface->setOpenGLContext(nullptr);
+    m_canvas->setOpenGLContext(nullptr);
 }
 
 void RenderWindow::onResize(ResizeEvent & event)
 {
     m_virtualSize = event.size();
 
-    m_surface->onViewport(
+    m_canvas->onViewport(
         glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
       , glm::vec4(0, 0, m_virtualSize.x, m_virtualSize.y)
     );
@@ -78,7 +78,7 @@ void RenderWindow::onFramebufferResize(ResizeEvent & event)
 {
     m_deviceSize = event.size();
 
-    m_surface->onViewport(
+    m_canvas->onViewport(
         glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
       , glm::vec4(0, 0, m_virtualSize.x, m_virtualSize.y)
     );
@@ -90,7 +90,7 @@ void RenderWindow::onMove(MoveEvent &)
 
 void RenderWindow::onPaint(PaintEvent &)
 {
-    m_surface->onRender();
+    m_canvas->onRender();
 }
 
 void RenderWindow::onKeyPress(KeyEvent & event)
@@ -100,7 +100,7 @@ void RenderWindow::onKeyPress(KeyEvent & event)
       setFullscreen(!isFullscreen());
     }
 
-    m_surface->onKeyPress(
+    m_canvas->onKeyPress(
         fromGLFWKeyCode(event.key()),
         fromGLFWModifier(event.modifiers())
     );
@@ -108,7 +108,7 @@ void RenderWindow::onKeyPress(KeyEvent & event)
 
 void RenderWindow::onKeyRelease(KeyEvent & event)
 {
-    m_surface->onKeyRelease(
+    m_canvas->onKeyRelease(
         fromGLFWKeyCode(event.key()),
         fromGLFWModifier(event.modifiers())
     );
@@ -116,7 +116,7 @@ void RenderWindow::onKeyRelease(KeyEvent & event)
 
 void RenderWindow::onMousePress(MouseEvent & event)
 {
-    m_surface->onMousePress(
+    m_canvas->onMousePress(
         fromGLFWMouseButton(event.button())
       , event.pos()
     );
@@ -124,7 +124,7 @@ void RenderWindow::onMousePress(MouseEvent & event)
 
 void RenderWindow::onMouseRelease(MouseEvent & event)
 {
-    m_surface->onMouseRelease(
+    m_canvas->onMouseRelease(
         fromGLFWMouseButton(event.button())
       , event.pos()
     );
@@ -132,7 +132,7 @@ void RenderWindow::onMouseRelease(MouseEvent & event)
 
 void RenderWindow::onMouseMove(MouseEvent & event)
 {
-    m_surface->onMouseMove(event.pos());
+    m_canvas->onMouseMove(event.pos());
 }
 
 void RenderWindow::onMouseEnter(MouseEnterEvent &)
@@ -145,7 +145,7 @@ void RenderWindow::onMouseLeave(MouseLeaveEvent &)
 
 void RenderWindow::onScroll(ScrollEvent & event)
 {
-    m_surface->onMouseWheel(
+    m_canvas->onMouseWheel(
         event.offset()
       , event.pos()
     );

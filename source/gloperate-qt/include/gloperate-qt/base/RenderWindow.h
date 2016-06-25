@@ -7,7 +7,7 @@
 
 namespace gloperate {
     class Environment;
-    class RenderSurface;
+    class Canvas;
     class Stage;
 }
 
@@ -87,8 +87,8 @@ protected:
 
 
 protected:
-    gloperate::Environment   * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    gloperate::RenderSurface * m_surface;     ///< Surface that renders on the window (must NOT be null)
+    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    gloperate::Canvas      * m_canvas;      ///< Canvas that renders onto the window (must NOT be null)
 };
 
 

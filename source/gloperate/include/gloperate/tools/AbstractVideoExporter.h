@@ -12,15 +12,21 @@ namespace gloperate
 {
 
 
-class RenderSurface;
+class Canvas;
 
 
 /**
-*  @brief Abstract class for video exporter classes which render from a RenderSurface to a video file.
+*  @brief
+*    Abstract class for video exporter classes which render from a canvas to a video file
 */
 class GLOPERATE_API AbstractVideoExporter
 {
 public:
+    /**
+    *  @brief
+    *    Constructor
+    */
+    AbstractVideoExporter();
 
     /**
     *  @brief
@@ -34,8 +40,8 @@ public:
     *
     *  @param[in] filename
     *    Name of output video file
-    *  @param[in] surface
-    *    The surface that will be rendered into a video
+    *  @param[in] canvas
+    *    Canvas that will be rendered into a video
     *  @param[in] width
     *    Width (in pixels) of output video
     *  @param[in] height
@@ -45,7 +51,7 @@ public:
     *  @param[in] length
     *    Length (in seconds) of output video
     */
-    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length) = 0;
+    virtual void init(const std::string & filename, Canvas * canvas, uint width, uint height, uint fps, uint length) = 0;
 
     /**
     *  @brief

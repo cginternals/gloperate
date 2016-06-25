@@ -6,7 +6,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/RenderSurface.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/AbstractGLContext.h>
 #include <gloperate/base/Image.h>
@@ -18,10 +18,10 @@ namespace gloperate
 {
 
 
-ImageExporter::ImageExporter(RenderSurface * surface)
-: m_surface(surface)
-, m_environment(surface->environment())
-, m_glContext(surface->openGLContext())
+ImageExporter::ImageExporter(Canvas * canvas)
+: m_canvas(canvas)
+, m_environment(canvas->environment())
+, m_glContext(canvas->openGLContext())
 , m_fbo(new globjects::Framebuffer())
 , m_color(globjects::Texture::createDefault(gl::GL_TEXTURE_2D))
 , m_depth(new globjects::Renderbuffer())
@@ -34,6 +34,10 @@ ImageExporter::ImageExporter(RenderSurface * surface)
     m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 }
 
+ImageExporter::~ImageExporter()
+{
+}
+
 void ImageExporter::init(const std::string & filename, int width, int height, int renderIterations)
 {
     m_filename = filename;
@@ -44,11 +48,11 @@ void ImageExporter::init(const std::string & filename, int width, int height, in
 
 void ImageExporter::save(bool glContextActive)
 {
-    auto deviceViewport = m_surface->deviceViewport();
-    auto virtualViewport = m_surface->virtualViewport();
+    auto deviceViewport = m_canvas->deviceViewport();
+    auto virtualViewport = m_canvas->virtualViewport();
     auto vp = glm::vec4(0, 0, m_width, m_height);
 
-    m_surface->onViewport(vp, vp);
+    m_canvas->onViewport(vp, vp);
 
     Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
@@ -63,7 +67,7 @@ void ImageExporter::save(bool glContextActive)
     for (int i = 0; i < m_renderIterations; ++i)
     {
         m_environment->update(1.f/30.f);
-        m_surface->onRender(m_fbo);
+        m_canvas->onRender(m_fbo);
     }
 
     if (!glContextActive)
@@ -73,7 +77,7 @@ void ImageExporter::save(bool glContextActive)
 
     m_environment->resourceManager()->store<globjects::Texture>(m_filename, m_color);
 
-    m_surface->onViewport(deviceViewport, virtualViewport);
+    m_canvas->onViewport(deviceViewport, virtualViewport);
 }
 
 

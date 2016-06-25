@@ -30,7 +30,7 @@ namespace gloperate
 {
 
 
-class Surface;
+class AbstractCanvas;
 
 
 /**
@@ -48,7 +48,7 @@ class Surface;
 */
 class GLOPERATE_API Environment : public cppexpose::Object
 {
-    friend class Surface;
+    friend class AbstractCanvas;
 
 
 public:
@@ -121,13 +121,13 @@ public:
     //@{
     /**
     *  @brief
-    *    Get surfaces
+    *    Get canvases
     *
     *  @return
-    *    List of registered surfaces (must NOT be null)
+    *    List of registered canvases (must NOT be null)
     */
-    const std::vector<Surface *> & surfaces() const;
-    std::vector<Surface *> & surfaces();
+    const std::vector<AbstractCanvas *> & canvases() const;
+    std::vector<AbstractCanvas *> & canvases();
     //@}
 
     //@{
@@ -243,39 +243,39 @@ protected:
 
     /**
     *  @brief
-    *    Register render surface
+    *    Register canvas
     *
-    *  @param[in] surface
-    *    Render surface (must NOT be null!)
+    *  @param[in] canvas
+    *    Canvas (must NOT be null!)
     */
-    void registerSurface(Surface * surface);
+    void registerCanvas(AbstractCanvas * canvas);
 
     /**
     *  @brief
-    *    Un-register render surface
+    *    Un-register canvas
     *
-    *  @param[in] surface
-    *    Render surface (must NOT be null!)
+    *  @param[in] canvas
+    *    Canvas (must NOT be null!)
     */
-    void unregisterSurface(Surface * surface);
+    void unregisterCanvas(AbstractCanvas * canvas);
     //@}
 
 
 protected:
-    ComponentManager            m_componentManager;  ///< Manager for plugin libraries and components
-    ResourceManager             m_resourceManager;   ///< Resource manager for loaders/storers
-    TimeManager                 m_timeManager;       ///< Manager for virtual time and timers
-    System                      m_system;            ///< System functions for scripting
-    PipelineApi                 m_pipeline;          ///< Pipeline API for scripting
-    InputManager                m_inputManager;      ///< Manager for Devices, -Providers and InputEvents
+    ComponentManager              m_componentManager; ///< Manager for plugin libraries and components
+    ResourceManager               m_resourceManager;  ///< Resource manager for loaders/storers
+    TimeManager                   m_timeManager;      ///< Manager for virtual time and timers
+    System                        m_system;           ///< System functions for scripting
+    PipelineApi                   m_pipeline;         ///< Pipeline API for scripting
+    InputManager                  m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
 
-    std::vector<Surface *>      m_surfaces;          ///< List of active surfaces
+    std::vector<AbstractCanvas *> m_canvases;         ///< List of active canvases
 
-    cppexpose::TreeNode         m_tree;              ///< Test object for scripting
+    cppexpose::TreeNode           m_tree;             ///< Test object for scripting
 
-    cppexpose::ScriptContext  * m_scriptContext;     ///< Scripting context
+    cppexpose::ScriptContext    * m_scriptContext;    ///< Scripting context
 
-    std::string                 m_helpText;          ///< Text that is displayed on 'help'
+    std::string                   m_helpText;         ///< Text that is displayed on 'help'
 };
 
 

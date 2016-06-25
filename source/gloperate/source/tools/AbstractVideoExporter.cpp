@@ -6,6 +6,10 @@ namespace gloperate
 {
 
 
+AbstractVideoExporter::AbstractVideoExporter()
+{
+}
+
 AbstractVideoExporter::~AbstractVideoExporter()
 {
 }

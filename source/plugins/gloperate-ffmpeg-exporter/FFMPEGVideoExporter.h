@@ -25,7 +25,7 @@
 
 namespace gloperate {
     class Environment;
-    class RenderSurface;
+    class Canvas;
     class AbstractGLContext;
 }
 
@@ -42,7 +42,7 @@ CPPEXPOSE_DECLARE_COMPONENT(
   , "" // Tags
   , "" // Icon
   , "" // Annotations
-  , "Export the RenderSurface to video using FFMPEG"
+  , "Export canvas to video using FFMPEG"
   , GLOPERATE_AUTHOR_ORGANIZATION
   , "v1.0.0"
 )
@@ -60,8 +60,8 @@ public:
     *
     *  @param[in] filename
     *    Name of output video file
-    *  @param[in] surface
-    *    The surface that will be rendered into a video
+    *  @param[in] canvas
+    *    Canvas that will be rendered into a video
     *  @param[in] width
     *    Width (in pixels) of output video
     *  @param[in] height
@@ -72,7 +72,7 @@ public:
     *    Length (in seconds) of output video
     */
     FFMPEGVideoExporter(const std::string & filename,
-              gloperate::RenderSurface * surface,
+              gloperate::Canvas * canvas,
               uint fps,
               uint length,
               uint width,
@@ -90,8 +90,8 @@ public:
     *
     *  @param[in] filename
     *    Name of output video file
-    *  @param[in] surface
-    *    The surface that will be rendered into a video
+    *  @param[in] canvas
+    *    Canvas that will be rendered into a video
     *  @param[in] width
     *    Width (in pixels) of output video
     *  @param[in] height
@@ -101,7 +101,7 @@ public:
     *  @param[in] length
     *    Length (in seconds) of output video
     */
-    virtual void init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length) override;
+    virtual void init(const std::string & filename, gloperate::Canvas * canvas, uint width, uint height, uint fps, uint length) override;
 
     /**
     *  @brief
@@ -132,7 +132,7 @@ protected:
 protected:
     FFMPEGVideoEncoder                         * m_videoEncoder;
     gloperate::Environment                     * m_environment;
-    gloperate::RenderSurface                   * m_surface;
+    gloperate::Canvas                          * m_canvas;
     gloperate::AbstractGLContext               * m_glContext;
 
     globjects::ref_ptr<globjects::Framebuffer>   m_fbo;

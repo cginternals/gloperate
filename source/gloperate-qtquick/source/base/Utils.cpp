@@ -7,7 +7,7 @@
 #include <globjects/globjects.h>
 
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/RenderSurface.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/pipeline/Stage.h>
 
     
@@ -40,11 +40,11 @@ gloperate::Stage * Utils::createRenderStage(gloperate::Environment * environment
 }
 
 
-gloperate::Surface * Utils::createSurface(gloperate::Environment * environment, gloperate::Stage * renderStage)
+gloperate::AbstractCanvas * Utils::createCanvas(gloperate::Environment * environment, gloperate::Stage * renderStage)
 {
-    gloperate::RenderSurface * renderSurface = new gloperate::RenderSurface(environment);
-    renderSurface->setRenderStage(renderStage);
-    return renderSurface;
+    gloperate::Canvas * canvas = new gloperate::Canvas(environment);
+    canvas->setRenderStage(renderStage);
+    return canvas;
 }
 
 

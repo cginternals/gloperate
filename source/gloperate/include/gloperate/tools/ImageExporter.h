@@ -16,7 +16,7 @@ namespace gloperate
 {
 
 
-class RenderSurface;
+class Canvas;
 class Environment;
 class AbstractGLContext;
 class ResourceManager;
@@ -24,12 +24,25 @@ class ResourceManager;
 
 /**
 *  @brief
-*    Tool to export images (screenshots) from a RenderSurface
+*    Tool to export images (screenshots) from a canvas
 */
 class GLOPERATE_API ImageExporter
 {
 public:
-    ImageExporter(RenderSurface * surface);
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] canvas
+    *    Canvas from which the screenshot is taken (must NOT be null!)
+    */
+    ImageExporter(Canvas * canvas);
+
+    /**
+    *  @brief
+    *    Destructor
+    */
+    ~ImageExporter();
 
     /**
     *  @brief
@@ -57,7 +70,7 @@ public:
 
 
 protected:
-    RenderSurface     * m_surface;
+    Canvas            * m_canvas;
     Environment       * m_environment;
     AbstractGLContext * m_glContext;
 

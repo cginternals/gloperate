@@ -7,7 +7,7 @@
 
 #include <cppexpose/scripting/ScriptContext.h>
 
-#include <gloperate/base/Surface.h>
+#include <gloperate/base/AbstractCanvas.h>
 
 // Local components
 #include <gloperate/stages/base/BasicFramebufferStage.h>
@@ -95,14 +95,14 @@ InputManager * Environment::inputManager()
     return &m_inputManager;
 }
 
-const std::vector<Surface *> & Environment::surfaces() const
+const std::vector<AbstractCanvas *> & Environment::canvases() const
 {
-    return m_surfaces;
+    return m_canvases;
 }
 
-std::vector<Surface *> & Environment::surfaces()
+std::vector<AbstractCanvas *> & Environment::canvases()
 {
-    return m_surfaces;
+    return m_canvases;
 }
 
 const cppexpose::ScriptContext * Environment::scriptContext() const
@@ -155,10 +155,10 @@ bool Environment::update()
     // Update timing and timers
     bool activeTimers = m_timeManager.update();
 
-    // Update surface
-    for (Surface * surface : m_surfaces)
+    // Update canvas
+    for (AbstractCanvas * canvas : m_canvases)
     {
-        surface->onUpdate();
+        canvas->onUpdate();
     }
 
     // Return indicator if any more timers are running
@@ -170,10 +170,10 @@ bool Environment::update(float delta)
     // Update timing and timers
     bool activeTimers = m_timeManager.update(delta);
 
-    // Update surface
-    for (Surface * surface : m_surfaces)
+    // Update canvas
+    for (AbstractCanvas * canvas : m_canvases)
     {
-        surface->onUpdate();
+        canvas->onUpdate();
     }
 
     // Return indicator if any more timers are running
@@ -240,16 +240,16 @@ void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)
         "  gloperate.timer.stopAll();\n";
 }
 
-void Environment::registerSurface(Surface * surface)
+void Environment::registerCanvas(AbstractCanvas * canvas)
 {
-    m_surfaces.push_back(surface);
-    addProperty(surface);
+    m_canvases.push_back(canvas);
+    addProperty(canvas);
 }
 
-void Environment::unregisterSurface(Surface * surface)
+void Environment::unregisterCanvas(AbstractCanvas * canvas)
 {
-    removeProperty(surface);
-    m_surfaces.erase(std::find(m_surfaces.begin(), m_surfaces.end(), surface));
+    removeProperty(canvas);
+    m_canvases.erase(std::find(m_canvases.begin(), m_canvases.end(), canvas));
 }
 
 

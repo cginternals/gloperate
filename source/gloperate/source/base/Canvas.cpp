@@ -1,5 +1,5 @@
 
-#include <gloperate/base/RenderSurface.h>
+#include <gloperate/base/Canvas.h>
 
 #include <cppassist/logging/logging.h>
 
@@ -19,12 +19,12 @@ namespace gloperate
 {
 
 
-RenderSurface::RenderSurface(Environment * environment)
-: Surface(environment)
+Canvas::Canvas(Environment * environment)
+: AbstractCanvas(environment)
 , m_pipelineContainer(environment)
 , m_frame(0)
-, m_mouseDevice(new MouseDevice(m_environment->inputManager(), "Render Surface"))
-, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), "Render Surface"))
+, m_mouseDevice(new MouseDevice(m_environment->inputManager(), "Canvas"))
+, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), "Canvas"))
 , m_videoExporter(nullptr)
 , m_imageExporter(nullptr)
 , m_requestVideo(false)
@@ -39,23 +39,23 @@ RenderSurface::RenderSurface(Environment * environment)
     });
 }
 
-RenderSurface::~RenderSurface()
+Canvas::~Canvas()
 {
     if (m_videoExporter) delete m_videoExporter;
     if (m_imageExporter) delete m_imageExporter;
 }
 
-Pipeline * RenderSurface::rootPipeline() const
+Pipeline * Canvas::rootPipeline() const
 {
     return static_cast<Pipeline *>(const_cast<PipelineContainer *>(&m_pipelineContainer));
 }
 
-Stage * RenderSurface::renderStage() const
+Stage * Canvas::renderStage() const
 {
     return m_pipelineContainer.renderStage();
 }
 
-void RenderSurface::setRenderStage(Stage * stage)
+void Canvas::setRenderStage(Stage * stage)
 {
     // De-initialize render stage
     if (m_pipelineContainer.renderStage() && m_openGLContext)
@@ -73,24 +73,24 @@ void RenderSurface::setRenderStage(Stage * stage)
     }
 }
 
-glm::vec4 RenderSurface::deviceViewport()
+glm::vec4 Canvas::deviceViewport()
 {
     return m_pipelineContainer.deviceViewport.value();
 }
 
-glm::vec4 RenderSurface::virtualViewport()
+glm::vec4 Canvas::virtualViewport()
 {
     return m_pipelineContainer.virtualViewport.value();
 }
 
-void RenderSurface::onUpdate()
+void Canvas::onUpdate()
 {
     float timeDelta = m_environment->timeManager()->timeDelta();
 
     m_pipelineContainer.timeDelta.setValue(timeDelta);
 }
 
-void RenderSurface::onContextInit()
+void Canvas::onContextInit()
 {
     cppassist::details() << "onContextInit()";
 
@@ -106,7 +106,7 @@ void RenderSurface::onContextInit()
     }
 }
 
-void RenderSurface::onContextDeinit()
+void Canvas::onContextDeinit()
 {
     cppassist::details() << "onContextDeinit()";
 
@@ -117,18 +117,18 @@ void RenderSurface::onContextDeinit()
     }
 }
 
-void RenderSurface::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
+void Canvas::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
     m_pipelineContainer.deviceViewport.setValue(deviceViewport);
     m_pipelineContainer.virtualViewport.setValue(virtualViewport);
 }
 
-void RenderSurface::onBackgroundColor(float red, float green, float blue)
+void Canvas::onBackgroundColor(float red, float green, float blue)
 {
     m_pipelineContainer.backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
-void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
+void Canvas::onRender(globjects::Framebuffer * targetFBO)
 {
     cppassist::details() << "onRender()";
 
@@ -161,49 +161,49 @@ void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
     }
 }
 
-void RenderSurface::onKeyPress(int key, int modifier)
+void Canvas::onKeyPress(int key, int modifier)
 {
     cppassist::details() << "onKeyPressed(" << key << ")";
 
     m_keyboardDevice->keyPress(key, modifier);
 }
 
-void RenderSurface::onKeyRelease(int key, int modifier)
+void Canvas::onKeyRelease(int key, int modifier)
 {
     cppassist::details() << "onKeyReleased(" << key << ")";
 
     m_keyboardDevice->keyRelease(key, modifier);
 }
 
-void RenderSurface::onMouseMove(const glm::ivec2 & pos)
+void Canvas::onMouseMove(const glm::ivec2 & pos)
 {
     cppassist::details() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->move(pos);
 }
 
-void RenderSurface::onMousePress(int button, const glm::ivec2 & pos)
+void Canvas::onMousePress(int button, const glm::ivec2 & pos)
 {
     cppassist::details() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->buttonPress(button, pos);
 }
 
-void RenderSurface::onMouseRelease(int button, const glm::ivec2 & pos)
+void Canvas::onMouseRelease(int button, const glm::ivec2 & pos)
 {
     cppassist::details() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->buttonRelease(button, pos);
 }
 
-void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
+void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
     cppassist::details() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->wheelScroll(delta, pos);
 }
 
-void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
+void Canvas::createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
 {
     auto component = m_environment->componentManager()->component<AbstractVideoExporter>(backend);
     if (!component) return;
@@ -215,20 +215,20 @@ void RenderSurface::createVideo(std::string filename, int width, int height, int
     m_requestVideo = true;
 }
 
-void RenderSurface::exportImage(std::string filename, int width, int height, int renderIterations)
+void Canvas::exportImage(std::string filename, int width, int height, int renderIterations)
 {
     m_imageExporter->init(filename, width, height, renderIterations);
     m_requestImage = true;
 }
 
-int RenderSurface::exportProgress()
+int Canvas::exportProgress()
 {
     if (!m_videoExporter) return 0;
 
     return m_videoExporter->progress();
 }
 
-cppexpose::VariantArray RenderSurface::videoExporterPlugins()
+cppexpose::VariantArray Canvas::videoExporterPlugins()
 {
     cppexpose::VariantArray plugins;
     for (auto component : m_environment->componentManager()->components())

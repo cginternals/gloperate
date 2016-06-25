@@ -10,7 +10,7 @@
 namespace gloperate
 {
     class Environment;
-    class Surface;
+    class AbstractCanvas;
     class Stage;
 }
 
@@ -51,7 +51,7 @@ public:
 
     // [TODO] Only for testing
     static gloperate::Stage * createRenderStage(gloperate::Environment * environment, const std::string & name);
-    static gloperate::Surface * createSurface(gloperate::Environment * environment, gloperate::Stage * renderStage);
+    static gloperate::AbstractCanvas * createCanvas(gloperate::Environment * environment, gloperate::Stage * renderStage);
 };
 
 

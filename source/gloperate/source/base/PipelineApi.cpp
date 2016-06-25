@@ -6,7 +6,7 @@
 #include <string>
 
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/RenderSurface.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractDataSlot.h>
@@ -169,13 +169,13 @@ void PipelineApi::setRequired(const std::string & path, bool required)
 
 Stage * PipelineApi::getStage(const std::string & name)
 {
-    // Get render surface
-    if (m_environment->surfaces().size() == 0) {
+    // Get canvas
+    if (m_environment->canvases().size() == 0) {
         return nullptr;
     }
 
-    RenderSurface * surface = static_cast<RenderSurface *>(m_environment->surfaces()[0]);
-    if (!surface) {
+    Canvas * canvas = static_cast<Canvas *>(m_environment->canvases()[0]);
+    if (!canvas) {
         return nullptr;
     }
 
@@ -193,7 +193,7 @@ Stage * PipelineApi::getStage(const std::string & name)
     {
         // Get sub-stage
         if (!stage && subname == "Viewer") {
-            stage = surface->rootPipeline();
+            stage = canvas->rootPipeline();
         } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
         } else {
@@ -211,13 +211,13 @@ Stage * PipelineApi::getStage(const std::string & name)
 
 AbstractSlot * PipelineApi::getSlot(const std::string & name)
 {
-    // Get render surface
-    if (m_environment->surfaces().size() == 0) {
+    // Get canvas
+    if (m_environment->canvases().size() == 0) {
         return nullptr;
     }
 
-    RenderSurface * surface = static_cast<RenderSurface *>(m_environment->surfaces()[0]);
-    if (!surface) {
+    Canvas * canvas = static_cast<Canvas *>(m_environment->canvases()[0]);
+    if (!canvas) {
         return nullptr;
     }
 
@@ -246,7 +246,7 @@ AbstractSlot * PipelineApi::getSlot(const std::string & name)
 
         // Get sub-stage
         if (!stage && subname == "Viewer") {
-            stage = surface->rootPipeline();
+            stage = canvas->rootPipeline();
         } else if (stage->isPipeline()) {
             stage = static_cast<Pipeline *>(stage)->stage(subname);
         } else {

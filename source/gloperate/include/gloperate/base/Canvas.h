@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/base/Surface.h>
+#include <gloperate/base/AbstractCanvas.h>
 #include <gloperate/base/PipelineContainer.h>
 #include <gloperate/input/constants.h>
 
@@ -20,9 +20,9 @@ class ImageExporter;
 
 /**
 *  @brief
-*    Default surface renderer for gloperate
+*    Default canvas renderer for gloperate
 */
-class GLOPERATE_API RenderSurface : public Surface
+class GLOPERATE_API Canvas : public AbstractCanvas
 {
 public:
     /**
@@ -30,15 +30,15 @@ public:
     *    Constructor
     *
     *  @param[in] environment
-    *    Environment to which the surface belongs (must NOT be null!)
+    *    Environment to which the canvas belongs (must NOT be null!)
     */
-    RenderSurface(Environment * environment);
+    Canvas(Environment * environment);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~RenderSurface();
+    virtual ~Canvas();
 
     /**
     *  @brief
@@ -67,12 +67,11 @@ public:
     *
     *  @remarks
     *    When setting a new render stage, the old render stage is destroyed.
-    *    The surface takes ownership over the stage.
+    *    The canvas takes ownership over the stage.
     */
     void setRenderStage(Stage * stage);
 
-
-    // Virtual Surface functions
+    // Virtual AbstractCanvas functions
     virtual glm::vec4 deviceViewport() override;
     virtual glm::vec4 virtualViewport() override;
     virtual void onUpdate() override;
@@ -98,8 +97,8 @@ protected:
     unsigned long           m_frame;             ///< Frame counter
     MouseDevice           * m_mouseDevice;       ///< Device for Mouse Events
     KeyboardDevice        * m_keyboardDevice;    ///< Device for Keyboard Events
-    AbstractVideoExporter * m_videoExporter;     ///< Tool for rendering surface to video file
-    ImageExporter         * m_imageExporter;     ///< Tool for exporting an image from surface
+    AbstractVideoExporter * m_videoExporter;     ///< Tool for rendering canvas to video file
+    ImageExporter         * m_imageExporter;     ///< Tool for exporting canvas to image file
     bool                    m_requestVideo;      ///< Flag to request a videoTool call during next render step
     bool                    m_requestImage;      ///< Flag to request a ImageExporter call during next render step
 };

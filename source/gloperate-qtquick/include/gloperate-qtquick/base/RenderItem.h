@@ -11,7 +11,7 @@
 class QQuickWindow;
 
 namespace gloperate {
-    class Surface;
+    class AbstractCanvas;
 }
 
 
@@ -47,12 +47,12 @@ public:
 
     /**
     *  @brief
-    *    Get surface
+    *    Get canvas
     *
     *  @return
-    *    Render surface (can be null)
+    *    Canvas that renders into the item (can be null)
     */
-    gloperate::Surface * surface() const;
+    gloperate::AbstractCanvas * canvas() const;
 
 
 protected:
@@ -73,10 +73,10 @@ protected:
 
 
 protected:
-    gloperate::Surface * m_surface;          ///< Surface that renders into the item (must NOT be null)
-    float                m_devicePixelRatio; ///< Number of device pixels per virtual pixel
-    bool                 m_initialized;      ///< 'true' if the surface has been initialized, else 'false'
-    QString              m_stage;            ///< Name of the render stage to use
+    gloperate::AbstractCanvas * m_canvas;           ///< Canvas that renders into the item (must NOT be null)
+    float                       m_devicePixelRatio; ///< Number of device pixels per virtual pixel
+    bool                        m_initialized;      ///< 'true' if the canvas has been initialized, else 'false'
+    QString                     m_stage;            ///< Name of the render stage to use
 };
 
 

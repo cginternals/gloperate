@@ -44,8 +44,8 @@ set(headers
     ${include_path}/base/ComponentManager.h
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
-    ${include_path}/base/Surface.h
-    ${include_path}/base/RenderSurface.h
+    ${include_path}/base/AbstractCanvas.h
+    ${include_path}/base/Canvas.h
     ${include_path}/base/PipelineContainer.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
@@ -132,8 +132,8 @@ set(sources
     ${source_path}/base/PipelineApi.cpp
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
-    ${source_path}/base/Surface.cpp
-    ${source_path}/base/RenderSurface.cpp
+    ${source_path}/base/AbstractCanvas.cpp
+    ${source_path}/base/Canvas.cpp
     ${source_path}/base/PipelineContainer.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractGLContext.cpp

@@ -9,7 +9,7 @@
 
 namespace gloperate {
     class Environment;
-    class RenderSurface;
+    class Canvas;
     class Stage;
 }
 
@@ -60,12 +60,12 @@ public:
 
      /**
     *  @brief
-    *    Get render surface
+    *    Get canvas
     *
     *  @return
-    *    Render surface that is rendered into
+    *    Canvas that is rendered on
     */
-    gloperate::RenderSurface * renderSurface() const;
+    gloperate::Canvas * canvas() const;
 
     /**
     *  @brief
@@ -102,10 +102,10 @@ protected:
 
 
 protected:
-    gloperate::Environment   * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    gloperate::RenderSurface * m_surface;     ///< Surface that control the rendering on the window (must NOT be null)
-    glm::ivec2                 m_deviceSize;  ///< Window size (real device pixels)
-    glm::ivec2                 m_virtualSize; ///< Window size (virtual pixel size)
+    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    gloperate::Canvas      * m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
+    glm::ivec2               m_deviceSize;  ///< Window size (real device pixels)
+    glm::ivec2               m_virtualSize; ///< Window size (virtual pixel size)
 };
 
 
