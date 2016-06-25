@@ -5,7 +5,7 @@
 
 #include <QCoreApplication>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/RenderSurface.h>
 
 #include <gloperate-qt/base/GLContext.h>
@@ -18,9 +18,9 @@ namespace gloperate_qt
 {
 
 
-RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
-, m_surface(new gloperate::RenderSurface(viewerContext))
+RenderWindow::RenderWindow(gloperate::Environment * environment)
+: m_environment(environment)
+, m_surface(new gloperate::RenderSurface(environment))
 {
     m_surface->redraw.connect([this] ()
     {
@@ -33,9 +33,9 @@ RenderWindow::~RenderWindow()
     delete m_surface;
 }
 
-gloperate::ViewerContext * RenderWindow::viewerContext() const
+gloperate::Environment * RenderWindow::environment() const
 {
-    return m_viewerContext;
+    return m_environment;
 }
 
 gloperate::Stage * RenderWindow::renderStage() const

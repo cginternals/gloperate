@@ -3,8 +3,6 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <gloperate/viewer/ViewerContext.h>
-
 
 namespace gloperate
 {
@@ -13,8 +11,8 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(BasicFramebufferStage, gloperate::Stage)
 
 
-BasicFramebufferStage::BasicFramebufferStage(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+BasicFramebufferStage::BasicFramebufferStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , viewport    ("viewport", this)
 , fbo         ("fbo", this)
 , colorTexture("colorTexture", this)

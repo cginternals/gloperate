@@ -29,9 +29,9 @@ Component<Type, gloperate::Stage>::~Component()
 }
 
 template <typename Type>
-gloperate::Stage * Component<Type, gloperate::Stage>::createInstance(gloperate::ViewerContext * viewerContext) const
+gloperate::Stage * Component<Type, gloperate::Stage>::createInstance(gloperate::Environment * environment) const
 {
-    return new Type(viewerContext);
+    return new Type(environment);
 }
 
 

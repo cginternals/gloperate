@@ -6,7 +6,7 @@
 
 
 namespace gloperate {
-    class ViewerContext;
+    class Environment;
     class RenderSurface;
     class Stage;
 }
@@ -27,10 +27,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the window belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the window belongs (must NOT be null!)
     */
-    RenderWindow(gloperate::ViewerContext * viewerContext);
+    RenderWindow(gloperate::Environment * environment);
 
     /**
     *  @brief
@@ -40,12 +40,12 @@ public:
 
     /**
     *  @brief
-    *    Get viewer context
+    *    Get gloperate environment
     *
     *  @return
-    *    Viewer context (cannot be null)
+    *    Gloperate environment (cannot be null)
     */
-    gloperate::ViewerContext * viewerContext() const;
+    gloperate::Environment * environment() const;
 
     /**
     *  @brief
@@ -87,8 +87,8 @@ protected:
 
 
 protected:
-    gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
-    gloperate::RenderSurface * m_surface;       ///< Surface that renders on the window (must NOT be null)
+    gloperate::Environment   * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    gloperate::RenderSurface * m_surface;     ///< Surface that renders on the window (must NOT be null)
 };
 
 

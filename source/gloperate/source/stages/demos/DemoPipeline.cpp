@@ -18,16 +18,16 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(DemoPipeline, gloperate::Stage)
 
 
-DemoPipeline::DemoPipeline(ViewerContext * viewerContext, const std::string & name)
-: Pipeline(viewerContext, name)
+DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
+: Pipeline(environment, name)
 , renderInterface(this)
-, m_mixerStage(new MixerStage(viewerContext, "MixerStage"))
-, m_splitStage(new SplitStage(viewerContext, "SplitStage"))
-, m_timerStage(new DemoTimerStage(viewerContext, "TimerStage"))
-, m_triangleStage(new DemoTriangleStage(viewerContext, "TriangleStage"))
-, m_framebufferStage(new BasicFramebufferStage(viewerContext, "FramebufferStage"))
-, m_textureLoadStage(new TextureLoadStage(viewerContext, "TextureLoadStage"))
-, m_proceduralTextureStage(new ProceduralTextureStage(viewerContext, "ProceduralTextureStage"))
+, m_mixerStage(new MixerStage(environment, "MixerStage"))
+, m_splitStage(new SplitStage(environment, "SplitStage"))
+, m_timerStage(new DemoTimerStage(environment, "TimerStage"))
+, m_triangleStage(new DemoTriangleStage(environment, "TriangleStage"))
+, m_framebufferStage(new BasicFramebufferStage(environment, "FramebufferStage"))
+, m_textureLoadStage(new TextureLoadStage(environment, "TextureLoadStage"))
+, m_proceduralTextureStage(new ProceduralTextureStage(environment, "ProceduralTextureStage"))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();

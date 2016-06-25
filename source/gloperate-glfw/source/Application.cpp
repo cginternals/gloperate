@@ -6,7 +6,7 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-glfw/Window.h>
 #include <gloperate-glfw/WindowEventDispatcher.h>
@@ -38,8 +38,8 @@ void Application::wakeup()
     glfwPostEmptyEvent();
 }
 
-Application::Application(gloperate::ViewerContext * viewerContext, int &, char **)
-: m_viewerContext(viewerContext)
+Application::Application(gloperate::Environment * environment, int &, char **)
+: m_environment(environment)
 , m_running(false)
 , m_exitCode(0)
 {
@@ -48,7 +48,7 @@ Application::Application(gloperate::ViewerContext * viewerContext, int &, char *
     s_app = this;
 
     // Connect to exit-signal
-    viewerContext->exitApplication.connect([] (int exitCode)
+    environment->exitApplication.connect([] (int exitCode)
     {
         Application::quit(exitCode);
     });
@@ -120,7 +120,7 @@ void Application::processEvents()
     }
 
     // Update timing
-    if (m_viewerContext->update())
+    if (m_environment->update())
     {
         // If someone wants another main loop iteration, wake it up
         wakeup();

@@ -3,8 +3,8 @@
 #include <QQmlEngine>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/viewer/ViewerContext.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Application.h>
@@ -25,26 +25,26 @@ int main(int argc, char * argv[])
     // Determine data paths
     QString qmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
 
-    // Create viewer context
-    ViewerContext viewerContext;
+    // Create gloperate environment
+    Environment environment;
 
     // Configure and load plugins
-    viewerContext.componentManager()->addPluginPath(
+    environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    viewerContext.componentManager()->scanPlugins("loaders");
-    viewerContext.componentManager()->scanPlugins("stages");
+    environment.componentManager()->scanPlugins("loaders");
+    environment.componentManager()->scanPlugins("stages");
 
     // Initialize Qt application
-    gloperate_qt::Application app(&viewerContext, argc, argv);
-    UpdateManager updateManager(&viewerContext);
+    gloperate_qt::Application app(&environment, argc, argv);
+    UpdateManager updateManager(&environment);
 
     // Create QML engine
-    QmlEngine qmlEngine(&viewerContext);
+    QmlEngine qmlEngine(&environment);
     qmlEngine.addImportPath(qmlPath);
 
     // Create scripting context backend
-    viewerContext.setupScripting(
+    environment.setupScripting(
         new gloperate_qtquick::QmlScriptContext(&qmlEngine)
     );
 

@@ -8,8 +8,8 @@
 
 
 namespace gloperate {
+    class Environment;
     class Stage;
-    class ViewerContext;
 }
 
 
@@ -37,7 +37,7 @@ public:
 
     virtual ~TypedComponent();
 
-    virtual gloperate::Stage * createInstance(gloperate::ViewerContext * viewerContext) const = 0;
+    virtual gloperate::Stage * createInstance(gloperate::Environment * environment) const = 0;
 };
 
 
@@ -61,7 +61,7 @@ public:
 
     virtual ~Component();
 
-    virtual gloperate::Stage * createInstance(gloperate::ViewerContext * viewerContext) const override;
+    virtual gloperate::Stage * createInstance(gloperate::Environment * environment) const override;
 };
 
 

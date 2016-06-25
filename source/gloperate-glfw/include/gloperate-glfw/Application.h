@@ -9,7 +9,7 @@
 
 namespace gloperate
 {
-    class ViewerContext;
+    class Environment;
 }
 
 
@@ -63,14 +63,14 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the surface belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Gloperate environment (must NOT be null!)
     *  @param[in] argc
     *    Argument count (pass on parameter from the main function)
     *  @param[in] argv
     *    Argument list (pass on parameter from the main function)
     */
-    Application(gloperate::ViewerContext * viewerContext, int & argc, char ** argv);
+    Application(gloperate::Environment * environment, int & argc, char ** argv);
 
     /**
     *  @brief
@@ -133,9 +133,9 @@ protected:
 
 
 protected:
-    gloperate::ViewerContext * m_viewerContext; ///< Viewer context
-    bool                       m_running;       ///< 'true' if application is currently running, else 'false'
-    int                        m_exitCode;      ///< Exit code (0 for no error, > 0 for error)
+    gloperate::Environment * m_environment; ///< Gloperate environment
+    bool                     m_running;     ///< 'true' if application is currently running, else 'false'
+    int                      m_exitCode;    ///< Exit code (0 for no error, > 0 for error)
 };
 
 

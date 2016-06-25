@@ -14,11 +14,11 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(DemoTimerStage, gloperate::Stage)
 
 
-DemoTimerStage::DemoTimerStage(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+DemoTimerStage::DemoTimerStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , timeDelta  ("timeDelta",   this, 0.0f)
 , virtualTime("virtualTime", this, 0.0f)
-, m_timer(viewerContext)
+, m_timer(environment)
 , m_time(0.0f)
 {
     // Setup timer

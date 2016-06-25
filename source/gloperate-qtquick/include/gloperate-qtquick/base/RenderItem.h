@@ -25,8 +25,8 @@ namespace gloperate_qtquick
 */
 class GLOPERATE_QTQUICK_API RenderItem : public QQuickItem
 {
-Q_OBJECT
-Q_PROPERTY(QString stage READ stage WRITE setStage)
+    Q_OBJECT
+    Q_PROPERTY(QString stage READ stage WRITE setStage)
 
 
 public:

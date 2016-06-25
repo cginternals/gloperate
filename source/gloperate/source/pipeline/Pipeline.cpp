@@ -17,8 +17,8 @@ namespace gloperate
 // [TODO] invalidate sorting when stages or connections change
 
 
-Pipeline::Pipeline(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+Pipeline::Pipeline(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , m_sorted(false)
 {
 }

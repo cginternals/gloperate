@@ -11,7 +11,7 @@ namespace gloperate
 {
 
 
-class ViewerContext;
+class Environment;
 
 
 /**
@@ -25,12 +25,12 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context (must NOT be null!)
+    *  @param[in] environment
+    *    Environment (must NOT be null!)
     *  @param[in] func
     *    Callback function
     */
-    ScriptTimer(ViewerContext * viewerContext, cppexpose::Function func);
+    ScriptTimer(Environment * environment, cppexpose::Function func);
 
     /**
     *  @brief

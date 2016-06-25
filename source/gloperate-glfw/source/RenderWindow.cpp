@@ -19,9 +19,9 @@ namespace gloperate_glfw
 {
 
 
-RenderWindow::RenderWindow(gloperate::ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
-, m_surface(new RenderSurface(viewerContext))
+RenderWindow::RenderWindow(gloperate::Environment * environment)
+: m_environment(environment)
+, m_surface(new RenderSurface(environment))
 {
     m_surface->redraw.connect([this] ()
     {
@@ -34,9 +34,9 @@ RenderWindow::~RenderWindow()
     delete m_surface;
 }
 
-gloperate::ViewerContext * RenderWindow::viewerContext() const
+gloperate::Environment * RenderWindow::environment() const
 {
-    return m_viewerContext;
+    return m_environment;
 }
 
 gloperate::Stage * RenderWindow::renderStage() const

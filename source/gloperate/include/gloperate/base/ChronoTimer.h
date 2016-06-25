@@ -16,7 +16,7 @@ namespace gloperate
 *    High performance timer based on std::chrono
 *
 *    This timer class is for time measurement, not for
-*    automated execution of tasks. See ViewerContext
+*    automated execution of tasks. See Environment
 *    for an interface to automatically trigger events
 *    based on timers.
 */

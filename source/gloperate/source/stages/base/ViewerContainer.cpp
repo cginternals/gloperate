@@ -6,8 +6,8 @@ namespace gloperate
 {
 
 
-ViewerContainer::ViewerContainer(ViewerContext * viewerContext)
-: Pipeline(viewerContext, "Viewer")
+ViewerContainer::ViewerContainer(Environment * environment)
+: Pipeline(environment, "Viewer")
 , deviceViewport ("deviceViewport",  this, glm::vec4(0, 0, 0, 0))
 , virtualViewport("virtualViewport", this, glm::vec4(0, 0, 0, 0))
 , backgroundColor("backgroundColor", this, glm::vec3(1.0, 1.0, 1.0))

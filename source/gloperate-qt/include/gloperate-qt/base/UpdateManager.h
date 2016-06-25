@@ -11,7 +11,7 @@
 
 namespace gloperate
 {
-    class ViewerContext;
+    class Environment;
 }
 
 
@@ -26,7 +26,7 @@ namespace gloperate_qt
 *  @remarks
 *    This class must be instanciated once for the gloperate timing
 *    to work correctly. It maintains a Qt timer that is activated
-*    whenever a timer in gloperate is active and calls ViewerContext.update()
+*    whenever a timer in gloperate is active and calls environment.update()
 *    to update the timing information in gloperate.
 */
 class GLOPERATE_QT_API UpdateManager : public QObject
@@ -36,10 +36,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the surface belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the manager belongs (must NOT be null!)
     */
-    UpdateManager(gloperate::ViewerContext * viewerContext);
+    UpdateManager(gloperate::Environment * environment);
 
     /**
     *  @brief
@@ -63,9 +63,9 @@ protected:
 
 
 protected:
-    gloperate::ViewerContext * m_viewerContext; ///< Viewer context
-    QTimer                     m_timer;         ///< Timer for continuous update
-    QTime                      m_time;          ///< Time measurement
+    gloperate::Environment * m_environment; ///< Gloperate environment
+    QTimer                   m_timer;       ///< Timer for continuous update
+    QTime                    m_time;        ///< Time measurement
 };
 
 

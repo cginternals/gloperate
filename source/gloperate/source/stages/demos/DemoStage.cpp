@@ -16,7 +16,7 @@
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
 
 
@@ -60,10 +60,10 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
 
 
-DemoStage::DemoStage(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+DemoStage::DemoStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , renderInterface(this)
-, m_timer(viewerContext)
+, m_timer(environment)
 , m_time(0.0f)
 , m_angle(0.0f)
 {
@@ -169,7 +169,7 @@ void DemoStage::createAndSetupCamera()
 void DemoStage::createAndSetupTexture()
 {
     // Load texture from file
-    m_texture = m_viewerContext->resourceManager()->load<globjects::Texture>(
+    m_texture = m_environment->resourceManager()->load<globjects::Texture>(
         gloperate::dataPath() + "/gloperate/textures/gloperate-logo.png"
     );
 

@@ -1,8 +1,8 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/GLContextUtils.h>
+#include <gloperate/base/environment.h>
+#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/stages/demos/DemoStage.h>
 
 #include <gloperate-glfw/viewer/Application.h>
@@ -19,20 +19,20 @@ using namespace gloperate_ffmpeg;
 
 int main(int argc, char * argv[])
 {
-    // Create viewer context
-    ViewerContext viewerContext;
+    // Create gloperate environment
+    Environment environment;
 
     // Initialize GLFW
     Application::init();
-    Application app(&viewerContext, argc, argv);
+    Application app(&environment, argc, argv);
 
     // Create render stage
-    DemoStage * renderStage = new DemoStage(&viewerContext);
+    DemoStage * renderStage = new DemoStage(&environment);
 
-    viewerContext.scriptEnvironment()->setupScripting();
+    environment.scriptEnvironment()->setupScripting();
 
     // Create window
-    RenderWindow window(&viewerContext);
+    RenderWindow window(&environment);
     window.setRenderStage(renderStage);
     window.setTitle("gloperate viewer");
     window.setSize(1600, 900);

@@ -16,7 +16,7 @@ namespace gloperate
 {
 
 
-class ViewerContext;
+class Environment;
 class AbstractLoader;
 class AbstractStorer;
 
@@ -32,10 +32,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context (must NOT be null!)
+    *  @param[in] environment
+    *    Environment (must NOT be null!)
     */
-    ResourceManager(ViewerContext * viewerContext);
+    ResourceManager(Environment * environment);
 
     /**
     *  @brief
@@ -113,9 +113,9 @@ protected:
 
 
 protected:
-    ViewerContext                         * m_viewerContext; ///< Viewer context (must NOT be null!)
-    mutable std::vector<AbstractLoader *>   m_loaders;       ///< Available loaders
-    mutable std::vector<AbstractStorer *>   m_storers;       ///< Available storers
+    Environment                           * m_environment; ///< Gloperate environment (must NOT be null!)
+    mutable std::vector<AbstractLoader *>   m_loaders;     ///< Available loaders
+    mutable std::vector<AbstractStorer *>   m_storers;     ///< Available storers
 };
 
 

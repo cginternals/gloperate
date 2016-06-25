@@ -61,12 +61,12 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
     */
-    DemoTriangleStage(ViewerContext * viewerContext, const std::string & name = "DemoTriangleStage");
+    DemoTriangleStage(Environment * environment, const std::string & name = "DemoTriangleStage");
 
     /**
     *  @brief

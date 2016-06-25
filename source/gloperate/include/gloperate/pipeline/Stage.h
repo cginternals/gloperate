@@ -18,7 +18,7 @@ namespace gloperate
 {
 
 
-class ViewerContext;
+class Environment;
 class AbstractGLContext;
 class AbstractSlot;
 class AbstractInputSlot;
@@ -79,12 +79,12 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
     */
-    Stage(ViewerContext * viewerContext, const std::string & name = "Stage");
+    Stage(Environment * environment, const std::string & name = "Stage");
 
     /**
     *  @brief
@@ -103,12 +103,12 @@ public:
 
     /**
     *  @brief
-    *    Get viewer context
+    *    Get gloperate environment
     *
     *  @return
-    *    Viewer context to which the stage belongs (must NOT be null!)
+    *    Environment to which the stage belongs (must NOT be null!)
     */
-    ViewerContext * viewerContext() const;
+    Environment * environment() const;
 
     /**
     *  @brief
@@ -506,8 +506,8 @@ protected:
 
 
 protected:
-    ViewerContext * m_viewerContext;  ///< Viewer context to which the stage belongs
-    bool            m_alwaysProcess;  ///< Is the stage always processed?
+    Environment * m_environment;    ///< Gloperate environment to which the stage belongs
+    bool          m_alwaysProcess;  ///< Is the stage always processed?
 
     std::vector<AbstractInputSlot *>                     m_inputs;          ///< List of inputs
     std::unordered_map<std::string, AbstractInputSlot *> m_inputsMap;       ///< Map of names and inputs

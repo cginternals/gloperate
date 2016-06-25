@@ -16,8 +16,6 @@
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/base/ResourceManager.h>
 
 
 // Geometry describing the triangle
@@ -69,8 +67,8 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(DemoTriangleStage, gloperate::Stage)
 
 
-DemoTriangleStage::DemoTriangleStage(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+DemoTriangleStage::DemoTriangleStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
 , angle          ("angle",           this, 0.0f)

@@ -14,10 +14,9 @@
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
 
-#include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/base/RenderSurface.h>
-
 #include <gloperate/gloperate.h>
+#include <gloperate/base/Environment.h>
+#include <gloperate/base/RenderSurface.h>
 
 
 using namespace globjects;
@@ -66,7 +65,7 @@ FFMPEGVideoExporter::FFMPEGVideoExporter()
 
 FFMPEGVideoExporter::FFMPEGVideoExporter(const std::string & filename, RenderSurface * surface, uint fps, uint length, uint width, uint height)
 : m_videoEncoder(new FFMPEGVideoEncoder())
-, m_context(surface->viewerContext())
+, m_environment(surface->environment())
 , m_surface(surface)
 , m_glContext(surface->openGLContext())
 , m_filename(filename)
@@ -87,7 +86,7 @@ FFMPEGVideoExporter::~FFMPEGVideoExporter()
 void FFMPEGVideoExporter::init(const std::string & filename, gloperate::RenderSurface * surface, uint width, uint height, uint fps, uint length)
 {
     m_videoEncoder = new FFMPEGVideoEncoder();
-    m_context = surface->viewerContext();
+    m_environment = surface->environment();
     m_surface = surface;
     m_glContext = surface->openGLContext();
     m_filename = filename;
@@ -128,7 +127,7 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
         m_color_quad->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
         m_depth_quad->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
 
-        m_context->update(m_timeDelta);
+        m_environment->update(m_timeDelta);
         m_surface->onRender(m_fbo);
 
 

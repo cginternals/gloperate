@@ -8,7 +8,7 @@
 
 
 namespace gloperate {
-    class ViewerContext;
+    class Environment;
 }
 
 
@@ -18,7 +18,7 @@ class Config : public QObject
     Q_PROPERTY(QString style READ style WRITE setStyle)
 
 public:
-    Config(gloperate::ViewerContext & viewerContext);
+    Config(gloperate::Environment & environment);
     virtual ~Config();
 
     const QString & style() const;
@@ -26,6 +26,6 @@ public:
 
 
 protected:
-    gloperate::ViewerContext & m_viewerContext; ///< Main gloperate context
-    QString                    m_style;         ///< Currently selected style
+    gloperate::Environment & m_environment; ///< Main gloperate environment
+    QString                  m_style;       ///< Currently selected style
 };

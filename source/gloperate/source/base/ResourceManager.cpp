@@ -5,18 +5,18 @@
 
 #include <cppexpose/plugin/ComponentManager.h>
 
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/Loader.h>
 #include <gloperate/base/Storer.h>
-#include <gloperate/viewer/ViewerContext.h>
  
 
 namespace gloperate
 {
 
 
-ResourceManager::ResourceManager(ViewerContext * viewerContext)
+ResourceManager::ResourceManager(Environment * environment)
 : cppexpose::Object("resources")
-, m_viewerContext(viewerContext)
+, m_environment(environment)
 {
 }
 
@@ -43,7 +43,7 @@ void ResourceManager::updateComponents() const
     clearComponents();
 
     // Get available loader components
-    auto loaders = m_viewerContext->componentManager()->components<AbstractLoader>();
+    auto loaders = m_environment->componentManager()->components<AbstractLoader>();
     for (auto component : loaders) {
         // Create loader
         AbstractLoader * loader = component->createInstance();
@@ -51,7 +51,7 @@ void ResourceManager::updateComponents() const
     }
 
     // Get available storer components
-    auto storers = m_viewerContext->componentManager()->components<AbstractStorer>();
+    auto storers = m_environment->componentManager()->components<AbstractStorer>();
     for (auto component : storers) {
         // Create storer
         AbstractStorer * storer = component->createInstance();

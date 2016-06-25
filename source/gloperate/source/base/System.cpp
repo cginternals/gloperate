@@ -3,16 +3,16 @@
 
 #include <fstream>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 
 namespace gloperate
 {
 
 
-System::System(ViewerContext * viewerContext)
+System::System(Environment * environment)
 : cppexpose::Object("system")
-, m_viewerContext(viewerContext)
+, m_environment(environment)
 {
     // Register functions
     addFunction("load",       this, &System::load);
@@ -32,7 +32,7 @@ void System::load(const std::string & filename)
 
     if (!code.empty()) {
         // Execute command
-        m_viewerContext->executeScript(code);
+        m_environment->executeScript(code);
     }
 }
 
@@ -74,7 +74,7 @@ void System::appendFile(const std::string & filename, const cppexpose::Variant &
 
 void System::exit(int exitCode)
 {
-    m_viewerContext->exit(exitCode);
+    m_environment->exit(exitCode);
 }
 
 

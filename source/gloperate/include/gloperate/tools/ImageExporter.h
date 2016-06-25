@@ -17,7 +17,7 @@ namespace gloperate
 
 
 class RenderSurface;
-class ViewerContext;
+class Environment;
 class AbstractGLContext;
 class ResourceManager;
 
@@ -57,9 +57,9 @@ public:
 
 
 protected:
-    RenderSurface                   * m_surface;
-    ViewerContext                   * m_context;
-    AbstractGLContext               * m_glContext;
+    RenderSurface     * m_surface;
+    Environment       * m_environment;
+    AbstractGLContext * m_glContext;
 
     globjects::ref_ptr<globjects::Framebuffer> m_fbo;
     globjects::ref_ptr<globjects::Texture> m_color;

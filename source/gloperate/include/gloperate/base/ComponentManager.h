@@ -18,7 +18,7 @@ namespace gloperate
 {
 
 
-class ViewerContext;
+class Environment;
 
 
 /**
@@ -32,10 +32,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context (must NOT be null!)
+    *  @param[in] environment
+    *    Environment (must NOT be null!)
     */
-    ComponentManager(ViewerContext * viewerContext);
+    ComponentManager(Environment * environment);
 
     /**
     *  @brief
@@ -55,7 +55,7 @@ protected:
 
 
 protected:
-    ViewerContext * m_viewerContext; ///< Viewer context (must NOT be null!)
+    Environment * m_environment; ///< Gloperate environment (must NOT be null!)
 };
 
 

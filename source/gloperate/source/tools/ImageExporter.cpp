@@ -5,7 +5,7 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/RenderSurface.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/AbstractGLContext.h>
@@ -20,7 +20,7 @@ namespace gloperate
 
 ImageExporter::ImageExporter(RenderSurface * surface)
 : m_surface(surface)
-, m_context(surface->viewerContext())
+, m_environment(surface->environment())
 , m_glContext(surface->openGLContext())
 , m_fbo(new globjects::Framebuffer())
 , m_color(globjects::Texture::createDefault(gl::GL_TEXTURE_2D))
@@ -62,7 +62,7 @@ void ImageExporter::save(bool glContextActive)
 
     for (int i = 0; i < m_renderIterations; ++i)
     {
-        m_context->update(1.f/30.f);
+        m_environment->update(1.f/30.f);
         m_surface->onRender(m_fbo);
     }
 
@@ -71,7 +71,7 @@ void ImageExporter::save(bool glContextActive)
         m_glContext->release();
     }
 
-    m_context->resourceManager()->store<globjects::Texture>(m_filename, m_color);
+    m_environment->resourceManager()->store<globjects::Texture>(m_filename, m_color);
 
     m_surface->onViewport(deviceViewport, virtualViewport);
 }

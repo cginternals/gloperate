@@ -28,7 +28,7 @@ namespace gloperate_qtquick
 
 QuickView::QuickView(QmlEngine * engine, QWindow * parent)
 : QQuickView(engine, parent)
-, m_viewerContext(engine->viewerContext())
+, m_environment(engine->environment())
 , m_context(nullptr)
 {
     // Do not clear surface when rendering Qml, because we render our content first
@@ -61,9 +61,9 @@ QuickView::~QuickView()
     delete m_context;
 }
 
-gloperate::ViewerContext * QuickView::viewerContext() const
+gloperate::Environment * QuickView::environment() const
 {
-    return m_viewerContext;
+    return m_environment;
 }
 
 gloperate_qt::GLContext * QuickView::context() const

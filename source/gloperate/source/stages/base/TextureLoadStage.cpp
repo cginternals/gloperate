@@ -1,7 +1,7 @@
 
 #include <gloperate/stages/base/TextureLoadStage.h>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 
 namespace gloperate
@@ -11,8 +11,8 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(TextureLoadStage, gloperate::Stage)
 
 
-TextureLoadStage::TextureLoadStage(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+TextureLoadStage::TextureLoadStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , filename("filename", this)
 , texture ("texture", this)
 {
@@ -46,7 +46,7 @@ void TextureLoadStage::onProcess(AbstractGLContext *)
 void TextureLoadStage::loadTexture()
 {
     // Load texture from file
-    m_texture = m_viewerContext->resourceManager()->load<globjects::Texture>(
+    m_texture = m_environment->resourceManager()->load<globjects::Texture>(
         *filename
     );
 }

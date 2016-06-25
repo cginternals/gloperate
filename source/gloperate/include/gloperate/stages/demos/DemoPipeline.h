@@ -50,12 +50,12 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the stage belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
     *  @param[in] name
     *    Stage name
     */
-    DemoPipeline(ViewerContext * viewerContext, const std::string & name = "DemoPipeline");
+    DemoPipeline(Environment * environment, const std::string & name = "DemoPipeline");
 
     /**
     *  @brief

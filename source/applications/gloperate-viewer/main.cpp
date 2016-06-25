@@ -14,8 +14,8 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/gloperate.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/viewer/ViewerContext.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Application.h>
@@ -38,11 +38,11 @@ int main(int argc, char * argv[])
     // Determine data paths
     const auto qmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
 
-    // Create viewer context
-    ViewerContext viewerContext;
+    // Create gloperate environment
+    Environment environment;
 
     // Initialize Qt application
-    gloperate_qt::Application app(&viewerContext, argc, argv);
+    gloperate_qt::Application app(&environment, argc, argv);
     const auto fi = QFileInfo(QCoreApplication::applicationFilePath());
 
     QApplication::setApplicationDisplayName(fi.baseName());
@@ -52,28 +52,28 @@ int main(int argc, char * argv[])
     QApplication::setOrganizationDomain(GLOPERATE_AUTHOR_DOMAIN);
 
     // Load configuration
-    Config config(viewerContext);
+    Config config(environment);
 
     // Configure update manager
-    UpdateManager updateManager(&viewerContext);
+    UpdateManager updateManager(&environment);
 
     // Create QML engine
-    QmlEngine qmlEngine(&viewerContext);
+    QmlEngine qmlEngine(&environment);
     qmlEngine.addImportPath(qmlPath);
     qmlEngine.rootContext()->setContextProperty("config", &config);
 
     // Create scripting context backend
-    viewerContext.setupScripting(
+    environment.setupScripting(
         new gloperate_qtquick::QmlScriptContext(&qmlEngine)
     );
 
     // Configure and load plugins
-    viewerContext.componentManager()->addPluginPath(
+    environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    viewerContext.componentManager()->scanPlugins("loaders");
-    viewerContext.componentManager()->scanPlugins("stages");
-    viewerContext.componentManager()->scanPlugins("exporter");
+    environment.componentManager()->scanPlugins("loaders");
+    environment.componentManager()->scanPlugins("stages");
+    environment.componentManager()->scanPlugins("exporter");
 
     // Load and show QML
     auto * window = new QuickView(&qmlEngine);

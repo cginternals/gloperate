@@ -13,8 +13,8 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(ProceduralTextureStage, gloperate::Stage)
 
 
-ProceduralTextureStage::ProceduralTextureStage(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+ProceduralTextureStage::ProceduralTextureStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , texture("texture", this, nullptr)
 {
 }

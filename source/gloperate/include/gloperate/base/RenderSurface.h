@@ -29,10 +29,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the surface belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the surface belongs (must NOT be null!)
     */
-    RenderSurface(ViewerContext * viewerContext);
+    RenderSurface(Environment * environment);
 
     /**
     *  @brief

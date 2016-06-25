@@ -17,9 +17,9 @@ namespace gloperate
 {
 
 
-Stage::Stage(ViewerContext * viewerContext, const std::string & name)
+Stage::Stage(Environment * environment, const std::string & name)
 : cppexpose::Object(name)
-, m_viewerContext(viewerContext)
+, m_environment(environment)
 , m_alwaysProcess(false)
 {
 }
@@ -39,9 +39,9 @@ bool Stage::isPipeline() const
     return false;
 }
 
-ViewerContext * Stage::viewerContext() const
+Environment * Stage::environment() const
 {
-    return m_viewerContext;
+    return m_environment;
 }
 
 Pipeline * Stage::parentPipeline() const

@@ -3,7 +3,7 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/TimeManager.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/input/MouseDevice.h>
@@ -19,12 +19,12 @@ namespace gloperate
 {
 
 
-RenderSurface::RenderSurface(ViewerContext * viewerContext)
-: Surface(viewerContext)
-, m_viewer(viewerContext)
+RenderSurface::RenderSurface(Environment * environment)
+: Surface(environment)
+, m_viewer(environment)
 , m_frame(0)
-, m_mouseDevice(new MouseDevice(m_viewerContext->inputManager(), "Render Surface"))
-, m_keyboardDevice(new KeyboardDevice(m_viewerContext->inputManager(), "Render Surface"))
+, m_mouseDevice(new MouseDevice(m_environment->inputManager(), "Render Surface"))
+, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), "Render Surface"))
 , m_videoExporter(nullptr)
 , m_imageExporter(nullptr)
 , m_requestVideo(false)
@@ -85,7 +85,7 @@ glm::vec4 RenderSurface::virtualViewport()
 
 void RenderSurface::onUpdate()
 {
-    float timeDelta = m_viewerContext->timeManager()->timeDelta();
+    float timeDelta = m_environment->timeManager()->timeDelta();
 
     m_viewer.timeDelta.setValue(timeDelta);
 }
@@ -205,7 +205,7 @@ void RenderSurface::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos
 
 void RenderSurface::createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
 {
-    auto component = m_viewerContext->componentManager()->component<AbstractVideoExporter>(backend);
+    auto component = m_environment->componentManager()->component<AbstractVideoExporter>(backend);
     if (!component) return;
 
     if (m_videoExporter) delete m_videoExporter;
@@ -231,7 +231,7 @@ int RenderSurface::exportProgress()
 cppexpose::VariantArray RenderSurface::videoExporterPlugins()
 {
     cppexpose::VariantArray plugins;
-    for (auto component : m_viewerContext->componentManager()->components())
+    for (auto component : m_environment->componentManager()->components())
     {
         if (strcmp(component->type(), "gloperate::AbstractVideoExporter") == 0)
         {

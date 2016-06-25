@@ -1,5 +1,5 @@
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 #include <algorithm>
 
@@ -25,7 +25,7 @@ namespace gloperate
 {
 
 
-ViewerContext::ViewerContext()
+Environment::Environment()
 : cppexpose::Object("gloperate")
 , m_componentManager(this)
 , m_resourceManager(this)
@@ -47,7 +47,7 @@ ViewerContext::ViewerContext()
     registerLocalPlugins();
 }
 
-ViewerContext::~ViewerContext()
+Environment::~Environment()
 {
     if (m_scriptContext)
     {
@@ -55,79 +55,79 @@ ViewerContext::~ViewerContext()
     }
 }
 
-const ComponentManager * ViewerContext::componentManager() const
+const ComponentManager * Environment::componentManager() const
 {
     return &m_componentManager;
 }
 
-ComponentManager * ViewerContext::componentManager()
+ComponentManager * Environment::componentManager()
 {
     return &m_componentManager;
 }
 
-const ResourceManager * ViewerContext::resourceManager() const
+const ResourceManager * Environment::resourceManager() const
 {
     return &m_resourceManager;
 }
 
-ResourceManager * ViewerContext::resourceManager()
+ResourceManager * Environment::resourceManager()
 {
     return &m_resourceManager;
 }
 
-const TimeManager * ViewerContext::timeManager() const
+const TimeManager * Environment::timeManager() const
 {
     return &m_timeManager;
 }
 
-TimeManager * ViewerContext::timeManager()
+TimeManager * Environment::timeManager()
 {
     return &m_timeManager;
 }
 
-const InputManager * ViewerContext::inputManager() const
+const InputManager * Environment::inputManager() const
 {
     return &m_inputManager;
 }
 
-InputManager * ViewerContext::inputManager()
+InputManager * Environment::inputManager()
 {
     return &m_inputManager;
 }
 
-const std::vector<Surface *> & ViewerContext::surfaces() const
+const std::vector<Surface *> & Environment::surfaces() const
 {
     return m_surfaces;
 }
 
-std::vector<Surface *> & ViewerContext::surfaces()
+std::vector<Surface *> & Environment::surfaces()
 {
     return m_surfaces;
 }
 
-const cppexpose::ScriptContext * ViewerContext::scriptContext() const
+const cppexpose::ScriptContext * Environment::scriptContext() const
 {
     return m_scriptContext;
 }
 
-cppexpose::ScriptContext * ViewerContext::scriptContext()
+cppexpose::ScriptContext * Environment::scriptContext()
 {
     return m_scriptContext;
 }
 
-void ViewerContext::setupScripting(const std::string & backendName)
+void Environment::setupScripting(const std::string & backendName)
 {
     initializeScripting(new cppexpose::ScriptContext(
         backendName.length() > 0 ? backendName : "javascript"
     ) );
 }
 
-void ViewerContext::setupScripting(cppexpose::AbstractScriptBackend * backend)
+void Environment::setupScripting(cppexpose::AbstractScriptBackend * backend)
 {
     initializeScripting(new cppexpose::ScriptContext(backend));
 }
 
-cppexpose::Variant ViewerContext::executeScript(const std::string & code)
+cppexpose::Variant Environment::executeScript(const std::string & code)
 {
     // There must be a valid scripting context
     if (!m_scriptContext)
@@ -150,7 +150,7 @@ cppexpose::Variant ViewerContext::executeScript(const std::string & code)
     return m_scriptContext->evaluate(cmd);
 }
 
-bool ViewerContext::update()
+bool Environment::update()
 {
     // Update timing and timers
     bool activeTimers = m_timeManager.update();
@@ -165,7 +165,7 @@ bool ViewerContext::update()
     return activeTimers;
 }
 
-bool ViewerContext::update(float delta)
+bool Environment::update(float delta)
 {
     // Update timing and timers
     bool activeTimers = m_timeManager.update(delta);
@@ -180,13 +180,13 @@ bool ViewerContext::update(float delta)
     return activeTimers;
 }
 
-void ViewerContext::exit(int exitCode)
+void Environment::exit(int exitCode)
 {
     // Emit signal
     this->exitApplication(exitCode);
 }
 
-void ViewerContext::registerLocalPlugins()
+void Environment::registerLocalPlugins()
 {
     m_componentManager.addComponent(&BasicFramebufferStage::Component);
     m_componentManager.addComponent(&TextureLoadStage::Component);
@@ -199,7 +199,7 @@ void ViewerContext::registerLocalPlugins()
     m_componentManager.addComponent(&DemoTimerStage::Component);
 }
 
-void ViewerContext::initializeScripting(cppexpose::ScriptContext * scriptContext)
+void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)
 {
     // Check parameters
     if (!scriptContext)
@@ -240,13 +240,13 @@ void ViewerContext::initializeScripting(cppexpose::ScriptContext * scriptContext
         "  gloperate.timer.stopAll();\n";
 }
 
-void ViewerContext::registerSurface(Surface * surface)
+void Environment::registerSurface(Surface * surface)
 {
     m_surfaces.push_back(surface);
     addProperty(surface);
 }
 
-void ViewerContext::unregisterSurface(Surface * surface)
+void Environment::unregisterSurface(Surface * surface)
 {
     removeProperty(surface);
     m_surfaces.erase(std::find(m_surfaces.begin(), m_surfaces.end(), surface));

@@ -14,7 +14,7 @@ namespace gloperate
 {
 
 
-class ViewerContext;
+class Environment;
 class Timer;
 class ScriptTimer;
 
@@ -33,10 +33,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the manager belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the manager belongs (must NOT be null!)
     */
-    TimeManager(ViewerContext * viewerContext);
+    TimeManager(Environment * environment);
 
     /**
     *  @brief
@@ -142,7 +142,7 @@ protected:
 
 
 protected:
-    ViewerContext              * m_viewerContext; ///< Viewer context to which the manager belongs
+    Environment                * m_environment;   ///< Gloperate environment to which the manager belongs
 
     // General timers
     unsigned int                 m_activeTimers;  ///< Number of active timers

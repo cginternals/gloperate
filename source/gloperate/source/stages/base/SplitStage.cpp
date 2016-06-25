@@ -43,8 +43,8 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(SplitStage, gloperate::Stage)
 
 
-SplitStage::SplitStage(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+SplitStage::SplitStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , viewport      ("viewport", this)
 , targetFBO     ("targetFBO", this)
 , texture1      ("texture1", this)

@@ -2,8 +2,8 @@
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/stages/demos/DemoStage.h>
 
 #include <gloperate-glfw/Application.h>
@@ -17,25 +17,25 @@ using namespace gloperate_glfw;
 
 int main(int argc, char * argv[])
 {
-    // Create viewer context
-    ViewerContext viewerContext;
+    // Create gloperate environment
+    Environment environment;
 
     // Configure and load plugins
-    viewerContext.componentManager()->addPluginPath(
+    environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    viewerContext.componentManager()->scanPlugins("loaders");
-    viewerContext.componentManager()->scanPlugins("stages");
+    environment.componentManager()->scanPlugins("loaders");
+    environment.componentManager()->scanPlugins("stages");
 
     // Initialize GLFW
     Application::init();
-    Application app(&viewerContext, argc, argv);
+    Application app(&environment, argc, argv);
 
     // Create render stage
-    DemoStage * renderStage = new DemoStage(&viewerContext);
+    DemoStage * renderStage = new DemoStage(&environment);
 
     // Create render window
-    RenderWindow window(&viewerContext);
+    RenderWindow window(&environment);
     window.setRenderStage(renderStage);
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);

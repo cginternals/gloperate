@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/RenderSurface.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
@@ -16,9 +16,9 @@ namespace gloperate
 {
 
 
-PipelineApi::PipelineApi(ViewerContext * viewerContext)
+PipelineApi::PipelineApi(Environment * environment)
 : cppexpose::Object("pipeline")
-, m_viewerContext(viewerContext)
+, m_environment(environment)
 {
     // Register functions
     addFunction("getName",         this, &PipelineApi::getName);
@@ -170,11 +170,11 @@ void PipelineApi::setRequired(const std::string & path, bool required)
 Stage * PipelineApi::getStage(const std::string & name)
 {
     // Get render surface
-    if (m_viewerContext->surfaces().size() == 0) {
+    if (m_environment->surfaces().size() == 0) {
         return nullptr;
     }
 
-    RenderSurface * surface = static_cast<RenderSurface *>(m_viewerContext->surfaces()[0]);
+    RenderSurface * surface = static_cast<RenderSurface *>(m_environment->surfaces()[0]);
     if (!surface) {
         return nullptr;
     }
@@ -212,11 +212,11 @@ Stage * PipelineApi::getStage(const std::string & name)
 AbstractSlot * PipelineApi::getSlot(const std::string & name)
 {
     // Get render surface
-    if (m_viewerContext->surfaces().size() == 0) {
+    if (m_environment->surfaces().size() == 0) {
         return nullptr;
     }
 
-    RenderSurface * surface = static_cast<RenderSurface *>(m_viewerContext->surfaces()[0]);
+    RenderSurface * surface = static_cast<RenderSurface *>(m_environment->surfaces()[0]);
     if (!surface) {
         return nullptr;
     }

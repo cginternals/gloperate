@@ -74,8 +74,8 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
     if (view)
     {
         m_surface = Utils::createSurface(
-            view->viewerContext(),
-            Utils::createRenderStage(view->viewerContext(), m_stage.toStdString())
+            view->environment(),
+            Utils::createRenderStage(view->environment(), m_stage.toStdString())
         );
     }
 

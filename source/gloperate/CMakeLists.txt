@@ -38,7 +38,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/gloperate.h
 
-    ${include_path}/base/input.h
+    ${include_path}/base/Environment.h
     ${include_path}/base/System.h
     ${include_path}/base/PipelineApi.h
     ${include_path}/base/ComponentManager.h
@@ -66,8 +66,7 @@ set(headers
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.hpp
     ${include_path}/base/GlmProperties.h
-
-    ${include_path}/viewer/ViewerContext.h
+    ${include_path}/base/input.h
 
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractDataSlot.h
@@ -128,6 +127,7 @@ set(headers
 set(sources
     ${source_path}/gloperate.cpp
 
+    ${source_path}/base/Environment.cpp
     ${source_path}/base/System.cpp
     ${source_path}/base/PipelineApi.cpp
     ${source_path}/base/ComponentManager.cpp
@@ -147,8 +147,6 @@ set(sources
     ${source_path}/base/Image.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
-
-    ${source_path}/viewer/ViewerContext.cpp
 
     ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/AbstractDataSlot.cpp

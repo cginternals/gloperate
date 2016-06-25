@@ -12,7 +12,7 @@
 #include <cppassist/io/FilePath.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-qtquick/base/RenderItem.h>
 #include <gloperate-qtquick/controls/TextController.h>
@@ -23,8 +23,8 @@ namespace gloperate_qtquick
 {
 
 
-QmlEngine::QmlEngine(gloperate::ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+QmlEngine::QmlEngine(gloperate::Environment * environment)
+: m_environment(environment)
 {
     // Register QML types
     qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
@@ -42,15 +42,15 @@ QmlEngine::~QmlEngine()
 {
 }
 
-gloperate::ViewerContext * QmlEngine::viewerContext() const
+gloperate::Environment * QmlEngine::environment() const
 {
-    return m_viewerContext;
+    return m_environment;
 }
 
 QString QmlEngine::execute(const QString & code)
 {
     return QString::fromStdString(
-        m_viewerContext->executeScript(code.toStdString()).value<std::string>()
+        m_environment->executeScript(code.toStdString()).value<std::string>()
     );
 }
 

@@ -8,7 +8,7 @@
 
 
 namespace gloperate {
-    class ViewerContext;
+    class Environment;
 }
 
 namespace gloperate_qt {
@@ -49,12 +49,12 @@ public:
 
     /**
     *  @brief
-    *    Get viewer context
+    *    Get gloperate environment
     *
     *  @return
-    *    Viewer context (cannot be null)
+    *    Gloperate environment (cannot be null)
     */
-    gloperate::ViewerContext * viewerContext() const;
+    gloperate::Environment * environment() const;
 
     /**
     *  @brief
@@ -72,8 +72,8 @@ protected:
 
 
 protected:
-    gloperate::ViewerContext * m_viewerContext; ///< Viewer context to which the window belongs (must NOT be null)
-    gloperate_qt::GLContext  * m_context;       ///< Context wrapper for gloperate (can be null)
+    gloperate::Environment   * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    gloperate_qt::GLContext  * m_context;     ///< Context wrapper for gloperate (can be null)
 };
 
 

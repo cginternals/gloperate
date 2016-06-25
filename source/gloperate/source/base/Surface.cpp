@@ -3,7 +3,7 @@
 
 #include <globjects/base/baselogging.h>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 
 namespace gloperate
@@ -13,9 +13,9 @@ namespace gloperate
 static int s_surfaces = 0;
 
 
-Surface::Surface(ViewerContext * viewerContext)
+Surface::Surface(Environment * environment)
 : cppexpose::Object("surface" + std::to_string(s_surfaces++))
-, m_viewerContext(viewerContext)
+, m_environment(environment)
 , m_openGLContext(nullptr)
 {
     addFunction("createVideo", this, &Surface::createVideo);
@@ -23,17 +23,17 @@ Surface::Surface(ViewerContext * viewerContext)
     addFunction("exportProgress", this, &Surface::exportProgress);
     addFunction("videoExporterPlugins", this, &Surface::videoExporterPlugins);
 
-    m_viewerContext->registerSurface(this);
+    m_environment->registerSurface(this);
 }
 
 Surface::~Surface()
 {
-    m_viewerContext->unregisterSurface(this);
+    m_environment->unregisterSurface(this);
 }
 
-ViewerContext * Surface::viewerContext() const
+Environment * Surface::environment() const
 {
-    return m_viewerContext;
+    return m_environment;
 }
 
 AbstractGLContext * Surface::openGLContext() const

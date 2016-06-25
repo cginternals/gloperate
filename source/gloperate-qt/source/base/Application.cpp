@@ -3,18 +3,18 @@
 
 #include <QApplication>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 
 namespace gloperate_qt
 {
 
 
-Application::Application(gloperate::ViewerContext * viewerContext, int & argc, char ** argv)
+Application::Application(gloperate::Environment * environment, int & argc, char ** argv)
 : QApplication(argc, argv)
 {
     // Connect to exit-signal
-    viewerContext->exitApplication.connect([] (int exitCode)
+    environment->exitApplication.connect([] (int exitCode)
     {
         QApplication::exit(exitCode);
     });

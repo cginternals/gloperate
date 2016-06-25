@@ -14,7 +14,7 @@ namespace gloperate
 {
 
 
-class ViewerContext;
+class Environment;
 class AbstractEventConsumer;
 class AbstractDeviceProvider;
 class AbstractDevice;
@@ -32,10 +32,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the manager belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the manager belongs (must NOT be null!)
     */
-    InputManager(ViewerContext * viewerContext);
+    InputManager(Environment * environment);
 
     /**
     *  @brief
@@ -81,7 +81,7 @@ public:
 
 
 protected:
-    ViewerContext                       * m_viewerContext; ///< Viewer context to which the manager belongs
+    Environment                         * m_environment; ///< Gloperate environment to which the manager belongs
     std::list<AbstractEventConsumer *>    m_consumers;
     std::list<AbstractDeviceProvider *>   m_deviceProviders;
     std::list<AbstractDevice *>           m_devices;

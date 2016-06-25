@@ -11,7 +11,7 @@ namespace gloperate
 {
 
 
-class ViewerContext;
+class Environment;
 
 
 /**
@@ -29,10 +29,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the surface belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the timer belongs (must NOT be null!)
     */
-    Timer(ViewerContext * viewerContext);
+    Timer(Environment * environment);
 
     /**
     *  @brief
@@ -107,11 +107,11 @@ protected:
 
 
 protected:
-    ViewerContext * m_viewerContext; ///< Viewer context to which the timer belongs
-    bool            m_active;        ///< 'true' if timer is active, else 'false'
-    bool            m_singleShot;    ///< 'true' if timer fires only once, else 'false'
-    float           m_interval;      ///< Interval (in seconds)
-    float           m_remaining;     ///< Remaining time (in seconds)
+    Environment * m_environment; ///< Gloperate environment to which the timer belongs
+    bool          m_active;      ///< 'true' if timer is active, else 'false'
+    bool          m_singleShot;  ///< 'true' if timer fires only once, else 'false'
+    float         m_interval;    ///< Interval (in seconds)
+    float         m_remaining;   ///< Remaining time (in seconds)
 };
 
 

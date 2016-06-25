@@ -5,16 +5,16 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 
 namespace gloperate
 {
 
 
-ComponentManager::ComponentManager(ViewerContext * viewerContext)
+ComponentManager::ComponentManager(Environment * environment)
 : cppexpose::Object("components")
-, m_viewerContext(viewerContext)
+, m_environment(environment)
 {
     // Register functions
     addFunction("pluginPaths",      this, &ComponentManager::script_pluginPaths);
@@ -31,7 +31,7 @@ ComponentManager::~ComponentManager()
 
 cppexpose::Variant ComponentManager::script_pluginPaths()
 {
-    std::vector<std::string> paths = m_viewerContext->componentManager()->pluginPaths();
+    std::vector<std::string> paths = m_environment->componentManager()->pluginPaths();
 
     cppexpose::Variant lst = cppexpose::Variant::array();
     for (auto path : paths) {
@@ -43,24 +43,24 @@ cppexpose::Variant ComponentManager::script_pluginPaths()
 
 void ComponentManager::script_addPluginPath(const std::string & path)
 {
-    m_viewerContext->componentManager()->addPluginPath(path);
+    m_environment->componentManager()->addPluginPath(path);
 }
 
 void ComponentManager::script_removePluginPath(const std::string & path)
 {
-    m_viewerContext->componentManager()->removePluginPath(path);
+    m_environment->componentManager()->removePluginPath(path);
 }
 
 void ComponentManager::script_scanPlugins(const std::string & identifier)
 {
-    m_viewerContext->componentManager()->scanPlugins(identifier);
+    m_environment->componentManager()->scanPlugins(identifier);
 }
 
 cppexpose::Variant ComponentManager::script_components()
 {
     cppexpose::Variant lst = cppexpose::Variant::array();
 
-    auto & components = m_viewerContext->componentManager()->components();
+    auto & components = m_environment->componentManager()->components();
     for (auto * component : components) {
         cppexpose::Variant obj = cppexpose::Variant::map();
         cppexpose::VariantMap & map = *obj.asMap();
@@ -82,7 +82,7 @@ cppexpose::Variant ComponentManager::script_components()
 
 void ComponentManager::script_printComponents()
 {
-    m_viewerContext->componentManager()->printComponents();
+    m_environment->componentManager()->printComponents();
 }
 
 

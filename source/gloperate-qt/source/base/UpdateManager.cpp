@@ -3,15 +3,15 @@
 
 #include <QTime>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 
 namespace gloperate_qt
 {
 
 
-UpdateManager::UpdateManager(gloperate::ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+UpdateManager::UpdateManager(gloperate::Environment * environment)
+: m_environment(environment)
 {
     // Connect update timer
     QObject::connect(
@@ -42,7 +42,7 @@ void UpdateManager::onTimer()
     m_time.restart();
 
     // Update timing
-    if (!m_viewerContext->update())
+    if (!m_environment->update())
     {
         m_timer.stop();
     }

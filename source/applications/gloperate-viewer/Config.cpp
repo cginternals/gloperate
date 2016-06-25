@@ -4,15 +4,15 @@
 #include <QSettings>
 #include <QStringList>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 
 
 const QString SETTINGS_PLUGINS("Plugins");
 const QString SETTINGS_STYLE("Style");
 
 
-Config::Config(gloperate::ViewerContext & viewerContext)
-: m_viewerContext(viewerContext)
+Config::Config(gloperate::Environment & environment)
+: m_environment(environment)
 , m_style("")
 {
     // Initialize settings
@@ -23,7 +23,7 @@ Config::Config(gloperate::ViewerContext & viewerContext)
     QStringList paths = settings.value(SETTINGS_PLUGINS).toStringList();
     for (auto path : paths)
     {
-        m_viewerContext.componentManager()->addPluginPath(
+        m_environment.componentManager()->addPluginPath(
             path.toStdString()
         );
     }
@@ -38,7 +38,7 @@ Config::~Config()
 
     // Save plugin paths
     QStringList paths;
-    for (auto path : m_viewerContext.componentManager()->pluginPaths())
+    for (auto path : m_environment.componentManager()->pluginPaths())
     {
         paths << QString::fromStdString(path);
     }

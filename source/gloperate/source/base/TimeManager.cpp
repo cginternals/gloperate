@@ -19,9 +19,9 @@ namespace gloperate
 {
 
 
-TimeManager::TimeManager(ViewerContext * viewerContext)
+TimeManager::TimeManager(Environment * environment)
 : cppexpose::Object("timer")
-, m_viewerContext(viewerContext)
+, m_environment(environment)
 , m_activeTimers(0)
 , m_timeDelta(0.0f)
 , m_nextId(1)
@@ -151,7 +151,7 @@ int TimeManager::startTimer(const cppexpose::Variant & func, int msec, bool sing
     cppexpose::Function function = func.value<cppexpose::Function>();
 
     // Create and start timer
-    ScriptTimer * timer = new ScriptTimer(m_viewerContext, function);
+    ScriptTimer * timer = new ScriptTimer(m_environment, function);
     timer->start(msec / 1000.0f, singleShot);
 
     // Store timer

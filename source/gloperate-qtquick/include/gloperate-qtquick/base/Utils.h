@@ -9,7 +9,7 @@
 
 namespace gloperate
 {
-    class ViewerContext;
+    class Environment;
     class Surface;
     class Stage;
 }
@@ -50,8 +50,8 @@ public:
     static void clearScreen(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f, bool clearDepthBuffer = true);
 
     // [TODO] Only for testing
-    static gloperate::Stage * createRenderStage(gloperate::ViewerContext * viewerContext, const std::string & name);
-    static gloperate::Surface * createSurface(gloperate::ViewerContext * viewerContext, gloperate::Stage * renderStage);
+    static gloperate::Stage * createRenderStage(gloperate::Environment * environment, const std::string & name);
+    static gloperate::Surface * createSurface(gloperate::Environment * environment, gloperate::Stage * renderStage);
 };
 
 

@@ -14,7 +14,7 @@
 class QVariant;
 
 namespace gloperate {
-    class ViewerContext;
+    class Environment;
 }
 
 
@@ -43,10 +43,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context (must NOT be null!)
+    *  @param[in] environment
+    *    Gloperate environment (must NOT be null!)
     */
-    QmlEngine(gloperate::ViewerContext * viewerContext);
+    QmlEngine(gloperate::Environment * environment);
 
     /**
     *  @brief
@@ -56,12 +56,12 @@ public:
 
     /**
     *  @brief
-    *    Get viewer context
+    *    Get gloperate environment
     *
     *  @return
-    *    Viewer context (cannot be null)
+    *    Gloperate environment (cannot be null)
     */
-    gloperate::ViewerContext * viewerContext() const;
+    gloperate::Environment * environment() const;
 
     /**
     *  @brief
@@ -149,9 +149,9 @@ public:
 
 
 protected:
-    gloperate::ViewerContext * m_viewerContext; ///< Viewer context (must NOT be null)
-    QJSValue                   m_global;        ///< Object 'global', can be used to store global values
-    QJSValue                   m_gloperate;     ///< Object 'gloperate', contains exposed API functions from gloperate
+    gloperate::Environment * m_environment; ///< Gloperate environment (must NOT be null)
+    QJSValue                 m_global;      ///< Object 'global', can be used to store global values
+    QJSValue                 m_gloperate;   ///< Object 'gloperate', contains exposed API functions from gloperate
 };
 
 

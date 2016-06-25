@@ -1,7 +1,7 @@
 
 #include <gloperate/base/Timer.h>
 
-#include <gloperate/viewer/ViewerContext.h>
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/TimeManager.h>
 
 
@@ -9,21 +9,21 @@ namespace gloperate
 {
 
 
-Timer::Timer(ViewerContext * viewerContext)
-: m_viewerContext(viewerContext)
+Timer::Timer(Environment * environment)
+: m_environment(environment)
 , m_active(false)
 , m_singleShot(false)
 , m_interval(0.0f)
 , m_remaining(0.0f)
 {
-    m_viewerContext->timeManager()->registerTimer(this);
+    m_environment->timeManager()->registerTimer(this);
 }
 
 Timer::~Timer()
 {
     stop();
 
-    m_viewerContext->timeManager()->unregisterTimer(this);
+    m_environment->timeManager()->unregisterTimer(this);
 }
 
 bool Timer::isActive() const
@@ -35,7 +35,7 @@ void Timer::start(float interval, bool singleShot)
 {
     if (!m_active)
     {
-        m_viewerContext->timeManager()->activateTimer();
+        m_environment->timeManager()->activateTimer();
     }
 
     m_active     = true;
@@ -48,7 +48,7 @@ void Timer::stop()
 {
     if (m_active)
     {
-        m_viewerContext->timeManager()->deactivateTimer();
+        m_environment->timeManager()->deactivateTimer();
     }
 
     m_active     = false;

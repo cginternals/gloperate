@@ -21,7 +21,7 @@ namespace gloperate
 {
 
 
-class ViewerContext;
+class Environment;
 class AbstractGLContext;
 
 
@@ -46,10 +46,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] viewerContext
-    *    Viewer context to which the surface belongs (must NOT be null!)
+    *  @param[in] environment
+    *    Environment to which the surface belongs (must NOT be null!)
     */
-    Surface(ViewerContext * viewerContext);
+    Surface(Environment * environment);
 
     /**
     *  @brief
@@ -59,12 +59,12 @@ public:
 
     /**
     *  @brief
-    *    Get viewer context
+    *    Get gloperate environment
     *
     *  @return
-    *    Viewer context to which the surface belongs (must NOT be null!)
+    *    Environment to which the surface belongs (must NOT be null!)
     */
-    ViewerContext * viewerContext() const;
+    Environment * environment() const;
 
     /**
     *  @brief
@@ -324,7 +324,7 @@ public:
 
 
 protected:
-    ViewerContext     * m_viewerContext; ///< Viewer context to which the surface belongs
+    Environment       * m_environment;   ///< Gloperate environment to which the surface belongs
     AbstractGLContext * m_openGLContext; ///< OpenGL context used for rendering on the surface
 };
 

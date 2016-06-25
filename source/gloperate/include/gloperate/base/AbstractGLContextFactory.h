@@ -18,7 +18,7 @@ class GLContextFormat;
 *
 *    A context factory is used to create OpenGL contexts.
 *    It must be provided by the windowing backend and can
-*    be accessed via ViewerContext.
+*    be accessed via Environment.
 */
 class GLOPERATE_API AbstractGLContextFactory
 {

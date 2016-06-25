@@ -24,7 +24,7 @@
 
 
 namespace gloperate {
-    class ViewerContext;
+    class Environment;
     class RenderSurface;
     class AbstractGLContext;
 }
@@ -131,7 +131,7 @@ protected:
 
 protected:
     FFMPEGVideoEncoder                         * m_videoEncoder;
-    gloperate::ViewerContext                   * m_context;
+    gloperate::Environment                     * m_environment;
     gloperate::RenderSurface                   * m_surface;
     gloperate::AbstractGLContext               * m_glContext;
 

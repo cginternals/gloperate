@@ -43,8 +43,8 @@ namespace gloperate
 CPPEXPOSE_COMPONENT(MixerStage, gloperate::Stage)
 
 
-MixerStage::MixerStage(ViewerContext * viewerContext, const std::string & name)
-: Stage(viewerContext, name)
+MixerStage::MixerStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
 , viewport      ("viewport", this)
 , targetFBO     ("targetFBO", this)
 , texture       ("texture", this)
