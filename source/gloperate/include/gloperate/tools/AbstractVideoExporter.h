@@ -63,7 +63,7 @@ public:
     *  @param[in] length
     *    Length (in seconds) of output video
     */
-    virtual void setTarget(AbstractCanvas * canvas, const std::string & filename, uint width, uint height, uint fps, uint length) = 0;
+    virtual void setTarget(AbstractCanvas * canvas, const std::string & filename, unsigned int width, unsigned int height, unsigned int fps, unsigned int length) = 0;
 
     /**
     *  @brief

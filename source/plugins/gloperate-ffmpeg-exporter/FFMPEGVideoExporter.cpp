@@ -76,7 +76,7 @@ FFMPEGVideoExporter::~FFMPEGVideoExporter()
     delete m_videoEncoder;
 }
 
-void FFMPEGVideoExporter::setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, uint width, uint height, uint fps, uint length)
+void FFMPEGVideoExporter::setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, unsigned int width, unsigned int height, unsigned int fps, unsigned int length)
 {
     // Save configuration
     m_canvas    = canvas;
@@ -110,7 +110,7 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
 
     m_videoEncoder->initEncoding(m_filename, m_width, m_height, m_fps);
 
-    for (uint i = 0; i < length; ++i)
+    for (unsigned int i = 0; i < length; ++i)
     {
         m_color->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
         m_depth->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());

@@ -60,7 +60,7 @@ public:
     virtual ~FFMPEGVideoExporter();
 
     // Virtual AbstractVideoExporter interface
-    virtual void setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, uint width, uint height, uint fps, uint length) override;
+    virtual void setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, unsigned int width, unsigned int height, unsigned int fps, unsigned int length) override;
     virtual void createVideo(AbstractVideoExporter::ContextHandling contextHandling, std::function<void(int, int)> progress) override;
     virtual int progress() const override;
 
@@ -84,10 +84,10 @@ protected:
     globjects::ref_ptr<globjects::Program>       m_program;
 
     std::string                                  m_filename;
-    uint                                         m_fps;
-    uint                                         m_length;
-    uint                                         m_width;
-    uint                                         m_height;
+    unsigned int                                 m_fps;
+    unsigned int                                 m_length;
+    unsigned int                                 m_width;
+    unsigned int                                 m_height;
     float                                        m_timeDelta;
     int                                          m_progress;
 };
