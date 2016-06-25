@@ -21,7 +21,7 @@ namespace gloperate
 
 RenderSurface::RenderSurface(Environment * environment)
 : Surface(environment)
-, m_viewer(environment)
+, m_pipelineContainer(environment)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_environment->inputManager(), "Render Surface"))
 , m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), "Render Surface"))
@@ -30,10 +30,10 @@ RenderSurface::RenderSurface(Environment * environment)
 , m_requestVideo(false)
 {
     // Mark render output as required and redraw when it is invalidated
-    m_viewer.rendered.setRequired(true);
-    m_viewer.rendered.valueChanged.connect([this] (bool)
+    m_pipelineContainer.rendered.setRequired(true);
+    m_pipelineContainer.rendered.valueChanged.connect([this] (bool)
     {
-        if (!m_viewer.rendered.isValid()) {
+        if (!m_pipelineContainer.rendered.isValid()) {
             this->redraw();
         }
     });
@@ -47,47 +47,47 @@ RenderSurface::~RenderSurface()
 
 Pipeline * RenderSurface::rootPipeline() const
 {
-    return static_cast<Pipeline *>(const_cast<ViewerContainer *>(&m_viewer));
+    return static_cast<Pipeline *>(const_cast<PipelineContainer *>(&m_pipelineContainer));
 }
 
 Stage * RenderSurface::renderStage() const
 {
-    return m_viewer.renderStage();
+    return m_pipelineContainer.renderStage();
 }
 
 void RenderSurface::setRenderStage(Stage * stage)
 {
     // De-initialize render stage
-    if (m_viewer.renderStage() && m_openGLContext)
+    if (m_pipelineContainer.renderStage() && m_openGLContext)
     {
-        m_viewer.renderStage()->deinitContext(m_openGLContext);
+        m_pipelineContainer.renderStage()->deinitContext(m_openGLContext);
     }
 
     // Set new render stage
-    m_viewer.setRenderStage(stage);
+    m_pipelineContainer.setRenderStage(stage);
 
     // Initialize new render stage
-    if (m_viewer.renderStage() && m_openGLContext)
+    if (m_pipelineContainer.renderStage() && m_openGLContext)
     {
-        m_viewer.renderStage()->initContext(m_openGLContext);
+        m_pipelineContainer.renderStage()->initContext(m_openGLContext);
     }
 }
 
 glm::vec4 RenderSurface::deviceViewport()
 {
-    return m_viewer.deviceViewport.value();
+    return m_pipelineContainer.deviceViewport.value();
 }
 
 glm::vec4 RenderSurface::virtualViewport()
 {
-    return m_viewer.virtualViewport.value();
+    return m_pipelineContainer.virtualViewport.value();
 }
 
 void RenderSurface::onUpdate()
 {
     float timeDelta = m_environment->timeManager()->timeDelta();
 
-    m_viewer.timeDelta.setValue(timeDelta);
+    m_pipelineContainer.timeDelta.setValue(timeDelta);
 }
 
 void RenderSurface::onContextInit()
@@ -95,9 +95,9 @@ void RenderSurface::onContextInit()
     cppassist::details() << "onContextInit()";
 
     // Initialize render stage in new context
-    if (m_viewer.renderStage())
+    if (m_pipelineContainer.renderStage())
     {
-        m_viewer.renderStage()->initContext(m_openGLContext);
+        m_pipelineContainer.renderStage()->initContext(m_openGLContext);
     }
 
     if (!m_imageExporter)
@@ -111,21 +111,21 @@ void RenderSurface::onContextDeinit()
     cppassist::details() << "onContextDeinit()";
 
     // De-initialize render stage in old context
-    if (m_viewer.renderStage())
+    if (m_pipelineContainer.renderStage())
     {
-        m_viewer.renderStage()->deinitContext(m_openGLContext);
+        m_pipelineContainer.renderStage()->deinitContext(m_openGLContext);
     }
 }
 
 void RenderSurface::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
-    m_viewer.deviceViewport.setValue(deviceViewport);
-    m_viewer.virtualViewport.setValue(virtualViewport);
+    m_pipelineContainer.deviceViewport.setValue(deviceViewport);
+    m_pipelineContainer.virtualViewport.setValue(virtualViewport);
 }
 
 void RenderSurface::onBackgroundColor(float red, float green, float blue)
 {
-    m_viewer.backgroundColor.setValue(glm::vec3(red, green, blue));
+    m_pipelineContainer.backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
 void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
@@ -150,14 +150,14 @@ void RenderSurface::onRender(globjects::Framebuffer * targetFBO)
         m_imageExporter->save(true);
     }
 
-    if (m_viewer.renderStage())
+    if (m_pipelineContainer.renderStage())
     {
         m_frame++;
 
-        m_viewer.frameCounter.setValue(m_frame);
-        m_viewer.targetFBO.setValue(targetFBO);
+        m_pipelineContainer.frameCounter.setValue(m_frame);
+        m_pipelineContainer.targetFBO.setValue(targetFBO);
 
-        m_viewer.renderStage()->process(m_openGLContext);
+        m_pipelineContainer.renderStage()->process(m_openGLContext);
     }
 }
 

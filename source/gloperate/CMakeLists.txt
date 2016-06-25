@@ -46,6 +46,7 @@ set(headers
     ${include_path}/base/ResourceManager.hpp
     ${include_path}/base/Surface.h
     ${include_path}/base/RenderSurface.h
+    ${include_path}/base/PipelineContainer.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
     ${include_path}/base/AbstractGLContextFactory.h
@@ -102,7 +103,6 @@ set(headers
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/base/SplitStage.h
-    ${include_path}/stages/base/ViewerContainer.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/DemoTriangleStage.h
@@ -134,6 +134,7 @@ set(sources
     ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/Surface.cpp
     ${source_path}/base/RenderSurface.cpp
+    ${source_path}/base/PipelineContainer.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractGLContext.cpp
     ${source_path}/base/AbstractGLContextFactory.cpp
@@ -165,7 +166,6 @@ set(sources
     ${source_path}/stages/base/ProceduralTextureStage.cpp
     ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/base/SplitStage.cpp
-    ${source_path}/stages/base/ViewerContainer.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
     ${source_path}/stages/demos/DemoTriangleStage.cpp

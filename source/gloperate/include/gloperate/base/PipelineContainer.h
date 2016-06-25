@@ -19,7 +19,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Viewer pipeline container
+*    Pipeline container
 *
 *    The class is used as an interface between the RenderSurface and
 *    the current rendering stage or pipeline. It is itself a pipeline
@@ -27,7 +27,7 @@ namespace gloperate
 *    inputs and outputs that connect the render surface to the rendering
 *    stage or pipeline it contains.
 */
-class GLOPERATE_API ViewerContainer : public Pipeline
+class GLOPERATE_API PipelineContainer : public Pipeline
 {
 public:
     // Render stage inputs
@@ -50,13 +50,13 @@ public:
     *  @param[in] environment
     *    Environment to which the stage belongs (must NOT be null!)
     */
-    ViewerContainer(Environment * environment);
+    PipelineContainer(Environment * environment);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~ViewerContainer();
+    virtual ~PipelineContainer();
 
     /**
     *  @brief

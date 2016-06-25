@@ -1,12 +1,12 @@
 
-#include <gloperate/stages/base/ViewerContainer.h>
+#include <gloperate/base/PipelineContainer.h>
 
 
 namespace gloperate
 {
 
 
-ViewerContainer::ViewerContainer(Environment * environment)
+PipelineContainer::PipelineContainer(Environment * environment)
 : Pipeline(environment, "Viewer")
 , deviceViewport ("deviceViewport",  this, glm::vec4(0, 0, 0, 0))
 , virtualViewport("virtualViewport", this, glm::vec4(0, 0, 0, 0))
@@ -19,16 +19,16 @@ ViewerContainer::ViewerContainer(Environment * environment)
 {
 }
 
-ViewerContainer::~ViewerContainer()
+PipelineContainer::~PipelineContainer()
 {
 }
 
-Stage * ViewerContainer::renderStage() const
+Stage * PipelineContainer::renderStage() const
 {
     return m_renderStage;
 }
 
-void ViewerContainer::setRenderStage(Stage * stage)
+void PipelineContainer::setRenderStage(Stage * stage)
 {
     // Destroy old render stage
     if (m_renderStage) {
@@ -67,7 +67,7 @@ void ViewerContainer::setRenderStage(Stage * stage)
     connect(&rendered,     m_renderStage,     "rendered");
 }
 
-void ViewerContainer::connect(Stage * stage, const std::string & name, AbstractSlot * source)
+void PipelineContainer::connect(Stage * stage, const std::string & name, AbstractSlot * source)
 {
     // Check source data
     if (!source) {
@@ -84,7 +84,7 @@ void ViewerContainer::connect(Stage * stage, const std::string & name, AbstractS
     input->connect(source);
 }
 
-void ViewerContainer::connect(AbstractInputSlot * input, Stage * stage, const std::string & name)
+void PipelineContainer::connect(AbstractInputSlot * input, Stage * stage, const std::string & name)
 {
     // Check input slot
     if (!input) {
@@ -101,7 +101,7 @@ void ViewerContainer::connect(AbstractInputSlot * input, Stage * stage, const st
     input->connect(source);
 }
 
-void ViewerContainer::disconnect(Stage * stage, const std::string & name)
+void PipelineContainer::disconnect(Stage * stage, const std::string & name)
 {
     // Get input slot
     AbstractInputSlot * input = dynamic_cast<AbstractInputSlot *>(stage->property(name));

@@ -4,7 +4,7 @@
 
 #include <gloperate/base/Surface.h>
 #include <gloperate/base/input.h>
-#include <gloperate/stages/base/ViewerContainer.h>
+#include <gloperate/base/PipelineContainer.h>
 
 
 namespace gloperate
@@ -94,14 +94,14 @@ public:
 
 
 protected:
-    ViewerContainer         m_viewer;         ///< Container for the rendering stage or pipeline
-    unsigned long           m_frame;          ///< Frame counter
-    MouseDevice           * m_mouseDevice;    ///< Device for Mouse Events
-    KeyboardDevice        * m_keyboardDevice; ///< Device for Keyboard Events
-    AbstractVideoExporter * m_videoExporter;  ///< Tool for rendering surface to video file
-    ImageExporter         * m_imageExporter;  ///< Tool for exporting an image from surface
-    bool                    m_requestVideo;   ///< Flag to request a videoTool call during next render step
-    bool                    m_requestImage;   ///< Flag to request a ImageExporter call during next render step
+    PipelineContainer       m_pipelineContainer; ///< Container for the rendering stage or pipeline
+    unsigned long           m_frame;             ///< Frame counter
+    MouseDevice           * m_mouseDevice;       ///< Device for Mouse Events
+    KeyboardDevice        * m_keyboardDevice;    ///< Device for Keyboard Events
+    AbstractVideoExporter * m_videoExporter;     ///< Tool for rendering surface to video file
+    ImageExporter         * m_imageExporter;     ///< Tool for exporting an image from surface
+    bool                    m_requestVideo;      ///< Flag to request a videoTool call during next render step
+    bool                    m_requestImage;      ///< Flag to request a ImageExporter call during next render step
 };
 
 
