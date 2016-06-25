@@ -14,8 +14,6 @@ namespace gloperate
 class Stage;
 class MouseDevice;
 class KeyboardDevice;
-class AbstractVideoExporter;
-class ImageExporter;
 
 
 /**
@@ -72,12 +70,12 @@ public:
     void setRenderStage(Stage * stage);
 
     // Virtual AbstractCanvas functions
-    virtual glm::vec4 deviceViewport() override;
-    virtual glm::vec4 virtualViewport() override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
     virtual void onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport) override;
+    virtual void onSaveViewport() override;
+    virtual void onResetViewport() override;
     virtual void onBackgroundColor(float red, float green, float blue) override;
     virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
     virtual void onKeyPress(int key, int modifier) override;
@@ -86,21 +84,17 @@ public:
     virtual void onMousePress(int button, const glm::ivec2 & pos) override;
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos) override;
-    virtual void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoExporter") override;
-    virtual void exportImage(std::string filename, int width, int height, int renderIterations) override;
-    virtual int exportProgress() override;
-    virtual cppexpose::VariantArray videoExporterPlugins() override;
 
 
 protected:
-    PipelineContainer       m_pipelineContainer; ///< Container for the rendering stage or pipeline
-    unsigned long           m_frame;             ///< Frame counter
-    MouseDevice           * m_mouseDevice;       ///< Device for Mouse Events
-    KeyboardDevice        * m_keyboardDevice;    ///< Device for Keyboard Events
-    AbstractVideoExporter * m_videoExporter;     ///< Tool for rendering canvas to video file
-    ImageExporter         * m_imageExporter;     ///< Tool for exporting canvas to image file
-    bool                    m_requestVideo;      ///< Flag to request a videoTool call during next render step
-    bool                    m_requestImage;      ///< Flag to request a ImageExporter call during next render step
+    PipelineContainer   m_pipelineContainer; ///< Container for the rendering stage or pipeline
+    unsigned long       m_frame;             ///< Frame counter
+    MouseDevice       * m_mouseDevice;       ///< Device for Mouse Events
+    KeyboardDevice    * m_keyboardDevice;    ///< Device for Keyboard Events
+    glm::vec4           m_deviceViewport;    ///< Last known device viewport configuration
+    glm::vec4           m_virtualViewport;   ///< Last known virtual viewport configuration
+    glm::vec4           m_savedDeviceVP;     ///< Saved device viewport configuration
+    glm::vec4           m_savedVirtualVP;    ///< Saved virtual viewport configuration
 };
 
 

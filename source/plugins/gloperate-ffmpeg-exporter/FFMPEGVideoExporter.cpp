@@ -15,7 +15,7 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/Canvas.h>
+#include <gloperate/base/AbstractCanvas.h>
 #include <gloperate/base/AbstractGLContext.h>
 
 
@@ -59,21 +59,14 @@ CPPEXPOSE_COMPONENT(FFMPEGVideoExporter, gloperate::AbstractVideoExporter)
 
 
 FFMPEGVideoExporter::FFMPEGVideoExporter()
-: m_progress(0)
-{
-}
-
-FFMPEGVideoExporter::FFMPEGVideoExporter(const std::string & filename, gloperate::Canvas * canvas, uint fps, uint length, uint width, uint height)
-: m_videoEncoder(new FFMPEGVideoEncoder())
-, m_environment(canvas->environment())
-, m_canvas(canvas)
-, m_glContext(canvas->openGLContext())
-, m_filename(filename)
-, m_fps(fps)
-, m_length(length)
-, m_width(width)
-, m_height(height)
-, m_timeDelta(1.f / static_cast<float>(fps))
+: m_videoEncoder(new FFMPEGVideoEncoder)
+, m_canvas(nullptr)
+, m_filename("")
+, m_fps(30)
+, m_length(10)
+, m_width(800)
+, m_height(600)
+, m_timeDelta(1.f / 30.0f)
 , m_progress(0)
 {
 }
@@ -83,38 +76,36 @@ FFMPEGVideoExporter::~FFMPEGVideoExporter()
     delete m_videoEncoder;
 }
 
-void FFMPEGVideoExporter::init(const std::string & filename, gloperate::Canvas * canvas, uint width, uint height, uint fps, uint length)
+void FFMPEGVideoExporter::setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, uint width, uint height, uint fps, uint length)
 {
-    m_videoEncoder = new FFMPEGVideoEncoder();
-    m_environment = canvas->environment();
-    m_canvas = canvas;
-    m_glContext = canvas->openGLContext();
-    m_filename = filename;
-    m_fps = fps;
-    m_length = length;
-    m_width = width;
-    m_height = height;
-    m_timeDelta = 1.f/static_cast<float>(fps);
-    m_progress = 0;
+    // Save configuration
+    m_canvas    = canvas;
+    m_filename  = filename;
+    m_fps       = fps;
+    m_length    = length;
+    m_width     = width;
+    m_height    = height;
+    m_timeDelta = 1.f / static_cast<float>(fps);
+    m_progress  = 0;
 }
 
-void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bool glContextActive)
+void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling contextHandling, std::function<void(int, int)> progress)
 {
-    auto deviceViewport = m_canvas->deviceViewport();
-    auto virtualViewport = m_canvas->virtualViewport();
-    auto vp = glm::vec4(0, 0, m_width, m_height);
+    auto viewport = glm::vec4(0, 0, m_width, m_height);
     auto length = m_length * m_fps;
 
     createAndSetupGeometry();
     createAndSetupShader();
 
-    m_canvas->onViewport(vp, vp);
+    m_canvas->onSaveViewport();
+
+    m_canvas->onViewport(viewport, viewport);
 
     Image image(m_width, m_height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 
-    if (!glContextActive)
+    if (contextHandling == AbstractVideoExporter::ActivateContext)
     {
-        m_glContext->use();
+        m_canvas->openGLContext()->use();
     }
 
     m_videoEncoder->initEncoding(m_filename, m_width, m_height, m_fps);
@@ -127,17 +118,17 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
         m_color_quad->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
         m_depth_quad->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
 
-        m_environment->update(m_timeDelta);
+        m_canvas->environment()->update(m_timeDelta);
         m_canvas->onRender(m_fbo);
 
 
         m_fbo_quad->bind(gl::GL_FRAMEBUFFER);
 
         gl::glViewport(
-            vp.x,
-            vp.y,
-            vp.z,
-            vp.w
+            viewport.x,
+            viewport.y,
+            viewport.z,
+            viewport.w
         );
 
         gl::glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -164,12 +155,12 @@ void FFMPEGVideoExporter::createVideo(std::function<void(int, int)> progress, bo
 
     m_videoEncoder->finishEncoding();
 
-    if (!glContextActive)
+    if (contextHandling == AbstractVideoExporter::ActivateContext)
     {
-        m_glContext->release();
+        m_canvas->openGLContext()->release();
     }
 
-    m_canvas->onViewport(deviceViewport, virtualViewport);
+    m_canvas->onResetViewport();
 
     progress(1, 1);
     m_progress = 100;

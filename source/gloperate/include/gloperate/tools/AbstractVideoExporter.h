@@ -12,7 +12,7 @@ namespace gloperate
 {
 
 
-class Canvas;
+class AbstractCanvas;
 
 
 /**
@@ -21,6 +21,18 @@ class Canvas;
 */
 class GLOPERATE_API AbstractVideoExporter
 {
+public:
+    /**
+    *  @brief
+    *    OpenGL context handling
+    */
+    enum ContextHandling
+    {
+        IgnoreContext,  ///< The OpenGL context is already active, no changes will be made
+        ActivateContext ///< The OpenGL context will be activated and released by the function
+    };
+
+
 public:
     /**
     *  @brief
@@ -36,12 +48,12 @@ public:
 
     /**
     *  @brief
-    *    Initialize
+    *    Set target video export configuration
     *
-    *  @param[in] filename
-    *    Name of output video file
     *  @param[in] canvas
     *    Canvas that will be rendered into a video
+    *  @param[in] filename
+    *    Name of output video file
     *  @param[in] width
     *    Width (in pixels) of output video
     *  @param[in] height
@@ -51,18 +63,18 @@ public:
     *  @param[in] length
     *    Length (in seconds) of output video
     */
-    virtual void init(const std::string & filename, Canvas * canvas, uint width, uint height, uint fps, uint length) = 0;
+    virtual void setTarget(AbstractCanvas * canvas, const std::string & filename, uint width, uint height, uint fps, uint length) = 0;
 
     /**
     *  @brief
     *    Actual call to start video creation
     *
+    *  @param[in] contextHandling
+    *    Defines whether the exporter will activate and later release the OpenGL context
     *  @param[in] progress
     *    Progress callback function
-    *  @param[in] glContextActive
-    *    Indicator whether an openGLContext already is active and does not have to be activated by the FFMPEGVideoExporter
     */
-    virtual void createVideo(std::function<void(int, int)> progress, bool glContextActive) = 0;
+    virtual void createVideo(ContextHandling contextHandling, std::function<void(int, int)> progress) = 0;
 
     /**
     *  @brief

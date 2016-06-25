@@ -23,6 +23,8 @@ namespace gloperate
 
 class Environment;
 class AbstractGLContext;
+class ImageExporter;
+class AbstractVideoExporter;
 
 
 /**
@@ -100,21 +102,58 @@ public:
 
     /**
     *  @brief
-    *    Get device viewport
+    *    Render this canvas to an image
     *
-    *  @return
-    *    Device viewport (actual device pixels)
+    *  @param[in] filename
+    *    Name of output image file
+    *  @param[in] width
+    *    Width (in pixels) of output image
+    *  @param[in] height
+    *    Height (in pixels) of output image
+    *  @param[in] renderIterations
+    *    Number of render iterations
     */
-    virtual glm::vec4 deviceViewport();
+    void exportImage(std::string filename, int width, int height, int renderIterations);
 
     /**
     *  @brief
-    *    Get virtual viewport
+    *    Render this canvas to a video
+    *
+    *  @param[in] filename
+    *    Name of output video file
+    *  @param[in] width
+    *    Width (in pixels) of output video
+    *  @param[in] height
+    *    Height (in pixels) of output video
+    *  @param[in] fps
+    *    Frames per second of output video
+    *  @param[in] seconds
+    *    Length (in seconds) of output video
+    *  @param[in] backend
+    *    Name of video backend to use
+    */
+    void exportVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoExporter");
+
+    /**
+    *  @brief
+    *    Get current video export progress in percent
     *
     *  @return
-    *    Virtual viewport (virtual pixels)
+    *    Percent of the current video export progress
+    *
+    *  @remarks
+    *    When nothing is currently being exported, this function returns 0.
     */
-    virtual glm::vec4 virtualViewport();
+    int exportProgress();
+
+    /**
+    *  @brief
+    *    Get the available plugin names for video export backends
+    *
+    *  @return
+    *    Vector of the available plugin names for video export backends
+    */
+    cppexpose::VariantArray videoExporterPlugins();
 
     /**
     *  @brief
@@ -171,6 +210,28 @@ public:
     virtual void onViewport(
         const glm::vec4 & deviceViewport
       , const glm::vec4 & virtualViewport);
+
+    /**
+    *  @brief
+    *    Save current viewport
+    *
+    *    This function is called to save the current viewport configuration
+    *    in order to restore it later. This is used for example when
+    *    making screenshots with resolutions that are different to the
+    *    current window's viewport. The implementation is supposed to
+    *    save the last values it has been provided with by onViewport.
+    */
+    virtual void onSaveViewport();
+
+    /**
+    *  @brief
+    *    Reset viewport to saved value
+    *
+    *    This function is called to reset the viewport to previously saved
+    *    values (see onSaveViewport). The implementation is supposed to reset
+    *    the viewport to the values present on the last call to onSaveViewport.
+    */
+    virtual void onResetViewport();
 
     /**
     *  @brief
@@ -272,60 +333,14 @@ public:
     */
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
 
-    /**
-    *  @brief
-    *    Request to render this canvas to a video
-    *
-    *  @param[in] filename
-    *    Name of output video file
-    *  @param[in] width
-    *    Width (in pixels) of output video
-    *  @param[in] height
-    *    Height (in pixels) of output video
-    *  @param[in] fps
-    *    Frames per second of output video
-    *  @param[in] length
-    *    Length (in seconds) of output video
-    */
-    virtual void createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoExporter");
-
-    /**
-    *  @brief
-    *    Request to render this canvas to an image
-    *
-    *  @param[in] filename
-    *    Name of output image file
-    *  @param[in] width
-    *    Width (in pixels) of output image
-    *  @param[in] height
-    *    Height (in pixels) of output image
-    *  @param[in] renderIterations
-    *    Number of render iterations
-    */
-    virtual void exportImage(std::string filename, int width, int height, int renderIterations);
-
-    /**
-    *  @brief
-    *    Getter of the current video export progress in percent
-    *
-    *  @return
-    *    Percent of the current video export progress. When nothing is being exported, it returns 0.
-    */
-    virtual int exportProgress();
-
-    /**
-    *  @brief
-    *    Get the available plugin names for video export backends.
-    *
-    *  @return
-    *    Vector of the available plugin names for video export backends.
-    */
-    virtual cppexpose::VariantArray videoExporterPlugins();
-
 
 protected:
-    Environment       * m_environment;   ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext * m_openGLContext; ///< OpenGL context used for rendering onto the canvas
+    Environment           * m_environment;   ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext     * m_openGLContext; ///< OpenGL context used for rendering onto the canvas
+    ImageExporter         * m_imageExporter; ///< Tool for exporting canvas to image file
+    AbstractVideoExporter * m_videoExporter; ///< Tool for rendering canvas to video file
+    bool                    m_requestImage;  ///< Flag to request a ImageExporter call during next render step
+    bool                    m_requestVideo;  ///< Flag to request a VideoTool call during next render step
 };
 
 

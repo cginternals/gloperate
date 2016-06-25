@@ -146,7 +146,7 @@ Background {
             icon: '0021-video-camera.png'
 
             onClicked: {
-                gloperate.canvas0.createVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
+                gloperate.canvas0.exportVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
             }
         }
     }

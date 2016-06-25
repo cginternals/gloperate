@@ -24,9 +24,7 @@
 
 
 namespace gloperate {
-    class Environment;
-    class Canvas;
-    class AbstractGLContext;
+    class AbstractCanvas;
 }
 
 
@@ -37,15 +35,16 @@ namespace gloperate {
 class FFMPEGVideoExporter : public gloperate::AbstractVideoExporter
 {
 public:
-CPPEXPOSE_DECLARE_COMPONENT(
-    FFMPEGVideoExporter, gloperate::AbstractVideoExporter
-  , "" // Tags
-  , "" // Icon
-  , "" // Annotations
-  , "Export canvas to video using FFMPEG"
-  , GLOPERATE_AUTHOR_ORGANIZATION
-  , "v1.0.0"
-)
+    CPPEXPOSE_DECLARE_COMPONENT(
+        FFMPEGVideoExporter, gloperate::AbstractVideoExporter
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
+      , "Export canvas to video using FFMPEG"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
+
 
 public:
     /**
@@ -56,71 +55,13 @@ public:
 
     /**
     *  @brief
-    *    Constructor
-    *
-    *  @param[in] filename
-    *    Name of output video file
-    *  @param[in] canvas
-    *    Canvas that will be rendered into a video
-    *  @param[in] width
-    *    Width (in pixels) of output video
-    *  @param[in] height
-    *    Height (in pixels) of output video
-    *  @param[in] fps
-    *    Frames per second of output video
-    *  @param[in] length
-    *    Length (in seconds) of output video
-    */
-    FFMPEGVideoExporter(const std::string & filename,
-              gloperate::Canvas * canvas,
-              uint fps,
-              uint length,
-              uint width,
-              uint height);
-
-    /**
-    *  @brief
     *    Destructor
     */
     virtual ~FFMPEGVideoExporter();
 
-    /**
-    *  @brief
-    *    Initialize
-    *
-    *  @param[in] filename
-    *    Name of output video file
-    *  @param[in] canvas
-    *    Canvas that will be rendered into a video
-    *  @param[in] width
-    *    Width (in pixels) of output video
-    *  @param[in] height
-    *    Height (in pixels) of output video
-    *  @param[in] fps
-    *    Frames per second of output video
-    *  @param[in] length
-    *    Length (in seconds) of output video
-    */
-    virtual void init(const std::string & filename, gloperate::Canvas * canvas, uint width, uint height, uint fps, uint length) override;
-
-    /**
-    *  @brief
-    *    Actual call to start video creation
-    *
-    *  @param[in] progress
-    *    Progress callback function
-    *  @param[in] glContextActive
-    *    Indicator whether an openGLContext already is active and does not have to be activated by the FFMPEGVideoExporter
-    */
-    virtual void createVideo(std::function<void(int, int)> progress, bool glContextActive = false) override;
-
-    /**
-    *  @brief
-    *    Get progress in percent, ranging from 0 (no progress) to 100 (complete)
-    *
-    *  @return
-    *    Progress in percent
-    */
+    // Virtual AbstractVideoExporter interface
+    virtual void setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, uint width, uint height, uint fps, uint length) override;
+    virtual void createVideo(AbstractVideoExporter::ContextHandling contextHandling, std::function<void(int, int)> progress) override;
     virtual int progress() const override;
 
 
@@ -131,9 +72,7 @@ protected:
 
 protected:
     FFMPEGVideoEncoder                         * m_videoEncoder;
-    gloperate::Environment                     * m_environment;
-    gloperate::Canvas                          * m_canvas;
-    gloperate::AbstractGLContext               * m_glContext;
+    gloperate::AbstractCanvas                  * m_canvas;
 
     globjects::ref_ptr<globjects::Framebuffer>   m_fbo;
     globjects::ref_ptr<globjects::Texture>       m_color;

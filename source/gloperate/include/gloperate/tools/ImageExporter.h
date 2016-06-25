@@ -16,7 +16,7 @@ namespace gloperate
 {
 
 
-class Canvas;
+class AbstractCanvas;
 class Environment;
 class AbstractGLContext;
 class ResourceManager;
@@ -31,12 +31,21 @@ class GLOPERATE_API ImageExporter
 public:
     /**
     *  @brief
-    *    Constructor
-    *
-    *  @param[in] canvas
-    *    Canvas from which the screenshot is taken (must NOT be null!)
+    *    OpenGL context handling
     */
-    ImageExporter(Canvas * canvas);
+    enum ContextHandling
+    {
+        IgnoreContext,  ///< The OpenGL context is already active, no changes will be made
+        ActivateContext ///< The OpenGL context will be activated and released by the function
+    };
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    */
+    ImageExporter();
 
     /**
     *  @brief
@@ -46,8 +55,10 @@ public:
 
     /**
     *  @brief
-    *    Initialize
+    *    Set target screenshot configuration
     *
+    *  @param[in] canvas
+    *    Canvas from which the screenshot is taken (must NOT be null!)
     *  @param[in] filename
     *    Name of output image file
     *  @param[in] width
@@ -57,31 +68,30 @@ public:
     *  @param[in] renderIterations
     *    Number of render iterations
     */
-    void init(const std::string & filename, int width = 0, int height = 0, int renderIterations = 1);
+    void setTarget(AbstractCanvas * canvas, const std::string & filename, int width = 0, int height = 0, int renderIterations = 1);
 
     /**
     *  @brief
     *    Actual call to export image creation
     *
-    *  @param[in] glContextActive
-    *    Indicator whether an openGLContext already is active and does not have to be activated by the ImageExporter
+    *  @param[in] contextHandling
+    *    Defines whether the exporter will activate and later release the OpenGL context
     */
-    void save(bool glContextActive = false);
+    void save(ContextHandling contextHandling = ActivateContext);
 
 
 protected:
-    Canvas            * m_canvas;
-    Environment       * m_environment;
-    AbstractGLContext * m_glContext;
+    // Configuration
+    AbstractCanvas * m_canvas;
+    std::string      m_filename;
+    int              m_width;
+    int              m_height;
+    int              m_renderIterations;
 
-    globjects::ref_ptr<globjects::Framebuffer> m_fbo;
-    globjects::ref_ptr<globjects::Texture> m_color;
+    // OpenGl objects
+    globjects::ref_ptr<globjects::Framebuffer>  m_fbo;
+    globjects::ref_ptr<globjects::Texture>      m_color;
     globjects::ref_ptr<globjects::Renderbuffer> m_depth;
-
-    std::string m_filename;
-    int         m_width;
-    int         m_height;
-    int         m_renderIterations;
 };
 
 

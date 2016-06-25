@@ -8,8 +8,6 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
-#include <gloperate/tools/AbstractVideoExporter.h>
-#include <gloperate/tools/ImageExporter.h>
 
 
 using namespace cppassist;
@@ -25,9 +23,6 @@ Canvas::Canvas(Environment * environment)
 , m_frame(0)
 , m_mouseDevice(new MouseDevice(m_environment->inputManager(), "Canvas"))
 , m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), "Canvas"))
-, m_videoExporter(nullptr)
-, m_imageExporter(nullptr)
-, m_requestVideo(false)
 {
     // Mark render output as required and redraw when it is invalidated
     m_pipelineContainer.rendered.setRequired(true);
@@ -41,8 +36,6 @@ Canvas::Canvas(Environment * environment)
 
 Canvas::~Canvas()
 {
-    if (m_videoExporter) delete m_videoExporter;
-    if (m_imageExporter) delete m_imageExporter;
 }
 
 PipelineContainer * Canvas::pipelineContainer() const
@@ -73,16 +66,6 @@ void Canvas::setRenderStage(Stage * stage)
     }
 }
 
-glm::vec4 Canvas::deviceViewport()
-{
-    return m_pipelineContainer.deviceViewport.value();
-}
-
-glm::vec4 Canvas::virtualViewport()
-{
-    return m_pipelineContainer.virtualViewport.value();
-}
-
 void Canvas::onUpdate()
 {
     float timeDelta = m_environment->timeManager()->timeDelta();
@@ -99,11 +82,6 @@ void Canvas::onContextInit()
     {
         m_pipelineContainer.renderStage()->initContext(m_openGLContext);
     }
-
-    if (!m_imageExporter)
-    {
-        m_imageExporter = new ImageExporter(this);
-    }
 }
 
 void Canvas::onContextDeinit()
@@ -119,8 +97,22 @@ void Canvas::onContextDeinit()
 
 void Canvas::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
+    m_deviceViewport  = deviceViewport;
+    m_virtualViewport = virtualViewport;
+
     m_pipelineContainer.deviceViewport.setValue(deviceViewport);
     m_pipelineContainer.virtualViewport.setValue(virtualViewport);
+}
+
+void Canvas::onSaveViewport()
+{
+    m_savedDeviceVP  = m_deviceViewport;
+    m_savedVirtualVP = m_virtualViewport;
+}
+
+void Canvas::onResetViewport()
+{
+    onViewport(m_savedDeviceVP, m_savedVirtualVP);
 }
 
 void Canvas::onBackgroundColor(float red, float green, float blue)
@@ -132,24 +124,10 @@ void Canvas::onRender(globjects::Framebuffer * targetFBO)
 {
     cppassist::details() << "onRender()";
 
-    // [TODO] This is necessary, because the actual render call (which will be called from the video/image exporter)
-    // has to come from within the render thread.
-    if (m_requestVideo)
-    {
-        m_requestVideo = false;
-        m_videoExporter->createVideo([this] (int, int)
-        {
-            this->wakeup();
-        }, true);
-    }
+    // Invoke image and video exports
+    AbstractCanvas::onRender(targetFBO);
 
-    // [TODO] see above
-    if (m_requestImage)
-    {
-        m_requestImage = false;
-        m_imageExporter->save(true);
-    }
-
+    // Invoke render stage/pipeline
     if (m_pipelineContainer.renderStage())
     {
         m_frame++;
@@ -201,44 +179,6 @@ void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
     cppassist::details() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->wheelScroll(delta, pos);
-}
-
-void Canvas::createVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
-{
-    auto component = m_environment->componentManager()->component<AbstractVideoExporter>(backend);
-    if (!component) return;
-
-    if (m_videoExporter) delete m_videoExporter;
-    m_videoExporter = component->createInstance();
-
-    m_videoExporter->init(filename, this, width, height, fps, seconds);
-    m_requestVideo = true;
-}
-
-void Canvas::exportImage(std::string filename, int width, int height, int renderIterations)
-{
-    m_imageExporter->init(filename, width, height, renderIterations);
-    m_requestImage = true;
-}
-
-int Canvas::exportProgress()
-{
-    if (!m_videoExporter) return 0;
-
-    return m_videoExporter->progress();
-}
-
-cppexpose::VariantArray Canvas::videoExporterPlugins()
-{
-    cppexpose::VariantArray plugins;
-    for (auto component : m_environment->componentManager()->components())
-    {
-        if (strcmp(component->type(), "gloperate::AbstractVideoExporter") == 0)
-        {
-            plugins.push_back(cppexpose::Variant(component->name()));
-        }
-    }
-    return plugins;
 }
 
 
