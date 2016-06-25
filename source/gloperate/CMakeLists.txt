@@ -38,6 +38,14 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/gloperate.h
 
+    ${include_path}/base/input.h
+    ${include_path}/base/System.h
+    ${include_path}/base/PipelineApi.h
+    ${include_path}/base/ComponentManager.h
+    ${include_path}/base/ResourceManager.h
+    ${include_path}/base/ResourceManager.hpp
+    ${include_path}/base/Surface.h
+    ${include_path}/base/RenderSurface.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
     ${include_path}/base/AbstractGLContextFactory.h
@@ -47,6 +55,9 @@ set(headers
     ${include_path}/base/CachedValue.hpp
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
+    ${include_path}/base/TimeManager.h
+    ${include_path}/base/Timer.h
+    ${include_path}/base/ScriptTimer.h
     ${include_path}/base/Image.h
     ${include_path}/base/AbstractLoader.h
     ${include_path}/base/AbstractStorer.h
@@ -57,16 +68,6 @@ set(headers
     ${include_path}/base/GlmProperties.h
 
     ${include_path}/viewer/ViewerContext.h
-    ${include_path}/viewer/ComponentManager.h
-    ${include_path}/viewer/ResourceManager.h
-    ${include_path}/viewer/ResourceManager.hpp
-    ${include_path}/viewer/Surface.h
-    ${include_path}/viewer/RenderSurface.h
-    ${include_path}/viewer/TimeManager.h
-    ${include_path}/viewer/Timer.h
-    ${include_path}/viewer/ScriptTimer.h
-    ${include_path}/viewer/System.h
-    ${include_path}/viewer/PipelineApi.h
 
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractDataSlot.h
@@ -127,6 +128,12 @@ set(headers
 set(sources
     ${source_path}/gloperate.cpp
 
+    ${source_path}/base/System.cpp
+    ${source_path}/base/PipelineApi.cpp
+    ${source_path}/base/ComponentManager.cpp
+    ${source_path}/base/ResourceManager.cpp
+    ${source_path}/base/Surface.cpp
+    ${source_path}/base/RenderSurface.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractGLContext.cpp
     ${source_path}/base/AbstractGLContextFactory.cpp
@@ -134,20 +141,14 @@ set(sources
     ${source_path}/base/GLContextUtils.cpp
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
+    ${source_path}/base/TimeManager.cpp
+    ${source_path}/base/Timer.cpp
+    ${source_path}/base/ScriptTimer.cpp
     ${source_path}/base/Image.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
 
     ${source_path}/viewer/ViewerContext.cpp
-    ${source_path}/viewer/ComponentManager.cpp
-    ${source_path}/viewer/ResourceManager.cpp
-    ${source_path}/viewer/Surface.cpp
-    ${source_path}/viewer/RenderSurface.cpp
-    ${source_path}/viewer/TimeManager.cpp
-    ${source_path}/viewer/Timer.cpp
-    ${source_path}/viewer/ScriptTimer.cpp
-    ${source_path}/viewer/System.cpp
-    ${source_path}/viewer/PipelineApi.cpp
 
     ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/AbstractDataSlot.cpp

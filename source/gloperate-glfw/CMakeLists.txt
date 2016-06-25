@@ -41,27 +41,25 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/base/GLContext.h
-    ${include_path}/base/GLContextFactory.h
-
-    ${include_path}/viewer/Application.h
-    ${include_path}/viewer/WindowEventDispatcher.h
-    ${include_path}/viewer/WindowEvent.h
-    ${include_path}/viewer/Window.h
-    ${include_path}/viewer/RenderWindow.h
-    ${include_path}/viewer/input.h
+    ${include_path}/Application.h
+    ${include_path}/WindowEventDispatcher.h
+    ${include_path}/WindowEvent.h
+    ${include_path}/Window.h
+    ${include_path}/RenderWindow.h
+    ${include_path}/GLContext.h
+    ${include_path}/GLContextFactory.h
+    ${include_path}/input.h
 )
 
 set(sources
-    ${source_path}/base/GLContext.cpp
-    ${source_path}/base/GLContextFactory.cpp
-
-    ${source_path}/viewer/Application.cpp
-    ${source_path}/viewer/WindowEventDispatcher.cpp
-    ${source_path}/viewer/WindowEvent.cpp
-    ${source_path}/viewer/Window.cpp
-    ${source_path}/viewer/RenderWindow.cpp
-    ${source_path}/viewer/input.cpp
+    ${source_path}/Application.cpp
+    ${source_path}/WindowEventDispatcher.cpp
+    ${source_path}/WindowEvent.cpp
+    ${source_path}/Window.cpp
+    ${source_path}/RenderWindow.cpp
+    ${source_path}/GLContext.cpp
+    ${source_path}/GLContextFactory.cpp
+    ${source_path}/input.cpp
 )
 
 # Group source files

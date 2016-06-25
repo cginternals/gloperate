@@ -5,10 +5,9 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <gloperate/viewer/RenderSurface.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/ResourceManager.h>
-
+#include <gloperate/base/RenderSurface.h>
+#include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/AbstractGLContext.h>
 #include <gloperate/base/Image.h>
 

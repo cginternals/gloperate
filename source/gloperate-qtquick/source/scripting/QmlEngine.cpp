@@ -14,8 +14,8 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
 
+#include <gloperate-qtquick/base/RenderItem.h>
 #include <gloperate-qtquick/controls/TextController.h>
-#include <gloperate-qtquick/viewer/RenderItem.h>
 #include <gloperate-qtquick/scripting/QmlScriptFunction.h>
 
     

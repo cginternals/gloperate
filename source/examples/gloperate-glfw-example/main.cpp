@@ -6,9 +6,9 @@
 #include <gloperate/viewer/ViewerContext.h>
 #include <gloperate/stages/demos/DemoStage.h>
 
-#include <gloperate-glfw/base/GLContext.h>
-#include <gloperate-glfw/viewer/Application.h>
-#include <gloperate-glfw/viewer/RenderWindow.h>
+#include <gloperate-glfw/Application.h>
+#include <gloperate-glfw/RenderWindow.h>
+#include <gloperate-glfw/GLContext.h>
 
 
 using namespace gloperate;

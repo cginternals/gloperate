@@ -7,10 +7,10 @@
 #include <gloperate/viewer/ViewerContext.h>
 
 #include <gloperate-qt/base/GLContext.h>
-#include <gloperate-qt/viewer/Application.h>
-#include <gloperate-qt/viewer/UpdateManager.h>
+#include <gloperate-qt/base/Application.h>
+#include <gloperate-qt/base/UpdateManager.h>
 
-#include <gloperate-qtquick/viewer/QuickView.h>
+#include <gloperate-qtquick/base/QuickView.h>
 #include <gloperate-qtquick/scripting/QmlEngine.h>
 #include <gloperate-qtquick/scripting/QmlScriptContext.h>
 

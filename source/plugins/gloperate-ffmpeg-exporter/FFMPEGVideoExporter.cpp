@@ -15,7 +15,7 @@
 #include <globjects/Buffer.h>
 
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/RenderSurface.h>
+#include <gloperate/base/RenderSurface.h>
 
 #include <gloperate/gloperate.h>
 

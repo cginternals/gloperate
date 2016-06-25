@@ -9,11 +9,11 @@
 #include <cppexpose/variant/Variant.h>
 #include <cppexpose/signal/Signal.h>
 
-#include <gloperate/viewer/ComponentManager.h>
-#include <gloperate/viewer/ResourceManager.h>
-#include <gloperate/viewer/TimeManager.h>
-#include <gloperate/viewer/System.h>
-#include <gloperate/viewer/PipelineApi.h>
+#include <gloperate/base/TimeManager.h>
+#include <gloperate/base/ComponentManager.h>
+#include <gloperate/base/ResourceManager.h>
+#include <gloperate/base/System.h>
+#include <gloperate/base/PipelineApi.h>
 #include <gloperate/input/InputManager.h>
 
 // [DEBUG]

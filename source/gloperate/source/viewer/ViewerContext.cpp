@@ -7,7 +7,7 @@
 
 #include <cppexpose/scripting/ScriptContext.h>
 
-#include <gloperate/viewer/Surface.h>
+#include <gloperate/base/Surface.h>
 
 // Local components
 #include <gloperate/stages/base/BasicFramebufferStage.h>

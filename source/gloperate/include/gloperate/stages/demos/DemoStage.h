@@ -12,9 +12,9 @@
 #include <globjects/Shader.h>
 
 #include <gloperate/gloperate-version.h>
+#include <gloperate/base/Timer.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
-#include <gloperate/viewer/Timer.h>
 #include <gloperate/rendering/Camera.h>
 
 

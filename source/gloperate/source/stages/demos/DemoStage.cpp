@@ -17,7 +17,7 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/viewer/ViewerContext.h>
-#include <gloperate/viewer/ResourceManager.h>
+#include <gloperate/base/ResourceManager.h>
 
 
 static const char * s_vertexShader = R"(

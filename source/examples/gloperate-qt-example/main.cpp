@@ -12,9 +12,9 @@
 #include <gloperate/stages/demos/DemoPipeline.h>
 
 #include <gloperate-qt/base/GLContext.h>
-#include <gloperate-qt/viewer/Application.h>
-#include <gloperate-qt/viewer/UpdateManager.h>
-#include <gloperate-qt/viewer/RenderWindow.h>
+#include <gloperate-qt/base/Application.h>
+#include <gloperate-qt/base/UpdateManager.h>
+#include <gloperate-qt/base/RenderWindow.h>
 #include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
 #include <gloperate-qt/scripting/ECMA26251Completer.h>
 #include <gloperate-qt/scripting/ScriptPromptWidget.h>
