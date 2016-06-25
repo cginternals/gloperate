@@ -3,8 +3,8 @@
 
 
 #include <gloperate/base/Surface.h>
-#include <gloperate/base/input.h>
 #include <gloperate/base/PipelineContainer.h>
+#include <gloperate/input/constants.h>
 
 
 namespace gloperate

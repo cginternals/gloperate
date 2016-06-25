@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 
 #include <gloperate/gloperate_api.h>
-#include <gloperate/base/input.h>
+#include <gloperate/input/constants.h>
 
 
 namespace gloperate

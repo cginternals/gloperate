@@ -7,7 +7,7 @@
 
 #include <glm/glm.hpp>
 
-#include <gloperate/base/input.h>
+#include <gloperate/input/constants.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 

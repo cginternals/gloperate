@@ -67,7 +67,6 @@ set(headers
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
     ${include_path}/base/GlmProperties.h
-    ${include_path}/base/input.h
 
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractDataSlot.h
@@ -108,6 +107,7 @@ set(headers
     ${include_path}/stages/demos/DemoTriangleStage.h
     ${include_path}/stages/demos/DemoTimerStage.h
 
+    ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
     ${include_path}/input/InputManager.h
     ${include_path}/input/AbstractEventConsumer.h

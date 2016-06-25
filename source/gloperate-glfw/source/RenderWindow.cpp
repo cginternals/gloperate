@@ -4,8 +4,8 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <gloperate/base/input.h>
 #include <gloperate/base/RenderSurface.h>
+#include <gloperate/input/constants.h>
 
 #include <gloperate-glfw/GLContext.h>
 #include <gloperate-glfw/WindowEvent.h>

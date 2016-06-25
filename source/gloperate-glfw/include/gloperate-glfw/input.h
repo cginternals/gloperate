@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/base/input.h>
+#include <gloperate/input/constants.h>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
