@@ -43,7 +43,7 @@ set(headers
     ${include_path}/base/PipelineApi.h
     ${include_path}/base/ComponentManager.h
     ${include_path}/base/ResourceManager.h
-    ${include_path}/base/ResourceManager.hpp
+    ${include_path}/base/ResourceManager.inl
     ${include_path}/base/Surface.h
     ${include_path}/base/RenderSurface.h
     ${include_path}/base/PipelineContainer.h
@@ -53,7 +53,7 @@ set(headers
     ${include_path}/base/GLContextFormat.h
     ${include_path}/base/GLContextUtils.h
     ${include_path}/base/CachedValue.h
-    ${include_path}/base/CachedValue.hpp
+    ${include_path}/base/CachedValue.inl
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
     ${include_path}/base/TimeManager.h
@@ -63,9 +63,9 @@ set(headers
     ${include_path}/base/AbstractLoader.h
     ${include_path}/base/AbstractStorer.h
     ${include_path}/base/Loader.h
-    ${include_path}/base/Loader.hpp
+    ${include_path}/base/Loader.inl
     ${include_path}/base/Storer.h
-    ${include_path}/base/Storer.hpp
+    ${include_path}/base/Storer.inl
     ${include_path}/base/GlmProperties.h
     ${include_path}/base/input.h
 
@@ -73,31 +73,31 @@ set(headers
     ${include_path}/pipeline/AbstractDataSlot.h
     ${include_path}/pipeline/AbstractInputSlot.h
     ${include_path}/pipeline/DataSlot.h
-    ${include_path}/pipeline/DataSlot.hpp
+    ${include_path}/pipeline/DataSlot.inl
     ${include_path}/pipeline/InputSlot.h
-    ${include_path}/pipeline/InputSlot.hpp
+    ${include_path}/pipeline/InputSlot.inl
     ${include_path}/pipeline/Parameter.h
-    ${include_path}/pipeline/Parameter.hpp
+    ${include_path}/pipeline/Parameter.inl
     ${include_path}/pipeline/Input.h
-    ${include_path}/pipeline/Input.hpp
+    ${include_path}/pipeline/Input.inl
     ${include_path}/pipeline/Output.h
-    ${include_path}/pipeline/Output.hpp
+    ${include_path}/pipeline/Output.inl
     ${include_path}/pipeline/ProxyOutput.h
-    ${include_path}/pipeline/ProxyOutput.hpp
+    ${include_path}/pipeline/ProxyOutput.inl
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/Pipeline.h
     ${include_path}/pipeline/OutputTypeSelector.h
     ${include_path}/pipeline/StageComponent.h
-    ${include_path}/pipeline/StageComponent.hpp
+    ${include_path}/pipeline/StageComponent.inl
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/Camera.h
     ${include_path}/rendering/Drawable.h
-    ${include_path}/rendering/Drawable.hpp
+    ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/RenderPass.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
-    ${include_path}/stages/interfaces/RenderInterface.hpp
+    ${include_path}/stages/interfaces/RenderInterface.inl
     ${include_path}/stages/base/BasicFramebufferStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/ProceduralTextureStage.h
@@ -189,9 +189,9 @@ set(sources
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
-source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${include_path} "\\\\.h$|\\\\.inl$" 
     ${header_group} ${headers})
-source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.inl$" 
     ${source_group} ${sources})
 
 

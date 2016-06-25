@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <gloperate/pipeline/DataSlot.h>
-
 #include <gloperate/pipeline/Stage.h>
 
 

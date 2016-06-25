@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <gloperate/pipeline/InputSlot.h>
-
 #include <cppexpose/typed/Typed.h>
 
 #include <gloperate/pipeline/Stage.h>

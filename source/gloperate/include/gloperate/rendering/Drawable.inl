@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <gloperate/rendering/Drawable.h>
-
-
 namespace gloperate
 {
 

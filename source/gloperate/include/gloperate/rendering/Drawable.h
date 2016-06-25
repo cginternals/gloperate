@@ -540,4 +540,4 @@ protected:
 } // namespace gloperate
 
 
-#include <gloperate/rendering/Drawable.hpp>
+#include <gloperate/rendering/Drawable.inl>

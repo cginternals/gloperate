@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <gloperate/pipeline/ProxyOutput.h>
-
-
 namespace gloperate
 {
 

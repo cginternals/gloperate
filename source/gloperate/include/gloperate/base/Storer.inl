@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <gloperate/base/Storer.h>
-
-
 namespace gloperate
 {
 

@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <gloperate/base/ResourceManager.h>
-
 #include <cppassist/io/FilePath.h>
 
 #include <gloperate/base/Loader.h>

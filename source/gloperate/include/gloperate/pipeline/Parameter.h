@@ -58,4 +58,4 @@ protected:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/Parameter.hpp>
+#include <gloperate/pipeline/Parameter.inl>

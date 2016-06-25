@@ -68,4 +68,4 @@ public:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/StageComponent.hpp>
+#include <gloperate/pipeline/StageComponent.inl>

@@ -59,4 +59,4 @@ public:
 } // namespace gloperate
 
 
-#include <gloperate/base/Storer.hpp>
+#include <gloperate/base/Storer.inl>

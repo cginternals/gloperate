@@ -122,4 +122,4 @@ protected:
 } // namespace gloperate
 
 
-#include <gloperate/base/ResourceManager.hpp>
+#include <gloperate/base/ResourceManager.inl>

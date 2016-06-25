@@ -62,4 +62,4 @@ protected:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/Output.hpp>
+#include <gloperate/pipeline/Output.inl>

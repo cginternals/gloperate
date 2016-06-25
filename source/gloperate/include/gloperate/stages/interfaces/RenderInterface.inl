@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <gloperate/stages/interfaces/RenderInterface.h>
-
-
 namespace gloperate
 {
 

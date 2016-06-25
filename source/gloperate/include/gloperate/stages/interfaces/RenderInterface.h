@@ -76,4 +76,4 @@ public:
 } // namespace gloperate
 
 
-#include <gloperate/stages/interfaces/RenderInterface.hpp>
+#include <gloperate/stages/interfaces/RenderInterface.inl>

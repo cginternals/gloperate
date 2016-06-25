@@ -49,4 +49,4 @@ protected:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/Input.hpp>
+#include <gloperate/pipeline/Input.inl>

@@ -76,4 +76,4 @@ public:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/DataSlot.hpp>
+#include <gloperate/pipeline/DataSlot.inl>

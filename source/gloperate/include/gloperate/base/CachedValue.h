@@ -60,4 +60,4 @@ protected:
 } // namespace gloperate
 
 
-#include "CachedValue.hpp"
+#include "CachedValue.inl"

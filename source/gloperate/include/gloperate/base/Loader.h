@@ -57,4 +57,4 @@ public:
 } // namespace gloperate
 
 
-#include <gloperate/base/Loader.hpp>
+#include <gloperate/base/Loader.inl>

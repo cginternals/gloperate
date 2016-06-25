@@ -193,4 +193,4 @@ protected:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/InputSlot.hpp>
+#include <gloperate/pipeline/InputSlot.inl>

@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <gloperate/pipeline/Output.h>
-
-
 namespace gloperate
 {
 

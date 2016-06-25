@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <gloperate/base/Loader.h>
-
-
 namespace gloperate
 {
 

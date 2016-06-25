@@ -49,4 +49,4 @@ protected:
 } // namespace cppexpose
 
 
-#include <gloperate/pipeline/ProxyOutput.hpp>
+#include <gloperate/pipeline/ProxyOutput.inl>
