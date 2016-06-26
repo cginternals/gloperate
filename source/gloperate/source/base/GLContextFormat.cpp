@@ -88,6 +88,10 @@ GLContextFormat::GLContextFormat()
 , m_samples(-1)
 , m_swapBehavior(SwapBehavior::DoubleBuffering)
 {
+#ifdef __APPLE__
+    m_version = glbinding::Version(3,2);
+    m_profile = Profile::Core;
+#endif
 }
 
 GLContextFormat::~GLContextFormat()
