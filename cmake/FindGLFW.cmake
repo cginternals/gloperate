@@ -112,6 +112,7 @@ endif()
 if(APPLE)
     set(GLFW_cocoa_LIBRARY "-framework Cocoa" CACHE STRING "Cocoa framework for OSX")
     set(GLFW_iokit_LIBRARY "-framework IOKit" CACHE STRING "IOKit framework for OSX")
+    set(GLFW_corevideo_LIBRARY "-framework CoreVideo" CACHE STRING "CoreVideo framework for OSX")
 endif()
 
 # GLFW is required to link statically for now (no deploy specified)

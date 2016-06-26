@@ -134,6 +134,9 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${GLFW_LIBRARIES}
+    ${GLFW_cocoa_LIBRARY}
+    ${GLFW_iokit_LIBRARY}
+    ${GLFW_corevideo_LIBRARY}
     cpplocate::cpplocate
     cppexpose::cppexpose
     cppassist::cppassist
