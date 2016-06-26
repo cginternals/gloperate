@@ -507,6 +507,8 @@ public:
      *   Enable the vertex shader attributes associated by all configured vertex attribute bindings.
      */
     void enableAllAttributeBindings();
+
+
 protected:
     globjects::ref_ptr<globjects::VertexArray> m_vao; /// The VertexArray used for the vertex shader input specification and draw call triggering
     std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_buffers; /// The collection of all buffers associated with this geometry. (Note: this class can be used without storing actual buffers here)
@@ -517,7 +519,6 @@ protected:
     gl::GLenum m_indexBufferType; /// The configured GPU index buffer type of the currently set index buffer.
     globjects::ref_ptr<globjects::Buffer> m_indexBuffer; /// The configured GPU index buffer that is used if no specific index buffer in passed in the draw method.
     std::vector<std::uint32_t> m_indices; /// The configured CPU index buffer that is used if no specific index buffer in passed in the draw method (Note: implied GL_UNSIGNED_INT as index buffer type).
-
 };
 
 
