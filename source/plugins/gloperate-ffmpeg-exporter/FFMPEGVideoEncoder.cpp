@@ -82,7 +82,7 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, i
     m_videoStream->codec->height        = height;
     m_videoStream->codec->time_base.num = 1;
     m_videoStream->codec->time_base.den = fps;
-    m_videoStream->codec->gop_size      = 12;
+    m_videoStream->codec->gop_size      = fps*2;
     m_videoStream->codec->pix_fmt       = AV_PIX_FMT_YUV420P;
 
     // Some formats want stream headers to be separate
