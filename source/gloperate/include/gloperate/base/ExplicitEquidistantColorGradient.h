@@ -27,6 +27,8 @@ public:
     template <typename... Args>
     ExplicitEquidistantColorGradient(const std::string & name, bool discrete, const reflectionzeug::Color & color, Args... args);
 
+    size_t numberOfColors() const override;
+
 protected:
     std::vector<reflectionzeug::Color> m_colors;
     bool m_discrete;

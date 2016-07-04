@@ -29,8 +29,8 @@ namespace
     static const float ROTATION_KEY_SCALE = 1.0f;
 
     //static const float NAV_CONSTRAINT_PAN_CIRCLE_R = 2.83;
-    static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * glm::pi<float>();
-    static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * glm::pi<float>();
+    static const float CONSTRAINT_ROT_MAX_V_UP = 0.01f * glm::pi<float>();
+    static const float CONSTRAINT_ROT_MAX_V_LO = 0.48f * glm::pi<float>();
 }
 
 
@@ -39,7 +39,7 @@ namespace gloperate
 
 
 WorldInHandNavigation::WorldInHandNavigation(
-    AbstractCameraCapability & cameraCapability, 
+    AbstractCameraCapability & cameraCapability,
     AbstractViewportCapability & viewportCapability,
     CoordinateProvider & coordProvider)
 : m_cameraCapability(cameraCapability)
@@ -83,8 +83,8 @@ void WorldInHandNavigation::reset()
 
 const glm::vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     bool & intersects,
-    const glm::ivec2 & mouse, 
-    const glm::vec3 & planePosition, 
+    const glm::ivec2 & mouse,
+    const glm::vec3 & planePosition,
     const glm::vec3 & planeNormal) const
 {
     // build a ray in object space from screen space mouse position and get
@@ -139,13 +139,13 @@ void WorldInHandNavigation::panProcess(const glm::ivec2 & mouse)
         return;
 
     // The first click of the interaction yields an object space position m_referencePosition.
-    // this point is our constraint for panning, that means for every mouse 
+    // this point is our constraint for panning, that means for every mouse
     // position there has to be an appropriate positioning for the scene, so
     // that the point under the mouse remains m_referencePosition.
-    // With this point and the up normal we build a plane, that defines the 
+    // With this point and the up normal we build a plane, that defines the
     // panning space. For panning, a ray is created, pointing from the screen
     // pixel into the view frustum. This ray then is converted to object space
-    // and used to intersect with the plane at p. 
+    // and used to intersect with the plane at p.
     // The delta of m_referencePosition and p is the translation required for panning.
 
     // constrain mouse interaction to viewport (if disabled, could lead to mishaps)
@@ -176,9 +176,10 @@ void WorldInHandNavigation::rotateBegin(const glm::ivec2 & mouse)
     m_mode = RotateInteraction;
 
     bool intersects = false;
-    m_referencePosition = mouseRayPlaneIntersection(intersects, mouse);
+    glm::ivec2 middle(m_viewportCapability.width()/2, m_viewportCapability.height()/2);
+    m_referencePosition = mouseRayPlaneIntersection(intersects, middle);
 
-    const float depth = m_coordProvider.depthAt(mouse);
+    const float depth = m_coordProvider.depthAt(middle);
     m_refPositionValid = intersects && DepthExtractor::isValidDepth(depth);
 
     m_m0 = mouse;
@@ -239,8 +240,8 @@ void WorldInHandNavigation::rotate(
     transform = glm::rotate(transform, vAngle, rotAxis);
     transform = glm::translate(transform, -t);
 
-    glm::vec4 newEye = transform * glm::vec4(m_eye, 1.f);
-    glm::vec4 newCenter = transform * glm::vec4(m_center, 1.f);
+    glm::vec4 newEye = transform * glm::vec4(m_eye, 1.0f);
+    glm::vec4 newCenter = transform * glm::vec4(m_center, 1.0f);
 
     m_cameraCapability.setEye(glm::vec3(newEye));
     m_cameraCapability.setCenter(glm::vec3(newCenter));
@@ -261,21 +262,21 @@ void WorldInHandNavigation::scaleAtMouse(
     if (!intersects && !DepthExtractor::isValidDepth(m_coordProvider.depthAt(mouse)))
         return;
 
-    // scale the distance between the pointed position in the scene and the 
+    // scale the distance between the pointed position in the scene and the
     // camera position - using ray constraints, the center is scaled appropriately.
 
     float scale = glm::clamp(scaleDelta, - 1.f, 1.f);
 
     if (scale > 0.f)
         scale = 1.f / (1.f - scale) - 1.f; // ensure that scaling consistent in both direction
-    
+
     // enforceScaleConstraints(scale, i);
 
     const glm::vec3 newEye = eye + scale * (intersectPoint - eye);
     m_cameraCapability.setEye(newEye);
 
     // the center needs to be constrained to the ground plane, so calc the new
-    // center based on the intersection with the scene and use this to obtain 
+    // center based on the intersection with the scene and use this to obtain
     // the new viewray-groundplane intersection as new center.
     const glm::vec3 newCenter = center + scale * (intersectPoint - center);
 
@@ -287,7 +288,7 @@ void WorldInHandNavigation::resetScaleAtMouse(const glm::ivec2 & mouse)
     const glm::vec3 ln = m_cameraCapability.eye();
     const glm::vec3 lf = m_cameraCapability.center();
 
-    // set the distance between pointed position in the scene and camera to 
+    // set the distance between pointed position in the scene and camera to
     // default distance
     bool intersects = false;
     glm::vec3 i = mouseRayPlaneIntersection(intersects, mouse);
@@ -333,7 +334,7 @@ void WorldInHandNavigation::scaleAtCenter(float scale)
 //}
 
 void WorldInHandNavigation::enforceRotationConstraints(
-    float & /*hAngle*/
+    float & hAngle
 ,   float & vAngle) const
 {
     // hAngle is not constrained, vAngle is.
@@ -341,15 +342,18 @@ void WorldInHandNavigation::enforceRotationConstraints(
     // retrieve the angle between camera-center to up and test how much closer
     // to up/down it can be rotated and clamp if required.
 
-    const float va = glm::degrees(acosf(
-        glm::dot(glm::normalize(m_eye - m_center), m_cameraCapability.up())));
+    float va = acosf(glm::dot(glm::normalize(m_eye - m_center), m_cameraCapability.up()));
 
+    float newAngle = 0.0f;
     if (vAngle <= 0.0)
-		vAngle = glm::max(vAngle, glm::degrees(CONSTRAINT_ROT_MAX_V_UP) - va);
+        newAngle = glm::max(vAngle, CONSTRAINT_ROT_MAX_V_UP - va);
     else
-		vAngle = glm::min(vAngle, glm::degrees(CONSTRAINT_ROT_MAX_V_LO) - va);
+        newAngle = glm::min(vAngle, CONSTRAINT_ROT_MAX_V_LO - va);
+
+    if(newAngle != vAngle)
+        vAngle = newAngle;
 }
- 
+
 //void WorldInHandNavigation::enforceScaleConstraints(
 //    float & scale
 //,   glm::vec3 & i) const

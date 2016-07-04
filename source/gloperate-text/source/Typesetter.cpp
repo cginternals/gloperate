@@ -96,7 +96,7 @@ glm::vec2 Typesetter::typeset(
     if (!dryrun)
     {
         anchor_transform(sequence, fontFace, begin, vertex);
-        vertex_transform(sequence.transform(), begin, vertex);
+        vertex_transform(sequence.transform(), sequence.fontColor(), begin, vertex);
     }
 
     return extent_transform(sequence, extent);
@@ -252,6 +252,7 @@ inline void Typesetter::anchor_transform(
 
 inline void Typesetter::vertex_transform(
     const glm::mat4 & transform
+,   const glm::vec4 & fontColor
 ,   const GlyphVertexCloud::Vertices::iterator & begin
 ,   const GlyphVertexCloud::Vertices::iterator & end)
 {
@@ -260,10 +261,12 @@ inline void Typesetter::vertex_transform(
         auto ll = transform * glm::vec4(v->origin, 1.f);
         auto lr = transform * glm::vec4(v->origin + v->vtan, 1.f);
         auto ul = transform * glm::vec4(v->origin + v->vbitan, 1.f);
+        
 
         v->origin = glm::vec3(ll);
         v->vtan   = glm::vec3(lr - ll);
         v->vbitan = glm::vec3(ul - ll);
+        v->fontColor = fontColor;
     }
 }
 

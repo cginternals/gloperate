@@ -10,6 +10,10 @@
 #include <gloperate/ext-includes-end.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
+#include "AbstractQtMapping.h"
+#include "QtKeyEventProvider.h"
+#include "QtMouseEventProvider.h"
+#include "QtWheelEventProvider.h"
 
 
 class Ui_Viewer;
@@ -35,7 +39,7 @@ namespace gloperate_qt
 
 
 class QtOpenGLWindow;
-class DefaultMapping;
+class TreeNavigationMapping;
 class ScriptEnvironment;
 class ViewerApi;
 class PluginApi;
@@ -148,7 +152,9 @@ protected:
     void setupCommandPrompt();
     void setupPropertyWidget();
     void setupDockArea();
+    void setupEventProvider();
     void setupCanvas();
+    void setupMapping();
     void setupScripting();
     void updatePainterMenu();
 
@@ -172,13 +178,17 @@ protected:
     std::unique_ptr<PluginApi>                       m_pluginApi;
 
     std::unique_ptr<gloperate::Painter>              m_painter;
-    std::unique_ptr<DefaultMapping>                  m_mapping;
+    std::unique_ptr<AbstractQtMapping>               m_mapping;
 
     std::unique_ptr<QtOpenGLWindow>                  m_canvas;
     std::unique_ptr<widgetzeug::MessageStatusWidget> m_messagesStatus;
     std::unique_ptr<widgetzeug::MessageWidget>       m_messagesLog;
     std::unique_ptr<widgetzeug::ScriptPromptWidget>  m_scriptPrompt;
     std::unique_ptr<gloperate::ImageExporter>        m_imageExporter;
+
+    std::unique_ptr<QtKeyEventProvider>              m_keyProvider;
+    std::unique_ptr<QtMouseEventProvider>            m_mouseProvider;
+    std::unique_ptr<QtWheelEventProvider>            m_wheelProvider;
 
     QDockWidget                                    * m_messagLogDockWidget;
     QDockWidget                                    * m_scriptPromptDockWidget;

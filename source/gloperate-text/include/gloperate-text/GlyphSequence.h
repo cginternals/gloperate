@@ -5,6 +5,7 @@
 
 #include <glm/fwd.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 
 #include <globjects/base/ref_ptr.h>
 
@@ -56,6 +57,9 @@ public:
     LineAnchor lineAnchor() const;
     void setLineAnchor(const LineAnchor anchor);
 
+    const glm::vec4 & fontColor() const;
+    void setFontColor(glm::vec4 fontColor);
+
     const glm::mat4 & transform() const;
     void setTransform(const glm::mat4 & transform);
 
@@ -66,8 +70,14 @@ public:
     ,   const glm::uvec2 & viewportExtent);
 
     void setTransform(
+        const glm::vec3 & origin
+    ,   const float fontSize
+    ,   const FontFace& fontFace
+    ,   const glm::mat4 rotation);
+
+    void setTransform(
         const glm::vec2 & origin
-    ,   float fontSize
+    ,   float fontSizeInWorld
     ,   const FontFace & fontFace
     ,   const glm::uvec2 & viewportExtent
     ,   float pixelPerInch
@@ -83,6 +93,7 @@ protected:
     LineAnchor m_anchor;
 
     glm::mat4 m_transform;
+    glm::vec4 m_fontColor;
 };
 
 

@@ -42,6 +42,7 @@
 #include <gloperate-qt/viewer/QtMouseEventProvider.h>
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 #include <gloperate-qt/viewer/DefaultMapping.h>
+#include <gloperate-qt/viewer/TreeNavigationMapping.h>
 #include <gloperate-qt/widgets/ImageExporterWidget.h>
 #include <gloperate-qt/widgets/PluginConfigWidget.h>
 #include <gloperate-qt/scripting/ScriptEnvironment.h>
@@ -49,6 +50,7 @@
 #include <gloperate-qt/scripting/TimerApi.h>
 #include <gloperate-qt/scripting/ViewerApi.h>
 #include <gloperate-qt/scripting/PluginApi.h>
+#include <gloperate-qt/viewer/EventRoutingMapping.h>
 
 
 using namespace widgetzeug;
@@ -127,6 +129,7 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     setupCommandPrompt();
     setupPropertyWidget();
     setupDockArea();
+    setupEventProvider();
     setupCanvas();
 
     // Load settings
@@ -194,7 +197,6 @@ void Viewer::setPainter(Painter & painter)
 
     // Setup new painter
     m_canvas->setPainter(m_painter.get());
-    m_mapping->setPainter(m_painter.get());
     m_canvas->initialize();
 
     // Register painter in scripting
@@ -236,6 +238,7 @@ void Viewer::loadPainter(const std::string & name)
 
     // Set new painter
     setPainter(*painterPlugin->createPainter(*m_resourceManager));
+    setupMapping();
 }
 
 const ScriptEnvironment * Viewer::scriptEnvironment() const
@@ -319,17 +322,27 @@ void Viewer::setupDockArea()
     tabifyDockWidget(m_messagLogDockWidget, m_scriptPromptDockWidget);
 }
 
+void Viewer::setupEventProvider()
+{
+    m_keyProvider.reset(new QtKeyEventProvider());
+    m_mouseProvider.reset(new QtMouseEventProvider());
+    m_wheelProvider.reset(new QtWheelEventProvider());
+}
+
 void Viewer::setupCanvas()
 {
     // Setup OpenGL context format
     QSurfaceFormat format;
+
+    format.setProfile(QSurfaceFormat::CoreProfile);
+
 #ifdef __APPLE__
     // Get OpenGL 3.2/4.1 core context
     format.setVersion(3, 2);
-    format.setProfile(QSurfaceFormat::CoreProfile);
 #else
-    // Get newest available compatibility context
+    // Get newest available core context
 #endif
+
     format.setDepthBufferSize(16);
 
     // Create OpenGL context and window
@@ -340,22 +353,28 @@ void Viewer::setupCanvas()
     centralWidget()->setFocusPolicy(Qt::StrongFocus);
 
     // Setup event provider to translate Qt messages into gloperate events
-    QtKeyEventProvider * keyProvider = new QtKeyEventProvider();
-    keyProvider->setParent(m_canvas.get());
-    QtMouseEventProvider * mouseProvider = new QtMouseEventProvider();
-    mouseProvider->setParent(m_canvas.get());
-    QtWheelEventProvider * wheelProvider = new QtWheelEventProvider();
-    wheelProvider->setParent(m_canvas.get());
+    
+    m_keyProvider->setParent(m_canvas.get());
+    m_mouseProvider->setParent(m_canvas.get());
+    m_wheelProvider->setParent(m_canvas.get());
 
-    m_canvas->installEventFilter(keyProvider);
-    m_canvas->installEventFilter(mouseProvider);
-    m_canvas->installEventFilter(wheelProvider);
+    m_canvas->installEventFilter(m_keyProvider.get());
+    m_canvas->installEventFilter(m_mouseProvider.get());
+    m_canvas->installEventFilter(m_wheelProvider.get());
+}
+
+void Viewer::setupMapping()
+{
 
     // Create input mapping for gloperate interaction techniques
-    m_mapping.reset(new DefaultMapping(m_canvas.get()));
-    m_mapping->addProvider(keyProvider);
-    m_mapping->addProvider(mouseProvider);
-    m_mapping->addProvider(wheelProvider);
+    if (m_painter->supports<AbstractEventRoutingCapability>())
+        m_mapping.reset(new EventRoutingMapping(m_canvas.get()));
+    else
+        m_mapping.reset(new TreeNavigationMapping(m_canvas.get()));
+    m_mapping->addProvider(m_keyProvider.get());
+    m_mapping->addProvider(m_mouseProvider.get());
+    m_mapping->addProvider(m_wheelProvider.get());
+    m_mapping->setPainter(m_painter.get());
 }
 
 void Viewer::setupScripting()

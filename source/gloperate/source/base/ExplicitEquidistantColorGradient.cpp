@@ -22,6 +22,11 @@ ExplicitEquidistantColorGradient::ExplicitEquidistantColorGradient(const std::st
 {
 }
 
+size_t ExplicitEquidistantColorGradient::numberOfColors() const
+{
+    return m_colors.size();
+}
+
 ExplicitEquidistantColorGradient::ExplicitEquidistantColorGradient(const std::string & name, bool discrete)
 : AbstractColorGradient(name)
 , m_discrete(discrete)

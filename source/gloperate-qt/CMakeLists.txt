@@ -58,6 +58,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/viewer/Application.h
     ${include_path}/viewer/DefaultMapping.h
+    ${include_path}/viewer/EventRoutingMapping.h
     ${include_path}/viewer/Viewer.h
     ${include_path}/viewer/AbstractQtMapping.h
     ${include_path}/viewer/QtEventTransformer.h
@@ -70,6 +71,7 @@ set(headers
     ${include_path}/viewer/QtWheelEventProvider.h
     ${include_path}/viewer/Converter.h
     ${include_path}/viewer/TimePropagator.h
+    ${include_path}/viewer/TreeNavigationMapping.h
 
     ${include_path}/scripting/ScriptEnvironment.h
     ${include_path}/scripting/SystemApi.h
@@ -91,6 +93,7 @@ set(headers
 set(sources
     ${source_path}/viewer/Application.cpp
     ${source_path}/viewer/DefaultMapping.cpp
+    ${source_path}/viewer/EventRoutingMapping.cpp
     ${source_path}/viewer/Viewer.cpp
     ${source_path}/viewer/Viewer.ui
     ${source_path}/viewer/AbstractQtMapping.cpp
@@ -104,6 +107,7 @@ set(sources
     ${source_path}/viewer/QtWheelEventProvider.cpp
     ${source_path}/viewer/Converter.cpp
     ${source_path}/viewer/TimePropagator.cpp
+    ${source_path}/viewer/TreeNavigationMapping.cpp
 
     ${source_path}/scripting/ScriptEnvironment.cpp
     ${source_path}/scripting/SystemApi.cpp
