@@ -10,6 +10,7 @@
 #include <gloperate/gloperate.h>
 
 #include <gloperate-text/GlyphVertexCloud.h>
+#include <glm/mat4x4.hpp>
 
 
 namespace gloperate_text
@@ -32,12 +33,14 @@ GlyphRenderer::GlyphRenderer(globjects::Shader * fragmentShader)
     m_program->attach(fragmentShader);
 
     m_program->setUniform<gl::GLint>("glyphs", 0);
+    m_program->setUniform<glm::mat4>("viewProjection", glm::mat4());
 }
 
 GlyphRenderer::GlyphRenderer(globjects::Program * program)
 : m_program(program)
 {
     m_program->setUniform<gl::GLint>("glyphs", 0);
+    m_program->setUniform<glm::mat4>("viewProjection", glm::mat4());
 }
 
 GlyphRenderer::~GlyphRenderer()
@@ -50,6 +53,26 @@ void GlyphRenderer::render(const GlyphVertexCloud & vertexCloud) const
     {
         return;
     }
+
+    m_program->setUniform("viewProjection", glm::mat4());
+
+    m_program->use();
+
+    vertexCloud.texture()->bindActive(0);
+    vertexCloud.drawable()->draw();
+    vertexCloud.texture()->unbindActive(0);
+
+    m_program->release();
+}
+
+void GlyphRenderer::renderInWorld(const GlyphVertexCloud & vertexCloud, const glm::mat4 & viewProjection) const
+{
+    if (vertexCloud.vertices().empty())
+    {
+        return;
+    }
+
+    m_program->setUniform("viewProjection", viewProjection);
 
     m_program->use();
 

@@ -19,6 +19,7 @@ GlyphSequence::GlyphSequence()
 , m_lineWidth(0.f)
 , m_alignment(Alignment::LeftAligned)
 , m_anchor(LineAnchor::Baseline)
+, m_fontColor(glm::vec4(0.f, 0.f, 0.f, 1.0))
 {
 }
 
@@ -125,6 +126,16 @@ void GlyphSequence::setLineAnchor(const LineAnchor anchor)
     m_anchor = anchor;
 }
 
+const glm::vec4 & GlyphSequence::fontColor() const
+{
+    return m_fontColor;
+}
+
+void GlyphSequence::setFontColor(glm::vec4 fontColor)
+{
+    m_fontColor = fontColor;
+}
+
 const char32_t & GlyphSequence::lineFeed()
 {
     static const auto LF = static_cast<char32_t>('\x0A');
@@ -157,6 +168,19 @@ void GlyphSequence::setTransform(
     m_transform = glm::scale(m_transform, glm::vec3(viewportExtent.y * fontSize / fontFace.size()));
     // scale glyphs to NDC size
     m_transform = glm::scale(m_transform, 2.f / glm::vec3(viewportExtent.x, viewportExtent.y, 1.f));
+}
+
+void GlyphSequence::setTransform(
+    const glm::vec3 & origin
+,   const float fontSizeInWorld
+,   const FontFace& fontFace
+,   const glm::mat4 rotation)
+{
+    m_transform = glm::mat4();
+    m_transform = glm::translate(m_transform, origin);
+    m_transform = glm::scale(m_transform, glm::vec3(fontSizeInWorld / fontFace.size()));
+
+    m_transform = m_transform * rotation;
 }
 
 void GlyphSequence::setTransform(
