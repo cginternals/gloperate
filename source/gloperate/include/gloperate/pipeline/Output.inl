@@ -59,5 +59,10 @@ void Output<T>::onValueChanged(const T & value)
     this->valueChanged(value);
 }
 
+template <typename T>
+void Output<T>::setValid(bool isValid)
+{
+    m_valid = isValid;
+}
 
 } // namespace gloperate

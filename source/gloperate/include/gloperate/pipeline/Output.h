@@ -45,6 +45,20 @@ public:
     // Virtual AbstractSlot interface
     virtual bool isValid() const override;
 
+    /**
+    *  @brief
+    *    Manually set validity of data
+    *
+    *  @remarks
+    *    This should only be called, if 'setValue()' is not used,
+    *    but the slot contains valid data.
+    *
+    *  @see
+    *    isValid
+    *  @see
+    *    setValue
+    */
+    void setValid(bool isValid);
 
 protected:
     // Virtual AbstractSlot interface
