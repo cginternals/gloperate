@@ -39,12 +39,18 @@ public:
 
     /**
     *  @brief
-    *    Invalidate output
+    *    Set validity of data
     *
-    *    This marks the output value as invalid.
-    *    The state will remain until a new value is set.
+    *  @remarks
+    *    This marks the output value as valid or invalid.
+    *    The state will automatically change to valid when a new value is set.
+    *
+    *  @see
+    *    isValid
+    *  @see
+    *    setValue
     */
-    virtual void invalidate() = 0;
+    virtual void setValid(bool isValid) = 0;
 
 
 protected:
