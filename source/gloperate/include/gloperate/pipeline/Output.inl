@@ -24,10 +24,10 @@ Output<T>::~Output()
 }
 
 template <typename T>
-void Output<T>::invalidate()
+void Output<T>::setValid(bool isValid)
 {
-    // Set state to invalid
-    m_valid = false;
+    // Set state to new state
+    m_valid = isValid;
 
     // Emit signal
     this->valueChanged(this->m_value);
@@ -58,6 +58,5 @@ void Output<T>::onValueChanged(const T & value)
     // Emit signal
     this->valueChanged(value);
 }
-
 
 } // namespace gloperate

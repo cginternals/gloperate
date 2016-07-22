@@ -40,11 +40,10 @@ public:
     virtual ~Output();
 
     // Virtual AbstractDataSlot interface
-    virtual void invalidate() override;
+    virtual void setValid(bool isValid) override;
 
     // Virtual AbstractSlot interface
     virtual bool isValid() const override;
-
 
 protected:
     // Virtual AbstractSlot interface
