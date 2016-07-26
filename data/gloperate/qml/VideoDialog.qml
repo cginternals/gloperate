@@ -16,9 +16,16 @@ Background {
     property alias layout: mainLayout
 
     function update() {
+        backends.clear();
+        profiles.clear();
+
         var plugins = gloperate.canvas0.videoExporterPlugins();
-        plugins.forEach(function(entry) {
-            backends.append({text: entry});
+        plugins.forEach(function(backend) {
+            backends.append({text: backend});
+        })
+
+        videoProfile.profiles.forEach(function(profile) {
+            profiles.append({text: profile})
         })
     }
 
@@ -54,15 +61,25 @@ Background {
 
             GridLayout {
                 id: gridLayout
-                rows: 5
+                rows: 6
                 flow: GridLayout.TopToBottom
                 anchors.fill: parent
 
+                Controls.Label { text: "Profile" }
                 Controls.Label { text: "Width" }
                 Controls.Label { text: "Height" }
                 Controls.Label { text: "FPS" }
                 Controls.Label { text: "Duration (sec)" }
                 Controls.Label { text: "Backend" }
+
+                ComboBox {
+                    Layout.fillWidth: true
+                    editable: false
+                    id: profile
+                    model: ListModel {
+                        id: profiles
+                    }
+                }
 
                 ComboBox {
                     editable: true
@@ -172,5 +189,9 @@ Background {
         onRejected: {
             close();
         }
+    }
+
+    VideoProfile {
+        id: videoProfile
     }
 }

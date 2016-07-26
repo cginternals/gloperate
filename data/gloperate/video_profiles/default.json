@@ -1,0 +1,7 @@
+{
+    "format": "avi",
+    "codec": "mpeg4",
+
+    // (standard-auflösung fps etc):
+    // options: [gop-size, etc., ffmpeg kommandozeilen optionen]
+}
