@@ -73,11 +73,17 @@ Background {
                 Controls.Label { text: "Backend" }
 
                 ComboBox {
+                    property alias currentProfile: profile.editText
+
                     Layout.fillWidth: true
                     editable: false
                     id: profile
                     model: ListModel {
                         id: profiles
+                    }
+
+                    onCurrentProfileChanged: {
+                        videoProfile.profile = currentProfile;
                     }
                 }
 
@@ -163,7 +169,7 @@ Background {
             icon: '0021-video-camera.png'
 
             onClicked: {
-                gloperate.canvas0.exportVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
+                gloperate.canvas0.exportVideo(filepath.text, videoProfile.format, videoProfile.codec, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
             }
         }
     }

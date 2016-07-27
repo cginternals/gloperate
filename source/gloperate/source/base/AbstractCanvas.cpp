@@ -89,7 +89,7 @@ void AbstractCanvas::exportImage(std::string filename, int width, int height, in
     m_requestImage = true;
 }
 
-void AbstractCanvas::exportVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
+void AbstractCanvas::exportVideo(std::string filename, std::string format, std::string codec, int width, int height, int fps, int seconds, std::string backend)
 {
     // Create video exporter backend
     auto component = m_environment->componentManager()->component<AbstractVideoExporter>(backend);
@@ -99,7 +99,7 @@ void AbstractCanvas::exportVideo(std::string filename, int width, int height, in
     m_videoExporter = component->createInstance();
 
     // Configure video exporter
-    m_videoExporter->setTarget(this, filename, width, height, fps, seconds);
+    m_videoExporter->setTarget(this, filename, format, codec, width, height, fps, seconds);
 
     // Execute video exporter on next frame
     m_requestVideo = true;

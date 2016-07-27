@@ -44,16 +44,12 @@ FFMPEGVideoEncoder::~FFMPEGVideoEncoder()
 {
 }
 
-void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, int height, int fps)
+void FFMPEGVideoEncoder::initEncoding(const std::string & filename, const std::string & format, const std::string & codec, int width, int height, int fps)
 {
     // Choose video format from file name
-    AVOutputFormat * format = av_guess_format(NULL, filename.c_str(), NULL);
-    if (!format) {
-        debug() << "Could not deduce output format from file extension: using MPEG.";
-        format = av_guess_format("mpeg", NULL, NULL);
-    }
-    if (!format) {
-        critical() << "Could not find suitable output format";
+    AVOutputFormat * avFormat = av_guess_format(format.c_str(), NULL, NULL);
+    if (!avFormat) {
+        critical() << "Could not use given output format (" << format << ").";
         return;
     }
 
@@ -63,7 +59,7 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, i
         critical() << "Could not create video context.";
         return;
     }
-    m_context->oformat = format;
+    m_context->oformat = avFormat;
 //  m_context->max_b_frames = 1; // ?
 //  snprintf(m_context->filename, sizeof(m_context->filename), "%s", filename.c_str());
 
@@ -74,9 +70,19 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, i
         return;
     }
 
+    AVCodec * tmpCodec = av_codec_next(NULL);
+    while(tmpCodec != NULL)
+    {
+        if (strcmp(tmpCodec->name, codec.c_str()) == 0)
+        {
+            m_videoStream->codec->codec_id = tmpCodec->id;
+            break;
+        }
+        tmpCodec = av_codec_next(tmpCodec);
+    }
+
     // Set video stream type and options
     m_videoStream->codec->codec_type    = AVMEDIA_TYPE_VIDEO;
-    m_videoStream->codec->codec_id      = format->video_codec;
     m_videoStream->codec->bit_rate      = 400000;
     m_videoStream->codec->width         = width;
     m_videoStream->codec->height        = height;
@@ -94,14 +100,14 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, i
     av_dump_format(m_context, 0, filename.c_str(), 1);
 
     // Find video encoder
-    AVCodec * codec = avcodec_find_encoder(m_videoStream->codec->codec_id);
-    if (!codec) {
+    AVCodec * avCodec = avcodec_find_encoder(m_videoStream->codec->codec_id);
+    if (!avCodec) {
         critical() << "Codec not found";
         return;
     }
 
     // Open codec
-    if (avcodec_open2(m_videoStream->codec, codec, nullptr) < 0) {
+    if (avcodec_open2(m_videoStream->codec, avCodec, nullptr) < 0) {
         critical() << "Could not open codec";
         return;
     }
@@ -127,7 +133,7 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, i
 
     // Output to file
     
-    if (!(format->flags & AVFMT_NOFILE)) {
+    if (!(avFormat->flags & AVFMT_NOFILE)) {
         if (avio_open(&m_context->pb, filename.c_str(), AVIO_FLAG_WRITE) < 0) {
             critical() << "Could not open  " << filename;
             return;

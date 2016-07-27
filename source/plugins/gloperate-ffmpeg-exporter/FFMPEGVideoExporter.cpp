@@ -62,6 +62,8 @@ FFMPEGVideoExporter::FFMPEGVideoExporter()
 : m_videoEncoder(new FFMPEGVideoEncoder)
 , m_canvas(nullptr)
 , m_filename("")
+, m_format("")
+, m_codec("")
 , m_fps(30)
 , m_length(10)
 , m_width(800)
@@ -76,11 +78,13 @@ FFMPEGVideoExporter::~FFMPEGVideoExporter()
     delete m_videoEncoder;
 }
 
-void FFMPEGVideoExporter::setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, unsigned int width, unsigned int height, unsigned int fps, unsigned int length)
+void FFMPEGVideoExporter::setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, const std::string & format, const std::string & codec, unsigned int width, unsigned int height, unsigned int fps, unsigned int length)
 {
     // Save configuration
     m_canvas    = canvas;
     m_filename  = filename;
+    m_format  = format;
+    m_codec  = codec;
     m_fps       = fps;
     m_length    = length;
     m_width     = width;
@@ -108,7 +112,7 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
         m_canvas->openGLContext()->use();
     }
 
-    m_videoEncoder->initEncoding(m_filename, m_width, m_height, m_fps);
+    m_videoEncoder->initEncoding(m_filename, m_format, m_codec, m_width, m_height, m_fps);
 
     for (unsigned int i = 0; i < length; ++i)
     {

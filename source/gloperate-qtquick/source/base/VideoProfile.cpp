@@ -4,6 +4,8 @@
 #include <gloperate/gloperate.h>
 
 #include <QDir>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QDebug>
 
 
@@ -17,22 +19,10 @@ VideoProfile::VideoProfile(QQuickItem * parent)
 , m_profile(m_profileDirectory + "/default.json")
 {
     setProfile(m_profileDirectory + "/default.json");
-
-    availableProfiles();
 }
 
 VideoProfile::~VideoProfile()
 {
-}
-
-QString VideoProfile::profile() const
-{
-    return m_profile;
-}
-
-void VideoProfile::setProfile(QString profile)
-{
-    m_profile = profile;
 }
 
 QList<QString> VideoProfile::availableProfiles() const
@@ -54,6 +44,60 @@ QList<QString> VideoProfile::availableProfiles() const
     }
 
     return profiles;
+}
+
+QString VideoProfile::profile() const
+{
+    return m_profile;
+}
+
+void VideoProfile::setProfile(QString profile)
+{
+    if (!loadJsonProfile(profile))
+    {
+        return;
+    }
+
+    m_profile = profile;
+}
+
+QString VideoProfile::format() const
+{
+    return m_format;
+}
+
+QString VideoProfile::codec() const
+{
+    return m_codec;
+}
+
+bool VideoProfile::loadJsonProfile(QString profile)
+{
+    QString val;
+    QFile file(profile);
+    if (!file.exists())
+    {
+        qWarning() << "Cannot find profile: " << profile;
+        return false;
+    }
+
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    val = file.readAll();
+    file.close();
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(val.toUtf8());
+    if (jsonDoc.isEmpty())
+    {
+        qWarning() << "The profile file appears not to be a valid (Qt-readable) json file.";
+        return false;
+    }
+
+    QJsonObject json = jsonDoc.object();
+
+    m_format = json.value("format").toString();
+    m_codec = json.value("codec").toString();
+
+    return true;
 }
 
 
