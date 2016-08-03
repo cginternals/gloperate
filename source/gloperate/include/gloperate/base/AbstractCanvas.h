@@ -132,7 +132,7 @@ public:
     *  @param[in] backend
     *    Name of video backend to use
     */
-    void exportVideo(std::string filename, std::string format, std::string codec, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoExporter");
+    void exportVideo(const cppexpose::VariantMap & parameters, std::string backend = "FFMPEGVideoExporter");
 
     /**
     *  @brief

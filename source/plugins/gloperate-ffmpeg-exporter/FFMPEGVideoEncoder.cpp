@@ -44,8 +44,15 @@ FFMPEGVideoEncoder::~FFMPEGVideoEncoder()
 {
 }
 
-void FFMPEGVideoEncoder::initEncoding(const std::string & filename, const std::string & format, const std::string & codec, int width, int height, int fps)
+void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
 {
+    auto filepath = parameters.at("filepath").toString();
+    auto format = parameters.at("format").toString();
+    auto codec = parameters.at("codec").toString();
+    auto width = parameters.at("width").toULongLong();
+    auto height = parameters.at("height").toULongLong();
+    auto fps = parameters.at("fps").toULongLong();
+
     // Choose video format from file name
     AVOutputFormat * avFormat = av_guess_format(format.c_str(), NULL, NULL);
     if (!avFormat) {
@@ -61,7 +68,7 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, const std::s
     }
     m_context->oformat = avFormat;
 //  m_context->max_b_frames = 1; // ?
-//  snprintf(m_context->filename, sizeof(m_context->filename), "%s", filename.c_str());
+//  snprintf(m_context->filepath, sizeof(m_context->filepath), "%s", filepath.c_str());
 
     // Create video stream
     m_videoStream = avformat_new_stream(m_context, 0);
@@ -97,7 +104,7 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, const std::s
     }
 
     // [DEBUG] Output video stream info
-    av_dump_format(m_context, 0, filename.c_str(), 1);
+    av_dump_format(m_context, 0, filepath.c_str(), 1);
 
     // Find video encoder
     AVCodec * avCodec = avcodec_find_encoder(m_videoStream->codec->codec_id);
@@ -134,8 +141,8 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, const std::s
     // Output to file
     
     if (!(avFormat->flags & AVFMT_NOFILE)) {
-        if (avio_open(&m_context->pb, filename.c_str(), AVIO_FLAG_WRITE) < 0) {
-            critical() << "Could not open  " << filename;
+        if (avio_open(&m_context->pb, filepath.c_str(), AVIO_FLAG_WRITE) < 0) {
+            critical() << "Could not open  " << filepath;
             return;
         }
     }

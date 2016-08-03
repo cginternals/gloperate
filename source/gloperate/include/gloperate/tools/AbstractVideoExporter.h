@@ -5,6 +5,8 @@
 #include <string>
 #include <functional>
 
+#include <cppexpose/variant/Variant.h>
+
 #include <gloperate/gloperate_api.h>
 
 
@@ -63,7 +65,7 @@ public:
     *  @param[in] length
     *    Length (in seconds) of output video
     */
-    virtual void setTarget(AbstractCanvas * canvas, const std::string & filename, const std::string & format, const std::string & codec, unsigned int width, unsigned int height, unsigned int fps, unsigned int length) = 0;
+    virtual void setTarget(AbstractCanvas * canvas, const cppexpose::VariantMap & parameters) = 0;
 
     /**
     *  @brief
