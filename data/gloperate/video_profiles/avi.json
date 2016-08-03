@@ -1,4 +1,9 @@
 {
     "format": "avi",
-    "codec": "mpeg4"
+    "codec": "mpeg4",
+    "width": 800,
+    "height": 600,
+    "fps": 30,
+    "seconds": 20,
+    "gopsize": 60
 }

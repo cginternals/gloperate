@@ -59,6 +59,8 @@ void VideoProfile::setProfile(QString profile)
     }
 
     m_profile = profile;
+
+    emit profileChanged();
 }
 
 QString VideoProfile::format() const
@@ -69,6 +71,31 @@ QString VideoProfile::format() const
 QString VideoProfile::codec() const
 {
     return m_codec;
+}
+
+int VideoProfile::width() const
+{
+    return m_width;
+}
+
+int VideoProfile::height() const
+{
+    return m_height;
+}
+
+int VideoProfile::fps() const
+{
+    return m_fps;
+}
+
+int VideoProfile::seconds() const
+{
+    return m_seconds;
+}
+
+int VideoProfile::gopsize() const
+{
+    return m_gopsize;
 }
 
 bool VideoProfile::loadJsonProfile(QString profile)
@@ -94,8 +121,20 @@ bool VideoProfile::loadJsonProfile(QString profile)
 
     QJsonObject json = jsonDoc.object();
 
+    if (!json.contains("format") || !json.contains("codec"))
+    {
+        qWarning() << "Video profile must provide 'format' and 'codec' field.";
+        return false;
+    }
+
     m_format = json.value("format").toString();
     m_codec = json.value("codec").toString();
+
+    m_width = json.contains("width")     ? json.value("width").toInt()   : 800;
+    m_height = json.contains("height")   ? json.value("height").toInt()  : 600;
+    m_fps = json.contains("fps")         ? json.value("fps").toInt()     : 30;
+    m_seconds = json.contains("seconds") ? json.value("seconds").toInt() : 5;
+    m_gopsize = json.contains("gopsize") ? json.value("gopsize").toInt() : 0;
 
     return true;
 }

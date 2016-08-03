@@ -176,7 +176,8 @@ Background {
                     width: width.editText,
                     height: height.editText,
                     fps: fps.editText,
-                    duration: duration.editText
+                    duration: duration.editText,
+                    gopsize: videoProfile.gopsize
                 }
 
                 gloperate.canvas0.exportVideo(parameters, backend.editText);
@@ -210,5 +211,12 @@ Background {
 
     VideoProfile {
         id: videoProfile
+
+        onProfileChanged: {
+            width.editText = videoProfile.width;
+            height.editText = videoProfile.height;
+            fps.editText = videoProfile.fps;
+            duration.editText = videoProfile.seconds;
+        }
     }
 }

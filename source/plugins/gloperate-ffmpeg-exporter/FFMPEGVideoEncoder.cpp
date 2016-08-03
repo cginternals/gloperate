@@ -53,6 +53,9 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
     auto height = parameters.at("height").toULongLong();
     auto fps = parameters.at("fps").toULongLong();
 
+    auto gopsize = parameters.count("gopsize") ? parameters.at("gopsize") : fps * 2;
+
+
     // Choose video format from file name
     AVOutputFormat * avFormat = av_guess_format(format.c_str(), NULL, NULL);
     if (!avFormat) {
@@ -95,7 +98,7 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
     m_videoStream->codec->height        = height;
     m_videoStream->codec->time_base.num = 1;
     m_videoStream->codec->time_base.den = fps;
-    m_videoStream->codec->gop_size      = fps*2;
+    m_videoStream->codec->gop_size      = gopsize;
     m_videoStream->codec->pix_fmt       = AV_PIX_FMT_YUV420P;
 
     // Some formats want stream headers to be separate
