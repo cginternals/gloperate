@@ -53,7 +53,7 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
     auto height = parameters.at("height").toULongLong();
     auto fps = parameters.at("fps").toULongLong();
 
-    auto gopsize = parameters.count("gopsize") ? parameters.at("gopsize") : fps * 2;
+    auto gopsize = parameters.at("gopsize").toLongLong() != 0 ? parameters.at("gopsize").toLongLong() : fps * 2;
 
 
     // Choose video format from file name

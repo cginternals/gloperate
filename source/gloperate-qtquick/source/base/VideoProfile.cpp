@@ -127,13 +127,17 @@ bool VideoProfile::loadJsonProfile(QString profile)
         return false;
     }
 
+    // Mandatory fields
     m_format = json.value("format").toString();
     m_codec = json.value("codec").toString();
 
+    // Optional fields. Adjustable in GUI afterwards
     m_width = json.contains("width")     ? json.value("width").toInt()   : 800;
     m_height = json.contains("height")   ? json.value("height").toInt()  : 600;
     m_fps = json.contains("fps")         ? json.value("fps").toInt()     : 30;
     m_seconds = json.contains("seconds") ? json.value("seconds").toInt() : 5;
+
+    // Optional fields. NOT adjustable in GUI afterwards
     m_gopsize = json.contains("gopsize") ? json.value("gopsize").toInt() : 0;
 
     return true;
