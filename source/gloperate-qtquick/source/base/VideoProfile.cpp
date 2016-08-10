@@ -98,6 +98,11 @@ int VideoProfile::gopsize() const
     return m_gopsize;
 }
 
+int VideoProfile::bitrate() const
+{
+    return m_bitrate;
+}
+
 bool VideoProfile::loadJsonProfile(QString profile)
 {
     QString val;
@@ -139,6 +144,7 @@ bool VideoProfile::loadJsonProfile(QString profile)
 
     // Optional fields. NOT adjustable in GUI afterwards
     m_gopsize = json.contains("gopsize") ? json.value("gopsize").toInt() : 0;
+    m_bitrate = json.contains("bitrate") ? json.value("bitrate").toInt() : 0;
 
     return true;
 }

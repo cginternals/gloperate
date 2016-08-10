@@ -4,6 +4,7 @@
     "width": 800,
     "height": 600,
     "fps": 30,
-    "seconds": 20,
-    "gopsize": 60
+    "seconds": 5,
+    "gopsize": 60,
+    "bitrate": 400000
 }

@@ -25,6 +25,7 @@ class VideoProfile : public QQuickItem
     Q_PROPERTY(int fps READ fps)
     Q_PROPERTY(int seconds READ seconds)
     Q_PROPERTY(int gopsize READ gopsize)
+    Q_PROPERTY(int bitrate READ bitrate)
 
 
 public:
@@ -133,6 +134,15 @@ public:
     */
     int gopsize() const;
 
+        /**
+    *  @brief
+    *    Get bit rate
+    *
+    *  @return
+    *    Video Bit rate
+    */
+    int bitrate() const;
+
 signals:
     void profileChanged();
 
@@ -161,6 +171,7 @@ protected:
     int            m_fps;               ///< Video fps
     int            m_seconds;           ///< Video duration (in seconds)
     int            m_gopsize;           ///< Size of pixel groups
+    int            m_bitrate;           ///< Video bitrate
 };
 
 

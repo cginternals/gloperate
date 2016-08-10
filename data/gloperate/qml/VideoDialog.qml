@@ -177,7 +177,8 @@ Background {
                     height: height.editText,
                     fps: fps.editText,
                     duration: duration.editText,
-                    gopsize: videoProfile.gopsize
+                    gopsize: videoProfile.gopsize,
+                    bitrate: videoProfile.bitrate
                 }
 
                 gloperate.canvas0.exportVideo(parameters, backend.editText);

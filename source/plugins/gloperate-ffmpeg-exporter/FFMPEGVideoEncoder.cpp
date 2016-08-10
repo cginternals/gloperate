@@ -54,6 +54,7 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
     auto fps = parameters.at("fps").toULongLong();
 
     auto gopsize = parameters.at("gopsize").toLongLong() != 0 ? parameters.at("gopsize").toLongLong() : fps * 2;
+    auto bitrate = parameters.at("bitrate").toLongLong() != 0 ? parameters.at("bitrate").toLongLong() : 400000;
 
 
     // Choose video format from file name
@@ -93,7 +94,7 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
 
     // Set video stream type and options
     m_videoStream->codec->codec_type    = AVMEDIA_TYPE_VIDEO;
-    m_videoStream->codec->bit_rate      = 400000;
+    m_videoStream->codec->bit_rate      = bitrate;
     m_videoStream->codec->width         = width;
     m_videoStream->codec->height        = height;
     m_videoStream->codec->time_base.num = 1;
