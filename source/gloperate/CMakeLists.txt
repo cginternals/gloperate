@@ -68,6 +68,15 @@ set(headers
     ${include_path}/base/Storer.inl
     ${include_path}/base/GlmProperties.h
 
+    ${include_path}/base/AbstractColorGradient.h
+    ${include_path}/base/AbstractColorGradient.hpp
+    ${include_path}/base/Color.h
+    ${include_path}/base/ColorGradientList.h
+    ${include_path}/base/ColorGradientList.hpp
+    ${include_path}/base/ColorGradientPreparation.h
+    ${include_path}/base/ExplicitEquidistantColorGradient.h
+    ${include_path}/base/ExplicitEquidistantColorGradient.hpp
+
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractDataSlot.h
     ${include_path}/pipeline/AbstractInputSlot.h
@@ -102,6 +111,8 @@ set(headers
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/base/SplitStage.h
+    ${include_path}/stages/base/ColorGradientSelectionStage.h
+    ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/DemoTriangleStage.h
@@ -148,6 +159,11 @@ set(sources
     ${source_path}/base/Image.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
+    ${source_path}/base/AbstractColorGradient.cpp
+    ${source_path}/base/Color.cpp
+    ${source_path}/base/ColorGradientList.cpp
+    ${source_path}/base/ColorGradientPreparation.cpp
+    ${source_path}/base/ExplicitEquidistantColorGradient.cpp
 
     ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/AbstractDataSlot.cpp
@@ -162,6 +178,8 @@ set(sources
     ${source_path}/rendering/RenderPass.cpp
 
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/ColorGradientSelectionStage.cpp
+    ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
     ${source_path}/stages/base/ProceduralTextureStage.cpp
     ${source_path}/stages/base/MixerStage.cpp
