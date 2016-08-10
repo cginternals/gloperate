@@ -56,11 +56,23 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
     auto gopsize = parameters.at("gopsize").toLongLong() != 0 ? parameters.at("gopsize").toLongLong() : fps * 2;
     auto bitrate = parameters.at("bitrate").toLongLong() != 0 ? parameters.at("bitrate").toLongLong() : 400000;
 
+    if (filepath == "")
+    {
+        critical() << "Filepath must not be empty.";
+        return;
+    }
 
     // Choose video format from file name
     AVOutputFormat * avFormat = av_guess_format(format.c_str(), NULL, NULL);
     if (!avFormat) {
         critical() << "Could not use given output format (" << format << ").";
+        return;
+    }
+
+    // Find video encoder
+    AVCodec * avCodec = avcodec_find_encoder_by_name(codec.c_str());
+    if (!avCodec) {
+        critical() << "Codec (" << codec << ") not found.";
         return;
     }
 
@@ -71,29 +83,17 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
         return;
     }
     m_context->oformat = avFormat;
-//  m_context->max_b_frames = 1; // ?
-//  snprintf(m_context->filepath, sizeof(m_context->filepath), "%s", filepath.c_str());
 
     // Create video stream
-    m_videoStream = avformat_new_stream(m_context, 0);
+    m_videoStream = avformat_new_stream(m_context, avCodec);
     if (!m_videoStream) {
         critical() << "Could not alloc stream";
         return;
     }
 
-    AVCodec * tmpCodec = av_codec_next(NULL);
-    while(tmpCodec != NULL)
-    {
-        if (strcmp(tmpCodec->name, codec.c_str()) == 0)
-        {
-            m_videoStream->codec->codec_id = tmpCodec->id;
-            break;
-        }
-        tmpCodec = av_codec_next(tmpCodec);
-    }
-
     // Set video stream type and options
     m_videoStream->codec->codec_type    = AVMEDIA_TYPE_VIDEO;
+    m_videoStream->codec->codec_id      = avCodec->id;
     m_videoStream->codec->bit_rate      = bitrate;
     m_videoStream->codec->width         = width;
     m_videoStream->codec->height        = height;
@@ -110,16 +110,9 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
     // [DEBUG] Output video stream info
     av_dump_format(m_context, 0, filepath.c_str(), 1);
 
-    // Find video encoder
-    AVCodec * avCodec = avcodec_find_encoder(m_videoStream->codec->codec_id);
-    if (!avCodec) {
-        critical() << "Codec not found";
-        return;
-    }
-
     // Open codec
     if (avcodec_open2(m_videoStream->codec, avCodec, nullptr) < 0) {
-        critical() << "Could not open codec";
+        critical() << "Could not open codec (" << codec << ")";
         return;
     }
 
@@ -150,12 +143,6 @@ void FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
             return;
         }
     }
-    
-
-    // Output to stream
-    // if (avio_open_dyn_buf(&m_context->pb)) {
-    //     debug() << "Could not create output stream";
-    // }
 
     // Write video header
     avformat_write_header(m_context, NULL);
