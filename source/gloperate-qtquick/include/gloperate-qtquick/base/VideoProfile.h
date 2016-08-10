@@ -18,6 +18,8 @@ class VideoProfile : public QQuickItem
     Q_OBJECT
     Q_PROPERTY(QList<QString> profiles READ availableProfiles)
     Q_PROPERTY(QString profile READ profile WRITE setProfile NOTIFY profileChanged)
+    Q_PROPERTY(int profileIndex WRITE setProfileIndex)
+    Q_PROPERTY(QString title READ title)
     Q_PROPERTY(QString format READ format)
     Q_PROPERTY(QString codec READ codec)
     Q_PROPERTY(int width READ width)
@@ -70,6 +72,24 @@ public:
     *    Path to profile file
     */
     void setProfile(QString profile);
+
+    /**
+    *  @brief
+    *    Set profile index
+    *
+    *  @param[in] index
+    *    Index of currently chosen profile
+    */
+    void setProfileIndex(int index);
+
+    /**
+    *  @brief
+    *    Get title
+    *
+    *  @return
+    *    Profile title (e.g. "AVI (codec: mpeg4)")
+    */
+    QString title() const;
 
     /**
     *  @brief
@@ -145,9 +165,16 @@ public:
 
 signals:
     void profileChanged();
+    void profileIndexChanged();
 
 
 protected:
+    /**
+    *  @brief
+    *    Load profile paths from profile directory
+    */
+    void initializeAvailableProfiles();
+
     /**
     *  @brief
     *    Load a json profile from file
@@ -161,17 +188,19 @@ protected:
 
 
 protected:
-    QList<QString> m_availableProfiles; ///< Available profile files in profile directory
-    QString        m_profileDirectory;  ///< Path to profile location
-    QString        m_profile;           ///< Path to current profile file
-    QString        m_format;            ///< Video format
-    QString        m_codec;             ///< Video codec
-    int            m_width;             ///< Video width
-    int            m_height;            ///< Video heigth
-    int            m_fps;               ///< Video fps
-    int            m_seconds;           ///< Video duration (in seconds)
-    int            m_gopsize;           ///< Size of pixel groups
-    int            m_bitrate;           ///< Video bitrate
+    QList<QString>     m_profilePaths;      ///< Available profiles in profile directory as paths
+    QList<QString>     m_profileTitles;     ///< Available profiles in profile directory as titles
+    QString            m_profileDirectory;  ///< Path to profile location
+    QString            m_profile;           ///< Path to current profile file
+    QString            m_title;             ///< Profile title
+    QString            m_format;            ///< Video format
+    QString            m_codec;             ///< Video codec
+    int                m_width;             ///< Video width
+    int                m_height;            ///< Video heigth
+    int                m_fps;               ///< Video fps
+    int                m_seconds;           ///< Video duration (in seconds)
+    int                m_gopsize;           ///< Size of pixel groups
+    int                m_bitrate;           ///< Video bitrate
 };
 
 

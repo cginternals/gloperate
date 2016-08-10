@@ -16,18 +16,24 @@ namespace gloperate_qtquick
 VideoProfile::VideoProfile(QQuickItem * parent)
 : QQuickItem(parent)
 , m_profileDirectory(QString::fromStdString(gloperate::dataPath()) + "/gloperate/video_profiles")
-, m_profile(m_profileDirectory + "/default.json")
+, m_profile(m_profileDirectory + "/avi.json")
 {
-    setProfile(m_profileDirectory + "/default.json");
+    initializeAvailableProfiles();
+    
+    if (m_profilePaths.size() > 0)
+    {
+        setProfileIndex(0);
+    }
 }
 
 VideoProfile::~VideoProfile()
 {
 }
 
-QList<QString> VideoProfile::availableProfiles() const
+void VideoProfile::initializeAvailableProfiles()
 {
-    QStringList profiles;
+    m_profilePaths = QStringList();
+    m_profileTitles = QStringList();
 
     QDir profileDirecotry(m_profileDirectory);
     profileDirecotry.setNameFilters(QStringList("*.json"));
@@ -35,15 +41,24 @@ QList<QString> VideoProfile::availableProfiles() const
     if (!profileDirecotry.exists())
     {
         qWarning() << "Cannot find directory: " << m_profileDirectory;
-        return profiles;
+        return;
     }
 
     for (auto entry : profileDirecotry.entryList())
     {
-        profiles << m_profileDirectory + "/" + entry;
-    }
+        if (!loadJsonProfile(m_profileDirectory + "/" + entry))
+        {
+            continue;
+        }
 
-    return profiles;
+        m_profilePaths << m_profile;
+        m_profileTitles << m_title;
+    }
+}
+
+QList<QString> VideoProfile::availableProfiles() const
+{
+    return m_profileTitles;
 }
 
 QString VideoProfile::profile() const
@@ -58,9 +73,17 @@ void VideoProfile::setProfile(QString profile)
         return;
     }
 
-    m_profile = profile;
-
     emit profileChanged();
+}
+
+void VideoProfile::setProfileIndex(int index)
+{
+    setProfile(m_profilePaths[index]);
+}
+
+QString VideoProfile::title() const
+{
+    return m_title;
 }
 
 QString VideoProfile::format() const
@@ -105,6 +128,8 @@ int VideoProfile::bitrate() const
 
 bool VideoProfile::loadJsonProfile(QString profile)
 {
+    m_profile = profile;
+
     QString val;
     QFile file(profile);
     if (!file.exists())
@@ -143,8 +168,9 @@ bool VideoProfile::loadJsonProfile(QString profile)
     m_seconds = json.contains("seconds") ? json.value("seconds").toInt() : 5;
 
     // Optional fields. NOT adjustable in GUI afterwards
-    m_gopsize = json.contains("gopsize") ? json.value("gopsize").toInt() : 0;
-    m_bitrate = json.contains("bitrate") ? json.value("bitrate").toInt() : 0;
+    m_title = json.contains("title")     ? json.value("title").toString() : m_format;
+    m_gopsize = json.contains("gopsize") ? json.value("gopsize").toInt()  : 0;
+    m_bitrate = json.contains("bitrate") ? json.value("bitrate").toInt()  : 0;
 
     return true;
 }

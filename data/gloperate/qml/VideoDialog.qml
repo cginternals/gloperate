@@ -73,7 +73,7 @@ Background {
                 Controls.Label { text: "Backend" }
 
                 ComboBox {
-                    property alias currentProfile: profile.editText
+                    property alias currentProfile: profile.currentIndex
 
                     Layout.fillWidth: true
                     editable: false
@@ -83,7 +83,7 @@ Background {
                     }
 
                     onCurrentProfileChanged: {
-                        videoProfile.profile = currentProfile;
+                        videoProfile.profileIndex = currentProfile;
                     }
                 }
 
