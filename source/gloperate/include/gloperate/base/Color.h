@@ -46,7 +46,7 @@ public:
 protected:
     union
     {
-        glm::tvec4<unsigned char> m_rgba;
+        glm::tvec4<unsigned char> m_bgra;
         unsigned int m_v;
     };
 };
