@@ -1,3 +1,4 @@
+
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 
 #include <glm/vec2.hpp>
@@ -9,8 +10,9 @@
 namespace gloperate
 {
 
+
 ScreenAlignedQuad::ScreenAlignedQuad()
-: m_drawable(new gloperate::Drawable)
+: m_drawable(new Drawable)
 {
     static const std::array<glm::vec2, 4> raw{{
         glm::vec2( +1.f, -1.f )
@@ -23,7 +25,7 @@ ScreenAlignedQuad::ScreenAlignedQuad()
     buffer->setData(raw, gl::GL_STATIC_DRAW);
 
     m_drawable->setPrimitiveMode(gl::GL_TRIANGLE_STRIP);
-    m_drawable->setDrawMode(gloperate::DrawMode::Arrays);
+    m_drawable->setDrawMode(DrawMode::Arrays);
     m_drawable->bindAttribute(0, 0);
 
     m_drawable->setBuffer(0, buffer);
@@ -39,7 +41,7 @@ ScreenAlignedQuad::~ScreenAlignedQuad()
 {
 }
 
-gloperate::Drawable * ScreenAlignedQuad::drawable() const
+const Drawable * ScreenAlignedQuad::drawable() const
 {
     return m_drawable;
 }
@@ -48,5 +50,6 @@ void ScreenAlignedQuad::draw() const
 {
     m_drawable->draw();
 }
+
 
 } // namespace gloperate

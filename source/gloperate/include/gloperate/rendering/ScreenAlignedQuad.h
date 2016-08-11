@@ -22,7 +22,7 @@ namespace gloperate
 *
 *    This class can be used to render a screen aligned quad.
 */
-class GLOPERATE_API ScreenAlignedQuad : public globjects::Referenced, gloperate::AbstractDrawable
+class GLOPERATE_API ScreenAlignedQuad : public globjects::Referenced, AbstractDrawable
 {
 public:
     /**
@@ -50,7 +50,7 @@ public:
     *  @return
     *    Pointer to the drawable object (always valid)
     */
-    gloperate::Drawable * drawable() const;
+    const Drawable * drawable() const;
 
     /**
     *  @brief
@@ -64,7 +64,8 @@ public:
 
 
 protected:
-    globjects::ref_ptr<gloperate::Drawable> m_drawable;
+    globjects::ref_ptr<Drawable> m_drawable;
+
 };
 
-}
+} // namespace gloperate
