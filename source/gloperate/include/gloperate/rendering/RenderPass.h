@@ -71,7 +71,7 @@ public:
     *  @return
     *    Geometry (can be null)
     */
-    Drawable * geometry() const;
+    const Drawable *geometry() const;
 
     /**
     *  @brief
@@ -80,7 +80,7 @@ public:
     *  @param[in] geometry
     *    Geometry (can be null)
     */
-    void setGeometry(Drawable * geometry);
+    void setGeometry(const Drawable *geometry);
 
     /**
     *  @brief
@@ -494,7 +494,7 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<Drawable>                     m_geometry;                    ///< Geometry rendered by the render pass
+    globjects::ref_ptr<const Drawable>               m_geometry;                    ///< Geometry rendered by the render pass
     globjects::ref_ptr<globjects::Program>           m_program;                     ///< Program used for rendering
     globjects::ref_ptr<globjects::ProgramPipeline>   m_programPipeline;             ///< Program pipeline used for rendering
     globjects::ref_ptr<globjects::TransformFeedback> m_recordTransformFeedback;     ///< Transform feedback object for recording (can be null)

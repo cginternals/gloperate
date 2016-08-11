@@ -75,12 +75,12 @@ void RenderPass::draw() const
     }
 }
 
-Drawable * RenderPass::geometry() const
+const Drawable * RenderPass::geometry() const
 {
     return m_geometry;
 }
 
-void RenderPass::setGeometry(Drawable * geometry)
+void RenderPass::setGeometry(const Drawable * geometry)
 {
     m_geometry = geometry;
 }
