@@ -95,6 +95,7 @@ set(headers
     ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/RenderPass.h
     ${include_path}/rendering/ScreenAlignedQuad.h
+    ${include_path}/rendering/ScreenAlignedTriangle.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/interfaces/RenderInterface.inl
@@ -162,6 +163,7 @@ set(sources
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/RenderPass.cpp
     ${source_path}/rendering/ScreenAlignedQuad.cpp
+    ${source_path}/rendering/ScreenAlignedTriangle.cpp
 
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp

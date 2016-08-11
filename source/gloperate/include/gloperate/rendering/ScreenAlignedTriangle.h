@@ -28,11 +28,11 @@ namespace gloperate
 
 /**
 *  @brief
-*    Screen aligned quad rendering helper
+*    Screen aligned triangle rendering helper
 *
-*    This class can be used to render a screen aligned quad.
+*    This class can be used to render a screen aligned triangle.
 */
-class GLOPERATE_API ScreenAlignedQuad : public globjects::Referenced, AbstractDrawable
+class GLOPERATE_API ScreenAlignedTriangle : public globjects::Referenced, AbstractDrawable
 {
 public:
     /**
@@ -42,7 +42,7 @@ public:
     *  @remarks
     *    Creates OpenGL objects, thus, a current context is required.
     */
-    ScreenAlignedQuad();
+    ScreenAlignedTriangle();
 
     /**
     *  @brief
@@ -51,7 +51,7 @@ public:
     *  @remarks
     *    Destroys OpenGL objects, thus, a current context is required.
     */
-    virtual ~ScreenAlignedQuad();
+    virtual ~ScreenAlignedTriangle();
 
     /**
     *  @brief
@@ -71,6 +71,7 @@ public:
     *    AbstractDrawable.
     */
     virtual void draw() const override;
+
 
 public:
     /**

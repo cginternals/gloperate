@@ -1,5 +1,5 @@
 
-#include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <gloperate/rendering/ScreenAlignedTriangle.h>
 
 #include <glm/vec2.hpp>
 
@@ -15,14 +15,13 @@ namespace gloperate
 {
 
 
-ScreenAlignedQuad::ScreenAlignedQuad()
+ScreenAlignedTriangle::ScreenAlignedTriangle()
 : m_drawable(new Drawable)
 {
     static const std::array<glm::vec2, 4> raw{{
         glm::vec2( +1.f, -1.f )
-    ,   glm::vec2( +1.f, +1.f )
-    ,   glm::vec2( -1.f, -1.f )
-    ,   glm::vec2( -1.f, +1.f )
+    ,   glm::vec2( +1.f, +3.f )
+    ,   glm::vec2( -3.f, -1.f )
     }};
 
     globjects::Buffer * buffer = new globjects::Buffer;
@@ -41,30 +40,30 @@ ScreenAlignedQuad::ScreenAlignedQuad()
     m_drawable->setSize(4);
 }
 
-ScreenAlignedQuad::~ScreenAlignedQuad()
+ScreenAlignedTriangle::~ScreenAlignedTriangle()
 {
 }
 
-const Drawable * ScreenAlignedQuad::drawable() const
+const Drawable * ScreenAlignedTriangle::drawable() const
 {
     return m_drawable;
 }
 
-void ScreenAlignedQuad::draw() const
+void ScreenAlignedTriangle::draw() const
 {
     m_drawable->draw();
 }
 
-const std::string ScreenAlignedQuad::s_defaultVertexShaderSource = gloperate::dataPath() + "/shaders/screenaligned/default.vert";
+const std::string ScreenAlignedTriangle::s_defaultVertexShaderSource = gloperate::dataPath() + "/shaders/screenaligned/default.vert";
 
-const std::string ScreenAlignedQuad::s_defaultFragmentShaderSource = gloperate::dataPath() + "/shaders/screenaligned/default.frag";
+const std::string ScreenAlignedTriangle::s_defaultFragmentShaderSource = gloperate::dataPath() + "/shaders/screenaligned/default.frag";
 
-const globjects::Shader* ScreenAlignedQuad::createDefaultVertexShader()
+const globjects::Shader* ScreenAlignedTriangle::createDefaultVertexShader()
 {
     return globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, s_defaultVertexShaderSource);
 }
 
-const globjects::Shader* ScreenAlignedQuad::createDefaultFragmentShader()
+const globjects::Shader* ScreenAlignedTriangle::createDefaultFragmentShader()
 {
     return globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, s_defaultFragmentShaderSource);
 }
