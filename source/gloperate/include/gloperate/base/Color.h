@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <glm/vec4.hpp>
+
 #include <gloperate/gloperate_api.h>
 
 namespace gloperate
@@ -22,6 +24,7 @@ public:
     Color();
     explicit Color(unsigned int bgra);
     Color(int red, int green, int blue, int alpha = 255);
+    Color(glm::tvec4<unsigned char> rgba);
 
     bool operator==(const Color & rhs) const;
     bool operator!=(const Color & rhs) const;
@@ -41,13 +44,9 @@ public:
     Color interpolate(const Color & other, float interpolationValue) const;
 
 protected:
-    union {
-        struct {
-            unsigned char b;
-            unsigned char g;
-            unsigned char r;
-            unsigned char a;
-        } m_rgba;
+    union
+    {
+        glm::tvec4<unsigned char> m_rgba;
         unsigned int m_v;
     };
 };

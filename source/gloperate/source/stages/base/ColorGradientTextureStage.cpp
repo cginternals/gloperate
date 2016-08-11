@@ -9,7 +9,7 @@ namespace gloperate
 ColorGradientTextureStage::ColorGradientTextureStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , gradients("gradients", this)
-, textureWidth("textureWidth", this)
+, textureWidth("textureWidth", this, 128)
 , gradientTexture("gradientTexture", this)
 {
 }

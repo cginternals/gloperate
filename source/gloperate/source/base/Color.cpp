@@ -1,4 +1,6 @@
 
+#include <glm/glm.hpp>
+
 #include <gloperate/base/Color.h>
 
 #include <cassert>
@@ -24,6 +26,11 @@ Color::Color(int red, int green, int blue, int alpha)
     m_rgba.r = static_cast<unsigned char>(red);
     m_rgba.g = static_cast<unsigned char>(green);
     m_rgba.b = static_cast<unsigned char>(blue);
+}
+
+Color::Color(glm::tvec4<unsigned char> rgba)
+{
+    m_rgba = rgba;
 }
 
 bool Color::operator==(const Color & rhs) const
@@ -92,12 +99,7 @@ void Color::setBgra(unsigned int bgra)
 
 Color Color::interpolate(const Color & other, float interpolationValue) const
 {
-    return Color(
-        static_cast<int>(m_rgba.r * (1.0 - interpolationValue) + other.m_rgba.r * interpolationValue),
-        static_cast<int>(m_rgba.g * (1.0 - interpolationValue) + other.m_rgba.g * interpolationValue),
-        static_cast<int>(m_rgba.b * (1.0 - interpolationValue) + other.m_rgba.b * interpolationValue),
-        static_cast<int>(m_rgba.a * (1.0 - interpolationValue) + other.m_rgba.a * interpolationValue)
-    );
+    return Color(glm::mix(m_rgba, other.m_rgba, interpolationValue));
 }
 
 

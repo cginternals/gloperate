@@ -18,6 +18,7 @@ class Texture;
 
 } // namespace globjects
 
+
 namespace gloperate
 {
 
@@ -26,7 +27,7 @@ class ColorGradientList;
 
 /**
  * @brief
- *    The base class for color gradients (i.e., a mapping of float values in the range of [0..1] to a reflectionzeug::Color).
+ *    The base class for color gradients (i.e., a mapping of float values in the range of [0..1] to a gloperate::Color).
  *
  *    This class provides convenience methods for accessing the binary image data of the gradient with specific widths (pixelData)
  *    and for using this color gradient in an OpenGL texture (generateTexture).
