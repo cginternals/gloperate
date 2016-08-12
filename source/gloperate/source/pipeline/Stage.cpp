@@ -32,6 +32,11 @@ Stage::~Stage()
     {
         parent->removeStage(this);
     }
+
+    for (auto slot : m_dynamicSlots)
+    {
+        delete slot;
+    }
 }
 
 bool Stage::isPipeline() const
