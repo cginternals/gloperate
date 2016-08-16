@@ -184,7 +184,7 @@ Background {
                     height: height.editText,
                     fps: fps.editText,
                     duration: duration.editText,
-                    
+
                     format: videoProfile.format,
                     codec: videoProfile.codec,
                     gopsize: videoProfile.gopsize,
@@ -199,7 +199,6 @@ Background {
     FileDialog {
         id: fileDialog
         title: "Please choose an export location and filename"
-//      folder: shortcuts.home
         selectFolder: false
         selectExisting: false
         selectMultiple: false

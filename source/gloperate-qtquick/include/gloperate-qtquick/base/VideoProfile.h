@@ -150,7 +150,7 @@ public:
     *    Get gop size
     *
     *  @return
-    *    Size of pixel groups (gop size)
+    *    Size of picture groups (gop size)
     */
     int gopsize() const;
 
@@ -165,7 +165,6 @@ public:
 
 signals:
     void profileChanged();
-    void profileIndexChanged();
 
 
 protected:
@@ -199,7 +198,7 @@ protected:
     int                m_height;            ///< Video heigth
     int                m_fps;               ///< Video fps
     int                m_seconds;           ///< Video duration (in seconds)
-    int                m_gopsize;           ///< Size of pixel groups
+    int                m_gopsize;           ///< Size of picture groups
     int                m_bitrate;           ///< Video bitrate
 };
 
