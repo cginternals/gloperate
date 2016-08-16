@@ -16,7 +16,6 @@ namespace gloperate_qtquick
 VideoProfile::VideoProfile(QQuickItem * parent)
 : QQuickItem(parent)
 , m_profileDirectory(QString::fromStdString(gloperate::dataPath()) + "/gloperate/video_profiles")
-, m_profile(m_profileDirectory + "/avi.json")
 {
     initializeAvailableProfiles();
     

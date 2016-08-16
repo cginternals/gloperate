@@ -27,6 +27,15 @@ Background {
         videoProfile.profiles.forEach(function(profile) {
             profiles.append({text: profile})
         })
+
+        updateParameters();
+    }
+
+    function updateParameters() {
+        width.editText = videoProfile.width;
+        height.editText = videoProfile.height;
+        fps.editText = videoProfile.fps;
+        duration.editText = videoProfile.seconds;
     }
 
     ColumnLayout {
@@ -171,18 +180,18 @@ Background {
             onClicked: {
                 var parameters = {
                     filepath: filepath.text,
-                    format: videoProfile.format,
-                    codec: videoProfile.codec,
                     width: width.editText,
                     height: height.editText,
                     fps: fps.editText,
                     duration: duration.editText,
+                    
+                    format: videoProfile.format,
+                    codec: videoProfile.codec,
                     gopsize: videoProfile.gopsize,
                     bitrate: videoProfile.bitrate
                 }
 
                 gloperate.canvas0.exportVideo(parameters, backend.editText);
-                // gloperate.canvas0.exportVideo(filepath.text, videoProfile.format, videoProfile.codec, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
             }
         }
     }
@@ -214,10 +223,7 @@ Background {
         id: videoProfile
 
         onProfileChanged: {
-            width.editText = videoProfile.width;
-            height.editText = videoProfile.height;
-            fps.editText = videoProfile.fps;
-            duration.editText = videoProfile.seconds;
+            updateParameters();
         }
     }
 }
