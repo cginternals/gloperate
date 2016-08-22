@@ -41,8 +41,10 @@ public:
     *
     *  @param[in] filename
     *    Filename for video file output
+    *  @return
+    *    Boolean whether the initialization was successful or not
     */
-    void initEncoding(const cppexpose::VariantMap & parameters);
+    bool initEncoding(const cppexpose::VariantMap & parameters);
 
     /**
     *  @brief

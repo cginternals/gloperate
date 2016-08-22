@@ -88,6 +88,13 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
     auto length = m_parameters.at("duration").toULongLong() * fps;
     auto timeDelta = 1.f / static_cast<float>(fps);
 
+
+    if (!m_videoEncoder->initEncoding(m_parameters))
+    {
+        critical() << "Error in initializing video encoding.";
+        return;
+    }
+
     createAndSetupGeometry();
     createAndSetupShader();
 
@@ -101,8 +108,6 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
     {
         m_canvas->openGLContext()->use();
     }
-
-    m_videoEncoder->initEncoding(m_parameters);
 
     for (unsigned int i = 0; i < length; ++i)
     {
