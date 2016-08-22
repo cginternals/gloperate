@@ -25,6 +25,7 @@ AbstractCanvas::AbstractCanvas(Environment * environment)
 , m_requestVideo(false)
 {
     addFunction("exportImage",          this, &AbstractCanvas::exportImage);
+    addFunction("setVideoTarget",       this, &AbstractCanvas::setVideoTarget);
     addFunction("exportVideo",          this, &AbstractCanvas::exportVideo);
     addFunction("exportProgress",       this, &AbstractCanvas::exportProgress);
     addFunction("videoExporterPlugins", this, &AbstractCanvas::videoExporterPlugins);
@@ -89,7 +90,7 @@ void AbstractCanvas::exportImage(std::string filename, int width, int height, in
     m_requestImage = true;
 }
 
-void AbstractCanvas::exportVideo(const cppexpose::VariantMap & parameters, std::string backend)
+void AbstractCanvas::setVideoTarget(const cppexpose::VariantMap & parameters, std::string backend)
 {
     // Create video exporter backend
     auto component = m_environment->componentManager()->component<AbstractVideoExporter>(backend);
@@ -100,6 +101,13 @@ void AbstractCanvas::exportVideo(const cppexpose::VariantMap & parameters, std::
 
     // Configure video exporter
     m_videoExporter->setTarget(this, parameters);
+}
+
+void AbstractCanvas::exportVideo(const cppexpose::VariantMap & parameters, std::string backend)
+{
+    setVideoTarget(parameters, backend);
+
+    if (!m_videoExporter) return;
 
     // Execute video exporter on next frame
     m_requestVideo = true;

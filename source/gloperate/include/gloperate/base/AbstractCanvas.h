@@ -117,7 +117,18 @@ public:
 
     /**
     *  @brief
-    *    Render this canvas to a video
+    *    Set up VideoExporter for rendering this canvas to a video
+    *
+    *  @param[in] parameters
+    *    Parameters for video exporter
+    *  @param[in] backend
+    *    Name of video backend to use
+    */
+    void setVideoTarget(const cppexpose::VariantMap & parameters, std::string backend = "FFMPEGVideoExporter");
+
+    /**
+    *  @brief
+    *    Set up VideoExporter and render this canvas to a video
     *
     *  @param[in] parameters
     *    Parameters for video exporter

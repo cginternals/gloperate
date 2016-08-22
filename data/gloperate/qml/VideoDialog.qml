@@ -171,27 +171,61 @@ Background {
             value: 0
         }
 
-        DialogButton {
-            text: "Record Video"
-            anchors.right: parent.right
+        Controls.GroupBox {
+            Layout.fillWidth: true
 
-            icon: '0021-video-camera.png'
+            GridLayout {
+                anchors.fill: parent
 
-            onClicked: {
-                var parameters = {
-                    filepath: filepath.text,
-                    width: width.editText,
-                    height: height.editText,
-                    fps: fps.editText,
-                    duration: duration.editText,
+                DialogButton {
+                    text: "Apply and Record"
+                    anchors.right: parent.right
 
-                    format: videoProfile.format,
-                    codec: videoProfile.codec,
-                    gopsize: videoProfile.gopsize,
-                    bitrate: videoProfile.bitrate
+                    icon: '0021-video-camera.png'
+
+                    onClicked: {
+                        var parameters = {
+                            filepath: filepath.text,
+                            width: width.editText,
+                            height: height.editText,
+                            fps: fps.editText,
+                            duration: duration.editText,
+
+                            format: videoProfile.format,
+                            codec: videoProfile.codec,
+                            gopsize: videoProfile.gopsize,
+                            bitrate: videoProfile.bitrate
+                        }
+
+                        gloperate.canvas0.exportVideo(parameters, backend.editText);
+                        close();
+                    }
                 }
 
-                gloperate.canvas0.exportVideo(parameters, backend.editText);
+                DialogButton {
+                    text: "Apply and Async"
+                    anchors.left: parent.left
+
+                    icon: '0021-video-camera.png'
+
+                    onClicked: {
+                        var parameters = {
+                            filepath: filepath.text,
+                            width: width.editText,
+                            height: height.editText,
+                            fps: fps.editText,
+                            duration: duration.editText,
+
+                            format: videoProfile.format,
+                            codec: videoProfile.codec,
+                            gopsize: videoProfile.gopsize,
+                            bitrate: videoProfile.bitrate
+                        }
+
+                        gloperate.canvas0.setVideoTarget(parameters, backend.editText);
+                        close();
+                    }
+                }
             }
         }
     }
