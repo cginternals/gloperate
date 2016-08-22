@@ -39,8 +39,8 @@ public:
     *  @brief
     *    Initialize, and open file for video encoding
     *
-    *  @param[in] filename
-    *    Filename for video file output
+    *  @param[in] parameters
+    *    Parameters for video encoding
     *  @return
     *    Boolean whether the initialization was successful or not
     */

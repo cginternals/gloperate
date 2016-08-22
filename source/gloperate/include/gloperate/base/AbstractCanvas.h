@@ -119,16 +119,8 @@ public:
     *  @brief
     *    Render this canvas to a video
     *
-    *  @param[in] filename
-    *    Name of output video file
-    *  @param[in] width
-    *    Width (in pixels) of output video
-    *  @param[in] height
-    *    Height (in pixels) of output video
-    *  @param[in] fps
-    *    Frames per second of output video
-    *  @param[in] seconds
-    *    Length (in seconds) of output video
+    *  @param[in] parameters
+    *    Parameters for video exporter
     *  @param[in] backend
     *    Name of video backend to use
     */

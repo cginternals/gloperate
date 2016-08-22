@@ -54,16 +54,8 @@ public:
     *
     *  @param[in] canvas
     *    Canvas that will be rendered into a video
-    *  @param[in] filename
-    *    Name of output video file
-    *  @param[in] width
-    *    Width (in pixels) of output video
-    *  @param[in] height
-    *    Height (in pixels) of output video
-    *  @param[in] fps
-    *    Frames per second of output video
-    *  @param[in] length
-    *    Length (in seconds) of output video
+    *  @param[in] parameters
+    *    Parameters for video exporting
     */
     virtual void setTarget(AbstractCanvas * canvas, const cppexpose::VariantMap & parameters) = 0;
 
