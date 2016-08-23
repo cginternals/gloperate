@@ -11,7 +11,6 @@
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
-#include <globjects/Framebuffer.h>
 #include <globjects/Renderbuffer.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
@@ -62,17 +61,22 @@ public:
     // Virtual AbstractVideoExporter interface
     virtual void setTarget(gloperate::AbstractCanvas * canvas, const cppexpose::VariantMap & parameters) override;
     virtual void createVideo(AbstractVideoExporter::ContextHandling contextHandling, std::function<void(int, int)> progress) override;
+    virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO) override;
     virtual int progress() const override;
 
 
 protected:
+    void initialize(ContextHandling contextHandling);
+    void finalize();
     void createAndSetupGeometry();
     void createAndSetupShader();
+    void createAndSetupBuffer();
 
 
 protected:
     FFMPEGVideoEncoder                         * m_videoEncoder;
     gloperate::AbstractCanvas                  * m_canvas;
+    gloperate::Image                           * m_image;
 
     globjects::ref_ptr<globjects::Framebuffer>   m_fbo;
     globjects::ref_ptr<globjects::Texture>       m_color;
@@ -86,4 +90,6 @@ protected:
     cppexpose::VariantMap                        m_parameters;
 
     int                                          m_progress;
+    bool                                         m_initialized;
+    AbstractVideoExporter::ContextHandling       m_contextHandling;
 };

@@ -5,6 +5,8 @@
 #include <string>
 #include <functional>
 
+#include <globjects/Framebuffer.h>
+
 #include <cppexpose/variant/Variant.h>
 
 #include <gloperate/gloperate_api.h>
@@ -69,6 +71,17 @@ public:
     *    Progress callback function
     */
     virtual void createVideo(ContextHandling contextHandling, std::function<void(int, int)> progress) = 0;
+
+    /**
+    *  @brief
+    *    onRender call for asynchronous video export per frame
+    *
+    *  @param[in] contextHandling
+    *    Defines whether the exporter will activate and later release the OpenGL context
+    *  @param[in] targetFBO
+    *    Target FBO on which should be rendered in addition to the video FBO
+    */
+    virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO) = 0;
 
     /**
     *  @brief

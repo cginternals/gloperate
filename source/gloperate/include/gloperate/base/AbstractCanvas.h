@@ -139,6 +139,15 @@ public:
 
     /**
     *  @brief
+    *    Toggle async video export on/off
+    *
+    *  @remarks
+    *    setVideoTarget() has to be called before to set up the video exporter properly.
+    */
+    void toggleVideoExport();
+
+    /**
+    *  @brief
     *    Get current video export progress in percent
     *
     *  @return
@@ -338,12 +347,15 @@ public:
 
 
 protected:
-    Environment           * m_environment;   ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext     * m_openGLContext; ///< OpenGL context used for rendering onto the canvas
-    ImageExporter         * m_imageExporter; ///< Tool for exporting canvas to image file
-    AbstractVideoExporter * m_videoExporter; ///< Tool for rendering canvas to video file
-    bool                    m_requestImage;  ///< Flag to request a ImageExporter call during next render step
-    bool                    m_requestVideo;  ///< Flag to request a VideoTool call during next render step
+    Environment           * m_environment;           ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext     * m_openGLContext;         ///< OpenGL context used for rendering onto the canvas
+    ImageExporter         * m_imageExporter;         ///< Tool for exporting canvas to image file
+    AbstractVideoExporter * m_videoExporter;         ///< Tool for rendering canvas to video file
+    bool                    m_requestImage;          ///< Flag to request a ImageExporter call during next render step
+    bool                    m_requestVideo;          ///< Flag to request a VideoExporter call during next render step
+    bool                    m_asyncVideoExportOn;    ///< Flag which indicates the async video export status (on/off)
+    bool                    m_shouldExportNextFrame; ///< Flag which indicates wether the next frame should be exported to video
+    bool                    m_preventRender;         ///< Flag to prevent rendering the next frame to screen while video exporting
 };
 
 

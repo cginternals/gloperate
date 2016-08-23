@@ -23,10 +23,14 @@ AbstractCanvas::AbstractCanvas(Environment * environment)
 , m_videoExporter(nullptr)
 , m_requestImage(false)
 , m_requestVideo(false)
+, m_asyncVideoExportOn(false)
+, m_shouldExportNextFrame(false)
+, m_preventRender(false)
 {
     addFunction("exportImage",          this, &AbstractCanvas::exportImage);
     addFunction("setVideoTarget",       this, &AbstractCanvas::setVideoTarget);
     addFunction("exportVideo",          this, &AbstractCanvas::exportVideo);
+    addFunction("toggleVideoExport",    this, &AbstractCanvas::toggleVideoExport);
     addFunction("exportProgress",       this, &AbstractCanvas::exportProgress);
     addFunction("videoExporterPlugins", this, &AbstractCanvas::videoExporterPlugins);
 
@@ -113,6 +117,20 @@ void AbstractCanvas::exportVideo(const cppexpose::VariantMap & parameters, std::
     m_requestVideo = true;
 }
 
+void AbstractCanvas::toggleVideoExport()
+{
+    if (!m_videoExporter && !m_asyncVideoExportOn)
+    {
+        globjects::warning() << "VideoExporter not properly initialized. Call setVideoTarget() before using the video export functionality.";
+        return;
+    }
+
+    // Toggle async video export
+    m_asyncVideoExportOn = !m_asyncVideoExportOn;
+    m_shouldExportNextFrame = false;
+    m_preventRender = false;
+}
+
 int AbstractCanvas::exportProgress()
 {
     if (!m_videoExporter)
@@ -163,7 +181,7 @@ void AbstractCanvas::onBackgroundColor(float, float, float)
 {
 }
 
-void AbstractCanvas::onRender(globjects::Framebuffer *)
+void AbstractCanvas::onRender(globjects::Framebuffer * targetFBO)
 {
     // In certain viewers, e.g. QML, differents threads for UI and rendering are
     // used. This makes it necessary to postpone any export functionality
@@ -189,6 +207,19 @@ void AbstractCanvas::onRender(globjects::Framebuffer *)
                 this->wakeup();
             }
         );
+    }
+
+    // Render current frame into video, blit onto screen
+    if (m_asyncVideoExportOn)
+    {
+        if (m_shouldExportNextFrame)
+        {
+            m_shouldExportNextFrame = false;
+            m_videoExporter->onRender(AbstractVideoExporter::IgnoreContext, targetFBO);
+            m_preventRender = true;
+        } else {
+            m_shouldExportNextFrame = true;
+        }
     }
 }
 

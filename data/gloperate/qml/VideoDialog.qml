@@ -224,6 +224,7 @@ Background {
 
                         gloperate.canvas0.setVideoTarget(parameters, backend.editText);
                         close();
+                        gloperate.canvas0.toggleVideoExport();
                     }
                 }
             }

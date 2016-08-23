@@ -61,13 +61,17 @@ CPPEXPOSE_COMPONENT(FFMPEGVideoExporter, gloperate::AbstractVideoExporter)
 FFMPEGVideoExporter::FFMPEGVideoExporter()
 : m_videoEncoder(new FFMPEGVideoEncoder)
 , m_canvas(nullptr)
+, m_image(nullptr)
 , m_progress(0)
+, m_initialized(false)
+, m_contextHandling(AbstractVideoExporter::IgnoreContext)
 {
 }
 
 FFMPEGVideoExporter::~FFMPEGVideoExporter()
 {
     delete m_videoEncoder;
+    if (m_image) delete m_image;
 }
 
 void FFMPEGVideoExporter::setTarget(gloperate::AbstractCanvas * canvas, const cppexpose::VariantMap & parameters)
@@ -82,12 +86,23 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
 {
     auto width = m_parameters.at("width").toULongLong();
     auto height = m_parameters.at("height").toULongLong();
-    auto fps = m_parameters.at("fps").toULongLong();
 
+    auto fps = m_parameters.at("fps").toULongLong();
     auto viewport = glm::vec4(0, 0, width, height);
     auto length = m_parameters.at("duration").toULongLong() * fps;
     auto timeDelta = 1.f / static_cast<float>(fps);
 
+    createAndSetupGeometry();
+    createAndSetupShader();
+    createAndSetupBuffer();
+
+    m_canvas->onSaveViewport();
+    m_canvas->onViewport(viewport, viewport);
+
+    if (contextHandling == AbstractVideoExporter::ActivateContext)
+    {
+        m_canvas->openGLContext()->use();
+    }
 
     if (!m_videoEncoder->initEncoding(m_parameters))
     {
@@ -95,30 +110,11 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
         return;
     }
 
-    createAndSetupGeometry();
-    createAndSetupShader();
-
-    m_canvas->onSaveViewport();
-
-    m_canvas->onViewport(viewport, viewport);
-
-    Image image(width, height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
-
-    if (contextHandling == AbstractVideoExporter::ActivateContext)
-    {
-        m_canvas->openGLContext()->use();
-    }
-
-    m_color->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
-    m_depth->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
-
-    m_color_quad->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
-    m_depth_quad->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
-
     for (unsigned int i = 0; i < length; ++i)
     {
         m_canvas->environment()->update(timeDelta);
         m_canvas->onRender(m_fbo);
+        // blitten auf default fbo zum anzeigen
 
 
         m_fbo_quad->bind(gl::GL_FRAMEBUFFER);
@@ -144,9 +140,9 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
         Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
 
-        m_color_quad->getImage(0, image.format(), image.type(), image.data());
+        m_color_quad->getImage(0, m_image->format(), m_image->type(), m_image->data());
 
-        m_videoEncoder->putFrame(image);
+        m_videoEncoder->putFrame(*m_image);
 
         m_progress = i*100/length;
         progress(i, length);
@@ -165,9 +161,98 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
     m_progress = 100;
 }
 
+void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO)
+{
+    if (!m_initialized) initialize(contextHandling);
+
+    auto width = m_parameters.at("width").toULongLong();
+    auto height = m_parameters.at("height").toULongLong();
+    auto viewport = glm::vec4(0, 0, width, height);
+
+    // m_canvas->environment()->update(timeDelta);
+    // m_canvas->environment()->update();
+    m_canvas->onRender(m_fbo);
+
+    
+    // blitten auf default fbo zum anzeigen
+
+
+    m_fbo_quad->bind(gl::GL_FRAMEBUFFER);
+
+    gl::glViewport(
+        viewport.x,
+        viewport.y,
+        viewport.z,
+        viewport.w
+    );
+
+    gl::glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+
+    m_color->bindActive(0);
+
+    m_program->use();
+    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
+    m_program->release();
+
+    m_color->unbindActive(0);
+
+    Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+
+
+    m_color_quad->getImage(0, m_image->format(), m_image->type(), m_image->data());
+
+    m_videoEncoder->putFrame(*m_image);
+}
+
 int FFMPEGVideoExporter::progress() const
 {
     return m_progress;
+}
+
+void FFMPEGVideoExporter::initialize(ContextHandling contextHandling)
+{
+    m_contextHandling = contextHandling;
+
+    auto width = m_parameters.at("width").toULongLong();
+    auto height = m_parameters.at("height").toULongLong();
+
+    // auto fps = m_parameters.at("fps").toULongLong();
+    auto viewport = glm::vec4(0, 0, width, height);
+
+    createAndSetupGeometry();
+    createAndSetupShader();
+    createAndSetupBuffer();
+
+    m_canvas->onSaveViewport();
+    m_canvas->onViewport(viewport, viewport);
+
+    if (m_contextHandling == AbstractVideoExporter::ActivateContext)
+    {
+        m_canvas->openGLContext()->use();
+    }
+
+    if (!m_videoEncoder->initEncoding(m_parameters))
+    {
+        critical() << "Error in initializing video encoding.";
+        return;
+    }
+
+    m_initialized = true;
+}
+
+void FFMPEGVideoExporter::finalize()
+{
+    m_videoEncoder->finishEncoding();
+
+    if (m_contextHandling == AbstractVideoExporter::ActivateContext)
+    {
+        m_canvas->openGLContext()->release();
+    }
+
+    m_canvas->onResetViewport();
+
+    m_initialized = false;
 }
 
 void FFMPEGVideoExporter::createAndSetupGeometry()
@@ -215,4 +300,18 @@ void FFMPEGVideoExporter::createAndSetupShader()
     m_program = new Program();
     m_program->attach(vertexShader, fragmentShader);
     m_program->setUniform("source", 0);
+}
+
+void FFMPEGVideoExporter::createAndSetupBuffer()
+{
+    auto width = m_parameters.at("width").toULongLong();
+    auto height = m_parameters.at("height").toULongLong();
+
+    m_image = new Image(width, height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
+
+    m_color->image2D(0, m_image->format(), m_image->width(), m_image->height(), 0, m_image->format(), m_image->type(), nullptr);
+    m_depth->storage(gl::GL_DEPTH_COMPONENT32, m_image->width(), m_image->height());
+
+    m_color_quad->image2D(0, m_image->format(), m_image->width(), m_image->height(), 0, m_image->format(), m_image->type(), nullptr);
+    m_depth_quad->storage(gl::GL_DEPTH_COMPONENT32, m_image->width(), m_image->height());
 }
