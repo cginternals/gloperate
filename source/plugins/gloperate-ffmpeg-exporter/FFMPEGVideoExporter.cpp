@@ -109,14 +109,14 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
         m_canvas->openGLContext()->use();
     }
 
+    m_color->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
+    m_depth->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
+
+    m_color_quad->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
+    m_depth_quad->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
+
     for (unsigned int i = 0; i < length; ++i)
     {
-        m_color->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
-        m_depth->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
-
-        m_color_quad->image2D(0, image.format(), image.width(), image.height(), 0, image.format(), image.type(), nullptr);
-        m_depth_quad->storage(gl::GL_DEPTH_COMPONENT32, image.width(), image.height());
-
         m_canvas->environment()->update(timeDelta);
         m_canvas->onRender(m_fbo);
 
