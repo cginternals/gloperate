@@ -161,8 +161,9 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
     m_progress = 100;
 }
 
-void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO)
+void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO, bool shouldFinalize)
 {
+
     if (!m_initialized) initialize(contextHandling);
 
     auto width = m_parameters.at("width").toULongLong();
@@ -173,10 +174,16 @@ void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::F
     // m_canvas->environment()->update();
     m_canvas->onRender(m_fbo);
 
+    auto destVP = m_canvas->savedDeviceViewport();
+
+    // Fix conversion
+    std::array<gl::GLint, 4> srcRect = {{viewport.x, viewport.y, viewport.z, viewport.w}};
+    std::array<gl::GLint, 4> destRect = {{destVP.x, destVP.y, destVP.z, destVP.w}};
+
+    if (!targetFBO) targetFBO = globjects::Framebuffer::defaultFBO();
+
+    m_fbo->blit(gl::GL_COLOR_ATTACHMENT0, srcRect, targetFBO, gl::GL_COLOR_ATTACHMENT0, destRect, gl::GL_COLOR_BUFFER_BIT, gl::GL_LINEAR);
     
-    // blitten auf default fbo zum anzeigen
-
-
     m_fbo_quad->bind(gl::GL_FRAMEBUFFER);
 
     gl::glViewport(
@@ -203,6 +210,11 @@ void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::F
     m_color_quad->getImage(0, m_image->format(), m_image->type(), m_image->data());
 
     m_videoEncoder->putFrame(*m_image);
+
+    if (shouldFinalize)
+    {
+        finalize();
+    }
 }
 
 int FFMPEGVideoExporter::progress() const

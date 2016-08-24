@@ -127,8 +127,10 @@ void AbstractCanvas::toggleVideoExport()
 
     // Toggle async video export
     m_asyncVideoExportOn = !m_asyncVideoExportOn;
-    m_shouldExportNextFrame = false;
-    m_preventRender = false;
+    // m_shouldExportNextFrame = false;
+    // m_preventRender = false;
+
+    // if(!m_asyncVideoExportOn) m_videoExporter->finalize();
 }
 
 int AbstractCanvas::exportProgress()
@@ -219,6 +221,12 @@ void AbstractCanvas::onRender(globjects::Framebuffer * targetFBO)
             m_preventRender = true;
         } else {
             m_shouldExportNextFrame = true;
+        }
+    } else {
+        if (m_shouldExportNextFrame)
+        {
+            m_shouldExportNextFrame = false;
+            m_videoExporter->onRender(AbstractVideoExporter::IgnoreContext, targetFBO, true);
         }
     }
 }

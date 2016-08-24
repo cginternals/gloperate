@@ -81,7 +81,7 @@ public:
     *  @param[in] targetFBO
     *    Target FBO on which should be rendered in addition to the video FBO
     */
-    virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO) = 0;
+    virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO, bool shouldFinalize = false) = 0;
 
     /**
     *  @brief

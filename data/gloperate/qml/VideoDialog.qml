@@ -203,6 +203,7 @@ Background {
                 }
 
                 DialogButton {
+                    id: asyncButton
                     text: "Apply and Async"
                     anchors.left: parent.left
 
@@ -223,8 +224,20 @@ Background {
                         }
 
                         gloperate.canvas0.setVideoTarget(parameters, backend.editText);
-                        close();
                         gloperate.canvas0.toggleVideoExport();
+                        close();
+                    }
+                }
+
+                DialogButton {
+                    text: "Toggle Off"
+                    anchors.left: asyncButton.right
+
+                    icon: '0021-video-camera.png'
+
+                    onClicked: {
+                        gloperate.canvas0.toggleVideoExport();
+                        close();
                     }
                 }
             }

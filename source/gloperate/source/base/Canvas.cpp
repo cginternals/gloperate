@@ -187,5 +187,10 @@ void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
     m_mouseDevice->wheelScroll(delta, pos);
 }
 
+glm::vec4 Canvas::savedDeviceViewport()
+{
+    return m_savedDeviceVP;
+}
+
 
 } // namespace gloperate

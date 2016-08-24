@@ -61,7 +61,7 @@ public:
     // Virtual AbstractVideoExporter interface
     virtual void setTarget(gloperate::AbstractCanvas * canvas, const cppexpose::VariantMap & parameters) override;
     virtual void createVideo(AbstractVideoExporter::ContextHandling contextHandling, std::function<void(int, int)> progress) override;
-    virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO) override;
+    virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO, bool shouldFinalize = false) override;
     virtual int progress() const override;
 
 

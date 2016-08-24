@@ -345,6 +345,15 @@ public:
     */
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
 
+    /**
+    *  @brief
+    *    Get saved device viewport
+    *
+    *  @return
+    *    Saved viewport (actual device pixels)
+    */
+    virtual glm::vec4 savedDeviceViewport() = 0;
+
 
 protected:
     Environment           * m_environment;           ///< Gloperate environment to which the canvas belongs
