@@ -236,6 +236,8 @@ void FFMPEGVideoExporter::initialize(ContextHandling contextHandling)
     createAndSetupShader();
     createAndSetupBuffer();
 
+    m_fbo->clearBuffer(gl::GL_COLOR, 0, glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
+
     m_canvas->onSaveViewport();
     m_canvas->onViewport(viewport, viewport);
 
