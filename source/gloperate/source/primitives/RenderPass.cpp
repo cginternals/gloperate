@@ -7,7 +7,7 @@
 #include <globjects/Texture.h>
 #include <globjects/Sampler.h>
 #include <globjects/Buffer.h>
-#include <globjects/Framebuffer.h>
+#include <globjects/State.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 #include <globjects/ProgramPipeline.h>
@@ -33,11 +33,6 @@ RenderPass::~RenderPass()
 void RenderPass::draw() const
 {
     bindResources();
-
-    if (m_fbo)
-    {
-        m_fbo->bind(gl::GL_FRAMEBUFFER);
-    }
 
     if (m_recordTransformFeedback)
     {
@@ -81,14 +76,14 @@ void RenderPass::draw() const
     }
 }
 
-globjects::Framebuffer * RenderPass::framebuffer() const
+globjects::State * RenderPass::state() const
 {
-    return m_fbo;
+    return m_state;
 }
 
-void RenderPass::setFramebuffer(globjects::Framebuffer * framebuffer)
+void RenderPass::setState(globjects::State * state)
 {
-    m_fbo = framebuffer;
+    m_state = state;
 }
 
 Drawable * RenderPass::geometry() const
@@ -404,6 +399,11 @@ void RenderPass::bindResources() const
     for (const auto & pair : m_transformFeedbackBuffers)
     {
         pair.second->bindBase(gl::GL_TRANSFORM_FEEDBACK_BUFFER, pair.first);
+    }
+
+    if (m_state)
+    {
+        m_state->apply();
     }
 }
 
