@@ -176,9 +176,8 @@ void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::F
 
     auto destVP = m_canvas->savedDeviceViewport();
 
-    // Fix conversion
-    std::array<gl::GLint, 4> srcRect = {{viewport.x, viewport.y, viewport.z, viewport.w}};
-    std::array<gl::GLint, 4> destRect = {{destVP.x, destVP.y, destVP.z, destVP.w}};
+    std::array<gl::GLint, 4> srcRect = {{int(viewport.x), int(viewport.y), int(viewport.z), int(viewport.w)}};
+    std::array<gl::GLint, 4> destRect = {{int(destVP.x), int(destVP.y), int(destVP.z), int(destVP.w)}};
 
     if (!targetFBO) targetFBO = globjects::Framebuffer::defaultFBO();
 
