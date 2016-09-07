@@ -55,8 +55,6 @@ void CameraCapability::update() const
     invalidateMatrices();
 
     m_dirty = false;
-
-    const_cast<CameraCapability*>(this)->changed();
 }
 
 void CameraCapability::setDefault()
@@ -163,6 +161,8 @@ void CameraCapability::dirty(bool update)
 
     if (update || m_autoUpdate)
         this->update();
+
+    setChanged(true);
 }
 
 void CameraCapability::invalidateMatrices() const
