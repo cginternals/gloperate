@@ -14,7 +14,8 @@ namespace gloperate_qt
 {
 
 
-QtKeyEventProvider::QtKeyEventProvider()
+QtKeyEventProvider::QtKeyEventProvider(QObject * parent)
+:   QObject{ parent }
 {
 }
 
@@ -33,7 +34,7 @@ bool QtKeyEventProvider::eventFilter(QObject * obj, QEvent * event)
             auto key = QtEventTransformer::fromQtKeyCode(qKeyEvent->key(), qKeyEvent->modifiers());
             KeyboardEvent * keyEvent = new KeyboardEvent(eventType
                 , key, qKeyEvent->nativeScanCode(), qKeyEvent->modifiers());
-            passEvent(keyEvent);
+            passEventWithContext(obj, keyEvent);
             return false;
         }
     }

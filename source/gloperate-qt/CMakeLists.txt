@@ -59,7 +59,6 @@ set(headers
     ${include_path}/viewer/Application.h
     ${include_path}/viewer/DefaultMapping.h
     ${include_path}/viewer/Viewer.h
-    ${include_path}/viewer/AbstractQtMapping.h
     ${include_path}/viewer/QtEventTransformer.h
     ${include_path}/viewer/QtKeyEventProvider.h
     ${include_path}/viewer/QtMouseEventProvider.h
@@ -70,6 +69,8 @@ set(headers
     ${include_path}/viewer/QtWheelEventProvider.h
     ${include_path}/viewer/Converter.h
     ${include_path}/viewer/TimePropagator.h
+    ${include_path}/viewer/AbstractQtEventProvider.h
+    ${include_path}/viewer/QtFrameEventProvider.h
 
     ${include_path}/scripting/ScriptEnvironment.h
     ${include_path}/scripting/SystemApi.h
@@ -93,7 +94,6 @@ set(sources
     ${source_path}/viewer/DefaultMapping.cpp
     ${source_path}/viewer/Viewer.cpp
     ${source_path}/viewer/Viewer.ui
-    ${source_path}/viewer/AbstractQtMapping.cpp
     ${source_path}/viewer/QtEventTransformer.cpp
     ${source_path}/viewer/QtKeyEventProvider.cpp
     ${source_path}/viewer/QtMouseEventProvider.cpp
@@ -104,6 +104,8 @@ set(sources
     ${source_path}/viewer/QtWheelEventProvider.cpp
     ${source_path}/viewer/Converter.cpp
     ${source_path}/viewer/TimePropagator.cpp
+    ${source_path}/viewer/AbstractQtEventProvider.cpp
+    ${source_path}/viewer/QtFrameEventProvider.cpp
 
     ${source_path}/scripting/ScriptEnvironment.cpp
     ${source_path}/scripting/SystemApi.cpp

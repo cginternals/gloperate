@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <gloperate/gloperate_api.h>
+
 
 namespace gloperate
 {
@@ -10,39 +12,54 @@ namespace gloperate
 *  @brief
 *    Mouse buttons
 */
-enum MouseButton {
-    NoMouseButton = 0,
-    MouseButton1 = 1,
-    MouseButtonLeft = 1,
-    MouseButton2 = 2,
-    MouseButtonRight = 2,
-    MouseButton3 = 3,
-    MouseButtonMiddle = 3,
-    MouseButton4,
-    MouseButton5,
-    MouseButton6,
-    MouseButton7,
-    MouseButton8
+enum class MouseButton {
+    NoMouseButton     = 0x0000,
+    MouseButton1      = 0x0001,
+    MouseButtonLeft   = MouseButton1,
+    MouseButton2      = 0x0002,
+    MouseButtonRight  = MouseButton2,
+    MouseButton3      = 0x0004,
+    MouseButtonMiddle = MouseButton3,
+    MouseButton4      = 0x0008,
+    MouseButton5      = 0x0010,
+    MouseButton6      = 0x0020,
+    MouseButton7      = 0x0040,
+    MouseButton8      = 0x0080
 };
+
+GLOPERATE_API MouseButton operator&(MouseButton lhs, MouseButton rhs);
+GLOPERATE_API void operator&=(MouseButton& lhs, MouseButton rhs);
+GLOPERATE_API MouseButton operator|(MouseButton lhs, MouseButton rhs);
+GLOPERATE_API void operator|=(MouseButton& lhs, MouseButton rhs);
+GLOPERATE_API MouseButton operator^(MouseButton lhs, MouseButton rhs);
+GLOPERATE_API void operator^=(MouseButton& lhs, MouseButton rhs);
 
 
 /**
 *  @brief
 *    Keyboard modifier keys
 */
-enum KeyModifier {
-    ModShift = 0x0001,
+enum class KeyModifier {
+    ModNone    = 0x0000,
+    ModShift   = 0x0001,
     ModControl = 0x0002,
-    ModAlt = 0x0004,
-    ModSuper = 0x0008
+    ModAlt     = 0x0004,
+    ModSuper   = 0x0008
 };
+
+GLOPERATE_API KeyModifier operator&(KeyModifier lhs, KeyModifier rhs);
+GLOPERATE_API void operator&=(KeyModifier& lhs, KeyModifier rhs);
+GLOPERATE_API KeyModifier operator|(KeyModifier lhs, KeyModifier rhs);
+GLOPERATE_API void operator|=(KeyModifier& lhs, KeyModifier rhs);
+GLOPERATE_API KeyModifier operator^(KeyModifier lhs, KeyModifier rhs);
+GLOPERATE_API void operator^=(KeyModifier& lhs, KeyModifier rhs);
 
 
 /**
 *  @brief
 *    Virtual key codes
 */
-enum Key {
+enum class Key {
     KeyUnknown = -1,
 
     KeySpace = 32,

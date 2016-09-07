@@ -27,6 +27,7 @@ enum class EventType : char
 ,   Mouse
 ,   Timer
 ,   Wheel
+,   Frame
 };
 
 

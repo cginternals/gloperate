@@ -26,9 +26,8 @@ using namespace gloperate;
 using namespace gloperate_qt;
 using gloperate::make_unique;
 
-
-QtViewerMapping::QtViewerMapping(QtOpenGLWindow * window)
-:   AbstractQtMapping(window)
+QtViewerMapping::QtViewerMapping(gloperate_qt::QtOpenGLWindow * window)
+:   m_window(window)
 {
 }
 
@@ -96,33 +95,33 @@ void QtViewerMapping::mapKeyboardEvent(KeyboardEvent * event)
         switch (event->key())
         {
         // WASD move camera
-        case KeyW:
+        case Key::KeyW:
             m_navigation->pan(glm::vec3(0, 0, 1));
             break;
-        case KeyA:
+        case Key::KeyA:
             m_navigation->pan(glm::vec3(1, 0, 0));
             break;
-        case KeyS:
+        case Key::KeyS:
             m_navigation->pan(glm::vec3(0, 0, -1));
             break;
-        case KeyD:
+        case Key::KeyD:
             m_navigation->pan(glm::vec3(-1, 0, 0));
             break;
         // Reset camera position
-        case KeyR:
+        case Key::KeyR:
             m_navigation->reset();
             break;
         // Arrows rotate camera
-        case KeyUp:
+        case Key::KeyUp:
             m_navigation->rotate(0.0f, glm::radians(-10.0f));
             break;
-        case KeyLeft:
+        case Key::KeyLeft:
             m_navigation->rotate(glm::radians(10.0f), 0.0f);
             break;
-        case KeyDown:
+        case Key::KeyDown:
             m_navigation->rotate(0.0f, glm::radians(10.0f));
             break;
-        case KeyRight:
+        case Key::KeyRight:
             m_navigation->rotate(glm::radians(-10.0f), 0.0f);
             break;
         default:
@@ -135,17 +134,17 @@ void QtViewerMapping::mapMouseEvent(MouseEvent * mouseEvent)
 {
     if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Press)
     {
-        const auto pos = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
+        const auto pos = mouseEvent->position() * static_cast<int>(m_window->devicePixelRatio());
 
         switch (mouseEvent->button())
         {
-        case MouseButtonMiddle:
+        case MouseButton::MouseButtonMiddle:
             m_navigation->reset();
             break;
-        case MouseButtonLeft:
+        case MouseButton::MouseButtonLeft:
             m_navigation->panBegin(pos);
             break;
-        case MouseButtonRight:
+        case MouseButton::MouseButtonRight:
             m_navigation->rotateBegin(pos);
             break;
         default:
@@ -154,8 +153,8 @@ void QtViewerMapping::mapMouseEvent(MouseEvent * mouseEvent)
     }
     else if (mouseEvent && mouseEvent->type() == MouseEvent::Type::Move)
     {
-        const auto pos = mouseEvent->pos() * static_cast<int>(m_window->devicePixelRatio());
-        
+        const auto pos = mouseEvent->position() * static_cast<int>(m_window->devicePixelRatio());
+
         switch (m_navigation->mode())
         {
         case WorldInHandNavigation::InteractionMode::PanInteraction:
@@ -172,10 +171,10 @@ void QtViewerMapping::mapMouseEvent(MouseEvent * mouseEvent)
     {
         switch (mouseEvent->button())
         {
-        case MouseButtonLeft:
+        case MouseButton::MouseButtonLeft:
             m_navigation->panEnd();
             break;
-        case MouseButtonRight:
+        case MouseButton::MouseButtonRight:
             m_navigation->rotateEnd();
             break;
         default:

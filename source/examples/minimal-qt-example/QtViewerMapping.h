@@ -1,8 +1,7 @@
 
 #pragma once
 
-
-#include <gloperate-qt/viewer/AbstractQtMapping.h>
+#include <gloperate/navigation/AbstractMapping.h>
 
 #include <memory>
 
@@ -22,8 +21,12 @@ namespace gloperate
     class WheelEvent;
 }
 
+namespace gloperate_qt
+{
+    class QtOpenGLWindow;
+}
 
-class QtViewerMapping : public gloperate_qt::AbstractQtMapping
+class QtViewerMapping : public gloperate::AbstractMapping
 {
 public:
     QtViewerMapping(gloperate_qt::QtOpenGLWindow * window);
@@ -46,4 +49,5 @@ protected:
     std::unique_ptr<gloperate::WorldInHandNavigation> m_navigation;
     std::unique_ptr<gloperate::CoordinateProvider> m_coordProvider;
     std::unique_ptr<gloperate::TypedRenderTargetCapability> m_renderTarget;
+    gloperate_qt::QtOpenGLWindow * m_window;
 };

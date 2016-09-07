@@ -13,8 +13,8 @@ using namespace gloperate;
 namespace gloperate_qt
 {
 
-
-QtWheelEventProvider::QtWheelEventProvider()
+QtWheelEventProvider::QtWheelEventProvider(QObject * parent)
+:   QObject{ parent }
 {
 }
 
@@ -33,7 +33,7 @@ bool QtWheelEventProvider::eventFilter(QObject * obj, QEvent * event)
             auto angleDelta = toDegrees(qAngleDelta);
             auto pixelDelta = QtEventTransformer::fromQPoint(qWheelEvent->pixelDelta());
             WheelEvent * wheelEvent = new WheelEvent(position, angleDelta, pixelDelta);
-            passEvent(wheelEvent);
+            passEventWithContext(obj, wheelEvent);
             return true;
         }
     }
