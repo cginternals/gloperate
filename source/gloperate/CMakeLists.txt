@@ -68,7 +68,9 @@ set(headers
     ${include_path}/navigation/AbstractMapping.h
     ${include_path}/navigation/CoordinateProvider.h
     ${include_path}/navigation/navigationmath.h
-    
+    ${include_path}/navigation/Trackball.h
+    ${include_path}/navigation/TrackballNavigation.h
+
     ${include_path}/painter/InputCapability.h
     ${include_path}/painter/AbstractInputCapability.h
     ${include_path}/painter/Painter.hpp
@@ -184,7 +186,9 @@ set(sources
     ${source_path}/navigation/navigationmath.cpp
     ${source_path}/navigation/WorldInHandNavigation.cpp
     ${source_path}/navigation/CoordinateProvider.cpp
-    
+    ${source_path}/navigation/Trackball.cpp
+    ${source_path}/navigation/TrackballNavigation.cpp
+
     ${source_path}/painter/PerspectiveProjectionCapability.cpp
     ${source_path}/painter/TargetFramebufferCapability.cpp
     ${source_path}/painter/CameraCapability.cpp
