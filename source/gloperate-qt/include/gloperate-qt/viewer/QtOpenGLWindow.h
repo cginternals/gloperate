@@ -6,6 +6,7 @@
 
 #include <globjects/base/ref_ptr.h>
 
+#include <gloperate/base/AbstractWindow.h>
 #include <gloperate/painter/Painter.h>
 
 #include <gloperate-qt/viewer/QtOpenGLWindowBase.h>
@@ -34,7 +35,7 @@ class TimerApi;
 *    no other components. For a fully-fledged application template, see
 *    gloperate_qt::Viewer.
 */
-class GLOPERATE_QT_API QtOpenGLWindow : public QtOpenGLWindowBase
+class GLOPERATE_QT_API QtOpenGLWindow : public gloperate::AbstractWindow, public QtOpenGLWindowBase
 {
 public:
     /**
@@ -65,24 +66,6 @@ public:
 
     /**
     *  @brief
-    *    Get used painter
-    *
-    *  @return
-    *    Painter, can be nullptr
-    */
-    gloperate::Painter * painter() const;
-
-    /**
-    *  @brief
-    *    Set used painter
-    *
-    *  @param[in] painter
-    *    Painter, can be nullptr
-    */
-    void setPainter(gloperate::Painter * painter);
-
-    /**
-    *  @brief
     *    Set scripting timer API
     *
     *  @param[in] timerAPI
@@ -107,11 +90,11 @@ protected:
     virtual void mouseDoubleClickEvent(QMouseEvent * event) override;
     virtual void wheelEvent(QWheelEvent * event) override;
 
+    void resetPainter(gloperate::Painter * painter);
+
 
 protected:
-    gloperate::ResourceManager & m_resourceManager;
-    gloperate::Painter * m_painter;                    ///< Currently used painter
-    std::unique_ptr<TimePropagator> m_timePropagator;  ///< Time propagator for continous updates
+    std::unique_ptr<TimePropagator> m_timePropagator;  /**< Time propagator for continous updates */
     TimerApi * m_timerApi;                             ///< Scripting timer API
 };
 

@@ -9,6 +9,7 @@
 
 #include <globjects/base/ref_ptr.h>
 
+#include <gloperate/base/AbstractWindow.h>
 #include <gloperate/painter/Painter.h>
 
 #include <gloperate-glfw/Window.h>
@@ -40,8 +41,8 @@ class Context;
 *
 *  @remarks
 *    Attach a WindowEventHandlerBase specialization for event handling.
-*/
-class GLOPERATE_GLFW_API Window
+ */
+class GLOPERATE_GLFW_API Window : public gloperate::AbstractWindow
 {
 public:
     static int init();
@@ -130,13 +131,6 @@ public:
     void swap();
     void destroy();
 
-    gloperate::Painter * painter() const;
-    void setPainter(gloperate::Painter * painter);
-
-    gloperate::ResourceManager & resourceManager();
-    const gloperate::ResourceManager & resourceManager() const;
-
-
 protected:
     bool createContext(const gloperate::ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
     void destroyContext();
@@ -147,6 +141,8 @@ protected:
     void clearEventQueue();
     void processEvent(WindowEvent & event);
     void postprocessEvent(WindowEvent & event);
+
+    void resetPainter(gloperate::Painter * painter);
 
 
 protected:
@@ -166,10 +162,6 @@ protected:
     };
 
     Mode m_mode;
-
-    gloperate::Painter * m_painter;
-    gloperate::ResourceManager & m_resourceManager;
-
 
 private:
     static std::set<Window*> s_instances;

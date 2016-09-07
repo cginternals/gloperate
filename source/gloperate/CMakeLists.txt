@@ -53,6 +53,7 @@ set(headers
     ${include_path}/base/make_unique.hpp
     ${include_path}/base/CachedValue.h
     ${include_path}/base/CachedValue.hpp
+    ${include_path}/base/AbstractWindow.h
         
     ${include_path}/input/MouseEvent.h
     ${include_path}/input/KeyboardEvent.h
@@ -170,6 +171,7 @@ set(sources
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/CyclicTime.cpp
+    ${source_path}/base/AbstractWindow.cpp
     
     ${source_path}/input/KeyboardEvent.cpp
     ${source_path}/input/WheelEvent.cpp
