@@ -155,6 +155,8 @@ public:
     */
     void deinitContext(AbstractGLContext * context);
 
+    // [TODO] prepare
+
     /**
     *  @brief
     *    Process stage

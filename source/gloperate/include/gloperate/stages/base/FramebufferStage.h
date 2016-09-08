@@ -23,17 +23,17 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that maintains a basic framebuffer with a color and depth attachment
+*    Stage that maintains a framebuffer attached with all input textures
 */
-class GLOPERATE_API BasicFramebufferStage : public Stage
+class GLOPERATE_API FramebufferStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        BasicFramebufferStage, gloperate::Stage
+        FramebufferStage, gloperate::Stage
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that maintains a basic framebuffer with a color and depth attachment"
+      , "Stage that maintains a framebuffer attached with all input textures"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -41,12 +41,11 @@ public:
 
 public:
     // Inputs
-    Input<glm::vec4>                 viewport;      ///< Texture size
+    Input<globjects::Texture *> colorTexture;  ///< Color attachment (#0)
+    Input<globjects::Texture *> depthTexture;  ///< Depth attachment
 
     // Outputs
-    Output<globjects::Framebuffer *> fbo;           ///< Framebuffer
-    Output<globjects::Texture *>     colorTexture;  ///< Color attachment
-    Output<globjects::Texture *>     depthTexture;  ///< Depth attachment
+    Output<globjects::Framebuffer *> fbo;      ///< Framebuffer
 
 
 public:
@@ -59,13 +58,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    BasicFramebufferStage(Environment * environment, const std::string & name = "BasicFramebufferStage");
+    FramebufferStage(Environment * environment, const std::string & name = "FramebufferStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~BasicFramebufferStage();
+    virtual ~FramebufferStage();
 
 
 protected:
@@ -80,9 +79,7 @@ protected:
 
 protected:
     // Data
-    globjects::ref_ptr<globjects::Framebuffer> m_fbo;       ///< The created framebuffer
-    globjects::ref_ptr<globjects::Texture>     m_texColor;  ///< Color texture
-    globjects::ref_ptr<globjects::Texture>     m_texDepth;  ///< Depth texture
+    globjects::ref_ptr<globjects::Framebuffer> m_fbo; ///< The created framebuffer
 };
 
 
