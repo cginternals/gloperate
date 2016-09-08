@@ -18,8 +18,6 @@ namespace gloperate
 {
 
 
-class Environment;
-
 
 /**
 *  @brief
@@ -31,11 +29,8 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] environment
-    *    Environment (must NOT be null!)
     */
-    ComponentManager(Environment * environment);
+    ComponentManager();
 
     /**
     *  @brief
@@ -53,9 +48,6 @@ protected:
     cppexpose::Variant script_components();
     void script_printComponents();
 
-
-protected:
-    Environment * m_environment; ///< Gloperate environment (must NOT be null!)
 };
 
 

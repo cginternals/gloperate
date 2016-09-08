@@ -5,16 +5,13 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <gloperate/base/Environment.h>
-
 
 namespace gloperate
 {
 
 
-ComponentManager::ComponentManager(Environment * environment)
+ComponentManager::ComponentManager()
 : cppexpose::Object("components")
-, m_environment(environment)
 {
     // Register functions
     addFunction("pluginPaths",      this, &ComponentManager::script_pluginPaths);
@@ -31,7 +28,7 @@ ComponentManager::~ComponentManager()
 
 cppexpose::Variant ComponentManager::script_pluginPaths()
 {
-    std::vector<std::string> paths = m_environment->componentManager()->pluginPaths();
+    std::vector<std::string> paths = this->pluginPaths();
 
     cppexpose::Variant lst = cppexpose::Variant::array();
     for (auto path : paths) {
@@ -43,24 +40,24 @@ cppexpose::Variant ComponentManager::script_pluginPaths()
 
 void ComponentManager::script_addPluginPath(const std::string & path)
 {
-    m_environment->componentManager()->addPluginPath(path);
+    this->addPluginPath(path);
 }
 
 void ComponentManager::script_removePluginPath(const std::string & path)
 {
-    m_environment->componentManager()->removePluginPath(path);
+    this->removePluginPath(path);
 }
 
 void ComponentManager::script_scanPlugins(const std::string & identifier)
 {
-    m_environment->componentManager()->scanPlugins(identifier);
+    this->scanPlugins(identifier);
 }
 
 cppexpose::Variant ComponentManager::script_components()
 {
     cppexpose::Variant lst = cppexpose::Variant::array();
 
-    auto & components = m_environment->componentManager()->components();
+    auto & components = this->components();
     for (auto * component : components) {
         cppexpose::Variant obj = cppexpose::Variant::map();
         cppexpose::VariantMap & map = *obj.asMap();
@@ -82,7 +79,7 @@ cppexpose::Variant ComponentManager::script_components()
 
 void ComponentManager::script_printComponents()
 {
-    m_environment->componentManager()->printComponents();
+    this->printComponents();
 }
 
 

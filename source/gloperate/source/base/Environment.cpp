@@ -27,7 +27,7 @@ namespace gloperate
 
 Environment::Environment()
 : cppexpose::Object("gloperate")
-, m_componentManager(this)
+, m_componentManager()
 , m_resourceManager(this)
 , m_timeManager(this)
 , m_system(this)
