@@ -69,13 +69,13 @@ set(headers
     ${include_path}/base/GlmProperties.h
 
     ${include_path}/base/AbstractColorGradient.h
-    ${include_path}/base/AbstractColorGradient.hpp
+    ${include_path}/base/AbstractColorGradient.inl
     ${include_path}/base/Color.h
     ${include_path}/base/ColorGradientList.h
-    ${include_path}/base/ColorGradientList.hpp
+    ${include_path}/base/ColorGradientList.inl
     ${include_path}/base/ColorGradientPreparation.h
     ${include_path}/base/ExplicitEquidistantColorGradient.h
-    ${include_path}/base/ExplicitEquidistantColorGradient.hpp
+    ${include_path}/base/ExplicitEquidistantColorGradient.inl
 
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/AbstractDataSlot.h

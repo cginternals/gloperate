@@ -3,8 +3,13 @@
 
 #include <gloperate/base/ColorGradientList.h>
 
+
 namespace gloperate
 {
+
+
+CPPEXPOSE_COMPONENT(ColorGradientTextureStage, gloperate::Stage)
+
 
 ColorGradientTextureStage::ColorGradientTextureStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
@@ -18,5 +23,6 @@ void ColorGradientTextureStage::onProcess(gloperate::AbstractGLContext * /*conte
 {
     gradientTexture.setValue((*gradients).generateTexture((*textureWidth)));
 }
+
 
 } // namespace gloperate

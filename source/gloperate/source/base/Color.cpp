@@ -28,9 +28,9 @@ Color::Color(int red, int green, int blue, int alpha)
     m_bgra[3] = static_cast<unsigned char>(alpha);
 }
 
-Color::Color(glm::tvec4<unsigned char> rgba)
+Color::Color(glm::tvec4<unsigned char> bgra)
 {
-    m_bgra = rgba;
+    m_bgra = bgra;
 }
 
 bool Color::operator==(const Color & rhs) const

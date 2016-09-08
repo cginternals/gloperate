@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <gloperate/base/AbstractColorGradient.h>
-
 
 namespace gloperate
 {

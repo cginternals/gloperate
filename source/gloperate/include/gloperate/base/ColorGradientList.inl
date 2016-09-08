@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include <gloperate/base/ColorGradientList.h>
 
 namespace gloperate
 {
+
 
 template <typename... Args>
 ColorGradientList::ColorGradientList(AbstractColorGradient * gradient, Args... args)
@@ -12,5 +12,6 @@ ColorGradientList::ColorGradientList(AbstractColorGradient * gradient, Args... a
 {
     add(gradient);
 }
+
 
 } // namespace gloperate
