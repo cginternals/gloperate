@@ -24,8 +24,7 @@ AbstractCanvas::AbstractCanvas(Environment * environment)
 , m_requestImage(false)
 , m_requestVideo(false)
 , m_asyncVideoExportOn(false)
-, m_shouldExportNextFrame(false)
-, m_preventRender(false)
+, m_asyncVideoFinalize(false)
 {
     addFunction("exportImage",          this, &AbstractCanvas::exportImage);
     addFunction("setVideoTarget",       this, &AbstractCanvas::setVideoTarget);
@@ -125,12 +124,12 @@ void AbstractCanvas::toggleVideoExport()
         return;
     }
 
-    // Toggle async video export
-    m_asyncVideoExportOn = !m_asyncVideoExportOn;
-    // m_shouldExportNextFrame = false;
-    // m_preventRender = false;
-
-    // if(!m_asyncVideoExportOn) m_videoExporter->finalize();
+    if (m_asyncVideoExportOn)
+    {
+        m_asyncVideoFinalize = true;
+    } else {
+        m_asyncVideoExportOn = true;
+    }
 }
 
 int AbstractCanvas::exportProgress()
@@ -155,35 +154,7 @@ cppexpose::VariantArray AbstractCanvas::videoExporterPlugins()
     return plugins;
 }
 
-void AbstractCanvas::onUpdate()
-{
-}
-
-void AbstractCanvas::onContextInit()
-{
-}
-
-void AbstractCanvas::onContextDeinit()
-{
-}
-
-void AbstractCanvas::onViewport(const glm::vec4 &, const glm::vec4 &)
-{
-}
-
-void AbstractCanvas::onSaveViewport()
-{
-}
-
-void AbstractCanvas::onResetViewport()
-{
-}
-
-void AbstractCanvas::onBackgroundColor(float, float, float)
-{
-}
-
-void AbstractCanvas::onRender(globjects::Framebuffer * targetFBO)
+void AbstractCanvas::render(globjects::Framebuffer * targetFBO)
 {
     // In certain viewers, e.g. QML, differents threads for UI and rendering are
     // used. This makes it necessary to postpone any export functionality
@@ -214,21 +185,51 @@ void AbstractCanvas::onRender(globjects::Framebuffer * targetFBO)
     // Render current frame into video, blit onto screen
     if (m_asyncVideoExportOn)
     {
-        if (m_shouldExportNextFrame)
+        if (m_asyncVideoFinalize)
         {
-            m_shouldExportNextFrame = false;
-            m_videoExporter->onRender(AbstractVideoExporter::IgnoreContext, targetFBO);
-            m_preventRender = true;
-        } else {
-            m_shouldExportNextFrame = true;
-        }
-    } else {
-        if (m_shouldExportNextFrame)
-        {
-            m_shouldExportNextFrame = false;
             m_videoExporter->onRender(AbstractVideoExporter::IgnoreContext, targetFBO, true);
+            m_asyncVideoExportOn = false;
+            m_asyncVideoFinalize = false;
+            return;
         }
+
+        m_videoExporter->onRender(AbstractVideoExporter::IgnoreContext, targetFBO);
+        return;
     }
+
+    onRender(targetFBO);
+}
+
+void AbstractCanvas::onUpdate()
+{
+}
+
+void AbstractCanvas::onContextInit()
+{
+}
+
+void AbstractCanvas::onContextDeinit()
+{
+}
+
+void AbstractCanvas::onViewport(const glm::vec4 &, const glm::vec4 &)
+{
+}
+
+void AbstractCanvas::onSaveViewport()
+{
+}
+
+void AbstractCanvas::onResetViewport()
+{
+}
+
+void AbstractCanvas::onBackgroundColor(float, float, float)
+{
+}
+
+void AbstractCanvas::onRender(globjects::Framebuffer * /*targetFBO*/)
+{ 
 }
 
 void AbstractCanvas::onKeyPress(int, int)

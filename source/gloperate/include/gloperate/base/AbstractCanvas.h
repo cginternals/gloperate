@@ -169,6 +169,18 @@ public:
 
     /**
     *  @brief
+    *    Render scene
+    *
+    *    This function is called when the viewer needs to redraw its content.
+    *    Use it to render the actual scene you want to display.
+    *
+    *  @param[in] targetFBO
+    *    Target FBO (can be null)
+    */
+    virtual void render(globjects::Framebuffer * targetFBO = nullptr);
+
+    /**
+    *  @brief
     *    Update call once per main loop iteration
     */
     virtual void onUpdate();
@@ -263,10 +275,10 @@ public:
 
     /**
     *  @brief
-    *    Render scene
+    *    Actual render call
     *
-    *    This function is called when the viewer needs to redraw its content.
-    *    Use it to render the actual scene you want to display.
+    *    This function is called by the render() or image and video exporters.
+    *    Overwrite it in derived classes to perform the actual rendering.
     *
     *  @param[in] targetFBO
     *    Target FBO (can be null)
@@ -363,8 +375,7 @@ protected:
     bool                    m_requestImage;          ///< Flag to request a ImageExporter call during next render step
     bool                    m_requestVideo;          ///< Flag to request a VideoExporter call during next render step
     bool                    m_asyncVideoExportOn;    ///< Flag which indicates the async video export status (on/off)
-    bool                    m_shouldExportNextFrame; ///< Flag which indicates wether the next frame should be exported to video
-    bool                    m_preventRender;         ///< Flag to prevent rendering the next frame to screen while video exporting
+    bool                    m_asyncVideoFinalize;    ///< Flag to finalize async video export
 };
 
 

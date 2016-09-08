@@ -124,15 +124,6 @@ void Canvas::onRender(globjects::Framebuffer * targetFBO)
 {
     cppassist::details() << "onRender()";
 
-    // Invoke image and video exports
-    AbstractCanvas::onRender(targetFBO);
-    
-    if (m_preventRender)
-    {
-        m_preventRender = false;
-        return;
-    }
-
     // Invoke render stage/pipeline
     if (m_pipelineContainer.renderStage())
     {
