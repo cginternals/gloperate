@@ -84,6 +84,7 @@ set(headers
     ${include_path}/pipeline/ProxyOutput.h
     ${include_path}/pipeline/ProxyOutput.inl
     ${include_path}/pipeline/Stage.h
+    ${include_path}/pipeline/Stage.inl
     ${include_path}/pipeline/Pipeline.h
     ${include_path}/pipeline/OutputTypeSelector.h
     ${include_path}/pipeline/StageComponent.h

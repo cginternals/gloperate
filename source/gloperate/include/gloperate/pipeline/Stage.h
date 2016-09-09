@@ -271,6 +271,26 @@ public:
 
     /**
     *  @brief
+    *    Create dynamic input
+    *
+    *  @tparam T
+    *    Type of the input
+    *  @param[in] name
+    *    Name of the input
+    *  @param[in] defaultValue
+    *    Default value (optional)
+    *
+    *  @return
+    *    Input, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic input and transfers ownership to the stage.
+    */
+    template <typename T>
+    Input<T> * createInput(const std::string & name, const T & defaultValue = T());
+
+    /**
+    *  @brief
     *    Add input
     *
     *  @param[in] input
@@ -309,6 +329,26 @@ public:
     *    Parameter (can be null)
     */
     const AbstractDataSlot * parameter(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Create dynamic parameter
+    *
+    *  @tparam T
+    *    Type of the parameter
+    *  @param[in] name
+    *    Name of the parameter
+    *  @param[in] defaultValue
+    *    Default value (optional)
+    *
+    *  @return
+    *    Parameter, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic parameter and transfers ownership to the stage.
+    */
+    template <typename T>
+    Parameter<T> * createParameter(const std::string & name, const T & defaultValue = T());
 
     /**
     *  @brief
@@ -353,6 +393,26 @@ public:
 
     /**
     *  @brief
+    *    Create dynamic output
+    *
+    *  @tparam T
+    *    Type of the output
+    *  @param[in] name
+    *    Name of the output
+    *  @param[in] defaultValue
+    *    Default value (optional)
+    *
+    *  @return
+    *    Output, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic output and transfers ownership to the stage.
+    */
+    template <typename T>
+    Output<T> * createOutput(const std::string & name, const T & defaultValue = T());
+
+    /**
+    *  @brief
     *    Add output
     *
     *  @param[in] output
@@ -391,6 +451,26 @@ public:
     *    Proxy output (can be null)
     */
     const AbstractInputSlot * proxyOutput(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Create dynamic proxy output
+    *
+    *  @tparam T
+    *    Type of the proxy output
+    *  @param[in] name
+    *    Name of the proxy output
+    *  @param[in] defaultValue
+    *    Default value (optional)
+    *
+    *  @return
+    *    Output, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic proxy output and transfers ownership to the stage.
+    */
+    template <typename T>
+    ProxyOutput<T> * createProxyOutput(const std::string & name, const T & defaultValue = T());
 
     /**
     *  @brief
@@ -523,3 +603,6 @@ protected:
 
 
 } // namespace gloperate
+
+
+#include <gloperate/pipeline/Stage.inl>

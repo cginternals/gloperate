@@ -18,12 +18,23 @@ Parameter<T>::Parameter(const std::string & name, Stage * parent, const T & valu
 }
 
 template <typename T>
+Parameter<T>::Parameter(const std::string & name, const T & value)
+: DataSlot<T>(value)
+{
+    // Do not add property to object, yet. Just initialize the property itself
+    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+
+    // Initialize data slot
+    this->initDataSlot(SlotType::Parameter, nullptr, cppexpose::PropertyOwnership::None);
+}
+
+template <typename T>
 Parameter<T>::~Parameter()
 {
 }
 
 template <typename T>
-void Parameter<T>::setValid(bool isValid)
+void Parameter<T>::setValid(bool)
 {
     // Parameters are always valid
 }

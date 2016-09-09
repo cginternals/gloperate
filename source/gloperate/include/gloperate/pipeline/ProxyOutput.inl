@@ -18,6 +18,17 @@ ProxyOutput<T>::ProxyOutput(const std::string & name, Stage * parent, const T & 
 }
 
 template <typename T>
+ProxyOutput<T>::ProxyOutput(const std::string & name, const T & value)
+: InputSlot<T>(value)
+{
+    // Do not add property to object, yet. Just initialize the property itself
+    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+
+    // Initialize input slot
+    this->initInputSlot(SlotType::ProxyOutput, nullptr, cppexpose::PropertyOwnership::None);
+}
+
+template <typename T>
 ProxyOutput<T>::~ProxyOutput()
 {
 }

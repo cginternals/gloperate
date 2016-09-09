@@ -29,9 +29,27 @@ public:
     *    Default value
     *
     *  @remarks
-    *    The proxy output is created and added to the given stage.
+    *    Creates the proxy output and adds it to the given stage without ownership.
+    *    Use this constructor for static slots, which are usually created
+    *    as direct instances on a stage class.
     */
     ProxyOutput(const std::string & name, Stage * parent, const T & defaultValue = T());
+
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] name
+    *    Property name
+    *  @param[in] value
+    *    Default value
+    *
+    *  @remarks
+    *    Creates the proxy output without adding it to any stage.
+    *    Use this constructor for dynamic slots and call addInput()
+    *    to add the slot to a stage.
+    */
+    ProxyOutput(const std::string & name, const T & defaultValue = T());
 
     /**
     *  @brief
