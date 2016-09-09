@@ -289,6 +289,25 @@ public:
 
     /**
     *  @brief
+    *    Create a new input on this stage
+    *
+    *  @param[in] name
+    *    Name of the new input
+    *
+    *  @param[in] defaultValue
+    *    Optional default value
+    *
+    *  @tparam T
+    *    Type of the new input
+    *
+    *  @return
+    *    Reference to the newly created Input
+    */
+    template <typename T>
+    Input<T> & createNewInput(const std::string & name, const T & defaultValue = T());
+
+    /**
+    *  @brief
     *    Get parameters
     *
     *  @return
@@ -327,6 +346,25 @@ public:
     *    Parameter (must NOT null!)
     */
     void removeParameter(AbstractDataSlot * parameter);
+
+    /**
+    *  @brief
+    *    Create a new parameter on this stage
+    *
+    *  @param[in] name
+    *    Name of the new parameter
+    *
+    *  @param[in] defaultValue
+    *    Optional default value
+    *
+    *  @tparam T
+    *    Type of the new parameter
+    *
+    *  @return
+    *    Reference to the newly created parameter
+    */
+    template <typename T>
+    Parameter<T> & createNewParameter(const std::string & name, const T & defaultValue = T());
 
     /**
     *  @brief
@@ -371,6 +409,25 @@ public:
 
     /**
     *  @brief
+    *    Create a new output on this stage
+    *
+    *  @param[in] name
+    *    Name of the new output
+    *
+    *  @param[in] defaultValue
+    *    Optional default value
+    *
+    *  @tparam T
+    *    Type of the new output
+    *
+    *  @return
+    *    Reference to the newly created output
+    */
+    template <typename T>
+    Output<T> & createNewOutput(const std::string & name, const T & defaultValue = T());
+
+    /**
+    *  @brief
     *    Get proxy outputs
     *
     *  @return
@@ -409,6 +466,25 @@ public:
     *    Proxy output (must NOT null!)
     */
     void removeProxyOutput(AbstractInputSlot * proxyOutput);
+
+    /**
+    *  @brief
+    *    Create a new proxy output on this stage
+    *
+    *  @param[in] name
+    *    Name of the new proxy output
+    *
+    *  @param[in] defaultValue
+    *    Optional default value
+    *
+    *  @tparam T
+    *    Type of the new proxy output
+    *
+    *  @return
+    *    Reference to the newly created proxy output
+    */
+    template <typename T>
+    ProxyOutput<T> & createNewProxyOutput(const std::string & name, const T & defaultValue = T());
 
 
 protected:
@@ -517,7 +593,11 @@ protected:
     std::unordered_map<std::string, AbstractDataSlot *>  m_outputsMap;      ///< Map of names and outputs
     std::vector<AbstractInputSlot *>                     m_proxyOutputs;    ///< List of proxy outputs
     std::unordered_map<std::string, AbstractInputSlot *> m_proxyOutputsMap; ///< Map of names and proxy outputs
+
+    std::vector<AbstractSlot *>                          m_dynamicSlots;    ///< List of slots created dynamically
 };
 
 
 } // namespace gloperate
+
+#include <gloperate/pipeline/Stage.inl>
