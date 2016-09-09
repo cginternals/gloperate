@@ -17,12 +17,12 @@
 namespace globjects
 {
     class Buffer;
-    class Framebuffer;
     class Program;
     class ProgramPipeline;
     class Sampler;
     class Texture;
     class TransformFeedback;
+    class State;
 }
 
 
@@ -63,6 +63,24 @@ public:
     *    Execute render pass
     */
     void draw() const;
+
+    /**
+    *  @brief
+    *    Get state that is applied before rendering
+    *
+    *  @return
+    *    State (can be null)
+    */
+    globjects::State * state() const;
+    
+    /**
+    *  @brief
+    *    Set state that is applied before rendering
+    *
+    *  @param[in] geometry
+    *    State (can be null)
+    */
+    void setState(globjects::State * state);
 
     /**
     *  @brief
@@ -494,6 +512,7 @@ protected:
 
 
 protected:
+    globjects::ref_ptr<globjects::State>             m_state;                       ///< State applied before rendering
     globjects::ref_ptr<Drawable>                     m_geometry;                    ///< Geometry rendered by the render pass
     globjects::ref_ptr<globjects::Program>           m_program;                     ///< Program used for rendering
     globjects::ref_ptr<globjects::ProgramPipeline>   m_programPipeline;             ///< Program pipeline used for rendering
