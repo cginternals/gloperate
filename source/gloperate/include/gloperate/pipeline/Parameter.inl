@@ -23,7 +23,7 @@ Parameter<T>::~Parameter()
 }
 
 template <typename T>
-void Parameter<T>::setValid(bool isValid)
+void Parameter<T>::setValid(bool)
 {
     // Parameters are always valid
 }
