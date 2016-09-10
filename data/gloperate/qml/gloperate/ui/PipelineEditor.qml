@@ -24,17 +24,6 @@ Background
         contentWidth:  pipeline.width  + 2 * pipeline.anchors.margins
         contentHeight: pipeline.height + 2 * pipeline.anchors.margins
 
-        Component
-        {
-            id: stageComponent
-
-            Stage
-            {
-                stageDelegate: stageComponent
-                targetStage:   modelData
-            }
-        }
-
         Row
         {
             id: topBar
@@ -56,15 +45,12 @@ Background
             }
         }
 
-        Stage
+        Stage2
         {
             id: pipeline
 
-            anchors.left:    parent.left
-            anchors.top:     parent.top
-            anchors.margins: Ui.style.pipelinePadding
-            stageDelegate:   stageComponent
-            targetStage:     'Viewer'
+            x: 50
+            y: 50
         }
     }
 
