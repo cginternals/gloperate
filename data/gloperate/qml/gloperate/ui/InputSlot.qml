@@ -5,7 +5,7 @@ import gloperate.ui 1.0
 
 
 /**
-*  Slot
+*  InputSlot
 *
 *  Representation of an input slot
 */

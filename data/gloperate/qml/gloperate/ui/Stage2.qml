@@ -21,7 +21,32 @@ BaseItem
     implicitWidth:  Math.max(connectors.implicitWidth, body.implicitWidth + radius)
     implicitHeight: connectors.implicitHeight + title.implicitHeight + Ui.style.paddingLarge
 
+    property real nx: x + inputs.children[0].mapToItem(item, 0, 0).x
+    property real ny: y + inputs.children[0].mapToItem(item, 0, 0).y
+
     Drag.active: mouseArea.drag.active
+
+    function getInputPos(index, x, y)
+    {
+        var inputSlot = inputs.children[index];
+
+        var pos = inputSlot.mapToItem(item, x, y);
+        pos.x -= inputSlot.radius / 8.0;
+        pos.y += inputSlot.radius / 2.0;
+
+        return pos;
+    }
+
+    function getOutputPos(index, x, y)
+    {
+        var outputSlot = outputs.children[index];
+
+        var pos = outputSlot.mapToItem(item, x, y);
+        pos.x += outputSlot.width;
+        pos.y += outputSlot.radius / 2.0;
+
+        return pos;
+    }
 
     Rectangle
     {
@@ -50,6 +75,7 @@ BaseItem
 
             radius: body.radius
             color:  Ui.style.pipelineTitleColor
+            clip:   true
 
             Rectangle
             {

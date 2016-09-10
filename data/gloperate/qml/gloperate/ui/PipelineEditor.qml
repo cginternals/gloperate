@@ -21,8 +21,38 @@ Background
         id: scrollArea
 
         anchors.fill:  parent
-        contentWidth:  pipeline.width  + 2 * pipeline.anchors.margins
-        contentHeight: pipeline.height + 2 * pipeline.anchors.margins
+        contentWidth:  1000
+        contentHeight: 1000
+
+        Connector
+        {
+            anchors.fill: parent
+
+            x0: stage1.getOutputPos(0, stage1.x, stage1.y).x
+            y0: stage1.getOutputPos(0, stage1.x, stage1.y).y
+            x1: stage2.getInputPos (0, stage2.x, stage2.y).x
+            y1: stage2.getInputPos (0, stage2.x, stage2.y).y
+        }
+
+        Connector
+        {
+            anchors.fill: parent
+
+            x0: stage1.getOutputPos(1, stage1.x, stage1.y).x
+            y0: stage1.getOutputPos(1, stage1.x, stage1.y).y
+            x1: stage2.getInputPos (3, stage2.x, stage2.y).x
+            y1: stage2.getInputPos (3, stage2.x, stage2.y).y
+        }
+
+        Connector
+        {
+            anchors.fill: parent
+
+            x0: stage1.getOutputPos(2, stage1.x, stage1.y).x
+            y0: stage1.getOutputPos(2, stage1.x, stage1.y).y
+            x1: stage2.getInputPos (1, stage2.x, stage2.y).x
+            y1: stage2.getInputPos (1, stage2.x, stage2.y).y
+        }
 
         Row
         {
@@ -40,17 +70,25 @@ Background
 
                 onClicked:
                 {
-                    pipeline.update();
+                    // pipeline.update();
                 }
             }
         }
 
         Stage2
         {
-            id: pipeline
+            id: stage1
 
-            x: 50
-            y: 50
+            x:  50
+            y: 100
+        }
+
+        Stage2
+        {
+            id: stage2
+
+            x: 500
+            y: 100
         }
     }
 
