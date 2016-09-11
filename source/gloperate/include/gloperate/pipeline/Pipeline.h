@@ -142,6 +142,11 @@ protected:
 
 
 protected:
+    // Scripting functions
+    virtual cppexpose::Variant scr_getDescription() override;
+
+
+protected:
     std::vector<Stage *>                     m_stages;    ///< List of topologically sorted stages in the pipeline
     std::unordered_map<std::string, Stage *> m_stagesMap; ///< Map of names -> stages
     bool                                     m_sorted;    ///< Have the stages of the pipeline already been sorted?

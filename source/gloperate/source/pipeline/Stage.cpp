@@ -5,12 +5,15 @@
 
 #include <cppassist/logging/logging.h>
 
+#include <cppexpose/variant/Variant.h>
+
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractDataSlot.h>
 
 
 using namespace cppassist;
+using namespace cppexpose;
 
 
 namespace gloperate
@@ -22,6 +25,8 @@ Stage::Stage(Environment * environment, const std::string & name)
 , m_environment(environment)
 , m_alwaysProcess(false)
 {
+    // Register functions
+    addFunction("getDescription", this, &Stage::scr_getDescription);
 }
 
 Stage::~Stage()
@@ -386,6 +391,57 @@ void Stage::onOutputRequiredChanged(AbstractSlot *)
     {
         input->setRequired(required);
     }
+}
+
+cppexpose::Variant Stage::scr_getDescription()
+{
+    Variant obj = Variant::map();
+
+    // Get name
+    (*obj.asMap())["name"] = name();
+
+    // List parameters
+    Variant parameters = Variant::array();
+
+    for (auto param : m_parameters)
+    {
+        parameters.asArray()->push_back(param->name());
+    }
+
+    (*obj.asMap())["parameters"] = parameters;
+
+    // List inputs
+    Variant inputs = Variant::array();
+
+    for (auto input : m_inputs)
+    {
+        inputs.asArray()->push_back(input->name());
+    }
+
+    (*obj.asMap())["inputs"] = inputs;
+
+    // List outputs
+    Variant outputs = Variant::array();
+
+    for (auto output : m_outputs)
+    {
+        outputs.asArray()->push_back(output->name());
+    }
+
+    (*obj.asMap())["outputs"] = outputs;
+
+    // List proxy outputs
+    Variant proxyOutputs = Variant::array();
+
+    for (auto proxy : m_proxyOutputs)
+    {
+        proxyOutputs.asArray()->push_back(proxy->name());
+    }
+
+    (*obj.asMap())["proxyOutputs"] = proxyOutputs;
+
+    // Return stage description
+    return obj;
 }
 
 

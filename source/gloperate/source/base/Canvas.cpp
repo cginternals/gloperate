@@ -21,8 +21,8 @@ Canvas::Canvas(Environment * environment)
 : AbstractCanvas(environment)
 , m_pipelineContainer(environment)
 , m_frame(0)
-, m_mouseDevice(new MouseDevice(m_environment->inputManager(), "Canvas"))
-, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), "Canvas"))
+, m_mouseDevice(new MouseDevice(m_environment->inputManager(), m_name))
+, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), m_name))
 {
     // Mark render output as required and redraw when it is invalidated
     m_pipelineContainer.rendered.setRequired(true);
@@ -32,6 +32,8 @@ Canvas::Canvas(Environment * environment)
             this->redraw();
         }
     });
+
+    addProperty(&m_pipelineContainer);
 }
 
 Canvas::~Canvas()

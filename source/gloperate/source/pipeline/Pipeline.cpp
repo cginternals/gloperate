@@ -4,10 +4,13 @@
 #include <vector>
 #include <set>
 
+#include <cppexpose/variant/Variant.h>
+
 #include <cppassist/logging/logging.h>
 
 
 using namespace cppassist;
+using namespace cppexpose;
 
 
 namespace gloperate
@@ -186,6 +189,25 @@ void Pipeline::onInputValueChanged(AbstractSlot *)
 void Pipeline::onOutputRequiredChanged(AbstractSlot *)
 {
     // Not necessary for pipelines (handled by inner connections)
+}
+
+cppexpose::Variant Pipeline::scr_getDescription()
+{
+    // Get stage description
+    cppexpose::Variant obj = Stage::scr_getDescription();
+
+    // List stages
+    Variant stages = Variant::array();
+
+    for (auto stage : m_stages)
+    {
+        stages.asArray()->push_back(stage->name());
+    }
+
+    (*obj.asMap())["stages"] = stages;
+
+    // Return pipeline description
+    return obj;
 }
 
 

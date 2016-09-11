@@ -588,6 +588,11 @@ protected:
 
 
 protected:
+    // Scripting functions
+    virtual cppexpose::Variant scr_getDescription();
+
+
+protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
 
