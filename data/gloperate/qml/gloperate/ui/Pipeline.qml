@@ -68,7 +68,7 @@ BaseItem
         var plDesc = pl.getDescription();
 
         // Add stages
-        var x =  50;
+        var x = 200;
         var y = 150;
 
         for (var i in plDesc.stages)
@@ -84,6 +84,10 @@ BaseItem
 
             x += stage.width + 20;
         }
+
+        // Add pseudo stages for inputs and outputs of the pipeline itself
+        addInputStage (pipeline.path, 'Inputs',    20, 150);
+        addOutputStage(pipeline.path, 'Outputs', 1600, 150);
 
         // Do the layout
         computeLayout();
@@ -105,6 +109,60 @@ BaseItem
         stageItems = {};
     }
 
+    function addInputStage(path, name, x, y)
+    {
+        // Create item for stage
+        var item = stageComponent.createObject(
+            stages,
+            {
+                pipeline:       pipeline,
+                x:              x || 100,
+                y:              y || 100,
+                name:           name,
+                color:          Ui.style.pipelineTitleColor2,
+                includeInputs:  true,
+                includeOutputs: false,
+                inverse:        true
+            }
+        );
+
+        // Load stage
+        item.path = path;
+
+        // Add to item cache
+        stageItems[name] = item;
+
+        // Return item
+        return item;
+    }
+
+    function addOutputStage(path, name, x, y)
+    {
+        // Create item for stage
+        var item = stageComponent.createObject(
+            stages,
+            {
+                pipeline:       pipeline,
+                x:              x || 100,
+                y:              y || 100,
+                name:           name,
+                color:          Ui.style.pipelineTitleColor2,
+                includeInputs:  false,
+                includeOutputs: true,
+                inverse:        true
+            }
+        );
+
+        // Load stage
+        item.path = path;
+
+        // Add to item cache
+        stageItems[name] = item;
+
+        // Return item
+        return item;
+    }
+
     function addStage(path, name, x, y)
     {
         // Create item for stage
@@ -112,12 +170,13 @@ BaseItem
             stages,
             {
                 pipeline: pipeline,
-                x: x || 100,
-                y: y || 100,
-                name: name || 'Stage'
+                x:        x || 100,
+                y:        y || 100,
+                name:     name || 'Stage'
             }
         );
 
+        // Load stage
         item.path = path;
 
         // Add to item cache
@@ -176,7 +235,26 @@ BaseItem
             {
                 var slotName = names[0];
 
-                // [TODO]
+                // Get stage
+                var inputsItem  = stageItems['Inputs'];
+                var outputsItem = stageItems['Outputs'];
+
+                if (inputsItem && outputsItem)
+                {
+                    var pos = inputsItem.getSlotPos(slotName, type);
+
+                    if (pos)
+                    {
+                        return inputsItem.mapToItem(pipeline, pos.x, pos.y);
+                    }
+
+                    pos = outputsItem.getSlotPos(slotName, type);
+
+                    if (pos)
+                    {
+                        return outputsItem.mapToItem(pipeline, pos.x, pos.y);
+                    }
+                }
             }
         }
 

@@ -38,13 +38,22 @@ Item
             var pl     = pipeline.getStage(pipeline.path);
             var plDesc = pl.getDescription();
 
-            // Get stages
+            // Get all stages of the pipeline and the pipeline itself
+            var stages = [];
+
             for (var i in plDesc.stages)
             {
-                var name = plDesc.stages[i];
+                var st = pl[ plDesc.stages[i] ];
+                stages.push(st);
+            }
 
+            stages.push(pl);
+
+            // Get connectors
+            for (var i in stages)
+            {
                 // Get stage
-                var st     = pl[name];
+                var st     = stages[i];
                 var stDesc = st.getDescription();
 
                 // Get connections of the stage
@@ -57,7 +66,7 @@ Item
                     var to   = connection.to;
 
                     var p0 = pipeline.getSlotPos(from, 'output');
-                    var p1 = pipeline.getSlotPos(to, 'input');
+                    var p1 = pipeline.getSlotPos(to,   'input');
 
                     if (p0 != null && p1 != null)
                     {

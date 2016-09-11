@@ -17,8 +17,13 @@ BaseItem
 
     property string path: '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.DemoStage')
 
+    property bool includeInputs:  true
+    property bool includeOutputs: true
+    property bool inverse:        false
+
     property string name:    'Stage'
     property int    radius:  Ui.style.pipelineConnectorSize
+    property color  color:   Ui.style.pipelineTitleColor
 
     property Item pipeline:  null
     property var  slotItems: null ///< Item cache
@@ -54,7 +59,7 @@ BaseItem
             implicitHeight:  label.implicitHeight + 2 * label.anchors.margins
 
             radius: body.radius
-            color:  Ui.style.pipelineTitleColor
+            color:  item.color
             clip:   true
 
             Rectangle
@@ -167,36 +172,48 @@ BaseItem
         var stage     = pipeline.getStage(path);
         var stageDesc = stage.getDescription();
 
-        // Add parameters
-        for (var i in stageDesc.parameters)
+        if (includeInputs)
         {
-            var paramName = stageDesc.parameters[i];
-            var slotItem = inputSlotComponent.createObject(inputs, { name: paramName || 'Parameter', color: Ui.style.pipelineConnectorColorParam });
-            slotItems[paramName] = slotItem;
+            var component  = inverse ? outputSlotComponent : inputSlotComponent;
+            var parentItem = inverse ? outputs : inputs;
+
+            // Add parameters
+            for (var i in stageDesc.parameters)
+            {
+                var paramName = stageDesc.parameters[i];
+                var slotItem = component.createObject(parentItem, { name: paramName || 'Parameter', color: Ui.style.pipelineConnectorColorParam });
+                slotItems[paramName] = slotItem;
+            }
+
+            // Add inputs
+            for (var i in stageDesc.inputs)
+            {
+                var inputName = stageDesc.inputs[i];
+                var slotItem = component.createObject(parentItem, { name: inputName || 'Input' });
+                slotItems[inputName] = slotItem;
+            }
         }
 
-        // Add inputs
-        for (var i in stageDesc.inputs)
+        if (includeOutputs)
         {
-            var inputName = stageDesc.inputs[i];
-            var slotItem = inputSlotComponent.createObject(inputs, { name: inputName || 'Input' });
-            slotItems[inputName] = slotItem;
-        }
+            var component  = inverse ? inputSlotComponent : outputSlotComponent;
+            var parentItem = inverse ? inputs : outputs;
 
-        // Add outputs
-        for (var i in stageDesc.outputs)
-        {
-            var outputName = stageDesc.outputs[i];
-            var slotItem = outputSlotComponent.createObject(outputs, { name: outputName || 'Output' });
-            slotItems[outputName] = slotItem;
-        }
+            // Add outputs
+            for (var i in stageDesc.outputs)
+            {
+                var outputName = stageDesc.outputs[i];
+                var slotItem = component.createObject(parentItem, { name: outputName || 'Output' });
+                slotItems[outputName] = slotItem;
+            }
 
-        // Add proxy outputs
-        for (var i in stageDesc.proxyOutputs)
-        {
-            var proxyName = stageDesc.proxyOutputs[i];
-            var slotItem = outputSlotComponent.createObject(outputs, { name: proxyName || 'Output' });
-            slotItems[proxyName] = slotItem;
+            // Add proxy outputs
+            for (var i in stageDesc.proxyOutputs)
+            {
+                var proxyName = stageDesc.proxyOutputs[i];
+                var slotItem = component.createObject(parentItem, { name: proxyName || 'Output' });
+                slotItems[proxyName] = slotItem;
+            }
         }
     }
 

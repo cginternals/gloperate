@@ -449,17 +449,16 @@ cppexpose::Variant Stage::scr_getConnections()
 {
     Variant obj = Variant::array();
 
-    // List connections
-    for (auto input : m_inputs)
+    auto addInputSlot = [&obj, this] (AbstractInputSlot * slot)
     {
-        // Check if input is connected
-        if (input->isConnected())
+        // Check if slot is connected
+        if (slot->isConnected())
         {
             // Get connection info
-            std::string from = input->source()->qualifiedName();
+            std::string from = slot->source()->qualifiedName();
             if (from.substr(0, 9) == "pipeline.") from = from.substr(9);
 
-            std::string to = input->qualifiedName();
+            std::string to = slot->qualifiedName();
             if (to.substr(0, 9) == "pipeline.") to = to.substr(9);
 
             // Describe connection
@@ -470,6 +469,17 @@ cppexpose::Variant Stage::scr_getConnections()
             // Add connection
             obj.asArray()->push_back(connection);
         }
+    };
+
+    // List connections
+    for (auto input : m_inputs)
+    {
+        addInputSlot(input);
+    }
+
+    for (auto proxy : m_proxyOutputs)
+    {
+        addInputSlot(proxy);
     }
 
     // Return connections

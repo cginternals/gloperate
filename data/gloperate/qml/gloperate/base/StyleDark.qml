@@ -140,6 +140,7 @@ Item
     property color pipelineStageColor:          '#b6bfc8'        // Background color of stages
     property int   pipelineStageRadius:         4                // Radius of stage rectangle
     property color pipelineTitleColor:          '#4f9e71'        // Background color of stage titles
+    property color pipelineTitleColor2:         '#fdca00'        // Background color of stage titles
     property color pipelineTextColor:           '#000000'        // Color of texts in stages
     property color pipelineTitleTextColor:      '#ffffff'        // Color of values in stages
     property color pipelineLineColor:           '#000000'        // Color of lines, connections, etc.
