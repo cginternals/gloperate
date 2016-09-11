@@ -21,42 +21,13 @@ Background
         id: scrollArea
 
         anchors.fill:  parent
-        contentWidth:  1000
-        contentHeight: 1000
 
-        Connector
-        {
-            anchors.fill: parent
-
-            x0: stage1.getOutputPos(0, stage1.x, stage1.y).x
-            y0: stage1.getOutputPos(0, stage1.x, stage1.y).y
-            x1: stage2.getInputPos (0, stage2.x, stage2.y).x
-            y1: stage2.getInputPos (0, stage2.x, stage2.y).y
-        }
-
-        Connector
-        {
-            anchors.fill: parent
-
-            x0: stage1.getOutputPos(1, stage1.x, stage1.y).x
-            y0: stage1.getOutputPos(1, stage1.x, stage1.y).y
-            x1: stage2.getInputPos (3, stage2.x, stage2.y).x
-            y1: stage2.getInputPos (3, stage2.x, stage2.y).y
-        }
-
-        Connector
-        {
-            anchors.fill: parent
-
-            x0: stage1.getOutputPos(2, stage1.x, stage1.y).x
-            y0: stage1.getOutputPos(2, stage1.x, stage1.y).y
-            x1: stage2.getInputPos (1, stage2.x, stage2.y).x
-            y1: stage2.getInputPos (1, stage2.x, stage2.y).y
-        }
+        contentWidth:  pipeline.width
+        contentHeight: pipeline.height + menuBar.height
 
         Row
         {
-            id: topBar
+            id: menuBar
 
             anchors.top:     parent.top
             anchors.left:    parent.left
@@ -73,51 +44,46 @@ Background
                     // pipeline.update();
                 }
             }
+
+            Button
+            {
+                icon: '0267-plus.png'
+                text: 'Add Stage'
+
+                onClicked:
+                {
+                    pipeline.addStage();
+                }
+            }
+
+            Button
+            {
+                icon: '0270-cancel-circle.png'
+                text: 'Clear stages'
+
+                onClicked:
+                {
+                    pipeline.clear();
+                }
+            }
         }
 
-        Stage2
+        Pipeline
         {
-            id: stage1
+            id: pipeline
 
-            x:  50
-            y: 100
-        }
-
-        Stage2
-        {
-            id: stage2
-
-            x: 500
-            y: 100
+            anchors.top:  menuBar.bottom
+            anchors.left: parent.left
         }
     }
 
     Component.onCompleted:
     {
-        /*
-        gloperate.pipeline.registerWatcher(function()
-        {
-            // [TODO]
-            // Update only the item that has been changed
-        });
-        */
-    }
+        // Get pipeline container
+        var pipelineContainer = gloperate.canvas0.pipeline;
 
-    // [TODO] After a while, this crashes (the faster, the sooner)
-    //        Check if this happens also with qml-only operations,
-    //        or if something in e.g. the qml-cppexpose-bridge
-    //        causes a memory leak
-    /*
-    Timer
-    {
-        interval: 200
-        running:  true
-        repeat:   true
-
-        onTriggered:
-        {
-            pipeline.update();
-        }
+        // Load root pipeline
+        var pipelineName = pipelineContainer.getDescription().stages[0];
+        pipeline.load(pipelineName);
     }
-    */
 }

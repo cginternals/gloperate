@@ -1,6 +1,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
+
 import gloperate.base 1.0
 import gloperate.ui 1.0
 
@@ -14,229 +15,213 @@ BaseItem
 {
     id: item
 
-    property Component stageDelegate: null
-    property string    targetStage:   ''
+    property string name:    'Stage'
+    property int    radius:  Ui.style.pipelineConnectorSize
 
-    property string name: ''
-    property var inputs:  []
-    property var outputs: []
+    implicitWidth:  Math.max(connectors.implicitWidth, body.implicitWidth + radius)
+    implicitHeight: connectors.implicitHeight + title.implicitHeight + Ui.style.paddingLarge
 
-    implicitWidth:  inputs.implicitWidth + outputs.implicitWidth + pipeline.implicitWidth + 2 * Ui.style.panelPadding
-    implicitHeight: label.implicitHeight + Math.max(Math.max(inputs.implicitHeight, outputs.implicitHeight), pipeline.implicitHeight) + 6 * Ui.style.panelPadding
-
-    clip: true
+    Drag.active: mouseArea.drag.active
 
     Rectangle
     {
         id: body
 
-        anchors.top:     parent.top
-        anchors.bottom:  parent.bottom
-        anchors.left:    inputs.horizontalCenter
-        anchors.right:   outputs.horizontalCenter
-        anchors.margins: Ui.style.panelPadding
+        anchors.fill:        parent
+        anchors.leftMargin:  item.radius / 2
+        anchors.rightMargin: item.radius / 2
+        implicitWidth:       title.implicitWidth + 2 * title.anchors.margins
 
         color:        Ui.style.pipelineStageColor
-        radius:       Ui.style.pipelineStageRadius
         border.color: Ui.style.pipelineLineColor
         border.width: Ui.style.pipelineLineWidth
+        radius:       Ui.style.pipelineStageRadius
 
-        z: 0
-    }
-
-    Label
-    {
-        id: label
-
-        anchors.horizontalCenter: body.horizontalCenter
-        anchors.top:              body.top
-        anchors.topMargin:        Ui.style.panelPadding
-
-        text:  item.name
-        color: Ui.style.pipelineTextColor
-
-        z: 1
-    }
-
-    ColumnLayout
-    {
-        id: inputs
-
-        anchors.top:       label.bottom
-        anchors.left:      parent.left
-        anchors.topMargin: Ui.style.panelPadding
-
-        spacing: Ui.style.ctrlSpacing
-
-        z: 1
-
-        Repeater
+        Rectangle
         {
-            id: inputsRepeater
+            id: title
 
-            model: item.inputs
+            anchors.top:     parent.top
+            anchors.left:    parent.left
+            anchors.right:   parent.right
+            anchors.margins: body.border.width
+            implicitWidth:   label.implicitWidth  + 2 * label.anchors.margins
+            implicitHeight:  label.implicitHeight + 2 * label.anchors.margins
 
-            delegate: EditableSlot
+            radius: body.radius
+            color:  Ui.style.pipelineTitleColor
+            clip:   true
+
+            Rectangle
             {
-                Layout.fillWidth: true
+                anchors.left:   parent.left
+                anchors.right:  parent.right
+                anchors.bottom: parent.bottom
+                height:         parent.height / 2
+                color:          parent.color
+            }
 
-                name:      item.inputs[index].name
-                value:     item.inputs[index].value
-                switched:  true
-                hasInput:  !item.inputs[index].hasOwnData
-                hasOutput: true
-                showValue: item.inputs[index].hasOwnData
-                valid:     item.inputs[index].valid
-                required:  item.inputs[index].required
+            Label
+            {
+                id: label
 
-                onValueEdited:
-                {
-                    var source = item.targetStage + '.' + name;
-                    gloperate.pipeline.setValue(source, value);
+                anchors.fill:    parent
+                anchors.margins: Ui.style.paddingMedium
 
-                    item.update();
-                }
+                text:  item.name
+                color: Ui.style.pipelineTitleTextColor
+            }
+
+            MouseArea
+            {
+                id: mouseArea
+
+                anchors.fill: parent
+
+                acceptedButtons: Qt.LeftButton
+                drag.target:     item
             }
         }
     }
 
     Item
     {
-        id: pipeline
+        id: connectors
 
-        anchors.left:    inputs.right
-        anchors.top:     label.bottom
-        anchors.margins: Ui.style.panelPadding
-        implicitWidth:   Math.max(realPipeline.implicitWidth,  label.implicitWidth)
-        implicitHeight:  Math.max(realPipeline.implicitHeight, label.implicitHeight)
+        anchors.left:   parent.left
+        anchors.right:  parent.right
+        anchors.bottom: parent.bottom
+        implicitWidth:  inputs.implicitWidth + Ui.style.paddingLarge + outputs.implicitWidth
+        implicitHeight: Math.max(inputs.implicitHeight, outputs.implicitHeight) + Ui.style.paddingLarge
 
-        Pipeline
+        Column
         {
-            id: realPipeline
+            id: inputs
 
-            anchors.fill: parent
+            anchors.left: parent.left
+            spacing:      Ui.style.paddingSmall
+        }
 
-            stageDelegate: item.stageDelegate
-            targetStage:   item.targetStage
+        Column
+        {
+            id: outputs
+
+            anchors.right: parent.right
+            spacing:       Ui.style.paddingSmall
         }
     }
 
-    ColumnLayout
+    /**
+    *  Component that contains the template for an input slot
+    */
+    property Component inputSlotComponent: InputSlot
     {
-        id: outputs
+    }
 
-        anchors.top:     label.bottom
-        anchors.left:    pipeline.right
-        anchors.margins: Ui.style.panelPadding
+    /**
+    *  Component that contains the template for an output slot
+    */
+    property Component outputSlotComponent: OutputSlot
+    {
+    }
 
-        z:       1
-        spacing: Ui.style.ctrlSpacing
-
-        Repeater
+    /**
+    *  Clear stage
+    */
+    function clear()
+    {
+        // Destroy all inputs
+        for (var i in inputs.children)
         {
-            id: outputsRepeater
+            var slot = inputs.children[i];
+            slot.destroy();
+        }
 
-            model: item.outputs
-
-            delegate: Slot
-            {
-                Layout.fillWidth: true
-
-                name:      item.outputs[index].name
-                value:     item.outputs[index].value
-                hasInput:  !item.outputs[index].hasOwnData
-                hasOutput: true
-                showValue: item.outputs[index].hasOwnData
-                valid:     item.outputs[index].valid
-                required:  item.outputs[index].required
-
-                onClicked:
-                {
-                    var source = item.targetStage + '.' + name;
-                    gloperate.pipeline.setRequired(source, !required);
-
-                    item.update();
-                }
-            }
+        // Destroy all outputs
+        for (var i in outputs.children)
+        {
+            var slot = outputs.children[i];
+            slot.destroy();
         }
     }
 
-    onTargetStageChanged:
+    /**
+    *  Load stage from pipeline viewer
+    *
+    *  @param[in] path
+    *    Path in the pipeline hierarchy (e.g., 'DemoPipeline.SubPipeline')
+    */
+    function load(path)
     {
-        update();
+        // Get pipeline container
+        var pipelineContainer = gloperate.canvas0.pipeline;
+
+        // Get stage
+        var stage     = getStage(path);
+        var stageDesc = stage.getDescription();
+
+        // Add parameters
+        for (var i in stageDesc.parameters)
+        {
+            var paramName = stageDesc.parameters[i];
+            inputSlotComponent.createObject(inputs, { text: paramName || 'Parameter', color: Ui.style.pipelineConnectorColorParam });
+        }
+
+        // Add inputs
+        for (var i in stageDesc.inputs)
+        {
+            var inputName = stageDesc.inputs[i];
+            inputSlotComponent.createObject(inputs, { text: inputName || 'Input' });
+        }
+
+        // Add outputs
+        for (var i in stageDesc.outputs)
+        {
+            var outputName = stageDesc.outputs[i];
+            outputSlotComponent.createObject(outputs, { text: outputName || 'Output' });
+        }
+
+        // Add proxy outputs
+        for (var i in stageDesc.proxyOutputs)
+        {
+            var proxyName = stageDesc.proxyOutputs[i];
+            outputSlotComponent.createObject(outputs, { text: proxyName || 'Output' });
+        }
     }
 
-    function update()
+    function getInputPos(index, x, y)
     {
-        // Update stage name
-        item.name = gloperate.pipeline.getName(item.targetStage);
+        var inputSlot = inputs.children[index];
 
-        // List inputs
-        var inputs = [];
+        var pos = inputSlot.mapToItem(item, x, y);
+        pos.x -= inputSlot.radius / 8.0;
+        pos.y += inputSlot.radius / 2.0;
 
-        var inputNames = gloperate.pipeline.getInputs(item.targetStage);
-        for (var i=0; i<inputNames.length; i++)
+        return pos;
+    }
+
+    function getOutputPos(index, x, y)
+    {
+        var outputSlot = outputs.children[index];
+
+        var pos = outputSlot.mapToItem(item, x, y);
+        pos.x += outputSlot.width;
+        pos.y += outputSlot.radius / 2.0;
+
+        return pos;
+    }
+
+    function getStage(path)
+    {
+        var stage = gloperate.canvas0.pipeline;
+
+        var names = path.split('.');
+        for (var i=0; i<names.length; i++)
         {
-            var name = inputNames[i];
-
-            inputs.push({
-                name:       name,
-                value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
-                valid:      gloperate.pipeline.isValid(item.targetStage + '.' + name),
-                required:   gloperate.pipeline.isRequired(item.targetStage + '.' + name),
-                hasOwnData: false
-            });
+            var name = names[i];
+            stage = stage[name];
         }
 
-        var parameterNames = gloperate.pipeline.getParameters(item.targetStage);
-        for (var i=0; i<parameterNames.length; i++)
-        {
-            var name = parameterNames[i];
-
-            inputs.push({
-                name:       name,
-                value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
-                valid:      gloperate.pipeline.isValid(item.targetStage + '.' + name),
-                required:   gloperate.pipeline.isRequired(item.targetStage + '.' + name),
-                hasOwnData: true
-            });
-        }
-
-        item.inputs = inputs;
-
-        // List outputs
-        var outputs = [];
-
-        var outputNames = gloperate.pipeline.getOutputs(item.targetStage);
-        for (var i=0; i<outputNames.length; i++)
-        {
-            var name = outputNames[i];
-
-            outputs.push({
-                name:       name,
-                value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
-                valid:      gloperate.pipeline.isValid(item.targetStage + '.' + name),
-                required:   gloperate.pipeline.isRequired(item.targetStage + '.' + name),
-                hasOwnData: true
-            });
-        }
-
-        var proxyOutputNames = gloperate.pipeline.getProxyOutputs(item.targetStage);
-        for (var i=0; i<proxyOutputNames.length; i++)
-        {
-            var name = proxyOutputNames[i];
-
-            outputs.push({
-                name:       name,
-                value:      gloperate.pipeline.getValue(item.targetStage + '.' + name),
-                valid:      gloperate.pipeline.isValid(item.targetStage + '.' + name),
-                required:   gloperate.pipeline.isRequired(item.targetStage + '.' + name),
-                hasOwnData: false
-            });
-        }
-
-        item.outputs = outputs;
-
-        realPipeline.update();
+        return stage;
     }
 }

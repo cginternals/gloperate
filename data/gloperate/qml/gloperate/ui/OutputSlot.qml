@@ -22,6 +22,8 @@ BaseItem
     property color borderColor: Ui.style.pipelineLineColor
     property int   borderWidth: Ui.style.pipelineLineWidth
 
+    anchors.right: parent.right
+
     Row
     {
         id: row
@@ -36,7 +38,8 @@ BaseItem
 
             anchors.verticalCenter: parent.verticalCenter
 
-            text: 'Value'
+            text:  'Value'
+            color: Ui.style.pipelineTextColor
         }
 
         Rectangle

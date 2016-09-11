@@ -1,6 +1,6 @@
 
 import QtQuick 2.0
-import QtQuick.Layouts 1.0
+
 import gloperate.base 1.0
 import gloperate.ui 1.0
 
@@ -14,53 +14,106 @@ BaseItem
 {
     id: item
 
-    property Component stageDelegate: null
-    property string    targetStage:   ''
+    width:  childrenRect.x + childrenRect.width
+    height: childrenRect.y + childrenRect.height
 
-    implicitWidth:  row.width  + 2 * row.anchors.margins
-    implicitHeight: row.height + 2 * row.anchors.margins
-
-    Row
+/*
+    Connector
     {
-        id: row
+        anchors.fill: parent
 
-        anchors.left:    parent.left
-        anchors.top:     parent.top
-        anchors.margins: Ui.style.pipelinePadding
+        x0: stage1.getOutputPos(0, stage1.x, stage1.y).x
+        y0: stage1.getOutputPos(0, stage1.x, stage1.y).y
+        x1: stage2.getInputPos (0, stage2.x, stage2.y).x
+        y1: stage2.getInputPos (0, stage2.x, stage2.y).y
+    }
+*/
 
-        spacing: 32
+    /**
+    *  Component that contains the template for a stage
+    */
+    property Component stageComponent: Stage
+    {
+    }
 
-        Repeater
+    /**
+    *  Add new stage
+    */
+    function addStage(name, x, y)
+    {
+        return stageComponent.createObject(item, { x: x || 100, y: y || 100, name: name || 'Stage' });
+    }
+
+    /**
+    *  Clear pipeline
+    */
+    function clear()
+    {
+        // Destroy all stages
+        for (var i in item.children)
         {
-            id: repeater
-
-            delegate: stageDelegate
+            var stage = item.children[i];
+            stage.destroy();
         }
     }
 
-    onTargetStageChanged:
+    /**
+    *  Load pipeline from pipeline viewer
+    *
+    *  @param[in] path
+    *    Path in the pipeline hierarchy (e.g., 'DemoPipeline.SubPipeline')
+    */
+    function load(path)
     {
-        update();
+        // Clear old pipeline
+        clear();
+
+        // Get pipeline container
+        var pipelineContainer = gloperate.canvas0.pipeline;
+
+        // Get pipeline
+        var pipeline     = getStage(path);
+        var pipelineDesc = pipeline.getDescription();
+
+        // Add stages
+        var x =  50;
+        var y = 150;
+
+        for (var i in pipelineDesc.stages)
+        {
+            var stageName = pipelineDesc.stages[i];
+
+            // Get stage
+            var stage = pipeline[stageName];
+            var stageDesc = stage.getDescription();
+
+            // Create stage in editor
+            var item = addStage(stageName, x, y);
+            item.load(path + '.' + stageName);
+
+            x += item.width + 20;
+        }
+
+        // Do the layout
+        computeLayout();
     }
 
-    function update()
+    function computeLayout()
     {
-        var lst = [];
+        // [TODO]
+    }
 
-        var stages = gloperate.pipeline.getStages(item.targetStage);
-        for (var i=0; i<stages.length; i++) {
-            var stage = stages[i];
-            if (item.targetStage.length > 0) {
-                stage = item.targetStage + '.' + stage;
-            }
+    function getStage(path)
+    {
+        var stage = gloperate.canvas0.pipeline;
 
-            lst.push(stage);
+        var names = path.split('.');
+        for (var i=0; i<names.length; i++)
+        {
+            var name = names[i];
+            stage = stage[name];
         }
 
-        repeater.model = lst;
-
-        for (var i=0; i<row.children.length; i++) {
-            row.children[i].update();
-        }
+        return stage;
     }
 }

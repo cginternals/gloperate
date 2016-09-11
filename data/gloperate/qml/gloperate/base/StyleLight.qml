@@ -139,22 +139,23 @@ Item
     property real  formControlHeight:          formHeight       // Height of form controls (e.g., input fields)
 
     // Pipeline editor
-    property color pipelineStageColor:         '#b6bfc8'        // Background color of stages
-    property int   pipelineStageRadius:        4                // Radius of stage rectangle
-    property color pipelineTitleColor:         '#4f9e71'        // Background color of stage titles
-    property color pipelineTextColor:          primaryColor     // Color of texts in stages
-    property color pipelineSecondaryTextColor: secondaryColor   // Color of values in stages
-    property color pipelineLineColor:          primaryColor     // Color of lines, connections, etc.
-    property int   pipelineLineWidth:          borderWidth      // Width of lines
-    property color pipelineSlotColor:          panelColor       // Background color of slots
-    property color pipelineSlotInvalidColor:   '#ff8888'        // Background color of invalid slots
-    property color pipelineSlotRequiredColor:  '#00ff00'        // Line color of required slots
-    property int   pipelineSlotRequiredBorder: 2                // Border width of required slots
-    property real  pipelineSlotSize:           formHeight * 1.2 // Height of input/output slots
-    property real  pipelineConnectorSize:      formHeight * 0.8 // Diameter of connectors
-    property color pipelineConnectorColorIn:   "#cafd00"        // Color of input connectors
-    property color pipelineConnectorColorOut:  backgroundColor  // Color of output connectors
-    property real  pipelinePadding:            50               // Space between outer and inner pipelines
+    property color pipelineStageColor:          '#b6bfc8'        // Background color of stages
+    property int   pipelineStageRadius:         4                // Radius of stage rectangle
+    property color pipelineTitleColor:          '#4f9e71'        // Background color of stage titles
+    property color pipelineTextColor:           primaryColor     // Color of texts in stages
+    property color pipelineTitleTextColor:      primaryColor     // Color of values in stages
+    property color pipelineLineColor:           primaryColor     // Color of lines, connections, etc.
+    property int   pipelineLineWidth:           borderWidth      // Width of lines
+    property color pipelineSlotColor:           panelColor       // Background color of slots
+    property color pipelineSlotInvalidColor:    '#ff8888'        // Background color of invalid slots
+    property color pipelineSlotRequiredColor:   '#00ff00'        // Line color of required slots
+    property int   pipelineSlotRequiredBorder:  2                // Border width of required slots
+    property real  pipelineSlotSize:            formHeight * 1.2 // Height of input/output slots
+    property real  pipelineConnectorSize:       formHeight * 0.8 // Diameter of connectors
+    property color pipelineConnectorColorParam: "#fdca00"        // Color of parameter connectors
+    property color pipelineConnectorColorIn:    "#ffffff"        // Color of input connectors
+    property color pipelineConnectorColorOut:   "#cafd00"        // Color of output connectors
+    property real  pipelinePadding:             50               // Space between outer and inner pipelines
 
 
     //

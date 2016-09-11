@@ -50,7 +50,8 @@ BaseItem
 
             anchors.verticalCenter: parent.verticalCenter
 
-            text: 'Value'
+            text:  'Value'
+            color: Ui.style.pipelineTextColor
         }
     }
 }
