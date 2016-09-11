@@ -16,7 +16,7 @@ BaseItem
     implicitWidth:  row.implicitWidth  + 2 * row.anchors.margins
     implicitHeight: row.implicitHeight + 2 * row.anchors.margins
 
-    property alias text:        label.text
+    property alias name:        label.text
     property int   radius:      Ui.style.pipelineConnectorSize
     property color color:       Ui.style.pipelineConnectorColorOut
     property color borderColor: Ui.style.pipelineLineColor

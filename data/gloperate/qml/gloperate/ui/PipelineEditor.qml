@@ -84,6 +84,6 @@ Background
 
         // Load root pipeline
         var pipelineName = pipelineContainer.getDescription().stages[0];
-        pipeline.load(pipelineName);
+        pipeline.path = pipelineName;
     }
 }

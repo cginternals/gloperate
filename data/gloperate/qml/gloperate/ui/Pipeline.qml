@@ -12,90 +12,119 @@ import gloperate.ui 1.0
 */
 BaseItem
 {
-    id: item
+    id: pipeline
 
-    width:  childrenRect.x + childrenRect.width
-    height: childrenRect.y + childrenRect.height
+    width:  stages.width
+    height: stages.height
 
-/*
-    Connector
-    {
-        anchors.fill: parent
+    property string path: '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.SubPipeline')
 
-        x0: stage1.getOutputPos(0, stage1.x, stage1.y).x
-        y0: stage1.getOutputPos(0, stage1.x, stage1.y).y
-        x1: stage2.getInputPos (0, stage2.x, stage2.y).x
-        y1: stage2.getInputPos (0, stage2.x, stage2.y).y
-    }
-*/
+    property var stageItems: null ///< Item cache
 
     /**
     *  Component that contains the template for a stage
     */
     property Component stageComponent: Stage
     {
+        onXChanged: connectors.requestPaint();
+        onYChanged: connectors.requestPaint();
     }
 
     /**
-    *  Add new stage
+    *  Item for drawing the connectors
     */
-    function addStage(name, x, y)
+    Connectors
     {
-        return stageComponent.createObject(item, { x: x || 100, y: y || 100, name: name || 'Stage' });
+        id: connectors
+
+        width:  stages.width
+        height: stages.height
+
+        pipeline: pipeline
+        stages:   stages
     }
 
     /**
-    *  Clear pipeline
+    *  Item that contains the stages
     */
-    function clear()
+    Item
     {
-        // Destroy all stages
-        for (var i in item.children)
-        {
-            var stage = item.children[i];
-            stage.destroy();
-        }
+        id: stages
+
+        width:  childrenRect.x + childrenRect.width
+        height: childrenRect.y + childrenRect.height
     }
 
     /**
     *  Load pipeline from pipeline viewer
-    *
-    *  @param[in] path
-    *    Path in the pipeline hierarchy (e.g., 'DemoPipeline.SubPipeline')
     */
-    function load(path)
+    onPathChanged:
     {
         // Clear old pipeline
         clear();
 
-        // Get pipeline container
-        var pipelineContainer = gloperate.canvas0.pipeline;
-
         // Get pipeline
-        var pipeline     = getStage(path);
-        var pipelineDesc = pipeline.getDescription();
+        var pl     = getStage(pipeline.path);
+        var plDesc = pl.getDescription();
 
         // Add stages
         var x =  50;
         var y = 150;
 
-        for (var i in pipelineDesc.stages)
+        for (var i in plDesc.stages)
         {
-            var stageName = pipelineDesc.stages[i];
+            var name = plDesc.stages[i];
 
             // Get stage
-            var stage = pipeline[stageName];
-            var stageDesc = stage.getDescription();
+            var st     = pl[name];
+            var stDesc = st.getDescription();
 
             // Create stage in editor
-            var item = addStage(stageName, x, y);
-            item.load(path + '.' + stageName);
+            var stage = addStage(pipeline.path + '.' + name, name, x, y);
 
-            x += item.width + 20;
+            x += stage.width + 20;
         }
 
         // Do the layout
         computeLayout();
+
+        // Redraw connections
+        connectors.requestPaint();
+    }
+
+    function clear()
+    {
+        // Destroy all stages
+        for (var i=0; i<stages.children.length; i++)
+        {
+            var stage = stages.children[i];
+            stage.destroy();
+        }
+
+        // Reset item cache
+        stageItems = {};
+    }
+
+    function addStage(path, name, x, y)
+    {
+        // Create item for stage
+        var item = stageComponent.createObject(
+            stages,
+            {
+                pipeline: pipeline,
+                x: x || 100,
+                y: y || 100,
+                name: name || 'Stage'
+            }
+        );
+
+        item.path = path;
+
+        // Add to item cache
+        stageItems[name] = item;
+
+        // Return item
+        return item;
     }
 
     function computeLayout()
@@ -105,15 +134,53 @@ BaseItem
 
     function getStage(path)
     {
-        var stage = gloperate.canvas0.pipeline;
+        var st = gloperate.canvas0.pipeline;
 
         var names = path.split('.');
         for (var i=0; i<names.length; i++)
         {
             var name = names[i];
-            stage = stage[name];
+            st = st[name];
         }
 
-        return stage;
+        return st;
+    }
+
+    function getSlotPos(path, type)
+    {
+        // The path must start with the path to this pipeline, otherwise something is wrong
+        var prefix = pipeline.path + '.';
+        if (path.substr(0, prefix.length) == prefix)
+        {
+            // Get path relative to the pipeline
+            var subPath = path.substr(prefix.length);
+            var names = subPath.split('.');
+
+            // If subpath has two components, it is a slot on a stage
+            if (names.length == 2)
+            {
+                var stageName = names[0];
+                var slotName  = names[1];
+
+                // Get stage
+                var stageItem = stageItems[stageName];
+                if (stageItem)
+                {
+                    var pos = stageItem.getSlotPos(slotName, type);
+                    return stageItem.mapToItem(pipeline, pos.x, pos.y);
+                }
+            }
+
+            // If subpath has only one component, it is a slot on this pipeline
+            else if (names.length == 1)
+            {
+                var slotName = names[0];
+
+                // [TODO]
+            }
+        }
+
+        // Error in calling this function
+        return null;
     }
 }

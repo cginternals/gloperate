@@ -27,6 +27,7 @@ Stage::Stage(Environment * environment, const std::string & name)
 {
     // Register functions
     addFunction("getDescription", this, &Stage::scr_getDescription);
+    addFunction("getConnections", this, &Stage::scr_getConnections);
 }
 
 Stage::~Stage()
@@ -51,7 +52,7 @@ Environment * Stage::environment() const
 
 Pipeline * Stage::parentPipeline() const
 {
-    return static_cast<Pipeline *>(m_parent);
+    return dynamic_cast<Pipeline *>(m_parent);
 }
 
 bool Stage::requires(const Stage * stage, bool recursive) const
@@ -441,6 +442,37 @@ cppexpose::Variant Stage::scr_getDescription()
     (*obj.asMap())["proxyOutputs"] = proxyOutputs;
 
     // Return stage description
+    return obj;
+}
+
+cppexpose::Variant Stage::scr_getConnections()
+{
+    Variant obj = Variant::array();
+
+    // List connections
+    for (auto input : m_inputs)
+    {
+        // Check if input is connected
+        if (input->isConnected())
+        {
+            // Get connection info
+            std::string from = input->source()->qualifiedName();
+            if (from.substr(0, 9) == "pipeline.") from = from.substr(9);
+
+            std::string to = input->qualifiedName();
+            if (to.substr(0, 9) == "pipeline.") to = to.substr(9);
+
+            // Describe connection
+            Variant connection = Variant::map();
+            (*connection.asMap())["from"] = from;
+            (*connection.asMap())["to"]   = to;
+
+            // Add connection
+            obj.asArray()->push_back(connection);
+        }
+    }
+
+    // Return connections
     return obj;
 }
 

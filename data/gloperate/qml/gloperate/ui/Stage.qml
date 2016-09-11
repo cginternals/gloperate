@@ -15,8 +15,13 @@ BaseItem
 {
     id: item
 
+    property string path: '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.DemoStage')
+
     property string name:    'Stage'
     property int    radius:  Ui.style.pipelineConnectorSize
+
+    property Item pipeline:  null
+    property var  slotItems: null ///< Item cache
 
     implicitWidth:  Math.max(connectors.implicitWidth, body.implicitWidth + radius)
     implicitHeight: connectors.implicitHeight + title.implicitHeight + Ui.style.paddingLarge
@@ -143,85 +148,74 @@ BaseItem
             var slot = outputs.children[i];
             slot.destroy();
         }
+
+        // Reset item cache
+        slotItems = {};
     }
 
     /**
     *  Load stage from pipeline viewer
-    *
-    *  @param[in] path
-    *    Path in the pipeline hierarchy (e.g., 'DemoPipeline.SubPipeline')
     */
-    function load(path)
+    onPathChanged:
     {
+        clear();
+
         // Get pipeline container
         var pipelineContainer = gloperate.canvas0.pipeline;
 
         // Get stage
-        var stage     = getStage(path);
+        var stage     = pipeline.getStage(path);
         var stageDesc = stage.getDescription();
 
         // Add parameters
         for (var i in stageDesc.parameters)
         {
             var paramName = stageDesc.parameters[i];
-            inputSlotComponent.createObject(inputs, { text: paramName || 'Parameter', color: Ui.style.pipelineConnectorColorParam });
+            var slotItem = inputSlotComponent.createObject(inputs, { name: paramName || 'Parameter', color: Ui.style.pipelineConnectorColorParam });
+            slotItems[paramName] = slotItem;
         }
 
         // Add inputs
         for (var i in stageDesc.inputs)
         {
             var inputName = stageDesc.inputs[i];
-            inputSlotComponent.createObject(inputs, { text: inputName || 'Input' });
+            var slotItem = inputSlotComponent.createObject(inputs, { name: inputName || 'Input' });
+            slotItems[inputName] = slotItem;
         }
 
         // Add outputs
         for (var i in stageDesc.outputs)
         {
             var outputName = stageDesc.outputs[i];
-            outputSlotComponent.createObject(outputs, { text: outputName || 'Output' });
+            var slotItem = outputSlotComponent.createObject(outputs, { name: outputName || 'Output' });
+            slotItems[outputName] = slotItem;
         }
 
         // Add proxy outputs
         for (var i in stageDesc.proxyOutputs)
         {
             var proxyName = stageDesc.proxyOutputs[i];
-            outputSlotComponent.createObject(outputs, { text: proxyName || 'Output' });
+            var slotItem = outputSlotComponent.createObject(outputs, { name: proxyName || 'Output' });
+            slotItems[proxyName] = slotItem;
         }
     }
 
-    function getInputPos(index, x, y)
+    function getSlotPos(name, type)
     {
-        var inputSlot = inputs.children[index];
+        var slot = slotItems[name];
 
-        var pos = inputSlot.mapToItem(item, x, y);
-        pos.x -= inputSlot.radius / 8.0;
-        pos.y += inputSlot.radius / 2.0;
-
-        return pos;
-    }
-
-    function getOutputPos(index, x, y)
-    {
-        var outputSlot = outputs.children[index];
-
-        var pos = outputSlot.mapToItem(item, x, y);
-        pos.x += outputSlot.width;
-        pos.y += outputSlot.radius / 2.0;
-
-        return pos;
-    }
-
-    function getStage(path)
-    {
-        var stage = gloperate.canvas0.pipeline;
-
-        var names = path.split('.');
-        for (var i=0; i<names.length; i++)
+        if (slot)
         {
-            var name = names[i];
-            stage = stage[name];
+            if (type == 'input')
+            {
+                return slot.mapToItem(item, -slot.radius / 8.0, slot.radius / 2.0);
+            }
+            else if (type == 'output')
+            {
+                return slot.mapToItem(item, slot.width, slot.radius / 2.0);
+            }
         }
 
-        return stage;
+        return null;
     }
 }

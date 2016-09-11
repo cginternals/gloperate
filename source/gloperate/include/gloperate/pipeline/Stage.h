@@ -590,6 +590,7 @@ protected:
 protected:
     // Scripting functions
     virtual cppexpose::Variant scr_getDescription();
+    virtual cppexpose::Variant scr_getConnections();
 
 
 protected:
