@@ -31,7 +31,6 @@ Environment::Environment()
 , m_resourceManager(this)
 , m_timeManager(this)
 , m_system(this)
-, m_pipeline(this)
 , m_inputManager(this)
 , m_tree("tree")
 , m_scriptContext(nullptr)
@@ -40,7 +39,6 @@ Environment::Environment()
     addProperty(&m_resourceManager);
     addProperty(&m_timeManager);
     addProperty(&m_system);
-    addProperty(&m_pipeline);
     addProperty(&m_inputManager);
     addProperty(&m_tree);
 

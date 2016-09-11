@@ -40,7 +40,6 @@ set(headers
 
     ${include_path}/base/Environment.h
     ${include_path}/base/System.h
-    ${include_path}/base/PipelineApi.h
     ${include_path}/base/ComponentManager.h
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
@@ -132,7 +131,6 @@ set(sources
 
     ${source_path}/base/Environment.cpp
     ${source_path}/base/System.cpp
-    ${source_path}/base/PipelineApi.cpp
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/AbstractCanvas.cpp
