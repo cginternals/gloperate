@@ -200,6 +200,10 @@ void AbstractCanvas::render(globjects::Framebuffer * targetFBO)
     onRender(targetFBO);
 }
 
+void AbstractCanvas::onRender(globjects::Framebuffer *)
+{ 
+}
+
 void AbstractCanvas::onUpdate()
 {
 }
@@ -226,10 +230,6 @@ void AbstractCanvas::onResetViewport()
 
 void AbstractCanvas::onBackgroundColor(float, float, float)
 {
-}
-
-void AbstractCanvas::onRender(globjects::Framebuffer * /*targetFBO*/)
-{ 
 }
 
 void AbstractCanvas::onKeyPress(int, int)

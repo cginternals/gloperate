@@ -177,7 +177,19 @@ public:
     *  @param[in] targetFBO
     *    Target FBO (can be null)
     */
-    virtual void render(globjects::Framebuffer * targetFBO = nullptr);
+    void render(globjects::Framebuffer * targetFBO = nullptr);
+
+    /**
+    *  @brief
+    *    Actual render call
+    *
+    *    This function is called by the render() or image and video exporters.
+    *    Overwrite it in derived classes to perform the actual rendering.
+    *
+    *  @param[in] targetFBO
+    *    Target FBO (can be null)
+    */
+    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr);
 
     /**
     *  @brief
@@ -272,18 +284,6 @@ public:
     *    Blue color component (0..1)
     */
     virtual void onBackgroundColor(float red, float green, float blue);
-
-    /**
-    *  @brief
-    *    Actual render call
-    *
-    *    This function is called by the render() or image and video exporters.
-    *    Overwrite it in derived classes to perform the actual rendering.
-    *
-    *  @param[in] targetFBO
-    *    Target FBO (can be null)
-    */
-    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr);
 
     /**
     *  @brief

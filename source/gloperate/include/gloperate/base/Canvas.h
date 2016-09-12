@@ -70,6 +70,7 @@ public:
     void setRenderStage(Stage * stage);
 
     // Virtual AbstractCanvas functions
+    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
@@ -77,7 +78,6 @@ public:
     virtual void onSaveViewport() override;
     virtual void onResetViewport() override;
     virtual void onBackgroundColor(float red, float green, float blue) override;
-    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
     virtual void onKeyPress(int key, int modifier) override;
     virtual void onKeyRelease(int key, int modifier) override;
     virtual void onMouseMove(const glm::ivec2 & pos) override;

@@ -66,6 +66,22 @@ void Canvas::setRenderStage(Stage * stage)
     }
 }
 
+void Canvas::onRender(globjects::Framebuffer * targetFBO)
+{
+    cppassist::details() << "onRender()";
+
+    // Invoke render stage/pipeline
+    if (m_pipelineContainer.renderStage())
+    {
+        m_frame++;
+
+        m_pipelineContainer.frameCounter.setValue(m_frame);
+        m_pipelineContainer.targetFBO.setValue(targetFBO);
+
+        m_pipelineContainer.renderStage()->process(m_openGLContext);
+    }
+}
+
 void Canvas::onUpdate()
 {
     float timeDelta = m_environment->timeManager()->timeDelta();
@@ -118,22 +134,6 @@ void Canvas::onResetViewport()
 void Canvas::onBackgroundColor(float red, float green, float blue)
 {
     m_pipelineContainer.backgroundColor.setValue(glm::vec3(red, green, blue));
-}
-
-void Canvas::onRender(globjects::Framebuffer * targetFBO)
-{
-    cppassist::details() << "onRender()";
-
-    // Invoke render stage/pipeline
-    if (m_pipelineContainer.renderStage())
-    {
-        m_frame++;
-
-        m_pipelineContainer.frameCounter.setValue(m_frame);
-        m_pipelineContainer.targetFBO.setValue(targetFBO);
-
-        m_pipelineContainer.renderStage()->process(m_openGLContext);
-    }
 }
 
 void Canvas::onKeyPress(int key, int modifier)
