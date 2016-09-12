@@ -204,7 +204,7 @@ Background {
 
                 DialogButton {
                     id: asyncButton
-                    text: "Apply and Async"
+                    text: "Apply"
                     anchors.left: parent.left
 
                     icon: '0021-video-camera.png'
@@ -224,22 +224,22 @@ Background {
                         }
 
                         gloperate.canvas0.setVideoTarget(parameters, backend.editText);
-                        gloperate.canvas0.toggleVideoExport();
+                        // gloperate.canvas0.toggleVideoExport();
                         close();
                     }
                 }
 
-                DialogButton {
-                    text: "Toggle Off"
-                    anchors.left: asyncButton.right
+                // DialogButton {
+                //     text: "Toggle Off"
+                //     anchors.left: asyncButton.right
 
-                    icon: '0021-video-camera.png'
+                //     icon: '0021-video-camera.png'
 
-                    onClicked: {
-                        gloperate.canvas0.toggleVideoExport();
-                        close();
-                    }
-                }
+                //     onClicked: {
+                //         gloperate.canvas0.toggleVideoExport();
+                //         close();
+                //     }
+                // }
             }
         }
     }

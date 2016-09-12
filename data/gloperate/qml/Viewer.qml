@@ -196,6 +196,28 @@ Page
         }
     }
 
+    // (Top-left) Async video record button
+    ButtonBar
+    {
+        id: toggleVideoRecord
+
+        anchors.left:   menuLeft.right
+        anchors.top:     main.top
+        anchors.margins: Ui.style.pagePadding
+
+        visible: page.uiEnabled
+        opacity: page.uiStatus
+
+        items: [
+            { name: 'toggle', text: 'Rec', icon: '0021-video-camera.png', enabled: video.settingsApplied }
+        ];
+
+        onItemClicked: // (menu, name)
+        {
+            gloperate.canvas0.toggleVideoExport();
+        }
+    }
+
     // Top-right menu
     ButtonBar
     {
@@ -275,6 +297,7 @@ Page
         id: video
 
         property int margin: Ui.style.paddingMedium
+        property bool settingsApplied: false
 
         title:  "Video"
         width:  videoDialog.layout.implicitWidth + 20 * margin
@@ -289,6 +312,7 @@ Page
 
             onClose: {
                 video.close();
+                video.settingsApplied = true;
             }
         }
     }
