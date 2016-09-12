@@ -86,36 +86,18 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
 {
     auto width = m_parameters.at("width").toULongLong();
     auto height = m_parameters.at("height").toULongLong();
+    auto viewport = glm::vec4(0, 0, width, height);
 
     auto fps = m_parameters.at("fps").toULongLong();
-    auto viewport = glm::vec4(0, 0, width, height);
     auto length = m_parameters.at("duration").toULongLong() * fps;
     auto timeDelta = 1.f / static_cast<float>(fps);
 
-    createAndSetupGeometry();
-    createAndSetupShader();
-    createAndSetupBuffer();
-
-    m_canvas->onSaveViewport();
-    m_canvas->onViewport(viewport, viewport);
-
-    if (contextHandling == AbstractVideoExporter::ActivateContext)
-    {
-        m_canvas->openGLContext()->use();
-    }
-
-    if (!m_videoEncoder->initEncoding(m_parameters))
-    {
-        critical() << "Error in initializing video encoding.";
-        return;
-    }
+    initialize(contextHandling);
 
     for (unsigned int i = 0; i < length; ++i)
     {
         m_canvas->environment()->update(timeDelta);
         m_canvas->onRender(m_fbo);
-        // blitten auf default fbo zum anzeigen
-
 
         m_fbo_quad->bind(gl::GL_FRAMEBUFFER);
 
@@ -139,7 +121,6 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
 
         Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
-
         m_color_quad->getImage(0, m_image->format(), m_image->type(), m_image->data());
 
         m_videoEncoder->putFrame(*m_image);
@@ -148,14 +129,7 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
         progress(i, length);
     }
 
-    m_videoEncoder->finishEncoding();
-
-    if (contextHandling == AbstractVideoExporter::ActivateContext)
-    {
-        m_canvas->openGLContext()->release();
-    }
-
-    m_canvas->onResetViewport();
+    finalize();
 
     progress(1, 1);
     m_progress = 100;
@@ -163,15 +137,12 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
 
 void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO, bool shouldFinalize)
 {
-
     if (!m_initialized) initialize(contextHandling);
 
     auto width = m_parameters.at("width").toULongLong();
     auto height = m_parameters.at("height").toULongLong();
     auto viewport = glm::vec4(0, 0, width, height);
 
-    // m_canvas->environment()->update(timeDelta);
-    // m_canvas->environment()->update();
     m_canvas->onRender(m_fbo);
 
     auto destVP = m_canvas->savedDeviceViewport();
@@ -204,7 +175,6 @@ void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::F
     m_color->unbindActive(0);
 
     Framebuffer::unbind(gl::GL_FRAMEBUFFER);
-
 
     m_color_quad->getImage(0, m_image->format(), m_image->type(), m_image->data());
 
