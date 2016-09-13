@@ -155,6 +155,9 @@ Item
     property color pipelineConnectorColorIn:    "#ffffff"        // Color of input connectors
     property color pipelineConnectorColorOut:   "#cafd00"        // Color of output connectors
     property real  pipelinePadding:             50               // Space between outer and inner pipelines
+    property color pipelineColorDefault:        '#000000'        // Color of connections
+    property color pipelineColorHighlighted:    '#6688c8'        // Color of connections when highlighted
+    property color pipelineColorSelected:       '#c83366'        // Color of connections when selected
 
 
     //

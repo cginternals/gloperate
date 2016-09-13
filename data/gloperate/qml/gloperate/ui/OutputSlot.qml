@@ -16,11 +16,16 @@ BaseItem
     implicitWidth:  row.implicitWidth  + 2 * row.anchors.margins
     implicitHeight: row.implicitHeight + 2 * row.anchors.margins
 
-    property alias name:        label.text
-    property int   radius:      Ui.style.pipelineConnectorSize
-    property color color:       Ui.style.pipelineConnectorColorOut
-    property color borderColor: Ui.style.pipelineLineColor
-    property int   borderWidth: Ui.style.pipelineLineWidth
+    property string path:        '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.DemoStage.texture')
+    property alias  name:        label.text
+    property int    radius:      Ui.style.pipelineConnectorSize
+    property color  color:       Ui.style.pipelineConnectorColorOut
+    property color  borderColor: Ui.style.pipelineLineColor
+    property int    borderWidth: Ui.style.pipelineLineWidth
+
+    property Item pipeline: null
+    readonly property bool hovered:  (pipeline != null && pipeline.hoveredElement  == path)
+    readonly property bool selected: (pipeline != null && pipeline.selectedElement == path)
 
     anchors.right: parent.right
 
@@ -51,9 +56,31 @@ BaseItem
             height:                 item.radius
 
             radius:       width / 2.0
-            color:        item.color
+            color:        item.selected ? Ui.style.pipelineColorSelected : (item.hovered ? Ui.style.pipelineColorHighlighted : item.color)
             border.color: item.borderColor
             border.width: item.borderWidth
+        }
+    }
+
+    MouseArea
+    {
+        anchors.fill: parent
+
+        hoverEnabled: true
+
+        onEntered:
+        {
+            pipeline.elementEntered(item.path);
+        }
+
+        onExited:
+        {
+            pipeline.elementLeft(item.path);
+        }
+
+        onPressed:
+        {
+            pipeline.selectOutput(item.path);
         }
     }
 }

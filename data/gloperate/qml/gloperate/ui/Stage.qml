@@ -181,7 +181,15 @@ BaseItem
             for (var i in stageDesc.parameters)
             {
                 var paramName = stageDesc.parameters[i];
-                var slotItem = component.createObject(parentItem, { name: paramName || 'Parameter', color: Ui.style.pipelineConnectorColorParam });
+
+                var slotItem = component.createObject(parentItem, {
+                    pipeline: item.pipeline,
+                    path: path + '.' + paramName,
+                    name: paramName,
+                    color: Ui.style.pipelineConnectorColorParam,
+                    connectable: false
+                } );
+
                 slotItems[paramName] = slotItem;
             }
 
@@ -189,7 +197,13 @@ BaseItem
             for (var i in stageDesc.inputs)
             {
                 var inputName = stageDesc.inputs[i];
-                var slotItem = component.createObject(parentItem, { name: inputName || 'Input' });
+
+                var slotItem = component.createObject(parentItem, {
+                    pipeline: item.pipeline,
+                    path: path + '.' + inputName,
+                    name: inputName
+                } );
+
                 slotItems[inputName] = slotItem;
             }
         }
@@ -203,7 +217,13 @@ BaseItem
             for (var i in stageDesc.outputs)
             {
                 var outputName = stageDesc.outputs[i];
-                var slotItem = component.createObject(parentItem, { name: outputName || 'Output' });
+
+                var slotItem = component.createObject(parentItem, {
+                    pipeline: item.pipeline,
+                    path: path + '.' + outputName,
+                    name: outputName
+                } );
+
                 slotItems[outputName] = slotItem;
             }
 
@@ -211,7 +231,13 @@ BaseItem
             for (var i in stageDesc.proxyOutputs)
             {
                 var proxyName = stageDesc.proxyOutputs[i];
-                var slotItem = component.createObject(parentItem, { name: proxyName || 'Output' });
+
+                var slotItem = component.createObject(parentItem, {
+                    pipeline: item.pipeline,
+                    path: path + '.' + proxyName,
+                    name: proxyName
+                } );
+
                 slotItems[proxyName] = slotItem;
             }
         }

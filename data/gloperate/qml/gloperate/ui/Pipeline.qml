@@ -19,7 +19,14 @@ BaseItem
 
     property string path: '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.SubPipeline')
 
-    property var stageItems: null ///< Item cache
+    // Internals
+    property var    stageItems:     null ///< Item cache
+    property string hoveredElement: ''   ///< Path of element that is currently hovered
+    property string selectedInput:  ''   ///< Path of selected input slot ('' if none)
+    property string selectedOutput: ''   ///< Path of selected output slot ('' if none)
+    property int    mouseX:         0;   ///< Current mouse position (X component)
+    property int    mouseY:         0;   ///< Current mouse position (Y component)
+
 
     /**
     *  Component that contains the template for a stage
@@ -42,6 +49,34 @@ BaseItem
 
         pipeline: pipeline
         stages:   stages
+    }
+
+    /**
+    *  Background mouse area
+    */
+    MouseArea
+    {
+        anchors.fill: parent
+
+        hoverEnabled: true
+
+        onPressed:
+        {
+            pipeline.selectedInput  = '';
+            pipeline.selectedOutput = '';
+            connectors.requestPaint();
+        }
+
+        onPositionChanged:
+        {
+            pipeline.mouseX = mouse.x;
+            pipeline.mouseY = mouse.y;
+
+            if (pipeline.selectedInput != '' || pipeline.selectedOutput != '')
+            {
+                connectors.requestPaint();
+            }
+        }
     }
 
     /**
@@ -260,5 +295,71 @@ BaseItem
 
         // Error in calling this function
         return null;
+    }
+
+    function elementEntered(path)
+    {
+        hoveredElement = path;
+
+        connectors.requestPaint();
+    }
+
+    function elementLeft(path)
+    {
+        if (hoveredElement == path)
+        {
+            hoveredElement = '';
+        }
+
+        connectors.requestPaint();
+    }
+
+    function selectInput(path)
+    {
+        // Connection created
+        if (path != '' && selectedOutput != '')
+        {
+            // [TODO] Create new connection
+
+            // Reset selection
+            selectedInput  = '';
+            selectedOutput = '';
+        }
+
+        // Select one side
+        else
+        {
+            // If input slot is already connected, kill that connection
+            // [TODO]
+
+            // Select input slot
+            selectedInput  = path;
+            selectedOutput = '';
+        }
+
+        connectors.requestPaint();
+    }
+
+    function selectOutput(path)
+    {
+        // Connection created
+        if (path != '' && selectedInput != '')
+        {
+            // [TODO] Create new connection
+
+            // Reset selection
+            selectedInput  = '';
+            selectedOutput = '';
+        }
+
+        // Select one side
+        else
+        {
+            // Select output slot
+            selectedInput  = '';
+            selectedOutput = path;
+        }
+
+        connectors.requestPaint();
     }
 }
