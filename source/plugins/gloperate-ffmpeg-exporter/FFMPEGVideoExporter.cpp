@@ -137,7 +137,13 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
 
 void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO, bool shouldFinalize)
 {
-    if (!m_initialized) initialize(contextHandling);
+    if (!m_initialized)
+    {
+        // Overwrite fps in async mode to not slow down/speed up video
+        m_parameters.at("fps") = 60;
+        
+        initialize(contextHandling);
+    }
 
     auto width = m_parameters.at("width").toULongLong();
     auto height = m_parameters.at("height").toULongLong();
@@ -198,7 +204,6 @@ void FFMPEGVideoExporter::initialize(ContextHandling contextHandling)
     auto width = m_parameters.at("width").toULongLong();
     auto height = m_parameters.at("height").toULongLong();
 
-    // auto fps = m_parameters.at("fps").toULongLong();
     auto viewport = glm::vec4(0, 0, width, height);
 
     createAndSetupGeometry();
