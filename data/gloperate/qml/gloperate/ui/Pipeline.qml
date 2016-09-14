@@ -1,5 +1,6 @@
 
 import QtQuick 2.0
+import QtQuick.Controls 1.0
 
 import gloperate.base 1.0
 import gloperate.ui 1.0
@@ -51,6 +52,48 @@ BaseItem
         stages:   stages
     }
 
+    Menu
+    {
+        id: menu
+
+        title: "Pipeline"
+
+        property bool initialized: false
+
+        function initialize()
+        {
+            if (initialized)
+            {
+                return;
+            }
+
+            var menu = addMenu('Add Stage');
+
+            var components = gloperate.components.components();
+            for (var i in components)
+            {
+                var component = components[i];
+
+                if (component.type == 'gloperate::Stage')
+                {
+                    var item = menu.addItem(component.name);
+
+                    var callbackFactory = function(type)
+                    {
+                        return function()
+                        {
+                            pipeline.createStage(type, type);
+                        };
+                    };
+
+                    item.triggered.connect(callbackFactory(component.name));
+                }
+            }
+
+            initialized = true;
+        }
+    }
+
     /**
     *  Background mouse area
     */
@@ -58,13 +101,23 @@ BaseItem
     {
         anchors.fill: parent
 
-        hoverEnabled: true
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        hoverEnabled:    true
 
-        onPressed:
+        onClicked:
         {
-            pipeline.selectedInput  = '';
-            pipeline.selectedOutput = '';
-            connectors.requestPaint();
+            if (mouse.button == Qt.LeftButton)
+            {
+                pipeline.selectedInput  = '';
+                pipeline.selectedOutput = '';
+                connectors.requestPaint();
+            }
+
+            if (mouse.button == Qt.RightButton)
+            {
+                menu.initialize();
+                menu.popup();
+            }
         }
 
         onPositionChanged:

@@ -47,18 +47,6 @@ Background
 
             Button
             {
-                icon: '0267-plus.png'
-                text: 'Add Stage'
-
-                onClicked:
-                {
-                    pipeline.createStage('MixerStage', 'MyMixer');
-                    pipeline.createStage('TextureLoadStage', 'MyTexture');
-                }
-            }
-
-            Button
-            {
                 icon: '0270-cancel-circle.png'
                 text: 'Clear stages'
 
