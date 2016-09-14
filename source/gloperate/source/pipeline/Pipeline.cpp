@@ -28,7 +28,10 @@ Pipeline::Pipeline(Environment * environment, const std::string & name)
 , m_sorted(false)
 {
     // Register functions
-    addFunction("createStage", this, &Pipeline::scr_createStage);
+    addFunction("createStage",      this, &Pipeline::scr_createStage);
+    addFunction("removeStage",      this, &Pipeline::scr_removeStage);
+    addFunction("addConnection",    this, &Pipeline::scr_addConnection);
+    addFunction("removeConnection", this, &Pipeline::scr_removeConnection);
 }
 
 Pipeline::~Pipeline()
@@ -251,6 +254,21 @@ std::string Pipeline::scr_createStage(const std::string & className, const std::
     }
 
     return "";
+}
+
+void Pipeline::scr_removeStage(const std::string & name)
+{
+    Stage * stage = this->stage(name);
+
+    removeStage(stage);
+}
+
+void Pipeline::scr_addConnection(const std::string & from, const std::string & to)
+{
+}
+
+void Pipeline::scr_removeConnection(const std::string & to)
+{
 }
 
 

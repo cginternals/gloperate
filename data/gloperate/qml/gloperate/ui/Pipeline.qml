@@ -214,7 +214,8 @@ BaseItem
                 color:          Ui.style.pipelineTitleColor2,
                 includeInputs:  true,
                 includeOutputs: false,
-                inverse:        true
+                inverse:        true,
+                allowClose:     false
             }
         );
 
@@ -241,7 +242,8 @@ BaseItem
                 color:          Ui.style.pipelineTitleColor2,
                 includeInputs:  false,
                 includeOutputs: true,
-                inverse:        true
+                inverse:        true,
+                allowClose:     false
             }
         );
 
@@ -274,8 +276,25 @@ BaseItem
         // Add to item cache
         stageItems[name] = item;
 
+        // Connect signal to remove the stage
+        item.closed.connect(function()
+        {
+            removeStage(path, name);
+        });
+
         // Return item
         return item;
+    }
+
+    function removeStage(path, name)
+    {
+        stageItems[name].destroy();
+
+        delete stageItems[name];
+
+        getStage(pipeline.path).removeStage(name);
+
+        connectors.requestPaint();
     }
 
     function createStage(className, name)

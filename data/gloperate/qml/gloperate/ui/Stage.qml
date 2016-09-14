@@ -15,11 +15,14 @@ BaseItem
 {
     id: item
 
+    signal closed()
+
     property string path: '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.DemoStage')
 
     property bool includeInputs:  true
     property bool includeOutputs: true
     property bool inverse:        false
+    property bool allowClose:     true
 
     property string name:    'Stage'
     property int    radius:  Ui.style.pipelineConnectorSize
@@ -55,7 +58,7 @@ BaseItem
             anchors.left:    parent.left
             anchors.right:   parent.right
             anchors.margins: body.border.width
-            implicitWidth:   label.implicitWidth  + 2 * label.anchors.margins
+            implicitWidth:   label.implicitWidth  + 3 * label.anchors.margins + icon.implicitWidth
             implicitHeight:  label.implicitHeight + 2 * label.anchors.margins
 
             radius: body.radius
@@ -91,6 +94,27 @@ BaseItem
                 acceptedButtons: Qt.LeftButton
                 drag.target:     item
             }
+
+            Icon
+            {
+                id: icon
+
+                anchors.verticalCenter: label.verticalCenter
+                anchors.right:          parent.right
+                anchors.margins:        Ui.style.paddingMedium
+
+                icon:       '0272-cross.png'
+                iconWidth:  12
+                iconHeight: 12
+
+                visible: allowClose
+
+                onClicked:
+                {
+                    item.closed();
+                }
+            }
+
         }
     }
 
