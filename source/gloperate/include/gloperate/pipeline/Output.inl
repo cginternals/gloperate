@@ -19,6 +19,18 @@ Output<T>::Output(const std::string & name, Stage * parent, const T & value)
 }
 
 template <typename T>
+Output<T>::Output(const std::string & name, const T & value)
+: DataSlot<T>(value)
+, m_valid(false)
+{
+    // Do not add property to object, yet. Just initialize the property itself
+    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+
+    // Initialize data slot
+    this->initDataSlot(SlotType::Output, nullptr, cppexpose::PropertyOwnership::None);
+}
+
+template <typename T>
 Output<T>::~Output()
 {
 }
