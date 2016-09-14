@@ -144,7 +144,7 @@ protected:
 protected:
     // Scripting functions
     virtual cppexpose::Variant scr_getDescription() override;
-    virtual void scr_createStage(const std::string & className, const std::string & name);
+    virtual std::string scr_createStage(const std::string & className, const std::string & name);
 
 
 protected:

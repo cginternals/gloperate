@@ -47,18 +47,26 @@ Stage * Pipeline::stage(const std::string & name) const
 
 void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
 {
+    // Check parameters
     if (!stage)
     {
         return;
     }
 
+    // Find free name
+    std::string name = getFreeName(stage->name());
+    stage->setName(name);
+
+    // Add stage as property
     addProperty(stage, ownership);
 
+    // Add stage
     m_stages.push_back(stage);
     if (stage->name() != "") {
         m_stagesMap.insert(std::make_pair(stage->name(), stage));        
     }
 
+    // Emit signal
     stageAdded(stage);
 }
 
@@ -215,7 +223,7 @@ cppexpose::Variant Pipeline::scr_getDescription()
     return obj;
 }
 
-void Pipeline::scr_createStage(const std::string & className, const std::string & name)
+std::string Pipeline::scr_createStage(const std::string & className, const std::string & name)
 {
     // Get component manager
     auto componentManager = m_environment->componentManager();
@@ -238,7 +246,11 @@ void Pipeline::scr_createStage(const std::string & className, const std::string 
         // Create stage
         Stage * stage = component->createInstance(m_environment, name);
         addStage(stage);
+
+        return stage->name();
     }
+
+    return "";
 }
 
 

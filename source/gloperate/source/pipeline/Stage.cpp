@@ -3,6 +3,7 @@
 
 #include <algorithm>
 
+#include <cppassist/string/conversion.h>
 #include <cppassist/logging/logging.h>
 
 #include <cppexpose/variant/Variant.h>
@@ -145,6 +146,10 @@ void Stage::addInput(AbstractInputSlot * input, cppexpose::PropertyOwnership own
         return;
     }
 
+    // Find free name
+    std::string name = getFreeName(input->name());
+    input->setName(name);
+
     // Add input as property
     addProperty(input, ownership);
 
@@ -200,6 +205,10 @@ void Stage::addParameter(AbstractDataSlot * parameter, cppexpose::PropertyOwners
         return;
     }
 
+    // Find free name
+    std::string name = getFreeName(parameter->name());
+    parameter->setName(name);
+
     // Add parameter as property
     addProperty(parameter, ownership);
 
@@ -253,6 +262,10 @@ void Stage::addOutput(AbstractDataSlot * output, cppexpose::PropertyOwnership ow
     if (!output) {
         return;
     }
+
+    // Find free name
+    std::string name = getFreeName(output->name());
+    output->setName(name);
 
     // Add output as property
     addProperty(output, ownership);
@@ -308,6 +321,10 @@ void Stage::addProxyOutput(AbstractInputSlot * proxyOutput, cppexpose::PropertyO
         return;
     }
 
+    // Find free name
+    std::string name = getFreeName(proxyOutput->name());
+    proxyOutput->setName(name);
+
     // Add proxy output as property
     addProperty(proxyOutput, ownership);
 
@@ -353,6 +370,20 @@ void Stage::outputRequiredChanged(AbstractSlot *slot)
 void Stage::inputValueChanged(AbstractSlot *slot)
 {
     onInputValueChanged(slot);
+}
+
+std::string Stage::getFreeName(const std::string & name) const
+{
+    std::string nameOut = name;
+    int i = 2;
+
+    while (propertyExists(nameOut))
+    {
+        nameOut = name + cppassist::toString<int>(i);
+        i++;
+    }
+
+    return nameOut;
 }
 
 void Stage::onContextInit(AbstractGLContext *)

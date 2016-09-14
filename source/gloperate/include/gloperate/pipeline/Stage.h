@@ -492,6 +492,27 @@ public:
     */
     void removeProxyOutput(AbstractInputSlot * proxyOutput);
 
+    /**
+    *  @brief
+    *    Get unique name for property or sub-stage
+    *
+    *  @param[in] name
+    *    Proposed name
+    *
+    *  @return
+    *    Name that is not yet used
+    *
+    *  @remarks
+    *    The function checks if the proposed name is already used. If it is,
+    *    it adds a number to the name, beginning with 2 and counts until it
+    *    finds a free name. For example, getFreeName("Stage") will return
+    *    - Stage
+    *    - Stage2
+    *    - Stage3
+    *    - ...
+    */
+    std::string getFreeName(const std::string & name) const;
+
 
 protected:
     /**

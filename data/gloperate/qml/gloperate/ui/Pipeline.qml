@@ -227,9 +227,9 @@ BaseItem
 
     function createStage(className, name)
     {
-        getStage(pipeline.path).createStage(className, name);
+        var realName = getStage(pipeline.path).createStage(className, name);
 
-        addStage(pipeline.path + '.' + name, name, 100, 100);
+        addStage(pipeline.path + '.' + realName, realName, 100, 100);
     }
 
     function computeLayout()
