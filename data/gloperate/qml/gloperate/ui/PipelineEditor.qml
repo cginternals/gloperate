@@ -52,7 +52,8 @@ Background
 
                 onClicked:
                 {
-                    pipeline.addStage();
+                    pipeline.createStage('MixerStage', 'MyMixer');
+                    pipeline.createStage('TextureLoadStage', 'MyTexture');
                 }
             }
 

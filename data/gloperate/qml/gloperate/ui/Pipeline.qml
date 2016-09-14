@@ -98,6 +98,10 @@ BaseItem
         // Clear old pipeline
         clear();
 
+        // Exit if no pipeline is set
+        if (path == '')
+            return;
+
         // Get pipeline
         var pl     = getStage(pipeline.path);
         var plDesc = pl.getDescription();
@@ -219,6 +223,13 @@ BaseItem
 
         // Return item
         return item;
+    }
+
+    function createStage(className, name)
+    {
+        getStage(pipeline.path).createStage(className, name);
+
+        addStage(pipeline.path + '.' + name, name, 100, 100);
     }
 
     function computeLayout()

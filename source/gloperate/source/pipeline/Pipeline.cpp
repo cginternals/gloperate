@@ -8,6 +8,9 @@
 
 #include <cppassist/logging/logging.h>
 
+#include <gloperate/base/Environment.h>
+#include <gloperate/base/ComponentManager.h>
+
 
 using namespace cppassist;
 using namespace cppexpose;
@@ -24,6 +27,8 @@ Pipeline::Pipeline(Environment * environment, const std::string & name)
 : Stage(environment, name)
 , m_sorted(false)
 {
+    // Register functions
+    addFunction("createStage", this, &Pipeline::scr_createStage);
 }
 
 Pipeline::~Pipeline()
@@ -208,6 +213,32 @@ cppexpose::Variant Pipeline::scr_getDescription()
 
     // Return pipeline description
     return obj;
+}
+
+void Pipeline::scr_createStage(const std::string & className, const std::string & name)
+{
+    // Get component manager
+    auto componentManager = m_environment->componentManager();
+
+    // List available stages
+    /*
+    auto stageComponents = componentManager->components<gloperate::Stage>();
+
+    for (auto component : stageComponents)
+    {
+        info() << "- " << component->name();
+    }
+    */
+
+    // Get component for the requested stage
+    auto component = componentManager->component<gloperate::Stage>(className);
+
+    if (component)
+    {
+        // Create stage
+        Stage * stage = component->createInstance(m_environment, name);
+        addStage(stage);
+    }
 }
 
 
