@@ -271,6 +271,18 @@ public:
 
     /**
     *  @brief
+    *    Get input by name
+    *
+    *  @param[in] name
+    *    Name of input
+    *
+    *  @return
+    *    Input (can be null)
+    */
+    AbstractInputSlot * input(const std::string & name);
+
+    /**
+    *  @brief
     *    Create dynamic input
     *
     *  @tparam T
@@ -329,6 +341,18 @@ public:
     *    Parameter (can be null)
     */
     const AbstractDataSlot * parameter(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Get parameter by name
+    *
+    *  @param[in] name
+    *    Name of parameter
+    *
+    *  @return
+    *    Parameter (can be null)
+    */
+    AbstractDataSlot * parameter(const std::string & name);
 
     /**
     *  @brief
@@ -393,6 +417,18 @@ public:
 
     /**
     *  @brief
+    *    Get output by name
+    *
+    *  @param[in] name
+    *    Name of output
+    *
+    *  @return
+    *    Output (can be null)
+    */
+    AbstractDataSlot * output(const std::string & name);
+
+    /**
+    *  @brief
     *    Create dynamic output
     *
     *  @tparam T
@@ -451,6 +487,18 @@ public:
     *    Proxy output (can be null)
     */
     const AbstractInputSlot * proxyOutput(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Get proxy output by name
+    *
+    *  @param[in] name
+    *    Name of proxy output
+    *
+    *  @return
+    *    Proxy output (can be null)
+    */
+    AbstractInputSlot * proxyOutput(const std::string & name);
 
     /**
     *  @brief

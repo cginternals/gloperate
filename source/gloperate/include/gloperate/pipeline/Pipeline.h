@@ -133,6 +133,18 @@ protected:
     */
     void sortStages();
 
+    /**
+    *  @brief
+    *    Get a slot of this pipeline or a subpipeline
+    *
+    *  @param[in] path
+    *    Path to the slot from this pipeline. Can contain the name of this pipeline as first element.
+    *
+    *  @return
+    *    Slot, nullptr if not found
+    */
+    AbstractSlot * getSlot(const std::string & path);
+
     // Virtual Stage interface
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
@@ -146,7 +158,7 @@ protected:
     virtual cppexpose::Variant scr_getDescription() override;
     std::string scr_createStage(const std::string & className, const std::string & name);
     void scr_removeStage(const std::string & name);
-    void scr_addConnection(const std::string & from, const std::string & to);
+    void scr_createConnection(const std::string & from, const std::string & to);
     void scr_removeConnection(const std::string & to);
 
 

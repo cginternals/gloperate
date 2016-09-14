@@ -136,6 +136,21 @@ const std::vector<AbstractInputSlot *> & Stage::inputs() const
 
 const AbstractInputSlot * Stage::input(const std::string & name) const
 {
+    if (m_inputsMap.find(name) == m_inputsMap.end())
+    {
+        return nullptr;
+    }
+
+    return m_inputsMap.at(name);
+}
+
+AbstractInputSlot * Stage::input(const std::string & name)
+{
+    if (m_inputsMap.find(name) == m_inputsMap.end())
+    {
+        return nullptr;
+    }
+
     return m_inputsMap.at(name);
 }
 
@@ -195,6 +210,21 @@ const std::vector<AbstractDataSlot *> & Stage::parameters() const
 
 const AbstractDataSlot * Stage::parameter(const std::string & name) const
 {
+    if (m_parametersMap.find(name) == m_parametersMap.end())
+    {
+        return nullptr;
+    }
+
+    return m_parametersMap.at(name);
+}
+
+AbstractDataSlot * Stage::parameter(const std::string & name)
+{
+    if (m_parametersMap.find(name) == m_parametersMap.end())
+    {
+        return nullptr;
+    }
+
     return m_parametersMap.at(name);
 }
 
@@ -253,6 +283,21 @@ const std::vector<AbstractDataSlot *> & Stage::outputs() const
 
 const AbstractDataSlot * Stage::output(const std::string & name) const
 {
+    if (m_outputsMap.find(name) == m_outputsMap.end())
+    {
+        return nullptr;
+    }
+
+    return m_outputsMap.at(name);
+}
+
+AbstractDataSlot * Stage::output(const std::string & name)
+{
+    if (m_outputsMap.find(name) == m_outputsMap.end())
+    {
+        return nullptr;
+    }
+
     return m_outputsMap.at(name);
 }
 
@@ -311,6 +356,21 @@ const std::vector<AbstractInputSlot *> & Stage::proxyOutputs() const
 
 const AbstractInputSlot * Stage::proxyOutput(const std::string & name) const
 {
+    if (m_proxyOutputsMap.find(name) == m_proxyOutputsMap.end())
+    {
+        return nullptr;
+    }
+
+    return m_proxyOutputsMap.at(name);
+}
+
+AbstractInputSlot * Stage::proxyOutput(const std::string & name)
+{
+    if (m_proxyOutputsMap.find(name) == m_proxyOutputsMap.end())
+    {
+        return nullptr;
+    }
+
     return m_proxyOutputsMap.at(name);
 }
 

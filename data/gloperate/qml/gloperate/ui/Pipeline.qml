@@ -399,10 +399,14 @@ BaseItem
 
     function selectInput(path)
     {
+        // If input slot is already connected, remove connection
+        getStage(pipeline.path).removeConnection(path);
+
         // Connection created
         if (path != '' && selectedOutput != '')
         {
-            // [TODO] Create new connection
+            // Create connection
+            getStage(pipeline.path).createConnection(selectedOutput, path);
 
             // Reset selection
             selectedInput  = '';
@@ -412,9 +416,6 @@ BaseItem
         // Select one side
         else
         {
-            // If input slot is already connected, kill that connection
-            // [TODO]
-
             // Select input slot
             selectedInput  = path;
             selectedOutput = '';
@@ -428,7 +429,8 @@ BaseItem
         // Connection created
         if (path != '' && selectedInput != '')
         {
-            // [TODO] Create new connection
+            // Create connection
+            getStage(pipeline.path).createConnection(path, selectedInput);
 
             // Reset selection
             selectedInput  = '';
