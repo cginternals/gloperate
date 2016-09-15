@@ -15,3 +15,4 @@ Connectors      1.0 Connectors.qml
 Stage           1.0 Stage.qml
 InputSlot       1.0 InputSlot.qml
 OutputSlot      1.0 OutputSlot.qml
+AddSlotDialog   1.0 AddSlotDialog.qml

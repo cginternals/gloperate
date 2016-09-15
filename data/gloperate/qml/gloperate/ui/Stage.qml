@@ -1,6 +1,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
+import QtQuick.Controls 1.0
 
 import gloperate.base 1.0
 import gloperate.ui 1.0
@@ -35,6 +36,67 @@ BaseItem
     implicitHeight: connectors.implicitHeight + title.implicitHeight + Ui.style.paddingLarge
 
     Drag.active: mouseArea.drag.active
+
+    AddSlotDialog
+    {
+        id: dialog
+
+        onCreateSlot:
+        {
+            console.log('Create ' + slotType + '<' + type + '> ' + name)
+        }
+    }
+
+    Menu
+    {
+        id: menu
+
+        title: "Stage"
+
+        MenuItem
+        {
+            text: 'Add Input'
+
+            onTriggered:
+            {
+                dialog.slotType = 'Input';
+                dialog.open();
+            }
+        }
+
+        MenuItem
+        {
+            text: 'Add Parameter'
+
+            onTriggered:
+            {
+                dialog.slotType = 'Parameter';
+                dialog.open();
+            }
+        }
+
+        MenuItem
+        {
+            text: 'Add Output'
+
+            onTriggered:
+            {
+                dialog.slotType = 'Output';
+                dialog.open();
+            }
+        }
+
+        MenuItem
+        {
+            text: 'Add ProxyOutput'
+
+            onTriggered:
+            {
+                dialog.slotType = 'ProxyOutput';
+                dialog.open();
+            }
+        }
+    }
 
     Rectangle
     {
@@ -91,8 +153,16 @@ BaseItem
 
                 anchors.fill: parent
 
-                acceptedButtons: Qt.LeftButton
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
                 drag.target:     item
+
+                onClicked:
+                {
+                    if (mouse.button == Qt.RightButton)
+                    {
+                        menu.popup();
+                    }
+                }
             }
 
             Icon
