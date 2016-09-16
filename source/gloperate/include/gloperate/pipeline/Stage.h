@@ -512,7 +512,7 @@ public:
     *    Default value (optional)
     *
     *  @return
-    *    Output, nullptr on error
+    *    Proxy output, nullptr on error
     *
     *  @remarks
     *    Creates a dynamic proxy output and transfers ownership to the stage.
@@ -560,6 +560,47 @@ public:
     *    - ...
     */
     std::string getFreeName(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Create dynamic slot
+    *
+    *  @tparam T
+    *    Type of the slot
+    *  @param[in] slotType
+    *    Type of the slot ("Input", "Output", "Parameter", or "ProxyOutput")
+    *  @param[in] name
+    *    Name of the proxy output
+    *  @param[in] defaultValue
+    *    Default value (optional)
+    *
+    *  @return
+    *    Slot, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic proxy output and transfers ownership to the stage.
+    */
+    template <typename T>
+    AbstractSlot * createSlot(const std::string & slotType, const std::string & name, const T & defaultValue = T());
+
+    /**
+    *  @brief
+    *    Create dynamic slot
+    *
+    *  @param[in] slotType
+    *    Type of the slot ("Input", "Output", "Parameter", or "ProxyOutput")
+    *  @param[in] type
+    *    Type of the slot ("int", "float", "vec3", ...)
+    *  @param[in] name
+    *    Name of the proxy output
+    *
+    *  @return
+    *    Output, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic proxy output and transfers ownership to the stage.
+    */
+    AbstractSlot * createSlot(const std::string & slotType, const std::string & type, const std::string & name);
 
 
 protected:
@@ -659,7 +700,9 @@ protected:
 protected:
     // Scripting functions
     virtual cppexpose::Variant scr_getDescription();
-    virtual cppexpose::Variant scr_getConnections();
+    cppexpose::Variant scr_getConnections();
+    void scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name);
+    cppexpose::Variant scr_slotTypes();
 
 
 protected:

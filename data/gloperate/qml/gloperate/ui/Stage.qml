@@ -37,13 +37,19 @@ BaseItem
 
     Drag.active: mouseArea.drag.active
 
+    onPathChanged:
+    {
+        update();
+    }
+
     AddSlotDialog
     {
         id: dialog
 
         onCreateSlot:
         {
-            console.log('Create ' + slotType + '<' + type + '> ' + name)
+            pipeline.getStage(item.path).createSlot(slotType, type, name);
+            item.update();
         }
     }
 
@@ -255,9 +261,12 @@ BaseItem
     /**
     *  Load stage from pipeline viewer
     */
-    onPathChanged:
+    function update()
     {
         clear();
+
+        if (path == '')
+            return;
 
         // Get pipeline container
         var pipelineContainer = gloperate.canvas0.pipeline;

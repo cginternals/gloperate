@@ -8,6 +8,10 @@
 
 #include <cppexpose/variant/Variant.h>
 
+#include <globjects/Texture.h>
+#include <globjects/Framebuffer.h>
+
+#include <gloperate/base/GlmProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/AbstractInputSlot.h>
 #include <gloperate/pipeline/AbstractDataSlot.h>
@@ -29,6 +33,7 @@ Stage::Stage(Environment * environment, const std::string & name)
     // Register functions
     addFunction("getDescription", this, &Stage::scr_getDescription);
     addFunction("getConnections", this, &Stage::scr_getConnections);
+    addFunction("createSlot",     this, &Stage::scr_createSlot);
 }
 
 Stage::~Stage()
@@ -446,6 +451,22 @@ std::string Stage::getFreeName(const std::string & name) const
     return nameOut;
 }
 
+AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string & type, const std::string & name)
+{
+    if (type == "int")     return createSlot<int>(slotType, name);
+    if (type == "float")   return createSlot<float>(slotType, name);
+    if (type == "vec2")    return createSlot<glm::vec2>(slotType, name);
+    if (type == "vec3")    return createSlot<glm::vec3>(slotType, name);
+    if (type == "vec4")    return createSlot<glm::vec4>(slotType, name);
+    if (type == "ivec2")   return createSlot<glm::ivec2>(slotType, name);
+    if (type == "ivec3")   return createSlot<glm::ivec3>(slotType, name);
+    if (type == "ivec4")   return createSlot<glm::ivec4>(slotType, name);
+    if (type == "texture") return createSlot<globjects::Texture *>(slotType, name);
+    if (type == "fbo")     return createSlot<globjects::Framebuffer *>(slotType, name);
+
+    return nullptr;
+}
+
 void Stage::onContextInit(AbstractGLContext *)
 {
 }
@@ -575,6 +596,29 @@ cppexpose::Variant Stage::scr_getConnections()
 
     // Return connections
     return obj;
+}
+
+void Stage::scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name)
+{
+    createSlot(slotType, type, name);
+}
+
+cppexpose::Variant Stage::scr_slotTypes()
+{
+    Variant types = Variant::array();
+
+    types.asArray()->push_back("int");
+    types.asArray()->push_back("float");
+    types.asArray()->push_back("vec2");
+    types.asArray()->push_back("vec3");
+    types.asArray()->push_back("vec4");
+    types.asArray()->push_back("ivec2");
+    types.asArray()->push_back("ivec3");
+    types.asArray()->push_back("ivec4");
+    types.asArray()->push_back("texture");
+    types.asArray()->push_back("fbo");
+
+    return types;
 }
 
 

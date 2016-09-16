@@ -71,8 +71,8 @@ QJSValue QmlObjectWrapper::wrapObject()
     m_obj.setProperty("_obj", internal);
 
     // Helper script for adding properties and functions
-    QJSValue registerProperty = m_engine->evaluate(s_registerProperty);
-    QJSValue registerFunction = m_engine->evaluate(s_registerFunction);
+    m_registerProperty = m_engine->evaluate(s_registerProperty);
+    m_registerFunction = m_engine->evaluate(s_registerFunction);
 
     // Add properties to object
     for (unsigned int i=0; i<m_object->numSubValues(); i++)
@@ -93,7 +93,7 @@ QJSValue QmlObjectWrapper::wrapObject()
             QJSValueList args;
             args << m_obj;
             args << QString::fromStdString(property->name());
-            registerProperty.call(args);
+            m_registerProperty.call(args);
 
             m_wrappedObjects.push_back(nullptr);
         }
@@ -108,7 +108,7 @@ QJSValue QmlObjectWrapper::wrapObject()
         QJSValueList args;
         args << m_obj;
         args << QString::fromStdString(func.name());
-        registerFunction.call(args);
+        m_registerFunction.call(args);
     }
 
     // Register callbacks for script engine update
@@ -127,7 +127,7 @@ QJSValue QmlObjectWrapper::wrapObject()
         }
     });
 
-    m_afterAddConnection = m_object->afterAdd.connect([this, & registerProperty](size_t index, cppexpose::AbstractProperty * property)
+    m_afterAddConnection = m_object->afterAdd.connect([this](size_t index, cppexpose::AbstractProperty * property)
     {
         // [TODO] Provide an UNUSED() macro in cppassist
         (void)(index);
@@ -152,7 +152,7 @@ QJSValue QmlObjectWrapper::wrapObject()
             QJSValueList args;
             args << m_obj;
             args << QString::fromStdString(property->name());
-            registerProperty.call(args);
+            m_registerProperty.call(args);
 
             m_wrappedObjects.push_back(nullptr);
         }
