@@ -34,6 +34,7 @@ Stage::Stage(Environment * environment, const std::string & name)
     addFunction("getDescription", this, &Stage::scr_getDescription);
     addFunction("getConnections", this, &Stage::scr_getConnections);
     addFunction("createSlot",     this, &Stage::scr_createSlot);
+    addFunction("slotTypes",      this, &Stage::scr_slotTypes);
 }
 
 Stage::~Stage()

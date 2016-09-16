@@ -66,6 +66,7 @@ BaseItem
             onTriggered:
             {
                 dialog.slotType = 'Input';
+                dialog.setChoices( pipeline.getStage(item.path).slotTypes() );
                 dialog.open();
             }
         }
