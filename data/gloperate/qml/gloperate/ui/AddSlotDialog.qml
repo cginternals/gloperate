@@ -18,6 +18,11 @@ Dialog
 
     signal createSlot(string slotType, string type, string name)
 
+    function setChoices(choices)
+    {
+        type.model = choices;
+    }
+
     Column
     {
         width: parent.width
@@ -35,7 +40,7 @@ Dialog
 
             width: parent.width
 
-            model: [ 'float', 'int', 'vec2', 'vec3', 'vec4', 'ivec2', 'ivec3', 'ivec4', 'color', 'texture', 'fbo' ]
+            model: []
         }
 
         Text

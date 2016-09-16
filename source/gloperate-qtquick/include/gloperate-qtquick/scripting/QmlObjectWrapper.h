@@ -101,10 +101,12 @@ protected:
 
 
 protected:
-    QmlEngine                       * m_engine;         ///< Qml engine with gloperate integration
-    cppexpose::Object               * m_object;         ///< Wrapped object (must NOT be null)
-    QJSValue                          m_obj;            ///< Javascript object representing the cppexpose object
-    std::vector<QmlObjectWrapper *>   m_wrappedObjects; ///< List of wrapped sub-objects
+    QmlEngine                       * m_engine;           ///< Qml engine with gloperate integration
+    cppexpose::Object               * m_object;           ///< Wrapped object (must NOT be null)
+    QJSValue                          m_obj;              ///< Javascript object representing the cppexpose object
+    std::vector<QmlObjectWrapper *>   m_wrappedObjects;   ///< List of wrapped sub-objects
+    QJSValue                          m_registerProperty; ///< Helper script for registering properties
+    QJSValue                          m_registerFunction; ///< Helper script for registering functions
 
     // Connections to the wrapped object
     cppexpose::ScopedConnection m_beforeDestroyConnection;
