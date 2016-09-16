@@ -1,6 +1,7 @@
 
 #include <gloperate/pipeline/Pipeline.h>
 
+#include <iostream>
 #include <vector>
 #include <set>
 
@@ -79,6 +80,10 @@ void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
         m_stagesMap.insert(std::make_pair(stage->name(), stage));        
     }
 
+    // Shouldn't be required if each slot of a stage would disconnect from connections
+    // and this would be propagated to the normal stage order invalidation
+    invalidateStageOrder();
+
     // Emit signal
     stageAdded(stage);
 }
@@ -103,6 +108,10 @@ bool Pipeline::removeStage(Stage * stage)
 
     removeProperty(stage);
 
+    // Shouldn't be required if each slot of a stage would disconnect from connections
+    // and this would be propagated to the normal stage order invalidation
+    invalidateStageOrder();
+
     return true;
 }
 
@@ -116,6 +125,12 @@ bool Pipeline::destroyStage(Stage * stage)
     delete stage;
 
     return true;
+}
+
+void Pipeline::invalidateStageOrder()
+{
+    std::cout << "Invalidate stage order; resort on next process" << std::endl;
+    m_sorted = false;
 }
 
 bool Pipeline::isPipeline() const

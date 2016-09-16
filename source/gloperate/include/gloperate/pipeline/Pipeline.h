@@ -122,6 +122,15 @@ public:
     */
     bool destroyStage(Stage * stage);
 
+    /**
+    *  @brief
+    *    Invalidate sorted stage order
+    *
+    *  @remarks
+    *    The stages are resorted upon next usage.
+    */
+    void invalidateStageOrder();
+
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 

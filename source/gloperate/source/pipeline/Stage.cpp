@@ -485,6 +485,14 @@ void Stage::onOutputRequiredChanged(AbstractSlot *)
     }
 }
 
+void Stage::invalidateInputConnections()
+{
+    if (parentPipeline())
+    {
+        parentPipeline()->invalidateStageOrder();
+    }
+}
+
 cppexpose::Variant Stage::scr_getDescription()
 {
     Variant obj = Variant::map();

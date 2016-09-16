@@ -310,6 +310,7 @@ void InputSlot<T>::promoteConnection()
 {
     // Emit signal
     this->connectionChanged();
+    this->parentStage()->invalidateInputConnections();
 }
 
 template <typename T>

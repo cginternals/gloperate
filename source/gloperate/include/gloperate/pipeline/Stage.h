@@ -561,6 +561,12 @@ public:
     */
     std::string getFreeName(const std::string & name) const;
 
+    /**
+    *  @brief
+    *    Invalidate any input connection caching
+    */
+    void invalidateInputConnections();
+
 
 protected:
     /**
