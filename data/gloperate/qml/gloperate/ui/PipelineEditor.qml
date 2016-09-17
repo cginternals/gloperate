@@ -16,6 +16,8 @@ Background
     implicitWidth:  scrollArea.contentWidth  + 20
     implicitHeight: scrollArea.contentHeight + 20
 
+    property bool loaded: false
+
     ScrollArea
     {
         id: scrollArea
@@ -36,23 +38,12 @@ Background
 
             Button
             {
-                icon: '0133-spinner11.png'
-                text: 'Update'
-
-                onClicked:
-                {
-                    // pipeline.update();
-                }
-            }
-
-            Button
-            {
                 icon: '0270-cancel-circle.png'
-                text: 'Clear stages'
+                text: 'Close'
 
                 onClicked:
                 {
-                    pipeline.clear();
+                    panel.visible = false;
                 }
             }
         }
@@ -66,13 +57,20 @@ Background
         }
     }
 
-    Component.onCompleted:
+    function load()
     {
-        // Get pipeline container
-        var pipelineContainer = gloperate.canvas0.pipeline;
+        // Check if pipeline has already been loaded
+        if (!loaded)
+        {
+            // Get pipeline container
+            var pipelineContainer = gloperate.canvas0.pipeline;
 
-        // Load root pipeline
-        var pipelineName = pipelineContainer.getDescription().stages[0];
-        pipeline.path = pipelineName;
+            // Load root pipeline
+            var pipelineName = pipelineContainer.getDescription().stages[0];
+            pipeline.path = pipelineName;
+
+            // Done
+            loaded = true;
+        }
     }
 }
