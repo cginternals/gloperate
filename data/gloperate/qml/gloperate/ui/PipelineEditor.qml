@@ -16,28 +16,20 @@ Background
     implicitWidth:  scrollArea.contentWidth  + 20
     implicitHeight: scrollArea.contentHeight + 20
 
+    property bool loaded: false
+
     ScrollArea
     {
         id: scrollArea
 
         anchors.fill:  parent
-        contentWidth:  pipeline.width  + 2 * pipeline.anchors.margins
-        contentHeight: pipeline.height + 2 * pipeline.anchors.margins
 
-        Component
-        {
-            id: stageComponent
-
-            Stage
-            {
-                stageDelegate: stageComponent
-                targetStage:   modelData
-            }
-        }
+        contentWidth:  pipeline.width
+        contentHeight: pipeline.height + menuBar.height
 
         Row
         {
-            id: topBar
+            id: menuBar
 
             anchors.top:     parent.top
             anchors.left:    parent.left
@@ -46,54 +38,39 @@ Background
 
             Button
             {
-                icon: '0133-spinner11.png'
-                text: 'Update'
+                icon: '0270-cancel-circle.png'
+                text: 'Close'
 
                 onClicked:
                 {
-                    pipeline.update();
+                    panel.visible = false;
                 }
             }
         }
 
-        Stage
+        Pipeline
         {
             id: pipeline
 
-            anchors.left:    parent.left
-            anchors.top:     parent.top
-            anchors.margins: Ui.style.pipelinePadding
-            stageDelegate:   stageComponent
-            targetStage:     'Viewer'
+            anchors.top:  menuBar.bottom
+            anchors.left: parent.left
         }
     }
 
-    Component.onCompleted:
+    function load()
     {
-        /*
-        gloperate.pipeline.registerWatcher(function()
+        // Check if pipeline has already been loaded
+        if (!loaded)
         {
-            // [TODO]
-            // Update only the item that has been changed
-        });
-        */
-    }
+            // Get pipeline container
+            var pipelineContainer = gloperate.canvas0.pipeline;
 
-    // [TODO] After a while, this crashes (the faster, the sooner)
-    //        Check if this happens also with qml-only operations,
-    //        or if something in e.g. the qml-cppexpose-bridge
-    //        causes a memory leak
-    /*
-    Timer
-    {
-        interval: 200
-        running:  true
-        repeat:   true
+            // Load root pipeline
+            var pipelineName = pipelineContainer.getDescription().stages[0];
+            pipeline.path = pipelineName;
 
-        onTriggered:
-        {
-            pipeline.update();
+            // Done
+            loaded = true;
         }
     }
-    */
 }

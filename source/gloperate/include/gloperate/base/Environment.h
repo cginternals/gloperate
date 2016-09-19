@@ -13,7 +13,6 @@
 #include <gloperate/base/ComponentManager.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/System.h>
-#include <gloperate/base/PipelineApi.h>
 #include <gloperate/input/InputManager.h>
 
 // [DEBUG]
@@ -266,7 +265,6 @@ protected:
     ResourceManager               m_resourceManager;  ///< Resource manager for loaders/storers
     TimeManager                   m_timeManager;      ///< Manager for virtual time and timers
     System                        m_system;           ///< System functions for scripting
-    PipelineApi                   m_pipeline;         ///< Pipeline API for scripting
     InputManager                  m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
 
     std::vector<AbstractCanvas *> m_canvases;         ///< List of active canvases

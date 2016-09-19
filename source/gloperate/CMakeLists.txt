@@ -40,7 +40,6 @@ set(headers
 
     ${include_path}/base/Environment.h
     ${include_path}/base/System.h
-    ${include_path}/base/PipelineApi.h
     ${include_path}/base/ComponentManager.h
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
@@ -99,6 +98,8 @@ set(headers
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/interfaces/RenderInterface.inl
     ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/FramebufferStage.h
+    ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
@@ -130,7 +131,6 @@ set(sources
 
     ${source_path}/base/Environment.cpp
     ${source_path}/base/System.cpp
-    ${source_path}/base/PipelineApi.cpp
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/AbstractCanvas.cpp
@@ -163,6 +163,8 @@ set(sources
     ${source_path}/rendering/RenderPass.cpp
 
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/FramebufferStage.cpp
+    ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
     ${source_path}/stages/base/ProceduralTextureStage.cpp
     ${source_path}/stages/base/MixerStage.cpp

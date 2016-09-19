@@ -1,13 +1,25 @@
 
 #include <gloperate/pipeline/Pipeline.h>
 
+#include <iostream>
 #include <vector>
 #include <set>
 
 #include <cppassist/logging/logging.h>
+#include <cppassist/string/manipulation.h>
+
+#include <cppexpose/variant/Variant.h>
+
+#include <gloperate/base/Environment.h>
+#include <gloperate/base/ComponentManager.h>
+#include <gloperate/pipeline/Parameter.h>
+#include <gloperate/pipeline/Input.h>
+#include <gloperate/pipeline/Output.h>
+#include <gloperate/pipeline/ProxyOutput.h>
 
 
 using namespace cppassist;
+using namespace cppexpose;
 
 
 namespace gloperate
@@ -21,6 +33,11 @@ Pipeline::Pipeline(Environment * environment, const std::string & name)
 : Stage(environment, name)
 , m_sorted(false)
 {
+    // Register functions
+    addFunction("createStage",      this, &Pipeline::scr_createStage);
+    addFunction("removeStage",      this, &Pipeline::scr_removeStage);
+    addFunction("createConnection", this, &Pipeline::scr_createConnection);
+    addFunction("removeConnection", this, &Pipeline::scr_removeConnection);
 }
 
 Pipeline::~Pipeline()
@@ -34,23 +51,40 @@ const std::vector<Stage *> Pipeline::stages() const
 
 Stage * Pipeline::stage(const std::string & name) const
 {
+    if (m_stagesMap.find(name) == m_stagesMap.end())
+    {
+        return nullptr;
+    }
+
     return m_stagesMap.at(name);
 }
 
 void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
 {
+    // Check parameters
     if (!stage)
     {
         return;
     }
 
+    // Find free name
+    std::string name = getFreeName(stage->name());
+    stage->setName(name);
+
+    // Add stage as property
     addProperty(stage, ownership);
 
+    // Add stage
     m_stages.push_back(stage);
     if (stage->name() != "") {
         m_stagesMap.insert(std::make_pair(stage->name(), stage));        
     }
 
+    // Shouldn't be required if each slot of a stage would disconnect from connections
+    // and this would be propagated to the normal stage order invalidation
+    invalidateStageOrder();
+
+    // Emit signal
     stageAdded(stage);
 }
 
@@ -74,6 +108,10 @@ bool Pipeline::removeStage(Stage * stage)
 
     removeProperty(stage);
 
+    // Shouldn't be required if each slot of a stage would disconnect from connections
+    // and this would be propagated to the normal stage order invalidation
+    invalidateStageOrder();
+
     return true;
 }
 
@@ -87,6 +125,12 @@ bool Pipeline::destroyStage(Stage * stage)
     delete stage;
 
     return true;
+}
+
+void Pipeline::invalidateStageOrder()
+{
+    std::cout << "Invalidate stage order; resort on next process" << std::endl;
+    m_sorted = false;
 }
 
 bool Pipeline::isPipeline() const
@@ -148,6 +192,66 @@ void Pipeline::sortStages()
     m_sorted = couldBeSorted;
 }
 
+AbstractSlot * Pipeline::getSlot(const std::string & path)
+{
+    std::vector<std::string> names = cppassist::split(path, '.');
+
+    Stage * stage = this;
+
+    for (size_t i=0; i<names.size(); i++)
+    {
+        std::string name = names[i];
+
+        // Ignore own stage name at the beginning
+        if (name == stage->name() && i == 0)
+        {
+            continue;
+        }
+
+        // Check if stage is a pipeline and has a substage with the given name
+        if (stage->isPipeline())
+        {
+            Pipeline * pipeline = static_cast<Pipeline *>(stage);
+            Stage * sub = pipeline->stage(name);
+
+            if (sub)
+            {
+                stage = sub;
+                continue;
+            }
+        }
+
+        // If there is no more substage but more names to fetch, return error
+        if (i != names.size() - 1)
+        {
+            return nullptr;
+        }
+
+        // Check if stage has a slot with that name
+        auto parameterSlot = stage->parameter(name);
+        if (parameterSlot) {
+            return parameterSlot;
+        }
+
+        auto inputSlot = stage->input(name);
+        if (inputSlot) {
+            return inputSlot;
+        }
+
+        auto outputSlot = stage->output(name);
+        if (outputSlot) {
+            return outputSlot;
+        }
+
+        auto proxyOutputSlot = stage->proxyOutput(name);
+        if (proxyOutputSlot) {
+            return proxyOutputSlot;
+        }
+    }
+
+    return nullptr;
+}
+
 void Pipeline::onContextInit(AbstractGLContext * context)
 {
     for (auto stage : m_stages)
@@ -186,6 +290,76 @@ void Pipeline::onInputValueChanged(AbstractSlot *)
 void Pipeline::onOutputRequiredChanged(AbstractSlot *)
 {
     // Not necessary for pipelines (handled by inner connections)
+}
+
+cppexpose::Variant Pipeline::scr_getDescription()
+{
+    // Get stage description
+    cppexpose::Variant obj = Stage::scr_getDescription();
+
+    // List stages
+    Variant stages = Variant::array();
+
+    for (auto stage : m_stages)
+    {
+        stages.asArray()->push_back(stage->name());
+    }
+
+    (*obj.asMap())["stages"] = stages;
+
+    // Return pipeline description
+    return obj;
+}
+
+std::string Pipeline::scr_createStage(const std::string & className, const std::string & name)
+{
+    // Get component manager
+    auto componentManager = m_environment->componentManager();
+
+    // Get component for the requested stage
+    auto component = componentManager->component<gloperate::Stage>(className);
+
+    if (component)
+    {
+        // Create stage
+        Stage * stage = component->createInstance(m_environment, name);
+        addStage(stage);
+
+        return stage->name();
+    }
+
+    return "";
+}
+
+void Pipeline::scr_removeStage(const std::string & name)
+{
+    Stage * stage = this->stage(name);
+
+    removeStage(stage);
+}
+
+void Pipeline::scr_createConnection(const std::string & from, const std::string & to)
+{
+    AbstractSlot * slotTo   = getSlot(to);
+    AbstractSlot * slotFrom = getSlot(from);
+
+    if (slotTo && slotFrom)
+    {
+        if (slotTo->slotType() == SlotType::Input || slotTo->slotType() == SlotType::ProxyOutput)
+        {
+            static_cast<AbstractInputSlot *>(slotTo)->connect(slotFrom);
+        }
+    }
+}
+
+void Pipeline::scr_removeConnection(const std::string & to)
+{
+    AbstractSlot * slotTo = getSlot(to);
+
+    if (slotTo->slotType() == SlotType::Input || slotTo->slotType() == SlotType::ProxyOutput)
+    {
+        static_cast<AbstractInputSlot *>(slotTo)->disconnect();
+    }
 }
 
 

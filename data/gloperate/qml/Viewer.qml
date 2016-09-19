@@ -181,17 +181,21 @@ Page
 
         onItemClicked: // (menu, name)
         {
-            if (name == 'screenshot') {
+            if (name == 'screenshot')
+            {
                 screenshot.visible = true;
             }
 
-            else if (name == 'video') {
+            else if (name == 'video')
+            {
                 video.visible = true;
                 videoDialog.update();
             }
 
-            else if (name == 'edit') {
-                pipelineWindow.createObject(page, {});
+            else if (name == 'edit')
+            {
+                pipelineEditor.visible = !pipelineEditor.visible;
+                pipelineEditor.load();
             }
         }
     }
@@ -223,10 +227,36 @@ Page
     {
         id: render
 
-        anchors.fill: main
-        z:            -1
+        anchors.top:    main.top
+        anchors.bottom: main.bottom
+        anchors.left:   main.left
+        anchors.right:  pipelineEditor.left
+
+        z: -1
 
         stage: page.stage
+    }
+
+    // Pipeline editor
+    PipelineEditor
+    {
+        id: pipelineEditor
+
+        anchors.right: main.right
+        anchors.top:   main.top
+        width:         visible ? main.width * 0.75 : 0
+        height:        main.height
+
+        visible: false
+
+        Behavior on width
+        {
+            NumberAnimation
+            {
+                easing.type: Easing.InOutQuad
+                duration:    600
+            }
+        }
     }
 
     // Settings dialog
@@ -340,25 +370,6 @@ Page
                     anchors.fill:    parent
                     anchors.margins: Ui.style.panelPadding
                 }
-            }
-        }
-    }
-
-    // Pipeline editor
-    Component
-    {
-        id: pipelineWindow
-
-        ApplicationWindow
-        {
-            title:   "Pipeline"
-            width:   1024
-            height:  800
-            visible: true
-
-            PipelineEditor
-            {
-                anchors.fill: parent
             }
         }
     }

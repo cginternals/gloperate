@@ -2,6 +2,12 @@
 #pragma once
 
 
+#include <gloperate/pipeline/Parameter.h>
+#include <gloperate/pipeline/Input.h>
+#include <gloperate/pipeline/Output.h>
+#include <gloperate/pipeline/ProxyOutput.h>
+
+
 namespace gloperate
 {
 
@@ -40,6 +46,17 @@ ProxyOutput<T> * Stage::createProxyOutput(const std::string & name, const T & de
     this->addProxyOutput(proxy, cppexpose::PropertyOwnership::Parent);
 
     return proxy;
+}
+
+template <typename T>
+AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string & name, const T & defaultValue)
+{
+         if (slotType == "Input")       return createInput<T>      (name, defaultValue);
+    else if (slotType == "Output")      return createOutput<T>     (name, defaultValue);
+    else if (slotType == "Parameter")   return createParameter<T>  (name, defaultValue);
+    else if (slotType == "ProxyOutput") return createProxyOutput<T>(name, defaultValue);
+
+    return nullptr;
 }
 
 

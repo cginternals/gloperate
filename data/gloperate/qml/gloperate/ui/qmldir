@@ -11,6 +11,8 @@ SettingsPlugins 1.0 SettingsPlugins.qml
 
 PipelineEditor  1.0 PipelineEditor.qml
 Pipeline        1.0 Pipeline.qml
+Connectors      1.0 Connectors.qml
 Stage           1.0 Stage.qml
-Slot            1.0 Slot.qml
-EditableSlot    1.0 EditableSlot.qml
+InputSlot       1.0 InputSlot.qml
+OutputSlot      1.0 OutputSlot.qml
+AddSlotDialog   1.0 AddSlotDialog.qml

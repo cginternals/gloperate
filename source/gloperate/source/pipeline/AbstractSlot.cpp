@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/Pipeline.h>
 
 
 namespace gloperate
@@ -32,18 +33,20 @@ Stage * AbstractSlot::parentStage() const
 
 std::string AbstractSlot::qualifiedName() const
 {
-    std::stringstream ss;
+    std::string path = name();
 
     Stage * stage = parentStage();
+    path = stage->name() + "." + path;
 
-    if (stage)
+    Pipeline * pipeline = stage->parentPipeline();
+    while (pipeline)
     {
-        ss << stage->name() << ".";
+        path = pipeline->name() + "." + path;
+
+        pipeline = pipeline->parentPipeline();
     }
 
-    ss << name();
-
-    return ss.str();
+    return path;
 }
 
 bool AbstractSlot::isRequired() const

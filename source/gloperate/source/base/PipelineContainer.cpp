@@ -1,13 +1,15 @@
 
 #include <gloperate/base/PipelineContainer.h>
 
+#include <gloperate/base/Environment.h>
+
 
 namespace gloperate
 {
 
 
 PipelineContainer::PipelineContainer(Environment * environment)
-: Pipeline(environment, "Viewer")
+: Pipeline(environment, "pipeline")
 , deviceViewport ("deviceViewport",  this, glm::vec4(0, 0, 0, 0))
 , virtualViewport("virtualViewport", this, glm::vec4(0, 0, 0, 0))
 , backgroundColor("backgroundColor", this, glm::vec3(1.0, 1.0, 1.0))

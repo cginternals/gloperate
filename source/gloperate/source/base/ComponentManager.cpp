@@ -14,19 +14,19 @@ ComponentManager::ComponentManager()
 : cppexpose::Object("components")
 {
     // Register functions
-    addFunction("pluginPaths",      this, &ComponentManager::script_pluginPaths);
-    addFunction("addPluginPath",    this, &ComponentManager::script_addPluginPath);
-    addFunction("removePluginPath", this, &ComponentManager::script_removePluginPath);
-    addFunction("scanPlugins",      this, &ComponentManager::script_scanPlugins);
-    addFunction("components",       this, &ComponentManager::script_components);
-    addFunction("printComponents",  this, &ComponentManager::script_printComponents);
+    addFunction("pluginPaths",      this, &ComponentManager::scr_pluginPaths);
+    addFunction("addPluginPath",    this, &ComponentManager::scr_addPluginPath);
+    addFunction("removePluginPath", this, &ComponentManager::scr_removePluginPath);
+    addFunction("scanPlugins",      this, &ComponentManager::scr_scanPlugins);
+    addFunction("components",       this, &ComponentManager::scr_components);
+    addFunction("printComponents",  this, &ComponentManager::scr_printComponents);
 }
 
 ComponentManager::~ComponentManager()
 {
 }
 
-cppexpose::Variant ComponentManager::script_pluginPaths()
+cppexpose::Variant ComponentManager::scr_pluginPaths()
 {
     std::vector<std::string> paths = this->pluginPaths();
 
@@ -38,22 +38,22 @@ cppexpose::Variant ComponentManager::script_pluginPaths()
     return lst;
 }
 
-void ComponentManager::script_addPluginPath(const std::string & path)
+void ComponentManager::scr_addPluginPath(const std::string & path)
 {
     this->addPluginPath(path);
 }
 
-void ComponentManager::script_removePluginPath(const std::string & path)
+void ComponentManager::scr_removePluginPath(const std::string & path)
 {
     this->removePluginPath(path);
 }
 
-void ComponentManager::script_scanPlugins(const std::string & identifier)
+void ComponentManager::scr_scanPlugins(const std::string & identifier)
 {
     this->scanPlugins(identifier);
 }
 
-cppexpose::Variant ComponentManager::script_components()
+cppexpose::Variant ComponentManager::scr_components()
 {
     cppexpose::Variant lst = cppexpose::Variant::array();
 
@@ -77,7 +77,7 @@ cppexpose::Variant ComponentManager::script_components()
     return lst;
 }
 
-void ComponentManager::script_printComponents()
+void ComponentManager::scr_printComponents()
 {
     this->printComponents();
 }

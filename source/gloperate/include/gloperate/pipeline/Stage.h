@@ -155,6 +155,8 @@ public:
     */
     void deinitContext(AbstractGLContext * context);
 
+    // [TODO] prepare
+
     /**
     *  @brief
     *    Process stage
@@ -269,6 +271,18 @@ public:
 
     /**
     *  @brief
+    *    Get input by name
+    *
+    *  @param[in] name
+    *    Name of input
+    *
+    *  @return
+    *    Input (can be null)
+    */
+    AbstractInputSlot * input(const std::string & name);
+
+    /**
+    *  @brief
     *    Create dynamic input
     *
     *  @tparam T
@@ -327,6 +341,18 @@ public:
     *    Parameter (can be null)
     */
     const AbstractDataSlot * parameter(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Get parameter by name
+    *
+    *  @param[in] name
+    *    Name of parameter
+    *
+    *  @return
+    *    Parameter (can be null)
+    */
+    AbstractDataSlot * parameter(const std::string & name);
 
     /**
     *  @brief
@@ -391,6 +417,18 @@ public:
 
     /**
     *  @brief
+    *    Get output by name
+    *
+    *  @param[in] name
+    *    Name of output
+    *
+    *  @return
+    *    Output (can be null)
+    */
+    AbstractDataSlot * output(const std::string & name);
+
+    /**
+    *  @brief
     *    Create dynamic output
     *
     *  @tparam T
@@ -452,6 +490,18 @@ public:
 
     /**
     *  @brief
+    *    Get proxy output by name
+    *
+    *  @param[in] name
+    *    Name of proxy output
+    *
+    *  @return
+    *    Proxy output (can be null)
+    */
+    AbstractInputSlot * proxyOutput(const std::string & name);
+
+    /**
+    *  @brief
     *    Create dynamic proxy output
     *
     *  @tparam T
@@ -489,6 +539,74 @@ public:
     *    Proxy output (must NOT null!)
     */
     void removeProxyOutput(AbstractInputSlot * proxyOutput);
+
+    /**
+    *  @brief
+    *    Get unique name for property or sub-stage
+    *
+    *  @param[in] name
+    *    Proposed name
+    *
+    *  @return
+    *    Name that is not yet used
+    *
+    *  @remarks
+    *    The function checks if the proposed name is already used. If it is,
+    *    it adds a number to the name, beginning with 2 and counts until it
+    *    finds a free name. For example, getFreeName("Stage") will return
+    *    - Stage
+    *    - Stage2
+    *    - Stage3
+    *    - ...
+    */
+    std::string getFreeName(const std::string & name) const;
+
+    /**
+    *  @brief
+    *    Create dynamic slot
+    *
+    *  @tparam T
+    *    Type of the slot
+    *  @param[in] slotType
+    *    Type of the slot ("Input", "Output", "Parameter", or "ProxyOutput")
+    *  @param[in] name
+    *    Name of the proxy output
+    *  @param[in] defaultValue
+    *    Default value (optional)
+    *
+    *  @return
+    *    Slot, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic proxy output and transfers ownership to the stage.
+    */
+    template <typename T>
+    AbstractSlot * createSlot(const std::string & slotType, const std::string & name, const T & defaultValue = T());
+
+    /**
+    *  @brief
+    *    Create dynamic slot
+    *
+    *  @param[in] slotType
+    *    Type of the slot ("Input", "Output", "Parameter", or "ProxyOutput")
+    *  @param[in] type
+    *    Type of the slot ("int", "float", "vec3", ...)
+    *  @param[in] name
+    *    Name of the proxy output
+    *
+    *  @return
+    *    Output, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic proxy output and transfers ownership to the stage.
+    */
+    AbstractSlot * createSlot(const std::string & slotType, const std::string & type, const std::string & name);
+
+    /**
+    *  @brief
+    *    Invalidate any input connection caching
+    */
+    void invalidateInputConnections();
 
 
 protected:
@@ -583,6 +701,14 @@ protected:
     *    implement everything else in onProcess().
     */
     virtual void onOutputRequiredChanged(AbstractSlot * slot);
+
+
+protected:
+    // Scripting functions
+    virtual cppexpose::Variant scr_getDescription();
+    cppexpose::Variant scr_getConnections();
+    void scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name);
+    cppexpose::Variant scr_slotTypes();
 
 
 protected:

@@ -226,6 +226,7 @@ void InputSlot<T>::disconnect()
 {
     // Reset source property
     m_source.slot = nullptr;
+    m_sourceType  = SlotType::Empty;
     m_connection  = cppexpose::ScopedConnection();
 
     // Emit events
@@ -309,6 +310,7 @@ void InputSlot<T>::promoteConnection()
 {
     // Emit signal
     this->connectionChanged();
+    this->parentStage()->invalidateInputConnections();
 }
 
 template <typename T>
