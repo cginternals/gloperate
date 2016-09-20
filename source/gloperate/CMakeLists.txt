@@ -104,10 +104,15 @@ set(headers
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/base/SplitStage.h
+    ${include_path}/stages/base/BlitStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/DemoTriangleStage.h
     ${include_path}/stages/demos/DemoTimerStage.h
+    ${include_path}/stages/demos/DemoMultiFramePipeline.h
+    ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
+    ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
+    ${include_path}/stages/multiframe/MultiFrameControlStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -169,10 +174,15 @@ set(sources
     ${source_path}/stages/base/ProceduralTextureStage.cpp
     ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/base/SplitStage.cpp
+    ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
     ${source_path}/stages/demos/DemoTriangleStage.cpp
     ${source_path}/stages/demos/DemoTimerStage.cpp
+    ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
+    ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
+    ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
+    ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp
