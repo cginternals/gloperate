@@ -16,6 +16,15 @@ namespace gloperate
 {
 
 
+namespace
+{
+// these are not part of the OpenGL specification, but defined identically
+// in all platform-specific context creation APIs
+const auto GL_CONTEXT_CORE_PROFILE_BIT          = 0x1;
+const auto GL_CONTEXT_COMPATIBILITY_PROFILE_BIT = 0x2;
+}
+
+
 bool GLContextUtils::isValid()
 {
     return (tryFetchHandle() > 0);
@@ -48,6 +57,8 @@ gloperate::GLContextFormat GLContextUtils::retrieveFormat()
     GLboolean b;
 
     format.setVersion(retrieveVersion());
+
+    format.setProfile(retrieveProfile());
 
     i = -1; glGetIntegerv(GLenum::GL_RED_BITS, &i);
     format.setRedBufferSize(i);
@@ -106,11 +117,41 @@ glbinding::Version GLContextUtils::retrieveVersion()
     return glbinding::Version(major, minor);
 }
 
+GLContextFormat::Profile GLContextUtils::retrieveProfile()
+{
+    assert(0 != glbinding::getCurrentContext());
+
+    GLint profileMask = -1;
+    glGetIntegerv(GLenum::GL_CONTEXT_PROFILE_MASK, &profileMask);
+
+    if (profileMask <= 0) // probably a context < 3.2 with no support for profiles
+    {
+        return GLContextFormat::Profile::None;
+    }
+
+    if ((profileMask & GL_CONTEXT_CORE_PROFILE_BIT) != 0)
+    {
+        return GLContextFormat::Profile::Core;
+    }
+    
+    if ((profileMask & GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) != 0)
+    {
+        return GLContextFormat::Profile::Compatibility;
+    }
+
+    return GLContextFormat::Profile::None;
+}
+
 std::string GLContextUtils::version()
 {
     assert(0 != glbinding::getCurrentContext());
 
     return glbinding::ContextInfo::version().toString();
+}
+
+std::string GLContextUtils::profile()
+{
+    return GLContextFormat::profileString(retrieveProfile());
 }
 
 std::string GLContextUtils::vendor()
