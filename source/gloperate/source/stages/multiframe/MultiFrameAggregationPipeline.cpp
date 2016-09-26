@@ -38,6 +38,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
 
     addStage(m_controlStage);
     m_controlStage->frameNumber << renderInterface.frameCounter;
+    m_controlStage->viewport << renderInterface.deviceViewport;
 
     addStage(m_aggregationStage);
     m_aggregationStage->aggregationFBO << m_aggregationFramebufferStage->fbo;

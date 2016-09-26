@@ -9,6 +9,8 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
+#include <glm/vec4.hpp>
+
 
 namespace gloperate
 {
@@ -29,10 +31,11 @@ public:
 
 
 public:
-    Input<int>    frameNumber;       ///< Total frame count
+    Input<int>       frameNumber;       ///< Total frame count
+    Input<glm::vec4> viewport;          ///< Viewport
 
-    Output<int>   currentFrame;      ///< Number of aggregated frames
-    Output<float> aggregationFactor; ///< Weight for next aggregated frame (= 1 / frameNumber)
+    Output<int>      currentFrame;      ///< Number of aggregated frames
+    Output<float>    aggregationFactor; ///< Weight for next aggregated frame (= 1 / frameNumber)
 
 
 public:

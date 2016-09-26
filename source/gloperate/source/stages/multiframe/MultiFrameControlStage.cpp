@@ -14,11 +14,15 @@ CPPEXPOSE_COMPONENT(MultiFrameControlStage, gloperate::Stage)
 
 MultiFrameControlStage::MultiFrameControlStage(Environment * environment, const std::string & name)
 : Stage(environment, name)
-, m_currentFrame(1)
+, m_currentFrame(0)
 , frameNumber("frameNumber", this)
+, viewport("viewport", this)
 , currentFrame("currentFrame", this)
 , aggregationFactor("aggregationFactor", this)
 {
+    viewport.valueChanged.connect([this](const glm::vec4 &){
+        m_currentFrame = 0;
+    });
 }
 
 MultiFrameControlStage::~MultiFrameControlStage()
@@ -27,12 +31,10 @@ MultiFrameControlStage::~MultiFrameControlStage()
 
 void MultiFrameControlStage::onProcess(AbstractGLContext *)
 {
-    // TODO: Mechanism to restart aggregation
+    m_currentFrame++;
 
     currentFrame.setValue(m_currentFrame);
     aggregationFactor.setValue(1.0f/m_currentFrame);
-
-    m_currentFrame++;
 }
 
 
