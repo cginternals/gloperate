@@ -14,8 +14,8 @@ CPPEXPOSE_COMPONENT(DemoMultiFramePipeline, gloperate::Stage)
 DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_frameRenderStage(new DemoStage(environment, "TriangleStage"))
-, m_multiFramePipeline(new MultiFrameAggregationPipeline(environment, "MultiFrameAggregationStage"))
+, m_frameRenderStage(new DemoStage(environment, "DemoStage"))
+, m_multiFramePipeline(new MultiFrameAggregationPipeline(environment, "MultiFrameAggregationPipeline"))
 {
     addStage(m_multiFramePipeline);
     m_multiFramePipeline->setFrameRenderer(m_frameRenderStage->renderInterface);
