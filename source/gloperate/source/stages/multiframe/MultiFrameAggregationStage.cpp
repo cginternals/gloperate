@@ -79,8 +79,8 @@ void MultiFrameAggregationStage::onContextInit(AbstractGLContext * context)
 void MultiFrameAggregationStage::onProcess(AbstractGLContext * context)
 {
     gl::glViewport(
-        (*viewport).x,
-        (*viewport).y,
+        0,              // Origin (0,0) because content was already shifted in main render pass
+        0,              // Applying the origin again would shift the result again
         (*viewport).z,
         (*viewport).w
     );
