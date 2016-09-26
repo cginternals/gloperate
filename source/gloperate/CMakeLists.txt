@@ -98,6 +98,7 @@ set(headers
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/interfaces/RenderInterface.inl
     ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/CustomFramebufferStage.h
     ${include_path}/stages/base/FramebufferStage.h
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
@@ -168,6 +169,7 @@ set(sources
     ${source_path}/rendering/RenderPass.cpp
 
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/CustomFramebufferStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp

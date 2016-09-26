@@ -14,6 +14,7 @@ namespace gloperate
 
 
 class BasicFramebufferStage;
+class CustomFramebufferStage;
 class BlitStage;
 class MultiFrameControlStage;
 class MultiFrameAggregationStage;
@@ -54,7 +55,7 @@ protected:
 protected:
     // Stages
     BasicFramebufferStage      * m_renderFramebufferStage;
-    BasicFramebufferStage      * m_aggregationFramebufferStage;
+    CustomFramebufferStage     * m_aggregationFramebufferStage;
     MultiFrameControlStage     * m_controlStage;
     MultiFrameAggregationStage * m_aggregationStage;
     BlitStage                  * m_blitStage;

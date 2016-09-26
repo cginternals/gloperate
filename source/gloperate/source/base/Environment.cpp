@@ -11,6 +11,7 @@
 
 // Local components
 #include <gloperate/stages/base/BasicFramebufferStage.h>
+#include <gloperate/stages/base/CustomFramebufferStage.h>
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/ProceduralTextureStage.h>
 #include <gloperate/stages/base/MixerStage.h>
@@ -191,6 +192,7 @@ void Environment::exit(int exitCode)
 void Environment::registerLocalPlugins()
 {
     m_componentManager.addComponent(&BasicFramebufferStage::Component);
+    m_componentManager.addComponent(&CustomFramebufferStage::Component);
     m_componentManager.addComponent(&TextureLoadStage::Component);
     m_componentManager.addComponent(&ProceduralTextureStage::Component);
     m_componentManager.addComponent(&MixerStage::Component);

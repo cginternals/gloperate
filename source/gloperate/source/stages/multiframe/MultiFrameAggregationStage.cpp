@@ -11,8 +11,6 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects/logging.h>
-
 static const std::array<glm::vec2, 4> s_vertices { {
     glm::vec2( +1.f, -1.f ),
     glm::vec2( +1.f, +1.f ),
