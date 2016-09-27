@@ -23,6 +23,17 @@ namespace gloperate
 class GLOPERATE_API TransparencyKernelStage : public gloperate::Stage
 {
 public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        TransparencyKernelStage, gloperate::Stage
+      , ""
+      , ""
+      , ""
+      , "Stage that provides noise for random discard based transparency"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
+
+public:
     TransparencyKernelStage(gloperate::Environment * environment, const std::string & name = "TransparencyKernelStage");
 
 public:

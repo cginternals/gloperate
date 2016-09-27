@@ -17,6 +17,17 @@ namespace gloperate
 class GLOPERATE_API MultiFrameDiscDistributionStage : public gloperate::Stage
 {
 public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        MultiFrameDiscDistributionStage, gloperate::Stage
+      , ""
+      , ""
+      , ""
+      , "Stage that provides random vectors with disc distribution"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
+
+public:
     MultiFrameDiscDistributionStage(gloperate::Environment * environment, const std::string & name = "MultiFrameDiscDistributionStage");
 
 public:

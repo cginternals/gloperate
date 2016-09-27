@@ -8,6 +8,9 @@ namespace gloperate
 {
 
 
+CPPEXPOSE_COMPONENT(SubpixelAntialiasingOffsetStage, gloperate::Stage)
+
+
 SubpixelAntialiasingOffsetStage::SubpixelAntialiasingOffsetStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , viewport("viewport", this)

@@ -10,6 +10,9 @@ namespace gloperate
 {
 
 
+CPPEXPOSE_COMPONENT(NoiseKernelStage, gloperate::Stage)
+
+
 NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , inputDimensions("inputDimensions", this)

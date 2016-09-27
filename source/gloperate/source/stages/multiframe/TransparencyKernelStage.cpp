@@ -12,6 +12,9 @@ namespace gloperate
 {
 
 
+CPPEXPOSE_COMPONENT(TransparencyKernelStage, gloperate::Stage)
+
+
 TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , reprocess("reprocess", this)

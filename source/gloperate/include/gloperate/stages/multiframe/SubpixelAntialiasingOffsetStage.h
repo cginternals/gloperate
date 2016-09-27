@@ -18,6 +18,17 @@ namespace gloperate
 class GLOPERATE_API SubpixelAntialiasingOffsetStage : public gloperate::Stage
 {
 public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        SubpixelAntialiasingOffsetStage, gloperate::Stage
+      , ""
+      , ""
+      , ""
+      , "Stage that provides random offsets for subpixel antialiasing"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
+
+public:
     SubpixelAntialiasingOffsetStage(gloperate::Environment * environment, const std::string & name = "SubpixelAntialiasingOffsetStage");
 
 public:

@@ -70,6 +70,9 @@ namespace gloperate
 {
 
 
+CPPEXPOSE_COMPONENT(SSAOKernelStage, gloperate::Stage)
+
+
 SSAOKernelStage::SSAOKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , enable("enable", this)

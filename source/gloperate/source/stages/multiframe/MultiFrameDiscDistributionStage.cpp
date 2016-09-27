@@ -9,6 +9,9 @@ namespace gloperate
 {
 
 
+CPPEXPOSE_COMPONENT(MultiFrameDiscDistributionStage, gloperate::Stage)
+
+
 MultiFrameDiscDistributionStage::MultiFrameDiscDistributionStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , isActive("isActive", this)

@@ -30,6 +30,17 @@ namespace gloperate
 class GLOPERATE_API SSAOKernelStage : public gloperate::Stage
 {
 public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        SSAOKernelStage, gloperate::Stage
+      , ""
+      , ""
+      , ""
+      , "Stage that provides kernel and noise for SSAO effect"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
+
+public:
     SSAOKernelStage(gloperate::Environment * environment, const std::string & name = "SSAOKernelStage");
 
 public:

@@ -29,6 +29,17 @@ namespace gloperate
 class GLOPERATE_API NoiseKernelStage : public gloperate::Stage
 {
 public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        NoiseKernelStage, gloperate::Stage
+      , ""
+      , ""
+      , ""
+      , "Stage that provides random noise"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
+
+public:
     NoiseKernelStage(gloperate::Environment * environment, const std::string & name = "NoiseKernelStage");
 
 public:
