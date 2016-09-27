@@ -6,12 +6,10 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/pipeline/Input.h>
+#include <gloperate/pipeline/Parameter.h>
 
 #include <gloperate/rendering/NoiseTexture.h>
 
@@ -34,11 +32,11 @@ public:
     NoiseKernelStage(gloperate::Environment * environment, const std::string & name = "NoiseKernelStage");
 
 public:
-    Input<int> inputDimensions;
-    Input<int> outputDimensions;
-    Input<int> size;
+    Parameter<int> inputDimensions;
+    Parameter<int> outputDimensions;
+    Parameter<int> size;
 
-    Output<globjects::ref_ptr<globjects::Texture>> noiseTexture;
+    Output<globjects::Texture *> noiseTexture;
 
 protected:
     std::unique_ptr<NoiseTexture> m_noiseTexture;

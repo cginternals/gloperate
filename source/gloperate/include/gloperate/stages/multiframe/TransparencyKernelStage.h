@@ -7,8 +7,6 @@
 #include <gloperate/pipeline/Output.h>
 #include <gloperate/pipeline/Input.h>
 
-#include <globjects/base/ref_ptr.h>
-
 
 namespace globjects
 {
@@ -30,7 +28,7 @@ public:
 public:
     Input<bool> reprocess;
 
-    Output<globjects::ref_ptr<globjects::Texture>> transparencyMaskTexture;
+    Output<globjects::Texture *> transparencyMaskTexture;
 
 protected:
     virtual void onProcess(gloperate::AbstractGLContext * context) override;

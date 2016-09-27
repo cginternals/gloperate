@@ -11,6 +11,7 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Output.h>
+#include <gloperate/pipeline/Parameter.h>
 #include <gloperate/pipeline/Input.h>
 
 
@@ -34,14 +35,14 @@ public:
 public:
     Input<bool> enable;
 
-    Input<int> kernelSize;
-    Input<int> noiseSize;
+    Parameter<int> kernelSize;
+    Parameter<int> noiseSize;
 
     Input<int> currentFrame;
     Input<int> multiFrameCount;
 
-    Output<globjects::ref_ptr<globjects::Texture>> ssaoTexture;
-    Output<globjects::ref_ptr<globjects::Texture>> noiseTexture;
+    Output<globjects::Texture *> ssaoTexture;
+    Output<globjects::Texture *> noiseTexture;
 
 protected:
 
