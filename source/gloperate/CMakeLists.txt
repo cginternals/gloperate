@@ -93,7 +93,9 @@ set(headers
     ${include_path}/rendering/Camera.h
     ${include_path}/rendering/Drawable.h
     ${include_path}/rendering/Drawable.inl
+    ${include_path}/rendering/NoiseTexture.h
     ${include_path}/rendering/RenderPass.h
+    ${include_path}/rendering/TransparencyMasksGenerator.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/interfaces/RenderInterface.inl
@@ -114,6 +116,11 @@ set(headers
     ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
     ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
     ${include_path}/stages/multiframe/MultiFrameControlStage.h
+    ${include_path}/stages/multiframe/MultiFrameDiscDistributionStage.h
+    ${include_path}/stages/multiframe/NoiseKernelStage.h
+    ${include_path}/stages/multiframe/SSAOKernelStage.h
+    ${include_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.h
+    ${include_path}/stages/multiframe/TransparencyKernelStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -166,7 +173,9 @@ set(sources
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp
     ${source_path}/rendering/Drawable.cpp
+    ${source_path}/rendering/NoiseTexture.cpp
     ${source_path}/rendering/RenderPass.cpp
+    ${source_path}/rendering/TransparencyMasksGenerator.cpp
 
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/CustomFramebufferStage.cpp
@@ -185,6 +194,11 @@ set(sources
     ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
     ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp
+    ${source_path}/stages/multiframe/MultiFrameDiscDistributionStage.cpp
+    ${source_path}/stages/multiframe/NoiseKernelStage.cpp
+    ${source_path}/stages/multiframe/SSAOKernelStage.cpp
+    ${source_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.cpp
+    ${source_path}/stages/multiframe/TransparencyKernelStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp
