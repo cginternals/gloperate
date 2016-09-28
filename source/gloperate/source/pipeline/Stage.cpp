@@ -398,7 +398,7 @@ cppexpose::Variant Stage::scr_getConnections()
 {
     Variant obj = Variant::array();
 
-    auto addInputSlot = [&obj, this] (AbstractSlot * slot)
+    auto addSlot = [&obj, this] (AbstractSlot * slot)
     {
         // Check if slot is connected
         if (slot->isConnected())
@@ -423,7 +423,12 @@ cppexpose::Variant Stage::scr_getConnections()
     // List connections
     for (auto input : m_inputs)
     {
-        addInputSlot(input);
+        addSlot(input);
+    }
+
+    for (auto output : m_outputs)
+    {
+        addSlot(output);
     }
 
     // Return connections

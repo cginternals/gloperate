@@ -73,33 +73,11 @@ BaseItem
 
         MenuItem
         {
-            text: 'Add Parameter'
-
-            onTriggered:
-            {
-                dialog.slotType = 'Parameter';
-                dialog.open();
-            }
-        }
-
-        MenuItem
-        {
             text: 'Add Output'
 
             onTriggered:
             {
                 dialog.slotType = 'Output';
-                dialog.open();
-            }
-        }
-
-        MenuItem
-        {
-            text: 'Add ProxyOutput'
-
-            onTriggered:
-            {
-                dialog.slotType = 'ProxyOutput';
                 dialog.open();
             }
         }
@@ -281,23 +259,6 @@ BaseItem
             var component  = inverse ? outputSlotComponent : inputSlotComponent;
             var parentItem = inverse ? outputs : inputs;
 
-            // Add parameters
-            for (var i in stageDesc.parameters)
-            {
-                var paramName = stageDesc.parameters[i];
-
-                var slotItem = component.createObject(parentItem, {
-                    pipeline: item.pipeline,
-                    path: path + '.' + paramName,
-                    name: paramName,
-                    color: Ui.style.pipelineConnectorColorParam,
-                    connectable: false
-                } );
-
-                slotItems[paramName] = slotItem;
-            }
-
-            // Add inputs
             for (var i in stageDesc.inputs)
             {
                 var inputName = stageDesc.inputs[i];
@@ -317,7 +278,6 @@ BaseItem
             var component  = inverse ? inputSlotComponent : outputSlotComponent;
             var parentItem = inverse ? inputs : outputs;
 
-            // Add outputs
             for (var i in stageDesc.outputs)
             {
                 var outputName = stageDesc.outputs[i];
@@ -329,20 +289,6 @@ BaseItem
                 } );
 
                 slotItems[outputName] = slotItem;
-            }
-
-            // Add proxy outputs
-            for (var i in stageDesc.proxyOutputs)
-            {
-                var proxyName = stageDesc.proxyOutputs[i];
-
-                var slotItem = component.createObject(parentItem, {
-                    pipeline: item.pipeline,
-                    path: path + '.' + proxyName,
-                    name: proxyName
-                } );
-
-                slotItems[proxyName] = slotItem;
             }
         }
     }
