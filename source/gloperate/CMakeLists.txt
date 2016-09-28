@@ -73,6 +73,10 @@ set(headers
     ${include_path}/pipeline/AbstractSlot.h
     ${include_path}/pipeline/Slot.h
     ${include_path}/pipeline/Slot.inl
+    ${include_path}/pipeline/Input.h
+    ${include_path}/pipeline/Input.inl
+    ${include_path}/pipeline/Output.h
+    ${include_path}/pipeline/Output.inl
     ${include_path}/pipeline/StageComponent.h
     ${include_path}/pipeline/StageComponent.inl
 
