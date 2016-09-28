@@ -11,7 +11,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/Parameter.h>
+#include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
 
@@ -38,8 +38,8 @@ public:
 
 
 public:
-    // Parameters
-    Parameter<std::string>       filename; ///< Texture filename
+    // Inputs
+    Input<std::string>           filename; ///< Texture filename
 
     // Outputs
     Output<globjects::Texture *> texture;  ///< Texture object

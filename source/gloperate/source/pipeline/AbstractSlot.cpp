@@ -12,18 +12,27 @@ namespace gloperate
 
 
 AbstractSlot::AbstractSlot()
-: m_slotType(SlotType::Empty)
+: m_slotType(SlotType::Unknown)
 , m_required(false)
+, m_feedback(false)
 {
 }
 
 AbstractSlot::~AbstractSlot()
 {
-}
+    // Get parent stage
+    Stage * stage = parentStage();
+    if (!stage) return;
 
-SlotType AbstractSlot::slotType() const
-{
-    return m_slotType;
+    // Remove slot from stage
+    if (m_slotType == SlotType::Input)
+    {
+        stage->removeInput(this);
+    }
+    else if (m_slotType == SlotType::Output)
+    {
+        stage->removeOutput(this);
+    }
 }
 
 Stage * AbstractSlot::parentStage() const
@@ -61,6 +70,38 @@ void AbstractSlot::setRequired(bool required)
         m_required = required;
 
         onRequiredChanged();
+    }
+}
+
+bool AbstractSlot::isFeedback() const
+{
+    return m_feedback;
+}
+
+void AbstractSlot::setFeedback(bool feedback)
+{
+    m_feedback = feedback;
+}
+
+bool AbstractSlot::isConnected() const
+{
+    return source() != nullptr;
+}
+
+void AbstractSlot::initSlot(SlotType slotType, Stage * parent, cppexpose::PropertyOwnership ownership)
+{
+    m_slotType = slotType;
+
+    if (parent)
+    {
+        if (m_slotType == SlotType::Input)
+        {
+            parent->addInput(this, ownership);
+        }
+        else if (m_slotType == SlotType::Output)
+        {
+            parent->addOutput(this, ownership);
+        }
     }
 }
 

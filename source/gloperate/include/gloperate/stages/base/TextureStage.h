@@ -12,8 +12,8 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/Output.h>
 #include <gloperate/pipeline/Input.h>
+#include <gloperate/pipeline/Output.h>
 
 
 namespace globjects
@@ -45,16 +45,14 @@ public:
 
 
 public:
-    // Parameters
-    Parameter<gl::GLenum> internalFormat;   ///< OpenGL internal image format
-    Parameter<gl::GLenum> format;           ///< OpenGL image format
-    Parameter<gl::GLenum> type;             ///< OpenGL data type
-
     // Inputs
-    Input<glm::vec2> size;                  ///< Image size
+    Input<gl::GLenum> internalFormat;     ///< OpenGL internal image format
+    Input<gl::GLenum> format;             ///< OpenGL image format
+    Input<gl::GLenum> type;               ///< OpenGL data type
+    Input<glm::vec2>  size;               ///< Image size
 
     // Outputs
-    Output<globjects::Texture *> texture;   ///< Texture
+    Output<globjects::Texture *> texture; ///< Texture
 
 
 public:

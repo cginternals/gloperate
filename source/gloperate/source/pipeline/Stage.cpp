@@ -13,8 +13,7 @@
 
 #include <gloperate/base/GlmProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/pipeline/AbstractInputSlot.h>
-#include <gloperate/pipeline/AbstractDataSlot.h>
+#include <gloperate/pipeline/AbstractSlot.h>
 
 
 using namespace cppassist;
@@ -69,7 +68,7 @@ bool Stage::requires(const Stage * stage, bool recursive) const
         return false;
     }
 
-    for (AbstractInputSlot * slot : m_inputs)
+    for (auto slot : m_inputs)
     {
         if (slot->isFeedback() || !slot->isConnected())
             continue;
@@ -102,13 +101,8 @@ bool Stage::needsProcessing() const
         return true;
     }
 
-    for (auto output : m_outputs) {
-        if (output->isRequired() && !output->isValid()) {
-            return true;
-        }
-    }
-
-    for (auto output : m_proxyOutputs) {
+    for (auto output : m_outputs)
+    {
         if (output->isRequired() && !output->isValid()) {
             return true;
         }
@@ -135,12 +129,12 @@ void Stage::invalidateOutputs()
     }
 }
 
-const std::vector<AbstractInputSlot *> & Stage::inputs() const
+const std::vector<AbstractSlot *> & Stage::inputs() const
 {
     return m_inputs;
 }
 
-const AbstractInputSlot * Stage::input(const std::string & name) const
+const AbstractSlot * Stage::input(const std::string & name) const
 {
     if (m_inputsMap.find(name) == m_inputsMap.end())
     {
@@ -150,7 +144,7 @@ const AbstractInputSlot * Stage::input(const std::string & name) const
     return m_inputsMap.at(name);
 }
 
-AbstractInputSlot * Stage::input(const std::string & name)
+AbstractSlot * Stage::input(const std::string & name)
 {
     if (m_inputsMap.find(name) == m_inputsMap.end())
     {
@@ -160,7 +154,7 @@ AbstractInputSlot * Stage::input(const std::string & name)
     return m_inputsMap.at(name);
 }
 
-void Stage::addInput(AbstractInputSlot * input, cppexpose::PropertyOwnership ownership)
+void Stage::addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownership)
 {
     // Check parameters
     if (!input) {
@@ -185,7 +179,7 @@ void Stage::addInput(AbstractInputSlot * input, cppexpose::PropertyOwnership own
     inputAdded(input);
 }
 
-void Stage::removeInput(AbstractInputSlot * input)
+void Stage::removeInput(AbstractSlot * input)
 {
     // Check parameters
     if (!input)
@@ -209,85 +203,12 @@ void Stage::removeInput(AbstractInputSlot * input)
     removeProperty(input);
 }
 
-const std::vector<AbstractDataSlot *> & Stage::parameters() const
-{
-    return m_parameters;
-}
-
-const AbstractDataSlot * Stage::parameter(const std::string & name) const
-{
-    if (m_parametersMap.find(name) == m_parametersMap.end())
-    {
-        return nullptr;
-    }
-
-    return m_parametersMap.at(name);
-}
-
-AbstractDataSlot * Stage::parameter(const std::string & name)
-{
-    if (m_parametersMap.find(name) == m_parametersMap.end())
-    {
-        return nullptr;
-    }
-
-    return m_parametersMap.at(name);
-}
-
-void Stage::addParameter(AbstractDataSlot * parameter, cppexpose::PropertyOwnership ownership)
-{
-    // Check parameters
-    if (!parameter) {
-        return;
-    }
-
-    // Find free name
-    std::string name = getFreeName(parameter->name());
-    parameter->setName(name);
-
-    // Add parameter as property
-    addProperty(parameter, ownership);
-
-    // Add parameter
-    m_parameters.push_back(parameter);
-    if (parameter->name() != "") {
-        m_parametersMap.insert(std::make_pair(parameter->name(), parameter));        
-    }
-
-    // Emit signal
-    parameterAdded(parameter);
-}
-
-void Stage::removeParameter(AbstractDataSlot * parameter)
-{
-    // Check parameters
-    if (!parameter)
-    {
-        return;
-    }
-
-    // Find parameter
-    auto it = std::find(m_parameters.begin(), m_parameters.end(), parameter);
-    if (it != m_parameters.end())
-    {
-        // Remove parameter
-        m_parameters.erase(it);
-        m_parametersMap.erase(parameter->name());
-
-        // Emit signal
-        parameterRemoved(parameter);
-    }
-
-    // Remove property
-    removeProperty(parameter);
-}
-
-const std::vector<AbstractDataSlot *> & Stage::outputs() const
+const std::vector<AbstractSlot *> & Stage::outputs() const
 {
     return m_outputs;
 }
 
-const AbstractDataSlot * Stage::output(const std::string & name) const
+const AbstractSlot * Stage::output(const std::string & name) const
 {
     if (m_outputsMap.find(name) == m_outputsMap.end())
     {
@@ -297,7 +218,7 @@ const AbstractDataSlot * Stage::output(const std::string & name) const
     return m_outputsMap.at(name);
 }
 
-AbstractDataSlot * Stage::output(const std::string & name)
+AbstractSlot * Stage::output(const std::string & name)
 {
     if (m_outputsMap.find(name) == m_outputsMap.end())
     {
@@ -307,7 +228,7 @@ AbstractDataSlot * Stage::output(const std::string & name)
     return m_outputsMap.at(name);
 }
 
-void Stage::addOutput(AbstractDataSlot * output, cppexpose::PropertyOwnership ownership)
+void Stage::addOutput(AbstractSlot * output, cppexpose::PropertyOwnership ownership)
 {
     // Check parameters
     if (!output) {
@@ -331,7 +252,7 @@ void Stage::addOutput(AbstractDataSlot * output, cppexpose::PropertyOwnership ow
     outputAdded(output);
 }
 
-void Stage::removeOutput(AbstractDataSlot * output)
+void Stage::removeOutput(AbstractSlot * output)
 {
     // Check parameters
     if (!output)
@@ -355,85 +276,12 @@ void Stage::removeOutput(AbstractDataSlot * output)
     removeProperty(output);
 }
 
-const std::vector<AbstractInputSlot *> & Stage::proxyOutputs() const
-{
-    return m_proxyOutputs;
-}
-
-const AbstractInputSlot * Stage::proxyOutput(const std::string & name) const
-{
-    if (m_proxyOutputsMap.find(name) == m_proxyOutputsMap.end())
-    {
-        return nullptr;
-    }
-
-    return m_proxyOutputsMap.at(name);
-}
-
-AbstractInputSlot * Stage::proxyOutput(const std::string & name)
-{
-    if (m_proxyOutputsMap.find(name) == m_proxyOutputsMap.end())
-    {
-        return nullptr;
-    }
-
-    return m_proxyOutputsMap.at(name);
-}
-
-void Stage::addProxyOutput(AbstractInputSlot * proxyOutput, cppexpose::PropertyOwnership ownership)
-{
-    // Check parameters
-    if (!proxyOutput) {
-        return;
-    }
-
-    // Find free name
-    std::string name = getFreeName(proxyOutput->name());
-    proxyOutput->setName(name);
-
-    // Add proxy output as property
-    addProperty(proxyOutput, ownership);
-
-    // Add proxy output
-    m_proxyOutputs.push_back(proxyOutput);
-    if (proxyOutput->name() != "") {
-        m_proxyOutputsMap.insert(std::make_pair(proxyOutput->name(), proxyOutput));        
-    }
-
-    // Emit signal
-    proxyOutputAdded(proxyOutput);
-}
-
-void Stage::removeProxyOutput(AbstractInputSlot * proxyOutput)
-{
-    // Check parameters
-    if (!proxyOutput)
-    {
-        return;
-    }
-
-    // Find proxy output
-    auto it = std::find(m_proxyOutputs.begin(), m_proxyOutputs.end(), proxyOutput);
-    if (it != m_proxyOutputs.end())
-    {
-        // Remove proxy output
-        m_proxyOutputs.erase(it);
-        m_proxyOutputsMap.erase(proxyOutput->name());
-
-        // Emit signal
-        proxyOutputRemoved(proxyOutput);
-    }
-
-    // Remove property
-    removeProperty(proxyOutput);
-}
-
-void Stage::outputRequiredChanged(AbstractSlot *slot)
+void Stage::outputRequiredChanged(AbstractSlot * slot)
 {
     onOutputRequiredChanged(slot);
 }
 
-void Stage::inputValueChanged(AbstractSlot *slot)
+void Stage::inputValueChanged(AbstractSlot * slot)
 {
     onInputValueChanged(slot);
 }
@@ -454,15 +302,15 @@ std::string Stage::getFreeName(const std::string & name) const
 
 AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string & type, const std::string & name)
 {
-    if (type == "int")     return createSlot<int>(slotType, name);
-    if (type == "float")   return createSlot<float>(slotType, name);
-    if (type == "vec2")    return createSlot<glm::vec2>(slotType, name);
-    if (type == "vec3")    return createSlot<glm::vec3>(slotType, name);
-    if (type == "vec4")    return createSlot<glm::vec4>(slotType, name);
-    if (type == "ivec2")   return createSlot<glm::ivec2>(slotType, name);
-    if (type == "ivec3")   return createSlot<glm::ivec3>(slotType, name);
-    if (type == "ivec4")   return createSlot<glm::ivec4>(slotType, name);
-    if (type == "texture") return createSlot<globjects::Texture *>(slotType, name);
+    if (type == "int")     return createSlot<int>                     (slotType, name);
+    if (type == "float")   return createSlot<float>                   (slotType, name);
+    if (type == "vec2")    return createSlot<glm::vec2>               (slotType, name);
+    if (type == "vec3")    return createSlot<glm::vec3>               (slotType, name);
+    if (type == "vec4")    return createSlot<glm::vec4>               (slotType, name);
+    if (type == "ivec2")   return createSlot<glm::ivec2>              (slotType, name);
+    if (type == "ivec3")   return createSlot<glm::ivec3>              (slotType, name);
+    if (type == "ivec4")   return createSlot<glm::ivec4>              (slotType, name);
+    if (type == "texture") return createSlot<globjects::Texture *>    (slotType, name);
     if (type == "fbo")     return createSlot<globjects::Framebuffer *>(slotType, name);
 
     return nullptr;
@@ -522,16 +370,6 @@ cppexpose::Variant Stage::scr_getDescription()
     // Get name
     (*obj.asMap())["name"] = name();
 
-    // List parameters
-    Variant parameters = Variant::array();
-
-    for (auto param : m_parameters)
-    {
-        parameters.asArray()->push_back(param->name());
-    }
-
-    (*obj.asMap())["parameters"] = parameters;
-
     // List inputs
     Variant inputs = Variant::array();
 
@@ -552,16 +390,6 @@ cppexpose::Variant Stage::scr_getDescription()
 
     (*obj.asMap())["outputs"] = outputs;
 
-    // List proxy outputs
-    Variant proxyOutputs = Variant::array();
-
-    for (auto proxy : m_proxyOutputs)
-    {
-        proxyOutputs.asArray()->push_back(proxy->name());
-    }
-
-    (*obj.asMap())["proxyOutputs"] = proxyOutputs;
-
     // Return stage description
     return obj;
 }
@@ -570,7 +398,7 @@ cppexpose::Variant Stage::scr_getConnections()
 {
     Variant obj = Variant::array();
 
-    auto addInputSlot = [&obj, this] (AbstractInputSlot * slot)
+    auto addInputSlot = [&obj, this] (AbstractSlot * slot)
     {
         // Check if slot is connected
         if (slot->isConnected())
@@ -596,11 +424,6 @@ cppexpose::Variant Stage::scr_getConnections()
     for (auto input : m_inputs)
     {
         addInputSlot(input);
-    }
-
-    for (auto proxy : m_proxyOutputs)
-    {
-        addInputSlot(proxy);
     }
 
     // Return connections

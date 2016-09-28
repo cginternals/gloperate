@@ -21,21 +21,16 @@ namespace gloperate
 class Environment;
 class AbstractGLContext;
 class AbstractSlot;
-class AbstractInputSlot;
-class AbstractDataSlot;
 class Pipeline;
+
+template <typename T>
+class Slot;
 
 template <typename T>
 class Input;
 
 template <typename T>
-class Parameter;
-
-template <typename T>
 class Output;
-
-template <typename T>
-class ProxyOutput;
 
 
 /**
@@ -51,27 +46,20 @@ class GLOPERATE_API Stage : public cppexpose::Object
 public:
     // Import data types into local namespace
     template <typename T>
-    using Input = gloperate::Input<T>;
+    using Slot = gloperate::Slot<T>;
 
     template <typename T>
-    using Parameter = gloperate::Parameter<T>;
+    using Input = gloperate::Input<T>;
 
     template <typename T>
     using Output = gloperate::Output<T>;
 
-    template <typename T>
-    using ProxyOutput = gloperate::ProxyOutput<T>;
-
 
 public:
-    cppexpose::Signal<AbstractInputSlot *> inputAdded;         ///< Called when an input has been added
-    cppexpose::Signal<AbstractInputSlot *> inputRemoved;       ///< Called when an input has been removed
-    cppexpose::Signal<AbstractDataSlot *>  parameterAdded;     ///< Called when a parameter has been added
-    cppexpose::Signal<AbstractDataSlot *>  parameterRemoved;   ///< Called when a parameter has been removed
-    cppexpose::Signal<AbstractDataSlot *>  outputAdded;        ///< Called when an output has been added
-    cppexpose::Signal<AbstractDataSlot *>  outputRemoved;      ///< Called when an output has been removed
-    cppexpose::Signal<AbstractInputSlot *> proxyOutputAdded;   ///< Called when a proxy output has been added
-    cppexpose::Signal<AbstractInputSlot *> proxyOutputRemoved; ///< Called when a proxy output has been removed
+    cppexpose::Signal<AbstractSlot *> inputAdded;    ///< Called when an input slot has been added
+    cppexpose::Signal<AbstractSlot *> inputRemoved;  ///< Called when an input slot has been removed
+    cppexpose::Signal<AbstractSlot *> outputAdded;   ///< Called when an output slot has been added
+    cppexpose::Signal<AbstractSlot *> outputRemoved; ///< Called when an output slot has been removed
 
 
 public:
@@ -255,7 +243,7 @@ public:
     *  @return
     *    List of inputs on the stage
     */
-    const std::vector<AbstractInputSlot *> & inputs() const;
+    const std::vector<AbstractSlot *> & inputs() const;
 
     /**
     *  @brief
@@ -267,7 +255,7 @@ public:
     *  @return
     *    Input (can be null)
     */
-    const AbstractInputSlot * input(const std::string & name) const;
+    const AbstractSlot * input(const std::string & name) const;
 
     /**
     *  @brief
@@ -279,7 +267,7 @@ public:
     *  @return
     *    Input (can be null)
     */
-    AbstractInputSlot * input(const std::string & name);
+    AbstractSlot * input(const std::string & name);
 
     /**
     *  @brief
@@ -310,7 +298,7 @@ public:
     *  @param[in] ownership
     *    Property ownership
     */
-    void addInput(AbstractInputSlot * input, cppexpose::PropertyOwnership ownership);
+    void addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownership);
 
     /**
     *  @brief
@@ -319,80 +307,7 @@ public:
     *  @param[in] input
     *    Input (must NOT null!)
     */
-    void removeInput(AbstractInputSlot * input);
-
-    /**
-    *  @brief
-    *    Get parameters
-    *
-    *  @return
-    *    List of parameters on the stage
-    */
-    const std::vector<AbstractDataSlot *> & parameters() const;
-
-    /**
-    *  @brief
-    *    Get parameter by name
-    *
-    *  @param[in] name
-    *    Name of parameter
-    *
-    *  @return
-    *    Parameter (can be null)
-    */
-    const AbstractDataSlot * parameter(const std::string & name) const;
-
-    /**
-    *  @brief
-    *    Get parameter by name
-    *
-    *  @param[in] name
-    *    Name of parameter
-    *
-    *  @return
-    *    Parameter (can be null)
-    */
-    AbstractDataSlot * parameter(const std::string & name);
-
-    /**
-    *  @brief
-    *    Create dynamic parameter
-    *
-    *  @tparam T
-    *    Type of the parameter
-    *  @param[in] name
-    *    Name of the parameter
-    *  @param[in] defaultValue
-    *    Default value (optional)
-    *
-    *  @return
-    *    Parameter, nullptr on error
-    *
-    *  @remarks
-    *    Creates a dynamic parameter and transfers ownership to the stage.
-    */
-    template <typename T>
-    Parameter<T> * createParameter(const std::string & name, const T & defaultValue = T());
-
-    /**
-    *  @brief
-    *    Add parameter
-    *
-    *  @param[in] parameter
-    *    Parameter (must NOT null!)
-    *  @param[in] ownership
-    *    Property ownership
-    */
-    void addParameter(AbstractDataSlot * parameter, cppexpose::PropertyOwnership ownership);
-
-    /**
-    *  @brief
-    *    Remove parameter
-    *
-    *  @param[in] parameter
-    *    Parameter (must NOT null!)
-    */
-    void removeParameter(AbstractDataSlot * parameter);
+    void removeInput(AbstractSlot * input);
 
     /**
     *  @brief
@@ -401,7 +316,7 @@ public:
     *  @return
     *    List of outputs on the stage
     */
-    const std::vector<AbstractDataSlot *> & outputs() const;
+    const std::vector<AbstractSlot *> & outputs() const;
 
     /**
     *  @brief
@@ -413,7 +328,7 @@ public:
     *  @return
     *    Output (can be null)
     */
-    const AbstractDataSlot * output(const std::string & name) const;
+    const AbstractSlot * output(const std::string & name) const;
 
     /**
     *  @brief
@@ -425,7 +340,7 @@ public:
     *  @return
     *    Output (can be null)
     */
-    AbstractDataSlot * output(const std::string & name);
+    AbstractSlot * output(const std::string & name);
 
     /**
     *  @brief
@@ -456,7 +371,7 @@ public:
     *  @param[in] ownership
     *    Property ownership
     */
-    void addOutput(AbstractDataSlot * output, cppexpose::PropertyOwnership ownership);
+    void addOutput(AbstractSlot * output, cppexpose::PropertyOwnership ownership);
 
     /**
     *  @brief
@@ -465,84 +380,11 @@ public:
     *  @param[in] output
     *    Output (must NOT null!)
     */
-    void removeOutput(AbstractDataSlot * output);
+    void removeOutput(AbstractSlot * output);
 
     /**
     *  @brief
-    *    Get proxy outputs
-    *
-    *  @return
-    *    List of proxy outputs on the stage
-    */
-    const std::vector<AbstractInputSlot *> & proxyOutputs() const;
-
-    /**
-    *  @brief
-    *    Get proxy output by name
-    *
-    *  @param[in] name
-    *    Name of proxy output
-    *
-    *  @return
-    *    Proxy output (can be null)
-    */
-    const AbstractInputSlot * proxyOutput(const std::string & name) const;
-
-    /**
-    *  @brief
-    *    Get proxy output by name
-    *
-    *  @param[in] name
-    *    Name of proxy output
-    *
-    *  @return
-    *    Proxy output (can be null)
-    */
-    AbstractInputSlot * proxyOutput(const std::string & name);
-
-    /**
-    *  @brief
-    *    Create dynamic proxy output
-    *
-    *  @tparam T
-    *    Type of the proxy output
-    *  @param[in] name
-    *    Name of the proxy output
-    *  @param[in] defaultValue
-    *    Default value (optional)
-    *
-    *  @return
-    *    Output, nullptr on error
-    *
-    *  @remarks
-    *    Creates a dynamic proxy output and transfers ownership to the stage.
-    */
-    template <typename T>
-    ProxyOutput<T> * createProxyOutput(const std::string & name, const T & defaultValue = T());
-
-    /**
-    *  @brief
-    *    Add proxy output
-    *
-    *  @param[in] proxyOutput
-    *    Proxy output (must NOT null!)
-    *  @param[in] ownership
-    *    Property ownership
-    */
-    void addProxyOutput(AbstractInputSlot * proxyOutput, cppexpose::PropertyOwnership ownership);
-
-    /**
-    *  @brief
-    *    Remove proxy output
-    *
-    *  @param[in] proxyOutput
-    *    Proxy output (must NOT null!)
-    */
-    void removeProxyOutput(AbstractInputSlot * proxyOutput);
-
-    /**
-    *  @brief
-    *    Get unique name for property or sub-stage
+    *    Get unique name for slot or sub-stage
     *
     *  @param[in] name
     *    Proposed name
@@ -568,9 +410,9 @@ public:
     *  @tparam T
     *    Type of the slot
     *  @param[in] slotType
-    *    Type of the slot ("Input", "Output", "Parameter", or "ProxyOutput")
+    *    Type of the slot ("Input" or "Output")
     *  @param[in] name
-    *    Name of the proxy output
+    *    Name of the slot
     *  @param[in] defaultValue
     *    Default value (optional)
     *
@@ -578,27 +420,27 @@ public:
     *    Slot, nullptr on error
     *
     *  @remarks
-    *    Creates a dynamic proxy output and transfers ownership to the stage.
+    *    Creates a dynamic slot and transfers ownership to the stage.
     */
     template <typename T>
-    AbstractSlot * createSlot(const std::string & slotType, const std::string & name, const T & defaultValue = T());
+    Slot<T> * createSlot(const std::string & slotType, const std::string & name, const T & defaultValue = T());
 
     /**
     *  @brief
     *    Create dynamic slot
     *
     *  @param[in] slotType
-    *    Type of the slot ("Input", "Output", "Parameter", or "ProxyOutput")
+    *    Type of the slot ("Input" or "Output")
     *  @param[in] type
-    *    Type of the slot ("int", "float", "vec3", ...)
+    *    Data type ("int", "float", "vec3", ...)
     *  @param[in] name
-    *    Name of the proxy output
+    *    Name of the slot
     *
     *  @return
     *    Output, nullptr on error
     *
     *  @remarks
-    *    Creates a dynamic proxy output and transfers ownership to the stage.
+    *    Creates a dynamic slot and transfers ownership to the stage.
     */
     AbstractSlot * createSlot(const std::string & slotType, const std::string & type, const std::string & name);
 
@@ -667,7 +509,7 @@ protected:
     *    Called when an input value has changed
     *
     *  @param[in] slot
-    *    Input slot (either input or parameter)
+    *    Input slot
     *
     *  @remarks
     *    The default implementation invalidates all outputs whenever
@@ -687,7 +529,7 @@ protected:
     *    Called when an output value's required-state has changed
     *
     *  @param[in] slot
-    *    Output slot (either output or proxy output)
+    *    Output slot
     *
     *  @remarks
     *    The default implementation is to require all input slots
@@ -715,14 +557,10 @@ protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
 
-    std::vector<AbstractInputSlot *>                     m_inputs;          ///< List of inputs
-    std::unordered_map<std::string, AbstractInputSlot *> m_inputsMap;       ///< Map of names and inputs
-    std::vector<AbstractDataSlot *>                      m_parameters;      ///< List of parameters
-    std::unordered_map<std::string, AbstractDataSlot *>  m_parametersMap;   ///< Map of names and parameters
-    std::vector<AbstractDataSlot *>                      m_outputs;         ///< List of outputs
-    std::unordered_map<std::string, AbstractDataSlot *>  m_outputsMap;      ///< Map of names and outputs
-    std::vector<AbstractInputSlot *>                     m_proxyOutputs;    ///< List of proxy outputs
-    std::unordered_map<std::string, AbstractInputSlot *> m_proxyOutputsMap; ///< Map of names and proxy outputs
+    std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
+    std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs
+    std::vector<AbstractSlot *>                     m_outputs;    ///< List of outputs
+    std::unordered_map<std::string, AbstractSlot *> m_outputsMap; ///< Map of names and outputs
 };
 
 

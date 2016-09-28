@@ -12,10 +12,8 @@
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ComponentManager.h>
-#include <gloperate/pipeline/Parameter.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/pipeline/ProxyOutput.h>
 
 
 using namespace cppassist;
@@ -228,11 +226,6 @@ AbstractSlot * Pipeline::getSlot(const std::string & path)
         }
 
         // Check if stage has a slot with that name
-        auto parameterSlot = stage->parameter(name);
-        if (parameterSlot) {
-            return parameterSlot;
-        }
-
         auto inputSlot = stage->input(name);
         if (inputSlot) {
             return inputSlot;
@@ -241,11 +234,6 @@ AbstractSlot * Pipeline::getSlot(const std::string & path)
         auto outputSlot = stage->output(name);
         if (outputSlot) {
             return outputSlot;
-        }
-
-        auto proxyOutputSlot = stage->proxyOutput(name);
-        if (proxyOutputSlot) {
-            return proxyOutputSlot;
         }
     }
 
@@ -345,10 +333,7 @@ void Pipeline::scr_createConnection(const std::string & from, const std::string 
 
     if (slotTo && slotFrom)
     {
-        if (slotTo->slotType() == SlotType::Input || slotTo->slotType() == SlotType::ProxyOutput)
-        {
-            static_cast<AbstractInputSlot *>(slotTo)->connect(slotFrom);
-        }
+        slotTo->connect(slotFrom);
     }
 }
 
@@ -356,9 +341,9 @@ void Pipeline::scr_removeConnection(const std::string & to)
 {
     AbstractSlot * slotTo = getSlot(to);
 
-    if (slotTo->slotType() == SlotType::Input || slotTo->slotType() == SlotType::ProxyOutput)
+    if (slotTo)
     {
-        static_cast<AbstractInputSlot *>(slotTo)->disconnect();
+        slotTo->disconnect();
     }
 }
 

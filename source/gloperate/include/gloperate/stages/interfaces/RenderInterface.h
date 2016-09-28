@@ -5,7 +5,6 @@
 #include <gloperate/base/GlmProperties.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/pipeline/OutputTypeSelector.h>
 
 
 namespace globjects {
@@ -37,12 +36,6 @@ template <typename StageType>
 class RenderInterface
 {
 public:
-    // Type alias for output type
-    template <typename T>
-    using OutputType = gloperate::OutputType<T, StageType>;
-
-
-public:
     // Inputs
     Input<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
     Input<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
@@ -52,7 +45,7 @@ public:
     Input<globjects::Framebuffer *> targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
 
     // Outputs
-    OutputType<bool>                rendered;        ///< 'true' if output has been rendered
+    Output<bool>                    rendered;        ///< 'true' if output has been rendered
 
 
 public:

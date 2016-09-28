@@ -67,25 +67,12 @@ set(headers
     ${include_path}/base/Storer.inl
     ${include_path}/base/GlmProperties.h
 
-    ${include_path}/pipeline/AbstractSlot.h
-    ${include_path}/pipeline/AbstractDataSlot.h
-    ${include_path}/pipeline/AbstractInputSlot.h
-    ${include_path}/pipeline/DataSlot.h
-    ${include_path}/pipeline/DataSlot.inl
-    ${include_path}/pipeline/InputSlot.h
-    ${include_path}/pipeline/InputSlot.inl
-    ${include_path}/pipeline/Parameter.h
-    ${include_path}/pipeline/Parameter.inl
-    ${include_path}/pipeline/Input.h
-    ${include_path}/pipeline/Input.inl
-    ${include_path}/pipeline/Output.h
-    ${include_path}/pipeline/Output.inl
-    ${include_path}/pipeline/ProxyOutput.h
-    ${include_path}/pipeline/ProxyOutput.inl
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/Stage.inl
     ${include_path}/pipeline/Pipeline.h
-    ${include_path}/pipeline/OutputTypeSelector.h
+    ${include_path}/pipeline/AbstractSlot.h
+    ${include_path}/pipeline/Slot.h
+    ${include_path}/pipeline/Slot.inl
     ${include_path}/pipeline/StageComponent.h
     ${include_path}/pipeline/StageComponent.inl
 
@@ -150,11 +137,9 @@ set(sources
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
 
-    ${source_path}/pipeline/AbstractSlot.cpp
-    ${source_path}/pipeline/AbstractDataSlot.cpp
-    ${source_path}/pipeline/AbstractInputSlot.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
+    ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/StageComponent.cpp
 
     ${source_path}/rendering/AbstractDrawable.cpp
