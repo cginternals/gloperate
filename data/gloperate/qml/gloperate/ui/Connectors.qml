@@ -11,10 +11,15 @@ import gloperate.base 1.0
 */
 Item
 {
-    property Item stages:    null
-    property Item pipeline:  null
-    property int  arrowSize: Ui.style.pipelineConnectorSize / 3.0
+    id: connectors
 
+    // Options
+    property var    pipelineInterface: null ///< Interface for accessing the pipeline
+    property Item   pipeline:          null ///< Pointer to pipeline item
+    property string path:              ''   ///< Path in the pipeline hierarchy (e.g., 'pipeline')
+    property int    arrowSize:         Ui.style.pipelineConnectorSize / 3.0
+
+    // 2D canvas for drawing
     Canvas
     {
         id: canvas
@@ -23,41 +28,49 @@ Item
 
         antialiasing: true
 
+        /**
+        *  Draw on canvas
+        */
         onPaint:
         {
+            // Get draw context
             var ctx = canvas.getContext('2d');
 
+            // Clear canvas
             ctx.clearRect(0, 0, width, height);
 
+            // Draw connectors
             drawConnectors(ctx);
         }
 
+        /**
+        *  Draw all connectors of the given pipeline
+        *
+        *  @param[in] ctx
+        *    Draw context
+        */
         function drawConnectors(ctx)
         {
-            // Get pipeline
-            var pl     = pipeline.getStage(pipeline.path);
-            var plDesc = pl.getDescription();
-
             // Get all stages of the pipeline and the pipeline itself
             var stages = [];
 
-            for (var i in plDesc.stages)
-            {
-                var st = pl[ plDesc.stages[i] ];
-                stages.push(st);
-            }
+            stages.push(path);
 
-            stages.push(pl);
+            var pipeline = pipelineInterface.getStage(path);
+
+            for (var i in pipeline.stages)
+            {
+                stages.push(path + '.' + pipeline.stages[i]);
+            }
 
             // Get connectors
             for (var i in stages)
             {
                 // Get stage
-                var st     = stages[i];
-                var stDesc = st.getDescription();
+                var stage = stages[i];
 
                 // Get connections of the stage
-                var connections = st.getConnections();
+                var connections = pipelineInterface.getConnections(stage);
                 for (var j in connections)
                 {
                     // Get connection
@@ -66,13 +79,13 @@ Item
                     var to   = connection.to;
 
                     // Draw connection
-                    var p0 = pipeline.getSlotPos(from, 'output');
-                    var p1 = pipeline.getSlotPos(to,   'input');
+                    var p0 = connectors.pipeline.getSlotPos(from);
+                    var p1 = connectors.pipeline.getSlotPos(to);
 
                     if (p0 != null && p1 != null)
                     {
                         // Highlight the connection if its input or output slot is selected
-                        var status = (pipeline.hoveredElement == from || pipeline.hoveredElement == to) ? 1 : 0;
+                        var status = (connectors.pipeline.hoveredElement == from || connectors.pipeline.hoveredElement == to) ? 1 : 0;
 
                         drawConnector(ctx, p0, p1, status);
                     }
@@ -80,21 +93,33 @@ Item
             }
 
             // Draw interactive connector
-            if (pipeline.selectedOutput != '')
+            if (connectors.pipeline.selectedOutput != '')
             {
-                var p0 = pipeline.getSlotPos(pipeline.selectedOutput, 'output');
-                var p1 = { x: pipeline.mouseX, y: pipeline.mouseY };
+                var p0 = connectors.pipeline.getSlotPos(connectors.pipeline.selectedOutput);
+                var p1 = { x: connectors.pipeline.mouseX, y: connectors.pipeline.mouseY };
                 drawConnector(ctx, p0, p1, 2);
             }
 
-            if (pipeline.selectedInput != '')
+            if (connectors.pipeline.selectedInput != '')
             {
-                var p0 = { x: pipeline.mouseX, y: pipeline.mouseY };
-                var p1 = pipeline.getSlotPos(pipeline.selectedInput, 'input');
+                var p0 = { x: connectors.pipeline.mouseX, y: connectors.pipeline.mouseY };
+                var p1 = connectors.pipeline.getSlotPos(connectors.pipeline.selectedInput);
                 drawConnector(ctx, p0, p1, 2);
             }
         }
 
+        /**
+        *  Draw a connector
+        *
+        *  @param[in] ctx
+        *    Draw context
+        *  @param[in] p0
+        *    Start position (x, y)
+        *  @param[in] p1
+        *    End position (x, y)
+        *  @param[in] status
+        *    Connector state (0: normal, 1: highlighted, 2: selected)
+        */
         function drawConnector(ctx, p0, p1, status)
         {
             var x0 = p0.x;
@@ -125,6 +150,9 @@ Item
         }
     }
 
+    /**
+    *  Request redraw
+    */
     function requestPaint()
     {
         canvas.requestPaint();

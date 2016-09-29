@@ -1,5 +1,6 @@
 
 import QtQuick 2.0
+
 import gloperate.base 1.0
 import gloperate.ui 1.0
 
@@ -13,11 +14,19 @@ Background
 {
     id: panel
 
+    // Internals
+    property bool loaded: false
+
     implicitWidth:  scrollArea.contentWidth  + 20
     implicitHeight: scrollArea.contentHeight + 20
 
-    property bool loaded: false
+    // Interface for communicating with the actual pipeline
+    PipelineInterface
+    {
+        id: pipelineInterface
+    }
 
+    // Scrollable container
     ScrollArea
     {
         id: scrollArea
@@ -27,6 +36,7 @@ Background
         contentWidth:  pipeline.width
         contentHeight: pipeline.height + menuBar.height
 
+        // Main menu
         Row
         {
             id: menuBar
@@ -48,26 +58,35 @@ Background
             }
         }
 
+        // Pipeline visualization
         Pipeline
         {
             id: pipeline
 
             anchors.top:  menuBar.bottom
             anchors.left: parent.left
+
+            pipelineInterface: pipelineInterface
         }
     }
 
-    function load()
+    /**
+    *  Load pipeline
+    *
+    *  @param[in] root
+    *    Pipeline object
+    */
+    function load(root)
     {
         // Check if pipeline has already been loaded
         if (!loaded)
         {
-            // Get pipeline container
-            var pipelineContainer = gloperate.canvas0.pipeline;
+            // Set pipeline root
+            pipelineInterface.root = root;
 
-            // Load root pipeline
-            var pipelineName = pipelineContainer.getDescription().stages[0];
-            pipeline.path = pipelineName;
+            // Get name of pipeline
+            var name = pipelineInterface.getStage('pipeline').stages[0];
+            pipeline.path = 'pipeline.' + name;
 
             // Done
             loaded = true;

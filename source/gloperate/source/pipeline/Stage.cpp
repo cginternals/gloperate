@@ -405,10 +405,7 @@ cppexpose::Variant Stage::scr_getConnections()
         {
             // Get connection info
             std::string from = slot->source()->qualifiedName();
-            if (from.substr(0, 9) == "pipeline.") from = from.substr(9);
-
-            std::string to = slot->qualifiedName();
-            if (to.substr(0, 9) == "pipeline.") to = to.substr(9);
+            std::string to   = slot->qualifiedName();
 
             // Describe connection
             Variant connection = Variant::map();

@@ -15,10 +15,9 @@ BaseItem
 {
     id: pipeline
 
-    width:  stages.width
-    height: stages.height
-
-    property string path: '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.SubPipeline')
+    // Options
+    property var    pipelineInterface: null ///< Interface for accessing the pipeline
+    property string path:              ''   ///< Path in the pipeline hierarchy (e.g., 'pipeline')
 
     // Internals
     property var    stageItems:     null ///< Item cache
@@ -28,6 +27,8 @@ BaseItem
     property int    mouseX:         0;   ///< Current mouse position (X component)
     property int    mouseY:         0;   ///< Current mouse position (Y component)
 
+    width:  stages.width
+    height: stages.height
 
     /**
     *  Component that contains the template for a stage
@@ -48,10 +49,12 @@ BaseItem
         width:  stages.width
         height: stages.height
 
-        pipeline: pipeline
-        stages:   stages
+        pipelineInterface: pipeline.pipelineInterface
+        path:              pipeline.path
+        pipeline:          pipeline
     }
 
+    // Main menu
     Menu
     {
         id: menu
@@ -69,25 +72,22 @@ BaseItem
 
             var menu = addMenu('Add Stage');
 
-            var components = gloperate.components.components();
-            for (var i in components)
+            var types = pipelineInterface.getStageTypes();
+            for (var i in types)
             {
-                var component = components[i];
+                var type = types[i];
 
-                if (component.type == 'gloperate::Stage')
+                var item = menu.addItem(type);
+
+                var callbackFactory = function(type)
                 {
-                    var item = menu.addItem(component.name);
-
-                    var callbackFactory = function(type)
+                    return function()
                     {
-                        return function()
-                        {
-                            pipeline.createStage(type, type);
-                        };
+                        pipeline.createStage(type, type);
                     };
+                };
 
-                    item.triggered.connect(callbackFactory(component.name));
-                }
+                item.triggered.connect(callbackFactory(type));
             }
 
             initialized = true;
@@ -106,6 +106,7 @@ BaseItem
 
         onClicked:
         {
+            // Deselect slots
             if (mouse.button == Qt.LeftButton)
             {
                 pipeline.selectedInput  = '';
@@ -113,6 +114,7 @@ BaseItem
                 connectors.requestPaint();
             }
 
+            // Open context menu
             if (mouse.button == Qt.RightButton)
             {
                 menu.initialize();
@@ -122,9 +124,11 @@ BaseItem
 
         onPositionChanged:
         {
+            // Update mouse position
             pipeline.mouseX = mouse.x;
             pipeline.mouseY = mouse.y;
 
+            // Draw new connection
             if (pipeline.selectedInput != '' || pipeline.selectedOutput != '')
             {
                 connectors.requestPaint();
@@ -144,42 +148,37 @@ BaseItem
     }
 
     /**
-    *  Load pipeline from pipeline viewer
+    *  Load pipeline
     */
     onPathChanged:
     {
         // Clear old pipeline
-        clear();
+        clearItems();
 
         // Exit if no pipeline is set
-        if (path == '')
+        if (path == '') {
             return;
+        }
 
         // Get pipeline
-        var pl     = getStage(pipeline.path);
-        var plDesc = pl.getDescription();
+        var pipelineDesc = pipelineInterface.getStage(pipeline.path);
 
         // Add stages
         var x = 200;
         var y = 150;
 
-        for (var i in plDesc.stages)
+        for (var i in pipelineDesc.stages)
         {
-            var name = plDesc.stages[i];
+            var name = pipelineDesc.stages[i];
 
-            // Get stage
-            var st     = pl[name];
-            var stDesc = st.getDescription();
-
-            // Create stage in editor
-            var stage = addStage(pipeline.path + '.' + name, name, x, y);
+            var stage = addStageItem(pipeline.path + '.' + name, name, x, y);
 
             x += stage.width + 20;
         }
 
         // Add pseudo stages for inputs and outputs of the pipeline itself
-        addInputStage (pipeline.path, 'Inputs',    20, 150);
-        addOutputStage(pipeline.path, 'Outputs', 1600, 150);
+        addInputStageItem (pipeline.path, 'Inputs',    20, 150);
+        addOutputStageItem(pipeline.path, 'Outputs', 1600, 150);
 
         // Do the layout
         computeLayout();
@@ -188,7 +187,10 @@ BaseItem
         connectors.requestPaint();
     }
 
-    function clear()
+    /**
+    *  Clear all items in the pipeline editor
+    */
+    function clearItems()
     {
         // Destroy all stages
         for (var i=0; i<stages.children.length; i++)
@@ -201,129 +203,185 @@ BaseItem
         stageItems = {};
     }
 
-    function addInputStage(path, name, x, y)
+    /**
+    *  Add item for stage
+    *
+    *  @param[in] path
+    *    Path in the pipeline hierarchy
+    *  @param[in] name
+    *    Name of stage
+    *  @param[in] x
+    *    X-position
+    *  @param[in] y
+    *    Y-position
+    */
+    function addStageItem(path, name, x, y)
     {
         // Create item for stage
-        var item = stageComponent.createObject(
+        var stage = stageComponent.createObject(
             stages,
             {
-                pipeline:       pipeline,
-                x:              x || 100,
-                y:              y || 100,
-                name:           name,
-                color:          Ui.style.pipelineTitleColor2,
-                includeInputs:  true,
-                includeOutputs: false,
-                inverse:        true,
-                allowClose:     false
+                pipelineInterface: pipelineInterface,
+                pipeline:          pipeline,
+                x:                 x || 100,
+                y:                 y || 100,
+                name:              name || 'Stage'
             }
         );
 
         // Load stage
-        item.path = path;
+        stage.path = path;
 
         // Add to item cache
-        stageItems[name] = item;
-
-        // Return item
-        return item;
-    }
-
-    function addOutputStage(path, name, x, y)
-    {
-        // Create item for stage
-        var item = stageComponent.createObject(
-            stages,
-            {
-                pipeline:       pipeline,
-                x:              x || 100,
-                y:              y || 100,
-                name:           name,
-                color:          Ui.style.pipelineTitleColor2,
-                includeInputs:  false,
-                includeOutputs: true,
-                inverse:        true,
-                allowClose:     false
-            }
-        );
-
-        // Load stage
-        item.path = path;
-
-        // Add to item cache
-        stageItems[name] = item;
-
-        // Return item
-        return item;
-    }
-
-    function addStage(path, name, x, y)
-    {
-        // Create item for stage
-        var item = stageComponent.createObject(
-            stages,
-            {
-                pipeline: pipeline,
-                x:        x || 100,
-                y:        y || 100,
-                name:     name || 'Stage'
-            }
-        );
-
-        // Load stage
-        item.path = path;
-
-        // Add to item cache
-        stageItems[name] = item;
+        stageItems[name] = stage;
 
         // Connect signal to remove the stage
-        item.closed.connect(function()
+        stage.closed.connect(function()
         {
             removeStage(path, name);
         });
 
         // Return item
-        return item;
+        return stage;
     }
 
+    /**
+    *  Add item for input-stage
+    *
+    *  @param[in] path
+    *    Path in the pipeline hierarchy
+    *  @param[in] name
+    *    Name of stage
+    *  @param[in] x
+    *    X-position
+    *  @param[in] y
+    *    Y-position
+    */
+    function addInputStageItem(path, name, x, y)
+    {
+        // Create item for stage
+        var stage = stageComponent.createObject(
+            stages,
+            {
+                pipelineInterface: pipelineInterface,
+                pipeline:          pipeline,
+                x:                 x || 100,
+                y:                 y || 100,
+                name:              name,
+                color:             Ui.style.pipelineTitleColor2,
+                includeInputs:     true,
+                includeOutputs:    false,
+                inverse:           true,
+                allowClose:        false
+            }
+        );
+
+        // Load stage
+        stage.path = path;
+
+        // Add to item cache
+        stageItems[name] = stage;
+
+        // Return item
+        return stage;
+    }
+
+    /**
+    *  Add item for output-stage
+    *
+    *  @param[in] path
+    *    Path in the pipeline hierarchy
+    *  @param[in] name
+    *    Name of stage
+    *  @param[in] x
+    *    X-position
+    *  @param[in] y
+    *    Y-position
+    */
+    function addOutputStageItem(path, name, x, y)
+    {
+        // Create item for stage
+        var stage = stageComponent.createObject(
+            stages,
+            {
+                pipelineInterface: pipelineInterface,
+                pipeline:          pipeline,
+                x:                 x || 100,
+                y:                 y  || 100,
+                name:              name,
+                color:             Ui.style.pipelineTitleColor2,
+                includeInputs:     false,
+                includeOutputs:    true,
+                inverse:           true,
+                allowClose:        false
+            }
+        );
+
+        // Load stage
+        stage.path = path;
+
+        // Add to item cache
+        stageItems[name] = stage;
+
+        // Return item
+        return stage;
+    }
+
+    /**
+    *  Create new stage in pipeline
+    *
+    *  @param[in] path
+    *    Path of pipeline
+    *  @param[in] className
+    *    Stage class
+    *  @param[in] name
+    *    Name of stage
+    */
+    function createStage(className, name)
+    {
+        // Create stage
+        var realName =  pipelineInterface.createStage(pipeline.path, className, name);
+
+        // Create stage item
+        addStageItem(pipeline.path + '.' + realName, realName, 100, 100);
+    }
+
+    /**
+    *  Remove stage from pipeline
+    *
+    *  @param[in] path
+    *    Path of pipeline
+    *  @param[in] name
+    *    Name of stage
+    */
     function removeStage(path, name)
     {
+        // Remove stage item
         stageItems[name].destroy();
-
         delete stageItems[name];
 
-        getStage(pipeline.path).removeStage(name);
+        // Destroy stage
+        pipelineInterface.removeStage(pipeline.path, name);
 
+        // Redraw connections
         connectors.requestPaint();
     }
 
-    function createStage(className, name)
-    {
-        var realName = getStage(pipeline.path).createStage(className, name);
-
-        addStage(pipeline.path + '.' + realName, realName, 100, 100);
-    }
-
+    /**
+    *  Compute automatic layout for stages
+    */
     function computeLayout()
     {
         // [TODO]
     }
 
-    function getStage(path)
-    {
-        var st = gloperate.canvas0.pipeline;
-
-        var names = path.split('.');
-        for (var i=0; i<names.length; i++)
-        {
-            var name = names[i];
-            st = st[name];
-        }
-
-        return st;
-    }
-
-    function getSlotPos(path, type)
+    /**
+    *  Get position of slot in pipeline
+    *
+    *  @param[in] path
+    *    Path in pipeline hierarchy (e.g., 'pipeline.stage1.input1')
+    */
+    function getSlotPos(path)
     {
         // The path must start with the path to this pipeline, otherwise something is wrong
         var prefix = pipeline.path + '.';
@@ -343,7 +401,7 @@ BaseItem
                 var stageItem = stageItems[stageName];
                 if (stageItem)
                 {
-                    var pos = stageItem.getSlotPos(slotName, type);
+                    var pos = stageItem.getSlotPos(slotName);
                     return stageItem.mapToItem(pipeline, pos.x, pos.y);
                 }
             }
@@ -359,14 +417,14 @@ BaseItem
 
                 if (inputsItem && outputsItem)
                 {
-                    var pos = inputsItem.getSlotPos(slotName, type);
+                    var pos = inputsItem.getSlotPos(slotName);
 
                     if (pos)
                     {
                         return inputsItem.mapToItem(pipeline, pos.x, pos.y);
                     }
 
-                    pos = outputsItem.getSlotPos(slotName, type);
+                    pos = outputsItem.getSlotPos(slotName);
 
                     if (pos)
                     {
@@ -380,14 +438,26 @@ BaseItem
         return null;
     }
 
-    function elementEntered(path)
+    /**
+    *  Called when mouse has entered a slot
+    *
+    *  @param[in] path
+    *    Path in pipeline hierarchy (e.g., 'pipeline.stage1.input1')
+    */
+    function onSlotEntered(path)
     {
         hoveredElement = path;
 
         connectors.requestPaint();
     }
 
-    function elementLeft(path)
+    /**
+    *  Called when mouse has left a slot
+    *
+    *  @param[in] path
+    *    Path in pipeline hierarchy (e.g., 'pipeline.stage1.input1')
+    */
+    function onSlotExited(path)
     {
         if (hoveredElement == path)
         {
@@ -397,16 +467,22 @@ BaseItem
         connectors.requestPaint();
     }
 
-    function selectInput(path)
+    /**
+    *  Called when an input slot has been selected
+    *
+    *  @param[in] path
+    *    Path in pipeline hierarchy (e.g., 'pipeline.stage1.input1')
+    */
+    function onInputSelected(path)
     {
         // If input slot is already connected, remove connection
-        getStage(pipeline.path).removeConnection(path);
+        pipelineInterface.removeConnection(path);
 
         // Connection created
         if (path != '' && selectedOutput != '')
         {
             // Create connection
-            getStage(pipeline.path).createConnection(selectedOutput, path);
+            pipelineInterface.createConnection(selectedOutput, path);
 
             // Reset selection
             selectedInput  = '';
@@ -421,16 +497,23 @@ BaseItem
             selectedOutput = '';
         }
 
+        // Redraw connections
         connectors.requestPaint();
     }
 
-    function selectOutput(path)
+    /**
+    *  Called when an output slot has been selected
+    *
+    *  @param[in] path
+    *    Path in pipeline hierarchy (e.g., 'pipeline.stage1.output1')
+    */
+    function onOutputSelected(path)
     {
         // Connection created
         if (path != '' && selectedInput != '')
         {
             // Create connection
-            getStage(pipeline.path).createConnection(path, selectedInput);
+            pipelineInterface.createConnection(path, selectedInput);
 
             // Reset selection
             selectedInput  = '';
@@ -445,6 +528,7 @@ BaseItem
             selectedOutput = path;
         }
 
+        // Redraw connections
         connectors.requestPaint();
     }
 }

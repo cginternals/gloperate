@@ -106,6 +106,7 @@ bool Pipeline::removeStage(Stage * stage)
 
     removeProperty(stage);
 
+    // [TODO]
     // Shouldn't be required if each slot of a stage would disconnect from connections
     // and this would be propagated to the normal stage order invalidation
     invalidateStageOrder();
