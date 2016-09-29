@@ -32,7 +32,6 @@ class Stage;
 *    and it will add the inputs and outputs directly to the stage (the interface
 *    itself is not an object in the hierarchy).
 */
-template <typename StageType>
 class RenderInterface
 {
 public:
@@ -67,6 +66,3 @@ public:
 
 
 } // namespace gloperate
-
-
-#include <gloperate/stages/interfaces/RenderInterface.inl>
