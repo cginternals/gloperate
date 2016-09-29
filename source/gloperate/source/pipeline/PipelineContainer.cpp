@@ -1,5 +1,5 @@
 
-#include <gloperate/base/PipelineContainer.h>
+#include <gloperate/pipeline/PipelineContainer.h>
 
 #include <gloperate/base/Environment.h>
 
