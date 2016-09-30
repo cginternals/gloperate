@@ -146,7 +146,8 @@ void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, con
     if (cppassist::hasSuffix(file, ".raw"))
     {
         auto texture = new globjects::Texture(gl::GL_TEXTURE_2D);
-        auto raw = cppassist::RawFile(path + "/" + file);
+        auto raw = cppassist::RawFile();
+        raw.load(path + "/" + file);
 
         if (!raw.isValid())
         {

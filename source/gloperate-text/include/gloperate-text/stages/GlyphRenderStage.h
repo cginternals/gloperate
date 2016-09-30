@@ -5,8 +5,6 @@
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 
-#include <gloperate/base/Color.h>
-
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 #include <gloperate/pipeline/Stage.h>
