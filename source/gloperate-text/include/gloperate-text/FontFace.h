@@ -65,11 +65,11 @@ public:
     FontFace();
 
     /**
-     *  @brief
-     *    Destructor
-     *
-     *    Releases all glyphs. The glyph texture remains if it is shared.
-     */
+    *  @brief
+    *    Destructor
+    *
+    *    Releases all glyphs. The glyph texture remains if it is shared.
+    */
     virtual ~FontFace();
 
     /**
