@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <cppassist/io/FilePath.h>
 
 #include <globjects/base/ref_ptr.h>
