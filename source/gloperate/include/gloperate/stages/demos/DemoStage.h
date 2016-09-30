@@ -42,7 +42,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface<Stage> renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
 
 public:

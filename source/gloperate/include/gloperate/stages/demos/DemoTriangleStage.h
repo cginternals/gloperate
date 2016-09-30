@@ -44,7 +44,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface<Stage>           renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface                  renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
     Input<globjects::Texture *>      texture;         ///< Texture object

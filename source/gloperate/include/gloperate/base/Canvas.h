@@ -3,7 +3,7 @@
 
 
 #include <gloperate/base/AbstractCanvas.h>
-#include <gloperate/base/PipelineContainer.h>
+#include <gloperate/pipeline/PipelineContainer.h>
 #include <gloperate/input/constants.h>
 
 

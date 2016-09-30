@@ -3,6 +3,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
+
 import gloperate.rendering 1.0
 import gloperate.base 1.0
 import gloperate.ui 1.0
@@ -17,11 +18,12 @@ Page
 //  property string stage: 'DemoStage'
 
     // UI status
-    property real uiStatus: 1.0
+             property real uiStatus:  1.0
     readonly property bool uiEnabled: uiStatus > 0.0
 
     focus: true
 
+    // Slowly fade out UI elements when deactivated
     Behavior on uiStatus
     {
         NumberAnimation
@@ -195,7 +197,7 @@ Page
             else if (name == 'edit')
             {
                 pipelineEditor.visible = !pipelineEditor.visible;
-                pipelineEditor.load();
+                pipelineEditor.load(gloperate.canvas0.pipeline);
             }
         }
     }
