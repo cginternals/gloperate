@@ -89,6 +89,7 @@ public:
     *    maximum required steps for loading.
     *
     *  @return
+    *    A configured and initialized FontFace on success, else 'nullptr'
     */
     virtual FontFace * load(
         const std::string & filename
