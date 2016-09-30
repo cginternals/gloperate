@@ -46,9 +46,6 @@ class GLOPERATE_API Stage : public cppexpose::Object
 public:
     // Import data types into local namespace
     template <typename T>
-    using Slot = gloperate::Slot<T>;
-
-    template <typename T>
     using Input = gloperate::Input<T>;
 
     template <typename T>
