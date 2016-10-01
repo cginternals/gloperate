@@ -93,8 +93,12 @@ void AbstractCanvas::exportImage(std::string filename, int width, int height, in
     m_requestImage = true;
 }
 
-void AbstractCanvas::setVideoTarget(const cppexpose::VariantMap & parameters, std::string backend)
+void AbstractCanvas::setVideoTarget(const cppexpose::Variant & parameters, std::string backend)
 {
+    // Check parameters
+    const cppexpose::VariantMap * map = parameters.asMap();
+    if (!map) return;
+
     // Create video exporter backend
     auto component = m_environment->componentManager()->component<AbstractVideoExporter>(backend);
     if (!component) return;
@@ -103,10 +107,10 @@ void AbstractCanvas::setVideoTarget(const cppexpose::VariantMap & parameters, st
     m_videoExporter = component->createInstance();
 
     // Configure video exporter
-    m_videoExporter->setTarget(this, parameters);
+    m_videoExporter->setTarget(this, *map);
 }
 
-void AbstractCanvas::exportVideo(const cppexpose::VariantMap & parameters, std::string backend)
+void AbstractCanvas::exportVideo(const cppexpose::Variant & parameters, std::string backend)
 {
     setVideoTarget(parameters, backend);
 
@@ -142,7 +146,7 @@ int AbstractCanvas::exportProgress()
     return m_videoExporter->progress();
 }
 
-cppexpose::VariantArray AbstractCanvas::videoExporterPlugins()
+cppexpose::Variant AbstractCanvas::videoExporterPlugins()
 {
     cppexpose::VariantArray plugins;
 
@@ -151,7 +155,7 @@ cppexpose::VariantArray AbstractCanvas::videoExporterPlugins()
         plugins.push_back(cppexpose::Variant(component->name()));
     }
 
-    return plugins;
+    return cppexpose::Variant(plugins);
 }
 
 void AbstractCanvas::render(globjects::Framebuffer * targetFBO)

@@ -124,7 +124,7 @@ public:
     *  @param[in] backend
     *    Name of video backend to use
     */
-    void setVideoTarget(const cppexpose::VariantMap & parameters, std::string backend = "FFMPEGVideoExporter");
+    void setVideoTarget(const cppexpose::Variant & parameters, std::string backend = "FFMPEGVideoExporter");
 
     /**
     *  @brief
@@ -135,7 +135,7 @@ public:
     *  @param[in] backend
     *    Name of video backend to use
     */
-    void exportVideo(const cppexpose::VariantMap & parameters, std::string backend = "FFMPEGVideoExporter");
+    void exportVideo(const cppexpose::Variant & parameters, std::string backend = "FFMPEGVideoExporter");
 
     /**
     *  @brief
@@ -165,7 +165,7 @@ public:
     *  @return
     *    Vector of the available plugin names for video export backends
     */
-    cppexpose::VariantArray videoExporterPlugins();
+    cppexpose::Variant videoExporterPlugins();
 
     /**
     *  @brief
