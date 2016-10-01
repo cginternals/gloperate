@@ -23,9 +23,13 @@ AbstractCanvas::AbstractCanvas(Environment * environment)
 , m_videoExporter(nullptr)
 , m_requestImage(false)
 , m_requestVideo(false)
+, m_asyncVideoExportOn(false)
+, m_asyncVideoFinalize(false)
 {
     addFunction("exportImage",          this, &AbstractCanvas::exportImage);
+    addFunction("setVideoTarget",       this, &AbstractCanvas::setVideoTarget);
     addFunction("exportVideo",          this, &AbstractCanvas::exportVideo);
+    addFunction("toggleVideoExport",    this, &AbstractCanvas::toggleVideoExport);
     addFunction("exportProgress",       this, &AbstractCanvas::exportProgress);
     addFunction("videoExporterPlugins", this, &AbstractCanvas::videoExporterPlugins);
 
@@ -89,7 +93,7 @@ void AbstractCanvas::exportImage(std::string filename, int width, int height, in
     m_requestImage = true;
 }
 
-void AbstractCanvas::exportVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend)
+void AbstractCanvas::setVideoTarget(const cppexpose::VariantMap & parameters, std::string backend)
 {
     // Create video exporter backend
     auto component = m_environment->componentManager()->component<AbstractVideoExporter>(backend);
@@ -99,10 +103,33 @@ void AbstractCanvas::exportVideo(std::string filename, int width, int height, in
     m_videoExporter = component->createInstance();
 
     // Configure video exporter
-    m_videoExporter->setTarget(this, filename, width, height, fps, seconds);
+    m_videoExporter->setTarget(this, parameters);
+}
+
+void AbstractCanvas::exportVideo(const cppexpose::VariantMap & parameters, std::string backend)
+{
+    setVideoTarget(parameters, backend);
+
+    if (!m_videoExporter) return;
 
     // Execute video exporter on next frame
     m_requestVideo = true;
+}
+
+void AbstractCanvas::toggleVideoExport()
+{
+    if (!m_videoExporter && !m_asyncVideoExportOn)
+    {
+        globjects::warning() << "VideoExporter not properly initialized. Call setVideoTarget() before using the video export functionality.";
+        return;
+    }
+
+    if (m_asyncVideoExportOn)
+    {
+        m_asyncVideoFinalize = true;
+    } else {
+        m_asyncVideoExportOn = true;
+    }
 }
 
 int AbstractCanvas::exportProgress()
@@ -125,6 +152,56 @@ cppexpose::VariantArray AbstractCanvas::videoExporterPlugins()
     }
 
     return plugins;
+}
+
+void AbstractCanvas::render(globjects::Framebuffer * targetFBO)
+{
+    // In certain viewers, e.g. QML, differents threads for UI and rendering are
+    // used. This makes it necessary to postpone any export functionality
+    // until the next render call, to make sure that they are executed from within
+    // the render thread.
+
+    // Perform image export
+    if (m_requestImage)
+    {
+        m_requestImage = false;
+
+        m_imageExporter->save(ImageExporter::IgnoreContext);
+    }
+
+    // Perform video export
+    if (m_requestVideo)
+    {
+        m_requestVideo = false;
+
+        m_videoExporter->createVideo(AbstractVideoExporter::IgnoreContext,
+            [this] (int, int)
+            {
+                this->wakeup();
+            }
+        );
+    }
+
+    // Render current frame into video, blit onto screen
+    if (m_asyncVideoExportOn)
+    {
+        if (m_asyncVideoFinalize)
+        {
+            m_videoExporter->onRender(AbstractVideoExporter::IgnoreContext, targetFBO, true);
+            m_asyncVideoExportOn = false;
+            m_asyncVideoFinalize = false;
+            return;
+        }
+
+        m_videoExporter->onRender(AbstractVideoExporter::IgnoreContext, targetFBO);
+        return;
+    }
+
+    onRender(targetFBO);
+}
+
+void AbstractCanvas::onRender(globjects::Framebuffer *)
+{ 
 }
 
 void AbstractCanvas::onUpdate()
@@ -153,35 +230,6 @@ void AbstractCanvas::onResetViewport()
 
 void AbstractCanvas::onBackgroundColor(float, float, float)
 {
-}
-
-void AbstractCanvas::onRender(globjects::Framebuffer *)
-{
-    // In certain viewers, e.g. QML, differents threads for UI and rendering are
-    // used. This makes it necessary to postpone any export functionality
-    // until the next render call, to make sure that they are executed from within
-    // the render thread.
-
-    // Perform image export
-    if (m_requestImage)
-    {
-        m_requestImage = false;
-
-        m_imageExporter->save(ImageExporter::IgnoreContext);
-    }
-
-    // Perform video export
-    if (m_requestVideo)
-    {
-        m_requestVideo = false;
-
-        m_videoExporter->createVideo(AbstractVideoExporter::IgnoreContext,
-            [this] (int, int)
-            {
-                this->wakeup();
-            }
-        );
-    }
 }
 
 void AbstractCanvas::onKeyPress(int, int)

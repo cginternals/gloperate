@@ -128,7 +128,7 @@ void RenderItem::onBeforeRendering()
     }
 
     // Render into item
-    m_canvas->onRender();
+    m_canvas->render();
 
     // Reset OpenGL state
     window()->resetOpenGLState();
