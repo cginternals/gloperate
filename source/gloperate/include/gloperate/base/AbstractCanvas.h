@@ -119,12 +119,20 @@ public:
     *  @brief
     *    Render this canvas to a video
     *
-    *  @param[in] parameters
-    *    Parameters for video exporter
+    *  @param[in] filename
+    *    Name of output video file
+    *  @param[in] width
+    *    Width (in pixels) of output video
+    *  @param[in] height
+    *    Height (in pixels) of output video
+    *  @param[in] fps
+    *    Frames per second of output video
+    *  @param[in] seconds
+    *    Length (in seconds) of output video
     *  @param[in] backend
     *    Name of video backend to use
     */
-    void exportVideo(const cppexpose::VariantMap & parameters, std::string backend = "FFMPEGVideoExporter");
+    void exportVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoExporter");
 
     /**
     *  @brief
