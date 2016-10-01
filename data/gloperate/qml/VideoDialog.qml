@@ -16,10 +16,26 @@ Background {
     property alias layout: mainLayout
 
     function update() {
+        backends.clear();
+        profiles.clear();
+
         var plugins = gloperate.canvas0.videoExporterPlugins();
-        plugins.forEach(function(entry) {
-            backends.append({text: entry});
+        plugins.forEach(function(backend) {
+            backends.append({text: backend});
         })
+
+        videoProfile.profiles.forEach(function(profile) {
+            profiles.append({text: profile})
+        })
+
+        updateParameters();
+    }
+
+    function updateParameters() {
+        width.editText = videoProfile.width;
+        height.editText = videoProfile.height;
+        fps.editText = videoProfile.fps;
+        duration.editText = videoProfile.seconds;
     }
 
     ColumnLayout {
@@ -54,15 +70,31 @@ Background {
 
             GridLayout {
                 id: gridLayout
-                rows: 5
+                rows: 6
                 flow: GridLayout.TopToBottom
                 anchors.fill: parent
 
+                Controls.Label { text: "Profile" }
                 Controls.Label { text: "Width" }
                 Controls.Label { text: "Height" }
                 Controls.Label { text: "FPS" }
                 Controls.Label { text: "Duration (sec)" }
                 Controls.Label { text: "Backend" }
+
+                ComboBox {
+                    property alias currentProfile: profile.currentIndex
+
+                    Layout.fillWidth: true
+                    editable: false
+                    id: profile
+                    model: ListModel {
+                        id: profiles
+                    }
+
+                    onCurrentProfileChanged: {
+                        videoProfile.profileIndex = currentProfile;
+                    }
+                }
 
                 ComboBox {
                     editable: true
@@ -146,7 +178,20 @@ Background {
             icon: '0021-video-camera.png'
 
             onClicked: {
-                gloperate.canvas0.exportVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
+                var parameters = {
+                    filepath: filepath.text,
+                    width: width.editText,
+                    height: height.editText,
+                    fps: fps.editText,
+                    duration: duration.editText,
+
+                    format: videoProfile.format,
+                    codec: videoProfile.codec,
+                    gopsize: videoProfile.gopsize,
+                    bitrate: videoProfile.bitrate
+                }
+
+                gloperate.canvas0.exportVideo(parameters, backend.editText);
             }
         }
     }
@@ -154,7 +199,6 @@ Background {
     FileDialog {
         id: fileDialog
         title: "Please choose an export location and filename"
-//      folder: shortcuts.home
         selectFolder: false
         selectExisting: false
         selectMultiple: false
@@ -171,6 +215,14 @@ Background {
         }
         onRejected: {
             close();
+        }
+    }
+
+    VideoProfile {
+        id: videoProfile
+
+        onProfileChanged: {
+            updateParameters();
         }
     }
 }

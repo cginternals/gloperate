@@ -60,6 +60,7 @@ set(headers
     ${include_path}/base/QuickView.h
     ${include_path}/base/RenderItem.h
     ${include_path}/base/Utils.h
+    ${include_path}/base/VideoProfile.h
 
     ${include_path}/controls/TextController.h
 
@@ -73,6 +74,7 @@ set(sources
     ${source_path}/base/QuickView.cpp
     ${source_path}/base/RenderItem.cpp
     ${source_path}/base/Utils.cpp
+    ${source_path}/base/VideoProfile.cpp
 
     ${source_path}/controls/TextController.cpp
 

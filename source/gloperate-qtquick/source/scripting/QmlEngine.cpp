@@ -15,6 +15,7 @@
 #include <gloperate/base/Environment.h>
 
 #include <gloperate-qtquick/base/RenderItem.h>
+#include <gloperate-qtquick/base/VideoProfile.h>
 #include <gloperate-qtquick/controls/TextController.h>
 #include <gloperate-qtquick/scripting/QmlScriptFunction.h>
 
@@ -29,6 +30,7 @@ QmlEngine::QmlEngine(gloperate::Environment * environment)
     // Register QML types
     qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
     qmlRegisterType<TextController>("gloperate.base",      1, 0, "TextController");
+    qmlRegisterType<VideoProfile>  ("gloperate.base",      1, 0, "VideoProfile");
 
     // Register global functions and properties
     rootContext()->setContextObject(this);
