@@ -4,8 +4,6 @@
 
 #include <string>
 
-#include <cppexpose/variant/Variant.h>
-
 #include <globjects/base/Referenced.h>
 
 #include <gloperate/base/Image.h>
@@ -39,12 +37,10 @@ public:
     *  @brief
     *    Initialize, and open file for video encoding
     *
-    *  @param[in] parameters
-    *    Parameters for video encoding
-    *  @return
-    *    Boolean whether the initialization was successful or not
+    *  @param[in] filename
+    *    Filename for video file output
     */
-    bool initEncoding(const cppexpose::VariantMap & parameters);
+    void initEncoding(const std::string & filename, int width, int height, int fps);
 
     /**
     *  @brief
