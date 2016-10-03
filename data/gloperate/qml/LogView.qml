@@ -1,6 +1,8 @@
 
 import QtQuick 2.0
-import gloperate.base 1.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
 
 
 /**
@@ -35,7 +37,7 @@ ScrollArea
         'Lorem ipsum dolor sit amet.'
     ]
 
-    contentHeight: content.height + 2 * Ui.style.ctrlPadding
+    contentHeight: content.height + 2 * Ui.style.paddingMedium
 
     Column
     {
@@ -44,7 +46,7 @@ ScrollArea
         anchors.left:    parent.left
         anchors.right:   parent.right
         anchors.top:     parent.top
-        anchors.margins: Ui.style.ctrlPadding
+        anchors.margins: Ui.style.paddingMedium
 
         Repeater
         {

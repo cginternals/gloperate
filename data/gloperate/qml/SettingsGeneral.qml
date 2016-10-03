@@ -1,8 +1,9 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.1
-import gloperate.base 1.0
-import gloperate.controls 1.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
 
 
 /**
@@ -10,7 +11,7 @@ import gloperate.controls 1.0
 *
 *  Settings page 'General'
 */
-Background
+Item
 {
     property real topMargin: 0
 
@@ -28,9 +29,9 @@ Background
             anchors.top:     parent.top
             anchors.left:    parent.left
             anchors.right:   parent.right
-            anchors.margins: Ui.style.panelPadding
+            anchors.margins: Ui.style.paddingMedium
 
-            spacing: Ui.style.panelSpacing
+            spacing: Ui.style.spacingMedium
 
             GroupBox
             {
@@ -44,7 +45,7 @@ Background
 
                 Column
                 {
-                    spacing: Ui.style.panelSpacing
+                    spacing: Ui.style.spacingMedium
 
                     Repeater
                     {
@@ -75,7 +76,7 @@ Background
                 Column
                 {
                     width:   parent.width
-                    spacing: Ui.style.panelSpacing
+                    spacing: Ui.style.spacingMedium
 
                     Switch
                     {

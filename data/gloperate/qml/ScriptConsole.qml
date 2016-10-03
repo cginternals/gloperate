@@ -1,6 +1,9 @@
 
 import QtQuick 2.0
-import gloperate.base 1.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
+import QmlToolbox.Ui 1.0
 
 
 /**
@@ -19,7 +22,7 @@ Item
         id: scrollArea
 
         anchors.fill:  parent
-        contentHeight: content.height + 2 * Ui.style.ctrlPadding
+        contentHeight: content.height + 2 * Ui.style.paddingMedium
 
         Column
         {
@@ -28,7 +31,7 @@ Item
             anchors.left:  parent.left
             anchors.right: parent.right
             anchors.top:   parent.top
-            spacing:       Ui.style.ctrlPadding
+            spacing:       Ui.style.paddingMedium
 
             LineEdit
             {
@@ -44,7 +47,7 @@ Item
                 id: input
 
                 width:           parent.width
-                backgroundColor: Ui.style.panelColorAlt
+                backgroundColor: Ui.style.panelItemColorSelected
 
                 onAccepted:
                 {
@@ -63,5 +66,10 @@ Item
                 }
             }
         }
+    }
+
+    function execute(cmd)
+    {
+        return '';
     }
 }

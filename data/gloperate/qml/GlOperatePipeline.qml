@@ -3,11 +3,9 @@ import QtQuick 2.0
 
 
 /**
-*  PipelineInterface
+*  GlOperatePipeline
 *
-*  Generic interface for accessing a pipeline.
-*  This interface can be implemented to access any type of pipeline.
-*  The current implementation uses the gloperate pipeline as a backend.
+*  Implementation of PipelineInterface for gloperate.
 */
 Item
 {

@@ -1,14 +1,16 @@
 
 import QtQuick 2.0
-import gloperate.base 1.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
 
 
 /**
-*  SettingsInput
+*  SettingsPlugins
 *
-*  Settings page 'Input'
+*  Settings page 'Plugins'
 */
-Background
+Item
 {
     property real topMargin: 0
 
@@ -26,7 +28,7 @@ Background
             anchors.top:     parent.top
             anchors.left:    parent.left
             anchors.right:   parent.right
-            anchors.margins: Ui.style.panelPadding
+            anchors.margins: Ui.style.paddingMedium
         }
     }
 }

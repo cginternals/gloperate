@@ -1,63 +1,106 @@
 
 import QtQuick 2.0
-import QtQuick.Controls 1.0 as Controls
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
-import gloperate.base 1.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
 
 
-Background {
+Window
+{
     id: screenshot
 
-    signal close()
-
-    property int margin: 0
     property alias layout: mainLayout
 
-    ColumnLayout {
+    width:  600
+    height: mainLayout.height + 2 * mainLayout.anchors.margins
+
+    title: 'Save Screenshot'
+
+    Column
+    {
         id: mainLayout
-        anchors.fill: parent
-        anchors.margins: margin
-        Controls.GroupBox {
+
+        anchors.top:     parent.top
+        anchors.left:    parent.left
+        anchors.right:   parent.right
+        anchors.margins: Ui.style.paddingMedium
+
+        spacing: Ui.style.spacingMedium
+
+        GroupBox
+        {
             id: rowBox
+
+            width: parent.width
+
             title: "Save as"
-            Layout.fillWidth: true
 
-            RowLayout {
-                anchors.fill: parent
-                TextField {
-                    id: filepath
-                    placeholderText: "e.g. /home/user/images/screen.jpg"
-                    Layout.fillWidth: true
-                }
-                DialogButton {
-                    text: "Browse"
+            TextField
+            {
+                id: filepath
 
-                    onClicked: {
-                        fileDialog.open();
-                    }
+                anchors.left:    parent.left
+                anchors.right:   button.left
+                anchors.margins: Ui.style.paddingMedium
+
+                placeholderText:  "e.g. /home/user/images/screen.jpg"
+            }
+
+            Button
+            {
+                id: button
+
+                anchors.right: parent.right
+
+                text: "Browse"
+
+                onClicked:
+                {
+                    fileDialog.open();
                 }
             }
         }
 
-        Controls.GroupBox {
-            title: "Settings"
-            Layout.fillWidth: true
+        GroupBox
+        {
+            width: parent.width
 
-            GridLayout {
+            title: "Settings"
+
+            GridLayout
+            {
                 id: gridLayout
+
+                width: parent.width
+
                 rows: 3
                 flow: GridLayout.TopToBottom
-                anchors.fill: parent
 
-                Controls.Label { text: "Width" }
-                Controls.Label { text: "Height" }
-                Controls.Label { text: "Renderiterations" }
+                Label
+                {
+                    text: "Width"
+                }
 
-                ComboBox {
-                    editable: true
+                Label
+                {
+                    text: "Height"
+                }
+
+                Label
+                {
+                    text: "Renderiterations"
+                }
+
+                ComboBox
+                {
                     id: width
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "800" }
                         ListElement { text: "1024" }
                         ListElement { text: "1152" }
@@ -71,10 +114,14 @@ Background {
                     }
                 }
                 
-                ComboBox {
-                    editable: true
+                ComboBox
+                {
                     id: height
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "600" }
                         ListElement { text: "720" }
                         ListElement { text: "768" }
@@ -89,10 +136,14 @@ Background {
                     }
                 }
 
-                ComboBox {
-                    editable: true
+                ComboBox
+                {
                     id: iterations
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "1" }
                         ListElement { text: "2" }
                         ListElement { text: "4" }
@@ -103,17 +154,17 @@ Background {
                         ListElement { text: "128" }
                     }
                 }
-
             }
         }
 
-        DialogButton {
-            text: "Take Screenshot"
+        Button
+        {
             anchors.right: parent.right
 
-            icon: '0040-file-picture.png'
+            text: "Take Screenshot"
 
-            onClicked: {
+            onClicked:
+            {
                 gloperate.canvas0.exportImage(filepath.text, width.editText, height.editText, iterations.editText);
 
                 close();
@@ -121,25 +172,32 @@ Background {
         }
     }
 
-    FileDialog {
+    FileDialog
+    {
         id: fileDialog
-        title: "Please choose an export location and filename"
-//      folder: shortcuts.home
-        selectFolder: false
+
+        title:          "Please choose an export location and filename"
+        selectFolder:   false
         selectExisting: false
         selectMultiple: false
 
-        onAccepted: {
+        onAccepted:
+        {
             var path = fileUrl.toString();
+
             // remove prefixed "file:///"
             path = path.replace(/^(file:\/{3})/,"");
+
             // unescape html codes like '%23' for '#'
             path = decodeURIComponent(path);
+
             filepath.text = path;
             
             close();
         }
-        onRejected: {
+
+        onRejected:
+        {
             close();
         }
     }
