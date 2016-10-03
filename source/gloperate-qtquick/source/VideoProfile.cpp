@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/base/VideoProfile.h>
+#include <gloperate-qtquick/VideoProfile.h>
 
 #include <gloperate/gloperate.h>
 

@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/scripting/QmlObjectWrapper.h>
+#include <gloperate-qtquick/QmlObjectWrapper.h>
 
 #include <QJSValueIterator>
 
@@ -7,7 +7,7 @@
 #include <cppexpose/reflection/Method.h>
 #include <cppexpose/variant/Variant.h>
 
-#include <gloperate-qtquick/scripting/QmlEngine.h>
+#include <gloperate-qtquick/QmlEngine.h>
 
 
 using namespace cppexpose;

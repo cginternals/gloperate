@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/scripting/QmlEngine.h>
+#include <gloperate-qtquick/QmlEngine.h>
 
 #include <QVariant>
 #include <QQmlContext>
@@ -14,10 +14,10 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 
-#include <gloperate-qtquick/base/RenderItem.h>
-#include <gloperate-qtquick/base/VideoProfile.h>
-#include <gloperate-qtquick/controls/TextController.h>
-#include <gloperate-qtquick/scripting/QmlScriptFunction.h>
+#include <gloperate-qtquick/RenderItem.h>
+#include <gloperate-qtquick/VideoProfile.h>
+#include <gloperate-qtquick/TextController.h>
+#include <gloperate-qtquick/QmlScriptFunction.h>
 
     
 namespace gloperate_qtquick

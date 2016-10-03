@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/controls/TextController.h>
+#include <gloperate-qtquick/TextController.h>
 
 #include <QQuickTextDocument>
 #include <QTextDocument>

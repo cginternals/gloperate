@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/base/QuickView.h>
+#include <gloperate-qtquick/QuickView.h>
 
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
@@ -15,8 +15,8 @@
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/GLContextFactory.h>
 
-#include <gloperate-qtquick/scripting/QmlEngine.h>
-#include <gloperate-qtquick/base/Utils.h>
+#include <gloperate-qtquick/QmlEngine.h>
+#include <gloperate-qtquick/Utils.h>
 
 
 using namespace cppassist;

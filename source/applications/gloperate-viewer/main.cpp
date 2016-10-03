@@ -21,9 +21,9 @@
 #include <gloperate-qt/base/Application.h>
 #include <gloperate-qt/base/UpdateManager.h>
 
-#include <gloperate-qtquick/base/QuickView.h>
-#include <gloperate-qtquick/scripting/QmlEngine.h>
-#include <gloperate-qtquick/scripting/QmlScriptContext.h>
+#include <gloperate-qtquick/QuickView.h>
+#include <gloperate-qtquick/QmlEngine.h>
+#include <gloperate-qtquick/QmlScriptContext.h>
 
 #include "Config.h"
 

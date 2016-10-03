@@ -4,6 +4,8 @@
 
 #include <QQuickItem>
 
+#include <gloperate-qtquick/gloperate-qtquick_api.h>
+
 
 class QTextDocument;
 class QSyntaxHighlighter;
@@ -17,7 +19,7 @@ namespace gloperate_qtquick
 *  @brief
 *    Qt quick item to extend options for TextEdit (e.g., syntax highlighting)
 */
-class TextController : public QQuickItem
+class GLOPERATE_QTQUICK_API TextController : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem* target READ target WRITE setTarget)

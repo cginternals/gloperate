@@ -1,7 +1,7 @@
 
-#include <gloperate-qtquick/scripting/QmlScriptFunction.h>
+#include <gloperate-qtquick/QmlScriptFunction.h>
 
-#include <gloperate-qtquick/scripting/QmlEngine.h>
+#include <gloperate-qtquick/QmlEngine.h>
 
 
 namespace gloperate_qtquick

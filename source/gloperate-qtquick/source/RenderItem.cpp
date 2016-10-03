@@ -1,5 +1,5 @@
 
-#include <gloperate-qtquick/base/RenderItem.h>
+#include <gloperate-qtquick/RenderItem.h>
 
 #include <QVariant>
 #include <QColor>
@@ -9,8 +9,8 @@
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/input.h>
 
-#include <gloperate-qtquick/base/QuickView.h>
-#include <gloperate-qtquick/base/Utils.h>
+#include <gloperate-qtquick/QuickView.h>
+#include <gloperate-qtquick/Utils.h>
 
 
 using namespace gloperate_qt;

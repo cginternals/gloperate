@@ -4,6 +4,8 @@
 
 #include <QQuickItem>
 
+#include <gloperate-qtquick/gloperate-qtquick_api.h>
+
 
 namespace gloperate_qtquick
 {
@@ -13,7 +15,7 @@ namespace gloperate_qtquick
 *  @brief
 *    Qt quick video profile
 */
-class VideoProfile : public QQuickItem
+class GLOPERATE_QTQUICK_API VideoProfile : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QList<QString> profiles READ availableProfiles)
@@ -28,6 +30,10 @@ class VideoProfile : public QQuickItem
     Q_PROPERTY(int seconds READ seconds)
     Q_PROPERTY(int gopsize READ gopsize)
     Q_PROPERTY(int bitrate READ bitrate)
+
+
+signals:
+    void profileChanged();
 
 
 public:
@@ -162,9 +168,6 @@ public:
     *    Video Bit rate
     */
     int bitrate() const;
-
-signals:
-    void profileChanged();
 
 
 protected:
