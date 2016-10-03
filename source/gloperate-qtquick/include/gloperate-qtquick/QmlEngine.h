@@ -2,11 +2,12 @@
 #pragma once
 
 
-#include <QQmlEngine>
 #include <QJSValue>
 #include <QString>
 
 #include <cppexpose/variant/Variant.h>
+
+#include <qmltoolbox/QmlEngine.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -31,7 +32,7 @@ namespace gloperate_qtquick
 *    for qml and adds an global object named 'global' which
 *    can be used by scripting functions to store data globally.
 */
-class GLOPERATE_QTQUICK_API QmlEngine : public QQmlEngine
+class GLOPERATE_QTQUICK_API QmlEngine : public qmltoolbox::QmlEngine
 {
     Q_OBJECT
     Q_PROPERTY(QJSValue global    READ global    WRITE setGlobal)
@@ -147,11 +148,21 @@ public:
     */
     void setGloperate(const QJSValue & obj);
 
+    /**
+    *  @brief
+    *    Get path to gloperate qml module
+    *
+    *  @return
+    *    Path to gloperate qml module
+    */
+    QString glOperateModulePath() const;
+
 
 protected:
-    gloperate::Environment * m_environment; ///< Gloperate environment (must NOT be null)
-    QJSValue                 m_global;      ///< Object 'global', can be used to store global values
-    QJSValue                 m_gloperate;   ///< Object 'gloperate', contains exposed API functions from gloperate
+    gloperate::Environment * m_environment;      ///< Gloperate environment (must NOT be null)
+    QJSValue                 m_global;           ///< Object 'global', can be used to store global values
+    QJSValue                 m_gloperate;        ///< Object 'gloperate', contains exposed API functions from gloperate
+    QString                  m_gloperateQmlPath; ///< Path to gloperate qml module
 };
 
 

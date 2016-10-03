@@ -9,6 +9,7 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
+find_package(qmltoolbox REQUIRED)
 
 # Qt5
 find_package(Qt5Core    5.1)
@@ -168,6 +169,7 @@ target_link_libraries(${target}
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
+    qmltoolbox::qmltoolbox
 
     INTERFACE
 )

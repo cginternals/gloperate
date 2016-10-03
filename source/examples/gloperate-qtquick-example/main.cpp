@@ -22,9 +22,6 @@ using namespace gloperate_qtquick;
 
 int main(int argc, char * argv[])
 {
-    // Determine data paths
-    QString qmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
-
     // Create gloperate environment
     Environment environment;
 
@@ -41,7 +38,6 @@ int main(int argc, char * argv[])
 
     // Create QML engine
     QmlEngine qmlEngine(&environment);
-    qmlEngine.addImportPath(qmlPath);
 
     // Create scripting context backend
     environment.setupScripting(
@@ -51,7 +47,7 @@ int main(int argc, char * argv[])
     // Load and show QML
     QuickView * window = new QuickView(&qmlEngine);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl::fromLocalFile(qmlPath + "/ExampleViewer.qml"));
+    window->setSource(QUrl::fromLocalFile(qmlEngine.glOperateModulePath() + "/ExampleViewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
     window->show();
 

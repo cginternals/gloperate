@@ -25,8 +25,15 @@ namespace gloperate_qtquick
 
 
 QmlEngine::QmlEngine(gloperate::Environment * environment)
-: m_environment(environment)
+: qmltoolbox::QmlEngine()
+, m_environment(environment)
 {
+    // Get data path
+    m_gloperateQmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
+
+    // Import gloperate qml module
+    addImportPath(m_gloperateQmlPath);
+
     // Register QML types
     qmlRegisterType<RenderItem>    ("gloperate.rendering", 1, 0, "RenderItem");
     qmlRegisterType<TextController>("gloperate.base",      1, 0, "TextController");
@@ -327,6 +334,11 @@ const QJSValue & QmlEngine::gloperate() const
 void QmlEngine::setGloperate(const QJSValue & obj)
 {
     m_gloperate = obj;
+}
+
+QString QmlEngine::glOperateModulePath() const
+{
+    return m_gloperateQmlPath;
 }
 
 
