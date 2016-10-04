@@ -226,7 +226,6 @@ Background
 
                 onClicked:
                 {
-                    gloperatePipeline.root = gloperate.canvas0.pipeline;
                     var name = gloperatePipeline.getStage('pipeline').stages[0];
 
                     pipelineEditor.load('pipeline.' + name);
@@ -285,12 +284,22 @@ Background
         z: -1
 
         stage: page.stage
+
+        onCanvasInitialized:
+        {
+            gloperatePipeline.root = gloperate.canvas0.pipeline;
+        }
     }
 
     // Pipeline editor
     GlOperatePipeline
     {
         id: gloperatePipeline
+
+        onRootChanged:
+        {
+            propertyEditor.update();
+        }
     }
 
     PipelineEditor
