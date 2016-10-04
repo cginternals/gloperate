@@ -19,6 +19,12 @@ class BlitStage;
 class MultiFrameControlStage;
 class MultiFrameAggregationStage;
 
+class MultiFrameDiscDistributionStage;
+class NoiseKernelStage;
+class SSAOKernelStage;
+class SubpixelAntialiasingOffsetStage;
+class TransparencyKernelStage;
+
 
 class GLOPERATE_API MultiFrameAggregationPipeline : public Pipeline
 {
@@ -52,12 +58,19 @@ protected:
 
 
 protected:
-    // Stages
+    // Required stages
     BasicFramebufferStage      * m_renderFramebufferStage;
     CustomFramebufferStage     * m_aggregationFramebufferStage;
     MultiFrameControlStage     * m_controlStage;
     MultiFrameAggregationStage * m_aggregationStage;
     BlitStage                  * m_blitStage;
+
+    // Optional stages
+    MultiFrameDiscDistributionStage * m_diskDistributionStage;
+    NoiseKernelStage                * m_noiseStage;
+    SSAOKernelStage                 * m_ssaoStage;
+    SubpixelAntialiasingOffsetStage * m_subpixelStage;
+    TransparencyKernelStage         * m_transparencyStage;
 
     Stage                      * m_renderStage;
 };

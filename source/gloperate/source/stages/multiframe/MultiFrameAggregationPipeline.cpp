@@ -7,6 +7,11 @@
 #include <gloperate/stages/base/BlitStage.h>
 #include <gloperate/stages/multiframe/MultiFrameControlStage.h>
 #include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
+#include <gloperate/stages/multiframe/MultiFrameDiscDistributionStage.h>
+#include <gloperate/stages/multiframe/NoiseKernelStage.h>
+#include <gloperate/stages/multiframe/SSAOKernelStage.h>
+#include <gloperate/stages/multiframe/SubpixelAntialiasingOffsetStage.h>
+#include <gloperate/stages/multiframe/TransparencyKernelStage.h>
 
 #include <glbinding/gl/enum.h>
 
@@ -25,6 +30,11 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
 , m_controlStage(new MultiFrameControlStage(environment, "MultiFrameControlStage"))
 , m_aggregationStage(new MultiFrameAggregationStage(environment, "MultiFrameAggregationStage"))
 , m_blitStage(new BlitStage(environment, "BlitStage"))
+, m_diskDistributionStage(new MultiFrameDiscDistributionStage(environment, "MultiFrameDiscDistributionStage"))
+, m_noiseStage(new NoiseKernelStage(environment, "NoiseKernelStage"))
+, m_ssaoStage(new SSAOKernelStage(environment, "SSAOKernelStage"))
+, m_subpixelStage(new SubpixelAntialiasingOffsetStage(environment, "SubpixelAntialiasingOffsetStage"))
+, m_transparencyStage(new TransparencyKernelStage(environment, "TransparencyKernelStage"))
 , m_renderStage(nullptr)
 {
     addStage(m_renderFramebufferStage);
@@ -53,6 +63,13 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
     m_blitStage->destinationViewport << renderInterface.deviceViewport;
 
     renderInterface.rendered << m_blitStage->blitted;
+
+    // to be connected manually
+    addStage(m_diskDistributionStage);
+    addStage(m_noiseStage);
+    addStage(m_ssaoStage);
+    addStage(m_subpixelStage);
+    addStage(m_transparencyStage);
 }
 
 MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()

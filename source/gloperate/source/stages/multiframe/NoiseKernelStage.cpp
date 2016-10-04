@@ -15,9 +15,9 @@ CPPEXPOSE_COMPONENT(NoiseKernelStage, gloperate::Stage)
 
 NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, inputDimensions("inputDimensions", this)
-, outputDimensions("outputDimensions", this)
-, size("size", this)
+, inputDimensions("inputDimensions", this, 2)
+, outputDimensions("outputDimensions", this, 3)
+, size("size", this, 16)
 , noiseTexture("noiseTexture", this)
 {
 }
