@@ -59,7 +59,7 @@ Item
                     log += '\n> ' + cmd;
                     panel.log = log;
 
-                    log += '\n' + execute(cmd) + '\n';
+                    log += '\n' + executeScript(cmd) + '\n';
                     panel.log = log;
 
                     scrollArea.contentY = scrollArea.contentHeight;

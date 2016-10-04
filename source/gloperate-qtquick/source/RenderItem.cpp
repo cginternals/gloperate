@@ -99,6 +99,8 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
         this, &RenderItem::onBeforeRendering,
         Qt::DirectConnection
     );
+
+    emit canvasInitialized();
 }
 
 void RenderItem::onBeforeRendering()

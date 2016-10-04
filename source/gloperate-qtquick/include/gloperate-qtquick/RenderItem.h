@@ -29,6 +29,10 @@ class GLOPERATE_QTQUICK_API RenderItem : public QQuickItem
     Q_PROPERTY(QString stage READ stage WRITE setStage)
 
 
+signals:
+    void canvasInitialized();
+
+
 public:
     /**
     *  @brief

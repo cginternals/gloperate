@@ -74,7 +74,7 @@ public:
     *  @return
     *    Return value of the script
     */
-    Q_INVOKABLE QString execute(const QString & code);
+    Q_INVOKABLE QString executeScript(const QString & code);
 
     /**
     *  @brief

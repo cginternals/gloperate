@@ -56,7 +56,7 @@ gloperate::Environment * QmlEngine::environment() const
     return m_environment;
 }
 
-QString QmlEngine::execute(const QString & code)
+QString QmlEngine::executeScript(const QString & code)
 {
     return QString::fromStdString(
         m_environment->executeScript(code.toStdString()).value<std::string>()
