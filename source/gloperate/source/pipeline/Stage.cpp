@@ -451,7 +451,7 @@ cppexpose::Variant Stage::scr_getSlot(const std::string & name)
     // Create slot description
     (*obj.asMap())["name"]    = slot->name();
     (*obj.asMap())["type"]    = slot->typeName();
-    (*obj.asMap())["value"]   = slot->toVariant();
+    (*obj.asMap())["value"]   = slot->toString();
     (*obj.asMap())["options"] = slot->options();
 
     // Return slot description
