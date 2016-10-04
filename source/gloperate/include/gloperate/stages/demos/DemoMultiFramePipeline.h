@@ -36,7 +36,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface<Pipeline> renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
 
 public:

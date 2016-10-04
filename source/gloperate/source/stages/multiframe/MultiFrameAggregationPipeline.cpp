@@ -69,23 +69,7 @@ void MultiFrameAggregationPipeline::onProcess(AbstractGLContext * context)
     Pipeline::onProcess(context);
 }
 
-void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface<Stage> & interface)
-{
-    if (m_renderStage) removeStage(m_renderStage);
-
-    m_renderStage = interface.rendered.parentStage();
-    addStage(m_renderStage);
-    interface.deviceViewport << renderInterface.deviceViewport;
-    interface.virtualViewport << renderInterface.virtualViewport;
-    interface.backgroundColor << renderInterface.backgroundColor;
-    interface.frameCounter << renderInterface.frameCounter;
-    interface.timeDelta << renderInterface.timeDelta;
-    interface.targetFBO << m_renderFramebufferStage->fbo;
-
-    m_aggregationStage->textureRerendered << interface.rendered;
-}
-
-void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface<Pipeline> & interface)
+void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface & interface)
 {
     if (m_renderStage) removeStage(m_renderStage);
 

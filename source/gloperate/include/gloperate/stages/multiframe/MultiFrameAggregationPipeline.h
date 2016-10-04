@@ -36,7 +36,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface<Pipeline> renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
 
 public:
@@ -44,8 +44,7 @@ public:
 
     virtual ~MultiFrameAggregationPipeline();
 
-    void setFrameRenderer(RenderInterface<Stage> & interface);
-    void setFrameRenderer(RenderInterface<Pipeline> & interface);
+    void setFrameRenderer(RenderInterface & interface);
 
 
 protected:

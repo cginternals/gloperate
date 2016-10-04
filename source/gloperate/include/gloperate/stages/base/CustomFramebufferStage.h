@@ -43,9 +43,9 @@ public:
 
 public:
     // Parameters
-    Parameter<gl::GLenum>            format;        ///< Color texture format
-    Parameter<gl::GLenum>            internalFormat;///< Internal format for color texture
-    Parameter<gl::GLenum>            dataType;      ///< Color texture data type
+    Input<gl::GLenum>            format;        ///< Color texture format
+    Input<gl::GLenum>            internalFormat;///< Internal format for color texture
+    Input<gl::GLenum>            dataType;      ///< Color texture data type
 
     // Inputs
     Input<glm::vec4>                 viewport;      ///< Texture size

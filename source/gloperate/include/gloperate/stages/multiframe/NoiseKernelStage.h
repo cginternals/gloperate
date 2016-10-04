@@ -9,7 +9,6 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/pipeline/Parameter.h>
 
 #include <gloperate/rendering/NoiseTexture.h>
 
@@ -43,9 +42,9 @@ public:
     NoiseKernelStage(gloperate::Environment * environment, const std::string & name = "NoiseKernelStage");
 
 public:
-    Parameter<int> inputDimensions;
-    Parameter<int> outputDimensions;
-    Parameter<int> size;
+    Input<int> inputDimensions;
+    Input<int> outputDimensions;
+    Input<int> size;
 
     Output<globjects::Texture *> noiseTexture;
 
