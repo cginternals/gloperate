@@ -74,6 +74,66 @@ Item
     }
 
     /**
+    *  Get information of a slot
+    *
+    *  @param[in] path
+    *    Path to slot (e.g., 'pipeline.stage1.in1')
+    *
+    *  @return
+    *    {
+    *      name:    'SlotName',
+    *      type:    'int',
+    *      value:   100,
+    *      options: {}
+    *    }
+    */
+    function getSlot(path)
+    {
+        // Get stage object
+        var stage = getStageObjectForSlot(path);
+
+        if (stage)
+        {
+            var names = path.split('.');
+            var slotName = names[names.length - 1];
+
+            return stage.getSlot(slotName);
+        }
+
+        // Invalid slot
+        return {
+            name:    '',
+            type:    '',
+            value:   null,
+            options: {}
+        };
+    }
+
+    /**
+    *  Set slot value
+    *
+    *  @param[in] path
+    *    Path to slot (e.g., 'pipeline.stage1.in1')
+    *  @param[in] value
+    *    Value
+    */
+    function setSlotValue(path, value)
+    {
+        // Get stage object
+        var stage = getStageObjectForSlot(path);
+
+        if (!stage)
+        {
+            return;
+        }
+
+        // Set value
+        var names = path.split('.');
+        var slotName = names[names.length - 1];
+        stage.setSlotValue(slotName, value);
+    }
+
+    /**
     *  Create new stage
     *
     *  @param[in] path
@@ -231,6 +291,32 @@ Item
         // Resolve path
         var names = path.split('.');
         for (var i=0; i<names.length; i++)
+        {
+            var name = names[i];
+
+            if (name == 'pipeline' && i == 0) {
+                stage = root;
+            } else {
+                stage = stage[name];
+            }
+
+            if (!stage) {
+                return null;
+            }
+        }
+
+        // Return stage
+        return stage;
+    }
+
+    function getStageObjectForSlot(path)
+    {
+        // Begin with root object
+        var stage = root;
+
+        // Resolve path
+        var names = path.split('.');
+        for (var i=0; i<names.length-1; i++)
         {
             var name = names[i];
 

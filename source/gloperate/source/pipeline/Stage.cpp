@@ -32,6 +32,8 @@ Stage::Stage(Environment * environment, const std::string & name)
     // Register functions
     addFunction("getDescription", this, &Stage::scr_getDescription);
     addFunction("getConnections", this, &Stage::scr_getConnections);
+    addFunction("getSlot",        this, &Stage::scr_getSlot);
+    addFunction("setSlotValue",   this, &Stage::scr_setSlotValue);
     addFunction("createSlot",     this, &Stage::scr_createSlot);
     addFunction("slotTypes",      this, &Stage::scr_slotTypes);
 }
@@ -430,6 +432,46 @@ cppexpose::Variant Stage::scr_getConnections()
 
     // Return connections
     return obj;
+}
+
+cppexpose::Variant Stage::scr_getSlot(const std::string & name)
+{
+    Variant obj = Variant::map();
+
+    // Get slot
+    AbstractSlot * slot = input(name);
+    if (!slot) slot = output(name);
+
+    // Return invalid if slot does not exist
+    if (!slot)
+    {
+        return obj;
+    }
+
+    // Create slot description
+    (*obj.asMap())["name"]    = slot->name();
+    (*obj.asMap())["type"]    = slot->typeName();
+    (*obj.asMap())["value"]   = slot->toVariant();
+    (*obj.asMap())["options"] = slot->options();
+
+    // Return slot description
+    return obj;
+}
+
+void Stage::scr_setSlotValue(const std::string & name, const cppexpose::Variant & value)
+{
+    // Get slot
+    AbstractSlot * slot = input(name);
+    if (!slot) slot = output(name);
+
+    // Return invalid if slot does not exist
+    if (!slot)
+    {
+        return;
+    }
+
+    // Set slot value
+    slot->fromVariant(value);
 }
 
 void Stage::scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name)
