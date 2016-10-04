@@ -11,7 +11,6 @@
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
-#include <globjects/Framebuffer.h>
 #include <globjects/Renderbuffer.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
@@ -60,19 +59,24 @@ public:
     virtual ~FFMPEGVideoExporter();
 
     // Virtual AbstractVideoExporter interface
-    virtual void setTarget(gloperate::AbstractCanvas * canvas, const std::string & filename, unsigned int width, unsigned int height, unsigned int fps, unsigned int length) override;
+    virtual void setTarget(gloperate::AbstractCanvas * canvas, const cppexpose::VariantMap & parameters) override;
     virtual void createVideo(AbstractVideoExporter::ContextHandling contextHandling, std::function<void(int, int)> progress) override;
+    virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO, bool shouldFinalize = false) override;
     virtual int progress() const override;
 
 
 protected:
+    void initialize(ContextHandling contextHandling);
+    void finalize();
     void createAndSetupGeometry();
     void createAndSetupShader();
+    void createAndSetupBuffer();
 
 
 protected:
     FFMPEGVideoEncoder                         * m_videoEncoder;
     gloperate::AbstractCanvas                  * m_canvas;
+    gloperate::Image                           * m_image;
 
     globjects::ref_ptr<globjects::Framebuffer>   m_fbo;
     globjects::ref_ptr<globjects::Texture>       m_color;
@@ -83,11 +87,9 @@ protected:
     globjects::ref_ptr<globjects::VertexArray>   m_vao;
     globjects::ref_ptr<globjects::Program>       m_program;
 
-    std::string                                  m_filename;
-    unsigned int                                 m_fps;
-    unsigned int                                 m_length;
-    unsigned int                                 m_width;
-    unsigned int                                 m_height;
-    float                                        m_timeDelta;
+    cppexpose::VariantMap                        m_parameters;
+
     int                                          m_progress;
+    bool                                         m_initialized;
+    AbstractVideoExporter::ContextHandling       m_contextHandling;
 };

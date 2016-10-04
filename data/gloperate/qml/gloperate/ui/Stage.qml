@@ -14,45 +14,43 @@ import gloperate.ui 1.0
 */
 BaseItem
 {
-    id: item
+    id: stage
 
+    // Called when the close-button of the stage has been clicked
     signal closed()
 
-    property string path: '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.DemoStage')
+    // Options
+    property var    pipelineInterface: null    ///< Interface for accessing the pipeline
+    property Item   pipeline:          null    ///< Pointer to pipeline item
+    property string path:              ''      ///< Path in the pipeline hierarchy (e.g., 'pipeline.stage1')
+    property string name:              'Stage' ///< Name of the stage
+    property bool   includeInputs:     true    ///< Display input slots on the stage?
+    property bool   includeOutputs:    true    ///< Display output slots on the stage?
+    property bool   inverse:           false   ///< Reverse input and output slot positions?
+    property bool   allowClose:        true    ///< Enable close-button on the stage?
+    property int    radius:            Ui.style.pipelineConnectorSize
+    property color  color:             Ui.style.pipelineTitleColor
 
-    property bool includeInputs:  true
-    property bool includeOutputs: true
-    property bool inverse:        false
-    property bool allowClose:     true
-
-    property string name:    'Stage'
-    property int    radius:  Ui.style.pipelineConnectorSize
-    property color  color:   Ui.style.pipelineTitleColor
-
-    property Item pipeline:  null
+    // Internals
     property var  slotItems: null ///< Item cache
 
     implicitWidth:  Math.max(connectors.implicitWidth, body.implicitWidth + radius)
     implicitHeight: connectors.implicitHeight + title.implicitHeight + Ui.style.paddingLarge
+    Drag.active:    mouseArea.drag.active
 
-    Drag.active: mouseArea.drag.active
-
-    onPathChanged:
-    {
-        update();
-    }
-
+    // Dialog for creating slots on a stage
     AddSlotDialog
     {
         id: dialog
 
         onCreateSlot:
         {
-            pipeline.getStage(item.path).createSlot(slotType, type, name);
-            item.update();
+            pipelineInterface.createSlot(stage.path, slotType, type, name);
+            stage.update();
         }
     }
 
+    // Context menu
     Menu
     {
         id: menu
@@ -66,18 +64,7 @@ BaseItem
             onTriggered:
             {
                 dialog.slotType = 'Input';
-                dialog.setChoices( pipeline.getStage(item.path).slotTypes() );
-                dialog.open();
-            }
-        }
-
-        MenuItem
-        {
-            text: 'Add Parameter'
-
-            onTriggered:
-            {
-                dialog.slotType = 'Parameter';
+                dialog.setChoices( pipelineInterface.getSlotTypes(stage.path) );
                 dialog.open();
             }
         }
@@ -92,26 +79,16 @@ BaseItem
                 dialog.open();
             }
         }
-
-        MenuItem
-        {
-            text: 'Add ProxyOutput'
-
-            onTriggered:
-            {
-                dialog.slotType = 'ProxyOutput';
-                dialog.open();
-            }
-        }
     }
 
+    // Stage body
     Rectangle
     {
         id: body
 
         anchors.fill:        parent
-        anchors.leftMargin:  item.radius / 2
-        anchors.rightMargin: item.radius / 2
+        anchors.leftMargin:  stage.radius / 2
+        anchors.rightMargin: stage.radius / 2
         implicitWidth:       title.implicitWidth + 2 * title.anchors.margins
 
         color:        Ui.style.pipelineStageColor
@@ -119,6 +96,7 @@ BaseItem
         border.width: Ui.style.pipelineLineWidth
         radius:       Ui.style.pipelineStageRadius
 
+        // Title bar
         Rectangle
         {
             id: title
@@ -131,9 +109,10 @@ BaseItem
             implicitHeight:  label.implicitHeight + 2 * label.anchors.margins
 
             radius: body.radius
-            color:  item.color
+            color:  stage.color
             clip:   true
 
+            // Fill round edges
             Rectangle
             {
                 anchors.left:   parent.left
@@ -143,6 +122,7 @@ BaseItem
                 color:          parent.color
             }
 
+            // Title
             Label
             {
                 id: label
@@ -150,10 +130,11 @@ BaseItem
                 anchors.fill:    parent
                 anchors.margins: Ui.style.paddingMedium
 
-                text:  item.name
+                text:  stage.name
                 color: Ui.style.pipelineTitleTextColor
             }
 
+            // Mouse area for dragging
             MouseArea
             {
                 id: mouseArea
@@ -161,7 +142,7 @@ BaseItem
                 anchors.fill: parent
 
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
-                drag.target:     item
+                drag.target:     stage
 
                 onClicked:
                 {
@@ -172,6 +153,7 @@ BaseItem
                 }
             }
 
+            // Close-button
             Icon
             {
                 id: icon
@@ -188,13 +170,13 @@ BaseItem
 
                 onClicked:
                 {
-                    item.closed();
+                    stage.closed();
                 }
             }
-
         }
     }
 
+    // Slots
     Item
     {
         id: connectors
@@ -205,6 +187,7 @@ BaseItem
         implicitWidth:  inputs.implicitWidth + Ui.style.paddingLarge + outputs.implicitWidth
         implicitHeight: Math.max(inputs.implicitHeight, outputs.implicitHeight) + Ui.style.paddingLarge
 
+        // Input slots
         Column
         {
             id: inputs
@@ -213,6 +196,7 @@ BaseItem
             spacing:      Ui.style.paddingSmall
         }
 
+        // Output slots
         Column
         {
             id: outputs
@@ -227,6 +211,26 @@ BaseItem
     */
     property Component inputSlotComponent: InputSlot
     {
+        hovered:  (pipeline != null && pipeline.hoveredElement  == path)
+        selected: (pipeline != null && pipeline.selectedElement == path)
+
+        onEntered:
+        {
+            pipeline.onSlotEntered(path);
+        }
+
+        onExited:
+        {
+            pipeline.onSlotExited(path);
+        }
+
+        onPressed:
+        {
+            if (connectable)
+            {
+                pipeline.onInputSelected(path);
+            }
+        }
     }
 
     /**
@@ -234,6 +238,23 @@ BaseItem
     */
     property Component outputSlotComponent: OutputSlot
     {
+        hovered:  (pipeline != null && pipeline.hoveredElement  == path)
+        selected: (pipeline != null && pipeline.selectedElement == path)
+
+        onEntered:
+        {
+            pipeline.onSlotEntered(path);
+        }
+
+        onExited:
+        {
+            pipeline.onSlotExited(path);
+        }
+
+        onPressed:
+        {
+            pipeline.onOutputSelected(path);
+        }
     }
 
     /**
@@ -260,55 +281,34 @@ BaseItem
     }
 
     /**
-    *  Load stage from pipeline viewer
+    *  Load stage from pipeline interface
     */
     function update()
     {
         clear();
 
-        if (path == '')
+        if (path == '') {
             return;
-
-        // Get pipeline container
-        var pipelineContainer = gloperate.canvas0.pipeline;
+        }
 
         // Get stage
-        var stage     = pipeline.getStage(path);
-        var stageDesc = stage.getDescription();
+        var stageDesc = pipelineInterface.getStage(path);
 
         if (includeInputs)
         {
             var component  = inverse ? outputSlotComponent : inputSlotComponent;
             var parentItem = inverse ? outputs : inputs;
 
-            // Add parameters
-            for (var i in stageDesc.parameters)
-            {
-                var paramName = stageDesc.parameters[i];
-
-                var slotItem = component.createObject(parentItem, {
-                    pipeline: item.pipeline,
-                    path: path + '.' + paramName,
-                    name: paramName,
-                    color: Ui.style.pipelineConnectorColorParam,
-                    connectable: false
-                } );
-
-                slotItems[paramName] = slotItem;
-            }
-
-            // Add inputs
             for (var i in stageDesc.inputs)
             {
                 var inputName = stageDesc.inputs[i];
 
                 var slotItem = component.createObject(parentItem, {
-                    pipeline: item.pipeline,
                     path: path + '.' + inputName,
                     name: inputName
                 } );
 
-                slotItems[inputName] = slotItem;
+                slotItems[inputName] = { type: inverse ? 'output' : 'input', item: slotItem };
             }
         }
 
@@ -317,52 +317,50 @@ BaseItem
             var component  = inverse ? inputSlotComponent : outputSlotComponent;
             var parentItem = inverse ? inputs : outputs;
 
-            // Add outputs
             for (var i in stageDesc.outputs)
             {
                 var outputName = stageDesc.outputs[i];
 
                 var slotItem = component.createObject(parentItem, {
-                    pipeline: item.pipeline,
                     path: path + '.' + outputName,
                     name: outputName
                 } );
 
-                slotItems[outputName] = slotItem;
-            }
-
-            // Add proxy outputs
-            for (var i in stageDesc.proxyOutputs)
-            {
-                var proxyName = stageDesc.proxyOutputs[i];
-
-                var slotItem = component.createObject(parentItem, {
-                    pipeline: item.pipeline,
-                    path: path + '.' + proxyName,
-                    name: proxyName
-                } );
-
-                slotItems[proxyName] = slotItem;
+                slotItems[outputName] = { type: inverse ? 'input' : 'output', item: slotItem };
             }
         }
     }
 
-    function getSlotPos(name, type)
+    /**
+    *  Get position of slot in stage
+    *
+    *  @param[in] name
+    *    Name of slot
+    */
+    function getSlotPos(name)
     {
         var slot = slotItems[name];
 
-        if (slot)
+        if (slot && slot.item)
         {
-            if (type == 'input')
+            if (slot.type == 'input')
             {
-                return slot.mapToItem(item, -slot.radius / 8.0, slot.radius / 2.0);
+                return slot.item.mapToItem(stage, -slot.item.radius / 8.0, slot.item.radius / 2.0);
             }
-            else if (type == 'output')
+            else if (slot.type == 'output')
             {
-                return slot.mapToItem(item, slot.width, slot.radius / 2.0);
+                return slot.item.mapToItem(stage, slot.item.width, slot.item.radius / 2.0);
             }
         }
 
         return null;
+    }
+
+    /**
+    *  Load pipeline
+    */
+    onPathChanged:
+    {
+        update();
     }
 }

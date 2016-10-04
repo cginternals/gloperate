@@ -1,0 +1,11 @@
+{
+    "title": "AVI (codec: mpeg4)",
+    "format": "avi",
+    "codec": "mpeg4",
+    "width": 800,
+    "height": 600,
+    "fps": 30,
+    "seconds": 7,
+    "gopsize": 60,
+    "bitrate": 400000
+}

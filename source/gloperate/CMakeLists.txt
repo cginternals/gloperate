@@ -45,7 +45,6 @@ set(headers
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
     ${include_path}/base/Canvas.h
-    ${include_path}/base/PipelineContainer.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
     ${include_path}/base/AbstractGLContextFactory.h
@@ -67,25 +66,17 @@ set(headers
     ${include_path}/base/Storer.inl
     ${include_path}/base/GlmProperties.h
 
+    ${include_path}/pipeline/PipelineContainer.h
+    ${include_path}/pipeline/Stage.h
+    ${include_path}/pipeline/Stage.inl
+    ${include_path}/pipeline/Pipeline.h
     ${include_path}/pipeline/AbstractSlot.h
-    ${include_path}/pipeline/AbstractDataSlot.h
-    ${include_path}/pipeline/AbstractInputSlot.h
-    ${include_path}/pipeline/DataSlot.h
-    ${include_path}/pipeline/DataSlot.inl
-    ${include_path}/pipeline/InputSlot.h
-    ${include_path}/pipeline/InputSlot.inl
-    ${include_path}/pipeline/Parameter.h
-    ${include_path}/pipeline/Parameter.inl
+    ${include_path}/pipeline/Slot.h
+    ${include_path}/pipeline/Slot.inl
     ${include_path}/pipeline/Input.h
     ${include_path}/pipeline/Input.inl
     ${include_path}/pipeline/Output.h
     ${include_path}/pipeline/Output.inl
-    ${include_path}/pipeline/ProxyOutput.h
-    ${include_path}/pipeline/ProxyOutput.inl
-    ${include_path}/pipeline/Stage.h
-    ${include_path}/pipeline/Stage.inl
-    ${include_path}/pipeline/Pipeline.h
-    ${include_path}/pipeline/OutputTypeSelector.h
     ${include_path}/pipeline/StageComponent.h
     ${include_path}/pipeline/StageComponent.inl
 
@@ -98,7 +89,6 @@ set(headers
     ${include_path}/rendering/TransparencyMasksGenerator.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
-    ${include_path}/stages/interfaces/RenderInterface.inl
     ${include_path}/stages/base/BasicFramebufferStage.h
     ${include_path}/stages/base/CustomFramebufferStage.h
     ${include_path}/stages/base/FramebufferStage.h
@@ -148,7 +138,6 @@ set(sources
     ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/AbstractCanvas.cpp
     ${source_path}/base/Canvas.cpp
-    ${source_path}/base/PipelineContainer.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractGLContext.cpp
     ${source_path}/base/AbstractGLContextFactory.cpp
@@ -163,11 +152,10 @@ set(sources
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
 
-    ${source_path}/pipeline/AbstractSlot.cpp
-    ${source_path}/pipeline/AbstractDataSlot.cpp
-    ${source_path}/pipeline/AbstractInputSlot.cpp
+    ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
+    ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/StageComponent.cpp
 
     ${source_path}/rendering/AbstractDrawable.cpp
@@ -177,6 +165,7 @@ set(sources
     ${source_path}/rendering/RenderPass.cpp
     ${source_path}/rendering/TransparencyMasksGenerator.cpp
 
+    ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/CustomFramebufferStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp

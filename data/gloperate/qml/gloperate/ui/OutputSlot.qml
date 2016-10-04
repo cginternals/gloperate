@@ -1,5 +1,6 @@
 
 import QtQuick 2.0
+
 import gloperate.base 1.0
 import gloperate.ui 1.0
 
@@ -11,24 +12,32 @@ import gloperate.ui 1.0
 */
 BaseItem
 {
-    id: item
+    id: slot
 
-    implicitWidth:  row.implicitWidth  + 2 * row.anchors.margins
-    implicitHeight: row.implicitHeight + 2 * row.anchors.margins
+    // Called when mouse cursor has entered the slot
+    signal entered()
 
-    property string path:        '' ///< Path in the pipeline hierarchy (e.g., 'DemoPipeline.DemoStage.texture')
-    property alias  name:        label.text
+    // Called when mouse cursor has left the slot
+    signal exited()
+
+    // Called when mouse button has been pressed on the slot
+    signal pressed()
+
+    // Options
+    property string path:        ''         ///< Path in the pipeline hierarchy (e.g., 'pipeline.stage1.output1')
+    property alias  name:        label.text ///< Name of the slot
+    property bool   hovered:     false      ///< Is the slot currently hovered?
+    property bool   selected:    false      ///< Is the slot currently selected?
     property int    radius:      Ui.style.pipelineConnectorSize
     property color  color:       Ui.style.pipelineConnectorColorOut
     property color  borderColor: Ui.style.pipelineLineColor
     property int    borderWidth: Ui.style.pipelineLineWidth
 
-    property Item pipeline: null
-    readonly property bool hovered:  (pipeline != null && pipeline.hoveredElement  == path)
-    readonly property bool selected: (pipeline != null && pipeline.selectedElement == path)
+    anchors.right:  parent.right
+    implicitWidth:  row.implicitWidth  + 2 * row.anchors.margins
+    implicitHeight: row.implicitHeight + 2 * row.anchors.margins
 
-    anchors.right: parent.right
-
+    // Slot container
     Row
     {
         id: row
@@ -37,6 +46,7 @@ BaseItem
         anchors.top:  parent.top
         spacing:      Ui.style.paddingSmall
 
+        // Name of slot
         Label
         {
             id: label
@@ -47,40 +57,31 @@ BaseItem
             color: Ui.style.pipelineTextColor
         }
 
+        // Connector
         Rectangle
         {
             id: connector
 
             anchors.verticalCenter: parent.verticalCenter
-            width:                  item.radius
-            height:                 item.radius
+            width:                  slot.radius
+            height:                 slot.radius
 
             radius:       width / 2.0
-            color:        item.selected ? Ui.style.pipelineColorSelected : (item.hovered ? Ui.style.pipelineColorHighlighted : item.color)
-            border.color: item.borderColor
-            border.width: item.borderWidth
+            color:        slot.selected ? Ui.style.pipelineColorSelected : (slot.hovered ? Ui.style.pipelineColorHighlighted : slot.color)
+            border.color: slot.borderColor
+            border.width: slot.borderWidth
         }
     }
 
+    // Mouse area for selection
     MouseArea
     {
         anchors.fill: parent
 
         hoverEnabled: true
 
-        onEntered:
-        {
-            pipeline.elementEntered(item.path);
-        }
-
-        onExited:
-        {
-            pipeline.elementLeft(item.path);
-        }
-
-        onPressed:
-        {
-            pipeline.selectOutput(item.path);
-        }
+        onEntered: slot.entered();
+        onExited:  slot.exited();
+        onPressed: slot.pressed();
     }
 }

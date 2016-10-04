@@ -3,6 +3,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
+
 import gloperate.rendering 1.0
 import gloperate.base 1.0
 import gloperate.ui 1.0
@@ -17,11 +18,12 @@ Page
 //  property string stage: 'DemoStage'
 
     // UI status
-    property real uiStatus: 1.0
+             property real uiStatus:  1.0
     readonly property bool uiEnabled: uiStatus > 0.0
 
     focus: true
 
+    // Slowly fade out UI elements when deactivated
     Behavior on uiStatus
     {
         NumberAnimation
@@ -195,8 +197,30 @@ Page
             else if (name == 'edit')
             {
                 pipelineEditor.visible = !pipelineEditor.visible;
-                pipelineEditor.load();
+                pipelineEditor.load(gloperate.canvas0.pipeline);
             }
+        }
+    }
+
+    // (Top-left) Async video record button
+    ButtonBar
+    {
+        id: toggleVideoRecord
+
+        anchors.left:   menuLeft.right
+        anchors.top:     main.top
+        anchors.margins: Ui.style.pagePadding
+
+        visible: page.uiEnabled
+        opacity: page.uiStatus
+
+        items: [
+            { name: 'toggle', text: 'Rec', icon: '0021-video-camera.png', enabled: video.settingsApplied }
+        ];
+
+        onItemClicked: // (menu, name)
+        {
+            gloperate.canvas0.toggleVideoExport();
         }
     }
 
@@ -305,6 +329,7 @@ Page
         id: video
 
         property int margin: Ui.style.paddingMedium
+        property bool settingsApplied: false
 
         title:  "Video"
         width:  videoDialog.layout.implicitWidth + 20 * margin
@@ -319,6 +344,7 @@ Page
 
             onClose: {
                 video.close();
+                video.settingsApplied = true;
             }
         }
     }

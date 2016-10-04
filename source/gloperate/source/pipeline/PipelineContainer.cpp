@@ -1,5 +1,5 @@
 
-#include <gloperate/base/PipelineContainer.h>
+#include <gloperate/pipeline/PipelineContainer.h>
 
 #include <gloperate/base/Environment.h>
 
@@ -77,7 +77,7 @@ void PipelineContainer::connect(Stage * stage, const std::string & name, Abstrac
     }
 
     // Get input slot
-    AbstractInputSlot * input = dynamic_cast<AbstractInputSlot *>(stage->property(name));
+    AbstractSlot * input = dynamic_cast<AbstractSlot *>(stage->property(name));
     if (!input) {
         return;
     }
@@ -86,7 +86,7 @@ void PipelineContainer::connect(Stage * stage, const std::string & name, Abstrac
     input->connect(source);
 }
 
-void PipelineContainer::connect(AbstractInputSlot * input, Stage * stage, const std::string & name)
+void PipelineContainer::connect(AbstractSlot * input, Stage * stage, const std::string & name)
 {
     // Check input slot
     if (!input) {
@@ -106,7 +106,7 @@ void PipelineContainer::connect(AbstractInputSlot * input, Stage * stage, const 
 void PipelineContainer::disconnect(Stage * stage, const std::string & name)
 {
     // Get input slot
-    AbstractInputSlot * input = dynamic_cast<AbstractInputSlot *>(stage->property(name));
+    AbstractSlot * input = dynamic_cast<AbstractSlot *>(stage->property(name));
     if (!input) {
         return;
     }
