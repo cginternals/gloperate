@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <cppassist/string/conversion.h>
 #include <cppassist/string/regex.h>
 
 #include <cppexpose/typed/GetTyped.h>
@@ -86,8 +87,36 @@ bool glmFromString(const std::string & string, T * data)
     return true;
 }
 
+/**
+*  @brief
+*    Helper template to determine the vector type as string
+*/
+template <typename T>
+class VectorPrefix
+{
+public:
+    static std::string getPrefix()
+    {
+        return "";
+    }
+};
+
+template <>
+class VectorPrefix<int>
+{
+public:
+    static std::string getPrefix()
+    {
+        return "i";
+    }
+};
+
 
 } // namespace gloperate
+
+
+namespace cppexpose
+{
 
 
 /**
@@ -123,14 +152,9 @@ public:
 
     virtual std::string typeName() const override
     {
-        return "glm::vec";
+        return "glm::" + gloperate::VectorPrefix<ValueType>::getPrefix() + "vec" + cppassist::toString<int>(Size);
     }
 };
-
-
-namespace cppexpose
-{
-
 
 template <typename BASE>
 struct GetTyped<glm::vec2, BASE>
