@@ -1,15 +1,16 @@
 
 import QtQuick 2.0
-import QtQuick.Window 2.0
 import QtQuick.Controls 1.1
-import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Ui 1.0
+import QmlToolbox.PipelineEditor 1.0
 
 import gloperate.rendering 1.0
-import gloperate.base 1.0
-import gloperate.ui 1.0
 
 
-Page
+Background
 {
     id: page
 
@@ -21,8 +22,6 @@ Page
              property real uiStatus:  1.0
     readonly property bool uiEnabled: uiStatus > 0.0
 
-    focus: true
-
     // Slowly fade out UI elements when deactivated
     Behavior on uiStatus
     {
@@ -32,6 +31,9 @@ Page
             duration:    1000
         }
     }
+
+    renderBackground: false
+    focus:            true
 
     // Hide all UI elements on Escape
     Keys.onPressed:
@@ -55,20 +57,20 @@ Page
 
         anchors.bottom:  panelBottom.top
         anchors.left:    parent.left
-        anchors.margins: Ui.style.panelPadding
-        spacing:         Ui.style.pageSpacing
+        anchors.margins: Ui.style.paddingSmall
+        spacing:         Ui.style.spacingSmall
 
         visible: page.uiEnabled
         opacity: page.uiStatus
 
         property string selected: ''
 
-        Button
+        IconButton
         {
             property string title: 'log'
 
-            icon:        '0035-file-text.png'
-            highlighted: tabs.selected == title
+            icon:     '0035-file-text.png'
+            selected: tabs.selected == title
 
             onClicked:
             {
@@ -82,12 +84,12 @@ Page
             }
         }
 
-        Button
+        IconButton
         {
             property string title: 'script'
 
-            icon:        '0086-keyboard.png'
-            highlighted: tabs.selected == title
+            icon:     '0086-keyboard.png'
+            selected: tabs.selected == title
 
             onClicked:
             {
@@ -103,16 +105,16 @@ Page
     }
 
     // Bottom panel
-    Panel
+    Frame
     {
         id: panelBottom
 
         anchors.left:         page.left
         anchors.right:        page.right
         anchors.bottom:       page.bottom
-        anchors.leftMargin:   Ui.style.pagePadding
-        anchors.rightMargin:  Ui.style.pagePadding
-        anchors.bottomMargin: status * (height + Ui.style.pagePadding) - height
+        anchors.leftMargin:   Ui.style.paddingMedium
+        anchors.rightMargin:  Ui.style.paddingMedium
+        anchors.bottomMargin: status * (height + Ui.style.paddingMedium) - height
         height:               page.height / 3
 
         visible: page.uiEnabled
@@ -132,7 +134,7 @@ Page
         LogView
         {
             anchors.fill:    parent
-            anchors.margins: Ui.style.panelPadding
+            anchors.margins: Ui.style.paddingMedium
 
             visible: tabs.selected == 'log'
         }
@@ -140,7 +142,7 @@ Page
         ScriptConsole
         {
             anchors.fill:    parent
-            anchors.margins: Ui.style.panelPadding
+            anchors.margins: Ui.style.paddingMedium
 
             visible: tabs.selected == 'script'
         }
@@ -155,7 +157,7 @@ Page
         anchors.right:   page.right
         anchors.top:     page.top
         anchors.bottom:  panelBottom.top
-        anchors.margins: Ui.style.pagePadding
+        anchors.margins: Ui.style.paddingMedium
     }
 
     // Top-left menu
@@ -165,62 +167,84 @@ Page
 
         anchors.left:    main.left
         anchors.top:     main.top
-        anchors.margins: Ui.style.panelPadding
+        anchors.margins: Ui.style.paddingMedium
 
         visible: page.uiEnabled
         opacity: page.uiStatus
 
-        items: [
-          { name: 'pipeline', text: 'Demo', icon: '0190-menu.png', enabled: true,
-            items: [
-              { name: 'choose',     text: 'Choose Pipeline', icon: '0092-tv.png', enabled: false },
-              { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: true },
-              { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: true },
-              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: true }
-            ]
-          }
-        ];
-
-        onItemClicked: // (menu, name)
+        ButtonMenu
         {
-            if (name == 'screenshot')
+            text: 'Demo'
+            icon: '0190-menu.png'
+
+            IconButton
             {
-                screenshot.visible = true;
+                text:    'Choose Pipeline'
+                icon:    '0092-tv.png'
+                enabled: false
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                }
             }
 
-            else if (name == 'video')
+            IconButton
             {
-                video.visible = true;
-                videoDialog.update();
+                text: 'Screenshot'
+                icon: '0040-file-picture.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    screenshot.visible = true;
+                }
             }
 
-            else if (name == 'edit')
+            IconButton
             {
-                pipelineEditor.visible = !pipelineEditor.visible;
-                pipelineEditor.load(gloperate.canvas0.pipeline);
+                text: 'Video'
+                icon: '0021-video-camera.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    video.visible = true;
+                    video.update();
+                }
+            }
+
+            IconButton
+            {
+                text: 'Edit Pipeline'
+                icon: '0387-share2.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    gloperatePipeline.root = gloperate.canvas0.pipeline;
+                    var name = gloperatePipeline.getStage('pipeline').stages[0];
+
+                    pipelineEditor.load('pipeline.' + name);
+                    pipelineEditor.visible = !pipelineEditor.visible;
+                }
             }
         }
-    }
 
-    // (Top-left) Async video record button
-    ButtonBar
-    {
-        id: toggleVideoRecord
-
-        anchors.left:   menuLeft.right
-        anchors.top:     main.top
-        anchors.margins: Ui.style.pagePadding
-
-        visible: page.uiEnabled
-        opacity: page.uiStatus
-
-        items: [
-            { name: 'toggle', text: 'Rec', icon: '0021-video-camera.png', enabled: video.settingsApplied }
-        ];
-
-        onItemClicked: // (menu, name)
+        IconButton
         {
-            gloperate.canvas0.toggleVideoExport();
+            text:    'Rec'
+            icon:    '0021-video-camera.png'
+            enabled: video.settingsApplied
+
+            onClicked:
+            {
+                gloperate.canvas0.toggleVideoExport();
+            }
         }
     }
 
@@ -231,18 +255,20 @@ Page
 
         anchors.right:   main.right
         anchors.top:     main.top
-        anchors.margins: Ui.style.pagePadding
+        anchors.margins: Ui.style.paddingMedium
 
         visible: page.uiEnabled
         opacity: page.uiStatus
 
-        items: [
-            { name: 'settings', text: 'Settings', icon: '0149-cog.png', enabled: true }
-        ];
-
-        onItemClicked: // (menu, name)
+        IconButton
         {
-            settings.visible = true;
+            text: 'Settings'
+            icon: '0149-cog.png'
+
+            onClicked:
+            {
+                settings.visible = true;
+            }
         }
     }
 
@@ -262,6 +288,11 @@ Page
     }
 
     // Pipeline editor
+    GlOperatePipeline
+    {
+        id: gloperatePipeline
+    }
+
     PipelineEditor
     {
         id: pipelineEditor
@@ -272,6 +303,8 @@ Page
         height:        main.height
 
         visible: false
+
+        pipelineInterface: gloperatePipeline
 
         Behavior on width
         {
@@ -284,68 +317,27 @@ Page
     }
 
     // Settings dialog
-    ApplicationWindow
+    Settings
     {
         id: settings
-
-        title:   "Settings"
-        visible: false
-        width:   800
-        height:  600
-
-        Settings
-        {
-            anchors.fill: parent
-        }
     }
 
-    // Screenshot window
-    Window
+    // Screenshot dialog
+    ScreenshotDialog
     {
         id: screenshot
-
-        property int margin: Ui.style.paddingMedium
-
-        title:  "Screenshot"
-        width:  screenshotItem.layout.implicitWidth + 20 * margin
-        height: screenshotItem.layout.implicitHeight + 2 * margin
-
-        Screenshot
-        {
-            id: screenshotItem
-
-            margin: screenshot.margin
-            anchors.fill: parent
-
-            onClose: {
-                screenshot.close();
-            }
-        }
     }
 
-    // Video capture window
-    Window
+    // Video capture dialog
+    VideoDialog
     {
         id: video
 
-        property int margin: Ui.style.paddingMedium
         property bool settingsApplied: false
 
-        title:  "Video"
-        width:  videoDialog.layout.implicitWidth + 20 * margin
-        height: videoDialog.layout.implicitHeight + 2 * margin
-
-        VideoDialog
+        onClosed:
         {
-            id: videoDialog
-
-            anchors.fill: parent
-            margin:       screenshot.margin
-
-            onClose: {
-                video.close();
-                video.settingsApplied = true;
-            }
+            settingsApplied = true;
         }
     }
 
@@ -369,7 +361,7 @@ Page
                 LogView
                 {
                     anchors.fill:    parent
-                    anchors.margins: Ui.style.panelPadding
+                    anchors.margins: Ui.style.paddingMedium
                 }
             }
         }
@@ -394,7 +386,7 @@ Page
                 ScriptConsole
                 {
                     anchors.fill:    parent
-                    anchors.margins: Ui.style.panelPadding
+                    anchors.margins: Ui.style.paddingMedium
                 }
             }
         }

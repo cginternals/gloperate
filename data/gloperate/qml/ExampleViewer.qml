@@ -1,23 +1,28 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.1
-import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Ui 1.0
+
 import gloperate.rendering 1.0
-import gloperate.base 1.0
-import gloperate.ui 1.0
 
 
-Page
+Background
 {
     id: page
 
-    focus: true
+    // Stage
+    property string stage: 'DemoStage'
+//  property string stage: 'DemoPipeline'
 
     // UI status
     property real uiStatus: 1.0
 
     readonly property bool uiEnabled: uiStatus > 0.0
 
+    // Slowly fade out UI elements when deactivated
     Behavior on uiStatus
     {
         NumberAnimation
@@ -26,6 +31,9 @@ Page
             duration:    1000
         }
     }
+
+    renderBackground: false
+    focus:            true
 
     // Hide all UI elements on Escape
     Keys.onPressed:
@@ -49,20 +57,20 @@ Page
 
         anchors.bottom:  panelBottom.top
         anchors.left:    parent.left
-        anchors.margins: Ui.style.panelPadding
-        spacing:         Ui.style.pageSpacing
+        anchors.margins: Ui.style.paddingSmall
+        spacing:         Ui.style.spacingSmall
 
         visible: page.uiEnabled
         opacity: page.uiStatus
 
         property string selected: ''
 
-        Button
+        IconButton
         {
             property string title: 'log'
 
-            icon:        '0035-file-text.png'
-            highlighted: tabs.selected == title
+            icon:     '0035-file-text.png'
+            selected: tabs.selected == title
 
             onClicked:
             {
@@ -76,12 +84,12 @@ Page
             }
         }
 
-        Button
+        IconButton
         {
             property string title: 'script'
 
-            icon:        '0086-keyboard.png'
-            highlighted: tabs.selected == title
+            icon:     '0086-keyboard.png'
+            selected: tabs.selected == title
 
             onClicked:
             {
@@ -97,16 +105,16 @@ Page
     }
 
     // Bottom panel
-    Panel
+    Frame
     {
         id: panelBottom
 
         anchors.left:         page.left
         anchors.right:        page.right
         anchors.bottom:       page.bottom
-        anchors.leftMargin:   Ui.style.pagePadding
-        anchors.rightMargin:  Ui.style.pagePadding
-        anchors.bottomMargin: status * (height + Ui.style.pagePadding) - height
+        anchors.leftMargin:   Ui.style.paddingMedium
+        anchors.rightMargin:  Ui.style.paddingMedium
+        anchors.bottomMargin: status * (height + Ui.style.paddingMedium) - height
         height:               page.height / 3
 
         visible: page.uiEnabled
@@ -126,7 +134,7 @@ Page
         LogView
         {
             anchors.fill:    parent
-            anchors.margins: Ui.style.panelPadding
+            anchors.margins: Ui.style.paddingMedium
 
             visible: tabs.selected == 'log'
         }
@@ -134,7 +142,7 @@ Page
         ScriptConsole
         {
             anchors.fill:    parent
-            anchors.margins: Ui.style.panelPadding
+            anchors.margins: Ui.style.paddingMedium
 
             visible: tabs.selected == 'script'
         }
@@ -159,24 +167,28 @@ Page
 
         anchors.left:    main.left
         anchors.top:     main.top
-        anchors.margins: Ui.style.panelPadding
+        anchors.margins: Ui.style.paddingMedium
 
         visible: page.uiEnabled
         opacity: page.uiStatus
 
-        items: [
-          { name: 'pipeline', text: 'Demo', icon: '0190-menu.png', enabled: true,
-            items: [
-              { name: 'choose',     text: 'Choose Pipeline', icon: '0092-tv.png', enabled: false },
-              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: false },
-              { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: false },
-              { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: false }
-            ]
-          }
-        ];
-
-        onItemClicked: // (menu, name)
+        ButtonMenu
         {
+            text: 'Demo'
+            icon: '0190-menu.png'
+
+            IconButton
+            {
+                text:    'Choose Pipeline'
+                icon:    '0092-tv.png'
+                enabled: false
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                }
+            }
         }
     }
 
@@ -187,18 +199,20 @@ Page
 
         anchors.right:   main.right
         anchors.top:     main.top
-        anchors.margins: Ui.style.pagePadding
+        anchors.margins: Ui.style.paddingMedium
 
         visible: page.uiEnabled
         opacity: page.uiStatus
 
-        items: [
-            { name: 'settings', text: 'Settings', icon: '0149-cog.png', enabled: true }
-        ];
-
-        onItemClicked: // (menu, name)
+        IconButton
         {
-            settings.visible = true;
+            text: 'Settings'
+            icon: '0149-cog.png'
+
+            onClicked:
+            {
+                settings.visible = true;
+            }
         }
     }
 
@@ -210,23 +224,13 @@ Page
         anchors.fill: main
         z:            -1
 
-        stage: 'DemoStage'
+        stage: page.stage
     }
 
     // Settings dialog
-    ApplicationWindow
+    Settings
     {
         id: settings
-
-        title:   "Settings"
-        visible: false
-        width:   800
-        height:  600
-
-        Settings
-        {
-            anchors.fill: parent
-        }
     }
 
     // Log window
@@ -249,7 +253,7 @@ Page
                 LogView
                 {
                     anchors.fill:    parent
-                    anchors.margins: Ui.style.panelPadding
+                    anchors.margins: Ui.style.paddingMedium
                 }
             }
         }
@@ -274,7 +278,7 @@ Page
                 ScriptConsole
                 {
                     anchors.fill:    parent
-                    anchors.margins: Ui.style.panelPadding
+                    anchors.margins: Ui.style.paddingMedium
                 }
             }
         }

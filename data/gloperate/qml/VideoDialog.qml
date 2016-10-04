@@ -4,75 +4,85 @@ import QtQuick.Controls 1.0 as Controls
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
 import QtQml 2.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
+
 import gloperate.base 1.0
 
 
-Background {
+Window
+{
     id: video
 
-    signal close();
+    signal closed()
 
-    property int margin: 0
+    property int   margin: 0
     property alias layout: mainLayout
 
-    function update() {
-        backends.clear();
-        profiles.clear();
+    width:  600
+    height: mainLayout.height + 2 * mainLayout.anchors.margins
 
-        var plugins = gloperate.canvas0.videoExporterPlugins();
-        plugins.forEach(function(backend) {
-            backends.append({text: backend});
-        })
+    title: 'Export Video'
 
-        videoProfile.profiles.forEach(function(profile) {
-            profiles.append({text: profile})
-        })
-
-        updateParameters();
-    }
-
-    function updateParameters() {
-        width.editText = videoProfile.width;
-        height.editText = videoProfile.height;
-        fps.editText = videoProfile.fps;
-        duration.editText = videoProfile.seconds;
-    }
-
-    ColumnLayout {
+    ColumnLayout 
+    {
         id: mainLayout
-        anchors.fill: parent
-        anchors.margins: margin
-        Controls.GroupBox {
+
+        anchors.top:     parent.top
+        anchors.left:    parent.left
+        anchors.right:   parent.right
+        anchors.margins: Ui.style.paddingMedium
+
+        spacing: Ui.style.spacingMedium
+
+        Controls.GroupBox
+        {
             id: rowBox
+
             title: "Save as"
+
             Layout.fillWidth: true
 
-            RowLayout {
+            RowLayout
+            {
                 anchors.fill: parent
-                TextField {
+
+                TextField
+                {
                     id: filepath
+
                     placeholderText: "e.g. /home/user/videos/video.avi"
+
                     Layout.fillWidth: true
                 }
-                DialogButton {
+
+                Button
+                {
                     text: "Browse"
 
-                    onClicked: {
+                    onClicked:
+                    {
                         fileDialog.open();
                     }
                 }
             }
         }
 
-        Controls.GroupBox {
+        Controls.GroupBox
+        {
             title: "Settings"
+
             Layout.fillWidth: true
 
-            GridLayout {
+            GridLayout
+            {
                 id: gridLayout
+
+                anchors.fill: parent
+
                 rows: 6
                 flow: GridLayout.TopToBottom
-                anchors.fill: parent
 
                 Controls.Label { text: "Profile" }
                 Controls.Label { text: "Width" }
@@ -81,25 +91,35 @@ Background {
                 Controls.Label { text: "Duration (sec)" }
                 Controls.Label { text: "Backend" }
 
-                ComboBox {
+                ComboBox
+                {
+                    id: profile
+
                     property alias currentProfile: profile.currentIndex
 
                     Layout.fillWidth: true
+
                     editable: false
-                    id: profile
-                    model: ListModel {
+
+                    model: ListModel
+                    {
                         id: profiles
                     }
 
-                    onCurrentProfileChanged: {
+                    onCurrentProfileChanged:
+                    {
                         videoProfile.profileIndex = currentProfile;
                     }
                 }
 
-                ComboBox {
-                    editable: true
+                ComboBox
+                {
                     id: width
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "800" }
                         ListElement { text: "1024" }
                         ListElement { text: "1152" }
@@ -113,10 +133,14 @@ Background {
                     }
                 }
                 
-                ComboBox {
-                    editable: true
+                ComboBox
+                {
                     id: height
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "600" }
                         ListElement { text: "720" }
                         ListElement { text: "768" }
@@ -131,19 +155,26 @@ Background {
                     }
                 }
 
-                ComboBox {
-                    editable: true
+                ComboBox
+                {
                     id: fps
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "30" }
                         ListElement { text: "60" }
                     }
                 }
 
                 ComboBox {
-                    editable: true
                     id: duration
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "5" }
                         ListElement { text: "10" }
                         ListElement { text: "60" }
@@ -151,126 +182,164 @@ Background {
                 }
 
                 ComboBox {
-                    Layout.fillWidth: true
-                    editable: false
                     id: backend
-                    model: ListModel {
+
+                    Layout.fillWidth: true
+
+                    editable: false
+
+                    model: ListModel
+                    {
                         id: backends
                     }
                 }
-
             }
         }
 
-        ProgressBar {
+        ProgressBar
+        {
             id: progressBar
+
             Layout.fillWidth: true
 
             minimumValue: 0
             maximumValue: 100
-            value: 0
+            value:        0
         }
 
-        Controls.GroupBox {
+        Item
+        {
             Layout.fillWidth: true
 
-            GridLayout {
-                anchors.fill: parent
+            implicitHeight: Math.max(button1.implicitHeight, button2.implicitHeight)
 
-                DialogButton {
-                    text: "Apply and Record"
-                    anchors.right: parent.right
+            Button
+            {
+                id: button1
 
-                    icon: '0021-video-camera.png'
+                anchors.left: parent.left
 
-                    onClicked: {
-                        var parameters = {
-                            filepath: filepath.text,
-                            width: width.editText,
-                            height: height.editText,
-                            fps: fps.editText,
-                            duration: duration.editText,
+                text: 'Apply'
 
-                            format: videoProfile.format,
-                            codec: videoProfile.codec,
-                            gopsize: videoProfile.gopsize,
-                            bitrate: videoProfile.bitrate
-                        }
+                onClicked:
+                {
+                    var parameters =
+                    {
+                        filepath: filepath.text,
+                        width: width.editText,
+                        height: height.editText,
+                        fps: fps.editText,
+                        duration: duration.editText,
 
-                        gloperate.canvas0.exportVideo(parameters, backend.editText);
-                        close();
-                    }
+                        format: videoProfile.format,
+                        codec: videoProfile.codec,
+                        gopsize: videoProfile.gopsize,
+                        bitrate: videoProfile.bitrate
+                    };
+
+                    gloperate.canvas0.setVideoTarget(parameters, backend.editText);
+                    // gloperate.canvas0.toggleVideoExport();
+
+                    closed();
+                    close();
                 }
+            }
 
-                DialogButton {
-                    id: asyncButton
-                    text: "Apply"
-                    anchors.left: parent.left
+            Button
+            {
+                id: button2
 
-                    icon: '0021-video-camera.png'
+                anchors.right: parent.right
 
-                    onClicked: {
-                        var parameters = {
-                            filepath: filepath.text,
-                            width: width.editText,
-                            height: height.editText,
-                            fps: fps.editText,
-                            duration: duration.editText,
+                text: 'Apply and Record'
 
-                            format: videoProfile.format,
-                            codec: videoProfile.codec,
-                            gopsize: videoProfile.gopsize,
-                            bitrate: videoProfile.bitrate
-                        }
+                onClicked:
+                {
+                    var parameters =
+                    {
+                        filepath: filepath.text,
+                        width: width.editText,
+                        height: height.editText,
+                        fps: fps.editText,
+                        duration: duration.editText,
 
-                        gloperate.canvas0.setVideoTarget(parameters, backend.editText);
-                        // gloperate.canvas0.toggleVideoExport();
-                        close();
-                    }
+                        format: videoProfile.format,
+                        codec: videoProfile.codec,
+                        gopsize: videoProfile.gopsize,
+                        bitrate: videoProfile.bitrate
+                    };
+
+                    gloperate.canvas0.exportVideo(parameters, backend.editText);
+
+                    closed();
+                    close();
                 }
-
-                // DialogButton {
-                //     text: "Toggle Off"
-                //     anchors.left: asyncButton.right
-
-                //     icon: '0021-video-camera.png'
-
-                //     onClicked: {
-                //         gloperate.canvas0.toggleVideoExport();
-                //         close();
-                //     }
-                // }
             }
         }
     }
 
-    FileDialog {
+    FileDialog
+    {
         id: fileDialog
-        title: "Please choose an export location and filename"
-        selectFolder: false
+
+        title:          'Please choose an export location and filename'
+        selectFolder:   false
         selectExisting: false
         selectMultiple: false
 
-        onAccepted: {
+        onAccepted:
+        {
             var path = fileUrl.toString();
+
             // remove prefixed "file:///"
             path = path.replace(/^(file:\/{3})/,"");
+
             // unescape html codes like '%23' for '#'
             path = decodeURIComponent(path);
+
             filepath.text = path;
             
             close();
         }
-        onRejected: {
+
+        onRejected:
+        {
             close();
         }
     }
 
-    VideoProfile {
+    VideoProfile
+    {
         id: videoProfile
 
-        onProfileChanged: {
+        onProfileChanged:
+        {
             updateParameters();
         }
+    }
+
+    function update()
+    {
+        backends.clear();
+        profiles.clear();
+
+        var plugins = gloperate.canvas0.videoExporterPlugins();
+        plugins.forEach(function(backend) {
+            backends.append({text: backend});
+        });
+
+        videoProfile.profiles.forEach(function(profile) {
+            profiles.append({text: profile})
+        });
+
+        updateParameters();
+    }
+
+    function updateParameters()
+    {
+        width.editText    = videoProfile.width;
+        height.editText   = videoProfile.height;
+        fps.editText      = videoProfile.fps;
+        duration.editText = videoProfile.seconds;
     }
 }
