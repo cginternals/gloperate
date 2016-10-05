@@ -91,9 +91,9 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;            /**< Screen-aligned quad geometry */
-    globjects::ref_ptr<globjects::Program>     m_program;        /**< Shader program */
-    bool                                       m_rebuildProgram; /**< 'true', if program needs rebuild */
+    globjects::ref_ptr<globjects::VertexArray> m_vao;            ///< Screen-aligned quad geometry
+    globjects::ref_ptr<globjects::Program>     m_program;        ///< Shader program
+    bool                                       m_rebuildProgram; ///< 'true', if program needs rebuild
 };
 
 

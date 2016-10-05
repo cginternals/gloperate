@@ -131,17 +131,6 @@ public:
     */
     void invalidateStageOrder();
 
-    // Virtual Stage interface
-    virtual bool isPipeline() const override;
-
-
-protected:
-    /**
-    *  @brief
-    *    Sort stages by their dependencies
-    */
-    void sortStages();
-
     /**
     *  @brief
     *    Get a slot of this pipeline or a subpipeline
@@ -153,6 +142,17 @@ protected:
     *    Slot, nullptr if not found
     */
     AbstractSlot * getSlot(const std::string & path);
+
+    // Virtual Stage interface
+    virtual bool isPipeline() const override;
+
+
+protected:
+    /**
+    *  @brief
+    *    Sort stages by their dependencies
+    */
+    void sortStages();
 
     // Virtual Stage interface
     virtual void onContextInit(AbstractGLContext * context) override;

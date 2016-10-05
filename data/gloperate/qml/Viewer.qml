@@ -366,6 +366,28 @@ Background
                 pipelineEditorFrame.visible = false;
             }
         }
+
+        TextureRenderItem
+        {
+            x:      350
+            y:      350
+            width:  200
+            height: 200
+
+            path: 'pipeline.DemoPipeline.TextureLoadStage.texture'
+
+            Drag.active: mouseArea.drag.active
+
+            MouseArea
+            {
+                id: mouseArea
+
+                anchors.fill: parent
+
+                acceptedButtons: Qt.LeftButton
+                drag.target:     parent
+            }
+        }
     }
 
     // Settings dialog
