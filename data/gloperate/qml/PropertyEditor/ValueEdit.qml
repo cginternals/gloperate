@@ -43,6 +43,8 @@ Item
                 input = editNumber.createObject(item);
             else if (slotInfo.type == 'color')
                 input = editColor.createObject(item);
+            else if (slotInfo.type == 'filename')
+                input = editFilename.createObject(item);
             else
                 input = editString.createObject(item);
         }
@@ -56,6 +58,19 @@ Item
         id: editString
 
         ValueEditString
+        {
+            anchors.fill: parent
+
+            pipelineInterface: item.pipelineInterface
+            path:              item.path
+        }
+    }
+
+    Component
+    {
+        id: editFilename
+
+        ValueEditFilename
         {
             anchors.fill: parent
 

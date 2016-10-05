@@ -10,6 +10,7 @@
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
+#include <gloperate/base/ExtraProperties.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
@@ -39,7 +40,7 @@ public:
 
 public:
     // Inputs
-    Input<std::string>           filename; ///< Texture filename
+    Input<cppassist::FilePath>   filename; ///< Texture filename
 
     // Outputs
     Output<globjects::Texture *> texture;  ///< Texture object

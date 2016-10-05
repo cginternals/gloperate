@@ -65,6 +65,7 @@ set(headers
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
     ${include_path}/base/GlmProperties.h
+    ${include_path}/base/ExtraProperties.h
 
     ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h

@@ -5,6 +5,7 @@
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
+#include <gloperate/base/ExtraProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
@@ -46,9 +47,9 @@ public:
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<std::string> texture; ///< Texture filename
-    Input<float>       angle;   ///< Current rotation angle
-    Input<bool>        rotate;  ///< Rotation automatically?
+    Input<cppassist::FilePath> texture; ///< Texture filename
+    Input<float>               angle;   ///< Current rotation angle
+    Input<bool>                rotate;  ///< Rotation automatically?
 
 
 public:
