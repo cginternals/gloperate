@@ -7,7 +7,7 @@
 #include <gloperate-glheadless/base/GLContextFactory.h>
 
 
-namespace gloperate_headless
+namespace gloperate_glheadless
 {
 
 
@@ -152,4 +152,4 @@ void OffscreenSurface::onPaint()
 }
 
 
-} // namespace gloperate_headless
+} // namespace gloperate_glheadless

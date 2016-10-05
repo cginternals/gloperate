@@ -9,7 +9,7 @@
 #include <gloperate-glheadless/gloperate-glheadless_api.h>
 
 
-namespace gloperate_headless
+namespace gloperate_glheadless
 {
 
 
@@ -25,7 +25,7 @@ class GLContext;
 *    using gloperate for rendering. When using gloperate, the derived
 *    class RenderWindow should be used.
 */
-class GLOPERATE_HEADLESS_API OffscreenSurface
+class GLOPERATE_GLHEADLESS_API OffscreenSurface
 {
 public:
     /**
@@ -154,4 +154,4 @@ protected:
 };
 
 
-} // namespace gloperate_headless
+} // namespace gloperate_glheadless

@@ -13,7 +13,7 @@
 
 
 using namespace gloperate;
-using namespace gloperate_headless;
+using namespace gloperate_glheadless;
 
 
 int main(int argc, char * argv[])

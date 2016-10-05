@@ -16,7 +16,7 @@ class Context;
 } // namespace glheadless
 
 
-namespace gloperate_headless
+namespace gloperate_glheadless
 {
 
 
@@ -29,7 +29,7 @@ namespace gloperate_headless
 *    (setSharedContext takes precedence). Contexts created through this factory will shared their
 *    state with the configured one.
 */
-class GLOPERATE_HEADLESS_API GLContextFactory : public gloperate::AbstractGLContextFactory
+class GLOPERATE_GLHEADLESS_API GLContextFactory : public gloperate::AbstractGLContextFactory
 {
 public:
     /**
@@ -121,4 +121,4 @@ private:
 };
 
 
-} // namespace gloperate_headless
+} // namespace gloperate_glheadless

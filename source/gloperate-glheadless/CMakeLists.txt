@@ -18,7 +18,7 @@ find_package(glheadless)
 
 # Target name
 set(target gloperate-glheadless)
-set(target_upper GLOPERATE_HEADLESS)
+set(target_upper GLOPERATE_GLHEADLESS)
 
 # Exit here if required dependencies are not met
 if (NOT glheadless_FOUND)

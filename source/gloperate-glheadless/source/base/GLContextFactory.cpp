@@ -13,7 +13,7 @@
 #include <gloperate-glheadless/base/GLContext.h>
 
 
-namespace gloperate_headless
+namespace gloperate_glheadless
 {
 
 
@@ -156,4 +156,4 @@ std::unique_ptr<glheadless::Context> GLContextFactory::createGlhContext(glheadle
 }
 
 
-} // namespace gloperate_headless
+} // namespace gloperate_glheadless

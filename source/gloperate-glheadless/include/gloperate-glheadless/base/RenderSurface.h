@@ -19,7 +19,7 @@ namespace gloperate{
 }
 
 
-namespace gloperate_headless
+namespace gloperate_glheadless
 {
 
 
@@ -27,7 +27,7 @@ namespace gloperate_headless
 *  @brief
 *    Window that renders a gloperate scene
 */
-class GLOPERATE_HEADLESS_API RenderSurface : public OffscreenSurface {
+class GLOPERATE_GLHEADLESS_API RenderSurface : public OffscreenSurface {
 public:
     /**
     *  @brief
@@ -91,4 +91,4 @@ protected:
 };
 
 
-} // namespace gloperate_headless
+} // namespace gloperate_glheadless

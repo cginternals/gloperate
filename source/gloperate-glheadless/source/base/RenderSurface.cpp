@@ -8,7 +8,7 @@
 #include <gloperate-glheadless/base/GLContext.h>
 
 
-namespace gloperate_headless
+namespace gloperate_glheadless
 {
 
 
@@ -67,4 +67,4 @@ void RenderSurface::onPaint()
 }
 
 
-} // namespace gloperate_headless
+} // namespace gloperate_glheadless

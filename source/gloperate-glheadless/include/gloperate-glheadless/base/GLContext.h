@@ -15,7 +15,7 @@ class Context;
 } // namespace glheadless
 
 
-namespace gloperate_headless
+namespace gloperate_glheadless
 {
 
 
@@ -26,7 +26,7 @@ namespace gloperate_headless
 *  The context does not have a default framebuffer, i.e., all rendering
 *  must be done through a custom frame buffer object.
 */
-class GLOPERATE_HEADLESS_API GLContext : public gloperate::AbstractGLContext
+class GLOPERATE_GLHEADLESS_API GLContext : public gloperate::AbstractGLContext
 {
     friend class GLContextFactory;
 
@@ -83,4 +83,4 @@ protected:
 };
 
 
-} // namespace gloperate_headless
+} // namespace gloperate_glheadless

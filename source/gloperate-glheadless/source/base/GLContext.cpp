@@ -12,7 +12,7 @@
 using namespace gloperate;
 
 
-namespace gloperate_headless
+namespace gloperate_glheadless
 {
 
 
@@ -75,4 +75,4 @@ void GLContext::release() const
 }
 
 
-} // namespace gloperate_headless
+} // namespace gloperate_glheadless
