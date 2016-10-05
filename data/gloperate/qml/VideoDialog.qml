@@ -4,70 +4,122 @@ import QtQuick.Controls 1.0 as Controls
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
 import QtQml 2.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
+
 import gloperate.base 1.0
 
 
-Background {
+Window
+{
     id: video
 
-    signal close();
+    signal closed()
 
-    property int margin: 0
+    property int   margin: 0
     property alias layout: mainLayout
 
-    function update() {
-        var plugins = gloperate.canvas0.videoExporterPlugins();
-        plugins.forEach(function(entry) {
-            backends.append({text: entry});
-        })
-    }
+    width:  600
+    height: mainLayout.height + 2 * mainLayout.anchors.margins
 
-    ColumnLayout {
+    title: 'Export Video'
+
+    ColumnLayout 
+    {
         id: mainLayout
-        anchors.fill: parent
-        anchors.margins: margin
-        Controls.GroupBox {
+
+        anchors.top:     parent.top
+        anchors.left:    parent.left
+        anchors.right:   parent.right
+        anchors.margins: Ui.style.paddingMedium
+
+        spacing: Ui.style.spacingMedium
+
+        Controls.GroupBox
+        {
             id: rowBox
+
             title: "Save as"
+
             Layout.fillWidth: true
 
-            RowLayout {
+            RowLayout
+            {
                 anchors.fill: parent
-                TextField {
+
+                TextField
+                {
                     id: filepath
+
                     placeholderText: "e.g. /home/user/videos/video.avi"
+
                     Layout.fillWidth: true
                 }
-                DialogButton {
+
+                Button
+                {
                     text: "Browse"
 
-                    onClicked: {
+                    onClicked:
+                    {
                         fileDialog.open();
                     }
                 }
             }
         }
 
-        Controls.GroupBox {
+        Controls.GroupBox
+        {
             title: "Settings"
+
             Layout.fillWidth: true
 
-            GridLayout {
+            GridLayout
+            {
                 id: gridLayout
-                rows: 5
-                flow: GridLayout.TopToBottom
+
                 anchors.fill: parent
 
+                rows: 6
+                flow: GridLayout.TopToBottom
+
+                Controls.Label { text: "Profile" }
                 Controls.Label { text: "Width" }
                 Controls.Label { text: "Height" }
                 Controls.Label { text: "FPS" }
                 Controls.Label { text: "Duration (sec)" }
                 Controls.Label { text: "Backend" }
 
-                ComboBox {
-                    editable: true
+                ComboBox
+                {
+                    id: profile
+
+                    property alias currentProfile: profile.currentIndex
+
+                    Layout.fillWidth: true
+
+                    editable: false
+
+                    model: ListModel
+                    {
+                        id: profiles
+                    }
+
+                    onCurrentProfileChanged:
+                    {
+                        videoProfile.profileIndex = currentProfile;
+                    }
+                }
+
+                ComboBox
+                {
                     id: width
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "800" }
                         ListElement { text: "1024" }
                         ListElement { text: "1152" }
@@ -81,10 +133,14 @@ Background {
                     }
                 }
                 
-                ComboBox {
-                    editable: true
+                ComboBox
+                {
                     id: height
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "600" }
                         ListElement { text: "720" }
                         ListElement { text: "768" }
@@ -99,19 +155,26 @@ Background {
                     }
                 }
 
-                ComboBox {
-                    editable: true
+                ComboBox
+                {
                     id: fps
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "30" }
                         ListElement { text: "60" }
                     }
                 }
 
                 ComboBox {
-                    editable: true
                     id: duration
-                    model: ListModel {
+
+                    editable: true
+
+                    model: ListModel
+                    {
                         ListElement { text: "5" }
                         ListElement { text: "10" }
                         ListElement { text: "60" }
@@ -119,58 +182,164 @@ Background {
                 }
 
                 ComboBox {
-                    Layout.fillWidth: true
-                    editable: false
                     id: backend
-                    model: ListModel {
+
+                    Layout.fillWidth: true
+
+                    editable: false
+
+                    model: ListModel
+                    {
                         id: backends
                     }
                 }
-
             }
         }
 
-        ProgressBar {
+        ProgressBar
+        {
             id: progressBar
+
             Layout.fillWidth: true
 
             minimumValue: 0
             maximumValue: 100
-            value: 0
+            value:        0
         }
 
-        DialogButton {
-            text: "Record Video"
-            anchors.right: parent.right
+        Item
+        {
+            Layout.fillWidth: true
 
-            icon: '0021-video-camera.png'
+            implicitHeight: Math.max(button1.implicitHeight, button2.implicitHeight)
 
-            onClicked: {
-                gloperate.canvas0.exportVideo(filepath.text, width.editText, height.editText, fps.editText, duration.editText, backend.editText);
+            Button
+            {
+                id: button1
+
+                anchors.left: parent.left
+
+                text: 'Apply'
+
+                onClicked:
+                {
+                    var parameters =
+                    {
+                        filepath: filepath.text,
+                        width: width.editText,
+                        height: height.editText,
+                        fps: fps.editText,
+                        duration: duration.editText,
+
+                        format: videoProfile.format,
+                        codec: videoProfile.codec,
+                        gopsize: videoProfile.gopsize,
+                        bitrate: videoProfile.bitrate
+                    };
+
+                    gloperate.canvas0.setVideoTarget(parameters, backend.editText);
+                    // gloperate.canvas0.toggleVideoExport();
+
+                    closed();
+                    close();
+                }
+            }
+
+            Button
+            {
+                id: button2
+
+                anchors.right: parent.right
+
+                text: 'Apply and Record'
+
+                onClicked:
+                {
+                    var parameters =
+                    {
+                        filepath: filepath.text,
+                        width: width.editText,
+                        height: height.editText,
+                        fps: fps.editText,
+                        duration: duration.editText,
+
+                        format: videoProfile.format,
+                        codec: videoProfile.codec,
+                        gopsize: videoProfile.gopsize,
+                        bitrate: videoProfile.bitrate
+                    };
+
+                    gloperate.canvas0.exportVideo(parameters, backend.editText);
+
+                    closed();
+                    close();
+                }
             }
         }
     }
 
-    FileDialog {
+    FileDialog
+    {
         id: fileDialog
-        title: "Please choose an export location and filename"
-//      folder: shortcuts.home
-        selectFolder: false
+
+        title:          'Please choose an export location and filename'
+        selectFolder:   false
         selectExisting: false
         selectMultiple: false
 
-        onAccepted: {
+        onAccepted:
+        {
             var path = fileUrl.toString();
+
             // remove prefixed "file:///"
             path = path.replace(/^(file:\/{3})/,"");
+
             // unescape html codes like '%23' for '#'
             path = decodeURIComponent(path);
+
             filepath.text = path;
             
             close();
         }
-        onRejected: {
+
+        onRejected:
+        {
             close();
         }
+    }
+
+    VideoProfile
+    {
+        id: videoProfile
+
+        onProfileChanged:
+        {
+            updateParameters();
+        }
+    }
+
+    function update()
+    {
+        backends.clear();
+        profiles.clear();
+
+        var plugins = gloperate.canvas0.videoExporterPlugins();
+        plugins.forEach(function(backend) {
+            backends.append({text: backend});
+        });
+
+        videoProfile.profiles.forEach(function(profile) {
+            profiles.append({text: profile})
+        });
+
+        updateParameters();
+    }
+
+    function updateParameters()
+    {
+        width.editText    = videoProfile.width;
+        height.editText   = videoProfile.height;
+        fps.editText      = videoProfile.fps;
+        duration.editText = videoProfile.seconds;
     }
 }

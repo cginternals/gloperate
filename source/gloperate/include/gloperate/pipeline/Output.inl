@@ -8,26 +8,18 @@ namespace gloperate
 
 template <typename T>
 Output<T>::Output(const std::string & name, Stage * parent, const T & value)
-: DataSlot<T>(value)
-, m_valid(false)
+: Slot<T>(SlotType::Output, name, parent, value)
 {
-    // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
-
-    // Register output, will also add output as a property
-    this->initDataSlot(SlotType::Output, parent, cppexpose::PropertyOwnership::None);
+    // Outputs are invalid until their value is set once
+    this->m_valid = false;
 }
 
 template <typename T>
 Output<T>::Output(const std::string & name, const T & value)
-: DataSlot<T>(value)
-, m_valid(false)
+: Slot<T>(SlotType::Output, name, value)
 {
-    // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
-
-    // Initialize data slot
-    this->initDataSlot(SlotType::Output, nullptr, cppexpose::PropertyOwnership::None);
+    // Outputs are invalid until their value is set once
+    this->m_valid = false;
 }
 
 template <typename T>
@@ -36,39 +28,29 @@ Output<T>::~Output()
 }
 
 template <typename T>
-void Output<T>::setValid(bool isValid)
-{
-    // Set state to new state
-    m_valid = isValid;
-
-    // Emit signal
-    this->valueChanged(this->m_value);
-}
-
-template <typename T>
-bool Output<T>::isValid() const
-{
-    return m_valid;
-}
-
-template <typename T>
 void Output<T>::onRequiredChanged()
 {
-    // Inform parent stage
-    if (Stage * stage = this->parentStage())
+    if (this->isConnected())
     {
-        stage->outputRequiredChanged(this);
+        // Promote required-flag to source slot
+        this->promoteRequired();
+    }
+    else
+    {
+        // Inform parent stage
+        if (Stage * stage = this->parentStage())
+        {
+            stage->outputRequiredChanged(this);
+        }
     }
 }
 
 template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
-    // Set state to valid
-    m_valid = true;
-
     // Emit signal
     this->valueChanged(value);
 }
+
 
 } // namespace gloperate

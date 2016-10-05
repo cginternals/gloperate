@@ -9,6 +9,7 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
+find_package(qmltoolbox REQUIRED)
 
 # Qt5
 find_package(Qt5Core    5.1)
@@ -57,29 +58,27 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/base/QuickView.h
-    ${include_path}/base/RenderItem.h
-    ${include_path}/base/Utils.h
-
-    ${include_path}/controls/TextController.h
-
-    ${include_path}/scripting/QmlEngine.h
-    ${include_path}/scripting/QmlScriptContext.h
-    ${include_path}/scripting/QmlScriptFunction.h
-    ${include_path}/scripting/QmlObjectWrapper.h
+    ${include_path}/QuickView.h
+    ${include_path}/RenderItem.h
+    ${include_path}/Utils.h
+    ${include_path}/VideoProfile.h
+    ${include_path}/TextController.h
+    ${include_path}/QmlEngine.h
+    ${include_path}/QmlScriptContext.h
+    ${include_path}/QmlScriptFunction.h
+    ${include_path}/QmlObjectWrapper.h
 )
 
 set(sources
-    ${source_path}/base/QuickView.cpp
-    ${source_path}/base/RenderItem.cpp
-    ${source_path}/base/Utils.cpp
-
-    ${source_path}/controls/TextController.cpp
-
-    ${source_path}/scripting/QmlEngine.cpp
-    ${source_path}/scripting/QmlScriptContext.cpp
-    ${source_path}/scripting/QmlScriptFunction.cpp
-    ${source_path}/scripting/QmlObjectWrapper.cpp
+    ${source_path}/QuickView.cpp
+    ${source_path}/RenderItem.cpp
+    ${source_path}/Utils.cpp
+    ${source_path}/VideoProfile.cpp
+    ${source_path}/TextController.cpp
+    ${source_path}/QmlEngine.cpp
+    ${source_path}/QmlScriptContext.cpp
+    ${source_path}/QmlScriptFunction.cpp
+    ${source_path}/QmlObjectWrapper.cpp
 )
 
 # Group source files
@@ -170,6 +169,7 @@ target_link_libraries(${target}
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
+    qmltoolbox::qmltoolbox
 
     INTERFACE
 )
