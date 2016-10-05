@@ -13,7 +13,7 @@ namespace gloperate
 {
 
 
-class DemoStage;
+class DemoAntialiasableTriangleStage;
 
 
 /**
@@ -60,8 +60,8 @@ public:
 
 protected:
     // Stages
-    MultiFrameAggregationPipeline * m_multiFramePipeline;
-    DemoStage                     * m_frameRenderStage;
+    MultiFrameAggregationPipeline  * m_multiFramePipeline;
+    DemoAntialiasableTriangleStage * m_frameRenderStage;
 };
 
 

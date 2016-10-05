@@ -7,6 +7,7 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/MultiFrameRenderInterface.h>
 
 
 namespace gloperate
@@ -51,10 +52,15 @@ public:
     virtual ~MultiFrameAggregationPipeline();
 
     void setFrameRenderer(RenderInterface & interface);
+    void setFrameRenderer(MultiFrameRenderInterface & interface);
 
 
 protected:
     virtual void onProcess(AbstractGLContext * context) override;
+
+    void connectBasicRenderInterface(RenderInterface & interface);
+    void connectMultiFrameRenderInterface(MultiFrameRenderInterface & interface);
+    void disconnectRenderStage();
 
 
 protected:
@@ -72,7 +78,8 @@ protected:
     SubpixelAntialiasingOffsetStage * m_subpixelStage;
     TransparencyKernelStage         * m_transparencyStage;
 
-    Stage                      * m_renderStage;
+    // Inserted Stage/Pipeline
+    Stage * m_frameRenderStage;
 };
 
 

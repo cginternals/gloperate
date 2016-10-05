@@ -2,7 +2,7 @@
 #include <gloperate/stages/demos/DemoMultiFramePipeline.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/stages/demos/DemoStage.h>
+#include <gloperate/stages/demos/DemoAntialiasableTriangleStage.h>
 
 namespace gloperate
 {
@@ -14,7 +14,7 @@ CPPEXPOSE_COMPONENT(DemoMultiFramePipeline, gloperate::Stage)
 DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_frameRenderStage(new DemoStage(environment, "DemoStage"))
+, m_frameRenderStage(new DemoAntialiasableTriangleStage(environment, "DemoStage"))
 , m_multiFramePipeline(new MultiFrameAggregationPipeline(environment, "MultiFrameAggregationPipeline"))
 {
     addStage(m_multiFramePipeline);

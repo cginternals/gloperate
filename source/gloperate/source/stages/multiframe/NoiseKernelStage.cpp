@@ -26,12 +26,11 @@ void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
     m_noiseTexture.reset(new NoiseTexture((*inputDimensions), (*outputDimensions), (*size)));
     
-    (*noiseTexture) = m_noiseTexture->texture();
+    noiseTexture.setValue(m_noiseTexture->texture());
 }
 
 void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
-    // invalidateOutputs();
 }
 
 

@@ -35,7 +35,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
 , m_ssaoStage(new SSAOKernelStage(environment, "SSAOKernelStage"))
 , m_subpixelStage(new SubpixelAntialiasingOffsetStage(environment, "SubpixelAntialiasingOffsetStage"))
 , m_transparencyStage(new TransparencyKernelStage(environment, "TransparencyKernelStage"))
-, m_renderStage(nullptr)
+, m_frameRenderStage(nullptr)
 {
     addStage(m_renderFramebufferStage);
     m_renderFramebufferStage->viewport << renderInterface.deviceViewport;
@@ -62,14 +62,24 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
     m_blitStage->sourceViewport << renderInterface.deviceViewport;
     m_blitStage->destinationViewport << renderInterface.deviceViewport;
 
-    renderInterface.rendered << m_blitStage->blitted;
-
-    // to be connected manually
     addStage(m_diskDistributionStage);
+    m_diskDistributionStage->currentMultiFrame << m_controlStage->currentFrame;
+    m_diskDistributionStage->multiFrameCount.setValue(128); // TODO: Where to get this value?
+
     addStage(m_noiseStage);
+
     addStage(m_ssaoStage);
+    m_ssaoStage->currentFrame << m_controlStage->currentFrame;
+    m_ssaoStage->multiFrameCount.setValue(128); // TODO: Where to get this value?
+
     addStage(m_subpixelStage);
+    m_subpixelStage->viewport << renderInterface.deviceViewport;
+    m_subpixelStage->currentMultiFrame << m_controlStage->currentFrame;
+    m_subpixelStage->multiFrameCount.setValue(128); // TODO: Where to get this value?
+
     addStage(m_transparencyStage);
+
+    renderInterface.rendered << m_blitStage->blitted;
 }
 
 MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
@@ -78,7 +88,7 @@ MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
 
 void MultiFrameAggregationPipeline::onProcess(AbstractGLContext * context)
 {
-    if (!m_renderStage)
+    if (!m_frameRenderStage)
     {
         return;
     }
@@ -88,10 +98,27 @@ void MultiFrameAggregationPipeline::onProcess(AbstractGLContext * context)
 
 void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface & interface)
 {
-    if (m_renderStage) removeStage(m_renderStage);
+    disconnectRenderStage();
 
-    m_renderStage = interface.rendered.parentStage();
-    addStage(m_renderStage);
+    m_frameRenderStage = interface.rendered.parentStage();
+    addStage(m_frameRenderStage);
+
+    connectBasicRenderInterface(interface);
+}
+
+void MultiFrameAggregationPipeline::setFrameRenderer(MultiFrameRenderInterface & interface)
+{
+    disconnectRenderStage();
+
+    m_frameRenderStage = interface.rendered.parentStage();
+    addStage(m_frameRenderStage);
+
+    connectBasicRenderInterface(interface);
+    connectMultiFrameRenderInterface(interface);
+}
+
+void MultiFrameAggregationPipeline::connectBasicRenderInterface(RenderInterface & interface)
+{
     interface.deviceViewport << renderInterface.deviceViewport;
     interface.virtualViewport << renderInterface.virtualViewport;
     interface.backgroundColor << renderInterface.backgroundColor;
@@ -100,6 +127,52 @@ void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface & interface
     interface.targetFBO << m_renderFramebufferStage->fbo;
 
     m_aggregationStage->textureRerendered << interface.rendered;
+}
+
+void MultiFrameAggregationPipeline::connectMultiFrameRenderInterface(MultiFrameRenderInterface & interface)
+{
+    interface.noiseKernel << m_noiseStage->noiseTexture;
+    interface.ssaoKernel << m_ssaoStage->ssaoTexture;
+    interface.ssaoNoise << m_ssaoStage->noiseTexture;
+    interface.transparencyKernel << m_transparencyStage->transparencyMaskTexture;
+    interface.dofShift << m_diskDistributionStage->value;
+    interface.subpixelOffset << m_subpixelStage->subPixelOffset;
+
+    m_ssaoStage->enable << interface.reprocessSSAO;
+    m_transparencyStage->reprocess << interface.reprocessTransparency;
+    m_diskDistributionStage->isActive << interface.reprocessDOFShift;
+    m_noiseStage->inputDimensions << interface.noiseInputDimensions;
+    m_noiseStage->outputDimensions << interface.noiseOutputDimensions;
+    m_noiseStage->size << interface.noiseKernelSize;
+    m_diskDistributionStage->radius << interface.dofRadius;
+}
+
+void MultiFrameAggregationPipeline::disconnectRenderStage()
+{
+    if (!m_frameRenderStage)
+    {
+        return;
+    }
+
+    // disconnect inputs
+    for (auto input : m_frameRenderStage->inputs())
+    {
+        input->disconnect();
+    }
+
+    // disconnect outputs by disconnecting their receivers
+    m_aggregationStage->textureRerendered.disconnect();
+
+    m_ssaoStage->enable.disconnect();
+    m_transparencyStage->reprocess.disconnect();
+    m_diskDistributionStage->isActive.disconnect();
+    m_noiseStage->inputDimensions.disconnect();
+    m_noiseStage->outputDimensions.disconnect();
+    m_noiseStage->size.disconnect();
+    m_diskDistributionStage->radius.disconnect();
+
+    // remove stage from pipeline
+    removeStage(m_frameRenderStage);
 }
 
 

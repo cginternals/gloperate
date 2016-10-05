@@ -22,7 +22,7 @@ SubpixelAntialiasingOffsetStage::SubpixelAntialiasingOffsetStage(gloperate::Envi
 
 void SubpixelAntialiasingOffsetStage::onProcess(gloperate::AbstractGLContext * context)
 {
-    (*subPixelOffset) = glm::diskRand(1.0f) / glm::vec2((*viewport).z, (*viewport).w);
+    subPixelOffset.setValue(glm::diskRand(1.0f) / glm::vec2((*viewport).z, (*viewport).w));
 
     // invalidateOutputs();
 }

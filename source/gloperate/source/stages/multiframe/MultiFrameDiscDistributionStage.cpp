@@ -33,7 +33,7 @@ void MultiFrameDiscDistributionStage::onProcess(gloperate::AbstractGLContext * c
         return;
     }
 
-    (*value) = glm::diskRand((*radius));
+    value.setValue(glm::diskRand(*radius));
 
     // invalidateOutputs();
 }

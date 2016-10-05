@@ -89,6 +89,7 @@ set(headers
     ${include_path}/rendering/TransparencyMasksGenerator.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
+    ${include_path}/stages/interfaces/MultiFrameRenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
     ${include_path}/stages/base/CustomFramebufferStage.h
     ${include_path}/stages/base/FramebufferStage.h
@@ -101,6 +102,7 @@ set(headers
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/DemoTriangleStage.h
+    ${include_path}/stages/demos/DemoAntialiasableTriangleStage.h
     ${include_path}/stages/demos/DemoTimerStage.h
     ${include_path}/stages/demos/DemoMultiFramePipeline.h
     ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
@@ -166,6 +168,7 @@ set(sources
     ${source_path}/rendering/TransparencyMasksGenerator.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
+    ${source_path}/stages/interfaces/MultiFrameRenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/CustomFramebufferStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
@@ -178,6 +181,7 @@ set(sources
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
     ${source_path}/stages/demos/DemoTriangleStage.cpp
+    ${source_path}/stages/demos/DemoAntialiasableTriangleStage.cpp
     ${source_path}/stages/demos/DemoTimerStage.cpp
     ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp

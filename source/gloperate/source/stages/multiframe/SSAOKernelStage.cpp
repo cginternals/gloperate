@@ -87,12 +87,12 @@ SSAOKernelStage::SSAOKernelStage(gloperate::Environment * environment, const std
 
 void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
-    (*ssaoTexture) = new globjects::Texture(gl::GL_TEXTURE_1D);
+    ssaoTexture.setValue(new globjects::Texture(gl::GL_TEXTURE_1D));
     (*ssaoTexture)->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
     (*ssaoTexture)->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
     (*ssaoTexture)->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_MIRRORED_REPEAT);
 
-    (*noiseTexture) = new globjects::Texture(gl::GL_TEXTURE_2D);
+    noiseTexture.setValue(new globjects::Texture(gl::GL_TEXTURE_2D));
     (*noiseTexture)->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
     (*noiseTexture)->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
     (*noiseTexture)->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
