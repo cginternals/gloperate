@@ -24,7 +24,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Demo stage that renders a simple triangle onto the screen
+*    Demo stage that renders a spinning rectangle onto the screen
 */
 class GLOPERATE_API DemoStage : public Stage
 {
@@ -34,7 +34,7 @@ public:
       , "RenderStage"   // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo stage that renders a simple triangle onto the screen"
+      , "Demo stage that renders a spinning rectangle onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )

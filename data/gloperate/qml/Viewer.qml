@@ -19,7 +19,6 @@ Background
 
     // Stage
     property string stage: 'DemoPipeline'
-//  property string stage: 'DemoStage'
 
     // UI status
              property real uiStatus:  1.0

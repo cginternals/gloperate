@@ -304,6 +304,7 @@ std::string Stage::getFreeName(const std::string & name) const
 
 AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string & type, const std::string & name)
 {
+    if (type == "bool")    return createSlot<bool>                    (slotType, name);
     if (type == "int")     return createSlot<int>                     (slotType, name);
     if (type == "float")   return createSlot<float>                   (slotType, name);
     if (type == "vec2")    return createSlot<glm::vec2>               (slotType, name);
@@ -312,6 +313,7 @@ AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string
     if (type == "ivec2")   return createSlot<glm::ivec2>              (slotType, name);
     if (type == "ivec3")   return createSlot<glm::ivec3>              (slotType, name);
     if (type == "ivec4")   return createSlot<glm::ivec4>              (slotType, name);
+    if (type == "string")  return createSlot<std::string>             (slotType, name);
     if (type == "texture") return createSlot<globjects::Texture *>    (slotType, name);
     if (type == "fbo")     return createSlot<globjects::Framebuffer *>(slotType, name);
 
@@ -483,6 +485,7 @@ cppexpose::Variant Stage::scr_slotTypes()
 {
     Variant types = Variant::array();
 
+    types.asArray()->push_back("bool");
     types.asArray()->push_back("int");
     types.asArray()->push_back("float");
     types.asArray()->push_back("vec2");
@@ -491,6 +494,7 @@ cppexpose::Variant Stage::scr_slotTypes()
     types.asArray()->push_back("ivec2");
     types.asArray()->push_back("ivec3");
     types.asArray()->push_back("ivec4");
+    types.asArray()->push_back("string");
     types.asArray()->push_back("texture");
     types.asArray()->push_back("fbo");
 

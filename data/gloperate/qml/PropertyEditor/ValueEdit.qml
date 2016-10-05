@@ -37,7 +37,9 @@ Item
 
             // Create editor
             inputType = slotInfo.type;
-            if (slotInfo.type == 'int' || slotInfo.type == 'float')
+            if (slotInfo.type == 'bool')
+                input = editBool.createObject(item);
+            else if (slotInfo.type == 'int' || slotInfo.type == 'float')
                 input = editNumber.createObject(item);
             else if (slotInfo.type == 'color')
                 input = editColor.createObject(item);
@@ -54,6 +56,19 @@ Item
         id: editString
 
         ValueEditString
+        {
+            anchors.fill: parent
+
+            pipelineInterface: item.pipelineInterface
+            path:              item.path
+        }
+    }
+
+    Component
+    {
+        id: editBool
+
+        ValueEditBool
         {
             anchors.fill: parent
 

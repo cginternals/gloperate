@@ -96,8 +96,8 @@ set(headers
     ${include_path}/stages/base/SplitStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
-    ${include_path}/stages/demos/DemoTriangleStage.h
-    ${include_path}/stages/demos/DemoTimerStage.h
+    ${include_path}/stages/demos/SpinningRectStage.h
+    ${include_path}/stages/demos/TimerStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -160,8 +160,8 @@ set(sources
     ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
-    ${source_path}/stages/demos/DemoTriangleStage.cpp
-    ${source_path}/stages/demos/DemoTimerStage.cpp
+    ${source_path}/stages/demos/SpinningRectStage.cpp
+    ${source_path}/stages/demos/TimerStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp
