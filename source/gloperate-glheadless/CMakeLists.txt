@@ -46,6 +46,11 @@ set(headers
     ${include_path}/base/GLContextFactory.h
     ${include_path}/base/OffscreenSurface.h
     ${include_path}/base/RenderSurface.h
+
+    ${include_path}/stages/demos/DemoOffscreenPipeline.h
+    ${include_path}/stages/demos/DemoOffscreenStage.h
+
+    ${include_path}/util/ScopedContext.h
 )
 
 set(sources
@@ -53,6 +58,11 @@ set(sources
     ${source_path}/base/GLContextFactory.cpp
     ${source_path}/base/OffscreenSurface.cpp
     ${source_path}/base/RenderSurface.cpp
+
+    ${source_path}/stages/demos/DemoOffscreenPipeline.cpp
+    ${source_path}/stages/demos/DemoOffscreenStage.cpp
+
+    ${source_path}/util/ScopedContext.cpp
 )
 
 # Group source files
