@@ -5,15 +5,9 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <glbinding/gl/enum.h>
-
-#include <globjects/DebugMessage.h>
-
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/stages/demos/DemoStage.h>
-#include <gloperate/stages/demos/DemoPipeline.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Application.h>
@@ -23,8 +17,7 @@
 #include <gloperate-qt/scripting/ECMA26251Completer.h>
 #include <gloperate-qt/scripting/ScriptPromptWidget.h>
 
-#include <gloperate-glheadless/stages/demos/DemoOffscreenPipeline.h>
-#include <globjects/globjects.h>
+#include <gloperate-glheadless/stages/demos/DemoCombinedPipeline.h>
 
 
 using namespace gloperate;
@@ -51,7 +44,7 @@ int main(int argc, char * argv[])
     UpdateManager updateManager(&environment);
 
     // Create render stage
-    auto * renderStage = new DemoOffscreenPipeline(&environment);
+    auto * renderStage = new DemoCombinedPipeline(&environment);
 
     // Create render window
     GLContextFormat format;
@@ -100,15 +93,6 @@ int main(int argc, char * argv[])
         << "OpenGL Profile:  " << GLContextUtils::profile() << std::endl
         << "OpenGL Vendor:   " << GLContextUtils::vendor() << std::endl
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
-
-    globjects::DebugMessage::enable();
-    globjects::DebugMessage::setCallback([](const globjects::DebugMessage & message)
-    {
-        if (message.type() == gl::GL_DEBUG_TYPE_ERROR)
-        {
-            cppassist::warning() << message.toString();
-        }
-    });
 
     window->context()->release();
 

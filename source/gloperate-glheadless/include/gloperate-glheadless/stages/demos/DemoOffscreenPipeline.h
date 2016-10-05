@@ -5,44 +5,52 @@
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/base/GlmProperties.h>
 
-#include <gloperate-glheadless/gloperate-glheadless_api.h>
+#include <gloperate-glheadless/stages/OffscreenPipeline.h>
+
+
+namespace globjects {
+class Texture;
+} // namespace globjects
 
 
 namespace gloperate {
-class DemoTimerStage;
-class DemoTriangleStage;
+class BasicFramebufferStage;
+class DemoStage;
 } // namespace gloperate
 
 
 namespace gloperate_glheadless {
 
 
-class DemoOffscreenStage;
-
-
 /**
 *  @brief
-*    Demo pipeline displaying a rotating texture created on an offscreen context
+*    Demo pipeline rendering a rotating logo to an offscreen context
 */
-class GLOPERATE_GLHEADLESS_API DemoOffscreenPipeline : public gloperate::Pipeline {
+class GLOPERATE_GLHEADLESS_API DemoOffscreenPipeline : public OffscreenPipeline
+{
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoOffscreenPipeline, gloperate::Stage
         , "RenderStage"   // Tags
         , ""              // Icon
         , ""              // Annotations
-        , "Demo pipeline displaying a rotating texture created on an offscreen context"
+        , "Demo pipeline displaying a rotating logo"
         , GLOPERATE_AUTHOR_ORGANIZATION
         , "v1.0.0"
     )
 
 
 public:
-    // Interfaces
-    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    // Inputs
+    gloperate::Input<glm::vec4> viewport;        ///< Texture size
+    Input<glm::vec3>            backgroundColor; ///< Background color (RGB)
+    Input<float>                timeDelta;       ///< Time delta since last frame (in seconds)
+
+    // Outputs
+    gloperate::Output<globjects::Texture *> colorTexture; ///< The rendered result
+    Output<bool>                            rendered;     ///< 'true' if output has been rendered
 
 
 public:
@@ -55,7 +63,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoOffscreenPipeline(gloperate::Environment * environment, const std::string & name = "DemoOffscreenPipeline");
+    explicit DemoOffscreenPipeline(gloperate::Environment * environment, const std::string & name = "DemoOffscreenPipeline");
 
     /**
     *  @brief
@@ -66,9 +74,8 @@ public:
 
 protected:
     // Stages
-    DemoOffscreenStage           * m_offscreenStage; ///< Offscreen stage to render the texture
-    gloperate::DemoTimerStage    * m_timerStage;     ///< Timer stage to drive rotation
-    gloperate::DemoTriangleStage * m_triangleStage;  ///< Render stage to display the rotating texture
+    gloperate::BasicFramebufferStage * m_framebufferStage;
+    gloperate::DemoStage             * m_renderStage;
 };
 
 

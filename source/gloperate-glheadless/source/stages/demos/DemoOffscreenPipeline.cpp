@@ -2,10 +2,7 @@
 #include <gloperate-glheadless/stages/demos/DemoOffscreenPipeline.h>
 
 #include <gloperate/stages/base/BasicFramebufferStage.h>
-#include <gloperate/stages/demos/DemoTriangleStage.h>
-#include <gloperate/stages/demos/DemoTimerStage.h>
-
-#include <gloperate-glheadless/stages/demos/DemoOffscreenStage.h>
+#include <gloperate/stages/demos/DemoStage.h>
 
 
 using namespace gloperate;
@@ -14,33 +11,33 @@ using namespace gloperate;
 namespace gloperate_glheadless {
 
 
+CPPEXPOSE_COMPONENT(DemoOffscreenPipeline, gloperate::Stage)
+
+
 DemoOffscreenPipeline::DemoOffscreenPipeline(Environment * environment, const std::string & name)
-: Pipeline(environment, name)
-, renderInterface(this)
-, m_offscreenStage(new DemoOffscreenStage(environment, "OffscreenStage"))
-, m_timerStage(new DemoTimerStage(environment, "TimerStage"))
-, m_triangleStage(new DemoTriangleStage(environment, "Triangle Stage"))
+: OffscreenPipeline(environment, name)
+, viewport("viewport", this)
+, backgroundColor("backgroundColor", this)
+, timeDelta("timeDelta", this)
+, colorTexture("colorTexture", this)
+, rendered("rendered", this)
+, m_framebufferStage(new BasicFramebufferStage(environment, "FramebufferStage"))
+, m_renderStage(new DemoStage(environment))
 {
-    // Offscreen stage
-    addStage(m_offscreenStage);
-    m_offscreenStage->viewport.setValue({ 0.0f, 0.0f, 400.0f, 400.0f });
-    m_offscreenStage->backgroundColor.setValue({ 0.3, 0.4, 1.0 });
-    m_offscreenStage->timeDelta << renderInterface.timeDelta;
+    // Framebuffer stage
+    addStage(m_framebufferStage);
+    m_framebufferStage->viewport << viewport;
 
-    // Timer stage
-    addStage(m_timerStage);
-    m_timerStage->timeDelta << renderInterface.timeDelta;
+    // Demo render stage
+    addStage(m_renderStage);
+    m_renderStage->renderInterface.deviceViewport  << viewport;
+    m_renderStage->renderInterface.targetFBO       << m_framebufferStage->fbo;
+    m_renderStage->renderInterface.timeDelta       << timeDelta;
+    m_renderStage->renderInterface.backgroundColor << backgroundColor;
 
-    // Triangle stage
-    addStage(m_triangleStage);
-    m_triangleStage->renderInterface.deviceViewport  << renderInterface.deviceViewport;
-    m_triangleStage->renderInterface.targetFBO       << renderInterface.targetFBO;
-    m_triangleStage->texture                         << m_offscreenStage->colorTexture;
-    m_triangleStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_triangleStage->angle                           << m_timerStage->virtualTime;
-
-    // Connect outputs
-    renderInterface.rendered << m_triangleStage->renderInterface.rendered;
+    // Outputs
+    colorTexture << m_framebufferStage->colorTexture;
+    rendered     << m_renderStage->renderInterface.rendered;
 }
 
 
@@ -49,4 +46,4 @@ DemoOffscreenPipeline::~DemoOffscreenPipeline()
 }
 
 
-} // gloperate_glheadless
+} // namespace gloperate_glheadless

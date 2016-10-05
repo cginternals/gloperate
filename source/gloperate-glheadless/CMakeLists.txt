@@ -47,6 +47,8 @@ set(headers
     ${include_path}/base/OffscreenSurface.h
     ${include_path}/base/RenderSurface.h
 
+    ${include_path}/stages/OffscreenPipeline.h
+    ${include_path}/stages/demos/DemoCombinedPipeline.h
     ${include_path}/stages/demos/DemoOffscreenPipeline.h
     ${include_path}/stages/demos/DemoOffscreenStage.h
 
@@ -59,6 +61,8 @@ set(sources
     ${source_path}/base/OffscreenSurface.cpp
     ${source_path}/base/RenderSurface.cpp
 
+    ${source_path}/stages/OffscreenPipeline.cpp
+    ${source_path}/stages/demos/DemoCombinedPipeline.cpp
     ${source_path}/stages/demos/DemoOffscreenPipeline.cpp
     ${source_path}/stages/demos/DemoOffscreenStage.cpp
 
