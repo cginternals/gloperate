@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/demos/DemoCubeScapeStage.h>
+#include <gloperate/stages/demos/SpinningRectStage.h>
 
 #include <random>
 
@@ -64,38 +64,39 @@ namespace gloperate
 {
 
 
-CPPEXPOSE_COMPONENT(DemoCubeScapeStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(SpinningRectStage, gloperate::Stage)
 
 
-DemoCubeScapeStage::DemoCubeScapeStage(Environment * environment, const std::string & name)
-: RenderStage(environment, name)
-, texture        (this, "texture",         nullptr)
-, angle          (this, "angle",           0.0f)
-, colorTexture   (this, "colorTexture",    nullptr)
-, fboOut         (this, "fboOut",          nullptr)
-, colorTextureOut(this, "colorTextureOut", nullptr)
+SpinningRectStage::SpinningRectStage(Environment * environment, const std::string & name)
+: Stage(environment, name)
+, renderInterface(this)
+, texture        ("texture",         this, nullptr)
+, angle          ("angle",           this, 0.0f)
+, colorTexture   ("colorTexture",    this, nullptr)
+, fboOut         ("fboOut",          this, nullptr)
+, colorTextureOut("colorTextureOut", this, nullptr)
 {
 }
 
-DemoCubeScapeStage::~DemoCubeScapeStage()
+SpinningRectStage::~SpinningRectStage()
 {
 }
 
-void DemoCubeScapeStage::onContextInit(AbstractGLContext *)
+void SpinningRectStage::onContextInit(AbstractGLContext *)
 {
     setupGeometry();
     setupCamera();
     setupProgram();
 }
 
-void DemoCubeScapeStage::onContextDeinit(AbstractGLContext *)
+void SpinningRectStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void DemoCubeScapeStage::onProcess(AbstractGLContext *)
+void SpinningRectStage::onProcess(AbstractGLContext *)
 {
     // Get viewport
-    glm::vec4 viewport = *deviceViewport;
+    glm::vec4 viewport = *renderInterface.deviceViewport;
 
     // Update viewport
     gl::glViewport(
@@ -106,12 +107,12 @@ void DemoCubeScapeStage::onProcess(AbstractGLContext *)
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *targetFBO;
+    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
     if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    glm::vec3 color = *backgroundColor;
+    glm::vec3 color = *renderInterface.backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -123,13 +124,12 @@ void DemoCubeScapeStage::onProcess(AbstractGLContext *)
     model = glm::rotate(model, *angle, glm::vec3(0.0, 1.0, 0.0));
 
     // Update model-view-projection matrix
-    m_program->setUniform("viewProjectionMatrix",      m_camera->viewProjection());
-    m_program->setUniform("modelViewProjectionMatrix", m_camera->viewProjection() * model);
+    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
+    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
 
     // Bind texture
     if (*texture) {
-        gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-        (*texture)->bind();
+        (*texture)->bindActive(0);
     }
 
     // Draw geometry
@@ -139,7 +139,7 @@ void DemoCubeScapeStage::onProcess(AbstractGLContext *)
 
     // Unbind texture
     if (*texture) {
-        (*texture)->unbind();
+        (*texture)->unbindActive(0);
     }
 
     // Unbind FBO
@@ -150,10 +150,10 @@ void DemoCubeScapeStage::onProcess(AbstractGLContext *)
     colorTextureOut.setValue(*colorTexture);
 
     // Signal that output is valid
-    rendered.setValue(true);
+    renderInterface.rendered.setValue(true);
 }
 
-void DemoCubeScapeStage::setupGeometry()
+void SpinningRectStage::setupGeometry()
 {
     m_vao = new globjects::VertexArray;
     m_vertexBuffer = new globjects::Buffer();
@@ -166,13 +166,12 @@ void DemoCubeScapeStage::setupGeometry()
     m_vao->enable(0);
 }
 
-void DemoCubeScapeStage::setupCamera()
+void SpinningRectStage::setupCamera()
 {
-    m_camera = new Camera();
-    m_camera->setEye(glm::vec3(0.0, 0.0, 12.0));
+    m_camera.setEye(glm::vec3(0.0, 0.0, 12.0));
 }
 
-void DemoCubeScapeStage::setupProgram()
+void SpinningRectStage::setupProgram()
 {
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));

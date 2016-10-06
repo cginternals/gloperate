@@ -16,6 +16,10 @@
 #include <gloperate/gloperate.h>
 
 
+namespace
+{
+
+
 /**
 *  @brief
 *    Load shader
@@ -33,6 +37,9 @@ static void loadShader(globjects::Program * program, const gl::GLenum type, cons
     globjects::StringTemplate * source = new globjects::StringTemplate(new globjects::File(filename));
     globjects::Shader * shader = new globjects::Shader(type, source);
     program->attach(shader);
+}
+
+
 }
 
 
