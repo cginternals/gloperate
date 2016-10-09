@@ -61,13 +61,11 @@ BaseItem
 
         onAccepted:
         {
-            var filename = fileUrl.toString();
-            filename = filename.replace(/^(file:\/{2})/,"");
-            filename = decodeURIComponent(filename);
+            var path = QmlUtils.urlToLocaFile(fileUrl);
 
-            input.text = filename;
+            input.text = path;
 
-            pipelineInterface.setSlotValue(path, filename);
+            pipelineInterface.setSlotValue(path, path);
         }
     }
 

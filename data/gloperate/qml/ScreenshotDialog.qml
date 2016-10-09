@@ -183,13 +183,7 @@ Window
 
         onAccepted:
         {
-            var path = fileUrl.toString();
-
-            // remove prefixed "file:///"
-            path = path.replace(/^(file:\/{3})/,"");
-
-            // unescape html codes like '%23' for '#'
-            path = decodeURIComponent(path);
+            var path = QmlUtils.urlToLocaFile(fileUrl);
 
             filepath.text = path;
             
