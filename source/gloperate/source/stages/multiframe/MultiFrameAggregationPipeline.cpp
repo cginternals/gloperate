@@ -108,12 +108,8 @@ void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface & interface
 
 void MultiFrameAggregationPipeline::setFrameRenderer(MultiFrameRenderInterface & interface)
 {
-    disconnectRenderStage();
+    setFrameRenderer(static_cast<RenderInterface &>(interface));
 
-    m_frameRenderStage = interface.rendered.parentStage();
-    addStage(m_frameRenderStage);
-
-    connectBasicRenderInterface(interface);
     connectMultiFrameRenderInterface(interface);
 }
 
