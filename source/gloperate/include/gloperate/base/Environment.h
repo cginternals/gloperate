@@ -123,7 +123,7 @@ public:
     *    Get canvases
     *
     *  @return
-    *    List of registered canvases (must NOT be null)
+    *    List of registered canvases
     */
     const std::vector<AbstractCanvas *> & canvases() const;
     std::vector<AbstractCanvas *> & canvases();

@@ -1,23 +1,28 @@
 
 import QtQuick 2.0
-import QtQuick.Controls 1.1
-import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.0
+
+import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
+import QmlToolbox.Ui 1.0
+
 import gloperate.rendering 1.0
-import gloperate.base 1.0
-import gloperate.ui 1.0
+
+import './PropertyEditor'
 
 
-Page
+Background
 {
     id: page
 
-    focus: true
+    // Stage
+    property string stage: 'DemoPipeline'
 
     // UI status
-    property real uiStatus: 1.0
-
+             property real uiStatus:  1.0
     readonly property bool uiEnabled: uiStatus > 0.0
 
+    // Slowly fade out UI elements when deactivated
     Behavior on uiStatus
     {
         NumberAnimation
@@ -42,114 +47,25 @@ Page
         }
     }
 
-    // Bottom icons
-    Row
+    // Disable background rendering, otherwise it would occlude the OpenGL widget
+    renderBackground: false
+    focus:            true
+
+    // Renderer
+    RenderItem
     {
-        id: tabs
+        id: render
 
-        anchors.bottom:  panelBottom.top
-        anchors.left:    parent.left
-        anchors.margins: Ui.style.panelPadding
-        spacing:         Ui.style.pageSpacing
+        anchors.fill: parent
 
-        visible: page.uiEnabled
-        opacity: page.uiStatus
+        z: -1
 
-        property string selected: ''
+        stage: page.stage
 
-        Button
+        onCanvasInitialized:
         {
-            property string title: 'log'
-
-            icon:        '0035-file-text.png'
-            highlighted: tabs.selected == title
-
-            onClicked:
-            {
-                if (tabs.selected != title) tabs.selected = title;
-                else                        tabs.selected = '';
-            }
-
-            onRightClicked:
-            {
-                logWindow.createObject(page, {});
-            }
+            gloperatePipeline.root = gloperate.canvas0.pipeline;
         }
-
-        Button
-        {
-            property string title: 'script'
-
-            icon:        '0086-keyboard.png'
-            highlighted: tabs.selected == title
-
-            onClicked:
-            {
-                if (tabs.selected != title) tabs.selected = title;
-                else                        tabs.selected = '';
-            }
-
-            onRightClicked:
-            {
-                scriptWindow.createObject(page, {});
-            }
-        }
-    }
-
-    // Bottom panel
-    Panel
-    {
-        id: panelBottom
-
-        anchors.left:         page.left
-        anchors.right:        page.right
-        anchors.bottom:       page.bottom
-        anchors.leftMargin:   Ui.style.pagePadding
-        anchors.rightMargin:  Ui.style.pagePadding
-        anchors.bottomMargin: status * (height + Ui.style.pagePadding) - height
-        height:               page.height / 3
-
-        visible: page.uiEnabled
-        opacity: page.uiStatus
-
-        property real status: (tabs.selected != '') ? 1.0 : 0.0
-
-        Behavior on status
-        {
-            NumberAnimation
-            {
-                easing.type: Easing.InOutQuad
-                duration:    600
-            }
-        }
-
-        LogView
-        {
-            anchors.fill:    parent
-            anchors.margins: Ui.style.panelPadding
-
-            visible: tabs.selected == 'log'
-        }
-
-        ScriptConsole
-        {
-            anchors.fill:    parent
-            anchors.margins: Ui.style.panelPadding
-
-            visible: tabs.selected == 'script'
-        }
-    }
-
-    // Main area
-    Item
-    {
-        id: main
-
-        anchors.left:    page.left
-        anchors.right:   page.right
-        anchors.top:     page.top
-        anchors.bottom:  panelBottom.top
-        anchors.margins: Ui.style.pagePadding
     }
 
     // Top-left menu
@@ -157,26 +73,69 @@ Page
     {
         id: menuLeft
 
-        anchors.left:    main.left
-        anchors.top:     main.top
-        anchors.margins: Ui.style.panelPadding
+        anchors.left:    parent.left
+        anchors.top:     parent.top
+        anchors.margins: Ui.style.paddingMedium
 
         visible: page.uiEnabled
         opacity: page.uiStatus
 
-        items: [
-          { name: 'pipeline', text: 'Demo', icon: '0190-menu.png', enabled: true,
-            items: [
-              { name: 'choose',     text: 'Choose Pipeline', icon: '0092-tv.png', enabled: false },
-              { name: 'edit'  ,     text: 'Edit Pipeline',   icon: '0387-share2.png', enabled: false },
-              { name: 'screenshot', text: 'Screenshot',      icon: '0040-file-picture.png', enabled: false },
-              { name: 'video',      text: 'Video',           icon: '0021-video-camera.png', enabled: false }
-            ]
-          }
-        ];
-
-        onItemClicked: // (menu, name)
+        ButtonMenu
         {
+            text: 'Demo'
+            icon: '0190-menu.png'
+
+            IconButton
+            {
+                text:    'Choose Pipeline'
+                icon:    '0092-tv.png'
+                enabled: false
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                }
+            }
+
+            IconButton
+            {
+                text: 'Screenshot'
+                icon: '0040-file-picture.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    screenshot.visible = true;
+                }
+            }
+
+            IconButton
+            {
+                text: 'Video'
+                icon: '0021-video-camera.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    video.visible = true;
+                    video.update();
+                }
+            }
+        }
+
+        IconButton
+        {
+            text:    'Rec'
+            icon:    '0021-video-camera.png'
+            enabled: video.settingsApplied
+
+            onClicked:
+            {
+                gloperate.canvas0.toggleVideoExport();
+            }
         }
     }
 
@@ -185,98 +144,114 @@ Page
     {
         id: menuRight
 
-        anchors.right:   main.right
-        anchors.top:     main.top
-        anchors.margins: Ui.style.pagePadding
+        anchors.right:   parent.right
+        anchors.top:     parent.top
+        anchors.margins: Ui.style.paddingMedium
 
         visible: page.uiEnabled
         opacity: page.uiStatus
 
-        items: [
-            { name: 'settings', text: 'Settings', icon: '0149-cog.png', enabled: true }
-        ];
-
-        onItemClicked: // (menu, name)
+        IconButton
         {
-            settings.visible = true;
+            text: 'Settings'
+            icon: '0149-cog.png'
+
+            onClicked:
+            {
+                settings.visible = true;
+            }
         }
-    }
-
-    // Renderer
-    RenderItem
-    {
-        id: render
-
-        anchors.fill: main
-        z:            -1
-
-        stage: 'DemoStage'
     }
 
     // Settings dialog
-    ApplicationWindow
+    Settings
     {
         id: settings
+    }
 
-        title:   "Settings"
-        visible: false
-        width:   800
-        height:  600
+    // Screenshot dialog
+    ScreenshotDialog
+    {
+        id: screenshot
+    }
 
-        Settings
+    // Video capture dialog
+    VideoDialog
+    {
+        id: video
+
+        property bool settingsApplied: false
+
+        onClosed:
         {
-            anchors.fill: parent
+            settingsApplied = true;
         }
     }
 
-    // Log window
-    Component
+    // Viewer options
+    GlOperatePipeline
     {
-        id: logWindow
+        id: gloperatePipeline
 
-        ApplicationWindow
+        onRootChanged:
         {
-
-            title:   "Log"
-            visible: true
-            width:   600
-            height:  800
-
-            Background
-            {
-                anchors.fill: parent
-
-                LogView
-                {
-                    anchors.fill:    parent
-                    anchors.margins: Ui.style.panelPadding
-                }
-            }
+            optionAngle.update();
+            optionRotate.update();
+            optionTexture.update();
         }
     }
 
-    // Scripting console window
-    Component
+    ValueEdit
     {
-        id: scriptWindow
+        id: optionAngle
 
-        ApplicationWindow
-        {
-            title:   "Scripting console"
-            visible: true
-            width:   600
-            height:  800
+        pipelineInterface: gloperatePipeline
+        path:              'pipeline.DemoPipeline.angle'
 
-            Background
-            {
-                anchors.fill: parent
+        anchors.left:    parent.left
+        anchors.right:   parent.right
+        anchors.bottom:  parent.bottom
+        anchors.margins: Ui.style.paddingLarge
+    }
 
-                ScriptConsole
-                {
-                    anchors.fill:    parent
-                    anchors.margins: Ui.style.panelPadding
-                }
-            }
-        }
+    ValueEdit
+    {
+        id: optionRotate
+
+        pipelineInterface: gloperatePipeline
+        path:              'pipeline.DemoPipeline.rotate'
+
+        anchors.left:    parent.left
+        anchors.bottom:  optionAngle.top
+        anchors.margins: Ui.style.paddingLarge
+    }
+
+    Label
+    {
+        text: 'Rotate'
+
+        anchors.left:           optionRotate.right
+        anchors.verticalCenter: optionRotate.verticalCenter
+    }
+
+    ValueEdit
+    {
+        id: optionTexture
+
+        pipelineInterface: gloperatePipeline
+        path:              'pipeline.DemoPipeline.texture'
+
+        anchors.right:   parent.right
+        anchors.bottom:  optionAngle.top
+        anchors.margins: Ui.style.paddingLarge
+    }
+
+    Label
+    {
+        text: 'Texture:'
+
+        anchors.right:          optionTexture.left
+        anchors.rightMargin:    Ui.style.paddingMedium
+        anchors.verticalCenter: optionTexture.verticalCenter
     }
 }

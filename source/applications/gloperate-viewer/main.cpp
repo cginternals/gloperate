@@ -12,8 +12,8 @@
 #include <cppexpose/scripting/ScriptContext.h>
 #include <cppexpose/reflection/Property.h>
 
-#include <gloperate/gloperate-version.h>
 #include <gloperate/gloperate.h>
+#include <gloperate/gloperate-version.h>
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/GLContextUtils.h>
 
@@ -21,9 +21,9 @@
 #include <gloperate-qt/base/Application.h>
 #include <gloperate-qt/base/UpdateManager.h>
 
-#include <gloperate-qtquick/base/QuickView.h>
-#include <gloperate-qtquick/scripting/QmlEngine.h>
-#include <gloperate-qtquick/scripting/QmlScriptContext.h>
+#include <gloperate-qtquick/QuickView.h>
+#include <gloperate-qtquick/QmlEngine.h>
+#include <gloperate-qtquick/QmlScriptContext.h>
 
 #include "Config.h"
 
@@ -35,9 +35,6 @@ using namespace gloperate_qtquick;
 
 int main(int argc, char * argv[])
 {
-    // Determine data paths
-    const auto qmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
-
     // Create gloperate environment
     Environment environment;
 
@@ -59,7 +56,6 @@ int main(int argc, char * argv[])
 
     // Create QML engine
     QmlEngine qmlEngine(&environment);
-    qmlEngine.addImportPath(qmlPath);
     qmlEngine.rootContext()->setContextProperty("config", &config);
 
     // Create scripting context backend
@@ -78,7 +74,7 @@ int main(int argc, char * argv[])
     // Load and show QML
     auto * window = new QuickView(&qmlEngine);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl::fromLocalFile(qmlPath + "/Viewer.qml"));
+    window->setSource(QUrl::fromLocalFile(qmlEngine.glOperateModulePath() + "/Viewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
     window->show();
 

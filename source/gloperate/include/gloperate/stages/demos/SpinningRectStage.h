@@ -7,12 +7,11 @@
 #include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
-#include <globjects/Texture.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
+#include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/Timer.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
@@ -24,17 +23,20 @@ namespace gloperate
 
 /**
 *  @brief
-*    Demo stage that renders a spinning rectangle onto the screen
+*    Demo stage that renders a rotating rectangle onto the screen
+*
+*  @remarks
+*    This stage is part of the DemoPipeline
 */
-class GLOPERATE_API DemoStage : public Stage
+class GLOPERATE_API SpinningRectStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoStage, gloperate::Stage
+        SpinningRectStage, gloperate::Stage
       , "RenderStage"   // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo stage that renders a spinning rectangle onto the screen"
+      , "Demo stage that renders a rotating rectangle onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -42,7 +44,16 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface                  renderInterface; ///< Interface for rendering into a viewer
+
+    // Inputs
+    Input<globjects::Texture *>      texture;         ///< Texture object
+    Input<float>                     angle;           ///< Current angle of rotating triangle (in radians)
+    Input<globjects::Texture *>      colorTexture;    ///< Target color texture
+
+    // Outputs
+    Output<globjects::Framebuffer *> fboOut;          ///< Pass through of target FBO
+    Output<globjects::Texture *>     colorTextureOut; ///< Pass through of target color texture
 
 
 public:
@@ -55,13 +66,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoStage(Environment * environment, const std::string & name = "DemoStage");
+    SpinningRectStage(Environment * environment, const std::string & name = "SpinningRectStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoStage();
+    virtual ~SpinningRectStage();
 
 
 protected:
@@ -71,27 +82,19 @@ protected:
     virtual void onProcess(AbstractGLContext * context) override;
 
     // Helper functions
-    void createAndSetupCamera();
-    void createAndSetupTexture();
-    void createAndSetupGeometry();
+    void setupGeometry();
+    void setupCamera();
+    void setupProgram();
 
 
 protected:
     // Rendering objects
     gloperate::Camera                          m_camera;
     globjects::ref_ptr<globjects::VertexArray> m_vao;
-    globjects::ref_ptr<globjects::Buffer>      m_buffer;
-    globjects::ref_ptr<globjects::Texture>     m_texture;
+    globjects::ref_ptr<globjects::Buffer>      m_vertexBuffer;
     globjects::ref_ptr<globjects::Program>     m_program;
     globjects::ref_ptr<globjects::Shader>      m_vertexShader;
     globjects::ref_ptr<globjects::Shader>      m_fragmentShader;
-
-    // Tools
-    Timer m_timer;
-
-    // Status
-    float m_time;   ///< Virtual time (in seconds)
-    float m_angle;  ///< Current angle of rotating triangle (in radians)
 };
 
 

@@ -2,15 +2,10 @@
 #pragma once
 
 
-#include <string>
-
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
-#include <globjects/Texture.h>
-
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/ExtraProperties.h>
+#include <gloperate/base/Timer.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
@@ -22,17 +17,20 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that loads a texture from a file
+*    Demo stage that creates a constant timer
+*
+*  @remarks
+*    This stage is part of the DemoPipeline
 */
-class GLOPERATE_API TextureLoadStage : public Stage
+class GLOPERATE_API TimerStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        TextureLoadStage, gloperate::Stage
+        TimerStage, gloperate::Stage
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that loads a texture from a file"
+      , "Demo stage that creates a constant timer"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -40,10 +38,10 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>   filename; ///< Texture filename
+    Input<float>  timeDelta;   ///< Time delta since last frame (in seconds)
 
     // Outputs
-    Output<globjects::Texture *> texture;  ///< Texture object
+    Output<float> virtualTime; ///< Elapsed time (in seconds)
 
 
 public:
@@ -56,28 +54,28 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    TextureLoadStage(Environment * environment, const std::string & name = "TextureLoadStage");
+    TimerStage(Environment * environment, const std::string & name = "TimerStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~TextureLoadStage();
+    virtual ~TimerStage();
 
 
 protected:
-    // Virtual Stage interface
+    // Virtual Stage functions
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
     virtual void onProcess(AbstractGLContext * context) override;
 
-    // Helper functions
-    void loadTexture();
-
 
 protected:
-    // Data
-    globjects::ref_ptr<globjects::Texture> m_texture; ///< Texture
+    // Tools
+    Timer m_timer;
+
+    // Status
+    float m_time;   ///< Virtual time (in seconds)
 };
 
 

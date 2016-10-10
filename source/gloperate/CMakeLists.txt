@@ -65,6 +65,7 @@ set(headers
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
     ${include_path}/base/GlmProperties.h
+    ${include_path}/base/ExtraProperties.h
 
     ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h
@@ -101,10 +102,10 @@ set(headers
     ${include_path}/stages/base/BlitStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
-    ${include_path}/stages/demos/DemoTriangleStage.h
     ${include_path}/stages/demos/DemoAntialiasableTriangleStage.h
-    ${include_path}/stages/demos/DemoTimerStage.h
     ${include_path}/stages/demos/DemoMultiFramePipeline.h
+    ${include_path}/stages/demos/SpinningRectStage.h
+    ${include_path}/stages/demos/TimerStage.h
     ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
     ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
     ${include_path}/stages/multiframe/MultiFrameControlStage.h
@@ -180,10 +181,10 @@ set(sources
     ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
-    ${source_path}/stages/demos/DemoTriangleStage.cpp
     ${source_path}/stages/demos/DemoAntialiasableTriangleStage.cpp
-    ${source_path}/stages/demos/DemoTimerStage.cpp
     ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
+    ${source_path}/stages/demos/SpinningRectStage.cpp
+    ${source_path}/stages/demos/TimerStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
     ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp

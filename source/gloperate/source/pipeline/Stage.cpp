@@ -32,6 +32,8 @@ Stage::Stage(Environment * environment, const std::string & name)
     // Register functions
     addFunction("getDescription", this, &Stage::scr_getDescription);
     addFunction("getConnections", this, &Stage::scr_getConnections);
+    addFunction("getSlot",        this, &Stage::scr_getSlot);
+    addFunction("setSlotValue",   this, &Stage::scr_setSlotValue);
     addFunction("createSlot",     this, &Stage::scr_createSlot);
     addFunction("slotTypes",      this, &Stage::scr_slotTypes);
 }
@@ -302,6 +304,7 @@ std::string Stage::getFreeName(const std::string & name) const
 
 AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string & type, const std::string & name)
 {
+    if (type == "bool")    return createSlot<bool>                    (slotType, name);
     if (type == "int")     return createSlot<int>                     (slotType, name);
     if (type == "float")   return createSlot<float>                   (slotType, name);
     if (type == "vec2")    return createSlot<glm::vec2>               (slotType, name);
@@ -310,6 +313,7 @@ AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string
     if (type == "ivec2")   return createSlot<glm::ivec2>              (slotType, name);
     if (type == "ivec3")   return createSlot<glm::ivec3>              (slotType, name);
     if (type == "ivec4")   return createSlot<glm::ivec4>              (slotType, name);
+    if (type == "string")  return createSlot<std::string>             (slotType, name);
     if (type == "texture") return createSlot<globjects::Texture *>    (slotType, name);
     if (type == "fbo")     return createSlot<globjects::Framebuffer *>(slotType, name);
 
@@ -432,6 +436,46 @@ cppexpose::Variant Stage::scr_getConnections()
     return obj;
 }
 
+cppexpose::Variant Stage::scr_getSlot(const std::string & name)
+{
+    Variant obj = Variant::map();
+
+    // Get slot
+    AbstractSlot * slot = input(name);
+    if (!slot) slot = output(name);
+
+    // Return invalid if slot does not exist
+    if (!slot)
+    {
+        return obj;
+    }
+
+    // Create slot description
+    (*obj.asMap())["name"]    = slot->name();
+    (*obj.asMap())["type"]    = slot->typeName();
+    (*obj.asMap())["value"]   = slot->toString();
+    (*obj.asMap())["options"] = slot->options();
+
+    // Return slot description
+    return obj;
+}
+
+void Stage::scr_setSlotValue(const std::string & name, const cppexpose::Variant & value)
+{
+    // Get slot
+    AbstractSlot * slot = input(name);
+    if (!slot) slot = output(name);
+
+    // Return invalid if slot does not exist
+    if (!slot)
+    {
+        return;
+    }
+
+    // Set slot value
+    slot->fromVariant(value);
+}
+
 void Stage::scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name)
 {
     createSlot(slotType, type, name);
@@ -441,6 +485,7 @@ cppexpose::Variant Stage::scr_slotTypes()
 {
     Variant types = Variant::array();
 
+    types.asArray()->push_back("bool");
     types.asArray()->push_back("int");
     types.asArray()->push_back("float");
     types.asArray()->push_back("vec2");
@@ -449,6 +494,7 @@ cppexpose::Variant Stage::scr_slotTypes()
     types.asArray()->push_back("ivec2");
     types.asArray()->push_back("ivec3");
     types.asArray()->push_back("ivec4");
+    types.asArray()->push_back("string");
     types.asArray()->push_back("texture");
     types.asArray()->push_back("fbo");
 
