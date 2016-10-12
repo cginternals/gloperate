@@ -128,7 +128,7 @@ bool Pipeline::destroyStage(Stage * stage)
 
 void Pipeline::invalidateStageOrder()
 {
-    std::cout << "Invalidate stage order; resort on next process" << std::endl;
+    debug() << "Invalidate stage order; resort on next process" << std::endl;
     m_sorted = false;
 }
 
