@@ -38,7 +38,7 @@ BaseItem
 
             delegate: Label
             {
-                text: item.properties[index]
+                text: item.properties[index] || ''
             }
         }
 

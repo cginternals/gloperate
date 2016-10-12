@@ -13,8 +13,8 @@ Item
     property var    pipelineInterface: null ///< Interface for communicating with the actual pipeline
     property string path:              ''   ///< Path to pipeline slot (e.g., 'pipeline.Stage1.in1')
 
-    implicitWidth:  input.implicitWidth
-    implicitHeight: input.implicitHeight
+    implicitWidth:  input ? input.implicitWidth  : 0
+    implicitHeight: input ? input.implicitHeight : 0
 
     property Item   input:     null
     property string inputType: ''
