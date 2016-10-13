@@ -48,6 +48,8 @@ void Output<T>::onRequiredChanged()
 template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
+    std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
+
     // Get current thread ID
     std::thread::id this_id = std::this_thread::get_id();
 

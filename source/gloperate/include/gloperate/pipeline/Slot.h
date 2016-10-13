@@ -4,6 +4,7 @@
 
 #include <map>
 #include <thread>
+#include <mutex>
 
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/signal/Signal.h>
@@ -155,6 +156,7 @@ protected:
     cppexpose::ScopedConnection m_connection; ///< Connection to changed-signal of source property
 
     std::map<std::thread::id, bool> m_cycleGuard; ///< Protection against cyclic propagation of change-events (one per thread to be thread-safe)
+    std::recursive_mutex            m_cycleMutex; ///< Mutex for accessing the cycle guard map
 };
 
 
