@@ -28,7 +28,7 @@ void FontImporterStage::onContextInit(gloperate::AbstractGLContext * /*context*/
     m_importer.reset(new gloperate_text::FontLoader(*(*resourceManager)));
 }
 
-void FontImporterStage::onProcess(gloperate::AbstractGLContext * context)
+void FontImporterStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     FontFace * newFont = m_importer->load((*fontFilePath).path());
 

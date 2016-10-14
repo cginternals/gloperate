@@ -25,7 +25,7 @@ GlyphPreparationStage::~GlyphPreparationStage()
 {
 }
 
-void GlyphPreparationStage::onProcess(gloperate::AbstractGLContext * context)
+void GlyphPreparationStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     // get total number of glyphs
     auto numGlyphs = size_t(0u);
@@ -43,7 +43,7 @@ void GlyphPreparationStage::onProcess(gloperate::AbstractGLContext * context)
     auto index = vc.vertices().begin();
     for (const auto & sequence : (*sequences))
     {
-        auto extent = Typesetter::typeset(sequence, *(*font), index);
+        /*auto extent = */Typesetter::typeset(sequence, *(*font), index);
         index += sequence.size(*(*font));
     }
 
