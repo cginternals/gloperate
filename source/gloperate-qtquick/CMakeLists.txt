@@ -60,6 +60,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/QuickView.h
     ${include_path}/RenderItem.h
+    ${include_path}/TextureRenderItem.h
     ${include_path}/Utils.h
     ${include_path}/VideoProfile.h
     ${include_path}/TextController.h
@@ -72,6 +73,8 @@ set(headers
 set(sources
     ${source_path}/QuickView.cpp
     ${source_path}/RenderItem.cpp
+    ${source_path}/TextureRenderItem.cpp
+    ${source_path}/TextureRenderItem_ogl.cpp
     ${source_path}/Utils.cpp
     ${source_path}/VideoProfile.cpp
     ${source_path}/TextController.cpp

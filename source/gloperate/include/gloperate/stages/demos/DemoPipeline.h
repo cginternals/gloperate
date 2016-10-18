@@ -5,7 +5,9 @@
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
+#include <gloperate/base/ExtraProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
+#include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
@@ -18,8 +20,8 @@ class TextureLoadStage;
 class ProceduralTextureStage;
 class MixerStage;
 class SplitStage;
-class DemoTimerStage;
-class DemoTriangleStage;
+class TimerStage;
+class SpinningRectStage;
 
 
 /**
@@ -44,6 +46,11 @@ public:
     // Interfaces
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
+    // Inputs
+    Input<cppassist::FilePath> texture; ///< Texture filename
+    Input<float>               angle;   ///< Current rotation angle
+    Input<bool>                rotate;  ///< Rotation automatically?
+
 
 public:
     /**
@@ -65,12 +72,16 @@ public:
 
 
 protected:
+    void onRotateChanged(const bool & rotate);
+
+
+protected:
     // Stages
     MixerStage             * m_mixerStage;
     SplitStage             * m_splitStage;
 
-    DemoTimerStage         * m_timerStage;
-    DemoTriangleStage      * m_triangleStage;
+    TimerStage             * m_timerStage;
+    SpinningRectStage      * m_spinningRectStage;
 
     BasicFramebufferStage  * m_framebufferStage;
     TextureLoadStage       * m_textureLoadStage;

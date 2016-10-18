@@ -17,8 +17,8 @@
 #include <gloperate/stages/base/SplitStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
 #include <gloperate/stages/demos/DemoStage.h>
-#include <gloperate/stages/demos/DemoTriangleStage.h>
-#include <gloperate/stages/demos/DemoTimerStage.h>
+#include <gloperate/stages/demos/SpinningRectStage.h>
+#include <gloperate/stages/demos/TimerStage.h>
 
 
 namespace gloperate
@@ -193,8 +193,8 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&SplitStage::Component);
     m_componentManager.addComponent(&DemoPipeline::Component);
     m_componentManager.addComponent(&DemoStage::Component);
-    m_componentManager.addComponent(&DemoTriangleStage::Component);
-    m_componentManager.addComponent(&DemoTimerStage::Component);
+    m_componentManager.addComponent(&SpinningRectStage::Component);
+    m_componentManager.addComponent(&TimerStage::Component);
 }
 
 void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)

@@ -4,10 +4,13 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
 
 import QmlToolbox.Base 1.0
+import QmlToolbox.Controls 1.0
 import QmlToolbox.Ui 1.0
 import QmlToolbox.PipelineEditor 1.0
 
 import gloperate.rendering 1.0
+
+import './PropertyEditor'
 
 
 Background
@@ -16,7 +19,6 @@ Background
 
     // Stage
     property string stage: 'DemoPipeline'
-//  property string stage: 'DemoStage'
 
     // UI status
              property real uiStatus:  1.0
@@ -32,9 +34,6 @@ Background
         }
     }
 
-    renderBackground: false
-    focus:            true
-
     // Hide all UI elements on Escape
     Keys.onPressed:
     {
@@ -46,6 +45,138 @@ Background
                 tabs.selected = '';
             } else {
                 uiStatus = 1.0;
+            }
+        }
+    }
+
+    // Disable background rendering, otherwise it would occlude the OpenGL widget
+    renderBackground: false
+    focus:            true
+
+    // Renderer
+    RenderItem
+    {
+        id: render
+
+        anchors.fill: parent
+
+        z: -1
+
+        stage: page.stage
+
+        onCanvasInitialized:
+        {
+            gloperatePipeline.root = gloperate.canvas0.pipeline;
+        }
+    }
+
+    // Top-left menu
+    ButtonBar
+    {
+        id: menuLeft
+
+        anchors.left:    parent.left
+        anchors.top:     parent.top
+        anchors.margins: Ui.style.paddingMedium
+
+        visible: page.uiEnabled
+        opacity: page.uiStatus
+
+        ButtonMenu
+        {
+            text: 'Demo'
+            icon: '0190-menu.png'
+
+            IconButton
+            {
+                text:    'Choose Pipeline'
+                icon:    '0092-tv.png'
+                enabled: false
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                }
+            }
+
+            IconButton
+            {
+                text: 'Screenshot'
+                icon: '0040-file-picture.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    screenshot.visible = true;
+                }
+            }
+
+            IconButton
+            {
+                text: 'Video'
+                icon: '0021-video-camera.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    video.visible = true;
+                    video.update();
+                }
+            }
+
+            IconButton
+            {
+                text: 'Edit Pipeline'
+                icon: '0387-share2.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    var name = gloperatePipeline.getStage('pipeline').stages[0];
+
+                    pipelineEditor.load('pipeline.' + name);
+                    pipelineEditorFrame.visible = !pipelineEditorFrame.visible;
+                }
+            }
+        }
+
+        IconButton
+        {
+            text:    'Rec'
+            icon:    '0021-video-camera.png'
+            enabled: video.settingsApplied
+
+            onClicked:
+            {
+                gloperate.canvas0.toggleVideoExport();
+            }
+        }
+    }
+
+    // Top-right menu
+    ButtonBar
+    {
+        id: menuRight
+
+        anchors.right:   parent.right
+        anchors.top:     parent.top
+        anchors.margins: Ui.style.paddingMedium
+
+        visible: page.uiEnabled
+        opacity: page.uiStatus
+
+        IconButton
+        {
+            text: 'Settings'
+            icon: '0149-cog.png'
+
+            onClicked:
+            {
+                settings.visible = true;
             }
         }
     }
@@ -148,146 +279,49 @@ Background
         }
     }
 
-    // Main area
-    Item
+    // Left panel
+    Frame
     {
-        id: main
+        id: panelLeft
 
-        anchors.left:    page.left
-        anchors.right:   page.right
-        anchors.top:     page.top
-        anchors.bottom:  panelBottom.top
+        anchors.left:    parent.left
+        anchors.top:     menuLeft.bottom
+        anchors.bottom:  tabs.top
         anchors.margins: Ui.style.paddingMedium
-    }
 
-    // Top-left menu
-    ButtonBar
-    {
-        id: menuLeft
-
-        anchors.left:    main.left
-        anchors.top:     main.top
-        anchors.margins: Ui.style.paddingMedium
+        implicitWidth: peCol.implicitWidth + 2 * peCol.anchors.margins
 
         visible: page.uiEnabled
-        opacity: page.uiStatus
+        opacity: 0.8 * page.uiStatus
 
-        ButtonMenu
+        Column
         {
-            text: 'Demo'
-            icon: '0190-menu.png'
+            id: peCol
 
-            IconButton
+            anchors.left:    parent.left
+            anchors.right:   parent.right
+            anchors.top:     parent.top
+            anchors.margins: Ui.style.paddingMedium
+
+            spacing: Ui.style.spacingMedium
+
+            PropertyEditor
             {
-                text:    'Choose Pipeline'
-                icon:    '0092-tv.png'
-                enabled: false
+                id: propertyEditor
 
-                Layout.fillWidth: true
+                pipelineInterface: gloperatePipeline
+                path:              'pipeline.DemoPipeline'
+            }
+
+            Button
+            {
+                text: 'Update'
 
                 onClicked:
                 {
+                    propertyEditor.update();
                 }
             }
-
-            IconButton
-            {
-                text: 'Screenshot'
-                icon: '0040-file-picture.png'
-
-                Layout.fillWidth: true
-
-                onClicked:
-                {
-                    screenshot.visible = true;
-                }
-            }
-
-            IconButton
-            {
-                text: 'Video'
-                icon: '0021-video-camera.png'
-
-                Layout.fillWidth: true
-
-                onClicked:
-                {
-                    video.visible = true;
-                    video.update();
-                }
-            }
-
-            IconButton
-            {
-                text: 'Edit Pipeline'
-                icon: '0387-share2.png'
-
-                Layout.fillWidth: true
-
-                onClicked:
-                {
-                    var name = gloperatePipeline.getStage('pipeline').stages[0];
-
-                    pipelineEditor.load('pipeline.' + name);
-                    pipelineEditor.visible = !pipelineEditor.visible;
-                }
-            }
-        }
-
-        IconButton
-        {
-            text:    'Rec'
-            icon:    '0021-video-camera.png'
-            enabled: video.settingsApplied
-
-            onClicked:
-            {
-                gloperate.canvas0.toggleVideoExport();
-            }
-        }
-    }
-
-    // Top-right menu
-    ButtonBar
-    {
-        id: menuRight
-
-        anchors.right:   main.right
-        anchors.top:     main.top
-        anchors.margins: Ui.style.paddingMedium
-
-        visible: page.uiEnabled
-        opacity: page.uiStatus
-
-        IconButton
-        {
-            text: 'Settings'
-            icon: '0149-cog.png'
-
-            onClicked:
-            {
-                settings.visible = true;
-            }
-        }
-    }
-
-    // Renderer
-    RenderItem
-    {
-        id: render
-
-        anchors.top:    main.top
-        anchors.bottom: main.bottom
-        anchors.left:   main.left
-        anchors.right:  pipelineEditor.left
-
-        z: -1
-
-        stage: page.stage
-
-        onCanvasInitialized:
-        {
-            gloperatePipeline.root = gloperate.canvas0.pipeline;
         }
     }
 
@@ -302,25 +336,56 @@ Background
         }
     }
 
-    PipelineEditor
+    Frame
     {
-        id: pipelineEditor
+        id: pipelineEditorFrame
 
-        anchors.right: main.right
-        anchors.top:   main.top
-        width:         visible ? main.width * 0.75 : 0
-        height:        main.height
+        anchors.fill: parent
 
         visible: false
 
-        pipelineInterface: gloperatePipeline
-
-        Behavior on width
+        PipelineEditor
         {
-            NumberAnimation
+            id: pipelineEditor
+
+            anchors.fill: parent
+
+            pipelineInterface: gloperatePipeline
+        }
+
+        Button
+        {
+            anchors.top:     parent.top
+            anchors.left:    parent.left
+            anchors.margins: Ui.style.paddingMedium
+
+            text: 'Close'
+
+            onClicked:
             {
-                easing.type: Easing.InOutQuad
-                duration:    600
+                pipelineEditorFrame.visible = false;
+            }
+        }
+
+        TextureRenderItem
+        {
+            x:      350
+            y:      350
+            width:  200
+            height: 200
+
+            path: 'pipeline.DemoPipeline.TextureLoadStage.texture'
+
+            Drag.active: mouseArea.drag.active
+
+            MouseArea
+            {
+                id: mouseArea
+
+                anchors.fill: parent
+
+                acceptedButtons: Qt.LeftButton
+                drag.target:     parent
             }
         }
     }

@@ -22,11 +22,11 @@ namespace gloperate
 *  @remarks
 *    This stage is part of the DemoPipeline
 */
-class GLOPERATE_API DemoTimerStage : public Stage
+class GLOPERATE_API TimerStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoTimerStage, gloperate::Stage
+        TimerStage, gloperate::Stage
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
@@ -54,13 +54,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoTimerStage(Environment * environment, const std::string & name = "DemoTimerStage");
+    TimerStage(Environment * environment, const std::string & name = "TimerStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoTimerStage();
+    virtual ~TimerStage();
 
 
 protected:

@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/demos/DemoTimerStage.h>
+#include <gloperate/stages/demos/TimerStage.h>
 
 #include <cppassist/logging/logging.h>
 
@@ -11,10 +11,10 @@ namespace gloperate
 {
 
 
-CPPEXPOSE_COMPONENT(DemoTimerStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(TimerStage, gloperate::Stage)
 
 
-DemoTimerStage::DemoTimerStage(Environment * environment, const std::string & name)
+TimerStage::TimerStage(Environment * environment, const std::string & name)
 : Stage(environment, name)
 , timeDelta  ("timeDelta",   this, 0.0f)
 , virtualTime("virtualTime", this, 0.0f)
@@ -32,19 +32,19 @@ DemoTimerStage::DemoTimerStage(Environment * environment, const std::string & na
     m_timer.start(0.0f);
 }
 
-DemoTimerStage::~DemoTimerStage()
+TimerStage::~TimerStage()
 {
 }
 
-void DemoTimerStage::onContextInit(AbstractGLContext *)
+void TimerStage::onContextInit(AbstractGLContext *)
 {
 }
 
-void DemoTimerStage::onContextDeinit(AbstractGLContext *)
+void TimerStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void DemoTimerStage::onProcess(AbstractGLContext *)
+void TimerStage::onProcess(AbstractGLContext *)
 {
 }
 
