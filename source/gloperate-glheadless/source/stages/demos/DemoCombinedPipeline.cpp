@@ -2,8 +2,8 @@
 #include <gloperate-glheadless/stages/demos/DemoCombinedPipeline.h>
 
 #include <gloperate/stages/base/BasicFramebufferStage.h>
-#include <gloperate/stages/demos/DemoTriangleStage.h>
-#include <gloperate/stages/demos/DemoTimerStage.h>
+#include <gloperate/stages/demos/SpinningRectStage.h>
+#include <gloperate/stages/demos/TimerStage.h>
 
 #include <gloperate-glheadless/stages/demos/DemoOffscreenPipeline.h>
 
@@ -21,8 +21,8 @@ DemoCombinedPipeline::DemoCombinedPipeline(Environment * environment, const std:
 : Pipeline(environment, name)
 , renderInterface(this)
 , m_offscreenStage(new DemoOffscreenPipeline(environment, "OffscreenStage"))
-, m_timerStage(new DemoTimerStage(environment, "TimerStage"))
-, m_triangleStage(new DemoTriangleStage(environment, "Triangle Stage"))
+, m_timerStage(new TimerStage(environment, "TimerStage"))
+, m_triangleStage(new SpinningRectStage(environment, "Triangle Stage"))
 {
     // Offscreen stage
     addStage(m_offscreenStage);

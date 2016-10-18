@@ -12,8 +12,8 @@
 
 
 namespace gloperate {
-class DemoTimerStage;
-class DemoTriangleStage;
+class TimerStage;
+class SpinningRectStage;
 } // namespace gloperate
 
 
@@ -67,8 +67,8 @@ public:
 protected:
     // Stages
     DemoOffscreenPipeline        * m_offscreenStage; ///< Offscreen stage to render the texture
-    gloperate::DemoTimerStage    * m_timerStage;     ///< Timer stage to drive rotation
-    gloperate::DemoTriangleStage * m_triangleStage;  ///< Render stage to display the rotating texture
+    gloperate::TimerStage        * m_timerStage;     ///< Timer stage to drive rotation
+    gloperate::SpinningRectStage * m_triangleStage;  ///< Render stage to display the rotating texture
 };
 
 
