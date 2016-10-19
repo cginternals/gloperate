@@ -40,13 +40,11 @@ set(headers
 
     ${include_path}/base/Environment.h
     ${include_path}/base/System.h
-    ${include_path}/base/PipelineApi.h
     ${include_path}/base/ComponentManager.h
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
     ${include_path}/base/Canvas.h
-    ${include_path}/base/PipelineContainer.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
     ${include_path}/base/AbstractGLContextFactory.h
@@ -67,7 +65,7 @@ set(headers
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
     ${include_path}/base/GlmProperties.h
-
+    ${include_path}/base/ExtraProperties.h
     ${include_path}/base/AbstractColorGradient.h
     ${include_path}/base/AbstractColorGradient.inl
     ${include_path}/base/Color.h
@@ -77,24 +75,17 @@ set(headers
     ${include_path}/base/ExplicitEquidistantColorGradient.h
     ${include_path}/base/ExplicitEquidistantColorGradient.inl
 
+    ${include_path}/pipeline/PipelineContainer.h
+    ${include_path}/pipeline/Stage.h
+    ${include_path}/pipeline/Stage.inl
+    ${include_path}/pipeline/Pipeline.h
     ${include_path}/pipeline/AbstractSlot.h
-    ${include_path}/pipeline/AbstractDataSlot.h
-    ${include_path}/pipeline/AbstractInputSlot.h
-    ${include_path}/pipeline/DataSlot.h
-    ${include_path}/pipeline/DataSlot.inl
-    ${include_path}/pipeline/InputSlot.h
-    ${include_path}/pipeline/InputSlot.inl
-    ${include_path}/pipeline/Parameter.h
-    ${include_path}/pipeline/Parameter.inl
+    ${include_path}/pipeline/Slot.h
+    ${include_path}/pipeline/Slot.inl
     ${include_path}/pipeline/Input.h
     ${include_path}/pipeline/Input.inl
     ${include_path}/pipeline/Output.h
     ${include_path}/pipeline/Output.inl
-    ${include_path}/pipeline/ProxyOutput.h
-    ${include_path}/pipeline/ProxyOutput.inl
-    ${include_path}/pipeline/Stage.h
-    ${include_path}/pipeline/Pipeline.h
-    ${include_path}/pipeline/OutputTypeSelector.h
     ${include_path}/pipeline/StageComponent.h
     ${include_path}/pipeline/StageComponent.inl
 
@@ -105,8 +96,9 @@ set(headers
     ${include_path}/rendering/RenderPass.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
-    ${include_path}/stages/interfaces/RenderInterface.inl
     ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/FramebufferStage.h
+    ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
@@ -115,8 +107,8 @@ set(headers
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
-    ${include_path}/stages/demos/DemoTriangleStage.h
-    ${include_path}/stages/demos/DemoTimerStage.h
+    ${include_path}/stages/demos/SpinningRectStage.h
+    ${include_path}/stages/demos/TimerStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -140,12 +132,10 @@ set(sources
 
     ${source_path}/base/Environment.cpp
     ${source_path}/base/System.cpp
-    ${source_path}/base/PipelineApi.cpp
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/AbstractCanvas.cpp
     ${source_path}/base/Canvas.cpp
-    ${source_path}/base/PipelineContainer.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractGLContext.cpp
     ${source_path}/base/AbstractGLContextFactory.cpp
@@ -165,11 +155,10 @@ set(sources
     ${source_path}/base/ColorGradientPreparation.cpp
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
 
-    ${source_path}/pipeline/AbstractSlot.cpp
-    ${source_path}/pipeline/AbstractDataSlot.cpp
-    ${source_path}/pipeline/AbstractInputSlot.cpp
+    ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
+    ${source_path}/pipeline/AbstractSlot.cpp
     ${source_path}/pipeline/StageComponent.cpp
 
     ${source_path}/rendering/AbstractDrawable.cpp
@@ -177,17 +166,20 @@ set(sources
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/RenderPass.cpp
 
+    ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
+    ${source_path}/stages/base/FramebufferStage.cpp
+    ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
     ${source_path}/stages/base/ProceduralTextureStage.cpp
     ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
-    ${source_path}/stages/demos/DemoTriangleStage.cpp
-    ${source_path}/stages/demos/DemoTimerStage.cpp
+    ${source_path}/stages/demos/SpinningRectStage.cpp
+    ${source_path}/stages/demos/TimerStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp

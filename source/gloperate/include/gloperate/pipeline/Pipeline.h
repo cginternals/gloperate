@@ -122,6 +122,27 @@ public:
     */
     bool destroyStage(Stage * stage);
 
+    /**
+    *  @brief
+    *    Invalidate sorted stage order
+    *
+    *  @remarks
+    *    The stages are resorted upon next usage.
+    */
+    void invalidateStageOrder();
+
+    /**
+    *  @brief
+    *    Get a slot of this pipeline or a subpipeline
+    *
+    *  @param[in] path
+    *    Path to the slot from this pipeline. Can contain the name of this pipeline as first element.
+    *
+    *  @return
+    *    Slot, nullptr if not found
+    */
+    AbstractSlot * getSlot(const std::string & path);
+
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
@@ -139,6 +160,15 @@ protected:
     virtual void onProcess(AbstractGLContext * context) override;
     virtual void onInputValueChanged(AbstractSlot * slot) override;
     virtual void onOutputRequiredChanged(AbstractSlot * slot) override;
+
+
+protected:
+    // Scripting functions
+    virtual cppexpose::Variant scr_getDescription() override;
+    std::string scr_createStage(const std::string & className, const std::string & name);
+    void scr_removeStage(const std::string & name);
+    void scr_createConnection(const std::string & from, const std::string & to);
+    void scr_removeConnection(const std::string & to);
 
 
 protected:

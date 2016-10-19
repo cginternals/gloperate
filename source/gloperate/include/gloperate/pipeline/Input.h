@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <gloperate/pipeline/InputSlot.h>
+#include <gloperate/pipeline/Slot.h>
 
 
 namespace gloperate
@@ -11,10 +11,12 @@ namespace gloperate
 
 /**
 *  @brief
-*    Data input of a stage
+*    Input data of a stage
+*
+*  @see AbstractSlot
 */
 template <typename T>
-class Input : public InputSlot<T>
+class Input : public Slot<T>
 {
 public:
     /**
@@ -29,9 +31,27 @@ public:
     *    Default value
     *
     *  @remarks
-    *    The input is created and added to the given stage.
+    *    Creates the input slot and adds it to the given stage without ownership.
+    *    Use this constructor for static slots, which are usually created as
+    *    direct instances on a stage class.
     */
     Input(const std::string & name, Stage * parent, const T & defaultValue = T());
+
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] name
+    *    Property name
+    *  @param[in] value
+    *    Default value
+    *
+    *  @remarks
+    *    Creates the input slot without adding it to any stage.
+    *    Use this constructor for dynamic slots and call addInput()
+    *    to add the slot to a stage.
+    */
+    Input(const std::string & name, const T & defaultValue = T());
 
     /**
     *  @brief

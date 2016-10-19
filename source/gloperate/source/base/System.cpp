@@ -15,20 +15,20 @@ System::System(Environment * environment)
 , m_environment(environment)
 {
     // Register functions
-    addFunction("load",       this, &System::load);
-    addFunction("readFile",   this, &System::readFile);
-    addFunction("writeFile",  this, &System::writeFile);
-    addFunction("appendFile", this, &System::appendFile);
-    addFunction("exit",       this, &System::exit);
+    addFunction("load",       this, &System::scr_load);
+    addFunction("readFile",   this, &System::scr_readFile);
+    addFunction("writeFile",  this, &System::scr_writeFile);
+    addFunction("appendFile", this, &System::scr_appendFile);
+    addFunction("exit",       this, &System::scr_exit);
 }
 
 System::~System()
 {
 }
 
-void System::load(const std::string & filename)
+void System::scr_load(const std::string & filename)
 {
-    std::string code = readFile(filename);
+    std::string code = scr_readFile(filename);
 
     if (!code.empty()) {
         // Execute command
@@ -36,7 +36,7 @@ void System::load(const std::string & filename)
     }
 }
 
-std::string System::readFile(const std::string & filename)
+std::string System::scr_readFile(const std::string & filename)
 {
     std::string txt;
 
@@ -52,7 +52,7 @@ std::string System::readFile(const std::string & filename)
     return txt;
 }
 
-void System::writeFile(const std::string & filename, const cppexpose::Variant & value)
+void System::scr_writeFile(const std::string & filename, const cppexpose::Variant & value)
 {
     std::ofstream f(filename);
 
@@ -62,7 +62,7 @@ void System::writeFile(const std::string & filename, const cppexpose::Variant & 
     }
 }
 
-void System::appendFile(const std::string & filename, const cppexpose::Variant & value)
+void System::scr_appendFile(const std::string & filename, const cppexpose::Variant & value)
 {
     std::ofstream f(filename, std::ios_base::app);
 
@@ -72,7 +72,7 @@ void System::appendFile(const std::string & filename, const cppexpose::Variant &
     }
 }
 
-void System::exit(int exitCode)
+void System::scr_exit(int exitCode)
 {
     m_environment->exit(exitCode);
 }

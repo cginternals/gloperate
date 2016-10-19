@@ -31,5 +31,11 @@ gloperate::Stage * Component<Type, gloperate::Stage>::createInstance(gloperate::
     return new Type(environment);
 }
 
+template <typename Type>
+gloperate::Stage * Component<Type, gloperate::Stage>::createInstance(gloperate::Environment * environment, const std::string & name) const
+{
+    return new Type(environment, name);
+}
+
 
 } // namespace cppexpose

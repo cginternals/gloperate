@@ -44,45 +44,62 @@ FFMPEGVideoEncoder::~FFMPEGVideoEncoder()
 {
 }
 
-void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, int height, int fps)
+bool FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
 {
-    // Choose video format from file name
-    AVOutputFormat * format = av_guess_format(NULL, filename.c_str(), NULL);
-    if (!format) {
-        debug() << "Could not deduce output format from file extension: using MPEG.";
-        format = av_guess_format("mpeg", NULL, NULL);
+    auto filepath = parameters.at("filepath").toString();
+    auto format = parameters.at("format").toString();
+    auto codec = parameters.at("codec").toString();
+    auto width = parameters.at("width").toULongLong();
+    auto height = parameters.at("height").toULongLong();
+    auto fps = parameters.at("fps").toULongLong();
+
+    auto gopsize = parameters.at("gopsize").toLongLong() != 0 ? parameters.at("gopsize").toLongLong() : fps * 2;
+    auto bitrate = parameters.at("bitrate").toLongLong() != 0 ? parameters.at("bitrate").toLongLong() : 400000;
+
+    if (filepath == "")
+    {
+        critical() << "Filepath must not be empty.";
+        return false;
     }
-    if (!format) {
-        critical() << "Could not find suitable output format";
-        return;
+
+    // Choose video format from file name
+    AVOutputFormat * avFormat = av_guess_format(format.c_str(), NULL, NULL);
+    if (!avFormat) {
+        critical() << "Could not use given output format (" << format << ").";
+        return false;
+    }
+
+    // Find video encoder
+    AVCodec * avCodec = avcodec_find_encoder_by_name(codec.c_str());
+    if (!avCodec) {
+        critical() << "Codec (" << codec << ") not found.";
+        return false;
     }
 
     // Create context
     m_context = avformat_alloc_context();
     if (!m_context) {
         critical() << "Could not create video context.";
-        return;
+        return false;
     }
-    m_context->oformat = format;
-//  m_context->max_b_frames = 1; // ?
-//  snprintf(m_context->filename, sizeof(m_context->filename), "%s", filename.c_str());
+    m_context->oformat = avFormat;
 
     // Create video stream
-    m_videoStream = avformat_new_stream(m_context, 0);
+    m_videoStream = avformat_new_stream(m_context, avCodec);
     if (!m_videoStream) {
         critical() << "Could not alloc stream";
-        return;
+        return false;
     }
 
     // Set video stream type and options
     m_videoStream->codec->codec_type    = AVMEDIA_TYPE_VIDEO;
-    m_videoStream->codec->codec_id      = format->video_codec;
-    m_videoStream->codec->bit_rate      = 400000;
+    m_videoStream->codec->codec_id      = avCodec->id;
+    m_videoStream->codec->bit_rate      = bitrate;
     m_videoStream->codec->width         = width;
     m_videoStream->codec->height        = height;
     m_videoStream->codec->time_base.num = 1;
     m_videoStream->codec->time_base.den = fps;
-    m_videoStream->codec->gop_size      = 12;
+    m_videoStream->codec->gop_size      = gopsize;
     m_videoStream->codec->pix_fmt       = AV_PIX_FMT_YUV420P;
 
     // Some formats want stream headers to be separate
@@ -91,26 +108,19 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, i
     }
 
     // [DEBUG] Output video stream info
-    av_dump_format(m_context, 0, filename.c_str(), 1);
-
-    // Find video encoder
-    AVCodec * codec = avcodec_find_encoder(m_videoStream->codec->codec_id);
-    if (!codec) {
-        critical() << "Codec not found";
-        return;
-    }
+    av_dump_format(m_context, 0, filepath.c_str(), 1);
 
     // Open codec
-    if (avcodec_open2(m_videoStream->codec, codec, nullptr) < 0) {
-        critical() << "Could not open codec";
-        return;
+    if (avcodec_open2(m_videoStream->codec, avCodec, nullptr) < 0) {
+        critical() << "Could not open codec (" << codec << ")";
+        return false;
     }
 
     // Allocate picture for encoding
     m_frame = av_frame_alloc();
     if (!m_frame) {
         critical() << "Could not allocate frame";
-        return;
+        return false;
     }
 
     // Allocate frame buffer
@@ -119,7 +129,7 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, i
     if (!picture_buf) {
         critical() << "Could not allocate picture";
         av_free(m_frame);
-        return;
+        return false;
     }
 
     // Assign frame buffer to picture
@@ -127,21 +137,17 @@ void FFMPEGVideoEncoder::initEncoding(const std::string & filename, int width, i
 
     // Output to file
     
-    if (!(format->flags & AVFMT_NOFILE)) {
-        if (avio_open(&m_context->pb, filename.c_str(), AVIO_FLAG_WRITE) < 0) {
-            critical() << "Could not open  " << filename;
-            return;
+    if (!(avFormat->flags & AVFMT_NOFILE)) {
+        if (avio_open(&m_context->pb, filepath.c_str(), AVIO_FLAG_WRITE) < 0) {
+            critical() << "Could not open  " << filepath;
+            return false;
         }
     }
-    
-
-    // Output to stream
-    // if (avio_open_dyn_buf(&m_context->pb)) {
-    //     debug() << "Could not create output stream";
-    // }
 
     // Write video header
     avformat_write_header(m_context, NULL);
+
+    return true;
 }
 
 void FFMPEGVideoEncoder::putFrame(const gloperate::Image & image)

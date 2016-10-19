@@ -40,7 +40,7 @@ public:
 
 
 public:
-    // Input
+    // Inputs
     Input<glm::vec4>                 viewport;      ///< Texture size
 
     // Outputs

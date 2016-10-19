@@ -47,7 +47,7 @@ void TextureLoadStage::loadTexture()
 {
     // Load texture from file
     m_texture = m_environment->resourceManager()->load<globjects::Texture>(
-        *filename
+        (*filename).path()
     );
 }
 

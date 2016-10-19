@@ -11,6 +11,7 @@
 #include <globjects/Program.h>
 #include <globjects/ProgramPipeline.h>
 #include <globjects/TransformFeedback.h>
+#include <globjects/State.h>
 
 #include <gloperate/rendering/Drawable.h>
 
@@ -73,6 +74,16 @@ void RenderPass::draw() const
 
         gl::glDisable(gl::GL_RASTERIZER_DISCARD);
     }
+}
+
+globjects::State * RenderPass::state() const
+{
+    return m_state;
+}
+
+void RenderPass::setState(globjects::State * state)
+{
+    m_state = state;
 }
 
 Drawable * RenderPass::geometry() const
@@ -388,6 +399,11 @@ void RenderPass::bindResources() const
     for (const auto & pair : m_transformFeedbackBuffers)
     {
         pair.second->bindBase(gl::GL_TRANSFORM_FEEDBACK_BUFFER, pair.first);
+    }
+
+    if (m_state)
+    {
+        m_state->apply();
     }
 }
 

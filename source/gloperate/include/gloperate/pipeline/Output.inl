@@ -8,14 +8,18 @@ namespace gloperate
 
 template <typename T>
 Output<T>::Output(const std::string & name, Stage * parent, const T & value)
-: DataSlot<T>(value)
-, m_valid(false)
+: Slot<T>(SlotType::Output, name, parent, value)
 {
-    // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+    // Outputs are invalid until their value is set once
+    this->m_valid = false;
+}
 
-    // Register output, will also add output as a property
-    this->initDataSlot(SlotType::Output, parent, cppexpose::PropertyOwnership::None);
+template <typename T>
+Output<T>::Output(const std::string & name, const T & value)
+: Slot<T>(SlotType::Output, name, value)
+{
+    // Outputs are invalid until their value is set once
+    this->m_valid = false;
 }
 
 template <typename T>
@@ -24,39 +28,56 @@ Output<T>::~Output()
 }
 
 template <typename T>
-void Output<T>::setValid(bool isValid)
-{
-    // Set state to new state
-    m_valid = isValid;
-
-    // Emit signal
-    this->valueChanged(this->m_value);
-}
-
-template <typename T>
-bool Output<T>::isValid() const
-{
-    return m_valid;
-}
-
-template <typename T>
 void Output<T>::onRequiredChanged()
 {
-    // Inform parent stage
-    if (Stage * stage = this->parentStage())
+    if (this->isConnected())
     {
-        stage->outputRequiredChanged(this);
+        // Promote required-flag to source slot
+        this->promoteRequired();
+    }
+    else
+    {
+        // Inform parent stage
+        if (Stage * stage = this->parentStage())
+        {
+            stage->outputRequiredChanged(this);
+        }
     }
 }
 
 template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
-    // Set state to valid
-    m_valid = true;
+    std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
+
+    // Get current thread ID
+    std::thread::id this_id = std::this_thread::get_id();
+
+    // Initialize guard for the current thread
+    if (this->m_cycleGuard.find(this_id) == this->m_cycleGuard.end())
+    {
+        this->m_cycleGuard[this_id] = false;
+    }
+
+    // Check if this slot has already been invoked in the current recursion
+    if (this->m_cycleGuard[this_id])
+    {
+        // Reset guard
+        this->m_cycleGuard[this_id] = false;
+
+        // Stop recursion here to avoid endless recursion
+        return;
+    }
+
+    // Raise guard
+    this->m_cycleGuard[this_id] = true;
 
     // Emit signal
     this->valueChanged(value);
+
+    // Reset guard
+    this->m_cycleGuard[this_id] = false;
 }
+
 
 } // namespace gloperate

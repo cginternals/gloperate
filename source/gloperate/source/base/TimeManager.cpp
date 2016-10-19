@@ -27,11 +27,11 @@ TimeManager::TimeManager(Environment * environment)
 , m_nextId(1)
 {
     // Register functions
-    addFunction("start",    this, &TimeManager::start);
-    addFunction("once",     this, &TimeManager::once);
-    addFunction("stop",     this, &TimeManager::stop);
-    addFunction("stopAll",  this, &TimeManager::stopAll);
-    addFunction("nextTick", this, &TimeManager::nextTick);
+    addFunction("start",    this, &TimeManager::scr_start);
+    addFunction("once",     this, &TimeManager::scr_once);
+    addFunction("stop",     this, &TimeManager::scr_stop);
+    addFunction("stopAll",  this, &TimeManager::scr_stopAll);
+    addFunction("nextTick", this, &TimeManager::scr_nextTick);
 }
 
 TimeManager::~TimeManager()
@@ -101,17 +101,17 @@ void TimeManager::deactivateTimer()
     }
 }
 
-int TimeManager::start(int msec, const cppexpose::Variant & func)
+int TimeManager::scr_start(int msec, const cppexpose::Variant & func)
 {
     return startTimer(func, msec, false);
 }
 
-int TimeManager::once(int msec, const cppexpose::Variant & func)
+int TimeManager::scr_once(int msec, const cppexpose::Variant & func)
 {
     return startTimer(func, msec, true);
 }
 
-void TimeManager::stop(int id)
+void TimeManager::scr_stop(int id)
 {
     // Check timer ID
     if (m_scriptTimers.count(id) < 1) {
@@ -123,7 +123,7 @@ void TimeManager::stop(int id)
     timer->stop();
 }
 
-void TimeManager::stopAll()
+void TimeManager::scr_stopAll()
 {
     // Enumerate all timers
     for (std::map<int, ScriptTimer *>::iterator it = m_scriptTimers.begin(); it != m_scriptTimers.end(); ++it)
@@ -134,7 +134,7 @@ void TimeManager::stopAll()
     }
 }
 
-int TimeManager::nextTick(const cppexpose::Variant & func)
+int TimeManager::scr_nextTick(const cppexpose::Variant & func)
 {
     return startTimer(func, 0, true);
 }

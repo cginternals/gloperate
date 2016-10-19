@@ -21,8 +21,8 @@ Canvas::Canvas(Environment * environment)
 : AbstractCanvas(environment)
 , m_pipelineContainer(environment)
 , m_frame(0)
-, m_mouseDevice(new MouseDevice(m_environment->inputManager(), "Canvas"))
-, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), "Canvas"))
+, m_mouseDevice(new MouseDevice(m_environment->inputManager(), m_name))
+, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), m_name))
 {
     // Mark render output as required and redraw when it is invalidated
     m_pipelineContainer.rendered.setRequired(true);
@@ -32,6 +32,8 @@ Canvas::Canvas(Environment * environment)
             this->redraw();
         }
     });
+
+    addProperty(&m_pipelineContainer);
 }
 
 Canvas::~Canvas()
@@ -63,6 +65,22 @@ void Canvas::setRenderStage(Stage * stage)
     if (m_pipelineContainer.renderStage() && m_openGLContext)
     {
         m_pipelineContainer.renderStage()->initContext(m_openGLContext);
+    }
+}
+
+void Canvas::onRender(globjects::Framebuffer * targetFBO)
+{
+    cppassist::details() << "onRender()";
+
+    // Invoke render stage/pipeline
+    if (m_pipelineContainer.renderStage())
+    {
+        m_frame++;
+
+        m_pipelineContainer.frameCounter.setValue(m_frame);
+        m_pipelineContainer.targetFBO.setValue(targetFBO);
+
+        m_pipelineContainer.renderStage()->process(m_openGLContext);
     }
 }
 
@@ -120,25 +138,6 @@ void Canvas::onBackgroundColor(float red, float green, float blue)
     m_pipelineContainer.backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
-void Canvas::onRender(globjects::Framebuffer * targetFBO)
-{
-    cppassist::details() << "onRender()";
-
-    // Invoke image and video exports
-    AbstractCanvas::onRender(targetFBO);
-
-    // Invoke render stage/pipeline
-    if (m_pipelineContainer.renderStage())
-    {
-        m_frame++;
-
-        m_pipelineContainer.frameCounter.setValue(m_frame);
-        m_pipelineContainer.targetFBO.setValue(targetFBO);
-
-        m_pipelineContainer.renderStage()->process(m_openGLContext);
-    }
-}
-
 void Canvas::onKeyPress(int key, int modifier)
 {
     cppassist::details() << "onKeyPressed(" << key << ")";
@@ -179,6 +178,11 @@ void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
     cppassist::details() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->wheelScroll(delta, pos);
+}
+
+glm::vec4 Canvas::savedDeviceViewport()
+{
+    return m_savedDeviceVP;
 }
 
 
