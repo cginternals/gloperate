@@ -109,6 +109,7 @@ set(headers
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
     ${include_path}/stages/demos/TimerStage.h
+    ${include_path}/stages/demos/ColorizeStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -180,6 +181,7 @@ set(sources
     ${source_path}/stages/demos/DemoPipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
+    ${source_path}/stages/demos/ColorizeStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp

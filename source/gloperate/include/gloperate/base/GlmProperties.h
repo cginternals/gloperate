@@ -150,6 +150,16 @@ public:
         return true;
     }
 
+    cppexpose::Variant toVariant() const override
+    {
+        return toString();
+    }
+
+    bool fromVariant(const cppexpose::Variant & value) override
+    {
+        return fromString(value.toString());
+    }
+
     virtual std::string typeName() const override
     {
         return "glm::" + gloperate::VectorPrefix<ValueType>::getPrefix() + "vec" + cppassist::toString<int>(Size);
