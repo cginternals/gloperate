@@ -5,10 +5,9 @@ import QtQuick.Layouts 1.0
 import QmlToolbox.Base 1.0
 import QmlToolbox.Controls 1.0
 import QmlToolbox.Ui 1.0
+import QmlToolbox.PropertyEditor 1.0
 
 import gloperate.rendering 1.0
-
-import './PropertyEditor'
 
 
 Background
