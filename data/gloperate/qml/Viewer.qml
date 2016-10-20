@@ -373,7 +373,7 @@ Background
             width:  200
             height: 200
 
-            path: 'pipeline.DemoPipeline.TextureLoadStage.texture'
+            path: 'pipeline.DemoPipeline.SpinningRectStage.colorTextureOut'
 
             Drag.active: mouseArea.drag.active
 
