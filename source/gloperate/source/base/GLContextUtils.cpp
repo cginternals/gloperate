@@ -16,15 +16,6 @@ namespace gloperate
 {
 
 
-namespace
-{
-// these are not part of the OpenGL specification, but defined identically
-// in all platform-specific context creation APIs
-const auto GL_CONTEXT_CORE_PROFILE_BIT          = 0x1;
-const auto GL_CONTEXT_COMPATIBILITY_PROFILE_BIT = 0x2;
-}
-
-
 bool GLContextUtils::isValid()
 {
     return (tryFetchHandle() > 0);
@@ -129,12 +120,12 @@ GLContextFormat::Profile GLContextUtils::retrieveProfile()
         return GLContextFormat::Profile::None;
     }
 
-    if ((profileMask & GL_CONTEXT_CORE_PROFILE_BIT) != 0)
+    if ((profileMask & static_cast<GLint>(GL_CONTEXT_CORE_PROFILE_BIT)) != 0)
     {
         return GLContextFormat::Profile::Core;
     }
     
-    if ((profileMask & GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) != 0)
+    if ((profileMask & static_cast<GLint>(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT)) != 0)
     {
         return GLContextFormat::Profile::Compatibility;
     }
