@@ -11,7 +11,7 @@
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 
-#include <gloperate/base/GlmProperties.h>
+#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/AbstractSlot.h>
 

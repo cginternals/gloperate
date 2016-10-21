@@ -64,8 +64,7 @@ set(headers
     ${include_path}/base/Loader.inl
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
-    ${include_path}/base/GlmProperties.h
-    ${include_path}/base/ExtraProperties.h
+    ${include_path}/base/ExtendedProperties.h
     ${include_path}/base/AbstractColorGradient.h
     ${include_path}/base/AbstractColorGradient.inl
     ${include_path}/base/Color.h

@@ -5,8 +5,7 @@
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/GlmProperties.h>
-#include <gloperate/base/ExtraProperties.h>
+#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
