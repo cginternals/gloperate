@@ -59,7 +59,7 @@ ColorizeStage::ColorizeStage(Environment * environment, const std::string & name
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
 , colorTexture   ("colorTexture",    this, nullptr)
-, color          ("color",           this, glm::vec4(1.0))
+, color          ("color",           this, Color(255, 255, 255, 255))
 , fboOut         ("fboOut",          this, nullptr)
 , colorTextureOut("colorTextureOut", this, nullptr)
 {
@@ -103,7 +103,7 @@ void ColorizeStage::onProcess(AbstractGLContext *)
     }
 
     // Update color
-    m_program->setUniform("color", *color);
+    m_program->setUniform("color", color->toVec4());
 
     // Draw screen-aligned quad
     m_program->use();

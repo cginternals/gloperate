@@ -49,7 +49,7 @@ public:
     Input<cppassist::FilePath> texture; ///< Texture filename
     Input<float>               angle;   ///< Current rotation angle
     Input<bool>                rotate;  ///< Rotation automatically?
-    Input<glm::vec4>           color;   ///< Mixer color
+    Input<Color>               color;   ///< Mixer color
 
 
 public:

@@ -11,6 +11,8 @@
 
 #include <cppexpose/typed/GetTyped.h>
 
+#include <gloperate/base/Color.h>
+
 
 namespace gloperate
 {
@@ -159,8 +161,7 @@ public:
 
     bool fromVariant(const Variant & variant) override
     {
-        this->fromString(variant.value<std::string>());
-        return true;
+        return this->fromString(variant.value<std::string>());
     }
 
     virtual std::string typeName() const override
@@ -173,6 +174,68 @@ template <typename BASE>
 struct GetTyped<cppassist::FilePath, BASE>
 {
     using Type = TypedFilename<BASE>;
+};
+
+
+/**
+*  @brief
+*    Property implementation for gloperate::Color
+*/
+template <typename BASE>
+class TypedColor : public cppexpose::Typed<gloperate::Color, BASE>
+{
+public:
+    TypedColor()
+    {
+    }
+
+    virtual ~TypedColor()
+    {
+    }
+
+    bool isString() const override
+    {
+        return false;
+    }
+
+    std::string toString() const override
+    {
+        return this->value().toHexString();
+    }
+
+    bool fromString(const std::string & string) override
+    {
+        gloperate::Color color;
+
+        if (color.fromHexString(string))
+        {
+            this->setValue(color);
+            return true;
+        }
+
+        return false;
+    }
+
+    Variant toVariant() const override
+    {
+        return Variant::fromValue<std::string>(this->toString());
+    }
+
+    bool fromVariant(const Variant & variant) override
+    {
+        return this->fromString(variant.value<std::string>());
+    }
+
+    virtual std::string typeName() const override
+    {
+        return "color";
+    }
+};
+
+template <typename BASE>
+struct GetTyped<gloperate::Color, BASE>
+{
+    using Type = TypedColor<BASE>;
 };
 
 

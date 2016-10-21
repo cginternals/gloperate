@@ -47,7 +47,7 @@ public:
     // Inputs
     Input<globjects::Texture *>      texture;         ///< Texture object
     Input<globjects::Texture *>      colorTexture;    ///< Target color texture
-    Input<glm::vec4>                 color;           ///< Color to mix with
+    Input<Color>                     color;           ///< Color to mix with
 
     // Outputs
     Output<globjects::Framebuffer *> fboOut;          ///< Pass through of target FBO
