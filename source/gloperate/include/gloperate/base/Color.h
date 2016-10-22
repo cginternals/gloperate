@@ -331,12 +331,6 @@ public:
 
 
 protected:
-    static std::string hexFromValue(int value);
-    static int valueFromHex(const std::string & hex);
-    static int hexValue(char c);
-
-
-protected:
     union
     {
         glm::tvec4<unsigned char> m_bgra; ///< Per component representation of the color

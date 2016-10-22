@@ -1,9 +1,13 @@
 
+#include <cassert>
+#include <sstream>
+#include <iomanip>
+
 #include <glm/glm.hpp>
 
-#include <gloperate/base/Color.h>
+#include <cppassist/string/regex.h>
 
-#include <cassert>
+#include <gloperate/base/Color.h>
 
 
 namespace gloperate
@@ -161,52 +165,68 @@ glm::vec4 Color::toVec4() const
 
 std::string Color::toHexString() const
 {
-    return "#" + hexFromValue(alpha()) + hexFromValue(red()) + hexFromValue(green()) + hexFromValue(blue());
+    std::stringstream stream;
+
+    stream << "#";
+    stream << std::hex << std::uppercase;
+
+    stream << std::setw(2) << std::setfill('0') << alpha();
+    stream << std::setw(2) << std::setfill('0') << red();
+    stream << std::setw(2) << std::setfill('0') << green();
+    stream << std::setw(2) << std::setfill('0') << blue();
+
+    return stream.str();
 }
 
-bool Color::fromHexString(const std::string & hex)
+bool Color::fromHexString(const std::string & str)
 {
-    if (hex.size() < 1 || hex[0] != '#')
+    // Check if string is a color
+    if (str.size() < 1 || str[0] != '#')
     {
         return false;
     }
 
-    if (hex.size() == 9)
+    // Convert string to canonical form
+    std::string hex = str.substr(1);
+
+    if (hex.size() == 3) // #RGB -> #ARGB
     {
-        setRed  (valueFromHex(hex.substr(3, 2)));
-        setGreen(valueFromHex(hex.substr(5, 2)));
-        setBlue (valueFromHex(hex.substr(7, 2)));
-        setAlpha(valueFromHex(hex.substr(1, 2)));
+        hex = "F" + hex;
     }
 
-    else if (hex.size() == 7)
+    if (hex.size() == 4) // #ARGB -> #AARRGGBB
     {
-        setRed  (valueFromHex(hex.substr(1, 2)));
-        setGreen(valueFromHex(hex.substr(3, 2)));
-        setBlue (valueFromHex(hex.substr(5, 2)));
-        setAlpha(255);
+        hex = hex.substr(0, 1) + hex.substr(0, 1)
+            + hex.substr(1, 1) + hex.substr(1, 1)
+            + hex.substr(2, 1) + hex.substr(2, 1)
+            + hex.substr(3, 1) + hex.substr(3, 1);
     }
 
-    else if (hex.size() == 5)
+    if (hex.size() == 6) // #RRGGBB -> #AARRGGBB
     {
-        setRed  (valueFromHex(hex.substr(2, 1) + hex.substr(2, 1)));
-        setGreen(valueFromHex(hex.substr(3, 1) + hex.substr(3, 1)));
-        setBlue (valueFromHex(hex.substr(4, 1) + hex.substr(4, 1)));
-        setAlpha(valueFromHex(hex.substr(1, 1) + hex.substr(1, 1)));
+        hex = "FF" + hex;
     }
 
-    else if (hex.size() == 4)
-    {
-        setRed  (valueFromHex(hex.substr(1, 1) + hex.substr(1, 1)));
-        setGreen(valueFromHex(hex.substr(2, 1) + hex.substr(2, 1)));
-        setBlue (valueFromHex(hex.substr(3, 1) + hex.substr(3, 1)));
-        setAlpha(255);
-    }
-
-    else
+    // Check string format
+    if (!cppassist::matchesRegex(hex, "([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})"))
     {
         return false;
     }
+
+    // Convert hex string to ARGB integer value
+    auto argb = 0u;
+    std::stringstream stream(hex);
+    stream >> std::hex;
+    stream >> argb;
+
+    // Set color
+    setBlue(argb & 0xff);
+    argb = argb >> 8;
+    setGreen(argb & 0xff);
+    argb = argb >> 8;
+    setRed(argb & 0xff);
+    argb = argb >> 8;
+    setAlpha(argb & 0xff);
 
     return true;
 }
@@ -214,59 +234,6 @@ bool Color::fromHexString(const std::string & hex)
 Color Color::interpolate(const Color & other, float interpolationValue) const
 {
     return Color(glm::mix(m_bgra, other.m_bgra, interpolationValue));
-}
-
-std::string Color::hexFromValue(int value)
-{
-    std::string digits = "0123456789ABCDEF";
-
-         if (value >= 255) return "FF";
-    else if (value <= 0)   return "00";
-    else                   return digits.substr(value / 16, 1) + digits.substr(value % 16, 1);
-}
-
-int Color::valueFromHex(const std::string & hex)
-{
-    int value = 0;
-
-    for (size_t i=0; i<hex.size(); i++)
-    {
-        value *= 16;
-
-        char c = hex[i];
-        value += hexValue(c);
-    }
-
-    return value;
-}
-
-int Color::hexValue(char c)
-{
-    switch (c)
-    {
-        case 'f':
-        case 'F': return 15;
-        case 'e':
-        case 'E': return 14;
-        case 'd':
-        case 'D': return 13;
-        case 'c':
-        case 'C': return 12;
-        case 'b':
-        case 'B': return 11;
-        case 'a':
-        case 'A': return 10;
-        case '9': return 9;
-        case '8': return 8;
-        case '7': return 7;
-        case '6': return 6;
-        case '5': return 5;
-        case '4': return 4;
-        case '3': return 3;
-        case '2': return 2;
-        case '1': return 1;
-        default:  return 0;
-    }
 }
 
 
