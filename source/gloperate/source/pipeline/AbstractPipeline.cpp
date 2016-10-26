@@ -220,11 +220,11 @@ bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
 
             auto nextStage = *stageIt;
             visit(nextStage);
-            stages.erase(stageIt);
 
             stageIt = stages.begin();
         }
 
+        stages.erase(find(stages.begin(), stages.end(), stage));
         sorted.push_back(stage);
     };
 
@@ -233,7 +233,6 @@ bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
         auto stageIt = stages.begin();
         auto stage = *stageIt;
         visit(stage);
-        stages.erase(stageIt);
     }
 
     stages = sorted;
