@@ -80,7 +80,7 @@ public:
     *  @return
     *    Pointer to a newly created default vertex shader object
     */
-    static const globjects::Shader* createDefaultVertexShader();
+    static globjects::Shader* createDefaultVertexShader();
 
     /**
     *  @brief
@@ -89,7 +89,7 @@ public:
     *  @return
     *    Pointer to a newly created default fragment shader object
     */
-    static const globjects::Shader* createDefaultFragmentShader();
+    static globjects::Shader* createDefaultFragmentShader();
 
 
 protected:

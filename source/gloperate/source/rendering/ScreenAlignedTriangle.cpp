@@ -58,12 +58,12 @@ const std::string ScreenAlignedTriangle::s_defaultVertexShaderSource = gloperate
 
 const std::string ScreenAlignedTriangle::s_defaultFragmentShaderSource = gloperate::dataPath() + "/shaders/screenaligned/default.frag";
 
-const globjects::Shader* ScreenAlignedTriangle::createDefaultVertexShader()
+globjects::Shader* ScreenAlignedTriangle::createDefaultVertexShader()
 {
     return globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, s_defaultVertexShaderSource);
 }
 
-const globjects::Shader* ScreenAlignedTriangle::createDefaultFragmentShader()
+globjects::Shader* ScreenAlignedTriangle::createDefaultFragmentShader()
 {
     return globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, s_defaultFragmentShaderSource);
 }
