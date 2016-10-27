@@ -64,8 +64,7 @@ set(headers
     ${include_path}/base/Loader.inl
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
-    ${include_path}/base/GlmProperties.h
-    ${include_path}/base/ExtraProperties.h
+    ${include_path}/base/ExtendedProperties.h
     ${include_path}/base/AbstractColorGradient.h
     ${include_path}/base/AbstractColorGradient.inl
     ${include_path}/base/Color.h
@@ -109,6 +108,7 @@ set(headers
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
     ${include_path}/stages/demos/TimerStage.h
+    ${include_path}/stages/demos/ColorizeStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -180,6 +180,7 @@ set(sources
     ${source_path}/stages/demos/DemoPipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
+    ${source_path}/stages/demos/ColorizeStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp
