@@ -6,6 +6,8 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
+#include <gloperate/gloperate_api.h>
+
 
 namespace globjects {
     class Framebuffer;
@@ -32,7 +34,7 @@ class Stage;
 *    and it will add the inputs and outputs directly to the stage (the interface
 *    itself is not an object in the hierarchy).
 */
-class RenderInterface
+class GLOPERATE_API RenderInterface
 {
 public:
     // Inputs
