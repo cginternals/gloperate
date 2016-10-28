@@ -54,9 +54,9 @@ void ScreenAlignedTriangle::draw() const
     m_drawable->draw();
 }
 
-const std::string ScreenAlignedTriangle::s_defaultVertexShaderSource = gloperate::dataPath() + "/shaders/screenaligned/default.vert";
+const std::string ScreenAlignedTriangle::s_defaultVertexShaderSource = gloperate::dataPath() + "/gloperate/shaders/screenaligned/default.vert";
 
-const std::string ScreenAlignedTriangle::s_defaultFragmentShaderSource = gloperate::dataPath() + "/shaders/screenaligned/default.frag";
+const std::string ScreenAlignedTriangle::s_defaultFragmentShaderSource = gloperate::dataPath() + "/gloperate/shaders/screenaligned/default.frag";
 
 globjects::Shader* ScreenAlignedTriangle::createDefaultVertexShader()
 {
