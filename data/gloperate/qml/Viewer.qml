@@ -293,32 +293,39 @@ Background
         visible: page.uiEnabled
         opacity: 0.8 * page.uiStatus
 
-        Column
+        ScrollArea
         {
-            id: peCol
+            anchors.fill: parent
 
-            anchors.left:    parent.left
-            anchors.right:   parent.right
-            anchors.top:     parent.top
-            anchors.margins: Ui.style.paddingMedium
+            contentHeight: peCol.height + Ui.style.paddingMedium
 
-            spacing: Ui.style.spacingMedium
-
-            PropertyEditor
+            Column
             {
-                id: propertyEditor
+                id: peCol
 
-                pipelineInterface: gloperatePipeline
-                path:              'pipeline.DemoPipeline'
-            }
+                anchors.left:    parent.left
+                anchors.right:   parent.right
+                anchors.top:     parent.top
+                anchors.margins: Ui.style.paddingMedium
 
-            Button
-            {
-                text: 'Update'
+                spacing: Ui.style.spacingMedium
 
-                onClicked:
+                PropertyEditor
                 {
-                    propertyEditor.update();
+                    id: propertyEditor
+
+                    pipelineInterface: gloperatePipeline
+                    path:              'pipeline.DemoPipeline'
+                }
+
+                Button
+                {
+                    text: 'Update'
+
+                    onClicked:
+                    {
+                        propertyEditor.update();
+                    }
                 }
             }
         }
