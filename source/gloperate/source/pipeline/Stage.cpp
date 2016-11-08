@@ -538,7 +538,7 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
         std::string target = "unconnected";
         if(input->isConnected())
         {
-            target = input->source()->name();
+            target = getQualifiedName(input->source());
         }
 
         writer(descripiton + " -> " + target, level+1);
@@ -553,6 +553,20 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
 
     writer("}", level);
 
+}
+
+std::string Stage::getQualifiedName(const AbstractSlot* slot) const
+{
+    std::string name = slot->name();
+    AbstractProperty* curParent = slot->parent();
+
+    while(curParent != nullptr)
+    {
+        name = curParent->name() + "::" + name;
+        curParent = curParent->parent();
+    }
+
+    return name;
 }
 
 
