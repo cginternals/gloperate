@@ -29,6 +29,8 @@ template <typename T>
 class Data : public AbstractData
 {
 public:
+    Data();
+
     template <typename... Args>
     explicit Data(Args&&... args);
 

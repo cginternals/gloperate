@@ -10,6 +10,11 @@ namespace gloperate
 
 
 template <typename T>
+Data<T>::Data()
+{
+}
+
+template <typename T>
 template <typename... Args>
 Data<T>::Data(Args&&... args)
 : m_data(std::forward<Args>(args)...)
