@@ -141,6 +141,19 @@ Background
                     pipelineEditorFrame.visible = !pipelineEditorFrame.visible;
                 }
             }
+
+            IconButton
+            {
+                text: 'Save Pipeline'
+                icon: '0040-file-picture.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    var serialized = gloperate.canvas0.pipeline.save('test.pipeline');
+                }
+            }
         }
 
         IconButton

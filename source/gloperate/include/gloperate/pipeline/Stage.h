@@ -633,6 +633,7 @@ protected:
     void scr_setSlotValue(const std::string & name, const cppexpose::Variant & value);
     void scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name);
     cppexpose::Variant scr_slotTypes();
+    virtual cppexpose::Variant scr_serialize();
 
 
 protected:

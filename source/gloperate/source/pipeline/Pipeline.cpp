@@ -2,6 +2,7 @@
 #include <gloperate/pipeline/Pipeline.h>
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <set>
 
@@ -36,6 +37,7 @@ Pipeline::Pipeline(Environment * environment, const std::string & className, con
     addFunction("removeStage",      this, &Pipeline::scr_removeStage);
     addFunction("createConnection", this, &Pipeline::scr_createConnection);
     addFunction("removeConnection", this, &Pipeline::scr_removeConnection);
+    addFunction("save",             this, &Pipeline::scr_save);
 }
 
 Pipeline::~Pipeline()
@@ -356,6 +358,26 @@ void Pipeline::scr_removeConnection(const std::string & to)
     {
         slotTo->disconnect();
     }
+}
+
+cppexpose::Variant Pipeline::scr_serialize()
+{
+    std::string description = m_name;
+
+    return Variant(description);
+}
+
+void Pipeline::scr_save(const std::string &filename)
+{
+    std::string description = m_name;
+
+    std::ofstream f{filename};
+
+    if (f.is_open()) {
+        f << description;
+        f.close();
+    }
+
 }
 
 
