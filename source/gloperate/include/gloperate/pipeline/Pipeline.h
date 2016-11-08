@@ -148,6 +148,9 @@ public:
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
+    // Serialization Interface
+    void serialize(std::function<void (const std::string &, uint)> writer, uint level) override;
+
 
 protected:
     /**
@@ -171,8 +174,8 @@ protected:
     void scr_removeStage(const std::string & name);
     void scr_createConnection(const std::string & from, const std::string & to);
     void scr_removeConnection(const std::string & to);
-    virtual cppexpose::Variant scr_serialize() override;
-    void scr_save(const std::string & filename);
+
+    void scr_save(const std::string &filename);
 
 
 protected:

@@ -527,25 +527,15 @@ cppexpose::Variant Stage::scr_slotTypes()
     return types;
 }
 
-cppexpose::Variant Stage::scr_serialize()
+void Stage::serialize(std::function<void (const std::string &, uint)> writer, uint level)
 {
     //TODO: Dump stage to string
 
-    std::vector<std::string> inputs;
-    for(auto &input : m_inputs)
-    {
-        inputs.push_back(input->name() + " : " + input->typeName());
-    }
+    writer(m_name, level);
+    writer("{", level);
 
-    std::vector<std::string> outputs;
-    for(auto &output : m_outputs)
-    {
-        outputs.push_back(output->name() + " : " + output->typeName());
-    }
+    writer("}", level);
 
-    std::string description{"Stage"};
-
-    return cppexpose::Variant{description};
 }
 
 

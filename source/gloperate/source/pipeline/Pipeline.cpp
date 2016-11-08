@@ -360,23 +360,44 @@ void Pipeline::scr_removeConnection(const std::string & to)
     }
 }
 
-cppexpose::Variant Pipeline::scr_serialize()
+void Pipeline::serialize(std::function<void(const std::string&, uint)>writer, uint level)
 {
-    std::string description = m_name;
-
-    return Variant(description);
+    writer(m_name, level);
+    writer("{", level);
+    //TODO: Serialize own Inputs/Outputs
+    for(auto& stage : m_stages)
+    {
+        stage->serialize(writer, level+1);
+    }
+    writer("}", level);
 }
 
 void Pipeline::scr_save(const std::string &filename)
 {
-    std::string description = m_name;
 
-    std::ofstream f{filename};
 
-    if (f.is_open()) {
-        f << description;
-        f.close();
+    std::ofstream file{filename};
+
+    if (!file.is_open())
+    {
+        debug("Error opening file: " + filename);
+        return;
     }
+
+    auto writer = [&file](const std::string& toWrite, uint level)
+    {
+        const std::string padString{"    "};
+        for(uint i = 0; i < level; i++)
+        {
+            file << padString;
+        }
+
+        file << toWrite << "\n";
+    };
+
+    serialize(writer, 0u);
+
+    file.close();
 
 }
 
