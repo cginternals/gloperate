@@ -529,10 +529,27 @@ cppexpose::Variant Stage::scr_slotTypes()
 
 void Stage::serialize(std::function<void (const std::string &, uint)> writer, uint level)
 {
-    //TODO: Dump stage to string
-
     writer(m_name, level);
     writer("{", level);
+    writer("inputs:", level);
+    for(const auto& input : m_inputs)
+    {
+        std::string descripiton{input->name() + " : " + input->typeName()};
+        std::string target = "unconnected";
+        if(input->isConnected())
+        {
+            target = input->source()->name();
+        }
+
+        writer(descripiton + " -> " + target, level+1);
+    }
+
+    writer("outputs:", level);
+
+    for(const auto& output : m_outputs)
+    {
+        writer(output->name() + " : " + output->typeName(), level+1);
+    }
 
     writer("}", level);
 
