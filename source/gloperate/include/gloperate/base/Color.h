@@ -2,6 +2,7 @@
 #pragma once
 
 
+#include <cstdint>
 #include <string>
 
 #include <glm/vec3.hpp>
@@ -27,7 +28,7 @@ public:
     *  @brief
     *    Constructor
     *
-    *    Constructs a Color with all components at '0'
+    *    Constructs a Color with all components '0'
     */
     Color();
 
@@ -40,7 +41,7 @@ public:
     *  @param[in] bgra
     *    The component values
     */
-    explicit Color(unsigned int bgra);
+    explicit Color(std::uint32_t bgra);
 
     /**
     *  @brief
@@ -127,7 +128,7 @@ public:
     *   @param[in] bgra
     *     The component values
     */
-    void setBgra(unsigned int bgra);
+    void setBgra(std::uint32_t bgra);
 
     /**
     *  @brief
@@ -136,7 +137,7 @@ public:
     *  @return
     *    The red component value [0..255]
     */
-    int red() const;
+    unsigned char red() const;
 
     /**
     *  @brief
@@ -145,7 +146,7 @@ public:
     *  @param[in] value
     *    The red component value [0..255]
     */
-    void setRed(int value);
+    void setRed(unsigned char value);
 
     /**
     *  @brief
@@ -154,7 +155,7 @@ public:
     *  @return
     *    The green component value [0..255]
     */
-    int green() const;
+    unsigned char green() const;
 
     /**
     *  @brief
@@ -163,7 +164,7 @@ public:
     *  @param[in] value
     *    The green component value [0..255]
     */
-    void setGreen(int value);
+    void setGreen(unsigned char value);
 
     /**
     *  @brief
@@ -172,7 +173,7 @@ public:
     *  @return
     *    The blue component value [0..255]
     */
-    int blue() const;
+    unsigned char blue() const;
 
     /**
     *  @brief
@@ -181,7 +182,7 @@ public:
     *  @param[in] value
     *    The blue component value [0..255]
     */
-    void setBlue(int value);
+    void setBlue(unsigned char value);
 
     /**
     *  @brief
@@ -190,7 +191,7 @@ public:
     *  @return
     *    The alpha component value [0..255]
     */
-    int alpha() const;
+    unsigned char alpha() const;
 
     /**
     *  @brief
@@ -199,7 +200,7 @@ public:
     *  @param[in] value
     *    The alpha component value [0..255]
     */
-    void setAlpha(int value);
+    void setAlpha(unsigned char value);
 
     /**
     *  @brief
@@ -333,8 +334,8 @@ public:
 protected:
     union
     {
-        glm::tvec4<unsigned char> m_bgra; ///< Per component representation of the color
-        unsigned int              m_v;    ///< GBRA representation of the color
+        std::uint8_t  m_bgra[4]; ///< Per component representation of the color
+        std::uint32_t m_v;       ///< GBRA representation of the color
     };
 };
 

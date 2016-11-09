@@ -19,7 +19,7 @@ Color::Color()
 {
 }
 
-Color::Color(unsigned int bgra)
+Color::Color(std::uint32_t bgra)
 : m_v{bgra}
 {
 }
@@ -42,7 +42,10 @@ Color::Color(float red, float green, float blue, float alpha)
 
 Color::Color(glm::tvec4<unsigned char> bgra)
 {
-    m_bgra = bgra;
+    m_bgra[0] = bgra[0];
+    m_bgra[1] = bgra[1];
+    m_bgra[2] = bgra[2];
+    m_bgra[3] = bgra[3];
 }
 
 bool Color::operator==(const Color & rhs) const
@@ -55,55 +58,55 @@ bool Color::operator!=(const Color & rhs) const
     return !(*this == rhs);
 }
 
-unsigned int Color::bgra() const
+std::uint32_t Color::bgra() const
 {
     return m_v;
 }
 
-void Color::setBgra(unsigned int bgra)
+void Color::setBgra(std::uint32_t bgra)
 {
     m_v = bgra;
 }
 
-int Color::red() const
+unsigned char Color::red() const
 {
     return m_bgra[2];
 }
 
-void Color::setRed(int value)
+void Color::setRed(unsigned char value)
 {
     assert(0 <= value && value <= 255);
     m_bgra[2] = static_cast<unsigned char>(value);
 }
 
-int Color::green() const
+unsigned char Color::green() const
 {
     return m_bgra[1];
 }
 
-void Color::setGreen(int value)
+void Color::setGreen(unsigned char value)
 {
     assert(0 <= value && value <= 255);
     m_bgra[1] = static_cast<unsigned char>(value);
 }
 
-int Color::blue() const
+unsigned char Color::blue() const
 {
     return m_bgra[0];
 }
 
-void Color::setBlue(int value)
+void Color::setBlue(unsigned char value)
 {
     assert(0 <= value && value <= 255);
     m_bgra[0] = static_cast<unsigned char>(value);
 }
 
-int Color::alpha() const
+unsigned char Color::alpha() const
 {
     return m_bgra[3];
 }
 
-void Color::setAlpha(int value)
+void Color::setAlpha(unsigned char value)
 {
     assert(0 <= value && value <= 255);
     m_bgra[3] = static_cast<unsigned char>(value);
@@ -233,7 +236,12 @@ bool Color::fromHexString(const std::string & str)
 
 Color Color::interpolate(const Color & other, float interpolationValue) const
 {
-    return Color(glm::mix(m_bgra, other.m_bgra, interpolationValue));
+    return Color(
+        static_cast<unsigned char>( m_bgra[2] * (1.0f - interpolationValue) + other.red()   * interpolationValue),
+        static_cast<unsigned char>( m_bgra[1] * (1.0f - interpolationValue) + other.green() * interpolationValue),
+        static_cast<unsigned char>( m_bgra[0] * (1.0f - interpolationValue) + other.blue()  * interpolationValue),
+        static_cast<unsigned char>( m_bgra[3] * (1.0f - interpolationValue) + other.alpha() * interpolationValue)
+    );
 }
 
 
