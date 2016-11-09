@@ -58,7 +58,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    FramebufferStage(Environment * environment, const std::string & name = "FramebufferStage");
+    FramebufferStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

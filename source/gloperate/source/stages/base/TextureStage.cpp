@@ -21,7 +21,7 @@ CPPEXPOSE_COMPONENT(TextureStage, gloperate::Stage)
 
 
 TextureStage::TextureStage(gloperate::Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "TextureStage", name)
 , internalFormat("internalFormat", this)
 , format("format", this)
 , type("type", this)

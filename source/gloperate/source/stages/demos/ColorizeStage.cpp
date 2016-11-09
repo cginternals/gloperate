@@ -55,7 +55,7 @@ CPPEXPOSE_COMPONENT(ColorizeStage, gloperate::Stage)
 
 
 ColorizeStage::ColorizeStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "ColorizeStage", name)
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
 , colorTexture   ("colorTexture",    this, nullptr)

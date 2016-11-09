@@ -24,8 +24,8 @@ namespace gloperate
 {
 
 
-Stage::Stage(Environment * environment, const std::string & name)
-: cppexpose::Object(name)
+Stage::Stage(Environment * environment, const std::string & typeName, const std::string & name)
+: cppexpose::Object(typeName, (name == "" || name.empty()) ? typeName : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
 {

@@ -54,7 +54,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    TimerStage(Environment * environment, const std::string & name = "TimerStage");
+    TimerStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

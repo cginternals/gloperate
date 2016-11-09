@@ -49,7 +49,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    ProceduralTextureStage(Environment * environment, const std::string & name = "ProceduralTextureStage");
+    ProceduralTextureStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

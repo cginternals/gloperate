@@ -12,7 +12,7 @@ CPPEXPOSE_COMPONENT(ColorGradientSelectionStage, gloperate::Stage)
 
 
 ColorGradientSelectionStage::ColorGradientSelectionStage(gloperate::Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "ColorGradientSelectionStage", name)
 , gradients("gradients", this)
 , gradientName("gradientName", this)
 , gradient("gradient", this)
