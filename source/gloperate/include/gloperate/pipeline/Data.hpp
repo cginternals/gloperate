@@ -11,6 +11,7 @@ namespace gloperate
 
 template <typename T>
 Data<T>::Data()
+: m_data()
 {
 }
 
