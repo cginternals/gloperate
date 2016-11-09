@@ -15,7 +15,7 @@ namespace gloperate
 
 
 Color::Color()
-: m_bgra{0u, 0u, 0u, 255u}
+: m_v{0ul}
 {
 }
 
