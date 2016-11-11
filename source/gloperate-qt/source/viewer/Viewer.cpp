@@ -42,6 +42,7 @@
 #include <gloperate-qt/viewer/QtMouseEventProvider.h>
 #include <gloperate-qt/viewer/QtWheelEventProvider.h>
 #include <gloperate-qt/viewer/DefaultMapping.h>
+#include <gloperate-qt/viewer/Application.h>
 #include <gloperate-qt/widgets/ImageExporterWidget.h>
 #include <gloperate-qt/widgets/PluginConfigWidget.h>
 #include <gloperate-qt/scripting/ScriptEnvironment.h>
@@ -130,19 +131,18 @@ Viewer::Viewer(QWidget * parent, Qt::WindowFlags flags)
     setupCanvas();
 
     // Load settings
-    QSettings::setDefaultFormat(QSettings::IniFormat);
-    QSettings settings;
+    const auto settings = Application::settings();
 
     // Restore GUI state from settings
-    restoreGeometry(settings.value(SETTINGS_GEOMETRY).toByteArray());
-    restoreState(settings.value(SETTINGS_STATE).toByteArray());
+    restoreGeometry(settings->value(SETTINGS_GEOMETRY).toByteArray());
+    restoreState(settings->value(SETTINGS_STATE).toByteArray());
 
     // Initialize plugin manager
     m_pluginManager.reset(new PluginManager());
     m_pluginManager->pluginsChanged.connect(this, &Viewer::updatePainterMenu);
 
     // Restore plugin search paths from settings
-    auto paths = fromQStringList(settings.value(SETTINGS_PLUGINS).toStringList());
+    auto paths = fromQStringList(settings->value(SETTINGS_PLUGINS).toStringList());
     if (paths.size() > 0) {
         m_pluginManager->setSearchPaths(paths);
     }
@@ -165,10 +165,10 @@ Viewer::~Viewer()
     m_canvas->doneCurrent();
 
     // Save settings
-    QSettings settings;
-    settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
-    settings.setValue(SETTINGS_STATE, saveState());
-    settings.setValue(SETTINGS_PLUGINS, toQStringList(m_pluginManager->searchPaths()));
+    const auto settings = Application::settings();
+    settings->setValue(SETTINGS_GEOMETRY, saveGeometry());
+    settings->setValue(SETTINGS_STATE, saveState());
+    settings->setValue(SETTINGS_PLUGINS, toQStringList(m_pluginManager->searchPaths()));
 
     // Disconnect message handlers
     MessageHandler::dettach(*m_messagesLog);
