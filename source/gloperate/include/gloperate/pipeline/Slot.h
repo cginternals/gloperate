@@ -161,6 +161,8 @@ public:
     // Virtual AbstractProperty interface
     virtual bool isObject() const override;
 
+    bool isStatic() const;
+
 
 protected:
     void promoteConnection();
@@ -169,6 +171,7 @@ protected:
 
 protected:
     bool                        m_valid;      ///< Does the slot have a valid value?
+    bool                        m_static;     ///< Was the slot created statically? (statically = registered during construction);
     Slot<T>                   * m_source;     ///< Connected slot (can be null)
     cppexpose::ScopedConnection m_connection; ///< Connection to changed-signal of source property
 

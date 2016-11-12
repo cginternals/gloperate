@@ -30,6 +30,7 @@ template <typename T>
 Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value)
 : cppexpose::DirectValue<T, AbstractSlot>(value)
 , m_valid(true)
+, m_static(true)
 , m_source(nullptr)
 {
     // Do not add property to object, yet. Just initialize the property itself
@@ -43,6 +44,7 @@ template <typename T>
 Slot<T>::Slot(SlotType slotType, const std::string & name, const T & value)
 : cppexpose::DirectValue<T, AbstractSlot>(value)
 , m_valid(true)
+, m_static(false)
 , m_source(nullptr)
 {
     // Do not add property to object, yet. Just initialize the property itself
@@ -253,6 +255,12 @@ template <typename T>
 bool Slot<T>::isObject() const
 {
     return false;
+}
+
+template <typename T>
+bool Slot<T>::isStatic() const
+{
+    return m_static;
 }
 
 template <typename T>
