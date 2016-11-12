@@ -531,24 +531,21 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
 {
     writer(m_name, level);
     writer("{", level);
-    writer("inputs:", level);
     for(const auto& input : m_inputs)
     {
-        std::string descripiton{input->name() + " : " + input->typeName()};
+        std::string descripiton{"input " + input->typeName() + " " + input->name()};
         std::string target = "unconnected";
         if(input->isConnected())
         {
             target = getQualifiedName(input->source());
         }
 
-        writer(descripiton + " -> " + target, level+1);
+        writer(descripiton + ": " + target, level+1);
     }
-
-    writer("outputs:", level);
 
     for(const auto& output : m_outputs)
     {
-        writer(output->name() + " : " + output->typeName(), level+1);
+        writer("output " + output->typeName() + " " + output->name() , level+1);
     }
 
     writer("}", level);
@@ -562,7 +559,7 @@ std::string Stage::getQualifiedName(const AbstractSlot* slot) const
 
     while(curParent != nullptr)
     {
-        name = curParent->name() + "::" + name;
+        name = curParent->name() + "." + name;
         curParent = curParent->parent();
     }
 
