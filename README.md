@@ -4,25 +4,24 @@ C++ library for defining and controlling modern GPU rendering/processing operati
 
 ## Project Health (master)
 
-| Service | System | Compiler | Targets | Status |
-| ------- | ------ | -------- | ------- | ------ |
-| Jenkins | Ubuntu 14.04 | GCC 4.8 | all, test | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc4.8)](http://jenkins.hpi3d.de/job/gloperate-linux-gcc4.8)|
-| Jenkins | Ubuntu 14.04 | GCC 4.9 | all, test | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc4.9)](http://jenkins.hpi3d.de/job/gloperate-linux-gcc4.9)|
-| Jenkins | Ubuntu 14.04 | GCC 5.3 | all, test | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc5.3)](http://jenkins.hpi3d.de/job/gloperate-linux-gcc5.3)|
-| Jenkins | Ubuntu 14.04 | Clang 3.5 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-clang3.5)](http://jenkins.hpi3d.de/job/gloperate-linux-clang3.5) |
-| Jenkins | OS X 10.10 | Clang 3.5 | - | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-osx-clang3.5)](http://jenkins.hpi3d.de/job/gloperate-osx-clang3.5) |
-| Jenkins | Windows 8.1 | MSVC 2013 Update 5 | all, test, install | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-windows-msvc2013)](http://jenkins.hpi3d.de/job/gloperate-windows-msvc2013) |
-| Jenkins | Windows 8.1 | MSVC 2015 Update 1 | all, test, install | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-windows-msvc2015)](http://jenkins.hpi3d.de/job/gloperate-windows-msvc2015) |
-| [Coverity](https://scan.coverity.com/projects/6829?tab=overview) | Ubuntu | GCC 4.8 | all| [![Coverity Status](https://scan.coverity.com/projects/6829/badge.svg)](https://scan.coverity.com/projects/6829) |
+| Service | System | Compiler | Status |
+| ------- | ------ | -------- | -----: |
+|  [Travis-CI](https://travis-ci.org/cginternals/globjects) | Ubuntu 14.04 | GCC 4.8, Clang 3.5 | upcoming |
+|  [Travis-CI](https://travis-ci.org/cginternals/globjects) | OS X | Clang ? | upcoming |
+| [Coverity](https://scan.coverity.com/projects/6831?tab=overview) | Ubuntu 14.04 | GCC 5.4 | [![Coverity Status](https://scan.coverity.com/projects/6831/badge.svg)](https://scan.coverity.com/projects/6831) |
+| Jenkins <br><br><br><br> | Ubuntu 14.04 <br><br><br><br> | GCC 4.8 <br> GCC 4.9 <br> GCC 5.4 <br> Clang 3.9 <br> | [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc4.8)](https://jenkins.hpi3d.de/job/gloperate-linux-gcc4.8) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc4.9)](https://jenkins.hpi3d.de/job/gloperate-linux-gcc4.9) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-gcc5)](https://jenkins.hpi3d.de/job/gloperate-linux-gcc5) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-linux-clang3.9)](https://jenkins.hpi3d.de/job/gloperate-linux-clang3.9) <br> |
+| Jenkins <br><br> | Windows 10 <br><br> | MSVC 2013 Update 5 <br>  MSVC 2015 Update 1 <br> | [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-windows-msvc2013)](https://jenkins.hpi3d.de/job/gloperate-windows-msvc2013) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=gloperate-windows-msvc2015)](https://jenkins.hpi3d.de/job/gloperate-windows-msvc2015) <br> |
+
+Please note that our OS X build node is currently broken (physically). However, *gloperate* is maintained for OS X as well and there are many people using it on OS X on a regular basis.
 
 ### Dependencies
 
 The following dev-libraries and programs need to be provided for correct CMake configuration:
 * C++11 compatible compiler (e.g. gcc >=4.7, MSVC >=2013)
 * CMake (>=2.8.9, better 2.8.12): http://www.cmake.org/
-* OpenGL C++ Bindings (glbinding >=1.0.0): https://github.com/hpicgs/glbinding
+* OpenGL C++ Bindings (glbinding >=1.0.0): https://github.com/cginternals/glbinding
 * OpenGL Mathematics (GLM >=0.9.4): http://glm.g-truc.net/, https://github.com/g-truc/glm
-* OpenGL Objects Wrapper (globjects >=0.3.2): https://github.com/hpicgs/globjects
+* OpenGL Objects Wrapper (globjects >=0.3.2): https://github.com/cginternals/globjects
 
 ### Optional Dependencies
 
