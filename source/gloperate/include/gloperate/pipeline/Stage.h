@@ -637,7 +637,7 @@ protected:
     void scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name);
     cppexpose::Variant scr_slotTypes();
 
-    std::string getQualifiedName (const AbstractSlot *slot) const;
+    std::string getSourcePath(const AbstractSlot* input) const;
 
 
 

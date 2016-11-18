@@ -534,13 +534,8 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
     for(const auto& input : m_inputs)
     {
         std::string descripiton{"input " + input->typeName() + " " + input->name()};
-        std::string target = "unconnected";
-        if(input->isConnected())
-        {
-            target = getQualifiedName(input->source());
-        }
 
-        writer(descripiton + ": " + target, level+1);
+        writer(descripiton + ": " + getSourcePath(input), level+1);
     }
 
     for(const auto& output : m_outputs)
@@ -552,18 +547,25 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
 
 }
 
-std::string Stage::getQualifiedName(const AbstractSlot* slot) const
+std::string Stage::getSourcePath(const AbstractSlot* input) const
 {
-    std::string name = slot->name();
-    AbstractProperty* curParent = slot->parent();
 
-    while(curParent != nullptr)
-    {
-        name = curParent->name() + "." + name;
-        curParent = curParent->parent();
+    if(!input->isConnected()){
+        return "unconnected";
     }
 
-    return name;
+    std::stringstream path;
+    path << "parent";
+
+    auto objectPath = input->parent()->relativePathTo(input->source()->parent());
+
+    for(const auto & node : objectPath){
+        path << "." << node;
+    }
+
+    path << "." << input->source()->name();
+
+    return path.str();
 }
 
 
