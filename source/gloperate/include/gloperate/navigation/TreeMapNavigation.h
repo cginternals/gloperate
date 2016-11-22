@@ -39,7 +39,7 @@ class GLOPERATE_API TreeMapNavigation : public AbstractInteraction
 public:
     TreeMapNavigation(gloperate::AbstractCameraCapability & cameraCapability,
         gloperate::AbstractViewportCapability & viewportCapability,
-        gloperate::CoordinateProvider & coordProvider, 
+        gloperate::CoordinateProvider & coordProvider,
         gloperate::AbstractProjectionCapability * projectionCapability);
     virtual ~TreeMapNavigation();
 
@@ -69,18 +69,20 @@ public:
     *    scale > 0: zoom in
     */
     void scaleAtMouse(const glm::ivec2 & mouse,	float scale);
-    void resetScaleAtMouse(const glm::ivec2 & mouse);
 
+protected:
     // constraints
-    void enforceRotationConstraints(
-        float & hAngle
-    ,	float & vAngle) const;
-    
+    void enforceRotationConstraints(float & deltaHAngle, float & deltaVAngle) const;
+
     void enforceTranslationConstraints(glm::vec3 & delta);
+    void enforceTranslationCenterOnMap(glm::vec3 & delta);
+    void enforceTranslationConstraints();
+
+
 
     // math
 
-    const glm::vec3 mouseRayPlaneIntersection(
+    const glm::vec3 mouseRayWorldIntersection(
         bool & intersects
     ,   const glm::ivec2 & mouse) const;
     const glm::vec3 mouseRayPlaneIntersection(
@@ -88,8 +90,10 @@ public:
     ,   const glm::ivec2 & mouse
     ,   const glm::vec3 & planePosition
     ,   const glm::vec3 & planeNormal) const;
+
     const glm::vec3 clampPointToMap(glm::vec3 point) const;
 
+    float clampDeltaAngle(float curAngle, float deltaAngle, float minAngle, float maxAngle) const;
 
 protected:
     gloperate::AbstractCameraCapability & m_cameraCapability;
@@ -97,11 +101,9 @@ protected:
     gloperate::AbstractProjectionCapability * m_projectionCapability;
 
     gloperate::CoordinateProvider & m_coordProvider;
-    
+
     glm::vec3   m_referencePosition;
     bool        m_refPositionValid; // stores if initial interaction pick yielded valid depth
-    glm::vec3   m_eye;
-    glm::vec3   m_center;
     glm::ivec2  m_m0;
     glm::vec3   m_cardinalDirection;
 };

@@ -1,12 +1,10 @@
 
 #include <gloperate/painter/CombinedProjectionCapability.h>
 
-#include <gloperate/ext-includes-begin.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <gloperate/ext-includes-end.h>
 
 #include <gloperate/painter/AbstractViewportCapability.h>
 
@@ -15,13 +13,13 @@ namespace gloperate
 {
 
 
-CombinedProjectionCapability::CombinedProjectionCapability(gloperate::AbstractViewportCapability *viewportCapability) 
+CombinedProjectionCapability::CombinedProjectionCapability(gloperate::AbstractViewportCapability *viewportCapability)
 : gloperate::AbstractProjectionCapability(viewportCapability)
 , m_orthoCapability(viewportCapability)
 , m_perspectiveCapability(viewportCapability)
 , m_mix(1.0f)
-{ 
-}  
+{
+}
 
 CombinedProjectionCapability::~CombinedProjectionCapability()
 {
@@ -61,7 +59,7 @@ float CombinedProjectionCapability::aspectRatio() const
 }
 
 const glm::mat4 & CombinedProjectionCapability::projection() const
-{  
+{
     if(!m_projection.isValid())
     {
         m_projection.setValue(interpolate(m_orthoCapability.projection(), m_perspectiveCapability.projection()));
@@ -93,7 +91,7 @@ void CombinedProjectionCapability::setAspectRatio(float ratio)
 {
     m_orthoCapability.setAspectRatio(ratio);
     m_perspectiveCapability.setAspectRatio(ratio);
-    
+
     invalidateMatrices();
 }
 
@@ -101,14 +99,14 @@ void CombinedProjectionCapability::setAspectRatio(const glm::ivec2 & viewport)
 {
     m_orthoCapability.setAspectRatio(viewport);
     m_perspectiveCapability.setAspectRatio(viewport);
-    
+
     invalidateMatrices();
 }
 
 void CombinedProjectionCapability::setMix(float mix)
 {
     m_mix = mix;
-    
+
     invalidateMatrices();
 }
 
@@ -124,16 +122,17 @@ glm::mat4 CombinedProjectionCapability::interpolate(const glm::mat4 &first, cons
 
 void CombinedProjectionCapability::setOrthoFOV(const glm::vec3 & eye, const glm::vec3 & focus)
 {
-    static const float offsetSmoothing = 0.85;
     auto alpha = m_perspectiveCapability.fovy();
-    auto fovy = glm::tan(alpha) * glm::length(eye-focus) * offsetSmoothing;
-    m_orthoCapability.setHeight(fovy);
+    auto height = glm::tan(alpha/2) * glm::length(eye-focus) * 2;
+    m_orthoCapability.setHeight(height);
+    invalidateMatrices();
 }
 
 void CombinedProjectionCapability::invalidateMatrices()
 {
     m_projection.invalidate();
     m_invertedProjection.invalidate();
+    changed();
 }
 
 

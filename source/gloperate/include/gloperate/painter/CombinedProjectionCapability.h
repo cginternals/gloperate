@@ -42,7 +42,7 @@ public:
     virtual float zFar() const override;
     virtual void setZFar(float zFar) override;
     virtual float aspectRatio() const override;
-    
+
     virtual const glm::mat4 & projection() const override;
     virtual const glm::mat4 & projectionInverted() const override;
     virtual glm::mat4 projectionForAspectRatio(float ratio) const override;
@@ -52,7 +52,7 @@ public:
     *    Update projection
     */
     void update() const;
-    
+
     float mix() const;
     void setMix(float mix);
     void setOrthoFOV(const glm::vec3 & eye, const glm::vec3 & focus);
@@ -62,20 +62,18 @@ protected:
     // Virtual functions from AbstractProjectionCapability
     virtual void setAspectRatio(float ratio) override;
     virtual void setAspectRatio(const glm::ivec2 & viewport) override;
-    
+
     glm::mat4 interpolate(const glm::mat4& first, const glm::mat4& second) const;
-    
+
     virtual void invalidateMatrices();
 
 
 protected:
     gloperate::OrthographicProjectionCapability m_orthoCapability;
     gloperate::PerspectiveProjectionCapability m_perspectiveCapability;
-    
+
     float m_mix;
-    
-    
-    
+
     gloperate::CachedValue<glm::mat4> m_projection;
     gloperate::CachedValue<glm::mat4> m_invertedProjection;
 };
