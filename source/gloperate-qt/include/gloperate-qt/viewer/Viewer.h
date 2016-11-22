@@ -125,7 +125,7 @@ public:
     *  @remarks
     *    Loads the painter into the viewer.
     */
-    void setPainter(gloperate::Painter & painter);
+    virtual void setPainter(gloperate::Painter & painter);
     //@}
 
     //@{
