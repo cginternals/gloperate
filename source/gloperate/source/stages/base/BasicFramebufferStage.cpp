@@ -12,7 +12,7 @@ CPPEXPOSE_COMPONENT(BasicFramebufferStage, gloperate::Stage)
 
 
 BasicFramebufferStage::BasicFramebufferStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "BasicFramebufferStage", name)
 , viewport    ("viewport", this)
 , fbo         ("fbo", this)
 , colorTexture("colorTexture", this)

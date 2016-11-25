@@ -24,11 +24,14 @@ namespace gloperate
 {
 
 
-Stage::Stage(Environment * environment, const std::string & name)
-: cppexpose::Object(name)
+Stage::Stage(Environment * environment, const std::string & className, const std::string & name)
+: cppexpose::Object((name == "" || name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
 {
+    // Set object class name
+    setClassName(className);
+
     // Register functions
     addFunction("getDescription", this, &Stage::scr_getDescription);
     addFunction("getConnections", this, &Stage::scr_getConnections);

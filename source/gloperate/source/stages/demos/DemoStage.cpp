@@ -61,7 +61,7 @@ CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
 
 
 DemoStage::DemoStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "DemoStage", name)
 , renderInterface(this)
 , m_timer(environment)
 , m_time(0.0f)

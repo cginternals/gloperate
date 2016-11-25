@@ -58,7 +58,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    ColorGradientTextureStage(gloperate::Environment * environment, const std::string & name = "ColorGradientTextureStage");
+    ColorGradientTextureStage(gloperate::Environment * environment, const std::string & name = "");
 
 protected:
 
