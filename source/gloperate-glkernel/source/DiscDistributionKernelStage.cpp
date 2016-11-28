@@ -18,8 +18,11 @@ namespace gloperate_glkernel
 {
 
 
-DiscDistributionKernelStage::DiscDistributionKernelStage(gloperate::Environment * environment)
-: Stage(environment, "Disc Distribution Kernel")
+CPPEXPOSE_COMPONENT(DiscDistributionKernelStage, gloperate::Stage)
+
+
+DiscDistributionKernelStage::DiscDistributionKernelStage(gloperate::Environment * environment, const std::string & name)
+: Stage(environment, name)
 , kernelSize("kernelSize", this, 1)
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)

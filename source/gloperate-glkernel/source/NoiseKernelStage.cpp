@@ -12,8 +12,11 @@ namespace gloperate_glkernel
 {
 
 
-NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment)
-: Stage(environment, "Noise Kernel")
+CPPEXPOSE_COMPONENT(NoiseKernelStage, gloperate::Stage)
+
+
+NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const std::string & name)
+: Stage(environment, name)
 , dimensions("dimensions", this, glm::ivec3(1))
 , kernel("kernel", this)
 , texture("texture", this)

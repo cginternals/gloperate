@@ -5,8 +5,11 @@
 
 #include <glkernel/Kernel.h>
 
+#include <cppexpose/plugin/plugin_api.h>
+
 #include <globjects/base/ref_ptr.h>
 
+#include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
@@ -23,9 +26,19 @@ namespace gloperate_glkernel
 
 class GLOPERATE_GLKERNEL_API NoiseKernelStage : public gloperate::Stage
 {
+public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        NoiseKernelStage, gloperate::Stage
+      , ""   // Tags
+      , ""   // Icon
+      , ""   // Annotations
+      , "Stage that creates a 3D noise texture for multiframe rendering"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v0.1.0"
+    )
 
 public:
-    NoiseKernelStage(gloperate::Environment * environment);
+    NoiseKernelStage(gloperate::Environment * environment, const std::string & name = "Noise Kernel");
 
 public:
     gloperate::Input<glm::ivec3> dimensions;

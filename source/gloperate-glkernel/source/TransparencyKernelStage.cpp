@@ -12,8 +12,11 @@ namespace gloperate_glkernel
 {
 
 
-TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * environment)
-: Stage(environment, "Transparency Kernel")
+CPPEXPOSE_COMPONENT(TransparencyKernelStage, gloperate::Stage)
+
+
+TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * environment, const std::string & name)
+: Stage(environment, name)
 , kernel("kernel", this)
 , texture("texture", this)
 {

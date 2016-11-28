@@ -18,8 +18,11 @@ namespace gloperate_glkernel
 {
 
 
-HemisphereDistributionKernelStage::HemisphereDistributionKernelStage(gloperate::Environment * environment)
-: Stage(environment, "Disc Distribution Kernel")
+CPPEXPOSE_COMPONENT(HemisphereDistributionKernelStage, gloperate::Stage)
+
+
+HemisphereDistributionKernelStage::HemisphereDistributionKernelStage(gloperate::Environment * environment, const std::string & name)
+: Stage(environment, name)
 , kernelSize("kernelSize", this, 1)
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
