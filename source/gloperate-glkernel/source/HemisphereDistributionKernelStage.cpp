@@ -27,6 +27,7 @@ HemisphereDistributionKernelStage::HemisphereDistributionKernelStage(gloperate::
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
+, m_texture(nullptr)
 {
 }
 
@@ -52,6 +53,11 @@ void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLConte
 
 void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
+    if (!m_texture)
+    {
+        onContextInit(context);
+    }
+
     bool regenKernel = *regenerate;
     if (*kernelSize != m_kernel.extent().x)
     {
@@ -71,4 +77,4 @@ void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext *
 }
 
 
-}
+} // namespace gloperate_glkernel

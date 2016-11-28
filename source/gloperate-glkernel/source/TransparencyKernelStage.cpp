@@ -19,6 +19,7 @@ TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * enviro
 : Stage(environment, name)
 , kernel("kernel", this)
 , texture("texture", this)
+, m_texture(nullptr)
 {
 }
 
@@ -31,6 +32,11 @@ void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * conte
 
 void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
+    if (!m_texture)
+    {
+        onContextInit(context);
+    }
+
     const size_t alphaValues = 256;
     const size_t maskSize = 1024;
     std::array<unsigned char, maskSize * alphaValues> kernel;
@@ -53,4 +59,4 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
 }
 
 
-}
+} // namespace gloperate_glkernel

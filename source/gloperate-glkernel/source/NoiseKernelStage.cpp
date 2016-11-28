@@ -1,7 +1,7 @@
 
 #include <gloperate-glkernel/NoiseKernelStage.h>
 
-#include <glkernel/sample.h>
+#include <glkernel/noise.h>
 
 #include <glbinding/gl/enum.h>
 
@@ -20,6 +20,7 @@ NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const s
 , dimensions("dimensions", this, glm::ivec3(1))
 , kernel("kernel", this)
 , texture("texture", this)
+, m_texture(nullptr)
 {
 }
 
@@ -32,6 +33,11 @@ void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext * context)
 
 void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
+    if (!m_texture)
+    {
+        onContextInit(context);
+    }
+
     if (*dimensions != glm::ivec3(m_kernel.extent()))
     {
         resizeKernel();
@@ -54,8 +60,8 @@ void NoiseKernelStage::resizeKernel()
 
 void NoiseKernelStage::regenerateKernel()
 {
-    glkernel::sample::best_candidate(m_kernel);
+    glkernel::noise::uniform(m_kernel);
 }
 
 
-}
+} // namespace gloperate_glkernel

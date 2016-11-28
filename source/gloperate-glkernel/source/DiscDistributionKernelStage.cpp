@@ -27,6 +27,7 @@ DiscDistributionKernelStage::DiscDistributionKernelStage(gloperate::Environment 
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
+, m_texture(nullptr)
 {
 }
 
@@ -41,9 +42,14 @@ void DiscDistributionKernelStage::regenerateKernel()
 {
     glkernel::sample::poisson_square(m_kernel);
 
+    glkernel::scale::range(m_kernel, -1.0f, 1.0f);
+
     // push the corners of the square in to form a disc
     std::transform(m_kernel.begin(), m_kernel.end(), m_kernel.begin(), [](glm::vec2 v) -> glm::vec2
     {
+        if (std::max(std::abs(v.x), std::abs(v.y)) < 1e-10f)
+            return v;
+
         glm::vec2 maxVec = v / std::max(v.x, v.y);
         float maxLen = glm::length(maxVec);
         return v / maxLen; 
@@ -61,6 +67,11 @@ void DiscDistributionKernelStage::onContextInit(gloperate::AbstractGLContext * c
 
 void DiscDistributionKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
+    if (!m_texture)
+    {
+        onContextInit(context);
+    }
+
     bool regenKernel = *regenerate;
     if (*kernelSize != m_kernel.extent().x)
     {
@@ -80,4 +91,4 @@ void DiscDistributionKernelStage::onProcess(gloperate::AbstractGLContext * conte
 }
 
 
-}
+} // namespace gloperate_glkernel
