@@ -80,52 +80,27 @@ gloperate::GLContextFormat GLContextUtils::retrieveFormat()
 
 glbinding::Version GLContextUtils::retrieveVersion()
 {
-    assert(0 != glbinding::getCurrentContext());
-
-    GLint major = -1;
-    GLint minor = -1;
-
-    glGetIntegerv(GLenum::GL_MAJOR_VERSION, &major); // major version
-    glGetIntegerv(GLenum::GL_MINOR_VERSION, &minor); // minor version
-
-    if (major < 0 && minor < 0) // probably a context < 3.0 with no support for GL_MAJOR/MINOR_VERSION
-    {
-        const GLubyte * vstr = glGetString(GLenum::GL_VERSION);
-        if (!vstr)
-        {
-            return glbinding::Version();
-        }
-
-        assert(vstr[1] == '.');
-
-        assert(vstr[0] >= '0'  && vstr[0] <= '9');
-        major = vstr[0] - '0';
-
-        assert(vstr[2] >= '0'  && vstr[2] <= '9');
-        minor = vstr[2] - '0';
-    }
-
-    return glbinding::Version(major, minor);
+    return glbinding::ContextInfo::version();
 }
 
 GLContextFormat::Profile GLContextUtils::retrieveProfile()
 {
     assert(0 != glbinding::getCurrentContext());
 
-    GLint profileMask = -1;
-    glGetIntegerv(GLenum::GL_CONTEXT_PROFILE_MASK, &profileMask);
+    gl::ContextProfileMask profileMask = gl::GL_NONE_BIT;
+    glGetIntegerv(GLenum::GL_CONTEXT_PROFILE_MASK, reinterpret_cast<GLint*>(&profileMask));
 
-    if (profileMask <= 0) // probably a context < 3.2 with no support for profiles
+    if (static_cast<GLint>(profileMask) <= 0) // probably a context < 3.2 with no support for profiles
     {
         return GLContextFormat::Profile::None;
     }
 
-    if ((profileMask & static_cast<GLint>(GL_CONTEXT_CORE_PROFILE_BIT)) != 0)
+    if ((profileMask & GL_CONTEXT_CORE_PROFILE_BIT) != gl::GL_NONE_BIT)
     {
         return GLContextFormat::Profile::Core;
     }
     
-    if ((profileMask & static_cast<GLint>(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT)) != 0)
+    if ((profileMask & GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) != gl::GL_NONE_BIT)
     {
         return GLContextFormat::Profile::Compatibility;
     }
