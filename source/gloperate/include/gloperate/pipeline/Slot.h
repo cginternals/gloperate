@@ -70,7 +70,7 @@ public:
     *    The input slot is created and added to the given stage
     *    without transferring ownership.
     */
-    Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value = T());
+    Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value = T(), bool dynamic = false);
 
     /**
     *  @brief
@@ -86,7 +86,7 @@ public:
     *  @remarks
     *    The input slot is created but not added to any stage.
     */
-    Slot(SlotType slotType, const std::string & name, const T & value = T());
+    Slot(SlotType slotType, const std::string & name, const T & value = T(), bool dynamic = true);
 
     /**
     *  @brief
@@ -161,7 +161,7 @@ public:
     // Virtual AbstractProperty interface
     virtual bool isObject() const override;
 
-    bool isStatic() const;
+    bool isDynamic() const;
 
 
 protected:
@@ -171,7 +171,7 @@ protected:
 
 protected:
     bool                        m_valid;      ///< Does the slot have a valid value?
-    bool                        m_static;     ///< Was the slot created statically? (statically = registered during construction);
+    bool                        m_dynamic;     ///< Was the slot created dynamically or statically? (statically = registered during construction);
     Slot<T>                   * m_source;     ///< Connected slot (can be null)
     cppexpose::ScopedConnection m_connection; ///< Connection to changed-signal of source property
 

@@ -27,10 +27,10 @@ auto Slot<T>::DereferenceHelper<U*>::pointer(U ** value) -> Pointer
 
 
 template <typename T>
-Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value)
+Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value, bool dynamic)
 : cppexpose::DirectValue<T, AbstractSlot>(value)
 , m_valid(true)
-, m_static(true)
+, m_dynamic(dynamic)
 , m_source(nullptr)
 {
     // Do not add property to object, yet. Just initialize the property itself
@@ -41,10 +41,10 @@ Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const
 }
 
 template <typename T>
-Slot<T>::Slot(SlotType slotType, const std::string & name, const T & value)
+Slot<T>::Slot(SlotType slotType, const std::string & name, const T & value, bool dynamic)
 : cppexpose::DirectValue<T, AbstractSlot>(value)
 , m_valid(true)
-, m_static(false)
+, m_dynamic(dynamic)
 , m_source(nullptr)
 {
     // Do not add property to object, yet. Just initialize the property itself
@@ -258,9 +258,9 @@ bool Slot<T>::isObject() const
 }
 
 template <typename T>
-bool Slot<T>::isStatic() const
+bool Slot<T>::isDynamic() const
 {
-    return m_static;
+    return m_dynamic;
 }
 
 template <typename T>
