@@ -60,7 +60,7 @@ void NoiseKernelStage::resizeKernel()
 
 void NoiseKernelStage::regenerateKernel()
 {
-    glkernel::noise::uniform(m_kernel);
+    glkernel::noise::uniform(m_kernel, 0.0f, 1.0f);
 }
 
 

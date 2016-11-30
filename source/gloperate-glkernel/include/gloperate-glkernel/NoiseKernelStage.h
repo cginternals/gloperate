@@ -7,8 +7,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
@@ -44,7 +42,7 @@ public:
     gloperate::Input<glm::ivec3> dimensions;
 
     gloperate::Output<glkernel::kernel3> kernel;
-    gloperate::Output<globjects::ref_ptr<globjects::Texture>> texture;
+    gloperate::Output<globjects::Texture *> texture;
 
 protected:
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
