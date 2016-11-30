@@ -331,14 +331,14 @@ struct GetTyped<glm::ivec4, BASE>
 *    Property implementation for globjects::Texture
 */
 template <typename BASE>
-class TypedTexture : public cppexpose::Typed<globjects::Texture, BASE>
+class TypedTexturePointer : public cppexpose::Typed<globjects::Texture *, BASE>
 {
 public:
-    TypedTexture()
+    TypedTexturePointer()
     {
     }
 
-    virtual ~TypedTexture()
+    virtual ~TypedTexturePointer()
     {
     }
 
@@ -373,14 +373,14 @@ public:
 
     virtual std::string typeName() const override
     {
-        return "Texture";
+        return "TexturePointer";
     }
 };
 
 template <typename BASE>
-struct GetTyped<globjects::Texture, BASE>
+struct GetTyped<globjects::Texture *, BASE>
 {
-    using Type = TypedTexture<BASE>;
+    using Type = TypedTexturePointer<BASE>;
 };
 
 
@@ -389,14 +389,14 @@ struct GetTyped<globjects::Texture, BASE>
 *    Property implementation for globjects::Texture
 */
 template <typename BASE>
-class TypedFramebuffer : public cppexpose::Typed<globjects::Framebuffer, BASE>
+class TypedFramebufferPointer : public cppexpose::Typed<globjects::Framebuffer *, BASE>
 {
 public:
-    TypedFramebuffer()
+    TypedFramebufferPointer()
     {
     }
 
-    virtual ~TypedFramebuffer()
+    virtual ~TypedFramebufferPointer()
     {
     }
 
@@ -431,14 +431,14 @@ public:
 
     virtual std::string typeName() const override
     {
-        return "Framebuffer";
+        return "FramebufferPointer";
     }
 };
 
 template <typename BASE>
-struct GetTyped<globjects::Framebuffer, BASE>
+struct GetTyped<globjects::Framebuffer *, BASE>
 {
-    using Type = TypedFramebuffer<BASE>;
+    using Type = TypedFramebufferPointer<BASE>;
 };
 
 
