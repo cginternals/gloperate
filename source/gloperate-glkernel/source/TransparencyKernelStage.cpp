@@ -39,15 +39,15 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
 
     const size_t alphaValues = 256;
     const size_t maskSize = 1024;
-    std::array<unsigned char, maskSize * alphaValues> kernel;
+    std::vector<unsigned char> newKernel(maskSize * alphaValues);
 
     for (auto alphaIndex = 0; alphaIndex < alphaValues; alphaIndex++)
     {
         auto alphaVal = float(alphaIndex) / alphaValues;
         auto numHits = int(std::floor(alphaVal * maskSize));
 
-        auto lineBegin   = kernel.begin() +  alphaIndex      * maskSize;
-        auto lineEnd     = kernel.begin() + (alphaIndex + 1) * maskSize;
+        auto lineBegin   = newKernel.begin() +  alphaIndex      * maskSize;
+        auto lineEnd     = newKernel.begin() + (alphaIndex + 1) * maskSize;
         auto changePoint = lineBegin + numHits;
 
         std::fill(lineBegin  , changePoint, 255);
@@ -55,7 +55,10 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
         std::random_shuffle(lineBegin, lineEnd);
     }
 
-    m_texture->image2D(1, gl::GL_R8, maskSize, alphaValues, 0, gl::GL_R, gl::GL_BYTE, kernel.data());
+    m_texture->image2D(1, gl::GL_R8, maskSize, alphaValues, 0, gl::GL_R, gl::GL_BYTE, newKernel.data());
+
+    kernel.setValue(newKernel);
+    texture.setValue(m_texture);
 }
 
 

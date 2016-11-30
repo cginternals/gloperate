@@ -71,7 +71,7 @@ void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext *
 
         m_texture->image1D(0, gl::GL_RGB32F, *kernelSize, 0, gl::GL_RGB, gl::GL_FLOAT, m_kernel.data());
 
-        kernel.setValue(m_kernel);
+        kernel.setValue(std::vector<glm::vec3>{m_kernel.begin(), m_kernel.end()});
         texture.setValue(m_texture);
     }
 }

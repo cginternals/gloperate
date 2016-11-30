@@ -3,7 +3,7 @@
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
-#include <memory>
+#include <vector>
 
 #include <glkernel/Kernel.h>
 
@@ -45,7 +45,7 @@ public:
     gloperate::Input<int> kernelSize;
     gloperate::Input<bool> regenerate;
 
-    gloperate::Output<glkernel::kernel2> kernel;
+    gloperate::Output<std::vector<glm::vec2>> kernel;
     gloperate::Output<globjects::Texture *> texture;
 
 protected:

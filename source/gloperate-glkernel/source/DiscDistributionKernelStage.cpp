@@ -85,7 +85,7 @@ void DiscDistributionKernelStage::onProcess(gloperate::AbstractGLContext * conte
 
         m_texture->image1D(0, gl::GL_RG32F, *kernelSize, 0, gl::GL_RG, gl::GL_FLOAT, m_kernel.data());
 
-        kernel.setValue(m_kernel);
+        kernel.setValue(std::vector<glm::vec2>{m_kernel.begin(), m_kernel.end()});
         texture.setValue(m_texture);
     }
 }

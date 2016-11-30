@@ -3,6 +3,8 @@
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
+#include <vector>
+
 #include <glkernel/Kernel.h>
 
 #include <cppexpose/plugin/plugin_api.h>
@@ -39,7 +41,7 @@ public:
     TransparencyKernelStage(gloperate::Environment * environment, const std::string & name = "Transparency Kernel");
 
 public:
-    gloperate::Output<glkernel::kernel1> kernel;
+    gloperate::Output<std::vector<unsigned char>> kernel;
     gloperate::Output<globjects::Texture *> texture;
 
 protected:

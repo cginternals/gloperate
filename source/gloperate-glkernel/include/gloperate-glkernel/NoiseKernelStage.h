@@ -3,6 +3,8 @@
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
+#include <vector>
+
 #include <glkernel/Kernel.h>
 
 #include <cppexpose/plugin/plugin_api.h>
@@ -41,7 +43,7 @@ public:
 public:
     gloperate::Input<glm::ivec3> dimensions;
 
-    gloperate::Output<glkernel::kernel3> kernel;
+    gloperate::Output<std::vector<glm::vec3>> kernel;
     gloperate::Output<globjects::Texture *> texture;
 
 protected:
