@@ -535,7 +535,18 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
     {
         std::string descripiton{"input " + input->typeName() + " " + input->name()};
 
-        writer(descripiton + ": " + getSourcePath(input), level+1);
+        std::string value = "undefined";
+
+        if(input->isConnected())
+        {
+            value = getSourcePath(input);
+        }
+        else
+        {
+            value = input.toVariant().toJSON();
+        }
+
+        writer(descripiton + ": " + value, level+1);
     }
 
     for(const auto& output : m_outputs)
