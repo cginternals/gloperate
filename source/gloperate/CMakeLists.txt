@@ -76,6 +76,7 @@ set(headers
     ${include_path}/base/ColorGradientPreparation.h
     ${include_path}/base/ExplicitEquidistantColorGradient.h
     ${include_path}/base/ExplicitEquidistantColorGradient.inl
+    ${include_path}/base/PipelineLoader.h
 
     ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h
@@ -191,6 +192,7 @@ set(sources
     ${source_path}/base/ColorGradientList.cpp
     ${source_path}/base/ColorGradientPreparation.cpp
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
+    ${source_path}/base/PipelineLoader.cpp
 
     ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
