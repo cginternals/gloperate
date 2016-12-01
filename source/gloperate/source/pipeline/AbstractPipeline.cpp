@@ -192,13 +192,19 @@ bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
     std::vector<AbstractStage *> sorted;
     std::set<AbstractStage *> touched;
 
+    std::function<void(AbstractStage *)> addSorted = [&](AbstractStage * stage)
+    {
+        stages.erase(find(stages.begin(), stages.end(), stage));
+        sorted.push_back(stage);
+    };
+
     std::function<void(AbstractStage *)> visit = [&](AbstractStage * stage)
     {
         if (touched.count(stage) > 0)
         {
             std::cerr << "Pipeline is not a directed acyclic graph" << std::endl;
             couldBeSorted = false;
-            sorted.push_back(stage);
+            addSorted(stage);
             return;
         }
 
@@ -208,7 +214,7 @@ bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
         {
             if (!couldBeSorted)
             {
-                sorted.push_back(stage);
+                addSorted(stage);
                 return;
             }
 
@@ -224,8 +230,7 @@ bool AbstractPipeline::tsort(std::vector<AbstractStage *> & stages)
             stageIt = stages.begin();
         }
 
-        stages.erase(find(stages.begin(), stages.end(), stage));
-        sorted.push_back(stage);
+        addSorted(stage);
     };
 
     while (!stages.empty())
