@@ -544,6 +544,9 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
         else
         {
             value = input->toVariant().toJSON();
+            if(input->type() == typeid(std::string)){
+                value = '"' + value + '"';
+            }
         }
 
         writer(descripiton + ": " + value, level+1);
