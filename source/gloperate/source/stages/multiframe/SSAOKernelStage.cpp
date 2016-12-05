@@ -75,7 +75,7 @@ CPPEXPOSE_COMPONENT(SSAOKernelStage, gloperate::Stage)
 
 SSAOKernelStage::SSAOKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, enable("enable", this)
+, enable("enable", this, true)
 , kernelSize("kernelSize", this)
 , noiseSize("noiseSize", this)
 , currentFrame("currentFrame", this)
@@ -101,7 +101,7 @@ void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 
 void SSAOKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
-    if (enable.isConnected() && !(*enable))
+    if (!(*enable))
     {
         return;
     }
