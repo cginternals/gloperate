@@ -529,7 +529,7 @@ cppexpose::Variant Stage::scr_slotTypes()
 
 void Stage::serialize(std::function<void (const std::string &, uint)> writer, uint level)
 {
-    writer(m_name, level);
+    writer(this->className() + " " + m_name, level);
     writer("{", level);
     for(const auto& input : m_inputs)
     {
@@ -543,7 +543,7 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
         }
         else
         {
-            value = input.toVariant().toJSON();
+            value = input->toVariant().toJSON();
         }
 
         writer(descripiton + ": " + value, level+1);
