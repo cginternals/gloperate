@@ -51,7 +51,7 @@ public:
     Input<int> currentFrame;
     Input<int> multiFrameCount;
 
-    Output<globjects::Texture *> ssaoTexture;
+    Output<globjects::Texture *> kernelTexture;
     Output<globjects::Texture *> noiseTexture;
 
 protected:

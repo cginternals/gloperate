@@ -80,17 +80,17 @@ SSAOKernelStage::SSAOKernelStage(gloperate::Environment * environment, const std
 , noiseSize("noiseSize", this)
 , currentFrame("currentFrame", this)
 , multiFrameCount("multiFrameCount", this)
-, ssaoTexture("ssaoTexture", this)
+, kernelTexture("ssaoTexture", this)
 , noiseTexture("noiseTexture", this)
 {
 }
 
 void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
-    ssaoTexture.setValue(new globjects::Texture(gl::GL_TEXTURE_1D));
-    (*ssaoTexture)->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
-    (*ssaoTexture)->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
-    (*ssaoTexture)->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_MIRRORED_REPEAT);
+    kernelTexture.setValue(new globjects::Texture(gl::GL_TEXTURE_1D));
+    (*kernelTexture)->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
+    (*kernelTexture)->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
+    (*kernelTexture)->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_MIRRORED_REPEAT);
 
     noiseTexture.setValue(new globjects::Texture(gl::GL_TEXTURE_2D));
     (*noiseTexture)->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
@@ -106,7 +106,7 @@ void SSAOKernelStage::onProcess(gloperate::AbstractGLContext * context)
         return;
     }
 
-    (*ssaoTexture)->image1D(0, gl::GL_RGB16F, (*kernelSize), 0, gl::GL_RGB, gl::GL_FLOAT, ssaoKernel((*kernelSize)).data());
+    (*kernelTexture)->image1D(0, gl::GL_RGB16F, (*kernelSize), 0, gl::GL_RGB, gl::GL_FLOAT, ssaoKernel((*kernelSize)).data());
     (*noiseTexture)->image2D(0, gl::GL_RG16F, (*noiseSize), (*noiseSize), 0, gl::GL_RG, gl::GL_FLOAT, ssaoNoise((*noiseSize)).data());
 
     // invalidateOutputs();

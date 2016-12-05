@@ -128,7 +128,7 @@ void MultiFrameAggregationPipeline::connectBasicRenderInterface(RenderInterface 
 void MultiFrameAggregationPipeline::connectMultiFrameRenderInterface(MultiFrameRenderInterface & interface)
 {
     interface.noiseKernel << m_noiseStage->noiseTexture;
-    interface.ssaoKernel << m_ssaoStage->ssaoTexture;
+    interface.ssaoKernel << m_ssaoStage->kernelTexture;
     interface.ssaoNoise << m_ssaoStage->noiseTexture;
     interface.transparencyKernel << m_transparencyStage->transparencyMaskTexture;
     interface.dofShift << m_diskDistributionStage->value;
