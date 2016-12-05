@@ -26,6 +26,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Stage that provides kernel and noise for SSAO effect
+*/
 class GLOPERATE_API SSAOKernelStage : public gloperate::Stage
 {
 public:
@@ -39,23 +43,35 @@ public:
       , "v1.0.0"
     )
 
+
 public:
+    // Inputs
+    Input<bool> enable;         ///< Regenerate kernel (optional, default: true)
+    Input<int> kernelSize;      ///< Size of SSAO kernel
+    Input<int> noiseSize;       ///< Size of SSAO noise
+    Input<int> currentFrame;    ///< Number of currently aggregated frame
+    Input<int> multiFrameCount; ///< Total number of aggregated frames
+
+    // Outputs
+    Output<globjects::Texture *> kernelTexture;  ///< Kernel texture
+    Output<globjects::Texture *> noiseTexture; ///< Noise texture
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     SSAOKernelStage(gloperate::Environment * environment, const std::string & name = "SSAOKernelStage");
 
-public:
-    Input<bool> enable;
-
-    Input<int> kernelSize;
-    Input<int> noiseSize;
-
-    Input<int> currentFrame;
-    Input<int> multiFrameCount;
-
-    Output<globjects::Texture *> kernelTexture;
-    Output<globjects::Texture *> noiseTexture;
 
 protected:
-
+    // Virtual Stage interface
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
 };

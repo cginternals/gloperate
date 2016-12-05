@@ -20,6 +20,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Stage that provides noise for random discard based transparency
+*/
 class GLOPERATE_API TransparencyKernelStage : public gloperate::Stage
 {
 public:
@@ -33,18 +37,32 @@ public:
       , "v1.0.0"
     )
 
+
 public:
+    // Inputs
+    Input<bool> reprocess; ///< Recreate texture
+
+    // Outputs
+    Output<globjects::Texture *> transparencyMaskTexture; ///< Transparency kernel
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     TransparencyKernelStage(gloperate::Environment * environment, const std::string & name = "TransparencyKernelStage");
 
-public:
-    Input<bool> reprocess;
-
-    Output<globjects::Texture *> transparencyMaskTexture;
 
 protected:
+    // Virtual Stage interface
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
-
 };
 
 

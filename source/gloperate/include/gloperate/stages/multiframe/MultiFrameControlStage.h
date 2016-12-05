@@ -16,6 +16,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Stage that maintaines and provides information about multi frame aggregation progress
+*/
 class GLOPERATE_API MultiFrameControlStage : public Stage
 {
 public:
@@ -24,31 +28,49 @@ public:
       , ""
       , ""
       , ""
-      , "" // TODO: Description
+      , "Stage that maintaines and provides information about multi frame aggregation progress"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
     );
 
 
 public:
+    // Inputs
     Input<int>       frameNumber;       ///< Total frame count
     Input<glm::vec4> viewport;          ///< Viewport
 
-    Output<int>      currentFrame;      ///< Number of aggregated frames
-    Output<float>    aggregationFactor; ///< Weight for next aggregated frame (= 1 / frameNumber)
+    // Outputs
+    Output<int>      currentFrame;      ///< Number of currently aggregated frame
+    Output<float>    aggregationFactor; ///< Weight for aggregating the current frame (= 1 / currentFrame)
 
 
 public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     MultiFrameControlStage(Environment * environment, const std::string & name = "MultiFrameControlStage");
+
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~MultiFrameControlStage();
 
 
 protected:
+    // Virtual Stage interface
     virtual void onProcess(AbstractGLContext * context) override;
 
 
 protected:
-    int m_currentFrame;
+    // Data
+    int m_currentFrame; ///< Number of currently aggregated frame
 };
 
 

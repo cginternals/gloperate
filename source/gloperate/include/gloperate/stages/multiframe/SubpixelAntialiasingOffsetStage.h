@@ -15,6 +15,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Stage that provides random offsets for subpixel antialiasing
+*/
 class GLOPERATE_API SubpixelAntialiasingOffsetStage : public gloperate::Stage
 {
 public:
@@ -28,17 +32,32 @@ public:
       , "v1.0.0"
     )
 
+
 public:
+    // Inputs
+    Input<glm::vec4> viewport;      ///< Viewport, as vec4(xPos, yPos, width, height)
+    Input<int> currentMultiFrame;   ///< Number of current frame
+    Input<int> multiFrameCount;     ///< Total number of frames to aggregate
+
+    // Outputs
+    Output<glm::vec2> subPixelOffset; ///< Subpixel offset
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     SubpixelAntialiasingOffsetStage(gloperate::Environment * environment, const std::string & name = "SubpixelAntialiasingOffsetStage");
 
-public:
-    Input<glm::vec4> viewport;
-    Input<int> currentMultiFrame;
-    Input<int> multiFrameCount;
-
-    Output<glm::vec2> subPixelOffset;
 
 protected:
+    // Virtual stage interface
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
 };

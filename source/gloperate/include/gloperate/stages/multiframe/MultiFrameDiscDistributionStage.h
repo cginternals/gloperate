@@ -14,6 +14,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Stage that provides random vectors with disc distribution
+*/
 class GLOPERATE_API MultiFrameDiscDistributionStage : public gloperate::Stage
 {
 public:
@@ -27,21 +31,34 @@ public:
       , "v1.0.0"
     )
 
+
 public:
+    // Inputs
+    Input<bool> isActive;         ///< Generate new vector
+    Input<float> radius;          ///< Maximum length of vector
+    Input<int> currentMultiFrame; ///< Number of currently aggregated frame
+    Input<int> multiFrameCount;   ///< Total number of aggregated frames
+
+    // Outputs
+    Output<glm::vec2> value; ///< Random vector
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     MultiFrameDiscDistributionStage(gloperate::Environment * environment, const std::string & name = "MultiFrameDiscDistributionStage");
 
-public:
-    Input<bool> isActive;
-    Input<float> radius;
-
-    Input<int> currentMultiFrame;
-    Input<int> multiFrameCount;
-
-    Output<glm::vec2> value;
 
 protected:
+    // Virtual Stage interface
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
-
 };
 
 

@@ -25,6 +25,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Stage that provides random noise
+*/
 class GLOPERATE_API NoiseKernelStage : public gloperate::Stage
 {
 public:
@@ -38,21 +42,39 @@ public:
       , "v1.0.0"
     )
 
+
 public:
+    // Inputs
+    Input<int> inputDimensions;  ///< Number of dimensions of noise texture
+    Input<int> outputDimensions; ///< Number of components in noise texture
+    Input<int> size;             ///< Size of noise texture
+
+    // Outputs
+    Output<globjects::Texture *> noiseTexture; ///< Noise texture
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     NoiseKernelStage(gloperate::Environment * environment, const std::string & name = "NoiseKernelStage");
 
-public:
-    Input<int> inputDimensions;
-    Input<int> outputDimensions;
-    Input<int> size;
-
-    Output<globjects::Texture *> noiseTexture;
 
 protected:
-    std::unique_ptr<NoiseTexture> m_noiseTexture;
-
+    // Virtual Stage interface
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+
+
+protected:
+    // Data
+    std::unique_ptr<NoiseTexture> m_noiseTexture; ///< Noise texture
 };
 
 

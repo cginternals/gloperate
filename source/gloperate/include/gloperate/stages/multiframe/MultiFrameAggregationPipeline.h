@@ -27,6 +27,10 @@ class SubpixelAntialiasingOffsetStage;
 class TransparencyKernelStage;
 
 
+/**
+*  @brief
+*    Pipeline that aggregates multiple frames rendered by the given Stage/Pipeline
+*/
 class GLOPERATE_API MultiFrameAggregationPipeline : public Pipeline
 {
 public:
@@ -47,39 +51,69 @@ public:
 
 
 public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     MultiFrameAggregationPipeline(Environment * environment, const std::string & name = "MultiFrameAggregationPipeline");
 
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~MultiFrameAggregationPipeline();
 
+    /**
+    *  @brief
+    *    Set the frame generating stage/pipeline
+    *
+    *  @param[in] interface
+    *    Render interface of the frame generating stage
+    */
     void setFrameRenderer(RenderInterface & interface);
+
+    /**
+    *  @brief
+    *    Set the frame generating stage/pipeline
+    *
+    *  @param[in] interface
+    *    Render interface of the frame generating stage
+    */
     void setFrameRenderer(MultiFrameRenderInterface & interface);
 
 
 protected:
+    // Virtual Stage interface
     virtual void onProcess(AbstractGLContext * context) override;
 
+    // Helper functions
     void connectBasicRenderInterface(RenderInterface & interface);
     void connectMultiFrameRenderInterface(MultiFrameRenderInterface & interface);
     void disconnectRenderStage();
 
 
 protected:
-    // Required stages
-    BasicFramebufferStage      * m_renderFramebufferStage;
-    CustomFramebufferStage     * m_aggregationFramebufferStage;
-    MultiFrameControlStage     * m_controlStage;
-    MultiFrameAggregationStage * m_aggregationStage;
-    BlitStage                  * m_blitStage;
+    // Aggregation stages
+    BasicFramebufferStage      * m_renderFramebufferStage;      ///< FBO stage for frame generating stage
+    CustomFramebufferStage     * m_aggregationFramebufferStage; ///< Aggregation FBO
+    MultiFrameControlStage     * m_controlStage;                ///< Multiframe control stage
+    MultiFrameAggregationStage * m_aggregationStage;            ///< Aggregation stage
+    BlitStage                  * m_blitStage;                   ///< Blit stage
 
-    // Optional stages
-    MultiFrameDiscDistributionStage * m_diskDistributionStage;
-    NoiseKernelStage                * m_noiseStage;
-    SSAOKernelStage                 * m_ssaoStage;
-    SubpixelAntialiasingOffsetStage * m_subpixelStage;
-    TransparencyKernelStage         * m_transparencyStage;
+    // Stages providing multiframe-specific data
+    MultiFrameDiscDistributionStage * m_diskDistributionStage;  ///< Disk distrubution stage
+    NoiseKernelStage                * m_noiseStage;             ///< Noise kernel stage
+    SSAOKernelStage                 * m_ssaoStage;              ///< SSAO stage
+    SubpixelAntialiasingOffsetStage * m_subpixelStage;          ///< Subpixel antialiasing offset stage
+    TransparencyKernelStage         * m_transparencyStage;      ///< Transparency kernel stage
 
     // Inserted Stage/Pipeline
-    Stage * m_frameRenderStage;
+    Stage * m_frameRenderStage;                                 ///< Frame generating stage
 };
 
 
