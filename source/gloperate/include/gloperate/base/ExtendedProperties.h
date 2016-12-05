@@ -349,10 +349,6 @@ public:
 
     std::string toString() const override
     {
-        if(this->value().hasName())
-        {
-            return this->value().name();
-        }
         return "";
     }
 
@@ -407,10 +403,6 @@ public:
 
     std::string toString() const override
     {
-        if(this->value().hasName())
-        {
-            return this->value().name();
-        }
         return "";
     }
 
