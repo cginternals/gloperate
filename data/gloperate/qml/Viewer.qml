@@ -151,7 +151,7 @@ Background
 
                 onClicked:
                 {
-                    var serialized = gloperate.canvas0.pipeline.save('test.pipeline');
+                    pipelineSave.visible = true;
                 }
             }
         }
@@ -419,6 +419,12 @@ Background
     ScreenshotDialog
     {
         id: screenshot
+    }
+
+    // Pipeline saving dialog
+    PipelineSaveDialog
+    {
+        id: pipelineSave
     }
 
     // Video capture dialog
