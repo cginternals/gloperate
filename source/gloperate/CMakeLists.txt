@@ -76,7 +76,6 @@ set(headers
     ${include_path}/base/ColorGradientPreparation.h
     ${include_path}/base/ExplicitEquidistantColorGradient.h
     ${include_path}/base/ExplicitEquidistantColorGradient.inl
-    ${include_path}/base/PipelineLoader.h
 
     ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h
@@ -89,6 +88,9 @@ set(headers
     ${include_path}/pipeline/Input.inl
     ${include_path}/pipeline/Output.h
     ${include_path}/pipeline/Output.inl
+    ${include_path}/pipeline/StageComponent.h
+    ${include_path}/pipeline/StageComponent.inl
+    ${include_path}/pipeline/PipelineLoader.h
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/Camera.h
@@ -192,12 +194,13 @@ set(sources
     ${source_path}/base/ColorGradientList.cpp
     ${source_path}/base/ColorGradientPreparation.cpp
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
-    ${source_path}/base/PipelineLoader.cpp
 
     ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
     ${source_path}/pipeline/AbstractSlot.cpp
+    ${source_path}/pipeline/StageComponent.cpp
+    ${source_path}/pipeline/PipelineLoader.cpp
 
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp

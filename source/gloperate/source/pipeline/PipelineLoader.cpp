@@ -1,4 +1,4 @@
-#include <gloperate/base/PipelineLoader.h>
+#include <gloperate/pipeline/PipelineLoader.h>
 
 #include <iostream>
 

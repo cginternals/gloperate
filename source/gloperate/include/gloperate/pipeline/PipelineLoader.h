@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <gloperate/base/PipelineLoader.h>
 #include <cppexpose/base/Tokenizer.h>
 
 #include <gloperate/pipeline/StageComponent.h>
