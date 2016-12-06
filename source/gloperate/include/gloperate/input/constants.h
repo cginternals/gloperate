@@ -11,18 +11,18 @@ namespace gloperate
 *    Mouse buttons
 */
 enum MouseButton {
-    NoMouseButton = 0,
-    MouseButton1 = 1,
-    MouseButtonLeft = 1,
-    MouseButton2 = 2,
-    MouseButtonRight = 2,
-    MouseButton3 = 3,
-    MouseButtonMiddle = 3,
-    MouseButton4,
-    MouseButton5,
-    MouseButton6,
-    MouseButton7,
-    MouseButton8
+    NoMouseButton     = 0x0000,
+    MouseButton1      = 0x0001,
+    MouseButtonLeft   = MouseButton1,
+    MouseButton2      = 0x0002,
+    MouseButtonRight  = MouseButton2,
+    MouseButton3      = 0x0004,
+    MouseButtonMiddle = MouseButton3,
+    MouseButton4      = 0x0008,
+    MouseButton5      = 0x0010,
+    MouseButton6      = 0x0020,
+    MouseButton7      = 0x0040,
+    MouseButton8      = 0x0080
 };
 
 
@@ -31,11 +31,11 @@ enum MouseButton {
 *    Keyboard modifier keys
 */
 enum KeyModifier {
-    ModNone = 0x0000,
-    ModShift = 0x0001,
+    ModNone    = 0x0000,
+    ModShift   = 0x0001,
     ModControl = 0x0002,
-    ModAlt = 0x0004,
-    ModSuper = 0x0008
+    ModAlt     = 0x0004,
+    ModSuper   = 0x0008
 };
 
 
