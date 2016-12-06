@@ -4,8 +4,10 @@
 #include <gloperate/base/PipelineLoader.h>
 #include <cppexpose/base/Tokenizer.h>
 
+#include <gloperate/pipeline/StageComponent.h>
+
 #include <string>
-#include <vector>
+#include <unordered_map>
 #include <memory>
 
 
@@ -28,6 +30,8 @@ namespace gloperate{
 class PipelineLoader
 {
 public:
+    PipelineLoader(gloperate::Environment* environment);
+
     /**
     *  @brief
     *    Load pipeline from file
@@ -39,7 +43,7 @@ public:
     *    returns the newly constructed pipeline
     *    returns nullptr when the file is inexistent or contains no valid pipeline
     */
-    static std::unique_ptr<Pipeline> load(gloperate::Environment *environment, const std::string & filename);
+    std::unique_ptr<Pipeline> load(const std::string & filename);
 
     /**
     *  @brief
@@ -52,14 +56,18 @@ public:
     *    returns the newly constructed pipeline
     *    returns nullptr when the file is inexistent or contains no valid pipeline
     */
-    static std::unique_ptr<Pipeline> parse(Environment *environment, const std::string & document);
+    std::unique_ptr<Pipeline> parse(const std::string & document);
 
 
 private:
-    static bool readDocument(gloperate::Pipeline* root, Environment* environment, cppexpose::Tokenizer& tokenizer);
-    static bool readPipeline(gloperate::Pipeline* root, Environment* environment, cppexpose::Tokenizer& tokenizer);
-    static bool readStage(gloperate::Stage* root, cppexpose::Tokenizer & tokenizer);
-    static bool readSlot(gloperate::AbstractSlot * slot, cppexpose::Tokenizer& tokenizer);
+    Pipeline *readDocument();
+    bool readPipeline(gloperate::Pipeline* root);
+    bool readStage(gloperate::Stage* root);
+    bool readSlot(gloperate::AbstractSlot * slot);
+
+    gloperate::Environment* m_environment;
+    cppexpose::Tokenizer m_tokenizer;
+    std::unordered_map<std::string, cppexpose::TypedComponent<gloperate::Stage> *> m_componentsByType;
 };
 
 

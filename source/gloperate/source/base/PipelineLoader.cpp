@@ -6,7 +6,6 @@
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/pipeline/StageComponent.h>
 #include <gloperate/pipeline/AbstractSlot.h>
 
 #include <gloperate/base/Environment.h>
@@ -22,11 +21,10 @@ namespace gloperate
 
 // TODO: build an error checked way to read a word
 
-std::unique_ptr<Pipeline> PipelineLoader::load(Environment * environment, const std::string & filename)
+PipelineLoader::PipelineLoader(Environment *environment)
+:   m_environment{environment}
 {
-    // Create tokenizer for JSON
-    Tokenizer tokenizer;
-    tokenizer.setOptions(
+    m_tokenizer.setOptions(
         Tokenizer::OptionParseStrings
       | Tokenizer::OptionParseNumber
       | Tokenizer::OptionParseBoolean
@@ -34,73 +32,71 @@ std::unique_ptr<Pipeline> PipelineLoader::load(Environment * environment, const 
       | Tokenizer::OptionCStyleComments
       | Tokenizer::OptionCppStyleComments
     );
-    tokenizer.setQuotationMarks("\"");
-    tokenizer.setSingleCharacters("{}:");
 
+    m_tokenizer.setQuotationMarks("\"");
+    m_tokenizer.setSingleCharacters("{}:");
+
+    std::vector<StageComponent* > stages = m_environment->componentManager()->components<gloperate::Stage>();
+
+    for(auto stage : stages){
+        m_componentsByType.insert({stage->type(), stage});
+    }
+}
+
+std::unique_ptr<Pipeline> PipelineLoader::load(const std::string & filename)
+{
     // Load file
-    if (!tokenizer.loadDocument(filename))
+    if (!m_tokenizer.loadDocument(filename))
     {
+        cppassist::critical()
+            << "Could not read the file: "
+            << filename
+            << ". Check that it exists and is accessible to the application."
+            << std::endl;
+
         return nullptr;
     }
 
-    Pipeline * rootPipeline;
-
     // Begin parsing
-    readDocument(rootPipeline, environment, tokenizer);
-    return std::unique_ptr<Pipeline>{rootPipeline};
+    auto pipeline = readDocument();
+    return std::unique_ptr<Pipeline>{pipeline};
 }
 
-std::unique_ptr<Pipeline> PipelineLoader::parse(Environment * environment, const std::string & document)
+std::unique_ptr<Pipeline> PipelineLoader::parse(const std::string & document)
 {
-    // Create tokenizer for JSON
-    Tokenizer tokenizer;
-    tokenizer.setOptions(
-        Tokenizer::OptionParseStrings
-      | Tokenizer::OptionParseNumber
-      | Tokenizer::OptionParseBoolean
-      | Tokenizer::OptionParseNull
-      | Tokenizer::OptionCStyleComments
-      | Tokenizer::OptionCppStyleComments
-    );
-    tokenizer.setQuotationMarks("\"");
-    tokenizer.setSingleCharacters("{}");
-
     // Set document
-    tokenizer.setDocument(document);
-
-    Pipeline * rootPipeline;
+    m_tokenizer.setDocument(document);
 
     // Begin parsing
-    readDocument(rootPipeline, environment, tokenizer);
-    return std::unique_ptr<Pipeline>{rootPipeline};
+    auto pipeline = readDocument();
+    return std::unique_ptr<Pipeline>{pipeline};
 }
 
-bool PipelineLoader::readDocument(Pipeline * root, Environment* environment, Tokenizer & tokenizer)
+Pipeline* PipelineLoader::readDocument()
 {
     // The first value in a document must be either an object or an array
-    Tokenizer::Token token = tokenizer.parseToken();
+    Tokenizer::Token token = m_tokenizer.parseToken();
+
+    Pipeline* root = nullptr;
 
     if (token.type == Tokenizer::TokenWord && token.content == "pipeline")
     {
-        root = new Pipeline(environment);
-        readPipeline(root, environment, tokenizer);
+        root = new Pipeline(m_environment);
+        readPipeline(root);
     }
-
     else
     {
         cppassist::critical()
             << "A valid pipeline must begin with the keyword 'pipeline'. "
             << std::endl;
-
-        return false;
     }
 
-    return true;
+    return root;
 }
 
-bool PipelineLoader::readPipeline(Pipeline *root, Environment *environment, cppexpose::Tokenizer &tokenizer)
+bool PipelineLoader::readPipeline(Pipeline *root)
 {
-    Tokenizer::Token token = tokenizer.parseToken();
+    Tokenizer::Token token = m_tokenizer.parseToken();
 
     if (token.type != Tokenizer::TokenWord){
         cppassist::critical()
@@ -113,7 +109,7 @@ bool PipelineLoader::readPipeline(Pipeline *root, Environment *environment, cppe
 
     root->setName(token.content);
 
-    token = tokenizer.parseToken();
+    token = m_tokenizer.parseToken();
     if (token.content != "{"){
         cppassist::critical()
             << "Expected '{' got: "
@@ -125,18 +121,15 @@ bool PipelineLoader::readPipeline(Pipeline *root, Environment *environment, cppe
 
     while(token.content != "}")
     {
-        token = tokenizer.parseToken();
+        token = m_tokenizer.parseToken();
 
         if(token.content == "pipeline"){
-            Pipeline * pipeline = new Pipeline(environment);
+            Pipeline * pipeline = new Pipeline(m_environment);
             root->addStage(pipeline);
-            readPipeline(pipeline, environment, tokenizer);
+            readPipeline(pipeline);
             continue;
         }
         if(token.content == "stage"){
-
-
-
             if (token.type != Tokenizer::TokenWord){
                 cppassist::critical()
                     << "Expected typename of a stage, got: "
@@ -147,14 +140,9 @@ bool PipelineLoader::readPipeline(Pipeline *root, Environment *environment, cppe
             }
             auto stageTypeName = token.content;
 
-            // TODO: make this an instance variable, add a method "getComponentByTypename"
-            std::vector<StageComponent* > stages = environment->componentManager()->components<gloperate::Stage>();
+            auto component = m_componentsByType.find(stageTypeName);
 
-            auto component = std::find_if(stages.begin(),
-                         stages.end(),
-                         [&stageTypeName](StageComponent* curComponent){return curComponent->type() == stageTypeName;});
-
-            if(component == stages.end()){
+            if(component == m_componentsByType.end()){
                 cppassist::critical()
                     << "Expected the typename of a stage, but no stage of type: "
                     << token.content
@@ -164,9 +152,9 @@ bool PipelineLoader::readPipeline(Pipeline *root, Environment *environment, cppe
                 return false;
             }
 
-            Stage * stage = (*component)->createInstance(environment);
+            Stage * stage = (*component).second->createInstance(m_environment);
             root->addStage(stage);
-            readStage(stage, tokenizer);
+            readStage(stage);
             continue;
         }
 
@@ -177,9 +165,9 @@ bool PipelineLoader::readPipeline(Pipeline *root, Environment *environment, cppe
 }
 
 
-bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
+bool PipelineLoader::readStage(Stage* root)
 {
-    Tokenizer::Token token = tokenizer.parseToken();
+    Tokenizer::Token token = m_tokenizer.parseToken();
 
     if (token.type != Tokenizer::TokenWord){
         cppassist::critical()
@@ -192,7 +180,7 @@ bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
 
     root->setName(token.content);
 
-    token = tokenizer.parseToken();
+    token = m_tokenizer.parseToken();
     if (token.content != "{"){
         cppassist::critical()
             << "Expected '{' got: "
@@ -204,7 +192,7 @@ bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
 
     while(token.content != "}")
     {
-        token = tokenizer.parseToken();
+        token = m_tokenizer.parseToken();
 
         AbstractSlot * slot;
 
@@ -213,7 +201,7 @@ bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
 
             auto slotType = token.content;
 
-            token = tokenizer.parseToken();
+            token = m_tokenizer.parseToken();
             if (token.type != Tokenizer::TokenWord){
                 cppassist::critical()
                     << "Expected the type of a slot got: "
@@ -263,7 +251,7 @@ bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
                     << std::endl;
             }
 
-            readSlot(slot, tokenizer);
+            readSlot(slot);
         }
 
     }
@@ -272,9 +260,9 @@ bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
 
 }
 
-bool PipelineLoader::readSlot(gloperate::AbstractSlot *slot, cppexpose::Tokenizer &tokenizer)
+bool PipelineLoader::readSlot(gloperate::AbstractSlot *slot)
 {
-    Tokenizer::Token token = tokenizer.parseToken();
+    Tokenizer::Token token = m_tokenizer.parseToken();
 
     if(token.content != ":")
     {
