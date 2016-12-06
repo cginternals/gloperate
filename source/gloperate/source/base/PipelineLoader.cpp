@@ -5,16 +5,22 @@
 #include <cppassist/string/conversion.h>
 #include <cppassist/logging/logging.h>
 
-
 #include <gloperate/pipeline/Pipeline.h>
+#include <gloperate/pipeline/StageComponent.h>
 #include <gloperate/pipeline/AbstractSlot.h>
+
+#include <gloperate/base/Environment.h>
 
 using namespace cppassist;
 
 using cppexpose::Tokenizer;
 
+using StageComponent = cppexpose::TypedComponent<gloperate::Stage>;
+
 namespace gloperate
 {
+
+// TODO: build an error checked way to read a word
 
 std::unique_ptr<Pipeline> PipelineLoader::load(Environment * environment, const std::string & filename)
 {
@@ -128,9 +134,37 @@ bool PipelineLoader::readPipeline(Pipeline *root, Environment *environment, cppe
             continue;
         }
         if(token.content == "stage"){
-            // TODO: resolve stagentype
-            auto stageType = tokenizer.parseToken();
-            Stage * stage = new Stage(environment);
+
+
+
+            if (token.type != Tokenizer::TokenWord){
+                cppassist::critical()
+                    << "Expected typename of a stage, got: "
+                    << token.content
+                    << std::endl;
+
+                return false;
+            }
+            auto stageTypeName = token.content;
+
+            // TODO: make this an instance variable, add a method "getComponentByTypename"
+            std::vector<StageComponent* > stages = environment->componentManager()->components<gloperate::Stage>();
+
+            auto component = std::find_if(stages.begin(),
+                         stages.end(),
+                         [&stageTypeName](StageComponent* curComponent){return curComponent->type() == stageTypeName;});
+
+            if(component == stages.end()){
+                cppassist::critical()
+                    << "Expected the typename of a stage, but no stage of type: "
+                    << token.content
+                    << " seems to exist."
+                    << std::endl;
+
+                return false;
+            }
+
+            Stage * stage = (*component)->createInstance(environment);
             root->addStage(stage);
             readStage(stage, tokenizer);
             continue;
@@ -141,6 +175,7 @@ bool PipelineLoader::readPipeline(Pipeline *root, Environment *environment, cppe
 
     return true;
 }
+
 
 bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
 {
@@ -171,25 +206,51 @@ bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
     {
         token = tokenizer.parseToken();
 
+        AbstractSlot * slot;
+
         // Test whether there is a dynamic property (input or output)
         if(token.content == "input" || token.content == "output"){
-            auto slotTypeString = tokenizer.parseToken();
-            // TODO: resolve slotType
-            auto * slot = new Slot<slotType>();
 
-            if(token.content == "input"){
-                root->addInput(slot);
-            }else{
-                root->addInput(slot);
-            }
+            auto slotType = token.content;
 
-            // A dynamic token is filled like a static one, so a fallthrough works just fine
             token = tokenizer.parseToken();
+            if (token.type != Tokenizer::TokenWord){
+                cppassist::critical()
+                    << "Expected the type of a slot got: "
+                    << token.content
+                    << std::endl;
+
+                return false;
+            }
+            auto type = token.content;
+
+            if (token.type != Tokenizer::TokenWord){
+                cppassist::critical()
+                    << "Expected the name of a slot got: "
+                    << token.content
+                    << std::endl;
+
+                return false;
+            }
+            auto name = token.content;
+
+            slot = root->createSlot(slotType, type, name);
+            if(slot == nullptr){
+                cppassist::critical()
+                    << type
+                    << " is not a valid type for a slot."
+                    << std::endl;
+
+                return false;
+            }
+            // A dynamic token is filled like a static one, so a fallthrough works just fine
         }
 
         if(token.type == Tokenizer::TokenWord)
         {
-            auto slot = root->input(token.content);
+            // No need to search for a slot that was just created
+            if(slot == nullptr)
+                slot = root->input(token.content);
             if(slot == nullptr)
                 slot = root->output(token.content);
 
@@ -202,7 +263,7 @@ bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
                     << std::endl;
             }
 
-            readSlot(root, slot, tokenizer);
+            readSlot(slot, tokenizer);
         }
 
     }
@@ -211,7 +272,7 @@ bool PipelineLoader::readStage(Stage* root, cppexpose::Tokenizer &tokenizer)
 
 }
 
-bool PipelineLoader::readSlot(Stage *root, gloperate::AbstractSlot *slot, cppexpose::Tokenizer &tokenizer)
+bool PipelineLoader::readSlot(gloperate::AbstractSlot *slot, cppexpose::Tokenizer &tokenizer)
 {
     Tokenizer::Token token = tokenizer.parseToken();
 
@@ -225,9 +286,7 @@ bool PipelineLoader::readSlot(Stage *root, gloperate::AbstractSlot *slot, cppexp
         return false;
     }
 
-    if(token.content == "true" || token.content == "false")
-        slot->setValue(cppexpose::Variant(token.content).toBool());
-
+    return slot->fromVariant(cppexpose::Variant(token.content));
 }
 
 } // namespace gloperate

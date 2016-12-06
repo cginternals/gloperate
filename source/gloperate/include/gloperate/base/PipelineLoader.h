@@ -59,7 +59,7 @@ private:
     static bool readDocument(gloperate::Pipeline* root, Environment* environment, cppexpose::Tokenizer& tokenizer);
     static bool readPipeline(gloperate::Pipeline* root, Environment* environment, cppexpose::Tokenizer& tokenizer);
     static bool readStage(gloperate::Stage* root, cppexpose::Tokenizer & tokenizer);
-    static bool readSlot(gloperate::Stage* root, gloperate::AbstractSlot * slot, cppexpose::Tokenizer& tokenizer);
+    static bool readSlot(gloperate::AbstractSlot * slot, cppexpose::Tokenizer& tokenizer);
 };
 
 
