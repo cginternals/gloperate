@@ -275,12 +275,14 @@ public:
     *    Vertex buffer index
     *  @param[in] data
     *    Vertex data
+    *  @param[in] usage
+    *    Used as a performance hint on how the buffer is used
     *
     *  @remarks
     *    The indices don't need to be continuous.
     */
     template <typename VectorType>
-    void setData(size_t index, const std::vector<VectorType> & data);
+    void setData(size_t index, const std::vector<VectorType> & data, gl::GLenum usage);
 
     /**
     *  @brief
@@ -294,12 +296,14 @@ public:
     *    Vertex buffer index
     *  @param[in] data
     *    Vertex data
+    *  @param[in] usage
+    *    Used as a performance hint on how the buffer is used
     *
     *  @remarks
     *    The indices don't need to be continuous.
     */
     template <typename ArrayType, size_t ArraySize>
-    void setData(size_t index, const std::array<ArrayType, ArraySize> & data);
+    void setData(size_t index, const std::array<ArrayType, ArraySize> & data, gl::GLenum usage);
 
     /**
     *  @brief
