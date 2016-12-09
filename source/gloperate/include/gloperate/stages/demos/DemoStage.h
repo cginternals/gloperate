@@ -55,7 +55,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoStage(Environment * environment, const std::string & name = "DemoStage");
+    DemoStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

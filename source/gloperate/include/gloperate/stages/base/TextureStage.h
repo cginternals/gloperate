@@ -65,7 +65,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    TextureStage(Environment * environment, const std::string & name = "TextureStage");
+    TextureStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

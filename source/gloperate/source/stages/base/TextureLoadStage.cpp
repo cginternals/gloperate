@@ -12,7 +12,7 @@ CPPEXPOSE_COMPONENT(TextureLoadStage, gloperate::Stage)
 
 
 TextureLoadStage::TextureLoadStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "TextureLoadStage", name)
 , filename("filename", this)
 , texture ("texture", this)
 {

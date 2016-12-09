@@ -18,7 +18,7 @@ CPPEXPOSE_COMPONENT(DemoPipeline, gloperate::Stage)
 
 
 DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
-: Pipeline(environment, name)
+: Pipeline(environment, "DemoPipeline", name)
 , renderInterface(this)
 , texture("texture", this)
 , angle("angle", this)

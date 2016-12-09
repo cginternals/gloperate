@@ -64,7 +64,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    ColorizeStage(Environment * environment, const std::string & name = "ColorizeStage");
+    ColorizeStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
