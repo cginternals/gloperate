@@ -75,7 +75,6 @@ unsigned char Color::red() const
 
 void Color::setRed(unsigned char value)
 {
-    assert(0 <= value && value <= 255);
     m_bgra[2] = static_cast<unsigned char>(value);
 }
 
@@ -86,7 +85,6 @@ unsigned char Color::green() const
 
 void Color::setGreen(unsigned char value)
 {
-    assert(0 <= value && value <= 255);
     m_bgra[1] = static_cast<unsigned char>(value);
 }
 
@@ -97,7 +95,6 @@ unsigned char Color::blue() const
 
 void Color::setBlue(unsigned char value)
 {
-    assert(0 <= value && value <= 255);
     m_bgra[0] = static_cast<unsigned char>(value);
 }
 
@@ -108,7 +105,6 @@ unsigned char Color::alpha() const
 
 void Color::setAlpha(unsigned char value)
 {
-    assert(0 <= value && value <= 255);
     m_bgra[3] = static_cast<unsigned char>(value);
 }
 
