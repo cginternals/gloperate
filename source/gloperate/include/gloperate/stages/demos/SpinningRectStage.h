@@ -66,7 +66,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    SpinningRectStage(Environment * environment, const std::string & name = "SpinningRectStage");
+    SpinningRectStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

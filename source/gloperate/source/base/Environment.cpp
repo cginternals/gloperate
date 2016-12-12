@@ -24,6 +24,7 @@
 #include <gloperate/stages/demos/DemoMultiFramePipeline.h>
 #include <gloperate/stages/demos/SpinningRectStage.h>
 #include <gloperate/stages/demos/TimerStage.h>
+#include <gloperate/stages/demos/ColorizeStage.h>
 
 
 namespace gloperate
@@ -205,6 +206,7 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&DemoMultiFramePipeline::Component);
     m_componentManager.addComponent(&SpinningRectStage::Component);
     m_componentManager.addComponent(&TimerStage::Component);
+    m_componentManager.addComponent(&ColorizeStage::Component);
 }
 
 void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)

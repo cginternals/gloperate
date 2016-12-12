@@ -166,15 +166,11 @@ void Slot<T>::setValid(bool isValid)
         return;
     }
 
-    // Only update state if state has changed
-    if (m_valid != isValid)
-    {
-        // Set state of own data
-        m_valid = isValid;
+    // Set state of own data
+    m_valid = isValid;
 
-        // Emit signal
-        this->onValueChanged(this->m_value);
-    }
+    // Emit signal
+    this->onValueChanged(this->m_value);
 }
 
 template <typename T>

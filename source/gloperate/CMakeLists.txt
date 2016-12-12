@@ -22,10 +22,11 @@ set(target gloperate)
 message(STATUS "Lib ${target}")
 
 # Set API export file and macro
-string(TOUPPER ${target} target_upper)
+string(MAKE_C_IDENTIFIER ${target} target_id)
+string(TOUPPER ${target_id} target_id)
 set(feature_file "include/${target}/${target}_features.h")
 set(export_file  "include/${target}/${target}_api.h")
-set(export_macro "${target_upper}_API")
+set(export_macro "${target_id}_API")
 
 
 # 
@@ -64,8 +65,15 @@ set(headers
     ${include_path}/base/Loader.inl
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
-    ${include_path}/base/GlmProperties.h
-    ${include_path}/base/ExtraProperties.h
+    ${include_path}/base/ExtendedProperties.h
+    ${include_path}/base/AbstractColorGradient.h
+    ${include_path}/base/AbstractColorGradient.inl
+    ${include_path}/base/Color.h
+    ${include_path}/base/ColorGradientList.h
+    ${include_path}/base/ColorGradientList.inl
+    ${include_path}/base/ColorGradientPreparation.h
+    ${include_path}/base/ExplicitEquidistantColorGradient.h
+    ${include_path}/base/ExplicitEquidistantColorGradient.inl
 
     ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h
@@ -100,12 +108,15 @@ set(headers
     ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/base/SplitStage.h
     ${include_path}/stages/base/BlitStage.h
+    ${include_path}/stages/base/ColorGradientSelectionStage.h
+    ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/DemoAntialiasableTriangleStage.h
     ${include_path}/stages/demos/DemoMultiFramePipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
     ${include_path}/stages/demos/TimerStage.h
+    ${include_path}/stages/demos/ColorizeStage.h
     ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
     ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
     ${include_path}/stages/multiframe/MultiFrameControlStage.h
@@ -154,6 +165,11 @@ set(sources
     ${source_path}/base/Image.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
+    ${source_path}/base/AbstractColorGradient.cpp
+    ${source_path}/base/Color.cpp
+    ${source_path}/base/ColorGradientList.cpp
+    ${source_path}/base/ColorGradientPreparation.cpp
+    ${source_path}/base/ExplicitEquidistantColorGradient.cpp
 
     ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
@@ -172,6 +188,8 @@ set(sources
     ${source_path}/stages/interfaces/MultiFrameRenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/CustomFramebufferStage.cpp
+    ${source_path}/stages/base/ColorGradientSelectionStage.cpp
+    ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
@@ -185,6 +203,7 @@ set(sources
     ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
+    ${source_path}/stages/demos/ColorizeStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
     ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp
@@ -302,7 +321,7 @@ target_compile_definitions(${target}
     PRIVATE
 
     PUBLIC
-    $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_upper}_STATIC_DEFINE>
+    $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_id}_STATIC_DEFINE>
     ${DEFAULT_COMPILE_DEFINITIONS}
     GLM_FORCE_RADIANS
 

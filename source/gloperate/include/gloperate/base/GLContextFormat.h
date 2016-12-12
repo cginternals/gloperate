@@ -41,7 +41,6 @@ public:
         Default         ///< The default swap behaviour (of the platform).
       , SingleBuffering ///< Might result in flickering when is done directly to screen without an intermediate offscreen buffer.
       , DoubleBuffering ///< Rendering is done to the back buffer, which is then swapped with the front buffer.
-      , TripleBuffering ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
     };
 
 

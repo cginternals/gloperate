@@ -51,7 +51,7 @@ CPPEXPOSE_COMPONENT(MixerStage, gloperate::Stage)
 
 
 MixerStage::MixerStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "MixerStage", name)
 , viewport      ("viewport", this)
 , targetFBO     ("targetFBO", this)
 , texture       ("texture", this)
