@@ -37,7 +37,7 @@ public:
 
 public:
     // Interfaces
-    MultiFrameRenderInterface renderInterface; ///< Interface for rendering into a viewer
+    MultiFrameRenderInterface renderInterface; ///< Interface for rendering into a viewer or to use with multiframe aggregation
 
 
 public:

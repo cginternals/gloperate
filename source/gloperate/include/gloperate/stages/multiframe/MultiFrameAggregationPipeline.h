@@ -49,6 +49,9 @@ public:
     // Interfaces
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
+    // Inputs
+    Input<int> multiFrameCount; ///< Maximum number of frames to aggregate
+
 
 public:
     /**

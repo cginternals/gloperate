@@ -16,6 +16,7 @@ MultiFrameControlStage::MultiFrameControlStage(Environment * environment, const 
 : Stage(environment, name)
 , m_currentFrame(0)
 , frameNumber("frameNumber", this)
+, multiFrameCount("multiFrameCount", this)
 , viewport("viewport", this)
 , currentFrame("currentFrame", this)
 , aggregationFactor("aggregationFactor", this)
@@ -33,8 +34,11 @@ void MultiFrameControlStage::onProcess(AbstractGLContext *)
 {
     m_currentFrame++;
 
-    currentFrame.setValue(m_currentFrame);
-    aggregationFactor.setValue(1.0f/m_currentFrame);
+    if (m_currentFrame < *multiFrameCount)
+    {
+        currentFrame.setValue(m_currentFrame);
+        aggregationFactor.setValue(1.0f/m_currentFrame);
+    }
 }
 
 

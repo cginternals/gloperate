@@ -25,6 +25,7 @@ CPPEXPOSE_COMPONENT(MultiFrameAggregationPipeline, gloperate::Stage)
 MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
+, multiFrameCount("multiFrameCount", this, 64)
 , m_renderFramebufferStage(new BasicFramebufferStage(environment, "BasicFramebufferStage (Renderer)"))
 , m_aggregationFramebufferStage(new CustomFramebufferStage(environment, "CustomFramebufferStage (Accumulation)"))
 , m_controlStage(new MultiFrameControlStage(environment, "MultiFrameControlStage"))
@@ -48,6 +49,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
 
     addStage(m_controlStage);
     m_controlStage->frameNumber << renderInterface.frameCounter;
+    m_controlStage->multiFrameCount << multiFrameCount;
     m_controlStage->viewport << renderInterface.deviceViewport;
 
     addStage(m_aggregationStage);
@@ -64,18 +66,18 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
 
     addStage(m_diskDistributionStage);
     m_diskDistributionStage->currentMultiFrame << m_controlStage->currentFrame;
-    m_diskDistributionStage->multiFrameCount.setValue(128); // TODO: Where to get this value?
+    m_diskDistributionStage->multiFrameCount << multiFrameCount;
 
     addStage(m_noiseStage);
 
     addStage(m_ssaoStage);
     m_ssaoStage->currentFrame << m_controlStage->currentFrame;
-    m_ssaoStage->multiFrameCount.setValue(128); // TODO: Where to get this value?
+    m_ssaoStage->multiFrameCount << multiFrameCount;
 
     addStage(m_subpixelStage);
     m_subpixelStage->viewport << renderInterface.deviceViewport;
     m_subpixelStage->currentMultiFrame << m_controlStage->currentFrame;
-    m_subpixelStage->multiFrameCount.setValue(128); // TODO: Where to get this value?
+    m_subpixelStage->multiFrameCount << multiFrameCount;
 
     addStage(m_transparencyStage);
 
