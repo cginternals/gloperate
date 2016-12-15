@@ -554,7 +554,13 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
 
     for(const auto& output : m_outputs)
     {
-        writer("output " + output->typeName() + " " + output->name() , level+1);
+        if(!output->isDynamic())
+        {
+            continue;
+        }
+
+        std::string description = "output " + output->typeName() + " " + output->name();
+        writer(description , level+1);
     }
 
     writer("\n", level);
