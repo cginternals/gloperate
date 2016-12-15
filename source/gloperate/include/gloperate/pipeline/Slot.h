@@ -161,7 +161,7 @@ public:
     // Virtual AbstractProperty interface
     virtual bool isObject() const override;
 
-    bool isDynamic() const;
+    bool isDynamic() const override;
 
 
 protected:

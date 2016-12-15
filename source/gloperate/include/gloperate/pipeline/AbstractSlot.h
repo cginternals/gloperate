@@ -218,6 +218,12 @@ public:
     */
     virtual void onRequiredChanged() = 0;
 
+    /**
+    *  @brief
+    *     Check whether the slot was created at runtime
+    */
+    virtual bool isDynamic() const = 0;
+
 
 protected:
     /**
