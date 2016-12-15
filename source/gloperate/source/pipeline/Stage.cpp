@@ -533,9 +533,9 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
     writer("{", level);
     for(const auto& input : m_inputs)
     {
-        std::string descripiton{"input " + input->typeName() + " " + input->name()};
 
         std::string value = "undefined";
+        std::string description = input->isDynamic() ? std::string{"input " + input->typeName() + " " + input->name()} : input->name();
 
         if(input->isConnected())
         {
