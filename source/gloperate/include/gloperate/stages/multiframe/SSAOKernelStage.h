@@ -50,7 +50,6 @@ public:
     Input<int> kernelSize;      ///< Size of SSAO kernel
     Input<int> noiseSize;       ///< Size of SSAO noise
     Input<int> currentFrame;    ///< Number of currently aggregated frame
-    Input<int> multiFrameCount; ///< Total number of aggregated frames
 
     // Outputs
     Output<globjects::Texture *> kernelTexture;  ///< Kernel texture

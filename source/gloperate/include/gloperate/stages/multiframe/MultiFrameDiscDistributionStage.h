@@ -37,7 +37,6 @@ public:
     Input<bool> isActive;         ///< Generate new vector
     Input<float> radius;          ///< Maximum length of vector
     Input<int> currentMultiFrame; ///< Number of currently aggregated frame
-    Input<int> multiFrameCount;   ///< Total number of aggregated frames
 
     // Outputs
     Output<glm::vec2> value; ///< Random vector

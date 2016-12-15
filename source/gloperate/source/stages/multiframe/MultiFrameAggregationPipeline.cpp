@@ -66,18 +66,15 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
 
     addStage(m_diskDistributionStage);
     m_diskDistributionStage->currentMultiFrame << m_controlStage->currentFrame;
-    m_diskDistributionStage->multiFrameCount << multiFrameCount;
 
     addStage(m_noiseStage);
 
     addStage(m_ssaoStage);
     m_ssaoStage->currentFrame << m_controlStage->currentFrame;
-    m_ssaoStage->multiFrameCount << multiFrameCount;
 
     addStage(m_subpixelStage);
     m_subpixelStage->viewport << renderInterface.deviceViewport;
     m_subpixelStage->currentMultiFrame << m_controlStage->currentFrame;
-    m_subpixelStage->multiFrameCount << multiFrameCount;
 
     addStage(m_transparencyStage);
 

@@ -17,7 +17,6 @@ MultiFrameDiscDistributionStage::MultiFrameDiscDistributionStage(gloperate::Envi
 , isActive("isActive", this)
 , radius("radius", this)
 , currentMultiFrame("currentMultiFrame", this)
-, multiFrameCount("multiFrameCount", this)
 , value("value", this)
 {
 }

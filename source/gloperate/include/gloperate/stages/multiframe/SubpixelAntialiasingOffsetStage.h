@@ -37,7 +37,6 @@ public:
     // Inputs
     Input<glm::vec4> viewport;      ///< Viewport, as vec4(xPos, yPos, width, height)
     Input<int> currentMultiFrame;   ///< Number of current frame
-    Input<int> multiFrameCount;     ///< Total number of frames to aggregate
 
     // Outputs
     Output<glm::vec2> subPixelOffset; ///< Subpixel offset

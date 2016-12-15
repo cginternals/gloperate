@@ -79,7 +79,6 @@ SSAOKernelStage::SSAOKernelStage(gloperate::Environment * environment, const std
 , kernelSize("kernelSize", this)
 , noiseSize("noiseSize", this)
 , currentFrame("currentFrame", this)
-, multiFrameCount("multiFrameCount", this)
 , kernelTexture("ssaoTexture", this)
 , noiseTexture("noiseTexture", this)
 {

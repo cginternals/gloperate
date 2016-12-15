@@ -15,7 +15,6 @@ SubpixelAntialiasingOffsetStage::SubpixelAntialiasingOffsetStage(gloperate::Envi
 : Stage(environment, name)
 , viewport("viewport", this)
 , currentMultiFrame("currentMultiFrame", this)
-, multiFrameCount("multiFrameCount", this)
 , subPixelOffset("subPixelOffset", this)
 {
 }
