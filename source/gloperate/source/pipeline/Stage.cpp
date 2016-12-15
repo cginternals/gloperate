@@ -588,5 +588,10 @@ std::string Stage::getSourcePath(const AbstractSlot* input) const
     return path.str();
 }
 
+void Stage::serialize_custom(std::function<void (const std::string &, uint)> writer, uint level)
+{
+    return;
+}
+
 
 } // namespace gloperate
