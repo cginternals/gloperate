@@ -42,7 +42,7 @@ public:
     *    returns the newly constructed pipeline
     *    returns nullptr when the file is inexistent or contains no valid pipeline
     */
-    std::unique_ptr<Pipeline> load(const std::string & filename);
+    std::unique_ptr<Stage> load(const std::string & filename);
 
     /**
     *  @brief
@@ -55,12 +55,11 @@ public:
     *    returns the newly constructed pipeline
     *    returns nullptr when the file is inexistent or contains no valid pipeline
     */
-    std::unique_ptr<Pipeline> parse(const std::string & document);
+    std::unique_ptr<Stage> parse(const std::string & document);
 
 
 private:
-    Pipeline *readDocument();
-    bool readPipeline(gloperate::Pipeline* root);
+    Stage *readDocument();
     bool readStage(gloperate::Stage* root);
     bool readSlot(gloperate::AbstractSlot * slot);
 

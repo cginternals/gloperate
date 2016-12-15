@@ -43,7 +43,7 @@ PipelineLoader::PipelineLoader(Environment *environment)
     }
 }
 
-std::unique_ptr<Pipeline> PipelineLoader::load(const std::string & filename)
+std::unique_ptr<Stage> PipelineLoader::load(const std::string & filename)
 {
     // Load file
     if (!m_tokenizer.loadDocument(filename))
@@ -59,109 +59,42 @@ std::unique_ptr<Pipeline> PipelineLoader::load(const std::string & filename)
 
     // Begin parsing
     auto pipeline = readDocument();
-    return std::unique_ptr<Pipeline>{pipeline};
+    return std::unique_ptr<Stage>{pipeline};
 }
 
-std::unique_ptr<Pipeline> PipelineLoader::parse(const std::string & document)
+std::unique_ptr<Stage> PipelineLoader::parse(const std::string & document)
 {
     // Set document
     m_tokenizer.setDocument(document);
 
     // Begin parsing
     auto pipeline = readDocument();
-    return std::unique_ptr<Pipeline>{pipeline};
+    return std::unique_ptr<Stage>{pipeline};
 }
 
-Pipeline* PipelineLoader::readDocument()
+Stage* PipelineLoader::readDocument()
 {
     // The first value in a document must be either an object or an array
     Tokenizer::Token token = m_tokenizer.parseToken();
 
-    Pipeline* root = nullptr;
+    Stage* root = nullptr;
 
-    if (token.type == Tokenizer::TokenWord && token.content == "pipeline")
-    {
-        root = new Pipeline(m_environment);
-        readPipeline(root);
+    if(m_componentsByType.find(token.content) != m_componentsByType.end()){
+
+        auto component = m_componentsByType.find(token.content);
+
+        root = (*component).second->createInstance(m_environment);
+        readStage(root);
     }
     else
     {
         cppassist::critical()
-            << "A valid pipeline must begin with the keyword 'pipeline'. "
+            << "Expected a known StageType, got: "
+            << token.content
             << std::endl;
     }
 
     return root;
-}
-
-bool PipelineLoader::readPipeline(Pipeline *root)
-{
-    Tokenizer::Token token = m_tokenizer.parseToken();
-
-    if (token.type != Tokenizer::TokenWord){
-        cppassist::critical()
-            << "Expected name of the pipeline, got: "
-            << token.content
-            << std::endl;
-
-        return false;
-    }
-
-    root->setName(token.content);
-
-    token = m_tokenizer.parseToken();
-    if (token.content != "{"){
-        cppassist::critical()
-            << "Expected '{' got: "
-            << token.content
-            << std::endl;
-
-        return false;
-    }
-
-    while(token.content != "}")
-    {
-        token = m_tokenizer.parseToken();
-
-        if(token.content == "pipeline"){
-            Pipeline * pipeline = new Pipeline(m_environment);
-            root->addStage(pipeline);
-            readPipeline(pipeline);
-            continue;
-        }
-        if(token.content == "stage"){
-            if (token.type != Tokenizer::TokenWord){
-                cppassist::critical()
-                    << "Expected typename of a stage, got: "
-                    << token.content
-                    << std::endl;
-
-                return false;
-            }
-            auto stageTypeName = token.content;
-
-            auto component = m_componentsByType.find(stageTypeName);
-
-            if(component == m_componentsByType.end()){
-                cppassist::critical()
-                    << "Expected the typename of a stage, but no stage of type: "
-                    << token.content
-                    << " seems to exist."
-                    << std::endl;
-
-                return false;
-            }
-
-            Stage * stage = (*component).second->createInstance(m_environment);
-            root->addStage(stage);
-            readStage(stage);
-            continue;
-        }
-
-        // TODO: Inputs/Outputs of Pipelines
-    }
-
-    return true;
 }
 
 
@@ -194,7 +127,28 @@ bool PipelineLoader::readStage(Stage* root)
     {
         token = m_tokenizer.parseToken();
 
-        AbstractSlot * slot;
+        // Test whether the element is a substage
+        if(m_componentsByType.find(token.content) != m_componentsByType.end()){
+
+            auto component = m_componentsByType.find(token.content);
+
+            Pipeline * rootAsPipeline = dynamic_cast<Pipeline*>(root);
+
+            if(rootAsPipeline == nullptr){
+                cppassist::critical()
+                    << root->name()
+                    << " is not a pipeline but seems to contain stages"
+                    << std::endl;
+                return false;
+            }
+
+            Stage * stage = (*component).second->createInstance(m_environment);
+            rootAsPipeline->addStage(stage);
+            readStage(stage);
+            continue;
+        }
+
+        AbstractSlot * slot = nullptr;
 
         // Test whether there is a dynamic property (input or output)
         if(token.content == "input" || token.content == "output"){
