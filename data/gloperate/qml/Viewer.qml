@@ -154,6 +154,19 @@ Background
                     pipelineSave.visible = true;
                 }
             }
+
+            IconButton
+            {
+                text: 'Load Pipeline'
+                icon: '0040-file-picture.png'
+
+                Layout.fillWidth: true
+
+                onClicked:
+                {
+                    pipelineLoad.visible = true;
+                }
+            }
         }
 
         IconButton
@@ -425,6 +438,12 @@ Background
     PipelineSaveDialog
     {
         id: pipelineSave
+    }
+
+    // Pipeline loading dialog
+    PipelineLoadDialog
+    {
+        id: pipelineLoad
     }
 
     // Video capture dialog
