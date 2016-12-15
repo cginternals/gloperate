@@ -638,6 +638,7 @@ protected:
     cppexpose::Variant scr_slotTypes();
 
     std::string getSourcePath(const AbstractSlot* input) const;
+    virtual void serialize_custom(std::function<void (const std::string &, uint)> writer, uint level);
 
 
 

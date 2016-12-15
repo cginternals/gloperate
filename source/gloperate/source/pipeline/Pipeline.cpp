@@ -293,6 +293,14 @@ void Pipeline::onOutputRequiredChanged(AbstractSlot *)
     // Not necessary for pipelines (handled by inner connections)
 }
 
+void Pipeline::serialize_custom(std::function<void (const std::string &, uint)> writer, uint level)
+{
+    for(auto& stage : m_stages)
+    {
+        stage->serialize(writer, level+1);
+    }
+}
+
 cppexpose::Variant Pipeline::scr_getDescription()
 {
     // Get stage description
@@ -358,18 +366,6 @@ void Pipeline::scr_removeConnection(const std::string & to)
     {
         slotTo->disconnect();
     }
-}
-
-void Pipeline::serialize(std::function<void(const std::string&, uint)>writer, uint level)
-{
-    writer(m_name, level);
-    writer("{", level);
-    //TODO: Serialize own Inputs/Outputs
-    for(auto& stage : m_stages)
-    {
-        stage->serialize(writer, level+1);
-    }
-    writer("}", level);
 }
 
 void Pipeline::scr_save(const std::string &filename)

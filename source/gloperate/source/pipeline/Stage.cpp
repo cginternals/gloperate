@@ -557,6 +557,10 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
         writer("output " + output->typeName() + " " + output->name() , level+1);
     }
 
+    writer("\n", level);
+
+    this->serialize_custom(writer, level);
+
     writer("}", level);
 
 }
