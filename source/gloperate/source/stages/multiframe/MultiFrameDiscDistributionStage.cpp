@@ -26,16 +26,12 @@ void MultiFrameDiscDistributionStage::onProcess(gloperate::AbstractGLContext * c
 {
     if (isActive.isConnected() && !(*isActive))
     {
-        (*value) = glm::vec2(0.0f);
-
-        // invalidateOutputs();
+        value.setValue(glm::vec2(0.0f));
 
         return;
     }
 
     value.setValue(glm::diskRand(*radius));
-
-    // invalidateOutputs();
 }
 
 

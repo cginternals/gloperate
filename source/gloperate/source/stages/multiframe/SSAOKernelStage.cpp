@@ -101,15 +101,14 @@ void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 
 void SSAOKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
-    if (!(*enable))
+    if (*enable)
     {
-        return;
+        (*kernelTexture)->image1D(0, gl::GL_RGB16F, *kernelSize, 0, gl::GL_RGB, gl::GL_FLOAT, ssaoKernel(*kernelSize).data());
+        (*noiseTexture)->image2D(0, gl::GL_RG16F, *noiseSize, *noiseSize, 0, gl::GL_RG, gl::GL_FLOAT, ssaoNoise(*noiseSize).data());
     }
 
-    (*kernelTexture)->image1D(0, gl::GL_RGB16F, (*kernelSize), 0, gl::GL_RGB, gl::GL_FLOAT, ssaoKernel((*kernelSize)).data());
-    (*noiseTexture)->image2D(0, gl::GL_RG16F, (*noiseSize), (*noiseSize), 0, gl::GL_RG, gl::GL_FLOAT, ssaoNoise((*noiseSize)).data());
-
-    // invalidateOutputs();
+    kernelTexture.setValid(true);
+    noiseTexture.setValid(true);
 }
 
 
