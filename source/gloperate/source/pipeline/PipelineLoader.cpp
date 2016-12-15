@@ -166,6 +166,7 @@ bool PipelineLoader::readStage(Stage* root)
             }
             auto type = token.content;
 
+            token = m_tokenizer.parseToken();
             if (token.type != Tokenizer::TokenWord){
                 cppassist::critical()
                     << "Expected the name of a slot got: "
@@ -183,7 +184,6 @@ bool PipelineLoader::readStage(Stage* root)
                     << " is not a valid type for a slot."
                     << std::endl;
 
-                return false;
             }
             // A dynamic token is filled like a static one, so a fallthrough works just fine
         }
@@ -198,14 +198,27 @@ bool PipelineLoader::readStage(Stage* root)
 
             if(slot == nullptr)
             {
-                return false;
                 cppassist::critical()
                     << "Expected a valid slot name got: "
                     << token.content
                     << std::endl;
+                continue;
             }
 
-            readSlot(slot);
+            Tokenizer::Token token = m_tokenizer.parseToken();
+
+            // only read the value of the slot if it is expected
+            if(token.content == ":"){
+                bool slot_read = readSlot(slot);
+                if(!slot_read)
+                {
+                    cppassist::critical()
+                        << "Could not read the content for Slot "
+                        << slot->name()
+                        << std::endl;
+                    continue;
+                }
+            }
         }
 
     }
@@ -218,15 +231,8 @@ bool PipelineLoader::readSlot(gloperate::AbstractSlot *slot)
 {
     Tokenizer::Token token = m_tokenizer.parseToken();
 
-    if(token.content != ":")
-    {
-        cppassist::critical()
-            << "Expected ':' got: "
-            << token.content
-            << std::endl;
-
-        return false;
-    }
+    // Read content of the slot
+    // Todo: Manage connections
 
     return slot->fromVariant(cppexpose::Variant(token.content));
 }
