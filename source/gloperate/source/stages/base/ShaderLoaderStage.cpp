@@ -23,8 +23,8 @@ ShaderLoaderStage::ShaderLoaderStage(Environment * environment, const std::strin
 , m_file(nullptr)
 , m_extensionToType({
     {"vert", gl::GL_VERTEX_SHADER},
-    {"tec", gl::GL_TESS_CONTROL_SHADER},
-    {"tes", gl::GL_TESS_EVALUATION_SHADER},
+    {"tesc", gl::GL_TESS_CONTROL_SHADER},
+    {"tese", gl::GL_TESS_EVALUATION_SHADER},
     {"geom", gl::GL_GEOMETRY_SHADER},
     {"frag", gl::GL_FRAGMENT_SHADER},
     {"comp", gl::GL_COMPUTE_SHADER}})

@@ -9,9 +9,7 @@
 #include <gloperate/stages/demos/ColorizeStage.h>
 
 #include <gloperate/stages/base/TextureLoadStage.h>
-#include <gloperate/stages/base/ShaderLoaderStage.h>
-#include <gloperate/stages/base/ShaderStage.h>
-#include <gloperate/stages/base/ProgramStage.h>
+#include <gloperate/stages/base/BasicProgramStage.h>
 #include <gloperate/stages/demos/DemoRenderStage.h>
 
 
@@ -29,11 +27,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 , shader2("shader2", this)
 , texture("texture", this)
 , m_textureLoadStage(new TextureLoadStage(environment, "TextureLoadStage"))
-, m_shaderLoadStage1(new ShaderLoaderStage(environment, "ShaderLoaderStage1"))
-, m_shaderStage1(new ShaderStage(environment, "ShaderStage1"))
-, m_shaderLoadStage2(new ShaderLoaderStage(environment, "ShaderLoaderStage2"))
-, m_shaderStage2(new ShaderStage(environment, "ShaderStage2"))
-, m_programStage(new ProgramStage(environment, "ProgramStage"))
+, m_programStage(new BasicProgramStage(environment, "ProgramStage"))
 , m_framebufferStage(new BasicFramebufferStage(environment, "BasicFramebufferStage"))
 , m_renderStage(new DemoRenderStage(environment, "RenderStage"))
 , m_mixerStage(new MixerStage(environment, "MixerStage"))
@@ -51,24 +45,10 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
     addStage(m_textureLoadStage);
     m_textureLoadStage->filename << texture;
 
-    // Shader loading
-    addStage(m_shaderLoadStage1);
-    addStage(m_shaderStage1);
-    m_shaderLoadStage1->filePath << shader1;
-    m_shaderStage1->type << m_shaderLoadStage1->type;
-    m_shaderStage1->source << m_shaderLoadStage1->source;
-
-    // Second shader
-    addStage(m_shaderLoadStage2);
-    addStage(m_shaderStage2);
-    m_shaderLoadStage2->filePath << shader2;
-    m_shaderStage2->type << m_shaderLoadStage2->type;
-    m_shaderStage2->source << m_shaderLoadStage2->source;
-
-    // Timer stage
+    // Basic program stage
     addStage(m_programStage);
-    *(m_programStage->createInput<globjects::Shader *>("shader1")) << m_shaderStage1->shader;
-    *(m_programStage->createInput<globjects::Shader *>("shader2")) << m_shaderStage2->shader;
+    *(m_programStage->createInput<cppassist::FilePath>("shader1")) << shader1;
+    *(m_programStage->createInput<cppassist::FilePath>("shader2")) << shader2;
 
     // Framebuffer stage for spinning rect
     addStage(m_framebufferStage);

@@ -17,9 +17,7 @@ namespace gloperate
 
 class BasicFramebufferStage;
 class TextureLoadStage;
-class ShaderLoaderStage;
-class ShaderStage;
-class ProgramStage;
+class BasicProgramStage;
 class DemoRenderStage;
 class MixerStage;
 
@@ -74,16 +72,10 @@ protected:
     // Stages
     TextureLoadStage      * m_textureLoadStage; ///< Stage that loads a static picture
 
-    ShaderLoaderStage     * m_shaderLoadStage1; ///< Stages that loads shader sources code from a file
-    ShaderStage           * m_shaderStage1;     ///< Stage which creates the shader
-
-    ShaderLoaderStage     * m_shaderLoadStage2; ///< Stages that loads shader sources code from a file
-    ShaderStage           * m_shaderStage2;     ///< Stage which creates the shader
-
-    ProgramStage          * m_programStage;     ///< Stage which creates the program
+    BasicProgramStage     * m_programStage;     ///< Stage which creates the program
 
     BasicFramebufferStage * m_framebufferStage; ///< Stage which creates the framebuffer
-    DemoRenderStage           * m_renderStage;      ///< Stage that renders with the program
+    DemoRenderStage       * m_renderStage;      ///< Stage that renders with the program
 
     MixerStage            * m_mixerStage;       ///< Stage that renders the output to the screen
 };

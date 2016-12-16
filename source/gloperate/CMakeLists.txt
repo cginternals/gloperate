@@ -107,6 +107,7 @@ set(headers
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/base/ShaderLoaderStage.h
     ${include_path}/stages/base/ShaderStage.h
+    ${include_path}/stages/base/BasicProgramStage.h
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
@@ -178,6 +179,7 @@ set(sources
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/ShaderLoaderStage.cpp
     ${source_path}/stages/base/ShaderStage.cpp
+    ${source_path}/stages/base/BasicProgramStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp

@@ -35,6 +35,14 @@ namespace gloperate
 /**
 *  @brief
 *    Stage that loads shader code from a file
+*
+*    Recognized file endings and inferred shader type:
+*    *.vert - gl::GL_VERTEX_SHADER
+*    *.tesc - gl::GL_TESS_CONTROL_SHADER
+*    *.tese - gl::GL_TESS_EVALUATION_SHADER
+*    *.geom - gl::GL_GEOMETRY_SHADER
+*    *.frag - gl::GL_FRAGMENT_SHADER
+*    *.comp - gl::GL_COMPUTE_SHADER
 */
 class GLOPERATE_API ShaderLoaderStage : public Stage
 {

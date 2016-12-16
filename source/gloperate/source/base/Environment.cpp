@@ -18,6 +18,7 @@
 #include <gloperate/stages/base/ShaderStage.h>
 #include <gloperate/stages/base/ShaderLoaderStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
+#include <gloperate/stages/base/BasicProgramStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
 #include <gloperate/stages/demos/ShaderDemoPipeline.h>
 #include <gloperate/stages/demos/DemoStage.h>
@@ -205,6 +206,7 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&ColorizeStage::Component);
     m_componentManager.addComponent(&ShaderStage::Component);
     m_componentManager.addComponent(&ShaderLoaderStage::Component);
+    m_componentManager.addComponent(&BasicProgramStage::Component);
     m_componentManager.addComponent(&ProgramStage::Component);
     m_componentManager.addComponent(&DemoRenderStage::Component);
 }
