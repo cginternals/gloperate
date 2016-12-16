@@ -59,7 +59,7 @@ void RenderTarget::bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo)
         fbo->attachTexture(bindingPoint, m_texture);
         break;
     case RenderTargetType::Renderbuffer:
-        // ToDo
+        fbo->attachRenderBuffer(bindingPoint, m_renderbuffer);
         break;
     case RenderTargetType::DefaultFBOAttachment:
         // ToDo

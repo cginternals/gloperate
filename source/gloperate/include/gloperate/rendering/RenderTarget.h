@@ -110,12 +110,14 @@ public:
 
 
 protected:
-    RenderTargetType                                     m_type;         ///< the current type
+    RenderTargetType                                         m_type;         ///< the current type
 
-    gl::GLenum                                           m_attachment;   ///< the attachment target
-    globjects::ref_ptr<globjects::Texture>               m_texture;      ///< the texture target
-    globjects::ref_ptr<globjects::Renderbuffer>          m_renderbuffer; ///< the renderbuffer target
-    globjects::ref_ptr<globjects::FramebufferAttachment> m_userDefined;  ///< the user defined framebuffer attachment
+    union {
+        gl::GLenum                                           m_attachment;   ///< the attachment target
+        globjects::ref_ptr<globjects::Texture>               m_texture;      ///< the texture target
+        globjects::ref_ptr<globjects::Renderbuffer>          m_renderbuffer; ///< the renderbuffer target
+        globjects::ref_ptr<globjects::FramebufferAttachment> m_userDefined;  ///< the user defined framebuffer attachment
+    };
 
 };
 
