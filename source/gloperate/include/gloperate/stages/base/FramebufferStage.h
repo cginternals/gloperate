@@ -8,7 +8,6 @@
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Framebuffer.h>
-#include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/ExtendedProperties.h>
@@ -19,6 +18,10 @@
 
 namespace gloperate
 {
+
+
+class RenderTarget;
+class Texture;
 
 
 /**
@@ -41,8 +44,8 @@ public:
 
 public:
     // Inputs
-    Input<globjects::Texture *> colorTexture;  ///< Color attachment (#0)
-    Input<globjects::Texture *> depthTexture;  ///< Depth attachment
+    Input<RenderTarget *> colorTexture;  ///< Color attachment (#0)
+    Input<RenderTarget *> depthTexture;  ///< Depth attachment
 
     // Outputs
     Output<globjects::Framebuffer *> fbo;      ///< Framebuffer
@@ -75,6 +78,7 @@ protected:
 
     // Helper functions
     void rebuildFBO();
+    bool isNameOfDepthRenderTarget(std::string name);
 
 
 protected:

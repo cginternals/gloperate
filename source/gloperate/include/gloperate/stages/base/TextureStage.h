@@ -21,6 +21,11 @@ namespace globjects
     class Texture;
 }
 
+namespace gloperate
+{
+    class RenderTarget;
+}
+
 
 namespace gloperate
 {
@@ -49,10 +54,11 @@ public:
     Input<gl::GLenum> internalFormat;     ///< OpenGL internal image format
     Input<gl::GLenum> format;             ///< OpenGL image format
     Input<gl::GLenum> type;               ///< OpenGL data type
-    Input<glm::vec2>  size;               ///< Image size
+    Input<glm::vec4>  size;               ///< Viewport size
 
     // Outputs
-    Output<globjects::Texture *> texture; ///< Texture
+    Output<globjects::Texture *> texture;           ///< Texture
+    Output<gloperate::RenderTarget *> renderTarget; ///< RenderTarget
 
 
 public:
@@ -84,6 +90,7 @@ protected:
 protected:
     // Data
     globjects::ref_ptr<globjects::Texture> m_texture; ///< The created texture
+    globjects::ref_ptr<gloperate::RenderTarget> m_renderTarget; ///< The passed render target
 };
 
 
