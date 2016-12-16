@@ -19,6 +19,7 @@
 #include <gloperate/stages/base/ShaderLoaderStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
+#include <gloperate/stages/demos/ShaderDemoPipeline.h>
 #include <gloperate/stages/demos/DemoStage.h>
 #include <gloperate/stages/demos/SpinningRectStage.h>
 #include <gloperate/stages/demos/TimerStage.h>
@@ -197,6 +198,7 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&MixerStage::Component);
     m_componentManager.addComponent(&SplitStage::Component);
     m_componentManager.addComponent(&DemoPipeline::Component);
+    m_componentManager.addComponent(&ShaderDemoPipeline::Component);
     m_componentManager.addComponent(&DemoStage::Component);
     m_componentManager.addComponent(&SpinningRectStage::Component);
     m_componentManager.addComponent(&TimerStage::Component);

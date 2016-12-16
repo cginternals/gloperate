@@ -17,11 +17,10 @@ namespace gloperate
 
 class BasicFramebufferStage;
 class TextureLoadStage;
-class ShaderLoaderStage;
-class ShaderStage;
-class ProgramStage;
-class DemoRenderStage;
 class MixerStage;
+class TimerStage;
+class SpinningRectStage;
+class ColorizeStage;
 
 
 /**
@@ -47,10 +46,11 @@ public:
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<cppassist::FilePath> shader1; ///< Shader 1 filename
-    Input<cppassist::FilePath> shader2; ///< Shader 2 filename
-
     Input<cppassist::FilePath> texture; ///< Texture filename
+    Input<float>               angle;   ///< Current rotation angle
+    Input<bool>                rotate;  ///< Rotation automatically?
+    Input<Color>               color;   ///< Mixer color
+
 
 public:
     /**
@@ -70,22 +70,23 @@ public:
     */
     virtual ~DemoPipeline();
 
+
+protected:
+    void onRotateChanged(const bool & rotate);
+
+
 protected:
     // Stages
-    TextureLoadStage      * m_textureLoadStage; ///< Stage that loads a static picture
+    TextureLoadStage       * m_textureLoadStage;    ///< Stage that loads a static picture
+    TimerStage             * m_timerStage;          ///< Timer for continuous rendering and animation
 
-    ShaderLoaderStage     * m_shaderLoadStage1; ///< Stages that loads shader sources code from a file
-    ShaderStage           * m_shaderStage1;     ///< Stage which creates the shader
+    BasicFramebufferStage  * m_framebufferStage1;   ///< Framebuffer for rendering the spinning rect
+    SpinningRectStage      * m_spinningRectStage;   ///< Stage that renders the spinning rect
 
-    ShaderLoaderStage     * m_shaderLoadStage2; ///< Stages that loads shader sources code from a file
-    ShaderStage           * m_shaderStage2;     ///< Stage which creates the shader
+    BasicFramebufferStage  * m_framebufferStage2;   ///< Framebuffer for rendering the colorized output
+    ColorizeStage          * m_colorizeStage;       ///< Stage that blends the image with a color
 
-    ProgramStage          * m_programStage;     ///< Stage which creates the program
-
-    BasicFramebufferStage * m_framebufferStage; ///< Stage which creates the framebuffer
-    DemoRenderStage           * m_renderStage;      ///< Stage that renders with the program
-
-    MixerStage            * m_mixerStage;       ///< Stage that renders the output to the screen
+    MixerStage             * m_mixerStage;          ///< Stage that renders the output to the screen
 };
 
 

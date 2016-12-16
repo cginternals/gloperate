@@ -110,6 +110,7 @@ set(headers
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
+    ${include_path}/stages/demos/ShaderDemoPipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
     ${include_path}/stages/demos/DemoRenderStage.h
     ${include_path}/stages/demos/TimerStage.h
@@ -186,6 +187,7 @@ set(sources
     ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
+    ${source_path}/stages/demos/ShaderDemoPipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
     ${source_path}/stages/demos/DemoRenderStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
