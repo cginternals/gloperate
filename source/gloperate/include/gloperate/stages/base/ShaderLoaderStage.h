@@ -52,7 +52,7 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>                filePath;   ///< the file to load the shdare from
+    Input<cppassist::FilePath>                filePath;   ///< the file to load the shader from
 
     // Outputs
     Output<globjects::AbstractStringSource *> source;     ///< the shader source

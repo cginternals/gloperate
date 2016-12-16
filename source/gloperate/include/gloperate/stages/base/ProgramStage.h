@@ -31,7 +31,10 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that creates a shader from shader code
+*    Stage that creates a program from multiple shaders
+*
+*    It expects input of pointers to globjects::Shader objects.
+*    They can be created for example from a ShaderStage.
 */
 class GLOPERATE_API ProgramStage : public Stage
 {
@@ -41,7 +44,7 @@ public:
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that creates a shader from shader code"
+      , "Stage that creates a program from multiple shaders"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -51,7 +54,7 @@ public:
     // Inputs can be created directly
 
     // Outputs
-    Output<globjects::Program *>              program; ///< the shader object
+    Output<globjects::Program *> program; ///< the program object
 
 
 public:
