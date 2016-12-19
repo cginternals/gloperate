@@ -8,31 +8,27 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
+
 namespace gloperate
 {
 
 
-class MultiFrameAggregationPipeline;
-class DemoAntialiasingPipeline;
-class DemoDOFPipeline;
-class DemoTransparencyPipeline;
+class TransparencyKernelStage;
+class NoiseKernelStage;
+class DemoTransparencyStage;
 
 
-/**
-*  @brief
-*    Demo pipeline displaying a rotating logo
-*/
-class GLOPERATE_API DemoMultiFramePipeline : public Pipeline
+class GLOPERATE_API DemoTransparencyPipeline : public Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoMultiFramePipeline, gloperate::Stage
-      , "RenderStage"   // Tags
+        DemoTransparencyPipeline, gloperate::Stage
+      , ""              // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo pipeline showing multiframe aggregation"
+      , "Demo pipeline that renders three transparent, overlapping circles onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
-      , "v0.1.0"
+      , "v1.0.0"
     )
 
 
@@ -51,21 +47,20 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoMultiFramePipeline(Environment * environment, const std::string & name = "DemoMultiFramePipeline");
+    DemoTransparencyPipeline(Environment * environment, const std::string & name = "DemoDOFPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoMultiFramePipeline();
+    virtual ~DemoTransparencyPipeline();
 
 
 protected:
     // Stages
-    MultiFrameAggregationPipeline  * m_multiFramePipeline;
-    DemoAntialiasingPipeline * m_antialiasingPipeline;
-    DemoDOFPipeline * m_dofPipeline;
-    DemoTransparencyPipeline * m_transparencyPipeline;
+    TransparencyKernelStage * m_transparencyKernelStage;  ///< Stage generating transparency kernel
+    NoiseKernelStage        * m_noiseKernelStage;         ///< Stage generating random noise
+    DemoTransparencyStage   * m_transparencyRenderStage;  ///< Rendering stage
 };
 
 
