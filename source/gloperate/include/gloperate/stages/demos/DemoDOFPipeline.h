@@ -8,30 +8,26 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
+
 namespace gloperate
 {
 
 
-class MultiFrameAggregationPipeline;
-class DemoAntialiasingPipeline;
-class DemoDOFPipeline;
+class MultiFrameDiscDistributionStage;
+class DemoDOFCubeStage;
 
 
-/**
-*  @brief
-*    Demo pipeline displaying a rotating logo
-*/
-class GLOPERATE_API DemoMultiFramePipeline : public Pipeline
+class GLOPERATE_API DemoDOFPipeline : public Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoMultiFramePipeline, gloperate::Stage
-      , "RenderStage"   // Tags
+        DemoDOFPipeline, gloperate::Stage
+      , ""              // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo pipeline showing multiframe aggregation"
+      , "Demo pipeline that renders a static cube onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
-      , "v0.1.0"
+      , "v1.0.0"
     )
 
 
@@ -50,20 +46,19 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoMultiFramePipeline(Environment * environment, const std::string & name = "DemoMultiFramePipeline");
+    DemoDOFPipeline(Environment * environment, const std::string & name = "DemoDOFPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoMultiFramePipeline();
+    virtual ~DemoDOFPipeline();
 
 
 protected:
     // Stages
-    MultiFrameAggregationPipeline  * m_multiFramePipeline;
-    DemoAntialiasingPipeline * m_antialiasingPipeline;
-    DemoDOFPipeline * m_dofPipeline;
+    MultiFrameDiscDistributionStage * m_dofShiftStage;  ///< Stage generating DOF shift
+    DemoDOFCubeStage                * m_cubeStage;      ///< Rendering stage
 };
 
 

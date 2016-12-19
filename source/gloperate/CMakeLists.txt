@@ -113,6 +113,8 @@ set(headers
     ${include_path}/stages/demos/DemoPipeline.h
     ${include_path}/stages/demos/DemoAntialiasableTriangleStage.h
     ${include_path}/stages/demos/DemoAntialiasingPipeline.h
+    ${include_path}/stages/demos/DemoDOFCubeStage.h
+    ${include_path}/stages/demos/DemoDOFPipeline.h
     ${include_path}/stages/demos/DemoMultiFramePipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
     ${include_path}/stages/demos/TimerStage.h
@@ -200,6 +202,8 @@ set(sources
     ${source_path}/stages/demos/DemoPipeline.cpp
     ${source_path}/stages/demos/DemoAntialiasableTriangleStage.cpp
     ${source_path}/stages/demos/DemoAntialiasingPipeline.cpp
+    ${source_path}/stages/demos/DemoDOFCubeStage.cpp
+    ${source_path}/stages/demos/DemoDOFPipeline.cpp
     ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
