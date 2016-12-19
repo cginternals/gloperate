@@ -12,25 +12,21 @@ namespace gloperate
 {
 
 
-class MultiFrameAggregationPipeline;
-class DemoAntialiasingPipeline;
+class SubpixelAntialiasingOffsetStage;
+class DemoAntialiasableTriangleStage;
 
 
-/**
-*  @brief
-*    Demo pipeline displaying a rotating logo
-*/
-class GLOPERATE_API DemoMultiFramePipeline : public Pipeline
+class GLOPERATE_API DemoAntialiasingPipeline : public Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoMultiFramePipeline, gloperate::Stage
-      , "RenderStage"   // Tags
+        DemoAntialiasingPipeline, gloperate::Stage
+      , ""              // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo pipeline showing multiframe aggregation"
+      , "Demo pipeline that renders a static triangle onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
-      , "v0.1.0"
+      , "v1.0.0"
     )
 
 
@@ -49,19 +45,19 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoMultiFramePipeline(Environment * environment, const std::string & name = "DemoMultiFramePipeline");
+    DemoAntialiasingPipeline(Environment * environment, const std::string & name = "DemoAntialiasingPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoMultiFramePipeline();
+    virtual ~DemoAntialiasingPipeline();
 
 
 protected:
     // Stages
-    MultiFrameAggregationPipeline  * m_multiFramePipeline;
-    DemoAntialiasingPipeline * m_frameRenderPipeline;
+    SubpixelAntialiasingOffsetStage * m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
+    DemoAntialiasableTriangleStage * m_triangleStage;   ///< Rendering stage
 };
 
 

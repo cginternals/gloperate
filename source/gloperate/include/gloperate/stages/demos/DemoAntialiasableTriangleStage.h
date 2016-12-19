@@ -13,7 +13,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/stages/interfaces/MultiFrameRenderInterface.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
 
 
@@ -37,7 +37,10 @@ public:
 
 public:
     // Interfaces
-    MultiFrameRenderInterface renderInterface; ///< Interface for rendering into a viewer or to use with multiframe aggregation
+    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+
+    // Inputs
+    Input<glm::vec2> subpixelOffset; ///< Subpixel offset for multiframe antialiasing
 
 
 public:

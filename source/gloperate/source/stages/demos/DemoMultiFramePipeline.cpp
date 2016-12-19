@@ -2,7 +2,8 @@
 #include <gloperate/stages/demos/DemoMultiFramePipeline.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/stages/demos/DemoAntialiasableTriangleStage.h>
+#include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
+#include <gloperate/stages/demos/DemoAntialiasingPipeline.h>
 
 namespace gloperate
 {
@@ -14,11 +15,11 @@ CPPEXPOSE_COMPONENT(DemoMultiFramePipeline, gloperate::Stage)
 DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_frameRenderStage(new DemoAntialiasableTriangleStage(environment, "DemoStage"))
-, m_multiFramePipeline(new MultiFrameAggregationPipeline(environment, "MultiFrameAggregationPipeline"))
+, m_frameRenderPipeline(new DemoAntialiasingPipeline(environment))
+, m_multiFramePipeline(new MultiFrameAggregationPipeline(environment))
 {
     addStage(m_multiFramePipeline);
-    m_multiFramePipeline->setFrameRenderer(m_frameRenderStage->renderInterface);
+    m_multiFramePipeline->setFrameRenderer(m_frameRenderPipeline->renderInterface);
 
     // Inputs
     m_multiFramePipeline->renderInterface.deviceViewport << renderInterface.deviceViewport;
@@ -30,7 +31,6 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const 
 
     // Outputs
     renderInterface.rendered << m_multiFramePipeline->renderInterface.rendered;
-
 }
 
 DemoMultiFramePipeline::~DemoMultiFramePipeline()

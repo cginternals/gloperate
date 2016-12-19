@@ -7,7 +7,6 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
-#include <gloperate/stages/interfaces/MultiFrameRenderInterface.h>
 
 
 namespace gloperate
@@ -19,12 +18,6 @@ class CustomFramebufferStage;
 class BlitStage;
 class MultiFrameControlStage;
 class MultiFrameAggregationStage;
-
-class MultiFrameDiscDistributionStage;
-class NoiseKernelStage;
-class SSAOKernelStage;
-class SubpixelAntialiasingOffsetStage;
-class TransparencyKernelStage;
 
 
 /**
@@ -80,15 +73,6 @@ public:
     */
     void setFrameRenderer(RenderInterface & interface);
 
-    /**
-    *  @brief
-    *    Set the frame generating stage/pipeline
-    *
-    *  @param[in] interface
-    *    Render interface of the frame generating stage
-    */
-    void setFrameRenderer(MultiFrameRenderInterface & interface);
-
 
 protected:
     // Virtual Stage interface
@@ -96,7 +80,6 @@ protected:
 
     // Helper functions
     void connectBasicRenderInterface(RenderInterface & interface);
-    void connectMultiFrameRenderInterface(MultiFrameRenderInterface & interface);
     void disconnectRenderStage();
 
 
@@ -107,13 +90,6 @@ protected:
     MultiFrameControlStage     * m_controlStage;                ///< Multiframe control stage
     MultiFrameAggregationStage * m_aggregationStage;            ///< Aggregation stage
     BlitStage                  * m_blitStage;                   ///< Blit stage
-
-    // Stages providing multiframe-specific data
-    MultiFrameDiscDistributionStage * m_diskDistributionStage;  ///< Disk distrubution stage
-    NoiseKernelStage                * m_noiseStage;             ///< Noise kernel stage
-    SSAOKernelStage                 * m_ssaoStage;              ///< SSAO stage
-    SubpixelAntialiasingOffsetStage * m_subpixelStage;          ///< Subpixel antialiasing offset stage
-    TransparencyKernelStage         * m_transparencyStage;      ///< Transparency kernel stage
 
     // Inserted Stage/Pipeline
     Stage * m_frameRenderStage;                                 ///< Frame generating stage
