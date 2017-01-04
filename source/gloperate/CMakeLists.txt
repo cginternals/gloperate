@@ -115,6 +115,9 @@ set(headers
     ${include_path}/stages/demos/DemoAntialiasingPipeline.h
     ${include_path}/stages/demos/DemoDOFCubeStage.h
     ${include_path}/stages/demos/DemoDOFPipeline.h
+    ${include_path}/stages/demos/DemoSSAORenderingStage.h
+    ${include_path}/stages/demos/DemoSSAOPostprocessingStage.h
+    ${include_path}/stages/demos/DemoSSAOPipeline.h
     ${include_path}/stages/demos/DemoTransparencyStage.h
     ${include_path}/stages/demos/DemoTransparencyPipeline.h
     ${include_path}/stages/demos/DemoMultiFramePipeline.h
@@ -206,6 +209,9 @@ set(sources
     ${source_path}/stages/demos/DemoAntialiasingPipeline.cpp
     ${source_path}/stages/demos/DemoDOFCubeStage.cpp
     ${source_path}/stages/demos/DemoDOFPipeline.cpp
+    ${source_path}/stages/demos/DemoSSAORenderingStage.cpp
+    ${source_path}/stages/demos/DemoSSAOPostprocessingStage.cpp
+    ${source_path}/stages/demos/DemoSSAOPipeline.cpp
     ${source_path}/stages/demos/DemoTransparencyStage.cpp
     ${source_path}/stages/demos/DemoTransparencyPipeline.cpp
     ${source_path}/stages/demos/DemoMultiFramePipeline.cpp

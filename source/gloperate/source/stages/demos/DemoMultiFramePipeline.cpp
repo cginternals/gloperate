@@ -6,6 +6,7 @@
 #include <gloperate/stages/demos/DemoAntialiasingPipeline.h>
 #include <gloperate/stages/demos/DemoDOFPipeline.h>
 #include <gloperate/stages/demos/DemoTransparencyPipeline.h>
+#include <gloperate/stages/demos/DemoSSAOPipeline.h>
 
 namespace gloperate
 {
@@ -20,14 +21,15 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const 
 , m_antialiasingPipeline(new DemoAntialiasingPipeline(environment))
 , m_dofPipeline(new DemoDOFPipeline(environment))
 , m_transparencyPipeline(new DemoTransparencyPipeline(environment))
+, m_ssaoPipeline(new DemoSSAOPipeline(environment))
 , m_multiFramePipeline(new MultiFrameAggregationPipeline(environment))
 {
     addStage(m_multiFramePipeline);
 
     //m_multiFramePipeline->setFrameRenderer(m_antialiasingPipeline->renderInterface);
     //m_multiFramePipeline->setFrameRenderer(m_dofPipeline->renderInterface);
-    m_multiFramePipeline->setFrameRenderer(m_transparencyPipeline->renderInterface);
-
+    //m_multiFramePipeline->setFrameRenderer(m_transparencyPipeline->renderInterface);
+    m_multiFramePipeline->setFrameRenderer(m_ssaoPipeline->renderInterface);
 
     // Inputs
     m_multiFramePipeline->renderInterface.deviceViewport << renderInterface.deviceViewport;

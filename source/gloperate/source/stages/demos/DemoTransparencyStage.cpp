@@ -30,7 +30,7 @@ static const std::array<glm::vec2, 4> s_vertices { {
     glm::vec2(+1.f, +1.f),
 } };
 
-// Vertex shader displaying the cube
+// Vertex shader displaying the circles
 static const char * s_vertexShader = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
@@ -49,7 +49,7 @@ void main()
 }
 )";
 
-// Fragment shader displaying the cube
+// Fragment shader displaying the circles
 static const char * s_fragmentShader = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require

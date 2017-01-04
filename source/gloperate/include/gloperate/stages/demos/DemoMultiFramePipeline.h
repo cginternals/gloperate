@@ -16,6 +16,7 @@ class MultiFrameAggregationPipeline;
 class DemoAntialiasingPipeline;
 class DemoDOFPipeline;
 class DemoTransparencyPipeline;
+class DemoSSAOPipeline;
 
 
 /**
@@ -66,6 +67,7 @@ protected:
     DemoAntialiasingPipeline * m_antialiasingPipeline;
     DemoDOFPipeline * m_dofPipeline;
     DemoTransparencyPipeline * m_transparencyPipeline;
+    DemoSSAOPipeline * m_ssaoPipeline;
 };
 
 

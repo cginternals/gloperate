@@ -53,7 +53,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoDOFCubeStage(Environment * environment, const std::string & name = "DemoAntialiasableTriangleStage");
+    DemoDOFCubeStage(Environment * environment, const std::string & name = "DemoDOFCubeStage");
 
     /**
     *  @brief

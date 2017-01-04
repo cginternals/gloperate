@@ -13,20 +13,21 @@ namespace gloperate
 {
 
 
-class TransparencyKernelStage;
-class NoiseKernelStage;
-class DemoTransparencyStage;
+class BasicFramebufferStage;
+class SSAOKernelStage;
+class DemoSSAORenderingStage;
+class DemoSSAOPostprocessingStage;
 
 
-class GLOPERATE_API DemoTransparencyPipeline : public Pipeline
+class GLOPERATE_API DemoSSAOPipeline : public Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoTransparencyPipeline, gloperate::Stage
+        DemoSSAOPipeline, gloperate::Stage
       , ""              // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo pipeline that renders three transparent, overlapping circles onto the screen"
+      , "Demo pipeline that renders a simple scene onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -47,20 +48,22 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoTransparencyPipeline(Environment * environment, const std::string & name = "DemoTransparencyPipeline");
+    DemoSSAOPipeline(Environment * environment, const std::string & name = "DemoSSAOPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoTransparencyPipeline();
+    virtual ~DemoSSAOPipeline();
 
 
 protected:
     // Stages
-    TransparencyKernelStage * m_transparencyKernelStage;  ///< Stage generating transparency kernel
-    NoiseKernelStage        * m_noiseKernelStage;         ///< Stage generating random noise
-    DemoTransparencyStage   * m_transparencyRenderStage;  ///< Rendering stage
+    BasicFramebufferStage       * m_colorFBOStage;       ///< Color buffer
+    BasicFramebufferStage       * m_normalFBOStage;      ///< Normal buffer
+    SSAOKernelStage             * m_kernelStage;         ///< Stage generating SSAO kernel
+    DemoSSAORenderingStage      * m_renderingStage;      ///< Rendering stage
+    DemoSSAOPostprocessingStage * m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
 };
 
 

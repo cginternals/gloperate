@@ -21,15 +21,15 @@ namespace gloperate
 {
 
 
-class GLOPERATE_API DemoTransparencyStage : public Stage
+class GLOPERATE_API DemoSSAOPostprocessingStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoTransparencyStage, gloperate::Stage
+        DemoSSAOPostprocessingStage, gloperate::Stage
       , "RenderStage"   // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo stage that renders three transparent, overlapping circles onto the screen"
+      , "Demo stage that applies SSAO to an image"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -40,8 +40,16 @@ public:
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<globjects::Texture *> transparencyKernel; ///< Transparency kernel for multiframe rendering
-    Input<globjects::Texture *> noiseKernel;        ///< Noise kernel for randomness
+    Input<globjects::Texture *> colorTexture;     ///< Color texture of the scene
+    Input<globjects::Texture *> normalTexture;    ///< Normal texture of the scene
+    Input<globjects::Texture *> depthTexture;     ///< Depth texture of the scene
+
+    Input<globjects::Texture *> ssaoKernel;       ///< SSAO kernel texture
+    Input<globjects::Texture *> ssaoNoise;        ///< SSAO noise texture
+    Input<glm::mat4>            projectionMatrix; ///< Projection matrix used for rendering the scene
+    Input<glm::mat3>            normalMatrix;     ///< Normal matrix from scene rendering
+
+    Input<bool>                 sceneRendered;    ///< Scene rendering stage processed?
 
 
 public:
@@ -54,13 +62,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoTransparencyStage(Environment * environment, const std::string & name = "DemoTransparencyStage");
+    DemoSSAOPostprocessingStage(Environment * environment, const std::string & name = "DemoSSAOPostprocessingStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoTransparencyStage();
+    virtual ~DemoSSAOPostprocessingStage();
 
 
 protected:

@@ -14,22 +14,21 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
-#include <gloperate/rendering/Camera.h>
 
 
 namespace gloperate
 {
 
 
-class GLOPERATE_API DemoTransparencyStage : public Stage
+class GLOPERATE_API DemoSSAORenderingStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoTransparencyStage, gloperate::Stage
+        DemoSSAORenderingStage, gloperate::Stage
       , "RenderStage"   // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo stage that renders three transparent, overlapping circles onto the screen"
+      , "Demo stage that renders a simple scene onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -37,12 +36,14 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface renderInterface;           ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<globjects::Texture *> transparencyKernel; ///< Transparency kernel for multiframe rendering
-    Input<globjects::Texture *> noiseKernel;        ///< Noise kernel for randomness
+    Input<globjects::Framebuffer *> normalFBO; ///< FBO to render normals into
 
+    // Outputs
+    Output<glm::mat4> projectionMatrix;        ///< Projection matrix used for rendering
+    Output<glm::mat3> normalMatrix;            ///< Normal matrix used for rendering
 
 public:
     /**
@@ -54,13 +55,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoTransparencyStage(Environment * environment, const std::string & name = "DemoTransparencyStage");
+    DemoSSAORenderingStage(Environment * environment, const std::string & name = "DemoSSAORenderingStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoTransparencyStage();
+    virtual ~DemoSSAORenderingStage();
 
 
 protected:
@@ -78,9 +79,11 @@ protected:
     // Rendering objects
     globjects::ref_ptr<globjects::VertexArray> m_vao;
     globjects::ref_ptr<globjects::Buffer>      m_vertexBuffer;
-    globjects::ref_ptr<globjects::Program>     m_program;
+    globjects::ref_ptr<globjects::Program>     m_colorProgram;
+    globjects::ref_ptr<globjects::Program>     m_normalProgram;
     globjects::ref_ptr<globjects::Shader>      m_vertexShader;
-    globjects::ref_ptr<globjects::Shader>      m_fragmentShader;
+    globjects::ref_ptr<globjects::Shader>      m_colorFragmentShader;
+    globjects::ref_ptr<globjects::Shader>      m_normalFragmentShader;
 };
 
 
