@@ -550,7 +550,7 @@ void Stage::serialize(std::function<void (const std::string &, uint)> writer, ui
             }
         }
 
-        writer(descripiton + ": " + value, level+1);
+        writer(description + ": " + value, level+1);
     }
 
     for(const auto& output : m_outputs)
