@@ -39,7 +39,7 @@ PipelineLoader::PipelineLoader(Environment *environment)
     std::vector<StageComponent* > stages = m_environment->componentManager()->components<gloperate::Stage>();
 
     for(auto stage : stages){
-        m_componentsByType.insert({stage->type(), stage});
+        m_componentsByType.insert({stage->name(), stage}); // TODO: this could be std::transform
     }
 }
 
