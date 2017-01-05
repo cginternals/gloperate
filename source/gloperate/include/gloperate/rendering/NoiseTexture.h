@@ -21,7 +21,7 @@ class GLOPERATE_API NoiseTexture
 {
 public:
     NoiseTexture(
-        unsigned int inputDimensions, 
+        unsigned int inputDimensions,
         unsigned int outputDimensions,
         gl::GLsizei textureSize = 64);
 
@@ -39,7 +39,7 @@ protected:
         unsigned int inputDimensions,
         unsigned int outputDimensions,
         gl::GLsizei textureSize);
-    
+
     static std::vector<float> generateNoise(
         unsigned int inputDimensions,
         unsigned int outputDimensions,

@@ -2,7 +2,7 @@
 #define SSAO
 
 vec3 kernel(
-    const in float i, 
+    const in float i,
     const in vec4 samplerSizes,
     const in sampler1D kernelSampler)
 {
@@ -27,7 +27,7 @@ float linearDepth(
 }
 
 mat3 noised(
-    const in vec3 normal, 
+    const in vec3 normal,
     in vec2 uv,
     const in vec2 screenSize,
     const in vec4 samplerSizes,
@@ -45,7 +45,7 @@ mat3 noised(
 }
 
 float ssaoKernel(
-    const in vec2 uv, 
+    const in vec2 uv,
     const in vec3 origin,
     const in float radius,
     const in float intensity,
@@ -58,7 +58,7 @@ float ssaoKernel(
 {
     int kernelSize = textureSize(kernelSampler, 0);
     ivec2 noiseSize = textureSize(noiseSampler, 0);
-    
+
     vec4 samplerSizes = vec4(kernelSize, 1.0 / float(kernelSize), noiseSize.x, 1.0 / float(noiseSize.x)); // expected: [kernelSize, 1 / kernelSize, noiseSize, 1 / noiseSize]
     vec3 screenspaceNormal = normalMatrix * normal(uv, normalTexture);
 
@@ -91,7 +91,7 @@ float ssaoKernel(
 
 
 vec3 ssao(
-    const in vec2 uv, 
+    const in vec2 uv,
     const in vec3 ssaoColor,
     const in float farZ,
     const in float radius,
@@ -105,7 +105,7 @@ vec3 ssao(
     const in mat3 normalMatrix)
 {
     float d = linearDepth(uv, projectionMatrix, depthTexture);
-    
+
     if (d > farZ)
         return vec3(1.0f);
 
@@ -117,7 +117,7 @@ vec3 ssao(
     vec3 origin = eye.xyz * d;
 
     float v = ssaoKernel(
-        uv, 
+        uv,
         origin,
         radius,
         intensity,
@@ -127,7 +127,7 @@ vec3 ssao(
         normalTexture,
         projectionMatrix,
         normalMatrix);
-    
+
     return mix(ssaoColor, vec3(1.0f), v);
 }
 

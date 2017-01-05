@@ -20,7 +20,7 @@ public:
 
     using mask_t = unsigned char;
     using maskDistribution_t = std::array<mask_t, s_numMasks>;
-    
+
     using maskDistributions_t = std::array<maskDistribution_t, s_alphaRes>;
 
 public:

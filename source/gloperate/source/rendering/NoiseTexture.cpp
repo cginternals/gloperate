@@ -15,7 +15,7 @@ namespace gloperate
 {
 
 NoiseTexture::NoiseTexture(
-    unsigned int inputDimensions, 
+    unsigned int inputDimensions,
     unsigned int outputDimensions,
     gl::GLsizei textureSize)
 {
@@ -57,7 +57,7 @@ gl::GLenum NoiseTexture::targetForDimensions(unsigned int dimensions)
 gl::GLenum NoiseTexture::internalFormatForDimensions(unsigned int dimensions)
 {
     assert(dimensions >= 1 && dimensions <= 4);
-    
+
     switch (dimensions)
     {
     case 1u:
@@ -76,7 +76,7 @@ gl::GLenum NoiseTexture::internalFormatForDimensions(unsigned int dimensions)
 gl::GLenum NoiseTexture::formatForDimensions(unsigned int dimensions)
 {
     assert(dimensions >= 1 && dimensions <= 4);
-    
+
     switch (dimensions)
     {
     case 1u:
@@ -100,11 +100,11 @@ globjects::Texture * NoiseTexture::createTexture(
     const auto target = targetForDimensions(inputDimensions);
     const auto internalFormat = internalFormatForDimensions(outputDimensions);
     const auto format = formatForDimensions(outputDimensions);
-    
+
     auto noise = generateNoise(inputDimensions, outputDimensions, textureSize);
-    
+
     auto texture = globjects::Texture::createDefault(target);
-    
+
     switch (target)
     {
     case gl::GL_TEXTURE_1D:
@@ -122,11 +122,11 @@ globjects::Texture * NoiseTexture::createTexture(
     default:
         break;
     }
-    
+
     texture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
     texture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
     texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_REPEAT);
-    
+
     return texture;
 }
 
@@ -139,7 +139,7 @@ std::vector<float> NoiseTexture::generateNoise(
 
     auto noiseArray = std::vector<float>(size);
     std::generate(noiseArray.begin(), noiseArray.end(), []() { return glm::linearRand(0.0f, 1.0f); });
-    
+
     return noiseArray;
 }
 
