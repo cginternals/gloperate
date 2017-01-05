@@ -14,7 +14,7 @@ CPPEXPOSE_COMPONENT(MultiFrameDiscDistributionStage, gloperate::Stage)
 
 MultiFrameDiscDistributionStage::MultiFrameDiscDistributionStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, isActive("isActive", this)
+, isActive("isActive", this, false)
 , radius("radius", this)
 , currentMultiFrame("currentMultiFrame", this)
 , value("value", this)
@@ -23,7 +23,7 @@ MultiFrameDiscDistributionStage::MultiFrameDiscDistributionStage(gloperate::Envi
 
 void MultiFrameDiscDistributionStage::onProcess(gloperate::AbstractGLContext * context)
 {
-    if (isActive.isConnected() && !(*isActive))
+    if (!(*isActive))
     {
         value.setValue(glm::vec2(0.0f));
 

@@ -17,7 +17,7 @@ CPPEXPOSE_COMPONENT(TransparencyKernelStage, gloperate::Stage)
 
 TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, reprocess("reprocess", this)
+, reprocess("reprocess", this, true)
 , transparencyMaskTexture("transparencyMaskTexture", this)
 {
 }
@@ -32,6 +32,11 @@ void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * /*con
 
 void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
+    if (!(*reprocess))
+        return;
+
+    const auto table = TransparencyMasksGenerator::generateDistributions(1);
+    (*transparencyMaskTexture)->image2D(0, gl::GL_R8, table->at(0).size(), table->size(), 0, gl::GL_RED, gl::GL_UNSIGNED_BYTE, table->data());
 }
 
 
