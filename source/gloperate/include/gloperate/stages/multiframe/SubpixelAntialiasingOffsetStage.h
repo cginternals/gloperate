@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
@@ -58,7 +59,6 @@ public:
 protected:
     // Virtual stage interface
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
-
 };
 
 

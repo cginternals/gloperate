@@ -21,10 +21,6 @@ BlitStage::BlitStage(Environment * environment, const std::string & name)
 {
 }
 
-BlitStage::~BlitStage()
-{
-}
-
 void BlitStage::onProcess(AbstractGLContext * context)
 {
     globjects::Framebuffer * srcFBO = *sourceFBO;
@@ -59,4 +55,4 @@ void BlitStage::onProcess(AbstractGLContext * context)
 }
 
 
-}
+} // namespace gloperate

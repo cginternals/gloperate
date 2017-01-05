@@ -8,6 +8,7 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
+
 namespace gloperate
 {
 
@@ -16,6 +17,10 @@ class SubpixelAntialiasingOffsetStage;
 class DemoAntialiasableTriangleStage;
 
 
+/**
+*  @brief
+*    Demo pipeline that renders a static triangle onto the screen
+*/
 class GLOPERATE_API DemoAntialiasingPipeline : public Pipeline
 {
 public:
@@ -57,7 +62,7 @@ public:
 protected:
     // Stages
     SubpixelAntialiasingOffsetStage * m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
-    DemoAntialiasableTriangleStage * m_triangleStage;   ///< Rendering stage
+    DemoAntialiasableTriangleStage  * m_triangleStage;  ///< Rendering stage
 };
 
 

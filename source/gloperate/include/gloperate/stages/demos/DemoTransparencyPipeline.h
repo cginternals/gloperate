@@ -18,6 +18,10 @@ class NoiseKernelStage;
 class DemoTransparencyStage;
 
 
+/**
+*  @brief
+*    Demo pipeline that renders three transparent, overlapping circles onto the screen
+*/
 class GLOPERATE_API DemoTransparencyPipeline : public Pipeline
 {
 public:

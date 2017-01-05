@@ -21,6 +21,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Demo stage that renders a static triangle onto the screen
+*/
 class GLOPERATE_API DemoAntialiasableTriangleStage : public Stage
 {
 public:

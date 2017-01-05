@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <memory>
 
 #include <glm/vec2.hpp>
@@ -15,9 +16,7 @@
 
 namespace globjects
 {
-
-class Texture;
-
+    class Texture;
 }
 
 
@@ -45,9 +44,9 @@ public:
 
 public:
     // Inputs
-    Input<int> inputDimensions;  ///< Number of dimensions of noise texture
-    Input<int> outputDimensions; ///< Number of components in noise texture
-    Input<int> size;             ///< Size of noise texture
+    Input<int> inputDimensions;                ///< Number of dimensions of noise texture
+    Input<int> outputDimensions;               ///< Number of components in noise texture
+    Input<int> size;                           ///< Size of noise texture
 
     // Outputs
     Output<globjects::Texture *> noiseTexture; ///< Noise texture

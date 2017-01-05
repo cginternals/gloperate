@@ -21,6 +21,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Demo stage that renders a static cube onto the screen
+*/
 class GLOPERATE_API DemoDOFCubeStage : public Stage
 {
 public:
@@ -40,7 +44,7 @@ public:
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<glm::vec2> dofShift; ///< DOF shift for multiframe rendering
+    Input<glm::vec2> dofShift;       ///< DOF shift for multiframe rendering
 
 
 public:

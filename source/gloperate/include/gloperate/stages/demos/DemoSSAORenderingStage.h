@@ -20,6 +20,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Demo stage that renders a simple scene onto the screen
+*/
 class GLOPERATE_API DemoSSAORenderingStage : public Stage
 {
 public:
@@ -44,6 +48,7 @@ public:
     // Outputs
     Output<glm::mat4> projectionMatrix;        ///< Projection matrix used for rendering
     Output<glm::mat3> normalMatrix;            ///< Normal matrix used for rendering
+
 
 public:
     /**

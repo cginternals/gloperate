@@ -18,6 +18,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Stage for blitting from one framebuffer to another
+*/
 class GLOPERATE_API BlitStage : public Stage
 {
 public:
@@ -33,25 +37,36 @@ public:
 
 
 public:
-    Input<globjects::Framebuffer *>  sourceFBO;
-    Input<glm::vec4>                 sourceViewport;
-    Input<globjects::Framebuffer *>  destinationFBO;
-    Input<glm::vec4>                 destinationViewport;
+    // Inputs
+    Input<globjects::Framebuffer *>  sourceFBO;           ///< FBO containing the source attachments
+    Input<glm::vec4>                 sourceViewport;      ///< Viewport for reading from source FBO
+    Input<globjects::Framebuffer *>  destinationFBO;      ///< FBO with destination attachments
+    Input<glm::vec4>                 destinationViewport; ///< Viewport for writing into destination FBO
 
-    Output<globjects::Framebuffer *> blittedFBO;
-    Output<bool>                     blitted;
+    // Outputs
+    Output<globjects::Framebuffer *> blittedFBO;          ///< FBO containing blitted result
+    Output<bool>                     blitted;             ///< True if processed successfully
 
 
 public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     BlitStage(Environment * environment, const std::string & name = "BlitStage");
 
-    virtual ~BlitStage();
 
 protected:
+    // Virtual Stage interface
     virtual void onProcess(AbstractGLContext * context) override;
 
 
 };
 
 
-}
+} // namespace gloperate

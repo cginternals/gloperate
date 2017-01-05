@@ -32,7 +32,6 @@ void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * /*con
 
 void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
-    // invalidateOutputs();
 }
 
 

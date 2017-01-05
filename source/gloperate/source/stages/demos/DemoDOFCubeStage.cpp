@@ -1,7 +1,7 @@
 
 #include <gloperate/stages/demos/DemoDOFCubeStage.h>
 
-#include <tuple>
+#include <array>
 
 #include <glm/gtc/matrix_transform.hpp>
 

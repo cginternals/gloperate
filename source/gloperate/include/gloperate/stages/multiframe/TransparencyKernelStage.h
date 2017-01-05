@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
@@ -10,9 +11,7 @@
 
 namespace globjects
 {
-
-class Texture;
-
+    class Texture;
 }
 
 

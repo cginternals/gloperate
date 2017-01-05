@@ -39,7 +39,7 @@ public:
     Input<int> currentMultiFrame; ///< Number of currently aggregated frame
 
     // Outputs
-    Output<glm::vec2> value; ///< Random vector
+    Output<glm::vec2> value;      ///< Random vector
 
 
 public:

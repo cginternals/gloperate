@@ -17,6 +17,10 @@ class MultiFrameDiscDistributionStage;
 class DemoDOFCubeStage;
 
 
+/**
+*  @brief
+*    Demo pipeline that renders a static cube onto the screen
+*/
 class GLOPERATE_API DemoDOFPipeline : public Pipeline
 {
 public:

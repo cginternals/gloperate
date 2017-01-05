@@ -21,6 +21,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Demo stage that applies SSAO to an image
+*/
 class GLOPERATE_API DemoSSAOPostprocessingStage : public Stage
 {
 public:

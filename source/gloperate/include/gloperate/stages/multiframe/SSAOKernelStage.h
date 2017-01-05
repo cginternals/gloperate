@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <memory>
 
 #include <cppexpose/plugin/plugin_api.h>
@@ -16,9 +17,7 @@
 
 namespace globjects
 {
-
-class Texture;
-
+    class Texture;
 }
 
 

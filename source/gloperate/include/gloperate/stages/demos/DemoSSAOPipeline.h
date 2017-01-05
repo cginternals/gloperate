@@ -19,6 +19,10 @@ class DemoSSAORenderingStage;
 class DemoSSAOPostprocessingStage;
 
 
+/**
+*  @brief
+*    Demo pipeline that renders a simple scene onto the screen
+*/
 class GLOPERATE_API DemoSSAOPipeline : public Pipeline
 {
 public:

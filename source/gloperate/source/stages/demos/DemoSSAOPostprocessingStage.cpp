@@ -1,7 +1,7 @@
 
 #include <gloperate/stages/demos/DemoSSAOPostprocessingStage.h>
 
-#include <tuple>
+#include <array>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>

@@ -9,6 +9,7 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
+
 namespace gloperate
 {
 
@@ -22,7 +23,7 @@ class DemoSSAOPipeline;
 
 /**
 *  @brief
-*    Demo pipeline displaying a rotating logo
+*    Demo pipeline showing multiframe aggregation
 */
 class GLOPERATE_API DemoMultiFramePipeline : public Pipeline
 {
@@ -67,11 +68,13 @@ public:
 
 protected:
     // Stages
-    MultiFrameAggregationPipeline  * m_multiFramePipeline;
-    DemoAntialiasingPipeline * m_antialiasingPipeline;
-    DemoDOFPipeline * m_dofPipeline;
-    DemoTransparencyPipeline * m_transparencyPipeline;
-    DemoSSAOPipeline * m_ssaoPipeline;
+    MultiFrameAggregationPipeline * m_multiFramePipeline;   ///< Aggregation Pipeline
+
+    // Demo pipelines using multiframe effects
+    DemoAntialiasingPipeline      * m_antialiasingPipeline;
+    DemoDOFPipeline               * m_dofPipeline;
+    DemoTransparencyPipeline      * m_transparencyPipeline;
+    DemoSSAOPipeline              * m_ssaoPipeline;
 };
 
 

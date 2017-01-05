@@ -25,7 +25,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that maintains a basic framebuffer with a color and depth attachment
+*    Stage that maintains a framebuffer with a color and depth attachment
 */
 class GLOPERATE_API CustomFramebufferStage : public Stage
 {
@@ -43,17 +43,17 @@ public:
 
 public:
     // Parameters
-    Input<gl::GLenum>            format;        ///< Color texture format
-    Input<gl::GLenum>            internalFormat;///< Internal format for color texture
-    Input<gl::GLenum>            dataType;      ///< Color texture data type
+    Input<gl::GLenum>            format;           ///< Color texture format
+    Input<gl::GLenum>            internalFormat;   ///< Internal format for color texture
+    Input<gl::GLenum>            dataType;         ///< Color texture data type
 
     // Inputs
-    Input<glm::vec4>                 viewport;      ///< Texture size
+    Input<glm::vec4>                 viewport;     ///< Texture size
 
     // Outputs
-    Output<globjects::Framebuffer *> fbo;           ///< Framebuffer
-    Output<globjects::Texture *>     colorTexture;  ///< Color attachment
-    Output<globjects::Texture *>     depthTexture;  ///< Depth attachment
+    Output<globjects::Framebuffer *> fbo;          ///< Framebuffer
+    Output<globjects::Texture *>     colorTexture; ///< Color attachment
+    Output<globjects::Texture *>     depthTexture; ///< Depth attachment
 
 
 public:

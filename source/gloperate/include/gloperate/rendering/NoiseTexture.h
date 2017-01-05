@@ -14,8 +14,10 @@ namespace globjects
     class Texture;
 }
 
+
 namespace gloperate
 {
+
 
 class GLOPERATE_API NoiseTexture
 {
@@ -29,6 +31,7 @@ public:
 
     void bindActive(unsigned int index) const;
     void unbindActive(unsigned int index) const;
+
 
 protected:
     static gl::GLenum targetForDimensions(unsigned int dimensions);
@@ -45,8 +48,10 @@ protected:
         unsigned int outputDimensions,
         gl::GLsizei textureSize);
 
+
 protected:
     globjects::ref_ptr<globjects::Texture> m_texture;
 };
+
 
 } // namespace gloperate

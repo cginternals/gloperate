@@ -21,6 +21,10 @@ namespace gloperate
 {
 
 
+/**
+*  @brief
+*    Demo stage that renders three transparent, overlapping circles onto the screen
+*/
 class GLOPERATE_API DemoTransparencyStage : public Stage
 {
 public:
