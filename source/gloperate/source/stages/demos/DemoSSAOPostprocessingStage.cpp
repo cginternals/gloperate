@@ -139,6 +139,12 @@ void DemoSSAOPostprocessingStage::onContextDeinit(AbstractGLContext *)
 
 void DemoSSAOPostprocessingStage::onProcess(AbstractGLContext *)
 {
+    if (!(*colorTexture && *normalTexture && *depthTexture && *ssaoKernel && *ssaoNoise))
+    {
+        renderInterface.rendered.setValue(false);
+        return;
+    }
+
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
 
