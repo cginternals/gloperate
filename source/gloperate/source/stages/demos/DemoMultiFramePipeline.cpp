@@ -18,6 +18,7 @@ CPPEXPOSE_COMPONENT(DemoMultiFramePipeline, gloperate::Stage)
 DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
+, multiFrameCount("multiFrameCount", this, 64)
 , m_antialiasingPipeline(new DemoAntialiasingPipeline(environment))
 , m_dofPipeline(new DemoDOFPipeline(environment))
 , m_transparencyPipeline(new DemoTransparencyPipeline(environment))
@@ -38,8 +39,7 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const 
     m_multiFramePipeline->renderInterface.frameCounter << renderInterface.frameCounter;
     m_multiFramePipeline->renderInterface.timeDelta << renderInterface.timeDelta;
     m_multiFramePipeline->renderInterface.targetFBO << renderInterface.targetFBO;
-
-    m_multiFramePipeline->multiFrameCount.setValue(256);
+    m_multiFramePipeline->multiFrameCount << multiFrameCount;
 
     // Outputs
     renderInterface.rendered << m_multiFramePipeline->renderInterface.rendered;

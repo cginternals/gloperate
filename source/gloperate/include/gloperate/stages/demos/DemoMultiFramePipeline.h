@@ -6,6 +6,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
+#include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 namespace gloperate
@@ -40,6 +41,9 @@ public:
 public:
     // Interfaces
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
+
+    // Inputs
+    Input<int> multiFrameCount;      ///< Number of frames to aggregate
 
 
 public:
