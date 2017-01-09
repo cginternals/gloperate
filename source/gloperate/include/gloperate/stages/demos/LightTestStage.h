@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppexpose/plugin/plugin_api.h>
+
 #include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
@@ -9,6 +11,7 @@
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
 
+#include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
@@ -27,6 +30,17 @@ namespace gloperate
 
 class GLOPERATE_API LightTestStage : public Stage
 {
+public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        LightTestStage, gloperate::Stage
+      , "RenderStage"   // Tags
+      , ""              // Icon
+      , ""              // Annotations
+      , "Stage that renders a rotating cube using provided lighting information"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v0.1.0"
+    )
+
 public:
     RenderInterface renderInterface;
 

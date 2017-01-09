@@ -15,7 +15,7 @@ CPPEXPOSE_COMPONENT(LightTestPipeline, gloperate::Stage)
 
 
 LightTestPipeline::LightTestPipeline(Environment * environment, const std::string & name)
-: Pipeline(environment, name)
+: Pipeline(environment, "LightTestPipeline", name)
 , renderInterface(this)
 , glossiness("glossiness", this)
 , lightType1("lightType1", this)

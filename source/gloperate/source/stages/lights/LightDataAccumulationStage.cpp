@@ -28,7 +28,7 @@ CPPEXPOSE_COMPONENT(LightDataAccumulationStage, gloperate::Stage)
 
 
 LightDataAccumulationStage::LightDataAccumulationStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "LightDataAccumulationStage", name)
 , colorTypeData("colorTypeData", this, nullptr)
 , positionData("positionData", this, nullptr)
 , attenuationData("attenuationData", this, nullptr)

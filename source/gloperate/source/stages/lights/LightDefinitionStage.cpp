@@ -6,8 +6,11 @@ namespace gloperate
 {
 
 
+CPPEXPOSE_COMPONENT(LightDefinitionStage, gloperate::Stage)
+
+
 LightDefinitionStage::LightDefinitionStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "LightDefinitionStage", name)
 , type("type", this)
 , color("color", this)
 , position("position", this)

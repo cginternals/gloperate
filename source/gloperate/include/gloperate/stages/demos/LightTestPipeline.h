@@ -28,7 +28,7 @@ public:
       , "RenderStage"   // Tags
       , ""              // Icon
       , ""              // Annotations
-      , ""
+      , "Stage that renders a rotating cube using provided lighting information"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
     )

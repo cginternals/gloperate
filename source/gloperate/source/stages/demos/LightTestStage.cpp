@@ -18,6 +18,10 @@
 #include <gloperate/gloperate.h>
 
 
+namespace
+{
+
+
 static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
     {glm::vec3(-1.f, -1.f, -1.f), glm::vec3( 0.0f, -1.0f,  0.0)},
     {glm::vec3(-1.f, -1.f, +1.f), glm::vec3( 0.0f, -1.0f,  0.0)},
@@ -98,12 +102,18 @@ static const char * s_fragmentShader = R"(
 static const glm::vec3 cameraEye(0.0f, -1.5f, -3.0f);
 
 
+} // namespace
+
+
 namespace gloperate
 {
 
 
+CPPEXPOSE_COMPONENT(LightTestStage, gloperate::Stage)
+
+
 LightTestStage::LightTestStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "LightTestStage", name)
 , renderInterface(this)
 , glossiness("glossiness", this, 0.0f)
 , totalTime("totalTime", this, 0.0f)
