@@ -102,4 +102,4 @@ LightTestPipeline::~LightTestPipeline()
 }
 
 
-}
+} // namespace gloperate
