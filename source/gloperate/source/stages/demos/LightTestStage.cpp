@@ -17,9 +17,6 @@
 
 #include <gloperate/gloperate.h>
 
-#include <globjects/logging.h>
-#include <glbinding/logging.h>
-
 
 static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
     {glm::vec3(-1.f, -1.f, -1.f), glm::vec3( 0.0f, -1.0f,  0.0)},
@@ -203,7 +200,6 @@ void LightTestStage::onProcess(AbstractGLContext * context)
 
     // Update other uniforms
     m_program->setUniform("glossiness", (*glossiness));
-    globjects::debug() << (*glossiness);
 
     // Bind textures
     if (*lightColorTypeData)
