@@ -68,7 +68,7 @@ CPPEXPOSE_COMPONENT(SpinningRectStage, gloperate::Stage)
 
 
 SpinningRectStage::SpinningRectStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "SpinningRectStage", name)
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
 , angle          ("angle",           this, 0.0f)

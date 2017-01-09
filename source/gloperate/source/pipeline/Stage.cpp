@@ -11,7 +11,7 @@
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 
-#include <gloperate/base/GlmProperties.h>
+#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/AbstractSlot.h>
 
@@ -24,11 +24,14 @@ namespace gloperate
 {
 
 
-Stage::Stage(Environment * environment, const std::string & name)
-: cppexpose::Object(name)
+Stage::Stage(Environment * environment, const std::string & className, const std::string & name)
+: cppexpose::Object((name == "" || name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
 {
+    // Set object class name
+    setClassName(className);
+
     // Register functions
     addFunction("getDescription", this, &Stage::scr_getDescription);
     addFunction("getConnections", this, &Stage::scr_getConnections);
@@ -314,6 +317,7 @@ AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string
     if (type == "ivec3")   return createSlot<glm::ivec3>              (slotType, name);
     if (type == "ivec4")   return createSlot<glm::ivec4>              (slotType, name);
     if (type == "string")  return createSlot<std::string>             (slotType, name);
+    if (type == "color")   return createSlot<gloperate::Color>        (slotType, name);
     if (type == "texture") return createSlot<globjects::Texture *>    (slotType, name);
     if (type == "fbo")     return createSlot<globjects::Framebuffer *>(slotType, name);
 
@@ -495,6 +499,7 @@ cppexpose::Variant Stage::scr_slotTypes()
     types.asArray()->push_back("ivec3");
     types.asArray()->push_back("ivec4");
     types.asArray()->push_back("string");
+    types.asArray()->push_back("color");
     types.asArray()->push_back("texture");
     types.asArray()->push_back("fbo");
 

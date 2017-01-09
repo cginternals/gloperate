@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 
 #include <QCoreApplication>
+#include <QOpenGLContext>
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/Canvas.h>
@@ -45,7 +46,9 @@ gloperate::Stage * RenderWindow::renderStage() const
 
 void RenderWindow::setRenderStage(gloperate::Stage * stage)
 {
+    m_context->qtContext()->makeCurrent(this);
     m_canvas->setRenderStage(stage);
+    m_context->qtContext()->doneCurrent();
 }
 
 void RenderWindow::onContextInit()

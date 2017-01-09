@@ -51,10 +51,12 @@ public:
     *
     *  @param[in] environment
     *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] className
+    *    Class name of the pipeline
     *  @param[in] name
     *    Stage name
     */
-    Pipeline(Environment * environment, const std::string & name = "Pipeline");
+    Pipeline(Environment * environment, const std::string & className = "Pipeline", const std::string & name = "");
 
     /**
     *  @brief

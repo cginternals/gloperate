@@ -7,7 +7,6 @@
 find_package(cpplocate REQUIRED)
 
 # Generate version-header
-string(TOUPPER ${META_PROJECT_NAME} META_PROJECT_NAME_UPPER)
 configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/${META_PROJECT_NAME}/${META_PROJECT_NAME}-version.h)
 
 
@@ -24,7 +23,7 @@ generate_module_info(${META_PROJECT_NAME}
 
     BUILD_VALUES
     dataPath    "${PROJECT_SOURCE_DIR}/data"
-    pluginPath  "${PROJECT_BINARY_DIR}"
+    pluginPath  "\${ModulePath}"
 
     INSTALL_VALUES
     dataPath    "\${ModulePath}/data"

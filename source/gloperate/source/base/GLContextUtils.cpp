@@ -49,6 +49,8 @@ gloperate::GLContextFormat GLContextUtils::retrieveFormat()
 
     format.setVersion(retrieveVersion());
 
+    format.setProfile(retrieveProfile());
+
     i = -1; glGetIntegerv(GLenum::GL_RED_BITS, &i);
     format.setRedBufferSize(i);
 
@@ -78,32 +80,32 @@ gloperate::GLContextFormat GLContextUtils::retrieveFormat()
 
 glbinding::Version GLContextUtils::retrieveVersion()
 {
+    return glbinding::ContextInfo::version();
+}
+
+GLContextFormat::Profile GLContextUtils::retrieveProfile()
+{
     assert(0 != glbinding::getCurrentContext());
 
-    GLint major = -1;
-    GLint minor = -1;
+    gl::ContextProfileMask profileMask = gl::GL_NONE_BIT;
+    glGetIntegerv(GLenum::GL_CONTEXT_PROFILE_MASK, reinterpret_cast<GLint*>(&profileMask));
 
-    glGetIntegerv(GLenum::GL_MAJOR_VERSION, &major); // major version
-    glGetIntegerv(GLenum::GL_MINOR_VERSION, &minor); // minor version
-
-    if (major < 0 && minor < 0) // probably a context < 3.0 with no support for GL_MAJOR/MINOR_VERSION
+    if (static_cast<GLint>(profileMask) <= 0) // probably a context < 3.2 with no support for profiles
     {
-        const GLubyte * vstr = glGetString(GLenum::GL_VERSION);
-        if (!vstr)
-        {
-            return glbinding::Version();
-        }
-
-        assert(vstr[1] == '.');
-
-        assert(vstr[0] >= '0'  && vstr[0] <= '9');
-        major = vstr[0] - '0';
-
-        assert(vstr[2] >= '0'  && vstr[2] <= '9');
-        minor = vstr[2] - '0';
+        return GLContextFormat::Profile::None;
     }
 
-    return glbinding::Version(major, minor);
+    if ((profileMask & GL_CONTEXT_CORE_PROFILE_BIT) != gl::GL_NONE_BIT)
+    {
+        return GLContextFormat::Profile::Core;
+    }
+    
+    if ((profileMask & GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) != gl::GL_NONE_BIT)
+    {
+        return GLContextFormat::Profile::Compatibility;
+    }
+
+    return GLContextFormat::Profile::None;
 }
 
 std::string GLContextUtils::version()
@@ -111,6 +113,11 @@ std::string GLContextUtils::version()
     assert(0 != glbinding::getCurrentContext());
 
     return glbinding::ContextInfo::version().toString();
+}
+
+std::string GLContextUtils::profile()
+{
+    return GLContextFormat::profileString(retrieveProfile());
 }
 
 std::string GLContextUtils::vendor()
