@@ -14,7 +14,7 @@ CPPEXPOSE_COMPONENT(MultiFrameDiscDistributionStage, gloperate::Stage)
 
 MultiFrameDiscDistributionStage::MultiFrameDiscDistributionStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, isActive("isActive", this, false)
+, isActive("isActive", this, true)
 , radius("radius", this)
 , currentMultiFrame("currentMultiFrame", this)
 , value("value", this)
