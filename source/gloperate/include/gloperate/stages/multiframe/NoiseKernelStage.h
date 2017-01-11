@@ -70,6 +70,9 @@ protected:
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
 
+    // Helper Functions
+    void recreateNoise();
+
 
 protected:
     // Data

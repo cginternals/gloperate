@@ -22,15 +22,21 @@ NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const s
 {
 }
 
-void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
+void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext * context)
 {
-    m_noiseTexture.reset(new NoiseTexture((*inputDimensions), (*outputDimensions), (*size)));
-
-    noiseTexture.setValue(m_noiseTexture->texture());
+    recreateNoise();
 }
 
 void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
+    recreateNoise();
+}
+
+void NoiseKernelStage::recreateNoise()
+{
+    m_noiseTexture.reset(new NoiseTexture((*inputDimensions), (*outputDimensions), (*size)));
+
+    noiseTexture.setValue(m_noiseTexture->texture());
 }
 
 

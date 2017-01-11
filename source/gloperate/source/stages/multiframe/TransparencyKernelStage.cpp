@@ -22,21 +22,23 @@ TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * enviro
 {
 }
 
-void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
+void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * context)
 {
-    const auto table = TransparencyMasksGenerator::generateDistributions(1);
-
-    transparencyMaskTexture.setValue(globjects::Texture::createDefault(gl::GL_TEXTURE_2D));
-    (*transparencyMaskTexture)->image2D(0, gl::GL_R8, table->at(0).size(), table->size(), 0, gl::GL_RED, gl::GL_UNSIGNED_BYTE, table->data());
+    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+    regenerateKernel();
 }
 
 void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
-    if (!(*reprocess))
-        return;
+    if (*reprocess)
+        regenerateKernel();
+}
 
+void TransparencyKernelStage::regenerateKernel()
+{
     const auto table = TransparencyMasksGenerator::generateDistributions(1);
-    (*transparencyMaskTexture)->image2D(0, gl::GL_R8, table->at(0).size(), table->size(), 0, gl::GL_RED, gl::GL_UNSIGNED_BYTE, table->data());
+    m_texture->image2D(0, gl::GL_R8, table->at(0).size(), table->size(), 0, gl::GL_RED, gl::GL_UNSIGNED_BYTE, table->data());
+    transparencyMaskTexture.setValue(m_texture);
 }
 
 

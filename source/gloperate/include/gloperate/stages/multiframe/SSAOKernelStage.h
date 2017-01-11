@@ -72,6 +72,13 @@ protected:
     // Virtual Stage interface
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+
+    // Helper functions
+    void recreateKernels();
+
+protected:
+    globjects::ref_ptr<globjects::Texture> m_kernelTexture;
+    globjects::ref_ptr<globjects::Texture> m_noiseTexture;
 };
 
 

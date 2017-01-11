@@ -84,30 +84,38 @@ SSAOKernelStage::SSAOKernelStage(gloperate::Environment * environment, const std
 {
 }
 
-void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
+void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * context)
 {
-    kernelTexture.setValue(new globjects::Texture(gl::GL_TEXTURE_1D));
-    (*kernelTexture)->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
-    (*kernelTexture)->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
-    (*kernelTexture)->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_MIRRORED_REPEAT);
+    m_kernelTexture = new globjects::Texture(gl::GL_TEXTURE_1D);
+    m_kernelTexture->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
+    m_kernelTexture->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
+    m_kernelTexture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_MIRRORED_REPEAT);
 
-    noiseTexture.setValue(new globjects::Texture(gl::GL_TEXTURE_2D));
-    (*noiseTexture)->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
-    (*noiseTexture)->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
-    (*noiseTexture)->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
-    (*noiseTexture)->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
+    m_noiseTexture = new globjects::Texture(gl::GL_TEXTURE_2D);
+    m_noiseTexture->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
+    m_noiseTexture->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
+    m_noiseTexture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
+    m_noiseTexture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
+
+    noiseTexture.setValue(m_noiseTexture);
+    kernelTexture.setValue(m_kernelTexture);
 }
 
 void SSAOKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
     if (*enable)
     {
-        (*kernelTexture)->image1D(0, gl::GL_RGB16F, *kernelSize, 0, gl::GL_RGB, gl::GL_FLOAT, ssaoKernel(*kernelSize).data());
-        (*noiseTexture)->image2D(0, gl::GL_RG16F, *noiseSize, *noiseSize, 0, gl::GL_RG, gl::GL_FLOAT, ssaoNoise(*noiseSize).data());
+        recreateKernels();
     }
 
     kernelTexture.setValid(true);
     noiseTexture.setValid(true);
+}
+
+void SSAOKernelStage::recreateKernels()
+{
+    m_kernelTexture->image1D(0, gl::GL_RGB16F, *kernelSize, 0, gl::GL_RGB, gl::GL_FLOAT, ssaoKernel(*kernelSize).data());
+    m_noiseTexture->image2D(0, gl::GL_RG16F, *noiseSize, *noiseSize, 0, gl::GL_RG, gl::GL_FLOAT, ssaoNoise(*noiseSize).data());
 }
 
 
