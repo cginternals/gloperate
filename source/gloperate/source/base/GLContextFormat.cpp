@@ -30,8 +30,7 @@ const std::string & GLContextFormat::swapBehaviorString(const SwapBehavior swapB
     {
         { SwapBehavior::Default,         "Default" }
       , { SwapBehavior::DoubleBuffering, "DoubleBuffering" }
-      , { SwapBehavior::SingleBuffering, "SingleBuffering" } 
-      , { SwapBehavior::TripleBuffering, "TripleBuffering" }
+      , { SwapBehavior::SingleBuffering, "SingleBuffering" }
     };
 
     return swapbIdentifier.at(swapBehavior);

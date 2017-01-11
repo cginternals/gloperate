@@ -7,6 +7,7 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 
+#include <cppassist/logging/logging.h>
 #include <cppassist/string/conversion.h>
 
 #include <cppexpose/scripting/ScriptContext.h>

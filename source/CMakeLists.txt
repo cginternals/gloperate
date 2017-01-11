@@ -23,7 +23,7 @@ generate_module_info(${META_PROJECT_NAME}
 
     BUILD_VALUES
     dataPath    "${PROJECT_SOURCE_DIR}/data"
-    pluginPath  "${PROJECT_BINARY_DIR}"
+    pluginPath  "\${ModulePath}"
 
     INSTALL_VALUES
     dataPath    "\${ModulePath}/data"
