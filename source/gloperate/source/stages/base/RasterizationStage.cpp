@@ -5,6 +5,7 @@
 
 #include <globjects/Program.h>
 #include <globjects/Framebuffer.h>
+#include <globjects/Texture.h>
 
 #include <gloperate/rendering/RenderPass.h>
 #include <gloperate/rendering/Drawable.h>
@@ -21,12 +22,14 @@ CPPEXPOSE_COMPONENT(RasterizationStage, gloperate::Stage)
 
 RasterizationStage::RasterizationStage(Environment * environment, const std::string & name)
 : Stage(environment, name)
-, renderInterface(this)
-, rasterize      ("rasterize",  this, true)
-, drawable       ("drawable",   this)
-, program        ("program",    this)
-, renderPass     ("renderPass", this)
-, fboOut         ("fboOut",     this)
+, renderInterface (this)
+, rasterize       ("rasterize",       this, true)
+, drawable        ("drawable",        this)
+, program         ("program",         this)
+, renderPass      ("renderPass",      this)
+, colorTexture    ("colorTexture",    this)
+, fboOut          ("fboOut",          this)
+, colorTextureOut ("colorTextureOut", this)
 {
 }
 
@@ -48,8 +51,6 @@ void RasterizationStage::onProcess(AbstractGLContext *)
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
     glm::vec4 viewport = *renderInterface.deviceViewport;
 
-//    gl::glClampColor(GL_CLAMP_READ_COLOR, static_cast<GLenum>(static_cast<GLint>(GL_FALSE)));
-
     gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
     // Clear background
@@ -70,6 +71,7 @@ void RasterizationStage::onProcess(AbstractGLContext *)
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     fboOut.setValue(fbo);
+    colorTextureOut.setValue(*colorTexture);
 }
 
 

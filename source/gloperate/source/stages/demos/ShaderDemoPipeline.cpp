@@ -4,14 +4,15 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/MixerStage.h>
-#include <gloperate/stages/demos/TimerStage.h>
-#include <gloperate/stages/demos/SpinningRectStage.h>
-#include <gloperate/stages/demos/ColorizeStage.h>
-
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/ShaderStage.h>
-#include <gloperate/stages/demos/DemoRenderStage.h>
+#include <gloperate/stages/base/RasterizationStage.h>
+#include <gloperate/stages/base/RenderPassStage.h>
+
+#include <gloperate/stages/demos/DemoDrawableStage.h>
+
+#include <cppassist/logging/logging.h>
 
 
 namespace gloperate
@@ -31,7 +32,9 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 , m_shaderStage(new ShaderStage(environment, "ShaderStage"))
 , m_programStage(new ProgramStage(environment, "ProgramStage"))
 , m_framebufferStage(new BasicFramebufferStage(environment, "BasicFramebufferStage"))
-, m_renderStage(new DemoRenderStage(environment, "RenderStage"))
+, m_demoDrawableStage(new DemoDrawableStage(environment, "DemoDrawableStage"))
+, m_renderPassStage(new RenderPassStage(environment, "RenderPassStage"))
+, m_rasterizationStage(new RasterizationStage(environment, "RasterizationStage"))
 , m_mixerStage(new MixerStage(environment, "MixerStage"))
 {
     // Get data path
@@ -56,24 +59,35 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
     m_programStage->createInput("shader1") << shader1;
     m_programStage->createInput("shader2") << m_shaderStage->shader;
 
-    // Framebuffer stage for spinning rect
+    // Framebuffer stage
     addStage(m_framebufferStage);
     m_framebufferStage->viewport << renderInterface.deviceViewport;
 
-    // Spinning rectangle stage
-    addStage(m_renderStage);
-    m_renderStage->renderInterface.deviceViewport  << renderInterface.deviceViewport;
-    m_renderStage->renderInterface.targetFBO       << m_framebufferStage->fbo;
-    m_renderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_renderStage->colorTexture                    << m_framebufferStage->colorTexture;
-    m_renderStage->texture                         << m_textureLoadStage->texture;
-    m_renderStage->program                         << m_programStage->program;
+    // Demo drawable stage (supplies demo drawable)
+    addStage(m_demoDrawableStage);
+
+    // Render pass stage with fixed camera
+    addStage(m_renderPassStage);
+    m_renderPassStage->camera.setValue(new Camera(glm::vec3(0.0, 0.0, 12.0)));
+    m_renderPassStage->drawable << m_demoDrawableStage->drawable;
+    m_renderPassStage->program << m_programStage->program;
+
+    auto textureInput = m_renderPassStage->createInput<globjects::Texture *>("texColor");
+    *textureInput << m_textureLoadStage->texture;
+
+    // Rasterization stage
+    addStage(m_rasterizationStage);
+    m_rasterizationStage->renderInterface.targetFBO << m_framebufferStage->fbo;
+    m_rasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_rasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    m_rasterizationStage->renderPass << m_renderPassStage->renderPass;
+    m_rasterizationStage->colorTexture << m_framebufferStage->colorTexture;
 
     // Mixer stage
     addStage(m_mixerStage);
     m_mixerStage->viewport  << renderInterface.deviceViewport;
     m_mixerStage->targetFBO << renderInterface.targetFBO;
-    m_mixerStage->texture   << m_renderStage->colorTextureOut;
+    m_mixerStage->texture   << m_rasterizationStage->colorTextureOut;
 
     // Outputs
     renderInterface.rendered << m_mixerStage->rendered;

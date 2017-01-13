@@ -45,9 +45,6 @@ void RenderPassStage::onContextInit(AbstractGLContext *)
     m_renderPass = new gloperate::RenderPass;
     renderPass.setValue(m_renderPass);
 
-    m_renderPass->setGeometry((*drawable));
-    m_renderPass->setProgram((*program));
-
     m_renderPass->setState(new globjects::State(globjects::State::DeferredMode));
 
 //    m_renderPass->state()->enable(gl::GL_DEPTH_TEST);
@@ -61,19 +58,18 @@ void RenderPassStage::onContextInit(AbstractGLContext *)
 
 void RenderPassStage::onProcess(AbstractGLContext *)
 {
-    auto program = m_renderPass->program();
+    m_renderPass->setGeometry((*drawable));
+    m_renderPass->setProgram((*program));
 
-    // ToDo: clean previous leftover values (?)
-
-    if (camera.isConnected())
+    if (camera.isValid())
     {
         gloperate::Camera * cameraPtr = *camera;
 
-        program->setUniform<glm::vec3>("eye", cameraPtr->eye());
-        program->setUniform<glm::mat4>("viewProjection", cameraPtr->viewProjection());
-        program->setUniform<glm::mat4>("view", cameraPtr->view());
-        program->setUniform<glm::mat4>("projection", cameraPtr->projection());
-        program->setUniform<glm::mat3>("normalMatrix", cameraPtr->normal());
+        (*program)->setUniform<glm::vec3>("eye", cameraPtr->eye());
+        (*program)->setUniform<glm::mat4>("viewProjection", cameraPtr->viewProjection());
+        (*program)->setUniform<glm::mat4>("view", cameraPtr->view());
+        (*program)->setUniform<glm::mat4>("projection", cameraPtr->projection());
+        (*program)->setUniform<glm::mat3>("normalMatrix", cameraPtr->normal());
     }
 
     unsigned int textureIndex = 0;
@@ -83,8 +79,9 @@ void RenderPassStage::onProcess(AbstractGLContext *)
         auto textureInput = dynamic_cast<Input<globjects::Texture *> *>(input);
         if (textureInput)
         {
-            program->setUniform<int>(textureInput->name(), textureIndex);
+            (*program)->setUniform<int>(textureInput->name(), textureIndex);
             m_renderPass->setTexture(textureIndex, **textureInput);
+
             if ((**textureInput)->target() == gl::GL_TEXTURE_CUBE_MAP)
             {
                 (*renderPass)->state()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);

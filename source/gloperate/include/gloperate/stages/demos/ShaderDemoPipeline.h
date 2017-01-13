@@ -19,8 +19,10 @@ class BasicFramebufferStage;
 class TextureLoadStage;
 class ShaderStage;
 class ProgramStage;
-class DemoRenderStage;
+class DemoDrawableStage;
 class MixerStage;
+class RasterizationStage;
+class RenderPassStage;
 
 
 /**
@@ -71,16 +73,19 @@ public:
 
 protected:
     // Stages
-    TextureLoadStage      * m_textureLoadStage; ///< Stage that loads a static picture
+    TextureLoadStage      * m_textureLoadStage;  ///< Stage that loads a static picture
 
     ShaderStage           * m_shaderStage;      ///< Stage which loads one shader
 
     ProgramStage          * m_programStage;     ///< Stage which creates the program
 
-    BasicFramebufferStage * m_framebufferStage; ///< Stage which creates the framebuffer
-    DemoRenderStage       * m_renderStage;      ///< Stage that renders with the program
+    BasicFramebufferStage * m_framebufferStage;  ///< Stage which creates the framebuffer
+    DemoDrawableStage     * m_demoDrawableStage; ///< Stage which creates the drawable
 
-    MixerStage            * m_mixerStage;       ///< Stage that renders the output to the screen
+    RenderPassStage *       m_renderPassStage;   ///< Stage which creates the render pass
+    RasterizationStage *    m_rasterizationStage;///< Stage which renders the scene
+
+    MixerStage            * m_mixerStage;        ///< Stage that renders the output to the screen
 };
 
 

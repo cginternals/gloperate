@@ -23,6 +23,7 @@ namespace globjects
 
 class Program;
 class Framebuffer;
+class Texture;
 
 
 } // namespace globjects
@@ -67,8 +68,11 @@ public:
     Input<globjects::Program *> program;        ///< the program used for rendering
     Input<gloperate::RenderPass *> renderPass;  ///< if connected, it replaces program and drawable input
 
+    Input<globjects::Texture *> colorTexture;   ///< pass in of texture input/output
+
     // Outputs
     Output<globjects::Framebuffer *> fboOut;     ///< pass through framebuffer
+    Output<globjects::Texture *> colorTextureOut;///< pass through color texture
 
 
 public:
