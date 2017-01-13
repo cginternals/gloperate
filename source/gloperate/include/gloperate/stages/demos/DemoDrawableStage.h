@@ -60,7 +60,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoDrawableStage(Environment * environment, const std::string & name = "RenderStage");
+    DemoDrawableStage(Environment * environment, const std::string & name = "DemoDrawableStage");
 
     /**
     *  @brief

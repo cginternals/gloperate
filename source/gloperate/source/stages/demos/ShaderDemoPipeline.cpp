@@ -37,6 +37,8 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 , m_rasterizationStage(new RasterizationStage(environment, "RasterizationStage"))
 , m_mixerStage(new MixerStage(environment, "MixerStage"))
 {
+    setVerbosityLevel(cppassist::LogMessage::Debug);
+
     // Get data path
     std::string dataPath = gloperate::dataPath();
 

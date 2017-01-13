@@ -22,7 +22,7 @@ CPPEXPOSE_COMPONENT(RenderPassStage, gloperate::Stage)
 
 
 RenderPassStage::RenderPassStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "RenderPassStage", name)
 , drawable("drawable", this)
 , program("program", this)
 , camera("camera", this)

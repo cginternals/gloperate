@@ -276,6 +276,7 @@ void Pipeline::onProcess(AbstractGLContext * context)
     for (auto stage : m_stages)
     {
         if (stage->needsProcessing()) {
+            debug() << "Process stage " << stage->name();
             stage->process(context);
         }
     }

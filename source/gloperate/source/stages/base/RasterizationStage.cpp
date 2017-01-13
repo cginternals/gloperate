@@ -21,7 +21,7 @@ CPPEXPOSE_COMPONENT(RasterizationStage, gloperate::Stage)
 
 
 RasterizationStage::RasterizationStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "RasterizationStage", name)
 , renderInterface (this)
 , rasterize       ("rasterize",       this, true)
 , drawable        ("drawable",        this)

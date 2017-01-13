@@ -27,7 +27,7 @@ CPPEXPOSE_COMPONENT(DemoDrawableStage, gloperate::Stage)
 
 
 DemoDrawableStage::DemoDrawableStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "DemoDrawableStage", name)
 , drawable("drawable", this, nullptr)
 {
 }
