@@ -50,13 +50,13 @@ void RenderPassStage::onContextInit(AbstractGLContext *)
 
     m_renderPass->setState(new globjects::State(globjects::State::DeferredMode));
 
-//     m_renderPass->state()->enable(gl::GL_DEPTH_TEST);
-//     m_renderPass->state()->enable(gl::GL_CULL_FACE);
-//     m_renderPass->state()->depthFunc(gl::GL_LEQUAL);
-//     m_renderPass->state()->disable(gl::GL_BLEND);
-//     m_renderPass->state()->cullFace(gl::GL_BACK);
-//     m_renderPass->state()->frontFace(gl::GL_CCW);
-//     m_renderPass->state()->depthMask(gl::GL_TRUE);
+//    m_renderPass->state()->enable(gl::GL_DEPTH_TEST);
+//    m_renderPass->state()->enable(gl::GL_CULL_FACE);
+//    m_renderPass->state()->depthFunc(gl::GL_LEQUAL);
+//    m_renderPass->state()->disable(gl::GL_BLEND);
+//    m_renderPass->state()->cullFace(gl::GL_BACK);
+//    m_renderPass->state()->frontFace(gl::GL_CCW);
+//    m_renderPass->state()->depthMask(gl::GL_TRUE);
 }
 
 void RenderPassStage::onProcess(AbstractGLContext *)
