@@ -94,7 +94,7 @@ void FramebufferStage::rebuildFBO()
     }
 }
 
-bool FramebufferStage::isNameOfDepthRenderTarget(std::string name)
+bool FramebufferStage::isNameOfDepthRenderTarget(const std::string & name)
 {
     return name.find("Depth") != std::string::npos || name.find("depth") != std::string::npos;
 }
