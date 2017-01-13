@@ -112,6 +112,7 @@ set(headers
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/base/ShaderStage.h
+    ${include_path}/stages/base/RenderPassStage.h
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
@@ -203,6 +204,7 @@ set(sources
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/ShaderStage.cpp
+    ${source_path}/stages/base/RenderPassStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp

@@ -16,8 +16,22 @@
 #include <gloperate/pipeline/Output.h>
 
 
+namespace globjects {
+
+
+class Program;
+
+
+} // namespace globjects
+
+
 namespace gloperate
 {
+
+
+class Drawable;
+class Camera;
+class RenderPass;
 
 
 /**
@@ -25,9 +39,10 @@ namespace gloperate
 *    Stage that creates a render pass
 *
 *    Additional inputs of the following types can be created dynamically:
-*    globjects::Texture - all textures are attached via their name
-*    globjects::Buffer  - buffers are added as shader storage buffers
-*    uniforms of type T - are updated automatically, see createNewUniformInput()
+*        Type            -               Description
+*    globjects::Texture  -  all textures are attached via their (input) name
+*    globjects::Buffer   -  buffers are added as shader storage buffers
+*    uniforms of type T  -  are updated automatically, see createNewUniformInput()
 */
 class GLOPERATE_API RenderPassStage : public Stage
 {
@@ -45,15 +60,14 @@ public:
 
 public:
     // Inputs
-    Input<globjects::ref_ptr<gloperate::Drawable>> drawable;
-    Input<globjects::ref_ptr<globjects::Program>> program;
-
-    Input<gloperate::Camera *> camera;
+    Input<gloperate::Drawable *> drawable;      ///< the drawable to be drawn
+    Input<globjects::Program *> program;        ///< the program used for rendering
+    Input<gloperate::Camera *> camera;          ///< the input camera
 
     // Additional dynamic inputs can be created, see class description
 
     // Outputs
-    Output<gloperate::RenderPass *> renderPass; ///< ToDo
+    Output<gloperate::RenderPass *> renderPass; ///< The created and configured RenderPass
 
 
 public:
@@ -95,9 +109,9 @@ protected:
     void onContextInit(AbstractGLContext * content) override;
 
 protected:
-    globjects::ref_ptr<gloperate::RenderPass> ///< RenderPass object
+    globjects::ref_ptr<gloperate::RenderPass> m_renderPass;                ///< RenderPass object
 
-    std::unordered_map<std::string, std::function<void()>> uniformSetters; ///< ToDo
+    std::unordered_map<std::string, std::function<void()>> uniformSetters; ///< Stores a lambda expression which updates the uniform value
 };
 
 
