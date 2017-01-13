@@ -33,6 +33,8 @@ ProgramStage::~ProgramStage()
 void ProgramStage::onContextInit(AbstractGLContext *)
 {
     m_program = new globjects::Program;
+    program.setValue(m_program);
+    program.setValid(false);
 }
 
 void ProgramStage::onProcess(AbstractGLContext *)
@@ -47,7 +49,7 @@ void ProgramStage::onProcess(AbstractGLContext *)
             m_program->attach(**shaderInput);
         }
     }
-    program.setValue(m_program);
+    program.setValid(true);
 }
 
 

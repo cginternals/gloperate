@@ -39,11 +39,12 @@ void ShaderLoaderStage::onProcess(AbstractGLContext *)
 {
     m_file = new globjects::File(filePath->path(), false);
     source.setValue(m_file);
-    if (m_extensionToType.count(filePath->extension()) > 0) {
-        type.setValue(m_extensionToType.at(filePath->extension()));
+    auto it = m_extensionToType.find(filePath->extension());
+    if (it == m_extensionToType.end()) {
+        type.setValue(gl::GL_NONE);
         return;
     }
-    type.setValue(gl::GL_NONE);
+    type.setValue((*it).second);
 }
 
 
