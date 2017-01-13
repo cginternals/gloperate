@@ -130,6 +130,7 @@ set(headers
     ${include_path}/stages/demos/DemoMultiFramePipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
     ${include_path}/stages/demos/DemoRenderStage.h
+    ${include_path}/stages/demos/DemoDrawableStage.h
     ${include_path}/stages/demos/TimerStage.h
     ${include_path}/stages/demos/ColorizeStage.h
     ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
@@ -230,6 +231,7 @@ set(sources
     ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
     ${source_path}/stages/demos/DemoRenderStage.cpp
+    ${source_path}/stages/demos/DemoDrawableStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
     ${source_path}/stages/demos/ColorizeStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
