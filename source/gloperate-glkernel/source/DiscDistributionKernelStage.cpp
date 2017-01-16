@@ -14,6 +14,27 @@
 #include <globjects/Buffer.h>
 
 
+namespace
+{
+
+
+using namespace glm;
+
+// push the corners of the square in to form a disc
+vec2 pushCorners(vec2 v)
+{
+    if (std::max(std::abs(v.x), std::abs(v.y)) < 1e-10f)
+        return v;
+
+    vec2 maxVec = v / std::max(v.x, v.y);
+    float maxLen = length(maxVec);
+    return v / maxLen;
+}
+
+
+}
+
+
 namespace gloperate_glkernel
 {
 
@@ -44,16 +65,7 @@ void DiscDistributionKernelStage::regenerateKernel()
 
     glkernel::scale::range(m_kernel, -1.0f, 1.0f);
 
-    // push the corners of the square in to form a disc
-    std::transform(m_kernel.begin(), m_kernel.end(), m_kernel.begin(), [](glm::vec2 v) -> glm::vec2
-    {
-        if (std::max(std::abs(v.x), std::abs(v.y)) < 1e-10f)
-            return v;
-
-        glm::vec2 maxVec = v / std::max(v.x, v.y);
-        float maxLen = glm::length(maxVec);
-        return v / maxLen; 
-    });
+    std::transform(m_kernel.begin(), m_kernel.end(), m_kernel.begin(), pushCorners);
 
     glkernel::sort::distance(m_kernel, {0.0f, 0.0f});
 }
