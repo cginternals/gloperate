@@ -42,24 +42,42 @@ public:
     )
 
 public:
-    RenderInterface renderInterface;
+    // Interfaces
+    RenderInterface renderInterface;                  ///< Interface for rendering into a viewer
 
-    Input<float> glossiness;
-    Input<float> totalTime;
+    // Inputs
+    Input<float> glossiness;                          ///< Glossiness of the cube (0.0 to 1.0)
+    Input<float> totalTime;                           ///< Total running time
 
-    Input<globjects::Texture *> lightColorTypeData;
-    Input<globjects::Texture *> lightPositionData;
-    Input<globjects::Texture *> lightAttenuationData;
+    Input<globjects::Texture *> lightColorTypeData;   ///< Buffer Texture with color & type information
+    Input<globjects::Texture *> lightPositionData;    ///< Buffer Texture with position information
+    Input<globjects::Texture *> lightAttenuationData; ///< Buffer Texture with attenuation information
 
 public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     LightTestStage(Environment * environment, const std::string & name = "LightTestStage");
+
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~LightTestStage();
 
 protected:
+    // Virtual Stage interface
     virtual void onContextInitialize(AbstractGLContext * context);
     virtual void onProcess(AbstractGLContext * context);
 
 protected:
+    // Rendering objects
     globjects::ref_ptr<globjects::VertexArray> m_vao;
     globjects::ref_ptr<globjects::Buffer>      m_vertexBuffer;
     globjects::ref_ptr<globjects::Program>     m_program;
