@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/lights/LightDataAccumulationStage.h>
+#include <gloperate/stages/lights/LightBufferTextureStage.h>
 
 #include <glm/vec3.hpp>
 
@@ -8,7 +8,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/Texture.h>
 
-#include <gloperate/rendering/LightDefinition.h>
+#include <gloperate/rendering/Light.h>
 
 
 namespace
@@ -24,26 +24,26 @@ struct ColorTypeEntry
 namespace gloperate
 {
 
-CPPEXPOSE_COMPONENT(LightDataAccumulationStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(LightBufferTextureStage, gloperate::Stage)
 
 
-LightDataAccumulationStage::LightDataAccumulationStage(Environment * environment, const std::string & name)
-: Stage(environment, "LightDataAccumulationStage", name)
+LightBufferTextureStage::LightBufferTextureStage(Environment * environment, const std::string & name)
+: Stage(environment, "LightBufferTextureStage", name)
 , colorTypeData("colorTypeData", this, nullptr)
 , positionData("positionData", this, nullptr)
 , attenuationData("attenuationData", this, nullptr)
 {
 }
 
-LightDataAccumulationStage::~LightDataAccumulationStage()
+LightBufferTextureStage::~LightBufferTextureStage()
 {
 }
 
-void LightDataAccumulationStage::onContextInit(AbstractGLContext * context)
+void LightBufferTextureStage::onContextInit(AbstractGLContext * context)
 {
 }
 
-void LightDataAccumulationStage::onProcess(AbstractGLContext * context)
+void LightBufferTextureStage::onProcess(AbstractGLContext * context)
 {
     if (!colorTypeData.isValid() || !positionData.isValid() || !attenuationData.isValid())
     {
@@ -74,7 +74,7 @@ void LightDataAccumulationStage::onProcess(AbstractGLContext * context)
     attenuationData.setValue(m_attenuationTexture);
 }
 
-void LightDataAccumulationStage::setupBufferTextures()
+void LightBufferTextureStage::setupBufferTextures()
 {
     m_colorTypeBuffer = new globjects::Buffer();
     m_colorTypeTexture = new globjects::Texture(gl::GL_TEXTURE_BUFFER);
@@ -90,9 +90,9 @@ void LightDataAccumulationStage::setupBufferTextures()
     m_attenuationTexture->texBuffer(gl::GL_RGB32F, m_attenuationBuffer);
 }
 
-Input<LightDefinition> * LightDataAccumulationStage::createLightInput()
+Input<Light> * LightBufferTextureStage::createLightInput()
 {
-    auto lightInput = createInput<LightDefinition>("light");
+    auto lightInput = createInput<Light>("light");
     m_lightInputs.push_back(lightInput);
     return lightInput;
 }

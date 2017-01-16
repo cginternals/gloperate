@@ -10,7 +10,7 @@ namespace gloperate
 {
 
 
-struct LightDefinition
+struct Light
 {
     LightType type;
     glm::vec3 color;

@@ -1,8 +1,8 @@
 
 #include <gloperate/stages/demos/LightTestPipeline.h>
 
-#include <gloperate/stages/lights/LightDefinitionStage.h>
-#include <gloperate/stages/lights/LightDataAccumulationStage.h>
+#include <gloperate/stages/lights/LightCreationStage.h>
+#include <gloperate/stages/lights/LightBufferTextureStage.h>
 #include <gloperate/stages/demos/LightTestStage.h>
 #include <gloperate/stages/demos/TimerStage.h>
 
@@ -30,10 +30,10 @@ LightTestPipeline::LightTestPipeline(Environment * environment, const std::strin
 , lightAttenuation1("lightAttenuation1", this)
 , lightAttenuation2("lightAttenuation2", this)
 , lightAttenuation3("lightAttenuation3", this)
-, m_lightDefStage1(new LightDefinitionStage(environment))
-, m_lightDefStage2(new LightDefinitionStage(environment))
-, m_lightDefStage3(new LightDefinitionStage(environment))
-, m_lightAccumulationStage(new LightDataAccumulationStage(environment))
+, m_lightDefStage1(new LightCreationStage(environment))
+, m_lightDefStage2(new LightCreationStage(environment))
+, m_lightDefStage3(new LightCreationStage(environment))
+, m_lightAccumulationStage(new LightBufferTextureStage(environment))
 , m_timerStage(new TimerStage(environment))
 , m_renderStage(new LightTestStage(environment))
 {

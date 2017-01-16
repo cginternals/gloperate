@@ -95,7 +95,7 @@ set(headers
     ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/RenderPass.h
     ${include_path}/rendering/LightType.h
-    ${include_path}/rendering/LightDefinition.h
+    ${include_path}/rendering/Light.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -114,8 +114,8 @@ set(headers
     ${include_path}/stages/demos/ColorizeStage.h
     ${include_path}/stages/demos/LightTestStage.h
     ${include_path}/stages/demos/LightTestPipeline.h
-    ${include_path}/stages/lights/LightDefinitionStage.h
-    ${include_path}/stages/lights/LightDataAccumulationStage.h
+    ${include_path}/stages/lights/LightCreationStage.h
+    ${include_path}/stages/lights/LightBufferTextureStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -190,8 +190,8 @@ set(sources
     ${source_path}/stages/demos/ColorizeStage.cpp
     ${source_path}/stages/demos/LightTestStage.cpp
     ${source_path}/stages/demos/LightTestPipeline.cpp
-    ${source_path}/stages/lights/LightDefinitionStage.cpp
-    ${source_path}/stages/lights/LightDataAccumulationStage.cpp
+    ${source_path}/stages/lights/LightCreationStage.cpp
+    ${source_path}/stages/lights/LightBufferTextureStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp

@@ -21,18 +21,18 @@ namespace gloperate
 {
 
 
-struct LightDefinition;
+struct Light;
 
 
 /**
 *  @brief
 *    Stage that takes Light objects as inputs and creates texture buffers containing information of all lights
 */
-class GLOPERATE_API LightDataAccumulationStage : public Stage
+class GLOPERATE_API LightBufferTextureStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        LightDataAccumulationStage, gloperate::Stage
+        LightBufferTextureStage, gloperate::Stage
       , ""
       , ""
       , ""
@@ -57,13 +57,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    LightDataAccumulationStage(Environment * environment, const std::string & name = "LightDataAccumulationStage");
+    LightBufferTextureStage(Environment * environment, const std::string & name = "LightBufferTextureStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~LightDataAccumulationStage();
+    virtual ~LightBufferTextureStage();
 
     /**
     *  @brief
@@ -72,7 +72,7 @@ public:
     *  @return
     *    Pointer to new input
     */
-    Input<LightDefinition> * createLightInput();
+    Input<Light> * createLightInput();
 
 protected:
     // Virtual Stage interface
@@ -91,7 +91,7 @@ protected:
     globjects::Buffer * m_positionBuffer;        ///< Buffer for position information
     globjects::Buffer * m_attenuationBuffer;     ///< Buffer for attenuation information
 
-    std::vector< Input<LightDefinition> * > m_lightInputs; ///< Light inputs
+    std::vector< Input<Light> * > m_lightInputs; ///< Light inputs
 };
 
 

@@ -10,7 +10,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/rendering/LightDefinition.h>
+#include <gloperate/rendering/Light.h>
 
 
 namespace gloperate
@@ -21,11 +21,11 @@ namespace gloperate
 *  @brief
 *    Stage that bundles information on a single light source into a Light object
 */
-class GLOPERATE_API LightDefinitionStage : public Stage
+class GLOPERATE_API LightCreationStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        LightDefinitionStage, gloperate::Stage
+        LightCreationStage, gloperate::Stage
       , ""              // Tags
       , ""              // Icon
       , ""              // Annotations
@@ -42,7 +42,7 @@ public:
     Input<glm::vec3> attenuationCoeffitients; ///< Coeffitients for attenuation in the order: constant, linear, quadratic
 
     // Output
-    Output<LightDefinition> light;                      ///< Light object
+    Output<Light> light;                      ///< Light object
 
 public:
     /**
@@ -54,13 +54,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    LightDefinitionStage(Environment * environment, const std::string & name = "LightDefinitionStage");
+    LightCreationStage(Environment * environment, const std::string & name = "LightCreationStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~LightDefinitionStage();
+    virtual ~LightCreationStage();
 
 protected:
     // Virtual Stage interface

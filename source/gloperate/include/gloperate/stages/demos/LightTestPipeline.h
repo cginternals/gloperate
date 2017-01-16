@@ -14,8 +14,8 @@ namespace gloperate
 {
 
 
-class LightDefinitionStage;
-class LightDataAccumulationStage;
+class LightCreationStage;
+class LightBufferTextureStage;
 class LightTestStage;
 class TimerStage;
 
@@ -80,10 +80,10 @@ public:
 
 protected:
     // Stages
-    LightDefinitionStage       * m_lightDefStage1;
-    LightDefinitionStage       * m_lightDefStage2;
-    LightDefinitionStage       * m_lightDefStage3;
-    LightDataAccumulationStage * m_lightAccumulationStage;
+    LightCreationStage         * m_lightDefStage1;
+    LightCreationStage         * m_lightDefStage2;
+    LightCreationStage         * m_lightDefStage3;
+    LightBufferTextureStage    * m_lightAccumulationStage;
     TimerStage                 * m_timerStage;
     LightTestStage             * m_renderStage;
 };
