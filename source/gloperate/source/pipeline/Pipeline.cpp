@@ -128,7 +128,7 @@ bool Pipeline::destroyStage(Stage * stage)
 
 void Pipeline::invalidateStageOrder()
 {
-    debug() << "Invalidate stage order; resort on next process" << std::endl;
+    debug() << "Invalidate stage order; resort on next process";
     m_sorted = false;
 }
 
@@ -203,7 +203,7 @@ void Pipeline::sortStages()
 
         if (touched.count(stage) > 0)
         {
-            critical() << "Pipeline is not a directed acyclic graph" << std::endl;
+            critical() << "Pipeline is not a directed acyclic graph";
             couldBeSorted = false;
             sorted.push_back(stage);
             return;
