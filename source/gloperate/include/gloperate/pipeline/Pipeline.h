@@ -51,10 +51,12 @@ public:
     *
     *  @param[in] environment
     *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] className
+    *    Class name of the pipeline
     *  @param[in] name
     *    Stage name
     */
-    Pipeline(Environment * environment, const std::string & name = "Pipeline");
+    Pipeline(Environment * environment, const std::string & className = "Pipeline", const std::string & name = "");
 
     /**
     *  @brief
@@ -122,6 +124,27 @@ public:
     */
     bool destroyStage(Stage * stage);
 
+    /**
+    *  @brief
+    *    Invalidate sorted stage order
+    *
+    *  @remarks
+    *    The stages are resorted upon next usage.
+    */
+    void invalidateStageOrder();
+
+    /**
+    *  @brief
+    *    Get a slot of this pipeline or a subpipeline
+    *
+    *  @param[in] path
+    *    Path to the slot from this pipeline. Can contain the name of this pipeline as first element.
+    *
+    *  @return
+    *    Slot, nullptr if not found
+    */
+    AbstractSlot * getSlot(const std::string & path);
+
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
@@ -139,6 +162,15 @@ protected:
     virtual void onProcess(AbstractGLContext * context) override;
     virtual void onInputValueChanged(AbstractSlot * slot) override;
     virtual void onOutputRequiredChanged(AbstractSlot * slot) override;
+
+
+protected:
+    // Scripting functions
+    virtual cppexpose::Variant scr_getDescription() override;
+    std::string scr_createStage(const std::string & className, const std::string & name);
+    void scr_removeStage(const std::string & name);
+    void scr_createConnection(const std::string & from, const std::string & to);
+    void scr_removeConnection(const std::string & to);
 
 
 protected:

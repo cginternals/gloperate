@@ -131,11 +131,11 @@ protected:
 
 protected:
     // Scripting functions
-    int  start(int msec, const cppexpose::Variant & func);
-    int  once(int msec, const cppexpose::Variant & func);
-    void stop(int id);
-    void stopAll();
-    int  nextTick(const cppexpose::Variant & func);
+    int  scr_start(int msec, const cppexpose::Variant & func);
+    int  scr_once(int msec, const cppexpose::Variant & func);
+    void scr_stop(int id);
+    void scr_stopAll();
+    int  scr_nextTick(const cppexpose::Variant & func);
 
     // Helper functions
     int startTimer(const cppexpose::Variant & func, int msec, bool singleShot);

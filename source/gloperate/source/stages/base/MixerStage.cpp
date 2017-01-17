@@ -16,6 +16,10 @@
 #include <gloperate/gloperate.h>
 
 
+namespace
+{
+
+
 /**
 *  @brief
 *    Load shader
@@ -36,6 +40,9 @@ static void loadShader(globjects::Program * program, const gl::GLenum type, cons
 }
 
 
+}
+
+
 namespace gloperate
 {
 
@@ -44,7 +51,7 @@ CPPEXPOSE_COMPONENT(MixerStage, gloperate::Stage)
 
 
 MixerStage::MixerStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "MixerStage", name)
 , viewport      ("viewport", this)
 , targetFBO     ("targetFBO", this)
 , texture       ("texture", this)

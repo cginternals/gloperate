@@ -39,11 +39,11 @@ public:
 
 protected:
     // Scripting functions
-    void load(const std::string & filename);
-    std::string readFile(const std::string & filename);
-    void writeFile(const std::string & filename, const cppexpose::Variant & value);
-    void appendFile(const std::string & filename, const cppexpose::Variant & value);
-    void exit(int exitCode);
+    void scr_load(const std::string & filename);
+    std::string scr_readFile(const std::string & filename);
+    void scr_writeFile(const std::string & filename, const cppexpose::Variant & value);
+    void scr_appendFile(const std::string & filename, const cppexpose::Variant & value);
+    void scr_exit(int exitCode);
 
 
 protected:

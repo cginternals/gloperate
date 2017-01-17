@@ -38,6 +38,7 @@ public:
     virtual ~TypedComponent();
 
     virtual gloperate::Stage * createInstance(gloperate::Environment * environment) const = 0;
+    virtual gloperate::Stage * createInstance(gloperate::Environment * environment, const std::string & name) const = 0;
 };
 
 
@@ -62,6 +63,7 @@ public:
     virtual ~Component();
 
     virtual gloperate::Stage * createInstance(gloperate::Environment * environment) const override;
+    virtual gloperate::Stage * createInstance(gloperate::Environment * environment, const std::string & name) const override;
 };
 
 

@@ -80,7 +80,7 @@ bool Window::create()
     // Create internal window
     if (!createInternalWindow(m_format, m_windowedModeSize.x, m_windowedModeSize.y))
     {
-        cppassist::fatal() << "Creating native window with OpenGL context failed.";
+        cppassist::critical() << "Creating native window with OpenGL context failed.";
         return false;
     }
 

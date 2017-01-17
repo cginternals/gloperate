@@ -11,10 +11,9 @@
 #include <globjects/Program.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/GlmProperties.h>
+#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
-#include <gloperate/pipeline/Parameter.h>
 #include <gloperate/pipeline/Output.h>
 
 
@@ -48,14 +47,12 @@ public:
 
 public:
     // Inputs
-    Input<glm::vec4>                 viewport;  ///< Viewport
-    Input<globjects::Framebuffer *>  targetFBO; ///< Target FBO into which to render
-    Input<globjects::Texture *>      texture;   ///< Color texture
-
-    // Parameters
-    Parameter<std::string>           vertexShader;   ///< Vertex shader filename
-    Parameter<std::string>           geometryShader; ///< Geometry shader filename
-    Parameter<std::string>           fragmentShader; ///< Fragment shader filename
+    Input<glm::vec4>                 viewport;       ///< Viewport
+    Input<globjects::Framebuffer *>  targetFBO;      ///< Target FBO into which to render
+    Input<globjects::Texture *>      texture;        ///< Color texture
+    Input<std::string>               vertexShader;   ///< Vertex shader filename
+    Input<std::string>               geometryShader; ///< Geometry shader filename
+    Input<std::string>               fragmentShader; ///< Fragment shader filename
 
     // Outputs
     Output<bool>                     rendered;  ///< 'true' if output has been rendered
@@ -72,7 +69,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    MixerStage(Environment * environment, const std::string & name = "MixerStage");
+    MixerStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
@@ -94,9 +91,9 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;            /**< Screen-aligned quad geometry */
-    globjects::ref_ptr<globjects::Program>     m_program;        /**< Shader program */
-    bool                                       m_rebuildProgram; /**< 'true', if program needs rebuild */
+    globjects::ref_ptr<globjects::VertexArray> m_vao;            ///< Screen-aligned quad geometry
+    globjects::ref_ptr<globjects::Program>     m_program;        ///< Shader program
+    bool                                       m_rebuildProgram; ///< 'true', if program needs rebuild
 };
 
 

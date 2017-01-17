@@ -117,22 +117,34 @@ public:
 
     /**
     *  @brief
-    *    Render this canvas to a video
+    *    Set up VideoExporter for rendering this canvas to a video
     *
-    *  @param[in] filename
-    *    Name of output video file
-    *  @param[in] width
-    *    Width (in pixels) of output video
-    *  @param[in] height
-    *    Height (in pixels) of output video
-    *  @param[in] fps
-    *    Frames per second of output video
-    *  @param[in] seconds
-    *    Length (in seconds) of output video
+    *  @param[in] parameters
+    *    Parameters for video exporter
     *  @param[in] backend
     *    Name of video backend to use
     */
-    void exportVideo(std::string filename, int width, int height, int fps, int seconds, std::string backend = "FFMPEGVideoExporter");
+    void setVideoTarget(const cppexpose::Variant & parameters, std::string backend = "FFMPEGVideoExporter");
+
+    /**
+    *  @brief
+    *    Set up VideoExporter and render this canvas to a video
+    *
+    *  @param[in] parameters
+    *    Parameters for video exporter
+    *  @param[in] backend
+    *    Name of video backend to use
+    */
+    void exportVideo(const cppexpose::Variant & parameters, std::string backend = "FFMPEGVideoExporter");
+
+    /**
+    *  @brief
+    *    Toggle async video export on/off
+    *
+    *  @remarks
+    *    setVideoTarget() has to be called before to set up the video exporter properly.
+    */
+    void toggleVideoExport();
 
     /**
     *  @brief
@@ -153,7 +165,31 @@ public:
     *  @return
     *    Vector of the available plugin names for video export backends
     */
-    cppexpose::VariantArray videoExporterPlugins();
+    cppexpose::Variant videoExporterPlugins();
+
+    /**
+    *  @brief
+    *    Render scene
+    *
+    *    This function is called when the viewer needs to redraw its content.
+    *    Use it to render the actual scene you want to display.
+    *
+    *  @param[in] targetFBO
+    *    Target FBO (can be null)
+    */
+    void render(globjects::Framebuffer * targetFBO = nullptr);
+
+    /**
+    *  @brief
+    *    Actual render call
+    *
+    *    This function is called by the render() or image and video exporters.
+    *    Overwrite it in derived classes to perform the actual rendering.
+    *
+    *  @param[in] targetFBO
+    *    Target FBO (can be null)
+    */
+    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr);
 
     /**
     *  @brief
@@ -251,18 +287,6 @@ public:
 
     /**
     *  @brief
-    *    Render scene
-    *
-    *    This function is called when the viewer needs to redraw its content.
-    *    Use it to render the actual scene you want to display.
-    *
-    *  @param[in] targetFBO
-    *    Target FBO (can be null)
-    */
-    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr);
-
-    /**
-    *  @brief
     *    Key pressed
     *
     *    This function is called when a key has been pressed inside the viewer.
@@ -333,14 +357,25 @@ public:
     */
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
 
+    /**
+    *  @brief
+    *    Get saved device viewport
+    *
+    *  @return
+    *    Saved viewport (actual device pixels)
+    */
+    virtual glm::vec4 savedDeviceViewport() = 0;
+
 
 protected:
-    Environment           * m_environment;   ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext     * m_openGLContext; ///< OpenGL context used for rendering onto the canvas
-    ImageExporter         * m_imageExporter; ///< Tool for exporting canvas to image file
-    AbstractVideoExporter * m_videoExporter; ///< Tool for rendering canvas to video file
-    bool                    m_requestImage;  ///< Flag to request a ImageExporter call during next render step
-    bool                    m_requestVideo;  ///< Flag to request a VideoTool call during next render step
+    Environment           * m_environment;           ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext     * m_openGLContext;         ///< OpenGL context used for rendering onto the canvas
+    ImageExporter         * m_imageExporter;         ///< Tool for exporting canvas to image file
+    AbstractVideoExporter * m_videoExporter;         ///< Tool for rendering canvas to video file
+    bool                    m_requestImage;          ///< Flag to request a ImageExporter call during next render step
+    bool                    m_requestVideo;          ///< Flag to request a VideoExporter call during next render step
+    bool                    m_asyncVideoExportOn;    ///< Flag which indicates the async video export status (on/off)
+    bool                    m_asyncVideoFinalize;    ///< Flag to finalize async video export
 };
 
 

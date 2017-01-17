@@ -10,8 +10,9 @@
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
+#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/pipeline/Parameter.h>
+#include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
 
@@ -38,8 +39,8 @@ public:
 
 
 public:
-    // Parameters
-    Parameter<std::string>       filename; ///< Texture filename
+    // Inputs
+    Input<cppassist::FilePath>   filename; ///< Texture filename
 
     // Outputs
     Output<globjects::Texture *> texture;  ///< Texture object
@@ -55,7 +56,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    TextureLoadStage(Environment * environment, const std::string & name = "TextureLoadStage");
+    TextureLoadStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

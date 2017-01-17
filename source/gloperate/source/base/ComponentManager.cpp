@@ -5,33 +5,30 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <gloperate/base/Environment.h>
-
 
 namespace gloperate
 {
 
 
-ComponentManager::ComponentManager(Environment * environment)
+ComponentManager::ComponentManager()
 : cppexpose::Object("components")
-, m_environment(environment)
 {
     // Register functions
-    addFunction("pluginPaths",      this, &ComponentManager::script_pluginPaths);
-    addFunction("addPluginPath",    this, &ComponentManager::script_addPluginPath);
-    addFunction("removePluginPath", this, &ComponentManager::script_removePluginPath);
-    addFunction("scanPlugins",      this, &ComponentManager::script_scanPlugins);
-    addFunction("components",       this, &ComponentManager::script_components);
-    addFunction("printComponents",  this, &ComponentManager::script_printComponents);
+    addFunction("pluginPaths",      this, &ComponentManager::scr_pluginPaths);
+    addFunction("addPluginPath",    this, &ComponentManager::scr_addPluginPath);
+    addFunction("removePluginPath", this, &ComponentManager::scr_removePluginPath);
+    addFunction("scanPlugins",      this, &ComponentManager::scr_scanPlugins);
+    addFunction("components",       this, &ComponentManager::scr_components);
+    addFunction("printComponents",  this, &ComponentManager::scr_printComponents);
 }
 
 ComponentManager::~ComponentManager()
 {
 }
 
-cppexpose::Variant ComponentManager::script_pluginPaths()
+cppexpose::Variant ComponentManager::scr_pluginPaths()
 {
-    std::vector<std::string> paths = m_environment->componentManager()->pluginPaths();
+    std::vector<std::string> paths = this->pluginPaths();
 
     cppexpose::Variant lst = cppexpose::Variant::array();
     for (auto path : paths) {
@@ -41,26 +38,26 @@ cppexpose::Variant ComponentManager::script_pluginPaths()
     return lst;
 }
 
-void ComponentManager::script_addPluginPath(const std::string & path)
+void ComponentManager::scr_addPluginPath(const std::string & path)
 {
-    m_environment->componentManager()->addPluginPath(path);
+    this->addPluginPath(path);
 }
 
-void ComponentManager::script_removePluginPath(const std::string & path)
+void ComponentManager::scr_removePluginPath(const std::string & path)
 {
-    m_environment->componentManager()->removePluginPath(path);
+    this->removePluginPath(path);
 }
 
-void ComponentManager::script_scanPlugins(const std::string & identifier)
+void ComponentManager::scr_scanPlugins(const std::string & identifier)
 {
-    m_environment->componentManager()->scanPlugins(identifier);
+    this->scanPlugins(identifier);
 }
 
-cppexpose::Variant ComponentManager::script_components()
+cppexpose::Variant ComponentManager::scr_components()
 {
     cppexpose::Variant lst = cppexpose::Variant::array();
 
-    auto & components = m_environment->componentManager()->components();
+    auto & components = this->components();
     for (auto * component : components) {
         cppexpose::Variant obj = cppexpose::Variant::map();
         cppexpose::VariantMap & map = *obj.asMap();
@@ -80,9 +77,9 @@ cppexpose::Variant ComponentManager::script_components()
     return lst;
 }
 
-void ComponentManager::script_printComponents()
+void ComponentManager::scr_printComponents()
 {
-    m_environment->componentManager()->printComponents();
+    this->printComponents();
 }
 
 

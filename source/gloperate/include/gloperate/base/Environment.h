@@ -13,7 +13,6 @@
 #include <gloperate/base/ComponentManager.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/System.h>
-#include <gloperate/base/PipelineApi.h>
 #include <gloperate/input/InputManager.h>
 
 // [DEBUG]
@@ -35,15 +34,15 @@ class AbstractCanvas;
 
 /**
 *  @brief
-*    Main object for gloperate containing the top-level components needed for rendering
+*    Main object for gloperate containing the top-level components needed for rendering.
 *
 *    The gloperate environment holds all necessary components used for the rendering
 *    process, such as the plugin manager, input manager, resource loaders, etc. It
-*    should usually be instanciated once by the top-level viewer application and
-*    passed down to other objects that need access these components. Some components
+*    should usually be instantiated once by the top-level viewer application and
+*    passed down to other objects that need access to these components. Some components
 *    have to be provided by the windowing backend on creation of the environment.
 *
-*    The gloperate environment is independend from windows and OpenGL contexts and
+*    The gloperate environment is independent from windows and OpenGL contexts and
 *    should be initialized before creating actual viewers and their OpenGL contexts.
 */
 class GLOPERATE_API Environment : public cppexpose::Object
@@ -124,7 +123,7 @@ public:
     *    Get canvases
     *
     *  @return
-    *    List of registered canvases (must NOT be null)
+    *    List of registered canvases
     */
     const std::vector<AbstractCanvas *> & canvases() const;
     std::vector<AbstractCanvas *> & canvases();
@@ -266,7 +265,6 @@ protected:
     ResourceManager               m_resourceManager;  ///< Resource manager for loaders/storers
     TimeManager                   m_timeManager;      ///< Manager for virtual time and timers
     System                        m_system;           ///< System functions for scripting
-    PipelineApi                   m_pipeline;         ///< Pipeline API for scripting
     InputManager                  m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
 
     std::vector<AbstractCanvas *> m_canvases;         ///< List of active canvases
