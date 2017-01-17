@@ -44,7 +44,16 @@ const std::map<std::string, const AbstractColorGradient *> & ColorGradientList::
 
 void ColorGradientList::add(AbstractColorGradient * gradient)
 {
-    m_gradients.emplace(gradient->name(), gradient);
+    const auto it = m_gradients.find(gradient->name());
+
+    if (it == m_gradients.end())
+    {
+        m_gradients.emplace(gradient->name(), gradient);
+    }
+    else
+    {
+        it->second = gradient;
+    }
 }
 
 const AbstractColorGradient * ColorGradientList::at(const std::string & name) const
