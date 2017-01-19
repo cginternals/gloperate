@@ -62,10 +62,13 @@ private:
     Stage *readDocument();
     bool readStage(gloperate::Stage* root);
     bool readSlot(gloperate::AbstractSlot * slot);
+    bool resolvePaths();
 
     gloperate::Environment* m_environment;
     cppexpose::Tokenizer m_tokenizer;
     std::unordered_map<std::string, cppexpose::TypedComponent<gloperate::Stage> *> m_componentsByType;
+
+    std::vector<std::pair<AbstractSlot *, std::string>> m_unresolvedPaths;
 };
 
 

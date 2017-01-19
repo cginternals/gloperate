@@ -1,6 +1,7 @@
 #include <gloperate/pipeline/PipelineLoader.h>
 
 #include <iostream>
+#include <regex>
 
 #include <cppassist/string/conversion.h>
 #include <cppassist/logging/logging.h>
@@ -93,6 +94,8 @@ Stage* PipelineLoader::readDocument()
             << token.content
             << std::endl;
     }
+
+    resolvePaths();
 
     return root;
 }
@@ -235,6 +238,45 @@ bool PipelineLoader::readSlot(gloperate::AbstractSlot *slot)
     // Todo: Manage connections
 
     return slot->fromVariant(cppexpose::Variant(token.content));
+    // if it is a path: add to process later
+    // idea: regex "((alnum+)(\.))+(alnum+)"
+    // this does not catch connections to the same stage
+
+    // check whether the token points to a path
+    auto path_string = "([:alnum:]+\.)+[:alnum:]+";
+    std::regex path_regex(path_string);
+    if(std::regex_match(token.content, path_regex)) {
+        auto pairing = std::make_pair(slot, token.content);
+        m_unresolvedPaths.push_back(pairing);
+        return true;
+    }
+    else {
+        // if it is a value: read directly
+        return slot->fromVariant(cppexpose::Variant(token.content));
+    }
+}
+
+bool PipelineLoader::resolvePaths()
+{
+    for(auto& slot_and_path : m_unresolvedPaths)
+    {
+        AbstractSlot * slot = slot_and_path.first;
+        std::string& path = slot_and_path.second;
+
+        cppexpose::AbstractProperty * target = slot->parentStage()->property(path);
+
+        AbstractSlot * targetSlot = dynamic_cast<AbstractSlot *>(target);
+
+        if(targetSlot == nullptr)
+        {
+            // The target is no stage and therefore has no slots, so this is an error/wrong path
+
+        }
+
+        slot->connect(targetSlot);
+    }
+
+    return true;
 }
 
 } // namespace gloperate
