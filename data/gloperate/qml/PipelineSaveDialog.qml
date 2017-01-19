@@ -71,7 +71,7 @@ Window
 
             onClicked:
             {
-                gloperate.canvas0.pipeline.save(filepath.text);
+                gloperate.canvas0.pipeline.DemoPipeline.save(filepath.text);
 
                 close();
             }
