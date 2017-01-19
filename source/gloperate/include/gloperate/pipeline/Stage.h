@@ -530,9 +530,6 @@ public:
     */
     void invalidateInputConnections();
 
-    // Serialization Interface
-    virtual void serialize(std::function<void(const std::string&, uint)>writer, uint level);
-
 
 protected:
     /**
@@ -636,9 +633,6 @@ protected:
     void scr_setSlotValue(const std::string & name, const cppexpose::Variant & value);
     void scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name);
     cppexpose::Variant scr_slotTypes();
-
-    std::string getSourcePath(const AbstractSlot* input) const;
-    virtual void serialize_custom(std::function<void (const std::string &, uint)> writer, uint level);
 
 
 

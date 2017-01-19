@@ -162,7 +162,6 @@ protected:
     virtual void onProcess(AbstractGLContext * context) override;
     virtual void onInputValueChanged(AbstractSlot * slot) override;
     virtual void onOutputRequiredChanged(AbstractSlot * slot) override;
-    virtual void serialize_custom(std::function<void (const std::string &, uint)> writer, uint level) override;
 
 
 protected:

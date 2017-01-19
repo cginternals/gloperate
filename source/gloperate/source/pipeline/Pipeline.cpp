@@ -2,7 +2,6 @@
 #include <gloperate/pipeline/Pipeline.h>
 
 #include <iostream>
-#include <fstream>
 #include <vector>
 #include <set>
 
@@ -15,6 +14,7 @@
 #include <gloperate/base/ComponentManager.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+#include <gloperate/pipeline/PipelineSaver.h>
 
 
 using namespace cppassist;
@@ -293,14 +293,6 @@ void Pipeline::onOutputRequiredChanged(AbstractSlot *)
     // Not necessary for pipelines (handled by inner connections)
 }
 
-void Pipeline::serialize_custom(std::function<void (const std::string &, uint)> writer, uint level)
-{
-    for(auto& stage : m_stages)
-    {
-        stage->serialize(writer, level+1);
-    }
-}
-
 cppexpose::Variant Pipeline::scr_getDescription()
 {
     // Get stage description
@@ -371,31 +363,9 @@ void Pipeline::scr_removeConnection(const std::string & to)
 void Pipeline::scr_save(const std::string &filename)
 {
 
+    PipelineSaver saver(this);
 
-    std::ofstream file{filename};
-
-    if (!file.is_open())
-    {
-        debug("Error opening file: " + filename);
-        return;
-    }
-
-    auto writer = [&file](const std::string& toWrite, uint level)
-    {
-        const std::string padString{"    "};
-        for(uint i = 0; i < level; i++)
-        {
-            file << padString;
-        }
-
-        file << toWrite << "\n";
-    };
-
-    serialize(writer, 0u);
-
-    file.close();
-
+    saver.save(filename);
 }
-
 
 } // namespace gloperate
