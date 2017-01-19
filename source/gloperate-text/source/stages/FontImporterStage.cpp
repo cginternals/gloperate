@@ -38,9 +38,7 @@ void FontImporterStage::onProcess(gloperate::AbstractGLContext * /*context*/)
     }
 
     m_font = newFont;
-    (*font) = /*ToDo: use setValue?*/ m_font;
-
-    // invalidateOutputs(); // TODO: check if outputs are set to valid
+    font.setValue(m_font);
 }
 
 
