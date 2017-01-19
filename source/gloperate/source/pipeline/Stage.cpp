@@ -580,7 +580,6 @@ std::string Stage::getSourcePath(const AbstractSlot* input) const
     }
 
     std::stringstream path;
-    path << "parent.";
 
     path << input->parent()->relativePathTo(input->source()->parent());
 
