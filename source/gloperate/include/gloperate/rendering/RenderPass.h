@@ -538,7 +538,7 @@ protected:
 
 protected:
     globjects::ref_ptr<globjects::State>             m_stateBefore;                 ///< State applied before rendering
-    globjects::ref_ptr<globjects::State>             m_stateAfter ;                 ///< State applied after rendering
+    globjects::ref_ptr<globjects::State>             m_stateAfter;                  ///< State applied after rendering
     globjects::ref_ptr<Drawable>                     m_geometry;                    ///< Geometry rendered by the render pass
     globjects::ref_ptr<globjects::Program>           m_program;                     ///< Program used for rendering
     globjects::ref_ptr<globjects::ProgramPipeline>   m_programPipeline;             ///< Program pipeline used for rendering
