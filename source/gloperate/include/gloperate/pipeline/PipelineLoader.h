@@ -60,8 +60,8 @@ public:
 
 private:
     Stage *readDocument();
-    bool readStage(gloperate::Stage* root);
-    bool readSlot(gloperate::AbstractSlot * slot);
+    bool readStage(Stage* root);
+    bool readSlot(AbstractSlot * slot);
     bool resolvePaths();
 
     gloperate::Environment* m_environment;

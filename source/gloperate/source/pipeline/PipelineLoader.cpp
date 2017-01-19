@@ -230,14 +230,13 @@ bool PipelineLoader::readStage(Stage* root)
 
 }
 
-bool PipelineLoader::readSlot(gloperate::AbstractSlot *slot)
+bool PipelineLoader::readSlot(AbstractSlot *slot)
 {
     Tokenizer::Token token = m_tokenizer.parseToken();
 
     // Read content of the slot
     // Todo: Manage connections
 
-    return slot->fromVariant(cppexpose::Variant(token.content));
     // if it is a path: add to process later
     // idea: regex "((alnum+)(\.))+(alnum+)"
     // this does not catch connections to the same stage
