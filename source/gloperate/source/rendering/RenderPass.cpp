@@ -33,6 +33,11 @@ RenderPass::~RenderPass()
 void RenderPass::draw() const
 {
     bindResources();
+    
+    if (m_stateBefore)
+    {
+        m_stateBefore->apply();
+    }
 
     if (m_recordTransformFeedback)
     {
@@ -40,9 +45,6 @@ void RenderPass::draw() const
         m_recordTransformFeedback->begin(m_recordTransformFeedbackMode);
 
         gl::glEnable(gl::GL_RASTERIZER_DISCARD);
-    }
-    else
-    {
     }
 
     if (m_program)
@@ -74,16 +76,31 @@ void RenderPass::draw() const
 
         gl::glDisable(gl::GL_RASTERIZER_DISCARD);
     }
+    
+    if (m_stateAfter)
+    {
+        m_stateAfter->apply();
+    }
 }
 
-globjects::State * RenderPass::state() const
+globjects::State * RenderPass::stateBefore() const
 {
-    return m_state;
+    return m_stateBefore;
 }
 
-void RenderPass::setState(globjects::State * state)
+void RenderPass::setStateBefore(globjects::State * state)
 {
-    m_state = state;
+    m_stateBefore = state;
+}
+
+globjects::State * RenderPass::stateAfter() const
+{
+    return m_stateAfter;
+}
+
+void RenderPass::setStateAfter(globjects::State * state)
+{
+    m_stateAfter = state;
 }
 
 Drawable * RenderPass::geometry() const
@@ -453,11 +470,6 @@ void RenderPass::bindResources() const
     for (const auto & pair : m_transformFeedbackBuffers)
     {
         pair.second->bindBase(gl::GL_TRANSFORM_FEEDBACK_BUFFER, pair.first);
-    }
-
-    if (m_state)
-    {
-        m_state->apply();
     }
 }
 
