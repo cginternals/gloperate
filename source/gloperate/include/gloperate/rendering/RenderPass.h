@@ -71,16 +71,41 @@ public:
     *  @return
     *    State (can be null)
     */
-    globjects::State * state() const;
+    globjects::State * stateBefore() const;
     
     /**
     *  @brief
     *    Set state that is applied before rendering
     *
-    *  @param[in] geometry
+    *  @param[in] state
+    *    State (can be null)
+    *    
+    *  @see setStateAfter()
+    */
+    void setStateBefore(globjects::State * state);
+
+    /**
+    *  @brief
+    *    Get state that is applied after rendering
+    *
+    *  @return
     *    State (can be null)
     */
-    void setState(globjects::State * state);
+    globjects::State * stateAfter() const;
+
+    /**
+    *  @brief
+    *    Set state that is applied after rendering
+    *
+    *  @param[in] state
+    *    State (can be null)
+    *    
+    *  @remarks
+    *    Use this to revert any state settings applied via setStateBefore()
+    *  
+    *  @see setStateBefore()
+    */
+    void setStateAfter(globjects::State * state);
 
     /**
     *  @brief
@@ -512,7 +537,8 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<globjects::State>             m_state;                       ///< State applied before rendering
+    globjects::ref_ptr<globjects::State>             m_stateBefore;                 ///< State applied before rendering
+    globjects::ref_ptr<globjects::State>             m_stateAfter ;                 ///< State applied after rendering
     globjects::ref_ptr<Drawable>                     m_geometry;                    ///< Geometry rendered by the render pass
     globjects::ref_ptr<globjects::Program>           m_program;                     ///< Program used for rendering
     globjects::ref_ptr<globjects::ProgramPipeline>   m_programPipeline;             ///< Program pipeline used for rendering
