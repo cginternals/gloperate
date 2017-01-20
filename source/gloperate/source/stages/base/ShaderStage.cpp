@@ -18,7 +18,7 @@ CPPEXPOSE_COMPONENT(ShaderStage, gloperate::Stage)
 
 ShaderStage::ShaderStage(Environment * environment, const std::string & name)
 : Stage(environment, name)
-, path("path", this)
+, filePath("filePath", this)
 , shader("shader", this)
 {
 }
@@ -29,7 +29,7 @@ ShaderStage::~ShaderStage()
 
 void ShaderStage::onProcess(AbstractGLContext *)
 {
-    m_shader = environment()->resourceManager()->load<globjects::Shader>((*path).path());
+    m_shader = environment()->resourceManager()->load<globjects::Shader>((*filePath).path());
     shader.setValue(m_shader);
 }
 

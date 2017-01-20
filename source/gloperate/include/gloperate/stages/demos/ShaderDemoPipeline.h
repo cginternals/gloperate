@@ -17,6 +17,7 @@ namespace gloperate
 
 class BasicFramebufferStage;
 class TextureLoadStage;
+class ShaderStage;
 class ProgramStage;
 class DemoRenderStage;
 class MixerStage;
@@ -24,7 +25,7 @@ class MixerStage;
 
 /**
 *  @brief
-*    Demo pipeline displaying a rotating logo
+*    Demo pipeline displaying a static logo
 */
 class GLOPERATE_API ShaderDemoPipeline : public Pipeline
 {
@@ -34,7 +35,7 @@ public:
       , "RenderStage"   // Tags
       , ""              // Icon
       , ""              // Annotations
-      , "Demo pipeline displaying a rotating logo"
+      , "Demo pipeline displaying a static logo"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -71,6 +72,8 @@ public:
 protected:
     // Stages
     TextureLoadStage      * m_textureLoadStage; ///< Stage that loads a static picture
+
+    ShaderStage           * m_shaderStage;      ///< Stage which loads one shader
 
     ProgramStage          * m_programStage;     ///< Stage which creates the program
 

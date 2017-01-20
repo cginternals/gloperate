@@ -10,6 +10,7 @@
 
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
+#include <gloperate/stages/base/ShaderStage.h>
 #include <gloperate/stages/demos/DemoRenderStage.h>
 
 
@@ -27,6 +28,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 , shader2("shader2", this)
 , texture("texture", this)
 , m_textureLoadStage(new TextureLoadStage(environment, "TextureLoadStage"))
+, m_shaderStage(new ShaderStage(environment, "ShaderStage"))
 , m_programStage(new ProgramStage(environment, "ProgramStage"))
 , m_framebufferStage(new BasicFramebufferStage(environment, "BasicFramebufferStage"))
 , m_renderStage(new DemoRenderStage(environment, "RenderStage"))
@@ -45,10 +47,14 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
     addStage(m_textureLoadStage);
     m_textureLoadStage->filename << texture;
 
+    // Shader stage
+    addStage(m_shaderStage);
+    m_shaderStage->filePath << shader2;
+
     // Basic program stage
     addStage(m_programStage);
     *(m_programStage->createInput<cppassist::FilePath>("shader1")) << shader1;
-    *(m_programStage->createInput<cppassist::FilePath>("shader2")) << shader2;
+    *(m_programStage->createInput<globjects::Shader *>("shader2")) << m_shaderStage->shader;
 
     // Framebuffer stage for spinning rect
     addStage(m_framebufferStage);

@@ -33,8 +33,7 @@ namespace gloperate
 *  @brief
 *    Stage that creates a program from multiple shaders
 *
-*    It expects input of pointers to globjects::Shader objects.
-*    They can be created for example from a ShaderStage.
+*    It expects input of pointers to globjects::Shader or cppassist::FilePath objects.
 */
 class GLOPERATE_API ProgramStage : public Stage
 {

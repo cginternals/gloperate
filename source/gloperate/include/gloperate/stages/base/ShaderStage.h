@@ -48,10 +48,10 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>   path;   ///< path to the source file of the shader
+    Input<cppassist::FilePath>   filePath;   ///< path to the source file of the shader
 
     // Outputs
-    Output<globjects::Shader *>  shader; ///< the shader object
+    Output<globjects::Shader *>  shader;     ///< the shader object
 
 
 public:
