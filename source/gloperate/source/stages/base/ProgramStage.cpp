@@ -20,7 +20,7 @@ CPPEXPOSE_COMPONENT(ProgramStage, gloperate::Stage)
 
 
 ProgramStage::ProgramStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "ProgramStage", name)
 , program("program", this)
 {
     inputAdded.connect([this] (gloperate::AbstractSlot * /*addedInput*/) {

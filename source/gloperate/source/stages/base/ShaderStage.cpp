@@ -17,7 +17,7 @@ CPPEXPOSE_COMPONENT(ShaderStage, gloperate::Stage)
 
 
 ShaderStage::ShaderStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "ShaderStage", name)
 , filePath("filePath", this)
 , shader("shader", this)
 {
