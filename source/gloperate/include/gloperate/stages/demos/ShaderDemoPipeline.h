@@ -17,7 +17,7 @@ namespace gloperate
 
 class BasicFramebufferStage;
 class TextureLoadStage;
-class BasicProgramStage;
+class ProgramStage;
 class DemoRenderStage;
 class MixerStage;
 
@@ -72,7 +72,7 @@ protected:
     // Stages
     TextureLoadStage      * m_textureLoadStage; ///< Stage that loads a static picture
 
-    BasicProgramStage     * m_programStage;     ///< Stage which creates the program
+    ProgramStage          * m_programStage;     ///< Stage which creates the program
 
     BasicFramebufferStage * m_framebufferStage; ///< Stage which creates the framebuffer
     DemoRenderStage       * m_renderStage;      ///< Stage that renders with the program

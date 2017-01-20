@@ -9,7 +9,7 @@
 #include <gloperate/stages/demos/ColorizeStage.h>
 
 #include <gloperate/stages/base/TextureLoadStage.h>
-#include <gloperate/stages/base/BasicProgramStage.h>
+#include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/demos/DemoRenderStage.h>
 
 
@@ -27,7 +27,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 , shader2("shader2", this)
 , texture("texture", this)
 , m_textureLoadStage(new TextureLoadStage(environment, "TextureLoadStage"))
-, m_programStage(new BasicProgramStage(environment, "ProgramStage"))
+, m_programStage(new ProgramStage(environment, "ProgramStage"))
 , m_framebufferStage(new BasicFramebufferStage(environment, "BasicFramebufferStage"))
 , m_renderStage(new DemoRenderStage(environment, "RenderStage"))
 , m_mixerStage(new MixerStage(environment, "MixerStage"))

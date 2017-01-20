@@ -3,6 +3,9 @@
 
 #include <globjects/Shader.h>
 
+#include <gloperate/base/Environment.h>
+#include <gloperate/base/ResourceManager.h>
+
 #include <gloperate/gloperate.h>
 
 
@@ -15,8 +18,7 @@ CPPEXPOSE_COMPONENT(ShaderStage, gloperate::Stage)
 
 ShaderStage::ShaderStage(Environment * environment, const std::string & name)
 : Stage(environment, name)
-, type("type", this)
-, source("source", this)
+, path("path", this)
 , shader("shader", this)
 {
 }
@@ -27,7 +29,7 @@ ShaderStage::~ShaderStage()
 
 void ShaderStage::onProcess(AbstractGLContext *)
 {
-    m_shader = new globjects::Shader(*type, *source);
+    m_shader = environment()->resourceManager()->load<globjects::Shader>((*path).path());
     shader.setValue(m_shader);
 }
 

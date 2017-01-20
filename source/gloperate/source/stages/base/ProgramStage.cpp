@@ -1,8 +1,13 @@
 
 #include <gloperate/stages/base/ProgramStage.h>
 
+#include <cppassist/io/FilePath.h>
+
 #include <globjects/Shader.h>
 #include <globjects/Program.h>
+
+#include <gloperate/base/Environment.h>
+#include <gloperate/base/ResourceManager.h>
 
 #include <gloperate/gloperate.h>
 
@@ -43,10 +48,17 @@ void ProgramStage::onProcess(AbstractGLContext *)
         m_program->detach(shader);
     }
     for (auto input : inputs()) {
-        auto shaderInput = dynamic_cast<Input<globjects::Shader *> *>(input);
-        if (shaderInput)
+        if (input->type() == typeid(globjects::Shader *))
         {
+            auto shaderInput = static_cast<Input<globjects::Shader *> *>(input);
             m_program->attach(**shaderInput);
+        }
+        if (input->type() == typeid(cppassist::FilePath))
+        {
+            auto fileInput = static_cast<Input<cppassist::FilePath> *>(input);
+            auto shader = environment()->resourceManager()->load<globjects::Shader>((*fileInput)->path());
+            // ToDo: Fix memory leak
+            m_program->attach(shader);
         }
     }
     program.setValid(true);

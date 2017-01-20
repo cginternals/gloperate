@@ -4,13 +4,13 @@
 
 #include <glm/glm.hpp>
 
+#include <cppassist/io/FilePath.h>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/ref_ptr.h>
-#include <globjects/base/File.h>
-#include <globjects/base/AbstractStringSource.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
@@ -23,9 +23,6 @@ namespace globjects {
     class AbstractStringSource;
 }
 
-namespace cppassist {
-    class FilePath;
-}
 
 namespace gloperate
 {
@@ -33,7 +30,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that creates a shader from shader code
+*    Stage that loads and creates a shader from a file path
 */
 class GLOPERATE_API ShaderStage : public Stage
 {
@@ -43,7 +40,7 @@ public:
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that creates a shader from shader code"
+      , "Stage that loads and creates a shader from a file path"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -51,11 +48,10 @@ public:
 
 public:
     // Inputs
-    Input<gl::GLenum>                        type;   ///< type of the shader
-    Input<globjects::AbstractStringSource *> source; ///< the source of the shader
+    Input<cppassist::FilePath>   path;   ///< path to the source file of the shader
 
     // Outputs
-    Output<globjects::Shader *>              shader; ///< the shader object
+    Output<globjects::Shader *>  shader; ///< the shader object
 
 
 public:
