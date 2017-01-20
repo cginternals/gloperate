@@ -24,20 +24,20 @@ namespace
 // Geometry describing the cube
 // position, color
 static const std::array<std::array<glm::vec3,2>, 14> s_vertices { {
-    {glm::vec3(-1.f, -1.f, -1.f),glm::vec3(0.0f, 0.0f, 1.0f)},
-    {glm::vec3(-1.f, -1.f, +1.f),glm::vec3(0.0f, 0.0f, 1.0f)},
-    {glm::vec3(+1.f, -1.f, -1.f),glm::vec3(0.0f, 0.0f, 1.0f)},
-    {glm::vec3(+1.f, -1.f, +1.f),glm::vec3(0.0f, 0.0f, 1.0f)},
-    {glm::vec3(+1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.7f)},
-    {glm::vec3(-1.f, -1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.4f)},
-    {glm::vec3(-1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.4f)},
-    {glm::vec3(-1.f, -1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.1f)},
-    {glm::vec3(-1.f, +1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.1f)},
-    {glm::vec3(+1.f, -1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.4f)},
-    {glm::vec3(+1.f, +1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.4f)},
-    {glm::vec3(+1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.7f)},
-    {glm::vec3(-1.f, +1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.0f)},
-    {glm::vec3(-1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.0f)}
+    {{ glm::vec3(-1.f, -1.f, -1.f),glm::vec3(0.0f, 0.0f, 1.0f) }},
+    {{ glm::vec3(-1.f, -1.f, +1.f),glm::vec3(0.0f, 0.0f, 1.0f) }},
+    {{ glm::vec3(+1.f, -1.f, -1.f),glm::vec3(0.0f, 0.0f, 1.0f) }},
+    {{ glm::vec3(+1.f, -1.f, +1.f),glm::vec3(0.0f, 0.0f, 1.0f) }},
+    {{ glm::vec3(+1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.7f) }},
+    {{ glm::vec3(-1.f, -1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.4f) }},
+    {{ glm::vec3(-1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.4f) }},
+    {{ glm::vec3(-1.f, -1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.1f) }},
+    {{ glm::vec3(-1.f, +1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.1f) }},
+    {{ glm::vec3(+1.f, -1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.4f) }},
+    {{ glm::vec3(+1.f, +1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.4f) }},
+    {{ glm::vec3(+1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.7f) }},
+    {{ glm::vec3(-1.f, +1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.0f) }},
+    {{ glm::vec3(-1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.0f) }}
 } };
 
 // Vertex shader displaying the cube

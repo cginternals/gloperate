@@ -134,7 +134,7 @@ void Pipeline::invalidateStageOrder()
 
 AbstractSlot * Pipeline::getSlot(const std::string & path)
 {
-    std::vector<std::string> names = cppassist::split(path, '.');
+    std::vector<std::string> names = cppassist::string::split(path, '.');
 
     Stage * stage = this;
 

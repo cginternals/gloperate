@@ -31,7 +31,7 @@ public:
       , "Stage that maintaines and provides information about multi frame aggregation progress"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
-    );
+    )
 
 
 public:

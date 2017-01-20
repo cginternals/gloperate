@@ -22,13 +22,13 @@ TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * enviro
 {
 }
 
-void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * context)
+void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
     regenerateKernel();
 }
 
-void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
+void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     if (*reprocess)
         regenerateKernel();
