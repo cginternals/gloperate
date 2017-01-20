@@ -128,7 +128,7 @@ bool Pipeline::destroyStage(Stage * stage)
 
 void Pipeline::invalidateStageOrder()
 {
-    debug() << "Invalidate stage order; resort on next process" << std::endl;
+    debug() << "Invalidate stage order; resort on next process";
     m_sorted = false;
 }
 
@@ -193,19 +193,25 @@ void Pipeline::sortStages()
     std::vector<Stage *> sorted;
     std::set<Stage *> touched;
 
-    std::function<void(Stage *)> visit = [&] (Stage * stage)
+    std::function<void(Stage *)> addSorted = [&](Stage * stage)
+    {
+        m_stages.erase(find(m_stages.begin(), m_stages.end(), stage));
+        sorted.push_back(stage);
+    };
+
+    std::function<void(Stage *)> visit = [&](Stage * stage)
     {
         if (!couldBeSorted)
         {
-            sorted.push_back(stage);
+            addSorted(stage);
             return;
         }
 
         if (touched.count(stage) > 0)
         {
-            critical() << "Pipeline is not a directed acyclic graph" << std::endl;
+            critical() << "Pipeline is not a directed acyclic graph";
             couldBeSorted = false;
-            sorted.push_back(stage);
+            addSorted(stage);
             return;
         }
 
@@ -220,20 +226,24 @@ void Pipeline::sortStages()
             }
 
             auto nextStage = *stageIt;
-            m_stages.erase(stageIt);
             visit(nextStage);
+
+            if (!couldBeSorted)
+            {
+                addSorted(stage);
+                return;
+            }
 
             stageIt = m_stages.begin();
         }
 
-        sorted.push_back(stage);
+        addSorted(stage);
     };
 
     while (!m_stages.empty())
     {
         auto stageIt = m_stages.begin();
         auto stage = *stageIt;
-        m_stages.erase(stageIt);
         visit(stage);
     }
 

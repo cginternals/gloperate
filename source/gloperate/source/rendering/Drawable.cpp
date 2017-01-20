@@ -149,7 +149,16 @@ globjects::Buffer * Drawable::buffer(size_t index) const
 
 void Drawable::setBuffer(size_t index, globjects::Buffer * buffer)
 {
-    m_buffers.emplace(index, buffer);
+    const auto it = m_buffers.find(index);
+
+    if (it == m_buffers.end())
+    {
+        m_buffers.emplace(index, buffer);
+    }
+    else
+    {
+        it->second = buffer;
+    }
 }
 
 globjects::Buffer * Drawable::indexBuffer() const
