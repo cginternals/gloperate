@@ -8,7 +8,6 @@
 
 #include <globjects/base/ref_ptr.h>
 #include <globjects/Framebuffer.h>
-#include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/ExtendedProperties.h>
@@ -21,9 +20,17 @@ namespace gloperate
 {
 
 
+class RenderTarget;
+class Texture;
+
+
 /**
 *  @brief
 *    Stage that maintains a framebuffer attached with all input textures
+*
+*    By default it only has one color texture and one depth texture input.
+*    Additional attachments (of type RenderTarget *) can be added as inputs dynamically.
+*    These will be added as color attachments in order of addition.
 */
 class GLOPERATE_API FramebufferStage : public Stage
 {
@@ -41,8 +48,10 @@ public:
 
 public:
     // Inputs
-    Input<globjects::Texture *> colorTexture;  ///< Color attachment (#0)
-    Input<globjects::Texture *> depthTexture;  ///< Depth attachment
+    Input<RenderTarget *> colorTexture;  ///< Color attachment (#0)
+    Input<RenderTarget *> depthTexture;  ///< Depth attachment
+
+    // Additional attachments (of type RenderTarget *) can be added as inputs dynamically
 
     // Outputs
     Output<globjects::Framebuffer *> fbo;      ///< Framebuffer
@@ -75,6 +84,7 @@ protected:
 
     // Helper functions
     void rebuildFBO();
+    bool isNameOfDepthRenderTarget(const std::string & name);
 
 
 protected:

@@ -94,6 +94,8 @@ set(headers
     ${include_path}/rendering/Drawable.h
     ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/RenderPass.h
+    ${include_path}/rendering/RenderTarget.h
+    ${include_path}/rendering/RenderTargetType.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -166,6 +168,7 @@ set(sources
     ${source_path}/rendering/Camera.cpp
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/RenderPass.cpp
+    ${source_path}/rendering/RenderTarget.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
