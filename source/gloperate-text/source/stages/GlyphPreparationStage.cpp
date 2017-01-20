@@ -21,44 +21,59 @@ GlyphPreparationStage::GlyphPreparationStage(gloperate::Environment * environmen
 {
 }
 
+
 GlyphPreparationStage::~GlyphPreparationStage()
 {
 }
 
+
+void GlyphPreparationStage::onContextInit(gloperate::AbstractGLContext * context)
+{
+    m_vertexCloud = std::unique_ptr<GlyphVertexCloud>{ new GlyphVertexCloud{} };
+}
+
+
+void GlyphPreparationStage::onContextDeinit(gloperate::AbstractGLContext * context)
+{
+    m_vertexCloud = nullptr;
+}
+
+
 void GlyphPreparationStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     // get total number of glyphs
-    auto numGlyphs = size_t(0u);
-    for (const auto & sequence : (*sequences))
-        numGlyphs += sequence.size(*(*font));
-
-    // prepare vertex cloud storage
-    auto & vc = (*vertexCloud);
-    vc.vertices().clear();
-    vc.vertices().resize(numGlyphs);
-
-    // typeset and transform all sequences
-    assert((*font));
-
-    auto index = vc.vertices().begin();
-    for (const auto & sequence : (*sequences))
+    auto numGlyphs = std::size_t{ 0 };
+    for (const auto & sequence : *sequences.value())
     {
-        /*auto extent = */Typesetter::typeset(sequence, *(*font), index);
-        index += sequence.size(*(*font));
+        numGlyphs += sequence.size(*font.value());
     }
 
-    if((*optimized))
+    // prepare vertex cloud storage
+    m_vertexCloud->vertices().clear();
+    m_vertexCloud->vertices().resize(numGlyphs);
+
+    // typeset and transform all sequences
+    assert(font.value() != nullptr);
+
+    auto vertexItr =m_vertexCloud->vertices().begin();
+    for (const auto & sequence : *sequences.value())
     {
-        vc.optimize((*sequences), *(*font)); // optimize and update drawable
+        /*auto extent = */Typesetter::typeset(sequence, *font.value(), vertexItr);
+        vertexItr += sequence.size(*font.value());
+    }
+
+    if (optimized.value())
+    {
+        m_vertexCloud->optimize(*sequences.value(), *font.value()); // optimize and update drawable
     }
     else
     {
-        vc.update(); // update drawable
+        m_vertexCloud->update(); // update drawable
     }
 
-    vc.setTexture((*font)->glyphTexture());
+    m_vertexCloud->setTexture(font.value()->glyphTexture());
 
-    // invalidateOutputs(); // TODO: check if outputs are set to valid
+    vertexCloud.setValue(m_vertexCloud.get());
 }
 
 

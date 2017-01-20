@@ -1,22 +1,16 @@
 
 #pragma once
 
-#include <globjects/base/ref_ptr.h>
-#include <globjects/Texture.h>
-#include <globjects/Framebuffer.h>
-
-#include <gloperate/pipeline/Input.h>
-#include <gloperate/pipeline/Output.h>
 #include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-text/gloperate-text_api.h>
 #include <gloperate-text/GlyphVertexCloud.h>
 
-namespace gloperate
+
+namespace globjects
 {
-
-
-} // namespace gloperate
+class Framebuffer;
+} // namespace globjects
 
 
 namespace gloperate_text
@@ -29,19 +23,24 @@ class GlyphVertexCloud;
 class GLOPERATE_TEXT_API GlyphRenderStage : public gloperate::Stage
 {
 public:
-    GlyphRenderStage(gloperate::Environment * environment, const std::string & name = "GlyphRenderStage");
-    virtual ~GlyphRenderStage();
-
-    Input<GlyphVertexCloud> vertexCloud;
+    Input<GlyphVertexCloud *> vertexCloud;
 
     Input<glm::vec4> viewport;
     Input<globjects::Framebuffer *> targetFramebuffer;
 
     Output<bool> rendered;
 
+
+public:
+    explicit GlyphRenderStage(gloperate::Environment * environment, const std::string & name = "");
+    virtual ~GlyphRenderStage();
+
+
 protected:
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
+
 
 protected:
     std::unique_ptr<GlyphRenderer> m_renderer;

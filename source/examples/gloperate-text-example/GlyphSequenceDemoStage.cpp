@@ -28,7 +28,7 @@ GlyphSequenceDemoStage::GlyphSequenceDemoStage(gloperate::Environment * environm
 
 void GlyphSequenceDemoStage::onProcess(gloperate::AbstractGLContext * context)
 {
-    sequences->resize(1);
+    m_sequences.resize(1);
 
     // TODO: property editor has a fixed range [0, 2 * PI], remove scaling once this is fixed!
     const auto scaledFontSize = fontSize.value() * 16.0f;
@@ -36,7 +36,7 @@ void GlyphSequenceDemoStage::onProcess(gloperate::AbstractGLContext * context)
 
     if (numChars.value() == 0)
     {
-        sequences->front().setString(cppassist::encode(string.value(), cppassist::Encoding::UTF8));
+        m_sequences.front().setString(cppassist::encode(string.value(), cppassist::Encoding::UTF8));
     }
     else
     {
@@ -47,16 +47,16 @@ void GlyphSequenceDemoStage::onProcess(gloperate::AbstractGLContext * context)
         {
             text += glyphs[std::rand() % glyphs.size()];
         }
-        sequences->front().setString(text);
+        m_sequences.front().setString(text);
     }
 
-    sequences->front().setWordWrap(wordWrap.value());
-    sequences->front().setLineWidth(scaledLineWidth, scaledFontSize, *font.value());
-    sequences->front().setAlignment(alignment.value());
-    sequences->front().setLineAnchor(lineAnchor.value());
+    m_sequences.front().setWordWrap(wordWrap.value());
+    m_sequences.front().setLineWidth(scaledLineWidth, scaledFontSize, *font.value());
+    m_sequences.front().setAlignment(alignment.value());
+    m_sequences.front().setLineAnchor(lineAnchor.value());
 
-    sequences->front().setTransform(origin.value(), scaledFontSize, *font.value()
+    m_sequences.front().setTransform(origin.value(), scaledFontSize, *font.value()
         , { viewport->z, viewport->w }, pixelPerInch.value(), margins.value());
 
-    sequences.setValid(true);
+    sequences.setValue(&m_sequences);
 }

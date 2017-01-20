@@ -39,7 +39,7 @@ public:
     Input<float> pixelPerInch;
     Input<glm::vec4> viewport;
 
-    Output<std::vector<gloperate_text::GlyphSequence>> sequences;
+    Output<std::vector<gloperate_text::GlyphSequence> *> sequences;
 
 
 public:
@@ -48,4 +48,8 @@ public:
 
 protected:
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
+
+
+protected:
+    std::vector<gloperate_text::GlyphSequence> m_sequences;
 };

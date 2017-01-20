@@ -14,54 +14,57 @@ namespace gloperate_text
 
 
 GlyphRenderStage::GlyphRenderStage(gloperate::Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "GlyphRenderStage", name)
 , vertexCloud("vertexCloud", this)
 , viewport("viewport", this)
 , targetFramebuffer("targetFramebuffer", this)
 , rendered("rendered", this)
 {
-    setAlwaysProcessed(true);
 }
+
 
 GlyphRenderStage::~GlyphRenderStage()
 {
 }
 
-void GlyphRenderStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
+
+void GlyphRenderStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_renderer.reset(new GlyphRenderer);
+    m_renderer = std::unique_ptr<GlyphRenderer>{ new GlyphRenderer{} };
 }
 
-double avg = 0.0;
-uint32_t n = 0;
 
-void GlyphRenderStage::onProcess(gloperate::AbstractGLContext * context)
+void GlyphRenderStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
-    gl::glViewport((*viewport)[0], (*viewport)[1], (*viewport)[2], (*viewport)[3]);
+    m_renderer = nullptr;
+}
 
-    globjects::Framebuffer * fbo = (*targetFramebuffer);
+
+void GlyphRenderStage::onProcess(gloperate::AbstractGLContext *)
+{
+    gl::glViewport(viewport->x, viewport->y, viewport->z, viewport->w);
+
+    auto fbo = targetFramebuffer.value();
 
     if (!fbo)
     {
         fbo = globjects::Framebuffer::defaultFBO();
     }
-    fbo->bind(gl::GL_FRAMEBUFFER);
-
-    gl::glClearColor(1.f, 1.f, 1.f, 1.f);
-    gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+    fbo->bind();
 
     gl::glDepthMask(gl::GL_FALSE);
     gl::glEnable(gl::GL_CULL_FACE);
     gl::glEnable(gl::GL_BLEND);
     gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
-    m_renderer->render((*vertexCloud));
+    m_renderer->render(*vertexCloud.value());
     
     gl::glDepthMask(gl::GL_TRUE);
     gl::glDisable(gl::GL_CULL_FACE);
+    gl::glBlendFunc(gl::GL_ONE, gl::GL_ZERO);
     gl::glDisable(gl::GL_BLEND);
 
-    fbo->unbind(gl::GL_FRAMEBUFFER);
+    fbo->unbind();
 
     rendered.setValue(true);
 }
