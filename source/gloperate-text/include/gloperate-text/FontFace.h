@@ -2,16 +2,13 @@
 #pragma once
 
 
-#include <map>
 #include <vector>
 #include <unordered_map>
-#include <string>
 
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 
 #include <globjects/base/ref_ptr.h>
-#include <globjects/base/Referenced.h>
 #include <globjects/Texture.h>
 
 #include <gloperate-text/gloperate-text_api.h>

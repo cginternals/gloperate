@@ -1,11 +1,18 @@
 
 #pragma once
 
+#include <glm/fwd.hpp>
+
 #include <globjects/base/ref_ptr.h>
-#include <globjects/Shader.h>
 #include <globjects/Program.h>
 
 #include <gloperate-text/gloperate-text_api.h>
+
+
+namespace globjects
+{
+class Shader;
+}
 
 
 namespace gloperate_text
@@ -17,12 +24,10 @@ class GlyphVertexCloud;
 
 class GLOPERATE_TEXT_API GlyphRenderer
 {
-
 public:
-
     GlyphRenderer();
-    GlyphRenderer(globjects::Shader * fragmentShader);
-    GlyphRenderer(globjects::Program * program);
+    explicit GlyphRenderer(globjects::Shader * fragmentShader);
+    explicit GlyphRenderer(globjects::Program * program);
     virtual ~GlyphRenderer();
 
     globjects::Program * program();
@@ -31,8 +36,8 @@ public:
     void render(const GlyphVertexCloud & vertexCloud) const;
     void renderInWorld(const GlyphVertexCloud & vertexCloud, const glm::mat4 & viewProjection) const;
 
-protected:
 
+protected:
     globjects::ref_ptr<globjects::Program> m_program;
 };
 

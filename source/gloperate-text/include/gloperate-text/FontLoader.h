@@ -15,10 +15,8 @@
 
 namespace gloperate
 {
-
 class ResourceManager;
-
-} // namespace gloperate
+}
 
 
 namespace gloperate_text

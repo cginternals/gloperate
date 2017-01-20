@@ -1,16 +1,16 @@
 
 #include <gloperate-text/GlyphRenderer.h>
 
+#include <glm/mat4x4.hpp>
+
 #include <glbinding/gl/enum.h>
 
 #include <globjects/base/File.h>
 #include <globjects/Shader.h>
-#include <globjects/Program.h>
 
 #include <gloperate/gloperate.h>
 
 #include <gloperate-text/GlyphVertexCloud.h>
-#include <glm/mat4x4.hpp>
 
 
 namespace gloperate_text
