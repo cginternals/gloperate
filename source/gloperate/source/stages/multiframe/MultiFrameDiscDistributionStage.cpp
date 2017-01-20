@@ -21,7 +21,7 @@ MultiFrameDiscDistributionStage::MultiFrameDiscDistributionStage(gloperate::Envi
 {
 }
 
-void MultiFrameDiscDistributionStage::onProcess(gloperate::AbstractGLContext * context)
+void MultiFrameDiscDistributionStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     if (!(*isActive))
     {

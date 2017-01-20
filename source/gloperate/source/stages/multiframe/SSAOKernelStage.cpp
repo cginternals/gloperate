@@ -84,7 +84,7 @@ SSAOKernelStage::SSAOKernelStage(gloperate::Environment * environment, const std
 {
 }
 
-void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * context)
+void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
     m_kernelTexture = new globjects::Texture(gl::GL_TEXTURE_1D);
     m_kernelTexture->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
@@ -101,7 +101,7 @@ void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * context)
     kernelTexture.setValue(m_kernelTexture);
 }
 
-void SSAOKernelStage::onProcess(gloperate::AbstractGLContext * context)
+void SSAOKernelStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     if (*enable)
     {

@@ -70,13 +70,13 @@ MultiFrameAggregationStage::~MultiFrameAggregationStage()
 {
 }
 
-void MultiFrameAggregationStage::onContextInit(AbstractGLContext * context)
+void MultiFrameAggregationStage::onContextInit(AbstractGLContext * /*context*/)
 {
     setupGeometry();
     setupProgram();
 }
 
-void MultiFrameAggregationStage::onProcess(AbstractGLContext * context)
+void MultiFrameAggregationStage::onProcess(AbstractGLContext * /*context*/)
 {
     if (!(*texture))
         return;

@@ -119,7 +119,7 @@ void DemoAntialiasableTriangleStage::onProcess(AbstractGLContext *)
     renderInterface.rendered.setValue(true);
 }
 
-void DemoAntialiasableTriangleStage::onInputValueChanged(AbstractSlot * slot)
+void DemoAntialiasableTriangleStage::onInputValueChanged(AbstractSlot * /*slot*/)
 {
     renderInterface.rendered.setValid(false);
 }

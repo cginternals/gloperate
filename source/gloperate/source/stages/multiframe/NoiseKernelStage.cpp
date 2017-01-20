@@ -22,12 +22,12 @@ NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const s
 {
 }
 
-void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext * context)
+void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
     recreateNoise();
 }
 
-void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
+void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     recreateNoise();
 }

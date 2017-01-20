@@ -298,7 +298,7 @@ std::string Stage::getFreeName(const std::string & name) const
 
     while (propertyExists(nameOut))
     {
-        nameOut = name + cppassist::toString<int>(i);
+        nameOut = name + cppassist::string::toString<int>(i);
         i++;
     }
 
