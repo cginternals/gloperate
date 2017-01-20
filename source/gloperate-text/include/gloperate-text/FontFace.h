@@ -49,7 +49,7 @@ namespace gloperate_text
 *    This class does not provide dpi awareness. This has to be
 *    handled outside of this class, e.g., during layouting and rendering.
 */
-class GLOPERATE_TEXT_API FontFace : public globjects::Referenced
+class GLOPERATE_TEXT_API FontFace
 {
 public:
     /**

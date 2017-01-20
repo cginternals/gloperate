@@ -4,8 +4,6 @@
 
 #include <cppassist/io/FilePath.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-text/gloperate-text_api.h>
@@ -28,6 +26,7 @@ public:
 
 public:
     explicit FontImporterStage(gloperate::Environment * environment, const std::string & name = "");
+    virtual ~FontImporterStage();
 
 
 protected:
@@ -35,7 +34,7 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<FontFace> m_font;
+    std::unique_ptr<FontFace> m_font;
 };
 
 
