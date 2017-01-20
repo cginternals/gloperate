@@ -18,6 +18,7 @@ GlyphRenderStage::GlyphRenderStage(gloperate::Environment * environment, const s
 , vertexCloud("vertexCloud", this)
 , viewport("viewport", this)
 , targetFramebuffer("targetFramebuffer", this)
+, rendered("rendered", this)
 {
     setAlwaysProcessed(true);
 }
@@ -61,6 +62,8 @@ void GlyphRenderStage::onProcess(gloperate::AbstractGLContext * context)
     gl::glDisable(gl::GL_BLEND);
 
     fbo->unbind(gl::GL_FRAMEBUFFER);
+
+    rendered.setValue(true);
 }
 
 

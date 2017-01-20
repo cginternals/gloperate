@@ -37,6 +37,8 @@ public:
     Input<glm::vec4> viewport;
     Input<globjects::Framebuffer *> targetFramebuffer;
 
+    Output<bool> rendered;
+
 protected:
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
