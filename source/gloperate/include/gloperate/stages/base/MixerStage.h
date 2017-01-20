@@ -69,7 +69,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    MixerStage(Environment * environment, const std::string & name = "MixerStage");
+    MixerStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

@@ -66,10 +66,12 @@ public:
     *
     *  @param[in] environment
     *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] className
+    *    Class name of the stage
     *  @param[in] name
     *    Stage name
     */
-    Stage(Environment * environment, const std::string & name = "Stage");
+    Stage(Environment * environment, const std::string & className = "Stage", const std::string & name = "");
 
     /**
     *  @brief

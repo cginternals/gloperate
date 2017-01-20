@@ -9,7 +9,7 @@ namespace gloperate
 
 
 PipelineContainer::PipelineContainer(Environment * environment)
-: Pipeline(environment, "pipeline")
+: Pipeline(environment, "PipelineContainer", "pipeline")
 , deviceViewport ("deviceViewport",  this, glm::vec4(0, 0, 0, 0))
 , virtualViewport("virtualViewport", this, glm::vec4(0, 0, 0, 0))
 , backgroundColor("backgroundColor", this, glm::vec3(1.0, 1.0, 1.0))

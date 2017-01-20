@@ -70,7 +70,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    SplitStage(Environment * environment, const std::string & name = "SplitStage");
+    SplitStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

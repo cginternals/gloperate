@@ -15,7 +15,7 @@ CPPEXPOSE_COMPONENT(TimerStage, gloperate::Stage)
 
 
 TimerStage::TimerStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "TimerStage", name)
 , timeDelta  ("timeDelta",   this, 0.0f)
 , virtualTime("virtualTime", this, 0.0f)
 , m_timer(environment)

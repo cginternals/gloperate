@@ -44,7 +44,7 @@ CPPEXPOSE_COMPONENT(SplitStage, gloperate::Stage)
 
 
 SplitStage::SplitStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "SplitStage", name)
 , viewport      ("viewport", this)
 , targetFBO     ("targetFBO", this)
 , texture1      ("texture1", this)
