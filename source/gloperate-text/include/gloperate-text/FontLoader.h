@@ -2,12 +2,13 @@
 #pragma once
 
 
-#include <string>
 #include <iosfwd>
 
+#include <cppexpose/plugin/plugin_api.h>
 #include <cppexpose/variant/Variant.h>
 
 #include <gloperate/base/Loader.h>
+#include <gloperate/gloperate-version.h>
 
 #include <gloperate-text/gloperate-text_api.h>
 
@@ -43,7 +44,7 @@ public:
     *  @param[in] resourceManager
     *    The resource manager that is used to load associated files from a font face description.
     */
-    FontLoader(gloperate::ResourceManager & resourceManager);
+    explicit FontLoader(gloperate::ResourceManager * resourceManager);
 
     /**
     *  @brief
@@ -55,7 +56,7 @@ public:
     *  @return
     *    'true' if this loader can handle files of given extension, else 'false'
     */
-    virtual bool canLoad(const std::string & ext) const;
+    virtual bool canLoad(const std::string & ext) const override;
 
     /**
     *  @brief
@@ -64,7 +65,7 @@ public:
     *  @return
     *   File dialog filter for all loadable file types.
     */
-    virtual std::vector<std::string> loadingTypes() const;
+    virtual std::vector<std::string> loadingTypes() const override;
 
     /**
     *  @brief
@@ -73,7 +74,7 @@ public:
     *  @return
     *   File dialog filter for all loadable file types.
     */
-    virtual std::string allLoadingTypes() const;
+    virtual std::string allLoadingTypes() const override;
 
     /**
     *  @brief
@@ -94,7 +95,7 @@ public:
     virtual FontFace * load(
         const std::string & filename
     ,   const cppexpose::Variant & options = cppexpose::Variant()
-    ,   std::function<void(int, int)> progress  = std::function<void(int, int)>()) const;
+    ,   std::function<void(int, int)> progress  = nullptr) const override;
 
 
 protected:
@@ -109,7 +110,7 @@ protected:
     *  @param[out]   fontSize
     *    The retrieved font size of the font face
     */
-    void handleInfo    (std::stringstream & stream, FontFace & fontFace, float & fontSize) const;
+    void handleInfo(std::stringstream & stream, FontFace & fontFace, float & fontSize) const;
 
     /**
     *  @brief
@@ -122,7 +123,7 @@ protected:
     *  @param[in]   fontSize
     *    The font size to correctly determine other metrics
     */
-    void handleCommon  (std::stringstream & stream, FontFace & fontFace, float fontSize) const;
+    void handleCommon(std::stringstream & stream, FontFace & fontFace, float fontSize) const;
 
     /**
     *  @brief
@@ -135,7 +136,7 @@ protected:
     *  @param[out]   filename
     *    The file name of the description file to derivate glyph texture atlas file paths
     */
-    void handlePage    (std::stringstream & stream, FontFace & fontFace
+    void handlePage(std::stringstream & stream, FontFace & fontFace
         , const std::string & filename) const;
 
     /**
@@ -147,7 +148,7 @@ protected:
     *  @param[inout] fontFace
     *    The font face to construct
     */
-    void handleChar    (std::stringstream & stream, FontFace & fontFace) const;
+    void handleChar(std::stringstream & stream, FontFace & fontFace) const;
 
     /**
     *  @brief
@@ -158,7 +159,7 @@ protected:
     *  @param[inout] fontFace
     *    The font face to construct
     */
-    void handleKerning (std::stringstream & stream, FontFace & fontFace) const;
+    void handleKerning(std::stringstream & stream, FontFace & fontFace) const;
 
     /**
     *  @brief
@@ -184,7 +185,7 @@ protected:
 
 
 protected:
-    gloperate::ResourceManager & m_resourceManager; ///< Resource manager to load associated files.
+    gloperate::ResourceManager * m_resourceManager; ///< Resource manager to load associated files.
 };
 
 

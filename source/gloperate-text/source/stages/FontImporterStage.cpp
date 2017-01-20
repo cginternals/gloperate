@@ -1,6 +1,7 @@
 
 #include <gloperate-text/stages/FontImporterStage.h>
 
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
 
 #include <gloperate-text/FontLoader.h>
@@ -12,25 +13,17 @@ namespace gloperate_text
 
 
 FontImporterStage::FontImporterStage(gloperate::Environment * environment, const std::string & name)
-: Stage(environment, name)
-, resourceManager("resourceManager", this)
-, fontFilePath("fontFilePath", this)
-, font("font", this)
+: Stage{ environment, "FontImporterStage", name }
+, fontFilePath{ "fontFilePath", this }
+, font{ "font", this }
 {
 }
 
-FontImporterStage::~FontImporterStage()
-{
-}
 
-void FontImporterStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
+void FontImporterStage::onProcess(gloperate::AbstractGLContext *)
 {
-    m_importer.reset(new gloperate_text::FontLoader(*(*resourceManager)));
-}
-
-void FontImporterStage::onProcess(gloperate::AbstractGLContext * /*context*/)
-{
-    FontFace * newFont = m_importer->load((*fontFilePath).path());
+    auto importer = FontLoader{ m_environment->resourceManager() };
+    auto newFont = importer.load(fontFilePath->path());
 
     if (newFont == nullptr)
     {
