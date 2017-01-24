@@ -4,7 +4,6 @@
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
 
-#include <gloperate-text/FontLoader.h>
 #include <gloperate-text/FontFace.h>
 
 
@@ -27,8 +26,7 @@ FontImporterStage::~FontImporterStage()
 
 void FontImporterStage::onProcess(gloperate::AbstractGLContext *)
 {
-    auto importer = FontLoader{ m_environment->resourceManager() };
-    auto newFont = std::unique_ptr<FontFace>{ importer.load(fontFilePath->path()) };
+    auto newFont = std::unique_ptr<FontFace>{ m_environment->resourceManager()->load<FontFace>(fontFilePath.value().path())};
 
     if (newFont != nullptr)
     {

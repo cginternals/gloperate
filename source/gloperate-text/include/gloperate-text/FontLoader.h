@@ -35,14 +35,26 @@ class FontFace;
 class GLOPERATE_TEXT_API FontLoader : public gloperate::Loader<FontFace>
 {
 public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        FontLoader, gloperate::AbstractLoader
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
+      , "Load fonts in the Bitmap Font (BMFont) format"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
+
+
+public:
     /**
     *  @brief
     *    Constructor
     *
-    *  @param[in] resourceManager
-    *    The resource manager that is used to load associated files from a font face description.
+    *  @param[in] environment
+    *    The environment.
     */
-    explicit FontLoader(gloperate::ResourceManager * resourceManager);
+    explicit FontLoader(gloperate::Environment * environment);
 
     /**
     *  @brief
@@ -180,10 +192,6 @@ protected:
     static StringPairs readKeyValuePairs(
         std::stringstream & stream
     ,   const std::initializer_list<const char *> & mandatoryKeys);
-
-
-protected:
-    gloperate::ResourceManager * m_resourceManager; ///< Resource manager to load associated files.
 };
 
 

@@ -16,6 +16,7 @@
 #include <cppassist/fs//FilePath.h>
 #include <cppassist/fs/RawFile.h>
 
+#include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
 
 #include <gloperate-text/FontFace.h>
@@ -25,24 +26,27 @@ namespace gloperate_text
 {
 
 
-FontLoader::FontLoader(gloperate::ResourceManager * resourceManager)
-: m_resourceManager(resourceManager)
+CPPEXPOSE_COMPONENT(FontLoader, gloperate::AbstractLoader)
+
+
+FontLoader::FontLoader(gloperate::Environment * environment)
+: gloperate::Loader<FontFace>(environment)
 {
 }
 
 bool FontLoader::canLoad(const std::string & ext) const
 {
-    return ext == ".txt";
+    return ext == "fnt";
 }
 
 std::vector<std::string> FontLoader::loadingTypes() const
 {
-    return { "Littera Text Font (*.txt)" };
+    return { "Bitmap Font (*.fnt)" };
 }
 
 std::string FontLoader::allLoadingTypes() const
 {
-    return "*.txt";
+    return "*.fnt";
 }
 
 
@@ -159,7 +163,7 @@ void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, con
         fontFace.setGlyphTexture(texture);
     }
     else
-        fontFace.setGlyphTexture(m_resourceManager->load<globjects::Texture>(path + "/" + file));
+        fontFace.setGlyphTexture(m_environment->resourceManager()->load<globjects::Texture>(path + "/" + file));
 
     fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_LINEAR);
     fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_LINEAR);
