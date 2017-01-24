@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <cppassist/io/FilePath.h>
+#include <cppassist/fs/FilePath.h>
 
 #include <gloperate/pipeline/Stage.h>
 

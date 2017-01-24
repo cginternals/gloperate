@@ -36,7 +36,7 @@ void GlyphSequenceDemoStage::onProcess(gloperate::AbstractGLContext * context)
 
     if (numChars.value() == 0)
     {
-        m_sequences.front().setString(cppassist::encode(string.value(), cppassist::Encoding::UTF8));
+        m_sequences.front().setString(cppassist::string::encode(string.value(), cppassist::Encoding::UTF8));
     }
     else
     {

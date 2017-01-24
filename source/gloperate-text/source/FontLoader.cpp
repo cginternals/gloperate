@@ -13,8 +13,8 @@
 #include <cppassist/logging/logging.h>
 #include <cppassist/string/conversion.h>
 #include <cppassist/string/manipulation.h>
-#include <cppassist/io/FilePath.h>
-#include <cppassist/io/RawFile.h>
+#include <cppassist/fs//FilePath.h>
+#include <cppassist/fs/RawFile.h>
 
 #include <gloperate/base/ResourceManager.h>
 
@@ -105,16 +105,16 @@ void FontLoader::handleInfo(std::stringstream & stream, FontFace & fontFace, flo
 {
     auto pairs = readKeyValuePairs(stream, { "size", "padding" });
   
-    fontSize = cppassist::fromString<float>(pairs.at("size"));
+    fontSize = cppassist::string::fromString<float>(pairs.at("size"));
 
-    auto values = cppassist::split(pairs.at("padding"), ',');
+    auto values = cppassist::string::split(pairs.at("padding"), ',');
     assert(values.size() == 4);
 
     auto padding = glm::vec4();
-    padding[0] = cppassist::fromString<float>(values[2]); // top 
-    padding[1] = cppassist::fromString<float>(values[1]); // right
-    padding[2] = cppassist::fromString<float>(values[3]); // bottom
-    padding[3] = cppassist::fromString<float>(values[0]); // left
+    padding[0] = cppassist::string::fromString<float>(values[2]); // top 
+    padding[1] = cppassist::string::fromString<float>(values[1]); // right
+    padding[2] = cppassist::string::fromString<float>(values[3]); // bottom
+    padding[3] = cppassist::string::fromString<float>(values[0]); // left
 
     fontFace.setGlyphTexturePadding(padding);
 }
@@ -123,15 +123,15 @@ void FontLoader::handleCommon(std::stringstream & stream, FontFace & fontFace, c
 {
     auto pairs = readKeyValuePairs(stream, { "lineHeight", "base", "scaleW", "scaleH" });
 
-    fontFace.setAscent(cppassist::fromString<float>(pairs.at("base")));
+    fontFace.setAscent(cppassist::string::fromString<float>(pairs.at("base")));
     fontFace.setDescent(fontFace.ascent() - fontSize);
 
     assert(fontFace.size() > 0.f);
-    fontFace.setLineHeight(cppassist::fromString<float>(pairs.at("lineHeight")));
+    fontFace.setLineHeight(cppassist::string::fromString<float>(pairs.at("lineHeight")));
 
     fontFace.setGlyphTextureExtent({
-        cppassist::fromString<float>(pairs.at("scaleW")),
-        cppassist::fromString<float>(pairs.at("scaleH")) });
+        cppassist::string::fromString<float>(pairs.at("scaleW")),
+        cppassist::string::fromString<float>(pairs.at("scaleH")) });
 }
 
 void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, const std::string & filename) const
@@ -139,9 +139,9 @@ void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, con
     auto pairs = readKeyValuePairs(stream, { "file" });
 
     const auto path = cppassist::FilePath(filename).directoryPath();
-    const auto file = cppassist::stripped(pairs.at("file"), { '"', '\r' });
+    const auto file = cppassist::string::stripped(pairs.at("file"), { '"', '\r' });
 
-    if (cppassist::hasSuffix(file, ".raw"))
+    if (cppassist::string::hasSuffix(file, ".raw"))
     {
         auto texture = new globjects::Texture(gl::GL_TEXTURE_2D);
         auto raw = cppassist::RawFile();
@@ -171,7 +171,7 @@ void FontLoader::handleChar(std::stringstream & stream, FontFace & fontFace) con
 {
     auto pairs = readKeyValuePairs(stream, { "id", "x", "y", "width", "height", "xoffset", "yoffset", "xadvance" });
 
-    auto index = cppassist::fromString<GlyphIndex>(pairs.at("id"));
+    auto index = cppassist::string::fromString<GlyphIndex>(pairs.at("id"));
     assert(index > 0);
 
     auto glyph = Glyph();
@@ -180,21 +180,21 @@ void FontLoader::handleChar(std::stringstream & stream, FontFace & fontFace) con
 
     const auto extentScale = 1.f / glm::vec2(fontFace.glyphTextureExtent());
     const auto extent = glm::vec2(
-        cppassist::fromString<float>(pairs.at("width")),
-        cppassist::fromString<float>(pairs.at("height")));
+        cppassist::string::fromString<float>(pairs.at("width")),
+        cppassist::string::fromString<float>(pairs.at("height")));
 
     glyph.setSubTextureOrigin({
-        cppassist::fromString<float>(pairs.at("x")) * extentScale.x,
-        1.f - (cppassist::fromString<float>(pairs.at("y")) + extent.y) * extentScale.y});
+        cppassist::string::fromString<float>(pairs.at("x")) * extentScale.x,
+        1.f - (cppassist::string::fromString<float>(pairs.at("y")) + extent.y) * extentScale.y});
 
     glyph.setExtent(extent);
     glyph.setSubTextureExtent(extent * extentScale);
 
     glyph.setBearing(fontFace.ascent(), 
-        cppassist::fromString<float>(pairs.at("xoffset")),
-        cppassist::fromString<float>(pairs.at("yoffset")));
+        cppassist::string::fromString<float>(pairs.at("xoffset")),
+        cppassist::string::fromString<float>(pairs.at("yoffset")));
 
-    glyph.setAdvance(cppassist::fromString<float>(pairs.at("xadvance")));
+    glyph.setAdvance(cppassist::string::fromString<float>(pairs.at("xadvance")));
 
     fontFace.addGlyph(glyph);
 }
@@ -203,13 +203,13 @@ void FontLoader::handleKerning(std::stringstream & stream, FontFace & fontFace) 
 {
     auto pairs = readKeyValuePairs(stream, { "first", "second", "amount" });
 
-    auto first = cppassist::fromString<GlyphIndex>(pairs.at("first"));
+    auto first = cppassist::string::fromString<GlyphIndex>(pairs.at("first"));
     assert(first > 0);
 
-    auto second = cppassist::fromString<GlyphIndex>(pairs.at("second"));
+    auto second = cppassist::string::fromString<GlyphIndex>(pairs.at("second"));
     assert(second > 0);
 
-    auto kerning = cppassist::fromString<float>(pairs.at("amount"));
+    auto kerning = cppassist::string::fromString<float>(pairs.at("amount"));
 
     fontFace.setKerning(first, second, kerning);
 }
