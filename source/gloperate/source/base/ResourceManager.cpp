@@ -46,7 +46,7 @@ void ResourceManager::updateComponents() const
     auto loaders = m_environment->componentManager()->components<AbstractLoader>();
     for (auto component : loaders) {
         // Create loader
-        AbstractLoader * loader = component->createInstance();
+        AbstractLoader * loader = component->createInstance(m_environment);
         m_loaders.push_back(loader);
     }
 
