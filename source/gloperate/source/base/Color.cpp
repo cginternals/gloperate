@@ -207,7 +207,7 @@ bool Color::fromHexString(const std::string & str)
     }
 
     // Check string format
-    if (!cppassist::matchesRegex(hex, "([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})"))
+    if (!cppassist::string::matchesRegex(hex, "([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})"))
     {
         return false;
     }

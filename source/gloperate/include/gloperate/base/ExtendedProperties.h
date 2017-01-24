@@ -7,7 +7,7 @@
 
 #include <cppassist/string/conversion.h>
 #include <cppassist/string/regex.h>
-#include <cppassist/io/FilePath.h>
+#include <cppassist/fs/FilePath.h>
 
 #include <cppexpose/typed/GetTyped.h>
 
@@ -74,10 +74,10 @@ bool glmFromString(const std::string & string, T * data)
     }
     ss << elementRegex << "\\)\\s*";
 
-    if (!cppassist::matchesRegex(string, ss.str()))
+    if (!cppassist::string::matchesRegex(string, ss.str()))
         return false;
 
-    std::vector<std::string> parts = cppassist::extract(string, elementRegex);
+    std::vector<std::string> parts = cppassist::string::extract(string, elementRegex);
 
     assert(parts.size() == Size);
 
@@ -282,7 +282,7 @@ public:
 
     virtual std::string typeName() const override
     {
-        return "glm::" + gloperate::VectorPrefix<ValueType>::getPrefix() + "vec" + cppassist::toString<int>(Size);
+        return "glm::" + gloperate::VectorPrefix<ValueType>::getPrefix() + "vec" + cppassist::string::toString<int>(Size);
     }
 };
 

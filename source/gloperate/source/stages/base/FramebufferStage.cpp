@@ -3,6 +3,10 @@
 
 #include <glbinding/gl/gl.h>
 
+#include <globjects/Texture.h>
+
+#include <gloperate/rendering/RenderTarget.h>
+
 
 namespace gloperate
 {
@@ -50,15 +54,8 @@ void FramebufferStage::rebuildFBO()
     m_fbo = new globjects::Framebuffer;
 
     // Attach textures to FBO
-    // [TODO] Iterate over dynamic inputs
-    m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
-    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, *colorTexture);
-    m_fbo->attachTexture(gl::GL_DEPTH_ATTACHMENT,  *depthTexture);
-
-/*
-    // Attach textures to FBO
     std::vector<gl::GLenum> colorAttachments;
-    for (int i=0; i<=1; i++) {
+    for (int i = 0; i <= 1; i++) {
         // First round: Count number of color attachments
         // Second round: Actually attach the textures
         gl::GLenum index = gl::GL_COLOR_ATTACHMENT0;
@@ -67,30 +64,41 @@ void FramebufferStage::rebuildFBO()
         }
 
         for (auto input : this->inputs()) {
-            if (auto slot = dynamic_cast<gloperate::InputSlot<globjects::Texture *> *>(input)) {
-                // Get texture (if set)
-                globjects::Texture * texture = slot->data();
-                if (texture && i == 0) {
-                    if (slot->name() != "texDepth") {
-                        // Add color attachment
-                        colorAttachments.push_back(index);
-                        index = index + 1;
-                    }
-                } else if (texture && i == 1) {
-                    if (slot->name() == "texDepth") {
-                        // Add depth attachment
-                        m_fbo->attachTexture(gl::GL_DEPTH_ATTACHMENT, texture);
-                    } else {
-                        // Add color attachment
-                        m_fbo->attachTexture(index, texture);
-                        index = index + 1;
-                    }
+            auto slot = dynamic_cast<Input<RenderTarget *> *>(input);
+            if (!slot) {
+                continue;
+            }
+            RenderTarget * texture = **slot;
+            if (!texture)
+            {
+                continue;
+            }
+
+            if (i == 0) {
+                if (!isNameOfDepthRenderTarget(slot->name())) {
+                    // Add color attachment
+                    colorAttachments.push_back(index);
+                    index = index + 1;
+                }
+            } else {
+                if (isNameOfDepthRenderTarget(slot->name())) {
+                    // Add depth attachment
+                    texture->bind(gl::GL_DEPTH_ATTACHMENT, m_fbo);
+                } else {
+                    // Add color attachment
+                    texture->bind(index, m_fbo);
+                    index = index + 1;
                 }
             }
         }
     }
-*/
 }
+
+bool FramebufferStage::isNameOfDepthRenderTarget(const std::string & name)
+{
+    return name.find("Depth") != std::string::npos || name.find("depth") != std::string::npos;
+}
+
 
 
 } // namespace gloperate

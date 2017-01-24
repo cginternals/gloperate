@@ -93,23 +93,47 @@ set(headers
     ${include_path}/rendering/Camera.h
     ${include_path}/rendering/Drawable.h
     ${include_path}/rendering/Drawable.inl
+    ${include_path}/rendering/NoiseTexture.h
     ${include_path}/rendering/RenderPass.h
+    ${include_path}/rendering/RenderTarget.h
+    ${include_path}/rendering/RenderTargetType.h
+    ${include_path}/rendering/TransparencyMasksGenerator.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/CustomFramebufferStage.h
     ${include_path}/stages/base/FramebufferStage.h
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/base/SplitStage.h
+    ${include_path}/stages/base/BlitStage.h
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
+    ${include_path}/stages/demos/DemoAntialiasableTriangleStage.h
+    ${include_path}/stages/demos/DemoAntialiasingPipeline.h
+    ${include_path}/stages/demos/DemoDOFCubeStage.h
+    ${include_path}/stages/demos/DemoDOFPipeline.h
+    ${include_path}/stages/demos/DemoSSAORenderingStage.h
+    ${include_path}/stages/demos/DemoSSAOPostprocessingStage.h
+    ${include_path}/stages/demos/DemoSSAOPipeline.h
+    ${include_path}/stages/demos/DemoTransparencyStage.h
+    ${include_path}/stages/demos/DemoTransparencyPipeline.h
+    ${include_path}/stages/demos/DemoMultiFramePipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
     ${include_path}/stages/demos/TimerStage.h
     ${include_path}/stages/demos/ColorizeStage.h
+    ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
+    ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
+    ${include_path}/stages/multiframe/MultiFrameControlStage.h
+    ${include_path}/stages/multiframe/MultiFrameDiscDistributionStage.h
+    ${include_path}/stages/multiframe/NoiseKernelStage.h
+    ${include_path}/stages/multiframe/SSAOKernelStage.h
+    ${include_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.h
+    ${include_path}/stages/multiframe/TransparencyKernelStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -165,10 +189,14 @@ set(sources
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp
     ${source_path}/rendering/Drawable.cpp
+    ${source_path}/rendering/NoiseTexture.cpp
     ${source_path}/rendering/RenderPass.cpp
+    ${source_path}/rendering/RenderTarget.cpp
+    ${source_path}/rendering/TransparencyMasksGenerator.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/CustomFramebufferStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
@@ -177,11 +205,30 @@ set(sources
     ${source_path}/stages/base/ProceduralTextureStage.cpp
     ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/base/SplitStage.cpp
+    ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
+    ${source_path}/stages/demos/DemoAntialiasableTriangleStage.cpp
+    ${source_path}/stages/demos/DemoAntialiasingPipeline.cpp
+    ${source_path}/stages/demos/DemoDOFCubeStage.cpp
+    ${source_path}/stages/demos/DemoDOFPipeline.cpp
+    ${source_path}/stages/demos/DemoSSAORenderingStage.cpp
+    ${source_path}/stages/demos/DemoSSAOPostprocessingStage.cpp
+    ${source_path}/stages/demos/DemoSSAOPipeline.cpp
+    ${source_path}/stages/demos/DemoTransparencyStage.cpp
+    ${source_path}/stages/demos/DemoTransparencyPipeline.cpp
+    ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
     ${source_path}/stages/demos/ColorizeStage.cpp
+    ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
+    ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
+    ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp
+    ${source_path}/stages/multiframe/MultiFrameDiscDistributionStage.cpp
+    ${source_path}/stages/multiframe/NoiseKernelStage.cpp
+    ${source_path}/stages/multiframe/SSAOKernelStage.cpp
+    ${source_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.cpp
+    ${source_path}/stages/multiframe/TransparencyKernelStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp

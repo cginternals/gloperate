@@ -9,7 +9,7 @@
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/function/Function.h>
 
-#include <cppassist/io/FilePath.h>
+#include <cppassist/fs/FilePath.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
