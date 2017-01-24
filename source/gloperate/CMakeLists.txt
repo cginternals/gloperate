@@ -40,8 +40,11 @@ set(headers
     ${include_path}/gloperate.h
 
     ${include_path}/base/Environment.h
+    ${include_path}/base/EnvironmentUser.h
     ${include_path}/base/System.h
     ${include_path}/base/ComponentManager.h
+    ${include_path}/base/Component.h
+    ${include_path}/base/Component.inl
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
@@ -156,6 +159,7 @@ set(sources
     ${source_path}/gloperate.cpp
 
     ${source_path}/base/Environment.cpp
+    ${source_path}/base/EnvironmentUser.cpp
     ${source_path}/base/System.cpp
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
