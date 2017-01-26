@@ -28,7 +28,7 @@ public:
     *  @brief
     *    Constructor
     */
-    Loader();
+    explicit Loader(Environment * environment);
 
     /**
     *  @brief

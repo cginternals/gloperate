@@ -5,7 +5,10 @@
 #include <string>
 #include <vector>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/base/EnvironmentUser.h>
+
+// Include Component<> specialization for downstream plugins
+#include <gloperate/base/Component.h>
 
 
 namespace gloperate
@@ -16,14 +19,14 @@ namespace gloperate
 *  @brief
 *    Loader base class
 */
-class GLOPERATE_API AbstractLoader 
+class GLOPERATE_API AbstractLoader : public EnvironmentUser
 {
 public:
     /**
     *  @brief
     *    Constructor
     */
-    AbstractLoader();
+    explicit AbstractLoader(Environment * environment);
 
     /**
     *  @brief
