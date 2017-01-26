@@ -23,7 +23,12 @@ vec3 singleLightIntensity(
     case LIGHT_TYPE_POINT:
         {
             vec3 L = lightPosition - worldPosition;
-            return diffuseColor * lightColor * max(dot(normalize(L), normal), 0.0);
+            vec3 V = normalize(eyePosition - worldPosition);
+            vec3 R = normalize(2 * normal - normalize(L));
+            float diffusePart = max(dot(normalize(L), normal), 0.0);
+            float n = 1 / pow(1 - glossiness, 3);
+            float specularPart = (2+n) / 6.283185307179586 * pow(max(dot(R,V), 0.0), n);
+            return mix(diffuseColor * diffusePart, specularColor * specularPart, glossiness) * lightColor;
         }
     case LIGHT_TYPE_POINT_ATT:
         {
@@ -34,7 +39,7 @@ vec3 singleLightIntensity(
             float attenuation = 1 / (attenuationCoefficients.x + attenuationCoefficients.y * d + attenuationCoefficients.z * d*d);
             float diffusePart = max(dot(normalize(L), normal), 0.0);
             float n = 1 / pow(1 - glossiness, 3);
-            float specularPart = (2+n / 6.283185307179586) * pow(max(dot(R,V), 0.0), n);
+            float specularPart = (2+n) / 6.283185307179586 * pow(max(dot(R,V), 0.0), n);
             return mix(diffuseColor * diffusePart, specularColor * specularPart, glossiness) * lightColor * attenuation;
         }
     default:
