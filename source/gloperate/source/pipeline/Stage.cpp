@@ -25,7 +25,7 @@ namespace gloperate
 
 
 Stage::Stage(Environment * environment, const std::string & className, const std::string & name)
-: cppexpose::Object((name == "" || name.empty()) ? className : name)
+: cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
 {
@@ -298,7 +298,7 @@ std::string Stage::getFreeName(const std::string & name) const
 
     while (propertyExists(nameOut))
     {
-        nameOut = name + cppassist::toString<int>(i);
+        nameOut = name + cppassist::string::toString<int>(i);
         i++;
     }
 

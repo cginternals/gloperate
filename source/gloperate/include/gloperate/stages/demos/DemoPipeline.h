@@ -16,10 +16,12 @@ namespace gloperate
 
 
 class BasicFramebufferStage;
+class FramebufferStage;
 class TextureLoadStage;
 class MixerStage;
 class TimerStage;
 class SpinningRectStage;
+class TextureStage;
 class ColorizeStage;
 
 
@@ -83,7 +85,10 @@ protected:
     BasicFramebufferStage  * m_framebufferStage1;   ///< Framebuffer for rendering the spinning rect
     SpinningRectStage      * m_spinningRectStage;   ///< Stage that renders the spinning rect
 
-    BasicFramebufferStage  * m_framebufferStage2;   ///< Framebuffer for rendering the colorized output
+    TextureStage           * m_textureStage1;       ///< Texture 1 for 2nd frame buffer
+    TextureStage           * m_textureStage2;       ///< Texture 2 for 2nd frame buffer
+
+    FramebufferStage       * m_framebufferStage2;   ///< Framebuffer for rendering the colorized output
     ColorizeStage          * m_colorizeStage;       ///< Stage that blends the image with a color
 
     MixerStage             * m_mixerStage;          ///< Stage that renders the output to the screen
