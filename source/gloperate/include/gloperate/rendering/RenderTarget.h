@@ -54,6 +54,12 @@ public:
 
     /**
     *  @brief
+    *    Release the current target
+    */
+    void releaseTarget();
+
+    /**
+    *  @brief
     *    Set a (new) desired target
     *
     *  @param[in] texture
