@@ -56,9 +56,9 @@ public:
     Input<glm::vec3> lightPos2;         ///< Position/Direction of 2nd light
     Input<glm::vec3> lightPos3;         ///< Position/Direction of 3rd light
 
-    Input<glm::vec3> lightAttenuation1; ///< Attenuation coeffitients of 1st light
-    Input<glm::vec3> lightAttenuation2; ///< Attenuation coeffitients of 2nd light
-    Input<glm::vec3> lightAttenuation3; ///< Attenuation coeffitients of 3rd light
+    Input<glm::vec3> lightAttenuation1; ///< Attenuation coefficients of 1st light
+    Input<glm::vec3> lightAttenuation2; ///< Attenuation coefficients of 2nd light
+    Input<glm::vec3> lightAttenuation3; ///< Attenuation coefficients of 3rd light
 
 public:
     /**

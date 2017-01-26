@@ -68,7 +68,7 @@ static const char * s_fragmentShader = R"(
 
     #define LIGHT_PROCESSING_PHONG
 
-    #include </lightProcessing.glsl>
+    #include </gloperate/shaders/lightProcessing.glsl>
 
     uniform samplerBuffer colorTypeData;
     uniform samplerBuffer positionData;
@@ -167,9 +167,9 @@ void LightTestStage::onContextInitialize(AbstractGLContext * context)
     m_program->setUniform("eye", cameraEye);
 
     auto dataFolderPath = dataPath();
-    globjects::NamedString::create("/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
-    globjects::NamedString::create("/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
-    globjects::NamedString::create("/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
 }
 
 void LightTestStage::onProcess(AbstractGLContext * context)
