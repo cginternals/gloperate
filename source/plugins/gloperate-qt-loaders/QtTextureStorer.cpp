@@ -13,8 +13,8 @@
 CPPEXPOSE_COMPONENT(QtTextureStorer, gloperate::AbstractStorer)
 
 
-QtTextureStorer::QtTextureStorer()
-: gloperate::Storer<globjects::Texture>()
+QtTextureStorer::QtTextureStorer(gloperate::Environment * environment)
+: gloperate::Storer<globjects::Texture>(environment)
 {
     // Get list of supported file formats
     QList<QByteArray> formats = QImageWriter::supportedImageFormats();

@@ -39,8 +39,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the storer belongs (must NOT be null!)
     */
-    QtTextureStorer();
+    QtTextureStorer(gloperate::Environment * environment);
 
     /**
     *  @brief

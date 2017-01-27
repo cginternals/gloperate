@@ -20,8 +20,8 @@ using namespace gloperate_qt;
 CPPEXPOSE_COMPONENT(QtTextureLoader, gloperate::AbstractLoader)
 
 
-QtTextureLoader::QtTextureLoader()
-: gloperate::Loader<globjects::Texture>()
+QtTextureLoader::QtTextureLoader(gloperate::Environment * environment)
+: gloperate::Loader<globjects::Texture>(environment)
 {
     // Get list of supported file formats
     QList<QByteArray> formats = QImageReader::supportedImageFormats();
