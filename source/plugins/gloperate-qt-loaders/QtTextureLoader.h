@@ -55,9 +55,9 @@ public:
     virtual ~QtTextureLoader();
 
     // Virtual gloperate::AbstractLoader functions
-    virtual bool canLoad(const std::string & ext) const;
-    virtual std::vector<std::string> loadingTypes() const;
-    virtual std::string allLoadingTypes() const;
+    virtual bool canLoad(const std::string & ext) const override;
+    virtual std::vector<std::string> loadingTypes() const override;
+    virtual std::string allLoadingTypes() const override;
 
     // Virtual gloperate::Loader<globjects::Texture> functions
     virtual globjects::Texture * load(const std::string & filename, const cppexpose::Variant & options, std::function<void(int, int)> progress) const override;
