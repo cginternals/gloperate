@@ -7,8 +7,7 @@ namespace gloperate
 
 
 template <typename T>
-Loader<T>::Loader(Environment * environment)
-: AbstractLoader(environment)
+Loader<T>::Loader()
 {
 }
 

@@ -6,8 +6,7 @@ namespace gloperate
 {
 
 
-AbstractLoader::AbstractLoader(Environment * environment)
-: EnvironmentUser(environment)
+AbstractLoader::AbstractLoader()
 {
 }
 

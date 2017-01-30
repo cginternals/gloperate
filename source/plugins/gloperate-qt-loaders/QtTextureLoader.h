@@ -43,7 +43,7 @@ public:
     *  @brief
     *    Constructor
     */
-    explicit QtTextureLoader(gloperate::Environment * environment);
+    QtTextureLoader();
 
     /**
     *  @brief
