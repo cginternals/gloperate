@@ -52,9 +52,9 @@ public:
     virtual ~QtTextureStorer();
 
     // Virtual gloperate::AbstractStorer functions
-    virtual bool canStore(const std::string & ext) const;
-    virtual std::vector<std::string> storingTypes() const;
-    virtual std::string allStoringTypes() const;
+    virtual bool canStore(const std::string & ext) const override;
+    virtual std::vector<std::string> storingTypes() const override;
+    virtual std::string allStoringTypes() const override;
 
     // Virtual gloperate::Storer<globjects::Texture> functions
     virtual bool store(const std::string & filename, const globjects::Texture * texture, const cppexpose::Variant & options, std::function<void(int, int)> progress) const override;
