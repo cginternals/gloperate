@@ -8,10 +8,7 @@
 
 #include <cppexpose/reflection/Object.h>
 
-#include <gloperate/gloperate_api.h>
-
-// Include Component<Stage> specialization for downstream plugins
-#include <gloperate/pipeline/StageComponent.h>
+#include <gloperate/base/Component.h>
 
 
 namespace gloperate
@@ -44,6 +41,12 @@ class Output;
 class GLOPERATE_API Stage : public cppexpose::Object
 {
 public:
+    // Define component types
+    using AbstractComponentType = gloperate::AbstractComponent<Stage>;
+
+    template <typename Type>
+    using ComponentType = gloperate::Component<Stage, Type>;
+
     // Import data types into local namespace
     template <typename T>
     using Input = gloperate::Input<T>;

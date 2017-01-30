@@ -42,6 +42,8 @@ set(headers
     ${include_path}/base/Environment.h
     ${include_path}/base/System.h
     ${include_path}/base/ComponentManager.h
+    ${include_path}/base/Component.h
+    ${include_path}/base/Component.inl
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
@@ -86,8 +88,6 @@ set(headers
     ${include_path}/pipeline/Input.inl
     ${include_path}/pipeline/Output.h
     ${include_path}/pipeline/Output.inl
-    ${include_path}/pipeline/StageComponent.h
-    ${include_path}/pipeline/StageComponent.inl
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/Camera.h
@@ -184,7 +184,6 @@ set(sources
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
     ${source_path}/pipeline/AbstractSlot.cpp
-    ${source_path}/pipeline/StageComponent.cpp
 
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp

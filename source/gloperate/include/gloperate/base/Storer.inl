@@ -7,7 +7,8 @@ namespace gloperate
 
 
 template <typename T>
-Storer<T>::Storer()
+Storer<T>::Storer(Environment * environment)
+: AbstractStorer(environment)
 {
 }
 
