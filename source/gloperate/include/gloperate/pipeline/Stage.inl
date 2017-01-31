@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <typeinfo>
+
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
@@ -11,12 +13,42 @@ namespace gloperate
 
 
 template <typename T>
+std::vector<Input<T> *> Stage::inputs() const
+{
+    auto result = std::vector<Input<T> *>{};
+    for (auto input : inputs())
+    {
+        if (input->type() == typeid(T))
+        {
+            result.push_back(static_cast<Input<T> *>(input));
+        }
+    }
+
+    return result;
+}
+
+template <typename T>
 Input<T> * Stage::createInput(const std::string & name, const T & defaultValue)
 {
     auto input = new Input<T>(name, defaultValue);
     this->addInput(input, cppexpose::PropertyOwnership::Parent);
 
     return input;
+}
+
+template <typename T>
+std::vector<Output<T> *> Stage::outputs() const
+{
+    auto result = std::vector<Output<T> *>{};
+    for (auto output : outputs())
+    {
+        if (output->type() == typeid(T))
+        {
+            result.push_back(static_cast<Output<T> *>(output));
+        }
+    }
+
+    return result;
 }
 
 template <typename T>
