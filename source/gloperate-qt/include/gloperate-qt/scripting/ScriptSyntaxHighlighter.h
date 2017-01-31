@@ -63,7 +63,7 @@ public:
 
 protected:
     // Virtual QSyntaxHighlighter interface
-    virtual void highlightBlock(const QString & text);
+    virtual void highlightBlock(const QString & text) override;
 
 
 protected:
