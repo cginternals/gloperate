@@ -1,7 +1,7 @@
 
 #include <gloperate/stages/base/ProgramStage.h>
 
-#include <cppassist/io/FilePath.h>
+#include <cppassist/fs/FilePath.h>
 
 #include <globjects/Shader.h>
 #include <globjects/Program.h>

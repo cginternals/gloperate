@@ -5,8 +5,8 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <cppassist/io/readfile.h>
-#include <cppassist/io/FilePath.h>
+#include <cppassist/fs/readfile.h>
+#include <cppassist/fs/FilePath.h>
 
 #include <glbinding/Meta.h>
 
@@ -17,8 +17,8 @@
 CPPEXPOSE_COMPONENT(ShaderLoader, gloperate::AbstractLoader)
 
 
-ShaderLoader::ShaderLoader()
-: gloperate::Loader<globjects::Shader>()
+ShaderLoader::ShaderLoader(gloperate::Environment * environment)
+: gloperate::Loader<globjects::Shader>(environment)
 , m_extensionToType({
     {"vert", gl::GL_VERTEX_SHADER},
     {"tesc", gl::GL_TESS_CONTROL_SHADER},

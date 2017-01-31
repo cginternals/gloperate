@@ -46,7 +46,7 @@ public:
     *  @brief
     *    Constructor
     */
-    ShaderLoader();
+    ShaderLoader(gloperate::Environment * environment);
 
     /**
     *  @brief

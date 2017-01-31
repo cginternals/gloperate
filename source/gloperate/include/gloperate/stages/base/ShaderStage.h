@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <cppassist/io/FilePath.h>
+#include <cppassist/fs/FilePath.h>
 
 #include <cppexpose/plugin/plugin_api.h>
 
