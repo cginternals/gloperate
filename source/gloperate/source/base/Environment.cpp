@@ -16,15 +16,19 @@
 #include <gloperate/stages/base/ProceduralTextureStage.h>
 #include <gloperate/stages/base/MixerStage.h>
 #include <gloperate/stages/base/SplitStage.h>
+#include <gloperate/stages/base/ShaderStage.h>
+#include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
 #include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
 #include <gloperate/stages/multiframe/MultiFrameControlStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
+#include <gloperate/stages/demos/ShaderDemoPipeline.h>
 #include <gloperate/stages/demos/DemoStage.h>
 #include <gloperate/stages/demos/DemoMultiFramePipeline.h>
 #include <gloperate/stages/demos/SpinningRectStage.h>
 #include <gloperate/stages/demos/TimerStage.h>
 #include <gloperate/stages/demos/ColorizeStage.h>
+#include <gloperate/stages/demos/DemoRenderStage.h>
 
 
 namespace gloperate
@@ -202,11 +206,15 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&MultiFrameAggregationStage::Component);
     m_componentManager.addComponent(&MultiFrameControlStage::Component);
     m_componentManager.addComponent(&DemoPipeline::Component);
+    m_componentManager.addComponent(&ShaderDemoPipeline::Component);
     m_componentManager.addComponent(&DemoStage::Component);
     m_componentManager.addComponent(&DemoMultiFramePipeline::Component);
     m_componentManager.addComponent(&SpinningRectStage::Component);
     m_componentManager.addComponent(&TimerStage::Component);
     m_componentManager.addComponent(&ColorizeStage::Component);
+    m_componentManager.addComponent(&ShaderStage::Component);
+    m_componentManager.addComponent(&ProgramStage::Component);
+    m_componentManager.addComponent(&DemoRenderStage::Component);
 }
 
 void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)

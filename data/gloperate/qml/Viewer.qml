@@ -17,7 +17,7 @@ Background
     id: page
 
     // Stage
-    property string stage: 'DemoPipeline'
+    property string stage: 'ShaderDemoPipeline'
 
     // UI status
              property real uiStatus:  1.0
@@ -315,7 +315,7 @@ Background
                     id: propertyEditor
 
                     pipelineInterface: gloperatePipeline
-                    path:              'pipeline.DemoPipeline'
+                    path:              'pipeline.ShaderDemoPipeline'
                 }
 
                 Button
@@ -380,7 +380,7 @@ Background
             width:  200
             height: 200
 
-            path: 'pipeline.DemoPipeline.SpinningRectStage.colorTextureOut'
+            path: 'pipeline.ShaderDemoPipeline.RenderStage.colorTextureOut'
 
             Drag.active: mouseArea.drag.active
 
