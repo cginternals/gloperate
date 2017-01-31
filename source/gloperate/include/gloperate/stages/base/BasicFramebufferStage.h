@@ -11,7 +11,7 @@
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/GlmProperties.h>
+#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
@@ -40,7 +40,7 @@ public:
 
 
 public:
-    // Input
+    // Inputs
     Input<glm::vec4>                 viewport;      ///< Texture size
 
     // Outputs
@@ -59,7 +59,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    BasicFramebufferStage(Environment * environment, const std::string & name = "BasicFramebufferStage");
+    BasicFramebufferStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief

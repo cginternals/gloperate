@@ -21,8 +21,8 @@ Canvas::Canvas(Environment * environment)
 : AbstractCanvas(environment)
 , m_pipelineContainer(environment)
 , m_frame(0)
-, m_mouseDevice(new MouseDevice(m_environment->inputManager(), "Canvas"))
-, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), "Canvas"))
+, m_mouseDevice(new MouseDevice(m_environment->inputManager(), m_name))
+, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), m_name))
 {
     // Mark render output as required and redraw when it is invalidated
     m_pipelineContainer.rendered.setRequired(true);
@@ -32,6 +32,8 @@ Canvas::Canvas(Environment * environment)
             this->redraw();
         }
     });
+
+    addProperty(&m_pipelineContainer);
 }
 
 Canvas::~Canvas()
@@ -66,6 +68,22 @@ void Canvas::setRenderStage(Stage * stage)
     }
 }
 
+void Canvas::onRender(globjects::Framebuffer * targetFBO)
+{
+    cppassist::debug(1) << "onRender()";
+
+    // Invoke render stage/pipeline
+    if (m_pipelineContainer.renderStage())
+    {
+        m_frame++;
+
+        m_pipelineContainer.frameCounter.setValue(m_frame);
+        m_pipelineContainer.targetFBO.setValue(targetFBO);
+
+        m_pipelineContainer.renderStage()->process(m_openGLContext);
+    }
+}
+
 void Canvas::onUpdate()
 {
     float timeDelta = m_environment->timeManager()->timeDelta();
@@ -75,7 +93,7 @@ void Canvas::onUpdate()
 
 void Canvas::onContextInit()
 {
-    cppassist::details() << "onContextInit()";
+    cppassist::debug(1) << "onContextInit()";
 
     // Initialize render stage in new context
     if (m_pipelineContainer.renderStage())
@@ -86,7 +104,7 @@ void Canvas::onContextInit()
 
 void Canvas::onContextDeinit()
 {
-    cppassist::details() << "onContextDeinit()";
+    cppassist::debug(1) << "onContextDeinit()";
 
     // De-initialize render stage in old context
     if (m_pipelineContainer.renderStage())
@@ -120,65 +138,51 @@ void Canvas::onBackgroundColor(float red, float green, float blue)
     m_pipelineContainer.backgroundColor.setValue(glm::vec3(red, green, blue));
 }
 
-void Canvas::onRender(globjects::Framebuffer * targetFBO)
-{
-    cppassist::details() << "onRender()";
-
-    // Invoke image and video exports
-    AbstractCanvas::onRender(targetFBO);
-
-    // Invoke render stage/pipeline
-    if (m_pipelineContainer.renderStage())
-    {
-        m_frame++;
-
-        m_pipelineContainer.frameCounter.setValue(m_frame);
-        m_pipelineContainer.targetFBO.setValue(targetFBO);
-
-        m_pipelineContainer.renderStage()->process(m_openGLContext);
-    }
-}
-
 void Canvas::onKeyPress(int key, int modifier)
 {
-    cppassist::details() << "onKeyPressed(" << key << ")";
+    cppassist::debug(1) << "onKeyPressed(" << key << ")";
 
     m_keyboardDevice->keyPress(key, modifier);
 }
 
 void Canvas::onKeyRelease(int key, int modifier)
 {
-    cppassist::details() << "onKeyReleased(" << key << ")";
+    cppassist::debug(1) << "onKeyReleased(" << key << ")";
 
     m_keyboardDevice->keyRelease(key, modifier);
 }
 
 void Canvas::onMouseMove(const glm::ivec2 & pos)
 {
-    cppassist::details() << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
+    cppassist::debug(1) << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->move(pos);
 }
 
 void Canvas::onMousePress(int button, const glm::ivec2 & pos)
 {
-    cppassist::details() << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(1) << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->buttonPress(button, pos);
 }
 
 void Canvas::onMouseRelease(int button, const glm::ivec2 & pos)
 {
-    cppassist::details() << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(1) << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->buttonRelease(button, pos);
 }
 
 void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
-    cppassist::details() << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(1) << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->wheelScroll(delta, pos);
+}
+
+glm::vec4 Canvas::savedDeviceViewport()
+{
+    return m_savedDeviceVP;
 }
 
 

@@ -71,6 +71,15 @@ public:
 
     /**
     *  @brief
+    *    Read OpenGL profile from current context
+    *
+    *  @notes
+    *    - Requires active context
+    */
+    static GLContextFormat::Profile retrieveProfile();
+
+    /**
+    *  @brief
     *    Get OpenGL version
     *
     *  @return
@@ -80,6 +89,18 @@ public:
     *    - Requires active context
     */
     static std::string version();
+
+    /**
+    *  @brief
+    *    Get OpenGL profile
+    *
+    *  @return
+    *    OpenGL profile string
+    *
+    *  @notes
+    *    - Requires active context
+    */
+    static std::string profile();
 
     /**
     *  @brief

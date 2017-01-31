@@ -3,7 +3,7 @@
 
 
 #include <gloperate/base/AbstractCanvas.h>
-#include <gloperate/base/PipelineContainer.h>
+#include <gloperate/pipeline/PipelineContainer.h>
 #include <gloperate/input/constants.h>
 
 
@@ -70,6 +70,7 @@ public:
     void setRenderStage(Stage * stage);
 
     // Virtual AbstractCanvas functions
+    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
@@ -77,13 +78,13 @@ public:
     virtual void onSaveViewport() override;
     virtual void onResetViewport() override;
     virtual void onBackgroundColor(float red, float green, float blue) override;
-    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
     virtual void onKeyPress(int key, int modifier) override;
     virtual void onKeyRelease(int key, int modifier) override;
     virtual void onMouseMove(const glm::ivec2 & pos) override;
     virtual void onMousePress(int button, const glm::ivec2 & pos) override;
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos) override;
+    virtual glm::vec4 savedDeviceViewport() override;
 
 
 protected:

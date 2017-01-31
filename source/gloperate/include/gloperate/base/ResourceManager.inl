@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <cppassist/io/FilePath.h>
+#include <cppassist/fs/FilePath.h>
 
 #include <gloperate/base/Loader.h>
 #include <gloperate/base/Storer.h>

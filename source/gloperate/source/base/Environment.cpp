@@ -11,14 +11,24 @@
 
 // Local components
 #include <gloperate/stages/base/BasicFramebufferStage.h>
+#include <gloperate/stages/base/CustomFramebufferStage.h>
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/ProceduralTextureStage.h>
 #include <gloperate/stages/base/MixerStage.h>
 #include <gloperate/stages/base/SplitStage.h>
+#include <gloperate/stages/base/ShaderStage.h>
+#include <gloperate/stages/base/ProgramStage.h>
+#include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
+#include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
+#include <gloperate/stages/multiframe/MultiFrameControlStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
+#include <gloperate/stages/demos/ShaderDemoPipeline.h>
 #include <gloperate/stages/demos/DemoStage.h>
-#include <gloperate/stages/demos/DemoTriangleStage.h>
-#include <gloperate/stages/demos/DemoTimerStage.h>
+#include <gloperate/stages/demos/DemoMultiFramePipeline.h>
+#include <gloperate/stages/demos/SpinningRectStage.h>
+#include <gloperate/stages/demos/TimerStage.h>
+#include <gloperate/stages/demos/ColorizeStage.h>
+#include <gloperate/stages/demos/DemoRenderStage.h>
 
 
 namespace gloperate
@@ -27,11 +37,10 @@ namespace gloperate
 
 Environment::Environment()
 : cppexpose::Object("gloperate")
-, m_componentManager(this)
+, m_componentManager()
 , m_resourceManager(this)
 , m_timeManager(this)
 , m_system(this)
-, m_pipeline(this)
 , m_inputManager(this)
 , m_tree("tree")
 , m_scriptContext(nullptr)
@@ -40,7 +49,6 @@ Environment::Environment()
     addProperty(&m_resourceManager);
     addProperty(&m_timeManager);
     addProperty(&m_system);
-    addProperty(&m_pipeline);
     addProperty(&m_inputManager);
     addProperty(&m_tree);
 
@@ -189,14 +197,24 @@ void Environment::exit(int exitCode)
 void Environment::registerLocalPlugins()
 {
     m_componentManager.addComponent(&BasicFramebufferStage::Component);
+    m_componentManager.addComponent(&CustomFramebufferStage::Component);
     m_componentManager.addComponent(&TextureLoadStage::Component);
     m_componentManager.addComponent(&ProceduralTextureStage::Component);
     m_componentManager.addComponent(&MixerStage::Component);
     m_componentManager.addComponent(&SplitStage::Component);
+    m_componentManager.addComponent(&MultiFrameAggregationPipeline::Component);
+    m_componentManager.addComponent(&MultiFrameAggregationStage::Component);
+    m_componentManager.addComponent(&MultiFrameControlStage::Component);
     m_componentManager.addComponent(&DemoPipeline::Component);
+    m_componentManager.addComponent(&ShaderDemoPipeline::Component);
     m_componentManager.addComponent(&DemoStage::Component);
-    m_componentManager.addComponent(&DemoTriangleStage::Component);
-    m_componentManager.addComponent(&DemoTimerStage::Component);
+    m_componentManager.addComponent(&DemoMultiFramePipeline::Component);
+    m_componentManager.addComponent(&SpinningRectStage::Component);
+    m_componentManager.addComponent(&TimerStage::Component);
+    m_componentManager.addComponent(&ColorizeStage::Component);
+    m_componentManager.addComponent(&ShaderStage::Component);
+    m_componentManager.addComponent(&ProgramStage::Component);
+    m_componentManager.addComponent(&DemoRenderStage::Component);
 }
 
 void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)

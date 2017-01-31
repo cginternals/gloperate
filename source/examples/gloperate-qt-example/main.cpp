@@ -86,6 +86,7 @@ int main(int argc, char * argv[])
 //  window->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
     cppassist::info() << std::endl
         << "OpenGL Version:  " << GLContextUtils::version() << std::endl
+        << "OpenGL Profile:  " << GLContextUtils::profile() << std::endl
         << "OpenGL Vendor:   " << GLContextUtils::vendor() << std::endl
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
     window->context()->release();

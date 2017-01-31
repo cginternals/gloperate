@@ -11,6 +11,7 @@
 #include <globjects/Program.h>
 #include <globjects/ProgramPipeline.h>
 #include <globjects/TransformFeedback.h>
+#include <globjects/State.h>
 
 #include <gloperate/rendering/Drawable.h>
 
@@ -32,6 +33,11 @@ RenderPass::~RenderPass()
 void RenderPass::draw() const
 {
     bindResources();
+    
+    if (m_stateBefore)
+    {
+        m_stateBefore->apply();
+    }
 
     if (m_recordTransformFeedback)
     {
@@ -39,9 +45,6 @@ void RenderPass::draw() const
         m_recordTransformFeedback->begin(m_recordTransformFeedbackMode);
 
         gl::glEnable(gl::GL_RASTERIZER_DISCARD);
-    }
-    else
-    {
     }
 
     if (m_program)
@@ -73,14 +76,39 @@ void RenderPass::draw() const
 
         gl::glDisable(gl::GL_RASTERIZER_DISCARD);
     }
+    
+    if (m_stateAfter)
+    {
+        m_stateAfter->apply();
+    }
 }
 
-const Drawable * RenderPass::geometry() const
+globjects::State * RenderPass::stateBefore() const
+{
+    return m_stateBefore;
+}
+
+void RenderPass::setStateBefore(globjects::State * state)
+{
+    m_stateBefore = state;
+}
+
+globjects::State * RenderPass::stateAfter() const
+{
+    return m_stateAfter;
+}
+
+void RenderPass::setStateAfter(globjects::State * state)
+{
+    m_stateAfter = state;
+}
+
+Drawable * RenderPass::geometry() const
 {
     return m_geometry;
 }
 
-void RenderPass::setGeometry(const Drawable * geometry)
+void RenderPass::setGeometry(Drawable * geometry)
 {
     m_geometry = geometry;
 }
@@ -164,7 +192,16 @@ globjects::Texture * RenderPass::texture(gl::GLenum activeTextureIndex) const
 
 void RenderPass::setTexture(size_t index, globjects::Texture * texture)
 {
-    m_textures.emplace(index, texture);
+    const auto it = m_textures.find(index);
+
+    if (it == m_textures.end())
+    {
+        m_textures.emplace(index, texture);
+    }
+    else
+    {
+        it->second = texture;
+    }
 }
 
 void RenderPass::setTexture(gl::GLenum activeTextureIndex, globjects::Texture * texture)
@@ -205,9 +242,18 @@ globjects::Sampler * RenderPass::sampler(size_t index) const
     return it->second.get();
 }
 
-void RenderPass::setSampler(size_t index, globjects::Sampler * texture)
+void RenderPass::setSampler(size_t index, globjects::Sampler * sampler)
 {
-    m_samplers.emplace(index, texture);
+    const auto it = m_samplers.find(index);
+
+    if (it == m_samplers.end())
+    {
+        m_samplers.emplace(index, sampler);
+    }
+    else
+    {
+        it->second = sampler;
+    }
 }
 
 globjects::Sampler * RenderPass::removeSampler(size_t index)
@@ -238,9 +284,18 @@ globjects::Buffer * RenderPass::uniformBuffer(size_t index) const
     return it->second;
 }
 
-void RenderPass::setUniformBuffer(size_t index, globjects::Buffer * texture)
+void RenderPass::setUniformBuffer(size_t index, globjects::Buffer * buffer)
 {
-    m_uniformBuffers.emplace(index, texture);
+    const auto it = m_uniformBuffers.find(index);
+
+    if (it == m_uniformBuffers.end())
+    {
+        m_uniformBuffers.emplace(index, buffer);
+    }
+    else
+    {
+        it->second = buffer;
+    }
 }
 
 globjects::Buffer * RenderPass::removeUniformBuffer(size_t index)
@@ -271,9 +326,18 @@ globjects::Buffer * RenderPass::atomicCounterBuffer(size_t index) const
     return it->second;
 }
 
-void RenderPass::setAtomicCounterBuffer(size_t index, globjects::Buffer * texture)
+void RenderPass::setAtomicCounterBuffer(size_t index, globjects::Buffer * buffer)
 {
-    m_atomicCounterBuffers.emplace(index, texture);
+    const auto it = m_atomicCounterBuffers.find(index);
+
+    if (it == m_atomicCounterBuffers.end())
+    {
+        m_atomicCounterBuffers.emplace(index, buffer);
+    }
+    else
+    {
+        it->second = buffer;
+    }
 }
 
 globjects::Buffer * RenderPass::removeAtomicCounterBuffer(size_t index)
@@ -304,9 +368,18 @@ globjects::Buffer * RenderPass::shaderStorageBuffer(size_t index) const
     return it->second;
 }
 
-void RenderPass::setShaderStorageBuffer(size_t index, globjects::Buffer * texture)
+void RenderPass::setShaderStorageBuffer(size_t index, globjects::Buffer * buffer)
 {
-    m_shaderStorageBuffers.emplace(index, texture);
+    const auto it = m_shaderStorageBuffers.find(index);
+
+    if (it == m_shaderStorageBuffers.end())
+    {
+        m_shaderStorageBuffers.emplace(index, buffer);
+    }
+    else
+    {
+        it->second = buffer;
+    }
 }
 
 globjects::Buffer * RenderPass::removeShaderStorageBuffer(size_t index)
@@ -337,9 +410,18 @@ globjects::Buffer * RenderPass::transformFeedbackBuffer(size_t index) const
     return it->second;
 }
 
-void RenderPass::setTransformFeedbackBuffer(size_t index, globjects::Buffer * texture)
+void RenderPass::setTransformFeedbackBuffer(size_t index, globjects::Buffer * buffer)
 {
-    m_transformFeedbackBuffers.emplace(index, texture);
+    const auto it = m_transformFeedbackBuffers.find(index);
+
+    if (it == m_transformFeedbackBuffers.end())
+    {
+        m_transformFeedbackBuffers.emplace(index, buffer);
+    }
+    else
+    {
+        it->second = buffer;
+    }
 }
 
 globjects::Buffer * RenderPass::removeTransformFeedbackBuffer(size_t index)

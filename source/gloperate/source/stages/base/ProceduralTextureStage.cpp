@@ -14,7 +14,7 @@ CPPEXPOSE_COMPONENT(ProceduralTextureStage, gloperate::Stage)
 
 
 ProceduralTextureStage::ProceduralTextureStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+: Stage(environment, "ProceduralTextureStage", name)
 , texture("texture", this, nullptr)
 {
 }
