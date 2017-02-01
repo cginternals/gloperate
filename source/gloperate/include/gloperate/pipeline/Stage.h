@@ -303,6 +303,52 @@ public:
 
     /**
     *  @brief
+    *    Create dynamic input connected to a source
+    *
+    *  @tparam T
+    *    Type of the input
+    *  @param[in] name
+    *    Name of the input
+    *  @param[in] source
+    *    The input to connect the new input to
+    *
+    *  @return
+    *    Input, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic input connect to source and transfers ownership to the stage.
+    *    
+    *    Two separate overloads for Input and Output source are required to correctly
+    *    deduce T from both Input<T> and Output<T>.
+    */
+    template <typename T>
+    Input<T> * createInput(const std::string & name, Input<T> & source);
+
+    /**
+    *  @brief
+    *    Create dynamic input connected to a source
+    *
+    *  @tparam T
+    *    Type of the input
+    *  @param[in] name
+    *    Name of the input
+    *  @param[in] source
+    *    The output to connect the new input to
+    *
+    *  @return
+    *    Input, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic input connect to source and transfers ownership to the stage.
+    *    
+    *    Two separate overloads for Input and Output source are required to correctly
+    *    deduce T from both Input<T> and Output<T>.
+    */
+    template <typename T>
+    Input<T> * createInput(const std::string & name, Output<T> & source);
+
+    /**
+    *  @brief
     *    Add input
     *
     *  @param[in] input

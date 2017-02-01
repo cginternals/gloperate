@@ -53,8 +53,8 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 
     // Basic program stage
     addStage(m_programStage);
-    *(m_programStage->createInput<cppassist::FilePath>("shader1")) << shader1;
-    *(m_programStage->createInput<globjects::Shader *>("shader2")) << m_shaderStage->shader;
+    m_programStage->createInput("shader1", shader1);
+    m_programStage->createInput("shader2", m_shaderStage->shader);
 
     // Framebuffer stage for spinning rect
     addStage(m_framebufferStage);

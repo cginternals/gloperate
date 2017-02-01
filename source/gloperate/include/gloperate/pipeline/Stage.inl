@@ -42,6 +42,24 @@ Input<T> * Stage::createInput(const std::string & name, const T & defaultValue)
 }
 
 template <typename T>
+Input<T> * Stage::createInput(const std::string & name, Input<T> & source)
+{
+    auto input = createInput<T>(name);
+    input->connect(&source);
+
+    return input;
+}
+
+template <typename T>
+Input<T> * Stage::createInput(const std::string & name, Output<T> & source)
+{
+    auto input = createInput<T>(name);
+    input->connect(&source);
+
+    return input;
+}
+
+template <typename T>
 std::vector<Output<T> *> Stage::outputs() const
 {
     auto result = std::vector<Output<T> *>{};
