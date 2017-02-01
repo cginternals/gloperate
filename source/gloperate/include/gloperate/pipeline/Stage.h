@@ -249,6 +249,16 @@ public:
 
     /**
     *  @brief
+    *    Get inputs of type T
+    *
+    *  @return
+    *    List of inputs of type T on the stage
+    */
+    template <typename T>
+    std::vector<Input<T> *> inputs() const;
+
+    /**
+    *  @brief
     *    Get input by name
     *
     *  @param[in] name
@@ -319,6 +329,16 @@ public:
     *    List of outputs on the stage
     */
     const std::vector<AbstractSlot *> & outputs() const;
+
+    /**
+    *  @brief
+    *    Get outputs of type T
+    *
+    *  @return
+    *    List of outputs of type T on the stage
+    */
+    template <typename T>
+    std::vector<Output<T> *> outputs() const;
 
     /**
     *  @brief

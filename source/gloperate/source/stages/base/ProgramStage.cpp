@@ -47,20 +47,15 @@ void ProgramStage::onProcess(AbstractGLContext *)
     for (auto shader : m_program->shaders()) {
         m_program->detach(shader);
     }
-    for (auto input : inputs()) {
-        if (input->type() == typeid(globjects::Shader *))
-        {
-            auto shaderInput = static_cast<Input<globjects::Shader *> *>(input);
-            m_program->attach(**shaderInput);
-        }
-        if (input->type() == typeid(cppassist::FilePath))
-        {
-            auto fileInput = static_cast<Input<cppassist::FilePath> *>(input);
-            auto shader = environment()->resourceManager()->load<globjects::Shader>((*fileInput)->path());
-            // ToDo: Fix memory leak
-            m_program->attach(shader);
-        }
+    for (auto input : inputs<globjects::Shader *>()) {
+        m_program->attach(input->value());
     }
+    for (auto input : inputs<cppassist::FilePath>()) {
+        auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path());
+        // ToDo: Fix memory leak
+        m_program->attach(shader);
+    }
+
     program.setValid(true);
 }
 
