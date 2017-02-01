@@ -16,6 +16,11 @@ template <typename T>
 std::vector<Input<T> *> Stage::inputs() const
 {
     auto result = std::vector<Input<T> *>{};
+    
+    // We do not reserve a heuristically derived number of elements as we assume
+    // the vector growing strategy would handle most cases efficiently
+    // result.reserve(inputs().size() / 2);
+    
     for (auto input : inputs())
     {
         if (input->type() == typeid(T))
@@ -40,6 +45,11 @@ template <typename T>
 std::vector<Output<T> *> Stage::outputs() const
 {
     auto result = std::vector<Output<T> *>{};
+    
+    // We do not reserve a heuristically derived number of elements as we assume
+    // the vector growing strategy would handle most cases efficiently
+    // result.reserve(outputs().size() / 2);
+    
     for (auto output : outputs())
     {
         if (output->type() == typeid(T))
