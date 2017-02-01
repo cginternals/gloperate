@@ -109,9 +109,9 @@ typename Slot<T>::DereferenceHelper<T>::Pointer Slot<T>::operator->()
 }
 
 template <typename T>
-const typename Slot<T>::DereferenceHelper<T>::Pointer Slot<T>::operator->() const
+typename Slot<T>::DereferenceHelper<const T>::Pointer Slot<T>::operator->() const
 {
-    return DereferenceHelper<T>::pointer(this->ptr());
+    return DereferenceHelper<const T>::pointer(this->ptr());
 }
 
 template <typename T>
