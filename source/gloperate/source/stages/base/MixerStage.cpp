@@ -116,7 +116,7 @@ void MixerStage::onProcess(AbstractGLContext *)
     // Bind texture
     if (*texture) {
         gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-        (*texture)->bind();
+        texture->bind();
     }
 
     // Draw screen-aligned quad
@@ -127,12 +127,12 @@ void MixerStage::onProcess(AbstractGLContext *)
 
     // Unbind texture
     if (*texture) {
-        (*texture)->unbind();
+        texture->unbind();
     }
 
     // Unbind FBO, bind default FBO
     if (*targetFBO) {
-        (*targetFBO)->unbind(gl::GL_FRAMEBUFFER);
+        targetFBO->unbind(gl::GL_FRAMEBUFFER);
         globjects::Framebuffer::defaultFBO()->bind(gl::GL_FRAMEBUFFER);
     }
 

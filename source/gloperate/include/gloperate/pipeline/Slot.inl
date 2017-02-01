@@ -11,6 +11,20 @@
 namespace gloperate
 {
 
+template <typename T>
+template <typename U>
+typename Slot<T>::DereferenceHelper<U>::Pointer Slot<T>::DereferenceHelper<U>::pointer(U * value)
+{
+    return value;
+}
+
+template <typename T>
+template <typename U>
+typename Slot<T>::DereferenceHelper<U *>::Pointer Slot<T>::DereferenceHelper<U*>::pointer(U ** value)
+{
+    return *value;
+}
+
 
 template <typename T>
 Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value)
@@ -89,15 +103,15 @@ const T & Slot<T>::operator*() const
 }
 
 template <typename T>
-T * Slot<T>::operator->()
+typename Slot<T>::DereferenceHelper<T>::Pointer Slot<T>::operator->()
 {
-    return this->ptr();
+    return DereferenceHelper<T>::pointer(this->ptr());
 }
 
 template <typename T>
-const T * Slot<T>::operator->() const
+const typename Slot<T>::DereferenceHelper<T>::Pointer Slot<T>::operator->() const
 {
-    return this->ptr();
+    return DereferenceHelper<T>::pointer(this->ptr());
 }
 
 template <typename T>

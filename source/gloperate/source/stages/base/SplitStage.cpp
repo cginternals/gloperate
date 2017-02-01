@@ -104,7 +104,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Bind texture #1
     if (*texture1) {
-        (*texture1)->bindActive(0);
+        texture1->bindActive(0);
     }
 
     // Draw screen-aligned quad
@@ -115,7 +115,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Unbind texture #1
     if (*texture1) {
-        (*texture1)->unbindActive(0);
+        texture1->unbindActive(0);
     }
 
     // Set viewport for texture #2
@@ -123,7 +123,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Bind texture #2
     if (*texture2) {
-        (*texture2)->bindActive(0);
+        texture2->bindActive(0);
     }
 
     // Draw screen-aligned quad
@@ -134,7 +134,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Unbind texture #2
     if (*texture2) {
-        (*texture2)->unbindActive(0);
+        texture2->unbindActive(0);
     }
 
     // Restore OpenGL states
@@ -143,7 +143,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Unbind FBO, bind default FBO
     if (*targetFBO) {
-        (*targetFBO)->unbind(gl::GL_FRAMEBUFFER);
+        targetFBO->unbind(gl::GL_FRAMEBUFFER);
         globjects::Framebuffer::defaultFBO()->bind(gl::GL_FRAMEBUFFER);
     }
 
