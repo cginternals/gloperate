@@ -3,6 +3,7 @@
 
 #include <QWindow>
 #include <QOpenGLContext>
+#include <QSurfaceFormat>
 
 #include <cppassist/logging/logging.h>
 
@@ -13,13 +14,48 @@ namespace gloperate_qt
 {
 
 
+GLContextFactory::GLContextFactory(QWindow * window)
+: m_window(window)
+{
+}
+
+GLContextFactory::~GLContextFactory()
+{
+}
+
+gloperate::AbstractGLContext * GLContextFactory::basicCreateContext(const gloperate::GLContextFormat & format) const
+{
+    // Create OpenGL context
+    QOpenGLContext * qContext = new QOpenGLContext;
+
+    qContext->setFormat(toQSurfaceFormat(format));
+
+    // Create and check success
+    if (!qContext->create())
+    {
+        delete qContext;
+
+        return nullptr;
+    }
+
+    return new GLContext(m_window, qContext);
+}
+
 QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextFormat & format)
 {
+
     QSurfaceFormat qFormat;
+    qFormat.setRenderableType(QSurfaceFormat::OpenGL);
 
     // Set OpenGL version
-    glbinding::Version version = format.version();
-    qFormat.setVersion(version.majorVersion(), version.minorVersion());
+    qFormat.setVersion(format.majorVersion(), format.minorVersion());
+
+    // Set OpenGL context flags
+    if (format.version() >= glbinding::Version(3, 0))
+    {
+        qFormat.setOption(QSurfaceFormat::DeprecatedFunctions, !format.forwardCompatible());
+        qFormat.setOption(QSurfaceFormat::DebugContext, format.debugContext());
+    }
 
     // Set OpenGL profile
     switch (format.profile())
@@ -47,69 +83,20 @@ QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextForm
     qFormat.setStereo(format.stereo());
     qFormat.setSamples(format.samples());
 
+    // Handle swap behavior
+    switch (format.swapBehavior())
+    {
+    case gloperate::GLContextFormat::SwapBehavior::DoubleBuffering:
+        qFormat.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+        break;
+    case gloperate::GLContextFormat::SwapBehavior::SingleBuffering:
+        qFormat.setSwapBehavior(QSurfaceFormat::SingleBuffer);
+    default:
+        qFormat.setSwapBehavior(QSurfaceFormat::DefaultSwapBehavior);
+    }
+
     // Return format description
     return qFormat;
-}
-
-GLContextFactory::GLContextFactory(QWindow * window)
-: m_window(window)
-{
-}
-
-GLContextFactory::~GLContextFactory()
-{
-}
-
-gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::GLContextFormat & format)
-{
-    // Get Qt context format
-    QSurfaceFormat qFormat = toQSurfaceFormat(format);
-    qFormat.setRenderableType(QSurfaceFormat::OpenGL);
-
-    // Create OpenGL context
-    QOpenGLContext * qContext = new QOpenGLContext;
-
-    if (qFormat.version().first < 3)
-    {
-        qContext->setFormat(qFormat);
-
-        if (!qContext->create()) {
-            cppassist::warning() << "Could not create intermediate OpenGL context.";
-            return nullptr;
-        } else {
-            QSurfaceFormat intermediateFormat = qContext->format();
-            cppassist::info() << "Created intermediate OpenGL context " << intermediateFormat.version().first << "." << intermediateFormat.version().second;
-
-            if ((intermediateFormat.version().first == 3 && intermediateFormat.version().second == 0) || intermediateFormat.version().first < 3)
-            {
-                qFormat.setMajorVersion(3);
-                qFormat.setMinorVersion(2);
-                qFormat.setProfile(QSurfaceFormat::CoreProfile);
-            }
-        }
-    }
-
-    qContext->setFormat(qFormat);
-    if (!qContext->create()) {
-        cppassist::warning() << "Could not create OpenGL context.";
-        return nullptr;
-    } else {
-        cppassist::info() << "Created OpenGL context " << qContext->format().version().first << "." << qContext->format().version().second;
-    }
-
-    // Activate context
-    GLContext::makeCurrent(qContext, m_window);
-
-    // Initialize glbinding in that context
-    GLContext::initGLBinding();
-
-    // Create context wrapper
-    GLContext * context = new GLContext(m_window, qContext);
-
-    // Deactivate context
-    GLContext::doneCurrent(qContext);
-
-    return context;
 }
 
 

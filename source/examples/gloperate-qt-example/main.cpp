@@ -47,8 +47,8 @@ int main(int argc, char * argv[])
 
     // Create render window
     RenderWindow * window = new RenderWindow(&environment);
-    window->setRenderStage(renderStage);
     window->createContext();
+    window->setRenderStage(renderStage);
 
     // Create main window
     QMainWindow mainWindow;
