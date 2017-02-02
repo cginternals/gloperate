@@ -53,7 +53,7 @@ public:
     */
     QOpenGLContext * qtContext() const;
 
-    // Virtual gloperate::AbstractGLContext functions
+    // Virtual gloperate::AbstractContext functions
     virtual void use() const override;
     virtual void release() const override;
 
@@ -71,7 +71,6 @@ protected:
 private:
     static void makeCurrent(QOpenGLContext * context, QWindow * window);
     static void doneCurrent(QOpenGLContext * context);
-    static void initGLBinding();
 };
 
 

@@ -28,11 +28,9 @@ GLContext::GLContext(GLFWwindow * window)
     assert(window);
 
     // Activate context
-    GLFWwindow * current = glfwGetCurrentContext();
-    if (current != m_window)
-    {
-        glfwMakeContextCurrent(m_window);
-    }
+    use();
+
+    initializeGLBinding();
 
     // Read context handle
     m_handle = GLContextUtils::tryFetchHandle();
@@ -41,10 +39,7 @@ GLContext::GLContext(GLFWwindow * window)
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context
-    if (current != m_window)
-    {
-        glfwMakeContextCurrent(current);
-    }
+    release();
 }
 
 GLContext::~GLContext()
@@ -69,6 +64,18 @@ void GLContext::release() const
     if (m_window && m_window == glfwGetCurrentContext())
     {
         glfwMakeContextCurrent(nullptr);
+    }
+}
+
+void GLContext::updateSwapBehavior(gloperate::GLContextFormat::SwapBehavior swapBehavior)
+{
+    switch (swapBehavior)
+    {
+    case gloperate::GLContextFormat::SwapBehavior::DoubleBuffering:
+        glfwSwapInterval(1);
+        break;
+    default:
+        glfwSwapInterval(0);
     }
 }
 

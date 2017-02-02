@@ -95,6 +95,8 @@ set(headers
     ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/NoiseTexture.h
     ${include_path}/rendering/RenderPass.h
+    ${include_path}/rendering/LightType.h
+    ${include_path}/rendering/Light.h
     ${include_path}/rendering/RenderTarget.h
     ${include_path}/rendering/RenderTargetType.h
     ${include_path}/rendering/TransparencyMasksGenerator.h
@@ -130,6 +132,10 @@ set(headers
     ${include_path}/stages/demos/DemoRenderStage.h
     ${include_path}/stages/demos/TimerStage.h
     ${include_path}/stages/demos/ColorizeStage.h
+    ${include_path}/stages/demos/LightTestStage.h
+    ${include_path}/stages/demos/LightTestPipeline.h
+    ${include_path}/stages/lights/LightCreationStage.h
+    ${include_path}/stages/lights/LightBufferTextureStage.h
     ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
     ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
     ${include_path}/stages/multiframe/MultiFrameControlStage.h
@@ -228,6 +234,10 @@ set(sources
     ${source_path}/stages/demos/DemoRenderStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
     ${source_path}/stages/demos/ColorizeStage.cpp
+    ${source_path}/stages/demos/LightTestStage.cpp
+    ${source_path}/stages/demos/LightTestPipeline.cpp
+    ${source_path}/stages/lights/LightCreationStage.cpp
+    ${source_path}/stages/lights/LightBufferTextureStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
     ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp

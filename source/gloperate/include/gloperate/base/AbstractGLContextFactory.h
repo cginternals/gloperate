@@ -49,8 +49,10 @@ public:
     *    This function tries to create a context that fits the desired
     *    format as good as possible. It internally uses createContext()
     *    to create the actual contexts, determine maximum versions etc.
+    *    If a major version lesser 3 is provided, the system tries to
+    *    create a context with the maximum available OpenGL version.
     */
-    gloperate::AbstractGLContext * createBestContext(const gloperate::GLContextFormat & format);
+    gloperate::AbstractGLContext * createBestContext(const gloperate::GLContextFormat & format) const;
 
     /**
     *  @brief
@@ -61,8 +63,13 @@ public:
     *
     *  @return
     *    OpenGL context
+    *
+    *  @remarks
+    *    Format has to contain valid major and minor OpenGL version.
+    *    Platform-dependent defaults are expected to be set beforehand
+    *    (e.g., macOS with OpenGL 3.2 Core FC).
     */
-    virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) = 0;
+    virtual gloperate::AbstractGLContext * basicCreateContext(const gloperate::GLContextFormat & format) const = 0;
 };
 
 
