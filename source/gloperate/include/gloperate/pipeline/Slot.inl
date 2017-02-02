@@ -13,14 +13,14 @@ namespace gloperate
 
 template <typename T>
 template <typename U>
-typename Slot<T>::DereferenceHelper<U>::Pointer Slot<T>::DereferenceHelper<U>::pointer(U * value)
+auto Slot<T>::DereferenceHelper<U>::pointer(U * value) -> Pointer
 {
     return value;
 }
 
 template <typename T>
 template <typename U>
-typename Slot<T>::DereferenceHelper<U *>::Pointer Slot<T>::DereferenceHelper<U*>::pointer(U ** value)
+auto Slot<T>::DereferenceHelper<U*>::pointer(U ** value) -> Pointer
 {
     return *value;
 }
