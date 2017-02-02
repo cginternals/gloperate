@@ -27,6 +27,7 @@ vec3 singleLightIntensity(
             vec3 R = normalize(2 * normal - normalize(L));
             float diffusePart = max(dot(normalize(L), normal), 0.0);
             float n = 1 / pow(1 - glossiness, 3);
+            // [TODO]: search for source or explanation of this specular part computation
             float specularPart = (2+n) / 6.283185307179586 * pow(max(dot(R,V), 0.0), n);
             return mix(diffuseColor * diffusePart, specularColor * specularPart, glossiness) * lightColor;
         }
@@ -39,6 +40,7 @@ vec3 singleLightIntensity(
             float attenuation = 1 / (attenuationCoefficients.x + attenuationCoefficients.y * d + attenuationCoefficients.z * d*d);
             float diffusePart = max(dot(normalize(L), normal), 0.0);
             float n = 1 / pow(1 - glossiness, 3);
+            // [TODO]: search for source or explanation of this specular part computation
             float specularPart = (2+n) / 6.283185307179586 * pow(max(dot(R,V), 0.0), n);
             return mix(diffuseColor * diffusePart, specularColor * specularPart, glossiness) * lightColor * attenuation;
         }
