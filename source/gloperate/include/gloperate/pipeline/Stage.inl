@@ -13,6 +13,13 @@ namespace gloperate
 
 
 template <typename T>
+Input<T> * Stage::CreateConnectedInputProxy::operator<<(Slot<T> & source)
+{
+    ++m_createdCount;
+    return m_stage->createConnectedInput(m_name, source);
+}
+
+template <typename T>
 std::vector<Input<T> *> Stage::inputs() const
 {
     auto result = std::vector<Input<T> *>{};
@@ -37,6 +44,15 @@ Input<T> * Stage::createInput(const std::string & name, const T & defaultValue)
 {
     auto input = new Input<T>(name, defaultValue);
     this->addInput(input, cppexpose::PropertyOwnership::Parent);
+
+    return input;
+}
+
+template <typename T>
+Input<T> * Stage::createConnectedInput(const std::string & name, Slot<T> & source)
+{
+    auto input = createInput<T>(name);
+    input->connect(&source);
 
     return input;
 }

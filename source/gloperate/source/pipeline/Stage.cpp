@@ -24,6 +24,18 @@ namespace gloperate
 {
 
 
+Stage::CreateConnectedInputProxy::CreateConnectedInputProxy(const std::string & name, Stage * stage)
+: m_name(name)
+, m_stage(stage)
+, m_createdCount(0)
+{
+}
+
+Stage::CreateConnectedInputProxy::~CreateConnectedInputProxy()
+{
+    assert(m_createdCount == 1);
+}
+
 Stage::Stage(Environment * environment, const std::string & className, const std::string & name)
 : cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
@@ -158,6 +170,13 @@ AbstractSlot * Stage::input(const std::string & name)
 
     return m_inputsMap.at(name);
 }
+
+
+Stage::CreateConnectedInputProxy Stage::createInput(const std::string & name)
+{
+    return { name, this };
+}
+
 
 void Stage::addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownership)
 {
