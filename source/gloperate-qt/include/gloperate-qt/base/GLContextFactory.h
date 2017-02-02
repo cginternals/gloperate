@@ -2,14 +2,13 @@
 #pragma once
 
 
-#include <QSurfaceFormat>
-
 #include <gloperate/base/AbstractGLContextFactory.h>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
 class QWindow;
+class QSurfaceFormat;
 
 
 namespace gloperate_qt
@@ -22,20 +21,6 @@ namespace gloperate_qt
 */
 class GLOPERATE_QT_API GLContextFactory : public gloperate::AbstractGLContextFactory
 {
-public:
-    /**
-    *  @brief
-    *    Convert context format description into Qt version
-    *
-    *  @param[in] format
-    *    OpenGL context format description (gloperate version)
-    *
-    *  @return
-    *    OpenGL context format description (Qt version)
-    */
-    static QSurfaceFormat toQSurfaceFormat(const gloperate::GLContextFormat & format);
-
-
 public:
     /**
     *  @brief
@@ -53,7 +38,19 @@ public:
     virtual ~GLContextFactory();
 
     // Virtual gloperate::AbstractGLContextFactory functions
-    virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) override;
+    virtual gloperate::AbstractGLContext * basicCreateContext(const gloperate::GLContextFormat & format) const override;
+
+    /**
+    *  @brief
+    *    Convert context format description into Qt version
+    *
+    *  @param[in] format
+    *    OpenGL context format description (gloperate version)
+    *
+    *  @return
+    *    OpenGL context format description (Qt version)
+    */
+    static QSurfaceFormat toQSurfaceFormat(const gloperate::GLContextFormat & format);
 
 
 protected:
