@@ -68,7 +68,7 @@ void Input<T>::onValueChanged(const T & value)
 }
 
 template <typename T>
-template <typename U, typename Enable = typename std::enable_if<std::is_convertible<U, T>::value>::type>
+template <typename U, typename Enable>
 Input<T> & Input<T>::operator=(const U & value)
 {
     setValue(value);
