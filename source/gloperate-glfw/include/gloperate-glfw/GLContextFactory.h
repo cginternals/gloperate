@@ -31,7 +31,7 @@ public:
     virtual ~GLContextFactory();
 
     // Virtual gloperate::AbstractGLContextFactory functions
-    virtual gloperate::AbstractGLContext * basicCreateContext(const gloperate::GLContextFormat & format) const override;
+    virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) const override;
 
 
 private:

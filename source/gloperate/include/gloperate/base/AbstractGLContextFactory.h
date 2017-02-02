@@ -69,7 +69,7 @@ public:
     *    Platform-dependent defaults are expected to be set beforehand
     *    (e.g., macOS with OpenGL 3.2 Core FC).
     */
-    virtual gloperate::AbstractGLContext * basicCreateContext(const gloperate::GLContextFormat & format) const = 0;
+    virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) const = 0;
 };
 
 

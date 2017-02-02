@@ -71,7 +71,7 @@ template <typename T>
 template <typename U, typename Enable>
 Input<T> & Input<T>::operator=(const U & value)
 {
-    setValue(value);
+    this->setValue(value);
 
     return *this;
 }

@@ -23,7 +23,7 @@ GLContextFactory::~GLContextFactory()
 {
 }
 
-gloperate::AbstractGLContext * GLContextFactory::basicCreateContext(const gloperate::GLContextFormat & format) const
+gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::GLContextFormat & format) const
 {
     // Create OpenGL context
     QOpenGLContext * qContext = new QOpenGLContext;

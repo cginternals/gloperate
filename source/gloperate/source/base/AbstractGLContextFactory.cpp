@@ -40,7 +40,7 @@ gloperate::AbstractGLContext * AbstractGLContextFactory::createBestContext(const
     }
 #endif
 
-    auto context = basicCreateContext(format);
+    auto context = createContext(format);
 
     if (context)
     {
@@ -56,7 +56,7 @@ gloperate::AbstractGLContext * AbstractGLContextFactory::createBestContext(const
     safeFormat.setForwardCompatible(true);
     safeFormat.setDebugContext(format.debugContext());
 
-    auto safeContext = basicCreateContext(safeFormat);
+    auto safeContext = createContext(safeFormat);
 
     if (!safeContext)
     {
