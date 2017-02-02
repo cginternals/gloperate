@@ -46,17 +46,17 @@ LightTestPipeline::LightTestPipeline(Environment * environment, const std::strin
     m_lightDefStage1->color << lightColor1;
     m_lightDefStage1->position << lightPos1;
     m_lightDefStage1->type << lightType1;
-    m_lightDefStage1->attenuationCoeffitients << lightAttenuation1;
+    m_lightDefStage1->attenuationCoefficients << lightAttenuation1;
     addStage(m_lightDefStage2);
     m_lightDefStage2->color << lightColor2;
     m_lightDefStage2->position << lightPos2;
     m_lightDefStage2->type << lightType2;
-    m_lightDefStage2->attenuationCoeffitients << lightAttenuation2;
+    m_lightDefStage2->attenuationCoefficients << lightAttenuation2;
     addStage(m_lightDefStage3);
     m_lightDefStage3->color << lightColor3;
     m_lightDefStage3->position << lightPos3;
     m_lightDefStage3->type << lightType3;
-    m_lightDefStage3->attenuationCoeffitients << lightAttenuation3;
+    m_lightDefStage3->attenuationCoefficients << lightAttenuation3;
 
     lightType1.setValue(0);
     lightColor1.setValue(glm::vec3(0.5, 0, 0));

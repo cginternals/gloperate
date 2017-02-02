@@ -39,7 +39,7 @@ public:
     Input<int> type;                          ///< Type id of the light
     Input<glm::vec3> color;                   ///< Color of the light
     Input<glm::vec3> position;                ///< Position of local light, direction of global light
-    Input<glm::vec3> attenuationCoeffitients; ///< Coeffitients for attenuation in the order: constant, linear, quadratic
+    Input<glm::vec3> attenuationCoefficients; ///< Coefficients for attenuation in the order: constant, linear, quadratic
 
     // Output
     Output<Light> light;                      ///< Light object

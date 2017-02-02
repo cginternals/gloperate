@@ -14,7 +14,7 @@ LightCreationStage::LightCreationStage(Environment * environment, const std::str
 , type("type", this)
 , color("color", this)
 , position("position", this)
-, attenuationCoeffitients("attenuationCoeffitients", this)
+, attenuationCoefficients("attenuationCoefficients", this)
 , light("light", this)
 {
 }
@@ -25,7 +25,7 @@ LightCreationStage::~LightCreationStage()
 
 void LightCreationStage::onProcess(AbstractGLContext * context)
 {
-    light.setValue(Light{LightType(*type), *color, *position, *attenuationCoeffitients});
+    light.setValue(Light{LightType(*type), *color, *position, *attenuationCoefficients});
 }
 
 
