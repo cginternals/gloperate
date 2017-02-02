@@ -53,6 +53,26 @@ public:
 
     template <typename T>
     using Output = gloperate::Output<T>;
+    
+    // Helper class for createInput()
+    class CreateConnectedInputProxy
+    {
+        friend class Stage;
+    private:
+        CreateConnectedInputProxy(const std::string & name, Stage * stage);
+
+    public:
+        CreateConnectedInputProxy(CreateConnectedInputProxy &&) = delete;
+        ~CreateConnectedInputProxy();
+
+        template <typename T>
+        Input<T> * operator<<(Slot<T> & source);
+
+    private:
+        std::string m_name;
+        Stage * m_stage;
+        int m_createdCount;
+    };
 
 
 public:
@@ -305,6 +325,24 @@ public:
     *  @brief
     *    Create dynamic input connected to a source
     *
+    *  @param[in] name
+    *    Name of the input
+    *
+    *  @return
+    *    A proxy object that defers the actual creation to the operator<<
+    *
+    *  @remarks
+    *    The operator<< must be called exactly once on the returned proxy object.
+    *    
+    *    createInput("somename") << someOutput; behaves exactly like
+    *    createConnectedInput("somename", someOutput);
+    */
+    CreateConnectedInputProxy createInput(const std::string & name);
+
+    /**
+    *  @brief
+    *    Create dynamic input connected to a source
+    *
     *  @tparam T
     *    Type of the input
     *  @param[in] name
@@ -316,36 +354,10 @@ public:
     *    Input, nullptr on error
     *
     *  @remarks
-    *    Creates a dynamic input connect to source and transfers ownership to the stage.
-    *    
-    *    Two separate overloads for Input and Output source are required to correctly
-    *    deduce T from both Input<T> and Output<T>.
+    *    Creates a dynamic input connected to source and transfers ownership to the stage.
     */
     template <typename T>
-    Input<T> * createInput(const std::string & name, Input<T> & source);
-
-    /**
-    *  @brief
-    *    Create dynamic input connected to a source
-    *
-    *  @tparam T
-    *    Type of the input
-    *  @param[in] name
-    *    Name of the input
-    *  @param[in] source
-    *    The output to connect the new input to
-    *
-    *  @return
-    *    Input, nullptr on error
-    *
-    *  @remarks
-    *    Creates a dynamic input connect to source and transfers ownership to the stage.
-    *    
-    *    Two separate overloads for Input and Output source are required to correctly
-    *    deduce T from both Input<T> and Output<T>.
-    */
-    template <typename T>
-    Input<T> * createInput(const std::string & name, Output<T> & source);
+    Input<T> * createConnectedInput(const std::string & name, Slot<T> & source);
 
     /**
     *  @brief
