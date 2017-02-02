@@ -139,8 +139,8 @@ public:
     *  @return
     *    Pointer to the stored data object (non-pointer T) or the stored pointer (pointer T)
     */
-    typename DereferenceHelper<T>::Pointer operator->();
-    typename DereferenceHelper<const T>::Pointer operator->() const;
+    auto operator->() -> typename DereferenceHelper<T>::Pointer;
+    auto operator->() const -> typename DereferenceHelper<const T>::Pointer;
     //@}
 
     // Virtual AbstractSlot interface

@@ -103,13 +103,13 @@ const T & Slot<T>::operator*() const
 }
 
 template <typename T>
-typename Slot<T>::DereferenceHelper<T>::Pointer Slot<T>::operator->()
+auto Slot<T>::operator->() -> typename DereferenceHelper<T>::Pointer
 {
     return DereferenceHelper<T>::pointer(this->ptr());
 }
 
 template <typename T>
-typename Slot<T>::DereferenceHelper<const T>::Pointer Slot<T>::operator->() const
+auto Slot<T>::operator->() const -> typename DereferenceHelper<const T>::Pointer
 {
     return DereferenceHelper<const T>::pointer(this->ptr());
 }
