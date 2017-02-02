@@ -42,6 +42,8 @@ set(headers
     ${include_path}/base/Environment.h
     ${include_path}/base/System.h
     ${include_path}/base/ComponentManager.h
+    ${include_path}/base/Component.h
+    ${include_path}/base/Component.inl
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
@@ -86,8 +88,6 @@ set(headers
     ${include_path}/pipeline/Input.inl
     ${include_path}/pipeline/Output.h
     ${include_path}/pipeline/Output.inl
-    ${include_path}/pipeline/StageComponent.h
-    ${include_path}/pipeline/StageComponent.inl
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/Camera.h
@@ -113,8 +113,11 @@ set(headers
     ${include_path}/stages/base/BlitStage.h
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
+    ${include_path}/stages/base/ShaderStage.h
+    ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
+    ${include_path}/stages/demos/ShaderDemoPipeline.h
     ${include_path}/stages/demos/DemoAntialiasableTriangleStage.h
     ${include_path}/stages/demos/DemoAntialiasingPipeline.h
     ${include_path}/stages/demos/DemoDOFCubeStage.h
@@ -126,6 +129,7 @@ set(headers
     ${include_path}/stages/demos/DemoTransparencyPipeline.h
     ${include_path}/stages/demos/DemoMultiFramePipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
+    ${include_path}/stages/demos/DemoRenderStage.h
     ${include_path}/stages/demos/TimerStage.h
     ${include_path}/stages/demos/ColorizeStage.h
     ${include_path}/stages/demos/LightTestStage.h
@@ -190,7 +194,6 @@ set(sources
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
     ${source_path}/pipeline/AbstractSlot.cpp
-    ${source_path}/pipeline/StageComponent.cpp
 
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp
@@ -205,6 +208,8 @@ set(sources
     ${source_path}/stages/base/CustomFramebufferStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
+    ${source_path}/stages/base/ShaderStage.cpp
+    ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
@@ -214,6 +219,7 @@ set(sources
     ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
+    ${source_path}/stages/demos/ShaderDemoPipeline.cpp
     ${source_path}/stages/demos/DemoAntialiasableTriangleStage.cpp
     ${source_path}/stages/demos/DemoAntialiasingPipeline.cpp
     ${source_path}/stages/demos/DemoDOFCubeStage.cpp
@@ -225,6 +231,7 @@ set(sources
     ${source_path}/stages/demos/DemoTransparencyPipeline.cpp
     ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
+    ${source_path}/stages/demos/DemoRenderStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
     ${source_path}/stages/demos/ColorizeStage.cpp
     ${source_path}/stages/demos/LightTestStage.cpp

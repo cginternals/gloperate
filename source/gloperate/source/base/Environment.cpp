@@ -18,16 +18,20 @@
 #include <gloperate/stages/base/SplitStage.h>
 #include <gloperate/stages/lights/LightBufferTextureStage.h>
 #include <gloperate/stages/lights/LightCreationStage.h>
+#include <gloperate/stages/base/ShaderStage.h>
+#include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
 #include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
 #include <gloperate/stages/multiframe/MultiFrameControlStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
+#include <gloperate/stages/demos/ShaderDemoPipeline.h>
 #include <gloperate/stages/demos/DemoStage.h>
 #include <gloperate/stages/demos/DemoMultiFramePipeline.h>
 #include <gloperate/stages/demos/SpinningRectStage.h>
 #include <gloperate/stages/demos/TimerStage.h>
 #include <gloperate/stages/demos/LightTestPipeline.h>
 #include <gloperate/stages/demos/ColorizeStage.h>
+#include <gloperate/stages/demos/DemoRenderStage.h>
 #include <gloperate/stages/demos/LightTestPipeline.h>
 #include <gloperate/stages/demos/LightTestStage.h>
 
@@ -209,12 +213,16 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&MultiFrameAggregationStage::Component);
     m_componentManager.addComponent(&MultiFrameControlStage::Component);
     m_componentManager.addComponent(&DemoPipeline::Component);
+    m_componentManager.addComponent(&ShaderDemoPipeline::Component);
     m_componentManager.addComponent(&DemoStage::Component);
     m_componentManager.addComponent(&DemoMultiFramePipeline::Component);
     m_componentManager.addComponent(&SpinningRectStage::Component);
     m_componentManager.addComponent(&TimerStage::Component);
     m_componentManager.addComponent(&LightTestPipeline::Component);
     m_componentManager.addComponent(&ColorizeStage::Component);
+    m_componentManager.addComponent(&ShaderStage::Component);
+    m_componentManager.addComponent(&ProgramStage::Component);
+    m_componentManager.addComponent(&DemoRenderStage::Component);
     m_componentManager.addComponent(&LightTestPipeline::Component);
     m_componentManager.addComponent(&LightTestStage::Component);
 }
