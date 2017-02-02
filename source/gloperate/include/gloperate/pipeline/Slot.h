@@ -117,9 +117,7 @@ public:
     *    Reference to this slot
     */
     Slot<T> & operator<<(Slot<T> & source);
-    //@}
 
-    //@{
     /**
     *  @brief
     *    Dereference pointer operator
@@ -127,7 +125,6 @@ public:
     *  @return
     *    Reference to the stored data object
     */
-    T & operator*();
     const T & operator*() const;
     //@}
 

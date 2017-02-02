@@ -91,12 +91,6 @@ Slot<T> & Slot<T>::operator<<(Slot<T> & source)
 }
 
 template <typename T>
-T & Slot<T>::operator*()
-{
-    return *this->ptr();
-}
-
-template <typename T>
 const T & Slot<T>::operator*() const
 {
     return *this->ptr();
