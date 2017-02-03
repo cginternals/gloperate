@@ -70,7 +70,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 
     // Render pass stage with fixed camera
     addStage(m_renderPassStage);
-    m_renderPassStage->camera.setValue(new Camera(glm::vec3(0.0, 0.0, 12.0)));
+    // m_renderPassStage->camera.setValue(new Camera(glm::vec3(0.0, 0.0, 12.0)));
     m_renderPassStage->drawable << m_demoDrawableStage->drawable;
     m_renderPassStage->program << m_programStage->program;
 

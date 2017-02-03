@@ -61,7 +61,7 @@ void RenderPassStage::onProcess(AbstractGLContext *)
     m_renderPass->setGeometry((*drawable));
     m_renderPass->setProgram((*program));
 
-    if (camera.isValid())
+    if (camera.isValid() && *camera)
     {
         gloperate::Camera * cameraPtr = *camera;
 
@@ -84,9 +84,7 @@ void RenderPassStage::onProcess(AbstractGLContext *)
 
             if ((**textureInput)->target() == gl::GL_TEXTURE_CUBE_MAP)
             {
-                RenderPass * rp = *renderPass;
-                rp->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
-                rp->stateAfter()->disable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
+                (*renderPass)->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
             }
 
             ++textureIndex;
