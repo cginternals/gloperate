@@ -33,6 +33,7 @@ ColorizeStage::ColorizeStage(Environment * environment, const std::string & name
 
 ColorizeStage::~ColorizeStage()
 {
+    delete m_screenAlignedQuad;
 }
 
 void ColorizeStage::onContextInit(AbstractGLContext *)
