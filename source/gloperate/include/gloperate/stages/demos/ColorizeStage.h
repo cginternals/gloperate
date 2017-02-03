@@ -16,6 +16,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
+#include <gloperate/rendering/ScreenAlignedQuad.h>
 
 
 namespace gloperate
@@ -87,6 +88,7 @@ protected:
 protected:
     // Rendering objects
     gloperate::Camera                          m_camera;
+    gloperate::ScreenAlignedQuad *             m_screenAlignedQuad;
     globjects::ref_ptr<globjects::VertexArray> m_vao;
     globjects::ref_ptr<globjects::Buffer>      m_vertexBuffer;
     globjects::ref_ptr<globjects::Program>     m_program;

@@ -12,41 +12,6 @@
 #include <globjects/Framebuffer.h>
 
 
-// Vertex shader displaying the triangle
-static const char * s_vertexShader = R"(
-    #version 140
-    #extension GL_ARB_explicit_attrib_location : require
-
-    layout (location = 0) in vec2 vertex;
-
-    out vec2 v_uv;
-
-    void main()
-    {
-        v_uv = vertex * 0.5 + 0.5;
-        gl_Position = vec4(vertex, 0.0, 1.0);
-    }
-)";
-
-// Fragment shader displaying the triangle
-static const char * s_fragmentShader = R"(
-    #version 140
-    #extension GL_ARB_explicit_attrib_location : require
-
-    uniform sampler2D source;
-    uniform vec4      color;
-
-    layout (location = 0) out vec4 fragColor;
-
-    in vec2 v_uv;
-
-    void main()
-    {
-        fragColor = texture(source, v_uv) * color;
-    }
-)";
-
-
 namespace gloperate
 {
 
@@ -62,6 +27,7 @@ ColorizeStage::ColorizeStage(Environment * environment, const std::string & name
 , color          ("color",           this, Color(255, 255, 255, 255))
 , fboOut         ("fboOut",          this, nullptr)
 , colorTextureOut("colorTextureOut", this, nullptr)
+, m_screenAlignedQuad(nullptr)
 {
 }
 
@@ -107,8 +73,8 @@ void ColorizeStage::onProcess(AbstractGLContext *)
 
     // Draw screen-aligned quad
     m_program->use();
-    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
-    m_vao->unbind();
+    m_screenAlignedQuad->draw();
+    // m_vao->unbind();
     m_program->release();
 
     // Enable depth buffer
@@ -135,39 +101,13 @@ void ColorizeStage::onProcess(AbstractGLContext *)
 
 void ColorizeStage::setupGeometry()
 {
-    // Static vertices
-    static const std::array<glm::vec2, 4> vertices { {
-          glm::vec2( +1.f, -1.f )
-        , glm::vec2( +1.f, +1.f )
-        , glm::vec2( -1.f, -1.f )
-        , glm::vec2( -1.f, +1.f ) } };
-
-    // Create vertex buffer
-    globjects::Buffer * buffer = new globjects::Buffer();
-    buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
-
-    // Create VAO
-    m_vao = new globjects::VertexArray;
-
-    auto binding = m_vao->binding(0);
-    binding->setAttribute(0);
-    binding->setBuffer(buffer, 0, sizeof(glm::vec2));
-    binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
-    m_vao->enable(0);
+    m_screenAlignedQuad = new ScreenAlignedQuad();
 }
 
 void ColorizeStage::setupProgram()
 {
-    globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
-    globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
-
-#ifdef __APPLE__
-    vertexShaderSource  ->replace("#version 140", "#version 150");
-    fragmentShaderSource->replace("#version 140", "#version 150");
-#endif
-
-    m_vertexShader   = new globjects::Shader(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_vertexShader   = ScreenAlignedQuad::createDefaultVertexShader();
+    m_fragmentShader = ScreenAlignedQuad::createDefaultFragmentShader();
     m_program = new globjects::Program();
     m_program->attach(m_vertexShader, m_fragmentShader);
 
