@@ -45,7 +45,7 @@ void RenderPassStage::onContextInit(AbstractGLContext *)
     m_renderPass = new gloperate::RenderPass;
     renderPass.setValue(m_renderPass);
 
-    m_renderPass->setState(new globjects::State(globjects::State::DeferredMode));
+    m_renderPass->setStateBefore(new globjects::State(globjects::State::DeferredMode));
 
 //    m_renderPass->state()->enable(gl::GL_DEPTH_TEST);
 //    m_renderPass->state()->enable(gl::GL_CULL_FACE);
@@ -84,7 +84,9 @@ void RenderPassStage::onProcess(AbstractGLContext *)
 
             if ((**textureInput)->target() == gl::GL_TEXTURE_CUBE_MAP)
             {
-                (*renderPass)->state()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
+                RenderPass * rp = *renderPass;
+                rp->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
+                rp->stateAfter()->disable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
             }
 
             ++textureIndex;
