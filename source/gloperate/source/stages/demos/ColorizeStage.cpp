@@ -75,7 +75,6 @@ void ColorizeStage::onProcess(AbstractGLContext *)
     // Draw screen-aligned quad
     m_program->use();
     m_screenAlignedQuad->draw();
-    // m_vao->unbind();
     m_program->release();
 
     // Enable depth buffer
