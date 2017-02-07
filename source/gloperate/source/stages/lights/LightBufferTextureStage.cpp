@@ -39,11 +39,11 @@ LightBufferTextureStage::~LightBufferTextureStage()
 {
 }
 
-void LightBufferTextureStage::onContextInit(AbstractGLContext * context)
+void LightBufferTextureStage::onContextInit(AbstractGLContext * /*context*/)
 {
 }
 
-void LightBufferTextureStage::onProcess(AbstractGLContext * context)
+void LightBufferTextureStage::onProcess(AbstractGLContext * /*context*/)
 {
     if (!colorTypeData.isValid() || !positionData.isValid() || !attenuationData.isValid())
     {

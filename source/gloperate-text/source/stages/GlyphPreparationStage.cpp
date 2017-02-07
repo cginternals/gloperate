@@ -27,13 +27,13 @@ GlyphPreparationStage::~GlyphPreparationStage()
 }
 
 
-void GlyphPreparationStage::onContextInit(gloperate::AbstractGLContext * context)
+void GlyphPreparationStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
     m_vertexCloud = std::unique_ptr<GlyphVertexCloud>{ new GlyphVertexCloud{} };
 }
 
 
-void GlyphPreparationStage::onContextDeinit(gloperate::AbstractGLContext * context)
+void GlyphPreparationStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
 {
     m_vertexCloud = nullptr;
 }

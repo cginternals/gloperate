@@ -23,20 +23,20 @@ namespace
 
 
 static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
-    {glm::vec3(-1.f, -1.f, -1.f), glm::vec3( 0.0f, -1.0f,  0.0)},
-    {glm::vec3(-1.f, -1.f, +1.f), glm::vec3( 0.0f, -1.0f,  0.0)},
-    {glm::vec3(+1.f, -1.f, -1.f), glm::vec3( 0.0f, -1.0f,  0.0)},
-    {glm::vec3(+1.f, -1.f, +1.f), glm::vec3( 0.0f, -1.0f,  0.0)},
-    {glm::vec3(+1.f, +1.f, +1.f), glm::vec3( 1.0f,  0.0f,  0.0)},
-    {glm::vec3(-1.f, -1.f, +1.f), glm::vec3( 0.0f,  0.0f,  1.0)},
-    {glm::vec3(-1.f, +1.f, +1.f), glm::vec3( 0.0f,  0.0f,  1.0)},
-    {glm::vec3(-1.f, -1.f, -1.f), glm::vec3(-1.0f,  0.0f,  0.0)},
-    {glm::vec3(-1.f, +1.f, -1.f), glm::vec3(-1.0f,  0.0f,  0.0)},
-    {glm::vec3(+1.f, -1.f, -1.f), glm::vec3( 0.0f,  0.0f, -1.0)},
-    {glm::vec3(+1.f, +1.f, -1.f), glm::vec3( 0.0f,  0.0f, -1.0)},
-    {glm::vec3(+1.f, +1.f, +1.f), glm::vec3( 1.0f,  0.0f,  0.0)},
-    {glm::vec3(-1.f, +1.f, -1.f), glm::vec3( 0.0f,  1.0f,  0.0)},
-    {glm::vec3(-1.f, +1.f, +1.f), glm::vec3( 0.0f,  1.0f,  0.0)}
+    {{ glm::vec3(-1.f, -1.f, -1.f), glm::vec3( 0.0f, -1.0f,  0.0) }},
+    {{ glm::vec3(-1.f, -1.f, +1.f), glm::vec3( 0.0f, -1.0f,  0.0) }},
+    {{ glm::vec3(+1.f, -1.f, -1.f), glm::vec3( 0.0f, -1.0f,  0.0) }},
+    {{ glm::vec3(+1.f, -1.f, +1.f), glm::vec3( 0.0f, -1.0f,  0.0) }},
+    {{ glm::vec3(+1.f, +1.f, +1.f), glm::vec3( 1.0f,  0.0f,  0.0) }},
+    {{ glm::vec3(-1.f, -1.f, +1.f), glm::vec3( 0.0f,  0.0f,  1.0) }},
+    {{ glm::vec3(-1.f, +1.f, +1.f), glm::vec3( 0.0f,  0.0f,  1.0) }},
+    {{ glm::vec3(-1.f, -1.f, -1.f), glm::vec3(-1.0f,  0.0f,  0.0) }},
+    {{ glm::vec3(-1.f, +1.f, -1.f), glm::vec3(-1.0f,  0.0f,  0.0) }},
+    {{ glm::vec3(+1.f, -1.f, -1.f), glm::vec3( 0.0f,  0.0f, -1.0) }},
+    {{ glm::vec3(+1.f, +1.f, -1.f), glm::vec3( 0.0f,  0.0f, -1.0) }},
+    {{ glm::vec3(+1.f, +1.f, +1.f), glm::vec3( 1.0f,  0.0f,  0.0) }},
+    {{ glm::vec3(-1.f, +1.f, -1.f), glm::vec3( 0.0f,  1.0f,  0.0) }},
+    {{ glm::vec3(-1.f, +1.f, +1.f), glm::vec3( 0.0f,  1.0f,  0.0) }}
 } };
 
 static const char * s_vertexShader = R"(
@@ -127,7 +127,7 @@ LightTestStage::~LightTestStage()
 {
 }
 
-void LightTestStage::onContextInitialize(AbstractGLContext * context)
+void LightTestStage::onContextInitialize(AbstractGLContext * /*context*/)
 {
     // setup Geometry
     m_vao = new globjects::VertexArray;
