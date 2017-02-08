@@ -155,7 +155,7 @@ public:
     *  @return
     *    Path to gloperate qml module
     */
-    QString glOperateModulePath() const;
+    QString gloperateModulePath() const;
 
 
 protected:

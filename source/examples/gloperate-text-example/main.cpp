@@ -49,7 +49,7 @@ int main(int argc, char * argv[])
     // Load and show QML
     auto window = new QuickView(&qmlEngine);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl::fromLocalFile(qmlEngine.glOperateModulePath() + "/TextExampleViewer.qml"));
+    window->setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/TextExampleViewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
     window->show();
 

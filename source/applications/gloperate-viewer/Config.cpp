@@ -7,8 +7,11 @@
 #include <gloperate/base/Environment.h>
 
 
-const QString SETTINGS_PLUGINS("Plugins");
-const QString SETTINGS_STYLE("Style");
+namespace
+{
+    const QString settingsPlugins("Plugins");
+    const QString settingsStyle("Style");
+}
 
 
 Config::Config(gloperate::Environment & environment)
@@ -20,8 +23,9 @@ Config::Config(gloperate::Environment & environment)
     QSettings settings;
 
     // Read plugin paths
-    QStringList paths = settings.value(SETTINGS_PLUGINS).toStringList();
-    for (auto path : paths)
+    QStringList paths = settings.value(settingsPlugins).toStringList();
+
+    for (const auto & path : paths)
     {
         m_environment.componentManager()->addPluginPath(
             path.toStdString()
@@ -29,7 +33,7 @@ Config::Config(gloperate::Environment & environment)
     }
 
     // Read UI style
-    m_style = settings.value(SETTINGS_STYLE).toString();
+    m_style = settings.value(settingsStyle).toString();
 }
 
 Config::~Config()
@@ -38,11 +42,12 @@ Config::~Config()
 
     // Save plugin paths
     QStringList paths;
-    for (auto path : m_environment.componentManager()->pluginPaths())
+    for (const auto & path : m_environment.componentManager()->pluginPaths())
     {
         paths << QString::fromStdString(path);
     }
-    settings.setValue(SETTINGS_PLUGINS, paths);
+
+    settings.setValue(settingsPlugins, paths);
 }
 
 const QString & Config::style() const
@@ -55,5 +60,5 @@ void Config::setStyle(const QString & style)
     m_style = style;
 
     QSettings settings;
-    settings.setValue(SETTINGS_STYLE, m_style);
+    settings.setValue(settingsStyle, m_style);
 }

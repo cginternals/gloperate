@@ -338,7 +338,7 @@ void QmlEngine::setGloperate(const QJSValue & obj)
     m_gloperate = obj;
 }
 
-QString QmlEngine::glOperateModulePath() const
+QString QmlEngine::gloperateModulePath() const
 {
     return m_gloperateQmlPath;
 }
