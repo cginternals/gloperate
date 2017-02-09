@@ -3,17 +3,6 @@ namespace gloperate
 {
 
 
-template <class BaseType>
-AbstractComponent<BaseType>::AbstractComponent()
-{
-}
-
-template <class BaseType>
-AbstractComponent<BaseType>::~AbstractComponent()
-{
-}
-
-
 template <class BaseType, class Type>
 Component<BaseType, Type>::Component()
 {

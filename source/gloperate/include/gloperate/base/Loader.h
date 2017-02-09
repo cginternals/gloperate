@@ -7,7 +7,8 @@
 #include <gloperate/base/AbstractLoader.h>
 
 
-namespace cppexpose {
+namespace cppexpose
+{
     class Variant;
 }
 

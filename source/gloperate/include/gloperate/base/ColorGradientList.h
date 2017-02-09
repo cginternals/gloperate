@@ -9,7 +9,8 @@
 #include <gloperate/base/AbstractColorGradient.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Texture;
 }
 

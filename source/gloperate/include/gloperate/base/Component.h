@@ -2,9 +2,9 @@
 #pragma once
 
 
-#include <cppexpose/plugin/AbstractComponent.h>
-
 #include <gloperate/gloperate_api.h>
+
+#include <gloperate/base/AbstractComponent.h>
 
 
 namespace gloperate
@@ -13,21 +13,6 @@ namespace gloperate
 
 class Environment;
 class Stage;
-
-
-/**
-*  @brief
-*    Component base class for gloperate classes
-*/
-template <class BaseType>
-class AbstractComponent : public cppexpose::AbstractComponent
-{
-public:
-    AbstractComponent();
-    virtual ~AbstractComponent();
-
-    virtual BaseType * createInstance(gloperate::Environment * environment) = 0;
-};
 
 
 /**
@@ -42,27 +27,6 @@ public:
     virtual ~Component();
 
     virtual BaseType * createInstance(gloperate::Environment * environment) override;
-};
-
-
-/**
-*  @brief
-*    Component base class for pipelines and stages
-*/
-template <>
-class AbstractComponent<gloperate::Stage> : public cppexpose::AbstractComponent
-{
-public:
-    AbstractComponent()
-    {
-    }
-
-    virtual ~AbstractComponent()
-    {
-    }
-
-    virtual gloperate::Stage * createInstance(gloperate::Environment * environment) = 0;
-    virtual gloperate::Stage * createInstance(gloperate::Environment * environment, const std::string & name) = 0;
 };
 
 

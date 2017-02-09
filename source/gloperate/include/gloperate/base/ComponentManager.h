@@ -18,7 +18,6 @@ namespace gloperate
 {
 
 
-
 /**
 *  @brief
 *    Component manager with script bindings
@@ -47,7 +46,6 @@ protected:
     void scr_scanPlugins(const std::string & identifier);
     cppexpose::Variant scr_components();
     void scr_printComponents();
-
 };
 
 

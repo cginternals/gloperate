@@ -5,8 +5,7 @@
 #include <cstdint>
 #include <string>
 
-#include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
+#include <glm/fwd.hpp>
 
 #include <gloperate/gloperate_api.h>
 
@@ -23,6 +22,10 @@ namespace gloperate
 */
 class GLOPERATE_API Color
 {
+public:
+    using vector_type = glm::tvec4<unsigned char, glm::highp>;
+
+
 public:
     /**
     *  @brief
@@ -86,7 +89,7 @@ public:
     *  @param[in] bgra
     *    The component values
     */
-    Color(glm::tvec4<unsigned char> bgra);
+    Color(const vector_type & bgra);
 
     /**
     *  @brief

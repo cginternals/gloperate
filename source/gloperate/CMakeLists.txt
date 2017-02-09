@@ -47,6 +47,8 @@ set(headers
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
+    ${include_path}/base/AbstractComponent.h
+    ${include_path}/base/AbstractComponent.inl
     ${include_path}/base/Canvas.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
@@ -68,6 +70,7 @@ set(headers
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
     ${include_path}/base/ExtendedProperties.h
+    ${include_path}/base/ExtendedProperties.inl
     ${include_path}/base/AbstractColorGradient.h
     ${include_path}/base/AbstractColorGradient.inl
     ${include_path}/base/Color.h
@@ -174,6 +177,7 @@ set(sources
     ${source_path}/base/AbstractCanvas.cpp
     ${source_path}/base/Canvas.cpp
     ${source_path}/base/AbstractContext.cpp
+    ${source_path}/base/AbstractComponent.cpp
     ${source_path}/base/AbstractGLContext.cpp
     ${source_path}/base/AbstractGLContextFactory.cpp
     ${source_path}/base/GLContextFormat.cpp
@@ -191,6 +195,8 @@ set(sources
     ${source_path}/base/ColorGradientList.cpp
     ${source_path}/base/ColorGradientPreparation.cpp
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
+    ${source_path}/base/AbstractColorGradient.cpp
+    ${source_path}/base/ExtendedProperties.cpp
 
     ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
@@ -290,6 +296,23 @@ add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
 # Export library for downstream projects
 export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
+
+# Check for availability of module; use pre-generated version if not found
+if (WriterCompilerDetectionHeaderFound)
+    write_compiler_detection_header(
+        FILE ${feature_file}
+        PREFIX ${target_id}
+        COMPILERS AppleClang Clang GNU MSVC
+        FEATURES cxx_noexcept
+        VERSION 3.2
+    )
+else()
+    file(
+        COPY ${PROJECT_SOURCE_DIR}/source/codegeneration/${target}_features.h
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/${target}
+        USE_SOURCE_PERMISSIONS
+    )
+endif()
 
 # Create API export header
 generate_export_header(${target}

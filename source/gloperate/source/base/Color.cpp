@@ -40,7 +40,7 @@ Color::Color(float red, float green, float blue, float alpha)
     m_bgra[3] = static_cast<unsigned char>(alpha * 255.0f);
 }
 
-Color::Color(glm::tvec4<unsigned char> bgra)
+Color::Color(const vector_type & bgra)
 {
     m_bgra[0] = bgra[0];
     m_bgra[1] = bgra[1];

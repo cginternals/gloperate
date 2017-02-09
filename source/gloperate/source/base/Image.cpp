@@ -1,6 +1,8 @@
 
 #include <gloperate/base/Image.h>
 
+#include <glbinding/gl/enum.h>
+
 #include <cppassist/logging/logging.h>
 
 #include <algorithm>
@@ -220,7 +222,7 @@ void Image::setData(int width, int height, GLenum format, GLenum type, char * da
     m_data = m_dataSize ? data : nullptr;
 }
 
-void swap(Image & first, Image & second) NOEXCEPT
+void swap(Image & first, Image & second) GLOPERATE_NOEXCEPT
 {
     using std::swap;
 

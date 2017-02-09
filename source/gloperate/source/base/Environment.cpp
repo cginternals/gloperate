@@ -113,7 +113,7 @@ const std::vector<AbstractCanvas *> & Environment::canvases() const
     return m_canvases;
 }
 
-std::vector<AbstractCanvas *> & Environment::canvases()
+std::vector<AbstractCanvas *> Environment::canvases()
 {
     return m_canvases;
 }

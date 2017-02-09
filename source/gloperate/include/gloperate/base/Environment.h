@@ -6,7 +6,6 @@
 #include <string>
 
 #include <cppexpose/reflection/Object.h>
-#include <cppexpose/variant/Variant.h>
 #include <cppexpose/signal/Signal.h>
 
 #include <gloperate/base/TimeManager.h>
@@ -19,9 +18,11 @@
 #include <cppexpose/scripting/example/TreeNode.h>
 
 
-namespace cppexpose {
+namespace cppexpose
+{
     class ScriptContext;
     class AbstractScriptBackend;
+    class Variant;
 }
 
 
@@ -126,7 +127,7 @@ public:
     *    List of registered canvases
     */
     const std::vector<AbstractCanvas *> & canvases() const;
-    std::vector<AbstractCanvas *> & canvases();
+    std::vector<AbstractCanvas *> canvases();
     //@}
 
     //@{

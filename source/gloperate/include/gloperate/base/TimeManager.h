@@ -2,8 +2,8 @@
 #pragma once
 
 
-#include <list>
 #include <map>
+#include <vector>
 
 #include <cppexpose/reflection/Object.h>
 
@@ -146,7 +146,7 @@ protected:
 
     // General timers
     unsigned int                 m_activeTimers;  ///< Number of active timers
-    std::list<Timer *>           m_timers;        ///< List of registered timers
+    std::vector<Timer *>         m_timers;        ///< List of registered timers
     gloperate::ChronoTimer       m_clock;         ///< Time measurement
     float                        m_timeDelta;     ///< Time delta since last update (in seconds)
 

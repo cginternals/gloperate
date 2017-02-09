@@ -10,7 +10,7 @@ namespace gloperate
 {
 
 
-ScriptTimer::ScriptTimer(Environment * environment, cppexpose::Function func)
+ScriptTimer::ScriptTimer(Environment * environment, const cppexpose::Function & func)
 : Timer(environment)
 , m_func(func)
 {
