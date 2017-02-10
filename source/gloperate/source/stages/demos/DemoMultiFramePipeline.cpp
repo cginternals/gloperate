@@ -19,11 +19,11 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const 
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
+, m_multiFramePipeline(new MultiFrameAggregationPipeline(environment))
 , m_antialiasingPipeline(new DemoAntialiasingPipeline(environment))
 , m_dofPipeline(new DemoDOFPipeline(environment))
 , m_transparencyPipeline(new DemoTransparencyPipeline(environment))
 , m_ssaoPipeline(new DemoSSAOPipeline(environment))
-, m_multiFramePipeline(new MultiFrameAggregationPipeline(environment))
 {
     addStage(m_multiFramePipeline);
 

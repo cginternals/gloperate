@@ -3,6 +3,8 @@
 
 #include <cassert>
 
+#include <glm/vec4.hpp>
+
 #include <glbinding/gl/gl.h>
 
 #include <gloperate/base/Environment.h>

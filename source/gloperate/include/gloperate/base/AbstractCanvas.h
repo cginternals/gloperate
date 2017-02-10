@@ -2,18 +2,23 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/signal/Signal.h>
-#include <cppexpose/reflection/Object.h>
-#include <cppexpose/variant/Variant.h>
 
 #include <gloperate/gloperate_api.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Framebuffer;
+}
+
+
+namespace cppexpose
+{
+    class Variant;
 }
 
 
@@ -66,7 +71,16 @@ public:
     *  @return
     *    Environment to which the canvas belongs (must NOT be null!)
     */
-    Environment * environment() const;
+    const Environment * environment() const;
+
+    /**
+    *  @brief
+    *    Get gloperate environment
+    *
+    *  @return
+    *    Environment to which the canvas belongs (must NOT be null!)
+    */
+    Environment * environment();
 
     /**
     *  @brief
@@ -82,7 +96,23 @@ public:
     *    Aside from that, there should always be a valid OpenGL context
     *    attached to the canvas.
     */
-    AbstractGLContext * openGLContext() const;
+    const AbstractGLContext * openGLContext() const;
+
+    /**
+    *  @brief
+    *    Get OpenGL context
+    *
+    *  @return
+    *    OpenGL context used for rendering on the canvas (can be null)
+    *
+    *  @remarks
+    *    The returned context can be null if the canvas has not been
+    *    initialized yet, or the method is called between onContextDeinit()
+    *    and onContextInit() when the context has been changed.
+    *    Aside from that, there should always be a valid OpenGL context
+    *    attached to the canvas.
+    */
+    AbstractGLContext * openGLContext();
 
     /**
     *  @brief
@@ -113,7 +143,7 @@ public:
     *  @param[in] renderIterations
     *    Number of render iterations
     */
-    void exportImage(std::string filename, int width, int height, int renderIterations);
+    void exportImage(const std::string & filename, int width, int height, int renderIterations);
 
     /**
     *  @brief
@@ -124,7 +154,7 @@ public:
     *  @param[in] backend
     *    Name of video backend to use
     */
-    void setVideoTarget(const cppexpose::Variant & parameters, std::string backend = "FFMPEGVideoExporter");
+    void setVideoTarget(const cppexpose::Variant & parameters, const std::string & backend = "FFMPEGVideoExporter");
 
     /**
     *  @brief
@@ -135,7 +165,7 @@ public:
     *  @param[in] backend
     *    Name of video backend to use
     */
-    void exportVideo(const cppexpose::Variant & parameters, std::string backend = "FFMPEGVideoExporter");
+    void exportVideo(const cppexpose::Variant & parameters, const std::string & backend = "FFMPEGVideoExporter");
 
     /**
     *  @brief
@@ -364,7 +394,7 @@ public:
     *  @return
     *    Saved viewport (actual device pixels)
     */
-    virtual glm::vec4 savedDeviceViewport() = 0;
+    virtual const glm::vec4 & savedDeviceViewport() const = 0;
 
 
 protected:

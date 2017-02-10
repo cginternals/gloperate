@@ -4,8 +4,7 @@
 #include <cassert>
 
 #include <QWindow>
-
-#include <glbinding/Binding.h>
+#include <QOpenGLContext>
 
 #include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
@@ -27,7 +26,9 @@ GLContext::GLContext(QWindow * window, QOpenGLContext * context, bool takeOwners
     assert(context);
 
     // Activate context
-    GLContext::makeCurrent(m_context, m_window);
+    use();
+
+    initializeGLBinding();
 
     // Read context handle
     m_handle = GLContextUtils::tryFetchHandle();
@@ -36,7 +37,7 @@ GLContext::GLContext(QWindow * window, QOpenGLContext * context, bool takeOwners
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context
-    GLContext::doneCurrent(m_context);
+    release();
 }
 
 GLContext::~GLContext()
@@ -58,11 +59,6 @@ void GLContext::release() const
     {
         GLContext::doneCurrent(m_context);
     }
-}
-
-void GLContext::initGLBinding()
-{
-    glbinding::Binding::initialize(false);
 }
 
 

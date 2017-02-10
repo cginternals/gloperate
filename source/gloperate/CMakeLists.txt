@@ -47,6 +47,8 @@ set(headers
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
+    ${include_path}/base/AbstractComponent.h
+    ${include_path}/base/AbstractComponent.inl
     ${include_path}/base/Canvas.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
@@ -68,6 +70,7 @@ set(headers
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
     ${include_path}/base/ExtendedProperties.h
+    ${include_path}/base/ExtendedProperties.inl
     ${include_path}/base/AbstractColorGradient.h
     ${include_path}/base/AbstractColorGradient.inl
     ${include_path}/base/Color.h
@@ -95,9 +98,13 @@ set(headers
     ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/NoiseTexture.h
     ${include_path}/rendering/RenderPass.h
+    ${include_path}/rendering/LightType.h
+    ${include_path}/rendering/Light.h
     ${include_path}/rendering/RenderTarget.h
     ${include_path}/rendering/RenderTargetType.h
     ${include_path}/rendering/TransparencyMasksGenerator.h
+    ${include_path}/rendering/ScreenAlignedQuad.h
+    ${include_path}/rendering/ScreenAlignedTriangle.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -133,6 +140,10 @@ set(headers
     ${include_path}/stages/demos/DemoDrawableStage.h
     ${include_path}/stages/demos/TimerStage.h
     ${include_path}/stages/demos/ColorizeStage.h
+    ${include_path}/stages/demos/LightTestStage.h
+    ${include_path}/stages/demos/LightTestPipeline.h
+    ${include_path}/stages/lights/LightCreationStage.h
+    ${include_path}/stages/lights/LightBufferTextureStage.h
     ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
     ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
     ${include_path}/stages/multiframe/MultiFrameControlStage.h
@@ -169,6 +180,7 @@ set(sources
     ${source_path}/base/AbstractCanvas.cpp
     ${source_path}/base/Canvas.cpp
     ${source_path}/base/AbstractContext.cpp
+    ${source_path}/base/AbstractComponent.cpp
     ${source_path}/base/AbstractGLContext.cpp
     ${source_path}/base/AbstractGLContextFactory.cpp
     ${source_path}/base/GLContextFormat.cpp
@@ -186,6 +198,8 @@ set(sources
     ${source_path}/base/ColorGradientList.cpp
     ${source_path}/base/ColorGradientPreparation.cpp
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
+    ${source_path}/base/AbstractColorGradient.cpp
+    ${source_path}/base/ExtendedProperties.cpp
 
     ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
@@ -199,6 +213,8 @@ set(sources
     ${source_path}/rendering/RenderPass.cpp
     ${source_path}/rendering/RenderTarget.cpp
     ${source_path}/rendering/TransparencyMasksGenerator.cpp
+    ${source_path}/rendering/ScreenAlignedQuad.cpp
+    ${source_path}/rendering/ScreenAlignedTriangle.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
@@ -234,6 +250,10 @@ set(sources
     ${source_path}/stages/demos/DemoDrawableStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
     ${source_path}/stages/demos/ColorizeStage.cpp
+    ${source_path}/stages/demos/LightTestStage.cpp
+    ${source_path}/stages/demos/LightTestPipeline.cpp
+    ${source_path}/stages/lights/LightCreationStage.cpp
+    ${source_path}/stages/lights/LightBufferTextureStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
     ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp
@@ -282,6 +302,23 @@ add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
 # Export library for downstream projects
 export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
+
+# Check for availability of module; use pre-generated version if not found
+if (WriterCompilerDetectionHeaderFound)
+    write_compiler_detection_header(
+        FILE ${feature_file}
+        PREFIX ${target_id}
+        COMPILERS AppleClang Clang GNU MSVC
+        FEATURES cxx_noexcept
+        VERSION 3.2
+    )
+else()
+    file(
+        COPY ${PROJECT_SOURCE_DIR}/source/codegeneration/${target}_features.h
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/${target}
+        USE_SOURCE_PERMISSIONS
+    )
+endif()
 
 # Create API export header
 generate_export_header(${target}

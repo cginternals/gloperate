@@ -49,13 +49,13 @@ public:
     *  @brief
     *    Check if this storer can store a specific file type
     *
-    *  @param[in] ext
+    *  @param[in] extension
     *    File extension (e.g., '.png')
     *
     *  @return
     *    'true' if storing is implemented for given file type, else 'false'
     */
-    virtual bool canStore(const std::string & ext) const = 0;
+    virtual bool canStore(const std::string & extension) const = 0;
 
     /**
     *  @brief

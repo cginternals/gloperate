@@ -11,7 +11,8 @@
 #include <gloperate/gloperate_api.h>
 
 
-namespace cppexpose {
+namespace cppexpose
+{
     class AbstractProperty;
 }
 

@@ -1,14 +1,5 @@
 
-#include <iostream>
-
-#include <QApplication>
-#include <QFileInfo>
-#include <QString>
-#include <QQmlEngine>
 #include <QQmlContext>
-
-#include <cppassist/logging/logging.h>
-#include <cppassist/string/conversion.h>
 
 #include <cppexpose/scripting/ScriptContext.h>
 #include <cppexpose/reflection/Property.h>
@@ -16,10 +7,8 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/GLContextUtils.h>
 
 #include <gloperate-qt/base/GLContext.h>
-#include <gloperate-qt/base/Application.h>
 #include <gloperate-qt/base/UpdateManager.h>
 
 #include <gloperate-qtquick/QuickView.h>
@@ -27,6 +16,7 @@
 #include <gloperate-qtquick/QmlScriptContext.h>
 
 #include "Config.h"
+#include "Application.h"
 
 
 using namespace gloperate;
@@ -40,14 +30,7 @@ int main(int argc, char * argv[])
     Environment environment;
 
     // Initialize Qt application
-    gloperate_qt::Application app(&environment, argc, argv);
-    const auto fi = QFileInfo(QCoreApplication::applicationFilePath());
-
-    QApplication::setApplicationDisplayName(fi.baseName());
-    QApplication::setApplicationName(GLOPERATE_PROJECT_NAME);
-    QApplication::setApplicationVersion(GLOPERATE_VERSION);
-    QApplication::setOrganizationName(GLOPERATE_AUTHOR_ORGANIZATION);
-    QApplication::setOrganizationDomain(GLOPERATE_AUTHOR_DOMAIN);
+    ::Application app(&environment, argc, argv);
 
     // Load configuration
     Config config(environment);
@@ -73,16 +56,12 @@ int main(int argc, char * argv[])
     environment.componentManager()->scanPlugins("exporter");
 
     // Load and show QML
-    auto * window = new QuickView(&qmlEngine);
+    std::unique_ptr<QuickView> window(new QuickView(&qmlEngine));
     window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl::fromLocalFile(qmlEngine.glOperateModulePath() + "/Viewer.qml"));
+    window->setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
     window->show();
 
     // Run main loop
-    int res = app.exec();
-
-    // Clean up
-    delete window;
-    return res;
+    return app.exec();
 }

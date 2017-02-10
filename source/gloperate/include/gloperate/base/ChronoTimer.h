@@ -23,7 +23,9 @@ namespace gloperate
 class GLOPERATE_API ChronoTimer
 {
 public:
-    using Duration = std::chrono::duration<long long, std::nano>;
+    using clock = std::chrono::high_resolution_clock;
+    using time_point = clock::time_point;
+    using Duration = std::chrono::duration<long long int, std::nano>;
 
 
 public:
@@ -121,21 +123,16 @@ public:
 
 
 protected:
-    using clock = std::chrono::high_resolution_clock;
-    using time_point = clock::time_point;
+    bool m_paused;      ///< Paused state
+    bool m_autoUpdate;  ///< Auto update state
 
+    time_point m_t0;    ///< Current time point
+    time_point m_tp;    ///< Time point of last pause
 
-protected:
-    bool m_paused;
-    bool m_autoUpdate;
+    time_point m_t1;    ///< Ask @cgcostume
 
-    time_point m_t0;
-    time_point m_tp; // time_point of last pausing
-
-    time_point m_t1;
-
-    Duration m_offset;
-    Duration m_elapsed;
+    Duration m_offset;  ///< Ask @cgcostume
+    Duration m_elapsed; ///< Ask @cgcostume
 };
 
 

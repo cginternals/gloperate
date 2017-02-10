@@ -16,6 +16,8 @@
 #include <gloperate/stages/base/ProceduralTextureStage.h>
 #include <gloperate/stages/base/MixerStage.h>
 #include <gloperate/stages/base/SplitStage.h>
+#include <gloperate/stages/lights/LightBufferTextureStage.h>
+#include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/base/ShaderStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
@@ -27,8 +29,11 @@
 #include <gloperate/stages/demos/DemoMultiFramePipeline.h>
 #include <gloperate/stages/demos/SpinningRectStage.h>
 #include <gloperate/stages/demos/TimerStage.h>
+#include <gloperate/stages/demos/LightTestPipeline.h>
 #include <gloperate/stages/demos/ColorizeStage.h>
 #include <gloperate/stages/demos/DemoRenderStage.h>
+#include <gloperate/stages/demos/LightTestPipeline.h>
+#include <gloperate/stages/demos/LightTestStage.h>
 
 
 namespace gloperate
@@ -108,7 +113,7 @@ const std::vector<AbstractCanvas *> & Environment::canvases() const
     return m_canvases;
 }
 
-std::vector<AbstractCanvas *> & Environment::canvases()
+std::vector<AbstractCanvas *> Environment::canvases()
 {
     return m_canvases;
 }
@@ -202,6 +207,8 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&ProceduralTextureStage::Component);
     m_componentManager.addComponent(&MixerStage::Component);
     m_componentManager.addComponent(&SplitStage::Component);
+    m_componentManager.addComponent(&LightBufferTextureStage::Component);
+    m_componentManager.addComponent(&LightCreationStage::Component);
     m_componentManager.addComponent(&MultiFrameAggregationPipeline::Component);
     m_componentManager.addComponent(&MultiFrameAggregationStage::Component);
     m_componentManager.addComponent(&MultiFrameControlStage::Component);
@@ -211,10 +218,13 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&DemoMultiFramePipeline::Component);
     m_componentManager.addComponent(&SpinningRectStage::Component);
     m_componentManager.addComponent(&TimerStage::Component);
+    m_componentManager.addComponent(&LightTestPipeline::Component);
     m_componentManager.addComponent(&ColorizeStage::Component);
     m_componentManager.addComponent(&ShaderStage::Component);
     m_componentManager.addComponent(&ProgramStage::Component);
     m_componentManager.addComponent(&DemoRenderStage::Component);
+    m_componentManager.addComponent(&LightTestPipeline::Component);
+    m_componentManager.addComponent(&LightTestStage::Component);
 }
 
 void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)

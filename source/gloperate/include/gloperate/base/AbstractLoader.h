@@ -49,13 +49,13 @@ public:
     *  @brief
     *    Check if this loader can load a specific file type
     *
-    *  @param[in] ext
+    *  @param[in] extension
     *    File extension (e.g., '.png')
     *
     *  @return
     *    'true' if loading is implemented for given file type, else 'false'
     */
-    virtual bool canLoad(const std::string & ext) const = 0;
+    virtual bool canLoad(const std::string & extension) const = 0;
 
     /**
     *  @brief

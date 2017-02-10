@@ -2,16 +2,10 @@
 #pragma once
 
 
-#ifndef _MSC_VER
-    #define NOEXCEPT noexcept
-#else
-    #define NOEXCEPT
-#endif
-
-
-#include <glbinding/gl/enum.h>
+#include <glbinding/gl/types.h>
 
 #include <gloperate/gloperate_api.h>
+#include <gloperate/gloperate_features.h>
 
 
 namespace gloperate
@@ -335,7 +329,7 @@ public:
     *  @remarks
     *    See https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
     */
-    friend void swap(Image & first, Image & second) NOEXCEPT;
+    friend void swap(Image & first, Image & second) GLOPERATE_NOEXCEPT;
 
 
 protected:

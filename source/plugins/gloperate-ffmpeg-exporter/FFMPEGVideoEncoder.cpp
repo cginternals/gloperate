@@ -1,8 +1,6 @@
 
 #include "FFMPEGVideoEncoder.h"
 
-#include <globjects/base/baselogging.h>
-
 extern "C" {
     #include <libavutil/opt.h>
     #include <libavcodec/avcodec.h>
@@ -24,6 +22,11 @@ extern "C" {
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55,28,1)
 #define av_frame_alloc  avcodec_alloc_frame
 #endif
+
+
+#include <glbinding/gl/enum.h>
+
+#include <globjects/base/baselogging.h>
 
 
 using namespace globjects;

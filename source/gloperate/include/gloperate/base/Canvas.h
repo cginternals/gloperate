@@ -45,7 +45,16 @@ public:
     *  @return
     *    Pipeline container (never null)
     */
-    PipelineContainer * pipelineContainer() const;
+    const PipelineContainer * pipelineContainer() const;
+
+    /**
+    *  @brief
+    *    Get pipeline container
+    *
+    *  @return
+    *    Pipeline container (never null)
+    */
+    PipelineContainer * pipelineContainer();
 
     /**
     *  @brief
@@ -54,7 +63,16 @@ public:
     *  @return
     *    Render stage that renders into the current context (can be null)
     */
-    Stage * renderStage() const;
+    const Stage * renderStage() const;
+
+    /**
+    *  @brief
+    *    Get render stage
+    *
+    *  @return
+    *    Render stage that renders into the current context (can be null)
+    */
+    Stage * renderStage();
 
     /**
     *  @brief
@@ -84,7 +102,7 @@ public:
     virtual void onMousePress(int button, const glm::ivec2 & pos) override;
     virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
     virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos) override;
-    virtual glm::vec4 savedDeviceViewport() override;
+    virtual const glm::vec4 & savedDeviceViewport() const override;
 
 
 protected:
