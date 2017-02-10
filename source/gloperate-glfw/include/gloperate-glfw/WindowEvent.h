@@ -2,9 +2,7 @@
 #pragma once
 
 
-#include <chrono>
-
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
@@ -23,6 +21,10 @@ class Window;
 class GLOPERATE_GLFW_API WindowEvent
 {
 public:
+    /**
+    *  @brief
+    *    Enumeration of all supported event types
+    */
     enum class Type
     {
         KeyPress
@@ -45,30 +47,124 @@ public:
 
 
 public:
+    /**
+    *  @brief
+    *    Destructor
+    */
     virtual ~WindowEvent();
 
+    /**
+    *  @brief
+    *    Get event type
+    *
+    *  @return
+    *    The event type
+    */
     Type type() const;
 
+    /**
+    *  @brief
+    *    Get accepted state
+    *
+    *  @return
+    *    The accepted state
+    */
     bool isAccepted() const;
+
+    /**
+    *  @brief
+    *    Get ignored state
+    *
+    *  @return
+    *    The ignored state
+    *
+    *  @remarks
+    *    An event is ignored iff it is not accepted
+    */
     bool isIgnored() const;
 
+    /**
+    *  @brief
+    *    Set accepted state
+    *
+    *  @param[in] accepted
+    *    The new accepted state
+    */
     void setAccepted(bool accepted);
+
+    /**
+    *  @brief
+    *    Set accepted state to 'true'
+    */
     void accept();
+
+    /**
+    *  @brief
+    *    Set ignored state to 'true'
+    *
+    *  @remarks
+    *    This is identical to setting the accepted state to 'false'
+    */
     void ignore();
 
-    Window * window() const;
+    /**
+    *  @brief
+    *    Get associated window
+    *
+    *  @return
+    *    The associated window
+    *
+    *  @remarks
+    *    May be 'null'
+    */
+    const Window * window() const;
+
+    /**
+    *  @brief
+    *    Get associated window
+    *
+    *  @return
+    *    The associated window
+    *
+    *  @remarks
+    *    May be 'null'
+    */
+    Window * window();
+
+
+    /**
+    *  @brief
+    *    Set associated window
+    *
+    *  @param[in] window
+    *    The associated window
+    *
+    *  @remarks
+    *    window may be 'null'
+    */
     void setWindow(Window * window);
 
 
 protected:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] type
+    *    The event type
+    *
+    *  @remarks
+    *    Initializes an event of given type that is not accepted
+    *    and has no associated window.
+    */
     WindowEvent(Type type);
 
 
 protected:
-    Type m_type;
-    bool m_accepted;
+    Type     m_type;     ///< The event type
+    bool     m_accepted; ///< The accepted state to prevent further bubbling
 
-    Window * m_window;
+    Window * m_window;   ///< The associated window, may be 'null'
 };
 
 

@@ -5,7 +5,7 @@
 #include <string>
 #include <queue>
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 #include <gloperate/base/GLContextFormat.h>
 
@@ -116,7 +116,16 @@ public:
     *  @return
     *    OpenGL context (can be nullptr)
     */
-    GLContext * context() const;
+    const GLContext * context() const;
+
+    /**
+    *  @brief
+    *    Get OpenGL context
+    *
+    *  @return
+    *    OpenGL context (can be nullptr)
+    */
+    GLContext * context();
 
     /**
     *  @brief
