@@ -11,6 +11,8 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
 
+#include <gloperate/gloperate.h>
+
 
 namespace gloperate
 {
@@ -107,7 +109,8 @@ void ColorizeStage::setupGeometry()
 void ColorizeStage::setupProgram()
 {
     m_vertexShader   = ScreenAlignedQuad::createDefaultVertexShader();
-    m_fragmentShader = ScreenAlignedQuad::createDefaultFragmentShader();
+    m_fragmentShader = globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, gloperate::dataPath() + "/gloperate/shaders/Demo/Colorize.frag");
+
     m_program = new globjects::Program();
     m_program->attach(m_vertexShader, m_fragmentShader);
 
