@@ -22,7 +22,9 @@ class MixerStage;
 class TimerStage;
 class SpinningRectStage;
 class TextureStage;
-class ColorizeStage;
+class ProgramStage;
+class RenderPassStage;
+class RasterizationStage;
 
 
 /**
@@ -53,6 +55,9 @@ public:
     Input<bool>                rotate;  ///< Rotation automatically?
     Input<Color>               color;   ///< Mixer color
 
+    Input<cppassist::FilePath> shader1; ///< Shader 1 filename
+    Input<cppassist::FilePath> shader2; ///< Shader 2 filename
+
 
 public:
     /**
@@ -79,19 +84,21 @@ protected:
 
 protected:
     // Stages
-    TextureLoadStage       * m_textureLoadStage;    ///< Stage that loads a static picture
-    TimerStage             * m_timerStage;          ///< Timer for continuous rendering and animation
+    TextureLoadStage       * m_textureLoadStage;            ///< Stage that loads a static picture
+    TimerStage             * m_timerStage;                  ///< Timer for continuous rendering and animation
 
-    BasicFramebufferStage  * m_framebufferStage1;   ///< Framebuffer for rendering the spinning rect
-    SpinningRectStage      * m_spinningRectStage;   ///< Stage that renders the spinning rect
+    BasicFramebufferStage  * m_framebufferStage1;           ///< Framebuffer for rendering the spinning rect
+    SpinningRectStage      * m_spinningRectStage;           ///< Stage that renders the spinning rect
 
-    TextureStage           * m_textureStage1;       ///< Texture 1 for 2nd frame buffer
-    TextureStage           * m_textureStage2;       ///< Texture 2 for 2nd frame buffer
+    TextureStage           * m_textureStage1;               ///< Texture 1 for 2nd frame buffer
+    TextureStage           * m_textureStage2;               ///< Texture 2 for 2nd frame buffer
 
-    FramebufferStage       * m_framebufferStage2;   ///< Framebuffer for rendering the colorized output
-    ColorizeStage          * m_colorizeStage;       ///< Stage that blends the image with a color
+    FramebufferStage       * m_framebufferStage2;           ///< Framebuffer for rendering the colorized output
+    ProgramStage           * m_colorizeProgramStage;        ///< Builds the Program for blending an image with a color
+    RenderPassStage        * m_colorizeRenderPassStage;     ///< Builds the RenderPass for the same task
+    RasterizationStage     * m_colorizeRasterizationStage;  ///< Executes this RenderPass on the inputs
 
-    MixerStage             * m_mixerStage;          ///< Stage that renders the output to the screen
+    MixerStage             * m_mixerStage;                  ///< Stage that renders the output to the screen
 };
 
 

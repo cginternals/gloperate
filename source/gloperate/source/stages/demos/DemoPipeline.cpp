@@ -4,14 +4,20 @@
 #include <glbinding/gl/enum.h>
 
 #include <gloperate/gloperate.h>
+
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/FramebufferStage.h>
 #include <gloperate/stages/base/MixerStage.h>
 #include <gloperate/stages/base/TextureStage.h>
+#include <gloperate/stages/base/ProgramStage.h>
+#include <gloperate/stages/base/RenderPassStage.h>
+#include <gloperate/stages/base/RasterizationStage.h>
+
 #include <gloperate/stages/demos/TimerStage.h>
 #include <gloperate/stages/demos/SpinningRectStage.h>
-#include <gloperate/stages/demos/ColorizeStage.h>
+
+#include <gloperate/rendering/ScreenAlignedQuad.h>
 
 
 namespace gloperate
@@ -28,6 +34,8 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
 , angle("angle", this)
 , rotate("rotate", this)
 , color("color", this, Color(255, 255, 255, 255))
+, shader1("shader1", this)
+, shader2("shader2", this)
 , m_textureLoadStage(new TextureLoadStage(environment, "TextureLoadStage"))
 , m_timerStage(new TimerStage(environment, "TimerStage"))
 , m_framebufferStage1(new BasicFramebufferStage(environment, "FramebufferStage1"))
@@ -35,7 +43,9 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
 , m_textureStage1(new TextureStage(environment, "TextureStage1"))
 , m_textureStage2(new TextureStage(environment, "TextureStage2"))
 , m_framebufferStage2(new FramebufferStage(environment, "FramebufferStage2"))
-, m_colorizeStage(new ColorizeStage(environment, "ColorizeStage"))
+, m_colorizeProgramStage(new ProgramStage(environment, "ColorizeProgramStage"))
+, m_colorizeRenderPassStage(new RenderPassStage(environment, "ColorizeRenderPassStage"))
+, m_colorizeRasterizationStage(new RasterizationStage(environment, "ColorizeRasterizationStage"))
 , m_mixerStage(new MixerStage(environment, "MixerStage"))
 {
     // Get data path
@@ -86,13 +96,34 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     m_framebufferStage2->colorTexture << m_textureStage1->renderTarget;
     m_framebufferStage2->depthTexture << m_textureStage2->renderTarget;
 
-    // Colorize stage
-    addStage(m_colorizeStage);
-    m_colorizeStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_colorizeStage->renderInterface.targetFBO      << m_framebufferStage2->fbo;
-    m_colorizeStage->colorTexture                   << m_textureStage1->texture;
-    m_colorizeStage->texture                        << m_spinningRectStage->colorTextureOut;
-    m_colorizeStage->color                          << this->color;
+    shader1 = dataPath + "/gloperate/shaders/screenaligned/default.vert";
+    shader2 = dataPath + "/gloperate/shaders/Demo/Colorize.frag";
+
+    // Colorize program stage
+    addStage(m_colorizeProgramStage);
+    m_colorizeProgramStage->createInput("shader1") << shader1;
+    m_colorizeProgramStage->createInput("shader2") << shader2;
+
+//    // Colorize stage
+//    addStage(m_colorizeStage);
+//    m_colorizeStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
+//    m_colorizeStage->renderInterface.targetFBO      << m_framebufferStage2->fbo;
+//    m_colorizeStage->colorTexture                   << m_textureStage1->texture;
+//    m_colorizeStage->texture                        << m_spinningRectStage->colorTextureOut;
+//    m_colorizeStage->color                          << this->color;
+
+    // Colorize render pass stage
+    addStage(m_colorizeRenderPassStage);
+    m_colorizeRenderPassStage->drawable.setValue(new ScreenAlignedQuad());
+    m_colorizeRenderPassStage->program << m_colorizeProgramStage->program;
+    m_colorizeRenderPassStage->createInput("color") << this->color;
+
+    // Colorize rasterization stage
+    m_colorizeRasterizationStage->renderInterface.targetFBO << m_framebufferStage2->fbo;
+    m_colorizeRasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_colorizeRasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    m_colorizeRasterizationStage->renderPass << m_colorizeRenderPassStage->renderPass;
+    m_colorizeRasterizationStage->colorTexture << m_textureStage1->texture;
 
     // Mixer stage
     addStage(m_mixerStage);
