@@ -4,14 +4,14 @@
 #include <glm/fwd.hpp>
 
 #include <globjects/base/ref_ptr.h>
-#include <globjects/Program.h>
 
 #include <gloperate-text/gloperate-text_api.h>
 
 
 namespace globjects
 {
-class Shader;
+    class Shader;
+    class Program;
 }
 
 

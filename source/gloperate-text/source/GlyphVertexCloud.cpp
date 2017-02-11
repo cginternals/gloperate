@@ -7,6 +7,10 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/boolean.h>
 
+#include <globjects/Texture.h>
+
+#include <gloperate/rendering/Drawable.h>
+
 #include <cppassist/memory/offsetof.h>
 
 #include <gloperate-text/GlyphSequence.h>
@@ -15,6 +19,8 @@
 
 namespace
 {
+
+
 // http://stackoverflow.com/a/17074810 (thanks to Timothy Shields)
 
 template <typename T, typename Compare>
@@ -25,7 +31,7 @@ std::vector<std::size_t> sort_permutation(
     std::vector<std::size_t> p(vec.size());
 
     std::iota(p.begin(), p.end(), 0);
-    std::sort(p.begin(), p.end(), [&](std::size_t i, std::size_t j) 
+    std::sort(p.begin(), p.end(), [&](std::size_t i, std::size_t j)
         { return compare(vec[i], vec[j]); });
 
     return p;
@@ -43,7 +49,8 @@ std::vector<T> apply_permutation(
     return sorted_vec;
 }
 
-}
+
+} // namespace
 
 
 namespace gloperate_text

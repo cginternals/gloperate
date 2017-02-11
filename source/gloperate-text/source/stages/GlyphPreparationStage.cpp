@@ -1,8 +1,6 @@
 
 #include <gloperate-text/stages/GlyphPreparationStage.h>
 
-#include <cassert>
-
 #include <gloperate-text/FontFace.h>
 #include <gloperate-text/GlyphSequence.h>
 #include <gloperate-text/Typesetter.h>

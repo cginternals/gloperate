@@ -2,16 +2,24 @@
 
 #include <vector>
 
-#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
 #include <globjects/base/ref_ptr.h>
-#include <globjects/Texture.h>
-
-#include <gloperate/rendering/Drawable.h>
 
 #include <gloperate-text/gloperate-text_api.h>
+
+
+namespace globjects
+{
+    class Texture;
+}
+
+
+namespace gloperate
+{
+    class Drawable;
+}
 
 
 namespace gloperate_text

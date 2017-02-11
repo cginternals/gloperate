@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <string>
+
 #include <glm/fwd.hpp>
 
 #include <gloperate-text/GlyphVertexCloud.h>
@@ -10,6 +12,8 @@
 
 namespace gloperate_text
 {
+
+
 enum class Alignment : unsigned char;
 
 class GlyphSequence;
@@ -36,8 +40,8 @@ public:
     ,   const GlyphVertexCloud::Vertices::iterator & begin
     ,   bool dryrun = false);
 
-private:
 
+private:
     static bool typeset_wordwrap(
         const GlyphSequence & sequence
     ,   const FontFace & fontFace

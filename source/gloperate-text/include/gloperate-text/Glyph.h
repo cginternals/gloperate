@@ -13,6 +13,7 @@
 namespace gloperate_text
 {
 
+
 using GlyphIndex = std::uint32_t; ///< Index type of a glyph in a FontFace
 
 /**
@@ -27,6 +28,10 @@ using GlyphIndex = std::uint32_t; ///< Index type of a glyph in a FontFace
 */
 class GLOPERATE_TEXT_API Glyph
 {
+public:
+    using KerningBySubsequentGlyphIndex = std::unordered_map<GlyphIndex, float>; ///< Map type for kerning information lookup
+
+
 public:
     /**
     *  @brief
@@ -284,7 +289,6 @@ protected:
     float     m_advance; ///< Glyph's horizontal overall advance in pt
     glm::vec2 m_extent; ///< Width and height of the glyph in pt
 
-    using KerningBySubsequentGlyphIndex = std::unordered_map<GlyphIndex, float>; ///< Map type for kerning information lookup
     KerningBySubsequentGlyphIndex m_kernings; ///< Kerning information map with upcoming glyph as key
 };
 

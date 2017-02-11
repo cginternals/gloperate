@@ -7,8 +7,11 @@
 
 #include <globjects/base/File.h>
 #include <globjects/Shader.h>
+#include <globjects/Program.h>
+#include <globjects/Texture.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/rendering/Drawable.h>
 
 #include <gloperate-text/GlyphVertexCloud.h>
 
