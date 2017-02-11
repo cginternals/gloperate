@@ -63,7 +63,12 @@ void ScriptPromptWidget::setMultiLinePaste(const bool enable)
     m_multiLinePaste = enable;
 }
 
-QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter() const
+const QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter() const
+{
+    return m_syntaxHighlighter;
+}
+
+QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter()
 {
     return m_syntaxHighlighter;
 }
@@ -79,7 +84,12 @@ void ScriptPromptWidget::setSyntaxHighlighter(QSyntaxHighlighter * syntaxHighlig
         syntaxHighlighter->setDocument(document());
 }
 
-QCompleter * ScriptPromptWidget::completer() const
+const QCompleter * ScriptPromptWidget::completer() const
+{
+    return m_completer;
+}
+
+QCompleter * ScriptPromptWidget::completer()
 {
     return m_completer;
 }
@@ -175,17 +185,17 @@ void ScriptPromptWidget::cls()
     setPosition(newPosition);
 }
 
-inline int ScriptPromptWidget::row() const
+int ScriptPromptWidget::row() const
 {
     return toPlainText().left(textCursor().position()).count("\n") + 1;
 }
 
-inline int ScriptPromptWidget::column() const
+int ScriptPromptWidget::column() const
 {
     return textCursor().columnNumber();
 }
 
-inline int ScriptPromptWidget::anchor() const
+int ScriptPromptWidget::anchor() const
 {
     return textCursor().anchor();
 }
@@ -198,12 +208,12 @@ QString ScriptPromptWidget::wordUnderCursor() const
     return tc.selectedText();
 }
 
-inline int ScriptPromptWidget::position() const
+int ScriptPromptWidget::position() const
 {
     return textCursor().position();
 }
 
-inline void ScriptPromptWidget::setPosition(
+void ScriptPromptWidget::setPosition(
     const int position
   , const QTextCursor::MoveMode mode)
 {
@@ -213,7 +223,7 @@ inline void ScriptPromptWidget::setPosition(
     setTextCursor(tc);
 }
 
-inline void ScriptPromptWidget::resetUndoRedo()
+void ScriptPromptWidget::resetUndoRedo()
 {
     setUndoRedoEnabled(false);
     setUndoRedoEnabled(true);

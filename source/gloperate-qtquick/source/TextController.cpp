@@ -28,7 +28,12 @@ TextController::~TextController()
     cleanUp();
 }
 
-QQuickItem * TextController::target() const
+const QQuickItem * TextController::target() const
+{
+    return m_target;
+}
+
+QQuickItem * TextController::target()
 {
     return m_target;
 }

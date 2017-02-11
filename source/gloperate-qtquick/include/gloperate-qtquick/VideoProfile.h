@@ -59,7 +59,7 @@ public:
     *  @return
     *    List of paths to available profiles
     */
-    QList<QString> availableProfiles() const;
+    const QList<QString> & availableProfiles() const;
 
     /**
     *  @brief
@@ -68,7 +68,7 @@ public:
     *  @return
     *    Path to profile file
     */
-    QString profile() const;
+    const QString & profile() const;
 
     /**
     *  @brief
@@ -77,7 +77,7 @@ public:
     *  @param[in] profile
     *    Path to profile file
     */
-    void setProfile(QString profile);
+    void setProfile(const QString & profile);
 
     /**
     *  @brief
@@ -95,7 +95,7 @@ public:
     *  @return
     *    Profile title (e.g. "AVI (codec: mpeg4)")
     */
-    QString title() const;
+    const QString & title() const;
 
     /**
     *  @brief
@@ -104,7 +104,7 @@ public:
     *  @return
     *    Video format (e.g. 'avi')
     */
-    QString format() const;
+    const QString & format() const;
 
     /**
     *  @brief
@@ -113,7 +113,7 @@ public:
     *  @return
     *    Video codec (e.g. 'codec')
     */
-    QString codec() const;
+    const QString & codec() const;
 
     /**
     *  @brief
@@ -186,23 +186,23 @@ protected:
     *  @return
     *    True if loading the profile was successful, false otherwise
     */
-    bool loadJsonProfile(QString profile);
+    bool loadJsonProfile(const QString & profile);
 
 
 protected:
-    QList<QString>     m_profilePaths;      ///< Available profiles in profile directory as paths
-    QList<QString>     m_profileTitles;     ///< Available profiles in profile directory as titles
-    QString            m_profileDirectory;  ///< Path to profile location
-    QString            m_profile;           ///< Path to current profile file
-    QString            m_title;             ///< Profile title
-    QString            m_format;            ///< Video format
-    QString            m_codec;             ///< Video codec
-    int                m_width;             ///< Video width
-    int                m_height;            ///< Video heigth
-    int                m_fps;               ///< Video fps
-    int                m_seconds;           ///< Video duration (in seconds)
-    int                m_gopsize;           ///< Size of picture groups
-    int                m_bitrate;           ///< Video bitrate
+    QList<QString> m_profilePaths;     ///< Available profiles in profile directory as paths
+    QList<QString> m_profileTitles;    ///< Available profiles in profile directory as titles
+    QString        m_profileDirectory; ///< Path to profile location
+    QString        m_profile;          ///< Path to current profile file
+    QString        m_title;            ///< Profile title
+    QString        m_format;           ///< Video format
+    QString        m_codec;            ///< Video codec
+    int            m_width;            ///< Video width
+    int            m_height;           ///< Video heigth
+    int            m_fps;              ///< Video fps
+    int            m_seconds;          ///< Video duration (in seconds)
+    int            m_gopsize;          ///< Size of picture groups
+    int            m_bitrate;          ///< Video bitrate
 };
 
 

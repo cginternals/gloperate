@@ -36,7 +36,7 @@ public:
     *  @param[in] func
     *    The wrapped function object
     */
-    QmlScriptFunction(QmlEngine * engine, QJSValue func);
+    QmlScriptFunction(QmlEngine * engine, const QJSValue & func);
 
     /**
     *  @brief

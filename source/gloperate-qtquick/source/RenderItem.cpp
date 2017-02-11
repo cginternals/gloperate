@@ -4,6 +4,9 @@
 #include <QVariant>
 #include <QColor>
 
+#include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
+
 #include <gloperate/base/AbstractCanvas.h>
 
 #include <gloperate-qt/base/GLContext.h>
@@ -43,12 +46,17 @@ RenderItem::~RenderItem()
 {
 }
 
-gloperate::AbstractCanvas * RenderItem::canvas() const
+const gloperate::AbstractCanvas * RenderItem::canvas() const
 {
     return m_canvas;
 }
 
-QString RenderItem::stage() const
+gloperate::AbstractCanvas * RenderItem::canvas()
+{
+    return m_canvas;
+}
+
+const QString & RenderItem::stage() const
 {
     return m_stage;
 }

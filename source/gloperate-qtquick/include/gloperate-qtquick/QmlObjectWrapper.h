@@ -12,7 +12,8 @@
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
-namespace cppexpose {
+namespace cppexpose
+{
     class Object;
 }
 

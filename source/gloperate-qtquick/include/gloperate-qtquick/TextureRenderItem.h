@@ -6,21 +6,24 @@
 #include <QQuickItem>
 
 #include <globjects/base/ref_ptr.h>
-#include <globjects/VertexArray.h>
-#include <globjects/Program.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
 class QQuickWindow;
 
-namespace globjects {
+
+namespace globjects
+{
     class Texture;
+    class VertexArray;
+    class Program;
 }
 
-namespace gloperate {
+
+namespace gloperate
+{
     class Environment;
-    class AbstractCanvas;
 }
 
 
@@ -64,7 +67,7 @@ protected:
 
     int getWindowHeight();
 
-    QString path() const;
+    const QString & path() const;
     void setPath(const QString & path);
 
 
@@ -73,7 +76,7 @@ protected:
 
 
 protected:
-    gloperate::Environment * m_environment;
+    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (may be null)
 
     float   m_x;                ///< Viewport (X)
     float   m_y;                ///< Viewport (Y)
@@ -85,7 +88,7 @@ protected:
 
     globjects::ref_ptr<globjects::VertexArray> m_vao;     ///< Screen-aligned quad geometry
     globjects::ref_ptr<globjects::Program>     m_program; ///< Shader program
-    globjects::Texture                       * m_texture; ///< Texture that is displayed
+    globjects::ref_ptr<globjects::Texture>     m_texture; ///< Texture that is displayed
 };
 
 

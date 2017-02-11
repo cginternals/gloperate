@@ -2,13 +2,15 @@
 #pragma once
 
 
-#include <vector>
-
-#include <cppexpose/variant/Variant.h>
-
 #include <cppexpose/scripting/AbstractScriptBackend.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
+
+
+namespace cppexpose
+{
+    class Variant;
+}
 
 
 namespace gloperate_qtquick

@@ -58,17 +58,26 @@ QuickView::QuickView(QmlEngine * engine, QWindow * parent)
 
 QuickView::~QuickView()
 {
-    delete m_context;
 }
 
-gloperate::Environment * QuickView::environment() const
+const gloperate::Environment * QuickView::environment() const
 {
     return m_environment;
 }
 
-gloperate_qt::GLContext * QuickView::context() const
+gloperate::Environment * QuickView::environment()
 {
-    return m_context;
+    return m_environment;
+}
+
+const gloperate_qt::GLContext * QuickView::context() const
+{
+    return m_context.data();
+}
+
+gloperate_qt::GLContext * QuickView::context()
+{
+    return m_context.data();
 }
 
 void QuickView::onSceneGraphInitialized()
@@ -86,7 +95,7 @@ void QuickView::onSceneGraphInitialized()
         << "OpenGL Renderer: " << gloperate::GLContextUtils::renderer() << std::endl;
 
     // Create context wrapper
-    m_context = new gloperate_qt::GLContext(this, openglContext(), false);
+    m_context.reset(new gloperate_qt::GLContext(this, openglContext(), false));
 }
 
 void QuickView::onBeforeRendering()

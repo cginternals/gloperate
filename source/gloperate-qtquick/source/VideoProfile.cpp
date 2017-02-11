@@ -43,7 +43,7 @@ void VideoProfile::initializeAvailableProfiles()
         return;
     }
 
-    for (auto entry : profileDirecotry.entryList())
+    for (const auto & entry : profileDirecotry.entryList())
     {
         if (!loadJsonProfile(m_profileDirectory + "/" + entry))
         {
@@ -55,17 +55,17 @@ void VideoProfile::initializeAvailableProfiles()
     }
 }
 
-QList<QString> VideoProfile::availableProfiles() const
+const QList<QString> & VideoProfile::availableProfiles() const
 {
     return m_profileTitles;
 }
 
-QString VideoProfile::profile() const
+const QString & VideoProfile::profile() const
 {
     return m_profile;
 }
 
-void VideoProfile::setProfile(QString profile)
+void VideoProfile::setProfile(const QString & profile)
 {
     if (!loadJsonProfile(profile))
     {
@@ -80,17 +80,17 @@ void VideoProfile::setProfileIndex(int index)
     setProfile(m_profilePaths[index]);
 }
 
-QString VideoProfile::title() const
+const QString & VideoProfile::title() const
 {
     return m_title;
 }
 
-QString VideoProfile::format() const
+const QString & VideoProfile::format() const
 {
     return m_format;
 }
 
-QString VideoProfile::codec() const
+const QString & VideoProfile::codec() const
 {
     return m_codec;
 }
@@ -125,7 +125,7 @@ int VideoProfile::bitrate() const
     return m_bitrate;
 }
 
-bool VideoProfile::loadJsonProfile(QString profile)
+bool VideoProfile::loadJsonProfile(const QString & profile)
 {
     m_profile = profile;
 

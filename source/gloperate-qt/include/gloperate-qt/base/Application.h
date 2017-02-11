@@ -7,7 +7,8 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
     class Environment;
 }
 

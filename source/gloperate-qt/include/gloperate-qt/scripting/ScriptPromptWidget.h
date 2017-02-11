@@ -84,7 +84,16 @@ public:
     *  @return
     *    Pointer to syntax highlighter (can be null)
     */
-    QSyntaxHighlighter * syntaxHighlighter() const;
+    const QSyntaxHighlighter * syntaxHighlighter() const;
+
+    /**
+    *  @brief
+    *    Get assigned syntax highlighter
+    *
+    *  @return
+    *    Pointer to syntax highlighter (can be null)
+    */
+    QSyntaxHighlighter * syntaxHighlighter();
 
     /**
     *  @brief
@@ -106,7 +115,16 @@ public:
     *  @return
     *    Pointer to text completer (can be null)
     */
-    QCompleter * completer() const;
+    const QCompleter * completer() const;
+
+    /**
+    *  @brief
+    *    Get assigned text completer
+    *
+    *  @return
+    *    Pointer to text completer (can be null)
+    */
+    QCompleter * completer();
 
     /**
     *  @brief
