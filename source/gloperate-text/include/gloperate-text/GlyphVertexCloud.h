@@ -48,6 +48,8 @@ public:
     GlyphVertexCloud();
     virtual ~GlyphVertexCloud();
 
+    GlyphVertexCloud & operator=(const GlyphVertexCloud &) = delete;
+
     const globjects::Texture * texture() const;
     void setTexture(globjects::Texture * texture);
 
