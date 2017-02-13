@@ -30,6 +30,8 @@ public:
     explicit GlyphRenderer(globjects::Program * program);
     virtual ~GlyphRenderer();
 
+    GlyphRenderer & operator=(const GlyphRenderer &) = delete;
+
     globjects::Program * program();
     const globjects::Program * program() const;
 
