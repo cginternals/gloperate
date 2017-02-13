@@ -109,9 +109,9 @@ target_include_directories(${target}
     PUBLIC
 
     INTERFACE
-#    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-#    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )
 
 

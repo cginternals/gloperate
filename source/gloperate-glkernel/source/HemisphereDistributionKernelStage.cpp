@@ -47,7 +47,7 @@ void HemisphereDistributionKernelStage::regenerateKernel()
 
 void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLContext * context)
 {
-    m_texture = new globjects::Texture(gl::GL_TEXTURE_2D);
+    m_texture = new globjects::Texture(gl::GL_TEXTURE_1D);
 }
 
 
@@ -71,7 +71,8 @@ void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext *
 
         m_texture->image1D(0, gl::GL_RGB32F, *kernelSize, 0, gl::GL_RGB, gl::GL_FLOAT, m_kernel.data());
 
-        kernel.setValue(std::vector<glm::vec3>{m_kernel.begin(), m_kernel.end()});
+        m_kernelData = {m_kernel.begin(), m_kernel.end()};
+        kernel.setValue(&m_kernelData);
         texture.setValue(m_texture);
     }
 }

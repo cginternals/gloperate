@@ -45,6 +45,7 @@ CPPEXPOSE_COMPONENT(DiscDistributionKernelStage, gloperate::Stage)
 DiscDistributionKernelStage::DiscDistributionKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , kernelSize("kernelSize", this, 1)
+, radius("radius", this, 1.0f)
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
@@ -63,7 +64,8 @@ void DiscDistributionKernelStage::regenerateKernel()
 {
     glkernel::sample::poisson_square(m_kernel);
 
-    glkernel::scale::range(m_kernel, -1.0f, 1.0f);
+    const float r = *radius;
+    glkernel::scale::range(m_kernel, -r, r);
 
     std::transform(m_kernel.begin(), m_kernel.end(), m_kernel.begin(), pushCorners);
 
@@ -97,7 +99,8 @@ void DiscDistributionKernelStage::onProcess(gloperate::AbstractGLContext * conte
 
         m_texture->image1D(0, gl::GL_RG32F, *kernelSize, 0, gl::GL_RG, gl::GL_FLOAT, m_kernel.data());
 
-        kernel.setValue(std::vector<glm::vec2>{m_kernel.begin(), m_kernel.end()});
+        m_kernelData = {m_kernel.begin(), m_kernel.end()};
+        kernel.setValue(&m_kernelData);
         texture.setValue(m_texture);
     }
 }

@@ -9,16 +9,13 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
+#include <globjects/base/ref_ptr.h>
+#include <globjects/Texture.h>
+
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-
-namespace globjects
-{
-    class Texture;
-    class Buffer;
-}
 
 
 namespace gloperate_glkernel
@@ -45,7 +42,7 @@ public:
     gloperate::Input<int> kernelSize;
     gloperate::Input<bool> regenerate;
 
-    gloperate::Output<std::vector<glm::vec3>> kernel;
+    gloperate::Output<std::vector<glm::vec3> *> kernel;
     gloperate::Output<globjects::Texture *> texture;
 
 protected:
@@ -58,8 +55,9 @@ protected:
 
 protected:
     glkernel::kernel3 m_kernel;
+    std::vector<glm::vec3> m_kernelData;
 
-    globjects::Texture * m_texture;
+    globjects::ref_ptr<globjects::Texture> m_texture;
     
 };
 

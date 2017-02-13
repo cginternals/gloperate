@@ -17,6 +17,7 @@ CPPEXPOSE_COMPONENT(TransparencyKernelStage, gloperate::Stage)
 
 TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
+, regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
 , m_texture(nullptr)
@@ -37,27 +38,31 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
         onContextInit(context);
     }
 
-    const size_t alphaValues = 256;
-    const size_t maskSize = 1024;
-    std::vector<unsigned char> newKernel(maskSize * alphaValues);
-
-    for (auto alphaIndex = 0; alphaIndex < alphaValues; alphaIndex++)
+    if (*regenerate)
     {
-        auto alphaVal = float(alphaIndex) / alphaValues;
-        auto numHits = int(std::floor(alphaVal * maskSize));
+        const size_t alphaValues = 256;
+        const size_t maskSize = 1024;
+        m_kernelData = std::vector<unsigned char>(maskSize * alphaValues);
 
-        auto lineBegin   = newKernel.begin() +  alphaIndex      * maskSize;
-        auto lineEnd     = newKernel.begin() + (alphaIndex + 1) * maskSize;
-        auto changePoint = lineBegin + numHits;
+        for (auto alphaIndex = 0; alphaIndex < alphaValues; alphaIndex++)
+        {
+            auto alphaVal = float(alphaIndex) / alphaValues;
+            auto numHits = int(std::floor(alphaVal * maskSize));
 
-        std::fill(lineBegin  , changePoint, 255);
-        std::fill(changePoint, lineEnd    , 0);
-        std::random_shuffle(lineBegin, lineEnd);
+            auto lineBegin   = m_kernelData.begin() +  alphaIndex      * maskSize;
+            auto lineEnd     = m_kernelData.begin() + (alphaIndex + 1) * maskSize;
+            auto changePoint = lineBegin + numHits;
+
+            std::fill(lineBegin  , changePoint, 255);
+            std::fill(changePoint, lineEnd    , 0);
+
+            std::random_shuffle(lineBegin, lineEnd);
+        }
+
+        m_texture->image2D(1, gl::GL_R8, maskSize, alphaValues, 0, gl::GL_R, gl::GL_BYTE, m_kernelData.data());
     }
 
-    m_texture->image2D(1, gl::GL_R8, maskSize, alphaValues, 0, gl::GL_R, gl::GL_BYTE, newKernel.data());
-
-    kernel.setValue(newKernel);
+    kernel.setValue(&m_kernelData);
     texture.setValue(m_texture);
 }
 

@@ -9,6 +9,9 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
+#include <globjects/base/ref_ptr.h>
+#include <globjects/Texture.h>
+
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
@@ -41,7 +44,9 @@ public:
     TransparencyKernelStage(gloperate::Environment * environment, const std::string & name = "Transparency Kernel");
 
 public:
-    gloperate::Output<std::vector<unsigned char>> kernel;
+    gloperate::Input<bool> regenerate;
+
+    gloperate::Output<std::vector<unsigned char> *> kernel;
     gloperate::Output<globjects::Texture *> texture;
 
 protected:
@@ -49,7 +54,9 @@ protected:
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
 protected:
-    globjects::Texture * m_texture;
+    std::vector<unsigned char> m_kernelData;
+
+    globjects::ref_ptr<globjects::Texture> m_texture;
 };
 
 

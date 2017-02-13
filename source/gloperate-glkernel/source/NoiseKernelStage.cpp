@@ -27,7 +27,7 @@ NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const s
 
 void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext * context)
 {
-    m_texture = new globjects::Texture(gl::GL_TEXTURE_2D);
+    m_texture = new globjects::Texture(gl::GL_TEXTURE_3D);
 }
 
 
@@ -47,7 +47,8 @@ void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
 
     m_texture->image3D(1, gl::GL_RGB32F, *dimensions, 0, gl::GL_RGB, gl::GL_FLOAT, m_kernel.data());
 
-    kernel.setValue(std::vector<glm::vec3>{m_kernel.begin(), m_kernel.end()});
+    m_kernelData = {m_kernel.begin(), m_kernel.end()};
+    kernel.setValue(&m_kernelData);
     texture.setValue(m_texture);
 }
 
