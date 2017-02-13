@@ -101,26 +101,27 @@ void WindowEventDispatcher::dispatchEvent(Window * window, WindowEvent * event)
 
 Window * WindowEventDispatcher::fromGLFW(GLFWwindow * glfwWindow)
 {
-    if (glfwWindow) {
+    if (glfwWindow)
+    {
         return static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
-    } else {
+    }
+    else
+    {
         return nullptr;
     }
 }
 
 glm::ivec2 WindowEventDispatcher::mousePosition(GLFWwindow * glfwWindow)
 {
-    if (glfwWindow)
-    {
-        double xd, yd;
-        glfwGetCursorPos(glfwWindow, &xd, &yd);
-
-        return glm::ivec2(std::floor(xd), std::floor(yd));
-    }
-    else
+    if (!glfwWindow)
     {
         return glm::ivec2();
     }
+
+    double xd, yd;
+    glfwGetCursorPos(glfwWindow, &xd, &yd);
+
+    return glm::ivec2(std::floor(xd), std::floor(yd));
 }
 
 void WindowEventDispatcher::handleRefresh(GLFWwindow * glfwWindow)

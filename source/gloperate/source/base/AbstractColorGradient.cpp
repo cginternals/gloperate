@@ -7,6 +7,8 @@
 
 #include <globjects/Texture.h>
 
+#include <gloperate/base/Color.h>
+
 
 namespace gloperate
 {

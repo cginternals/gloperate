@@ -55,7 +55,7 @@ add_subdirectory(gloperate-hidapi)
 add_subdirectory(gloperate-glkernel)
 #add_subdirectory(gloperate-assimp)
 #add_subdirectory(gloperate-osg)
-#add_subdirectory(gloperate-text)
+add_subdirectory(gloperate-text)
 
 # Plugins
 set(IDE_FOLDER "Plugins")

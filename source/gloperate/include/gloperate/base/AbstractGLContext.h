@@ -66,6 +66,14 @@ public:
     */
     const GLContextFormat & format() const;
 
+    /**
+    *  @brief
+    *    Initializes glbinding for current context
+    *
+    *  @remarks
+    *    Should only be called once per context
+    */
+    static void initializeGLBinding();
 
 protected:
     glbinding::ContextHandle m_handle;  ///< OpenGL context handle

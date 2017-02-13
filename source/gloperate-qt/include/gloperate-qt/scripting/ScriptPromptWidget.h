@@ -84,7 +84,16 @@ public:
     *  @return
     *    Pointer to syntax highlighter (can be null)
     */
-    QSyntaxHighlighter * syntaxHighlighter() const;
+    const QSyntaxHighlighter * syntaxHighlighter() const;
+
+    /**
+    *  @brief
+    *    Get assigned syntax highlighter
+    *
+    *  @return
+    *    Pointer to syntax highlighter (can be null)
+    */
+    QSyntaxHighlighter * syntaxHighlighter();
 
     /**
     *  @brief
@@ -106,7 +115,16 @@ public:
     *  @return
     *    Pointer to text completer (can be null)
     */
-    QCompleter * completer() const;
+    const QCompleter * completer() const;
+
+    /**
+    *  @brief
+    *    Get assigned text completer
+    *
+    *  @return
+    *    Pointer to text completer (can be null)
+    */
+    QCompleter * completer();
 
     /**
     *  @brief
@@ -255,7 +273,7 @@ protected:
     *  @param[in] e
     *    Keyboard event
     */
-    virtual void keyPressEvent(QKeyEvent * e);
+    virtual void keyPressEvent(QKeyEvent * e) override;
 
     /**
     *  @brief
@@ -280,7 +298,7 @@ protected:
     *    source contains a URI, it is passed as file name (comma-separated,
     *    if multiple URIs are provided).
     */
-    virtual void insertFromMimeData(const QMimeData * source);
+    virtual void insertFromMimeData(const QMimeData * source) override;
 
     /**
     *  @brief

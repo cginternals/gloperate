@@ -48,7 +48,16 @@ public:
     *  @return
     *    Target TextEdit item (can be null)
     */
-    QQuickItem * target() const;
+    const QQuickItem * target() const;
+
+    /**
+    *  @brief
+    *    Get target
+    *
+    *  @return
+    *    Target TextEdit item (can be null)
+    */
+    QQuickItem * target();
 
     /**
     *  @brief

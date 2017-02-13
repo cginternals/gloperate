@@ -27,8 +27,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the storer belongs (must NOT be null!)
     */
-    Storer();
+    Storer(Environment * environment);
 
     /**
     *  @brief

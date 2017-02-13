@@ -27,7 +27,7 @@ public:
     *    Property name
     *  @param[in] parent
     *    Parent stage (must NOT be null!)
-    *  @param[in] value
+    *  @param[in] defaultValue
     *    Default value
     *
     *  @remarks
@@ -43,7 +43,7 @@ public:
     *
     *  @param[in] name
     *    Property name
-    *  @param[in] value
+    *  @param[in] defaultValue
     *    Default value
     *
     *  @remarks
@@ -58,6 +58,23 @@ public:
     *    Destructor
     */
     virtual ~Input();
+
+    /**
+    *  @brief
+    *    Set value
+    *
+    *  @tparam[in] U
+    *    Type of the assigned value. Must be implicitly convertible to T.
+    *  @param[in] value
+    *    Value
+    *    
+    *  @remarks
+    *    Has the same effect as calling setValue().
+    *    
+    *  @see setValue()
+    */
+    template <typename U, typename Enable = typename std::enable_if<std::is_convertible<U, T>::value>::type>
+    Input<T> & operator=(const U & value);
 
 
 protected:

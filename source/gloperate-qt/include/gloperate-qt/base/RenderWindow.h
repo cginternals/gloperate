@@ -5,7 +5,8 @@
 #include <gloperate-qt/base/OpenGLWindow.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
     class Environment;
     class Canvas;
     class Stage;

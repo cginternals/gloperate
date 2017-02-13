@@ -2,14 +2,16 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <string>
 
-#include <cppassist/string/conversion.h>
-#include <cppassist/string/regex.h>
-#include <cppassist/io/FilePath.h>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 #include <cppexpose/typed/GetTyped.h>
+#include <cppassist/fs/FilePath.h>
+
+#include <gloperate/gloperate_api.h>
 
 #include <gloperate/base/Color.h>
 
@@ -29,24 +31,7 @@ namespace gloperate
 *    String representation
 */
 template <typename T, glm::length_t Size>
-std::string glmToString(const T * data)
-{
-    std::stringstream ss;
-
-    ss << "(";
-
-    for (unsigned i = 0; i < Size; ++i)
-    {
-        if (i > 0)
-            ss << ", ";
-
-        ss << data[i];
-    }
-
-    ss << ")";
-
-    return ss.str();
-}
+std::string glmToString(const T * data);
 
 /**
 *  @brief
@@ -61,34 +46,7 @@ std::string glmToString(const T * data)
 *    'true' if all went fine, else 'false'
 */
 template <typename T, glm::length_t Size>
-bool glmFromString(const std::string & string, T * data)
-{
-    std::string elementRegex = std::is_integral<T>::value ? "(-|\\+)?\\d+" : "(-|\\+)?\\d+\\.?\\d*";
-
-    std::stringstream ss;
-    ss << "\\s*\\(";
-    for (unsigned i=0; i<Size-1; ++i)
-    {
-        ss << "(" << elementRegex << ")";
-        ss << "\\s*,\\s*";
-    }
-    ss << elementRegex << "\\)\\s*";
-
-    if (!cppassist::matchesRegex(string, ss.str()))
-        return false;
-
-    std::vector<std::string> parts = cppassist::extract(string, elementRegex);
-
-    assert(parts.size() == Size);
-
-    for (unsigned i = 0; i < Size; ++i)
-    {
-        const std::string & part = parts[i];
-        data[i] = std::is_integral<T>::value ? static_cast<T>(std::stoi(part)) : static_cast<T>(std::stod(part));
-    }
-
-    return true;
-}
+bool glmFromString(const std::string & string, T * data);
 
 /**
 *  @brief
@@ -98,20 +56,21 @@ template <typename T>
 class VectorPrefix
 {
 public:
-    static std::string getPrefix()
-    {
-        return "";
-    }
+    static const std::string & getPrefix();
 };
 
+/**
+*  @brief
+*    Helper template to determine the vector type as string
+*
+*  @remarks
+*    Spezialization for integer vector types
+*/
 template <>
 class VectorPrefix<int>
 {
 public:
-    static std::string getPrefix()
-    {
-        return "i";
-    }
+    static const std::string & getPrefix();
 };
 
 
@@ -130,44 +89,21 @@ template <typename BASE>
 class TypedFilename : public cppexpose::Typed<cppassist::FilePath, BASE>
 {
 public:
-    TypedFilename()
-    {
-    }
+    TypedFilename();
 
-    virtual ~TypedFilename()
-    {
-    }
+    virtual ~TypedFilename();
 
-    bool isString() const override
-    {
-        return true;
-    }
+    bool isString() const override;
 
-    std::string toString() const override
-    {
-        return this->value().path();
-    }
+    std::string toString() const override;
 
-    bool fromString(const std::string & string) override
-    {
-        this->setValue(cppassist::FilePath(string));
-        return true;
-    }
+    bool fromString(const std::string & string) override;
 
-    Variant toVariant() const override
-    {
-        return Variant::fromValue<std::string>(this->toString());
-    }
+    Variant toVariant() const override;
 
-    bool fromVariant(const Variant & variant) override
-    {
-        return this->fromString(variant.value<std::string>());
-    }
+    bool fromVariant(const Variant & variant) override;
 
-    virtual std::string typeName() const override
-    {
-        return "filename";
-    }
+    virtual std::string typeName() const override;
 };
 
 template <typename BASE>
@@ -185,51 +121,21 @@ template <typename BASE>
 class TypedColor : public cppexpose::Typed<gloperate::Color, BASE>
 {
 public:
-    TypedColor()
-    {
-    }
+    TypedColor();
 
-    virtual ~TypedColor()
-    {
-    }
+    virtual ~TypedColor();
 
-    bool isString() const override
-    {
-        return false;
-    }
+    bool isString() const override;
 
-    std::string toString() const override
-    {
-        return this->value().toHexString();
-    }
+    std::string toString() const override;
 
-    bool fromString(const std::string & string) override
-    {
-        gloperate::Color color;
+    bool fromString(const std::string & string) override;
 
-        if (color.fromHexString(string))
-        {
-            this->setValue(color);
-            return true;
-        }
+    Variant toVariant() const override;
 
-        return false;
-    }
+    bool fromVariant(const Variant & variant) override;
 
-    Variant toVariant() const override
-    {
-        return Variant::fromValue<std::string>(this->toString());
-    }
-
-    bool fromVariant(const Variant & variant) override
-    {
-        return this->fromString(variant.value<std::string>());
-    }
-
-    virtual std::string typeName() const override
-    {
-        return "color";
-    }
+    virtual std::string typeName() const override;
 };
 
 template <typename BASE>
@@ -247,43 +153,19 @@ template <typename VectorType, typename ValueType, glm::length_t Size, typename 
 class TypedGlmVec : public cppexpose::Typed<VectorType, BASE>
 {
 public:
-    TypedGlmVec()
-    {
-    }
+    TypedGlmVec();
 
-    virtual ~TypedGlmVec()
-    {
-    }
+    virtual ~TypedGlmVec();
 
-    std::string toString() const override
-    {
-        return gloperate::glmToString<ValueType, Size>(glm::value_ptr(this->value())); 
-    }
+    std::string toString() const override;
 
-    bool fromString(const std::string & string) override
-    {
-        VectorType value;
-        if (!gloperate::glmFromString<ValueType, Size>(string, glm::value_ptr(value)))
-            return false;
+    bool fromString(const std::string & string) override;
 
-        this->setValue(value);
-        return true;
-    }
+    cppexpose::Variant toVariant() const override;
 
-    cppexpose::Variant toVariant() const override
-    {
-        return toString();
-    }
+    bool fromVariant(const cppexpose::Variant & value) override;
 
-    bool fromVariant(const cppexpose::Variant & value) override
-    {
-        return fromString(value.toString());
-    }
-
-    virtual std::string typeName() const override
-    {
-        return "glm::" + gloperate::VectorPrefix<ValueType>::getPrefix() + "vec" + cppassist::toString<int>(Size);
-    }
+    virtual std::string typeName() const override;
 };
 
 template <typename BASE>
@@ -324,3 +206,6 @@ struct GetTyped<glm::ivec4, BASE>
 
 
 } // namespace cppexpose
+
+
+#include <gloperate/base/ExtendedProperties.inl>

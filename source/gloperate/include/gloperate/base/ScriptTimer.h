@@ -30,7 +30,7 @@ public:
     *  @param[in] func
     *    Callback function
     */
-    ScriptTimer(Environment * environment, cppexpose::Function func);
+    ScriptTimer(Environment * environment, const cppexpose::Function & func);
 
     /**
     *  @brief

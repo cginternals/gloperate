@@ -26,6 +26,26 @@ namespace gloperate
 template <typename T>
 class Slot : public cppexpose::DirectValue<T, AbstractSlot>
 {
+protected:
+    //@{
+    /**
+    * @see operator->()
+    */
+    template <typename U>
+    struct DereferenceHelper
+    {
+        using Pointer = U *;
+        static Pointer pointer(U * value);
+    };
+    template <typename U>
+    struct DereferenceHelper<U *>
+    {
+        using Pointer = U *;
+        static Pointer pointer(U ** value);
+    };
+    //@}
+
+
 public:
     cppexpose::Signal<const T &> valueChanged;      ///< Called when the value has been changed
     cppexpose::Signal<>          connectionChanged; ///< Called when the connection has been changed
@@ -97,9 +117,7 @@ public:
     *    Reference to this slot
     */
     Slot<T> & operator<<(Slot<T> & source);
-    //@}
 
-    //@{
     /**
     *  @brief
     *    Dereference pointer operator
@@ -107,7 +125,6 @@ public:
     *  @return
     *    Reference to the stored data object
     */
-    T & operator*();
     const T & operator*() const;
     //@}
 
@@ -117,10 +134,10 @@ public:
     *    Dereference pointer operator
     *
     *  @return
-    *    Pointer to the stored data object (never null)
+    *    Pointer to the stored data object (non-pointer T) or the stored pointer (pointer T)
     */
-    T * operator->();
-    const T * operator->() const;
+    auto operator->() -> typename DereferenceHelper<T>::Pointer;
+    auto operator->() const -> typename DereferenceHelper<const T>::Pointer;
     //@}
 
     // Virtual AbstractSlot interface

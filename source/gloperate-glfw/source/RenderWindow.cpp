@@ -34,17 +34,32 @@ RenderWindow::~RenderWindow()
     delete m_canvas;
 }
 
-gloperate::Environment * RenderWindow::environment() const
+const gloperate::Environment * RenderWindow::environment() const
 {
     return m_environment;
 }
 
-gloperate::Stage * RenderWindow::renderStage() const
+gloperate::Environment * RenderWindow::environment()
+{
+    return m_environment;
+}
+
+const gloperate::Stage * RenderWindow::renderStage() const
 {
     return m_canvas->renderStage();
 }
 
-gloperate::Canvas * RenderWindow::canvas() const
+gloperate::Stage * RenderWindow::renderStage()
+{
+    return m_canvas->renderStage();
+}
+
+const gloperate::Canvas * RenderWindow::canvas() const
+{
+    return m_canvas;
+}
+
+gloperate::Canvas * RenderWindow::canvas()
 {
     return m_canvas;
 }

@@ -79,5 +79,14 @@ void Output<T>::onValueChanged(const T & value)
     this->m_cycleGuard[this_id] = false;
 }
 
+template <typename T>
+template <typename U, typename Enable>
+Output<T> & Output<T>::operator=(const U & value)
+{
+    setValue(value);
+
+    return *this;
+}
+
 
 } // namespace gloperate

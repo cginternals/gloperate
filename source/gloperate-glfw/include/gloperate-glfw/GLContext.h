@@ -45,9 +45,21 @@ public:
     */
     GLFWwindow * window() const;
 
-    // Virtual gloperate::AbstractGLContext functions
+    // Virtual gloperate::AbstractContext functions
     virtual void use() const override;
     virtual void release() const override;
+
+    /**
+    *  @brief
+    *    Update current swap behavior
+    *
+    *  @param[in] swapBehavior
+    *    The new behavior for swapping the buffers
+    *
+    *  @remarks
+    *    Operates on the current OpenGL context
+    */
+    static void updateSwapBehavior(gloperate::GLContextFormat::SwapBehavior swapBehavior);
 
 
 protected:

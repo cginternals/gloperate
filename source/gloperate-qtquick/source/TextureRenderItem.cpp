@@ -4,6 +4,10 @@
 #include <QVariant>
 #include <QColor>
 
+#include <globjects/VertexArray.h>
+#include <globjects/Program.h>
+#include <globjects/Texture.h>
+
 #include <gloperate/base/AbstractCanvas.h>
 
 #include <gloperate-qt/base/GLContext.h>
@@ -11,7 +15,6 @@
 
 #include <gloperate-qtquick/QuickView.h>
 #include <gloperate-qtquick/Utils.h>
-
 
 using namespace gloperate_qt;
 
@@ -29,7 +32,6 @@ TextureRenderItem::TextureRenderItem(QQuickItem * parent)
 , m_height(0.0f)
 , m_devicePixelRatio(1.0f)
 , m_initialized(false)
-, m_texture(nullptr)
 {
     // Set input modes
     setAcceptedMouseButtons(Qt::AllButtons);
@@ -102,7 +104,7 @@ int TextureRenderItem::getWindowHeight()
     return window()->height();
 }
 
-QString TextureRenderItem::path() const
+const QString & TextureRenderItem::path() const
 {
     return m_path;
 }

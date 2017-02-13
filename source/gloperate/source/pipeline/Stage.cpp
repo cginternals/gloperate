@@ -24,8 +24,20 @@ namespace gloperate
 {
 
 
+Stage::CreateConnectedInputProxy::CreateConnectedInputProxy(const std::string & name, Stage * stage)
+: m_name(name)
+, m_stage(stage)
+, m_createdCount(0)
+{
+}
+
+Stage::CreateConnectedInputProxy::~CreateConnectedInputProxy()
+{
+    assert(m_createdCount == 1);
+}
+
 Stage::Stage(Environment * environment, const std::string & className, const std::string & name)
-: cppexpose::Object((name == "" || name.empty()) ? className : name)
+: cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
 {
@@ -158,6 +170,13 @@ AbstractSlot * Stage::input(const std::string & name)
 
     return m_inputsMap.at(name);
 }
+
+
+Stage::CreateConnectedInputProxy Stage::createInput(const std::string & name)
+{
+    return { name, this };
+}
+
 
 void Stage::addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownership)
 {
@@ -298,7 +317,7 @@ std::string Stage::getFreeName(const std::string & name) const
 
     while (propertyExists(nameOut))
     {
-        nameOut = name + cppassist::toString<int>(i);
+        nameOut = name + cppassist::string::toString<int>(i);
         i++;
     }
 
@@ -317,6 +336,7 @@ AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string
     if (type == "ivec3")   return createSlot<glm::ivec3>              (slotType, name);
     if (type == "ivec4")   return createSlot<glm::ivec4>              (slotType, name);
     if (type == "string")  return createSlot<std::string>             (slotType, name);
+    if (type == "file")    return createSlot<cppassist::FilePath>     (slotType, name);
     if (type == "color")   return createSlot<gloperate::Color>        (slotType, name);
     if (type == "texture") return createSlot<globjects::Texture *>    (slotType, name);
     if (type == "fbo")     return createSlot<globjects::Framebuffer *>(slotType, name);
@@ -499,6 +519,7 @@ cppexpose::Variant Stage::scr_slotTypes()
     types.asArray()->push_back("ivec3");
     types.asArray()->push_back("ivec4");
     types.asArray()->push_back("string");
+    types.asArray()->push_back("file");
     types.asArray()->push_back("color");
     types.asArray()->push_back("texture");
     types.asArray()->push_back("fbo");

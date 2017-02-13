@@ -40,12 +40,22 @@ Canvas::~Canvas()
 {
 }
 
-PipelineContainer * Canvas::pipelineContainer() const
+const PipelineContainer * Canvas::pipelineContainer() const
 {
-    return const_cast<PipelineContainer *>(&m_pipelineContainer);
+    return &m_pipelineContainer;
 }
 
-Stage * Canvas::renderStage() const
+PipelineContainer * Canvas::pipelineContainer()
+{
+    return &m_pipelineContainer;
+}
+
+const Stage * Canvas::renderStage() const
+{
+    return m_pipelineContainer.renderStage();
+}
+
+Stage * Canvas::renderStage()
 {
     return m_pipelineContainer.renderStage();
 }
@@ -180,7 +190,7 @@ void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
     m_mouseDevice->wheelScroll(delta, pos);
 }
 
-glm::vec4 Canvas::savedDeviceViewport()
+const glm::vec4 & Canvas::savedDeviceViewport() const
 {
     return m_savedDeviceVP;
 }

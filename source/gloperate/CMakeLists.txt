@@ -42,9 +42,13 @@ set(headers
     ${include_path}/base/Environment.h
     ${include_path}/base/System.h
     ${include_path}/base/ComponentManager.h
+    ${include_path}/base/Component.h
+    ${include_path}/base/Component.inl
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
+    ${include_path}/base/AbstractComponent.h
+    ${include_path}/base/AbstractComponent.inl
     ${include_path}/base/Canvas.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
@@ -66,6 +70,7 @@ set(headers
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
     ${include_path}/base/ExtendedProperties.h
+    ${include_path}/base/ExtendedProperties.inl
     ${include_path}/base/AbstractColorGradient.h
     ${include_path}/base/AbstractColorGradient.inl
     ${include_path}/base/Color.h
@@ -86,30 +91,64 @@ set(headers
     ${include_path}/pipeline/Input.inl
     ${include_path}/pipeline/Output.h
     ${include_path}/pipeline/Output.inl
-    ${include_path}/pipeline/StageComponent.h
-    ${include_path}/pipeline/StageComponent.inl
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/Camera.h
     ${include_path}/rendering/Drawable.h
     ${include_path}/rendering/Drawable.inl
+    ${include_path}/rendering/NoiseTexture.h
     ${include_path}/rendering/RenderPass.h
+    ${include_path}/rendering/LightType.h
+    ${include_path}/rendering/Light.h
+    ${include_path}/rendering/RenderTarget.h
+    ${include_path}/rendering/RenderTargetType.h
+    ${include_path}/rendering/TransparencyMasksGenerator.h
+    ${include_path}/rendering/ScreenAlignedQuad.h
+    ${include_path}/rendering/ScreenAlignedTriangle.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/CustomFramebufferStage.h
     ${include_path}/stages/base/FramebufferStage.h
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/ProceduralTextureStage.h
     ${include_path}/stages/base/MixerStage.h
     ${include_path}/stages/base/SplitStage.h
+    ${include_path}/stages/base/BlitStage.h
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
+    ${include_path}/stages/base/ShaderStage.h
+    ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
+    ${include_path}/stages/demos/ShaderDemoPipeline.h
+    ${include_path}/stages/demos/DemoAntialiasableTriangleStage.h
+    ${include_path}/stages/demos/DemoAntialiasingPipeline.h
+    ${include_path}/stages/demos/DemoDOFCubeStage.h
+    ${include_path}/stages/demos/DemoDOFPipeline.h
+    ${include_path}/stages/demos/DemoSSAORenderingStage.h
+    ${include_path}/stages/demos/DemoSSAOPostprocessingStage.h
+    ${include_path}/stages/demos/DemoSSAOPipeline.h
+    ${include_path}/stages/demos/DemoTransparencyStage.h
+    ${include_path}/stages/demos/DemoTransparencyPipeline.h
+    ${include_path}/stages/demos/DemoMultiFramePipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
+    ${include_path}/stages/demos/DemoRenderStage.h
     ${include_path}/stages/demos/TimerStage.h
     ${include_path}/stages/demos/ColorizeStage.h
+    ${include_path}/stages/demos/LightTestStage.h
+    ${include_path}/stages/demos/LightTestPipeline.h
+    ${include_path}/stages/lights/LightCreationStage.h
+    ${include_path}/stages/lights/LightBufferTextureStage.h
+    ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
+    ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
+    ${include_path}/stages/multiframe/MultiFrameControlStage.h
+    ${include_path}/stages/multiframe/MultiFrameDiscDistributionStage.h
+    ${include_path}/stages/multiframe/NoiseKernelStage.h
+    ${include_path}/stages/multiframe/SSAOKernelStage.h
+    ${include_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.h
+    ${include_path}/stages/multiframe/TransparencyKernelStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -138,6 +177,7 @@ set(sources
     ${source_path}/base/AbstractCanvas.cpp
     ${source_path}/base/Canvas.cpp
     ${source_path}/base/AbstractContext.cpp
+    ${source_path}/base/AbstractComponent.cpp
     ${source_path}/base/AbstractGLContext.cpp
     ${source_path}/base/AbstractGLContextFactory.cpp
     ${source_path}/base/GLContextFormat.cpp
@@ -155,33 +195,67 @@ set(sources
     ${source_path}/base/ColorGradientList.cpp
     ${source_path}/base/ColorGradientPreparation.cpp
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
+    ${source_path}/base/AbstractColorGradient.cpp
+    ${source_path}/base/ExtendedProperties.cpp
 
     ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
     ${source_path}/pipeline/AbstractSlot.cpp
-    ${source_path}/pipeline/StageComponent.cpp
 
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp
     ${source_path}/rendering/Drawable.cpp
+    ${source_path}/rendering/NoiseTexture.cpp
     ${source_path}/rendering/RenderPass.cpp
+    ${source_path}/rendering/RenderTarget.cpp
+    ${source_path}/rendering/TransparencyMasksGenerator.cpp
+    ${source_path}/rendering/ScreenAlignedQuad.cpp
+    ${source_path}/rendering/ScreenAlignedTriangle.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/CustomFramebufferStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
+    ${source_path}/stages/base/ShaderStage.cpp
+    ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
     ${source_path}/stages/base/ProceduralTextureStage.cpp
     ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/base/SplitStage.cpp
+    ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/demos/DemoStage.cpp
     ${source_path}/stages/demos/DemoPipeline.cpp
+    ${source_path}/stages/demos/ShaderDemoPipeline.cpp
+    ${source_path}/stages/demos/DemoAntialiasableTriangleStage.cpp
+    ${source_path}/stages/demos/DemoAntialiasingPipeline.cpp
+    ${source_path}/stages/demos/DemoDOFCubeStage.cpp
+    ${source_path}/stages/demos/DemoDOFPipeline.cpp
+    ${source_path}/stages/demos/DemoSSAORenderingStage.cpp
+    ${source_path}/stages/demos/DemoSSAOPostprocessingStage.cpp
+    ${source_path}/stages/demos/DemoSSAOPipeline.cpp
+    ${source_path}/stages/demos/DemoTransparencyStage.cpp
+    ${source_path}/stages/demos/DemoTransparencyPipeline.cpp
+    ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
+    ${source_path}/stages/demos/DemoRenderStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
     ${source_path}/stages/demos/ColorizeStage.cpp
+    ${source_path}/stages/demos/LightTestStage.cpp
+    ${source_path}/stages/demos/LightTestPipeline.cpp
+    ${source_path}/stages/lights/LightCreationStage.cpp
+    ${source_path}/stages/lights/LightBufferTextureStage.cpp
+    ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
+    ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
+    ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp
+    ${source_path}/stages/multiframe/MultiFrameDiscDistributionStage.cpp
+    ${source_path}/stages/multiframe/NoiseKernelStage.cpp
+    ${source_path}/stages/multiframe/SSAOKernelStage.cpp
+    ${source_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.cpp
+    ${source_path}/stages/multiframe/TransparencyKernelStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp
@@ -222,6 +296,23 @@ add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
 # Export library for downstream projects
 export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
+
+# Check for availability of module; use pre-generated version if not found
+if (WriterCompilerDetectionHeaderFound)
+    write_compiler_detection_header(
+        FILE ${feature_file}
+        PREFIX ${target_id}
+        COMPILERS AppleClang Clang GNU MSVC
+        FEATURES cxx_noexcept
+        VERSION 3.2
+    )
+else()
+    file(
+        COPY ${PROJECT_SOURCE_DIR}/source/codegeneration/${target}_features.h
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/${target}
+        USE_SOURCE_PERMISSIONS
+    )
+endif()
 
 # Create API export header
 generate_export_header(${target}

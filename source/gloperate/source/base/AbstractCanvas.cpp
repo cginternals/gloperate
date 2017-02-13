@@ -1,18 +1,21 @@
 
 #include <gloperate/base/AbstractCanvas.h>
 
-#include <globjects/base/baselogging.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/tools/AbstractVideoExporter.h>
 #include <gloperate/tools/ImageExporter.h>
 
 
+namespace
+{
+    auto s_nextCanvasId = size_t(0);
+}
+
+
 namespace gloperate
 {
-
-
-static int s_nextCanvasId = 0;
 
 
 AbstractCanvas::AbstractCanvas(Environment * environment)
@@ -49,12 +52,22 @@ AbstractCanvas::~AbstractCanvas()
     }
 }
 
-Environment * AbstractCanvas::environment() const
+const Environment * AbstractCanvas::environment() const
 {
     return m_environment;
 }
 
-AbstractGLContext * AbstractCanvas::openGLContext() const
+Environment * AbstractCanvas::environment()
+{
+    return m_environment;
+}
+
+const AbstractGLContext * AbstractCanvas::openGLContext() const
+{
+    return m_openGLContext;
+}
+
+AbstractGLContext * AbstractCanvas::openGLContext()
 {
     return m_openGLContext;
 }
@@ -78,7 +91,7 @@ void AbstractCanvas::setOpenGLContext(AbstractGLContext * context)
     }
 }
 
-void AbstractCanvas::exportImage(std::string filename, int width, int height, int renderIterations)
+void AbstractCanvas::exportImage(const std::string & filename, int width, int height, int renderIterations)
 {
     // Lazy creation of image exporter
     if (!m_imageExporter)
@@ -93,7 +106,7 @@ void AbstractCanvas::exportImage(std::string filename, int width, int height, in
     m_requestImage = true;
 }
 
-void AbstractCanvas::setVideoTarget(const cppexpose::Variant & parameters, std::string backend)
+void AbstractCanvas::setVideoTarget(const cppexpose::Variant & parameters, const std::string & backend)
 {
     // Check parameters
     const cppexpose::VariantMap * map = parameters.asMap();
@@ -110,11 +123,12 @@ void AbstractCanvas::setVideoTarget(const cppexpose::Variant & parameters, std::
     m_videoExporter->setTarget(this, *map);
 }
 
-void AbstractCanvas::exportVideo(const cppexpose::Variant & parameters, std::string backend)
+void AbstractCanvas::exportVideo(const cppexpose::Variant & parameters, const std::string & backend)
 {
     setVideoTarget(parameters, backend);
 
-    if (!m_videoExporter) return;
+    if (!m_videoExporter)
+        return;
 
     // Execute video exporter on next frame
     m_requestVideo = true;
@@ -124,7 +138,7 @@ void AbstractCanvas::toggleVideoExport()
 {
     if (!m_videoExporter && !m_asyncVideoExportOn)
     {
-        globjects::warning() << "VideoExporter not properly initialized. Call setVideoTarget() before using the video export functionality.";
+        cppassist::warning() << "VideoExporter not properly initialized. Call setVideoTarget() before using the video export functionality.";
         return;
     }
 

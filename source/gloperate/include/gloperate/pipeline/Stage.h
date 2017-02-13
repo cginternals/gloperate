@@ -8,10 +8,7 @@
 
 #include <cppexpose/reflection/Object.h>
 
-#include <gloperate/gloperate_api.h>
-
-// Include Component<Stage> specialization for downstream plugins
-#include <gloperate/pipeline/StageComponent.h>
+#include <gloperate/base/Component.h>
 
 
 namespace gloperate
@@ -44,12 +41,38 @@ class Output;
 class GLOPERATE_API Stage : public cppexpose::Object
 {
 public:
+    // Define component types
+    using AbstractComponentType = gloperate::AbstractComponent<Stage>;
+
+    template <typename Type>
+    using ComponentType = gloperate::Component<Stage, Type>;
+
     // Import data types into local namespace
     template <typename T>
     using Input = gloperate::Input<T>;
 
     template <typename T>
     using Output = gloperate::Output<T>;
+    
+    // Helper class for createInput()
+    class CreateConnectedInputProxy
+    {
+        friend class Stage;
+    private:
+        CreateConnectedInputProxy(const std::string & name, Stage * stage);
+
+    public:
+        CreateConnectedInputProxy(CreateConnectedInputProxy &&) = delete;
+        ~CreateConnectedInputProxy();
+
+        template <typename T>
+        Input<T> * operator<<(Slot<T> & source);
+
+    private:
+        std::string m_name;
+        Stage * m_stage;
+        int m_createdCount;
+    };
 
 
 public:
@@ -71,7 +94,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    Stage(Environment * environment, const std::string & className = "Stage", const std::string & name = "Stage");
+    Stage(Environment * environment, const std::string & className = "Stage", const std::string & name = "");
 
     /**
     *  @brief
@@ -246,6 +269,16 @@ public:
 
     /**
     *  @brief
+    *    Get inputs of type T
+    *
+    *  @return
+    *    List of inputs of type T on the stage
+    */
+    template <typename T>
+    std::vector<Input<T> *> inputs() const;
+
+    /**
+    *  @brief
     *    Get input by name
     *
     *  @param[in] name
@@ -290,6 +323,44 @@ public:
 
     /**
     *  @brief
+    *    Create dynamic input connected to a source
+    *
+    *  @param[in] name
+    *    Name of the input
+    *
+    *  @return
+    *    A proxy object that defers the actual creation to the operator<<
+    *
+    *  @remarks
+    *    The operator<< must be called exactly once on the returned proxy object.
+    *    
+    *    createInput("somename") << someOutput; behaves exactly like
+    *    createConnectedInput("somename", someOutput);
+    */
+    CreateConnectedInputProxy createInput(const std::string & name);
+
+    /**
+    *  @brief
+    *    Create dynamic input connected to a source
+    *
+    *  @tparam T
+    *    Type of the input
+    *  @param[in] name
+    *    Name of the input
+    *  @param[in] source
+    *    The input to connect the new input to
+    *
+    *  @return
+    *    Input, nullptr on error
+    *
+    *  @remarks
+    *    Creates a dynamic input connected to source and transfers ownership to the stage.
+    */
+    template <typename T>
+    Input<T> * createConnectedInput(const std::string & name, Slot<T> & source);
+
+    /**
+    *  @brief
     *    Add input
     *
     *  @param[in] input
@@ -316,6 +387,16 @@ public:
     *    List of outputs on the stage
     */
     const std::vector<AbstractSlot *> & outputs() const;
+
+    /**
+    *  @brief
+    *    Get outputs of type T
+    *
+    *  @return
+    *    List of outputs of type T on the stage
+    */
+    template <typename T>
+    std::vector<Output<T> *> outputs() const;
 
     /**
     *  @brief

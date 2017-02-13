@@ -10,7 +10,9 @@
 
 class QQuickWindow;
 
-namespace gloperate {
+
+namespace gloperate
+{
     class AbstractCanvas;
 }
 
@@ -56,11 +58,20 @@ public:
     *  @return
     *    Canvas that renders into the item (can be null)
     */
-    gloperate::AbstractCanvas * canvas() const;
+    const gloperate::AbstractCanvas * canvas() const;
+
+    /**
+    *  @brief
+    *    Get canvas
+    *
+    *  @return
+    *    Canvas that renders into the item (can be null)
+    */
+    gloperate::AbstractCanvas * canvas();
 
 
 protected:
-    QString stage() const;
+    const QString & stage() const;
     void setStage(const QString & name);
     void onWindowChanged(QQuickWindow * window);
     void onBeforeRendering();

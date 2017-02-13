@@ -2,10 +2,7 @@
 #pragma once
 
 
-#include <unordered_map>
-#include <chrono>
-
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 

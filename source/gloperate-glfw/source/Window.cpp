@@ -102,7 +102,12 @@ void Window::destroy()
     }
 }
 
-GLContext * Window::context() const
+const GLContext * Window::context() const
+{
+    return m_context;
+}
+
+GLContext * Window::context()
 {
     return m_context;
 }

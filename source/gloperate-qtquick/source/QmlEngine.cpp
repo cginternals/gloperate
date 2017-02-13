@@ -9,7 +9,7 @@
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/function/Function.h>
 
-#include <cppassist/io/FilePath.h>
+#include <cppassist/fs/FilePath.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
@@ -53,7 +53,12 @@ QmlEngine::~QmlEngine()
 {
 }
 
-gloperate::Environment * QmlEngine::environment() const
+const gloperate::Environment * QmlEngine::environment() const
+{
+    return m_environment;
+}
+
+gloperate::Environment * QmlEngine::environment()
 {
     return m_environment;
 }
@@ -323,6 +328,11 @@ const QJSValue & QmlEngine::global() const
     return m_global;
 }
 
+QJSValue & QmlEngine::global()
+{
+    return m_global;
+}
+
 void QmlEngine::setGlobal(const QJSValue & obj)
 {
     m_global = obj;
@@ -333,12 +343,17 @@ const QJSValue & QmlEngine::gloperate() const
     return m_gloperate;
 }
 
+QJSValue & QmlEngine::gloperate()
+{
+    return m_gloperate;
+}
+
 void QmlEngine::setGloperate(const QJSValue & obj)
 {
     m_gloperate = obj;
 }
 
-QString QmlEngine::glOperateModulePath() const
+const QString & QmlEngine::gloperateModulePath() const
 {
     return m_gloperateQmlPath;
 }

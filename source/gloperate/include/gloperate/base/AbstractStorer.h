@@ -5,11 +5,14 @@
 #include <string>
 #include <vector>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/base/Component.h>
 
 
 namespace gloperate
 {
+
+
+class Environment;
 
 
 /**
@@ -19,11 +22,22 @@ namespace gloperate
 class GLOPERATE_API AbstractStorer 
 {
 public:
+    // Define component types
+    using AbstractComponentType = gloperate::AbstractComponent<AbstractStorer>;
+
+    template <typename Type>
+    using ComponentType = gloperate::Component<AbstractStorer, Type>;
+
+
+public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the storer belongs (must NOT be null!)
     */
-    AbstractStorer();
+    explicit AbstractStorer(Environment * environment);
 
     /**
     *  @brief
@@ -35,13 +49,13 @@ public:
     *  @brief
     *    Check if this storer can store a specific file type
     *
-    *  @param[in] ext
+    *  @param[in] extension
     *    File extension (e.g., '.png')
     *
     *  @return
     *    'true' if storing is implemented for given file type, else 'false'
     */
-    virtual bool canStore(const std::string & ext) const = 0;
+    virtual bool canStore(const std::string & extension) const = 0;
 
     /**
     *  @brief
@@ -66,6 +80,10 @@ public:
     *    Example string: "*.mft *.any *.txt"
     */
     virtual std::string allStoringTypes() const = 0;
+
+
+protected:
+    Environment * m_environment; ///< Gloperate environment to which the storer belongs
 };
 
 

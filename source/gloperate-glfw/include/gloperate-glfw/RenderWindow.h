@@ -2,12 +2,13 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 #include <gloperate-glfw/Window.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
     class Environment;
     class Canvas;
     class Stage;
@@ -47,7 +48,16 @@ public:
     *  @return
     *    Environment (cannot be null)
     */
-    gloperate::Environment * environment() const;
+    const gloperate::Environment * environment() const;
+
+    /**
+    *  @brief
+    *    Get gloperate environment
+    *
+    *  @return
+    *    Environment (cannot be null)
+    */
+    gloperate::Environment * environment();
 
     /**
     *  @brief
@@ -56,16 +66,34 @@ public:
     *  @return
     *    Render stage that renders into the window (can be null)
     */
-    gloperate::Stage * renderStage() const;
+    const gloperate::Stage * renderStage() const;
 
-     /**
+    /**
+    *  @brief
+    *    Get render stage
+    *
+    *  @return
+    *    Render stage that renders into the window (can be null)
+    */
+    gloperate::Stage * renderStage();
+
+    /**
     *  @brief
     *    Get canvas
     *
     *  @return
     *    Canvas that is rendered on
     */
-    gloperate::Canvas * canvas() const;
+    const gloperate::Canvas * canvas() const;
+
+    /**
+    *  @brief
+    *    Get canvas
+    *
+    *  @return
+    *    Canvas that is rendered on
+    */
+    gloperate::Canvas * canvas();
 
     /**
     *  @brief

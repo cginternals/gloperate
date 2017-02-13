@@ -29,7 +29,7 @@ void ChronoTimer::update()
 {
     m_t1 = m_paused ? m_tp : clock::now();
 
-    const auto delta = m_t1 - m_t0;  
+    const auto delta = m_t1 - m_t0;
     m_elapsed = delta + m_offset;
 }
 

@@ -1,6 +1,8 @@
 
 #include <gloperate/base/AbstractGLContext.h>
 
+#include <glbinding/Binding.h>
+
 
 namespace gloperate
 {
@@ -22,6 +24,11 @@ glbinding::ContextHandle AbstractGLContext::handle() const
 const GLContextFormat & AbstractGLContext::format() const
 {
     return m_format;
+}
+
+void AbstractGLContext::initializeGLBinding()
+{
+    glbinding::Binding::initialize(false);
 }
 
 

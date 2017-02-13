@@ -6,12 +6,11 @@
 #include <array>
 #include <vector>
 
-#include <gloperate/base/Color.h>
-
 #include <gloperate/gloperate_api.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Texture;
 }
 
@@ -20,6 +19,7 @@ namespace gloperate
 {
 
 
+class Color;
 class ColorGradientList;
 
 

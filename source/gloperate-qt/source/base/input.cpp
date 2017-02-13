@@ -1,6 +1,10 @@
 
 #include <gloperate-qt/base/input.h>
 
+#include <QKeyEvent>
+
+#include <glm/vec2.hpp>
+
 
 using namespace gloperate;
 
@@ -9,7 +13,7 @@ namespace gloperate_qt
 {
 
 
-glm::ivec2 fromQPoint(const QPoint point)
+glm::ivec2 fromQPoint(const QPoint & point)
 {
     return glm::ivec2(point.x(), point.y());
 }

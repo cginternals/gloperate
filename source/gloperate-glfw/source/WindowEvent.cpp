@@ -50,7 +50,12 @@ void WindowEvent::ignore()
     m_accepted = false;
 }
 
-Window * WindowEvent::window() const
+const Window * WindowEvent::window() const
+{
+    return m_window;
+}
+
+Window * WindowEvent::window()
 {
     return m_window;
 }

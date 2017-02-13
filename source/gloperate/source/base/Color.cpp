@@ -40,7 +40,7 @@ Color::Color(float red, float green, float blue, float alpha)
     m_bgra[3] = static_cast<unsigned char>(alpha * 255.0f);
 }
 
-Color::Color(glm::tvec4<unsigned char> bgra)
+Color::Color(const vector_type & bgra)
 {
     m_bgra[0] = bgra[0];
     m_bgra[1] = bgra[1];
@@ -207,7 +207,7 @@ bool Color::fromHexString(const std::string & str)
     }
 
     // Check string format
-    if (!cppassist::matchesRegex(hex, "([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})"))
+    if (!cppassist::string::matchesRegex(hex, "([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})"))
     {
         return false;
     }

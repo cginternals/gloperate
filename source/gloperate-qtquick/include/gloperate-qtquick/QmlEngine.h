@@ -14,7 +14,8 @@
 
 class QVariant;
 
-namespace gloperate {
+namespace gloperate
+{
     class Environment;
 }
 
@@ -62,7 +63,16 @@ public:
     *  @return
     *    Gloperate environment (cannot be null)
     */
-    gloperate::Environment * environment() const;
+    const gloperate::Environment * environment() const;
+
+    /**
+    *  @brief
+    *    Get gloperate environment
+    *
+    *  @return
+    *    Gloperate environment (cannot be null)
+    */
+    gloperate::Environment * environment();
 
     /**
     *  @brief
@@ -123,6 +133,15 @@ public:
 
     /**
     *  @brief
+    *    Get object 'global'
+    *
+    *  @return
+    *    Object
+    */
+    QJSValue & global();
+
+    /**
+    *  @brief
     *    Set object 'global'
     *
     *  @param[in] obj
@@ -141,6 +160,15 @@ public:
 
     /**
     *  @brief
+    *    Get object 'gloperate'
+    *
+    *  @return
+    *    Object
+    */
+    QJSValue & gloperate();
+
+    /**
+    *  @brief
     *    Set object 'gloperate'
     *
     *  @param[in] obj
@@ -155,7 +183,7 @@ public:
     *  @return
     *    Path to gloperate qml module
     */
-    QString glOperateModulePath() const;
+    const QString & gloperateModulePath() const;
 
 
 protected:
