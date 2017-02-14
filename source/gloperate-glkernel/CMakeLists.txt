@@ -8,13 +8,7 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(glkernel  REQUIRED)
 find_package(cppexpose REQUIRED)
-find_package(cpplocate REQUIRED)
 find_package(cppassist REQUIRED)
-
-# Qt5
-find_package(Qt5Core 5.1)
-find_package(Qt5Xml  5.1)
-find_package(Qt5Sql  5.1)
 
 #
 # Library name and options
