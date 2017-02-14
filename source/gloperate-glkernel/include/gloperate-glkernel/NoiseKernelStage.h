@@ -17,16 +17,15 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
-namespace globjects
-{
-    class Texture;
-}
-
 
 namespace gloperate_glkernel
 {
 
 
+/**
+*  @brief
+*    Stage that creates a 3D noise texture for multiframe rendering
+*/
 class GLOPERATE_GLKERNEL_API NoiseKernelStage : public gloperate::Stage
 {
 public:
@@ -40,30 +39,54 @@ public:
       , "v0.1.0"
     )
 
+
 public:
+    // Inputs
+    gloperate::Input<glm::ivec3> dimensions;            ///< Dimensions of the noise texture (3D)
+    gloperate::Input<bool> regenerate;                  ///< Regenerate kernel?
+
+    // Outputs
+    gloperate::Output<std::vector<glm::vec3> *> kernel; ///< Pointer to std::vector with kernel values (linearized)
+    gloperate::Output<globjects::Texture *> texture;    ///< Pointer to globjects::Texture with kernel values
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     NoiseKernelStage(gloperate::Environment * environment, const std::string & name = "Noise Kernel");
 
-public:
-    gloperate::Input<glm::ivec3> dimensions;
+    /**
+    *  @brief
+    *    Destructor
+    */
+    virtual ~NoiseKernelStage();
 
-    gloperate::Output<std::vector<glm::vec3> *> kernel;
-    gloperate::Output<globjects::Texture *> texture;
 
 protected:
+    // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
-protected:
+    // Helper functions
     void resizeKernel();
     void regenerateKernel();
 
-protected:
-    glkernel::kernel3 m_kernel;
-    std::vector<glm::vec3> m_kernelData;
 
-    globjects::ref_ptr<globjects::Texture> m_texture;
+protected:
+    // Data
+    glkernel::kernel3 m_kernel;                       ///< Kernel object
+    std::vector<glm::vec3> m_kernelData;              ///< Vector with kernel data
+    globjects::ref_ptr<globjects::Texture> m_texture; ///< Texture with kernel data
+
 
 };
 
 
-}
+} // namespace gloperate_glkernel

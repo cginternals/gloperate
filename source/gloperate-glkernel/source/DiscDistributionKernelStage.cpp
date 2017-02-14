@@ -54,22 +54,8 @@ DiscDistributionKernelStage::DiscDistributionKernelStage(gloperate::Environment 
 }
 
 
-void DiscDistributionKernelStage::resizeKernel()
+DiscDistributionKernelStage::~DiscDistributionKernelStage()
 {
-    m_kernel = glkernel::kernel2(static_cast<std::uint16_t>(*kernelSize));
-}
-
-
-void DiscDistributionKernelStage::regenerateKernel()
-{
-    glkernel::sample::poisson_square(m_kernel);
-
-    const float r = *radius;
-    glkernel::scale::range(m_kernel, -r, r);
-
-    std::transform(m_kernel.begin(), m_kernel.end(), m_kernel.begin(), pushCorners);
-
-    glkernel::sort::distance(m_kernel, {0.0f, 0.0f});
 }
 
 
@@ -103,6 +89,25 @@ void DiscDistributionKernelStage::onProcess(gloperate::AbstractGLContext * conte
         kernel.setValue(&m_kernelData);
         texture.setValue(m_texture);
     }
+}
+
+
+void DiscDistributionKernelStage::resizeKernel()
+{
+    m_kernel = glkernel::kernel2(static_cast<std::uint16_t>(*kernelSize));
+}
+
+
+void DiscDistributionKernelStage::regenerateKernel()
+{
+    glkernel::sample::poisson_square(m_kernel);
+
+    const float r = *radius;
+    glkernel::scale::range(m_kernel, -r, r);
+
+    std::transform(m_kernel.begin(), m_kernel.end(), m_kernel.begin(), pushCorners);
+
+    glkernel::sort::distance(m_kernel, {0.0f, 0.0f});
 }
 
 

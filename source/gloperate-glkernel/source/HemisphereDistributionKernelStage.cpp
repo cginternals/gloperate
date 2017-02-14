@@ -32,16 +32,8 @@ HemisphereDistributionKernelStage::HemisphereDistributionKernelStage(gloperate::
 }
 
 
-void HemisphereDistributionKernelStage::resizeKernel()
+HemisphereDistributionKernelStage::~HemisphereDistributionKernelStage()
 {
-    m_kernel = glkernel::kernel3(static_cast<std::uint16_t>(*kernelSize));
-}
-
-
-void HemisphereDistributionKernelStage::regenerateKernel()
-{
-    glkernel::sample::hammersley_sphere(m_kernel);
-    glkernel::sort::distance(m_kernel, {0.0f, 0.0f, 1.0f});
 }
 
 
@@ -75,6 +67,19 @@ void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext *
         kernel.setValue(&m_kernelData);
         texture.setValue(m_texture);
     }
+}
+
+
+void HemisphereDistributionKernelStage::resizeKernel()
+{
+    m_kernel = glkernel::kernel3(static_cast<std::uint16_t>(*kernelSize));
+}
+
+
+void HemisphereDistributionKernelStage::regenerateKernel()
+{
+    glkernel::sample::hammersley_sphere(m_kernel);
+    glkernel::sort::distance(m_kernel, {0.0f, 0.0f, 1.0f});
 }
 
 

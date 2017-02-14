@@ -18,9 +18,15 @@ CPPEXPOSE_COMPONENT(NoiseKernelStage, gloperate::Stage)
 NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , dimensions("dimensions", this, glm::ivec3(1))
+, regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
 , m_texture(nullptr)
+{
+}
+
+
+NoiseKernelStage::~NoiseKernelStage()
 {
 }
 
@@ -38,16 +44,22 @@ void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
         onContextInit(context);
     }
 
+    bool regen = *regenerate;
+
     if (*dimensions != glm::ivec3(m_kernel.extent()))
     {
         resizeKernel();
+        regen = true;
     }
 
-    regenerateKernel();
+    if (regen)
+    {
+        regenerateKernel();
 
-    m_texture->image3D(1, gl::GL_RGB32F, *dimensions, 0, gl::GL_RGB, gl::GL_FLOAT, m_kernel.data());
+        m_texture->image3D(1, gl::GL_RGB32F, *dimensions, 0, gl::GL_RGB, gl::GL_FLOAT, m_kernel.data());
+        m_kernelData = {m_kernel.begin(), m_kernel.end()};
+    }
 
-    m_kernelData = {m_kernel.begin(), m_kernel.end()};
     kernel.setValue(&m_kernelData);
     texture.setValue(m_texture);
 }

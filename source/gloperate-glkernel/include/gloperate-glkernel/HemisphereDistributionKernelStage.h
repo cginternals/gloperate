@@ -22,6 +22,10 @@ namespace gloperate_glkernel
 {
 
 
+/**
+*  @brief
+*    Stage that creates a set of random 3D-vectors for multiframe rendering
+*/
 class GLOPERATE_GLKERNEL_API HemisphereDistributionKernelStage : public gloperate::Stage
 {
 public:
@@ -35,31 +39,54 @@ public:
       , "v0.1.0"
     )
 
+
 public:
+    // Inputs
+    gloperate::Input<int> kernelSize;                   ///< Number of values to generate
+    gloperate::Input<bool> regenerate;                  ///< Regenerate kernel?
+
+    // Outputs
+    gloperate::Output<std::vector<glm::vec3> *> kernel; ///< Pointer to std::vector with kernel values
+    gloperate::Output<globjects::Texture *> texture;    ///< Pointer to globjects::Texture with kernel values
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     HemisphereDistributionKernelStage(gloperate::Environment * environment, const std::string & name = "Hemisphere Distribution Kernel");
 
-public:
-    gloperate::Input<int> kernelSize;
-    gloperate::Input<bool> regenerate;
+    /**
+    *  @brief
+    *    Destructor
+    */
+    virtual ~HemisphereDistributionKernelStage();
 
-    gloperate::Output<std::vector<glm::vec3> *> kernel;
-    gloperate::Output<globjects::Texture *> texture;
 
 protected:
+    // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
-protected:
+    // Helper functions
     void resizeKernel();
     void regenerateKernel();
 
-protected:
-    glkernel::kernel3 m_kernel;
-    std::vector<glm::vec3> m_kernelData;
 
-    globjects::ref_ptr<globjects::Texture> m_texture;
+protected:
+    // Data
+    glkernel::kernel3 m_kernel;                       ///< Kernel object
+    std::vector<glm::vec3> m_kernelData;              ///< Vector with kernel data
+    globjects::ref_ptr<globjects::Texture> m_texture; ///< Texture with kernel data
     
+
 };
 
 
-}
+} // namespace gloperate_glkernel

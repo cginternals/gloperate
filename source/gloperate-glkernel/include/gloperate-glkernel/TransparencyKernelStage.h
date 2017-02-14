@@ -17,16 +17,15 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
-namespace globjects
-{
-    class Texture;
-}
-
 
 namespace gloperate_glkernel
 {
 
 
+/**
+*  @brief
+*    Stage that creates a transparency mask texture for multiframe rendering
+*/
 class GLOPERATE_GLKERNEL_API TransparencyKernelStage : public gloperate::Stage
 {
 public:
@@ -40,23 +39,49 @@ public:
       , "v0.1.0"
     )
 
+
 public:
+    // Inputs
+    gloperate::Input<bool> regenerate;                      ///< Regenerate kernel?
+
+    // Outputs
+    gloperate::Output<std::vector<unsigned char> *> kernel; ///< Pointer to std::vector with kernel values
+    gloperate::Output<globjects::Texture *> texture;        ///< Pointer to globjects::Texture with kernel values
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] environment
+    *    Environment to which the stage belongs (must NOT be null!)
+    *  @param[in] name
+    *    Stage name
+    */
     TransparencyKernelStage(gloperate::Environment * environment, const std::string & name = "Transparency Kernel");
 
-public:
-    gloperate::Input<bool> regenerate;
+    /**
+    *  @brief
+    *    Destructor
+    */
+    virtual ~TransparencyKernelStage();
 
-    gloperate::Output<std::vector<unsigned char> *> kernel;
-    gloperate::Output<globjects::Texture *> texture;
 
 protected:
+    // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
-protected:
-    std::vector<unsigned char> m_kernelData;
+    // Helper function
+    void regenerateKernel();
 
-    globjects::ref_ptr<globjects::Texture> m_texture;
+protected:
+    // Data
+    std::vector<unsigned char> m_kernelData;          ///< Vector with kernel data
+    globjects::ref_ptr<globjects::Texture> m_texture; ///< Texture with kernel data
+
+
 };
 
 
