@@ -110,9 +110,15 @@ void RenderWindow::onPaint(PaintEvent &)
 
 void RenderWindow::onKeyPress(KeyEvent & event)
 {
+    // Skip auto-repeated key events
+    if (event.action() == GLFW_REPEAT)
+    {
+        return;
+    }
+
     if (event.key() == GLFW_KEY_F11)
     {
-      setFullscreen(!isFullscreen());
+        setFullscreen(!isFullscreen());
     }
 
     m_canvas->onKeyPress(
