@@ -23,7 +23,8 @@ void KeyboardDevice::keyPress(int key, int modifier)
     auto inputEvent = new ButtonEvent{
         InputEvent::Type::ButtonPress,
         this,
-        std::to_string(key) + ":" + std::to_string(modifier)
+        key,
+        modifier
     };
 
     m_inputManager->onEvent(inputEvent);
@@ -32,9 +33,10 @@ void KeyboardDevice::keyPress(int key, int modifier)
 void KeyboardDevice::keyRelease(int key, int modifier)
 {
     auto inputEvent = new ButtonEvent{
-        InputEvent::Type::ButtonPress,
+        InputEvent::Type::ButtonRelease,
         this,
-        std::to_string(key) + ":" + std::to_string(modifier)
+        key,
+        modifier
     };
 
     m_inputManager->onEvent(inputEvent);
