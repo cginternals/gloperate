@@ -177,6 +177,12 @@ void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldG
 
 void RenderItem::keyPressEvent(QKeyEvent * event)
 {
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
     if (m_canvas)
     {
         m_canvas->onKeyPress(
@@ -188,6 +194,12 @@ void RenderItem::keyPressEvent(QKeyEvent * event)
 
 void RenderItem::keyReleaseEvent(QKeyEvent * event)
 {
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
     if (m_canvas)
     {
         m_canvas->onKeyRelease(

@@ -20,26 +20,38 @@ public:
     *    The type of the ButtonEvent (must be either of InputEvent::Type::ButtonPress or InputEvent::Type::ButtonRelease)
     *  @param[in] dispatchingDevice
     *    Pointer to the device that generated the event (must NOT be null)
-    *  @param[in] description
-    *    A string decribing the pressed button
+    *  @param[in] key
+    *    The key code
+    *  @param[in] modifier
+    *    Th active modifiers
     */
-    ButtonEvent(Type type, AbstractDevice * dispatchingDevice, const std::string & description);
+    ButtonEvent(Type type, AbstractDevice * dispatchingDevice, int key, int modifier);
 
     /**
     *  @brief
-    *    A getter for the description of the event
-    *
+    *    Get key code
+    *    
     *  @return
-    *    A string decribing the pressed button
+    *    The key code
     */
-    std::string description() const;
+    int key() const;
+
+    /**
+    *  @brief
+    *    Get modifier
+    *    
+    *  @return
+    *    The modifier
+    */
+    int modifier() const;
+
 
     // Virtual InputEvent interface
     virtual std::string asString() const override;
 
-
 protected:
-    std::string m_description;
+    int         m_key;
+    int         m_modifier;
 };
 
 

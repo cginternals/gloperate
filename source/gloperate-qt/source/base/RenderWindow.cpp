@@ -76,6 +76,12 @@ void RenderWindow::onPaint()
 
 void RenderWindow::keyPressEvent(QKeyEvent * event)
 {
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
     m_canvas->onKeyPress(
         fromQtKeyCode(event->key(), event->modifiers()),
         fromQtModifiers(event->modifiers())
@@ -84,6 +90,12 @@ void RenderWindow::keyPressEvent(QKeyEvent * event)
 
 void RenderWindow::keyReleaseEvent(QKeyEvent * event)
 {
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
     m_canvas->onKeyRelease(
         fromQtKeyCode(event->key(), event->modifiers()),
         fromQtModifiers(event->modifiers())
