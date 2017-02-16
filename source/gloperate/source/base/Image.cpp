@@ -5,7 +5,7 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <algorithm>
+#include <gloperate/base/make_unique.h>
 
 
 using namespace gl;
@@ -90,10 +90,10 @@ Image::Image(int width, int height, GLenum format, GLenum type, const char * dat
     copyImage(width, height, format, type, data);
 }
 
-Image::Image(int width, int height, GLenum format, GLenum type, char * data)
+Image::Image(int width, int height, GLenum format, GLenum type, std::unique_ptr<char[]> && data)
 : Image()
 {
-    setData(width, height, format, type, data);
+    setData(width, height, format, type, std::move(data));
 }
 
 Image::Image(const Image & other)
@@ -110,7 +110,6 @@ Image::Image(Image && other)
 
 Image::~Image()
 {
-    delete [] m_data;
 }
 
 Image & Image::operator=(Image other)
@@ -157,21 +156,16 @@ int Image::bytes() const
 
 const char * Image::data() const
 {
-    return m_data;
+    return m_data.get();
 }
 
 char * Image::data()
 {
-    return m_data;
+    return m_data.get();
 }
 
 void Image::clear()
 {
-    // Release image data
-    if (m_data) {
-        delete [] m_data;
-    }
-
     // Reset image
     m_width    = 0;
     m_height   = 0;
@@ -195,7 +189,7 @@ void Image::allocate(int width, int height, GLenum format, GLenum type)
         return;
     }
 
-    m_data = new char[m_dataSize];
+    m_data = make_unique<char[]>(m_dataSize);
 }
 
 void Image::copyImage(int width, int height, GLenum format, GLenum type, const char * data)
@@ -210,16 +204,16 @@ void Image::copyImage(int width, int height, GLenum format, GLenum type, const c
         return;
     }
 
-    std::copy_n(data, m_dataSize, m_data);
+    std::copy_n(data, m_dataSize, m_data.get());
 }
 
-void Image::setData(int width, int height, GLenum format, GLenum type, char * data)
+void Image::setData(int width, int height, GLenum format, GLenum type, std::unique_ptr<char[]> && data)
 {
     clear();
 
     initializeImage(width, height, format, type);
 
-    m_data = m_dataSize ? data : nullptr;
+    m_data = m_dataSize ? std::move(data) : nullptr;
 }
 
 void swap(Image & first, Image & second) GLOPERATE_NOEXCEPT

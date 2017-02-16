@@ -106,14 +106,14 @@ public:
 
 
 protected:
-    PipelineContainer   m_pipelineContainer; ///< Container for the rendering stage or pipeline
-    unsigned long       m_frame;             ///< Frame counter
-    MouseDevice       * m_mouseDevice;       ///< Device for Mouse Events
-    KeyboardDevice    * m_keyboardDevice;    ///< Device for Keyboard Events
-    glm::vec4           m_deviceViewport;    ///< Last known device viewport configuration
-    glm::vec4           m_virtualViewport;   ///< Last known virtual viewport configuration
-    glm::vec4           m_savedDeviceVP;     ///< Saved device viewport configuration
-    glm::vec4           m_savedVirtualVP;    ///< Saved virtual viewport configuration
+    PipelineContainer               m_pipelineContainer; ///< Container for the rendering stage or pipeline
+    unsigned long                   m_frame;             ///< Frame counter
+    std::unique_ptr<MouseDevice>    m_mouseDevice;       ///< Device for Mouse Events
+    std::unique_ptr<KeyboardDevice> m_keyboardDevice;    ///< Device for Keyboard Events
+    glm::vec4                       m_deviceViewport;    ///< Last known device viewport configuration
+    glm::vec4                       m_virtualViewport;   ///< Last known virtual viewport configuration
+    glm::vec4                       m_savedDeviceVP;     ///< Saved device viewport configuration
+    glm::vec4                       m_savedVirtualVP;    ///< Saved virtual viewport configuration
 };
 
 

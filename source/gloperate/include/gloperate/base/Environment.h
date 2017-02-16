@@ -239,7 +239,7 @@ protected:
     *    If there is a script context already active, it will be deleted
     *    before the new one is initialized.
     */
-    void initializeScripting(cppexpose::ScriptContext * scriptContext);
+    void initializeScripting(std::unique_ptr<cppexpose::ScriptContext> && scriptContext);
 
     /**
     *  @brief
@@ -262,19 +262,19 @@ protected:
 
 
 protected:
-    ComponentManager              m_componentManager; ///< Manager for plugin libraries and components
-    ResourceManager               m_resourceManager;  ///< Resource manager for loaders/storers
-    TimeManager                   m_timeManager;      ///< Manager for virtual time and timers
-    System                        m_system;           ///< System functions for scripting
-    InputManager                  m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
+    ComponentManager                          m_componentManager; ///< Manager for plugin libraries and components
+    ResourceManager                           m_resourceManager;  ///< Resource manager for loaders/storers
+    TimeManager                               m_timeManager;      ///< Manager for virtual time and timers
+    System                                    m_system;           ///< System functions for scripting
+    InputManager                              m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
 
-    std::vector<AbstractCanvas *> m_canvases;         ///< List of active canvases
+    std::vector<AbstractCanvas *>             m_canvases;         ///< List of active canvases
 
-    cppexpose::TreeNode           m_tree;             ///< Test object for scripting
+    cppexpose::TreeNode                       m_tree;             ///< Test object for scripting
 
-    cppexpose::ScriptContext    * m_scriptContext;    ///< Scripting context
+    std::unique_ptr<cppexpose::ScriptContext> m_scriptContext;    ///< Scripting context
 
-    std::string                   m_helpText;         ///< Text that is displayed on 'help'
+    std::string                               m_helpText;         ///< Text that is displayed on 'help'
 };
 
 

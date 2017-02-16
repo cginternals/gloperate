@@ -5,6 +5,7 @@
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/TimeManager.h>
+#include <gloperate/base/make_unique.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
@@ -21,8 +22,8 @@ Canvas::Canvas(Environment * environment)
 : AbstractCanvas(environment)
 , m_pipelineContainer(environment)
 , m_frame(0)
-, m_mouseDevice(new MouseDevice(m_environment->inputManager(), m_name))
-, m_keyboardDevice(new KeyboardDevice(m_environment->inputManager(), m_name))
+, m_mouseDevice(gloperate::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
+, m_keyboardDevice(gloperate::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
 {
     // Mark render output as required and redraw when it is invalidated
     m_pipelineContainer.rendered.setRequired(true);
