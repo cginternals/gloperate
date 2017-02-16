@@ -19,6 +19,9 @@ UpdateManager::UpdateManager(gloperate::Environment * environment)
         this, &UpdateManager::onTimer
     );
 
+    // Connect wake signal
+    environment->timeManager()->activated.connect(this, &UpdateManager::wakeTimer);
+
     // Setup timer
     m_timer.setSingleShot(false);
     m_timer.start(0);
