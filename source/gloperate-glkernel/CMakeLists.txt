@@ -3,7 +3,6 @@
 # External dependencies
 #
 
-find_package(libzeug   REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(glkernel  REQUIRED)
@@ -19,9 +18,11 @@ find_package(cppassist REQUIRED)
 set(target gloperate-glkernel)
 
 # Set API export file and macro
-string(TOUPPER ${target} target_upper)
+string(MAKE_C_IDENTIFIER ${target} target_id)
+string(TOUPPER ${target_id} target_id)
+set(feature_file "include/${target}/${target}_features.h")
 set(export_file  "include/${target}/${target}_api.h")
-set(export_macro "${target_upper}_API")
+set(export_macro "${target_id}_API")
 
 
 #
@@ -122,7 +123,6 @@ target_link_libraries(${target}
     glkernel::glkernel
     globjects::globjects
     glbinding::glbinding
-    libzeug::signalzeug
     ${META_PROJECT_NAME}::gloperate
 
     PUBLIC
@@ -140,7 +140,7 @@ target_compile_definitions(${target}
     PRIVATE
 
     PUBLIC
-    $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_upper}_STATIC_DEFINE>
+    $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_id}_STATIC_DEFINE>
     ${DEFAULT_COMPILE_DEFINITIONS}
     GLM_FORCE_RADIANS
 
