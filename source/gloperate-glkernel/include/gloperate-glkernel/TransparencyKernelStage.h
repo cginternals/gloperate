@@ -42,6 +42,7 @@ public:
 
 public:
     // Inputs
+    gloperate::Input<glm::ivec2> kernelSize;                ///< Size of the kernel, height determines number of alpha steps
     gloperate::Input<bool> regenerate;                      ///< Regenerate kernel?
 
     // Outputs

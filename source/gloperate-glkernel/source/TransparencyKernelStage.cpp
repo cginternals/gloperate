@@ -8,13 +8,6 @@
 #include <globjects/Texture.h>
 
 
-namespace
-{
-    const size_t s_alphaValues = 256;
-    const size_t s_maskSize = 1024;
-}
-
-
 namespace gloperate_glkernel
 {
 
@@ -24,6 +17,7 @@ CPPEXPOSE_COMPONENT(TransparencyKernelStage, gloperate::Stage)
 
 TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
+, kernelSize("kernelSize", this, glm::ivec2(1))
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
@@ -53,7 +47,7 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
     if (*regenerate)
     {
         regenerateKernel();
-        m_texture->image2D(1, gl::GL_R8, s_maskSize, s_alphaValues, 0, gl::GL_R, gl::GL_BYTE, m_kernelData.data());
+        m_texture->image2D(1, gl::GL_R8, *kernelSize, 0, gl::GL_R, gl::GL_BYTE, m_kernelData.data());
     }
 
     kernel.setValue(&m_kernelData);
@@ -63,15 +57,18 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
 
 void TransparencyKernelStage::regenerateKernel()
 {
-    m_kernelData = std::vector<unsigned char>(s_maskSize * s_alphaValues);
+    const auto maskSize = (*kernelSize).x;
+    const auto alphaValues = (*kernelSize).y;
 
-    for (auto alphaIndex = 0; alphaIndex < s_alphaValues; alphaIndex++)
+    m_kernelData = std::vector<unsigned char>();
+
+    for (auto alphaIndex = 0; alphaIndex < alphaValues; alphaIndex++)
     {
-        auto alphaVal = float(alphaIndex) / s_alphaValues;
-        auto numHits = int(std::floor(alphaVal * s_maskSize));
+        auto alphaVal = float(alphaIndex) / alphaValues;
+        auto numHits = int(std::floor(alphaVal * maskSize));
 
-        auto lineBegin   = m_kernelData.begin() +  alphaIndex      * s_maskSize;
-        auto lineEnd     = m_kernelData.begin() + (alphaIndex + 1) * s_maskSize;
+        auto lineBegin   = m_kernelData.begin() +  alphaIndex      * maskSize;
+        auto lineEnd     = m_kernelData.begin() + (alphaIndex + 1) * maskSize;
         auto changePoint = lineBegin + numHits;
 
         std::fill(lineBegin  , changePoint, 255);

@@ -21,7 +21,7 @@ namespace
 using namespace glm;
 
 // push the corners of the square in to form a disc
-vec2 pushCorners(vec2 v)
+vec2 pushCorners(const vec2 & v)
 {
     if (std::max(std::abs(v.x), std::abs(v.y)) < 1e-10f)
         return v;
