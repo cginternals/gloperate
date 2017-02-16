@@ -31,6 +31,18 @@ class GLOPERATE_API TimeManager : public cppexpose::Object
 public:
     /**
     *  @brief
+    *    Fired when any timer was activated after no timer was active.
+    *    
+    *  @remarks
+    *    Platform backends can connect to this signal to resume time
+    *    tracking after a pause (e.g., when update() returned false)
+    */
+    cppexpose::Signal<> activated;
+
+
+public:
+    /**
+    *  @brief
     *    Constructor
     *
     *  @param[in] environment

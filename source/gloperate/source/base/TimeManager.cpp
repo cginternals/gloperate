@@ -88,6 +88,7 @@ void TimeManager::activateTimer()
     if (m_activeTimers == 0)
     {
         m_clock.reset();
+        activated();
     }
 
     m_activeTimers++;
