@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <array>
 #include <vector>
+#include <string>
 
 #include <gloperate/gloperate_api.h>
 

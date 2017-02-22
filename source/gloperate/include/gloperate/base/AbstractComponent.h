@@ -48,8 +48,8 @@ public:
     {
     }
 
-    virtual gloperate::Stage * createInstance(gloperate::Environment * environment) = 0;
-    virtual gloperate::Stage * createInstance(gloperate::Environment * environment, const std::string & name) = 0;
+    virtual std::unique_ptr<gloperate::Stage> createInstance(gloperate::Environment * environment) = 0;
+    virtual std::unique_ptr<gloperate::Stage> createInstance(gloperate::Environment * environment, const std::string & name) = 0;
 };
 
 

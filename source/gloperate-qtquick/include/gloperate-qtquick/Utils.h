@@ -50,8 +50,8 @@ public:
     static void clearScreen(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f, bool clearDepthBuffer = true);
 
     // [TODO] Only for testing
-    static gloperate::Stage * createRenderStage(gloperate::Environment * environment, const std::string & name);
-    static gloperate::AbstractCanvas * createCanvas(gloperate::Environment * environment, gloperate::Stage * renderStage);
+    static std::unique_ptr<gloperate::Stage> createRenderStage(gloperate::Environment * environment, const std::string & name);
+    static gloperate::AbstractCanvas * createCanvas(gloperate::Environment * environment, std::unique_ptr<gloperate::Stage> && renderStage);
 };
 
 

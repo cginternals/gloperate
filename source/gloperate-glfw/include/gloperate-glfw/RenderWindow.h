@@ -106,7 +106,7 @@ public:
     *    When setting a new render stage, the old render stage is destroyed.
     *    The window takes ownership over the stage.
     */
-    void setRenderStage(gloperate::Stage * stage);
+    void setRenderStage(std::unique_ptr<gloperate::Stage> && stage);
 
 
 protected:

@@ -41,8 +41,8 @@ public:
     Component();
     virtual ~Component();
 
-    virtual gloperate::Stage * createInstance(gloperate::Environment * environment) override;
-    virtual gloperate::Stage * createInstance(gloperate::Environment * environment, const std::string & name) override;
+    virtual std::unique_ptr<gloperate::Stage> createInstance(gloperate::Environment * environment) override;
+    virtual std::unique_ptr<gloperate::Stage> createInstance(gloperate::Environment * environment, const std::string & name) override;
 };
 
 

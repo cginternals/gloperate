@@ -85,7 +85,7 @@ public:
     *    When setting a new render stage, the old render stage is destroyed.
     *    The canvas takes ownership over the stage.
     */
-    void setRenderStage(Stage * stage);
+    void setRenderStage(std::unique_ptr<Stage> && stage);
 
     // Virtual AbstractCanvas functions
     virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;

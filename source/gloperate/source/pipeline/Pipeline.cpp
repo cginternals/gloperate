@@ -57,7 +57,7 @@ Stage * Pipeline::stage(const std::string & name) const
     return m_stagesMap.at(name);
 }
 
-void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
+void Pipeline::addStage(Stage * stage)
 {
     // Check parameters
     if (!stage)
@@ -70,7 +70,7 @@ void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
     stage->setName(name);
 
     // Add stage as property
-    addProperty(stage, ownership);
+    addProperty(stage, PropertyOwnership::None);
 
     // Add stage
     m_stages.push_back(stage);
@@ -104,24 +104,18 @@ bool Pipeline::removeStage(Stage * stage)
 
     stageRemoved(stage);
 
+    auto ownedIt = std::find_if(m_ownedStages.begin(), m_ownedStages.end(), [stage](const std::unique_ptr<Stage> & ownedStage) { return ownedStage.get() == stage; });
+    if (ownedIt != m_ownedStages.end())
+    {
+        m_ownedStages.erase(ownedIt);
+    }
+
     removeProperty(stage);
 
     // [TODO]
     // Shouldn't be required if each slot of a stage would disconnect from connections
     // and this would be propagated to the normal stage order invalidation
     invalidateStageOrder();
-
-    return true;
-}
-
-bool Pipeline::destroyStage(Stage * stage)
-{
-    if (!removeStage(stage))
-    {
-        return false;
-    }
-
-    delete stage;
 
     return true;
 }
@@ -321,10 +315,13 @@ std::string Pipeline::scr_createStage(const std::string & className, const std::
     if (component)
     {
         // Create stage
-        Stage * stage = component->createInstance(m_environment, name);
-        addStage(stage);
+        auto stage = component->createInstance(m_environment, name);
+        auto stagePtr = stage.get();
 
-        return stage->name();
+        addStage(stagePtr);
+        m_ownedStages.push_back(std::move(stage));
+
+        return stagePtr->name();
     }
 
     return "";

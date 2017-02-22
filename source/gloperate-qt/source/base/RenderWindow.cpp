@@ -44,10 +44,10 @@ gloperate::Stage * RenderWindow::renderStage() const
     return m_canvas->renderStage();
 }
 
-void RenderWindow::setRenderStage(gloperate::Stage * stage)
+void RenderWindow::setRenderStage(std::unique_ptr<gloperate::Stage> && stage)
 {
     m_context->qtContext()->makeCurrent(this);
-    m_canvas->setRenderStage(stage);
+    m_canvas->setRenderStage(std::move(stage));
     m_context->qtContext()->doneCurrent();
 }
 

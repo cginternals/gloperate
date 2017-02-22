@@ -61,7 +61,7 @@ Stage * Canvas::renderStage()
     return m_pipelineContainer.renderStage();
 }
 
-void Canvas::setRenderStage(Stage * stage)
+void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 {
     // De-initialize render stage
     if (m_pipelineContainer.renderStage() && m_openGLContext)
@@ -70,7 +70,7 @@ void Canvas::setRenderStage(Stage * stage)
     }
 
     // Set new render stage
-    m_pipelineContainer.setRenderStage(stage);
+    m_pipelineContainer.setRenderStage(std::move(stage));
 
     // Initialize new render stage
     if (m_pipelineContainer.renderStage() && m_openGLContext)

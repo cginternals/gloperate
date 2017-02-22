@@ -85,6 +85,18 @@ public:
     */
     Stage * stage(const std::string & name) const;
 
+    template <typename T, typename ... Args>
+    T * createStage(Args && ... args)
+    {
+        auto stage = gloperate::make_unique<T>(std::forward<Args>(args)...);
+        auto stagePtr = stage.get();
+
+        addStage(stagePtr);
+        m_ownedStages.push_back(std::move(stage));
+
+        return stagePtr;
+    };
+
     /**
     *  @brief
     *    Add stage
@@ -94,7 +106,7 @@ public:
     *  @param[in] ownership
     *    Property ownership
     */
-    void addStage(Stage * stage, cppexpose::PropertyOwnership ownership = cppexpose::PropertyOwnership::Parent);
+    void addStage(Stage * stage);
 
     /**
     *  @brief
@@ -109,20 +121,6 @@ public:
     *  If the stage is not part of the pipeline, nothing happens
     */
     bool removeStage(Stage * stage);
-
-    /**
-    *  @brief
-    *    Remove and destroy stage
-    *
-    *  @param[in] stage
-    *    Stage (must NOT be null!)
-    *
-    *  @return
-    *    'true' if the stage was removed and destroyed, else 'false'
-    *
-    *  If the stage is not part of the pipeline, nothing happens
-    */
-    bool destroyStage(Stage * stage);
 
     /**
     *  @brief
@@ -174,6 +172,7 @@ protected:
 
 
 protected:
+    std::vector<std::unique_ptr<Stage>>      m_ownedStages;
     std::vector<Stage *>                     m_stages;    ///< List of topologically sorted stages in the pipeline
     std::unordered_map<std::string, Stage *> m_stagesMap; ///< Map of names -> stages
     bool                                     m_sorted;    ///< Have the stages of the pipeline already been sorted?

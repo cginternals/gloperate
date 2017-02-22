@@ -78,7 +78,7 @@ public:
     *    When setting a new render stage, the old render stage is destroyed.
     *    The canvas takes ownership over the stage.
     */
-    void setRenderStage(Stage * stage);
+    void setRenderStage(std::unique_ptr<Stage> && stage);
 
 
 protected:
@@ -88,7 +88,7 @@ protected:
 
 
 protected:
-    Stage * m_renderStage; ///< Render stage that renders into the current context (can be null)
+    std::unique_ptr<Stage> m_renderStage; ///< Render stage that renders into the current context (can be null)
 };
 
 

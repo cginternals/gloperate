@@ -34,15 +34,15 @@ Component<gloperate::Stage, Type>::~Component()
 }
 
 template <class Type>
-gloperate::Stage * Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment)
+std::unique_ptr<gloperate::Stage> Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment)
 {
-    return new Type(environment);
+    return gloperate::make_unique<Type>(environment);
 }
 
 template <class Type>
-gloperate::Stage * Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment, const std::string & name)
+std::unique_ptr<gloperate::Stage> Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment, const std::string & name)
 {
-    return new Type(environment, name);
+    return gloperate::make_unique<Type>(environment, name);
 }
 
 
