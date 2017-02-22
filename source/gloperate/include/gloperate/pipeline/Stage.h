@@ -96,6 +96,9 @@ public:
     */
     Stage(Environment * environment, const std::string & className = "Stage", const std::string & name = "");
 
+    Stage(const Stage &) = delete;
+    Stage & operator=(const Stage &) = delete;
+
     /**
     *  @brief
     *    Destructor
@@ -368,7 +371,7 @@ public:
     *  @param[in] ownership
     *    Property ownership
     */
-    void addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownership);
+    void addInput(AbstractSlot * input);
 
     /**
     *  @brief
@@ -451,7 +454,7 @@ public:
     *  @param[in] ownership
     *    Property ownership
     */
-    void addOutput(AbstractSlot * output, cppexpose::PropertyOwnership ownership);
+    void addOutput(AbstractSlot * output);
 
     /**
     *  @brief
@@ -643,6 +646,7 @@ protected:
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs
     std::vector<AbstractSlot *>                     m_outputs;    ///< List of outputs
     std::unordered_map<std::string, AbstractSlot *> m_outputsMap; ///< Map of names and outputs
+    std::vector<std::unique_ptr<AbstractSlot>>      m_ownedSlots;
 };
 
 

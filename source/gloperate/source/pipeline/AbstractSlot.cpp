@@ -88,7 +88,7 @@ bool AbstractSlot::isConnected() const
     return source() != nullptr;
 }
 
-void AbstractSlot::initSlot(SlotType slotType, Stage * parent, cppexpose::PropertyOwnership ownership)
+void AbstractSlot::initSlot(SlotType slotType, Stage * parent)
 {
     m_slotType = slotType;
 
@@ -96,11 +96,11 @@ void AbstractSlot::initSlot(SlotType slotType, Stage * parent, cppexpose::Proper
     {
         if (m_slotType == SlotType::Input)
         {
-            parent->addInput(this, ownership);
+            parent->addInput(this);
         }
         else if (m_slotType == SlotType::Output)
         {
-            parent->addOutput(this, ownership);
+            parent->addOutput(this);
         }
     }
 }

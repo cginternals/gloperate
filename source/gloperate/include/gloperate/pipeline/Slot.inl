@@ -36,7 +36,7 @@ Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const
     this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
 
     // Initialize slot, will also add slot as a property
-    this->initSlot(slotType, parent, cppexpose::PropertyOwnership::None);
+    this->initSlot(slotType, parent);
 }
 
 template <typename T>
@@ -49,7 +49,7 @@ Slot<T>::Slot(SlotType slotType, const std::string & name, const T & value)
     this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
 
     // Initialize slot
-    this->initSlot(slotType, nullptr, cppexpose::PropertyOwnership::None);
+    this->initSlot(slotType, nullptr);
 }
 
 template <typename T>

@@ -178,7 +178,7 @@ Stage::CreateConnectedInputProxy Stage::createInput(const std::string & name)
 }
 
 
-void Stage::addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownership)
+void Stage::addInput(AbstractSlot * input)
 {
     // Check parameters
     if (!input) {
@@ -190,7 +190,7 @@ void Stage::addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownershi
     input->setName(name);
 
     // Add input as property
-    addProperty(input, ownership);
+    addProperty(input, PropertyOwnership::None);
 
     // Add input
     m_inputs.push_back(input);
@@ -223,6 +223,12 @@ void Stage::removeInput(AbstractSlot * input)
         inputRemoved(input);
     }
 
+    auto ownedIt = std::find_if(m_ownedSlots.begin(), m_ownedSlots.end(), [input](const std::unique_ptr<AbstractSlot> & slot) { return slot.get() == input;  });
+    if (ownedIt != m_ownedSlots.end())
+    {
+        m_ownedSlots.erase(ownedIt);
+    }
+
     // Remove property
     removeProperty(input);
 }
@@ -252,7 +258,7 @@ AbstractSlot * Stage::output(const std::string & name)
     return m_outputsMap.at(name);
 }
 
-void Stage::addOutput(AbstractSlot * output, cppexpose::PropertyOwnership ownership)
+void Stage::addOutput(AbstractSlot * output)
 {
     // Check parameters
     if (!output) {
@@ -264,7 +270,7 @@ void Stage::addOutput(AbstractSlot * output, cppexpose::PropertyOwnership owners
     output->setName(name);
 
     // Add output as property
-    addProperty(output, ownership);
+    addProperty(output, PropertyOwnership::None);
 
     // Add output
     m_outputs.push_back(output);
@@ -294,6 +300,12 @@ void Stage::removeOutput(AbstractSlot * output)
 
         // Emit signal
         outputRemoved(output);
+    }
+
+    auto ownedIt = std::find_if(m_ownedSlots.begin(), m_ownedSlots.end(), [output](const std::unique_ptr<AbstractSlot> & slot) { return slot.get() == output;  });
+    if (ownedIt != m_ownedSlots.end())
+    {
+        m_ownedSlots.erase(ownedIt);
     }
 
     // Remove property
