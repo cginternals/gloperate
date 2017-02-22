@@ -44,6 +44,9 @@ public:
     */
     ColorGradientList();
 
+    ColorGradientList(const ColorGradientList &) = delete;
+    ColorGradientList & operator=(const ColorGradientList &) = delete;
+
     /**
     *  @brief
     *    Constructor

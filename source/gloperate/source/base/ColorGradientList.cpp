@@ -20,7 +20,7 @@ ColorGradientList::ColorGradientList(std::initializer_list<AbstractColorGradient
 {
     for (auto gradient : gradients)
     {
-        add(gradient);
+        add(std::unique_ptr<AbstractColorGradient>(gradient));
     }
 }
 
@@ -44,7 +44,7 @@ void ColorGradientList::add(std::unique_ptr<AbstractColorGradient> && gradient)
 
     if (it == m_gradients.end())
     {
-        m_gradients.emplace(gradient->name(), gradient);
+        m_gradients.emplace(gradient->name(), std::move(gradient));
     }
     else
     {
