@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <memory>
+
 #include <cppexpose/plugin/AbstractComponent.h>
 
 #include <gloperate/gloperate_api.h>
@@ -26,7 +28,7 @@ public:
     AbstractComponent();
     virtual ~AbstractComponent();
 
-    virtual BaseType * createInstance(gloperate::Environment * environment) = 0;
+    virtual std::unique_ptr<BaseType> createInstance(gloperate::Environment * environment) = 0;
 };
 
 

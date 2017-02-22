@@ -36,6 +36,8 @@ public:
     *    Environment (must NOT be null!)
     */
     ResourceManager(Environment * environment);
+    ResourceManager(const ResourceManager &) = delete;
+    ResourceManager & operator=(const ResourceManager &) = delete;
 
     /**
     *  @brief
@@ -50,7 +52,7 @@ public:
     *  @return
     *    List of loaders
     */
-    const std::vector<AbstractLoader *> & loaders() const;
+    std::vector<AbstractLoader *> loaders() const;
 
     /**
     *  @brief
@@ -59,7 +61,7 @@ public:
     *  @return
     *    List of storers
     */
-    const std::vector<AbstractStorer *> & storers() const;
+    std::vector<AbstractStorer *> storers() const;
 
     /**
     *  @brief
@@ -113,9 +115,9 @@ protected:
 
 
 protected:
-    Environment                           * m_environment; ///< Gloperate environment (must NOT be null!)
-    mutable std::vector<AbstractLoader *>   m_loaders;     ///< Available loaders
-    mutable std::vector<AbstractStorer *>   m_storers;     ///< Available storers
+    Environment                                        * m_environment; ///< Gloperate environment (must NOT be null!)
+    mutable std::vector<std::unique_ptr<AbstractLoader>> m_loaders;     ///< Available loaders
+    mutable std::vector<std::unique_ptr<AbstractStorer>> m_storers;     ///< Available storers
 };
 
 

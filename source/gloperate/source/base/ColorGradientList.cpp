@@ -26,10 +26,6 @@ ColorGradientList::ColorGradientList(std::initializer_list<AbstractColorGradient
 
 ColorGradientList::~ColorGradientList()
 {
-    for (const auto & pair : m_gradients)
-    {
-        delete pair.second;
-    }
 }
 
 size_t ColorGradientList::size() const
@@ -42,7 +38,7 @@ const std::map<std::string, const AbstractColorGradient *> & ColorGradientList::
     return reinterpret_cast<const std::map<std::string, const AbstractColorGradient *> &>(m_gradients);
 }
 
-void ColorGradientList::add(AbstractColorGradient * gradient)
+void ColorGradientList::add(std::unique_ptr<AbstractColorGradient> && gradient)
 {
     const auto it = m_gradients.find(gradient->name());
 
@@ -52,7 +48,7 @@ void ColorGradientList::add(AbstractColorGradient * gradient)
     }
     else
     {
-        it->second = gradient;
+        it->second = std::move(gradient);
     }
 }
 
@@ -65,7 +61,7 @@ const AbstractColorGradient * ColorGradientList::at(const std::string & name) co
         return nullptr;
     }
 
-    return iterator->second;
+    return iterator->second.get();
 }
 
 AbstractColorGradient * ColorGradientList::at(const std::string & name)
@@ -77,7 +73,7 @@ AbstractColorGradient * ColorGradientList::at(const std::string & name)
         return nullptr;
     }
 
-    return iterator->second;
+    return iterator->second.get();
 }
 
 size_t ColorGradientList::indexOf(const std::string & name) const
@@ -94,7 +90,7 @@ std::vector<unsigned char> ColorGradientList::pixelData(size_t numPixels) const
     size_t i = 0;
     for (const auto & pair : m_gradients)
     {
-        const AbstractColorGradient * gradient = pair.second;
+        const auto & gradient = pair.second;
 
         gradient->fillPixelData(&data[i * numPixels * sizeof(std::uint32_t)], numPixels);
 

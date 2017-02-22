@@ -26,7 +26,7 @@ public:
     Component();
     virtual ~Component();
 
-    virtual BaseType * createInstance(gloperate::Environment * environment) override;
+    virtual std::unique_ptr<BaseType> createInstance(gloperate::Environment * environment) override;
 };
 
 

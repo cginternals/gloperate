@@ -1,4 +1,7 @@
 
+#include <gloperate/base/make_unique.h>
+
+
 namespace gloperate
 {
 
@@ -14,9 +17,9 @@ Component<BaseType, Type>::~Component()
 }
 
 template <class BaseType, class Type>
-BaseType * Component<BaseType, Type>::createInstance(gloperate::Environment * environment)
+std::unique_ptr<BaseType> Component<BaseType, Type>::createInstance(gloperate::Environment * environment)
 {
-    return new Type(environment);
+    return gloperate::make_unique<Type>(environment);
 }
 
 
