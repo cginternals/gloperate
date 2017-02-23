@@ -172,6 +172,8 @@ protected:
     void scr_createConnection(const std::string & from, const std::string & to);
     void scr_removeConnection(const std::string & to);
 
+    void scr_save(const std::string &filename);
+
 
 protected:
     std::vector<Stage *>                     m_stages;    ///< List of topologically sorted stages in the pipeline

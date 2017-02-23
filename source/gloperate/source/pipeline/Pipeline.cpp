@@ -14,6 +14,7 @@
 #include <gloperate/base/ComponentManager.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+#include <gloperate/pipeline/PipelineSaver.h>
 
 
 using namespace cppassist;
@@ -36,6 +37,7 @@ Pipeline::Pipeline(Environment * environment, const std::string & className, con
     addFunction("removeStage",      this, &Pipeline::scr_removeStage);
     addFunction("createConnection", this, &Pipeline::scr_createConnection);
     addFunction("removeConnection", this, &Pipeline::scr_removeConnection);
+    addFunction("save",             this, &Pipeline::scr_save);
 }
 
 Pipeline::~Pipeline()
@@ -358,5 +360,12 @@ void Pipeline::scr_removeConnection(const std::string & to)
     }
 }
 
+void Pipeline::scr_save(const std::string &filename)
+{
+
+    PipelineSaver saver(this);
+
+    saver.save(filename);
+}
 
 } // namespace gloperate

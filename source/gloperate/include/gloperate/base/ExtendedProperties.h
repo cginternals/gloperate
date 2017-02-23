@@ -11,6 +11,9 @@
 
 #include <cppexpose/typed/GetTyped.h>
 
+#include <globjects/Texture.h>
+#include <globjects/Framebuffer.h>
+
 #include <gloperate/base/Color.h>
 
 
@@ -320,6 +323,114 @@ template <typename BASE>
 struct GetTyped<glm::ivec4, BASE>
 {
     using Type = TypedGlmVec<glm::ivec4, glm::ivec4::value_type, 4, BASE>;
+};
+
+
+/**
+*  @brief
+*    Property implementation for globjects::Texture
+*/
+template <typename BASE>
+class TypedTexturePointer : public cppexpose::Typed<globjects::Texture *, BASE>
+{
+public:
+    TypedTexturePointer()
+    {
+    }
+
+    virtual ~TypedTexturePointer()
+    {
+    }
+
+    bool isString() const override
+    {
+        return false;
+    }
+
+    std::string toString() const override
+    {
+        return "";
+    }
+
+    bool fromString(const std::string & string) override
+    {
+        return false;
+    }
+
+    Variant toVariant() const override
+    {
+        return Variant::fromValue<std::string>(this->toString());
+    }
+
+    bool fromVariant(const Variant & variant) override
+    {
+        return this->fromString(variant.value<std::string>());
+    }
+
+    virtual std::string typeName() const override
+    {
+        return "TexturePointer";
+    }
+};
+
+template <typename BASE>
+struct GetTyped<globjects::Texture *, BASE>
+{
+    using Type = TypedTexturePointer<BASE>;
+};
+
+
+/**
+*  @brief
+*    Property implementation for globjects::Texture
+*/
+template <typename BASE>
+class TypedFramebufferPointer : public cppexpose::Typed<globjects::Framebuffer *, BASE>
+{
+public:
+    TypedFramebufferPointer()
+    {
+    }
+
+    virtual ~TypedFramebufferPointer()
+    {
+    }
+
+    bool isString() const override
+    {
+        return false;
+    }
+
+    std::string toString() const override
+    {
+        return "";
+    }
+
+    bool fromString(const std::string & string) override
+    {
+        return false;
+    }
+
+    Variant toVariant() const override
+    {
+        return Variant::fromValue<std::string>(this->toString());
+    }
+
+    bool fromVariant(const Variant & variant) override
+    {
+        return this->fromString(variant.value<std::string>());
+    }
+
+    virtual std::string typeName() const override
+    {
+        return "FramebufferPointer";
+    }
+};
+
+template <typename BASE>
+struct GetTyped<globjects::Framebuffer *, BASE>
+{
+    using Type = TypedFramebufferPointer<BASE>;
 };
 
 

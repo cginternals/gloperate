@@ -527,5 +527,4 @@ cppexpose::Variant Stage::scr_slotTypes()
     return types;
 }
 
-
 } // namespace gloperate

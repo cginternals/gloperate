@@ -5,6 +5,7 @@
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/TimeManager.h>
+#include <gloperate/pipeline/PipelineLoader.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
@@ -34,6 +35,8 @@ Canvas::Canvas(Environment * environment)
     });
 
     addProperty(&m_pipelineContainer);
+
+    addFunction("loadPipeline",          this, &Canvas::loadPipeline);
 }
 
 Canvas::~Canvas()
@@ -66,6 +69,12 @@ void Canvas::setRenderStage(Stage * stage)
     {
         m_pipelineContainer.renderStage()->initContext(m_openGLContext);
     }
+}
+
+void Canvas::loadPipeline(const std::string& filename)
+{
+    auto loader = PipelineLoader(m_environment);
+    auto pipeline = loader.load(filename);
 }
 
 void Canvas::onRender(globjects::Framebuffer * targetFBO)

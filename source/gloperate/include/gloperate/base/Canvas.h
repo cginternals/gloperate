@@ -69,6 +69,14 @@ public:
     */
     void setRenderStage(Stage * stage);
 
+    /**
+    *  @brief
+    *    Load a pipeline from a file
+    *  @param[in] filename
+    *    The file from which to load the pipeline
+    */
+    void loadPipeline(const std::string &filename);
+
     // Virtual AbstractCanvas functions
     virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
     virtual void onUpdate() override;
