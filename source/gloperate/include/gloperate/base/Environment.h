@@ -159,7 +159,7 @@ public:
     *  @param[in] backend
     *    Scripting backend to use (must NOT be null)
     */
-    void setupScripting(cppexpose::AbstractScriptBackend * backend);
+    void setupScripting(std::unique_ptr<cppexpose::AbstractScriptBackend> backend);
 
     /**
     *  @brief

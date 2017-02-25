@@ -156,7 +156,7 @@ public:
     virtual T * ptr() override;
 
     // Virtual AbstractTyped interface
-    virtual cppexpose::AbstractTyped * clone() const override;
+    virtual std::unique_ptr<cppexpose::AbstractTyped> clone() const override;
 
     // Virtual AbstractProperty interface
     virtual bool isObject() const override;

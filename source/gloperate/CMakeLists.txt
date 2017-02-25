@@ -79,8 +79,6 @@ set(headers
     ${include_path}/base/ColorGradientPreparation.h
     ${include_path}/base/ExplicitEquidistantColorGradient.h
     ${include_path}/base/ExplicitEquidistantColorGradient.inl
-    ${include_path}/base/make_unique.h
-    ${include_path}/base/make_unique.inl
 
     ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h

@@ -367,18 +367,25 @@ public:
     *    Add input
     *
     *  @param[in] input
-    *    Input (must NOT null!)
-    *  @param[in] ownership
-    *    Property ownership
+    *    Input (must NOT be null!)
     */
     void addInput(AbstractSlot * input);
+
+    /**
+    *  @brief
+    *    Add input
+    *
+    *  @param[in] input
+    *    Input (must NOT be null!)
+    */
+    void addInput(std::unique_ptr<AbstractSlot> && input);
 
     /**
     *  @brief
     *    Remove input
     *
     *  @param[in] input
-    *    Input (must NOT null!)
+    *    Input (must NOT be null!)
     */
     void removeInput(AbstractSlot * input);
 
@@ -450,18 +457,25 @@ public:
     *    Add output
     *
     *  @param[in] output
-    *    Output (must NOT null!)
-    *  @param[in] ownership
-    *    Property ownership
+    *    Output (must NOT be null!)
     */
     void addOutput(AbstractSlot * output);
+
+    /**
+    *  @brief
+    *    Add output
+    *
+    *  @param[in] output
+    *    Output (must NOT be null!)
+    */
+    void addOutput(std::unique_ptr<AbstractSlot> && output);
 
     /**
     *  @brief
     *    Remove output
     *
     *  @param[in] output
-    *    Output (must NOT null!)
+    *    Output (must NOT be null!)
     */
     void removeOutput(AbstractSlot * output);
 
@@ -627,6 +641,18 @@ protected:
     */
     virtual void onOutputRequiredChanged(AbstractSlot * slot);
 
+    /**
+    *  @brief
+    *    Common implementation of addInput(AbstractSlot *) and addInput(std::unique_ptr<AbstractSlot> &&)
+    */
+    void registerInput(AbstractSlot * input);
+
+    /**
+    *  @brief
+    *    Common implementation of addOutput(AbstractSlot *) and addOutput(std::unique_ptr<AbstractSlot> &&)
+    */
+    void registerOutput(AbstractSlot * output);
+
 
 protected:
     // Scripting functions
@@ -646,7 +672,6 @@ protected:
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs
     std::vector<AbstractSlot *>                     m_outputs;    ///< List of outputs
     std::unordered_map<std::string, AbstractSlot *> m_outputsMap; ///< Map of names and outputs
-    std::vector<std::unique_ptr<AbstractSlot>>      m_ownedSlots;
 };
 
 

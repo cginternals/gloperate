@@ -59,23 +59,41 @@ Stage * Pipeline::stage(const std::string & name) const
 
 void Pipeline::addStage(Stage * stage)
 {
-    // Check parameters
-    if (!stage)
-    {
-        return;
-    }
+    assert(stage);
 
     // Find free name
     std::string name = getFreeName(stage->name());
     stage->setName(name);
 
     // Add stage as property
-    addProperty(stage, PropertyOwnership::None);
+    addProperty(stage);
 
+    // Add stage
+    registerStage(stage);
+}
+
+void Pipeline::addStage(std::unique_ptr<Stage> && stage)
+{
+    assert(stage);
+
+    // Find free name
+    std::string name = getFreeName(stage->name());
+    stage->setName(name);
+
+    // Add stage as property
+    const auto stagePtr = stage.get();
+    addProperty(std::move(stage));
+
+    // Add stage
+    registerStage(stagePtr);
+}
+
+void Pipeline::registerStage(Stage * stage)
+{
     // Add stage
     m_stages.push_back(stage);
     if (stage->name() != "") {
-        m_stagesMap.insert(std::make_pair(stage->name(), stage));        
+        m_stagesMap.insert(std::make_pair(stage->name(), stage));
     }
 
     // Shouldn't be required if each slot of a stage would disconnect from connections
@@ -103,12 +121,6 @@ bool Pipeline::removeStage(Stage * stage)
     m_stagesMap.erase(stage->name());
 
     stageRemoved(stage);
-
-    auto ownedIt = std::find_if(m_ownedStages.begin(), m_ownedStages.end(), [stage](const std::unique_ptr<Stage> & ownedStage) { return ownedStage.get() == stage; });
-    if (ownedIt != m_ownedStages.end())
-    {
-        m_ownedStages.erase(ownedIt);
-    }
 
     removeProperty(stage);
 
@@ -318,8 +330,7 @@ std::string Pipeline::scr_createStage(const std::string & className, const std::
         auto stage = component->createInstance(m_environment, name);
         auto stagePtr = stage.get();
 
-        addStage(stagePtr);
-        m_ownedStages.push_back(std::move(stage));
+        addStage(std::move(stage));
 
         return stagePtr->name();
     }

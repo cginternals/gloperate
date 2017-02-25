@@ -5,7 +5,7 @@
 
 #include <gloperate/base/Timer.h>
 #include <gloperate/base/ScriptTimer.h>
-#include <gloperate/base/make_unique.h>
+#include <cppassist/memory/make_unique.h>
 
 
 // [TODO] Implement garbage collection of stopped scripting timers.
@@ -148,7 +148,7 @@ int TimeManager::startTimer(const cppexpose::Variant & func, int msec, bool sing
     cppexpose::Function function = func.value<cppexpose::Function>();
 
     // Create and start timer
-    auto timer = make_unique<ScriptTimer>(m_environment, function);
+    auto timer = cppassist::make_unique<ScriptTimer>(m_environment, function);
     timer->start(msec / 1000.0f, singleShot);
 
     // Store timer

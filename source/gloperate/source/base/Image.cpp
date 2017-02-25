@@ -5,7 +5,7 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <gloperate/base/make_unique.h>
+#include <cppassist/memory/make_unique.h>
 
 
 using namespace gl;

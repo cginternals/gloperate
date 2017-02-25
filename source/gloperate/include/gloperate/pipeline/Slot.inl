@@ -33,7 +33,7 @@ Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const
 , m_source(nullptr)
 {
     // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+    this->initProperty(name, nullptr);
 
     // Initialize slot, will also add slot as a property
     this->initSlot(slotType, parent);
@@ -46,7 +46,7 @@ Slot<T>::Slot(SlotType slotType, const std::string & name, const T & value)
 , m_source(nullptr)
 {
     // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr, cppexpose::PropertyOwnership::None);
+    this->initProperty(name, nullptr);
 
     // Initialize slot
     this->initSlot(slotType, nullptr);
@@ -244,7 +244,7 @@ T * Slot<T>::ptr()
 }
 
 template <typename T>
-cppexpose::AbstractTyped * Slot<T>::clone() const
+std::unique_ptr<cppexpose::AbstractTyped> Slot<T>::clone() const
 {
     return nullptr;
 }

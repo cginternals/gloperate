@@ -36,7 +36,7 @@ std::unique_ptr<gloperate::Stage> Utils::createRenderStage(gloperate::Environmen
         return component->createInstance(environment);
     }
 
-    return gloperate::make_unique<gloperate::Stage>(environment);
+    return cppassist::make_unique<gloperate::Stage>(environment);
 }
 
 

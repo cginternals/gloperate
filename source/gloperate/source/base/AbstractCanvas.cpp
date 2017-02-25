@@ -4,7 +4,7 @@
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/make_unique.h>
+#include <cppassist/memory/make_unique.h>
 #include <gloperate/tools/AbstractVideoExporter.h>
 #include <gloperate/tools/ImageExporter.h>
 

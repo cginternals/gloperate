@@ -8,7 +8,7 @@
 #include <cppexpose/scripting/ScriptContext.h>
 
 #include <gloperate/base/AbstractCanvas.h>
-#include <gloperate/base/make_unique.h>
+#include <cppassist/memory/make_unique.h>
 
 // Local components
 #include <gloperate/stages/base/BasicFramebufferStage.h>
@@ -127,14 +127,14 @@ cppexpose::ScriptContext * Environment::scriptContext()
 
 void Environment::setupScripting(const std::string & backendName)
 {
-    initializeScripting(gloperate::make_unique<cppexpose::ScriptContext>(
+    initializeScripting(cppassist::make_unique<cppexpose::ScriptContext>(
         backendName.length() > 0 ? backendName : "javascript"
     ) );
 }
 
-void Environment::setupScripting(cppexpose::AbstractScriptBackend * backend)
+void Environment::setupScripting(std::unique_ptr<cppexpose::AbstractScriptBackend> backend)
 {
-    initializeScripting(make_unique<cppexpose::ScriptContext>(backend));
+    initializeScripting(make_unique<cppexpose::ScriptContext>(std::move(backend)));
 }
 
 cppexpose::Variant Environment::executeScript(const std::string & code)

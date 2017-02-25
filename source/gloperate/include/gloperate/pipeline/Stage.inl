@@ -42,11 +42,10 @@ std::vector<Input<T> *> Stage::inputs() const
 template <typename T>
 Input<T> * Stage::createInput(const std::string & name, const T & defaultValue)
 {
-    auto input = gloperate::make_unique<Input<T>>(name, defaultValue);
+    auto input = cppassist::make_unique<Input<T>>(name, defaultValue);
     auto inputPtr = input.get();
 
-    this->addInput(inputPtr);
-    m_ownedSlots.push_back(std::move(input));
+    this->addInput(std::move(input));
 
     return inputPtr;
 }
@@ -83,11 +82,10 @@ std::vector<Output<T> *> Stage::outputs() const
 template <typename T>
 Output<T> * Stage::createOutput(const std::string & name, const T & defaultValue)
 {
-    auto output = gloperate::make_unique<Output<T>>(name, defaultValue);
+    auto output = cppassist::make_unique<Output<T>>(name, defaultValue);
     auto outputPtr = output.get();
 
     this->addOutput(outputPtr);
-    m_ownedSlots.push_back(std::move(output));
 
     return outputPtr;
 }
