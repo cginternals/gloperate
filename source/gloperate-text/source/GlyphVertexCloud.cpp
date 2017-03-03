@@ -67,22 +67,22 @@ GlyphVertexCloud::~GlyphVertexCloud()
 
 const globjects::Texture * GlyphVertexCloud::texture() const
 {
-    return m_texture;
+    return m_texture.get();
 }
 
 void GlyphVertexCloud::setTexture(globjects::Texture * texture)
 {
-    m_texture = texture;
+    m_texture.reset(texture);
 }
 
 gloperate::Drawable * GlyphVertexCloud::drawable()
 {
-    return m_drawable;
+    return m_drawable.get();
 }
 
 const gloperate::Drawable * GlyphVertexCloud::drawable() const
 {
-    return m_drawable;
+    return m_drawable.get();
 }
 
 GlyphVertexCloud::Vertices & GlyphVertexCloud::vertices()
@@ -104,7 +104,7 @@ gloperate::Drawable * GlyphVertexCloud::createDrawable()
 
     drawable->bindAttributes({ 0, 1, 2, 3, 4 });
 
-    globjects::Buffer * vertexBuffer = new globjects::Buffer;
+    auto vertexBuffer = std::make_shared<globjects::Buffer>();
     drawable->setBuffer(0, vertexBuffer);
     drawable->setAttributeBindingBuffer(0, 0, 0, sizeof(Vertex));
     drawable->setAttributeBindingBuffer(1, 0, 0, sizeof(Vertex));
@@ -126,7 +126,7 @@ gloperate::Drawable * GlyphVertexCloud::createDrawable()
 void GlyphVertexCloud::update()
 {
     if (!m_drawable)
-        m_drawable = createDrawable();
+        m_drawable.reset(createDrawable());
 
     m_drawable->buffer(0)->setData(m_vertices, gl::GL_STATIC_DRAW);
     m_drawable->setSize(m_vertices.size());
@@ -135,7 +135,7 @@ void GlyphVertexCloud::update()
 void GlyphVertexCloud::update(const Vertices & vertices)
 {
     if (!m_drawable)
-        m_drawable = createDrawable();
+        m_drawable.reset(createDrawable());
 
     m_drawable->buffer(0)->setData(vertices, gl::GL_STATIC_DRAW);
     m_drawable->setSize(vertices.size());

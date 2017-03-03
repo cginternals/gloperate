@@ -8,7 +8,6 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
 #include <gloperate-text/gloperate-text_api.h>
@@ -400,7 +399,7 @@ protected:
     glm::uvec2 m_glyphTextureExtent;  ///< The size/extent of the glyph texture in px.
     glm::vec4  m_glyphTexturePadding; ///< The padding applied to every glyph in px.
 
-    globjects::ref_ptr<globjects::Texture> m_glyphTexture; ///< The font face's associated glyph atlas.
+    std::unique_ptr<globjects::Texture> m_glyphTexture; ///< The font face's associated glyph atlas.
 
     std::unordered_map<GlyphIndex, Glyph> m_glyphs; ///< Quick-access container for all added glyphs.
 };

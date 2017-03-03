@@ -4,7 +4,6 @@
 
 #include <string>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Renderbuffer.h>
@@ -89,9 +88,9 @@ protected:
     int              m_renderIterations;
 
     // OpenGl objects
-    globjects::ref_ptr<globjects::Framebuffer>  m_fbo;
-    globjects::ref_ptr<globjects::Texture>      m_color;
-    globjects::ref_ptr<globjects::Renderbuffer> m_depth;
+    std::unique_ptr<globjects::Framebuffer>  m_fbo;
+    std::unique_ptr<globjects::Texture>      m_color;
+    std::unique_ptr<globjects::Renderbuffer> m_depth;
 };
 
 

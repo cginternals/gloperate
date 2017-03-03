@@ -33,7 +33,6 @@ ColorizeStage::ColorizeStage(Environment * environment, const std::string & name
 
 ColorizeStage::~ColorizeStage()
 {
-    delete m_screenAlignedQuad;
 }
 
 void ColorizeStage::onContextInit(AbstractGLContext *)
@@ -50,7 +49,7 @@ void ColorizeStage::onProcess(AbstractGLContext *)
 {
     // Activate FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
+    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Set viewport
@@ -101,15 +100,15 @@ void ColorizeStage::onProcess(AbstractGLContext *)
 
 void ColorizeStage::setupGeometry()
 {
-    m_screenAlignedQuad = new ScreenAlignedQuad();
+    m_screenAlignedQuad = cppassist::make_unique<ScreenAlignedQuad>();
 }
 
 void ColorizeStage::setupProgram()
 {
-    m_vertexShader   = ScreenAlignedQuad::createDefaultVertexShader();
-    m_fragmentShader = ScreenAlignedQuad::createDefaultFragmentShader();
-    m_program = new globjects::Program();
-    m_program->attach(m_vertexShader, m_fragmentShader);
+    m_vertexShader   = std::unique_ptr<globjects::Shader>(ScreenAlignedQuad::createDefaultVertexShader());
+    m_fragmentShader = std::unique_ptr<globjects::Shader>(ScreenAlignedQuad::createDefaultFragmentShader());
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
     m_program->setUniform("source", 0);
 }

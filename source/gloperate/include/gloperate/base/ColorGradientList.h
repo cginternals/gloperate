@@ -175,7 +175,7 @@ public:
     *  @remarks
     *   The texture has texel dimensions of (numColors x size()).
     */
-    globjects::Texture * generateTexture(size_t numColors) const;
+    std::unique_ptr<globjects::Texture> generateTexture(size_t numColors) const;
 
 
 protected:

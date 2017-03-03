@@ -25,7 +25,7 @@ ScreenAlignedQuad::ScreenAlignedQuad()
     ,   glm::vec2( -1.f, +1.f )
     }};
 
-    globjects::Buffer * buffer = new globjects::Buffer;
+    auto buffer = std::make_shared<globjects::Buffer>();
     buffer->setData(raw, gl::GL_STATIC_DRAW);
 
     m_drawable->setPrimitiveMode(gl::GL_TRIANGLE_STRIP);
@@ -47,7 +47,7 @@ ScreenAlignedQuad::~ScreenAlignedQuad()
 
 const Drawable * ScreenAlignedQuad::drawable() const
 {
-    return m_drawable;
+    return m_drawable.get();
 }
 
 void ScreenAlignedQuad::draw() const
@@ -61,12 +61,18 @@ const std::string ScreenAlignedQuad::s_defaultFragmentShaderSource = gloperate::
 
 globjects::Shader* ScreenAlignedQuad::createDefaultVertexShader()
 {
-    return globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, s_defaultVertexShaderSource);
+    //TODO
+    //this was removed in cginternals/globjects/primitive_memory_management
+    //return globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, s_defaultVertexShaderSource);
+    return nullptr;
 }
 
 globjects::Shader* ScreenAlignedQuad::createDefaultFragmentShader()
 {
-    return globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, s_defaultFragmentShaderSource);
+    //TODO
+    //this was removed in cginternals/globjects/primitive_memory_management
+    //return globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, s_defaultFragmentShaderSource);
+    return nullptr;
 }
 
 

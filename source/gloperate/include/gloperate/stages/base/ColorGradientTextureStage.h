@@ -5,7 +5,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate_api.h>
@@ -42,10 +41,12 @@ public:
 
 
 public:
-    Input<ColorGradientList *>                     gradients;       ///< List of gradients
-    Input<size_t>                                  textureWidth;    ///< Size of texture in x dimension
+    Input<ColorGradientList *>                  gradients;       ///< List of gradients
+    Input<size_t>                               textureWidth;    ///< Size of texture in x dimension
 
-    Output<globjects::ref_ptr<globjects::Texture>> gradientTexture; ///< Texture with gradients
+    //TODO
+    //why did this Output use ref_ptr while all other Outputs don't?
+    Output<globjects::Texture*> gradientTexture; ///< Texture with gradients
 
 
 public:

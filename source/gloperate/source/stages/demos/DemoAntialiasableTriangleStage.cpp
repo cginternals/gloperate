@@ -93,7 +93,7 @@ void DemoAntialiasableTriangleStage::onProcess(AbstractGLContext *)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
+    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
@@ -126,13 +126,13 @@ void DemoAntialiasableTriangleStage::onInputValueChanged(AbstractSlot * /*slot*/
 
 void DemoAntialiasableTriangleStage::setupGeometry()
 {
-    m_vao = new globjects::VertexArray;
-    m_vertexBuffer = new globjects::Buffer();
+    m_vao.reset(new globjects::VertexArray);
+    m_vertexBuffer.reset(new globjects::Buffer());
     m_vertexBuffer->setData(s_vertices, gl::GL_STATIC_DRAW);
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(m_vertexBuffer, 0, sizeof(glm::vec2));
+    binding->setBuffer(m_vertexBuffer.get(), 0, sizeof(glm::vec2));
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 }
@@ -147,10 +147,10 @@ void DemoAntialiasableTriangleStage::setupProgram()
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
 
-    m_vertexShader   = new globjects::Shader(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
-    m_program = new globjects::Program();
-    m_program->attach(m_vertexShader, m_fragmentShader);
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_program.reset(new globjects::Program());
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 }
 
 

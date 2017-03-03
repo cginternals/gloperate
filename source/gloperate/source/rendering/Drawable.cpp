@@ -8,13 +8,15 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
+#include <cppassist/memory/make_unique.h>
+
 
 namespace gloperate
 {
 
 
 Drawable::Drawable()
-: m_vao(new globjects::VertexArray)
+: m_vao(cppassist::make_unique<globjects::VertexArray>())
 , m_drawMode(DrawMode::Arrays)
 , m_size(0)
 , m_primitiveMode(gl::GL_TRIANGLES)
@@ -28,7 +30,7 @@ Drawable::~Drawable()
 
 globjects::VertexArray * Drawable::vao() const
 {
-    return m_vao;
+    return m_vao.get();
 }
 
 DrawMode Drawable::drawMode() const
@@ -94,7 +96,7 @@ void Drawable::drawElements(gl::GLenum mode) const
     }
     else
     {
-        drawElements(mode, m_size, m_indexBufferType, m_indexBuffer);
+        drawElements(mode, m_size, m_indexBufferType, m_indexBuffer.get());
     }
 }
 
@@ -132,22 +134,22 @@ void Drawable::setPrimitiveMode(gl::GLenum mode)
     m_primitiveMode = mode;
 }
 
-globjects::Buffer * Drawable::buffer(size_t index)
+std::shared_ptr<globjects::Buffer> Drawable::buffer(size_t index)
 {
     if (m_buffers.count(index) == 0)
     {
-        setBuffer(index, new globjects::Buffer);
+        setBuffer(index, std::make_shared<globjects::Buffer>());
     }
 
     return m_buffers.at(index);
 }
 
-globjects::Buffer * Drawable::buffer(size_t index) const
+std::shared_ptr<globjects::Buffer> Drawable::buffer(size_t index) const
 {
     return m_buffers.at(index);
 }
 
-void Drawable::setBuffer(size_t index, globjects::Buffer * buffer)
+void Drawable::setBuffer(size_t index, std::shared_ptr<globjects::Buffer> buffer)
 {
     const auto it = m_buffers.find(index);
 
@@ -161,14 +163,14 @@ void Drawable::setBuffer(size_t index, globjects::Buffer * buffer)
     }
 }
 
-globjects::Buffer * Drawable::indexBuffer() const
+globjects::Buffer* Drawable::indexBuffer() const
 {
-    return m_indexBuffer;
+    return m_indexBuffer.get();
 }
 
 void Drawable::setIndexBuffer(globjects::Buffer * buffer)
 {
-    m_indexBuffer = buffer;
+    m_indexBuffer = std::unique_ptr<globjects::Buffer>(buffer);
 }
 
 void Drawable::setIndexBuffer(globjects::Buffer * buffer, gl::GLenum bufferType)
@@ -206,7 +208,7 @@ void Drawable::setAttributeBindingBuffer(size_t bindingIndex, size_t bufferIndex
 {
     assert(m_buffers.count(bufferIndex) > 0);
 
-    m_vao->binding(bindingIndex)->setBuffer(m_buffers.at(bufferIndex), baseOffset, stride);
+    m_vao->binding(bindingIndex)->setBuffer(m_buffers.at(bufferIndex).get(), baseOffset, stride);
 }
 
 void Drawable::setAttributeBindingFormat(size_t bindingIndex, gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset)

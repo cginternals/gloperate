@@ -48,7 +48,7 @@ public:
     *
     *  @remarks
     *    Creates the output slot without adding it to any stage.
-    *    Use this constructor for dynamic slots and call addInput()
+    *    Use this constructor for dynamic slots and call addOutput()
     *    to add the slot to a stage.
     */
     Output(const std::string & name, const T & defaultValue = T());

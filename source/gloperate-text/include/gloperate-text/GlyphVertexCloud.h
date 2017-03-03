@@ -1,11 +1,10 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-
-#include <globjects/base/ref_ptr.h>
 
 #include <gloperate-text/gloperate-text_api.h>
 
@@ -73,8 +72,8 @@ protected:
 protected:
     Vertices m_vertices;
 
-    globjects::ref_ptr<gloperate::Drawable> m_drawable;
-    globjects::ref_ptr<globjects::Texture> m_texture;
+    std::unique_ptr<gloperate::Drawable> m_drawable;
+    std::unique_ptr<globjects::Texture> m_texture;
 };
 
 

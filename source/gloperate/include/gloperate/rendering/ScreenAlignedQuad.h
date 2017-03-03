@@ -3,8 +3,6 @@
 
 #include <globjects/Buffer.h>
 #include <globjects/VertexArray.h>
-#include <globjects/base/Referenced.h>
-#include <globjects/base/ref_ptr.h>
 
 #include <gloperate/rendering/AbstractDrawable.h>
 #include <gloperate/rendering/Drawable.h>
@@ -32,7 +30,7 @@ namespace gloperate
 *
 *    This class can be used to render a screen aligned quad.
 */
-class GLOPERATE_API ScreenAlignedQuad : public globjects::Referenced, AbstractDrawable
+class GLOPERATE_API ScreenAlignedQuad : public AbstractDrawable
 {
 public:
     /**
@@ -93,7 +91,7 @@ public:
 
 
 protected:
-    globjects::ref_ptr<Drawable> m_drawable;
+    std::unique_ptr<Drawable> m_drawable;
 
 
 protected:

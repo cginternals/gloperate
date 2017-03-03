@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include <glm/fwd.hpp>
+#include <memory>
 
-#include <globjects/base/ref_ptr.h>
+#include <glm/fwd.hpp>
 
 #include <gloperate-text/gloperate-text_api.h>
 
@@ -40,7 +40,7 @@ public:
 
 
 protected:
-    globjects::ref_ptr<globjects::Program> m_program;
+    std::unique_ptr<globjects::Program> m_program;
 };
 
 

@@ -11,8 +11,6 @@
 
 #include <globjects/Buffer.h>
 #include <globjects/VertexArray.h>
-#include <globjects/base/Referenced.h>
-#include <globjects/base/ref_ptr.h>
 
 #include <gloperate/rendering/AbstractDrawable.h>
 
@@ -56,7 +54,7 @@ enum class DrawMode : unsigned int
 *   Note: most configurable parameters (such as DrawMode, primitive mode, draw count,
 *         index buffer source, ...) can be temporarily overwritten for each draw call.
 */
-class GLOPERATE_API Drawable : public globjects::Referenced, gloperate::AbstractDrawable
+class GLOPERATE_API Drawable : public gloperate::AbstractDrawable
 {
 public:
     /**
@@ -319,7 +317,7 @@ public:
     *    The indices don't need to be continuous.
     *    If an OpenGL buffer at the given index doesn't exist, a new one will be created.
     */
-    globjects::Buffer * buffer(size_t index);
+    std::shared_ptr<globjects::Buffer> buffer(size_t index);
 
     /**
     *  @brief
@@ -334,7 +332,7 @@ public:
     *  @remarks
     *    The indices don't need to be continuous.
     */
-    globjects::Buffer * buffer(size_t index) const;
+    std::shared_ptr<globjects::Buffer> buffer(size_t index) const;
 
     /**
     *  @brief
@@ -351,7 +349,7 @@ public:
     *    this class. However, if it is associated, the buffer object is partially owned by
     *    this object.
     */
-    void setBuffer(size_t index, globjects::Buffer * buffer);
+    void setBuffer(size_t index, std::shared_ptr<globjects::Buffer> buffer);
 
     /**
     *  @brief
@@ -529,14 +527,14 @@ public:
 
 
 protected:
-    globjects::ref_ptr<globjects::VertexArray>                        m_vao;     ///< The VertexArray used for the vertex shader input specification and draw call triggering
-    std::unordered_map<size_t, globjects::ref_ptr<globjects::Buffer>> m_buffers; ///< The collection of all buffers associated with this geometry. (Note: this class can be used without storing actual buffers here)
+    std::unique_ptr<globjects::VertexArray>                        m_vao;     ///< The VertexArray used for the vertex shader input specification and draw call triggering
+    std::unordered_map<size_t, std::shared_ptr<globjects::Buffer>> m_buffers; ///< The collection of all buffers associated with this geometry. (Note: this class can be used without storing actual buffers here)
 
     DrawMode                              m_drawMode;        ///< The configured draw mode that is used if no specific draw mode is passed in the draw method.
     gl::GLsizei                           m_size;            ///< The configured vertex count that is used if no specific vertex range is passed in the draw method.
     gl::GLenum                            m_primitiveMode;   ///< The configured primitive mode that is used if no specific primitive mode is passed in the draw method.
     gl::GLenum                            m_indexBufferType; ///< The configured GPU index buffer type of the currently set index buffer.
-    globjects::ref_ptr<globjects::Buffer> m_indexBuffer;     ///< The configured GPU index buffer that is used if no specific index buffer in passed in the draw method.
+    std::unique_ptr<globjects::Buffer>    m_indexBuffer;     ///< The configured GPU index buffer that is used if no specific index buffer in passed in the draw method.
     std::vector<std::uint32_t>            m_indices;         ///< The configured CPU index buffer that is used if no specific index buffer in passed in the draw method (Note: implied GL_UNSIGNED_INT as index buffer type).
 };
 

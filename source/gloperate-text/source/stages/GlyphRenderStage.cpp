@@ -48,7 +48,7 @@ void GlyphRenderStage::onProcess(gloperate::AbstractGLContext *)
 
     if (!fbo)
     {
-        fbo = globjects::Framebuffer::defaultFBO();
+        fbo = globjects::Framebuffer::defaultFBO().get();
     }
     fbo->bind();
 

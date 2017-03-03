@@ -98,7 +98,7 @@ void MixerStage::onProcess(AbstractGLContext *)
 
     // Activate FBO
     globjects::Framebuffer * fbo = *targetFBO;
-    fbo = fbo ? fbo : globjects::Framebuffer::defaultFBO();
+    fbo = fbo ? fbo : globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Set viewport
@@ -169,7 +169,7 @@ void MixerStage::buildGeometry()
     buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
 
     // Create VAO
-    m_vao = new globjects::VertexArray;
+    m_vao = std::unique_ptr<globjects::VertexArray>(new globjects::VertexArray);
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
@@ -181,15 +181,15 @@ void MixerStage::buildGeometry()
 void MixerStage::buildProgram()
 {
     // Create program and load shaders
-    m_program = new globjects::Program;
+    m_program.reset(new globjects::Program);
     if (vertexShader.value() != "") {
-        loadShader(m_program, gl::GL_VERTEX_SHADER, vertexShader.value());
+        loadShader(m_program.get(), gl::GL_VERTEX_SHADER, vertexShader.value());
     }
     if (geometryShader.value() != "") {
-        loadShader(m_program, gl::GL_GEOMETRY_SHADER, geometryShader.value());
+        loadShader(m_program.get(), gl::GL_GEOMETRY_SHADER, geometryShader.value());
     }
     if (fragmentShader.value() != "") {
-        loadShader(m_program, gl::GL_FRAGMENT_SHADER, fragmentShader.value());
+        loadShader(m_program.get(), gl::GL_FRAGMENT_SHADER, fragmentShader.value());
     }
 
     // Set uniforms

@@ -2,6 +2,7 @@
 #pragma once
 
 
+#include <memory>
 #include <string>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>

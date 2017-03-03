@@ -37,8 +37,8 @@ ProgramStage::~ProgramStage()
 
 void ProgramStage::onContextInit(AbstractGLContext *)
 {
-    m_program = new globjects::Program;
-    program.setValue(m_program);
+    m_program = cppassist::make_unique<globjects::Program>();
+    program.setValue(m_program.get());
     program.setValid(false);
 }
 

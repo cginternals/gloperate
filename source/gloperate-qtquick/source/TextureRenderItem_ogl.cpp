@@ -65,7 +65,7 @@ void TextureRenderItem::render()
 
         if (slot && slot->type() == typeid(globjects::Texture *))
         {
-            m_texture = static_cast< Slot<globjects::Texture *> * >(slot)->value();
+            m_texture.reset(static_cast< Slot<globjects::Texture *> * >(slot)->value());
         }
     }
 
@@ -134,7 +134,7 @@ void TextureRenderItem::buildGeometry()
     buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
 
     // Create VAO
-    m_vao = new globjects::VertexArray;
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
@@ -149,9 +149,9 @@ void TextureRenderItem::buildProgram()
     std::string dataPath = gloperate::dataPath();
 
     // Create program and load shaders
-    m_program = new globjects::Program;
-    loadShader(m_program, gl::GL_VERTEX_SHADER,   dataPath + "/gloperate/shaders/Mixer/Mixer.vert");
-    loadShader(m_program, gl::GL_FRAGMENT_SHADER, dataPath + "/gloperate/shaders/Mixer/Mixer.frag");
+    m_program = cppassist::make_unique<globjects::Program>();
+    loadShader(m_program.get(), gl::GL_VERTEX_SHADER,   dataPath + "/gloperate/shaders/Mixer/Mixer.vert");
+    loadShader(m_program.get(), gl::GL_FRAGMENT_SHADER, dataPath + "/gloperate/shaders/Mixer/Mixer.frag");
 
     // Set uniforms
     m_program->setUniform("texColor", 0);

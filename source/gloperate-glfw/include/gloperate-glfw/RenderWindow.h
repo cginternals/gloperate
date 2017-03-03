@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <glm/vec2.hpp>
 

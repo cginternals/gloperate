@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <gloperate-qt/base/OpenGLWindow.h>
 

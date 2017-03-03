@@ -85,42 +85,42 @@ void RenderPass::draw() const
 
 globjects::State * RenderPass::stateBefore() const
 {
-    return m_stateBefore;
+    return m_stateBefore.get();
 }
 
 void RenderPass::setStateBefore(globjects::State * state)
 {
-    m_stateBefore = state;
+    m_stateBefore.reset(state);
 }
 
 globjects::State * RenderPass::stateAfter() const
 {
-    return m_stateAfter;
+    return m_stateAfter.get();
 }
 
 void RenderPass::setStateAfter(globjects::State * state)
 {
-    m_stateAfter = state;
+    m_stateAfter.reset(state);
 }
 
 Drawable * RenderPass::geometry() const
 {
-    return m_geometry;
+    return m_geometry.get();
 }
 
 void RenderPass::setGeometry(Drawable * geometry)
 {
-    m_geometry = geometry;
+    m_geometry.reset(geometry);
 }
 
 globjects::TransformFeedback * RenderPass::recordTransformFeedback() const
 {
-    return m_recordTransformFeedback;
+    return m_recordTransformFeedback.get();
 }
 
 void RenderPass::setRecordTransformFeedback(globjects::TransformFeedback * transformFeedback)
 {
-    m_recordTransformFeedback = transformFeedback;
+    m_recordTransformFeedback.reset(transformFeedback);
 }
 
 gl::GLenum RenderPass::recordTransformFeedbackMode() const
@@ -135,12 +135,12 @@ void RenderPass::setRecordTransformFeedbackMode(gl::GLenum mode)
 
 globjects::TransformFeedback * RenderPass::drawTransformFeedback() const
 {
-    return m_drawTransformFeedback;
+    return m_drawTransformFeedback.get();
 }
 
 void RenderPass::setDrawTransformFeedback(globjects::TransformFeedback * transformFeedback)
 {
-    m_drawTransformFeedback = transformFeedback;
+    m_drawTransformFeedback.reset(transformFeedback);
 }
 
 gl::GLenum RenderPass::drawTransformFeedbackMode() const
@@ -155,22 +155,22 @@ void RenderPass::setDrawTransformFeedbackMode(gl::GLenum mode)
 
 globjects::Program * RenderPass::program() const
 {
-    return m_program;
+    return m_program.get();
 }
 
 void RenderPass::setProgram(globjects::Program * program)
 {
-    m_program = program;
+    m_program.reset(program);
 }
 
 globjects::ProgramPipeline * RenderPass::programPipeline() const
 {
-    return m_programPipeline;
+    return m_programPipeline.get();
 }
 
 void RenderPass::setProgramPipeline(globjects::ProgramPipeline * programPipeline)
 {
-    m_programPipeline = programPipeline;
+    m_programPipeline.reset(programPipeline);
 }
 
 globjects::Texture * RenderPass::texture(size_t index) const
@@ -182,7 +182,7 @@ globjects::Texture * RenderPass::texture(size_t index) const
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 globjects::Texture * RenderPass::texture(gl::GLenum activeTextureIndex) const
@@ -196,11 +196,11 @@ void RenderPass::setTexture(size_t index, globjects::Texture * texture)
 
     if (it == m_textures.end())
     {
-        m_textures.emplace(index, texture);
+        m_textures.emplace(index, std::unique_ptr<globjects::Texture>(texture));
     }
     else
     {
-        it->second = texture;
+        it->second.reset(texture);
     }
 }
 
@@ -248,11 +248,11 @@ void RenderPass::setSampler(size_t index, globjects::Sampler * sampler)
 
     if (it == m_samplers.end())
     {
-        m_samplers.emplace(index, sampler);
+        m_samplers.emplace(index, std::unique_ptr<globjects::Sampler>(sampler));
     }
     else
     {
-        it->second = sampler;
+        it->second.reset(sampler);
     }
 }
 
@@ -281,7 +281,7 @@ globjects::Buffer * RenderPass::uniformBuffer(size_t index) const
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 void RenderPass::setUniformBuffer(size_t index, globjects::Buffer * buffer)
@@ -290,11 +290,11 @@ void RenderPass::setUniformBuffer(size_t index, globjects::Buffer * buffer)
 
     if (it == m_uniformBuffers.end())
     {
-        m_uniformBuffers.emplace(index, buffer);
+        m_uniformBuffers.emplace(index, std::unique_ptr<globjects::Buffer>(buffer));
     }
     else
     {
-        it->second = buffer;
+        it->second.reset(buffer);
     }
 }
 
@@ -323,7 +323,7 @@ globjects::Buffer * RenderPass::atomicCounterBuffer(size_t index) const
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 void RenderPass::setAtomicCounterBuffer(size_t index, globjects::Buffer * buffer)
@@ -332,11 +332,11 @@ void RenderPass::setAtomicCounterBuffer(size_t index, globjects::Buffer * buffer
 
     if (it == m_atomicCounterBuffers.end())
     {
-        m_atomicCounterBuffers.emplace(index, buffer);
+        m_atomicCounterBuffers.emplace(index, std::unique_ptr<globjects::Buffer>(buffer));
     }
     else
     {
-        it->second = buffer;
+        it->second.reset(buffer);
     }
 }
 
@@ -365,7 +365,7 @@ globjects::Buffer * RenderPass::shaderStorageBuffer(size_t index) const
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 void RenderPass::setShaderStorageBuffer(size_t index, globjects::Buffer * buffer)
@@ -374,11 +374,11 @@ void RenderPass::setShaderStorageBuffer(size_t index, globjects::Buffer * buffer
 
     if (it == m_shaderStorageBuffers.end())
     {
-        m_shaderStorageBuffers.emplace(index, buffer);
+        m_shaderStorageBuffers.emplace(index, std::unique_ptr<globjects::Buffer>(buffer));
     }
     else
     {
-        it->second = buffer;
+        it->second.reset(buffer);
     }
 }
 
@@ -407,7 +407,7 @@ globjects::Buffer * RenderPass::transformFeedbackBuffer(size_t index) const
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 void RenderPass::setTransformFeedbackBuffer(size_t index, globjects::Buffer * buffer)
@@ -416,11 +416,11 @@ void RenderPass::setTransformFeedbackBuffer(size_t index, globjects::Buffer * bu
 
     if (it == m_transformFeedbackBuffers.end())
     {
-        m_transformFeedbackBuffers.emplace(index, buffer);
+        m_transformFeedbackBuffers.emplace(index, std::unique_ptr<globjects::Buffer>(buffer));
     }
     else
     {
-        it->second = buffer;
+        it->second.reset(buffer);
     }
 }
 

@@ -100,9 +100,9 @@ std::vector<unsigned char> ColorGradientList::pixelData(size_t numPixels) const
     return data;
 }
 
-globjects::Texture * ColorGradientList::generateTexture(size_t numPixels) const
+std::unique_ptr<globjects::Texture> ColorGradientList::generateTexture(size_t numPixels) const
 {
-    globjects::Texture * texture = globjects::Texture::createDefault();
+    auto texture = globjects::Texture::createDefault();
 
     std::vector<unsigned char> data = pixelData(numPixels);
 

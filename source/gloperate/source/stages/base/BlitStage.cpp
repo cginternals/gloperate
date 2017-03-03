@@ -26,13 +26,13 @@ void BlitStage::onProcess(AbstractGLContext * /*context*/)
     globjects::Framebuffer * srcFBO = *sourceFBO;
     if (!srcFBO)
     {
-        srcFBO = globjects::Framebuffer::defaultFBO();
+        srcFBO = globjects::Framebuffer::defaultFBO().get();
     }
 
     globjects::Framebuffer * destFBO = *destinationFBO;
     if (!destFBO)
     {
-        destFBO = globjects::Framebuffer::defaultFBO();
+        destFBO = globjects::Framebuffer::defaultFBO().get();
     }
 
     std::array<gl::GLint, 4> srcRect = {{

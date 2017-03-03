@@ -4,9 +4,6 @@
 
 #include <glbinding/gl/enum.h>
 
-#include <globjects/base/Referenced.h>
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/rendering/RenderTargetType.h>
 
 #include <gloperate/gloperate_api.h>
@@ -37,7 +34,7 @@ namespace gloperate
 *    a symbolic attachment of the default renderbuffer, or a user-defined
 *    renderbuffer with attachment specification.
 */
-class GLOPERATE_API RenderTarget : public globjects::Referenced
+class GLOPERATE_API RenderTarget
 {
 public:
     /**
@@ -115,12 +112,12 @@ public:
 
 
 protected:
-    RenderTargetType                                     m_type;         ///< the current type
+    RenderTargetType                                  m_type;         ///< the current type
 
-    gl::GLenum                                           m_attachment;   ///< the default framebuffer attachment target
-    globjects::ref_ptr<globjects::Texture>               m_texture;      ///< the texture target
-    globjects::ref_ptr<globjects::Renderbuffer>          m_renderbuffer; ///< the renderbuffer target
-    globjects::ref_ptr<globjects::FramebufferAttachment> m_userDefined;  ///< the user defined framebuffer attachment
+    gl::GLenum                                        m_attachment;   ///< the default framebuffer attachment target
+    std::unique_ptr<globjects::Texture>               m_texture;      ///< the texture target
+    std::unique_ptr<globjects::Renderbuffer>          m_renderbuffer; ///< the renderbuffer target
+    std::unique_ptr<globjects::FramebufferAttachment> m_userDefined;  ///< the user defined framebuffer attachment
 };
 
 

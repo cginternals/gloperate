@@ -3,8 +3,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Output.h>
@@ -70,7 +68,7 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<globjects::Texture> m_texture;
+    std::unique_ptr<globjects::Texture> m_texture;
 };
 
 

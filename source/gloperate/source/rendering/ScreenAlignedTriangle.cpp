@@ -24,7 +24,7 @@ ScreenAlignedTriangle::ScreenAlignedTriangle()
     ,   glm::vec2( -3.f, -1.f )
     }};
 
-    globjects::Buffer * buffer = new globjects::Buffer;
+    auto buffer = std::make_shared<globjects::Buffer>();
     buffer->setData(raw, gl::GL_STATIC_DRAW);
 
     m_drawable->setPrimitiveMode(gl::GL_TRIANGLE_STRIP);
@@ -46,7 +46,7 @@ ScreenAlignedTriangle::~ScreenAlignedTriangle()
 
 const Drawable * ScreenAlignedTriangle::drawable() const
 {
-    return m_drawable;
+    return m_drawable.get();
 }
 
 void ScreenAlignedTriangle::draw() const
@@ -60,12 +60,18 @@ const std::string ScreenAlignedTriangle::s_defaultFragmentShaderSource = glopera
 
 globjects::Shader* ScreenAlignedTriangle::createDefaultVertexShader()
 {
-    return globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, s_defaultVertexShaderSource);
+    //TODO
+    //this was removed in cginternals/globjects/primitive_memory_management
+    //return globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, s_defaultVertexShaderSource);
+    return nullptr;
 }
 
 globjects::Shader* ScreenAlignedTriangle::createDefaultFragmentShader()
 {
-    return globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, s_defaultFragmentShaderSource);
+    //TODO
+    //this was removed in cginternals/globjects/primitive_memory_management
+    //return globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, s_defaultFragmentShaderSource);
+    return nullptr;
 }
 
 

@@ -7,6 +7,8 @@
 
 #include <cppassist/memory/make_unique.h>
 
+#include <algorithm>
+
 
 using namespace gl;
 using namespace cppassist;

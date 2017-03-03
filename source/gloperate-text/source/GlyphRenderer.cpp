@@ -88,12 +88,12 @@ void GlyphRenderer::renderInWorld(const GlyphVertexCloud & vertexCloud, const gl
 
 globjects::Program * GlyphRenderer::program()
 {
-    return m_program;
+    return m_program.get();
 }
 
 const globjects::Program * GlyphRenderer::program() const
 {
-    return m_program;
+    return m_program.get();
 }
 
 

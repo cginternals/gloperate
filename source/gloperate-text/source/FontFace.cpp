@@ -111,12 +111,12 @@ void FontFace::setGlyphTexturePadding(const glm::vec4 & padding)
 
 globjects::Texture * FontFace::glyphTexture() const
 {
-    return m_glyphTexture;
+    return m_glyphTexture.get();
 }
 
 void FontFace::setGlyphTexture(globjects::Texture * texture)
 {
-    m_glyphTexture = texture;
+    m_glyphTexture.reset(texture);
 }
 
 bool FontFace::hasGlyph(const GlyphIndex index) const
