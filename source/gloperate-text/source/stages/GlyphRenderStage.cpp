@@ -46,9 +46,11 @@ void GlyphRenderStage::onProcess(gloperate::AbstractGLContext *)
 
     auto fbo = targetFramebuffer.value();
 
+    std::unique_ptr<globjects::Framebuffer> resource_wrapper;
     if (!fbo)
     {
-        fbo = globjects::Framebuffer::defaultFBO().get();
+        resource_wrapper = globjects::Framebuffer::defaultFBO();
+        fbo = resource_wrapper.get();
     }
     fbo->bind();
 

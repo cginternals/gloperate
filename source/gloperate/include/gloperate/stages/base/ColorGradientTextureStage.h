@@ -44,8 +44,6 @@ public:
     Input<ColorGradientList *>                  gradients;       ///< List of gradients
     Input<size_t>                               textureWidth;    ///< Size of texture in x dimension
 
-    //TODO
-    //why did this Output use ref_ptr while all other Outputs don't?
     Output<globjects::Texture*> gradientTexture; ///< Texture with gradients
 
 

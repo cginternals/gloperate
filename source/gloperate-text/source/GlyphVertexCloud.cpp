@@ -95,9 +95,9 @@ const GlyphVertexCloud::Vertices & GlyphVertexCloud::vertices() const
     return m_vertices;
 }
 
-gloperate::Drawable * GlyphVertexCloud::createDrawable()
+std::unique_ptr<gloperate::Drawable> GlyphVertexCloud::createDrawable()
 {
-    auto drawable = new gloperate::Drawable();
+    std::unique_ptr<gloperate::Drawable> drawable{new gloperate::Drawable()};
 
     drawable->setPrimitiveMode(gl::GL_POINTS);
     drawable->setDrawMode(gloperate::DrawMode::Arrays);
@@ -126,7 +126,7 @@ gloperate::Drawable * GlyphVertexCloud::createDrawable()
 void GlyphVertexCloud::update()
 {
     if (!m_drawable)
-        m_drawable.reset(createDrawable());
+        m_drawable = createDrawable();
 
     m_drawable->buffer(0)->setData(m_vertices, gl::GL_STATIC_DRAW);
     m_drawable->setSize(m_vertices.size());
@@ -135,7 +135,7 @@ void GlyphVertexCloud::update()
 void GlyphVertexCloud::update(const Vertices & vertices)
 {
     if (!m_drawable)
-        m_drawable.reset(createDrawable());
+        m_drawable = createDrawable();
 
     m_drawable->buffer(0)->setData(vertices, gl::GL_STATIC_DRAW);
     m_drawable->setSize(vertices.size());

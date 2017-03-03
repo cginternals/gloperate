@@ -67,7 +67,7 @@ public:
     ,   const FontFace & fontFace);
 
 protected:
-    static gloperate::Drawable * createDrawable();
+    static std::unique_ptr<gloperate::Drawable> createDrawable();
 
 protected:
     Vertices m_vertices;

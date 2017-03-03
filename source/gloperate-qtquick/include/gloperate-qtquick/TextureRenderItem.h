@@ -87,7 +87,7 @@ protected:
 
     std::unique_ptr<globjects::VertexArray> m_vao;     ///< Screen-aligned quad geometry
     std::unique_ptr<globjects::Program>     m_program; ///< Shader program
-    std::unique_ptr<globjects::Texture>     m_texture; ///< Texture that is displayed
+    globjects::Texture *                    m_texture; ///< Texture that is displayed; owned by stage
 };
 
 

@@ -275,7 +275,7 @@ public:
     *  @param[in] texture
     *    The new texture atlas for all glyphs
     */
-    void setGlyphTexture(globjects::Texture * texture);
+    void setGlyphTexture(std::unique_ptr<globjects::Texture> &&texture);
 
     /**
     *  @brief

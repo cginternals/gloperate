@@ -65,7 +65,7 @@ void TextureRenderItem::render()
 
         if (slot && slot->type() == typeid(globjects::Texture *))
         {
-            m_texture.reset(static_cast< Slot<globjects::Texture *> * >(slot)->value());
+            m_texture = static_cast< Slot<globjects::Texture *> * >(slot)->value();
         }
     }
 
