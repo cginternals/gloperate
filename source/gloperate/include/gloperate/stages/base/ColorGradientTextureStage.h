@@ -74,6 +74,10 @@ protected:
     *    Overriden
     */
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
+
+protected:
+    // Data
+    std::unique_ptr<globjects::Texture>         m_gradientTexture;  ///< Gradient texture
 };
 
 } // namespace gloperate

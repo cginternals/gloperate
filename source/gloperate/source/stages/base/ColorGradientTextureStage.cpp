@@ -21,9 +21,14 @@ ColorGradientTextureStage::ColorGradientTextureStage(gloperate::Environment * en
 
 void ColorGradientTextureStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
-    //TODO ?
-    //this might be an memory leak now
-    gradientTexture.setValue(gradients->generateTexture(*textureWidth).release());
+    if(!m_gradientTexture)
+    {
+        //generate texture
+        m_gradientTexture = gradients->generateTexture(*textureWidth);
+
+        //update output
+        this->gradientTexture.setValue(m_gradientTexture.get());
+    }
 }
 
 
