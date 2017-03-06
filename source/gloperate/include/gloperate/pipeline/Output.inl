@@ -83,7 +83,7 @@ template <typename T>
 template <typename U, typename Enable>
 Output<T> & Output<T>::operator=(const U & value)
 {
-    setValue(value);
+    this->setValue(value);
 
     return *this;
 }
