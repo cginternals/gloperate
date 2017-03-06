@@ -5,7 +5,7 @@
 
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(glkernel  REQUIRED)
+find_package(glkernel)
 find_package(cppexpose REQUIRED)
 find_package(cpplocate REQUIRED)
 find_package(cppassist REQUIRED)
@@ -16,6 +16,13 @@ find_package(cppassist REQUIRED)
 
 # Target name
 set(target gloperate-glkernel)
+
+if (NOT glkernel_FOUND)
+    message("Lib ${target} skipped: glkernel not found")
+    return()
+else()
+    message(STATUS "Lib ${target}")
+endif()
 
 # Set API export file and macro
 string(MAKE_C_IDENTIFIER ${target} target_id)
