@@ -535,22 +535,22 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::State>             m_stateBefore;                 ///< State applied before rendering
-    std::unique_ptr<globjects::State>             m_stateAfter;                  ///< State applied after rendering
-    std::unique_ptr<Drawable>                     m_geometry;                    ///< Geometry rendered by the render pass
-    std::unique_ptr<globjects::Program>           m_program;                     ///< Program used for rendering
-    std::unique_ptr<globjects::ProgramPipeline>   m_programPipeline;             ///< Program pipeline used for rendering
-    std::unique_ptr<globjects::TransformFeedback> m_recordTransformFeedback;     ///< Transform feedback object for recording (can be null)
-    gl::GLenum                                    m_recordTransformFeedbackMode; ///< Primitive mode for recording transform feedback
-    std::unique_ptr<globjects::TransformFeedback> m_drawTransformFeedback;       ///< Transform feedback object for playback (can be null)
-    gl::GLenum                                    m_drawTransformFeedbackMode;   ///< Primitive mode for playback transform feedback
+    globjects::State*               m_stateBefore;                 ///< State applied before rendering
+    globjects::State*               m_stateAfter;                  ///< State applied after rendering
+    Drawable*                       m_geometry;                    ///< Geometry rendered by the render pass
+    globjects::Program*             m_program;                     ///< Program used for rendering
+    globjects::ProgramPipeline*     m_programPipeline;             ///< Program pipeline used for rendering
+    globjects::TransformFeedback*   m_recordTransformFeedback;     ///< Transform feedback object for recording (can be null)
+    gl::GLenum                      m_recordTransformFeedbackMode; ///< Primitive mode for recording transform feedback
+    globjects::TransformFeedback*   m_drawTransformFeedback;       ///< Transform feedback object for playback (can be null)
+    gl::GLenum                      m_drawTransformFeedbackMode;   ///< Primitive mode for playback transform feedback
 
-    std::unordered_map<size_t, std::unique_ptr<globjects::Texture>> m_textures;                 /// Collection of all textures associated with this render pass. The key is used as the active texture binding.
-    std::unordered_map<size_t, std::unique_ptr<globjects::Sampler>> m_samplers;                 /// Collection of all samplers associated with this render pass. The key is used as the sampler binding index.
-    std::unordered_map<size_t, std::unique_ptr<globjects::Buffer>>  m_uniformBuffers;           /// Collection of all uniform buffers associated with this render pass. The key is used as the uniform buffer binding index.
-    std::unordered_map<size_t, std::unique_ptr<globjects::Buffer>>  m_atomicCounterBuffers;     /// Collection of all atomic counter buffers associated with this render pass. The key is used as the atomic counter buffer binding index.
-    std::unordered_map<size_t, std::unique_ptr<globjects::Buffer>>  m_shaderStorageBuffers;     /// Collection of all shader storage buffers associated with this render pass. The key is used as the shader storage buffer binding index.
-    std::unordered_map<size_t, std::unique_ptr<globjects::Buffer>>  m_transformFeedbackBuffers; /// Collection of all transform feedback buffers associated with this render pass. The key is used as the transform feedback buffer binding index.
+    std::unordered_map<size_t, globjects::Texture*> m_textures;                 /// Collection of all textures associated with this render pass. The key is used as the active texture binding.
+    std::unordered_map<size_t, globjects::Sampler*> m_samplers;                 /// Collection of all samplers associated with this render pass. The key is used as the sampler binding index.
+    std::unordered_map<size_t, globjects::Buffer*>  m_uniformBuffers;           /// Collection of all uniform buffers associated with this render pass. The key is used as the uniform buffer binding index.
+    std::unordered_map<size_t, globjects::Buffer*>  m_atomicCounterBuffers;     /// Collection of all atomic counter buffers associated with this render pass. The key is used as the atomic counter buffer binding index.
+    std::unordered_map<size_t, globjects::Buffer*>  m_shaderStorageBuffers;     /// Collection of all shader storage buffers associated with this render pass. The key is used as the shader storage buffer binding index.
+    std::unordered_map<size_t, globjects::Buffer*>  m_transformFeedbackBuffers; /// Collection of all transform feedback buffers associated with this render pass. The key is used as the transform feedback buffer binding index.
 };
 
 
