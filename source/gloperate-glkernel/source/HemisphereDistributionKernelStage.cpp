@@ -79,7 +79,7 @@ void HemisphereDistributionKernelStage::resizeKernel()
 void HemisphereDistributionKernelStage::regenerateKernel()
 {
     glkernel::sample::hammersley_sphere(m_kernel);
-    glkernel::sort::distance(m_kernel, {0.0f, 0.0f, 1.0f});
+    glkernel::sort::distance(m_kernel, glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 

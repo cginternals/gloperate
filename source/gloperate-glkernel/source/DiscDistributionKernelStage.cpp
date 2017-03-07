@@ -107,7 +107,7 @@ void DiscDistributionKernelStage::regenerateKernel()
 
     std::transform(m_kernel.begin(), m_kernel.end(), m_kernel.begin(), pushCorners);
 
-    glkernel::sort::distance(m_kernel, {0.0f, 0.0f});
+    glkernel::sort::distance(m_kernel, glm::vec2(0.0f, 0.0f));
 }
 
 
