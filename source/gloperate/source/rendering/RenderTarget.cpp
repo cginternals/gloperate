@@ -26,16 +26,16 @@ void RenderTarget::releaseTarget()
     switch (m_type)
     {
     case RenderTargetType::Texture:
-        m_texture.reset(nullptr);
+        m_texture = nullptr;
         break;
     case RenderTargetType::Renderbuffer:
-        m_renderbuffer.reset(nullptr);
+        m_renderbuffer = nullptr;
         break;
     case RenderTargetType::DefaultFBOAttachment:
         m_attachment = gl::GL_NONE;
         break;
     case RenderTargetType::UserDefinedFBOAttachment:
-        m_userDefined.reset(nullptr);
+        m_userDefined = nullptr;
         break;
     case RenderTargetType::Invalid:
     default:
@@ -52,7 +52,7 @@ void RenderTarget::setTarget(globjects::Texture *texture)
 
     m_type = RenderTargetType::Texture;
 
-    m_texture.reset(texture);
+    m_texture = texture;
 }
 
 void RenderTarget::setTarget(globjects::Renderbuffer *renderbuffer)
@@ -61,7 +61,7 @@ void RenderTarget::setTarget(globjects::Renderbuffer *renderbuffer)
 
     m_type = RenderTargetType::Renderbuffer;
 
-    m_renderbuffer.reset(renderbuffer);
+    m_renderbuffer = renderbuffer;
 }
 
 void RenderTarget::setTarget(gl::GLenum attachment)
@@ -79,7 +79,7 @@ void RenderTarget::setTarget(globjects::FramebufferAttachment *fboAttachment)
 
     m_type = RenderTargetType::UserDefinedFBOAttachment;
 
-    m_userDefined.reset(fboAttachment);
+    m_userDefined = fboAttachment;
 }
 
 void RenderTarget::bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo)
@@ -90,10 +90,10 @@ void RenderTarget::bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo)
     switch (m_type)
     {
     case RenderTargetType::Texture:
-        fbo->attachTexture(bindingPoint, m_texture.get());
+        fbo->attachTexture(bindingPoint, m_texture);
         break;
     case RenderTargetType::Renderbuffer:
-        fbo->attachRenderBuffer(bindingPoint, m_renderbuffer.get());
+        fbo->attachRenderBuffer(bindingPoint, m_renderbuffer);
         break;
     case RenderTargetType::DefaultFBOAttachment:
         // ToDo

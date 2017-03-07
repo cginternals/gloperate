@@ -112,12 +112,12 @@ public:
 
 
 protected:
-    RenderTargetType                                  m_type;         ///< the current type
+    RenderTargetType                    m_type;         ///< the current type
 
-    gl::GLenum                                        m_attachment;   ///< the default framebuffer attachment target
-    std::unique_ptr<globjects::Texture>               m_texture;      ///< the texture target
-    std::unique_ptr<globjects::Renderbuffer>          m_renderbuffer; ///< the renderbuffer target
-    std::unique_ptr<globjects::FramebufferAttachment> m_userDefined;  ///< the user defined framebuffer attachment
+    gl::GLenum                          m_attachment;   ///< the default framebuffer attachment target
+    globjects::Texture*                 m_texture;      ///< the texture target
+    globjects::Renderbuffer*            m_renderbuffer; ///< the renderbuffer target
+    globjects::FramebufferAttachment*   m_userDefined;  ///< the user defined framebuffer attachment
 };
 
 
