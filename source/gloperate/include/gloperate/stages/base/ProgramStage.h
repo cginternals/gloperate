@@ -80,6 +80,8 @@ protected:
 
 protected:
     std::unique_ptr<globjects::Program> m_program; ///< Program object
+
+    std::vector<std::unique_ptr<globjects::Shader>>     m_shaders; ///< collection of self created shaders for later removal
 };
 
 

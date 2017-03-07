@@ -15,6 +15,8 @@ namespace globjects
 
 
 class Shader;
+class Program;
+class File;
 
 
 }
@@ -78,7 +80,7 @@ public:
     *  @return
     *    Pointer to a newly created default vertex shader object
     */
-    static globjects::Shader* createDefaultVertexShader();
+    static std::unique_ptr<globjects::Shader> createDefaultVertexShader();
 
     /**
     *  @brief
@@ -87,7 +89,7 @@ public:
     *  @return
     *    Pointer to a newly created default fragment shader object
     */
-    static globjects::Shader* createDefaultFragmentShader();
+    static std::unique_ptr<globjects::Shader> createDefaultFragmentShader();
 
 
 protected:
@@ -95,9 +97,10 @@ protected:
     std::unique_ptr<globjects::Buffer>  m_buffer;       ///< pointer to the buffer used by m_drawable
 
 
+
 protected:
-    static const std::string s_defaultVertexShaderSource;
-    static const std::string s_defaultFragmentShaderSource;
+    static const std::unique_ptr<globjects::File> s_defaultVertexShaderSource;
+    static const std::unique_ptr<globjects::File> s_defaultFragmentShaderSource;
 
 };
 

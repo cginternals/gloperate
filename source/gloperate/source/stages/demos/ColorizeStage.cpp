@@ -105,8 +105,8 @@ void ColorizeStage::setupGeometry()
 
 void ColorizeStage::setupProgram()
 {
-    m_vertexShader   = std::unique_ptr<globjects::Shader>(ScreenAlignedQuad::createDefaultVertexShader());
-    m_fragmentShader = std::unique_ptr<globjects::Shader>(ScreenAlignedQuad::createDefaultFragmentShader());
+    m_vertexShader   = ScreenAlignedQuad::createDefaultVertexShader();
+    m_fragmentShader = ScreenAlignedQuad::createDefaultFragmentShader();
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 

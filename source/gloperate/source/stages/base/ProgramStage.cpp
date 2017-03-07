@@ -52,7 +52,7 @@ void ProgramStage::onProcess(AbstractGLContext *)
     }
     for (auto input : inputs<cppassist::FilePath>()) {
         auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path());
-        // ToDo: Fix memory leak
+        m_shaders.emplace_back(shader);
         m_program->attach(shader);
     }
 

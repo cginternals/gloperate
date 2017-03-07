@@ -9,6 +9,7 @@
 #include <glbinding/gl/boolean.h>
 
 #include <globjects/Shader.h>
+#include <globjects/base/File.h>
 
 #include <gloperate/gloperate.h>
 
@@ -57,24 +58,20 @@ void ScreenAlignedQuad::draw() const
     m_drawable->draw();
 }
 
-const std::string ScreenAlignedQuad::s_defaultVertexShaderSource = gloperate::dataPath() + "/gloperate/shaders/screenaligned/default.vert";
+const std::unique_ptr<globjects::File> ScreenAlignedQuad::s_defaultVertexShaderSource = globjects::Shader::sourceFromFile(
+            gloperate::dataPath() + "/gloperate/shaders/screenaligned/default.vert");
 
-const std::string ScreenAlignedQuad::s_defaultFragmentShaderSource = gloperate::dataPath() + "/gloperate/shaders/screenaligned/default.frag";
+const std::unique_ptr<globjects::File> ScreenAlignedQuad::s_defaultFragmentShaderSource = globjects::Shader::sourceFromFile(
+            gloperate::dataPath() + "/gloperate/shaders/screenaligned/default.frag");
 
-globjects::Shader* ScreenAlignedQuad::createDefaultVertexShader()
+std::unique_ptr<globjects::Shader> ScreenAlignedQuad::createDefaultVertexShader()
 {
-    //TODO
-    //this was removed in cginternals/globjects/primitive_memory_management
-    //return globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, s_defaultVertexShaderSource);
-    return nullptr;
+    return cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, s_defaultVertexShaderSource.get());
 }
 
-globjects::Shader* ScreenAlignedQuad::createDefaultFragmentShader()
+std::unique_ptr<globjects::Shader> ScreenAlignedQuad::createDefaultFragmentShader()
 {
-    //TODO
-    //this was removed in cginternals/globjects/primitive_memory_management
-    //return globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, s_defaultFragmentShaderSource);
-    return nullptr;
+    return cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, s_defaultFragmentShaderSource.get());
 }
 
 
