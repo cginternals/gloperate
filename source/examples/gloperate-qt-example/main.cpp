@@ -8,8 +8,9 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/stages/demos/DemoStage.h>
-#include <gloperate/stages/demos/DemoPipeline.h>
+
+#include <demo-stages/DemoStage.h>
+#include <demo-stages/DemoPipeline.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Application.h>
@@ -43,7 +44,7 @@ int main(int argc, char * argv[])
     UpdateManager updateManager(&environment);
 
     // Create render stage
-    auto * renderStage = new DemoStage(&environment);
+    auto * renderStage = new gloperate::DemoStage(&environment);
 
     // Create render window
     RenderWindow * window = new RenderWindow(&environment);
