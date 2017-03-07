@@ -13,34 +13,10 @@
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
 
+#include <gloperate/base/Environment.h>
+#include <gloperate/base/ResourceManager.h>
+
 #include <gloperate/gloperate.h>
-
-
-namespace
-{
-
-
-/**
-*  @brief
-*    Load shader
-*
-*  @param[in] program
-*    Shader program
-*  @param[in] type
-*    Shader type (e.g., GL_VERTEX_SHADER)
-*  @param[in] filename
-*    Shader file
-*/
-static void loadShader(globjects::Program * program, const gl::GLenum type, const std::string & filename)
-{
-    // Load shader
-    globjects::StringTemplate * source = new globjects::StringTemplate(new globjects::File(filename));
-    globjects::Shader * shader = new globjects::Shader(type, source);
-    program->attach(shader);
-}
-
-
-}
 
 
 namespace gloperate
@@ -98,7 +74,14 @@ void MixerStage::onProcess(AbstractGLContext *)
 
     // Activate FBO
     globjects::Framebuffer * fbo = *targetFBO;
-    fbo = fbo ? fbo : globjects::Framebuffer::defaultFBO().get();
+    if(!fbo)
+    {
+        if(!m_defaultFBO)
+        {
+            m_defaultFBO = globjects::Framebuffer::defaultFBO();
+        }
+        fbo = m_defaultFBO.get();
+    }
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Set viewport
@@ -165,15 +148,15 @@ void MixerStage::buildGeometry()
         , glm::vec2( -1.f, +1.f ) } };
 
     // Create vertex buffer
-    globjects::Buffer * buffer = new globjects::Buffer();
-    buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
+    m_buffer = cppassist::make_unique<globjects::Buffer>();
+    m_buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
 
     // Create VAO
-    m_vao = std::unique_ptr<globjects::VertexArray>(new globjects::VertexArray);
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(buffer, 0, sizeof(glm::vec2));
+    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 }
@@ -183,13 +166,16 @@ void MixerStage::buildProgram()
     // Create program and load shaders
     m_program.reset(new globjects::Program);
     if (vertexShader.value() != "") {
-        loadShader(m_program.get(), gl::GL_VERTEX_SHADER, vertexShader.value());
+        m_vertexShader.reset(environment()->resourceManager()->load<globjects::Shader>(vertexShader.value()));
+        m_program->attach(m_vertexShader.get());
     }
     if (geometryShader.value() != "") {
-        loadShader(m_program.get(), gl::GL_GEOMETRY_SHADER, geometryShader.value());
+        m_geometryShader.reset(environment()->resourceManager()->load<globjects::Shader>(geometryShader.value()));
+        m_program->attach(m_vertexShader.get());
     }
     if (fragmentShader.value() != "") {
-        loadShader(m_program.get(), gl::GL_FRAGMENT_SHADER, fragmentShader.value());
+        m_fragmentShader.reset(environment()->resourceManager()->load<globjects::Shader>(fragmentShader.value()));
+        m_program->attach(m_vertexShader.get());
     }
 
     // Set uniforms

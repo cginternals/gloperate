@@ -78,6 +78,7 @@ globjects::Texture * QtTextureLoader::load(const std::string & filename, const c
         QImage converted = Converter::convert(image);
 
         // Create texture
+        //TODO this "release" is ugly but to change it to use unique_ptr all Loaders and the resource manager must be changed
         globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D).release();
         texture->image2D(
             0,

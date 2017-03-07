@@ -66,6 +66,9 @@ protected:
     virtual void onProcess(AbstractGLContext * context) override;
 
 
+protected:
+    std::unique_ptr<globjects::Framebuffer> m_defaultFBO;
+
 };
 
 

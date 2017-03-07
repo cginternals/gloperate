@@ -16,26 +16,6 @@
 #include <gloperate/gloperate.h>
 
 
-/**
-*  @brief
-*    Load shader
-*
-*  @param[in] program
-*    Shader program
-*  @param[in] type
-*    Shader type (e.g., GL_VERTEX_SHADER)
-*  @param[in] filename
-*    Shader file
-*/
-static void loadShader(globjects::Program * program, const gl::GLenum type, const std::string & filename)
-{
-    // Load shader
-    globjects::StringTemplate * source = new globjects::StringTemplate(new globjects::File(filename));
-    globjects::Shader * shader = new globjects::Shader(type, source);
-    program->attach(shader);
-}
-
-
 namespace gloperate
 {
 
@@ -92,7 +72,7 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Activate FBO
     globjects::Framebuffer * fbo = *targetFBO;
-    //TODO is defaultFBO really unique ownership?
+
     fbo = fbo ? fbo : globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
@@ -193,15 +173,18 @@ void SplitStage::buildGeometry()
 void SplitStage::buildProgram()
 {
     // Create program and load shaders
-    m_program = cppassist::make_unique<globjects::Program>();
+    m_program.reset(new globjects::Program);
     if (vertexShader.value() != "") {
-        loadShader(m_program.get(), gl::GL_VERTEX_SHADER, vertexShader.value());
+        m_vertexShader.reset(environment()->resourceManager()->load<globjects::Shader>(vertexShader.value()));
+        m_program->attach(m_vertexShader.get());
     }
     if (geometryShader.value() != "") {
-        loadShader(m_program.get(), gl::GL_GEOMETRY_SHADER, geometryShader.value());
+        m_geometryShader.reset(environment()->resourceManager()->load<globjects::Shader>(geometryShader.value()));
+        m_program->attach(m_vertexShader.get());
     }
     if (fragmentShader.value() != "") {
-        loadShader(m_program.get(), gl::GL_FRAGMENT_SHADER, fragmentShader.value());
+        m_fragmentShader.reset(environment()->resourceManager()->load<globjects::Shader>(fragmentShader.value()));
+        m_program->attach(m_vertexShader.get());
     }
 
     // Set uniforms
