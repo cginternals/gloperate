@@ -3,6 +3,8 @@
 
 #include <glm/vec2.hpp>
 
+#include <cppassist/memory/make_unique.h>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/boolean.h>
 
@@ -16,7 +18,8 @@ namespace gloperate
 
 
 ScreenAlignedQuad::ScreenAlignedQuad()
-: m_drawable(new Drawable)
+: m_drawable(cppassist::make_unique<Drawable>()),
+  m_buffer(cppassist::make_unique<globjects::Buffer>())
 {
     static const std::array<glm::vec2, 4> raw{{
         glm::vec2( +1.f, -1.f )
@@ -25,14 +28,13 @@ ScreenAlignedQuad::ScreenAlignedQuad()
     ,   glm::vec2( -1.f, +1.f )
     }};
 
-    auto buffer = std::make_shared<globjects::Buffer>();
-    buffer->setData(raw, gl::GL_STATIC_DRAW);
+    m_buffer->setData(raw, gl::GL_STATIC_DRAW);
 
     m_drawable->setPrimitiveMode(gl::GL_TRIANGLE_STRIP);
     m_drawable->setDrawMode(DrawMode::Arrays);
     m_drawable->bindAttribute(0, 0);
 
-    m_drawable->setBuffer(0, buffer);
+    m_drawable->setBuffer(0, m_buffer.get());
 
     m_drawable->setAttributeBindingBuffer(0, 0, 0, sizeof(glm::vec2));
     m_drawable->setAttributeBindingFormat(0, 2, gl::GL_FLOAT, gl::GL_FALSE, 0);

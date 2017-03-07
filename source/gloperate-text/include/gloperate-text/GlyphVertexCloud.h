@@ -12,6 +12,7 @@
 namespace globjects
 {
     class Texture;
+    class Buffer;
 }
 
 
@@ -66,14 +67,12 @@ public:
         const std::vector<GlyphSequence> & sequences
     ,   const FontFace & fontFace);
 
-protected:
-    static std::unique_ptr<gloperate::Drawable> createDrawable();
+protected:   
+    std::unique_ptr<gloperate::Drawable>           m_drawable;     ///< underlying drawable object
+    std::unique_ptr<globjects::Buffer>  m_buffer;       ///< pointer to the buffer used by m_drawable
 
-protected:
-    Vertices m_vertices;
-
-    std::unique_ptr<gloperate::Drawable> m_drawable;
-    std::unique_ptr<globjects::Texture> m_texture;
+    Vertices             m_vertices;
+    globjects::Texture*  m_texture;
 };
 
 

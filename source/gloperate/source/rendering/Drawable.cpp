@@ -3,12 +3,13 @@
 
 #include <cassert>
 
+#include <cppassist/memory/make_unique.h>
+
 #include <glbinding/gl/enum.h>
 
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
-#include <cppassist/memory/make_unique.h>
 
 
 namespace gloperate
@@ -96,7 +97,7 @@ void Drawable::drawElements(gl::GLenum mode) const
     }
     else
     {
-        drawElements(mode, m_size, m_indexBufferType, m_indexBuffer.get());
+        drawElements(mode, m_size, m_indexBufferType, m_indexBuffer);
     }
 }
 
@@ -134,43 +135,39 @@ void Drawable::setPrimitiveMode(gl::GLenum mode)
     m_primitiveMode = mode;
 }
 
-std::shared_ptr<globjects::Buffer> Drawable::buffer(size_t index)
+globjects::Buffer* Drawable::buffer(size_t index)
 {
     if (m_buffers.count(index) == 0)
     {
-        setBuffer(index, std::make_shared<globjects::Buffer>());
+        return nullptr;
     }
 
     return m_buffers.at(index);
 }
 
-std::shared_ptr<globjects::Buffer> Drawable::buffer(size_t index) const
+globjects::Buffer* Drawable::buffer(size_t index) const
 {
+    if (m_buffers.count(index) == 0)
+    {
+        return nullptr;
+    }
+
     return m_buffers.at(index);
 }
 
-void Drawable::setBuffer(size_t index, std::shared_ptr<globjects::Buffer> buffer)
+void Drawable::setBuffer(size_t index, globjects::Buffer* buffer)
 {
-    const auto it = m_buffers.find(index);
-
-    if (it == m_buffers.end())
-    {
-        m_buffers.emplace(index, buffer);
-    }
-    else
-    {
-        it->second = buffer;
-    }
+    m_buffers[index] = buffer;
 }
 
 globjects::Buffer* Drawable::indexBuffer() const
 {
-    return m_indexBuffer.get();
+    return m_indexBuffer;
 }
 
 void Drawable::setIndexBuffer(globjects::Buffer * buffer)
 {
-    m_indexBuffer = std::unique_ptr<globjects::Buffer>(buffer);
+    m_indexBuffer = buffer;
 }
 
 void Drawable::setIndexBuffer(globjects::Buffer * buffer, gl::GLenum bufferType)
@@ -208,7 +205,7 @@ void Drawable::setAttributeBindingBuffer(size_t bindingIndex, size_t bufferIndex
 {
     assert(m_buffers.count(bufferIndex) > 0);
 
-    m_vao->binding(bindingIndex)->setBuffer(m_buffers.at(bufferIndex).get(), baseOffset, stride);
+    m_vao->binding(bindingIndex)->setBuffer(m_buffers.at(bufferIndex), baseOffset, stride);
 }
 
 void Drawable::setAttributeBindingFormat(size_t bindingIndex, gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset)
