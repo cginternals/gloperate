@@ -9,7 +9,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
@@ -71,7 +70,7 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext *) override;
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
@@ -83,7 +82,7 @@ protected:
     // Data
     glkernel::kernel3 m_kernel;                       ///< Kernel object
     std::vector<glm::vec3> m_kernelData;              ///< Vector with kernel data
-    globjects::ref_ptr<globjects::Texture> m_texture; ///< Texture with kernel data
+    std::unique_ptr<globjects::Texture> m_texture;    ///< Texture with kernel data
 
 
 };
