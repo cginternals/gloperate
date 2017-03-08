@@ -8,6 +8,7 @@
 #include <glm/vec4.hpp>
 
 #include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/input.h>

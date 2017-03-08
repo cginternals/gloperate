@@ -64,9 +64,9 @@ gloperate::Canvas * RenderWindow::canvas()
     return m_canvas;
 }
 
-void RenderWindow::setRenderStage(gloperate::Stage * stage)
+void RenderWindow::setRenderStage(std::unique_ptr<Stage> && stage)
 {
-    m_canvas->setRenderStage(stage);
+    m_canvas->setRenderStage(std::move(stage));
 }
 
 void RenderWindow::onContextInit()

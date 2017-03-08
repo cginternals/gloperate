@@ -42,7 +42,7 @@ public:
 
 
 public:
-    Input<ColorGradientList>                       gradients;       ///< List of gradients
+    Input<ColorGradientList *>                     gradients;       ///< List of gradients
     Input<size_t>                                  textureWidth;    ///< Size of texture in x dimension
 
     Output<globjects::ref_ptr<globjects::Texture>> gradientTexture; ///< Texture with gradients

@@ -8,6 +8,7 @@
 #include <cppexpose/scripting/ScriptContext.h>
 
 #include <gloperate/base/AbstractCanvas.h>
+#include <cppassist/memory/make_unique.h>
 
 // Local components
 #include <gloperate/stages/base/BasicFramebufferStage.h>
@@ -62,10 +63,6 @@ Environment::Environment()
 
 Environment::~Environment()
 {
-    if (m_scriptContext)
-    {
-        delete m_scriptContext;
-    }
 }
 
 const ComponentManager * Environment::componentManager() const
@@ -120,24 +117,24 @@ std::vector<AbstractCanvas *> Environment::canvases()
 
 const cppexpose::ScriptContext * Environment::scriptContext() const
 {
-    return m_scriptContext;
+    return m_scriptContext.get();
 }
 
 cppexpose::ScriptContext * Environment::scriptContext()
 {
-    return m_scriptContext;
+    return m_scriptContext.get();
 }
 
 void Environment::setupScripting(const std::string & backendName)
 {
-    initializeScripting(new cppexpose::ScriptContext(
+    initializeScripting(cppassist::make_unique<cppexpose::ScriptContext>(
         backendName.length() > 0 ? backendName : "javascript"
     ) );
 }
 
-void Environment::setupScripting(cppexpose::AbstractScriptBackend * backend)
+void Environment::setupScripting(std::unique_ptr<cppexpose::AbstractScriptBackend> backend)
 {
-    initializeScripting(new cppexpose::ScriptContext(backend));
+    initializeScripting(make_unique<cppexpose::ScriptContext>(std::move(backend)));
 }
 
 cppexpose::Variant Environment::executeScript(const std::string & code)
@@ -227,7 +224,7 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&LightTestStage::Component);
 }
 
-void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)
+void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> && scriptContext)
 {
     // Check parameters
     if (!scriptContext)
@@ -235,14 +232,8 @@ void Environment::initializeScripting(cppexpose::ScriptContext * scriptContext)
         return;
     }
 
-    // Destroy old script context
-    if (m_scriptContext)
-    {
-        delete m_scriptContext;
-    }
-
     // Set new script context
-    m_scriptContext = scriptContext;
+    m_scriptContext = std::move(scriptContext);
 
     // Set global object
     m_scriptContext->setGlobalObject(this);
