@@ -54,7 +54,7 @@ void RenderWindow::setRenderStage(std::unique_ptr<gloperate::Stage> && stage)
 
 void RenderWindow::onContextInit()
 {
-    m_canvas->setOpenGLContext(m_context);
+    m_canvas->setOpenGLContext(m_context.get());
 }
 
 void RenderWindow::onContextDeinit()

@@ -9,6 +9,8 @@
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
 
+#include <cppassist/memory/make_unique.h>
+
 #include <glbinding/Binding.h>
 
 #include <gloperate/base/GLContextUtils.h>
@@ -32,7 +34,7 @@ GLContextFactory::~GLContextFactory()
 {
 }
 
-gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::GLContextFormat & format) const
+std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(const gloperate::GLContextFormat & format) const
 {
     initializeGLFWState(format);
 
@@ -44,7 +46,7 @@ gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::
     }
 
     // Create context wrapper
-    auto context = new GLContext(window);
+    auto context = cppassist::make_unique<GLContext>(window);
 
     // Handle swap behavior
     context->updateSwapBehavior(format.swapBehavior());

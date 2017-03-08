@@ -6,6 +6,7 @@
 #include <QSurfaceFormat>
 
 #include <cppassist/logging/logging.h>
+#include <cppassist/memory/make_unique.h>
 
 #include <gloperate-qt/base/GLContext.h>
 
@@ -23,7 +24,7 @@ GLContextFactory::~GLContextFactory()
 {
 }
 
-gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::GLContextFormat & format) const
+std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(const gloperate::GLContextFormat & format) const
 {
     // Create OpenGL context
     QOpenGLContext * qContext = new QOpenGLContext;
@@ -38,7 +39,7 @@ gloperate::AbstractGLContext * GLContextFactory::createContext(const gloperate::
         return nullptr;
     }
 
-    return new GLContext(m_window, qContext);
+    return cppassist::make_unique<GLContext>(m_window, qContext);
 }
 
 QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextFormat & format)

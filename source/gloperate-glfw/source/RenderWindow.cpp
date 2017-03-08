@@ -23,7 +23,7 @@ namespace gloperate_glfw
 
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
-, m_canvas(new Canvas(environment))
+, m_canvas(cppassist::make_unique<Canvas>(environment))
 , m_defaultFBO(globjects::Framebuffer::defaultFBO())
 {
     m_canvas->redraw.connect([this] ()
@@ -73,7 +73,7 @@ void RenderWindow::setRenderStage(std::unique_ptr<Stage> && stage)
 
 void RenderWindow::onContextInit()
 {
-    m_canvas->setOpenGLContext(m_context);
+    m_canvas->setOpenGLContext(m_context.get());
 }
 
 void RenderWindow::onContextDeinit()
