@@ -219,7 +219,7 @@ public:
     *  @param[in] targetFBO
     *    Target FBO (can be null)
     */
-    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr);
+    virtual void onRender(globjects::Framebuffer * targetFBO);
 
     /**
     *  @brief

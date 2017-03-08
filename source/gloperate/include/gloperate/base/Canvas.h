@@ -88,7 +88,7 @@ public:
     void setRenderStage(std::unique_ptr<Stage> && stage);
 
     // Virtual AbstractCanvas functions
-    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr) override;
+    virtual void onRender(globjects::Framebuffer * targetFBO) override;
     virtual void onUpdate() override;
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;

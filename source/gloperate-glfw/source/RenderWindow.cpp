@@ -4,6 +4,8 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+#include <globjects/Framebuffer.h>
+
 #include <gloperate/base/Canvas.h>
 #include <gloperate/input/constants.h>
 
@@ -22,6 +24,7 @@ namespace gloperate_glfw
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
 , m_canvas(new Canvas(environment))
+, m_defaultFBO(globjects::Framebuffer::defaultFBO())
 {
     m_canvas->redraw.connect([this] ()
     {
@@ -31,7 +34,6 @@ RenderWindow::RenderWindow(gloperate::Environment * environment)
 
 RenderWindow::~RenderWindow()
 {
-    delete m_canvas;
 }
 
 const gloperate::Environment * RenderWindow::environment() const
@@ -56,12 +58,12 @@ gloperate::Stage * RenderWindow::renderStage()
 
 const gloperate::Canvas * RenderWindow::canvas() const
 {
-    return m_canvas;
+    return m_canvas.get();
 }
 
 gloperate::Canvas * RenderWindow::canvas()
 {
-    return m_canvas;
+    return m_canvas.get();
 }
 
 void RenderWindow::setRenderStage(std::unique_ptr<Stage> && stage)
@@ -105,7 +107,7 @@ void RenderWindow::onMove(MoveEvent &)
 
 void RenderWindow::onPaint(PaintEvent &)
 {
-    m_canvas->onRender();
+    m_canvas->onRender(m_defaultFBO.get());
 }
 
 void RenderWindow::onKeyPress(KeyEvent & event)

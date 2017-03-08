@@ -7,6 +7,8 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 
+#include <globjects/Framebuffer.h>
+
 #include <gloperate/base/AbstractCanvas.h>
 #include <gloperate/pipeline/Stage.h>
 
@@ -139,7 +141,11 @@ void RenderItem::onBeforeRendering()
     }
 
     // Render into item
-    m_canvas->render();
+    if(!m_defaultFBO)
+    {
+        m_defaultFBO = globjects::Framebuffer::defaultFBO();
+    }
+    m_canvas->render(m_defaultFBO.get());
 
     // Reset OpenGL state
     window()->resetOpenGLState();

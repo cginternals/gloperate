@@ -1,7 +1,8 @@
-
 #include "gloperate-qt/base/RenderWindow.h"
 
 #include <glm/glm.hpp>
+
+#include <globjects/Framebuffer.h>
 
 #include <QCoreApplication>
 #include <QOpenGLContext>
@@ -22,6 +23,7 @@ namespace gloperate_qt
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
 , m_canvas(new gloperate::Canvas(environment))
+, m_defaultFBO(globjects::Framebuffer::defaultFBO())
 {
     m_canvas->redraw.connect([this] ()
     {
@@ -31,7 +33,6 @@ RenderWindow::RenderWindow(gloperate::Environment * environment)
 
 RenderWindow::~RenderWindow()
 {
-    delete m_canvas;
 }
 
 gloperate::Environment * RenderWindow::environment() const
@@ -71,7 +72,7 @@ void RenderWindow::onResize(const QSize & deviceSize, const QSize & virtualSize)
 
 void RenderWindow::onPaint()
 {
-    m_canvas->onRender();
+    m_canvas->onRender(m_defaultFBO.get());
 }
 
 void RenderWindow::keyPressEvent(QKeyEvent * event)

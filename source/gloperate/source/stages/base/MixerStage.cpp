@@ -74,14 +74,8 @@ void MixerStage::onProcess(AbstractGLContext *)
 
     // Activate FBO
     globjects::Framebuffer * fbo = *targetFBO;
-    if(!fbo)
-    {
-        if(!m_defaultFBO)
-        {
-            m_defaultFBO = globjects::Framebuffer::defaultFBO();
-        }
-        fbo = m_defaultFBO.get();
-    }
+    assert(fbo);
+
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Set viewport
