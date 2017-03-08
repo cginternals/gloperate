@@ -89,7 +89,6 @@ void MultiFrameAggregationStage::onProcess(AbstractGLContext * /*context*/)
     );
 
     globjects::Framebuffer * fbo = *aggregationFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     (*texture)->bindActive(0);
@@ -124,6 +123,7 @@ void MultiFrameAggregationStage::setupGeometry()
 
 void MultiFrameAggregationStage::setupProgram()
 {
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 

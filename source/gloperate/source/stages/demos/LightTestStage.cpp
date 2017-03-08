@@ -146,6 +146,7 @@ void LightTestStage::onContextInitialize(AbstractGLContext * /*context*/)
     normalBinding->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(glm::vec3));
     m_vao->enable(1);
 
+    //TODO this is a memory leak! Use resource loader?
     // setup Program
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
@@ -190,7 +191,6 @@ void LightTestStage::onProcess(AbstractGLContext * context)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background

@@ -93,7 +93,6 @@ void DemoAntialiasableTriangleStage::onProcess(AbstractGLContext *)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
@@ -149,7 +148,7 @@ void DemoAntialiasableTriangleStage::setupProgram()
 
     m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
     m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
-    m_program.reset(new globjects::Program());
+    m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 }
 

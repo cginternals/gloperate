@@ -61,7 +61,7 @@ void BasicFramebufferStage::rebuildFBO()
     m_texDepth->image2D(0, gl::GL_DEPTH_COMPONENT, size.x, size.y, 0, gl::GL_DEPTH_COMPONENT, gl::GL_UNSIGNED_BYTE, nullptr);
 
     // Create FBO
-    m_fbo = globjects::Framebuffer::create();
+    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
     m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_texColor.get());
     m_fbo->attachTexture(gl::GL_DEPTH_ATTACHMENT,  m_texDepth.get());

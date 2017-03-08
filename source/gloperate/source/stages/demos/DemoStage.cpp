@@ -112,7 +112,6 @@ void DemoStage::onProcess(AbstractGLContext *)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Update animation
@@ -211,6 +210,7 @@ void DemoStage::createAndSetupGeometry()
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 

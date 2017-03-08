@@ -69,25 +69,25 @@ void LightBufferTextureStage::onProcess(AbstractGLContext * /*context*/)
     m_positionBuffer->setData(positions, gl::GL_DYNAMIC_DRAW);
     m_attenuationBuffer->setData(attenuations, gl::GL_DYNAMIC_DRAW);
 
-    colorTypeData.setValue(m_colorTypeTexture);
-    positionData.setValue(m_positionTexture);
-    attenuationData.setValue(m_attenuationTexture);
+    colorTypeData.setValue(m_colorTypeTexture.get());
+    positionData.setValue(m_positionTexture.get());
+    attenuationData.setValue(m_attenuationTexture.get());
 }
 
 void LightBufferTextureStage::setupBufferTextures()
 {
-    m_colorTypeBuffer = new globjects::Buffer();
-    m_colorTypeTexture = new globjects::Texture(gl::GL_TEXTURE_BUFFER);
+    m_colorTypeBuffer = cppassist::make_unique<globjects::Buffer>();
+    m_colorTypeTexture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_BUFFER);
 
-    m_positionBuffer = new globjects::Buffer();
-    m_positionTexture = new globjects::Texture(gl::GL_TEXTURE_BUFFER);
+    m_positionBuffer = cppassist::make_unique<globjects::Buffer>();
+    m_positionTexture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_BUFFER);
 
-    m_attenuationBuffer = new globjects::Buffer();
-    m_attenuationTexture = new globjects::Texture(gl::GL_TEXTURE_BUFFER);
+    m_attenuationBuffer = cppassist::make_unique<globjects::Buffer>();
+    m_attenuationTexture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_BUFFER);
 
-    m_colorTypeTexture->texBuffer(gl::GL_RGBA32F, m_colorTypeBuffer);
-    m_positionTexture->texBuffer(gl::GL_RGB32F, m_positionBuffer);
-    m_attenuationTexture->texBuffer(gl::GL_RGB32F, m_attenuationBuffer);
+    m_colorTypeTexture->texBuffer(gl::GL_RGBA32F, m_colorTypeBuffer.get());
+    m_positionTexture->texBuffer(gl::GL_RGB32F, m_positionBuffer.get());
+    m_attenuationTexture->texBuffer(gl::GL_RGB32F, m_attenuationBuffer.get());
 }
 
 Input<Light> * LightBufferTextureStage::createLightInput()

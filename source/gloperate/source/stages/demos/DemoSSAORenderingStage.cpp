@@ -145,7 +145,6 @@ void DemoSSAORenderingStage::onProcess(AbstractGLContext *)
 
     // Bind color FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
@@ -213,6 +212,7 @@ void DemoSSAORenderingStage::setupGeometry()
 
 void DemoSSAORenderingStage::setupProgram()
 {
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * colorFragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_colorFragmentShader));
     globjects::StringTemplate * normalFragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_normalFragmentShader));

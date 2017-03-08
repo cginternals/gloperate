@@ -30,7 +30,7 @@ GlyphRenderStage::~GlyphRenderStage()
 
 void GlyphRenderStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_renderer = std::unique_ptr<GlyphRenderer>{ new GlyphRenderer{} };
+    m_renderer = cppassist::make_unique<GlyphRenderer>();
 }
 
 
@@ -45,13 +45,6 @@ void GlyphRenderStage::onProcess(gloperate::AbstractGLContext *)
     gl::glViewport(viewport->x, viewport->y, viewport->z, viewport->w);
 
     auto fbo = targetFramebuffer.value();
-
-    std::unique_ptr<globjects::Framebuffer> resource_wrapper;
-    if (!fbo)
-    {
-        resource_wrapper = globjects::Framebuffer::defaultFBO();
-        fbo = resource_wrapper.get();
-    }
     fbo->bind();
 
     gl::glDepthMask(gl::GL_FALSE);

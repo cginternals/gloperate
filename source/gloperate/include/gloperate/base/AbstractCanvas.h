@@ -205,9 +205,9 @@ public:
     *    Use it to render the actual scene you want to display.
     *
     *  @param[in] targetFBO
-    *    Target FBO (can be null)
+    *    Target FBO (must not be null)
     */
-    void render(globjects::Framebuffer * targetFBO = nullptr);
+    void render(globjects::Framebuffer * targetFBO);
 
     /**
     *  @brief
@@ -217,7 +217,7 @@ public:
     *    Overwrite it in derived classes to perform the actual rendering.
     *
     *  @param[in] targetFBO
-    *    Target FBO (can be null)
+    *    Target FBO (must not be null)
     */
     virtual void onRender(globjects::Framebuffer * targetFBO);
 

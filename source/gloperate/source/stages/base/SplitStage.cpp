@@ -75,8 +75,6 @@ void SplitStage::onProcess(AbstractGLContext *)
 
     // Activate FBO
     globjects::Framebuffer * fbo = *targetFBO;
-
-    fbo = fbo ? fbo : globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Set OpenGL states

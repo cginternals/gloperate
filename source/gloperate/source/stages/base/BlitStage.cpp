@@ -18,23 +18,14 @@ BlitStage::BlitStage(Environment * environment, const std::string & name)
 , destinationViewport("destinationViewport", this)
 , blittedFBO("blittedFBO", this)
 , blitted("blitted", this)
-, m_defaultFBO(globjects::Framebuffer::defaultFBO())
 {
 }
 
 void BlitStage::onProcess(AbstractGLContext * /*context*/)
 {
     globjects::Framebuffer * srcFBO = *sourceFBO;
-    if (!srcFBO)
-    {
-        srcFBO = m_defaultFBO.get();
-    }
 
     globjects::Framebuffer * destFBO = *destinationFBO;
-    if (!destFBO)
-    {
-        destFBO = m_defaultFBO.get();
-    }
 
     std::array<gl::GLint, 4> srcRect = {{
         static_cast<gl::GLint>((*sourceViewport).x),

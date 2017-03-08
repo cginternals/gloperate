@@ -74,7 +74,6 @@ void DemoRenderStage::onProcess(AbstractGLContext *)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background

@@ -158,7 +158,6 @@ void DemoSSAOPostprocessingStage::onProcess(AbstractGLContext *)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO().get();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
@@ -215,6 +214,7 @@ void DemoSSAOPostprocessingStage::setupGeometry()
 
 void DemoSSAOPostprocessingStage::setupProgram()
 {
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 
