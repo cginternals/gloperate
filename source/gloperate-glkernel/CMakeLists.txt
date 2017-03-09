@@ -33,17 +33,17 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/DiscDistributionKernelStage.h
-    ${include_path}/HemisphereDistributionKernelStage.h
-    ${include_path}/NoiseKernelStage.h
-    ${include_path}/TransparencyKernelStage.h
+    ${include_path}/stages/DiscDistributionKernelStage.h
+    ${include_path}/stages/HemisphereDistributionKernelStage.h
+    ${include_path}/stages/NoiseKernelStage.h
+    ${include_path}/stages/TransparencyKernelStage.h
 )
 
 set(sources
-    ${source_path}/DiscDistributionKernelStage.cpp
-    ${source_path}/HemisphereDistributionKernelStage.cpp
-    ${source_path}/NoiseKernelStage.cpp
-    ${source_path}/TransparencyKernelStage.cpp
+    ${source_path}/stages/DiscDistributionKernelStage.cpp
+    ${source_path}/stages/HemisphereDistributionKernelStage.cpp
+    ${source_path}/stages/NoiseKernelStage.cpp
+    ${source_path}/stages/TransparencyKernelStage.cpp
 )
 
 # Group source files

@@ -1,4 +1,4 @@
-#include <gloperate-glkernel/DiscDistributionKernelStage.h>
+#include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
 
 #include <algorithm>
 

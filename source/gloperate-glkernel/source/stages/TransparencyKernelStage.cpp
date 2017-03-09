@@ -1,5 +1,5 @@
 
-#include <gloperate-glkernel/TransparencyKernelStage.h>
+#include <gloperate-glkernel/stages/TransparencyKernelStage.h>
 
 #include <algorithm>
 

@@ -1,5 +1,5 @@
 
-#include <gloperate-glkernel/NoiseKernelStage.h>
+#include <gloperate-glkernel/stages/NoiseKernelStage.h>
 
 #include <glkernel/noise.h>
 
