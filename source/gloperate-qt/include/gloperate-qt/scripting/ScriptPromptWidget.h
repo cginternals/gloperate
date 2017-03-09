@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <QTextEdit>
 
@@ -106,7 +107,7 @@ public:
     *    The widget takes ownership of the highlighter and deletes it on 
     *    varrying reassign or in dtor.
     */
-    void setSyntaxHighlighter(QSyntaxHighlighter * syntaxHighlighter);
+    void setSyntaxHighlighter(std::unique_ptr<QSyntaxHighlighter> &&syntaxHighlighter);
 
     /**
     *  @brief
@@ -137,7 +138,7 @@ public:
     *    The widget takes ownership of the completer and deletes it on 
     *    varrying reassign or in dtor.
     */
-    void setCompleter(QCompleter * completer);
+    void setCompleter(std::unique_ptr<QCompleter> &&completer);
 
     /**
     *  @brief
@@ -354,8 +355,8 @@ protected:
 
     bool m_multiLinePaste;
 
-    QCompleter * m_completer;
-    QSyntaxHighlighter * m_syntaxHighlighter;
+    std::unique_ptr<QCompleter>         m_completer;
+    std::unique_ptr<QSyntaxHighlighter> m_syntaxHighlighter;
 
     QString m_urisPasteDelimiter;
     bool m_urisPasteQuotMarks;

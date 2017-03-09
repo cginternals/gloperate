@@ -177,6 +177,7 @@ void DemoDOFCubeStage::setupGeometry()
 
 void DemoDOFCubeStage::setupProgram()
 {
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 

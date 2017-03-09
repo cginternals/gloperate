@@ -158,15 +158,15 @@ void SplitStage::buildGeometry()
         , glm::vec2( -1.f, +1.f ) } };
 
     // Create vertex buffer
-    globjects::Buffer * buffer = new globjects::Buffer();
-    buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
+    m_buffer = cppassist::make_unique<globjects::Buffer>();
+    m_buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
 
     // Create VAO
     m_vao = cppassist::make_unique<globjects::VertexArray>();
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(buffer, 0, sizeof(glm::vec2));
+    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 }
@@ -174,7 +174,7 @@ void SplitStage::buildGeometry()
 void SplitStage::buildProgram()
 {
     // Create program and load shaders
-    m_program.reset(new globjects::Program);
+    m_program = cppassist::make_unique<globjects::Program>();
     if (vertexShader.value() != "") {
         m_vertexShader.reset(environment()->resourceManager()->load<globjects::Shader>(vertexShader.value()));
         m_program->attach(m_vertexShader.get());

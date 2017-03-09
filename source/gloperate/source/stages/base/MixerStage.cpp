@@ -158,7 +158,7 @@ void MixerStage::buildGeometry()
 void MixerStage::buildProgram()
 {
     // Create program and load shaders
-    m_program.reset(new globjects::Program);
+    m_program = cppassist::make_unique<globjects::Program>();
     if (vertexShader.value() != "") {
         m_vertexShader.reset(environment()->resourceManager()->load<globjects::Shader>(vertexShader.value()));
         m_program->attach(m_vertexShader.get());

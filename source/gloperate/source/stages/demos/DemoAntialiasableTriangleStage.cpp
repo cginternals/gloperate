@@ -125,8 +125,8 @@ void DemoAntialiasableTriangleStage::onInputValueChanged(AbstractSlot * /*slot*/
 
 void DemoAntialiasableTriangleStage::setupGeometry()
 {
-    m_vao.reset(new globjects::VertexArray);
-    m_vertexBuffer.reset(new globjects::Buffer());
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
+    m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
     m_vertexBuffer->setData(s_vertices, gl::GL_STATIC_DRAW);
 
     auto binding = m_vao->binding(0);
@@ -138,6 +138,7 @@ void DemoAntialiasableTriangleStage::setupGeometry()
 
 void DemoAntialiasableTriangleStage::setupProgram()
 {
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 
