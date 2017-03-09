@@ -165,11 +165,11 @@ void MixerStage::buildProgram()
     }
     if (geometryShader.value() != "") {
         m_geometryShader.reset(environment()->resourceManager()->load<globjects::Shader>(geometryShader.value()));
-        m_program->attach(m_vertexShader.get());
+        m_program->attach(m_geometryShader.get());
     }
     if (fragmentShader.value() != "") {
         m_fragmentShader.reset(environment()->resourceManager()->load<globjects::Shader>(fragmentShader.value()));
-        m_program->attach(m_vertexShader.get());
+        m_program->attach(m_fragmentShader.get());
     }
 
     // Set uniforms
