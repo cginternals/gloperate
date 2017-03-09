@@ -5,14 +5,14 @@
 #include <gloperate/base/Environment.h>
 
 
-namespace gloperate
+namespace gloperate_glkernel
 {
 
 
 CPPEXPOSE_COMPONENT(MultiFrameControlStage, gloperate::Stage)
 
 
-MultiFrameControlStage::MultiFrameControlStage(Environment * environment, const std::string & name)
+MultiFrameControlStage::MultiFrameControlStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , frameNumber("frameNumber", this)
 , multiFrameCount("multiFrameCount", this)
@@ -30,7 +30,7 @@ MultiFrameControlStage::~MultiFrameControlStage()
 {
 }
 
-void MultiFrameControlStage::onProcess(AbstractGLContext *)
+void MultiFrameControlStage::onProcess(gloperate::AbstractGLContext *)
 {
     m_currentFrame++;
 

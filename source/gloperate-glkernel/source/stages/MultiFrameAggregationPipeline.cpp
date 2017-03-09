@@ -11,21 +11,21 @@
 #include <glbinding/gl/enum.h>
 
 
-namespace gloperate
+namespace gloperate_glkernel
 {
 
 CPPEXPOSE_COMPONENT(MultiFrameAggregationPipeline, gloperate::Stage)
 
 
-MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * environment, const std::string & name)
+MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
-, m_renderFramebufferStage(new BasicFramebufferStage(environment, "BasicFramebufferStage (Renderer)"))
-, m_aggregationFramebufferStage(new CustomFramebufferStage(environment, "CustomFramebufferStage (Accumulation)"))
+, m_renderFramebufferStage(new gloperate::BasicFramebufferStage(environment, "BasicFramebufferStage (Renderer)"))
+, m_aggregationFramebufferStage(new gloperate::CustomFramebufferStage(environment, "CustomFramebufferStage (Accumulation)"))
 , m_controlStage(new MultiFrameControlStage(environment, "MultiFrameControlStage"))
 , m_aggregationStage(new MultiFrameAggregationStage(environment, "MultiFrameAggregationStage"))
-, m_blitStage(new BlitStage(environment, "BlitStage"))
+, m_blitStage(new gloperate::BlitStage(environment, "BlitStage"))
 , m_frameRenderStage(nullptr)
 {
     addStage(m_renderFramebufferStage);
@@ -61,7 +61,7 @@ MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
 {
 }
 
-void MultiFrameAggregationPipeline::onProcess(AbstractGLContext * context)
+void MultiFrameAggregationPipeline::onProcess(gloperate::AbstractGLContext * context)
 {
     if (!m_frameRenderStage)
     {
@@ -71,7 +71,7 @@ void MultiFrameAggregationPipeline::onProcess(AbstractGLContext * context)
     Pipeline::onProcess(context);
 }
 
-void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface & interface)
+void MultiFrameAggregationPipeline::setFrameRenderer(gloperate::RenderInterface & interface)
 {
     disconnectRenderStage();
 
@@ -81,7 +81,7 @@ void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface & interface
     connectBasicRenderInterface(interface);
 }
 
-void MultiFrameAggregationPipeline::connectBasicRenderInterface(RenderInterface & interface)
+void MultiFrameAggregationPipeline::connectBasicRenderInterface(gloperate::RenderInterface & interface)
 {
     interface.deviceViewport << renderInterface.deviceViewport;
     interface.virtualViewport << renderInterface.virtualViewport;

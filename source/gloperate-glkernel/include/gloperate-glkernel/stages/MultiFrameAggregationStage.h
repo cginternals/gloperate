@@ -21,7 +21,7 @@
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
 
-namespace gloperate
+namespace gloperate_glkernel
 {
 
 
@@ -29,7 +29,7 @@ namespace gloperate
 *  @brief
 *    Stage that aggregates multiple subsequent frames into a single framebuffer
 */
-class GLOPERATE_GLKERNEL_API MultiFrameAggregationStage : public Stage
+class GLOPERATE_GLKERNEL_API MultiFrameAggregationStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -65,7 +65,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    MultiFrameAggregationStage(Environment * environment, const std::string & name = "MultiFrameAggregationStage");
+    MultiFrameAggregationStage(gloperate::Environment * environment, const std::string & name = "MultiFrameAggregationStage");
 
     /**
     *  @brief
@@ -76,8 +76,8 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
     void setupGeometry();
