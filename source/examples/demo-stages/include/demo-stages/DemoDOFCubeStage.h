@@ -46,7 +46,7 @@ public:
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<glm::vec2> dofShift;       ///< DOF shift for multiframe rendering
+    Input<std::vector<glm::vec2> *> dofShifts;       ///< DOF shift for multiframe rendering
 
 
 public:

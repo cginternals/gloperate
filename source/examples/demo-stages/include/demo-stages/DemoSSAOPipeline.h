@@ -10,13 +10,18 @@
 
 #include <demo-stages/demo-stages_api.h>
 
+namespace gloperate_glkernel {
+
+class HemisphereDistributionKernelStage;
+class NoiseKernelStage;
+
+}
 
 namespace gloperate
 {
 
 
 class BasicFramebufferStage;
-class SSAOKernelStage;
 class DemoSSAORenderingStage;
 class DemoSSAOPostprocessingStage;
 
@@ -65,11 +70,12 @@ public:
 
 protected:
     // Stages
-    BasicFramebufferStage       * m_colorFBOStage;       ///< Color buffer
-    BasicFramebufferStage       * m_normalFBOStage;      ///< Normal buffer
-    SSAOKernelStage             * m_kernelStage;         ///< Stage generating SSAO kernel
-    DemoSSAORenderingStage      * m_renderingStage;      ///< Rendering stage
-    DemoSSAOPostprocessingStage * m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
+    BasicFramebufferStage                                 * m_colorFBOStage;       ///< Color buffer
+    BasicFramebufferStage                                 * m_normalFBOStage;      ///< Normal buffer
+    gloperate_glkernel::HemisphereDistributionKernelStage * m_kernelStage;         ///< Stage generating SSAO kernel
+    gloperate_glkernel::NoiseKernelStage                  * m_noiseStage;          ///< Stage generating SSAO noise
+    DemoSSAORenderingStage                                * m_renderingStage;      ///< Rendering stage
+    DemoSSAOPostprocessingStage                           * m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
 };
 
 

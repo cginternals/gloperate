@@ -10,12 +10,16 @@
 
 #include <demo-stages/demo-stages_api.h>
 
+namespace gloperate_glkernel {
+
+class DiscDistributionKernelStage;
+
+}
 
 namespace gloperate
 {
 
 
-class MultiFrameDiscDistributionStage;
 class DemoDOFCubeStage;
 
 
@@ -41,6 +45,9 @@ public:
     // Interfaces
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
+    // Inputs
+    Input<int> multiFrameCount;      ///< Total number of multiframes to render
+
 
 public:
     /**
@@ -63,8 +70,8 @@ public:
 
 protected:
     // Stages
-    MultiFrameDiscDistributionStage * m_dofShiftStage;  ///< Stage generating DOF shift
-    DemoDOFCubeStage                * m_cubeStage;      ///< Rendering stage
+    gloperate_glkernel::DiscDistributionKernelStage * m_dofShiftStage;  ///< Stage generating DOF shift
+    DemoDOFCubeStage                                * m_cubeStage;      ///< Rendering stage
 };
 
 

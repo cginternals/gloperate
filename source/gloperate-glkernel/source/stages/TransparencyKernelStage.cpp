@@ -60,7 +60,7 @@ void TransparencyKernelStage::regenerateKernel()
     const auto maskSize = (*kernelSize).x;
     const auto alphaValues = (*kernelSize).y;
 
-    m_kernelData = std::vector<unsigned char>();
+    m_kernelData = std::vector<unsigned char>(maskSize * alphaValues);
 
     for (auto alphaIndex = 0; alphaIndex < alphaValues; alphaIndex++)
     {

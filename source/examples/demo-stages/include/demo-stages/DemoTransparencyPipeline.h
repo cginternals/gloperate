@@ -10,13 +10,17 @@
 
 #include <demo-stages/demo-stages_api.h>
 
+namespace gloperate_glkernel {
+
+class TransparencyKernelStage;
+class NoiseKernelStage;
+
+}
 
 namespace gloperate
 {
 
 
-class TransparencyKernelStage;
-class NoiseKernelStage;
 class DemoTransparencyStage;
 
 
@@ -64,9 +68,9 @@ public:
 
 protected:
     // Stages
-    TransparencyKernelStage * m_transparencyKernelStage;  ///< Stage generating transparency kernel
-    NoiseKernelStage        * m_noiseKernelStage;         ///< Stage generating random noise
-    DemoTransparencyStage   * m_transparencyRenderStage;  ///< Rendering stage
+    gloperate_glkernel::TransparencyKernelStage * m_transparencyKernelStage;  ///< Stage generating transparency kernel
+    gloperate_glkernel::NoiseKernelStage        * m_noiseKernelStage;         ///< Stage generating random noise
+    DemoTransparencyStage                       * m_transparencyRenderStage;  ///< Rendering stage
 };
 
 

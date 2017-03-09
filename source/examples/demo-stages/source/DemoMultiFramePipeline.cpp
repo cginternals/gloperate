@@ -2,7 +2,7 @@
 #include <demo-stages/DemoMultiFramePipeline.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
+#include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
 #include <demo-stages/DemoAntialiasingPipeline.h>
 #include <demo-stages/DemoDOFPipeline.h>
@@ -20,7 +20,7 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const 
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
-, m_multiFramePipeline(new MultiFrameAggregationPipeline(environment))
+, m_multiFramePipeline(new gloperate_glkernel::MultiFrameAggregationPipeline(environment))
 , m_antialiasingPipeline(new DemoAntialiasingPipeline(environment))
 , m_dofPipeline(new DemoDOFPipeline(environment))
 , m_transparencyPipeline(new DemoTransparencyPipeline(environment))
@@ -29,9 +29,14 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const 
     addStage(m_multiFramePipeline);
 
     //m_multiFramePipeline->setFrameRenderer(m_antialiasingPipeline->renderInterface);
+    //m_antialiasingPipeline->multiFrameCount << multiFrameCount;
+
     //m_multiFramePipeline->setFrameRenderer(m_dofPipeline->renderInterface);
-    //m_multiFramePipeline->setFrameRenderer(m_transparencyPipeline->renderInterface);
-    m_multiFramePipeline->setFrameRenderer(m_ssaoPipeline->renderInterface);
+    //m_dofPipeline->multiFrameCount << multiFrameCount;
+
+    m_multiFramePipeline->setFrameRenderer(m_transparencyPipeline->renderInterface);
+
+    //m_multiFramePipeline->setFrameRenderer(m_ssaoPipeline->renderInterface);
 
     // Inputs
     m_multiFramePipeline->renderInterface.deviceViewport << renderInterface.deviceViewport;

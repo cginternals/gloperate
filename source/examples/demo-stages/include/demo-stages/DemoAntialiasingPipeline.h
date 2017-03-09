@@ -10,12 +10,16 @@
 
 #include <demo-stages/demo-stages_api.h>
 
+namespace gloperate_glkernel {
+
+class DiscDistributionKernelStage;
+
+}
 
 namespace gloperate
 {
 
 
-class SubpixelAntialiasingOffsetStage;
 class DemoAntialiasableTriangleStage;
 
 
@@ -41,6 +45,9 @@ public:
     // Interfaces
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
+    // Inputs
+    Input<int> multiFrameCount;      ///< Total number of frames to aggregate
+
 
 public:
     /**
@@ -63,8 +70,8 @@ public:
 
 protected:
     // Stages
-    SubpixelAntialiasingOffsetStage * m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
-    DemoAntialiasableTriangleStage  * m_triangleStage;  ///< Rendering stage
+    gloperate_glkernel::DiscDistributionKernelStage * m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
+    DemoAntialiasableTriangleStage                  * m_triangleStage;  ///< Rendering stage
 };
 
 

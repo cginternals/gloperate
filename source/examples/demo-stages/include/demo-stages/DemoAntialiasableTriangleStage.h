@@ -46,7 +46,7 @@ public:
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<glm::vec2> subpixelOffset; ///< Subpixel offset for multiframe antialiasing
+    Input<std::vector<glm::vec2> *> subpixelOffsets; ///< Subpixel offsets for multiframe antialiasing
 
 
 public:

@@ -12,11 +12,16 @@
 #include <demo-stages/demo-stages_api.h>
 
 
+namespace gloperate_glkernel {
+
+class MultiFrameAggregationPipeline;
+
+}
+
 namespace gloperate
 {
 
 
-class MultiFrameAggregationPipeline;
 class DemoAntialiasingPipeline;
 class DemoDOFPipeline;
 class DemoTransparencyPipeline;
@@ -70,7 +75,7 @@ public:
 
 protected:
     // Stages
-    MultiFrameAggregationPipeline * m_multiFramePipeline;   ///< Aggregation Pipeline
+    gloperate_glkernel::MultiFrameAggregationPipeline * m_multiFramePipeline;   ///< Aggregation Pipeline
 
     // Demo pipelines using multiframe effects
     DemoAntialiasingPipeline      * m_antialiasingPipeline;
