@@ -52,7 +52,7 @@ public:
 
     // [TODO] Only for testing
     static std::unique_ptr<gloperate::Stage> createRenderStage(gloperate::Environment * environment, const std::string & name);
-    static gloperate::AbstractCanvas * createCanvas(gloperate::Environment * environment, std::unique_ptr<gloperate::Stage> && renderStage);
+    static std::unique_ptr<gloperate::AbstractCanvas> createCanvas(gloperate::Environment * environment, std::unique_ptr<gloperate::Stage> && renderStage);
 };
 
 

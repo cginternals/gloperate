@@ -40,9 +40,9 @@ std::unique_ptr<gloperate::Stage> Utils::createRenderStage(gloperate::Environmen
 }
 
 
-gloperate::AbstractCanvas * Utils::createCanvas(gloperate::Environment * environment, std::unique_ptr<gloperate::Stage> && renderStage)
+std::unique_ptr<gloperate::AbstractCanvas> Utils::createCanvas(gloperate::Environment * environment, std::unique_ptr<gloperate::Stage> && renderStage)
 {
-    gloperate::Canvas * canvas = new gloperate::Canvas(environment);
+    auto canvas = cppassist::make_unique<gloperate::Canvas>(environment);
     canvas->setRenderStage(std::move(renderStage));
     return canvas;
 }

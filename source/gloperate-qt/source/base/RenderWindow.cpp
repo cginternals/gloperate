@@ -22,7 +22,7 @@ namespace gloperate_qt
 
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
-, m_canvas(new gloperate::Canvas(environment))
+, m_canvas(cppassist::make_unique<gloperate::Canvas>(environment))
 , m_defaultFBO(globjects::Framebuffer::defaultFBO())
 {
     m_canvas->redraw.connect([this] ()

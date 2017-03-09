@@ -32,6 +32,7 @@ RenderItem::RenderItem(QQuickItem * parent)
 , m_devicePixelRatio(1.0f)
 , m_initialized(false)
 , m_stage("")
+, m_defaultFBO(nullptr)
 {
     // Set input modes
     setAcceptedMouseButtons(Qt::AllButtons);
@@ -51,12 +52,12 @@ RenderItem::~RenderItem()
 
 const gloperate::AbstractCanvas * RenderItem::canvas() const
 {
-    return m_canvas;
+    return m_canvas.get();
 }
 
 gloperate::AbstractCanvas * RenderItem::canvas()
 {
-    return m_canvas;
+    return m_canvas.get();
 }
 
 const QString & RenderItem::stage() const
@@ -89,6 +90,7 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
             Utils::createRenderStage(view->environment(), m_stage.toStdString())
         );
     }
+    assert(m_canvas);
 
     // Repaint window when canvas needs to be updated
     m_canvas->redraw.connect([this] ()

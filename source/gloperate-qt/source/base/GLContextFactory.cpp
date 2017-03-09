@@ -27,19 +27,17 @@ GLContextFactory::~GLContextFactory()
 std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(const gloperate::GLContextFormat & format) const
 {
     // Create OpenGL context
-    QOpenGLContext * qContext = new QOpenGLContext;
+    auto qContext = cppassist::make_unique<QOpenGLContext>();
 
     qContext->setFormat(toQSurfaceFormat(format));
 
     // Create and check success
     if (!qContext->create())
     {
-        delete qContext;
-
         return nullptr;
     }
 
-    return cppassist::make_unique<GLContext>(m_window, qContext);
+    return cppassist::make_unique<GLContext>(m_window, qContext.release());
 }
 
 QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextFormat & format)

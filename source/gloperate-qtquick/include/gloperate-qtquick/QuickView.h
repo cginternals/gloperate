@@ -1,9 +1,9 @@
 
 #pragma once
 
+#include <memory>
 
 #include <QQuickView>
-#include <QScopedPointer>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -93,8 +93,8 @@ protected:
 
 
 protected:
-    gloperate::Environment                * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    QScopedPointer<gloperate_qt::GLContext> m_context;     ///< Context wrapper for gloperate (can be null)
+    gloperate::Environment                  * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    std::unique_ptr<gloperate_qt::GLContext>  m_context;     ///< Context wrapper for gloperate (can be null)
 };
 
 
