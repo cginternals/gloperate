@@ -1,4 +1,4 @@
-#include <gloperate-glkernel/HemisphereDistributionKernelStage.h>
+#include <gloperate-glkernel/stages/HemisphereDistributionKernelStage.h>
 
 #include <algorithm>
 

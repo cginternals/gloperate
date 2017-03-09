@@ -8,14 +8,22 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
+#include <gloperate-glkernel/gloperate-glkernel_api.h>
+
 
 namespace gloperate
 {
 
-
 class BasicFramebufferStage;
 class CustomFramebufferStage;
 class BlitStage;
+
+}
+
+
+namespace gloperate_glkernel {
+
+
 class MultiFrameControlStage;
 class MultiFrameAggregationStage;
 
@@ -24,11 +32,11 @@ class MultiFrameAggregationStage;
 *  @brief
 *    Pipeline that aggregates multiple frames rendered by the given Stage/Pipeline
 */
-class GLOPERATE_API MultiFrameAggregationPipeline : public Pipeline
+class GLOPERATE_GLKERNEL_API MultiFrameAggregationPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        MultiFrameAggregationPipeline, gloperate::Stage
+        gloperate_glkernel::MultiFrameAggregationPipeline, gloperate::Stage
       , ""
       , ""
       , ""
@@ -40,10 +48,10 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<int> multiFrameCount; ///< Maximum number of frames to aggregate
+    gloperate::Input<int> multiFrameCount; ///< Maximum number of frames to aggregate
 
 
 public:
@@ -56,7 +64,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    MultiFrameAggregationPipeline(Environment * environment, const std::string & name = "MultiFrameAggregationPipeline");
+    MultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name = "MultiFrameAggregationPipeline");
 
     /**
     *  @brief
@@ -71,25 +79,25 @@ public:
     *  @param[in] interface
     *    Render interface of the frame generating stage
     */
-    void setFrameRenderer(RenderInterface & interface);
+    void setFrameRenderer(gloperate::RenderInterface & interface);
 
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
-    void connectBasicRenderInterface(RenderInterface & interface);
+    void connectBasicRenderInterface(gloperate::RenderInterface & interface);
     void disconnectRenderStage();
 
 
 protected:
     // Aggregation stages
-    BasicFramebufferStage      * m_renderFramebufferStage;      ///< FBO stage for frame generating stage
-    CustomFramebufferStage     * m_aggregationFramebufferStage; ///< Aggregation FBO
-    MultiFrameControlStage     * m_controlStage;                ///< Multiframe control stage
-    MultiFrameAggregationStage * m_aggregationStage;            ///< Aggregation stage
-    BlitStage                  * m_blitStage;                   ///< Blit stage
+    gloperate::BasicFramebufferStage  * m_renderFramebufferStage;      ///< FBO stage for frame generating stage
+    gloperate::CustomFramebufferStage * m_aggregationFramebufferStage; ///< Aggregation FBO
+    MultiFrameControlStage            * m_controlStage;                ///< Multiframe control stage
+    MultiFrameAggregationStage        * m_aggregationStage;            ///< Aggregation stage
+    gloperate::BlitStage              * m_blitStage;                   ///< Blit stage
 
     // Inserted Stage/Pipeline
     Stage * m_frameRenderStage;                                 ///< Frame generating stage

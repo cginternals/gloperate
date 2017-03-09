@@ -20,9 +20,6 @@
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/base/ShaderStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
-#include <gloperate/stages/multiframe/MultiFrameControlStage.h>
 
 
 namespace gloperate
@@ -198,9 +195,6 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&SplitStage::Component);
     m_componentManager.addComponent(&LightBufferTextureStage::Component);
     m_componentManager.addComponent(&LightCreationStage::Component);
-    m_componentManager.addComponent(&MultiFrameAggregationPipeline::Component);
-    m_componentManager.addComponent(&MultiFrameAggregationStage::Component);
-    m_componentManager.addComponent(&MultiFrameControlStage::Component);
     m_componentManager.addComponent(&ShaderStage::Component);
     m_componentManager.addComponent(&ProgramStage::Component);
 }

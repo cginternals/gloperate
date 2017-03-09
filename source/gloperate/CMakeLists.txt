@@ -9,6 +9,7 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
+find_package(qmltoolbox REQUIRED)
 
 
 # 
@@ -122,14 +123,6 @@ set(headers
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
-    ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
-    ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
-    ${include_path}/stages/multiframe/MultiFrameControlStage.h
-    ${include_path}/stages/multiframe/MultiFrameDiscDistributionStage.h
-    ${include_path}/stages/multiframe/NoiseKernelStage.h
-    ${include_path}/stages/multiframe/SSAOKernelStage.h
-    ${include_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.h
-    ${include_path}/stages/multiframe/TransparencyKernelStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -210,14 +203,6 @@ set(sources
     ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
-    ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
-    ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
-    ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp
-    ${source_path}/stages/multiframe/MultiFrameDiscDistributionStage.cpp
-    ${source_path}/stages/multiframe/NoiseKernelStage.cpp
-    ${source_path}/stages/multiframe/SSAOKernelStage.cpp
-    ${source_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.cpp
-    ${source_path}/stages/multiframe/TransparencyKernelStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp
@@ -377,6 +362,38 @@ target_link_libraries(${target}
     ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
+)
+
+
+# 
+# Module information file
+# 
+
+
+generate_module_info(${META_PROJECT_NAME}
+    VALUES
+    name        "${META_PROJECT_NAME}"
+    version     "${META_VERSION}"
+    description "${META_PROJECT_DESCRIPTION}"
+    author      "${META_AUTHOR_ORGANIZATION}"
+
+    BUILD_VALUES
+    dataPath    "${PROJECT_SOURCE_DIR}/data"
+    pluginPath  "\${ModulePath}"
+
+    INSTALL_VALUES
+    dataPath    "\${ModulePath}/data"
+    pluginPath  "\${ModulePath}/plugins"
+)
+
+export_module_info_with_deps(${META_PROJECT_NAME}
+    REQUIRES qmltoolbox qmltoolbox::qmltoolbox
+    FOLDER "ModuleInfo"
+)
+
+install_module_info(${META_PROJECT_NAME}
+    DESTINATION ${INSTALL_ROOT}
+    COMPONENT runtime
 )
 
 
