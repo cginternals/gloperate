@@ -28,7 +28,7 @@ namespace gloperate
 {
 
 
-class Drawable;
+class AbstractDrawable;
 
 
 /**
@@ -112,7 +112,7 @@ public:
     *  @return
     *    Geometry (can be null)
     */
-    Drawable * geometry() const;
+    AbstractDrawable * geometry() const;
 
     /**
     *  @brief
@@ -121,7 +121,7 @@ public:
     *  @param[in] geometry
     *    Geometry (can be null)
     */
-    void setGeometry(Drawable * geometry);
+    void setGeometry(AbstractDrawable * geometry);
 
     /**
     *  @brief
@@ -537,7 +537,7 @@ protected:
 protected:
     globjects::State*               m_stateBefore;                 ///< State applied before rendering
     globjects::State*               m_stateAfter;                  ///< State applied after rendering
-    Drawable*                       m_geometry;                    ///< Geometry rendered by the render pass
+    AbstractDrawable*               m_geometry;                    ///< Geometry rendered by the render pass
     globjects::Program*             m_program;                     ///< Program used for rendering
     globjects::ProgramPipeline*     m_programPipeline;             ///< Program pipeline used for rendering
     globjects::TransformFeedback*   m_recordTransformFeedback;     ///< Transform feedback object for recording (can be null)

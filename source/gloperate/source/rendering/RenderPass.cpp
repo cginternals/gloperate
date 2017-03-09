@@ -13,7 +13,7 @@
 #include <globjects/TransformFeedback.h>
 #include <globjects/State.h>
 
-#include <gloperate/rendering/Drawable.h>
+#include <gloperate/rendering/AbstractDrawable.h>
 
 
 namespace gloperate
@@ -103,12 +103,12 @@ void RenderPass::setStateAfter(globjects::State * state)
     m_stateAfter = state;
 }
 
-Drawable * RenderPass::geometry() const
+AbstractDrawable * RenderPass::geometry() const
 {
     return m_geometry;
 }
 
-void RenderPass::setGeometry(Drawable * geometry)
+void RenderPass::setGeometry(AbstractDrawable * geometry)
 {
     m_geometry = geometry;
 }
