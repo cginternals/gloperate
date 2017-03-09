@@ -1,12 +1,12 @@
 
-#include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
+#include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/CustomFramebufferStage.h>
 #include <gloperate/stages/base/BlitStage.h>
-#include <gloperate/stages/multiframe/MultiFrameControlStage.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
+#include <gloperate-glkernel/stages/MultiFrameControlStage.h>
+#include <gloperate-glkernel/stages/MultiFrameAggregationStage.h>
 
 #include <glbinding/gl/enum.h>
 

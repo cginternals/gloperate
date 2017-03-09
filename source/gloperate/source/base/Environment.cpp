@@ -20,13 +20,10 @@
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/base/ShaderStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
-#include <gloperate/stages/multiframe/MultiFrameControlStage.h>
 #include <gloperate/stages/demos/DemoPipeline.h>
 #include <gloperate/stages/demos/ShaderDemoPipeline.h>
 #include <gloperate/stages/demos/DemoStage.h>
-#include <gloperate/stages/demos/DemoMultiFramePipeline.h>
+//#include <gloperate/stages/demos/DemoMultiFramePipeline.h>
 #include <gloperate/stages/demos/SpinningRectStage.h>
 #include <gloperate/stages/demos/TimerStage.h>
 #include <gloperate/stages/demos/LightTestPipeline.h>
@@ -209,13 +206,10 @@ void Environment::registerLocalPlugins()
     m_componentManager.addComponent(&SplitStage::Component);
     m_componentManager.addComponent(&LightBufferTextureStage::Component);
     m_componentManager.addComponent(&LightCreationStage::Component);
-    m_componentManager.addComponent(&MultiFrameAggregationPipeline::Component);
-    m_componentManager.addComponent(&MultiFrameAggregationStage::Component);
-    m_componentManager.addComponent(&MultiFrameControlStage::Component);
     m_componentManager.addComponent(&DemoPipeline::Component);
     m_componentManager.addComponent(&ShaderDemoPipeline::Component);
     m_componentManager.addComponent(&DemoStage::Component);
-    m_componentManager.addComponent(&DemoMultiFramePipeline::Component);
+//    m_componentManager.addComponent(&DemoMultiFramePipeline::Component);
     m_componentManager.addComponent(&SpinningRectStage::Component);
     m_componentManager.addComponent(&TimerStage::Component);
     m_componentManager.addComponent(&LightTestPipeline::Component);

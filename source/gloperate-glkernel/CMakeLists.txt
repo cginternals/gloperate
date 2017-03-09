@@ -33,6 +33,10 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
+    ${include_path}/stages/MultiFrameAggregationPipeline.h
+    ${include_path}/stages/MultiFrameAggregationStage.h
+    ${include_path}/stages/MultiFrameControlStage.h
+
     ${include_path}/stages/DiscDistributionKernelStage.h
     ${include_path}/stages/HemisphereDistributionKernelStage.h
     ${include_path}/stages/NoiseKernelStage.h
@@ -40,6 +44,10 @@ set(headers
 )
 
 set(sources
+    ${source_path}/stages/MultiFrameAggregationPipeline.cpp
+    ${source_path}/stages/MultiFrameAggregationStage.cpp
+    ${source_path}/stages/MultiFrameControlStage.cpp
+
     ${source_path}/stages/DiscDistributionKernelStage.cpp
     ${source_path}/stages/HemisphereDistributionKernelStage.cpp
     ${source_path}/stages/NoiseKernelStage.cpp

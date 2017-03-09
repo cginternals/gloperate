@@ -8,6 +8,8 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
+#include <gloperate-glkernel/gloperate-glkernel_api.h>
+
 
 namespace gloperate
 {
@@ -24,7 +26,7 @@ class MultiFrameAggregationStage;
 *  @brief
 *    Pipeline that aggregates multiple frames rendered by the given Stage/Pipeline
 */
-class GLOPERATE_API MultiFrameAggregationPipeline : public Pipeline
+class GLOPERATE_GLKERNEL_API MultiFrameAggregationPipeline : public Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

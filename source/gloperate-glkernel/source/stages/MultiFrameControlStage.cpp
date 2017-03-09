@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/multiframe/MultiFrameControlStage.h>
+#include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>

@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
+#include <gloperate-glkernel/stages/MultiFrameAggregationStage.h>
 
 #include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>

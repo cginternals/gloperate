@@ -18,6 +18,8 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
+#include <gloperate-glkernel/gloperate-glkernel_api.h>
+
 
 namespace gloperate
 {
@@ -27,7 +29,7 @@ namespace gloperate
 *  @brief
 *    Stage that aggregates multiple subsequent frames into a single framebuffer
 */
-class GLOPERATE_API MultiFrameAggregationStage : public Stage
+class GLOPERATE_GLKERNEL_API MultiFrameAggregationStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
