@@ -4,6 +4,9 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Framebuffer.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/Shader.h>
+#include <globjects/Program.h>
 
 #include <gloperate-text/GlyphRenderer.h>
 #include <gloperate-text/GlyphVertexCloud.h>
@@ -30,13 +33,26 @@ GlyphRenderStage::~GlyphRenderStage()
 
 void GlyphRenderStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_renderer = cppassist::make_unique<GlyphRenderer>();
+    m_vSource = GlyphRenderer::vertexShaderSource();
+    m_gSource = GlyphRenderer::geometryShaderSource();
+    m_fSource = GlyphRenderer::fragmentShaderSource();
+
+
+    m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vSource.get());
+    m_geometryShader = cppassist::make_unique<globjects::Shader>(gl::GL_GEOMETRY_SHADER, m_gSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fSource.get());
+
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get());
+    m_program->attach(m_geometryShader.get());
+    m_program->attach(m_fragmentShader.get());
+
+    m_renderer = cppassist::make_unique<GlyphRenderer>(m_program.get());
 }
 
 
 void GlyphRenderStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
-    m_renderer = nullptr;
 }
 
 

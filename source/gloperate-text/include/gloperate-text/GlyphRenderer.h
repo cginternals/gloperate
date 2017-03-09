@@ -10,8 +10,8 @@
 
 namespace globjects
 {
-    class Shader;
     class Program;
+    class AbstractStringSource;
 }
 
 
@@ -25,10 +25,12 @@ class GlyphVertexCloud;
 class GLOPERATE_TEXT_API GlyphRenderer
 {
 public:
-    GlyphRenderer();
-    explicit GlyphRenderer(globjects::Shader * fragmentShader);
     explicit GlyphRenderer(globjects::Program * program);
     virtual ~GlyphRenderer();
+
+    static std::unique_ptr<globjects::AbstractStringSource> vertexShaderSource();
+    static std::unique_ptr<globjects::AbstractStringSource> geometryShaderSource();
+    static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSource();
 
     GlyphRenderer & operator=(const GlyphRenderer &) = delete;
 
@@ -40,7 +42,7 @@ public:
 
 
 protected:
-    std::unique_ptr<globjects::Program> m_program;
+    globjects::Program * m_program;  ///< Program used for rendering (owned by stage)
 };
 
 
