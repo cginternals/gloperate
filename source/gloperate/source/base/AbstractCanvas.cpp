@@ -110,7 +110,7 @@ void AbstractCanvas::setVideoTarget(const cppexpose::Variant & parameters, const
     if (!component) return;
 
     // Create video exporter
-    m_videoExporter = std::unique_ptr<AbstractVideoExporter>(component->createInstance()); // TODO: make createInstance() return unique_ptr
+    m_videoExporter = component->createInstance();
 
     // Configure video exporter
     m_videoExporter->setTarget(this, *map);
