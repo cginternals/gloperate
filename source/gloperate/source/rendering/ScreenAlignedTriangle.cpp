@@ -37,7 +37,7 @@ ScreenAlignedTriangle::ScreenAlignedTriangle()
     m_drawable->setAttributeBindingFormat(0, 2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_drawable->enableAttributeBinding(0);
 
-    m_drawable->setSize(4);
+    m_drawable->setSize(3);
 }
 
 ScreenAlignedTriangle::~ScreenAlignedTriangle()
