@@ -104,11 +104,19 @@ void ColorizeStage::setupGeometry()
 
 void ColorizeStage::setupProgram()
 {
-    m_vertexShader   = ScreenAlignedQuad::createDefaultVertexShader();
-    m_fragmentShader = ScreenAlignedQuad::createDefaultFragmentShader();
+    m_vSource = ScreenAlignedQuad::vertexShaderSource();
+    m_fSource = ScreenAlignedQuad::fragmentShaderSource();
+
+#ifdef __APPLE__
+    m_vSource->replace("#version 140", "#version 150");
+    m_fSource->replace("#version 140", "#version 150");
+#endif
+
+    m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fSource.get());
+
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
-
     m_program->setUniform("source", 0);
 }
 

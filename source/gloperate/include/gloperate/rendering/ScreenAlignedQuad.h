@@ -12,13 +12,7 @@
 
 namespace globjects
 {
-
-
-class Shader;
-class Program;
-class File;
-
-
+    class AbstractStringSource;
 }
 
 
@@ -73,35 +67,13 @@ public:
     virtual void draw() const override;
 
 public:
-    /**
-    *  @brief
-    *    Create new default vertex shader
-    *
-    *  @return
-    *    Pointer to a newly created default vertex shader object
-    */
-    static std::unique_ptr<globjects::Shader> createDefaultVertexShader();
-
-    /**
-    *  @brief
-    *    Create new default fragment shader
-    *
-    *  @return
-    *    Pointer to a newly created default fragment shader object
-    */
-    static std::unique_ptr<globjects::Shader> createDefaultFragmentShader();
+    static std::unique_ptr<globjects::AbstractStringSource> vertexShaderSource();
+    static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSource();
 
 
 protected:
     std::unique_ptr<Drawable>           m_drawable;     ///< underlying drawable object
     std::unique_ptr<globjects::Buffer>  m_buffer;       ///< pointer to the buffer used by m_drawable
-
-
-
-protected:
-    static const std::unique_ptr<globjects::File> s_defaultVertexShaderSource;
-    static const std::unique_ptr<globjects::File> s_defaultFragmentShaderSource;
-
 };
 
 } // namespace gloperate

@@ -132,7 +132,7 @@ void Environment::setupScripting(const std::string & backendName)
     ) );
 }
 
-void Environment::setupScripting(std::unique_ptr<cppexpose::AbstractScriptBackend> backend)
+void Environment::setupScripting(std::unique_ptr<cppexpose::AbstractScriptBackend>  && backend)
 {
     initializeScripting(make_unique<cppexpose::ScriptContext>(std::move(backend)));
 }

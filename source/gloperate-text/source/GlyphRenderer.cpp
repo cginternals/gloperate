@@ -32,17 +32,17 @@ GlyphRenderer::~GlyphRenderer()
 }
 
 
-std::unique_ptr<globjects::AbstractStringSource> vertexShaderSource()
+std::unique_ptr<globjects::AbstractStringSource> GlyphRenderer::vertexShaderSource()
 {
     return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate-text/shaders/glyph.vert");
 }
 
-std::unique_ptr<globjects::AbstractStringSource> geometryShaderSource()
+std::unique_ptr<globjects::AbstractStringSource> GlyphRenderer::geometryShaderSource()
 {
     return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate-text/shaders/glyph.geom");
 }
 
-std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSource()
+std::unique_ptr<globjects::AbstractStringSource> GlyphRenderer::fragmentShaderSource()
 {
     return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate-text/shaders/glyph.frag");
 }
