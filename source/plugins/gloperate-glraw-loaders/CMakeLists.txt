@@ -105,7 +105,6 @@ target_link_libraries(${target}
     glbinding::glbinding
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
-    ${META_PROJECT_NAME}::gloperate-qt
 
     PUBLIC
     ${DEFAULT_LIBRARIES}

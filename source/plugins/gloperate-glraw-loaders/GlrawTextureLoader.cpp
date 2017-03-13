@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include <cppassist/fs/FilePath.h>
+#include <cppassist/fs/readfile.h>
 
 #include <cppexpose/variant/Variant.h>
 
@@ -76,7 +77,6 @@ globjects::Texture * GlrawTextureLoader::load(const std::string & filename, cons
 globjects::Texture * GlrawTextureLoader::loadGLRawImage(const std::string & filename) const
 {
     glraw::RawFile rawFile(filename);
-
     if (!rawFile.isValid())
         return nullptr;
 
@@ -127,12 +127,9 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
         return nullptr;
 
     //read file
-    std::ifstream ifs(filename, std::ios::binary | std::ios::ate);
-    const size_t size = ifs.tellg();
-    ifs.seekg(0, std::ios::beg);
-
-    std::vector<char> buffer(size);
-    ifs.read(buffer.data(), size);
+    glraw::RawFile rawFile{filename,false};
+    if (!rawFile.isValid())
+        return nullptr;
 
     globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
     if (!suffix.compressed())
@@ -145,7 +142,7 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
             0,
             suffix.format(),
             suffix.type(),
-            buffer.data()
+            rawFile.data()
         );
     }
     else
@@ -156,8 +153,8 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
             suffix.width(),
             suffix.height(),
             0,
-            buffer.size(),
-            buffer.data()
+            rawFile.size(),
+            rawFile.data()
         );
     }
 
