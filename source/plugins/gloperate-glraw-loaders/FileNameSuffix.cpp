@@ -1,57 +1,55 @@
 #include <FileNameSuffix.h>
 
 #include <cassert>
-
-#include <QMap>
-#include <QRegExp>
-#include <QStringList>
+#include <regex>
+#include <string>
 
 #include <glbinding/gl/gl.h>
 
 
 namespace
 {
-    static const QMap<gl::GLenum, QString> suffixesByFormat =
+    static const std::map<std::string, gl::GLenum> formatsBySuffix =
 	{
-        { gl::GL_RED,   "r"    },
-        { gl::GL_GREEN, "g"    },
-        { gl::GL_BLUE,  "b"    },
-        { gl::GL_RG,    "rg"   },
-        { gl::GL_RGB,   "rgb"  },
-        { gl::GL_BGR,   "bgr"  },
-        { gl::GL_RGBA,  "rgba" },
-        { gl::GL_BGRA,  "bgra" }
+        { "rh",     gl::GL_RED      },
+        { "g",      gl::GL_GREEN    },
+        { "b",      gl::GL_BLUE     },
+        { "rg",     gl::GL_RG       },
+        { "rgb",    gl::GL_RGB      },
+        { "bgr",    gl::GL_BGR      },
+        { "rgba",   gl::GL_RGBA     },
+        { "bgra",   gl::GL_BGRA     }
 	};
 
-    static const QMap<gl::GLenum, QString> suffixesByType =
+    static const std::map<std::string, gl::GLenum> typesBySuffix =
 	{
-        { gl::GL_UNSIGNED_BYTE,  "ub" },
-        { gl::GL_BYTE,           "b"  },
-        { gl::GL_UNSIGNED_SHORT, "us" },
-        { gl::GL_SHORT,          "s"  },
-        { gl::GL_UNSIGNED_INT,   "ui" },
-        { gl::GL_INT,            "i"  },
-        { gl::GL_FLOAT,          "f"  }
+        { "ub", gl::GL_UNSIGNED_BYTE    },
+        { "b",  gl::GL_BYTE             },
+        { "us", gl::GL_UNSIGNED_SHORT   },
+        { "s",  gl::GL_SHORT            },
+        { "ui", gl::GL_UNSIGNED_INT     },
+        { "i",  gl::GL_INT              },
+        { "f",  gl::GL_FLOAT            }
 
     #ifdef gl::GL_ARB_texture_compression_rgtc
 		,
-        { gl::GL_COMPRESSED_RED_RGTC1,        "rgtc1-r"   },
-        { gl::GL_COMPRESSED_SIGNED_RED_RGTC1, "rgtc1-sr"  },
-        { gl::GL_COMPRESSED_RG_RGTC2,         "rgtc2-rg"  },
-        { gl::GL_COMPRESSED_SIGNED_RG_RGTC2,  "rgtc2-srg" }
+        { "rgtc1-r",    gl::GL_COMPRESSED_RED_RGTC1,        },
+        { "rgtc1-sr",   gl::GL_COMPRESSED_SIGNED_RED_RGTC1  },
+        { "rgtc2-rg",   gl::GL_COMPRESSED_RG_RGTC2          },
+        { "rgtc2-srg",  gl::GL_COMPRESSED_SIGNED_RG_RGTC2   }
 	#endif
     #ifdef gl::GL_ARB_texture_compression_bptc
 		,
-        { gl::GL_COMPRESSED_RGBA_BPTC_UNORM_ARB,         "bptc-rgba-unorm" },
-        { gl::GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_ARB,   "bptc-rgb-sf"     },
-        { gl::GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_ARB, "bptc-rgb-uf"     }
+        { "bptc-rgba-unorm",gl::GL_COMPRESSED_RGBA_BPTC_UNORM_ARB           },
+        { "bptc-rgb-sf",    gl::GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_ARB     },
+        { "bptc-rgb-uf",    gl::GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_ARB   }
 	#endif
 	#ifdef GLRAW_DXT // special treatment here - see S3TCExtensions.h
 		,
-        { gl::GL_COMPRESSED_RGB_S3TC_DXT1_EXT,  "dxt1-rgb"  },
-        { gl::GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, "dxt1-rgba" },
-        { gl::GL_COMPRESSED_RGBA_S3TC_DXT3_EXT, "dxt3-rgba" },
-        { gl::GL_COMPRESSED_RGBA_S3TC_DXT5_EXT, "dxt5-rgba" }
+        { "dxt1-rgb",   gl::GL_COMPRESSED_RGB_S3TC_DXT1_EXT   },
+        { "dxt1-rgba",  gl::GL_COMPRESSED_RGBA_S3TC_DXT1_EXT  },
+        { "dxt3-rgba",  gl::GL_COMPRESSED_RGBA_S3TC_DXT3_EXT  },
+        { "dxt5-rgba",  gl::GL_COMPRESSED_RGBA_S3TC_DXT5_EXT  }
 	#endif
 	};
 }
@@ -60,7 +58,7 @@ namespace
 namespace glraw
 {
 
-FileNameSuffix::FileNameSuffix(const QString & fileName)
+FileNameSuffix::FileNameSuffix(const std::string & fileName)
 : m_width (-1)
 , m_height(-1)
 , m_format(gl::GL_INVALID_ENUM)
@@ -68,62 +66,39 @@ FileNameSuffix::FileNameSuffix(const QString & fileName)
 , m_compressed(false)
 {
 	// check if either compressed or uncompressed (or unknown) format
+    std::regex regexp{R"(^.*\.(\d+)\.(\d+)\.(\w+)\.raw$)"};
+    std::smatch base_match;
 
-	QRegExp regexp(R"(^.*\.(\d+)\.(\d+)\.(\w+)\.raw$)");
-	if (regexp.exactMatch(fileName))
+    if (std::regex_match(fileName, base_match, regexp))
 		m_compressed = true;
 	else
 	{
-		regexp = QRegExp(R"(^.*\.(\d+)\.(\d+)\.(\w+)\.(\w+)\.raw$)");
-		if (!regexp.exactMatch(fileName))
+        regexp = std::regex{R"(^.*\.(\d+)\.(\d+)\.(\w+)\.(\w+)\.raw$)"};
+        if (!std::regex_match(fileName, base_match, regexp))
 			return;
 	}
 
 	// retrieve intel from suffix parts
-
-	QStringList parts = regexp.capturedTexts();
-
-	bool ok;
-
-	m_width = parts[1].toInt(&ok);
-	assert(ok);
-
-	m_height = parts[2].toInt(&ok);
-	assert(ok);
+    try
+    {
+        m_width = std::stoi(base_match[1]);
+        m_height = std::stoi(base_match[2]);
+    }
+    catch(...)
+    {
+        return;
+    }
 
 	if (!m_compressed)
 	{
-		m_format = format(parts[3]);
+        m_format = format(base_match[3]);
         assert(m_format != gl::GL_INVALID_ENUM);
 	}
 
-	m_type = type(parts[m_compressed ? 3 : 4]);
+    m_type = type(base_match[m_compressed ? 3 : 4]);
     assert(m_type != gl::GL_INVALID_ENUM);
 }
 
-FileNameSuffix::FileNameSuffix(
-    const int width, const int height, const gl::GLenum format, const gl::GLenum type)
-: m_width(width)
-, m_height(height)
-, m_format(format)
-, m_type(type)
-, m_compressed(false)
-{
-	m_suffix = QString(".%1.%2.%3.%4")
-		.arg(m_width).arg(m_height).arg(formatSuffix(m_format)).arg(typeSuffix(m_type));
-}
-
-FileNameSuffix::FileNameSuffix(
-    const int width, const int height, const gl::GLenum compressedType)
-: m_width(width)
-, m_height(height)
-, m_format(gl::GL_INVALID_ENUM)
-, m_type(compressedType)
-, m_compressed(true)
-{
-    m_suffix = QString(".%1.%2.%3")
-        .arg(m_width).arg(m_height).arg(typeSuffix(m_type));
-}
 
 bool FileNameSuffix::isValid() const
 {
@@ -158,29 +133,27 @@ bool FileNameSuffix::compressed() const
 	return m_compressed;
 }
 
-const QString & FileNameSuffix::get() const
+const std::string & FileNameSuffix::get() const
 {
 	return m_suffix;
 }
 
-const QString FileNameSuffix::formatSuffix(const gl::GLenum format)
+gl::GLenum FileNameSuffix::format(const std::string & format)
 {
-	return suffixesByFormat.value(format, "");
+    std::string formatToLower = format;
+    std::transform(formatToLower.begin(), formatToLower.end(), formatToLower.begin(), ::tolower);
+    auto it = formatsBySuffix.find(formatToLower);
+    return (it!=formatsBySuffix.end()) ? it->second : gl::GL_INVALID_ENUM;
 }
 
-gl::GLenum FileNameSuffix::format(const QString & format)
-{
-    return suffixesByFormat.key(format.toLower(), gl::GL_INVALID_ENUM);
-}
 
-const QString FileNameSuffix::typeSuffix(const gl::GLenum type)
-{
-	return suffixesByType.value(type, "");
-}
 
-gl::GLenum FileNameSuffix::type(const QString & type)
+gl::GLenum FileNameSuffix::type(const std::string & type)
 {
-    return suffixesByType.key(type.toLower(), gl::GL_INVALID_ENUM);
+    std::string typeToLower = type;
+    std::transform(typeToLower.begin(), typeToLower.end(), typeToLower.begin(), ::tolower);
+    auto it = typesBySuffix.find(typeToLower);
+    return (it!=typesBySuffix.end()) ? it->second : gl::GL_INVALID_ENUM;
 }
 
 } // namespace glraw

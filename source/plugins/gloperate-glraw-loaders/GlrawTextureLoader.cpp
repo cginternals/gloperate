@@ -1,17 +1,21 @@
 
 #include "GlrawTextureLoader.h"
 
-#include <QString>
-#include <QFileInfo>
 
-#include <RawFile.h>
-#include <FileNameSuffix.h>
+#include <algorithm>
+#include <fstream>
+
+#include <cppassist/fs/FilePath.h>
 
 #include <cppexpose/variant/Variant.h>
 
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Texture.h>
+
+
+#include <RawFile.h>
+#include <FileNameSuffix.h>
 
 
 CPPEXPOSE_COMPONENT(GlrawTextureLoader, gloperate::AbstractLoader)
@@ -58,13 +62,12 @@ std::string GlrawTextureLoader::allLoadingTypes() const
 
 globjects::Texture * GlrawTextureLoader::load(const std::string & filename, const cppexpose::Variant & /*options*/, std::function<void(int, int)> /*progress*/) const
 {
-
     globjects::Texture * texture = nullptr;
 
-    QFileInfo fi(QString::fromStdString(filename));
-    if (fi.suffix() == "glraw")
+    cppassist::FilePath filePath(filename);
+    if (filePath.extension() == "glraw")
         texture = loadGLRawImage(filename);
-    else if (fi.suffix() == "raw")
+    else if (filePath.extension() == "raw")
         texture = loadRawImage(filename);
 
     return texture;
@@ -119,19 +122,19 @@ globjects::Texture * GlrawTextureLoader::loadGLRawImage(const std::string & file
 
 globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filename) const
 {
-    glraw::FileNameSuffix suffix(QString::fromStdString(filename));
-
+    glraw::FileNameSuffix suffix(filename);
     if (!suffix.isValid())
         return nullptr;
 
-    QFile file(QString::fromStdString(filename));
-    if (!file.open(QIODevice::ReadOnly))
-        return nullptr;
-    QByteArray data = file.readAll();
+    //read file
+    std::ifstream ifs(filename, std::ios::binary | std::ios::ate);
+    size_t size = ifs.tellg();
+    ifs.seekg(0, std::ios::beg);
 
+    std::vector<char> buffer(size);
+    ifs.read(buffer.data(), size);
 
     globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-
     if (!suffix.compressed())
     {
         texture->image2D(
@@ -142,7 +145,7 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
             0,
             suffix.format(),
             suffix.type(),
-            data.data()
+            buffer.data()
         );
     }
     else
@@ -153,8 +156,8 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
             suffix.width(),
             suffix.height(),
             0,
-            data.size(),
-            data.data()
+            buffer.size(),
+            buffer.data()
         );
     }
 

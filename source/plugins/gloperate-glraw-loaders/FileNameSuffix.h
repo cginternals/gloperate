@@ -1,8 +1,6 @@
 #pragma once
 
 
-#include <QString>
-
 #include <glbinding/gl/gl.h>
 
 
@@ -13,18 +11,8 @@ namespace glraw
 class FileNameSuffix
 {
 public:
-	FileNameSuffix(const QString & fileName);
+    FileNameSuffix(const std::string & fileName);
 
-	FileNameSuffix(
-		int width,
-		int height,
-        gl::GLenum format,
-        gl::GLenum type);
-
-	FileNameSuffix(
-		int width,
-		int height,
-        gl::GLenum compressedType);
 
 	/** \return Returns true, if width, height, type, and format if not compressed have valid values.
 	*/
@@ -55,19 +43,16 @@ public:
 	*/
 	bool compressed() const;
 
-	/** \return raw texture file name suffix as QString.
+    /** \return raw texture file name suffix.
 	*/
-	const QString & get() const;
+    const std::string & get() const;
 
 protected:
-    static const QString formatSuffix(gl::GLenum format);
-    static const QString typeSuffix(gl::GLenum type);
-
-    static gl::GLenum format(const QString & suffix);
-    static gl::GLenum type(const QString & suffix);
+    static gl::GLenum format(const std::string & suffix);
+    static gl::GLenum type(const std::string & suffix);
 
 protected:
-	QString m_suffix;
+    std::string m_suffix;
 
 	int m_width;
 	int m_height;
