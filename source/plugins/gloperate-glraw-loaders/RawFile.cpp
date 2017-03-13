@@ -147,11 +147,11 @@ void RawFile::readProperties(std::ifstream & ifs, uint64_t offset)
 {
     while (ifs.tellg() < static_cast<int64_t>(offset) && ifs.good())
     {
-        uint8_t type = read<uint8_t>(ifs);
+        auto type = read<PropertyType>(ifs);
 
         std::string key = readString(ifs);
 
-		switch (static_cast<PropertyType>(type))
+        switch (type)
         {
 		case PropertyType::Int:
             m_intProperties[key] = read<int32_t>(ifs);
@@ -175,7 +175,7 @@ void RawFile::readRawData(std::ifstream & ifs, uint64_t rawDataOffset)
 {
     ifs.seekg(0, std::ios::end);
     
-    size_t endPosition = ifs.tellg();
+    const size_t endPosition = ifs.tellg();
     const size_t size = endPosition - rawDataOffset;
     
     ifs.seekg(rawDataOffset, std::ios::beg);

@@ -3,6 +3,8 @@
 #include <cassert>
 #include <regex>
 
+#include <glbinding/gl/enum.h>
+
 
 namespace
 {
@@ -48,8 +50,8 @@ namespace glraw
 FileNameSuffix::FileNameSuffix(const std::string & fileName)
 : m_width (-1)
 , m_height(-1)
-, m_format(gl::GL_INVALID_ENUM)
-, m_type(gl::GL_INVALID_ENUM)
+, m_format(gl::GL_NONE)
+, m_type(gl::GL_NONE)
 , m_compressed(false)
 {
 	// check if either compressed or uncompressed (or unknown) format
@@ -79,11 +81,11 @@ FileNameSuffix::FileNameSuffix(const std::string & fileName)
 	if (!m_compressed)
 	{
         m_format = format(base_match[3]);
-        assert(m_format != gl::GL_INVALID_ENUM);
+        assert(m_format != gl::GL_NONE);
 	}
 
     m_type = type(base_match[m_compressed ? 3 : 4]);
-    assert(m_type != gl::GL_INVALID_ENUM);
+    assert(m_type != gl::GL_NONE);
 }
 
 
@@ -91,8 +93,8 @@ bool FileNameSuffix::isValid() const
 {
 	return m_width  != -1
 		&& m_height != -1
-        && m_type   != gl::GL_INVALID_ENUM
-        && (m_compressed || m_format != gl::GL_INVALID_ENUM);
+        && m_type   != gl::GL_NONE
+        && (m_compressed || m_format != gl::GL_NONE);
 }
 
 int FileNameSuffix::width() const
@@ -130,7 +132,7 @@ gl::GLenum FileNameSuffix::format(const std::string & format)
     std::string formatToLower = format;
     std::transform(formatToLower.begin(), formatToLower.end(), formatToLower.begin(), ::tolower);
     auto it = formatsBySuffix.find(formatToLower);
-    return (it!=formatsBySuffix.end()) ? it->second : gl::GL_INVALID_ENUM;
+    return (it!=formatsBySuffix.end()) ? it->second : gl::GL_NONE;
 }
 
 
@@ -140,7 +142,7 @@ gl::GLenum FileNameSuffix::type(const std::string & type)
     std::string typeToLower = type;
     std::transform(typeToLower.begin(), typeToLower.end(), typeToLower.begin(), ::tolower);
     auto it = typesBySuffix.find(typeToLower);
-    return (it!=typesBySuffix.end()) ? it->second : gl::GL_INVALID_ENUM;
+    return (it!=typesBySuffix.end()) ? it->second : gl::GL_NONE;
 }
 
 } // namespace glraw

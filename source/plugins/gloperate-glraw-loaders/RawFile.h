@@ -14,7 +14,7 @@ class RawFile
 public:
     static uint16_t s_signature;
 
-    enum class PropertyType 
+    enum class PropertyType : unsigned char
 	{
         Unknown	= 0,
         Int		= 1,

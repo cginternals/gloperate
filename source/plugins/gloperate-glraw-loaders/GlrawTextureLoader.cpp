@@ -38,7 +38,7 @@ GlrawTextureLoader::~GlrawTextureLoader()
 bool GlrawTextureLoader::canLoad(const std::string & ext) const
 {
     // Check if file type is supported
-    return (std::count(m_extensions.begin(), m_extensions.end(), "." + ext) > 0);
+    return std::find(m_extensions.begin(), m_extensions.end(), "." + ext) != m_extensions.end();
 }
 
 std::vector<std::string> GlrawTextureLoader::loadingTypes() const
@@ -128,7 +128,7 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
 
     //read file
     std::ifstream ifs(filename, std::ios::binary | std::ios::ate);
-    size_t size = ifs.tellg();
+    const size_t size = ifs.tellg();
     ifs.seekg(0, std::ios::beg);
 
     std::vector<char> buffer(size);
