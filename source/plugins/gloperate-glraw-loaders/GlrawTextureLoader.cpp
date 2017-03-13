@@ -1,5 +1,5 @@
 
-#include "GlRawLoader.h"
+#include "GlrawTextureLoader.h"
 
 #include <QString>
 #include <QFileInfo>
@@ -14,10 +14,10 @@
 #include <globjects/Texture.h>
 
 
-CPPEXPOSE_COMPONENT(GlRawLoader, gloperate::AbstractLoader)
+CPPEXPOSE_COMPONENT(GlrawTextureLoader, gloperate::AbstractLoader)
 
 
-GlRawLoader::GlRawLoader(gloperate::Environment * environment)
+GlrawTextureLoader::GlrawTextureLoader(gloperate::Environment * environment)
     : gloperate::Loader<globjects::Texture>(environment)
 {
     m_extensions.push_back(".raw");
@@ -27,23 +27,23 @@ GlRawLoader::GlRawLoader(gloperate::Environment * environment)
     m_types.push_back("glraw images (*.glraw)");
 }
 
-GlRawLoader::~GlRawLoader()
+GlrawTextureLoader::~GlrawTextureLoader()
 {
 }
 
-bool GlRawLoader::canLoad(const std::string & ext) const
+bool GlrawTextureLoader::canLoad(const std::string & ext) const
 {
     // Check if file type is supported
     return (std::count(m_extensions.begin(), m_extensions.end(), "." + ext) > 0);
 }
 
-std::vector<std::string> GlRawLoader::loadingTypes() const
+std::vector<std::string> GlrawTextureLoader::loadingTypes() const
 {
     // Return list of supported file types
     return m_types;
 }
 
-std::string GlRawLoader::allLoadingTypes() const
+std::string GlrawTextureLoader::allLoadingTypes() const
 {
     // Compose list of all supported file extensions
     std::string allTypes;
@@ -56,7 +56,7 @@ std::string GlRawLoader::allLoadingTypes() const
     return allTypes;
 }
 
-globjects::Texture * GlRawLoader::load(const std::string & filename, const cppexpose::Variant & /*options*/, std::function<void(int, int)> /*progress*/) const
+globjects::Texture * GlrawTextureLoader::load(const std::string & filename, const cppexpose::Variant & /*options*/, std::function<void(int, int)> /*progress*/) const
 {
 
     globjects::Texture * texture = nullptr;
@@ -70,7 +70,7 @@ globjects::Texture * GlRawLoader::load(const std::string & filename, const cppex
     return texture;
 }
 
-globjects::Texture * GlRawLoader::loadGLRawImage(const std::string & filename) const
+globjects::Texture * GlrawTextureLoader::loadGLRawImage(const std::string & filename) const
 {
     glraw::RawFile rawFile(filename);
 
@@ -117,7 +117,7 @@ globjects::Texture * GlRawLoader::loadGLRawImage(const std::string & filename) c
     return texture;
 }
 
-globjects::Texture * GlRawLoader::loadRawImage(const std::string & filename) const
+globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filename) const
 {
     glraw::FileNameSuffix suffix(QString::fromStdString(filename));
 

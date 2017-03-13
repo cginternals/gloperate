@@ -25,11 +25,11 @@ namespace globjects
 *  Supported options:
 *    none
 */
-class GlRawLoader : public gloperate::Loader<globjects::Texture>
+class GlrawTextureLoader : public gloperate::Loader<globjects::Texture>
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        GlRawLoader, gloperate::AbstractLoader
+        GlrawTextureLoader, gloperate::AbstractLoader
       , "" // Tags
       , "" // Icon
       , "" // Annotations
@@ -47,13 +47,13 @@ public:
     *  @param[in] environment
     *    Environment to which the loader belongs (must NOT be null!)
     */
-    GlRawLoader(gloperate::Environment * environment);
+    GlrawTextureLoader(gloperate::Environment * environment);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~GlRawLoader();
+    virtual ~GlrawTextureLoader();
 
     // Virtual gloperate::AbstractLoader functions
     virtual bool canLoad(const std::string & ext) const override;
