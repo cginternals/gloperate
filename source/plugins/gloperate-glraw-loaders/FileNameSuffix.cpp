@@ -122,11 +122,6 @@ bool FileNameSuffix::compressed() const
 	return m_compressed;
 }
 
-const std::string & FileNameSuffix::get() const
-{
-	return m_suffix;
-}
-
 gl::GLenum FileNameSuffix::format(const std::string & format)
 {
     std::string formatToLower = format;
@@ -134,8 +129,6 @@ gl::GLenum FileNameSuffix::format(const std::string & format)
     auto it = formatsBySuffix.find(formatToLower);
     return (it!=formatsBySuffix.end()) ? it->second : gl::GL_NONE;
 }
-
-
 
 gl::GLenum FileNameSuffix::type(const std::string & type)
 {

@@ -9,59 +9,92 @@ namespace glraw
 {
 
 
+/**
+*  @brief
+*    Class to parse the filename of .raw files and extract the attributes of the texture.
+*
+*/
 class FileNameSuffix
 {
-public:
+public:  
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] fileName
+    *    filename of the .raw file
+    */
     FileNameSuffix(const std::string & fileName);
 
 
-	/** \return Returns true, if width, height, type, and format if not compressed have valid values.
+    /**
+    * @brief
+    *   Return true, if width, height, type, and format if not compressed have valid values.
 	*/
 	bool isValid() const;
 
-	/** \return Returns width of raw texture file name suffix in pixel;
-				Is -1 when no width is provided.
+    /**
+    * @brief
+    *   Return width of raw texture file name suffix in pixel;
+    *   Is -1 when no width is provided.
 	*/
 	int width()  const;
 
-	/** \return Returns height of raw texture file name suffix in pixel; 
-				Is -1 when no height is provided.
+    /**
+    * @brief
+    *   Return height of raw texture file name suffix in pixel;
+    *   Is -1 when no height is provided.
 	*/
 	int height() const;
 
-	/** \return Returns type of raw texture file name suffix; 
-				Is GL_INVALID_ENUM when type is not unknown or not provided.
+    /**
+    * @brief
+    *   Returns type of raw texture file name suffix;
+    *   Is GL_NONE when type is not unknown or not provided.
 	*/
     gl::GLenum type() const;
 
-	/** \return Returns format of raw texture file name suffix; 
-				Is GL_INVALID_ENUM when format is not unknown or not provided.
+    /**
+    * @brief
+    *   Returns format of raw texture file name suffix;
+    *   Is GL_NONE when format is not unknown or not provided.
 	*/
     gl::GLenum format() const;
 
-	/** \return Returns true if texture type is compressed and no extra format is given; false otherwise.
-	    \remark When type is of GL_INVALID_ENUM, returns false.
+    /**
+    * @brief
+    *   Returns true if texture type is compressed and no extra format is given; false otherwise.
+    *   When type is of GL_NONE, returns false.
 	*/
 	bool compressed() const;
 
-    /** \return raw texture file name suffix.
-	*/
-    const std::string & get() const;
-
 protected:
+    /**
+    *  @brief
+    *    find format enum that corresponds to suffix
+    *
+    *  @param[in] suffix
+    *    part of a .raw filename
+    */
     static gl::GLenum format(const std::string & suffix);
+
+    /**
+    *  @brief
+    *    find type enum that corresponds to suffix
+    *
+    *  @param[in] suffix
+    *    part of a .raw filename
+    */
     static gl::GLenum type(const std::string & suffix);
 
 protected:
-    std::string m_suffix;
-
-	int m_width;
-	int m_height;
+    int m_width;  ///< Width of the Texture
+    int m_height; ///< Height of the Texture
 	
-    gl::GLenum m_format;
-    gl::GLenum m_type;
+    gl::GLenum m_format; ///< Format of the Texture
+    gl::GLenum m_type;   ///< Type of the Texture
 
-    bool m_compressed;
+    bool m_compressed;   ///< states if Texture is compressed or not
 };
 
 } // namespace glraw

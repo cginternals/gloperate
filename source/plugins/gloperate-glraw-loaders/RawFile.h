@@ -53,9 +53,9 @@ protected:
     const std::string m_filePath;
     std::vector<char> m_data;
 
-    std::map<std::string, std::string> m_stringProperties;
-    std::map<std::string, int32_t> m_intProperties;
-    std::map<std::string, double> m_doubleProperties;
+    std::map<std::string, std::string>  m_stringProperties;
+    std::map<std::string, int32_t>      m_intProperties;
+    std::map<std::string, double>       m_doubleProperties;
 
     bool m_valid;
 

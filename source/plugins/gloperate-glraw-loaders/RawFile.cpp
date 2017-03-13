@@ -138,8 +138,6 @@ bool RawFile::readFile(bool parseProperties)
     
     readRawData(ifs, offset);
 
-    ifs.close();
-
     return true;
 }
 

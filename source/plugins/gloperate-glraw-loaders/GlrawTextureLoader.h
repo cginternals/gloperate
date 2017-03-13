@@ -20,10 +20,7 @@ namespace globjects
 
 /**
 *  @brief
-*    .raw file loader
-*
-*  Supported options:
-*    none
+*    .raw file loader 
 */
 class GlrawTextureLoader : public gloperate::Loader<globjects::Texture>
 {
@@ -64,7 +61,26 @@ public:
     virtual globjects::Texture * load(const std::string & filename, const cppexpose::Variant & options, std::function<void(int, int)> progress) const override;
 
 protected:
+    /**
+    *  @brief
+    *    create Texture from .glraw file
+    *
+    *    This function is called by load when the file extension is .glraw
+    *
+    *  @param[in] filename
+    *    path of the .glraw file
+    */
     globjects::Texture * loadGLRawImage(const std::string & filename) const;
+
+    /**
+    *  @brief
+    *    create Texture from .raw file
+    *
+    *    This function is called by load when the file extension is .raw
+    *
+    *  @param[in] filename
+    *    path of the .raw file
+    */
     globjects::Texture * loadRawImage(const std::string & filename) const;
 
 
