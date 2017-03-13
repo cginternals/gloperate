@@ -9,7 +9,7 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <glbinding/gl/gl.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/Texture.h>
 

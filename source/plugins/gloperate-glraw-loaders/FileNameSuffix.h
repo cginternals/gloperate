@@ -1,7 +1,8 @@
 #pragma once
 
+#include <string>
 
-#include <glbinding/gl/gl.h>
+#include <glbinding/gl/enum.h>
 
 
 namespace glraw

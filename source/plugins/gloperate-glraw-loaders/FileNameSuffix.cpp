@@ -2,9 +2,6 @@
 
 #include <cassert>
 #include <regex>
-#include <string>
-
-#include <glbinding/gl/gl.h>
 
 
 namespace
@@ -23,34 +20,24 @@ namespace
 
     static const std::map<std::string, gl::GLenum> typesBySuffix =
 	{
-        { "ub", gl::GL_UNSIGNED_BYTE    },
-        { "b",  gl::GL_BYTE             },
-        { "us", gl::GL_UNSIGNED_SHORT   },
-        { "s",  gl::GL_SHORT            },
-        { "ui", gl::GL_UNSIGNED_INT     },
-        { "i",  gl::GL_INT              },
-        { "f",  gl::GL_FLOAT            }
-
-    #ifdef gl::GL_ARB_texture_compression_rgtc
-		,
-        { "rgtc1-r",    gl::GL_COMPRESSED_RED_RGTC1,        },
-        { "rgtc1-sr",   gl::GL_COMPRESSED_SIGNED_RED_RGTC1  },
-        { "rgtc2-rg",   gl::GL_COMPRESSED_RG_RGTC2          },
-        { "rgtc2-srg",  gl::GL_COMPRESSED_SIGNED_RG_RGTC2   }
-	#endif
-    #ifdef gl::GL_ARB_texture_compression_bptc
-		,
+        { "ub",             gl::GL_UNSIGNED_BYTE    },
+        { "b",              gl::GL_BYTE             },
+        { "us",             gl::GL_UNSIGNED_SHORT   },
+        { "s",              gl::GL_SHORT            },
+        { "ui",             gl::GL_UNSIGNED_INT     },
+        { "i",              gl::GL_INT              },
+        { "f",              gl::GL_FLOAT            },
+        { "rgtc1-r",        gl::GL_COMPRESSED_RED_RGTC1,        },
+        { "rgtc1-sr",       gl::GL_COMPRESSED_SIGNED_RED_RGTC1  },
+        { "rgtc2-rg",       gl::GL_COMPRESSED_RG_RGTC2          },
+        { "rgtc2-srg",      gl::GL_COMPRESSED_SIGNED_RG_RGTC2   },
         { "bptc-rgba-unorm",gl::GL_COMPRESSED_RGBA_BPTC_UNORM_ARB           },
         { "bptc-rgb-sf",    gl::GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_ARB     },
-        { "bptc-rgb-uf",    gl::GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_ARB   }
-	#endif
-	#ifdef GLRAW_DXT // special treatment here - see S3TCExtensions.h
-		,
-        { "dxt1-rgb",   gl::GL_COMPRESSED_RGB_S3TC_DXT1_EXT   },
-        { "dxt1-rgba",  gl::GL_COMPRESSED_RGBA_S3TC_DXT1_EXT  },
-        { "dxt3-rgba",  gl::GL_COMPRESSED_RGBA_S3TC_DXT3_EXT  },
-        { "dxt5-rgba",  gl::GL_COMPRESSED_RGBA_S3TC_DXT5_EXT  }
-	#endif
+        { "bptc-rgb-uf",    gl::GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_ARB   },
+        { "dxt1-rgb",       gl::GL_COMPRESSED_RGB_S3TC_DXT1_EXT   },
+        { "dxt1-rgba",      gl::GL_COMPRESSED_RGBA_S3TC_DXT1_EXT  },
+        { "dxt3-rgba",      gl::GL_COMPRESSED_RGBA_S3TC_DXT3_EXT  },
+        { "dxt5-rgba",      gl::GL_COMPRESSED_RGBA_S3TC_DXT5_EXT  }
 	};
 }
 

@@ -9,20 +9,6 @@ find_package(cppexpose REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 
-# Qt5
-find_package(Qt5Core 5.1)
-find_package(Qt5Gui 5.1)
-
-# Enable automoc
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
-set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
-
-# ENABLE CMP0020: Automatically link Qt executables to qtmain target on Windows.
-cmake_policy(SET CMP0020 NEW)
-
-
 # 
 # Library name and options
 # 
@@ -30,13 +16,8 @@ cmake_policy(SET CMP0020 NEW)
 # Target name
 set(target gloperate-glraw-loaders)
 
-# Exit here if required dependencies are not met
-if (NOT Qt5Core_FOUND)
-    message("Plugin ${target} skipped: Qt5 not found")
-    return()
-else()
-    message(STATUS "Plugin ${target}")
-endif()
+message(STATUS "Plugin ${target}")
+
 
 
 # 
@@ -118,8 +99,6 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    Qt5::Core
-    Qt5::Gui
     cpplocate::cpplocate
     cppassist::cppassist
     cppexpose::cppexpose
