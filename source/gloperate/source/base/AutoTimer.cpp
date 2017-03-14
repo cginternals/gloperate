@@ -6,6 +6,7 @@
 #include <chrono>
 
 #include <cppassist/logging/logging.h>
+#include <cppassist/memory/make_unique.h>
 
 #include <gloperate/base/ChronoTimer.h>
 
@@ -27,7 +28,7 @@ int AutoTimer::s_numActiveInstances = 0;
 AutoTimer::AutoTimer(const std::string & info)
 : m_info(info)
 , m_index(++s_numActiveInstances)
-, m_timer(new ChronoTimer(false))
+, m_timer(cppassist::make_unique<ChronoTimer>(false))
 {
     m_timer->start();
 }

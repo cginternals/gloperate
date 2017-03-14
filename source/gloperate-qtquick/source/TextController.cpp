@@ -5,6 +5,8 @@
 #include <QTextDocument>
 #include <QDebug>
 
+#include <cppassist/memory/make_unique.h>
+
 #include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
 
 
@@ -28,7 +30,12 @@ TextController::~TextController()
     cleanUp();
 }
 
-QQuickItem * TextController::target() const
+const QQuickItem * TextController::target() const
+{
+    return m_target;
+}
+
+QQuickItem * TextController::target()
 {
     return m_target;
 }
@@ -55,7 +62,7 @@ void TextController::setTarget(QQuickItem * target)
             m_textDocument = textDocument->textDocument();
 
             // Create syntax highlighter
-            m_highlighter = new ECMA26251SyntaxHighlighter;
+            m_highlighter = cppassist::make_unique<ECMA26251SyntaxHighlighter>();
             m_highlighter->setDocument(m_textDocument);
         }
     }
@@ -63,13 +70,8 @@ void TextController::setTarget(QQuickItem * target)
 
 void TextController::cleanUp()
 {
-    // Destroy syntax highlighter
-    if (m_highlighter) {
-        delete m_highlighter;
-        m_highlighter = nullptr;
-    }
-
     // Reset stored data
+    m_highlighter = nullptr;
     m_textDocument = nullptr;
 }
 

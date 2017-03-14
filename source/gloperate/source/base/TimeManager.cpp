@@ -5,6 +5,7 @@
 
 #include <gloperate/base/Timer.h>
 #include <gloperate/base/ScriptTimer.h>
+#include <cppassist/memory/make_unique.h>
 
 
 // [TODO] Implement garbage collection of stopped scripting timers.
@@ -36,11 +37,6 @@ TimeManager::TimeManager(Environment * environment)
 
 TimeManager::~TimeManager()
 {
-    // Delete timers
-    for (auto it = m_scriptTimers.begin(); it != m_scriptTimers.end(); ++it)
-    {
-        delete it->second;
-    }
 }
 
 bool TimeManager::update()
@@ -88,6 +84,7 @@ void TimeManager::activateTimer()
     if (m_activeTimers == 0)
     {
         m_clock.reset();
+        activated();
     }
 
     m_activeTimers++;
@@ -119,17 +116,17 @@ void TimeManager::scr_stop(int id)
     }
 
     // Stop timer
-    ScriptTimer * timer = m_scriptTimers.at(id);
+    ScriptTimer * timer = m_scriptTimers.at(id).get();
     timer->stop();
 }
 
 void TimeManager::scr_stopAll()
 {
     // Enumerate all timers
-    for (std::map<int, ScriptTimer *>::iterator it = m_scriptTimers.begin(); it != m_scriptTimers.end(); ++it)
+    for (auto it = m_scriptTimers.begin(); it != m_scriptTimers.end(); ++it)
     {
         // Stop timer
-        ScriptTimer * timer = it->second;
+        ScriptTimer * timer = it->second.get();
         timer->stop();
     }
 }
@@ -151,12 +148,12 @@ int TimeManager::startTimer(const cppexpose::Variant & func, int msec, bool sing
     cppexpose::Function function = func.value<cppexpose::Function>();
 
     // Create and start timer
-    ScriptTimer * timer = new ScriptTimer(m_environment, function);
+    auto timer = cppassist::make_unique<ScriptTimer>(m_environment, function);
     timer->start(msec / 1000.0f, singleShot);
 
     // Store timer
     int id = m_nextId++;
-    m_scriptTimers[id] = timer;
+    m_scriptTimers[id] = std::move(timer);
 
     // Return timer ID
     return id;

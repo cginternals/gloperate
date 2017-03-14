@@ -39,6 +39,7 @@ namespace
 static void loadShader(globjects::Program * program, const gl::GLenum type, const std::string & filename)
 {
     // Load shader
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * source = new globjects::StringTemplate(new globjects::File(filename));
     globjects::Shader * shader = new globjects::Shader(type, source);
     program->attach(shader);
@@ -130,15 +131,15 @@ void TextureRenderItem::buildGeometry()
         , glm::vec2( -1.f, +1.f ) } };
 
     // Create vertex buffer
-    globjects::Buffer * buffer = new globjects::Buffer();
-    buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
+    m_buffer = cppassist::make_unique<globjects::Buffer>();
+    m_buffer->setData(vertices, gl::GL_STATIC_DRAW); // needed for some drivers
 
     // Create VAO
-    m_vao = new globjects::VertexArray;
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(buffer, 0, sizeof(glm::vec2));
+    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 }
@@ -149,9 +150,9 @@ void TextureRenderItem::buildProgram()
     std::string dataPath = gloperate::dataPath();
 
     // Create program and load shaders
-    m_program = new globjects::Program;
-    loadShader(m_program, gl::GL_VERTEX_SHADER,   dataPath + "/gloperate/shaders/Mixer/Mixer.vert");
-    loadShader(m_program, gl::GL_FRAGMENT_SHADER, dataPath + "/gloperate/shaders/Mixer/Mixer.frag");
+    m_program = cppassist::make_unique<globjects::Program>();
+    loadShader(m_program.get(), gl::GL_VERTEX_SHADER,   dataPath + "/gloperate/shaders/Mixer/Mixer.vert");
+    loadShader(m_program.get(), gl::GL_FRAGMENT_SHADER, dataPath + "/gloperate/shaders/Mixer/Mixer.frag");
 
     // Set uniforms
     m_program->setUniform("texColor", 0);

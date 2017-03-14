@@ -5,10 +5,9 @@
 #include <glm/glm.hpp>
 
 #include <cppexpose/plugin/plugin_api.h>
+#include <cppexpose/signal/ScopedConnection.h>
 
 #include <glbinding/gl/gl.h>
-
-#include <globjects/base/ref_ptr.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
@@ -20,6 +19,7 @@ namespace globjects {
 
 
 class Program;
+class State;
 
 
 } // namespace globjects
@@ -29,7 +29,7 @@ namespace gloperate
 {
 
 
-class Drawable;
+class AbstractDrawable;
 class Camera;
 class RenderPass;
 
@@ -60,7 +60,7 @@ public:
 
 public:
     // Inputs
-    Input<gloperate::Drawable *> drawable;      ///< the drawable to be drawn
+    Input<gloperate::AbstractDrawable *> drawable;      ///< the drawable to be drawn
     Input<globjects::Program *> program;        ///< the program used for rendering
     Input<gloperate::Camera *> camera;          ///< the input camera
 
@@ -109,7 +109,10 @@ protected:
     void onContextInit(AbstractGLContext * content) override;
 
 protected:
-    globjects::ref_ptr<gloperate::RenderPass> m_renderPass;                ///< RenderPass object
+    std::unique_ptr<gloperate::RenderPass> m_renderPass;                ///< RenderPass object
+    std::unique_ptr<globjects::State> m_beforeState;
+    cppexpose::ScopedConnection m_inputAddedConnection;
+    cppexpose::ScopedConnection m_inputRemovedConnection;
 
     std::unordered_map<std::string, std::function<void()>> uniformSetters; ///< Stores a lambda expression which updates the uniform value
 };

@@ -10,8 +10,6 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
@@ -78,7 +76,7 @@ protected:
     virtual void onProcess(AbstractGLContext * context) override;
 
 protected:
-    globjects::ref_ptr<globjects::Shader> m_shader; ///< Shader object
+    std::unique_ptr<globjects::Shader> m_shader; ///< Shader object
 };
 
 

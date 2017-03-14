@@ -1,17 +1,20 @@
 
 #pragma once
 
+#include <memory>
 
 #include <QQuickView>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
     class Environment;
 }
 
-namespace gloperate_qt {
+namespace gloperate_qt
+{
     class GLContext;
 }
 
@@ -54,7 +57,16 @@ public:
     *  @return
     *    Gloperate environment (cannot be null)
     */
-    gloperate::Environment * environment() const;
+    const gloperate::Environment * environment() const;
+
+    /**
+    *  @brief
+    *    Get gloperate environment
+    *
+    *  @return
+    *    Gloperate environment (cannot be null)
+    */
+    gloperate::Environment * environment();
 
     /**
     *  @brief
@@ -63,7 +75,16 @@ public:
     *  @return
     *    OpenGL context (can be null)
     */
-    gloperate_qt::GLContext * context() const;
+    const gloperate_qt::GLContext * context() const;
+
+    /**
+    *  @brief
+    *    Get OpenGL context
+    *
+    *  @return
+    *    OpenGL context (can be null)
+    */
+    gloperate_qt::GLContext * context();
 
 
 protected:
@@ -72,8 +93,8 @@ protected:
 
 
 protected:
-    gloperate::Environment   * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    gloperate_qt::GLContext  * m_context;     ///< Context wrapper for gloperate (can be null)
+    gloperate::Environment                  * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    std::unique_ptr<gloperate_qt::GLContext>  m_context;     ///< Context wrapper for gloperate (can be null)
 };
 
 

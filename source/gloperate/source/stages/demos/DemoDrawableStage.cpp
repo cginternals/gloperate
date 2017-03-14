@@ -38,14 +38,14 @@ DemoDrawableStage::~DemoDrawableStage()
 
 void DemoDrawableStage::onContextInit(AbstractGLContext *)
 {
-    m_drawable = new Drawable();
+    m_drawable = cppassist::make_unique<Drawable>();
     m_drawable->setPrimitiveMode(gl::GL_TRIANGLE_STRIP);
     m_drawable->setDrawMode(DrawMode::Arrays);
 
-    m_vertexBuffer = new globjects::Buffer();
+    m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
     m_vertexBuffer->setData(s_vertices, gl::GL_STATIC_DRAW);
 
-    m_drawable->setBuffer(0, m_vertexBuffer);
+    m_drawable->setBuffer(0, m_vertexBuffer.get());
 
     m_drawable->setAttributeBindingBuffer(0, 0, 0, sizeof(glm::vec2));
 
@@ -62,7 +62,7 @@ void DemoDrawableStage::onContextDeinit(AbstractGLContext *)
 
 void DemoDrawableStage::onProcess(AbstractGLContext *)
 {
-    drawable.setValue(m_drawable);
+    drawable.setValue(m_drawable.get());
 }
 
 

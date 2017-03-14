@@ -4,7 +4,13 @@
 #include <QVariant>
 #include <QColor>
 
+#include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
+
+#include <globjects/Framebuffer.h>
+
 #include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/input.h>
@@ -43,12 +49,17 @@ RenderItem::~RenderItem()
 {
 }
 
-gloperate::AbstractCanvas * RenderItem::canvas() const
+const gloperate::AbstractCanvas * RenderItem::canvas() const
 {
-    return m_canvas;
+    return m_canvas.get();
 }
 
-QString RenderItem::stage() const
+gloperate::AbstractCanvas * RenderItem::canvas()
+{
+    return m_canvas.get();
+}
+
+const QString & RenderItem::stage() const
 {
     return m_stage;
 }
@@ -71,13 +82,15 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
 
     // Create canvas and render stage
     QuickView * view = static_cast<QuickView*>(window);
-    if (view)
-    {
-        m_canvas = Utils::createCanvas(
-            view->environment(),
-            Utils::createRenderStage(view->environment(), m_stage.toStdString())
-        );
-    }
+
+    assert(view != nullptr);
+
+    m_canvas = Utils::createCanvas(
+        view->environment(),
+        Utils::createRenderStage(view->environment(), m_stage.toStdString())
+    );
+
+    assert(m_canvas);
 
     // Repaint window when canvas needs to be updated
     m_canvas->redraw.connect([this] ()
@@ -129,8 +142,10 @@ void RenderItem::onBeforeRendering()
         m_canvas->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
     }
 
-    // Render into item
-    m_canvas->render();
+    // [TODO]: optimize memory reallocation problem
+    auto defaultFBO = globjects::Framebuffer::defaultFBO();
+
+    m_canvas->render(defaultFBO.get());
 
     // Reset OpenGL state
     window()->resetOpenGLState();
@@ -169,6 +184,12 @@ void RenderItem::geometryChanged(const QRectF & newGeometry, const QRectF & oldG
 
 void RenderItem::keyPressEvent(QKeyEvent * event)
 {
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
     if (m_canvas)
     {
         m_canvas->onKeyPress(
@@ -180,6 +201,12 @@ void RenderItem::keyPressEvent(QKeyEvent * event)
 
 void RenderItem::keyReleaseEvent(QKeyEvent * event)
 {
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
     if (m_canvas)
     {
         m_canvas->onKeyRelease(

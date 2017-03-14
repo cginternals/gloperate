@@ -2,9 +2,10 @@
 #pragma once
 
 
-#include <QImage>
-
 #include <gloperate-qt/gloperate-qt_api.h>
+
+
+class QImage;
 
 
 namespace gloperate_qt

@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <gloperate/base/AbstractGLContext.h>
 
@@ -52,7 +53,7 @@ public:
     *    If a major version lesser 3 is provided, the system tries to
     *    create a context with the maximum available OpenGL version.
     */
-    gloperate::AbstractGLContext * createBestContext(const gloperate::GLContextFormat & format) const;
+    std::unique_ptr<gloperate::AbstractGLContext> createBestContext(const gloperate::GLContextFormat & format) const;
 
     /**
     *  @brief
@@ -69,7 +70,7 @@ public:
     *    Platform-dependent defaults are expected to be set beforehand
     *    (e.g., macOS with OpenGL 3.2 Core FC).
     */
-    virtual gloperate::AbstractGLContext * createContext(const gloperate::GLContextFormat & format) const = 0;
+    virtual std::unique_ptr<gloperate::AbstractGLContext> createContext(const gloperate::GLContextFormat & format) const = 0;
 };
 
 

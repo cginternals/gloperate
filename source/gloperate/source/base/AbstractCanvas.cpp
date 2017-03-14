@@ -4,6 +4,7 @@
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/base/Environment.h>
+#include <cppassist/memory/make_unique.h>
 #include <gloperate/tools/AbstractVideoExporter.h>
 #include <gloperate/tools/ImageExporter.h>
 
@@ -42,14 +43,6 @@ AbstractCanvas::AbstractCanvas(Environment * environment)
 AbstractCanvas::~AbstractCanvas()
 {
     m_environment->unregisterCanvas(this);
-
-    if (m_imageExporter) {
-        delete m_imageExporter;
-    }
-
-    if (m_videoExporter) {
-        delete m_videoExporter;
-    }
 }
 
 const Environment * AbstractCanvas::environment() const
@@ -96,7 +89,7 @@ void AbstractCanvas::exportImage(const std::string & filename, int width, int he
     // Lazy creation of image exporter
     if (!m_imageExporter)
     {
-        m_imageExporter = new ImageExporter;
+        m_imageExporter = make_unique<ImageExporter>();
     }
 
     // Configure image exporter

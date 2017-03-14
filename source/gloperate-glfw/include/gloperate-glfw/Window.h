@@ -4,8 +4,9 @@
 #include <set>
 #include <string>
 #include <queue>
+#include <memory>
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 #include <gloperate/base/GLContextFormat.h>
 
@@ -116,7 +117,16 @@ public:
     *  @return
     *    OpenGL context (can be nullptr)
     */
-    GLContext * context() const;
+    const GLContext * context() const;
+
+    /**
+    *  @brief
+    *    Get OpenGL context
+    *
+    *  @return
+    *    OpenGL context (can be nullptr)
+    */
+    GLContext * context();
 
     /**
     *  @brief
@@ -297,7 +307,7 @@ protected:
     *  @param[in] event
     *    Event (can be nullptr)
     */
-    void queueEvent(WindowEvent * event);
+    void queueEvent(std::unique_ptr<WindowEvent> &&event);
 
     /**
     *  @brief
@@ -405,7 +415,7 @@ protected:
 
 protected:
     GLFWwindow * m_window;                  ///< GLFW window (can be nullptr)
-    GLContext  * m_context;                 ///< OpenGL context (can be nullptr)
+    std::unique_ptr<GLContext>   m_context;                 ///< OpenGL context (can be nullptr)
     WindowMode   m_windowMode;              ///< Window mode (windowed or fullscreen)
     glm::ivec2   m_windowedModeSize;        ///< Size of window when returned from fullscreen mode
     bool         m_quitOnDestroy;           ///< Quit application when window is closed?
@@ -413,7 +423,7 @@ protected:
 
     gloperate::GLContextFormat m_format;    ///< The desired OpenGL context format
 
-    std::queue<WindowEvent*> m_eventQueue;  ///< List of events to be processed by the window
+    std::queue<std::unique_ptr<WindowEvent>> m_eventQueue;  ///< List of events to be processed by the window
     bool m_needsRepaint;                    ///< Has a repaint be scheduled?
 
 

@@ -3,10 +3,13 @@
 
 #include <cassert>
 
+#include <cppassist/memory/make_unique.h>
+
 #include <glbinding/gl/enum.h>
 
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
+
 
 
 namespace gloperate
@@ -14,7 +17,7 @@ namespace gloperate
 
 
 Drawable::Drawable()
-: m_vao(new globjects::VertexArray)
+: m_vao(cppassist::make_unique<globjects::VertexArray>())
 , m_drawMode(DrawMode::Arrays)
 , m_size(0)
 , m_primitiveMode(gl::GL_TRIANGLES)
@@ -28,7 +31,7 @@ Drawable::~Drawable()
 
 globjects::VertexArray * Drawable::vao() const
 {
-    return m_vao;
+    return m_vao.get();
 }
 
 DrawMode Drawable::drawMode() const
@@ -132,36 +135,32 @@ void Drawable::setPrimitiveMode(gl::GLenum mode)
     m_primitiveMode = mode;
 }
 
-globjects::Buffer * Drawable::buffer(size_t index)
+globjects::Buffer* Drawable::buffer(size_t index)
 {
     if (m_buffers.count(index) == 0)
     {
-        setBuffer(index, new globjects::Buffer);
+        return nullptr;
     }
 
     return m_buffers.at(index);
 }
 
-globjects::Buffer * Drawable::buffer(size_t index) const
+globjects::Buffer* Drawable::buffer(size_t index) const
 {
+    if (m_buffers.count(index) == 0)
+    {
+        return nullptr;
+    }
+
     return m_buffers.at(index);
 }
 
-void Drawable::setBuffer(size_t index, globjects::Buffer * buffer)
+void Drawable::setBuffer(size_t index, globjects::Buffer* buffer)
 {
-    const auto it = m_buffers.find(index);
-
-    if (it == m_buffers.end())
-    {
-        m_buffers.emplace(index, buffer);
-    }
-    else
-    {
-        it->second = buffer;
-    }
+    m_buffers[index] = buffer;
 }
 
-globjects::Buffer * Drawable::indexBuffer() const
+globjects::Buffer* Drawable::indexBuffer() const
 {
     return m_indexBuffer;
 }

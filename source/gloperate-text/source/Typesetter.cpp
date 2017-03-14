@@ -15,6 +15,7 @@
 namespace gloperate_text
 {
 
+
 const char32_t & Typesetter::lineFeed()
 {
     static const auto LF = static_cast<char32_t>('\x0A');
@@ -280,7 +281,6 @@ inline glm::vec2 Typesetter::extent_transform(
 
     return glm::vec2(glm::distance(lr, ll), glm::distance(ul, ll));
 }
-
 
 
 } // namespace gloperate_text

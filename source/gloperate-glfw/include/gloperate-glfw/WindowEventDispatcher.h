@@ -1,11 +1,9 @@
 
 #pragma once
 
+#include <memory>
 
-#include <unordered_map>
-#include <chrono>
-
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
@@ -63,7 +61,7 @@ protected:
     *  @remarks
     *    The event object will be destroyed after dispatching.
     */
-    static void dispatchEvent(GLFWwindow * glfwWindow, WindowEvent * event);
+    static void dispatchEvent(GLFWwindow * glfwWindow, std::unique_ptr<WindowEvent> &&event);
 
     /**
     *  @brief
@@ -77,7 +75,7 @@ protected:
     *  @remarks
     *    The event object will be destroyed after dispatching.
     */
-    static void dispatchEvent(Window * window, WindowEvent * event);
+    static void dispatchEvent(Window * window, std::unique_ptr<WindowEvent> &&event);
 
     /**
     *  @brief

@@ -8,8 +8,6 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>

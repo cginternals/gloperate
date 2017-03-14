@@ -7,8 +7,11 @@
 
 #include <globjects/base/File.h>
 #include <globjects/Shader.h>
+#include <globjects/Program.h>
+#include <globjects/Texture.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/rendering/Drawable.h>
 
 #include <gloperate-text/GlyphVertexCloud.h>
 
@@ -16,25 +19,6 @@
 namespace gloperate_text
 {
 
-
-GlyphRenderer::GlyphRenderer()
-: GlyphRenderer(new globjects::Shader(gl::GL_FRAGMENT_SHADER
-    , new globjects::File(gloperate::dataPath()+"/gloperate-text/shaders/glyph.frag")))
-{
-}
-
-GlyphRenderer::GlyphRenderer(globjects::Shader * fragmentShader)
-: GlyphRenderer(new globjects::Program)
-{
-    m_program->attach(new globjects::Shader(gl::GL_VERTEX_SHADER
-        , new globjects::File(gloperate::dataPath()+"/gloperate-text/shaders/glyph.vert")));
-    m_program->attach(new globjects::Shader(gl::GL_GEOMETRY_SHADER
-        , new globjects::File(gloperate::dataPath()+"/gloperate-text/shaders/glyph.geom")));
-    m_program->attach(fragmentShader);
-
-    m_program->setUniform<gl::GLint>("glyphs", 0);
-    m_program->setUniform<glm::mat4>("viewProjection", glm::mat4());
-}
 
 GlyphRenderer::GlyphRenderer(globjects::Program * program)
 : m_program(program)
@@ -46,6 +30,23 @@ GlyphRenderer::GlyphRenderer(globjects::Program * program)
 GlyphRenderer::~GlyphRenderer()
 {
 }
+
+
+std::unique_ptr<globjects::AbstractStringSource> GlyphRenderer::vertexShaderSource()
+{
+    return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate-text/shaders/glyph.vert");
+}
+
+std::unique_ptr<globjects::AbstractStringSource> GlyphRenderer::geometryShaderSource()
+{
+    return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate-text/shaders/glyph.geom");
+}
+
+std::unique_ptr<globjects::AbstractStringSource> GlyphRenderer::fragmentShaderSource()
+{
+    return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate-text/shaders/glyph.frag");
+}
+
 
 void GlyphRenderer::render(const GlyphVertexCloud & vertexCloud) const
 {

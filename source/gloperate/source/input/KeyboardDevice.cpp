@@ -20,24 +20,26 @@ KeyboardDevice::~KeyboardDevice()
 
 void KeyboardDevice::keyPress(int key, int modifier)
 {
-    auto inputEvent = new ButtonEvent{
+    auto inputEvent = cppassist::make_unique<ButtonEvent>(
         InputEvent::Type::ButtonPress,
         this,
-        std::to_string(key) + ":" + std::to_string(modifier)
-    };
+        key,
+        modifier
+    );
 
-    m_inputManager->onEvent(inputEvent);
+    m_inputManager->onEvent(std::move(inputEvent));
 }
 
 void KeyboardDevice::keyRelease(int key, int modifier)
 {
-    auto inputEvent = new ButtonEvent{
-        InputEvent::Type::ButtonPress,
+    auto inputEvent = cppassist::make_unique<ButtonEvent>(
+        InputEvent::Type::ButtonRelease,
         this,
-        std::to_string(key) + ":" + std::to_string(modifier)
-    };
+        key,
+        modifier
+    );
 
-    m_inputManager->onEvent(inputEvent);
+    m_inputManager->onEvent(std::move(inputEvent));
 }
 
 void KeyboardDevice::update()

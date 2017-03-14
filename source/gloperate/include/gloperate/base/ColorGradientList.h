@@ -3,6 +3,7 @@
 
 
 #include <map>
+#include <memory>
 
 #include <gloperate/gloperate_api.h>
 
@@ -42,6 +43,9 @@ public:
     *    Add gradients with the add() method.
     */
     ColorGradientList();
+
+    ColorGradientList(const ColorGradientList &) = delete;
+    ColorGradientList & operator=(const ColorGradientList &) = delete;
 
     /**
     *  @brief
@@ -102,7 +106,7 @@ public:
     *  @remarks
     *    Takes ownership of gradient
     */
-    void add(AbstractColorGradient * gradient);
+    void add(std::unique_ptr<AbstractColorGradient> && gradient);
 
     /**
     *  @brief
@@ -171,11 +175,11 @@ public:
     *  @remarks
     *   The texture has texel dimensions of (numColors x size()).
     */
-    globjects::Texture * generateTexture(size_t numColors) const;
+    std::unique_ptr<globjects::Texture> generateTexture(size_t numColors) const;
 
 
 protected:
-    std::map<std::string, AbstractColorGradient *> m_gradients; ///< The list of gradients with their name as lookup key
+    std::map<std::string, std::unique_ptr<AbstractColorGradient>> m_gradients; ///< The list of gradients with their name as lookup key
 };
 
 

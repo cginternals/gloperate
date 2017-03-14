@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <glm/vec4.hpp>
+
 #include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-text/gloperate-text_api.h>
@@ -9,12 +11,16 @@
 
 namespace globjects
 {
-class Framebuffer;
-} // namespace globjects
+    class Framebuffer;
+    class AbstractStringSource;
+    class Shader;
+    class Program;
+}
 
 
 namespace gloperate_text
 {
+
 
 class GlyphRenderer;
 class GlyphVertexCloud;
@@ -43,6 +49,16 @@ protected:
 
 
 protected:
+    std::unique_ptr<globjects::AbstractStringSource> m_vSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_gSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_fSource;
+
+    std::unique_ptr<globjects::Shader> m_vertexShader;
+    std::unique_ptr<globjects::Shader> m_geometryShader;
+    std::unique_ptr<globjects::Shader> m_fragmentShader;
+
+    std::unique_ptr<globjects::Program> m_program;
+
     std::unique_ptr<GlyphRenderer> m_renderer;
 };
 

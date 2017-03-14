@@ -8,7 +8,7 @@ namespace gloperate_qtquick
 {
 
 
-QmlScriptFunction::QmlScriptFunction(QmlEngine * engine, QJSValue func)
+QmlScriptFunction::QmlScriptFunction(QmlEngine * engine, const QJSValue & func)
 : cppexpose::AbstractFunction()
 , m_engine(engine)
 , m_function(func)
@@ -19,16 +19,18 @@ QmlScriptFunction::~QmlScriptFunction()
 {
 }
 
-cppexpose::AbstractFunction * QmlScriptFunction::clone()
+std::unique_ptr<cppexpose::AbstractFunction> QmlScriptFunction::clone()
 {
-    return new QmlScriptFunction(m_engine, m_function);
+    return cppassist::make_unique<QmlScriptFunction>(m_engine, m_function);
 }
 
 cppexpose::Variant QmlScriptFunction::call(const std::vector<cppexpose::Variant> & args)
 {
     QJSValueList argv;
+    argv.reserve(args.size());
 
-    for (cppexpose::Variant var : args) {
+    for (const cppexpose::Variant & var : args)
+    {
         argv.append(m_engine->toScriptValue(var));
     }
 

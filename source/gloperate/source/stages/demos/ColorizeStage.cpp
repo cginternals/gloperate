@@ -7,6 +7,7 @@
 
 #include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>
+#include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
@@ -35,7 +36,6 @@ ColorizeStage::ColorizeStage(Environment * environment, const std::string & name
 
 ColorizeStage::~ColorizeStage()
 {
-    delete m_screenAlignedQuad;
 }
 
 void ColorizeStage::onContextInit(AbstractGLContext *)
@@ -52,7 +52,6 @@ void ColorizeStage::onProcess(AbstractGLContext *)
 {
     // Activate FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Set viewport
@@ -103,17 +102,19 @@ void ColorizeStage::onProcess(AbstractGLContext *)
 
 void ColorizeStage::setupGeometry()
 {
-    m_screenAlignedQuad = new ScreenAlignedQuad();
+    m_screenAlignedQuad = cppassist::make_unique<ScreenAlignedQuad>();
 }
 
 void ColorizeStage::setupProgram()
 {
-    m_vertexShader   = ScreenAlignedQuad::createDefaultVertexShader();
-    m_fragmentShader = globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, gloperate::dataPath() + "/gloperate/shaders/Demo/Colorize.frag");
+    m_vSource = ScreenAlignedQuad::vertexShaderSource();
+    m_fSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/Colorize.frag");
 
-    m_program = new globjects::Program();
-    m_program->attach(m_vertexShader, m_fragmentShader);
+    m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fSource.get());
 
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
     m_program->setUniform("source", 0);
 }
 

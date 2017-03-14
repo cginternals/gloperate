@@ -1,13 +1,15 @@
 
 #pragma once
 
+#include <memory>
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 #include <gloperate-glfw/Window.h>
 
 
-namespace gloperate {
+namespace gloperate
+{
     class Environment;
     class Canvas;
     class Stage;
@@ -47,7 +49,16 @@ public:
     *  @return
     *    Environment (cannot be null)
     */
-    gloperate::Environment * environment() const;
+    const gloperate::Environment * environment() const;
+
+    /**
+    *  @brief
+    *    Get gloperate environment
+    *
+    *  @return
+    *    Environment (cannot be null)
+    */
+    gloperate::Environment * environment();
 
     /**
     *  @brief
@@ -56,16 +67,34 @@ public:
     *  @return
     *    Render stage that renders into the window (can be null)
     */
-    gloperate::Stage * renderStage() const;
+    const gloperate::Stage * renderStage() const;
 
-     /**
+    /**
+    *  @brief
+    *    Get render stage
+    *
+    *  @return
+    *    Render stage that renders into the window (can be null)
+    */
+    gloperate::Stage * renderStage();
+
+    /**
     *  @brief
     *    Get canvas
     *
     *  @return
     *    Canvas that is rendered on
     */
-    gloperate::Canvas * canvas() const;
+    const gloperate::Canvas * canvas() const;
+
+    /**
+    *  @brief
+    *    Get canvas
+    *
+    *  @return
+    *    Canvas that is rendered on
+    */
+    gloperate::Canvas * canvas();
 
     /**
     *  @brief
@@ -78,7 +107,7 @@ public:
     *    When setting a new render stage, the old render stage is destroyed.
     *    The window takes ownership over the stage.
     */
-    void setRenderStage(gloperate::Stage * stage);
+    void setRenderStage(std::unique_ptr<gloperate::Stage> && stage);
 
 
 protected:
@@ -102,8 +131,8 @@ protected:
 
 
 protected:
-    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    gloperate::Canvas      * m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
+    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null) 
+    std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
     glm::ivec2               m_deviceSize;  ///< Window size (real device pixels)
     glm::ivec2               m_virtualSize; ///< Window size (virtual pixel size)
 };

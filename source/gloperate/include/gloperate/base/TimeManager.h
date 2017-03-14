@@ -31,6 +31,18 @@ class GLOPERATE_API TimeManager : public cppexpose::Object
 public:
     /**
     *  @brief
+    *    Fired when any timer was activated after no timer was active.
+    *    
+    *  @remarks
+    *    Platform backends can connect to this signal to resume time
+    *    tracking after a pause (e.g., when update() returned false)
+    */
+    cppexpose::Signal<> activated;
+
+
+public:
+    /**
+    *  @brief
     *    Constructor
     *
     *  @param[in] environment
@@ -43,6 +55,10 @@ public:
     *    Destructor
     */
     ~TimeManager();
+
+    // No copying
+    TimeManager(const TimeManager &) = delete;
+    TimeManager & operator=(const TimeManager &) = delete;
 
     /**
     *  @brief
@@ -142,17 +158,17 @@ protected:
 
 
 protected:
-    Environment                * m_environment;   ///< Gloperate environment to which the manager belongs
+    Environment                               * m_environment;   ///< Gloperate environment to which the manager belongs
 
     // General timers
-    unsigned int                 m_activeTimers;  ///< Number of active timers
-    std::vector<Timer *>         m_timers;        ///< List of registered timers
-    gloperate::ChronoTimer       m_clock;         ///< Time measurement
-    float                        m_timeDelta;     ///< Time delta since last update (in seconds)
+    unsigned int                                m_activeTimers;  ///< Number of active timers
+    std::vector<Timer *>                        m_timers;        ///< List of registered timers
+    gloperate::ChronoTimer                      m_clock;         ///< Time measurement
+    float                                       m_timeDelta;     ///< Time delta since last update (in seconds)
 
     // Scripting timers
-    std::map<int, ScriptTimer *> m_scriptTimers;  ///< List of activated scripting timers
-    int                          m_nextId;        ///< Next scripting timer ID
+    std::map<int, std::unique_ptr<ScriptTimer>> m_scriptTimers;  ///< List of activated scripting timers
+    int                                         m_nextId;        ///< Next scripting timer ID
 };
 
 

@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 
 #include <cppassist/logging/logging.h>
+#include <cppassist/memory/make_unique.h>
 
 #include <gloperate/base/GLContextFormat.h>
 
@@ -59,7 +60,7 @@ Window::~Window()
 bool Window::setContextFormat(const gloperate::GLContextFormat & format)
 {
     // If window has already been created, the context format cannot be changed anymore
-    if (m_context != nullptr)
+    if (m_context)
     {
         return false;
     }
@@ -102,9 +103,14 @@ void Window::destroy()
     }
 }
 
-GLContext * Window::context() const
+const GLContext * Window::context() const
 {
-    return m_context;
+    return m_context.get();
+}
+
+GLContext * Window::context()
+{
+    return m_context.get();
 }
 
 void Window::show()
@@ -134,7 +140,7 @@ void Window::close()
         return;
     }
 
-    queueEvent(new CloseEvent);
+    queueEvent(cppassist::make_unique<CloseEvent>());
 }
 
 bool Window::isFullscreen() const
@@ -326,14 +332,14 @@ GLFWwindow * Window::internalWindow() const
     return m_window;
 }
 
-void Window::queueEvent(WindowEvent * event)
+void Window::queueEvent(std::unique_ptr<WindowEvent> && event)
 {
     if (!event)
     {
         return;
     }
 
-    m_eventQueue.push(event);
+    m_eventQueue.push(std::move(event));
 }
 
 void Window::updateRepaintEvent()
@@ -342,7 +348,7 @@ void Window::updateRepaintEvent()
     {
         m_needsRepaint = false;
 
-        queueEvent(new PaintEvent);
+        queueEvent(cppassist::make_unique<PaintEvent>());
     }
 }
 
@@ -367,13 +373,11 @@ void Window::processEvents()
 
     while (!m_eventQueue.empty())
     {
-        WindowEvent * event = m_eventQueue.front();
+        m_eventQueue.front()->setWindow(this);
+
+        handleEvent(*m_eventQueue.front());
+
         m_eventQueue.pop();
-        event->setWindow(this);
-
-        handleEvent(*event);
-
-        delete event;
 
         if (!m_context)
         {
@@ -467,17 +471,14 @@ void Window::handleEvent(WindowEvent & event)
 
 void Window::clearEventQueue()
 {
-    while (!m_eventQueue.empty())
-    {
-        delete m_eventQueue.front();
-        m_eventQueue.pop();
-    }
+    std::queue<std::unique_ptr<WindowEvent>> empty;
+    std::swap(m_eventQueue, empty);
 }
 
 bool Window::createInternalWindow(const GLContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
 {
     // Abort if window is already created
-    assert(nullptr == m_context);
+    assert(!m_context);
     if (m_context)
     {
         return false;
@@ -485,7 +486,10 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
 
     // Create GLFW window with OpenGL context
     GLContextFactory factory;
-    m_context = static_cast<GLContext*>(factory.createBestContext(format));
+    m_context = std::unique_ptr<GLContext>(
+                static_cast<GLContext*>(factory.createBestContext(format).release())
+    );
+
     if (!m_context)
     {
         return false;
@@ -510,8 +514,8 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
     glfwMakeContextCurrent(nullptr);
 
     // Promote current size
-    queueEvent(new ResizeEvent(size()));
-    queueEvent(new ResizeEvent(framebufferSize(), true));
+    queueEvent(cppassist::make_unique<ResizeEvent>(size()));
+    queueEvent(cppassist::make_unique<ResizeEvent>(framebufferSize(), true));
 
     return true;
 }
@@ -532,8 +536,7 @@ void Window::destroyInternalWindow()
     // Unregister window from event processing
     WindowEventDispatcher::deregisterWindow(this);
 
-    // Destroy GLFW window and OpenGL context
-    delete m_context;
+    // Destroy GLFW window
     glfwDestroyWindow(m_window);
 
     // Reset internal pointers

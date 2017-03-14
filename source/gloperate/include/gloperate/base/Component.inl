@@ -1,4 +1,7 @@
 
+#include <cppassist/memory/make_unique.h>
+
+
 namespace gloperate
 {
 
@@ -14,9 +17,9 @@ Component<BaseType, Type>::~Component()
 }
 
 template <class BaseType, class Type>
-BaseType * Component<BaseType, Type>::createInstance(gloperate::Environment * environment)
+std::unique_ptr<BaseType> Component<BaseType, Type>::createInstance(gloperate::Environment * environment)
 {
-    return new Type(environment);
+    return cppassist::make_unique<Type>(environment);
 }
 
 
@@ -31,15 +34,15 @@ Component<gloperate::Stage, Type>::~Component()
 }
 
 template <class Type>
-gloperate::Stage * Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment)
+std::unique_ptr<gloperate::Stage> Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment)
 {
-    return new Type(environment);
+    return cppassist::make_unique<Type>(environment);
 }
 
 template <class Type>
-gloperate::Stage * Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment, const std::string & name)
+std::unique_ptr<gloperate::Stage> Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment, const std::string & name)
 {
-    return new Type(environment, name);
+    return cppassist::make_unique<Type>(environment, name);
 }
 
 

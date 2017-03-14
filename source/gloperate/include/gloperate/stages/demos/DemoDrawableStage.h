@@ -4,7 +4,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -21,6 +20,7 @@ namespace gloperate
 {
 
 
+class AbstractDrawable;
 class Drawable;
 
 
@@ -47,7 +47,7 @@ public:
 
 public:
     // Outputs
-    Output<gloperate::Drawable *> drawable; ///< The demo drawable
+    Output<gloperate::AbstractDrawable *> drawable; ///< The demo drawable
 
 
 public:
@@ -78,9 +78,9 @@ protected:
 
 protected:
     // Rendering objects
-    globjects::ref_ptr<Drawable>               m_drawable;
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
-    globjects::ref_ptr<globjects::Buffer>      m_vertexBuffer;
+    std::unique_ptr<Drawable>               m_drawable;
+    std::unique_ptr<globjects::VertexArray> m_vao;
+    std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
 };
 
 

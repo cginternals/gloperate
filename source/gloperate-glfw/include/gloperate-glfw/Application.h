@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <string>
-
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
 

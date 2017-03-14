@@ -44,14 +44,14 @@ void FramebufferStage::onProcess(AbstractGLContext *)
         rebuildFBO();
 
         // Update outputs
-        this->fbo.setValue(m_fbo);
+        this->fbo.setValue(m_fbo.get());
     }
 }
 
 void FramebufferStage::rebuildFBO()
 {
     // Create FBO
-    m_fbo = new globjects::Framebuffer;
+    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
 
     // Attach textures to FBO
     std::vector<gl::GLenum> colorAttachments;
@@ -83,10 +83,10 @@ void FramebufferStage::rebuildFBO()
             } else {
                 if (isNameOfDepthRenderTarget(slot->name())) {
                     // Add depth attachment
-                    texture->bind(gl::GL_DEPTH_ATTACHMENT, m_fbo);
+                    texture->bind(gl::GL_DEPTH_ATTACHMENT, m_fbo.get());
                 } else {
                     // Add color attachment
-                    texture->bind(index, m_fbo);
+                    texture->bind(index, m_fbo.get());
                     index = index + 1;
                 }
             }

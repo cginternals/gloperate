@@ -36,7 +36,7 @@ public:
     *  @param[in] func
     *    The wrapped function object
     */
-    QmlScriptFunction(QmlEngine * engine, QJSValue func);
+    QmlScriptFunction(QmlEngine * engine, const QJSValue & func);
 
     /**
     *  @brief
@@ -45,7 +45,7 @@ public:
     ~QmlScriptFunction();
 
     // Virtual cppexpose::AbstractFunction functions
-    virtual cppexpose::AbstractFunction * clone() override;
+    virtual std::unique_ptr<cppexpose::AbstractFunction> clone() override;
     virtual cppexpose::Variant call(const std::vector<cppexpose::Variant> & args) override;
 
 

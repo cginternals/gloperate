@@ -6,10 +6,10 @@
 
 #include <string>
 #include <functional>
+#include <memory>
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 #include <globjects/Renderbuffer.h>
 #include <globjects/VertexArray.h>
@@ -78,14 +78,15 @@ protected:
     gloperate::AbstractCanvas                  * m_canvas;
     gloperate::Image                           * m_image;
 
-    globjects::ref_ptr<globjects::Framebuffer>   m_fbo;
-    globjects::ref_ptr<globjects::Texture>       m_color;
-    globjects::ref_ptr<globjects::Renderbuffer>  m_depth;
-    globjects::ref_ptr<globjects::Framebuffer>   m_fbo_quad;
-    globjects::ref_ptr<globjects::Texture>       m_color_quad;
-    globjects::ref_ptr<globjects::Renderbuffer>  m_depth_quad;
-    globjects::ref_ptr<globjects::VertexArray>   m_vao;
-    globjects::ref_ptr<globjects::Program>       m_program;
+    std::unique_ptr<globjects::Framebuffer>   m_fbo;
+    std::unique_ptr<globjects::Texture>       m_color;
+    std::unique_ptr<globjects::Renderbuffer>  m_depth;
+    std::unique_ptr<globjects::Framebuffer>   m_fbo_quad;
+    std::unique_ptr<globjects::Texture>       m_color_quad;
+    std::unique_ptr<globjects::Renderbuffer>  m_depth_quad;
+    std::unique_ptr<globjects::VertexArray>   m_vao;
+    std::unique_ptr<globjects::Buffer>        m_buffer;
+    std::unique_ptr<globjects::Program>       m_program;
 
     cppexpose::VariantMap                        m_parameters;
 

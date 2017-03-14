@@ -1,7 +1,8 @@
-
 #include "gloperate-qt/base/RenderWindow.h"
 
 #include <glm/glm.hpp>
+
+#include <globjects/Framebuffer.h>
 
 #include <QCoreApplication>
 #include <QOpenGLContext>
@@ -21,7 +22,7 @@ namespace gloperate_qt
 
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
-, m_canvas(new gloperate::Canvas(environment))
+, m_canvas(cppassist::make_unique<gloperate::Canvas>(environment))
 {
     m_canvas->redraw.connect([this] ()
     {
@@ -31,7 +32,6 @@ RenderWindow::RenderWindow(gloperate::Environment * environment)
 
 RenderWindow::~RenderWindow()
 {
-    delete m_canvas;
 }
 
 gloperate::Environment * RenderWindow::environment() const
@@ -44,16 +44,16 @@ gloperate::Stage * RenderWindow::renderStage() const
     return m_canvas->renderStage();
 }
 
-void RenderWindow::setRenderStage(gloperate::Stage * stage)
+void RenderWindow::setRenderStage(std::unique_ptr<gloperate::Stage> && stage)
 {
     m_context->qtContext()->makeCurrent(this);
-    m_canvas->setRenderStage(stage);
+    m_canvas->setRenderStage(std::move(stage));
     m_context->qtContext()->doneCurrent();
 }
 
 void RenderWindow::onContextInit()
 {
-    m_canvas->setOpenGLContext(m_context);
+    m_canvas->setOpenGLContext(m_context.get());
 }
 
 void RenderWindow::onContextDeinit()
@@ -71,11 +71,20 @@ void RenderWindow::onResize(const QSize & deviceSize, const QSize & virtualSize)
 
 void RenderWindow::onPaint()
 {
-    m_canvas->onRender();
+    // [TODO]: optimize memory reallocation problem
+    auto defaultFBO = globjects::Framebuffer::defaultFBO();
+
+    m_canvas->onRender(defaultFBO.get());
 }
 
 void RenderWindow::keyPressEvent(QKeyEvent * event)
 {
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
     m_canvas->onKeyPress(
         fromQtKeyCode(event->key(), event->modifiers()),
         fromQtModifiers(event->modifiers())
@@ -84,6 +93,12 @@ void RenderWindow::keyPressEvent(QKeyEvent * event)
 
 void RenderWindow::keyReleaseEvent(QKeyEvent * event)
 {
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
     m_canvas->onKeyRelease(
         fromQtKeyCode(event->key(), event->modifiers()),
         fromQtModifiers(event->modifiers())

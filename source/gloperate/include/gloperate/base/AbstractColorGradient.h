@@ -5,6 +5,9 @@
 #include <cstdint>
 #include <array>
 #include <vector>
+#include <string>
+#include <memory>
+
 
 #include <gloperate/gloperate_api.h>
 
@@ -134,7 +137,7 @@ public:
     *  @return
     *    The 1D texture
     */
-    globjects::Texture * generateTexture(size_t numColors) const;
+    std::unique_ptr<globjects::Texture> generateTexture(size_t numColors) const;
 
 
 protected:

@@ -231,7 +231,7 @@ protected:
     *  @param[in] ownership
     *    Property ownership
     */
-    void initSlot(SlotType slotType, Stage * parent, cppexpose::PropertyOwnership ownership);
+    void initSlot(SlotType slotType, Stage * parent);
 
 
 protected:

@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <QString>
 #include <QQuickItem>
@@ -10,7 +11,13 @@
 
 class QQuickWindow;
 
-namespace gloperate {
+namespace globjects
+{
+    class Framebuffer;
+}
+
+namespace gloperate
+{
     class AbstractCanvas;
 }
 
@@ -56,11 +63,20 @@ public:
     *  @return
     *    Canvas that renders into the item (can be null)
     */
-    gloperate::AbstractCanvas * canvas() const;
+    const gloperate::AbstractCanvas * canvas() const;
+
+    /**
+    *  @brief
+    *    Get canvas
+    *
+    *  @return
+    *    Canvas that renders into the item (can be null)
+    */
+    gloperate::AbstractCanvas * canvas();
 
 
 protected:
-    QString stage() const;
+    const QString & stage() const;
     void setStage(const QString & name);
     void onWindowChanged(QQuickWindow * window);
     void onBeforeRendering();
@@ -77,7 +93,7 @@ protected:
 
 
 protected:
-    gloperate::AbstractCanvas * m_canvas;           ///< Canvas that renders into the item (must NOT be null)
+    std::unique_ptr<gloperate::AbstractCanvas> m_canvas;  ///< Canvas that renders into the item (must NOT be null)
     float                       m_devicePixelRatio; ///< Number of device pixels per virtual pixel
     bool                        m_initialized;      ///< 'true' if the canvas has been initialized, else 'false'
     QString                     m_stage;            ///< Name of the render stage to use

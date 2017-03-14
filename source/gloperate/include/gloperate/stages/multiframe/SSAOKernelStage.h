@@ -7,8 +7,6 @@
 
 #include <glm/vec2.hpp>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Output.h>
@@ -77,8 +75,8 @@ protected:
     void recreateKernels();
 
 protected:
-    globjects::ref_ptr<globjects::Texture> m_kernelTexture;
-    globjects::ref_ptr<globjects::Texture> m_noiseTexture;
+    std::unique_ptr<globjects::Texture> m_kernelTexture;
+    std::unique_ptr<globjects::Texture> m_noiseTexture;
 };
 
 

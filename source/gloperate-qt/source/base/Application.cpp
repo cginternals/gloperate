@@ -1,8 +1,6 @@
 
 #include <gloperate-qt/base/Application.h>
 
-#include <QApplication>
-
 #include <gloperate/base/Environment.h>
 
 

@@ -131,7 +131,7 @@ const glm::vec4 & GlyphSequence::fontColor() const
     return m_fontColor;
 }
 
-void GlyphSequence::setFontColor(glm::vec4 fontColor)
+void GlyphSequence::setFontColor(const glm::vec4 & fontColor)
 {
     m_fontColor = fontColor;
 }
@@ -174,7 +174,7 @@ void GlyphSequence::setTransform(
     const glm::vec3 & origin
 ,   const float fontSizeInWorld
 ,   const FontFace& fontFace
-,   const glm::mat4 rotation)
+,   const glm::mat4 & rotation)
 {
     m_transform = glm::mat4();
     m_transform = glm::translate(m_transform, origin);

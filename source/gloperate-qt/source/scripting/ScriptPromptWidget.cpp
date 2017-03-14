@@ -49,8 +49,6 @@ ScriptPromptWidget::ScriptPromptWidget(QWidget * parent)
 
 ScriptPromptWidget::~ScriptPromptWidget()
 {
-    delete m_syntaxHighlighter;
-    delete m_completer;
 }
 
 bool ScriptPromptWidget::multiLinePaste() const
@@ -63,37 +61,41 @@ void ScriptPromptWidget::setMultiLinePaste(const bool enable)
     m_multiLinePaste = enable;
 }
 
-QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter() const
+const QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter() const
 {
-    return m_syntaxHighlighter;
+    return m_syntaxHighlighter.get();
 }
 
-void ScriptPromptWidget::setSyntaxHighlighter(QSyntaxHighlighter * syntaxHighlighter)
+QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter()
 {
-    if (m_syntaxHighlighter != syntaxHighlighter)
-        delete m_syntaxHighlighter;
+    return m_syntaxHighlighter.get();
+}
 
-    m_syntaxHighlighter = syntaxHighlighter;
+void ScriptPromptWidget::setSyntaxHighlighter(std::unique_ptr<QSyntaxHighlighter> && syntaxHighlighter)
+{
+    m_syntaxHighlighter = std::move(syntaxHighlighter);
 
     if (m_syntaxHighlighter)
-        syntaxHighlighter->setDocument(document());
+        m_syntaxHighlighter->setDocument(document());
 }
 
-QCompleter * ScriptPromptWidget::completer() const
+const QCompleter * ScriptPromptWidget::completer() const
 {
-    return m_completer;
+    return m_completer.get();
 }
 
-void ScriptPromptWidget::setCompleter(QCompleter * completer)
+QCompleter * ScriptPromptWidget::completer()
 {
-    if (m_completer != completer && m_completer)
-        delete m_completer;
+    return m_completer.get();
+}
 
-    m_completer = completer;
+void ScriptPromptWidget::setCompleter(std::unique_ptr<QCompleter> && completer)
+{
+    m_completer = std::move(completer);
 
     if (m_completer)
     {
-        connect(m_completer, SIGNAL(activated(QString)), this, SLOT(complete(QString)));
+        connect(m_completer.get(), SIGNAL(activated(QString)), this, SLOT(complete(QString)));
 
         m_completer->setWidget(this);
         m_completer->popup()->setFont(font());
@@ -175,17 +177,17 @@ void ScriptPromptWidget::cls()
     setPosition(newPosition);
 }
 
-inline int ScriptPromptWidget::row() const
+int ScriptPromptWidget::row() const
 {
     return toPlainText().left(textCursor().position()).count("\n") + 1;
 }
 
-inline int ScriptPromptWidget::column() const
+int ScriptPromptWidget::column() const
 {
     return textCursor().columnNumber();
 }
 
-inline int ScriptPromptWidget::anchor() const
+int ScriptPromptWidget::anchor() const
 {
     return textCursor().anchor();
 }
@@ -198,12 +200,12 @@ QString ScriptPromptWidget::wordUnderCursor() const
     return tc.selectedText();
 }
 
-inline int ScriptPromptWidget::position() const
+int ScriptPromptWidget::position() const
 {
     return textCursor().position();
 }
 
-inline void ScriptPromptWidget::setPosition(
+void ScriptPromptWidget::setPosition(
     const int position
   , const QTextCursor::MoveMode mode)
 {
@@ -213,7 +215,7 @@ inline void ScriptPromptWidget::setPosition(
     setTextCursor(tc);
 }
 
-inline void ScriptPromptWidget::resetUndoRedo()
+void ScriptPromptWidget::resetUndoRedo()
 {
     setUndoRedoEnabled(false);
     setUndoRedoEnabled(true);

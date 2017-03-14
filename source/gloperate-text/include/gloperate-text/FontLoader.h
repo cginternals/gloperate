@@ -15,7 +15,7 @@
 
 namespace gloperate
 {
-class ResourceManager;
+    class ResourceManager;
 }
 
 
@@ -44,6 +44,14 @@ public:
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
+
+
+public:
+    /**
+    *  @brief
+    *    Key-Value pairs of the description file
+    */
+    using StringPairs = std::map<std::string, std::string>;
 
 
 public:
@@ -170,12 +178,6 @@ protected:
     *    The font face to construct
     */
     void handleKerning(std::stringstream & stream, FontFace & fontFace) const;
-
-    /**
-    *  @brief
-    *    Key-Value pairs of the description file
-    */
-    using StringPairs = std::map<std::string, std::string>;
 
     /**
     *  @brief

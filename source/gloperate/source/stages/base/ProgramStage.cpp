@@ -37,8 +37,8 @@ ProgramStage::~ProgramStage()
 
 void ProgramStage::onContextInit(AbstractGLContext *)
 {
-    m_program = new globjects::Program;
-    program.setValue(m_program);
+    m_program = cppassist::make_unique<globjects::Program>();
+    program.setValue(m_program.get());
     program.setValid(false);
 }
 
@@ -52,7 +52,7 @@ void ProgramStage::onProcess(AbstractGLContext *)
     }
     for (auto input : inputs<cppassist::FilePath>()) {
         auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path());
-        // ToDo: Fix memory leak
+        m_shaders.emplace_back(shader);
         m_program->attach(shader);
     }
 

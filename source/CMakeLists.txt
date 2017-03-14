@@ -11,37 +11,6 @@ configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/${META_PROJECT_N
 
 
 # 
-# Module information file
-# 
-
-generate_module_info(${META_PROJECT_NAME}
-    VALUES
-    name        "${META_PROJECT_NAME}"
-    version     "${META_VERSION}"
-    description "${META_PROJECT_DESCRIPTION}"
-    author      "${META_AUTHOR_ORGANIZATION}"
-
-    BUILD_VALUES
-    dataPath    "${PROJECT_SOURCE_DIR}/data"
-    pluginPath  "\${ModulePath}"
-
-    INSTALL_VALUES
-    dataPath    "\${ModulePath}/data"
-    pluginPath  "\${ModulePath}/plugins"
-)
-
-export_module_info(${META_PROJECT_NAME}
-    TARGET ${META_PROJECT_NAME}
-    FOLDER "ModuleInfo"
-)
-
-install_module_info(${META_PROJECT_NAME}
-    DESTINATION ${INSTALL_ROOT}
-    COMPONENT runtime
-)
-
-
-# 
 # Sub-projects
 # 
 
@@ -52,6 +21,7 @@ add_subdirectory(gloperate-glfw)
 add_subdirectory(gloperate-qt)
 add_subdirectory(gloperate-qtquick)
 add_subdirectory(gloperate-hidapi)
+add_subdirectory(gloperate-glkernel)
 #add_subdirectory(gloperate-assimp)
 #add_subdirectory(gloperate-osg)
 add_subdirectory(gloperate-text)

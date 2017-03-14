@@ -28,10 +28,10 @@ RenderPassStage::RenderPassStage(Environment * environment, const std::string & 
 , camera("camera", this)
 , renderPass("renderPass", this)
 {
-    inputAdded.connect([this] (gloperate::AbstractSlot *) {
+    m_inputAddedConnection = inputAdded.connect([this] (gloperate::AbstractSlot *) {
         renderPass.setValid(false);
     });
-    inputRemoved.connect([this] (gloperate::AbstractSlot *) {
+    m_inputRemovedConnection = inputRemoved.connect([this] (gloperate::AbstractSlot *) {
         renderPass.setValid(false);
     });
 }
@@ -42,10 +42,12 @@ RenderPassStage::~RenderPassStage()
 
 void RenderPassStage::onContextInit(AbstractGLContext *)
 {
-    m_renderPass = new gloperate::RenderPass;
-    renderPass.setValue(m_renderPass);
+    m_renderPass = cppassist::make_unique<gloperate::RenderPass>();
+    renderPass.setValue(m_renderPass.get());
 
-    m_renderPass->setStateBefore(new globjects::State(globjects::State::DeferredMode));
+    m_beforeState = cppassist::make_unique<globjects::State>(globjects::State::DeferredMode);
+
+    m_renderPass->setStateBefore(m_beforeState.get());
 
 //    m_renderPass->state()->enable(gl::GL_DEPTH_TEST);
 //    m_renderPass->state()->enable(gl::GL_CULL_FACE);
