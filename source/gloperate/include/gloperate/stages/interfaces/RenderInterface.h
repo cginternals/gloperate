@@ -43,7 +43,7 @@ public:
     Input<glm::vec3>                backgroundColor; ///< Background color (RGB)
     Input<int>                      frameCounter;    ///< Frame counter (number of frames)
     Input<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
-    Input<globjects::Framebuffer *> targetFBO;       ///< Target FBO. If null, the stage is supposed to render into the default frame buffer.
+    Input<globjects::Framebuffer *> targetFBO;       ///< Target FBO (must not be null)
 
     // Outputs
     Output<bool>                    rendered;        ///< 'true' if output has been rendered

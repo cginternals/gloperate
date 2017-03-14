@@ -19,9 +19,9 @@ QmlScriptFunction::~QmlScriptFunction()
 {
 }
 
-cppexpose::AbstractFunction * QmlScriptFunction::clone()
+std::unique_ptr<cppexpose::AbstractFunction> QmlScriptFunction::clone()
 {
-    return new QmlScriptFunction(m_engine, m_function);
+    return cppassist::make_unique<QmlScriptFunction>(m_engine, m_function);
 }
 
 cppexpose::Variant QmlScriptFunction::call(const std::vector<cppexpose::Variant> & args)

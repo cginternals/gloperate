@@ -54,9 +54,9 @@ void AbstractColorGradient::fillPixelData(unsigned char * data, size_t numPixels
     }
 }
 
-globjects::Texture * AbstractColorGradient::generateTexture(size_t numPixels) const
+std::unique_ptr<globjects::Texture> AbstractColorGradient::generateTexture(size_t numPixels) const
 {
-    globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);
+    auto texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);
 
     std::vector<unsigned char> data = pixelData(numPixels);
 

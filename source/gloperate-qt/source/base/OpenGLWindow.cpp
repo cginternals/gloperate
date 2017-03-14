@@ -27,7 +27,6 @@ OpenGLWindow::OpenGLWindow()
 
 OpenGLWindow::~OpenGLWindow()
 {
-    delete m_context;
 }
 
 void OpenGLWindow::setContextFormat(const gloperate::GLContextFormat & format)
@@ -37,7 +36,7 @@ void OpenGLWindow::setContextFormat(const gloperate::GLContextFormat & format)
 
 GLContext * OpenGLWindow::context() const
 {
-    return m_context;
+    return m_context.get();
 }
 
 void OpenGLWindow::createContext()
@@ -46,12 +45,13 @@ void OpenGLWindow::createContext()
     if (m_context)
     {
         deinitializeContext();
-        delete m_context;
     }
 
     // Create OpenGL context
     GLContextFactory factory(this);
-    m_context = static_cast<GLContext*>(factory.createBestContext(m_format));
+    m_context = std::unique_ptr<GLContext>(
+                static_cast<GLContext*>(factory.createBestContext(m_format).release())
+    );
 
     // Initialize new context
     initializeContext();
@@ -66,8 +66,6 @@ void OpenGLWindow::destroyContext()
     }
 
     deinitializeContext();
-
-    delete m_context;
     m_context = nullptr;
 }
 

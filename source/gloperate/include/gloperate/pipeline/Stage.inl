@@ -42,10 +42,12 @@ std::vector<Input<T> *> Stage::inputs() const
 template <typename T>
 Input<T> * Stage::createInput(const std::string & name, const T & defaultValue)
 {
-    auto input = new Input<T>(name, defaultValue);
-    this->addInput(input, cppexpose::PropertyOwnership::Parent);
+    auto input = cppassist::make_unique<Input<T>>(name, defaultValue);
+    auto inputPtr = input.get();
 
-    return input;
+    this->addInput(std::move(input));
+
+    return inputPtr;
 }
 
 template <typename T>
@@ -80,10 +82,12 @@ std::vector<Output<T> *> Stage::outputs() const
 template <typename T>
 Output<T> * Stage::createOutput(const std::string & name, const T & defaultValue)
 {
-    auto output = new Output<T>(name, defaultValue);
-    this->addOutput(output, cppexpose::PropertyOwnership::Parent);
+    auto output = cppassist::make_unique<Output<T>>(name, defaultValue);
+    auto outputPtr = output.get();
 
-    return output;
+    this->addOutput(outputPtr);
+
+    return outputPtr;
 }
 
 template <typename T>

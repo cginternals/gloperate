@@ -8,8 +8,6 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
@@ -89,8 +87,8 @@ protected:
 
 protected:
     // Data
-    globjects::ref_ptr<globjects::Texture> m_texture; ///< The created texture
-    globjects::ref_ptr<gloperate::RenderTarget> m_renderTarget; ///< The passed render target
+    std::unique_ptr<globjects::Texture>      m_texture; ///< The created texture
+    std::unique_ptr<gloperate::RenderTarget> m_renderTarget; ///< The passed render target
 };
 
 

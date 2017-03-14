@@ -43,12 +43,12 @@ int main(int argc, char * argv[])
     UpdateManager updateManager(&environment);
 
     // Create render stage
-    auto * renderStage = new DemoStage(&environment);
+    auto renderStage = cppassist::make_unique<DemoStage>(&environment);
 
     // Create render window
     RenderWindow * window = new RenderWindow(&environment);
     window->createContext();
-    window->setRenderStage(renderStage);
+    window->setRenderStage(std::move(renderStage));
 
     // Create main window
     QMainWindow mainWindow;
@@ -60,8 +60,8 @@ int main(int argc, char * argv[])
 
     // Create script console
     ScriptPromptWidget * scriptPrompt = new ScriptPromptWidget(&mainWindow);
-    scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlighter);
-    scriptPrompt->setCompleter(new ECMA26251Completer);
+    scriptPrompt->setSyntaxHighlighter(cppassist::make_unique<ECMA26251SyntaxHighlighter>());
+    scriptPrompt->setCompleter(cppassist::make_unique<ECMA26251Completer>());
     scriptPrompt->setFrameShape(QFrame::NoFrame);
     QObject::connect(scriptPrompt, &ScriptPromptWidget::evaluate,
         [&environment, scriptPrompt] (const QString & cmd)

@@ -91,10 +91,17 @@ public:
     *
     *  @param[in] stage
     *    Stage (must NOT be null!)
-    *  @param[in] ownership
-    *    Property ownership
     */
-    void addStage(Stage * stage, cppexpose::PropertyOwnership ownership = cppexpose::PropertyOwnership::Parent);
+    void addStage(Stage * stage);
+
+    /**
+    *  @brief
+    *    Add stage
+    *
+    *  @param[in] stage
+    *    Stage (must NOT be null!)
+    */
+    void addStage(std::unique_ptr<Stage> && stage);
 
     /**
     *  @brief
@@ -109,20 +116,6 @@ public:
     *  If the stage is not part of the pipeline, nothing happens
     */
     bool removeStage(Stage * stage);
-
-    /**
-    *  @brief
-    *    Remove and destroy stage
-    *
-    *  @param[in] stage
-    *    Stage (must NOT be null!)
-    *
-    *  @return
-    *    'true' if the stage was removed and destroyed, else 'false'
-    *
-    *  If the stage is not part of the pipeline, nothing happens
-    */
-    bool destroyStage(Stage * stage);
 
     /**
     *  @brief
@@ -155,6 +148,12 @@ protected:
     *    Sort stages by their dependencies
     */
     void sortStages();
+
+    /**
+    *  @brief
+    *    Common implementation of addStage(Stage *) and addStage(std::unique_ptr<Stage> &&)
+    */
+    void registerStage(Stage * stage);
 
     // Virtual Stage interface
     virtual void onContextInit(AbstractGLContext * context) override;

@@ -32,11 +32,11 @@ int main(int argc, char * argv[])
     Application app(&environment, argc, argv);
 
     // Create render stage
-    DemoStage * renderStage = new DemoStage(&environment);
+    auto renderStage = cppassist::make_unique<DemoStage>(&environment);
 
     // Create render window
     RenderWindow window(&environment);
-    window.setRenderStage(renderStage);
+    window.setRenderStage(std::move(renderStage));
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);
     if (!window.create())

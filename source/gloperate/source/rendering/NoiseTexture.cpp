@@ -17,9 +17,9 @@ namespace gloperate
 NoiseTexture::NoiseTexture(
     unsigned int inputDimensions,
     unsigned int outputDimensions,
-    gl::GLsizei textureSize)
+    gl::GLsizei textureSize) :
+    m_texture(createTexture(inputDimensions, outputDimensions, textureSize))
 {
-    m_texture = createTexture(inputDimensions, outputDimensions, textureSize);
 }
 
 void NoiseTexture::bindActive(unsigned int index) const
@@ -34,7 +34,7 @@ void NoiseTexture::unbindActive(unsigned int index) const
 
 globjects::Texture * NoiseTexture::texture()
 {
-    return m_texture;
+    return m_texture.get();
 }
 
 gl::GLenum NoiseTexture::targetForDimensions(unsigned int dimensions)
@@ -92,7 +92,7 @@ gl::GLenum NoiseTexture::formatForDimensions(unsigned int dimensions)
     }
 }
 
-globjects::Texture * NoiseTexture::createTexture(
+std::unique_ptr<globjects::Texture> NoiseTexture::createTexture(
     unsigned int inputDimensions,
     unsigned int outputDimensions,
     gl::GLsizei textureSize)

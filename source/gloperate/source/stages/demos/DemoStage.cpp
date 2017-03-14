@@ -112,7 +112,6 @@ void DemoStage::onProcess(AbstractGLContext *)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Update animation
@@ -169,9 +168,9 @@ void DemoStage::createAndSetupCamera()
 void DemoStage::createAndSetupTexture()
 {
     // Load texture from file
-    m_texture = m_environment->resourceManager()->load<globjects::Texture>(
+    m_texture = std::unique_ptr<globjects::Texture>(m_environment->resourceManager()->load<globjects::Texture>(
         gloperate::dataPath() + "/gloperate/textures/gloperate-logo.png"
-    );
+    ));
 
     // Create procedural texture if texture couldn't be found
     if (!m_texture)
@@ -201,16 +200,17 @@ void DemoStage::createAndSetupGeometry()
         glm::vec2( -1.f, -1.f ),
         glm::vec2( -1.f, +1.f ) } };
 
-    m_vao = new globjects::VertexArray;
-    m_buffer = new globjects::Buffer();
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
+    m_buffer = cppassist::make_unique<globjects::Buffer>();
     m_buffer->setData(raw, gl::GL_STATIC_DRAW);
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(m_buffer, 0, sizeof(glm::vec2));
+    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 
@@ -219,10 +219,10 @@ void DemoStage::createAndSetupGeometry()
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
 
-    m_vertexShader   = new globjects::Shader(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
-    m_program = new globjects::Program();
-    m_program->attach(m_vertexShader, m_fragmentShader);
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
     m_program->setUniform("source", 0);
 }

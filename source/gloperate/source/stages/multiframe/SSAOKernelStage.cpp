@@ -86,19 +86,19 @@ SSAOKernelStage::SSAOKernelStage(gloperate::Environment * environment, const std
 
 void SSAOKernelStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
-    m_kernelTexture = new globjects::Texture(gl::GL_TEXTURE_1D);
+    m_kernelTexture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_1D);
     m_kernelTexture->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
     m_kernelTexture->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
     m_kernelTexture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_MIRRORED_REPEAT);
 
-    m_noiseTexture = new globjects::Texture(gl::GL_TEXTURE_2D);
+    m_noiseTexture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_2D);
     m_noiseTexture->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_NEAREST);
     m_noiseTexture->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_NEAREST);
     m_noiseTexture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
     m_noiseTexture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
 
-    noiseTexture.setValue(m_noiseTexture);
-    kernelTexture.setValue(m_kernelTexture);
+    noiseTexture.setValue(m_noiseTexture.get());
+    kernelTexture.setValue(m_kernelTexture.get());
 }
 
 void SSAOKernelStage::onProcess(gloperate::AbstractGLContext * /*context*/)

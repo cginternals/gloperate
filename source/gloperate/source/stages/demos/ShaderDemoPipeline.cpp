@@ -27,12 +27,12 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 , shader1("shader1", this)
 , shader2("shader2", this)
 , texture("texture", this)
-, m_textureLoadStage(new TextureLoadStage(environment, "TextureLoadStage"))
-, m_shaderStage(new ShaderStage(environment, "ShaderStage"))
-, m_programStage(new ProgramStage(environment, "ProgramStage"))
-, m_framebufferStage(new BasicFramebufferStage(environment, "BasicFramebufferStage"))
-, m_renderStage(new DemoRenderStage(environment, "RenderStage"))
-, m_mixerStage(new MixerStage(environment, "MixerStage"))
+, m_textureLoadStage(cppassist::make_unique<TextureLoadStage>(environment, "TextureLoadStage"))
+, m_shaderStage(cppassist::make_unique<ShaderStage>(environment, "ShaderStage"))
+, m_programStage(cppassist::make_unique<ProgramStage>(environment, "ProgramStage"))
+, m_framebufferStage(cppassist::make_unique<BasicFramebufferStage>(environment, "BasicFramebufferStage"))
+, m_renderStage(cppassist::make_unique<DemoRenderStage>(environment, "RenderStage"))
+, m_mixerStage(cppassist::make_unique<MixerStage>(environment, "MixerStage"))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
@@ -44,24 +44,24 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
     texture = dataPath + "/gloperate/textures/gloperate-logo.png";
 
     // Texture loader stage
-    addStage(m_textureLoadStage);
+    addStage(m_textureLoadStage.get());
     m_textureLoadStage->filename << texture;
 
     // Shader stage
-    addStage(m_shaderStage);
+    addStage(m_shaderStage.get());
     m_shaderStage->filePath << shader2;
 
     // Basic program stage
-    addStage(m_programStage);
+    addStage(m_programStage.get());
     m_programStage->createInput("shader1") << shader1;
     m_programStage->createInput("shader2") << m_shaderStage->shader;
 
     // Framebuffer stage for spinning rect
-    addStage(m_framebufferStage);
+    addStage(m_framebufferStage.get());
     m_framebufferStage->viewport << renderInterface.deviceViewport;
 
     // Spinning rectangle stage
-    addStage(m_renderStage);
+    addStage(m_renderStage.get());
     m_renderStage->renderInterface.deviceViewport  << renderInterface.deviceViewport;
     m_renderStage->renderInterface.targetFBO       << m_framebufferStage->fbo;
     m_renderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
@@ -70,7 +70,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
     m_renderStage->program                         << m_programStage->program;
 
     // Mixer stage
-    addStage(m_mixerStage);
+    addStage(m_mixerStage.get());
     m_mixerStage->viewport  << renderInterface.deviceViewport;
     m_mixerStage->targetFBO << renderInterface.targetFBO;
     m_mixerStage->texture   << m_renderStage->colorTextureOut;

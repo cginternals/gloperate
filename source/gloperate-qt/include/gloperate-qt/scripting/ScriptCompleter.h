@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <QCompleter>
 
@@ -73,7 +74,7 @@ public:
 
 
 protected:
-    QStandardItemModel * m_model; ///< Qt item model that contains the word list
+    std::unique_ptr<QStandardItemModel> m_model; ///< Qt item model that contains the word list
 };
 
 

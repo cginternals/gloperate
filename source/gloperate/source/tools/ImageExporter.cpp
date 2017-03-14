@@ -45,13 +45,13 @@ void ImageExporter::setTarget(AbstractCanvas * canvas, const std::string & filen
 void ImageExporter::save(ImageExporter::ContextHandling contextHandling)
 {
     // Create output textures
-    m_color = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-    m_depth = new globjects::Renderbuffer();
+    m_color = std::unique_ptr<globjects::Texture>(globjects::Texture::createDefault(gl::GL_TEXTURE_2D));
+    m_depth = cppassist::make_unique<globjects::Renderbuffer>();
 
     // Create output FBO
-    m_fbo   = new globjects::Framebuffer();
-    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color);
-    m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
+    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
+    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color.get());
+    m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth.get());
 
     // Set viewport
     auto viewport = glm::vec4(0, 0, m_width, m_height);
@@ -72,7 +72,7 @@ void ImageExporter::save(ImageExporter::ContextHandling contextHandling)
     for (int i = 0; i < m_renderIterations; ++i)
     {
         m_canvas->environment()->update(1.f / 30.f);
-        m_canvas->onRender(m_fbo);
+        m_canvas->onRender(m_fbo.get());
     }
 
     // Release context (if necessary)
@@ -82,7 +82,7 @@ void ImageExporter::save(ImageExporter::ContextHandling contextHandling)
     }
 
     // Save texture to image file
-    m_canvas->environment()->resourceManager()->store<globjects::Texture>(m_filename, m_color);
+    m_canvas->environment()->resourceManager()->store<globjects::Texture>(m_filename, m_color.get());
 
     // Reset viewport
     m_canvas->onResetViewport();

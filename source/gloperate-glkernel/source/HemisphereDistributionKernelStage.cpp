@@ -27,7 +27,6 @@ HemisphereDistributionKernelStage::HemisphereDistributionKernelStage(gloperate::
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
-, m_texture(nullptr)
 {
 }
 
@@ -37,9 +36,9 @@ HemisphereDistributionKernelStage::~HemisphereDistributionKernelStage()
 }
 
 
-void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLContext * context)
+void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_texture = new globjects::Texture(gl::GL_TEXTURE_1D);
+    m_texture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_1D);
 }
 
 
@@ -65,7 +64,7 @@ void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext *
 
         m_kernelData = {m_kernel.begin(), m_kernel.end()};
         kernel.setValue(&m_kernelData);
-        texture.setValue(m_texture);
+        texture.setValue(m_texture.get());
     }
 }
 

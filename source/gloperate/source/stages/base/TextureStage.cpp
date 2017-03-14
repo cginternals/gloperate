@@ -42,16 +42,16 @@ void TextureStage::onContextInit(gloperate::AbstractGLContext *)
     // Create new texture
     m_texture = Texture::createDefault(GL_TEXTURE_2D);
     // Create wrapping render target
-    m_renderTarget = new RenderTarget();
-    m_renderTarget->setTarget(m_texture);
+    m_renderTarget = cppassist::make_unique<RenderTarget>();
+    m_renderTarget->setTarget(m_texture.get());
 }
 
 void TextureStage::onContextDeinit(AbstractGLContext *)
 {
     // Release texture
-    m_texture = nullptr;
+    m_texture.reset(nullptr);
     // Release render target
-    m_renderTarget = nullptr;
+    m_renderTarget.reset(nullptr);
 }
 
 void TextureStage::onProcess(gloperate::AbstractGLContext *)
@@ -68,8 +68,8 @@ void TextureStage::onProcess(gloperate::AbstractGLContext *)
     m_texture->image2D(0, *internalFormat, width, height, 0, *format, *type, nullptr);
 
     // Update output values
-    texture.setValue(m_texture);
-    renderTarget.setValue(m_renderTarget);
+    texture.setValue(m_texture.get());
+    renderTarget.setValue(m_renderTarget.get());
 }
 
 

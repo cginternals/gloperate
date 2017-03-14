@@ -130,22 +130,23 @@ LightTestStage::~LightTestStage()
 void LightTestStage::onContextInitialize(AbstractGLContext * /*context*/)
 {
     // setup Geometry
-    m_vao = new globjects::VertexArray;
-    m_vertexBuffer = new globjects::Buffer();
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
+    m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
     m_vertexBuffer->setData(s_cube, gl::GL_STATIC_DRAW);
 
     auto positionBinding = m_vao->binding(0);
     positionBinding->setAttribute(0);
-    positionBinding->setBuffer(m_vertexBuffer, 0, sizeof(glm::vec3) * 2);
+    positionBinding->setBuffer(m_vertexBuffer.get(), 0, sizeof(glm::vec3) * 2);
     positionBinding->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 
     auto normalBinding = m_vao->binding(1);
     normalBinding->setAttribute(1);
-    normalBinding->setBuffer(m_vertexBuffer, 0, sizeof(glm::vec3) * 2);
+    normalBinding->setBuffer(m_vertexBuffer.get(), 0, sizeof(glm::vec3) * 2);
     normalBinding->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(glm::vec3));
     m_vao->enable(1);
 
+    //TODO this is a memory leak! Use resource loader?
     // setup Program
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
@@ -155,10 +156,10 @@ void LightTestStage::onContextInitialize(AbstractGLContext * /*context*/)
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
 
-    m_vertexShader   = new globjects::Shader(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
-    m_program = new globjects::Program();
-    m_program->attach(m_vertexShader, m_fragmentShader);
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
     m_program->setUniform("colorTypeData", 0);
     m_program->setUniform("positionData", 1);
@@ -190,7 +191,6 @@ void LightTestStage::onProcess(AbstractGLContext * context)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background

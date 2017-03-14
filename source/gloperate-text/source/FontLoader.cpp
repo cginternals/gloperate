@@ -160,10 +160,12 @@ void FontLoader::handlePage(std::stringstream & stream, FontFace & fontFace, con
         texture->image2D(0, gl::GL_R8, fontFace.glyphTextureExtent(), 0
             , gl::GL_RED, gl::GL_UNSIGNED_BYTE, raw.data());
 
-        fontFace.setGlyphTexture(texture);
+        fontFace.setGlyphTexture(std::unique_ptr<globjects::Texture>(texture));
     }
     else
-        fontFace.setGlyphTexture(m_environment->resourceManager()->load<globjects::Texture>(path + "/" + file));
+        fontFace.setGlyphTexture(
+            std::unique_ptr<globjects::Texture>(m_environment->resourceManager()->load<globjects::Texture>(path + "/" + file))
+        );
 
     fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_LINEAR);
     fontFace.glyphTexture()->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_LINEAR);

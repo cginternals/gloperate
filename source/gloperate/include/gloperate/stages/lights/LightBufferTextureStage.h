@@ -83,13 +83,13 @@ protected:
     void setupBufferTextures();
 
 protected:
-    globjects::Texture * m_colorTypeTexture;     ///< Buffer texture for color & type information
-    globjects::Texture * m_positionTexture;      ///< Buffer texture for position information
-    globjects::Texture * m_attenuationTexture;   ///< Buffer texture for attenuation information
+    std::unique_ptr<globjects::Texture> m_colorTypeTexture;     ///< Buffer texture for color & type information
+    std::unique_ptr<globjects::Texture> m_positionTexture;      ///< Buffer texture for position information
+    std::unique_ptr<globjects::Texture> m_attenuationTexture;   ///< Buffer texture for attenuation information
 
-    globjects::Buffer * m_colorTypeBuffer;       ///< Buffer for color & type information
-    globjects::Buffer * m_positionBuffer;        ///< Buffer for position information
-    globjects::Buffer * m_attenuationBuffer;     ///< Buffer for attenuation information
+    std::unique_ptr<globjects::Buffer>  m_colorTypeBuffer;       ///< Buffer for color & type information
+    std::unique_ptr<globjects::Buffer>  m_positionBuffer;        ///< Buffer for position information
+    std::unique_ptr<globjects::Buffer>  m_attenuationBuffer;     ///< Buffer for attenuation information
 
     std::vector< Input<Light> * > m_lightInputs; ///< Light inputs
 };

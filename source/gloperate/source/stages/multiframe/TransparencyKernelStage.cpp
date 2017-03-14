@@ -38,7 +38,7 @@ void TransparencyKernelStage::regenerateKernel()
 {
     const auto table = TransparencyMasksGenerator::generateDistributions(1);
     m_texture->image2D(0, gl::GL_R8, table->at(0).size(), table->size(), 0, gl::GL_RED, gl::GL_UNSIGNED_BYTE, table->data());
-    transparencyMaskTexture.setValue(m_texture);
+    transparencyMaskTexture.setValue(m_texture.get());
 }
 
 
