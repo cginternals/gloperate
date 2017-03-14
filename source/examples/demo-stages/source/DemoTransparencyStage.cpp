@@ -57,7 +57,7 @@ static const char * s_fragmentShader = R"(
 const float alpha = 0.35;
 
 uniform sampler2D transparencyKernel;
-uniform sampler2D noiseKernel;
+uniform sampler3D noiseKernel;
 uniform vec3 color;
 uniform float randVal;
 
@@ -73,11 +73,11 @@ void main()
         discard;
     }
 
-    float rand = texture(noiseKernel, v_localPos + randVal).r;
+    float rand = texture(noiseKernel, vec3(v_localPos * 0.5 + 0.5, randVal)).r;
 
     ivec2 transpSize = textureSize(transparencyKernel, 0);
-    ivec2 transpIndex = ivec2(rand * transpSize.x, alpha * transpSize.y);
-    bool opaque = texelFetch(transparencyKernel, transpIndex, 0).r > 0.0f;
+    ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize);
+    bool opaque = texelFetch(transparencyKernel, transpIndex, 0).r > 0.5;
 
     if (!opaque)
         discard;

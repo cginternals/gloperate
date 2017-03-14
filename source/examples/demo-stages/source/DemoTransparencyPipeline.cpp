@@ -23,10 +23,10 @@ DemoTransparencyPipeline::DemoTransparencyPipeline(Environment * environment, co
 , m_transparencyRenderStage(new DemoTransparencyStage(environment))
 {
     addStage(m_transparencyKernelStage);
-    m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256,256));
+    m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
 
     addStage(m_noiseKernelStage);
-    m_noiseKernelStage->dimensions.setValue(glm::ivec3(256,256,1));
+    m_noiseKernelStage->dimensions.setValue(glm::ivec3(64, 64, 64));
 
     addStage(m_transparencyRenderStage);
     m_transparencyRenderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
