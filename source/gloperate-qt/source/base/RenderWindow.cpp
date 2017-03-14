@@ -23,7 +23,6 @@ namespace gloperate_qt
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
 , m_canvas(cppassist::make_unique<gloperate::Canvas>(environment))
-, m_defaultFBO(globjects::Framebuffer::defaultFBO())
 {
     m_canvas->redraw.connect([this] ()
     {
@@ -72,7 +71,10 @@ void RenderWindow::onResize(const QSize & deviceSize, const QSize & virtualSize)
 
 void RenderWindow::onPaint()
 {
-    m_canvas->onRender(m_defaultFBO.get());
+    // [TODO]: optimize memory reallocation problem
+    auto defaultFBO = globjects::Framebuffer::defaultFBO();
+
+    m_canvas->onRender(defaultFBO.get());
 }
 
 void RenderWindow::keyPressEvent(QKeyEvent * event)

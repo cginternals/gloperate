@@ -58,6 +58,8 @@ QuickView::QuickView(QmlEngine * engine, QWindow * parent)
 
 QuickView::~QuickView()
 {
+    // [TODO]: review handling of differing threads for creation and deletion of this QuickView.
+    Utils::registerGlobjectsContext();
 }
 
 const gloperate::Environment * QuickView::environment() const

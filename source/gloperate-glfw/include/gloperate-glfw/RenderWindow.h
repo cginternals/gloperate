@@ -8,11 +8,6 @@
 #include <gloperate-glfw/Window.h>
 
 
-namespace globjects
-{
-    class Framebuffer;
-}
-
 namespace gloperate
 {
     class Environment;
@@ -138,7 +133,6 @@ protected:
 protected:
     gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null) 
     std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO;
     glm::ivec2               m_deviceSize;  ///< Window size (real device pixels)
     glm::ivec2               m_virtualSize; ///< Window size (virtual pixel size)
 };

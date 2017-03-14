@@ -76,7 +76,7 @@ void ScriptPromptWidget::setSyntaxHighlighter(std::unique_ptr<QSyntaxHighlighter
     m_syntaxHighlighter = std::move(syntaxHighlighter);
 
     if (m_syntaxHighlighter)
-        syntaxHighlighter->setDocument(document());
+        m_syntaxHighlighter->setDocument(document());
 }
 
 const QCompleter * ScriptPromptWidget::completer() const

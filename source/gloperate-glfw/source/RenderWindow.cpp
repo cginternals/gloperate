@@ -24,7 +24,6 @@ namespace gloperate_glfw
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
 , m_canvas(cppassist::make_unique<Canvas>(environment))
-, m_defaultFBO(globjects::Framebuffer::defaultFBO())
 {
     m_canvas->redraw.connect([this] ()
     {
@@ -107,7 +106,10 @@ void RenderWindow::onMove(MoveEvent &)
 
 void RenderWindow::onPaint(PaintEvent &)
 {
-    m_canvas->onRender(m_defaultFBO.get());
+    // [TODO]: optimize memory reallocation problem
+    auto defaultFBO = globjects::Framebuffer::defaultFBO();
+
+    m_canvas->onRender(defaultFBO.get());
 }
 
 void RenderWindow::onKeyPress(KeyEvent & event)

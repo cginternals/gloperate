@@ -32,7 +32,6 @@ RenderItem::RenderItem(QQuickItem * parent)
 , m_devicePixelRatio(1.0f)
 , m_initialized(false)
 , m_stage("")
-, m_defaultFBO(nullptr)
 {
     // Set input modes
     setAcceptedMouseButtons(Qt::AllButtons);
@@ -83,13 +82,14 @@ void RenderItem::onWindowChanged(QQuickWindow * window)
 
     // Create canvas and render stage
     QuickView * view = static_cast<QuickView*>(window);
-    if (view)
-    {
-        m_canvas = Utils::createCanvas(
-            view->environment(),
-            Utils::createRenderStage(view->environment(), m_stage.toStdString())
-        );
-    }
+
+    assert(view != nullptr);
+
+    m_canvas = Utils::createCanvas(
+        view->environment(),
+        Utils::createRenderStage(view->environment(), m_stage.toStdString())
+    );
+
     assert(m_canvas);
 
     // Repaint window when canvas needs to be updated
@@ -142,12 +142,10 @@ void RenderItem::onBeforeRendering()
         m_canvas->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
     }
 
-    // Render into item
-    if(!m_defaultFBO)
-    {
-        m_defaultFBO = globjects::Framebuffer::defaultFBO();
-    }
-    m_canvas->render(m_defaultFBO.get());
+    // [TODO]: optimize memory reallocation problem
+    auto defaultFBO = globjects::Framebuffer::defaultFBO();
+
+    m_canvas->render(defaultFBO.get());
 
     // Reset OpenGL state
     window()->resetOpenGLState();

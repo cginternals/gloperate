@@ -97,7 +97,6 @@ protected:
     float                       m_devicePixelRatio; ///< Number of device pixels per virtual pixel
     bool                        m_initialized;      ///< 'true' if the canvas has been initialized, else 'false'
     QString                     m_stage;            ///< Name of the render stage to use
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO;
 };
 
 

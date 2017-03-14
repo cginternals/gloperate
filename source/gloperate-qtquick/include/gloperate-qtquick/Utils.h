@@ -35,6 +35,16 @@ public:
 
     /**
     *  @brief
+    *    Registers current context for globjects.
+    *
+    *  @remarks
+    *    This function is necessary to handle the deletion of the QML objects
+    *    From the main thread instead of the QSGRenderThread.
+    */
+    static void registerGlobjectsContext();
+
+    /**
+    *  @brief
     *    Clear screen (call glClear)
     *
     *  @param[in] red

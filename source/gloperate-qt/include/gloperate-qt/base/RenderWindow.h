@@ -6,11 +6,6 @@
 #include <gloperate-qt/base/OpenGLWindow.h>
 
 
-namespace globjects
-{
-    class Framebuffer;
-}
-
 namespace gloperate
 {
     class Environment;
@@ -96,7 +91,6 @@ protected:
 protected:
     gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
     std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that renders onto the window (must NOT be null)
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO;
 };
 
 
