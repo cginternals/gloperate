@@ -3,10 +3,11 @@
 
 
 #include <algorithm>
-#include <fstream>
 
 #include <cppassist/fs/FilePath.h>
 #include <cppassist/fs/readfile.h>
+#include <cppassist/fs/RawFile.h>
+#include <cppassist/fs/DescriptiveRawFile.h>
 
 #include <cppexpose/variant/Variant.h>
 
@@ -15,7 +16,6 @@
 #include <globjects/Texture.h>
 
 
-#include <RawFile.h>
 #include <FileNameSuffix.h>
 
 
@@ -76,8 +76,8 @@ globjects::Texture * GlrawTextureLoader::load(const std::string & filename, cons
 
 globjects::Texture * GlrawTextureLoader::loadGLRawImage(const std::string & filename) const
 {
-    glraw::RawFile rawFile(filename);
-    if (!rawFile.isValid())
+    cppassist::DescriptiveRawFile rawFile;
+    if (!rawFile.load(filename))
         return nullptr;
 
     const int w = rawFile.intProperty("width");
@@ -127,8 +127,8 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
         return nullptr;
 
     //read file
-    glraw::RawFile rawFile{filename,false};
-    if (!rawFile.isValid())
+    cppassist::RawFile rawFile;
+    if (!rawFile.load(filename))
         return nullptr;
 
     globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);

@@ -29,13 +29,11 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
     ${include_path}/GlrawTextureLoader.h
-    ${include_path}/RawFile.h
     ${include_path}/FileNameSuffix.h
 )
 
 set(sources
     ${source_path}/GlrawTextureLoader.cpp
-    ${source_path}/RawFile.cpp
     ${source_path}/FileNameSuffix.cpp
     ${source_path}/plugin.cpp
 )
