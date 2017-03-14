@@ -3,6 +3,8 @@
 
 #include <glm/vec2.hpp>
 
+#include <cppassist/memory/make_unique.h>
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/baselogging.h>
@@ -97,7 +99,7 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
     for (unsigned int i = 0; i < length; ++i)
     {
         m_canvas->environment()->update(timeDelta);
-        m_canvas->onRender(m_fbo);
+        m_canvas->onRender(m_fbo.get());
 
         m_fbo_quad->bind(gl::GL_FRAMEBUFFER);
 
@@ -149,14 +151,12 @@ void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::F
     auto height = m_parameters.at("height").toULongLong();
     auto viewport = glm::vec4(0, 0, width, height);
 
-    m_canvas->onRender(m_fbo);
+    m_canvas->onRender(m_fbo.get());
 
     auto destVP = m_canvas->savedDeviceViewport();
 
     std::array<gl::GLint, 4> srcRect = {{int(viewport.x), int(viewport.y), int(viewport.z), int(viewport.w)}};
     std::array<gl::GLint, 4> destRect = {{int(destVP.x), int(destVP.y), int(destVP.z), int(destVP.w)}};
-
-    if (!targetFBO) targetFBO = globjects::Framebuffer::defaultFBO();
 
     m_fbo->blit(gl::GL_COLOR_ATTACHMENT0, srcRect, targetFBO, gl::GL_COLOR_ATTACHMENT0, destRect, gl::GL_COLOR_BUFFER_BIT, gl::GL_LINEAR);
     
@@ -251,24 +251,24 @@ void FFMPEGVideoExporter::createAndSetupGeometry()
         glm::vec2( -1.f, -1.f ),
         glm::vec2( -1.f, +1.f ) } };
         
-    m_fbo = new Framebuffer();
+    m_fbo = cppassist::make_unique<Framebuffer>();
     m_color = Texture::createDefault(gl::GL_TEXTURE_2D);
-    m_depth = new Renderbuffer();
-    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color);
-    m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
+    m_depth = cppassist::make_unique<Renderbuffer>();
+    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color.get());
+    m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth.get());
 
-    m_fbo_quad = new Framebuffer();
+    m_fbo_quad = cppassist::make_unique<Framebuffer>();
     m_color_quad = Texture::createDefault(gl::GL_TEXTURE_2D);
-    m_depth_quad = new Renderbuffer();
-    m_fbo_quad->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color_quad);
-    m_fbo_quad->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth_quad);
+    m_depth_quad = cppassist::make_unique<Renderbuffer>();
+    m_fbo_quad->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color_quad.get());
+    m_fbo_quad->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth_quad.get());
     
-    m_vao = new VertexArray;
-    auto buffer = new Buffer();
-    buffer->setData(raw, gl::GL_STATIC_DRAW); //needed for some drivers
+    m_vao = cppassist::make_unique<VertexArray>();
+    m_buffer = cppassist::make_unique<Buffer>();
+    m_buffer->setData(raw, gl::GL_STATIC_DRAW); //needed for some drivers
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(buffer, 0, sizeof(glm::vec2));
+    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 }
@@ -285,7 +285,7 @@ void FFMPEGVideoExporter::createAndSetupShader()
 
     auto vertexShader   = new Shader(gl::GL_VERTEX_SHADER,   vertexShaderSource);
     auto fragmentShader = new Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
-    m_program = new Program();
+    m_program = cppassist::make_unique<Program>();
     m_program->attach(vertexShader, fragmentShader);
     m_program->setUniform("source", 0);
 }

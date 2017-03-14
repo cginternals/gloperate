@@ -41,7 +41,7 @@ int main(int argc, char * argv[])
 
     // Create scripting context backend
     environment.setupScripting(
-        new gloperate_qtquick::QmlScriptContext(&qmlEngine)
+        cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&qmlEngine)
     );
 
     // Load and show QML

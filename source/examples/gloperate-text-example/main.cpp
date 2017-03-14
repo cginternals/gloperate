@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
     QmlEngine qmlEngine(&environment);
 
     // Create scripting context backend
-    environment.setupScripting(new gloperate_qtquick::QmlScriptContext(&qmlEngine));
+    environment.setupScripting(cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&qmlEngine));
 
     // Load and show QML
     auto window = new QuickView(&qmlEngine);

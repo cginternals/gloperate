@@ -79,7 +79,7 @@ public:
     *  @param[in] contextHandling
     *    Defines whether the exporter will activate and later release the OpenGL context
     *  @param[in] targetFBO
-    *    Target FBO on which should be rendered in addition to the video FBO
+    *    Target FBO on which should be rendered in addition to the video FBO (must not be 'null')
     */
     virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO, bool shouldFinalize = false) = 0;
 
