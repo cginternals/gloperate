@@ -42,7 +42,7 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
 , m_spinningRectStage(cppassist::make_unique<SpinningRectStage>(environment, "SpinningRectStage"))
 , m_textureStage1(cppassist::make_unique<TextureStage>(environment, "TextureStage1"))
 , m_textureStage2(cppassist::make_unique<TextureStage>(environment, "TextureStage2"))
-, m_framebufferStage2(cppassist::make_unique<FramebufferStage>(environment, "FramebufferStage2"))
+, m_framebufferStage2(cppassist::make_unique<BasicFramebufferStage>(environment, "FramebufferStage2"))
 , m_colorizeProgramStage(cppassist::make_unique<ProgramStage>(environment, "ColorizeProgramStage"))
 , m_colorizeRenderPassStage(cppassist::make_unique<RenderPassStage>(environment, "ColorizeRenderPassStage"))
 , m_colorizeRasterizationStage(cppassist::make_unique<RasterizationStage>(environment, "ColorizeRasterizationStage"))
@@ -77,24 +77,9 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     m_spinningRectStage->texture                         << m_textureLoadStage->texture;
     m_spinningRectStage->angle                           << m_timerStage->virtualTime;
 
-    // textures 1 for 2nd frame buffer
-    addStage(m_textureStage1.get());
-    m_textureStage1->internalFormat.setValue(gl::GL_RGBA);
-    m_textureStage1->format.setValue(gl::GL_RGBA);
-    m_textureStage1->type.setValue(gl::GL_UNSIGNED_BYTE);
-    m_textureStage1->size << renderInterface.deviceViewport;
-
-    // textures 2 for 2nd frame buffer
-    addStage(m_textureStage2.get());
-    m_textureStage2->internalFormat.setValue(gl::GL_DEPTH_COMPONENT);
-    m_textureStage2->format.setValue(gl::GL_DEPTH_COMPONENT);
-    m_textureStage2->type.setValue(gl::GL_UNSIGNED_BYTE);
-    m_textureStage2->size << renderInterface.deviceViewport;
-
     // Framebuffer stage for colorized output
     addStage(m_framebufferStage2.get());
-    m_framebufferStage2->colorTexture << m_textureStage1->renderTarget;
-    m_framebufferStage2->depthTexture << m_textureStage2->renderTarget;
+    m_framebufferStage2->viewport << renderInterface.deviceViewport;
 
     shader1 = dataPath + "/gloperate/shaders/screenaligned/default.vert";
     shader2 = dataPath + "/gloperate/shaders/Demo/Colorize.frag";
@@ -104,26 +89,20 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     m_colorizeProgramStage->createInput("shader1") << shader1;
     m_colorizeProgramStage->createInput("shader2") << shader2;
 
-//    // Colorize stage
-//    addStage(m_colorizeStage);
-//    m_colorizeStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-//    m_colorizeStage->renderInterface.targetFBO      << m_framebufferStage2->fbo;
-//    m_colorizeStage->colorTexture                   << m_textureStage1->texture;
-//    m_colorizeStage->texture                        << m_spinningRectStage->colorTextureOut;
-//    m_colorizeStage->color                          << this->color;
-
     // Colorize render pass stage
     addStage(m_colorizeRenderPassStage.get());
-    //m_colorizeRenderPassStage->drawable.setValue(m_screenAlignedQuad.get());
+    // m_colorizeRenderPassStage->drawable is set in onContextInit()
     m_colorizeRenderPassStage->program << m_colorizeProgramStage->program;
     m_colorizeRenderPassStage->createInput("color") << this->color;
+    m_colorizeRenderPassStage->createInput("source") << m_spinningRectStage->colorTextureOut;
 
     // Colorize rasterization stage
+    addStage(m_colorizeRasterizationStage.get());
     m_colorizeRasterizationStage->renderInterface.targetFBO << m_framebufferStage2->fbo;
     m_colorizeRasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_colorizeRasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_colorizeRasterizationStage->renderPass << m_colorizeRenderPassStage->renderPass;
-    m_colorizeRasterizationStage->colorTexture << m_textureStage1->texture;
+    m_colorizeRasterizationStage->colorTexture << m_framebufferStage2->colorTexture;
 
     // Mixer stage
     addStage(m_mixerStage.get());
@@ -145,7 +124,7 @@ void DemoPipeline::onContextInit(AbstractGLContext *context)
 
     m_screenAlignedQuad = cppassist::make_unique<ScreenAlignedQuad>();
 
-    m_colorizeRenderPassStage->drawable.setValue(m_screenAlignedQuad.get());
+    m_colorizeRenderPassStage->drawable = m_screenAlignedQuad.get();
 }
 
 void DemoPipeline::onRotateChanged(const bool & rotate)

@@ -5,7 +5,9 @@
 
 #include <globjects/Program.h>
 #include <globjects/State.h>
- #include <globjects/Texture.h>
+#include <globjects/Texture.h>
+
+#include <gloperate/base/Color.h>
 
 #include <gloperate/rendering/RenderPass.h>
 #include <gloperate/rendering/Drawable.h>
@@ -49,13 +51,13 @@ void RenderPassStage::onContextInit(AbstractGLContext *)
 
     m_renderPass->setStateBefore(m_beforeState.get());
 
-//    m_renderPass->state()->enable(gl::GL_DEPTH_TEST);
-//    m_renderPass->state()->enable(gl::GL_CULL_FACE);
-//    m_renderPass->state()->depthFunc(gl::GL_LEQUAL);
-//    m_renderPass->state()->disable(gl::GL_BLEND);
-//    m_renderPass->state()->cullFace(gl::GL_BACK);
-//    m_renderPass->state()->frontFace(gl::GL_CCW);
-//    m_renderPass->state()->depthMask(gl::GL_TRUE);
+    m_renderPass->stateBefore()->enable(gl::GL_DEPTH_TEST);
+    m_renderPass->stateBefore()->enable(gl::GL_CULL_FACE);
+    m_renderPass->stateBefore()->depthFunc(gl::GL_LEQUAL);
+    m_renderPass->stateBefore()->disable(gl::GL_BLEND);
+    m_renderPass->stateBefore()->cullFace(gl::GL_BACK);
+    m_renderPass->stateBefore()->frontFace(gl::GL_CCW);
+    m_renderPass->stateBefore()->depthMask(gl::GL_TRUE);
 }
 
 void RenderPassStage::onProcess(AbstractGLContext *)
@@ -77,28 +79,25 @@ void RenderPassStage::onProcess(AbstractGLContext *)
     unsigned int textureIndex = 0;
     unsigned int shaderStorageBufferIndex = 0;
 
-    for (auto input : inputs()) {
-        auto textureInput = dynamic_cast<Input<globjects::Texture *> *>(input);
-        if (textureInput)
+    for (auto input : inputs<globjects::Texture *>()) {
+        (*program)->setUniform<int>(input->name(), textureIndex);
+        m_renderPass->setTexture(textureIndex, **input);
+
+        if ((**input)->target() == gl::GL_TEXTURE_CUBE_MAP)
         {
-            (*program)->setUniform<int>(textureInput->name(), textureIndex);
-            m_renderPass->setTexture(textureIndex, **textureInput);
-
-            if ((**textureInput)->target() == gl::GL_TEXTURE_CUBE_MAP)
-            {
-                (*renderPass)->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
-            }
-
-            ++textureIndex;
+            (*renderPass)->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
         }
 
-        auto bufferInput = dynamic_cast<Input<globjects::Buffer *> *>(input);
-        if (bufferInput)
-        {
-            m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, **bufferInput);
+        ++textureIndex;
+    }
+    for (auto bufferInput : inputs<globjects::Buffer *>()) {
+        m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, **bufferInput);
 
-            ++shaderStorageBufferIndex;
-        }
+        ++shaderStorageBufferIndex;
+    }
+
+    for (auto input : inputs<Color>()) {
+        (*program)->setUniform<glm::vec4>(input->name(), (*input)->toVec4());
     }
 
     for (auto setterPair : uniformSetters)
