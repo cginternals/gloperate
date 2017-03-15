@@ -25,6 +25,13 @@ auto Slot<T>::DereferenceHelper<U*>::pointer(U ** value) -> Pointer
     return *value;
 }
 
+template <typename T>
+template <typename U>
+auto Slot<T>::DereferenceHelper<U*>::pointer(U * const * value) -> const Pointer
+{
+    return *value;
+}
+
 
 template <typename T>
 Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value)
@@ -103,9 +110,9 @@ auto Slot<T>::operator->() -> typename DereferenceHelper<T>::Pointer
 }
 
 template <typename T>
-auto Slot<T>::operator->() const -> typename DereferenceHelper<const T>::Pointer
+auto Slot<T>::operator->() const -> const typename DereferenceHelper<T>::Pointer
 {
-    return DereferenceHelper<const T>::pointer(this->ptr());
+    return DereferenceHelper<T>::pointer(this->ptr());
 }
 
 template <typename T>
