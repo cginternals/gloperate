@@ -55,7 +55,7 @@ public:
     using Output = gloperate::Output<T>;
     
     // Helper class for createInput()
-    class CreateConnectedInputProxy
+    class GLOPERATE_API CreateConnectedInputProxy
     {
         friend class Stage;
     private:

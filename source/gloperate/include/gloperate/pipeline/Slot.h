@@ -42,6 +42,7 @@ protected:
     {
         using Pointer = U *;
         static Pointer pointer(U ** value);
+        static const Pointer pointer(U * const * value);
     };
     //@}
 
@@ -137,7 +138,7 @@ public:
     *    Pointer to the stored data object (non-pointer T) or the stored pointer (pointer T)
     */
     auto operator->() -> typename DereferenceHelper<T>::Pointer;
-    auto operator->() const -> typename DereferenceHelper<const T>::Pointer;
+    auto operator->() const -> const typename DereferenceHelper<T>::Pointer;
     //@}
 
     // Virtual AbstractSlot interface
