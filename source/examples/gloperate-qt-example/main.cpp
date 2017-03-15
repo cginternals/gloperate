@@ -47,6 +47,7 @@ int main(int argc, char * argv[])
 
     // Create render window
     auto window = cppassist::make_unique<RenderWindow>(&environment);
+    auto windowRaw = window.get();
     window->createContext();
     window->setRenderStage(std::move(renderStage));
 
@@ -84,14 +85,14 @@ int main(int argc, char * argv[])
     mainWindow.addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, scriptPromptDockWidget.release());
 
     // Initialize context, print context info
-    window->context()->use();
-//  window->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
+    windowRaw->context()->use();
+//  windowRaw->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
     cppassist::info() << std::endl
         << "OpenGL Version:  " << GLContextUtils::version() << std::endl
         << "OpenGL Profile:  " << GLContextUtils::profile() << std::endl
         << "OpenGL Vendor:   " << GLContextUtils::vendor() << std::endl
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
-    window->context()->release();
+    windowRaw->context()->release();
 
     // Run main loop
     return app.exec();
