@@ -105,12 +105,12 @@ void Window::destroy()
 
 const GLContext * Window::context() const
 {
-    return m_context.get();
+    return static_cast<GLContext*>(m_context.get());
 }
 
 GLContext * Window::context()
 {
-    return m_context.get();
+    return static_cast<GLContext*>(m_context.get());
 }
 
 void Window::show()
@@ -486,9 +486,7 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
 
     // Create GLFW window with OpenGL context
     GLContextFactory factory;
-    m_context = std::unique_ptr<GLContext>(
-                static_cast<GLContext*>(factory.createBestContext(format).release())
-    );
+    m_context = factory.createBestContext(format);
 
     if (!m_context)
     {
@@ -496,10 +494,10 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
     }
 
     // Check OpenGL format
-    m_context->format().verify(format);
+    static_cast<GLContext*>(m_context.get())->format().verify(format);
 
     // Get internal window
-    m_window = m_context->window();
+    m_window = static_cast<GLContext*>(m_context.get())->window();
 
     // Set window size and title
     glfwSetWindowSize (m_window, width, height);

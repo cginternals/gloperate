@@ -20,6 +20,7 @@ struct GLFWmonitor;
 namespace gloperate
 {
     class GLContextFormat;
+    class AbstractGLContext;
 }
 
 
@@ -415,7 +416,7 @@ protected:
 
 protected:
     GLFWwindow * m_window;                  ///< GLFW window (can be nullptr)
-    std::unique_ptr<GLContext>   m_context;                 ///< OpenGL context (can be nullptr)
+    std::unique_ptr<gloperate::AbstractGLContext>   m_context;                 ///< OpenGL context (can be nullptr)
     WindowMode   m_windowMode;              ///< Window mode (windowed or fullscreen)
     glm::ivec2   m_windowedModeSize;        ///< Size of window when returned from fullscreen mode
     bool         m_quitOnDestroy;           ///< Quit application when window is closed?
