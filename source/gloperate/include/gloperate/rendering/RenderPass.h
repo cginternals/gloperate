@@ -241,7 +241,7 @@ public:
     *  @brief
     *    Set program pipeline used by the render pass
     *
-    *  @param[in] program
+    *  @param[in] programPipeline
     *    Program pipeline (can be null)
     *
     *  @notes
@@ -267,7 +267,7 @@ public:
     *  @brief
     *    Get texture used by the render pass
     *
-    *  @param[in] index
+    *  @param[in] activeTextureIndex
     *    Texture index (does not need to be continuous)
     *
     *  @return
@@ -294,7 +294,7 @@ public:
     *  @brief
     *    Set texture used by the render pass
     *
-    *  @param[in] index
+    *  @param[in] activeTextureIndex
     *    Texture index (does not need to be continuous)
     *  @param[in] texture
     *    Texture (must NOT be null!)
