@@ -2,13 +2,9 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
-
 #include <cppassist/fs/FilePath.h>
 
 #include <cppexpose/plugin/plugin_api.h>
-
-#include <glbinding/gl/gl.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>

@@ -1,7 +1,7 @@
 
 #include <gloperate/stages/base/RasterizationStage.h>
 
-#include <glbinding/gl/enum.h>
+#include <glbinding/gl/gl.h>
 
 #include <globjects/Program.h>
 #include <globjects/Framebuffer.h>

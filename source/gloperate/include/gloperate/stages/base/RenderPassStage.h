@@ -2,12 +2,8 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
-
 #include <cppexpose/plugin/plugin_api.h>
 #include <cppexpose/signal/ScopedConnection.h>
-
-#include <glbinding/gl/gl.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
