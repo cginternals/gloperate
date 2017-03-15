@@ -7,9 +7,12 @@
 
 #include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>
+#include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
+
+#include <gloperate/gloperate.h>
 
 
 namespace gloperate
@@ -105,12 +108,7 @@ void ColorizeStage::setupGeometry()
 void ColorizeStage::setupProgram()
 {
     m_vSource = ScreenAlignedQuad::vertexShaderSource();
-    m_fSource = ScreenAlignedQuad::fragmentShaderSource();
-
-#ifdef __APPLE__
-    m_vSource->replace("#version 140", "#version 150");
-    m_fSource->replace("#version 140", "#version 150");
-#endif
+    m_fSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/Colorize.frag");
 
     m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vSource.get());
     m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fSource.get());

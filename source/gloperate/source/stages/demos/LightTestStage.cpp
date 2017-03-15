@@ -168,6 +168,7 @@ void LightTestStage::onContextInitialize(AbstractGLContext * /*context*/)
     m_program->setUniform("eye", cameraEye);
 
     auto dataFolderPath = dataPath();
+    // [TODO]: fix memory leak
     globjects::NamedString::create("/gloperate/shaders/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
     globjects::NamedString::create("/gloperate/shaders/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
     globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));

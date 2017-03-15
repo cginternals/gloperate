@@ -19,8 +19,10 @@ class BasicFramebufferStage;
 class TextureLoadStage;
 class ShaderStage;
 class ProgramStage;
-class DemoRenderStage;
+class DemoDrawableStage;
 class MixerStage;
+class RasterizationStage;
+class RenderPassStage;
 
 
 /**
@@ -71,16 +73,19 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<TextureLoadStage>      m_textureLoadStage; ///< Stage that loads a static picture
+    std::unique_ptr<TextureLoadStage> m_textureLoadStage;  ///< Stage that loads a static picture
 
-    std::unique_ptr<ShaderStage>           m_shaderStage;      ///< Stage which loads one shader
+    std::unique_ptr<ShaderStage> m_shaderStage;      ///< Stage which loads one shader
 
-    std::unique_ptr<ProgramStage>          m_programStage;     ///< Stage which creates the program
+    std::unique_ptr<ProgramStage> m_programStage;     ///< Stage which creates the program
 
-    std::unique_ptr<BasicFramebufferStage> m_framebufferStage; ///< Stage which creates the framebuffer
-    std::unique_ptr<DemoRenderStage>       m_renderStage;      ///< Stage that renders with the program
+    std::unique_ptr<BasicFramebufferStage> m_framebufferStage;  ///< Stage which creates the framebuffer
+    std::unique_ptr<DemoDrawableStage> m_demoDrawableStage; ///< Stage which creates the drawable
 
-    std::unique_ptr<MixerStage>            m_mixerStage;       ///< Stage that renders the output to the screen
+    std::unique_ptr<RenderPassStage>       m_renderPassStage;   ///< Stage which creates the render pass
+    std::unique_ptr<RasterizationStage>    m_rasterizationStage;///< Stage which renders the scene
+
+    std::unique_ptr<MixerStage> m_mixerStage;        ///< Stage that renders the output to the screen
 };
 
 

@@ -120,6 +120,8 @@ set(headers
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/base/ShaderStage.h
+    ${include_path}/stages/base/RenderPassStage.h
+    ${include_path}/stages/base/RasterizationStage.h
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/demos/DemoStage.h
     ${include_path}/stages/demos/DemoPipeline.h
@@ -136,6 +138,7 @@ set(headers
     ${include_path}/stages/demos/DemoMultiFramePipeline.h
     ${include_path}/stages/demos/SpinningRectStage.h
     ${include_path}/stages/demos/DemoRenderStage.h
+    ${include_path}/stages/demos/DemoDrawableStage.h
     ${include_path}/stages/demos/TimerStage.h
     ${include_path}/stages/demos/ColorizeStage.h
     ${include_path}/stages/demos/LightTestStage.h
@@ -221,6 +224,8 @@ set(sources
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/ShaderStage.cpp
+    ${source_path}/stages/base/RenderPassStage.cpp
+    ${source_path}/stages/base/RasterizationStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
@@ -244,6 +249,7 @@ set(sources
     ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
     ${source_path}/stages/demos/SpinningRectStage.cpp
     ${source_path}/stages/demos/DemoRenderStage.cpp
+    ${source_path}/stages/demos/DemoDrawableStage.cpp
     ${source_path}/stages/demos/TimerStage.cpp
     ${source_path}/stages/demos/ColorizeStage.cpp
     ${source_path}/stages/demos/LightTestStage.cpp

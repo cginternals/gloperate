@@ -73,7 +73,7 @@ FFMPEGVideoExporter::FFMPEGVideoExporter()
 FFMPEGVideoExporter::~FFMPEGVideoExporter()
 {
     delete m_videoEncoder;
-    if (m_image) delete m_image;
+    delete m_image;
 }
 
 void FFMPEGVideoExporter::setTarget(gloperate::AbstractCanvas * canvas, const cppexpose::VariantMap & parameters)
