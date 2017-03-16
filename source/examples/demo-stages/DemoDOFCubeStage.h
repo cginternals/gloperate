@@ -18,15 +18,11 @@
 #include <demo-stages/demo-stages_api.h>
 
 
-namespace gloperate
-{
-
-
 /**
 *  @brief
 *    Demo stage that renders a static cube onto the screen
 */
-class DEMO_STAGES_API DemoDOFCubeStage : public Stage
+class DEMO_STAGES_API DemoDOFCubeStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -42,10 +38,10 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<glm::vec2> dofShift;       ///< DOF shift for multiframe rendering
+    Input<glm::vec2>           dofShift;        ///< DOF shift for multiframe rendering
 
 
 public:
@@ -58,7 +54,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoDOFCubeStage(Environment * environment, const std::string & name = "DemoDOFCubeStage");
+    DemoDOFCubeStage(gloperate::Environment * environment, const std::string & name = "DemoDOFCubeStage");
 
     /**
     *  @brief
@@ -69,9 +65,9 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
     void setupGeometry();
@@ -86,6 +82,3 @@ protected:
     std::unique_ptr<globjects::Shader>      m_vertexShader;
     std::unique_ptr<globjects::Shader>      m_fragmentShader;
 };
-
-
-} // namespace gloperate

@@ -21,15 +21,13 @@
 
 namespace globjects
 {
+
 class Texture;
+
 } // namespace globjects
 
 
-namespace gloperate
-{
-
-
-class DEMO_STAGES_API LightTestStage : public Stage
+class DEMO_STAGES_API LightTestStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -44,7 +42,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface;                  ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface;                  ///< Interface for rendering into a viewer
 
     // Inputs
     Input<float> glossiness;                          ///< Glossiness of the cube (0.0 to 1.0)
@@ -64,7 +62,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    LightTestStage(Environment * environment, const std::string & name = "LightTestStage");
+    LightTestStage(gloperate::Environment * environment, const std::string & name = "LightTestStage");
 
     /**
     *  @brief
@@ -74,8 +72,8 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onContextInitialize(AbstractGLContext * context);
-    virtual void onProcess(AbstractGLContext * context);
+    virtual void onContextInitialize(gloperate::AbstractGLContext * context);
+    virtual void onProcess(gloperate::AbstractGLContext * context);
 
 protected:
     // Rendering objects
@@ -85,6 +83,3 @@ protected:
     std::unique_ptr<globjects::Shader>      m_vertexShader;
     std::unique_ptr<globjects::Shader>      m_fragmentShader;
 };
-
-
-} // namespace gloperate

@@ -18,15 +18,11 @@
 #include <demo-stages/demo-stages_api.h>
 
 
-namespace gloperate
-{
-
-
 /**
 *  @brief
 *    Demo stage that renders a static triangle onto the screen
 */
-class DEMO_STAGES_API DemoAntialiasableTriangleStage : public Stage
+class DEMO_STAGES_API DemoAntialiasableTriangleStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -42,10 +38,10 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<glm::vec2> subpixelOffset; ///< Subpixel offset for multiframe antialiasing
+    Input<glm::vec2>           subpixelOffset;  ///< Subpixel offset for multiframe antialiasing
 
 
 public:
@@ -58,7 +54,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoAntialiasableTriangleStage(Environment * environment, const std::string & name = "DemoAntialiasableTriangleStage");
+    DemoAntialiasableTriangleStage(gloperate::Environment * environment, const std::string & name = "DemoAntialiasableTriangleStage");
 
     /**
     *  @brief
@@ -69,10 +65,10 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
-    virtual void onInputValueChanged(AbstractSlot * slot) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onInputValueChanged(gloperate::AbstractSlot * slot) override;
 
     // Helper functions
     void setupGeometry();
@@ -87,6 +83,3 @@ protected:
     std::unique_ptr<globjects::Shader>      m_vertexShader;
     std::unique_ptr<globjects::Shader>      m_fragmentShader;
 };
-
-
-} // namespace gloperate

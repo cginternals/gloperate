@@ -15,9 +15,12 @@
 namespace gloperate
 {
 
-
 class LightCreationStage;
 class LightBufferTextureStage;
+
+}
+
+
 class LightTestStage;
 class TimerStage;
 
@@ -26,7 +29,7 @@ class TimerStage;
 *  @brief
 *    Pipeline that renders a rotating cube illuminated by 3 light sources
 */
-class DEMO_STAGES_API LightTestPipeline : public Pipeline
+class DEMO_STAGES_API LightTestPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -41,26 +44,26 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface;    ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface;    ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<float> glossiness;            ///< Glossiness of the cube (0.0 to 1.0)
+    Input<float> glossiness;                       ///< Glossiness of the cube (0.0 to 1.0)
 
-    Input<int> lightType1;              ///< Type of 1st light
-    Input<int> lightType2;              ///< Type of 2nd light
-    Input<int> lightType3;              ///< Type of 3rd light
+    Input<int> lightType1;                         ///< Type of 1st light
+    Input<int> lightType2;                         ///< Type of 2nd light
+    Input<int> lightType3;                         ///< Type of 3rd light
 
-    Input<glm::vec3> lightColor1;       ///< Color of 1st light
-    Input<glm::vec3> lightColor2;       ///< Color of 2nd light
-    Input<glm::vec3> lightColor3;       ///< Color of 3rd light
+    Input<glm::vec3> lightColor1;                  ///< Color of 1st light
+    Input<glm::vec3> lightColor2;                  ///< Color of 2nd light
+    Input<glm::vec3> lightColor3;                  ///< Color of 3rd light
 
-    Input<glm::vec3> lightPos1;         ///< Position/Direction of 1st light
-    Input<glm::vec3> lightPos2;         ///< Position/Direction of 2nd light
-    Input<glm::vec3> lightPos3;         ///< Position/Direction of 3rd light
+    Input<glm::vec3> lightPos1;                    ///< Position/Direction of 1st light
+    Input<glm::vec3> lightPos2;                    ///< Position/Direction of 2nd light
+    Input<glm::vec3> lightPos3;                    ///< Position/Direction of 3rd light
 
-    Input<glm::vec3> lightAttenuation1; ///< Attenuation coefficients of 1st light
-    Input<glm::vec3> lightAttenuation2; ///< Attenuation coefficients of 2nd light
-    Input<glm::vec3> lightAttenuation3; ///< Attenuation coefficients of 3rd light
+    Input<glm::vec3> lightAttenuation1;            ///< Attenuation coefficients of 1st light
+    Input<glm::vec3> lightAttenuation2;            ///< Attenuation coefficients of 2nd light
+    Input<glm::vec3> lightAttenuation3;            ///< Attenuation coefficients of 3rd light
 
 public:
     /**
@@ -72,7 +75,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    LightTestPipeline(Environment * environment, const std::string & name = "LightTestPipeline");
+    LightTestPipeline(gloperate::Environment * environment, const std::string & name = "LightTestPipeline");
 
     /**
     *  @brief
@@ -82,13 +85,10 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<LightCreationStage>         m_lightDefStage1;
-    std::unique_ptr<LightCreationStage>         m_lightDefStage2;
-    std::unique_ptr<LightCreationStage>         m_lightDefStage3;
-    std::unique_ptr<LightBufferTextureStage>    m_lightAccumulationStage;
-    std::unique_ptr<TimerStage>                 m_timerStage;
-    std::unique_ptr<LightTestStage>             m_renderStage;
+    std::unique_ptr<gloperate::LightCreationStage>         m_lightDefStage1;
+    std::unique_ptr<gloperate::LightCreationStage>         m_lightDefStage2;
+    std::unique_ptr<gloperate::LightCreationStage>         m_lightDefStage3;
+    std::unique_ptr<gloperate::LightBufferTextureStage>    m_lightAccumulationStage;
+    std::unique_ptr<TimerStage>                            m_timerStage;
+    std::unique_ptr<LightTestStage>                        m_renderStage;
 };
-
-
-} // namespace gloperate

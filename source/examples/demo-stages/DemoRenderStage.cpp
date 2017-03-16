@@ -26,14 +26,10 @@ static const std::array<glm::vec2, 4> s_vertices { {
     glm::vec2( -1.f, +1.f ) } };
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoRenderStage, gloperate::Stage)
 
 
-DemoRenderStage::DemoRenderStage(Environment * environment, const std::string & name)
+DemoRenderStage::DemoRenderStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
@@ -49,17 +45,17 @@ DemoRenderStage::~DemoRenderStage()
 {
 }
 
-void DemoRenderStage::onContextInit(AbstractGLContext *)
+void DemoRenderStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupCamera();
 }
 
-void DemoRenderStage::onContextDeinit(AbstractGLContext *)
+void DemoRenderStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoRenderStage::onProcess(AbstractGLContext *)
+void DemoRenderStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -136,6 +132,3 @@ void DemoRenderStage::setupCamera()
 {
     m_camera.setEye(glm::vec3(0.0, 0.0, 12.0));
 }
-
-
-} // namespace gloperate

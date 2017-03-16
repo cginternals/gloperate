@@ -15,19 +15,15 @@
 #include <gloperate/gloperate.h>
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(ColorizeStage, gloperate::Stage)
 
 
-ColorizeStage::ColorizeStage(Environment * environment, const std::string & name)
+ColorizeStage::ColorizeStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "ColorizeStage", name)
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
 , colorTexture   ("colorTexture",    this, nullptr)
-, color          ("color",           this, Color(255, 255, 255, 255))
+, color          ("color",           this, gloperate::Color(255, 255, 255, 255))
 , fboOut         ("fboOut",          this, nullptr)
 , colorTextureOut("colorTextureOut", this, nullptr)
 , m_screenAlignedQuad(nullptr)
@@ -38,17 +34,17 @@ ColorizeStage::~ColorizeStage()
 {
 }
 
-void ColorizeStage::onContextInit(AbstractGLContext *)
+void ColorizeStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void ColorizeStage::onContextDeinit(AbstractGLContext *)
+void ColorizeStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void ColorizeStage::onProcess(AbstractGLContext *)
+void ColorizeStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Activate FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
@@ -102,12 +98,12 @@ void ColorizeStage::onProcess(AbstractGLContext *)
 
 void ColorizeStage::setupGeometry()
 {
-    m_screenAlignedQuad = cppassist::make_unique<ScreenAlignedQuad>();
+    m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
 }
 
 void ColorizeStage::setupProgram()
 {
-    m_vSource = ScreenAlignedQuad::vertexShaderSource();
+    m_vSource = gloperate::ScreenAlignedQuad::vertexShaderSource();
     m_fSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/Colorize.frag");
 
     m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vSource.get());
@@ -117,6 +113,3 @@ void ColorizeStage::setupProgram()
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
     m_program->setUniform("source", 0);
 }
-
-
-} // namespace gloperate

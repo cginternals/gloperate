@@ -14,9 +14,12 @@
 namespace gloperate
 {
 
-
 class TransparencyKernelStage;
 class NoiseKernelStage;
+
+}
+
+
 class DemoTransparencyStage;
 
 
@@ -24,7 +27,7 @@ class DemoTransparencyStage;
 *  @brief
 *    Demo pipeline that renders three transparent, overlapping circles onto the screen
 */
-class DEMO_STAGES_API DemoTransparencyPipeline : public Pipeline
+class DEMO_STAGES_API DemoTransparencyPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -40,7 +43,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
 
 public:
@@ -53,7 +56,7 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoTransparencyPipeline(Environment * environment, const std::string & name = "DemoTransparencyPipeline");
+    DemoTransparencyPipeline(gloperate::Environment * environment, const std::string & name = "DemoTransparencyPipeline");
 
     /**
     *  @brief
@@ -64,10 +67,7 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<TransparencyKernelStage> m_transparencyKernelStage;  ///< Stage generating transparency kernel
-    std::unique_ptr<NoiseKernelStage>        m_noiseKernelStage;         ///< Stage generating random noise
-    std::unique_ptr<DemoTransparencyStage>   m_transparencyRenderStage;  ///< Rendering stage
+    std::unique_ptr<gloperate::TransparencyKernelStage> m_transparencyKernelStage;  ///< Stage generating transparency kernel
+    std::unique_ptr<gloperate::NoiseKernelStage>        m_noiseKernelStage;         ///< Stage generating random noise
+    std::unique_ptr<DemoTransparencyStage>              m_transparencyRenderStage;  ///< Rendering stage
 };
-
-
-} // namespace gloperate

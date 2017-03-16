@@ -9,18 +9,14 @@
 #include "DemoTransparencyPipeline.h"
 #include "DemoSSAOPipeline.h"
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoMultiFramePipeline, gloperate::Stage)
 
 
-DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const std::string & name)
+DemoMultiFramePipeline::DemoMultiFramePipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
-, m_multiFramePipeline(cppassist::make_unique<MultiFrameAggregationPipeline>(environment))
+, m_multiFramePipeline(cppassist::make_unique<gloperate::MultiFrameAggregationPipeline>(environment))
 , m_antialiasingPipeline(cppassist::make_unique<DemoAntialiasingPipeline>(environment))
 , m_dofPipeline(cppassist::make_unique<DemoDOFPipeline>(environment))
 , m_transparencyPipeline(cppassist::make_unique<DemoTransparencyPipeline>(environment))
@@ -49,6 +45,3 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const 
 DemoMultiFramePipeline::~DemoMultiFramePipeline()
 {
 }
-
-
-} // namespace gloperate

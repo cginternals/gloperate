@@ -20,31 +20,27 @@
 #include "SpinningRectStage.h"
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoPipeline, gloperate::Stage)
 
 
-DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
+DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, "DemoPipeline", name)
 , renderInterface(this)
 , texture("texture", this)
 , angle("angle", this)
 , rotate("rotate", this)
-, color("color", this, Color(255, 255, 255, 255))
+, color("color", this, gloperate::Color(255, 255, 255, 255))
 , shader1("shader1", this)
 , shader2("shader2", this)
-, m_textureLoadStage(cppassist::make_unique<TextureLoadStage>(environment, "TextureLoadStage"))
+, m_textureLoadStage(cppassist::make_unique<gloperate::TextureLoadStage>(environment, "TextureLoadStage"))
 , m_timerStage(cppassist::make_unique<TimerStage>(environment, "TimerStage"))
-, m_framebufferStage1(cppassist::make_unique<BasicFramebufferStage>(environment, "FramebufferStage1"))
+, m_framebufferStage1(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "FramebufferStage1"))
 , m_spinningRectStage(cppassist::make_unique<SpinningRectStage>(environment, "SpinningRectStage"))
-, m_framebufferStage2(cppassist::make_unique<BasicFramebufferStage>(environment, "FramebufferStage2"))
-, m_colorizeProgramStage(cppassist::make_unique<ProgramStage>(environment, "ColorizeProgramStage"))
-, m_colorizeRenderPassStage(cppassist::make_unique<RenderPassStage>(environment, "ColorizeRenderPassStage"))
-, m_colorizeRasterizationStage(cppassist::make_unique<RasterizationStage>(environment, "ColorizeRasterizationStage"))
-, m_mixerStage(cppassist::make_unique<MixerStage>(environment, "MixerStage"))
+, m_framebufferStage2(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "FramebufferStage2"))
+, m_colorizeProgramStage(cppassist::make_unique<gloperate::ProgramStage>(environment, "ColorizeProgramStage"))
+, m_colorizeRenderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "ColorizeRenderPassStage"))
+, m_colorizeRasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "ColorizeRasterizationStage"))
+, m_mixerStage(cppassist::make_unique<gloperate::MixerStage>(environment, "MixerStage"))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
@@ -116,11 +112,11 @@ DemoPipeline::~DemoPipeline()
 {
 }
 
-void DemoPipeline::onContextInit(AbstractGLContext *context)
+void DemoPipeline::onContextInit(gloperate::AbstractGLContext *context)
 {
     Pipeline::onContextInit(context);
 
-    m_screenAlignedQuad = cppassist::make_unique<ScreenAlignedQuad>();
+    m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
 
     m_colorizeRenderPassStage->drawable = m_screenAlignedQuad.get();
 }
@@ -133,6 +129,3 @@ void DemoPipeline::onRotateChanged(const bool & rotate)
         m_spinningRectStage->angle << angle;
     }
 }
-
-
-} // namespace gloperate

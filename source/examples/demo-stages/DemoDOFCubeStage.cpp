@@ -84,14 +84,10 @@ void main()
 } // namespace
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoDOFCubeStage, gloperate::Stage)
 
 
-DemoDOFCubeStage::DemoDOFCubeStage(Environment * environment, const std::string & name)
+DemoDOFCubeStage::DemoDOFCubeStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , dofShift("dofShift", this, glm::vec2(0.0f))
@@ -102,17 +98,17 @@ DemoDOFCubeStage::~DemoDOFCubeStage()
 {
 }
 
-void DemoDOFCubeStage::onContextInit(AbstractGLContext *)
+void DemoDOFCubeStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoDOFCubeStage::onContextDeinit(AbstractGLContext *)
+void DemoDOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoDOFCubeStage::onProcess(AbstractGLContext *)
+void DemoDOFCubeStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -191,6 +187,3 @@ void DemoDOFCubeStage::setupProgram()
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 }
-
-
-} // namespace gloperate

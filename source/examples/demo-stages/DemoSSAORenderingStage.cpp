@@ -89,14 +89,10 @@ void main()
 } // namespace
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoSSAORenderingStage, gloperate::Stage)
 
 
-DemoSSAORenderingStage::DemoSSAORenderingStage(Environment * environment, const std::string & name)
+DemoSSAORenderingStage::DemoSSAORenderingStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , normalFBO("normalFBO", this, nullptr)
@@ -109,17 +105,17 @@ DemoSSAORenderingStage::~DemoSSAORenderingStage()
 {
 }
 
-void DemoSSAORenderingStage::onContextInit(AbstractGLContext *)
+void DemoSSAORenderingStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoSSAORenderingStage::onContextDeinit(AbstractGLContext *)
+void DemoSSAORenderingStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoSSAORenderingStage::onProcess(AbstractGLContext *)
+void DemoSSAORenderingStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -232,6 +228,3 @@ void DemoSSAORenderingStage::setupProgram()
     m_normalProgram = cppassist::make_unique<globjects::Program>();
     m_normalProgram->attach(m_vertexShader.get(), m_normalFragmentShader.get());
 }
-
-
-} // namespace gloperate

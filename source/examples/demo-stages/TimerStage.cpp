@@ -7,14 +7,10 @@
 using namespace cppassist;
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(TimerStage, gloperate::Stage)
 
 
-TimerStage::TimerStage(Environment * environment, const std::string & name)
+TimerStage::TimerStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "TimerStage", name)
 , timeDelta  ("timeDelta",   this, 0.0f)
 , virtualTime("virtualTime", this, 0.0f)
@@ -36,17 +32,14 @@ TimerStage::~TimerStage()
 {
 }
 
-void TimerStage::onContextInit(AbstractGLContext *)
+void TimerStage::onContextInit(gloperate::AbstractGLContext *)
 {
 }
 
-void TimerStage::onContextDeinit(AbstractGLContext *)
+void TimerStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void TimerStage::onProcess(AbstractGLContext *)
+void TimerStage::onProcess(gloperate::AbstractGLContext *)
 {
 }
-
-
-} // namespace gloperate

@@ -9,19 +9,15 @@
 #include "DemoSSAOPostprocessingStage.h"
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoSSAOPipeline, gloperate::Stage)
 
 
-DemoSSAOPipeline::DemoSSAOPipeline(Environment * environment, const std::string & name)
+DemoSSAOPipeline::DemoSSAOPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_colorFBOStage(cppassist::make_unique<BasicFramebufferStage>(environment, "Color FBO"))
-, m_normalFBOStage(cppassist::make_unique<BasicFramebufferStage>(environment, "Normal FBO"))
-, m_kernelStage(cppassist::make_unique<SSAOKernelStage>(environment))
+, m_colorFBOStage(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "Color FBO"))
+, m_normalFBOStage(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "Normal FBO"))
+, m_kernelStage(cppassist::make_unique<gloperate::SSAOKernelStage>(environment))
 , m_renderingStage(cppassist::make_unique<DemoSSAORenderingStage>(environment))
 , m_postprocessingStage(cppassist::make_unique<DemoSSAOPostprocessingStage>(environment))
 {
@@ -67,6 +63,3 @@ DemoSSAOPipeline::DemoSSAOPipeline(Environment * environment, const std::string 
 DemoSSAOPipeline::~DemoSSAOPipeline()
 {
 }
-
-
-} // namespace gloperate

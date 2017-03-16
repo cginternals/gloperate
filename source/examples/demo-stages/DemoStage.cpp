@@ -53,14 +53,10 @@ static const char * s_fragmentShader = R"(
 )";
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
 
 
-DemoStage::DemoStage(Environment * environment, const std::string & name)
+DemoStage::DemoStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "DemoStage", name)
 , renderInterface(this)
 , m_timer(environment)
@@ -84,7 +80,7 @@ DemoStage::~DemoStage()
 {
 }
 
-void DemoStage::onContextInit(AbstractGLContext *)
+void DemoStage::onContextInit(gloperate::AbstractGLContext *)
 {
     globjects::init();
 
@@ -93,11 +89,11 @@ void DemoStage::onContextInit(AbstractGLContext *)
     createAndSetupGeometry();
 }
 
-void DemoStage::onContextDeinit(AbstractGLContext *)
+void DemoStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoStage::onProcess(AbstractGLContext *)
+void DemoStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -226,6 +222,3 @@ void DemoStage::createAndSetupGeometry()
 
     m_program->setUniform("source", 0);
 }
-
-
-} // namespace gloperate

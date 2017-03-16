@@ -19,15 +19,11 @@
 #include <demo-stages/demo-stages_api.h>
 
 
-namespace gloperate
-{
-
-
 /**
 *  @brief
 *    Demo stage that applies SSAO to an image
 */
-class DEMO_STAGES_API DemoSSAOPostprocessingStage : public Stage
+class DEMO_STAGES_API DemoSSAOPostprocessingStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -43,7 +39,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface  renderInterface;  ///< Interface for rendering into a viewer
 
     // Inputs
     Input<globjects::Texture *> colorTexture;     ///< Color texture of the scene
@@ -68,7 +64,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoSSAOPostprocessingStage(Environment * environment, const std::string & name = "DemoSSAOPostprocessingStage");
+    DemoSSAOPostprocessingStage(gloperate::Environment * environment, const std::string & name = "DemoSSAOPostprocessingStage");
 
     /**
     *  @brief
@@ -79,9 +75,9 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
     void setupGeometry();
@@ -97,6 +93,3 @@ protected:
     std::unique_ptr<globjects::Shader>      m_fragmentShader;
     std::unique_ptr<globjects::NamedString> m_ssaoFileNamedString;
 };
-
-
-} // namespace gloperate

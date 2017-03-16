@@ -8,14 +8,10 @@
 #include "TimerStage.h"
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(LightTestPipeline, gloperate::Stage)
 
 
-LightTestPipeline::LightTestPipeline(Environment * environment, const std::string & name)
+LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, "LightTestPipeline", name)
 , renderInterface(this)
 , glossiness("glossiness", this)
@@ -31,10 +27,10 @@ LightTestPipeline::LightTestPipeline(Environment * environment, const std::strin
 , lightAttenuation1("lightAttenuation1", this)
 , lightAttenuation2("lightAttenuation2", this)
 , lightAttenuation3("lightAttenuation3", this)
-, m_lightDefStage1(cppassist::make_unique<LightCreationStage>(environment))
-, m_lightDefStage2(cppassist::make_unique<LightCreationStage>(environment))
-, m_lightDefStage3(cppassist::make_unique<LightCreationStage>(environment))
-, m_lightAccumulationStage(cppassist::make_unique<LightBufferTextureStage>(environment))
+, m_lightDefStage1(cppassist::make_unique<gloperate::LightCreationStage>(environment))
+, m_lightDefStage2(cppassist::make_unique<gloperate::LightCreationStage>(environment))
+, m_lightDefStage3(cppassist::make_unique<gloperate::LightCreationStage>(environment))
+, m_lightAccumulationStage(cppassist::make_unique<gloperate::LightBufferTextureStage>(environment))
 , m_timerStage(cppassist::make_unique<TimerStage>(environment))
 , m_renderStage(cppassist::make_unique<LightTestStage>(environment))
 {
@@ -101,6 +97,3 @@ LightTestPipeline::LightTestPipeline(Environment * environment, const std::strin
 LightTestPipeline::~LightTestPipeline()
 {
 }
-
-
-} // namespace gloperate

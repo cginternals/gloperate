@@ -18,10 +18,6 @@
 #include <demo-stages/demo-stages_api.h>
 
 
-namespace gloperate
-{
-
-
 /**
 *  @brief
 *    Demo stage that renders a rotating rectangle onto the screen
@@ -29,7 +25,7 @@ namespace gloperate
 *  @remarks
 *    This stage is part of the DemoPipeline
 */
-class DEMO_STAGES_API DemoRenderStage : public Stage
+class DEMO_STAGES_API DemoRenderStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -45,7 +41,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface                  renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface       renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
     Input<globjects::Texture *>      texture;         ///< Texture object
@@ -68,7 +64,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoRenderStage(Environment * environment, const std::string & name = "RenderStage");
+    DemoRenderStage(gloperate::Environment * environment, const std::string & name = "RenderStage");
 
     /**
     *  @brief
@@ -79,9 +75,9 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
     void setupGeometry();
@@ -94,6 +90,3 @@ protected:
     std::unique_ptr<globjects::VertexArray> m_vao;
     std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
 };
-
-
-} // namespace gloperate

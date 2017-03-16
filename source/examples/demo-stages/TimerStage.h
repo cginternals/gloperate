@@ -13,10 +13,6 @@
 #include <demo-stages/demo-stages_api.h>
 
 
-namespace gloperate
-{
-
-
 /**
 *  @brief
 *    Demo stage that creates a constant timer
@@ -24,7 +20,7 @@ namespace gloperate
 *  @remarks
 *    This stage is part of the DemoPipeline
 */
-class DEMO_STAGES_API TimerStage : public Stage
+class DEMO_STAGES_API TimerStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -56,7 +52,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    TimerStage(Environment * environment, const std::string & name = "");
+    TimerStage(gloperate::Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
@@ -67,18 +63,15 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
 
 protected:
     // Tools
-    Timer m_timer;
+    gloperate::Timer m_timer;
 
     // Status
     float m_time;   ///< Virtual time (in seconds)
 };
-
-
-} // namespace gloperate

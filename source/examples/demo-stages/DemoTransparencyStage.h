@@ -18,15 +18,11 @@
 #include <demo-stages/demo-stages_api.h>
 
 
-namespace gloperate
-{
-
-
 /**
 *  @brief
 *    Demo stage that renders three transparent, overlapping circles onto the screen
 */
-class DEMO_STAGES_API DemoTransparencyStage : public Stage
+class DEMO_STAGES_API DemoTransparencyStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -42,7 +38,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
     Input<globjects::Texture *> transparencyKernel; ///< Transparency kernel for multiframe rendering
@@ -59,7 +55,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoTransparencyStage(Environment * environment, const std::string & name = "DemoTransparencyStage");
+    DemoTransparencyStage(gloperate::Environment * environment, const std::string & name = "DemoTransparencyStage");
 
     /**
     *  @brief
@@ -70,9 +66,9 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
     void setupGeometry();
@@ -87,6 +83,3 @@ protected:
     std::unique_ptr<globjects::Shader>      m_vertexShader;
     std::unique_ptr<globjects::Shader>      m_fragmentShader;
 };
-
-
-} // namespace gloperate

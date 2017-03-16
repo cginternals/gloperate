@@ -9,17 +9,13 @@
 #include "DemoAntialiasableTriangleStage.h"
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoAntialiasingPipeline, gloperate::Stage)
 
 
-DemoAntialiasingPipeline::DemoAntialiasingPipeline(Environment * environment, const std::string & name)
+DemoAntialiasingPipeline::DemoAntialiasingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_subpixelStage(cppassist::make_unique<SubpixelAntialiasingOffsetStage>(environment))
+, m_subpixelStage(cppassist::make_unique<gloperate::SubpixelAntialiasingOffsetStage>(environment))
 , m_triangleStage(cppassist::make_unique<DemoAntialiasableTriangleStage>(environment))
 {
     addStage(m_subpixelStage.get());
@@ -41,6 +37,3 @@ DemoAntialiasingPipeline::DemoAntialiasingPipeline(Environment * environment, co
 DemoAntialiasingPipeline::~DemoAntialiasingPipeline()
 {
 }
-
-
-} // namespace gloperate

@@ -14,9 +14,12 @@
 namespace gloperate
 {
 
-
 class BasicFramebufferStage;
 class SSAOKernelStage;
+
+}
+
+
 class DemoSSAORenderingStage;
 class DemoSSAOPostprocessingStage;
 
@@ -25,7 +28,7 @@ class DemoSSAOPostprocessingStage;
 *  @brief
 *    Demo pipeline that renders a simple scene onto the screen
 */
-class DEMO_STAGES_API DemoSSAOPipeline : public Pipeline
+class DEMO_STAGES_API DemoSSAOPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -41,7 +44,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
 
 public:
@@ -54,7 +57,7 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoSSAOPipeline(Environment * environment, const std::string & name = "DemoSSAOPipeline");
+    DemoSSAOPipeline(gloperate::Environment * environment, const std::string & name = "DemoSSAOPipeline");
 
     /**
     *  @brief
@@ -65,12 +68,9 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<BasicFramebufferStage>       m_colorFBOStage;       ///< Color buffer
-    std::unique_ptr<BasicFramebufferStage>       m_normalFBOStage;      ///< Normal buffer
-    std::unique_ptr<SSAOKernelStage>             m_kernelStage;         ///< Stage generating SSAO kernel
-    std::unique_ptr<DemoSSAORenderingStage>      m_renderingStage;      ///< Rendering stage
-    std::unique_ptr<DemoSSAOPostprocessingStage> m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
+    std::unique_ptr<gloperate::BasicFramebufferStage> m_colorFBOStage;       ///< Color buffer
+    std::unique_ptr<gloperate::BasicFramebufferStage> m_normalFBOStage;      ///< Normal buffer
+    std::unique_ptr<gloperate::SSAOKernelStage>       m_kernelStage;         ///< Stage generating SSAO kernel
+    std::unique_ptr<DemoSSAORenderingStage>           m_renderingStage;      ///< Rendering stage
+    std::unique_ptr<DemoSSAOPostprocessingStage>      m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
 };
-
-
-} // namespace gloperate

@@ -19,14 +19,10 @@ static const std::array<glm::vec2, 4> s_vertices { {
     glm::vec2( -1.f, +1.f ) } };
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoDrawableStage, gloperate::Stage)
 
 
-DemoDrawableStage::DemoDrawableStage(Environment * environment, const std::string & name)
+DemoDrawableStage::DemoDrawableStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "DemoDrawableStage", name)
 , drawable("drawable", this, nullptr)
 {
@@ -36,11 +32,11 @@ DemoDrawableStage::~DemoDrawableStage()
 {
 }
 
-void DemoDrawableStage::onContextInit(AbstractGLContext *)
+void DemoDrawableStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_drawable = cppassist::make_unique<Drawable>();
+    m_drawable = cppassist::make_unique<gloperate::Drawable>();
     m_drawable->setPrimitiveMode(gl::GL_TRIANGLE_STRIP);
-    m_drawable->setDrawMode(DrawMode::Arrays);
+    m_drawable->setDrawMode(gloperate::DrawMode::Arrays);
 
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
     m_vertexBuffer->setData(s_vertices, gl::GL_STATIC_DRAW);
@@ -56,14 +52,11 @@ void DemoDrawableStage::onContextInit(AbstractGLContext *)
     m_drawable->setSize(s_vertices.size());
 }
 
-void DemoDrawableStage::onContextDeinit(AbstractGLContext *)
+void DemoDrawableStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoDrawableStage::onProcess(AbstractGLContext *)
+void DemoDrawableStage::onProcess(gloperate::AbstractGLContext *)
 {
     drawable.setValue(m_drawable.get());
 }
-
-
-} // namespace gloperate

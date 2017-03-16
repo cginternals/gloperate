@@ -14,8 +14,11 @@
 namespace gloperate
 {
 
-
 class SubpixelAntialiasingOffsetStage;
+
+}
+
+
 class DemoAntialiasableTriangleStage;
 
 
@@ -23,7 +26,7 @@ class DemoAntialiasableTriangleStage;
 *  @brief
 *    Demo pipeline that renders a static triangle onto the screen
 */
-class DEMO_STAGES_API DemoAntialiasingPipeline : public Pipeline
+class DEMO_STAGES_API DemoAntialiasingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -39,7 +42,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
 
 public:
@@ -52,7 +55,7 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoAntialiasingPipeline(Environment * environment, const std::string & name = "DemoAntialiasingPipeline");
+    DemoAntialiasingPipeline(gloperate::Environment * environment, const std::string & name = "DemoAntialiasingPipeline");
 
     /**
     *  @brief
@@ -63,9 +66,6 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<SubpixelAntialiasingOffsetStage> m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
-    std::unique_ptr<DemoAntialiasableTriangleStage>  m_triangleStage;  ///< Rendering stage
+    std::unique_ptr<gloperate::SubpixelAntialiasingOffsetStage> m_subpixelStage; ///< Stage generating subpixel offset for antialiasing
+    std::unique_ptr<DemoAntialiasableTriangleStage>             m_triangleStage; ///< Rendering stage
 };
-
-
-} // namespace gloperate

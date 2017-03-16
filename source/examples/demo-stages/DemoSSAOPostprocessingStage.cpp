@@ -102,14 +102,10 @@ void main()
 } // namespace
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoSSAOPostprocessingStage, gloperate::Stage)
 
 
-DemoSSAOPostprocessingStage::DemoSSAOPostprocessingStage(Environment * environment, const std::string & name)
+DemoSSAOPostprocessingStage::DemoSSAOPostprocessingStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , colorTexture("colorTexture", this, nullptr)
@@ -127,17 +123,17 @@ DemoSSAOPostprocessingStage::~DemoSSAOPostprocessingStage()
 {
 }
 
-void DemoSSAOPostprocessingStage::onContextInit(AbstractGLContext *)
+void DemoSSAOPostprocessingStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoSSAOPostprocessingStage::onContextDeinit(AbstractGLContext *)
+void DemoSSAOPostprocessingStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoSSAOPostprocessingStage::onProcess(AbstractGLContext *)
+void DemoSSAOPostprocessingStage::onProcess(gloperate::AbstractGLContext *)
 {
     if (!(*colorTexture && *normalTexture && *depthTexture && *ssaoKernel && *ssaoNoise))
     {
@@ -236,6 +232,3 @@ void DemoSSAOPostprocessingStage::setupProgram()
     m_program->setUniform("ssaoNoiseTexture", 4);
 
 }
-
-
-} // namespace gloperate

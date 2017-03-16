@@ -14,8 +14,10 @@
 namespace gloperate
 {
 
-
 class MultiFrameDiscDistributionStage;
+
+}
+
 class DemoDOFCubeStage;
 
 
@@ -23,7 +25,7 @@ class DemoDOFCubeStage;
 *  @brief
 *    Demo pipeline that renders a static cube onto the screen
 */
-class DEMO_STAGES_API DemoDOFPipeline : public Pipeline
+class DEMO_STAGES_API DemoDOFPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -39,7 +41,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
 
 public:
@@ -52,7 +54,7 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoDOFPipeline(Environment * environment, const std::string & name = "DemoDOFPipeline");
+    DemoDOFPipeline(gloperate::Environment * environment, const std::string & name = "DemoDOFPipeline");
 
     /**
     *  @brief
@@ -63,9 +65,6 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<MultiFrameDiscDistributionStage> m_dofShiftStage;  ///< Stage generating DOF shift
-    std::unique_ptr<DemoDOFCubeStage>                m_cubeStage;      ///< Rendering stage
+    std::unique_ptr<gloperate::MultiFrameDiscDistributionStage> m_dofShiftStage;  ///< Stage generating DOF shift
+    std::unique_ptr<DemoDOFCubeStage>                           m_cubeStage;      ///< Rendering stage
 };
-
-
-} // namespace gloperate

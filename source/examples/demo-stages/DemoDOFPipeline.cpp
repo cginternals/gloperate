@@ -9,17 +9,13 @@
 #include "DemoDOFCubeStage.h"
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoDOFPipeline, gloperate::Stage)
 
 
-DemoDOFPipeline::DemoDOFPipeline(Environment * environment, const std::string & name)
+DemoDOFPipeline::DemoDOFPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_dofShiftStage(cppassist::make_unique<MultiFrameDiscDistributionStage>(environment))
+, m_dofShiftStage(cppassist::make_unique<gloperate::MultiFrameDiscDistributionStage>(environment))
 , m_cubeStage(cppassist::make_unique<DemoDOFCubeStage>(environment))
 {
     addStage(m_dofShiftStage.get());
@@ -41,6 +37,3 @@ DemoDOFPipeline::DemoDOFPipeline(Environment * environment, const std::string & 
 DemoDOFPipeline::~DemoDOFPipeline()
 {
 }
-
-
-} // namespace gloperate

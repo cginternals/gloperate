@@ -17,15 +17,11 @@
 #include <demo-stages/demo-stages_api.h>
 
 
-namespace gloperate
-{
-
-
 /**
 *  @brief
 *    Demo stage that renders a simple scene onto the screen
 */
-class DEMO_STAGES_API DemoSSAORenderingStage : public Stage
+class DEMO_STAGES_API DemoSSAORenderingStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -41,14 +37,14 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface;           ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<globjects::Framebuffer *> normalFBO; ///< FBO to render normals into
+    Input<globjects::Framebuffer *> normalFBO;  ///< FBO to render normals into
 
     // Outputs
-    Output<glm::mat4> projectionMatrix;        ///< Projection matrix used for rendering
-    Output<glm::mat3> normalMatrix;            ///< Normal matrix used for rendering
+    Output<glm::mat4> projectionMatrix;         ///< Projection matrix used for rendering
+    Output<glm::mat3> normalMatrix;             ///< Normal matrix used for rendering
 
 
 public:
@@ -61,7 +57,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoSSAORenderingStage(Environment * environment, const std::string & name = "DemoSSAORenderingStage");
+    DemoSSAORenderingStage(gloperate::Environment * environment, const std::string & name = "DemoSSAORenderingStage");
 
     /**
     *  @brief
@@ -72,9 +68,9 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
     void setupGeometry();
@@ -91,6 +87,3 @@ protected:
     std::unique_ptr<globjects::Shader>      m_colorFragmentShader;
     std::unique_ptr<globjects::Shader>      m_normalFragmentShader;
 };
-
-
-} // namespace gloperate

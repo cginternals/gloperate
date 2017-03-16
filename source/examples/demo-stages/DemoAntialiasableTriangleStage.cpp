@@ -50,14 +50,10 @@ static const char * s_fragmentShader = R"(
 )";
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoAntialiasableTriangleStage, gloperate::Stage)
 
 
-DemoAntialiasableTriangleStage::DemoAntialiasableTriangleStage(Environment * environment, const std::string & name)
+DemoAntialiasableTriangleStage::DemoAntialiasableTriangleStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , subpixelOffset("subpixelOffset", this, glm::vec2(0.0f))
@@ -68,17 +64,17 @@ DemoAntialiasableTriangleStage::~DemoAntialiasableTriangleStage()
 {
 }
 
-void DemoAntialiasableTriangleStage::onContextInit(AbstractGLContext *)
+void DemoAntialiasableTriangleStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoAntialiasableTriangleStage::onContextDeinit(AbstractGLContext *)
+void DemoAntialiasableTriangleStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoAntialiasableTriangleStage::onProcess(AbstractGLContext *)
+void DemoAntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -118,7 +114,7 @@ void DemoAntialiasableTriangleStage::onProcess(AbstractGLContext *)
     renderInterface.rendered.setValue(true);
 }
 
-void DemoAntialiasableTriangleStage::onInputValueChanged(AbstractSlot * /*slot*/)
+void DemoAntialiasableTriangleStage::onInputValueChanged(gloperate::AbstractSlot * /*slot*/)
 {
     renderInterface.rendered.setValid(false);
 }
@@ -152,6 +148,3 @@ void DemoAntialiasableTriangleStage::setupProgram()
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 }
-
-
-} // namespace gloperate

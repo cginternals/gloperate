@@ -15,27 +15,23 @@
 #include <cppassist/logging/logging.h>
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(ShaderDemoPipeline, gloperate::Stage)
 
 
-ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::string & name)
+ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , shader1("shader1", this)
 , shader2("shader2", this)
 , texture("texture", this)
-, m_textureLoadStage(cppassist::make_unique<TextureLoadStage>(environment, "TextureLoadStage"))
-, m_shaderStage(cppassist::make_unique<ShaderStage>(environment, "ShaderStage"))
-, m_programStage(cppassist::make_unique<ProgramStage>(environment, "ProgramStage"))
-, m_framebufferStage(cppassist::make_unique<BasicFramebufferStage>(environment, "BasicFramebufferStage"))
+, m_textureLoadStage(cppassist::make_unique<gloperate::TextureLoadStage>(environment, "TextureLoadStage"))
+, m_shaderStage(cppassist::make_unique<gloperate::ShaderStage>(environment, "ShaderStage"))
+, m_programStage(cppassist::make_unique<gloperate::ProgramStage>(environment, "ProgramStage"))
+, m_framebufferStage(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "BasicFramebufferStage"))
 , m_demoDrawableStage(cppassist::make_unique<DemoDrawableStage>(environment, "DemoDrawableStage"))
-, m_renderPassStage(cppassist::make_unique<RenderPassStage>(environment, "RenderPassStage"))
-, m_rasterizationStage(cppassist::make_unique<RasterizationStage>(environment, "RasterizationStage"))
-, m_mixerStage(cppassist::make_unique<MixerStage>(environment, "MixerStage"))
+, m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "RenderPassStage"))
+, m_rasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "RasterizationStage"))
+, m_mixerStage(cppassist::make_unique<gloperate::MixerStage>(environment, "MixerStage"))
 {
     setVerbosityLevel(cppassist::LogMessage::Debug);
 
@@ -98,5 +94,3 @@ ShaderDemoPipeline::ShaderDemoPipeline(Environment * environment, const std::str
 ShaderDemoPipeline::~ShaderDemoPipeline()
 {
 }
-
-} // namespace gloperate

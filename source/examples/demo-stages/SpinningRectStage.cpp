@@ -60,14 +60,10 @@ static const char * s_fragmentShader = R"(
 )";
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(SpinningRectStage, gloperate::Stage)
 
 
-SpinningRectStage::SpinningRectStage(Environment * environment, const std::string & name)
+SpinningRectStage::SpinningRectStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "SpinningRectStage", name)
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
@@ -82,18 +78,18 @@ SpinningRectStage::~SpinningRectStage()
 {
 }
 
-void SpinningRectStage::onContextInit(AbstractGLContext *)
+void SpinningRectStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupCamera();
     setupProgram();
 }
 
-void SpinningRectStage::onContextDeinit(AbstractGLContext *)
+void SpinningRectStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void SpinningRectStage::onProcess(AbstractGLContext *)
+void SpinningRectStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -188,6 +184,3 @@ void SpinningRectStage::setupProgram()
 
     m_program->setUniform("source", 0);
 }
-
-
-} // namespace gloperate

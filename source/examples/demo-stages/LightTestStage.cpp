@@ -105,14 +105,10 @@ static const glm::vec3 cameraEye(0.0f, -1.5f, -3.0f);
 } // namespace
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(LightTestStage, gloperate::Stage)
 
 
-LightTestStage::LightTestStage(Environment * environment, const std::string & name)
+LightTestStage::LightTestStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "LightTestStage", name)
 , renderInterface(this)
 , glossiness("glossiness", this, 0.0f)
@@ -127,7 +123,7 @@ LightTestStage::~LightTestStage()
 {
 }
 
-void LightTestStage::onContextInitialize(AbstractGLContext * /*context*/)
+void LightTestStage::onContextInitialize(gloperate::AbstractGLContext * /*context*/)
 {
     // setup Geometry
     m_vao = cppassist::make_unique<globjects::VertexArray>();
@@ -167,14 +163,14 @@ void LightTestStage::onContextInitialize(AbstractGLContext * /*context*/)
 
     m_program->setUniform("eye", cameraEye);
 
-    auto dataFolderPath = dataPath();
+    auto dataFolderPath = gloperate::dataPath();
     // [TODO]: fix memory leak
     globjects::NamedString::create("/gloperate/shaders/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
     globjects::NamedString::create("/gloperate/shaders/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
     globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
 }
 
-void LightTestStage::onProcess(AbstractGLContext * context)
+void LightTestStage::onProcess(gloperate::AbstractGLContext * context)
 {
     if (!m_program)
         onContextInitialize(context);
@@ -239,6 +235,3 @@ void LightTestStage::onProcess(AbstractGLContext * context)
     // Signal that output is valid
     renderInterface.rendered.setValue(true);
 }
-
-
-} // namespace gloperate

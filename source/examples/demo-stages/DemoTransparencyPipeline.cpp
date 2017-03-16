@@ -8,18 +8,14 @@
 #include "DemoTransparencyStage.h"
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoTransparencyPipeline, gloperate::Stage)
 
 
-DemoTransparencyPipeline::DemoTransparencyPipeline(Environment * environment, const std::string & name)
+DemoTransparencyPipeline::DemoTransparencyPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_transparencyKernelStage(cppassist::make_unique<TransparencyKernelStage>(environment))
-, m_noiseKernelStage(cppassist::make_unique<NoiseKernelStage>(environment))
+, m_transparencyKernelStage(cppassist::make_unique<gloperate::TransparencyKernelStage>(environment))
+, m_noiseKernelStage(cppassist::make_unique<gloperate::NoiseKernelStage>(environment))
 , m_transparencyRenderStage(cppassist::make_unique<DemoTransparencyStage>(environment))
 {
     addStage(m_transparencyKernelStage.get());
@@ -45,6 +41,3 @@ DemoTransparencyPipeline::DemoTransparencyPipeline(Environment * environment, co
 DemoTransparencyPipeline::~DemoTransparencyPipeline()
 {
 }
-
-
-} // namespace gloperate

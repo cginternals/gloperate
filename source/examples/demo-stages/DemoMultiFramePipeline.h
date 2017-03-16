@@ -15,8 +15,11 @@
 namespace gloperate
 {
 
-
 class MultiFrameAggregationPipeline;
+
+}
+
+
 class DemoAntialiasingPipeline;
 class DemoDOFPipeline;
 class DemoTransparencyPipeline;
@@ -27,7 +30,7 @@ class DemoSSAOPipeline;
 *  @brief
 *    Demo pipeline showing multiframe aggregation
 */
-class DEMO_STAGES_API DemoMultiFramePipeline : public Pipeline
+class DEMO_STAGES_API DemoMultiFramePipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -43,10 +46,10 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<int> multiFrameCount;      ///< Number of frames to aggregate
+    Input<int>                 multiFrameCount; ///< Number of frames to aggregate
 
 
 public:
@@ -59,7 +62,7 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoMultiFramePipeline(Environment * environment, const std::string & name = "DemoMultiFramePipeline");
+    DemoMultiFramePipeline(gloperate::Environment * environment, const std::string & name = "DemoMultiFramePipeline");
 
     /**
     *  @brief
@@ -70,14 +73,11 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
+    std::unique_ptr<gloperate::MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
 
     // Demo pipelines using multiframe effects
-    std::unique_ptr<DemoAntialiasingPipeline>      m_antialiasingPipeline;
-    std::unique_ptr<DemoDOFPipeline>               m_dofPipeline;
-    std::unique_ptr<DemoTransparencyPipeline>      m_transparencyPipeline;
-    std::unique_ptr<DemoSSAOPipeline>              m_ssaoPipeline;
+    std::unique_ptr<DemoAntialiasingPipeline>                 m_antialiasingPipeline;
+    std::unique_ptr<DemoDOFPipeline>                          m_dofPipeline;
+    std::unique_ptr<DemoTransparencyPipeline>                 m_transparencyPipeline;
+    std::unique_ptr<DemoSSAOPipeline>                         m_ssaoPipeline;
 };
-
-
-} // namespace gloperate

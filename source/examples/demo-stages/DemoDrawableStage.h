@@ -21,9 +21,10 @@
 namespace gloperate
 {
 
-
 class AbstractDrawable;
 class Drawable;
+
+}
 
 
 /**
@@ -33,7 +34,7 @@ class Drawable;
 *  @remarks
 *    This stage is part of the ShaderDemoPipeline
 */
-class DEMO_STAGES_API DemoDrawableStage : public Stage
+class DEMO_STAGES_API DemoDrawableStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -62,7 +63,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoDrawableStage(Environment * environment, const std::string & name = "DemoDrawableStage");
+    DemoDrawableStage(gloperate::Environment * environment, const std::string & name = "DemoDrawableStage");
 
     /**
     *  @brief
@@ -73,17 +74,14 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
 
 protected:
     // Rendering objects
-    std::unique_ptr<Drawable>               m_drawable;
+    std::unique_ptr<gloperate::Drawable>    m_drawable;
     std::unique_ptr<globjects::VertexArray> m_vao;
     std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
 };
-
-
-} // namespace gloperate

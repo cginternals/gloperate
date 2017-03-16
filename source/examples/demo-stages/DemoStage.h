@@ -19,15 +19,11 @@
 #include <demo-stages/demo-stages_api.h>
 
 
-namespace gloperate
-{
-
-
 /**
 *  @brief
 *    Demo stage that renders a spinning rectangle onto the screen
 */
-class DEMO_STAGES_API DemoStage : public Stage
+class DEMO_STAGES_API DemoStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -43,7 +39,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
 
 public:
@@ -56,7 +52,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoStage(Environment * environment, const std::string & name = "");
+    DemoStage(gloperate::Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
@@ -67,9 +63,9 @@ public:
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(AbstractGLContext * context) override;
-    virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
     // Helper functions
     void createAndSetupCamera();
@@ -88,12 +84,9 @@ protected:
     std::unique_ptr<globjects::Shader>          m_fragmentShader;
 
     // Tools
-    Timer m_timer;
+    gloperate::Timer m_timer;
 
     // Status
     float m_time;   ///< Virtual time (in seconds)
     float m_angle;  ///< Current angle of rotating triangle (in radians)
 };
-
-
-} // namespace gloperate

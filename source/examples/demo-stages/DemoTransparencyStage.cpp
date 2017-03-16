@@ -90,14 +90,10 @@ void main()
 } // namespace
 
 
-namespace gloperate
-{
-
-
 CPPEXPOSE_COMPONENT(DemoTransparencyStage, gloperate::Stage)
 
 
-DemoTransparencyStage::DemoTransparencyStage(Environment * environment, const std::string & name)
+DemoTransparencyStage::DemoTransparencyStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , transparencyKernel("transparencyKernel", this, nullptr)
@@ -109,17 +105,17 @@ DemoTransparencyStage::~DemoTransparencyStage()
 {
 }
 
-void DemoTransparencyStage::onContextInit(AbstractGLContext *)
+void DemoTransparencyStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoTransparencyStage::onContextDeinit(AbstractGLContext *)
+void DemoTransparencyStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoTransparencyStage::onProcess(AbstractGLContext *)
+void DemoTransparencyStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -240,6 +236,3 @@ void DemoTransparencyStage::setupProgram()
     m_program->setUniform("transparencyKernel", 0);
     m_program->setUniform("noiseKernel", 1);
 }
-
-
-} // namespace gloperate
