@@ -8,6 +8,7 @@
 #include <glm/vec4.hpp>
 
 #include <globjects/Framebuffer.h>
+#include <globjects/VertexArray.h>
 
 #include <gloperate/base/AbstractCanvas.h>
 #include <gloperate/pipeline/Stage.h>
@@ -148,6 +149,7 @@ void RenderItem::onBeforeRendering()
     m_canvas->render(defaultFBO.get());
 
     // Reset OpenGL state
+    globjects::VertexArray::unbind();
     window()->resetOpenGLState();
 }
 

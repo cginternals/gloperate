@@ -24,8 +24,8 @@ RasterizationStage::RasterizationStage(Environment * environment, const std::str
 : Stage(environment, "RasterizationStage", name)
 , renderInterface (this)
 , rasterize       ("rasterize",       this, true)
-, drawable        ("drawable",        this)
-, program         ("program",         this)
+//, drawable        ("drawable",        this)
+//, program         ("program",         this)
 , renderPass      ("renderPass",      this)
 , colorTexture    ("colorTexture",    this)
 , fboOut          ("fboOut",          this)
@@ -49,12 +49,12 @@ void RasterizationStage::onProcess(AbstractGLContext *)
     }
 
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *renderInterface.deviceViewport;
 
     gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
     // Clear background
-    glm::vec3 color = *renderInterface.backgroundColor;
+    const glm::vec3 & color = *renderInterface.backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);

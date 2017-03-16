@@ -103,6 +103,7 @@ void Drawable::drawElements(gl::GLenum mode) const
 
 void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices) const
 {
+    // [TODO]: rethink recorded vao state
     globjects::Buffer::unbind(gl::GL_ELEMENT_ARRAY_BUFFER);
 
     m_vao->drawElements(mode, count, type, indices);
@@ -110,8 +111,7 @@ void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type,
 
 void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, globjects::Buffer * indices) const
 {
-    indices->bind(gl::GL_ELEMENT_ARRAY_BUFFER);
-
+    // [TODO]: rethink recorded vao state
     m_vao->drawElements(mode, count, type, nullptr);
 }
 
@@ -167,7 +167,10 @@ globjects::Buffer* Drawable::indexBuffer() const
 
 void Drawable::setIndexBuffer(globjects::Buffer * buffer)
 {
+    m_vao->bind();
+    buffer->bind(gl::GL_ELEMENT_ARRAY_BUFFER);
     m_indexBuffer = buffer;
+    m_vao->unbind();
 }
 
 void Drawable::setIndexBuffer(globjects::Buffer * buffer, gl::GLenum bufferType)

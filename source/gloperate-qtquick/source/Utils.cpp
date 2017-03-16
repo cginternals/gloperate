@@ -19,6 +19,9 @@ void Utils::initContext()
 {
     glbinding::Binding::initialize(false);
     globjects::init();
+#ifdef DEBUG
+    globjects::DebugMessage::enable(true);
+#endif
 }
 
 void Utils::registerGlobjectsContext()
