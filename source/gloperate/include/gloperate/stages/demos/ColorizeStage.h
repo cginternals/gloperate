@@ -4,7 +4,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -87,13 +86,16 @@ protected:
 
 protected:
     // Rendering objects
-    gloperate::Camera                          m_camera;
-    gloperate::ScreenAlignedQuad *             m_screenAlignedQuad;
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
-    globjects::ref_ptr<globjects::Buffer>      m_vertexBuffer;
-    globjects::ref_ptr<globjects::Program>     m_program;
-    globjects::ref_ptr<globjects::Shader>      m_vertexShader;
-    globjects::ref_ptr<globjects::Shader>      m_fragmentShader;
+    gloperate::Camera                               m_camera;
+    std::unique_ptr<gloperate::ScreenAlignedQuad>   m_screenAlignedQuad;
+    std::unique_ptr<globjects::VertexArray>         m_vao;
+    std::unique_ptr<globjects::Buffer>              m_vertexBuffer;
+    std::unique_ptr<globjects::Program>             m_program;
+
+    std::unique_ptr<globjects::AbstractStringSource> m_vSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_fSource;
+    std::unique_ptr<globjects::Shader>               m_vertexShader;
+    std::unique_ptr<globjects::Shader>               m_fragmentShader;
 };
 
 

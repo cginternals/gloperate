@@ -41,20 +41,16 @@ int main(int argc, char * argv[])
 
     // Create scripting context backend
     environment.setupScripting(
-        new gloperate_qtquick::QmlScriptContext(&qmlEngine)
+        cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&qmlEngine)
     );
 
     // Load and show QML
-    QuickView * window = new QuickView(&qmlEngine);
-    window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/ExampleViewer.qml"));
-    window->setGeometry(100, 100, 1280, 720);
-    window->show();
+    QuickView window(&qmlEngine);
+    window.setResizeMode(QQuickView::SizeRootObjectToView);
+    window.setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/ExampleViewer.qml"));
+    window.setGeometry(100, 100, 1280, 720);
+    window.show();
 
     // Run main loop
-    int res = app.exec();
-
-    // Clean up
-    delete window;
-    return res;
+    return app.exec();
 }

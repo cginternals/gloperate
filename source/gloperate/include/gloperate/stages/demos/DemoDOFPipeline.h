@@ -61,8 +61,8 @@ public:
 
 protected:
     // Stages
-    MultiFrameDiscDistributionStage * m_dofShiftStage;  ///< Stage generating DOF shift
-    DemoDOFCubeStage                * m_cubeStage;      ///< Rendering stage
+    std::unique_ptr<MultiFrameDiscDistributionStage> m_dofShiftStage;  ///< Stage generating DOF shift
+    std::unique_ptr<DemoDOFCubeStage>                m_cubeStage;      ///< Rendering stage
 };
 
 

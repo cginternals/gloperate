@@ -3,8 +3,6 @@
 
 #include <globjects/Buffer.h>
 #include <globjects/VertexArray.h>
-#include <globjects/base/Referenced.h>
-#include <globjects/base/ref_ptr.h>
 
 #include <gloperate/rendering/AbstractDrawable.h>
 #include <gloperate/rendering/Drawable.h>
@@ -17,6 +15,7 @@ namespace globjects
 
 
 class Shader;
+class File;
 
 
 }
@@ -32,7 +31,7 @@ namespace gloperate
 *
 *    This class can be used to render a screen aligned triangle.
 */
-class GLOPERATE_API ScreenAlignedTriangle : public globjects::Referenced, AbstractDrawable
+class GLOPERATE_API ScreenAlignedTriangle : public AbstractDrawable
 {
 public:
     /**
@@ -81,7 +80,7 @@ public:
     *  @return
     *    Pointer to a newly created default vertex shader object
     */
-    static globjects::Shader* createDefaultVertexShader();
+    static std::unique_ptr<globjects::Shader> createDefaultVertexShader();
 
     /**
     *  @brief
@@ -90,16 +89,17 @@ public:
     *  @return
     *    Pointer to a newly created default fragment shader object
     */
-    static globjects::Shader* createDefaultFragmentShader();
+    static std::unique_ptr<globjects::Shader> createDefaultFragmentShader();
 
 
 protected:
-    globjects::ref_ptr<Drawable> m_drawable;
+    std::unique_ptr<Drawable>           m_drawable;     ///< underlying drawable object
+    std::unique_ptr<globjects::Buffer>  m_buffer;       ///< pointer to the buffer used by m_drawable
 
 
 protected:
-    static const std::string s_defaultVertexShaderSource;
-    static const std::string s_defaultFragmentShaderSource;
+    static const std::unique_ptr<globjects::File> s_defaultVertexShaderSource;
+    static const std::unique_ptr<globjects::File> s_defaultFragmentShaderSource;
 
 };
 

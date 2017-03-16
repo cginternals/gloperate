@@ -205,9 +205,9 @@ public:
     *    Use it to render the actual scene you want to display.
     *
     *  @param[in] targetFBO
-    *    Target FBO (can be null)
+    *    Target FBO (must not be null)
     */
-    void render(globjects::Framebuffer * targetFBO = nullptr);
+    void render(globjects::Framebuffer * targetFBO);
 
     /**
     *  @brief
@@ -217,9 +217,9 @@ public:
     *    Overwrite it in derived classes to perform the actual rendering.
     *
     *  @param[in] targetFBO
-    *    Target FBO (can be null)
+    *    Target FBO (must not be null)
     */
-    virtual void onRender(globjects::Framebuffer * targetFBO = nullptr);
+    virtual void onRender(globjects::Framebuffer * targetFBO);
 
     /**
     *  @brief
@@ -398,14 +398,14 @@ public:
 
 
 protected:
-    Environment           * m_environment;           ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext     * m_openGLContext;         ///< OpenGL context used for rendering onto the canvas
-    ImageExporter         * m_imageExporter;         ///< Tool for exporting canvas to image file
-    AbstractVideoExporter * m_videoExporter;         ///< Tool for rendering canvas to video file
-    bool                    m_requestImage;          ///< Flag to request a ImageExporter call during next render step
-    bool                    m_requestVideo;          ///< Flag to request a VideoExporter call during next render step
-    bool                    m_asyncVideoExportOn;    ///< Flag which indicates the async video export status (on/off)
-    bool                    m_asyncVideoFinalize;    ///< Flag to finalize async video export
+    Environment                          * m_environment;           ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext                    * m_openGLContext;         ///< OpenGL context used for rendering onto the canvas
+    std::unique_ptr<ImageExporter>         m_imageExporter;         ///< Tool for exporting canvas to image file
+    std::unique_ptr<AbstractVideoExporter> m_videoExporter;         ///< Tool for rendering canvas to video file
+    bool                                   m_requestImage;          ///< Flag to request a ImageExporter call during next render step
+    bool                                   m_requestVideo;          ///< Flag to request a VideoExporter call during next render step
+    bool                                   m_asyncVideoExportOn;    ///< Flag which indicates the async video export status (on/off)
+    bool                                   m_asyncVideoFinalize;    ///< Flag to finalize async video export
 };
 
 

@@ -10,7 +10,7 @@ template <typename... Args>
 ColorGradientList::ColorGradientList(AbstractColorGradient * gradient, Args... args)
 : ColorGradientList(args...)
 {
-    add(gradient);
+    add(std::unique_ptr<AbstractColorGradient>(gradient));
 }
 
 

@@ -178,25 +178,44 @@ Stage::CreateConnectedInputProxy Stage::createInput(const std::string & name)
 }
 
 
-void Stage::addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownership)
+void Stage::addInput(AbstractSlot * input)
 {
-    // Check parameters
-    if (!input) {
-        return;
-    }
+    assert(input);
 
     // Find free name
     std::string name = getFreeName(input->name());
     input->setName(name);
 
     // Add input as property
-    addProperty(input, ownership);
+    addProperty(input);
 
+    // Add input
+    registerInput(input);
+}
+
+void Stage::addInput(std::unique_ptr<AbstractSlot> && input)
+{
+    assert(input);
+
+    // Find free name
+    std::string name = getFreeName(input->name());
+    input->setName(name);
+
+    // Add input as property
+    const auto inputPtr = input.get();
+    addProperty(std::move(input));
+
+    // Add input
+    registerInput(inputPtr);
+}
+
+void Stage::registerInput(AbstractSlot * input)
+{
     // Add input
     m_inputs.push_back(input);
 
     if (input->name() != "") {
-        m_inputsMap.insert(std::make_pair(input->name(), input));        
+        m_inputsMap.insert(std::make_pair(input->name(), input));
     }
 
     // Emit signal
@@ -205,12 +224,6 @@ void Stage::addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownershi
 
 void Stage::removeInput(AbstractSlot * input)
 {
-    // Check parameters
-    if (!input)
-    {
-        return;
-    }
-
     // Find input
     auto it = std::find(m_inputs.begin(), m_inputs.end(), input);
     if (it != m_inputs.end())
@@ -252,24 +265,43 @@ AbstractSlot * Stage::output(const std::string & name)
     return m_outputsMap.at(name);
 }
 
-void Stage::addOutput(AbstractSlot * output, cppexpose::PropertyOwnership ownership)
+void Stage::addOutput(AbstractSlot * output)
 {
-    // Check parameters
-    if (!output) {
-        return;
-    }
+    assert(output);
 
     // Find free name
     std::string name = getFreeName(output->name());
     output->setName(name);
 
     // Add output as property
-    addProperty(output, ownership);
+    addProperty(output);
 
+    // Add output
+    registerOutput(output);
+}
+
+void Stage::addOutput(std::unique_ptr<AbstractSlot> && output)
+{
+    assert(output);
+
+    // Find free name
+    std::string name = getFreeName(output->name());
+    output->setName(name);
+
+    // Add output as property
+    auto outputPtr = output.get();
+    addProperty(std::move(output));
+
+    // Add output
+    registerOutput(outputPtr);
+}
+
+void Stage::registerOutput(AbstractSlot * output)
+{
     // Add output
     m_outputs.push_back(output);
     if (output->name() != "") {
-        m_outputsMap.insert(std::make_pair(output->name(), output));        
+        m_outputsMap.insert(std::make_pair(output->name(), output));
     }
 
     // Emit signal
@@ -278,12 +310,6 @@ void Stage::addOutput(AbstractSlot * output, cppexpose::PropertyOwnership owners
 
 void Stage::removeOutput(AbstractSlot * output)
 {
-    // Check parameters
-    if (!output)
-    {
-        return;
-    }
-
     // Find output
     auto it = std::find(m_outputs.begin(), m_outputs.end(), output);
     if (it != m_outputs.end())

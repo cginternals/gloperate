@@ -1,10 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include <glbinding/gl/types.h>
-
-#include <globjects/base/ref_ptr.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -38,7 +37,7 @@ protected:
     static gl::GLenum internalFormatForDimensions(unsigned int dimensions);
     static gl::GLenum formatForDimensions(unsigned int dimensions);
 
-    static globjects::Texture * createTexture(
+    static std::unique_ptr<globjects::Texture> createTexture(
         unsigned int inputDimensions,
         unsigned int outputDimensions,
         gl::GLsizei textureSize);
@@ -50,7 +49,7 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<globjects::Texture> m_texture;
+    std::unique_ptr<globjects::Texture> m_texture;
 };
 
 

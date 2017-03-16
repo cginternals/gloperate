@@ -17,18 +17,18 @@ CPPEXPOSE_COMPONENT(DemoTransparencyPipeline, gloperate::Stage)
 DemoTransparencyPipeline::DemoTransparencyPipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_transparencyKernelStage(new TransparencyKernelStage(environment))
-, m_noiseKernelStage(new NoiseKernelStage(environment))
-, m_transparencyRenderStage(new DemoTransparencyStage(environment))
+, m_transparencyKernelStage(cppassist::make_unique<TransparencyKernelStage>(environment))
+, m_noiseKernelStage(cppassist::make_unique<NoiseKernelStage>(environment))
+, m_transparencyRenderStage(cppassist::make_unique<DemoTransparencyStage>(environment))
 {
-    addStage(m_transparencyKernelStage);
+    addStage(m_transparencyKernelStage.get());
 
-    addStage(m_noiseKernelStage);
+    addStage(m_noiseKernelStage.get());
     m_noiseKernelStage->inputDimensions.setValue(2);
     m_noiseKernelStage->outputDimensions.setValue(1);
     m_noiseKernelStage->size.setValue(256);
 
-    addStage(m_transparencyRenderStage);
+    addStage(m_transparencyRenderStage.get());
     m_transparencyRenderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_transparencyRenderStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_transparencyRenderStage->renderInterface.frameCounter << renderInterface.frameCounter;

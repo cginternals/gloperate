@@ -49,8 +49,6 @@ ScriptPromptWidget::ScriptPromptWidget(QWidget * parent)
 
 ScriptPromptWidget::~ScriptPromptWidget()
 {
-    delete m_syntaxHighlighter;
-    delete m_completer;
 }
 
 bool ScriptPromptWidget::multiLinePaste() const
@@ -65,45 +63,39 @@ void ScriptPromptWidget::setMultiLinePaste(const bool enable)
 
 const QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter() const
 {
-    return m_syntaxHighlighter;
+    return m_syntaxHighlighter.get();
 }
 
 QSyntaxHighlighter * ScriptPromptWidget::syntaxHighlighter()
 {
-    return m_syntaxHighlighter;
+    return m_syntaxHighlighter.get();
 }
 
-void ScriptPromptWidget::setSyntaxHighlighter(QSyntaxHighlighter * syntaxHighlighter)
+void ScriptPromptWidget::setSyntaxHighlighter(std::unique_ptr<QSyntaxHighlighter> && syntaxHighlighter)
 {
-    if (m_syntaxHighlighter != syntaxHighlighter)
-        delete m_syntaxHighlighter;
-
-    m_syntaxHighlighter = syntaxHighlighter;
+    m_syntaxHighlighter = std::move(syntaxHighlighter);
 
     if (m_syntaxHighlighter)
-        syntaxHighlighter->setDocument(document());
+        m_syntaxHighlighter->setDocument(document());
 }
 
 const QCompleter * ScriptPromptWidget::completer() const
 {
-    return m_completer;
+    return m_completer.get();
 }
 
 QCompleter * ScriptPromptWidget::completer()
 {
-    return m_completer;
+    return m_completer.get();
 }
 
-void ScriptPromptWidget::setCompleter(QCompleter * completer)
+void ScriptPromptWidget::setCompleter(std::unique_ptr<QCompleter> && completer)
 {
-    if (m_completer != completer && m_completer)
-        delete m_completer;
-
-    m_completer = completer;
+    m_completer = std::move(completer);
 
     if (m_completer)
     {
-        connect(m_completer, SIGNAL(activated(QString)), this, SLOT(complete(QString)));
+        connect(m_completer.get(), SIGNAL(activated(QString)), this, SLOT(complete(QString)));
 
         m_completer->setWidget(this);
         m_completer->popup()->setFont(font());

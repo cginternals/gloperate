@@ -12,6 +12,9 @@
 namespace globjects
 {
     class Framebuffer;
+    class AbstractStringSource;
+    class Shader;
+    class Program;
 }
 
 
@@ -46,6 +49,16 @@ protected:
 
 
 protected:
+    std::unique_ptr<globjects::AbstractStringSource> m_vSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_gSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_fSource;
+
+    std::unique_ptr<globjects::Shader> m_vertexShader;
+    std::unique_ptr<globjects::Shader> m_geometryShader;
+    std::unique_ptr<globjects::Shader> m_fragmentShader;
+
+    std::unique_ptr<globjects::Program> m_program;
+
     std::unique_ptr<GlyphRenderer> m_renderer;
 };
 

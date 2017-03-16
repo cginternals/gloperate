@@ -40,7 +40,7 @@ public:
 
 
 public:
-    Input<ColorGradientList>              gradients;     ///< List of gradients
+    Input<ColorGradientList *>            gradients;     ///< List of gradients
     Input<std::string>                    gradientName;  ///< Name of chosen gradient
 
     Output<const AbstractColorGradient *> gradient;      ///< Gradient

@@ -1,11 +1,10 @@
 
 #pragma once
 
+#include <memory>
 
 #include <QString>
 #include <QQuickItem>
-
-#include <globjects/base/ref_ptr.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -15,9 +14,10 @@ class QQuickWindow;
 
 namespace globjects
 {
-    class Texture;
+    class Buffer;
     class VertexArray;
     class Program;
+    class Texture;
 }
 
 
@@ -86,9 +86,10 @@ protected:
     bool    m_initialized;      ///< 'true' if the canvas has been initialized, else 'false'
     QString m_path;             ///< Path to the displayed texture slot
 
-    globjects::ref_ptr<globjects::VertexArray> m_vao;     ///< Screen-aligned quad geometry
-    globjects::ref_ptr<globjects::Program>     m_program; ///< Shader program
-    globjects::ref_ptr<globjects::Texture>     m_texture; ///< Texture that is displayed
+    std::unique_ptr<globjects::Buffer>      m_buffer;  ///< Vertex buffer
+    std::unique_ptr<globjects::VertexArray> m_vao;     ///< Screen-aligned quad geometry
+    std::unique_ptr<globjects::Program>     m_program; ///< Shader program
+    globjects::Texture *                    m_texture; ///< Texture that is displayed; owned by stage
 };
 
 

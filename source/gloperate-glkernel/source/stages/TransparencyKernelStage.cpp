@@ -21,7 +21,6 @@ TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * enviro
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
-, m_texture(nullptr)
 {
 }
 
@@ -31,9 +30,9 @@ TransparencyKernelStage::~TransparencyKernelStage()
 }
 
 
-void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * context)
+void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_texture = new globjects::Texture(gl::GL_TEXTURE_2D);
+    m_texture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_2D);
 }
 
 
@@ -51,7 +50,7 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
     }
 
     kernel.setValue(&m_kernelData);
-    texture.setValue(m_texture);
+    texture.setValue(m_texture.get());
 }
 
 

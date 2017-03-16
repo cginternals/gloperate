@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <QQuickItem>
 
@@ -80,7 +81,7 @@ protected:
 protected:
     QQuickItem         * m_target;       ///< Target TextEdit item that is extended (can be null)
     QTextDocument      * m_textDocument; ///< Text document of that item (can be null)
-    QSyntaxHighlighter * m_highlighter;  ///< Syntax highlighter (can be null)
+    std::unique_ptr<QSyntaxHighlighter> m_highlighter;  ///< Syntax highlighter (can be null)
 };
 
 

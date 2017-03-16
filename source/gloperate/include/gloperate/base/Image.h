@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <memory>
+
 #include <glbinding/gl/types.h>
 
 #include <gloperate/gloperate_api.h>
@@ -119,7 +121,7 @@ public:
     *    This does NOT allocate own memory.
     *    The ownership of \p data is transferred to the Image object.
     */
-    Image(int width, int height, gl::GLenum format, gl::GLenum type, char * data);
+    Image(int width, int height, gl::GLenum format, gl::GLenum type, std::unique_ptr<char[]> && data);
 
     /**
     *  @brief
@@ -315,7 +317,7 @@ public:
     *    The ownership of \p data is transferred to the Image object.
     *    Any existing image data is deleted.
     */
-    void setData(int width, int height, gl::GLenum format, gl::GLenum type, char * data);
+    void setData(int width, int height, gl::GLenum format, gl::GLenum type, std::unique_ptr<char[]> && data);
 
     /**
     *  @brief
@@ -354,14 +356,14 @@ protected:
 
 
 protected:
-    int        m_width;     ///< Image width (0 if empty)
-    int        m_height;    ///< Image height (0 if empty)
-    gl::GLenum m_format;    ///< Image format (OpenGL definition, GL_INVALID_ENUM if empty)
-    gl::GLenum m_type;      ///< Data type (OpenGL definition, GL_INVALID_ENUM if empty)
-    int        m_channels;  ///< Number of color channels (0 if empty)
-    int        m_bytes;     ///< Bytes per element (0 if empty)
-    int        m_dataSize;  ///< Size of image data (0 if empty)
-    char *     m_data;      ///< Image data (can be null)
+    int                     m_width;     ///< Image width (0 if empty)
+    int                     m_height;    ///< Image height (0 if empty)
+    gl::GLenum              m_format;    ///< Image format (OpenGL definition, GL_INVALID_ENUM if empty)
+    gl::GLenum              m_type;      ///< Data type (OpenGL definition, GL_INVALID_ENUM if empty)
+    int                     m_channels;  ///< Number of color channels (0 if empty)
+    int                     m_bytes;     ///< Bytes per element (0 if empty)
+    int                     m_dataSize;  ///< Size of image data (0 if empty)
+    std::unique_ptr<char[]> m_data;      ///< Image data (can be null)
 };
 
 

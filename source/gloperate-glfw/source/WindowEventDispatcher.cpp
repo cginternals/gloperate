@@ -4,6 +4,8 @@
 #include <cassert>
 #include <cmath>
 
+#include <cppassist/memory/make_unique.h>
+
 #include <glbinding/gl/enum.h>
 
 #include <GLFW/glfw3.h>
@@ -74,13 +76,13 @@ void WindowEventDispatcher::deregisterWindow(Window * window)
     glfwSetWindowCloseCallback(glfwWindow, nullptr);
 }
 
-void WindowEventDispatcher::dispatchEvent(GLFWwindow * glfwWindow, WindowEvent * event)
+void WindowEventDispatcher::dispatchEvent(GLFWwindow * glfwWindow, std::unique_ptr<WindowEvent> && event)
 {
     // Find window object from GLFW window, dispatch event
-    dispatchEvent(fromGLFW(glfwWindow), event);
+    dispatchEvent(fromGLFW(glfwWindow), std::move(event));
 }
 
-void WindowEventDispatcher::dispatchEvent(Window * window, WindowEvent * event)
+void WindowEventDispatcher::dispatchEvent(Window * window, std::unique_ptr<WindowEvent> && event)
 {
     // Check if event is valid
     if (!event)
@@ -91,12 +93,11 @@ void WindowEventDispatcher::dispatchEvent(Window * window, WindowEvent * event)
     // Check if window is valid, ignore event otherwise
     if (!window)
     {
-        delete event;
         return;
     }
 
     // Dispatch event to window
-    window->queueEvent(event);
+    window->queueEvent(std::move(event));
 }
 
 Window * WindowEventDispatcher::fromGLFW(GLFWwindow * glfwWindow)
@@ -126,74 +127,74 @@ glm::ivec2 WindowEventDispatcher::mousePosition(GLFWwindow * glfwWindow)
 
 void WindowEventDispatcher::handleRefresh(GLFWwindow * glfwWindow)
 {
-    dispatchEvent(glfwWindow, new PaintEvent);
+    dispatchEvent(glfwWindow, cppassist::make_unique<PaintEvent>());
 }
 
 void WindowEventDispatcher::handleKey(GLFWwindow * glfwWindow, int key, int scanCode, int action, int modifiers)
 {
-    dispatchEvent(glfwWindow, new KeyEvent(key, scanCode, action, modifiers));
+    dispatchEvent(glfwWindow, cppassist::make_unique<KeyEvent>(key, scanCode, action, modifiers));
 }
 
 void WindowEventDispatcher::handleChar(GLFWwindow * glfwWindow, unsigned int character)
 {
-    dispatchEvent(glfwWindow, new KeyEvent(character));
+    dispatchEvent(glfwWindow, cppassist::make_unique<KeyEvent>(character));
 }
 
 void WindowEventDispatcher::handleMouse(GLFWwindow * glfwWindow, int button, int action, int modifiers)
 {
-    dispatchEvent(glfwWindow, new MouseEvent(mousePosition(glfwWindow), button, action, modifiers));
+    dispatchEvent(glfwWindow, cppassist::make_unique<MouseEvent>(mousePosition(glfwWindow), button, action, modifiers));
 }
 
 void WindowEventDispatcher::handleCursorPos(GLFWwindow * glfwWindow, double xPos, double yPos)
 {
-    dispatchEvent(glfwWindow, new MouseEvent(glm::ivec2(std::floor(xPos), std::floor(yPos))));
+    dispatchEvent(glfwWindow, cppassist::make_unique<MouseEvent>(glm::ivec2(std::floor(xPos), std::floor(yPos))));
 }
 
 void WindowEventDispatcher::handleCursorEnter(GLFWwindow * glfwWindow, int entered)
 {
     if (entered == GL_TRUE)
     {
-        dispatchEvent(glfwWindow, new MouseEnterEvent);
+        dispatchEvent(glfwWindow, cppassist::make_unique<MouseEnterEvent>());
     }
     else
     {
-        dispatchEvent(glfwWindow, new MouseLeaveEvent);
+        dispatchEvent(glfwWindow, cppassist::make_unique<MouseLeaveEvent>());
     }
 }
 
 void WindowEventDispatcher::handleScroll(GLFWwindow * glfwWindow, double xOffset, double yOffset)
 {
-    dispatchEvent(glfwWindow, new ScrollEvent(glm::vec2(xOffset, yOffset), mousePosition(glfwWindow)));
+    dispatchEvent(glfwWindow, cppassist::make_unique<ScrollEvent>(glm::vec2(xOffset, yOffset), mousePosition(glfwWindow)));
 }
 
 void WindowEventDispatcher::handleResize(GLFWwindow * glfwWindow, int width, int height)
 {
-    dispatchEvent(glfwWindow, new ResizeEvent(glm::ivec2(width, height)));
+    dispatchEvent(glfwWindow, cppassist::make_unique<ResizeEvent>(glm::ivec2(width, height)));
 }
 
 void WindowEventDispatcher::handleFramebufferResize(GLFWwindow * glfwWindow, int width, int height)
 {
-    dispatchEvent(glfwWindow, new ResizeEvent(glm::ivec2(width, height), true));
+    dispatchEvent(glfwWindow, cppassist::make_unique<ResizeEvent>(glm::ivec2(width, height), true));
 }
 
 void WindowEventDispatcher::handleMove(GLFWwindow * glfwWindow, int x, int y)
 {
-    dispatchEvent(glfwWindow, new MoveEvent(glm::ivec2(x, y)));
+    dispatchEvent(glfwWindow, cppassist::make_unique<MoveEvent>(glm::ivec2(x, y)));
 }
 
 void WindowEventDispatcher::handleFocus(GLFWwindow * glfwWindow, int focused)
 {
-    dispatchEvent(glfwWindow, new FocusEvent(focused == GL_TRUE));
+    dispatchEvent(glfwWindow, cppassist::make_unique<FocusEvent>(focused == GL_TRUE));
 }
 
 void WindowEventDispatcher::handleIconify(GLFWwindow * glfwWindow, int iconified)
 {
-    dispatchEvent(glfwWindow, new IconifyEvent(iconified == GL_TRUE));
+    dispatchEvent(glfwWindow, cppassist::make_unique<IconifyEvent>(iconified == GL_TRUE));
 }
 
 void WindowEventDispatcher::handleClose(GLFWwindow * glfwWindow)
 {
-    dispatchEvent(glfwWindow, new CloseEvent);
+    dispatchEvent(glfwWindow, cppassist::make_unique<CloseEvent>());
 }
 
 

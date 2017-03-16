@@ -21,25 +21,6 @@ InputManager::InputManager(Environment * environment)
 
 InputManager::~InputManager()
 {
-	for (const auto ptr : m_consumers)
-	{
-		delete ptr;
-	}
-
-	for (const auto ptr : m_deviceProviders)
-	{
-		delete ptr;
-	}
-
-	for (const auto ptr : m_devices)
-	{
-		delete ptr;
-	}
-
-	for (const auto ptr : m_events)
-	{
-		delete ptr;
-	}
 }
 
 void InputManager::registerConsumer(AbstractEventConsumer * consumer)
@@ -60,15 +41,16 @@ void InputManager::addDevice(AbstractDevice * device)
     m_devices.emplace_back(device);
 }
 
-void InputManager::onEvent(InputEvent * event)
+void InputManager::onEvent(std::unique_ptr<InputEvent> && event)
 {
     assert(event != nullptr);
-    m_events.emplace_back(event);
 
     for (auto consumer : m_consumers)
     {
-        consumer->onEvent(event);
+        consumer->onEvent(event.get());
     }
+
+	m_events.push_back(std::move(event));
 }
 
 

@@ -77,15 +77,15 @@ public:
     *  @param event
     *    The Event to forward
     */
-    void onEvent(InputEvent * event);
+    void onEvent(std::unique_ptr<InputEvent> && event);
 
 
 protected:
-    Environment                         * m_environment; ///< Gloperate environment to which the manager belongs
-    std::list<AbstractEventConsumer *>    m_consumers;
-    std::list<AbstractDeviceProvider *>   m_deviceProviders;
-    std::list<AbstractDevice *>           m_devices;
-    std::list<InputEvent *>               m_events;
+    Environment                                      * m_environment; ///< Gloperate environment to which the manager belongs
+    std::list<AbstractEventConsumer *>                 m_consumers;
+    std::list<std::unique_ptr<AbstractDeviceProvider>> m_deviceProviders;
+    std::list<AbstractDevice *>                        m_devices;
+    std::list<std::unique_ptr<InputEvent>>             m_events;
 };
 
 

@@ -6,7 +6,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
@@ -77,7 +76,7 @@ protected:
 
 protected:
     // Data
-    globjects::ref_ptr<globjects::Texture> m_texture; ///< Texture
+    std::unique_ptr<globjects::Texture> m_texture; ///< Texture
 };
 
 
