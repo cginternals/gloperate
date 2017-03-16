@@ -93,7 +93,6 @@ void DemoAntialiasableTriangleStage::onProcess(AbstractGLContext *)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
@@ -128,19 +127,20 @@ void DemoAntialiasableTriangleStage::onInputValueChanged(AbstractSlot * /*slot*/
 
 void DemoAntialiasableTriangleStage::setupGeometry()
 {
-    m_vao = new globjects::VertexArray;
-    m_vertexBuffer = new globjects::Buffer();
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
+    m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
     m_vertexBuffer->setData(s_vertices, gl::GL_STATIC_DRAW);
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(m_vertexBuffer, 0, sizeof(glm::vec2));
+    binding->setBuffer(m_vertexBuffer.get(), 0, sizeof(glm::vec2));
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 }
 
 void DemoAntialiasableTriangleStage::setupProgram()
 {
+    //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 
@@ -149,10 +149,10 @@ void DemoAntialiasableTriangleStage::setupProgram()
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
 
-    m_vertexShader   = new globjects::Shader(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
-    m_program = new globjects::Program();
-    m_program->attach(m_vertexShader, m_fragmentShader);
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 }
 
 

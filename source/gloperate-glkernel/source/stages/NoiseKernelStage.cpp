@@ -21,7 +21,6 @@ NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const s
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
-, m_texture(nullptr)
 {
 }
 
@@ -31,7 +30,7 @@ NoiseKernelStage::~NoiseKernelStage()
 }
 
 
-void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext * context)
+void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_3D);
 }
@@ -61,7 +60,7 @@ void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
     }
 
     kernel.setValue(&m_kernelData);
-    texture.setValue(m_texture);
+    texture.setValue(m_texture.get());
 }
 
 

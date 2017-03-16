@@ -4,7 +4,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -91,9 +90,9 @@ protected:
 
 protected:
     // Rendering objects
-    gloperate::Camera                          m_camera;
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
-    globjects::ref_ptr<globjects::Buffer>      m_vertexBuffer;
+    gloperate::Camera                       m_camera;
+    std::unique_ptr<globjects::VertexArray> m_vao;
+    std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
 };
 
 

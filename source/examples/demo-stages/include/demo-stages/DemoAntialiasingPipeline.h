@@ -70,8 +70,8 @@ public:
 
 protected:
     // Stages
-    gloperate_glkernel::DiscDistributionKernelStage * m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
-    DemoAntialiasableTriangleStage                  * m_triangleStage;  ///< Rendering stage
+    std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage> m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
+    std::unique_ptr<DemoAntialiasableTriangleStage>                  m_triangleStage;  ///< Rendering stage
 };
 
 

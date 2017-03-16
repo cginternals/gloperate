@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
 
     // Create scripting context backend
     environment.setupScripting(
-        new gloperate_qtquick::QmlScriptContext(&qmlEngine)
+        cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&qmlEngine)
     );
 
     // Configure and load plugins
@@ -56,7 +56,7 @@ int main(int argc, char * argv[])
     environment.componentManager()->scanPlugins("exporter");
 
     // Load and show QML
-    std::unique_ptr<QuickView> window(new QuickView(&qmlEngine));
+    auto window = cppassist::make_unique<QuickView>(&qmlEngine);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
     window->setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
     window->setGeometry(100, 100, 1280, 720);

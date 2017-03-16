@@ -27,9 +27,9 @@ T * ResourceManager::load(const std::string & filename, const cppexpose::Variant
     std::string ext = FilePath(filename).extension();
 
     // Find suitable loader
-    for (AbstractLoader * loader : m_loaders) {
+    for (const auto & loader : m_loaders) {
         // Check loader type
-        Loader<T> * concreteLoader = dynamic_cast<Loader<T> *>(loader);
+        Loader<T> * concreteLoader = dynamic_cast<Loader<T> *>(loader.get());
         if (concreteLoader) {
             // Check if filetype is supported
             if (concreteLoader->canLoad(ext)) {
@@ -55,9 +55,9 @@ bool ResourceManager::store(const std::string & filename, T * resource, const cp
     std::string ext = FilePath(filename).extension();
 
     // Find suitable storer
-    for (AbstractStorer * storer : m_storers) {
+    for (const auto & storer : m_storers) {
         // Check storer type
-        Storer<T> * concreteStorer = dynamic_cast<Storer<T> *>(storer);
+        Storer<T> * concreteStorer = dynamic_cast<Storer<T> *>(storer.get());
         if (concreteStorer) {
             // Check if filetype is supported
             if (concreteStorer->canStore(ext)) {

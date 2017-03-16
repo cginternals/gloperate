@@ -6,6 +6,8 @@
 
 #include <glm/common.hpp>
 
+#include <cppassist/memory/make_unique.h>
+
 
 namespace gloperate
 {
@@ -25,7 +27,7 @@ auto TransparencyMasksGenerator::generateDistributions() -> std::unique_ptr<mask
 {
     generateCombinations();
 
-    auto masks = std::unique_ptr<maskDistributions_t>(new maskDistributions_t());
+    auto masks = cppassist::make_unique<maskDistributions_t>();
 
     for (auto i = 0u; i < masks->size(); ++i)
         generateDistributionForAlpha(i, masks->at(i));

@@ -6,7 +6,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/gloperate-version.h>
@@ -89,7 +88,7 @@ protected:
 
 protected:
     // Data
-    globjects::ref_ptr<globjects::Framebuffer> m_fbo; ///< The created framebuffer
+    std::unique_ptr<globjects::Framebuffer> m_fbo; ///< The created framebuffer
 };
 
 

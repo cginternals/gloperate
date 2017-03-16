@@ -70,8 +70,8 @@ public:
 
 protected:
     // Stages
-    gloperate_glkernel::DiscDistributionKernelStage * m_dofShiftStage;  ///< Stage generating DOF shift
-    DemoDOFCubeStage                                * m_cubeStage;      ///< Rendering stage
+    std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage> m_dofShiftStage;  ///< Stage generating DOF shift
+    std::unique_ptr<DemoDOFCubeStage>                                m_cubeStage;      ///< Rendering stage
 };
 
 

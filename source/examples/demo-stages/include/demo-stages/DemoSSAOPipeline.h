@@ -70,12 +70,12 @@ public:
 
 protected:
     // Stages
-    BasicFramebufferStage                                 * m_colorFBOStage;       ///< Color buffer
-    BasicFramebufferStage                                 * m_normalFBOStage;      ///< Normal buffer
-    gloperate_glkernel::HemisphereDistributionKernelStage * m_kernelStage;         ///< Stage generating SSAO kernel
-    gloperate_glkernel::NoiseKernelStage                  * m_noiseStage;          ///< Stage generating SSAO noise
-    DemoSSAORenderingStage                                * m_renderingStage;      ///< Rendering stage
-    DemoSSAOPostprocessingStage                           * m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
+    std::unique_ptr<BasicFramebufferStage>                                 m_colorFBOStage;       ///< Color buffer
+    std::unique_ptr<BasicFramebufferStage>                                 m_normalFBOStage;      ///< Normal buffer
+    std::unique_ptr<gloperate_glkernel::HemisphereDistributionKernelStage> m_kernelStage;         ///< Stage generating SSAO kernel
+    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;          ///< Stage generating SSAO noise
+    std::unique_ptr<DemoSSAORenderingStage>                                m_renderingStage;      ///< Rendering stage
+    std::unique_ptr<DemoSSAOPostprocessingStage>                           m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
 };
 
 

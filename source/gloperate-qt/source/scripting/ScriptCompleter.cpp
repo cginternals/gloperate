@@ -8,6 +8,8 @@
 #include <QStandardItem>
 #include <QAbstractItemView>
 
+#include <cppassist/memory/make_unique.h>
+
 
 namespace gloperate_qt
 {
@@ -15,18 +17,17 @@ namespace gloperate_qt
 
 ScriptCompleter::ScriptCompleter()
 : QCompleter()
-, m_model(new QStandardItemModel)
+, m_model(cppassist::make_unique<QStandardItemModel>())
 {
     setCompletionMode(QCompleter::PopupCompletion);
     setCaseSensitivity(Qt::CaseSensitive);
     setFilterMode(Qt::MatchStartsWith);
 
-    setModel(m_model);
+    setModel(m_model.get());
 }
 
 ScriptCompleter::~ScriptCompleter()
 {
-    delete m_model;
 }
 
 void ScriptCompleter::registerWord(const QString & word)

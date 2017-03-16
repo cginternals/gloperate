@@ -18,17 +18,17 @@ CPPEXPOSE_COMPONENT(DemoTransparencyPipeline, gloperate::Stage)
 DemoTransparencyPipeline::DemoTransparencyPipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_transparencyKernelStage(new gloperate_glkernel::TransparencyKernelStage(environment))
-, m_noiseKernelStage(new gloperate_glkernel::NoiseKernelStage(environment))
-, m_transparencyRenderStage(new DemoTransparencyStage(environment))
+, m_transparencyKernelStage(cppassist::make_unique<gloperate_glkernel::TransparencyKernelStage>(environment))
+, m_noiseKernelStage(cppassist::make_unique<gloperate_glkernel::NoiseKernelStage>(environment))
+, m_transparencyRenderStage(cppassist::make_unique<DemoTransparencyStage>(environment))
 {
-    addStage(m_transparencyKernelStage);
+    addStage(m_transparencyKernelStage.get());
     m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
 
-    addStage(m_noiseKernelStage);
+    addStage(m_noiseKernelStage.get());
     m_noiseKernelStage->dimensions.setValue(glm::ivec3(64, 64, 64));
 
-    addStage(m_transparencyRenderStage);
+    addStage(m_transparencyRenderStage.get());
     m_transparencyRenderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_transparencyRenderStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_transparencyRenderStage->renderInterface.frameCounter << renderInterface.frameCounter;

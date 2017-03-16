@@ -31,29 +31,29 @@ LightTestPipeline::LightTestPipeline(Environment * environment, const std::strin
 , lightAttenuation1("lightAttenuation1", this)
 , lightAttenuation2("lightAttenuation2", this)
 , lightAttenuation3("lightAttenuation3", this)
-, m_lightDefStage1(new LightCreationStage(environment))
-, m_lightDefStage2(new LightCreationStage(environment))
-, m_lightDefStage3(new LightCreationStage(environment))
-, m_lightAccumulationStage(new LightBufferTextureStage(environment))
-, m_timerStage(new TimerStage(environment))
-, m_renderStage(new LightTestStage(environment))
+, m_lightDefStage1(cppassist::make_unique<LightCreationStage>(environment))
+, m_lightDefStage2(cppassist::make_unique<LightCreationStage>(environment))
+, m_lightDefStage3(cppassist::make_unique<LightCreationStage>(environment))
+, m_lightAccumulationStage(cppassist::make_unique<LightBufferTextureStage>(environment))
+, m_timerStage(cppassist::make_unique<TimerStage>(environment))
+, m_renderStage(cppassist::make_unique<LightTestStage>(environment))
 {
     glossiness.setOptions({
         {"minimum", 0.0f},
         {"maximum", 1.0f}
     });
 
-    addStage(m_lightDefStage1);
+    addStage(m_lightDefStage1.get());
     m_lightDefStage1->color << lightColor1;
     m_lightDefStage1->position << lightPos1;
     m_lightDefStage1->type << lightType1;
     m_lightDefStage1->attenuationCoefficients << lightAttenuation1;
-    addStage(m_lightDefStage2);
+    addStage(m_lightDefStage2.get());
     m_lightDefStage2->color << lightColor2;
     m_lightDefStage2->position << lightPos2;
     m_lightDefStage2->type << lightType2;
     m_lightDefStage2->attenuationCoefficients << lightAttenuation2;
-    addStage(m_lightDefStage3);
+    addStage(m_lightDefStage3.get());
     m_lightDefStage3->color << lightColor3;
     m_lightDefStage3->position << lightPos3;
     m_lightDefStage3->type << lightType3;
@@ -74,15 +74,15 @@ LightTestPipeline::LightTestPipeline(Environment * environment, const std::strin
     lightPos3.setValue(glm::vec3(1.5, -1.3, -1.5));
     lightAttenuation3.setValue(glm::vec3(1, 0.2f, 0.01f));
 
-    addStage(m_lightAccumulationStage);
+    addStage(m_lightAccumulationStage.get());
     *(m_lightAccumulationStage->createLightInput()) << m_lightDefStage1->light;
     *(m_lightAccumulationStage->createLightInput()) << m_lightDefStage2->light;
     *(m_lightAccumulationStage->createLightInput()) << m_lightDefStage3->light;
 
-    addStage(m_timerStage);
+    addStage(m_timerStage.get());
     m_timerStage->timeDelta << renderInterface.timeDelta;
 
-    addStage(m_renderStage);
+    addStage(m_renderStage.get());
     m_renderStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_renderStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
     //m_renderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;

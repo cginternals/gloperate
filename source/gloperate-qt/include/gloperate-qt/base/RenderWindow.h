@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <gloperate-qt/base/OpenGLWindow.h>
 
@@ -68,7 +69,7 @@ public:
     *    When setting a new render stage, the old render stage is destroyed.
     *    The window takes ownership over the stage.
     */
-    void setRenderStage(gloperate::Stage * stage);
+    void setRenderStage(std::unique_ptr<gloperate::Stage> && stage);
 
 
 protected:
@@ -89,7 +90,7 @@ protected:
 
 protected:
     gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    gloperate::Canvas      * m_canvas;      ///< Canvas that renders onto the window (must NOT be null)
+    std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that renders onto the window (must NOT be null)
 };
 
 

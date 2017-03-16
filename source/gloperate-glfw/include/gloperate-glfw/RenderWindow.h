@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 
 #include <glm/vec2.hpp>
 
@@ -106,7 +107,7 @@ public:
     *    When setting a new render stage, the old render stage is destroyed.
     *    The window takes ownership over the stage.
     */
-    void setRenderStage(gloperate::Stage * stage);
+    void setRenderStage(std::unique_ptr<gloperate::Stage> && stage);
 
 
 protected:
@@ -130,8 +131,8 @@ protected:
 
 
 protected:
-    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    gloperate::Canvas      * m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
+    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null) 
+    std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
     glm::ivec2               m_deviceSize;  ///< Window size (real device pixels)
     glm::ivec2               m_virtualSize; ///< Window size (virtual pixel size)
 };

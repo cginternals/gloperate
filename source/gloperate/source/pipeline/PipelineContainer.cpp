@@ -27,24 +27,24 @@ PipelineContainer::~PipelineContainer()
 
 Stage * PipelineContainer::renderStage() const
 {
-    return m_renderStage;
+    return m_renderStage.get();
 }
 
-void PipelineContainer::setRenderStage(Stage * stage)
+void PipelineContainer::setRenderStage(std::unique_ptr<Stage> && stage)
 {
     // Destroy old render stage
     if (m_renderStage) {
         // Disconnect inputs and outputs from former render stage
-        disconnect(m_renderStage, "deviceViewport");
-        disconnect(m_renderStage, "virtualViewport");
-        disconnect(m_renderStage, "backgroundColor");
-        disconnect(m_renderStage, "frameCounter");
-        disconnect(m_renderStage, "timeDelta");
-        disconnect(m_renderStage, "targetFBO");
+        disconnect(m_renderStage.get(), "deviceViewport");
+        disconnect(m_renderStage.get(), "virtualViewport");
+        disconnect(m_renderStage.get(), "backgroundColor");
+        disconnect(m_renderStage.get(), "frameCounter");
+        disconnect(m_renderStage.get(), "timeDelta");
+        disconnect(m_renderStage.get(), "targetFBO");
         rendered.disconnect();
 
-        // Destroy render stage
-        destroyStage(m_renderStage);
+        // Remove render stage
+        removeStage(m_renderStage.get());
 
         m_renderStage = nullptr;
     }
@@ -56,17 +56,17 @@ void PipelineContainer::setRenderStage(Stage * stage)
     }
 
     // Set new render stage
-    this->addStage(stage);
-    m_renderStage = stage;
+    this->addStage(stage.get());
+    m_renderStage = std::move(stage);
 
     // Connect inputs and outputs of render stage
-    connect(m_renderStage, "deviceViewport",  &deviceViewport);
-    connect(m_renderStage, "virtualViewport", &virtualViewport);
-    connect(m_renderStage, "backgroundColor", &backgroundColor);
-    connect(m_renderStage, "frameCounter",    &frameCounter);
-    connect(m_renderStage, "timeDelta",       &timeDelta);
-    connect(m_renderStage, "targetFBO",       &targetFBO);
-    connect(&rendered,     m_renderStage,     "rendered");
+    connect(m_renderStage.get(), "deviceViewport",  &deviceViewport);
+    connect(m_renderStage.get(), "virtualViewport", &virtualViewport);
+    connect(m_renderStage.get(), "backgroundColor", &backgroundColor);
+    connect(m_renderStage.get(), "frameCounter",    &frameCounter);
+    connect(m_renderStage.get(), "timeDelta",       &timeDelta);
+    connect(m_renderStage.get(), "targetFBO",       &targetFBO);
+    connect(&rendered, m_renderStage.get(), "rendered");
 }
 
 void PipelineContainer::connect(Stage * stage, const std::string & name, AbstractSlot * source)

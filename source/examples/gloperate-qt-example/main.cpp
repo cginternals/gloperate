@@ -44,53 +44,56 @@ int main(int argc, char * argv[])
     UpdateManager updateManager(&environment);
 
     // Create render stage
-    auto * renderStage = new gloperate::DemoStage(&environment);
+    auto renderStage = cppassist::make_unique<gloperate::DemoStage>(&environment);
 
     // Create render window
-    RenderWindow * window = new RenderWindow(&environment);
+    auto window = cppassist::make_unique<RenderWindow>(&environment);
+    auto windowRaw = window.get();
     window->createContext();
-    window->setRenderStage(renderStage);
+    window->setRenderStage(std::move(renderStage));
 
     // Create main window
     QMainWindow mainWindow;
     mainWindow.setWindowTitle("gloperate viewer");
     mainWindow.resize(1280, 720);
-    mainWindow.setCentralWidget(QWidget::createWindowContainer(window));
+    mainWindow.setCentralWidget(QWidget::createWindowContainer(window.release())); // pass ownership to Qt
     mainWindow.centralWidget()->setFocusPolicy(Qt::StrongFocus);
     mainWindow.show();
 
     // Create script console
-    ScriptPromptWidget * scriptPrompt = new ScriptPromptWidget(&mainWindow);
-    scriptPrompt->setSyntaxHighlighter(new ECMA26251SyntaxHighlighter);
-    scriptPrompt->setCompleter(new ECMA26251Completer);
+    auto scriptPrompt = cppassist::make_unique<ScriptPromptWidget>(&mainWindow);
+    scriptPrompt->setSyntaxHighlighter(cppassist::make_unique<ECMA26251SyntaxHighlighter>());
+    scriptPrompt->setCompleter(cppassist::make_unique<ECMA26251Completer>());
     scriptPrompt->setFrameShape(QFrame::NoFrame);
-    QObject::connect(scriptPrompt, &ScriptPromptWidget::evaluate,
-        [&environment, scriptPrompt] (const QString & cmd)
+
+    auto scriptPromptRaw = scriptPrompt.get();
+    QObject::connect(scriptPrompt.get(), &ScriptPromptWidget::evaluate,
+        [&environment, scriptPromptRaw] (const QString & cmd)
         {
             // Execute script code
             std::string code = cmd.toStdString();
             cppexpose::Variant res = environment.executeScript(code);
 
             // Output result
-            scriptPrompt->print(QString::fromStdString(res.value<std::string>()));
+            scriptPromptRaw->print(QString::fromStdString(res.value<std::string>()));
         }
     );
 
     // Create dock window for scripting console
-    QDockWidget * scriptPromptDockWidget = new QDockWidget("Script Prompt");
-    scriptPromptDockWidget->setWidget(scriptPrompt);
+    auto scriptPromptDockWidget = cppassist::make_unique<QDockWidget>("Script Prompt");
+    scriptPromptDockWidget->setWidget(scriptPrompt.release());
     scriptPromptDockWidget->setObjectName("ScriptPromptWidget");
-    mainWindow.addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, scriptPromptDockWidget);
+    mainWindow.addDockWidget(Qt::DockWidgetArea::BottomDockWidgetArea, scriptPromptDockWidget.release());
 
     // Initialize context, print context info
-    window->context()->use();
-//  window->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
+    windowRaw->context()->use();
+//  windowRaw->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
     cppassist::info() << std::endl
         << "OpenGL Version:  " << GLContextUtils::version() << std::endl
         << "OpenGL Profile:  " << GLContextUtils::profile() << std::endl
         << "OpenGL Vendor:   " << GLContextUtils::vendor() << std::endl
         << "OpenGL Renderer: " << GLContextUtils::renderer() << std::endl;
-    window->context()->release();
+    windowRaw->context()->release();
 
     // Run main loop
     return app.exec();

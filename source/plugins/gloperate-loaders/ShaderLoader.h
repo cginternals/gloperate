@@ -22,7 +22,7 @@ namespace globjects
 
 /**
 *  @brief
-*    Texture loader based on Qt
+*    Shader loader based on Qt
 *
 *  Supported options:
 *    none

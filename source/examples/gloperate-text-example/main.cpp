@@ -44,19 +44,15 @@ int main(int argc, char * argv[])
     QmlEngine qmlEngine(&environment);
 
     // Create scripting context backend
-    environment.setupScripting(new gloperate_qtquick::QmlScriptContext(&qmlEngine));
+    environment.setupScripting(cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&qmlEngine));
 
     // Load and show QML
-    auto window = new QuickView(&qmlEngine);
-    window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/TextExampleViewer.qml"));
-    window->setGeometry(100, 100, 1280, 720);
-    window->show();
+    QuickView window(&qmlEngine);
+    window.setResizeMode(QQuickView::SizeRootObjectToView);
+    window.setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/TextExampleViewer.qml"));
+    window.setGeometry(100, 100, 1280, 720);
+    window.show();
 
     // Run main loop
-    const auto res = app.exec();
-
-    // Clean up
-    delete window;
-    return res;
+    return app.exec();
 }

@@ -120,6 +120,8 @@ set(headers
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/base/ShaderStage.h
+    ${include_path}/stages/base/RenderPassStage.h
+    ${include_path}/stages/base/RasterizationStage.h
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
@@ -136,6 +138,7 @@ set(headers
     ${include_path}/input/AxisEvent.h
     ${include_path}/input/MouseDevice.h
     ${include_path}/input/KeyboardDevice.h
+    ${include_path}/input/PrintLineConsumer.h
 
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
@@ -193,6 +196,8 @@ set(sources
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/ShaderStage.cpp
+    ${source_path}/stages/base/RenderPassStage.cpp
+    ${source_path}/stages/base/RasterizationStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
@@ -214,6 +219,7 @@ set(sources
     ${source_path}/input/AxisEvent.cpp
     ${source_path}/input/MouseDevice.cpp
     ${source_path}/input/KeyboardDevice.cpp
+    ${source_path}/input/PrintLineConsumer.cpp
 
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp

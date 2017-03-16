@@ -6,7 +6,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 
@@ -87,9 +86,9 @@ protected:
 
 protected:
     // Data
-    globjects::ref_ptr<globjects::Framebuffer> m_fbo;       ///< The created framebuffer
-    globjects::ref_ptr<globjects::Texture>     m_texColor;  ///< Color texture
-    globjects::ref_ptr<globjects::Texture>     m_texDepth;  ///< Depth texture
+    std::unique_ptr<globjects::Framebuffer> m_fbo;       ///< The created framebuffer
+    std::unique_ptr<globjects::Texture>     m_texColor;  ///< Color texture
+    std::unique_ptr<globjects::Texture>     m_texDepth;  ///< Depth texture
 };
 
 

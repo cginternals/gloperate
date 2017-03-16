@@ -41,11 +41,10 @@ TextRenderingPipeline::TextRenderingPipeline(gloperate::Environment * environmen
 , lineAnchor  { "lineAnchor",   this, gloperate_text::LineAnchor::Baseline }
 , optimized   { "optimized",    this, true }
 {
-    auto fontImport = new gloperate_text::FontImporterStage{ environment, "FontImport" };
+    auto fontImport = cppassist::make_unique<gloperate_text::FontImporterStage>(environment, "FontImport");
     fontImport->fontFilePath << fontFilename;
-    addStage(fontImport);
 
-    auto demo = new GlyphSequenceDemoStage{ environment, "DemoSequence" };
+    auto demo = cppassist::make_unique<GlyphSequenceDemoStage>(environment, "DemoSequence");
     demo->string       << string;
     demo->numChars     << numChars;
     demo->font         << fontImport->font;
@@ -58,19 +57,21 @@ TextRenderingPipeline::TextRenderingPipeline(gloperate::Environment * environmen
     demo->alignment    << alignment;
     demo->lineAnchor   << lineAnchor;
     demo->pixelPerInch.setValue(72.0f);
-    addStage(demo);
 
-    auto glyphPreparation = new gloperate_text::GlyphPreparationStage{ environment, "GlyphPreparation" };
+    auto glyphPreparation = cppassist::make_unique<gloperate_text::GlyphPreparationStage>(environment, "GlyphPreparation");
     glyphPreparation->font      << fontImport->font;
     glyphPreparation->sequences << demo->sequences;
     glyphPreparation->optimized << optimized;
-    addStage(glyphPreparation);
 
-    auto glyphRendering = new gloperate_text::GlyphRenderStage{ environment, "GlyphRendering" };
+    auto glyphRendering = cppassist::make_unique<gloperate_text::GlyphRenderStage>(environment, "GlyphRendering");
     glyphRendering->vertexCloud       << glyphPreparation->vertexCloud;
     glyphRendering->viewport          << renderInterface.deviceViewport;
     glyphRendering->targetFramebuffer << renderInterface.targetFBO;
-    addStage(glyphRendering);
 
     renderInterface.rendered << glyphRendering->rendered;
+
+    addStage(std::move(fontImport));
+    addStage(std::move(demo));
+    addStage(std::move(glyphPreparation));
+    addStage(std::move(glyphRendering));
 }

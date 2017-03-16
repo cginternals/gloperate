@@ -64,8 +64,6 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess(AbstractGLContext * context) override;
-
-
 };
 
 

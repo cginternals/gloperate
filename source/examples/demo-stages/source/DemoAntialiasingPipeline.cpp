@@ -1,6 +1,8 @@
 
 #include <demo-stages/DemoAntialiasingPipeline.h>
 
+#include <cppassist/memory/make_unique.h>
+
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
 
@@ -18,14 +20,14 @@ DemoAntialiasingPipeline::DemoAntialiasingPipeline(Environment * environment, co
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 1)
-, m_subpixelStage(new gloperate_glkernel::DiscDistributionKernelStage(environment))
-, m_triangleStage(new DemoAntialiasableTriangleStage(environment))
+, m_subpixelStage(cppassist::make_unique<gloperate_glkernel::DiscDistributionKernelStage>(environment))
+, m_triangleStage(cppassist::make_unique<DemoAntialiasableTriangleStage>(environment))
 {
-    addStage(m_subpixelStage);
+    addStage(m_subpixelStage.get());
     m_subpixelStage->kernelSize << multiFrameCount;
     m_subpixelStage->radius.setValue(0.001f); // guessing inverse height of viewport
 
-    addStage(m_triangleStage);
+    addStage(m_triangleStage.get());
     m_triangleStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_triangleStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_triangleStage->renderInterface.frameCounter << renderInterface.frameCounter;

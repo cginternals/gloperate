@@ -68,9 +68,9 @@ public:
 
 protected:
     // Stages
-    gloperate_glkernel::TransparencyKernelStage * m_transparencyKernelStage;  ///< Stage generating transparency kernel
-    gloperate_glkernel::NoiseKernelStage        * m_noiseKernelStage;         ///< Stage generating random noise
-    DemoTransparencyStage                       * m_transparencyRenderStage;  ///< Rendering stage
+    std::unique_ptr<gloperate_glkernel::TransparencyKernelStage> m_transparencyKernelStage;  ///< Stage generating transparency kernel
+    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>        m_noiseKernelStage;         ///< Stage generating random noise
+    std::unique_ptr<DemoTransparencyStage>   m_transparencyRenderStage;  ///< Rendering stage
 };
 
 

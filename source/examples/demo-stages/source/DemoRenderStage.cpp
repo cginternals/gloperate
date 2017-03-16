@@ -74,7 +74,6 @@ void DemoRenderStage::onProcess(AbstractGLContext *)
 
     // Bind FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    if (!fbo) fbo = globjects::Framebuffer::defaultFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
@@ -122,13 +121,13 @@ void DemoRenderStage::onProcess(AbstractGLContext *)
 
 void DemoRenderStage::setupGeometry()
 {
-    m_vao = new globjects::VertexArray;
-    m_vertexBuffer = new globjects::Buffer();
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
+    m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
     m_vertexBuffer->setData(s_vertices, gl::GL_STATIC_DRAW);
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(m_vertexBuffer, 0, sizeof(glm::vec2));
+    binding->setBuffer(m_vertexBuffer.get(), 0, sizeof(glm::vec2));
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 }

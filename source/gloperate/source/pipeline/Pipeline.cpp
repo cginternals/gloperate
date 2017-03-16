@@ -57,25 +57,43 @@ Stage * Pipeline::stage(const std::string & name) const
     return m_stagesMap.at(name);
 }
 
-void Pipeline::addStage(Stage * stage, cppexpose::PropertyOwnership ownership)
+void Pipeline::addStage(Stage * stage)
 {
-    // Check parameters
-    if (!stage)
-    {
-        return;
-    }
+    assert(stage);
 
     // Find free name
     std::string name = getFreeName(stage->name());
     stage->setName(name);
 
     // Add stage as property
-    addProperty(stage, ownership);
+    addProperty(stage);
 
+    // Add stage
+    registerStage(stage);
+}
+
+void Pipeline::addStage(std::unique_ptr<Stage> && stage)
+{
+    assert(stage);
+
+    // Find free name
+    std::string name = getFreeName(stage->name());
+    stage->setName(name);
+
+    // Add stage as property
+    const auto stagePtr = stage.get();
+    addProperty(std::move(stage));
+
+    // Add stage
+    registerStage(stagePtr);
+}
+
+void Pipeline::registerStage(Stage * stage)
+{
     // Add stage
     m_stages.push_back(stage);
     if (stage->name() != "") {
-        m_stagesMap.insert(std::make_pair(stage->name(), stage));        
+        m_stagesMap.insert(std::make_pair(stage->name(), stage));
     }
 
     // Shouldn't be required if each slot of a stage would disconnect from connections
@@ -110,18 +128,6 @@ bool Pipeline::removeStage(Stage * stage)
     // Shouldn't be required if each slot of a stage would disconnect from connections
     // and this would be propagated to the normal stage order invalidation
     invalidateStageOrder();
-
-    return true;
-}
-
-bool Pipeline::destroyStage(Stage * stage)
-{
-    if (!removeStage(stage))
-    {
-        return false;
-    }
-
-    delete stage;
 
     return true;
 }
@@ -276,6 +282,7 @@ void Pipeline::onProcess(AbstractGLContext * context)
     for (auto stage : m_stages)
     {
         if (stage->needsProcessing()) {
+            debug() << "Process stage " << stage->name();
             stage->process(context);
         }
     }
@@ -321,10 +328,12 @@ std::string Pipeline::scr_createStage(const std::string & className, const std::
     if (component)
     {
         // Create stage
-        Stage * stage = component->createInstance(m_environment, name);
-        addStage(stage);
+        auto stage = component->createInstance(m_environment, name);
+        auto stagePtr = stage.get();
 
-        return stage->name();
+        addStage(std::move(stage));
+
+        return stagePtr->name();
     }
 
     return "";

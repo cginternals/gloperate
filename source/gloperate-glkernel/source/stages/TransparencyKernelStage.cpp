@@ -21,7 +21,6 @@ TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * enviro
 , regenerate("regenerate", this, true)
 , kernel("kernel", this)
 , texture("texture", this)
-, m_texture(nullptr)
 {
 }
 
@@ -31,7 +30,7 @@ TransparencyKernelStage::~TransparencyKernelStage()
 }
 
 
-void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext * context)
+void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 }
@@ -51,7 +50,7 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
     }
 
     kernel.setValue(&m_kernelData);
-    texture.setValue(m_texture);
+    texture.setValue(m_texture.get());
 }
 
 

@@ -96,6 +96,9 @@ public:
     */
     Stage(Environment * environment, const std::string & className = "Stage", const std::string & name = "");
 
+    Stage(const Stage &) = delete;
+    Stage & operator=(const Stage &) = delete;
+
     /**
     *  @brief
     *    Destructor
@@ -364,18 +367,25 @@ public:
     *    Add input
     *
     *  @param[in] input
-    *    Input (must NOT null!)
-    *  @param[in] ownership
-    *    Property ownership
+    *    Input (must NOT be null!)
     */
-    void addInput(AbstractSlot * input, cppexpose::PropertyOwnership ownership);
+    void addInput(AbstractSlot * input);
+
+    /**
+    *  @brief
+    *    Add input
+    *
+    *  @param[in] input
+    *    Input (must NOT be null!)
+    */
+    void addInput(std::unique_ptr<AbstractSlot> && input);
 
     /**
     *  @brief
     *    Remove input
     *
     *  @param[in] input
-    *    Input (must NOT null!)
+    *    Input (must NOT be null!)
     */
     void removeInput(AbstractSlot * input);
 
@@ -447,18 +457,25 @@ public:
     *    Add output
     *
     *  @param[in] output
-    *    Output (must NOT null!)
-    *  @param[in] ownership
-    *    Property ownership
+    *    Output (must NOT be null!)
     */
-    void addOutput(AbstractSlot * output, cppexpose::PropertyOwnership ownership);
+    void addOutput(AbstractSlot * output);
+
+    /**
+    *  @brief
+    *    Add output
+    *
+    *  @param[in] output
+    *    Output (must NOT be null!)
+    */
+    void addOutput(std::unique_ptr<AbstractSlot> && output);
 
     /**
     *  @brief
     *    Remove output
     *
     *  @param[in] output
-    *    Output (must NOT null!)
+    *    Output (must NOT be null!)
     */
     void removeOutput(AbstractSlot * output);
 
@@ -623,6 +640,18 @@ protected:
     *    implement everything else in onProcess().
     */
     virtual void onOutputRequiredChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
+    *    Common implementation of addInput(AbstractSlot *) and addInput(std::unique_ptr<AbstractSlot> &&)
+    */
+    void registerInput(AbstractSlot * input);
+
+    /**
+    *  @brief
+    *    Common implementation of addOutput(AbstractSlot *) and addOutput(std::unique_ptr<AbstractSlot> &&)
+    */
+    void registerOutput(AbstractSlot * output);
 
 
 protected:
