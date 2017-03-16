@@ -93,11 +93,11 @@ protected:
 
 protected:
     // Aggregation stages
-    std::unique_ptr<gloperate::BasicFramebufferStage>      m_renderFramebufferStage;      ///< FBO stage for frame generating stage
-    std::unique_ptr<gloperate::CustomFramebufferStage>     m_aggregationFramebufferStage; ///< Aggregation FBO
-    std::unique_ptr<MultiFrameControlStage>     m_controlStage;                ///< Multiframe control stage
-    std::unique_ptr<MultiFrameAggregationStage> m_aggregationStage;            ///< Aggregation stage
-    std::unique_ptr<gloperate::BlitStage>                  m_blitStage;                   ///< Blit stage
+    std::unique_ptr<gloperate::BasicFramebufferStage>  m_renderFramebufferStage;      ///< FBO stage for frame generating stage
+    std::unique_ptr<gloperate::CustomFramebufferStage> m_aggregationFramebufferStage; ///< Aggregation FBO
+    std::unique_ptr<MultiFrameControlStage>            m_controlStage;                ///< Multiframe control stage
+    std::unique_ptr<MultiFrameAggregationStage>        m_aggregationStage;            ///< Aggregation stage
+    std::unique_ptr<gloperate::BlitStage>              m_blitStage;                   ///< Blit stage
 
     // Inserted Stage/Pipeline
     Stage * m_frameRenderStage;                                 ///< Frame generating stage
