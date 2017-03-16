@@ -1,12 +1,12 @@
 
-#include <demo-stages/DemoAntialiasingPipeline.h>
+#include "DemoAntialiasingPipeline.h"
 
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/multiframe/SubpixelAntialiasingOffsetStage.h>
 
-#include <demo-stages/DemoAntialiasableTriangleStage.h>
+#include "DemoAntialiasableTriangleStage.h"
 
 
 namespace gloperate

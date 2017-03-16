@@ -1,5 +1,5 @@
 
-#include <demo-stages/DemoPipeline.h>
+#include "DemoPipeline.h"
 
 #include <glbinding/gl/enum.h>
 
@@ -14,10 +14,10 @@
 #include <gloperate/stages/base/RenderPassStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
 
-#include <demo-stages/TimerStage.h>
-#include <demo-stages/SpinningRectStage.h>
-
 #include <gloperate/rendering/ScreenAlignedQuad.h>
+
+#include "TimerStage.h"
+#include "SpinningRectStage.h"
 
 
 namespace gloperate

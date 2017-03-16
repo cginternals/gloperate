@@ -24,17 +24,17 @@ message(STATUS "Plugin ${target}")
 # Set API export file and macro
 string(MAKE_C_IDENTIFIER ${target} target_id)
 string(TOUPPER ${target_id} target_id)
-set(feature_file "include/${target}/${target}_features.h")
-set(export_file  "include/${target}/${target}_api.h")
-set(export_macro "${target_id}_API")
+#set(feature_file "include/${target}/${target}_features.h")
+#set(export_file  "include/${target}/${target}_api.h")
+#set(export_macro "${target_id}_API")
 
 
 #
 # Sources
 #
 
-set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
-set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
+set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
     ${include_path}/DemoStage.h
@@ -98,7 +98,7 @@ source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.inl$"
 #
 
 # Build library
-add_library(${target}
+add_library(${target} SHARED
     ${sources}
     ${headers}
 )
@@ -108,29 +108,6 @@ add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
 # Export library for downstream projects
 export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
-
-# Check for availability of module; use pre-generated version if not found
-if (WriterCompilerDetectionHeaderFound)
-    write_compiler_detection_header(
-        FILE ${feature_file}
-        PREFIX ${target_id}
-        COMPILERS AppleClang Clang GNU MSVC
-        FEATURES cxx_noexcept
-        VERSION 3.2
-    )
-else()
-    file(
-        COPY ${PROJECT_SOURCE_DIR}/source/codegeneration/${target}_features.h
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/${target}
-        USE_SOURCE_PERMISSIONS
-    )
-endif()
-
-# Create API export header
-generate_export_header(${target}
-    EXPORT_FILE_NAME  ${export_file}
-    EXPORT_MACRO_NAME ${export_macro}
-)
 
 
 #
@@ -237,27 +214,6 @@ target_link_libraries(${target}
 
 # Library
 install(TARGETS ${target}
-    EXPORT  "${target}-export"            COMPONENT dev
-    RUNTIME DESTINATION ${INSTALL_BIN}    COMPONENT runtime
-    LIBRARY DESTINATION ${INSTALL_SHARED} COMPONENT runtime
-    ARCHIVE DESTINATION ${INSTALL_LIB}    COMPONENT dev
-)
-
-# Header files
-install(DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE}
-    COMPONENT dev
-)
-
-# Generated header files
-install(DIRECTORY
-    ${CMAKE_CURRENT_BINARY_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE}
-    COMPONENT dev
-)
-
-# CMake config
-install(EXPORT ${target}-export
-    NAMESPACE   ${META_PROJECT_NAME}::
-    DESTINATION ${INSTALL_CMAKE}/${target}
-    COMPONENT   dev
+    RUNTIME DESTINATION ${INSTALL_BIN} COMPONENT runtime
+    BUNDLE  DESTINATION ${INSTALL_BIN} COMPONENT runtime
 )

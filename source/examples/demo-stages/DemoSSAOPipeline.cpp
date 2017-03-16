@@ -1,12 +1,12 @@
 
-#include <demo-stages/DemoSSAOPipeline.h>
+#include "DemoSSAOPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/multiframe/SSAOKernelStage.h>
 
-#include <demo-stages/DemoSSAORenderingStage.h>
-#include <demo-stages/DemoSSAOPostprocessingStage.h>
+#include "DemoSSAORenderingStage.h"
+#include "DemoSSAOPostprocessingStage.h"
 
 
 namespace gloperate

@@ -1,5 +1,5 @@
 
-#include <demo-stages/DemoDOFCubeStage.h>
+#include "DemoDOFCubeStage.h"
 
 #include <array>
 

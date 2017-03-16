@@ -1,5 +1,5 @@
 
-#include <demo-stages/ShaderDemoPipeline.h>
+#include "ShaderDemoPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
@@ -10,7 +10,7 @@
 #include <gloperate/stages/base/RasterizationStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
 
-#include <demo-stages/DemoDrawableStage.h>
+#include "DemoDrawableStage.h"
 
 #include <cppassist/logging/logging.h>
 

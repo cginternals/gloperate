@@ -1,11 +1,11 @@
 
-#include <demo-stages/DemoTransparencyPipeline.h>
+#include "DemoTransparencyPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/multiframe/TransparencyKernelStage.h>
 #include <gloperate/stages/multiframe/NoiseKernelStage.h>
 
-#include <demo-stages/DemoTransparencyStage.h>
+#include "DemoTransparencyStage.h"
 
 
 namespace gloperate

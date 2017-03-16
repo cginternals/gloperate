@@ -1,12 +1,12 @@
 
-#include <demo-stages/DemoDOFPipeline.h>
+#include "DemoDOFPipeline.h"
 
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/multiframe/MultiFrameDiscDistributionStage.h>
 
-#include <demo-stages/DemoDOFCubeStage.h>
+#include "DemoDOFCubeStage.h"
 
 
 namespace gloperate

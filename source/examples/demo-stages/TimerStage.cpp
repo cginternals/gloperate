@@ -1,5 +1,5 @@
 
-#include <demo-stages/TimerStage.h>
+#include "TimerStage.h"
 
 #include <cppassist/logging/logging.h>
 

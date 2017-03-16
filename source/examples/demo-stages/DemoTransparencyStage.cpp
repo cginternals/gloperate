@@ -1,5 +1,5 @@
 
-#include <demo-stages/DemoTransparencyStage.h>
+#include "DemoTransparencyStage.h"
 
 #include <array>
 

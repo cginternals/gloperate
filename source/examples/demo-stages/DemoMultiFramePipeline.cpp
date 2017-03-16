@@ -1,13 +1,13 @@
 
-#include <demo-stages/DemoMultiFramePipeline.h>
+#include "DemoMultiFramePipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
 
-#include <demo-stages/DemoAntialiasingPipeline.h>
-#include <demo-stages/DemoDOFPipeline.h>
-#include <demo-stages/DemoTransparencyPipeline.h>
-#include <demo-stages/DemoSSAOPipeline.h>
+#include "DemoAntialiasingPipeline.h"
+#include "DemoDOFPipeline.h"
+#include "DemoTransparencyPipeline.h"
+#include "DemoSSAOPipeline.h"
 
 namespace gloperate
 {

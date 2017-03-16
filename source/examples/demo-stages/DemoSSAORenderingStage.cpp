@@ -1,5 +1,5 @@
 
-#include <demo-stages/DemoSSAORenderingStage.h>
+#include "DemoSSAORenderingStage.h"
 
 #include <tuple>
 

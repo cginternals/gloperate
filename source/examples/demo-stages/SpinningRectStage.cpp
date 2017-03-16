@@ -1,5 +1,5 @@
 
-#include <demo-stages/DemoRenderStage.h>
+#include "SpinningRectStage.h"
 
 #include <random>
 
@@ -25,41 +25,75 @@ static const std::array<glm::vec2, 4> s_vertices { {
     glm::vec2( -1.f, -1.f ),
     glm::vec2( -1.f, +1.f ) } };
 
+// Vertex shader displaying the triangle
+static const char * s_vertexShader = R"(
+    #version 140
+    #extension GL_ARB_explicit_attrib_location : require
+
+    uniform mat4 modelViewProjectionMatrix;
+
+    layout (location = 0) in vec2 a_vertex;
+    out vec2 v_uv;
+
+    void main()
+    {
+        v_uv = a_vertex * 0.5 + 0.5;
+        gl_Position = modelViewProjectionMatrix * vec4(a_vertex, 0.0, 1.0);
+    }
+)";
+
+// Fragment shader displaying the triangle
+static const char * s_fragmentShader = R"(
+    #version 140
+    #extension GL_ARB_explicit_attrib_location : require
+
+    uniform sampler2D source;
+
+    layout (location = 0) out vec4 fragColor;
+
+    in vec2 v_uv;
+
+    void main()
+    {
+        fragColor = texture(source, v_uv);
+    }
+)";
+
 
 namespace gloperate
 {
 
 
-CPPEXPOSE_COMPONENT(DemoRenderStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(SpinningRectStage, gloperate::Stage)
 
 
-DemoRenderStage::DemoRenderStage(Environment * environment, const std::string & name)
-: Stage(environment, name)
+SpinningRectStage::SpinningRectStage(Environment * environment, const std::string & name)
+: Stage(environment, "SpinningRectStage", name)
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
 , angle          ("angle",           this, 0.0f)
 , colorTexture   ("colorTexture",    this, nullptr)
-, program        ("program",         this, nullptr)
 , fboOut         ("fboOut",          this, nullptr)
 , colorTextureOut("colorTextureOut", this, nullptr)
 {
 }
 
-DemoRenderStage::~DemoRenderStage()
+SpinningRectStage::~SpinningRectStage()
 {
 }
 
-void DemoRenderStage::onContextInit(AbstractGLContext *)
+void SpinningRectStage::onContextInit(AbstractGLContext *)
 {
     setupGeometry();
     setupCamera();
+    setupProgram();
 }
 
-void DemoRenderStage::onContextDeinit(AbstractGLContext *)
+void SpinningRectStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void DemoRenderStage::onProcess(AbstractGLContext *)
+void SpinningRectStage::onProcess(AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -89,9 +123,8 @@ void DemoRenderStage::onProcess(AbstractGLContext *)
     model = glm::rotate(model, *angle, glm::vec3(0.0, 1.0, 0.0));
 
     // Update model-view-projection matrix
-    (*program)->setUniform("source", 0);
-    (*program)->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
-    (*program)->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
+    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
+    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
 
     // Bind texture
     if (*texture) {
@@ -99,9 +132,9 @@ void DemoRenderStage::onProcess(AbstractGLContext *)
     }
 
     // Draw geometry
-    (*program)->use();
+    m_program->use();
     m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
-    (*program)->release();
+    m_program->release();
 
     // Unbind texture
     if (*texture) {
@@ -119,7 +152,7 @@ void DemoRenderStage::onProcess(AbstractGLContext *)
     renderInterface.rendered.setValue(true);
 }
 
-void DemoRenderStage::setupGeometry()
+void SpinningRectStage::setupGeometry()
 {
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
@@ -132,9 +165,28 @@ void DemoRenderStage::setupGeometry()
     m_vao->enable(0);
 }
 
-void DemoRenderStage::setupCamera()
+void SpinningRectStage::setupCamera()
 {
     m_camera.setEye(glm::vec3(0.0, 0.0, 12.0));
+}
+
+void SpinningRectStage::setupProgram()
+{
+    //TODO this is a memory leak! Use resource loader?
+    globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
+    globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
+
+#ifdef __APPLE__
+    vertexShaderSource  ->replace("#version 140", "#version 150");
+    fragmentShaderSource->replace("#version 140", "#version 150");
+#endif
+
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
+
+    m_program->setUniform("source", 0);
 }
 
 

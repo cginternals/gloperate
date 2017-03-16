@@ -1,5 +1,5 @@
 
-#include <demo-stages/SpinningRectStage.h>
+#include "DemoStage.h"
 
 #include <random>
 
@@ -16,16 +16,10 @@
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/Environment.h>
+#include <gloperate/base/ResourceManager.h>
 
 
-// Geometry describing the triangle
-static const std::array<glm::vec2, 4> s_vertices { {
-    glm::vec2( +1.f, -1.f ),
-    glm::vec2( +1.f, +1.f ),
-    glm::vec2( -1.f, -1.f ),
-    glm::vec2( -1.f, +1.f ) } };
-
-// Vertex shader displaying the triangle
 static const char * s_vertexShader = R"(
     #version 140
     #extension GL_ARB_explicit_attrib_location : require
@@ -42,7 +36,6 @@ static const char * s_vertexShader = R"(
     }
 )";
 
-// Fragment shader displaying the triangle
 static const char * s_fragmentShader = R"(
     #version 140
     #extension GL_ARB_explicit_attrib_location : require
@@ -64,36 +57,47 @@ namespace gloperate
 {
 
 
-CPPEXPOSE_COMPONENT(SpinningRectStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
 
 
-SpinningRectStage::SpinningRectStage(Environment * environment, const std::string & name)
-: Stage(environment, "SpinningRectStage", name)
+DemoStage::DemoStage(Environment * environment, const std::string & name)
+: Stage(environment, "DemoStage", name)
 , renderInterface(this)
-, texture        ("texture",         this, nullptr)
-, angle          ("angle",           this, 0.0f)
-, colorTexture   ("colorTexture",    this, nullptr)
-, fboOut         ("fboOut",          this, nullptr)
-, colorTextureOut("colorTextureOut", this, nullptr)
+, m_timer(environment)
+, m_time(0.0f)
+, m_angle(0.0f)
+{
+    // Setup timer
+    m_timer.elapsed.connect([this] ()
+    {
+        // Update virtual time
+        m_time += *renderInterface.timeDelta;
+
+        // Redraw
+        invalidateOutputs();
+    });
+
+    m_timer.start(0.0f);
+}
+
+DemoStage::~DemoStage()
 {
 }
 
-SpinningRectStage::~SpinningRectStage()
+void DemoStage::onContextInit(AbstractGLContext *)
+{
+    globjects::init();
+
+    createAndSetupCamera();
+    createAndSetupTexture();
+    createAndSetupGeometry();
+}
+
+void DemoStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void SpinningRectStage::onContextInit(AbstractGLContext *)
-{
-    setupGeometry();
-    setupCamera();
-    setupProgram();
-}
-
-void SpinningRectStage::onContextDeinit(AbstractGLContext *)
-{
-}
-
-void SpinningRectStage::onProcess(AbstractGLContext *)
+void DemoStage::onProcess(AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -110,6 +114,9 @@ void SpinningRectStage::onProcess(AbstractGLContext *)
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
     fbo->bind(gl::GL_FRAMEBUFFER);
 
+    // Update animation
+    m_angle = m_time;
+
     // Clear background
     glm::vec3 color = *renderInterface.backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
@@ -120,15 +127,20 @@ void SpinningRectStage::onProcess(AbstractGLContext *)
 
     // Get model matrix
     glm::mat4 model = glm::mat4(1.0);
-    model = glm::rotate(model, *angle, glm::vec3(0.0, 1.0, 0.0));
+    model = glm::rotate(model, m_angle, glm::vec3(0.0, 1.0, 0.0));
 
     // Update model-view-projection matrix
     m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
     m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
 
+    // Lazy creation of texture
+    if (!m_texture) {
+        createAndSetupTexture();
+    }
+
     // Bind texture
-    if (*texture) {
-        (*texture)->bindActive(0);
+    if (m_texture) {
+        m_texture->bindActive(0);
     }
 
     // Draw geometry
@@ -137,41 +149,67 @@ void SpinningRectStage::onProcess(AbstractGLContext *)
     m_program->release();
 
     // Unbind texture
-    if (*texture) {
-        (*texture)->unbindActive(0);
+    if (m_texture) {
+        m_texture->unbindActive(0);
     }
 
     // Unbind FBO
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
-    // Indicate change to the output FBO and texture
-    fboOut.setValue(fbo);
-    colorTextureOut.setValue(*colorTexture);
-
     // Signal that output is valid
     renderInterface.rendered.setValue(true);
 }
 
-void SpinningRectStage::setupGeometry()
-{
-    m_vao = cppassist::make_unique<globjects::VertexArray>();
-    m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
-    m_vertexBuffer->setData(s_vertices, gl::GL_STATIC_DRAW);
-
-    auto binding = m_vao->binding(0);
-    binding->setAttribute(0);
-    binding->setBuffer(m_vertexBuffer.get(), 0, sizeof(glm::vec2));
-    binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
-    m_vao->enable(0);
-}
-
-void SpinningRectStage::setupCamera()
+void DemoStage::createAndSetupCamera()
 {
     m_camera.setEye(glm::vec3(0.0, 0.0, 12.0));
 }
 
-void SpinningRectStage::setupProgram()
+void DemoStage::createAndSetupTexture()
 {
+    // Load texture from file
+    m_texture = std::unique_ptr<globjects::Texture>(m_environment->resourceManager()->load<globjects::Texture>(
+        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.png"
+    ));
+
+    // Create procedural texture if texture couldn't be found
+    if (!m_texture)
+    {
+        static const int w(256);
+        static const int h(256);
+        unsigned char data[w * h * 4];
+
+        std::random_device rd;
+        std::mt19937 generator(rd());
+        std::poisson_distribution<> r(0.2);
+
+        for (int i = 0; i < w * h * 4; ++i) {
+            data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
+        }
+
+        m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
+    }
+}
+
+void DemoStage::createAndSetupGeometry()
+{
+    static const std::array<glm::vec2, 4> raw { {
+        glm::vec2( +1.f, -1.f ),
+        glm::vec2( +1.f, +1.f ),
+        glm::vec2( -1.f, -1.f ),
+        glm::vec2( -1.f, +1.f ) } };
+
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
+    m_buffer = cppassist::make_unique<globjects::Buffer>();
+    m_buffer->setData(raw, gl::GL_STATIC_DRAW);
+
+    auto binding = m_vao->binding(0);
+    binding->setAttribute(0);
+    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
+    binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
+    m_vao->enable(0);
+
     //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));

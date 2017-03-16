@@ -1,5 +1,5 @@
 
-#include <demo-stages/DemoSSAOPostprocessingStage.h>
+#include "DemoSSAOPostprocessingStage.h"
 
 #include <array>
 

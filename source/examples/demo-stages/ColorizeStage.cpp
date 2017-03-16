@@ -1,5 +1,5 @@
 
-#include <demo-stages/ColorizeStage.h>
+#include "ColorizeStage.h"
 
 #include <glm/glm.hpp>
 

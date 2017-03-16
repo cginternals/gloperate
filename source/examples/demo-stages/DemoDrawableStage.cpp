@@ -1,5 +1,5 @@
 
-#include <demo-stages/DemoDrawableStage.h>
+#include "DemoDrawableStage.h"
 
 #include <glbinding/gl/gl.h>
 

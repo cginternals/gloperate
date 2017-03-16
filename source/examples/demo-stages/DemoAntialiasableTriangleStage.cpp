@@ -1,5 +1,5 @@
 
-#include <demo-stages/DemoAntialiasableTriangleStage.h>
+#include "DemoAntialiasableTriangleStage.h"
 
 #include <glbinding/gl/gl.h>
 

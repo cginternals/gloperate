@@ -1,5 +1,5 @@
 
-#include <demo-stages/LightTestStage.h>
+#include "LightTestStage.h"
 
 #include <glm/gtx/transform.hpp>
 

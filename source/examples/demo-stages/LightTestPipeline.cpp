@@ -1,11 +1,11 @@
 
-#include <demo-stages/LightTestPipeline.h>
+#include "LightTestPipeline.h"
 
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/lights/LightBufferTextureStage.h>
 
-#include <demo-stages/LightTestStage.h>
-#include <demo-stages/TimerStage.h>
+#include "LightTestStage.h"
+#include "TimerStage.h"
 
 
 namespace gloperate
