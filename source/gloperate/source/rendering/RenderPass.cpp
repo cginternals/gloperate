@@ -7,13 +7,12 @@
 #include <globjects/Texture.h>
 #include <globjects/Sampler.h>
 #include <globjects/Buffer.h>
-#include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 #include <globjects/ProgramPipeline.h>
 #include <globjects/TransformFeedback.h>
 #include <globjects/State.h>
 
-#include <gloperate/rendering/Drawable.h>
+#include <gloperate/rendering/AbstractDrawable.h>
 
 
 namespace gloperate
@@ -21,7 +20,14 @@ namespace gloperate
 
 
 RenderPass::RenderPass()
-: m_recordTransformFeedbackMode(gl::GL_POINTS)
+: m_stateBefore(nullptr)
+, m_stateAfter(nullptr)
+, m_geometry(nullptr)
+, m_program(nullptr)
+, m_programPipeline(nullptr)
+, m_recordTransformFeedback(nullptr)
+, m_recordTransformFeedbackMode(gl::GL_POINTS)
+, m_drawTransformFeedback(nullptr)
 , m_drawTransformFeedbackMode(gl::GL_POINTS)
 {
 }
@@ -103,12 +109,12 @@ void RenderPass::setStateAfter(globjects::State * state)
     m_stateAfter = state;
 }
 
-Drawable * RenderPass::geometry() const
+AbstractDrawable * RenderPass::geometry() const
 {
     return m_geometry;
 }
 
-void RenderPass::setGeometry(Drawable * geometry)
+void RenderPass::setGeometry(AbstractDrawable * geometry)
 {
     m_geometry = geometry;
 }
@@ -218,7 +224,7 @@ globjects::Texture * RenderPass::removeTexture(size_t index)
         return nullptr;
     }
 
-    const auto former = it->second.get();
+    const auto former = it->second;
 
     m_textures.erase(it);
 
@@ -239,7 +245,7 @@ globjects::Sampler * RenderPass::sampler(size_t index) const
         return nullptr;
     }
 
-    return it->second.get();
+    return it->second;
 }
 
 void RenderPass::setSampler(size_t index, globjects::Sampler * sampler)
@@ -265,7 +271,7 @@ globjects::Sampler * RenderPass::removeSampler(size_t index)
         return nullptr;
     }
 
-    const auto former = it->second.get();
+    const auto former = it->second;
 
     m_samplers.erase(it);
 
@@ -307,7 +313,7 @@ globjects::Buffer * RenderPass::removeUniformBuffer(size_t index)
         return nullptr;
     }
 
-    const auto former = it->second.get();
+    const auto former = it->second;
 
     m_uniformBuffers.erase(it);
 
@@ -349,7 +355,7 @@ globjects::Buffer * RenderPass::removeAtomicCounterBuffer(size_t index)
         return nullptr;
     }
 
-    const auto former = it->second.get();
+    const auto former = it->second;
 
     m_atomicCounterBuffers.erase(it);
 
@@ -391,7 +397,7 @@ globjects::Buffer * RenderPass::removeShaderStorageBuffer(size_t index)
         return nullptr;
     }
 
-    const auto former = it->second.get();
+    const auto former = it->second;
 
     m_shaderStorageBuffers.erase(it);
 
@@ -433,7 +439,7 @@ globjects::Buffer * RenderPass::removeTransformFeedbackBuffer(size_t index)
         return nullptr;
     }
 
-    const auto former = it->second.get();
+    const auto former = it->second;
 
     m_transformFeedbackBuffers.erase(it);
 

@@ -34,7 +34,7 @@ void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 
 void NoiseKernelStage::recreateNoise()
 {
-    m_noiseTexture.reset(new NoiseTexture((*inputDimensions), (*outputDimensions), (*size)));
+    m_noiseTexture = cppassist::make_unique<NoiseTexture>((*inputDimensions), (*outputDimensions), (*size));
 
     noiseTexture.setValue(m_noiseTexture->texture());
 }

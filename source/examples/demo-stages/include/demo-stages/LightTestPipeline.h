@@ -82,12 +82,12 @@ public:
 
 protected:
     // Stages
-    LightCreationStage         * m_lightDefStage1;
-    LightCreationStage         * m_lightDefStage2;
-    LightCreationStage         * m_lightDefStage3;
-    LightBufferTextureStage    * m_lightAccumulationStage;
-    TimerStage                 * m_timerStage;
-    LightTestStage             * m_renderStage;
+    std::unique_ptr<LightCreationStage>         m_lightDefStage1;
+    std::unique_ptr<LightCreationStage>         m_lightDefStage2;
+    std::unique_ptr<LightCreationStage>         m_lightDefStage3;
+    std::unique_ptr<LightBufferTextureStage>    m_lightAccumulationStage;
+    std::unique_ptr<TimerStage>                 m_timerStage;
+    std::unique_ptr<LightTestStage>             m_renderStage;
 };
 
 

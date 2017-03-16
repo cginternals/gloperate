@@ -2,13 +2,7 @@
 #pragma once
 
 
-#include <glm/glm.hpp>
-
 #include <cppexpose/plugin/plugin_api.h>
-
-#include <glbinding/gl/gl.h>
-
-#include <globjects/base/ref_ptr.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
@@ -81,7 +75,9 @@ protected:
     void onContextInit(AbstractGLContext * content) override;
 
 protected:
-    globjects::ref_ptr<globjects::Program> m_program; ///< Program object
+    std::unique_ptr<globjects::Program> m_program; ///< Program object
+
+    std::vector<std::unique_ptr<globjects::Shader>>     m_shaders; ///< collection of self created shaders for later removal
 };
 
 

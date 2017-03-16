@@ -19,24 +19,24 @@ CPPEXPOSE_COMPONENT(DemoSSAOPipeline, gloperate::Stage)
 DemoSSAOPipeline::DemoSSAOPipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_colorFBOStage(new BasicFramebufferStage(environment, "Color FBO"))
-, m_normalFBOStage(new BasicFramebufferStage(environment, "Normal FBO"))
-, m_kernelStage(new SSAOKernelStage(environment))
-, m_renderingStage(new DemoSSAORenderingStage(environment))
-, m_postprocessingStage(new DemoSSAOPostprocessingStage(environment))
+, m_colorFBOStage(cppassist::make_unique<BasicFramebufferStage>(environment, "Color FBO"))
+, m_normalFBOStage(cppassist::make_unique<BasicFramebufferStage>(environment, "Normal FBO"))
+, m_kernelStage(cppassist::make_unique<SSAOKernelStage>(environment))
+, m_renderingStage(cppassist::make_unique<DemoSSAORenderingStage>(environment))
+, m_postprocessingStage(cppassist::make_unique<DemoSSAOPostprocessingStage>(environment))
 {
-    addStage(m_colorFBOStage);
+    addStage(m_colorFBOStage.get());
     m_colorFBOStage->viewport << renderInterface.deviceViewport;
 
-    addStage(m_normalFBOStage);
+    addStage(m_normalFBOStage.get());
     m_normalFBOStage->viewport << renderInterface.deviceViewport;
 
-    addStage(m_kernelStage);
+    addStage(m_kernelStage.get());
     m_kernelStage->currentFrame << renderInterface.frameCounter;
     m_kernelStage->noiseSize.setValue(128);
     m_kernelStage->kernelSize.setValue(16);
 
-    addStage(m_renderingStage);
+    addStage(m_renderingStage.get());
     m_renderingStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_renderingStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_renderingStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
@@ -45,7 +45,7 @@ DemoSSAOPipeline::DemoSSAOPipeline(Environment * environment, const std::string 
     m_renderingStage->renderInterface.targetFBO << m_colorFBOStage->fbo;
     m_renderingStage->normalFBO << m_normalFBOStage->fbo;
 
-    addStage(m_postprocessingStage);
+    addStage(m_postprocessingStage.get());
     m_postprocessingStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_postprocessingStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_postprocessingStage->renderInterface.virtualViewport << renderInterface.virtualViewport;

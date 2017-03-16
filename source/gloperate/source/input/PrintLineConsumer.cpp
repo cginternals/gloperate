@@ -13,6 +13,15 @@ namespace gloperate
 {
 
 
+PrintLineConsumer::PrintLineConsumer(InputManager * inputManager)
+: AbstractEventConsumer(inputManager)
+{
+}
+
+PrintLineConsumer::~PrintLineConsumer()
+{
+}
+
 void PrintLineConsumer::onEvent(gloperate::InputEvent * event)
 {
     info() << event->asString();

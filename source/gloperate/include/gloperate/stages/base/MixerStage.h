@@ -6,7 +6,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 
@@ -18,8 +17,9 @@
 
 
 namespace globjects {
-    class Framebuffer;
     class Texture;
+    class Buffer;
+    class Framebuffer;
 }
 
 
@@ -91,9 +91,14 @@ protected:
 
 
 protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;            ///< Screen-aligned quad geometry
-    globjects::ref_ptr<globjects::Program>     m_program;        ///< Shader program
-    bool                                       m_rebuildProgram; ///< 'true', if program needs rebuild
+    std::unique_ptr<globjects::VertexArray> m_vao;            ///< Screen-aligned quad geometry
+    std::unique_ptr<globjects::Program>     m_program;        ///< Shader program
+    bool                                    m_rebuildProgram; ///< 'true', if program needs rebuild
+    std::unique_ptr<globjects::Buffer>      m_buffer;
+
+    std::unique_ptr<globjects::Shader>  m_vertexShader;
+    std::unique_ptr<globjects::Shader>  m_geometryShader;
+    std::unique_ptr<globjects::Shader>  m_fragmentShader;
 };
 
 

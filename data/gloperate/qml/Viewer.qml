@@ -380,7 +380,7 @@ Background
             width:  200
             height: 200
 
-            path: 'pipeline.DemoPipeline.ColorizeStage.colorTextureOut'
+            path: 'pipeline.DemoPipeline.ColorizeRasterizationStage.colorTextureOut'
 
             Drag.active: mouseArea.drag.active
 

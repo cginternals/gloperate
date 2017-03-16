@@ -5,7 +5,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate_api.h>
@@ -42,10 +41,10 @@ public:
 
 
 public:
-    Input<ColorGradientList>                       gradients;       ///< List of gradients
-    Input<size_t>                                  textureWidth;    ///< Size of texture in x dimension
+    Input<ColorGradientList *>                  gradients;       ///< List of gradients
+    Input<size_t>                               textureWidth;    ///< Size of texture in x dimension
 
-    Output<globjects::ref_ptr<globjects::Texture>> gradientTexture; ///< Texture with gradients
+    Output<globjects::Texture*> gradientTexture; ///< Texture with gradients
 
 
 public:
@@ -73,6 +72,10 @@ protected:
     *    Overriden
     */
     virtual void onProcess(gloperate::AbstractGLContext * context) override;
+
+protected:
+    // Data
+    std::unique_ptr<globjects::Texture>         m_gradientTexture;  ///< Gradient texture
 };
 
 } // namespace gloperate

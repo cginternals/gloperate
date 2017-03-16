@@ -21,34 +21,34 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * envir
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
-, m_renderFramebufferStage(new BasicFramebufferStage(environment, "BasicFramebufferStage (Renderer)"))
-, m_aggregationFramebufferStage(new CustomFramebufferStage(environment, "CustomFramebufferStage (Accumulation)"))
-, m_controlStage(new MultiFrameControlStage(environment, "MultiFrameControlStage"))
-, m_aggregationStage(new MultiFrameAggregationStage(environment, "MultiFrameAggregationStage"))
-, m_blitStage(new BlitStage(environment, "BlitStage"))
+, m_renderFramebufferStage(cppassist::make_unique<BasicFramebufferStage>(environment, "BasicFramebufferStage (Renderer)"))
+, m_aggregationFramebufferStage(cppassist::make_unique<CustomFramebufferStage>(environment, "CustomFramebufferStage (Accumulation)"))
+, m_controlStage(cppassist::make_unique<MultiFrameControlStage>(environment, "MultiFrameControlStage"))
+, m_aggregationStage(cppassist::make_unique<MultiFrameAggregationStage>(environment, "MultiFrameAggregationStage"))
+, m_blitStage(cppassist::make_unique<BlitStage>(environment, "BlitStage"))
 , m_frameRenderStage(nullptr)
 {
-    addStage(m_renderFramebufferStage);
+    addStage(m_renderFramebufferStage.get());
     m_renderFramebufferStage->viewport << renderInterface.deviceViewport;
 
-    addStage(m_aggregationFramebufferStage);
+    addStage(m_aggregationFramebufferStage.get());
     m_aggregationFramebufferStage->viewport << renderInterface.deviceViewport;
     m_aggregationFramebufferStage->format.setValue(gl::GL_RGBA);
     m_aggregationFramebufferStage->internalFormat.setValue(gl::GL_RGBA32F);
     m_aggregationFramebufferStage->dataType.setValue(gl::GL_FLOAT);
 
-    addStage(m_controlStage);
+    addStage(m_controlStage.get());
     m_controlStage->frameNumber << renderInterface.frameCounter;
     m_controlStage->multiFrameCount << multiFrameCount;
     m_controlStage->viewport << renderInterface.deviceViewport;
 
-    addStage(m_aggregationStage);
+    addStage(m_aggregationStage.get());
     m_aggregationStage->aggregationFBO << m_aggregationFramebufferStage->fbo;
     m_aggregationStage->texture << m_renderFramebufferStage->colorTexture;
     m_aggregationStage->viewport << renderInterface.deviceViewport;
     m_aggregationStage->aggregationFactor << m_controlStage->aggregationFactor;
 
-    addStage(m_blitStage);
+    addStage(m_blitStage.get());
     m_blitStage->sourceFBO << m_aggregationStage->aggregatedFBO;
     m_blitStage->destinationFBO << renderInterface.targetFBO;
     m_blitStage->sourceViewport << renderInterface.deviceViewport;

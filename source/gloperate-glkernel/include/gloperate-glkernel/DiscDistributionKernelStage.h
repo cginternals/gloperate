@@ -9,7 +9,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
@@ -83,7 +82,7 @@ protected:
     // Data
     glkernel::kernel2 m_kernel;                       ///< Kernel object
     std::vector<glm::vec2> m_kernelData;              ///< Vector with kernel data
-    globjects::ref_ptr<globjects::Texture> m_texture; ///< Texture with kernel data
+    std::unique_ptr<globjects::Texture> m_texture;    ///< Texture with kernel data
     
 
 };

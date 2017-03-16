@@ -85,11 +85,11 @@ protected:
 
 protected:
     // Aggregation stages
-    BasicFramebufferStage      * m_renderFramebufferStage;      ///< FBO stage for frame generating stage
-    CustomFramebufferStage     * m_aggregationFramebufferStage; ///< Aggregation FBO
-    MultiFrameControlStage     * m_controlStage;                ///< Multiframe control stage
-    MultiFrameAggregationStage * m_aggregationStage;            ///< Aggregation stage
-    BlitStage                  * m_blitStage;                   ///< Blit stage
+    std::unique_ptr<BasicFramebufferStage>      m_renderFramebufferStage;      ///< FBO stage for frame generating stage
+    std::unique_ptr<CustomFramebufferStage>     m_aggregationFramebufferStage; ///< Aggregation FBO
+    std::unique_ptr<MultiFrameControlStage>     m_controlStage;                ///< Multiframe control stage
+    std::unique_ptr<MultiFrameAggregationStage> m_aggregationStage;            ///< Aggregation stage
+    std::unique_ptr<BlitStage>                  m_blitStage;                   ///< Blit stage
 
     // Inserted Stage/Pipeline
     Stage * m_frameRenderStage;                                 ///< Frame generating stage

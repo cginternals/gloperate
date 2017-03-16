@@ -6,8 +6,6 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <gloperate/base/Image.h>
 
 

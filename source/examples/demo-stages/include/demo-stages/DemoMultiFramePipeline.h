@@ -70,13 +70,13 @@ public:
 
 protected:
     // Stages
-    MultiFrameAggregationPipeline * m_multiFramePipeline;   ///< Aggregation Pipeline
+    std::unique_ptr<MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
 
     // Demo pipelines using multiframe effects
-    DemoAntialiasingPipeline      * m_antialiasingPipeline;
-    DemoDOFPipeline               * m_dofPipeline;
-    DemoTransparencyPipeline      * m_transparencyPipeline;
-    DemoSSAOPipeline              * m_ssaoPipeline;
+    std::unique_ptr<DemoAntialiasingPipeline>      m_antialiasingPipeline;
+    std::unique_ptr<DemoDOFPipeline>               m_dofPipeline;
+    std::unique_ptr<DemoTransparencyPipeline>      m_transparencyPipeline;
+    std::unique_ptr<DemoSSAOPipeline>              m_ssaoPipeline;
 };
 
 

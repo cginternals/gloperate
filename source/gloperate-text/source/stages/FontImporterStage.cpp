@@ -28,7 +28,7 @@ void FontImporterStage::onProcess(gloperate::AbstractGLContext *)
 {
     auto newFont = std::unique_ptr<FontFace>{ m_environment->resourceManager()->load<FontFace>(fontFilePath.value().path())};
 
-    if (newFont != nullptr)
+    if (newFont)
     {
         m_font = std::move(newFont);
         font.setValue(m_font.get());

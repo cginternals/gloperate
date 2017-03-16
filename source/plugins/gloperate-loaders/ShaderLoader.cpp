@@ -77,6 +77,7 @@ globjects::Shader * ShaderLoader::load(const std::string & filename, const cppex
 
     auto it = m_extensionToType.find(cppassist::FilePath(filename).extension());
 
+    //TODO is this file a memory leak?
     globjects::File * file = new globjects::File(filename, false);
 
     if (it == m_extensionToType.end() || file->string().empty()) {

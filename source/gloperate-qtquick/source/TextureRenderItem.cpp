@@ -4,6 +4,7 @@
 #include <QVariant>
 #include <QColor>
 
+#include <globjects/Buffer.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 #include <globjects/Texture.h>

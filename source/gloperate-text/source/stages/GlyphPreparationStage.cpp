@@ -27,7 +27,7 @@ GlyphPreparationStage::~GlyphPreparationStage()
 
 void GlyphPreparationStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
-    m_vertexCloud = std::unique_ptr<GlyphVertexCloud>{ new GlyphVertexCloud{} };
+    m_vertexCloud = cppassist::make_unique<GlyphVertexCloud>();
 }
 
 

@@ -6,7 +6,6 @@
 
 #include <glm/vec4.hpp>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -84,11 +83,11 @@ protected:
 
 protected:
     // Data
-    globjects::ref_ptr<globjects::VertexArray> m_vao;            ///< VAO for screen aligned quad
-    globjects::ref_ptr<globjects::Buffer>      m_vertexBuffer;   ///< VBO for screen aligned quad
-    globjects::ref_ptr<globjects::Program>     m_program;        ///< Shader program used for aggregation
-    globjects::ref_ptr<globjects::Shader>      m_vertexShader;   ///< Vertex shader
-    globjects::ref_ptr<globjects::Shader>      m_fragmentShader; ///< Fragment shader
+    std::unique_ptr<globjects::VertexArray> m_vao;            ///< VAO for screen aligned quad
+    std::unique_ptr<globjects::Buffer>      m_vertexBuffer;   ///< VBO for screen aligned quad
+    std::unique_ptr<globjects::Program>     m_program;        ///< Shader program used for aggregation
+    std::unique_ptr<globjects::Shader>      m_vertexShader;   ///< Vertex shader
+    std::unique_ptr<globjects::Shader>      m_fragmentShader; ///< Fragment shader
 };
 
 

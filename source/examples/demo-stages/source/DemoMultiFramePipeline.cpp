@@ -20,13 +20,13 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(Environment * environment, const 
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
-, m_multiFramePipeline(new MultiFrameAggregationPipeline(environment))
-, m_antialiasingPipeline(new DemoAntialiasingPipeline(environment))
-, m_dofPipeline(new DemoDOFPipeline(environment))
-, m_transparencyPipeline(new DemoTransparencyPipeline(environment))
-, m_ssaoPipeline(new DemoSSAOPipeline(environment))
+, m_multiFramePipeline(cppassist::make_unique<MultiFrameAggregationPipeline>(environment))
+, m_antialiasingPipeline(cppassist::make_unique<DemoAntialiasingPipeline>(environment))
+, m_dofPipeline(cppassist::make_unique<DemoDOFPipeline>(environment))
+, m_transparencyPipeline(cppassist::make_unique<DemoTransparencyPipeline>(environment))
+, m_ssaoPipeline(cppassist::make_unique<DemoSSAOPipeline>(environment))
 {
-    addStage(m_multiFramePipeline);
+    addStage(m_multiFramePipeline.get());
 
     //m_multiFramePipeline->setFrameRenderer(m_antialiasingPipeline->renderInterface);
     //m_multiFramePipeline->setFrameRenderer(m_dofPipeline->renderInterface);

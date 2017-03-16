@@ -63,8 +63,8 @@ public:
 
 protected:
     // Stages
-    SubpixelAntialiasingOffsetStage * m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
-    DemoAntialiasableTriangleStage  * m_triangleStage;  ///< Rendering stage
+    std::unique_ptr<SubpixelAntialiasingOffsetStage> m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
+    std::unique_ptr<DemoAntialiasableTriangleStage>  m_triangleStage;  ///< Rendering stage
 };
 
 

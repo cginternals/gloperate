@@ -64,9 +64,9 @@ public:
 
 protected:
     // Stages
-    TransparencyKernelStage * m_transparencyKernelStage;  ///< Stage generating transparency kernel
-    NoiseKernelStage        * m_noiseKernelStage;         ///< Stage generating random noise
-    DemoTransparencyStage   * m_transparencyRenderStage;  ///< Rendering stage
+    std::unique_ptr<TransparencyKernelStage> m_transparencyKernelStage;  ///< Stage generating transparency kernel
+    std::unique_ptr<NoiseKernelStage>        m_noiseKernelStage;         ///< Stage generating random noise
+    std::unique_ptr<DemoTransparencyStage>   m_transparencyRenderStage;  ///< Rendering stage
 };
 
 

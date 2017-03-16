@@ -9,6 +9,7 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
+find_package(qmltoolbox REQUIRED)
 
 
 # 
@@ -119,6 +120,8 @@ set(headers
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/base/ShaderStage.h
+    ${include_path}/stages/base/RenderPassStage.h
+    ${include_path}/stages/base/RasterizationStage.h
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
@@ -143,6 +146,7 @@ set(headers
     ${include_path}/input/AxisEvent.h
     ${include_path}/input/MouseDevice.h
     ${include_path}/input/KeyboardDevice.h
+    ${include_path}/input/PrintLineConsumer.h
 
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
@@ -200,6 +204,8 @@ set(sources
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/ShaderStage.cpp
+    ${source_path}/stages/base/RenderPassStage.cpp
+    ${source_path}/stages/base/RasterizationStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
@@ -229,6 +235,7 @@ set(sources
     ${source_path}/input/AxisEvent.cpp
     ${source_path}/input/MouseDevice.cpp
     ${source_path}/input/KeyboardDevice.cpp
+    ${source_path}/input/PrintLineConsumer.cpp
 
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
@@ -377,6 +384,38 @@ target_link_libraries(${target}
     ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
+)
+
+
+# 
+# Module information file
+# 
+
+
+generate_module_info(${META_PROJECT_NAME}
+    VALUES
+    name        "${META_PROJECT_NAME}"
+    version     "${META_VERSION}"
+    description "${META_PROJECT_DESCRIPTION}"
+    author      "${META_AUTHOR_ORGANIZATION}"
+
+    BUILD_VALUES
+    dataPath    "${PROJECT_SOURCE_DIR}/data"
+    pluginPath  "\${ModulePath}"
+
+    INSTALL_VALUES
+    dataPath    "\${ModulePath}/data"
+    pluginPath  "\${ModulePath}/plugins"
+)
+
+export_module_info_with_deps(${META_PROJECT_NAME}
+    REQUIRES qmltoolbox qmltoolbox::qmltoolbox
+    FOLDER "ModuleInfo"
+)
+
+install_module_info(${META_PROJECT_NAME}
+    DESTINATION ${INSTALL_ROOT}
+    COMPONENT runtime
 )
 
 

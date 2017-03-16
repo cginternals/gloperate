@@ -16,7 +16,7 @@ AbstractGLContextFactory::~AbstractGLContextFactory()
 {
 }
 
-gloperate::AbstractGLContext * AbstractGLContextFactory::createBestContext(const gloperate::GLContextFormat & f) const
+std::unique_ptr<gloperate::AbstractGLContext> AbstractGLContextFactory::createBestContext(const gloperate::GLContextFormat & f) const
 {
     gloperate::GLContextFormat format(f);
 

@@ -1,6 +1,8 @@
 
 #include <demo-stages/DemoAntialiasingPipeline.h>
 
+#include <cppassist/memory/make_unique.h>
+
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/multiframe/SubpixelAntialiasingOffsetStage.h>
 
@@ -17,14 +19,14 @@ CPPEXPOSE_COMPONENT(DemoAntialiasingPipeline, gloperate::Stage)
 DemoAntialiasingPipeline::DemoAntialiasingPipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_subpixelStage(new SubpixelAntialiasingOffsetStage(environment))
-, m_triangleStage(new DemoAntialiasableTriangleStage(environment))
+, m_subpixelStage(cppassist::make_unique<SubpixelAntialiasingOffsetStage>(environment))
+, m_triangleStage(cppassist::make_unique<DemoAntialiasableTriangleStage>(environment))
 {
-    addStage(m_subpixelStage);
+    addStage(m_subpixelStage.get());
     m_subpixelStage->currentMultiFrame << renderInterface.frameCounter;
     m_subpixelStage->viewport << renderInterface.deviceViewport;
 
-    addStage(m_triangleStage);
+    addStage(m_triangleStage.get());
     m_triangleStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_triangleStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_triangleStage->renderInterface.frameCounter << renderInterface.frameCounter;
