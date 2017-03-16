@@ -42,7 +42,7 @@ Pipeline::~Pipeline()
 {
 }
 
-const std::vector<Stage *> Pipeline::stages() const
+const std::vector<Stage *> & Pipeline::stages() const
 {
     return m_stages;
 }
