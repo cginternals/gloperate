@@ -7,7 +7,6 @@
 #include <globjects/Texture.h>
 #include <globjects/Sampler.h>
 #include <globjects/Buffer.h>
-#include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 #include <globjects/ProgramPipeline.h>
 #include <globjects/TransformFeedback.h>
@@ -21,7 +20,14 @@ namespace gloperate
 
 
 RenderPass::RenderPass()
-: m_recordTransformFeedbackMode(gl::GL_POINTS)
+: m_stateBefore(nullptr)
+, m_stateAfter(nullptr)
+, m_geometry(nullptr)
+, m_program(nullptr)
+, m_programPipeline(nullptr)
+, m_recordTransformFeedback(nullptr)
+, m_recordTransformFeedbackMode(gl::GL_POINTS)
+, m_drawTransformFeedback(nullptr)
 , m_drawTransformFeedbackMode(gl::GL_POINTS)
 {
 }
