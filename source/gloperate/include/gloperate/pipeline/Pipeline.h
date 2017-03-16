@@ -71,7 +71,7 @@ public:
     *  @return
     *    List of stages in the pipeline
     */
-    const std::vector<Stage *> stages() const;
+    const std::vector<Stage *> & stages() const;
 
     /**
     *  @brief
