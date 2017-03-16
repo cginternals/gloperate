@@ -52,7 +52,7 @@ std::unique_ptr<gloperate::AbstractCanvas> Utils::createCanvas(gloperate::Enviro
 {
     auto canvas = cppassist::make_unique<gloperate::Canvas>(environment);
     canvas->setRenderStage(std::move(renderStage));
-    return canvas;
+    return std::move(canvas);
 }
 
 
