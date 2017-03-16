@@ -9,6 +9,7 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
+#include <globjects/NamedString.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
@@ -94,6 +95,7 @@ protected:
     std::unique_ptr<globjects::Program>     m_program;
     std::unique_ptr<globjects::Shader>      m_vertexShader;
     std::unique_ptr<globjects::Shader>      m_fragmentShader;
+    std::unique_ptr<globjects::NamedString> m_ssaoFileNamedString;
 };
 
 
