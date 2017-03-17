@@ -53,6 +53,9 @@ void RasterizationStage::onProcess(AbstractGLContext *)
 
     gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
+    // bind FBO
+    fbo->bind(gl::GL_FRAMEBUFFER);
+
     // Clear background
     const glm::vec3 & color = *renderInterface.backgroundColor;
     gl::glClearColor(color.r, color.g, color.b, 1.0f);
@@ -61,8 +64,7 @@ void RasterizationStage::onProcess(AbstractGLContext *)
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
     gl::glDisable(gl::GL_SCISSOR_TEST);
 
-    // bind FBO
-    fbo->bind(gl::GL_FRAMEBUFFER);
+
 
     // draw with the RenderPass
     (*renderPass)->draw();
