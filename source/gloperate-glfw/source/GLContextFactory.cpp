@@ -51,7 +51,7 @@ std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(co
     // Handle swap behavior
     context->updateSwapBehavior(format.swapBehavior());
 
-    return context;
+    return std::move(context);
 }
 
 void GLContextFactory::initializeGLFWState(const gloperate::GLContextFormat & format)
