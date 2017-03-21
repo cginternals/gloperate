@@ -42,7 +42,7 @@ Pipeline::~Pipeline()
 {
 }
 
-const std::vector<Stage *> Pipeline::stages() const
+const std::vector<Stage *> & Pipeline::stages() const
 {
     return m_stages;
 }
@@ -282,7 +282,7 @@ void Pipeline::onProcess(AbstractGLContext * context)
     for (auto stage : m_stages)
     {
         if (stage->needsProcessing()) {
-            debug() << "Process stage " << stage->name();
+            debug(1) << "Process stage " << stage->name();
             stage->process(context);
         }
     }
