@@ -9,6 +9,7 @@
 set(MODULE_NAMES
     gloperate
     gloperate-qt
+    gloperate-qtquick
     gloperate-glfw
     gloperate-osg
     gloperate-assimp
