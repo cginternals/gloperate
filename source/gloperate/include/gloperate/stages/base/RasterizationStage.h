@@ -58,8 +58,8 @@ public:
 
     // Inputs
     Input<bool> rasterize;                      ///< if connected, it enables/disables rasterization
-    Input<gloperate::Drawable *> drawable;      ///< the drawable to be drawn
-    Input<globjects::Program *> program;        ///< the program used for rendering
+    //Input<gloperate::Drawable *> drawable;      ///< the drawable to be drawn
+    //Input<globjects::Program *> program;        ///< the program used for rendering
     Input<gloperate::RenderPass *> renderPass;  ///< if connected, it replaces program and drawable input
 
     Input<globjects::Texture *> colorTexture;   ///< pass in of texture input/output
