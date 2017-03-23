@@ -47,6 +47,7 @@ namespace
 namespace glraw
 {
 
+
 FileNameSuffix::FileNameSuffix(const std::string & fileName)
 : m_width (-1)
 , m_height(-1)
@@ -78,11 +79,11 @@ FileNameSuffix::FileNameSuffix(const std::string & fileName)
         return;
     }
 
-	if (!m_compressed)
-	{
+    if (!m_compressed)
+    {
         m_format = format(base_match[3]);
         assert(m_format != gl::GL_NONE);
-	}
+    }
 
     m_type = type(base_match[m_compressed ? 3 : 4]);
     assert(m_type != gl::GL_NONE);
@@ -91,35 +92,35 @@ FileNameSuffix::FileNameSuffix(const std::string & fileName)
 
 bool FileNameSuffix::isValid() const
 {
-	return m_width  != -1
-		&& m_height != -1
+    return m_width  != -1
+        && m_height != -1
         && m_type   != gl::GL_NONE
         && (m_compressed || m_format != gl::GL_NONE);
 }
 
 int FileNameSuffix::width() const
 {
-	return m_width;
+    return m_width;
 }
 
 int FileNameSuffix::height() const
 {
-	return m_height;
+    return m_height;
 }
 
 gl::GLenum FileNameSuffix::type() const
 {
-	return m_type;
+    return m_type;
 }
 
 gl::GLenum FileNameSuffix::format() const
 {
-	return m_format;
+    return m_format;
 }
 
 bool FileNameSuffix::compressed() const
 {
-	return m_compressed;
+    return m_compressed;
 }
 
 gl::GLenum FileNameSuffix::format(const std::string & format)
