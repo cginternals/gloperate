@@ -123,26 +123,6 @@ set(headers
     ${include_path}/stages/base/RenderPassStage.h
     ${include_path}/stages/base/RasterizationStage.h
     ${include_path}/stages/base/ProgramStage.h
-    ${include_path}/stages/demos/DemoStage.h
-    ${include_path}/stages/demos/DemoPipeline.h
-    ${include_path}/stages/demos/ShaderDemoPipeline.h
-    ${include_path}/stages/demos/DemoAntialiasableTriangleStage.h
-    ${include_path}/stages/demos/DemoAntialiasingPipeline.h
-    ${include_path}/stages/demos/DemoDOFCubeStage.h
-    ${include_path}/stages/demos/DemoDOFPipeline.h
-    ${include_path}/stages/demos/DemoSSAORenderingStage.h
-    ${include_path}/stages/demos/DemoSSAOPostprocessingStage.h
-    ${include_path}/stages/demos/DemoSSAOPipeline.h
-    ${include_path}/stages/demos/DemoTransparencyStage.h
-    ${include_path}/stages/demos/DemoTransparencyPipeline.h
-    ${include_path}/stages/demos/DemoMultiFramePipeline.h
-    ${include_path}/stages/demos/SpinningRectStage.h
-    ${include_path}/stages/demos/DemoRenderStage.h
-    ${include_path}/stages/demos/DemoDrawableStage.h
-    ${include_path}/stages/demos/TimerStage.h
-    ${include_path}/stages/demos/ColorizeStage.h
-    ${include_path}/stages/demos/LightTestStage.h
-    ${include_path}/stages/demos/LightTestPipeline.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
     ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
@@ -234,26 +214,6 @@ set(sources
     ${source_path}/stages/base/MixerStage.cpp
     ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/base/BlitStage.cpp
-    ${source_path}/stages/demos/DemoStage.cpp
-    ${source_path}/stages/demos/DemoPipeline.cpp
-    ${source_path}/stages/demos/ShaderDemoPipeline.cpp
-    ${source_path}/stages/demos/DemoAntialiasableTriangleStage.cpp
-    ${source_path}/stages/demos/DemoAntialiasingPipeline.cpp
-    ${source_path}/stages/demos/DemoDOFCubeStage.cpp
-    ${source_path}/stages/demos/DemoDOFPipeline.cpp
-    ${source_path}/stages/demos/DemoSSAORenderingStage.cpp
-    ${source_path}/stages/demos/DemoSSAOPostprocessingStage.cpp
-    ${source_path}/stages/demos/DemoSSAOPipeline.cpp
-    ${source_path}/stages/demos/DemoTransparencyStage.cpp
-    ${source_path}/stages/demos/DemoTransparencyPipeline.cpp
-    ${source_path}/stages/demos/DemoMultiFramePipeline.cpp
-    ${source_path}/stages/demos/SpinningRectStage.cpp
-    ${source_path}/stages/demos/DemoRenderStage.cpp
-    ${source_path}/stages/demos/DemoDrawableStage.cpp
-    ${source_path}/stages/demos/TimerStage.cpp
-    ${source_path}/stages/demos/ColorizeStage.cpp
-    ${source_path}/stages/demos/LightTestStage.cpp
-    ${source_path}/stages/demos/LightTestPipeline.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
     ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
