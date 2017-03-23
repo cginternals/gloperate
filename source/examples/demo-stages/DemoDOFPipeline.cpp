@@ -15,12 +15,8 @@ CPPEXPOSE_COMPONENT(DemoDOFPipeline, gloperate::Stage)
 DemoDOFPipeline::DemoDOFPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-<<<<<<< HEAD:source/examples/demo-stages/source/DemoDOFPipeline.cpp
 , multiFrameCount("multiFrameCount", this, 1)
 , m_dofShiftStage(cppassist::make_unique<gloperate_glkernel::DiscDistributionKernelStage>(environment))
-=======
-, m_dofShiftStage(cppassist::make_unique<gloperate::MultiFrameDiscDistributionStage>(environment))
->>>>>>> move_demos:source/examples/demo-stages/DemoDOFPipeline.cpp
 , m_cubeStage(cppassist::make_unique<DemoDOFCubeStage>(environment))
 {
     addStage(m_dofShiftStage.get());
