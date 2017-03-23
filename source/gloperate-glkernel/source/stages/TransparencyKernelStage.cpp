@@ -32,7 +32,7 @@ TransparencyKernelStage::~TransparencyKernelStage()
 
 void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_texture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_2D);
+    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 }
 
 
@@ -46,7 +46,7 @@ void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
     if (*regenerate)
     {
         regenerateKernel();
-        m_texture->image2D(1, gl::GL_R8, *kernelSize, 0, gl::GL_R, gl::GL_BYTE, m_kernelData.data());
+        m_texture->image2D(0, gl::GL_R8, *kernelSize, 0, gl::GL_RED, gl::GL_UNSIGNED_BYTE, m_kernelData.data());
     }
 
     kernel.setValue(&m_kernelData);
@@ -59,7 +59,7 @@ void TransparencyKernelStage::regenerateKernel()
     const auto maskSize = (*kernelSize).x;
     const auto alphaValues = (*kernelSize).y;
 
-    m_kernelData = std::vector<unsigned char>();
+    m_kernelData = std::vector<unsigned char>(maskSize * alphaValues);
 
     for (auto alphaIndex = 0; alphaIndex < alphaValues; alphaIndex++)
     {

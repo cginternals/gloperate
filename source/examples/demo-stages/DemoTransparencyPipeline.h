@@ -9,11 +9,16 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
-namespace gloperate
-{
+namespace gloperate_glkernel {
 
 class TransparencyKernelStage;
 class NoiseKernelStage;
+
+}
+
+namespace gloperate
+{
+
 
 }
 
@@ -65,7 +70,7 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate::TransparencyKernelStage> m_transparencyKernelStage;  ///< Stage generating transparency kernel
-    std::unique_ptr<gloperate::NoiseKernelStage>        m_noiseKernelStage;         ///< Stage generating random noise
-    std::unique_ptr<DemoTransparencyStage>              m_transparencyRenderStage;  ///< Rendering stage
+    std::unique_ptr<gloperate_glkernel::TransparencyKernelStage> m_transparencyKernelStage;  ///< Stage generating transparency kernel
+    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>        m_noiseKernelStage;         ///< Stage generating random noise
+    std::unique_ptr<DemoTransparencyStage>   m_transparencyRenderStage;  ///< Rendering stage
 };

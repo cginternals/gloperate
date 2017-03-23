@@ -9,11 +9,17 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
+namespace gloperate_glkernel {
+
+class HemisphereDistributionKernelStage;
+class NoiseKernelStage;
+
+}
+
 namespace gloperate
 {
 
 class BasicFramebufferStage;
-class SSAOKernelStage;
 
 }
 
@@ -68,7 +74,8 @@ protected:
     // Stages
     std::unique_ptr<gloperate::BasicFramebufferStage> m_colorFBOStage;       ///< Color buffer
     std::unique_ptr<gloperate::BasicFramebufferStage> m_normalFBOStage;      ///< Normal buffer
-    std::unique_ptr<gloperate::SSAOKernelStage>       m_kernelStage;         ///< Stage generating SSAO kernel
+    std::unique_ptr<gloperate_glkernel::HemisphereDistributionKernelStage> m_kernelStage;         ///< Stage generating SSAO kernel
+    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;          ///< Stage generating SSAO noise
     std::unique_ptr<DemoSSAORenderingStage>           m_renderingStage;      ///< Rendering stage
     std::unique_ptr<DemoSSAOPostprocessingStage>      m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
 };
