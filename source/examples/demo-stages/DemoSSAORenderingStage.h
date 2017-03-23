@@ -14,14 +14,12 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 /**
 *  @brief
 *    Demo stage that renders a simple scene onto the screen
 */
-class DEMO_STAGES_API DemoSSAORenderingStage : public gloperate::Stage
+class DemoSSAORenderingStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

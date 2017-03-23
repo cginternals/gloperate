@@ -8,7 +8,6 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
 
 namespace gloperate_glkernel {
 
@@ -33,7 +32,7 @@ class DemoSSAOPostprocessingStage;
 *  @brief
 *    Demo pipeline that renders a simple scene onto the screen
 */
-class DEMO_STAGES_API DemoSSAOPipeline : public gloperate::Pipeline
+class DemoSSAOPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

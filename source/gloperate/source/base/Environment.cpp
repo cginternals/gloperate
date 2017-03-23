@@ -43,8 +43,6 @@ Environment::Environment()
     addProperty(&m_system);
     addProperty(&m_inputManager);
     addProperty(&m_tree);
-
-    registerLocalPlugins();
 }
 
 Environment::~Environment()
@@ -180,20 +178,6 @@ void Environment::exit(int exitCode)
 {
     // Emit signal
     this->exitApplication(exitCode);
-}
-
-void Environment::registerLocalPlugins()
-{
-    m_componentManager.addComponent(&BasicFramebufferStage::Component);
-    m_componentManager.addComponent(&CustomFramebufferStage::Component);
-    m_componentManager.addComponent(&TextureLoadStage::Component);
-    m_componentManager.addComponent(&ProceduralTextureStage::Component);
-    m_componentManager.addComponent(&MixerStage::Component);
-    m_componentManager.addComponent(&SplitStage::Component);
-    m_componentManager.addComponent(&LightBufferTextureStage::Component);
-    m_componentManager.addComponent(&LightCreationStage::Component);
-    m_componentManager.addComponent(&ShaderStage::Component);
-    m_componentManager.addComponent(&ProgramStage::Component);
 }
 
 void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> && scriptContext)

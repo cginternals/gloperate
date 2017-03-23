@@ -15,14 +15,12 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 /**
 *  @brief
 *    Demo stage that renders a static cube onto the screen
 */
-class DEMO_STAGES_API DemoDOFCubeStage : public gloperate::Stage
+class DemoDOFCubeStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

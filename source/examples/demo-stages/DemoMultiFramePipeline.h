@@ -9,8 +9,6 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 namespace gloperate_glkernel {
 
@@ -36,7 +34,7 @@ class DemoSSAOPipeline;
 *  @brief
 *    Demo pipeline showing multiframe aggregation
 */
-class DEMO_STAGES_API DemoMultiFramePipeline : public gloperate::Pipeline
+class DemoMultiFramePipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

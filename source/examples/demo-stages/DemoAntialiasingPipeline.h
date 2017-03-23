@@ -8,7 +8,6 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
 
 namespace gloperate_glkernel {
 
@@ -31,7 +30,7 @@ class DemoAntialiasableTriangleStage;
 *  @brief
 *    Demo pipeline that renders a static triangle onto the screen
 */
-class DEMO_STAGES_API DemoAntialiasingPipeline : public gloperate::Pipeline
+class DemoAntialiasingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

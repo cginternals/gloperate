@@ -10,8 +10,6 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 namespace gloperate
 {
@@ -37,7 +35,7 @@ class TimerStage;
 *  @brief
 *    Demo pipeline displaying a rotating logo
 */
-class DEMO_STAGES_API DemoPipeline : public gloperate::Pipeline
+class DemoPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

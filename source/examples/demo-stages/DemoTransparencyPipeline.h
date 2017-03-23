@@ -8,7 +8,6 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
 
 namespace gloperate_glkernel {
 
@@ -31,7 +30,7 @@ class DemoTransparencyStage;
 *  @brief
 *    Demo pipeline that renders three transparent, overlapping circles onto the screen
 */
-class DEMO_STAGES_API DemoTransparencyPipeline : public gloperate::Pipeline
+class DemoTransparencyPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

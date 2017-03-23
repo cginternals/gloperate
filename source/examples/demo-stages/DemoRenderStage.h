@@ -15,8 +15,6 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 /**
 *  @brief
@@ -25,7 +23,7 @@
 *  @remarks
 *    This stage is part of the DemoPipeline
 */
-class DEMO_STAGES_API DemoRenderStage : public gloperate::Stage
+class DemoRenderStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

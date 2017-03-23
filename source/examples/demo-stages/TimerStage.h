@@ -10,8 +10,6 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 /**
 *  @brief
@@ -20,7 +18,7 @@
 *  @remarks
 *    This stage is part of the DemoPipeline
 */
-class DEMO_STAGES_API TimerStage : public gloperate::Stage
+class TimerStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

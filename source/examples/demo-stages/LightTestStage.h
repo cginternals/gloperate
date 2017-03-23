@@ -16,8 +16,6 @@
 #include <gloperate/pipeline/Output.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 namespace globjects
 {
@@ -27,7 +25,7 @@ class Texture;
 } // namespace globjects
 
 
-class DEMO_STAGES_API LightTestStage : public gloperate::Stage
+class LightTestStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

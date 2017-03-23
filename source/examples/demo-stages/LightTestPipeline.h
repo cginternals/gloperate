@@ -9,8 +9,6 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 namespace gloperate
 {
@@ -29,7 +27,7 @@ class TimerStage;
 *  @brief
 *    Pipeline that renders a rotating cube illuminated by 3 light sources
 */
-class DEMO_STAGES_API LightTestPipeline : public gloperate::Pipeline
+class LightTestPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
