@@ -33,9 +33,6 @@ int main(int argc, char * argv[])
     environment.componentManager()->scanPlugins("loaders");
     environment.componentManager()->scanPlugins("stages");
 
-    // Register local stages
-    environment.componentManager()->addComponent(&TextRenderingPipeline::Component);
-
     // Initialize Qt application
     gloperate_qt::Application app(&environment, argc, argv);
     UpdateManager updateManager(&environment);
