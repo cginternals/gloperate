@@ -8,8 +8,6 @@
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 namespace gloperate
 {
@@ -25,7 +23,7 @@ class DemoDOFCubeStage;
 *  @brief
 *    Demo pipeline that renders a static cube onto the screen
 */
-class DEMO_STAGES_API DemoDOFPipeline : public gloperate::Pipeline
+class DemoDOFPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

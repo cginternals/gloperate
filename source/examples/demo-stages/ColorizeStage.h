@@ -17,14 +17,12 @@
 #include <gloperate/rendering/Camera.h>
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 /**
 *  @brief
 *    Demo stage that applies a color to a texture
 */
-class DEMO_STAGES_API ColorizeStage : public gloperate::Stage
+class ColorizeStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

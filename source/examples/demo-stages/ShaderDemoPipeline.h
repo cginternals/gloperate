@@ -10,8 +10,6 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 namespace gloperate
 {
@@ -34,7 +32,7 @@ class DemoDrawableStage;
 *  @brief
 *    Demo pipeline displaying a static logo
 */
-class DEMO_STAGES_API ShaderDemoPipeline : public gloperate::Pipeline
+class ShaderDemoPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

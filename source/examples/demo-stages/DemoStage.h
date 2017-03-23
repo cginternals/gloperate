@@ -16,14 +16,12 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 /**
 *  @brief
 *    Demo stage that renders a spinning rectangle onto the screen
 */
-class DEMO_STAGES_API DemoStage : public gloperate::Stage
+class DemoStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

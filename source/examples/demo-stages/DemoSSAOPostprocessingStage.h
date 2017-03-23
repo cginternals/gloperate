@@ -16,14 +16,12 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 /**
 *  @brief
 *    Demo stage that applies SSAO to an image
 */
-class DEMO_STAGES_API DemoSSAOPostprocessingStage : public gloperate::Stage
+class DemoSSAOPostprocessingStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

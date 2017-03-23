@@ -15,8 +15,6 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
 
-#include <demo-stages/demo-stages_api.h>
-
 
 namespace gloperate
 {
@@ -34,7 +32,7 @@ class Drawable;
 *  @remarks
 *    This stage is part of the ShaderDemoPipeline
 */
-class DEMO_STAGES_API DemoDrawableStage : public gloperate::Stage
+class DemoDrawableStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
