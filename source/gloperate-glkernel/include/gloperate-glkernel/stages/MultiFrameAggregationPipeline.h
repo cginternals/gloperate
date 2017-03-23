@@ -21,7 +21,8 @@ class BlitStage;
 }
 
 
-namespace gloperate_glkernel {
+namespace gloperate_glkernel
+{
 
 
 class MultiFrameControlStage;
@@ -36,7 +37,7 @@ class GLOPERATE_GLKERNEL_API MultiFrameAggregationPipeline : public gloperate::P
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        gloperate_glkernel::MultiFrameAggregationPipeline, gloperate::Stage
+        MultiFrameAggregationPipeline, gloperate::Stage
       , ""
       , ""
       , ""
@@ -51,7 +52,7 @@ public:
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    gloperate::Input<int> multiFrameCount; ///< Maximum number of frames to aggregate
+    Input<int> multiFrameCount; ///< Maximum number of frames to aggregate
 
 
 public:
