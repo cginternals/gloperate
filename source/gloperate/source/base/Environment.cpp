@@ -21,17 +21,6 @@
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/base/ShaderStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
-#include <gloperate/stages/demos/DemoPipeline.h>
-#include <gloperate/stages/demos/ShaderDemoPipeline.h>
-#include <gloperate/stages/demos/DemoStage.h>
-#include <gloperate/stages/demos/DemoMultiFramePipeline.h>
-#include <gloperate/stages/demos/SpinningRectStage.h>
-#include <gloperate/stages/demos/TimerStage.h>
-#include <gloperate/stages/demos/LightTestPipeline.h>
-#include <gloperate/stages/demos/ColorizeStage.h>
-#include <gloperate/stages/demos/DemoRenderStage.h>
-#include <gloperate/stages/demos/LightTestPipeline.h>
-#include <gloperate/stages/demos/LightTestStage.h>
 
 
 namespace gloperate

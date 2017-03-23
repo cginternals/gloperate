@@ -8,8 +8,7 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/stages/demos/DemoStage.h>
-#include <gloperate/stages/demos/DemoPipeline.h>
+#include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Application.h>
@@ -43,7 +42,7 @@ int main(int argc, char * argv[])
     UpdateManager updateManager(&environment);
 
     // Create render stage
-    auto renderStage = cppassist::make_unique<DemoStage>(&environment);
+    auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
 
     // Create render window
     auto window = cppassist::make_unique<RenderWindow>(&environment);
