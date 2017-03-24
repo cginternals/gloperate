@@ -9,7 +9,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/Loader.h>
-
+#include <gloperate-qt/gloperate-qt_api.h>
 
 namespace globjects
 {
@@ -24,7 +24,7 @@ namespace globjects
 *  Supported options:
 *    none
 */
-class QtTextureLoader : public gloperate::Loader<globjects::Texture> 
+class GLOPERATE_QT_API QtTextureLoader : public gloperate::Loader<globjects::Texture>
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
