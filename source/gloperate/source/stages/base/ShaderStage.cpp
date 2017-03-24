@@ -30,6 +30,7 @@ ShaderStage::~ShaderStage()
 void ShaderStage::onProcess(AbstractGLContext *)
 {
     m_shader = std::unique_ptr<globjects::Shader>(environment()->resourceManager()->load<globjects::Shader>((*filePath).path()));
+    assert(m_shader);
     shader.setValue(m_shader.get());
 }
 

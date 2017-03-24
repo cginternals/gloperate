@@ -1,6 +1,8 @@
 
 #include <gloperate/stages/base/TextureLoadStage.h>
 
+#include <glbinding/gl/enum.h>
+
 #include <gloperate/base/Environment.h>
 
 
@@ -46,9 +48,8 @@ void TextureLoadStage::onProcess(AbstractGLContext *)
 void TextureLoadStage::loadTexture()
 {
     // Load texture from file
-    m_texture.reset(
-        m_environment->resourceManager()->load<globjects::Texture>((*filename).path())
-    );
+    auto tex = m_environment->resourceManager()->load<globjects::Texture>((*filename).path());
+    m_texture = std::unique_ptr<globjects::Texture>(tex ? tex : Texture::createDefault(gl::GL_TEXTURE_2D));
 }
 
 

@@ -51,9 +51,11 @@ void ProgramStage::onProcess(AbstractGLContext *)
         m_program->attach(input->value());
     }
     for (auto input : inputs<cppassist::FilePath>()) {
-        auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path());
-        m_shaders.emplace_back(shader);
-        m_program->attach(shader);
+        if(auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path()))
+        {
+            m_shaders.emplace_back(shader);
+            m_program->attach(shader);
+        }
     }
 
     program.setValid(true);
