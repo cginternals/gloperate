@@ -1,6 +1,5 @@
 
 # Resource loaders
-add_subdirectory(gloperate-loaders)
 #add_subdirectory(gloperate-assimp-loaders)
 add_subdirectory(gloperate-text-loaders)
 
