@@ -3,13 +3,16 @@
 #include <cassert>
 #include <regex>
 
+
+#include <cppassist/string/conversion.h>
+
 #include <glbinding/gl/enum.h>
 
 
 namespace
 {
     static const std::map<std::string, gl::GLenum> formatsBySuffix =
-	{
+    {
         { "rh",     gl::GL_RED      },
         { "g",      gl::GL_GREEN    },
         { "b",      gl::GL_BLUE     },
@@ -18,10 +21,10 @@ namespace
         { "bgr",    gl::GL_BGR      },
         { "rgba",   gl::GL_RGBA     },
         { "bgra",   gl::GL_BGRA     }
-	};
+    };
 
     static const std::map<std::string, gl::GLenum> typesBySuffix =
-	{
+    {
         { "ub",             gl::GL_UNSIGNED_BYTE    },
         { "b",              gl::GL_BYTE             },
         { "us",             gl::GL_UNSIGNED_SHORT   },
@@ -40,7 +43,10 @@ namespace
         { "dxt1-rgba",      gl::GL_COMPRESSED_RGBA_S3TC_DXT1_EXT  },
         { "dxt3-rgba",      gl::GL_COMPRESSED_RGBA_S3TC_DXT3_EXT  },
         { "dxt5-rgba",      gl::GL_COMPRESSED_RGBA_S3TC_DXT5_EXT  }
-	};
+    };
+
+    static const std::regex regex1{R"(^.*\.(\d+)\.(\d+)\.(\w+)\.raw$)"};
+    static const std::regex regex2{R"(^.*\.(\d+)\.(\d+)\.(\w+)\.(\w+)\.raw$)"};
 }
 
 
@@ -55,20 +61,18 @@ FileNameSuffix::FileNameSuffix(const std::string & fileName)
 , m_type(gl::GL_NONE)
 , m_compressed(false)
 {
-	// check if either compressed or uncompressed (or unknown) format
-    std::regex regexp{R"(^.*\.(\d+)\.(\d+)\.(\w+)\.raw$)"};
+    // check if either compressed or uncompressed (or unknown) format
     std::smatch base_match;
 
-    if (std::regex_match(fileName, base_match, regexp))
-		m_compressed = true;
-	else
-	{
-        regexp = std::regex{R"(^.*\.(\d+)\.(\d+)\.(\w+)\.(\w+)\.raw$)"};
-        if (!std::regex_match(fileName, base_match, regexp))
-			return;
-	}
+    if (std::regex_match(fileName, base_match, regex1))
+        m_compressed = true;
+    else
+    {
+        if (!std::regex_match(fileName, base_match, regex2))
+            return;
+    }
 
-	// retrieve intel from suffix parts
+    // retrieve intel from suffix parts
     try
     {
         m_width = std::stoi(base_match[1]);
@@ -125,17 +129,13 @@ bool FileNameSuffix::compressed() const
 
 gl::GLenum FileNameSuffix::format(const std::string & format)
 {
-    std::string formatToLower = format;
-    std::transform(formatToLower.begin(), formatToLower.end(), formatToLower.begin(), ::tolower);
-    auto it = formatsBySuffix.find(formatToLower);
+    auto it = formatsBySuffix.find(cppassist::string::toLower(format));
     return (it!=formatsBySuffix.end()) ? it->second : gl::GL_NONE;
 }
 
 gl::GLenum FileNameSuffix::type(const std::string & type)
 {
-    std::string typeToLower = type;
-    std::transform(typeToLower.begin(), typeToLower.end(), typeToLower.begin(), ::tolower);
-    auto it = typesBySuffix.find(typeToLower);
+    auto it = typesBySuffix.find(cppassist::string::toLower(type));
     return (it!=typesBySuffix.end()) ? it->second : gl::GL_NONE;
 }
 

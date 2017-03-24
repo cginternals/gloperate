@@ -30,43 +30,43 @@ public:
     /**
     * @brief
     *   Return true, if width, height, type, and format if not compressed have valid values.
-	*/
-	bool isValid() const;
+    */
+    bool isValid() const;
 
     /**
     * @brief
     *   Return width of raw texture file name suffix in pixel;
     *   Is -1 when no width is provided.
-	*/
-	int width()  const;
+    */
+    int width()  const;
 
     /**
     * @brief
     *   Return height of raw texture file name suffix in pixel;
     *   Is -1 when no height is provided.
-	*/
-	int height() const;
+    */
+    int height() const;
 
     /**
     * @brief
     *   Returns type of raw texture file name suffix;
     *   Is GL_NONE when type is not unknown or not provided.
-	*/
+    */
     gl::GLenum type() const;
 
     /**
     * @brief
     *   Returns format of raw texture file name suffix;
     *   Is GL_NONE when format is not unknown or not provided.
-	*/
+    */
     gl::GLenum format() const;
 
     /**
     * @brief
     *   Returns true if texture type is compressed and no extra format is given; false otherwise.
     *   When type is of GL_NONE, returns false.
-	*/
-	bool compressed() const;
+    */
+    bool compressed() const;
 
 protected:
     /**
@@ -90,7 +90,7 @@ protected:
 protected:
     int m_width;  ///< Width of the Texture
     int m_height; ///< Height of the Texture
-	
+
     gl::GLenum m_format; ///< Format of the Texture
     gl::GLenum m_type;   ///< Type of the Texture
 
