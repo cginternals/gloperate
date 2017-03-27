@@ -48,7 +48,10 @@ void ProgramStage::onProcess(AbstractGLContext *)
         m_program->detach(shader);
     }
     for (auto input : inputs<globjects::Shader *>()) {
-        m_program->attach(input->value());
+        if(input)
+        {
+            m_program->attach(input->value());
+        }
     }
     for (auto input : inputs<cppassist::FilePath>()) {
         if(auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path()))
