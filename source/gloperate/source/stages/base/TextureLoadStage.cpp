@@ -49,7 +49,7 @@ void TextureLoadStage::loadTexture()
 {
     // Load texture from file
     auto tex = m_environment->resourceManager()->load<globjects::Texture>((*filename).path());
-    m_texture = std::unique_ptr<globjects::Texture>(tex ? tex : Texture::createDefault(gl::GL_TEXTURE_2D));
+    m_texture = tex ? std::unique_ptr<globjects::Texture>(tex) : globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 }
 
 
