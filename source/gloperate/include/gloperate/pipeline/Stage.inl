@@ -85,7 +85,7 @@ Output<T> * Stage::createOutput(const std::string & name, const T & defaultValue
     auto output = cppassist::make_unique<Output<T>>(name, defaultValue);
     auto outputPtr = output.get();
 
-    this->addOutput(outputPtr);
+    this->addOutput(std::move(output));
 
     return outputPtr;
 }
