@@ -79,9 +79,9 @@ protected:
     // Rendering objects
     std::unique_ptr<globjects::VertexArray> m_vao;
     std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
-    std::unique_ptr<globjects::Program>     m_colorProgram;
-    std::unique_ptr<globjects::Program>     m_normalProgram;
     std::unique_ptr<globjects::Shader>      m_vertexShader;
     std::unique_ptr<globjects::Shader>      m_colorFragmentShader;
     std::unique_ptr<globjects::Shader>      m_normalFragmentShader;
+    std::unique_ptr<globjects::Program>     m_colorProgram;
+    std::unique_ptr<globjects::Program>     m_normalProgram;
 };

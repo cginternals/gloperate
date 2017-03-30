@@ -30,9 +30,9 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(gloperate::Environment * environm
     //m_multiFramePipeline->setFrameRenderer(m_dofPipeline->renderInterface);
     //m_dofPipeline->multiFrameCount << multiFrameCount;
 
-    m_multiFramePipeline->setFrameRenderer(m_transparencyPipeline->renderInterface);
+    //m_multiFramePipeline->setFrameRenderer(m_transparencyPipeline->renderInterface);
 
-    //m_multiFramePipeline->setFrameRenderer(m_ssaoPipeline->renderInterface);
+    m_multiFramePipeline->setFrameRenderer(m_ssaoPipeline->renderInterface);
 
     // Inputs
     m_multiFramePipeline->renderInterface.deviceViewport << renderInterface.deviceViewport;

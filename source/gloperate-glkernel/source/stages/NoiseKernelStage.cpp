@@ -33,6 +33,9 @@ NoiseKernelStage::~NoiseKernelStage()
 void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_3D);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_REPEAT);
 }
 
 

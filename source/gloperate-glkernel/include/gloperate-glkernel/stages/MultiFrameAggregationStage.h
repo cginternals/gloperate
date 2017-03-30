@@ -87,9 +87,9 @@ protected:
     // Data
     std::unique_ptr<globjects::VertexArray> m_vao;            ///< VAO for screen aligned quad
     std::unique_ptr<globjects::Buffer>      m_vertexBuffer;   ///< VBO for screen aligned quad
-    std::unique_ptr<globjects::Program>     m_program;        ///< Shader program used for aggregation
     std::unique_ptr<globjects::Shader>      m_vertexShader;   ///< Vertex shader
     std::unique_ptr<globjects::Shader>      m_fragmentShader; ///< Fragment shader
+    std::unique_ptr<globjects::Program>     m_program;        ///< Shader program used for aggregation
 };
 
 

@@ -4,6 +4,7 @@
 #include <tuple>
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/random.hpp>
 
 #include <glbinding/gl/gl.h>
@@ -129,12 +130,12 @@ void DemoSSAORenderingStage::onProcess(gloperate::AbstractGLContext *)
     );
 
     // Set uniforms
-    auto view = glm::lookAt(glm::vec3(1.0f, 1.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    auto view = glm::lookAt(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     auto projection = glm::perspective(20.0f, viewport.z / viewport.w, 1.0f, 10.0f);
     auto viewProjection = projection * view;
 
     projectionMatrix.setValue(projection);
-    normalMatrix.setValue(glm::mat3(viewProjection));
+    normalMatrix.setValue(glm::inverseTranspose(glm::mat3(view)));
 
     m_colorProgram->setUniform("modelViewProjection", viewProjection);
     m_normalProgram->setUniform("modelViewProjection", viewProjection);
@@ -169,7 +170,7 @@ void DemoSSAORenderingStage::onProcess(gloperate::AbstractGLContext *)
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    gl::glClearColor(color.r, color.g, color.b, 1.0f);
+    gl::glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
