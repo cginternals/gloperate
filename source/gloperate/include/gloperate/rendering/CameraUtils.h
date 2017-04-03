@@ -1,5 +1,14 @@
 
+#pragma once
+
+
 #include <glm/mat4x4.hpp>
+
+#include <gloperate/gloperate_api.h>
+
+
+namespace gloperate
+{
 
 /**
 *  @brief
@@ -12,7 +21,7 @@
 *    distance of the plane that should keep constant size in both projections
 *    range: [zNear, zFar]
 */
-glm::mat4 orthographicFromPerspective(float fovy, float aspectRatio, float zNear, float zFar, float syncDist);
+GLOPERATE_API glm::mat4 orthographicFromPerspective(float fovy, float aspectRatio, float zNear, float zFar, float syncDist);
 
 /**
 *  @brief
@@ -26,4 +35,7 @@ glm::mat4 orthographicFromPerspective(float fovy, float aspectRatio, float zNear
 *    distance of the plane that should keep constant size in both projections
 *    range: [zNear, zFar]
 */
-glm::mat4 perspectiveFromOrthographic(float left, float right, float bottom, float top, float zNear, float zFar, float syncDist);
+GLOPERATE_API glm::mat4 perspectiveFromOrthographic(float left, float right, float bottom, float top, float zNear, float zFar, float syncDist);
+
+
+} // namespace gloperate
