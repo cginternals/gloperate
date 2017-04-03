@@ -14,10 +14,15 @@ glm::mat4 orthographicFromPerspective(float fovy, float aspectRatio, float zNear
 
 glm::mat4 perspectiveFromOrthographic(float left, float right, float bottom, float top, float zNear, float zFar, float syncDist)
 {
-    float fovy = glm::atan(right / zNear) * 2; //assuming right = -left and bottom = -top
-    float aspectRatio = (2 * right) / (2 * top);
-
     float c = zNear / syncDist;
+
+    float r = c*right;
+    float t = c*top;
+
+    float fovy = glm::atan(r / zNear) * 2; //assuming right = -left and bottom = -top
+    float aspectRatio = (2 * r) / (2 * t);
+
+
     return glm::perspective(fovy, aspectRatio, zNear, zFar);
 
 
