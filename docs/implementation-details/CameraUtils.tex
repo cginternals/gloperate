@@ -1,0 +1,34 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{float}
+
+\begin{document}
+
+Given the parameters for a perspective projection we want to find a corresponding orthographic projection matrix and vice versa. The target projection should include the exact same portion of a plane perpendicular to the view direction. The plane is given by the distance to the camera.
+The following explains the computation from perspective to orthographc. The other way is handled analogously.
+
+A perspective projection is specified by a field of view (fovy), the aspect ratio and the distance to the near-/far plane (zNear, zFar). First we need to compute the distances of the edges to the center of the near plane for our perspective projection($l_p,r_p,b_p,t_p$). These get translated along the inverse z-axis up to the point of syncronisation and are used as input for the new orthographic projection($l_o,r_o,b_o,t_o$). The frustrum looks like this:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gl_projectionmatrix01}
+  \caption{Perspective Frustum and Normalized Device Coordinates (NDC)}
+\end{figure}
+
+A point is projected on the near plane as shown here for the x coordinate:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{gl_projectionmatrix03}
+  \caption{Top View of Frustum; $x_e$ is eye space, $x_p$ is projected}
+\end{figure}
+
+This is done using the ratio of similar triangles:
+\begin{equation}
+    \label{similar_triangles}
+    \frac{x_p}{x_e} = \frac{-n}{z_e}
+\end{equation}
+
+
+
+
+\end{document}
