@@ -2,7 +2,7 @@
 #include <gloperate/gloperate.h>
 
 #include <cpplocate/cpplocate.h>
-#include <cpplocate/ModuleInfo.h>
+#include <cpplocate/utils.h>
 
 
 namespace
@@ -10,18 +10,18 @@ namespace
 
 std::string determineDataPath()
 {
-    const cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("gloperate");
-    const std::string moduleInfoPath = moduleInfo.value("dataPath");
+    std::string path = cpplocate::locatePath("data/gloperate", "share/gloperate", reinterpret_cast<void *>(&gloperate::dataPath));
+    if (path.empty()) path = "./data";
+    else              path = path + "/data";
 
-    return moduleInfoPath.empty() ? "data" : moduleInfoPath;
+    return path;
 }
 
 std::string determinePluginPath()
 {
-    const cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("gloperate");
-    const std::string moduleInfoPath = moduleInfo.value("pluginPath");
+    std::string path = cpplocate::utils::getDirectoryPath(cpplocate::getLibraryPath(reinterpret_cast<void *>(&gloperate::dataPath)));
 
-    return moduleInfoPath.empty() ? "" : moduleInfoPath;
+    return path;
 }
 
 } // namespace
