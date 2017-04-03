@@ -95,6 +95,7 @@ set(headers
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/Camera.h
+    ${include_path}/rendering/CameraUtils.h
     ${include_path}/rendering/Drawable.h
     ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/NoiseTexture.h
@@ -190,6 +191,7 @@ set(sources
 
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp
+    ${source_path}/rendering/CameraUtils.cpp
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/NoiseTexture.cpp
     ${source_path}/rendering/RenderPass.cpp
