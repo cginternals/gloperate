@@ -40,6 +40,10 @@ Pipeline::Pipeline(Environment * environment, const std::string & className, con
 
 Pipeline::~Pipeline()
 {
+    while (!m_stages.empty())
+    {
+        removeStage(m_stages.back());
+    }
 }
 
 const std::vector<Stage *> & Pipeline::stages() const
