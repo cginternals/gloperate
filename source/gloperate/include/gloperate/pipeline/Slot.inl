@@ -11,6 +11,7 @@
 namespace gloperate
 {
 
+
 template <typename T>
 template <typename U>
 auto Slot<T>::DereferenceHelper<U>::pointer(U * value) -> Pointer
@@ -27,7 +28,7 @@ auto Slot<T>::DereferenceHelper<U*>::pointer(U ** value) -> Pointer
 
 template <typename T>
 template <typename U>
-auto Slot<T>::DereferenceHelper<U*>::pointer(U * const * value) -> const Pointer
+auto Slot<T>::DereferenceHelper<U*>::pointer(U * const * value) -> Pointer
 {
     return *value;
 }

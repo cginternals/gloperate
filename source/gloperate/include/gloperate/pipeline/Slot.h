@@ -37,12 +37,13 @@ protected:
         using Pointer = U *;
         static Pointer pointer(U * value);
     };
+
     template <typename U>
     struct DereferenceHelper<U *>
     {
         using Pointer = U *;
         static Pointer pointer(U ** value);
-        static const Pointer pointer(U * const * value);
+        static Pointer pointer(U * const * value);
     };
     //@}
 
