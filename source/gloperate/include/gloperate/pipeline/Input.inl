@@ -57,6 +57,8 @@ void Input<T>::onValueChanged(const T & value)
     // Emit signal
     this->valueChanged(value);
 
+    this->setChanged(true);
+
     // Inform parent stage
     if (Stage * stage = this->parentStage())
     {

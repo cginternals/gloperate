@@ -110,6 +110,11 @@ void Stage::deinitContext(AbstractGLContext * context)
 void Stage::process(AbstractGLContext * context)
 {
     onProcess(context);
+
+    for (auto input : m_inputs)
+    {
+        input->setChanged(false);
+    }
 }
 
 bool Stage::needsProcessing() const
@@ -142,7 +147,10 @@ void Stage::invalidateOutputs()
 {
     for (auto output : m_outputs)
     {
-        output->setValid(false);
+        if(output->isValid())
+        {
+            output->setValid(false);
+        }
     }
 }
 

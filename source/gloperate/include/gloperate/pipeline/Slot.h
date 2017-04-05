@@ -148,6 +148,8 @@ public:
     virtual const AbstractSlot * source() const override;
     virtual bool isValid() const override;
     virtual void setValid(bool isValid) override;
+    virtual bool hasChanged() const override;
+    virtual void setChanged(bool hasChanged) override;
     virtual void onRequiredChanged() override;
 
     // Virtual Typed<T> interface
@@ -170,6 +172,7 @@ protected:
 
 protected:
     bool                        m_valid;      ///< Does the slot have a valid value?
+    bool                        m_changed;    ///< Was the slot changed since the last time it's pipeline was processed
     Slot<T>                   * m_source;     ///< Connected slot (can be null)
     cppexpose::ScopedConnection m_connection; ///< Connection to changed-signal of source property
 

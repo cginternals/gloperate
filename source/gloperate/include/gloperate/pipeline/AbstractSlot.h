@@ -214,6 +214,33 @@ public:
 
     /**
     *  @brief
+    *    Check if slot was changed
+    *
+    *  @return
+    *    'true' if data was changed, else 'false'
+    *
+    *  @remarks
+    *    This status helps to improve performance in a pipeline.
+    *    It is used to avoid processing of input values that where
+    *    processed ealier already.
+    */
+    virtual bool hasChanged() const = 0;
+
+    /**
+    *  @brief
+    *    Set the changed flag
+    *
+    *  @remarks
+    *    This marks the input value as changed or unchanged.
+    *    The state will automatically change to changed when a new value is set.
+    *
+    *  @see
+    *    hasChanged
+    */
+    virtual void setChanged(bool hasChanged) = 0;
+
+    /**
+    *  @brief
     *    Called when required-flag has been changed
     */
     virtual void onRequiredChanged() = 0;

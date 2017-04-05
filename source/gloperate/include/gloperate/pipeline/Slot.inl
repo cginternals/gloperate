@@ -189,6 +189,18 @@ void Slot<T>::setValid(bool isValid)
 }
 
 template <typename T>
+bool Slot<T>::hasChanged() const
+{
+    return m_changed;
+}
+
+template <typename T>
+void Slot<T>::setChanged(bool hasChanged)
+{
+    m_changed = hasChanged;
+}
+
+template <typename T>
 void Slot<T>::onRequiredChanged()
 {
     promoteRequired();
