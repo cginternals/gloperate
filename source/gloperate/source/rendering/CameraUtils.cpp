@@ -1,4 +1,6 @@
 
+#include <gloperate/rendering/CameraUtils.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -6,7 +8,7 @@ namespace gloperate
 {
 
 
-glm::mat4 orthographicFromPerspective(float fovy, float aspectRatio, float zNear, float zFar, float syncDist)
+glm::mat4 CameraUtils::orthographicFromPerspective(double fovy, double aspectRatio, double zNear, double zFar, double syncDist)
 {
     //compute ortho params from fovy and aspect assuming symmetry
     const auto right = zNear*glm::tan(fovy/2.0);
@@ -19,7 +21,7 @@ glm::mat4 orthographicFromPerspective(float fovy, float aspectRatio, float zNear
     return glm::ortho(c*left, c*right, c*bottom, c*top, zNear, zFar);
 }
 
-glm::mat4 perspectiveFromOrthographic(float left, float right, float bottom, float top, float zNear, float zFar, float syncDist)
+glm::mat4 CameraUtils::perspectiveFromOrthographic(double left, double right, double bottom, double top, double zNear, double zFar, double syncDist)
 {
     const auto c = zNear / syncDist;
 
