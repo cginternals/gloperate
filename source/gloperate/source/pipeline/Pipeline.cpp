@@ -40,6 +40,7 @@ Pipeline::Pipeline(Environment * environment, const std::string & className, con
 
 Pipeline::~Pipeline()
 {
+    // Do not use iterators here, as removeStage modifies m_stages
     while (!m_stages.empty())
     {
         removeStage(m_stages.back());
