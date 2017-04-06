@@ -56,11 +56,23 @@ int main(int argc, char * argv[])
     environment.componentManager()->scanPlugins("exporter");
 
     // Load and show QML
+    qmlEngine.load(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
+
+    // Connect signals to toggle fullscreen-mode on all windows
+    for (auto & window : app.allWindows())
+    {
+        QObject::connect(window, SIGNAL(toFullScreenMode()), window, SLOT(showFullScreen()));
+        QObject::connect(window, SIGNAL(toWindowedMode()), window, SLOT(showNormal()));
+    }
+
+    /*
+    // Load and show QML
     auto window = cppassist::make_unique<QuickView>(&qmlEngine);
     window->setResizeMode(QQuickView::SizeRootObjectToView);
     window->setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
     window->setGeometry(100, 100, 1280, 720);
     window->show();
+    */
 
     // Run main loop
     return app.exec();

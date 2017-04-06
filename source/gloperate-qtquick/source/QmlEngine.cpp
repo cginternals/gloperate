@@ -26,7 +26,7 @@ namespace gloperate_qtquick
 
 
 QmlEngine::QmlEngine(gloperate::Environment * environment)
-: qmltoolbox::QmlEngine()
+: qmltoolbox::QmlApplicationEngine()
 , m_environment(environment)
 {
     // Get data path
