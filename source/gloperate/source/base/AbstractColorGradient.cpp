@@ -60,7 +60,7 @@ std::unique_ptr<globjects::Texture> AbstractColorGradient::generateTexture(size_
 
     std::vector<unsigned char> data = pixelData(numPixels);
 
-    texture->image1D(0, gl::GL_RGBA, numPixels, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data.data());
+    texture->image1D(0, gl::GL_RGBA, numPixels, 0, gl::GL_BGRA, gl::GL_UNSIGNED_BYTE, data.data());
 
     return texture;
 }
