@@ -11,7 +11,7 @@ namespace gloperate_qtquick
 {
 
 
-class RenderItem2;
+class RenderItem;
 
 
 /**
@@ -28,7 +28,7 @@ public:
     *  @param[in] renderItem
     *    RenderItem into which is rendered (must NOT be null!)
     */
-    RenderItemRenderer(RenderItem2 * renderItem);
+    RenderItemRenderer(RenderItem * renderItem);
 
     /**
     *  @brief
@@ -43,7 +43,7 @@ public:
 
 
 protected:
-    RenderItem2 * m_renderItem; ///< RenderItem into which is rendered (never null)
+    RenderItem * m_renderItem; ///< RenderItem into which is rendered (never null)
     bool m_first;
 };
 

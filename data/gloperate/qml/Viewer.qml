@@ -250,14 +250,13 @@ Controls.ApplicationWindow
 
             anchors.fill: parent
 
-            RenderItem2
+            RenderItem
             {
                 width:  400
                 height: 400
 
                 stage: window.stage
             }
-//            TestContent { }
 
             panel.minimumWidth: 240
 

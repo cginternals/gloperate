@@ -12,7 +12,7 @@
 
 #include <gloperate-qt/base/GLContext.h>
 
-#include <gloperate-qtquick/RenderItem2.h>
+#include <gloperate-qtquick/RenderItem.h>
 #include <gloperate-qtquick/Utils.h>
 
 #include <iostream>
@@ -22,7 +22,7 @@ namespace gloperate_qtquick
 {
 
 
-RenderItemRenderer::RenderItemRenderer(RenderItem2 * renderItem)
+RenderItemRenderer::RenderItemRenderer(RenderItem * renderItem)
 : m_renderItem(renderItem)
 , m_first(true)
 {
