@@ -1,12 +1,17 @@
 
 #include <gloperate/rendering/CameraUtils.h>
 
+#include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 
 namespace gloperate
 {
 
+
+CameraUtils::CameraUtils()
+{
+}
 
 glm::mat4 CameraUtils::orthographicFromPerspective(float fovy, float aspectRatio, float zNear, float zFar, float syncDist)
 {
