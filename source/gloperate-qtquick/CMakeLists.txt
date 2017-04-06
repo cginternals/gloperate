@@ -76,6 +76,7 @@ set(sources
     ${source_path}/QuickView.cpp
     ${source_path}/RenderItem.cpp
     ${source_path}/RenderItemRenderer.cpp
+    ${source_path}/RenderItemRenderer_ogl.cpp
     ${source_path}/TextureRenderItem.cpp
     ${source_path}/TextureRenderItem_ogl.cpp
     ${source_path}/Utils.cpp

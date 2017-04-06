@@ -63,25 +63,6 @@ Controls.ApplicationWindow
         stateWrapper.state = (stateWrapper.state == "normal") ? "preview" : "normal";
     }
 
-    // Renderer
-    /*
-    RenderItem
-    {
-        id: render
-
-        anchors.fill: parent
-
-        z: -1
-
-        stage: window.stage
-
-        onCanvasInitialized:
-        {
-            //gloperatePipeline.root = gloperate.canvas0.pipeline;
-        }
-    }
-    */
-
     Item 
     {
         id: stateWrapper
@@ -252,10 +233,14 @@ Controls.ApplicationWindow
 
             RenderItem
             {
-                width:  400
-                height: 400
+                anchors.fill: parent
 
                 stage: window.stage
+
+                onCanvasInitialized:
+                {
+                    //gloperatePipeline.root = gloperate.canvas0.pipeline;
+                }
             }
 
             panel.minimumWidth: 240

@@ -4,10 +4,12 @@
 #include <QQuickWindow>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLContext>
-#include <QOpenGLFunctions>
+
+#include <glm/vec4.hpp>
 
 #include <cppassist/memory/make_unique.h>
 
+#include <gloperate/base/AbstractCanvas.h>
 #include <gloperate/base/GLContextUtils.h>
 
 #include <gloperate-qt/base/GLContext.h>
@@ -24,31 +26,42 @@ namespace gloperate_qtquick
 
 RenderItemRenderer::RenderItemRenderer(RenderItem * renderItem)
 : m_renderItem(renderItem)
-, m_first(true)
+, m_fbo(nullptr)
+, m_contextInitialized(false)
+, m_canvasInitialized(false)
 {
 }
 
 RenderItemRenderer::~RenderItemRenderer()
 {
+    destroyFboWrapper();
+}
+
+void RenderItemRenderer::synchronize(QQuickFramebufferObject * framebufferObject)
+{
+    // Get render item
+    RenderItem * renderItem = static_cast<RenderItem *>(framebufferObject);
+
+    // Check if canvas has changed
+    if (m_canvas.get() != renderItem->canvas().get())
+    {
+        // Copy pointer to the new canvas
+        m_canvas = renderItem->canvas();
+
+        // Initialize canvas on next draw call
+        m_canvasInitialized = false;
+    }
 }
 
 QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSize & size)
 {
-    std::cout << "createFramebufferObject(" << size.width() << ", " << size.height() << ")" << std::endl;
+    // Get QML window
+    auto * window = m_renderItem->window();
 
-    QOpenGLFramebufferObjectFormat format;
-    format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-    format.setSamples(0);
-    return new QOpenGLFramebufferObject(size, format);
-}
-
-void RenderItemRenderer::render()
-{
-    if (m_first)
+    // Initialize context before rendering the first time
+    if (!m_contextInitialized)
     {
-        m_first = false;
-
-m_renderItem->window()->openglContext()->makeCurrent(m_renderItem->window());
+        m_contextInitialized = true;
 
         // Initialize glbinding and globjects in context
         Utils::initContext();
@@ -59,31 +72,60 @@ m_renderItem->window()->openglContext()->makeCurrent(m_renderItem->window());
             << "OpenGL Vendor:   " << gloperate::GLContextUtils::vendor() << std::endl
             << "OpenGL Renderer: " << gloperate::GLContextUtils::renderer() << std::endl;
 
-        auto * a = m_renderItem->window();
-        auto * b = m_renderItem->window()->openglContext();
-
-        m_renderItem->m_context = cppassist::make_unique<gloperate_qt::GLContext>(
-            m_renderItem->window(),
-            m_renderItem->window()->openglContext(),
+        // Create context wrapper
+        m_context = cppassist::make_unique<gloperate_qt::GLContext>(
+            window,
+            window->openglContext(),
             false);
 
-m_renderItem->window()->openglContext()->makeCurrent(m_renderItem->window());
+        // Make sure that context is still active
+        window->openglContext()->makeCurrent(window);
     }
 
-    std::cout << "render()" << std::endl;
+    // Create new FBO
+    QOpenGLFramebufferObjectFormat format;
+    format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+    format.setSamples(0);
+    auto * fbo = new QOpenGLFramebufferObject(size, format);
 
-    /*
-    QOpenGLFunctions * gl = QOpenGLContext::currentContext()->functions();
-    gl->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-    gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    */
+    // Create globjects FBO wrapper
+    createFboWrapper(fbo->handle());
 
-    m_renderItem->doRender(framebufferObject()->handle());
+    // Set viewport size
+    if (m_canvas)
+    {
+        auto ratio = window->devicePixelRatio();
+        m_canvas->onViewport(
+            glm::vec4(0, 0, m_renderItem->width() * ratio, m_renderItem->height() * ratio)
+          , glm::vec4(0, 0, m_renderItem->width(),         m_renderItem->height())
+        );
+    }
+
+    // Return FBO
+    return fbo;
 }
 
-void RenderItemRenderer::synchronize(QQuickFramebufferObject *)
+void RenderItemRenderer::render()
 {
-    std::cout << "synchronize()" << std::endl;
+    // Check canvas
+    if (!m_canvas)
+    {
+        return;
+    }
+
+    // Initialize canvas before rendering the first time
+    if (!m_canvasInitialized)
+    {
+        m_canvas->setOpenGLContext(m_context.get());
+
+        m_canvasInitialized = true;
+    }
+
+    // Render canvas
+    m_canvas->render(m_fbo);
+
+    // Reset OpenGL state for QML
+    m_renderItem->window()->resetOpenGLState();
 }
 
 
