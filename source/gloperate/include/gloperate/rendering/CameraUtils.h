@@ -30,7 +30,7 @@ public:
     *    distance of the plane that should keep constant size in both projections
     *    range: [zNear, zFar]
     */
-    static glm::mat4 orthographicFromPerspective(double fovy, double aspectRatio, double zNear, double zFar, double syncDist);
+    static glm::mat4 orthographicFromPerspective(float fovy, float aspectRatio, float zNear, float zFar, float syncDist);
 
     /**
     *  @brief
@@ -56,7 +56,7 @@ public:
     *    distance of the plane that should keep constant size in both projections
     *    range: [zNear, zFar]
     */
-    static glm::mat4 perspectiveFromOrthographic(double left, double right, double bottom, double top, double zNear, double zFar, double syncDist);
+    static glm::mat4 perspectiveFromOrthographic(float left, float right, float bottom, float top, float zNear, float zFar, float syncDist);
 };
 
 

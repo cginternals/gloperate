@@ -8,10 +8,10 @@ namespace gloperate
 {
 
 
-glm::mat4 CameraUtils::orthographicFromPerspective(double fovy, double aspectRatio, double zNear, double zFar, double syncDist)
+glm::mat4 CameraUtils::orthographicFromPerspective(float fovy, float aspectRatio, float zNear, float zFar, float syncDist)
 {
     //compute ortho params from fovy and aspect assuming symmetry
-    const auto right = zNear*glm::tan(fovy/2.0);
+    const auto right = zNear*glm::tan(fovy/2.f);
     const auto top = right / aspectRatio;
     const auto left = -right;
     const auto bottom = -top;
@@ -21,15 +21,15 @@ glm::mat4 CameraUtils::orthographicFromPerspective(double fovy, double aspectRat
     return glm::ortho(c*left, c*right, c*bottom, c*top, zNear, zFar);
 }
 
-glm::mat4 CameraUtils::perspectiveFromOrthographic(double left, double right, double bottom, double top, double zNear, double zFar, double syncDist)
+glm::mat4 CameraUtils::perspectiveFromOrthographic(float left, float right, float bottom, float top, float zNear, float zFar, float syncDist)
 {
     const auto c = zNear / syncDist;
 
     const auto r = c*right;
     const auto t = c*top;
 
-    const auto fovy = glm::atan(r / zNear) * 2; //assuming right = -left and bottom = -top
-    const auto aspectRatio = (2 * r) / (2 * t);
+    const auto fovy = glm::atan(r / zNear) * 2.f; //assuming right = -left and bottom = -top
+    const auto aspectRatio = (2.f * r) / (2.f * t);
 
     return glm::perspective(fovy, aspectRatio, zNear, zFar);
 }
