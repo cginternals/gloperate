@@ -183,10 +183,14 @@ void Slot<T>::setValid(bool isValid)
     }
 
     // Set state of own data
+    auto wasValid = m_valid;
     m_valid = isValid;
 
-    // Emit signal
-    this->onValueChanged(this->m_value);
+    // Emit signal if it was invalidated
+    if(wasValid && !isValid)
+    {
+        this->onValueChanged(this->m_value);
+    }
 }
 
 template <typename T>

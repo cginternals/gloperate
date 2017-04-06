@@ -147,10 +147,7 @@ void Stage::invalidateOutputs()
 {
     for (auto output : m_outputs)
     {
-        if(output->isValid())
-        {
-            output->setValid(false);
-        }
+        output->setValid(false);
     }
 }
 
