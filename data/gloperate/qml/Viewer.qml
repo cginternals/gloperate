@@ -28,9 +28,6 @@ Controls.ApplicationWindow
     // Stage
     property string stage: 'DemoPipeline'
 
-    signal toFullScreenMode()
-    signal toWindowedMode()
-
     Controls.Shortcut 
     {
         sequence: "CTRL+F6"
@@ -139,13 +136,13 @@ Controls.ApplicationWindow
             {
                 name: "windowedMode"
 
-                StateChangeScript { script: window.toWindowedMode() }
+                StateChangeScript { script: window.showNormal() }
             },
             State 
             {
                 name: "fullScreenMode"
 
-                StateChangeScript { script: window.toFullScreenMode() }
+                StateChangeScript { script: window.showFullScreen() }
             }
         ]
     }
@@ -253,7 +250,12 @@ Controls.ApplicationWindow
 
             anchors.fill: parent
 
-            TestContent { }
+            RenderItem2
+            {
+                width:  400
+                height: 400
+            }
+//            TestContent { }
 
             panel.minimumWidth: 240
 

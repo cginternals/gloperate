@@ -1,0 +1,297 @@
+
+#include <gloperate-qtquick/RenderItem2.h>
+
+#include <QVariant>
+#include <QColor>
+
+#include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
+
+#include <globjects/Framebuffer.h>
+#include <globjects/VertexArray.h>
+
+#include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/pipeline/Stage.h>
+
+#include <gloperate-qt/base/GLContext.h>
+#include <gloperate-qt/base/input.h>
+
+#include <gloperate-qtquick/QuickView.h>
+#include <gloperate-qtquick/Utils.h>
+
+#include <gloperate-qtquick/RenderItemRenderer.h>
+
+
+using namespace gloperate_qt;
+
+
+namespace gloperate_qtquick
+{
+
+
+RenderItem2::RenderItem2(QQuickItem * parent)
+: QQuickFramebufferObject(parent)
+, m_canvas(nullptr)
+, m_devicePixelRatio(1.0f)
+, m_initialized(false)
+, m_stage("")
+{
+    /*
+    // Set input modes
+    setAcceptedMouseButtons(Qt::AllButtons);
+    setFlag(ItemAcceptsInputMethod, true);
+
+    // Connect to event when the window into which is rendered has changed
+    connect(
+        this, &QQuickItem::windowChanged,
+        this, &RenderItem2::onWindowChanged,
+        Qt::DirectConnection
+    );
+    */
+}
+
+RenderItem2::~RenderItem2()
+{
+}
+
+const gloperate::AbstractCanvas * RenderItem2::canvas() const
+{
+    return m_canvas.get();
+}
+
+gloperate::AbstractCanvas * RenderItem2::canvas()
+{
+    return m_canvas.get();
+}
+
+QQuickFramebufferObject::Renderer * RenderItem2::createRenderer() const
+{
+    return new RenderItemRenderer;
+}
+
+const QString & RenderItem2::stage() const
+{
+    return m_stage;
+}
+
+void RenderItem2::setStage(const QString & name)
+{
+    m_stage = name;
+}
+
+void RenderItem2::onWindowChanged(QQuickWindow * window)
+{
+    // Check if window is valid
+    if (!window)
+    {
+        return;
+    }
+
+    /*
+    // Get device/pixel-ratio
+    m_devicePixelRatio = window->devicePixelRatio();
+
+    // Create canvas and render stage
+    QuickView * view = static_cast<QuickView*>(window);
+
+    assert(view != nullptr);
+
+    m_canvas = Utils::createCanvas(
+        view->environment(),
+        Utils::createRenderStage(view->environment(), m_stage.toStdString())
+    );
+
+    assert(m_canvas);
+
+    // Repaint window when canvas needs to be updated
+    m_canvas->redraw.connect([this] ()
+    {
+        if (this->window())
+        {
+            this->window()->update();
+        }
+    } );
+
+    m_canvas->wakeup.connect([] ()
+    {
+        QCoreApplication::instance()->processEvents();
+    } );
+
+    // Connect to window draw event
+    connect(
+        window, &QQuickWindow::beforeRendering,
+        this, &RenderItem2::onBeforeRendering,
+        Qt::DirectConnection
+    );
+
+    emit canvasInitialized();
+    */
+}
+
+void RenderItem2::onBeforeRendering()
+{
+    /*
+    if (!m_canvas || !this->window())
+    {
+        return;
+    }
+
+    // Get qml view
+    QuickView * view = static_cast<QuickView*>(this->window());
+
+    // Initialize canvas before rendering the first time
+    if (!m_initialized)
+    {
+        m_canvas->setOpenGLContext(view->context());
+
+        m_initialized = true;
+    }
+
+    // Get background color    
+    if (view->rootObject())
+    {
+        QVariant var = view->rootObject()->property("backgroundColor");
+        QColor color = var.value<QColor>();
+        m_canvas->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
+    }
+
+    // [TODO]: optimize memory reallocation problem
+    auto defaultFBO = globjects::Framebuffer::defaultFBO();
+
+    m_canvas->render(defaultFBO.get());
+
+    // Reset OpenGL state
+    globjects::VertexArray::unbind();
+    window()->resetOpenGLState();
+    */
+}
+
+void RenderItem2::geometryChanged(const QRectF & newGeometry, const QRectF & oldGeometry)
+{
+    /*
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+
+    if (!m_canvas)
+    {
+        return;
+    }
+
+    QPointF pos1 = parentItem()->mapToScene(newGeometry.topLeft());
+    QPointF pos2 = parentItem()->mapToScene(newGeometry.bottomRight());
+
+    float virtX      = pos1.x();
+    float virtY      = pos1.y();
+    float virtWidth  = pos2.x() - pos1.x() + 1;
+    float virtHeight = pos2.y() - pos1.y() + 1;
+
+    float screenHeight = window()->height();
+    virtY = screenHeight - (virtY + virtHeight);
+
+    float devX       = virtX      * m_devicePixelRatio;
+    float devY       = virtY      * m_devicePixelRatio;
+    float devWidth   = virtWidth  * m_devicePixelRatio;
+    float devHeight  = virtHeight * m_devicePixelRatio;
+
+    m_canvas->onViewport(
+        glm::vec4(devX,  devY,  devWidth,  devHeight)
+      , glm::vec4(virtX, virtY, virtWidth, virtHeight)
+    );
+    */
+}
+
+void RenderItem2::keyPressEvent(QKeyEvent * event)
+{
+    /*
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
+    if (m_canvas)
+    {
+        m_canvas->onKeyPress(
+            fromQtKeyCode(event->key(), event->modifiers()),
+            fromQtModifiers(event->modifiers())
+        );
+    }
+    */
+}
+
+void RenderItem2::keyReleaseEvent(QKeyEvent * event)
+{
+    /*
+    // Skip auto-repeated key events
+    if (event->isAutoRepeat())
+    {
+        return;
+    }
+
+    if (m_canvas)
+    {
+        m_canvas->onKeyRelease(
+            fromQtKeyCode(event->key(), event->modifiers()),
+            fromQtModifiers(event->modifiers())
+        );
+    }
+    */
+}
+
+void RenderItem2::mouseMoveEvent(QMouseEvent * event)
+{
+    /*
+    if (m_canvas)
+    {
+        m_canvas->onMouseMove(glm::ivec2(
+            (int)(event->x() * m_devicePixelRatio),
+            (int)(event->y() * m_devicePixelRatio))
+        );
+    }
+    */
+}
+
+void RenderItem2::mousePressEvent(QMouseEvent * event)
+{
+    /*
+    if (m_canvas)
+    {
+        m_canvas->onMousePress(
+            fromQtMouseButton(event->button()),
+            glm::ivec2( (int)(event->x() * m_devicePixelRatio),
+                        (int)(event->y() * m_devicePixelRatio) )
+        );
+    }
+    */
+}
+
+void RenderItem2::mouseReleaseEvent(QMouseEvent * event)
+{
+    /*
+    if (m_canvas)
+    {
+        m_canvas->onMouseRelease(
+            fromQtMouseButton(event->button()),
+            glm::ivec2( (int)(event->x() * m_devicePixelRatio),
+                        (int)(event->y() * m_devicePixelRatio) )
+        );
+    }
+    */
+}
+
+void RenderItem2::wheelEvent(QWheelEvent * event)
+{
+    /*
+    if (m_canvas)
+    {
+        m_canvas->onMouseWheel(
+            glm::vec2( event->orientation() == Qt::Vertical ? 0.0f : (float)event->delta(),
+                       event->orientation() == Qt::Vertical ? (float)event->delta() : 0.0f ),
+            glm::ivec2( (int)(event->x() * m_devicePixelRatio),
+                        (int)(event->y() * m_devicePixelRatio) )
+        );
+    }
+    */
+}
+
+
+} // namespace gloperate_qtquick

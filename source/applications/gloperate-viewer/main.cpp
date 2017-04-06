@@ -58,13 +58,6 @@ int main(int argc, char * argv[])
     // Load and show QML
     qmlEngine.load(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
 
-    // Connect signals to toggle fullscreen-mode on all windows
-    for (auto & window : app.allWindows())
-    {
-        QObject::connect(window, SIGNAL(toFullScreenMode()), window, SLOT(showFullScreen()));
-        QObject::connect(window, SIGNAL(toWindowedMode()), window, SLOT(showNormal()));
-    }
-
     /*
     // Load and show QML
     auto window = cppassist::make_unique<QuickView>(&qmlEngine);

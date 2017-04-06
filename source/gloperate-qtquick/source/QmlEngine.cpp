@@ -15,6 +15,7 @@
 #include <gloperate/base/Environment.h>
 
 #include <gloperate-qtquick/RenderItem.h>
+#include <gloperate-qtquick/RenderItem2.h>
 #include <gloperate-qtquick/TextureRenderItem.h>
 #include <gloperate-qtquick/VideoProfile.h>
 #include <gloperate-qtquick/TextController.h>
@@ -37,6 +38,7 @@ QmlEngine::QmlEngine(gloperate::Environment * environment)
 
     // Register QML types
     qmlRegisterType<RenderItem>       ("gloperate.rendering", 1, 0, "RenderItem");
+    qmlRegisterType<RenderItem2>      ("gloperate.rendering", 1, 0, "RenderItem2");
     qmlRegisterType<TextureRenderItem>("gloperate.rendering", 1, 0, "TextureRenderItem");
     qmlRegisterType<TextController>   ("gloperate.base",      1, 0, "TextController");
     qmlRegisterType<VideoProfile>     ("gloperate.base",      1, 0, "VideoProfile");
