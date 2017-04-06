@@ -1,8 +1,11 @@
 
 #include <gloperate-qtquick/RenderItem2.h>
 
+#include <iostream>
+
 #include <QVariant>
 #include <QColor>
+#include <QQmlContext>
 
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
@@ -16,6 +19,7 @@
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/input.h>
 
+#include <gloperate-qtquick/QmlEngine.h>
 #include <gloperate-qtquick/QuickView.h>
 #include <gloperate-qtquick/Utils.h>
 
@@ -36,7 +40,6 @@ RenderItem2::RenderItem2(QQuickItem * parent)
 , m_initialized(false)
 , m_stage("")
 {
-    /*
     // Set input modes
     setAcceptedMouseButtons(Qt::AllButtons);
     setFlag(ItemAcceptsInputMethod, true);
@@ -47,7 +50,12 @@ RenderItem2::RenderItem2(QQuickItem * parent)
         this, &RenderItem2::onWindowChanged,
         Qt::DirectConnection
     );
-    */
+
+    connect(
+        this, &RenderItem2::updated,
+        this, &RenderItem2::doUpdate,
+        Qt::QueuedConnection
+    );
 }
 
 RenderItem2::~RenderItem2()
@@ -66,7 +74,7 @@ gloperate::AbstractCanvas * RenderItem2::canvas()
 
 QQuickFramebufferObject::Renderer * RenderItem2::createRenderer() const
 {
-    return new RenderItemRenderer;
+    return new RenderItemRenderer(const_cast<RenderItem2 *>(this));
 }
 
 const QString & RenderItem2::stage() const
@@ -77,6 +85,33 @@ const QString & RenderItem2::stage() const
 void RenderItem2::setStage(const QString & name)
 {
     m_stage = name;
+
+std::cout << "Create stage " << m_stage.toStdString() << std::endl;
+
+    auto * engine = static_cast<QmlEngine *>(QQmlEngine::contextForObject(this)->engine());
+
+    // Create canvas and render stage
+    gloperate::Environment * environment = engine->environment();
+
+    m_canvas = Utils::createCanvas(
+        environment,
+        Utils::createRenderStage(environment, m_stage.toStdString())
+    );
+
+    assert(m_canvas);
+
+    // Repaint window when canvas needs to be updated
+    m_canvas->redraw.connect([this] ()
+    {
+        emit this->updated();
+    } );
+
+    m_canvas->wakeup.connect([] ()
+    {
+        QCoreApplication::instance()->processEvents();
+    } );
+
+    emit canvasInitialized();
 }
 
 void RenderItem2::onWindowChanged(QQuickWindow * window)
@@ -87,18 +122,19 @@ void RenderItem2::onWindowChanged(QQuickWindow * window)
         return;
     }
 
-    /*
     // Get device/pixel-ratio
     m_devicePixelRatio = window->devicePixelRatio();
 
-    // Create canvas and render stage
-    QuickView * view = static_cast<QuickView*>(window);
+std::cout << "Create stage " << m_stage.toStdString() << std::endl;
 
-    assert(view != nullptr);
+    auto * engine = static_cast<QmlEngine *>(QQmlEngine::contextForObject(this)->engine());
+
+    // Create canvas and render stage
+    gloperate::Environment * environment = engine->environment();
 
     m_canvas = Utils::createCanvas(
-        view->environment(),
-        Utils::createRenderStage(view->environment(), m_stage.toStdString())
+        environment,
+        Utils::createRenderStage(environment, m_stage.toStdString())
     );
 
     assert(m_canvas);
@@ -106,10 +142,7 @@ void RenderItem2::onWindowChanged(QQuickWindow * window)
     // Repaint window when canvas needs to be updated
     m_canvas->redraw.connect([this] ()
     {
-        if (this->window())
-        {
-            this->window()->update();
-        }
+        emit this->updated();
     } );
 
     m_canvas->wakeup.connect([] ()
@@ -117,53 +150,63 @@ void RenderItem2::onWindowChanged(QQuickWindow * window)
         QCoreApplication::instance()->processEvents();
     } );
 
-    // Connect to window draw event
-    connect(
-        window, &QQuickWindow::beforeRendering,
-        this, &RenderItem2::onBeforeRendering,
-        Qt::DirectConnection
-    );
-
     emit canvasInitialized();
-    */
 }
 
-void RenderItem2::onBeforeRendering()
+void RenderItem2::doRender(int fboId)
 {
-    /*
+std::cout << "doRender1" << std::endl;
+
     if (!m_canvas || !this->window())
     {
         return;
     }
 
-    // Get qml view
-    QuickView * view = static_cast<QuickView*>(this->window());
+std::cout << "doRender2" << std::endl;
+
+    // Get qml window
+    auto * window = this->window();
 
     // Initialize canvas before rendering the first time
     if (!m_initialized)
     {
-        m_canvas->setOpenGLContext(view->context());
+        m_canvas->setOpenGLContext(m_context.get());
 
         m_initialized = true;
     }
 
-    // Get background color    
-    if (view->rootObject())
+    /*
+    // Get background color
+    if (window->rootObject())
     {
-        QVariant var = view->rootObject()->property("backgroundColor");
+        QVariant var = window->rootObject()->property("backgroundColor");
         QColor color = var.value<QColor>();
         m_canvas->onBackgroundColor(color.redF(), color.greenF(), color.blueF());
     }
+    */
 
     // [TODO]: optimize memory reallocation problem
-    auto defaultFBO = globjects::Framebuffer::defaultFBO();
+    auto defaultFBO = globjects::Framebuffer::fromId(fboId);
+
+    m_canvas->onViewport(
+        glm::vec4(0, 0, 400, 400)
+      , glm::vec4(0, 0, 400, 400)
+    );
+
+std::cout << "doRender3" << std::endl;
 
     m_canvas->render(defaultFBO.get());
 
     // Reset OpenGL state
     globjects::VertexArray::unbind();
-    window()->resetOpenGLState();
-    */
+    window->resetOpenGLState();
+}
+
+void RenderItem2::doUpdate()
+{
+    std::cout << "doUpdate()" << std::endl;
+
+    this->update();
 }
 
 void RenderItem2::geometryChanged(const QRectF & newGeometry, const QRectF & oldGeometry)

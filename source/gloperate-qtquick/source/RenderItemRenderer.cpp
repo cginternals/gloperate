@@ -1,9 +1,19 @@
 
 #include <gloperate-qtquick/RenderItemRenderer.h>
 
+#include <QQuickWindow>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+
+#include <cppassist/memory/make_unique.h>
+
+#include <gloperate/base/GLContextUtils.h>
+
+#include <gloperate-qt/base/GLContext.h>
+
+#include <gloperate-qtquick/RenderItem2.h>
+#include <gloperate-qtquick/Utils.h>
 
 #include <iostream>
 
@@ -12,7 +22,9 @@ namespace gloperate_qtquick
 {
 
 
-RenderItemRenderer::RenderItemRenderer()
+RenderItemRenderer::RenderItemRenderer(RenderItem2 * renderItem)
+: m_renderItem(renderItem)
+, m_first(true)
 {
 }
 
@@ -32,11 +44,41 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
 
 void RenderItemRenderer::render()
 {
+    if (m_first)
+    {
+        m_first = false;
+
+m_renderItem->window()->openglContext()->makeCurrent(m_renderItem->window());
+
+        // Initialize glbinding and globjects in context
+        Utils::initContext();
+
+        // Print context info
+        std::cout << std::endl
+            << "OpenGL Version:  " << gloperate::GLContextUtils::version() << std::endl
+            << "OpenGL Vendor:   " << gloperate::GLContextUtils::vendor() << std::endl
+            << "OpenGL Renderer: " << gloperate::GLContextUtils::renderer() << std::endl;
+
+        auto * a = m_renderItem->window();
+        auto * b = m_renderItem->window()->openglContext();
+
+        m_renderItem->m_context = cppassist::make_unique<gloperate_qt::GLContext>(
+            m_renderItem->window(),
+            m_renderItem->window()->openglContext(),
+            false);
+
+m_renderItem->window()->openglContext()->makeCurrent(m_renderItem->window());
+    }
+
     std::cout << "render()" << std::endl;
 
+    /*
     QOpenGLFunctions * gl = QOpenGLContext::currentContext()->functions();
     gl->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    */
+
+    m_renderItem->doRender(framebufferObject()->handle());
 }
 
 void RenderItemRenderer::synchronize(QQuickFramebufferObject *)

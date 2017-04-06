@@ -254,6 +254,8 @@ Controls.ApplicationWindow
             {
                 width:  400
                 height: 400
+
+                stage: window.stage
             }
 //            TestContent { }
 

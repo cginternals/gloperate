@@ -11,6 +11,9 @@ namespace gloperate_qtquick
 {
 
 
+class RenderItem2;
+
+
 /**
 *  @brief
 *    Renderer that executes the rendering into the FBO
@@ -21,8 +24,11 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] renderItem
+    *    RenderItem into which is rendered (must NOT be null!)
     */
-    RenderItemRenderer();
+    RenderItemRenderer(RenderItem2 * renderItem);
 
     /**
     *  @brief
@@ -34,6 +40,11 @@ public:
     QOpenGLFramebufferObject * createFramebufferObject(const QSize & size) Q_DECL_OVERRIDE;
     void render() Q_DECL_OVERRIDE;
     void synchronize(QQuickFramebufferObject * item) Q_DECL_OVERRIDE;
+
+
+protected:
+    RenderItem2 * m_renderItem; ///< RenderItem into which is rendered (never null)
+    bool m_first;
 };
 
 
