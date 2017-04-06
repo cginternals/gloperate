@@ -76,10 +76,14 @@ bool Slot<T>::connect(Slot<T> * source)
     // Set source
     m_source = source;
 
-    // Connect to data container
-    m_connection = m_source->valueChanged.connect([this] (const T & value)
+    // Connect to data container; no direct binding of member function to achive virtual lookup
+    m_valueConnection = m_source->valueChanged.connect([this] (const T & value)
     {
         this->onValueChanged(value);
+    } );
+    m_validConnection = m_source->valueInvalidated.connect([this] ()
+    {
+        this->onValueInvalidated();
     } );
 
     // Emit events
@@ -147,7 +151,8 @@ void Slot<T>::disconnect()
 {
     // Reset source property
     m_source     = nullptr;
-    m_connection = cppexpose::ScopedConnection();
+    m_valueConnection = cppexpose::ScopedConnection();
+    m_validConnection = cppexpose::ScopedConnection();
 
     // Emit events
     this->promoteConnection();
@@ -189,7 +194,7 @@ void Slot<T>::setValid(bool isValid)
     // Emit signal if it was invalidated
     if(wasValid && !isValid)
     {
-        this->onValueChanged(this->m_value);
+        this->onValueInvalidated();
     }
 }
 

@@ -2,6 +2,10 @@
 #pragma once
 
 
+#include <map>
+#include <thread>
+#include <mutex>
+
 #include <gloperate/pipeline/Slot.h>
 
 
@@ -78,8 +82,16 @@ public:
 
 
 protected:
+    // Virtual AbstractSlot interface
+    virtual void onValueInvalidated() override;
+
     // Virtual Typed<T> interface
     virtual void onValueChanged(const T & value) override;
+
+protected:
+    // Data
+    std::map<std::thread::id, bool> m_cycleGuard; ///< Protection against cyclic propagation of change-events (one per thread to be thread-safe)
+    std::recursive_mutex            m_cycleMutex; ///< Mutex for accessing the cycle guard map
 };
 
 

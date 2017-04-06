@@ -2,10 +2,6 @@
 #pragma once
 
 
-#include <map>
-#include <thread>
-#include <mutex>
-
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/signal/ScopedConnection.h>
@@ -50,6 +46,7 @@ protected:
 
 public:
     cppexpose::Signal<const T &> valueChanged;      ///< Called when the value has been changed
+    cppexpose::Signal<>          valueInvalidated;  ///< Called when the value was invalidated but not changed
     cppexpose::Signal<>          connectionChanged; ///< Called when the connection has been changed
 
 
@@ -175,10 +172,8 @@ protected:
     bool                        m_valid;      ///< Does the slot have a valid value?
     bool                        m_changed;    ///< Was the slot changed since the last time it's pipeline was processed
     Slot<T>                   * m_source;     ///< Connected slot (can be null)
-    cppexpose::ScopedConnection m_connection; ///< Connection to changed-signal of source property
-
-    std::map<std::thread::id, bool> m_cycleGuard; ///< Protection against cyclic propagation of change-events (one per thread to be thread-safe)
-    std::recursive_mutex            m_cycleMutex; ///< Mutex for accessing the cycle guard map
+    cppexpose::ScopedConnection m_valueConnection; ///< Connection to changed-signal of source slot; removes the connection when destroyed
+    cppexpose::ScopedConnection m_validConnection; ///< Connection to invalidated-signal of source slot; removes the connection when destroyed
 };
 
 

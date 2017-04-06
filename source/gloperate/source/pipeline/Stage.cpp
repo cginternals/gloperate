@@ -341,6 +341,12 @@ void Stage::inputValueChanged(AbstractSlot * slot)
     onInputValueChanged(slot);
 }
 
+void Stage::inputValueInvalidated(AbstractSlot * slot)
+{
+    onInputValueInvalidated(slot);
+}
+
+
 std::string Stage::getFreeName(const std::string & name) const
 {
     std::string nameOut = name;
@@ -388,6 +394,12 @@ void Stage::onProcess(AbstractGLContext *)
 }
 
 void Stage::onInputValueChanged(AbstractSlot *)
+{
+    // Invalidate all outputs
+    invalidateOutputs();
+}
+
+void Stage::onInputValueInvalidated(AbstractSlot *)
 {
     // Invalidate all outputs
     invalidateOutputs();

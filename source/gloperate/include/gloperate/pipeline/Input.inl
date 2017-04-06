@@ -27,7 +27,7 @@ Input<T>::~Input()
 }
 
 template <typename T>
-void Input<T>::onValueChanged(const T & value)
+void Input<T>::onValueInvalidated()
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
 
@@ -55,18 +55,33 @@ void Input<T>::onValueChanged(const T & value)
     this->m_cycleGuard[this_id] = true;
 
     // Emit signal
-    this->valueChanged(value);
+    this->valueInvalidated();
 
     this->setChanged(true);
 
     // Inform parent stage
     if (Stage * stage = this->parentStage())
     {
-        stage->inputValueChanged(this);
+        stage->inputValueInvalidated(this);
     }
 
     // Reset guard
     this->m_cycleGuard[this_id] = false;
+}
+
+template <typename T>
+void Input<T>::onValueChanged(const T & value)
+{
+    this->setChanged(true);
+
+    // Emit signal
+    this->valueChanged(value);
+
+    // Inform parent stage
+    if (Stage * stage = this->parentStage())
+    {
+        stage->inputValueChanged(this);
+    }
 }
 
 template <typename T>

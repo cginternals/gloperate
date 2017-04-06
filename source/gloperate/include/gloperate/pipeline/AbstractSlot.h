@@ -245,6 +245,12 @@ public:
     */
     virtual void onRequiredChanged() = 0;
 
+    /**
+    *  @brief
+    *    Called when value was invalidated i.e. it was valid and is set to invalid
+    */
+    virtual void onValueInvalidated() = 0;
+
 
 protected:
     /**
