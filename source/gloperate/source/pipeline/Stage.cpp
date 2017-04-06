@@ -111,24 +111,26 @@ void Stage::deinitContext(AbstractGLContext * context)
 
 void Stage::process(AbstractGLContext * context)
 {
-    debug(2) << this->qualifiedName() + ": begin processing";
+    debug(1) << this->qualifiedName() + ": processing";
     onProcess(context);
-    debug(2) << this->qualifiedName() + ": end processing";
 }
 
 bool Stage::needsProcessing() const
 {
     if (m_alwaysProcess) {
+        debug(4) << this->qualifiedName() + ": needs processing because it is always processed";
         return true;
     }
 
     for (auto output : m_outputs)
     {
         if (output->isRequired() && !output->isValid()) {
+            debug(4) << this->qualifiedName() + ": needs processing because output is invalid and required (" + output->qualifiedName() + ")";
             return true;
         }
     }
 
+    debug(4) << this->qualifiedName() + ": needs no processing";
     return false;
 }
 
@@ -139,6 +141,7 @@ bool Stage::alwaysProcessed() const
 
 void Stage::setAlwaysProcessed(bool alwaysProcess)
 {
+    debug(2) << this->qualifiedName() + ": set always processed";
     m_alwaysProcess = alwaysProcess;
 }
 
@@ -224,10 +227,10 @@ void Stage::registerInput(AbstractSlot * input)
         m_inputsMap.insert(std::make_pair(input->name(), input));
     }
 
+    debug(2) << input->qualifiedName() + ": add input to stage";
+
     // Emit signal
     inputAdded(input);
-
-    debug(2) << input->qualifiedName() + ": Add input";
 }
 
 void Stage::removeInput(AbstractSlot * input)
@@ -236,7 +239,7 @@ void Stage::removeInput(AbstractSlot * input)
     auto it = std::find(m_inputs.begin(), m_inputs.end(), input);
     if (it != m_inputs.end())
     {
-        debug(2) << input->qualifiedName() + ": Remove input";
+        debug(2) << input->qualifiedName() + ": remove input from stage";
 
         // Remove input
         m_inputs.erase(it);
@@ -314,10 +317,10 @@ void Stage::registerOutput(AbstractSlot * output)
         m_outputsMap.insert(std::make_pair(output->name(), output));
     }
 
+    debug(2) << output->qualifiedName() + ": add output to stage";
+
     // Emit signal
     outputAdded(output);
-
-    debug(2) << output->qualifiedName() + ": Add output";
 }
 
 void Stage::removeOutput(AbstractSlot * output)
@@ -326,7 +329,7 @@ void Stage::removeOutput(AbstractSlot * output)
     auto it = std::find(m_outputs.begin(), m_outputs.end(), output);
     if (it != m_outputs.end())
     {
-        debug(2) << output->qualifiedName() + ": Remove output";
+        debug(2) << output->qualifiedName() + ": remove output from stage";
 
         // Remove output
         m_outputs.erase(it);
@@ -342,6 +345,7 @@ void Stage::removeOutput(AbstractSlot * output)
 
 void Stage::outputRequiredChanged(AbstractSlot * slot)
 {
+    debug(2) << this->qualifiedName() + ": output required changed";
     onOutputRequiredChanged(slot);
 }
 

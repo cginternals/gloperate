@@ -96,6 +96,8 @@ void Pipeline::registerStage(Stage * stage)
         m_stagesMap.insert(std::make_pair(stage->name(), stage));
     }
 
+    debug(1) << stage->qualifiedName() + ": add to pipeline";
+
     // Shouldn't be required if each slot of a stage would disconnect from connections
     // and this would be propagated to the normal stage order invalidation
     invalidateStageOrder();
@@ -120,6 +122,8 @@ bool Pipeline::removeStage(Stage * stage)
     m_stages.erase(it);
     m_stagesMap.erase(stage->name());
 
+    debug(1) << stage->qualifiedName() + ": remove from pipeline";
+
     stageRemoved(stage);
 
     removeProperty(stage);
@@ -134,7 +138,7 @@ bool Pipeline::removeStage(Stage * stage)
 
 void Pipeline::invalidateStageOrder()
 {
-    debug(0) << this->name() + ": Invalidate stage order; resort on next process";
+    debug(1) << this->name() + ": Invalidate stage order; resort on next process";
     m_sorted = false;
 }
 
@@ -195,6 +199,8 @@ bool Pipeline::isPipeline() const
 
 void Pipeline::sortStages()
 {
+    debug() << this->qualifiedName() + ": sort stages";
+
     auto couldBeSorted = true;
     std::vector<Stage *> sorted;
     std::set<Stage *> touched;
@@ -283,6 +289,10 @@ void Pipeline::onProcess(AbstractGLContext * context)
     {
         if (stage->needsProcessing()) {
             stage->process(context);
+        }
+        else
+        {
+            debug(2) << stage->qualifiedName() + ": omit execution";
         }
     }
 }

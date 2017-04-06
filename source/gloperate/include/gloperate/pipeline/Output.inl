@@ -2,6 +2,9 @@
 #pragma once
 
 
+#include <cppassist/logging/logging.h>
+
+
 namespace gloperate
 {
 
@@ -30,8 +33,6 @@ Output<T>::~Output()
 template <typename T>
 void Output<T>::onRequiredChanged()
 {
-    debug(4) << this->qualifiedName() + ": output required changed";
-
     if (this->isConnected())
     {
         // Promote required-flag to source slot
@@ -70,6 +71,7 @@ void Output<T>::onValueChanged(const T & value)
         this->m_cycleGuard[this_id] = false;
 
         // Stop recursion here to avoid endless recursion
+        cppassist::debug(4) << this->qualifiedName() + ": detected cyclic dependency";
         return;
     }
 

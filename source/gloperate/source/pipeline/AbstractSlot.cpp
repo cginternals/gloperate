@@ -69,6 +69,8 @@ void AbstractSlot::setRequired(bool required)
     {
         m_required = required;
 
+        cppassist::debug(3) << this->qualifiedName() + ": required changed";
+
         onRequiredChanged();
     }
 }

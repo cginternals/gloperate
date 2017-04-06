@@ -139,6 +139,7 @@ bool Slot<T>::connect(AbstractSlot * source)
     // Check if source is valid and compatible data container
     if (!source || !isCompatible(source))
     {
+        cppassist::debug(2) << this->qualifiedName() + ": connect slot failed for " + source->qualifiedName();
         return false;
     }
 
@@ -152,6 +153,8 @@ void Slot<T>::disconnect()
     // Reset source property
     m_source     = nullptr;
     m_connection = cppexpose::ScopedConnection();
+
+    cppassist::debug(2) << this->qualifiedName() + ": disconnect slot";
 
     // Emit events
     this->promoteConnection();

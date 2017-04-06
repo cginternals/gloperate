@@ -49,7 +49,7 @@ void Input<T>::onValueChanged(const T & value)
         this->m_cycleGuard[this_id] = false;
 
         // Stop recursion here to avoid endless recursion
-        cppassist::warning() << "detected cyclic dependency for " << this->qualifiedName();
+        cppassist::debug(4) << this->qualifiedName() + ": detected cyclic dependency";
         return;
     }
 
