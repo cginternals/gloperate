@@ -9,6 +9,7 @@
 #include <globjects/Texture.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
+#include <globjects/base/StringTemplate.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/Timer.h>
@@ -77,9 +78,11 @@ protected:
     std::unique_ptr<globjects::VertexArray>     m_vao;
     std::unique_ptr<globjects::Buffer>          m_buffer;
     std::unique_ptr<globjects::Texture>         m_texture;
-    std::unique_ptr<globjects::Program>         m_program;
+    std::unique_ptr<globjects::StringTemplate>  m_vertexShaderSource;
+    std::unique_ptr<globjects::StringTemplate>  m_fragmentShaderSource;
     std::unique_ptr<globjects::Shader>          m_vertexShader;
     std::unique_ptr<globjects::Shader>          m_fragmentShader;
+    std::unique_ptr<globjects::Program>         m_program;
 
     // Tools
     gloperate::Timer m_timer;

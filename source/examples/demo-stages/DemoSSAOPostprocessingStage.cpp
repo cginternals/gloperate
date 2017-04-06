@@ -210,9 +210,8 @@ void DemoSSAOPostprocessingStage::setupGeometry()
 
 void DemoSSAOPostprocessingStage::setupProgram()
 {
-    //TODO this is a memory leak! Use resource loader?
-    globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
-    globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
+    m_vertexShaderSource   = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_vertexShader  ));
+    m_fragmentShaderSource = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_fragmentShader));
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");
@@ -220,8 +219,8 @@ void DemoSSAOPostprocessingStage::setupProgram()
 #endif
     m_ssaoFileNamedString = globjects::NamedString::create("/gloperate/shaders/ssao.glsl", new globjects::File(gloperate::dataPath() + "/gloperate/shaders/ssao.glsl"));
 
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 

@@ -206,17 +206,16 @@ void DemoStage::createAndSetupGeometry()
     binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 
-    //TODO this is a memory leak! Use resource loader?
-    globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
-    globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
+    m_vertexShaderSource   = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_vertexShader  ));
+    m_fragmentShaderSource = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_fragmentShader));
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
 
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
