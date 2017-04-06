@@ -30,6 +30,8 @@ Output<T>::~Output()
 template <typename T>
 void Output<T>::onRequiredChanged()
 {
+    debug(4) << this->qualifiedName() + ": output required changed";
+
     if (this->isConnected())
     {
         // Promote required-flag to source slot
@@ -48,6 +50,8 @@ void Output<T>::onRequiredChanged()
 template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
+    cppassist::debug(3) << this->qualifiedName() + ": output changed value";
+
     std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
 
     // Get current thread ID

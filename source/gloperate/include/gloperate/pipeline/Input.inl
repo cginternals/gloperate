@@ -29,6 +29,8 @@ Input<T>::~Input()
 template <typename T>
 void Input<T>::onValueChanged(const T & value)
 {
+    cppassist::debug(3) << this->qualifiedName() + ": input changed value";
+
     std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
 
     // Get current thread ID

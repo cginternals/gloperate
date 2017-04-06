@@ -547,6 +547,15 @@ public:
     */
     void invalidateInputConnections();
 
+    /**
+    *  @brief
+    *    Get qualified name
+    *
+    *  @return
+    *    Name with all parent names, separated by '.'
+    */
+    std::string qualifiedName() const;
+
 
 protected:
     /**

@@ -99,17 +99,21 @@ bool Stage::requires(const Stage * stage, bool recursive) const
 
 void Stage::initContext(AbstractGLContext * context)
 {
+    debug(2) << this->qualifiedName() + ": initContext";
     onContextInit(context);
 }
 
 void Stage::deinitContext(AbstractGLContext * context)
 {
+    debug(2) << this->qualifiedName() + ": deinitContex";
     onContextDeinit(context);
 }
 
 void Stage::process(AbstractGLContext * context)
 {
+    debug(2) << this->qualifiedName() + ": begin processing";
     onProcess(context);
+    debug(2) << this->qualifiedName() + ": end processing";
 }
 
 bool Stage::needsProcessing() const
@@ -140,6 +144,8 @@ void Stage::setAlwaysProcessed(bool alwaysProcess)
 
 void Stage::invalidateOutputs()
 {
+    debug(3) << this->qualifiedName() + ": invalidateOutputs";
+
     for (auto output : m_outputs)
     {
         output->setValid(false);
@@ -220,6 +226,8 @@ void Stage::registerInput(AbstractSlot * input)
 
     // Emit signal
     inputAdded(input);
+
+    debug(2) << input->qualifiedName() + ": Add input";
 }
 
 void Stage::removeInput(AbstractSlot * input)
@@ -228,6 +236,8 @@ void Stage::removeInput(AbstractSlot * input)
     auto it = std::find(m_inputs.begin(), m_inputs.end(), input);
     if (it != m_inputs.end())
     {
+        debug(2) << input->qualifiedName() + ": Remove input";
+
         // Remove input
         m_inputs.erase(it);
         m_inputsMap.erase(input->name());
@@ -306,6 +316,8 @@ void Stage::registerOutput(AbstractSlot * output)
 
     // Emit signal
     outputAdded(output);
+
+    debug(2) << output->qualifiedName() + ": Add output";
 }
 
 void Stage::removeOutput(AbstractSlot * output)
@@ -314,6 +326,8 @@ void Stage::removeOutput(AbstractSlot * output)
     auto it = std::find(m_outputs.begin(), m_outputs.end(), output);
     if (it != m_outputs.end())
     {
+        debug(2) << output->qualifiedName() + ": Remove output";
+
         // Remove output
         m_outputs.erase(it);
         m_outputsMap.erase(output->name());
@@ -368,6 +382,21 @@ AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string
     if (type == "fbo")     return createSlot<globjects::Framebuffer *>(slotType, name);
 
     return nullptr;
+}
+
+std::string Stage::qualifiedName() const
+{
+    std::string path = name();
+
+    Pipeline * pipeline = this->parentPipeline();
+    while (pipeline)
+    {
+        path = pipeline->name() + "." + path;
+
+        pipeline = pipeline->parentPipeline();
+    }
+
+    return path;
 }
 
 void Stage::onContextInit(AbstractGLContext *)

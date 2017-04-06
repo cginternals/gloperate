@@ -134,7 +134,7 @@ bool Pipeline::removeStage(Stage * stage)
 
 void Pipeline::invalidateStageOrder()
 {
-    debug() << "Invalidate stage order; resort on next process";
+    debug(0) << this->name() + ": Invalidate stage order; resort on next process";
     m_sorted = false;
 }
 
@@ -282,7 +282,6 @@ void Pipeline::onProcess(AbstractGLContext * context)
     for (auto stage : m_stages)
     {
         if (stage->needsProcessing()) {
-            debug(1) << "Process stage " << stage->name();
             stage->process(context);
         }
     }

@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppassist/logging/logging.h>
+
 #include <cppexpose/typed/Typed.h>
 
 #include <gloperate/pipeline/Stage.h>
@@ -68,6 +70,8 @@ Slot<T>::~Slot()
 template <typename T>
 bool Slot<T>::connect(Slot<T> * source)
 {
+    cppassist::debug(2) << this->qualifiedName() + ": connect slot " + source->qualifiedName();
+
     // Check if source is valid
     if (!source) {
         return false;

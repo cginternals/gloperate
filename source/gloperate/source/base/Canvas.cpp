@@ -81,7 +81,7 @@ void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 
 void Canvas::onRender(globjects::Framebuffer * targetFBO)
 {
-    cppassist::debug(1) << "onRender()";
+    cppassist::debug(2) << "onRender()";
 
     // Invoke render stage/pipeline
     if (m_pipelineContainer.renderStage())
@@ -104,7 +104,7 @@ void Canvas::onUpdate()
 
 void Canvas::onContextInit()
 {
-    cppassist::debug(1) << "onContextInit()";
+    cppassist::debug(2) << "onContextInit()";
 
     // Initialize render stage in new context
     if (m_pipelineContainer.renderStage())
@@ -115,7 +115,7 @@ void Canvas::onContextInit()
 
 void Canvas::onContextDeinit()
 {
-    cppassist::debug(1) << "onContextDeinit()";
+    cppassist::debug(2) << "onContextDeinit()";
 
     // De-initialize render stage in old context
     if (m_pipelineContainer.renderStage())
@@ -151,42 +151,42 @@ void Canvas::onBackgroundColor(float red, float green, float blue)
 
 void Canvas::onKeyPress(int key, int modifier)
 {
-    cppassist::debug(1) << "onKeyPressed(" << key << ")";
+    cppassist::debug(2) << "onKeyPressed(" << key << ")";
 
     m_keyboardDevice->keyPress(key, modifier);
 }
 
 void Canvas::onKeyRelease(int key, int modifier)
 {
-    cppassist::debug(1) << "onKeyReleased(" << key << ")";
+    cppassist::debug(2) << "onKeyReleased(" << key << ")";
 
     m_keyboardDevice->keyRelease(key, modifier);
 }
 
 void Canvas::onMouseMove(const glm::ivec2 & pos)
 {
-    cppassist::debug(1) << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2) << "onMouseMoved(" << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->move(pos);
 }
 
 void Canvas::onMousePress(int button, const glm::ivec2 & pos)
 {
-    cppassist::debug(1) << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2) << "onMousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->buttonPress(button, pos);
 }
 
 void Canvas::onMouseRelease(int button, const glm::ivec2 & pos)
 {
-    cppassist::debug(1) << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2) << "onMouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->buttonRelease(button, pos);
 }
 
 void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
-    cppassist::debug(1) << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2) << "onMouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     m_mouseDevice->wheelScroll(delta, pos);
 }
