@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <glm/mat4x4.hpp>
+#include <glm/fwd.hpp>
 
 #include <gloperate/gloperate_api.h>
 
@@ -57,6 +57,16 @@ public:
     *    range: [zNear, zFar]
     */
     static glm::mat4 perspectiveFromOrthographic(float left, float right, float bottom, float top, float zNear, float zFar, float syncDist);
+
+
+private:
+    /**
+    * @brief
+    *   Constructor
+    *
+    * @remarks
+    *   An instance of this class is not required so the construction is prevented.
+    CameraUtils();
 };
 
 
