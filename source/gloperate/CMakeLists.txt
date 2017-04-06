@@ -372,38 +372,6 @@ target_link_libraries(${target}
 
 
 # 
-# Module information file
-# 
-
-
-generate_module_info(${META_PROJECT_NAME}
-    VALUES
-    name        "${META_PROJECT_NAME}"
-    version     "${META_VERSION}"
-    description "${META_PROJECT_DESCRIPTION}"
-    author      "${META_AUTHOR_ORGANIZATION}"
-
-    BUILD_VALUES
-    dataPath    "${PROJECT_SOURCE_DIR}/data"
-    pluginPath  "\${ModulePath}"
-
-    INSTALL_VALUES
-    dataPath    "\${ModulePath}/data"
-    pluginPath  "\${ModulePath}/plugins"
-)
-
-export_module_info_with_deps(${META_PROJECT_NAME}
-    REQUIRES qmltoolbox qmltoolbox::qmltoolbox
-    FOLDER "ModuleInfo"
-)
-
-install_module_info(${META_PROJECT_NAME}
-    DESTINATION ${INSTALL_ROOT}
-    COMPONENT runtime
-)
-
-
-# 
 # Deployment
 # 
 

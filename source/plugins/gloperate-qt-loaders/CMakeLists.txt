@@ -177,37 +177,6 @@ target_link_libraries(${target}
 
 
 # 
-# Module information file
-# 
-
-generate_module_info(${target}
-    VALUES
-    name        "${target}"
-    version     "${META_VERSION}"
-    description "${META_PROJECT_DESCRIPTION}"
-    author      "${META_AUTHOR_ORGANIZATION}"
-
-    BUILD_VALUES
-    dataPath    "${PROJECT_SOURCE_DIR}/data"
-
-    INSTALL_VALUES
-    dataPath    "\${ModulePath}/../data"
-)
-
-export_module_info(${target}
-    TARGET ${target}
-    FOLDER "ModuleInfo"
-    RENAME "$<TARGET_FILE_NAME:${target}>.modinfo"
-)
-
-install_module_info(${target}
-    DESTINATION ${INSTALL_PLUGINS}
-    RENAME "$<TARGET_FILE_NAME:${target}>.modinfo"
-    COMPONENT runtime
-)
-
-
-# 
 # Deployment
 # 
 
