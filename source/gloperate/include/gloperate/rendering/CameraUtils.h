@@ -66,6 +66,7 @@ private:
     *
     * @remarks
     *   An instance of this class is not required so the construction is prevented.
+    */
     CameraUtils();
 };
 
