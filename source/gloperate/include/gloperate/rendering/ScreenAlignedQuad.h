@@ -66,9 +66,11 @@ public:
     */
     virtual void draw() const override;
 
+
 public:
     static std::unique_ptr<globjects::AbstractStringSource> vertexShaderSource();
     static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSource();
+    static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSourceInverted();
 
 
 protected:

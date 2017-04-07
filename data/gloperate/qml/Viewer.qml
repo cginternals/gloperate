@@ -16,34 +16,31 @@ Controls.ApplicationWindow
 {
     id: window
 
-    x: settings.x
-    y: settings.y
-    width: settings.width
-    height: settings.height
+    x:       settings.x
+    y:       settings.y
+    width:   settings.width
+    height:  settings.height
     visible: true
 
+    // Viewer hints
     property color backgroundColor:  'black'
     property bool  renderBackground: true
 
     // Stage
     property string stage: 'DemoPipeline'
 
+    // Shortcuts
     Controls.Shortcut 
     {
-        sequence: "CTRL+F6"
-        onActivated: leftPanelView.togglePanel()
-    }
+        sequence: "ESC"
+        onActivated:
+        {
+            var visible = !toolBar.visible;
 
-    Controls.Shortcut 
-    {
-        sequence: "CTRL+F7"
-        onActivated: bottomPanelView.togglePanel()
-    }
-
-    Controls.Shortcut
-    { 
-        sequence: "CTRL+F11"
-        onActivated: togglePreviewMode();
+            leftPanelView.setPanelVisibility(visible);
+            bottomPanelView.setPanelVisibility(visible);
+            toolBar.visible = visible;
+        }
     }
 
     Controls.Shortcut
@@ -58,46 +55,14 @@ Controls.ApplicationWindow
         onActivated: toggleFullScreenMode();
     }
 
-    function togglePreviewMode() 
+    GlOperatePipeline
     {
-        stateWrapper.state = (stateWrapper.state == "normal") ? "preview" : "normal";
-    }
+        id: gloperatePipeline
 
-    Item 
-    {
-        id: stateWrapper
-
-        state: "normal"
-
-        states: 
-        [
-            State 
-            {
-                name: "preview"
-
-                StateChangeScript { script: leftPanelView.setPanelVisibility(false) }
-                StateChangeScript { script: bottomPanelView.setPanelVisibility(false) }
-
-                PropertyChanges 
-                {
-                    target: window
-                    header: null
-                }
-
-                PropertyChanges 
-                {
-                    target: drawer
-                    visible: false
-                }
-            },
-            State 
-            {
-                name: "normal"
-
-                StateChangeScript { script: leftPanelView.setPanelVisibility(true) }
-                StateChangeScript { script: bottomPanelView.setPanelVisibility(true) }
-            }
-        ]
+        onRootChanged:
+        {
+            propertyEditor.update();
+        }
     }
 
     function toggleFullScreenMode()
@@ -239,7 +204,7 @@ Controls.ApplicationWindow
 
                 onCanvasInitialized:
                 {
-                    //gloperatePipeline.root = gloperate.canvas0.pipeline;
+                    gloperatePipeline.root = gloperate.canvas0.pipeline;
                 }
             }
 
@@ -259,8 +224,8 @@ Controls.ApplicationWindow
                 {
                     id: propertyEditor
 
-                    pipelineInterface: Qt.createComponent("PipelineDummy.qml").createObject(propertyEditor);
-                    path: 'root'
+                    pipelineInterface: gloperatePipeline
+                    path: 'pipeline.DemoPipeline'
 
                     Component.onCompleted: propertyEditor.update()
                 }

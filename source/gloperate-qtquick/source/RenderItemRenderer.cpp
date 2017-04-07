@@ -24,19 +24,6 @@ namespace gloperate_qtquick
 {
 
 
-RenderItemRenderer::RenderItemRenderer(RenderItem * renderItem)
-: m_renderItem(renderItem)
-, m_fbo(nullptr)
-, m_contextInitialized(false)
-, m_canvasInitialized(false)
-{
-}
-
-RenderItemRenderer::~RenderItemRenderer()
-{
-    destroyFboWrapper();
-}
-
 void RenderItemRenderer::synchronize(QQuickFramebufferObject * framebufferObject)
 {
     // Get render item
@@ -89,7 +76,7 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
     auto * fbo = new QOpenGLFramebufferObject(size, format);
 
     // Create globjects FBO wrapper
-    createFboWrapper(fbo->handle());
+    createFbo(fbo->handle(), size.width(), size.height());
 
     // Set viewport size
     if (m_canvas)
@@ -122,7 +109,10 @@ void RenderItemRenderer::render()
     }
 
     // Render canvas
-    m_canvas->render(m_fbo);
+    m_canvas->render(m_innerFbo.get());
+
+    // Render screen aligned quad
+    renderTexture();
 
     // Reset OpenGL state for QML
     m_renderItem->window()->resetOpenGLState();
