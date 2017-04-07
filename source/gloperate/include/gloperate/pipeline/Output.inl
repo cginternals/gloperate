@@ -51,7 +51,7 @@ void Output<T>::onRequiredChanged()
 template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
-    cppassist::debug(3) << this->qualifiedName() + ": output changed value";
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": output changed value";
 
     std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
 
@@ -71,7 +71,7 @@ void Output<T>::onValueChanged(const T & value)
         this->m_cycleGuard[this_id] = false;
 
         // Stop recursion here to avoid endless recursion
-        cppassist::debug(4) << this->qualifiedName() + ": detected cyclic dependency";
+        cppassist::debug(4, "gloperate") << this->qualifiedName() << ": detected cyclic dependency";
         return;
     }
 

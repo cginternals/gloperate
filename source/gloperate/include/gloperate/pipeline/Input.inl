@@ -29,7 +29,7 @@ Input<T>::~Input()
 template <typename T>
 void Input<T>::onValueChanged(const T & value)
 {
-    cppassist::debug(3) << this->qualifiedName() + ": input changed value";
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": input changed value";
 
     std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
 
@@ -49,7 +49,7 @@ void Input<T>::onValueChanged(const T & value)
         this->m_cycleGuard[this_id] = false;
 
         // Stop recursion here to avoid endless recursion
-        cppassist::debug(4) << this->qualifiedName() + ": detected cyclic dependency";
+        cppassist::debug(4, "gloperate") << this->qualifiedName() << ": detected cyclic dependency";
         return;
     }
 
