@@ -11,7 +11,6 @@
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/UpdateManager.h>
 
-#include <gloperate-qtquick/QuickView.h>
 #include <gloperate-qtquick/QmlEngine.h>
 #include <gloperate-qtquick/QmlScriptContext.h>
 
@@ -57,15 +56,6 @@ int main(int argc, char * argv[])
 
     // Load and show QML
     qmlEngine.load(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
-
-    /*
-    // Load and show QML
-    auto window = cppassist::make_unique<QuickView>(&qmlEngine);
-    window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
-    window->setGeometry(100, 100, 1280, 720);
-    window->show();
-    */
 
     // Run main loop
     return app.exec();
