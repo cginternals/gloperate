@@ -188,7 +188,7 @@ void Slot<T>::setValid(bool isValid)
     }
 
     // Set state of own data
-    auto wasValid = m_valid;
+    const auto wasValid = m_valid;
     m_valid = isValid;
 
     // Emit signal if it was invalidated
