@@ -37,12 +37,13 @@ protected:
         using Pointer = U *;
         static Pointer pointer(U * value);
     };
+
     template <typename U>
     struct DereferenceHelper<U *>
     {
         using Pointer = U *;
         static Pointer pointer(U ** value);
-        static const Pointer pointer(U * const * value);
+        static Pointer pointer(U * const * value);
     };
     //@}
 
@@ -169,10 +170,9 @@ protected:
 
 
 protected:
-    bool                        m_valid;      ///< Does the slot have a valid value?
-    Slot<T>                   * m_source;     ///< Connected slot (can be null)
-    cppexpose::ScopedConnection m_connection; ///< Connection to changed-signal of source property
-
+    bool                            m_valid;      ///< Does the slot have a valid value?
+    Slot<T>                       * m_source;     ///< Connected slot (can be null)
+    cppexpose::ScopedConnection     m_connection; ///< Connection to changed-signal of source property
     std::map<std::thread::id, bool> m_cycleGuard; ///< Protection against cyclic propagation of change-events (one per thread to be thread-safe)
     std::recursive_mutex            m_cycleMutex; ///< Mutex for accessing the cycle guard map
 };

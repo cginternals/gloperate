@@ -175,17 +175,20 @@ void SplitStage::buildProgram()
 {
     // Create program and load shaders
     m_program = cppassist::make_unique<globjects::Program>();
-    if (vertexShader.value() != "") {
-        m_vertexShader.reset(environment()->resourceManager()->load<globjects::Shader>(vertexShader.value()));
+    if (auto shader = environment()->resourceManager()->load<globjects::Shader>(vertexShader.value()))
+    {
+        m_vertexShader = std::unique_ptr<globjects::Shader>(shader);
         m_program->attach(m_vertexShader.get());
     }
-    if (geometryShader.value() != "") {
-        m_geometryShader.reset(environment()->resourceManager()->load<globjects::Shader>(geometryShader.value()));
-        m_program->attach(m_vertexShader.get());
+    if (auto shader = environment()->resourceManager()->load<globjects::Shader>(geometryShader.value()))
+    {
+        m_geometryShader = std::unique_ptr<globjects::Shader>(shader);
+        m_program->attach(m_geometryShader.get());
     }
-    if (fragmentShader.value() != "") {
-        m_fragmentShader.reset(environment()->resourceManager()->load<globjects::Shader>(fragmentShader.value()));
-        m_program->attach(m_vertexShader.get());
+    if (auto shader = environment()->resourceManager()->load<globjects::Shader>(fragmentShader.value()))
+    {
+        m_fragmentShader = std::unique_ptr<globjects::Shader>(shader);
+        m_program->attach(m_fragmentShader.get());
     }
 
     // Set uniforms
