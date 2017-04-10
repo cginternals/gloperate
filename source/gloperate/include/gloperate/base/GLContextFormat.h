@@ -399,6 +399,27 @@ public:
     */
     bool verify(const GLContextFormat & requested) const;
 
+    /**
+     * @brief
+     *   Create a string representing the Format using the scheme
+     *   "OpenGL<majorVersion>.<minorVersion><profile>[:<flagname>=<flagvalue>]*".
+     *   e.g. OpenGL4.5Core:SwapBehavior=SingleBuffering
+     *
+     * @return
+     *   The format as string.
+     */
+    std::string toString() const;
+
+    /**
+     * @brief
+     *   Update format attributes from string representation
+     *
+     * @param[in] formatString
+     *   "OpenGL<majorVersion>.<minorVersion><profile>[:<flagname>=<flagvalue>]*"
+     *   e.g. OpenGL4.5Core:SwapBehavior=SingleBuffering
+     */
+    void initializeFromString(std::string formatString);
+
 
 protected:
     /**

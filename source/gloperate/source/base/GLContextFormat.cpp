@@ -4,6 +4,7 @@
 #include <cassert>
 #include <sstream>
 #include <map>
+#include <regex>
 
 #include <cppassist/logging/logging.h>
 
@@ -248,6 +249,73 @@ bool GLContextFormat::verify(const GLContextFormat & requested) const
 {
    return verifyVersionAndProfile(requested)
              && verifyPixelFormat(requested);
+}
+
+std::string GLContextFormat::toString() const
+{
+    std::string result = "OpenGL";
+    result.append(m_version.toString());
+    result.append(GLContextFormat::profileString(m_profile));
+    result.append(":" + "SwapBehavior=" + GLContextFormat::swapBehaviorString(m_swapBehavior));
+
+    return result;
+}
+
+void GLContextFormat::initializeFromString(std::string formatString)
+{
+    /* captures
+     * 1 major version
+     * 2 minor version
+     * 3 profile
+     * 4 first key-value parameter
+     * 5 first key
+     * 6 first value
+     * 7 rest of the string
+     */
+    const std::regex reg{ R"( OpenGL(\d)\.(\d+)(\w+)(:(\w+)=(\w+))(.*) )" };
+    std::match_results match;
+    std::regex_match(formatString, match, reg);
+
+    if(match.empty())
+    {
+        return;
+    }
+
+    setVersion(std::stoi(match[1]), std::stoi(match[2]));
+
+    static const std::map<std::string, Profile> profileMap =
+    {
+        { "Core",          Profile::Core }
+      , { "Compatibility", Profile::Compatibility }
+      , { "None",          Profile::None }
+    };
+
+    if(profileMap.find(match[3]) != profileMap.end())
+    {
+        setProfile(profileMap[match[3]]);
+    }
+
+    std::string key = match[5];
+    std::string value = match[6];
+    std::string rest = match[7];
+
+    /* captures
+     * 1 key
+     * 2 value
+     * 3 rest
+     */
+    const std::regex paramExtract{ R"( :(\w+)=(\w+)(.*) )"};
+
+    while(key != "" && value != "")
+    {
+        // TODO process requested parameters
+
+
+        std::regex_match(rest, match, paramExtract);
+        key = match[1];
+        value = match[2];
+        rest = match[3];
+    }
 }
 
 bool GLContextFormat::verifyVersionAndProfile(const GLContextFormat & requested) const
