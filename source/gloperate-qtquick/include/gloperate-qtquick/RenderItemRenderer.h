@@ -66,8 +66,9 @@ public:
 
 
 protected:
-    void createFbo(int fboId, unsigned int width, unsigned int height);
+    void configureFbo(int fboId, unsigned int width, unsigned int height);
     void renderTexture();
+    void initializeFboAttachments();
 
 
 protected:

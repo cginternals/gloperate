@@ -64,6 +64,14 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
             window,
             window->openglContext(),
             false);
+        // Make sure that context is still active
+        window->openglContext()->makeCurrent(window);
+
+        initializeFboAttachments();
+    }
+    else
+    {
+        Utils::setGlobjectsContext();
 
         // Make sure that context is still active
         window->openglContext()->makeCurrent(window);
@@ -76,7 +84,7 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
     auto * fbo = new QOpenGLFramebufferObject(size, format);
 
     // Create globjects FBO wrapper
-    createFbo(fbo->handle(), size.width(), size.height());
+    configureFbo(fbo->handle(), size.width(), size.height());
 
     // Set viewport size
     if (m_canvas)
@@ -88,7 +96,9 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
         );
     }
 
-    // Return FBO
+    // Done current to ensure correct active context management
+    window->openglContext()->doneCurrent();
+
     return fbo;
 }
 

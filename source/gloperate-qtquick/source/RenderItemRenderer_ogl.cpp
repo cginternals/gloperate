@@ -34,7 +34,7 @@ RenderItemRenderer::~RenderItemRenderer()
 {
 }
 
-void RenderItemRenderer::createFbo(int fboId, unsigned int width, unsigned int height)
+void RenderItemRenderer::configureFbo(int fboId, unsigned int width, unsigned int height)
 {
     // Create wrapper for the outer FBO
     m_fbo = globjects::Framebuffer::fromId(fboId);
@@ -49,12 +49,10 @@ void RenderItemRenderer::createFbo(int fboId, unsigned int width, unsigned int h
     gl::GLenum internalFormat = gl::GL_RGBA;
     gl::GLenum dataType       = gl::GL_UNSIGNED_BYTE;
 
-    // Create color texture
-    m_texColor = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+    // Resize color texture
     m_texColor->image2D(0, internalFormat, size.x, size.y, 0, format, dataType, nullptr);
 
-    // Create depth texture
-    m_texDepth = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+    // Resize depth texture
     m_texDepth->image2D(0, gl::GL_DEPTH_COMPONENT, size.x, size.y, 0, gl::GL_DEPTH_COMPONENT, gl::GL_UNSIGNED_BYTE, nullptr);
 
     // Create FBO
@@ -62,6 +60,15 @@ void RenderItemRenderer::createFbo(int fboId, unsigned int width, unsigned int h
     m_innerFbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
     m_innerFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_texColor.get());
     m_innerFbo->attachTexture(gl::GL_DEPTH_ATTACHMENT,  m_texDepth.get());
+}
+
+void RenderItemRenderer::initializeFboAttachments()
+{
+    // Create color texture
+    m_texColor = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+
+    // Create depth texture
+    m_texDepth = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
     // Create screen-aligned quad
     m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
