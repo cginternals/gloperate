@@ -16,7 +16,6 @@ Application::Application(gloperate::Environment * environment, int & argc, char 
     QApplication::setApplicationVersion(GLOPERATE_VERSION);
     QApplication::setOrganizationName(GLOPERATE_AUTHOR_ORGANIZATION);
     QApplication::setOrganizationDomain(GLOPERATE_AUTHOR_DOMAIN);
-
 }
 
 Application::~Application()

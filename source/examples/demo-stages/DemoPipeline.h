@@ -84,7 +84,8 @@ public:
 
 protected:
     void onRotateChanged(const bool & rotate);
-    void onContextInit(gloperate::AbstractGLContext * context);
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
 
 
 protected:

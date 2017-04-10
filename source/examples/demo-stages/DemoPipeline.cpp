@@ -125,6 +125,13 @@ std::cout << "DemoPipeline::onContextInit()" << std::endl;
     m_colorizeRenderPassStage->drawable = m_screenAlignedQuad.get();
 }
 
+void DemoPipeline::onContextDeinit(gloperate::AbstractGLContext *context)
+{
+    Pipeline::onContextDeinit(context);
+
+    m_screenAlignedQuad = nullptr;
+}
+
 void DemoPipeline::onRotateChanged(const bool & rotate)
 {
     if (rotate) {

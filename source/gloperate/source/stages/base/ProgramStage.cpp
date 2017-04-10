@@ -42,6 +42,12 @@ void ProgramStage::onContextInit(AbstractGLContext *)
     program.setValid(false);
 }
 
+void ProgramStage::onContextDeinit(AbstractGLContext *)
+{
+    m_shaders.clear();
+    m_program = nullptr;
+}
+
 void ProgramStage::onProcess(AbstractGLContext *)
 {
     for (auto shader : m_program->shaders()) {

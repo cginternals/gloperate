@@ -16,6 +16,9 @@
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 #include <gloperate-qt/base/GLContext.h>
 
+#include <gloperate-qtquick/RenderItem.h>
+#include <gloperate/base/Canvas.h>
+
 
 namespace gloperate_qtquick
 {
@@ -32,6 +35,9 @@ RenderItemRenderer::RenderItemRenderer(RenderItem * renderItem)
 
 RenderItemRenderer::~RenderItemRenderer()
 {
+    // free pipeline as the pipeline got initialized using OpenGL context of this
+    // [TODO]: Reevaluate the destruction / deinitialization chain
+    m_renderItem->canvas()->onContextDeinit();
 }
 
 void RenderItemRenderer::configureFbo(int fboId, unsigned int width, unsigned int height)
