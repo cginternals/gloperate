@@ -1,7 +1,4 @@
 
-# Resource loaders
-#add_subdirectory(gloperate-assimp-loaders)
-
 # Exporters
 add_subdirectory(gloperate-ffmpeg-exporter)
 
