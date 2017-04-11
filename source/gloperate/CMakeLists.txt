@@ -151,6 +151,8 @@ set(headers
 
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
+
+    ${include_path}/loaders/ShaderLoader.h
 )
 
 set(sources
@@ -241,6 +243,8 @@ set(sources
 
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
+
+    ${source_path}/loaders/ShaderLoader.cpp
 )
 
 # Group source files

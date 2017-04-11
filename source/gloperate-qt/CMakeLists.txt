@@ -71,6 +71,9 @@ set(headers
     ${include_path}/scripting/ScriptCompleter.h
     ${include_path}/scripting/ScriptPromptWidget.h
     ${include_path}/scripting/ScriptSyntaxHighlighter.h
+
+    ${include_path}/loaders/QtTextureLoader.h
+    ${include_path}/loaders/QtTextureStorer.h
 )
 
 set(sources
@@ -89,6 +92,9 @@ set(sources
     ${source_path}/scripting/ScriptCompleter.cpp
     ${source_path}/scripting/ScriptPromptWidget.cpp
     ${source_path}/scripting/ScriptSyntaxHighlighter.cpp
+
+    ${source_path}/loaders/QtTextureLoader.cpp
+    ${source_path}/loaders/QtTextureStorer.cpp
 )
 
 # Group source files
