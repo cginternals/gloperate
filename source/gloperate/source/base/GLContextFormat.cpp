@@ -289,32 +289,41 @@ void GLContextFormat::initializeFromString(const std::string &formatString)
      * 3 profile
      * 4 rest of the string
      */
-    static const std::regex reg{ R"(OpenGL(\d)\.(\d+)(\w+)(.*))" };
+    static const std::regex reg{ R"(OpenGL(\d+)\.(\d+)(Core|Compatibility)?(.*))" };
     std::smatch match;
     std::regex_match(formatString, match, reg);
 
     if(match.empty())
     {
-        return;
+        cppassist::error("gloperate") << "requested contex string is ill-formed. Exiting";
+        exit(1);
     }
 
-    setVersion(std::stoi(match[1]), std::stoi(match[2]));
+    // set version
+    const auto version_major = std::stoi(match[1]);
+    const auto version_minor = std::stoi(match[2]);
+    setVersion(version_major, version_minor);
 
-    static const std::map<std::string, Profile> profileMap =
+    // set profile
+    auto profileString = static_cast<std::string>(match[3]);
+    if(profileString == 'Core')
     {
-        { "Core",          Profile::Core }
-      , { "Compatibility", Profile::Compatibility }
-      , { "None",          Profile::None }
-    };
-
-    const auto it = profileMap.find(match[3]);
-    if(it != profileMap.end())
+        setProfile(Profile::Core);
+    }
+    if(profileString == "Compatibility")
     {
-        setProfile(it->second);
+        setProfile(Profile::Compatibility);
+    }
+    if(profileString == "")
+    {
+        auto defaultProfile = Profile::Compatibility;
+        if(version_major<3 || (version_major == 3 && version_minor < 2))
+            defaultProfile = Profile::None;
+        setProfile(defaultProfile);
     }
 
+    // process params
     auto remainingParams = static_cast<std::string>(match[4]);
-
     /* captures
      * 1 key
      * 2 value with preceeding '='; optional
