@@ -222,19 +222,19 @@ public:
 
     /**
     *  @brief
-    *    Get noerror context mode
+    *    Get KHR_no_error context mode
     *
     *  @return
-    *    noerror context mode (default: false)
+    *    KHR_no_error context mode (default: false)
     */
     bool noErrorContext() const;
 
     /**
     *  @brief
-    *    Set noerror context mode
+    *    Set KHR_no_error context mode
     *
     *  @param[in] on
-    *    noerror context mode
+    *    KHR_no_error context mode
     */
     void setNoErrorContext(bool on);
 
@@ -503,7 +503,7 @@ protected:
 
     bool m_forwardCompatibility;        ///< Forward compatibility mode
     bool m_debugContext;                ///< Debug context mode
-    bool m_noerror;                     ///< NoError context mode
+    bool m_noerror;                     ///< KHR_no_error context mode
 
     unsigned int m_redBufferSize;       ///< Buffer size for red color channel
     unsigned int m_greenBufferSize;     ///< Buffer size for green color channel
