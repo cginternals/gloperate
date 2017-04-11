@@ -44,9 +44,14 @@ int main(int argc, char * argv[])
     // Create render stage
     auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
 
+    // Specify desired context format
+    gloperate::GLContextFormat format;
+    format.initializeFromString("OpenGL3.0None:ForwardCompatiblity=true:Debug:NoError=false");
+
     // Create render window
     auto window = cppassist::make_unique<RenderWindow>(&environment);
     auto windowRaw = window.get();
+    window->setContextFormat(format);
     window->createContext();
     window->setRenderStage(std::move(renderStage));
 

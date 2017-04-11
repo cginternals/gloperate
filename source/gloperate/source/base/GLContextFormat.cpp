@@ -4,6 +4,7 @@
 #include <cassert>
 #include <sstream>
 #include <map>
+// TODO use cppassist regex
 #include <regex>
 
 #include <cppassist/logging/logging.h>
@@ -78,6 +79,7 @@ GLContextFormat::GLContextFormat()
 , m_profile(Profile::None)
 , m_forwardCompatibility(false)
 , m_debugContext(false)
+, m_noerror(false)
 , m_redBufferSize(-1)
 , m_greenBufferSize(-1)
 , m_blueBufferSize(-1)
@@ -153,6 +155,16 @@ bool GLContextFormat::debugContext() const
 void GLContextFormat::setDebugContext(const bool on)
 {
     m_debugContext = on;
+}
+
+bool GLContextFormat::noErrorContext() const
+{
+    return m_noerror;
+}
+
+void GLContextFormat::setNoErrorContext(const bool on)
+{
+    m_noerror = on;
 }
 
 int GLContextFormat::redBufferSize() const
@@ -256,24 +268,29 @@ std::string GLContextFormat::toString() const
     std::string result = "OpenGL";
     result.append(m_version.toString());
     result.append(GLContextFormat::profileString(m_profile));
-    result.append(":" + "SwapBehavior=" + GLContextFormat::swapBehaviorString(m_swapBehavior));
+
+    result.append(":ForwardCompatiblity=");
+    result.append(m_forwardCompatibility ? "true" : "false");
+
+    result.append(":Debug=");
+    result.append(m_debugContext ? "true" : "false");
+
+    result.append(":NoError=");
+    result.append(m_noerror ? "true" : "false");
 
     return result;
 }
 
-void GLContextFormat::initializeFromString(std::string formatString)
+void GLContextFormat::initializeFromString(const std::string &formatString)
 {
     /* captures
      * 1 major version
      * 2 minor version
      * 3 profile
-     * 4 first key-value parameter
-     * 5 first key
-     * 6 first value
-     * 7 rest of the string
+     * 4 rest of the string
      */
-    const std::regex reg{ R"( OpenGL(\d)\.(\d+)(\w+)(:(\w+)=(\w+))(.*) )" };
-    std::match_results match;
+    static const std::regex reg{ R"(OpenGL(\d)\.(\d+)(\w+)(.*))" };
+    std::smatch match;
     std::regex_match(formatString, match, reg);
 
     if(match.empty())
@@ -290,31 +307,37 @@ void GLContextFormat::initializeFromString(std::string formatString)
       , { "None",          Profile::None }
     };
 
-    if(profileMap.find(match[3]) != profileMap.end())
+    const auto it = profileMap.find(match[3]);
+    if(it != profileMap.end())
     {
-        setProfile(profileMap[match[3]]);
+        setProfile(it->second);
     }
 
-    std::string key = match[5];
-    std::string value = match[6];
-    std::string rest = match[7];
+    auto remainingParams = static_cast<std::string>(match[4]);
 
     /* captures
      * 1 key
-     * 2 value
-     * 3 rest
+     * 2 value with preceeding '='; optional
+     * 3 value; optional
+     * 4 rest
      */
-    const std::regex paramExtract{ R"( :(\w+)=(\w+)(.*) )"};
+    static const std::regex paramExtract{R"(:(\w+)(=(\w+))?(.*))"};
 
-    while(key != "" && value != "")
+    while(std::regex_match(remainingParams,match,paramExtract))
     {
-        // TODO process requested parameters
+        const auto key = static_cast<std::string>(match[1]);
+        const auto value = match[2].matched ? static_cast<std::string>(match[3]) : "true";
 
+        if(key=="ForwardCompatiblity")
+            setForwardCompatible(value == "true");
 
-        std::regex_match(rest, match, paramExtract);
-        key = match[1];
-        value = match[2];
-        rest = match[3];
+        if(key=="Debug")
+            setDebugContext(value == "true");
+
+        if(key=="NoError")
+            setNoErrorContext(value == "true");
+
+        remainingParams = static_cast<std::string>(match[4]);
     }
 }
 
