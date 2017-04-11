@@ -141,7 +141,7 @@ bool Stage::alwaysProcessed() const
 
 void Stage::setAlwaysProcessed(bool alwaysProcess)
 {
-    debug(2, "gloperate") << this->qualifiedName() + ": set always processed to " << alwaysProcess;
+    debug(2, "gloperate") << this->qualifiedName() << ": set always processed to " << alwaysProcess;
     m_alwaysProcess = alwaysProcess;
 }
 
