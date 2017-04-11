@@ -99,32 +99,38 @@ bool Stage::requires(const Stage * stage, bool recursive) const
 
 void Stage::initContext(AbstractGLContext * context)
 {
+    debug(2, "gloperate") << this->qualifiedName() << ": initContext";
     onContextInit(context);
 }
 
 void Stage::deinitContext(AbstractGLContext * context)
 {
+    debug(2, "gloperate") << this->qualifiedName() << ": deinitContex";
     onContextDeinit(context);
 }
 
 void Stage::process(AbstractGLContext * context)
 {
+    debug(1, "gloperate") << this->qualifiedName() << ": processing";
     onProcess(context);
 }
 
 bool Stage::needsProcessing() const
 {
     if (m_alwaysProcess) {
+        debug(4, "gloperate") << this->qualifiedName() << ": needs processing because it is always processed";
         return true;
     }
 
     for (auto output : m_outputs)
     {
         if (output->isRequired() && !output->isValid()) {
+            debug(4, "gloperate") << this->qualifiedName() << ": needs processing because output is invalid and required (" << output->qualifiedName()<< ")";
             return true;
         }
     }
 
+    debug(4, "gloperate") << this->qualifiedName() << ": needs no processing";
     return false;
 }
 
@@ -135,11 +141,14 @@ bool Stage::alwaysProcessed() const
 
 void Stage::setAlwaysProcessed(bool alwaysProcess)
 {
+    debug(2, "gloperate") << this->qualifiedName() << ": set always processed to " << alwaysProcess;
     m_alwaysProcess = alwaysProcess;
 }
 
 void Stage::invalidateOutputs()
 {
+    debug(3, "gloperate") << this->qualifiedName() << ": invalidateOutputs";
+
     for (auto output : m_outputs)
     {
         output->setValid(false);
@@ -218,6 +227,8 @@ void Stage::registerInput(AbstractSlot * input)
         m_inputsMap.insert(std::make_pair(input->name(), input));
     }
 
+    debug(2, "gloperate") << input->qualifiedName() << ": add input to stage";
+
     // Emit signal
     inputAdded(input);
 }
@@ -228,6 +239,8 @@ void Stage::removeInput(AbstractSlot * input)
     auto it = std::find(m_inputs.begin(), m_inputs.end(), input);
     if (it != m_inputs.end())
     {
+        debug(2, "gloperate") << input->qualifiedName() << ": remove input from stage";
+
         // Remove input
         m_inputs.erase(it);
         m_inputsMap.erase(input->name());
@@ -304,6 +317,8 @@ void Stage::registerOutput(AbstractSlot * output)
         m_outputsMap.insert(std::make_pair(output->name(), output));
     }
 
+    debug(2, "gloperate") << output->qualifiedName() << ": add output to stage";
+
     // Emit signal
     outputAdded(output);
 }
@@ -314,6 +329,8 @@ void Stage::removeOutput(AbstractSlot * output)
     auto it = std::find(m_outputs.begin(), m_outputs.end(), output);
     if (it != m_outputs.end())
     {
+        debug(2, "gloperate") << output->qualifiedName() << ": remove output from stage";
+
         // Remove output
         m_outputs.erase(it);
         m_outputsMap.erase(output->name());
@@ -328,6 +345,7 @@ void Stage::removeOutput(AbstractSlot * output)
 
 void Stage::outputRequiredChanged(AbstractSlot * slot)
 {
+    debug(2, "gloperate") << this->qualifiedName() << ": output required changed for " << slot->qualifiedName();
     onOutputRequiredChanged(slot);
 }
 
@@ -368,6 +386,21 @@ AbstractSlot * Stage::createSlot(const std::string & slotType, const std::string
     if (type == "fbo")     return createSlot<globjects::Framebuffer *>(slotType, name);
 
     return nullptr;
+}
+
+std::string Stage::qualifiedName() const
+{
+    std::string path = name();
+
+    Pipeline * pipeline = this->parentPipeline();
+    while (pipeline)
+    {
+        path = pipeline->name() + "." + path;
+
+        pipeline = pipeline->parentPipeline();
+    }
+
+    return path;
 }
 
 void Stage::onContextInit(AbstractGLContext *)

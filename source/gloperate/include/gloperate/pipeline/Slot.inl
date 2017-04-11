@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppassist/logging/logging.h>
+
 #include <cppexpose/typed/Typed.h>
 
 #include <gloperate/pipeline/Stage.h>
@@ -68,6 +70,8 @@ Slot<T>::~Slot()
 template <typename T>
 bool Slot<T>::connect(Slot<T> * source)
 {
+    cppassist::debug(2, "gloperate") << this->qualifiedName() << ": connect slot " << source->qualifiedName();
+
     // Check if source is valid
     if (!source) {
         return false;
@@ -135,6 +139,7 @@ bool Slot<T>::connect(AbstractSlot * source)
     // Check if source is valid and compatible data container
     if (!source || !isCompatible(source))
     {
+        cppassist::debug(2, "gloperate") << this->qualifiedName() << ": connect slot failed for " << source->qualifiedName();
         return false;
     }
 
@@ -148,6 +153,8 @@ void Slot<T>::disconnect()
     // Reset source property
     m_source     = nullptr;
     m_connection = cppexpose::ScopedConnection();
+
+    cppassist::debug(2, "gloperate") << this->qualifiedName() << ": disconnect slot";
 
     // Emit events
     this->promoteConnection();
