@@ -7,6 +7,7 @@
 // TODO use cppassist regex
 #include <regex>
 
+#include <cppassist/string/conversion.h>
 #include <cppassist/logging/logging.h>
 
 
@@ -281,7 +282,7 @@ std::string GLContextFormat::toString() const
     return result;
 }
 
-void GLContextFormat::initializeFromString(const std::string &formatString)
+bool GLContextFormat::initializeFromString(const std::string &formatString)
 {
     /* captures
      * 1 major version
@@ -296,12 +297,12 @@ void GLContextFormat::initializeFromString(const std::string &formatString)
     if(match.empty())
     {
         cppassist::error("gloperate") << "requested contex string is ill-formed. Exiting";
-        exit(1);
+        return false;
     }
 
     // set version
-    const auto version_major = std::stoi(match[1]);
-    const auto version_minor = std::stoi(match[2]);
+    const auto version_major = cppassist::string::fromString<int>(match[1]);
+    const auto version_minor = cppassist::string::fromString<int>(match[2]);
     setVersion(version_major, version_minor);
 
     // set profile
@@ -348,6 +349,7 @@ void GLContextFormat::initializeFromString(const std::string &formatString)
 
         remainingParams = static_cast<std::string>(match[4]);
     }
+    return true;
 }
 
 bool GLContextFormat::verifyVersionAndProfile(const GLContextFormat & requested) const

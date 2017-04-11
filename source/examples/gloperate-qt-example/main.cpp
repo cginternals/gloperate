@@ -54,7 +54,8 @@ int main(int argc, char * argv[])
     if(!contextString.empty())
     {
         gloperate::GLContextFormat format;
-        format.initializeFromString(contextString);
+        if(!format.initializeFromString(contextString));
+            return 1;
         window->setContextFormat(format);
     }
     auto windowRaw = window.get();

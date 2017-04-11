@@ -439,7 +439,7 @@ public:
      *    Bool parameter without the '=<flagvalue>' are considered as 'true'
      *    i.e. OpenGL3.2Core:Debug <=> OpenGL3.2Core:Debug=true
      */
-    void initializeFromString(const std::string & formatString);
+    bool initializeFromString(const std::string & formatString);
 
 
 protected:
