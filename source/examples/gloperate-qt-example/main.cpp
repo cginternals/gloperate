@@ -4,6 +4,7 @@
 #include <QDockWidget>
 
 #include <cppassist/logging/logging.h>
+#include <cppassist/cmdline/ArgumentParser.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
@@ -46,7 +47,12 @@ int main(int argc, char * argv[])
 
     // Specify desired context format
     gloperate::GLContextFormat format;
-    format.initializeFromString("OpenGL3.0None:ForwardCompatiblity=true:Debug:NoError=false");
+    cppassist::ArgumentParser argumentParser;
+    argumentParser.parse(argc, argv);
+    if(!argumentParser.params().empty())
+    {
+        format.initializeFromString(argumentParser.params().front());
+    }
 
     // Create render window
     auto window = cppassist::make_unique<RenderWindow>(&environment);
