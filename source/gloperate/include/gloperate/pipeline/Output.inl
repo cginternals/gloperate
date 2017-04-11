@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <cppassist/logging/logging.h>
-
-
 namespace gloperate
 {
 
@@ -49,40 +46,22 @@ void Output<T>::onRequiredChanged()
 }
 
 template <typename T>
+void Output<T>::onValueInvalidated()
+{
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": output invalidated";
+
+    // Emit signal
+    this->valueInvalidated();
+}
+
+
+template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
     cppassist::debug(3, "gloperate") << this->qualifiedName() << ": output changed value";
-
-    std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
-
-    // Get current thread ID
-    std::thread::id this_id = std::this_thread::get_id();
-
-    // Initialize guard for the current thread
-    if (this->m_cycleGuard.find(this_id) == this->m_cycleGuard.end())
-    {
-        this->m_cycleGuard[this_id] = false;
-    }
-
-    // Check if this slot has already been invoked in the current recursion
-    if (this->m_cycleGuard[this_id])
-    {
-        // Reset guard
-        this->m_cycleGuard[this_id] = false;
-
-        // Stop recursion here to avoid endless recursion
-        cppassist::debug(4, "gloperate") << this->qualifiedName() << ": detected cyclic dependency";
-        return;
-    }
-
-    // Raise guard
-    this->m_cycleGuard[this_id] = true;
-
+    
     // Emit signal
     this->valueChanged(value);
-
-    // Reset guard
-    this->m_cycleGuard[this_id] = false;
 }
 
 template <typename T>

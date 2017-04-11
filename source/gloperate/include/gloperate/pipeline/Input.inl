@@ -27,7 +27,7 @@ Input<T>::~Input()
 }
 
 template <typename T>
-void Input<T>::onValueChanged(const T & value)
+void Input<T>::onValueInvalidated()
 {
     cppassist::debug(3, "gloperate") << this->qualifiedName() << ": input changed value";
 
@@ -57,6 +57,26 @@ void Input<T>::onValueChanged(const T & value)
     this->m_cycleGuard[this_id] = true;
 
     // Emit signal
+    this->valueInvalidated();
+
+    this->setChanged(true);
+
+    // Inform parent stage
+    if (Stage * stage = this->parentStage())
+    {
+        stage->inputValueInvalidated(this);
+    }
+
+    // Reset guard
+    this->m_cycleGuard[this_id] = false;
+}
+
+template <typename T>
+void Input<T>::onValueChanged(const T & value)
+{
+    this->setChanged(true);
+
+    // Emit signal
     this->valueChanged(value);
 
     // Inform parent stage
@@ -64,9 +84,6 @@ void Input<T>::onValueChanged(const T & value)
     {
         stage->inputValueChanged(this);
     }
-
-    // Reset guard
-    this->m_cycleGuard[this_id] = false;
 }
 
 template <typename T>

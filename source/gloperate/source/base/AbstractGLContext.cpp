@@ -3,6 +3,9 @@
 
 #include <glbinding/Binding.h>
 
+#include <globjects/globjects.h>
+#include <globjects/DebugMessage.h>
+
 
 namespace gloperate
 {
@@ -29,6 +32,10 @@ const GLContextFormat & AbstractGLContext::format() const
 void AbstractGLContext::initializeGLBinding()
 {
     glbinding::Binding::initialize(false);
+    globjects::init();
+#ifdef DEBUG
+    globjects::DebugMessage::enable(true);
+#endif
 }
 
 
