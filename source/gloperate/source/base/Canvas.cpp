@@ -29,7 +29,7 @@ Canvas::Canvas(Environment * environment)
 {
     // Mark render output as required and redraw when it is invalidated
     m_pipelineContainer.rendered.setRequired(true);
-    m_pipelineContainer.rendered.valueChanged.connect([this] (bool)
+    m_pipelineContainer.rendered.valueInvalidated.connect([this] ()
     {
         if (!m_pipelineContainer.rendered.isValid()) {
             this->redraw();
