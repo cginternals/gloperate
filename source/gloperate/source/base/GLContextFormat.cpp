@@ -271,13 +271,13 @@ std::string GLContextFormat::toString() const
     result.append(GLContextFormat::profileString(m_profile));
 
     result.append(":ForwardCompatiblity=");
-    result.append(m_forwardCompatibility ? "true" : "false");
+    result.append(cppassist::string::toString(m_forwardCompatibility));
 
     result.append(":Debug=");
-    result.append(m_debugContext ? "true" : "false");
+    result.append(cppassist::string::toString(m_debugContext));
 
     result.append(":NoError=");
-    result.append(m_noerror ? "true" : "false");
+    result.append(cppassist::string::toString(m_noerror));
 
     return result;
 }
@@ -301,24 +301,23 @@ bool GLContextFormat::initializeFromString(const std::string &formatString)
     }
 
     // set version
-    const auto version_major = cppassist::string::fromString<int>(match[1]);
-    const auto version_minor = cppassist::string::fromString<int>(match[2]);
-    setVersion(version_major, version_minor);
+    const auto version = glbinding::Version(cppassist::string::fromString<int>(match[1]), cppassist::string::fromString<int>(match[2]));
+    setVersion(version);
 
     // set profile
     auto profileString = static_cast<std::string>(match[3]);
-    if(profileString == 'Core')
+    if (profileString == "Core")
     {
         setProfile(Profile::Core);
     }
-    if(profileString == "Compatibility")
+    if (profileString == "Compatibility")
     {
         setProfile(Profile::Compatibility);
     }
-    if(profileString == "")
+    if (profileString == "")
     {
         auto defaultProfile = Profile::Compatibility;
-        if(version_major<3 || (version_major == 3 && version_minor < 2))
+        if(version < glbinding::Version(3,2))
             defaultProfile = Profile::None;
         setProfile(defaultProfile);
     }
@@ -339,13 +338,13 @@ bool GLContextFormat::initializeFromString(const std::string &formatString)
         const auto value = match[2].matched ? static_cast<std::string>(match[3]) : "true";
 
         if(key=="ForwardCompatiblity")
-            setForwardCompatible(value == "true");
+            setForwardCompatible(cppassist::string::fromString<bool>(value));
 
         if(key=="Debug")
-            setDebugContext(value == "true");
+            setDebugContext(cppassist::string::fromString<bool>(value));
 
         if(key=="NoError")
-            setNoErrorContext(value == "true");
+            setNoErrorContext(cppassist::string::fromString<bool>(value));
 
         remainingParams = static_cast<std::string>(match[4]);
     }
