@@ -29,6 +29,8 @@ Input<T>::~Input()
 template <typename T>
 void Input<T>::onValueInvalidated()
 {
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": input changed value";
+
     std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
 
     // Get current thread ID
@@ -47,7 +49,7 @@ void Input<T>::onValueInvalidated()
         this->m_cycleGuard[this_id] = false;
 
         // Stop recursion here to avoid endless recursion
-        cppassist::warning() << "detected cyclic dependency for " << this->qualifiedName();
+        cppassist::debug(4, "gloperate") << this->qualifiedName() << ": detected cyclic dependency";
         return;
     }
 

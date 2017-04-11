@@ -13,9 +13,8 @@ namespace gloperate
 *  @brief
 *    Base class for drawables
 *
-*    A drawable is any kind of geometry that can be
-*    rendered on the GPU. Subclasses should provide
-*    a paint method that executes the actual rendering.
+*    A drawable is any kind of geometry that can be rendered on the GPU.
+*    Subclasses implement the draw-method that executes the actual rendering.
 */
 class GLOPERATE_API AbstractDrawable
 {
@@ -37,7 +36,6 @@ public:
     *    Draw geometry
     */
     virtual void draw() const = 0;
-
 };
 
 

@@ -48,6 +48,8 @@ void Output<T>::onRequiredChanged()
 template <typename T>
 void Output<T>::onValueInvalidated()
 {
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": output invalidated";
+
     // Emit signal
     this->valueInvalidated();
 }
@@ -56,6 +58,8 @@ void Output<T>::onValueInvalidated()
 template <typename T>
 void Output<T>::onValueChanged(const T & value)
 {
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": output changed value";
+    
     // Emit signal
     this->valueChanged(value);
 }
