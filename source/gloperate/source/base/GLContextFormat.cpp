@@ -4,7 +4,10 @@
 #include <cassert>
 #include <sstream>
 #include <map>
+// TODO use cppassist regex
+#include <regex>
 
+#include <cppassist/string/conversion.h>
 #include <cppassist/logging/logging.h>
 
 
@@ -77,6 +80,7 @@ GLContextFormat::GLContextFormat()
 , m_profile(Profile::None)
 , m_forwardCompatibility(false)
 , m_debugContext(false)
+, m_noerror(false)
 , m_redBufferSize(-1)
 , m_greenBufferSize(-1)
 , m_blueBufferSize(-1)
@@ -152,6 +156,16 @@ bool GLContextFormat::debugContext() const
 void GLContextFormat::setDebugContext(const bool on)
 {
     m_debugContext = on;
+}
+
+bool GLContextFormat::noErrorContext() const
+{
+    return m_noerror;
+}
+
+void GLContextFormat::setNoErrorContext(const bool on)
+{
+    m_noerror = on;
 }
 
 int GLContextFormat::redBufferSize() const
@@ -248,6 +262,94 @@ bool GLContextFormat::verify(const GLContextFormat & requested) const
 {
    return verifyVersionAndProfile(requested)
              && verifyPixelFormat(requested);
+}
+
+std::string GLContextFormat::toString() const
+{
+    std::string result = "OpenGL";
+    result.append(m_version.toString());
+    result.append(GLContextFormat::profileString(m_profile));
+
+    result.append(":ForwardCompatiblity=");
+    result.append(m_forwardCompatibility ? "true" : "false");
+
+    result.append(":Debug=");
+    result.append(m_debugContext ? "true" : "false");
+
+    result.append(":NoError=");
+    result.append(m_noerror ? "true" : "false");
+
+    return result;
+}
+
+bool GLContextFormat::initializeFromString(const std::string &formatString)
+{
+    /* captures
+     * 1 major version
+     * 2 minor version
+     * 3 profile
+     * 4 rest of the string
+     */
+    static const std::regex reg{ R"(OpenGL(\d+)\.(\d+)(Core|Compatibility)?(.*))" };
+    std::smatch match;
+    std::regex_match(formatString, match, reg);
+
+    if(match.empty())
+    {
+        cppassist::error("gloperate") << "requested contex string is ill-formed. Exiting";
+        return false;
+    }
+
+    // set version
+    const auto version_major = cppassist::string::fromString<int>(match[1]);
+    const auto version_minor = cppassist::string::fromString<int>(match[2]);
+    setVersion(version_major, version_minor);
+
+    // set profile
+    auto profileString = static_cast<std::string>(match[3]);
+    if(profileString == 'Core')
+    {
+        setProfile(Profile::Core);
+    }
+    if(profileString == "Compatibility")
+    {
+        setProfile(Profile::Compatibility);
+    }
+    if(profileString == "")
+    {
+        auto defaultProfile = Profile::Compatibility;
+        if(version_major<3 || (version_major == 3 && version_minor < 2))
+            defaultProfile = Profile::None;
+        setProfile(defaultProfile);
+    }
+
+    // process params
+    auto remainingParams = static_cast<std::string>(match[4]);
+    /* captures
+     * 1 key
+     * 2 value with preceeding '='; optional
+     * 3 value; optional
+     * 4 rest
+     */
+    static const std::regex paramExtract{R"(:(\w+)(=(\w+))?(.*))"};
+
+    while(std::regex_match(remainingParams,match,paramExtract))
+    {
+        const auto key = static_cast<std::string>(match[1]);
+        const auto value = match[2].matched ? static_cast<std::string>(match[3]) : "true";
+
+        if(key=="ForwardCompatiblity")
+            setForwardCompatible(value == "true");
+
+        if(key=="Debug")
+            setDebugContext(value == "true");
+
+        if(key=="NoError")
+            setNoErrorContext(value == "true");
+
+        remainingParams = static_cast<std::string>(match[4]);
+    }
+    return true;
 }
 
 bool GLContextFormat::verifyVersionAndProfile(const GLContextFormat & requested) const
