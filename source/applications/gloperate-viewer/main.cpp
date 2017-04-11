@@ -61,12 +61,13 @@ int main(int argc, char * argv[])
     // Load and show QML
     auto window = cppassist::make_unique<QuickView>(&qmlEngine);
     // Specify desired context format
-    gloperate::GLContextFormat format;
     cppassist::ArgumentParser argumentParser;
     argumentParser.parse(argc, argv);
-    if(!argumentParser.params().empty())
+    const auto contextString = argumentParser.value("--context");
+    if(!contextString.empty())
     {
-        format.initializeFromString(argumentParser.params().front());
+        gloperate::GLContextFormat format;
+        format.initializeFromString(contextString);
         QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
         window->setFormat(qFormat);
     }

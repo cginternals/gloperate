@@ -1,5 +1,6 @@
 
 #include <cppassist/logging/logging.h>
+#include <cppassist/cmdline/ArgumentParser.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
@@ -36,6 +37,17 @@ int main(int argc, char * argv[])
 
     // Create render window
     RenderWindow window(&environment);
+    // Specify desired context format
+    cppassist::ArgumentParser argumentParser;
+    argumentParser.parse(argc, argv);
+    const auto contextString = argumentParser.value("--context");
+    if(!contextString.empty())
+    {
+        gloperate::GLContextFormat format;
+        format.initializeFromString(contextString);
+        window.setContextFormat(format);
+    }
+
     window.setRenderStage(std::move(renderStage));
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);

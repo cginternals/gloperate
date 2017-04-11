@@ -45,19 +45,19 @@ int main(int argc, char * argv[])
     // Create render stage
     auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
 
-    // Specify desired context format
-    gloperate::GLContextFormat format;
-    cppassist::ArgumentParser argumentParser;
-    argumentParser.parse(argc, argv);
-    if(!argumentParser.params().empty())
-    {
-        format.initializeFromString(argumentParser.params().front());
-    }
-
     // Create render window
     auto window = cppassist::make_unique<RenderWindow>(&environment);
+    // Specify desired context format
+    cppassist::ArgumentParser argumentParser;
+    argumentParser.parse(argc, argv);
+    const auto contextString = argumentParser.value("--context");
+    if(!contextString.empty())
+    {
+        gloperate::GLContextFormat format;
+        format.initializeFromString(contextString);
+        window->setContextFormat(format);
+    }
     auto windowRaw = window.get();
-    window->setContextFormat(format);
     window->createContext();
     window->setRenderStage(std::move(renderStage));
 
