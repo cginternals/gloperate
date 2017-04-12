@@ -4,6 +4,7 @@
 #include <QSurfaceFormat>
 
 #include <cppassist/cmdline/ArgumentParser.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>

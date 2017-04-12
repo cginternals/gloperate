@@ -264,6 +264,12 @@ void Pipeline::sortStages()
         visit(stage);
     }
 
+    debug(2, "gloperate") << "Stage order after sorting";
+    for (const auto stage : sorted)
+    {
+        debug(2, "gloperate") << stage->qualifiedName();
+    }
+
     m_stages = sorted;
     m_sorted = couldBeSorted;
 }
