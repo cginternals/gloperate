@@ -74,15 +74,9 @@ RawFileNameSuffix::RawFileNameSuffix(const std::string & fileName)
     }
 
     // retrieve intel from suffix parts
-    try
-    {
-        m_width = std::stoi(base_match[1]);
-        m_height = std::stoi(base_match[2]);
-    }
-    catch(...)
-    {
-        return;
-    }
+    m_width = cppassist::string::fromString<int>(base_match[1]);
+    m_height = cppassist::string::fromString<int>(base_match[2]);
+
 
     if (!m_compressed)
     {

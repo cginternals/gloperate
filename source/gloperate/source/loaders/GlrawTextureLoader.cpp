@@ -81,9 +81,7 @@ globjects::Texture * GlrawTextureLoader::loadGLRawImage(const std::string & file
     const int w = rawFile.intProperty("width");
     const int h = rawFile.intProperty("height");
 
-    //TODO this should be a unique ptr like this:
-    //auto texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-    globjects::Texture * texture = new globjects::Texture(gl::GL_TEXTURE_2D);
+    globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D).release();
 
     if (rawFile.hasIntProperty("format"))
     {
@@ -131,9 +129,7 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
     if (!rawFile.load(filename))
         return nullptr;
 
-    //TODO this should be a unique ptr like this:
-    //auto texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-    globjects::Texture * texture = new globjects::Texture(gl::GL_TEXTURE_2D);
+    globjects::Texture * texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D).release();
 
     if (!suffix.compressed())
     {
