@@ -42,20 +42,9 @@ Stage * AbstractSlot::parentStage() const
 
 std::string AbstractSlot::qualifiedName() const
 {
-    std::string path = name();
-
     Stage * stage = parentStage();
-    path = stage->name() + "." + path;
 
-    Pipeline * pipeline = stage->parentPipeline();
-    while (pipeline)
-    {
-        path = pipeline->name() + "." + path;
-
-        pipeline = pipeline->parentPipeline();
-    }
-
-    return path;
+    return (stage != nullptr) ? stage->qualifiedName() + "." + name() : name();
 }
 
 bool AbstractSlot::isRequired() const
@@ -68,6 +57,8 @@ void AbstractSlot::setRequired(bool required)
     if (m_required != required)
     {
         m_required = required;
+
+        cppassist::debug(3, "gloperate") << this->qualifiedName() << ": required changed to " << required;
 
         onRequiredChanged();
     }

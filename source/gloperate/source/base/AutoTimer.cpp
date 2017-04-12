@@ -53,7 +53,7 @@ AutoTimer::~AutoTimer()
     // shorten the time to nearest time unit
     double deltaf = static_cast<double>(delta.count()) / pow(1000.0, unitPrecision);
 
-    cppassist::debug() << m_info << " took "
+    cppassist::debug("gloperate") << m_info << " took "
         << std::setprecision(4) << deltaf << unit
         << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
 

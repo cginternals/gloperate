@@ -27,8 +27,10 @@ Input<T>::~Input()
 }
 
 template <typename T>
-void Input<T>::onValueChanged(const T & value)
+void Input<T>::onValueInvalidated()
 {
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": input changed value";
+
     std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
 
     // Get current thread ID
@@ -47,12 +49,32 @@ void Input<T>::onValueChanged(const T & value)
         this->m_cycleGuard[this_id] = false;
 
         // Stop recursion here to avoid endless recursion
-        cppassist::warning() << "detected cyclic dependency for " << this->qualifiedName();
+        cppassist::debug(4, "gloperate") << this->qualifiedName() << ": detected cyclic dependency";
         return;
     }
 
     // Raise guard
     this->m_cycleGuard[this_id] = true;
+
+    // Emit signal
+    this->valueInvalidated();
+
+    this->setChanged(true);
+
+    // Inform parent stage
+    if (Stage * stage = this->parentStage())
+    {
+        stage->inputValueInvalidated(this);
+    }
+
+    // Reset guard
+    this->m_cycleGuard[this_id] = false;
+}
+
+template <typename T>
+void Input<T>::onValueChanged(const T & value)
+{
+    this->setChanged(true);
 
     // Emit signal
     this->valueChanged(value);
@@ -62,9 +84,6 @@ void Input<T>::onValueChanged(const T & value)
     {
         stage->inputValueChanged(this);
     }
-
-    // Reset guard
-    this->m_cycleGuard[this_id] = false;
 }
 
 template <typename T>

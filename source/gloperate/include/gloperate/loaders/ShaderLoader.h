@@ -27,7 +27,7 @@ namespace globjects
 *  Supported options:
 *    none
 */
-class ShaderLoader : public gloperate::Loader<globjects::Shader>
+class GLOPERATE_API ShaderLoader : public gloperate::Loader<globjects::Shader>
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

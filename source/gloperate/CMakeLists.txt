@@ -95,6 +95,7 @@ set(headers
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/Camera.h
+    ${include_path}/rendering/CameraUtils.h
     ${include_path}/rendering/Drawable.h
     ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/NoiseTexture.h
@@ -142,6 +143,8 @@ set(headers
 
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
+
+    ${include_path}/loaders/ShaderLoader.h
 )
 
 set(sources
@@ -182,6 +185,7 @@ set(sources
 
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp
+    ${source_path}/rendering/CameraUtils.cpp
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/NoiseTexture.cpp
     ${source_path}/rendering/RenderPass.cpp
@@ -223,6 +227,8 @@ set(sources
 
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
+
+    ${source_path}/loaders/ShaderLoader.cpp
 )
 
 # Group source files
