@@ -56,7 +56,7 @@ CPPEXPOSE_COMPONENT(DemoAntialiasableTriangleStage, gloperate::Stage)
 DemoAntialiasableTriangleStage::DemoAntialiasableTriangleStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
-, subpixelOffset("subpixelOffset", this, glm::vec2(0.0f))
+, subpixelOffsets("subpixelOffset", this, nullptr)
 {
 }
 
@@ -100,7 +100,9 @@ void DemoAntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
     gl::glDisable(gl::GL_SCISSOR_TEST);
 
     // Set uniforms
-    m_program->setUniform("offset", *(subpixelOffset));
+    m_program->setUniform("offset", *subpixelOffsets
+                                    ? (*subpixelOffsets)->at((*renderInterface.frameCounter) % (*subpixelOffsets)->size())
+                                    : glm::vec2(0.0f));
 
     // Draw geometry
     m_program->use();

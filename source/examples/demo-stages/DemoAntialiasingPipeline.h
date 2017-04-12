@@ -9,6 +9,12 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
+namespace gloperate_glkernel {
+
+class DiscDistributionKernelStage;
+
+}
+
 namespace gloperate
 {
 
@@ -42,6 +48,9 @@ public:
     // Interfaces
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
+    // Inputs
+    Input<int> multiFrameCount;      ///< Total number of frames to aggregate
+
 
 public:
     /**
@@ -64,6 +73,6 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate::SubpixelAntialiasingOffsetStage> m_subpixelStage; ///< Stage generating subpixel offset for antialiasing
-    std::unique_ptr<DemoAntialiasableTriangleStage>             m_triangleStage; ///< Rendering stage
+    std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage> m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
+    std::unique_ptr<DemoAntialiasableTriangleStage>                  m_triangleStage;  ///< Rendering stage
 };

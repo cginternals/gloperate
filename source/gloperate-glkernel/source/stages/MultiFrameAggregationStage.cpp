@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
+#include <gloperate-glkernel/stages/MultiFrameAggregationStage.h>
 
 #include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>
@@ -48,14 +48,14 @@ static const char * s_fragmentShader = R"(
 )";
 
 
-namespace gloperate
+namespace gloperate_glkernel
 {
 
 
 CPPEXPOSE_COMPONENT(MultiFrameAggregationStage, gloperate::Stage)
 
 
-MultiFrameAggregationStage::MultiFrameAggregationStage(Environment * environment, const std::string & name)
+MultiFrameAggregationStage::MultiFrameAggregationStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , aggregationFBO("aggregationFBO", this)
 , texture("texture", this)
@@ -70,13 +70,13 @@ MultiFrameAggregationStage::~MultiFrameAggregationStage()
 {
 }
 
-void MultiFrameAggregationStage::onContextInit(AbstractGLContext * /*context*/)
+void MultiFrameAggregationStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
     setupGeometry();
     setupProgram();
 }
 
-void MultiFrameAggregationStage::onProcess(AbstractGLContext * /*context*/)
+void MultiFrameAggregationStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     if (!(*texture))
         return;

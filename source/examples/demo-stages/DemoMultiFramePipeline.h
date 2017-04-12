@@ -10,6 +10,12 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
+namespace gloperate_glkernel {
+
+class MultiFrameAggregationPipeline;
+
+}
+
 namespace gloperate
 {
 
@@ -71,7 +77,7 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate::MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
+    std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
 
     // Demo pipelines using multiframe effects
     std::unique_ptr<DemoAntialiasingPipeline>                 m_antialiasingPipeline;

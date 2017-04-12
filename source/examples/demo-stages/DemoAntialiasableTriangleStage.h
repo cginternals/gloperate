@@ -39,7 +39,7 @@ public:
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<glm::vec2>           subpixelOffset;  ///< Subpixel offset for multiframe antialiasing
+    Input<std::vector<glm::vec2> *> subpixelOffsets; ///< Subpixel offsets for multiframe antialiasing
 
 
 public:
@@ -77,7 +77,7 @@ protected:
     // Rendering objects
     std::unique_ptr<globjects::VertexArray> m_vao;
     std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
-    std::unique_ptr<globjects::Program>     m_program;
     std::unique_ptr<globjects::Shader>      m_vertexShader;
     std::unique_ptr<globjects::Shader>      m_fragmentShader;
+    std::unique_ptr<globjects::Program>     m_program;
 };

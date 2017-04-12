@@ -90,7 +90,7 @@ CPPEXPOSE_COMPONENT(DemoDOFCubeStage, gloperate::Stage)
 DemoDOFCubeStage::DemoDOFCubeStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
-, dofShift("dofShift", this, glm::vec2(0.0f))
+, dofShifts("dofShift", this, nullptr)
 {
 }
 
@@ -134,7 +134,10 @@ void DemoDOFCubeStage::onProcess(gloperate::AbstractGLContext *)
     gl::glDisable(gl::GL_SCISSOR_TEST);
 
     // Set uniforms
-    m_program->setUniform("dofShift", *(dofShift));
+    m_program->setUniform("dofShift", *dofShifts
+                                      ? (*dofShifts)->at((*renderInterface.frameCounter) % (*dofShifts)->size())
+                                      : glm::vec2(0.0f));
+
     auto view = glm::lookAt(glm::vec3(1.02f, -1.02f, 1.1f), glm::vec3(0.5f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     auto projection = glm::perspective(30.0f, viewport.z / viewport.w, 0.1f, 10.0f);
     m_program->setUniform("view", view);

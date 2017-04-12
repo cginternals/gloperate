@@ -1,5 +1,5 @@
 
-#include <gloperate-glkernel/NoiseKernelStage.h>
+#include <gloperate-glkernel/stages/NoiseKernelStage.h>
 
 #include <glkernel/noise.h>
 
@@ -32,7 +32,10 @@ NoiseKernelStage::~NoiseKernelStage()
 
 void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_texture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_3D);
+    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_3D);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_REPEAT);
 }
 
 
@@ -55,7 +58,7 @@ void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
     {
         regenerateKernel();
 
-        m_texture->image3D(1, gl::GL_RGB32F, *dimensions, 0, gl::GL_RGB, gl::GL_FLOAT, m_kernel.data());
+        m_texture->image3D(0, gl::GL_RGB32F, *dimensions, 0, gl::GL_RGB, gl::GL_FLOAT, m_kernel.data());
         m_kernelData = {m_kernel.begin(), m_kernel.end()};
     }
 

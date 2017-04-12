@@ -59,13 +59,13 @@ static const char * s_fragmentShader = R"(
 const vec3 ssaoColor = vec3(0.0);
 const float farZ = 10.0;
 const float ssaoRadius = 0.2;
-const float ssaoIntensity = 0.2;
+const float ssaoIntensity = 0.5;
 
 uniform sampler2D colorTexture;
 uniform sampler2D normalTexture;
 uniform sampler2D depthTexture;
 uniform sampler1D ssaoKernelTexture;
-uniform sampler2D ssaoNoiseTexture;
+uniform sampler3D ssaoNoiseTexture;
 
 uniform mat4 projectionMatrix;
 uniform mat4 projectionInverseMatrix;

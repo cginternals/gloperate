@@ -37,9 +37,6 @@ public:
     // Interfaces
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
-    // Inputs
-    Input<globjects::Framebuffer *> normalFBO;  ///< FBO to render normals into
-
     // Outputs
     Output<glm::mat4> projectionMatrix;         ///< Projection matrix used for rendering
     Output<glm::mat3> normalMatrix;             ///< Normal matrix used for rendering
@@ -79,9 +76,7 @@ protected:
     // Rendering objects
     std::unique_ptr<globjects::VertexArray> m_vao;
     std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
-    std::unique_ptr<globjects::Program>     m_colorProgram;
-    std::unique_ptr<globjects::Program>     m_normalProgram;
     std::unique_ptr<globjects::Shader>      m_vertexShader;
-    std::unique_ptr<globjects::Shader>      m_colorFragmentShader;
-    std::unique_ptr<globjects::Shader>      m_normalFragmentShader;
+    std::unique_ptr<globjects::Shader>      m_fragmentShader;
+    std::unique_ptr<globjects::Program>     m_program;
 };

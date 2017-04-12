@@ -2,8 +2,8 @@
 #include "DemoTransparencyPipeline.h"
 
 #include <gloperate/gloperate.h>
-#include <gloperate/stages/multiframe/TransparencyKernelStage.h>
-#include <gloperate/stages/multiframe/NoiseKernelStage.h>
+#include <gloperate-glkernel/stages/TransparencyKernelStage.h>
+#include <gloperate-glkernel/stages/NoiseKernelStage.h>
 
 #include "DemoTransparencyStage.h"
 
@@ -14,16 +14,15 @@ CPPEXPOSE_COMPONENT(DemoTransparencyPipeline, gloperate::Stage)
 DemoTransparencyPipeline::DemoTransparencyPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_transparencyKernelStage(cppassist::make_unique<gloperate::TransparencyKernelStage>(environment))
-, m_noiseKernelStage(cppassist::make_unique<gloperate::NoiseKernelStage>(environment))
+, m_transparencyKernelStage(cppassist::make_unique<gloperate_glkernel::TransparencyKernelStage>(environment))
+, m_noiseKernelStage(cppassist::make_unique<gloperate_glkernel::NoiseKernelStage>(environment))
 , m_transparencyRenderStage(cppassist::make_unique<DemoTransparencyStage>(environment))
 {
     addStage(m_transparencyKernelStage.get());
+    m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
 
     addStage(m_noiseKernelStage.get());
-    m_noiseKernelStage->inputDimensions.setValue(2);
-    m_noiseKernelStage->outputDimensions.setValue(1);
-    m_noiseKernelStage->size.setValue(256);
+    m_noiseKernelStage->dimensions.setValue(glm::ivec3(64, 64, 64));
 
     addStage(m_transparencyRenderStage.get());
     m_transparencyRenderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
@@ -32,8 +31,8 @@ DemoTransparencyPipeline::DemoTransparencyPipeline(gloperate::Environment * envi
     m_transparencyRenderStage->renderInterface.targetFBO << renderInterface.targetFBO;
     m_transparencyRenderStage->renderInterface.timeDelta << renderInterface.timeDelta;
     m_transparencyRenderStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
-    m_transparencyRenderStage->transparencyKernel << m_transparencyKernelStage->transparencyMaskTexture;
-    m_transparencyRenderStage->noiseKernel << m_noiseKernelStage->noiseTexture;
+    m_transparencyRenderStage->transparencyKernel << m_transparencyKernelStage->texture;
+    m_transparencyRenderStage->noiseKernel << m_noiseKernelStage->texture;
 
     renderInterface.rendered << m_transparencyRenderStage->renderInterface.rendered;
 }

@@ -1,4 +1,4 @@
-#include <gloperate-glkernel/HemisphereDistributionKernelStage.h>
+#include <gloperate-glkernel/stages/HemisphereDistributionKernelStage.h>
 
 #include <algorithm>
 
@@ -38,7 +38,7 @@ HemisphereDistributionKernelStage::~HemisphereDistributionKernelStage()
 
 void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_texture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_1D);
+    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);
 }
 
 
