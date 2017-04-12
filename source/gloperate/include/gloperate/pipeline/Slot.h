@@ -145,7 +145,7 @@ public:
     virtual void disconnect() override;
     virtual const AbstractSlot * source() const override;
     virtual bool isValid() const override;
-    virtual void setValid(bool isValid) override;
+    virtual void invalidate() override;
     virtual bool hasChanged() const override;
     virtual void setChanged(bool hasChanged) override;
     virtual void onRequiredChanged() override;
