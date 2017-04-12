@@ -1,6 +1,7 @@
 
 #include <QApplication>
 #include <QQmlEngine>
+#include <QSurfaceFormat>
 
 #include <cppassist/cmdline/ArgumentParser.h>
 
