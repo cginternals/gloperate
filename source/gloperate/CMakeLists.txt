@@ -95,6 +95,7 @@ set(headers
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/Camera.h
+    ${include_path}/rendering/CameraUtils.h
     ${include_path}/rendering/Drawable.h
     ${include_path}/rendering/Drawable.inl
     ${include_path}/rendering/NoiseTexture.h
@@ -150,6 +151,8 @@ set(headers
 
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
+
+    ${include_path}/loaders/ShaderLoader.h
 )
 
 set(sources
@@ -190,6 +193,7 @@ set(sources
 
     ${source_path}/rendering/AbstractDrawable.cpp
     ${source_path}/rendering/Camera.cpp
+    ${source_path}/rendering/CameraUtils.cpp
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/NoiseTexture.cpp
     ${source_path}/rendering/RenderPass.cpp
@@ -239,6 +243,8 @@ set(sources
 
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
+
+    ${source_path}/loaders/ShaderLoader.cpp
 )
 
 # Group source files
@@ -384,38 +390,6 @@ target_link_libraries(${target}
     ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
-)
-
-
-# 
-# Module information file
-# 
-
-
-generate_module_info(${META_PROJECT_NAME}
-    VALUES
-    name        "${META_PROJECT_NAME}"
-    version     "${META_VERSION}"
-    description "${META_PROJECT_DESCRIPTION}"
-    author      "${META_AUTHOR_ORGANIZATION}"
-
-    BUILD_VALUES
-    dataPath    "${PROJECT_SOURCE_DIR}/data"
-    pluginPath  "\${ModulePath}"
-
-    INSTALL_VALUES
-    dataPath    "\${ModulePath}/data"
-    pluginPath  "\${ModulePath}/plugins"
-)
-
-export_module_info_with_deps(${META_PROJECT_NAME}
-    REQUIRES qmltoolbox qmltoolbox::qmltoolbox
-    FOLDER "ModuleInfo"
-)
-
-install_module_info(${META_PROJECT_NAME}
-    DESTINATION ${INSTALL_ROOT}
-    COMPONENT runtime
 )
 
 

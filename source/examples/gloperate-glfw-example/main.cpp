@@ -1,10 +1,11 @@
 
 #include <cppassist/logging/logging.h>
+#include <cppassist/cmdline/ArgumentParser.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/stages/demos/DemoStage.h>
+#include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/RenderWindow.h>
@@ -32,10 +33,22 @@ int main(int argc, char * argv[])
     Application app(&environment, argc, argv);
 
     // Create render stage
-    auto renderStage = cppassist::make_unique<DemoStage>(&environment);
+    auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
 
     // Create render window
     RenderWindow window(&environment);
+    // Specify desired context format
+    cppassist::ArgumentParser argumentParser;
+    argumentParser.parse(argc, argv);
+    const auto contextString = argumentParser.value("--context");
+    if(!contextString.empty())
+    {
+        gloperate::GLContextFormat format;
+        if(!format.initializeFromString(contextString))
+            return 1;
+        window.setContextFormat(format);
+    }
+
     window.setRenderStage(std::move(renderStage));
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);
