@@ -1,6 +1,5 @@
 
-#include "GlrawTextureLoader.h"
-
+#include <gloperate/loaders/GlrawTextureLoader.h>
 
 #include <algorithm>
 
@@ -15,8 +14,7 @@
 
 #include <globjects/Texture.h>
 
-
-#include <FileNameSuffix.h>
+#include <gloperate/base/FileNameSuffix.h>
 
 
 CPPEXPOSE_COMPONENT(GlrawTextureLoader, gloperate::AbstractLoader)
