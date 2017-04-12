@@ -1,4 +1,4 @@
-#include <gloperate-glkernel/DiscDistributionKernelStage.h>
+#include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
 
 #include <algorithm>
 
@@ -60,7 +60,7 @@ DiscDistributionKernelStage::~DiscDistributionKernelStage()
 
 void DiscDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_texture = cppassist::make_unique<globjects::Texture>(gl::GL_TEXTURE_1D);
+    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);
 }
 
 

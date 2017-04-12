@@ -1,6 +1,8 @@
 
 #include <QQmlContext>
 
+#include <cppassist/cmdline/ArgumentParser.h>
+
 #include <cppexpose/scripting/ScriptContext.h>
 #include <cppexpose/reflection/Property.h>
 
@@ -9,6 +11,7 @@
 #include <gloperate/base/Environment.h>
 
 #include <gloperate-qt/base/GLContext.h>
+#include <gloperate-qt/base/GLContextFactory.h>
 #include <gloperate-qt/base/UpdateManager.h>
 
 #include <gloperate-qtquick/QmlEngine.h>
@@ -53,6 +56,19 @@ int main(int argc, char * argv[])
     environment.componentManager()->scanPlugins("loaders");
     environment.componentManager()->scanPlugins("stages");
     environment.componentManager()->scanPlugins("exporter");
+
+    // Specify desired context format
+    cppassist::ArgumentParser argumentParser;
+    argumentParser.parse(argc, argv);
+    const auto contextString = argumentParser.value("--context");
+    if(!contextString.empty())
+    {
+        gloperate::GLContextFormat format;
+        if(!format.initializeFromString(contextString))
+            return 1;
+        QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
+        QSurfaceFormat::setDefaultFormat(qFormat);
+    }
 
     // Load and show QML
     qmlEngine.load(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));

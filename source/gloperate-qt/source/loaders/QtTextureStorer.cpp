@@ -1,5 +1,5 @@
 
-#include "QtTextureStorer.h"
+#include <gloperate-qt/loaders/QtTextureStorer.h>
 
 #include <QString>
 #include <QImage>

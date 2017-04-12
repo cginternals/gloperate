@@ -6,6 +6,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/Storer.h>
+#include <gloperate-qt/gloperate-qt_api.h>
 
 
 namespace globjects
@@ -21,7 +22,7 @@ namespace globjects
 *  Supported options:
 *    none
 */
-class QtTextureStorer : public gloperate::Storer<globjects::Texture> 
+class GLOPERATE_QT_API QtTextureStorer : public gloperate::Storer<globjects::Texture>
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

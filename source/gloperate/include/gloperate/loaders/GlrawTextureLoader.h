@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
@@ -19,20 +20,17 @@ namespace globjects
 
 /**
 *  @brief
-*    Texture loader based on Qt
-*
-*  Supported options:
-*    none
+*    .raw file loader 
 */
-class QtTextureLoader : public gloperate::Loader<globjects::Texture> 
+class GLOPERATE_API GlrawTextureLoader : public gloperate::Loader<globjects::Texture>
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        QtTextureLoader, gloperate::AbstractLoader
+        GlrawTextureLoader, gloperate::AbstractLoader
       , "" // Tags
       , "" // Icon
       , "" // Annotations
-      , "Load textures using the Qt image functionality"
+      , "Load .raw files"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -46,13 +44,13 @@ public:
     *  @param[in] environment
     *    Environment to which the loader belongs (must NOT be null!)
     */
-    QtTextureLoader(gloperate::Environment * environment);
+    GlrawTextureLoader(gloperate::Environment * environment);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~QtTextureLoader();
+    virtual ~GlrawTextureLoader();
 
     // Virtual gloperate::AbstractLoader functions
     virtual bool canLoad(const std::string & ext) const override;
@@ -61,6 +59,29 @@ public:
 
     // Virtual gloperate::Loader<globjects::Texture> functions
     virtual globjects::Texture * load(const std::string & filename, const cppexpose::Variant & options, std::function<void(int, int)> progress) const override;
+
+protected:
+    /**
+    *  @brief
+    *    create Texture from .glraw file
+    *
+    *    This function is called by load when the file extension is .glraw
+    *
+    *  @param[in] filename
+    *    path of the .glraw file
+    */
+    globjects::Texture * loadGLRawImage(const std::string & filename) const;
+
+    /**
+    *  @brief
+    *    create Texture from .raw file
+    *
+    *    This function is called by load when the file extension is .raw
+    *
+    *  @param[in] filename
+    *    path of the .raw file
+    */
+    globjects::Texture * loadRawImage(const std::string & filename) const;
 
 
 protected:

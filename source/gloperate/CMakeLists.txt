@@ -80,6 +80,7 @@ set(headers
     ${include_path}/base/ColorGradientPreparation.h
     ${include_path}/base/ExplicitEquidistantColorGradient.h
     ${include_path}/base/ExplicitEquidistantColorGradient.inl
+    ${include_path}/base/RawFileNameSuffix.h
 
     ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h
@@ -126,14 +127,6 @@ set(headers
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
-    ${include_path}/stages/multiframe/MultiFrameAggregationPipeline.h
-    ${include_path}/stages/multiframe/MultiFrameAggregationStage.h
-    ${include_path}/stages/multiframe/MultiFrameControlStage.h
-    ${include_path}/stages/multiframe/MultiFrameDiscDistributionStage.h
-    ${include_path}/stages/multiframe/NoiseKernelStage.h
-    ${include_path}/stages/multiframe/SSAOKernelStage.h
-    ${include_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.h
-    ${include_path}/stages/multiframe/TransparencyKernelStage.h
 
     ${include_path}/input/constants.h
     ${include_path}/input/InputManager.h
@@ -151,6 +144,9 @@ set(headers
 
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
+
+    ${include_path}/loaders/ShaderLoader.h
+    ${include_path}/loaders/GlrawTextureLoader.h
 )
 
 set(sources
@@ -183,6 +179,7 @@ set(sources
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
     ${source_path}/base/AbstractColorGradient.cpp
     ${source_path}/base/ExtendedProperties.cpp
+    ${source_path}/base/RawFileNameSuffix.cpp
 
     ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
@@ -218,14 +215,6 @@ set(sources
     ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
-    ${source_path}/stages/multiframe/MultiFrameAggregationStage.cpp
-    ${source_path}/stages/multiframe/MultiFrameControlStage.cpp
-    ${source_path}/stages/multiframe/MultiFrameAggregationPipeline.cpp
-    ${source_path}/stages/multiframe/MultiFrameDiscDistributionStage.cpp
-    ${source_path}/stages/multiframe/NoiseKernelStage.cpp
-    ${source_path}/stages/multiframe/SSAOKernelStage.cpp
-    ${source_path}/stages/multiframe/SubpixelAntialiasingOffsetStage.cpp
-    ${source_path}/stages/multiframe/TransparencyKernelStage.cpp
 
     ${source_path}/input/InputManager.cpp
     ${source_path}/input/AbstractEventConsumer.cpp
@@ -241,6 +230,9 @@ set(sources
 
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
+
+    ${source_path}/loaders/ShaderLoader.cpp
+    ${source_path}/loaders/GlrawTextureLoader.cpp
 )
 
 # Group source files

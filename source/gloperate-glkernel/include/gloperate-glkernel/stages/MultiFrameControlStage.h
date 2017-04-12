@@ -11,8 +11,10 @@
 
 #include <glm/vec4.hpp>
 
+#include <gloperate-glkernel/gloperate-glkernel_api.h>
 
-namespace gloperate
+
+namespace gloperate_glkernel
 {
 
 
@@ -20,7 +22,7 @@ namespace gloperate
 *  @brief
 *    Stage that maintaines and provides information about multi frame aggregation progress
 */
-class GLOPERATE_API MultiFrameControlStage : public Stage
+class GLOPERATE_GLKERNEL_API MultiFrameControlStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -55,7 +57,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    MultiFrameControlStage(Environment * environment, const std::string & name = "MultiFrameControlStage");
+    MultiFrameControlStage(gloperate::Environment * environment, const std::string & name = "MultiFrameControlStage");
 
     /**
     *  @brief
@@ -66,7 +68,7 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess(gloperate::AbstractGLContext * context) override;
 
 
 protected:

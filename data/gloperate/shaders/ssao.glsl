@@ -31,11 +31,11 @@ mat3 noised(
     in vec2 uv,
     const in vec2 screenSize,
     const in vec4 samplerSizes,
-    const in sampler2D noiseSampler)
+    const in sampler3D noiseSampler)
 {
     uv *= screenSize * samplerSizes[3];
 
-    vec3 random = texture(noiseSampler, uv).xyz;
+    vec3 random = texture(noiseSampler, vec3(uv, 0.0)).xyz * vec3(2,2,0) - vec3(1,1,0);
 
     // orientation matrix
     vec3 t = normalize(random - normal * dot(random, normal));
@@ -50,14 +50,14 @@ float ssaoKernel(
     const in float radius,
     const in float intensity,
     const in sampler1D kernelSampler,
-    const in sampler2D noiseSampler,
+    const in sampler3D noiseSampler,
     const in sampler2D depthTexture,
     const in sampler2D normalTexture,
     const in mat4 projectionMatrix,
     const in mat3 normalMatrix)
 {
     int kernelSize = textureSize(kernelSampler, 0);
-    ivec2 noiseSize = textureSize(noiseSampler, 0);
+    ivec3 noiseSize = textureSize(noiseSampler, 0);
 
     vec4 samplerSizes = vec4(kernelSize, 1.0 / float(kernelSize), noiseSize.x, 1.0 / float(noiseSize.x)); // expected: [kernelSize, 1 / kernelSize, noiseSize, 1 / noiseSize]
     vec3 screenspaceNormal = normalMatrix * normal(uv, normalTexture);
@@ -70,7 +70,6 @@ float ssaoKernel(
     for (float i = 0.0; i < samplerSizes[0]; ++i)
     {
         vec3 s = m * kernel(i, samplerSizes, kernelSampler);
-
         s *= 2.0 * radius;
         s += origin;
 
@@ -97,7 +96,7 @@ vec3 ssao(
     const in float radius,
     const in float intensity,
     const in sampler1D kernelSampler,
-    const in sampler2D noiseSampler,
+    const in sampler3D noiseSampler,
     const in sampler2D depthTexture,
     const in sampler2D normalTexture,
     const in mat4 projectionMatrix,

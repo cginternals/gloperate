@@ -21,9 +21,6 @@
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/base/ShaderStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
-#include <gloperate/stages/multiframe/MultiFrameControlStage.h>
 
 
 namespace gloperate

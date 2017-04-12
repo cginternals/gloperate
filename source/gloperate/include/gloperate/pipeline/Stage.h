@@ -226,6 +226,20 @@ public:
 
     /**
     *  @brief
+    *    Update the validity of the stage's output slots
+    *
+    *  @param[in] slot
+    *    Input slot which has been invalidated
+    *
+    *  @remarks
+    *    By default, all outputs are invalidated when any input
+    *    value of the stage has invalidated. This behavior can
+    *    be overridden with the onInputValueInvalidated method.
+    */
+    void inputValueInvalidated(AbstractSlot * slot);
+
+    /**
+    *  @brief
     *    Check if stage is always processed
     *
     *  @return
@@ -547,6 +561,15 @@ public:
     */
     void invalidateInputConnections();
 
+    /**
+    *  @brief
+    *    Get qualified name
+    *
+    *  @return
+    *    Name with all parent names, separated by '.'
+    */
+    std::string qualifiedName() const;
+
 
 protected:
     /**
@@ -620,6 +643,26 @@ protected:
     *    implement everything else in onProcess().
     */
     virtual void onInputValueChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
+    *    Called when an input value was invalidated
+    *
+    *  @param[in] slot
+    *    Input slot
+    *
+    *  @remarks
+    *    The default implementation invalidates all outputs whenever
+    *    an input and parameter has been invalidated. This method can
+    *    be overridden to refine that logic, e.g., invalidate only
+    *    certain outputs on certain inputs.
+    *
+    *    IMPORTANT: Do not make any OpenGL calls in this function,
+    *    because there is no OpenGL context active at the time this
+    *    function is called. Use it only for invalidating outputs and
+    *    implement everything else in onProcess().
+    */
+    virtual void onInputValueInvalidated(AbstractSlot * slot);
 
     /**
     *  @brief

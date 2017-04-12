@@ -1,31 +1,31 @@
 
-#include <gloperate/stages/multiframe/MultiFrameAggregationPipeline.h>
+#include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/CustomFramebufferStage.h>
 #include <gloperate/stages/base/BlitStage.h>
-#include <gloperate/stages/multiframe/MultiFrameControlStage.h>
-#include <gloperate/stages/multiframe/MultiFrameAggregationStage.h>
+#include <gloperate-glkernel/stages/MultiFrameControlStage.h>
+#include <gloperate-glkernel/stages/MultiFrameAggregationStage.h>
 
 #include <glbinding/gl/enum.h>
 
 
-namespace gloperate
+namespace gloperate_glkernel
 {
 
 CPPEXPOSE_COMPONENT(MultiFrameAggregationPipeline, gloperate::Stage)
 
 
-MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(Environment * environment, const std::string & name)
+MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
-, m_renderFramebufferStage(cppassist::make_unique<BasicFramebufferStage>(environment, "BasicFramebufferStage (Renderer)"))
-, m_aggregationFramebufferStage(cppassist::make_unique<CustomFramebufferStage>(environment, "CustomFramebufferStage (Accumulation)"))
+, m_renderFramebufferStage(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "BasicFramebufferStage (Renderer)"))
+, m_aggregationFramebufferStage(cppassist::make_unique<gloperate::CustomFramebufferStage>(environment, "CustomFramebufferStage (Accumulation)"))
 , m_controlStage(cppassist::make_unique<MultiFrameControlStage>(environment, "MultiFrameControlStage"))
 , m_aggregationStage(cppassist::make_unique<MultiFrameAggregationStage>(environment, "MultiFrameAggregationStage"))
-, m_blitStage(cppassist::make_unique<BlitStage>(environment, "BlitStage"))
+, m_blitStage(cppassist::make_unique<gloperate::BlitStage>(environment, "BlitStage"))
 , m_frameRenderStage(nullptr)
 {
     addStage(m_renderFramebufferStage.get());
@@ -61,7 +61,7 @@ MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
 {
 }
 
-void MultiFrameAggregationPipeline::onProcess(AbstractGLContext * context)
+void MultiFrameAggregationPipeline::onProcess(gloperate::AbstractGLContext * context)
 {
     if (!m_frameRenderStage)
     {
@@ -71,7 +71,7 @@ void MultiFrameAggregationPipeline::onProcess(AbstractGLContext * context)
     Pipeline::onProcess(context);
 }
 
-void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface & interface)
+void MultiFrameAggregationPipeline::setFrameRenderer(gloperate::RenderInterface & interface)
 {
     disconnectRenderStage();
 
@@ -81,7 +81,7 @@ void MultiFrameAggregationPipeline::setFrameRenderer(RenderInterface & interface
     connectBasicRenderInterface(interface);
 }
 
-void MultiFrameAggregationPipeline::connectBasicRenderInterface(RenderInterface & interface)
+void MultiFrameAggregationPipeline::connectBasicRenderInterface(gloperate::RenderInterface & interface)
 {
     interface.deviceViewport << renderInterface.deviceViewport;
     interface.virtualViewport << renderInterface.virtualViewport;

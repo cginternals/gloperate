@@ -1,5 +1,5 @@
 
-#include "ShaderLoader.h"
+#include <gloperate/loaders/ShaderLoader.h>
 
 #include <algorithm>
 

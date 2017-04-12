@@ -4,7 +4,7 @@
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/stages/multiframe/MultiFrameDiscDistributionStage.h>
+#include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
 
 #include "DemoDOFCubeStage.h"
 
@@ -15,11 +15,12 @@ CPPEXPOSE_COMPONENT(DemoDOFPipeline, gloperate::Stage)
 DemoDOFPipeline::DemoDOFPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, m_dofShiftStage(cppassist::make_unique<gloperate::MultiFrameDiscDistributionStage>(environment))
+, multiFrameCount("multiFrameCount", this, 1)
+, m_dofShiftStage(cppassist::make_unique<gloperate_glkernel::DiscDistributionKernelStage>(environment))
 , m_cubeStage(cppassist::make_unique<DemoDOFCubeStage>(environment))
 {
     addStage(m_dofShiftStage.get());
-    m_dofShiftStage->currentMultiFrame << renderInterface.frameCounter;
+    m_dofShiftStage->kernelSize << multiFrameCount;
     m_dofShiftStage->radius.setValue(0.03f);
 
     addStage(m_cubeStage.get());
@@ -29,7 +30,7 @@ DemoDOFPipeline::DemoDOFPipeline(gloperate::Environment * environment, const std
     m_cubeStage->renderInterface.targetFBO << renderInterface.targetFBO;
     m_cubeStage->renderInterface.timeDelta << renderInterface.timeDelta;
     m_cubeStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
-    m_cubeStage->dofShift << m_dofShiftStage->value;
+    m_cubeStage->dofShifts << m_dofShiftStage->kernel;
 
     renderInterface.rendered << m_cubeStage->renderInterface.rendered;
 }

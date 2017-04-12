@@ -9,6 +9,7 @@ find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
+find_package(glkernel  REQUIRED)
 
 
 #
@@ -151,11 +152,13 @@ target_link_libraries(${target}
     PRIVATE
     ${OPENGL_LIBRARIES}
     ${META_PROJECT_NAME}::gloperate
+    ${META_PROJECT_NAME}::gloperate-glkernel
     cpplocate::cpplocate
     cppexpose::cppexpose
     cppassist::cppassist
     glbinding::glbinding
     globjects::globjects
+    glkernel::glkernel
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
