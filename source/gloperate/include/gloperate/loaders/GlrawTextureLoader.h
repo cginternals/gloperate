@@ -22,7 +22,7 @@ namespace globjects
 *  @brief
 *    .raw file loader 
 */
-class GlrawTextureLoader : public gloperate::Loader<globjects::Texture>
+class GLOPERATE_API GlrawTextureLoader : public gloperate::Loader<globjects::Texture>
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(

@@ -4,8 +4,10 @@
 
 #include <glbinding/gl/types.h>
 
+#include <gloperate/gloperate_api.h>
 
-namespace glraw
+
+namespace gloperate
 {
 
 
@@ -14,7 +16,7 @@ namespace glraw
 *    Class to parse the filename of .raw files and extract the attributes of the texture.
 *
 */
-class FileNameSuffix
+class GLOPERATE_API RawFileNameSuffix
 {
 public:  
     /**
@@ -24,7 +26,7 @@ public:
     *  @param[in] fileName
     *    filename of the .raw file
     */
-    FileNameSuffix(const std::string & fileName);
+    RawFileNameSuffix(const std::string & fileName);
 
 
     /**
@@ -97,4 +99,4 @@ protected:
     bool m_compressed;   ///< states if Texture is compressed or not
 };
 
-} // namespace glraw
+} // namespace gloperate

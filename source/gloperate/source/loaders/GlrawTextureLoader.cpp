@@ -14,7 +14,7 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/base/FileNameSuffix.h>
+#include <gloperate/base/RawFileNameSuffix.h>
 
 
 CPPEXPOSE_COMPONENT(GlrawTextureLoader, gloperate::AbstractLoader)
@@ -122,7 +122,7 @@ globjects::Texture * GlrawTextureLoader::loadGLRawImage(const std::string & file
 
 globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filename) const
 {
-    glraw::FileNameSuffix suffix(filename);
+    gloperate::RawFileNameSuffix suffix(filename);
     if (!suffix.isValid())
         return nullptr;
 

@@ -1,4 +1,5 @@
-#include <FileNameSuffix.h>
+
+#include <gloperate/base/RawFileNameSuffix.h>
 
 #include <cassert>
 #include <regex>
@@ -50,11 +51,11 @@ namespace
 }
 
 
-namespace glraw
+namespace gloperate
 {
 
 
-FileNameSuffix::FileNameSuffix(const std::string & fileName)
+RawFileNameSuffix::RawFileNameSuffix(const std::string & fileName)
 : m_width (-1)
 , m_height(-1)
 , m_format(gl::GL_NONE)
@@ -94,7 +95,7 @@ FileNameSuffix::FileNameSuffix(const std::string & fileName)
 }
 
 
-bool FileNameSuffix::isValid() const
+bool RawFileNameSuffix::isValid() const
 {
     return m_width  != -1
         && m_height != -1
@@ -102,41 +103,41 @@ bool FileNameSuffix::isValid() const
         && (m_compressed || m_format != gl::GL_NONE);
 }
 
-int FileNameSuffix::width() const
+int RawFileNameSuffix::width() const
 {
     return m_width;
 }
 
-int FileNameSuffix::height() const
+int RawFileNameSuffix::height() const
 {
     return m_height;
 }
 
-gl::GLenum FileNameSuffix::type() const
+gl::GLenum RawFileNameSuffix::type() const
 {
     return m_type;
 }
 
-gl::GLenum FileNameSuffix::format() const
+gl::GLenum RawFileNameSuffix::format() const
 {
     return m_format;
 }
 
-bool FileNameSuffix::compressed() const
+bool RawFileNameSuffix::compressed() const
 {
     return m_compressed;
 }
 
-gl::GLenum FileNameSuffix::format(const std::string & format)
+gl::GLenum RawFileNameSuffix::format(const std::string & format)
 {
     auto it = formatsBySuffix.find(cppassist::string::toLower(format));
     return (it!=formatsBySuffix.end()) ? it->second : gl::GL_NONE;
 }
 
-gl::GLenum FileNameSuffix::type(const std::string & type)
+gl::GLenum RawFileNameSuffix::type(const std::string & type)
 {
     auto it = typesBySuffix.find(cppassist::string::toLower(type));
     return (it!=typesBySuffix.end()) ? it->second : gl::GL_NONE;
 }
 
-} // namespace glraw
+} // namespace gloperate

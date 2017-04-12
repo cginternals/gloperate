@@ -80,7 +80,7 @@ set(headers
     ${include_path}/base/ColorGradientPreparation.h
     ${include_path}/base/ExplicitEquidistantColorGradient.h
     ${include_path}/base/ExplicitEquidistantColorGradient.inl
-    ${include_path}/base/FileNameSuffix.h
+    ${include_path}/base/RawFileNameSuffix.h
 
     ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h
@@ -187,7 +187,7 @@ set(sources
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
     ${source_path}/base/AbstractColorGradient.cpp
     ${source_path}/base/ExtendedProperties.cpp
-    ${source_path}/base/FileNameSuffix.cpp
+    ${source_path}/base/RawFileNameSuffix.cpp
 
     ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
