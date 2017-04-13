@@ -1,11 +1,16 @@
 
 #include <QApplication>
+#include <QSurfaceFormat>
+
+#include <cppassist/cmdline/ArgumentParser.h>
 
 #include <cppexpose/plugin/ComponentManager.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 
+#include <gloperate-qt/base/GLContext.h>
+#include <gloperate-qt/base/GLContextFactory.h>
 #include <gloperate-qt/base/Application.h>
 #include <gloperate-qt/base/UpdateManager.h>
 
@@ -22,6 +27,12 @@ using namespace gloperate_qtquick;
 
 int main(int argc, char * argv[])
 {
+    // Read command line options
+    cppassist::ArgumentParser argumentParser;
+    argumentParser.parse(argc, argv);
+
+    const auto contextString = argumentParser.value("--context");
+
     // Create gloperate environment
     Environment environment;
 
@@ -46,6 +57,20 @@ int main(int argc, char * argv[])
     environment.componentManager()->scanPlugins("loaders");
     environment.componentManager()->scanPlugins("stages");
     environment.componentManager()->scanPlugins("exporter");
+
+    // Specify desired context format
+    gloperate::GLContextFormat format;
+
+    if (!contextString.empty())
+    {
+        if (!format.initializeFromString(contextString))
+        {
+            return 1;
+        }
+    }
+
+    QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
+    QSurfaceFormat::setDefaultFormat(qFormat);
 
     // Load and show QML
     qmlEngine.load(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/TextExampleViewer.qml"));
