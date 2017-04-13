@@ -17,12 +17,18 @@ endif()
 # Project options
 # 
 
+set(default_visibility "hidden")
+
+if("${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
+    set(default_visibility "default")
+endif()
+
 set(DEFAULT_PROJECT_OPTIONS
     DEBUG_POSTFIX             "d"
     CXX_STANDARD              11 # Not available before CMake 3.1; see below for manual command line argument addition
     LINKER_LANGUAGE           "CXX"
     POSITION_INDEPENDENT_CODE ON
-    CXX_VISIBILITY_PRESET     "hidden"
+    CXX_VISIBILITY_PRESET     ${default_visibility}
 )
 
 
