@@ -64,16 +64,17 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
             window,
             window->openglContext(),
             false);
+
         // Make sure that context is still active
         window->openglContext()->makeCurrent(window);
 
+        // Finish FBO setup
         initializeFboAttachments();
     }
     else
     {
+        // Activate context
         Utils::setGlobjectsContext();
-
-        // Make sure that context is still active
         window->openglContext()->makeCurrent(window);
     }
 
@@ -96,8 +97,10 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
         );
     }
 
-    // Done current to ensure correct active context management
-    window->openglContext()->doneCurrent();
+    // This function is called by Qt. We must not reset the context here because
+    // Qt still assumes it to be active.
+
+    // window->openglContext()->doneCurrent();
 
     return fbo;
 }
