@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppassist/logging/logging.h>
+
 #include <cppexpose/typed/Typed.h>
 
 #include <gloperate/pipeline/Stage.h>
@@ -68,6 +70,8 @@ Slot<T>::~Slot()
 template <typename T>
 bool Slot<T>::connect(Slot<T> * source)
 {
+    cppassist::debug(2, "gloperate") << this->qualifiedName() << ": connect slot " << source->qualifiedName();
+
     // Check if source is valid
     if (!source) {
         return false;
@@ -76,10 +80,14 @@ bool Slot<T>::connect(Slot<T> * source)
     // Set source
     m_source = source;
 
-    // Connect to data container
-    m_connection = m_source->valueChanged.connect([this] (const T & value)
+    // Connect to data container; no direct binding of member function to achive virtual lookup
+    m_valueConnection = m_source->valueChanged.connect([this] (const T & value)
     {
         this->onValueChanged(value);
+    } );
+    m_validConnection = m_source->valueInvalidated.connect([this] ()
+    {
+        this->onValueInvalidated();
     } );
 
     // Emit events
@@ -135,6 +143,7 @@ bool Slot<T>::connect(AbstractSlot * source)
     // Check if source is valid and compatible data container
     if (!source || !isCompatible(source))
     {
+        cppassist::debug(2, "gloperate") << this->qualifiedName() << ": connect slot failed for " << source->qualifiedName();
         return false;
     }
 
@@ -147,7 +156,10 @@ void Slot<T>::disconnect()
 {
     // Reset source property
     m_source     = nullptr;
-    m_connection = cppexpose::ScopedConnection();
+    m_valueConnection = cppexpose::ScopedConnection();
+    m_validConnection = cppexpose::ScopedConnection();
+
+    cppassist::debug(2, "gloperate") << this->qualifiedName() << ": disconnect slot";
 
     // Emit events
     this->promoteConnection();
@@ -176,17 +188,32 @@ bool Slot<T>::isValid() const
 template <typename T>
 void Slot<T>::setValid(bool isValid)
 {
+    // Set state of own data
+    const auto wasValid = m_valid;
+
     // If connected, abort function
-    if (m_source)
+    if (!m_source)
     {
-        return;
+        m_valid = isValid;
     }
 
-    // Set state of own data
-    m_valid = isValid;
+    // Emit signal if it was invalidated
+    if (wasValid && !isValid)
+    {
+        this->onValueInvalidated();
+    }
+}
 
-    // Emit signal
-    this->onValueChanged(this->m_value);
+template <typename T>
+bool Slot<T>::hasChanged() const
+{
+    return m_changed;
+}
+
+template <typename T>
+void Slot<T>::setChanged(bool hasChanged)
+{
+    m_changed = hasChanged;
 }
 
 template <typename T>

@@ -82,8 +82,6 @@ DemoStage::~DemoStage()
 
 void DemoStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    globjects::init();
-
     createAndSetupCamera();
     createAndSetupTexture();
     createAndSetupGeometry();

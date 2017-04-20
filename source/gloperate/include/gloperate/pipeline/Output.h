@@ -79,6 +79,7 @@ public:
 
 protected:
     // Virtual AbstractSlot interface
+    virtual void onValueInvalidated() override;
     virtual void onRequiredChanged() override;
 
     // Virtual Typed<T> interface

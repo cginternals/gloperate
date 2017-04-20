@@ -222,6 +222,24 @@ public:
 
     /**
     *  @brief
+    *    Get KHR_no_error context mode
+    *
+    *  @return
+    *    KHR_no_error context mode (default: false)
+    */
+    bool noErrorContext() const;
+
+    /**
+    *  @brief
+    *    Set KHR_no_error context mode
+    *
+    *  @param[in] on
+    *    KHR_no_error context mode
+    */
+    void setNoErrorContext(bool on);
+
+    /**
+    *  @brief
     *    Get buffer size for red color channel
     *
     *  @return
@@ -399,6 +417,30 @@ public:
     */
     bool verify(const GLContextFormat & requested) const;
 
+    /**
+     *  @brief
+     *    Create a string representing the Format using the scheme
+     *    "OpenGL<majorVersion>.<minorVersion><profile>[:<flagname>=<flagvalue>]*".
+     *
+     *  @return
+     *    The format as string.
+     */
+    std::string toString() const;
+
+    /**
+     *  @brief
+     *    Update format attributes from string representation
+     *
+     *  @param[in] formatString
+     *    "OpenGL<majorVersion>.<minorVersion><profile>[:<flagname>=<flagvalue>]*"
+     *    e.g. OpenGL3.0None:ForwardCompatiblity=true:Debug=true:NoError=true
+     *
+     *  @remarks
+     *    Bool parameter without the '=<flagvalue>' are considered as 'true'
+     *    i.e. OpenGL3.2Core:Debug <=> OpenGL3.2Core:Debug=true
+     */
+    bool initializeFromString(const std::string & formatString);
+
 
 protected:
     /**
@@ -461,6 +503,7 @@ protected:
 
     bool m_forwardCompatibility;        ///< Forward compatibility mode
     bool m_debugContext;                ///< Debug context mode
+    bool m_noerror;                     ///< KHR_no_error context mode
 
     unsigned int m_redBufferSize;       ///< Buffer size for red color channel
     unsigned int m_greenBufferSize;     ///< Buffer size for green color channel
