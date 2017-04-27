@@ -59,7 +59,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    NoiseKernelStage(gloperate::Environment * environment, const std::string & name = "Noise Kernel");
+    NoiseKernelStage(gloperate::Environment * environment, const std::string & name = "NoiseKernelStage");
 
     /**
     *  @brief
