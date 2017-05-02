@@ -9,8 +9,7 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/StringTemplate.h>
-#include <globjects/base/StaticStringSource.h>
+#include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
@@ -34,44 +33,6 @@ static const std::array<std::array<glm::vec3, 2>, 8> s_vertices { {
     {{ glm::vec3(1.f, 0.f, 1.f), glm::vec3(0.f, 1.f, 0.f) }},
     {{ glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f) }}
 } };
-
-// Vertex shader displaying the cube
-static const char * s_vertexShader = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-uniform mat4 modelViewProjection;
-
-layout (location = 0) in vec3 a_vertex;
-layout (location = 1) in vec3 a_normal;
-
-flat out vec3 v_normal;
-
-void main()
-{
-    gl_Position = modelViewProjection * vec4(a_vertex, 1.0);
-    v_normal = a_normal;
-}
-)";
-
-// Fragment shader displaying the cube
-static const char * s_fragmentShader = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-const vec3 lightIntensity = vec3(0.9);
-
-flat in vec3 v_normal;
-
-layout (location = 0) out vec4 fragColor;
-layout (location = 1) out vec3 normal;
-
-void main()
-{
-    fragColor = vec4(vec3(dot(v_normal, lightIntensity)), 1.0);
-    normal = v_normal;
-}
-)";
 
 
 } // namespace
@@ -171,8 +132,8 @@ void DemoSSAORenderingStage::setupGeometry()
 
 void DemoSSAORenderingStage::setupProgram()
 {
-    m_vertexShaderSource   = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_vertexShader));
-    m_fragmentShaderSource = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_fragmentShader));
+    m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoSSAORendering.vert");
+    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoSSAORendering.frag");
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");

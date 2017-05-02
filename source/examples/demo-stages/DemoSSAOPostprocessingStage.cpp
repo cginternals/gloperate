@@ -9,97 +9,11 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/File.h>
-#include <globjects/base/StringTemplate.h>
-#include <globjects/base/StaticStringSource.h>
-#include <globjects/VertexArray.h>
-#include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/NamedString.h>
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
-
-
-namespace
-{
-
-
-// Geometry, screen aligned quad
-static const std::array<glm::vec2, 4> s_vertices { {
-    glm::vec2(-1.f, -1.f),
-    glm::vec2(-1.f, +1.f),
-    glm::vec2(+1.f, -1.f),
-    glm::vec2(+1.f, +1.f),
-} };
-
-// Vertex shader displaying the quad
-static const char * s_vertexShader = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-layout (location = 0) in vec2 a_vertex;
-
-out vec2 v_uv;
-
-void main()
-{
-    gl_Position = vec4(a_vertex, 0.0, 1.0);
-    v_uv = a_vertex * 0.5 + 0.5;
-}
-)";
-
-// Fragment shader displaying the quad
-static const char * s_fragmentShader = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-#extension GL_ARB_shading_language_include : require
-
-#include </gloperate/shaders/ssao.glsl>
-
-const vec3 ssaoColor = vec3(0.0);
-const float farZ = 10.0;
-const float ssaoRadius = 0.2;
-const float ssaoIntensity = 0.5;
-
-uniform sampler2D colorTexture;
-uniform sampler2D normalTexture;
-uniform sampler2D depthTexture;
-uniform sampler1D ssaoKernelTexture;
-uniform sampler3D ssaoNoiseTexture;
-
-uniform mat4 projectionMatrix;
-uniform mat4 projectionInverseMatrix;
-uniform mat3 normalMatrix;
-
-in vec2 v_uv;
-
-layout (location = 0) out vec4 fragColor;
-
-void main()
-{
-    vec3 baseColor = texture(colorTexture, v_uv).rgb;
-
-    vec3 ssaoFactor = ssao(
-        v_uv,
-        ssaoColor,
-        farZ,
-        ssaoRadius,
-        ssaoIntensity,
-        ssaoKernelTexture,
-        ssaoNoiseTexture,
-        depthTexture,
-        normalTexture,
-        projectionMatrix,
-        projectionInverseMatrix,
-        normalMatrix
-    );
-
-    fragColor = vec4(baseColor * ssaoFactor, 1.0);
-}
-)";
-
-
-} // namespace
 
 
 CPPEXPOSE_COMPONENT(DemoSSAOPostprocessingStage, gloperate::Stage)
@@ -178,7 +92,7 @@ void DemoSSAOPostprocessingStage::onProcess(gloperate::AbstractGLContext *)
 
     // Draw geometry
     m_program->use();
-    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
+    m_screenAlignedQuad->draw();
     m_program->release();
 
     // Unbind textures
@@ -197,21 +111,13 @@ void DemoSSAOPostprocessingStage::onProcess(gloperate::AbstractGLContext *)
 
 void DemoSSAOPostprocessingStage::setupGeometry()
 {
-    m_vao = cppassist::make_unique<globjects::VertexArray>();
-    m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
-    m_vertexBuffer->setData(s_vertices, gl::GL_STATIC_DRAW);
-
-    auto positionBinding = m_vao->binding(0);
-    positionBinding->setAttribute(0);
-    positionBinding->setBuffer(m_vertexBuffer.get(), 0, sizeof(glm::vec2));
-    positionBinding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
-    m_vao->enable(0);
+    m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
 }
 
 void DemoSSAOPostprocessingStage::setupProgram()
 {
-    m_vertexShaderSource   = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_vertexShader  ));
-    m_fragmentShaderSource = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_fragmentShader));
+    m_vertexShaderSource   = gloperate::ScreenAlignedQuad::vertexShaderSource();
+    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate/shaders/Demo/DemoSSAOPostprocessing.frag");
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");

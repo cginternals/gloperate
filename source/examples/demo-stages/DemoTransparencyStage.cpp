@@ -8,8 +8,7 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/StringTemplate.h>
-#include <globjects/base/StaticStringSource.h>
+#include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
@@ -29,62 +28,6 @@ static const std::array<glm::vec2, 4> s_vertices { {
     glm::vec2(+1.f, -1.f),
     glm::vec2(+1.f, +1.f),
 } };
-
-// Vertex shader displaying the circles
-static const char * s_vertexShader = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-uniform mat4 modelViewProjection;
-uniform float z;
-
-layout (location = 0) in vec2 a_vertex;
-
-out vec2 v_localPos;
-
-void main()
-{
-    gl_Position = modelViewProjection * vec4(a_vertex, z, 1.0);
-    v_localPos = a_vertex;
-}
-)";
-
-// Fragment shader displaying the circles
-static const char * s_fragmentShader = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-const float alpha = 0.35;
-
-uniform sampler2D transparencyKernel;
-uniform sampler3D noiseKernel;
-uniform vec3 color;
-uniform float randVal;
-
-in vec2 v_localPos;
-
-layout (location = 0) out vec4 fragColor;
-
-void main()
-{
-    // Making a circle from a square
-    if (v_localPos.x * v_localPos.x + v_localPos.y * v_localPos.y > 1.0)
-    {
-        discard;
-    }
-
-    float rand = texture(noiseKernel, vec3(v_localPos * 0.5 + 0.5, randVal)).r;
-
-    ivec2 transpSize = textureSize(transparencyKernel, 0);
-    ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize);
-    bool opaque = texelFetch(transparencyKernel, transpIndex, 0).r > 0.5;
-
-    if (!opaque)
-        discard;
-
-    fragColor = vec4(color, 1.0);
-}
-)";
 
 
 } // namespace
@@ -219,8 +162,8 @@ void DemoTransparencyStage::setupGeometry()
 
 void DemoTransparencyStage::setupProgram()
 {
-    m_vertexShaderSource   = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_vertexShader  ));
-    m_fragmentShaderSource = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_fragmentShader));
+    m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoTransparency.vert");
+    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoTransparency.frag");
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");

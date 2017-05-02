@@ -16,6 +16,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
+#include <gloperate/rendering/ScreenAlignedQuad.h>
 
 
 /**
@@ -85,12 +86,11 @@ protected:
 
 protected:
     // Rendering objects
-    std::unique_ptr<globjects::VertexArray>    m_vao;
-    std::unique_ptr<globjects::Buffer>         m_vertexBuffer;
-    std::unique_ptr<globjects::StringTemplate> m_vertexShaderSource;
-    std::unique_ptr<globjects::StringTemplate> m_fragmentShaderSource;
-    std::unique_ptr<globjects::Shader>         m_vertexShader;
-    std::unique_ptr<globjects::Shader>         m_fragmentShader;
-    std::unique_ptr<globjects::Program>        m_program;
-    std::unique_ptr<globjects::NamedString>    m_ssaoFileNamedString;
+    std::unique_ptr<gloperate::ScreenAlignedQuad>    m_screenAlignedQuad;
+    std::unique_ptr<globjects::AbstractStringSource> m_vertexShaderSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_fragmentShaderSource;
+    std::unique_ptr<globjects::Shader>               m_vertexShader;
+    std::unique_ptr<globjects::Shader>               m_fragmentShader;
+    std::unique_ptr<globjects::Program>              m_program;
+    std::unique_ptr<globjects::NamedString>          m_ssaoFileNamedString;
 };
