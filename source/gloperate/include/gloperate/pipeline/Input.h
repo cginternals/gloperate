@@ -6,6 +6,7 @@
 #include <thread>
 #include <mutex>
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/pipeline/Slot.h>
 
 
@@ -20,7 +21,7 @@ namespace gloperate
 *  @see AbstractSlot
 */
 template <typename T>
-class Input : public Slot<T>
+class GLOPERATE_TEMPLATE_API Input : public Slot<T>
 {
 public:
     /**

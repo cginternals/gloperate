@@ -6,6 +6,7 @@
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/signal/ScopedConnection.h>
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/pipeline/AbstractSlot.h>
 
 
@@ -20,7 +21,7 @@ namespace gloperate
 *  @see AbstractSlot
 */
 template <typename T>
-class Slot : public cppexpose::DirectValue<T, AbstractSlot>
+class GLOPERATE_TEMPLATE_API Slot : public cppexpose::DirectValue<T, AbstractSlot>
 {
 protected:
     //@{

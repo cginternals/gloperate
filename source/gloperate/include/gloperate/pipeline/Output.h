@@ -2,6 +2,7 @@
 #pragma once
 
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/pipeline/Slot.h>
 
 
@@ -16,7 +17,7 @@ namespace gloperate
 *  @see AbstractSlot
 */
 template <typename T>
-class Output : public Slot<T>
+class GLOPERATE_TEMPLATE_API Output : public Slot<T>
 {
 public:
     /**
