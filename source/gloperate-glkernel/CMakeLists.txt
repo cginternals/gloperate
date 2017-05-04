@@ -20,9 +20,10 @@ set(target gloperate-glkernel)
 # Set API export file and macro
 string(MAKE_C_IDENTIFIER ${target} target_id)
 string(TOUPPER ${target_id} target_id)
-set(feature_file "include/${target}/${target}_features.h")
-set(export_file  "include/${target}/${target}_api.h")
-set(export_macro "${target_id}_API")
+set(feature_file         "include/${target}/${target}_features.h")
+set(export_file          "include/${target}/${target}_export.h")
+set(template_export_file "include/${target}/${target}_api.h")
+set(export_macro         "${target_id}_API")
 
 
 #
@@ -85,6 +86,11 @@ generate_export_header(${target}
     EXPORT_MACRO_NAME ${export_macro}
 )
 
+generate_template_export_header(${target}
+    ${target_id}
+    ${template_export_file}
+)
+
 
 #
 # Project options
@@ -94,6 +100,8 @@ set_target_properties(${target}
     PROPERTIES
     ${DEFAULT_PROJECT_OPTIONS}
     FOLDER "${IDE_FOLDER}"
+    VERSION ${META_VERSION}
+    SOVERSION ${META_VERSION_MAJOR}
 )
 
 
@@ -181,6 +189,17 @@ target_link_libraries(${target}
     ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
+)
+
+
+#
+# Target Health
+#
+
+perform_health_checks(
+    ${target}
+    ${sources}
+    ${headers}
 )
 
 
