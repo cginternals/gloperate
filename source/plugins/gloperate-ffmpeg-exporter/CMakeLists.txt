@@ -3,6 +3,7 @@
 # External dependencies
 # 
 
+find_package(glm REQUIRED)
 find_package(cpplocate REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(cppexpose REQUIRED)

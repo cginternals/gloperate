@@ -3,7 +3,7 @@
 # External dependencies
 # 
 
-find_package(GLM       REQUIRED)
+find_package(glm       REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
@@ -83,10 +83,6 @@ target_include_directories(${target}
     PRIVATE
     ${DEFAULT_INCLUDE_DIRECTORIES}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${GLM_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/source/gloperate/include
-    ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
-    ${PROJECT_SOURCE_DIR}/source/gloperate-qtquick/include
 )
 
 
