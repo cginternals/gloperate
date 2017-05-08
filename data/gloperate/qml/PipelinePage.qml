@@ -1,48 +1,23 @@
 
-import QtQuick 2.4
+import QtQuick 2.0
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
 
 import QmlToolbox.Base 1.0
-import QmlToolbox.PipelineEditor 1.0
-import QmlToolbox.Controls 1.0 as Controls
+import QmlToolbox.Controls 1.0
 
 
-Page 
+Item
 {
-    id: page
-
-    header: Controls.ToolBar 
+    ColumnLayout
     {
-        id: toolBar
+        anchors.top:   parent.top
+        anchors.left:  parent.left
+        anchors.right: parent.right
 
-        RowLayout 
+        Label
         {
-            anchors.fill: parent
-
-            Controls.ToolButton 
-            {
-                text: qsTr("Back")
-
-                onClicked: page.StackView.view.pop()
-            }
-
-            Item { Layout.fillWidth: true }
+            text: qsTr("Select Pipeline")
+            font.pointSize: Ui.style.fontSizeLarge
         }
-    }
-
-    PipelineEditor
-    {
-        id: pipelineEditor
-
-        anchors.fill: parent
-
-        pipelineInterface: DemoPipelineInterface { }
-    }
-
-    Component.onCompleted:
-    {
-        Ui.setStyle("Light");
-        pipelineEditor.load();
     }
 }
