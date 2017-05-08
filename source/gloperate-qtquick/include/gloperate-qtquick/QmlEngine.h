@@ -8,7 +8,6 @@
 #include <cppexpose/variant/Variant.h>
 
 #include <qmltoolbox/QmlApplicationEngine.h>
-#include <qmltoolbox/QmlEngine.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 

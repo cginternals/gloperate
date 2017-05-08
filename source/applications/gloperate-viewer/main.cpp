@@ -7,6 +7,8 @@
 #include <cppexpose/scripting/ScriptContext.h>
 #include <cppexpose/reflection/Property.h>
 
+#include <qmltoolbox/MessageHandler.h>
+
 #include <gloperate/gloperate.h>
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/Environment.h>
@@ -29,6 +31,9 @@ using namespace gloperate_qtquick;
 
 int main(int argc, char * argv[])
 {
+    // Redirect output
+    qmltoolbox::MessageHandler::instance().installMessageHandlers();
+
     // Read command line options
     cppassist::ArgumentParser argumentParser;
     argumentParser.parse(argc, argv);
