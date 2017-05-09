@@ -6,8 +6,6 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 
-#include <globjects/base/StringTemplate.h>
-#include <globjects/base/StaticStringSource.h>
 #include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
@@ -38,66 +36,6 @@ static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
     {{ glm::vec3(-1.f, +1.f, -1.f), glm::vec3( 0.0f,  1.0f,  0.0) }},
     {{ glm::vec3(-1.f, +1.f, +1.f), glm::vec3( 0.0f,  1.0f,  0.0) }}
 } };
-
-static const char * s_vertexShader = R"(
-    #version 140
-    #extension GL_ARB_explicit_attrib_location : require
-
-    uniform mat4 modelMatrix;
-    uniform mat4 modelViewProjection;
-
-    layout (location = 0) in vec3 a_vertex;
-    layout (location = 1) in vec3 a_normal;
-
-    out vec3 v_worldPosition;
-    flat out vec3 v_normal;
-
-    void main()
-    {
-        gl_Position = modelViewProjection * vec4(a_vertex, 1.0);
-
-        v_worldPosition = (modelMatrix * vec4(a_vertex, 1.0)).xyz;
-        v_normal = normalize((modelMatrix * vec4(a_normal, 0.0)).xyz);
-    }
-)";
-
-static const char * s_fragmentShader = R"(
-    #version 140
-    #extension GL_ARB_explicit_attrib_location : require
-    #extension GL_ARB_shading_language_include : require
-
-    #define LIGHT_PROCESSING_PHONG
-
-    #include </gloperate/shaders/lightProcessing.glsl>
-
-    uniform samplerBuffer colorTypeData;
-    uniform samplerBuffer positionData;
-    uniform samplerBuffer attenuationData;
-
-    uniform vec3 eye;
-    uniform float glossiness;
-
-    in vec3 v_worldPosition;
-    flat in vec3 v_normal;
-
-    layout (location = 0) out vec4 fragColor;
-
-    void main()
-    {
-        vec3 color = lightIntensity(
-            v_worldPosition,
-            vec3(1.0),
-            vec3(0.5),
-            v_normal,
-            glossiness,
-            eye,
-            colorTypeData,
-            positionData,
-            attenuationData);
-
-        fragColor = vec4(color, 1.0);
-    }
-)";
 
 static const glm::vec3 cameraEye(0.0f, -1.5f, -3.0f);
 
@@ -143,8 +81,8 @@ void LightTestStage::onContextInitialize(gloperate::AbstractGLContext * /*contex
     m_vao->enable(1);
 
     // setup Program
-    m_vertexShaderSource   = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_vertexShader  ));
-    m_fragmentShaderSource = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_fragmentShader));
+    m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoLights.vert");
+    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoLights.frag");
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");
