@@ -84,7 +84,8 @@ public:
 
 protected:
     void onRotateChanged(const bool & rotate);
-    void onContextInit(gloperate::AbstractGLContext * context);
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
 
 
 protected:
@@ -102,7 +103,6 @@ protected:
 
     std::unique_ptr<gloperate::MixerStage> m_mixerStage;                           ///< Stage that renders the output to the screen
 
-protected:
-    // Members
-    std::unique_ptr<gloperate::ScreenAlignedQuad> m_screenAlignedQuad;             ///< Simple Screen Aligned Quad for Colorization in Demo
+    // Internal data
+    std::unique_ptr<gloperate::ScreenAlignedQuad> m_screenAlignedQuad;             ///< Simple screen-aligned quad for colorization in demo
 };

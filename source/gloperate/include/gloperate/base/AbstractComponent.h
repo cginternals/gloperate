@@ -22,7 +22,7 @@ class Stage;
 *    Component base class for gloperate classes
 */
 template <class BaseType>
-class AbstractComponent : public cppexpose::AbstractComponent
+class GLOPERATE_TEMPLATE_API AbstractComponent : public cppexpose::AbstractComponent
 {
 public:
     AbstractComponent();
@@ -37,7 +37,7 @@ public:
 *    Component base class for pipelines and stages
 */
 template <>
-class AbstractComponent<gloperate::Stage> : public cppexpose::AbstractComponent
+class GLOPERATE_TEMPLATE_API AbstractComponent<gloperate::Stage> : public cppexpose::AbstractComponent
 {
 public:
     AbstractComponent()

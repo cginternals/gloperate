@@ -36,6 +36,11 @@ Canvas::Canvas(Environment * environment)
         }
     });
 
+    m_pipelineContainer.rendered.valueChanged.onFire([this] ()
+    {
+        this->redraw();
+    });
+
     addProperty(&m_pipelineContainer);
 }
 

@@ -36,7 +36,7 @@ namespace gloperate
 *    The wrapped value type
 */
 template <typename T>
-class CachedValue
+class GLOPERATE_TEMPLATE_API CachedValue
 {
 public:
     /**

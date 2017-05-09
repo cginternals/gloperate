@@ -45,6 +45,16 @@ public:
 
     /**
     *  @brief
+    *    Set current context for globjects.
+    *
+    *  @remarks
+    *    This function is necessary to handle the usage of OpenGL objects
+    *    From event threads.
+    */
+    static void setGlobjectsContext();
+
+    /**
+    *  @brief
     *    Clear screen (call glClear)
     *
     *  @param[in] red

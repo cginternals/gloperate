@@ -56,6 +56,12 @@ void MixerStage::onContextInit(AbstractGLContext *)
 
 void MixerStage::onContextDeinit(AbstractGLContext *)
 {
+    m_vao = nullptr;
+    m_buffer = nullptr;
+    m_vertexShader = nullptr;
+    m_geometryShader = nullptr;
+    m_fragmentShader = nullptr;
+    m_program = nullptr;
 }
 
 void MixerStage::onProcess(AbstractGLContext *)
@@ -81,14 +87,10 @@ void MixerStage::onProcess(AbstractGLContext *)
     // Set viewport
     gl::glViewport(viewport->x, viewport->y, viewport->z, viewport->w);
 
-    // Disable depth test for screen-aligned quad
+    // Set OpenGL states
+    gl::glDisable(gl::GL_CULL_FACE);
     gl::glDisable(gl::GL_DEPTH_TEST);
-
-    // Enable blending
     gl::glEnable(gl::GL_BLEND);
-
-    // Restore OpenGL states
-    gl::glEnable(gl::GL_DEPTH_TEST);
 
     // Bind texture
     if (*texture) {

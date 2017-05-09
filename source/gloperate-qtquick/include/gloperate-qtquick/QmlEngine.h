@@ -7,7 +7,7 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <qmltoolbox/QmlEngine.h>
+#include <qmltoolbox/QmlApplicationEngine.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
@@ -33,7 +33,7 @@ namespace gloperate_qtquick
 *    for qml and adds an global object named 'global' which
 *    can be used by scripting functions to store data globally.
 */
-class GLOPERATE_QTQUICK_API QmlEngine : public qmltoolbox::QmlEngine
+class GLOPERATE_QTQUICK_API QmlEngine : public qmltoolbox::QmlApplicationEngine
 {
     Q_OBJECT
     Q_PROPERTY(QJSValue global    READ global    WRITE setGlobal)

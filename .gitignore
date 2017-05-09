@@ -23,6 +23,7 @@ release_build
 # Qt cache
 CMakeLists.txt.user
 CMakeLists.txt.user.*
+*.qmlc
 
 # IDE project files
 *.sublime-project

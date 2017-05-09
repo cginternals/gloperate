@@ -30,6 +30,9 @@ void BasicFramebufferStage::onContextInit(AbstractGLContext *)
 
 void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
 {
+    m_texColor = nullptr;
+    m_texDepth = nullptr;
+    m_fbo = nullptr;
 }
 
 void BasicFramebufferStage::onProcess(AbstractGLContext *)

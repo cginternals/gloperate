@@ -4,6 +4,7 @@
 
 #include <functional>
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/base/AbstractStorer.h>
 
 
@@ -21,7 +22,7 @@ namespace gloperate
 *    Storer class template
 */
 template <typename T>
-class Storer : public AbstractStorer 
+class GLOPERATE_TEMPLATE_API Storer : public AbstractStorer
 {
 public:
     /**

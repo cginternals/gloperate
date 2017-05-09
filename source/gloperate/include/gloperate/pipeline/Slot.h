@@ -6,6 +6,7 @@
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/signal/ScopedConnection.h>
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/pipeline/AbstractSlot.h>
 
 
@@ -20,7 +21,7 @@ namespace gloperate
 *  @see AbstractSlot
 */
 template <typename T>
-class Slot : public cppexpose::DirectValue<T, AbstractSlot>
+class GLOPERATE_TEMPLATE_API Slot : public cppexpose::DirectValue<T, AbstractSlot>
 {
 protected:
     //@{
@@ -145,7 +146,7 @@ public:
     virtual void disconnect() override;
     virtual const AbstractSlot * source() const override;
     virtual bool isValid() const override;
-    virtual void setValid(bool isValid) override;
+    virtual void invalidate() override;
     virtual bool hasChanged() const override;
     virtual void setChanged(bool hasChanged) override;
     virtual void onRequiredChanged() override;

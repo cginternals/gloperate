@@ -4,6 +4,7 @@
 
 #include <functional>
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/base/AbstractLoader.h>
 
 
@@ -22,7 +23,7 @@ namespace gloperate
 *    Loader class template
 */
 template <typename T>
-class Loader : public AbstractLoader 
+class GLOPERATE_TEMPLATE_API Loader : public AbstractLoader
 {
 public:
     /**

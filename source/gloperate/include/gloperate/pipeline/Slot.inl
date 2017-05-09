@@ -186,22 +186,21 @@ bool Slot<T>::isValid() const
 }
 
 template <typename T>
-void Slot<T>::setValid(bool isValid)
+void Slot<T>::invalidate()
 {
-    // Set state of own data
-    const auto wasValid = m_valid;
+    if (!m_valid)
+    {
+        return;
+    }
 
     // If connected, abort function
     if (!m_source)
     {
-        m_valid = isValid;
+        m_valid = false;
     }
 
     // Emit signal if it was invalidated
-    if (wasValid && !isValid)
-    {
-        this->onValueInvalidated();
-    }
+    this->onValueInvalidated();
 }
 
 template <typename T>

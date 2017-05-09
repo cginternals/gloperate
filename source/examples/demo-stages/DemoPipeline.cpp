@@ -1,6 +1,8 @@
 
 #include "DemoPipeline.h"
 
+#include <iostream>
+
 #include <glbinding/gl/enum.h>
 
 #include <gloperate/gloperate.h>
@@ -118,7 +120,16 @@ void DemoPipeline::onContextInit(gloperate::AbstractGLContext *context)
 
     m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
 
+std::cout << "DemoPipeline::onContextInit()" << std::endl;
+
     m_colorizeRenderPassStage->drawable = m_screenAlignedQuad.get();
+}
+
+void DemoPipeline::onContextDeinit(gloperate::AbstractGLContext *context)
+{
+    Pipeline::onContextDeinit(context);
+
+    m_screenAlignedQuad = nullptr;
 }
 
 void DemoPipeline::onRotateChanged(const bool & rotate)

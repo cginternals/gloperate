@@ -1,10 +1,13 @@
 
 #include <QQmlContext>
+#include <QSurfaceFormat>
 
 #include <cppassist/cmdline/ArgumentParser.h>
 
 #include <cppexpose/scripting/ScriptContext.h>
 #include <cppexpose/reflection/Property.h>
+
+#include <qmltoolbox/MessageHandler.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/gloperate-version.h>
@@ -14,7 +17,6 @@
 #include <gloperate-qt/base/GLContextFactory.h>
 #include <gloperate-qt/base/UpdateManager.h>
 
-#include <gloperate-qtquick/QuickView.h>
 #include <gloperate-qtquick/QmlEngine.h>
 #include <gloperate-qtquick/QmlScriptContext.h>
 
@@ -29,6 +31,15 @@ using namespace gloperate_qtquick;
 
 int main(int argc, char * argv[])
 {
+    // Redirect output
+    qmltoolbox::MessageHandler::instance().installMessageHandlers();
+
+    // Read command line options
+    cppassist::ArgumentParser argumentParser;
+    argumentParser.parse(argc, argv);
+
+    const auto contextString = argumentParser.value("--context");
+
     // Create gloperate environment
     Environment environment;
 
@@ -58,24 +69,22 @@ int main(int argc, char * argv[])
     environment.componentManager()->scanPlugins("stages");
     environment.componentManager()->scanPlugins("exporter");
 
-    // Load and show QML
-    auto window = cppassist::make_unique<QuickView>(&qmlEngine);
     // Specify desired context format
-    cppassist::ArgumentParser argumentParser;
-    argumentParser.parse(argc, argv);
-    const auto contextString = argumentParser.value("--context");
-    if(!contextString.empty())
+    gloperate::GLContextFormat format;
+
+    if (!contextString.empty())
     {
-        gloperate::GLContextFormat format;
-        if(!format.initializeFromString(contextString))
+        if (!format.initializeFromString(contextString))
+        {
             return 1;
-        QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
-        window->setFormat(qFormat);
+        }
     }
-    window->setResizeMode(QQuickView::SizeRootObjectToView);
-    window->setSource(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
-    window->setGeometry(100, 100, 1280, 720);
-    window->show();
+
+    QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
+    QSurfaceFormat::setDefaultFormat(qFormat);
+
+    // Load and show QML
+    qmlEngine.load(QUrl::fromLocalFile(qmlEngine.gloperateModulePath() + "/Viewer.qml"));
 
     // Run main loop
     return app.exec();

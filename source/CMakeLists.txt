@@ -3,9 +3,6 @@
 # Configuration for all sub-projects
 # 
 
-# External packages
-find_package(cpplocate REQUIRED)
-
 # Generate version-header
 configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/${META_PROJECT_NAME}/${META_PROJECT_NAME}-version.h)
 
@@ -22,6 +19,7 @@ add_subdirectory(gloperate-qt)
 add_subdirectory(gloperate-qtquick)
 add_subdirectory(gloperate-hidapi)
 add_subdirectory(gloperate-glkernel)
+#add_subdirectory(gloperate-ffmpeg)
 #add_subdirectory(gloperate-assimp)
 #add_subdirectory(gloperate-osg)
 add_subdirectory(gloperate-text)
@@ -43,8 +41,10 @@ set(IDE_FOLDER "Examples")
 add_subdirectory(examples)
 
 # Tests
-#set(IDE_FOLDER "Tests")
-#add_subdirectory(tests)
+#if(OPTION_BUILD_TESTS)
+#    set(IDE_FOLDER "Tests")
+#    add_subdirectory(tests)
+#endif()
 
 
 # 

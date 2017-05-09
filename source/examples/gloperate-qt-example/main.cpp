@@ -26,6 +26,12 @@ using namespace gloperate_qt;
 
 int main(int argc, char * argv[])
 {
+    // Read command line options
+    cppassist::ArgumentParser argumentParser;
+    argumentParser.parse(argc, argv);
+
+    const auto contextString = argumentParser.value("--context");
+
     // Create gloperate environment
     Environment environment;
     environment.setupScripting();
@@ -47,17 +53,20 @@ int main(int argc, char * argv[])
 
     // Create render window
     auto window = cppassist::make_unique<RenderWindow>(&environment);
+
     // Specify desired context format
-    cppassist::ArgumentParser argumentParser;
-    argumentParser.parse(argc, argv);
-    const auto contextString = argumentParser.value("--context");
-    if(!contextString.empty())
+    gloperate::GLContextFormat format;
+
+    if (!contextString.empty())
     {
-        gloperate::GLContextFormat format;
-        if(!format.initializeFromString(contextString))
+        if (!format.initializeFromString(contextString))
+        {
             return 1;
-        window->setContextFormat(format);
+        }
     }
+
+    window->setContextFormat(format);
+
     auto windowRaw = window.get();
     window->createContext();
     window->setRenderStage(std::move(renderStage));

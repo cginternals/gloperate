@@ -3,9 +3,10 @@
 # External dependencies
 # 
 
-find_package(GLM REQUIRED)
+find_package(GLM       REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(cpplocate REQUIRED)
 find_package(GLFW)
 find_package(FFMPEG)
 
@@ -121,6 +122,16 @@ target_compile_options(${target}
 target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LINKER_OPTIONS}
+)
+
+
+#
+# Target Health
+#
+
+perform_health_checks(
+    ${target}
+    ${sources}
 )
 
 

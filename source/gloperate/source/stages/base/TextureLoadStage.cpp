@@ -30,6 +30,7 @@ void TextureLoadStage::onContextInit(AbstractGLContext *)
 
 void TextureLoadStage::onContextDeinit(AbstractGLContext *)
 {
+    m_texture = nullptr;
 }
 
 void TextureLoadStage::onProcess(AbstractGLContext *)

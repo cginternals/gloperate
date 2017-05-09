@@ -3,10 +3,11 @@
 # External dependencies
 #
 
-find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
+find_package(OpenGL    REQUIRED)
+find_package(GLM       REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(cpplocate REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(glkernel  REQUIRED)
@@ -208,6 +209,16 @@ target_link_libraries(${target}
     ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
+)
+
+
+#
+# Target Health
+#
+
+perform_health_checks(
+    ${target}
+    ${sources}
 )
 
 

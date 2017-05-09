@@ -20,7 +20,7 @@ class Stage;
 *    Component class for gloperate classes
 */
 template <class BaseType, class Type>
-class Component : public AbstractComponent<BaseType>
+class GLOPERATE_TEMPLATE_API Component : public AbstractComponent<BaseType>
 {
 public:
     Component();
@@ -35,7 +35,7 @@ public:
 *    Component class for pipelines and stages
 */
 template <class Type>
-class Component<gloperate::Stage, Type> : public AbstractComponent<gloperate::Stage>
+class GLOPERATE_TEMPLATE_API Component<gloperate::Stage, Type> : public AbstractComponent<gloperate::Stage>
 {
 public:
     Component();

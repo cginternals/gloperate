@@ -3,12 +3,13 @@
 # External dependencies
 # 
 
-find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
-find_package(glbinding REQUIRED)
-find_package(globjects REQUIRED)
-find_package(cppexpose REQUIRED)
-find_package(cppassist REQUIRED)
+find_package(OpenGL     REQUIRED)
+find_package(GLM        REQUIRED)
+find_package(glbinding  REQUIRED)
+find_package(globjects  REQUIRED)
+find_package(cppexpose  REQUIRED)
+find_package(cppassist  REQUIRED)
+find_package(cpplocate  REQUIRED)
 find_package(qmltoolbox REQUIRED)
 
 # Qt5
@@ -46,9 +47,10 @@ endif()
 # Set API export file and macro
 string(MAKE_C_IDENTIFIER ${target} target_id)
 string(TOUPPER ${target_id} target_id)
-set(feature_file "include/${target}/${target}_features.h")
-set(export_file  "include/${target}/${target}_api.h")
-set(export_macro "${target_id}_API")
+set(feature_file         "include/${target}/${target}_features.h")
+set(export_file          "include/${target}/${target}_export.h")
+set(template_export_file "include/${target}/${target}_api.h")
+set(export_macro         "${target_id}_API")
 
 
 # 
@@ -59,9 +61,9 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/QuickView.h
     ${include_path}/RenderItem.h
-    ${include_path}/TextureRenderItem.h
+    ${include_path}/RenderItemRenderer.h
+#   ${include_path}/TextureRenderItem.h
     ${include_path}/Utils.h
     ${include_path}/VideoProfile.h
     ${include_path}/TextController.h
@@ -72,10 +74,11 @@ set(headers
 )
 
 set(sources
-    ${source_path}/QuickView.cpp
     ${source_path}/RenderItem.cpp
-    ${source_path}/TextureRenderItem.cpp
-    ${source_path}/TextureRenderItem_ogl.cpp
+    ${source_path}/RenderItemRenderer.cpp
+    ${source_path}/RenderItemRenderer_ogl.cpp
+#   ${source_path}/TextureRenderItem.cpp
+#   ${source_path}/TextureRenderItem_ogl.cpp
     ${source_path}/Utils.cpp
     ${source_path}/VideoProfile.cpp
     ${source_path}/TextController.cpp
@@ -116,6 +119,11 @@ generate_export_header(${target}
     EXPORT_MACRO_NAME ${export_macro}
 )
 
+generate_template_export_header(${target}
+    ${target_id}
+    ${template_export_file}
+)
+
 
 # 
 # Project options
@@ -125,6 +133,8 @@ set_target_properties(${target}
     PROPERTIES
     ${DEFAULT_PROJECT_OPTIONS}
     FOLDER "${IDE_FOLDER}"
+    VERSION ${META_VERSION}
+    SOVERSION ${META_VERSION_MAJOR}
 )
 
 
@@ -220,6 +230,17 @@ target_link_libraries(${target}
     ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
+)
+
+
+#
+# Target Health
+#
+
+perform_health_checks(
+    ${target}
+    ${sources}
+    ${headers}
 )
 
 

@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <regex>
+#include <map>
 
 
 #include <cppassist/string/conversion.h>
