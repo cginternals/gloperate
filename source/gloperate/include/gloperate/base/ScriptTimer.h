@@ -4,6 +4,7 @@
 
 #include <cppexpose/function/Function.h>
 
+#include <gloperate/gloperate_api.h>
 #include <gloperate/base/Timer.h>
 
 
@@ -18,7 +19,7 @@ class Environment;
 *  @brief
 *    Timer that executes a scripting function
 */
-class ScriptTimer : public Timer
+class GLOPERATE_API ScriptTimer : public Timer
 {
 public:
     /**
