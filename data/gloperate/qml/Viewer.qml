@@ -318,6 +318,7 @@ ApplicationWindow
             visible:      false
 
             pipelineInterface: gloperatePipeline
+            path:              'pipeline.' + window.stage
 
             onClosed:
             {

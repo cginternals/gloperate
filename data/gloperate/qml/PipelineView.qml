@@ -12,7 +12,8 @@ Item
 
     signal closed()
 
-    property var pipelineInterface: null ///< Interface for communicating with the actual pipeline
+    property var    pipelineInterface: null ///< Interface for communicating with the actual pipeline
+    property string path:              ''   ///< Path to pipeline
 
     implicitWidth:  pipelineEditor.implicitWidth
     implicitHeight: pipelineEditor.implicitHeight
@@ -42,6 +43,6 @@ Item
 
     Component.onCompleted:
     {
-        pipelineEditor.load();
+        pipelineEditor.load(path);
     }
 }
