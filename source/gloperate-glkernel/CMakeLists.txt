@@ -3,6 +3,7 @@
 # External dependencies
 #
 
+find_package(glm       REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(glkernel  REQUIRED)
@@ -116,7 +117,6 @@ target_include_directories(${target}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${PROJECT_SOURCE_DIR}/source/gloperate/include
-    ${GLM_INCLUDE_DIR}
 
     PUBLIC
 

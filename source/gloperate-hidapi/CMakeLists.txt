@@ -3,7 +3,7 @@
 # External libraries
 #
 
-find_package(GLM       REQUIRED)
+find_package(glm       REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
