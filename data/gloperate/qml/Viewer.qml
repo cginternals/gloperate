@@ -142,18 +142,31 @@ ApplicationWindow
                 onClicked: mainMenu.open()
             }
 
-            Item { Layout.fillWidth: true }
+            Item
+            {
+                Layout.fillWidth: true
+            }
 
             ToolButton
             {
                 text: qsTr("Pipeline")
                 onClicked: pipelineMenu.open()
 
-                Menu {
+                Menu
+                {
                     id: pipelineMenu
                     y: toolBar.height
 
-                    MenuItem { text: qsTr("Edit Pipeline") }
+                    MenuItem
+                    {
+                        text: qsTr("Edit Pipeline")
+
+                        onTriggered:
+                        {
+                            pipelineView.visible = true;
+                            mainView.visible     = false;
+                        }
+                    }
                 }
             }
 
@@ -167,8 +180,15 @@ ApplicationWindow
                     id: toolsMenu
                     y: toolBar.height
 
-                    MenuItem { text: qsTr("Take Screenshot") }
-                    MenuItem { text: qsTr("Record Video") }
+                    MenuItem
+                    {
+                        text: qsTr("Take Screenshot")
+                    }
+
+                    MenuItem
+                    {
+                        text: qsTr("Record Video")
+                    }
                 }
             }
 
@@ -223,7 +243,7 @@ ApplicationWindow
         settingsObj: settings
     }
 
-    // Wrapper containing main page and side panel
+    // Container for the main view(s)
     Item
     {
         anchors.left:   parent.left
@@ -231,52 +251,78 @@ ApplicationWindow
         anchors.top:    parent.top
         anchors.bottom: bottomPanel.top
 
-        // Main page
-        RenderItem
+        // Main view
+        Item
         {
-            anchors.left:   sidePanel.position == 'left' ? sidePanel.right : parent.left
-            anchors.right:  sidePanel.position == 'left' ? parent.right    : sidePanel.left
-            anchors.top:    parent.top
-            anchors.bottom: parent.bottom
+            id: mainView
 
-            stage: window.stage
+            anchors.fill: parent
 
-            onCanvasInitialized:
+            visible: true
+
+            RenderItem
             {
-                gloperatePipeline.root = gloperate.canvas0.pipeline;
+                anchors.left:   sidePanel.position == 'left' ? sidePanel.right : parent.left
+                anchors.right:  sidePanel.position == 'left' ? parent.right    : sidePanel.left
+                anchors.top:    parent.top
+                anchors.bottom: parent.bottom
+
+                stage: window.stage
+
+                onCanvasInitialized:
+                {
+                    gloperatePipeline.root = gloperate.canvas0.pipeline;
+                }
+            }
+
+            // Side Panel
+            Panel
+            {
+                id: sidePanel
+
+                position:    settings.panelPosition
+                minimumSize: 240
+
+                ScrollArea
+                {
+                    anchors.fill: parent
+
+                    contentHeight: propertyEditor.height
+                    contentWidth:  propertyEditor.width
+
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+
+                    PropertyEditor
+                    {
+                        id: propertyEditor
+
+                        pipelineInterface: gloperatePipeline
+                        path:              'pipeline.DemoPipeline'
+
+                        Component.onCompleted:
+                        {
+                            propertyEditor.update()
+                        }
+                    }
+                }
             }
         }
 
-        // Side Panel
-        Panel
+        // Pipeline view
+        PipelineView
         {
-            id: sidePanel
+            id: pipelineView
 
-            position:    settings.panelPosition
-            minimumSize: 240
+            anchors.fill: parent
+            visible:      false
 
-            ScrollArea
+            pipelineInterface: gloperatePipeline
+
+            onClosed:
             {
-                anchors.fill: parent
-
-                contentHeight: propertyEditor.height
-                contentWidth:  propertyEditor.width
-
-                flickableDirection: Flickable.VerticalFlick
-                boundsBehavior: Flickable.StopAtBounds
-
-                PropertyEditor
-                {
-                    id: propertyEditor
-
-                    pipelineInterface: gloperatePipeline
-                    path:              'pipeline.DemoPipeline'
-
-                    Component.onCompleted:
-                    {
-                        propertyEditor.update()
-                    }
-                }
+                mainView.visible     = true;
+                pipelineView.visible = false;
             }
         }
     }
