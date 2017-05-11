@@ -59,7 +59,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    HemisphereDistributionKernelStage(gloperate::Environment * environment, const std::string & name = "Hemisphere Distribution Kernel");
+    HemisphereDistributionKernelStage(gloperate::Environment * environment, const std::string & name = "HemisphereDistributionKernelStage");
 
     /**
     *  @brief
