@@ -41,6 +41,7 @@ void TextureStage::onContextInit(gloperate::AbstractGLContext *)
 {
     // Create new texture
     m_texture = Texture::createDefault(GL_TEXTURE_2D);
+
     // Create wrapping render target
     m_renderTarget = cppassist::make_unique<RenderTarget>();
     m_renderTarget->setTarget(m_texture.get());
@@ -50,6 +51,7 @@ void TextureStage::onContextDeinit(AbstractGLContext *)
 {
     // Release texture
     m_texture.reset(nullptr);
+
     // Release render target
     m_renderTarget.reset(nullptr);
 }

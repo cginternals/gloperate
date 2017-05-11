@@ -19,14 +19,12 @@ namespace globjects
     class Texture;
 }
 
-namespace gloperate
-{
-    class RenderTarget;
-}
-
 
 namespace gloperate
 {
+
+
+class RenderTarget;
 
 
 /**
@@ -55,7 +53,7 @@ public:
     Input<glm::vec4>  size;               ///< Viewport size
 
     // Outputs
-    Output<globjects::Texture *> texture;           ///< Texture
+    Output<globjects::Texture *>      texture;      ///< Texture
     Output<gloperate::RenderTarget *> renderTarget; ///< RenderTarget
 
 

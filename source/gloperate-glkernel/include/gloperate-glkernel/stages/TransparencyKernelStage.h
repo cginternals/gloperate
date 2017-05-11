@@ -59,7 +59,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    TransparencyKernelStage(gloperate::Environment * environment, const std::string & name = "Transparency Kernel");
+    TransparencyKernelStage(gloperate::Environment * environment, const std::string & name = "TransparencyKernelStage");
 
     /**
     *  @brief

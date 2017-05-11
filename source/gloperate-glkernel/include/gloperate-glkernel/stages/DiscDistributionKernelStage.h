@@ -60,7 +60,7 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DiscDistributionKernelStage(gloperate::Environment * environment, const std::string & name = "Disc Distribution Kernel");
+    DiscDistributionKernelStage(gloperate::Environment * environment, const std::string & name = "DiscDistributionKernelStage");
 
     /**
     *  @brief
