@@ -136,13 +136,13 @@ target_link_libraries(${target}
     cppassist::cppassist
     cppexpose::cppexpose
     cpplocate::cpplocate
-    glkernel::glkernel
     globjects::globjects
     glbinding::glbinding
-    ${META_PROJECT_NAME}::gloperate
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
+    ${META_PROJECT_NAME}::gloperate
+    glkernel::glkernel
 
     INTERFACE
 )
