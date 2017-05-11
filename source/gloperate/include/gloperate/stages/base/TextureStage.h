@@ -19,14 +19,12 @@ namespace globjects
     class Texture;
 }
 
-namespace gloperate
-{
-    class RenderTarget;
-}
-
 
 namespace gloperate
 {
+
+
+class RenderTarget;
 
 
 /**
