@@ -55,7 +55,7 @@ public:
     Input<glm::vec4>  size;               ///< Viewport size
 
     // Outputs
-    Output<globjects::Texture *> texture;           ///< Texture
+    Output<globjects::Texture *>      texture;      ///< Texture
     Output<gloperate::RenderTarget *> renderTarget; ///< RenderTarget
 
 

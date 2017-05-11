@@ -101,11 +101,11 @@ public:
 
 
 protected:
-    RenderTargetType                    m_type;         ///< Target type
-    gl::GLenum                          m_attachment;   ///< Default framebuffer attachment target
-    globjects::Texture*                 m_texture;      ///< Texture target
-    globjects::Renderbuffer*            m_renderbuffer; ///< Renderbuffer target
-    globjects::FramebufferAttachment*   m_userDefined;  ///< User defined framebuffer attachment target
+    RenderTargetType                   m_type;         ///< Target type
+    gl::GLenum                         m_attachment;   ///< Default framebuffer attachment target
+    globjects::Texture               * m_texture;      ///< Texture target
+    globjects::Renderbuffer          * m_renderbuffer; ///< Renderbuffer target
+    globjects::FramebufferAttachment * m_userDefined;  ///< User defined framebuffer attachment target
 };
 
 
