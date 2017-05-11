@@ -46,7 +46,7 @@ void RenderTarget::releaseTarget()
     m_type = RenderTargetType::Invalid;
 }
 
-void RenderTarget::setTarget(globjects::Texture *texture)
+void RenderTarget::setTarget(globjects::Texture * texture)
 {
     releaseTarget();
 
@@ -55,7 +55,7 @@ void RenderTarget::setTarget(globjects::Texture *texture)
     m_texture = texture;
 }
 
-void RenderTarget::setTarget(globjects::Renderbuffer *renderbuffer)
+void RenderTarget::setTarget(globjects::Renderbuffer * renderbuffer)
 {
     releaseTarget();
 
@@ -73,7 +73,7 @@ void RenderTarget::setTarget(gl::GLenum attachment)
     m_attachment = attachment;
 }
 
-void RenderTarget::setTarget(globjects::FramebufferAttachment *fboAttachment)
+void RenderTarget::setTarget(globjects::FramebufferAttachment * fboAttachment)
 {
     releaseTarget();
 
@@ -96,10 +96,10 @@ void RenderTarget::bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo)
         fbo->attachRenderBuffer(bindingPoint, m_renderbuffer);
         break;
     case RenderTargetType::DefaultFBOAttachment:
-        // ToDo
+        // [TODO]
         break;
     case RenderTargetType::UserDefinedFBOAttachment:
-        // ToDo
+        // [TODO]
         break;
     case RenderTargetType::Invalid:
     default:
@@ -107,11 +107,6 @@ void RenderTarget::bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo)
         break;
     }
 }
-
-// void RenderTarget::unbind()
-// {
-//     // ToDo
-// }
 
 
 } // namespace gloperate

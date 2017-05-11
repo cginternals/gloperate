@@ -11,15 +11,11 @@
 
 namespace globjects
 {
-
-
-class Framebuffer;
-class FramebufferAttachment;
-class Renderbuffer;
-class Texture;
-
-
-} // namespace globjects
+    class Framebuffer;
+    class FramebufferAttachment;
+    class Renderbuffer;
+    class Texture;
+}
 
 
 namespace gloperate
@@ -57,7 +53,7 @@ public:
 
     /**
     *  @brief
-    *    Set a (new) desired target
+    *    Set desired target
     *
     *  @param[in] texture
     *    A texture
@@ -66,7 +62,7 @@ public:
 
     /**
     *  @brief
-    *    Set a (new) desired target
+    *    Set desired target
     *
     *  @param[in] renderbuffer
     *    A renderbuffer
@@ -75,7 +71,7 @@ public:
 
     /**
     *  @brief
-    *    Set a (new) desired target
+    *    Set desired target
     *
     *  @param[in] attachment
     *    A symbolic attachment of the default renderbuffer
@@ -84,40 +80,32 @@ public:
 
     /**
     *  @brief
-    *    Set a (new) desired target
+    *    Set desired target
     *
     *  @param[in] fboAttachment
     *    A user-defined fbo attachment
     */
-    void setTarget(globjects::FramebufferAttachment *fboAttachment);
+    void setTarget(globjects::FramebufferAttachment * fboAttachment);
 
     /**
     *  @brief
-    *    Binds this render target to a framebuffer
+    *    Bind render target to a framebuffer
     *
     *  @param[in] renderbuffer
     *    Target framebuffer
-    *
     *  @param[in] bindingPoint
     *    Target binding point, e.g. gl::GL_DEPTH_ATTACHMENT
     *    Will be ignored if not applicable
     */
     void bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo);
 
-    /**
-    *  @brief
-    *    Unbinds this render target
-    */
-    // void unbind();
-
 
 protected:
-    RenderTargetType                    m_type;         ///< the current type
-
-    gl::GLenum                          m_attachment;   ///< the default framebuffer attachment target
-    globjects::Texture*                 m_texture;      ///< the texture target
-    globjects::Renderbuffer*            m_renderbuffer; ///< the renderbuffer target
-    globjects::FramebufferAttachment*   m_userDefined;  ///< the user defined framebuffer attachment
+    RenderTargetType                    m_type;         ///< Target type
+    gl::GLenum                          m_attachment;   ///< Default framebuffer attachment target
+    globjects::Texture*                 m_texture;      ///< Texture target
+    globjects::Renderbuffer*            m_renderbuffer; ///< Renderbuffer target
+    globjects::FramebufferAttachment*   m_userDefined;  ///< User defined framebuffer attachment target
 };
 
 

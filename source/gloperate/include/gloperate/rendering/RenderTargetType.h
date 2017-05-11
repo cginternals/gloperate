@@ -12,15 +12,15 @@ namespace gloperate
 
 /**
 *  @brief
-*    RenderTargetType enum class for identifying the valid render target
+*    Type of a render target
 */
 enum class RenderTargetType : unsigned int
 {
-    Invalid,                 ///< does not contain a valid render target (yet)
-    Texture,                 ///< texture
-    Renderbuffer,            ///< renderbuffer
-    DefaultFBOAttachment,    ///< symbolic attachment of the default renderbuffer
-    UserDefinedFBOAttachment ///< user-defined renderbuffer with attachment
+    Invalid,                 ///< Does not contain a valid render target (yet)
+    Texture,                 ///< Texture
+    Renderbuffer,            ///< Render buffer
+    DefaultFBOAttachment,    ///< Symbolic attachment of the default renderbuffer
+    UserDefinedFBOAttachment ///< User-defined renderbuffer with attachment
 };
 
 
@@ -40,8 +40,7 @@ namespace std
 template<>
 struct hash<gloperate::RenderTargetType>
 {
-    std::hash<unsigned char>::result_type operator()(
-        const gloperate::RenderTargetType & arg) const
+    std::hash<unsigned char>::result_type operator()(const gloperate::RenderTargetType & arg) const
     {
         std::hash<unsigned char> hasher;
         return hasher(static_cast<unsigned char>(arg));
@@ -65,7 +64,7 @@ struct EnumDefaultStrings<gloperate::RenderTargetType>
 {
     std::map<gloperate::RenderTargetType, std::string> operator()()
     {
-        return{
+        return {
             { gloperate::RenderTargetType::Invalid, "Invalid" },
             { gloperate::RenderTargetType::Texture, "Texture" },
             { gloperate::RenderTargetType::Renderbuffer, "Renderbuffer" },
