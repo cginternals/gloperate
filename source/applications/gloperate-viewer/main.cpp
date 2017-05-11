@@ -20,7 +20,6 @@
 #include <gloperate-qtquick/QmlEngine.h>
 #include <gloperate-qtquick/QmlScriptContext.h>
 
-#include "Config.h"
 #include "Application.h"
 
 
@@ -46,15 +45,11 @@ int main(int argc, char * argv[])
     // Initialize Qt application
     ::Application app(&environment, argc, argv);
 
-    // Load configuration
-    Config config(environment);
-
     // Configure update manager
     UpdateManager updateManager(&environment);
 
     // Create QML engine
     QmlEngine qmlEngine(&environment);
-    qmlEngine.rootContext()->setContextProperty("config", &config);
 
     // Create scripting context backend
     environment.setupScripting(
