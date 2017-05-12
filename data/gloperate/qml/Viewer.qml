@@ -19,7 +19,7 @@ ApplicationWindow
     property bool  renderBackground: true
 
     // Stage
-    property string stage: 'DemoPipeline'
+    property string stage: settings.stage
 
     x:       settings.x
     y:       settings.y
@@ -241,6 +241,11 @@ ApplicationWindow
         id: mainMenu
 
         settingsObj: settings
+
+        onRenderStageSelected:
+        {
+            settings.stage = name;
+        }
     }
 
     // Container for the main view(s)
@@ -298,7 +303,7 @@ ApplicationWindow
                         id: propertyEditor
 
                         pipelineInterface: gloperatePipeline
-                        path:              'pipeline.DemoPipeline'
+                        path:              'pipeline.' + window.stage
 
                         Component.onCompleted:
                         {
@@ -399,6 +404,7 @@ ApplicationWindow
         property int    height:        600
         property bool   debugMode:     false
         property string panelPosition: 'left'
+        property string stage:         'DemoPipeline'
 
         onDebugModeChanged:
         {
