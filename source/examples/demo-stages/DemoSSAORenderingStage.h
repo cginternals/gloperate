@@ -24,9 +24,9 @@ class DemoSSAORenderingStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoSSAORenderingStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Demo stage that renders a simple scene onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

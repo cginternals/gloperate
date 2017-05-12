@@ -25,9 +25,9 @@ class DemoDOFCubeStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoDOFCubeStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Demo stage that renders a static cube onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

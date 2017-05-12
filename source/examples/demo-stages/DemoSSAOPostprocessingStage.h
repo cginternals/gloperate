@@ -26,9 +26,9 @@ class DemoSSAOPostprocessingStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoSSAOPostprocessingStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Demo stage that applies SSAO to an image"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
