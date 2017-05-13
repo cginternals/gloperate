@@ -25,7 +25,7 @@ ApplicationWindow
     y:       settings.y
     width:   settings.width
     height:  settings.height
-    visible: true
+    visible: false
 
     Shortcut
     {
@@ -415,6 +415,7 @@ ApplicationWindow
     Component.onCompleted:
     {
         settings.load();
+        window.visible = true;
     }
 
     Component.onDestruction:
