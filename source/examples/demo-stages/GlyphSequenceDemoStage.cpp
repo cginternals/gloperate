@@ -25,7 +25,6 @@ GlyphSequenceDemoStage::GlyphSequenceDemoStage(gloperate::Environment * environm
 {
 }
 
-
 void GlyphSequenceDemoStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     m_sequences.resize(1);

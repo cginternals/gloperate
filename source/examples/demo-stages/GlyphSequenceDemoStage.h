@@ -14,9 +14,9 @@
 
 namespace gloperate_text
 {
-enum class LineAnchor : unsigned char;
-enum class Alignment : unsigned char;
-class FontFace;
+    enum class LineAnchor : unsigned char;
+    enum class Alignment : unsigned char;
+    class FontFace;
 }
 
 

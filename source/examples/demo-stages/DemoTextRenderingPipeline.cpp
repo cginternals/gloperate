@@ -1,5 +1,5 @@
 
-#include "TextRenderingPipeline.h"
+#include "DemoTextRenderingPipeline.h"
 
 #include <gloperate/gloperate.h>
 
@@ -23,11 +23,11 @@ R"(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirm
 } // unnamed namespace
 
 
-CPPEXPOSE_COMPONENT(TextRenderingPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DemoTextRenderingPipeline, gloperate::Stage)
 
 
-TextRenderingPipeline::TextRenderingPipeline(gloperate::Environment * environment, const std::string & name)
-: gloperate::Pipeline{ environment, "TextRenderingPipeline", name }
+DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * environment, const std::string & name)
+: gloperate::Pipeline{ environment, "DemoTextRenderingPipeline", name }
 , renderInterface{ this }
 , fontFilename{ "fontFilename", this, gloperate::dataPath() + "/gloperate-text/fonts/opensansr36.fnt" }
 , string      { "string",       this, lorem }
