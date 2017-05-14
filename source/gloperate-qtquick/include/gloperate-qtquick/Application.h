@@ -27,7 +27,7 @@ namespace gloperate_qtquick
 *    using loadQml(), or access the Qml engine via qmlEngine().
 *    Call Application::exec() to run the main loop.
 */
-class QMLTOOLBOX_API Application : public QGuiApplication
+class GLOPERATE_QTQUICK_API Application : public QGuiApplication
 {
 public:
     /**
