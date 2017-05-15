@@ -61,6 +61,7 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
+    ${include_path}/Application.h
     ${include_path}/RenderItem.h
     ${include_path}/RenderItemRenderer.h
 #   ${include_path}/TextureRenderItem.h
@@ -74,6 +75,7 @@ set(headers
 )
 
 set(sources
+    ${source_path}/Application.cpp
     ${source_path}/RenderItem.cpp
     ${source_path}/RenderItemRenderer.cpp
     ${source_path}/RenderItemRenderer_ogl.cpp

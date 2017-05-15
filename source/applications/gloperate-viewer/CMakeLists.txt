@@ -48,8 +48,6 @@ endif()
 
 set(sources
     main.cpp
-    Application.cpp
-    Application.h
 )
 
 
