@@ -9,6 +9,9 @@ using namespace gloperate_qtquick;
 
 int main(int argc, char * argv[])
 {
+    // Initialize gloperate and qmltoolbox
+    Application::initialize();
+
     // Initialize Qt application
     Application app(argc, argv);
     app.setApplicationName(GLOPERATE_PROJECT_NAME);
