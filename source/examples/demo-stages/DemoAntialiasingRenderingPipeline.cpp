@@ -1,23 +1,23 @@
 
-#include "DemoAntialiasingPipeline.h"
+#include "DemoAntialiasingRenderingPipeline.h"
 
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
 
-#include "DemoAntialiasableTriangleStage.h"
+#include "AntialiasableTriangleStage.h"
 
 
-CPPEXPOSE_COMPONENT(DemoAntialiasingPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DemoAntialiasingRenderingPipeline, gloperate::Stage)
 
 
-DemoAntialiasingPipeline::DemoAntialiasingPipeline(gloperate::Environment * environment, const std::string & name)
+DemoAntialiasingRenderingPipeline::DemoAntialiasingRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 1)
 , m_subpixelStage(cppassist::make_unique<gloperate_glkernel::DiscDistributionKernelStage>(environment))
-, m_triangleStage(cppassist::make_unique<DemoAntialiasableTriangleStage>(environment))
+, m_triangleStage(cppassist::make_unique<AntialiasableTriangleStage>(environment))
 {
     addStage(m_subpixelStage.get());
     m_subpixelStage->kernelSize << multiFrameCount;
@@ -35,6 +35,6 @@ DemoAntialiasingPipeline::DemoAntialiasingPipeline(gloperate::Environment * envi
     renderInterface.rendered << m_triangleStage->renderInterface.rendered;
 }
 
-DemoAntialiasingPipeline::~DemoAntialiasingPipeline()
+DemoAntialiasingRenderingPipeline::~DemoAntialiasingRenderingPipeline()
 {
 }

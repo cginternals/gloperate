@@ -1,5 +1,5 @@
 
-#include "DemoTransparencyStage.h"
+#include "TransparentCirclesStage.h"
 
 #include <array>
 
@@ -90,10 +90,10 @@ void main()
 } // namespace
 
 
-CPPEXPOSE_COMPONENT(DemoTransparencyStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(TransparentCirclesStage, gloperate::Stage)
 
 
-DemoTransparencyStage::DemoTransparencyStage(gloperate::Environment * environment, const std::string & name)
+TransparentCirclesStage::TransparentCirclesStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , transparencyKernel("transparencyKernel", this, nullptr)
@@ -101,21 +101,21 @@ DemoTransparencyStage::DemoTransparencyStage(gloperate::Environment * environmen
 {
 }
 
-DemoTransparencyStage::~DemoTransparencyStage()
+TransparentCirclesStage::~TransparentCirclesStage()
 {
 }
 
-void DemoTransparencyStage::onContextInit(gloperate::AbstractGLContext *)
+void TransparentCirclesStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoTransparencyStage::onContextDeinit(gloperate::AbstractGLContext *)
+void TransparentCirclesStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoTransparencyStage::onProcess(gloperate::AbstractGLContext *)
+void TransparentCirclesStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -204,7 +204,7 @@ void DemoTransparencyStage::onProcess(gloperate::AbstractGLContext *)
     renderInterface.rendered.setValue(true);
 }
 
-void DemoTransparencyStage::setupGeometry()
+void TransparentCirclesStage::setupGeometry()
 {
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
@@ -217,7 +217,7 @@ void DemoTransparencyStage::setupGeometry()
     m_vao->enable(0);
 }
 
-void DemoTransparencyStage::setupProgram()
+void TransparentCirclesStage::setupProgram()
 {
     //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));

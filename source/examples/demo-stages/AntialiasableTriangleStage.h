@@ -20,11 +20,11 @@
 *  @brief
 *    Demo stage that renders a static triangle onto the screen
 */
-class DemoAntialiasableTriangleStage : public gloperate::Stage
+class AntialiasableTriangleStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoAntialiasableTriangleStage, gloperate::Stage
+        AntialiasableTriangleStage, gloperate::Stage
       , "" // Tags
       , "" // Icon
       , "" // Annotations
@@ -52,13 +52,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoAntialiasableTriangleStage(gloperate::Environment * environment, const std::string & name = "DemoAntialiasableTriangleStage");
+    AntialiasableTriangleStage(gloperate::Environment * environment, const std::string & name = "AntialiasableTriangleStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoAntialiasableTriangleStage();
+    virtual ~AntialiasableTriangleStage();
 
 
 protected:

@@ -25,19 +25,19 @@ class TextureStage;
 }
 
 
-class DemoSSAORenderingStage;
-class DemoSSAOPostprocessingStage;
+class SSAOSceneRenderingStage;
+class SSAOApplicationStage;
 
 
 /**
 *  @brief
 *    Demo pipeline that renders a simple scene onto the screen
 */
-class DemoSSAOPipeline : public gloperate::Pipeline
+class DemoSSAORenderingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoSSAOPipeline, gloperate::Stage
+        DemoSSAORenderingPipeline, gloperate::Stage
       , "RenderStage Demo SSAO" // Tags
       , ""                      // Icon
       , ""                      // Annotations
@@ -62,13 +62,13 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoSSAOPipeline(gloperate::Environment * environment, const std::string & name = "DemoSSAOPipeline");
+    DemoSSAORenderingPipeline(gloperate::Environment * environment, const std::string & name = "DemoSSAORenderingPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoSSAOPipeline();
+    virtual ~DemoSSAORenderingPipeline();
 
 
 protected:
@@ -79,6 +79,6 @@ protected:
     std::unique_ptr<gloperate::FramebufferStage> m_fboStage;                              ///< Stage creating FBO for main rendering
     std::unique_ptr<gloperate_glkernel::HemisphereDistributionKernelStage> m_kernelStage; ///< Stage generating SSAO kernel
     std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;  ///< Stage generating SSAO noise
-    std::unique_ptr<DemoSSAORenderingStage>           m_renderingStage;                   ///< Rendering stage
-    std::unique_ptr<DemoSSAOPostprocessingStage>      m_postprocessingStage;              ///< Postprocessing stage (SSAO applied here)
+    std::unique_ptr<SSAOSceneRenderingStage>           m_renderingStage;                   ///< Rendering stage
+    std::unique_ptr<SSAOApplicationStage>      m_postprocessingStage;              ///< Postprocessing stage (SSAO applied here)
 };

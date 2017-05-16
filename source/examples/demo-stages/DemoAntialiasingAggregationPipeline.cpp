@@ -4,7 +4,7 @@
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
-#include "DemoAntialiasingPipeline.h"
+#include "DemoAntialiasingRenderingPipeline.h"
 
 CPPEXPOSE_COMPONENT(DemoAntialiasingAggregationPipeline, gloperate::Stage)
 
@@ -14,7 +14,7 @@ DemoAntialiasingAggregationPipeline::DemoAntialiasingAggregationPipeline(glopera
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
-, m_antialiasingPipeline(cppassist::make_unique<DemoAntialiasingPipeline>(environment))
+, m_antialiasingPipeline(cppassist::make_unique<DemoAntialiasingRenderingPipeline>(environment))
 {
     addStage(m_multiFramePipeline.get());
 

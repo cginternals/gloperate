@@ -1,5 +1,5 @@
 
-#include "DemoDOFCubeStage.h"
+#include "DOFCubeStage.h"
 
 #include <array>
 
@@ -84,31 +84,31 @@ void main()
 } // namespace
 
 
-CPPEXPOSE_COMPONENT(DemoDOFCubeStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DOFCubeStage, gloperate::Stage)
 
 
-DemoDOFCubeStage::DemoDOFCubeStage(gloperate::Environment * environment, const std::string & name)
+DOFCubeStage::DOFCubeStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , dofShifts("dofShift", this, nullptr)
 {
 }
 
-DemoDOFCubeStage::~DemoDOFCubeStage()
+DOFCubeStage::~DOFCubeStage()
 {
 }
 
-void DemoDOFCubeStage::onContextInit(gloperate::AbstractGLContext *)
+void DOFCubeStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoDOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
+void DOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoDOFCubeStage::onProcess(gloperate::AbstractGLContext *)
+void DOFCubeStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -155,7 +155,7 @@ void DemoDOFCubeStage::onProcess(gloperate::AbstractGLContext *)
     renderInterface.rendered.setValue(true);
 }
 
-void DemoDOFCubeStage::setupGeometry()
+void DOFCubeStage::setupGeometry()
 {
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
@@ -174,7 +174,7 @@ void DemoDOFCubeStage::setupGeometry()
     m_vao->enable(1);
 }
 
-void DemoDOFCubeStage::setupProgram()
+void DOFCubeStage::setupProgram()
 {
     //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));

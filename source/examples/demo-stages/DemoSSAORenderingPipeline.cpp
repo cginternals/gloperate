@@ -1,5 +1,5 @@
 
-#include "DemoSSAOPipeline.h"
+#include "DemoSSAORenderingPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/FramebufferStage.h>
@@ -10,14 +10,14 @@
 
 #include <glbinding/gl/enum.h>
 
-#include "DemoSSAORenderingStage.h"
-#include "DemoSSAOPostprocessingStage.h"
+#include "SSAOSceneRenderingStage.h"
+#include "SSAOApplicationStage.h"
 
 
-CPPEXPOSE_COMPONENT(DemoSSAOPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DemoSSAORenderingPipeline, gloperate::Stage)
 
 
-DemoSSAOPipeline::DemoSSAOPipeline(gloperate::Environment * environment, const std::string & name)
+DemoSSAORenderingPipeline::DemoSSAORenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , m_colorTextureStage(cppassist::make_unique<gloperate::TextureStage>(environment, "ColorTextureStage"))
@@ -26,8 +26,8 @@ DemoSSAOPipeline::DemoSSAOPipeline(gloperate::Environment * environment, const s
 , m_fboStage(cppassist::make_unique<gloperate::FramebufferStage>(environment))
 , m_kernelStage(cppassist::make_unique<gloperate_glkernel::HemisphereDistributionKernelStage>(environment))
 , m_noiseStage(cppassist::make_unique<gloperate_glkernel::NoiseKernelStage>(environment))
-, m_renderingStage(cppassist::make_unique<DemoSSAORenderingStage>(environment))
-, m_postprocessingStage(cppassist::make_unique<DemoSSAOPostprocessingStage>(environment))
+, m_renderingStage(cppassist::make_unique<SSAOSceneRenderingStage>(environment))
+, m_postprocessingStage(cppassist::make_unique<SSAOApplicationStage>(environment))
 {
     addStage(m_colorTextureStage.get());
     m_colorTextureStage->format.setValue(gl::GL_RGBA);
@@ -85,6 +85,6 @@ DemoSSAOPipeline::DemoSSAOPipeline(gloperate::Environment * environment, const s
     renderInterface.rendered << m_postprocessingStage->renderInterface.rendered;
 }
 
-DemoSSAOPipeline::~DemoSSAOPipeline()
+DemoSSAORenderingPipeline::~DemoSSAORenderingPipeline()
 {
 }

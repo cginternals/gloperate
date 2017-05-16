@@ -13,22 +13,21 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
-#include <gloperate/rendering/Camera.h>
 
 
 /**
 *  @brief
-*    Demo stage that renders three transparent, overlapping circles onto the screen
+*    Demo stage that renders a simple scene onto the screen
 */
-class DemoTransparencyStage : public gloperate::Stage
+class SSAOSceneRenderingStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoTransparencyStage, gloperate::Stage
+        SSAOSceneRenderingStage, gloperate::Stage
       , "" // Tags
       , "" // Icon
       , "" // Annotations
-      , "Demo stage that renders three transparent, overlapping circles onto the screen"
+      , "Demo stage that renders a simple scene onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -38,9 +37,9 @@ public:
     // Interfaces
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
-    // Inputs
-    Input<globjects::Texture *> transparencyKernel; ///< Transparency kernel for multiframe rendering
-    Input<globjects::Texture *> noiseKernel;        ///< Noise kernel for randomness
+    // Outputs
+    Output<glm::mat4> projectionMatrix;         ///< Projection matrix used for rendering
+    Output<glm::mat3> normalMatrix;             ///< Normal matrix used for rendering
 
 
 public:
@@ -53,13 +52,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoTransparencyStage(gloperate::Environment * environment, const std::string & name = "DemoTransparencyStage");
+    SSAOSceneRenderingStage(gloperate::Environment * environment, const std::string & name = "SSAOSceneRenderingStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoTransparencyStage();
+    virtual ~SSAOSceneRenderingStage();
 
 
 protected:

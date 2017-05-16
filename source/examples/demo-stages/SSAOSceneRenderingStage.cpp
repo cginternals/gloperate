@@ -1,5 +1,5 @@
 
-#include "DemoSSAORenderingStage.h"
+#include "SSAOSceneRenderingStage.h"
 
 #include <tuple>
 
@@ -77,10 +77,10 @@ void main()
 } // namespace
 
 
-CPPEXPOSE_COMPONENT(DemoSSAORenderingStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(SSAOSceneRenderingStage, gloperate::Stage)
 
 
-DemoSSAORenderingStage::DemoSSAORenderingStage(gloperate::Environment * environment, const std::string & name)
+SSAOSceneRenderingStage::SSAOSceneRenderingStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , projectionMatrix("projectionMatrix", this)
@@ -88,21 +88,21 @@ DemoSSAORenderingStage::DemoSSAORenderingStage(gloperate::Environment * environm
 {
 }
 
-DemoSSAORenderingStage::~DemoSSAORenderingStage()
+SSAOSceneRenderingStage::~SSAOSceneRenderingStage()
 {
 }
 
-void DemoSSAORenderingStage::onContextInit(gloperate::AbstractGLContext *)
+void SSAOSceneRenderingStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoSSAORenderingStage::onContextDeinit(gloperate::AbstractGLContext *)
+void SSAOSceneRenderingStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoSSAORenderingStage::onProcess(gloperate::AbstractGLContext *)
+void SSAOSceneRenderingStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -150,7 +150,7 @@ void DemoSSAORenderingStage::onProcess(gloperate::AbstractGLContext *)
     renderInterface.rendered.setValue(true);
 }
 
-void DemoSSAORenderingStage::setupGeometry()
+void SSAOSceneRenderingStage::setupGeometry()
 {
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
@@ -169,7 +169,7 @@ void DemoSSAORenderingStage::setupGeometry()
     m_vao->enable(1);
 }
 
-void DemoSSAORenderingStage::setupProgram()
+void SSAOSceneRenderingStage::setupProgram()
 {
     //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));

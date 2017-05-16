@@ -1,23 +1,23 @@
 
-#include "DemoDOFPipeline.h"
+#include "DemoDOFRenderingPipeline.h"
 
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
 
-#include "DemoDOFCubeStage.h"
+#include "DOFCubeStage.h"
 
 
-CPPEXPOSE_COMPONENT(DemoDOFPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DemoDOFRenderingPipeline, gloperate::Stage)
 
 
-DemoDOFPipeline::DemoDOFPipeline(gloperate::Environment * environment, const std::string & name)
+DemoDOFRenderingPipeline::DemoDOFRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 1)
 , m_dofShiftStage(cppassist::make_unique<gloperate_glkernel::DiscDistributionKernelStage>(environment))
-, m_cubeStage(cppassist::make_unique<DemoDOFCubeStage>(environment))
+, m_cubeStage(cppassist::make_unique<DOFCubeStage>(environment))
 {
     addStage(m_dofShiftStage.get());
     m_dofShiftStage->kernelSize << multiFrameCount;
@@ -35,6 +35,6 @@ DemoDOFPipeline::DemoDOFPipeline(gloperate::Environment * environment, const std
     renderInterface.rendered << m_cubeStage->renderInterface.rendered;
 }
 
-DemoDOFPipeline::~DemoDOFPipeline()
+DemoDOFRenderingPipeline::~DemoDOFRenderingPipeline()
 {
 }

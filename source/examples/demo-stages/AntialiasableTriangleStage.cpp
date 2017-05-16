@@ -1,5 +1,5 @@
 
-#include "DemoAntialiasableTriangleStage.h"
+#include "AntialiasableTriangleStage.h"
 
 #include <glbinding/gl/gl.h>
 
@@ -50,31 +50,31 @@ static const char * s_fragmentShader = R"(
 )";
 
 
-CPPEXPOSE_COMPONENT(DemoAntialiasableTriangleStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(AntialiasableTriangleStage, gloperate::Stage)
 
 
-DemoAntialiasableTriangleStage::DemoAntialiasableTriangleStage(gloperate::Environment * environment, const std::string & name)
+AntialiasableTriangleStage::AntialiasableTriangleStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , subpixelOffsets("subpixelOffset", this, nullptr)
 {
 }
 
-DemoAntialiasableTriangleStage::~DemoAntialiasableTriangleStage()
+AntialiasableTriangleStage::~AntialiasableTriangleStage()
 {
 }
 
-void DemoAntialiasableTriangleStage::onContextInit(gloperate::AbstractGLContext *)
+void AntialiasableTriangleStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoAntialiasableTriangleStage::onContextDeinit(gloperate::AbstractGLContext *)
+void AntialiasableTriangleStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoAntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
+void AntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -116,12 +116,12 @@ void DemoAntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
     renderInterface.rendered.setValue(true);
 }
 
-void DemoAntialiasableTriangleStage::onInputValueChanged(gloperate::AbstractSlot * /*slot*/)
+void AntialiasableTriangleStage::onInputValueChanged(gloperate::AbstractSlot * /*slot*/)
 {
     renderInterface.rendered.invalidate();
 }
 
-void DemoAntialiasableTriangleStage::setupGeometry()
+void AntialiasableTriangleStage::setupGeometry()
 {
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
@@ -134,7 +134,7 @@ void DemoAntialiasableTriangleStage::setupGeometry()
     m_vao->enable(0);
 }
 
-void DemoAntialiasableTriangleStage::setupProgram()
+void AntialiasableTriangleStage::setupProgram()
 {
     //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));

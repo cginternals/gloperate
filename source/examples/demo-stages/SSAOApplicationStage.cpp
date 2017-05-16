@@ -1,5 +1,5 @@
 
-#include "DemoSSAOPostprocessingStage.h"
+#include "SSAOApplicationStage.h"
 
 #include <array>
 
@@ -102,10 +102,10 @@ void main()
 } // namespace
 
 
-CPPEXPOSE_COMPONENT(DemoSSAOPostprocessingStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(SSAOApplicationStage, gloperate::Stage)
 
 
-DemoSSAOPostprocessingStage::DemoSSAOPostprocessingStage(gloperate::Environment * environment, const std::string & name)
+SSAOApplicationStage::SSAOApplicationStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
 , renderInterface(this)
 , colorTexture("colorTexture", this, nullptr)
@@ -119,21 +119,21 @@ DemoSSAOPostprocessingStage::DemoSSAOPostprocessingStage(gloperate::Environment 
 {
 }
 
-DemoSSAOPostprocessingStage::~DemoSSAOPostprocessingStage()
+SSAOApplicationStage::~SSAOApplicationStage()
 {
 }
 
-void DemoSSAOPostprocessingStage::onContextInit(gloperate::AbstractGLContext *)
+void SSAOApplicationStage::onContextInit(gloperate::AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void DemoSSAOPostprocessingStage::onContextDeinit(gloperate::AbstractGLContext *)
+void SSAOApplicationStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoSSAOPostprocessingStage::onProcess(gloperate::AbstractGLContext *)
+void SSAOApplicationStage::onProcess(gloperate::AbstractGLContext *)
 {
     if (!(*colorTexture && *normalTexture && *depthTexture && *ssaoKernel && *ssaoNoise))
     {
@@ -195,7 +195,7 @@ void DemoSSAOPostprocessingStage::onProcess(gloperate::AbstractGLContext *)
     renderInterface.rendered.setValue(true);
 }
 
-void DemoSSAOPostprocessingStage::setupGeometry()
+void SSAOApplicationStage::setupGeometry()
 {
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
@@ -208,7 +208,7 @@ void DemoSSAOPostprocessingStage::setupGeometry()
     m_vao->enable(0);
 }
 
-void DemoSSAOPostprocessingStage::setupProgram()
+void SSAOApplicationStage::setupProgram()
 {
     //TODO this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));

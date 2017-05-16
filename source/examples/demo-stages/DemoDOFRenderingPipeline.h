@@ -22,18 +22,18 @@ class MultiFrameDiscDistributionStage;
 
 }
 
-class DemoDOFCubeStage;
+class DOFCubeStage;
 
 
 /**
 *  @brief
 *    Demo pipeline that renders a static cube onto the screen
 */
-class DemoDOFPipeline : public gloperate::Pipeline
+class DemoDOFRenderingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoDOFPipeline, gloperate::Stage
+        DemoDOFRenderingPipeline, gloperate::Stage
       , "RenderStage Demo DOF" // Tags
       , ""                     // Icon
       , ""                     // Annotations
@@ -61,17 +61,17 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoDOFPipeline(gloperate::Environment * environment, const std::string & name = "DemoDOFPipeline");
+    DemoDOFRenderingPipeline(gloperate::Environment * environment, const std::string & name = "DemoDOFRenderingPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoDOFPipeline();
+    virtual ~DemoDOFRenderingPipeline();
 
 
 protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage> m_dofShiftStage;  ///< Stage generating DOF shift
-    std::unique_ptr<DemoDOFCubeStage>                                m_cubeStage;      ///< Rendering stage
+    std::unique_ptr<DOFCubeStage>                                m_cubeStage;      ///< Rendering stage
 };

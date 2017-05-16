@@ -1,22 +1,22 @@
 
-#include "DemoTransparencyPipeline.h"
+#include "DemoTransparencyRenderingPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/TransparencyKernelStage.h>
 #include <gloperate-glkernel/stages/NoiseKernelStage.h>
 
-#include "DemoTransparencyStage.h"
+#include "TransparentCirclesStage.h"
 
 
-CPPEXPOSE_COMPONENT(DemoTransparencyPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DemoTransparencyRenderingPipeline, gloperate::Stage)
 
 
-DemoTransparencyPipeline::DemoTransparencyPipeline(gloperate::Environment * environment, const std::string & name)
+DemoTransparencyRenderingPipeline::DemoTransparencyRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , m_transparencyKernelStage(cppassist::make_unique<gloperate_glkernel::TransparencyKernelStage>(environment))
 , m_noiseKernelStage(cppassist::make_unique<gloperate_glkernel::NoiseKernelStage>(environment))
-, m_transparencyRenderStage(cppassist::make_unique<DemoTransparencyStage>(environment))
+, m_transparencyRenderStage(cppassist::make_unique<TransparentCirclesStage>(environment))
 {
     addStage(m_transparencyKernelStage.get());
     m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
@@ -37,6 +37,6 @@ DemoTransparencyPipeline::DemoTransparencyPipeline(gloperate::Environment * envi
     renderInterface.rendered << m_transparencyRenderStage->renderInterface.rendered;
 }
 
-DemoTransparencyPipeline::~DemoTransparencyPipeline()
+DemoTransparencyRenderingPipeline::~DemoTransparencyRenderingPipeline()
 {
 }

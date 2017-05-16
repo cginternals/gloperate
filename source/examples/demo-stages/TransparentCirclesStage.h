@@ -9,7 +9,6 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
-#include <globjects/NamedString.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
@@ -19,17 +18,17 @@
 
 /**
 *  @brief
-*    Demo stage that applies SSAO to an image
+*    Demo stage that renders three transparent, overlapping circles onto the screen
 */
-class DemoSSAOPostprocessingStage : public gloperate::Stage
+class TransparentCirclesStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoSSAOPostprocessingStage, gloperate::Stage
+        TransparentCirclesStage, gloperate::Stage
       , "" // Tags
       , "" // Icon
       , "" // Annotations
-      , "Demo stage that applies SSAO to an image"
+      , "Demo stage that renders three transparent, overlapping circles onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -37,19 +36,11 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface  renderInterface;  ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<globjects::Texture *> colorTexture;     ///< Color texture of the scene
-    Input<globjects::Texture *> normalTexture;    ///< Normal texture of the scene
-    Input<globjects::Texture *> depthTexture;     ///< Depth texture of the scene
-
-    Input<globjects::Texture *> ssaoKernel;       ///< SSAO kernel texture
-    Input<globjects::Texture *> ssaoNoise;        ///< SSAO noise texture
-    Input<glm::mat4>            projectionMatrix; ///< Projection matrix used for rendering the scene
-    Input<glm::mat3>            normalMatrix;     ///< Normal matrix from scene rendering
-
-    Input<bool>                 sceneRendered;    ///< Scene rendering stage processed?
+    Input<globjects::Texture *> transparencyKernel; ///< Transparency kernel for multiframe rendering
+    Input<globjects::Texture *> noiseKernel;        ///< Noise kernel for randomness
 
 
 public:
@@ -62,13 +53,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoSSAOPostprocessingStage(gloperate::Environment * environment, const std::string & name = "DemoSSAOPostprocessingStage");
+    TransparentCirclesStage(gloperate::Environment * environment, const std::string & name = "TransparentCirclesStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoSSAOPostprocessingStage();
+    virtual ~TransparentCirclesStage();
 
 
 protected:
@@ -89,5 +80,4 @@ protected:
     std::unique_ptr<globjects::Shader>      m_vertexShader;
     std::unique_ptr<globjects::Shader>      m_fragmentShader;
     std::unique_ptr<globjects::Program>     m_program;
-    std::unique_ptr<globjects::NamedString> m_ssaoFileNamedString;
 };

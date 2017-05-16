@@ -23,18 +23,18 @@ class SubpixelAntialiasingOffsetStage;
 }
 
 
-class DemoAntialiasableTriangleStage;
+class AntialiasableTriangleStage;
 
 
 /**
 *  @brief
 *    Demo pipeline that renders a static triangle onto the screen
 */
-class DemoAntialiasingPipeline : public gloperate::Pipeline
+class DemoAntialiasingRenderingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoAntialiasingPipeline, gloperate::Stage
+        DemoAntialiasingRenderingPipeline, gloperate::Stage
       , "RenderStage Demo Antialiasing" // Tags
       , ""                              // Icon
       , ""                              // Annotations
@@ -62,17 +62,17 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoAntialiasingPipeline(gloperate::Environment * environment, const std::string & name = "DemoAntialiasingPipeline");
+    DemoAntialiasingRenderingPipeline(gloperate::Environment * environment, const std::string & name = "DemoAntialiasingRenderingPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoAntialiasingPipeline();
+    virtual ~DemoAntialiasingRenderingPipeline();
 
 
 protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage> m_subpixelStage;  ///< Stage generating subpixel offset for antialiasing
-    std::unique_ptr<DemoAntialiasableTriangleStage>                  m_triangleStage;  ///< Rendering stage
+    std::unique_ptr<AntialiasableTriangleStage>                  m_triangleStage;  ///< Rendering stage
 };

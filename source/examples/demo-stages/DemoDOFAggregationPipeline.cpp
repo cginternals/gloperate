@@ -4,7 +4,7 @@
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
-#include "DemoDOFPipeline.h"
+#include "DemoDOFRenderingPipeline.h"
 
 CPPEXPOSE_COMPONENT(DemoDOFAggregationPipeline, gloperate::Stage)
 
@@ -14,7 +14,7 @@ DemoDOFAggregationPipeline::DemoDOFAggregationPipeline(gloperate::Environment * 
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
-, m_dofPipeline(cppassist::make_unique<DemoDOFPipeline>(environment))
+, m_dofPipeline(cppassist::make_unique<DemoDOFRenderingPipeline>(environment))
 {
     addStage(m_multiFramePipeline.get());
 

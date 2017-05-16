@@ -13,21 +13,22 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/rendering/Camera.h>
 
 
 /**
 *  @brief
-*    Demo stage that renders a simple scene onto the screen
+*    Demo stage that renders a static cube onto the screen
 */
-class DemoSSAORenderingStage : public gloperate::Stage
+class DOFCubeStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoSSAORenderingStage, gloperate::Stage
+        DOFCubeStage, gloperate::Stage
       , "" // Tags
       , "" // Icon
       , "" // Annotations
-      , "Demo stage that renders a simple scene onto the screen"
+      , "Demo stage that renders a static cube onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -37,9 +38,8 @@ public:
     // Interfaces
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
-    // Outputs
-    Output<glm::mat4> projectionMatrix;         ///< Projection matrix used for rendering
-    Output<glm::mat3> normalMatrix;             ///< Normal matrix used for rendering
+    // Inputs
+    Input<std::vector<glm::vec2> *> dofShifts;       ///< DOF shift for multiframe rendering
 
 
 public:
@@ -52,13 +52,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoSSAORenderingStage(gloperate::Environment * environment, const std::string & name = "DemoSSAORenderingStage");
+    DOFCubeStage(gloperate::Environment * environment, const std::string & name = "DOFCubeStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoSSAORenderingStage();
+    virtual ~DOFCubeStage();
 
 
 protected:

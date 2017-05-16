@@ -17,7 +17,7 @@ class MultiFrameAggregationPipeline;
 }
 
 
-class DemoAntialiasingPipeline;
+class DemoAntialiasingRenderingPipeline;
 
 
 /**
@@ -68,5 +68,5 @@ public:
 protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
-    std::unique_ptr<DemoAntialiasingPipeline>                          m_antialiasingPipeline; ///< Demo pipeline generating frames to aggregate
+    std::unique_ptr<DemoAntialiasingRenderingPipeline>                          m_antialiasingPipeline; ///< Demo pipeline generating frames to aggregate
 };
