@@ -127,6 +127,8 @@ set(headers
     ${include_path}/stages/base/RenderPassStage.h
     ${include_path}/stages/base/RasterizationStage.h
     ${include_path}/stages/base/ProgramStage.h
+    ${include_path}/stages/base/VectorSelectionStage.h
+    ${include_path}/stages/base/VectorSelectionStage.inl
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
 
