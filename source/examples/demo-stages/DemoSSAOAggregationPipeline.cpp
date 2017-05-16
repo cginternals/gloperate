@@ -1,36 +1,22 @@
 
-#include "DemoMultiFramePipeline.h"
+#include "DemoSSAOAggregationPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
-#include "DemoAntialiasingPipeline.h"
-#include "DemoDOFPipeline.h"
-#include "DemoTransparencyPipeline.h"
 #include "DemoSSAOPipeline.h"
 
-CPPEXPOSE_COMPONENT(DemoMultiFramePipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DemoSSAOAggregationPipeline, gloperate::Stage)
 
 
-DemoMultiFramePipeline::DemoMultiFramePipeline(gloperate::Environment * environment, const std::string & name)
+DemoSSAOAggregationPipeline::DemoSSAOAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
-, m_antialiasingPipeline(cppassist::make_unique<DemoAntialiasingPipeline>(environment))
-, m_dofPipeline(cppassist::make_unique<DemoDOFPipeline>(environment))
-, m_transparencyPipeline(cppassist::make_unique<DemoTransparencyPipeline>(environment))
 , m_ssaoPipeline(cppassist::make_unique<DemoSSAOPipeline>(environment))
 {
     addStage(m_multiFramePipeline.get());
-
-    //m_multiFramePipeline->setFrameRenderer(m_antialiasingPipeline->renderInterface);
-    //m_antialiasingPipeline->multiFrameCount << multiFrameCount;
-
-    //m_multiFramePipeline->setFrameRenderer(m_dofPipeline->renderInterface);
-    //m_dofPipeline->multiFrameCount << multiFrameCount;
-
-    //m_multiFramePipeline->setFrameRenderer(m_transparencyPipeline->renderInterface);
 
     m_multiFramePipeline->setFrameRenderer(m_ssaoPipeline->renderInterface);
 
@@ -47,6 +33,6 @@ DemoMultiFramePipeline::DemoMultiFramePipeline(gloperate::Environment * environm
     renderInterface.rendered << m_multiFramePipeline->renderInterface.rendered;
 }
 
-DemoMultiFramePipeline::~DemoMultiFramePipeline()
+DemoSSAOAggregationPipeline::~DemoSSAOAggregationPipeline()
 {
 }

@@ -51,7 +51,10 @@ set(headers
     ${include_path}/DemoSSAOPipeline.h
     ${include_path}/DemoTransparencyStage.h
     ${include_path}/DemoTransparencyPipeline.h
-    ${include_path}/DemoMultiFramePipeline.h
+    ${include_path}/DemoAntialiasingAggregationPipeline.h
+    ${include_path}/DemoDOFAggregationPipeline.h
+    ${include_path}/DemoSSAOAggregationPipeline.h
+    ${include_path}/DemoTransparencyAggregationPipeline.h
     ${include_path}/SpinningRectStage.h
     ${include_path}/DemoRenderStage.h
     ${include_path}/DemoDrawableStage.h
@@ -78,7 +81,10 @@ set(sources
     ${source_path}/DemoSSAOPipeline.cpp
     ${source_path}/DemoTransparencyStage.cpp
     ${source_path}/DemoTransparencyPipeline.cpp
-    ${source_path}/DemoMultiFramePipeline.cpp
+    ${source_path}/DemoAntialiasingAggregationPipeline.cpp
+    ${source_path}/DemoDOFAggregationPipeline.cpp
+    ${source_path}/DemoSSAOAggregationPipeline.cpp
+    ${source_path}/DemoTransparencyAggregationPipeline.cpp
     ${source_path}/SpinningRectStage.cpp
     ${source_path}/DemoRenderStage.cpp
     ${source_path}/DemoDrawableStage.cpp

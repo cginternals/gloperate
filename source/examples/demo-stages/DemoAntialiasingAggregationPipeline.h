@@ -16,29 +16,19 @@ class MultiFrameAggregationPipeline;
 
 }
 
-namespace gloperate
-{
-
-class MultiFrameAggregationPipeline;
-
-}
-
 
 class DemoAntialiasingPipeline;
-class DemoDOFPipeline;
-class DemoTransparencyPipeline;
-class DemoSSAOPipeline;
 
 
 /**
 *  @brief
 *    Demo pipeline showing multiframe aggregation
 */
-class DemoMultiFramePipeline : public gloperate::Pipeline
+class DemoAntialiasingAggregationPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoMultiFramePipeline, gloperate::Stage
+        DemoAntialiasingAggregationPipeline, gloperate::Stage
       , "RenderStage Demo Multiframe" // Tags
       , ""                            // Icon
       , ""                            // Annotations
@@ -66,22 +56,17 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoMultiFramePipeline(gloperate::Environment * environment, const std::string & name = "DemoMultiFramePipeline");
+    DemoAntialiasingAggregationPipeline(gloperate::Environment * environment, const std::string & name = "DemoAntialiasingAggregationPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoMultiFramePipeline();
+    virtual ~DemoAntialiasingAggregationPipeline();
 
 
 protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
-
-    // Demo pipelines using multiframe effects
-    std::unique_ptr<DemoAntialiasingPipeline>                 m_antialiasingPipeline;
-    std::unique_ptr<DemoDOFPipeline>                          m_dofPipeline;
-    std::unique_ptr<DemoTransparencyPipeline>                 m_transparencyPipeline;
-    std::unique_ptr<DemoSSAOPipeline>                         m_ssaoPipeline;
+    std::unique_ptr<DemoAntialiasingPipeline>                          m_antialiasingPipeline; ///< Demo pipeline generating frames to aggregate
 };
