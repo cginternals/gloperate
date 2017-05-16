@@ -29,9 +29,9 @@ class SpinningRectStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         SpinningRectStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Demo stage that renders a rotating rectangle onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

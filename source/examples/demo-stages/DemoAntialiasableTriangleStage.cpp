@@ -92,7 +92,7 @@ void DemoAntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
 
 void DemoAntialiasableTriangleStage::onInputValueChanged(gloperate::AbstractSlot * /*slot*/)
 {
-    renderInterface.rendered.setValid(false);
+    renderInterface.rendered.invalidate();
 }
 
 void DemoAntialiasableTriangleStage::setupGeometry()

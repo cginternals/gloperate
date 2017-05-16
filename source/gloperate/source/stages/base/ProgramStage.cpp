@@ -24,10 +24,10 @@ ProgramStage::ProgramStage(Environment * environment, const std::string & name)
 , program("program", this)
 {
     inputAdded.connect([this] (gloperate::AbstractSlot * /*addedInput*/) {
-        program.setValid(false);
+        program.invalidate();
     });
     inputRemoved.connect([this] (gloperate::AbstractSlot * /*addedInput*/) {
-        program.setValid(false);
+        program.invalidate();
     });
 }
 
@@ -39,7 +39,13 @@ void ProgramStage::onContextInit(AbstractGLContext *)
 {
     m_program = cppassist::make_unique<globjects::Program>();
     program.setValue(m_program.get());
-    program.setValid(false);
+    program.invalidate();
+}
+
+void ProgramStage::onContextDeinit(AbstractGLContext *)
+{
+    m_shaders.clear();
+    m_program = nullptr;
 }
 
 void ProgramStage::onProcess(AbstractGLContext *)
@@ -61,7 +67,7 @@ void ProgramStage::onProcess(AbstractGLContext *)
         }
     }
 
-    program.setValid(true);
+    program.setValue(m_program.get());
 }
 
 

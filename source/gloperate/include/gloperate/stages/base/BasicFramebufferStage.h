@@ -7,7 +7,6 @@
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <globjects/Framebuffer.h>
-#include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/ExtendedProperties.h>
@@ -16,8 +15,17 @@
 #include <gloperate/pipeline/Output.h>
 
 
+namespace globjects
+{
+    class Texture;
+}
+
+
 namespace gloperate
 {
+
+
+class RenderTarget;
 
 
 /**
@@ -43,9 +51,11 @@ public:
     Input<glm::vec4>                 viewport;      ///< Texture size
 
     // Outputs
-    Output<globjects::Framebuffer *> fbo;           ///< Framebuffer
-    Output<globjects::Texture *>     colorTexture;  ///< Color attachment
-    Output<globjects::Texture *>     depthTexture;  ///< Depth attachment
+    Output<globjects::Framebuffer *>  fbo;          ///< Framebuffer
+    Output<globjects::Texture *>      colorTexture; ///< Color texture
+    Output<globjects::Texture *>      depthTexture; ///< Depth texture
+    Output<gloperate::RenderTarget *> colorBuffer;  ///< Color attachment
+    Output<gloperate::RenderTarget *> depthBuffer;  ///< Depth attachment
 
 
 public:
@@ -79,9 +89,11 @@ protected:
 
 protected:
     // Data
-    std::unique_ptr<globjects::Framebuffer> m_fbo;       ///< The created framebuffer
-    std::unique_ptr<globjects::Texture>     m_texColor;  ///< Color texture
-    std::unique_ptr<globjects::Texture>     m_texDepth;  ///< Depth texture
+    std::unique_ptr<globjects::Framebuffer>  m_fbo;          ///< The created framebuffer
+    std::unique_ptr<globjects::Texture>      m_colorTexture; ///< The created texture
+    std::unique_ptr<globjects::Texture>      m_depthTexture; ///< The created texture
+    std::unique_ptr<gloperate::RenderTarget> m_colorBuffer;  ///< Color texture
+    std::unique_ptr<gloperate::RenderTarget> m_depthBuffer;  ///< Depth texture
 };
 
 

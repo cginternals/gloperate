@@ -52,6 +52,11 @@ void SpinningRectStage::onContextInit(gloperate::AbstractGLContext *)
 
 void SpinningRectStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
+    m_fragmentShader = nullptr;
+    m_vertexShader = nullptr;
+    m_program = nullptr;
+    m_vertexBuffer = nullptr;
+    m_vao = nullptr;
 }
 
 void SpinningRectStage::onProcess(gloperate::AbstractGLContext *)

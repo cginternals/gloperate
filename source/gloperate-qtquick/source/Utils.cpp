@@ -29,6 +29,11 @@ void Utils::registerGlobjectsContext()
     globjects::registerCurrentContext();
 }
 
+void Utils::setGlobjectsContext()
+{
+    globjects::setCurrentContext();
+}
+
 void Utils::clearScreen(float red, float green, float blue, float alpha, bool clearDepthBuffer)
 {
     gl::glClearColor(red, green, blue, alpha);

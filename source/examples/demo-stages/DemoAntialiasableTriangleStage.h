@@ -25,9 +25,9 @@ class DemoAntialiasableTriangleStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoAntialiasableTriangleStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Demo stage that renders a static triangle onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

@@ -199,10 +199,9 @@ public:
 
     /**
     *  @brief
-    *    Set validity of data
+    *    Invalidates data
     *
     *  @remarks
-    *    This marks the output value as valid or invalid.
     *    The state will automatically change to valid when a new value is set.
     *
     *  @see
@@ -210,7 +209,7 @@ public:
     *  @see
     *    setValue
     */
-    virtual void setValid(bool isValid) = 0;
+    virtual void invalidate() = 0;
 
     /**
     *  @brief

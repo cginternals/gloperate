@@ -31,10 +31,10 @@ RenderPassStage::RenderPassStage(Environment * environment, const std::string & 
 , renderPass("renderPass", this)
 {
     m_inputAddedConnection = inputAdded.connect([this] (gloperate::AbstractSlot *) {
-        renderPass.setValid(false);
+        renderPass.invalidate();
     });
     m_inputRemovedConnection = inputRemoved.connect([this] (gloperate::AbstractSlot *) {
-        renderPass.setValid(false);
+        renderPass.invalidate();
     });
 }
 
@@ -105,7 +105,7 @@ void RenderPassStage::onProcess(AbstractGLContext *)
         setterPair.second();
     }
 
-    renderPass.setValid(true);
+    renderPass.setValue(m_renderPass.get());
 }
 
 

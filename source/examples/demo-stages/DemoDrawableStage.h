@@ -37,9 +37,9 @@ class DemoDrawableStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoDrawableStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Demo stage that creates a simple triangle strip as a drawable"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

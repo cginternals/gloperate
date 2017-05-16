@@ -58,7 +58,6 @@ void ScreenAlignedQuad::draw() const
     m_drawable->draw();
 }
 
-
 std::unique_ptr<globjects::AbstractStringSource> ScreenAlignedQuad::vertexShaderSource()
 {
     return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate/shaders/screenaligned/default.vert");
@@ -67,6 +66,11 @@ std::unique_ptr<globjects::AbstractStringSource> ScreenAlignedQuad::vertexShader
 std::unique_ptr<globjects::AbstractStringSource> ScreenAlignedQuad::fragmentShaderSource()
 {
     return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate/shaders/screenaligned/default.frag");
+}
+
+std::unique_ptr<globjects::AbstractStringSource> ScreenAlignedQuad::fragmentShaderSourceInverted()
+{
+    return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate/shaders/screenaligned/defaultInverted.frag");
 }
 
 

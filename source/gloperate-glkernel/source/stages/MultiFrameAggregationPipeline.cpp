@@ -3,7 +3,8 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
-#include <gloperate/stages/base/CustomFramebufferStage.h>
+#include <gloperate/stages/base/TextureStage.h>
+#include <gloperate/stages/base/FramebufferStage.h>
 #include <gloperate/stages/base/BlitStage.h>
 #include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationStage.h>
@@ -21,8 +22,10 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
-, m_renderFramebufferStage(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "BasicFramebufferStage (Renderer)"))
-, m_aggregationFramebufferStage(cppassist::make_unique<gloperate::CustomFramebufferStage>(environment, "CustomFramebufferStage (Accumulation)"))
+, m_renderFramebufferStage(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "RenderFramebufferStage"))
+, m_aggregationColorTextureStage(cppassist::make_unique<gloperate::TextureStage>(environment, "ColorTextureStage"))
+, m_aggregationDepthTextureStage(cppassist::make_unique<gloperate::TextureStage>(environment, "DepthTextureStage"))
+, m_aggregationFramebufferStage(cppassist::make_unique<gloperate::FramebufferStage>(environment, "AccumulationFramebufferStage"))
 , m_controlStage(cppassist::make_unique<MultiFrameControlStage>(environment, "MultiFrameControlStage"))
 , m_aggregationStage(cppassist::make_unique<MultiFrameAggregationStage>(environment, "MultiFrameAggregationStage"))
 , m_blitStage(cppassist::make_unique<gloperate::BlitStage>(environment, "BlitStage"))
@@ -31,11 +34,21 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     addStage(m_renderFramebufferStage.get());
     m_renderFramebufferStage->viewport << renderInterface.deviceViewport;
 
+    addStage(m_aggregationColorTextureStage.get());
+    m_aggregationColorTextureStage->size << renderInterface.deviceViewport;
+    m_aggregationColorTextureStage->format.setValue(gl::GL_RGBA);
+    m_aggregationColorTextureStage->internalFormat.setValue(gl::GL_RGBA32F);
+    m_aggregationColorTextureStage->type.setValue(gl::GL_FLOAT);
+
+    addStage(m_aggregationDepthTextureStage.get());
+    m_aggregationDepthTextureStage->size << renderInterface.deviceViewport;
+    m_aggregationDepthTextureStage->format.setValue(gl::GL_DEPTH_COMPONENT);
+    m_aggregationDepthTextureStage->internalFormat.setValue(gl::GL_DEPTH_COMPONENT);
+    m_aggregationDepthTextureStage->type.setValue(gl::GL_UNSIGNED_BYTE);
+
     addStage(m_aggregationFramebufferStage.get());
-    m_aggregationFramebufferStage->viewport << renderInterface.deviceViewport;
-    m_aggregationFramebufferStage->format.setValue(gl::GL_RGBA);
-    m_aggregationFramebufferStage->internalFormat.setValue(gl::GL_RGBA32F);
-    m_aggregationFramebufferStage->dataType.setValue(gl::GL_FLOAT);
+    m_aggregationFramebufferStage->colorTexture << m_aggregationColorTextureStage->renderTarget;
+    m_aggregationFramebufferStage->depthTexture << m_aggregationDepthTextureStage->renderTarget;
 
     addStage(m_controlStage.get());
     m_controlStage->frameNumber << renderInterface.frameCounter;

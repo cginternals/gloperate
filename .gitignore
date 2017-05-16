@@ -23,10 +23,12 @@ release_build
 # Qt cache
 CMakeLists.txt.user
 CMakeLists.txt.user.*
+*.qmlc
 
 # IDE project files
 *.sublime-project
 *.sublime-workspace
+.vscode
 
 # Local config windows
 _configure*.bat

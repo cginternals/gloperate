@@ -3,11 +3,12 @@
 # External dependencies
 # 
 
-find_package(GLM REQUIRED)
+find_package(glm       REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
+find_package(cpplocate REQUIRED)
 find_package(Qt5Core    5.1)
 find_package(Qt5Gui     5.1)
 find_package(Qt5Widgets 5.1)
@@ -81,9 +82,6 @@ target_include_directories(${target}
     PRIVATE
     ${DEFAULT_INCLUDE_DIRECTORIES}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${GLM_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/source/gloperate/include
-    ${PROJECT_SOURCE_DIR}/source/gloperate-qt/include
 )
 
 
@@ -136,6 +134,16 @@ target_compile_options(${target}
 target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LINKER_OPTIONS}
+)
+
+
+#
+# Target Health
+#
+
+perform_health_checks(
+    ${target}
+    ${sources}
 )
 
 

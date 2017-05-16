@@ -26,9 +26,9 @@ class DemoTransparencyStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoTransparencyStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Demo stage that renders three transparent, overlapping circles onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

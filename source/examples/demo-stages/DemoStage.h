@@ -27,9 +27,9 @@ class DemoStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "RenderStage Demo" // Tags
+      , ""                 // Icon
+      , ""                 // Annotations
       , "Demo stage that renders a spinning rectangle onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
@@ -39,6 +39,9 @@ public:
 public:
     // Interfaces
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+
+    // Outputs
+    Output<globjects::Framebuffer *> fboOut; ///< Pass through of target FBO
 
 
 public:

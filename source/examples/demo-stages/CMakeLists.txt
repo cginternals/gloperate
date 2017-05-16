@@ -3,10 +3,11 @@
 # External dependencies
 #
 
-find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
+find_package(OpenGL    REQUIRED)
+find_package(glm       REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(cpplocate REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(glkernel  REQUIRED)
@@ -58,6 +59,8 @@ set(headers
     ${include_path}/ColorizeStage.h
     ${include_path}/LightTestStage.h
     ${include_path}/LightTestPipeline.h
+    ${include_path}/DemoTextRenderingPipeline.h
+    ${include_path}/GlyphSequenceDemoStage.h
 )
 
 set(sources
@@ -83,6 +86,8 @@ set(sources
     ${source_path}/ColorizeStage.cpp
     ${source_path}/LightTestStage.cpp
     ${source_path}/LightTestPipeline.cpp
+    ${source_path}/DemoTextRenderingPipeline.cpp
+    ${source_path}/GlyphSequenceDemoStage.cpp
 )
 
 # Group source files
@@ -132,7 +137,6 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
-    ${GLM_INCLUDE_DIR}
 
     PUBLIC
 
@@ -153,6 +157,7 @@ target_link_libraries(${target}
     ${OPENGL_LIBRARIES}
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-glkernel
+    ${META_PROJECT_NAME}::gloperate-text
     cpplocate::cpplocate
     cppexpose::cppexpose
     cppassist::cppassist
@@ -208,6 +213,16 @@ target_link_libraries(${target}
     ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
+)
+
+
+#
+# Target Health
+#
+
+perform_health_checks(
+    ${target}
+    ${sources}
 )
 
 

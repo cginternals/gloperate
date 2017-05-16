@@ -25,6 +25,7 @@ CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
 DemoStage::DemoStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "DemoStage", name)
 , renderInterface(this)
+, fboOut("fboOut", this, nullptr)
 , m_timer(environment)
 , m_time(0.0f)
 , m_angle(0.0f)
@@ -118,6 +119,7 @@ void DemoStage::onProcess(gloperate::AbstractGLContext *)
 
     // Signal that output is valid
     renderInterface.rendered.setValue(true);
+    fboOut.setValue(*renderInterface.targetFBO);
 }
 
 void DemoStage::createAndSetupCamera()
