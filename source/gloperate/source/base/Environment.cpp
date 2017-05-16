@@ -3,23 +3,12 @@
 
 #include <algorithm>
 
+#include <cppassist/memory/make_unique.h>
 #include <cppassist/logging/logging.h>
 
 #include <cppexpose/scripting/ScriptContext.h>
 
 #include <gloperate/base/AbstractCanvas.h>
-#include <cppassist/memory/make_unique.h>
-
-// Local components
-#include <gloperate/stages/base/BasicFramebufferStage.h>
-#include <gloperate/stages/base/TextureLoadStage.h>
-#include <gloperate/stages/base/ProceduralTextureStage.h>
-#include <gloperate/stages/base/MixerStage.h>
-#include <gloperate/stages/base/SplitStage.h>
-#include <gloperate/stages/lights/LightBufferTextureStage.h>
-#include <gloperate/stages/lights/LightCreationStage.h>
-#include <gloperate/stages/base/ShaderStage.h>
-#include <gloperate/stages/base/ProgramStage.h>
 
 
 namespace gloperate

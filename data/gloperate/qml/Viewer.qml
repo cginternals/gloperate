@@ -19,13 +19,13 @@ ApplicationWindow
     property bool  renderBackground: true
 
     // Stage
-    property string stage: 'DemoPipeline'
+    property string stage: settings.stage
 
     x:       settings.x
     y:       settings.y
     width:   settings.width
     height:  settings.height
-    visible: true
+    visible: false
 
     Shortcut
     {
@@ -241,6 +241,11 @@ ApplicationWindow
         id: mainMenu
 
         settingsObj: settings
+
+        onRenderStageSelected:
+        {
+            settings.stage = name;
+        }
     }
 
     // Container for the main view(s)
@@ -298,7 +303,7 @@ ApplicationWindow
                         id: propertyEditor
 
                         pipelineInterface: gloperatePipeline
-                        path:              'pipeline.DemoPipeline'
+                        path:              'pipeline.' + window.stage
 
                         Component.onCompleted:
                         {
@@ -347,7 +352,7 @@ ApplicationWindow
 
             onSubmitted:
             {
-                scriptConsole.output("> " + command + "\n", "Command");
+                scriptConsole.output("> " + command + "\n");
                 var res = executeScript(command);
 
                 if (res != undefined)
@@ -364,18 +369,8 @@ ApplicationWindow
 
         onMessageReceived:
         {
-            var stringType;
-
-            if (type == MessageForwarder.Debug)
-                stringType = "Debug";
-            else if (type == MessageForwarder.Warning)
-                stringType = "Warning";
-            else if (type == MessageForwarder.Critical)
-                stringType = "Critical";
-            else if (type == MessageForwarder.Fatal)
-                stringType = "Fatal";
-
-            scriptConsole.output(message, stringType);
+            // Put message on console log
+            scriptConsole.output(message, type);
         }
     }
 
@@ -397,8 +392,15 @@ ApplicationWindow
         property int    y:             100
         property int    width:         800
         property int    height:        600
+        property int    logLevel:      3
         property bool   debugMode:     false
         property string panelPosition: 'left'
+        property string stage:         'DemoPipeline'
+
+        onLogLevelChanged:
+        {
+            gloperate.system.setLogLevel(logLevel);
+        }
 
         onDebugModeChanged:
         {
@@ -409,6 +411,7 @@ ApplicationWindow
     Component.onCompleted:
     {
         settings.load();
+        window.visible = true;
     }
 
     Component.onDestruction:

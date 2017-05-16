@@ -59,6 +59,8 @@ set(headers
     ${include_path}/ColorizeStage.h
     ${include_path}/LightTestStage.h
     ${include_path}/LightTestPipeline.h
+    ${include_path}/DemoTextRenderingPipeline.h
+    ${include_path}/GlyphSequenceDemoStage.h
 )
 
 set(sources
@@ -84,6 +86,8 @@ set(sources
     ${source_path}/ColorizeStage.cpp
     ${source_path}/LightTestStage.cpp
     ${source_path}/LightTestPipeline.cpp
+    ${source_path}/DemoTextRenderingPipeline.cpp
+    ${source_path}/GlyphSequenceDemoStage.cpp
 )
 
 # Group source files
@@ -153,6 +157,7 @@ target_link_libraries(${target}
     ${OPENGL_LIBRARIES}
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-glkernel
+    ${META_PROJECT_NAME}::gloperate-text
     cpplocate::cpplocate
     cppexpose::cppexpose
     cppassist::cppassist

@@ -30,9 +30,9 @@ class LightTestStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         LightTestStage, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Stage that renders a rotating cube using provided lighting information"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"

@@ -9,6 +9,9 @@ Drawer
 {
     id: drawer
 
+    /// Called when a render stage has been selected
+    signal renderStageSelected(string name)
+
     property string activePage:     ''
     property real   fullWidth:      parent.width
     property real   collapsedWidth: 0.3 * fullWidth
@@ -99,6 +102,14 @@ Drawer
         PipelinePage
         {
             anchors.fill: parent
+
+            currentStage: settingsObj.stage
+
+            onRenderStageSelected:
+            {
+                drawer.renderStageSelected(name);
+                drawer.close();
+            }
         }
     }
 

@@ -54,6 +54,25 @@ Item
                 {
                     Layout.alignment: Qt.AlignRight
 
+                    text: 'Log Level'
+                }
+
+                ComboBox
+                {
+                    model: [ 'Critical', 'Error', 'Warning', 'Message', 'Debug', 'Debug (2)', 'Debug (3)', 'Debug (4)' ]
+
+                    currentIndex: settings.logLevel
+
+                    onActivated:
+                    {
+                        settings.logLevel = index;
+                    }
+                }
+
+                Label
+                {
+                    Layout.alignment: Qt.AlignRight
+
                     text: 'Enable Debug Mode'
                 }
 

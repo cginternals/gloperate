@@ -38,9 +38,9 @@ class DemoSSAOPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoSSAOPipeline, gloperate::Stage
-      , ""              // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "RenderStage Demo SSAO" // Tags
+      , ""                      // Icon
+      , ""                      // Annotations
       , "Demo pipeline that renders a simple scene onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

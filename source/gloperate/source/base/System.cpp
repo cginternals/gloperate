@@ -3,6 +3,8 @@
 
 #include <fstream>
 
+#include <cppassist/logging/logging.h>
+
 #include <gloperate/base/Environment.h>
 
 
@@ -15,15 +17,31 @@ System::System(Environment * environment)
 , m_environment(environment)
 {
     // Register functions
-    addFunction("load",       this, &System::scr_load);
-    addFunction("readFile",   this, &System::scr_readFile);
-    addFunction("writeFile",  this, &System::scr_writeFile);
-    addFunction("appendFile", this, &System::scr_appendFile);
-    addFunction("exit",       this, &System::scr_exit);
+    addFunction("logLevel",    this, &System::scr_logLevel);
+    addFunction("setLogLevel", this, &System::scr_setLogLevel);
+    addFunction("load",        this, &System::scr_load);
+    addFunction("load",        this, &System::scr_load);
+    addFunction("readFile",    this, &System::scr_readFile);
+    addFunction("writeFile",   this, &System::scr_writeFile);
+    addFunction("appendFile",  this, &System::scr_appendFile);
+    addFunction("exit",        this, &System::scr_exit);
 }
 
 System::~System()
 {
+}
+
+int System::scr_logLevel()
+{
+    return cppassist::verbosityLevel();
+}
+
+void System::scr_setLogLevel(int logLevel)
+{
+    if (logLevel >= 0)
+    {
+        cppassist::setVerbosityLevel(logLevel);
+    }
 }
 
 void System::scr_load(const std::string & filename)

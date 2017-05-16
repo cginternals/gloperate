@@ -32,9 +32,9 @@ class LightTestPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         LightTestPipeline, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "RenderStage Demo Lighting" // Tags
+      , ""                          // Icon
+      , ""                          // Annotations
       , "Stage that renders a rotating cube illuminated by 3 light sources"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"

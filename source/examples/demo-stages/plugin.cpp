@@ -15,6 +15,8 @@
 #include "DemoStage.h"
 #include "DemoTransparencyPipeline.h"
 #include "DemoTransparencyStage.h"
+#include "DemoTextRenderingPipeline.h"
+#include "GlyphSequenceDemoStage.h"
 #include "LightTestPipeline.h"
 #include "LightTestStage.h"
 #include "ShaderDemoPipeline.h"
@@ -38,6 +40,8 @@ CPPEXPOSE_PLUGIN_LIBRARY
     CPPEXPOSE_PLUGIN_COMPONENT(DemoStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoTransparencyPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoTransparencyStage)
+    CPPEXPOSE_PLUGIN_COMPONENT(DemoTextRenderingPipeline)
+    CPPEXPOSE_PLUGIN_COMPONENT(GlyphSequenceDemoStage)
     CPPEXPOSE_PLUGIN_COMPONENT(LightTestPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(LightTestStage)
     CPPEXPOSE_PLUGIN_COMPONENT(ShaderDemoPipeline)

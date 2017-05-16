@@ -48,8 +48,6 @@ endif()
 
 set(sources
     main.cpp
-    Application.cpp
-    Application.h
 )
 
 
@@ -75,6 +73,7 @@ set_target_properties(${target}
     PROPERTIES
     ${DEFAULT_PROJECT_OPTIONS}
     FOLDER "${IDE_FOLDER}"
+    MACOSX_BUNDLE_INFO_PLIST CustomMacOSXBundleInfo.plist.in
 )
 
 

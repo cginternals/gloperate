@@ -35,9 +35,9 @@ class DemoTransparencyPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoTransparencyPipeline, gloperate::Stage
-      , ""              // Tags
-      , ""              // Icon
-      , ""              // Annotations
+      , "RenderStage Demo Transparency" // Tags
+      , ""                              // Icon
+      , ""                              // Annotations
       , "Demo pipeline that renders three transparent, overlapping circles onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

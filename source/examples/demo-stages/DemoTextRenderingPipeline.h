@@ -13,19 +13,19 @@
 
 namespace gloperate_text
 {
-enum class Alignment : unsigned char;
-enum class LineAnchor : unsigned char;
+    enum class Alignment : unsigned char;
+    enum class LineAnchor : unsigned char;
 }
 
 
-class TextRenderingPipeline : public gloperate::Pipeline
+class DemoTextRenderingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        TextRenderingPipeline, gloperate::Stage
-      , "RenderStage"   // Tags
-      , ""   // Icon
-      , ""   // Annotations
+        DemoTextRenderingPipeline, gloperate::Stage
+      , "RenderStage Demo Text" // Tags
+      , ""                      // Icon
+      , ""                      // Annotations
       , "Text demo"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
@@ -54,5 +54,5 @@ public:
 
 
 public:
-    explicit TextRenderingPipeline(gloperate::Environment * environment, const std::string & name = "");
+    explicit DemoTextRenderingPipeline(gloperate::Environment * environment, const std::string & name = "");
 };
