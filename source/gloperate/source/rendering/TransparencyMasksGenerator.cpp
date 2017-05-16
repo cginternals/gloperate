@@ -32,7 +32,7 @@ auto TransparencyMasksGenerator::generateDistributions() -> std::unique_ptr<mask
     for (auto i = 0u; i < masks->size(); ++i)
         generateDistributionForAlpha(i, masks->at(i));
 
-    return std::move(masks);
+    return masks;
 }
 
 void TransparencyMasksGenerator::generateCombinations()
