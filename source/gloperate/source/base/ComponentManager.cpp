@@ -75,9 +75,13 @@ void ComponentManager::scr_removePluginPath(const std::string & path)
     this->removePluginPath(path);
 }
 
-void ComponentManager::scr_scanPlugins(const std::string & suffix)
+void ComponentManager::scr_scanPlugins()
 {
-    this->scanPlugins(suffix);
+    #ifndef NDEBUG
+        this->scanPlugins("-plugins-debug");
+    #else
+        this->scanPlugins("-plugins");
+    #endif
 }
 
 cppexpose::Variant ComponentManager::scr_components()

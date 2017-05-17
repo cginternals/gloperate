@@ -43,15 +43,10 @@ Application::Application(int & argc, char ** argv)
         cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&m_qmlEngine)
     );
 
-    // Configure and load plugins
+    // Configure plugin paths
     m_environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    #ifndef NDEBUG
-        m_environment.componentManager()->scanPlugins("-plugins-debug");
-    #else
-        m_environment.componentManager()->scanPlugins("-plugins");
-    #endif
 
     // Specify desired context format
     gloperate::GLContextFormat format;

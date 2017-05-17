@@ -45,7 +45,7 @@ protected:
     cppexpose::Variant scr_pluginPaths();
     void scr_addPluginPath(const std::string & path);
     void scr_removePluginPath(const std::string & path);
-    void scr_scanPlugins(const std::string & suffix);
+    void scr_scanPlugins();
     cppexpose::Variant scr_components();
     void scr_printComponents();
 };
