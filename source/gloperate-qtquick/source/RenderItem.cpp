@@ -89,11 +89,19 @@ void RenderItem::createCanvasWithStage(const QString & stage)
     auto * engine = static_cast<QmlEngine *>(QQmlEngine::contextForObject(this)->engine());
     gloperate::Environment * environment = engine->environment();
 
+    // Create stage before
+    auto stageInstance = Utils::createRenderStage(environment, m_stage.toStdString());
+
+    if (!stageInstance)
+    {
+        return;
+    }
+
     // Create canvas and render stage
     m_stage = stage;
     m_canvas = Utils::createCanvas(
         environment,
-        Utils::createRenderStage(environment, m_stage.toStdString())
+        std::move(stageInstance)
     );
 
     assert(m_canvas);
@@ -126,10 +134,18 @@ void RenderItem::updateStage(const QString & stage)
     auto * engine = static_cast<QmlEngine *>(QQmlEngine::contextForObject(this)->engine());
     gloperate::Environment * environment = engine->environment();
 
-    // Create render stage
+    // Create stage before
+    auto stageInstance = Utils::createRenderStage(environment, stage.toStdString());
+
+    if (!stageInstance)
+    {
+        return;
+    }
+
+    // Update render stage
     m_stage = stage;
     static_cast<gloperate::Canvas*>(m_canvas.get())->setRenderStage(
-        Utils::createRenderStage(environment, stage.toStdString())
+        std::move(stageInstance)
     );
 }
 
