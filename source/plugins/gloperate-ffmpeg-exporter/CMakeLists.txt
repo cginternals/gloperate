@@ -28,7 +28,7 @@ cmake_policy(SET CMP0020 NEW)
 # 
 
 # Target name
-set(target gloperate-ffmpeg-exporter)
+set(target gloperate-ffmpeg-exporter-plugins)
 
 # Exit here if required dependencies are not met
 if (NOT FFMPEG_FOUND)
@@ -91,6 +91,7 @@ set_target_properties(${target}
     PROPERTIES
     ${DEFAULT_PROJECT_OPTIONS}
     FOLDER "${IDE_FOLDER}"
+    DEBUG_POSTFIX "-debug"
 )
 
 

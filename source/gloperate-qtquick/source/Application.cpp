@@ -47,9 +47,11 @@ Application::Application(int & argc, char ** argv)
     m_environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    m_environment.componentManager()->scanPlugins("loaders");
-    m_environment.componentManager()->scanPlugins("stages");
-    m_environment.componentManager()->scanPlugins("exporter");
+    #ifndef NDEBUG
+        m_environment.componentManager()->scanPlugins("-plugins-debug");
+    #else
+        m_environment.componentManager()->scanPlugins("-plugins");
+    #endif
 
     // Specify desired context format
     gloperate::GLContextFormat format;
