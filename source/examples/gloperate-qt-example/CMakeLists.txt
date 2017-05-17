@@ -103,7 +103,6 @@ target_link_libraries(${target}
     globjects::globjects
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-qt
-    ${META_PROJECT_NAME}::demo-stages
 )
 
 

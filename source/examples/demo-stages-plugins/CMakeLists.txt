@@ -18,7 +18,7 @@ find_package(glkernel  REQUIRED)
 #
 
 # Target name
-set(target demo-stages)
+set(target demo-stages-plugins)
 
 # Exit here if required dependencies are not met
 message(STATUS "Plugin ${target}")
@@ -124,6 +124,7 @@ set_target_properties(${target}
     PROPERTIES
     ${DEFAULT_PROJECT_OPTIONS}
     FOLDER "${IDE_FOLDER}"
+    DEBUG_POSTFIX "-debug"
 )
 
 
