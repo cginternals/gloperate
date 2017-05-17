@@ -396,6 +396,7 @@ ApplicationWindow
         property bool   debugMode:     false
         property string panelPosition: 'left'
         property string stage:         'DemoPipeline'
+        property string pluginPaths:   ''
 
         onLogLevelChanged:
         {
@@ -410,7 +411,12 @@ ApplicationWindow
 
     Component.onCompleted:
     {
+        // Load settings
         settings.load();
+        gloperate.components.setPluginPaths(settings.pluginPaths);
+        gloperate.components.scanPlugins();
+
+        // Show window
         window.visible = true;
     }
 

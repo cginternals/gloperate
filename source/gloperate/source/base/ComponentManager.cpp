@@ -6,6 +6,9 @@
 #include <cppexpose/variant/Variant.h>
 
 
+using namespace cppexpose;
+
+
 namespace gloperate
 {
 
@@ -14,6 +17,8 @@ ComponentManager::ComponentManager()
 : cppexpose::Object("components")
 {
     // Register functions
+    addFunction("getPluginPaths",   this, &ComponentManager::scr_getPluginPaths);
+    addFunction("setPluginPaths",   this, &ComponentManager::scr_setPluginPaths);
     addFunction("pluginPaths",      this, &ComponentManager::scr_pluginPaths);
     addFunction("addPluginPath",    this, &ComponentManager::scr_addPluginPath);
     addFunction("removePluginPath", this, &ComponentManager::scr_removePluginPath);
@@ -26,9 +31,31 @@ ComponentManager::~ComponentManager()
 {
 }
 
+std::string ComponentManager::scr_getPluginPaths()
+{
+    std::vector<std::string> paths = this->pluginPaths(PluginPathType::UserDefined);
+
+    std::string allPaths = "";
+    for (auto path : paths) {
+        if (!allPaths.empty()) allPaths += ";";
+        allPaths += path;
+    }
+
+    return allPaths;
+}
+
+void ComponentManager::scr_setPluginPaths(const std::string & allPaths)
+{
+    std::vector<std::string> paths = cppassist::string::split(allPaths, ';');
+
+    for (auto path : paths) {
+        this->addPluginPath(path, PluginPathType::UserDefined);
+    }
+}
+
 cppexpose::Variant ComponentManager::scr_pluginPaths()
 {
-    std::vector<std::string> paths = this->pluginPaths();
+    std::vector<std::string> paths = this->pluginPaths(PluginPathType::UserDefined);
 
     cppexpose::Variant lst = cppexpose::Variant::array();
     for (auto path : paths) {
@@ -40,7 +67,7 @@ cppexpose::Variant ComponentManager::scr_pluginPaths()
 
 void ComponentManager::scr_addPluginPath(const std::string & path)
 {
-    this->addPluginPath(path);
+    this->addPluginPath(path, PluginPathType::UserDefined);
 }
 
 void ComponentManager::scr_removePluginPath(const std::string & path)
@@ -48,9 +75,9 @@ void ComponentManager::scr_removePluginPath(const std::string & path)
     this->removePluginPath(path);
 }
 
-void ComponentManager::scr_scanPlugins(const std::string & identifier)
+void ComponentManager::scr_scanPlugins(const std::string & suffix)
 {
-    this->scanPlugins(identifier);
+    this->scanPlugins(suffix);
 }
 
 cppexpose::Variant ComponentManager::scr_components()
