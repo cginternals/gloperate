@@ -49,11 +49,16 @@ void TextureItemRenderer::configureFbo(int fboId, unsigned int width, unsigned i
 
 void TextureItemRenderer::renderTexture()
 {
+    if (m_environment->canvases().empty())
+    {
+        return;
+    }
+
     // Get texture
     globjects::Texture * texture = nullptr;
 
     // Get slot
-    Canvas * canvas = static_cast<Canvas*>(m_environment->canvases()[0]);
+    Canvas * canvas = static_cast<Canvas*>(m_environment->canvases().front());
     AbstractSlot * slot = canvas->pipelineContainer()->getSlot(m_path.toStdString());
     if (!slot) return;
 
@@ -94,8 +99,7 @@ void TextureItemRenderer::renderTexture()
     gl::glEnable(gl::GL_BLEND);
 
     // Bind texture
-    gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-    texture->bind();
+    texture->bindActive(0);
 
     // Draw screen-aligned quad
     m_program->use();

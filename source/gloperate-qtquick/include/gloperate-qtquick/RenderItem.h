@@ -98,7 +98,8 @@ protected slots:
 
 
 protected:
-    void createCanvas(const QString & stage);
+    void createCanvasWithStage(const QString & stage);
+    void updateStage(const QString & stage);
 
     virtual void keyPressEvent(QKeyEvent * event) override;
     virtual void keyReleaseEvent(QKeyEvent * event) override;
