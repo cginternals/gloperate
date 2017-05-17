@@ -246,6 +246,7 @@ ApplicationWindow
         {
             settings.stage = name;
             window.stage   = name;
+            propertyEditor.update();
         }
     }
 
@@ -421,6 +422,7 @@ ApplicationWindow
 
         // Set render stage
         window.stage = settings.stage;
+        propertyEditor.update();
 
         // Show window
         window.visible = true;
