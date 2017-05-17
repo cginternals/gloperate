@@ -71,8 +71,19 @@ ApplicationWindow
     // Main view
     RenderItem
     {
+        id: renderItem
+
         anchors.fill: parent
 
         stage: window.stage
+    }
+
+    Component.onCompleted:
+    {
+        // Scan for plugins
+        gloperate.components.scanPlugins();
+
+        // Set render stage
+        renderItem.stage = window.stage;
     }
 }
