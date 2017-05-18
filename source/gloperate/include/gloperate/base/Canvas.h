@@ -76,6 +76,21 @@ public:
 
     /**
     *  @brief
+    *    Release and return current render stage
+    *
+    *  @return
+    *    The current render stage
+    *
+    *  @remarks
+    *    The pipeline container is always empty after this function call.
+    *    If the return value is not used, the stage gets deleted immediately
+    *    (potentionally leaking OpenGL resources or crash upon deletion
+    *    because of a missing current OpenGL context).
+    */
+    std::unique_ptr<Stage> obtainRenderStage();
+
+    /**
+    *  @brief
     *    Set render stage
     *
     *  @param[in] stage

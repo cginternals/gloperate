@@ -71,19 +71,19 @@ Stage * Canvas::renderStage()
 void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 {
     // De-initialize render stage
-    if (m_pipelineContainer.renderStage() && m_openGLContext)
+    /*if (m_pipelineContainer.renderStage() && m_openGLContext)
     {
         m_pipelineContainer.renderStage()->deinitContext(m_openGLContext);
-    }
+    }*/
 
     // Set new render stage
     m_pipelineContainer.setRenderStage(std::move(stage));
 
     // Initialize new render stage
-    if (m_pipelineContainer.renderStage() && m_openGLContext)
+    /*if (m_pipelineContainer.renderStage() && m_openGLContext)
     {
         m_pipelineContainer.renderStage()->initContext(m_openGLContext);
-    }
+    }*/
 }
 
 void Canvas::onRender(globjects::Framebuffer * targetFBO)
@@ -207,6 +207,11 @@ void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 const glm::vec4 & Canvas::savedDeviceViewport() const
 {
     return m_savedDeviceVP;
+}
+
+std::unique_ptr<Stage> Canvas::obtainRenderStage()
+{
+    return m_pipelineContainer.obtainRenderStage();
 }
 
 

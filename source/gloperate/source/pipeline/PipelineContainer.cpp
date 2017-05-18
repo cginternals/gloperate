@@ -115,5 +115,10 @@ void PipelineContainer::disconnect(Stage * stage, const std::string & name)
     input->disconnect();
 }
 
+std::unique_ptr<Stage> PipelineContainer::obtainRenderStage()
+{
+    return std::move(m_renderStage);
+}
+
 
 } // namespace gloperate

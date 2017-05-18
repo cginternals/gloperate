@@ -6,11 +6,10 @@
 
 #include <QString>
 #include <QQuickFramebufferObject>
+#include <QRunnable>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
-
-class QQuickWindow;
 
 namespace globjects
 {
@@ -20,6 +19,8 @@ namespace globjects
 namespace gloperate
 {
     class AbstractCanvas;
+    class Canvas;
+    class Stage;
 }
 
 
@@ -38,8 +39,9 @@ class GLOPERATE_QTQUICK_API RenderItem : public QQuickFramebufferObject
 
 
 signals:
-    void canvasInitialized(); ///< Called after the canvas has been successfully initialized
-    void updateNeeded();      ///< Called when the canvas needs to be redrawn
+    void canvasInitialized();  ///< Called after the canvas has been successfully initialized
+    void renderStageReplaced(); ///< Called after the render stage has been replaced
+    void updateNeeded();       ///< Called when the canvas needs to be redrawn
 
 
 public:
@@ -101,6 +103,8 @@ protected:
     void createCanvasWithStage(const QString & stage);
     void updateStage(const QString & stage);
 
+    virtual void releaseResources() override;
+
     virtual void keyPressEvent(QKeyEvent * event) override;
     virtual void keyReleaseEvent(QKeyEvent * event) override;
     virtual void mouseMoveEvent(QMouseEvent * event) override;
@@ -110,8 +114,36 @@ protected:
 
 
 protected:
-    QString                                    m_stage;  ///< Name of the render stage to use
-    std::shared_ptr<gloperate::AbstractCanvas> m_canvas; ///< Canvas that renders into the item (must NOT be null)
+    class RenderStageInitialization : public QRunnable
+    {
+    public:
+        RenderStageInitialization(gloperate::Stage * stage, gloperate::Canvas * canvas);
+
+        virtual void run() override;
+
+
+    protected:
+        gloperate::Canvas * m_canvas; ///< The canvas
+        gloperate::Stage *  m_stage;  ///< The new stage
+    };
+
+    class RenderStageCleanup : public QRunnable
+    {
+    public:
+        RenderStageCleanup(std::unique_ptr<gloperate::Stage> && stage, gloperate::Canvas * canvas);
+
+        virtual void run() override;
+
+
+    protected:
+        gloperate::Canvas *               m_canvas; ///< The former canvas
+        std::unique_ptr<gloperate::Stage> m_stage;  ///< The stage to delete
+    };
+
+
+protected:
+    QString                                    m_stage;     ///< Name of the render stage to use
+    std::shared_ptr<gloperate::AbstractCanvas> m_canvas;    ///< Canvas that renders into the item (must NOT be null)
 };
 
 

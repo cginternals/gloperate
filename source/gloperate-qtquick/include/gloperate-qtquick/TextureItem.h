@@ -10,8 +10,6 @@
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
-class QQuickWindow;
-
 namespace globjects
 {
     class Framebuffer;

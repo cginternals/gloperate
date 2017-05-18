@@ -1,9 +1,9 @@
 
 #include <gloperate-qtquick/TextureItemRenderer.h>
 
-#include <QQuickWindow>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLContext>
+#include <QQuickWindow>
 
 #include <cppassist/memory/make_unique.h>
 

@@ -246,7 +246,6 @@ ApplicationWindow
         {
             settings.stage = name;
             window.stage   = name;
-            propertyEditor.update();
         }
     }
 
@@ -276,9 +275,10 @@ ApplicationWindow
 
                 stage: window.stage
 
-                onCanvasInitialized:
+                onRenderStageReplaced:
                 {
                     gloperatePipeline.root = gloperate.canvas0.pipeline;
+                    propertyEditor.update();
                 }
             }
 
@@ -306,11 +306,6 @@ ApplicationWindow
 
                         pipelineInterface: gloperatePipeline
                         path:              'pipeline.' + window.stage
-
-                        Component.onCompleted:
-                        {
-                            propertyEditor.update()
-                        }
                     }
                 }
             }
@@ -422,7 +417,6 @@ ApplicationWindow
 
         // Set render stage
         window.stage = settings.stage;
-        propertyEditor.update();
 
         // Show window
         window.visible = true;
