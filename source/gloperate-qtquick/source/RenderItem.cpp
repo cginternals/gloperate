@@ -150,8 +150,12 @@ void RenderItem::updateStage(const QString & stage)
 
     auto canvas = static_cast<gloperate::Canvas*>(m_canvas.get());
 
-    window()->scheduleRenderJob(new RenderStageCleanup(canvas->obtainRenderStage(), canvas), QQuickWindow::BeforeRenderingStage);
-    window()->scheduleRenderJob(new RenderStageInitialization(stageInstance.get(), canvas), QQuickWindow::BeforeRenderingStage);
+    auto formerStage = canvas->obtainRenderStage();
+
+    if (formerStage)
+    {
+        window()->scheduleRenderJob(new RenderStageCleanup(std::move(formerStage), canvas), QQuickWindow::BeforeRenderingStage);
+    }
 
     canvas->setUninitializedRenderStage(std::move(stageInstance));
 
@@ -250,20 +254,6 @@ void RenderItem::releaseResources()
 }
 
 
-RenderItem::RenderStageInitialization::RenderStageInitialization(gloperate::Stage * stage, gloperate::Canvas * canvas)
-: m_canvas(canvas)
-, m_stage(stage)
-{
-}
-
-void RenderItem::RenderStageInitialization::run()
-{
-    m_stage->initContext(m_canvas->openGLContext());
-    m_canvas->setRenderStageInitialized(true);
-    m_canvas->redraw();
-}
-
-
 RenderItem::RenderStageCleanup::RenderStageCleanup(std::unique_ptr<gloperate::Stage> && stage, gloperate::Canvas * canvas)
 : m_canvas(canvas)
 , m_stage(std::move(stage))
@@ -272,10 +262,7 @@ RenderItem::RenderStageCleanup::RenderStageCleanup(std::unique_ptr<gloperate::St
 
 void RenderItem::RenderStageCleanup::run()
 {
-    if (m_stage)
-    {
-        m_stage->deinitContext(m_canvas->openGLContext());
-    }
+    m_stage->deinitContext(m_canvas->openGLContext());
 }
 
 

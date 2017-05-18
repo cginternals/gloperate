@@ -77,7 +77,7 @@ void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
     if (m_pipelineContainer.renderStage() && m_openGLContext)
     {
         m_pipelineContainer.renderStage()->initContext(m_openGLContext);
-        m_renderStageInitialized = false;
+        m_renderStageInitialized = true;
     }
 }
 
@@ -104,8 +104,14 @@ void Canvas::onRender(globjects::Framebuffer * targetFBO)
     }
 
     // Invoke render stage/pipeline
-    if (m_pipelineContainer.renderStage() && m_renderStageInitialized)
+    if (m_pipelineContainer.renderStage())
     {
+        if (!m_renderStageInitialized)
+        {
+            m_pipelineContainer.renderStage()->initContext(m_openGLContext);
+            m_renderStageInitialized = true;
+        }
+
         m_frame++;
 
         m_pipelineContainer.frameCounter.setValue(m_frame);
@@ -127,11 +133,13 @@ void Canvas::onContextInit()
     cppassist::debug(2, "gloperate") << "onContextInit()";
 
     // Initialize render stage in new context
-    if (m_pipelineContainer.renderStage())
+
+    // This is maybe called from the wrong thread; need to validate on GCC
+    /*if (m_pipelineContainer.renderStage())
     {
         m_pipelineContainer.renderStage()->initContext(m_openGLContext);
         m_renderStageInitialized = true;
-    }
+    }*/
 }
 
 void Canvas::onContextDeinit()

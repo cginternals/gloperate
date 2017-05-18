@@ -114,19 +114,6 @@ protected:
 
 
 protected:
-    class RenderStageInitialization : public QRunnable
-    {
-    public:
-        RenderStageInitialization(gloperate::Stage * stage, gloperate::Canvas * canvas);
-
-        virtual void run() override;
-
-
-    protected:
-        gloperate::Canvas * m_canvas; ///< The canvas
-        gloperate::Stage *  m_stage;  ///< The new stage
-    };
-
     class RenderStageCleanup : public QRunnable
     {
     public:
