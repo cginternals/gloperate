@@ -55,7 +55,7 @@ void RenderItem::setStage(const QString & name)
 {
     if (m_canvas)
     {
-        // Create and updaterender stage
+        // Create and update render stage
         // Stage is saved internally
         updateStage(name);
     }
@@ -126,6 +126,9 @@ void RenderItem::createCanvasWithStage(const QString & stage)
 
     // Inform about initialization of the canvas
     emit canvasInitialized();
+
+    // Inform about replacement of the render stage
+    emit renderStageReplaced();
 }
 
 void RenderItem::updateStage(const QString & stage)
@@ -144,9 +147,20 @@ void RenderItem::updateStage(const QString & stage)
 
     // Update render stage
     m_stage = stage;
-    static_cast<gloperate::Canvas*>(m_canvas.get())->setRenderStage(
-        std::move(stageInstance)
-    );
+
+    auto canvas = static_cast<gloperate::Canvas*>(m_canvas.get());
+
+    auto formerStage = canvas->obtainRenderStage();
+
+    if (formerStage)
+    {
+        window()->scheduleRenderJob(new RenderStageCleanup(std::move(formerStage), canvas), QQuickWindow::BeforeRenderingStage);
+    }
+
+    canvas->setUninitializedRenderStage(std::move(stageInstance));
+
+    // Inform about replacement of the render stage
+    emit renderStageReplaced();
 }
 
 void RenderItem::keyPressEvent(QKeyEvent * event)
@@ -229,6 +243,26 @@ void RenderItem::wheelEvent(QWheelEvent * event)
                         (int)(event->y() * window()->devicePixelRatio()) )
         );
     }
+}
+
+void RenderItem::releaseResources()
+{
+    if (m_canvas)
+    {
+        m_canvas->onContextDeinit();
+    }
+}
+
+
+RenderItem::RenderStageCleanup::RenderStageCleanup(std::unique_ptr<gloperate::Stage> && stage, gloperate::Canvas * canvas)
+: m_canvas(canvas)
+, m_stage(std::move(stage))
+{
+}
+
+void RenderItem::RenderStageCleanup::run()
+{
+    m_stage->deinitContext(m_canvas->openGLContext());
 }
 
 

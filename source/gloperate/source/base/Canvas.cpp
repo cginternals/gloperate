@@ -23,6 +23,7 @@ namespace gloperate
 Canvas::Canvas(Environment * environment)
 : AbstractCanvas(environment)
 , m_pipelineContainer(environment)
+, m_renderStageInitialized(false)
 , m_frame(0)
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
@@ -70,20 +71,26 @@ Stage * Canvas::renderStage()
 
 void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 {
-    // De-initialize render stage
-    if (m_pipelineContainer.renderStage() && m_openGLContext)
-    {
-        m_pipelineContainer.renderStage()->deinitContext(m_openGLContext);
-    }
-
-    // Set new render stage
-    m_pipelineContainer.setRenderStage(std::move(stage));
+    setUninitializedRenderStage(std::move(stage));
 
     // Initialize new render stage
     if (m_pipelineContainer.renderStage() && m_openGLContext)
     {
         m_pipelineContainer.renderStage()->initContext(m_openGLContext);
+        m_renderStageInitialized = true;
     }
+}
+
+void Canvas::setUninitializedRenderStage(std::unique_ptr<Stage> && stage)
+{
+    // Set new render stage
+    m_pipelineContainer.setRenderStage(std::move(stage));
+    m_renderStageInitialized = false;
+}
+
+void Canvas::setRenderStageInitialized(bool initialized)
+{
+    m_renderStageInitialized = initialized;
 }
 
 void Canvas::onRender(globjects::Framebuffer * targetFBO)
@@ -99,6 +106,12 @@ void Canvas::onRender(globjects::Framebuffer * targetFBO)
     // Invoke render stage/pipeline
     if (m_pipelineContainer.renderStage())
     {
+        if (!m_renderStageInitialized)
+        {
+            m_pipelineContainer.renderStage()->initContext(m_openGLContext);
+            m_renderStageInitialized = true;
+        }
+
         m_frame++;
 
         m_pipelineContainer.frameCounter.setValue(m_frame);
@@ -120,10 +133,13 @@ void Canvas::onContextInit()
     cppassist::debug(2, "gloperate") << "onContextInit()";
 
     // Initialize render stage in new context
-    if (m_pipelineContainer.renderStage())
+
+    // This is maybe called from the wrong thread; need to validate on GCC
+    /*if (m_pipelineContainer.renderStage())
     {
         m_pipelineContainer.renderStage()->initContext(m_openGLContext);
-    }
+        m_renderStageInitialized = true;
+    }*/
 }
 
 void Canvas::onContextDeinit()
@@ -134,6 +150,7 @@ void Canvas::onContextDeinit()
     if (m_pipelineContainer.renderStage())
     {
         m_pipelineContainer.renderStage()->deinitContext(m_openGLContext);
+        m_renderStageInitialized = false;
     }
 }
 
@@ -207,6 +224,11 @@ void Canvas::onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 const glm::vec4 & Canvas::savedDeviceViewport() const
 {
     return m_savedDeviceVP;
+}
+
+std::unique_ptr<Stage> Canvas::obtainRenderStage()
+{
+    return m_pipelineContainer.obtainRenderStage();
 }
 
 

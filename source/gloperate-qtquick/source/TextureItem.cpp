@@ -2,7 +2,6 @@
 #include <gloperate-qtquick/TextureItem.h>
 
 #include <QQmlContext>
-#include <QQuickWindow>
 
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>

@@ -90,6 +90,12 @@ void DemoStage::onContextInit(gloperate::AbstractGLContext *)
 
 void DemoStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
+    m_vao.reset(nullptr);
+    m_buffer.reset(nullptr);
+    m_texture.reset(nullptr);
+    m_program.reset(nullptr);
+    m_vertexShader.reset(nullptr);
+    m_fragmentShader.reset(nullptr);
 }
 
 void DemoStage::onProcess(gloperate::AbstractGLContext *)

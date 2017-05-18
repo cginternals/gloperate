@@ -76,7 +76,22 @@ public:
 
     /**
     *  @brief
-    *    Set render stage
+    *    Release and return current render stage
+    *
+    *  @return
+    *    The current render stage
+    *
+    *  @remarks
+    *    The pipeline container is always empty after this function call.
+    *    If the return value is not used, the stage gets deleted immediately
+    *    (potentionally leaking OpenGL resources or crash upon deletion
+    *    because of a missing current OpenGL context).
+    */
+    std::unique_ptr<Stage> obtainRenderStage();
+
+    /**
+    *  @brief
+    *    Set render stage and initializes it immediately
     *
     *  @param[in] stage
     *    Render stage that renders into the current context (can be null)
@@ -86,6 +101,32 @@ public:
     *    The canvas takes ownership over the stage.
     */
     void setRenderStage(std::unique_ptr<Stage> && stage);
+
+    /**
+    *  @brief
+    *    Set render stage, assume it will be initialized later
+    *
+    *  @param[in] stage
+    *    Render stage that renders into the current context (can be null)
+    *
+    *  @remarks
+    *    When setting a new render stage, the old render stage is destroyed.
+    *    The canvas takes ownership over the stage.
+    */
+    void setUninitializedRenderStage(std::unique_ptr<Stage> && stage);
+
+    /**
+    *  @brief
+    *    Update render stage initialization status.
+    *
+    *  @param[in] initialized
+    *    The initialization status
+    *
+    *  @remarks
+    *    A rendering is triggered only if the rneder stage is
+    *    marked as initialized.
+    */
+    void setRenderStageInitialized(bool initialized);
 
     // Virtual AbstractCanvas functions
     virtual void onRender(globjects::Framebuffer * targetFBO) override;
@@ -106,14 +147,15 @@ public:
 
 
 protected:
-    PipelineContainer               m_pipelineContainer; ///< Container for the rendering stage or pipeline
-    unsigned long                   m_frame;             ///< Frame counter
-    std::unique_ptr<MouseDevice>    m_mouseDevice;       ///< Device for Mouse Events
-    std::unique_ptr<KeyboardDevice> m_keyboardDevice;    ///< Device for Keyboard Events
-    glm::vec4                       m_deviceViewport;    ///< Last known device viewport configuration
-    glm::vec4                       m_virtualViewport;   ///< Last known virtual viewport configuration
-    glm::vec4                       m_savedDeviceVP;     ///< Saved device viewport configuration
-    glm::vec4                       m_savedVirtualVP;    ///< Saved virtual viewport configuration
+    PipelineContainer               m_pipelineContainer;      ///< Container for the rendering stage or pipeline
+    bool                            m_renderStageInitialized; ///< Initialization status of render stage
+    unsigned long                   m_frame;                  ///< Frame counter
+    std::unique_ptr<MouseDevice>    m_mouseDevice;            ///< Device for Mouse Events
+    std::unique_ptr<KeyboardDevice> m_keyboardDevice;         ///< Device for Keyboard Events
+    glm::vec4                       m_deviceViewport;         ///< Last known device viewport configuration
+    glm::vec4                       m_virtualViewport;        ///< Last known virtual viewport configuration
+    glm::vec4                       m_savedDeviceVP;          ///< Saved device viewport configuration
+    glm::vec4                       m_savedVirtualVP;         ///< Saved virtual viewport configuration
 };
 
 
