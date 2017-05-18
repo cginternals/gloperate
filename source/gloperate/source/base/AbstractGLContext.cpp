@@ -33,7 +33,7 @@ void AbstractGLContext::initializeGLBinding()
 {
     glbinding::Binding::initialize(false);
     globjects::init();
-#ifdef DEBUG
+#ifndef NDEBUG
     globjects::DebugMessage::enable(true);
 #endif
 }

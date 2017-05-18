@@ -153,7 +153,7 @@ void RenderItem::updateStage(const QString & stage)
     window()->scheduleRenderJob(new RenderStageCleanup(canvas->obtainRenderStage(), canvas), QQuickWindow::BeforeRenderingStage);
     window()->scheduleRenderJob(new RenderStageInitialization(stageInstance.get(), canvas), QQuickWindow::BeforeRenderingStage);
 
-    canvas->setRenderStage(std::move(stageInstance));
+    canvas->setUninitializedRenderStage(std::move(stageInstance));
 
     // Inform about replacement of the render stage
     emit renderStageReplaced();
@@ -259,6 +259,8 @@ RenderItem::RenderStageInitialization::RenderStageInitialization(gloperate::Stag
 void RenderItem::RenderStageInitialization::run()
 {
     m_stage->initContext(m_canvas->openGLContext());
+    m_canvas->setRenderStageInitialized(true);
+    m_canvas->redraw();
 }
 
 
@@ -270,7 +272,10 @@ RenderItem::RenderStageCleanup::RenderStageCleanup(std::unique_ptr<gloperate::St
 
 void RenderItem::RenderStageCleanup::run()
 {
-    m_stage->deinitContext(m_canvas->openGLContext());
+    if (m_stage)
+    {
+        m_stage->deinitContext(m_canvas->openGLContext());
+    }
 }
 
 
