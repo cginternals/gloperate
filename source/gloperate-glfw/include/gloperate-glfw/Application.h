@@ -19,7 +19,7 @@ namespace gloperate_glfw
 *  @brief
 *    Class representing the main message loop
 *
-*    The Application class is a singleton the has to be
+*    The Application class is a singleton that has to be
 *    instanciated exactly once in an application.
 *    It controls the main message loop for all windows
 *    (instances of gloperate_glfw::Window).

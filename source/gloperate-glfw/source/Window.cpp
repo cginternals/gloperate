@@ -35,14 +35,14 @@ const std::set<Window*> & Window::instances()
 
 
 Window::Window()
-: m_window(nullptr)
-, m_context(nullptr)
-, m_windowMode(WindowedMode)
+: m_title("")
+, m_format()
+, m_window(nullptr)
+, m_fullscreen(false)
 , m_windowedModeSize(100, 100)
 , m_quitOnDestroy(true)
-, m_title("")
-, m_format()
 , m_needsRepaint(false)
+, m_context(nullptr)
 {
     // Register window
     s_instances.insert(this);
@@ -85,6 +85,7 @@ bool Window::create()
         return false;
     }
 
+    // Success
     return true;
 }
 
@@ -105,12 +106,12 @@ void Window::destroy()
 
 const GLContext * Window::context() const
 {
-    return static_cast<GLContext*>(m_context.get());
+    return m_context.get();
 }
 
 GLContext * Window::context()
 {
-    return static_cast<GLContext*>(m_context.get());
+    return m_context.get();
 }
 
 void Window::show()
@@ -150,7 +151,7 @@ bool Window::isFullscreen() const
         return false;
     }
 
-    return (m_windowMode == FullscreenMode);
+    return m_fullscreen;
 }
 
 void Window::setFullscreen(bool fullscreen)
@@ -161,7 +162,7 @@ void Window::setFullscreen(bool fullscreen)
     }
 
     // Switch to fullscreen-mode
-    if (fullscreen && m_windowMode != FullscreenMode)
+    if (fullscreen && !m_fullscreen)
     {
         // Get monitor on which fullscreen mode is requested
         GLFWmonitor * monitor = glfwGetPrimaryMonitor();
@@ -185,12 +186,12 @@ void Window::setFullscreen(bool fullscreen)
         if (createInternalWindow(m_format, w, h, monitor))
         {
             // Save fullscreen mode
-            m_windowMode = FullscreenMode;
+            m_fullscreen = true;
         }
     }
 
     // Switch to windowed-mode
-    else if (!fullscreen && m_windowMode != WindowedMode)
+    else if (!fullscreen && m_fullscreen)
     {
         int w = m_windowedModeSize.x;
         int h = m_windowedModeSize.y;
@@ -202,7 +203,7 @@ void Window::setFullscreen(bool fullscreen)
         if (createInternalWindow(m_format, w, h, nullptr))
         {
             // Save windowed mode
-            m_windowMode = WindowedMode;
+            m_fullscreen = false;
         }
     }
 }
@@ -458,10 +459,13 @@ void Window::handleEvent(WindowEvent & event)
             break;
 
         case WindowEvent::Type::Close:
+            onClose(static_cast<CloseEvent &>(event));
+
             if (!event.isAccepted())
             {
                 destroy();
             }
+
             break;
 
         default:
@@ -486,7 +490,7 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
 
     // Create GLFW window with OpenGL context
     GLContextFactory factory;
-    m_context = factory.createBestContext(format);
+    m_context.reset(static_cast<GLContext*>( factory.createBestContext(format).release() ));
 
     if (!m_context)
     {
@@ -494,10 +498,10 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
     }
 
     // Check OpenGL format
-    static_cast<GLContext*>(m_context.get())->format().verify(format);
+    m_context->format().verify(format);
 
     // Get internal window
-    m_window = static_cast<GLContext*>(m_context.get())->window();
+    m_window = m_context->window();
 
     // Set window size and title
     glfwSetWindowSize (m_window, width, height);
@@ -515,6 +519,7 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
     queueEvent(cppassist::make_unique<ResizeEvent>(size()));
     queueEvent(cppassist::make_unique<ResizeEvent>(framebufferSize(), true));
 
+    // Success
     return true;
 }
 
@@ -539,7 +544,7 @@ void Window::destroyInternalWindow()
 
     // Reset internal pointers
     m_context = nullptr;
-    m_window = nullptr;
+    m_window  = nullptr;
 }
 
 void Window::onContextInit()
@@ -603,6 +608,10 @@ void Window::onFocus(FocusEvent &)
 }
 
 void Window::onIconify(IconifyEvent &)
+{
+}
+
+void Window::onClose(CloseEvent &)
 {
 }
 
