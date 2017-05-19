@@ -10,7 +10,7 @@ find_package(globjects  REQUIRED)
 find_package(cppexpose  REQUIRED)
 find_package(cppassist  REQUIRED)
 find_package(qmltoolbox REQUIRED)
-find_package(cpplocate REQUIRED)
+find_package(cpplocate  REQUIRED)
 
 
 # 
@@ -50,6 +50,7 @@ set(headers
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
+    ${include_path}/base/Canvas2.h
     ${include_path}/base/AbstractComponent.h
     ${include_path}/base/AbstractComponent.inl
     ${include_path}/base/Canvas.h
@@ -158,6 +159,7 @@ set(sources
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/AbstractCanvas.cpp
+    ${source_path}/base/Canvas2.cpp
     ${source_path}/base/Canvas.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractComponent.cpp
