@@ -40,11 +40,7 @@ int main(int argc, char * argv[])
     environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    #ifndef NDEBUG
-        environment.componentManager()->scanPlugins("-plugins-debug");
-    #else
-        environment.componentManager()->scanPlugins("-plugins");
-    #endif
+    environment.componentManager()->scanPlugins();
 
     // Initialize Qt application
     gloperate_qt::Application app(&environment, argc, argv);
