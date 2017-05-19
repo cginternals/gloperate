@@ -22,7 +22,6 @@ Environment::Environment()
 , m_timeManager(this)
 , m_system(this)
 , m_inputManager(this)
-, m_tree("tree")
 , m_scriptContext(nullptr)
 {
     addProperty(&m_componentManager);
@@ -30,7 +29,6 @@ Environment::Environment()
     addProperty(&m_timeManager);
     addProperty(&m_system);
     addProperty(&m_inputManager);
-    addProperty(&m_tree);
 }
 
 Environment::~Environment()

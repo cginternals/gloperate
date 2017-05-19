@@ -14,9 +14,6 @@
 #include <gloperate/base/System.h>
 #include <gloperate/input/InputManager.h>
 
-// [DEBUG]
-#include <cppexpose/scripting/example/TreeNode.h>
-
 
 namespace cppexpose
 {
@@ -269,8 +266,6 @@ protected:
     InputManager                              m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
 
     std::vector<AbstractCanvas *>             m_canvases;         ///< List of active canvases
-
-    cppexpose::TreeNode                       m_tree;             ///< Test object for scripting
 
     std::unique_ptr<cppexpose::ScriptContext> m_scriptContext;    ///< Scripting context
 
