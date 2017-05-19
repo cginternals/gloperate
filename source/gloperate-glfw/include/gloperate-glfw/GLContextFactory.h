@@ -35,6 +35,13 @@ public:
 
 
 private:
+    /**
+    *  @brief
+    *    Set GLFW states and hints to select the given OpenGL context format
+    *
+    *  @param[in] format
+    *    OpenGL context format
+    */
     static void initializeGLFWState(const gloperate::GLContextFormat & format);
 };
 

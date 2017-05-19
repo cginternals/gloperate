@@ -13,7 +13,6 @@
 
 #include <glbinding/Binding.h>
 
-#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
 
 #include <gloperate-glfw/GLContext.h>
@@ -36,6 +35,7 @@ GLContextFactory::~GLContextFactory()
 
 std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(const gloperate::GLContextFormat & format) const
 {
+    // Adjust GLFW settings to produce the given context format
     initializeGLFWState(format);
 
     // Create window
@@ -51,6 +51,7 @@ std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(co
     // Handle swap behavior
     context->updateSwapBehavior(format.swapBehavior());
 
+    // Return context (and window)
     return std::move(context);
 }
 

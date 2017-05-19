@@ -9,7 +9,6 @@
 #include <gloperate/base/Environment.h>
 
 #include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/WindowEventDispatcher.h>
 
 
 namespace gloperate_glfw

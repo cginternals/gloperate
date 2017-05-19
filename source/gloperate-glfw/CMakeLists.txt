@@ -51,7 +51,6 @@ set(headers
     ${include_path}/RenderWindow.h
     ${include_path}/GLContext.h
     ${include_path}/GLContextFactory.h
-    ${include_path}/input.h
 )
 
 set(sources
@@ -62,7 +61,6 @@ set(sources
     ${source_path}/RenderWindow.cpp
     ${source_path}/GLContext.cpp
     ${source_path}/GLContextFactory.cpp
-    ${source_path}/input.cpp
 )
 
 # Group source files

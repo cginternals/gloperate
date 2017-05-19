@@ -22,6 +22,19 @@ namespace gloperate_glfw
 {
 
 
+void GLContext::updateSwapBehavior(gloperate::GLContextFormat::SwapBehavior swapBehavior)
+{
+    switch (swapBehavior)
+    {
+    case gloperate::GLContextFormat::SwapBehavior::DoubleBuffering:
+        glfwSwapInterval(1);
+        break;
+
+    default:
+        glfwSwapInterval(0);
+    }
+}
+
 GLContext::GLContext(GLFWwindow * window)
 : m_window(window)
 {
@@ -30,12 +43,11 @@ GLContext::GLContext(GLFWwindow * window)
     // Activate context
     use();
 
+    // Initialize glbinding in context (needed for context utils)
     initializeGLBinding();
 
-    // Read context handle
+    // Read context handle and format
     m_handle = GLContextUtils::tryFetchHandle();
-
-    // Read context format
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context
@@ -64,18 +76,6 @@ void GLContext::release() const
     if (m_window && m_window == glfwGetCurrentContext())
     {
         glfwMakeContextCurrent(nullptr);
-    }
-}
-
-void GLContext::updateSwapBehavior(gloperate::GLContextFormat::SwapBehavior swapBehavior)
-{
-    switch (swapBehavior)
-    {
-    case gloperate::GLContextFormat::SwapBehavior::DoubleBuffering:
-        glfwSwapInterval(1);
-        break;
-    default:
-        glfwSwapInterval(0);
     }
 }
 

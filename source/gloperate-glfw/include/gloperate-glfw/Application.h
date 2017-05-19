@@ -19,9 +19,8 @@ namespace gloperate_glfw
 *  @brief
 *    Class representing the main message loop
 *
-*    The Application class is a singleton that has to be
-*    instanciated exactly once in an application.
-*    It controls the main message loop for all windows
+*    The Application class is a singleton that has to be instanciated exactly
+*    once in an application. It controls the main message loop for all windows
 *    (instances of gloperate_glfw::Window).
 */
 class GLOPERATE_GLFW_API Application
@@ -31,7 +30,7 @@ public:
     *  @brief
     *    Initialize GLFW
     *
-    *  @param[in] code
+    *  @return
     *    Return code (0 for no error, > 0 for error)
     */
     static int init();

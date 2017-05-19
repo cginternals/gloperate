@@ -7,11 +7,9 @@
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/base/Canvas.h>
-#include <gloperate/input/constants.h>
 
 #include <gloperate-glfw/GLContext.h>
 #include <gloperate-glfw/WindowEvent.h>
-#include <gloperate-glfw/input.h>
 
 
 using namespace gloperate;
@@ -182,6 +180,34 @@ void RenderWindow::onFocus(FocusEvent &)
 
 void RenderWindow::onIconify(IconifyEvent &)
 {
+}
+
+gloperate::MouseButton RenderWindow::fromGLFWMouseButton(int button) const
+{
+    switch (button)
+    {
+        case GLFW_MOUSE_BUTTON_1: return MouseButton1;
+        case GLFW_MOUSE_BUTTON_2: return MouseButton2;
+        case GLFW_MOUSE_BUTTON_3: return MouseButton3;
+        case GLFW_MOUSE_BUTTON_4: return MouseButton4;
+        case GLFW_MOUSE_BUTTON_5: return MouseButton5;
+        case GLFW_MOUSE_BUTTON_6: return MouseButton6;
+        case GLFW_MOUSE_BUTTON_7: return MouseButton7;
+        case GLFW_MOUSE_BUTTON_8: return MouseButton8;
+        default:                  return NoMouseButton;
+    }
+}
+
+gloperate::Key RenderWindow::fromGLFWKeyCode(int key) const
+{
+    // We are using the same key code table as GLFW
+    return static_cast<gloperate::Key>(key);
+}
+
+gloperate::KeyModifier RenderWindow::fromGLFWModifier(int modifier) const
+{
+    //We are using the same modifier code table as GLFW
+    return static_cast<gloperate::KeyModifier>(modifier);
 }
 
 
