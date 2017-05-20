@@ -66,7 +66,6 @@ set(headers
     ${include_path}/base/GLContext.h
     ${include_path}/base/GLContextFactory.h
     ${include_path}/base/Converter.h
-    ${include_path}/base/input.h
 
     ${include_path}/scripting/ECMA26251Completer.h
     ${include_path}/scripting/ECMA26251SyntaxHighlighter.h
@@ -87,7 +86,6 @@ set(sources
     ${source_path}/base/GLContext_qt.cpp
     ${source_path}/base/GLContextFactory.cpp
     ${source_path}/base/Converter.cpp
-    ${source_path}/base/input.cpp
     
     ${source_path}/scripting/ECMA26251Completer.cpp
     ${source_path}/scripting/ECMA26251SyntaxHighlighter.cpp

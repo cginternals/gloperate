@@ -10,7 +10,7 @@
 #include <gloperate/base/Canvas.h>
 #include <gloperate/pipeline/Stage.h>
 
-#include <gloperate-qt/base/input.h>
+#include <gloperate-qt/base/Converter.h>
 
 #include <gloperate-qtquick/QmlEngine.h>
 #include <gloperate-qtquick/Utils.h>
@@ -160,8 +160,8 @@ void RenderItem::keyPressEvent(QKeyEvent * event)
     if (m_canvas)
     {
         m_canvas->onKeyPress(
-            fromQtKeyCode(event->key(), event->modifiers()),
-            fromQtModifiers(event->modifiers())
+            Converter::fromQtKeyCode(event->key(), event->modifiers()),
+            Converter::fromQtModifiers(event->modifiers())
         );
     }
 }
@@ -177,8 +177,8 @@ void RenderItem::keyReleaseEvent(QKeyEvent * event)
     if (m_canvas)
     {
         m_canvas->onKeyRelease(
-            fromQtKeyCode(event->key(), event->modifiers()),
-            fromQtModifiers(event->modifiers())
+            Converter::fromQtKeyCode(event->key(), event->modifiers()),
+            Converter::fromQtModifiers(event->modifiers())
         );
     }
 }
@@ -199,7 +199,7 @@ void RenderItem::mousePressEvent(QMouseEvent * event)
     if (m_canvas)
     {
         m_canvas->onMousePress(
-            fromQtMouseButton(event->button()),
+            Converter::fromQtMouseButton(event->button()),
             glm::ivec2( (int)(event->x() * window()->devicePixelRatio()),
                         (int)(event->y() * window()->devicePixelRatio()) )
         );
@@ -211,7 +211,7 @@ void RenderItem::mouseReleaseEvent(QMouseEvent * event)
     if (m_canvas)
     {
         m_canvas->onMouseRelease(
-            fromQtMouseButton(event->button()),
+            Converter::fromQtMouseButton(event->button()),
             glm::ivec2( (int)(event->x() * window()->devicePixelRatio()),
                         (int)(event->y() * window()->devicePixelRatio()) )
         );

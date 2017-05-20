@@ -3,11 +3,7 @@
 
 #include <cassert>
 
-#include <QWindow>
-#include <QOpenGLContext>
-
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/base/GLContextFormat.h>
 
 
 using namespace gloperate;
@@ -28,12 +24,11 @@ GLContext::GLContext(QWindow * window, QOpenGLContext * context, bool takeOwners
     // Activate context
     use();
 
+    // Initialize glbinding in context (needed for context utils)
     initializeGLBinding();
 
-    // Read context handle
+    // Read context handle and format
     m_handle = GLContextUtils::tryFetchHandle();
-
-    // Read context format
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context

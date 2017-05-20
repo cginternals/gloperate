@@ -10,15 +10,10 @@
 #include <gloperate/base/AbstractCanvas.h>
 #include <gloperate/pipeline/Stage.h>
 
-#include <gloperate-qt/base/input.h>
-
 #include <gloperate-qtquick/QmlEngine.h>
 #include <gloperate-qtquick/Utils.h>
 
 #include <gloperate-qtquick/TextureItemRenderer.h>
-
-
-using namespace gloperate_qt;
 
 
 namespace gloperate_qtquick

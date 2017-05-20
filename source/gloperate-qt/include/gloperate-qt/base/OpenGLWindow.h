@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <memory>
 
 #include <QWindow>
@@ -154,10 +155,10 @@ protected:
 
 
 protected:
-    gloperate::GLContextFormat   m_format;        ///< Desired OpenGL format
-    std::unique_ptr<GLContext>   m_context;       ///< Context wrapper for gloperate (can be null)
-    bool                         m_initialized;   ///< Has the rendering already been initialized?
-    bool                         m_updatePending; ///< Flag to indicate if a redraw has been requested
+    gloperate::GLContextFormat m_format;        ///< Desired OpenGL format
+    std::unique_ptr<GLContext> m_context;       ///< Context wrapper for gloperate (can be null)
+    bool                       m_initialized;   ///< Has the rendering already been initialized?
+    bool                       m_updatePending; ///< Flag to indicate if a redraw has been requested
 };
 
 

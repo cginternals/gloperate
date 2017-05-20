@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <memory>
 
 #include <gloperate-qt/base/OpenGLWindow.h>
@@ -89,8 +90,8 @@ protected:
 
 
 protected:
-    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that renders onto the window (must NOT be null)
+    gloperate::Environment           * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    std::unique_ptr<gloperate::Canvas> m_canvas;      ///< Canvas that renders onto the window (must NOT be null)
 };
 
 

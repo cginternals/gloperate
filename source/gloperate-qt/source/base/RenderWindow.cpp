@@ -1,19 +1,16 @@
+
 #include "gloperate-qt/base/RenderWindow.h"
 
 #include <glm/glm.hpp>
 
 #include <globjects/Framebuffer.h>
 
-#include <QCoreApplication>
 #include <QOpenGLContext>
 
-#include <gloperate/base/Environment.h>
 #include <gloperate/base/Canvas.h>
 
 #include <gloperate-qt/base/GLContext.h>
-#include <gloperate-qt/base/input.h>
-
-#include <gloperate/input/InputEvent.h>
+#include <gloperate-qt/base/Converter.h>
 
 
 namespace gloperate_qt
@@ -86,8 +83,8 @@ void RenderWindow::keyPressEvent(QKeyEvent * event)
     }
 
     m_canvas->onKeyPress(
-        fromQtKeyCode(event->key(), event->modifiers()),
-        fromQtModifiers(event->modifiers())
+        Converter::fromQtKeyCode(event->key(), event->modifiers()),
+        Converter::fromQtModifiers(event->modifiers())
     );
 }
 
@@ -100,8 +97,8 @@ void RenderWindow::keyReleaseEvent(QKeyEvent * event)
     }
 
     m_canvas->onKeyRelease(
-        fromQtKeyCode(event->key(), event->modifiers()),
-        fromQtModifiers(event->modifiers())
+        Converter::fromQtKeyCode(event->key(), event->modifiers()),
+        Converter::fromQtModifiers(event->modifiers())
     );
 }
 
@@ -116,7 +113,7 @@ void RenderWindow::mouseMoveEvent(QMouseEvent * event)
 void RenderWindow::mousePressEvent(QMouseEvent * event)
 {
     m_canvas->onMousePress(
-        fromQtMouseButton(event->button()),
+        Converter::fromQtMouseButton(event->button()),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),
                     (int)(event->y() * devicePixelRatio()) )
     );
@@ -125,7 +122,7 @@ void RenderWindow::mousePressEvent(QMouseEvent * event)
 void RenderWindow::mouseReleaseEvent(QMouseEvent * event)
 {
     m_canvas->onMouseRelease(
-        fromQtMouseButton(event->button()),
+        Converter::fromQtMouseButton(event->button()),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),
                     (int)(event->y() * devicePixelRatio()) )
     );

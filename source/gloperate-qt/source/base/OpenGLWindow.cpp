@@ -1,11 +1,9 @@
 
 #include "gloperate-qt/base/OpenGLWindow.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QResizeEvent>
 #include <QOpenGLContext>
-
-#include <gloperate/base/GLContextFormat.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/GLContextFactory.h>
@@ -50,7 +48,7 @@ void OpenGLWindow::createContext()
     // Create OpenGL context
     GLContextFactory factory(this);
     m_context = std::unique_ptr<GLContext>(
-                static_cast<GLContext*>(factory.createBestContext(m_format).release())
+        static_cast<GLContext*>(factory.createBestContext(m_format).release())
     );
 
     // Initialize new context
@@ -66,6 +64,7 @@ void OpenGLWindow::destroyContext()
     }
 
     deinitializeContext();
+
     m_context = nullptr;
 }
 
