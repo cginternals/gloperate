@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
     Application app(&environment, argc, argv);
 
     // Create render stage
-    auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
+    //auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
 
     // Create render window
     RenderWindow window(&environment);
@@ -56,7 +56,7 @@ int main(int argc, char * argv[])
 
     window.setContextFormat(format);
 
-    window.setRenderStage(std::move(renderStage));
+    //window.setRenderStage(std::move(renderStage));
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);
     if (!window.create())

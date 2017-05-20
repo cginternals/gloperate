@@ -66,6 +66,8 @@ public:
     */
     const GLContextFormat & format() const;
 
+
+public:
     /**
     *  @brief
     *    Initializes glbinding for current context
@@ -75,9 +77,10 @@ public:
     */
     static void initializeGLBinding();
 
+
 protected:
-    glbinding::ContextHandle m_handle;  ///< OpenGL context handle
-    GLContextFormat          m_format;  ///< OpenGL context format
+    glbinding::ContextHandle m_handle; ///< OpenGL context handle
+    GLContextFormat          m_format; ///< OpenGL context format
 };
 
 

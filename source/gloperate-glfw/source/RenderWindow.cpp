@@ -4,9 +4,11 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+
 #include <globjects/Framebuffer.h>
 
-#include <gloperate/base/Canvas.h>
+#include <gloperate/base/Canvas2.h>
 
 #include <gloperate-glfw/GLContext.h>
 #include <gloperate-glfw/WindowEvent.h>
@@ -21,7 +23,7 @@ namespace gloperate_glfw
 
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
-, m_canvas(cppassist::make_unique<Canvas>(environment))
+, m_canvas(cppassist::make_unique<Canvas2>(environment))
 {
     m_canvas->redraw.connect([this] ()
     {
@@ -45,27 +47,26 @@ gloperate::Environment * RenderWindow::environment()
 
 const gloperate::Stage * RenderWindow::renderStage() const
 {
-    return m_canvas->renderStage();
+    return nullptr;
 }
 
 gloperate::Stage * RenderWindow::renderStage()
 {
-    return m_canvas->renderStage();
+    return nullptr;
 }
 
-const gloperate::Canvas * RenderWindow::canvas() const
+const gloperate::Canvas2 * RenderWindow::canvas() const
 {
     return m_canvas.get();
 }
 
-gloperate::Canvas * RenderWindow::canvas()
+gloperate::Canvas2 * RenderWindow::canvas()
 {
     return m_canvas.get();
 }
 
-void RenderWindow::setRenderStage(std::unique_ptr<Stage> && stage)
+void RenderWindow::setRenderStage(std::unique_ptr<Stage> &&)
 {
-    m_canvas->setRenderStage(std::move(stage));
 }
 
 void RenderWindow::onContextInit()

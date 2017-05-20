@@ -21,7 +21,7 @@ CPPEXPOSE_COMPONENT(GlrawTextureLoader, gloperate::AbstractLoader)
 
 
 GlrawTextureLoader::GlrawTextureLoader(gloperate::Environment * environment)
-    : gloperate::Loader<globjects::Texture>(environment)
+: gloperate::Loader<globjects::Texture>(environment)
 {
     m_extensions.push_back(".raw");
     m_extensions.push_back(".glraw");

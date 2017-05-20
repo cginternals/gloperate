@@ -6,6 +6,18 @@
 
 #include <gloperate/base/Environment.h>
 
+// demo
+#include <glbinding/gl/gl.h>
+#include <globjects/globjects.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/Framebuffer.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Texture.h>
+#include <gloperate/gloperate.h>
+#include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <iostream>
+
 
 namespace gloperate
 {
@@ -16,6 +28,7 @@ Canvas2::Canvas2(Environment * environment)
 , m_environment(environment)
 , m_openGLContext(nullptr)
 {
+    std::cout << "Canvas created" << std::endl;
 }
 
 Canvas2::~Canvas2()
@@ -66,8 +79,41 @@ void Canvas2::render(globjects::Framebuffer * targetFBO)
     onRender(targetFBO);
 }
 
-void Canvas2::onRender(globjects::Framebuffer *)
+void Canvas2::onRender(globjects::Framebuffer * fbo)
 { 
+    std::cout << "Canvas onRender" << std::endl;
+
+    globjects::setCurrentContext();
+
+    // Bind FBO
+    fbo->bind(gl::GL_FRAMEBUFFER);
+
+    // Set viewport
+    int ofs = 50;
+    gl::glViewport((int)m_deviceViewport.x + ofs, (int)m_deviceViewport.y + ofs, (int)m_deviceViewport.z - 2*ofs, (int)m_deviceViewport.w - 2*ofs);
+
+    // Set OpenGL states
+    gl::glDisable(gl::GL_DEPTH_TEST);
+
+    // Bind texture
+    if (m_texture.get())
+    {
+        m_texture->bindActive(0);
+    }
+
+    // Draw screen-aligned quad
+    m_program->use();
+    m_quad->draw();
+    m_program->release();
+
+    // Unbind texture
+    if (m_texture.get())
+    {
+        m_texture->unbind();
+    }
+
+    // Restore OpenGL states
+    gl::glEnable(gl::GL_DEPTH_TEST);
 }
 
 void Canvas2::onUpdate()
@@ -76,18 +122,44 @@ void Canvas2::onUpdate()
 
 void Canvas2::onContextInit()
 {
+    std::cout << "Canvas onContextInit" << std::endl;
+
+    // demo
+    m_texture = std::unique_ptr<globjects::Texture>(m_environment->resourceManager()->load<globjects::Texture>(
+        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.glraw"
+    ));
+
+    m_quad = cppassist::make_unique<ScreenAlignedQuad>();
+
+    m_vertexShaderSource   = m_quad->vertexShaderSource();
+    m_fragmentShaderSource = m_quad->fragmentShaderSource();
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
+
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
+    m_program->setUniform("source", 0);
 }
 
 void Canvas2::onContextDeinit()
 {
+    std::cout << "Canvas onContextDeinit" << std::endl;
+
+    // demo
+    m_texture = nullptr;
+    m_quad = nullptr;
+    m_program = nullptr;
+    m_vertexShader = nullptr;
+    m_fragmentShader = nullptr;
+    m_vertexShaderSource = nullptr;
+    m_fragmentShaderSource = nullptr;
 }
 
-void Canvas2::onViewport(const glm::vec4 &, const glm::vec4 &)
+void Canvas2::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
-}
-
-void Canvas2::onBackgroundColor(float, float, float)
-{
+    m_deviceViewport  = deviceViewport;
+    m_virtualViewport = virtualViewport;
+    std::cout << "Canvas onViewport" << std::endl;
 }
 
 void Canvas2::onKeyPress(int, int)
