@@ -139,7 +139,7 @@ void Renderer::onRender(globjects::Framebuffer * fbo)
     gl::glDisable(gl::GL_DEPTH_TEST);
 }
 
-void Renderer::onUpdateTime(float timeDelta)
+void Renderer::onUpdateTime(float, float timeDelta)
 {
     // Animate camera (by 90° per second)
     m_angle += 0.5f * glm::pi<float>() * timeDelta;

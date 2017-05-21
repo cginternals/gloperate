@@ -296,12 +296,9 @@ public:
 
     /**
     *  @brief
-    *    Update time
-    *
-    *  @param[in] timeDelta
-    *    Number of seconds since the last update
+    *    Called once every mainloop iteration
     */
-    void updateTime();
+    void idle();
 
 
 protected:
@@ -415,7 +412,7 @@ protected:
     virtual void onFocus(FocusEvent & event);
     virtual void onIconify(IconifyEvent & event);
     virtual void onClose(CloseEvent & event);
-    virtual void onUpdateTime();
+    virtual void onIdle();
 
 
 protected:

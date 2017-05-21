@@ -1,14 +1,10 @@
 
 #include <gloperate/base/Canvas2.h>
 
-#include <cppassist/logging/logging.h>
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/Renderer.h>
-
-
-using namespace cppassist;
 
 
 namespace gloperate
@@ -20,8 +16,8 @@ Canvas2::Canvas2(Environment * environment)
 , m_environment(environment)
 , m_openGLContext(nullptr)
 , m_renderer(cppassist::make_unique<Renderer>(environment))
+, m_virtualTime(0.0f)
 {
-    info() << "Canvas created";
 }
 
 Canvas2::~Canvas2()
@@ -53,7 +49,7 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
-        onContextDeinit();
+        m_renderer->onContextDeinit();
 
         m_openGLContext = nullptr;
     }
@@ -63,79 +59,58 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     {
         m_openGLContext = context;
 
-        onContextInit();
+        m_renderer->onContextInit();
     }
+}
+
+void Canvas2::updateTime()
+{
+    // Get number of milliseconds since last call
+    auto duration = m_clock.elapsed();
+    m_clock.reset();
+
+    // Determine time delta and virtual time
+    float timeDelta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
+    m_virtualTime += timeDelta;
+
+    // Update timing
+    m_renderer->onUpdateTime(m_virtualTime, timeDelta);
+
+    // [TODO] Check redraw
+    redraw();
+}
+
+void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
+{
+    m_renderer->onViewport(deviceViewport, virtualViewport);
 }
 
 void Canvas2::render(globjects::Framebuffer * targetFBO)
 {
-    onRender(targetFBO);
+    m_renderer->render(targetFBO);
 }
 
-void Canvas2::onContextInit()
-{
-    info() << "Canvas onContextInit";
-
-    m_renderer->onContextInit();
-}
-
-void Canvas2::onContextDeinit()
-{
-    info() << "Canvas onContextDeinit";
-
-    m_renderer->onContextDeinit();
-}
-
-void Canvas2::onRender(globjects::Framebuffer * fbo)
-{ 
-    info() << "Canvas onRender";
-
-    m_renderer->render(fbo);
-}
-
-void Canvas2::onUpdateTime()
-{
-    auto duration = m_clock.elapsed();
-    m_clock.reset();
-
-    float timeDelta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
-
-    m_renderer->onUpdateTime(timeDelta);
-
-    redraw();
-}
-
-void Canvas2::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
-{
-    m_deviceViewport  = deviceViewport;
-    m_virtualViewport = virtualViewport;
-
-    info() << "Canvas onViewport";
-
-    m_renderer->onViewport(deviceViewport, virtualViewport);
-}
-
-void Canvas2::onKeyPress(int, int)
+void Canvas2::promoteKeyPress(int, int)
 {
 }
 
-void Canvas2::onKeyRelease(int, int)
+void Canvas2::promoteKeyRelease(int, int)
 {
 }
 
-void Canvas2::onMouseMove(const glm::ivec2 &)
+void Canvas2::promoteMouseMove(const glm::ivec2 &)
 {
 }
 
-void Canvas2::onMousePress(int, const glm::ivec2 &)
+void Canvas2::promoteMousePress(int, const glm::ivec2 &)
 {
 }
 
-void Canvas2::onMouseRelease(int, const glm::ivec2 &)
+void Canvas2::promoteMouseRelease(int, const glm::ivec2 &)
 {
 }
 
-void Canvas2::onMouseWheel(const glm::vec2 &, const glm::ivec2 &)
+void Canvas2::promoteMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
 }
 

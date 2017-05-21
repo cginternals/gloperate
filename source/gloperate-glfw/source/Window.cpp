@@ -334,9 +334,9 @@ void Window::swap()
     glfwSwapBuffers(m_window);
 }
 
-void Window::updateTime()
+void Window::idle()
 {
-    onUpdateTime();
+    onIdle();
 }
 
 GLFWwindow * Window::internalWindow() const
@@ -626,7 +626,7 @@ void Window::onClose(CloseEvent &)
 {
 }
 
-void Window::onUpdateTime()
+void Window::onIdle()
 {
 }
 

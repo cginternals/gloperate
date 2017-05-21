@@ -78,10 +78,12 @@ public:
     *  @brief
     *    Update time
     *
+    *  @param[in] virtualTime
+    *    The current virtual time (in seconds)
     *  @param[in] timeDelta
     *    Number of seconds since the last update
     */
-    virtual void onUpdateTime(float timeDelta);
+    virtual void onUpdateTime(float virtualTime, float timeDelta);
 
     // Must be called from UI thread
     virtual void onViewport(

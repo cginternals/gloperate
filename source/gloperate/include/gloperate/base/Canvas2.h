@@ -2,8 +2,7 @@
 #pragma once
 
 
-#include <glm/vec2.hpp>
-#include <glm/vec4.hpp>
+#include <glm/fwd.hpp>
 
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/signal/Signal.h>
@@ -40,7 +39,6 @@ class GLOPERATE_API Canvas2 : public cppexpose::Object
 public:
     // Must be emitted only from the UI thread
     cppexpose::Signal<> redraw; ///< Called when the canvas needs to be redrawn
-    cppexpose::Signal<> wakeup; ///< Called when the main loop need to wake up
 
 
 public:
@@ -58,7 +56,7 @@ public:
     *  @brief
     *    Destructor
     */
-    virtual ~Canvas2();
+    ~Canvas2();
     //@}
 
     //@{
@@ -95,7 +93,7 @@ public:
     //@{
     /**
     *  @brief
-    *    Set OpenGL context
+    *    Set OpenGL context (must be called from UI thread)
     *
     *  @param[in] context
     *    OpenGL context used for rendering on the canvas (can be null)
@@ -108,42 +106,116 @@ public:
     *    set to that new context and onContextInit() will be invoked.
     */
     void setOpenGLContext(AbstractGLContext * context);
+    //@}
 
-    // Must be called from render thread
+    //@{
+    /**
+    *  @brief
+    *    Update virtual time (must be called from UI thread)
+    *
+    *  @remarks
+    *    This function determines the time delta since the last call to
+    *    the function and updates the internal virtual time. This is
+    *    passed on to the render stage to allow for continuous updates
+    *    of the virtual scene. If a pipeline depends on the virtual time
+    *    or time delta inputs and in turn invalidates its render outputs,
+    *    a redraw will be scheduled. Otherwise, only the virtual time is
+    *    updated regularly, but no redraw occurs.
+    */
+    void updateTime();
+
+    /**
+    *  @brief
+    *    Set viewport (must be called from UI thread)
+    *
+    *  @param[in] deviceViewport
+    *    Viewport (in real device coordinates)
+    *  @param[in] virtualViewport
+    *    Viewport (in virtual coordinates)
+    */
+    void setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport);
+
+    /**
+    *  @brief
+    *    Perform rendering (must be called from render thread)
+    *
+    *  @param[in] targetFBO
+    *    Framebuffer into which is rendered
+    */
     void render(globjects::Framebuffer * targetFBO);
 
+    /**
+    *  @brief
+    *    Promote keyboard press event (must be called from UI thread)
+    *
+    *  @param[in] key
+    *    Key (gloperate key code)
+    *  @param[in] modifier
+    *    Modifiers (gloperate modifier codes)
+    */
+    void promoteKeyPress(int key, int modifier);
 
-    virtual void onContextInit();
-    virtual void onContextDeinit();
+    /**
+    *  @brief
+    *    Promote keyboard release event (must be called from UI thread)
+    *
+    *  @param[in] key
+    *    Key (gloperate key code)
+    *  @param[in] modifier
+    *    Modifiers (gloperate modifier codes)
+    */
+    void promoteKeyRelease(int key, int modifier);
 
-    // Must be called from render thread
-    virtual void onRender(globjects::Framebuffer * targetFBO);
+    /**
+    *  @brief
+    *    Promote mouse move event (must be called from UI thread)
+    *
+    *  @param[in] pos
+    *    Mouse position
+    */
+    void promoteMouseMove(const glm::ivec2 & pos);
 
-    // Must be called from UI thread
-    virtual void onUpdateTime();
+    /**
+    *  @brief
+    *    Promote mouse press event (must be called from UI thread)
+    *
+    *  @param[in] button
+    *    Mouse button (gloperate button code)
+    *  @param[in] pos
+    *    Mouse position
+    */
+    void promoteMousePress(int button, const glm::ivec2 & pos);
 
-    // Must be called from UI thread
-    virtual void onViewport(
-        const glm::vec4 & deviceViewport
-      , const glm::vec4 & virtualViewport);
+    /**
+    *  @brief
+    *    Promote mouse release event (must be called from UI thread)
+    *
+    *  @param[in] button
+    *    Mouse button (gloperate button code)
+    *  @param[in] pos
+    *    Mouse position
+    */
+    void promoteMouseRelease(int button, const glm::ivec2 & pos);
 
-    // Must be called from UI thread
-    virtual void onKeyPress(int key, int modifier);
-    virtual void onKeyRelease(int key, int modifier);
-    virtual void onMouseMove(const glm::ivec2 & pos);
-    virtual void onMousePress(int button, const glm::ivec2 & pos);
-    virtual void onMouseRelease(int button, const glm::ivec2 & pos);
-    virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
+    /**
+    *  @brief
+    *    Promote mouse wheel event (must be called from UI thread)
+    *
+    *  @param[in] delta
+    *    Wheel delta
+    *  @param[in] pos
+    *    Mouse position
+    */
+    void promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
     //@}
 
 
 protected:
-    Environment             * m_environment;     ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext       * m_openGLContext;   ///< OpenGL context used for rendering onto the canvas
-    glm::vec4                 m_deviceViewport;  ///< Viewport (in real device coordinates)
-    glm::vec4                 m_virtualViewport; ///< Viewport (in virtual coordinates)
-    gloperate::ChronoTimer    m_clock;           ///< Time measurement
-    std::unique_ptr<Renderer> m_renderer;        ///< Render that renders into the canvas
+    Environment             * m_environment;   ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext       * m_openGLContext; ///< OpenGL context used for rendering onto the canvas
+    std::unique_ptr<Renderer> m_renderer;      ///< Render that renders into the canvas
+    gloperate::ChronoTimer    m_clock;         ///< Time measurement
+    float                     m_virtualTime;   ///< The current virtual time (in seconds)
 };
 
 

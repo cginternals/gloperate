@@ -83,7 +83,7 @@ void RenderWindow::onResize(ResizeEvent & event)
 {
     m_virtualSize = event.size();
 
-    m_canvas->onViewport(
+    m_canvas->setViewport(
         glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
       , glm::vec4(0, 0, m_virtualSize.x, m_virtualSize.y)
     );
@@ -93,7 +93,7 @@ void RenderWindow::onFramebufferResize(ResizeEvent & event)
 {
     m_deviceSize = event.size();
 
-    m_canvas->onViewport(
+    m_canvas->setViewport(
         glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
       , glm::vec4(0, 0, m_virtualSize.x, m_virtualSize.y)
     );
@@ -108,7 +108,7 @@ void RenderWindow::onPaint(PaintEvent &)
     // [TODO] Optimize memory reallocation problem
     auto defaultFBO = globjects::Framebuffer::defaultFBO();
 
-    m_canvas->onRender(defaultFBO.get());
+    m_canvas->render(defaultFBO.get());
 }
 
 void RenderWindow::onKeyPress(KeyEvent & event)
@@ -124,7 +124,7 @@ void RenderWindow::onKeyPress(KeyEvent & event)
         setFullscreen(!isFullscreen());
     }
 
-    m_canvas->onKeyPress(
+    m_canvas->promoteKeyPress(
         fromGLFWKeyCode(event.key()),
         fromGLFWModifier(event.modifiers())
     );
@@ -132,7 +132,7 @@ void RenderWindow::onKeyPress(KeyEvent & event)
 
 void RenderWindow::onKeyRelease(KeyEvent & event)
 {
-    m_canvas->onKeyRelease(
+    m_canvas->promoteKeyRelease(
         fromGLFWKeyCode(event.key()),
         fromGLFWModifier(event.modifiers())
     );
@@ -140,7 +140,7 @@ void RenderWindow::onKeyRelease(KeyEvent & event)
 
 void RenderWindow::onMousePress(MouseEvent & event)
 {
-    m_canvas->onMousePress(
+    m_canvas->promoteMousePress(
         fromGLFWMouseButton(event.button())
       , event.pos()
     );
@@ -148,7 +148,7 @@ void RenderWindow::onMousePress(MouseEvent & event)
 
 void RenderWindow::onMouseRelease(MouseEvent & event)
 {
-    m_canvas->onMouseRelease(
+    m_canvas->promoteMouseRelease(
         fromGLFWMouseButton(event.button())
       , event.pos()
     );
@@ -156,7 +156,7 @@ void RenderWindow::onMouseRelease(MouseEvent & event)
 
 void RenderWindow::onMouseMove(MouseEvent & event)
 {
-    m_canvas->onMouseMove(event.pos());
+    m_canvas->promoteMouseMove(event.pos());
 }
 
 void RenderWindow::onMouseEnter(MouseEnterEvent &)
@@ -169,7 +169,7 @@ void RenderWindow::onMouseLeave(MouseLeaveEvent &)
 
 void RenderWindow::onScroll(ScrollEvent & event)
 {
-    m_canvas->onMouseWheel(
+    m_canvas->promoteMouseWheel(
         event.offset()
       , event.pos()
     );
@@ -183,9 +183,9 @@ void RenderWindow::onIconify(IconifyEvent &)
 {
 }
 
-void RenderWindow::onUpdateTime()
+void RenderWindow::onIdle()
 {
-    m_canvas->onUpdateTime();
+    m_canvas->updateTime();
 }
 
 gloperate::MouseButton RenderWindow::fromGLFWMouseButton(int button) const
