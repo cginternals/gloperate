@@ -121,16 +121,15 @@ public:
     void render(globjects::Framebuffer * targetFBO);
 
 
+    virtual void onContextInit();
+    virtual void onContextDeinit();
+
     // Must be called from render thread
     virtual void onRender(globjects::Framebuffer * targetFBO);
 
     // Must be called from UI thread
     // [TODO] Needed any more?
     virtual void onUpdate();
-
-    // [TODO] Needed any more?
-    virtual void onContextInit();
-    virtual void onContextDeinit();
 
     // Must be called from UI thread
     virtual void onViewport(

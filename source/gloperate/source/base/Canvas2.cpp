@@ -79,6 +79,41 @@ void Canvas2::render(globjects::Framebuffer * targetFBO)
     onRender(targetFBO);
 }
 
+void Canvas2::onContextInit()
+{
+    std::cout << "Canvas onContextInit" << std::endl;
+
+    // demo
+    m_texture = std::unique_ptr<globjects::Texture>(m_environment->resourceManager()->load<globjects::Texture>(
+        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.glraw"
+    ));
+
+    m_quad = cppassist::make_unique<ScreenAlignedQuad>();
+
+    m_vertexShaderSource   = m_quad->vertexShaderSource();
+    m_fragmentShaderSource = m_quad->fragmentShaderSource();
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
+
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
+    m_program->setUniform("source", 0);
+}
+
+void Canvas2::onContextDeinit()
+{
+    std::cout << "Canvas onContextDeinit" << std::endl;
+
+    // demo
+    m_texture = nullptr;
+    m_quad = nullptr;
+    m_program = nullptr;
+    m_vertexShader = nullptr;
+    m_fragmentShader = nullptr;
+    m_vertexShaderSource = nullptr;
+    m_fragmentShaderSource = nullptr;
+}
+
 void Canvas2::onRender(globjects::Framebuffer * fbo)
 { 
     std::cout << "Canvas onRender" << std::endl;
@@ -118,41 +153,6 @@ void Canvas2::onRender(globjects::Framebuffer * fbo)
 
 void Canvas2::onUpdate()
 {
-}
-
-void Canvas2::onContextInit()
-{
-    std::cout << "Canvas onContextInit" << std::endl;
-
-    // demo
-    m_texture = std::unique_ptr<globjects::Texture>(m_environment->resourceManager()->load<globjects::Texture>(
-        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.glraw"
-    ));
-
-    m_quad = cppassist::make_unique<ScreenAlignedQuad>();
-
-    m_vertexShaderSource   = m_quad->vertexShaderSource();
-    m_fragmentShaderSource = m_quad->fragmentShaderSource();
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
-
-    m_program = cppassist::make_unique<globjects::Program>();
-    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
-    m_program->setUniform("source", 0);
-}
-
-void Canvas2::onContextDeinit()
-{
-    std::cout << "Canvas onContextDeinit" << std::endl;
-
-    // demo
-    m_texture = nullptr;
-    m_quad = nullptr;
-    m_program = nullptr;
-    m_vertexShader = nullptr;
-    m_fragmentShader = nullptr;
-    m_vertexShaderSource = nullptr;
-    m_fragmentShaderSource = nullptr;
 }
 
 void Canvas2::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
