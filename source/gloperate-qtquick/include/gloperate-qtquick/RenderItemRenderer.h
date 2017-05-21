@@ -20,7 +20,7 @@ namespace globjects
 
 namespace gloperate
 {
-    class AbstractCanvas;
+    class Canvas2;
     class ScreenAlignedQuad;
 }
 
@@ -77,8 +77,8 @@ protected:
     bool                                               m_canvasInitialized;    ///< 'true' if canvas has been initialized, else 'false'
     unsigned int                                       m_width;                ///< Current width
     unsigned int                                       m_height;               ///< Current height
+    gloperate::Canvas2                               * m_canvas;               ///< Canvas that renders into the item (never null)
     std::unique_ptr<gloperate_qt::GLContext>           m_context;              ///< Context wrapper for gloperate (can be null)
-    std::shared_ptr<gloperate::AbstractCanvas>         m_canvas;               ///< Canvas that renders into the item (must NOT be null)
     std::unique_ptr<globjects::Framebuffer>            m_fbo;                  ///< Framebuffer wrapper for outer FBO
     std::unique_ptr<globjects::Framebuffer>            m_innerFbo;             ///< Framebuffer into which gloperate renders
     std::unique_ptr<globjects::Texture>                m_texColor;             ///< Color texture

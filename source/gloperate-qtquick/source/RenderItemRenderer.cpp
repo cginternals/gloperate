@@ -9,7 +9,7 @@
 
 #include <cppassist/memory/make_unique.h>
 
-#include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/base/Canvas2.h>
 #include <gloperate/base/GLContextUtils.h>
 
 #include <gloperate-qt/base/GLContext.h>
@@ -18,38 +18,33 @@
 #include <gloperate-qtquick/Utils.h>
 
 #include <iostream>
+#include <thread>
 
 
 namespace gloperate_qtquick
 {
 
 
-void RenderItemRenderer::synchronize(QQuickFramebufferObject * framebufferObject)
+// NOTE: All function in RenderItem are called from the render thread
+
+void RenderItemRenderer::synchronize(QQuickFramebufferObject *)
 {
-    // Get render item
-    RenderItem * renderItem = static_cast<RenderItem *>(framebufferObject);
 
-    // Check if canvas has changed
-    if (m_canvas.get() != renderItem->canvas().get())
-    {
-        // Copy pointer to the new canvas
-        m_canvas = renderItem->canvas();
+    std::cout << "synchronize() [" << std::this_thread::get_id() << "]" << std::endl;
 
-        // Initialize canvas on next draw call
-        m_canvasInitialized = false;
-    }
+    // [TODO]
 }
 
 QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSize & size)
 {
+    std::cout << "createFramebufferObject() [" << std::this_thread::get_id() << "]" << std::endl;
+
     // Get QML window
     auto * window = m_renderItem->window();
 
     // Initialize context before rendering the first time
     if (!m_contextInitialized)
     {
-        m_contextInitialized = true;
-
         // Initialize glbinding and globjects in context
         Utils::initContext();
 
@@ -70,6 +65,8 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
 
         // Finish FBO setup
         initializeFboAttachments();
+
+        m_contextInitialized = true;
     }
     else
     {
@@ -87,15 +84,20 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
     // Create globjects FBO wrapper
     configureFbo(fbo->handle(), size.width(), size.height());
 
-    // Set viewport size
-    if (m_canvas)
+    // Initialize canvas before rendering the first time
+    if (!m_canvasInitialized)
     {
-        auto ratio = window->devicePixelRatio();
-        m_canvas->onViewport(
-            glm::vec4(0, 0, m_renderItem->width() * ratio, m_renderItem->height() * ratio)
-          , glm::vec4(0, 0, m_renderItem->width(),         m_renderItem->height())
-        );
+        m_canvas->setOpenGLContext(m_context.get());
+
+        m_canvasInitialized = true;
     }
+
+    // Set viewport size
+    auto ratio = window->devicePixelRatio();
+    m_canvas->setViewport(
+        glm::vec4(0, 0, m_renderItem->width() * ratio, m_renderItem->height() * ratio)
+      , glm::vec4(0, 0, m_renderItem->width(),         m_renderItem->height())
+    );
 
     // This function is called by Qt. We must not reset the context here because
     // Qt still assumes it to be active.
@@ -107,19 +109,7 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
 
 void RenderItemRenderer::render()
 {
-    // Check canvas
-    if (!m_canvas)
-    {
-        return;
-    }
-
-    // Initialize canvas before rendering the first time
-    if (!m_canvasInitialized)
-    {
-        m_canvas->setOpenGLContext(m_context.get());
-
-        m_canvasInitialized = true;
-    }
+    std::cout << "render() [" << std::this_thread::get_id() << "]" << std::endl;
 
     // Render canvas
     m_canvas->render(m_innerFbo.get());

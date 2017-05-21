@@ -93,7 +93,7 @@ public:
     //@{
     /**
     *  @brief
-    *    Set OpenGL context (must be called from UI thread)
+    *    Set OpenGL context
     *
     *  @param[in] context
     *    OpenGL context used for rendering on the canvas (can be null)

@@ -14,10 +14,14 @@
 #include <globjects/Shader.h>
 
 #include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <gloperate/base/Canvas2.h>
+
 #include <gloperate-qt/base/GLContext.h>
 
 #include <gloperate-qtquick/RenderItem.h>
-#include <gloperate/base/Canvas.h>
+
+#include <iostream>
+#include <thread>
 
 
 namespace gloperate_qtquick
@@ -30,19 +34,17 @@ RenderItemRenderer::RenderItemRenderer(RenderItem * renderItem)
 , m_canvasInitialized(false)
 , m_width(0)
 , m_height(0)
+, m_canvas(renderItem->canvas())
 {
+    std::cout << "RenderItemRenderer() [" << std::this_thread::get_id() << "]" << std::endl;
 }
 
 RenderItemRenderer::~RenderItemRenderer()
 {
-    if (!m_renderItem->canvas())
-    {
-        return;
-    }
+    std::cout << "~RenderItemRenderer() [" << std::this_thread::get_id() << "]" << std::endl;
 
-    // free pipeline as the pipeline got initialized using OpenGL context of this
-    // [TODO]: Reevaluate the destruction / deinitialization chain
-    m_renderItem->canvas()->onContextDeinit();
+    // Deinitialize canvas (must be performed in the render thread!)
+    m_renderItem->canvas()->setOpenGLContext(nullptr);
 }
 
 void RenderItemRenderer::configureFbo(int fboId, unsigned int width, unsigned int height)
