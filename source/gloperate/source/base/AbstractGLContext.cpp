@@ -38,7 +38,7 @@ void AbstractGLContext::initializeBindings()
     globjects::init();
 
     // Enable debug messages
-#ifdef DEBUG
+#ifndef NDEBUG
     globjects::DebugMessage::enable(true);
 #endif
 }
