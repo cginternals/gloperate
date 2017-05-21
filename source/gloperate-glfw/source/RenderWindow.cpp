@@ -105,7 +105,7 @@ void RenderWindow::onMove(MoveEvent &)
 
 void RenderWindow::onPaint(PaintEvent &)
 {
-    // [TODO]: optimize memory reallocation problem
+    // [TODO] Optimize memory reallocation problem
     auto defaultFBO = globjects::Framebuffer::defaultFBO();
 
     m_canvas->onRender(defaultFBO.get());
@@ -119,7 +119,7 @@ void RenderWindow::onKeyPress(KeyEvent & event)
         return;
     }
 
-    if (event.key() == GLFW_KEY_F11)
+    if (event.key() == GLFW_KEY_F11 || (event.key() == GLFW_KEY_ENTER && (event.modifiers() & GLFW_MOD_ALT) != 0) )
     {
         setFullscreen(!isFullscreen());
     }

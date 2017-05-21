@@ -185,6 +185,9 @@ void Window::setFullscreen(bool fullscreen)
         // Create new internal window
         if (createInternalWindow(m_format, w, h, monitor))
         {
+            // Show window
+            show();
+
             // Save fullscreen mode
             m_fullscreen = true;
         }
@@ -202,6 +205,9 @@ void Window::setFullscreen(bool fullscreen)
         // Create new internal window
         if (createInternalWindow(m_format, w, h, nullptr))
         {
+            // Show window
+            show();
+
             // Save windowed mode
             m_fullscreen = false;
         }
@@ -479,7 +485,7 @@ void Window::clearEventQueue()
     std::swap(m_eventQueue, empty);
 }
 
-bool Window::createInternalWindow(const GLContextFormat & format, int width, int height, GLFWmonitor * /*monitor*/)
+bool Window::createInternalWindow(const GLContextFormat & format, int width, int height, GLFWmonitor * monitor)
 {
     // Abort if window is already created
     assert(!m_context);
@@ -489,9 +495,10 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
     }
 
     // Create GLFW window with OpenGL context
-    GLContextFactory factory;
+    GLContextFactory factory(monitor, width, height);
     m_context.reset(static_cast<GLContext*>( factory.createBestContext(format).release() ));
 
+    // Check if context has been created
     if (!m_context)
     {
         return false;
@@ -503,8 +510,7 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
     // Get internal window
     m_window = m_context->window();
 
-    // Set window size and title
-    glfwSetWindowSize (m_window, width, height);
+    // Set window title
     glfwSetWindowTitle(m_window, m_title.c_str());
 
     // Register window for event processing

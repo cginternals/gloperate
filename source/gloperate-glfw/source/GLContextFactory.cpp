@@ -25,7 +25,10 @@ namespace gloperate_glfw
 {
 
 
-GLContextFactory::GLContextFactory()
+GLContextFactory::GLContextFactory(GLFWmonitor * monitor, unsigned int width, unsigned int height)
+: m_monitor(monitor)
+, m_width(width)
+, m_height(height)
 {
 }
 
@@ -39,7 +42,7 @@ std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(co
     initializeGLFWState(format);
 
     // Create window
-    GLFWwindow * window = glfwCreateWindow(1, 1, "", nullptr, nullptr);
+    GLFWwindow * window = glfwCreateWindow(m_width, m_height, "", m_monitor, nullptr);
     if (!window)
     {
         return nullptr;
