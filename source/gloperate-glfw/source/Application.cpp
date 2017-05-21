@@ -2,6 +2,8 @@
 #include <gloperate-glfw/Application.h>
 
 #include <cassert>
+#include <chrono>
+#include <thread>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -116,14 +118,16 @@ void Application::processEvents()
         if (window->hasPendingEvents()) {
             window->processEvents();
         }
+
+        // Update timing
+        window->updateTime();
     }
 
-    // Update timing
-    if (m_environment->update())
-    {
-        // If someone wants another main loop iteration, wake it up
-        wakeup();
-    }
+    // Make sure we don't overuse the CPU 
+    std::this_thread::sleep_for(std::chrono::milliseconds(2));
+
+    // Wake up mainloop to enable continuous update/simulation
+    wakeup();
 }
 
 

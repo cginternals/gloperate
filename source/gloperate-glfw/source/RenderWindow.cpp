@@ -183,6 +183,11 @@ void RenderWindow::onIconify(IconifyEvent &)
 {
 }
 
+void RenderWindow::onUpdateTime()
+{
+    m_canvas->onUpdateTime();
+}
+
 gloperate::MouseButton RenderWindow::fromGLFWMouseButton(int button) const
 {
     switch (button)

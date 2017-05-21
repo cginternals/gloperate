@@ -93,8 +93,16 @@ void Canvas2::onRender(globjects::Framebuffer * fbo)
     m_renderer->render(fbo);
 }
 
-void Canvas2::onUpdate()
+void Canvas2::onUpdateTime()
 {
+    auto duration = m_clock.elapsed();
+    m_clock.reset();
+
+    float timeDelta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
+
+    m_renderer->onUpdateTime(timeDelta);
+
+    redraw();
 }
 
 void Canvas2::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)

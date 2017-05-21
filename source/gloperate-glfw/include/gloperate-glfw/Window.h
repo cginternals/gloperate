@@ -294,6 +294,15 @@ public:
     */
     void swap();
 
+    /**
+    *  @brief
+    *    Update time
+    *
+    *  @param[in] timeDelta
+    *    Number of seconds since the last update
+    */
+    void updateTime();
+
 
 protected:
     /**
@@ -406,6 +415,7 @@ protected:
     virtual void onFocus(FocusEvent & event);
     virtual void onIconify(IconifyEvent & event);
     virtual void onClose(CloseEvent & event);
+    virtual void onUpdateTime();
 
 
 protected:

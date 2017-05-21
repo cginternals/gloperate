@@ -8,7 +8,7 @@
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/signal/Signal.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/base/ChronoTimer.h>
 
 
 namespace globjects
@@ -120,8 +120,7 @@ public:
     virtual void onRender(globjects::Framebuffer * targetFBO);
 
     // Must be called from UI thread
-    // [TODO] Needed any more?
-    virtual void onUpdate();
+    virtual void onUpdateTime();
 
     // Must be called from UI thread
     virtual void onViewport(
@@ -143,6 +142,7 @@ protected:
     AbstractGLContext       * m_openGLContext;   ///< OpenGL context used for rendering onto the canvas
     glm::vec4                 m_deviceViewport;  ///< Viewport (in real device coordinates)
     glm::vec4                 m_virtualViewport; ///< Viewport (in virtual coordinates)
+    gloperate::ChronoTimer    m_clock;           ///< Time measurement
     std::unique_ptr<Renderer> m_renderer;        ///< Render that renders into the canvas
 };
 

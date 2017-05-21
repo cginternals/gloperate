@@ -74,8 +74,14 @@ public:
     virtual void onRender(globjects::Framebuffer * targetFBO);
 
     // Must be called from UI thread
-    // [TODO] Needed any more?
-    virtual void onUpdate();
+    /**
+    *  @brief
+    *    Update time
+    *
+    *  @param[in] timeDelta
+    *    Number of seconds since the last update
+    */
+    virtual void onUpdateTime(float timeDelta);
 
     // Must be called from UI thread
     virtual void onViewport(
@@ -96,6 +102,8 @@ protected:
     std::unique_ptr<globjects::Shader>               m_vertexShader;
     std::unique_ptr<globjects::Shader>               m_fragmentShader;
     std::unique_ptr<gloperate::Camera>               m_camera;
+
+    float m_angle;
 };
 
 

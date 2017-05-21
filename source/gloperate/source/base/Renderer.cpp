@@ -32,6 +32,7 @@ namespace gloperate
 Renderer::Renderer(Environment * environment)
 : cppexpose::Object("renderer")
 , m_environment(environment)
+, m_angle(0.0f)
 {
     info() << "Renderer created";
 }
@@ -107,6 +108,10 @@ void Renderer::onRender(globjects::Framebuffer * fbo)
     // Set viewport
     gl::glViewport((int)m_deviceViewport.x, (int)m_deviceViewport.y, (int)m_deviceViewport.z, (int)m_deviceViewport.w);
 
+    // Clear screen
+    gl::glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+
     // Set OpenGL states
     gl::glEnable(gl::GL_DEPTH_TEST);
 
@@ -115,16 +120,6 @@ void Renderer::onRender(globjects::Framebuffer * fbo)
     {
         m_texture->bindActive(0);
     }
-
-    // Animate camera
-    static float angle = 0.0f;
-
-    angle += 0.03f;
-    if (angle >= 2 * glm::pi<float>()) angle -= 2 * glm::pi<float>();
-
-    float x = 3.0f * glm::sin(angle);
-    float y = 3.0f * glm::cos(angle);
-    m_camera->setEye(glm::vec3(y, 2.0f, x));
 
     // Update uniforms
     m_program->setUniform("viewProjectionMatrix", m_camera->viewProjection());
@@ -144,8 +139,16 @@ void Renderer::onRender(globjects::Framebuffer * fbo)
     gl::glDisable(gl::GL_DEPTH_TEST);
 }
 
-void Renderer::onUpdate()
+void Renderer::onUpdateTime(float timeDelta)
 {
+    // Animate camera (by 90° per second)
+    m_angle += 0.5f * glm::pi<float>() * timeDelta;
+    if (m_angle >= 2 * glm::pi<float>()) {
+        m_angle -= 2 * glm::pi<float>();
+    }
+
+    // Update camera position
+    m_camera->setEye(glm::vec3(3.0f * glm::cos(m_angle), 2.0f, 3.0f * glm::sin(m_angle)));
 }
 
 void Renderer::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)

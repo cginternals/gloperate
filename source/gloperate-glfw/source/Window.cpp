@@ -334,6 +334,11 @@ void Window::swap()
     glfwSwapBuffers(m_window);
 }
 
+void Window::updateTime()
+{
+    onUpdateTime();
+}
+
 GLFWwindow * Window::internalWindow() const
 {
     return m_window;
@@ -618,6 +623,10 @@ void Window::onIconify(IconifyEvent &)
 }
 
 void Window::onClose(CloseEvent &)
+{
+}
+
+void Window::onUpdateTime()
 {
 }
 
