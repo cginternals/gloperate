@@ -64,38 +64,20 @@ public:
     Environment * environment();
     //@}
 
-    // Must be called from render thread
-    void render(globjects::Framebuffer * targetFBO);
-
+    // Virtual event handler functions
     virtual void onContextInit();
     virtual void onContextDeinit();
-
-    // Must be called from render thread
-    virtual void onRender(globjects::Framebuffer * targetFBO);
-
-    // Must be called from UI thread
-    /**
-    *  @brief
-    *    Update time
-    *
-    *  @param[in] virtualTime
-    *    The current virtual time (in seconds)
-    *  @param[in] timeDelta
-    *    Number of seconds since the last update
-    */
     virtual void onUpdateTime(float virtualTime, float timeDelta);
-
-    // Must be called from UI thread
-    virtual void onViewport(
-        const glm::vec4 & deviceViewport
-      , const glm::vec4 & virtualViewport);
+    virtual void onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport);
+    virtual void onRender(globjects::Framebuffer * targetFBO);
 
 
 protected:
-    Environment       * m_environment;     ///< Gloperate environment to which the canvas belongs
-    glm::vec4           m_deviceViewport;  ///< Viewport (in real device coordinates)
-    glm::vec4           m_virtualViewport; ///< Viewport (in virtual coordinates)
+    Environment * m_environment;     ///< Gloperate environment to which the canvas belongs
+    glm::vec4     m_deviceViewport;  ///< Viewport (in real device coordinates)
+    glm::vec4     m_virtualViewport; ///< Viewport (in virtual coordinates)
 
+    // Rendering data
     std::unique_ptr<globjects::Texture>              m_texture;
     std::unique_ptr<gloperate::Box>                  m_box;
     std::unique_ptr<globjects::Program>              m_program;
@@ -104,8 +86,7 @@ protected:
     std::unique_ptr<globjects::Shader>               m_vertexShader;
     std::unique_ptr<globjects::Shader>               m_fragmentShader;
     std::unique_ptr<gloperate::Camera>               m_camera;
-
-    float m_angle;
+    float                                            m_angle;
 };
 
 

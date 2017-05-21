@@ -34,7 +34,7 @@ Renderer::Renderer(Environment * environment)
 , m_environment(environment)
 , m_angle(0.0f)
 {
-    info() << "Renderer created";
+    info() << "Renderer::Renderer()";
 }
 
 Renderer::~Renderer()
@@ -51,15 +51,11 @@ Environment * Renderer::environment()
     return m_environment;
 }
 
-void Renderer::render(globjects::Framebuffer * targetFBO)
-{
-    onRender(targetFBO);
-}
-
 void Renderer::onContextInit()
 {
-    info() << "Renderer onContextInit";
+    info() << "Renderer::onContextInit()";
 
+    // Create OpenGL objects
     m_camera = cppassist::make_unique<Camera>();
     m_camera->setEye(glm::vec3(0.0, 0.0, 3.0));
 
@@ -84,23 +80,45 @@ void Renderer::onContextInit()
 
 void Renderer::onContextDeinit()
 {
-    info() << "Renderer onContextDeinit";
+    info() << "Renderer::onContextDeinit()";
 
-    m_camera = nullptr;
-    m_texture = nullptr;
-    m_box = nullptr;
-    m_program = nullptr;
-    m_vertexShader = nullptr;
-    m_fragmentShader = nullptr;
-    m_vertexShaderSource = nullptr;
+    // Release OpenGL objects
+    m_camera               = nullptr;
+    m_texture              = nullptr;
+    m_box                  = nullptr;
+    m_program              = nullptr;
+    m_vertexShader         = nullptr;
+    m_fragmentShader       = nullptr;
+    m_vertexShaderSource   = nullptr;
     m_fragmentShaderSource = nullptr;
+}
+
+void Renderer::onUpdateTime(float, float timeDelta)
+{
+    info() << "Renderer::onUpdateTime()";
+
+    // Animate camera by 90° per second
+    m_angle += 0.5f * glm::pi<float>() * timeDelta;
+    if (m_angle >= 2 * glm::pi<float>()) {
+        m_angle -= 2 * glm::pi<float>();
+    }
+
+    // Update camera position
+    m_camera->setEye(glm::vec3(3.0f * glm::cos(m_angle), 2.0f, 3.0f * glm::sin(m_angle)));
+}
+
+void Renderer::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
+{
+    info() << "Renderer::onViewport()";
+
+    // Save viewport size
+    m_deviceViewport  = deviceViewport;
+    m_virtualViewport = virtualViewport;
 }
 
 void Renderer::onRender(globjects::Framebuffer * fbo)
 { 
-    info() << "Renderer onRender";
-
-    globjects::setCurrentContext();
+    info() << "Renderer::onRender()";
 
     // Bind FBO
     fbo->bind(gl::GL_FRAMEBUFFER);
@@ -124,7 +142,7 @@ void Renderer::onRender(globjects::Framebuffer * fbo)
     // Update uniforms
     m_program->setUniform("viewProjectionMatrix", m_camera->viewProjection());
 
-    // Draw screen-aligned quad
+    // Draw geometry
     m_program->use();
     m_box->draw();
     m_program->release();
@@ -137,25 +155,6 @@ void Renderer::onRender(globjects::Framebuffer * fbo)
 
     // Restore OpenGL states
     gl::glDisable(gl::GL_DEPTH_TEST);
-}
-
-void Renderer::onUpdateTime(float, float timeDelta)
-{
-    // Animate camera (by 90° per second)
-    m_angle += 0.5f * glm::pi<float>() * timeDelta;
-    if (m_angle >= 2 * glm::pi<float>()) {
-        m_angle -= 2 * glm::pi<float>();
-    }
-
-    // Update camera position
-    m_camera->setEye(glm::vec3(3.0f * glm::cos(m_angle), 2.0f, 3.0f * glm::sin(m_angle)));
-}
-
-void Renderer::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
-{
-    m_deviceViewport  = deviceViewport;
-    m_virtualViewport = virtualViewport;
-    info() << "Renderer onViewport";
 }
 
 

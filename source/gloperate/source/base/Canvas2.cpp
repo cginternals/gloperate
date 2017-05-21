@@ -87,31 +87,37 @@ void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & vi
 
 void Canvas2::render(globjects::Framebuffer * targetFBO)
 {
-    m_renderer->render(targetFBO);
+    m_renderer->onRender(targetFBO);
 }
 
 void Canvas2::promoteKeyPress(int, int)
 {
+    // [TODO]
 }
 
 void Canvas2::promoteKeyRelease(int, int)
 {
+    // [TODO]
 }
 
 void Canvas2::promoteMouseMove(const glm::ivec2 &)
 {
+    // [TODO]
 }
 
 void Canvas2::promoteMousePress(int, const glm::ivec2 &)
 {
+    // [TODO]
 }
 
 void Canvas2::promoteMouseRelease(int, const glm::ivec2 &)
 {
+    // [TODO]
 }
 
 void Canvas2::promoteMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
+    // [TODO]
 }
 
 
