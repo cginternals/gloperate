@@ -50,10 +50,11 @@ set(headers
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
     ${include_path}/base/AbstractCanvas.h
-    ${include_path}/base/Canvas2.h
     ${include_path}/base/AbstractComponent.h
     ${include_path}/base/AbstractComponent.inl
     ${include_path}/base/Canvas.h
+    ${include_path}/base/Canvas2.h
+    ${include_path}/base/Renderer.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
     ${include_path}/base/AbstractGLContextFactory.h
@@ -111,6 +112,7 @@ set(headers
     ${include_path}/rendering/TransparencyMasksGenerator.h
     ${include_path}/rendering/ScreenAlignedQuad.h
     ${include_path}/rendering/ScreenAlignedTriangle.h
+    ${include_path}/rendering/Box.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -159,8 +161,9 @@ set(sources
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/AbstractCanvas.cpp
-    ${source_path}/base/Canvas2.cpp
     ${source_path}/base/Canvas.cpp
+    ${source_path}/base/Canvas2.cpp
+    ${source_path}/base/Renderer.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractComponent.cpp
     ${source_path}/base/AbstractGLContext.cpp
@@ -199,6 +202,7 @@ set(sources
     ${source_path}/rendering/TransparencyMasksGenerator.cpp
     ${source_path}/rendering/ScreenAlignedQuad.cpp
     ${source_path}/rendering/ScreenAlignedTriangle.cpp
+    ${source_path}/rendering/Box.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp

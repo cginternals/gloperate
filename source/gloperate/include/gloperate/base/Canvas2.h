@@ -14,12 +14,6 @@
 namespace globjects
 {
     class Framebuffer;
-
-    // demo
-    class Texture;
-    class Program;
-    class Shader;
-    class AbstractStringSource;
 }
 
 
@@ -29,9 +23,7 @@ namespace gloperate
 
 class Environment;
 class AbstractGLContext;
-
-// demo
-class ScreenAlignedQuad;
+class Renderer;
 
 
 /**
@@ -147,19 +139,11 @@ public:
 
 
 protected:
-    Environment       * m_environment;     ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext * m_openGLContext;   ///< OpenGL context used for rendering onto the canvas
-    glm::vec4           m_deviceViewport;  ///< Viewport (in real device coordinates)
-    glm::vec4           m_virtualViewport; ///< Viewport (in virtual coordinates)
-
-    // demo
-    std::unique_ptr<globjects::Texture>              m_texture;
-    std::unique_ptr<gloperate::ScreenAlignedQuad>    m_quad;
-    std::unique_ptr<globjects::Program>              m_program;
-    std::unique_ptr<globjects::AbstractStringSource> m_vertexShaderSource;
-    std::unique_ptr<globjects::AbstractStringSource> m_fragmentShaderSource;
-    std::unique_ptr<globjects::Shader>               m_vertexShader;
-    std::unique_ptr<globjects::Shader>               m_fragmentShader;
+    Environment             * m_environment;     ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext       * m_openGLContext;   ///< OpenGL context used for rendering onto the canvas
+    glm::vec4                 m_deviceViewport;  ///< Viewport (in real device coordinates)
+    glm::vec4                 m_virtualViewport; ///< Viewport (in virtual coordinates)
+    std::unique_ptr<Renderer> m_renderer;        ///< Render that renders into the canvas
 };
 
 
