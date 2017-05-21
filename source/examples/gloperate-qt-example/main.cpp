@@ -13,7 +13,6 @@
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Application.h>
-#include <gloperate-qt/base/UpdateManager.h>
 #include <gloperate-qt/base/RenderWindow.h>
 #include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
 #include <gloperate-qt/scripting/ECMA26251Completer.h>
@@ -44,10 +43,9 @@ int main(int argc, char * argv[])
 
     // Initialize Qt application
     gloperate_qt::Application app(&environment, argc, argv);
-    UpdateManager updateManager(&environment);
 
     // Create render stage
-    auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
+    //auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
 
     // Create render window
     auto window = cppassist::make_unique<RenderWindow>(&environment);
@@ -67,7 +65,7 @@ int main(int argc, char * argv[])
 
     auto windowRaw = window.get();
     window->createContext();
-    window->setRenderStage(std::move(renderStage));
+    //window->setRenderStage(std::move(renderStage));
 
     // Create main window
     QMainWindow mainWindow;

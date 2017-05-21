@@ -5,6 +5,7 @@
 #include <memory>
 
 #include <QWindow>
+#include <QTimer>
 
 #include <gloperate/base/GLContextFormat.h>
 
@@ -146,6 +147,12 @@ protected:
     */
     virtual void onPaint();
 
+    /**
+    *  @brief
+    *    Called on timer update
+    */
+    virtual void onTimer();
+
     // Qt event callbacks
     virtual bool event(QEvent * event) override;
     virtual void resizeEvent(QResizeEvent * event) override;
@@ -155,6 +162,7 @@ protected:
 
 
 protected:
+    QTimer                     m_timer;         ///< Timer for continuous update
     gloperate::GLContextFormat m_format;        ///< Desired OpenGL format
     std::unique_ptr<GLContext> m_context;       ///< Context wrapper for gloperate (can be null)
     bool                       m_initialized;   ///< Has the rendering already been initialized?

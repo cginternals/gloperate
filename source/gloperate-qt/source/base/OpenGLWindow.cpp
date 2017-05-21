@@ -18,9 +18,19 @@ OpenGLWindow::OpenGLWindow()
 , m_initialized(false)
 , m_updatePending(false)
 {
+    // Connect update timer
+    QObject::connect(
+        &m_timer, &QTimer::timeout,
+        this, &OpenGLWindow::onTimer
+    );
+
     // Create window with OpenGL capability
     setSurfaceType(OpenGLSurface);
     create();
+
+    // Start timer
+    m_timer.setSingleShot(false);
+    m_timer.start(5);
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -151,6 +161,10 @@ void OpenGLWindow::onResize(const QSize &, const QSize &)
 }
 
 void OpenGLWindow::onPaint()
+{
+}
+
+void OpenGLWindow::onTimer()
 {
 }
 

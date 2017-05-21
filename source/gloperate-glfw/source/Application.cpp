@@ -124,7 +124,7 @@ void Application::processEvents()
     }
 
     // Make sure we don't saturate the CPU 
-    std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
     // Wake up mainloop to enable continuous update/simulation
     wakeup();
