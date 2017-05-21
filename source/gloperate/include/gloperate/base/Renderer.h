@@ -64,6 +64,15 @@ public:
     Environment * environment();
     //@}
 
+    /**
+    *  @brief
+    *    Check if a redraw is required
+    *
+    *  @return
+    *    'true' if a redraw is required, else 'false'
+    */
+    bool requiresRedraw() const;
+
     // Virtual event handler functions
     virtual void onContextInit();
     virtual void onContextDeinit();
@@ -76,6 +85,7 @@ protected:
     Environment * m_environment;     ///< Gloperate environment to which the canvas belongs
     glm::vec4     m_deviceViewport;  ///< Viewport (in real device coordinates)
     glm::vec4     m_virtualViewport; ///< Viewport (in virtual coordinates)
+    bool          m_redrawRequired;  ///< 'true' if a redraw is required, else 'false'
 
     // Rendering data
     std::unique_ptr<globjects::Texture>              m_texture;

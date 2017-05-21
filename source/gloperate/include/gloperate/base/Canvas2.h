@@ -211,6 +211,18 @@ public:
 
 
 protected:
+    /**
+    *  @brief
+    *    Check if a redraw is required
+    *
+    *  @remarks
+    *    This function checks if the render stage needs to be redrawn
+    *    and invokes the redraw signal if that is the case.
+    */
+    void checkRedraw();
+
+
+protected:
     Environment             * m_environment;   ///< Gloperate environment to which the canvas belongs
     AbstractGLContext       * m_openGLContext; ///< OpenGL context used for rendering onto the canvas
     bool                      m_initialized;   ///< 'true' if the context has been initialized and the viewport has been set, else 'false'

@@ -80,52 +80,83 @@ void Canvas2::updateTime()
     // Update timing
     m_renderer->onUpdateTime(m_virtualTime, timeDelta);
 
-    // [TODO] Check redraw
-    redraw();
+    // Check if a redraw is required
+    checkRedraw();
 }
 
 void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
+    // Promote new viewport
     m_renderer->onViewport(deviceViewport, virtualViewport);
     m_initialized = true;
+
+    // Check if a redraw is required
+    checkRedraw();
 }
 
 void Canvas2::render(globjects::Framebuffer * targetFBO)
 {
-    if (m_initialized)
-    {
-        m_renderer->onRender(targetFBO);
-    }
+    // Abort if not initialized
+    if (!m_initialized) return;
+
+    // Render
+    m_renderer->onRender(targetFBO);
 }
 
 void Canvas2::promoteKeyPress(int, int)
 {
     // [TODO]
+
+    // Check if a redraw is required
+    checkRedraw();
 }
 
 void Canvas2::promoteKeyRelease(int, int)
 {
     // [TODO]
+
+    // Check if a redraw is required
+    checkRedraw();
 }
 
 void Canvas2::promoteMouseMove(const glm::ivec2 &)
 {
     // [TODO]
+
+    // Check if a redraw is required
+    checkRedraw();
 }
 
 void Canvas2::promoteMousePress(int, const glm::ivec2 &)
 {
     // [TODO]
+
+    // Check if a redraw is required
+    checkRedraw();
 }
 
 void Canvas2::promoteMouseRelease(int, const glm::ivec2 &)
 {
     // [TODO]
+
+    // Check if a redraw is required
+    checkRedraw();
 }
 
 void Canvas2::promoteMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 {
     // [TODO]
+
+    // Check if a redraw is required
+    checkRedraw();
+}
+
+void Canvas2::checkRedraw()
+{
+    if (m_renderer->requiresRedraw())
+    {
+        redraw();
+    }
 }
 
 

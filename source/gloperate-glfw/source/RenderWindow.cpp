@@ -119,15 +119,20 @@ void RenderWindow::onKeyPress(KeyEvent & event)
         return;
     }
 
+    m_canvas->promoteKeyPress(
+        fromGLFWKeyCode(event.key()),
+        fromGLFWModifier(event.modifiers())
+    );
+
     if (event.key() == GLFW_KEY_F11 || (event.key() == GLFW_KEY_ENTER && (event.modifiers() & GLFW_MOD_ALT) != 0) )
     {
         setFullscreen(!isFullscreen());
     }
 
-    m_canvas->promoteKeyPress(
-        fromGLFWKeyCode(event.key()),
-        fromGLFWModifier(event.modifiers())
-    );
+    if (event.key() == GLFW_KEY_ESCAPE)
+    {
+        close();
+    }
 }
 
 void RenderWindow::onKeyRelease(KeyEvent & event)

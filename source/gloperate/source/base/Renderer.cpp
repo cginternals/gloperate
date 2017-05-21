@@ -32,6 +32,7 @@ namespace gloperate
 Renderer::Renderer(Environment * environment)
 : cppexpose::Object("renderer")
 , m_environment(environment)
+, m_redrawRequired(false)
 , m_angle(0.0f)
 {
     info() << "Renderer::Renderer()";
@@ -49,6 +50,11 @@ const Environment * Renderer::environment() const
 Environment * Renderer::environment()
 {
     return m_environment;
+}
+
+bool Renderer::requiresRedraw() const
+{
+    return m_redrawRequired;
 }
 
 void Renderer::onContextInit()
@@ -104,6 +110,9 @@ void Renderer::onUpdateTime(float, float timeDelta)
 
     // Update camera position
     m_camera->setEye(glm::vec3(3.0f * glm::cos(m_angle), 2.0f, 3.0f * glm::sin(m_angle)));
+
+    // Request redraw
+    m_redrawRequired = true;
 }
 
 void Renderer::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
@@ -154,6 +163,9 @@ void Renderer::onRender(globjects::Framebuffer * fbo)
 
     // Restore OpenGL states
     gl::glDisable(gl::GL_DEPTH_TEST);
+
+    // Set rendered
+    m_redrawRequired = false;
 }
 
 
