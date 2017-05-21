@@ -70,12 +70,12 @@ public:
 public:
     /**
     *  @brief
-    *    Initializes glbinding for current context
+    *    Initialize glbinding and globjects in the current context
     *
     *  @remarks
     *    Should only be called once per context
     */
-    static void initializeGLBinding();
+    static void initializeBindings();
 
 
 protected:

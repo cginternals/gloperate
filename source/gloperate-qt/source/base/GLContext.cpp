@@ -25,7 +25,7 @@ GLContext::GLContext(QWindow * window, QOpenGLContext * context, bool takeOwners
     use();
 
     // Initialize glbinding in context (needed for context utils)
-    initializeGLBinding();
+    initializeBindings();
 
     // Read context handle and format
     m_handle = GLContextUtils::tryFetchHandle();

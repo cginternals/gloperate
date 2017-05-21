@@ -29,10 +29,15 @@ const GLContextFormat & AbstractGLContext::format() const
     return m_format;
 }
 
-void AbstractGLContext::initializeGLBinding()
+void AbstractGLContext::initializeBindings()
 {
+    // Initialize glbinding
     glbinding::Binding::initialize(false);
+
+    // Initialize globjects
     globjects::init();
+
+    // Enable debug messages
 #ifdef DEBUG
     globjects::DebugMessage::enable(true);
 #endif

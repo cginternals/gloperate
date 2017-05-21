@@ -44,7 +44,7 @@ GLContext::GLContext(GLFWwindow * window)
     use();
 
     // Initialize glbinding in context (needed for context utils)
-    initializeGLBinding();
+    initializeBindings();
 
     // Read context handle and format
     m_handle = GLContextUtils::tryFetchHandle();
