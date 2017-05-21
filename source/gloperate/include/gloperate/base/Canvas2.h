@@ -213,6 +213,7 @@ public:
 protected:
     Environment             * m_environment;   ///< Gloperate environment to which the canvas belongs
     AbstractGLContext       * m_openGLContext; ///< OpenGL context used for rendering onto the canvas
+    bool                      m_initialized;   ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
     std::unique_ptr<Renderer> m_renderer;      ///< Render that renders into the canvas
     gloperate::ChronoTimer    m_clock;         ///< Time measurement
     float                     m_virtualTime;   ///< The current virtual time (in seconds)

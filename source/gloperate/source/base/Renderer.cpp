@@ -83,7 +83,6 @@ void Renderer::onContextDeinit()
     info() << "Renderer::onContextDeinit()";
 
     // Release OpenGL objects
-    m_camera               = nullptr;
     m_texture              = nullptr;
     m_box                  = nullptr;
     m_program              = nullptr;

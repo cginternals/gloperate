@@ -15,6 +15,7 @@ Canvas2::Canvas2(Environment * environment)
 : cppexpose::Object("canvas")
 , m_environment(environment)
 , m_openGLContext(nullptr)
+, m_initialized(false)
 , m_renderer(cppassist::make_unique<Renderer>(environment))
 , m_virtualTime(0.0f)
 {
@@ -61,6 +62,9 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
 
         m_renderer->onContextInit();
     }
+
+    // Reset status
+    m_initialized = false;
 }
 
 void Canvas2::updateTime()
@@ -83,11 +87,15 @@ void Canvas2::updateTime()
 void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
     m_renderer->onViewport(deviceViewport, virtualViewport);
+    m_initialized = true;
 }
 
 void Canvas2::render(globjects::Framebuffer * targetFBO)
 {
-    m_renderer->onRender(targetFBO);
+    if (m_initialized)
+    {
+        m_renderer->onRender(targetFBO);
+    }
 }
 
 void Canvas2::promoteKeyPress(int, int)

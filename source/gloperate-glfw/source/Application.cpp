@@ -111,6 +111,9 @@ void Application::processEvents()
     // Get messages for all windows
     for (Window * window : Window::instances())
     {
+        // Update timing
+        window->idle();
+
         // If window needs updating, let it send an udate event
         window->updateRepaintEvent();
 
@@ -118,9 +121,6 @@ void Application::processEvents()
         if (window->hasPendingEvents()) {
             window->processEvents();
         }
-
-        // Update timing
-        window->idle();
     }
 
     // Make sure we don't saturate the CPU 
