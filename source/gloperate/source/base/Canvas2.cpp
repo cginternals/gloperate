@@ -10,9 +10,10 @@
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ComponentManager.h>
-
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Slot.h>
+#include <gloperate/input/MouseDevice.h>
+#include <gloperate/input/KeyboardDevice.h>
 
 
 namespace
@@ -43,6 +44,8 @@ Canvas2::Canvas2(Environment * environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
 , m_virtualTime(0.0f)
+, m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
+, m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
 {
 }
 
@@ -215,7 +218,8 @@ void Canvas2::promoteKeyPress(int key, int modifier)
 {
     cppassist::debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
 
-    // [TODO]
+    // Promote keyboard event
+    m_keyboardDevice->keyPress(key, modifier);
 
     // Check if a redraw is required
     checkRedraw();
@@ -225,7 +229,8 @@ void Canvas2::promoteKeyRelease(int key, int modifier)
 {
     cppassist::debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
 
-    // [TODO]
+    // Promote keyboard event
+    m_keyboardDevice->keyRelease(key, modifier);
 
     // Check if a redraw is required
     checkRedraw();
@@ -235,7 +240,8 @@ void Canvas2::promoteMouseMove(const glm::ivec2 & pos)
 {
     cppassist::debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
-    // [TODO]
+    // Promote mouse event
+    m_mouseDevice->move(pos);
 
     // Check if a redraw is required
     checkRedraw();
@@ -245,7 +251,8 @@ void Canvas2::promoteMousePress(int button, const glm::ivec2 & pos)
 {
     cppassist::debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
-    // [TODO]
+    // Promote mouse event
+    m_mouseDevice->buttonPress(button, pos);
 
     // Check if a redraw is required
     checkRedraw();
@@ -255,7 +262,8 @@ void Canvas2::promoteMouseRelease(int button, const glm::ivec2 & pos)
 {
     cppassist::debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
-    // [TODO]
+    // Promote mouse event
+    m_mouseDevice->buttonRelease(button, pos);
 
     // Check if a redraw is required
     checkRedraw();
@@ -265,7 +273,8 @@ void Canvas2::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
     cppassist::debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
-    // [TODO]
+    // Promote mouse event
+    m_mouseDevice->wheelScroll(delta, pos);
 
     // Check if a redraw is required
     checkRedraw();
