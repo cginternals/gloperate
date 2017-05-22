@@ -1,7 +1,12 @@
 
 #include <gloperate/base/Canvas2.h>
 
+#include <glm/glm.hpp>
+
+#include <cppassist/logging/logging.h>
 #include <cppassist/memory/make_unique.h>
+
+#include <globjects/Framebuffer.h>
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ComponentManager.h>
@@ -97,6 +102,8 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
+        cppassist::debug(2, "gloperate") << "deinitContext()";
+
         if (m_renderStage)
         {
             m_renderStage->deinitContext(m_openGLContext);
@@ -108,6 +115,8 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     // Initialize renderer in new context
     if (context)
     {
+        cppassist::debug(2, "gloperate") << "initContext()";
+
         m_openGLContext = context;
 
         if (m_renderStage)
@@ -159,6 +168,9 @@ void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & vi
 
 void Canvas2::render(globjects::Framebuffer * targetFBO)
 {
+    auto fboName = targetFBO->hasName() ? targetFBO->name() : std::to_string(targetFBO->id());
+    cppassist::debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
+
     // Abort if not initialized
     if (!m_initialized) return;
 
@@ -199,48 +211,60 @@ void Canvas2::render(globjects::Framebuffer * targetFBO)
     }
 }
 
-void Canvas2::promoteKeyPress(int, int)
+void Canvas2::promoteKeyPress(int key, int modifier)
 {
+    cppassist::debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
+
     // [TODO]
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas2::promoteKeyRelease(int, int)
+void Canvas2::promoteKeyRelease(int key, int modifier)
 {
+    cppassist::debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
+
     // [TODO]
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas2::promoteMouseMove(const glm::ivec2 &)
+void Canvas2::promoteMouseMove(const glm::ivec2 & pos)
 {
+    cppassist::debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
+
     // [TODO]
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas2::promoteMousePress(int, const glm::ivec2 &)
+void Canvas2::promoteMousePress(int button, const glm::ivec2 & pos)
 {
+    cppassist::debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+
     // [TODO]
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas2::promoteMouseRelease(int, const glm::ivec2 &)
+void Canvas2::promoteMouseRelease(int button, const glm::ivec2 & pos)
 {
+    cppassist::debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+
     // [TODO]
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas2::promoteMouseWheel(const glm::vec2 &, const glm::ivec2 &)
+void Canvas2::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
+    cppassist::debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+
     // [TODO]
 
     // Check if a redraw is required
