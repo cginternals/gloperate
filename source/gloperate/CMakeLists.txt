@@ -54,7 +54,6 @@ set(headers
     ${include_path}/base/AbstractComponent.inl
     ${include_path}/base/Canvas.h
     ${include_path}/base/Canvas2.h
-    ${include_path}/base/Renderer.h
     ${include_path}/base/AbstractContext.h
     ${include_path}/base/AbstractGLContext.h
     ${include_path}/base/AbstractGLContextFactory.h
@@ -163,7 +162,6 @@ set(sources
     ${source_path}/base/AbstractCanvas.cpp
     ${source_path}/base/Canvas.cpp
     ${source_path}/base/Canvas2.cpp
-    ${source_path}/base/Renderer.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractComponent.cpp
     ${source_path}/base/AbstractGLContext.cpp

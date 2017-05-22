@@ -1,15 +1,13 @@
 
-#include <gloperate/base/Renderer.h>
+#include "DemoStage2.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-#include <cppassist/logging/logging.h>
 #include <cppassist/memory/make_unique.h>
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/globjects.h>
 #include <globjects/base/AbstractStringSource.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Program.h>
@@ -22,45 +20,26 @@
 #include <gloperate/rendering/Camera.h>
 
 
-using namespace cppassist;
+using namespace gloperate;
 
 
-namespace gloperate
-{
+CPPEXPOSE_COMPONENT(DemoStage2, gloperate::Stage)
 
 
-Renderer::Renderer(Environment * environment)
-: cppexpose::Object("renderer")
-, m_environment(environment)
-, m_redrawRequired(false)
+DemoStage2::DemoStage2(gloperate::Environment * environment, const std::string & name)
+: Stage(environment, "DemoStage2", name)
+, renderInterface(this)
+, fboOut("fboOut", this, nullptr)
 , m_angle(0.0f)
 {
-    info() << "Renderer::Renderer()";
 }
 
-Renderer::~Renderer()
+DemoStage2::~DemoStage2()
 {
 }
 
-const Environment * Renderer::environment() const
+void DemoStage2::onContextInit(gloperate::AbstractGLContext *)
 {
-    return m_environment;
-}
-
-Environment * Renderer::environment()
-{
-    return m_environment;
-}
-
-bool Renderer::requiresRedraw() const
-{
-    return m_redrawRequired;
-}
-
-void Renderer::onContextInit()
-{
-    info() << "Renderer::onContextInit()";
-
     // Create OpenGL objects
     m_camera = cppassist::make_unique<Camera>();
     m_camera->setEye(glm::vec3(0.0, 0.0, 3.0));
@@ -84,10 +63,8 @@ void Renderer::onContextInit()
     m_program->setUniform("tex0", 0);
 }
 
-void Renderer::onContextDeinit()
+void DemoStage2::onContextDeinit(gloperate::AbstractGLContext *)
 {
-    info() << "Renderer::onContextDeinit()";
-
     // Release OpenGL objects
     m_texture              = nullptr;
     m_box                  = nullptr;
@@ -98,12 +75,10 @@ void Renderer::onContextDeinit()
     m_fragmentShaderSource = nullptr;
 }
 
-void Renderer::onUpdateTime(float, float timeDelta)
+void DemoStage2::onProcess(gloperate::AbstractGLContext *)
 {
-    info() << "Renderer::onUpdateTime()";
-
     // Animate camera by 90° per second
-    m_angle += 0.5f * glm::pi<float>() * timeDelta;
+    m_angle += 0.2f * glm::pi<float>() * (*renderInterface.timeDelta);
     if (m_angle >= 2 * glm::pi<float>()) {
         m_angle -= 2 * glm::pi<float>();
     }
@@ -111,28 +86,15 @@ void Renderer::onUpdateTime(float, float timeDelta)
     // Update camera position
     m_camera->setEye(glm::vec3(3.0f * glm::cos(m_angle), 2.0f, 3.0f * glm::sin(m_angle)));
 
-    // Request redraw
-    m_redrawRequired = true;
-}
-
-void Renderer::onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
-{
-    info() << "Renderer::onViewport()";
-
-    // Save viewport size
-    m_deviceViewport  = deviceViewport;
-    m_virtualViewport = virtualViewport;
-}
-
-void Renderer::onRender(globjects::Framebuffer * fbo)
-{ 
-    info() << "Renderer::onRender()";
-
     // Bind FBO
+    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
     fbo->bind(gl::GL_FRAMEBUFFER);
 
+    // Get viewport
+    glm::vec4 viewport = *renderInterface.deviceViewport;
+
     // Set viewport
-    gl::glViewport((int)m_deviceViewport.x, (int)m_deviceViewport.y, (int)m_deviceViewport.z, (int)m_deviceViewport.w);
+    gl::glViewport((int)viewport.x, (int)viewport.y, (int)viewport.z, (int)viewport.w);
 
     // Clear screen
     gl::glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -164,9 +126,7 @@ void Renderer::onRender(globjects::Framebuffer * fbo)
     // Restore OpenGL states
     gl::glDisable(gl::GL_DEPTH_TEST);
 
-    // Set rendered
-    m_redrawRequired = false;
+    // Signal that output is valid
+    renderInterface.rendered.setValue(true);
+    fboOut.setValue(*renderInterface.targetFBO);
 }
-
-
-} // namespace gloperate

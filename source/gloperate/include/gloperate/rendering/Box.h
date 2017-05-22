@@ -20,7 +20,7 @@ namespace gloperate
 *  @brief
 *    Box drawable
 */
-class Box : public gloperate::AbstractDrawable
+class GLOPERATE_API Box : public gloperate::AbstractDrawable
 {
 public:
     /**

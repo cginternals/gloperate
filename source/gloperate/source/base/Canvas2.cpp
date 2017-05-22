@@ -5,7 +5,6 @@
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ComponentManager.h>
-#include <gloperate/base/Renderer.h>
 
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Slot.h>
