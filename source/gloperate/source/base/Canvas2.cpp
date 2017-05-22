@@ -18,7 +18,11 @@ namespace
 template <typename T>
 gloperate::Slot<T> * getSlot(gloperate::Stage * stage, const std::string & name)
 {
-    return static_cast<gloperate::Slot<T> *>(stage->property(name));
+    if (!stage) {
+        return nullptr;
+    } else {
+        return static_cast<gloperate::Slot<T> *>(stage->property(name));
+    }
 }
 
 
@@ -36,10 +40,6 @@ Canvas2::Canvas2(Environment * environment)
 , m_initialized(false)
 , m_virtualTime(0.0f)
 {
-    auto component = m_environment->componentManager()->component<gloperate::Stage>("DemoStage");
-    if (component) {
-        m_renderStage = std::unique_ptr<Stage>( component->createInstance(environment) );
-    }
 }
 
 Canvas2::~Canvas2()
@@ -54,6 +54,33 @@ const Environment * Canvas2::environment() const
 Environment * Canvas2::environment()
 {
     return m_environment;
+}
+
+const Stage * Canvas2::renderStage() const
+{
+    return m_renderStage.get();
+}
+
+Stage * Canvas2::renderStage()
+{
+    return m_renderStage.get();
+}
+
+void Canvas2::setRenderStage(std::unique_ptr<Stage> && stage)
+{
+    m_newStage = std::move(stage);
+    redraw();
+}
+
+void Canvas2::loadRenderStage(const std::string & name)
+{
+    // Find component
+    auto component = m_environment->componentManager()->component<gloperate::Stage>(name);
+    if (component)
+    {
+        // Create stage
+        m_newStage = std::unique_ptr<Stage>( component->createInstance(m_environment) );
+    }
 }
 
 const AbstractGLContext * Canvas2::openGLContext() const
@@ -71,7 +98,10 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
-        m_renderStage->deinitContext(m_openGLContext);
+        if (m_renderStage)
+        {
+            m_renderStage->deinitContext(m_openGLContext);
+        }
 
         m_openGLContext = nullptr;
     }
@@ -81,7 +111,10 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     {
         m_openGLContext = context;
 
-        m_renderStage->initContext(m_openGLContext);
+        if (m_renderStage)
+        {
+            m_renderStage->initContext(m_openGLContext);
+        }
     }
 
     // Reset status
@@ -110,12 +143,16 @@ void Canvas2::updateTime()
 
 void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
+    // Store viewport information
+    m_deviceViewport  = deviceViewport;
+    m_virtualViewport = virtualViewport;
+    m_initialized = true;
+
     // Promote new viewport
     auto slotdeviceViewport = getSlot<glm::vec4>(m_renderStage.get(), "deviceViewport");
-    if (slotdeviceViewport) slotdeviceViewport->setValue(deviceViewport);
+    if (slotdeviceViewport) slotdeviceViewport->setValue(m_deviceViewport);
     auto slotVirtualViewport = getSlot<glm::vec4>(m_renderStage.get(), "virtualViewport");
-    if (slotVirtualViewport) slotVirtualViewport->setValue(virtualViewport);
-    m_initialized = true;
+    if (slotVirtualViewport) slotVirtualViewport->setValue(m_virtualViewport);
 
     // Check if a redraw is required
     checkRedraw();
@@ -125,6 +162,34 @@ void Canvas2::render(globjects::Framebuffer * targetFBO)
 {
     // Abort if not initialized
     if (!m_initialized) return;
+
+    // Check if the render stage is to be replaced
+    if (m_newStage)
+    {
+        // Destroy old stage
+        if (m_renderStage)
+        {
+            // Deinitialize stage
+            m_renderStage->deinitContext(m_openGLContext);
+        }
+
+        // Move stage
+        m_renderStage.reset(m_newStage.release());
+        m_newStage.reset();
+
+        // Initialize stage
+        m_renderStage->initContext(m_openGLContext);
+
+        // Promote viewport information
+        auto slotdeviceViewport = getSlot<glm::vec4>(m_renderStage.get(), "deviceViewport");
+        if (slotdeviceViewport) slotdeviceViewport->setValue(m_deviceViewport);
+        auto slotVirtualViewport = getSlot<glm::vec4>(m_renderStage.get(), "virtualViewport");
+        if (slotVirtualViewport) slotVirtualViewport->setValue(m_virtualViewport);
+
+        // Mark output as required
+        auto slotRendered = getSlot<bool>(m_renderStage.get(), "rendered");
+        if (slotRendered) slotRendered->setRequired(true);
+    }
 
     // Render
     auto slotTargetFBO = getSlot<globjects::Framebuffer *>(m_renderStage.get(), "targetFBO");

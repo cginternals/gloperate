@@ -67,9 +67,17 @@ const QString & RenderItem::stage() const
     return m_stage;
 }
 
-void RenderItem::setStage(const QString &)
+void RenderItem::setStage(const QString & name)
 {
-    // [TODO]
+    // Save stage name
+    m_stage = name;
+
+    // If canvas has already been created, load the stage
+    // Otherwise, it will be done in createRenderer
+    if (m_canvas)
+    {
+        m_canvas->loadRenderStage(m_stage.toStdString());
+    }
 }
 
 QQuickFramebufferObject::Renderer * RenderItem::createRenderer() const
@@ -87,6 +95,9 @@ QQuickFramebufferObject::Renderer * RenderItem::createRenderer() const
     {
         self->update();
     } );
+
+    // Load initial stage
+    m_canvas->loadRenderStage(m_stage.toStdString());
 
     // Create renderer
     return new RenderItemRenderer(const_cast<RenderItem *>(this));

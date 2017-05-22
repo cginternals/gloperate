@@ -2,6 +2,7 @@
 #pragma once
 
 
+#include <glm/vec4.hpp>
 #include <glm/fwd.hpp>
 
 #include <cppexpose/reflection/Object.h>
@@ -69,6 +70,38 @@ public:
     */
     const Environment * environment() const;
     Environment * environment();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get render stage
+    *
+    *  @return
+    *    Render stage that renders into the current context (can be null)
+    */
+    const Stage * renderStage() const;
+    Stage * renderStage();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Set render stage
+    *
+    *  @param[in] stage
+    *    Render stage that renders into the current context (can be null)
+    */
+    void setRenderStage(std::unique_ptr<Stage> && stage);
+
+    /**
+    *  @brief
+    *    Load render stage
+    *
+    *  @param[in] name
+    *    Name of render stage
+    */
+    void loadRenderStage(const std::string & name);
     //@}
 
     //@{
@@ -223,12 +256,15 @@ protected:
 
 
 protected:
-    Environment          * m_environment;   ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext    * m_openGLContext; ///< OpenGL context used for rendering onto the canvas
-    bool                   m_initialized;   ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
-    gloperate::ChronoTimer m_clock;         ///< Time measurement
-    float                  m_virtualTime;   ///< The current virtual time (in seconds)
-    std::unique_ptr<Stage> m_renderStage;   ///< Render stage that renders into the canvas
+    Environment          * m_environment;     ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext    * m_openGLContext;   ///< OpenGL context used for rendering onto the canvas
+    bool                   m_initialized;     ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
+    gloperate::ChronoTimer m_clock;           ///< Time measurement
+    glm::vec4              m_deviceViewport;  ///< Viewport (in real device coordinates)
+    glm::vec4              m_virtualViewport; ///< Viewport (in virtual coordinates)
+    float                  m_virtualTime;     ///< The current virtual time (in seconds)
+    std::unique_ptr<Stage> m_renderStage;     ///< Render stage that renders into the canvas
+    std::unique_ptr<Stage> m_newStage;        ///< New render stage, will replace the old one on the next render call
 };
 
 
