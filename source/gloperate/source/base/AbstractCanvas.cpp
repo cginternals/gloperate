@@ -36,13 +36,10 @@ AbstractCanvas::AbstractCanvas(Environment * environment)
     addFunction("toggleVideoExport",    this, &AbstractCanvas::toggleVideoExport);
     addFunction("exportProgress",       this, &AbstractCanvas::exportProgress);
     addFunction("videoExporterPlugins", this, &AbstractCanvas::videoExporterPlugins);
-
-    m_environment->registerCanvas(this);
 }
 
 AbstractCanvas::~AbstractCanvas()
 {
-    m_environment->unregisterCanvas(this);
 }
 
 const Environment * AbstractCanvas::environment() const

@@ -8,7 +8,7 @@
 
 #include <cppexpose/scripting/ScriptContext.h>
 
-#include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/base/Canvas2.h>
 
 
 namespace gloperate
@@ -75,12 +75,12 @@ InputManager * Environment::inputManager()
     return &m_inputManager;
 }
 
-const std::vector<AbstractCanvas *> & Environment::canvases() const
+const std::vector<Canvas2 *> & Environment::canvases() const
 {
     return m_canvases;
 }
 
-std::vector<AbstractCanvas *> Environment::canvases()
+std::vector<Canvas2 *> Environment::canvases()
 {
     return m_canvases;
 }
@@ -135,12 +135,6 @@ bool Environment::update()
     // Update timing and timers
     bool activeTimers = m_timeManager.update();
 
-    // Update canvas
-    for (AbstractCanvas * canvas : m_canvases)
-    {
-        canvas->onUpdate();
-    }
-
     // Return indicator if any more timers are running
     return activeTimers;
 }
@@ -149,12 +143,6 @@ bool Environment::update(float delta)
 {
     // Update timing and timers
     bool activeTimers = m_timeManager.update(delta);
-
-    // Update canvas
-    for (AbstractCanvas * canvas : m_canvases)
-    {
-        canvas->onUpdate();
-    }
 
     // Return indicator if any more timers are running
     return activeTimers;
@@ -201,13 +189,13 @@ void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> 
         "  gloperate.timer.stopAll();\n";
 }
 
-void Environment::registerCanvas(AbstractCanvas * canvas)
+void Environment::registerCanvas(Canvas2 * canvas)
 {
     m_canvases.push_back(canvas);
     addProperty(canvas);
 }
 
-void Environment::unregisterCanvas(AbstractCanvas * canvas)
+void Environment::unregisterCanvas(Canvas2 * canvas)
 {
     removeProperty(canvas);
     m_canvases.erase(std::find(m_canvases.begin(), m_canvases.end(), canvas));

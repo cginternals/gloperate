@@ -30,6 +30,8 @@ gloperate::Slot<T> * getSlot(gloperate::Stage * stage, const std::string & name)
     }
 }
 
+auto s_nextCanvasId = size_t(0);
+
 
 }
 
@@ -39,7 +41,7 @@ namespace gloperate
 
 
 Canvas2::Canvas2(Environment * environment)
-: cppexpose::Object("canvas")
+: cppexpose::Object("canvas" + std::to_string(s_nextCanvasId++))
 , m_environment(environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
@@ -47,10 +49,12 @@ Canvas2::Canvas2(Environment * environment)
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
 {
+    m_environment->registerCanvas(this);
 }
 
 Canvas2::~Canvas2()
 {
+    m_environment->unregisterCanvas(this);
 }
 
 const Environment * Canvas2::environment() const
@@ -75,7 +79,10 @@ Stage * Canvas2::renderStage()
 
 void Canvas2::setRenderStage(std::unique_ptr<Stage> && stage)
 {
+    // Set stage
     m_newStage = std::move(stage);
+
+    // Issue a redraw
     redraw();
 }
 
@@ -86,7 +93,7 @@ void Canvas2::loadRenderStage(const std::string & name)
     if (component)
     {
         // Create stage
-        m_newStage = std::unique_ptr<Stage>( component->createInstance(m_environment) );
+        setRenderStage(std::unique_ptr<Stage>(component->createInstance(m_environment)));
     }
 }
 

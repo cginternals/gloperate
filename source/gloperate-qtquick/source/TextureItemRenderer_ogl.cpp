@@ -12,7 +12,8 @@
 #include <globjects/Shader.h>
 
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/Canvas.h>
+#include <gloperate/base/Canvas2.h>
+#include <gloperate/pipeline/Stage.h>
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 
 #include <gloperate-qtquick/TextureItem.h>
@@ -58,8 +59,8 @@ void TextureItemRenderer::renderTexture()
     globjects::Texture * texture = nullptr;
 
     // Get slot
-    Canvas * canvas = static_cast<Canvas*>(m_environment->canvases().front());
-    AbstractSlot * slot = canvas->pipelineContainer()->getSlot(m_path.toStdString());
+    Canvas2 * canvas = m_environment->canvases().front();
+    AbstractSlot * slot = canvas->renderStage()->output(m_path.toStdString());
     if (!slot) return;
 
     // Check if it is a texture slot
