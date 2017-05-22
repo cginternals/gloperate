@@ -20,9 +20,6 @@
 
 #include <gloperate-qtquick/RenderItem.h>
 
-#include <iostream>
-#include <thread>
-
 
 namespace gloperate_qtquick
 {
@@ -36,13 +33,10 @@ RenderItemRenderer::RenderItemRenderer(RenderItem * renderItem)
 , m_height(0)
 , m_canvas(renderItem->canvas())
 {
-    std::cout << "RenderItemRenderer() [" << std::this_thread::get_id() << "]" << std::endl;
 }
 
 RenderItemRenderer::~RenderItemRenderer()
 {
-    std::cout << "~RenderItemRenderer() [" << std::this_thread::get_id() << "]" << std::endl;
-
     // Deinitialize canvas (must be performed in the render thread!)
     m_renderItem->canvas()->setOpenGLContext(nullptr);
 }

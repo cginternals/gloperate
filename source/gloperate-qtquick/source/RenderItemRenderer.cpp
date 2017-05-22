@@ -7,6 +7,7 @@
 
 #include <glm/vec4.hpp>
 
+#include <cppassist/logging/logging.h>
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/base/Canvas2.h>
@@ -17,8 +18,8 @@
 #include <gloperate-qtquick/RenderItem.h>
 #include <gloperate-qtquick/Utils.h>
 
-#include <iostream>
-#include <thread>
+
+using namespace cppassist;
 
 
 namespace gloperate_qtquick
@@ -30,15 +31,11 @@ namespace gloperate_qtquick
 void RenderItemRenderer::synchronize(QQuickFramebufferObject *)
 {
 
-    std::cout << "synchronize() [" << std::this_thread::get_id() << "]" << std::endl;
-
     // [TODO]
 }
 
 QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSize & size)
 {
-    std::cout << "createFramebufferObject() [" << std::this_thread::get_id() << "]" << std::endl;
-
     // Get QML window
     auto * window = m_renderItem->window();
 
@@ -49,7 +46,7 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
         Utils::initContext();
 
         // Print context info
-        std::cout << std::endl
+        info() << std::endl
             << "OpenGL Version:  " << gloperate::GLContextUtils::version() << std::endl
             << "OpenGL Vendor:   " << gloperate::GLContextUtils::vendor() << std::endl
             << "OpenGL Renderer: " << gloperate::GLContextUtils::renderer() << std::endl;
@@ -109,8 +106,6 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
 
 void RenderItemRenderer::render()
 {
-    std::cout << "render() [" << std::this_thread::get_id() << "]" << std::endl;
-
     // Render canvas
     m_canvas->render(m_innerFbo.get());
 

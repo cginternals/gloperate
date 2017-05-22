@@ -18,9 +18,6 @@
 
 #include <gloperate-qtquick/RenderItemRenderer.h>
 
-#include <iostream>
-#include <thread>
-
 
 using namespace gloperate_qt;
 
@@ -34,8 +31,6 @@ RenderItem::RenderItem(QQuickItem * parent)
 , m_stage("")
 , m_canvas(nullptr)
 {
-    std::cout << "RenderItem() [" << std::this_thread::get_id() << "]" << std::endl;
-
     // Set input modes
     setAcceptedMouseButtons(Qt::AllButtons);
     setFlag(ItemAcceptsInputMethod, true);
@@ -53,7 +48,6 @@ RenderItem::RenderItem(QQuickItem * parent)
 
 RenderItem::~RenderItem()
 {
-    std::cout << "~RenderItem() [" << std::this_thread::get_id() << "]" << std::endl;
 }
 
 gloperate::Canvas2 * RenderItem::canvas() const
