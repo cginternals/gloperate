@@ -7,7 +7,7 @@
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
 
-class GLFWmonitor;
+struct GLFWmonitor;
 
 
 namespace gloperate_glfw
