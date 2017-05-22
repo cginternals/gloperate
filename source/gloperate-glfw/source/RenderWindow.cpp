@@ -45,28 +45,9 @@ gloperate::Environment * RenderWindow::environment()
     return m_environment;
 }
 
-const gloperate::Stage * RenderWindow::renderStage() const
-{
-    return nullptr;
-}
-
-gloperate::Stage * RenderWindow::renderStage()
-{
-    return nullptr;
-}
-
-const gloperate::Canvas2 * RenderWindow::canvas() const
+gloperate::Canvas2 * RenderWindow::canvas() const
 {
     return m_canvas.get();
-}
-
-gloperate::Canvas2 * RenderWindow::canvas()
-{
-    return m_canvas.get();
-}
-
-void RenderWindow::setRenderStage(std::unique_ptr<Stage> &&)
-{
 }
 
 void RenderWindow::onContextInit()

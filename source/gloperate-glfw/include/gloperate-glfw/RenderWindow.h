@@ -14,7 +14,6 @@ namespace gloperate
 {
     class Environment;
     class Canvas2;
-    class Stage;
 }
 
 
@@ -64,52 +63,12 @@ public:
 
     /**
     *  @brief
-    *    Get render stage
-    *
-    *  @return
-    *    Render stage that renders into the window (can be null)
-    */
-    const gloperate::Stage * renderStage() const;
-
-    /**
-    *  @brief
-    *    Get render stage
-    *
-    *  @return
-    *    Render stage that renders into the window (can be null)
-    */
-    gloperate::Stage * renderStage();
-
-    /**
-    *  @brief
     *    Get canvas
     *
     *  @return
     *    Canvas that is rendered on
     */
-    const gloperate::Canvas2 * canvas() const;
-
-    /**
-    *  @brief
-    *    Get canvas
-    *
-    *  @return
-    *    Canvas that is rendered on
-    */
-    gloperate::Canvas2 * canvas();
-
-    /**
-    *  @brief
-    *    Set render stage
-    *
-    *  @param[in] stage
-    *    Render stage that renders into the window (can be null)
-    *
-    *  @remarks
-    *    When setting a new render stage, the old render stage is destroyed.
-    *    The window takes ownership over the stage.
-    */
-    void setRenderStage(std::unique_ptr<gloperate::Stage> && stage);
+    gloperate::Canvas2 * canvas() const;
 
 
 protected:

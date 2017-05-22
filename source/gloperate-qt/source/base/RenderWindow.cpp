@@ -36,6 +36,11 @@ gloperate::Environment * RenderWindow::environment() const
     return m_environment;
 }
 
+gloperate::Canvas2 * RenderWindow::canvas() const
+{
+    return m_canvas.get();
+}
+
 void RenderWindow::onContextInit()
 {
     m_canvas->setOpenGLContext(m_context.get());

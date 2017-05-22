@@ -49,6 +49,15 @@ public:
     */
     gloperate::Environment * environment() const;
 
+    /**
+    *  @brief
+    *    Get canvas
+    *
+    *  @return
+    *    Canvas that renders onto the window (cannot be null)
+    */
+    gloperate::Canvas2 * canvas() const;
+
 
 protected:
     // Virtual OpenGLWindow functions
