@@ -84,10 +84,6 @@ protected:
     std::unique_ptr<globjects::Shader>          m_vertexShader;
     std::unique_ptr<globjects::Shader>          m_fragmentShader;
 
-    // Tools
-    gloperate::Timer m_timer;
-
     // Status
-    float m_time;   ///< Virtual time (in seconds)
     float m_angle;  ///< Current angle of rotating triangle (in radians)
 };

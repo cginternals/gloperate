@@ -4,7 +4,25 @@
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/base/Environment.h>
+#include <gloperate/base/ComponentManager.h>
 #include <gloperate/base/Renderer.h>
+
+#include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/Slot.h>
+
+
+namespace
+{
+
+
+template <typename T>
+gloperate::Slot<T> * getSlot(gloperate::Stage * stage, const std::string & name)
+{
+    return static_cast<gloperate::Slot<T> *>(stage->property(name));
+}
+
+
+}
 
 
 namespace gloperate
@@ -16,9 +34,12 @@ Canvas2::Canvas2(Environment * environment)
 , m_environment(environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
-, m_renderer(cppassist::make_unique<Renderer>(environment))
 , m_virtualTime(0.0f)
 {
+    auto component = m_environment->componentManager()->component<gloperate::Stage>("DemoStage");
+    if (component) {
+        m_renderStage = std::unique_ptr<Stage>( component->createInstance(environment) );
+    }
 }
 
 Canvas2::~Canvas2()
@@ -50,7 +71,7 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
-        m_renderer->onContextDeinit();
+        m_renderStage->deinitContext(m_openGLContext);
 
         m_openGLContext = nullptr;
     }
@@ -60,7 +81,7 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     {
         m_openGLContext = context;
 
-        m_renderer->onContextInit();
+        m_renderStage->initContext(m_openGLContext);
     }
 
     // Reset status
@@ -78,7 +99,10 @@ void Canvas2::updateTime()
     m_virtualTime += timeDelta;
 
     // Update timing
-    m_renderer->onUpdateTime(m_virtualTime, timeDelta);
+    auto slotTimeDelta = getSlot<float>(m_renderStage.get(), "timeDelta");
+    if (slotTimeDelta) slotTimeDelta->setValue(timeDelta);
+    auto slotVirtualTime = getSlot<float>(m_renderStage.get(), "virtualTime");
+    if (slotVirtualTime) slotVirtualTime->setValue(m_virtualTime);
 
     // Check if a redraw is required
     checkRedraw();
@@ -87,7 +111,10 @@ void Canvas2::updateTime()
 void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
     // Promote new viewport
-    m_renderer->onViewport(deviceViewport, virtualViewport);
+    auto slotdeviceViewport = getSlot<glm::vec4>(m_renderStage.get(), "deviceViewport");
+    if (slotdeviceViewport) slotdeviceViewport->setValue(deviceViewport);
+    auto slotVirtualViewport = getSlot<glm::vec4>(m_renderStage.get(), "virtualViewport");
+    if (slotVirtualViewport) slotVirtualViewport->setValue(virtualViewport);
     m_initialized = true;
 
     // Check if a redraw is required
@@ -100,7 +127,12 @@ void Canvas2::render(globjects::Framebuffer * targetFBO)
     if (!m_initialized) return;
 
     // Render
-    m_renderer->onRender(targetFBO);
+    auto slotTargetFBO = getSlot<globjects::Framebuffer *>(m_renderStage.get(), "targetFBO");
+    if (slotTargetFBO)
+    {
+        slotTargetFBO->setValue(targetFBO);
+        m_renderStage->process(m_openGLContext);
+    }
 }
 
 void Canvas2::promoteKeyPress(int, int)
@@ -153,7 +185,8 @@ void Canvas2::promoteMouseWheel(const glm::vec2 &, const glm::ivec2 &)
 
 void Canvas2::checkRedraw()
 {
-    if (m_renderer->requiresRedraw())
+    auto slotRendered = getSlot<globjects::Framebuffer *>(m_renderStage.get(), "rendered");
+    if (slotRendered && !slotRendered->isValid())
     {
         redraw();
     }
