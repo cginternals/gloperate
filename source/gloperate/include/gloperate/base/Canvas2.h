@@ -2,10 +2,13 @@
 #pragma once
 
 
+#include <string>
+
 #include <glm/vec4.hpp>
 #include <glm/fwd.hpp>
 
 #include <cppexpose/reflection/Object.h>
+#include <cppexpose/variant/Variant.h>
 #include <cppexpose/signal/Signal.h>
 
 #include <gloperate/base/ChronoTimer.h>
@@ -24,6 +27,7 @@ namespace gloperate
 class Environment;
 class AbstractGLContext;
 class Stage;
+class AbstractSlot;
 class MouseDevice;
 class KeyboardDevice;
 
@@ -256,6 +260,22 @@ protected:
     */
     void checkRedraw();
 
+    // Scripting functions
+    cppexpose::Variant scr_getDescription(const std::string & path);
+    cppexpose::Variant scr_getSlot(const std::string & path);
+    void scr_setSlotValue(const std::string & path, const cppexpose::Variant & value);
+    std::string scr_createStage(const std::string & path, const std::string & className, const std::string & name);
+    void scr_removeStage(const std::string & path, const std::string & name);
+    void scr_createConnection(const std::string & from, const std::string & to);
+    void scr_removeConnection(const std::string & to);
+    cppexpose::Variant scr_getConnections(const std::string & path);
+    void scr_createSlot(const std::string & path, const std::string & slotType, const std::string & type, const std::string & name);
+    cppexpose::Variant scr_slotTypes(const std::string & path);
+
+    // Helper functions
+    Stage * getStageObject(const std::string & path) const;
+    Stage * getStageObjectForSlot(const std::string & path, std::string & slotName) const;
+
 
 protected:
     Environment                   * m_environment;     ///< Gloperate environment to which the canvas belongs
@@ -266,9 +286,10 @@ protected:
     glm::vec4                       m_virtualViewport; ///< Viewport (in virtual coordinates)
     float                           m_virtualTime;     ///< The current virtual time (in seconds)
     std::unique_ptr<Stage>          m_renderStage;     ///< Render stage that renders into the canvas
-    std::unique_ptr<Stage>          m_newStage;        ///< New render stage, will replace the old one on the next render call
+    std::unique_ptr<Stage>          m_oldStage;        ///< Old render stage, will be destroyed on the next render call
     std::unique_ptr<MouseDevice>    m_mouseDevice;     ///< Device for Mouse Events
     std::unique_ptr<KeyboardDevice> m_keyboardDevice;  ///< Device for Keyboard Events
+    bool                            m_replaceStage;    ///< 'true' if the stage has just been replaced, else 'false'
 };
 
 

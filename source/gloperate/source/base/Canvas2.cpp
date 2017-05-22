@@ -5,12 +5,13 @@
 
 #include <cppassist/logging/logging.h>
 #include <cppassist/memory/make_unique.h>
+#include <cppassist/string/manipulation.h>
 
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ComponentManager.h>
-#include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Slot.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
@@ -48,12 +49,27 @@ Canvas2::Canvas2(Environment * environment)
 , m_virtualTime(0.0f)
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
+, m_replaceStage(false)
 {
+    // Register functions
+    addFunction("getDescription",   this, &Canvas2::scr_getDescription);
+    addFunction("getConnections",   this, &Canvas2::scr_getConnections);
+    addFunction("getSlot",          this, &Canvas2::scr_getSlot);
+    addFunction("setSlotValue",     this, &Canvas2::scr_setSlotValue);
+    addFunction("createSlot",       this, &Canvas2::scr_createSlot);
+    addFunction("slotTypes",        this, &Canvas2::scr_slotTypes);
+    addFunction("createStage",      this, &Canvas2::scr_createStage);
+    addFunction("removeStage",      this, &Canvas2::scr_removeStage);
+    addFunction("createConnection", this, &Canvas2::scr_createConnection);
+    addFunction("removeConnection", this, &Canvas2::scr_removeConnection);
+
+    // Register canvas
     m_environment->registerCanvas(this);
 }
 
 Canvas2::~Canvas2()
 {
+    // Remove canvas
     m_environment->unregisterCanvas(this);
 }
 
@@ -79,10 +95,14 @@ Stage * Canvas2::renderStage()
 
 void Canvas2::setRenderStage(std::unique_ptr<Stage> && stage)
 {
+    // Save old stage
+    m_oldStage = std::unique_ptr<Stage>(m_renderStage.release());
+
     // Set stage
-    m_newStage = std::move(stage);
+    m_renderStage = std::move(stage);
 
     // Issue a redraw
+    m_replaceStage = true;
     redraw();
 }
 
@@ -185,18 +205,17 @@ void Canvas2::render(globjects::Framebuffer * targetFBO)
     if (!m_initialized) return;
 
     // Check if the render stage is to be replaced
-    if (m_newStage)
+    if (m_replaceStage)
     {
-        // Destroy old stage
-        if (m_renderStage)
+        // Check if an old stage must be destroyed
+        if (m_oldStage)
         {
-            // Deinitialize stage
-            m_renderStage->deinitContext(m_openGLContext);
-        }
+            // Deinitialize old stage
+            m_oldStage->deinitContext(m_openGLContext);
 
-        // Move stage
-        m_renderStage.reset(m_newStage.release());
-        m_newStage.reset();
+            // Destroy old stage
+            m_oldStage = nullptr;
+        }
 
         // Initialize stage
         m_renderStage->initContext(m_openGLContext);
@@ -210,6 +229,9 @@ void Canvas2::render(globjects::Framebuffer * targetFBO)
         // Mark output as required
         auto slotRendered = getSlot<bool>(m_renderStage.get(), "rendered");
         if (slotRendered) slotRendered->setRequired(true);
+
+        // Replace finished
+        m_replaceStage = false;
     }
 
     // Render
@@ -294,6 +316,193 @@ void Canvas2::checkRedraw()
     {
         redraw();
     }
+}
+
+cppexpose::Variant Canvas2::scr_getDescription(const std::string & path)
+{
+    Stage * stage = getStageObject(path);
+
+    if (stage)
+    {
+        return stage->scr_getDescription();
+    }
+
+    return cppexpose::Variant();
+}
+
+cppexpose::Variant Canvas2::scr_getSlot(const std::string & path)
+{
+    std::string slotName;
+    Stage * stage = getStageObjectForSlot(path, slotName);
+
+    if (stage)
+    {
+        return stage->scr_getSlot(slotName);
+    }
+
+    return cppexpose::Variant();
+}
+
+void Canvas2::scr_setSlotValue(const std::string & path, const cppexpose::Variant & value)
+{
+    std::string slotName;
+    Stage * stage = getStageObjectForSlot(path, slotName);
+
+    if (stage)
+    {
+        stage->scr_setSlotValue(slotName, value);
+    }
+}
+
+std::string Canvas2::scr_createStage(const std::string & path, const std::string & className, const std::string & name)
+{
+    Stage * stage = getStageObject(path);
+
+    if (stage && stage->isPipeline())
+    {
+        Pipeline * pipeline = static_cast<Pipeline*>(stage);
+
+        return pipeline->scr_createStage(className, name);
+    }
+
+    return "";
+}
+
+void Canvas2::scr_removeStage(const std::string & path, const std::string & name)
+{
+    Stage * stage = getStageObject(path);
+
+    if (stage && stage->isPipeline())
+    {
+        Pipeline * pipeline = static_cast<Pipeline*>(stage);
+
+        pipeline->scr_removeStage(name);
+    }
+}
+
+cppexpose::Variant Canvas2::scr_slotTypes(const std::string & path)
+{
+    Stage * stage = getStageObject(path);
+
+    if (stage)
+    {
+        return stage->scr_slotTypes();
+    }
+
+    return cppexpose::Variant();
+}
+
+void Canvas2::scr_createSlot(const std::string & path, const std::string & slotType, const std::string & type, const std::string & name)
+{
+    Stage * stage = getStageObject(path);
+
+    if (stage)
+    {
+        return stage->scr_createSlot(slotType, type, name);
+    }
+}
+
+cppexpose::Variant Canvas2::scr_getConnections(const std::string & path)
+{
+    Stage * stage = getStageObject(path);
+
+    if (stage)
+    {
+        return stage->scr_getConnections();
+    }
+
+    return cppexpose::Variant();
+}
+
+void Canvas2::scr_createConnection(const std::string & from, const std::string & to)
+{
+    Stage * stage = getStageObject("");
+
+    if (stage && stage->isPipeline())
+    {
+        Pipeline * pipeline = static_cast<Pipeline*>(stage);
+        pipeline->scr_createConnection(from, to);
+    }
+}
+
+void Canvas2::scr_removeConnection(const std::string & to)
+{
+    Stage * stage = getStageObject("");
+
+    if (stage && stage->isPipeline())
+    {
+        Pipeline * pipeline = static_cast<Pipeline*>(stage);
+        pipeline->scr_removeConnection(to);
+    }
+}
+
+Stage * Canvas2::getStageObject(const std::string & path) const
+{
+    // Begin with render stage
+    Stage * stage = m_renderStage.get();
+    if (!stage) return nullptr;
+
+    // Split path
+    auto names = string::split(path, '.');
+
+    // Resolve path
+    for (auto name : names)
+    {
+        // Abort if stage does not have sub-stages
+        if (!stage->isPipeline()) {
+            return nullptr;
+        }
+
+        // Convert to pipeline
+        Pipeline * pipeline = static_cast<Pipeline*>(stage);
+
+        // Get sub-stage
+        if (!(stage == m_renderStage.get() && name == m_renderStage->name()))
+        {
+            stage = pipeline->stage(name);
+            if (!stage) return nullptr;
+        }
+    }
+
+    // Return stage
+    return stage;
+}
+
+Stage * Canvas2::getStageObjectForSlot(const std::string & path, std::string & slotName) const
+{
+    // Begin with render stage
+    Stage * stage = m_renderStage.get();
+    if (!stage) return nullptr;
+
+    // Split path
+    auto names = string::split(path, '.');
+    if (names.size() == 0) return nullptr;
+
+    // Remove name of slot
+    slotName = names[names.size() - 1];
+    names.pop_back();
+
+    // Resolve path
+    for (auto name : names)
+    {
+        // Abort if stage does not have sub-stages
+        if (!stage->isPipeline()) {
+            return nullptr;
+        }
+
+        // Convert to pipeline
+        Pipeline * pipeline = static_cast<Pipeline*>(stage);
+
+        // Get sub-stage
+        if (!(stage == m_renderStage.get() && name == m_renderStage->name()))
+        {
+            stage = pipeline->stage(name);
+            if (!stage) return nullptr;
+        }
+    }
+
+    // Return stage
+    return stage;
 }
 
 

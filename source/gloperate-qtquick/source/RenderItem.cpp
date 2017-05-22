@@ -93,6 +93,9 @@ QQuickFramebufferObject::Renderer * RenderItem::createRenderer() const
     // Load initial stage
     m_canvas->loadRenderStage(m_stage.toStdString());
 
+    // Emit signal
+    self->canvasInitialized();
+
     // Create renderer
     return new RenderItemRenderer(const_cast<RenderItem *>(this));
 }

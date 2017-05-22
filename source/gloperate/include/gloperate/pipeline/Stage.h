@@ -40,6 +40,9 @@ class Output;
 */
 class GLOPERATE_API Stage : public cppexpose::Object
 {
+    friend class Canvas2;
+
+
 public:
     // Define component types
     using AbstractComponentType = gloperate::AbstractComponent<Stage>;
