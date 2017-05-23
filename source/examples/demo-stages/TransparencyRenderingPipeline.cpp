@@ -1,5 +1,5 @@
 
-#include "DemoTransparencyRenderingPipeline.h"
+#include "TransparencyRenderingPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/TransparencyKernelStage.h>
@@ -8,10 +8,10 @@
 #include "TransparentCirclesStage.h"
 
 
-CPPEXPOSE_COMPONENT(DemoTransparencyRenderingPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(TransparencyRenderingPipeline, gloperate::Stage)
 
 
-DemoTransparencyRenderingPipeline::DemoTransparencyRenderingPipeline(gloperate::Environment * environment, const std::string & name)
+TransparencyRenderingPipeline::TransparencyRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , m_transparencyKernelStage(cppassist::make_unique<gloperate_glkernel::TransparencyKernelStage>(environment))
@@ -37,6 +37,6 @@ DemoTransparencyRenderingPipeline::DemoTransparencyRenderingPipeline(gloperate::
     renderInterface.rendered << m_transparencyRenderStage->renderInterface.rendered;
 }
 
-DemoTransparencyRenderingPipeline::~DemoTransparencyRenderingPipeline()
+TransparencyRenderingPipeline::~TransparencyRenderingPipeline()
 {
 }

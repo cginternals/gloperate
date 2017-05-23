@@ -1,5 +1,5 @@
 
-#include "DemoAntialiasingRenderingPipeline.h"
+#include "AntialiasingRenderingPipeline.h"
 
 #include <cppassist/memory/make_unique.h>
 
@@ -9,10 +9,10 @@
 #include "AntialiasableTriangleStage.h"
 
 
-CPPEXPOSE_COMPONENT(DemoAntialiasingRenderingPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(AntialiasingRenderingPipeline, gloperate::Stage)
 
 
-DemoAntialiasingRenderingPipeline::DemoAntialiasingRenderingPipeline(gloperate::Environment * environment, const std::string & name)
+AntialiasingRenderingPipeline::AntialiasingRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 1)
@@ -35,6 +35,6 @@ DemoAntialiasingRenderingPipeline::DemoAntialiasingRenderingPipeline(gloperate::
     renderInterface.rendered << m_triangleStage->renderInterface.rendered;
 }
 
-DemoAntialiasingRenderingPipeline::~DemoAntialiasingRenderingPipeline()
+AntialiasingRenderingPipeline::~AntialiasingRenderingPipeline()
 {
 }

@@ -1,5 +1,5 @@
 
-#include "DemoDOFRenderingPipeline.h"
+#include "DOFRenderingPipeline.h"
 
 #include <cppassist/memory/make_unique.h>
 
@@ -9,10 +9,10 @@
 #include "DOFCubeStage.h"
 
 
-CPPEXPOSE_COMPONENT(DemoDOFRenderingPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DOFRenderingPipeline, gloperate::Stage)
 
 
-DemoDOFRenderingPipeline::DemoDOFRenderingPipeline(gloperate::Environment * environment, const std::string & name)
+DOFRenderingPipeline::DOFRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 1)
@@ -35,6 +35,6 @@ DemoDOFRenderingPipeline::DemoDOFRenderingPipeline(gloperate::Environment * envi
     renderInterface.rendered << m_cubeStage->renderInterface.rendered;
 }
 
-DemoDOFRenderingPipeline::~DemoDOFRenderingPipeline()
+DOFRenderingPipeline::~DOFRenderingPipeline()
 {
 }

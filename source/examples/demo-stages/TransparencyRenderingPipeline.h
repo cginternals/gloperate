@@ -30,12 +30,12 @@ class TransparentCirclesStage;
 *  @brief
 *    Demo pipeline that renders three transparent, overlapping circles onto the screen
 */
-class DemoTransparencyRenderingPipeline : public gloperate::Pipeline
+class TransparencyRenderingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoTransparencyRenderingPipeline, gloperate::Stage
-      , "RenderStage Demo Transparency" // Tags
+        TransparencyRenderingPipeline, gloperate::Stage
+      , ""                              // Tags
       , ""                              // Icon
       , ""                              // Annotations
       , "Demo pipeline that renders three transparent, overlapping circles onto the screen"
@@ -59,13 +59,13 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoTransparencyRenderingPipeline(gloperate::Environment * environment, const std::string & name = "DemoTransparencyRenderingPipeline");
+    TransparencyRenderingPipeline(gloperate::Environment * environment, const std::string & name = "TransparencyRenderingPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoTransparencyRenderingPipeline();
+    virtual ~TransparencyRenderingPipeline();
 
 
 protected:

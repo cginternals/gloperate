@@ -17,7 +17,7 @@ class MultiFrameAggregationPipeline;
 }
 
 
-class DemoTransparencyRenderingPipeline;
+class TransparencyRenderingPipeline;
 
 
 /**
@@ -68,5 +68,5 @@ public:
 protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
-    std::unique_ptr<DemoTransparencyRenderingPipeline>                          m_transparencyPipeline; ///< Pipeline generating frames to aggregate
+    std::unique_ptr<TransparencyRenderingPipeline>                          m_transparencyPipeline; ///< Pipeline generating frames to aggregate
 };

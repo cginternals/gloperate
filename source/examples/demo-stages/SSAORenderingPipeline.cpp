@@ -1,5 +1,5 @@
 
-#include "DemoSSAORenderingPipeline.h"
+#include "SSAORenderingPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/FramebufferStage.h>
@@ -14,10 +14,10 @@
 #include "SSAOApplicationStage.h"
 
 
-CPPEXPOSE_COMPONENT(DemoSSAORenderingPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(SSAORenderingPipeline, gloperate::Stage)
 
 
-DemoSSAORenderingPipeline::DemoSSAORenderingPipeline(gloperate::Environment * environment, const std::string & name)
+SSAORenderingPipeline::SSAORenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
 , m_colorTextureStage(cppassist::make_unique<gloperate::TextureStage>(environment, "ColorTextureStage"))
@@ -85,6 +85,6 @@ DemoSSAORenderingPipeline::DemoSSAORenderingPipeline(gloperate::Environment * en
     renderInterface.rendered << m_postprocessingStage->renderInterface.rendered;
 }
 
-DemoSSAORenderingPipeline::~DemoSSAORenderingPipeline()
+SSAORenderingPipeline::~SSAORenderingPipeline()
 {
 }

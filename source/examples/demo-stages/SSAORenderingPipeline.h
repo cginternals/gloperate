@@ -33,12 +33,12 @@ class SSAOApplicationStage;
 *  @brief
 *    Demo pipeline that renders a simple scene onto the screen
 */
-class DemoSSAORenderingPipeline : public gloperate::Pipeline
+class SSAORenderingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoSSAORenderingPipeline, gloperate::Stage
-      , "RenderStage Demo SSAO" // Tags
+        SSAORenderingPipeline, gloperate::Stage
+      , ""                      // Tags
       , ""                      // Icon
       , ""                      // Annotations
       , "Demo pipeline that renders a simple scene onto the screen"
@@ -62,13 +62,13 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoSSAORenderingPipeline(gloperate::Environment * environment, const std::string & name = "DemoSSAORenderingPipeline");
+    SSAORenderingPipeline(gloperate::Environment * environment, const std::string & name = "SSAORenderingPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoSSAORenderingPipeline();
+    virtual ~SSAORenderingPipeline();
 
 
 protected:

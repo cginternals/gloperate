@@ -30,12 +30,12 @@ class AntialiasableTriangleStage;
 *  @brief
 *    Demo pipeline that renders a static triangle onto the screen
 */
-class DemoAntialiasingRenderingPipeline : public gloperate::Pipeline
+class AntialiasingRenderingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoAntialiasingRenderingPipeline, gloperate::Stage
-      , "RenderStage Demo Antialiasing" // Tags
+        AntialiasingRenderingPipeline, gloperate::Stage
+      , ""                              // Tags
       , ""                              // Icon
       , ""                              // Annotations
       , "Demo pipeline that renders a static triangle onto the screen"
@@ -62,13 +62,13 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoAntialiasingRenderingPipeline(gloperate::Environment * environment, const std::string & name = "DemoAntialiasingRenderingPipeline");
+    AntialiasingRenderingPipeline(gloperate::Environment * environment, const std::string & name = "AntialiasingRenderingPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoAntialiasingRenderingPipeline();
+    virtual ~AntialiasingRenderingPipeline();
 
 
 protected:

@@ -4,7 +4,7 @@
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
-#include "DemoSSAORenderingPipeline.h"
+#include "SSAORenderingPipeline.h"
 
 CPPEXPOSE_COMPONENT(DemoSSAOAggregationPipeline, gloperate::Stage)
 
@@ -14,7 +14,7 @@ DemoSSAOAggregationPipeline::DemoSSAOAggregationPipeline(gloperate::Environment 
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
-, m_ssaoPipeline(cppassist::make_unique<DemoSSAORenderingPipeline>(environment))
+, m_ssaoPipeline(cppassist::make_unique<SSAORenderingPipeline>(environment))
 {
     addStage(m_multiFramePipeline.get());
 

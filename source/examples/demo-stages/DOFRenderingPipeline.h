@@ -29,12 +29,12 @@ class DOFCubeStage;
 *  @brief
 *    Demo pipeline that renders a static cube onto the screen
 */
-class DemoDOFRenderingPipeline : public gloperate::Pipeline
+class DOFRenderingPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoDOFRenderingPipeline, gloperate::Stage
-      , "RenderStage Demo DOF" // Tags
+        DOFRenderingPipeline, gloperate::Stage
+      , ""                     // Tags
       , ""                     // Icon
       , ""                     // Annotations
       , "Demo pipeline that renders a static cube onto the screen"
@@ -61,13 +61,13 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoDOFRenderingPipeline(gloperate::Environment * environment, const std::string & name = "DemoDOFRenderingPipeline");
+    DOFRenderingPipeline(gloperate::Environment * environment, const std::string & name = "DOFRenderingPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoDOFRenderingPipeline();
+    virtual ~DOFRenderingPipeline();
 
 
 protected:

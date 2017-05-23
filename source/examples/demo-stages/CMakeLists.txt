@@ -43,17 +43,17 @@ set(headers
     ${include_path}/DemoPipeline.h
     ${include_path}/ShaderDemoPipeline.h
     ${include_path}/AntialiasableTriangleStage.h
-    ${include_path}/DemoAntialiasingRenderingPipeline.h
+    ${include_path}/AntialiasingRenderingPipeline.h
     ${include_path}/DemoAntialiasingAggregationPipeline.h
     ${include_path}/DOFCubeStage.h
-    ${include_path}/DemoDOFRenderingPipeline.h
+    ${include_path}/DOFRenderingPipeline.h
     ${include_path}/DemoDOFAggregationPipeline.h
     ${include_path}/SSAOSceneRenderingStage.h
     ${include_path}/SSAOApplicationStage.h
-    ${include_path}/DemoSSAORenderingPipeline.h
+    ${include_path}/SSAORenderingPipeline.h
     ${include_path}/DemoSSAOAggregationPipeline.h
     ${include_path}/TransparentCirclesStage.h
-    ${include_path}/DemoTransparencyRenderingPipeline.h
+    ${include_path}/TransparencyRenderingPipeline.h
     ${include_path}/DemoTransparencyAggregationPipeline.h
     ${include_path}/SpinningRectStage.h
     ${include_path}/DemoRenderStage.h
@@ -73,17 +73,17 @@ set(sources
     ${source_path}/DemoPipeline.cpp
     ${source_path}/ShaderDemoPipeline.cpp
     ${source_path}/AntialiasableTriangleStage.cpp
-    ${source_path}/DemoAntialiasingRenderingPipeline.cpp
+    ${source_path}/AntialiasingRenderingPipeline.cpp
     ${source_path}/DemoAntialiasingAggregationPipeline.cpp
     ${source_path}/DOFCubeStage.cpp
-    ${source_path}/DemoDOFRenderingPipeline.cpp
+    ${source_path}/DOFRenderingPipeline.cpp
     ${source_path}/DemoDOFAggregationPipeline.cpp
     ${source_path}/SSAOSceneRenderingStage.cpp
     ${source_path}/SSAOApplicationStage.cpp
-    ${source_path}/DemoSSAORenderingPipeline.cpp
+    ${source_path}/SSAORenderingPipeline.cpp
     ${source_path}/DemoSSAOAggregationPipeline.cpp
     ${source_path}/TransparentCirclesStage.cpp
-    ${source_path}/DemoTransparencyRenderingPipeline.cpp
+    ${source_path}/TransparencyRenderingPipeline.cpp
     ${source_path}/DemoTransparencyAggregationPipeline.cpp
     ${source_path}/SpinningRectStage.cpp
     ${source_path}/DemoRenderStage.cpp

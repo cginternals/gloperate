@@ -17,7 +17,7 @@ class MultiFrameAggregationPipeline;
 }
 
 
-class DemoDOFRenderingPipeline;
+class DOFRenderingPipeline;
 
 
 /**
@@ -68,5 +68,5 @@ public:
 protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline; ///< Aggregation Pipeline
-    std::unique_ptr<DemoDOFRenderingPipeline>                                   m_dofPipeline;        ///< Pipeline generating frames to aggregate
+    std::unique_ptr<DOFRenderingPipeline>                                   m_dofPipeline;        ///< Pipeline generating frames to aggregate
 };

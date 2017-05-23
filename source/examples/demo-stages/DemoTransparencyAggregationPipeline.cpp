@@ -4,7 +4,7 @@
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
-#include "DemoTransparencyRenderingPipeline.h"
+#include "TransparencyRenderingPipeline.h"
 
 CPPEXPOSE_COMPONENT(DemoTransparencyAggregationPipeline, gloperate::Stage)
 
@@ -14,7 +14,7 @@ DemoTransparencyAggregationPipeline::DemoTransparencyAggregationPipeline(glopera
 , renderInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
-, m_transparencyPipeline(cppassist::make_unique<DemoTransparencyRenderingPipeline>(environment))
+, m_transparencyPipeline(cppassist::make_unique<TransparencyRenderingPipeline>(environment))
 {
     addStage(m_multiFramePipeline.get());
 
