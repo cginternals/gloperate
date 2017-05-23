@@ -8,7 +8,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/AbstractGLContext.h>
 
@@ -32,7 +32,7 @@ ImageExporter::~ImageExporter()
 {
 }
 
-void ImageExporter::setTarget(Canvas2 * canvas, const std::string & filename, int width, int height, int renderIterations)
+void ImageExporter::setTarget(Canvas * canvas, const std::string & filename, int width, int height, int renderIterations)
 {
     // Save configuration
     m_canvas           = canvas;

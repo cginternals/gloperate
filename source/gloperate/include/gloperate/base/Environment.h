@@ -26,7 +26,7 @@ namespace gloperate
 {
 
 
-class Canvas2;
+class Canvas;
 
 
 /**
@@ -44,7 +44,7 @@ class Canvas2;
 */
 class GLOPERATE_API Environment : public cppexpose::Object
 {
-    friend class Canvas2;
+    friend class Canvas;
 
 
 public:
@@ -110,8 +110,8 @@ public:
     *  @return
     *    List of registered canvases
     */
-    const std::vector<Canvas2 *> & canvases() const;
-    std::vector<Canvas2 *> canvases();
+    const std::vector<Canvas *> & canvases() const;
+    std::vector<Canvas *> canvases();
     //@}
 
     //@{
@@ -200,7 +200,7 @@ protected:
     *  @param[in] canvas
     *    Canvas (must NOT be null!)
     */
-    void registerCanvas(Canvas2 * canvas);
+    void registerCanvas(Canvas * canvas);
 
     /**
     *  @brief
@@ -209,7 +209,7 @@ protected:
     *  @param[in] canvas
     *    Canvas (must NOT be null!)
     */
-    void unregisterCanvas(Canvas2 * canvas);
+    void unregisterCanvas(Canvas * canvas);
     //@}
 
 
@@ -219,7 +219,7 @@ protected:
     System                                    m_system;           ///< System functions for scripting
     InputManager                              m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
 
-    std::vector<Canvas2 *>                    m_canvases;         ///< List of active canvases
+    std::vector<Canvas *>                     m_canvases;         ///< List of active canvases
 
     std::unique_ptr<cppexpose::ScriptContext> m_scriptContext;    ///< Scripting context
 

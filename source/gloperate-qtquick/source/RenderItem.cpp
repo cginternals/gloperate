@@ -9,7 +9,7 @@
 
 #include <cppassist/memory/make_unique.h>
 
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 
 #include <gloperate-qt/base/Converter.h>
 
@@ -50,7 +50,7 @@ RenderItem::~RenderItem()
 {
 }
 
-gloperate::Canvas2 * RenderItem::canvas() const
+gloperate::Canvas * RenderItem::canvas() const
 {
     return m_canvas.get();
 }
@@ -82,7 +82,7 @@ QQuickFramebufferObject::Renderer * RenderItem::createRenderer() const
 
     // Create canvas
     RenderItem * self = const_cast<RenderItem *>(this);
-    self->m_canvas = cppassist::make_unique<gloperate::Canvas2>(environment);
+    self->m_canvas = cppassist::make_unique<gloperate::Canvas>(environment);
 
     // Connect redraw event
     m_canvas->redraw.connect([self] ()

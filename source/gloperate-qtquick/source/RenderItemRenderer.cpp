@@ -10,7 +10,7 @@
 #include <cppassist/logging/logging.h>
 #include <cppassist/memory/make_unique.h>
 
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/base/GLContextUtils.h>
 
 #include <gloperate-qt/base/GLContext.h>

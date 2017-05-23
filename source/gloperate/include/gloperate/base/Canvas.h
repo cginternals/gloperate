@@ -41,7 +41,7 @@ class KeyboardDevice;
 *    receives state changes from the outside (such as window size, mouse,
 *    or keyboard events) and passes them on to the rendering components.
 */
-class GLOPERATE_API Canvas2 : public cppexpose::Object
+class GLOPERATE_API Canvas : public cppexpose::Object
 {
 public:
     // Must be emitted only from the UI thread
@@ -57,13 +57,13 @@ public:
     *  @param[in] environment
     *    Environment to which the canvas belongs (must NOT be null!)
     */
-    Canvas2(Environment * environment);
+    Canvas(Environment * environment);
 
     /**
     *  @brief
     *    Destructor
     */
-    ~Canvas2();
+    ~Canvas();
     //@}
 
     //@{

@@ -1,5 +1,5 @@
 
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 
 #include <glm/glm.hpp>
 
@@ -41,7 +41,7 @@ namespace gloperate
 {
 
 
-Canvas2::Canvas2(Environment * environment)
+Canvas::Canvas(Environment * environment)
 : cppexpose::Object("canvas" + std::to_string(s_nextCanvasId++))
 , m_environment(environment)
 , m_openGLContext(nullptr)
@@ -52,48 +52,48 @@ Canvas2::Canvas2(Environment * environment)
 , m_replaceStage(false)
 {
     // Register functions
-    addFunction("getDescription",   this, &Canvas2::scr_getDescription);
-    addFunction("getConnections",   this, &Canvas2::scr_getConnections);
-    addFunction("getSlot",          this, &Canvas2::scr_getSlot);
-    addFunction("setSlotValue",     this, &Canvas2::scr_setSlotValue);
-    addFunction("createSlot",       this, &Canvas2::scr_createSlot);
-    addFunction("slotTypes",        this, &Canvas2::scr_slotTypes);
-    addFunction("createStage",      this, &Canvas2::scr_createStage);
-    addFunction("removeStage",      this, &Canvas2::scr_removeStage);
-    addFunction("createConnection", this, &Canvas2::scr_createConnection);
-    addFunction("removeConnection", this, &Canvas2::scr_removeConnection);
+    addFunction("getDescription",   this, &Canvas::scr_getDescription);
+    addFunction("getConnections",   this, &Canvas::scr_getConnections);
+    addFunction("getSlot",          this, &Canvas::scr_getSlot);
+    addFunction("setSlotValue",     this, &Canvas::scr_setSlotValue);
+    addFunction("createSlot",       this, &Canvas::scr_createSlot);
+    addFunction("slotTypes",        this, &Canvas::scr_slotTypes);
+    addFunction("createStage",      this, &Canvas::scr_createStage);
+    addFunction("removeStage",      this, &Canvas::scr_removeStage);
+    addFunction("createConnection", this, &Canvas::scr_createConnection);
+    addFunction("removeConnection", this, &Canvas::scr_removeConnection);
 
     // Register canvas
     m_environment->registerCanvas(this);
 }
 
-Canvas2::~Canvas2()
+Canvas::~Canvas()
 {
     // Remove canvas
     m_environment->unregisterCanvas(this);
 }
 
-const Environment * Canvas2::environment() const
+const Environment * Canvas::environment() const
 {
     return m_environment;
 }
 
-Environment * Canvas2::environment()
+Environment * Canvas::environment()
 {
     return m_environment;
 }
 
-const Stage * Canvas2::renderStage() const
+const Stage * Canvas::renderStage() const
 {
     return m_renderStage.get();
 }
 
-Stage * Canvas2::renderStage()
+Stage * Canvas::renderStage()
 {
     return m_renderStage.get();
 }
 
-void Canvas2::setRenderStage(std::unique_ptr<Stage> && stage)
+void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 {
     // Save old stage
     m_oldStage = std::unique_ptr<Stage>(m_renderStage.release());
@@ -106,7 +106,7 @@ void Canvas2::setRenderStage(std::unique_ptr<Stage> && stage)
     redraw();
 }
 
-void Canvas2::loadRenderStage(const std::string & name)
+void Canvas::loadRenderStage(const std::string & name)
 {
     // Find component
     auto component = m_environment->componentManager()->component<gloperate::Stage>(name);
@@ -117,17 +117,17 @@ void Canvas2::loadRenderStage(const std::string & name)
     }
 }
 
-const AbstractGLContext * Canvas2::openGLContext() const
+const AbstractGLContext * Canvas::openGLContext() const
 {
     return m_openGLContext;
 }
 
-AbstractGLContext * Canvas2::openGLContext()
+AbstractGLContext * Canvas::openGLContext()
 {
     return m_openGLContext;
 }
 
-void Canvas2::setOpenGLContext(AbstractGLContext * context)
+void Canvas::setOpenGLContext(AbstractGLContext * context)
 {
     // Deinitialize renderer in old context
     if (m_openGLContext)
@@ -159,7 +159,7 @@ void Canvas2::setOpenGLContext(AbstractGLContext * context)
     m_initialized = false;
 }
 
-void Canvas2::updateTime()
+void Canvas::updateTime()
 {
     // Get number of milliseconds since last call
     auto duration = m_clock.elapsed();
@@ -179,7 +179,7 @@ void Canvas2::updateTime()
     checkRedraw();
 }
 
-void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
+void Canvas::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
     // Store viewport information
     m_deviceViewport  = deviceViewport;
@@ -196,7 +196,7 @@ void Canvas2::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & vi
     checkRedraw();
 }
 
-void Canvas2::render(globjects::Framebuffer * targetFBO)
+void Canvas::render(globjects::Framebuffer * targetFBO)
 {
     auto fboName = targetFBO->hasName() ? targetFBO->name() : std::to_string(targetFBO->id());
     cppassist::debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
@@ -243,7 +243,7 @@ void Canvas2::render(globjects::Framebuffer * targetFBO)
     }
 }
 
-void Canvas2::promoteKeyPress(int key, int modifier)
+void Canvas::promoteKeyPress(int key, int modifier)
 {
     cppassist::debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
 
@@ -254,7 +254,7 @@ void Canvas2::promoteKeyPress(int key, int modifier)
     checkRedraw();
 }
 
-void Canvas2::promoteKeyRelease(int key, int modifier)
+void Canvas::promoteKeyRelease(int key, int modifier)
 {
     cppassist::debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
 
@@ -265,7 +265,7 @@ void Canvas2::promoteKeyRelease(int key, int modifier)
     checkRedraw();
 }
 
-void Canvas2::promoteMouseMove(const glm::ivec2 & pos)
+void Canvas::promoteMouseMove(const glm::ivec2 & pos)
 {
     cppassist::debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
@@ -276,7 +276,7 @@ void Canvas2::promoteMouseMove(const glm::ivec2 & pos)
     checkRedraw();
 }
 
-void Canvas2::promoteMousePress(int button, const glm::ivec2 & pos)
+void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
 {
     cppassist::debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
@@ -287,7 +287,7 @@ void Canvas2::promoteMousePress(int button, const glm::ivec2 & pos)
     checkRedraw();
 }
 
-void Canvas2::promoteMouseRelease(int button, const glm::ivec2 & pos)
+void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
 {
     cppassist::debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
@@ -298,7 +298,7 @@ void Canvas2::promoteMouseRelease(int button, const glm::ivec2 & pos)
     checkRedraw();
 }
 
-void Canvas2::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
+void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
     cppassist::debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
@@ -309,7 +309,7 @@ void Canvas2::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
     checkRedraw();
 }
 
-void Canvas2::checkRedraw()
+void Canvas::checkRedraw()
 {
     auto slotRendered = getSlot<globjects::Framebuffer *>(m_renderStage.get(), "rendered");
     if (slotRendered && !slotRendered->isValid())
@@ -318,7 +318,7 @@ void Canvas2::checkRedraw()
     }
 }
 
-cppexpose::Variant Canvas2::scr_getDescription(const std::string & path)
+cppexpose::Variant Canvas::scr_getDescription(const std::string & path)
 {
     Stage * stage = getStageObject(path);
 
@@ -330,7 +330,7 @@ cppexpose::Variant Canvas2::scr_getDescription(const std::string & path)
     return cppexpose::Variant();
 }
 
-cppexpose::Variant Canvas2::scr_getSlot(const std::string & path)
+cppexpose::Variant Canvas::scr_getSlot(const std::string & path)
 {
     std::string slotName;
     Stage * stage = getStageObjectForSlot(path, slotName);
@@ -343,7 +343,7 @@ cppexpose::Variant Canvas2::scr_getSlot(const std::string & path)
     return cppexpose::Variant();
 }
 
-void Canvas2::scr_setSlotValue(const std::string & path, const cppexpose::Variant & value)
+void Canvas::scr_setSlotValue(const std::string & path, const cppexpose::Variant & value)
 {
     std::string slotName;
     Stage * stage = getStageObjectForSlot(path, slotName);
@@ -354,7 +354,7 @@ void Canvas2::scr_setSlotValue(const std::string & path, const cppexpose::Varian
     }
 }
 
-std::string Canvas2::scr_createStage(const std::string & path, const std::string & className, const std::string & name)
+std::string Canvas::scr_createStage(const std::string & path, const std::string & className, const std::string & name)
 {
     Stage * stage = getStageObject(path);
 
@@ -368,7 +368,7 @@ std::string Canvas2::scr_createStage(const std::string & path, const std::string
     return "";
 }
 
-void Canvas2::scr_removeStage(const std::string & path, const std::string & name)
+void Canvas::scr_removeStage(const std::string & path, const std::string & name)
 {
     Stage * stage = getStageObject(path);
 
@@ -380,7 +380,7 @@ void Canvas2::scr_removeStage(const std::string & path, const std::string & name
     }
 }
 
-cppexpose::Variant Canvas2::scr_slotTypes(const std::string & path)
+cppexpose::Variant Canvas::scr_slotTypes(const std::string & path)
 {
     Stage * stage = getStageObject(path);
 
@@ -392,7 +392,7 @@ cppexpose::Variant Canvas2::scr_slotTypes(const std::string & path)
     return cppexpose::Variant();
 }
 
-void Canvas2::scr_createSlot(const std::string & path, const std::string & slotType, const std::string & type, const std::string & name)
+void Canvas::scr_createSlot(const std::string & path, const std::string & slotType, const std::string & type, const std::string & name)
 {
     Stage * stage = getStageObject(path);
 
@@ -402,7 +402,7 @@ void Canvas2::scr_createSlot(const std::string & path, const std::string & slotT
     }
 }
 
-cppexpose::Variant Canvas2::scr_getConnections(const std::string & path)
+cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 {
     Stage * stage = getStageObject(path);
 
@@ -414,7 +414,7 @@ cppexpose::Variant Canvas2::scr_getConnections(const std::string & path)
     return cppexpose::Variant();
 }
 
-void Canvas2::scr_createConnection(const std::string & from, const std::string & to)
+void Canvas::scr_createConnection(const std::string & from, const std::string & to)
 {
     Stage * stage = getStageObject("");
 
@@ -425,7 +425,7 @@ void Canvas2::scr_createConnection(const std::string & from, const std::string &
     }
 }
 
-void Canvas2::scr_removeConnection(const std::string & to)
+void Canvas::scr_removeConnection(const std::string & to)
 {
     Stage * stage = getStageObject("");
 
@@ -436,7 +436,7 @@ void Canvas2::scr_removeConnection(const std::string & to)
     }
 }
 
-Stage * Canvas2::getStageObject(const std::string & path) const
+Stage * Canvas::getStageObject(const std::string & path) const
 {
     // Begin with render stage
     Stage * stage = m_renderStage.get();
@@ -468,7 +468,7 @@ Stage * Canvas2::getStageObject(const std::string & path) const
     return stage;
 }
 
-Stage * Canvas2::getStageObjectForSlot(const std::string & path, std::string & slotName) const
+Stage * Canvas::getStageObjectForSlot(const std::string & path, std::string & slotName) const
 {
     // Begin with render stage
     Stage * stage = m_renderStage.get();

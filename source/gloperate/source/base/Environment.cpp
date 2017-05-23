@@ -8,7 +8,7 @@
 
 #include <cppexpose/scripting/ScriptContext.h>
 
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 
 
 namespace gloperate
@@ -63,12 +63,12 @@ InputManager * Environment::inputManager()
     return &m_inputManager;
 }
 
-const std::vector<Canvas2 *> & Environment::canvases() const
+const std::vector<Canvas *> & Environment::canvases() const
 {
     return m_canvases;
 }
 
-std::vector<Canvas2 *> Environment::canvases()
+std::vector<Canvas *> Environment::canvases()
 {
     return m_canvases;
 }
@@ -151,13 +151,13 @@ void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> 
         "  exit: Exit the application\n";
 }
 
-void Environment::registerCanvas(Canvas2 * canvas)
+void Environment::registerCanvas(Canvas * canvas)
 {
     m_canvases.push_back(canvas);
     addProperty(canvas);
 }
 
-void Environment::unregisterCanvas(Canvas2 * canvas)
+void Environment::unregisterCanvas(Canvas * canvas)
 {
     removeProperty(canvas);
     m_canvases.erase(std::find(m_canvases.begin(), m_canvases.end(), canvas));

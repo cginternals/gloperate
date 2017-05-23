@@ -40,7 +40,7 @@ class Output;
 */
 class GLOPERATE_API Stage : public cppexpose::Object
 {
-    friend class Canvas2;
+    friend class Canvas;
 
 
 public:

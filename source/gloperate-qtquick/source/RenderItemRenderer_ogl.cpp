@@ -14,7 +14,7 @@
 #include <globjects/Shader.h>
 
 #include <gloperate/rendering/ScreenAlignedQuad.h>
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 
 #include <gloperate-qt/base/GLContext.h>
 

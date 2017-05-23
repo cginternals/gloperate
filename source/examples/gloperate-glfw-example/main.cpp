@@ -4,7 +4,7 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/base/GLContextUtils.h>
 
 #include <gloperate-glfw/Application.h>

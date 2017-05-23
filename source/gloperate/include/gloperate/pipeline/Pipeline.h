@@ -37,7 +37,7 @@ namespace gloperate
 class GLOPERATE_API Pipeline : public Stage
 {
     friend class Stage;
-    friend class Canvas2;
+    friend class Canvas;
 
 
 public:

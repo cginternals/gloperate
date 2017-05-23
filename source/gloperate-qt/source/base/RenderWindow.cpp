@@ -7,7 +7,7 @@
 
 #include <QOpenGLContext>
 
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Converter.h>
@@ -19,7 +19,7 @@ namespace gloperate_qt
 
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
-, m_canvas(cppassist::make_unique<gloperate::Canvas2>(environment))
+, m_canvas(cppassist::make_unique<gloperate::Canvas>(environment))
 {
     m_canvas->redraw.connect([this] ()
     {
@@ -36,7 +36,7 @@ gloperate::Environment * RenderWindow::environment() const
     return m_environment;
 }
 
-gloperate::Canvas2 * RenderWindow::canvas() const
+gloperate::Canvas * RenderWindow::canvas() const
 {
     return m_canvas.get();
 }

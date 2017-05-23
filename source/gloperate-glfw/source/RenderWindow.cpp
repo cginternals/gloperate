@@ -8,7 +8,7 @@
 
 #include <globjects/Framebuffer.h>
 
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 
 #include <gloperate-glfw/GLContext.h>
 #include <gloperate-glfw/WindowEvent.h>
@@ -23,7 +23,7 @@ namespace gloperate_glfw
 
 RenderWindow::RenderWindow(gloperate::Environment * environment)
 : m_environment(environment)
-, m_canvas(cppassist::make_unique<Canvas2>(environment))
+, m_canvas(cppassist::make_unique<Canvas>(environment))
 {
     m_canvas->redraw.connect([this] ()
     {
@@ -45,7 +45,7 @@ gloperate::Environment * RenderWindow::environment()
     return m_environment;
 }
 
-gloperate::Canvas2 * RenderWindow::canvas() const
+gloperate::Canvas * RenderWindow::canvas() const
 {
     return m_canvas.get();
 }

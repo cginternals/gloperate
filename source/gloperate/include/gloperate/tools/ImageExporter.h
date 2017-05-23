@@ -15,7 +15,7 @@ namespace gloperate
 {
 
 
-class Canvas2;
+class Canvas;
 class Environment;
 class AbstractGLContext;
 class ResourceManager;
@@ -67,7 +67,7 @@ public:
     *  @param[in] renderIterations
     *    Number of render iterations
     */
-    void setTarget(Canvas2 * canvas, const std::string & filename, int width = 0, int height = 0, int renderIterations = 1);
+    void setTarget(Canvas * canvas, const std::string & filename, int width = 0, int height = 0, int renderIterations = 1);
 
     /**
     *  @brief
@@ -81,7 +81,7 @@ public:
 
 protected:
     // Configuration
-    Canvas2     * m_canvas;
+    Canvas      * m_canvas;
     std::string   m_filename;
     int           m_width;
     int           m_height;

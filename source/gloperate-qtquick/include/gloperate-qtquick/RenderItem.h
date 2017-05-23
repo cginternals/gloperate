@@ -20,7 +20,7 @@ namespace globjects
 
 namespace gloperate
 {
-    class Canvas2;
+    class Canvas;
 }
 
 
@@ -65,7 +65,7 @@ public:
     *  @return
     *    Canvas that renders into the item (never null)
     */
-    gloperate::Canvas2 * canvas() const;
+    gloperate::Canvas * canvas() const;
 
     /**
     *  @brief
@@ -105,9 +105,9 @@ protected:
 
 
 protected:
-    QString                             m_stage;  ///< Name of the render stage to use
-    QTimer                              m_timer;  ///< Timer for continuous update
-    std::unique_ptr<gloperate::Canvas2> m_canvas; ///< Canvas that renders into the item (must NOT be null)
+    QString                            m_stage;  ///< Name of the render stage to use
+    QTimer                             m_timer;  ///< Timer for continuous update
+    std::unique_ptr<gloperate::Canvas> m_canvas; ///< Canvas that renders into the item (must NOT be null)
 };
 
 

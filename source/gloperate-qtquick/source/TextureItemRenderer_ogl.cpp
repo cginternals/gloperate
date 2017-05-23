@@ -12,7 +12,7 @@
 #include <globjects/Shader.h>
 
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/Canvas2.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 
@@ -59,7 +59,7 @@ void TextureItemRenderer::renderTexture()
     globjects::Texture * texture = nullptr;
 
     // Get slot
-    Canvas2 * canvas = m_environment->canvases().front();
+    Canvas * canvas = m_environment->canvases().front();
     AbstractSlot * slot = canvas->renderStage()->output(m_path.toStdString());
     if (!slot) return;
 

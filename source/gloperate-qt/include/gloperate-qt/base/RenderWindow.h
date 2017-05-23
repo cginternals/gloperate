@@ -10,7 +10,7 @@
 namespace gloperate
 {
     class Environment;
-    class Canvas2;
+    class Canvas;
 }
 
 
@@ -56,7 +56,7 @@ public:
     *  @return
     *    Canvas that renders onto the window (cannot be null)
     */
-    gloperate::Canvas2 * canvas() const;
+    gloperate::Canvas * canvas() const;
 
 
 protected:
@@ -77,8 +77,8 @@ protected:
 
 
 protected:
-    gloperate::Environment            * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    std::unique_ptr<gloperate::Canvas2> m_canvas;      ///< Canvas that renders onto the window (never null)
+    gloperate::Environment           * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    std::unique_ptr<gloperate::Canvas> m_canvas;      ///< Canvas that renders onto the window (never null)
 };
 
 
