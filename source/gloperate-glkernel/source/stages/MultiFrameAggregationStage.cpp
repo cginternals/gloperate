@@ -76,6 +76,18 @@ void MultiFrameAggregationStage::onContextInit(gloperate::AbstractGLContext * /*
     setupProgram();
 }
 
+void MultiFrameAggregationStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
+{
+    // deinitialize program
+    m_program.reset();
+    m_fragmentShader.reset();
+    m_vertexShader.reset();
+
+    // deinitialize geometry
+    m_vertexBuffer.reset();
+    m_vao.reset();
+}
+
 void MultiFrameAggregationStage::onProcess(gloperate::AbstractGLContext * /*context*/)
 {
     if (!(*texture))

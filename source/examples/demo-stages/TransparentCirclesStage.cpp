@@ -113,6 +113,14 @@ void TransparentCirclesStage::onContextInit(gloperate::AbstractGLContext *)
 
 void TransparentCirclesStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
+    // deinitialize program
+    m_program.reset();
+    m_fragmentShader.reset();
+    m_vertexShader.reset();
+
+    // deinitialize geometry
+    m_vertexBuffer.reset();
+    m_vao.reset();
 }
 
 void TransparentCirclesStage::onProcess(gloperate::AbstractGLContext *)

@@ -39,6 +39,12 @@ void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext *)
 }
 
 
+void NoiseKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_texture.reset();
+}
+
+
 void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
     if (!m_texture)

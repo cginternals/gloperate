@@ -42,6 +42,12 @@ void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLConte
 }
 
 
+void HemisphereDistributionKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_texture.reset();
+}
+
+
 void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
     if (!m_texture)

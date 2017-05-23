@@ -36,6 +36,12 @@ void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
 }
 
 
+void TransparencyKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_texture.reset();
+}
+
+
 void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
     if (!m_texture)

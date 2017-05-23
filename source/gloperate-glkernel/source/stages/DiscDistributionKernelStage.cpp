@@ -64,6 +64,12 @@ void DiscDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
 }
 
 
+void DiscDistributionKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_texture.reset();
+}
+
+
 void DiscDistributionKernelStage::onProcess(gloperate::AbstractGLContext * context)
 {
     if (!m_texture)

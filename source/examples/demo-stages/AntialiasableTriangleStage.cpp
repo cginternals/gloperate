@@ -72,6 +72,14 @@ void AntialiasableTriangleStage::onContextInit(gloperate::AbstractGLContext *)
 
 void AntialiasableTriangleStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
+    // deinitialize program
+    m_program.reset();
+    m_fragmentShader.reset();
+    m_vertexShader.reset();
+
+    // deinitialize geometry
+    m_vertexBuffer.reset();
+    m_vao.reset();
 }
 
 void AntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
