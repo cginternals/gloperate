@@ -17,11 +17,6 @@ namespace globjects
     class Framebuffer;
 }
 
-namespace gloperate
-{
-    class AbstractCanvas;
-}
-
 
 namespace gloperate_qtquick
 {

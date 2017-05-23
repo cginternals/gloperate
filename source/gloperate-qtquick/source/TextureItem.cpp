@@ -7,7 +7,6 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 
-#include <gloperate/base/AbstractCanvas.h>
 #include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-qtquick/QmlEngine.h>

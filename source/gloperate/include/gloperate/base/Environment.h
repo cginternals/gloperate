@@ -8,7 +8,6 @@
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/signal/Signal.h>
 
-#include <gloperate/base/TimeManager.h>
 #include <gloperate/base/ComponentManager.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/System.h>
@@ -94,18 +93,6 @@ public:
     //@{
     /**
     *  @brief
-    *    Get time manager
-    *
-    *  @return
-    *    Time manager (must NOT be null)
-    */
-    const TimeManager * timeManager() const;
-    TimeManager * timeManager();
-    //@}
-
-    //@{
-    /**
-    *  @brief
     *    Get input manager
     *
     *  @return
@@ -169,38 +156,6 @@ public:
     *    Return value from the scripting context
     */
     cppexpose::Variant executeScript(const std::string & code);
-    //@}
-
-    //@{
-    /**
-    *  @brief
-    *    Update timing
-    *
-    *  @return
-    *    'true' if there are any timers active, 'false' if not
-    *
-    *  @remarks
-    *    This signature measures the time since the last call
-    *    for the time delta. It should usually be used in
-    *    interactive applications.
-    */
-    bool update();
-
-    /**
-    *  @brief
-    *    Update timing
-    *
-    *  @param[in] delta
-    *    Time delta (in seconds)
-    *
-    *  @return
-    *    'true' if there are any timers active, 'false' if not
-    *
-    *  @remarks
-    *    This signature can be used to provide a specific time delta,
-    *    e.g., when rendering videos at a fixed frame rate.
-    */
-    bool update(float delta);
 
     /**
     *  @brief
@@ -261,7 +216,6 @@ protected:
 protected:
     ComponentManager                          m_componentManager; ///< Manager for plugin libraries and components
     ResourceManager                           m_resourceManager;  ///< Resource manager for loaders/storers
-    TimeManager                               m_timeManager;      ///< Manager for virtual time and timers
     System                                    m_system;           ///< System functions for scripting
     InputManager                              m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
 

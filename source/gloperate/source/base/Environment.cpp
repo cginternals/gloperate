@@ -19,14 +19,12 @@ Environment::Environment()
 : cppexpose::Object("gloperate")
 , m_componentManager()
 , m_resourceManager(this)
-, m_timeManager(this)
 , m_system(this)
 , m_inputManager(this)
 , m_scriptContext(nullptr)
 {
     addProperty(&m_componentManager);
     addProperty(&m_resourceManager);
-    addProperty(&m_timeManager);
     addProperty(&m_system);
     addProperty(&m_inputManager);
 }
@@ -53,16 +51,6 @@ const ResourceManager * Environment::resourceManager() const
 ResourceManager * Environment::resourceManager()
 {
     return &m_resourceManager;
-}
-
-const TimeManager * Environment::timeManager() const
-{
-    return &m_timeManager;
-}
-
-TimeManager * Environment::timeManager()
-{
-    return &m_timeManager;
 }
 
 const InputManager * Environment::inputManager() const
@@ -130,24 +118,6 @@ cppexpose::Variant Environment::executeScript(const std::string & code)
     return m_scriptContext->evaluate(cmd);
 }
 
-bool Environment::update()
-{
-    // Update timing and timers
-    bool activeTimers = m_timeManager.update();
-
-    // Return indicator if any more timers are running
-    return activeTimers;
-}
-
-bool Environment::update(float delta)
-{
-    // Update timing and timers
-    bool activeTimers = m_timeManager.update(delta);
-
-    // Return indicator if any more timers are running
-    return activeTimers;
-}
-
 void Environment::exit(int exitCode)
 {
     // Emit signal
@@ -178,15 +148,7 @@ void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> 
     m_helpText =
         "Available commands:\n"
         "  help: Print this help message\n"
-        "  exit: Exit the application\n"
-        "\n"
-        "APIs:\n"
-        "  gloperate.system: System API (IO, keyboard handling, ...)\n"
-        "  gloperate.timer:  Timer API\n"
-        "\n"
-        "Examples:\n"
-        "  gloperate.timer.start(1000, function() { print(\"Hello Scripting World.\"); } );\n"
-        "  gloperate.timer.stopAll();\n";
+        "  exit: Exit the application\n";
 }
 
 void Environment::registerCanvas(Canvas2 * canvas)

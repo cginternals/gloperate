@@ -60,7 +60,6 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/base/Application.h
-    ${include_path}/base/UpdateManager.h
     ${include_path}/base/OpenGLWindow.h
     ${include_path}/base/RenderWindow.h
     ${include_path}/base/GLContext.h
@@ -79,7 +78,6 @@ set(headers
 
 set(sources
     ${source_path}/base/Application.cpp
-    ${source_path}/base/UpdateManager.cpp
     ${source_path}/base/OpenGLWindow.cpp
     ${source_path}/base/RenderWindow.cpp
     ${source_path}/base/GLContext.cpp
