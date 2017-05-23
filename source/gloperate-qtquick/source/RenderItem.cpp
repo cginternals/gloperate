@@ -7,7 +7,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 
-#include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-qt/base/input.h>
@@ -53,11 +53,18 @@ const QString & RenderItem::stage() const
 
 void RenderItem::setStage(const QString & name)
 {
-    // Save name of render stage
-    m_stage = name;
-
-    // Create canvas with render stage
-    createCanvas(m_stage);
+    if (m_canvas)
+    {
+        // Create and updaterender stage
+        // Stage is saved internally
+        updateStage(name);
+    }
+    else
+    {
+        // Create canvas with render stage
+        // Stage is saved internally
+        createCanvasWithStage(name);
+    }
 }
 
 const std::shared_ptr<gloperate::AbstractCanvas> & RenderItem::canvas() const
@@ -76,17 +83,25 @@ void RenderItem::onUpdate()
     update();
 }
 
-void RenderItem::createCanvas(const QString & stage)
+void RenderItem::createCanvasWithStage(const QString & stage)
 {
     // Get gloperate environment
     auto * engine = static_cast<QmlEngine *>(QQmlEngine::contextForObject(this)->engine());
     gloperate::Environment * environment = engine->environment();
 
+    // Create stage before
+    auto stageInstance = Utils::createRenderStage(environment, m_stage.toStdString());
+
+    if (!stageInstance)
+    {
+        return;
+    }
+
     // Create canvas and render stage
     m_stage = stage;
     m_canvas = Utils::createCanvas(
         environment,
-        Utils::createRenderStage(environment, m_stage.toStdString())
+        std::move(stageInstance)
     );
 
     assert(m_canvas);
@@ -111,6 +126,27 @@ void RenderItem::createCanvas(const QString & stage)
 
     // Inform about initialization of the canvas
     emit canvasInitialized();
+}
+
+void RenderItem::updateStage(const QString & stage)
+{
+    // Get gloperate environment
+    auto * engine = static_cast<QmlEngine *>(QQmlEngine::contextForObject(this)->engine());
+    gloperate::Environment * environment = engine->environment();
+
+    // Create stage before
+    auto stageInstance = Utils::createRenderStage(environment, stage.toStdString());
+
+    if (!stageInstance)
+    {
+        return;
+    }
+
+    // Update render stage
+    m_stage = stage;
+    static_cast<gloperate::Canvas*>(m_canvas.get())->setRenderStage(
+        std::move(stageInstance)
+    );
 }
 
 void RenderItem::keyPressEvent(QKeyEvent * event)

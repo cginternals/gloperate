@@ -109,7 +109,7 @@ void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type,
     m_vao->drawElements(mode, count, type, indices);
 }
 
-void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, globjects::Buffer * indices) const
+void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, globjects::Buffer * /*indices*/) const
 {
     // [TODO]: rethink recorded vao state
     m_vao->drawElements(mode, count, type, nullptr);

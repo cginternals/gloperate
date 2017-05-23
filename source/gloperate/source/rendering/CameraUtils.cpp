@@ -26,7 +26,7 @@ glm::mat4 CameraUtils::orthographicFromPerspective(float fovy, float aspectRatio
     return glm::ortho(c*left, c*right, c*bottom, c*top, zNear, zFar);
 }
 
-glm::mat4 CameraUtils::perspectiveFromOrthographic(float left, float right, float bottom, float top, float zNear, float zFar, float syncDist)
+glm::mat4 CameraUtils::perspectiveFromOrthographic(float /*left*/, float right, float /*bottom*/, float top, float zNear, float zFar, float syncDist)
 {
     const auto c = zNear / syncDist;
 

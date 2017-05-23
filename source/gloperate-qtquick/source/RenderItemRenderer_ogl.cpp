@@ -35,6 +35,11 @@ RenderItemRenderer::RenderItemRenderer(RenderItem * renderItem)
 
 RenderItemRenderer::~RenderItemRenderer()
 {
+    if (!m_renderItem->canvas())
+    {
+        return;
+    }
+
     // free pipeline as the pipeline got initialized using OpenGL context of this
     // [TODO]: Reevaluate the destruction / deinitialization chain
     m_renderItem->canvas()->onContextDeinit();

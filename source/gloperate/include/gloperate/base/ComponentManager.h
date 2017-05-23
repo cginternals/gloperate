@@ -40,10 +40,12 @@ public:
 
 protected:
     // Scripting functions
+    std::string scr_getPluginPaths();
+    void scr_setPluginPaths(const std::string & allPaths);
     cppexpose::Variant scr_pluginPaths();
     void scr_addPluginPath(const std::string & path);
     void scr_removePluginPath(const std::string & path);
-    void scr_scanPlugins(const std::string & identifier);
+    void scr_scanPlugins();
     cppexpose::Variant scr_components();
     void scr_printComponents();
 };

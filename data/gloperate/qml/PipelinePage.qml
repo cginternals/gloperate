@@ -86,7 +86,14 @@ ScrollArea
         }
     }
 
-    Component.onCompleted:
+    onVisibleChanged:
+    {
+        if (visible) {
+            updateComponents();
+        }
+    }
+
+    function updateComponents()
     {
         var categories = [];
         var stages     = {};

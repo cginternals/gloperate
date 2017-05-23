@@ -19,7 +19,7 @@ ApplicationWindow
     property bool  renderBackground: true
 
     // Stage
-    property string stage: settings.stage
+    property string stage: ''
 
     x:       settings.x
     y:       settings.y
@@ -245,6 +245,8 @@ ApplicationWindow
         onRenderStageSelected:
         {
             settings.stage = name;
+            window.stage   = name;
+            propertyEditor.update();
         }
     }
 
@@ -395,7 +397,8 @@ ApplicationWindow
         property int    logLevel:      3
         property bool   debugMode:     false
         property string panelPosition: 'left'
-        property string stage:         'DemoPipeline'
+        property string stage:         ''
+        property string pluginPaths:   ''
 
         onLogLevelChanged:
         {
@@ -410,7 +413,18 @@ ApplicationWindow
 
     Component.onCompleted:
     {
+        // Load settings
         settings.load();
+
+        // Scan for plugins
+        gloperate.components.setPluginPaths(settings.pluginPaths);
+        gloperate.components.scanPlugins();
+
+        // Set render stage
+        window.stage = settings.stage;
+        propertyEditor.update();
+
+        // Show window
         window.visible = true;
     }
 

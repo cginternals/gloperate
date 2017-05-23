@@ -64,7 +64,8 @@ set(headers
     ${include_path}/Application.h
     ${include_path}/RenderItem.h
     ${include_path}/RenderItemRenderer.h
-#   ${include_path}/TextureRenderItem.h
+    ${include_path}/TextureItem.h
+    ${include_path}/TextureItemRenderer.h
     ${include_path}/Utils.h
     ${include_path}/VideoProfile.h
     ${include_path}/TextController.h
@@ -79,8 +80,9 @@ set(sources
     ${source_path}/RenderItem.cpp
     ${source_path}/RenderItemRenderer.cpp
     ${source_path}/RenderItemRenderer_ogl.cpp
-#   ${source_path}/TextureRenderItem.cpp
-#   ${source_path}/TextureRenderItem_ogl.cpp
+    ${source_path}/TextureItem.cpp
+    ${source_path}/TextureItemRenderer.cpp
+    ${source_path}/TextureItemRenderer_ogl.cpp
     ${source_path}/Utils.cpp
     ${source_path}/VideoProfile.cpp
     ${source_path}/TextController.cpp
