@@ -12,10 +12,8 @@
 
 namespace gloperate
 {
-
-class LightCreationStage;
-class LightBufferTextureStage;
-
+    class LightCreationStage;
+    class LightBufferTextureStage;
 }
 
 
@@ -40,6 +38,7 @@ public:
       , "v0.1.0"
     )
 
+
 public:
     // Interfaces
     gloperate::RenderInterface renderInterface;    ///< Interface for rendering into a viewer
@@ -63,6 +62,7 @@ public:
     Input<glm::vec3> lightAttenuation2;            ///< Attenuation coefficients of 2nd light
     Input<glm::vec3> lightAttenuation3;            ///< Attenuation coefficients of 3rd light
 
+
 public:
     /**
     *  @brief
@@ -81,12 +81,13 @@ public:
     */
     virtual ~LightTestPipeline();
 
+
 protected:
     // Stages
-    std::unique_ptr<gloperate::LightCreationStage>         m_lightDefStage1;
-    std::unique_ptr<gloperate::LightCreationStage>         m_lightDefStage2;
-    std::unique_ptr<gloperate::LightCreationStage>         m_lightDefStage3;
-    std::unique_ptr<gloperate::LightBufferTextureStage>    m_lightAccumulationStage;
-    std::unique_ptr<TimerStage>                            m_timerStage;
-    std::unique_ptr<LightTestStage>                        m_renderStage;
+    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage1;
+    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage2;
+    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage3;
+    std::unique_ptr<gloperate::LightBufferTextureStage> m_lightAccumulationStage;
+    std::unique_ptr<TimerStage>                         m_timerStage;
+    std::unique_ptr<LightTestStage>                     m_renderStage;
 };
