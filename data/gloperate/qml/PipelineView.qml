@@ -53,6 +53,7 @@ Item
             border.color: 'black'
             border.width: 1
 
+/*
             TextureItem
             {
                 anchors.fill: parent
@@ -60,6 +61,7 @@ Item
 
                 path: 'DemoPipeline.FramebufferStage1.colorTexture'
             }
+*/
 
             MouseArea
             {
