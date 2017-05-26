@@ -201,7 +201,7 @@ Item
     */
     function getConnections(path)
     {
-        var connections = root ? root.getConnections() : null;
+        var connections = root ? root.getConnections(path) : null;
 
         if (connections) return connections;
         else             return [];
