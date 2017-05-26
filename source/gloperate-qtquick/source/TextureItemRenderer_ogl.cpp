@@ -13,7 +13,7 @@
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/Canvas.h>
-#include <gloperate/pipeline/Stage.h>
+#include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 
 #include <gloperate-qtquick/TextureItem.h>
@@ -60,7 +60,9 @@ void TextureItemRenderer::renderTexture()
 
     // Get slot
     Canvas * canvas = m_environment->canvases().front();
-    AbstractSlot * slot = canvas->renderStage()->output(m_path.toStdString());
+    Stage * stage = canvas->renderStage();
+    if (!stage) return;
+    AbstractSlot * slot = stage->getSlot(m_path.toStdString());
     if (!slot) return;
 
     // Check if it is a texture slot

@@ -281,6 +281,18 @@ public:
 
     /**
     *  @brief
+    *    Get a slot of this stage or a substage
+    *
+    *  @param[in] path
+    *    Path to the slot from this stage. Can contain the name of this stage as first element.
+    *
+    *  @return
+    *    Slot, nullptr if not found
+    */
+    AbstractSlot * getSlot(const std::string & path);
+
+    /**
+    *  @brief
     *    Get inputs
     *
     *  @return

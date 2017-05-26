@@ -127,18 +127,6 @@ public:
     */
     void invalidateStageOrder();
 
-    /**
-    *  @brief
-    *    Get a slot of this pipeline or a subpipeline
-    *
-    *  @param[in] path
-    *    Path to the slot from this pipeline. Can contain the name of this pipeline as first element.
-    *
-    *  @return
-    *    Slot, nullptr if not found
-    */
-    AbstractSlot * getSlot(const std::string & path);
-
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
