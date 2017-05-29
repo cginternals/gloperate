@@ -383,11 +383,21 @@ void Window::processEvents()
 
     glfwMakeContextCurrent(m_window);
 
+    bool hasPaintEvent = false;
+
     while (!m_eventQueue.empty())
     {
         m_eventQueue.front()->setWindow(this);
 
-        handleEvent(*m_eventQueue.front());
+        auto event = *m_eventQueue.front();
+
+        if (event.type() == WindowEvent::Type::Paint) {
+            // Postpone paint event until the end
+            hasPaintEvent = true;
+        } else {
+            // Handle all other events immediately
+            handleEvent(*m_eventQueue.front());
+        }
 
         m_eventQueue.pop();
 
@@ -396,6 +406,15 @@ void Window::processEvents()
             clearEventQueue();
             return;
         }
+    }
+
+    // Handle postponed paint event
+    if (hasPaintEvent)
+    {
+        PaintEvent event;
+        event.setWindow(this);
+
+        handleEvent(event);
     }
 
     glfwMakeContextCurrent(nullptr);
