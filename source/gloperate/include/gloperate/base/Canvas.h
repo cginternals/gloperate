@@ -176,6 +176,24 @@ public:
 
     /**
     *  @brief
+    *    Get device viewport
+    *
+    *  @return
+    *    The device viewport
+    */
+    const glm::vec4 & deviceViewport() const;
+
+    /**
+    *  @brief
+    *    Get virtual viewport
+    *
+    *  @return
+    *    The virtual viewport
+    */
+    const glm::vec4 & virtualViewport() const;
+
+    /**
+    *  @brief
     *    Perform rendering (must be called from render thread)
     *
     *  @param[in] targetFBO

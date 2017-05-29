@@ -193,13 +193,23 @@ void Canvas::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & vir
     m_initialized = true;
 
     // Promote new viewport
-    auto slotdeviceViewport = getSlot<glm::vec4>(m_renderStage.get(), "deviceViewport");
-    if (slotdeviceViewport) slotdeviceViewport->setValue(m_deviceViewport);
+    auto slotDeviceViewport = getSlot<glm::vec4>(m_renderStage.get(), "deviceViewport");
+    if (slotDeviceViewport) slotDeviceViewport->setValue(m_deviceViewport);
     auto slotVirtualViewport = getSlot<glm::vec4>(m_renderStage.get(), "virtualViewport");
     if (slotVirtualViewport) slotVirtualViewport->setValue(m_virtualViewport);
 
     // Check if a redraw is required
     checkRedraw();
+}
+
+const glm::vec4 & Canvas::deviceViewport() const
+{
+    return m_deviceViewport;
+}
+
+const glm::vec4 & Canvas::virtualViewport() const
+{
+    return m_virtualViewport;
 }
 
 void Canvas::render(globjects::Framebuffer * targetFBO)
