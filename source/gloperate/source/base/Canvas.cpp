@@ -47,6 +47,7 @@ Canvas::Canvas(Environment * environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
 , m_virtualTime(0.0f)
+, m_timeDelta(0.0f)
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
 , m_replaceStage(false)
@@ -161,6 +162,10 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
 
 void Canvas::updateTime()
 {
+    // In multithreaded viewers, updateTime() might get called several times
+    // before render(). Therefore, the time delta is accumulated until the
+    // pipeline is actually rendered, and then reset by the method render().
+
     // Get number of milliseconds since last call
     auto duration = m_clock.elapsed();
     m_clock.reset();
@@ -168,12 +173,13 @@ void Canvas::updateTime()
     // Determine time delta and virtual time
     float timeDelta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
     m_virtualTime += timeDelta;
+    m_timeDelta   += timeDelta;
 
     // Update timing
-    auto slotTimeDelta = getSlot<float>(m_renderStage.get(), "timeDelta");
-    if (slotTimeDelta) slotTimeDelta->setValue(timeDelta);
     auto slotVirtualTime = getSlot<float>(m_renderStage.get(), "virtualTime");
     if (slotVirtualTime) slotVirtualTime->setValue(m_virtualTime);
+    auto slotTimeDelta = getSlot<float>(m_renderStage.get(), "timeDelta");
+    if (slotTimeDelta) slotTimeDelta->setValue(m_timeDelta);
 
     // Check if a redraw is required
     checkRedraw();
@@ -198,6 +204,9 @@ void Canvas::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & vir
 
 void Canvas::render(globjects::Framebuffer * targetFBO)
 {
+    // Reset time delta
+    m_timeDelta = 0.0f;
+
     auto fboName = targetFBO->hasName() ? targetFBO->name() : std::to_string(targetFBO->id());
     cppassist::debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
 

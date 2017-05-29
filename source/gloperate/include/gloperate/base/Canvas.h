@@ -285,6 +285,7 @@ protected:
     glm::vec4                       m_deviceViewport;  ///< Viewport (in real device coordinates)
     glm::vec4                       m_virtualViewport; ///< Viewport (in virtual coordinates)
     float                           m_virtualTime;     ///< The current virtual time (in seconds)
+    float                           m_timeDelta;       ///< Time delta since the last update (in seconds)
     std::unique_ptr<Stage>          m_renderStage;     ///< Render stage that renders into the canvas
     std::unique_ptr<Stage>          m_oldStage;        ///< Old render stage, will be destroyed on the next render call
     std::unique_ptr<MouseDevice>    m_mouseDevice;     ///< Device for Mouse Events
