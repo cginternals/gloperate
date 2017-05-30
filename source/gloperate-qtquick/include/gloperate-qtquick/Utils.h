@@ -2,18 +2,7 @@
 #pragma once
 
 
-#include <memory>
-#include <string>
-
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
-
-
-namespace gloperate
-{
-    class Environment;
-    class AbstractCanvas;
-    class Stage;
-}
 
 
 namespace gloperate_qtquick
@@ -69,10 +58,6 @@ public:
     *    If 'true', the depth buffer will also be cleared, otherwise only the color buffer
     */
     static void clearScreen(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f, bool clearDepthBuffer = true);
-
-    // [TODO] Only for testing
-    static std::unique_ptr<gloperate::Stage> createRenderStage(gloperate::Environment * environment, const std::string & name);
-    static std::unique_ptr<gloperate::AbstractCanvas> createCanvas(gloperate::Environment * environment, std::unique_ptr<gloperate::Stage> && renderStage);
 };
 
 

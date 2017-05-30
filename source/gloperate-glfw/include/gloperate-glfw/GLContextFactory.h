@@ -7,6 +7,9 @@
 #include <gloperate-glfw/gloperate-glfw_api.h>
 
 
+struct GLFWmonitor;
+
+
 namespace gloperate_glfw
 {
 
@@ -21,8 +24,15 @@ public:
     /**
     *  @brief
     *    Constructor
+    *
+    *  @param[in] monitor
+    *    GLFW monitor (if valid, fullscreen mode is used, else windowed mode)
+    *  @param[in] width
+    *    Window width
+    *  @param[in] height
+    *    Window height
     */
-    GLContextFactory();
+    GLContextFactory(GLFWmonitor * monitor, unsigned int width, unsigned int height);
 
     /**
     *  @brief
@@ -35,7 +45,20 @@ public:
 
 
 private:
+    /**
+    *  @brief
+    *    Set GLFW states and hints to select the given OpenGL context format
+    *
+    *  @param[in] format
+    *    OpenGL context format
+    */
     static void initializeGLFWState(const gloperate::GLContextFormat & format);
+
+
+private:
+    GLFWmonitor * m_monitor; ///< GLFW monitor (if valid, fullscreen mode is used, else windowed mode)
+    unsigned int  m_width;   ///< Window width
+    unsigned int  m_height;  ///< Window height
 };
 
 

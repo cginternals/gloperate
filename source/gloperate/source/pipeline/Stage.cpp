@@ -160,6 +160,56 @@ void Stage::invalidateOutputs()
     }
 }
 
+AbstractSlot * Stage::getSlot(const std::string & path)
+{
+    std::vector<std::string> names = cppassist::string::split(path, '.');
+
+    Stage * stage = this;
+
+    for (size_t i=0; i<names.size(); i++)
+    {
+        std::string name = names[i];
+
+        // Ignore own stage name at the beginning
+        if (name == stage->name() && i == 0)
+        {
+            continue;
+        }
+
+        // Check if stage is a pipeline and has a substage with the given name
+        if (stage->isPipeline())
+        {
+            Pipeline * pipeline = static_cast<Pipeline *>(stage);
+            Stage * sub = pipeline->stage(name);
+
+            if (sub)
+            {
+                stage = sub;
+                continue;
+            }
+        }
+
+        // If there is no more substage but more names to fetch, return error
+        if (i != names.size() - 1)
+        {
+            return nullptr;
+        }
+
+        // Check if stage has a slot with that name
+        auto inputSlot = stage->input(name);
+        if (inputSlot) {
+            return inputSlot;
+        }
+
+        auto outputSlot = stage->output(name);
+        if (outputSlot) {
+            return outputSlot;
+        }
+    }
+
+    return nullptr;
+}
+
 const std::vector<AbstractSlot *> & Stage::inputs() const
 {
     return m_inputs;

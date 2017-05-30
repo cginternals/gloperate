@@ -278,7 +278,7 @@ ApplicationWindow
 
                 onCanvasInitialized:
                 {
-                    gloperatePipeline.root = gloperate.canvas0.pipeline;
+                    gloperatePipeline.root = gloperate.canvas0;
                 }
             }
 
@@ -305,7 +305,7 @@ ApplicationWindow
                         id: propertyEditor
 
                         pipelineInterface: gloperatePipeline
-                        path:              'pipeline.' + window.stage
+                        path:              window.stage
 
                         Component.onCompleted:
                         {
@@ -325,7 +325,7 @@ ApplicationWindow
             visible:      false
 
             pipelineInterface: gloperatePipeline
-            path:              'pipeline.' + window.stage
+            path:              window.stage
 
             onClosed:
             {

@@ -5,6 +5,8 @@
 
 #include <glm/vec2.hpp>
 
+#include <gloperate/input/constants.h>
+
 #include <gloperate-glfw/Window.h>
 
 
@@ -12,7 +14,6 @@ namespace gloperate
 {
     class Environment;
     class Canvas;
-    class Stage;
 }
 
 
@@ -62,52 +63,12 @@ public:
 
     /**
     *  @brief
-    *    Get render stage
-    *
-    *  @return
-    *    Render stage that renders into the window (can be null)
-    */
-    const gloperate::Stage * renderStage() const;
-
-    /**
-    *  @brief
-    *    Get render stage
-    *
-    *  @return
-    *    Render stage that renders into the window (can be null)
-    */
-    gloperate::Stage * renderStage();
-
-    /**
-    *  @brief
     *    Get canvas
     *
     *  @return
     *    Canvas that is rendered on
     */
-    const gloperate::Canvas * canvas() const;
-
-    /**
-    *  @brief
-    *    Get canvas
-    *
-    *  @return
-    *    Canvas that is rendered on
-    */
-    gloperate::Canvas * canvas();
-
-    /**
-    *  @brief
-    *    Set render stage
-    *
-    *  @param[in] stage
-    *    Render stage that renders into the window (can be null)
-    *
-    *  @remarks
-    *    When setting a new render stage, the old render stage is destroyed.
-    *    The window takes ownership over the stage.
-    */
-    void setRenderStage(std::unique_ptr<gloperate::Stage> && stage);
+    gloperate::Canvas * canvas() const;
 
 
 protected:
@@ -128,13 +89,50 @@ protected:
     virtual void onScroll(ScrollEvent & event) override;
     virtual void onFocus(FocusEvent & event) override;
     virtual void onIconify(IconifyEvent & event) override;
+    virtual void onIdle() override;
+
+    /**
+    *  @brief
+    *    Convert GLFW mouse button into gloperate mouse button
+    *
+    *  @param[in] button
+    *    GLFW mouse button
+    *
+    *  @return
+    *    gloperate mouse button
+    */
+    gloperate::MouseButton fromGLFWMouseButton(int button) const;
+
+    /**
+    *  @brief
+    *    Convert GLFW key code into gloperate key code
+    *
+    *  @param[in] key
+    *    GLFW key code
+    *
+    *  @return
+    *    gloperate key code
+    */
+    gloperate::Key fromGLFWKeyCode(int key) const;
+
+    /**
+    *  @brief
+    *    Convert GLFW modifier code into gloperate modifier code
+    *
+    *  @param[in] key
+    *    GLFW key modifier
+    *
+    *  @return
+    *    gloperate key modifier
+    */
+    gloperate::KeyModifier fromGLFWModifier(int modifier) const;
 
 
 protected:
-    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null) 
-    std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
-    glm::ivec2               m_deviceSize;  ///< Window size (real device pixels)
-    glm::ivec2               m_virtualSize; ///< Window size (virtual pixel size)
+    gloperate::Environment           * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null) 
+    std::unique_ptr<gloperate::Canvas> m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
+    glm::ivec2                         m_deviceSize;  ///< Window size (real device pixels)
+    glm::ivec2                         m_virtualSize; ///< Window size (virtual pixel size)
 };
 
 

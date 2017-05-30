@@ -40,6 +40,9 @@ class Output;
 */
 class GLOPERATE_API Stage : public cppexpose::Object
 {
+    friend class Canvas;
+
+
 public:
     // Define component types
     using AbstractComponentType = gloperate::AbstractComponent<Stage>;
@@ -97,6 +100,7 @@ public:
     Stage(Environment * environment, const std::string & className = "Stage", const std::string & name = "");
 
     Stage(const Stage &) = delete;
+
     Stage & operator=(const Stage &) = delete;
 
     /**
@@ -274,6 +278,18 @@ public:
     *    Invalidate all outputs
     */
     void invalidateOutputs();
+
+    /**
+    *  @brief
+    *    Get a slot of this stage or a substage
+    *
+    *  @param[in] path
+    *    Path to the slot from this stage. Can contain the name of this stage as first element.
+    *
+    *  @return
+    *    Slot, nullptr if not found
+    */
+    AbstractSlot * getSlot(const std::string & path);
 
     /**
     *  @brief
@@ -585,7 +601,7 @@ protected:
     *    textures and geometries, in this function.
     *
     *  @param[in] context
-    *    OpenGL context used for rendering (must NOT null!)
+    *    OpenGL context used for rendering (must NOT be null!)
     */
     virtual void onContextInit(AbstractGLContext * context);
 
@@ -594,10 +610,13 @@ protected:
     *    De-Initialize in OpenGL context
     *
     *    This function is called when the OpenGL context is destroyed.
-    *    The object must release its OpenGL objects at this point.
+    *    The object MUST release its OpenGL objects at this point
+    *    to make sure they are released in the same thread they have
+    *    be created (e.g., the render thread). Otherwise, the
+    *    application may crash on shutdown.
     *
     *  @param[in] context
-    *    OpenGL context used for rendering (must NOT null!)
+    *    OpenGL context used for rendering (must NOT be null!)
     *
     *  @see onContextInit()
     */
@@ -612,7 +631,7 @@ protected:
     *    inputs and create its output data.
     *
     *  @param[in] context
-    *    OpenGL context that is current (must NOT null!)
+    *    OpenGL context that is current (must NOT be null!)
     *
     *  @remarks
     *    The provided OpenGL context is already made current by

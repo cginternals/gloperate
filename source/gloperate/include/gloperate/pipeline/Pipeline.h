@@ -37,6 +37,7 @@ namespace gloperate
 class GLOPERATE_API Pipeline : public Stage
 {
     friend class Stage;
+    friend class Canvas;
 
 
 public:
@@ -125,18 +126,6 @@ public:
     *    The stages are resorted upon next usage.
     */
     void invalidateStageOrder();
-
-    /**
-    *  @brief
-    *    Get a slot of this pipeline or a subpipeline
-    *
-    *  @param[in] path
-    *    Path to the slot from this pipeline. Can contain the name of this pipeline as first element.
-    *
-    *  @return
-    *    Slot, nullptr if not found
-    */
-    AbstractSlot * getSlot(const std::string & path);
 
     // Virtual Stage interface
     virtual bool isPipeline() const override;

@@ -29,7 +29,6 @@ void Application::initialize()
 Application::Application(int & argc, char ** argv)
 : QGuiApplication(argc, argv)
 , m_environment()
-, m_updateManager(&m_environment)
 , m_qmlEngine(&m_environment)
 {
     // Read command line options

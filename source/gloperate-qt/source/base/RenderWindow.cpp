@@ -1,19 +1,16 @@
+
 #include "gloperate-qt/base/RenderWindow.h"
 
 #include <glm/glm.hpp>
 
 #include <globjects/Framebuffer.h>
 
-#include <QCoreApplication>
 #include <QOpenGLContext>
 
-#include <gloperate/base/Environment.h>
 #include <gloperate/base/Canvas.h>
 
 #include <gloperate-qt/base/GLContext.h>
-#include <gloperate-qt/base/input.h>
-
-#include <gloperate/input/InputEvent.h>
+#include <gloperate-qt/base/Converter.h>
 
 
 namespace gloperate_qt
@@ -39,16 +36,9 @@ gloperate::Environment * RenderWindow::environment() const
     return m_environment;
 }
 
-gloperate::Stage * RenderWindow::renderStage() const
+gloperate::Canvas * RenderWindow::canvas() const
 {
-    return m_canvas->renderStage();
-}
-
-void RenderWindow::setRenderStage(std::unique_ptr<gloperate::Stage> && stage)
-{
-    m_context->qtContext()->makeCurrent(this);
-    m_canvas->setRenderStage(std::move(stage));
-    m_context->qtContext()->doneCurrent();
+    return m_canvas.get();
 }
 
 void RenderWindow::onContextInit()
@@ -63,7 +53,7 @@ void RenderWindow::onContextDeinit()
 
 void RenderWindow::onResize(const QSize & deviceSize, const QSize & virtualSize)
 {
-    m_canvas->onViewport(
+    m_canvas->setViewport(
         glm::vec4(0, 0, deviceSize.width(),  deviceSize.height())
       , glm::vec4(0, 0, virtualSize.width(), virtualSize.height())
     );
@@ -74,7 +64,12 @@ void RenderWindow::onPaint()
     // [TODO]: optimize memory reallocation problem
     auto defaultFBO = globjects::Framebuffer::defaultFBO();
 
-    m_canvas->onRender(defaultFBO.get());
+    m_canvas->render(defaultFBO.get());
+}
+
+void RenderWindow::onTimer()
+{
+    m_canvas->updateTime();
 }
 
 void RenderWindow::keyPressEvent(QKeyEvent * event)
@@ -85,9 +80,9 @@ void RenderWindow::keyPressEvent(QKeyEvent * event)
         return;
     }
 
-    m_canvas->onKeyPress(
-        fromQtKeyCode(event->key(), event->modifiers()),
-        fromQtModifiers(event->modifiers())
+    m_canvas->promoteKeyPress(
+        Converter::fromQtKeyCode(event->key(), event->modifiers()),
+        Converter::fromQtModifiers(event->modifiers())
     );
 }
 
@@ -99,15 +94,15 @@ void RenderWindow::keyReleaseEvent(QKeyEvent * event)
         return;
     }
 
-    m_canvas->onKeyRelease(
-        fromQtKeyCode(event->key(), event->modifiers()),
-        fromQtModifiers(event->modifiers())
+    m_canvas->promoteKeyRelease(
+        Converter::fromQtKeyCode(event->key(), event->modifiers()),
+        Converter::fromQtModifiers(event->modifiers())
     );
 }
 
 void RenderWindow::mouseMoveEvent(QMouseEvent * event)
 {
-    m_canvas->onMouseMove(glm::ivec2(
+    m_canvas->promoteMouseMove(glm::ivec2(
         (int)(event->x() * devicePixelRatio()),
         (int)(event->y() * devicePixelRatio()))
     );
@@ -115,8 +110,8 @@ void RenderWindow::mouseMoveEvent(QMouseEvent * event)
 
 void RenderWindow::mousePressEvent(QMouseEvent * event)
 {
-    m_canvas->onMousePress(
-        fromQtMouseButton(event->button()),
+    m_canvas->promoteMousePress(
+        Converter::fromQtMouseButton(event->button()),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),
                     (int)(event->y() * devicePixelRatio()) )
     );
@@ -124,8 +119,8 @@ void RenderWindow::mousePressEvent(QMouseEvent * event)
 
 void RenderWindow::mouseReleaseEvent(QMouseEvent * event)
 {
-    m_canvas->onMouseRelease(
-        fromQtMouseButton(event->button()),
+    m_canvas->promoteMouseRelease(
+        Converter::fromQtMouseButton(event->button()),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),
                     (int)(event->y() * devicePixelRatio()) )
     );
@@ -133,7 +128,7 @@ void RenderWindow::mouseReleaseEvent(QMouseEvent * event)
 
 void RenderWindow::wheelEvent(QWheelEvent * event)
 {
-    m_canvas->onMouseWheel(
+    m_canvas->promoteMouseWheel(
         glm::vec2( event->orientation() == Qt::Vertical ? 0.0f : (float)event->delta(),
                    event->orientation() == Qt::Vertical ? (float)event->delta() : 0.0f ),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),

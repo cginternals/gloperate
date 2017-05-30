@@ -5,6 +5,7 @@
 #include <memory>
 
 #include <QString>
+#include <QTimer>
 #include <QQuickFramebufferObject>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
@@ -19,7 +20,7 @@ namespace globjects
 
 namespace gloperate
 {
-    class AbstractCanvas;
+    class Canvas;
 }
 
 
@@ -39,7 +40,6 @@ class GLOPERATE_QTQUICK_API RenderItem : public QQuickFramebufferObject
 
 signals:
     void canvasInitialized(); ///< Called after the canvas has been successfully initialized
-    void updateNeeded();      ///< Called when the canvas needs to be redrawn
 
 
 public:
@@ -60,6 +60,15 @@ public:
 
     /**
     *  @brief
+    *    Get canvas
+    *
+    *  @return
+    *    Canvas that renders into the item (never null)
+    */
+    gloperate::Canvas * canvas() const;
+
+    /**
+    *  @brief
     *    Get render stage
     *
     *  @return
@@ -76,31 +85,11 @@ public:
     */
     void setStage(const QString & name);
 
-    /**
-    *  @brief
-    *    Get canvas
-    *
-    *  @return
-    *    Canvas that renders into the item (can be null)
-    */
-    const std::shared_ptr<gloperate::AbstractCanvas> & canvas() const;
-
     // Virtual QQuickFramebufferObject interface
     QQuickFramebufferObject::Renderer * createRenderer() const Q_DECL_OVERRIDE;
 
 
-protected slots:
-    /**
-    *  @brief
-    *    Issue a redraw of the item
-    */
-    void onUpdate();
-
-
 protected:
-    void createCanvasWithStage(const QString & stage);
-    void updateStage(const QString & stage);
-
     virtual void keyPressEvent(QKeyEvent * event) override;
     virtual void keyReleaseEvent(QKeyEvent * event) override;
     virtual void mouseMoveEvent(QMouseEvent * event) override;
@@ -108,10 +97,17 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent * event) override;
     virtual void wheelEvent(QWheelEvent * event) override;
 
+    /**
+    *  @brief
+    *    Called on timer update
+    */
+    void onTimer();
+
 
 protected:
-    QString                                    m_stage;  ///< Name of the render stage to use
-    std::shared_ptr<gloperate::AbstractCanvas> m_canvas; ///< Canvas that renders into the item (must NOT be null)
+    QString                            m_stage;  ///< Name of the render stage to use
+    QTimer                             m_timer;  ///< Timer for continuous update
+    std::unique_ptr<gloperate::Canvas> m_canvas; ///< Canvas that renders into the item (must NOT be null)
 };
 
 

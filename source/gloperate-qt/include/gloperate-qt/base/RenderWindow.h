@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <memory>
 
 #include <gloperate-qt/base/OpenGLWindow.h>
@@ -10,7 +11,6 @@ namespace gloperate
 {
     class Environment;
     class Canvas;
-    class Stage;
 }
 
 
@@ -51,25 +51,12 @@ public:
 
     /**
     *  @brief
-    *    Get render stage
+    *    Get canvas
     *
     *  @return
-    *    Render stage that renders into the window (can be null)
+    *    Canvas that renders onto the window (cannot be null)
     */
-    gloperate::Stage * renderStage() const;
-
-    /**
-    *  @brief
-    *    Set render stage
-    *
-    *  @param[in] stage
-    *    Render stage that renders into the window (can be null)
-    *
-    *  @remarks
-    *    When setting a new render stage, the old render stage is destroyed.
-    *    The window takes ownership over the stage.
-    */
-    void setRenderStage(std::unique_ptr<gloperate::Stage> && stage);
+    gloperate::Canvas * canvas() const;
 
 
 protected:
@@ -78,6 +65,7 @@ protected:
     virtual void onContextDeinit() override;
     virtual void onResize(const QSize & deviceSize, const QSize & virtualSize) override;
     virtual void onPaint() override;
+    virtual void onTimer() override;
 
     // Qt event functions
     virtual void keyPressEvent(QKeyEvent * event) override;
@@ -89,8 +77,8 @@ protected:
 
 
 protected:
-    gloperate::Environment * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
-    std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that renders onto the window (must NOT be null)
+    gloperate::Environment           * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    std::unique_ptr<gloperate::Canvas> m_canvas;      ///< Canvas that renders onto the window (never null)
 };
 
 

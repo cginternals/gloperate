@@ -78,4 +78,5 @@ protected:
     std::unique_ptr<globjects::Buffer>  m_buffer;       ///< pointer to the buffer used by m_drawable
 };
 
+
 } // namespace gloperate

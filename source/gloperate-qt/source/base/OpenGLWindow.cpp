@@ -1,11 +1,9 @@
 
 #include "gloperate-qt/base/OpenGLWindow.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QResizeEvent>
 #include <QOpenGLContext>
-
-#include <gloperate/base/GLContextFormat.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/GLContextFactory.h>
@@ -20,9 +18,19 @@ OpenGLWindow::OpenGLWindow()
 , m_initialized(false)
 , m_updatePending(false)
 {
+    // Connect update timer
+    QObject::connect(
+        &m_timer, &QTimer::timeout,
+        this, &OpenGLWindow::onTimer
+    );
+
     // Create window with OpenGL capability
     setSurfaceType(OpenGLSurface);
     create();
+
+    // Start timer
+    m_timer.setSingleShot(false);
+    m_timer.start(5);
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -50,7 +58,7 @@ void OpenGLWindow::createContext()
     // Create OpenGL context
     GLContextFactory factory(this);
     m_context = std::unique_ptr<GLContext>(
-                static_cast<GLContext*>(factory.createBestContext(m_format).release())
+        static_cast<GLContext*>(factory.createBestContext(m_format).release())
     );
 
     // Initialize new context
@@ -66,6 +74,7 @@ void OpenGLWindow::destroyContext()
     }
 
     deinitializeContext();
+
     m_context = nullptr;
 }
 
@@ -152,6 +161,10 @@ void OpenGLWindow::onResize(const QSize &, const QSize &)
 }
 
 void OpenGLWindow::onPaint()
+{
+}
+
+void OpenGLWindow::onTimer()
 {
 }
 

@@ -10,7 +10,7 @@ find_package(globjects  REQUIRED)
 find_package(cppexpose  REQUIRED)
 find_package(cppassist  REQUIRED)
 find_package(qmltoolbox REQUIRED)
-find_package(cpplocate REQUIRED)
+find_package(cpplocate  REQUIRED)
 
 
 # 
@@ -49,7 +49,6 @@ set(headers
     ${include_path}/base/Component.inl
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
-    ${include_path}/base/AbstractCanvas.h
     ${include_path}/base/AbstractComponent.h
     ${include_path}/base/AbstractComponent.inl
     ${include_path}/base/Canvas.h
@@ -62,9 +61,6 @@ set(headers
     ${include_path}/base/CachedValue.inl
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
-    ${include_path}/base/TimeManager.h
-    ${include_path}/base/Timer.h
-    ${include_path}/base/ScriptTimer.h
     ${include_path}/base/Image.h
     ${include_path}/base/AbstractLoader.h
     ${include_path}/base/AbstractStorer.h
@@ -84,7 +80,6 @@ set(headers
     ${include_path}/base/ExplicitEquidistantColorGradient.inl
     ${include_path}/base/RawFileNameSuffix.h
 
-    ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/Stage.inl
     ${include_path}/pipeline/Pipeline.h
@@ -110,6 +105,7 @@ set(headers
     ${include_path}/rendering/TransparencyMasksGenerator.h
     ${include_path}/rendering/ScreenAlignedQuad.h
     ${include_path}/rendering/ScreenAlignedTriangle.h
+    ${include_path}/rendering/Box.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -157,7 +153,6 @@ set(sources
     ${source_path}/base/System.cpp
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
-    ${source_path}/base/AbstractCanvas.cpp
     ${source_path}/base/Canvas.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractComponent.cpp
@@ -167,9 +162,6 @@ set(sources
     ${source_path}/base/GLContextUtils.cpp
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
-    ${source_path}/base/TimeManager.cpp
-    ${source_path}/base/Timer.cpp
-    ${source_path}/base/ScriptTimer.cpp
     ${source_path}/base/Image.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
@@ -182,7 +174,6 @@ set(sources
     ${source_path}/base/ExtendedProperties.cpp
     ${source_path}/base/RawFileNameSuffix.cpp
 
-    ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
     ${source_path}/pipeline/AbstractSlot.cpp
@@ -197,6 +188,7 @@ set(sources
     ${source_path}/rendering/TransparencyMasksGenerator.cpp
     ${source_path}/rendering/ScreenAlignedQuad.cpp
     ${source_path}/rendering/ScreenAlignedTriangle.cpp
+    ${source_path}/rendering/Box.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
