@@ -94,7 +94,7 @@ void SpinningRectStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_vao = nullptr;
 }
 
-void SpinningRectStage::onProcess(gloperate::AbstractGLContext *)
+void SpinningRectStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

@@ -31,7 +31,7 @@ void TimerStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void TimerStage::onProcess(gloperate::AbstractGLContext *)
+void TimerStage::onProcess()
 {
     m_time += (*timeDelta) * (*factor);
 

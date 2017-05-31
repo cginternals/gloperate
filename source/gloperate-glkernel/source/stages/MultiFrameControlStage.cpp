@@ -30,7 +30,7 @@ MultiFrameControlStage::~MultiFrameControlStage()
 {
 }
 
-void MultiFrameControlStage::onProcess(gloperate::AbstractGLContext *)
+void MultiFrameControlStage::onProcess()
 {
     m_currentFrame++;
 

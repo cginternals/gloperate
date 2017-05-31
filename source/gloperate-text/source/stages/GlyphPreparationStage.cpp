@@ -37,7 +37,7 @@ void GlyphPreparationStage::onContextDeinit(gloperate::AbstractGLContext * /*con
 }
 
 
-void GlyphPreparationStage::onProcess(gloperate::AbstractGLContext * /*context*/)
+void GlyphPreparationStage::onProcess()
 {
     // get total number of glyphs
     auto numGlyphs = std::size_t{ 0 };

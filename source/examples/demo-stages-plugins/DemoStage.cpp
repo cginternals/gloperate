@@ -85,7 +85,7 @@ void DemoStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_fragmentShader = nullptr;
 }
 
-void DemoStage::onProcess(gloperate::AbstractGLContext *)
+void DemoStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

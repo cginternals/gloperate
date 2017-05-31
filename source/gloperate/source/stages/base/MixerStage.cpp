@@ -64,7 +64,7 @@ void MixerStage::onContextDeinit(AbstractGLContext *)
     m_program = nullptr;
 }
 
-void MixerStage::onProcess(AbstractGLContext *)
+void MixerStage::onProcess()
 {
     // Check if geometry needs to be built
     if (!m_vao.get())

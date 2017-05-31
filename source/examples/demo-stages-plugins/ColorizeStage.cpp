@@ -44,7 +44,7 @@ void ColorizeStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void ColorizeStage::onProcess(gloperate::AbstractGLContext *)
+void ColorizeStage::onProcess()
 {
     // Activate FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;

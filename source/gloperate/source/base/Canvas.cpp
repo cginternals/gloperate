@@ -258,7 +258,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     if (slotTargetFBO)
     {
         slotTargetFBO->setValue(targetFBO);
-        m_renderStage->process(m_openGLContext);
+        m_renderStage->process();
     }
 }
 

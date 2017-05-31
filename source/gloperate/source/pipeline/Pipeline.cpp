@@ -240,7 +240,7 @@ void Pipeline::onContextDeinit(AbstractGLContext * context)
     }
 }
 
-void Pipeline::onProcess(AbstractGLContext * context)
+void Pipeline::onProcess()
 {
     if (!m_sorted) {
         sortStages();
@@ -249,7 +249,7 @@ void Pipeline::onProcess(AbstractGLContext * context)
     for (auto stage : m_stages)
     {
         if (stage->needsProcessing()) {
-            stage->process(context);
+            stage->process();
         }
         else
         {

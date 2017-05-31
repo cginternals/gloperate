@@ -133,7 +133,7 @@ void DemoSSAOPostprocessingStage::onContextDeinit(gloperate::AbstractGLContext *
 {
 }
 
-void DemoSSAOPostprocessingStage::onProcess(gloperate::AbstractGLContext *)
+void DemoSSAOPostprocessingStage::onProcess()
 {
     if (!(*colorTexture && *normalTexture && *depthTexture && *ssaoKernel && *ssaoNoise))
     {

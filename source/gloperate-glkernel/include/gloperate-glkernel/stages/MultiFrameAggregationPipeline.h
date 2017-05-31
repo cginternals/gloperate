@@ -86,7 +86,7 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void connectBasicRenderInterface(gloperate::RenderInterface & interface);

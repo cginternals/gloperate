@@ -102,7 +102,7 @@ void DemoSSAORenderingStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoSSAORenderingStage::onProcess(gloperate::AbstractGLContext *)
+void DemoSSAORenderingStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

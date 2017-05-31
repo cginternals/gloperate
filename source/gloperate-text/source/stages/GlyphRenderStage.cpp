@@ -56,7 +56,7 @@ void GlyphRenderStage::onContextDeinit(gloperate::AbstractGLContext *)
 }
 
 
-void GlyphRenderStage::onProcess(gloperate::AbstractGLContext *)
+void GlyphRenderStage::onProcess()
 {
     gl::glViewport(viewport->x, viewport->y, viewport->z, viewport->w);
 

@@ -178,12 +178,9 @@ public:
     *  @brief
     *    Process stage
     *
-    *  @param[in] context
-    *    OpenGL context that is current (must NOT null!)
-    *
     *  @see onProcess
     */
-    void process(AbstractGLContext * context);
+    void process();
 
     /**
     *  @brief
@@ -630,9 +627,6 @@ protected:
     *    At this point, the stage is expected to process its
     *    inputs and create its output data.
     *
-    *  @param[in] context
-    *    OpenGL context that is current (must NOT be null!)
-    *
     *  @remarks
     *    The provided OpenGL context is already made current by
     *    the caller of this function, i.e., the viewer or parent
@@ -641,7 +635,7 @@ protected:
     *    manages its own context, it needs to rebind the former
     *    context at the end of its execution.
     */
-    virtual void onProcess(AbstractGLContext * context);
+    virtual void onProcess();
 
     /**
     *  @brief

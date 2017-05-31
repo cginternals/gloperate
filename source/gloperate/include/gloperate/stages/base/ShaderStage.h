@@ -69,7 +69,7 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
 protected:
     std::unique_ptr<globjects::Shader> m_shader; ///< Shader object

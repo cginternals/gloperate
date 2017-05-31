@@ -76,7 +76,7 @@ void MultiFrameAggregationStage::onContextInit(gloperate::AbstractGLContext * /*
     setupProgram();
 }
 
-void MultiFrameAggregationStage::onProcess(gloperate::AbstractGLContext * /*context*/)
+void MultiFrameAggregationStage::onProcess()
 {
     if (!(*texture))
         return;

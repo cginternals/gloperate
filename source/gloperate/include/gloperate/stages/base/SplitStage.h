@@ -83,7 +83,7 @@ protected:
     // Virtual Stage interface
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess() override;
     virtual void onInputValueChanged(AbstractSlot * slot) override;
 
     // Helper functions

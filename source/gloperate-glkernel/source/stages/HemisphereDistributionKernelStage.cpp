@@ -42,13 +42,8 @@ void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLConte
 }
 
 
-void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext * context)
+void HemisphereDistributionKernelStage::onProcess()
 {
-    if (!m_texture)
-    {
-        onContextInit(context);
-    }
-
     bool regenKernel = *regenerate;
     if (*kernelSize != m_kernel.extent().x)
     {

@@ -74,14 +74,14 @@ MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
 {
 }
 
-void MultiFrameAggregationPipeline::onProcess(gloperate::AbstractGLContext * context)
+void MultiFrameAggregationPipeline::onProcess()
 {
     if (!m_frameRenderStage)
     {
         return;
     }
 
-    Pipeline::onProcess(context);
+    Pipeline::onProcess();
 }
 
 void MultiFrameAggregationPipeline::setFrameRenderer(gloperate::RenderInterface & interface)

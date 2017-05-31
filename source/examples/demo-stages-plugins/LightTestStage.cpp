@@ -170,11 +170,8 @@ void LightTestStage::onContextInitialize(gloperate::AbstractGLContext *)
     globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
 }
 
-void LightTestStage::onProcess(gloperate::AbstractGLContext * context)
+void LightTestStage::onProcess()
 {
-    if (!m_program)
-        onContextInitialize(context);
-
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
 
