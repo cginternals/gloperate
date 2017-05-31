@@ -11,7 +11,6 @@
 #include <globjects/VertexAttributeBinding.h>
 
 
-
 namespace gloperate
 {
 
@@ -57,6 +56,7 @@ void Drawable::draw(DrawMode drawMode) const
     case DrawMode::ElementsIndexBuffer:
         drawElements();
         break;
+
     case DrawMode::Arrays:
     default:
         drawArrays();
@@ -109,7 +109,7 @@ void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type,
     m_vao->drawElements(mode, count, type, indices);
 }
 
-void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, globjects::Buffer * /*indices*/) const
+void Drawable::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, globjects::Buffer *) const
 {
     // [TODO]: rethink recorded vao state
     m_vao->drawElements(mode, count, type, nullptr);
@@ -135,7 +135,7 @@ void Drawable::setPrimitiveMode(gl::GLenum mode)
     m_primitiveMode = mode;
 }
 
-globjects::Buffer* Drawable::buffer(size_t index)
+globjects::Buffer * Drawable::buffer(size_t index)
 {
     if (m_buffers.count(index) == 0)
     {
@@ -145,7 +145,7 @@ globjects::Buffer* Drawable::buffer(size_t index)
     return m_buffers.at(index);
 }
 
-globjects::Buffer* Drawable::buffer(size_t index) const
+globjects::Buffer * Drawable::buffer(size_t index) const
 {
     if (m_buffers.count(index) == 0)
     {
@@ -155,12 +155,12 @@ globjects::Buffer* Drawable::buffer(size_t index) const
     return m_buffers.at(index);
 }
 
-void Drawable::setBuffer(size_t index, globjects::Buffer* buffer)
+void Drawable::setBuffer(size_t index, globjects::Buffer * buffer)
 {
     m_buffers[index] = buffer;
 }
 
-globjects::Buffer* Drawable::indexBuffer() const
+globjects::Buffer * Drawable::indexBuffer() const
 {
     return m_indexBuffer;
 }
