@@ -1,13 +1,12 @@
 
 #pragma once
 
-#include <gloperate-glkernel/gloperate-glkernel_api.h>
 
 #include <vector>
 
-#include <glkernel/Kernel.h>
-
 #include <cppexpose/plugin/plugin_api.h>
+
+#include <glkernel/Kernel.h>
 
 #include <globjects/Texture.h>
 
@@ -15,6 +14,8 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+
+#include <gloperate-glkernel/gloperate-glkernel_api.h>
 
 
 namespace gloperate_glkernel
@@ -83,8 +84,6 @@ protected:
     glkernel::kernel3 m_kernel;                       ///< Kernel object
     std::vector<glm::vec3> m_kernelData;              ///< Vector with kernel data
     std::unique_ptr<globjects::Texture> m_texture;    ///< Texture with kernel data
-
-
 };
 
 

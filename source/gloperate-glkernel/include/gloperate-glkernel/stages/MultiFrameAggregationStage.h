@@ -93,4 +93,4 @@ protected:
 };
 
 
-} // namespace gloperate
+} // namespace gloperate_glkernel

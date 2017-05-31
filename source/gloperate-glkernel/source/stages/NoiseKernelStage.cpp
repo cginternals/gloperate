@@ -24,11 +24,9 @@ NoiseKernelStage::NoiseKernelStage(gloperate::Environment * environment, const s
 {
 }
 
-
 NoiseKernelStage::~NoiseKernelStage()
 {
 }
-
 
 void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
@@ -37,7 +35,6 @@ void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext *)
     m_texture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
     m_texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_REPEAT);
 }
-
 
 void NoiseKernelStage::onProcess()
 {
@@ -61,12 +58,10 @@ void NoiseKernelStage::onProcess()
     texture.setValue(m_texture.get());
 }
 
-
 void NoiseKernelStage::resizeKernel()
 {
     m_kernel = glkernel::kernel3(*dimensions);
 }
-
 
 void NoiseKernelStage::regenerateKernel()
 {

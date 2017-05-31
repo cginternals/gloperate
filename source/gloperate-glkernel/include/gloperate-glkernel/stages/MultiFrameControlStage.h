@@ -2,14 +2,14 @@
 #pragma once
 
 
+#include <glm/vec4.hpp>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-
-#include <glm/vec4.hpp>
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
@@ -77,4 +77,4 @@ protected:
 };
 
 
-} // namespace gloperate
+} // namespace gloperate_glkernel

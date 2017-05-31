@@ -1,19 +1,21 @@
 
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
+#include <glbinding/gl/enum.h>
+
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/TextureStage.h>
 #include <gloperate/stages/base/FramebufferStage.h>
 #include <gloperate/stages/base/BlitStage.h>
+
 #include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationStage.h>
-
-#include <glbinding/gl/enum.h>
 
 
 namespace gloperate_glkernel
 {
+
 
 CPPEXPOSE_COMPONENT(MultiFrameAggregationPipeline, gloperate::Stage)
 
@@ -127,4 +129,4 @@ void MultiFrameAggregationPipeline::disconnectRenderStage()
 }
 
 
-} // namespace gloperate
+} // namespace gloperate_glkernel

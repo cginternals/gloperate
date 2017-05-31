@@ -24,17 +24,14 @@ TransparencyKernelStage::TransparencyKernelStage(gloperate::Environment * enviro
 {
 }
 
-
 TransparencyKernelStage::~TransparencyKernelStage()
 {
 }
-
 
 void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 }
-
 
 void TransparencyKernelStage::onProcess()
 {
@@ -47,7 +44,6 @@ void TransparencyKernelStage::onProcess()
     kernel.setValue(&m_kernelData);
     texture.setValue(m_texture.get());
 }
-
 
 void TransparencyKernelStage::regenerateKernel()
 {

@@ -1,3 +1,4 @@
+
 #include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
 
 #include <algorithm>
@@ -19,6 +20,7 @@ namespace
 
 
 using namespace glm;
+
 
 // push the corners of the square in to form a disc
 vec2 pushCorners(const vec2 & v)
@@ -52,17 +54,14 @@ DiscDistributionKernelStage::DiscDistributionKernelStage(gloperate::Environment 
 {
 }
 
-
 DiscDistributionKernelStage::~DiscDistributionKernelStage()
 {
 }
-
 
 void DiscDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);
 }
-
 
 void DiscDistributionKernelStage::onProcess()
 {
@@ -85,12 +84,10 @@ void DiscDistributionKernelStage::onProcess()
     }
 }
 
-
 void DiscDistributionKernelStage::resizeKernel()
 {
     m_kernel = glkernel::kernel2(static_cast<std::uint16_t>(*kernelSize));
 }
-
 
 void DiscDistributionKernelStage::regenerateKernel()
 {

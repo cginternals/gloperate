@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <gloperate-glkernel/gloperate-glkernel_api.h>
-
 #include <vector>
 
 #include <glkernel/Kernel.h>
@@ -15,6 +13,8 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+
+#include <gloperate-glkernel/gloperate-glkernel_api.h>
 
 
 namespace gloperate_glkernel
@@ -76,12 +76,11 @@ protected:
     // Helper function
     void regenerateKernel();
 
+
 protected:
     // Data
     std::vector<unsigned char> m_kernelData;          ///< Vector with kernel data
     std::unique_ptr<globjects::Texture> m_texture;    ///< Texture with kernel data
-
-
 };
 
 

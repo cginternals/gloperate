@@ -1,7 +1,6 @@
 
 #include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 
-#include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 
 
@@ -42,4 +41,4 @@ void MultiFrameControlStage::onProcess()
 }
 
 
-} // namespace gloperate
+} // namespace gloperate_glkernel
