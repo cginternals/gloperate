@@ -108,7 +108,7 @@ void DemoDOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoDOFCubeStage::onProcess(gloperate::AbstractGLContext *)
+void DemoDOFCubeStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

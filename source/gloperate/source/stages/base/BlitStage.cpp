@@ -21,7 +21,7 @@ BlitStage::BlitStage(Environment * environment, const std::string & name)
 {
 }
 
-void BlitStage::onProcess(AbstractGLContext * /*context*/)
+void BlitStage::onProcess()
 {
     globjects::Framebuffer * srcFBO = *sourceFBO;
 

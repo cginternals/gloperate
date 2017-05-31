@@ -71,7 +71,7 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void resizeKernel();

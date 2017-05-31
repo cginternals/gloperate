@@ -39,13 +39,8 @@ void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext *)
 }
 
 
-void NoiseKernelStage::onProcess(gloperate::AbstractGLContext * context)
+void NoiseKernelStage::onProcess()
 {
-    if (!m_texture)
-    {
-        onContextInit(context);
-    }
-
     bool regen = *regenerate;
 
     if (*dimensions != glm::ivec3(m_kernel.extent()))

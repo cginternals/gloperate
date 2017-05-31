@@ -109,10 +109,10 @@ void Stage::deinitContext(AbstractGLContext * context)
     onContextDeinit(context);
 }
 
-void Stage::process(AbstractGLContext * context)
+void Stage::process()
 {
     debug(1, "gloperate") << this->qualifiedName() << ": processing";
-    onProcess(context);
+    onProcess();
 
     for (auto input : m_inputs)
     {
@@ -472,7 +472,7 @@ void Stage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void Stage::onProcess(AbstractGLContext *)
+void Stage::onProcess()
 {
 }
 

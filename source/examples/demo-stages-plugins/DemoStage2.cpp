@@ -75,7 +75,7 @@ void DemoStage2::onContextDeinit(gloperate::AbstractGLContext *)
     m_fragmentShaderSource = nullptr;
 }
 
-void DemoStage2::onProcess(gloperate::AbstractGLContext *)
+void DemoStage2::onProcess()
 {
     // Animate camera by 90° per second
     m_angle += 0.2f * glm::pi<float>() * (*renderInterface.timeDelta);

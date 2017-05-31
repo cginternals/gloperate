@@ -23,7 +23,7 @@ LightCreationStage::~LightCreationStage()
 {
 }
 
-void LightCreationStage::onProcess(AbstractGLContext * /*context*/)
+void LightCreationStage::onProcess()
 {
     light.setValue(Light{LightType(*type), *color, *position, *attenuationCoefficients});
 }

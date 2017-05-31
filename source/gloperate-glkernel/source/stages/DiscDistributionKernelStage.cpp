@@ -64,13 +64,8 @@ void DiscDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
 }
 
 
-void DiscDistributionKernelStage::onProcess(gloperate::AbstractGLContext * context)
+void DiscDistributionKernelStage::onProcess()
 {
-    if (!m_texture)
-    {
-        onContextInit(context);
-    }
-
     bool regenKernel = *regenerate;
     if (*kernelSize != m_kernel.extent().x)
     {

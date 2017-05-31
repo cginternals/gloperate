@@ -68,7 +68,7 @@ protected:
     *  @remarks
     *    Overriden
     */
-    virtual void onProcess(gloperate::AbstractGLContext * /*context*/) override;
+    virtual void onProcess() override;
 };
 
 

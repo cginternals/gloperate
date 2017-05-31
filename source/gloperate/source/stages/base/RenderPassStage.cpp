@@ -60,7 +60,7 @@ void RenderPassStage::onContextInit(AbstractGLContext *)
     m_renderPass->stateBefore()->depthMask(gl::GL_TRUE);
 }
 
-void RenderPassStage::onProcess(AbstractGLContext *)
+void RenderPassStage::onProcess()
 {
     m_renderPass->setGeometry((*drawable));
     m_renderPass->setProgram((*program));

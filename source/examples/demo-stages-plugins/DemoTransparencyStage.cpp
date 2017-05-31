@@ -115,7 +115,7 @@ void DemoTransparencyStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoTransparencyStage::onProcess(gloperate::AbstractGLContext *)
+void DemoTransparencyStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

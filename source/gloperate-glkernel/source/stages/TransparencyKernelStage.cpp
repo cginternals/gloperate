@@ -36,13 +36,8 @@ void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
 }
 
 
-void TransparencyKernelStage::onProcess(gloperate::AbstractGLContext * context)
+void TransparencyKernelStage::onProcess()
 {
-    if (!m_texture)
-    {
-        onContextInit(context);
-    }
-
     if (*regenerate)
     {
         regenerateKernel();

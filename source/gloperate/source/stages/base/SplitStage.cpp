@@ -59,7 +59,7 @@ void SplitStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void SplitStage::onProcess(AbstractGLContext *)
+void SplitStage::onProcess()
 {
     // Check if geometry needs to be built
     if (!m_vao.get())

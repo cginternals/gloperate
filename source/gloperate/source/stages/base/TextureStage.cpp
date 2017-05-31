@@ -56,7 +56,7 @@ void TextureStage::onContextDeinit(AbstractGLContext *)
     m_renderTarget.reset(nullptr);
 }
 
-void TextureStage::onProcess(gloperate::AbstractGLContext *)
+void TextureStage::onProcess()
 {
     // Check if texture has been created successfully
     if (!m_texture.get())

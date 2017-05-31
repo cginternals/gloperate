@@ -47,7 +47,7 @@ public:
 
 
 protected:
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
 
 protected:
