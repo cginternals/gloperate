@@ -114,7 +114,7 @@ globjects::Texture * FontFace::glyphTexture() const
     return m_glyphTexture.get();
 }
 
-void FontFace::setGlyphTexture(std::unique_ptr<globjects::Texture> &&texture)
+void FontFace::setGlyphTexture(std::unique_ptr<globjects::Texture> && texture)
 {
     m_glyphTexture = move(texture);
 }

@@ -18,11 +18,9 @@ FontImporterStage::FontImporterStage(gloperate::Environment * environment, const
 {
 }
 
-
 FontImporterStage::~FontImporterStage()
 {
 }
-
 
 void FontImporterStage::onProcess()
 {

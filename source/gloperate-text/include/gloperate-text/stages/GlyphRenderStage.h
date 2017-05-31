@@ -1,11 +1,11 @@
 
 #pragma once
 
+
 #include <glm/vec4.hpp>
 
 #include <gloperate/pipeline/Stage.h>
 
-#include <gloperate-text/gloperate-text_api.h>
 #include <gloperate-text/GlyphVertexCloud.h>
 
 
@@ -30,7 +30,6 @@ class GLOPERATE_TEXT_API GlyphRenderStage : public gloperate::Stage
 {
 public:
     Input<GlyphVertexCloud *> vertexCloud;
-
     Input<glm::vec4> viewport;
     Input<globjects::Framebuffer *> targetFramebuffer;
 

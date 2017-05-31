@@ -16,6 +16,7 @@ namespace gloperate_text
 
 using GlyphIndex = std::uint32_t; ///< Index type of a glyph in a FontFace
 
+
 /**
 *  @brief
 *   Glyph related data for glyph based text rendering.
@@ -287,7 +288,7 @@ protected:
 
     glm::vec2 m_bearing; ///< x and y offsets w.r.t. to the pen-position on the baseline
     float     m_advance; ///< Glyph's horizontal overall advance in pt
-    glm::vec2 m_extent; ///< Width and height of the glyph in pt
+    glm::vec2 m_extent;  ///< Width and height of the glyph in pt
 
     KerningBySubsequentGlyphIndex m_kernings; ///< Kerning information map with upcoming glyph as key
 };

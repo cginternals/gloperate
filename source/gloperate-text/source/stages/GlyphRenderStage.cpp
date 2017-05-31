@@ -25,18 +25,15 @@ GlyphRenderStage::GlyphRenderStage(gloperate::Environment * environment, const s
 {
 }
 
-
 GlyphRenderStage::~GlyphRenderStage()
 {
 }
-
 
 void GlyphRenderStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_vSource = GlyphRenderer::vertexShaderSource();
     m_gSource = GlyphRenderer::geometryShaderSource();
     m_fSource = GlyphRenderer::fragmentShaderSource();
-
 
     m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vSource.get());
     m_geometryShader = cppassist::make_unique<globjects::Shader>(gl::GL_GEOMETRY_SHADER, m_gSource.get());
@@ -50,11 +47,9 @@ void GlyphRenderStage::onContextInit(gloperate::AbstractGLContext *)
     m_renderer = cppassist::make_unique<GlyphRenderer>(m_program.get());
 }
 
-
 void GlyphRenderStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
-
 
 void GlyphRenderStage::onProcess()
 {
