@@ -170,4 +170,4 @@ protected:
 };
 
 
-} // namespace gloperate-qt
+} // namespace gloperate_qt

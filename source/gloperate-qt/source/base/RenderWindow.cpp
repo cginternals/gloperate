@@ -137,4 +137,4 @@ void RenderWindow::wheelEvent(QWheelEvent * event)
 }
 
 
-} // namespace gloperate-qt
+} // namespace gloperate_qt

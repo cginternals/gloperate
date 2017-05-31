@@ -208,4 +208,4 @@ void OpenGLWindow::leaveEvent(QEvent *)
 }
 
 
-} // namespace gloperate-qt
+} // namespace gloperate_qt

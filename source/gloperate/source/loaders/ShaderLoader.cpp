@@ -3,10 +3,10 @@
 
 #include <algorithm>
 
-#include <cppexpose/variant/Variant.h>
-
 #include <cppassist/fs/readfile.h>
 #include <cppassist/fs/FilePath.h>
+
+#include <cppexpose/variant/Variant.h>
 
 #include <glbinding/Meta.h>
 
@@ -14,11 +14,15 @@
 #include <globjects/Shader.h>
 
 
+namespace gloperate
+{
+
+
 CPPEXPOSE_COMPONENT(ShaderLoader, gloperate::AbstractLoader)
 
 
-ShaderLoader::ShaderLoader(gloperate::Environment * environment)
-: gloperate::Loader<globjects::Shader>(environment)
+ShaderLoader::ShaderLoader(Environment * environment)
+: Loader<globjects::Shader>(environment)
 , m_extensionToType({
     {"vert", gl::GL_VERTEX_SHADER},
     {"tesc", gl::GL_TESS_CONTROL_SHADER},
@@ -77,7 +81,7 @@ globjects::Shader * ShaderLoader::load(const std::string & filename, const cppex
 
     auto it = m_extensionToType.find(cppassist::FilePath(filename).extension());
 
-    //TODO is this file a memory leak?
+    // [TODO] Is this file a memory leak?
     globjects::File * file = new globjects::File(filename, false);
 
     if (it == m_extensionToType.end() || file->string().empty()) {
@@ -88,3 +92,6 @@ globjects::Shader * ShaderLoader::load(const std::string & filename, const cppex
 
     return shader;
 }
+
+
+} // namespace gloperate

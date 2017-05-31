@@ -16,7 +16,8 @@
 #include <gloperate/pipeline/Output.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Framebuffer;
     class Texture;
     class Buffer;
@@ -92,14 +93,13 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::VertexArray> m_vao;            /**< Screen-aligned quad geometry */
-    std::unique_ptr<globjects::Program>     m_program;        /**< Shader program */
-    bool                                    m_rebuildProgram; /**< 'true', if program needs rebuild */
-    std::unique_ptr<globjects::Buffer>      m_buffer;
-
-    std::unique_ptr<globjects::Shader>  m_vertexShader;
-    std::unique_ptr<globjects::Shader>  m_geometryShader;
-    std::unique_ptr<globjects::Shader>  m_fragmentShader;
+    std::unique_ptr<globjects::VertexArray> m_vao;            ///< Screen-aligned quad geometry
+    std::unique_ptr<globjects::Buffer>      m_buffer;         ///< Vertex buffer
+    std::unique_ptr<globjects::Program>     m_program;        ///< Shader program
+    std::unique_ptr<globjects::Shader>      m_vertexShader;   ///< Vertex shader object
+    std::unique_ptr<globjects::Shader>      m_geometryShader; ///< Geometry shader object
+    std::unique_ptr<globjects::Shader>      m_fragmentShader; ///< Fragment shader object
+    bool                                    m_rebuildProgram; ///< 'true' if program needs rebuild, else 'false'
 };
 
 

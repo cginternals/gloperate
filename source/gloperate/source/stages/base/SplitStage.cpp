@@ -13,10 +13,9 @@
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
 
+#include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
-
-#include <gloperate/gloperate.h>
 
 
 namespace gloperate

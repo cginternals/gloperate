@@ -10,6 +10,10 @@
 #include <globjects/Texture.h>
 
 
+namespace gloperate_qt
+{
+
+
 CPPEXPOSE_COMPONENT(QtTextureStorer, gloperate::AbstractStorer)
 
 
@@ -87,3 +91,6 @@ bool QtTextureStorer::store(const std::string & filename, const globjects::Textu
 
     return image.mirrored().save(QString::fromStdString(filename));
 }
+
+
+} // namespace gloperate_qt
