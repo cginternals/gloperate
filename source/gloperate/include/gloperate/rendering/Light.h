@@ -19,4 +19,4 @@ struct Light
 };
 
 
-}
+} // namespace gloperate

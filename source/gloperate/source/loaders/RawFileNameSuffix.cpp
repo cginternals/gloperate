@@ -1,5 +1,5 @@
 
-#include <gloperate/base/RawFileNameSuffix.h>
+#include <gloperate/loaders/RawFileNameSuffix.h>
 
 #include <cassert>
 #include <regex>

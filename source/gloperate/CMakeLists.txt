@@ -78,7 +78,6 @@ set(headers
     ${include_path}/base/ColorGradientPreparation.h
     ${include_path}/base/ExplicitEquidistantColorGradient.h
     ${include_path}/base/ExplicitEquidistantColorGradient.inl
-    ${include_path}/base/RawFileNameSuffix.h
 
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/Stage.inl
@@ -144,6 +143,7 @@ set(headers
 
     ${include_path}/loaders/ShaderLoader.h
     ${include_path}/loaders/GlrawTextureLoader.h
+    ${include_path}/loaders/RawFileNameSuffix.h
 )
 
 set(sources
@@ -172,7 +172,6 @@ set(sources
     ${source_path}/base/ExplicitEquidistantColorGradient.cpp
     ${source_path}/base/AbstractColorGradient.cpp
     ${source_path}/base/ExtendedProperties.cpp
-    ${source_path}/base/RawFileNameSuffix.cpp
 
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
@@ -225,6 +224,7 @@ set(sources
 
     ${source_path}/loaders/ShaderLoader.cpp
     ${source_path}/loaders/GlrawTextureLoader.cpp
+    ${source_path}/loaders/RawFileNameSuffix.cpp
 )
 
 # Group source files

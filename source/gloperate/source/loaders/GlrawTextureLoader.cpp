@@ -14,7 +14,7 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/base/RawFileNameSuffix.h>
+#include <gloperate/loaders/RawFileNameSuffix.h>
 
 
 namespace gloperate

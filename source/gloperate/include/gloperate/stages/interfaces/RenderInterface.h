@@ -9,7 +9,8 @@
 #include <gloperate/gloperate_api.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Framebuffer;
 }
 

@@ -11,14 +11,11 @@
 #include <gloperate/pipeline/Output.h>
 
 
-namespace globjects {
-
-
-class Program;
-class State;
-
-
-} // namespace globjects
+namespace globjects
+{
+    class Program;
+    class State;
+}
 
 
 namespace gloperate
@@ -56,9 +53,9 @@ public:
 
 public:
     // Inputs
-    Input<gloperate::AbstractDrawable *> drawable;      ///< the drawable to be drawn
-    Input<globjects::Program *> program;        ///< the program used for rendering
-    Input<gloperate::Camera *> camera;          ///< the input camera
+    Input<gloperate::AbstractDrawable *> drawable; ///< the drawable to be drawn
+    Input<globjects::Program *>          program;  ///< the program used for rendering
+    Input<gloperate::Camera *>           camera;   ///< the input camera
 
     // Additional dynamic inputs can be created, see class description
 
@@ -105,7 +102,7 @@ protected:
     void onContextInit(AbstractGLContext * content) override;
 
 protected:
-    std::unique_ptr<gloperate::RenderPass> m_renderPass;                ///< RenderPass object
+    std::unique_ptr<gloperate::RenderPass> m_renderPass;
     std::unique_ptr<globjects::State> m_beforeState;
     cppexpose::ScopedConnection m_inputAddedConnection;
     cppexpose::ScopedConnection m_inputRemovedConnection;
@@ -115,3 +112,6 @@ protected:
 
 
 } // namespace gloperate
+
+
+#include <gloperate/stages/base/RenderPassStage.inl>

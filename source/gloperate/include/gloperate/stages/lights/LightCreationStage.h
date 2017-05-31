@@ -34,6 +34,7 @@ public:
       , "v0.1.0"
     )
 
+
 public:
     // Inputs
     Input<int> type;                          ///< Type id of the light
@@ -43,6 +44,7 @@ public:
 
     // Output
     Output<Light> light;                      ///< Light object
+
 
 public:
     /**
@@ -61,6 +63,7 @@ public:
     *    Destructor
     */
     virtual ~LightCreationStage();
+
 
 protected:
     // Virtual Stage interface

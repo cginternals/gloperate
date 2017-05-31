@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 
 #include <cppexpose/plugin/plugin_api.h>
@@ -9,10 +10,10 @@
 
 #include <gloperate/gloperate_api.h>
 #include <gloperate/gloperate-version.h>
+#include <gloperate/base/ColorGradientList.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/base/ColorGradientList.h>
 
 
 namespace gloperate
@@ -41,8 +42,8 @@ public:
 
 
 public:
-    Input<ColorGradientList *>                  gradients;       ///< List of gradients
-    Input<size_t>                               textureWidth;    ///< Size of texture in x dimension
+    Input<ColorGradientList *>  gradients;       ///< List of gradients
+    Input<size_t>               textureWidth;    ///< Size of texture in x dimension
 
     Output<globjects::Texture*> gradientTexture; ///< Texture with gradients
 
@@ -59,8 +60,8 @@ public:
     */
     ColorGradientTextureStage(gloperate::Environment * environment, const std::string & name = "");
 
-protected:
 
+protected:
     /**
     *  @brief
     *    Process one iteration
@@ -73,9 +74,11 @@ protected:
     */
     virtual void onProcess() override;
 
+
 protected:
     // Data
-    std::unique_ptr<globjects::Texture>         m_gradientTexture;  ///< Gradient texture
+    std::unique_ptr<globjects::Texture> m_gradientTexture;  ///< Gradient texture
 };
+
 
 } // namespace gloperate

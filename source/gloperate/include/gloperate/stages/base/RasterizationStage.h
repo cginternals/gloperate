@@ -13,14 +13,10 @@
 
 namespace globjects
 {
-
-
-class Program;
-class Framebuffer;
-class Texture;
-
-
-} // namespace globjects
+    class Program;
+    class Framebuffer;
+    class Texture;
+}
 
 
 namespace gloperate
@@ -57,16 +53,15 @@ public:
     RenderInterface renderInterface;            ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<bool> rasterize;                      ///< if connected, it enables/disables rasterization
-    //Input<gloperate::Drawable *> drawable;      ///< the drawable to be drawn
-    //Input<globjects::Program *> program;        ///< the program used for rendering
-    Input<gloperate::RenderPass *> renderPass;  ///< if connected, it replaces program and drawable input
-
-    Input<globjects::Texture *> colorTexture;   ///< pass in of texture input/output
+    Input<bool> rasterize;                      ///< If connected, it enables/disables rasterization
+    //Input<gloperate::Drawable *> drawable;    ///< The drawable to be drawn
+    //Input<globjects::Program *> program;      ///< The program used for rendering
+    Input<gloperate::RenderPass *> renderPass;  ///< If connected, it replaces program and drawable input
+    Input<globjects::Texture *> colorTexture;   ///< Pass in of texture input/output
 
     // Outputs
-    Output<globjects::Framebuffer *> fboOut;     ///< pass through framebuffer
-    Output<globjects::Texture *> colorTextureOut;///< pass through color texture
+    Output<globjects::Framebuffer *> fboOut;     ///< Pass through framebuffer
+    Output<globjects::Texture *> colorTextureOut;///< Pass through color texture
 
 
 public:
@@ -91,10 +86,7 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
-    void onContextInit(AbstractGLContext * content) override;
-
-protected:
-    // protected members
+    virtual void onContextInit(AbstractGLContext * content) override;
 };
 
 

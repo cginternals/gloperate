@@ -7,13 +7,11 @@
 #include <globjects/State.h>
 #include <globjects/Texture.h>
 
+#include <gloperate/gloperate.h>
 #include <gloperate/base/Color.h>
-
 #include <gloperate/rendering/RenderPass.h>
 #include <gloperate/rendering/Drawable.h>
 #include <gloperate/rendering/Camera.h>
-
-#include <gloperate/gloperate.h>
 
 
 namespace gloperate
@@ -90,6 +88,7 @@ void RenderPassStage::onProcess()
 
         ++textureIndex;
     }
+
     for (auto bufferInput : inputs<globjects::Buffer *>()) {
         m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, **bufferInput);
 
