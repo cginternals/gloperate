@@ -123,7 +123,7 @@ void TransparentCirclesStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_vao.reset();
 }
 
-void TransparentCirclesStage::onProcess(gloperate::AbstractGLContext *)
+void TransparentCirclesStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

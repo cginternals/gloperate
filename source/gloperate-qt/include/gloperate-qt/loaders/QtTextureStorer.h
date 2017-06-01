@@ -6,6 +6,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/Storer.h>
+
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
@@ -13,6 +14,10 @@ namespace globjects
 {
     class Texture;
 }
+
+
+namespace gloperate_qt
+{
 
 
 /**
@@ -62,6 +67,9 @@ public:
 
 
 protected:
-    std::vector<std::string> m_extensions; /**< List of supported file extensions (e.g., ".bmp") */
-    std::vector<std::string> m_types;      /**< List of supported file types (e.g., "bmp image (*.bmp)") */
+    std::vector<std::string> m_extensions; ///< List of supported file extensions (e.g., ".bmp")
+    std::vector<std::string> m_types;      ///< List of supported file types (e.g., "bmp image (*.bmp)")
 };
+
+
+} // namespace gloperate_qt

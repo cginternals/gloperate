@@ -35,7 +35,7 @@ bool WindowEvent::isIgnored() const
     return !m_accepted;
 }
 
-void WindowEvent::setAccepted(const bool accepted)
+void WindowEvent::setAccepted(bool accepted)
 {
     m_accepted = accepted;
 }
@@ -269,7 +269,6 @@ bool IconifyEvent::isIconified() const
 {
     return m_isIconified;
 }
-
 
 
 } // namespace gloperate_glfw

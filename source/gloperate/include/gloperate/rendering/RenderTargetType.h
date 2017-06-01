@@ -24,7 +24,7 @@ enum class RenderTargetType : unsigned int
 };
 
 
-} // namespace gloperate_text
+} // namespace gloperate
 
 
 namespace std

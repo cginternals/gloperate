@@ -19,6 +19,7 @@ namespace cppassist {
     class FilePath;
 }
 
+
 namespace gloperate
 {
 
@@ -71,14 +72,14 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess() override;
     virtual void onContextInit(AbstractGLContext * content) override;
     virtual void onContextDeinit(AbstractGLContext * content) override;
 
-protected:
-    std::unique_ptr<globjects::Program> m_program; ///< Program object
 
-    std::vector<std::unique_ptr<globjects::Shader>>     m_shaders; ///< collection of self created shaders for later removal
+protected:
+    std::unique_ptr<globjects::Program>             m_program; ///< Program object
+    std::vector<std::unique_ptr<globjects::Shader>> m_shaders; ///< collection of self created shaders for later removal
 };
 
 

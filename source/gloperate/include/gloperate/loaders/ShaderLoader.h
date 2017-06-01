@@ -20,9 +20,13 @@ namespace globjects
 }
 
 
+namespace gloperate
+{
+
+
 /**
 *  @brief
-*    Shader loader based on Qt
+*    Shader loader
 *
 *  Supported options:
 *    none
@@ -64,8 +68,11 @@ public:
 
 
 protected:
-    std::vector<std::string> m_extensions; /**< List of supported file extensions (e.g., ".bmp") */
-    std::vector<std::string> m_types;      /**< List of supported file types (e.g., "bmp image (*.bmp)") */
+    std::vector<std::string> m_extensions; ///< List of supported file extensions (e.g., ".bmp")
+    std::vector<std::string> m_types;      ///< List of supported file types (e.g., "bmp image (*.bmp)")
 
     const std::unordered_map<std::string, gl::GLenum> m_extensionToType; ///< Mapping of file extension to GLenum type
 };
+
+
+} // namespace gloperate

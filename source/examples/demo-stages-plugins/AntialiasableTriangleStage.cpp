@@ -82,7 +82,7 @@ void AntialiasableTriangleStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_vao.reset();
 }
 
-void AntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
+void AntialiasableTriangleStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

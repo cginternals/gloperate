@@ -178,7 +178,7 @@ protected:
 };
 
 
-} // namespace cppexpose
+} // namespace gloperate
 
 
 #include <gloperate/pipeline/Slot.inl>

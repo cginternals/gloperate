@@ -1,11 +1,9 @@
 
 #include <gloperate-qt/base/GLContextFactory.h>
 
-#include <QWindow>
 #include <QOpenGLContext>
 #include <QSurfaceFormat>
 
-#include <cppassist/logging/logging.h>
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate-qt/base/GLContext.h>
@@ -28,10 +26,9 @@ std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(co
 {
     // Create OpenGL context
     auto qContext = cppassist::make_unique<QOpenGLContext>();
-
     qContext->setFormat(toQSurfaceFormat(format));
 
-    // Create and check success
+    // Create and check context
     if (!qContext->create())
     {
         return nullptr;

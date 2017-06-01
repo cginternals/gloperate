@@ -3,6 +3,7 @@
 
 
 #include <functional>
+
 #include <cppexpose/typed/TypedEnum.h>
 
 

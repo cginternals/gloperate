@@ -55,7 +55,7 @@ void DemoRenderStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoRenderStage::onProcess(gloperate::AbstractGLContext *)
+void DemoRenderStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

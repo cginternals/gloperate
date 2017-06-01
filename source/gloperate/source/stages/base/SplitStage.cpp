@@ -13,10 +13,9 @@
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
 
+#include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
-
-#include <gloperate/gloperate.h>
 
 
 namespace gloperate
@@ -59,7 +58,7 @@ void SplitStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void SplitStage::onProcess(AbstractGLContext *)
+void SplitStage::onProcess()
 {
     // Check if geometry needs to be built
     if (!m_vao.get())

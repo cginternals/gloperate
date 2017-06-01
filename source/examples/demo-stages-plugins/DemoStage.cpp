@@ -60,21 +60,8 @@ DemoStage::DemoStage(gloperate::Environment * environment, const std::string & n
 : Stage(environment, "DemoStage", name)
 , renderInterface(this)
 , fboOut("fboOut", this, nullptr)
-, m_timer(environment)
-, m_time(0.0f)
 , m_angle(0.0f)
 {
-    // Setup timer
-    m_timer.elapsed.connect([this] ()
-    {
-        // Update virtual time
-        m_time += *renderInterface.timeDelta;
-
-        // Redraw
-        invalidateOutputs();
-    });
-
-    m_timer.start(0.0f);
 }
 
 DemoStage::~DemoStage()
@@ -90,9 +77,15 @@ void DemoStage::onContextInit(gloperate::AbstractGLContext *)
 
 void DemoStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
+    m_vao            = nullptr;
+    m_buffer         = nullptr;
+    m_texture        = nullptr;
+    m_program        = nullptr;
+    m_vertexShader   = nullptr;
+    m_fragmentShader = nullptr;
 }
 
-void DemoStage::onProcess(gloperate::AbstractGLContext *)
+void DemoStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -110,7 +103,7 @@ void DemoStage::onProcess(gloperate::AbstractGLContext *)
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Update animation
-    m_angle = m_time;
+    m_angle = *renderInterface.virtualTime;
 
     // Clear background
     glm::vec3 color = *renderInterface.backgroundColor;

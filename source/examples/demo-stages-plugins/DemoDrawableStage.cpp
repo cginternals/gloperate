@@ -56,7 +56,7 @@ void DemoDrawableStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoDrawableStage::onProcess(gloperate::AbstractGLContext *)
+void DemoDrawableStage::onProcess()
 {
     drawable.setValue(m_drawable.get());
 }

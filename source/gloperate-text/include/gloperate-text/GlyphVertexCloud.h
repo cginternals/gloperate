@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 #include <memory>
 #include <vector>
@@ -15,7 +17,6 @@ namespace globjects
     class Buffer;
 }
 
-
 namespace gloperate
 {
     class Drawable;
@@ -24,6 +25,7 @@ namespace gloperate
 
 namespace gloperate_text
 {
+
 
 class FontFace;
 class GlyphSequence;
@@ -43,6 +45,7 @@ public:
     };
 
     using Vertices = std::vector<Vertex>;
+
 
 public:
     GlyphVertexCloud();
@@ -67,9 +70,10 @@ public:
         const std::vector<GlyphSequence> & sequences
     ,   const FontFace & fontFace);
 
+
 protected:   
-    std::unique_ptr<gloperate::Drawable>           m_drawable;     ///< underlying drawable object
-    std::unique_ptr<globjects::Buffer>  m_buffer;       ///< pointer to the buffer used by m_drawable
+    std::unique_ptr<gloperate::Drawable> m_drawable; ///< underlying drawable object
+    std::unique_ptr<globjects::Buffer>   m_buffer;   ///< pointer to the buffer used by m_drawable
 
     Vertices             m_vertices;
     globjects::Texture*  m_texture;

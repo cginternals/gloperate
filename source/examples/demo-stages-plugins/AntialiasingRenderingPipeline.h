@@ -9,17 +9,14 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
-namespace gloperate_glkernel {
-
-class DiscDistributionKernelStage;
-
+namespace gloperate_glkernel
+{
+    class DiscDistributionKernelStage;
 }
 
 namespace gloperate
 {
-
-class SubpixelAntialiasingOffsetStage;
-
+    class SubpixelAntialiasingOffsetStage;
 }
 
 

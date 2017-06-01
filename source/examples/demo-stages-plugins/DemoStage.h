@@ -11,7 +11,6 @@
 #include <globjects/Shader.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/Timer.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
@@ -66,7 +65,7 @@ protected:
     // Virtual Stage functions
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void createAndSetupCamera();
@@ -84,10 +83,6 @@ protected:
     std::unique_ptr<globjects::Shader>          m_vertexShader;
     std::unique_ptr<globjects::Shader>          m_fragmentShader;
 
-    // Tools
-    gloperate::Timer m_timer;
-
     // Status
-    float m_time;   ///< Virtual time (in seconds)
     float m_angle;  ///< Current angle of rotating triangle (in radians)
 };

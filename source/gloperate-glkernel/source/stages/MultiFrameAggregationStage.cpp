@@ -1,6 +1,9 @@
 
 #include <gloperate-glkernel/stages/MultiFrameAggregationStage.h>
 
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
+
 #include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/VertexArray.h>
@@ -8,8 +11,6 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/globjects.h>
 
-#include <glbinding/gl/functions.h>
-#include <glbinding/gl/enum.h>
 
 static const std::array<glm::vec2, 4> s_vertices { {
     glm::vec2( +1.f, -1.f ),
@@ -88,7 +89,7 @@ void MultiFrameAggregationStage::onContextDeinit(gloperate::AbstractGLContext * 
     m_vao.reset();
 }
 
-void MultiFrameAggregationStage::onProcess(gloperate::AbstractGLContext * /*context*/)
+void MultiFrameAggregationStage::onProcess()
 {
     if (!(*texture))
         return;
@@ -153,4 +154,4 @@ void MultiFrameAggregationStage::setupProgram()
 }
 
 
-} // namespace gloperate
+} // namespace gloperate_glkernel

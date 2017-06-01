@@ -116,7 +116,7 @@ void DOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_vao.reset();
 }
 
-void DOFCubeStage::onProcess(gloperate::AbstractGLContext *)
+void DOFCubeStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

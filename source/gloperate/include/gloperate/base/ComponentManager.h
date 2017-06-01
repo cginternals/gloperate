@@ -37,6 +37,16 @@ public:
     */
     ~ComponentManager();
 
+    /**
+    *  @brief
+    *    Scan for gloperate plugins
+    *
+    *  @remarks
+    *    This scans only for plugin libraries with the suffix "-plugins",
+    *    or "-plugins-debug" for debug builds.
+    */
+    void scanPlugins();
+
 
 protected:
     // Scripting functions

@@ -56,21 +56,18 @@ Item
     */
     function getStage(path)
     {
-        // Get stage object
-        var stage = getStageObject(path);
+        var info = root ? root.getDescription(path) : null;
 
-        if (stage)
-        {
-            return stage.getDescription();
+        if (info) {
+            return info;
+        } else {
+            return {
+                name:    '',
+                inputs:  [],
+                outputs: [],
+                stages:  []
+            };
         }
-
-        // Invalid stage
-        return {
-            name:    '',
-            inputs:  [],
-            outputs: [],
-            stages:  []
-        };
     }
 
     /**
@@ -89,24 +86,18 @@ Item
     */
     function getSlot(path)
     {
-        // Get stage object
-        var stage = getStageObjectForSlot(path);
+        var info = root ? root.getSlot(path) : null;
 
-        if (stage)
-        {
-            var names = path.split('.');
-            var slotName = names[names.length - 1];
-
-            return stage.getSlot(slotName);
+        if (info) {
+            return info;
+        } else {
+            return {
+                name:    '',
+                type:    '',
+                value:   null,
+                options: {}
+            };
         }
-
-        // Invalid slot
-        return {
-            name:    '',
-            type:    '',
-            value:   null,
-            options: {}
-        };
     }
 
     /**
@@ -119,18 +110,10 @@ Item
     */
     function setSlotValue(path, value)
     {
-        // Get stage object
-        var stage = getStageObjectForSlot(path);
-
-        if (!stage)
+        if (root)
         {
-            return;
+            root.setSlotValue(path, value);
         }
-
-        // Set value
-        var names = path.split('.');
-        var slotName = names[names.length - 1];
-        stage.setSlotValue(slotName, value);
     }
 
     /**
@@ -148,16 +131,10 @@ Item
     */
     function createStage(path, className, name)
     {
-        // Get stage object
-        var stage = getStageObject(path);
-
-        if (stage)
+        if (root)
         {
-            return stage.createStage(className, name);
+            return root.createStage(path, className, name);
         }
-
-        // Error
-        return '';
     }
 
     /**
@@ -170,12 +147,9 @@ Item
     */
     function removeStage(path, name)
     {
-        // Get stage object
-        var stage = getStageObject(path);
-
-        if (stage)
+        if (root)
         {
-            stage.removeStage(name);
+            root.removeStage(path, name);
         }
     }
 
@@ -190,14 +164,10 @@ Item
     */
     function getSlotTypes(path)
     {
-        var stage = getStageObject(path);
+        var types = root ? root.slotTypes() : null;
 
-        if (stage)
-        {
-            return stage.slotTypes();
-        }
-
-        return [];
+        if (types) return types;
+        else       return [];
     }
 
     /**
@@ -214,11 +184,9 @@ Item
     */
     function createSlot(path, slotType, type, name)
     {
-        var stage = getStageObject(path);
-
-        if (stage)
+        if (root)
         {
-            stage.createSlot(slotType, type, name);
+            root.createSlot(path, slotType, type, name);
         }
     }
 
@@ -233,16 +201,10 @@ Item
     */
     function getConnections(path)
     {
-        // Get stage object
-        var stage = getStageObject(path);
+        var connections = root ? root.getConnections(path) : null;
 
-        if (stage)
-        {
-            return stage.getConnections();
-        }
-
-        // Invalid stage
-        return [];
+        if (connections) return connections;
+        else             return [];
     }
 
     /**
@@ -255,12 +217,9 @@ Item
     */
     function createConnection(from, to)
     {
-        // Get stage object
-        var stage = getStageObject('pipeline');
-
-        if (stage)
+        if (root)
         {
-            stage.createConnection(from, to);
+            root.createConnection(from, to);
         }
     }
 
@@ -272,66 +231,9 @@ Item
     */
     function removeConnection(to)
     {
-        // Get stage object
-        var stage = getStageObject('pipeline');
-
-        if (stage)
+        if (root)
         {
-            stage.removeConnection(to);
+            root.removeConnection(to);
         }
-    }
-
-    // Internal functions
-
-    function getStageObject(path)
-    {
-        // Begin with root object
-        var stage = root;
-
-        // Resolve path
-        var names = path.split('.');
-        for (var i=0; i<names.length; i++)
-        {
-            var name = names[i];
-
-            if (name == 'pipeline' && i == 0) {
-                stage = root;
-            } else {
-                stage = stage[name];
-            }
-
-            if (!stage) {
-                return null;
-            }
-        }
-
-        // Return stage
-        return stage;
-    }
-
-    function getStageObjectForSlot(path)
-    {
-        // Begin with root object
-        var stage = root;
-
-        // Resolve path
-        var names = path.split('.');
-        for (var i=0; i<names.length-1; i++)
-        {
-            var name = names[i];
-
-            if (name == 'pipeline' && i == 0) {
-                stage = root;
-            } else {
-                stage = stage[name];
-            }
-
-            if (!stage) {
-                return null;
-            }
-        }
-
-        // Return stage
-        return stage;
     }
 }

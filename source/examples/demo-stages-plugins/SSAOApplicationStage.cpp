@@ -142,7 +142,7 @@ void SSAOApplicationStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_vao.reset();
 }
 
-void SSAOApplicationStage::onProcess(gloperate::AbstractGLContext *)
+void SSAOApplicationStage::onProcess()
 {
     if (!(*colorTexture && *normalTexture && *depthTexture && *ssaoKernel && *ssaoNoise))
     {

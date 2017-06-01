@@ -1,10 +1,9 @@
 
-#include <gloperate/base/RawFileNameSuffix.h>
+#include <gloperate/loaders/RawFileNameSuffix.h>
 
 #include <cassert>
 #include <regex>
 #include <map>
-
 
 #include <cppassist/string/conversion.h>
 
@@ -59,15 +58,17 @@ namespace gloperate
 RawFileNameSuffix::RawFileNameSuffix(const std::string & fileName)
 : m_width (-1)
 , m_height(-1)
+, m_compressed(false)
 , m_format(gl::GL_NONE)
 , m_type(gl::GL_NONE)
-, m_compressed(false)
 {
     // check if either compressed or uncompressed (or unknown) format
     std::smatch base_match;
 
     if (std::regex_match(fileName, base_match, regex1))
+    {
         m_compressed = true;
+    }
     else
     {
         if (!std::regex_match(fileName, base_match, regex2))
@@ -78,7 +79,6 @@ RawFileNameSuffix::RawFileNameSuffix(const std::string & fileName)
     m_width = cppassist::string::fromString<int>(base_match[1]);
     m_height = cppassist::string::fromString<int>(base_match[2]);
 
-
     if (!m_compressed)
     {
         m_format = format(base_match[3]);
@@ -88,7 +88,6 @@ RawFileNameSuffix::RawFileNameSuffix(const std::string & fileName)
     m_type = type(base_match[m_compressed ? 3 : 4]);
     assert(m_type != gl::GL_NONE);
 }
-
 
 bool RawFileNameSuffix::isValid() const
 {
@@ -108,6 +107,11 @@ int RawFileNameSuffix::height() const
     return m_height;
 }
 
+bool RawFileNameSuffix::compressed() const
+{
+    return m_compressed;
+}
+
 gl::GLenum RawFileNameSuffix::type() const
 {
     return m_type;
@@ -116,11 +120,6 @@ gl::GLenum RawFileNameSuffix::type() const
 gl::GLenum RawFileNameSuffix::format() const
 {
     return m_format;
-}
-
-bool RawFileNameSuffix::compressed() const
-{
-    return m_compressed;
 }
 
 gl::GLenum RawFileNameSuffix::format(const std::string & format)
@@ -134,5 +133,6 @@ gl::GLenum RawFileNameSuffix::type(const std::string & type)
     auto it = typesBySuffix.find(cppassist::string::toLower(type));
     return (it!=typesBySuffix.end()) ? it->second : gl::GL_NONE;
 }
+
 
 } // namespace gloperate

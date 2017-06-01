@@ -1,11 +1,8 @@
 
 #pragma once
 
-#include <gloperate-glkernel/gloperate-glkernel_api.h>
 
 #include <vector>
-
-#include <glkernel/Kernel.h>
 
 #include <cppexpose/plugin/plugin_api.h>
 
@@ -15,6 +12,10 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+
+#include <glkernel/Kernel.h>
+
+#include <gloperate-glkernel/gloperate-glkernel_api.h>
 
 
 namespace gloperate_glkernel
@@ -66,13 +67,14 @@ public:
     *  @brief
     *    Destructor
     */
-    ~DiscDistributionKernelStage();
+    virtual ~DiscDistributionKernelStage();
+
 
 protected:
     // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void resizeKernel();
@@ -84,8 +86,6 @@ protected:
     glkernel::kernel2 m_kernel;                       ///< Kernel object
     std::vector<glm::vec2> m_kernelData;              ///< Vector with kernel data
     std::unique_ptr<globjects::Texture> m_texture;    ///< Texture with kernel data
-    
-
 };
 
 

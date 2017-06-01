@@ -48,7 +48,7 @@ void ProgramStage::onContextDeinit(AbstractGLContext *)
     m_program = nullptr;
 }
 
-void ProgramStage::onProcess(AbstractGLContext *)
+void ProgramStage::onProcess()
 {
     for (auto shader : m_program->shaders()) {
         m_program->detach(shader);

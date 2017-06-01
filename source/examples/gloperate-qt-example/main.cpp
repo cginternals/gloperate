@@ -1,5 +1,4 @@
 
-#include <QApplication>
 #include <QMainWindow>
 #include <QDockWidget>
 
@@ -8,13 +7,12 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/pipeline/Stage.h>
 
-#include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Application.h>
-#include <gloperate-qt/base/UpdateManager.h>
 #include <gloperate-qt/base/RenderWindow.h>
+#include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/scripting/ECMA26251SyntaxHighlighter.h>
 #include <gloperate-qt/scripting/ECMA26251Completer.h>
 #include <gloperate-qt/scripting/ScriptPromptWidget.h>
@@ -40,18 +38,10 @@ int main(int argc, char * argv[])
     environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    #ifndef NDEBUG
-        environment.componentManager()->scanPlugins("-plugins-debug");
-    #else
-        environment.componentManager()->scanPlugins("-plugins");
-    #endif
+    environment.componentManager()->scanPlugins();
 
     // Initialize Qt application
     gloperate_qt::Application app(&environment, argc, argv);
-    UpdateManager updateManager(&environment);
-
-    // Create render stage
-    auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
 
     // Create render window
     auto window = cppassist::make_unique<RenderWindow>(&environment);
@@ -71,7 +61,7 @@ int main(int argc, char * argv[])
 
     auto windowRaw = window.get();
     window->createContext();
-    window->setRenderStage(std::move(renderStage));
+    window->canvas()->loadRenderStage("DemoStage2");
 
     // Create main window
     QMainWindow mainWindow;

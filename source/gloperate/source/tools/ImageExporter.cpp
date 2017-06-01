@@ -8,7 +8,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/AbstractGLContext.h>
 
@@ -32,7 +32,7 @@ ImageExporter::~ImageExporter()
 {
 }
 
-void ImageExporter::setTarget(AbstractCanvas * canvas, const std::string & filename, int width, int height, int renderIterations)
+void ImageExporter::setTarget(Canvas * canvas, const std::string & filename, int width, int height, int renderIterations)
 {
     // Save configuration
     m_canvas           = canvas;
@@ -42,8 +42,11 @@ void ImageExporter::setTarget(AbstractCanvas * canvas, const std::string & filen
     m_renderIterations = renderIterations;
 }
 
-void ImageExporter::save(ImageExporter::ContextHandling contextHandling)
+void ImageExporter::save(ImageExporter::ContextHandling)
 {
+    // [TODO] Reimplement
+
+    /*
     // Create output textures
     m_color = std::unique_ptr<globjects::Texture>(globjects::Texture::createDefault(gl::GL_TEXTURE_2D));
     m_depth = cppassist::make_unique<globjects::Renderbuffer>();
@@ -86,6 +89,7 @@ void ImageExporter::save(ImageExporter::ContextHandling contextHandling)
 
     // Reset viewport
     m_canvas->onResetViewport();
+    */
 }
 
 

@@ -43,7 +43,7 @@ void LightBufferTextureStage::onContextInit(AbstractGLContext * /*context*/)
 {
 }
 
-void LightBufferTextureStage::onProcess(AbstractGLContext * /*context*/)
+void LightBufferTextureStage::onProcess()
 {
     if (!colorTypeData.isValid() || !positionData.isValid() || !attenuationData.isValid())
     {

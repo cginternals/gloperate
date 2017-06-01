@@ -33,7 +33,7 @@ void TextureLoadStage::onContextDeinit(AbstractGLContext *)
     m_texture = nullptr;
 }
 
-void TextureLoadStage::onProcess(AbstractGLContext *)
+void TextureLoadStage::onProcess()
 {
     // Check if texture needs to be rebuilt
     if (!texture.isValid())

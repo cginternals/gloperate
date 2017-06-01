@@ -1,17 +1,18 @@
+
 #include <gloperate-glkernel/stages/HemisphereDistributionKernelStage.h>
 
 #include <algorithm>
 
 #include <glm/vec3.hpp>
 
-#include <glkernel/sample.h>
-#include <glkernel/scale.h>
-#include <glkernel/sort.h>
-
 #include <glbinding/gl/enum.h>
 
 #include <globjects/Texture.h>
 #include <globjects/Buffer.h>
+
+#include <glkernel/sample.h>
+#include <glkernel/scale.h>
+#include <glkernel/sort.h>
 
 
 namespace gloperate_glkernel
@@ -30,11 +31,9 @@ HemisphereDistributionKernelStage::HemisphereDistributionKernelStage(gloperate::
 {
 }
 
-
 HemisphereDistributionKernelStage::~HemisphereDistributionKernelStage()
 {
 }
-
 
 void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
@@ -48,13 +47,8 @@ void HemisphereDistributionKernelStage::onContextDeinit(gloperate::AbstractGLCon
 }
 
 
-void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext * context)
+void HemisphereDistributionKernelStage::onProcess()
 {
-    if (!m_texture)
-    {
-        onContextInit(context);
-    }
-
     bool regenKernel = *regenerate;
     if (*kernelSize != m_kernel.extent().x)
     {
@@ -74,12 +68,10 @@ void HemisphereDistributionKernelStage::onProcess(gloperate::AbstractGLContext *
     }
 }
 
-
 void HemisphereDistributionKernelStage::resizeKernel()
 {
     m_kernel = glkernel::kernel3(static_cast<std::uint16_t>(*kernelSize));
 }
-
 
 void HemisphereDistributionKernelStage::regenerateKernel()
 {
