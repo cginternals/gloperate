@@ -6,8 +6,6 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 
-#include <globjects/base/StringTemplate.h>
-#include <globjects/base/StaticStringSource.h>
 #include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
@@ -39,66 +37,6 @@ static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
     {{ glm::vec3(-1.f, +1.f, +1.f), glm::vec3( 0.0f,  1.0f,  0.0) }}
 } };
 
-static const char * s_vertexShader = R"(
-    #version 140
-    #extension GL_ARB_explicit_attrib_location : require
-
-    uniform mat4 modelMatrix;
-    uniform mat4 modelViewProjection;
-
-    layout (location = 0) in vec3 a_vertex;
-    layout (location = 1) in vec3 a_normal;
-
-    out vec3 v_worldPosition;
-    flat out vec3 v_normal;
-
-    void main()
-    {
-        gl_Position = modelViewProjection * vec4(a_vertex, 1.0);
-
-        v_worldPosition = (modelMatrix * vec4(a_vertex, 1.0)).xyz;
-        v_normal = normalize((modelMatrix * vec4(a_normal, 0.0)).xyz);
-    }
-)";
-
-static const char * s_fragmentShader = R"(
-    #version 140
-    #extension GL_ARB_explicit_attrib_location : require
-    #extension GL_ARB_shading_language_include : require
-
-    #define LIGHT_PROCESSING_PHONG
-
-    #include </gloperate/shaders/lightProcessing.glsl>
-
-    uniform samplerBuffer colorTypeData;
-    uniform samplerBuffer positionData;
-    uniform samplerBuffer attenuationData;
-
-    uniform vec3 eye;
-    uniform float glossiness;
-
-    in vec3 v_worldPosition;
-    flat in vec3 v_normal;
-
-    layout (location = 0) out vec4 fragColor;
-
-    void main()
-    {
-        vec3 color = lightIntensity(
-            v_worldPosition,
-            vec3(1.0),
-            vec3(0.5),
-            v_normal,
-            glossiness,
-            eye,
-            colorTypeData,
-            positionData,
-            attenuationData);
-
-        fragColor = vec4(color, 1.0);
-    }
-)";
-
 static const glm::vec3 cameraEye(0.0f, -1.5f, -3.0f);
 
 
@@ -125,6 +63,9 @@ LightTestStage::~LightTestStage()
 
 void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    if (m_vao) // protect against initializing twice
+        return;
+
     // Setup Geometry
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
@@ -142,18 +83,17 @@ void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
     normalBinding->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(glm::vec3));
     m_vao->enable(1);
 
-    // Setup Program
-    // [TODO] this is a memory leak! Use resource loader?
-    globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
-    globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
+    // setup Program
+    m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoLights.vert");
+    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoLights.frag");
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
 
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
@@ -163,11 +103,30 @@ void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
 
     m_program->setUniform("eye", cameraEye);
 
-    // [TODO] fix memory leak
+    // register NamedStrings for shader includes
     auto dataFolderPath = gloperate::dataPath();
-    globjects::NamedString::create("/gloperate/shaders/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
-    globjects::NamedString::create("/gloperate/shaders/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
-    globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
+    m_lightProcessingString        = globjects::NamedString::create("/gloperate/shaders/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
+    m_lightProcessingDiffuseString = globjects::NamedString::create("/gloperate/shaders/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
+    m_lightProcessingPhongString   = globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
+}
+
+void LightTestStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    // deregister NamedStrings
+    m_lightProcessingDiffuseString.reset();
+    m_lightProcessingPhongString.reset();
+    m_lightProcessingString.reset();
+
+    // deinitialize program
+    m_program.reset();
+    m_fragmentShader.reset();
+    m_vertexShader.reset();
+    m_fragmentShaderSource.reset();
+    m_vertexShaderSource.reset();
+
+    // deinitialize geometry
+    m_vertexBuffer.reset();
+    m_vao.reset();
 }
 
 void LightTestStage::onProcess()

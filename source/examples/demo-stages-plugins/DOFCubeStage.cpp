@@ -7,8 +7,7 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/StringTemplate.h>
-#include <globjects/base/StaticStringSource.h>
+#include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
@@ -39,46 +38,6 @@ static const std::array<std::array<glm::vec3,2>, 14> s_vertices { {
     {{ glm::vec3(-1.f, +1.f, -1.f),glm::vec3(0.0f, 0.0f, 0.0f) }},
     {{ glm::vec3(-1.f, +1.f, +1.f),glm::vec3(0.0f, 0.0f, 0.0f) }}
 } };
-
-// Vertex shader displaying the cube
-static const char * s_vertexShader = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-uniform mat4 view;
-uniform mat4 projection;
-uniform vec2 dofShift;
-
-layout (location = 0) in vec3 a_vertex;
-layout (location = 1) in vec3 a_color;
-
-flat out vec3 v_color;
-
-void main()
-{
-    vec4 viewPos = view * vec4(a_vertex, 1.0);
-    vec4 shiftedPos = vec4(viewPos.xy + dofShift * (viewPos.z + 0.1), viewPos.zw);
-    //shiftedPos = viewPos;
-    gl_Position = projection * shiftedPos;
-
-    v_color = a_color;
-}
-)";
-
-// Fragment shader displaying the cube
-static const char * s_fragmentShader = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-flat in vec3 v_color;
-
-layout (location = 0) out vec4 fragColor;
-
-void main()
-{
-    fragColor = vec4(v_color, 1.0);
-}
-)";
 
 
 } // namespace
@@ -184,17 +143,16 @@ void DOFCubeStage::setupGeometry()
 
 void DOFCubeStage::setupProgram()
 {
-    //TODO this is a memory leak! Use resource loader?
-    globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
-    globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
+    m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoDepthOfField.vert");
+    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoDepthOfField.frag");
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
 
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 }
