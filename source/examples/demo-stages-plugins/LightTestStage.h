@@ -70,7 +70,7 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onContextInitialize(gloperate::AbstractGLContext * context);
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess();
 
 

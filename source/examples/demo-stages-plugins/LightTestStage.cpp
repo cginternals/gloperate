@@ -123,7 +123,7 @@ LightTestStage::~LightTestStage()
 {
 }
 
-void LightTestStage::onContextInitialize(gloperate::AbstractGLContext *)
+void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
 {
     // Setup Geometry
     m_vao = cppassist::make_unique<globjects::VertexArray>();
