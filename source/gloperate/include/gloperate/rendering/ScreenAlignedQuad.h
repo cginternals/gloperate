@@ -1,17 +1,16 @@
 
 #pragma once
 
-#include <globjects/Buffer.h>
-#include <globjects/VertexArray.h>
 
-#include <gloperate/rendering/AbstractDrawable.h>
 #include <gloperate/rendering/Drawable.h>
-
-#include <gloperate/gloperate_api.h>
 
 
 namespace globjects
 {
+    class Buffer;
+    class Texture;
+    class Program;
+    class Shader;
     class AbstractStringSource;
 }
 
@@ -31,10 +30,36 @@ class GLOPERATE_API ScreenAlignedQuad : public AbstractDrawable
 public:
     /**
     *  @brief
-    *    Constructor
+    *    Get vertex shader for screen aligned quad
     *
-    *  @remarks
-    *    Creates OpenGL objects, thus, a current context is required.
+    *  @return
+    *    String source for shader
+    */
+    static std::unique_ptr<globjects::AbstractStringSource> vertexShaderSource();
+
+    /**
+    *  @brief
+    *    Get fragment shader for screen aligned quad
+    *
+    *  @return
+    *    String source for shader
+    */
+    static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSource();
+
+    /**
+    *  @brief
+    *    Get fragment shader for screen aligned quad
+    *
+    *  @return
+    *    String source for shader
+    */
+    static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSourceInverted();
+
+
+public:
+    /**
+    *  @brief
+    *    Constructor
     */
     ScreenAlignedQuad();
 
@@ -49,33 +74,66 @@ public:
 
     /**
     *  @brief
-    *    Get underlying drawable object
+    *    Get texture
     *
     *  @return
-    *    Pointer to the drawable object (always valid)
+    *    Texture that is displayed (can be null)
     */
-    const Drawable * drawable() const;
+    globjects::Texture * texture() const;
+
+    /**
+    *  @brief
+    *    Set texture
+    *
+    *  @param[in] texture
+    *    Texture that is displayed (can be null)
+    */
+    void setTexture(globjects::Texture * texture);
+
+    /**
+    *  @brief
+    *    Check if texture is mirrored vertically
+    *
+    *  @return
+    *    'true' if texture is mirrored vertically, else 'false'
+    */
+    bool inverted() const;
+
+    /**
+    *  @brief
+    *    Set if texture is mirrored vertically
+    *
+    *  @param[in] inverted
+    *    'true' if texture is mirrored vertically, else 'false'
+    */
+    void setInverted(bool inverted);
 
     /**
     *  @brief
     *    Draw geometry
-    *
-    *  @remarks
-    *    This function is the main draw entry point, used by the superclass
-    *    AbstractDrawable.
     */
     virtual void draw() const override;
 
 
-public:
-    static std::unique_ptr<globjects::AbstractStringSource> vertexShaderSource();
-    static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSource();
-    static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSourceInverted();
+protected:
+    /**
+    *  @brief
+    *    Initialize OpenGL objects
+    */
+    void initialize();
 
 
 protected:
-    std::unique_ptr<Drawable>          m_drawable; ///< Underlying drawable object
-    std::unique_ptr<globjects::Buffer> m_buffer;   ///< Pointer to the buffer used by m_drawable
+    std::unique_ptr<Drawable>                          m_drawable;             ///< Underlying drawable object
+    std::unique_ptr<globjects::Buffer>                 m_vertices;             ///< Vertex buffer
+    std::unique_ptr<globjects::AbstractStringSource>   m_vertexShaderSource;   ///< Vertex shader source
+    std::unique_ptr<globjects::AbstractStringSource>   m_fragmentShaderSource; ///< Fragment shader source
+    std::unique_ptr<globjects::Shader>                 m_vertexShader;         ///< Vertex shader
+    std::unique_ptr<globjects::Shader>                 m_fragmentShader;       ///< Fragment shader
+    std::unique_ptr<globjects::Program>                m_program;              ///< Shader program
+    globjects::Texture                               * m_texture;              ///< Texture that is displayed (can be null)
+    bool                                               m_inverted;             ///< If 'true', the texture will be mirrored vertically, else 'false'
+    bool                                               m_initialized;          ///< 'true' if initialized, else 'false'
 };
 
 

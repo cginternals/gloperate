@@ -16,7 +16,7 @@
 #include <gloperate/stages/base/RenderPassStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
 
-#include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <gloperate/rendering/Quad.h>
 
 #include "TimerStage.h"
 #include "SpinningRectStage.h"
@@ -114,22 +114,22 @@ DemoPipeline::~DemoPipeline()
 {
 }
 
-void DemoPipeline::onContextInit(gloperate::AbstractGLContext *context)
+void DemoPipeline::onContextInit(gloperate::AbstractGLContext * context)
 {
     Pipeline::onContextInit(context);
 
-    m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
+    m_quad = cppassist::make_unique<gloperate::Quad>(2.0f);
 
 std::cout << "DemoPipeline::onContextInit()" << std::endl;
 
-    m_colorizeRenderPassStage->drawable = m_screenAlignedQuad.get();
+    m_colorizeRenderPassStage->drawable = m_quad.get();
 }
 
-void DemoPipeline::onContextDeinit(gloperate::AbstractGLContext *context)
+void DemoPipeline::onContextDeinit(gloperate::AbstractGLContext * context)
 {
     Pipeline::onContextDeinit(context);
 
-    m_screenAlignedQuad = nullptr;
+    m_quad = nullptr;
 }
 
 void DemoPipeline::onRotateChanged(const bool & rotate)

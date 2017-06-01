@@ -13,9 +13,6 @@
 namespace globjects
 {
     class Framebuffer;
-    class Program;
-    class Shader;
-    class AbstractStringSource;
 }
 
 namespace gloperate
@@ -70,19 +67,14 @@ protected:
 
 
 protected:
-    TextureItem                                      * m_textureItem;          ///< TextureItem into which is rendered
-    gloperate::Environment                           * m_environment;          ///< GlOperate environment
-    unsigned int                                       m_width;                ///< Current width
-    unsigned int                                       m_height;               ///< Current height
-    QString                                            m_path;                 ///< Path to texture slot
+    TextureItem                                 * m_textureItem;       ///< TextureItem into which is rendered
+    gloperate::Environment                      * m_environment;       ///< GlOperate environment
+    unsigned int                                  m_width;             ///< Current width
+    unsigned int                                  m_height;            ///< Current height
+    QString                                       m_path;              ///< Path to texture slot
 
-    std::unique_ptr<globjects::Framebuffer>            m_fbo;                  ///< Framebuffer wrapper for outer FBO
-    std::unique_ptr<gloperate::ScreenAlignedQuad>      m_screenAlignedQuad;    ///< Screen aligned quad geometry
-    std::unique_ptr<globjects::Program>                m_program;              ///< Shader program
-    std::unique_ptr<globjects::AbstractStringSource>   m_vertexShaderSource;   ///< Vertex shader source
-    std::unique_ptr<globjects::AbstractStringSource>   m_fragmentShaderSource; ///< Fragment shader source
-    std::unique_ptr<globjects::Shader>                 m_vertexShader;         ///< Vertex shader
-    std::unique_ptr<globjects::Shader>                 m_fragmentShader;       ///< Fragment shader
+    std::unique_ptr<globjects::Framebuffer>       m_fbo;               ///< Framebuffer wrapper for outer FBO
+    std::unique_ptr<gloperate::ScreenAlignedQuad> m_screenAlignedQuad; ///< Screen aligned quad
 };
 
 
