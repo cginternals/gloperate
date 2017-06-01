@@ -23,6 +23,12 @@ MultiFrameControlStage::MultiFrameControlStage(gloperate::Environment * environm
     viewport.valueChanged.connect([this](const glm::vec4 &){
         m_currentFrame = 0;
     });
+
+    multiFrameCount.valueChanged.connect([this](const int &){
+        m_currentFrame = 0;
+    });
+
+    setAlwaysProcessed(true);
 }
 
 MultiFrameControlStage::~MultiFrameControlStage()
