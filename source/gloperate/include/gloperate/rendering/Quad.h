@@ -16,9 +16,9 @@ namespace gloperate
 
 /**
 *  @brief
-*    Box drawable
+*    Quad shape
 */
-class GLOPERATE_API Box : public Shape
+class GLOPERATE_API Quad : public Shape
 {
 public:
     /**
@@ -26,11 +26,11 @@ public:
     *    Constructor
     *
     *  @param[in] size
-    *    Edge width, height, and depth
+    *    Edge width and height
     *  @param[in] options
     *    Shape options
     */
-    Box(float size = 2.0f, unsigned int options = 0);
+    Quad(float size = 2.0f, unsigned int options = 0);
 
     /**
     *  @brief
@@ -40,18 +40,16 @@ public:
     *    Edge width
     *  @param[in] height
     *    Edge height
-    *  @param[in] depth
-    *    Edge depth
     *  @param[in] options
     *    Shape options
     */
-    Box(float width, float height, float depth, unsigned int options = 0);
+    Quad(float width, float height, unsigned int options = 0);
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~Box();
+    virtual ~Quad();
 
     // Virtual AbstractDrawable functions
     virtual void draw() const override;

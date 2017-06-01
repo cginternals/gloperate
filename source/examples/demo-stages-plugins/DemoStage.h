@@ -4,8 +4,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Buffer.h>
 #include <globjects/Texture.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
@@ -14,6 +12,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
+#include <gloperate/rendering/Sphere.h>
 
 
 /**
@@ -75,13 +74,12 @@ protected:
 
 protected:
     // Rendering objects
-    gloperate::Camera                           m_camera;
-    std::unique_ptr<globjects::VertexArray>     m_vao;
-    std::unique_ptr<globjects::Buffer>          m_buffer;
-    std::unique_ptr<globjects::Texture>         m_texture;
-    std::unique_ptr<globjects::Program>         m_program;
-    std::unique_ptr<globjects::Shader>          m_vertexShader;
-    std::unique_ptr<globjects::Shader>          m_fragmentShader;
+    gloperate::Camera                   m_camera;
+    std::unique_ptr<gloperate::Sphere>  m_quad;
+    std::unique_ptr<globjects::Texture> m_texture;
+    std::unique_ptr<globjects::Program> m_program;
+    std::unique_ptr<globjects::Shader>  m_vertexShader;
+    std::unique_ptr<globjects::Shader>  m_fragmentShader;
 
     // Status
     float m_angle;  ///< Current angle of rotating triangle (in radians)

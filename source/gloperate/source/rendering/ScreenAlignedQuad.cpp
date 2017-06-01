@@ -19,8 +19,8 @@ namespace gloperate
 
 
 ScreenAlignedQuad::ScreenAlignedQuad()
-: m_drawable(cppassist::make_unique<Drawable>()),
-  m_buffer(cppassist::make_unique<globjects::Buffer>())
+: m_drawable(cppassist::make_unique<Drawable>())
+, m_buffer(cppassist::make_unique<globjects::Buffer>())
 {
     static const std::array<glm::vec2, 4> raw{{
         glm::vec2( +1.f, -1.f )
