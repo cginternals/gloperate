@@ -19,25 +19,21 @@ GlyphPreparationStage::GlyphPreparationStage(gloperate::Environment * environmen
 {
 }
 
-
 GlyphPreparationStage::~GlyphPreparationStage()
 {
 }
 
-
-void GlyphPreparationStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
+void GlyphPreparationStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_vertexCloud = cppassist::make_unique<GlyphVertexCloud>();
 }
 
-
-void GlyphPreparationStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
+void GlyphPreparationStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
     m_vertexCloud = nullptr;
 }
 
-
-void GlyphPreparationStage::onProcess(gloperate::AbstractGLContext * /*context*/)
+void GlyphPreparationStage::onProcess()
 {
     // get total number of glyphs
     auto numGlyphs = std::size_t{ 0 };

@@ -4,14 +4,14 @@
 #include <numeric>
 #include <algorithm>
 
+#include <cppassist/memory/offsetof.h>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/boolean.h>
 
 #include <globjects/Texture.h>
 
 #include <gloperate/rendering/Drawable.h>
-
-#include <cppassist/memory/offsetof.h>
 
 #include <gloperate-text/GlyphSequence.h>
 #include <gloperate-text/FontFace.h>
@@ -58,7 +58,7 @@ namespace gloperate_text
 
 
 GlyphVertexCloud::GlyphVertexCloud()
-    : m_drawable(cppassist::make_unique<gloperate::Drawable>()),
+: m_drawable(cppassist::make_unique<gloperate::Drawable>()),
   m_buffer(cppassist::make_unique<globjects::Buffer>())
 {
     m_drawable->setPrimitiveMode(gl::GL_POINTS);

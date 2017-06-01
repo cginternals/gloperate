@@ -5,6 +5,8 @@ import QmlToolbox.Base 1.0
 import QmlToolbox.Controls 1.0
 import QmlToolbox.PipelineEditor 1.0 as Editor
 
+import gloperate.rendering 1.0
+
 
 Item
 {
@@ -39,10 +41,39 @@ Item
                 page.closed();
             }
         }
+
+        Rectangle
+        {
+            x:      100
+            y:      100
+            width:  200
+            height: 200
+
+            color:        'white'
+            border.color: 'black'
+            border.width: 1
+
+            TextureItem
+            {
+                anchors.fill: parent
+                anchors.margins: 1
+
+                path: 'DemoPipeline.FramebufferStage1.colorTexture'
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                drag.target: parent
+            }
+        }
     }
 
-    Component.onCompleted:
+    onVisibleChanged:
     {
-        pipelineEditor.load(path);
+        if (visible)
+        {
+            pipelineEditor.load(path);
+        }
     }
 }

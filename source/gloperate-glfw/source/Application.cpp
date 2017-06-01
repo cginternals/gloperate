@@ -2,6 +2,8 @@
 #include <gloperate-glfw/Application.h>
 
 #include <cassert>
+#include <chrono>
+#include <thread>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -9,7 +11,6 @@
 #include <gloperate/base/Environment.h>
 
 #include <gloperate-glfw/Window.h>
-#include <gloperate-glfw/WindowEventDispatcher.h>
 
 
 namespace gloperate_glfw
@@ -110,6 +111,9 @@ void Application::processEvents()
     // Get messages for all windows
     for (Window * window : Window::instances())
     {
+        // Update timing
+        window->idle();
+
         // If window needs updating, let it send an udate event
         window->updateRepaintEvent();
 
@@ -119,12 +123,11 @@ void Application::processEvents()
         }
     }
 
-    // Update timing
-    if (m_environment->update())
-    {
-        // If someone wants another main loop iteration, wake it up
-        wakeup();
-    }
+    // Make sure we don't saturate the CPU 
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+    // Wake up mainloop to enable continuous update/simulation
+    wakeup();
 }
 
 

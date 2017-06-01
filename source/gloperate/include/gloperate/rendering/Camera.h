@@ -28,7 +28,7 @@ namespace gloperate
 class GLOPERATE_API Camera
 {
 public:
-    cppexpose::Signal<> invalidated;   /**< Called when the camera has been modified */
+    cppexpose::Signal<> invalidated; ///< Called when the camera has been modified
 
 
 public:
@@ -306,26 +306,26 @@ protected:
 
 protected:
     // Internal data
-    mutable bool m_dirty;   /**< Has the data been changed? If true, matrices will be recalculated */
-    bool m_autoUpdate;      /**< 'true' if camera is updated automatically, else 'false' */
+    mutable bool m_dirty; ///< Has the data been changed? If true, matrices will be recalculated
+    bool m_autoUpdate;    ///< 'true' if camera is updated automatically, else 'false'
 
     // Camera data
-    glm::vec3 m_eye;        /**< Camera position */
-    glm::vec3 m_center;     /**< Look-at position */
-    glm::vec3 m_up;         /**< Up-vector */
-    float     m_fovy;       /**< Field-of-view angle (Y) */
-    float     m_aspect;     /**< Aspect ratio (width / height) */
-    float     m_zNear;      /**< Near plane */
-    float     m_zFar;       /**< Far plane */
+    glm::vec3 m_eye;      ///< Camera position
+    glm::vec3 m_center;   ///< Look-at position
+    glm::vec3 m_up;       ///< Up-vector
+    float     m_fovy;     ///< Field-of-view angle (Y)
+    float     m_aspect;   ///< Aspect ratio (width / height)
+    float     m_zNear;    ///< Near plane
+    float     m_zFar;     ///< Far plane
 
     // Camera matrices
-    gloperate::CachedValue<glm::mat4> m_view;                   /**< View matrix */
-    gloperate::CachedValue<glm::mat4> m_viewInverted;           /**< Inverted view matrix */
-    gloperate::CachedValue<glm::mat4> m_projection;             /**< Projection matrix */
-    gloperate::CachedValue<glm::mat4> m_projectionInverted;     /**< Inverted projection matrix */
-    gloperate::CachedValue<glm::mat4> m_viewProjection;         /**< View-projection matrix */
-    gloperate::CachedValue<glm::mat4> m_viewProjectionInverted; /**< Invertex view-projection matrix */
-    gloperate::CachedValue<glm::mat3> m_normal;                 /**< Normal matrix */
+    gloperate::CachedValue<glm::mat4> m_view;                   ///< View matrix
+    gloperate::CachedValue<glm::mat4> m_viewInverted;           ///< Inverted view matrix
+    gloperate::CachedValue<glm::mat4> m_projection;             ///< Projection matrix
+    gloperate::CachedValue<glm::mat4> m_projectionInverted;     ///< Inverted projection matrix
+    gloperate::CachedValue<glm::mat4> m_viewProjection;         ///< View-projection matrix
+    gloperate::CachedValue<glm::mat4> m_viewProjectionInverted; ///< Invertex view-projection matrix
+    gloperate::CachedValue<glm::mat3> m_normal;                 ///< Normal matrix
 };
 
 

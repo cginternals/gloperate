@@ -12,12 +12,8 @@
 
 namespace globjects
 {
-
-
-class Shader;
-class File;
-
-
+    class Shader;
+    class File;
 }
 
 

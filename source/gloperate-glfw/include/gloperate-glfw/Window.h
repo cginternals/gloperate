@@ -1,10 +1,10 @@
 
 #pragma once
 
+#include <memory>
+#include <queue>
 #include <set>
 #include <string>
-#include <queue>
-#include <memory>
 
 #include <glm/vec2.hpp>
 
@@ -19,7 +19,6 @@ struct GLFWmonitor;
 
 namespace gloperate
 {
-    class GLContextFormat;
     class AbstractGLContext;
 }
 
@@ -35,11 +34,12 @@ class MouseEvent;
 class MouseEnterEvent;
 class MouseLeaveEvent;
 class ScrollEvent;
+class MoveEvent;
 class ResizeEvent;
 class PaintEvent;
+class CloseEvent;
 class FocusEvent;
 class IconifyEvent;
-class MoveEvent;
 
 
 /**
@@ -61,6 +61,10 @@ public:
     *    List of open windows
     */
     static const std::set<Window*> & instances();
+
+
+private:
+    static std::set<Window*> s_instances;   ///< List of window instances
 
 
 public:
@@ -290,6 +294,12 @@ public:
     */
     void swap();
 
+    /**
+    *  @brief
+    *    Called once every mainloop iteration
+    */
+    void idle();
+
 
 protected:
     /**
@@ -308,7 +318,7 @@ protected:
     *  @param[in] event
     *    Event (can be nullptr)
     */
-    void queueEvent(std::unique_ptr<WindowEvent> &&event);
+    void queueEvent(std::unique_ptr<WindowEvent> && event);
 
     /**
     *  @brief
@@ -401,35 +411,21 @@ protected:
     virtual void onScroll(ScrollEvent & event);
     virtual void onFocus(FocusEvent & event);
     virtual void onIconify(IconifyEvent & event);
-
-protected:
-    /**
-    *  @brief
-    *    Window mode
-    */
-    enum WindowMode
-    {
-        WindowedMode    ///< Window is in windowed-mode
-      , FullscreenMode  ///< Window is in fullscreen-mode
-    };
+    virtual void onClose(CloseEvent & event);
+    virtual void onIdle();
 
 
 protected:
-    GLFWwindow * m_window;                  ///< GLFW window (can be nullptr)
-    std::unique_ptr<gloperate::AbstractGLContext>   m_context;                 ///< OpenGL context (can be nullptr)
-    WindowMode   m_windowMode;              ///< Window mode (windowed or fullscreen)
-    glm::ivec2   m_windowedModeSize;        ///< Size of window when returned from fullscreen mode
-    bool         m_quitOnDestroy;           ///< Quit application when window is closed?
-    std::string  m_title;                   ///< Window title
+    std::string                              m_title;            ///< Window title
+    gloperate::GLContextFormat               m_format;           ///< The desired OpenGL context format
 
-    gloperate::GLContextFormat m_format;    ///< The desired OpenGL context format
-
-    std::queue<std::unique_ptr<WindowEvent>> m_eventQueue;  ///< List of events to be processed by the window
-    bool m_needsRepaint;                    ///< Has a repaint be scheduled?
-
-
-private:
-    static std::set<Window*> s_instances;   ///< List of window instances
+    GLFWwindow                             * m_window;           ///< GLFW window (can be nullptr)
+    std::queue<std::unique_ptr<WindowEvent>> m_eventQueue;       ///< List of events to be processed by the window
+    bool                                     m_fullscreen;       ///< 'true' if window is in fullscreen mode, else 'false'
+    glm::ivec2                               m_windowedModeSize; ///< Size of window when returned from fullscreen mode
+    bool                                     m_quitOnDestroy;    ///< Quit application when window is closed?
+    bool                                     m_needsRepaint;     ///< Has a repaint be scheduled?
+    std::unique_ptr<GLContext>               m_context;          ///< OpenGL context (can be nullptr)
 };
 
 

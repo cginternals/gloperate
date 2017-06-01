@@ -19,7 +19,7 @@ ApplicationWindow
     property bool  renderBackground: true
 
     // Stage
-    property string stage: 'DemoPipeline'
+    property string stage: 'DemoStage2'
 
     x:       100
     y:       100
@@ -71,8 +71,19 @@ ApplicationWindow
     // Main view
     RenderItem
     {
+        id: renderItem
+
         anchors.fill: parent
 
         stage: window.stage
+    }
+
+    Component.onCompleted:
+    {
+        // Scan for plugins
+        gloperate.components.scanPlugins();
+
+        // Set render stage
+        renderItem.stage = window.stage;
     }
 }

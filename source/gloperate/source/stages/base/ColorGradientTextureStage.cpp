@@ -19,7 +19,7 @@ ColorGradientTextureStage::ColorGradientTextureStage(gloperate::Environment * en
 {
 }
 
-void ColorGradientTextureStage::onProcess(gloperate::AbstractGLContext * /*context*/)
+void ColorGradientTextureStage::onProcess()
 {
     if(!m_gradientTexture)
     {

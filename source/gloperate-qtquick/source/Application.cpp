@@ -29,7 +29,6 @@ void Application::initialize()
 Application::Application(int & argc, char ** argv)
 : QGuiApplication(argc, argv)
 , m_environment()
-, m_updateManager(&m_environment)
 , m_qmlEngine(&m_environment)
 {
     // Read command line options
@@ -43,13 +42,10 @@ Application::Application(int & argc, char ** argv)
         cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&m_qmlEngine)
     );
 
-    // Configure and load plugins
+    // Configure plugin paths
     m_environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    m_environment.componentManager()->scanPlugins("loaders");
-    m_environment.componentManager()->scanPlugins("stages");
-    m_environment.componentManager()->scanPlugins("exporter");
 
     // Specify desired context format
     gloperate::GLContextFormat format;

@@ -1,13 +1,12 @@
 
 #pragma once
 
+
 #include <string>
 
 #include <glm/fwd.hpp>
 
 #include <gloperate-text/GlyphVertexCloud.h>
-
-#include <gloperate-text/gloperate-text_api.h>
 
 
 namespace gloperate_text

@@ -41,7 +41,7 @@ void RasterizationStage::onContextInit(AbstractGLContext *)
 {
 }
 
-void RasterizationStage::onProcess(AbstractGLContext *)
+void RasterizationStage::onProcess()
 {
     if (!*rasterize)
     {

@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 
 #include <glm/fwd.hpp>
@@ -9,12 +10,12 @@
 
 #include <gloperate-text/Alignment.h>
 #include <gloperate-text/LineAnchor.h>
-
 #include <gloperate-text/gloperate-text_api.h>
 
 
 namespace gloperate_text
 {
+
 
 class FontFace;
 class Glyph;
@@ -80,6 +81,7 @@ public:
     ,   const glm::uvec2 & viewportExtent
     ,   float pixelPerInch
     ,   const glm::vec4 & margins = glm::vec4(0.f, 0.f, 0.f, 0.f));
+
 
 protected:
     std::u32string m_string;

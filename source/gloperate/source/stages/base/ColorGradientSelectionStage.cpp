@@ -20,7 +20,7 @@ ColorGradientSelectionStage::ColorGradientSelectionStage(gloperate::Environment 
 {
 }
 
-void ColorGradientSelectionStage::onProcess(gloperate::AbstractGLContext * /*context*/)
+void ColorGradientSelectionStage::onProcess()
 {
     gradientIndex.setValue(gradients->indexOf(*gradientName));
     gradient.setValue(gradients->at(*gradientName));

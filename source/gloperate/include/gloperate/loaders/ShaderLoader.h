@@ -20,9 +20,13 @@ namespace globjects
 }
 
 
+namespace gloperate
+{
+
+
 /**
 *  @brief
-*    Shader loader based on Qt
+*    Shader loader
 *
 *  Supported options:
 *    none
@@ -55,17 +59,20 @@ public:
     virtual ~ShaderLoader();
 
     // Virtual gloperate::AbstractLoader functions
-    virtual bool canLoad(const std::string & ext) const;
-    virtual std::vector<std::string> loadingTypes() const;
-    virtual std::string allLoadingTypes() const;
+    virtual bool canLoad(const std::string & ext) const override;
+    virtual std::vector<std::string> loadingTypes() const override;
+    virtual std::string allLoadingTypes() const override;
 
     // Virtual gloperate::Loader<globjects::Texture> functions
     virtual globjects::Shader * load(const std::string & filename, const cppexpose::Variant & options, std::function<void(int, int)> progress) const override;
 
 
 protected:
-    std::vector<std::string> m_extensions; /**< List of supported file extensions (e.g., ".bmp") */
-    std::vector<std::string> m_types;      /**< List of supported file types (e.g., "bmp image (*.bmp)") */
+    std::vector<std::string> m_extensions; ///< List of supported file extensions (e.g., ".bmp")
+    std::vector<std::string> m_types;      ///< List of supported file types (e.g., "bmp image (*.bmp)")
 
     const std::unordered_map<std::string, gl::GLenum> m_extensionToType; ///< Mapping of file extension to GLenum type
 };
+
+
+} // namespace gloperate

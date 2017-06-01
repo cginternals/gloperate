@@ -1,0 +1,182 @@
+
+#include "DemoStage.h"
+
+#include <random>
+
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/constants.hpp>
+
+#include <glbinding/gl/gl.h>
+
+#include <globjects/base/File.h>
+#include <globjects/VertexArray.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/Framebuffer.h>
+#include <globjects/globjects.h>
+
+#include <gloperate/gloperate.h>
+#include <gloperate/base/Environment.h>
+#include <gloperate/base/ResourceManager.h>
+
+
+CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
+
+
+DemoStage::DemoStage(gloperate::Environment * environment, const std::string & name)
+: Stage(environment, "DemoStage", name)
+, renderInterface(this)
+, fboOut("fboOut", this, nullptr)
+, m_angle(0.0f)
+{
+}
+
+DemoStage::~DemoStage()
+{
+}
+
+void DemoStage::onContextInit(gloperate::AbstractGLContext *)
+{
+    createAndSetupCamera();
+    createAndSetupTexture();
+    createAndSetupGeometry();
+}
+
+void DemoStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_vao            = nullptr;
+    m_buffer         = nullptr;
+    m_texture        = nullptr;
+    m_program        = nullptr;
+    m_vertexShader   = nullptr;
+    m_fragmentShader = nullptr;
+}
+
+void DemoStage::onProcess()
+{
+    // Get viewport
+    glm::vec4 viewport = *renderInterface.deviceViewport;
+
+    // Update viewport
+    gl::glViewport(
+        viewport.x,
+        viewport.y,
+        viewport.z,
+        viewport.w
+    );
+
+    // Bind FBO
+    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    fbo->bind(gl::GL_FRAMEBUFFER);
+
+    // Update animation
+    m_angle = *renderInterface.virtualTime;
+
+    // Clear background
+    glm::vec3 color = *renderInterface.backgroundColor;
+    gl::glClearColor(color.r, color.g, color.b, 1.0f);
+    gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
+    gl::glEnable(gl::GL_SCISSOR_TEST);
+    gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+    gl::glDisable(gl::GL_SCISSOR_TEST);
+
+    // Get model matrix
+    glm::mat4 model = glm::mat4(1.0);
+    model = glm::rotate(model, m_angle, glm::vec3(0.0, 1.0, 0.0));
+
+    // Update model-view-projection matrix
+    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
+    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
+
+    // Lazy creation of texture
+    if (!m_texture) {
+        createAndSetupTexture();
+    }
+
+    // Bind texture
+    if (m_texture) {
+        m_texture->bindActive(0);
+    }
+
+    // Draw geometry
+    m_program->use();
+    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
+    m_program->release();
+
+    // Unbind texture
+    if (m_texture) {
+        m_texture->unbindActive(0);
+    }
+
+    // Unbind FBO
+    globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+
+    // Signal that output is valid
+    renderInterface.rendered.setValue(true);
+    fboOut.setValue(*renderInterface.targetFBO);
+}
+
+void DemoStage::createAndSetupCamera()
+{
+    m_camera.setEye(glm::vec3(0.0, 0.0, 12.0));
+}
+
+void DemoStage::createAndSetupTexture()
+{
+    // Load texture from file
+    m_texture = std::unique_ptr<globjects::Texture>(m_environment->resourceManager()->load<globjects::Texture>(
+        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.png"
+    ));
+
+    // Create procedural texture if texture couldn't be found
+    if (!m_texture)
+    {
+        static const int w(256);
+        static const int h(256);
+        unsigned char data[w * h * 4];
+
+        std::random_device rd;
+        std::mt19937 generator(rd());
+        std::poisson_distribution<> r(0.2);
+
+        for (int i = 0; i < w * h * 4; ++i) {
+            data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
+        }
+
+        m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
+    }
+}
+
+void DemoStage::createAndSetupGeometry()
+{
+    static const std::array<glm::vec2, 4> raw { {
+        glm::vec2( +1.f, -1.f ),
+        glm::vec2( +1.f, +1.f ),
+        glm::vec2( -1.f, -1.f ),
+        glm::vec2( -1.f, +1.f ) } };
+
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
+    m_buffer = cppassist::make_unique<globjects::Buffer>();
+    m_buffer->setData(raw, gl::GL_STATIC_DRAW);
+
+    auto binding = m_vao->binding(0);
+    binding->setAttribute(0);
+    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
+    binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
+    m_vao->enable(0);
+
+    m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/SpinningRect.vert");
+    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/SpinningRect.frag");
+
+#ifdef __APPLE__
+    vertexShaderSource  ->replace("#version 140", "#version 150");
+    fragmentShaderSource->replace("#version 140", "#version 150");
+#endif
+
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
+    m_program = cppassist::make_unique<globjects::Program>();
+    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
+
+    m_program->setUniform("source", 0);
+}

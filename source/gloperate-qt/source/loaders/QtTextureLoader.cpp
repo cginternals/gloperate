@@ -17,6 +17,10 @@
 using namespace gloperate_qt;
 
 
+namespace gloperate_qt
+{
+
+
 CPPEXPOSE_COMPONENT(QtTextureLoader, gloperate::AbstractLoader)
 
 
@@ -96,3 +100,6 @@ globjects::Texture * QtTextureLoader::load(const std::string & filename, const c
     // Could not load image
     return nullptr;
 }
+
+
+} // namespace gloperate_qt

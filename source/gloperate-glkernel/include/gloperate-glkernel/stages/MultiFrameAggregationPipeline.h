@@ -13,12 +13,10 @@
 
 namespace gloperate
 {
-
-class BasicFramebufferStage;
-class TextureStage;
-class FramebufferStage;
-class BlitStage;
-
+    class BasicFramebufferStage;
+    class TextureStage;
+    class FramebufferStage;
+    class BlitStage;
 }
 
 
@@ -86,7 +84,7 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void connectBasicRenderInterface(gloperate::RenderInterface & interface);
@@ -104,8 +102,8 @@ protected:
     std::unique_ptr<gloperate::BlitStage>             m_blitStage;                    ///< Blit stage
 
     // Inserted Stage/Pipeline
-    Stage * m_frameRenderStage;                                 ///< Frame generating stage
+    Stage * m_frameRenderStage; ///< Frame generating stage
 };
 
 
-} // namespace gloperate
+} // namespace gloperate_glkernel

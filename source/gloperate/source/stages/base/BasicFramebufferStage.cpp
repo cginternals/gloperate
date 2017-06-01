@@ -43,7 +43,7 @@ void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
     m_fbo          = nullptr;
 }
 
-void BasicFramebufferStage::onProcess(AbstractGLContext *)
+void BasicFramebufferStage::onProcess()
 {
     // Check if FBO needs to be rebuilt
     if (!fbo.isValid())

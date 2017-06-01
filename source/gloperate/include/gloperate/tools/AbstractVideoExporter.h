@@ -16,7 +16,7 @@ namespace gloperate
 {
 
 
-class AbstractCanvas;
+class Canvas;
 
 
 /**
@@ -59,7 +59,7 @@ public:
     *  @param[in] parameters
     *    Parameters for video exporting
     */
-    virtual void setTarget(AbstractCanvas * canvas, const cppexpose::VariantMap & parameters) = 0;
+    virtual void setTarget(Canvas * canvas, const cppexpose::VariantMap & parameters) = 0;
 
     /**
     *  @brief

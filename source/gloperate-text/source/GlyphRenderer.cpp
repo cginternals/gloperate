@@ -31,7 +31,6 @@ GlyphRenderer::~GlyphRenderer()
 {
 }
 
-
 std::unique_ptr<globjects::AbstractStringSource> GlyphRenderer::vertexShaderSource()
 {
     return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate-text/shaders/glyph.vert");
@@ -46,7 +45,6 @@ std::unique_ptr<globjects::AbstractStringSource> GlyphRenderer::fragmentShaderSo
 {
     return globjects::Shader::sourceFromFile(gloperate::dataPath()+"/gloperate-text/shaders/glyph.frag");
 }
-
 
 void GlyphRenderer::render(const GlyphVertexCloud & vertexCloud) const
 {
@@ -95,4 +93,4 @@ const globjects::Program * GlyphRenderer::program() const
 }
 
 
-} // namespace
+} // namespace gloperate_text

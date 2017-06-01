@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <vector>
 
 #include <gloperate/pipeline/Stage.h>
@@ -21,7 +22,6 @@ class GLOPERATE_TEXT_API GlyphPreparationStage : public gloperate::Stage
 {
 public:
     Input<FontFace *> font;
-
     Input<std::vector<GlyphSequence> *> sequences;
     Input<bool> optimized;
 
@@ -36,7 +36,7 @@ public:
 protected:
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
 
 protected:

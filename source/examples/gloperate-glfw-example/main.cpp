@@ -4,8 +4,8 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/base/GLContextUtils.h>
-#include <gloperate/pipeline/Stage.h>
 
 #include <gloperate-glfw/Application.h>
 #include <gloperate-glfw/RenderWindow.h>
@@ -31,15 +31,11 @@ int main(int argc, char * argv[])
     environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    environment.componentManager()->scanPlugins("loaders");
-    environment.componentManager()->scanPlugins("stages");
+    environment.componentManager()->scanPlugins();
 
     // Initialize GLFW
     Application::init();
     Application app(&environment, argc, argv);
-
-    // Create render stage
-    auto renderStage = environment.componentManager()->component<Stage>("DemoStage")->createInstance(&environment);
 
     // Create render window
     RenderWindow window(&environment);
@@ -57,7 +53,7 @@ int main(int argc, char * argv[])
 
     window.setContextFormat(format);
 
-    window.setRenderStage(std::move(renderStage));
+    window.canvas()->loadRenderStage("DemoStage2");
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);
     if (!window.create())

@@ -10,8 +10,6 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate-text/gloperate-text_api.h>
-
 #include <gloperate-text/Glyph.h>
 
 
@@ -275,11 +273,14 @@ public:
     *  @param[in] texture
     *    The new texture atlas for all glyphs
     */
-    void setGlyphTexture(std::unique_ptr<globjects::Texture> &&texture);
+    void setGlyphTexture(std::unique_ptr<globjects::Texture> && texture);
 
     /**
     *  @brief
     *    Check if a glyph of a specific index is available.
+    *
+    *  @param[in] index
+    *    Index of the glyph to access.
     *
     *  @return
     *    'true' if a glyph for the provided index was added, else 'false'.
@@ -399,9 +400,8 @@ protected:
     glm::uvec2 m_glyphTextureExtent;  ///< The size/extent of the glyph texture in px.
     glm::vec4  m_glyphTexturePadding; ///< The padding applied to every glyph in px.
 
-    std::unique_ptr<globjects::Texture> m_glyphTexture; ///< The font face's associated glyph atlas.
-
-    std::unordered_map<GlyphIndex, Glyph> m_glyphs; ///< Quick-access container for all added glyphs.
+    std::unique_ptr<globjects::Texture>   m_glyphTexture; ///< The font face's associated glyph atlas.
+    std::unordered_map<GlyphIndex, Glyph> m_glyphs;       ///< Quick-access container for all added glyphs.
 };
 
 

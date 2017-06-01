@@ -31,7 +31,7 @@ void ProceduralTextureStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void ProceduralTextureStage::onProcess(AbstractGLContext *)
+void ProceduralTextureStage::onProcess()
 {
     // Check if texture needs to be rebuilt
     if (!texture.isValid())

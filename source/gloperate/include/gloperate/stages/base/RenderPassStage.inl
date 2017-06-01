@@ -2,7 +2,9 @@
 #pragma once
 
 
-#include <gloperate/stages/base/RenderPassStage.h>
+#include <globjects/Program.h>
+
+#include <gloperate/rendering/RenderPass.h>
 
 
 namespace gloperate

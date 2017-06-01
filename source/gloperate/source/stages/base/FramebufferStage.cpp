@@ -35,7 +35,7 @@ void FramebufferStage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void FramebufferStage::onProcess(AbstractGLContext *)
+void FramebufferStage::onProcess()
 {
     // Check if FBO needs to be rebuilt
     if (!fbo.isValid())
