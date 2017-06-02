@@ -48,7 +48,7 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
     std::string dataPath = gloperate::dataPath();
 
     // Setup parameters
-    texture = dataPath + "/gloperate/textures/gloperate-logo.png";
+    texture = dataPath + "/gloperate/textures/gloperate-logo.glraw";
     rotate  = true;
     rotate.valueChanged.connect(this, &DemoPipeline::onRotateChanged);
 
