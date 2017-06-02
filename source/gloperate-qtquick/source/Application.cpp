@@ -10,6 +10,7 @@
 #include <qmltoolbox/Application.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/TimerManager.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/GLContextFactory.h>
@@ -65,6 +66,14 @@ Application::Application(int & argc, char ** argv)
     // Convert and set Qt context format
     QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
     QSurfaceFormat::setDefaultFormat(qFormat);
+
+    // Create global timer
+    QObject::connect(
+        &m_timer, &QTimer::timeout,
+        this, &Application::onTimer
+    );
+
+    m_timer.start(5);
 }
 
 Application::~Application()
@@ -99,6 +108,12 @@ const gloperate::Environment & Application::environment() const
 gloperate::Environment & Application::environment()
 {
     return m_environment;
+}
+
+void Application::onTimer()
+{
+    // Update scripting timers
+    m_environment.timerManager()->update();
 }
 
 

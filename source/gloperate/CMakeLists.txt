@@ -44,6 +44,7 @@ set(headers
 
     ${include_path}/base/Environment.h
     ${include_path}/base/System.h
+    ${include_path}/base/TimerManager.h
     ${include_path}/base/ComponentManager.h
     ${include_path}/base/Component.h
     ${include_path}/base/Component.inl
@@ -155,6 +156,7 @@ set(sources
 
     ${source_path}/base/Environment.cpp
     ${source_path}/base/System.cpp
+    ${source_path}/base/TimerManager.cpp
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
     ${source_path}/base/Canvas.cpp
