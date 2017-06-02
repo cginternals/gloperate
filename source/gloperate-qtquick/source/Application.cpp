@@ -37,7 +37,7 @@ Application::Application(int & argc, char ** argv)
 
     const auto contextFormat = argumentParser.value("--context");
 
-    if(argumentParser.isSet("-safeMode"))
+    if (argumentParser.isSet("-safemode"))
     {
         m_environment.setSafeMode(true);
     }

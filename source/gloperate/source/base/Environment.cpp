@@ -125,6 +125,16 @@ void Environment::exit(int exitCode)
     this->exitApplication(exitCode);
 }
 
+bool Environment::safeMode()
+{
+    return m_safeMode;
+}
+
+void Environment::setSafeMode(bool safeMode)
+{
+    m_safeMode = safeMode;
+}
+
 void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> && scriptContext)
 {
     // Check parameters
@@ -164,13 +174,5 @@ void Environment::unregisterCanvas(Canvas * canvas)
     m_canvases.erase(std::find(m_canvases.begin(), m_canvases.end(), canvas));
 }
 
-    void Environment::setSafeMode(bool safeMode)
-    {
-        m_safeMode = safeMode;
-    }
 
-    bool Environment::safeMode()
-    {
-        return m_safeMode;
-    }
 } // namespace gloperate

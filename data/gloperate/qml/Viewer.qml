@@ -413,11 +413,13 @@ ApplicationWindow
 
     Component.onCompleted:
     {
-        if(!gloperate.system.safeMode()) {
+        if (gloperate.system.safeMode())
+        {
+            // Save default settings to config file
+            settings.forceSave();
+        } else {
             // Load settings
             settings.load();
-        } else {
-            settings.forceSave();
         }
 
         // Scan for plugins

@@ -172,22 +172,31 @@ public:
     
     /**
     *  @brief
-    *    set the safeMode-flag
+    *    Get safemode-flag
     *
-    *  @param[in] safeMode
-    *    value for the safeMode-flag
+    *  @return
+    *    'true' if safemode is activated, else 'false'
+    *
+    *  @remarks
+    *    If safemode is on, the gloperate viewer does not load its settings
+    *    from file. Instead, it resets all settings to default and restores
+    *    the config file.
     */
-    void setSafeMode(bool safeMode);
+    bool safeMode();    
 
     /**
     *  @brief
-    *    get the safeMode-flag
+    *    Set safemode-flag
     *
-    *  @return
-    *    value of the safeMode-flag
+    *  @param[in] safeMode
+    *    'true' if safemode is activated, else 'false'
+    *
+    *  @remarks
+    *    see safeMode()
     */
-    bool safeMode();    
+    void setSafeMode(bool safeMode);
     //@}
+
 
 protected:
     //@{
@@ -241,8 +250,7 @@ protected:
     std::unique_ptr<cppexpose::ScriptContext> m_scriptContext;    ///< Scripting context
 
     std::string                               m_helpText;         ///< Text that is displayed on 'help'
-
-    bool m_safeMode;
+    bool                                      m_safeMode;         ///< If 'true', settings are not loaded from file but reset to default values
 };
 
 
