@@ -19,7 +19,7 @@ Input<T> & RenderPassStage::createNewUniformInput(const std::string & name, cons
     uniformSetters[name] = [this, name, newInput](){
         if (newInput->isConnected())
         {
-            (*renderPass)->program()->setUniform<T>(name, **newInput);
+            m_renderPass->program()->setUniform<T>(name, **newInput);
         }
     };
 

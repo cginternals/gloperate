@@ -60,7 +60,7 @@ public:
     // Additional dynamic inputs can be created, see class description
 
     // Outputs
-    Output<gloperate::RenderPass *> renderPass; ///< The created and configured RenderPass
+    Output<gloperate::AbstractDrawable *> renderPass; ///< The created and configured RenderPass
 
 
 public:

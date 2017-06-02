@@ -8,7 +8,7 @@
 
 #include <glbinding/gl/types.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/rendering/AbstractDrawable.h>
 
 
 namespace globjects
@@ -27,9 +27,6 @@ namespace gloperate
 {
 
 
-class AbstractDrawable;
-
-
 /**
 *  @brief
 *    Render pass that renders a geometry with a given set of states and modes
@@ -40,7 +37,7 @@ class AbstractDrawable;
 *    Once configured, a call to draw() will activate the specified configuration
 *    and then draw the associated geometry of the render pass.
 */
-class GLOPERATE_API RenderPass
+class GLOPERATE_API RenderPass : public AbstractDrawable
 {
 public:
     /**
@@ -57,9 +54,9 @@ public:
 
     /**
     *  @brief
-    *    Execute render pass
+    *    Draw geometry
     */
-    void draw() const;
+    virtual void draw() const override;
 
     /**
     *  @brief
