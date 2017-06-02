@@ -2,6 +2,7 @@
 #include <gloperate-qt/base/Application.h>
 
 #include <gloperate/base/Environment.h>
+#include <gloperate/base/TimerManager.h>
 
 
 namespace gloperate_qt
@@ -33,6 +34,8 @@ Application::~Application()
 
 void Application::onTimer()
 {
+    // Update scripting timers
+    m_environment->timerManager()->update();
 }
 
 

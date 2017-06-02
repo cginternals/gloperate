@@ -10,6 +10,7 @@
 #include <qmltoolbox/Application.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/TimerManager.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/GLContextFactory.h>
@@ -111,6 +112,8 @@ gloperate::Environment & Application::environment()
 
 void Application::onTimer()
 {
+    // Update scripting timers
+    m_environment.timerManager()->update();
 }
 
 

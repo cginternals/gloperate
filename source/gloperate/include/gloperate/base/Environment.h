@@ -11,6 +11,7 @@
 #include <gloperate/base/ComponentManager.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/System.h>
+#include <gloperate/base/TimerManager.h>
 #include <gloperate/input/InputManager.h>
 
 
@@ -100,6 +101,18 @@ public:
     */
     const InputManager * inputManager() const;
     InputManager * inputManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get timer manager
+    *
+    *  @return
+    *    Timer manager (never null)
+    */
+    const TimerManager * timerManager() const;
+    TimerManager * timerManager();
     //@}
 
     //@{
@@ -244,6 +257,7 @@ protected:
     ResourceManager                           m_resourceManager;  ///< Resource manager for loaders/storers
     System                                    m_system;           ///< System functions for scripting
     InputManager                              m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
+    TimerManager                              m_timerManager;     ///< Manager for scripting timers
 
     std::vector<Canvas *>                     m_canvases;         ///< List of active canvases
 

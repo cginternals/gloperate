@@ -21,6 +21,7 @@ Environment::Environment()
 , m_resourceManager(this)
 , m_system(this)
 , m_inputManager(this)
+, m_timerManager(this)
 , m_scriptContext(nullptr)
 , m_safeMode(false)
 {
@@ -28,6 +29,7 @@ Environment::Environment()
     addProperty(&m_resourceManager);
     addProperty(&m_system);
     addProperty(&m_inputManager);
+    addProperty(&m_timerManager);
 }
 
 Environment::~Environment()
@@ -62,6 +64,16 @@ const InputManager * Environment::inputManager() const
 InputManager * Environment::inputManager()
 {
     return &m_inputManager;
+}
+
+const TimerManager * Environment::timerManager() const
+{
+    return &m_timerManager;
+}
+
+TimerManager * Environment::timerManager()
+{
+    return &m_timerManager;
 }
 
 const std::vector<Canvas *> & Environment::canvases() const
