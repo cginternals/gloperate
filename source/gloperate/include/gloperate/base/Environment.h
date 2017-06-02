@@ -169,10 +169,25 @@ public:
     *    Exit code (default: 0)
     */
     void exit(int exitCode = 0);
-    //@}
-
+    
+    /**
+    *  @brief
+    *    set the safeMode-flag
+    *
+    *  @param[in] safeMode
+    *    value for the safeMode-flag
+    */
     void setSafeMode(bool safeMode);
-    bool safeMode();
+
+    /**
+    *  @brief
+    *    get the safeMode-flag
+    *
+    *  @return
+    *    value of the safeMode-flag
+    */
+    bool safeMode();    
+    //@}
 
 protected:
     //@{
