@@ -23,54 +23,54 @@ Box::Box(float width, float height, float depth, unsigned int options)
 : Shape(ShapeType::Box, options)
 {
     // Box geometry
-    const std::array<glm::vec3, 36> vertices { {
-          glm::vec3(-0.5f * width, -0.5f * height,  0.5f * depth)
-        , glm::vec3( 0.5f * width, -0.5f * height,  0.5f * depth)
-        , glm::vec3(-0.5f * width,  0.5f * height,  0.5f * depth)
+    static const std::array<glm::vec3, 36> vertices { {
+          glm::vec3(-0.5f, -0.5f,  0.5f)
+        , glm::vec3( 0.5f, -0.5f,  0.5f)
+        , glm::vec3(-0.5f,  0.5f,  0.5f)
 
-        , glm::vec3( 0.5f * width, -0.5f * height,  0.5f * depth)
-        , glm::vec3(-0.5f * width,  0.5f * height,  0.5f * depth)
-        , glm::vec3( 0.5f * width,  0.5f * height,  0.5f * depth)
+        , glm::vec3( 0.5f, -0.5f,  0.5f)
+        , glm::vec3(-0.5f,  0.5f,  0.5f)
+        , glm::vec3( 0.5f,  0.5f,  0.5f)
 
-        , glm::vec3(-0.5f * width, -0.5f * height, -0.5f * depth)
-        , glm::vec3(-0.5f * width,  0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width, -0.5f * height, -0.5f * depth)
+        , glm::vec3(-0.5f, -0.5f, -0.5f)
+        , glm::vec3(-0.5f,  0.5f, -0.5f)
+        , glm::vec3( 0.5f, -0.5f, -0.5f)
 
-        , glm::vec3(-0.5f * width,  0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width, -0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width,  0.5f * height, -0.5f * depth)
+        , glm::vec3(-0.5f,  0.5f, -0.5f)
+        , glm::vec3( 0.5f, -0.5f, -0.5f)
+        , glm::vec3( 0.5f,  0.5f, -0.5f)
 
-        , glm::vec3(-0.5f * width, -0.5f * height,  0.5f * depth)
-        , glm::vec3(-0.5f * width,  0.5f * height,  0.5f * depth)
-        , glm::vec3(-0.5f * width, -0.5f * height, -0.5f * depth)
+        , glm::vec3(-0.5f, -0.5f,  0.5f)
+        , glm::vec3(-0.5f,  0.5f,  0.5f)
+        , glm::vec3(-0.5f, -0.5f, -0.5f)
 
-        , glm::vec3(-0.5f * width,  0.5f * height,  0.5f * depth)
-        , glm::vec3(-0.5f * width, -0.5f * height, -0.5f * depth)
-        , glm::vec3(-0.5f * width,  0.5f * height, -0.5f * depth)
+        , glm::vec3(-0.5f,  0.5f,  0.5f)
+        , glm::vec3(-0.5f, -0.5f, -0.5f)
+        , glm::vec3(-0.5f,  0.5f, -0.5f)
 
-        , glm::vec3( 0.5f * width, -0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width,  0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width, -0.5f * height,  0.5f * depth)
+        , glm::vec3( 0.5f, -0.5f, -0.5f)
+        , glm::vec3( 0.5f,  0.5f, -0.5f)
+        , glm::vec3( 0.5f, -0.5f,  0.5f)
 
-        , glm::vec3( 0.5f * width,  0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width, -0.5f * height,  0.5f * depth)
-        , glm::vec3( 0.5f * width,  0.5f * height,  0.5f * depth)
+        , glm::vec3( 0.5f,  0.5f, -0.5f)
+        , glm::vec3( 0.5f, -0.5f,  0.5f)
+        , glm::vec3( 0.5f,  0.5f,  0.5f)
 
-        , glm::vec3(-0.5f * width,  0.5f * height,  0.5f * depth)
-        , glm::vec3( 0.5f * width,  0.5f * height,  0.5f * depth)
-        , glm::vec3(-0.5f * width,  0.5f * height, -0.5f * depth)
+        , glm::vec3(-0.5f,  0.5f,  0.5f)
+        , glm::vec3( 0.5f,  0.5f,  0.5f)
+        , glm::vec3(-0.5f,  0.5f, -0.5f)
 
-        , glm::vec3( 0.5f * width,  0.5f * height,  0.5f * depth)
-        , glm::vec3(-0.5f * width,  0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width,  0.5f * height, -0.5f * depth)
+        , glm::vec3( 0.5f,  0.5f,  0.5f)
+        , glm::vec3(-0.5f,  0.5f, -0.5f)
+        , glm::vec3( 0.5f,  0.5f, -0.5f)
 
-        , glm::vec3(-0.5f * width, -0.5f * height,  0.5f * depth)
-        , glm::vec3(-0.5f * width, -0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width, -0.5f * height,  0.5f * depth)
+        , glm::vec3(-0.5f, -0.5f,  0.5f)
+        , glm::vec3(-0.5f, -0.5f, -0.5f)
+        , glm::vec3( 0.5f, -0.5f,  0.5f)
 
-        , glm::vec3(-0.5f * width, -0.5f * height, -0.5f * depth)
-        , glm::vec3( 0.5f * width, -0.5f * height,  0.5f * depth)
-        , glm::vec3( 0.5f * width, -0.5f * height, -0.5f * depth)
+        , glm::vec3(-0.5f, -0.5f, -0.5f)
+        , glm::vec3( 0.5f, -0.5f,  0.5f)
+        , glm::vec3( 0.5f, -0.5f, -0.5f)
     } };
 
     static const std::array<glm::vec2, 36> texcoords { {
@@ -128,13 +128,19 @@ Box::Box(float width, float height, float depth, unsigned int options)
 
     // Create drawable
     m_drawable = cppassist::make_unique<Drawable>();
-    m_drawable->setPrimitiveMode(gl::GL_TRIANGLE_STRIP);
+    m_drawable->setPrimitiveMode(gl::GL_TRIANGLES);
     m_drawable->setDrawMode(DrawMode::Arrays);
     m_drawable->setSize(36);
 
     // Create vertex buffer
+    auto v = vertices;
+
+    for (auto & vertex : v) {
+        vertex *= glm::vec3(width, height, depth);
+    }
+
     m_vertices = cppassist::make_unique<globjects::Buffer>();
-    m_vertices->setData(vertices, gl::GL_STATIC_DRAW);
+    m_vertices->setData(v, gl::GL_STATIC_DRAW);
 
     m_drawable->bindAttribute(0, 0);
     m_drawable->setBuffer(0, m_vertices.get());

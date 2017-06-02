@@ -16,7 +16,7 @@ namespace gloperate
 {
 
 
-Sphere::Sphere(float, unsigned int options)
+Sphere::Sphere(float radius, unsigned int options)
 : Shape(ShapeType::Sphere, options)
 {
     // Check options
@@ -33,8 +33,15 @@ Sphere::Sphere(float, unsigned int options)
     m_drawable->setSize(m_icosahedron->indices().size() * std::tuple_size<Icosahedron::Face>::value);
 
     // Create vertex buffer
+    auto vertices = m_icosahedron->vertices();
+
+    for (auto & vertex : vertices)
+    {
+        vertex *= radius;
+    }
+
     m_vertices = cppassist::make_unique<globjects::Buffer>();
-    m_vertices->setData(m_icosahedron->vertices(), gl::GL_STATIC_DRAW);
+    m_vertices->setData(vertices, gl::GL_STATIC_DRAW);
 
     m_drawable->bindAttribute(0, 0);
     m_drawable->setBuffer(0, m_vertices.get());

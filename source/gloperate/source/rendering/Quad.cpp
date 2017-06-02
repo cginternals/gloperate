@@ -23,11 +23,11 @@ Quad::Quad(float width, float height, unsigned int options)
 : Shape(ShapeType::Quad, options)
 {
     // Quad geometry
-    const std::array<glm::vec3, 4> vertices { {
-          glm::vec3(-0.5f * width, -0.5f * height, 0.0f)
-        , glm::vec3( 0.5f * width, -0.5f * height, 0.0f)
-        , glm::vec3(-0.5f * width,  0.5f * height, 0.0f)
-        , glm::vec3( 0.5f * width,  0.5f * height, 0.0f)
+    static const std::array<glm::vec2, 4> vertices { {
+          glm::vec2(-0.5f, -0.5f)
+        , glm::vec2( 0.5f, -0.5f)
+        , glm::vec2(-0.5f,  0.5f)
+        , glm::vec2( 0.5f,  0.5f)
     } };
 
     static const std::array<glm::vec2, 4> texcoords { {
@@ -47,13 +47,19 @@ Quad::Quad(float width, float height, unsigned int options)
     m_drawable->setSize(4);
 
     // Create vertex buffer
+    auto v = vertices;
+
+    for(auto & vertex : v) {
+        vertex *= glm::vec2(width, height);
+    }
+
     m_vertices = cppassist::make_unique<globjects::Buffer>();
-    m_vertices->setData(vertices, gl::GL_STATIC_DRAW);
+    m_vertices->setData(v, gl::GL_STATIC_DRAW);
 
     m_drawable->bindAttribute(0, 0);
     m_drawable->setBuffer(0, m_vertices.get());
-    m_drawable->setAttributeBindingBuffer(0, 0, 0, sizeof(glm::vec3));
-    m_drawable->setAttributeBindingFormat(0, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
+    m_drawable->setAttributeBindingBuffer(0, 0, 0, sizeof(glm::vec2));
+    m_drawable->setAttributeBindingFormat(0, 2, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_drawable->enableAttributeBinding(0);
 
     // Create texture coordinate buffer
