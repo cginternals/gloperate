@@ -5,11 +5,10 @@
 #include <unordered_map>
 #include <cstdint>
 #include <cstddef>
-#include <memory>
 
 #include <glbinding/gl/types.h>
 
-#include <gloperate/gloperate_api.h>
+#include <gloperate/rendering/AbstractDrawable.h>
 
 
 namespace globjects
@@ -28,9 +27,6 @@ namespace gloperate
 {
 
 
-class AbstractDrawable;
-
-
 /**
 *  @brief
 *    Render pass that renders a geometry with a given set of states and modes
@@ -41,7 +37,7 @@ class AbstractDrawable;
 *    Once configured, a call to draw() will activate the specified configuration
 *    and then draw the associated geometry of the render pass.
 */
-class GLOPERATE_API RenderPass
+class GLOPERATE_API RenderPass : public AbstractDrawable
 {
 public:
     /**
@@ -58,9 +54,9 @@ public:
 
     /**
     *  @brief
-    *    Execute render pass
+    *    Draw geometry
     */
-    void draw() const;
+    virtual void draw() const override;
 
     /**
     *  @brief
@@ -535,15 +531,15 @@ protected:
 
 
 protected:
-    globjects::State*               m_stateBefore;                 ///< State applied before rendering
-    globjects::State*               m_stateAfter;                  ///< State applied after rendering
-    AbstractDrawable*               m_geometry;                    ///< Geometry rendered by the render pass
-    globjects::Program*             m_program;                     ///< Program used for rendering
-    globjects::ProgramPipeline*     m_programPipeline;             ///< Program pipeline used for rendering
-    globjects::TransformFeedback*   m_recordTransformFeedback;     ///< Transform feedback object for recording (can be null)
-    gl::GLenum                      m_recordTransformFeedbackMode; ///< Primitive mode for recording transform feedback
-    globjects::TransformFeedback*   m_drawTransformFeedback;       ///< Transform feedback object for playback (can be null)
-    gl::GLenum                      m_drawTransformFeedbackMode;   ///< Primitive mode for playback transform feedback
+    globjects::State             * m_stateBefore;                 ///< State applied before rendering
+    globjects::State             * m_stateAfter;                  ///< State applied after rendering
+    AbstractDrawable             * m_geometry;                    ///< Geometry rendered by the render pass
+    globjects::Program           * m_program;                     ///< Program used for rendering
+    globjects::ProgramPipeline   * m_programPipeline;             ///< Program pipeline used for rendering
+    globjects::TransformFeedback * m_recordTransformFeedback;     ///< Transform feedback object for recording (can be null)
+    gl::GLenum                     m_recordTransformFeedbackMode; ///< Primitive mode for recording transform feedback
+    globjects::TransformFeedback * m_drawTransformFeedback;       ///< Transform feedback object for playback (can be null)
+    gl::GLenum                     m_drawTransformFeedbackMode;   ///< Primitive mode for playback transform feedback
 
     std::unordered_map<size_t, globjects::Texture*> m_textures;                 /// Collection of all textures associated with this render pass. The key is used as the active texture binding.
     std::unordered_map<size_t, globjects::Sampler*> m_samplers;                 /// Collection of all samplers associated with this render pass. The key is used as the sampler binding index.

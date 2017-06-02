@@ -25,13 +25,15 @@ static const char * s_vertexShader = R"(
 
     uniform mat4 modelViewProjectionMatrix;
 
-    layout (location = 0) in vec2 a_vertex;
+    layout (location = 0) in vec3 a_vertex;
+    layout (location = 1) in vec2 a_uv;
+
     out vec2 v_uv;
 
     void main()
     {
-        v_uv = a_vertex * 0.5 + 0.5;
-        gl_Position = modelViewProjectionMatrix * vec4(a_vertex, 0.0, 1.0);
+        v_uv = a_uv;
+        gl_Position = modelViewProjectionMatrix * vec4(a_vertex, 1.0);
     }
 )";
 
@@ -76,8 +78,7 @@ void DemoStage::onContextInit(gloperate::AbstractGLContext *)
 
 void DemoStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
-    m_vao            = nullptr;
-    m_buffer         = nullptr;
+    m_quad           = nullptr;
     m_texture        = nullptr;
     m_program        = nullptr;
     m_vertexShader   = nullptr;
@@ -132,7 +133,7 @@ void DemoStage::onProcess()
 
     // Draw geometry
     m_program->use();
-    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
+    m_quad->draw();
     m_program->release();
 
     // Unbind texture
@@ -163,23 +164,9 @@ void DemoStage::createAndSetupTexture()
 
 void DemoStage::createAndSetupGeometry()
 {
-    static const std::array<glm::vec2, 4> raw { {
-        glm::vec2( +1.f, -1.f ),
-        glm::vec2( +1.f, +1.f ),
-        glm::vec2( -1.f, -1.f ),
-        glm::vec2( -1.f, +1.f ) } };
+    m_quad = cppassist::make_unique<gloperate::Sphere>(2.0f, gloperate::ShapeOption::IncludeTexCoords);
 
-    m_vao = cppassist::make_unique<globjects::VertexArray>();
-    m_buffer = cppassist::make_unique<globjects::Buffer>();
-    m_buffer->setData(raw, gl::GL_STATIC_DRAW);
-
-    auto binding = m_vao->binding(0);
-    binding->setAttribute(0);
-    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
-    binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
-    m_vao->enable(0);
-
-    //TODO this is a memory leak! Use resource loader?
+    // [TODO] This is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 

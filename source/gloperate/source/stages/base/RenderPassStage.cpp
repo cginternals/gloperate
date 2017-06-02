@@ -83,7 +83,7 @@ void RenderPassStage::onProcess()
 
         if ((**input)->target() == gl::GL_TEXTURE_CUBE_MAP)
         {
-            (*renderPass)->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
+            m_renderPass->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
         }
 
         ++textureIndex;

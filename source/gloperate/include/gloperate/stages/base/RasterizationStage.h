@@ -23,8 +23,8 @@ namespace gloperate
 {
 
 
+class AbstractDrawable;
 class Drawable;
-class RenderPass;
 
 
 /**
@@ -54,9 +54,9 @@ public:
 
     // Inputs
     Input<bool> rasterize;                      ///< If connected, it enables/disables rasterization
-    //Input<gloperate::Drawable *> drawable;    ///< The drawable to be drawn
+    //Input<gloperate::AbstractDrawable *> drawable;    ///< The drawable to be drawn
     //Input<globjects::Program *> program;      ///< The program used for rendering
-    Input<gloperate::RenderPass *> renderPass;  ///< If connected, it replaces program and drawable input
+    Input<gloperate::AbstractDrawable *> renderPass;  ///< If connected, it replaces program and drawable input
     Input<globjects::Texture *> colorTexture;   ///< Pass in of texture input/output
 
     // Outputs
