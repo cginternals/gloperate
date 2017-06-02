@@ -184,7 +184,7 @@ void DemoStage::createAndSetupTexture()
 
 void DemoStage::createAndSetupGeometry()
 {
-    m_quad = cppassist::make_unique<gloperate::Sphere>(2.0f, (int)gloperate::ShapeOption::IncludeTexCoords);
+    m_quad = cppassist::make_unique<gloperate::Sphere>(2.0f, gloperate::ShapeOption::IncludeTexCoords);
 
     // [TODO] This is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));

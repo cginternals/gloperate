@@ -14,12 +14,12 @@ namespace gloperate
 {
 
 
-Box::Box(float size, unsigned int options)
+Box::Box(float size, cppassist::Flags<ShapeOption> options)
 : Box(size, size, size, options)
 {
 }
 
-Box::Box(float width, float height, float depth, unsigned int options)
+Box::Box(float width, float height, float depth, cppassist::Flags<ShapeOption> options)
 : Shape(ShapeType::Box, options)
 {
     // Box geometry
@@ -123,9 +123,6 @@ Box::Box(float width, float height, float depth, unsigned int options)
         , glm::vec2(1.0f, 0.0f)
     } };
 
-    // Check options
-    bool createTexCoords = ((options & (int)ShapeOption::IncludeTexCoords) != 0);
-
     // Create drawable
     m_drawable = cppassist::make_unique<Drawable>();
     m_drawable->setPrimitiveMode(gl::GL_TRIANGLES);
@@ -149,7 +146,7 @@ Box::Box(float width, float height, float depth, unsigned int options)
     m_drawable->enableAttributeBinding(0);
 
     // Create texture coordinate buffer
-    if (createTexCoords)
+    if (options & ShapeOption::IncludeTexCoords)
     {
         m_texCoords = cppassist::make_unique<globjects::Buffer>();
         m_texCoords->setData(texcoords, gl::GL_STATIC_DRAW);

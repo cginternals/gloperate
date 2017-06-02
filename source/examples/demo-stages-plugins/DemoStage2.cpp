@@ -48,7 +48,7 @@ void DemoStage2::onContextInit(gloperate::AbstractGLContext *)
         gloperate::dataPath() + "/gloperate/textures/gloperate-logo.glraw"
     ));
 
-    m_box = cppassist::make_unique<Box>(1.0f, (unsigned int)ShapeOption::IncludeTexCoords);
+    m_box = cppassist::make_unique<Box>(1.0f, ShapeOption::IncludeTexCoords);
 
     m_vertexShader = std::unique_ptr<globjects::Shader>( m_environment->resourceManager()->load<globjects::Shader>(
         gloperate::dataPath() + "/gloperate/shaders/Geometry/RenderGeometry.vert"

@@ -16,12 +16,9 @@ namespace gloperate
 {
 
 
-Sphere::Sphere(float radius, unsigned int options)
+Sphere::Sphere(float radius, cppassist::Flags<ShapeOption> options)
 : Shape(ShapeType::Sphere, options)
 {
-    // Check options
-    bool createTexCoords = ((options & (int)ShapeOption::IncludeTexCoords) != 0);
-
     // Create icosahedron
     m_icosahedron = cppassist::make_unique<Icosahedron>();
     m_icosahedron->generateGeometry(5);
@@ -50,7 +47,7 @@ Sphere::Sphere(float radius, unsigned int options)
     m_drawable->enableAttributeBinding(0);
 
     // Create texture coordinate buffer
-    if (createTexCoords)
+    if (options & ShapeOption::IncludeTexCoords)
     {
         m_icosahedron->generateTextureCoordinates();
 

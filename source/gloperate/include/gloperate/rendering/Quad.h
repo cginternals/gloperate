@@ -30,7 +30,7 @@ public:
     *  @param[in] options
     *    Shape options
     */
-    Quad(float size = 2.0f, unsigned int options = 0);
+    Quad(float size = 2.0f, cppassist::Flags<ShapeOption> options = ShapeOption::None);
 
     /**
     *  @brief
@@ -43,7 +43,7 @@ public:
     *  @param[in] options
     *    Shape options
     */
-    Quad(float width, float height, unsigned int options = 0);
+    Quad(float width, float height, cppassist::Flags<ShapeOption> options = ShapeOption::None);
 
     /**
     *  @brief

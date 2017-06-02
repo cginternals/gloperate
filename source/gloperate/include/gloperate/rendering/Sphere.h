@@ -31,7 +31,7 @@ public:
     *  @param[in] options
     *    Shape options
     */
-    Sphere(float radius = 1.0f, unsigned int options = 0);
+    Sphere(float radius = 1.0f, cppassist::Flags<ShapeOption> options = ShapeOption::None);
 
     /**
     *  @brief

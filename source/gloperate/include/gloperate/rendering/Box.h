@@ -30,7 +30,7 @@ public:
     *  @param[in] options
     *    Shape options
     */
-    Box(float size = 2.0f, unsigned int options = 0);
+    Box(float size = 2.0f, cppassist::Flags<ShapeOption> options = ShapeOption::None);
 
     /**
     *  @brief
@@ -45,7 +45,7 @@ public:
     *  @param[in] options
     *    Shape options
     */
-    Box(float width, float height, float depth, unsigned int options = 0);
+    Box(float width, float height, float depth, cppassist::Flags<ShapeOption> options = ShapeOption::None);
 
     /**
     *  @brief

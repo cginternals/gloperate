@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppassist/flags/Flags.h>
+
 #include <gloperate/rendering/AbstractDrawable.h>
 
 
@@ -27,6 +29,7 @@ enum class ShapeType : int
 */
 enum class ShapeOption : int
 {
+    None = 0,            ///< No option
     IncludeTexCoords = 1 ///< Include texture coordinates in geometry
 };
 
@@ -47,7 +50,7 @@ public:
     *  @param[in] options
     *    Shape options
     */
-    Shape(ShapeType shapeType, unsigned int options);
+    Shape(ShapeType shapeType, cppassist::Flags<ShapeOption> options);
 
     /**
     *  @brief
@@ -71,12 +74,12 @@ public:
     *  @return
     *    Shape options
     */
-    unsigned int options() const;
+    cppassist::Flags<ShapeOption> options() const;
 
 
 protected:
-    ShapeType    m_type;    ///< Type of the shape
-    unsigned int m_options; ///< Shape options
+    ShapeType                     m_type;    ///< Type of the shape
+    cppassist::Flags<ShapeOption> m_options; ///< Shape options
 };
 
 

@@ -14,12 +14,12 @@ namespace gloperate
 {
 
 
-Quad::Quad(float size, unsigned int options)
+Quad::Quad(float size, cppassist::Flags<ShapeOption> options)
 : Quad(size, size, options)
 {
 }
 
-Quad::Quad(float width, float height, unsigned int options)
+Quad::Quad(float width, float height, cppassist::Flags<ShapeOption> options)
 : Shape(ShapeType::Quad, options)
 {
     // Quad geometry
@@ -36,9 +36,6 @@ Quad::Quad(float width, float height, unsigned int options)
         , glm::vec2(0.0f, 1.0f)
         , glm::vec2(1.0f, 1.0f)
     } };
-
-    // Check options
-    bool createTexCoords = ((options & (int)ShapeOption::IncludeTexCoords) != 0);
 
     // Create drawable
     m_drawable = cppassist::make_unique<Drawable>();
@@ -63,7 +60,7 @@ Quad::Quad(float width, float height, unsigned int options)
     m_drawable->enableAttributeBinding(0);
 
     // Create texture coordinate buffer
-    if (createTexCoords)
+    if (options & ShapeOption::IncludeTexCoords)
     {
         m_texCoords = cppassist::make_unique<globjects::Buffer>();
         m_texCoords->setData(texcoords, gl::GL_STATIC_DRAW);
