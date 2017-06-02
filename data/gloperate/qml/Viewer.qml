@@ -413,8 +413,12 @@ ApplicationWindow
 
     Component.onCompleted:
     {
-        // Load settings
-        settings.load();
+        if(!gloperate.system.safeMode()) {
+            // Load settings
+            settings.load();
+        } else {
+            settings.forceSave();
+        }
 
         // Scan for plugins
         gloperate.components.setPluginPaths(settings.pluginPaths);

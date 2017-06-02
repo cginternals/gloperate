@@ -19,6 +19,7 @@ System::System(Environment * environment)
     // Register functions
     addFunction("logLevel",    this, &System::scr_logLevel);
     addFunction("setLogLevel", this, &System::scr_setLogLevel);
+    addFunction("safeMode",    this, &System::src_safeMode);
     addFunction("load",        this, &System::scr_load);
     addFunction("load",        this, &System::scr_load);
     addFunction("readFile",    this, &System::scr_readFile);
@@ -42,6 +43,11 @@ void System::scr_setLogLevel(int logLevel)
     {
         cppassist::setVerbosityLevel(logLevel);
     }
+}
+
+bool System::src_safeMode()
+{
+    return m_environment->safeMode();
 }
 
 void System::scr_load(const std::string & filename)

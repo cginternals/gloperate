@@ -22,6 +22,7 @@ Environment::Environment()
 , m_system(this)
 , m_inputManager(this)
 , m_scriptContext(nullptr)
+, m_safeMode(false)
 {
     addProperty(&m_componentManager);
     addProperty(&m_resourceManager);
@@ -163,5 +164,13 @@ void Environment::unregisterCanvas(Canvas * canvas)
     m_canvases.erase(std::find(m_canvases.begin(), m_canvases.end(), canvas));
 }
 
+    void Environment::setSafeMode(bool safeMode)
+    {
+        m_safeMode = safeMode;
+    }
 
+    bool Environment::safeMode()
+    {
+        return m_safeMode;
+    }
 } // namespace gloperate

@@ -171,6 +171,8 @@ public:
     void exit(int exitCode = 0);
     //@}
 
+    void setSafeMode(bool safeMode);
+    bool safeMode();
 
 protected:
     //@{
@@ -224,6 +226,8 @@ protected:
     std::unique_ptr<cppexpose::ScriptContext> m_scriptContext;    ///< Scripting context
 
     std::string                               m_helpText;         ///< Text that is displayed on 'help'
+
+    bool m_safeMode;
 };
 
 
