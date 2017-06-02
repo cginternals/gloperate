@@ -22,6 +22,7 @@ Environment::Environment()
 , m_system(this)
 , m_inputManager(this)
 , m_scriptContext(nullptr)
+, m_safeMode(false)
 {
     addProperty(&m_componentManager);
     addProperty(&m_resourceManager);
@@ -122,6 +123,16 @@ void Environment::exit(int exitCode)
 {
     // Emit signal
     this->exitApplication(exitCode);
+}
+
+bool Environment::safeMode()
+{
+    return m_safeMode;
+}
+
+void Environment::setSafeMode(bool safeMode)
+{
+    m_safeMode = safeMode;
 }
 
 void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> && scriptContext)

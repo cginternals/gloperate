@@ -37,6 +37,11 @@ Application::Application(int & argc, char ** argv)
 
     const auto contextFormat = argumentParser.value("--context");
 
+    if (argumentParser.isSet("-safemode"))
+    {
+        m_environment.setSafeMode(true);
+    }
+
     // Create scripting context
     m_environment.setupScripting(
         cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&m_qmlEngine)
