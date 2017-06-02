@@ -60,6 +60,14 @@ Application::Application(int & argc, char ** argv)
     // Convert and set Qt context format
     QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
     QSurfaceFormat::setDefaultFormat(qFormat);
+
+    // Create global timer
+    QObject::connect(
+        &m_timer, &QTimer::timeout,
+        this, &Application::onTimer
+    );
+
+    m_timer.start(5);
 }
 
 Application::~Application()
@@ -94,6 +102,10 @@ const gloperate::Environment & Application::environment() const
 gloperate::Environment & Application::environment()
 {
     return m_environment;
+}
+
+void Application::onTimer()
+{
 }
 
 

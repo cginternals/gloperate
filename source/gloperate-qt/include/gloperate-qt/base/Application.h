@@ -3,6 +3,7 @@
 
 
 #include <QApplication>
+#include <QTimer>
 
 #include <gloperate-qt/gloperate-qt_api.h>
 
@@ -45,6 +46,15 @@ public:
     *    Destructor
     */
     virtual ~Application();
+
+
+protected:
+    void onTimer();
+
+
+protected:
+    gloperate::Environment * m_environment; ///< Main gloperate environment
+    QTimer                   m_timer;       ///< Global timer (e.g., to update scripting timers)
 };
 
 
