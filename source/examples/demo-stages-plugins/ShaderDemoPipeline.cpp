@@ -76,7 +76,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     m_rasterizationStage->renderInterface.targetFBO << m_framebufferStage->fbo;
     m_rasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_rasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_rasterizationStage->renderPass << m_renderPassStage->renderPass;
+    m_rasterizationStage->drawable << m_renderPassStage->renderPass;
     m_rasterizationStage->colorTexture << m_framebufferStage->colorTexture;
 
     // Mixer stage

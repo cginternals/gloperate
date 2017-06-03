@@ -56,12 +56,13 @@ void MixerStage::onContextInit(AbstractGLContext *)
 
 void MixerStage::onContextDeinit(AbstractGLContext *)
 {
-    m_vao = nullptr;
-    m_buffer = nullptr;
-    m_vertexShader = nullptr;
+    // Clean-up OpenGl objects
+    m_vao            = nullptr;
+    m_buffer         = nullptr;
+    m_vertexShader   = nullptr;
     m_geometryShader = nullptr;
     m_fragmentShader = nullptr;
-    m_program = nullptr;
+    m_program        = nullptr;
 }
 
 void MixerStage::onProcess()

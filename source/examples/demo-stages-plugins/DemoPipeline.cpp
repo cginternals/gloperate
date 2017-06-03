@@ -1,8 +1,6 @@
 
 #include "DemoPipeline.h"
 
-#include <iostream>
-
 #include <glbinding/gl/enum.h>
 
 #include <gloperate/gloperate.h>
@@ -97,7 +95,7 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
     m_colorizeRasterizationStage->renderInterface.targetFBO << m_framebufferStage2->fbo;
     m_colorizeRasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_colorizeRasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_colorizeRasterizationStage->renderPass << m_colorizeRenderPassStage->renderPass;
+    m_colorizeRasterizationStage->drawable << m_colorizeRenderPassStage->renderPass;
     m_colorizeRasterizationStage->colorTexture << m_framebufferStage2->colorTexture;
 
     // Mixer stage
@@ -119,8 +117,6 @@ void DemoPipeline::onContextInit(gloperate::AbstractGLContext * context)
     Pipeline::onContextInit(context);
 
     m_quad = cppassist::make_unique<gloperate::Quad>(2.0f);
-
-std::cout << "DemoPipeline::onContextInit()" << std::endl;
 
     m_colorizeRenderPassStage->drawable = m_quad.get();
 }

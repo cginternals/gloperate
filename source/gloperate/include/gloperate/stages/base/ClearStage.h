@@ -27,17 +27,17 @@ class AbstractDrawable;
 
 /**
 *  @brief
-*    Stage that rasterizes a given drawable
+*    Stage that clears the screen with a background color
 */
-class GLOPERATE_API RasterizationStage : public Stage
+class GLOPERATE_API ClearStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        RasterizationStage, gloperate::Stage
+        ClearStage, gloperate::Stage
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that rasterizes a given drawable"
+      , "Stage that clears the screen with a background color"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -48,13 +48,11 @@ public:
     RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<bool>                          rasterize;    ///< If connected, it enables/disables rasterization
-    Input<gloperate::AbstractDrawable *> drawable;     ///< Drawable that is rendered
-    Input<globjects::Texture *>          colorTexture; ///< Pass in of texture input/output
+    Input<globjects::Texture *>      colorTexture;    ///< Pass in of texture input/output
 
     // Outputs
-    Output<globjects::Framebuffer *>     fboOut;          ///< Pass through framebuffer
-    Output<globjects::Texture *>         colorTextureOut; ///< Pass through color texture
+    Output<globjects::Framebuffer *> fboOut;          ///< Pass through framebuffer
+    Output<globjects::Texture *>     colorTextureOut; ///< Pass through color texture
 
 
 public:
@@ -67,13 +65,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    RasterizationStage(Environment * environment, const std::string & name = "RasterizationStage");
+    ClearStage(Environment * environment, const std::string & name = "ClearStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~RasterizationStage();
+    virtual ~ClearStage();
 
 
 protected:

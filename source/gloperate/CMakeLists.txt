@@ -125,6 +125,7 @@ set(headers
     ${include_path}/stages/base/ShaderStage.h
     ${include_path}/stages/base/RenderPassStage.h
     ${include_path}/stages/base/RasterizationStage.h
+    ${include_path}/stages/base/ClearStage.h
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
@@ -206,6 +207,7 @@ set(sources
     ${source_path}/stages/base/ShaderStage.cpp
     ${source_path}/stages/base/RenderPassStage.cpp
     ${source_path}/stages/base/RasterizationStage.cpp
+    ${source_path}/stages/base/ClearStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp

@@ -16,7 +16,8 @@
 #include <gloperate/pipeline/Output.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Texture;
     class Buffer;
     class Framebuffer;
@@ -55,8 +56,8 @@ public:
     Input<std::string>               fragmentShader; ///< Fragment shader filename
 
     // Outputs
-    Output<bool>                     rendered;  ///< 'true' if output has been rendered
-    Output<globjects::Framebuffer *> fboOut;    ///< Pass through of target FBO
+    Output<bool>                     rendered;       ///< 'true' if output has been rendered
+    Output<globjects::Framebuffer *> fboOut;         ///< Pass through of target FBO
 
 
 public:
