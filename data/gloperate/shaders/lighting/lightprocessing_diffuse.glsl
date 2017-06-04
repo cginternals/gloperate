@@ -1,3 +1,4 @@
+
 vec3 singleLightIntensity(
     vec3 worldPosition,
     vec3 diffuseColor,

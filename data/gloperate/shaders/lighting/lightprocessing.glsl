@@ -1,3 +1,4 @@
+
 #ifndef LIGHT_PROCESSING
 #define LIGHT_PROCESSING
 
@@ -50,4 +51,4 @@ vec3 lightIntensity(
     return intensity;
 }
 
-#endif //LIGHT_PROCESSING
+#endif // LIGHT_PROCESSING
