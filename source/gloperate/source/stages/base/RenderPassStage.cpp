@@ -28,11 +28,14 @@ RenderPassStage::RenderPassStage(Environment * environment, const std::string & 
 , camera("camera", this)
 , renderPass("renderPass", this)
 {
-    m_inputAddedConnection = inputAdded.connect([this] (gloperate::AbstractSlot *) {
+    // Invalidate output when input slots have been added or removed
+    m_inputAddedConnection = inputAdded.connect([this] (gloperate::AbstractSlot *)
+    {
         renderPass.invalidate();
     });
 
-    m_inputRemovedConnection = inputRemoved.connect([this] (gloperate::AbstractSlot *) {
+    m_inputRemovedConnection = inputRemoved.connect([this] (gloperate::AbstractSlot *)
+    {
         renderPass.invalidate();
     });
 }

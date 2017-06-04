@@ -103,9 +103,11 @@ protected:
 
 
 protected:
+    // OpenGL objects
     std::unique_ptr<gloperate::RenderPass> m_renderPass;
     std::unique_ptr<globjects::State>      m_beforeState;
 
+    // Signal connections
     cppexpose::ScopedConnection m_inputAddedConnection;
     cppexpose::ScopedConnection m_inputRemovedConnection;
 

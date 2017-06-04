@@ -80,8 +80,13 @@ protected:
 
 
 protected:
+    // OpenGL objects
     std::unique_ptr<globjects::Program>             m_program; ///< Program object
     std::vector<std::unique_ptr<globjects::Shader>> m_shaders; ///< collection of self created shaders for later removal
+
+    // Signal connections
+    cppexpose::ScopedConnection m_inputAddedConnection;
+    cppexpose::ScopedConnection m_inputRemovedConnection;
 };
 
 

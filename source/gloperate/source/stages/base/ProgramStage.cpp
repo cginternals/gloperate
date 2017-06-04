@@ -24,12 +24,12 @@ ProgramStage::ProgramStage(Environment * environment, const std::string & name)
 , program("program", this)
 {
     // Invalidate output when input slots have been added or removed
-    inputAdded.connect([this] (gloperate::AbstractSlot * )
+    m_inputAddedConnection = inputAdded.connect([this] (gloperate::AbstractSlot *)
     {
         program.invalidate();
     });
 
-    inputRemoved.connect([this] (gloperate::AbstractSlot *)
+    m_inputRemovedConnection = inputRemoved.connect([this] (gloperate::AbstractSlot *)
     {
         program.invalidate();
     });
