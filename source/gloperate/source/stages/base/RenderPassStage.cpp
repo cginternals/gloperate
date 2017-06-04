@@ -6,6 +6,7 @@
 #include <globjects/Program.h>
 #include <globjects/State.h>
 #include <globjects/Texture.h>
+#include <globjects/TextureHandle.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Color.h>
@@ -68,6 +69,18 @@ void RenderPassStage::onProcess()
     m_renderPass->setGeometry((*drawable));
     m_renderPass->setProgram((*program));
 
+    // Update camera uniforms
+    if (camera.isValid() && *this->camera)
+    {
+        gloperate::Camera * camera = *this->camera;
+
+        (*program)->setUniform<glm::vec3>("eye",            camera->eye());
+        (*program)->setUniform<glm::mat4>("viewProjection", camera->viewProjection());
+        (*program)->setUniform<glm::mat4>("view",           camera->view());
+        (*program)->setUniform<glm::mat4>("projection",     camera->projection());
+        (*program)->setUniform<glm::mat3>("normalMatrix",   camera->normal());
+    }
+
     // Update OpenGL states
     if (*this->depthTest) m_renderPass->stateBefore()->enable (gl::GL_DEPTH_TEST);
     else                  m_renderPass->stateBefore()->disable(gl::GL_DEPTH_TEST);
@@ -82,54 +95,165 @@ void RenderPassStage::onProcess()
     if (*this->blending) m_renderPass->stateBefore()->enable (gl::GL_BLEND);
     else                 m_renderPass->stateBefore()->disable(gl::GL_BLEND);
 
-    // Update camera uniforms
-    if (camera.isValid() && *this->camera)
-    {
-        gloperate::Camera * camera = *this->camera;
-
-        (*program)->setUniform<glm::vec3>("eye",            camera->eye());
-        (*program)->setUniform<glm::mat4>("viewProjection", camera->viewProjection());
-        (*program)->setUniform<glm::mat4>("view",           camera->view());
-        (*program)->setUniform<glm::mat4>("projection",     camera->projection());
-        (*program)->setUniform<glm::mat3>("normalMatrix",   camera->normal());
-    }
-
-    // Attach textures
+    // Update uniforms from dynamic inputs
     unsigned int textureIndex = 0;
-    for (auto input : inputs<globjects::Texture *>())
-    {
-        (*program)->setUniform<int>(input->name(), textureIndex);
-        m_renderPass->setTexture(textureIndex, **input);
+    unsigned int shaderStorageBufferIndex = 0;
 
-        if ((**input)->target() == gl::GL_TEXTURE_CUBE_MAP)
+    for (auto input : inputs())
+    {
+        // Only conside dynamic inputs here
+        if (!input->isDynamic())
+            continue;
+
+        // Texture
+        if (input->type() == typeid(globjects::Texture *))
         {
-            m_renderPass->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
+            // Get texture input
+            auto textureInput = static_cast<Input<globjects::Texture *> *>(input);
+
+            // Attach texture
+            (*program)->setUniform<int>(input->name(), textureIndex);
+            m_renderPass->setTexture(textureIndex, **textureInput);
+
+            if ((**textureInput)->target() == gl::GL_TEXTURE_CUBE_MAP)
+            {
+                m_renderPass->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
+            }
+
+            ++textureIndex;
         }
 
-        ++textureIndex;
-    }
+        // Shader storage buffer
+        else if (input->type() == typeid(globjects::Buffer *))
+        {
+            // Get buffer input
+            auto bufferInput = static_cast<Input<globjects::Buffer *> *>(input);
 
-    // Attach shader storage buffers
-    unsigned int shaderStorageBufferIndex = 0;
-    for (auto bufferInput : inputs<globjects::Buffer *>())
-    {
-        m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, **bufferInput);
+            // Attach shader storage buffer
+            m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, **bufferInput);
+            ++shaderStorageBufferIndex;
+        }
 
-        ++shaderStorageBufferIndex;
-    }
+        // Color
+        else if (input->type() == typeid(Color))
+        {
+            // Get color input
+            auto colorInput = static_cast<Input<Color> *>(input);
 
-    // Set color uniforms
-    for (auto input : inputs<Color>()) {
-        (*program)->setUniform<glm::vec4>(input->name(), (*input)->toVec4());
-    }
+            // Set color uniform
+            (*program)->setUniform<glm::vec4>(input->name(), (*colorInput)->toVec4());
+        }
 
-    for (auto setterPair : uniformSetters)
-    {
-        setterPair.second();
+        // Basic uniform
+        else
+        {
+            setUniformValue(*program, input);
+        }
     }
 
     // Update outputs
     renderPass.setValue(m_renderPass.get());
+}
+
+void RenderPassStage::setUniformValue(globjects::Program * program, AbstractSlot * input)
+{
+    if (input->type() == typeid(float)) {
+        program->setUniform<float>(input->name(), static_cast<Input<float> *>(input)->value());
+    } else if (input->type() == typeid(int)) {
+        program->setUniform<int>(input->name(), static_cast<Input<int> *>(input)->value());
+    } else if (input->type() == typeid(unsigned int)) {
+        program->setUniform<unsigned int>(input->name(), static_cast<Input<unsigned int> *>(input)->value());
+    } else if (input->type() == typeid(bool)) {
+        program->setUniform<bool>(input->name(), static_cast<Input<bool> *>(input)->value());
+    } else if (input->type() == typeid(glm::vec2)) {
+        program->setUniform<glm::vec2>(input->name(), static_cast<Input<glm::vec2> *>(input)->value());
+    } else if (input->type() == typeid(glm::vec3)) {
+        program->setUniform<glm::vec3>(input->name(), static_cast<Input<glm::vec3> *>(input)->value());
+    } else if (input->type() == typeid(glm::vec4)) {
+        program->setUniform<glm::vec4>(input->name(), static_cast<Input<glm::vec4> *>(input)->value());
+    } else if (input->type() == typeid(glm::ivec2)) {
+        program->setUniform<glm::ivec2>(input->name(), static_cast<Input<glm::ivec2> *>(input)->value());
+    } else if (input->type() == typeid(glm::ivec3)) {
+        program->setUniform<glm::ivec3>(input->name(), static_cast<Input<glm::ivec3> *>(input)->value());
+    } else if (input->type() == typeid(glm::ivec4)) {
+        program->setUniform<glm::ivec4>(input->name(), static_cast<Input<glm::ivec4> *>(input)->value());
+    } else if (input->type() == typeid(glm::uvec2)) {
+        program->setUniform<glm::uvec2>(input->name(), static_cast<Input<glm::uvec2> *>(input)->value());
+    } else if (input->type() == typeid(glm::uvec3)) {
+        program->setUniform<glm::uvec3>(input->name(), static_cast<Input<glm::uvec3> *>(input)->value());
+    } else if (input->type() == typeid(glm::uvec4)) {
+        program->setUniform<glm::uvec4>(input->name(), static_cast<Input<glm::uvec4> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat2)) {
+        program->setUniform<glm::mat2>(input->name(), static_cast<Input<glm::mat2> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat3)) {
+        program->setUniform<glm::mat3>(input->name(), static_cast<Input<glm::mat3> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat4)) {
+        program->setUniform<glm::mat4>(input->name(), static_cast<Input<glm::mat4> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat2x3)) {
+        program->setUniform<glm::mat2x3>(input->name(), static_cast<Input<glm::mat2x3> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat3x2)) {
+        program->setUniform<glm::mat3x2>(input->name(), static_cast<Input<glm::mat3x2> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat2x4)) {
+        program->setUniform<glm::mat2x4>(input->name(), static_cast<Input<glm::mat2x4> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat4x2)) {
+        program->setUniform<glm::mat4x2>(input->name(), static_cast<Input<glm::mat4x2> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat3x4)) {
+        program->setUniform<glm::mat3x4>(input->name(), static_cast<Input<glm::mat3x4> *>(input)->value());
+    } else if (input->type() == typeid(glm::mat4x3)) {
+        program->setUniform<glm::mat4x3>(input->name(), static_cast<Input<glm::mat4x3> *>(input)->value());
+    } else if (input->type() == typeid(gl::GLuint64)) {
+        program->setUniform<gl::GLuint64>(input->name(), static_cast<Input<gl::GLuint64> *>(input)->value());
+    } else if (input->type() == typeid(globjects::TextureHandle)) {
+        program->setUniform<globjects::TextureHandle>(input->name(), static_cast<Input<globjects::TextureHandle> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<float>)) {
+        program->setUniform<std::vector<float>>(input->name(), static_cast<Input<std::vector<float>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<int>)) {
+        program->setUniform<std::vector<int>>(input->name(), static_cast<Input<std::vector<int>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<unsigned int>)) {
+        program->setUniform<std::vector<unsigned int>>(input->name(), static_cast<Input<std::vector<unsigned int>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<bool>)) {
+        program->setUniform<std::vector<bool>>(input->name(), static_cast<Input<std::vector<bool>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::vec2>)) {
+        program->setUniform<std::vector<glm::vec2>>(input->name(), static_cast<Input<std::vector<glm::vec2>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::vec3>)) {
+        program->setUniform<std::vector<glm::vec3>>(input->name(), static_cast<Input<std::vector<glm::vec3>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::vec4>)) {
+        program->setUniform<std::vector<glm::vec4>>(input->name(), static_cast<Input<std::vector<glm::vec4>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::ivec2>)) {
+        program->setUniform<std::vector<glm::ivec2>>(input->name(), static_cast<Input<std::vector<glm::ivec2>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::ivec3>)) {
+        program->setUniform<std::vector<glm::ivec3>>(input->name(), static_cast<Input<std::vector<glm::ivec3>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::ivec4>)) {
+        program->setUniform<std::vector<glm::ivec4>>(input->name(), static_cast<Input<std::vector<glm::ivec4>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::uvec2>)) {
+        program->setUniform<std::vector<glm::uvec2>>(input->name(), static_cast<Input<std::vector<glm::uvec2>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::uvec3>)) {
+        program->setUniform<std::vector<glm::uvec3>>(input->name(), static_cast<Input<std::vector<glm::uvec3>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::uvec4>)) {
+        program->setUniform<std::vector<glm::uvec4>>(input->name(), static_cast<Input<std::vector<glm::uvec4>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat2>)) {
+        program->setUniform<std::vector<glm::mat2>>(input->name(), static_cast<Input<std::vector<glm::mat2>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat3>)) {
+        program->setUniform<std::vector<glm::mat3>>(input->name(), static_cast<Input<std::vector<glm::mat3>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat4>)) {
+        program->setUniform<std::vector<glm::mat4>>(input->name(), static_cast<Input<std::vector<glm::mat4>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat2x3>)) {
+        program->setUniform<std::vector<glm::mat2x3>>(input->name(), static_cast<Input<std::vector<glm::mat2x3>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat3x2>)) {
+        program->setUniform<std::vector<glm::mat3x2>>(input->name(), static_cast<Input<std::vector<glm::mat3x2>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat2x4>)) {
+        program->setUniform<std::vector<glm::mat2x4>>(input->name(), static_cast<Input<std::vector<glm::mat2x4>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat4x2>)) {
+        program->setUniform<std::vector<glm::mat4x2>>(input->name(), static_cast<Input<std::vector<glm::mat4x2>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat3x4>)) {
+        program->setUniform<std::vector<glm::mat3x4>>(input->name(), static_cast<Input<std::vector<glm::mat3x4>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<glm::mat4x3>)) {
+        program->setUniform<std::vector<glm::mat4x3>>(input->name(), static_cast<Input<std::vector<glm::mat4x3>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<gl::GLuint64>)) {
+        program->setUniform<std::vector<gl::GLuint64>>(input->name(), static_cast<Input<std::vector<gl::GLuint64>> *>(input)->value());
+    } else if (input->type() == typeid(std::vector<globjects::TextureHandle>)) {
+        program->setUniform<std::vector<globjects::TextureHandle>>(input->name(), static_cast<Input<std::vector<globjects::TextureHandle>> *>(input)->value());
+    }
 }
 
 

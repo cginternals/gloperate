@@ -113,6 +113,9 @@ protected:
     virtual void onProcess() override;
     void onContextInit(AbstractGLContext * content) override;
 
+    // Helper functions
+    void setUniformValue(globjects::Program * program, AbstractSlot * input);
+
 
 protected:
     // OpenGL objects
@@ -122,12 +125,7 @@ protected:
     // Signal connections
     cppexpose::ScopedConnection m_inputAddedConnection;
     cppexpose::ScopedConnection m_inputRemovedConnection;
-
-    std::unordered_map<std::string, std::function<void()>> uniformSetters; ///< Stores a lambda expression which updates the uniform value
 };
 
 
 } // namespace gloperate
-
-
-#include <gloperate/stages/base/RenderPassStage.inl>
