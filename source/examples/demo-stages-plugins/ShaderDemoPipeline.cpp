@@ -83,11 +83,11 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     addStage(m_blitStage.get());
     m_blitStage->sourceFBO << m_rasterizationStage->fboOut;
     m_blitStage->sourceViewport << renderInterface.deviceViewport;
-    m_blitStage->destinationFBO << renderInterface.targetFBO;
-    m_blitStage->destinationViewport << renderInterface.deviceViewport;
+    m_blitStage->targetFBO << renderInterface.targetFBO;
+    m_blitStage->targetViewport << renderInterface.deviceViewport;
 
     // Outputs
-    renderInterface.rendered << m_blitStage->blitted;
+    renderInterface.rendered << m_blitStage->rendered;
 }
 
 ShaderDemoPipeline::~ShaderDemoPipeline()

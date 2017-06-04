@@ -65,11 +65,11 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
 
     addStage(m_blitStage.get());
     m_blitStage->sourceFBO << m_aggregationStage->aggregatedFBO;
-    m_blitStage->destinationFBO << renderInterface.targetFBO;
+    m_blitStage->targetFBO << renderInterface.targetFBO;
     m_blitStage->sourceViewport << renderInterface.deviceViewport;
-    m_blitStage->destinationViewport << renderInterface.deviceViewport;
+    m_blitStage->targetViewport << renderInterface.deviceViewport;
 
-    renderInterface.rendered << m_blitStage->blitted;
+    renderInterface.rendered << m_blitStage->rendered;
 }
 
 MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()

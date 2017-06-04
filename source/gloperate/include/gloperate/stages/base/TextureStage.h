@@ -84,8 +84,7 @@ protected:
 
 
 protected:
-    // Data
-    std::unique_ptr<globjects::Texture>      m_texture; ///< The created texture
+    std::unique_ptr<globjects::Texture>      m_texture;      ///< The created texture
     std::unique_ptr<gloperate::RenderTarget> m_renderTarget; ///< The passed render target
 };
 

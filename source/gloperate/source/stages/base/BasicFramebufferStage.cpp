@@ -36,6 +36,7 @@ void BasicFramebufferStage::onContextInit(AbstractGLContext *)
 
 void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
 {
+    // Clean up OpenGL objects
     m_colorBuffer  = nullptr;
     m_depthBuffer  = nullptr;
     m_colorTexture = nullptr;

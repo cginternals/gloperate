@@ -17,20 +17,16 @@ CPPEXPOSE_COMPONENT(RasterizationStage, gloperate::Stage)
 
 RasterizationStage::RasterizationStage(Environment * environment, const std::string & name)
 : Stage(environment, "RasterizationStage", name)
-, renderInterface (this)
-, rasterize       ("rasterize",       this, true)
-, drawable        ("drawable",        this)
-, colorTexture    ("colorTexture",    this)
-, fboOut          ("fboOut",          this)
-, colorTextureOut ("colorTextureOut", this)
+, renderInterface(this)
+, rasterize      ("rasterize",       this, true)
+, drawable       ("drawable",        this)
+, colorTexture   ("colorTexture",    this)
+, fboOut         ("fboOut",          this)
+, colorTextureOut("colorTextureOut", this)
 {
 }
 
 RasterizationStage::~RasterizationStage()
-{
-}
-
-void RasterizationStage::onContextInit(AbstractGLContext *)
 {
 }
 

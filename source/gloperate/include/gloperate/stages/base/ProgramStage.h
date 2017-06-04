@@ -10,12 +10,14 @@
 #include <gloperate/pipeline/Output.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Program;
     class Shader;
 }
 
-namespace cppassist {
+namespace cppassist
+{
     class FilePath;
 }
 
@@ -45,7 +47,7 @@ public:
 
 
 public:
-    // Inputs can be created directly
+    // Inputs of type Shader or FilePath can be created dynamically
 
     // Outputs
     Output<globjects::Program *> program; ///< the program object

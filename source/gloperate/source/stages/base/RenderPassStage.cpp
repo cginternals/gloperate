@@ -31,6 +31,7 @@ RenderPassStage::RenderPassStage(Environment * environment, const std::string & 
     m_inputAddedConnection = inputAdded.connect([this] (gloperate::AbstractSlot *) {
         renderPass.invalidate();
     });
+
     m_inputRemovedConnection = inputRemoved.connect([this] (gloperate::AbstractSlot *) {
         renderPass.invalidate();
     });

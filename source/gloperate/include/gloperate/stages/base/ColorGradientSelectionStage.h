@@ -6,7 +6,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
@@ -59,15 +58,15 @@ public:
     */
     ColorGradientSelectionStage(gloperate::Environment * environment, const std::string & name = "");
 
-
-protected:
     /**
     *  @brief
-    *    Process one iteration
-    *
-    *  @remarks
-    *    Overriden
+    *    Destructor
     */
+    ~ColorGradientSelectionStage();
+
+
+protected:
+    // Virtual Stage interface
     virtual void onProcess() override;
 };
 

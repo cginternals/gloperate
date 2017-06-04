@@ -102,11 +102,11 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
     addStage(m_blitStage.get());
     m_blitStage->sourceFBO << m_colorizeRasterizationStage->fboOut;
     m_blitStage->sourceViewport << renderInterface.deviceViewport;
-    m_blitStage->destinationFBO << renderInterface.targetFBO;
-    m_blitStage->destinationViewport << renderInterface.deviceViewport;
+    m_blitStage->targetFBO << renderInterface.targetFBO;
+    m_blitStage->targetViewport << renderInterface.deviceViewport;
 
     // Outputs
-    renderInterface.rendered << m_blitStage->blitted;
+    renderInterface.rendered << m_blitStage->rendered;
 }
 
 DemoPipeline::~DemoPipeline()
