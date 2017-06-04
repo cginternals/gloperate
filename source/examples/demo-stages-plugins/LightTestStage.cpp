@@ -68,7 +68,7 @@ static const char * s_fragmentShader = R"(
 
     #define LIGHT_PROCESSING_PHONG
 
-    #include </gloperate/shaders/lightProcessing.glsl>
+    #include </gloperate/shaders/lighting/lightprocessing.glsl>
 
     uniform samplerBuffer colorTypeData;
     uniform samplerBuffer positionData;
@@ -165,9 +165,9 @@ void LightTestStage::onContextInitialize(gloperate::AbstractGLContext *)
 
     // [TODO] fix memory leak
     auto dataFolderPath = gloperate::dataPath();
-    globjects::NamedString::create("/gloperate/shaders/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
-    globjects::NamedString::create("/gloperate/shaders/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
-    globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_diffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_diffuse.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_phong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_phong.glsl"));
 }
 
 void LightTestStage::onProcess()

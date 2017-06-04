@@ -51,11 +51,11 @@ void DemoStage2::onContextInit(gloperate::AbstractGLContext *)
     m_box = cppassist::make_unique<Box>(1.0f, ShapeOption::IncludeTexCoords);
 
     m_vertexShader = std::unique_ptr<globjects::Shader>( m_environment->resourceManager()->load<globjects::Shader>(
-        gloperate::dataPath() + "/gloperate/shaders/Geometry/RenderGeometry.vert"
+        gloperate::dataPath() + "/gloperate/shaders/geometry/geometry.vert"
     ));
 
     m_fragmentShader = std::unique_ptr<globjects::Shader>( m_environment->resourceManager()->load<globjects::Shader>(
-        gloperate::dataPath() + "/gloperate/shaders/Geometry/RenderGeometry.frag"
+        gloperate::dataPath() + "/gloperate/shaders/geometry/geometry.frag"
     ));
 
     m_program = cppassist::make_unique<globjects::Program>();

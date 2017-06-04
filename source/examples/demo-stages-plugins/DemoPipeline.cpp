@@ -75,8 +75,8 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
     addStage(m_framebufferStage2.get());
     m_framebufferStage2->viewport << renderInterface.deviceViewport;
 
-    shader1 = dataPath + "/gloperate/shaders/screenaligned/default.vert";
-    shader2 = dataPath + "/gloperate/shaders/Demo/Colorize.frag";
+    shader1 = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
+    shader2 = dataPath + "/gloperate/shaders/demo/colorize.frag";
 
     // Colorize program stage
     addStage(m_colorizeProgramStage.get());

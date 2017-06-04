@@ -23,17 +23,17 @@ namespace gloperate
 
 std::unique_ptr<globjects::AbstractStringSource> ScreenAlignedQuad::vertexShaderSource()
 {
-    return globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/screenaligned/default.vert");
+    return globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/geometry/screenaligned.vert");
 }
 
 std::unique_ptr<globjects::AbstractStringSource> ScreenAlignedQuad::fragmentShaderSource()
 {
-    return globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/screenaligned/default.frag");
+    return globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/geometry/screenaligned.frag");
 }
 
 std::unique_ptr<globjects::AbstractStringSource> ScreenAlignedQuad::fragmentShaderSourceInverted()
 {
-    return globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/screenaligned/defaultInverted.frag");
+    return globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/geometry/screenaligned_inverted.frag");
 }
 
 ScreenAlignedQuad::ScreenAlignedQuad()
