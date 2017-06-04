@@ -114,12 +114,12 @@ void DemoStage::onProcess()
     gl::glDisable(gl::GL_SCISSOR_TEST);
 
     // Get model matrix
-    glm::mat4 model = glm::mat4(1.0);
-    model = glm::rotate(model, m_angle, glm::vec3(0.0, 1.0, 0.0));
+    glm::mat4 modelMatrix = glm::mat4(1.0);
+    modelMatrix = glm::rotate(modelMatrix, m_angle, glm::vec3(0.0, 1.0, 0.0));
 
     // Update model-view-projection matrix
-    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
-    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
+    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjectionMatrix());
+    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjectionMatrix() * modelMatrix);
 
     // Lazy creation of texture
     if (!m_texture) {

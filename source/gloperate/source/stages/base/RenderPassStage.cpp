@@ -74,11 +74,11 @@ void RenderPassStage::onProcess()
     {
         gloperate::Camera * camera = *this->camera;
 
-        (*program)->setUniform<glm::vec3>("eye",            camera->eye());
-        (*program)->setUniform<glm::mat4>("viewProjection", camera->viewProjection());
-        (*program)->setUniform<glm::mat4>("view",           camera->view());
-        (*program)->setUniform<glm::mat4>("projection",     camera->projection());
-        (*program)->setUniform<glm::mat3>("normalMatrix",   camera->normal());
+        (*program)->setUniform<glm::vec3>("eye",                  camera->eye());
+        (*program)->setUniform<glm::mat4>("viewProjectionMatrix", camera->viewProjectionMatrix());
+        (*program)->setUniform<glm::mat4>("viewMatrix",           camera->viewMatrix());
+        (*program)->setUniform<glm::mat4>("projectionMatrix",     camera->projectionMatrix());
+        (*program)->setUniform<glm::mat3>("normalMatrixMatrix",   camera->normalMatrix());
     }
 
     // Update OpenGL states

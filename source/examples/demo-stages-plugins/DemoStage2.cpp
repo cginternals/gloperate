@@ -110,7 +110,7 @@ void DemoStage2::onProcess()
     }
 
     // Update uniforms
-    m_program->setUniform("viewProjectionMatrix", m_camera->viewProjection());
+    m_program->setUniform("viewProjectionMatrix", m_camera->viewProjectionMatrix());
 
     // Draw geometry
     m_program->use();
