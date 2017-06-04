@@ -116,8 +116,6 @@ set(headers
     ${include_path}/stages/base/FramebufferStage.h
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
-    ${include_path}/stages/base/ProceduralTextureStage.h
-    ${include_path}/stages/base/SplitStage.h
     ${include_path}/stages/base/BlitStage.h
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
@@ -211,8 +209,6 @@ set(sources
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
-    ${source_path}/stages/base/ProceduralTextureStage.cpp
-    ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
