@@ -45,12 +45,12 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface                      renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<bool>                          rasterize;    ///< If connected, it enables/disables rasterization
-    Input<gloperate::AbstractDrawable *> drawable;     ///< Drawable that is rendered
-    Input<globjects::Texture *>          colorTexture; ///< Pass in of texture input/output
+    Input<bool>                          rasterize;       ///< If connected, it enables/disables rasterization
+    Input<gloperate::AbstractDrawable *> drawable;        ///< Drawable that is rendered
+    Input<globjects::Texture *>          colorTexture;    ///< Pass in of texture input/output
 
     // Outputs
     Output<globjects::Framebuffer *>     fboOut;          ///< Pass through framebuffer

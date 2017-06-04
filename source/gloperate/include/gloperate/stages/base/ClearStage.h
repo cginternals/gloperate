@@ -45,7 +45,7 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface                  renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
     Input<globjects::Texture *>      colorTexture;    ///< Pass in of texture input/output
