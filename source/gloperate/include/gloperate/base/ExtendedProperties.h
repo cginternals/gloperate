@@ -8,12 +8,11 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
-#include <cppexpose/typed/GetTyped.h>
 #include <cppassist/fs/FilePath.h>
 
-#include <gloperate/gloperate_api.h>
+#include <cppexpose/typed/GetTyped.h>
 
-#include <gloperate/base/Color.h>
+#include <gloperate/rendering/Color.h>
 
 
 namespace gloperate

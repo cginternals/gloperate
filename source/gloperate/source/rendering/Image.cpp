@@ -1,17 +1,15 @@
 
-#include <gloperate/base/Image.h>
-
-#include <glbinding/gl/enum.h>
-
-#include <cppassist/logging/logging.h>
-
-#include <cppassist/memory/make_unique.h>
+#include <gloperate/rendering/Image.h>
 
 #include <algorithm>
 
+#include <cppassist/logging/logging.h>
+#include <cppassist/memory/make_unique.h>
+
+#include <glbinding/gl/enum.h>
+
 
 using namespace gl;
-using namespace cppassist;
 
 
 namespace gloperate
@@ -187,11 +185,11 @@ void Image::allocate(int width, int height, GLenum format, GLenum type)
 
     if (m_dataSize == 0)
     {
-        critical() << "Image buffer creation failed.";
+        cppassist::critical() << "Image buffer creation failed.";
         return;
     }
 
-    m_data = make_unique<char[]>(m_dataSize);
+    m_data = cppassist::make_unique<char[]>(m_dataSize);
 }
 
 void Image::copyImage(int width, int height, GLenum format, GLenum type, const char * data)
@@ -202,7 +200,7 @@ void Image::copyImage(int width, int height, GLenum format, GLenum type, const c
 
     if (m_data == nullptr)
     {
-        critical() << "Image buffer creation failed.";
+        cppassist::critical() << "Image buffer creation failed.";
         return;
     }
 

@@ -1,5 +1,5 @@
 
-#include <gloperate/base/AbstractColorGradient.h>
+#include <gloperate/rendering/AbstractColorGradient.h>
 
 #include <cstring>
 
@@ -7,7 +7,7 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/base/Color.h>
+#include <gloperate/rendering/Color.h>
 
 
 namespace gloperate

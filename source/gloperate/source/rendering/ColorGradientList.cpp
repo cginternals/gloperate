@@ -1,5 +1,5 @@
 
-#include <gloperate/base/ColorGradientList.h>
+#include <gloperate/rendering/ColorGradientList.h>
 
 #include <algorithm>
 
@@ -7,10 +7,12 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/base/AbstractColorGradient.h>
+#include <gloperate/rendering/AbstractColorGradient.h>
+
 
 namespace gloperate
 {
+
 
 ColorGradientList::ColorGradientList()
 {
@@ -110,5 +112,6 @@ std::unique_ptr<globjects::Texture> ColorGradientList::generateTexture(size_t nu
 
     return texture;
 }
+
 
 } // namespace gloperate

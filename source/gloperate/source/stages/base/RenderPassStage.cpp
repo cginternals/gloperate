@@ -9,7 +9,7 @@
 #include <globjects/TextureHandle.h>
 
 #include <gloperate/gloperate.h>
-#include <gloperate/base/Color.h>
+#include <gloperate/rendering/Color.h>
 #include <gloperate/rendering/RenderPass.h>
 #include <gloperate/rendering/Drawable.h>
 #include <gloperate/rendering/Camera.h>

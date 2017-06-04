@@ -8,9 +8,8 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/ColorGradientList.h>
+#include <gloperate/rendering/ColorGradientList.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
@@ -18,9 +17,6 @@
 
 namespace gloperate
 {
-
-
-class ColorGradientList;
 
 
 /**

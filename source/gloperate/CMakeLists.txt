@@ -62,7 +62,6 @@ set(headers
     ${include_path}/base/CachedValue.inl
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
-    ${include_path}/base/Image.h
     ${include_path}/base/AbstractLoader.h
     ${include_path}/base/AbstractStorer.h
     ${include_path}/base/Loader.h
@@ -71,14 +70,6 @@ set(headers
     ${include_path}/base/Storer.inl
     ${include_path}/base/ExtendedProperties.h
     ${include_path}/base/ExtendedProperties.inl
-    ${include_path}/base/AbstractColorGradient.h
-    ${include_path}/base/AbstractColorGradient.inl
-    ${include_path}/base/Color.h
-    ${include_path}/base/ColorGradientList.h
-    ${include_path}/base/ColorGradientList.inl
-    ${include_path}/base/ColorGradientPreparation.h
-    ${include_path}/base/ExplicitEquidistantColorGradient.h
-    ${include_path}/base/ExplicitEquidistantColorGradient.inl
 
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/Stage.inl
@@ -110,6 +101,15 @@ set(headers
     ${include_path}/rendering/Sphere.h
     ${include_path}/rendering/Quad.h
     ${include_path}/rendering/Icosahedron.h
+    ${include_path}/rendering/Color.h
+    ${include_path}/rendering/Image.h
+    ${include_path}/rendering/AbstractColorGradient.h
+    ${include_path}/rendering/AbstractColorGradient.inl
+    ${include_path}/rendering/LinearColorGradient.h
+    ${include_path}/rendering/LinearColorGradient.inl
+    ${include_path}/rendering/ColorGradientList.h
+    ${include_path}/rendering/ColorGradientList.inl
+    ${include_path}/rendering/ColorGradientPreparation.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -166,15 +166,8 @@ set(sources
     ${source_path}/base/GLContextUtils.cpp
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
-    ${source_path}/base/Image.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
-    ${source_path}/base/AbstractColorGradient.cpp
-    ${source_path}/base/Color.cpp
-    ${source_path}/base/ColorGradientList.cpp
-    ${source_path}/base/ColorGradientPreparation.cpp
-    ${source_path}/base/ExplicitEquidistantColorGradient.cpp
-    ${source_path}/base/AbstractColorGradient.cpp
     ${source_path}/base/ExtendedProperties.cpp
 
     ${source_path}/pipeline/Stage.cpp
@@ -196,6 +189,12 @@ set(sources
     ${source_path}/rendering/Sphere.cpp
     ${source_path}/rendering/Quad.cpp
     ${source_path}/rendering/Icosahedron.cpp
+    ${source_path}/rendering/Color.cpp
+    ${source_path}/rendering/Image.cpp
+    ${source_path}/rendering/AbstractColorGradient.cpp
+    ${source_path}/rendering/LinearColorGradient.cpp
+    ${source_path}/rendering/ColorGradientList.cpp
+    ${source_path}/rendering/ColorGradientPreparation.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp

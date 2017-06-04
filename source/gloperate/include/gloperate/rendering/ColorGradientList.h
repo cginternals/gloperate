@@ -5,9 +5,7 @@
 #include <map>
 #include <memory>
 
-#include <gloperate/gloperate_api.h>
-
-#include <gloperate/base/AbstractColorGradient.h>
+#include <gloperate/rendering/AbstractColorGradient.h>
 
 
 namespace globjects
@@ -186,4 +184,4 @@ protected:
 } // namespace gloperate
 
 
-#include <gloperate/base/ColorGradientList.inl>
+#include <gloperate/rendering/ColorGradientList.inl>

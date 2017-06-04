@@ -10,7 +10,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/base/ColorGradientList.h>
+#include <gloperate/rendering/ColorGradientList.h>
 
 
 namespace gloperate

@@ -6,11 +6,8 @@
 #include <vector>
 #include <initializer_list>
 
-#include <gloperate/base/Color.h>
-
-#include <gloperate/gloperate_api.h>
-
-#include <gloperate/base/AbstractColorGradient.h>
+#include <gloperate/rendering/Color.h>
+#include <gloperate/rendering/AbstractColorGradient.h>
 
 
 namespace gloperate
@@ -23,7 +20,7 @@ namespace gloperate
 *
 *    The gradient can be both discrete or continuous.
 */
-class GLOPERATE_API ExplicitEquidistantColorGradient : public AbstractColorGradient
+class GLOPERATE_API LinearColorGradient : public AbstractColorGradient
 {
 public:
     /**
@@ -37,7 +34,7 @@ public:
     *  @param[in] colors
     *    The list of colors
     */
-    ExplicitEquidistantColorGradient(const std::string & name, bool discrete, const std::vector<Color> & colors);
+    LinearColorGradient(const std::string & name, bool discrete, const std::vector<Color> & colors);
 
     /**
     *  @brief
@@ -53,7 +50,7 @@ public:
     *    The list of colors
     */
     template <size_t Count>
-    ExplicitEquidistantColorGradient(const std::string & name, bool discrete, const std::array<Color, Count> & colors);
+    LinearColorGradient(const std::string & name, bool discrete, const std::array<Color, Count> & colors);
 
     /**
     *  @brief
@@ -66,7 +63,7 @@ public:
     *  @param[in] colors
     *    The list of colors
     */
-    ExplicitEquidistantColorGradient(const std::string & name, bool discrete, std::initializer_list<Color> colors);
+    LinearColorGradient(const std::string & name, bool discrete, std::initializer_list<Color> colors);
 
     /**
     *  @brief
@@ -82,7 +79,7 @@ public:
     *    Tail of the list of colors
     */
     template <typename... Args>
-    ExplicitEquidistantColorGradient(const std::string & name, bool discrete, const Color & color, Args... args);
+    LinearColorGradient(const std::string & name, bool discrete, const Color & color, Args... args);
 
 
 protected:
@@ -112,11 +109,11 @@ protected:
     *  @param[in] discrete
     *    Whether the gradient should be discrete or continuous
     */
-    ExplicitEquidistantColorGradient(const std::string & name, bool discrete);
+    LinearColorGradient(const std::string & name, bool discrete);
 };
 
 
 } // namespace gloperate
 
 
-#include <gloperate/base/ExplicitEquidistantColorGradient.inl>
+#include <gloperate/rendering/LinearColorGradient.inl>

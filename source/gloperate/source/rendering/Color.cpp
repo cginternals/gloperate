@@ -1,4 +1,6 @@
 
+#include <gloperate/rendering/Color.h>
+
 #include <cassert>
 #include <sstream>
 #include <iomanip>
@@ -7,20 +9,18 @@
 
 #include <cppassist/string/regex.h>
 
-#include <gloperate/base/Color.h>
-
 
 namespace gloperate
 {
 
 
 Color::Color()
-: m_v{0ul}
+: m_v(0ul)
 {
 }
 
 Color::Color(std::uint32_t bgra)
-: m_v{bgra}
+: m_v(bgra)
 {
 }
 

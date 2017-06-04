@@ -1,10 +1,10 @@
 
-#include <gloperate/base/ColorGradientPreparation.h>
+#include <gloperate/rendering/ColorGradientPreparation.h>
 
 #include <cppexpose/reflection/AbstractProperty.h>
 
-#include <gloperate/base/AbstractColorGradient.h>
-#include <gloperate/base/ColorGradientList.h>
+#include <gloperate/rendering/AbstractColorGradient.h>
+#include <gloperate/rendering/ColorGradientList.h>
 
 
 namespace gloperate
@@ -21,7 +21,6 @@ ColorGradientPreparation::ColorGradientPreparation(const ColorGradientList & gra
 , m_iconSize(iconSize)
 , m_whitelist(whitelist)
 {
-
 }
 
 const ColorGradientList & ColorGradientPreparation::gradients() const

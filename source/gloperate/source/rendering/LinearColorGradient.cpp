@@ -1,5 +1,5 @@
 
-#include <gloperate/base/ExplicitEquidistantColorGradient.h>
+#include <gloperate/rendering/LinearColorGradient.h>
 
 #include <algorithm>
 
@@ -9,27 +9,27 @@ namespace gloperate
 {
 
 
-ExplicitEquidistantColorGradient::ExplicitEquidistantColorGradient(const std::string & name, bool discrete, const std::vector<Color> & colors)
+LinearColorGradient::LinearColorGradient(const std::string & name, bool discrete, const std::vector<Color> & colors)
 : AbstractColorGradient(name)
 , m_colors(colors)
 , m_discrete(discrete)
 {
 }
 
-ExplicitEquidistantColorGradient::ExplicitEquidistantColorGradient(const std::string & name, bool discrete, std::initializer_list<Color> colors)
+LinearColorGradient::LinearColorGradient(const std::string & name, bool discrete, std::initializer_list<Color> colors)
 : AbstractColorGradient(name)
 , m_colors(colors.begin(), colors.end())
 , m_discrete(discrete)
 {
 }
 
-ExplicitEquidistantColorGradient::ExplicitEquidistantColorGradient(const std::string & name, bool discrete)
+LinearColorGradient::LinearColorGradient(const std::string & name, bool discrete)
 : AbstractColorGradient(name)
 , m_discrete(discrete)
 {
 }
 
-Color ExplicitEquidistantColorGradient::colorAt(float position) const
+Color LinearColorGradient::colorAt(float position) const
 {
     if (m_discrete)
     {

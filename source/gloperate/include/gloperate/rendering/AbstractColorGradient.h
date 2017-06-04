@@ -148,4 +148,4 @@ protected:
 } // namespace gloperate
 
 
-#include <gloperate/base/AbstractColorGradient.inl>
+#include <gloperate/rendering/AbstractColorGradient.inl>
