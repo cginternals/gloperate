@@ -32,6 +32,7 @@ RasterizationStage::~RasterizationStage()
 
 void RasterizationStage::onProcess()
 {
+    // Check if rasterization is enabled
     if (!*rasterize)
     {
         return;
