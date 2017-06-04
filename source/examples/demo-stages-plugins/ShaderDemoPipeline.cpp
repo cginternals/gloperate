@@ -3,7 +3,7 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
-#include <gloperate/stages/base/MixerStage.h>
+#include <gloperate/stages/base/BlitStage.h>
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/ShaderStage.h>
@@ -31,7 +31,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
 , m_demoDrawableStage(cppassist::make_unique<DemoDrawableStage>(environment, "DemoDrawableStage"))
 , m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "RenderPassStage"))
 , m_rasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "RasterizationStage"))
-, m_mixerStage(cppassist::make_unique<gloperate::MixerStage>(environment, "MixerStage"))
+, m_blitStage(cppassist::make_unique<gloperate::BlitStage>(environment, "BlitStage"))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
@@ -79,14 +79,15 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     m_rasterizationStage->drawable << m_renderPassStage->renderPass;
     m_rasterizationStage->colorTexture << m_framebufferStage->colorTexture;
 
-    // Mixer stage
-    addStage(m_mixerStage.get());
-    m_mixerStage->viewport  << renderInterface.deviceViewport;
-    m_mixerStage->targetFBO << renderInterface.targetFBO;
-    m_mixerStage->texture   << m_rasterizationStage->colorTextureOut;
+    // Blit stage
+    addStage(m_blitStage.get());
+    m_blitStage->sourceFBO << m_rasterizationStage->fboOut;
+    m_blitStage->sourceViewport << renderInterface.deviceViewport;
+    m_blitStage->destinationFBO << renderInterface.targetFBO;
+    m_blitStage->destinationViewport << renderInterface.deviceViewport;
 
     // Outputs
-    renderInterface.rendered << m_mixerStage->rendered;
+    renderInterface.rendered << m_blitStage->blitted;
 }
 
 ShaderDemoPipeline::~ShaderDemoPipeline()

@@ -13,17 +13,14 @@
 
 namespace gloperate
 {
-
-class BasicFramebufferStage;
-class TextureLoadStage;
-class ShaderStage;
-class ProgramStage;
-class MixerStage;
-class RasterizationStage;
-class RenderPassStage;
-
+    class BasicFramebufferStage;
+    class TextureLoadStage;
+    class ShaderStage;
+    class ProgramStage;
+    class RasterizationStage;
+    class RenderPassStage;
+    class BlitStage;
 }
-
 
 class DemoDrawableStage;
 
@@ -85,8 +82,8 @@ protected:
     std::unique_ptr<gloperate::BasicFramebufferStage> m_framebufferStage;  ///< Stage which creates the framebuffer
     std::unique_ptr<DemoDrawableStage> m_demoDrawableStage;                ///< Stage which creates the drawable
 
-    std::unique_ptr<gloperate::RenderPassStage>       m_renderPassStage;   ///< Stage which creates the render pass
-    std::unique_ptr<gloperate::RasterizationStage>    m_rasterizationStage;///< Stage which renders the scene
+    std::unique_ptr<gloperate::RenderPassStage>    m_renderPassStage;      ///< Stage which creates the render pass
+    std::unique_ptr<gloperate::RasterizationStage> m_rasterizationStage;   ///< Stage which renders the scene
 
-    std::unique_ptr<gloperate::MixerStage> m_mixerStage;                   ///< Stage that renders the output to the screen
+    std::unique_ptr<gloperate::BlitStage> m_blitStage;                     ///< Stage that renders the output to the screen
 };

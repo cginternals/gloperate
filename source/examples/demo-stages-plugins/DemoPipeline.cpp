@@ -8,11 +8,11 @@
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/FramebufferStage.h>
-#include <gloperate/stages/base/MixerStage.h>
 #include <gloperate/stages/base/TextureStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
+#include <gloperate/stages/base/BlitStage.h>
 
 #include <gloperate/rendering/Quad.h>
 
@@ -40,7 +40,7 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
 , m_colorizeProgramStage(cppassist::make_unique<gloperate::ProgramStage>(environment, "ColorizeProgramStage"))
 , m_colorizeRenderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "ColorizeRenderPassStage"))
 , m_colorizeRasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "ColorizeRasterizationStage"))
-, m_mixerStage(cppassist::make_unique<gloperate::MixerStage>(environment, "MixerStage"))
+, m_blitStage(cppassist::make_unique<gloperate::BlitStage>(environment, "BlitStage"))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
@@ -98,14 +98,15 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
     m_colorizeRasterizationStage->drawable << m_colorizeRenderPassStage->renderPass;
     m_colorizeRasterizationStage->colorTexture << m_framebufferStage2->colorTexture;
 
-    // Mixer stage
-    addStage(m_mixerStage.get());
-    m_mixerStage->viewport  << renderInterface.deviceViewport;
-    m_mixerStage->targetFBO << renderInterface.targetFBO;
-    m_mixerStage->texture   << m_colorizeRasterizationStage->colorTextureOut;
+    // Blit stage
+    addStage(m_blitStage.get());
+    m_blitStage->sourceFBO << m_colorizeRasterizationStage->fboOut;
+    m_blitStage->sourceViewport << renderInterface.deviceViewport;
+    m_blitStage->destinationFBO << renderInterface.targetFBO;
+    m_blitStage->destinationViewport << renderInterface.deviceViewport;
 
     // Outputs
-    renderInterface.rendered << m_mixerStage->rendered;
+    renderInterface.rendered << m_blitStage->blitted;
 }
 
 DemoPipeline::~DemoPipeline()
