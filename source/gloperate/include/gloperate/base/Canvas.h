@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include <mutex>
 
 #include <glm/vec4.hpp>
 #include <glm/fwd.hpp>
@@ -309,6 +310,8 @@ protected:
     std::unique_ptr<MouseDevice>    m_mouseDevice;     ///< Device for Mouse Events
     std::unique_ptr<KeyboardDevice> m_keyboardDevice;  ///< Device for Keyboard Events
     bool                            m_replaceStage;    ///< 'true' if the stage has just been replaced, else 'false'
+
+    std::mutex                      m_mutex;           ///< Mutex for separating main and render thread
 };
 
 

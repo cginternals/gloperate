@@ -130,6 +130,8 @@ AbstractGLContext * Canvas::openGLContext()
 
 void Canvas::setOpenGLContext(AbstractGLContext * context)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
@@ -162,6 +164,8 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
 
 void Canvas::updateTime()
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     // In multithreaded viewers, updateTime() might get called several times
     // before render(). Therefore, the time delta is accumulated until the
     // pipeline is actually rendered, and then reset by the method render().
@@ -187,6 +191,8 @@ void Canvas::updateTime()
 
 void Canvas::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     // Store viewport information
     m_deviceViewport  = deviceViewport;
     m_virtualViewport = virtualViewport;
@@ -214,6 +220,8 @@ const glm::vec4 & Canvas::virtualViewport() const
 
 void Canvas::render(globjects::Framebuffer * targetFBO)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     // Reset time delta
     m_timeDelta = 0.0f;
 
@@ -264,6 +272,8 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
 void Canvas::promoteKeyPress(int key, int modifier)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     cppassist::debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
@@ -275,6 +285,8 @@ void Canvas::promoteKeyPress(int key, int modifier)
 
 void Canvas::promoteKeyRelease(int key, int modifier)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     cppassist::debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
@@ -286,6 +298,8 @@ void Canvas::promoteKeyRelease(int key, int modifier)
 
 void Canvas::promoteMouseMove(const glm::ivec2 & pos)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     cppassist::debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
@@ -297,6 +311,8 @@ void Canvas::promoteMouseMove(const glm::ivec2 & pos)
 
 void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     cppassist::debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
@@ -308,6 +324,8 @@ void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
 
 void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     cppassist::debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
@@ -319,6 +337,8 @@ void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
 
 void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     cppassist::debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
@@ -339,6 +359,8 @@ void Canvas::checkRedraw()
 
 cppexpose::Variant Canvas::scr_getDescription(const std::string & path)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     Stage * stage = getStageObject(path);
 
     if (stage)
@@ -351,6 +373,8 @@ cppexpose::Variant Canvas::scr_getDescription(const std::string & path)
 
 cppexpose::Variant Canvas::scr_getSlot(const std::string & path)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     std::string slotName;
     Stage * stage = getStageObjectForSlot(path, slotName);
 
@@ -364,6 +388,8 @@ cppexpose::Variant Canvas::scr_getSlot(const std::string & path)
 
 void Canvas::scr_setSlotValue(const std::string & path, const cppexpose::Variant & value)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     std::string slotName;
     Stage * stage = getStageObjectForSlot(path, slotName);
 
@@ -375,6 +401,8 @@ void Canvas::scr_setSlotValue(const std::string & path, const cppexpose::Variant
 
 std::string Canvas::scr_createStage(const std::string & path, const std::string & className, const std::string & name)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     Stage * stage = getStageObject(path);
 
     if (stage && stage->isPipeline())
@@ -389,6 +417,8 @@ std::string Canvas::scr_createStage(const std::string & path, const std::string 
 
 void Canvas::scr_removeStage(const std::string & path, const std::string & name)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     Stage * stage = getStageObject(path);
 
     if (stage && stage->isPipeline())
@@ -401,6 +431,8 @@ void Canvas::scr_removeStage(const std::string & path, const std::string & name)
 
 cppexpose::Variant Canvas::scr_slotTypes(const std::string & path)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     Stage * stage = getStageObject(path);
 
     if (stage)
@@ -413,6 +445,8 @@ cppexpose::Variant Canvas::scr_slotTypes(const std::string & path)
 
 void Canvas::scr_createSlot(const std::string & path, const std::string & slotType, const std::string & type, const std::string & name)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     Stage * stage = getStageObject(path);
 
     if (stage)
@@ -423,6 +457,8 @@ void Canvas::scr_createSlot(const std::string & path, const std::string & slotTy
 
 cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     Stage * stage = getStageObject(path);
 
     if (stage)
@@ -435,6 +471,8 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 
 void Canvas::scr_createConnection(const std::string & from, const std::string & to)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     Stage * stage = getStageObject("");
 
     if (stage && stage->isPipeline())
@@ -446,6 +484,8 @@ void Canvas::scr_createConnection(const std::string & from, const std::string & 
 
 void Canvas::scr_removeConnection(const std::string & to)
 {
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
     Stage * stage = getStageObject("");
 
     if (stage && stage->isPipeline())
