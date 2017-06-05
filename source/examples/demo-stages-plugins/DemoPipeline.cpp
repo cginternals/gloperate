@@ -87,6 +87,7 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
     addStage(m_colorizeRenderPassStage.get());
     // m_colorizeRenderPassStage->drawable is set in onContextInit()
     m_colorizeRenderPassStage->program << m_colorizeProgramStage->program;
+    m_colorizeRenderPassStage->culling = false;
     m_colorizeRenderPassStage->createInput("color") << this->color;
     m_colorizeRenderPassStage->createInput("source") << m_spinningRectStage->colorTextureOut;
 
