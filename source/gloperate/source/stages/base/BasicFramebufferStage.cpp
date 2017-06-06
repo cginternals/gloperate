@@ -36,6 +36,7 @@ void BasicFramebufferStage::onContextInit(AbstractGLContext *)
 
 void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
 {
+    // Clean up OpenGL objects
     m_colorBuffer  = nullptr;
     m_depthBuffer  = nullptr;
     m_colorTexture = nullptr;
@@ -43,7 +44,7 @@ void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
     m_fbo          = nullptr;
 }
 
-void BasicFramebufferStage::onProcess(AbstractGLContext *)
+void BasicFramebufferStage::onProcess()
 {
     // Check if FBO needs to be rebuilt
     if (!fbo.isValid())

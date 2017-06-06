@@ -49,14 +49,12 @@ void TextureStage::onContextInit(gloperate::AbstractGLContext *)
 
 void TextureStage::onContextDeinit(AbstractGLContext *)
 {
-    // Release texture
-    m_texture.reset(nullptr);
-
-    // Release render target
-    m_renderTarget.reset(nullptr);
+    // Clean up OpenGL objects
+    m_texture      = nullptr;
+    m_renderTarget = nullptr;
 }
 
-void TextureStage::onProcess(gloperate::AbstractGLContext *)
+void TextureStage::onProcess()
 {
     // Check if texture has been created successfully
     if (!m_texture.get())
@@ -69,7 +67,7 @@ void TextureStage::onProcess(gloperate::AbstractGLContext *)
     const auto height = (*size)[3];
     m_texture->image2D(0, *internalFormat, width, height, 0, *format, *type, nullptr);
 
-    // Update output values
+    // Update outputs
     texture.setValue(m_texture.get());
     renderTarget.setValue(m_renderTarget.get());
 }

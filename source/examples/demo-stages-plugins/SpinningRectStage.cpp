@@ -94,7 +94,7 @@ void SpinningRectStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_vao = nullptr;
 }
 
-void SpinningRectStage::onProcess(gloperate::AbstractGLContext *)
+void SpinningRectStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -124,8 +124,8 @@ void SpinningRectStage::onProcess(gloperate::AbstractGLContext *)
     model = glm::rotate(model, *angle, glm::vec3(0.0, 1.0, 0.0));
 
     // Update model-view-projection matrix
-    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
-    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
+    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjectionMatrix());
+    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjectionMatrix() * model);
 
     // Bind texture
     if (*texture) {

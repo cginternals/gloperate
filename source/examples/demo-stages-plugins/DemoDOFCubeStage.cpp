@@ -45,8 +45,8 @@ static const char * s_vertexShader = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 uniform vec2 dofShift;
 
 layout (location = 0) in vec3 a_vertex;
@@ -56,10 +56,10 @@ flat out vec3 v_color;
 
 void main()
 {
-    vec4 viewPos = view * vec4(a_vertex, 1.0);
+    vec4 viewPos = viewMatrix * vec4(a_vertex, 1.0);
     vec4 shiftedPos = vec4(viewPos.xy + dofShift * (viewPos.z + 0.1), viewPos.zw);
     //shiftedPos = viewPos;
-    gl_Position = projection * shiftedPos;
+    gl_Position = projectionMatrix * shiftedPos;
 
     v_color = a_color;
 }
@@ -108,7 +108,7 @@ void DemoDOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoDOFCubeStage::onProcess(gloperate::AbstractGLContext *)
+void DemoDOFCubeStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -138,10 +138,10 @@ void DemoDOFCubeStage::onProcess(gloperate::AbstractGLContext *)
                                       ? (*dofShifts)->at((*renderInterface.frameCounter) % (*dofShifts)->size())
                                       : glm::vec2(0.0f));
 
-    auto view = glm::lookAt(glm::vec3(1.02f, -1.02f, 1.1f), glm::vec3(0.5f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    auto projection = glm::perspective(30.0f, viewport.z / viewport.w, 0.1f, 10.0f);
-    m_program->setUniform("view", view);
-    m_program->setUniform("projection", projection);
+    auto viewMatrix = glm::lookAt(glm::vec3(1.02f, -1.02f, 1.1f), glm::vec3(0.5f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    auto projectionMatrix = glm::perspective(30.0f, viewport.z / viewport.w, 0.1f, 10.0f);
+    m_program->setUniform("viewMatrix", viewMatrix);
+    m_program->setUniform("projectionMatrix", projectionMatrix);
 
     // Draw geometry
     m_program->use();

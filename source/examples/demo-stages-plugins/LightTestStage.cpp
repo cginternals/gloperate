@@ -68,7 +68,7 @@ static const char * s_fragmentShader = R"(
 
     #define LIGHT_PROCESSING_PHONG
 
-    #include </gloperate/shaders/lightProcessing.glsl>
+    #include </gloperate/shaders/lighting/lightprocessing.glsl>
 
     uniform samplerBuffer colorTypeData;
     uniform samplerBuffer positionData;
@@ -123,9 +123,9 @@ LightTestStage::~LightTestStage()
 {
 }
 
-void LightTestStage::onContextInitialize(gloperate::AbstractGLContext * /*context*/)
+void LightTestStage::onContextInitialize(gloperate::AbstractGLContext *)
 {
-    // setup Geometry
+    // Setup Geometry
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
     m_vertexBuffer->setData(s_cube, gl::GL_STATIC_DRAW);
@@ -142,8 +142,8 @@ void LightTestStage::onContextInitialize(gloperate::AbstractGLContext * /*contex
     normalBinding->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(glm::vec3));
     m_vao->enable(1);
 
-    //TODO this is a memory leak! Use resource loader?
-    // setup Program
+    // Setup Program
+    // [TODO] this is a memory leak! Use resource loader?
     globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
     globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 
@@ -163,18 +163,15 @@ void LightTestStage::onContextInitialize(gloperate::AbstractGLContext * /*contex
 
     m_program->setUniform("eye", cameraEye);
 
+    // [TODO] fix memory leak
     auto dataFolderPath = gloperate::dataPath();
-    // [TODO]: fix memory leak
-    globjects::NamedString::create("/gloperate/shaders/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
-    globjects::NamedString::create("/gloperate/shaders/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
-    globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_diffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_diffuse.glsl"));
+    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_phong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_phong.glsl"));
 }
 
-void LightTestStage::onProcess(gloperate::AbstractGLContext * context)
+void LightTestStage::onProcess()
 {
-    if (!m_program)
-        onContextInitialize(context);
-
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
 

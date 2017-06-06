@@ -13,6 +13,7 @@ namespace gloperate
 
 AbstractSlot::AbstractSlot()
 : m_slotType(SlotType::Unknown)
+, m_dynamic(false)
 , m_required(false)
 , m_feedback(false)
 {
@@ -45,6 +46,11 @@ std::string AbstractSlot::qualifiedName() const
     Stage * stage = parentStage();
 
     return (stage != nullptr) ? stage->qualifiedName() + "." + name() : name();
+}
+
+bool AbstractSlot::isDynamic() const
+{
+    return m_dynamic;
 }
 
 bool AbstractSlot::isRequired() const

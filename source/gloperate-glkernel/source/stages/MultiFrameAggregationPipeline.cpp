@@ -1,19 +1,21 @@
 
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
+#include <glbinding/gl/enum.h>
+
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/TextureStage.h>
 #include <gloperate/stages/base/FramebufferStage.h>
 #include <gloperate/stages/base/BlitStage.h>
+
 #include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationStage.h>
-
-#include <glbinding/gl/enum.h>
 
 
 namespace gloperate_glkernel
 {
+
 
 CPPEXPOSE_COMPONENT(MultiFrameAggregationPipeline, gloperate::Stage)
 
@@ -63,25 +65,25 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
 
     addStage(m_blitStage.get());
     m_blitStage->sourceFBO << m_aggregationStage->aggregatedFBO;
-    m_blitStage->destinationFBO << renderInterface.targetFBO;
+    m_blitStage->targetFBO << renderInterface.targetFBO;
     m_blitStage->sourceViewport << renderInterface.deviceViewport;
-    m_blitStage->destinationViewport << renderInterface.deviceViewport;
+    m_blitStage->targetViewport << renderInterface.deviceViewport;
 
-    renderInterface.rendered << m_blitStage->blitted;
+    renderInterface.rendered << m_blitStage->rendered;
 }
 
 MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
 {
 }
 
-void MultiFrameAggregationPipeline::onProcess(gloperate::AbstractGLContext * context)
+void MultiFrameAggregationPipeline::onProcess()
 {
     if (!m_frameRenderStage)
     {
         return;
     }
 
-    Pipeline::onProcess(context);
+    Pipeline::onProcess();
 }
 
 void MultiFrameAggregationPipeline::setFrameRenderer(gloperate::RenderInterface & interface)
@@ -127,4 +129,4 @@ void MultiFrameAggregationPipeline::disconnectRenderStage()
 }
 
 
-} // namespace gloperate
+} // namespace gloperate_glkernel

@@ -8,7 +8,7 @@
 
 #include <cppexpose/scripting/ScriptContext.h>
 
-#include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/base/Canvas.h>
 
 
 namespace gloperate
@@ -19,18 +19,17 @@ Environment::Environment()
 : cppexpose::Object("gloperate")
 , m_componentManager()
 , m_resourceManager(this)
-, m_timeManager(this)
 , m_system(this)
 , m_inputManager(this)
-, m_tree("tree")
+, m_timerManager(this)
 , m_scriptContext(nullptr)
+, m_safeMode(false)
 {
     addProperty(&m_componentManager);
     addProperty(&m_resourceManager);
-    addProperty(&m_timeManager);
     addProperty(&m_system);
     addProperty(&m_inputManager);
-    addProperty(&m_tree);
+    addProperty(&m_timerManager);
 }
 
 Environment::~Environment()
@@ -57,16 +56,6 @@ ResourceManager * Environment::resourceManager()
     return &m_resourceManager;
 }
 
-const TimeManager * Environment::timeManager() const
-{
-    return &m_timeManager;
-}
-
-TimeManager * Environment::timeManager()
-{
-    return &m_timeManager;
-}
-
 const InputManager * Environment::inputManager() const
 {
     return &m_inputManager;
@@ -77,12 +66,22 @@ InputManager * Environment::inputManager()
     return &m_inputManager;
 }
 
-const std::vector<AbstractCanvas *> & Environment::canvases() const
+const TimerManager * Environment::timerManager() const
+{
+    return &m_timerManager;
+}
+
+TimerManager * Environment::timerManager()
+{
+    return &m_timerManager;
+}
+
+const std::vector<Canvas *> & Environment::canvases() const
 {
     return m_canvases;
 }
 
-std::vector<AbstractCanvas *> Environment::canvases()
+std::vector<Canvas *> Environment::canvases()
 {
     return m_canvases;
 }
@@ -132,40 +131,20 @@ cppexpose::Variant Environment::executeScript(const std::string & code)
     return m_scriptContext->evaluate(cmd);
 }
 
-bool Environment::update()
-{
-    // Update timing and timers
-    bool activeTimers = m_timeManager.update();
-
-    // Update canvas
-    for (AbstractCanvas * canvas : m_canvases)
-    {
-        canvas->onUpdate();
-    }
-
-    // Return indicator if any more timers are running
-    return activeTimers;
-}
-
-bool Environment::update(float delta)
-{
-    // Update timing and timers
-    bool activeTimers = m_timeManager.update(delta);
-
-    // Update canvas
-    for (AbstractCanvas * canvas : m_canvases)
-    {
-        canvas->onUpdate();
-    }
-
-    // Return indicator if any more timers are running
-    return activeTimers;
-}
-
 void Environment::exit(int exitCode)
 {
     // Emit signal
     this->exitApplication(exitCode);
+}
+
+bool Environment::safeMode()
+{
+    return m_safeMode;
+}
+
+void Environment::setSafeMode(bool safeMode)
+{
+    m_safeMode = safeMode;
 }
 
 void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> && scriptContext)
@@ -192,24 +171,16 @@ void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> 
     m_helpText =
         "Available commands:\n"
         "  help: Print this help message\n"
-        "  exit: Exit the application\n"
-        "\n"
-        "APIs:\n"
-        "  gloperate.system: System API (IO, keyboard handling, ...)\n"
-        "  gloperate.timer:  Timer API\n"
-        "\n"
-        "Examples:\n"
-        "  gloperate.timer.start(1000, function() { print(\"Hello Scripting World.\"); } );\n"
-        "  gloperate.timer.stopAll();\n";
+        "  exit: Exit the application\n";
 }
 
-void Environment::registerCanvas(AbstractCanvas * canvas)
+void Environment::registerCanvas(Canvas * canvas)
 {
     m_canvases.push_back(canvas);
     addProperty(canvas);
 }
 
-void Environment::unregisterCanvas(AbstractCanvas * canvas)
+void Environment::unregisterCanvas(Canvas * canvas)
 {
     removeProperty(canvas);
     m_canvases.erase(std::find(m_canvases.begin(), m_canvases.end(), canvas));

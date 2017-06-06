@@ -13,20 +13,23 @@
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/rendering/ScreenAlignedQuad.h>
 
 
 CPPEXPOSE_COMPONENT(ColorizeStage, gloperate::Stage)
 
 
-ColorizeStage::ColorizeStage(gloperate::Environment * environment, const std::string & name)
+using namespace gloperate;
+
+
+ColorizeStage::ColorizeStage(Environment * environment, const std::string & name)
 : Stage(environment, "ColorizeStage", name)
 , renderInterface(this)
 , texture        ("texture",         this, nullptr)
 , colorTexture   ("colorTexture",    this, nullptr)
-, color          ("color",           this, gloperate::Color(255, 255, 255, 255))
+, color          ("color",           this, Color(255, 255, 255, 255))
 , fboOut         ("fboOut",          this, nullptr)
 , colorTextureOut("colorTextureOut", this, nullptr)
-, m_screenAlignedQuad(nullptr)
 {
 }
 
@@ -34,17 +37,23 @@ ColorizeStage::~ColorizeStage()
 {
 }
 
-void ColorizeStage::onContextInit(gloperate::AbstractGLContext *)
+void ColorizeStage::onContextInit(AbstractGLContext *)
 {
     setupGeometry();
     setupProgram();
 }
 
-void ColorizeStage::onContextDeinit(gloperate::AbstractGLContext *)
+void ColorizeStage::onContextDeinit(AbstractGLContext *)
 {
+    m_quad                 = nullptr;
+    m_program              = nullptr;
+    m_vertexShader         = nullptr;
+    m_vertexShaderSource   = nullptr;
+    m_fragmentShader       = nullptr;
+    m_fragmentShaderSource = nullptr;
 }
 
-void ColorizeStage::onProcess(gloperate::AbstractGLContext *)
+void ColorizeStage::onProcess()
 {
     // Activate FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
@@ -71,7 +80,7 @@ void ColorizeStage::onProcess(gloperate::AbstractGLContext *)
 
     // Draw screen-aligned quad
     m_program->use();
-    m_screenAlignedQuad->draw();
+    m_quad->draw();
     m_program->release();
 
     // Enable depth buffer
@@ -98,17 +107,20 @@ void ColorizeStage::onProcess(gloperate::AbstractGLContext *)
 
 void ColorizeStage::setupGeometry()
 {
-    m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
+    m_quad = cppassist::make_unique<Quad>(2.0f, (unsigned int)ShapeOption::IncludeTexCoords);
 }
 
 void ColorizeStage::setupProgram()
 {
-    m_vSource = gloperate::ScreenAlignedQuad::vertexShaderSource();
-    m_fSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/Colorize.frag");
+    // Create vertex shader
+    m_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
+    m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vertexShaderSource.get());
 
-    m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vSource.get());
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fSource.get());
+    // Create fragment shader
+    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/demo/colorize.frag");
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
 
+    // Create program
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
     m_program->setUniform("source", 0);

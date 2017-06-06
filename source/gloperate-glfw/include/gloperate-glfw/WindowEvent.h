@@ -163,8 +163,7 @@ protected:
 protected:
     Type     m_type;     ///< The event type
     bool     m_accepted; ///< The accepted state to prevent further bubbling
-
-    Window * m_window;   ///< The associated window, may be 'null'
+    Window * m_window;   ///< The associated window, may be null
 };
 
 

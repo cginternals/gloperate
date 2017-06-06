@@ -10,7 +10,7 @@ find_package(globjects  REQUIRED)
 find_package(cppexpose  REQUIRED)
 find_package(cppassist  REQUIRED)
 find_package(qmltoolbox REQUIRED)
-find_package(cpplocate REQUIRED)
+find_package(cpplocate  REQUIRED)
 
 
 # 
@@ -44,12 +44,12 @@ set(headers
 
     ${include_path}/base/Environment.h
     ${include_path}/base/System.h
+    ${include_path}/base/TimerManager.h
     ${include_path}/base/ComponentManager.h
     ${include_path}/base/Component.h
     ${include_path}/base/Component.inl
     ${include_path}/base/ResourceManager.h
     ${include_path}/base/ResourceManager.inl
-    ${include_path}/base/AbstractCanvas.h
     ${include_path}/base/AbstractComponent.h
     ${include_path}/base/AbstractComponent.inl
     ${include_path}/base/Canvas.h
@@ -62,10 +62,6 @@ set(headers
     ${include_path}/base/CachedValue.inl
     ${include_path}/base/ChronoTimer.h
     ${include_path}/base/AutoTimer.h
-    ${include_path}/base/TimeManager.h
-    ${include_path}/base/Timer.h
-    ${include_path}/base/ScriptTimer.h
-    ${include_path}/base/Image.h
     ${include_path}/base/AbstractLoader.h
     ${include_path}/base/AbstractStorer.h
     ${include_path}/base/Loader.h
@@ -74,17 +70,7 @@ set(headers
     ${include_path}/base/Storer.inl
     ${include_path}/base/ExtendedProperties.h
     ${include_path}/base/ExtendedProperties.inl
-    ${include_path}/base/AbstractColorGradient.h
-    ${include_path}/base/AbstractColorGradient.inl
-    ${include_path}/base/Color.h
-    ${include_path}/base/ColorGradientList.h
-    ${include_path}/base/ColorGradientList.inl
-    ${include_path}/base/ColorGradientPreparation.h
-    ${include_path}/base/ExplicitEquidistantColorGradient.h
-    ${include_path}/base/ExplicitEquidistantColorGradient.inl
-    ${include_path}/base/RawFileNameSuffix.h
 
-    ${include_path}/pipeline/PipelineContainer.h
     ${include_path}/pipeline/Stage.h
     ${include_path}/pipeline/Stage.inl
     ${include_path}/pipeline/Pipeline.h
@@ -110,6 +96,20 @@ set(headers
     ${include_path}/rendering/TransparencyMasksGenerator.h
     ${include_path}/rendering/ScreenAlignedQuad.h
     ${include_path}/rendering/ScreenAlignedTriangle.h
+    ${include_path}/rendering/Shape.h
+    ${include_path}/rendering/Box.h
+    ${include_path}/rendering/Sphere.h
+    ${include_path}/rendering/Quad.h
+    ${include_path}/rendering/Icosahedron.h
+    ${include_path}/rendering/Color.h
+    ${include_path}/rendering/Image.h
+    ${include_path}/rendering/AbstractColorGradient.h
+    ${include_path}/rendering/AbstractColorGradient.inl
+    ${include_path}/rendering/LinearColorGradient.h
+    ${include_path}/rendering/LinearColorGradient.inl
+    ${include_path}/rendering/ColorGradientList.h
+    ${include_path}/rendering/ColorGradientList.inl
+    ${include_path}/rendering/ColorGradientPreparation.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -117,15 +117,13 @@ set(headers
     ${include_path}/stages/base/FramebufferStage.h
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
-    ${include_path}/stages/base/ProceduralTextureStage.h
-    ${include_path}/stages/base/MixerStage.h
-    ${include_path}/stages/base/SplitStage.h
     ${include_path}/stages/base/BlitStage.h
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/base/ShaderStage.h
     ${include_path}/stages/base/RenderPassStage.h
     ${include_path}/stages/base/RasterizationStage.h
+    ${include_path}/stages/base/ClearStage.h
     ${include_path}/stages/base/ProgramStage.h
     ${include_path}/stages/base/VectorSelectionStage.h
     ${include_path}/stages/base/VectorSelectionStage.inl
@@ -151,6 +149,7 @@ set(headers
 
     ${include_path}/loaders/ShaderLoader.h
     ${include_path}/loaders/GlrawTextureLoader.h
+    ${include_path}/loaders/RawFileNameSuffix.h
 )
 
 set(sources
@@ -158,9 +157,9 @@ set(sources
 
     ${source_path}/base/Environment.cpp
     ${source_path}/base/System.cpp
+    ${source_path}/base/TimerManager.cpp
     ${source_path}/base/ComponentManager.cpp
     ${source_path}/base/ResourceManager.cpp
-    ${source_path}/base/AbstractCanvas.cpp
     ${source_path}/base/Canvas.cpp
     ${source_path}/base/AbstractContext.cpp
     ${source_path}/base/AbstractComponent.cpp
@@ -170,22 +169,10 @@ set(sources
     ${source_path}/base/GLContextUtils.cpp
     ${source_path}/base/ChronoTimer.cpp
     ${source_path}/base/AutoTimer.cpp
-    ${source_path}/base/TimeManager.cpp
-    ${source_path}/base/Timer.cpp
-    ${source_path}/base/ScriptTimer.cpp
-    ${source_path}/base/Image.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
-    ${source_path}/base/AbstractColorGradient.cpp
-    ${source_path}/base/Color.cpp
-    ${source_path}/base/ColorGradientList.cpp
-    ${source_path}/base/ColorGradientPreparation.cpp
-    ${source_path}/base/ExplicitEquidistantColorGradient.cpp
-    ${source_path}/base/AbstractColorGradient.cpp
     ${source_path}/base/ExtendedProperties.cpp
-    ${source_path}/base/RawFileNameSuffix.cpp
 
-    ${source_path}/pipeline/PipelineContainer.cpp
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp
     ${source_path}/pipeline/AbstractSlot.cpp
@@ -200,6 +187,17 @@ set(sources
     ${source_path}/rendering/TransparencyMasksGenerator.cpp
     ${source_path}/rendering/ScreenAlignedQuad.cpp
     ${source_path}/rendering/ScreenAlignedTriangle.cpp
+    ${source_path}/rendering/Shape.cpp
+    ${source_path}/rendering/Box.cpp
+    ${source_path}/rendering/Sphere.cpp
+    ${source_path}/rendering/Quad.cpp
+    ${source_path}/rendering/Icosahedron.cpp
+    ${source_path}/rendering/Color.cpp
+    ${source_path}/rendering/Image.cpp
+    ${source_path}/rendering/AbstractColorGradient.cpp
+    ${source_path}/rendering/LinearColorGradient.cpp
+    ${source_path}/rendering/ColorGradientList.cpp
+    ${source_path}/rendering/ColorGradientPreparation.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
@@ -209,13 +207,11 @@ set(sources
     ${source_path}/stages/base/ShaderStage.cpp
     ${source_path}/stages/base/RenderPassStage.cpp
     ${source_path}/stages/base/RasterizationStage.cpp
+    ${source_path}/stages/base/ClearStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
     ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
-    ${source_path}/stages/base/ProceduralTextureStage.cpp
-    ${source_path}/stages/base/MixerStage.cpp
-    ${source_path}/stages/base/SplitStage.cpp
     ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
@@ -237,6 +233,7 @@ set(sources
 
     ${source_path}/loaders/ShaderLoader.cpp
     ${source_path}/loaders/GlrawTextureLoader.cpp
+    ${source_path}/loaders/RawFileNameSuffix.cpp
 )
 
 # Group source files

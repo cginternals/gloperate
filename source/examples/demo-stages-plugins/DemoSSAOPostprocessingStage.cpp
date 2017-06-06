@@ -54,7 +54,7 @@ static const char * s_fragmentShader = R"(
 #extension GL_ARB_explicit_attrib_location : require
 #extension GL_ARB_shading_language_include : require
 
-#include </gloperate/shaders/ssao.glsl>
+#include </gloperate/shaders/lighting/ssao.glsl>
 
 const vec3 ssaoColor = vec3(0.0);
 const float farZ = 10.0;
@@ -133,7 +133,7 @@ void DemoSSAOPostprocessingStage::onContextDeinit(gloperate::AbstractGLContext *
 {
 }
 
-void DemoSSAOPostprocessingStage::onProcess(gloperate::AbstractGLContext *)
+void DemoSSAOPostprocessingStage::onProcess()
 {
     if (!(*colorTexture && *normalTexture && *depthTexture && *ssaoKernel && *ssaoNoise))
     {
@@ -165,9 +165,9 @@ void DemoSSAOPostprocessingStage::onProcess(gloperate::AbstractGLContext *)
     gl::glDisable(gl::GL_SCISSOR_TEST);
 
     // Set uniforms
-    m_program->setUniform("projectionMatrix", *projectionMatrix);
+    m_program->setUniform("projectionMatrix",        *projectionMatrix);
     m_program->setUniform("projectionInverseMatrix", glm::inverse(*projectionMatrix));
-    m_program->setUniform("normalMatrix", *normalMatrix);
+    m_program->setUniform("normalMatrix",            *normalMatrix);
 
     // Bind textures
     (*colorTexture) ->bindActive(0);
@@ -218,7 +218,8 @@ void DemoSSAOPostprocessingStage::setupProgram()
     vertexShaderSource  ->replace("#version 140", "#version 150");
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
-    m_ssaoFileNamedString = globjects::NamedString::create("/gloperate/shaders/ssao.glsl", new globjects::File(gloperate::dataPath() + "/gloperate/shaders/ssao.glsl"));
+
+    m_ssaoFileNamedString = globjects::NamedString::create("/gloperate/shaders/lighting/ssao.glsl", new globjects::File(gloperate::dataPath() + "/gloperate/shaders/lighting/ssao.glsl"));
 
     m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
     m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);

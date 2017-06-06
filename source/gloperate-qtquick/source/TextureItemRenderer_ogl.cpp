@@ -13,6 +13,7 @@
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/Canvas.h>
+#include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 
 #include <gloperate-qtquick/TextureItem.h>
@@ -49,12 +50,19 @@ void TextureItemRenderer::configureFbo(int fboId, unsigned int width, unsigned i
 
 void TextureItemRenderer::renderTexture()
 {
+    if (m_environment->canvases().empty())
+    {
+        return;
+    }
+
     // Get texture
     globjects::Texture * texture = nullptr;
 
     // Get slot
-    Canvas * canvas = static_cast<Canvas*>(m_environment->canvases()[0]);
-    AbstractSlot * slot = canvas->pipelineContainer()->getSlot(m_path.toStdString());
+    Canvas * canvas = m_environment->canvases().front();
+    Stage * stage = canvas->renderStage();
+    if (!stage) return;
+    AbstractSlot * slot = stage->getSlot(m_path.toStdString());
     if (!slot) return;
 
     // Check if it is a texture slot
@@ -75,12 +83,6 @@ void TextureItemRenderer::renderTexture()
         buildGeometry();
     }
 
-    // Check if program needs to be (re-)built
-    if (!m_program.get())
-    {
-        buildProgram();
-    }
-
     // Bind default FBO
     m_fbo->bind(gl::GL_FRAMEBUFFER);
 
@@ -93,14 +95,9 @@ void TextureItemRenderer::renderTexture()
     // Enable blending
     gl::glEnable(gl::GL_BLEND);
 
-    // Bind texture
-    gl::glActiveTexture(gl::GL_TEXTURE0 + 0);
-    texture->bind();
-
     // Draw screen-aligned quad
-    m_program->use();
+    m_screenAlignedQuad->setTexture(texture);
     m_screenAlignedQuad->draw();
-    m_program->release();
 
     // Unbind texture
     texture->unbind();
@@ -113,21 +110,7 @@ void TextureItemRenderer::buildGeometry()
 {
     // Create screen-aligned quad
     m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
-}
-
-void TextureItemRenderer::buildProgram()
-{
-    // Create shaders
-    m_vertexShaderSource   = m_screenAlignedQuad->vertexShaderSource();
-    m_fragmentShaderSource = m_screenAlignedQuad->fragmentShaderSourceInverted();
-
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
-
-    // Create program
-    m_program = cppassist::make_unique<globjects::Program>();
-    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
-    m_program->setUniform("source", 0);
+    m_screenAlignedQuad->setInverted(true);
 }
 
 

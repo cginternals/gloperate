@@ -23,7 +23,7 @@
 
 
 namespace gloperate {
-    class AbstractCanvas;
+    class Canvas;
 }
 
 
@@ -59,7 +59,7 @@ public:
     virtual ~FFMPEGVideoExporter();
 
     // Virtual AbstractVideoExporter interface
-    virtual void setTarget(gloperate::AbstractCanvas * canvas, const cppexpose::VariantMap & parameters) override;
+    virtual void setTarget(gloperate::Canvas * canvas, const cppexpose::VariantMap & parameters) override;
     virtual void createVideo(AbstractVideoExporter::ContextHandling contextHandling, std::function<void(int, int)> progress) override;
     virtual void onRender(ContextHandling contextHandling, globjects::Framebuffer * targetFBO, bool shouldFinalize = false) override;
     virtual int progress() const override;
@@ -74,23 +74,26 @@ protected:
 
 
 protected:
-    FFMPEGVideoEncoder                         * m_videoEncoder;
-    gloperate::AbstractCanvas                  * m_canvas;
-    gloperate::Image                           * m_image;
+    FFMPEGVideoEncoder                     * m_videoEncoder;
+    gloperate::Canvas                      * m_canvas;
+    gloperate::Image                       * m_image;
 
-    std::unique_ptr<globjects::Framebuffer>   m_fbo;
-    std::unique_ptr<globjects::Texture>       m_color;
-    std::unique_ptr<globjects::Renderbuffer>  m_depth;
-    std::unique_ptr<globjects::Framebuffer>   m_fbo_quad;
-    std::unique_ptr<globjects::Texture>       m_color_quad;
-    std::unique_ptr<globjects::Renderbuffer>  m_depth_quad;
-    std::unique_ptr<globjects::VertexArray>   m_vao;
-    std::unique_ptr<globjects::Buffer>        m_buffer;
-    std::unique_ptr<globjects::Program>       m_program;
+    std::unique_ptr<globjects::Framebuffer>  m_fbo;
+    std::unique_ptr<globjects::Texture>      m_color;
+    std::unique_ptr<globjects::Renderbuffer> m_depth;
+    std::unique_ptr<globjects::Framebuffer>  m_fbo_quad;
+    std::unique_ptr<globjects::Texture>      m_color_quad;
+    std::unique_ptr<globjects::Renderbuffer> m_depth_quad;
+    std::unique_ptr<globjects::VertexArray>  m_vao;
+    std::unique_ptr<globjects::Buffer>       m_buffer;
+    std::unique_ptr<globjects::Program>      m_program;
 
-    cppexpose::VariantMap                        m_parameters;
+    cppexpose::VariantMap                    m_parameters;
 
-    int                                          m_progress;
-    bool                                         m_initialized;
-    AbstractVideoExporter::ContextHandling       m_contextHandling;
+    int                                      m_progress;
+    bool                                     m_initialized;
+    AbstractVideoExporter::ContextHandling   m_contextHandling;
+
+    glm::vec4                                m_savedDeviceViewport;
+    glm::vec4                                m_savedVirtualViewport;
 };

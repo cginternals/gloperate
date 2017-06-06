@@ -1,23 +1,17 @@
 
 #pragma once
 
-#include <globjects/Buffer.h>
-#include <globjects/VertexArray.h>
 
-#include <gloperate/rendering/AbstractDrawable.h>
 #include <gloperate/rendering/Drawable.h>
-
-#include <gloperate/gloperate_api.h>
 
 
 namespace globjects
 {
-
-
-class Shader;
-class File;
-
-
+    class Buffer;
+    class Texture;
+    class Program;
+    class Shader;
+    class AbstractStringSource;
 }
 
 
@@ -37,9 +31,6 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @remarks
-    *    Creates OpenGL objects, thus, a current context is required.
     */
     ScreenAlignedTriangle();
 
@@ -54,53 +45,67 @@ public:
 
     /**
     *  @brief
-    *    Get underlying drawable object
+    *    Get texture
     *
     *  @return
-    *    Pointer to the drawable object (always valid)
+    *    Texture that is displayed (can be null)
     */
-    const Drawable * drawable() const;
+    globjects::Texture * texture() const;
+
+    /**
+    *  @brief
+    *    Set texture
+    *
+    *  @param[in] texture
+    *    Texture that is displayed (can be null)
+    */
+    void setTexture(globjects::Texture * texture);
+
+    /**
+    *  @brief
+    *    Check if texture is mirrored vertically
+    *
+    *  @return
+    *    'true' if texture is mirrored vertically, else 'false'
+    */
+    bool inverted() const;
+
+    /**
+    *  @brief
+    *    Set if texture is mirrored vertically
+    *
+    *  @param[in] inverted
+    *    'true' if texture is mirrored vertically, else 'false'
+    */
+    void setInverted(bool inverted);
 
     /**
     *  @brief
     *    Draw geometry
-    *
-    *  @remarks
-    *    This function is the main draw entry point, used by the superclass
-    *    AbstractDrawable.
     */
     virtual void draw() const override;
 
 
-public:
+protected:
     /**
     *  @brief
-    *    Create new default vertex shader
-    *
-    *  @return
-    *    Pointer to a newly created default vertex shader object
+    *    Initialize OpenGL objects
     */
-    static std::unique_ptr<globjects::Shader> createDefaultVertexShader();
-
-    /**
-    *  @brief
-    *    Create new default fragment shader
-    *
-    *  @return
-    *    Pointer to a newly created default fragment shader object
-    */
-    static std::unique_ptr<globjects::Shader> createDefaultFragmentShader();
+    void initialize();
 
 
 protected:
-    std::unique_ptr<Drawable>           m_drawable;     ///< underlying drawable object
-    std::unique_ptr<globjects::Buffer>  m_buffer;       ///< pointer to the buffer used by m_drawable
-
-
-protected:
-    static const std::unique_ptr<globjects::File> s_defaultVertexShaderSource;
-    static const std::unique_ptr<globjects::File> s_defaultFragmentShaderSource;
-
+    std::unique_ptr<Drawable>                          m_drawable;             ///< Underlying drawable object
+    std::unique_ptr<globjects::Buffer>                 m_vertices;             ///< Vertex buffer
+    std::unique_ptr<globjects::AbstractStringSource>   m_vertexShaderSource;   ///< Vertex shader source
+    std::unique_ptr<globjects::AbstractStringSource>   m_fragmentShaderSource; ///< Fragment shader source
+    std::unique_ptr<globjects::Shader>                 m_vertexShader;         ///< Vertex shader
+    std::unique_ptr<globjects::Shader>                 m_fragmentShader;       ///< Fragment shader
+    std::unique_ptr<globjects::Program>                m_program;              ///< Shader program
+    globjects::Texture                               * m_texture;              ///< Texture that is displayed (can be null)
+    bool                                               m_inverted;             ///< If 'true', the texture will be mirrored vertically, else 'false'
+    bool                                               m_initialized;          ///< 'true' if initialized, else 'false'
 };
+
 
 } // namespace gloperate

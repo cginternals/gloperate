@@ -10,16 +10,8 @@
 
 
 namespace gloperate_glkernel {
-
-class TransparencyKernelStage;
-class NoiseKernelStage;
-
-}
-
-namespace gloperate
-{
-
-
+    class TransparencyKernelStage;
+    class NoiseKernelStage;
 }
 
 

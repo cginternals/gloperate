@@ -10,14 +10,17 @@
 #include <gloperate/pipeline/Output.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Program;
     class Shader;
 }
 
-namespace cppassist {
+namespace cppassist
+{
     class FilePath;
 }
+
 
 namespace gloperate
 {
@@ -44,7 +47,7 @@ public:
 
 
 public:
-    // Inputs can be created directly
+    // Inputs of type Shader or FilePath can be created dynamically
 
     // Outputs
     Output<globjects::Program *> program; ///< the program object
@@ -71,14 +74,19 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess() override;
     virtual void onContextInit(AbstractGLContext * content) override;
     virtual void onContextDeinit(AbstractGLContext * content) override;
 
-protected:
-    std::unique_ptr<globjects::Program> m_program; ///< Program object
 
-    std::vector<std::unique_ptr<globjects::Shader>>     m_shaders; ///< collection of self created shaders for later removal
+protected:
+    // OpenGL objects
+    std::unique_ptr<globjects::Program>             m_program; ///< Program object
+    std::vector<std::unique_ptr<globjects::Shader>> m_shaders; ///< collection of self created shaders for later removal
+
+    // Signal connections
+    cppexpose::ScopedConnection m_inputAddedConnection;
+    cppexpose::ScopedConnection m_inputRemovedConnection;
 };
 
 

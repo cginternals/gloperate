@@ -74,7 +74,7 @@ void DemoAntialiasableTriangleStage::onContextDeinit(gloperate::AbstractGLContex
 {
 }
 
-void DemoAntialiasableTriangleStage::onProcess(gloperate::AbstractGLContext *)
+void DemoAntialiasableTriangleStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;

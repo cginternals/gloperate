@@ -97,7 +97,7 @@ public:
     *  @brief
     *    Set draw mode
     *
-    *  @return
+    *  @param[in] drawMode
     *    Configured draw mode
     *
     *  @remarks
@@ -317,7 +317,7 @@ public:
     *    The indices don't need to be continuous.
     *    If an OpenGL buffer at the given index doesn't exist, a nullptr is returned.
     */
-    globjects::Buffer* buffer(size_t index);
+    globjects::Buffer * buffer(size_t index);
 
     /**
     *  @brief
@@ -332,7 +332,7 @@ public:
     *  @remarks
     *    The indices don't need to be continuous.
     */
-    globjects::Buffer* buffer(size_t index) const;
+    globjects::Buffer * buffer(size_t index) const;
 
     /**
     *  @brief
@@ -348,7 +348,7 @@ public:
     *    one index. A buffer doesn't need to be associated with an index to be usable by
     *    this class.
     */
-    void setBuffer(size_t index, globjects::Buffer* buffer);
+    void setBuffer(size_t index, globjects::Buffer * buffer);
 
     /**
     *  @brief
@@ -364,7 +364,7 @@ public:
     *    Set index buffer
     *
     *  @param[in] buffer
-    *    Index buffer
+    *    Index buffer (must NOT be null!)
     */
     void setIndexBuffer(globjects::Buffer * buffer);
 
@@ -373,7 +373,7 @@ public:
     *    Set index buffer and type
     *
     *  @param[in] buffer
-    *    Index buffer
+    *    Index buffer (must NOT be null!)
     *  @param[in] bufferType
     *    Type of the indices
     */
@@ -423,7 +423,7 @@ public:
     *    Binding index
     *
     *  @return
-    *    Vertex attribute binding
+    *    Vertex attribute binding (never null)
     */
     globjects::VertexAttributeBinding * attributeBinding(size_t index) const;
 
@@ -526,15 +526,15 @@ public:
 
 
 protected:
-    std::unique_ptr<globjects::VertexArray>             m_vao;     ///< The VertexArray used for the vertex shader input specification and draw call triggering
-    std::unordered_map<size_t, globjects::Buffer*>      m_buffers; ///< The collection of all buffers associated with this geometry. (Note: this class can be used without storing actual buffers here)
+    std::unique_ptr<globjects::VertexArray>        m_vao;     ///< The VertexArray used for the vertex shader input specification and draw call triggering
+    std::unordered_map<size_t, globjects::Buffer*> m_buffers; ///< The collection of all buffers associated with this geometry. (Note: this class can be used without storing actual buffers here)
 
-    DrawMode                              m_drawMode;        ///< The configured draw mode that is used if no specific draw mode is passed in the draw method.
-    gl::GLsizei                           m_size;            ///< The configured vertex count that is used if no specific vertex range is passed in the draw method.
-    gl::GLenum                            m_primitiveMode;   ///< The configured primitive mode that is used if no specific primitive mode is passed in the draw method.
-    gl::GLenum                            m_indexBufferType; ///< The configured GPU index buffer type of the currently set index buffer.
-    globjects::Buffer*                    m_indexBuffer;     ///< The configured GPU index buffer that is used if no specific index buffer in passed in the draw method.
-    std::vector<std::uint32_t>            m_indices;         ///< The configured CPU index buffer that is used if no specific index buffer in passed in the draw method (Note: implied GL_UNSIGNED_INT as index buffer type).
+    DrawMode                   m_drawMode;        ///< The configured draw mode that is used if no specific draw mode is passed in the draw method.
+    gl::GLsizei                m_size;            ///< The configured vertex count that is used if no specific vertex range is passed in the draw method.
+    gl::GLenum                 m_primitiveMode;   ///< The configured primitive mode that is used if no specific primitive mode is passed in the draw method.
+    gl::GLenum                 m_indexBufferType; ///< The configured GPU index buffer type of the currently set index buffer.
+    globjects::Buffer*         m_indexBuffer;     ///< The configured GPU index buffer that is used if no specific index buffer in passed in the draw method.
+    std::vector<std::uint32_t> m_indices;         ///< The configured CPU index buffer that is used if no specific index buffer in passed in the draw method (Note: implied GL_UNSIGNED_INT as index buffer type).
 };
 
 

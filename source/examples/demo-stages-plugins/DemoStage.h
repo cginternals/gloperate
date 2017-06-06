@@ -4,17 +4,15 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Buffer.h>
 #include <globjects/Texture.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/Timer.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
+#include <gloperate/rendering/Sphere.h>
 
 
 /**
@@ -66,7 +64,7 @@ protected:
     // Virtual Stage functions
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void createAndSetupCamera();
@@ -76,18 +74,13 @@ protected:
 
 protected:
     // Rendering objects
-    gloperate::Camera                           m_camera;
-    std::unique_ptr<globjects::VertexArray>     m_vao;
-    std::unique_ptr<globjects::Buffer>          m_buffer;
-    std::unique_ptr<globjects::Texture>         m_texture;
-    std::unique_ptr<globjects::Program>         m_program;
-    std::unique_ptr<globjects::Shader>          m_vertexShader;
-    std::unique_ptr<globjects::Shader>          m_fragmentShader;
-
-    // Tools
-    gloperate::Timer m_timer;
+    gloperate::Camera                   m_camera;
+    std::unique_ptr<gloperate::Sphere>  m_quad;
+    std::unique_ptr<globjects::Texture> m_texture;
+    std::unique_ptr<globjects::Program> m_program;
+    std::unique_ptr<globjects::Shader>  m_vertexShader;
+    std::unique_ptr<globjects::Shader>  m_fragmentShader;
 
     // Status
-    float m_time;   ///< Virtual time (in seconds)
     float m_angle;  ///< Current angle of rotating triangle (in radians)
 };

@@ -1,7 +1,6 @@
 
 #include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 
-#include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 
 
@@ -30,7 +29,7 @@ MultiFrameControlStage::~MultiFrameControlStage()
 {
 }
 
-void MultiFrameControlStage::onProcess(gloperate::AbstractGLContext *)
+void MultiFrameControlStage::onProcess()
 {
     m_currentFrame++;
 
@@ -42,4 +41,4 @@ void MultiFrameControlStage::onProcess(gloperate::AbstractGLContext *)
 }
 
 
-} // namespace gloperate
+} // namespace gloperate_glkernel

@@ -4,8 +4,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
@@ -15,7 +13,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/rendering/Camera.h>
-#include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <gloperate/rendering/Quad.h>
 
 
 /**
@@ -73,7 +71,7 @@ protected:
     // Virtual Stage functions
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void setupGeometry();
@@ -82,14 +80,11 @@ protected:
 
 protected:
     // Rendering objects
-    gloperate::Camera                               m_camera;
-    std::unique_ptr<gloperate::ScreenAlignedQuad>   m_screenAlignedQuad;
-    std::unique_ptr<globjects::VertexArray>         m_vao;
-    std::unique_ptr<globjects::Buffer>              m_vertexBuffer;
-    std::unique_ptr<globjects::Program>             m_program;
-
-    std::unique_ptr<globjects::AbstractStringSource> m_vSource;
-    std::unique_ptr<globjects::AbstractStringSource> m_fSource;
+    gloperate::Camera                                m_camera;
+    std::unique_ptr<gloperate::Quad>                 m_quad;
+    std::unique_ptr<globjects::Program>              m_program;
+    std::unique_ptr<globjects::AbstractStringSource> m_vertexShaderSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_fragmentShaderSource;
     std::unique_ptr<globjects::Shader>               m_vertexShader;
     std::unique_ptr<globjects::Shader>               m_fragmentShader;
 };

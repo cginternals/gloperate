@@ -23,6 +23,20 @@ class GLOPERATE_GLFW_API GLContext : public gloperate::AbstractGLContext
 public:
     /**
     *  @brief
+    *    Update swap behavior
+    *
+    *  @param[in] swapBehavior
+    *    The new behavior for swapping the buffers
+    *
+    *  @remarks
+    *    Operates on the current OpenGL context
+    */
+    static void updateSwapBehavior(gloperate::GLContextFormat::SwapBehavior swapBehavior);
+
+
+public:
+    /**
+    *  @brief
     *    Constructor
     *
     *  @param[in] window
@@ -48,18 +62,6 @@ public:
     // Virtual gloperate::AbstractContext functions
     virtual void use() const override;
     virtual void release() const override;
-
-    /**
-    *  @brief
-    *    Update current swap behavior
-    *
-    *  @param[in] swapBehavior
-    *    The new behavior for swapping the buffers
-    *
-    *  @remarks
-    *    Operates on the current OpenGL context
-    */
-    static void updateSwapBehavior(gloperate::GLContextFormat::SwapBehavior swapBehavior);
 
 
 protected:

@@ -37,6 +37,16 @@ public:
     */
     ~ComponentManager();
 
+    /**
+    *  @brief
+    *    Scan for gloperate plugins
+    *
+    *  @remarks
+    *    This scans only for plugin libraries with the suffix "-plugins",
+    *    or "-plugins-debug" for debug builds.
+    */
+    void scanPlugins();
+
 
 protected:
     // Scripting functions
@@ -45,7 +55,7 @@ protected:
     cppexpose::Variant scr_pluginPaths();
     void scr_addPluginPath(const std::string & path);
     void scr_removePluginPath(const std::string & path);
-    void scr_scanPlugins(const std::string & suffix);
+    void scr_scanPlugins();
     cppexpose::Variant scr_components();
     void scr_printComponents();
 };

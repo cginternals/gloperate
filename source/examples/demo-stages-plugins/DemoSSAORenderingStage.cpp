@@ -40,7 +40,7 @@ static const char * s_vertexShader = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
-uniform mat4 modelViewProjection;
+uniform mat4 viewProjectionMatrix;
 
 layout (location = 0) in vec3 a_vertex;
 layout (location = 1) in vec3 a_normal;
@@ -49,7 +49,7 @@ flat out vec3 v_normal;
 
 void main()
 {
-    gl_Position = modelViewProjection * vec4(a_vertex, 1.0);
+    gl_Position = viewProjectionMatrix * vec4(a_vertex, 1.0);
     v_normal = a_normal;
 }
 )";
@@ -102,7 +102,7 @@ void DemoSSAORenderingStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
 }
 
-void DemoSSAORenderingStage::onProcess(gloperate::AbstractGLContext *)
+void DemoSSAORenderingStage::onProcess()
 {
     // Get viewport
     glm::vec4 viewport = *renderInterface.deviceViewport;
@@ -116,14 +116,14 @@ void DemoSSAORenderingStage::onProcess(gloperate::AbstractGLContext *)
     );
 
     // Set uniforms
-    auto view = glm::lookAt(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    auto projection = glm::perspective(20.0f, viewport.z / viewport.w, 1.0f, 10.0f);
-    auto viewProjection = projection * view;
+    auto viewMatrix = glm::lookAt(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    auto projectionMatrix = glm::perspective(20.0f, viewport.z / viewport.w, 1.0f, 10.0f);
+    auto viewProjectionMatrix = projectionMatrix * viewMatrix;
 
-    projectionMatrix.setValue(projection);
-    normalMatrix.setValue(glm::inverseTranspose(glm::mat3(view)));
+    this->projectionMatrix.setValue(projectionMatrix);
+    this->normalMatrix.setValue(glm::inverseTranspose(glm::mat3(viewMatrix)));
 
-    m_program->setUniform("modelViewProjection", viewProjection);
+    m_program->setUniform("viewProjectionMatrix", viewProjectionMatrix);
 
     // Bind color FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;

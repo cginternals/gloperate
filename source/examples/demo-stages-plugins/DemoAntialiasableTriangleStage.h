@@ -65,7 +65,7 @@ protected:
     // Virtual Stage functions
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
     virtual void onInputValueChanged(gloperate::AbstractSlot * slot) override;
 
     // Helper functions

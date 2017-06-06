@@ -2,27 +2,55 @@
 #pragma once
 
 
-#include <gloperate/base/AbstractCanvas.h>
-#include <gloperate/pipeline/PipelineContainer.h>
-#include <gloperate/input/constants.h>
+#include <string>
+#include <mutex>
+
+#include <glm/vec4.hpp>
+#include <glm/fwd.hpp>
+
+#include <cppexpose/reflection/Object.h>
+#include <cppexpose/variant/Variant.h>
+#include <cppexpose/signal/Signal.h>
+
+#include <gloperate/base/ChronoTimer.h>
+
+
+namespace globjects
+{
+    class Framebuffer;
+}
 
 
 namespace gloperate
 {
 
 
+class Environment;
+class AbstractGLContext;
 class Stage;
+class AbstractSlot;
 class MouseDevice;
 class KeyboardDevice;
 
 
 /**
 *  @brief
-*    Default canvas renderer for gloperate
+*    Representation of a canvas onto which can be rendered
+*
+*    A canvas is attached to a window or offscreen context and handles the
+*    actual rendering. It should be embedded by the windowing backend and
+*    receives state changes from the outside (such as window size, mouse,
+*    or keyboard events) and passes them on to the rendering components.
 */
-class GLOPERATE_API Canvas : public AbstractCanvas
+class GLOPERATE_API Canvas : public cppexpose::Object
 {
 public:
+    // Must be emitted only from the UI thread
+    cppexpose::Signal<> redraw; ///< Called when the canvas needs to be redrawn
+
+
+public:
+    //@{
     /**
     *  @brief
     *    Constructor
@@ -36,26 +64,22 @@ public:
     *  @brief
     *    Destructor
     */
-    virtual ~Canvas();
+    ~Canvas();
+    //@}
 
+    //@{
     /**
     *  @brief
-    *    Get pipeline container
+    *    Get gloperate environment
     *
     *  @return
-    *    Pipeline container (never null)
+    *    Environment to which the canvas belongs (never null)
     */
-    const PipelineContainer * pipelineContainer() const;
+    const Environment * environment() const;
+    Environment * environment();
+    //@}
 
-    /**
-    *  @brief
-    *    Get pipeline container
-    *
-    *  @return
-    *    Pipeline container (never null)
-    */
-    PipelineContainer * pipelineContainer();
-
+    //@{
     /**
     *  @brief
     *    Get render stage
@@ -64,56 +88,230 @@ public:
     *    Render stage that renders into the current context (can be null)
     */
     const Stage * renderStage() const;
-
-    /**
-    *  @brief
-    *    Get render stage
-    *
-    *  @return
-    *    Render stage that renders into the current context (can be null)
-    */
     Stage * renderStage();
+    //@}
 
+    //@{
     /**
     *  @brief
     *    Set render stage
     *
     *  @param[in] stage
     *    Render stage that renders into the current context (can be null)
-    *
-    *  @remarks
-    *    When setting a new render stage, the old render stage is destroyed.
-    *    The canvas takes ownership over the stage.
     */
     void setRenderStage(std::unique_ptr<Stage> && stage);
 
-    // Virtual AbstractCanvas functions
-    virtual void onRender(globjects::Framebuffer * targetFBO) override;
-    virtual void onUpdate() override;
-    virtual void onContextInit() override;
-    virtual void onContextDeinit() override;
-    virtual void onViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport) override;
-    virtual void onSaveViewport() override;
-    virtual void onResetViewport() override;
-    virtual void onBackgroundColor(float red, float green, float blue) override;
-    virtual void onKeyPress(int key, int modifier) override;
-    virtual void onKeyRelease(int key, int modifier) override;
-    virtual void onMouseMove(const glm::ivec2 & pos) override;
-    virtual void onMousePress(int button, const glm::ivec2 & pos) override;
-    virtual void onMouseRelease(int button, const glm::ivec2 & pos) override;
-    virtual void onMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos) override;
-    virtual const glm::vec4 & savedDeviceViewport() const override;
+    /**
+    *  @brief
+    *    Load render stage
+    *
+    *  @param[in] name
+    *    Name of render stage
+    */
+    void loadRenderStage(const std::string & name);
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Get OpenGL context
+    *
+    *  @return
+    *    OpenGL context used for rendering on the canvas (can be null)
+    *
+    *  @remarks
+    *    The returned context can be null if the canvas has not been
+    *    initialized yet, or the method is called between onContextDeinit()
+    *    and onContextInit() when the context has been changed.
+    *    Aside from that, there should always be a valid OpenGL context
+    *    attached to the canvas.
+    */
+    const AbstractGLContext * openGLContext() const;
+    AbstractGLContext * openGLContext();
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Set OpenGL context
+    *
+    *  @param[in] context
+    *    OpenGL context used for rendering on the canvas (can be null)
+    *
+    *  @remarks
+    *    This function should only be called by the windowing backend.
+    *    If the canvas still has a valid context, onContextDeinit()
+    *    will be called and the context pointer will be set to nullptr.
+    *    Then, if the new context is valid, the context pointer will be
+    *    set to that new context and onContextInit() will be invoked.
+    */
+    void setOpenGLContext(AbstractGLContext * context);
+    //@}
+
+    //@{
+    /**
+    *  @brief
+    *    Update virtual time (must be called from UI thread)
+    *
+    *  @remarks
+    *    This function determines the time delta since the last call to
+    *    the function and updates the internal virtual time. This is
+    *    passed on to the render stage to allow for continuous updates
+    *    of the virtual scene. If a pipeline depends on the virtual time
+    *    or time delta inputs and in turn invalidates its render outputs,
+    *    a redraw will be scheduled. Otherwise, only the virtual time is
+    *    updated regularly, but no redraw occurs.
+    */
+    void updateTime();
+
+    /**
+    *  @brief
+    *    Set viewport (must be called from UI thread)
+    *
+    *  @param[in] deviceViewport
+    *    Viewport (in real device coordinates)
+    *  @param[in] virtualViewport
+    *    Viewport (in virtual coordinates)
+    */
+    void setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport);
+
+    /**
+    *  @brief
+    *    Get device viewport
+    *
+    *  @return
+    *    The device viewport
+    */
+    const glm::vec4 & deviceViewport() const;
+
+    /**
+    *  @brief
+    *    Get virtual viewport
+    *
+    *  @return
+    *    The virtual viewport
+    */
+    const glm::vec4 & virtualViewport() const;
+
+    /**
+    *  @brief
+    *    Perform rendering (must be called from render thread)
+    *
+    *  @param[in] targetFBO
+    *    Framebuffer into which is rendered
+    */
+    void render(globjects::Framebuffer * targetFBO);
+
+    /**
+    *  @brief
+    *    Promote keyboard press event (must be called from UI thread)
+    *
+    *  @param[in] key
+    *    Key (gloperate key code)
+    *  @param[in] modifier
+    *    Modifiers (gloperate modifier codes)
+    */
+    void promoteKeyPress(int key, int modifier);
+
+    /**
+    *  @brief
+    *    Promote keyboard release event (must be called from UI thread)
+    *
+    *  @param[in] key
+    *    Key (gloperate key code)
+    *  @param[in] modifier
+    *    Modifiers (gloperate modifier codes)
+    */
+    void promoteKeyRelease(int key, int modifier);
+
+    /**
+    *  @brief
+    *    Promote mouse move event (must be called from UI thread)
+    *
+    *  @param[in] pos
+    *    Mouse position
+    */
+    void promoteMouseMove(const glm::ivec2 & pos);
+
+    /**
+    *  @brief
+    *    Promote mouse press event (must be called from UI thread)
+    *
+    *  @param[in] button
+    *    Mouse button (gloperate button code)
+    *  @param[in] pos
+    *    Mouse position
+    */
+    void promoteMousePress(int button, const glm::ivec2 & pos);
+
+    /**
+    *  @brief
+    *    Promote mouse release event (must be called from UI thread)
+    *
+    *  @param[in] button
+    *    Mouse button (gloperate button code)
+    *  @param[in] pos
+    *    Mouse position
+    */
+    void promoteMouseRelease(int button, const glm::ivec2 & pos);
+
+    /**
+    *  @brief
+    *    Promote mouse wheel event (must be called from UI thread)
+    *
+    *  @param[in] delta
+    *    Wheel delta
+    *  @param[in] pos
+    *    Mouse position
+    */
+    void promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
+    //@}
 
 
 protected:
-    PipelineContainer               m_pipelineContainer; ///< Container for the rendering stage or pipeline
-    unsigned long                   m_frame;             ///< Frame counter
-    std::unique_ptr<MouseDevice>    m_mouseDevice;       ///< Device for Mouse Events
-    std::unique_ptr<KeyboardDevice> m_keyboardDevice;    ///< Device for Keyboard Events
-    glm::vec4                       m_deviceViewport;    ///< Last known device viewport configuration
-    glm::vec4                       m_virtualViewport;   ///< Last known virtual viewport configuration
-    glm::vec4                       m_savedDeviceVP;     ///< Saved device viewport configuration
-    glm::vec4                       m_savedVirtualVP;    ///< Saved virtual viewport configuration
+    /**
+    *  @brief
+    *    Check if a redraw is required
+    *
+    *  @remarks
+    *    This function checks if the render stage needs to be redrawn
+    *    and invokes the redraw signal if that is the case.
+    */
+    void checkRedraw();
+
+    // Scripting functions
+    cppexpose::Variant scr_getDescription(const std::string & path);
+    cppexpose::Variant scr_getSlot(const std::string & path);
+    void scr_setSlotValue(const std::string & path, const cppexpose::Variant & value);
+    std::string scr_createStage(const std::string & path, const std::string & className, const std::string & name);
+    void scr_removeStage(const std::string & path, const std::string & name);
+    void scr_createConnection(const std::string & from, const std::string & to);
+    void scr_removeConnection(const std::string & to);
+    cppexpose::Variant scr_getConnections(const std::string & path);
+    void scr_createSlot(const std::string & path, const std::string & slotType, const std::string & type, const std::string & name);
+    cppexpose::Variant scr_slotTypes(const std::string & path);
+
+    // Helper functions
+    Stage * getStageObject(const std::string & path) const;
+    Stage * getStageObjectForSlot(const std::string & path, std::string & slotName) const;
+
+
+protected:
+    Environment                   * m_environment;     ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext             * m_openGLContext;   ///< OpenGL context used for rendering onto the canvas
+    bool                            m_initialized;     ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
+    gloperate::ChronoTimer          m_clock;           ///< Time measurement
+    glm::vec4                       m_deviceViewport;  ///< Viewport (in real device coordinates)
+    glm::vec4                       m_virtualViewport; ///< Viewport (in virtual coordinates)
+    float                           m_virtualTime;     ///< The current virtual time (in seconds)
+    float                           m_timeDelta;       ///< Time delta since the last update (in seconds)
+    std::unique_ptr<Stage>          m_renderStage;     ///< Render stage that renders into the canvas
+    std::unique_ptr<Stage>          m_oldStage;        ///< Old render stage, will be destroyed on the next render call
+    std::unique_ptr<MouseDevice>    m_mouseDevice;     ///< Device for Mouse Events
+    std::unique_ptr<KeyboardDevice> m_keyboardDevice;  ///< Device for Keyboard Events
+    bool                            m_replaceStage;    ///< 'true' if the stage has just been replaced, else 'false'
+
+    std::mutex                      m_mutex;           ///< Mutex for separating main and render thread
 };
 
 

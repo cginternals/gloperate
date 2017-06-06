@@ -14,18 +14,18 @@ BlitStage::BlitStage(Environment * environment, const std::string & name)
 :Stage(environment, name)
 , sourceFBO("sourceFBO", this)
 , sourceViewport("sourceViewport", this)
-, destinationFBO("destinationFBO", this)
-, destinationViewport("destinationViewport", this)
-, blittedFBO("blittedFBO", this)
-, blitted("blitted", this)
+, targetFBO("targetFBO", this)
+, targetViewport("targetViewport", this)
+, fboOut("fboOut", this)
+, rendered("rendered", this)
 {
 }
 
-void BlitStage::onProcess(AbstractGLContext * /*context*/)
+void BlitStage::onProcess()
 {
     globjects::Framebuffer * srcFBO = *sourceFBO;
 
-    globjects::Framebuffer * destFBO = *destinationFBO;
+    globjects::Framebuffer * destFBO = *targetFBO;
 
     std::array<gl::GLint, 4> srcRect = {{
         static_cast<gl::GLint>((*sourceViewport).x),
@@ -34,16 +34,16 @@ void BlitStage::onProcess(AbstractGLContext * /*context*/)
         static_cast<gl::GLint>((*sourceViewport).w)
     }};
     std::array<gl::GLint, 4> destRect = {{
-        static_cast<gl::GLint>((*destinationViewport).x),
-        static_cast<gl::GLint>((*destinationViewport).y),
-        static_cast<gl::GLint>((*destinationViewport).z),
-        static_cast<gl::GLint>((*destinationViewport).w)
+        static_cast<gl::GLint>((*targetViewport).x),
+        static_cast<gl::GLint>((*targetViewport).y),
+        static_cast<gl::GLint>((*targetViewport).z),
+        static_cast<gl::GLint>((*targetViewport).w)
     }};
 
     srcFBO->blit(gl::GL_COLOR_ATTACHMENT0, srcRect, destFBO, destFBO->id() == 0 ? gl::GL_BACK_LEFT : gl::GL_COLOR_ATTACHMENT0, destRect, gl::GL_COLOR_BUFFER_BIT, gl::GL_LINEAR);
 
-    blittedFBO.setValue(*destinationFBO);
-    blitted.setValue(true);
+    fboOut.setValue(*targetFBO);
+    rendered.setValue(true);
 }
 
 

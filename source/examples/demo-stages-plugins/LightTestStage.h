@@ -19,10 +19,8 @@
 
 namespace globjects
 {
-
-class Texture;
-
-} // namespace globjects
+    class Texture;
+}
 
 
 class LightTestStage : public gloperate::Stage
@@ -38,6 +36,7 @@ public:
       , "v0.1.0"
     )
 
+
 public:
     // Interfaces
     gloperate::RenderInterface renderInterface;                  ///< Interface for rendering into a viewer
@@ -45,10 +44,10 @@ public:
     // Inputs
     Input<float> glossiness;                          ///< Glossiness of the cube (0.0 to 1.0)
     Input<float> totalTime;                           ///< Total running time
-
     Input<globjects::Texture *> lightColorTypeData;   ///< Buffer Texture with color & type information
     Input<globjects::Texture *> lightPositionData;    ///< Buffer Texture with position information
     Input<globjects::Texture *> lightAttenuationData; ///< Buffer Texture with attenuation information
+
 
 public:
     /**
@@ -68,10 +67,12 @@ public:
     */
     virtual ~LightTestStage();
 
+
 protected:
     // Virtual Stage interface
     virtual void onContextInitialize(gloperate::AbstractGLContext * context);
-    virtual void onProcess(gloperate::AbstractGLContext * context);
+    virtual void onProcess();
+
 
 protected:
     // Rendering objects

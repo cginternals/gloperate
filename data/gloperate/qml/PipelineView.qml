@@ -58,7 +58,6 @@ Item
                 anchors.fill: parent
                 anchors.margins: 1
 
-                //path: 'DemoPipeline.TextureLoadStage.texture'
                 path: 'DemoPipeline.FramebufferStage1.colorTexture'
             }
 
@@ -70,8 +69,11 @@ Item
         }
     }
 
-    Component.onCompleted:
+    onVisibleChanged:
     {
-        pipelineEditor.load(path);
+        if (visible)
+        {
+            pipelineEditor.load(path);
+        }
     }
 }

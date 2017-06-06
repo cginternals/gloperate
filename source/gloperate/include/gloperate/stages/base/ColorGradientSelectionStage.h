@@ -6,12 +6,11 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/base/ColorGradientList.h>
+#include <gloperate/rendering/ColorGradientList.h>
 
 
 namespace gloperate
@@ -59,16 +58,16 @@ public:
     */
     ColorGradientSelectionStage(gloperate::Environment * environment, const std::string & name = "");
 
-
-protected:
     /**
     *  @brief
-    *    Process one iteration
-    *
-    *  @remarks
-    *    Overriden
+    *    Destructor
     */
-    virtual void onProcess(gloperate::AbstractGLContext * /*context*/) override;
+    ~ColorGradientSelectionStage();
+
+
+protected:
+    // Virtual Stage interface
+    virtual void onProcess() override;
 };
 
 

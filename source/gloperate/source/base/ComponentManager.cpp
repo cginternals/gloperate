@@ -31,6 +31,15 @@ ComponentManager::~ComponentManager()
 {
 }
 
+void ComponentManager::scanPlugins()
+{
+    #ifndef NDEBUG
+        cppexpose::ComponentManager::scanPlugins("-plugins-debug");
+    #else
+        cppexpose::ComponentManager::scanPlugins("-plugins");
+    #endif
+}
+
 std::string ComponentManager::scr_getPluginPaths()
 {
     std::vector<std::string> paths = this->pluginPaths(PluginPathType::UserDefined);
@@ -75,9 +84,9 @@ void ComponentManager::scr_removePluginPath(const std::string & path)
     this->removePluginPath(path);
 }
 
-void ComponentManager::scr_scanPlugins(const std::string & suffix)
+void ComponentManager::scr_scanPlugins()
 {
-    this->scanPlugins(suffix);
+    scanPlugins();
 }
 
 cppexpose::Variant ComponentManager::scr_components()

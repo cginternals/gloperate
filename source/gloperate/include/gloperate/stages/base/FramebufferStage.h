@@ -53,7 +53,7 @@ public:
     // Additional attachments (of type RenderTarget *) can be added as inputs dynamically
 
     // Outputs
-    Output<globjects::Framebuffer *> fbo;      ///< Framebuffer
+    Output<globjects::Framebuffer *> fbo; ///< Framebuffer
 
 
 public:
@@ -79,7 +79,7 @@ protected:
     // Virtual Stage interface
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void rebuildFBO();
@@ -87,7 +87,6 @@ protected:
 
 
 protected:
-    // Data
     std::unique_ptr<globjects::Framebuffer> m_fbo; ///< The created framebuffer
 };
 

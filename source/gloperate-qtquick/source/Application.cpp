@@ -10,6 +10,7 @@
 #include <qmltoolbox/Application.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/TimerManager.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/GLContextFactory.h>
@@ -29,7 +30,6 @@ void Application::initialize()
 Application::Application(int & argc, char ** argv)
 : QGuiApplication(argc, argv)
 , m_environment()
-, m_updateManager(&m_environment)
 , m_qmlEngine(&m_environment)
 {
     // Read command line options
@@ -38,20 +38,20 @@ Application::Application(int & argc, char ** argv)
 
     const auto contextFormat = argumentParser.value("--context");
 
+    if (argumentParser.isSet("-safemode"))
+    {
+        m_environment.setSafeMode(true);
+    }
+
     // Create scripting context
     m_environment.setupScripting(
         cppassist::make_unique<gloperate_qtquick::QmlScriptContext>(&m_qmlEngine)
     );
 
-    // Configure and load plugins
+    // Configure plugin paths
     m_environment.componentManager()->addPluginPath(
         gloperate::pluginPath(), cppexpose::PluginPathType::Internal
     );
-    #ifndef NDEBUG
-        m_environment.componentManager()->scanPlugins("-plugins-debug");
-    #else
-        m_environment.componentManager()->scanPlugins("-plugins");
-    #endif
 
     // Specify desired context format
     gloperate::GLContextFormat format;
@@ -66,6 +66,14 @@ Application::Application(int & argc, char ** argv)
     // Convert and set Qt context format
     QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
     QSurfaceFormat::setDefaultFormat(qFormat);
+
+    // Create global timer
+    QObject::connect(
+        &m_timer, &QTimer::timeout,
+        this, &Application::onTimer
+    );
+
+    m_timer.start(5);
 }
 
 Application::~Application()
@@ -100,6 +108,12 @@ const gloperate::Environment & Application::environment() const
 gloperate::Environment & Application::environment()
 {
     return m_environment;
+}
+
+void Application::onTimer()
+{
+    // Update scripting timers
+    m_environment.timerManager()->update();
 }
 
 

@@ -40,6 +40,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
     ${include_path}/DemoStage.h
+    ${include_path}/DemoStage2.h
     ${include_path}/DemoPipeline.h
     ${include_path}/ShaderDemoPipeline.h
     ${include_path}/DemoAntialiasableTriangleStage.h
@@ -67,6 +68,7 @@ set(sources
     ${source_path}/plugin.cpp
 
     ${source_path}/DemoStage.cpp
+    ${source_path}/DemoStage2.cpp
     ${source_path}/DemoPipeline.cpp
     ${source_path}/ShaderDemoPipeline.cpp
     ${source_path}/DemoAntialiasableTriangleStage.cpp

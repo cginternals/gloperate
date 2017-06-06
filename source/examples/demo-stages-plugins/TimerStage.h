@@ -5,7 +5,6 @@
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/Timer.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
@@ -35,6 +34,7 @@ public:
 public:
     // Inputs
     Input<float>  timeDelta;   ///< Time delta since last frame (in seconds)
+    Input<float>  factor;      ///< Factor by which the time delta is multiplied
 
     // Outputs
     Output<float> virtualTime; ///< Elapsed time (in seconds)
@@ -63,13 +63,10 @@ protected:
     // Virtual Stage functions
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
 
 protected:
-    // Tools
-    gloperate::Timer m_timer;
-
     // Status
     float m_time;   ///< Virtual time (in seconds)
 };
