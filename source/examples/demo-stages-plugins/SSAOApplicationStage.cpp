@@ -9,11 +9,27 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/File.h>
+#include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/NamedString.h>
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
+
+
+namespace
+{
+
+
+std::array<glm::vec2, 4> s_quad {{
+    glm::vec2(-1.0f, -1.0f),
+    glm::vec2( 1.0f, -1.0f),
+    glm::vec2(-1.0f,  1.0f),
+    glm::vec2( 1.0f,  1.0f)
+}};
+
+
+} // namespace
 
 
 CPPEXPOSE_COMPONENT(SSAOApplicationStage, gloperate::Stage)
@@ -39,6 +55,9 @@ SSAOApplicationStage::~SSAOApplicationStage()
 
 void SSAOApplicationStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    if (m_vao) // protect against initializing twice
+        return;
+
     setupGeometry();
     setupProgram();
 }
@@ -52,7 +71,8 @@ void SSAOApplicationStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_ssaoFileNamedString.reset();
 
     // deinitialize geometry
-    m_screenAlignedQuad.reset();
+    m_vertexBuffer.reset();
+    m_vao.reset();
 }
 
 void SSAOApplicationStage::onProcess()
@@ -100,7 +120,7 @@ void SSAOApplicationStage::onProcess()
 
     // Draw geometry
     m_program->use();
-    m_screenAlignedQuad->draw();
+    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
     m_program->release();
 
     // Unbind textures
@@ -119,7 +139,15 @@ void SSAOApplicationStage::onProcess()
 
 void SSAOApplicationStage::setupGeometry()
 {
-    m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
+    m_vao = cppassist::make_unique<globjects::VertexArray>();
+    m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
+    m_vertexBuffer->setData(s_quad, gl::GL_STATIC_DRAW);
+
+    auto positionBinding = m_vao->binding(0);
+    positionBinding->setAttribute(0);
+    positionBinding->setBuffer(m_vertexBuffer.get(), 0, sizeof(glm::vec2));
+    positionBinding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
+    m_vao->enable(0);
 }
 
 void SSAOApplicationStage::setupProgram()

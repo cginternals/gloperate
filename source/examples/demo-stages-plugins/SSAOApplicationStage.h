@@ -86,7 +86,8 @@ protected:
 
 protected:
     // Rendering objects
-    std::unique_ptr<gloperate::ScreenAlignedQuad>    m_screenAlignedQuad;
+    std::unique_ptr<globjects::VertexArray>          m_vao;
+    std::unique_ptr<globjects::Buffer>               m_vertexBuffer;
     std::unique_ptr<globjects::AbstractStringSource> m_vertexShaderSource;
     std::unique_ptr<globjects::AbstractStringSource> m_fragmentShaderSource;
     std::unique_ptr<globjects::Shader>               m_vertexShader;
