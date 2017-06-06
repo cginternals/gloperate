@@ -1,8 +1,6 @@
 
 #include <gloperate/stages/base/ColorGradientTextureStage.h>
 
-#include <gloperate/base/ColorGradientList.h>
-
 
 namespace gloperate
 {
@@ -19,16 +17,27 @@ ColorGradientTextureStage::ColorGradientTextureStage(gloperate::Environment * en
 {
 }
 
+ColorGradientTextureStage::~ColorGradientTextureStage()
+{
+}
+
+void ColorGradientTextureStage::onContextInit(AbstractGLContext *)
+{
+}
+
+void ColorGradientTextureStage::onContextDeinit(AbstractGLContext *)
+{
+    // Clean up OpenGL objects
+    m_gradientTexture = nullptr;
+}
+
 void ColorGradientTextureStage::onProcess()
 {
-    if(!m_gradientTexture)
-    {
-        //generate texture
-        m_gradientTexture = gradients->generateTexture(*textureWidth);
+    // Generate texture
+    m_gradientTexture = gradients->generateTexture(*textureWidth);
 
-        //update output
-        this->gradientTexture.setValue(m_gradientTexture.get());
-    }
+    // Update output
+    this->gradientTexture.setValue(m_gradientTexture.get());
 }
 
 

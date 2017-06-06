@@ -70,12 +70,8 @@ protected:
     virtual void onContextDeinit(AbstractGLContext * context) override;
     virtual void onProcess() override;
 
-    // Helper functions
-    void loadTexture();
-
 
 protected:
-    // Data
     std::unique_ptr<globjects::Texture> m_texture; ///< Texture
 };
 

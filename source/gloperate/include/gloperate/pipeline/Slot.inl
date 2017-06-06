@@ -55,6 +55,9 @@ Slot<T>::Slot(SlotType slotType, const std::string & name, const T & value)
 , m_valid(true)
 , m_source(nullptr)
 {
+    // Make as a dynamic slot
+    this->m_dynamic = true;
+
     // Do not add property to object, yet. Just initialize the property itself
     this->initProperty(name, nullptr);
 

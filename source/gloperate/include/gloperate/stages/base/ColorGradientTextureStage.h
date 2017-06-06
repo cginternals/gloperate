@@ -8,9 +8,8 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/ColorGradientList.h>
+#include <gloperate/rendering/ColorGradientList.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
@@ -20,12 +19,9 @@ namespace gloperate
 {
 
 
-class ColorGradientList;
-
-
 /**
 *  @brief
-*    Stage that maintains a texture containing gradients
+*    Stage that creates a texture containing color gradients
 */
 class GLOPERATE_API ColorGradientTextureStage : public gloperate::Stage
 {
@@ -35,16 +31,18 @@ public:
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that maintains a texture containing gradients"
+      , "Stage that creates a texture containing color gradients"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
 
 
 public:
-    Input<ColorGradientList *>  gradients;       ///< List of gradients
+    // Inputs
+    Input<ColorGradientList *>  gradients;       ///< List of color gradients
     Input<size_t>               textureWidth;    ///< Size of texture in x dimension
 
+    // Outputs
     Output<globjects::Texture*> gradientTexture; ///< Texture with gradients
 
 
@@ -60,24 +58,22 @@ public:
     */
     ColorGradientTextureStage(gloperate::Environment * environment, const std::string & name = "");
 
-
-protected:
     /**
     *  @brief
-    *    Process one iteration
-    *
-    *  @param[in] context
-    *    Pointer to OpenGL context (must not be 'nullptr')
-    *
-    *  @remarks
-    *    Overriden
+    *    Destructor
     */
+    virtual ~ColorGradientTextureStage();
+
+
+protected:
+    // Virtual Stage interface
+    virtual void onContextInit(AbstractGLContext * context) override;
+    virtual void onContextDeinit(AbstractGLContext * context) override;
     virtual void onProcess() override;
 
 
 protected:
-    // Data
-    std::unique_ptr<globjects::Texture> m_gradientTexture;  ///< Gradient texture
+    std::unique_ptr<globjects::Texture> m_gradientTexture; ///< Gradient texture
 };
 
 

@@ -13,7 +13,6 @@
 
 namespace globjects
 {
-    class Program;
     class Framebuffer;
     class Texture;
 }
@@ -24,15 +23,11 @@ namespace gloperate
 
 
 class AbstractDrawable;
-class Drawable;
 
 
 /**
 *  @brief
-*    Stage that rasterizes a scene, given as RenderPass or Drawable + Program
-*
-*    The Drawable and Program are rendered into the given Framebuffer.
-*    Alternatively if RenderPass is connected, the RenderPass is used for rasterization.
+*    Stage that rasterizes a given drawable
 */
 class GLOPERATE_API RasterizationStage : public Stage
 {
@@ -42,7 +37,7 @@ public:
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that rasterizes a scene, given as RenderPass or Drawable + Program"
+      , "Stage that rasterizes a given drawable"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -50,18 +45,16 @@ public:
 
 public:
     // Interfaces
-    RenderInterface renderInterface;            ///< Interface for rendering into a viewer
+    RenderInterface                      renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<bool> rasterize;                      ///< If connected, it enables/disables rasterization
-    //Input<gloperate::AbstractDrawable *> drawable;    ///< The drawable to be drawn
-    //Input<globjects::Program *> program;      ///< The program used for rendering
-    Input<gloperate::AbstractDrawable *> renderPass;  ///< If connected, it replaces program and drawable input
-    Input<globjects::Texture *> colorTexture;   ///< Pass in of texture input/output
+    Input<bool>                          rasterize;       ///< If connected, it enables/disables rasterization
+    Input<gloperate::AbstractDrawable *> drawable;        ///< Drawable that is rendered
+    Input<globjects::Texture *>          colorTexture;    ///< Pass in of texture input/output
 
     // Outputs
-    Output<globjects::Framebuffer *> fboOut;     ///< Pass through framebuffer
-    Output<globjects::Texture *> colorTextureOut;///< Pass through color texture
+    Output<globjects::Framebuffer *>     fboOut;          ///< Pass through framebuffer
+    Output<globjects::Texture *>         colorTextureOut; ///< Pass through color texture
 
 
 public:
@@ -86,7 +79,6 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
-    virtual void onContextInit(AbstractGLContext * content) override;
 };
 
 

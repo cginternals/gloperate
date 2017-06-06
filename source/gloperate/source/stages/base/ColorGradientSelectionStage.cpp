@@ -1,7 +1,7 @@
 
 #include <gloperate/stages/base/ColorGradientSelectionStage.h>
 
-#include <gloperate/base/AbstractColorGradient.h>
+#include <gloperate/rendering/AbstractColorGradient.h>
 
 
 namespace gloperate
@@ -20,8 +20,13 @@ ColorGradientSelectionStage::ColorGradientSelectionStage(gloperate::Environment 
 {
 }
 
+ColorGradientSelectionStage::~ColorGradientSelectionStage()
+{
+}
+
 void ColorGradientSelectionStage::onProcess()
 {
+    // Update ooutputs
     gradientIndex.setValue(gradients->indexOf(*gradientName));
     gradient.setValue(gradients->at(*gradientName));
 }

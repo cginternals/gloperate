@@ -48,7 +48,7 @@ public:
 
 public:
     // Inputs
-    Input<glm::vec4>                 viewport;      ///< Texture size
+    Input<glm::vec4>                  viewport;     ///< Texture size
 
     // Outputs
     Output<globjects::Framebuffer *>  fbo;          ///< Framebuffer
@@ -88,7 +88,6 @@ protected:
 
 
 protected:
-    // Data
     std::unique_ptr<globjects::Framebuffer>  m_fbo;          ///< The created framebuffer
     std::unique_ptr<globjects::Texture>      m_colorTexture; ///< The created texture
     std::unique_ptr<globjects::Texture>      m_depthTexture; ///< The created texture

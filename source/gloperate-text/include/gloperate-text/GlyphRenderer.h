@@ -39,7 +39,7 @@ public:
     const globjects::Program * program() const;
 
     void render(const GlyphVertexCloud & vertexCloud) const;
-    void renderInWorld(const GlyphVertexCloud & vertexCloud, const glm::mat4 & viewProjection) const;
+    void renderInWorld(const GlyphVertexCloud & vertexCloud, const glm::mat4 & viewProjectionMatrix) const;
 
 
 protected:
