@@ -53,7 +53,7 @@ int main(int argc, char * argv[])
 
     window.setContextFormat(format);
 
-    window.canvas()->loadRenderStage("DemoStage2");
+    window.canvas()->loadRenderStage("DemoPipeline");
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);
     if (!window.create())

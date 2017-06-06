@@ -81,13 +81,13 @@ void DemoRenderStage::onProcess()
     gl::glDisable(gl::GL_SCISSOR_TEST);
 
     // Get model matrix
-    glm::mat4 model = glm::mat4(1.0);
-    model = glm::rotate(model, *angle, glm::vec3(0.0, 1.0, 0.0));
+    glm::mat4 modelMatrix = glm::mat4(1.0);
+    modelMatrix = glm::rotate(modelMatrix, *angle, glm::vec3(0.0, 1.0, 0.0));
 
     // Update model-view-projection matrix
     (*program)->setUniform("source", 0);
-    (*program)->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
-    (*program)->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
+    (*program)->setUniform("viewProjectionMatrix",      m_camera.viewProjectionMatrix());
+    (*program)->setUniform("modelViewProjectionMatrix", m_camera.viewProjectionMatrix() * modelMatrix);
 
     // Bind texture
     if (*texture) {

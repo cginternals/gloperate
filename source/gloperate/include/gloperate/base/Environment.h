@@ -11,6 +11,7 @@
 #include <gloperate/base/ComponentManager.h>
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/base/System.h>
+#include <gloperate/base/TimerManager.h>
 #include <gloperate/input/InputManager.h>
 
 
@@ -105,6 +106,18 @@ public:
     //@{
     /**
     *  @brief
+    *    Get timer manager
+    *
+    *  @return
+    *    Timer manager (never null)
+    */
+    const TimerManager * timerManager() const;
+    TimerManager * timerManager();
+    //@}
+
+    //@{
+    /**
+    *  @brief
     *    Get canvases
     *
     *  @return
@@ -169,6 +182,32 @@ public:
     *    Exit code (default: 0)
     */
     void exit(int exitCode = 0);
+    
+    /**
+    *  @brief
+    *    Get safemode-flag
+    *
+    *  @return
+    *    'true' if safemode is activated, else 'false'
+    *
+    *  @remarks
+    *    If safemode is on, the gloperate viewer does not load its settings
+    *    from file. Instead, it resets all settings to default and restores
+    *    the config file.
+    */
+    bool safeMode();    
+
+    /**
+    *  @brief
+    *    Set safemode-flag
+    *
+    *  @param[in] safeMode
+    *    'true' if safemode is activated, else 'false'
+    *
+    *  @remarks
+    *    see safeMode()
+    */
+    void setSafeMode(bool safeMode);
     //@}
 
 
@@ -218,12 +257,14 @@ protected:
     ResourceManager                           m_resourceManager;  ///< Resource manager for loaders/storers
     System                                    m_system;           ///< System functions for scripting
     InputManager                              m_inputManager;     ///< Manager for Devices, -Providers and InputEvents
+    TimerManager                              m_timerManager;     ///< Manager for scripting timers
 
     std::vector<Canvas *>                     m_canvases;         ///< List of active canvases
 
     std::unique_ptr<cppexpose::ScriptContext> m_scriptContext;    ///< Scripting context
 
     std::string                               m_helpText;         ///< Text that is displayed on 'help'
+    bool                                      m_safeMode;         ///< If 'true', settings are not loaded from file but reset to default values
 };
 
 

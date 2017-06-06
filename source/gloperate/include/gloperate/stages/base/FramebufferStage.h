@@ -53,7 +53,7 @@ public:
     // Additional attachments (of type RenderTarget *) can be added as inputs dynamically
 
     // Outputs
-    Output<globjects::Framebuffer *> fbo;      ///< Framebuffer
+    Output<globjects::Framebuffer *> fbo; ///< Framebuffer
 
 
 public:
@@ -87,7 +87,6 @@ protected:
 
 
 protected:
-    // Data
     std::unique_ptr<globjects::Framebuffer> m_fbo; ///< The created framebuffer
 };
 

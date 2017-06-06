@@ -75,6 +75,15 @@ public:
 
     /**
     *  @brief
+    *    Check if slot is dynamic
+    *
+    *  @return
+    *    'true' if slot has been added dynamically, else 'false'
+    */
+    bool isDynamic() const;
+
+    /**
+    *  @brief
     *    Check if slot is required
     *
     *  @return
@@ -268,6 +277,7 @@ protected:
 
 protected:
     SlotType m_slotType; ///< Type or role of the slot (input or output)
+    bool     m_dynamic;  ///< 'true' if slot has been added dynamically, else 'false'
     bool     m_required; ///< Is the data required?
     bool     m_feedback; ///< Does the slot contain a feedback connection?
 };

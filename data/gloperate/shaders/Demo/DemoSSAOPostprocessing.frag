@@ -2,7 +2,7 @@
 #extension GL_ARB_explicit_attrib_location : require
 #extension GL_ARB_shading_language_include : require
 
-#include </gloperate/shaders/ssao.glsl>
+#include </gloperate/shaders/lighting/ssao.glsl>
 
 const vec3 ssaoColor = vec3(0.0);
 const float farZ = 10.0;

@@ -9,6 +9,7 @@
 #include <GLFW/glfw3.h>
 
 #include <gloperate/base/Environment.h>
+#include <gloperate/base/TimerManager.h>
 
 #include <gloperate-glfw/Window.h>
 
@@ -122,6 +123,9 @@ void Application::processEvents()
             window->processEvents();
         }
     }
+
+    // Update scripting timers
+    m_environment->timerManager()->update();
 
     // Make sure we don't saturate the CPU 
     std::this_thread::sleep_for(std::chrono::milliseconds(5));

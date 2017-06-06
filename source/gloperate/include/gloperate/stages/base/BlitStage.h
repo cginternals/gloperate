@@ -20,7 +20,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage for blitting from one framebuffer to another
+*    Stage for blitting from one framebuffer into another
 */
 class GLOPERATE_API BlitStage : public Stage
 {
@@ -30,7 +30,7 @@ public:
       , ""
       , ""
       , ""
-      , "Stage for blitting from one framebuffer to another"
+      , "Stage for blitting from one framebuffer into another"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
     )
@@ -38,14 +38,14 @@ public:
 
 public:
     // Inputs
-    Input<globjects::Framebuffer *>  sourceFBO;           ///< FBO containing the source attachments
-    Input<glm::vec4>                 sourceViewport;      ///< Viewport for reading from source FBO
-    Input<globjects::Framebuffer *>  destinationFBO;      ///< FBO with destination attachments
-    Input<glm::vec4>                 destinationViewport; ///< Viewport for writing into destination FBO
+    Input<globjects::Framebuffer *>  sourceFBO;      ///< FBO containing the source attachments
+    Input<glm::vec4>                 sourceViewport; ///< Viewport for reading from source FBO
+    Input<globjects::Framebuffer *>  targetFBO;      ///< FBO with destination attachments
+    Input<glm::vec4>                 targetViewport; ///< Viewport for writing into destination FBO
 
     // Outputs
-    Output<globjects::Framebuffer *> blittedFBO;          ///< FBO containing blitted result
-    Output<bool>                     blitted;             ///< True if processed successfully
+    Output<globjects::Framebuffer *> fboOut;         ///< Pass through framebuffer
+    Output<bool>                     rendered;       ///< 'true' if output has been rendered
 
 
 public:

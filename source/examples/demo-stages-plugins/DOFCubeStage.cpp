@@ -105,10 +105,10 @@ void DOFCubeStage::onProcess()
                                       ? (*dofShifts)->at((*renderInterface.frameCounter) % (*dofShifts)->size())
                                       : glm::vec2(0.0f));
 
-    auto view = glm::lookAt(glm::vec3(1.02f, -1.02f, 1.1f), glm::vec3(0.5f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    auto projection = glm::perspective(30.0f, viewport.z / viewport.w, 0.1f, 10.0f);
-    m_program->setUniform("view", view);
-    m_program->setUniform("projection", projection);
+    auto viewMatrix = glm::lookAt(glm::vec3(1.02f, -1.02f, 1.1f), glm::vec3(0.5f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    auto projectionMatrix = glm::perspective(30.0f, viewport.z / viewport.w, 0.1f, 10.0f);
+    m_program->setUniform("viewMatrix", viewMatrix);
+    m_program->setUniform("projectionMatrix", projectionMatrix);
 
     // Draw geometry
     m_program->use();

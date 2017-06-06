@@ -4,7 +4,7 @@
 
 #define LIGHT_PROCESSING_PHONG
 
-#include </gloperate/shaders/lightProcessing.glsl>
+#include </gloperate/shaders/lighting/lightprocessing.glsl>
 
 uniform samplerBuffer colorTypeData;
 uniform samplerBuffer positionData;

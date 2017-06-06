@@ -4,7 +4,6 @@
 #include <random>
 
 #include <glm/gtx/transform.hpp>
-#include <glm/gtc/constants.hpp>
 
 #include <glbinding/gl/gl.h>
 
@@ -43,8 +42,7 @@ void DemoStage::onContextInit(gloperate::AbstractGLContext *)
 
 void DemoStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
-    m_vao            = nullptr;
-    m_buffer         = nullptr;
+    m_quad           = nullptr;
     m_texture        = nullptr;
     m_program        = nullptr;
     m_vertexShader   = nullptr;
@@ -80,12 +78,12 @@ void DemoStage::onProcess()
     gl::glDisable(gl::GL_SCISSOR_TEST);
 
     // Get model matrix
-    glm::mat4 model = glm::mat4(1.0);
-    model = glm::rotate(model, m_angle, glm::vec3(0.0, 1.0, 0.0));
+    glm::mat4 modelMatrix = glm::mat4(1.0);
+    modelMatrix = glm::rotate(modelMatrix, m_angle, glm::vec3(0.0, 1.0, 0.0));
 
     // Update model-view-projection matrix
-    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjection());
-    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjection() * model);
+    m_program->setUniform("viewProjectionMatrix",      m_camera.viewProjectionMatrix());
+    m_program->setUniform("modelViewProjectionMatrix", m_camera.viewProjectionMatrix() * modelMatrix);
 
     // Lazy creation of texture
     if (!m_texture) {
@@ -99,7 +97,7 @@ void DemoStage::onProcess()
 
     // Draw geometry
     m_program->use();
-    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
+    m_quad->draw();
     m_program->release();
 
     // Unbind texture
@@ -124,46 +122,13 @@ void DemoStage::createAndSetupTexture()
 {
     // Load texture from file
     m_texture = std::unique_ptr<globjects::Texture>(m_environment->resourceManager()->load<globjects::Texture>(
-        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.png"
+        gloperate::dataPath() + "/gloperate/textures/gloperate-logo.glraw"
     ));
-
-    // Create procedural texture if texture couldn't be found
-    if (!m_texture)
-    {
-        static const int w(256);
-        static const int h(256);
-        unsigned char data[w * h * 4];
-
-        std::random_device rd;
-        std::mt19937 generator(rd());
-        std::poisson_distribution<> r(0.2);
-
-        for (int i = 0; i < w * h * 4; ++i) {
-            data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
-        }
-
-        m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-        m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
-    }
 }
 
 void DemoStage::createAndSetupGeometry()
 {
-    static const std::array<glm::vec2, 4> raw { {
-        glm::vec2( +1.f, -1.f ),
-        glm::vec2( +1.f, +1.f ),
-        glm::vec2( -1.f, -1.f ),
-        glm::vec2( -1.f, +1.f ) } };
-
-    m_vao = cppassist::make_unique<globjects::VertexArray>();
-    m_buffer = cppassist::make_unique<globjects::Buffer>();
-    m_buffer->setData(raw, gl::GL_STATIC_DRAW);
-
-    auto binding = m_vao->binding(0);
-    binding->setAttribute(0);
-    binding->setBuffer(m_buffer.get(), 0, sizeof(glm::vec2));
-    binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
-    m_vao->enable(0);
+    m_quad = cppassist::make_unique<gloperate::Sphere>(2.0f, gloperate::ShapeOption::IncludeTexCoords);
 
     m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/SpinningRect.vert");
     m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/SpinningRect.frag");

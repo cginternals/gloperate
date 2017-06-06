@@ -21,12 +21,15 @@ Environment::Environment()
 , m_resourceManager(this)
 , m_system(this)
 , m_inputManager(this)
+, m_timerManager(this)
 , m_scriptContext(nullptr)
+, m_safeMode(false)
 {
     addProperty(&m_componentManager);
     addProperty(&m_resourceManager);
     addProperty(&m_system);
     addProperty(&m_inputManager);
+    addProperty(&m_timerManager);
 }
 
 Environment::~Environment()
@@ -61,6 +64,16 @@ const InputManager * Environment::inputManager() const
 InputManager * Environment::inputManager()
 {
     return &m_inputManager;
+}
+
+const TimerManager * Environment::timerManager() const
+{
+    return &m_timerManager;
+}
+
+TimerManager * Environment::timerManager()
+{
+    return &m_timerManager;
 }
 
 const std::vector<Canvas *> & Environment::canvases() const
@@ -122,6 +135,16 @@ void Environment::exit(int exitCode)
 {
     // Emit signal
     this->exitApplication(exitCode);
+}
+
+bool Environment::safeMode()
+{
+    return m_safeMode;
+}
+
+void Environment::setSafeMode(bool safeMode)
+{
+    m_safeMode = safeMode;
 }
 
 void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> && scriptContext)

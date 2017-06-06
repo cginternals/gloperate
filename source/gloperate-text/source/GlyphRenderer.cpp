@@ -24,7 +24,7 @@ GlyphRenderer::GlyphRenderer(globjects::Program * program)
 : m_program(program)
 {
     m_program->setUniform<gl::GLint>("glyphs", 0);
-    m_program->setUniform<glm::mat4>("viewProjection", glm::mat4());
+    m_program->setUniform<glm::mat4>("viewProjectionMatrix", glm::mat4());
 }
 
 GlyphRenderer::~GlyphRenderer()
@@ -53,7 +53,7 @@ void GlyphRenderer::render(const GlyphVertexCloud & vertexCloud) const
         return;
     }
 
-    m_program->setUniform("viewProjection", glm::mat4());
+    m_program->setUniform("viewProjectionMatrix", glm::mat4());
 
     m_program->use();
 
@@ -64,14 +64,14 @@ void GlyphRenderer::render(const GlyphVertexCloud & vertexCloud) const
     m_program->release();
 }
 
-void GlyphRenderer::renderInWorld(const GlyphVertexCloud & vertexCloud, const glm::mat4 & viewProjection) const
+void GlyphRenderer::renderInWorld(const GlyphVertexCloud & vertexCloud, const glm::mat4 & viewProjectionMatrix) const
 {
     if (vertexCloud.vertices().empty())
     {
         return;
     }
 
-    m_program->setUniform("viewProjection", viewProjection);
+    m_program->setUniform("viewProjectionMatrix", viewProjectionMatrix);
 
     m_program->use();
 

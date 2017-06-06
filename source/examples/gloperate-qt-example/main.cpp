@@ -61,7 +61,7 @@ int main(int argc, char * argv[])
 
     auto windowRaw = window.get();
     window->createContext();
-    window->canvas()->loadRenderStage("DemoStage2");
+    window->canvas()->loadRenderStage("DemoPipeline");
 
     // Create main window
     QMainWindow mainWindow;

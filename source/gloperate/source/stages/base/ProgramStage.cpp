@@ -23,10 +23,14 @@ ProgramStage::ProgramStage(Environment * environment, const std::string & name)
 : Stage(environment, "ProgramStage", name)
 , program("program", this)
 {
-    inputAdded.connect([this] (gloperate::AbstractSlot * /*addedInput*/) {
+    // Invalidate output when input slots have been added or removed
+    m_inputAddedConnection = inputAdded.connect([this] (gloperate::AbstractSlot *)
+    {
         program.invalidate();
     });
-    inputRemoved.connect([this] (gloperate::AbstractSlot * /*addedInput*/) {
+
+    m_inputRemovedConnection = inputRemoved.connect([this] (gloperate::AbstractSlot *)
+    {
         program.invalidate();
     });
 }
@@ -38,35 +42,43 @@ ProgramStage::~ProgramStage()
 void ProgramStage::onContextInit(AbstractGLContext *)
 {
     m_program = cppassist::make_unique<globjects::Program>();
-    program.setValue(m_program.get());
-    program.invalidate();
 }
 
 void ProgramStage::onContextDeinit(AbstractGLContext *)
 {
+    // Clean up OpenGL objects
     m_shaders.clear();
     m_program = nullptr;
 }
 
 void ProgramStage::onProcess()
 {
-    for (auto shader : m_program->shaders()) {
+    // Detach all shaders from program
+    for (auto shader : m_program->shaders())
+    {
         m_program->detach(shader);
     }
-    for (auto input : inputs<globjects::Shader *>()) {
-        if(input)
+
+    // Attach all shaders from inputs of type Shader
+    for (auto input : inputs<globjects::Shader *>())
+    {
+        if (input)
         {
             m_program->attach(input->value());
         }
     }
-    for (auto input : inputs<cppassist::FilePath>()) {
-        if(auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path()))
+
+    // Load and attach all shaders from inputs of type FilePath
+    for (auto input : inputs<cppassist::FilePath>())
+    {
+        if (auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path()))
         {
             m_shaders.emplace_back(shader);
             m_program->attach(shader);
         }
     }
 
+    // Update output
     program.setValue(m_program.get());
 }
 

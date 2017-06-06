@@ -48,14 +48,14 @@ void DemoStage2::onContextInit(gloperate::AbstractGLContext *)
         gloperate::dataPath() + "/gloperate/textures/gloperate-logo.glraw"
     ));
 
-    m_box = cppassist::make_unique<Box>();
+    m_box = cppassist::make_unique<Box>(1.0f, ShapeOption::IncludeTexCoords);
 
-    m_vertexShader   = std::unique_ptr<globjects::Shader>( m_environment->resourceManager()->load<globjects::Shader>(
-        gloperate::dataPath() + "/gloperate/shaders/Geometry/RenderGeometry.vert"
+    m_vertexShader = std::unique_ptr<globjects::Shader>( m_environment->resourceManager()->load<globjects::Shader>(
+        gloperate::dataPath() + "/gloperate/shaders/geometry/geometry.vert"
     ));
 
     m_fragmentShader = std::unique_ptr<globjects::Shader>( m_environment->resourceManager()->load<globjects::Shader>(
-        gloperate::dataPath() + "/gloperate/shaders/Geometry/RenderGeometry.frag"
+        gloperate::dataPath() + "/gloperate/shaders/geometry/geometry.frag"
     ));
 
     m_program = cppassist::make_unique<globjects::Program>();
@@ -110,7 +110,7 @@ void DemoStage2::onProcess()
     }
 
     // Update uniforms
-    m_program->setUniform("viewProjectionMatrix", m_camera->viewProjection());
+    m_program->setUniform("viewProjectionMatrix", m_camera->viewProjectionMatrix());
 
     // Draw geometry
     m_program->use();

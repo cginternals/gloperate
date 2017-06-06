@@ -108,7 +108,7 @@ void TransparentCirclesStage::onProcess()
     // Draw geometry
 
     // Red
-    m_program->setUniform("modelViewProjection", modelMatrix);
+    m_program->setUniform("modelViewProjectionMatrix", modelMatrix);
     m_program->setUniform("z", 0.0f);
     m_program->setUniform("color", glm::vec3(1,0,0));
 
@@ -121,7 +121,7 @@ void TransparentCirclesStage::onProcess()
     modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 0.5f, 0.0f));
 
     // Green
-    m_program->setUniform("modelViewProjection", modelMatrix);
+    m_program->setUniform("modelViewProjectionMatrix", modelMatrix);
     m_program->setUniform("z", 0.1f);
     m_program->setUniform("color", glm::vec3(0,1,0));
 
@@ -134,7 +134,7 @@ void TransparentCirclesStage::onProcess()
     modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 0.5f, 0.0f));
 
     // Blue
-    m_program->setUniform("modelViewProjection", modelMatrix);
+    m_program->setUniform("modelViewProjectionMatrix", modelMatrix);
     m_program->setUniform("z", 0.2f);
     m_program->setUniform("color", glm::vec3(0,0,1));
 

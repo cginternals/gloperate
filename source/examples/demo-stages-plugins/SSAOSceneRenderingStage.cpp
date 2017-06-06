@@ -85,14 +85,14 @@ void SSAOSceneRenderingStage::onProcess()
     );
 
     // Set uniforms
-    auto view = glm::lookAt(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    auto projection = glm::perspective(20.0f, viewport.z / viewport.w, 1.0f, 10.0f);
-    auto viewProjection = projection * view;
+    auto viewMatrix = glm::lookAt(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    auto projectionMatrix = glm::perspective(20.0f, viewport.z / viewport.w, 1.0f, 10.0f);
+    auto viewProjectionMatrix = projectionMatrix * viewMatrix;
 
-    projectionMatrix.setValue(projection);
-    normalMatrix.setValue(glm::inverseTranspose(glm::mat3(view)));
+    this->projectionMatrix.setValue(projectionMatrix);
+    this->normalMatrix.setValue(glm::inverseTranspose(glm::mat3(viewMatrix)));
 
-    m_program->setUniform("modelViewProjection", viewProjection);
+    m_program->setUniform("viewProjectionMatrix", viewProjectionMatrix);
 
     // Bind color FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;

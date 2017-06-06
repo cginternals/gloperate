@@ -67,8 +67,9 @@ public:
     *    Default value
     *
     *  @remarks
-    *    The input slot is created and added to the given stage
-    *    without transferring ownership.
+    *    The slot is created and added to the given stage
+    *    without transferring ownership. This will set
+    *    isDynamic to false.
     */
     Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value = T());
 
@@ -84,7 +85,8 @@ public:
     *    Default value
     *
     *  @remarks
-    *    The input slot is created but not added to any stage.
+    *    The slot is created but not added to any stage.
+    *    This will set isDynamic to true.
     */
     Slot(SlotType slotType, const std::string & name, const T & value = T());
 

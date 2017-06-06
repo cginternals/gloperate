@@ -6,7 +6,7 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <gloperate/base/Image.h>
+#include <gloperate/rendering/Image.h>
 
 
 class AVFormatContext;

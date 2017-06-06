@@ -105,9 +105,9 @@ void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
 
     // register NamedStrings for shader includes
     auto dataFolderPath = gloperate::dataPath();
-    m_lightProcessingString        = globjects::NamedString::create("/gloperate/shaders/lightProcessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessing.glsl"));
-    m_lightProcessingDiffuseString = globjects::NamedString::create("/gloperate/shaders/lightProcessingDiffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingDiffuse.glsl"));
-    m_lightProcessingPhongString   = globjects::NamedString::create("/gloperate/shaders/lightProcessingPhong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lightProcessingPhong.glsl"));
+    m_lightProcessingString        = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing.glsl"));
+    m_lightProcessingDiffuseString = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_diffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_diffuse.glsl"));
+    m_lightProcessingPhongString   = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_phong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_phong.glsl"));
 }
 
 void LightTestStage::onContextDeinit(gloperate::AbstractGLContext *)

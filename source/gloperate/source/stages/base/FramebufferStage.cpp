@@ -33,6 +33,8 @@ void FramebufferStage::onContextInit(AbstractGLContext *)
 
 void FramebufferStage::onContextDeinit(AbstractGLContext *)
 {
+    // Clean up OpenGL objects
+    m_fbo = nullptr;
 }
 
 void FramebufferStage::onProcess()
@@ -55,7 +57,8 @@ void FramebufferStage::rebuildFBO()
 
     // Attach textures to FBO
     std::vector<gl::GLenum> colorAttachments;
-    for (int i = 0; i <= 1; i++) {
+    for (int i = 0; i <= 1; i++)
+    {
         // First round: Count number of color attachments
         // Second round: Actually attach the textures
         gl::GLenum index = gl::GL_COLOR_ATTACHMENT0;
@@ -63,11 +66,13 @@ void FramebufferStage::rebuildFBO()
             m_fbo->setDrawBuffers(colorAttachments);
         }
 
-        for (auto input : this->inputs()) {
+        for (auto input : this->inputs())
+        {
             auto slot = dynamic_cast<Input<RenderTarget *> *>(input);
             if (!slot) {
                 continue;
             }
+
             RenderTarget * texture = **slot;
             if (!texture)
             {

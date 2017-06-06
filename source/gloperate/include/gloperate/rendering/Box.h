@@ -4,12 +4,10 @@
 
 #include <memory>
 
-#include <glm/vec3.hpp>
-
 #include <globjects/Buffer.h>
-#include <globjects/VertexArray.h>
 
-#include <gloperate/rendering/AbstractDrawable.h>
+#include <gloperate/rendering/Shape.h>
+#include <gloperate/rendering/Drawable.h>
 
 
 namespace gloperate
@@ -20,19 +18,34 @@ namespace gloperate
 *  @brief
 *    Box drawable
 */
-class GLOPERATE_API Box : public gloperate::AbstractDrawable
+class GLOPERATE_API Box : public Shape
 {
 public:
     /**
     *  @brief
     *    Constructor
     *
-    *  @param[in] center
-    *    Center point
     *  @param[in] size
-    *    Size factor
+    *    Edge width, height, and depth
+    *  @param[in] options
+    *    Shape options
     */
-    Box(glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f), float size = 1.0f);
+    Box(float size = 2.0f, cppassist::Flags<ShapeOption> options = ShapeOption::None);
+
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] width
+    *    Edge width
+    *  @param[in] height
+    *    Edge height
+    *  @param[in] depth
+    *    Edge depth
+    *  @param[in] options
+    *    Shape options
+    */
+    Box(float width, float height, float depth, cppassist::Flags<ShapeOption> options = ShapeOption::None);
 
     /**
     *  @brief
@@ -45,9 +58,9 @@ public:
 
 
 protected:
-    std::unique_ptr<globjects::Buffer>      m_vertices;  ///< Vertex buffer
-    std::unique_ptr<globjects::Buffer>      m_texCoords; ///< Texture coordinate buffer
-    std::unique_ptr<globjects::VertexArray> m_vao;       ///< Vertex array object
+    std::unique_ptr<Drawable>          m_drawable;  ///< Underlying drawable object
+    std::unique_ptr<globjects::Buffer> m_vertices;  ///< Vertex buffer
+    std::unique_ptr<globjects::Buffer> m_texCoords; ///< Texture coordinate buffer
 };
 
 
