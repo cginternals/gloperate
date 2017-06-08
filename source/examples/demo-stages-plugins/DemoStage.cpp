@@ -25,13 +25,15 @@ static const char * s_vertexShader = R"(
 
     uniform mat4 modelViewProjectionMatrix;
 
-    layout (location = 0) in vec2 a_vertex;
+    layout (location = 0) in vec3 a_vertex;
+    layout (location = 1) in vec2 a_uv;
+
     out vec2 v_uv;
 
     void main()
     {
-        v_uv = a_vertex * 0.5 + 0.5;
-        gl_Position = modelViewProjectionMatrix * vec4(a_vertex, 0.0, 1.0);
+        v_uv = a_uv;
+        gl_Position = modelViewProjectionMatrix * vec4(a_vertex, 1.0);
     }
 )";
 
@@ -164,16 +166,17 @@ void DemoStage::createAndSetupGeometry()
 {
     m_quad = cppassist::make_unique<gloperate::Sphere>(2.0f, gloperate::ShapeOption::IncludeTexCoords);
 
-    m_vertexShaderSource   = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_vertexShader  ));
-    m_fragmentShaderSource = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_fragmentShader));
+    // [TODO] This is a memory leak! Use resource loader?
+    globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
+    globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
 
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
+    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
+    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
