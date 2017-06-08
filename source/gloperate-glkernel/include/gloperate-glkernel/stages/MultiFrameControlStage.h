@@ -69,6 +69,7 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
+    virtual void onInputValueChanged(gloperate::AbstractSlot * slot) override;
 
 
 protected:

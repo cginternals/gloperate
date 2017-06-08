@@ -20,14 +20,6 @@ MultiFrameControlStage::MultiFrameControlStage(gloperate::Environment * environm
 , aggregationFactor("aggregationFactor", this)
 , m_currentFrame(0)
 {
-    viewport.valueChanged.connect([this](const glm::vec4 &){
-        m_currentFrame = 0;
-    });
-
-    multiFrameCount.valueChanged.connect([this](const int &){
-        m_currentFrame = 0;
-    });
-
     setAlwaysProcessed(true);
 }
 
@@ -47,7 +39,19 @@ void MultiFrameControlStage::onProcess()
     else
     {
         aggregationFactor.setValue(0.0f);
+        setAlwaysProcessed(false);
     }
+}
+
+void MultiFrameControlStage::onInputValueChanged(gloperate::AbstractSlot * slot)
+{
+    if (slot != &frameNumber)
+    {
+        m_currentFrame = 0;
+        setAlwaysProcessed(true);
+    }
+
+    Stage::onInputValueChanged(slot);
 }
 
 
