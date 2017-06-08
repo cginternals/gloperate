@@ -745,7 +745,17 @@ cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::st
             (*status.asMap())["name"]  = slot->name();
             (*status.asMap())["type"]  = slot->typeName();
             (*status.asMap())["value"] = slot->toVariant();
-            // [TODO] input->options()
+
+            // Include options
+            const VariantMap & options = slot->options();
+
+            for (auto it : options)
+            {
+                std::string key = it.first;
+                Variant & value = it.second;
+
+                (*status.asMap())[key] = value;
+            }
         }
     }
 
