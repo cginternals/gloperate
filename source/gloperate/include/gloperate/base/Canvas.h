@@ -280,20 +280,20 @@ protected:
     void checkRedraw();
 
     // Scripting functions
-    cppexpose::Variant scr_getDescription(const std::string & path);
-    cppexpose::Variant scr_getSlot(const std::string & path);
-    void scr_setSlotValue(const std::string & path, const cppexpose::Variant & value);
-    std::string scr_createStage(const std::string & path, const std::string & className, const std::string & name);
+    cppexpose::Variant scr_getSlotTypes(const std::string & path);
+    std::string scr_createStage(const std::string & path, const std::string & name, const std::string & type);
     void scr_removeStage(const std::string & path, const std::string & name);
-    void scr_createConnection(const std::string & from, const std::string & to);
-    void scr_removeConnection(const std::string & to);
+    void scr_createSlot(const std::string & path, const std::string & slot, const std::string & slotType, const std::string & type);
     cppexpose::Variant scr_getConnections(const std::string & path);
-    void scr_createSlot(const std::string & path, const std::string & slotType, const std::string & type, const std::string & name);
-    cppexpose::Variant scr_slotTypes(const std::string & path);
+    void scr_createConnection(const std::string & sourcePath, const std::string & sourceSlot, const std::string & destPath, const std::string & destSlot);
+    void scr_removeConnection(const std::string & path, const std::string & slot);
+    cppexpose::Variant scr_getStage(const std::string & path);
+    cppexpose::Variant scr_getSlot(const std::string & path, const std::string & slot);
+    cppexpose::Variant scr_getValue(const std::string & path, const std::string & slot);
+    void scr_setValue(const std::string & path, const std::string & slot, const cppexpose::Variant & value);
 
     // Helper functions
     Stage * getStageObject(const std::string & path) const;
-    Stage * getStageObjectForSlot(const std::string & path, std::string & slotName) const;
 
 
 protected:
@@ -310,7 +310,6 @@ protected:
     std::unique_ptr<MouseDevice>    m_mouseDevice;     ///< Device for Mouse Events
     std::unique_ptr<KeyboardDevice> m_keyboardDevice;  ///< Device for Keyboard Events
     bool                            m_replaceStage;    ///< 'true' if the stage has just been replaced, else 'false'
-
     std::mutex                      m_mutex;           ///< Mutex for separating main and render thread
 };
 

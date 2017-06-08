@@ -711,16 +711,6 @@ protected:
 
 
 protected:
-    // Scripting functions
-    virtual cppexpose::Variant scr_getDescription();
-    cppexpose::Variant scr_getConnections();
-    cppexpose::Variant scr_getSlot(const std::string & name);
-    void scr_setSlotValue(const std::string & name, const cppexpose::Variant & value);
-    void scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name);
-    cppexpose::Variant scr_slotTypes();
-
-
-protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
 
