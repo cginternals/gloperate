@@ -8,13 +8,13 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/Environment.h>
 
 
 namespace
@@ -170,16 +170,9 @@ void TransparentCirclesStage::setupGeometry()
 
 void TransparentCirclesStage::setupProgram()
 {
-    m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoTransparency.vert");
-    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoTransparency.frag");
+    m_vertexShader   = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoTransparency.vert"));
+    m_fragmentShader = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoTransparency.frag"));
 
-#ifdef __APPLE__
-    vertexShaderSource  ->replace("#version 140", "#version 150");
-    fragmentShaderSource->replace("#version 140", "#version 150");
-#endif
-
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
