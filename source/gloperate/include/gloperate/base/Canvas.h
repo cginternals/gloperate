@@ -11,6 +11,7 @@
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/variant/Variant.h>
 #include <cppexpose/signal/Signal.h>
+#include <cppexpose/signal/ScopedConnection.h>
 
 #include <gloperate/base/ChronoTimer.h>
 
@@ -279,7 +280,23 @@ protected:
     */
     void checkRedraw();
 
+    /**
+    *  @brief
+    *    Promote changes of input slots
+    */
+    void promoteChangedInputs();
+
+    /**
+    *  @brief
+    *    Called when an input on the current stage has changed
+    *
+    *  @param[in] slot
+    *    Input slot
+    */
+    void stageInputChanged(AbstractSlot * slot);
+
     // Scripting functions
+    void scr_onStageInputChanged(const cppexpose::Variant & func);
     cppexpose::Variant scr_getSlotTypes(const std::string & path);
     std::string scr_createStage(const std::string & path, const std::string & name, const std::string & type);
     void scr_removeStage(const std::string & path, const std::string & name);
@@ -294,23 +311,28 @@ protected:
 
     // Helper functions
     Stage * getStageObject(const std::string & path) const;
+    cppexpose::Variant getSlotStatus(const std::string & path, const std::string & slot);
 
 
 protected:
-    Environment                   * m_environment;     ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext             * m_openGLContext;   ///< OpenGL context used for rendering onto the canvas
-    bool                            m_initialized;     ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
-    gloperate::ChronoTimer          m_clock;           ///< Time measurement
-    glm::vec4                       m_deviceViewport;  ///< Viewport (in real device coordinates)
-    glm::vec4                       m_virtualViewport; ///< Viewport (in virtual coordinates)
-    float                           m_virtualTime;     ///< The current virtual time (in seconds)
-    float                           m_timeDelta;       ///< Time delta since the last update (in seconds)
-    std::unique_ptr<Stage>          m_renderStage;     ///< Render stage that renders into the canvas
-    std::unique_ptr<Stage>          m_oldStage;        ///< Old render stage, will be destroyed on the next render call
-    std::unique_ptr<MouseDevice>    m_mouseDevice;     ///< Device for Mouse Events
-    std::unique_ptr<KeyboardDevice> m_keyboardDevice;  ///< Device for Keyboard Events
-    bool                            m_replaceStage;    ///< 'true' if the stage has just been replaced, else 'false'
-    std::mutex                      m_mutex;           ///< Mutex for separating main and render thread
+    Environment                   * m_environment;            ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext             * m_openGLContext;          ///< OpenGL context used for rendering onto the canvas
+    bool                            m_initialized;            ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
+    gloperate::ChronoTimer          m_clock;                  ///< Time measurement
+    glm::vec4                       m_deviceViewport;         ///< Viewport (in real device coordinates)
+    glm::vec4                       m_virtualViewport;        ///< Viewport (in virtual coordinates)
+    float                           m_virtualTime;            ///< The current virtual time (in seconds)
+    float                           m_timeDelta;              ///< Time delta since the last update (in seconds)
+    std::unique_ptr<Stage>          m_renderStage;            ///< Render stage that renders into the canvas
+    std::unique_ptr<Stage>          m_oldStage;               ///< Old render stage, will be destroyed on the next render call
+    std::unique_ptr<MouseDevice>    m_mouseDevice;            ///< Device for Mouse Events
+    std::unique_ptr<KeyboardDevice> m_keyboardDevice;         ///< Device for Keyboard Events
+    bool                            m_replaceStage;           ///< 'true' if the stage has just been replaced, else 'false'
+    std::mutex                      m_mutex;                  ///< Mutex for separating main and render thread
+    cppexpose::ScopedConnection     m_inputChangedConnection; ///< Connection for the inputChanged-signal of the current stage
+    cppexpose::Function             m_inputChangedCallback;   ///< Script function that is called on inputChanged (slot, status)
+    std::vector<AbstractSlot *>     m_changedInputs;          ///< List of changed input slots
+    std::mutex                      m_changedInputMutex;      ///< Mutex to access m_changedInputs
 };
 
 

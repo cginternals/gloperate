@@ -386,6 +386,11 @@ ApplicationWindow
         onCanvasChanged:
         {
             propertyEditor.update();
+
+            canvas.onStageInputChanged(function(slot, status)
+            {
+                gloperatePipeline.slotChanged('root', slot, status);
+            });
         }
     }
 

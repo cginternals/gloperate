@@ -83,6 +83,7 @@ public:
     cppexpose::Signal<AbstractSlot *> inputRemoved;  ///< Called when an input slot has been removed
     cppexpose::Signal<AbstractSlot *> outputAdded;   ///< Called when an output slot has been added
     cppexpose::Signal<AbstractSlot *> outputRemoved; ///< Called when an output slot has been removed
+    cppexpose::Signal<AbstractSlot *> inputChanged;  ///< Called when an input slot has changed its value
 
 
 public:

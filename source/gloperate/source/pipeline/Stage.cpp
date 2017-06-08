@@ -398,6 +398,8 @@ void Stage::outputRequiredChanged(AbstractSlot * slot)
 
 void Stage::inputValueChanged(AbstractSlot * slot)
 {
+    inputChanged(slot);
+
     onInputValueChanged(slot);
 }
 

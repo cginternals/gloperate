@@ -59,17 +59,18 @@ Canvas::Canvas(Environment * environment)
 , m_replaceStage(false)
 {
     // Register functions
-    addFunction("getSlotTypes",     this, &Canvas::scr_getSlotTypes);
-    addFunction("createStage",      this, &Canvas::scr_createStage);
-    addFunction("removeStage",      this, &Canvas::scr_removeStage);
-    addFunction("createSlot",       this, &Canvas::scr_createSlot);
-    addFunction("getConnections",   this, &Canvas::scr_getConnections);
-    addFunction("createConnection", this, &Canvas::scr_createConnection);
-    addFunction("removeConnection", this, &Canvas::scr_removeConnection);
-    addFunction("getStage",         this, &Canvas::scr_getStage);
-    addFunction("getSlot",          this, &Canvas::scr_getSlot);
-    addFunction("getValue",         this, &Canvas::scr_getValue);
-    addFunction("setValue",         this, &Canvas::scr_setValue);
+    addFunction("onStageInputChanged", this, &Canvas::scr_onStageInputChanged);
+    addFunction("getSlotTypes",        this, &Canvas::scr_getSlotTypes);
+    addFunction("createStage",         this, &Canvas::scr_createStage);
+    addFunction("removeStage",         this, &Canvas::scr_removeStage);
+    addFunction("createSlot",          this, &Canvas::scr_createSlot);
+    addFunction("getConnections",      this, &Canvas::scr_getConnections);
+    addFunction("createConnection",    this, &Canvas::scr_createConnection);
+    addFunction("removeConnection",    this, &Canvas::scr_removeConnection);
+    addFunction("getStage",            this, &Canvas::scr_getStage);
+    addFunction("getSlot",             this, &Canvas::scr_getSlot);
+    addFunction("getValue",            this, &Canvas::scr_getValue);
+    addFunction("setValue",            this, &Canvas::scr_setValue);
 
     // Register canvas
     m_environment->registerCanvas(this);
@@ -108,6 +109,9 @@ void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 
     // Set stage
     m_renderStage = std::move(stage);
+
+    // Connect to changes on the stage's input slots
+    m_inputChangedConnection = m_renderStage->inputChanged.connect(this, &Canvas::stageInputChanged);
 
     // Issue a redraw
     m_replaceStage = true;
@@ -194,6 +198,9 @@ void Canvas::updateTime()
 
     // Check if a redraw is required
     checkRedraw();
+
+    // Promote changed input value to scripting
+    promoteChangedInputs();
 }
 
 void Canvas::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
@@ -362,6 +369,53 @@ void Canvas::checkRedraw()
     {
         redraw();
     }
+}
+
+void Canvas::promoteChangedInputs()
+{
+    std::lock_guard<std::mutex> lock(this->m_changedInputMutex);
+
+    // Check if a callback function is set
+    if (m_inputChangedCallback.isEmpty())
+        return;
+
+    // Invoke callback function for each changed input
+    for (auto * slot : m_changedInputs)
+    {
+        // Get slot status
+        std::string name = slot->name();
+        Variant status = getSlotStatus("root", name);
+
+        // Invoke callback function
+        std::vector<cppexpose::Variant> params;
+        params.push_back(name);
+        params.push_back(status);
+
+        m_inputChangedCallback.call(params);
+    }
+
+    // Reset
+    m_changedInputs.clear();
+}
+
+void Canvas::stageInputChanged(AbstractSlot * slot)
+{
+    std::lock_guard<std::mutex> lock(this->m_changedInputMutex);
+
+    // Put changed input into list, will be processed on next update
+    m_changedInputs.push_back(slot);
+}
+
+void Canvas::scr_onStageInputChanged(const cppexpose::Variant & func)
+{
+    // Check if a function has been passed
+    if (!func.hasType<cppexpose::Function>())
+    {
+        return;
+    }
+
+    // Save callback function
+    m_inputChangedCallback = func.value<cppexpose::Function>();
 }
 
 cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)
@@ -606,25 +660,7 @@ cppexpose::Variant Canvas::scr_getSlot(const std::string & path, const std::stri
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    Variant status = Variant::map();
-
-    // Get stage
-    Stage * stage = getStageObject(path);
-    if (stage)
-    {
-        // Get slot
-        AbstractSlot * slot = stage->getSlot(slotName);
-        if (slot)
-        {
-            // Compose slot information
-            (*status.asMap())["name"]  = slot->name();
-            (*status.asMap())["type"]  = slot->typeName();
-            (*status.asMap())["value"] = slot->toVariant();
-            // [TODO] input->options()
-        }
-    }
-
-    return status;
+    return getSlotStatus(path, slotName);
 }
 
 cppexpose::Variant Canvas::scr_getValue(const std::string & path, const std::string & slotName)
@@ -691,6 +727,29 @@ Stage * Canvas::getStageObject(const std::string & path) const
 
     // Return stage
     return stage;
+}
+
+cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::string & slotName)
+{
+    Variant status = Variant::map();
+
+    // Get stage
+    Stage * stage = getStageObject(path);
+    if (stage)
+    {
+        // Get slot
+        AbstractSlot * slot = stage->getSlot(slotName);
+        if (slot)
+        {
+            // Compose slot information
+            (*status.asMap())["name"]  = slot->name();
+            (*status.asMap())["type"]  = slot->typeName();
+            (*status.asMap())["value"] = slot->toVariant();
+            // [TODO] input->options()
+        }
+    }
+
+    return status;
 }
 
 
