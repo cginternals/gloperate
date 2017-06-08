@@ -19,6 +19,7 @@
 #include <gloperate/input/KeyboardDevice.h>
 
 
+using namespace cppassist;
 using namespace cppexpose;
 
 
@@ -141,7 +142,7 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
-        cppassist::debug(2, "gloperate") << "deinitContext()";
+        debug(2, "gloperate") << "deinitContext()";
 
         if (m_renderStage)
         {
@@ -154,7 +155,7 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
     // Initialize renderer in new context
     if (context)
     {
-        cppassist::debug(2, "gloperate") << "initContext()";
+        debug(2, "gloperate") << "initContext()";
 
         m_openGLContext = context;
 
@@ -232,7 +233,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     m_timeDelta = 0.0f;
 
     auto fboName = targetFBO->hasName() ? targetFBO->name() : std::to_string(targetFBO->id());
-    cppassist::debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
+    debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
 
     // Abort if not initialized
     if (!m_initialized) return;
@@ -280,7 +281,7 @@ void Canvas::promoteKeyPress(int key, int modifier)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
+    debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
     m_keyboardDevice->keyPress(key, modifier);
@@ -293,7 +294,7 @@ void Canvas::promoteKeyRelease(int key, int modifier)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
+    debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
     m_keyboardDevice->keyRelease(key, modifier);
@@ -306,7 +307,7 @@ void Canvas::promoteMouseMove(const glm::ivec2 & pos)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
+    debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->move(pos);
@@ -319,7 +320,7 @@ void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+    debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->buttonPress(button, pos);
@@ -332,7 +333,7 @@ void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+    debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->buttonRelease(button, pos);
@@ -345,7 +346,7 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+    debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->wheelScroll(delta, pos);
@@ -472,6 +473,17 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
                 // Get connection info
                 std::string from = slot->source()->qualifiedName();
                 std::string to   = slot->qualifiedName();
+
+                // Replace name of stage with "root"
+                std::string stageName = m_renderStage->name();
+
+                if (string::hasPrefix(from, stageName)) {
+                    from.replace(0, stageName.length(), "root");
+                }
+
+                if (string::hasPrefix(to, stageName)) {
+                    to.replace(0, stageName.length(), "root");
+                }
 
                 // Describe connection
                 Variant connection = Variant::map();

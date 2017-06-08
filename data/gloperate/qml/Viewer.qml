@@ -308,12 +308,11 @@ ApplicationWindow
                         width: scrollArea.width
 
                         properties: gloperatePipeline
-                        path:       ''
+                        path:       'root'
 
                         Component.onCompleted:
                         {
-                            path = 'root';
-                            //propertyEditor.update();
+                            propertyEditor.update();
                         }
                     }
                 }
@@ -329,7 +328,7 @@ ApplicationWindow
             visible:      false
 
             properties: gloperatePipeline
-            path:       window.stage
+            path:       'root'
 
             onClosed:
             {
