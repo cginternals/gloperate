@@ -7,7 +7,8 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/File.h>
+#include <globjects/base/StringTemplate.h>
+#include <globjects/base/StaticStringSource.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
@@ -16,6 +17,39 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
+
+
+static const char * s_vertexShader = R"(
+    #version 140
+    #extension GL_ARB_explicit_attrib_location : require
+
+    uniform mat4 modelViewProjectionMatrix;
+
+    layout (location = 0) in vec2 a_vertex;
+    out vec2 v_uv;
+
+    void main()
+    {
+        v_uv = a_vertex * 0.5 + 0.5;
+        gl_Position = modelViewProjectionMatrix * vec4(a_vertex, 0.0, 1.0);
+    }
+)";
+
+static const char * s_fragmentShader = R"(
+    #version 140
+    #extension GL_ARB_explicit_attrib_location : require
+
+    uniform sampler2D source;
+
+    layout (location = 0) out vec4 fragColor;
+
+    in vec2 v_uv;
+
+    void main()
+    {
+        fragColor = texture(source, v_uv);
+    }
+)";
 
 
 CPPEXPOSE_COMPONENT(DemoStage, gloperate::Stage)
@@ -130,8 +164,8 @@ void DemoStage::createAndSetupGeometry()
 {
     m_quad = cppassist::make_unique<gloperate::Sphere>(2.0f, gloperate::ShapeOption::IncludeTexCoords);
 
-    m_vertexShaderSource   = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/SpinningRect.vert");
-    m_fragmentShaderSource = globjects::Shader::sourceFromFile(gloperate::dataPath() + "/gloperate/shaders/Demo/SpinningRect.frag");
+    m_vertexShaderSource   = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_vertexShader  ));
+    m_fragmentShaderSource = cppassist::make_unique<globjects::StringTemplate>(new globjects::StaticStringSource(s_fragmentShader));
 
 #ifdef __APPLE__
     vertexShaderSource  ->replace("#version 140", "#version 150");
