@@ -1,14 +1,18 @@
+
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
+
 
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 uniform vec2 dofShift;
 
+
 layout (location = 0) in vec3 a_vertex;
 layout (location = 1) in vec3 a_color;
 
 flat out vec3 v_color;
+
 
 void main()
 {

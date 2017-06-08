@@ -1,16 +1,21 @@
+
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
+
 const float alpha = 0.35;
+
 
 uniform sampler2D transparencyKernel;
 uniform sampler3D noiseKernel;
 uniform vec3 color;
 uniform float randVal;
 
+
 in vec2 v_localPos;
 
 layout (location = 0) out vec4 fragColor;
+
 
 void main()
 {

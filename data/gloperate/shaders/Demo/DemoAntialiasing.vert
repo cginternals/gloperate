@@ -1,11 +1,15 @@
+
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
+
 uniform vec2 offset;
+
 
 layout (location = 0) in vec2 a_vertex;
 
 out vec2 v_uv;
+
 
 void main()
 {
