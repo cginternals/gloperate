@@ -23,9 +23,9 @@ class DemoTextRenderingPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoTextRenderingPipeline, gloperate::Stage
-      , "RenderStage Demo Text" // Tags
-      , ""                      // Icon
-      , ""                      // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Text demo"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

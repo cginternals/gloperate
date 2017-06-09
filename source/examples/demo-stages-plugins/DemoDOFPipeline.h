@@ -31,9 +31,9 @@ class DemoDOFPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoDOFPipeline, gloperate::Stage
-      , "RenderStage Demo DOF" // Tags
-      , ""                     // Icon
-      , ""                     // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Demo pipeline that renders a static cube onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
