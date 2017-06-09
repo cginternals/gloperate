@@ -92,7 +92,7 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
 
     auto fps = m_parameters.at("fps").toULongLong();
     auto length = m_parameters.at("duration").toULongLong() * fps;
-    auto timeDelta = 1.f / static_cast<float>(fps);
+    //auto timeDelta = 1.f / static_cast<float>(fps);
 
     initialize(contextHandling);
 
