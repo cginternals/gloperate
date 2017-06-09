@@ -29,7 +29,7 @@ KernelToPointInPlanestage::~KernelToPointInPlanestage()
 {
 }
 
-void KernelToPointInPlanestage::onProcess(gloperate::AbstractGLContext *)
+void KernelToPointInPlanestage::onProcess()
 {
     if (*kernel == nullptr)
     {
@@ -42,7 +42,7 @@ void KernelToPointInPlanestage::onProcess(gloperate::AbstractGLContext *)
     auto currentOffset = glm::vec2(0.0f, 0.0f);
     const auto normal = glm::normalize((*planeNormal));
 
-    if (*frameNumber < kernel.value()->size())
+    if (static_cast<unsigned int>(*frameNumber) < kernel.value()->size())
     {
         kernel.value()->at(*frameNumber);
         currentOffset *= *kernelScale;

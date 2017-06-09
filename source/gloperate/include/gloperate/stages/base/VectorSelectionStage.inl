@@ -18,7 +18,7 @@ VectorSelectionStage<T>::VectorSelectionStage(Environment * environment, const s
 
 
 template <typename T>
-void VectorSelectionStage<T>::onProcess(AbstractGLContext * /*context*/)
+void VectorSelectionStage<T>::onProcess()
 {
     const auto i = index.value();
 

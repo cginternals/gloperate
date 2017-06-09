@@ -29,7 +29,7 @@ void CubeMapProjectionsStage::onContextInit(gloperate::AbstractGLContext * /*con
 {
 }
 
-void CubeMapProjectionsStage::onProcess(gloperate::AbstractGLContext * /*context*/)
+void CubeMapProjectionsStage::onProcess()
 {
     const auto c = *center;
 
