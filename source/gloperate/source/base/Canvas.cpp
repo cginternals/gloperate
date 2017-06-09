@@ -7,6 +7,8 @@
 #include <cppassist/memory/make_unique.h>
 #include <cppassist/string/manipulation.h>
 
+#include <cppexpose/variant/Variant.h>
+
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/base/Environment.h>
@@ -15,6 +17,10 @@
 #include <gloperate/pipeline/Slot.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
+
+
+using namespace cppassist;
+using namespace cppexpose;
 
 
 namespace
@@ -53,16 +59,18 @@ Canvas::Canvas(Environment * environment)
 , m_replaceStage(false)
 {
     // Register functions
-    addFunction("getDescription",   this, &Canvas::scr_getDescription);
-    addFunction("getConnections",   this, &Canvas::scr_getConnections);
-    addFunction("getSlot",          this, &Canvas::scr_getSlot);
-    addFunction("setSlotValue",     this, &Canvas::scr_setSlotValue);
-    addFunction("createSlot",       this, &Canvas::scr_createSlot);
-    addFunction("slotTypes",        this, &Canvas::scr_slotTypes);
-    addFunction("createStage",      this, &Canvas::scr_createStage);
-    addFunction("removeStage",      this, &Canvas::scr_removeStage);
-    addFunction("createConnection", this, &Canvas::scr_createConnection);
-    addFunction("removeConnection", this, &Canvas::scr_removeConnection);
+    addFunction("onStageInputChanged", this, &Canvas::scr_onStageInputChanged);
+    addFunction("getSlotTypes",        this, &Canvas::scr_getSlotTypes);
+    addFunction("createStage",         this, &Canvas::scr_createStage);
+    addFunction("removeStage",         this, &Canvas::scr_removeStage);
+    addFunction("createSlot",          this, &Canvas::scr_createSlot);
+    addFunction("getConnections",      this, &Canvas::scr_getConnections);
+    addFunction("createConnection",    this, &Canvas::scr_createConnection);
+    addFunction("removeConnection",    this, &Canvas::scr_removeConnection);
+    addFunction("getStage",            this, &Canvas::scr_getStage);
+    addFunction("getSlot",             this, &Canvas::scr_getSlot);
+    addFunction("getValue",            this, &Canvas::scr_getValue);
+    addFunction("setValue",            this, &Canvas::scr_setValue);
 
     // Register canvas
     m_environment->registerCanvas(this);
@@ -102,6 +110,9 @@ void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
     // Set stage
     m_renderStage = std::move(stage);
 
+    // Connect to changes on the stage's input slots
+    m_inputChangedConnection = m_renderStage->inputChanged.connect(this, &Canvas::stageInputChanged);
+
     // Issue a redraw
     m_replaceStage = true;
     redraw();
@@ -135,7 +146,7 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
-        cppassist::debug(2, "gloperate") << "deinitContext()";
+        debug(2, "gloperate") << "deinitContext()";
 
         if (m_renderStage)
         {
@@ -148,7 +159,7 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
     // Initialize renderer in new context
     if (context)
     {
-        cppassist::debug(2, "gloperate") << "initContext()";
+        debug(2, "gloperate") << "initContext()";
 
         m_openGLContext = context;
 
@@ -187,6 +198,9 @@ void Canvas::updateTime()
 
     // Check if a redraw is required
     checkRedraw();
+
+    // Promote changed input value to scripting
+    promoteChangedInputs();
 }
 
 void Canvas::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
@@ -226,7 +240,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     m_timeDelta = 0.0f;
 
     auto fboName = targetFBO->hasName() ? targetFBO->name() : std::to_string(targetFBO->id());
-    cppassist::debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
+    debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
 
     // Abort if not initialized
     if (!m_initialized) return;
@@ -274,7 +288,7 @@ void Canvas::promoteKeyPress(int key, int modifier)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
+    debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
     m_keyboardDevice->keyPress(key, modifier);
@@ -287,7 +301,7 @@ void Canvas::promoteKeyRelease(int key, int modifier)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
+    debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
     m_keyboardDevice->keyRelease(key, modifier);
@@ -300,7 +314,7 @@ void Canvas::promoteMouseMove(const glm::ivec2 & pos)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
+    debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->move(pos);
@@ -313,7 +327,7 @@ void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+    debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->buttonPress(button, pos);
@@ -326,7 +340,7 @@ void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+    debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->buttonRelease(button, pos);
@@ -339,7 +353,7 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    cppassist::debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+    debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->wheelScroll(delta, pos);
@@ -357,7 +371,54 @@ void Canvas::checkRedraw()
     }
 }
 
-cppexpose::Variant Canvas::scr_getDescription(const std::string & path)
+void Canvas::promoteChangedInputs()
+{
+    std::lock_guard<std::mutex> lock(this->m_changedInputMutex);
+
+    // Check if a callback function is set
+    if (m_inputChangedCallback.isEmpty())
+        return;
+
+    // Invoke callback function for each changed input
+    for (auto * slot : m_changedInputs)
+    {
+        // Get slot status
+        std::string name = slot->name();
+        Variant status = getSlotStatus("root", name);
+
+        // Invoke callback function
+        std::vector<cppexpose::Variant> params;
+        params.push_back(name);
+        params.push_back(status);
+
+        m_inputChangedCallback.call(params);
+    }
+
+    // Reset
+    m_changedInputs.clear();
+}
+
+void Canvas::stageInputChanged(AbstractSlot * slot)
+{
+    std::lock_guard<std::mutex> lock(this->m_changedInputMutex);
+
+    // Put changed input into list, will be processed on next update
+    m_changedInputs.push_back(slot);
+}
+
+void Canvas::scr_onStageInputChanged(const cppexpose::Variant & func)
+{
+    // Check if a function has been passed
+    if (!func.hasType<cppexpose::Function>())
+    {
+        return;
+    }
+
+    // Save callback function
+    m_inputChangedCallback = func.value<cppexpose::Function>();
+}
+
+cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
@@ -365,41 +426,30 @@ cppexpose::Variant Canvas::scr_getDescription(const std::string & path)
 
     if (stage)
     {
-        return stage->scr_getDescription();
+        Variant types = Variant::array();
+
+        types.asArray()->push_back("bool");
+        types.asArray()->push_back("int");
+        types.asArray()->push_back("float");
+        types.asArray()->push_back("vec2");
+        types.asArray()->push_back("vec3");
+        types.asArray()->push_back("vec4");
+        types.asArray()->push_back("ivec2");
+        types.asArray()->push_back("ivec3");
+        types.asArray()->push_back("ivec4");
+        types.asArray()->push_back("string");
+        types.asArray()->push_back("file");
+        types.asArray()->push_back("color");
+        types.asArray()->push_back("texture");
+        types.asArray()->push_back("fbo");
+
+        return types;
     }
 
     return cppexpose::Variant();
 }
 
-cppexpose::Variant Canvas::scr_getSlot(const std::string & path)
-{
-    std::lock_guard<std::mutex> lock(this->m_mutex);
-
-    std::string slotName;
-    Stage * stage = getStageObjectForSlot(path, slotName);
-
-    if (stage)
-    {
-        return stage->scr_getSlot(slotName);
-    }
-
-    return cppexpose::Variant();
-}
-
-void Canvas::scr_setSlotValue(const std::string & path, const cppexpose::Variant & value)
-{
-    std::lock_guard<std::mutex> lock(this->m_mutex);
-
-    std::string slotName;
-    Stage * stage = getStageObjectForSlot(path, slotName);
-
-    if (stage)
-    {
-        stage->scr_setSlotValue(slotName, value);
-    }
-}
-
-std::string Canvas::scr_createStage(const std::string & path, const std::string & className, const std::string & name)
+std::string Canvas::scr_createStage(const std::string & path, const std::string & name, const std::string & type)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
@@ -409,7 +459,21 @@ std::string Canvas::scr_createStage(const std::string & path, const std::string 
     {
         Pipeline * pipeline = static_cast<Pipeline*>(stage);
 
-        return pipeline->scr_createStage(className, name);
+        // Get component manager
+        auto componentManager = m_environment->componentManager();
+
+        // Get component for the requested stage
+        auto component = componentManager->component<gloperate::Stage>(type);
+        if (component)
+        {
+            // Create stage
+            auto stage = component->createInstance(m_environment, name);
+            auto stagePtr = stage.get();
+
+            pipeline->addStage(std::move(stage));
+
+            return stagePtr->name();
+        }
     }
 
     return "";
@@ -425,11 +489,15 @@ void Canvas::scr_removeStage(const std::string & path, const std::string & name)
     {
         Pipeline * pipeline = static_cast<Pipeline*>(stage);
 
-        pipeline->scr_removeStage(name);
+        Stage * targetStage = pipeline->stage(name);
+        if (targetStage)
+        {
+            pipeline->removeStage(targetStage);
+        }
     }
 }
 
-cppexpose::Variant Canvas::scr_slotTypes(const std::string & path)
+void Canvas::scr_createSlot(const std::string & path, const std::string & slot, const std::string & slotType, const std::string & type)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
@@ -437,21 +505,7 @@ cppexpose::Variant Canvas::scr_slotTypes(const std::string & path)
 
     if (stage)
     {
-        return stage->scr_slotTypes();
-    }
-
-    return cppexpose::Variant();
-}
-
-void Canvas::scr_createSlot(const std::string & path, const std::string & slotType, const std::string & type, const std::string & name)
-{
-    std::lock_guard<std::mutex> lock(this->m_mutex);
-
-    Stage * stage = getStageObject(path);
-
-    if (stage)
-    {
-        return stage->scr_createSlot(slotType, type, name);
+        stage->createSlot(slotType, type, slot);
     }
 }
 
@@ -463,43 +517,188 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 
     if (stage)
     {
-        return stage->scr_getConnections();
+        Variant obj = Variant::array();
+
+        auto addSlot = [&obj, this] (AbstractSlot * slot)
+        {
+            // Check if slot is connected
+            if (slot->isConnected())
+            {
+                // Get connection info
+                std::string from = slot->source()->qualifiedName();
+                std::string to   = slot->qualifiedName();
+
+                // Replace name of stage with "root"
+                std::string stageName = m_renderStage->name();
+
+                if (string::hasPrefix(from, stageName)) {
+                    from.replace(0, stageName.length(), "root");
+                }
+
+                if (string::hasPrefix(to, stageName)) {
+                    to.replace(0, stageName.length(), "root");
+                }
+
+                // Describe connection
+                Variant connection = Variant::map();
+                (*connection.asMap())["from"] = from;
+                (*connection.asMap())["to"]   = to;
+
+                // Add connection
+                obj.asArray()->push_back(connection);
+            }
+        };
+
+        // List connections
+        for (auto input : stage->m_inputs)
+        {
+            addSlot(input);
+        }
+
+        for (auto output : stage->m_outputs)
+        {
+            addSlot(output);
+        }
+
+        // Return connections
+        return obj;
     }
 
     return cppexpose::Variant();
 }
 
-void Canvas::scr_createConnection(const std::string & from, const std::string & to)
+void Canvas::scr_createConnection(const std::string & sourcePath, const std::string & sourceSlot, const std::string & destPath, const std::string & destSlot)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    Stage * stage = getStageObject("");
+    Stage * sourceStage = getStageObject(sourcePath);
+    Stage * destStage   = getStageObject(destPath);
 
-    if (stage && stage->isPipeline())
+    if (sourceStage && destStage)
     {
-        Pipeline * pipeline = static_cast<Pipeline*>(stage);
-        pipeline->scr_createConnection(from, to);
+        AbstractSlot * slotFrom = sourceStage->getSlot(sourceSlot);
+        AbstractSlot * slotTo   = destStage->getSlot(destSlot);
+
+        if (slotFrom && slotTo)
+        {
+            slotTo->connect(slotFrom);
+        }
     }
 }
 
-void Canvas::scr_removeConnection(const std::string & to)
+void Canvas::scr_removeConnection(const std::string & path, const std::string & slot)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
-    Stage * stage = getStageObject("");
+    Stage * stage = getStageObject(path);
 
-    if (stage && stage->isPipeline())
+    if (stage)
     {
-        Pipeline * pipeline = static_cast<Pipeline*>(stage);
-        pipeline->scr_removeConnection(to);
+        AbstractSlot * slotTo = stage->getSlot(slot);
+
+        if (slotTo)
+        {
+            slotTo->disconnect();
+        }
+    }
+}
+
+cppexpose::Variant Canvas::scr_getStage(const std::string & path)
+{
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
+    // Get stage
+    Stage * stage = getStageObject(path);
+    if (stage)
+    {
+        // Compose stage information
+        Variant obj = Variant::map();
+
+        (*obj.asMap())["name"] = name();
+
+        // List inputs
+        Variant inputs = Variant::array();
+        for (auto input : stage->inputs())
+        {
+            inputs.asArray()->push_back(input->name());
+        }
+
+        (*obj.asMap())["inputs"] = inputs;
+
+        // List outputs
+        Variant outputs = Variant::array();
+        for (auto output : stage->outputs())
+        {
+            outputs.asArray()->push_back(output->name());
+        }
+
+        (*obj.asMap())["outputs"] = outputs;
+
+        // List stages
+        Variant stages = Variant::array();
+        if (stage->isPipeline())
+        {
+            Pipeline * pipeline = static_cast<Pipeline*>(stage);
+
+            auto stageList = pipeline->stages();
+            for (auto stage : stageList)
+            {
+                stages.asArray()->push_back(stage->name());
+            }
+        }
+
+        (*obj.asMap())["stages"] = stages;
+
+        // Return information about stage
+        return obj;
+    }
+
+    return cppexpose::Variant();
+}
+
+cppexpose::Variant Canvas::scr_getSlot(const std::string & path, const std::string & slotName)
+{
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
+    return getSlotStatus(path, slotName);
+}
+
+cppexpose::Variant Canvas::scr_getValue(const std::string & path, const std::string & slotName)
+{
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
+    Stage * stage = getStageObject(path);
+    if (stage)
+    {
+        AbstractSlot * slot = stage->getSlot(slotName);
+        if (slot)
+        {
+            return slot->toVariant();
+        }
+    }
+
+    return cppexpose::Variant();
+}
+
+void Canvas::scr_setValue(const std::string & path, const std::string & slotName, const cppexpose::Variant & value)
+{
+    std::lock_guard<std::mutex> lock(this->m_mutex);
+
+    Stage * stage = getStageObject(path);
+    if (stage)
+    {
+        AbstractSlot * slot = stage->getSlot(slotName);
+        if (slot)
+        {
+            slot->fromVariant(value);
+        }
     }
 }
 
 Stage * Canvas::getStageObject(const std::string & path) const
 {
-    // Begin with render stage
-    Stage * stage = m_renderStage.get();
-    if (!stage) return nullptr;
+    // Begin with empty stage
+    Stage * stage = nullptr;
 
     // Split path
     auto names = string::split(path, '.');
@@ -507,19 +706,22 @@ Stage * Canvas::getStageObject(const std::string & path) const
     // Resolve path
     for (auto name : names)
     {
-        // Abort if stage does not have sub-stages
-        if (!stage->isPipeline()) {
-            return nullptr;
+        if (!stage && name == "root")
+        {
+            stage = m_renderStage.get();
         }
 
-        // Convert to pipeline
-        Pipeline * pipeline = static_cast<Pipeline*>(stage);
-
-        // Get sub-stage
-        if (!(stage == m_renderStage.get() && name == m_renderStage->name()))
+        else if (stage && stage->isPipeline())
         {
+            Pipeline * pipeline = static_cast<Pipeline*>(stage);
+
             stage = pipeline->stage(name);
             if (!stage) return nullptr;
+        }
+
+        else
+        {
+            return nullptr;
         }
     }
 
@@ -527,41 +729,37 @@ Stage * Canvas::getStageObject(const std::string & path) const
     return stage;
 }
 
-Stage * Canvas::getStageObjectForSlot(const std::string & path, std::string & slotName) const
+cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::string & slotName)
 {
-    // Begin with render stage
-    Stage * stage = m_renderStage.get();
-    if (!stage) return nullptr;
+    Variant status = Variant::map();
 
-    // Split path
-    auto names = string::split(path, '.');
-    if (names.size() == 0) return nullptr;
-
-    // Remove name of slot
-    slotName = names[names.size() - 1];
-    names.pop_back();
-
-    // Resolve path
-    for (auto name : names)
+    // Get stage
+    Stage * stage = getStageObject(path);
+    if (stage)
     {
-        // Abort if stage does not have sub-stages
-        if (!stage->isPipeline()) {
-            return nullptr;
-        }
-
-        // Convert to pipeline
-        Pipeline * pipeline = static_cast<Pipeline*>(stage);
-
-        // Get sub-stage
-        if (!(stage == m_renderStage.get() && name == m_renderStage->name()))
+        // Get slot
+        AbstractSlot * slot = stage->getSlot(slotName);
+        if (slot)
         {
-            stage = pipeline->stage(name);
-            if (!stage) return nullptr;
+            // Compose slot information
+            (*status.asMap())["name"]  = slot->name();
+            (*status.asMap())["type"]  = slot->typeName();
+            (*status.asMap())["value"] = slot->toVariant();
+
+            // Include options
+            const VariantMap & options = slot->options();
+
+            for (auto it : options)
+            {
+                std::string key = it.first;
+                Variant & value = it.second;
+
+                (*status.asMap())[key] = value;
+            }
         }
     }
 
-    // Return stage
-    return stage;
+    return status;
 }
 
 

@@ -278,7 +278,7 @@ ApplicationWindow
 
                 onCanvasInitialized:
                 {
-                    gloperatePipeline.root = gloperate.canvas0;
+                    gloperatePipeline.canvas = gloperate.canvas0;
                 }
             }
 
@@ -292,10 +292,11 @@ ApplicationWindow
 
                 ScrollArea
                 {
+                    id: scrollArea
+
                     anchors.fill: parent
 
                     contentHeight: propertyEditor.height
-                    contentWidth:  propertyEditor.width
 
                     flickableDirection: Flickable.VerticalFlick
                     boundsBehavior: Flickable.StopAtBounds
@@ -304,12 +305,14 @@ ApplicationWindow
                     {
                         id: propertyEditor
 
-                        pipelineInterface: gloperatePipeline
-                        path:              window.stage
+                        width: scrollArea.width
+
+                        properties: gloperatePipeline
+                        path:       'root'
 
                         Component.onCompleted:
                         {
-                            propertyEditor.update()
+                            propertyEditor.update();
                         }
                     }
                 }
@@ -324,8 +327,8 @@ ApplicationWindow
             anchors.fill: parent
             visible:      false
 
-            pipelineInterface: gloperatePipeline
-            path:              window.stage
+            properties: gloperatePipeline
+            path:       'root'
 
             onClosed:
             {
@@ -380,9 +383,14 @@ ApplicationWindow
     {
         id: gloperatePipeline
 
-        onRootChanged:
+        onCanvasChanged:
         {
             propertyEditor.update();
+
+            canvas.onStageInputChanged(function(slot, status)
+            {
+                gloperatePipeline.slotChanged('root', slot, status);
+            });
         }
     }
 
