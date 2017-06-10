@@ -27,6 +27,7 @@ RenderPassStage::RenderPassStage(Environment * environment, const std::string & 
 , drawable("drawable", this)
 , program("program", this)
 , camera("camera", this)
+, modelMatrix("modelMatrix", this, glm::mat4(1.0))
 , depthTest("depthTest", this, true)
 , depthMask("depthMask", this, true)
 , depthFunc("depthFunc", this, gl::GL_LEQUAL)
@@ -74,11 +75,14 @@ void RenderPassStage::onProcess()
     {
         gloperate::Camera * camera = *this->camera;
 
-        (*program)->setUniform<glm::vec3>("eye",                  camera->eye());
-        (*program)->setUniform<glm::mat4>("viewProjectionMatrix", camera->viewProjectionMatrix());
-        (*program)->setUniform<glm::mat4>("viewMatrix",           camera->viewMatrix());
-        (*program)->setUniform<glm::mat4>("projectionMatrix",     camera->projectionMatrix());
-        (*program)->setUniform<glm::mat3>("normalMatrixMatrix",   camera->normalMatrix());
+        (*program)->setUniform<glm::vec3>("eye",                       camera->eye());
+        (*program)->setUniform<glm::mat4>("viewProjectionMatrix",      camera->viewProjectionMatrix());
+        (*program)->setUniform<glm::mat4>("viewMatrix",                camera->viewMatrix());
+        (*program)->setUniform<glm::mat4>("projectionMatrix",          camera->projectionMatrix());
+        (*program)->setUniform<glm::mat3>("normalMatrixMatrix",        camera->normalMatrix());
+        (*program)->setUniform<glm::mat4>("modelMatrix",               *this->modelMatrix);
+        (*program)->setUniform<glm::mat4>("modelViewMatrix",           camera->viewMatrix() * *this->modelMatrix);
+        (*program)->setUniform<glm::mat4>("modelViewProjectionMatrix", camera->projectionMatrix() * camera->viewMatrix() * *this->modelMatrix);
     }
 
     // Update OpenGL states

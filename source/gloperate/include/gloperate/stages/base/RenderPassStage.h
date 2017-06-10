@@ -5,6 +5,8 @@
 #include <cppexpose/plugin/plugin_api.h>
 #include <cppexpose/signal/ScopedConnection.h>
 
+#include <glm/glm.hpp>
+
 #include <glbinding/gl/types.h>
 
 #include <gloperate/gloperate-version.h>
@@ -57,9 +59,10 @@ public:
 
 public:
     // Inputs
-    Input<gloperate::AbstractDrawable *> drawable; ///< The drawable to be drawn
-    Input<globjects::Program *>          program;  ///< The program used for rendering
-    Input<gloperate::Camera *>           camera;   ///< The input camera
+    Input<gloperate::AbstractDrawable *> drawable;    ///< The drawable to be drawn
+    Input<globjects::Program *>          program;     ///< The program used for rendering
+    Input<gloperate::Camera *>           camera;      ///< The input camera
+    Input<glm::mat4>                     modelMatrix; ///< Transformation matrix
 
     Input<bool>       depthTest; ///< Enable depth test?
     Input<bool>       depthMask; ///< Enable writing to the depth buffer?

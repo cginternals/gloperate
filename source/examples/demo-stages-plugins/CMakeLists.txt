@@ -53,7 +53,6 @@ set(headers
     ${include_path}/DemoTransparencyStage.h
     ${include_path}/DemoTransparencyPipeline.h
     ${include_path}/DemoMultiFramePipeline.h
-    ${include_path}/SpinningRectStage.h
     ${include_path}/DemoRenderStage.h
     ${include_path}/DemoDrawableStage.h
     ${include_path}/ColorizeStage.h
@@ -80,7 +79,6 @@ set(sources
     ${source_path}/DemoTransparencyStage.cpp
     ${source_path}/DemoTransparencyPipeline.cpp
     ${source_path}/DemoMultiFramePipeline.cpp
-    ${source_path}/SpinningRectStage.cpp
     ${source_path}/DemoRenderStage.cpp
     ${source_path}/DemoDrawableStage.cpp
     ${source_path}/ColorizeStage.cpp

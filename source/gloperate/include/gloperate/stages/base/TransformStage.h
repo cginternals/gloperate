@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <glm/glm.hpp>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
@@ -16,17 +18,17 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that creates a constant timer
+*    Stage that creates a transformation matrix
 */
-class GLOPERATE_API TimerStage : public gloperate::Stage
+class GLOPERATE_API TransformStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        TimerStage, gloperate::Stage
+        TransformStage, gloperate::Stage
       , "" // Tags
       , "" // Icon
       , "" // Annotations
-      , "Stage that creates a constant timer"
+      , "Stage that creates a transformation matrix"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -34,12 +36,10 @@ public:
 
 public:
     // Inputs
-    Input<float>  timeDelta;   ///< Time delta since last frame (in seconds)
-    Input<float>  factor;      ///< Factor by which the time delta is multiplied
-    Input<float>  interval;    ///< Interval after which the virtual time is reset to 0 (interval <= 0 for infinite)
+    Input<float> angle; ///< Rotation angle (in radians)
 
     // Outputs
-    Output<float> virtualTime; ///< Elapsed time (in seconds)
+    Output<glm::mat4> modelMatrix; ///< Transformation matrix
 
 
 public:
@@ -52,24 +52,23 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    TimerStage(gloperate::Environment * environment, const std::string & name = "");
+    TransformStage(gloperate::Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~TimerStage();
+    virtual ~TransformStage();
 
 
 protected:
     // Virtual Stage functions
-    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
-    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess() override;
 
 
 protected:
-    float m_time; ///< Virtual time (in seconds)
+    // Rendering objects
+    glm::mat4 m_modelMatrix; ///< Current model matrix
 };
 
 

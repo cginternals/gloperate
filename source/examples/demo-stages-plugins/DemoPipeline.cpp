@@ -15,6 +15,7 @@
 #include <gloperate/stages/base/ClearStage.h>
 #include <gloperate/stages/base/ShapeStage.h>
 #include <gloperate/stages/base/TimerStage.h>
+#include <gloperate/stages/base/TransformStage.h>
 #include <gloperate/stages/navigation/TrackballStage.h>
 #include <gloperate/rendering/Shape.h>
 #include <gloperate/rendering/Quad.h>
@@ -32,8 +33,8 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
 , renderInterface(this)
 , shape("shape", this, ShapeType::Box)
 , texture("texture", this)
-, angle("angle", this)
-, rotate("rotate", this)
+, angle("angle", this, 0.0f)
+, rotate("rotate", this, false)
 , color("color", this, Color(255, 255, 255, 255))
 , m_timer(cppassist::make_unique<TimerStage>(environment, "Timer"))
 , m_trackball(cppassist::make_unique<TrackballStage>(environment, "Trackball"))
@@ -41,6 +42,7 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
 , m_texture(cppassist::make_unique<TextureLoadStage>(environment, "Texture"))
 , m_framebuffer(cppassist::make_unique<BasicFramebufferStage>(environment, "Framebuffer"))
 , m_clear(cppassist::make_unique<ClearStage>(environment, "Clear"))
+, m_shapeTransform(cppassist::make_unique<TransformStage>(environment, "ShapeTransform"))
 , m_shapeProgram(cppassist::make_unique<ProgramStage>(environment, "ShapeProgram"))
 , m_shapeRenderPass(cppassist::make_unique<RenderPassStage>(environment, "ShapeRenderPass"))
 , m_shapeRasterization(cppassist::make_unique<RasterizationStage>(environment, "ShapeRasterization"))
@@ -57,12 +59,11 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     angle.setOption("minimumValue", 0.0f);
     angle.setOption("maximumValue", 6.3f);
 
-    rotate = true;
     rotate.valueChanged.connect(this, &DemoPipeline::onRotateChanged);
 
     // Timer stage
     addStage(m_timer.get());
-    m_timer->timeDelta << renderInterface.timeDelta;
+    m_timer->interval = 6.3f;
 
     // Trackball stage
     addStage(m_trackball.get());
@@ -93,6 +94,10 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     m_clear->colorTexture << m_framebuffer->colorTexture;
     m_clear->createInput("renderPass") << m_shapeRenderPass->renderPass;
 
+    // Transform stage for shape
+    addStage(m_shapeTransform.get());
+    m_shapeTransform->angle << angle;
+
     // Program stage for shape
     addStage(m_shapeProgram.get());
     *m_shapeProgram->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/geometry/geometry.vert";
@@ -104,6 +109,7 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     m_shapeRenderPass->drawable << m_shape->drawable;
     m_shapeRenderPass->program << m_shapeProgram->program;
     m_shapeRenderPass->camera << m_trackball->camera;
+    m_shapeRenderPass->modelMatrix << m_shapeTransform->modelMatrix;
     m_shapeRenderPass->createInput("color") << this->color;
     m_shapeRenderPass->createInput("tex0") << m_texture->texture;
 
@@ -135,6 +141,9 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
 
     // Outputs
     renderInterface.rendered << m_colorizeRasterization->renderInterface.rendered;
+
+    // Start rotation
+    rotate = true;
 }
 
 DemoPipeline::~DemoPipeline()
@@ -159,11 +168,13 @@ void DemoPipeline::onContextDeinit(AbstractGLContext * context)
 
 void DemoPipeline::onRotateChanged(const bool & rotate)
 {
-    /*
     if (rotate) {
-        m_spinningRectStage->angle << m_timer->virtualTime;
+        m_timer->virtualTime = *angle;
+        angle << m_timer->virtualTime;
+        m_timer->timeDelta << renderInterface.timeDelta;
     } else {
-        m_spinningRectStage->angle << angle;
+        angle.disconnect();
+        angle = *m_timer->virtualTime;
+        m_timer->timeDelta.disconnect();
     }
-    */
 }

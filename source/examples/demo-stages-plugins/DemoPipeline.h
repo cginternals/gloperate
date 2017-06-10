@@ -27,6 +27,7 @@ namespace gloperate
     class ShapeStage;
     class TrackballStage;
     class TimerStage;
+    class TransformStage;
 }
 
 
@@ -97,6 +98,7 @@ protected:
 
     std::unique_ptr<gloperate::ClearStage>            m_clear;                 ///< Clears the output image
 
+    std::unique_ptr<gloperate::TransformStage>        m_shapeTransform;        ///< Rotates the shape around its axis
     std::unique_ptr<gloperate::ProgramStage>          m_shapeProgram;          ///< Builds the Program for rendering the shape
     std::unique_ptr<gloperate::RenderPassStage>       m_shapeRenderPass;       ///< Builds the RenderPass for rendering the shape
     std::unique_ptr<gloperate::RasterizationStage>    m_shapeRasterization;    ///< Executes the RenderPass
