@@ -71,7 +71,7 @@ void RenderPass::draw() const
     {
         m_drawTransformFeedback->draw(m_drawTransformFeedbackMode);
     }
-    else
+    else if (m_geometry)
     {
         m_geometry->draw();
     }
