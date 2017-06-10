@@ -3,6 +3,7 @@
 
 #include <cppassist/memory/make_unique.h>
 
+#include <gloperate/rendering/Point.h>
 #include <gloperate/rendering/Quad.h>
 #include <gloperate/rendering/Box.h>
 #include <gloperate/rendering/Sphere.h>
@@ -54,6 +55,10 @@ void ShapeStage::onProcess()
     // Create shape
     switch (type)
     {
+        case ShapeType::Point:
+            m_shape = cppassist::make_unique<Point>(options);
+            break;
+
         case ShapeType::Quad:
             m_shape = cppassist::make_unique<Quad>(*this->width, *this->height, options);
             break;

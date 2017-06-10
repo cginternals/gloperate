@@ -18,6 +18,7 @@ namespace gloperate
 enum class ShapeType : int
 {
     None,  ///< No shape
+    Point, ///< Single point
     Quad,  ///< 2D rectangle or quad
     Box,   ///< 3D box or cube
     Sphere ///< 3D sphere or ellipsoid

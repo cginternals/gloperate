@@ -97,9 +97,10 @@ set(headers
     ${include_path}/rendering/ScreenAlignedQuad.h
     ${include_path}/rendering/ScreenAlignedTriangle.h
     ${include_path}/rendering/Shape.h
+    ${include_path}/rendering/Point.h
+    ${include_path}/rendering/Quad.h
     ${include_path}/rendering/Box.h
     ${include_path}/rendering/Sphere.h
-    ${include_path}/rendering/Quad.h
     ${include_path}/rendering/Icosahedron.h
     ${include_path}/rendering/Color.h
     ${include_path}/rendering/Image.h
@@ -187,9 +188,10 @@ set(sources
     ${source_path}/rendering/ScreenAlignedQuad.cpp
     ${source_path}/rendering/ScreenAlignedTriangle.cpp
     ${source_path}/rendering/Shape.cpp
+    ${source_path}/rendering/Point.cpp
+    ${source_path}/rendering/Quad.cpp
     ${source_path}/rendering/Box.cpp
     ${source_path}/rendering/Sphere.cpp
-    ${source_path}/rendering/Quad.cpp
     ${source_path}/rendering/Icosahedron.cpp
     ${source_path}/rendering/Color.cpp
     ${source_path}/rendering/Image.cpp
