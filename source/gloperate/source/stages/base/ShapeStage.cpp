@@ -49,7 +49,7 @@ void ShapeStage::onProcess()
 {
     // Get shape options
     ShapeType type = *shapeType;
-    Flags<ShapeOption> options;
+    Flags<ShapeOption> options = ShapeOption::None;
     if (*this->texCoords) options = ShapeOption::IncludeTexCoords;
 
     // Create shape
@@ -64,15 +64,15 @@ void ShapeStage::onProcess()
             break;
 
         case ShapeType::Box:
-            m_shape = cppassist::make_unique<Box>(*this->width, *this->height, *this->depth, ShapeOption::IncludeTexCoords);
+            m_shape = cppassist::make_unique<Box>(*this->width, *this->height, *this->depth, options);
             break;
 
         case ShapeType::Sphere:
-            m_shape = cppassist::make_unique<Sphere>(*this->radius, ShapeOption::IncludeTexCoords);
+            m_shape = cppassist::make_unique<Sphere>(*this->radius, options);
             break;
 
         default:
-            m_shape = nullptr;
+            m_shape = cppassist::make_unique<Shape>(options);
             break;
     }
 

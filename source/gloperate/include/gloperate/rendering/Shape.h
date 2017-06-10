@@ -27,12 +27,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] type
-    *    Type of the shape
     *  @param[in] options
     *    Shape options
     */
-    Shape(ShapeType shapeType, cppassist::Flags<ShapeOption> options);
+    Shape(cppassist::Flags<ShapeOption> options);
 
     /**
     *  @brief
@@ -57,6 +55,22 @@ public:
     *    Shape options
     */
     cppassist::Flags<ShapeOption> options() const;
+
+    // Virtual AbstractDrawable functions
+    virtual void draw() const override;
+
+
+protected:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] type
+    *    Type of the shape
+    *  @param[in] options
+    *    Shape options
+    */
+    Shape(ShapeType shapeType, cppassist::Flags<ShapeOption> options);
 
 
 protected:
