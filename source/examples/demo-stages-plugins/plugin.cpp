@@ -21,7 +21,6 @@
 #include "LightTestStage.h"
 #include "ShaderDemoPipeline.h"
 #include "SpinningRectStage.h"
-#include "TimerStage.h"
 
 
 CPPEXPOSE_PLUGIN_LIBRARY
@@ -46,6 +45,5 @@ CPPEXPOSE_PLUGIN_LIBRARY
     CPPEXPOSE_PLUGIN_COMPONENT(LightTestStage)
     CPPEXPOSE_PLUGIN_COMPONENT(ShaderDemoPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(SpinningRectStage)
-    CPPEXPOSE_PLUGIN_COMPONENT(TimerStage)
 
 CPPEXPOSE_PLUGIN_LIBRARY_END

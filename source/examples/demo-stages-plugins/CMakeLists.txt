@@ -56,7 +56,6 @@ set(headers
     ${include_path}/SpinningRectStage.h
     ${include_path}/DemoRenderStage.h
     ${include_path}/DemoDrawableStage.h
-    ${include_path}/TimerStage.h
     ${include_path}/ColorizeStage.h
     ${include_path}/LightTestStage.h
     ${include_path}/LightTestPipeline.h
@@ -84,7 +83,6 @@ set(sources
     ${source_path}/SpinningRectStage.cpp
     ${source_path}/DemoRenderStage.cpp
     ${source_path}/DemoDrawableStage.cpp
-    ${source_path}/TimerStage.cpp
     ${source_path}/ColorizeStage.cpp
     ${source_path}/LightTestStage.cpp
     ${source_path}/LightTestPipeline.cpp

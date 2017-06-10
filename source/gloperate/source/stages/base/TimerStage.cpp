@@ -1,10 +1,14 @@
 
-#include "TimerStage.h"
+#include <gloperate/stages/base/TimerStage.h>
 
 #include <cppassist/logging/logging.h>
 
 
 using namespace cppassist;
+
+
+namespace gloperate
+{
 
 
 CPPEXPOSE_COMPONENT(TimerStage, gloperate::Stage)
@@ -37,3 +41,6 @@ void TimerStage::onProcess()
 
     virtualTime.setValue(m_time);
 }
+
+
+} // namespace gloperate

@@ -14,11 +14,10 @@
 #include <gloperate/stages/base/RasterizationStage.h>
 #include <gloperate/stages/base/ClearStage.h>
 #include <gloperate/stages/base/ShapeStage.h>
+#include <gloperate/stages/base/TimerStage.h>
 #include <gloperate/stages/navigation/TrackballStage.h>
 #include <gloperate/rendering/Shape.h>
 #include <gloperate/rendering/Quad.h>
-
-#include "TimerStage.h"
 
 
 CPPEXPOSE_COMPONENT(DemoPipeline, gloperate::Stage)
@@ -28,26 +27,26 @@ using namespace cppexpose;
 using namespace gloperate;
 
 
-DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::string & name)
+DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
 : Pipeline(environment, "DemoPipeline", name)
 , renderInterface(this)
 , shape("shape", this, ShapeType::Box)
 , texture("texture", this)
 , angle("angle", this)
 , rotate("rotate", this)
-, color("color", this, gloperate::Color(255, 255, 255, 255))
+, color("color", this, Color(255, 255, 255, 255))
 , m_timer(cppassist::make_unique<TimerStage>(environment, "Timer"))
-, m_trackball(cppassist::make_unique<gloperate::TrackballStage>(environment, "Trackball"))
-, m_shape(cppassist::make_unique<gloperate::ShapeStage>(environment, "Shape"))
-, m_texture(cppassist::make_unique<gloperate::TextureLoadStage>(environment, "Texture"))
-, m_framebuffer(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "Framebuffer"))
-, m_clear(cppassist::make_unique<gloperate::ClearStage>(environment, "Clear"))
-, m_shapeProgram(cppassist::make_unique<gloperate::ProgramStage>(environment, "ShapeProgram"))
-, m_shapeRenderPass(cppassist::make_unique<gloperate::RenderPassStage>(environment, "ShapeRenderPass"))
-, m_shapeRasterization(cppassist::make_unique<gloperate::RasterizationStage>(environment, "ShapeRasterization"))
-, m_colorizeProgram(cppassist::make_unique<gloperate::ProgramStage>(environment, "ColorizeProgram"))
-, m_colorizeRenderPass(cppassist::make_unique<gloperate::RenderPassStage>(environment, "ColorizeRenderPass"))
-, m_colorizeRasterization(cppassist::make_unique<gloperate::RasterizationStage>(environment, "ColorizeRasterization"))
+, m_trackball(cppassist::make_unique<TrackballStage>(environment, "Trackball"))
+, m_shape(cppassist::make_unique<ShapeStage>(environment, "Shape"))
+, m_texture(cppassist::make_unique<TextureLoadStage>(environment, "Texture"))
+, m_framebuffer(cppassist::make_unique<BasicFramebufferStage>(environment, "Framebuffer"))
+, m_clear(cppassist::make_unique<ClearStage>(environment, "Clear"))
+, m_shapeProgram(cppassist::make_unique<ProgramStage>(environment, "ShapeProgram"))
+, m_shapeRenderPass(cppassist::make_unique<RenderPassStage>(environment, "ShapeRenderPass"))
+, m_shapeRasterization(cppassist::make_unique<RasterizationStage>(environment, "ShapeRasterization"))
+, m_colorizeProgram(cppassist::make_unique<ProgramStage>(environment, "ColorizeProgram"))
+, m_colorizeRenderPass(cppassist::make_unique<RenderPassStage>(environment, "ColorizeRenderPass"))
+, m_colorizeRasterization(cppassist::make_unique<RasterizationStage>(environment, "ColorizeRasterization"))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
@@ -142,16 +141,16 @@ DemoPipeline::~DemoPipeline()
 {
 }
 
-void DemoPipeline::onContextInit(gloperate::AbstractGLContext * context)
+void DemoPipeline::onContextInit(AbstractGLContext * context)
 {
     Pipeline::onContextInit(context);
 
-    m_quad = cppassist::make_unique<gloperate::Quad>(2.0f);
+    m_quad = cppassist::make_unique<Quad>(2.0f);
 
     m_colorizeRenderPass->drawable = m_quad.get();
 }
 
-void DemoPipeline::onContextDeinit(gloperate::AbstractGLContext * context)
+void DemoPipeline::onContextDeinit(AbstractGLContext * context)
 {
     Pipeline::onContextDeinit(context);
 

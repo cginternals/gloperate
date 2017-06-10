@@ -26,9 +26,8 @@ namespace gloperate
     class Quad;
     class ShapeStage;
     class TrackballStage;
+    class TimerStage;
 }
-
-class TimerStage;
 
 
 /**
@@ -88,7 +87,7 @@ protected:
 
 protected:
     // Stages
-    std::unique_ptr<TimerStage>                       m_timer;                 ///< Timer for continuous rendering and animation
+    std::unique_ptr<gloperate::TimerStage>            m_timer;                 ///< Timer for continuous rendering and animation
 
     std::unique_ptr<gloperate::TrackballStage>        m_trackball;             ///< Trackball camera navigation stage
 
