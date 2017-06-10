@@ -24,12 +24,14 @@
 CPPEXPOSE_COMPONENT(DemoPipeline, gloperate::Stage)
 
 
+using namespace cppexpose;
 using namespace gloperate;
 
 
 DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, "DemoPipeline", name)
 , renderInterface(this)
+, shape("shape", this, ShapeType::Box)
 , texture("texture", this)
 , angle("angle", this)
 , rotate("rotate", this)
@@ -69,7 +71,7 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
 
     // Shape stage
     addStage(m_shape.get());
-    m_shape->shapeType = ShapeType::Box;
+    m_shape->shapeType << this->shape;
     m_shape->width     = 1.0f;
     m_shape->height    = 1.0f;
     m_shape->depth     = 1.0f;

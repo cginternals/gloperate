@@ -19,6 +19,15 @@ AbstractSlot::AbstractSlot()
 {
 }
 
+AbstractSlot::AbstractSlot(const cppexpose::Variant & options)
+: AbstractProperty(options)
+, m_slotType(SlotType::Unknown)
+, m_dynamic(false)
+, m_required(false)
+, m_feedback(false)
+{
+}
+
 AbstractSlot::~AbstractSlot()
 {
     // Get parent stage

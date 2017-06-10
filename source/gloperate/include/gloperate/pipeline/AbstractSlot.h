@@ -51,6 +51,15 @@ public:
 
     /**
     *  @brief
+    *    Constructor
+    *
+    *  @param[in] options
+    *    Options with which the property is initialized
+    */
+    AbstractSlot(const cppexpose::Variant & options);
+
+    /**
+    *  @brief
     *    Destructor
     */
     virtual ~AbstractSlot();

@@ -6,6 +6,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/base/ExtendedProperties.h>
+#include <gloperate/rendering/Shape.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
@@ -53,10 +54,11 @@ public:
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<cppassist::FilePath> texture;         ///< Texture filename
-    Input<float>               angle;           ///< Current rotation angle
-    Input<bool>                rotate;          ///< Rotation automatically?
-    Input<gloperate::Color>    color;           ///< Mixer color
+    Input<gloperate::ShapeType> shape;   ///< Shape type
+    Input<cppassist::FilePath>  texture; ///< Texture filename
+    Input<float>                angle;   ///< Current rotation angle
+    Input<bool>                 rotate;  ///< Rotation automatically?
+    Input<gloperate::Color>     color;   ///< Mixer color
 
 
 public:

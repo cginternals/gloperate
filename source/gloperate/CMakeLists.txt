@@ -97,6 +97,7 @@ set(headers
     ${include_path}/rendering/ScreenAlignedQuad.h
     ${include_path}/rendering/ScreenAlignedTriangle.h
     ${include_path}/rendering/Shape.h
+    ${include_path}/rendering/ShapeType.h
     ${include_path}/rendering/Point.h
     ${include_path}/rendering/Quad.h
     ${include_path}/rendering/Box.h
