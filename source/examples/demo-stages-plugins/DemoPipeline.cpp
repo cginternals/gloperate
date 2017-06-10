@@ -12,15 +12,19 @@
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
-#include <gloperate/stages/base/BlitStage.h>
-
+#include <gloperate/stages/base/ClearStage.h>
+#include <gloperate/stages/base/ShapeStage.h>
+#include <gloperate/stages/navigation/TrackballStage.h>
+#include <gloperate/rendering/Shape.h>
 #include <gloperate/rendering/Quad.h>
 
 #include "TimerStage.h"
-#include "SpinningRectStage.h"
 
 
 CPPEXPOSE_COMPONENT(DemoPipeline, gloperate::Stage)
+
+
+using namespace gloperate;
 
 
 DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::string & name)
@@ -30,17 +34,18 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
 , angle("angle", this)
 , rotate("rotate", this)
 , color("color", this, gloperate::Color(255, 255, 255, 255))
-, shader1("shader1", this)
-, shader2("shader2", this)
-, m_textureLoadStage(cppassist::make_unique<gloperate::TextureLoadStage>(environment, "TextureLoadStage"))
-, m_timerStage(cppassist::make_unique<TimerStage>(environment, "TimerStage"))
-, m_framebufferStage1(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "FramebufferStage1"))
-, m_spinningRectStage(cppassist::make_unique<SpinningRectStage>(environment, "SpinningRectStage"))
-, m_framebufferStage2(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "FramebufferStage2"))
-, m_colorizeProgramStage(cppassist::make_unique<gloperate::ProgramStage>(environment, "ColorizeProgramStage"))
-, m_colorizeRenderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "ColorizeRenderPassStage"))
-, m_colorizeRasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "ColorizeRasterizationStage"))
-, m_blitStage(cppassist::make_unique<gloperate::BlitStage>(environment, "BlitStage"))
+, m_timer(cppassist::make_unique<TimerStage>(environment, "Timer"))
+, m_trackball(cppassist::make_unique<gloperate::TrackballStage>(environment, "Trackball"))
+, m_shape(cppassist::make_unique<gloperate::ShapeStage>(environment, "Shape"))
+, m_texture(cppassist::make_unique<gloperate::TextureLoadStage>(environment, "Texture"))
+, m_framebuffer(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "Framebuffer"))
+, m_clear(cppassist::make_unique<gloperate::ClearStage>(environment, "Clear"))
+, m_shapeProgram(cppassist::make_unique<gloperate::ProgramStage>(environment, "ShapeProgram"))
+, m_shapeRenderPass(cppassist::make_unique<gloperate::RenderPassStage>(environment, "ShapeRenderPass"))
+, m_shapeRasterization(cppassist::make_unique<gloperate::RasterizationStage>(environment, "ShapeRasterization"))
+, m_colorizeProgram(cppassist::make_unique<gloperate::ProgramStage>(environment, "ColorizeProgram"))
+, m_colorizeRenderPass(cppassist::make_unique<gloperate::RenderPassStage>(environment, "ColorizeRenderPass"))
+, m_colorizeRasterization(cppassist::make_unique<gloperate::RasterizationStage>(environment, "ColorizeRasterization"))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
@@ -54,64 +59,81 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
     rotate = true;
     rotate.valueChanged.connect(this, &DemoPipeline::onRotateChanged);
 
-    // Texture loader stage
-    addStage(m_textureLoadStage.get());
-    m_textureLoadStage->filename << texture;
-
     // Timer stage
-    addStage(m_timerStage.get());
-    m_timerStage->timeDelta << renderInterface.timeDelta;
+    addStage(m_timer.get());
+    m_timer->timeDelta << renderInterface.timeDelta;
 
-    // Framebuffer stage for spinning rect
-    addStage(m_framebufferStage1.get());
-    m_framebufferStage1->viewport << renderInterface.deviceViewport;
+    // Trackball stage
+    addStage(m_trackball.get());
+    m_trackball->viewport << renderInterface.deviceViewport;
 
-    // Spinning rectangle stage
-    addStage(m_spinningRectStage.get());
-    m_spinningRectStage->renderInterface.deviceViewport  << renderInterface.deviceViewport;
-    m_spinningRectStage->renderInterface.targetFBO       << m_framebufferStage1->fbo;
-    m_spinningRectStage->colorTexture                    << m_framebufferStage1->colorTexture;
-    m_spinningRectStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_spinningRectStage->texture                         << m_textureLoadStage->texture;
-    m_spinningRectStage->angle                           << m_timerStage->virtualTime;
+    // Shape stage
+    addStage(m_shape.get());
+    m_shape->shapeType = ShapeType::Box;
+    m_shape->width     = 1.0f;
+    m_shape->height    = 1.0f;
+    m_shape->depth     = 1.0f;
+    m_shape->radius    = 1.0f;
+    m_shape->texCoords = true;
 
-    // Framebuffer stage for colorized output
-    addStage(m_framebufferStage2.get());
-    m_framebufferStage2->viewport << renderInterface.deviceViewport;
+    // Texture loader stage
+    addStage(m_texture.get());
+    m_texture->filename << texture;
 
-    shader1 = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
-    shader2 = dataPath + "/gloperate/shaders/demo/colorize.frag";
+    // Framebuffer stage
+    addStage(m_framebuffer.get());
+    m_framebuffer->viewport << renderInterface.deviceViewport;
+
+    // Clear stage
+    addStage(m_clear.get());
+    m_clear->renderInterface.targetFBO << m_framebuffer->fbo;
+    m_clear->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_clear->renderInterface.backgroundColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    m_clear->colorTexture << m_framebuffer->colorTexture;
+    m_clear->createInput("renderPass") << m_shapeRenderPass->renderPass;
+
+    // Program stage for shape
+    addStage(m_shapeProgram.get());
+    *m_shapeProgram->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/geometry/geometry.vert";
+    *m_shapeProgram->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/geometry/geometry.frag";
+
+    // Render pass stage for shape
+    addStage(m_shapeRenderPass.get());
+    m_shapeRenderPass->culling = false;
+    m_shapeRenderPass->drawable << m_shape->drawable;
+    m_shapeRenderPass->program << m_shapeProgram->program;
+    m_shapeRenderPass->camera << m_trackball->camera;
+    m_shapeRenderPass->createInput("color") << this->color;
+    m_shapeRenderPass->createInput("tex0") << m_texture->texture;
+
+    // Rasterization stage for shape
+    addStage(m_shapeRasterization.get());
+    m_shapeRasterization->renderInterface.targetFBO << m_clear->fboOut;
+    m_shapeRasterization->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_shapeRasterization->drawable << m_shapeRenderPass->renderPass;
+    m_shapeRasterization->colorTexture << m_clear->colorTextureOut;
 
     // Colorize program stage
-    addStage(m_colorizeProgramStage.get());
-    m_colorizeProgramStage->createInput("shader1") << shader1;
-    m_colorizeProgramStage->createInput("shader2") << shader2;
+    addStage(m_colorizeProgram.get());
+    *m_colorizeProgram->createInput<cppassist::FilePath>("shader1") = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
+    *m_colorizeProgram->createInput<cppassist::FilePath>("shader2") = dataPath + "/gloperate/shaders/demo/colorize.frag";
 
     // Colorize render pass stage
-    addStage(m_colorizeRenderPassStage.get());
-    // m_colorizeRenderPassStage->drawable is set in onContextInit()
-    m_colorizeRenderPassStage->program << m_colorizeProgramStage->program;
-    m_colorizeRenderPassStage->culling = false;
-    m_colorizeRenderPassStage->createInput("color") << this->color;
-    m_colorizeRenderPassStage->createInput("source") << m_spinningRectStage->colorTextureOut;
+    addStage(m_colorizeRenderPass.get());
+    // m_colorizeRenderPass->drawable is set in onContextInit()
+    m_colorizeRenderPass->program << m_colorizeProgram->program;
+    m_colorizeRenderPass->culling = false;
+    m_colorizeRenderPass->createInput("color") << this->color;
+    m_colorizeRenderPass->createInput("source") << m_shapeRasterization->colorTextureOut;
 
     // Colorize rasterization stage
-    addStage(m_colorizeRasterizationStage.get());
-    m_colorizeRasterizationStage->renderInterface.targetFBO << m_framebufferStage2->fbo;
-    m_colorizeRasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_colorizeRasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_colorizeRasterizationStage->drawable << m_colorizeRenderPassStage->renderPass;
-    m_colorizeRasterizationStage->colorTexture << m_framebufferStage2->colorTexture;
-
-    // Blit stage
-    addStage(m_blitStage.get());
-    m_blitStage->sourceFBO << m_colorizeRasterizationStage->fboOut;
-    m_blitStage->sourceViewport << renderInterface.deviceViewport;
-    m_blitStage->targetFBO << renderInterface.targetFBO;
-    m_blitStage->targetViewport << renderInterface.deviceViewport;
+    addStage(m_colorizeRasterization.get());
+    m_colorizeRasterization->renderInterface.targetFBO << renderInterface.targetFBO;
+    m_colorizeRasterization->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_colorizeRasterization->drawable << m_colorizeRenderPass->renderPass;
 
     // Outputs
-    renderInterface.rendered << m_blitStage->rendered;
+    renderInterface.rendered << m_colorizeRasterization->renderInterface.rendered;
 }
 
 DemoPipeline::~DemoPipeline()
@@ -124,7 +146,7 @@ void DemoPipeline::onContextInit(gloperate::AbstractGLContext * context)
 
     m_quad = cppassist::make_unique<gloperate::Quad>(2.0f);
 
-    m_colorizeRenderPassStage->drawable = m_quad.get();
+    m_colorizeRenderPass->drawable = m_quad.get();
 }
 
 void DemoPipeline::onContextDeinit(gloperate::AbstractGLContext * context)
@@ -136,9 +158,11 @@ void DemoPipeline::onContextDeinit(gloperate::AbstractGLContext * context)
 
 void DemoPipeline::onRotateChanged(const bool & rotate)
 {
+    /*
     if (rotate) {
-        m_spinningRectStage->angle << m_timerStage->virtualTime;
+        m_spinningRectStage->angle << m_timer->virtualTime;
     } else {
         m_spinningRectStage->angle << angle;
     }
+    */
 }

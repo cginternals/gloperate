@@ -20,12 +20,13 @@ namespace gloperate
     class ProgramStage;
     class RenderPassStage;
     class RasterizationStage;
-    class BlitStage;
+    class ClearStage;
     class ScreenAlignedQuad;
     class Quad;
+    class ShapeStage;
+    class TrackballStage;
 }
 
-class SpinningRectStage;
 class TimerStage;
 
 
@@ -57,9 +58,6 @@ public:
     Input<bool>                rotate;          ///< Rotation automatically?
     Input<gloperate::Color>    color;           ///< Mixer color
 
-    Input<cppassist::FilePath> shader1;         ///< Shader 1 filename
-    Input<cppassist::FilePath> shader2;         ///< Shader 2 filename
-
 
 public:
     /**
@@ -88,19 +86,24 @@ protected:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate::TextureLoadStage>      m_textureLoadStage;           ///< Stage that loads a static picture
-    std::unique_ptr<TimerStage>                       m_timerStage;                 ///< Timer for continuous rendering and animation
+    std::unique_ptr<TimerStage>                       m_timer;                 ///< Timer for continuous rendering and animation
 
-    std::unique_ptr<gloperate::BasicFramebufferStage> m_framebufferStage1;          ///< Framebuffer for rendering the spinning rect
-    std::unique_ptr<SpinningRectStage>                m_spinningRectStage;          ///< Stage that renders the spinning rect
+    std::unique_ptr<gloperate::TrackballStage>        m_trackball;             ///< Trackball camera navigation stage
 
-    std::unique_ptr<gloperate::BasicFramebufferStage> m_framebufferStage2;          ///< Framebuffer for rendering the colorized output
-    std::unique_ptr<gloperate::ProgramStage>          m_colorizeProgramStage;       ///< Builds the Program for blending an image with a color
-    std::unique_ptr<gloperate::RenderPassStage>       m_colorizeRenderPassStage;    ///< Builds the RenderPass for the same task
-    std::unique_ptr<gloperate::RasterizationStage>    m_colorizeRasterizationStage; ///< Executes this RenderPass on the inputs
+    std::unique_ptr<gloperate::ShapeStage>            m_shape;                 ///< Stage that generates a basic shape
+    std::unique_ptr<gloperate::TextureLoadStage>      m_texture;               ///< Stage that loads a static picture
+    std::unique_ptr<gloperate::BasicFramebufferStage> m_framebuffer;           ///< Framebuffer for rendering the shape
 
-    std::unique_ptr<gloperate::BlitStage>             m_blitStage;                  ///< Stage that renders the output to the screen
+    std::unique_ptr<gloperate::ClearStage>            m_clear;                 ///< Clears the output image
+
+    std::unique_ptr<gloperate::ProgramStage>          m_shapeProgram;          ///< Builds the Program for rendering the shape
+    std::unique_ptr<gloperate::RenderPassStage>       m_shapeRenderPass;       ///< Builds the RenderPass for rendering the shape
+    std::unique_ptr<gloperate::RasterizationStage>    m_shapeRasterization;    ///< Executes the RenderPass
+
+    std::unique_ptr<gloperate::ProgramStage>          m_colorizeProgram;       ///< Builds the Program for blending
+    std::unique_ptr<gloperate::RenderPassStage>       m_colorizeRenderPass;    ///< Builds the RenderPass for blending
+    std::unique_ptr<gloperate::RasterizationStage>    m_colorizeRasterization; ///< Executes the RenderPass
 
     // Internal data
-    std::unique_ptr<gloperate::Quad>                  m_quad;                       ///< Screen-aligned quad for colorization in demo
+    std::unique_ptr<gloperate::Quad>                  m_quad;                  ///< Screen-aligned quad for colorization in demo
 };
