@@ -103,7 +103,7 @@ void DemoStage::onProcess()
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Update animation
-    m_angle = *renderInterface.virtualTime;
+    m_angle += *renderInterface.timeDelta;
 
     // Clear background
     glm::vec3 color = *renderInterface.backgroundColor;
