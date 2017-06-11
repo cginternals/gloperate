@@ -39,8 +39,6 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
-    ${include_path}/DemoStage.h
-    ${include_path}/DemoStage2.h
     ${include_path}/DemoPipeline.h
     ${include_path}/ShaderDemoPipeline.h
     ${include_path}/DemoAntialiasableTriangleStage.h
@@ -53,9 +51,7 @@ set(headers
     ${include_path}/DemoTransparencyStage.h
     ${include_path}/DemoTransparencyPipeline.h
     ${include_path}/DemoMultiFramePipeline.h
-    ${include_path}/DemoRenderStage.h
     ${include_path}/DemoDrawableStage.h
-    ${include_path}/ColorizeStage.h
     ${include_path}/LightTestStage.h
     ${include_path}/LightTestPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
@@ -65,8 +61,6 @@ set(headers
 set(sources
     ${source_path}/plugin.cpp
 
-    ${source_path}/DemoStage.cpp
-    ${source_path}/DemoStage2.cpp
     ${source_path}/DemoPipeline.cpp
     ${source_path}/ShaderDemoPipeline.cpp
     ${source_path}/DemoAntialiasableTriangleStage.cpp
@@ -79,9 +73,7 @@ set(sources
     ${source_path}/DemoTransparencyStage.cpp
     ${source_path}/DemoTransparencyPipeline.cpp
     ${source_path}/DemoMultiFramePipeline.cpp
-    ${source_path}/DemoRenderStage.cpp
     ${source_path}/DemoDrawableStage.cpp
-    ${source_path}/ColorizeStage.cpp
     ${source_path}/LightTestStage.cpp
     ${source_path}/LightTestPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp

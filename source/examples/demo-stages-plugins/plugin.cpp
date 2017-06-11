@@ -1,18 +1,15 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include "ColorizeStage.h"
 #include "DemoAntialiasableTriangleStage.h"
 #include "DemoAntialiasingPipeline.h"
 #include "DemoDOFCubeStage.h"
 #include "DemoDOFPipeline.h"
 #include "DemoMultiFramePipeline.h"
 #include "DemoPipeline.h"
-#include "DemoRenderStage.h"
 #include "DemoSSAOPipeline.h"
 #include "DemoSSAOPostprocessingStage.h"
 #include "DemoSSAORenderingStage.h"
-#include "DemoStage.h"
 #include "DemoTransparencyPipeline.h"
 #include "DemoTransparencyStage.h"
 #include "DemoTextRenderingPipeline.h"
@@ -24,18 +21,15 @@
 
 CPPEXPOSE_PLUGIN_LIBRARY
 
-    CPPEXPOSE_PLUGIN_COMPONENT(ColorizeStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoAntialiasableTriangleStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoAntialiasingPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoDOFCubeStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoDOFPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoMultiFramePipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoPipeline)
-    CPPEXPOSE_PLUGIN_COMPONENT(DemoRenderStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoSSAOPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoSSAOPostprocessingStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoSSAORenderingStage)
-    CPPEXPOSE_PLUGIN_COMPONENT(DemoStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoTransparencyPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoTransparencyStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoTextRenderingPipeline)
