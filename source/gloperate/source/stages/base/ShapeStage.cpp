@@ -5,6 +5,7 @@
 
 #include <gloperate/rendering/Point.h>
 #include <gloperate/rendering/Quad.h>
+#include <gloperate/rendering/Triangle.h>
 #include <gloperate/rendering/Box.h>
 #include <gloperate/rendering/Sphere.h>
 
@@ -61,6 +62,10 @@ void ShapeStage::onProcess()
 
         case ShapeType::Quad:
             m_shape = cppassist::make_unique<Quad>(*this->width, *this->height, options);
+            break;
+
+        case ShapeType::Triangle:
+            m_shape = cppassist::make_unique<Triangle>(*this->width, *this->height, options);
             break;
 
         case ShapeType::Box:

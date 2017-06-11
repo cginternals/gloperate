@@ -99,6 +99,7 @@ set(headers
     ${include_path}/rendering/Shape.h
     ${include_path}/rendering/ShapeType.h
     ${include_path}/rendering/Point.h
+    ${include_path}/rendering/Triangle.h
     ${include_path}/rendering/Quad.h
     ${include_path}/rendering/Box.h
     ${include_path}/rendering/Sphere.h
@@ -192,6 +193,7 @@ set(sources
     ${source_path}/rendering/ScreenAlignedTriangle.cpp
     ${source_path}/rendering/Shape.cpp
     ${source_path}/rendering/Point.cpp
+    ${source_path}/rendering/Triangle.cpp
     ${source_path}/rendering/Quad.cpp
     ${source_path}/rendering/Box.cpp
     ${source_path}/rendering/Sphere.cpp
