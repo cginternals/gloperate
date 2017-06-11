@@ -36,7 +36,10 @@ public:
 
 public:
     // Inputs
-    Input<float> angle; ///< Rotation angle (in radians)
+    Input<glm::vec3> rotationAxis;  ///< Axis around which the object is rotated
+    Input<float>     rotationAngle; ///< Rotation angle (in radians)
+    Input<glm::vec3> translation;   ///< Vector by which the object is translated
+    Input<glm::vec3> scale;         ///< Factors by which the object is scaled
 
     // Outputs
     Output<glm::mat4> modelMatrix; ///< Transformation matrix

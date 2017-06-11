@@ -96,7 +96,7 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
 
     // Transform stage for shape
     addStage(m_shapeTransform.get());
-    m_shapeTransform->angle << angle;
+    m_shapeTransform->rotationAngle << angle;
 
     // Program stage for shape
     addStage(m_shapeProgram.get());
