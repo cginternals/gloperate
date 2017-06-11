@@ -55,6 +55,7 @@ void RasterizationStage::onProcess()
     // Update outputs
     fboOut.setValue(fbo);
     colorTextureOut.setValue(*colorTexture);
+    renderInterface.rendered.setValue(true);
 }
 
 
