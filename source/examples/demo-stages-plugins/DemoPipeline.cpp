@@ -57,13 +57,14 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     texture = dataPath + "/gloperate/textures/gloperate-logo.glraw";
 
     angle.setOption("minimumValue", 0.0f);
-    angle.setOption("maximumValue", 6.3f);
+    angle.setOption("maximumValue", 2.0f * glm::pi<float>());
+    angle.setOption("updateOnDrag", true);
 
     rotate.valueChanged.connect(this, &DemoPipeline::onRotateChanged);
 
     // Timer stage
     addStage(m_timer.get());
-    m_timer->interval = 6.3f;
+    m_timer->interval = 2.0f * glm::pi<float>();
 
     // Trackball stage
     addStage(m_trackball.get());
@@ -168,13 +169,25 @@ void DemoPipeline::onContextDeinit(AbstractGLContext * context)
 
 void DemoPipeline::onRotateChanged(const bool & rotate)
 {
-    if (rotate) {
+    // Switch rotation on
+    if (rotate)
+    {
+        // Set timer to current rotation value
         m_timer->virtualTime = *angle;
+
+        // Connect angle to timer and resume timer
         angle << m_timer->virtualTime;
         m_timer->timeDelta << renderInterface.timeDelta;
-    } else {
+    }
+
+    // Switch rotation off
+    else
+    {
+        // Set angle to current timer value
         angle.disconnect();
         angle = *m_timer->virtualTime;
+
+        // Stop time
         m_timer->timeDelta.disconnect();
     }
 }
