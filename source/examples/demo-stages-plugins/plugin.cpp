@@ -6,7 +6,7 @@
 #include "DemoDOFCubeStage.h"
 #include "DemoDOFPipeline.h"
 #include "DemoMultiFramePipeline.h"
-#include "DemoPipeline.h"
+#include "ShapeDemo.h"
 #include "DemoSSAOPipeline.h"
 #include "DemoSSAOPostprocessingStage.h"
 #include "DemoSSAORenderingStage.h"
@@ -26,7 +26,7 @@ CPPEXPOSE_PLUGIN_LIBRARY
     CPPEXPOSE_PLUGIN_COMPONENT(DemoDOFCubeStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoDOFPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoMultiFramePipeline)
-    CPPEXPOSE_PLUGIN_COMPONENT(DemoPipeline)
+    CPPEXPOSE_PLUGIN_COMPONENT(ShapeDemo)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoSSAOPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoSSAOPostprocessingStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoSSAORenderingStage)

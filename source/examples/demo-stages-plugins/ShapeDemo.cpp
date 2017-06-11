@@ -1,5 +1,5 @@
 
-#include "DemoPipeline.h"
+#include "ShapeDemo.h"
 
 #include <glbinding/gl/enum.h>
 
@@ -21,15 +21,15 @@
 #include <gloperate/rendering/Quad.h>
 
 
-CPPEXPOSE_COMPONENT(DemoPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(ShapeDemo, gloperate::Stage)
 
 
 using namespace cppexpose;
 using namespace gloperate;
 
 
-DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
-: Pipeline(environment, "DemoPipeline", name)
+ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
+: Pipeline(environment, "ShapeDemo", name)
 , renderInterface(this)
 , shape("shape", this, ShapeType::Box)
 , texture("texture", this)
@@ -60,7 +60,7 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     angle.setOption("maximumValue", 2.0f * glm::pi<float>());
     angle.setOption("updateOnDrag", true);
 
-    rotate.valueChanged.connect(this, &DemoPipeline::onRotateChanged);
+    rotate.valueChanged.connect(this, &ShapeDemo::onRotateChanged);
 
     // Timer stage
     addStage(m_timer.get());
@@ -147,11 +147,11 @@ DemoPipeline::DemoPipeline(Environment * environment, const std::string & name)
     rotate = true;
 }
 
-DemoPipeline::~DemoPipeline()
+ShapeDemo::~ShapeDemo()
 {
 }
 
-void DemoPipeline::onContextInit(AbstractGLContext * context)
+void ShapeDemo::onContextInit(AbstractGLContext * context)
 {
     Pipeline::onContextInit(context);
 
@@ -160,14 +160,14 @@ void DemoPipeline::onContextInit(AbstractGLContext * context)
     m_colorizeRenderPass->drawable = m_quad.get();
 }
 
-void DemoPipeline::onContextDeinit(AbstractGLContext * context)
+void ShapeDemo::onContextDeinit(AbstractGLContext * context)
 {
     Pipeline::onContextDeinit(context);
 
     m_quad = nullptr;
 }
 
-void DemoPipeline::onRotateChanged(const bool & rotate)
+void ShapeDemo::onRotateChanged(const bool & rotate)
 {
     // Switch rotation on
     if (rotate)

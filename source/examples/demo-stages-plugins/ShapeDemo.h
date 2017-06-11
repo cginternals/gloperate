@@ -33,17 +33,17 @@ namespace gloperate
 
 /**
 *  @brief
-*    Demo pipeline displaying a rotating logo
+*    Demo pipeline displaying a rotating shape
 */
-class DemoPipeline : public gloperate::Pipeline
+class ShapeDemo : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoPipeline, gloperate::Stage
+        ShapeDemo, gloperate::Stage
       , "RenderStage Demos" // Tags
       , ""                  // Icon
       , ""                  // Annotations
-      , "Demo pipeline displaying a rotating logo"
+      , "Demo pipeline displaying a rotating shape"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -71,13 +71,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    DemoPipeline(gloperate::Environment * environment, const std::string & name = "");
+    ShapeDemo(gloperate::Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoPipeline();
+    virtual ~ShapeDemo();
 
 
 protected:
