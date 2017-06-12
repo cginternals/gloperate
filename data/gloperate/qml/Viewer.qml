@@ -398,15 +398,16 @@ ApplicationWindow
     {
         id: settings
 
-        property int    x:             100
-        property int    y:             100
-        property int    width:         800
-        property int    height:        600
-        property int    logLevel:      3
-        property bool   debugMode:     false
-        property string panelPosition: 'left'
-        property string stage:         ''
-        property string pluginPaths:   ''
+        property int    x:                100
+        property int    y:                100
+        property int    width:            800
+        property int    height:           600
+        property int    logLevel:         3
+        property bool   debugMode:        false
+        property bool   continuousRedraw: false
+        property string panelPosition:    'left'
+        property string stage:            ''
+        property string pluginPaths:      ''
 
         onLogLevelChanged:
         {
@@ -416,6 +417,11 @@ ApplicationWindow
         onDebugModeChanged:
         {
             Ui.debugMode = debugMode;
+        }
+        
+        onContinuousRedrawChanged:
+        {
+            gloperate.system.setContinuousRedraw(continuousRedraw);
         }
     }
 

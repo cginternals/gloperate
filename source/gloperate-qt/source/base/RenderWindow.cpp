@@ -8,6 +8,7 @@
 #include <QOpenGLContext>
 
 #include <gloperate/base/Canvas.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Converter.h>
@@ -70,6 +71,11 @@ void RenderWindow::onPaint()
 void RenderWindow::onTimer()
 {
     m_canvas->updateTime();
+
+    if (m_canvas->environment()->continuousRedraw())
+    {
+        updateGL();
+    }
 }
 
 void RenderWindow::keyPressEvent(QKeyEvent * event)
