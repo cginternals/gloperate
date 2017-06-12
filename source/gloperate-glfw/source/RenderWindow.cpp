@@ -9,6 +9,7 @@
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/base/Canvas.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-glfw/GLContext.h>
 #include <gloperate-glfw/WindowEvent.h>
@@ -172,6 +173,11 @@ void RenderWindow::onIconify(IconifyEvent &)
 void RenderWindow::onIdle()
 {
     m_canvas->updateTime();
+
+    if (m_canvas->environment()->continuousRedraw())
+    {
+        repaint();
+    }
 }
 
 gloperate::MouseButton RenderWindow::fromGLFWMouseButton(int button) const

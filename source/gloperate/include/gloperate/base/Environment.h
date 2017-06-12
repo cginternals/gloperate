@@ -195,7 +195,7 @@ public:
     *    from file. Instead, it resets all settings to default and restores
     *    the config file.
     */
-    bool safeMode();    
+    bool safeMode() const;
 
     /**
     *  @brief
@@ -208,6 +208,24 @@ public:
     *    see safeMode()
     */
     void setSafeMode(bool safeMode);
+
+    /**
+    *  @brief
+    *    Get continuous-redraw-flag
+    *
+    *  @return
+    *    'true' if continuous redraw is activated, else 'false'
+    */
+    bool continuousRedraw() const;
+
+    /**
+    *  @brief
+    *    Set continuous-redraw-flag
+    *
+    *  @param[in] continuousRedraw
+    *    'true' if continuous redraw is activated, else 'false'
+    */
+    void setContinuousRedraw(bool continuousRedraw);
     //@}
 
 
@@ -265,6 +283,7 @@ protected:
 
     std::string                               m_helpText;         ///< Text that is displayed on 'help'
     bool                                      m_safeMode;         ///< If 'true', settings are not loaded from file but reset to default values
+    bool                                      m_continuousRedraw; ///< If 'true', a redraw is permanently issued
 };
 
 
