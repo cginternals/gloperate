@@ -32,9 +32,9 @@ class DemoAntialiasingPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoAntialiasingPipeline, gloperate::Stage
-      , "RenderStage Demo Antialiasing" // Tags
-      , ""                              // Icon
-      , ""                              // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Demo pipeline that renders a static triangle onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

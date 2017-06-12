@@ -125,6 +125,7 @@ set(headers
     ${include_path}/stages/base/RasterizationStage.h
     ${include_path}/stages/base/ClearStage.h
     ${include_path}/stages/base/ProgramStage.h
+    ${include_path}/stages/navigation/TrackballStage.h
     ${include_path}/stages/base/VectorSelectionStage.h
     ${include_path}/stages/base/VectorSelectionStage.inl
     ${include_path}/stages/lights/LightCreationStage.h
@@ -213,6 +214,7 @@ set(sources
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
     ${source_path}/stages/base/BlitStage.cpp
+    ${source_path}/stages/navigation/TrackballStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
 

@@ -83,6 +83,7 @@ public:
     cppexpose::Signal<AbstractSlot *> inputRemoved;  ///< Called when an input slot has been removed
     cppexpose::Signal<AbstractSlot *> outputAdded;   ///< Called when an output slot has been added
     cppexpose::Signal<AbstractSlot *> outputRemoved; ///< Called when an output slot has been removed
+    cppexpose::Signal<AbstractSlot *> inputChanged;  ///< Called when an input slot has changed its value
 
 
 public:
@@ -708,16 +709,6 @@ protected:
     *    Common implementation of addOutput(AbstractSlot *) and addOutput(std::unique_ptr<AbstractSlot> &&)
     */
     void registerOutput(AbstractSlot * output);
-
-
-protected:
-    // Scripting functions
-    virtual cppexpose::Variant scr_getDescription();
-    cppexpose::Variant scr_getConnections();
-    cppexpose::Variant scr_getSlot(const std::string & name);
-    void scr_setSlotValue(const std::string & name, const cppexpose::Variant & value);
-    void scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name);
-    cppexpose::Variant scr_slotTypes();
 
 
 protected:

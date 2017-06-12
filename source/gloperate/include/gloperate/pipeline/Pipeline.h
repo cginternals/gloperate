@@ -153,15 +153,6 @@ protected:
 
 
 protected:
-    // Scripting functions
-    virtual cppexpose::Variant scr_getDescription() override;
-    std::string scr_createStage(const std::string & className, const std::string & name);
-    void scr_removeStage(const std::string & name);
-    void scr_createConnection(const std::string & from, const std::string & to);
-    void scr_removeConnection(const std::string & to);
-
-
-protected:
     std::vector<Stage *>                     m_stages;    ///< List of topologically sorted stages in the pipeline
     std::unordered_map<std::string, Stage *> m_stagesMap; ///< Map of names -> stages
     bool                                     m_sorted;    ///< Have the stages of the pipeline already been sorted?

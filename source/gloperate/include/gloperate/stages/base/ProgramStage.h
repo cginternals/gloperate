@@ -3,6 +3,7 @@
 
 
 #include <cppexpose/plugin/plugin_api.h>
+#include <cppexpose/signal/ScopedConnection.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>

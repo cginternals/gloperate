@@ -47,7 +47,11 @@ DemoPipeline::DemoPipeline(gloperate::Environment * environment, const std::stri
 
     // Setup parameters
     texture = dataPath + "/gloperate/textures/gloperate-logo.glraw";
-    rotate  = true;
+
+    angle.setOption("minimumValue", 0.0f);
+    angle.setOption("maximumValue", 6.3f);
+
+    rotate = true;
     rotate.valueChanged.connect(this, &DemoPipeline::onRotateChanged);
 
     // Texture loader stage
