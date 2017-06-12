@@ -32,13 +32,11 @@ void CubeMapProjectionsStage::onContextInit(gloperate::AbstractGLContext * /*con
 void CubeMapProjectionsStage::onProcess()
 {
     const auto c = *center;
+    const auto projection = glm::perspective(glm::radians(90.0f), 1.0f, *nearPlane, *farPlane);
 
     for (int i = 0; i < 6; ++i)
     {
-        const auto projection = glm::perspective(glm::radians(90.0f), 1.0f, *nearPlane, *farPlane);
-        const auto view = glm::lookAt(c, c + viewDirs[i], ups[i]);
-
-        projections->at(i) = std::move(projection) * std::move(view);
+        m_projections.at(i) = projection * glm::lookAt(c, c + viewDirs[i], ups[i]);
     }
 
     projections.setValue(&m_projections);
