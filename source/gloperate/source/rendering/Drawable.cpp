@@ -21,6 +21,7 @@ Drawable::Drawable()
 , m_size(0)
 , m_primitiveMode(gl::GL_TRIANGLES)
 , m_indexBufferType(gl::GL_UNSIGNED_INT)
+, m_indexBuffer(nullptr)
 {
 }
 
