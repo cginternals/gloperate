@@ -79,54 +79,6 @@ namespace cppexpose
 
 
 template <typename BASE>
-TypedFilename<BASE>::TypedFilename()
-{
-}
-
-template <typename BASE>
-TypedFilename<BASE>::~TypedFilename()
-{
-}
-
-template <typename BASE>
-bool TypedFilename<BASE>::isString() const
-{
-    return true;
-}
-
-template <typename BASE>
-std::string TypedFilename<BASE>::toString() const
-{
-    return this->value().path();
-}
-
-template <typename BASE>
-bool TypedFilename<BASE>::fromString(const std::string & string)
-{
-    this->setValue(cppassist::FilePath(string));
-    return true;
-}
-
-template <typename BASE>
-Variant TypedFilename<BASE>::toVariant() const
-{
-    return Variant::fromValue<std::string>(this->toString());
-}
-
-template <typename BASE>
-bool TypedFilename<BASE>::fromVariant(const Variant & variant)
-{
-    return this->fromString(variant.value<std::string>());
-}
-
-template <typename BASE>
-std::string TypedFilename<BASE>::typeName() const
-{
-    return "filename";
-}
-
-
-template <typename BASE>
 TypedColor<BASE>::TypedColor()
 {
 }
@@ -134,6 +86,12 @@ TypedColor<BASE>::TypedColor()
 template <typename BASE>
 TypedColor<BASE>::~TypedColor()
 {
+}
+
+template <typename BASE>
+std::string TypedColor<BASE>::typeName() const
+{
+    return "color";
 }
 
 template <typename BASE>
@@ -174,12 +132,6 @@ bool TypedColor<BASE>::fromVariant(const Variant & variant)
     return this->fromString(variant.value<std::string>());
 }
 
-template <typename BASE>
-std::string TypedColor<BASE>::typeName() const
-{
-    return "color";
-}
-
 
 template <typename VectorType, typename ValueType, glm::length_t Size, typename BASE>
 TypedGlmVec<VectorType, ValueType, Size, BASE>::TypedGlmVec()
@@ -189,6 +141,12 @@ TypedGlmVec<VectorType, ValueType, Size, BASE>::TypedGlmVec()
 template <typename VectorType, typename ValueType, glm::length_t Size, typename BASE>
 TypedGlmVec<VectorType, ValueType, Size, BASE>::~TypedGlmVec()
 {
+}
+
+template <typename VectorType, typename ValueType, glm::length_t Size, typename BASE>
+std::string TypedGlmVec<VectorType, ValueType, Size, BASE>::typeName() const
+{
+    return "glm::" + gloperate::VectorPrefix<ValueType>::getPrefix() + "vec" + cppassist::string::toString<int>(Size);
 }
 
 template <typename VectorType, typename ValueType, glm::length_t Size, typename BASE>
@@ -218,12 +176,6 @@ template <typename VectorType, typename ValueType, glm::length_t Size, typename 
 bool TypedGlmVec<VectorType, ValueType, Size, BASE>::fromVariant(const cppexpose::Variant & value)
 {
     return fromString(value.toString());
-}
-
-template <typename VectorType, typename ValueType, glm::length_t Size, typename BASE>
-std::string TypedGlmVec<VectorType, ValueType, Size, BASE>::typeName() const
-{
-    return "glm::" + gloperate::VectorPrefix<ValueType>::getPrefix() + "vec" + cppassist::string::toString<int>(Size);
 }
 
 
