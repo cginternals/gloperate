@@ -25,9 +25,9 @@ class DemoStage : public gloperate::Stage
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoStage, gloperate::Stage
-      , "RenderStage Demo" // Tags
-      , ""                 // Icon
-      , ""                 // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Demo stage that renders a spinning rectangle onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

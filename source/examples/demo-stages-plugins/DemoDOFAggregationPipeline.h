@@ -29,9 +29,9 @@ class DemoDOFAggregationPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoDOFAggregationPipeline, gloperate::Stage
-      , "RenderStage Demo Multiframe" // Tags
-      , ""                            // Icon
-      , ""                            // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Demo pipeline showing multiframe aggregation"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"

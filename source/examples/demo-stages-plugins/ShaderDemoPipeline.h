@@ -34,9 +34,9 @@ class ShaderDemoPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         ShaderDemoPipeline, gloperate::Stage
-      , "RenderStage Demo Shader" // Tags
-      , ""                        // Icon
-      , ""                        // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Demo pipeline displaying a static logo"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

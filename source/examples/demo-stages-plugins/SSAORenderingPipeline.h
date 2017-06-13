@@ -9,21 +9,17 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
-namespace gloperate_glkernel {
-
-class HemisphereDistributionKernelStage;
-class NoiseKernelStage;
-
+namespace gloperate_glkernel
+{
+    class HemisphereDistributionKernelStage;
+    class NoiseKernelStage;
 }
 
 namespace gloperate
 {
-
-class FramebufferStage;
-class TextureStage;
-
+    class FramebufferStage;
+    class TextureStage;
 }
-
 
 class SSAOSceneRenderingStage;
 class SSAOApplicationStage;

@@ -16,6 +16,15 @@ RenderInterface::RenderInterface(Stage * stage)
 , targetFBO      ("targetFBO", stage)
 , rendered       ("rendered", stage)
 {
+    // Hide inputs in property editor
+    deviceViewport .setOption("hidden", true);
+    virtualViewport.setOption("hidden", true);
+    backgroundColor.setOption("hidden", true);
+    frameCounter   .setOption("hidden", true);
+    virtualTime    .setOption("hidden", true);
+    timeDelta      .setOption("hidden", true);
+    targetFBO      .setOption("hidden", true);
+    rendered       .setOption("hidden", true);
 }
 
 RenderInterface::~RenderInterface()

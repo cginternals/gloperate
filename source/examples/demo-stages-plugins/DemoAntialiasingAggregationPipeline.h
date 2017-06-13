@@ -10,10 +10,9 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
-namespace gloperate_glkernel {
-
-class MultiFrameAggregationPipeline;
-
+namespace gloperate_glkernel
+{
+    class MultiFrameAggregationPipeline;
 }
 
 
@@ -29,9 +28,9 @@ class DemoAntialiasingAggregationPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoAntialiasingAggregationPipeline, gloperate::Stage
-      , "RenderStage Demo Multiframe" // Tags
-      , ""                            // Icon
-      , ""                            // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Demo pipeline showing multiframe aggregation"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"

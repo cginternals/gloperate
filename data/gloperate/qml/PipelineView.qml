@@ -14,8 +14,8 @@ Item
 
     signal closed()
 
-    property var    pipelineInterface: null ///< Interface for communicating with the actual pipeline
-    property string path:              ''   ///< Path to pipeline
+    property var    properties: null ///< Interface for communicating with the actual properties
+    property string path:       ''   ///< Path to pipeline
 
     implicitWidth:  pipelineEditor.implicitWidth
     implicitHeight: pipelineEditor.implicitHeight
@@ -26,7 +26,7 @@ Item
 
         anchors.fill: parent
 
-        pipelineInterface: page.pipelineInterface
+        properties: page.properties
 
         Button
         {

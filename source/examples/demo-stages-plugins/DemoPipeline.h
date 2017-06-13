@@ -38,9 +38,9 @@ class DemoPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoPipeline, gloperate::Stage
-      , "RenderStage Demo" // Tags
-      , ""                 // Icon
-      , ""                 // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Demo pipeline displaying a rotating logo"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
