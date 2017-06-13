@@ -91,7 +91,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     addStage(m_clear.get());
     m_clear->renderInterface.targetFBO << m_framebuffer->fbo;
     m_clear->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_clear->renderInterface.backgroundColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    m_clear->renderInterface.backgroundColor = Color(0.0f, 0.0f, 0.0f, 1.0f);
     m_clear->colorTexture << m_framebuffer->colorTexture;
     m_clear->createInput("renderPass") << m_shapeRenderPass->renderPass;
 
