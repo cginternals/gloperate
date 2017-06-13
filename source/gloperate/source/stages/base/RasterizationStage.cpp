@@ -32,25 +32,25 @@ RasterizationStage::~RasterizationStage()
 
 void RasterizationStage::onProcess()
 {
-    // Check if rasterization is enabled
-    if (!*rasterize)
-    {
-        return;
-    }
-
-    // Set viewport
-    const glm::vec4 & viewport = *renderInterface.deviceViewport;
-    gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
-
-    // Bind FBO
+    // Get FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    fbo->bind(gl::GL_FRAMEBUFFER);
 
-    // Render the drawable
-    (*drawable)->draw();
+    // Check if rasterization is enabled
+    if (*rasterize)
+    {
+        // Set viewport
+        const glm::vec4 & viewport = *renderInterface.deviceViewport;
+        gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
-    // Unbind FBO
-    globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+        // Bind FBO
+        fbo->bind(gl::GL_FRAMEBUFFER);
+
+        // Render the drawable
+        (*drawable)->draw();
+
+        // Unbind FBO
+        globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+    }
 
     // Update outputs
     fboOut.setValue(fbo);
