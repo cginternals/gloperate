@@ -99,6 +99,75 @@ public:
     */
     void bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo);
 
+    /**
+    *  @brief
+    *    Get current attachment type
+    *
+    *  @return
+    *    The current attachment type
+    */
+    RenderTargetType type() const;
+
+    /**
+    *  @brief
+    *    Get default framebuffer attachment
+    *
+    *  @return
+    *    The default framebuffer attachment
+    *
+    *  @remarks
+    *    The result is only defined if type() == DefaultFBOAttachment
+    */
+    gl::GLenum defaultFramebufferAttachment() const;
+
+    /**
+    *  @brief
+    *    Get texture attachment
+    *
+    *  @return
+    *    The texture attachment
+    *
+    *  @remarks
+    *    The result is only defined if type() == Texture
+    */
+    globjects::Texture * textureAttachment() const;
+
+    /**
+    *  @brief
+    *    Get renderbuffer attachment
+    *
+    *  @return
+    *    The renderbuffer attachment
+    *
+    *  @remarks
+    *    The result is only defined if type() == Renderbuffer
+    */
+    globjects::Renderbuffer * renderbufferAttachment() const;
+
+    /**
+    *  @brief
+    *    Get framebuffer attachment
+    *
+    *  @return
+    *    The framebuffer attachment
+    *
+    *  @remarks
+    *    The result is only defined if type() == UserDefinedFBOAttachment
+    */
+    globjects::FramebufferAttachment * framebufferAttachment() const;
+
+    /**
+    *  @brief
+    *    Query requirement for user-defined framebuffer to use this attachment
+    *
+    *  @return
+    *    'true', if a user-defined framebuffer is required to use this attachment
+    *
+    *  @remarks
+    *    A user-defined framebuffer is required if the attachment is neither invalid
+    *    nor an attachment of the default framebuffer
+    */
+    bool attachmentRequiresUserDefinedFramebuffer() const;
 
 protected:
     RenderTargetType                   m_type;         ///< Target type

@@ -6,16 +6,12 @@
 
 #include <glm/vec4.hpp>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Buffer.h>
-#include <globjects/Program.h>
-#include <globjects/Shader.h>
 #include <globjects/Texture.h>
-#include <globjects/Framebuffer.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/rendering/ScreenAlignedTriangle.h>
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
@@ -36,7 +32,7 @@ public:
       , ""
       , ""
       , ""
-      , "Stage that aggregates multiple subsequent frames into a single framebuffer"
+      , "Stage that aggregates multiple subsequent frames into a single texture"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
     )
@@ -44,14 +40,13 @@ public:
 
 public:
     // Inputs
-    Input<globjects::Framebuffer *>  aggregationFBO;    ///< FBO to aggregate into
-    Input<globjects::Texture *>      texture;           ///< New frame to add to aggregation
-    Input<bool>                      textureRerendered; ///< Add texture to aggregation?
-    Input<glm::vec4>                 viewport;          ///< Target viewport
-    Input<float>                     aggregationFactor; ///< Weight of new frame in current aggregation
+    Input<globjects::Texture *>  sourceTexture;     ///< Current frame texture
+    Input<globjects::Texture *>  targetTexture;     ///< Aggregation target texture
+    Input<glm::vec4>             viewport;          ///< Target viewport
+    Input<float>                 aggregationFactor; ///< Weight of new frame in current aggregation
 
     // Outputs
-    Output<globjects::Framebuffer *> aggregatedFBO;     ///< Framebuffer containing aggregation
+    Output<globjects::Texture *> aggregatedTexture; ///< Aggregation target texture (passed for stage chaining)
 
 
 public:
@@ -76,20 +71,13 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess() override;
-
-    // Helper functions
-    void setupGeometry();
-    void setupProgram();
-
 
 protected:
     // Data
-    std::unique_ptr<globjects::VertexArray> m_vao;            ///< VAO for screen aligned quad
-    std::unique_ptr<globjects::Buffer>      m_vertexBuffer;   ///< VBO for screen aligned quad
-    std::unique_ptr<globjects::Shader>      m_vertexShader;   ///< Vertex shader
-    std::unique_ptr<globjects::Shader>      m_fragmentShader; ///< Fragment shader
-    std::unique_ptr<globjects::Program>     m_program;        ///< Shader program used for aggregation
+    std::unique_ptr<gloperate::ScreenAlignedTriangle> m_triangle; ///< Screen-aligned Triangle for 'blitting'
+    std::unique_ptr<globjects::Framebuffer> m_fbo;                ///< Framebuffer for render targets
 };
 
 

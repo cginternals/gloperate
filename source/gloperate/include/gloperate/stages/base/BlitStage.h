@@ -13,6 +13,8 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
+#include <gloperate/rendering/RenderTarget.h>
+
 
 namespace gloperate
 {
@@ -38,14 +40,15 @@ public:
 
 public:
     // Inputs
-    Input<globjects::Framebuffer *>  sourceFBO;      ///< FBO containing the source attachments
+    Input<gloperate::RenderTarget *> source;         ///< FBO containing the source attachments
     Input<glm::vec4>                 sourceViewport; ///< Viewport for reading from source FBO
-    Input<globjects::Framebuffer *>  targetFBO;      ///< FBO with destination attachments
+    Input<gloperate::RenderTarget *> target;         ///< FBO with destination attachments
     Input<glm::vec4>                 targetViewport; ///< Viewport for writing into destination FBO
+    Input<gl::GLenum>                minFilter;      ///< Interpolation mode used when target size is lower than source size (default: linear interpolation)
+    Input<gl::GLenum>                magFilter;      ///< Interpolation mode used when target size is greater than source size (default: nearest filtering)
 
     // Outputs
-    Output<globjects::Framebuffer *> fboOut;         ///< Pass through framebuffer
-    Output<bool>                     rendered;       ///< 'true' if output has been rendered
+    Output<gloperate::RenderTarget *> targetOut;     ///< Pass-through render target
 
 
 public:
@@ -64,6 +67,14 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
+    virtual void onContextInit(AbstractGLContext * context) override;
+    virtual void onContextDeinit(AbstractGLContext * context) override;
+
+
+protected:
+    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Intermediate default FBO
+    std::unique_ptr<globjects::Framebuffer> m_sourceFBO; ///< Intermediate source FBO
+    std::unique_ptr<globjects::Framebuffer> m_targetFBO; ///< Intermediate target FBO
 };
 
 

@@ -116,7 +116,6 @@ set(headers
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
-    ${include_path}/stages/base/FramebufferStage.h
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/BlitStage.h
@@ -214,7 +213,6 @@ set(sources
     ${source_path}/stages/base/RasterizationStage.cpp
     ${source_path}/stages/base/ClearStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
-    ${source_path}/stages/base/FramebufferStage.cpp
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
     ${source_path}/stages/base/BlitStage.cpp

@@ -14,6 +14,9 @@ namespace gloperate
 RenderTarget::RenderTarget()
 : m_type(RenderTargetType::Invalid)
 , m_attachment(gl::GL_NONE)
+, m_texture(nullptr)
+, m_renderbuffer(nullptr)
+, m_userDefined(nullptr)
 {
 }
 
@@ -82,30 +85,36 @@ void RenderTarget::setTarget(globjects::FramebufferAttachment * fboAttachment)
     m_userDefined = fboAttachment;
 }
 
-void RenderTarget::bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo)
+RenderTargetType RenderTarget::type() const
 {
-    assert(fbo != nullptr);
-    assert(!fbo->isDefault());
+    return m_type;
+}
 
-    switch (m_type)
-    {
-    case RenderTargetType::Texture:
-        fbo->attachTexture(bindingPoint, m_texture);
-        break;
-    case RenderTargetType::Renderbuffer:
-        fbo->attachRenderBuffer(bindingPoint, m_renderbuffer);
-        break;
-    case RenderTargetType::DefaultFBOAttachment:
-        // [TODO]
-        break;
-    case RenderTargetType::UserDefinedFBOAttachment:
-        // [TODO]
-        break;
-    case RenderTargetType::Invalid:
-    default:
-        // [TODO] show error/warning?
-        break;
-    }
+gl::GLenum RenderTarget::defaultFramebufferAttachment() const
+{
+    return m_attachment;
+}
+
+globjects::Texture * RenderTarget::textureAttachment() const
+{
+    return m_texture;
+}
+
+globjects::Renderbuffer * RenderTarget::renderbufferAttachment() const
+{
+    return m_renderbuffer;
+}
+
+globjects::FramebufferAttachment * RenderTarget::framebufferAttachment() const
+{
+    return m_userDefined;
+}
+
+bool RenderTarget::attachmentRequiresUserDefinedFramebuffer() const
+{
+    return m_type == RenderTargetType::Texture
+        || m_type == RenderTargetType::Renderbuffer
+        || m_type == RenderTargetType::UserDefinedFBOAttachment;
 }
 
 
