@@ -166,5 +166,4 @@ void SSAOApplicationStage::setupProgram()
     m_program->setUniform("depthTexture", 2);
     m_program->setUniform("ssaoKernelTexture", 3);
     m_program->setUniform("ssaoNoiseTexture", 4);
-
 }

@@ -69,12 +69,12 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate::TextureStage> m_colorTextureStage;                         ///< Stage creating color texture for main rendering
-    std::unique_ptr<gloperate::TextureStage> m_depthTextureStage;                         ///< Stage creating depth texture for main rendering
-    std::unique_ptr<gloperate::TextureStage> m_normalTextureStage;                        ///< Stage creating normal texture for main rendering
-    std::unique_ptr<gloperate::FramebufferStage> m_fboStage;                              ///< Stage creating FBO for main rendering
-    std::unique_ptr<gloperate_glkernel::HemisphereDistributionKernelStage> m_kernelStage; ///< Stage generating SSAO kernel
-    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;  ///< Stage generating SSAO noise
-    std::unique_ptr<SSAOSceneRenderingStage>           m_renderingStage;                   ///< Rendering stage
-    std::unique_ptr<SSAOApplicationStage>      m_postprocessingStage;              ///< Postprocessing stage (SSAO applied here)
+    std::unique_ptr<gloperate::TextureStage>                               m_colorTextureStage;   ///< Stage creating color texture for main rendering
+    std::unique_ptr<gloperate::TextureStage>                               m_depthTextureStage;   ///< Stage creating depth texture for main rendering
+    std::unique_ptr<gloperate::TextureStage>                               m_normalTextureStage;  ///< Stage creating normal texture for main rendering
+    std::unique_ptr<gloperate::FramebufferStage>                           m_fboStage;            ///< Stage creating FBO for main rendering
+    std::unique_ptr<gloperate_glkernel::HemisphereDistributionKernelStage> m_kernelStage;         ///< Stage generating SSAO kernel
+    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;          ///< Stage generating SSAO noise
+    std::unique_ptr<SSAOSceneRenderingStage>                               m_renderingStage;      ///< Rendering stage
+    std::unique_ptr<SSAOApplicationStage>                                  m_postprocessingStage; ///< Postprocessing stage (SSAO applied here)
 };

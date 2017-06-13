@@ -86,10 +86,10 @@ protected:
 
 protected:
     // Rendering objects
-    std::unique_ptr<globjects::VertexArray>          m_vao;
-    std::unique_ptr<globjects::Buffer>               m_vertexBuffer;
-    std::unique_ptr<globjects::Shader>               m_vertexShader;
-    std::unique_ptr<globjects::Shader>               m_fragmentShader;
-    std::unique_ptr<globjects::Program>              m_program;
-    std::unique_ptr<globjects::NamedString>          m_ssaoFileNamedString;
+    std::unique_ptr<globjects::VertexArray> m_vao;
+    std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
+    std::unique_ptr<globjects::Shader>      m_vertexShader;
+    std::unique_ptr<globjects::Shader>      m_fragmentShader;
+    std::unique_ptr<globjects::Program>     m_program;
+    std::unique_ptr<globjects::NamedString> m_ssaoFileNamedString;
 };

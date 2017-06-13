@@ -45,7 +45,7 @@ public:
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<int> multiFrameCount;      ///< Total number of multiframes to render
+    Input<int> multiFrameCount;                 ///< Total number of multiframes to render
 
 
 public:
@@ -69,6 +69,6 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage> m_dofShiftStage;  ///< Stage generating DOF shift
-    std::unique_ptr<DOFCubeStage>                                m_cubeStage;      ///< Rendering stage
+    std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage> m_dofShiftStage; ///< Stage generating DOF shift
+    std::unique_ptr<DOFCubeStage>                                    m_cubeStage;     ///< Rendering stage
 };

@@ -23,6 +23,7 @@ namespace
 
 
 // Geometry, a triangle fan spanning 3 sides of a cube
+// position, surface normal
 static const std::array<std::array<glm::vec3, 2>, 8> s_vertices { {
     {{ glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f) }},
     {{ glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f) }},

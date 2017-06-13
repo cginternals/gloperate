@@ -41,7 +41,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface;                  ///< Interface for rendering into a viewer
+    gloperate::RenderInterface renderInterface;       ///< Interface for rendering into a viewer
 
     // Inputs
     Input<float> glossiness;                          ///< Glossiness of the cube (0.0 to 1.0)
@@ -79,12 +79,12 @@ protected:
 
 protected:
     // Rendering objects
-    std::unique_ptr<globjects::VertexArray>          m_vao;
-    std::unique_ptr<globjects::Buffer>               m_vertexBuffer;
-    std::unique_ptr<globjects::Shader>               m_vertexShader;
-    std::unique_ptr<globjects::Shader>               m_fragmentShader;
-    std::unique_ptr<globjects::Program>              m_program;
-    std::unique_ptr<globjects::NamedString>          m_lightProcessingString;
-    std::unique_ptr<globjects::NamedString>          m_lightProcessingDiffuseString;
-    std::unique_ptr<globjects::NamedString>          m_lightProcessingPhongString;
+    std::unique_ptr<globjects::VertexArray> m_vao;
+    std::unique_ptr<globjects::Buffer>      m_vertexBuffer;
+    std::unique_ptr<globjects::Shader>      m_vertexShader;
+    std::unique_ptr<globjects::Shader>      m_fragmentShader;
+    std::unique_ptr<globjects::Program>     m_program;
+    std::unique_ptr<globjects::NamedString> m_lightProcessingString;
+    std::unique_ptr<globjects::NamedString> m_lightProcessingDiffuseString;
+    std::unique_ptr<globjects::NamedString> m_lightProcessingPhongString;
 };

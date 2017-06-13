@@ -21,6 +21,8 @@ namespace
 {
 
 
+// Geometry describing the cube
+// position, surface normal
 static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
     {{ glm::vec3(-1.f, -1.f, -1.f), glm::vec3( 0.0f, -1.0f,  0.0) }},
     {{ glm::vec3(-1.f, -1.f, +1.f), glm::vec3( 0.0f, -1.0f,  0.0) }},
@@ -38,7 +40,7 @@ static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
     {{ glm::vec3(-1.f, +1.f, +1.f), glm::vec3( 0.0f,  1.0f,  0.0) }}
 } };
 
-static const glm::vec3 cameraEye(0.0f, -1.5f, -3.0f);
+static const glm::vec3 s_cameraEye(0.0f, -1.5f, -3.0f);
 
 
 } // namespace
@@ -95,7 +97,7 @@ void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
     m_program->setUniform("positionData", 1);
     m_program->setUniform("attenuationData", 2);
 
-    m_program->setUniform("eye", cameraEye);
+    m_program->setUniform("eye", s_cameraEye);
 
     // register NamedStrings for shader includes
     auto dataFolderPath = gloperate::dataPath();
@@ -148,7 +150,7 @@ void LightTestStage::onProcess()
 
     // Update transformation
     auto model = glm::rotate((*totalTime) / 3.0f, glm::vec3(0, 1, 0));
-    auto view = glm::lookAt(cameraEye, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    auto view = glm::lookAt(s_cameraEye, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     auto projection = glm::perspective(30.0f, viewport.z / viewport.w, 0.1f, 10.0f);
     m_program->setUniform("modelMatrix", model);
     m_program->setUniform("modelViewProjection", projection * view * model);
