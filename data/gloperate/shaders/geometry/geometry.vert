@@ -3,7 +3,7 @@
 #extension GL_ARB_explicit_attrib_location : require
 
 
-uniform mat4 viewProjectionMatrix;
+uniform mat4 modelViewProjectionMatrix;
 
 
 layout (location = 0) in vec3 vertex;
@@ -15,6 +15,6 @@ out vec2 v_texcoord;
 
 void main()
 {
-    gl_Position = viewProjectionMatrix * vec4(vertex, 1.0);
+    gl_Position = modelViewProjectionMatrix * vec4(vertex, 1.0);
     v_texcoord  = texcoord;
 }
