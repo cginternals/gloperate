@@ -125,14 +125,17 @@ void RenderPassStage::onProcess()
         // Texture
         if (input->type() == typeid(globjects::Texture *))
         {
-            // Get texture input
-            auto textureInput = static_cast<Input<globjects::Texture *> *>(input);
+            // Get texture
+            globjects::Texture * texture = static_cast<Input<globjects::Texture *> *>(input)->value();
+
+            if (!texture)
+                continue;
 
             // Attach texture
             (*program)->setUniform<int>(input->name(), textureIndex);
-            m_renderPass->setTexture(textureIndex, **textureInput);
+            m_renderPass->setTexture(textureIndex, texture);
 
-            if ((**textureInput)->target() == gl::GL_TEXTURE_CUBE_MAP)
+            if (texture->target() == gl::GL_TEXTURE_CUBE_MAP)
             {
                 m_renderPass->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
             }
@@ -143,22 +146,25 @@ void RenderPassStage::onProcess()
         // Shader storage buffer
         else if (input->type() == typeid(globjects::Buffer *))
         {
-            // Get buffer input
-            auto bufferInput = static_cast<Input<globjects::Buffer *> *>(input);
+            // Get buffer
+            globjects::Buffer * buffer = static_cast<Input<globjects::Buffer *> *>(input)->value();
+
+            if (!buffer)
+                continue;
 
             // Attach shader storage buffer
-            m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, **bufferInput);
+            m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, buffer);
             ++shaderStorageBufferIndex;
         }
 
         // Color
         else if (input->type() == typeid(Color))
         {
-            // Get color input
-            auto colorInput = static_cast<Input<Color> *>(input);
+            // Get color
+            const Color & color = **(static_cast<Input<Color> *>(input));
 
             // Set color uniform
-            (*program)->setUniform<glm::vec4>(input->name(), (*colorInput)->toVec4());
+            (*program)->setUniform<glm::vec4>(input->name(), color.toVec4());
         }
 
         // Basic uniform
