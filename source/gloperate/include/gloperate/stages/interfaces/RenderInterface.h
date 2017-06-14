@@ -9,17 +9,12 @@
 #include <gloperate/gloperate_api.h>
 
 
-namespace globjects
-{
-    class Framebuffer;
-}
-
-
 namespace gloperate
 {
 
 
 class Stage;
+class RenderTarget;
 
 
 /**
@@ -39,15 +34,17 @@ class GLOPERATE_API RenderInterface
 {
 public:
     // Inputs
-    Input<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
-    Input<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
-    Input<Color>                    backgroundColor; ///< Background color (RGB)
-    Input<int>                      frameCounter;    ///< Frame counter (number of frames)
-    Input<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
-    Input<globjects::Framebuffer *> targetFBO;       ///< Target FBO (must not be null)
+    Input<glm::vec4>                 deviceViewport;    ///< Viewport (in real device coordinates)
+    Input<glm::vec4>                 virtualViewport;   ///< Viewport (in virtual coordinates)
+    Input<Color>                     backgroundColor;   ///< Background color (RGB)
+    Input<int>                       frameCounter;      ///< Frame counter (number of frames)
+    Input<float>                     timeDelta;         ///< Time delta since last frame (in seconds)
+    Input<gloperate::RenderTarget *> colorRenderTarget; ///< Target color attachment (must not be null)
+    Input<gloperate::RenderTarget *> depthRenderTarget; ///< Target color attachment (may be null, depends on created OpenGL context)
 
     // Outputs
-    Output<bool>                    rendered;        ///< 'true' if output has been rendered
+    Output<gloperate::RenderTarget *> colorRenderTargetOut; ///< Output color target of pipeline (must be set by owning stage/pipeline)
+    Output<gloperate::RenderTarget *> depthRenderTargetOut; ///< Output depth target of pipeline (may be set by owning stage/pipeline)
 
 
 public:

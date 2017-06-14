@@ -12,8 +12,8 @@ RenderInterface::RenderInterface(Stage * stage)
 , backgroundColor("backgroundColor", stage)
 , frameCounter   ("frameCounter", stage)
 , timeDelta      ("timeDelta", stage)
-, targetFBO      ("targetFBO", stage)
-, rendered       ("rendered", stage)
+, renderTarget   ("renderTarget", stage)
+, renderTargetOut("renderTargetOut", stage)
 {
     // Hide inputs in property editor
     deviceViewport .setOption("hidden", true);
@@ -21,8 +21,8 @@ RenderInterface::RenderInterface(Stage * stage)
     backgroundColor.setOption("hidden", true);
     frameCounter   .setOption("hidden", true);
     timeDelta      .setOption("hidden", true);
-    targetFBO      .setOption("hidden", true);
-    rendered       .setOption("hidden", true);
+    renderTarget   .setOption("hidden", true);
+    renderTargetOut.setOption("hidden", true);
 }
 
 RenderInterface::~RenderInterface()

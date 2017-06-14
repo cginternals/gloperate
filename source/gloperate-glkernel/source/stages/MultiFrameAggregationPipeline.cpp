@@ -6,7 +6,6 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
 #include <gloperate/stages/base/TextureStage.h>
-#include <gloperate/stages/base/FramebufferStage.h>
 #include <gloperate/stages/base/BlitStage.h>
 
 #include <gloperate-glkernel/stages/MultiFrameControlStage.h>
@@ -64,12 +63,12 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     m_aggregationStage->aggregationFactor << m_controlStage->aggregationFactor;
 
     addStage(m_blitStage.get());
-    m_blitStage->sourceFBO << m_aggregationStage->aggregatedFBO;
-    m_blitStage->targetFBO << renderInterface.targetFBO;
+    m_blitStage->source << m_aggregationStage->aggregatedFBO;
+    m_blitStage->target << renderInterface.renderTarget;
     m_blitStage->sourceViewport << renderInterface.deviceViewport;
     m_blitStage->targetViewport << renderInterface.deviceViewport;
 
-    renderInterface.rendered << m_blitStage->rendered;
+    renderInterface.renderTargetOut << m_blitStage->targetOut;
 }
 
 MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
