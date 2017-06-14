@@ -408,6 +408,11 @@ void Stage::inputValueInvalidated(AbstractSlot * slot)
     onInputValueInvalidated(slot);
 }
 
+void Stage::inputOptionsChanged(AbstractSlot * slot)
+{
+    inputChanged(slot);
+}
+
 
 std::string Stage::getFreeName(const std::string & name) const
 {

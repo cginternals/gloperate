@@ -87,6 +87,16 @@ void Input<T>::onValueChanged(const T & value)
 }
 
 template <typename T>
+void Input<T>::onOptionChanged(const std::string &)
+{
+    // Inform parent stage
+    if (Stage * stage = this->parentStage())
+    {
+        stage->inputOptionsChanged(this);
+    }
+}
+
+template <typename T>
 template <typename U, typename Enable>
 Input<T> & Input<T>::operator=(const U & value)
 {

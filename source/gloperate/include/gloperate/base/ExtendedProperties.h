@@ -8,8 +8,6 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
-#include <cppassist/fs/FilePath.h>
-
 #include <cppexpose/typed/GetTyped.h>
 
 #include <gloperate/rendering/Color.h>
@@ -82,38 +80,6 @@ namespace cppexpose
 
 /**
 *  @brief
-*    Property implementation for cppassist::FilePath
-*/
-template <typename BASE>
-class TypedFilename : public cppexpose::Typed<cppassist::FilePath, BASE>
-{
-public:
-    TypedFilename();
-
-    virtual ~TypedFilename();
-
-    bool isString() const override;
-
-    std::string toString() const override;
-
-    bool fromString(const std::string & string) override;
-
-    Variant toVariant() const override;
-
-    bool fromVariant(const Variant & variant) override;
-
-    virtual std::string typeName() const override;
-};
-
-template <typename BASE>
-struct GetTyped<cppassist::FilePath, BASE>
-{
-    using Type = TypedFilename<BASE>;
-};
-
-
-/**
-*  @brief
 *    Property implementation for gloperate::Color
 */
 template <typename BASE>
@@ -121,20 +87,16 @@ class TypedColor : public cppexpose::Typed<gloperate::Color, BASE>
 {
 public:
     TypedColor();
-
     virtual ~TypedColor();
 
+    virtual std::string typeName() const override;
     bool isString() const override;
 
     std::string toString() const override;
-
     bool fromString(const std::string & string) override;
 
     Variant toVariant() const override;
-
     bool fromVariant(const Variant & variant) override;
-
-    virtual std::string typeName() const override;
 };
 
 template <typename BASE>
@@ -153,18 +115,15 @@ class TypedGlmVec : public cppexpose::Typed<VectorType, BASE>
 {
 public:
     TypedGlmVec();
-
     virtual ~TypedGlmVec();
 
-    std::string toString() const override;
+    virtual std::string typeName() const override;
 
+    std::string toString() const override;
     bool fromString(const std::string & string) override;
 
     cppexpose::Variant toVariant() const override;
-
     bool fromVariant(const cppexpose::Variant & value) override;
-
-    virtual std::string typeName() const override;
 };
 
 template <typename BASE>
