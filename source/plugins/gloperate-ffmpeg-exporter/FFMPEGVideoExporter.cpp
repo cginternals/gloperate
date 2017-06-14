@@ -215,8 +215,7 @@ void FFMPEGVideoExporter::initialize(ContextHandling contextHandling)
 
     m_fbo->clearBuffer(gl::GL_COLOR, 0, glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
 
-    m_savedDeviceViewport = m_canvas->deviceViewport();
-    m_savedVirtualViewport = m_canvas->virtualViewport();
+    m_savedViewport = m_canvas->viewport();
 
     m_canvas->setViewport(viewport, viewport);
 
@@ -243,7 +242,7 @@ void FFMPEGVideoExporter::finalize()
         m_canvas->openGLContext()->release();
     }
 
-    m_canvas->setViewport(m_savedDeviceViewport, m_savedVirtualViewport);
+    m_canvas->setViewport(m_savedViewport);
 
     m_initialized = false;
 }

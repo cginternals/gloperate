@@ -83,6 +83,7 @@ set(headers
     ${include_path}/pipeline/Output.inl
 
     ${include_path}/rendering/AbstractDrawable.h
+    ${include_path}/rendering/AttachmentType.h
     ${include_path}/rendering/Camera.h
     ${include_path}/rendering/CameraUtils.h
     ${include_path}/rendering/Drawable.h
@@ -115,6 +116,7 @@ set(headers
     ${include_path}/rendering/ColorGradientPreparation.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
+    ${include_path}/stages/interfaces/CanvasInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
@@ -205,6 +207,7 @@ set(sources
     ${source_path}/rendering/ColorGradientPreparation.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
+    ${source_path}/stages/interfaces/CanvasInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp

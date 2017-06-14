@@ -17,13 +17,27 @@ CPPEXPOSE_COMPONENT(RasterizationStage, gloperate::Stage)
 
 RasterizationStage::RasterizationStage(Environment * environment, const std::string & name)
 : Stage(environment, "RasterizationStage", name)
-, renderInterface(this)
-, rasterize      ("rasterize",       this, true)
-, drawable       ("drawable",        this)
-, colorTexture   ("colorTexture",    this)
-, fboOut         ("fboOut",          this)
-, colorTextureOut("colorTextureOut", this)
+, renderInterface(             this)
+, rasterize      ("rasterize", this, true)
+, drawable       ("drawable",  this)
 {
+    inputAdded.connect( [this] (gloperate::AbstractSlot * connectedInput) {
+        auto renderTargetInput = dynamic_cast<Input<gloperate::RenderTarget *> *>(connectedInput);
+
+        if (renderTargetInput)
+        {
+            renderInterface.addRenderTargetInput(renderTargetInput);
+        }
+    });
+
+    outputAdded.connect( [this] (gloperate::AbstractSlot * connectedOutput) {
+        auto renderTargetOutput = dynamic_cast<Output<gloperate::RenderTarget *> *>(connectedOutput);
+
+        if (renderTargetOutput)
+        {
+            renderInterface.addRenderTargetOutput(renderTargetOutput);
+        }
+    });
 }
 
 RasterizationStage::~RasterizationStage()
@@ -32,15 +46,22 @@ RasterizationStage::~RasterizationStage()
 
 void RasterizationStage::onProcess()
 {
-    // Get FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    if (!renderInterface.allRenderTargetsCompatible())
+    {
+        cppassist::warning("gloperate") << "Framebuffer attachments not compatible";
+
+        return;
+    }
 
     // Check if rasterization is enabled
     if (*rasterize)
     {
         // Set viewport
-        const glm::vec4 & viewport = *renderInterface.deviceViewport;
+        const glm::vec4 & viewport = *renderInterface.viewport;
         gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+
+        // Configure FBO
+        auto fbo = renderInterface.configureFBO(m_fbo.get(), m_defaultFBO.get());
 
         // Bind FBO
         fbo->bind(gl::GL_FRAMEBUFFER);
@@ -49,13 +70,13 @@ void RasterizationStage::onProcess()
         (*drawable)->draw();
 
         // Unbind FBO
-        globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+        fbo->unbind();
     }
 
     // Update outputs
-    fboOut.setValue(fbo);
-    colorTextureOut.setValue(*colorTexture);
-    renderInterface.rendered.setValue(true);
+    renderInterface.pairwiseRenderTargetsDo([](Input <RenderTarget *> * input, Output <RenderTarget *> * output) {
+        output->setValue(**input);
+    });
 }
 
 

@@ -9,6 +9,16 @@
 #include <gloperate/gloperate_api.h>
 
 
+namespace globjects
+{
+
+
+class Framebuffer;
+
+
+} // namespace globjects
+
+
 namespace gloperate
 {
 
@@ -21,9 +31,8 @@ class RenderTarget;
 *  @brief
 *    Interface that can be used for rendering stages and pipelines
 *
-*    A render stage is a stage that renders into the current framebuffer
-*    and can therefore be assigned to a viewer. Therefore, it has to support
-*    interface via input and output slots which is accessed by the viewer.
+*    A render stage is a stage that renders into render targets, given
+*    a common viewport.
 *
 *    This class can be used to instanciate the necessary inputs and outputs
 *    for rendering stages. It can just be instanciated on a stage or pipeline
@@ -34,17 +43,10 @@ class GLOPERATE_API RenderInterface
 {
 public:
     // Inputs
-    Input<glm::vec4>                 deviceViewport;    ///< Viewport (in real device coordinates)
-    Input<glm::vec4>                 virtualViewport;   ///< Viewport (in virtual coordinates)
-    Input<Color>                     backgroundColor;   ///< Background color (RGB)
-    Input<int>                       frameCounter;      ///< Frame counter (number of frames)
-    Input<float>                     timeDelta;         ///< Time delta since last frame (in seconds)
-    Input<gloperate::RenderTarget *> colorRenderTarget; ///< Target color attachment (must not be null)
-    Input<gloperate::RenderTarget *> depthRenderTarget; ///< Target color attachment (may be null, depends on created OpenGL context)
+    Input<glm::vec4>                 viewport;    ///< Viewport (in framebuffer coordinates)
 
-    // Outputs
-    Output<gloperate::RenderTarget *> colorRenderTargetOut; ///< Output color target of pipeline (must be set by owning stage/pipeline)
-    Output<gloperate::RenderTarget *> depthRenderTargetOut; ///< Output depth target of pipeline (may be set by owning stage/pipeline)
+    // Rendertarget Inputs -> subject to pipeline/stage designer
+    // Rendertarget Outputs -> subject to pipeline/stage designer
 
 
 public:
@@ -62,6 +64,52 @@ public:
     *    Destructor
     */
     ~RenderInterface();
+
+    bool allRenderTargetsCompatible() const;
+
+    size_t renderTargetInputSize() const;
+
+    const std::vector<Input<RenderTarget *> *> & renderTargetInputs() const;
+
+    Input<RenderTarget *> * renderTargetInput(size_t index) const;
+
+    RenderTarget * inputRenderTarget(size_t index) const;
+
+    size_t renderTargetOutputSize() const;
+
+    const std::vector<Output<RenderTarget *> *> & renderTargetOutputs() const;
+
+    Output<RenderTarget *> * renderTargetOutput(size_t index) const;
+
+    RenderTarget * outputRenderTarget(size_t index) const;
+
+    /**
+    *  @brief
+    *    Registers new render target input
+    *
+    *  @param[in] input
+    *    New render target input
+    */
+    void addRenderTargetInput(Input<RenderTarget *> * input);
+
+    /**
+    *  @brief
+    *    Registers new render target input
+    *
+    *  @param[in] input
+    *    New render target input
+    */
+    void addRenderTargetOutput(Output<RenderTarget *> * input);
+
+    void pairwiseRenderTargetsDo(std::function<void(Input <RenderTarget *> *, Output <RenderTarget *> *)> callback, bool includeIncompletePairs = false);
+
+    globjects::Framebuffer * configureFBO(globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO) const;
+
+    static globjects::Framebuffer * configureFBO(size_t index, RenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO);
+
+protected:
+    std::vector<Input <RenderTarget *> *> m_renderTargetInputs;  ///< List of input render targets
+    std::vector<Output<RenderTarget *> *> m_renderTargetOutputs; ///< List of output render targets (pass-through)
 };
 
 

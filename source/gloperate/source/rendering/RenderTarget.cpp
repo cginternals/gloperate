@@ -49,6 +49,30 @@ void RenderTarget::releaseTarget()
     m_type = RenderTargetType::Invalid;
 }
 
+AttachmentType RenderTarget::attachmentType() const
+{
+    return m_attachmentType;
+}
+
+gl::GLenum RenderTarget::attachmentGLType() const
+{
+    switch (m_attachmentType)
+    {
+    case AttachmentType::Depth:
+        return gl::GL_DEPTH;
+    case AttachmentType::DepthStencil:
+        return gl::GL_DEPTH_STENCIL;
+    case AttachmentType::Color:
+    default:
+        return gl::GL_COLOR;
+    }
+}
+
+void RenderTarget::setAttachmentType(AttachmentType attachmentType)
+{
+    m_attachmentType = attachmentType;
+}
+
 void RenderTarget::setTarget(globjects::Texture * texture)
 {
     releaseTarget();
@@ -115,6 +139,20 @@ bool RenderTarget::attachmentRequiresUserDefinedFramebuffer() const
     return m_type == RenderTargetType::Texture
         || m_type == RenderTargetType::Renderbuffer
         || m_type == RenderTargetType::UserDefinedFBOAttachment;
+}
+
+gl::GLenum RenderTarget::attachmentBuffer() const
+{
+    return attachmentRequiresUserDefinedFramebuffer()
+        ? attachmentGLType()
+        : m_attachment;
+}
+
+gl::GLint RenderTarget::attachmentDrawBuffer(gl::GLint index) const
+{
+    return attachmentRequiresUserDefinedFramebuffer()
+        ? (m_attachmentType == AttachmentType::Color ? index : 0)
+        : 0;
 }
 
 

@@ -51,11 +51,10 @@ void RenderWindow::onContextDeinit()
     m_canvas->setOpenGLContext(nullptr);
 }
 
-void RenderWindow::onResize(const QSize & deviceSize, const QSize & virtualSize)
+void RenderWindow::onResize(const QSize & deviceSize, const QSize & /*virtualSize*/)
 {
     m_canvas->setViewport(
         glm::vec4(0, 0, deviceSize.width(),  deviceSize.height())
-      , glm::vec4(0, 0, virtualSize.width(), virtualSize.height())
     );
 }
 

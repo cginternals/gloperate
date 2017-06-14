@@ -32,6 +32,7 @@ class Stage;
 class AbstractSlot;
 class MouseDevice;
 class KeyboardDevice;
+class RenderTarget;
 
 
 /**
@@ -169,30 +170,19 @@ public:
     *  @brief
     *    Set viewport (must be called from UI thread)
     *
-    *  @param[in] deviceViewport
+    *  @param[in] viewport
     *    Viewport (in real device coordinates)
-    *  @param[in] virtualViewport
-    *    Viewport (in virtual coordinates)
     */
-    void setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport);
+    void setViewport(const glm::vec4 & viewport);
 
     /**
     *  @brief
-    *    Get device viewport
+    *    Get viewport (in real device coordinates)
     *
     *  @return
-    *    The device viewport
+    *    The viewport
     */
-    const glm::vec4 & deviceViewport() const;
-
-    /**
-    *  @brief
-    *    Get virtual viewport
-    *
-    *  @return
-    *    The virtual viewport
-    */
-    const glm::vec4 & virtualViewport() const;
+    const glm::vec4 & viewport() const;
 
     /**
     *  @brief
@@ -319,8 +309,7 @@ protected:
     AbstractGLContext             * m_openGLContext;          ///< OpenGL context used for rendering onto the canvas
     bool                            m_initialized;            ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
     gloperate::ChronoTimer          m_clock;                  ///< Time measurement
-    glm::vec4                       m_deviceViewport;         ///< Viewport (in real device coordinates)
-    glm::vec4                       m_virtualViewport;        ///< Viewport (in virtual coordinates)
+    glm::vec4                       m_viewport;               ///< Viewport (in real device coordinates)
     float                           m_timeDelta;              ///< Time delta since the last update (in seconds)
     std::unique_ptr<Stage>          m_renderStage;            ///< Render stage that renders into the canvas
     std::unique_ptr<Stage>          m_oldStage;               ///< Old render stage, will be destroyed on the next render call
@@ -332,6 +321,10 @@ protected:
     cppexpose::Function             m_inputChangedCallback;   ///< Script function that is called on inputChanged (slot, status)
     std::vector<AbstractSlot *>     m_changedInputs;          ///< List of changed input slots
     std::mutex                      m_changedInputMutex;      ///< Mutex to access m_changedInputs
+
+    std::unique_ptr<RenderTarget>   m_colorTarget;            ///< Input render target for color attachment
+    std::unique_ptr<RenderTarget>   m_depthTarget;            ///< Input render target for depth only attachment
+    std::unique_ptr<RenderTarget>   m_depthStencilTarget;     ///< Input render target for depth stencil attachment
 };
 
 

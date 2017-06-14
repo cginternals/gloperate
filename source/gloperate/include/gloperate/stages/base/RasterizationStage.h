@@ -50,12 +50,6 @@ public:
     // Inputs
     Input<bool>                          rasterize;       ///< If connected, it enables/disables rasterization
     Input<gloperate::AbstractDrawable *> drawable;        ///< Drawable that is rendered
-    Input<globjects::Texture *>          colorTexture;    ///< Pass in of texture input/output
-
-    // Outputs
-    Output<globjects::Framebuffer *>     fboOut;          ///< Pass through framebuffer
-    Output<globjects::Texture *>         colorTextureOut; ///< Pass through color texture
-
 
 public:
     /**
@@ -79,6 +73,11 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
+
+
+protected:
+    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Default FBO for clearing
+    std::unique_ptr<globjects::Framebuffer> m_fbo;        ///< Intermediate FBO for clearing
 };
 
 

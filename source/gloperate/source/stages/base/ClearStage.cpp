@@ -20,30 +20,44 @@ CPPEXPOSE_COMPONENT(ClearStage, gloperate::Stage)
 
 ClearStage::ClearStage(Environment * environment, const std::string & name)
 : Stage(environment, "ClearStage", name)
-, clear                    ("clear",                     this)
-, viewport                 ("viewport",                  this)
-, colorAttachment0         ("colorAttachment0",          this)
-, clearColor0              ("clearColor0",               this)
-, colorAttachment1         ("colorAttachment1",          this)
-, clearColor1              ("clearColor1",               this)
-, colorAttachment2         ("colorAttachment2",          this)
-, clearColor2              ("clearColor2",               this)
-, colorAttachment3         ("colorAttachment3",          this)
-, clearColor3              ("clearColor3",               this)
-, colorAttachment4         ("colorAttachment4",          this)
-, clearColor4              ("clearColor4",               this)
-, depthAttachment          ("depthAttachment",           this)
-, depthValue               ("depthValue",                this)
-, depthStencilAttachment   ("depthStencilAttachment",    this)
-, stencilValue             ("stencilValue",              this)
-, colorAttachment0Out      ("colorAttachment0Out",       this)
-, colorAttachment1Out      ("colorAttachment1Out",       this)
-, colorAttachment2Out      ("colorAttachment2Out",       this)
-, colorAttachment3Out      ("colorAttachment3Out",       this)
-, colorAttachment4Out      ("colorAttachment4Out",       this)
-, depthAttachmentOut       ("depthAttachmentOut",        this)
-, depthStencilAttachmentOut("depthStencilAttachmentOut", this)
+, clear("clear",  this)
+, renderInterface(this)
 {
+    inputAdded.connect( [this] (gloperate::AbstractSlot * connectedInput) {
+        auto renderTargetInput = dynamic_cast<Input<gloperate::RenderTarget *> *>(connectedInput);
+        auto colorValueInput = dynamic_cast<Input<glm::vec4> *>(connectedInput);
+        auto depthValueInput = dynamic_cast<Input<float> *>(connectedInput);
+        auto depthStencilValueInput = dynamic_cast<Input<std::pair<float, int>> *>(connectedInput);
+
+        if (renderTargetInput)
+        {
+            renderInterface.addRenderTargetInput(renderTargetInput);
+        }
+
+        if (colorValueInput)
+        {
+            m_colorValueInputs.push_back(colorValueInput);
+        }
+
+        if (depthValueInput)
+        {
+            m_depthValueInputs.push_back(depthValueInput);
+        }
+
+        if (depthStencilValueInput)
+        {
+            m_depthStencilValueInputs.push_back(depthStencilValueInput);
+        }
+    });
+
+    outputAdded.connect( [this] (gloperate::AbstractSlot * connectedOutput) {
+        auto renderTargetOutput = dynamic_cast<Output<gloperate::RenderTarget *> *>(connectedOutput);
+
+        if (renderTargetOutput)
+        {
+            renderInterface.addRenderTargetOutput(renderTargetOutput);
+        }
+    });
 }
 
 ClearStage::~ClearStage()
@@ -67,246 +81,76 @@ void ClearStage::onProcess()
     if (!*clear)
     {
         // Setup OpenGL state
-        gl::glScissor(viewport->x, viewport->y, viewport->z, viewport->w);
+        gl::glScissor(renderInterface.viewport->x, renderInterface.viewport->y, renderInterface.viewport->z, renderInterface.viewport->w);
         gl::glEnable(gl::GL_SCISSOR_TEST);
 
-        // Clear individual buffers
-        clearColorAttachment       (0, *colorAttachment0,       *clearColor0              );
-        clearColorAttachment       (1, *colorAttachment1,       *clearColor1              );
-        clearColorAttachment       (2, *colorAttachment2,       *clearColor2              );
-        clearColorAttachment       (3, *colorAttachment3,       *clearColor3              );
-        clearColorAttachment       (4, *colorAttachment4,       *clearColor4              );
-        clearDepthAttachment       (   *depthAttachment,        *depthValue               );
-        clearDepthStencilAttachment(   *depthStencilAttachment, *depthValue, *stencilValue);
+        size_t colorAttachmentIndex        = 0;
+        size_t depthAttachmentIndex        = 0;
+        size_t depthStencilAttachmentIndex = 0;
+
+        renderInterface.pairwiseRenderTargetsDo([this, & colorAttachmentIndex, & depthAttachmentIndex, & depthStencilAttachmentIndex](Input <RenderTarget *> * input, Output <RenderTarget *> * output) {
+            if (!output->isRequired() || !**input)
+            {
+                return;
+            }
+
+            switch ((**input)->attachmentType())
+            {
+            case AttachmentType::Color:
+                {
+                    if (m_colorValueInputs.size() <= colorAttachmentIndex)
+                    {
+                        return;
+                    }
+
+                    auto fbo = renderInterface.configureFBO(colorAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+
+                    fbo->clearBuffer((**input)->attachmentBuffer(), (**input)->attachmentDrawBuffer(colorAttachmentIndex), **m_colorValueInputs.at(colorAttachmentIndex));
+
+                    ++colorAttachmentIndex;
+                }
+                break;
+            case AttachmentType::Depth:
+                {
+                    if (m_depthValueInputs.size() <= depthAttachmentIndex)
+                    {
+                        return;
+                    }
+
+                    auto fbo = renderInterface.configureFBO(depthAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+
+                    fbo->clearBuffer((**input)->attachmentBuffer(), (**input)->attachmentDrawBuffer(depthAttachmentIndex), **m_depthValueInputs.at(depthAttachmentIndex), 0);
+
+                    ++depthAttachmentIndex;
+                }
+                break;
+            case AttachmentType::DepthStencil:
+                {
+                    if (m_depthStencilValueInputs.size() <= depthStencilAttachmentIndex)
+                    {
+                        return;
+                    }
+
+                    auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+
+                    fbo->clearBuffer((**input)->attachmentBuffer(), (**input)->attachmentDrawBuffer(depthAttachmentIndex), (**m_depthStencilValueInputs.at(depthAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthAttachmentIndex)).second);
+
+                    ++depthStencilAttachmentIndex;
+                }
+                break;
+            default:
+                break;
+            }
+        });
 
         // Reset OpenGL state
         gl::glDisable(gl::GL_SCISSOR_TEST);
     }
 
     // Update outputs
-    colorAttachment0Out.setValue(&colorAttachment0);
-    colorAttachment1Out.setValue(&colorAttachment1);
-    colorAttachment2Out.setValue(&colorAttachment2);
-    colorAttachment3Out.setValue(&colorAttachment3);
-    colorAttachment4Out.setValue(&colorAttachment4);
-    depthAttachmentOut.setValue(&depthAttachmentOut);
-    depthStencilAttachmentOut.setValue(&depthStencilAttachmentOut);
+    renderInterface.pairwiseRenderTargetsDo([](Input <RenderTarget *> * input, Output <RenderTarget *> * output) {
+        output->setValue(**input);
+    });
 }
-
-void ClearStage::clearColorAttachment(unsigned char index, gloperate::RenderTarget * target, const glm::vec4 & clearColor)
-{
-    if (!target)
-    {
-        return;
-    }
-
-    const auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
-
-    switch (target->type())
-    {
-    case RenderTargetType::DefaultFBOAttachment:
-        m_defaultFBO->clearBuffer(target->defaultFramebufferAttachment(), 0, clearColor);
-        break;
-
-    case RenderTargetType::UserDefinedFBOAttachment:
-        {
-            const auto fboAttachment = m_fbo->getAttachment(attachmentIndex);
-            const auto targetAttachment = target->framebufferAttachment();
-
-            const auto targetAttachedTexture = static_cast<globjects::AttachedTexture *>(targetAttachment);
-            const auto targetAttachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(targetAttachment);
-            const auto fboAttachedTexture = static_cast<globjects::AttachedTexture *>(fboAttachment);
-            const auto fboAttachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(fboAttachment);
-
-            if (fboAttachment->isTextureAttachment() && (!targetAttachment->isTextureAttachment() || fboAttachedTexture->texture() != targetAttachedTexture->texture()))
-            {
-                m_fbo->attachTexture(attachmentIndex, targetAttachedTexture->texture());
-            }
-            else if (fboAttachment->isRenderBufferAttachment() && (!targetAttachment->isRenderBufferAttachment() || fboAttachedRenderbuffer->renderbuffer() != targetAttachedRenderbuffer->renderbuffer()))
-            {
-                m_fbo->attachTexture(attachmentIndex, targetAttachedRenderbuffer->renderbuffer);
-            }
-
-            m_fbo->clearBuffer(gl::GL_COLOR, index, clearColor);
-        }
-        break;
-
-    case RenderTargetType::Texture:
-        {
-            const auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
-            const auto attachment = m_fbo->getAttachment(attachmentIndex);
-
-            const auto attachedTexture = static_cast<globjects::AttachedTexture *>(attachment);
-            if (!attachment->isTextureAttachment() || attachedTexture->texture() != target->textureAttachment())
-            {
-                m_fbo->attachTexture(attachmentIndex, target->textureAttachment());
-            }
-
-            m_fbo->clearBuffer(gl::GL_COLOR, index, clearColor);
-        }
-        break;
-
-    case RenderTargetType::Renderbuffer:
-        {
-            const auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
-            const auto attachment = m_fbo->getAttachment(attachmentIndex);
-
-            const auto attachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(attachment);
-            if (!attachment->isRenderBufferAttachment() || attachedRenderbuffer->renderBuffer() != target->renderbufferAttachment())
-            {
-                m_fbo->attachRenderBuffer(attachmentIndex, target->renderbufferAttachment());
-            }
-
-            m_fbo->clearBuffer(gl::GL_COLOR, index, clearColor);
-        }
-        break;
-
-    default:
-        return false;
-    }
-}
-
-void ClearStage::clearDepthAttachment(gloperate::RenderTarget * target, float clearDepth)
-{
-    if (!target)
-    {
-        return;
-    }
-
-    const auto attachmentIndex = gl::GL_DEPTH_ATTACHMENT;
-
-    switch (target->type())
-    {
-    case RenderTargetType::DefaultFBOAttachment:
-        m_defaultFBO->clearBuffer(target->defaultFramebufferAttachment(), clearDepth, 0);
-        break;
-
-    case RenderTargetType::UserDefinedFBOAttachment:
-        {
-            const auto fboAttachment = m_fbo->getAttachment(attachmentIndex);
-            const auto targetAttachment = target->framebufferAttachment();
-
-            const auto targetAttachedTexture = static_cast<globjects::AttachedTexture *>(targetAttachment);
-            const auto targetAttachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(targetAttachment);
-            const auto fboAttachedTexture = static_cast<globjects::AttachedTexture *>(fboAttachment);
-            const auto fboAttachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(fboAttachment);
-
-            if (fboAttachment->isTextureAttachment() && (!targetAttachment->isTextureAttachment() || fboAttachedTexture->texture() != targetAttachedTexture->texture()))
-            {
-                m_fbo->attachTexture(attachmentIndex, targetAttachedTexture->texture());
-            }
-            else if (fboAttachment->isRenderBufferAttachment() && (!targetAttachment->isRenderBufferAttachment() || fboAttachedRenderbuffer->renderbuffer() != targetAttachedRenderbuffer->renderbuffer()))
-            {
-                m_fbo->attachTexture(attachmentIndex, targetAttachedRenderbuffer->renderbuffer);
-            }
-
-            m_fbo->clearBuffer(gl::GL_DEPTH, clearDepth, 0);
-        }
-        break;
-
-    case RenderTargetType::Texture:
-        {
-            const auto attachment = m_fbo->getAttachment(attachmentIndex);
-
-            const auto attachedTexture = static_cast<globjects::AttachedTexture *>(attachment);
-            if (!attachment->isTextureAttachment() || attachedTexture->texture() != target->textureAttachment())
-            {
-                m_fbo->attachTexture(attachmentIndex, target->textureAttachment());
-            }
-
-            m_fbo->clearBuffer(gl::GL_DEPTH, clearDepth, 0);
-        }
-        break;
-
-    case RenderTargetType::Renderbuffer:
-        {
-            const auto attachment = m_fbo->getAttachment(attachmentIndex);
-
-            const auto attachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(attachment);
-            if (!attachment->isRenderBufferAttachment() || attachedRenderbuffer->renderBuffer() != target->renderbufferAttachment())
-            {
-                m_fbo->attachRenderBuffer(attachmentIndex, target->renderbufferAttachment());
-            }
-
-            m_fbo->clearBuffer(gl::GL_DEPTH, clearDepth, 0);
-        }
-        break;
-
-    default:
-        return false;
-    }
-}
-
-void ClearStage::clearDepthStencilAttachment(gloperate::RenderTarget * target, float clearDepth, int clearStencil)
-{
-    if (!target)
-    {
-        return;
-    }
-
-    const auto attachmentIndex = gl::GL_DEPTH_STENCIL_ATTACHMENT;
-
-    switch (target->type())
-    {
-    case RenderTargetType::DefaultFBOAttachment:
-        m_defaultFBO->clearBuffer(target->defaultFramebufferAttachment(), 0, clearDepth, clearStencil);
-        break;
-
-    case RenderTargetType::UserDefinedFBOAttachment:
-        {
-            const auto fboAttachment = m_fbo->getAttachment(attachmentIndex);
-            const auto targetAttachment = target->framebufferAttachment();
-
-            const auto targetAttachedTexture = static_cast<globjects::AttachedTexture *>(targetAttachment);
-            const auto targetAttachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(targetAttachment);
-            const auto fboAttachedTexture = static_cast<globjects::AttachedTexture *>(fboAttachment);
-            const auto fboAttachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(fboAttachment);
-
-            if (fboAttachment->isTextureAttachment() && (!targetAttachment->isTextureAttachment() || fboAttachedTexture->texture() != targetAttachedTexture->texture()))
-            {
-                m_fbo->attachTexture(attachmentIndex, targetAttachedTexture->texture());
-            }
-            else if (fboAttachment->isRenderBufferAttachment() && (!targetAttachment->isRenderBufferAttachment() || fboAttachedRenderbuffer->renderbuffer() != targetAttachedRenderbuffer->renderbuffer()))
-            {
-                m_fbo->attachTexture(attachmentIndex, targetAttachedRenderbuffer->renderbuffer);
-            }
-
-            m_fbo->clearBuffer(gl::GL_DEPTH_STENCIL, clearDepth, clearStencil);
-        }
-        break;
-
-    case RenderTargetType::Texture:
-        {
-            const auto attachment = m_fbo->getAttachment(attachmentIndex);
-
-            const auto attachedTexture = static_cast<globjects::AttachedTexture *>(attachment);
-            if (!attachment->isTextureAttachment() || attachedTexture->texture() != target->textureAttachment())
-            {
-                m_fbo->attachTexture(attachmentIndex, target->textureAttachment());
-            }
-
-            m_fbo->clearBuffer(gl::GL_DEPTH_STENCIL, clearDepth, clearStencil);
-        }
-        break;
-
-    case RenderTargetType::Renderbuffer:
-        {
-            const auto attachment = m_fbo->getAttachment(attachmentIndex);
-
-            const auto attachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(attachment);
-            if (!attachment->isRenderBufferAttachment() || attachedRenderbuffer->renderBuffer() != target->renderbufferAttachment())
-            {
-                m_fbo->attachRenderBuffer(attachmentIndex, target->renderbufferAttachment());
-            }
-
-            m_fbo->clearBuffer(gl::GL_DEPTH_STENCIL, clearDepth, clearStencil);
-        }
-        break;
-
-    default:
-        return false;
-    }
-}
-
 
 } // namespace gloperate

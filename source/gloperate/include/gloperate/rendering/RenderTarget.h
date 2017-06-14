@@ -2,9 +2,11 @@
 #pragma once
 
 
+#include <glbinding/gl/types.h>
 #include <glbinding/gl/enum.h>
 
 #include <gloperate/rendering/RenderTargetType.h>
+#include <gloperate/rendering/AttachmentType.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -50,6 +52,33 @@ public:
     *    Release the current target
     */
     void releaseTarget();
+
+    /**
+    *  @brief
+    *    Get attachment type
+    *
+    *  @return
+    *    The attachment type
+    */
+    AttachmentType attachmentType() const;
+
+    /**
+    *  @brief
+    *    Get attachment type as GLenum
+    *
+    *  @return
+    *    The attachment type as GLenum
+    */
+    gl::GLenum attachmentGLType() const;
+
+    /**
+    *  @brief
+    *    Set attachment type
+    *
+    *  @param[in] type
+    *    The attachment type
+    */
+    void setAttachmentType(AttachmentType attachmentType);
 
     /**
     *  @brief
@@ -101,10 +130,10 @@ public:
 
     /**
     *  @brief
-    *    Get current attachment type
+    *    Get current target type
     *
     *  @return
-    *    The current attachment type
+    *    The current target type
     */
     RenderTargetType type() const;
 
@@ -169,12 +198,17 @@ public:
     */
     bool attachmentRequiresUserDefinedFramebuffer() const;
 
+    gl::GLenum attachmentBuffer() const;
+
+    gl::GLint attachmentDrawBuffer(gl::GLint index) const;
+
 protected:
-    RenderTargetType                   m_type;         ///< Target type
-    gl::GLenum                         m_attachment;   ///< Default framebuffer attachment target
-    globjects::Texture               * m_texture;      ///< Texture target
-    globjects::Renderbuffer          * m_renderbuffer; ///< Renderbuffer target
-    globjects::FramebufferAttachment * m_userDefined;  ///< User defined framebuffer attachment target
+    RenderTargetType                   m_type;           ///< Target type
+    AttachmentType                     m_attachmentType; ///< OpenGL attachment type
+    gl::GLenum                         m_attachment;     ///< Default framebuffer attachment target
+    globjects::Texture               * m_texture;        ///< Texture target
+    globjects::Renderbuffer          * m_renderbuffer;   ///< Renderbuffer target
+    globjects::FramebufferAttachment * m_userDefined;    ///< User defined framebuffer attachment target
 };
 
 

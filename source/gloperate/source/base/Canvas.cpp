@@ -1,6 +1,9 @@
 
 #include <gloperate/base/Canvas.h>
 
+#include <functional>
+#include <algorithm>
+
 #include <glm/glm.hpp>
 
 #include <cppassist/logging/logging.h>
@@ -17,6 +20,8 @@
 #include <gloperate/pipeline/Slot.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
+#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/AttachmentType.h>
 
 
 using namespace cppassist;
@@ -35,6 +40,87 @@ gloperate::Slot<T> * getSlot(gloperate::Stage * stage, const std::string & name)
     } else {
         return static_cast<gloperate::Slot<T> *>(stage->property(name));
     }
+}
+
+template <typename T>
+gloperate::Input<T> * getInput(gloperate::Stage * stage, std::function<bool(gloperate::Input<T> *)> callback)
+{
+    if (!stage)
+    {
+        return nullptr;
+    }
+
+    const auto & inputs = stage->inputs();
+
+    const auto it = std::find_if(inputs.begin(), inputs.end(), [callback](gloperate::AbstractSlot * slot) {
+        const auto input = dynamic_cast<gloperate::Input<T> *>(slot);
+
+        if (!input)
+        {
+            return false;
+        }
+
+        return callback(input);
+    });
+
+    if (it == inputs.end())
+    {
+        return nullptr;
+    }
+
+    return static_cast<gloperate::Input<T> *>(*it);
+}
+
+template <typename T>
+void forAllInputs(gloperate::Stage * stage, std::function<void(gloperate::Input<T> *)> callback)
+{
+    if (!stage)
+    {
+        return;
+    }
+
+    const auto & inputs = stage->inputs();
+
+    for (const auto input : inputs)
+    {
+        const auto inputT = dynamic_cast<gloperate::Input<T> *>(input);
+
+        if (!inputT)
+        {
+            continue;
+        }
+
+        callback(inputT);
+    }
+}
+
+template <typename T>
+gloperate::Output<T> * getOutput(gloperate::Stage * stage, std::function<bool(gloperate::Output<T> *)> callback)
+{
+    if (!stage)
+    {
+        return nullptr;
+    }
+
+    const auto & outputs = stage->outputs();
+
+    const auto it = std::find_if(outputs.begin(), outputs.end(), [callback](gloperate::AbstractSlot * slot) {
+        const auto output = dynamic_cast<gloperate::Output<T> *>(slot);
+
+        if (!output)
+        {
+            return false;
+        }
+
+        return callback(output);
+    });
+
+    if (it == outputs.end())
+    {
+        return nullptr;
+    }
+
+    return static_cast<gloperate::Output<T> *>(*it);
 }
 
 auto s_nextCanvasId = size_t(0);
@@ -56,6 +142,9 @@ Canvas::Canvas(Environment * environment)
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
 , m_replaceStage(false)
+, m_colorTarget(cppassist::make_unique<RenderTarget>())
+, m_depthTarget(cppassist::make_unique<RenderTarget>())
+, m_depthStencilTarget(cppassist::make_unique<RenderTarget>())
 {
     // Register functions
     addFunction("onStageInputChanged", this, &Canvas::scr_onStageInputChanged);
@@ -73,6 +162,10 @@ Canvas::Canvas(Environment * environment)
 
     // Register canvas
     m_environment->registerCanvas(this);
+
+    m_colorTarget->setAttachmentType(AttachmentType::Color);
+    m_depthTarget->setAttachmentType(AttachmentType::Depth);
+    m_depthStencilTarget->setAttachmentType(AttachmentType::DepthStencil);
 }
 
 Canvas::~Canvas()
@@ -189,7 +282,7 @@ void Canvas::updateTime()
     m_timeDelta += timeDelta;
 
     // Update timing
-    auto slotTimeDelta = getSlot<float>(m_renderStage.get(), "timeDelta");
+    auto slotTimeDelta = getInput<float>(m_renderStage.get(), [](Input<float>* input) { return input->name() == "timeDelta"; });
     if (slotTimeDelta) slotTimeDelta->setValue(m_timeDelta);
 
     // Check if a redraw is required
@@ -199,33 +292,25 @@ void Canvas::updateTime()
     promoteChangedInputs();
 }
 
-void Canvas::setViewport(const glm::vec4 & deviceViewport, const glm::vec4 & virtualViewport)
+void Canvas::setViewport(const glm::vec4 & deviceViewport)
 {
     std::lock_guard<std::mutex> lock(this->m_mutex);
 
     // Store viewport information
-    m_deviceViewport  = deviceViewport;
-    m_virtualViewport = virtualViewport;
+    m_viewport  = deviceViewport;
     m_initialized = true;
 
     // Promote new viewport
-    auto slotDeviceViewport = getSlot<glm::vec4>(m_renderStage.get(), "deviceViewport");
-    if (slotDeviceViewport) slotDeviceViewport->setValue(m_deviceViewport);
-    auto slotVirtualViewport = getSlot<glm::vec4>(m_renderStage.get(), "virtualViewport");
-    if (slotVirtualViewport) slotVirtualViewport->setValue(m_virtualViewport);
+    auto slotViewport = getInput<glm::vec4>(m_renderStage.get(), [](Input<glm::vec4>* input) { return input->name() == "viewport"; });
+    if (slotViewport) slotViewport->setValue(m_viewport);
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-const glm::vec4 & Canvas::deviceViewport() const
+const glm::vec4 & Canvas::viewport() const
 {
-    return m_deviceViewport;
-}
-
-const glm::vec4 & Canvas::virtualViewport() const
-{
-    return m_virtualViewport;
+    return m_viewport;
 }
 
 void Canvas::render(globjects::Framebuffer * targetFBO)
@@ -258,26 +343,87 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         m_renderStage->initContext(m_openGLContext);
 
         // Promote viewport information
-        auto slotdeviceViewport = getSlot<glm::vec4>(m_renderStage.get(), "deviceViewport");
-        if (slotdeviceViewport) slotdeviceViewport->setValue(m_deviceViewport);
-        auto slotVirtualViewport = getSlot<glm::vec4>(m_renderStage.get(), "virtualViewport");
-        if (slotVirtualViewport) slotVirtualViewport->setValue(m_virtualViewport);
+        auto slotViewport = getInput<glm::vec4>(m_renderStage.get(), [](Input<glm::vec4>* input) { return input->name() == "viewport"; });
+        if (slotViewport) slotViewport->setValue(m_viewport);
 
         // Mark output as required
-        auto slotRendered = getSlot<bool>(m_renderStage.get(), "rendered");
-        if (slotRendered) slotRendered->setRequired(true);
+        auto slotColorRenderTarget = getOutput<RenderTarget *>(m_renderStage.get(), [](Output<RenderTarget *> * output) {
+            RenderTarget * target = **output;
+
+            return target->attachmentType() == AttachmentType::Color;
+        });
+        if (slotColorRenderTarget) slotColorRenderTarget->setRequired(true);
 
         // Replace finished
         m_replaceStage = false;
     }
 
-    // Render
-    auto slotTargetFBO = getSlot<globjects::Framebuffer *>(m_renderStage.get(), "targetFBO");
-    if (slotTargetFBO)
+    // Extract default color and depth buffer from FBO
+    if (targetFBO->isDefault())
     {
-        slotTargetFBO->setValue(targetFBO);
-        m_renderStage->process();
+        m_colorTarget->setTarget(gl::GL_BACK_LEFT);
+        m_depthTarget->setTarget(gl::GL_DEPTH_ATTACHMENT);
+        m_depthStencilTarget->setTarget(gl::GL_DEPTH_STENCIL_ATTACHMENT);
     }
+    else
+    {
+        unsigned int i = 0;
+        globjects::FramebufferAttachment * colorAttachment = nullptr;
+        while (i < 16 && colorAttachment == nullptr)
+        {
+            colorAttachment = targetFBO->getAttachment(gl::GL_COLOR_ATTACHMENT0+i);
+        }
+        const auto depthAttachment = targetFBO->getAttachment(gl::GL_DEPTH_ATTACHMENT);
+        const auto depthStencilAttachment = targetFBO->getAttachment(gl::GL_DEPTH_STENCIL_ATTACHMENT);
+
+        if (colorAttachment)
+        {
+            m_colorTarget->setTarget(colorAttachment);
+        }
+        else
+        {
+            m_colorTarget->releaseTarget();
+        }
+
+        if (depthStencilAttachment)
+        {
+            m_depthTarget->setTarget(depthStencilAttachment);
+            m_depthStencilTarget->setTarget(depthStencilAttachment);
+        }
+        else if (depthAttachment)
+        {
+            m_depthTarget->setTarget(depthAttachment);
+            m_depthStencilTarget->setTarget(depthAttachment);
+        }
+        else
+        {
+            m_depthTarget->releaseTarget();
+            m_depthStencilTarget->releaseTarget();
+        }
+    }
+
+    // Update render stage input render targets
+    forAllInputs<gloperate::RenderTarget *>(m_renderStage.get(), [this](Input<RenderTarget *> * input) {
+        gloperate::RenderTarget * renderTarget = **input;
+
+        switch (renderTarget->attachmentType())
+        {
+        case AttachmentType::Color:
+            input->setValue(m_colorTarget.get());
+            break;
+        case AttachmentType::Depth:
+            input->setValue(m_depthTarget.get());
+            break;
+        case AttachmentType::DepthStencil:
+            input->setValue(m_depthStencilTarget.get());
+            break;
+        default:
+            input->setValue(nullptr);
+        }
+    });
+
+    // Render
+    m_renderStage->process();
 }
 
 void Canvas::promoteKeyPress(int key, int modifier)
