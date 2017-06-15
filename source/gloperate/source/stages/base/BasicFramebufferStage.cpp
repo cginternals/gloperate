@@ -72,6 +72,7 @@ void BasicFramebufferStage::rebuildFBO()
 
     m_colorBuffer = cppassist::make_unique<RenderTarget>();
     m_colorBuffer->setTarget(m_colorTexture.get());
+    m_colorBuffer->setAttachmentType(AttachmentType::Color);
 
     // Create depth texture
     m_depthTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
@@ -79,6 +80,7 @@ void BasicFramebufferStage::rebuildFBO()
 
     m_depthBuffer = cppassist::make_unique<RenderTarget>();
     m_depthBuffer->setTarget(m_depthTexture.get());
+    m_depthBuffer->setAttachmentType(AttachmentType::Depth);
 
     // Create FBO
     m_fbo = cppassist::make_unique<globjects::Framebuffer>();

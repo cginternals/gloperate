@@ -156,7 +156,7 @@ void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::F
 
     m_canvas->render(m_fbo.get());
 
-    auto destVP = m_savedDeviceViewport;
+    auto destVP = m_savedViewport;
 
     std::array<gl::GLint, 4> srcRect = {{int(viewport.x), int(viewport.y), int(viewport.z), int(viewport.w)}};
     std::array<gl::GLint, 4> destRect = {{int(destVP.x), int(destVP.y), int(destVP.z), int(destVP.w)}};
@@ -217,7 +217,7 @@ void FFMPEGVideoExporter::initialize(ContextHandling contextHandling)
 
     m_savedViewport = m_canvas->viewport();
 
-    m_canvas->setViewport(viewport, viewport);
+    m_canvas->setViewport(viewport);
 
     if (m_contextHandling == AbstractVideoExporter::ActivateContext)
     {

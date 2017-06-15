@@ -23,6 +23,24 @@ RenderInterface::RenderInterface(Stage * stage)
 {
     // Hide inputs in property editor
     viewport.setOption("hidden", true);
+
+    stage->inputAdded.connect( [this] (AbstractSlot * connectedInput) {
+        auto renderTargetInput = dynamic_cast<Input<RenderTarget *> *>(connectedInput);
+
+        if (renderTargetInput)
+        {
+            addRenderTargetInput(renderTargetInput);
+        }
+    });
+
+    stage->outputAdded.connect( [this] (AbstractSlot * connectedOutput) {
+        auto renderTargetOutput = dynamic_cast<Output<RenderTarget *> *>(connectedOutput);
+
+        if (renderTargetOutput)
+        {
+            addRenderTargetOutput(renderTargetOutput);
+        }
+    });
 }
 
 RenderInterface::~RenderInterface()

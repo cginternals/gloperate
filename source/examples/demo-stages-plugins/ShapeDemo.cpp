@@ -7,7 +7,6 @@
 
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
-#include <gloperate/stages/base/FramebufferStage.h>
 #include <gloperate/stages/base/TextureStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
@@ -19,6 +18,7 @@
 #include <gloperate/stages/navigation/TrackballStage.h>
 #include <gloperate/rendering/Shape.h>
 #include <gloperate/rendering/Quad.h>
+#include <gloperate/rendering/RenderTarget.h>
 
 
 CPPEXPOSE_COMPONENT(ShapeDemo, gloperate::Stage)
@@ -30,12 +30,13 @@ using namespace gloperate;
 
 ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 : Pipeline(environment, "ShapeDemo", name)
-, renderInterface(this)
+, canvasInterface(this)
 , shape("shape", this, ShapeType::Box)
 , texture("texture", this)
 , angle("angle", this, 0.0f)
 , rotate("rotate", this, false)
 , color("color", this, Color(255, 255, 255, 255))
+, m_colorTarget(cppassist::make_unique<gloperate::RenderTarget>())
 , m_timer(cppassist::make_unique<TimerStage>(environment, "Timer"))
 , m_trackball(cppassist::make_unique<TrackballStage>(environment, "Trackball"))
 , m_shape(cppassist::make_unique<ShapeStage>(environment, "Shape"))
@@ -50,6 +51,8 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 , m_colorizeRenderPass(cppassist::make_unique<RenderPassStage>(environment, "ColorizeRenderPass"))
 , m_colorizeRasterization(cppassist::make_unique<RasterizationStage>(environment, "ColorizeRasterization"))
 {
+    m_colorTarget->setAttachmentType(gloperate::AttachmentType::Color);
+
     // Get data path
     std::string dataPath = gloperate::dataPath();
 
@@ -68,7 +71,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Trackball stage
     addStage(m_trackball.get());
-    m_trackball->viewport << renderInterface.deviceViewport;
+    m_trackball->viewport << canvasInterface.viewport;
 
     // Shape stage
     addStage(m_shape.get());
@@ -81,18 +84,19 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Texture loader stage
     addStage(m_texture.get());
-    m_texture->filename << texture;
+    m_texture->filename << this->texture;
 
     // Framebuffer stage
     addStage(m_framebuffer.get());
-    m_framebuffer->viewport << renderInterface.deviceViewport;
+    m_framebuffer->viewport << canvasInterface.viewport;
 
     // Clear stage
     addStage(m_clear.get());
-    m_clear->renderInterface.targetFBO << m_framebuffer->fbo;
-    m_clear->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_clear->renderInterface.backgroundColor = Color(0.0f, 0.0f, 0.0f, 1.0f);
-    m_clear->colorTexture << m_framebuffer->colorTexture;
+    m_clear->createInput("ColorAttachment") << m_framebuffer->colorBuffer;
+    m_clear->createInput("DepthAttachment") << m_framebuffer->depthBuffer;
+    m_clear->renderInterface.viewport << canvasInterface.viewport;
+
+    // Invalidation of Clear Stage if new rendering should take place
     m_clear->createInput("renderPass") << m_shapeRenderPass->renderPass;
 
     // Transform stage for shape
@@ -116,10 +120,10 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Rasterization stage for shape
     addStage(m_shapeRasterization.get());
-    m_shapeRasterization->renderInterface.targetFBO << m_clear->fboOut;
-    m_shapeRasterization->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_shapeRasterization->createInput("ColorAttachment") << *m_clear->createOutput<gloperate::RenderTarget *>("ColorAttachmentOut");
+    m_shapeRasterization->createInput("DepthAttachment") << *m_clear->createOutput<gloperate::RenderTarget *>("DepthAttachmentOut");
+    m_shapeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_shapeRasterization->drawable << m_shapeRenderPass->renderPass;
-    m_shapeRasterization->colorTexture << m_clear->colorTextureOut;
 
     // Colorize program stage
     addStage(m_colorizeProgram.get());
@@ -132,16 +136,16 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_colorizeRenderPass->program << m_colorizeProgram->program;
     m_colorizeRenderPass->culling = false;
     m_colorizeRenderPass->createInput("color") << this->color;
-    m_colorizeRenderPass->createInput("source") << m_shapeRasterization->colorTextureOut;
+    m_colorizeRenderPass->createInput("source") << m_framebuffer->colorTexture;
 
     // Colorize rasterization stage
     addStage(m_colorizeRasterization.get());
-    m_colorizeRasterization->renderInterface.targetFBO << renderInterface.targetFBO;
-    m_colorizeRasterization->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_colorizeRasterization->createInput("ColorAttachment") << *createInput<gloperate::RenderTarget *>("Color");
+    m_colorizeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_colorizeRasterization->drawable << m_colorizeRenderPass->renderPass;
 
     // Outputs
-    renderInterface.rendered << m_colorizeRasterization->renderInterface.rendered;
+    *createOutput<gloperate::RenderTarget *>("ColorOut") << *m_colorizeRasterization->createOutput<gloperate::RenderTarget *>("ColorOut");
 
     // Start rotation
     rotate = true;
@@ -177,7 +181,7 @@ void ShapeDemo::onRotateChanged(const bool & rotate)
 
         // Connect angle to timer and resume timer
         angle << m_timer->virtualTime;
-        m_timer->timeDelta << renderInterface.timeDelta;
+        m_timer->timeDelta << canvasInterface.timeDelta;
     }
 
     // Switch rotation off

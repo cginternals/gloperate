@@ -9,7 +9,7 @@
 #include <gloperate/rendering/Shape.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Input.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 namespace gloperate
@@ -51,7 +51,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
     Input<gloperate::ShapeType> shape;   ///< Shape type
@@ -87,6 +87,9 @@ protected:
 
 
 protected:
+    // Misc
+    std::unique_ptr<gloperate::RenderTarget>          m_colorTarget;
+
     // Stages
     std::unique_ptr<gloperate::TimerStage>            m_timer;                 ///< Timer for continuous rendering and animation
 

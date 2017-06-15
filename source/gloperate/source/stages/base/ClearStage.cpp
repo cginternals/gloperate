@@ -23,16 +23,10 @@ ClearStage::ClearStage(Environment * environment, const std::string & name)
 , clear("clear",  this)
 , renderInterface(this)
 {
-    inputAdded.connect( [this] (gloperate::AbstractSlot * connectedInput) {
-        auto renderTargetInput = dynamic_cast<Input<gloperate::RenderTarget *> *>(connectedInput);
+    inputAdded.connect( [this] (AbstractSlot * connectedInput) {
         auto colorValueInput = dynamic_cast<Input<glm::vec4> *>(connectedInput);
         auto depthValueInput = dynamic_cast<Input<float> *>(connectedInput);
         auto depthStencilValueInput = dynamic_cast<Input<std::pair<float, int>> *>(connectedInput);
-
-        if (renderTargetInput)
-        {
-            renderInterface.addRenderTargetInput(renderTargetInput);
-        }
 
         if (colorValueInput)
         {
@@ -47,15 +41,6 @@ ClearStage::ClearStage(Environment * environment, const std::string & name)
         if (depthStencilValueInput)
         {
             m_depthStencilValueInputs.push_back(depthStencilValueInput);
-        }
-    });
-
-    outputAdded.connect( [this] (gloperate::AbstractSlot * connectedOutput) {
-        auto renderTargetOutput = dynamic_cast<Output<gloperate::RenderTarget *> *>(connectedOutput);
-
-        if (renderTargetOutput)
-        {
-            renderInterface.addRenderTargetOutput(renderTargetOutput);
         }
     });
 }

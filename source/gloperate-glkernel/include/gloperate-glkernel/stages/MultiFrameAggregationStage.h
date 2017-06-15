@@ -39,14 +39,12 @@ public:
 
 
 public:
-    // Inputs
-    Input<globjects::Texture *>  sourceTexture;     ///< Current frame texture
-    Input<globjects::Texture *>  targetTexture;     ///< Aggregation target texture
-    Input<glm::vec4>             viewport;          ///< Target viewport
-    Input<float>                 aggregationFactor; ///< Weight of new frame in current aggregation
+    // Render Interface
+    gloperate::RenderInterface  renderInterface;   ///< Render interface for aggregation target
 
-    // Outputs
-    Output<globjects::Texture *> aggregatedTexture; ///< Aggregation target texture (passed for stage chaining)
+    // Inputs
+    Input<globjects::Texture *> intermediateFrame; ///< Current frame texture
+    Input<float>                aggregationFactor; ///< Weight of new frame in current aggregation
 
 
 public:
@@ -77,6 +75,7 @@ protected:
 protected:
     // Data
     std::unique_ptr<gloperate::ScreenAlignedTriangle> m_triangle; ///< Screen-aligned Triangle for 'blitting'
+    std::unique_ptr<globjects::Framebuffer> m_defaultFBO;         ///< Default framebuffer for render targets
     std::unique_ptr<globjects::Framebuffer> m_fbo;                ///< Framebuffer for render targets
 };
 

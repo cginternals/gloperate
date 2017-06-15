@@ -7,13 +7,12 @@ namespace gloperate
 
 
 CanvasInterface::CanvasInterface(Stage * stage)
-: viewport       ("viewport", stage)
+: RenderInterface(stage)
 , backgroundColor("backgroundColor", stage)
 , frameCounter   ("frameCounter", stage)
 , timeDelta      ("timeDelta", stage)
 {
     // Hide inputs in property editor
-    viewport       .setOption("hidden", true);
     backgroundColor.setOption("hidden", true);
     frameCounter   .setOption("hidden", true);
     timeDelta      .setOption("hidden", true);

@@ -21,23 +21,6 @@ RasterizationStage::RasterizationStage(Environment * environment, const std::str
 , rasterize      ("rasterize", this, true)
 , drawable       ("drawable",  this)
 {
-    inputAdded.connect( [this] (gloperate::AbstractSlot * connectedInput) {
-        auto renderTargetInput = dynamic_cast<Input<gloperate::RenderTarget *> *>(connectedInput);
-
-        if (renderTargetInput)
-        {
-            renderInterface.addRenderTargetInput(renderTargetInput);
-        }
-    });
-
-    outputAdded.connect( [this] (gloperate::AbstractSlot * connectedOutput) {
-        auto renderTargetOutput = dynamic_cast<Output<gloperate::RenderTarget *> *>(connectedOutput);
-
-        if (renderTargetOutput)
-        {
-            renderInterface.addRenderTargetOutput(renderTargetOutput);
-        }
-    });
 }
 
 RasterizationStage::~RasterizationStage()

@@ -5,6 +5,7 @@
 #include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
 
 #include <gloperate/gloperate_api.h>
 
@@ -33,11 +34,10 @@ class RenderTarget;
 *    and it will add the inputs and outputs directly to the stage (the interface
 *    itself is not an object in the hierarchy).
 */
-class GLOPERATE_API CanvasInterface
+class GLOPERATE_API CanvasInterface : public RenderInterface
 {
 public:
     // Inputs
-    Input<glm::vec4> viewport;        ///< Viewport (in real device coordinates)
     Input<Color>     backgroundColor; ///< Background color (RGBA)
     Input<int>       frameCounter;    ///< Frame counter (number of frames)
     Input<float>     timeDelta;       ///< Time delta since last frame (in seconds)
