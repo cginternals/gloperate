@@ -94,7 +94,7 @@ void ColorGradientPreparation::configureProperty(cppexpose::AbstractProperty * p
 {
     property->setOption("choices", cppexpose::Variant::arrayFromValues(names()));
     property->setOption("pixmapSize", cppexpose::Variant::fromValue(iconSize()));
-    property->setOption("pixmaps", cppexpose::Variant::fromValue(pixmaps()));
+    property->setOption("pixmaps", cppexpose::Variant::arrayFromValues(pixmaps()));
 }
 
 
