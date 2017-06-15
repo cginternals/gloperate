@@ -51,24 +51,26 @@ void BasicFramebufferStage::onProcess()
     {
         // Rebuild FBO (and textures)
         rebuildFBO();
-
-        // Update outputs
-        this->fbo.setValue(m_fbo.get());
-        this->colorTexture.setValue(m_colorTexture.get());
-        this->depthTexture.setValue(m_depthTexture.get());
-        this->colorBuffer.setValue(m_colorBuffer.get());
-        this->depthBuffer.setValue(m_depthBuffer.get());
     }
+
+    // Get texture size
+    glm::ivec2 size = glm::ivec2((*this->viewport).z, (*this->viewport).w);
+
+    m_colorTexture->image2D(0, gl::GL_RGBA, size.x, size.y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
+    m_depthTexture->image2D(0, gl::GL_DEPTH_COMPONENT, size.x, size.y, 0, gl::GL_DEPTH_COMPONENT, gl::GL_UNSIGNED_BYTE, nullptr);
+
+    // Update outputs
+    this->fbo.setValue(m_fbo.get());
+    this->colorTexture.setValue(m_colorTexture.get());
+    this->depthTexture.setValue(m_depthTexture.get());
+    this->colorBuffer.setValue(m_colorBuffer.get());
+    this->depthBuffer.setValue(m_depthBuffer.get());
 }
 
 void BasicFramebufferStage::rebuildFBO()
 {
-    // Get texture size
-    glm::ivec2 size = glm::ivec2((*this->viewport).z, (*this->viewport).w);
-
     // Create color texture
     m_colorTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-    m_colorTexture->image2D(0, gl::GL_RGBA, size.x, size.y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
 
     m_colorBuffer = cppassist::make_unique<RenderTarget>();
     m_colorBuffer->setTarget(m_colorTexture.get());
@@ -76,7 +78,6 @@ void BasicFramebufferStage::rebuildFBO()
 
     // Create depth texture
     m_depthTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-    m_depthTexture->image2D(0, gl::GL_DEPTH_COMPONENT, size.x, size.y, 0, gl::GL_DEPTH_COMPONENT, gl::GL_UNSIGNED_BYTE, nullptr);
 
     m_depthBuffer = cppassist::make_unique<RenderTarget>();
     m_depthBuffer->setTarget(m_depthTexture.get());

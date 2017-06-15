@@ -123,6 +123,29 @@ gloperate::Output<T> * getOutput(gloperate::Stage * stage, std::function<bool(gl
     return static_cast<gloperate::Output<T> *>(*it);
 }
 
+template <typename T>
+void forAllOutputs(gloperate::Stage * stage, std::function<void(gloperate::Output<T> *)> callback)
+{
+    if (!stage)
+    {
+        return;
+    }
+
+    const auto & outputs = stage->outputs();
+
+    for (const auto output : outputs)
+    {
+        const auto outputT = dynamic_cast<gloperate::Output<T> *>(output);
+
+        if (!outputT)
+        {
+            continue;
+        }
+
+        callback(outputT);
+    }
+}
+
 auto s_nextCanvasId = size_t(0);
 
 
@@ -283,7 +306,10 @@ void Canvas::updateTime()
 
     // Update timing
     auto slotTimeDelta = getInput<float>(m_renderStage.get(), [](Input<float>* input) { return input->name() == "timeDelta"; });
-    if (slotTimeDelta) slotTimeDelta->setValue(m_timeDelta);
+    if (slotTimeDelta)
+    {
+        slotTimeDelta->setValue(m_timeDelta);
+    }
 
     // Check if a redraw is required
     checkRedraw();
@@ -324,7 +350,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
 
     // Abort if not initialized
-    if (!m_initialized) return;
+    if (!m_initialized || !m_renderStage) return;
 
     // Check if the render stage is to be replaced
     if (m_replaceStage)
@@ -347,12 +373,9 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         if (slotViewport) slotViewport->setValue(m_viewport);
 
         // Mark output as required
-        auto slotColorRenderTarget = getOutput<RenderTarget *>(m_renderStage.get(), [](Output<RenderTarget *> * output) {
-            RenderTarget * target = **output;
-
-            return target->attachmentType() == AttachmentType::Color;
+        forAllOutputs<RenderTarget *>(m_renderStage.get(), [](Output<RenderTarget *> * output) {
+            output->setRequired(true);
         });
-        if (slotColorRenderTarget) slotColorRenderTarget->setRequired(true);
 
         // Replace finished
         m_replaceStage = false;
@@ -405,6 +428,11 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     // Update render stage input render targets
     forAllInputs<gloperate::RenderTarget *>(m_renderStage.get(), [this](Input<RenderTarget *> * input) {
         gloperate::RenderTarget * renderTarget = **input;
+
+        if (renderTarget == nullptr)
+        {
+            return;
+        }
 
         switch (renderTarget->attachmentType())
         {

@@ -138,9 +138,13 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_colorizeRenderPass->createInput("color") << this->color;
     m_colorizeRenderPass->createInput("source") << m_framebuffer->colorTexture;
 
+    auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::RenderTarget *>("ColorAttachmentOut");
+    shapeColorOutput->setRequired(true);
+    shapeColorOutput->valueInvalidated.connect([this]() { m_colorizeRasterization->drawable.invalidate(); });
+
     // Colorize rasterization stage
     addStage(m_colorizeRasterization.get());
-    m_colorizeRasterization->createInput("ColorAttachment") << *createInput<gloperate::RenderTarget *>("Color");
+    m_colorizeRasterization->createInput("ColorAttachment") << *createInput<gloperate::RenderTarget *>("Color", m_colorTarget.get());
     m_colorizeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_colorizeRasterization->drawable << m_colorizeRenderPass->renderPass;
 
@@ -178,6 +182,7 @@ void ShapeDemo::onRotateChanged(const bool & rotate)
     {
         // Set timer to current rotation value
         m_timer->virtualTime = *angle;
+        m_timer->virtualTime.setRequired(true);
 
         // Connect angle to timer and resume timer
         angle << m_timer->virtualTime;
@@ -193,5 +198,6 @@ void ShapeDemo::onRotateChanged(const bool & rotate)
 
         // Stop time
         m_timer->timeDelta.disconnect();
+        m_timer->virtualTime.setRequired(false);
     }
 }

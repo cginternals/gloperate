@@ -126,8 +126,8 @@ void RenderInterface::addRenderTargetOutput(Output<RenderTarget *> * input)
 void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input <RenderTarget *> *, Output <RenderTarget *> *)> callback, bool includeIncompletePairs)
 {
     const auto end = includeIncompletePairs
-        ? std::min(m_renderTargetInputs.size(), m_renderTargetOutputs.size())
-        : std::max(m_renderTargetInputs.size(), m_renderTargetOutputs.size());
+        ? std::max(m_renderTargetInputs.size(), m_renderTargetOutputs.size())
+        : std::min(m_renderTargetInputs.size(), m_renderTargetOutputs.size());
 
     for (auto i = size_t(0); i < end; ++i)
     {
@@ -139,6 +139,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
 {
     assert(allRenderTargetsCompatible());
 
+    std::vector<gl::GLenum> drawBuffers;
     globjects::Framebuffer * currentFBO = nullptr;
     auto colorAttachmentIndex = size_t(0);
     for (auto input : m_renderTargetInputs)
@@ -154,16 +155,29 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
 
         if ((**input)->attachmentType() == AttachmentType::Color)
         {
+            drawBuffers.push_back(gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
             ++colorAttachmentIndex;
         }
     }
+
+    currentFBO->setDrawBuffers(drawBuffers);
 
     return currentFBO;
 }
 
 globjects::Framebuffer * RenderInterface::configureFBO(size_t index, RenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO)
 {
-    const auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
+    auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
+
+    if (renderTarget->attachmentType() == AttachmentType::Depth)
+    {
+        attachmentIndex = gl::GL_DEPTH_ATTACHMENT;
+    }
+
+    if (renderTarget->attachmentType() == AttachmentType::DepthStencil)
+    {
+        attachmentIndex = gl::GL_DEPTH_STENCIL_ATTACHMENT;
+    }
 
     switch (renderTarget->type())
     {
@@ -180,7 +194,18 @@ globjects::Framebuffer * RenderInterface::configureFBO(size_t index, RenderTarge
             const auto fboAttachedTexture = static_cast<globjects::AttachedTexture *>(fboAttachment);
             const auto fboAttachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(fboAttachment);
 
-            if (fboAttachment->isTextureAttachment() && (!targetAttachment->isTextureAttachment() || fboAttachedTexture->texture() != targetAttachedTexture->texture()))
+            if (!fboAttachment)
+            {
+                if (targetAttachment->isTextureAttachment())
+                {
+                    fbo->attachTexture(attachmentIndex, targetAttachedTexture->texture());
+                }
+                else
+                {
+                    fbo->attachRenderBuffer(attachmentIndex, targetAttachedRenderbuffer->renderBuffer());
+                }
+            }
+            else if (fboAttachment->isTextureAttachment() && (!targetAttachment->isTextureAttachment() || fboAttachedTexture->texture() != targetAttachedTexture->texture()))
             {
                 fbo->attachTexture(attachmentIndex, targetAttachedTexture->texture());
             }
@@ -198,7 +223,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(size_t index, RenderTarge
             const auto attachment = fbo->getAttachment(attachmentIndex);
 
             const auto attachedTexture = static_cast<globjects::AttachedTexture *>(attachment);
-            if (!attachment->isTextureAttachment() || attachedTexture->texture() != renderTarget->textureAttachment())
+            if (!attachment || !attachment->isTextureAttachment() || attachedTexture->texture() != renderTarget->textureAttachment())
             {
                 fbo->attachTexture(attachmentIndex, renderTarget->textureAttachment());
             }

@@ -73,6 +73,8 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
+    virtual void onContextInit(AbstractGLContext * content) override;
+    virtual void onContextDeinit(AbstractGLContext * content) override;
 
 
 protected:

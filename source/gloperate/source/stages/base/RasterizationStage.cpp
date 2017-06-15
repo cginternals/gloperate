@@ -27,6 +27,18 @@ RasterizationStage::~RasterizationStage()
 {
 }
 
+void RasterizationStage::onContextInit(AbstractGLContext *)
+{
+    m_defaultFBO = globjects::Framebuffer::defaultFBO();
+    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
+}
+
+void RasterizationStage::onContextDeinit(AbstractGLContext *)
+{
+    m_defaultFBO = nullptr;
+    m_fbo = nullptr;
+}
+
 void RasterizationStage::onProcess()
 {
     if (!renderInterface.allRenderTargetsCompatible())
@@ -48,6 +60,8 @@ void RasterizationStage::onProcess()
 
         // Bind FBO
         fbo->bind(gl::GL_FRAMEBUFFER);
+
+        fbo->printStatus(true);
 
         // Render the drawable
         (*drawable)->draw();
