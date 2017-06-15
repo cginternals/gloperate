@@ -52,7 +52,6 @@ Canvas::Canvas(Environment * environment)
 , m_environment(environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
-, m_virtualTime(0.0f)
 , m_timeDelta(0.0f)
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
@@ -187,12 +186,9 @@ void Canvas::updateTime()
 
     // Determine time delta and virtual time
     float timeDelta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
-    m_virtualTime += timeDelta;
-    m_timeDelta   += timeDelta;
+    m_timeDelta += timeDelta;
 
     // Update timing
-    auto slotVirtualTime = getSlot<float>(m_renderStage.get(), "virtualTime");
-    if (slotVirtualTime) slotVirtualTime->setValue(m_virtualTime);
     auto slotTimeDelta = getSlot<float>(m_renderStage.get(), "timeDelta");
     if (slotTimeDelta) slotTimeDelta->setValue(m_timeDelta);
 

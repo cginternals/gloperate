@@ -84,8 +84,8 @@ void TransparentCirclesStage::onProcess()
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    glm::vec3 color = *renderInterface.backgroundColor;
-    gl::glClearColor(color.r, color.g, color.b, 1.0f);
+    auto & color = *renderInterface.backgroundColor;
+    gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);

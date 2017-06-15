@@ -169,10 +169,10 @@ std::string Color::toHexString() const
     stream << "#";
     stream << std::hex << std::uppercase;
 
-    stream << std::setw(2) << std::setfill('0') << alpha();
-    stream << std::setw(2) << std::setfill('0') << red();
-    stream << std::setw(2) << std::setfill('0') << green();
-    stream << std::setw(2) << std::setfill('0') << blue();
+    stream << std::setw(2) << std::setfill('0') << (int)alpha();
+    stream << std::setw(2) << std::setfill('0') << (int)red();
+    stream << std::setw(2) << std::setfill('0') << (int)green();
+    stream << std::setw(2) << std::setfill('0') << (int)blue();
 
     return stream.str();
 }

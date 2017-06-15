@@ -14,11 +14,10 @@ namespace gloperate
 {
     class LightCreationStage;
     class LightBufferTextureStage;
+    class TimerStage;
 }
 
-
 class LightTestStage;
-class TimerStage;
 
 
 /**
@@ -88,6 +87,6 @@ protected:
     std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage2;
     std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage3;
     std::unique_ptr<gloperate::LightBufferTextureStage> m_lightAccumulationStage;
-    std::unique_ptr<TimerStage>                         m_timerStage;
+    std::unique_ptr<gloperate::TimerStage>              m_timerStage;
     std::unique_ptr<LightTestStage>                     m_renderStage;
 };

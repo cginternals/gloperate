@@ -1,11 +1,11 @@
 
 #include "LightTestPipeline.h"
 
+#include <gloperate/stages/base/TimerStage.h>
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/lights/LightBufferTextureStage.h>
 
 #include "LightTestStage.h"
-#include "TimerStage.h"
 
 
 CPPEXPOSE_COMPONENT(LightTestPipeline, gloperate::Stage)
@@ -31,7 +31,7 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
 , m_lightDefStage2(cppassist::make_unique<gloperate::LightCreationStage>(environment))
 , m_lightDefStage3(cppassist::make_unique<gloperate::LightCreationStage>(environment))
 , m_lightAccumulationStage(cppassist::make_unique<gloperate::LightBufferTextureStage>(environment))
-, m_timerStage(cppassist::make_unique<TimerStage>(environment))
+, m_timerStage(cppassist::make_unique<gloperate::TimerStage>(environment))
 , m_renderStage(cppassist::make_unique<LightTestStage>(environment))
 {
     glossiness.setOptions({

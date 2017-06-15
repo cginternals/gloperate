@@ -39,9 +39,7 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
-    ${include_path}/DemoStage.h
-    ${include_path}/DemoStage2.h
-    ${include_path}/DemoPipeline.h
+    ${include_path}/ShapeDemo.h
     ${include_path}/ShaderDemoPipeline.h
     ${include_path}/AntialiasableTriangleStage.h
     ${include_path}/AntialiasingRenderingPipeline.h
@@ -56,11 +54,7 @@ set(headers
     ${include_path}/TransparentCirclesStage.h
     ${include_path}/TransparencyRenderingPipeline.h
     ${include_path}/DemoTransparencyAggregationPipeline.h
-    ${include_path}/SpinningRectStage.h
-    ${include_path}/DemoRenderStage.h
     ${include_path}/DemoDrawableStage.h
-    ${include_path}/TimerStage.h
-    ${include_path}/ColorizeStage.h
     ${include_path}/LightTestStage.h
     ${include_path}/LightTestPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
@@ -70,9 +64,7 @@ set(headers
 set(sources
     ${source_path}/plugin.cpp
 
-    ${source_path}/DemoStage.cpp
-    ${source_path}/DemoStage2.cpp
-    ${source_path}/DemoPipeline.cpp
+    ${source_path}/ShapeDemo.cpp
     ${source_path}/ShaderDemoPipeline.cpp
     ${source_path}/AntialiasableTriangleStage.cpp
     ${source_path}/AntialiasingRenderingPipeline.cpp
@@ -87,11 +79,7 @@ set(sources
     ${source_path}/TransparentCirclesStage.cpp
     ${source_path}/TransparencyRenderingPipeline.cpp
     ${source_path}/DemoTransparencyAggregationPipeline.cpp
-    ${source_path}/SpinningRectStage.cpp
-    ${source_path}/DemoRenderStage.cpp
     ${source_path}/DemoDrawableStage.cpp
-    ${source_path}/TimerStage.cpp
-    ${source_path}/ColorizeStage.cpp
     ${source_path}/LightTestStage.cpp
     ${source_path}/LightTestPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp

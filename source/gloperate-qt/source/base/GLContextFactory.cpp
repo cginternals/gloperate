@@ -87,6 +87,7 @@ QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextForm
         break;
     case gloperate::GLContextFormat::SwapBehavior::SingleBuffering:
         qFormat.setSwapBehavior(QSurfaceFormat::SingleBuffer);
+        break;
     default:
         qFormat.setSwapBehavior(QSurfaceFormat::DefaultSwapBehavior);
     }

@@ -58,7 +58,7 @@ Item
                 anchors.fill: parent
                 anchors.margins: 1
 
-                path: 'DemoPipeline.FramebufferStage1.colorTexture'
+                path: 'ShapeDemo.Framebuffer.colorTexture'
             }
 
             MouseArea
