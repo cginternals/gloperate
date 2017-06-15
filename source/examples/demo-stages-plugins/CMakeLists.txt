@@ -54,6 +54,8 @@ set(headers
     ${include_path}/TransparentCirclesStage.h
     ${include_path}/TransparencyRenderingPipeline.h
     ${include_path}/DemoTransparencyAggregationPipeline.h
+    ${include_path}/MultiFrameRenderingPipeline.h
+    ${include_path}/DemoMultiFrameAggregationPipeline.h
     ${include_path}/DemoDrawableStage.h
     ${include_path}/LightTestStage.h
     ${include_path}/LightTestPipeline.h
@@ -79,6 +81,8 @@ set(sources
     ${source_path}/TransparentCirclesStage.cpp
     ${source_path}/TransparencyRenderingPipeline.cpp
     ${source_path}/DemoTransparencyAggregationPipeline.cpp
+    ${source_path}/MultiFrameRenderingPipeline.cpp
+    ${source_path}/DemoMultiFrameAggregationPipeline.cpp
     ${source_path}/DemoDrawableStage.cpp
     ${source_path}/LightTestStage.cpp
     ${source_path}/LightTestPipeline.cpp
