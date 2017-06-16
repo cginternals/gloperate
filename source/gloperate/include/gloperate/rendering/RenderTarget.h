@@ -118,18 +118,6 @@ public:
 
     /**
     *  @brief
-    *    Bind render target to a framebuffer
-    *
-    *  @param[in] renderbuffer
-    *    Target framebuffer
-    *  @param[in] bindingPoint
-    *    Target binding point, e.g. gl::GL_DEPTH_ATTACHMENT
-    *    Will be ignored if not applicable
-    */
-    void bind(gl::GLenum bindingPoint, globjects::Framebuffer * fbo);
-
-    /**
-    *  @brief
     *    Get current target type
     *
     *  @return

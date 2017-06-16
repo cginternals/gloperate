@@ -91,10 +91,9 @@ GLContextFormat::GLContextFormat()
 , m_samples(-1)
 , m_swapBehavior(SwapBehavior::DoubleBuffering)
 {
-#ifdef __APPLE__
     m_version = glbinding::Version(3,2);
     m_profile = Profile::Core;
-#endif
+    m_forwardCompatibility = true;
 }
 
 GLContextFormat::~GLContextFormat()
@@ -431,9 +430,9 @@ bool GLContextFormat::verifyPixelFormat(const GLContextFormat & requested) const
         issues.push_back("- Stereo Buffering requested, but not initialized.");
     }
 
-    if (requested.samples())
+    if (requested.samples() > 0)
     {
-        if (!samples())
+        if (samples() <= 0)
         {
             issues.push_back("- Sample Buffers requested, but none initialized.");
         }

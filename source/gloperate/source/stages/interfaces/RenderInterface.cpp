@@ -155,7 +155,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
 
         if ((**input)->attachmentType() == AttachmentType::Color)
         {
-            drawBuffers.push_back(gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
+            drawBuffers.push_back((**input)->type() == RenderTargetType::DefaultFBOAttachment ? (**input)->defaultFramebufferAttachment() : gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
             ++colorAttachmentIndex;
         }
     }
