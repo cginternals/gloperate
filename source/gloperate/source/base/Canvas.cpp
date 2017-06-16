@@ -361,9 +361,16 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 void Canvas::checkRedraw()
 {
     auto slotRendered = getSlot<globjects::Framebuffer *>(m_renderStage.get(), "rendered");
+
     if (slotRendered && !slotRendered->isValid())
     {
+        debug(2, "gloperate") << "check redraw: redraw required";
+
         redraw();
+    }
+    else
+    {
+        debug(2, "gloperate") << "check redraw: no redraw required";
     }
 }
 
