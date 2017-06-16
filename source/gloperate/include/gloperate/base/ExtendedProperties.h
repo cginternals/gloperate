@@ -10,6 +10,7 @@
 
 #include <cppexpose/typed/GetTyped.h>
 
+#include <gloperate/base/Range.h>
 #include <gloperate/rendering/Color.h>
 
 
@@ -103,6 +104,34 @@ template <typename BASE>
 struct GetTyped<gloperate::Color, BASE>
 {
     using Type = TypedColor<BASE>;
+};
+
+
+/**
+*  @brief
+*    Property implementation for gloperate::Range
+*/
+template <typename BASE>
+class TypedRange : public cppexpose::Typed<gloperate::Range, BASE>
+{
+public:
+    TypedRange();
+    virtual ~TypedRange();
+
+    virtual std::string typeName() const override;
+    bool isString() const override;
+
+    std::string toString() const override;
+    bool fromString(const std::string & string) override;
+
+    Variant toVariant() const override;
+    bool fromVariant(const Variant & variant) override;
+};
+
+template <typename BASE>
+struct GetTyped<gloperate::Range, BASE>
+{
+    using Type = TypedRange<BASE>;
 };
 
 
