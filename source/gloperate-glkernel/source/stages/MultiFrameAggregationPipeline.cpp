@@ -5,7 +5,8 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
-#include <gloperate/stages/base/TextureStage.h>
+#include <gloperate/stages/base/TextureRenderTargetStage.h>
+#include <gloperate/stages/base/RenderbufferRenderTargetStage.h>
 #include <gloperate/stages/base/BlitStage.h>
 
 #include <gloperate-glkernel/stages/MultiFrameControlStage.h>
@@ -125,8 +126,8 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
 , canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
 // Stages
-, m_colorRenderTargetStage(cppassist::make_unique<gloperate::TextureStage>(environment, "ColorStage"))
-, m_depthStencilRenderTargetStage(cppassist::make_unique<gloperate::TextureStage>(environment, "DepthStencilStage"))
+, m_colorRenderTargetStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorStage"))
+, m_depthStencilRenderTargetStage(cppassist::make_unique<gloperate::RenderbufferRenderTargetStage>(environment, "DepthStencilStage"))
 , m_controlStage(cppassist::make_unique<MultiFrameControlStage>(environment, "MultiFrameControlStage"))
 , m_framePreparationStage(cppassist::make_unique<IntermediateFramePreparationStage>(environment, "IntermediateFramePreparationStage"))
 , m_aggregationStage(cppassist::make_unique<MultiFrameAggregationStage>(environment, "MultiFrameAggregationStage"))
@@ -144,9 +145,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
 
     addStage(m_depthStencilRenderTargetStage.get());
     m_depthStencilRenderTargetStage->size << canvasInterface.viewport;
-    m_depthStencilRenderTargetStage->format.setValue(gl::GL_DEPTH_STENCIL);
     m_depthStencilRenderTargetStage->internalFormat.setValue(gl::GL_DEPTH24_STENCIL8);
-    m_depthStencilRenderTargetStage->type.setValue(gl::GL_UNSIGNED_INT_24_8);
 
     addStage(m_controlStage.get());
     m_controlStage->frameNumber << canvasInterface.frameCounter;

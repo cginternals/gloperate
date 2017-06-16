@@ -16,7 +16,7 @@
 
 namespace globjects
 {
-    class Texture;
+    class Renderbuffer;
 }
 
 
@@ -31,15 +31,15 @@ class RenderTarget;
 *  @brief
 *    Stage that creates an empty texture with a specified size and format
 */
-class GLOPERATE_API TextureStage : public gloperate::Stage
+class GLOPERATE_API RenderbufferRenderTargetStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        TextureStage, gloperate::Stage
+        RenderbufferRenderTargetStage, gloperate::Stage
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that creates an empty texture with a specified size and format"
+      , "Stage that creates an empty renderbuffer as render target with a specified size and format"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -48,12 +48,10 @@ public:
 public:
     // Inputs
     Input<gl::GLenum> internalFormat;     ///< OpenGL internal image format
-    Input<gl::GLenum> format;             ///< OpenGL image format
-    Input<gl::GLenum> type;               ///< OpenGL data type
     Input<glm::vec4>  size;               ///< Viewport size
 
     // Outputs
-    Output<globjects::Texture *>      texture;      ///< Texture
+    Output<globjects::Renderbuffer *> renderbuffer; ///< Texture
     Output<gloperate::RenderTarget *> renderTarget; ///< RenderTarget
 
 
@@ -67,13 +65,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    TextureStage(Environment * environment, const std::string & name = "");
+    RenderbufferRenderTargetStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~TextureStage();
+    virtual ~RenderbufferRenderTargetStage();
 
 
 protected:
@@ -84,7 +82,7 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::Texture>      m_texture;      ///< The created texture
+    std::unique_ptr<globjects::Renderbuffer> m_renderbuffer; ///< The created renderbuffer
     std::unique_ptr<gloperate::RenderTarget> m_renderTarget; ///< The passed render target
 };
 

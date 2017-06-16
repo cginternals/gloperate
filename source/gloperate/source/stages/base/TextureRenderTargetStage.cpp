@@ -1,5 +1,5 @@
 
-#include <gloperate/stages/base/TextureStage.h>
+#include <gloperate/stages/base/TextureRenderTargetStage.h>
 
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
@@ -19,11 +19,11 @@ namespace gloperate
 {
 
 
-CPPEXPOSE_COMPONENT(TextureStage, gloperate::Stage)
+CPPEXPOSE_COMPONENT(TextureRenderTargetStage, gloperate::Stage)
 
 
-TextureStage::TextureStage(gloperate::Environment * environment, const std::string & name)
-: Stage(environment, "TextureStage", name)
+TextureRenderTargetStage::TextureRenderTargetStage(gloperate::Environment * environment, const std::string & name)
+: Stage(environment, "TextureRenderTargetStage", name)
 , internalFormat("internalFormat", this)
 , format("format", this)
 , type("type", this)
@@ -33,11 +33,11 @@ TextureStage::TextureStage(gloperate::Environment * environment, const std::stri
 {
 }
 
-TextureStage::~TextureStage()
+TextureRenderTargetStage::~TextureRenderTargetStage()
 {
 }
 
-void TextureStage::onContextInit(gloperate::AbstractGLContext *)
+void TextureRenderTargetStage::onContextInit(gloperate::AbstractGLContext *)
 {
     // Create new texture
     m_texture = Texture::createDefault(GL_TEXTURE_2D);
@@ -47,14 +47,14 @@ void TextureStage::onContextInit(gloperate::AbstractGLContext *)
     m_renderTarget->setTarget(m_texture.get());
 }
 
-void TextureStage::onContextDeinit(AbstractGLContext *)
+void TextureRenderTargetStage::onContextDeinit(AbstractGLContext *)
 {
     // Clean up OpenGL objects
     m_texture      = nullptr;
     m_renderTarget = nullptr;
 }
 
-void TextureStage::onProcess()
+void TextureRenderTargetStage::onProcess()
 {
     // Check if texture has been created successfully
     if (!m_texture.get())

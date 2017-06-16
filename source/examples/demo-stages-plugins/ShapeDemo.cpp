@@ -7,7 +7,7 @@
 
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/BasicFramebufferStage.h>
-#include <gloperate/stages/base/TextureStage.h>
+#include <gloperate/stages/base/TextureRenderTargetStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
