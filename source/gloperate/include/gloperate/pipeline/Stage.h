@@ -71,6 +71,9 @@ public:
         template <typename T>
         Input<T> * operator<<(Slot<T> & source);
 
+        template <typename T>
+        Input<T> * operator=(const T & value);
+
     private:
         std::string m_name;
         Stage * m_stage;

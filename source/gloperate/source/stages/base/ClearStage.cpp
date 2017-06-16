@@ -20,7 +20,7 @@ CPPEXPOSE_COMPONENT(ClearStage, gloperate::Stage)
 
 ClearStage::ClearStage(Environment * environment, const std::string & name)
 : Stage(environment, "ClearStage", name)
-, clear("clear",  this)
+, clear("clear",  this, true)
 , renderInterface(this)
 {
     inputAdded.connect( [this] (AbstractSlot * connectedInput) {
@@ -63,7 +63,7 @@ void ClearStage::onContextDeinit(AbstractGLContext *)
 
 void ClearStage::onProcess()
 {
-    if (!*clear)
+    if (*clear)
     {
         // Setup OpenGL state
         gl::glScissor(renderInterface.viewport->x, renderInterface.viewport->y, renderInterface.viewport->z, renderInterface.viewport->w);
@@ -104,7 +104,7 @@ void ClearStage::onProcess()
 
                     auto fbo = renderInterface.configureFBO(depthAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-                    fbo->clearBuffer((**input)->attachmentBuffer(), (**input)->attachmentDrawBuffer(depthAttachmentIndex), **m_depthValueInputs.at(depthAttachmentIndex), 0);
+                    fbo->clearBuffer(gl::GL_DEPTH_STENCIL, **m_depthValueInputs.at(depthAttachmentIndex), 0, (**input)->attachmentDrawBuffer(depthAttachmentIndex));
 
                     ++depthAttachmentIndex;
                 }
@@ -118,7 +118,7 @@ void ClearStage::onProcess()
 
                     auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-                    fbo->clearBuffer((**input)->attachmentBuffer(), (**input)->attachmentDrawBuffer(depthAttachmentIndex), (**m_depthStencilValueInputs.at(depthAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthAttachmentIndex)).second);
+                    fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthAttachmentIndex)).second, (**input)->attachmentDrawBuffer(depthAttachmentIndex));
 
                     ++depthStencilAttachmentIndex;
                 }

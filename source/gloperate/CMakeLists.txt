@@ -117,6 +117,7 @@ set(headers
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/interfaces/CanvasInterface.h
+    ${include_path}/stages/base/FloatSelectionStage.h
     ${include_path}/stages/base/BasicFramebufferStage.h
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
@@ -208,6 +209,7 @@ set(sources
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/interfaces/CanvasInterface.cpp
+    ${source_path}/stages/base/FloatSelectionStage.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp

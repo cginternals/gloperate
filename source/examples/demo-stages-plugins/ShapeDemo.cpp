@@ -15,6 +15,7 @@
 #include <gloperate/stages/base/ShapeStage.h>
 #include <gloperate/stages/base/TimerStage.h>
 #include <gloperate/stages/base/TransformStage.h>
+#include <gloperate/stages/base/FloatSelectionStage.h>
 #include <gloperate/stages/navigation/TrackballStage.h>
 #include <gloperate/rendering/Shape.h>
 #include <gloperate/rendering/Quad.h>
@@ -38,6 +39,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 , color("color", this, Color(255, 255, 255, 255))
 , m_colorTarget(cppassist::make_unique<gloperate::RenderTarget>())
 , m_timer(cppassist::make_unique<TimerStage>(environment, "Timer"))
+, m_floatSelection(cppassist::make_unique<FloatSelectionStage>(environment, "FloatSelection"))
 , m_trackball(cppassist::make_unique<TrackballStage>(environment, "Trackball"))
 , m_shape(cppassist::make_unique<ShapeStage>(environment, "Shape"))
 , m_texture(cppassist::make_unique<TextureLoadStage>(environment, "Texture"))
@@ -64,10 +66,19 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     angle.setOption("updateOnDrag", true);
 
     rotate.valueChanged.connect(this, &ShapeDemo::onRotateChanged);
+    m_timer->virtualTime.valueChanged.connect([this](const float & angle) {
+        // Set angle to current timer value
+        this->angle = angle;
+    });
 
     // Timer stage
     addStage(m_timer.get());
     m_timer->interval = 2.0f * glm::pi<float>();
+
+    addStage(m_floatSelection.get());
+    m_floatSelection->createInput("timerValue") << m_timer->virtualTime;
+    m_floatSelection->createInput("angle") << angle;
+    m_floatSelection->index = 1u;
 
     // Trackball stage
     addStage(m_trackball.get());
@@ -90,18 +101,9 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     addStage(m_framebuffer.get());
     m_framebuffer->viewport << canvasInterface.viewport;
 
-    // Clear stage
-    addStage(m_clear.get());
-    m_clear->createInput("ColorAttachment") << m_framebuffer->colorBuffer;
-    m_clear->createInput("DepthAttachment") << m_framebuffer->depthBuffer;
-    m_clear->renderInterface.viewport << canvasInterface.viewport;
-
-    // Invalidation of Clear Stage if new rendering should take place
-    m_clear->createInput("renderPass") << m_shapeRenderPass->renderPass;
-
     // Transform stage for shape
     addStage(m_shapeTransform.get());
-    m_shapeTransform->rotationAngle << angle;
+    m_shapeTransform->rotationAngle << m_floatSelection->value;
 
     // Program stage for shape
     addStage(m_shapeProgram.get());
@@ -118,12 +120,27 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_shapeRenderPass->createInput("color") << this->color;
     m_shapeRenderPass->createInput("tex0") << m_texture->texture;
 
+    // Clear stage
+    addStage(m_clear.get());
+    m_clear->createInput("ColorAttachment") << m_framebuffer->colorBuffer;
+    m_clear->createInput("DepthAttachment") << m_framebuffer->depthBuffer;
+    m_clear->createInput("ColorValue") = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_clear->createInput("DepthValue") = 1.0f;
+    m_clear->renderInterface.viewport << canvasInterface.viewport;
+
+    // Invalidation of Clear Stage if new rendering should take place
+    m_clear->createInput("renderPass") << m_shapeRenderPass->renderPass;
+
     // Rasterization stage for shape
     addStage(m_shapeRasterization.get());
     m_shapeRasterization->createInput("ColorAttachment") << *m_clear->createOutput<gloperate::RenderTarget *>("ColorAttachmentOut");
     m_shapeRasterization->createInput("DepthAttachment") << *m_clear->createOutput<gloperate::RenderTarget *>("DepthAttachmentOut");
     m_shapeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_shapeRasterization->drawable << m_shapeRenderPass->renderPass;
+
+    auto colorTextureInput = m_shapeRasterization->createInput<globjects::Texture *>("ColorTexture");
+    auto colorTextureOutput = m_shapeRasterization->createOutput<globjects::Texture *>("ColorTextureOut");
+    *colorTextureInput << m_framebuffer->colorTexture;
 
     // Colorize program stage
     addStage(m_colorizeProgram.get());
@@ -136,11 +153,18 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_colorizeRenderPass->program << m_colorizeProgram->program;
     m_colorizeRenderPass->culling = false;
     m_colorizeRenderPass->createInput("color") << this->color;
-    m_colorizeRenderPass->createInput("source") << m_framebuffer->colorTexture;
+    m_colorizeRenderPass->createInput("source") << *colorTextureOutput;
 
+    /* Hack Start */
     auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::RenderTarget *>("ColorAttachmentOut");
-    shapeColorOutput->setRequired(true);
-    shapeColorOutput->valueInvalidated.connect([this]() { m_colorizeRasterization->drawable.invalidate(); });
+    shapeColorOutput->valueChanged.onFire([=]() {
+        colorTextureOutput->setValue(**colorTextureInput);
+    });
+    shapeColorOutput->valueInvalidated.onFire([=]() {
+        m_clear->renderInterface.renderTargetOutput(0)->invalidate();
+        m_clear->renderInterface.renderTargetOutput(1)->invalidate();
+    });
+    /* Hack End */
 
     // Colorize rasterization stage
     addStage(m_colorizeRasterization.get());
@@ -182,22 +206,19 @@ void ShapeDemo::onRotateChanged(const bool & rotate)
     {
         // Set timer to current rotation value
         m_timer->virtualTime = *angle;
-        m_timer->virtualTime.setRequired(true);
 
-        // Connect angle to timer and resume timer
-        angle << m_timer->virtualTime;
+        // Switch angle to timer and resume timer
         m_timer->timeDelta << canvasInterface.timeDelta;
+        m_floatSelection->index = 0u;
     }
 
     // Switch rotation off
     else
     {
-        // Set angle to current timer value
-        angle.disconnect();
-        angle = *m_timer->virtualTime;
-
         // Stop time
         m_timer->timeDelta.disconnect();
-        m_timer->virtualTime.setRequired(false);
+
+        // Switch timer to angle
+        m_floatSelection->index = 1u;
     }
 }

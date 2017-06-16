@@ -28,6 +28,7 @@ namespace gloperate
     class TrackballStage;
     class TimerStage;
     class TransformStage;
+    class FloatSelectionStage;
 }
 
 
@@ -92,6 +93,8 @@ protected:
 
     // Stages
     std::unique_ptr<gloperate::TimerStage>            m_timer;                 ///< Timer for continuous rendering and animation
+
+    std::unique_ptr<gloperate::FloatSelectionStage>   m_floatSelection;        ///< Selection between user-defined angle and timer-updated angle
 
     std::unique_ptr<gloperate::TrackballStage>        m_trackball;             ///< Trackball camera navigation stage
 

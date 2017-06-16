@@ -20,6 +20,14 @@ Input<T> * Stage::CreateConnectedInputProxy::operator<<(Slot<T> & source)
 }
 
 template <typename T>
+Input<T> * Stage::CreateConnectedInputProxy::operator=(const T & value)
+{
+    ++m_createdCount;
+    return m_stage->createInput(m_name, value);
+}
+
+
+template <typename T>
 std::vector<Input<T> *> Stage::inputs() const
 {
     auto result = std::vector<Input<T> *>{};

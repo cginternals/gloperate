@@ -33,16 +33,6 @@ namespace
 
 
 template <typename T>
-gloperate::Slot<T> * getSlot(gloperate::Stage * stage, const std::string & name)
-{
-    if (!stage) {
-        return nullptr;
-    } else {
-        return static_cast<gloperate::Slot<T> *>(stage->property(name));
-    }
-}
-
-template <typename T>
 gloperate::Input<T> * getInput(gloperate::Stage * stage, std::function<bool(gloperate::Input<T> *)> callback)
 {
     if (!stage)
@@ -534,10 +524,17 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 
 void Canvas::checkRedraw()
 {
-    auto slotRendered = getSlot<globjects::Framebuffer *>(m_renderStage.get(), "rendered");
-    if (slotRendered && !slotRendered->isValid())
+    bool redraw = false;
+    forAllOutputs<RenderTarget *>(m_renderStage.get(), [& redraw](Output<RenderTarget *> * output) {
+        if (**output && !output->isValid())
+        {
+            redraw = true;
+        }
+    });
+
+    if (redraw)
     {
-        redraw();
+        this->redraw();
     }
 }
 

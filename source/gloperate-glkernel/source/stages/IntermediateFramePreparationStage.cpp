@@ -67,7 +67,7 @@ void IntermediateFramePreparationStage::onProcess()
         }};
 
         auto sourceFBO = renderInterface.configureFBO(0, *intermediateRenderTarget, m_fbo.get(), m_defaultFBO.get());
-        auto sourceAttachment = (*intermediateRenderTarget)->attachmentRequiresUserDefinedFramebuffer() ? (*intermediateRenderTarget)->attachmentBuffer() : gl::GL_COLOR_ATTACHMENT0;
+        auto sourceAttachment = (*intermediateRenderTarget)->attachmentRequiresUserDefinedFramebuffer() ? (*intermediateRenderTarget)->defaultFramebufferAttachment() : gl::GL_COLOR_ATTACHMENT0;
 
         auto targetFBO = m_targetFBO.get();
         auto targetAttachment = gl::GL_COLOR_ATTACHMENT0;

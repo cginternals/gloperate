@@ -47,8 +47,6 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 
 Stage::~Stage()
 {
-    info() << m_name << " destroyed.";
-
     if (Pipeline * parent = parentPipeline())
     {
         parent->removeStage(this);
