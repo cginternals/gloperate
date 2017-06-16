@@ -152,6 +152,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     // m_colorizeRenderPass->drawable is set in onContextInit()
     m_colorizeRenderPass->program << m_colorizeProgram->program;
     m_colorizeRenderPass->culling = false;
+    m_colorizeRenderPass->depthTest = false;
     m_colorizeRenderPass->createInput("color") << this->color;
     m_colorizeRenderPass->createInput("source") << *colorTextureOutput;
 

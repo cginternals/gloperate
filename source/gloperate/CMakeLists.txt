@@ -68,6 +68,7 @@ set(headers
     ${include_path}/base/Loader.inl
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
+    ${include_path}/base/Range.h
     ${include_path}/base/ExtendedProperties.h
     ${include_path}/base/ExtendedProperties.inl
 
@@ -177,6 +178,7 @@ set(sources
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
+    ${source_path}/base/Range.cpp
     ${source_path}/base/ExtendedProperties.cpp
 
     ${source_path}/pipeline/Stage.cpp
