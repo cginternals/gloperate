@@ -133,6 +133,85 @@ bool TypedColor<BASE>::fromVariant(const Variant & variant)
 }
 
 
+template <typename BASE>
+TypedRange<BASE>::TypedRange()
+{
+}
+
+template <typename BASE>
+TypedRange<BASE>::~TypedRange()
+{
+}
+
+template <typename BASE>
+std::string TypedRange<BASE>::typeName() const
+{
+    return "range";
+}
+
+template <typename BASE>
+bool TypedRange<BASE>::isString() const
+{
+    return false;
+}
+
+template <typename BASE>
+std::string TypedRange<BASE>::toString() const
+{
+    gloperate::Range range = this->value();
+
+    float values[2] = { range.minimumValue(), range.maximumValue() };
+
+    return gloperate::glmToString<float, 2>(values);
+}
+
+template <typename BASE>
+bool TypedRange<BASE>::fromString(const std::string & string)
+{
+    float values[2];
+
+    if (gloperate::glmFromString<float, 2>(string, values))
+    {
+        this->setValue(gloperate::Range(values[0], values[1]));
+        return true;
+    }
+
+    return false;
+}
+
+template <typename BASE>
+Variant TypedRange<BASE>::toVariant() const
+{
+    gloperate::Range range = this->value();
+
+    Variant variant = Variant::array();
+    variant.asArray()->push_back(range.minimumValue());
+    variant.asArray()->push_back(range.maximumValue());
+
+    return variant;
+}
+
+template <typename BASE>
+bool TypedRange<BASE>::fromVariant(const Variant & variant)
+{
+    if (variant.isVariantArray())
+    {
+        gloperate::Range range;
+
+
+        auto & vector = *variant.asArray();
+        if (vector.size() >= 1) { range.setMinimumValue(vector[0].value<float>()); }
+        if (vector.size() >= 2) { range.setMaximumValue(vector[1].value<float>()); }
+
+        this->setValue(range);
+
+        return true;
+    }
+
+    return false;
+}
+
+
 template <typename VectorType, typename ValueType, glm::length_t Size, typename BASE>
 TypedGlmVec<VectorType, ValueType, Size, BASE>::TypedGlmVec()
 {
