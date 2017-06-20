@@ -5,6 +5,9 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
+#include <gloperate-glkernel/stages/HemisphereDistributionKernelStage.h>
+#include <gloperate-glkernel/stages/NoiseKernelStage.h>
+#include <gloperate-glkernel/stages/TransparencyKernelStage.h>
 
 #include "AntialiasableTriangleStage.h"
 

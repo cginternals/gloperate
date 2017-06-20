@@ -22,6 +22,9 @@
 using namespace gloperate;
 
 
+CPPEXPOSE_COMPONENT(AssimpMeshLoader, gloperate::AbstractLoader)
+
+
 AssimpMeshLoader::AssimpMeshLoader(gloperate::Environment * environment)
 : gloperate::Loader<gloperate::Drawable>(environment)
 {

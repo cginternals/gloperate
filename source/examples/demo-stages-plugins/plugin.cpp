@@ -20,6 +20,7 @@
 #include "LightTestPipeline.h"
 #include "LightTestStage.h"
 #include "ShaderDemoPipeline.h"
+#include "AssimpMeshLoader.h"
 
 
 CPPEXPOSE_PLUGIN_LIBRARY
@@ -43,5 +44,6 @@ CPPEXPOSE_PLUGIN_LIBRARY
     CPPEXPOSE_PLUGIN_COMPONENT(LightTestPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(LightTestStage)
     CPPEXPOSE_PLUGIN_COMPONENT(ShaderDemoPipeline)
+    CPPEXPOSE_PLUGIN_COMPONENT(AssimpMeshLoader)
 
 CPPEXPOSE_PLUGIN_LIBRARY_END

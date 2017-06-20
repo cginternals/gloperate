@@ -2,6 +2,9 @@
 #pragma once
 
 
+#include <cppexpose/plugin/plugin_api.h>
+
+#include <gloperate/gloperate-version.h>
 #include <gloperate/base/Loader.h>
 
 
@@ -23,6 +26,18 @@ namespace gloperate
 */
 class AssimpMeshLoader : public gloperate::Loader<gloperate::Drawable>
 {
+public:
+    CPPEXPOSE_DECLARE_COMPONENT(
+        AssimpMeshLoader, gloperate::AbstractLoader
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
+      , "Load a shader from a source code file"
+      , GLOPERATE_AUTHOR_ORGANIZATION
+      , "v1.0.0"
+    )
+
+
 public:
     /**
     *  @brief
