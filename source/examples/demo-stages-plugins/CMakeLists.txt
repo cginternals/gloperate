@@ -5,6 +5,7 @@
 
 find_package(OpenGL    REQUIRED)
 find_package(glm       REQUIRED)
+find_package(assimp    REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cpplocate REQUIRED)
@@ -61,6 +62,7 @@ set(headers
     ${include_path}/LightTestPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
     ${include_path}/GlyphSequenceDemoStage.h
+    ${include_path}/AssimpMeshLoader.h
 )
 
 set(sources
@@ -88,6 +90,7 @@ set(sources
     ${source_path}/LightTestPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp
     ${source_path}/GlyphSequenceDemoStage.cpp
+    ${source_path}/AssimpMeshLoader.cpp
 )
 
 # Group source files
@@ -138,6 +141,7 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
+    ${ASSIMP_INCLUDE_DIR}
 
     PUBLIC
 
@@ -156,6 +160,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${OPENGL_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-glkernel
     ${META_PROJECT_NAME}::gloperate-text
