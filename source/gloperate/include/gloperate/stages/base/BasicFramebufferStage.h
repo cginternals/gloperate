@@ -51,7 +51,6 @@ public:
     Input<glm::vec4>                  viewport;     ///< Texture size
 
     // Outputs
-    Output<globjects::Framebuffer *>  fbo;          ///< Framebuffer
     Output<globjects::Texture *>      colorTexture; ///< Color texture
     Output<globjects::Texture *>      depthTexture; ///< Depth texture
     Output<gloperate::RenderTarget *> colorBuffer;  ///< Color attachment
@@ -83,12 +82,8 @@ protected:
     virtual void onContextDeinit(AbstractGLContext * context) override;
     virtual void onProcess() override;
 
-    // Helper functions
-    void rebuildFBO();
-
 
 protected:
-    std::unique_ptr<globjects::Framebuffer>  m_fbo;          ///< The created framebuffer
     std::unique_ptr<globjects::Texture>      m_colorTexture; ///< The created texture
     std::unique_ptr<globjects::Texture>      m_depthTexture; ///< The created texture
     std::unique_ptr<gloperate::RenderTarget> m_colorBuffer;  ///< Color texture
