@@ -1,14 +1,17 @@
 
 #pragma once
 
-
-#include <glbinding/gl/types.h>
-#include <glbinding/gl/enum.h>
-
 #include <gloperate/rendering/RenderTargetType.h>
 #include <gloperate/rendering/AttachmentType.h>
 
 #include <gloperate/gloperate_api.h>
+
+
+namespace gl
+{
+    enum class GLenum : unsigned int;
+    using GLint = int;
+}
 
 
 namespace globjects
@@ -26,26 +29,26 @@ namespace gloperate
 
 /**
 *  @brief
-*    Render target that represents one target we can render into
+*    Abstract render target that represents one target we can render into
 *
 *    A render target can internally be: a texture, a renderbuffer,
 *    a symbolic attachment of the default renderbuffer, or a user-defined
 *    renderbuffer with attachment specification.
 */
-class GLOPERATE_API RenderTarget
+class GLOPERATE_API AbstractRenderTarget
 {
 public:
     /**
     *  @brief
     *    Constructor
     */
-    RenderTarget();
+    AbstractRenderTarget();
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~RenderTarget();
+    virtual ~AbstractRenderTarget();
 
     /**
     *  @brief
@@ -188,7 +191,7 @@ public:
 
     gl::GLenum attachmentBuffer() const;
 
-    gl::GLint attachmentDrawBuffer(gl::GLint index) const;
+    gl::GLint attachmentDrawBuffer(size_t index) const;
 
 protected:
     RenderTargetType                   m_type;           ///< Target type

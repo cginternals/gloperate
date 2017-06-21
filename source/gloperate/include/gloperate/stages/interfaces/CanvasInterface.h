@@ -15,7 +15,6 @@ namespace gloperate
 
 
 class Stage;
-class RenderTarget;
 
 
 /**

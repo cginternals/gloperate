@@ -25,7 +25,8 @@ namespace gloperate
 {
 
 
-class RenderTarget;
+class ColorRenderTarget;
+class DepthRenderTarget;
 
 
 /**
@@ -48,13 +49,13 @@ public:
 
 public:
     // Inputs
-    Input<glm::vec4>                  viewport;     ///< Texture size
+    Input<glm::vec4>                       viewport;     ///< Texture size
 
     // Outputs
-    Output<globjects::Texture *>      colorTexture; ///< Color texture
-    Output<globjects::Texture *>      depthTexture; ///< Depth texture
-    Output<gloperate::RenderTarget *> colorBuffer;  ///< Color attachment
-    Output<gloperate::RenderTarget *> depthBuffer;  ///< Depth attachment
+    Output<globjects::Texture *>           colorTexture; ///< Color texture
+    Output<globjects::Texture *>           depthTexture; ///< Depth texture
+    Output<gloperate::ColorRenderTarget *> colorBuffer;  ///< Color attachment
+    Output<gloperate::DepthRenderTarget *> depthBuffer;  ///< Depth attachment
 
 
 public:
@@ -84,10 +85,10 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::Texture>      m_colorTexture; ///< The created texture
-    std::unique_ptr<globjects::Texture>      m_depthTexture; ///< The created texture
-    std::unique_ptr<gloperate::RenderTarget> m_colorBuffer;  ///< Color texture
-    std::unique_ptr<gloperate::RenderTarget> m_depthBuffer;  ///< Depth texture
+    std::unique_ptr<globjects::Texture>           m_colorTexture; ///< The created texture
+    std::unique_ptr<globjects::Texture>           m_depthTexture; ///< The created texture
+    std::unique_ptr<gloperate::ColorRenderTarget> m_colorBuffer;  ///< Color texture
+    std::unique_ptr<gloperate::DepthRenderTarget> m_depthBuffer;  ///< Depth texture
 };
 
 

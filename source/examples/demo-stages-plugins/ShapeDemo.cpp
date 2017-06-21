@@ -174,8 +174,9 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_colorizeRasterization->drawable << m_colorizeRenderPass->renderPass;
 
     // Outputs
-    *createOutput<gloperate::RenderTarget *>("ColorOut") << *m_colorizeRasterization->createOutput<gloperate::RenderTarget *>("ColorOut");
-    //*createOutput<gloperate::RenderTarget *>("ColorOut") << *shapeColorOutput;
+    //*createOutput<gloperate::RenderTarget *>("ColorOut") << *m_colorizeRasterization->createOutput<gloperate::RenderTarget *>("ColorOut");
+    *createOutput<gloperate::RenderTarget *>("ColorOut") << *shapeColorOutput;
+    //*createOutput<glm::vec4>("ViewportOut") = glm::vec4(0, 0, 700, 700);
 
     // Start rotation
     rotate = true;

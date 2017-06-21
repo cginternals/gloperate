@@ -93,7 +93,10 @@ set(headers
     ${include_path}/rendering/RenderPass.h
     ${include_path}/rendering/LightType.h
     ${include_path}/rendering/Light.h
-    ${include_path}/rendering/RenderTarget.h
+    ${include_path}/rendering/AbstractRenderTarget.h
+    ${include_path}/rendering/ColorRenderTarget.h
+    ${include_path}/rendering/DepthRenderTarget.h
+    ${include_path}/rendering/DepthStencilRenderTarget.h
     ${include_path}/rendering/RenderTargetType.h
     ${include_path}/rendering/TransparencyMasksGenerator.h
     ${include_path}/rendering/ScreenAlignedQuad.h
@@ -192,7 +195,10 @@ set(sources
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/NoiseTexture.cpp
     ${source_path}/rendering/RenderPass.cpp
-    ${source_path}/rendering/RenderTarget.cpp
+    ${source_path}/rendering/AbstractRenderTarget.cpp
+    ${source_path}/rendering/ColorRenderTarget.cpp
+    ${source_path}/rendering/DepthRenderTarget.cpp
+    ${source_path}/rendering/DepthStencilRenderTarget.cpp
     ${source_path}/rendering/TransparencyMasksGenerator.cpp
     ${source_path}/rendering/ScreenAlignedQuad.cpp
     ${source_path}/rendering/ScreenAlignedTriangle.cpp

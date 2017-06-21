@@ -15,7 +15,7 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
-#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/ColorRenderTarget.h>
 
 
 namespace gloperate
@@ -42,15 +42,15 @@ public:
 
 public:
     // Inputs
-    Input<gloperate::RenderTarget *> source;         ///< FBO containing the source attachments
-    Input<glm::vec4>                 sourceViewport; ///< Viewport for reading from source FBO
-    Input<gloperate::RenderTarget *> target;         ///< FBO with destination attachments
-    Input<glm::vec4>                 targetViewport; ///< Viewport for writing into destination FBO
-    Input<gl::GLenum>                minFilter;      ///< Interpolation mode used when target size is lower than source size (default: linear interpolation)
-    Input<gl::GLenum>                magFilter;      ///< Interpolation mode used when target size is greater than source size (default: nearest filtering)
+    Input<gloperate::ColorRenderTarget *> source;         ///< FBO containing the source attachments
+    Input<glm::vec4>                      sourceViewport; ///< Viewport for reading from source FBO
+    Input<gloperate::ColorRenderTarget *> target;         ///< FBO with destination attachments
+    Input<glm::vec4>                      targetViewport; ///< Viewport for writing into destination FBO
+    Input<gl::GLenum>                     minFilter;      ///< Interpolation mode used when target size is lower than source size (default: linear interpolation)
+    Input<gl::GLenum>                     magFilter;      ///< Interpolation mode used when target size is greater than source size (default: nearest filtering)
 
     // Outputs
-    Output<gloperate::RenderTarget *> targetOut;     ///< Pass-through render target
+    Output<gloperate::ColorRenderTarget *> targetOut;     ///< Pass-through render target
 
 
 public:

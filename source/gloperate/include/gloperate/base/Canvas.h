@@ -32,7 +32,9 @@ class Stage;
 class AbstractSlot;
 class MouseDevice;
 class KeyboardDevice;
-class RenderTarget;
+class ColorRenderTarget;
+class DepthRenderTarget;
+class DepthStencilRenderTarget;
 class BlitStage;
 
 
@@ -306,27 +308,27 @@ protected:
 
 
 protected:
-    Environment                   * m_environment;            ///< Gloperate environment to which the canvas belongs
-    AbstractGLContext             * m_openGLContext;          ///< OpenGL context used for rendering onto the canvas
-    bool                            m_initialized;            ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
-    gloperate::ChronoTimer          m_clock;                  ///< Time measurement
-    glm::vec4                       m_viewport;               ///< Viewport (in real device coordinates)
-    float                           m_timeDelta;              ///< Time delta since the last update (in seconds)
-    std::unique_ptr<Stage>          m_renderStage;            ///< Render stage that renders into the canvas
-    std::unique_ptr<Stage>          m_oldStage;               ///< Old render stage, will be destroyed on the next render call
-    std::unique_ptr<BlitStage>      m_blitStage;              ///< Blit stage that is used to blit to target color attachment if render stage uses own targets
-    std::unique_ptr<MouseDevice>    m_mouseDevice;            ///< Device for Mouse Events
-    std::unique_ptr<KeyboardDevice> m_keyboardDevice;         ///< Device for Keyboard Events
-    bool                            m_replaceStage;           ///< 'true' if the stage has just been replaced, else 'false'
-    std::mutex                      m_mutex;                  ///< Mutex for separating main and render thread
-    cppexpose::ScopedConnection     m_inputChangedConnection; ///< Connection for the inputChanged-signal of the current stage
-    cppexpose::Function             m_inputChangedCallback;   ///< Script function that is called on inputChanged (slot, status)
-    std::vector<AbstractSlot *>     m_changedInputs;          ///< List of changed input slots
-    std::mutex                      m_changedInputMutex;      ///< Mutex to access m_changedInputs
+    Environment                             * m_environment;            ///< Gloperate environment to which the canvas belongs
+    AbstractGLContext                       * m_openGLContext;          ///< OpenGL context used for rendering onto the canvas
+    bool                                      m_initialized;            ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
+    gloperate::ChronoTimer                    m_clock;                  ///< Time measurement
+    glm::vec4                                 m_viewport;               ///< Viewport (in real device coordinates)
+    float                                     m_timeDelta;              ///< Time delta since the last update (in seconds)
+    std::unique_ptr<Stage>                    m_renderStage;            ///< Render stage that renders into the canvas
+    std::unique_ptr<Stage>                    m_oldStage;               ///< Old render stage, will be destroyed on the next render call
+    std::unique_ptr<BlitStage>                m_blitStage;              ///< Blit stage that is used to blit to target color attachment if render stage uses own targets
+    std::unique_ptr<MouseDevice>              m_mouseDevice;            ///< Device for Mouse Events
+    std::unique_ptr<KeyboardDevice>           m_keyboardDevice;         ///< Device for Keyboard Events
+    bool                                      m_replaceStage;           ///< 'true' if the stage has just been replaced, else 'false'
+    std::mutex                                m_mutex;                  ///< Mutex for separating main and render thread
+    cppexpose::ScopedConnection               m_inputChangedConnection; ///< Connection for the inputChanged-signal of the current stage
+    cppexpose::Function                       m_inputChangedCallback;   ///< Script function that is called on inputChanged (slot, status)
+    std::vector<AbstractSlot *>               m_changedInputs;          ///< List of changed input slots
+    std::mutex                                m_changedInputMutex;      ///< Mutex to access m_changedInputs
 
-    std::unique_ptr<RenderTarget>   m_colorTarget;            ///< Input render target for color attachment
-    std::unique_ptr<RenderTarget>   m_depthTarget;            ///< Input render target for depth only attachment
-    std::unique_ptr<RenderTarget>   m_depthStencilTarget;     ///< Input render target for depth stencil attachment
+    std::unique_ptr<ColorRenderTarget>        m_colorTarget;            ///< Input render target for color attachment
+    std::unique_ptr<DepthRenderTarget>        m_depthTarget;            ///< Input render target for depth only attachment
+    std::unique_ptr<DepthStencilRenderTarget> m_depthStencilTarget;     ///< Input render target for depth stencil attachment
 };
 
 

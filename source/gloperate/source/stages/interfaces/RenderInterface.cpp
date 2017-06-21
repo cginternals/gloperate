@@ -11,7 +11,9 @@
 #include <globjects/AttachedTexture.h>
 
 #include <gloperate/rendering/RenderTargetType.h>
-#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/ColorRenderTarget.h>
+#include <gloperate/rendering/DepthRenderTarget.h>
+#include <gloperate/rendering/DepthStencilRenderTarget.h>
 
 
 namespace gloperate
@@ -25,20 +27,44 @@ RenderInterface::RenderInterface(Stage * stage)
     viewport.setOption("hidden", true);
 
     stage->inputAdded.connect( [this] (AbstractSlot * connectedInput) {
-        auto renderTargetInput = dynamic_cast<Input<RenderTarget *> *>(connectedInput);
+        auto colorRenderTargetInput = dynamic_cast<Input<ColorRenderTarget *> *>(connectedInput);
+        auto depthRenderTargetInput = dynamic_cast<Input<DepthRenderTarget *> *>(connectedInput);
+        auto depthStencilRenderTargetInput = dynamic_cast<Input<DepthStencilRenderTarget *> *>(connectedInput);
 
-        if (renderTargetInput)
+        if (colorRenderTargetInput)
         {
-            addRenderTargetInput(renderTargetInput);
+            addRenderTargetInput(colorRenderTargetInput);
+        }
+
+        if (depthRenderTargetInput)
+        {
+            addRenderTargetInput(depthRenderTargetInput);
+        }
+
+        if (depthStencilRenderTargetInput)
+        {
+            addRenderTargetInput(depthStencilRenderTargetInput);
         }
     });
 
     stage->outputAdded.connect( [this] (AbstractSlot * connectedOutput) {
-        auto renderTargetOutput = dynamic_cast<Output<RenderTarget *> *>(connectedOutput);
+        auto colorRenderTargetOutput = dynamic_cast<Output<ColorRenderTarget *> *>(connectedOutput);
+        auto depthRenderTargetOutput = dynamic_cast<Output<DepthRenderTarget *> *>(connectedOutput);
+        auto depthStencilRenderTargetOutput = dynamic_cast<Output<DepthStencilRenderTarget *> *>(connectedOutput);
 
-        if (renderTargetOutput)
+        if (colorRenderTargetOutput)
         {
-            addRenderTargetOutput(renderTargetOutput);
+            addRenderTargetOutput(colorRenderTargetOutput);
+        }
+
+        if (depthRenderTargetOutput)
+        {
+            addRenderTargetOutput(depthRenderTargetOutput);
+        }
+
+        if (depthStencilRenderTargetOutput)
+        {
+            addRenderTargetOutput(depthStencilRenderTargetOutput);
         }
     });
 }
@@ -49,14 +75,12 @@ RenderInterface::~RenderInterface()
 
 bool RenderInterface::allRenderTargetsCompatible() const
 {
-    if (renderTargetInputSize() == 0)
+    if (m_colorRenderTargetOutputs.empty() && m_depthRenderTargetOutputs.empty() && m_depthStencilRenderTargetOutputs.empty())
     {
         return true;
     }
 
-    auto numberOfDepthAttachments = std::count_if(m_renderTargetInputs.begin(), m_renderTargetInputs.end(), [](Input<RenderTarget *> * input) {
-            return input ? (**input)->attachmentType() == AttachmentType::Depth || (**input)->attachmentType() == AttachmentType::DepthStencil : false;
-        });
+    auto numberOfDepthAttachments = m_depthRenderTargetOutputs.size() + m_depthStencilRenderTargetOutputs.size();
 
     auto allDefaultFramebufferAttachments = std::all_of(m_renderTargetInputs.begin(), m_renderTargetInputs.end(), [](Input<RenderTarget *> * input) {
         return input ? (**input)->attachmentRequiresUserDefinedFramebuffer() : true;
@@ -151,7 +175,10 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
             currentFBO = nextFBO;
         }
 
-        assert(nextFBO == currentFBO);
+        if (nextFBO != currentFBO)
+        {
+            return nullptr;
+        }
 
         if ((**input)->attachmentType() == AttachmentType::Color)
         {

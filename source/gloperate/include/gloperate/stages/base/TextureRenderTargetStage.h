@@ -24,12 +24,14 @@ namespace gloperate
 {
 
 
-class RenderTarget;
+class ColorRenderTarget;
+class DepthRenderTarget;
+class DepthStencilRenderTarget;
 
 
 /**
 *  @brief
-*    Stage that creates an empty texture with a specified size and format
+*    Stage that creates an empty texture with a specified size and format as render target
 */
 class GLOPERATE_API TextureRenderTargetStage : public gloperate::Stage
 {
@@ -39,7 +41,7 @@ public:
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that creates an empty texture as render target with a specified size and format"
+      , "Stage that creates an empty texture with a specified size and format as render target"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -50,11 +52,13 @@ public:
     Input<gl::GLenum> internalFormat;     ///< OpenGL internal image format
     Input<gl::GLenum> format;             ///< OpenGL image format
     Input<gl::GLenum> type;               ///< OpenGL data type
-    Input<glm::vec4>  size;               ///< Viewport size
+    Input<glm::vec4>  size;               ///< Viewport size (only z and w component is used as width and height)
 
     // Outputs
-    Output<globjects::Texture *>      texture;      ///< Texture
-    Output<gloperate::RenderTarget *> renderTarget; ///< RenderTarget
+    Output<globjects::Texture *>                  texture;                  ///< Texture
+    Output<gloperate::ColorRenderTarget *>        colorRenderTarget;        ///< Color RenderTarget
+    Output<gloperate::DepthRenderTarget *>        depthRenderTarget;        ///< Depth RenderTarget
+    Output<gloperate::DepthStencilRenderTarget *> depthStencilRenderTarget; ///< Stencil RenderTarget
 
 
 public:
@@ -84,8 +88,10 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::Texture>      m_texture;      ///< The created texture
-    std::unique_ptr<gloperate::RenderTarget> m_renderTarget; ///< The passed render target
+    std::unique_ptr<globjects::Texture>                  m_texture;                  ///< The created texture
+    std::unique_ptr<gloperate::ColorRenderTarget>        m_colorRenderTarget;        ///< The color render target
+    std::unique_ptr<gloperate::DepthRenderTarget>        m_depthRenderTarget;        ///< The depth render target
+    std::unique_ptr<gloperate::DepthStencilRenderTarget> m_depthStencilRenderTarget; ///< The depth stencil render target
 };
 
 

@@ -6,6 +6,8 @@
 
 #include <glm/glm.hpp>
 
+#include <glbinding/gl/enum.h>
+
 #include <cppassist/logging/logging.h>
 #include <cppassist/memory/make_unique.h>
 #include <cppassist/string/manipulation.h>
@@ -20,7 +22,9 @@
 #include <gloperate/pipeline/Slot.h>
 #include <gloperate/input/MouseDevice.h>
 #include <gloperate/input/KeyboardDevice.h>
-#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/ColorRenderTarget.h>
+#include <gloperate/rendering/DepthRenderTarget.h>
+#include <gloperate/rendering/DepthStencilRenderTarget.h>
 #include <gloperate/rendering/AttachmentType.h>
 #include <gloperate/stages/base/BlitStage.h>
 
@@ -157,9 +161,9 @@ Canvas::Canvas(Environment * environment)
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
 , m_replaceStage(false)
-, m_colorTarget(cppassist::make_unique<RenderTarget>())
-, m_depthTarget(cppassist::make_unique<RenderTarget>())
-, m_depthStencilTarget(cppassist::make_unique<RenderTarget>())
+, m_colorTarget(cppassist::make_unique<ColorRenderTarget>())
+, m_depthTarget(cppassist::make_unique<DepthRenderTarget>())
+, m_depthStencilTarget(cppassist::make_unique<DepthStencilRenderTarget>())
 {
     // Register functions
     addFunction("onStageInputChanged", this, &Canvas::scr_onStageInputChanged);
@@ -369,7 +373,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         if (slotViewport) slotViewport->setValue(m_viewport);
 
         // Mark output as required
-        forAllOutputs<RenderTarget *>(m_renderStage.get(), [](Output<RenderTarget *> * output) {
+        forAllOutputs<ColorRenderTarget *>(m_renderStage.get(), [](Output<ColorRenderTarget *> * output) {
             output->setRequired(true);
         });
 
@@ -422,38 +426,44 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     }
 
     // Update render stage input render targets
-    forAllInputs<gloperate::RenderTarget *>(m_renderStage.get(), [this](Input<RenderTarget *> * input) {
-        gloperate::RenderTarget * renderTarget = **input;
+    forAllInputs<gloperate::ColorRenderTarget *>(m_renderStage.get(), [this](Input<ColorRenderTarget *> * input) {
+        const auto renderTarget = **input;
 
         if (renderTarget == nullptr)
         {
             return;
         }
 
-        switch (renderTarget->attachmentType())
+        input->setValue(m_colorTarget.get());
+    });
+    forAllInputs<gloperate::DepthRenderTarget *>(m_renderStage.get(), [this](Input<DepthRenderTarget *> * input) {
+        const auto renderTarget = **input;
+
+        if (renderTarget == nullptr)
         {
-        case AttachmentType::Color:
-            input->setValue(m_colorTarget.get());
-            break;
-        case AttachmentType::Depth:
-            input->setValue(m_depthTarget.get());
-            break;
-        case AttachmentType::DepthStencil:
-            input->setValue(m_depthStencilTarget.get());
-            break;
-        default:
-            input->setValue(nullptr);
+            return;
         }
+
+        input->setValue(m_depthTarget.get());
+    });
+    forAllInputs<gloperate::DepthStencilRenderTarget *>(m_renderStage.get(), [this](Input<DepthStencilRenderTarget *> * input) {
+        const auto renderTarget = **input;
+
+        if (renderTarget == nullptr)
+        {
+            return;
+        }
+
+        input->setValue(m_depthStencilTarget.get());
     });
 
     // Render
     m_renderStage->process();
 
-    auto colorOutput = getOutput<gloperate::RenderTarget *>(m_renderStage.get(), [this](Output<RenderTarget *> * output) {
-        gloperate::RenderTarget * renderTarget = **output;
-
-        return renderTarget->attachmentType() == AttachmentType::Color;
+    auto colorOutput = getOutput<gloperate::ColorRenderTarget *>(m_renderStage.get(), [this](Output<ColorRenderTarget *> * output) {
+        return **output != nullptr;
     });
+
     if (colorOutput)
     {
         if (**colorOutput == m_colorTarget.get())
@@ -556,7 +566,7 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 void Canvas::checkRedraw()
 {
     bool redraw = false;
-    forAllOutputs<RenderTarget *>(m_renderStage.get(), [& redraw](Output<RenderTarget *> * output) {
+    forAllOutputs<ColorRenderTarget *>(m_renderStage.get(), [& redraw](Output<ColorRenderTarget *> * output) {
         if (**output && !output->isValid())
         {
             redraw = true;

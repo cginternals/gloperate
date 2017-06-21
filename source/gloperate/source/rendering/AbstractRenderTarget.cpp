@@ -1,5 +1,8 @@
 
-#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/AbstractRenderTarget.h>
+
+#include <glbinding/gl/types.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/Framebuffer.h>
 #include <globjects/FramebufferAttachment.h>
@@ -11,7 +14,7 @@ namespace gloperate
 {
 
 
-RenderTarget::RenderTarget()
+AbstractRenderTarget::AbstractRenderTarget()
 : m_type(RenderTargetType::Invalid)
 , m_attachment(gl::GL_NONE)
 , m_texture(nullptr)
@@ -20,11 +23,11 @@ RenderTarget::RenderTarget()
 {
 }
 
-RenderTarget::~RenderTarget()
+AbstractRenderTarget::~AbstractRenderTarget()
 {
 }
 
-void RenderTarget::releaseTarget()
+void AbstractRenderTarget::releaseTarget()
 {
     switch (m_type)
     {
@@ -49,12 +52,12 @@ void RenderTarget::releaseTarget()
     m_type = RenderTargetType::Invalid;
 }
 
-AttachmentType RenderTarget::attachmentType() const
+AttachmentType AbstractRenderTarget::attachmentType() const
 {
     return m_attachmentType;
 }
 
-gl::GLenum RenderTarget::attachmentGLType() const
+gl::GLenum AbstractRenderTarget::attachmentGLType() const
 {
     switch (m_attachmentType)
     {
@@ -68,12 +71,12 @@ gl::GLenum RenderTarget::attachmentGLType() const
     }
 }
 
-void RenderTarget::setAttachmentType(AttachmentType attachmentType)
+void AbstractRenderTarget::setAttachmentType(AttachmentType attachmentType)
 {
     m_attachmentType = attachmentType;
 }
 
-void RenderTarget::setTarget(globjects::Texture * texture)
+void AbstractRenderTarget::setTarget(globjects::Texture * texture)
 {
     releaseTarget();
 
@@ -82,7 +85,7 @@ void RenderTarget::setTarget(globjects::Texture * texture)
     m_texture = texture;
 }
 
-void RenderTarget::setTarget(globjects::Renderbuffer * renderbuffer)
+void AbstractRenderTarget::setTarget(globjects::Renderbuffer * renderbuffer)
 {
     releaseTarget();
 
@@ -91,7 +94,7 @@ void RenderTarget::setTarget(globjects::Renderbuffer * renderbuffer)
     m_renderbuffer = renderbuffer;
 }
 
-void RenderTarget::setTarget(gl::GLenum attachment)
+void AbstractRenderTarget::setTarget(gl::GLenum attachment)
 {
     releaseTarget();
 
@@ -100,7 +103,7 @@ void RenderTarget::setTarget(gl::GLenum attachment)
     m_attachment = attachment;
 }
 
-void RenderTarget::setTarget(globjects::FramebufferAttachment * fboAttachment)
+void AbstractRenderTarget::setTarget(globjects::FramebufferAttachment * fboAttachment)
 {
     releaseTarget();
 
@@ -109,46 +112,46 @@ void RenderTarget::setTarget(globjects::FramebufferAttachment * fboAttachment)
     m_userDefined = fboAttachment;
 }
 
-RenderTargetType RenderTarget::type() const
+RenderTargetType AbstractRenderTarget::type() const
 {
     return m_type;
 }
 
-gl::GLenum RenderTarget::defaultFramebufferAttachment() const
+gl::GLenum AbstractRenderTarget::defaultFramebufferAttachment() const
 {
     return m_attachment;
 }
 
-globjects::Texture * RenderTarget::textureAttachment() const
+globjects::Texture * AbstractRenderTarget::textureAttachment() const
 {
     return m_texture;
 }
 
-globjects::Renderbuffer * RenderTarget::renderbufferAttachment() const
+globjects::Renderbuffer * AbstractRenderTarget::renderbufferAttachment() const
 {
     return m_renderbuffer;
 }
 
-globjects::FramebufferAttachment * RenderTarget::framebufferAttachment() const
+globjects::FramebufferAttachment * AbstractRenderTarget::framebufferAttachment() const
 {
     return m_userDefined;
 }
 
-bool RenderTarget::attachmentRequiresUserDefinedFramebuffer() const
+bool AbstractRenderTarget::attachmentRequiresUserDefinedFramebuffer() const
 {
     return m_type == RenderTargetType::Texture
         || m_type == RenderTargetType::Renderbuffer
         || m_type == RenderTargetType::UserDefinedFBOAttachment;
 }
 
-gl::GLenum RenderTarget::attachmentBuffer() const
+gl::GLenum AbstractRenderTarget::attachmentBuffer() const
 {
     return attachmentRequiresUserDefinedFramebuffer()
         ? attachmentGLType()
         : m_attachment;
 }
 
-gl::GLint RenderTarget::attachmentDrawBuffer(gl::GLint index) const
+gl::GLint AbstractRenderTarget::attachmentDrawBuffer(size_t index) const
 {
     return attachmentRequiresUserDefinedFramebuffer()
         ? (m_attachmentType == AttachmentType::Color ? index : 0)
