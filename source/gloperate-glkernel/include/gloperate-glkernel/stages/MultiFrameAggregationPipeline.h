@@ -6,7 +6,6 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
