@@ -175,6 +175,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Outputs
     *createOutput<gloperate::RenderTarget *>("ColorOut") << *m_colorizeRasterization->createOutput<gloperate::RenderTarget *>("ColorOut");
+    //*createOutput<gloperate::RenderTarget *>("ColorOut") << *shapeColorOutput;
 
     // Start rotation
     rotate = true;

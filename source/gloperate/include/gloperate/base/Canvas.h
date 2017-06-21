@@ -33,6 +33,7 @@ class AbstractSlot;
 class MouseDevice;
 class KeyboardDevice;
 class RenderTarget;
+class BlitStage;
 
 
 /**
@@ -313,6 +314,7 @@ protected:
     float                           m_timeDelta;              ///< Time delta since the last update (in seconds)
     std::unique_ptr<Stage>          m_renderStage;            ///< Render stage that renders into the canvas
     std::unique_ptr<Stage>          m_oldStage;               ///< Old render stage, will be destroyed on the next render call
+    std::unique_ptr<BlitStage>      m_blitStage;              ///< Blit stage that is used to blit to target color attachment if render stage uses own targets
     std::unique_ptr<MouseDevice>    m_mouseDevice;            ///< Device for Mouse Events
     std::unique_ptr<KeyboardDevice> m_keyboardDevice;         ///< Device for Keyboard Events
     bool                            m_replaceStage;           ///< 'true' if the stage has just been replaced, else 'false'

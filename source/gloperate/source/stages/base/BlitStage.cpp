@@ -4,6 +4,8 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 
+#include <gloperate/stages/interfaces/RenderInterface.h>
+
 
 namespace gloperate
 {
@@ -38,6 +40,13 @@ void BlitStage::onContextDeinit(AbstractGLContext * /*context*/)
 
 void BlitStage::onProcess()
 {
+    if (*source == *target)
+    {
+        targetOut.setValue(*target);
+
+        return;
+    }
+
     std::array<gl::GLint, 4> sourceRect = {{
         static_cast<gl::GLint>((*sourceViewport).x),
         static_cast<gl::GLint>((*sourceViewport).y),
@@ -51,8 +60,9 @@ void BlitStage::onProcess()
         static_cast<gl::GLint>((*targetViewport).w)
     }};
 
-    globjects::Framebuffer * sourceFBO = source->attachmentRequiresUserDefinedFramebuffer() ? m_sourceFBO.get() : m_defaultFBO.get();
-    globjects::Framebuffer * targetFBO = target->attachmentRequiresUserDefinedFramebuffer() ? m_targetFBO.get() : m_defaultFBO.get();
+    globjects::Framebuffer * sourceFBO = RenderInterface::configureFBO(0, *source, m_sourceFBO.get(), m_defaultFBO.get());
+    globjects::Framebuffer * targetFBO = RenderInterface::configureFBO(0, *target, m_targetFBO.get(), m_defaultFBO.get());
+
     auto sourceAttachment = source->attachmentRequiresUserDefinedFramebuffer() ? gl::GL_COLOR_ATTACHMENT0 : source->defaultFramebufferAttachment();
     auto targetAttachment = target->attachmentRequiresUserDefinedFramebuffer() ? gl::GL_COLOR_ATTACHMENT0 : target->defaultFramebufferAttachment();
 

@@ -22,6 +22,7 @@
 #include <gloperate/input/KeyboardDevice.h>
 #include <gloperate/rendering/RenderTarget.h>
 #include <gloperate/rendering/AttachmentType.h>
+#include <gloperate/stages/base/BlitStage.h>
 
 
 using namespace cppassist;
@@ -152,6 +153,7 @@ Canvas::Canvas(Environment * environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
 , m_timeDelta(0.0f)
+, m_blitStage(cppassist::make_unique<BlitStage>(environment, "FinalBlit"))
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
 , m_replaceStage(false)
@@ -258,6 +260,8 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
             m_renderStage->deinitContext(m_openGLContext);
         }
 
+        m_blitStage->deinitContext(m_openGLContext);
+
         m_openGLContext = nullptr;
     }
 
@@ -272,6 +276,8 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
         {
             m_renderStage->initContext(m_openGLContext);
         }
+
+        m_blitStage->initContext(m_openGLContext);
     }
 
     // Reset status
@@ -442,6 +448,31 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
     // Render
     m_renderStage->process();
+
+    auto colorOutput = getOutput<gloperate::RenderTarget *>(m_renderStage.get(), [this](Output<RenderTarget *> * output) {
+        gloperate::RenderTarget * renderTarget = **output;
+
+        return renderTarget->attachmentType() == AttachmentType::Color;
+    });
+    if (colorOutput)
+    {
+        if (**colorOutput == m_colorTarget.get())
+        {
+
+        }
+        else
+        {
+            auto viewport = getOutput<glm::vec4>(m_renderStage.get(), [this](Output<glm::vec4> *) {
+                return true;
+            });
+
+            m_blitStage->source = **colorOutput;
+            m_blitStage->sourceViewport = viewport ? **viewport : m_viewport;
+            m_blitStage->target = m_colorTarget.get();
+            m_blitStage->targetViewport = m_viewport;
+            m_blitStage->process();
+        }
+    }
 }
 
 void Canvas::promoteKeyPress(int key, int modifier)
