@@ -44,11 +44,13 @@ gloperate::Canvas * RenderWindow::canvas() const
 void RenderWindow::onContextInit()
 {
     m_canvas->setOpenGLContext(m_context.get());
+    m_framebuffer = globjects::Framebuffer::defaultFBO();
 }
 
 void RenderWindow::onContextDeinit()
 {
     m_canvas->setOpenGLContext(nullptr);
+    m_framebuffer = nullptr;
 }
 
 void RenderWindow::onResize(const QSize & deviceSize, const QSize & /*virtualSize*/)
@@ -60,10 +62,7 @@ void RenderWindow::onResize(const QSize & deviceSize, const QSize & /*virtualSiz
 
 void RenderWindow::onPaint()
 {
-    // [TODO]: optimize memory reallocation problem
-    auto defaultFBO = globjects::Framebuffer::defaultFBO();
-
-    m_canvas->render(defaultFBO.get());
+    m_canvas->render(m_framebuffer.get());
 }
 
 void RenderWindow::onTimer()
