@@ -19,7 +19,7 @@ namespace gloperate
 
 
 RenderInterface::RenderInterface(Stage * stage)
-: viewport("viewport", stage)
+: viewport("viewport", stage, glm::vec4(0.0, 0.0, -1.0, -1.0))
 {
     // Hide inputs in property editor
     viewport.setOption("hidden", true);

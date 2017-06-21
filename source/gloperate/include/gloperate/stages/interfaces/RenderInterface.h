@@ -38,6 +38,10 @@ class RenderTarget;
 *    for rendering stages. It can just be instanciated on a stage or pipeline
 *    and it will add the inputs and outputs directly to the stage (the interface
 *    itself is not an object in the hierarchy).
+*
+*    The viewport is initialized with an invalid width and height (i.e., -1.0
+*    per component) which results in no rendering for rasterization stages and
+*    full clearing for clear stages.
 */
 class GLOPERATE_API RenderInterface
 {

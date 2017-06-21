@@ -65,9 +65,16 @@ void ClearStage::onProcess()
 {
     if (*clear)
     {
-        // Setup OpenGL state
-        gl::glScissor(renderInterface.viewport->x, renderInterface.viewport->y, renderInterface.viewport->z, renderInterface.viewport->w);
-        gl::glEnable(gl::GL_SCISSOR_TEST);
+        if (renderInterface.viewport->z >= 0.0 || renderInterface.viewport->w >= 0.0) {
+            // Setup OpenGL state
+            gl::glScissor(renderInterface.viewport->x, renderInterface.viewport->y, renderInterface.viewport->z, renderInterface.viewport->w);
+            gl::glEnable(gl::GL_SCISSOR_TEST);
+        }
+        else
+        {
+            // Clear full render targets if viewport has invalid size
+            gl::glDisable(gl::GL_SCISSOR_TEST);
+        }
 
         size_t colorAttachmentIndex        = 0;
         size_t depthAttachmentIndex        = 0;
@@ -90,7 +97,11 @@ void ClearStage::onProcess()
 
                     auto fbo = renderInterface.configureFBO(colorAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-                    fbo->clearBuffer((**input)->attachmentBuffer(), (**input)->attachmentDrawBuffer(colorAttachmentIndex), **m_colorValueInputs.at(colorAttachmentIndex));
+                    const auto attachmentBuffer = (**input)->attachmentBuffer();
+                    const auto attachmentDrawBuffer = (**input)->attachmentDrawBuffer(colorAttachmentIndex);
+                    const auto clearColor = **m_colorValueInputs.at(colorAttachmentIndex);
+
+                    fbo->clearBuffer(attachmentBuffer, attachmentDrawBuffer, clearColor);
 
                     ++colorAttachmentIndex;
                 }

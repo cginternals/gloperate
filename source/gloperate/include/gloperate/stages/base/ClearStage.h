@@ -25,6 +25,9 @@ namespace gloperate
 /**
 *  @brief
 *    Stage that clears the screen with a background color
+*
+*  If a valid viewport is set (width and height are greater or equal to '0', only the area of
+*  the given viewport is cleared, otherwise the full render targets are cleared.
 */
 class GLOPERATE_API ClearStage : public Stage
 {
