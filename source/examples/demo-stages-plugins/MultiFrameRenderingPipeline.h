@@ -9,6 +9,13 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
+namespace gloperate
+{
+    class FramebufferStage;
+    class TextureStage;
+}
+
+
 namespace gloperate_glkernel
 {
     class DiscDistributionKernelStage;
@@ -16,6 +23,10 @@ namespace gloperate_glkernel
     class NoiseKernelStage;
     class TransparencyKernelStage;
 }
+
+
+class MultiFrameSceneRenderingStage;
+class MultiFramePostprocessingStage;
 
 
 /**
@@ -65,10 +76,20 @@ public:
 
 protected:
     // Stages
+    // Custom FBO
+    std::unique_ptr<gloperate::TextureStage>                               m_colorTextureStage;   ///< Stage creating color texture for main rendering
+    std::unique_ptr<gloperate::TextureStage>                               m_depthTextureStage;   ///< Stage creating depth texture for main rendering
+    std::unique_ptr<gloperate::TextureStage>                               m_normalTextureStage;  ///< Stage creating normal texture for main rendering
+    std::unique_ptr<gloperate::FramebufferStage>                           m_fboStage;            ///< Stage creating FBO for main rendering
+
     // Kernels
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage>       m_subpixelStage;           ///< subpixel offsets for antialiasing
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage>       m_dofShiftStage;           ///< offsets for depth of field
     std::unique_ptr<gloperate_glkernel::HemisphereDistributionKernelStage> m_ssaoKernelStage;         ///< kernel for SSAO
     std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;              ///< noise for SSAO & Transparency
     std::unique_ptr<gloperate_glkernel::TransparencyKernelStage>           m_transparencyKernelStage; ///< kernel for transparency
+
+    // Rendering
+    std::unique_ptr<MultiFrameSceneRenderingStage>                         m_renderingStage;
+    std::unique_ptr<MultiFramePostprocessingStage>                         m_postprocessingStage;
 };

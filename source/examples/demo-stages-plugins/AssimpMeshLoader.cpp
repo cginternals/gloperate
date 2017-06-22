@@ -12,6 +12,8 @@
 #include <assimp/types.h>
 #include <assimp/postprocess.h>
 
+#include <cppassist/logging/logging.h>
+
 #include <cppexpose/variant/Variant.h>
 
 #include <glbinding/gl/enum.h>
@@ -122,7 +124,7 @@ Drawable * AssimpMeshLoader::load(const std::string & filename, const cppexpose:
     // Check for errors
     if (!scene)
     {
-        std::cout << aiGetErrorString();
+        cppassist::error("AssimpMeshLoader") << aiGetErrorString();
         return nullptr;
     }
 
@@ -152,7 +154,11 @@ Drawable * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
         for (auto j = 0u; j < face.mNumIndices; ++j)
             indices.push_back(face.mIndices[j]);
     }
-    geometry->setIndices(std::move(indices));
+    globjects::Buffer * indexBuffer = new globjects::Buffer;
+    indexBuffer->setData(std::move(indices), gl::GL_STATIC_DRAW);
+    geometry->setIndexBuffer(indexBuffer);
+    geometry->setSize(indices.size());
+    geometry->setDrawMode(gloperate::DrawMode::ElementsIndexBuffer);
 
     // Copy vertex array
     std::vector<glm::vec3> vertices;
@@ -161,9 +167,12 @@ Drawable * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
         const auto & vertex = mesh->mVertices[i];
         vertices.push_back({ vertex.x, vertex.y, vertex.z });
     }
-    globjects::Buffer * vertexBuffer = new globjects::Buffer();
+    globjects::Buffer * vertexBuffer = new globjects::Buffer;
     geometry->setBuffer(0, vertexBuffer);
     geometry->setData(0, std::move(vertices), gl::GL_STATIC_DRAW);
+    geometry->setAttributeBindingBuffer(0, 0, 0, sizeof(glm::vec3));
+    geometry->setAttributeBindingFormat(0, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
+    geometry->enableAttributeBinding(0);
 
     // Does the mesh contain normal vectors?
     if (mesh->HasNormals())
@@ -175,9 +184,12 @@ Drawable * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
             const auto & normal = mesh->mNormals[i];
             normals.push_back({ normal.x, normal.y, normal.z });
         }
-        globjects::Buffer * normalBuffer = new globjects::Buffer();
+        globjects::Buffer * normalBuffer = new globjects::Buffer;
         geometry->setBuffer(1, normalBuffer);
         geometry->setData(1, std::move(normals), gl::GL_STATIC_DRAW);
+        geometry->setAttributeBindingFormat(1, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
+        geometry->setAttributeBindingBuffer(1, 1, 0, sizeof(glm::vec3));
+        geometry->enableAttributeBinding(1);
     }
 
     // Does the mesh contain texture coordinates?
@@ -190,9 +202,12 @@ Drawable * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
             const auto & textureCoordinate = mesh->mTextureCoords[0][i];
             textureCoordinates.push_back({ textureCoordinate.x, textureCoordinate.y, textureCoordinate.z });
         }
-        globjects::Buffer * texCoordBuffer = new globjects::Buffer();
+        globjects::Buffer * texCoordBuffer = new globjects::Buffer;
         geometry->setBuffer(2, texCoordBuffer);
         geometry->setData(2, std::move(textureCoordinates), gl::GL_STATIC_DRAW);
+        geometry->setAttributeBindingFormat(2, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
+        geometry->setAttributeBindingBuffer(2, 2, 0, sizeof(glm::vec3));
+        geometry->enableAttributeBinding(2);
     }
 
     // Materials
