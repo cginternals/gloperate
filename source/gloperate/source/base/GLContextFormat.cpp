@@ -4,9 +4,8 @@
 #include <cassert>
 #include <sstream>
 #include <map>
-// TODO use cppassist regex
-#include <regex>
 
+#include <cppassist/string/regex.h>
 #include <cppassist/string/conversion.h>
 #include <cppassist/logging/logging.h>
 
@@ -290,9 +289,9 @@ bool GLContextFormat::initializeFromString(const std::string &formatString)
      * 3 profile
      * 4 rest of the string
      */
-    static const std::regex reg{ R"(OpenGL(\d+)\.(\d+)(Core|Compatibility)?(.*))" };
-    std::smatch match;
-    std::regex_match(formatString, match, reg);
+    static const std::string reg = "(OpenGL(\\d+)\\.(\\d+)(Core|Compatibility)?(.*))";
+
+    auto match = cppassist::string::extract(formatString, reg);
 
     if(match.empty())
     {
@@ -330,24 +329,25 @@ bool GLContextFormat::initializeFromString(const std::string &formatString)
      * 3 value; optional
      * 4 rest
      */
-    static const std::regex paramExtract{R"(:(\w+)(=(\w+))?(.*))"};
+    static const std::string paramExtract = "(:(\\w+)(=(\\w+))?(.*))";
 
-    while(std::regex_match(remainingParams,match,paramExtract))
+    while (cppassist::string::matchesRegex(remainingParams, paramExtract))
     {
         const auto key = static_cast<std::string>(match[1]);
-        const auto value = match[2].matched ? static_cast<std::string>(match[3]) : "true";
+        const auto value = !match[2].empty() ? static_cast<std::string>(match[3]) : "true";
 
-        if(key=="ForwardCompatiblity")
+        if (key == "ForwardCompatiblity")
             setForwardCompatible(cppassist::string::fromString<bool>(value));
 
-        if(key=="Debug")
+        if (key == "Debug")
             setDebugContext(cppassist::string::fromString<bool>(value));
 
-        if(key=="NoError")
+        if (key == "NoError")
             setNoErrorContext(cppassist::string::fromString<bool>(value));
 
         remainingParams = static_cast<std::string>(match[4]);
     }
+
     return true;
 }
 
