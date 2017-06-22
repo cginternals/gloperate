@@ -13,7 +13,7 @@
 #include <gloperate/rendering/RenderTargetType.h>
 #include <gloperate/rendering/ColorRenderTarget.h>
 #include <gloperate/rendering/DepthRenderTarget.h>
-#include <gloperate/rendering/DepthStencilRenderTarget.h>
+#include <gloperate/rendering/StencilRenderTarget.h>
 
 
 namespace gloperate
@@ -29,7 +29,7 @@ RenderInterface::RenderInterface(Stage * stage)
     stage->inputAdded.connect( [this] (AbstractSlot * connectedInput) {
         auto colorRenderTargetInput = dynamic_cast<Input<ColorRenderTarget *> *>(connectedInput);
         auto depthRenderTargetInput = dynamic_cast<Input<DepthRenderTarget *> *>(connectedInput);
-        auto depthStencilRenderTargetInput = dynamic_cast<Input<DepthStencilRenderTarget *> *>(connectedInput);
+        auto stencilRenderTargetInput = dynamic_cast<Input<StencilRenderTarget *> *>(connectedInput);
 
         if (colorRenderTargetInput)
         {
@@ -41,16 +41,16 @@ RenderInterface::RenderInterface(Stage * stage)
             addRenderTargetInput(depthRenderTargetInput);
         }
 
-        if (depthStencilRenderTargetInput)
+        if (stencilRenderTargetInput)
         {
-            addRenderTargetInput(depthStencilRenderTargetInput);
+            addRenderTargetInput(stencilRenderTargetInput);
         }
     });
 
     stage->outputAdded.connect( [this] (AbstractSlot * connectedOutput) {
         auto colorRenderTargetOutput = dynamic_cast<Output<ColorRenderTarget *> *>(connectedOutput);
         auto depthRenderTargetOutput = dynamic_cast<Output<DepthRenderTarget *> *>(connectedOutput);
-        auto depthStencilRenderTargetOutput = dynamic_cast<Output<DepthStencilRenderTarget *> *>(connectedOutput);
+        auto stencilRenderTargetOutput = dynamic_cast<Output<StencilRenderTarget *> *>(connectedOutput);
 
         if (colorRenderTargetOutput)
         {
@@ -62,9 +62,9 @@ RenderInterface::RenderInterface(Stage * stage)
             addRenderTargetOutput(depthRenderTargetOutput);
         }
 
-        if (depthStencilRenderTargetOutput)
+        if (stencilRenderTargetOutput)
         {
-            addRenderTargetOutput(depthStencilRenderTargetOutput);
+            addRenderTargetOutput(stencilRenderTargetOutput);
         }
     });
 }
@@ -75,87 +75,198 @@ RenderInterface::~RenderInterface()
 
 bool RenderInterface::allRenderTargetsCompatible() const
 {
-    if (m_colorRenderTargetOutputs.empty() && m_depthRenderTargetOutputs.empty() && m_depthStencilRenderTargetOutputs.empty())
+    if (m_colorRenderTargetOutputs.empty() && m_depthRenderTargetOutputs.empty() && m_stencilRenderTargetOutputs.empty())
     {
         return true;
     }
 
-    auto numberOfDepthAttachments = m_depthRenderTargetOutputs.size() + m_depthStencilRenderTargetOutputs.size();
+    auto numberOfDepthAttachments = m_depthRenderTargetOutputs.size() + m_stencilRenderTargetOutputs.size();
 
-    auto allDefaultFramebufferAttachments = std::all_of(m_renderTargetInputs.begin(), m_renderTargetInputs.end(), [](Input<RenderTarget *> * input) {
+    auto allDefaultFramebufferAttachments =
+        std::all_of(m_colorRenderTargetInputs.begin(), m_colorRenderTargetInputs.end(), [](Input<ColorRenderTarget *> * input) {
+        return input ? (**input)->attachmentRequiresUserDefinedFramebuffer() : true;
+    }) && std::all_of(m_depthRenderTargetInputs.begin(), m_depthRenderTargetInputs.end(), [](Input<DepthRenderTarget *> * input) {
+        return input ? (**input)->attachmentRequiresUserDefinedFramebuffer() : true;
+    }) && std::all_of(m_stencilRenderTargetInputs.begin(), m_stencilRenderTargetInputs.end(), [](Input<StencilRenderTarget *> * input) {
         return input ? (**input)->attachmentRequiresUserDefinedFramebuffer() : true;
     });
 
-    auto allUserDefinedFramebufferAttachments = std::all_of(m_renderTargetInputs.begin(), m_renderTargetInputs.end(), [](Input<RenderTarget *> * input) {
-        return input ? !(**input)->attachmentRequiresUserDefinedFramebuffer() : true;
-    });
+    auto allUserDefinedFramebufferAttachments = std::all_of(m_colorRenderTargetInputs.begin(), m_colorRenderTargetInputs.end(), [](Input<ColorRenderTarget *> * input) {
+            return input ? !(**input)->attachmentRequiresUserDefinedFramebuffer() : true;
+        }) && std::all_of(m_depthRenderTargetInputs.begin(), m_depthRenderTargetInputs.end(), [](Input<DepthRenderTarget *> * input) {
+            return input ? !(**input)->attachmentRequiresUserDefinedFramebuffer() : true;
+        }) && std::all_of(m_stencilRenderTargetInputs.begin(), m_stencilRenderTargetInputs.end(), [](Input<StencilRenderTarget *> * input) {
+            return input ? !(**input)->attachmentRequiresUserDefinedFramebuffer() : true;
+        });
 
     return allDefaultFramebufferAttachments != allUserDefinedFramebufferAttachments && numberOfDepthAttachments <= 1;
 }
 
-size_t RenderInterface::renderTargetInputSize() const
+const std::vector<Input<ColorRenderTarget *> *> & RenderInterface::colorRenderTargetInputs() const
 {
-    return m_renderTargetInputs.size();
+    return m_colorRenderTargetInputs;
 }
 
-const std::vector<Input<RenderTarget *> *> & RenderInterface::renderTargetInputs() const
+const std::vector<Input<DepthRenderTarget *> *> & RenderInterface::depthRenderTargetInputs() const
 {
-    return m_renderTargetInputs;
+    return m_depthRenderTargetInputs;
 }
 
-Input<RenderTarget *> * RenderInterface::renderTargetInput(size_t index) const
+const std::vector<Input<StencilRenderTarget *> *> & RenderInterface::stencilRenderTargetInputs() const
 {
-    return m_renderTargetInputs.size() > index ? m_renderTargetInputs.at(index) : nullptr;
+    return m_stencilRenderTargetInputs;
 }
 
-RenderTarget * RenderInterface::inputRenderTarget(size_t index) const
+Input<ColorRenderTarget *> * RenderInterface::colorRenderTargetInput(size_t index) const
 {
-    const auto input = renderTargetInput(index);
+    return m_colorRenderTargetInputs.size() > index ? m_colorRenderTargetInputs.at(index) : nullptr;
+}
+
+Input<DepthRenderTarget *> * RenderInterface::depthRenderTargetInput(size_t index) const
+{
+    return m_depthRenderTargetInputs.size() > index ? m_depthRenderTargetInputs.at(index) : nullptr;
+}
+
+Input<StencilRenderTarget *> * RenderInterface::stencilRenderTargetInput(size_t index) const
+{
+    return m_stencilRenderTargetInputs.size() > index ? m_stencilRenderTargetInputs.at(index) : nullptr;
+}
+
+ColorRenderTarget * RenderInterface::inputColorRenderTarget(size_t index) const
+{
+    const auto input = colorRenderTargetInput(index);
 
     return input ? **input : nullptr;
 }
 
-size_t RenderInterface::renderTargetOutputSize() const
+DepthRenderTarget * RenderInterface::inputDepthRenderTarget(size_t index) const
 {
-    return m_renderTargetOutputs.size();
+    const auto input = depthRenderTargetInput(index);
+
+    return input ? **input : nullptr;
 }
 
-const std::vector<Output<RenderTarget *> *> & RenderInterface::renderTargetOutputs() const
+StencilRenderTarget * RenderInterface::inputStencilRenderTarget(size_t index) const
 {
-    return m_renderTargetOutputs;
+    const auto input = stencilRenderTargetInput(index);
+
+    return input ? **input : nullptr;
 }
 
-Output<RenderTarget *> * RenderInterface::renderTargetOutput(size_t index) const
+const std::vector<Output<ColorRenderTarget *> *> & RenderInterface::colorRenderTargetOutputs() const
 {
-    return m_renderTargetOutputs.size() > index ? m_renderTargetOutputs.at(index) : nullptr;
+    return m_colorRenderTargetOutputs;
 }
 
-RenderTarget * RenderInterface::outputRenderTarget(size_t index) const
+const std::vector<Output<DepthRenderTarget *> *> & RenderInterface::depthRenderTargetOutputs() const
 {
-    const auto output = renderTargetOutput(index);
+    return m_depthRenderTargetOutputs;
+}
+
+const std::vector<Output<StencilRenderTarget *> *> & RenderInterface::stencilRenderTargetOutputs() const
+{
+    return m_stencilRenderTargetOutputs;
+}
+
+Output<ColorRenderTarget *> * RenderInterface::colorRenderTargetOutput(size_t index) const
+{
+    return m_colorRenderTargetOutputs.size() > index ? m_colorRenderTargetOutputs.at(index) : nullptr;
+}
+
+Output<DepthRenderTarget *> * RenderInterface::depthRenderTargetOutput(size_t index) const
+{
+    return m_depthRenderTargetOutputs.size() > index ? m_depthRenderTargetOutputs.at(index) : nullptr;
+}
+
+Output<StencilRenderTarget *> * RenderInterface::stencilRenderTargetOutput(size_t index) const
+{
+    return m_stencilRenderTargetOutputs.size() > index ? m_stencilRenderTargetOutputs.at(index) : nullptr;
+}
+
+ColorRenderTarget * RenderInterface::outputColorRenderTarget(size_t index) const
+{
+    const auto output = colorRenderTargetOutput(index);
 
     return output ? **output : nullptr;
 }
 
-void RenderInterface::addRenderTargetInput(Input<RenderTarget *> * input)
+DepthRenderTarget * RenderInterface::outputDepthRenderTarget(size_t index) const
 {
-    m_renderTargetInputs.push_back(input);
+    const auto output = depthRenderTargetOutput(index);
+
+    return output ? **output : nullptr;
 }
 
-void RenderInterface::addRenderTargetOutput(Output<RenderTarget *> * input)
+StencilRenderTarget * RenderInterface::outputStencilRenderTarget(size_t index) const
 {
-    m_renderTargetOutputs.push_back(input);
+    const auto output = stencilRenderTargetOutput(index);
+
+    return output ? **output : nullptr;
 }
 
-void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input <RenderTarget *> *, Output <RenderTarget *> *)> callback, bool includeIncompletePairs)
+void RenderInterface::addRenderTargetInput(Input<ColorRenderTarget *> * input)
+{
+    m_colorRenderTargetInputs.push_back(input);
+}
+
+void RenderInterface::addRenderTargetInput(Input<DepthRenderTarget *> * input)
+{
+    m_depthRenderTargetInputs.push_back(input);
+}
+
+void RenderInterface::addRenderTargetInput(Input<StencilRenderTarget *> * input)
+{
+    m_stencilRenderTargetInputs.push_back(input);
+}
+
+void RenderInterface::addRenderTargetOutput(Output<ColorRenderTarget *> * input)
+{
+    m_colorRenderTargetOutputs.push_back(input);
+}
+
+void RenderInterface::addRenderTargetOutput(Output<DepthRenderTarget *> * input)
+{
+    m_depthRenderTargetOutputs.push_back(input);
+}
+
+void RenderInterface::addRenderTargetOutput(Output<StencilRenderTarget *> * input)
+{
+    m_stencilRenderTargetOutputs.push_back(input);
+}
+
+void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<ColorRenderTarget *> *, Output<ColorRenderTarget *> *)> callback, bool includeIncompletePairs)
 {
     const auto end = includeIncompletePairs
-        ? std::max(m_renderTargetInputs.size(), m_renderTargetOutputs.size())
-        : std::min(m_renderTargetInputs.size(), m_renderTargetOutputs.size());
+        ? std::max(m_colorRenderTargetInputs.size(), m_colorRenderTargetOutputs.size())
+        : std::min(m_colorRenderTargetInputs.size(), m_colorRenderTargetOutputs.size());
 
     for (auto i = size_t(0); i < end; ++i)
     {
-        callback(renderTargetInput(i), renderTargetOutput(i));
+        callback(colorRenderTargetInput(i), colorRenderTargetOutput(i));
+    }
+}
+
+void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<DepthRenderTarget *> *, Output<DepthRenderTarget *> *)> callback, bool includeIncompletePairs)
+{
+    const auto end = includeIncompletePairs
+        ? std::max(m_depthRenderTargetInputs.size(), m_depthRenderTargetOutputs.size())
+        : std::min(m_depthRenderTargetInputs.size(), m_depthRenderTargetOutputs.size());
+
+    for (auto i = size_t(0); i < end; ++i)
+    {
+        callback(depthRenderTargetInput(i), depthRenderTargetOutput(i));
+    }
+}
+
+void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<StencilRenderTarget *> *, Output<StencilRenderTarget *> *)> callback, bool includeIncompletePairs)
+{
+    const auto end = includeIncompletePairs
+        ? std::max(m_stencilRenderTargetInputs.size(), m_stencilRenderTargetOutputs.size())
+        : std::min(m_stencilRenderTargetInputs.size(), m_stencilRenderTargetOutputs.size());
+
+    for (auto i = size_t(0); i < end; ++i)
+    {
+        callback(stencilRenderTargetInput(i), stencilRenderTargetOutput(i));
     }
 }
 
@@ -166,7 +277,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
     std::vector<gl::GLenum> drawBuffers;
     globjects::Framebuffer * currentFBO = nullptr;
     auto colorAttachmentIndex = size_t(0);
-    for (auto input : m_renderTargetInputs)
+    for (auto input : m_colorRenderTargetInputs)
     {
         auto nextFBO = configureFBO(colorAttachmentIndex, **input, fbo, defaultFBO);
 
@@ -180,10 +291,45 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
             return nullptr;
         }
 
-        if ((**input)->attachmentType() == AttachmentType::Color)
+        if (**input)
         {
             drawBuffers.push_back((**input)->type() == RenderTargetType::DefaultFBOAttachment ? (**input)->defaultFramebufferAttachment() : gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
-            ++colorAttachmentIndex;
+        }
+        else
+        {
+            drawBuffers.push_back(gl::GL_NONE);
+        }
+
+        ++colorAttachmentIndex;
+    }
+
+    for (auto input : m_depthRenderTargetInputs)
+    {
+        auto nextFBO = configureFBO(0, **input, fbo, defaultFBO);
+
+        if (!currentFBO)
+        {
+            currentFBO = nextFBO;
+        }
+
+        if (nextFBO != currentFBO)
+        {
+            return nullptr;
+        }
+    }
+
+    for (auto input : m_stencilRenderTargetInputs)
+    {
+        auto nextFBO = configureFBO(0, **input, fbo, defaultFBO);
+
+        if (!currentFBO)
+        {
+            currentFBO = nextFBO;
+        }
+
+        if (nextFBO != currentFBO)
+        {
+            return nullptr;
         }
     }
 
@@ -192,13 +338,18 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
     return currentFBO;
 }
 
-globjects::Framebuffer * RenderInterface::configureFBO(size_t index, RenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO)
+globjects::Framebuffer * RenderInterface::configureFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO)
 {
     auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
 
     if (renderTarget->attachmentType() == AttachmentType::Depth)
     {
         attachmentIndex = gl::GL_DEPTH_ATTACHMENT;
+    }
+
+    if (renderTarget->attachmentType() == AttachmentType::Stencil)
+    {
+        attachmentIndex = gl::GL_STENCIL_ATTACHMENT;
     }
 
     if (renderTarget->attachmentType() == AttachmentType::DepthStencil)

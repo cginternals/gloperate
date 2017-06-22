@@ -63,7 +63,7 @@ gl::GLenum AbstractRenderTarget::attachmentGLType() const
     {
     case AttachmentType::Depth:
         return gl::GL_DEPTH;
-    case AttachmentType::DepthStencil:
+    case AttachmentType::Stencil:
         return gl::GL_DEPTH_STENCIL;
     case AttachmentType::Color:
     default:

@@ -20,7 +20,7 @@ namespace gloperate
 *    a symbolic attachment of the default renderbuffer, or a user-defined
 *    renderbuffer with attachment specification.
 */
-class GLOPERATE_API DepthStencilRenderTarget : public AbstractRenderTarget
+class GLOPERATE_API StencilRenderTarget : public AbstractRenderTarget
 {
 public:
     using AbstractRenderTarget::AbstractRenderTarget;

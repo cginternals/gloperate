@@ -18,7 +18,8 @@ enum class AttachmentType : unsigned int
 {
     Color,       ///< Color attachment
     Depth,       ///< Depth only attachment
-    DepthStencil ///< Depth stencil attachment
+    Stencil,     ///< Stencil attachment
+    DepthStencil ///< Combined depth-stencil attachment
 };
 
 
@@ -65,6 +66,7 @@ struct EnumDefaultStrings<gloperate::AttachmentType>
         return {
             { gloperate::AttachmentType::Color, "Color" },
             { gloperate::AttachmentType::Depth, "Depth" },
+            { gloperate::AttachmentType::Stencil, "Stencil" },
             { gloperate::AttachmentType::DepthStencil, "DepthStencil" }
         };
     }

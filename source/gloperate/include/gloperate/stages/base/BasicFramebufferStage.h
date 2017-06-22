@@ -27,6 +27,7 @@ namespace gloperate
 
 class ColorRenderTarget;
 class DepthRenderTarget;
+class StencilRenderTarget;
 
 
 /**
@@ -52,10 +53,11 @@ public:
     Input<glm::vec4>                       viewport;     ///< Texture size
 
     // Outputs
-    Output<globjects::Texture *>           colorTexture; ///< Color texture
-    Output<globjects::Texture *>           depthTexture; ///< Depth texture
-    Output<gloperate::ColorRenderTarget *> colorBuffer;  ///< Color attachment
-    Output<gloperate::DepthRenderTarget *> depthBuffer;  ///< Depth attachment
+    Output<globjects::Texture *>             colorTexture;        ///< Color texture
+    Output<globjects::Texture *>             depthStencilTexture; ///< Combined depth-stencil texture
+    Output<gloperate::ColorRenderTarget *>   colorBuffer;         ///< Color attachment
+    Output<gloperate::DepthRenderTarget *>   depthBuffer;         ///< Depth attachment
+    Output<gloperate::StencilRenderTarget *> stencilBuffer;       ///< Stencil attachment
 
 
 public:
@@ -85,10 +87,11 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::Texture>           m_colorTexture; ///< The created texture
-    std::unique_ptr<globjects::Texture>           m_depthTexture; ///< The created texture
-    std::unique_ptr<gloperate::ColorRenderTarget> m_colorBuffer;  ///< Color texture
-    std::unique_ptr<gloperate::DepthRenderTarget> m_depthBuffer;  ///< Depth texture
+    std::unique_ptr<globjects::Texture>             m_colorTexture;        ///< Internal color texture
+    std::unique_ptr<globjects::Texture>             m_depthStencilTexture; ///< Internal, combined depth-stencil texture
+    std::unique_ptr<gloperate::ColorRenderTarget>   m_colorBuffer;         ///< Color texture
+    std::unique_ptr<gloperate::DepthRenderTarget>   m_depthBuffer;         ///< Depth texture
+    std::unique_ptr<gloperate::StencilRenderTarget> m_stencilBuffer;       ///< Stencil texture
 };
 
 

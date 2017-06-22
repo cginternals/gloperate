@@ -24,7 +24,7 @@
 #include <gloperate/input/KeyboardDevice.h>
 #include <gloperate/rendering/ColorRenderTarget.h>
 #include <gloperate/rendering/DepthRenderTarget.h>
-#include <gloperate/rendering/DepthStencilRenderTarget.h>
+#include <gloperate/rendering/StencilRenderTarget.h>
 #include <gloperate/rendering/AttachmentType.h>
 #include <gloperate/stages/base/BlitStage.h>
 
@@ -163,7 +163,7 @@ Canvas::Canvas(Environment * environment)
 , m_replaceStage(false)
 , m_colorTarget(cppassist::make_unique<ColorRenderTarget>())
 , m_depthTarget(cppassist::make_unique<DepthRenderTarget>())
-, m_depthStencilTarget(cppassist::make_unique<DepthStencilRenderTarget>())
+, m_stencilTarget(cppassist::make_unique<StencilRenderTarget>())
 {
     // Register functions
     addFunction("onStageInputChanged", this, &Canvas::scr_onStageInputChanged);
@@ -184,7 +184,7 @@ Canvas::Canvas(Environment * environment)
 
     m_colorTarget->setAttachmentType(AttachmentType::Color);
     m_depthTarget->setAttachmentType(AttachmentType::Depth);
-    m_depthStencilTarget->setAttachmentType(AttachmentType::DepthStencil);
+    m_stencilTarget->setAttachmentType(AttachmentType::Stencil);
 }
 
 Canvas::~Canvas()
@@ -386,7 +386,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     {
         m_colorTarget->setTarget(gl::GL_BACK_LEFT);
         m_depthTarget->setTarget(gl::GL_DEPTH_ATTACHMENT);
-        m_depthStencilTarget->setTarget(gl::GL_DEPTH_STENCIL_ATTACHMENT);
+        m_stencilTarget->setTarget(gl::GL_STENCIL_ATTACHMENT);
     }
     else
     {
@@ -397,6 +397,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
             colorAttachment = targetFBO->getAttachment(gl::GL_COLOR_ATTACHMENT0+i);
         }
         const auto depthAttachment = targetFBO->getAttachment(gl::GL_DEPTH_ATTACHMENT);
+        const auto stencilAttachment = targetFBO->getAttachment(gl::GL_STENCIL_ATTACHMENT);
         const auto depthStencilAttachment = targetFBO->getAttachment(gl::GL_DEPTH_STENCIL_ATTACHMENT);
 
         if (colorAttachment)
@@ -411,17 +412,27 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         if (depthStencilAttachment)
         {
             m_depthTarget->setTarget(depthStencilAttachment);
-            m_depthStencilTarget->setTarget(depthStencilAttachment);
-        }
-        else if (depthAttachment)
-        {
-            m_depthTarget->setTarget(depthAttachment);
-            m_depthStencilTarget->setTarget(depthAttachment);
+            m_stencilTarget->setTarget(depthStencilAttachment);
         }
         else
         {
-            m_depthTarget->releaseTarget();
-            m_depthStencilTarget->releaseTarget();
+            if (depthAttachment)
+            {
+                m_depthTarget->setTarget(depthAttachment);
+            }
+            else
+            {
+                m_depthTarget->releaseTarget();
+            }
+
+            if (stencilAttachment)
+            {
+                m_stencilTarget->setTarget(stencilAttachment);
+            }
+            else
+            {
+                m_stencilTarget->releaseTarget();
+            }
         }
     }
 
@@ -446,7 +457,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
         input->setValue(m_depthTarget.get());
     });
-    forAllInputs<gloperate::DepthStencilRenderTarget *>(m_renderStage.get(), [this](Input<DepthStencilRenderTarget *> * input) {
+    forAllInputs<gloperate::StencilRenderTarget *>(m_renderStage.get(), [this](Input<StencilRenderTarget *> * input) {
         const auto renderTarget = **input;
 
         if (renderTarget == nullptr)
@@ -454,7 +465,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
             return;
         }
 
-        input->setValue(m_depthStencilTarget.get());
+        input->setValue(m_stencilTarget.get());
     });
 
     // Render
