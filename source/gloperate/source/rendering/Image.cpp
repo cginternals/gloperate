@@ -124,11 +124,6 @@ bool Image::empty() const
     return m_data == nullptr;
 }
 
-std::string Image::name() const
-{
-    return m_name;
-}
-
 int Image::width() const
 {
     return m_width;

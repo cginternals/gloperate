@@ -95,9 +95,6 @@ public:
     *  @brief
     *    Get the list pixmaps with pixel data
     *
-    *  @param[in] namePrefix
-    *    An optional prefix for the image names
-    *
     *  @return
     *    The list of pixmaps
     *
@@ -124,9 +121,7 @@ public:
     *
     *  @param[in] pixmaps
     *    The list of pixmaps to fill
-    *  @param[in] namePrefix
-    *    An optional prefix for the image names
-        *
+    *
     *  @remarks
     *    The list is emptied before appending names
     */

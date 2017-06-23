@@ -7,14 +7,14 @@
 #include <QQmlContext>
 #include <QJSValueIterator>
 #include <QBuffer>
+#include <QImage>
 
 #include <cppexpose/reflection/Property.h>
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/function/Function.h>
 
 #include <cppassist/fs/FilePath.h>
-
-#include <qmltoolbox/EnumImageProvider.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
@@ -34,7 +34,6 @@ namespace gloperate_qtquick
 QmlEngine::QmlEngine(gloperate::Environment * environment)
 : qmltoolbox::QmlApplicationEngine()
 , m_environment(environment)
-, m_imageProvider(new qmltoolbox::EnumImageProvider())
 {
     // Get data path
     m_gloperateQmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
@@ -54,9 +53,6 @@ QmlEngine::QmlEngine(gloperate::Environment * environment)
     // Create global objects
     m_global    = newObject();
     m_gloperate = newObject();
-
-    // Add image provider
-    addImageProvider("provider", m_imageProvider);
 }
 
 QmlEngine::~QmlEngine()

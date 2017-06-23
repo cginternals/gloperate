@@ -194,7 +194,6 @@ protected:
     QJSValue                        m_global;           ///< Object 'global', can be used to store global values
     QJSValue                        m_gloperate;        ///< Object 'gloperate', contains exposed API functions from gloperate
     QString                         m_gloperateQmlPath; ///< Path to gloperate qml module
-    qmltoolbox::EnumImageProvider * m_imageProvider;    ///< Image provider for transferring images between C++ and QML
 };
 
 

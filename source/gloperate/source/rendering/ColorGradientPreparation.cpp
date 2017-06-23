@@ -96,7 +96,6 @@ void ColorGradientPreparation::fillPixmaps(std::vector<Image> & pixmaps) const
 void ColorGradientPreparation::configureProperty(cppexpose::AbstractProperty * property) const
 {
     property->setOption("choices", cppexpose::Variant::fromVector(names()));
-    //property->setOption("pixmapSize", cppexpose::Variant::fromValue(iconSize()));
     property->setOption("pixmaps", cppexpose::Variant::fromVector(pixmaps()));
 }
 
