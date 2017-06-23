@@ -1,10 +1,12 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.0
 
 import QmlToolbox.Base 1.0
 import QmlToolbox.Controls 1.0
 
+import gloperate.rendering 1.0
 
 Item
 {
@@ -106,6 +108,87 @@ Item
                         settings.panelPosition = position;
                     }
                 }
+
+                Label
+                {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+
+                    text: 'Add Plugin Path'
+                }
+
+                // Plugin Paths Editor
+                Column
+                {
+                    id: pluginPathEditor
+
+                    property var pluginPaths: []
+
+                    function updatePluginPaths() {
+                        settings.pluginPaths = gloperate.components.getPluginPaths()
+                        pluginPathEditor.pluginPaths = settings.pluginPaths.split(';')
+                        gloperate.components.scanPlugins();
+                        if(pluginPathEditor.pluginPaths == "") {pluginPathEditor.pluginPaths = []}
+
+                    }
+
+                    Repeater
+                    {
+                        model: pluginPathEditor.pluginPaths.length
+
+                        Row
+                        {
+                            Label
+                            {                                
+                                text: pluginPathEditor.pluginPaths[index]
+                            }
+
+                            ClickLabel
+                            {
+                                text: " delete"
+                                Layout.alignment: Qt.AlignRight
+
+                                onClicked:
+                                {
+                                    gloperate.components.removePluginPath(pluginPathEditor.pluginPaths[index])
+                                    pluginPathEditor.updatePluginPaths()
+                                }
+                            }
+                        }
+                    }
+
+                    ClickLabel
+                    {
+                        text:   "Select Path"
+
+                        FileDialog {
+                            id: fileDialog
+                            
+                            selectFolder: true
+
+                            folder: shortcuts.home
+                            onAccepted: {
+                                var path = fileDialog.fileUrl.toString();
+
+                                // remove prefixed "file:///"
+                                path = path.replace(/^(file:\/{3})/,"");
+
+                                gloperate.components.addPluginPath(path)
+                                pluginPathEditor.updatePluginPaths()
+                            }
+                        }
+
+                        onClicked:
+                        {
+                            fileDialog.open()
+                        }
+                    }
+                    
+                    Component.onCompleted:
+                    {
+                        pluginPathEditor.updatePluginPaths()
+                    }
+                }
+
             }
         }
     }
