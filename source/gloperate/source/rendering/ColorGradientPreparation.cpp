@@ -60,16 +60,16 @@ void ColorGradientPreparation::fillNames(std::vector<std::string> & names) const
     }
 }
 
-std::vector<Image> ColorGradientPreparation::pixmaps(std::string namePrefix) const
+std::vector<Image> ColorGradientPreparation::pixmaps() const
 {
     std::vector<Image> result;
 
-    fillPixmaps(result, namePrefix);
+    fillPixmaps(result);
 
     return result;
 }
 
-void ColorGradientPreparation::fillPixmaps(std::vector<Image> & pixmaps, std::string namePrefix) const
+void ColorGradientPreparation::fillPixmaps(std::vector<Image> & pixmaps) const
 {
     pixmaps.clear();
 
@@ -82,7 +82,7 @@ void ColorGradientPreparation::fillPixmaps(std::vector<Image> & pixmaps, std::st
 
         const AbstractColorGradient * gradient = pair.second;
 
-        Image gradientData(m_iconSize.first, m_iconSize.second, gl::GL_RGB, gl::GL_UNSIGNED_INT, namePrefix + "/" + pair.first);
+        Image gradientData(m_iconSize.first, m_iconSize.second, gl::GL_RGB, gl::GL_UNSIGNED_INT);
 
         for (size_t i = 0; i < m_iconSize.second; ++i)
         {
@@ -96,8 +96,8 @@ void ColorGradientPreparation::fillPixmaps(std::vector<Image> & pixmaps, std::st
 void ColorGradientPreparation::configureProperty(cppexpose::AbstractProperty * property) const
 {
     property->setOption("choices", cppexpose::Variant::fromVector(names()));
-    property->setOption("pixmapSize", cppexpose::Variant::fromValue(iconSize()));
-    property->setOption("pixmaps", cppexpose::Variant::fromVector(pixmaps(property->name())));
+    //property->setOption("pixmapSize", cppexpose::Variant::fromValue(iconSize()));
+    property->setOption("pixmaps", cppexpose::Variant::fromVector(pixmaps()));
 }
 
 

@@ -6,6 +6,7 @@
 #include <QVariant>
 #include <QQmlContext>
 #include <QJSValueIterator>
+#include <QBuffer>
 
 #include <cppexpose/reflection/Property.h>
 #include <cppexpose/typed/DirectValue.h>
@@ -230,11 +231,16 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
 
     else if (var.hasType<gloperate::Image>()) {
         const gloperate::Image * image = var.ptr<gloperate::Image>();
-        QImage conversion(image->width(), image->height(), QImage::Format_RGB32);
-        std::memcpy(conversion.scanLine(0), image->data(), conversion.byteCount());
-        m_imageProvider->addImage(QPixmap::fromImage(conversion), image->name());
 
-        return toScriptValue(image->name());
+        QImage conversion((unsigned char *) image->data(), image->width(), image->height(), QImage::Format_RGB32);
+
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        buffer.open(QIODevice::WriteOnly);
+        conversion.save(&buffer, "PNG");
+        QString imgBase64 = QString::fromLatin1(byteArray.toBase64().data());
+
+        return toScriptValue("data:image/png;base64," + imgBase64.toStdString());
     }
 
     else if (var.hasType<cppexpose::VariantArray>()) {
@@ -298,7 +304,7 @@ cppexpose::Variant QmlEngine::fromQVariant(const QVariant & value)
         QStringList list = value.toStringList();
         for (QStringList::iterator it = list.begin(); it != list.end(); ++it)
         {
-            array.push_back( cppexpose::Variant((*it).toStdString()) );
+            array.push_back(cppexpose::Variant((*it).toStdString()) );
         }
 
         return array;

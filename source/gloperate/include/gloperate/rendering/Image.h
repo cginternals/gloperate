@@ -60,7 +60,7 @@ public:
     *
     *  @see empty()
     */
-    Image(std::string name = "");
+    Image();
 
     /**
     *  @brief
@@ -82,7 +82,7 @@ public:
     *
     *  @see createBuffer
     */
-    Image(int width, int height, gl::GLenum format, gl::GLenum type, std::string name = "");
+    Image(int width, int height, gl::GLenum format, gl::GLenum type);
 
     /**
     *  @brief
@@ -107,7 +107,7 @@ public:
     *
     *  @see createBuffer
     */
-    Image(int width, int height, gl::GLenum format, gl::GLenum type, const char * data, std::string name = "");
+    Image(int width, int height, gl::GLenum format, gl::GLenum type, const char * data);
 
     /**
     *  @brief
@@ -130,7 +130,7 @@ public:
     *    This does NOT allocate own memory.
     *    The ownership of \p data is transferred to the Image object.
     */
-    Image(int width, int height, gl::GLenum format, gl::GLenum type, std::unique_ptr<char[]> && data, std::string name = "");
+    Image(int width, int height, gl::GLenum format, gl::GLenum type, std::unique_ptr<char[]> && data);
 
     /**
     *  @brief
@@ -263,6 +263,15 @@ public:
     *    Pointer to raw image data (can be null)
     */
     char * data();
+
+    /**
+    *  @brief
+    *    Get number of bytes in raw image data
+    *
+    *  @return
+    *    Number of bytes in raw image data (0 if empty)
+    */
+    unsigned int dataSize() const;
 
     /**
     *  @brief

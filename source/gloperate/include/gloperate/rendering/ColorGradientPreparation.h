@@ -104,7 +104,7 @@ public:
     *  @remarks
     *    The order of gradients in the list is preserved.
     */
-    std::vector<Image> pixmaps(std::string namePrefix = "") const;
+    std::vector<Image> pixmaps() const;
 
     /**
     *  @brief
@@ -130,7 +130,7 @@ public:
     *  @remarks
     *    The list is emptied before appending names
     */
-    void fillPixmaps(std::vector<Image> &pixmaps, std::string namePrefix = "") const;
+    void fillPixmaps(std::vector<Image> &pixmaps) const;
 
     /**
     *  @brief

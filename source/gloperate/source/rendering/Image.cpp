@@ -66,7 +66,7 @@ int Image::bytes(GLenum type)
     }
 }
 
-Image::Image(std::string name)
+Image::Image()
 : m_width(0)
 , m_height(0)
 , m_format(GL_INVALID_ENUM)
@@ -75,30 +75,29 @@ Image::Image(std::string name)
 , m_bytes(0)
 , m_dataSize(0)
 , m_data(nullptr)
-, m_name(name)
 {
 }
 
-Image::Image(int width, int height, GLenum format, GLenum type, std::string name)
-: Image(name)
+Image::Image(int width, int height, GLenum format, GLenum type)
+: Image()
 {
     allocate(width, height, format, type);
 }
 
-Image::Image(int width, int height, GLenum format, GLenum type, const char * data, std::string name)
-: Image(name)
+Image::Image(int width, int height, GLenum format, GLenum type, const char * data)
+: Image()
 {
     copyImage(width, height, format, type, data);
 }
 
-Image::Image(int width, int height, GLenum format, GLenum type, std::unique_ptr<char[]> && data, std::string name)
-: Image(name)
+Image::Image(int width, int height, GLenum format, GLenum type, std::unique_ptr<char[]> && data)
+: Image()
 {
     setData(width, height, format, type, std::move(data));
 }
 
 Image::Image(const Image & other)
-: Image(other.name())
+: Image()
 {
     copyImage(other.width(), other.height(), other.format(), other.type(), other.data());
 }
@@ -168,6 +167,11 @@ const char * Image::data() const
 char * Image::data()
 {
     return m_data.get();
+}
+
+unsigned int Image::dataSize() const
+{
+    return m_dataSize;
 }
 
 void Image::clear()
