@@ -55,9 +55,12 @@ public:
     *
     *    Constructs an empty image
     *
+    *  @param[in] name
+    *    Optional name of the image (can be empty)
+    *
     *  @see empty()
     */
-    Image();
+    Image(std::string name = "");
 
     /**
     *  @brief
@@ -71,13 +74,15 @@ public:
     *    Image format (OpenGL definition)
     *  @param[in] type
     *    Data type (OpenGL definition)
+    *  @param[in] name
+    *    Optional name of the image (can be empty)
     *
     *  @remarks
     *    Allocates the necessary image data memory.
     *
     *  @see createBuffer
     */
-    Image(int width, int height, gl::GLenum format, gl::GLenum type);
+    Image(int width, int height, gl::GLenum format, gl::GLenum type, std::string name = "");
 
     /**
     *  @brief
@@ -93,6 +98,8 @@ public:
     *    Data type (OpenGL definition)
     *  @param[in] data
     *    Pointer to image data (must NOT be nullptr!)
+    *  @param[in] name
+    *    Optional name of the image (can be empty)
     *
     *  @remarks
     *    This allocates new image memory and copies the content of \p data.
@@ -100,7 +107,7 @@ public:
     *
     *  @see createBuffer
     */
-    Image(int width, int height, gl::GLenum format, gl::GLenum type, const char * data);
+    Image(int width, int height, gl::GLenum format, gl::GLenum type, const char * data, std::string name = "");
 
     /**
     *  @brief
@@ -116,12 +123,14 @@ public:
     *    Data type (OpenGL definition)
     *  @param[in] data
     *    Pointer to image data (must NOT be nullptr!)
+    *  @param[in] name
+    *    Optional name of the image (can be empty)
     *
     *  @remarks
     *    This does NOT allocate own memory.
     *    The ownership of \p data is transferred to the Image object.
     */
-    Image(int width, int height, gl::GLenum format, gl::GLenum type, std::unique_ptr<char[]> && data);
+    Image(int width, int height, gl::GLenum format, gl::GLenum type, std::unique_ptr<char[]> && data, std::string name = "");
 
     /**
     *  @brief
@@ -173,6 +182,15 @@ public:
     *    An empty image has all parameters set to zero and no allocated data.
     */
     bool empty() const;
+
+    /**
+    *  @brief
+    *    Get name
+    *
+    *  @return
+    *    Image name
+    */
+    std::string name() const;
 
     /**
     *  @brief
@@ -364,6 +382,7 @@ protected:
     int                     m_bytes;     ///< Bytes per element (0 if empty)
     int                     m_dataSize;  ///< Size of image data (0 if empty)
     std::unique_ptr<char[]> m_data;      ///< Image data (can be null)
+    std::string             m_name;      ///< Optional image name
 };
 
 

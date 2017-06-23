@@ -1,6 +1,8 @@
 
 #include <gloperate-qtquick/QmlEngine.h>
 
+#include <cstring>
+
 #include <QVariant>
 #include <QQmlContext>
 #include <QJSValueIterator>
@@ -11,8 +13,11 @@
 
 #include <cppassist/fs/FilePath.h>
 
+#include <qmltoolbox/EnumImageProvider.h>
+
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
+#include <gloperate/rendering/Image.h>
 
 #include <gloperate-qtquick/RenderItem.h>
 #include <gloperate-qtquick/TextureItem.h>
@@ -28,6 +33,7 @@ namespace gloperate_qtquick
 QmlEngine::QmlEngine(gloperate::Environment * environment)
 : qmltoolbox::QmlApplicationEngine()
 , m_environment(environment)
+, m_imageProvider(new qmltoolbox::EnumImageProvider())
 {
     // Get data path
     m_gloperateQmlPath = QString::fromStdString(gloperate::dataPath()) + "/gloperate/qml";
@@ -47,6 +53,9 @@ QmlEngine::QmlEngine(gloperate::Environment * environment)
     // Create global objects
     m_global    = newObject();
     m_gloperate = newObject();
+
+    // Add image provider
+    addImageProvider("provider", m_imageProvider);
 }
 
 QmlEngine::~QmlEngine()
@@ -217,6 +226,15 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
 
     else if (var.isString()) {
         return QJSValue(var.toString().c_str());
+    }
+
+    else if (var.hasType<gloperate::Image>()) {
+        const gloperate::Image * image = var.ptr<gloperate::Image>();
+        QImage conversion(image->width(), image->height(), QImage::Format_RGB32);
+        std::memcpy(conversion.scanLine(0), image->data(), conversion.byteCount());
+        m_imageProvider->addImage(QPixmap::fromImage(conversion), image->name());
+
+        return toScriptValue(image->name());
     }
 
     else if (var.hasType<cppexpose::VariantArray>()) {

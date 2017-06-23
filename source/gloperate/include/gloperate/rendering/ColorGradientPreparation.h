@@ -22,6 +22,7 @@ namespace gloperate
 
 
 class ColorGradientList;
+class Image;
 
 
 /**
@@ -94,13 +95,16 @@ public:
     *  @brief
     *    Get the list pixmaps with pixel data
     *
+    *  @param[in] namePrefix
+    *    An optional prefix for the image names
+    *
     *  @return
     *    The list of pixmaps
     *
     *  @remarks
     *    The order of gradients in the list is preserved.
     */
-    std::vector<std::vector<unsigned char>> pixmaps() const;
+    std::vector<Image> pixmaps(std::string namePrefix = "") const;
 
     /**
     *  @brief
@@ -120,11 +124,13 @@ public:
     *
     *  @param[in] pixmaps
     *    The list of pixmaps to fill
-    *
+    *  @param[in] namePrefix
+    *    An optional prefix for the image names
+        *
     *  @remarks
     *    The list is emptied before appending names
     */
-    void fillPixmaps(std::vector<std::vector<unsigned char>> & pixmaps) const;
+    void fillPixmaps(std::vector<Image> &pixmaps, std::string namePrefix = "") const;
 
     /**
     *  @brief

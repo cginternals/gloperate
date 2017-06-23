@@ -114,6 +114,7 @@ public:
     *    By default, the method computes a new color for each pixel.
     */
     virtual void fillPixelData(unsigned char * data, size_t numColors) const;
+    virtual void fillPixelData(char * data, size_t numColors) const;
 
     /**
     *  @brief

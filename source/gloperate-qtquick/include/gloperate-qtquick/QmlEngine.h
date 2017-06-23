@@ -19,6 +19,9 @@ namespace gloperate
     class Environment;
 }
 
+namespace qmltoolbox {
+    class EnumImageProvider;
+}
 
 namespace gloperate_qtquick
 {
@@ -187,10 +190,11 @@ public:
 
 
 protected:
-    gloperate::Environment * m_environment;      ///< Gloperate environment (must NOT be null)
-    QJSValue                 m_global;           ///< Object 'global', can be used to store global values
-    QJSValue                 m_gloperate;        ///< Object 'gloperate', contains exposed API functions from gloperate
-    QString                  m_gloperateQmlPath; ///< Path to gloperate qml module
+    gloperate::Environment *        m_environment;      ///< Gloperate environment (must NOT be null)
+    QJSValue                        m_global;           ///< Object 'global', can be used to store global values
+    QJSValue                        m_gloperate;        ///< Object 'gloperate', contains exposed API functions from gloperate
+    QString                         m_gloperateQmlPath; ///< Path to gloperate qml module
+    qmltoolbox::EnumImageProvider * m_imageProvider;    ///< Image provider for transferring images between C++ and QML
 };
 
 
