@@ -80,6 +80,7 @@ protected:
 protected:
     std::vector<Input<glm::vec4> *> m_colorValueInputs;
     std::vector<Input<float> *> m_depthValueInputs;
+    std::vector<Input<int> *> m_stencilValueInputs;
     std::vector<Input<std::pair<float, int>> *> m_depthStencilValueInputs;
     std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Default FBO for clearing
     std::unique_ptr<globjects::Framebuffer> m_fbo;        ///< Intermediate FBO for clearing

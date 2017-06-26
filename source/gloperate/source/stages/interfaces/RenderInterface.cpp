@@ -73,6 +73,18 @@ RenderInterface::~RenderInterface()
 {
 }
 
+void RenderInterface::updateRenderTargetOutputs() {
+    pairwiseRenderTargetsDo([](Input<ColorRenderTarget *> * input, Output<ColorRenderTarget *> * output) {
+        output->setValue(**input);
+    });
+    pairwiseRenderTargetsDo([](Input<DepthRenderTarget *> * input, Output<DepthRenderTarget *> * output) {
+        output->setValue(**input);
+    });
+    pairwiseRenderTargetsDo([](Input<StencilRenderTarget *> * input, Output<StencilRenderTarget *> * output) {
+        output->setValue(**input);
+    });
+}
+
 bool RenderInterface::allRenderTargetsCompatible() const
 {
     if (m_colorRenderTargetOutputs.empty() && m_depthRenderTargetOutputs.empty() && m_stencilRenderTargetOutputs.empty())

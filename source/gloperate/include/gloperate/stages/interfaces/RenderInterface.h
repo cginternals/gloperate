@@ -72,6 +72,8 @@ public:
     */
     ~RenderInterface();
 
+    void updateRenderTargetOutputs();
+
     bool allRenderTargetsCompatible() const;
 
     const std::vector<Input<ColorRenderTarget *> *> & colorRenderTargetInputs() const;

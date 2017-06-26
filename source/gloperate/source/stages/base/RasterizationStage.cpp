@@ -71,9 +71,7 @@ void RasterizationStage::onProcess()
     }
 
     // Update outputs
-    renderInterface.pairwiseRenderTargetsDo([](Input <RenderTarget *> * input, Output <RenderTarget *> * output) {
-        output->setValue(**input);
-    });
+    renderInterface.updateRenderTargetOutputs();
 }
 
 

@@ -8,7 +8,9 @@
 #include <globjects/AttachedRenderbuffer.h>
 #include <globjects/AttachedTexture.h>
 
-#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/ColorRenderTarget.h>
+#include <gloperate/rendering/DepthRenderTarget.h>
+#include <gloperate/rendering/StencilRenderTarget.h>
 
 
 namespace gloperate
@@ -26,6 +28,7 @@ ClearStage::ClearStage(Environment * environment, const std::string & name)
     inputAdded.connect( [this] (AbstractSlot * connectedInput) {
         auto colorValueInput = dynamic_cast<Input<glm::vec4> *>(connectedInput);
         auto depthValueInput = dynamic_cast<Input<float> *>(connectedInput);
+        auto stencilValueInput = dynamic_cast<Input<int> *>(connectedInput);
         auto depthStencilValueInput = dynamic_cast<Input<std::pair<float, int>> *>(connectedInput);
 
         if (colorValueInput)
@@ -36,6 +39,11 @@ ClearStage::ClearStage(Environment * environment, const std::string & name)
         if (depthValueInput)
         {
             m_depthValueInputs.push_back(depthValueInput);
+        }
+
+        if (stencilValueInput)
+        {
+            m_stencilValueInputs.push_back(stencilValueInput);
         }
 
         if (depthStencilValueInput)
@@ -78,65 +86,105 @@ void ClearStage::onProcess()
 
         size_t colorAttachmentIndex        = 0;
         size_t depthAttachmentIndex        = 0;
+        size_t stencilAttachmentIndex      = 0;
         size_t depthStencilAttachmentIndex = 0;
+        std::set<AbstractRenderTarget *> clearedDepthStencilTargets;
 
-        renderInterface.pairwiseRenderTargetsDo([this, & colorAttachmentIndex, & depthAttachmentIndex, & depthStencilAttachmentIndex](Input <RenderTarget *> * input, Output <RenderTarget *> * output) {
+        renderInterface.pairwiseRenderTargetsDo([this, & colorAttachmentIndex](Input<ColorRenderTarget *> * input, Output<ColorRenderTarget *> * output) {
             if (!output->isRequired() || !**input)
             {
                 return;
             }
 
-            switch ((**input)->attachmentType())
+            if (m_colorValueInputs.size() <= colorAttachmentIndex)
             {
-            case AttachmentType::Color:
-                {
-                    if (m_colorValueInputs.size() <= colorAttachmentIndex)
-                    {
-                        return;
-                    }
-
-                    auto fbo = renderInterface.configureFBO(colorAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
-
-                    const auto attachmentBuffer = (**input)->attachmentBuffer();
-                    const auto attachmentDrawBuffer = (**input)->attachmentDrawBuffer(colorAttachmentIndex);
-                    const auto clearColor = **m_colorValueInputs.at(colorAttachmentIndex);
-
-                    fbo->clearBuffer(attachmentBuffer, attachmentDrawBuffer, clearColor);
-
-                    ++colorAttachmentIndex;
-                }
-                break;
-            case AttachmentType::Depth:
-                {
-                    if (m_depthValueInputs.size() <= depthAttachmentIndex)
-                    {
-                        return;
-                    }
-
-                    auto fbo = renderInterface.configureFBO(depthAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
-
-                    fbo->clearBuffer(gl::GL_DEPTH_STENCIL, **m_depthValueInputs.at(depthAttachmentIndex), 0, (**input)->attachmentDrawBuffer(depthAttachmentIndex));
-
-                    ++depthAttachmentIndex;
-                }
-                break;
-            case AttachmentType::DepthStencil:
-                {
-                    if (m_depthStencilValueInputs.size() <= depthStencilAttachmentIndex)
-                    {
-                        return;
-                    }
-
-                    auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
-
-                    fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthAttachmentIndex)).second, (**input)->attachmentDrawBuffer(depthAttachmentIndex));
-
-                    ++depthStencilAttachmentIndex;
-                }
-                break;
-            default:
-                break;
+                return;
             }
+
+            auto fbo = renderInterface.configureFBO(colorAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+
+            const auto attachmentBuffer = (**input)->attachmentBuffer();
+            const auto attachmentDrawBuffer = (**input)->attachmentDrawBuffer(colorAttachmentIndex);
+            const auto clearColor = **m_colorValueInputs.at(colorAttachmentIndex);
+
+            fbo->clearBuffer(attachmentBuffer, attachmentDrawBuffer, clearColor);
+
+            ++colorAttachmentIndex;
+        });
+
+        renderInterface.pairwiseRenderTargetsDo([this, & depthAttachmentIndex, & depthStencilAttachmentIndex, & clearedDepthStencilTargets](Input<DepthRenderTarget *> * input, Output<DepthRenderTarget *> * output) {
+            if (!output->isRequired() || !**input)
+            {
+                return;
+            }
+
+            if ((**input)->attachmentType() == AttachmentType::Depth)
+            {
+                if (m_depthValueInputs.size() <= depthAttachmentIndex)
+                {
+                    return;
+                }
+
+                auto fbo = renderInterface.configureFBO(depthAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+
+                fbo->clearBuffer(gl::GL_DEPTH_STENCIL, **m_depthValueInputs.at(depthAttachmentIndex), 0, (**input)->attachmentDrawBuffer(depthAttachmentIndex));
+
+                ++depthAttachmentIndex;
+            }
+            else if ((**input)->attachmentType() == AttachmentType::DepthStencil)
+            {
+                if (m_depthStencilValueInputs.size() <= depthStencilAttachmentIndex)
+                {
+                    return;
+                }
+
+                auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+
+                fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).second, (**input)->attachmentDrawBuffer(depthStencilAttachmentIndex));
+
+                ++depthStencilAttachmentIndex;
+                clearedDepthStencilTargets.insert(**input);
+            }
+        });
+
+        renderInterface.pairwiseRenderTargetsDo([this, & stencilAttachmentIndex, & depthStencilAttachmentIndex, & clearedDepthStencilTargets](Input<StencilRenderTarget *> * input, Output<StencilRenderTarget *> * output) {
+            if (!output->isRequired() || !**input)
+            {
+                return;
+            }
+
+            if ((**input)->attachmentType() == AttachmentType::Stencil)
+            {
+                if (m_stencilValueInputs.size() <= stencilAttachmentIndex)
+                {
+                    return;
+                }
+
+                auto fbo = renderInterface.configureFBO(stencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+
+                fbo->clearBuffer(gl::GL_STENCIL, (**input)->attachmentDrawBuffer(stencilAttachmentIndex), **m_stencilValueInputs.at(stencilAttachmentIndex));
+
+                ++stencilAttachmentIndex;
+            }
+            else if ((**input)->attachmentType() == AttachmentType::DepthStencil)
+            {
+                if (std::find(clearedDepthStencilTargets.begin(), clearedDepthStencilTargets.end(), **input) != clearedDepthStencilTargets.end())
+                {
+                    return;
+                }
+
+                if (m_depthStencilValueInputs.size() <= depthStencilAttachmentIndex)
+                {
+                    return;
+                }
+
+                auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+
+                fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).second, (**input)->attachmentDrawBuffer(depthStencilAttachmentIndex));
+
+                ++depthStencilAttachmentIndex;
+            }
+
         });
 
         // Reset OpenGL state
@@ -144,9 +192,7 @@ void ClearStage::onProcess()
     }
 
     // Update outputs
-    renderInterface.pairwiseRenderTargetsDo([](Input <RenderTarget *> * input, Output <RenderTarget *> * output) {
-        output->setValue(**input);
-    });
+    renderInterface.updateRenderTargetOutputs();
 }
 
 } // namespace gloperate
