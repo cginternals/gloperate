@@ -48,7 +48,7 @@ public:
     using AbstractComponentType = gloperate::AbstractComponent<Stage>;
 
     template <typename Type>
-    using ComponentType = gloperate::Component<Stage, Type>;
+    using ComponentType = gloperate::StageComponent<Type>;
 
     // Import data types into local namespace
     template <typename T>

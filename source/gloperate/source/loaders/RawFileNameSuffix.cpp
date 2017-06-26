@@ -2,9 +2,9 @@
 #include <gloperate/loaders/RawFileNameSuffix.h>
 
 #include <cassert>
-#include <regex>
 #include <map>
 
+#include <cppassist/string/regex.h>
 #include <cppassist/string/conversion.h>
 
 #include <glbinding/gl/enum.h>
@@ -46,8 +46,8 @@ namespace
         { "dxt5-rgba",      gl::GL_COMPRESSED_RGBA_S3TC_DXT5_EXT  }
     };
 
-    static const std::regex regex1{R"(^.*\.(\d+)\.(\d+)\.(\w+)\.raw$)"};
-    static const std::regex regex2{R"(^.*\.(\d+)\.(\d+)\.(\w+)\.(\w+)\.raw$)"};
+    static const std::string regex1 = "(^.*\\.(\\d+)\\.(\\d+)\\.(\\w+)\\.raw$)";
+    static const std::string regex2 = "(^.*\\.(\\d+)\\.(\\d+)\\.(\\w+)\\.(\\w+)\\.raw$)";
 }
 
 
@@ -63,16 +63,20 @@ RawFileNameSuffix::RawFileNameSuffix(const std::string & fileName)
 , m_type(gl::GL_NONE)
 {
     // check if either compressed or uncompressed (or unknown) format
-    std::smatch base_match;
+    std::vector<std::string> base_match;
 
-    if (std::regex_match(fileName, base_match, regex1))
+    if (cppassist::string::matchesRegex(fileName, regex1))
     {
         m_compressed = true;
+
+        base_match = cppassist::string::extract(fileName, regex1);
     }
     else
     {
-        if (!std::regex_match(fileName, base_match, regex2))
+        if (!cppassist::string::matchesRegex(fileName, regex2))
             return;
+
+        base_match = cppassist::string::extract(fileName, regex2);
     }
 
     // retrieve intel from suffix parts
