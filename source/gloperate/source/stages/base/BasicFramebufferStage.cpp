@@ -20,11 +20,11 @@ CPPEXPOSE_COMPONENT(BasicFramebufferStage, gloperate::Stage)
 
 BasicFramebufferStage::BasicFramebufferStage(Environment * environment, const std::string & name)
 : Stage(environment, "BasicFramebufferStage", name)
-, viewport           ("viewport",            this)
-, colorTexture       ("colorTexture",        this)
-, depthTexture("depthStencilTexture", this)
-, colorBuffer        ("colorBuffer",         this)
-, depthBuffer        ("depthBuffer",         this)
+, viewport     ("viewport",     this)
+, colorTexture ("colorTexture", this)
+, depthTexture ("depthTexture", this)
+, colorBuffer  ("colorBuffer",  this)
+, depthBuffer  ("depthBuffer",  this)
 {
 }
 
@@ -44,10 +44,10 @@ void BasicFramebufferStage::onContextInit(AbstractGLContext *)
     m_colorTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
     // Create depth texture
-    m_depthStencilTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+    m_depthTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
     m_colorBuffer->setTarget(m_colorTexture.get());
-    m_depthBuffer->setTarget(m_depthStencilTexture.get());
+    m_depthBuffer->setTarget(m_depthTexture.get());
 }
 
 void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
@@ -56,7 +56,7 @@ void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
     m_colorBuffer         = nullptr;
     m_depthBuffer         = nullptr;
     m_colorTexture        = nullptr;
-    m_depthStencilTexture = nullptr;
+    m_depthTexture = nullptr;
 }
 
 void BasicFramebufferStage::onProcess()
@@ -64,17 +64,13 @@ void BasicFramebufferStage::onProcess()
     // Get texture size
     glm::ivec2 size = glm::ivec2((*this->viewport).z, (*this->viewport).w);
 
-    cppassist::debug() << "resize " << m_colorTexture->id();
-
     m_colorTexture->image2D(0, gl::GL_RGBA, size.x, size.y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
 
-    cppassist::debug() << "resize " << m_depthStencilTexture->id();
-
-    m_depthStencilTexture->image2D(0, gl::GL_DEPTH_COMPONENT, size.x, size.y, 0, gl::GL_DEPTH_COMPONENT, gl::GL_FLOAT, nullptr);
+    m_depthTexture->image2D(0, gl::GL_DEPTH_COMPONENT, size.x, size.y, 0, gl::GL_DEPTH_COMPONENT, gl::GL_FLOAT, nullptr);
 
     // Update outputs
     this->colorTexture.setValue(m_colorTexture.get());
-    this->depthTexture.setValue(m_depthStencilTexture.get());
+    this->depthTexture.setValue(m_depthTexture.get());
     this->colorBuffer.setValue(m_colorBuffer.get());
     this->depthBuffer.setValue(m_depthBuffer.get());
 }
