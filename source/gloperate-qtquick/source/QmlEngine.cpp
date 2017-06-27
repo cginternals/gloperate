@@ -1,18 +1,24 @@
 
 #include <gloperate-qtquick/QmlEngine.h>
 
+#include <cstring>
+
 #include <QVariant>
 #include <QQmlContext>
 #include <QJSValueIterator>
+#include <QBuffer>
+#include <QImage>
 
 #include <cppexpose/reflection/Property.h>
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/function/Function.h>
 
 #include <cppassist/fs/FilePath.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
+#include <gloperate/rendering/Image.h>
 
 #include <gloperate-qtquick/RenderItem.h>
 #include <gloperate-qtquick/TextureItem.h>
@@ -219,6 +225,20 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         return QJSValue(var.toString().c_str());
     }
 
+    else if (var.hasType<gloperate::Image>()) {
+        const gloperate::Image * image = var.ptr<gloperate::Image>();
+
+        QImage conversion((unsigned char *) image->data(), image->width(), image->height(), QImage::Format_RGB32);
+
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        buffer.open(QIODevice::WriteOnly);
+        conversion.save(&buffer, "PNG");
+        QString imgBase64 = QString::fromLatin1(byteArray.toBase64().data());
+
+        return toScriptValue("data:image/png;base64," + imgBase64.toStdString());
+    }
+
     else if (var.hasType<cppexpose::VariantArray>()) {
         QJSValue array = newArray();
 
@@ -280,7 +300,7 @@ cppexpose::Variant QmlEngine::fromQVariant(const QVariant & value)
         QStringList list = value.toStringList();
         for (QStringList::iterator it = list.begin(); it != list.end(); ++it)
         {
-            array.push_back( cppexpose::Variant((*it).toStdString()) );
+            array.push_back(cppexpose::Variant((*it).toStdString()) );
         }
 
         return array;

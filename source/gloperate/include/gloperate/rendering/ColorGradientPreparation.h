@@ -22,6 +22,7 @@ namespace gloperate
 
 
 class ColorGradientList;
+class Image;
 
 
 /**
@@ -100,7 +101,7 @@ public:
     *  @remarks
     *    The order of gradients in the list is preserved.
     */
-    std::vector<std::vector<unsigned char>> pixmaps() const;
+    std::vector<Image> pixmaps() const;
 
     /**
     *  @brief
@@ -124,7 +125,7 @@ public:
     *  @remarks
     *    The list is emptied before appending names
     */
-    void fillPixmaps(std::vector<std::vector<unsigned char>> & pixmaps) const;
+    void fillPixmaps(std::vector<Image> &pixmaps) const;
 
     /**
     *  @brief

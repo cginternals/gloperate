@@ -3,8 +3,11 @@
 
 #include <cppexpose/reflection/AbstractProperty.h>
 
+#include <glbinding/gl/enum.h>
+
 #include <gloperate/rendering/AbstractColorGradient.h>
 #include <gloperate/rendering/ColorGradientList.h>
+#include <gloperate/rendering/Image.h>
 
 
 namespace gloperate
@@ -57,16 +60,16 @@ void ColorGradientPreparation::fillNames(std::vector<std::string> & names) const
     }
 }
 
-std::vector<std::vector<unsigned char>> ColorGradientPreparation::pixmaps() const
+std::vector<Image> ColorGradientPreparation::pixmaps() const
 {
-    std::vector<std::vector<unsigned char>> result;
+    std::vector<Image> result;
 
     fillPixmaps(result);
 
     return result;
 }
 
-void ColorGradientPreparation::fillPixmaps(std::vector<std::vector<unsigned char>> & pixmaps) const
+void ColorGradientPreparation::fillPixmaps(std::vector<Image> & pixmaps) const
 {
     pixmaps.clear();
 
@@ -79,11 +82,11 @@ void ColorGradientPreparation::fillPixmaps(std::vector<std::vector<unsigned char
 
         const AbstractColorGradient * gradient = pair.second;
 
-        std::vector<unsigned char> gradientData(m_iconSize.first * m_iconSize.second * sizeof(std::uint32_t));
+        Image gradientData(m_iconSize.first, m_iconSize.second, gl::GL_RGB, gl::GL_UNSIGNED_INT);
 
         for (size_t i = 0; i < m_iconSize.second; ++i)
         {
-            gradient->fillPixelData(gradientData.data()+i*m_iconSize.first*sizeof(std::uint32_t), m_iconSize.first);
+            gradient->fillPixelData(gradientData.data() + i * m_iconSize.first * sizeof(std::uint32_t), m_iconSize.first);
         }
 
         pixmaps.push_back(gradientData);
@@ -93,7 +96,6 @@ void ColorGradientPreparation::fillPixmaps(std::vector<std::vector<unsigned char
 void ColorGradientPreparation::configureProperty(cppexpose::AbstractProperty * property) const
 {
     property->setOption("choices", cppexpose::Variant::fromVector(names()));
-    property->setOption("pixmapSize", cppexpose::Variant::fromValue(iconSize()));
     property->setOption("pixmaps", cppexpose::Variant::fromVector(pixmaps()));
 }
 
