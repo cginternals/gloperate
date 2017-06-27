@@ -164,11 +164,6 @@ char * Image::data()
     return m_data.get();
 }
 
-unsigned int Image::dataSize() const
-{
-    return m_dataSize;
-}
-
 void Image::clear()
 {
     // Reset image
