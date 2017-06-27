@@ -127,7 +127,7 @@ void ClearStage::onProcess()
 
                 auto fbo = renderInterface.configureFBO(depthAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-                fbo->clearBuffer(gl::GL_DEPTH_STENCIL, **m_depthValueInputs.at(depthAttachmentIndex), 0, (**input)->attachmentDrawBuffer(depthAttachmentIndex));
+                fbo->clearBuffer(gl::GL_DEPTH, (**input)->attachmentDrawBuffer(depthAttachmentIndex), **m_depthValueInputs.at(depthAttachmentIndex));
 
                 ++depthAttachmentIndex;
             }

@@ -26,7 +26,7 @@ namespace gloperate
 
 class ColorRenderTarget;
 class DepthRenderTarget;
-class DepthStencilRenderTarget;
+class StencilRenderTarget;
 
 
 /**
@@ -53,10 +53,10 @@ public:
     Input<glm::vec4>  size;               ///< Viewport size (only z and w component is used as width and height)
 
     // Outputs
-    Output<globjects::Renderbuffer *>             renderbuffer;             ///< Renderbuffer
-    Output<gloperate::ColorRenderTarget *>        colorRenderTarget;        ///< Color RenderTarget
-    Output<gloperate::DepthRenderTarget *>        depthRenderTarget;        ///< Depth RenderTarget
-    Output<gloperate::DepthStencilRenderTarget *> depthStencilRenderTarget; ///< Stencil RenderTarget
+    Output<globjects::Renderbuffer *>        renderbuffer;        ///< Renderbuffer
+    Output<gloperate::ColorRenderTarget *>   colorRenderTarget;   ///< Color RenderTarget
+    Output<gloperate::DepthRenderTarget *>   depthRenderTarget;   ///< Depth RenderTarget
+    Output<gloperate::StencilRenderTarget *> stencilRenderTarget; ///< Stencil RenderTarget
 
 
 public:
@@ -86,10 +86,10 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::Renderbuffer>             m_renderbuffer;             ///< The created renderbuffer
-    std::unique_ptr<gloperate::ColorRenderTarget>        m_colorRenderTarget;        ///< The color render target
-    std::unique_ptr<gloperate::DepthRenderTarget>        m_depthRenderTarget;        ///< The depth render target
-    std::unique_ptr<gloperate::DepthStencilRenderTarget> m_depthStencilRenderTarget; ///< The depth stencil render target
+    std::unique_ptr<globjects::Renderbuffer>        m_renderbuffer;        ///< The created renderbuffer
+    std::unique_ptr<gloperate::ColorRenderTarget>   m_colorRenderTarget;   ///< The color render target
+    std::unique_ptr<gloperate::DepthRenderTarget>   m_depthRenderTarget;   ///< The depth render target
+    std::unique_ptr<gloperate::StencilRenderTarget> m_stencilRenderTarget; ///< The stencil render target
 };
 
 

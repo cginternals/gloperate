@@ -8,7 +8,9 @@
 
 #include <globjects/Renderbuffer.h>
 
-#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/ColorRenderTarget.h>
+#include <gloperate/rendering/DepthRenderTarget.h>
+#include <gloperate/rendering/StencilRenderTarget.h>
 
 
 using namespace gl;
@@ -27,7 +29,9 @@ RenderbufferRenderTargetStage::RenderbufferRenderTargetStage(gloperate::Environm
 , internalFormat("internalFormat", this)
 , size("size", this)
 , renderbuffer("renderbuffer", this)
-, renderTarget("renderTarget", this)
+, colorRenderTarget("colorRenderTarget", this)
+, depthRenderTarget("depthRenderTarget", this)
+, stencilRenderTarget("stencilRenderTarget", this)
 {
 }
 
@@ -41,15 +45,21 @@ void RenderbufferRenderTargetStage::onContextInit(gloperate::AbstractGLContext *
     m_renderbuffer = cppassist::make_unique<Renderbuffer>();
 
     // Create wrapping render target
-    m_renderTarget = cppassist::make_unique<RenderTarget>();
-    m_renderTarget->setTarget(m_renderbuffer.get());
+    m_colorRenderTarget   = cppassist::make_unique<ColorRenderTarget>();
+    m_depthRenderTarget   = cppassist::make_unique<DepthRenderTarget>();
+    m_stencilRenderTarget = cppassist::make_unique<StencilRenderTarget>();
+
+    m_colorRenderTarget->setAttachmentType(AttachmentType::Color);
+    m_stencilRenderTarget->setAttachmentType(AttachmentType::DepthStencil);
 }
 
 void RenderbufferRenderTargetStage::onContextDeinit(AbstractGLContext *)
 {
     // Clean up OpenGL objects
-    m_renderbuffer = nullptr;
-    m_renderTarget = nullptr;
+    m_renderbuffer        = nullptr;
+    m_colorRenderTarget   = nullptr;
+    m_depthRenderTarget   = nullptr;
+    m_stencilRenderTarget = nullptr;
 }
 
 void RenderbufferRenderTargetStage::onProcess()
@@ -65,9 +75,42 @@ void RenderbufferRenderTargetStage::onProcess()
     const auto height = (*size)[3];
     m_renderbuffer->storage(*internalFormat, width, height);
 
+    switch(*internalFormat)
+    {
+    case GL_DEPTH_COMPONENT:
+    case GL_DEPTH_COMPONENT16:
+    case GL_DEPTH_COMPONENT24:
+    case GL_DEPTH_COMPONENT32F:
+        m_colorRenderTarget->releaseTarget();
+        m_stencilRenderTarget->releaseTarget();
+
+        m_depthRenderTarget->setTarget(m_renderbuffer.get());
+
+        m_depthRenderTarget->setAttachmentType(AttachmentType::Depth);
+        break;
+    case GL_DEPTH_STENCIL:
+    case GL_DEPTH24_STENCIL8:
+    case GL_DEPTH32F_STENCIL8:
+        m_colorRenderTarget->releaseTarget();
+
+        m_depthRenderTarget->setTarget(m_renderbuffer.get());
+        m_stencilRenderTarget->setTarget(m_renderbuffer.get());
+
+        m_depthRenderTarget->setAttachmentType(AttachmentType::DepthStencil);
+        break;
+    default: // Color attachment
+        m_depthRenderTarget->releaseTarget();
+        m_stencilRenderTarget->releaseTarget();
+
+        m_colorRenderTarget->setTarget(m_renderbuffer.get());
+        break;
+    }
+
     // Update outputs
     renderbuffer.setValue(m_renderbuffer.get());
-    renderTarget.setValue(m_renderTarget.get());
+    colorRenderTarget.setValue(m_colorRenderTarget.get());
+    depthRenderTarget.setValue(m_depthRenderTarget.get());
+    stencilRenderTarget.setValue(m_stencilRenderTarget.get());
 }
 
 
