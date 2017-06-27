@@ -35,11 +35,11 @@ public:
 *    Component class for pipelines and stages
 */
 template <class Type>
-class GLOPERATE_TEMPLATE_API Component<gloperate::Stage, Type> : public AbstractComponent<gloperate::Stage>
+class GLOPERATE_TEMPLATE_API StageComponent : public AbstractComponent<gloperate::Stage>
 {
 public:
-    Component();
-    virtual ~Component();
+    StageComponent();
+    virtual ~StageComponent();
 
     virtual std::unique_ptr<gloperate::Stage> createInstance(gloperate::Environment * environment) override;
     virtual std::unique_ptr<gloperate::Stage> createInstance(gloperate::Environment * environment, const std::string & name) override;
