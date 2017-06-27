@@ -248,15 +248,6 @@ public:
 
     /**
     *  @brief
-    *    Get number of bytes in raw image data
-    *
-    *  @return
-    *    Number of bytes in raw image data (0 if empty)
-    */
-    unsigned int dataSize() const;
-
-    /**
-    *  @brief
     *    Clear image
     *
     *  @remarks
