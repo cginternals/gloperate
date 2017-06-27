@@ -26,7 +26,7 @@ ColorGradientSelectionStage::~ColorGradientSelectionStage()
 
 void ColorGradientSelectionStage::onProcess()
 {
-    // Update ooutputs
+    // Update outputs
     gradientIndex.setValue(gradients->indexOf(*gradientName));
     gradient.setValue(gradients->at(*gradientName));
 }
