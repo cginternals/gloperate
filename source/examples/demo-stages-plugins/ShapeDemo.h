@@ -88,9 +88,6 @@ protected:
 
 
 protected:
-    // Misc
-    std::unique_ptr<gloperate::RenderTarget>          m_colorTarget;
-
     // Stages
     std::unique_ptr<gloperate::TimerStage>            m_timer;                 ///< Timer for continuous rendering and animation
 

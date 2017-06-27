@@ -9,7 +9,7 @@
 #include <globjects/FramebufferAttachment.h>
 #include <globjects/AttachedTexture.h>
 
-#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/ColorRenderTarget.h>
 #include <gloperate/rendering/AttachmentType.h>
 
 

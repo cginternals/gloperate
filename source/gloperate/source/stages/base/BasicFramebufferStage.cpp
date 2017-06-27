@@ -22,10 +22,9 @@ BasicFramebufferStage::BasicFramebufferStage(Environment * environment, const st
 : Stage(environment, "BasicFramebufferStage", name)
 , viewport           ("viewport",            this)
 , colorTexture       ("colorTexture",        this)
-, depthStencilTexture("depthStencilTexture", this)
+, depthTexture("depthStencilTexture", this)
 , colorBuffer        ("colorBuffer",         this)
 , depthBuffer        ("depthBuffer",         this)
-, stencilBuffer      ("stencilBuffer",       this)
 {
 }
 
@@ -39,10 +38,7 @@ void BasicFramebufferStage::onContextInit(AbstractGLContext *)
     m_colorBuffer->setAttachmentType(AttachmentType::Color);
 
     m_depthBuffer = cppassist::make_unique<DepthRenderTarget>();
-    m_depthBuffer->setAttachmentType(AttachmentType::DepthStencil);
-
-    m_stencilBuffer = cppassist::make_unique<StencilRenderTarget>();
-    m_stencilBuffer->setAttachmentType(AttachmentType::DepthStencil);
+    m_depthBuffer->setAttachmentType(AttachmentType::Depth);
 
     // Create color texture
     m_colorTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
@@ -52,7 +48,6 @@ void BasicFramebufferStage::onContextInit(AbstractGLContext *)
 
     m_colorBuffer->setTarget(m_colorTexture.get());
     m_depthBuffer->setTarget(m_depthStencilTexture.get());
-    m_stencilBuffer->setTarget(m_depthStencilTexture.get());
 }
 
 void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
@@ -60,7 +55,6 @@ void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
     // Clean up OpenGL objects
     m_colorBuffer         = nullptr;
     m_depthBuffer         = nullptr;
-    m_stencilBuffer       = nullptr;
     m_colorTexture        = nullptr;
     m_depthStencilTexture = nullptr;
 }
@@ -76,14 +70,13 @@ void BasicFramebufferStage::onProcess()
 
     cppassist::debug() << "resize " << m_depthStencilTexture->id();
 
-    m_depthStencilTexture->image2D(0, gl::GL_DEPTH24_STENCIL8, size.x, size.y, 0, gl::GL_DEPTH_STENCIL, gl::GL_UNSIGNED_BYTE, nullptr);
+    m_depthStencilTexture->image2D(0, gl::GL_DEPTH_COMPONENT, size.x, size.y, 0, gl::GL_DEPTH_COMPONENT, gl::GL_FLOAT, nullptr);
 
     // Update outputs
     this->colorTexture.setValue(m_colorTexture.get());
-    this->depthStencilTexture.setValue(m_depthStencilTexture.get());
+    this->depthTexture.setValue(m_depthStencilTexture.get());
     this->colorBuffer.setValue(m_colorBuffer.get());
     this->depthBuffer.setValue(m_depthBuffer.get());
-    this->stencilBuffer.setValue(m_stencilBuffer.get());
 }
 
 

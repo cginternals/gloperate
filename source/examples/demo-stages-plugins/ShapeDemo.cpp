@@ -19,7 +19,7 @@
 #include <gloperate/stages/navigation/TrackballStage.h>
 #include <gloperate/rendering/Shape.h>
 #include <gloperate/rendering/Quad.h>
-#include <gloperate/rendering/RenderTarget.h>
+#include <gloperate/rendering/ColorRenderTarget.h>
 
 
 CPPEXPOSE_COMPONENT(ShapeDemo, gloperate::Stage)
@@ -37,7 +37,6 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 , angle("angle", this, 0.0f)
 , rotate("rotate", this, false)
 , color("color", this, Color(255, 255, 255, 255))
-, m_colorTarget(cppassist::make_unique<gloperate::RenderTarget>())
 , m_timer(cppassist::make_unique<TimerStage>(environment, "Timer"))
 , m_floatSelection(cppassist::make_unique<FloatSelectionStage>(environment, "FloatSelection"))
 , m_trackball(cppassist::make_unique<TrackballStage>(environment, "Trackball"))
@@ -53,8 +52,6 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 , m_colorizeRenderPass(cppassist::make_unique<RenderPassStage>(environment, "ColorizeRenderPass"))
 , m_colorizeRasterization(cppassist::make_unique<RasterizationStage>(environment, "ColorizeRasterization"))
 {
-    m_colorTarget->setAttachmentType(gloperate::AttachmentType::Color);
-
     // Get data path
     std::string dataPath = gloperate::dataPath();
 
@@ -133,8 +130,8 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Rasterization stage for shape
     addStage(m_shapeRasterization.get());
-    m_shapeRasterization->createInput("ColorAttachment") << *m_clear->createOutput<gloperate::RenderTarget *>("ColorAttachmentOut");
-    m_shapeRasterization->createInput("DepthAttachment") << *m_clear->createOutput<gloperate::RenderTarget *>("DepthAttachmentOut");
+    m_shapeRasterization->createInput("ColorAttachment") << *m_clear->createOutput<gloperate::ColorRenderTarget *>("ColorAttachmentOut");
+    m_shapeRasterization->createInput("DepthAttachment") << *m_clear->createOutput<gloperate::DepthRenderTarget *>("DepthAttachmentOut");
     m_shapeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_shapeRasterization->drawable << m_shapeRenderPass->renderPass;
 
@@ -157,25 +154,25 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_colorizeRenderPass->createInput("source") << *colorTextureOutput;
 
     /* Hack Start */
-    auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::RenderTarget *>("ColorAttachmentOut");
+    auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::ColorRenderTarget *>("ColorAttachmentOut");
     shapeColorOutput->valueChanged.onFire([=]() {
         colorTextureOutput->setValue(**colorTextureInput);
     });
     shapeColorOutput->valueInvalidated.onFire([=]() {
-        m_clear->renderInterface.renderTargetOutput(0)->invalidate();
-        m_clear->renderInterface.renderTargetOutput(1)->invalidate();
+        m_clear->renderInterface.colorRenderTargetOutput(0)->invalidate();
+        m_clear->renderInterface.depthRenderTargetOutput(0)->invalidate();
     });
     /* Hack End */
 
     // Colorize rasterization stage
     addStage(m_colorizeRasterization.get());
-    m_colorizeRasterization->createInput("ColorAttachment") << *createInput<gloperate::RenderTarget *>("Color", m_colorTarget.get());
+    m_colorizeRasterization->createInput("ColorAttachment") << *createInput<gloperate::ColorRenderTarget *>("Color");
     m_colorizeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_colorizeRasterization->drawable << m_colorizeRenderPass->renderPass;
 
     // Outputs
     //*createOutput<gloperate::RenderTarget *>("ColorOut") << *m_colorizeRasterization->createOutput<gloperate::RenderTarget *>("ColorOut");
-    *createOutput<gloperate::RenderTarget *>("ColorOut") << *shapeColorOutput;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *shapeColorOutput;
     //*createOutput<glm::vec4>("ViewportOut") = glm::vec4(0, 0, 700, 700);
 
     // Start rotation

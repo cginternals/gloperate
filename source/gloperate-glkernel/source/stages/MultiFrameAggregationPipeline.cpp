@@ -134,8 +134,8 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
 // Additional Stages
 , m_renderStage(nullptr)
 {
-    canvasInterface.addRenderTargetInput(createInput<gloperate::RenderTarget *>("ColorTarget"));
-    canvasInterface.addRenderTargetOutput(createOutput<gloperate::RenderTarget *>("ColorTargetOut"));
+    createInput <gloperate::ColorRenderTarget *>("ColorTarget");
+    createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut");
 
     addStage(m_colorRenderTargetStage.get());
     m_colorRenderTargetStage->size << canvasInterface.viewport;
@@ -158,8 +158,8 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     m_framePreparationStage->intermediateFrameTexture << m_colorRenderTargetStage->texture;
 
     addStage(m_aggregationStage.get());
-    (*m_aggregationStage->createInput<gloperate::RenderTarget *>("ColorTarget")) << (*canvasInterface.renderTargetInput(0));
-    (*canvasInterface.renderTargetOutput(0)) << (*m_aggregationStage->createOutput<gloperate::RenderTarget *>("ColorTargetOut"));
+    (*m_aggregationStage->createInput<gloperate::ColorRenderTarget *>("ColorTarget")) << (*canvasInterface.colorRenderTargetInput(0));
+    (*canvasInterface.colorRenderTargetOutput(0)) << (*m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut"));
     m_aggregationStage->intermediateFrame << m_framePreparationStage->intermediateFrameTextureOut; // set by setRenderStage
     m_aggregationStage->renderInterface.viewport << canvasInterface.viewport;
     m_aggregationStage->aggregationFactor << m_controlStage->aggregationFactor;
@@ -201,30 +201,20 @@ void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
     (*slotViewport) << canvasInterface.viewport;
 
     // Update render stage input render targets
-    forAllInputs<gloperate::RenderTarget *>(m_renderStage, [this](Input<gloperate::RenderTarget *> * input) {
-        gloperate::RenderTarget * renderTarget = **input;
-
-        switch (renderTarget->attachmentType())
-        {
-        case gloperate::AttachmentType::Color:
-            (*input) << m_colorRenderTargetStage->renderTarget;
-            break;
-        case gloperate::AttachmentType::Depth:
-            (*input) << m_depthStencilRenderTargetStage->renderTarget;
-            break;
-        case gloperate::AttachmentType::DepthStencil:
-            (*input) << m_depthStencilRenderTargetStage->renderTarget;
-            break;
-        default:
-            input->setValue(nullptr);
-        }
+    forAllInputs<gloperate::ColorRenderTarget *>(m_renderStage, [this](Input<gloperate::ColorRenderTarget *> * input) {
+        (*input) << m_colorRenderTargetStage->colorRenderTarget;
+    });
+    forAllInputs<gloperate::DepthRenderTarget *>(m_renderStage, [this](Input<gloperate::DepthRenderTarget *> * input) {
+        (*input) << m_depthStencilRenderTargetStage->depthRenderTarget;
+    });
+    forAllInputs<gloperate::StencilRenderTarget *>(m_renderStage, [this](Input<gloperate::StencilRenderTarget *> * input) {
+        (*input) << m_depthStencilRenderTargetStage->stencilRenderTarget;
     });
 
-    // Connect Color Output
-    auto slotColorRenderTarget = getOutput<gloperate::RenderTarget *>(m_renderStage, [](Output<gloperate::RenderTarget *> * output) {
-        gloperate::RenderTarget * target = **output;
 
-        return target->attachmentType() == gloperate::AttachmentType::Color;
+    // Connect Color Output
+    auto slotColorRenderTarget = getOutput<gloperate::ColorRenderTarget *>(m_renderStage, [](Output<gloperate::ColorRenderTarget *> * /*output*/) {
+        return true;
     });
 
     if (slotColorRenderTarget)

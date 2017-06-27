@@ -37,14 +37,14 @@ public:
 
 public:
     // Render Interface
-    gloperate::RenderInterface       renderInterface;   ///< Render interface for aggregation target
+    gloperate::RenderInterface            renderInterface;             ///< Render interface for aggregation target
 
     // Inputs
-    Input<gloperate::RenderTarget *> intermediateRenderTarget;    ///< Intermediate frame render target
-    Input<globjects::Texture      *> intermediateFrameTexture;    ///< Designated intermediate frame texture
+    Input<gloperate::ColorRenderTarget *> intermediateRenderTarget;    ///< Intermediate frame render target
+    Input<globjects::Texture           *> intermediateFrameTexture;    ///< Designated intermediate frame texture
 
     // Outputs
-    Output<globjects::Texture     *> intermediateFrameTextureOut; ///< Intermediate frame texture with same contents as intermediateRenderTarget
+    Output<globjects::Texture          *> intermediateFrameTextureOut; ///< Intermediate frame texture with same contents as intermediateRenderTarget
 
 
 public:
