@@ -20,6 +20,7 @@
 #include <gloperate/rendering/Shape.h>
 #include <gloperate/rendering/Quad.h>
 #include <gloperate/rendering/ColorRenderTarget.h>
+#include <gloperate/stages/base/TextureFromRenderTargetExtractionStage.h>
 
 
 CPPEXPOSE_COMPONENT(ShapeDemo, gloperate::Stage)
@@ -49,6 +50,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 , m_shapeRenderPass(cppassist::make_unique<RenderPassStage>(environment, "ShapeRenderPass"))
 , m_shapeRasterization(cppassist::make_unique<RasterizationStage>(environment, "ShapeRasterization"))
 , m_colorizeProgram(cppassist::make_unique<ProgramStage>(environment, "ColorizeProgram"))
+, m_textureExtractionStage(cppassist::make_unique<TextureFromRenderTargetExtractionStage>(environment, "TextureExtraction"))
 , m_colorizeRenderPass(cppassist::make_unique<RenderPassStage>(environment, "ColorizeRenderPass"))
 , m_colorizeRasterization(cppassist::make_unique<RasterizationStage>(environment, "ColorizeRasterization"))
 {
@@ -135,14 +137,22 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_shapeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_shapeRasterization->drawable << m_shapeRenderPass->renderPass;
 
-    auto colorTextureInput = m_shapeRasterization->createInput<globjects::Texture *>("ColorTexture");
-    auto colorTextureOutput = m_shapeRasterization->createOutput<globjects::Texture *>("ColorTextureOut");
-    *colorTextureInput << m_framebuffer->colorTexture;
-
     // Colorize program stage
     addStage(m_colorizeProgram.get());
     *m_colorizeProgram->createInput<cppassist::FilePath>("shader1") = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
     *m_colorizeProgram->createInput<cppassist::FilePath>("shader2") = dataPath + "/gloperate/shaders/demo/colorize.frag";
+
+    auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::ColorRenderTarget *>("ColorAttachmentOut");
+
+    /* Hack Start */
+    shapeColorOutput->valueInvalidated.onFire([=]() {
+        m_clear->renderInterface.colorRenderTargetOutput(0)->invalidate();
+        m_clear->renderInterface.depthRenderTargetOutput(0)->invalidate();
+    });
+    /* Hack End */
+
+    addStage(m_textureExtractionStage.get());
+    m_textureExtractionStage->colorRenderTarget << *shapeColorOutput;
 
     // Colorize render pass stage
     addStage(m_colorizeRenderPass.get());
@@ -151,18 +161,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_colorizeRenderPass->culling = false;
     m_colorizeRenderPass->depthTest = false;
     m_colorizeRenderPass->createInput("color") << this->color;
-    m_colorizeRenderPass->createInput("source") << *colorTextureOutput;
-
-    /* Hack Start */
-    auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::ColorRenderTarget *>("ColorAttachmentOut");
-    shapeColorOutput->valueChanged.onFire([=]() {
-        colorTextureOutput->setValue(**colorTextureInput);
-    });
-    shapeColorOutput->valueInvalidated.onFire([=]() {
-        m_clear->renderInterface.colorRenderTargetOutput(0)->invalidate();
-        m_clear->renderInterface.depthRenderTargetOutput(0)->invalidate();
-    });
-    /* Hack End */
+    m_colorizeRenderPass->createInput("source") << m_textureExtractionStage->texture;
 
     // Colorize rasterization stage
     addStage(m_colorizeRasterization.get());
