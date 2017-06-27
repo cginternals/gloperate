@@ -14,105 +14,6 @@
 #include <gloperate-glkernel/stages/IntermediateFramePreparationStage.h>
 
 
-namespace
-{
-
-
-template <typename T>
-gloperate::Slot<T> * getSlot(gloperate::Stage * stage, const std::string & name)
-{
-    if (!stage) {
-        return nullptr;
-    } else {
-        return static_cast<gloperate::Slot<T> *>(stage->property(name));
-    }
-}
-
-template <typename T>
-gloperate::Input<T> * getInput(gloperate::Stage * stage, std::function<bool(gloperate::Input<T> *)> callback)
-{
-    if (!stage)
-    {
-        return nullptr;
-    }
-
-    const auto & inputs = stage->inputs();
-
-    const auto it = std::find_if(inputs.begin(), inputs.end(), [callback](gloperate::AbstractSlot * slot) {
-        const auto input = dynamic_cast<gloperate::Input<T> *>(slot);
-
-        if (!input)
-        {
-            return false;
-        }
-
-        return callback(input);
-    });
-
-    if (it == inputs.end())
-    {
-        return nullptr;
-    }
-
-    return static_cast<gloperate::Input<T> *>(*it);
-}
-
-template <typename T>
-void forAllInputs(gloperate::Stage * stage, std::function<void(gloperate::Input<T> *)> callback)
-{
-    if (!stage)
-    {
-        return;
-    }
-
-    const auto & inputs = stage->inputs();
-
-    for (const auto input : inputs)
-    {
-        const auto inputT = dynamic_cast<gloperate::Input<T> *>(input);
-
-        if (!inputT)
-        {
-            continue;
-        }
-
-        callback(inputT);
-    }
-}
-
-template <typename T>
-gloperate::Output<T> * getOutput(gloperate::Stage * stage, std::function<bool(gloperate::Output<T> *)> callback)
-{
-    if (!stage)
-    {
-        return nullptr;
-    }
-
-    const auto & outputs = stage->outputs();
-
-    const auto it = std::find_if(outputs.begin(), outputs.end(), [callback](gloperate::AbstractSlot * slot) {
-        const auto output = dynamic_cast<gloperate::Output<T> *>(slot);
-
-        if (!output)
-        {
-            return false;
-        }
-
-        return callback(output);
-    });
-
-    if (it == outputs.end())
-    {
-        return nullptr;
-    }
-
-    return static_cast<gloperate::Output<T> *>(*it);
-}
-
-
-}
-
-
 namespace gloperate_glkernel
 {
 
@@ -197,23 +98,23 @@ void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
     m_renderStage = stage;
 
     // Promote viewport information
-    auto slotViewport = getInput<glm::vec4>(m_renderStage, [](Input<glm::vec4>* input) { return input->name() == "viewport"; });
+    auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
     (*slotViewport) << canvasInterface.viewport;
 
     // Update render stage input render targets
-    forAllInputs<gloperate::ColorRenderTarget *>(m_renderStage, [this](Input<gloperate::ColorRenderTarget *> * input) {
+    m_renderStage->forAllInputs<gloperate::ColorRenderTarget *>([this](Input<gloperate::ColorRenderTarget *> * input) {
         (*input) << m_colorRenderTargetStage->colorRenderTarget;
     });
-    forAllInputs<gloperate::DepthRenderTarget *>(m_renderStage, [this](Input<gloperate::DepthRenderTarget *> * input) {
+    m_renderStage->forAllInputs<gloperate::DepthRenderTarget *>([this](Input<gloperate::DepthRenderTarget *> * input) {
         (*input) << m_depthStencilRenderTargetStage->depthRenderTarget;
     });
-    forAllInputs<gloperate::StencilRenderTarget *>(m_renderStage, [this](Input<gloperate::StencilRenderTarget *> * input) {
+    m_renderStage->forAllInputs<gloperate::StencilRenderTarget *>([this](Input<gloperate::StencilRenderTarget *> * input) {
         (*input) << m_depthStencilRenderTargetStage->stencilRenderTarget;
     });
 
 
     // Connect Color Output
-    auto slotColorRenderTarget = getOutput<gloperate::ColorRenderTarget *>(m_renderStage, [](Output<gloperate::ColorRenderTarget *> * /*output*/) {
+    auto slotColorRenderTarget = m_renderStage->findOutput<gloperate::ColorRenderTarget *>([](Output<gloperate::ColorRenderTarget *> * /*output*/) {
         return true;
     });
 

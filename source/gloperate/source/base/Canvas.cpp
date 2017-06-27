@@ -37,110 +37,6 @@ namespace
 {
 
 
-template <typename T>
-gloperate::Input<T> * getInput(gloperate::Stage * stage, std::function<bool(gloperate::Input<T> *)> callback)
-{
-    if (!stage)
-    {
-        return nullptr;
-    }
-
-    const auto & inputs = stage->inputs();
-
-    const auto it = std::find_if(inputs.begin(), inputs.end(), [callback](gloperate::AbstractSlot * slot) {
-        const auto input = dynamic_cast<gloperate::Input<T> *>(slot);
-
-        if (!input)
-        {
-            return false;
-        }
-
-        return callback(input);
-    });
-
-    if (it == inputs.end())
-    {
-        return nullptr;
-    }
-
-    return static_cast<gloperate::Input<T> *>(*it);
-}
-
-template <typename T>
-void forAllInputs(gloperate::Stage * stage, std::function<void(gloperate::Input<T> *)> callback)
-{
-    if (!stage)
-    {
-        return;
-    }
-
-    const auto & inputs = stage->inputs();
-
-    for (const auto input : inputs)
-    {
-        const auto inputT = dynamic_cast<gloperate::Input<T> *>(input);
-
-        if (!inputT)
-        {
-            continue;
-        }
-
-        callback(inputT);
-    }
-}
-
-template <typename T>
-gloperate::Output<T> * getOutput(gloperate::Stage * stage, std::function<bool(gloperate::Output<T> *)> callback)
-{
-    if (!stage)
-    {
-        return nullptr;
-    }
-
-    const auto & outputs = stage->outputs();
-
-    const auto it = std::find_if(outputs.begin(), outputs.end(), [callback](gloperate::AbstractSlot * slot) {
-        const auto output = dynamic_cast<gloperate::Output<T> *>(slot);
-
-        if (!output)
-        {
-            return false;
-        }
-
-        return callback(output);
-    });
-
-    if (it == outputs.end())
-    {
-        return nullptr;
-    }
-
-    return static_cast<gloperate::Output<T> *>(*it);
-}
-
-template <typename T>
-void forAllOutputs(gloperate::Stage * stage, std::function<void(gloperate::Output<T> *)> callback)
-{
-    if (!stage)
-    {
-        return;
-    }
-
-    const auto & outputs = stage->outputs();
-
-    for (const auto output : outputs)
-    {
-        const auto outputT = dynamic_cast<gloperate::Output<T> *>(output);
-
-        if (!outputT)
-        {
-            continue;
-        }
-
-        callback(outputT);
-    }
-}
-
 auto s_nextCanvasId = size_t(0);
 
 
@@ -305,7 +201,7 @@ void Canvas::updateTime()
     m_timeDelta += timeDelta;
 
     // Update timing
-    auto slotTimeDelta = getInput<float>(m_renderStage.get(), [](Input<float>* input) { return input->name() == "timeDelta"; });
+    auto slotTimeDelta = m_renderStage->findInput<float>([](Input<float>* input) { return input->name() == "timeDelta"; });
     if (slotTimeDelta)
     {
         slotTimeDelta->setValue(m_timeDelta);
@@ -327,7 +223,7 @@ void Canvas::setViewport(const glm::vec4 & deviceViewport)
     m_initialized = true;
 
     // Promote new viewport
-    auto slotViewport = getInput<glm::vec4>(m_renderStage.get(), [](Input<glm::vec4>* input) { return input->name() == "viewport"; });
+    auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
     if (slotViewport) slotViewport->setValue(m_viewport);
 
     // Check if a redraw is required
@@ -369,11 +265,11 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         m_renderStage->initContext(m_openGLContext);
 
         // Promote viewport information
-        auto slotViewport = getInput<glm::vec4>(m_renderStage.get(), [](Input<glm::vec4>* input) { return input->name() == "viewport"; });
+        auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
         if (slotViewport) slotViewport->setValue(m_viewport);
 
         // Mark output as required
-        forAllOutputs<ColorRenderTarget *>(m_renderStage.get(), [](Output<ColorRenderTarget *> * output) {
+        m_renderStage->forAllOutputs<ColorRenderTarget *>([](Output<ColorRenderTarget *> * output) {
             output->setRequired(true);
         });
 
@@ -437,7 +333,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     }
 
     // Update render stage input render targets
-    forAllInputs<gloperate::ColorRenderTarget *>(m_renderStage.get(), [this](Input<ColorRenderTarget *> * input) {
+    m_renderStage->forAllInputs<gloperate::ColorRenderTarget *>([this](Input<ColorRenderTarget *> * input) {
         const auto renderTarget = **input;
 
         if (renderTarget == nullptr)
@@ -447,7 +343,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
         input->setValue(m_colorTarget.get());
     });
-    forAllInputs<gloperate::DepthRenderTarget *>(m_renderStage.get(), [this](Input<DepthRenderTarget *> * input) {
+    m_renderStage->forAllInputs<gloperate::DepthRenderTarget *>([this](Input<DepthRenderTarget *> * input) {
         const auto renderTarget = **input;
 
         if (renderTarget == nullptr)
@@ -457,7 +353,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
         input->setValue(m_depthTarget.get());
     });
-    forAllInputs<gloperate::StencilRenderTarget *>(m_renderStage.get(), [this](Input<StencilRenderTarget *> * input) {
+    m_renderStage->forAllInputs<gloperate::StencilRenderTarget *>([this](Input<StencilRenderTarget *> * input) {
         const auto renderTarget = **input;
 
         if (renderTarget == nullptr)
@@ -471,7 +367,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     // Render
     m_renderStage->process();
 
-    auto colorOutput = getOutput<gloperate::ColorRenderTarget *>(m_renderStage.get(), [this](Output<ColorRenderTarget *> * output) {
+    auto colorOutput = m_renderStage->findOutput<gloperate::ColorRenderTarget *>([this](Output<ColorRenderTarget *> * output) {
         return **output != nullptr;
     });
 
@@ -483,7 +379,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         }
         else
         {
-            auto viewport = getOutput<glm::vec4>(m_renderStage.get(), [this](Output<glm::vec4> *) {
+            auto viewport = m_renderStage->findOutput<glm::vec4>([this](Output<glm::vec4> *) {
                 return true;
             });
 
@@ -577,7 +473,7 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 void Canvas::checkRedraw()
 {
     bool redraw = false;
-    forAllOutputs<ColorRenderTarget *>(m_renderStage.get(), [& redraw](Output<ColorRenderTarget *> * output) {
+    m_renderStage->forAllOutputs<ColorRenderTarget *>([& redraw](Output<ColorRenderTarget *> * output) {
         if (**output && !output->isValid())
         {
             redraw = true;

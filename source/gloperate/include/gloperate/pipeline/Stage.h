@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <functional>
 
 #include <cppexpose/reflection/Object.h>
 
@@ -598,6 +599,58 @@ public:
     *    Name with all parent names, separated by '.'
     */
     std::string qualifiedName() const;
+
+    /**
+    *  @brief
+    *    Return the first input of type T where the callback returns 'true'
+    *
+    *  @param[in] callback
+    *    The callback
+    *
+    *  @return
+    *    The first input where the callback returns 'true'
+    */
+    template <typename T>
+    gloperate::Input<T> * findInput(std::function<bool(gloperate::Input<T> *)> callback);
+
+    /**
+    *  @brief
+    *    Iterate over all inputs and execute the callback.
+    */
+    void forAllInputs(std::function<void(gloperate::AbstractSlot *)> callback);
+
+    /**
+    *  @brief
+    *    Iterate over all inputs of type T and execute the callback.
+    */
+    template <typename T>
+    void forAllInputs(std::function<void(gloperate::Input<T> *)> callback);
+
+    /**
+    *  @brief
+    *    Return the first output of type T where the callback returns 'true'
+    *
+    *  @param[in] callback
+    *    The callback
+    *
+    *  @return
+    *    The first output where the callback returns 'true'
+    */
+    template <typename T>
+    gloperate::Output<T> * findOutput(std::function<bool(gloperate::Output<T> *)> callback);
+
+    /**
+    *  @brief
+    *    Iterate over all inputs and execute the callback.
+    */
+    void forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callback);
+
+    /**
+    *  @brief
+    *    Iterate over all inputs of type T and execute the callback.
+    */
+    template <typename T>
+    void forAllOutputs(std::function<void(gloperate::Output<T> *)> callback);
 
 
 protected:

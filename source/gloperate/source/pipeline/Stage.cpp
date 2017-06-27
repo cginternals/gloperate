@@ -514,5 +514,21 @@ void Stage::invalidateInputConnections()
     }
 }
 
+void Stage::forAllInputs(std::function<void(gloperate::AbstractSlot *)> callback)
+{
+    for (const auto input : m_inputs)
+    {
+        callback(input);
+    }
+}
+
+void Stage::forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callback)
+{
+    for (const auto output : m_outputs)
+    {
+        callback(output);
+    }
+}
+
 
 } // namespace gloperate

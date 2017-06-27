@@ -107,5 +107,79 @@ Slot<T> * Stage::createSlot(const std::string & slotType, const std::string & na
     return nullptr;
 }
 
+template <typename T>
+gloperate::Input<T> * Stage::findInput(std::function<bool(gloperate::Input<T> *)> callback)
+{
+    const auto it = std::find_if(m_inputs.begin(), m_inputs.end(), [callback](gloperate::AbstractSlot * slot) {
+        const auto input = dynamic_cast<gloperate::Input<T> *>(slot);
+
+        if (!input)
+        {
+            return false;
+        }
+
+        return callback(input);
+    });
+
+    if (it == m_inputs.end())
+    {
+        return nullptr;
+    }
+
+    return static_cast<gloperate::Input<T> *>(*it);
+}
+
+template <typename T>
+void Stage::forAllInputs(std::function<void(gloperate::Input<T> *)> callback)
+{
+    forAllInputs([& callback](gloperate::AbstractSlot * input) {
+        const auto inputT = dynamic_cast<gloperate::Input<T> *>(input);
+
+        if (!inputT)
+        {
+            return;
+        }
+
+        callback(inputT);
+    });
+}
+
+template <typename T>
+gloperate::Output<T> * Stage::findOutput(std::function<bool(gloperate::Output<T> *)> callback)
+{
+    const auto it = std::find_if(m_outputs.begin(), m_outputs.end(), [callback](gloperate::AbstractSlot * slot) {
+        const auto output = dynamic_cast<gloperate::Output<T> *>(slot);
+
+        if (!output)
+        {
+            return false;
+        }
+
+        return callback(output);
+    });
+
+    if (it == m_outputs.end())
+    {
+        return nullptr;
+    }
+
+    return static_cast<gloperate::Output<T> *>(*it);
+}
+
+template <typename T>
+void Stage::forAllOutputs(std::function<void(gloperate::Output<T> *)> callback)
+{
+    forAllOutputs([& callback](gloperate::AbstractSlot * output) {
+        const auto outputT = dynamic_cast<gloperate::Output<T> *>(output);
+
+        if (!outputT)
+        {
+            return;
+        }
+
+        callback(outputT);
+    });
+}
+
 
 } // namespace gloperate
