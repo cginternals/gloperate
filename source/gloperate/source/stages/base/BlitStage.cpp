@@ -63,8 +63,8 @@ void BlitStage::onProcess()
     globjects::Framebuffer * sourceFBO = RenderInterface::configureFBO(0, *source, m_sourceFBO.get(), m_defaultFBO.get());
     globjects::Framebuffer * targetFBO = RenderInterface::configureFBO(0, *target, m_targetFBO.get(), m_defaultFBO.get());
 
-    auto sourceAttachment = source->attachmentRequiresUserDefinedFramebuffer() ? gl::GL_COLOR_ATTACHMENT0 : source->defaultFramebufferAttachment();
-    auto targetAttachment = target->attachmentRequiresUserDefinedFramebuffer() ? gl::GL_COLOR_ATTACHMENT0 : target->defaultFramebufferAttachment();
+    auto sourceAttachment = source->drawBufferAttachment(0);
+    auto targetAttachment = target->drawBufferAttachment(0);
 
     if (sourceRect[2] <= targetRect[2] && sourceRect[3] <= targetRect[3])
     {

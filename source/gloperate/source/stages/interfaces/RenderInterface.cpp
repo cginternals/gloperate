@@ -144,21 +144,21 @@ Input<StencilRenderTarget *> * RenderInterface::stencilRenderTargetInput(size_t 
     return m_stencilRenderTargetInputs.size() > index ? m_stencilRenderTargetInputs.at(index) : nullptr;
 }
 
-ColorRenderTarget * RenderInterface::inputColorRenderTarget(size_t index) const
+ColorRenderTarget * RenderInterface::colorRenderTarget(size_t index) const
 {
     const auto input = colorRenderTargetInput(index);
 
     return input ? **input : nullptr;
 }
 
-DepthRenderTarget * RenderInterface::inputDepthRenderTarget(size_t index) const
+DepthRenderTarget * RenderInterface::depthRenderTarget(size_t index) const
 {
     const auto input = depthRenderTargetInput(index);
 
     return input ? **input : nullptr;
 }
 
-StencilRenderTarget * RenderInterface::inputStencilRenderTarget(size_t index) const
+StencilRenderTarget * RenderInterface::stencilRenderTarget(size_t index) const
 {
     const auto input = stencilRenderTargetInput(index);
 

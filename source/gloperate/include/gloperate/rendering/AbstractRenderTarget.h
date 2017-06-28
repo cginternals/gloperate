@@ -213,6 +213,18 @@ public:
     */
     gl::GLint clearBufferDrawBuffer(size_t index) const;
 
+    /**
+    *  @brief
+    *    Get the symbolic constant for the attachment name given a color attachment index
+    *
+    *  @param[in] index
+    *    The color attachment index
+    *
+    *  @return
+    *    The symbolic constant for the attachment name
+    */
+    gl::GLenum drawBufferAttachment(size_t index) const;
+
 
 protected:
     RenderTargetType                   m_currentTargetType;        ///< Target type

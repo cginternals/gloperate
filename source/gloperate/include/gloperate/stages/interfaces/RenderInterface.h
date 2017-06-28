@@ -193,7 +193,7 @@ public:
     *  @return
     *    The color render target at given index, 'null' if index is invalid
     */
-    ColorRenderTarget * inputColorRenderTarget(size_t index) const;
+    ColorRenderTarget * colorRenderTarget(size_t index) const;
 
     /**
     *  @brief
@@ -205,7 +205,7 @@ public:
     *  @return
     *    The depth render target at given index, 'null' if index is invalid
     */
-    DepthRenderTarget * inputDepthRenderTarget(size_t index) const;
+    DepthRenderTarget * depthRenderTarget(size_t index) const;
 
     /**
     *  @brief
@@ -217,7 +217,7 @@ public:
     *  @return
     *    The stencil render target at given index, 'null' if index is invalid
     */
-    StencilRenderTarget * inputStencilRenderTarget(size_t index) const;
+    StencilRenderTarget * stencilRenderTarget(size_t index) const;
 
     /**
     *  @brief
