@@ -17,7 +17,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that selects a float from a given index
+*    Stage that selects a float value from a given index
 */
 class GLOPERATE_API FloatSelectionStage : public gloperate::Stage
 {
@@ -34,9 +34,11 @@ public:
 
 
 public:
+    // Inputs
     Input<unsigned int> index; ///< Index of float to select
 
-    Output<float>       value; ///< Resulting float
+    // Outputs
+    Output<float>       value; ///< Resulting float value
 
 
 public:
@@ -64,7 +66,7 @@ protected:
 
 
 protected:
-    std::vector<Input<float> *> m_floatInputs;
+    std::vector<Input<float> *> m_floatInputs; ///< The list of all connected float inputs
 };
 
 

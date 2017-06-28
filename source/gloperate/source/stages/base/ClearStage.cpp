@@ -22,8 +22,8 @@ CPPEXPOSE_COMPONENT(ClearStage, gloperate::Stage)
 
 ClearStage::ClearStage(Environment * environment, const std::string & name)
 : Stage(environment, "ClearStage", name)
-, clear("clear",  this, true)
 , renderInterface(this)
+, clear("clear",  this, true)
 {
     inputAdded.connect( [this] (AbstractSlot * connectedInput) {
         auto colorValueInput = dynamic_cast<Input<glm::vec4> *>(connectedInput);
@@ -103,8 +103,8 @@ void ClearStage::onProcess()
 
             auto fbo = renderInterface.configureFBO(colorAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-            const auto attachmentBuffer = (**input)->attachmentBuffer();
-            const auto attachmentDrawBuffer = (**input)->attachmentDrawBuffer(colorAttachmentIndex);
+            const auto attachmentBuffer = (**input)->clearBufferAttachment();
+            const auto attachmentDrawBuffer = (**input)->clearBufferDrawBuffer(colorAttachmentIndex);
             const auto clearColor = **m_colorValueInputs.at(colorAttachmentIndex);
 
             fbo->clearBuffer(attachmentBuffer, attachmentDrawBuffer, clearColor);
@@ -118,7 +118,7 @@ void ClearStage::onProcess()
                 return;
             }
 
-            if ((**input)->attachmentType() == AttachmentType::Depth)
+            if ((**input)->underlyingAttachmentType() == AttachmentType::Depth)
             {
                 if (m_depthValueInputs.size() <= depthAttachmentIndex)
                 {
@@ -127,11 +127,11 @@ void ClearStage::onProcess()
 
                 auto fbo = renderInterface.configureFBO(depthAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-                fbo->clearBuffer(gl::GL_DEPTH, (**input)->attachmentDrawBuffer(depthAttachmentIndex), **m_depthValueInputs.at(depthAttachmentIndex));
+                fbo->clearBuffer(gl::GL_DEPTH, (**input)->clearBufferDrawBuffer(depthAttachmentIndex), **m_depthValueInputs.at(depthAttachmentIndex));
 
                 ++depthAttachmentIndex;
             }
-            else if ((**input)->attachmentType() == AttachmentType::DepthStencil)
+            else if ((**input)->underlyingAttachmentType() == AttachmentType::DepthStencil)
             {
                 if (m_depthStencilValueInputs.size() <= depthStencilAttachmentIndex)
                 {
@@ -140,7 +140,7 @@ void ClearStage::onProcess()
 
                 auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-                fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).second, (**input)->attachmentDrawBuffer(depthStencilAttachmentIndex));
+                fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).second, (**input)->clearBufferDrawBuffer(depthStencilAttachmentIndex));
 
                 ++depthStencilAttachmentIndex;
                 clearedDepthStencilTargets.insert(**input);
@@ -153,7 +153,7 @@ void ClearStage::onProcess()
                 return;
             }
 
-            if ((**input)->attachmentType() == AttachmentType::Stencil)
+            if ((**input)->underlyingAttachmentType() == AttachmentType::Stencil)
             {
                 if (m_stencilValueInputs.size() <= stencilAttachmentIndex)
                 {
@@ -162,11 +162,11 @@ void ClearStage::onProcess()
 
                 auto fbo = renderInterface.configureFBO(stencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-                fbo->clearBuffer(gl::GL_STENCIL, (**input)->attachmentDrawBuffer(stencilAttachmentIndex), **m_stencilValueInputs.at(stencilAttachmentIndex));
+                fbo->clearBuffer(gl::GL_STENCIL, (**input)->clearBufferDrawBuffer(stencilAttachmentIndex), **m_stencilValueInputs.at(stencilAttachmentIndex));
 
                 ++stencilAttachmentIndex;
             }
-            else if ((**input)->attachmentType() == AttachmentType::DepthStencil)
+            else if ((**input)->underlyingAttachmentType() == AttachmentType::DepthStencil)
             {
                 if (std::find(clearedDepthStencilTargets.begin(), clearedDepthStencilTargets.end(), **input) != clearedDepthStencilTargets.end())
                 {
@@ -180,7 +180,7 @@ void ClearStage::onProcess()
 
                 auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
 
-                fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).second, (**input)->attachmentDrawBuffer(depthStencilAttachmentIndex));
+                fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).second, (**input)->clearBufferDrawBuffer(depthStencilAttachmentIndex));
 
                 ++depthStencilAttachmentIndex;
             }

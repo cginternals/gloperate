@@ -27,7 +27,7 @@ class AbstractDrawable;
 
 /**
 *  @brief
-*    Stage that rasterizes a given drawable
+*    Stage that rasterizes a given drawable into render targets
 */
 class GLOPERATE_API RasterizationStage : public Stage
 {
@@ -78,8 +78,8 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Default FBO for clearing
-    std::unique_ptr<globjects::Framebuffer> m_fbo;        ///< Intermediate FBO for clearing
+    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Default FBO for rasterization
+    std::unique_ptr<globjects::Framebuffer> m_fbo;        ///< Intermediate FBO for rasterization
 };
 
 

@@ -81,16 +81,6 @@ MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
 {
 }
 
-/*void MultiFrameAggregationPipeline::onProcess()
-{
-    if (!m_renderStage)
-    {
-        return;
-    }
-
-    Pipeline::onProcess();
-}*/
-
 void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
 {
     disconnectRenderStage();

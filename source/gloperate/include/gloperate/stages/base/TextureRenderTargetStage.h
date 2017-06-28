@@ -49,10 +49,10 @@ public:
 
 public:
     // Inputs
-    Input<gl::GLenum> internalFormat;     ///< OpenGL internal image format
-    Input<gl::GLenum> format;             ///< OpenGL image format
-    Input<gl::GLenum> type;               ///< OpenGL data type
-    Input<glm::vec4>  size;               ///< Viewport size (only z and w component is used as width and height)
+    Input<gl::GLenum> internalFormat; ///< OpenGL internal image format
+    Input<gl::GLenum> format;         ///< OpenGL image format
+    Input<gl::GLenum> type;           ///< OpenGL data type
+    Input<glm::vec4>  size;           ///< Viewport size (only z and w component is used as width and height)
 
     // Outputs
     Output<globjects::Texture *>             texture;             ///< Texture

@@ -29,7 +29,7 @@ public:
       , ""
       , ""
       , ""
-      , "Stage that ensures the intermediate frame is in the outer color attachment"
+      , "Stage that ensures the intermediate frame is in the output color attachment"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
     )
@@ -71,6 +71,7 @@ protected:
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess() override;
+
 
 protected:
     // Data

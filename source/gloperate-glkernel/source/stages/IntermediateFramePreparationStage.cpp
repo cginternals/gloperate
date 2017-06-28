@@ -56,7 +56,7 @@ void IntermediateFramePreparationStage::onProcess()
         return;
     }
 
-    if (intermediateRenderTarget->type() != gloperate::RenderTargetType::Texture
+    if (intermediateRenderTarget->currentTargetType() != gloperate::RenderTargetType::Texture
         || intermediateRenderTarget->textureAttachment() != *intermediateFrameTexture)
     {
         std::array<gl::GLint, 4> rect = {{

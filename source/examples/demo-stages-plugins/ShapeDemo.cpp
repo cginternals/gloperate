@@ -55,7 +55,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 , m_colorizeRasterization(cppassist::make_unique<RasterizationStage>(environment, "ColorizeRasterization"))
 {
     // Get data path
-    std::string dataPath = gloperate::dataPath();
+    const auto dataPath = gloperate::dataPath();
 
     // Setup parameters
     texture = dataPath + "/gloperate/textures/gloperate-logo.glraw";
@@ -193,9 +193,9 @@ void ShapeDemo::onContextInit(AbstractGLContext * context)
 
 void ShapeDemo::onContextDeinit(AbstractGLContext * context)
 {
-    Pipeline::onContextDeinit(context);
-
     m_quad = nullptr;
+
+    Pipeline::onContextDeinit(context);
 }
 
 void ShapeDemo::onRotateChanged(const bool & rotate)

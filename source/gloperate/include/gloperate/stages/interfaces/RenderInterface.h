@@ -11,12 +11,8 @@
 
 namespace globjects
 {
-
-
-class Framebuffer;
-
-
-} // namespace globjects
+    class Framebuffer;
+}
 
 
 namespace gloperate
@@ -72,63 +68,306 @@ public:
     */
     ~RenderInterface();
 
+    /**
+    *  @brief
+    *    Set value of all output render targets to their input render target counterparts
+    */
     void updateRenderTargetOutputs();
-
-    bool allRenderTargetsCompatible() const;
-
-    const std::vector<Input<ColorRenderTarget *> *> & colorRenderTargetInputs() const;
-    const std::vector<Input<DepthRenderTarget *> *> & depthRenderTargetInputs() const;
-    const std::vector<Input<StencilRenderTarget *> *> & stencilRenderTargetInputs() const;
-
-    Input<ColorRenderTarget *> * colorRenderTargetInput(size_t index) const;
-    Input<DepthRenderTarget *> * depthRenderTargetInput(size_t index) const;
-    Input<StencilRenderTarget *> * stencilRenderTargetInput(size_t index) const;
-
-    ColorRenderTarget * inputColorRenderTarget(size_t index) const;
-    DepthRenderTarget * inputDepthRenderTarget(size_t index) const;
-    StencilRenderTarget * inputStencilRenderTarget(size_t index) const;
-
-    const std::vector<Output<ColorRenderTarget *> *> & colorRenderTargetOutputs() const;
-    const std::vector<Output<DepthRenderTarget *> *> & depthRenderTargetOutputs() const;
-    const std::vector<Output<StencilRenderTarget *> *> & stencilRenderTargetOutputs() const;
-
-    Output<ColorRenderTarget *> * colorRenderTargetOutput(size_t index) const;
-    Output<DepthRenderTarget *> * depthRenderTargetOutput(size_t index) const;
-    Output<StencilRenderTarget *> * stencilRenderTargetOutput(size_t index) const;
-
-    ColorRenderTarget * outputColorRenderTarget(size_t index) const;
-    DepthRenderTarget * outputDepthRenderTarget(size_t index) const;
-    StencilRenderTarget * outputStencilRenderTarget(size_t index) const;
 
     /**
     *  @brief
-    *    Registers new render target input
+    *    Test if all registered render targets can be attached to a single FBO
+    *
+    *  @return
+    *    'true', if all registered render targets are compatible using one single FBO, else 'false'
+    */
+    bool allRenderTargetsCompatible() const;
+
+    /**
+    *  @brief
+    *    Configures all render targets as attachments for a framebuffer
+    *
+    *    Further, the draw buffers are updated on the framebuffer.
+    *
+    *  @param[in] fbo
+    *    The user-defined framebuffer used for user-defined attachments
+    *  @param[in] defaultFBO
+    *    The default framebuffer used for default framebuffer attachments
+    *
+    *  @return
+    *    The matching framebuffer; either fbo or defaultFBO, depending on the type of render target attachments
+    *
+    *  @remarks
+    *    allRenderTargetsCompatible() is expected to return 'true'.
+    */
+    globjects::Framebuffer * configureFBO(globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO) const;
+
+    /**
+    *  @brief
+    *    Configures one render target as attachment for a framebuffer
+    *
+    *  @param[in] index
+    *    The next color attachment index
+    *  @param[in] renderTarget
+    *    The render target to attach
+    *  @param[in] fbo
+    *    The user-defined framebuffer used for user-defined attachments
+    *  @param[in] defaultFBO
+    *    The default framebuffer used for default framebuffer attachments
+    *
+    *  @return
+    *    The matching framebuffer; either fbo or defaultFBO, depending on the type of the render target attachment
+    */
+    static globjects::Framebuffer * configureFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO);
+
+    /**
+    *  @brief
+    *    Get the vector of all registered color render target inputs
+    *
+    *  @return
+    *    The vector of color render target inputs
+    */
+    const std::vector<Input<ColorRenderTarget *> *> & colorRenderTargetInputs() const;
+
+    /**
+    *  @brief
+    *    Get the vector of all registered depth render target inputs
+    *
+    *  @return
+    *    The vector of depth render target inputs
+    */
+    const std::vector<Input<DepthRenderTarget *> *> & depthRenderTargetInputs() const;
+
+    /**
+    *  @brief
+    *    Get the vector of all registered stencil render target inputs
+    *
+    *  @return
+    *    The vector of stencil render target inputs
+    */
+    const std::vector<Input<StencilRenderTarget *> *> & stencilRenderTargetInputs() const;
+
+    /**
+    *  @brief
+    *    Get the color render target input at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The color render target input at given index, 'null' if index is invalid
+    */
+    Input<ColorRenderTarget *> * colorRenderTargetInput(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the depth render target input at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The depth render target input at given index, 'null' if index is invalid
+    */
+    Input<DepthRenderTarget *> * depthRenderTargetInput(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the stencil render target input at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The stencil render target input at given index, 'null' if index is invalid
+    */
+    Input<StencilRenderTarget *> * stencilRenderTargetInput(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the color render target at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The color render target at given index, 'null' if index is invalid
+    */
+    ColorRenderTarget * inputColorRenderTarget(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the depth render target at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The depth render target at given index, 'null' if index is invalid
+    */
+    DepthRenderTarget * inputDepthRenderTarget(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the stencil render target at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The stencil render target at given index, 'null' if index is invalid
+    */
+    StencilRenderTarget * inputStencilRenderTarget(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the vector of all registered color render target outputs
+    *
+    *  @return
+    *    The vector of color render target outputs
+    */
+    const std::vector<Output<ColorRenderTarget *> *> & colorRenderTargetOutputs() const;
+
+    /**
+    *  @brief
+    *    Get the vector of all registered depth render target outputs
+    *
+    *  @return
+    *    The vector of depth render target outputs
+    */
+    const std::vector<Output<DepthRenderTarget *> *> & depthRenderTargetOutputs() const;
+
+    /**
+    *  @brief
+    *    Get the vector of all registered stencil render target outputs
+    *
+    *  @return
+    *    The vector of stencil render target outputs
+    */
+    const std::vector<Output<StencilRenderTarget *> *> & stencilRenderTargetOutputs() const;
+
+    /**
+    *  @brief
+    *    Get the color render target output at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The color render target output at given index, 'null' if index is invalid
+    */
+    Output<ColorRenderTarget *> * colorRenderTargetOutput(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the depth render target output at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The depth render target output at given index, 'null' if index is invalid
+    */
+    Output<DepthRenderTarget *> * depthRenderTargetOutput(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the stencil render target output at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The stencil render target output at given index, 'null' if index is invalid
+    */
+    Output<StencilRenderTarget *> * stencilRenderTargetOutput(size_t index) const;
+
+    /**
+    *  @brief
+    *    Registers new color render target input
     *
     *  @param[in] input
-    *    New render target input
+    *    New color render target input
     */
     void addRenderTargetInput(Input<ColorRenderTarget *> * input);
+
+    /**
+    *  @brief
+    *    Registers new depth render target input
+    *
+    *  @param[in] input
+    *    New depth render target input
+    */
     void addRenderTargetInput(Input<DepthRenderTarget *> * input);
+
+    /**
+    *  @brief
+    *    Registers new stencil render target input
+    *
+    *  @param[in] input
+    *    New stencil render target input
+    */
     void addRenderTargetInput(Input<StencilRenderTarget *> * input);
 
     /**
     *  @brief
-    *    Registers new render target input
+    *    Registers new color render target output
     *
     *  @param[in] input
-    *    New render target input
+    *    New render color target output
     */
-    void addRenderTargetOutput(Output<ColorRenderTarget *> * input);
-    void addRenderTargetOutput(Output<DepthRenderTarget *> * input);
-    void addRenderTargetOutput(Output<StencilRenderTarget *> * input);
+    void addRenderTargetOutput(Output<ColorRenderTarget *> * output);
 
+    /**
+    *  @brief
+    *    Registers new depth render target output
+    *
+    *  @param[in] input
+    *    New render depth target output
+    */
+    void addRenderTargetOutput(Output<DepthRenderTarget *> * output);
+
+    /**
+    *  @brief
+    *    Registers new stencil render target output
+    *
+    *  @param[in] input
+    *    New render stencil target output
+    */
+    void addRenderTargetOutput(Output<StencilRenderTarget *> * output);
+
+    /**
+    *  @brief
+    *    Iterate over all pairs of color render target inputs and outputs and call the callback
+    *
+    *  @param[in] callback
+    *    The callback
+    *  @param[in] includeIncompletePairs
+    *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
+    */
     void pairwiseRenderTargetsDo(std::function<void(Input<ColorRenderTarget *> *, Output<ColorRenderTarget *> *)> callback, bool includeIncompletePairs = false);
+
+    /**
+    *  @brief
+    *    Iterate over all pairs of depth render target inputs and outputs and call the callback
+    *
+    *  @param[in] callback
+    *    The callback
+    *  @param[in] includeIncompletePairs
+    *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
+    */
     void pairwiseRenderTargetsDo(std::function<void(Input<DepthRenderTarget *> *, Output<DepthRenderTarget *> *)> callback, bool includeIncompletePairs = false);
+
+    /**
+    *  @brief
+    *    Iterate over all pairs of stencil render target inputs and outputs and call the callback
+    *
+    *  @param[in] callback
+    *    The callback
+    *  @param[in] includeIncompletePairs
+    *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
+    */
     void pairwiseRenderTargetsDo(std::function<void(Input<StencilRenderTarget *> *, Output<StencilRenderTarget *> *)> callback, bool includeIncompletePairs = false);
-
-    globjects::Framebuffer * configureFBO(globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO) const;
-
-    static globjects::Framebuffer * configureFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO);
 
 protected:
     std::vector<Input <ColorRenderTarget   *> *> m_colorRenderTargetInputs;    ///< List of input color render targets

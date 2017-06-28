@@ -18,7 +18,7 @@ namespace gloperate
     class RenderbufferRenderTargetStage;
     class FramebufferStage;
     class BlitStage;
-}
+} // namespace gloperate
 
 
 namespace gloperate_glkernel
@@ -53,9 +53,7 @@ public:
     gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<int> multiFrameCount; ///< Maximum number of frames to aggregate
-
-    // Additional Inputs
+    Input<int>                 multiFrameCount; ///< Maximum number of frames to aggregate
 
 
 public:
@@ -78,12 +76,6 @@ public:
 
 
 protected:
-    // Virtual Stage interface
-    //virtual void onProcess() override;
-
-    // Helper functions
-    void disconnectRenderStage();
-
     /**
     *  @brief
     *    Set the intermediate frame generating stage/pipeline
@@ -92,6 +84,12 @@ protected:
     *    The render stage
     */
     void setRenderStage(gloperate::Stage * stage);
+
+    /**
+    *  @brief
+    *    Disconnects the current render stage.
+    */
+    void disconnectRenderStage();
 
 
 protected:
@@ -103,7 +101,7 @@ protected:
     std::unique_ptr<MultiFrameAggregationStage>               m_aggregationStage;              ///< Aggregation stage
 
     // Inserted Stage/Pipeline
-    Stage * m_renderStage; ///< Actual rendering stage, providing intermediate frames
+    Stage                                                   * m_renderStage;                   ///< Actual rendering stage, providing intermediate frames
 };
 
 

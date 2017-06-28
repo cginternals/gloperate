@@ -42,15 +42,15 @@ public:
 
 public:
     // Inputs
-    Input<gloperate::ColorRenderTarget *> source;         ///< FBO containing the source attachments
-    Input<glm::vec4>                      sourceViewport; ///< Viewport for reading from source FBO
-    Input<gloperate::ColorRenderTarget *> target;         ///< FBO with destination attachments
-    Input<glm::vec4>                      targetViewport; ///< Viewport for writing into destination FBO
+    Input<gloperate::ColorRenderTarget *> source;         ///< Source render target
+    Input<glm::vec4>                      sourceViewport; ///< Source Viewport for reading from source
+    Input<gloperate::ColorRenderTarget *> target;         ///< Target render target
+    Input<glm::vec4>                      targetViewport; ///< Target viewport for writing into target
     Input<gl::GLenum>                     minFilter;      ///< Interpolation mode used when target size is lower than source size (default: linear interpolation)
     Input<gl::GLenum>                     magFilter;      ///< Interpolation mode used when target size is greater than source size (default: nearest filtering)
 
     // Outputs
-    Output<gloperate::ColorRenderTarget *> targetOut;     ///< Pass-through render target
+    Output<gloperate::ColorRenderTarget *> targetOut;     ///< Pass-through target render target
 
 
 public:

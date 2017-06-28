@@ -53,14 +53,14 @@ public:
 
 public:
     // Interfaces
-    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface  canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<gloperate::ShapeType> shape;   ///< Shape type
-    Input<cppassist::FilePath>  texture; ///< Texture filename
-    Input<float>                angle;   ///< Current rotation angle
-    Input<bool>                 rotate;  ///< Rotation automatically?
-    Input<gloperate::Color>     color;   ///< Mixer color
+    Input<gloperate::ShapeType> shape;           ///< Shape type
+    Input<cppassist::FilePath>  texture;         ///< Texture filename
+    Input<float>                angle;           ///< Current rotation angle
+    Input<bool>                 rotate;          ///< Rotation automatically?
+    Input<gloperate::Color>     color;           ///< Mixer color
 
 
 public:
@@ -83,7 +83,19 @@ public:
 
 
 protected:
+    /**
+    *  @brief
+    *    React on rotation type change
+    *
+    *  @param[in] rotate
+    *    Rotation flag
+    *
+    *  @remarks
+    *    A 'rotate' value of 'true' enables automatic rotation, 'false' disables it
+    */
     void onRotateChanged(const bool & rotate);
+
+    // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
 

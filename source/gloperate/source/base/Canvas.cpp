@@ -78,9 +78,9 @@ Canvas::Canvas(Environment * environment)
     // Register canvas
     m_environment->registerCanvas(this);
 
-    m_colorTarget->setAttachmentType(AttachmentType::Color);
-    m_depthTarget->setAttachmentType(AttachmentType::Depth);
-    m_stencilTarget->setAttachmentType(AttachmentType::Stencil);
+    m_colorTarget->setUnderlyingAttachmentType(AttachmentType::Color);
+    m_depthTarget->setUnderlyingAttachmentType(AttachmentType::Depth);
+    m_stencilTarget->setUnderlyingAttachmentType(AttachmentType::Stencil);
 }
 
 Canvas::~Canvas()

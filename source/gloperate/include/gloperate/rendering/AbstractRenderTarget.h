@@ -63,7 +63,16 @@ public:
     *  @return
     *    The attachment type
     */
-    AttachmentType attachmentType() const;
+    AttachmentType underlyingAttachmentType() const;
+
+    /**
+    *  @brief
+    *    Set attachment type
+    *
+    *  @param[in] type
+    *    The attachment type
+    */
+    void setUnderlyingAttachmentType(AttachmentType underlyingAttachmentType);
 
     /**
     *  @brief
@@ -73,15 +82,6 @@ public:
     *    The attachment type as GLenum
     */
     gl::GLenum attachmentGLType() const;
-
-    /**
-    *  @brief
-    *    Set attachment type
-    *
-    *  @param[in] type
-    *    The attachment type
-    */
-    void setAttachmentType(AttachmentType attachmentType);
 
     /**
     *  @brief
@@ -126,7 +126,7 @@ public:
     *  @return
     *    The current target type
     */
-    RenderTargetType type() const;
+    RenderTargetType currentTargetType() const;
 
     /**
     *  @brief
@@ -189,17 +189,38 @@ public:
     */
     bool attachmentRequiresUserDefinedFramebuffer() const;
 
-    gl::GLenum attachmentBuffer() const;
+    /**
+    *  @brief
+    *    Get the symbolic constant of the attachment type used for glClearBuffer
+    *
+    *  @return
+    *    The symbolic constant for glClearBuffer parameter 1
+    */
+    gl::GLenum clearBufferAttachment() const;
 
-    gl::GLint attachmentDrawBuffer(size_t index) const;
+    /**
+    *  @brief
+    *    Get the draw buffer attachment index
+    *
+    *  @param[in] index
+    *    The current color attachment index.
+    *
+    *  @return
+    *    The draw buffer attachment index used for glClearBuffer parameter 1
+    *
+    *  @remarks
+    *    If this is no color attachment, '0' is returned
+    */
+    gl::GLint clearBufferDrawBuffer(size_t index) const;
+
 
 protected:
-    RenderTargetType                   m_type;           ///< Target type
-    AttachmentType                     m_attachmentType; ///< OpenGL attachment type
-    gl::GLenum                         m_attachment;     ///< Default framebuffer attachment target
-    globjects::Texture               * m_texture;        ///< Texture target
-    globjects::Renderbuffer          * m_renderbuffer;   ///< Renderbuffer target
-    globjects::FramebufferAttachment * m_userDefined;    ///< User defined framebuffer attachment target
+    RenderTargetType                   m_currentTargetType;        ///< Target type
+    AttachmentType                     m_internalAttachmentType;   ///< Internal OpenGL attachment type
+    gl::GLenum                         m_defaultFBOAttachment;     ///< Default framebuffer attachment target
+    globjects::Texture               * m_texture;                  ///< Texture target
+    globjects::Renderbuffer          * m_renderbuffer;             ///< Renderbuffer target
+    globjects::FramebufferAttachment * m_userDefinedFBOAttachment; ///< User-defined framebuffer attachment target
 };
 
 

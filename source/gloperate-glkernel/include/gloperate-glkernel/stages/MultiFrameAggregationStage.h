@@ -4,8 +4,6 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <glm/vec4.hpp>
-
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
@@ -72,11 +70,12 @@ protected:
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess() override;
 
+
 protected:
     // Data
-    std::unique_ptr<gloperate::ScreenAlignedTriangle> m_triangle; ///< Screen-aligned Triangle for 'blitting'
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO;         ///< Default framebuffer for render targets
-    std::unique_ptr<globjects::Framebuffer> m_fbo;                ///< Framebuffer for render targets
+    std::unique_ptr<gloperate::ScreenAlignedTriangle> m_triangle;   ///< Screen-aligned Triangle for 'blitting'
+    std::unique_ptr<globjects::Framebuffer>           m_defaultFBO; ///< Default framebuffer for render targets
+    std::unique_ptr<globjects::Framebuffer>           m_fbo;        ///< Framebuffer for render targets
 };
 
 

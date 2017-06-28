@@ -26,7 +26,7 @@ TextureFromRenderTargetExtractionStage::~TextureFromRenderTargetExtractionStage(
 
 void TextureFromRenderTargetExtractionStage::onProcess()
 {
-    switch (colorRenderTarget->type())
+    switch (colorRenderTarget->currentTargetType())
     {
     case RenderTargetType::Texture:
         texture.setValue(colorRenderTarget->textureAttachment());

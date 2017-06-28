@@ -44,11 +44,11 @@ public:
 
 
 public:
+    // Interfaces
+    RenderInterface renderInterface; ///< Renderinterface to manage render targets inputs and outputs
+
     // Inputs
-
-    Input<bool>                      clear;                  ///< Flag if buffers should get cleared
-
-    RenderInterface                  renderInterface;        ///< Renderinterface to manage render targets inputs and outputs
+    Input<bool>     clear;           ///< Flag if buffers should get cleared
 
 
 public:
@@ -78,12 +78,12 @@ protected:
 
 
 protected:
-    std::vector<Input<glm::vec4> *> m_colorValueInputs;
-    std::vector<Input<float> *> m_depthValueInputs;
-    std::vector<Input<int> *> m_stencilValueInputs;
-    std::vector<Input<std::pair<float, int>> *> m_depthStencilValueInputs;
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Default FBO for clearing
-    std::unique_ptr<globjects::Framebuffer> m_fbo;        ///< Intermediate FBO for clearing
+    std::vector<Input<glm::vec4> *>             m_colorValueInputs;        ///< Color clear values
+    std::vector<Input<float> *>                 m_depthValueInputs;        ///< Depth clear values
+    std::vector<Input<int> *>                   m_stencilValueInputs;      ///< Stencil clear values
+    std::vector<Input<std::pair<float, int>> *> m_depthStencilValueInputs; ///< Depth-stencil clear values
+    std::unique_ptr<globjects::Framebuffer>     m_defaultFBO;              ///< Default FBO for clearing
+    std::unique_ptr<globjects::Framebuffer>     m_fbo;                     ///< Intermediate FBO for clearing
 };
 
 

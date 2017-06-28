@@ -51,8 +51,8 @@ void TextureRenderTargetStage::onContextInit(gloperate::AbstractGLContext *)
     m_depthRenderTarget   = cppassist::make_unique<DepthRenderTarget>();
     m_stencilRenderTarget = cppassist::make_unique<StencilRenderTarget>();
 
-    m_colorRenderTarget->setAttachmentType(AttachmentType::Color);
-    m_stencilRenderTarget->setAttachmentType(AttachmentType::DepthStencil);
+    m_colorRenderTarget->setUnderlyingAttachmentType(AttachmentType::Color);
+    m_stencilRenderTarget->setUnderlyingAttachmentType(AttachmentType::DepthStencil);
 }
 
 void TextureRenderTargetStage::onContextDeinit(AbstractGLContext *)
@@ -88,7 +88,7 @@ void TextureRenderTargetStage::onProcess()
 
         m_depthRenderTarget->setTarget(m_texture.get());
 
-        m_depthRenderTarget->setAttachmentType(AttachmentType::Depth);
+        m_depthRenderTarget->setUnderlyingAttachmentType(AttachmentType::Depth);
         break;
     case GL_DEPTH_STENCIL:
     case GL_DEPTH24_STENCIL8:
@@ -98,7 +98,7 @@ void TextureRenderTargetStage::onProcess()
         m_depthRenderTarget->setTarget(m_texture.get());
         m_stencilRenderTarget->setTarget(m_texture.get());
 
-        m_depthRenderTarget->setAttachmentType(AttachmentType::DepthStencil);
+        m_depthRenderTarget->setUnderlyingAttachmentType(AttachmentType::DepthStencil);
         break;
     default: // Color attachment
         m_depthRenderTarget->releaseTarget();

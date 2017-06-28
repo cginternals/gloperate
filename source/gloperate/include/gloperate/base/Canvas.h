@@ -263,6 +263,7 @@ public:
 
 
 protected:
+    //@{
     /**
     *  @brief
     *    Check if a redraw is required
@@ -287,7 +288,9 @@ protected:
     *    Input slot
     */
     void stageInputChanged(AbstractSlot * slot);
+    //@}
 
+    //@{
     // Scripting functions
     void scr_onStageInputChanged(const cppexpose::Variant & func);
     cppexpose::Variant scr_getSlotTypes(const std::string & path);
@@ -301,10 +304,13 @@ protected:
     cppexpose::Variant scr_getSlot(const std::string & path, const std::string & slot);
     cppexpose::Variant scr_getValue(const std::string & path, const std::string & slot);
     void scr_setValue(const std::string & path, const std::string & slot, const cppexpose::Variant & value);
+    //@}
 
+    //@{
     // Helper functions
     Stage * getStageObject(const std::string & path) const;
     cppexpose::Variant getSlotStatus(const std::string & path, const std::string & slot);
+    //@}
 
 
 protected:
@@ -327,8 +333,8 @@ protected:
     std::mutex                           m_changedInputMutex;      ///< Mutex to access m_changedInputs
 
     std::unique_ptr<ColorRenderTarget>   m_colorTarget;            ///< Input render target for color attachment
-    std::unique_ptr<DepthRenderTarget>   m_depthTarget;            ///< Input render target for depth only attachment
-    std::unique_ptr<StencilRenderTarget> m_stencilTarget;          ///< Input render target for depth stencil attachment
+    std::unique_ptr<DepthRenderTarget>   m_depthTarget;            ///< Input render target for depth attachment
+    std::unique_ptr<StencilRenderTarget> m_stencilTarget;          ///< Input render target for stencil attachment
 };
 
 

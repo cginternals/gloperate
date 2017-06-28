@@ -26,7 +26,7 @@ namespace gloperate_qt
 
 /**
 *  @brief
-*    Window that renders a gloperate scene
+*    Window that displays a gloperate canvas
 */
 class GLOPERATE_QT_API RenderWindow : public OpenGLWindow
 {
@@ -83,8 +83,8 @@ protected:
 
 
 protected:
-    gloperate::Environment           * m_environment;      ///< Gloperate environment to which the window belongs (must NOT be null)
-    std::unique_ptr<gloperate::Canvas> m_canvas;           ///< Canvas that renders onto the window (never null)
+    gloperate::Environment                * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null)
+    std::unique_ptr<gloperate::Canvas>      m_canvas;      ///< Canvas that renders onto the window (never null)
     std::unique_ptr<globjects::Framebuffer> m_framebuffer; ///< Target framebuffer for rendering
 };
 

@@ -195,27 +195,6 @@ Output<StencilRenderTarget *> * RenderInterface::stencilRenderTargetOutput(size_
     return m_stencilRenderTargetOutputs.size() > index ? m_stencilRenderTargetOutputs.at(index) : nullptr;
 }
 
-ColorRenderTarget * RenderInterface::outputColorRenderTarget(size_t index) const
-{
-    const auto output = colorRenderTargetOutput(index);
-
-    return output ? **output : nullptr;
-}
-
-DepthRenderTarget * RenderInterface::outputDepthRenderTarget(size_t index) const
-{
-    const auto output = depthRenderTargetOutput(index);
-
-    return output ? **output : nullptr;
-}
-
-StencilRenderTarget * RenderInterface::outputStencilRenderTarget(size_t index) const
-{
-    const auto output = stencilRenderTargetOutput(index);
-
-    return output ? **output : nullptr;
-}
-
 void RenderInterface::addRenderTargetInput(Input<ColorRenderTarget *> * input)
 {
     m_colorRenderTargetInputs.push_back(input);
@@ -305,7 +284,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
 
         if (**input)
         {
-            drawBuffers.push_back((**input)->type() == RenderTargetType::DefaultFBOAttachment ? (**input)->defaultFramebufferAttachment() : gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
+            drawBuffers.push_back((**input)->currentTargetType() == RenderTargetType::DefaultFBOAttachment ? (**input)->defaultFramebufferAttachment() : gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
         }
         else
         {
@@ -354,22 +333,22 @@ globjects::Framebuffer * RenderInterface::configureFBO(size_t index, AbstractRen
 {
     auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
 
-    if (renderTarget->attachmentType() == AttachmentType::Depth)
+    if (renderTarget->underlyingAttachmentType() == AttachmentType::Depth)
     {
         attachmentIndex = gl::GL_DEPTH_ATTACHMENT;
     }
 
-    if (renderTarget->attachmentType() == AttachmentType::Stencil)
+    if (renderTarget->underlyingAttachmentType() == AttachmentType::Stencil)
     {
         attachmentIndex = gl::GL_STENCIL_ATTACHMENT;
     }
 
-    if (renderTarget->attachmentType() == AttachmentType::DepthStencil)
+    if (renderTarget->underlyingAttachmentType() == AttachmentType::DepthStencil)
     {
         attachmentIndex = gl::GL_DEPTH_STENCIL_ATTACHMENT;
     }
 
-    switch (renderTarget->type())
+    switch (renderTarget->currentTargetType())
     {
     case RenderTargetType::DefaultFBOAttachment:
         return defaultFBO;

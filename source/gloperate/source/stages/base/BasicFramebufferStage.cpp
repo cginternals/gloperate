@@ -20,11 +20,11 @@ CPPEXPOSE_COMPONENT(BasicFramebufferStage, gloperate::Stage)
 
 BasicFramebufferStage::BasicFramebufferStage(Environment * environment, const std::string & name)
 : Stage(environment, "BasicFramebufferStage", name)
-, viewport     ("viewport",     this)
-, colorTexture ("colorTexture", this)
-, depthTexture ("depthTexture", this)
-, colorBuffer  ("colorBuffer",  this)
-, depthBuffer  ("depthBuffer",  this)
+, viewport    ("viewport",     this)
+, colorTexture("colorTexture", this)
+, depthTexture("depthTexture", this)
+, colorBuffer ("colorBuffer",  this)
+, depthBuffer ("depthBuffer",  this)
 {
 }
 
@@ -35,10 +35,10 @@ BasicFramebufferStage::~BasicFramebufferStage()
 void BasicFramebufferStage::onContextInit(AbstractGLContext *)
 {
     m_colorBuffer = cppassist::make_unique<ColorRenderTarget>();
-    m_colorBuffer->setAttachmentType(AttachmentType::Color);
+    m_colorBuffer->setUnderlyingAttachmentType(AttachmentType::Color);
 
     m_depthBuffer = cppassist::make_unique<DepthRenderTarget>();
-    m_depthBuffer->setAttachmentType(AttachmentType::Depth);
+    m_depthBuffer->setUnderlyingAttachmentType(AttachmentType::Depth);
 
     // Create color texture
     m_colorTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
