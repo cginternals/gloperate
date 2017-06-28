@@ -72,7 +72,7 @@ void IntermediateFramePreparationStage::onProcess()
         auto targetFBO = m_targetFBO.get();
         auto targetAttachment = gl::GL_COLOR_ATTACHMENT0;
 
-        targetFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, *intermediateFrameTexture);
+        targetFBO->attachTexture(targetAttachment, *intermediateFrameTexture);
 
         sourceFBO->blit(sourceAttachment, rect, targetFBO, targetAttachment, rect, gl::GL_COLOR_BUFFER_BIT, gl::GL_NEAREST);
     }
