@@ -59,14 +59,12 @@ ClearStage::~ClearStage()
 
 void ClearStage::onContextInit(AbstractGLContext *)
 {
-    m_defaultFBO = globjects::Framebuffer::defaultFBO();
-    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
+    renderInterface.onContextInit();
 }
 
 void ClearStage::onContextDeinit(AbstractGLContext *)
 {
-    m_defaultFBO = nullptr;
-    m_fbo = nullptr;
+    renderInterface.onContextDeinit();
 }
 
 void ClearStage::onProcess()
@@ -101,7 +99,7 @@ void ClearStage::onProcess()
                 return;
             }
 
-            auto fbo = renderInterface.configureFBO(colorAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+            auto fbo = renderInterface.obtainFBO(colorAttachmentIndex, **input);
 
             const auto attachmentBuffer = (**input)->clearBufferAttachment();
             const auto attachmentDrawBuffer = (**input)->clearBufferDrawBuffer(colorAttachmentIndex);
@@ -125,7 +123,7 @@ void ClearStage::onProcess()
                     return;
                 }
 
-                auto fbo = renderInterface.configureFBO(depthAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+                auto fbo = renderInterface.obtainFBO(depthAttachmentIndex, **input);
 
                 fbo->clearBuffer(gl::GL_DEPTH, (**input)->clearBufferDrawBuffer(depthAttachmentIndex), **m_depthValueInputs.at(depthAttachmentIndex));
 
@@ -138,7 +136,7 @@ void ClearStage::onProcess()
                     return;
                 }
 
-                auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+                auto fbo = renderInterface.obtainFBO(depthStencilAttachmentIndex, **input);
 
                 fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).second, (**input)->clearBufferDrawBuffer(depthStencilAttachmentIndex));
 
@@ -160,7 +158,7 @@ void ClearStage::onProcess()
                     return;
                 }
 
-                auto fbo = renderInterface.configureFBO(stencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+                auto fbo = renderInterface.obtainFBO(stencilAttachmentIndex, **input);
 
                 fbo->clearBuffer(gl::GL_STENCIL, (**input)->clearBufferDrawBuffer(stencilAttachmentIndex), **m_stencilValueInputs.at(stencilAttachmentIndex));
 
@@ -178,7 +176,7 @@ void ClearStage::onProcess()
                     return;
                 }
 
-                auto fbo = renderInterface.configureFBO(depthStencilAttachmentIndex, **input, m_fbo.get(), m_defaultFBO.get());
+                auto fbo = renderInterface.obtainFBO(depthStencilAttachmentIndex, **input);
 
                 fbo->clearBuffer(gl::GL_DEPTH_STENCIL, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).first, (**m_depthStencilValueInputs.at(depthStencilAttachmentIndex)).second, (**input)->clearBufferDrawBuffer(depthStencilAttachmentIndex));
 

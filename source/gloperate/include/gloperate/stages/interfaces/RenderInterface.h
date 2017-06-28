@@ -85,7 +85,7 @@ public:
 
     /**
     *  @brief
-    *    Configures all render targets as attachments for a framebuffer
+    *    Get a configured framebuffer containing all render targets as attachments
     *
     *    Further, the draw buffers are updated on the framebuffer.
     *
@@ -100,11 +100,25 @@ public:
     *  @remarks
     *    allRenderTargetsCompatible() is expected to return 'true'.
     */
-    globjects::Framebuffer * configureFBO(globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO) const;
+    globjects::Framebuffer * obtainFBO() const;
 
     /**
     *  @brief
-    *    Configures one render target as attachment for a framebuffer
+    *    Get a configured framebuffer containing one render target as attachment
+    *
+    *  @param[in] index
+    *    The next color attachment index
+    *  @param[in] renderTarget
+    *    The render target to attach
+    *
+    *  @return
+    *    The matching framebuffer; either a user-defined FBO or an default FBO, depending on the type of the render target attachment
+    */
+    globjects::Framebuffer * obtainFBO(size_t index, AbstractRenderTarget * renderTarget) const;
+
+    /**
+    *  @brief
+    *    Get a configured framebuffer containing one render target as attachment
     *
     *  @param[in] index
     *    The next color attachment index
@@ -112,13 +126,11 @@ public:
     *    The render target to attach
     *  @param[in] fbo
     *    The user-defined framebuffer used for user-defined attachments
-    *  @param[in] defaultFBO
-    *    The default framebuffer used for default framebuffer attachments
     *
     *  @return
     *    The matching framebuffer; either fbo or defaultFBO, depending on the type of the render target attachment
     */
-    static globjects::Framebuffer * configureFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO);
+    static globjects::Framebuffer * obtainFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO);
 
     /**
     *  @brief
@@ -369,7 +381,28 @@ public:
     */
     void pairwiseRenderTargetsDo(std::function<void(Input<StencilRenderTarget *> *, Output<StencilRenderTarget *> *)> callback, bool includeIncompletePairs = false);
 
+
+public:
+    /**
+    *  @brief
+    *    Initialize in OpenGL context
+    *
+    *  @see Stage::onContextInit
+    */
+    void onContextInit();
+
+    /**
+    *  @brief
+    *    De-Initialize in OpenGL context
+    *
+    *  @see Stage::onContextDeinit()
+    */
+    void onContextDeinit();
+
+
 protected:
+    std::unique_ptr<globjects::Framebuffer>      m_defaultFBO;                 ///< Default FBO for configuration
+    std::unique_ptr<globjects::Framebuffer>      m_fbo;                        ///< Intermediate FBO for configuration
     std::vector<Input <ColorRenderTarget   *> *> m_colorRenderTargetInputs;    ///< List of input color render targets
     std::vector<Input <DepthRenderTarget   *> *> m_depthRenderTargetInputs;    ///< List of input depth render targets
     std::vector<Input <StencilRenderTarget *> *> m_stencilRenderTargetInputs;  ///< List of input depth-stencil render targets

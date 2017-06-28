@@ -75,8 +75,6 @@ protected:
 
 protected:
     // Data
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Default framebuffer for render targets
-    std::unique_ptr<globjects::Framebuffer> m_fbo;        ///< Framebuffer for render targets
     std::unique_ptr<globjects::Framebuffer> m_targetFBO;  ///< Framebuffer for blitting target
 };
 

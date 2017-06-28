@@ -34,15 +34,15 @@ MultiFrameAggregationStage::~MultiFrameAggregationStage()
 void MultiFrameAggregationStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
     m_triangle = cppassist::make_unique<gloperate::ScreenAlignedTriangle>();
-    m_defaultFBO = globjects::Framebuffer::defaultFBO();
-    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
+
+    renderInterface.onContextInit();
 }
 
 void MultiFrameAggregationStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
 {
     m_triangle = nullptr;
-    m_defaultFBO = nullptr;
-    m_fbo = nullptr;
+
+    renderInterface.onContextDeinit();
 }
 
 void MultiFrameAggregationStage::onProcess()
@@ -54,7 +54,7 @@ void MultiFrameAggregationStage::onProcess()
         return;
     }
 
-    auto fbo = renderInterface.configureFBO(m_fbo.get(), m_defaultFBO.get());
+    auto fbo = renderInterface.obtainFBO();
 
     gl::glViewport(
         renderInterface.viewport->x,

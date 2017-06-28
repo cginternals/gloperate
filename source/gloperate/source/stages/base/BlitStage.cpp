@@ -60,8 +60,8 @@ void BlitStage::onProcess()
         static_cast<gl::GLint>((*targetViewport).w)
     }};
 
-    globjects::Framebuffer * sourceFBO = RenderInterface::configureFBO(0, *source, m_sourceFBO.get(), m_defaultFBO.get());
-    globjects::Framebuffer * targetFBO = RenderInterface::configureFBO(0, *target, m_targetFBO.get(), m_defaultFBO.get());
+    globjects::Framebuffer * sourceFBO = RenderInterface::obtainFBO(0, *source, m_sourceFBO.get(), m_defaultFBO.get());
+    globjects::Framebuffer * targetFBO = RenderInterface::obtainFBO(0, *target, m_targetFBO.get(), m_defaultFBO.get());
 
     auto sourceAttachment = source->drawBufferAttachment(0);
     auto targetAttachment = target->drawBufferAttachment(0);

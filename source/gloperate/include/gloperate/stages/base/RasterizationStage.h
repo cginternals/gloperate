@@ -75,11 +75,6 @@ protected:
     virtual void onProcess() override;
     virtual void onContextInit(AbstractGLContext * content) override;
     virtual void onContextDeinit(AbstractGLContext * content) override;
-
-
-protected:
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Default FBO for rasterization
-    std::unique_ptr<globjects::Framebuffer> m_fbo;        ///< Intermediate FBO for rasterization
 };
 
 

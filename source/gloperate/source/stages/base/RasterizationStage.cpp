@@ -29,14 +29,12 @@ RasterizationStage::~RasterizationStage()
 
 void RasterizationStage::onContextInit(AbstractGLContext *)
 {
-    m_defaultFBO = globjects::Framebuffer::defaultFBO();
-    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
+    renderInterface.onContextInit();
 }
 
 void RasterizationStage::onContextDeinit(AbstractGLContext *)
 {
-    m_defaultFBO = nullptr;
-    m_fbo = nullptr;
+    renderInterface.onContextDeinit();
 }
 
 void RasterizationStage::onProcess()
@@ -56,7 +54,7 @@ void RasterizationStage::onProcess()
         gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
         // Configure FBO
-        auto fbo = renderInterface.configureFBO(m_fbo.get(), m_defaultFBO.get());
+        auto fbo = renderInterface.obtainFBO();
 
         // Bind FBO
         fbo->bind(gl::GL_FRAMEBUFFER);

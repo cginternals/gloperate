@@ -35,16 +35,16 @@ IntermediateFramePreparationStage::~IntermediateFramePreparationStage()
 
 void IntermediateFramePreparationStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
-    m_defaultFBO = globjects::Framebuffer::defaultFBO();
-    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
     m_targetFBO = cppassist::make_unique<globjects::Framebuffer>();
+
+    renderInterface.onContextInit();
 }
 
 void IntermediateFramePreparationStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
 {
-    m_defaultFBO = nullptr;
-    m_fbo = nullptr;
     m_targetFBO = nullptr;
+
+    renderInterface.onContextDeinit();
 }
 
 void IntermediateFramePreparationStage::onProcess()
@@ -66,7 +66,7 @@ void IntermediateFramePreparationStage::onProcess()
             static_cast<gl::GLint>(renderInterface.viewport->w)
         }};
 
-        auto sourceFBO = renderInterface.configureFBO(0, *intermediateRenderTarget, m_fbo.get(), m_defaultFBO.get());
+        auto sourceFBO = renderInterface.obtainFBO(0, *intermediateRenderTarget);
         auto sourceAttachment = (*intermediateRenderTarget)->drawBufferAttachment(0);
 
         auto targetFBO = m_targetFBO.get();

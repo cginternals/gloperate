@@ -337,7 +337,7 @@ void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<StencilRe
     }
 }
 
-globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO) const
+globjects::Framebuffer * RenderInterface::obtainFBO() const
 {
     assert(allRenderTargetsCompatible());
 
@@ -346,7 +346,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
     auto colorAttachmentIndex = size_t(0);
     for (auto input : m_colorRenderTargetInputs)
     {
-        auto nextFBO = configureFBO(colorAttachmentIndex, **input, fbo, defaultFBO);
+        auto nextFBO = obtainFBO(colorAttachmentIndex, **input);
 
         if (!currentFBO)
         {
@@ -372,7 +372,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
 
     for (auto input : m_depthRenderTargetInputs)
     {
-        auto nextFBO = configureFBO(0, **input, fbo, defaultFBO);
+        auto nextFBO = obtainFBO(0, **input);
 
         if (!currentFBO)
         {
@@ -387,7 +387,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
 
     for (auto input : m_stencilRenderTargetInputs)
     {
-        auto nextFBO = configureFBO(0, **input, fbo, defaultFBO);
+        auto nextFBO = obtainFBO(0, **input);
 
         if (!currentFBO)
         {
@@ -405,7 +405,12 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
     return currentFBO;
 }
 
-globjects::Framebuffer * RenderInterface::configureFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO)
+globjects::Framebuffer * RenderInterface::obtainFBO(size_t index, AbstractRenderTarget * renderTarget) const
+{
+    return obtainFBO(index, renderTarget, m_fbo.get(), m_defaultFBO.get());
+}
+
+globjects::Framebuffer * RenderInterface::obtainFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO)
 {
     auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
 
@@ -494,6 +499,18 @@ globjects::Framebuffer * RenderInterface::configureFBO(size_t index, AbstractRen
     default:
         return nullptr;
     }
+}
+
+void RenderInterface::onContextInit()
+{
+    m_defaultFBO = globjects::Framebuffer::defaultFBO();
+    m_fbo = cppassist::make_unique<globjects::Framebuffer>();
+}
+
+void RenderInterface::onContextDeinit()
+{
+    m_defaultFBO = nullptr;
+    m_fbo = nullptr;
 }
 
 

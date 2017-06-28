@@ -82,8 +82,6 @@ protected:
     std::vector<Input<float> *>                 m_depthValueInputs;        ///< Depth clear values
     std::vector<Input<int> *>                   m_stencilValueInputs;      ///< Stencil clear values
     std::vector<Input<std::pair<float, int>> *> m_depthStencilValueInputs; ///< Depth-stencil clear values
-    std::unique_ptr<globjects::Framebuffer>     m_defaultFBO;              ///< Default FBO for clearing
-    std::unique_ptr<globjects::Framebuffer>     m_fbo;                     ///< Intermediate FBO for clearing
 };
 
 

@@ -74,8 +74,6 @@ protected:
 protected:
     // Data
     std::unique_ptr<gloperate::ScreenAlignedTriangle> m_triangle;   ///< Screen-aligned Triangle for 'blitting'
-    std::unique_ptr<globjects::Framebuffer>           m_defaultFBO; ///< Default framebuffer for render targets
-    std::unique_ptr<globjects::Framebuffer>           m_fbo;        ///< Framebuffer for render targets
 };
 
 
