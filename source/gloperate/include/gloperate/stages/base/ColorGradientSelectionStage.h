@@ -43,7 +43,7 @@ public:
     Input<std::string>                    gradientName;  ///< Name of chosen gradient
 
     Output<const AbstractColorGradient *> gradient;      ///< Gradient
-    Output<size_t>                        gradientIndex; ///< Index of gradient
+    Output<unsigned int>                  gradientIndex; ///< Index of gradient
 
 
 public:

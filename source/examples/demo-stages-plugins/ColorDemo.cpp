@@ -41,7 +41,8 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
 , rotate("rotate", this, false)
 , color("color", this, Color(255, 255, 255, 255))
 , colorFile("colorFile", this, dataPath() + "/gloperate/gradients/colorbrewer.json")
-, gradient("gradient", this, "")
+, gradient("gradient", this)
+, colorValue("colorValue", this, 0.5f)
 , m_timer(cppassist::make_unique<TimerStage>(environment, "Timer"))
 , m_trackball(cppassist::make_unique<TrackballStage>(environment, "Trackball"))
 , m_shape(cppassist::make_unique<ShapeStage>(environment, "Shape"))
@@ -136,17 +137,23 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
     m_colorGradientLoading->colorGradientList.valueChanged.connect([this] (const gloperate::ColorGradientList * list) {
         gloperate::ColorGradientPreparation gradientsTool(*list, { 80, 20 });
         gradientsTool.configureProperty(&gradient);
+        gradient.setValue(list->gradients().begin()->first);
     });
 
-    // Color gradien selection stage
+    // Color gradient selection stage
     addStage(m_colorGradientSelection.get());
     m_colorGradientSelection->gradients << m_colorGradientLoading->colorGradientList;
     m_colorGradientSelection->gradientName << gradient;
 
+    // Color gradients texture stage
+    addStage(m_colorGradientTexture.get());
+    m_colorGradientTexture->gradients << m_colorGradientLoading->colorGradientList;
+    m_colorGradientTexture->textureWidth = 128;
+
     // Colorize program stage
     addStage(m_colorizeProgram.get());
-    *m_colorizeProgram->createInput<cppassist::FilePath>("shader1") = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
-    *m_colorizeProgram->createInput<cppassist::FilePath>("shader2") = dataPath + "/gloperate/shaders/demo/colorize.frag";
+    *m_colorizeProgram->createInput<cppassist::FilePath>("shader1") = dataPath + "/gloperate/shaders/demo/gradient.vert";
+    *m_colorizeProgram->createInput<cppassist::FilePath>("shader2") = dataPath + "/gloperate/shaders/demo/gradient.frag";
 
     // Colorize render pass stage
     addStage(m_colorizeRenderPass.get());
@@ -154,9 +161,10 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
     m_colorizeRenderPass->program << m_colorizeProgram->program;
     m_colorizeRenderPass->culling = false;
     m_colorizeRenderPass->depthTest = false;
-    m_colorizeRenderPass->createInput("color") << this->color;
     m_colorizeRenderPass->createInput("source") << m_shapeRasterization->colorTextureOut;
-    m_colorizeRenderPass->createInput("gradient") << m_colorGradientSelection->gradientIndex;
+    m_colorizeRenderPass->createInput("gradientIndex") << m_colorGradientSelection->gradientIndex;
+    m_colorizeRenderPass->createInput("gradientTexture") << m_colorGradientTexture->gradientTexture;
+    m_colorizeRenderPass->createInput("gradientColor") << colorValue;
 
     // Colorize rasterization stage
     addStage(m_colorizeRasterization.get());

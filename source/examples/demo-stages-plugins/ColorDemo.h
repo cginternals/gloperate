@@ -57,13 +57,14 @@ public:
     gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<gloperate::ShapeType> shape;     ///< Shape type
-    Input<cppassist::FilePath>  texture;   ///< Texture filename
-    Input<float>                angle;     ///< Current rotation angle
-    Input<bool>                 rotate;    ///< Rotation automatically?
-    Input<gloperate::Color>     color;     ///< Mixer color
-    Input<cppassist::FilePath>  colorFile; ///< Color gradients filename
-    Input<std::string>          gradient;  ///< Selected gradient
+    Input<gloperate::ShapeType> shape;      ///< Shape type
+    Input<cppassist::FilePath>  texture;    ///< Texture filename
+    Input<float>                angle;      ///< Current rotation angle
+    Input<bool>                 rotate;     ///< Rotation automatically?
+    Input<gloperate::Color>     color;      ///< Mixer color
+    Input<cppassist::FilePath>  colorFile;  ///< Color gradients filename
+    Input<std::string>          gradient;   ///< Selected gradient
+    Input<float>                colorValue; ///< Value for choosing color
 
 
 public:
