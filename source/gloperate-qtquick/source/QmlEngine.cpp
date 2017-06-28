@@ -233,7 +233,7 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
         buffer.open(QIODevice::WriteOnly);
-        conversion.save(&buffer, "PNG");
+        conversion.save(&buffer, "PNG", 0);
         QString imgBase64 = QString::fromLatin1(byteArray.toBase64().data());
 
         return toScriptValue("data:image/png;base64," + imgBase64.toStdString());
