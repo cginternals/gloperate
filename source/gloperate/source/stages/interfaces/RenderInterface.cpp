@@ -96,19 +96,95 @@ bool RenderInterface::allRenderTargetsCompatible() const
 
     auto allDefaultFramebufferAttachments =
         std::all_of(m_colorRenderTargetInputs.begin(), m_colorRenderTargetInputs.end(), [](Input<ColorRenderTarget *> * input) {
-        return input ? (**input)->attachmentRequiresUserDefinedFramebuffer() : true;
-    }) && std::all_of(m_depthRenderTargetInputs.begin(), m_depthRenderTargetInputs.end(), [](Input<DepthRenderTarget *> * input) {
-        return input ? (**input)->attachmentRequiresUserDefinedFramebuffer() : true;
-    }) && std::all_of(m_stencilRenderTargetInputs.begin(), m_stencilRenderTargetInputs.end(), [](Input<StencilRenderTarget *> * input) {
-        return input ? (**input)->attachmentRequiresUserDefinedFramebuffer() : true;
-    });
+            if (input == nullptr)
+            {
+                return true;
+            }
+
+            auto renderTarget = **input;
+
+            if (renderTarget == nullptr)
+            {
+                return true;
+            }
+
+            return !renderTarget->attachmentRequiresUserDefinedFramebuffer();
+        })
+        && std::all_of(m_depthRenderTargetInputs.begin(), m_depthRenderTargetInputs.end(), [](Input<DepthRenderTarget *> * input) {
+            if (input == nullptr)
+            {
+                return true;
+            }
+
+            auto renderTarget = **input;
+
+            if (renderTarget == nullptr)
+            {
+                return true;
+            }
+
+            return !renderTarget->attachmentRequiresUserDefinedFramebuffer();
+        })
+        && std::all_of(m_stencilRenderTargetInputs.begin(), m_stencilRenderTargetInputs.end(), [](Input<StencilRenderTarget *> * input) {
+            if (input == nullptr)
+            {
+                return true;
+            }
+
+            auto renderTarget = **input;
+
+            if (renderTarget == nullptr)
+            {
+                return true;
+            }
+
+            return !renderTarget->attachmentRequiresUserDefinedFramebuffer();
+        });
 
     auto allUserDefinedFramebufferAttachments = std::all_of(m_colorRenderTargetInputs.begin(), m_colorRenderTargetInputs.end(), [](Input<ColorRenderTarget *> * input) {
-            return input ? !(**input)->attachmentRequiresUserDefinedFramebuffer() : true;
-        }) && std::all_of(m_depthRenderTargetInputs.begin(), m_depthRenderTargetInputs.end(), [](Input<DepthRenderTarget *> * input) {
-            return input ? !(**input)->attachmentRequiresUserDefinedFramebuffer() : true;
-        }) && std::all_of(m_stencilRenderTargetInputs.begin(), m_stencilRenderTargetInputs.end(), [](Input<StencilRenderTarget *> * input) {
-            return input ? !(**input)->attachmentRequiresUserDefinedFramebuffer() : true;
+            if (input == nullptr)
+            {
+                return true;
+            }
+
+            auto renderTarget = **input;
+
+            if (renderTarget == nullptr)
+            {
+                return true;
+            }
+
+            return renderTarget->attachmentRequiresUserDefinedFramebuffer();
+        })
+        && std::all_of(m_depthRenderTargetInputs.begin(), m_depthRenderTargetInputs.end(), [](Input<DepthRenderTarget *> * input) {
+            if (input == nullptr)
+            {
+                return true;
+            }
+
+            auto renderTarget = **input;
+
+            if (renderTarget == nullptr)
+            {
+                return true;
+            }
+
+            return renderTarget->attachmentRequiresUserDefinedFramebuffer();
+        })
+        && std::all_of(m_stencilRenderTargetInputs.begin(), m_stencilRenderTargetInputs.end(), [](Input<StencilRenderTarget *> * input) {
+            if (input == nullptr)
+            {
+                return true;
+            }
+
+            auto renderTarget = **input;
+
+            if (renderTarget == nullptr)
+            {
+                return true;
+            }
+
+            return renderTarget->attachmentRequiresUserDefinedFramebuffer();
         });
 
     return allDefaultFramebufferAttachments != allUserDefinedFramebufferAttachments && numberOfDepthAttachments <= 1;
@@ -284,7 +360,7 @@ globjects::Framebuffer * RenderInterface::configureFBO(globjects::Framebuffer * 
 
         if (**input)
         {
-            drawBuffers.push_back((**input)->currentTargetType() == RenderTargetType::DefaultFBOAttachment ? (**input)->defaultFramebufferAttachment() : gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
+            drawBuffers.push_back((**input)->drawBufferAttachment(colorAttachmentIndex));
         }
         else
         {

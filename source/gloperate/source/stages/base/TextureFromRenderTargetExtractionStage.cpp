@@ -26,6 +26,13 @@ TextureFromRenderTargetExtractionStage::~TextureFromRenderTargetExtractionStage(
 
 void TextureFromRenderTargetExtractionStage::onProcess()
 {
+    if (*colorRenderTarget == nullptr)
+    {
+        texture.setValue(nullptr);
+
+        return;
+    }
+
     switch (colorRenderTarget->currentTargetType())
     {
     case RenderTargetType::Texture:

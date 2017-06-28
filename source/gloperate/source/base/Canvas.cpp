@@ -334,33 +334,12 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
     // Update render stage input render targets
     m_renderStage->forAllInputs<gloperate::ColorRenderTarget *>([this](Input<ColorRenderTarget *> * input) {
-        const auto renderTarget = **input;
-
-        if (renderTarget == nullptr)
-        {
-            return;
-        }
-
         input->setValue(m_colorTarget.get());
     });
     m_renderStage->forAllInputs<gloperate::DepthRenderTarget *>([this](Input<DepthRenderTarget *> * input) {
-        const auto renderTarget = **input;
-
-        if (renderTarget == nullptr)
-        {
-            return;
-        }
-
         input->setValue(m_depthTarget.get());
     });
     m_renderStage->forAllInputs<gloperate::StencilRenderTarget *>([this](Input<StencilRenderTarget *> * input) {
-        const auto renderTarget = **input;
-
-        if (renderTarget == nullptr)
-        {
-            return;
-        }
-
         input->setValue(m_stencilTarget.get());
     });
 
