@@ -36,7 +36,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Demo pipeline displaying a rotating shape
+*    Demo pipeline demonstrating the use of color gradients
 */
 class ColorDemo : public gloperate::Pipeline
 {
@@ -46,7 +46,7 @@ public:
       , "RenderStage Demos" // Tags
       , ""                  // Icon
       , ""                  // Annotations
-      , "Demo pipeline displaying a rotating shape"
+      , "Demo pipeline demonstrating the use of color gradients"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
