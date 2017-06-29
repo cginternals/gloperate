@@ -136,6 +136,8 @@ Item
 
                     property var pluginPaths: []
 
+                    spacing: Ui.style.paddingMedium
+
                     function update()
                     {
                         pluginPaths = gloperate.components.pluginPaths();
