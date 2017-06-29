@@ -8,6 +8,7 @@ import QmlToolbox.Controls 1.0
 
 import gloperate.rendering 1.0
 
+
 Item
 {
     anchors.fill: parent
@@ -123,12 +124,16 @@ Item
 
                     property var pluginPaths: []
 
-                    function updatePluginPaths() {
-                        settings.pluginPaths = gloperate.components.getPluginPaths()
-                        pluginPathEditor.pluginPaths = settings.pluginPaths.split(';')
+                    function updatePluginPaths()
+                    {
+                        settings.pluginPaths = gloperate.components.getPluginPaths();
+                        pluginPathEditor.pluginPaths = settings.pluginPaths.split(';');
                         gloperate.components.scanPlugins();
-                        if(pluginPathEditor.pluginPaths == "") {pluginPathEditor.pluginPaths = []}
 
+                        if (pluginPathEditor.pluginPaths == "")
+                        {
+                            pluginPathEditor.pluginPaths = [];
+                        }
                     }
 
                     Repeater
@@ -137,6 +142,8 @@ Item
 
                         Row
                         {
+                            spacing: Ui.style.paddingMedium
+
                             Label
                             {                                
                                 text: pluginPathEditor.pluginPaths[index]
@@ -144,13 +151,13 @@ Item
 
                             ClickLabel
                             {
-                                text: " delete"
+                                text: "delete"
                                 Layout.alignment: Qt.AlignRight
 
                                 onClicked:
                                 {
-                                    gloperate.components.removePluginPath(pluginPathEditor.pluginPaths[index])
-                                    pluginPathEditor.updatePluginPaths()
+                                    gloperate.components.removePluginPath(pluginPathEditor.pluginPaths[index]);
+                                    pluginPathEditor.updatePluginPaths();
                                 }
                             }
                         }
@@ -158,37 +165,38 @@ Item
 
                     ClickLabel
                     {
-                        text:   "Select Path"
+                        text: "Select Path"
 
-                        FileDialog {
+                        FileDialog
+                        {
                             id: fileDialog
-                            
-                            selectFolder: true
 
-                            folder: shortcuts.home
-                            onAccepted: {
+                            selectFolder: true
+                            folder:       shortcuts.home
+
+                            onAccepted:
+                            {
                                 var path = fileDialog.fileUrl.toString();
 
                                 // remove prefixed "file:///"
                                 path = path.replace(/^(file:\/{3})/,"");
 
-                                gloperate.components.addPluginPath(path)
-                                pluginPathEditor.updatePluginPaths()
+                                gloperate.components.addPluginPath(path);
+                                pluginPathEditor.updatePluginPaths();
                             }
                         }
 
                         onClicked:
                         {
-                            fileDialog.open()
+                            fileDialog.open();
                         }
                     }
-                    
+
                     Component.onCompleted:
                     {
-                        pluginPathEditor.updatePluginPaths()
+                        pluginPathEditor.updatePluginPaths();
                     }
                 }
-
             }
         }
     }
