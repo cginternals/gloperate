@@ -181,10 +181,7 @@ Item
 
                             onAccepted:
                             {
-                                var path = fileDialog.fileUrl.toString();
-
-                                // remove prefixed "file:///"
-                                path = path.replace(/^(file:\/{3})/,"");
+                                var path = QmlUtils.urlToLocalFile(fileDialog.fileUrl);
 
                                 gloperate.components.addPluginPath(path);
                                 item.settings.pluginPaths = gloperate.components.getPluginPaths();
