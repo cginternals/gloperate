@@ -123,7 +123,7 @@ public:
     *  @remarks
     *    The order of gradients in the list is preserved.
     */
-    std::vector<Image> pixmaps(const glm::ivec2 & size) const;
+    std::vector<Image> pixmaps(const glm::uvec2 & size) const;
 
     /**
     *  @brief

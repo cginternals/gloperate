@@ -39,7 +39,7 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
-    ${include_path}/ColorDemo.h
+    ${include_path}/ColorGradientDemo.h
     ${include_path}/DemoAntialiasableTriangleStage.h
     ${include_path}/DemoAntialiasingPipeline.h
     ${include_path}/DemoDOFCubeStage.h
@@ -62,7 +62,7 @@ set(headers
 set(sources
     ${source_path}/plugin.cpp
 
-    ${source_path}/ColorDemo.cpp
+    ${source_path}/ColorGradientDemo.cpp
     ${source_path}/DemoAntialiasableTriangleStage.cpp
     ${source_path}/DemoAntialiasingPipeline.cpp
     ${source_path}/DemoDOFCubeStage.cpp

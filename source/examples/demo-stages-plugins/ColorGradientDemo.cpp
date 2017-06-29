@@ -1,5 +1,5 @@
 
-#include "ColorDemo.h"
+#include "ColorGradientDemo.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/ProgramStage.h>
@@ -17,15 +17,15 @@
 #include <gloperate/rendering/Image.h>
 
 
-CPPEXPOSE_COMPONENT(ColorDemo, gloperate::Stage)
+CPPEXPOSE_COMPONENT(ColorGradientDemo, gloperate::Stage)
 
 
 using namespace cppexpose;
 using namespace gloperate;
 
 
-ColorDemo::ColorDemo(Environment * environment, const std::string & name)
-: Pipeline(environment, "ColorDemo", name)
+ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::string & name)
+: Pipeline(environment, "ColorGradientDemo", name)
 , renderInterface(this)
 , colors("colors", this, dataPath() + "/gloperate/gradients/colorbrewer.json")
 , gradient("gradient", this)
@@ -123,6 +123,6 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
     renderInterface.rendered << m_shapeRasterization->renderInterface.rendered;
 }
 
-ColorDemo::~ColorDemo()
+ColorGradientDemo::~ColorGradientDemo()
 {
 }

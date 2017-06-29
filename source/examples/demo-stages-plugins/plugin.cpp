@@ -1,7 +1,7 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include "ColorDemo.h"
+#include "ColorGradientDemo.h"
 #include "DemoAntialiasableTriangleStage.h"
 #include "DemoAntialiasingPipeline.h"
 #include "DemoDOFCubeStage.h"
@@ -22,7 +22,7 @@
 
 CPPEXPOSE_PLUGIN_LIBRARY
 
-    CPPEXPOSE_PLUGIN_COMPONENT(ColorDemo)
+    CPPEXPOSE_PLUGIN_COMPONENT(ColorGradientDemo)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoAntialiasableTriangleStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoAntialiasingPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoDOFCubeStage)

@@ -55,7 +55,7 @@ std::vector<std::string> ColorGradientList::names() const
     return names;
 }
 
-std::vector<Image> ColorGradientList::pixmaps(const glm::ivec2 & size) const
+std::vector<Image> ColorGradientList::pixmaps(const glm::uvec2 & size) const
 {
     std::vector<Image> pixmaps;
 

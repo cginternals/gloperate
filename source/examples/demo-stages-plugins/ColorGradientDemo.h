@@ -30,11 +30,11 @@ namespace gloperate
 *  @brief
 *    Demo pipeline demonstrating the use of color gradients
 */
-class ColorDemo : public gloperate::Pipeline
+class ColorGradientDemo : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        ColorDemo, gloperate::Stage
+        ColorGradientDemo, gloperate::Stage
       , "RenderStage Demos" // Tags
       , ""                  // Icon
       , ""                  // Annotations
@@ -64,13 +64,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    ColorDemo(gloperate::Environment * environment, const std::string & name = "");
+    ColorGradientDemo(gloperate::Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~ColorDemo();
+    virtual ~ColorGradientDemo();
 
 
 protected:
