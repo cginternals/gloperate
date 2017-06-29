@@ -126,7 +126,7 @@ Item
                 {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
 
-                    text: 'Add Plugin Path'
+                    text: 'Plugin Paths'
                 }
 
                 // Plugin Paths Editor
@@ -156,7 +156,7 @@ Item
 
                             ClickLabel
                             {
-                                text: "delete"
+                                text: "Remove"
                                 Layout.alignment: Qt.AlignRight
 
                                 onClicked:
@@ -170,7 +170,7 @@ Item
 
                     ClickLabel
                     {
-                        text: "Select Path"
+                        text: "Add"
 
                         FileDialog
                         {
