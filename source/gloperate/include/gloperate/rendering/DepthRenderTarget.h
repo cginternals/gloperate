@@ -23,6 +23,10 @@ class GLOPERATE_API DepthRenderTarget : public AbstractRenderTarget
 {
 public:
     using AbstractRenderTarget::AbstractRenderTarget;
+
+    // Virtual AbstractRenderTarget interface
+    virtual AttachmentType underlyingAttachmentType() const override;
+    virtual gl::GLenum attachmentGLType() const override;
 };
 
 

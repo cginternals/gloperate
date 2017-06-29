@@ -24,6 +24,10 @@ class GLOPERATE_API StencilRenderTarget : public AbstractRenderTarget
 {
 public:
     using AbstractRenderTarget::AbstractRenderTarget;
+
+    // Virtual AbstractRenderTarget interface
+    virtual AttachmentType underlyingAttachmentType() const override;
+    virtual gl::GLenum attachmentGLType() const override;
 };
 
 

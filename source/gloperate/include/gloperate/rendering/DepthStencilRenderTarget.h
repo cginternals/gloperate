@@ -13,13 +13,13 @@ namespace gloperate
 
 /**
 *  @brief
-*    Color render target that represents one color target we can render into
+*    Combined depth stencil render target that represents one depth stencil target for depth and stencil tests during rasterization
 *
 *    A render target can internally be: a texture, a renderbuffer,
 *    a symbolic attachment of the default renderbuffer, or a user-defined
 *    renderbuffer with attachment specification.
 */
-class GLOPERATE_API ColorRenderTarget : public AbstractRenderTarget
+class GLOPERATE_API DepthStencilRenderTarget : public AbstractRenderTarget
 {
 public:
     using AbstractRenderTarget::AbstractRenderTarget;

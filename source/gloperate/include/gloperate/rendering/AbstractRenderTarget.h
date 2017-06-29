@@ -58,33 +58,6 @@ public:
 
     /**
     *  @brief
-    *    Get attachment type
-    *
-    *  @return
-    *    The attachment type
-    */
-    AttachmentType underlyingAttachmentType() const;
-
-    /**
-    *  @brief
-    *    Set attachment type
-    *
-    *  @param[in] type
-    *    The attachment type
-    */
-    void setUnderlyingAttachmentType(AttachmentType underlyingAttachmentType);
-
-    /**
-    *  @brief
-    *    Get attachment type as GLenum
-    *
-    *  @return
-    *    The attachment type as GLenum
-    */
-    gl::GLenum attachmentGLType() const;
-
-    /**
-    *  @brief
     *    Set desired target
     *
     *  @param[in] texture
@@ -226,9 +199,28 @@ public:
     gl::GLenum drawBufferAttachment(size_t index) const;
 
 
+public:
+    /**
+    *  @brief
+    *    Get attachment type
+    *
+    *  @return
+    *    The attachment type
+    */
+    virtual AttachmentType underlyingAttachmentType() const = 0;
+
+    /**
+    *  @brief
+    *    Get attachment type as GLenum
+    *
+    *  @return
+    *    The attachment type as GLenum
+    */
+    virtual gl::GLenum attachmentGLType() const = 0;
+
+
 protected:
     RenderTargetType                   m_currentTargetType;        ///< Target type
-    AttachmentType                     m_internalAttachmentType;   ///< Internal OpenGL attachment type
     gl::GLenum                         m_defaultFBOAttachment;     ///< Default framebuffer attachment target
     globjects::Texture               * m_texture;                  ///< Texture target
     globjects::Renderbuffer          * m_renderbuffer;             ///< Renderbuffer target

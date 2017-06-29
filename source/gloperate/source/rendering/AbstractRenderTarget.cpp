@@ -52,32 +52,6 @@ void AbstractRenderTarget::releaseTarget()
     m_currentTargetType = RenderTargetType::Invalid;
 }
 
-AttachmentType AbstractRenderTarget::underlyingAttachmentType() const
-{
-    return m_internalAttachmentType;
-}
-
-gl::GLenum AbstractRenderTarget::attachmentGLType() const
-{
-    switch (m_internalAttachmentType)
-    {
-    case AttachmentType::Depth:
-        return gl::GL_DEPTH;
-    case AttachmentType::Stencil:
-        return gl::GL_STENCIL;
-    case AttachmentType::DepthStencil:
-        return gl::GL_DEPTH_STENCIL;
-    case AttachmentType::Color:
-    default:
-        return gl::GL_COLOR;
-    }
-}
-
-void AbstractRenderTarget::setUnderlyingAttachmentType(AttachmentType attachmentType)
-{
-    m_internalAttachmentType = attachmentType;
-}
-
 void AbstractRenderTarget::setTarget(globjects::Texture * texture)
 {
     releaseTarget();

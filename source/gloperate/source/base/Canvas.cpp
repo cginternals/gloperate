@@ -24,6 +24,7 @@
 #include <gloperate/input/KeyboardDevice.h>
 #include <gloperate/rendering/ColorRenderTarget.h>
 #include <gloperate/rendering/DepthRenderTarget.h>
+#include <gloperate/rendering/DepthStencilRenderTarget.h>
 #include <gloperate/rendering/StencilRenderTarget.h>
 #include <gloperate/rendering/AttachmentType.h>
 #include <gloperate/stages/base/BlitStage.h>
@@ -59,6 +60,7 @@ Canvas::Canvas(Environment * environment)
 , m_replaceStage(false)
 , m_colorTarget(cppassist::make_unique<ColorRenderTarget>())
 , m_depthTarget(cppassist::make_unique<DepthRenderTarget>())
+, m_depthStencilTarget(cppassist::make_unique<DepthStencilRenderTarget>())
 , m_stencilTarget(cppassist::make_unique<StencilRenderTarget>())
 {
     // Register functions
@@ -77,10 +79,6 @@ Canvas::Canvas(Environment * environment)
 
     // Register canvas
     m_environment->registerCanvas(this);
-
-    m_colorTarget->setUnderlyingAttachmentType(AttachmentType::Color);
-    m_depthTarget->setUnderlyingAttachmentType(AttachmentType::Depth);
-    m_stencilTarget->setUnderlyingAttachmentType(AttachmentType::Stencil);
 }
 
 Canvas::~Canvas()
