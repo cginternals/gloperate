@@ -2,7 +2,6 @@
 #include "ColorDemo.h"
 
 #include <gloperate/gloperate.h>
-
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
@@ -13,9 +12,9 @@
 #include <gloperate/stages/base/ColorGradientSelectionStage.h>
 #include <gloperate/stages/base/ColorGradientTextureStage.h>
 #include <gloperate/stages/navigation/TrackballStage.h>
-#include <gloperate/rendering/ColorGradientPreparation.h>
 #include <gloperate/rendering/ColorGradientList.h>
 #include <gloperate/rendering/Shape.h>
+#include <gloperate/rendering/Image.h>
 
 
 CPPEXPOSE_COMPONENT(ColorDemo, gloperate::Stage)
@@ -49,7 +48,8 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
     value.setOption("minimumValue", 0.0f);
     value.setOption("maximumValue", 1.0f);
     value.setOption("updateOnDrag", true);
-    value.valueChanged.connect([this] (const float & value) {
+    value.valueChanged.connect([this] (const float & value)
+    {
         float v = 0.2 + 0.8 * value;
         m_shapeTransform->scale = glm::vec3(v, v, v);
     });
@@ -69,10 +69,11 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
     // Color gradient load stage
     addStage(m_colorGradientLoading.get());
     m_colorGradientLoading->filePath << colors;
-    m_colorGradientLoading->gradients.valueChanged.connect([this] (const gloperate::ColorGradientList * list) {
-        gloperate::ColorGradientPreparation gradientsTool(*list, { 80, 20 });
-        gradientsTool.configureProperty(&gradient);
-        gradient.setValue(list->gradients().begin()->first);
+    m_colorGradientLoading->gradients.valueChanged.connect([this] (const gloperate::ColorGradientList * gradients)
+    {
+        gradient.setOption("choices", cppexpose::Variant::fromVector(gradients->names()));
+        gradient.setOption("pixmaps", cppexpose::Variant::fromVector(gradients->pixmaps({ 80, 20 })));
+        gradient.setValue(gradients->gradients().begin()->first);
     });
 
     // Color gradients texture stage

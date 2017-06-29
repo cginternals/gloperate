@@ -113,7 +113,6 @@ set(headers
     ${include_path}/rendering/LinearColorGradient.inl
     ${include_path}/rendering/ColorGradientList.h
     ${include_path}/rendering/ColorGradientList.inl
-    ${include_path}/rendering/ColorGradientPreparation.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -207,7 +206,6 @@ set(sources
     ${source_path}/rendering/AbstractColorGradient.cpp
     ${source_path}/rendering/LinearColorGradient.cpp
     ${source_path}/rendering/ColorGradientList.cpp
-    ${source_path}/rendering/ColorGradientPreparation.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
