@@ -14,26 +14,25 @@ namespace gloperate
 {
     class LightCreationStage;
     class LightBufferTextureStage;
+    class TimerStage;
 }
 
-
 class LightTestStage;
-class TimerStage;
 
 
 /**
 *  @brief
-*    Pipeline that renders a rotating cube illuminated by 3 light sources
+*    Pipeline that renders a rotating cube illuminated by three light sources
 */
 class LightTestPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         LightTestPipeline, gloperate::Stage
-      , "RenderStage Demo Lighting" // Tags
-      , ""                          // Icon
-      , ""                          // Annotations
-      , "Stage that renders a rotating cube illuminated by 3 light sources"
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
+      , "Stage that renders a rotating cube illuminated by three light sources"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
     )
@@ -88,6 +87,6 @@ protected:
     std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage2;
     std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage3;
     std::unique_ptr<gloperate::LightBufferTextureStage> m_lightAccumulationStage;
-    std::unique_ptr<TimerStage>                         m_timerStage;
+    std::unique_ptr<gloperate::TimerStage>              m_timerStage;
     std::unique_ptr<LightTestStage>                     m_renderStage;
 };

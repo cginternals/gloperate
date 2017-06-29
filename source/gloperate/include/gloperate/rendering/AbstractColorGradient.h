@@ -8,7 +8,6 @@
 #include <string>
 #include <memory>
 
-
 #include <gloperate/gloperate_api.h>
 
 
@@ -23,17 +22,16 @@ namespace gloperate
 
 
 class Color;
-class ColorGradientList;
 
 
 /**
 *  @brief
-*    The base class for color gradients (i.e., a mapping of float values in the range of [0..1] to a Color).
+*    The base class for color gradients (i.e., a mapping of float values in the range of [0..1] to a color).
 *
 *    This class provides convenience methods for accessing the binary image data of the gradient with specific widths (pixelData)
 *    and for using this color gradient in an OpenGL texture (generateTexture).
 *
-*    A color gradient is identified through its name and this name is mainly used by the ColorGradientList class.
+*    A color gradient is identified through its name, which is mainly used by the ColorGradientList class.
 *
 *  @see Color
 *  @see ColorGradientList
@@ -42,6 +40,7 @@ class ColorGradientList;
 class GLOPERATE_API AbstractColorGradient
 {
 public:
+    //@{
     /**
     *  @brief
     *    Constructor
@@ -99,7 +98,9 @@ public:
     */
     template <size_t numColors>
     std::array<unsigned char, numColors * sizeof(std::uint32_t)> pixelData() const;
+    //@}
 
+    //@{
     /**
     *  @brief
     *    Computes GBRA8 encoded colors and store the resulting color list at the passed address
@@ -114,7 +115,10 @@ public:
     *    By default, the method computes a new color for each pixel.
     */
     virtual void fillPixelData(unsigned char * data, size_t numColors) const;
+    virtual void fillPixelData(char * data, size_t numColors) const;
+    //@}
 
+    //@{
     /**
     *  @brief
     *    Return the associated color for a given virtual position within the gradient
@@ -138,10 +142,11 @@ public:
     *    The 1D texture
     */
     std::unique_ptr<globjects::Texture> generateTexture(size_t numColors) const;
+    //@}
 
 
 protected:
-    std::string m_name; ///< The identifier of a color gradient.
+    std::string m_name; ///< The identifier of the color gradient
 };
 
 

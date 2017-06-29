@@ -9,21 +9,17 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
-namespace gloperate_glkernel {
-
-class HemisphereDistributionKernelStage;
-class NoiseKernelStage;
-
+namespace gloperate_glkernel
+{
+    class HemisphereDistributionKernelStage;
+    class NoiseKernelStage;
 }
 
 namespace gloperate
 {
-
-class FramebufferStage;
-class TextureStage;
-
+    class FramebufferStage;
+    class TextureStage;
 }
-
 
 class DemoSSAORenderingStage;
 class DemoSSAOPostprocessingStage;
@@ -38,9 +34,9 @@ class DemoSSAOPipeline : public gloperate::Pipeline
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         DemoSSAOPipeline, gloperate::Stage
-      , "RenderStage Demo SSAO" // Tags
-      , ""                      // Icon
-      , ""                      // Annotations
+      , "RenderStage Demos" // Tags
+      , ""                  // Icon
+      , ""                  // Annotations
       , "Demo pipeline that renders a simple scene onto the screen"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"

@@ -54,6 +54,18 @@ void AbstractColorGradient::fillPixelData(unsigned char * data, size_t numPixels
     }
 }
 
+void AbstractColorGradient::fillPixelData(char * data, size_t numPixels) const
+{
+    for (size_t i = 0; i < numPixels; ++i)
+    {
+        const float position = i / float(numPixels-1);
+        const Color color = colorAt(position);
+        const std::uint32_t encodedColor = color.bgra();
+
+        std::memmove(&data[i * sizeof(std::uint32_t)], &encodedColor, sizeof(std::uint32_t));
+    }
+}
+
 std::unique_ptr<globjects::Texture> AbstractColorGradient::generateTexture(size_t numPixels) const
 {
     auto texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);

@@ -48,7 +48,7 @@ public:
     using AbstractComponentType = gloperate::AbstractComponent<Stage>;
 
     template <typename Type>
-    using ComponentType = gloperate::Component<Stage, Type>;
+    using ComponentType = gloperate::StageComponent<Type>;
 
     // Import data types into local namespace
     template <typename T>
@@ -83,7 +83,7 @@ public:
     cppexpose::Signal<AbstractSlot *> inputRemoved;  ///< Called when an input slot has been removed
     cppexpose::Signal<AbstractSlot *> outputAdded;   ///< Called when an output slot has been added
     cppexpose::Signal<AbstractSlot *> outputRemoved; ///< Called when an output slot has been removed
-    cppexpose::Signal<AbstractSlot *> inputChanged;  ///< Called when an input slot has changed its value
+    cppexpose::Signal<AbstractSlot *> inputChanged;  ///< Called when an input slot has changed its value or options
 
 
 public:
@@ -239,6 +239,18 @@ public:
     *    be overridden with the onInputValueInvalidated method.
     */
     void inputValueInvalidated(AbstractSlot * slot);
+
+    /**
+    *  @brief
+    *    Called when the options of an input slot have changed
+    *
+    *  @param[in] slot
+    *    Input slot which has been invalidated
+    *
+    *  @remarks
+    *    Will emit the signal inputChanged.
+    */
+    void inputOptionsChanged(AbstractSlot * slot);
 
     /**
     *  @brief

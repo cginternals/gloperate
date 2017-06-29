@@ -41,9 +41,8 @@ public:
     // Inputs
     Input<glm::vec4>                deviceViewport;  ///< Viewport (in real device coordinates)
     Input<glm::vec4>                virtualViewport; ///< Viewport (in virtual coordinates)
-    Input<glm::vec3>                backgroundColor; ///< Background color (RGB)
+    Input<Color>                    backgroundColor; ///< Background color (RGB)
     Input<int>                      frameCounter;    ///< Frame counter (number of frames)
-    Input<float>                    virtualTime;     ///< Virtual time (in seconds)
     Input<float>                    timeDelta;       ///< Time delta since last frame (in seconds)
     Input<globjects::Framebuffer *> targetFBO;       ///< Target FBO (must not be null)
 

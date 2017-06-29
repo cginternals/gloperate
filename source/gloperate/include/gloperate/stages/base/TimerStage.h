@@ -10,22 +10,23 @@
 #include <gloperate/pipeline/Output.h>
 
 
+namespace gloperate
+{
+
+
 /**
 *  @brief
-*    Demo stage that creates a constant timer
-*
-*  @remarks
-*    This stage is part of the DemoPipeline
+*    Stage that creates a constant timer
 */
-class TimerStage : public gloperate::Stage
+class GLOPERATE_API TimerStage : public gloperate::Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         TimerStage, gloperate::Stage
-      , ""   // Tags
-      , ""   // Icon
-      , ""   // Annotations
-      , "Demo stage that creates a constant timer"
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
+      , "Stage that creates a constant timer"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -35,6 +36,7 @@ public:
     // Inputs
     Input<float>  timeDelta;   ///< Time delta since last frame (in seconds)
     Input<float>  factor;      ///< Factor by which the time delta is multiplied
+    Input<float>  interval;    ///< Interval after which the virtual time is reset to 0 (interval <= 0 for infinite)
 
     // Outputs
     Output<float> virtualTime; ///< Elapsed time (in seconds)
@@ -67,6 +69,8 @@ protected:
 
 
 protected:
-    // Status
-    float m_time;   ///< Virtual time (in seconds)
+    float m_time; ///< Virtual time (in seconds)
 };
+
+
+} // namespace gloperate

@@ -83,11 +83,6 @@ public:
 
 
 protected:
-    std::vector<Color> m_colors;   ///< The list of colors
-    bool               m_discrete; ///< Whether this gradient is discrete ('true') or continuous ('false')
-
-
-protected:
     /**
     *  @brief
     *    Return the associated color for a given virtual position within the gradient
@@ -110,6 +105,11 @@ protected:
     *    Whether the gradient should be discrete or continuous
     */
     LinearColorGradient(const std::string & name, bool discrete);
+
+
+protected:
+    std::vector<Color> m_colors;   ///< The list of colors
+    bool               m_discrete; ///< Whether this gradient is discrete ('true') or continuous ('false')
 };
 
 

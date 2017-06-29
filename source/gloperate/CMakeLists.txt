@@ -68,6 +68,7 @@ set(headers
     ${include_path}/base/Loader.inl
     ${include_path}/base/Storer.h
     ${include_path}/base/Storer.inl
+    ${include_path}/base/Range.h
     ${include_path}/base/ExtendedProperties.h
     ${include_path}/base/ExtendedProperties.inl
 
@@ -97,9 +98,12 @@ set(headers
     ${include_path}/rendering/ScreenAlignedQuad.h
     ${include_path}/rendering/ScreenAlignedTriangle.h
     ${include_path}/rendering/Shape.h
+    ${include_path}/rendering/ShapeType.h
+    ${include_path}/rendering/Point.h
+    ${include_path}/rendering/Triangle.h
+    ${include_path}/rendering/Quad.h
     ${include_path}/rendering/Box.h
     ${include_path}/rendering/Sphere.h
-    ${include_path}/rendering/Quad.h
     ${include_path}/rendering/Icosahedron.h
     ${include_path}/rendering/Color.h
     ${include_path}/rendering/Image.h
@@ -109,7 +113,6 @@ set(headers
     ${include_path}/rendering/LinearColorGradient.inl
     ${include_path}/rendering/ColorGradientList.h
     ${include_path}/rendering/ColorGradientList.inl
-    ${include_path}/rendering/ColorGradientPreparation.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/base/BasicFramebufferStage.h
@@ -117,6 +120,7 @@ set(headers
     ${include_path}/stages/base/TextureStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/BlitStage.h
+    ${include_path}/stages/base/ColorGradientStage.h
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/base/ShaderStage.h
@@ -124,6 +128,9 @@ set(headers
     ${include_path}/stages/base/RasterizationStage.h
     ${include_path}/stages/base/ClearStage.h
     ${include_path}/stages/base/ProgramStage.h
+    ${include_path}/stages/base/ShapeStage.h
+    ${include_path}/stages/base/TransformStage.h
+    ${include_path}/stages/base/TimerStage.h
     ${include_path}/stages/navigation/TrackballStage.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
@@ -145,6 +152,7 @@ set(headers
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
 
+    ${include_path}/loaders/ColorGradientLoader.h
     ${include_path}/loaders/ShaderLoader.h
     ${include_path}/loaders/GlrawTextureLoader.h
     ${include_path}/loaders/RawFileNameSuffix.h
@@ -169,6 +177,7 @@ set(sources
     ${source_path}/base/AutoTimer.cpp
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
+    ${source_path}/base/Range.cpp
     ${source_path}/base/ExtendedProperties.cpp
 
     ${source_path}/pipeline/Stage.cpp
@@ -186,19 +195,21 @@ set(sources
     ${source_path}/rendering/ScreenAlignedQuad.cpp
     ${source_path}/rendering/ScreenAlignedTriangle.cpp
     ${source_path}/rendering/Shape.cpp
+    ${source_path}/rendering/Point.cpp
+    ${source_path}/rendering/Triangle.cpp
+    ${source_path}/rendering/Quad.cpp
     ${source_path}/rendering/Box.cpp
     ${source_path}/rendering/Sphere.cpp
-    ${source_path}/rendering/Quad.cpp
     ${source_path}/rendering/Icosahedron.cpp
     ${source_path}/rendering/Color.cpp
     ${source_path}/rendering/Image.cpp
     ${source_path}/rendering/AbstractColorGradient.cpp
     ${source_path}/rendering/LinearColorGradient.cpp
     ${source_path}/rendering/ColorGradientList.cpp
-    ${source_path}/rendering/ColorGradientPreparation.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/ColorGradientStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/ShaderStage.cpp
@@ -210,6 +221,9 @@ set(sources
     ${source_path}/stages/base/TextureStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
     ${source_path}/stages/base/BlitStage.cpp
+    ${source_path}/stages/base/ShapeStage.cpp
+    ${source_path}/stages/base/TransformStage.cpp
+    ${source_path}/stages/base/TimerStage.cpp
     ${source_path}/stages/navigation/TrackballStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
@@ -229,6 +243,7 @@ set(sources
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
 
+    ${source_path}/loaders/ColorGradientLoader.cpp
     ${source_path}/loaders/ShaderLoader.cpp
     ${source_path}/loaders/GlrawTextureLoader.cpp
     ${source_path}/loaders/RawFileNameSuffix.cpp
