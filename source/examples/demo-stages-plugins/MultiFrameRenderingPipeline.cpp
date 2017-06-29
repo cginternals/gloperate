@@ -66,12 +66,13 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 
     addStage(m_dofShiftStage.get());
     m_dofShiftStage->kernelSize << multiFrameCount;
+    m_dofShiftStage->radius = 0.01f;
 
     addStage(m_ssaoKernelStage.get());
     m_ssaoKernelStage->kernelSize.setValue(16);
 
     addStage(m_noiseStage.get());
-    m_noiseStage->dimensions.setValue(glm::ivec3(64, 64, 1));
+    m_noiseStage->dimensions.setValue(glm::ivec3(64, 64, 64));
 
     addStage(m_transparencyKernelStage.get());
     m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
@@ -85,7 +86,6 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_renderingStage->renderInterface.targetFBO << m_fboStage->fbo;
     m_renderingStage->subpixelShiftKernel << m_subpixelStage->kernel;
     m_renderingStage->dofShiftKernel << m_dofShiftStage->kernel;
-    m_renderingStage->noiseKernelTexture << m_noiseStage->texture;
     m_renderingStage->transparencyKernelTexture << m_transparencyKernelStage->texture;
 
     addStage(m_postprocessingStage.get());

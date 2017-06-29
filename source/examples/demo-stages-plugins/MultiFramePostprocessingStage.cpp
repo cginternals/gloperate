@@ -111,6 +111,7 @@ void MultiFramePostprocessingStage::onProcess()
     m_program->setUniform("projectionMatrix", *projectionMatrix);
     m_program->setUniform("projectionInverseMatrix", glm::inverse(*projectionMatrix));
     m_program->setUniform("normalMatrix", *normalMatrix);
+    m_program->setUniform("currentFrame", *renderInterface.frameCounter);
 
     // Bind textures
     (*colorTexture) ->bindActive(0);
@@ -156,7 +157,7 @@ void MultiFramePostprocessingStage::setupProgram()
     m_ssaoFileNamedString = globjects::NamedString::create("/gloperate/shaders/lighting/ssao.glsl", new globjects::File(gloperate::dataPath() + "/gloperate/shaders/lighting/ssao.glsl"));
 
     m_vertexShader   = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath()+"/gloperate/shaders/Geometry/screenaligned.vert"));
-    m_fragmentShader = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath()+"/gloperate/shaders/Demo/DemoSSAOPostprocessing.frag"));
+    m_fragmentShader = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath()+"/gloperate/shaders/Demo/DemoMultiFramePostprocessing.frag"));
 
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());

@@ -39,7 +39,6 @@ public:
     // Inputs
     Input<std::vector<glm::vec2> *> subpixelShiftKernel;   ///< Subpixel shifts for antialiasing
     Input<std::vector<glm::vec2> *> dofShiftKernel;        ///< DOF shifts
-    Input<globjects::Texture *> noiseKernelTexture;        ///< Noise kernel for transparency
     Input<globjects::Texture *> transparencyKernelTexture; ///< Transparency kernel
 
     // Outputs

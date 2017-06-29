@@ -12,7 +12,7 @@ CPPEXPOSE_COMPONENT(DemoMultiFrameAggregationPipeline, gloperate::Stage)
 DemoMultiFrameAggregationPipeline::DemoMultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , renderInterface(this)
-, multiFrameCount("multiFrameCount", this, 64)
+, multiFrameCount("multiFrameCount", this, 256)
 , m_aggregationPipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
 , m_renderingPipeline(cppassist::make_unique<MultiFrameRenderingPipeline>(environment))
 {

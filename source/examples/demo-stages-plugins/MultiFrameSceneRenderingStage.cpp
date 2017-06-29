@@ -28,7 +28,6 @@ MultiFrameSceneRenderingStage::MultiFrameSceneRenderingStage(gloperate::Environm
 , renderInterface(this)
 , subpixelShiftKernel("subpixelShiftKernel", this)
 , dofShiftKernel("dofShiftKernel", this)
-, noiseKernelTexture("noiseKernelTexture", this)
 , transparencyKernelTexture("transparencyKernelTexture", this)
 , projectionMatrix("projectionMatrix", this)
 , normalMatrix("normalMatrix", this)
@@ -83,10 +82,18 @@ void MultiFrameSceneRenderingStage::onProcess()
     auto projectionMatrix = glm::perspective(20.0f, viewport.z / viewport.w, 1.0f, 10.0f);
     auto viewProjectionMatrix = projectionMatrix * viewMatrix;
 
+    auto subpixelShift = (*subpixelShiftKernel)->at((*renderInterface.frameCounter) % (*subpixelShiftKernel)->size());
+    subpixelShift *= glm::vec2(1.0f, 1.0f) / glm::vec2(viewport.z, viewport.w);
+    auto dofShift = (*dofShiftKernel)->at((*renderInterface.frameCounter) % (*dofShiftKernel)->size());
+
     this->projectionMatrix.setValue(projectionMatrix);
     this->normalMatrix.setValue(glm::inverseTranspose(glm::mat3(viewMatrix)));
 
-    m_program->setUniform("viewProjectionMatrix", viewProjectionMatrix);
+    m_program->setUniform("viewMatrix", viewMatrix);
+    m_program->setUniform("projectionMatrix", projectionMatrix);
+    m_program->setUniform("subpixelShift", subpixelShift);
+    m_program->setUniform("dofShift", dofShift);
+    m_program->setUniform("currentFrame", *renderInterface.frameCounter);
 
     // Bind color FBO
     globjects::Framebuffer * fbo = *renderInterface.targetFBO;
@@ -98,13 +105,23 @@ void MultiFrameSceneRenderingStage::onProcess()
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+
+    // Set GL states
     gl::glDisable(gl::GL_SCISSOR_TEST);
     gl::glDisable(gl::GL_BLEND); // ..., as it is still enabled from previous frame
+
+    // Bind textures
+    if (*transparencyKernelTexture)
+        (*transparencyKernelTexture)->bindActive(0);
 
     // Draw to color
     m_program->use();
     m_drawable->drawElements();
     m_program->release();
+
+    // Unbind textures
+    if (*transparencyKernelTexture)
+        (*transparencyKernelTexture)->unbindActive(0);
 
     // Unbind color FBO
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
@@ -125,9 +142,11 @@ void MultiFrameSceneRenderingStage::setupGeometry()
 
 void MultiFrameSceneRenderingStage::setupProgram()
 {
-    m_vertexShader   = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoSSAORendering.vert"));
-    m_fragmentShader = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoSSAORendering.frag"));
+    m_vertexShader   = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoMultiFrameRendering.vert"));
+    m_fragmentShader = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath() + "/gloperate/shaders/Demo/DemoMultiFrameRendering.frag"));
 
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
+
+    m_program->setUniform("transparencyKernel", 0);
 }

@@ -32,11 +32,12 @@ mat3 noised(
     in vec2 uv,
     const in vec2 screenSize,
     const in vec4 samplerSizes,
-    const in sampler3D noiseSampler)
+    const in sampler2DArray noiseSampler,
+    const in int noiseIndex)
 {
     uv *= screenSize * samplerSizes[3];
 
-    vec3 random = texture(noiseSampler, vec3(uv, 0.0)).xyz * vec3(2,2,0) - vec3(1,1,0);
+    vec3 random = texture(noiseSampler, vec3(uv, noiseIndex)).xyz * vec3(2,2,0) - vec3(1,1,0);
 
     // orientation matrix
     vec3 t = normalize(random - normal * dot(random, normal));
@@ -51,11 +52,12 @@ float ssaoKernel(
     const in float radius,
     const in float intensity,
     const in sampler1D kernelSampler,
-    const in sampler3D noiseSampler,
+    const in sampler2DArray noiseSampler,
     const in sampler2D depthTexture,
     const in sampler2D normalTexture,
     const in mat4 projectionMatrix,
-    const in mat3 normalMatrix)
+    const in mat3 normalMatrix,
+    const in int noiseIndex)
 {
     int kernelSize = textureSize(kernelSampler, 0);
     ivec3 noiseSize = textureSize(noiseSampler, 0);
@@ -64,7 +66,7 @@ float ssaoKernel(
     vec3 screenspaceNormal = normalMatrix * normal(uv, normalTexture);
 
     // randomized orientation matrix for hemisphere based on face normal
-    mat3 m = noised(screenspaceNormal, uv, vec2(textureSize(depthTexture, 0)), samplerSizes, noiseSampler);
+    mat3 m = noised(screenspaceNormal, uv, vec2(textureSize(depthTexture, 0)), samplerSizes, noiseSampler, noiseIndex);
 
     float ao = 0.0;
 
@@ -97,12 +99,13 @@ vec3 ssao(
     const in float radius,
     const in float intensity,
     const in sampler1D kernelSampler,
-    const in sampler3D noiseSampler,
+    const in sampler2DArray noiseSampler,
     const in sampler2D depthTexture,
     const in sampler2D normalTexture,
     const in mat4 projectionMatrix,
     const in mat4 projectionInverseMatrix,
-    const in mat3 normalMatrix)
+    const in mat3 normalMatrix,
+    const in int noiseIndex)
 {
     float d = linearDepth(uv, projectionMatrix, depthTexture);
 
@@ -126,7 +129,8 @@ vec3 ssao(
         depthTexture,
         normalTexture,
         projectionMatrix,
-        normalMatrix);
+        normalMatrix,
+        noiseIndex);
 
     return mix(ssaoColor, vec3(1.0f), v);
 }
