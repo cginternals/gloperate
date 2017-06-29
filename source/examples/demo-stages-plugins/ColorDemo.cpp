@@ -14,6 +14,7 @@
 #include <gloperate/stages/base/ColorGradientTextureStage.h>
 #include <gloperate/stages/navigation/TrackballStage.h>
 #include <gloperate/rendering/ColorGradientPreparation.h>
+#include <gloperate/rendering/ColorGradientList.h>
 #include <gloperate/rendering/Shape.h>
 
 
@@ -82,7 +83,7 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
     // Color gradient selection stage
     addStage(m_colorGradientSelection.get());
     m_colorGradientSelection->gradients << m_colorGradientLoading->gradients;
-    m_colorGradientSelection->gradientName << gradient;
+    m_colorGradientSelection->name << gradient;
 
     // Transform stage for shape
     addStage(m_shapeTransform.get());
@@ -100,8 +101,8 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
     m_shapeRenderPass->program << m_shapeProgram->program;
     m_shapeRenderPass->camera << m_trackball->camera;
     m_shapeRenderPass->modelMatrix << m_shapeTransform->modelMatrix;
-    m_shapeRenderPass->createInput("gradientTexture") << m_colorGradientTexture->gradientTexture;
-    m_shapeRenderPass->createInput("gradientIndex") << m_colorGradientSelection->gradientIndex;
+    m_shapeRenderPass->createInput("gradientTexture") << m_colorGradientTexture->texture;
+    m_shapeRenderPass->createInput("gradientIndex") << m_colorGradientSelection->index;
     m_shapeRenderPass->createInput("value") << this->value;
 
     // Clear stage

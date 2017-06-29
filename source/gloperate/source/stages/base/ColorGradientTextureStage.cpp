@@ -17,7 +17,7 @@ ColorGradientTextureStage::ColorGradientTextureStage(gloperate::Environment * en
 : Stage(environment, "ColorGradientTextureStage", name)
 , gradients("gradients", this)
 , textureWidth("textureWidth", this, 128)
-, gradientTexture("gradientTexture", this)
+, texture("texture", this)
 {
 }
 
@@ -41,7 +41,7 @@ void ColorGradientTextureStage::onProcess()
     m_gradientTexture = gradients->generateTexture(*textureWidth);
 
     // Update output
-    this->gradientTexture.setValue(m_gradientTexture.get());
+    this->texture.setValue(m_gradientTexture.get());
 }
 
 
