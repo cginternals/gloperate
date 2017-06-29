@@ -11,9 +11,21 @@ import gloperate.rendering 1.0
 
 Item
 {
+    id: item
+
     anchors.fill: parent
 
     property var settings: null
+
+    Connections
+    {
+        target: settings
+
+        onPluginPathsChanged:
+        {
+            pluginPathEditor.update();
+        }
+    }
 
     ScrollArea
     {
@@ -124,16 +136,9 @@ Item
 
                     property var pluginPaths: []
 
-                    function updatePluginPaths()
+                    function update()
                     {
-                        settings.pluginPaths = gloperate.components.getPluginPaths();
-                        pluginPathEditor.pluginPaths = settings.pluginPaths.split(';');
-                        gloperate.components.scanPlugins();
-
-                        if (pluginPathEditor.pluginPaths == "")
-                        {
-                            pluginPathEditor.pluginPaths = [];
-                        }
+                        pluginPaths = gloperate.components.pluginPaths();
                     }
 
                     Repeater
@@ -157,7 +162,7 @@ Item
                                 onClicked:
                                 {
                                     gloperate.components.removePluginPath(pluginPathEditor.pluginPaths[index]);
-                                    pluginPathEditor.updatePluginPaths();
+                                    item.settings.pluginPaths = gloperate.components.getPluginPaths();
                                 }
                             }
                         }
@@ -182,7 +187,7 @@ Item
                                 path = path.replace(/^(file:\/{3})/,"");
 
                                 gloperate.components.addPluginPath(path);
-                                pluginPathEditor.updatePluginPaths();
+                                item.settings.pluginPaths = gloperate.components.getPluginPaths();
                             }
                         }
 
@@ -190,11 +195,6 @@ Item
                         {
                             fileDialog.open();
                         }
-                    }
-
-                    Component.onCompleted:
-                    {
-                        pluginPathEditor.updatePluginPaths();
                     }
                 }
             }
