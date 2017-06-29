@@ -3,11 +3,14 @@
 
 #include <algorithm>
 
+#include <glm/glm.hpp>
+
 #include <glbinding/gl/enum.h>
 
 #include <globjects/Texture.h>
 
 #include <gloperate/rendering/AbstractColorGradient.h>
+#include <gloperate/rendering/Image.h>
 
 
 namespace gloperate
@@ -38,6 +41,39 @@ size_t ColorGradientList::size() const
 const std::map<std::string, const AbstractColorGradient *> & ColorGradientList::gradients() const
 {
     return reinterpret_cast<const std::map<std::string, const AbstractColorGradient *> &>(m_gradients);
+}
+
+std::vector<std::string> ColorGradientList::names() const
+{
+    std::vector<std::string> names;
+
+    for (const auto & pair : m_gradients)
+    {
+        names.push_back(pair.first);
+    }
+
+    return names;
+}
+
+std::vector<Image> ColorGradientList::pixmaps(const glm::uvec2 & size) const
+{
+    std::vector<Image> pixmaps;
+
+    for (const auto & pair : m_gradients)
+    {
+        const AbstractColorGradient * gradient = pair.second.get();
+
+        Image gradientData(size.x, size.y, gl::GL_RGB, gl::GL_UNSIGNED_INT);
+
+        for (size_t i = 0; i < size.y; ++i)
+        {
+            gradient->fillPixelData(gradientData.data() + i * size.x * sizeof(std::uint32_t), size.x);
+        }
+
+        pixmaps.push_back(gradientData);
+    }
+
+    return pixmaps;
 }
 
 void ColorGradientList::add(std::unique_ptr<AbstractColorGradient> && gradient)
@@ -78,11 +114,16 @@ AbstractColorGradient * ColorGradientList::at(const std::string & name)
     return iterator->second.get();
 }
 
-size_t ColorGradientList::indexOf(const std::string & name) const
+int ColorGradientList::indexOf(const std::string & name) const
 {
-    auto iterator = m_gradients.find(name);
+    auto it = m_gradients.find(name);
 
-    return std::distance(m_gradients.begin(), iterator);
+    if (it == m_gradients.end())
+    {
+        return -1;
+    }
+
+    return static_cast<int>(std::distance(m_gradients.begin(), it));
 }
 
 std::vector<unsigned char> ColorGradientList::pixelData(size_t numPixels) const

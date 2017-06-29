@@ -39,45 +39,47 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
-    ${include_path}/ShapeDemo.h
-    ${include_path}/ShaderDemoPipeline.h
+    ${include_path}/ColorGradientDemo.h
     ${include_path}/DemoAntialiasableTriangleStage.h
     ${include_path}/DemoAntialiasingPipeline.h
     ${include_path}/DemoDOFCubeStage.h
     ${include_path}/DemoDOFPipeline.h
-    ${include_path}/DemoSSAORenderingStage.h
-    ${include_path}/DemoSSAOPostprocessingStage.h
-    ${include_path}/DemoSSAOPipeline.h
-    ${include_path}/DemoTransparencyStage.h
-    ${include_path}/DemoTransparencyPipeline.h
-    ${include_path}/DemoMultiFramePipeline.h
     ${include_path}/DemoDrawableStage.h
-    ${include_path}/LightTestStage.h
-    ${include_path}/LightTestPipeline.h
+    ${include_path}/DemoMultiFramePipeline.h
+    ${include_path}/DemoSSAOPipeline.h
+    ${include_path}/DemoSSAOPostprocessingStage.h
+    ${include_path}/DemoSSAORenderingStage.h
     ${include_path}/DemoTextRenderingPipeline.h
+    ${include_path}/DemoTransparencyPipeline.h
+    ${include_path}/DemoTransparencyStage.h
     ${include_path}/GlyphSequenceDemoStage.h
+    ${include_path}/LightTestPipeline.h
+    ${include_path}/LightTestStage.h
+    ${include_path}/ShaderDemoPipeline.h
+    ${include_path}/ShapeDemo.h
 )
 
 set(sources
     ${source_path}/plugin.cpp
 
-    ${source_path}/ShapeDemo.cpp
-    ${source_path}/ShaderDemoPipeline.cpp
+    ${source_path}/ColorGradientDemo.cpp
     ${source_path}/DemoAntialiasableTriangleStage.cpp
     ${source_path}/DemoAntialiasingPipeline.cpp
     ${source_path}/DemoDOFCubeStage.cpp
     ${source_path}/DemoDOFPipeline.cpp
-    ${source_path}/DemoSSAORenderingStage.cpp
-    ${source_path}/DemoSSAOPostprocessingStage.cpp
-    ${source_path}/DemoSSAOPipeline.cpp
-    ${source_path}/DemoTransparencyStage.cpp
-    ${source_path}/DemoTransparencyPipeline.cpp
-    ${source_path}/DemoMultiFramePipeline.cpp
     ${source_path}/DemoDrawableStage.cpp
-    ${source_path}/LightTestStage.cpp
-    ${source_path}/LightTestPipeline.cpp
+    ${source_path}/DemoMultiFramePipeline.cpp
+    ${source_path}/DemoSSAOPipeline.cpp
+    ${source_path}/DemoSSAOPostprocessingStage.cpp
+    ${source_path}/DemoSSAORenderingStage.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp
+    ${source_path}/DemoTransparencyPipeline.cpp
+    ${source_path}/DemoTransparencyStage.cpp
     ${source_path}/GlyphSequenceDemoStage.cpp
+    ${source_path}/LightTestPipeline.cpp
+    ${source_path}/LightTestStage.cpp
+    ${source_path}/ShaderDemoPipeline.cpp
+    ${source_path}/ShapeDemo.cpp
 )
 
 # Group source files
