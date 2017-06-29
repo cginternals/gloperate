@@ -68,7 +68,7 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
     // Color gradient load stage
     addStage(m_colorGradientLoading.get());
     m_colorGradientLoading->filePath << colors;
-    m_colorGradientLoading->colorGradientList.valueChanged.connect([this] (const gloperate::ColorGradientList * list) {
+    m_colorGradientLoading->gradients.valueChanged.connect([this] (const gloperate::ColorGradientList * list) {
         gloperate::ColorGradientPreparation gradientsTool(*list, { 80, 20 });
         gradientsTool.configureProperty(&gradient);
         gradient.setValue(list->gradients().begin()->first);
@@ -76,12 +76,12 @@ ColorDemo::ColorDemo(Environment * environment, const std::string & name)
 
     // Color gradients texture stage
     addStage(m_colorGradientTexture.get());
-    m_colorGradientTexture->gradients << m_colorGradientLoading->colorGradientList;
+    m_colorGradientTexture->gradients << m_colorGradientLoading->gradients;
     m_colorGradientTexture->textureWidth = 128;
 
     // Color gradient selection stage
     addStage(m_colorGradientSelection.get());
-    m_colorGradientSelection->gradients << m_colorGradientLoading->colorGradientList;
+    m_colorGradientSelection->gradients << m_colorGradientLoading->gradients;
     m_colorGradientSelection->gradientName << gradient;
 
     // Transform stage for shape

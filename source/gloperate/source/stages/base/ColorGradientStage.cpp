@@ -16,7 +16,7 @@ CPPEXPOSE_COMPONENT(ColorGradientStage, gloperate::Stage)
 ColorGradientStage::ColorGradientStage(Environment * environment, const std::string & name)
 : Stage(environment, "ColorGradientStage", name)
 , filePath("filePath", this)
-, colorGradientList("colorGradientList", this)
+, gradients("gradients", this)
 {
 }
 
@@ -40,7 +40,7 @@ void ColorGradientStage::onProcess()
     m_colorGradientList = std::unique_ptr<ColorGradientList>(environment()->resourceManager()->load<ColorGradientList>((*filePath).path()));
 
     // Update outputs
-    colorGradientList.setValue(m_colorGradientList.get());
+    gradients.setValue(m_colorGradientList.get());
 }
 
 

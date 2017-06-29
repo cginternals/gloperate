@@ -1,6 +1,10 @@
 
 #include <gloperate/stages/base/ColorGradientTextureStage.h>
 
+#include <globjects/Texture.h>
+
+#include <gloperate/rendering/ColorGradientList.h>
+
 
 namespace gloperate
 {

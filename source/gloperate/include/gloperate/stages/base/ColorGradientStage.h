@@ -39,10 +39,10 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>  filePath;          ///< Path to the source file of the color gradient list
+    Input<cppassist::FilePath>  filePath;  ///< Path to the source file of the color gradient list
 
     // Outputs
-    Output<ColorGradientList *> colorGradientList; ///< The color gradient list object
+    Output<ColorGradientList *> gradients; ///< List of color gradients
 
 
 public:

@@ -2,21 +2,25 @@
 #pragma once
 
 
-#include <string>
-
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <globjects/Texture.h>
-
 #include <gloperate/gloperate-version.h>
-#include <gloperate/rendering/ColorGradientList.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
 
+namespace globjects
+{
+    class Texture;
+}
+
+
 namespace gloperate
 {
+
+
+class ColorGradientList;
 
 
 /**
@@ -39,11 +43,11 @@ public:
 
 public:
     // Inputs
-    Input<ColorGradientList *>  gradients;       ///< List of color gradients
-    Input<size_t>               textureWidth;    ///< Size of texture in x dimension
+    Input<ColorGradientList *>   gradients;       ///< List of color gradients
+    Input<size_t>                textureWidth;    ///< Size of texture in X-dimension
 
     // Outputs
-    Output<globjects::Texture*> gradientTexture; ///< Texture with gradients
+    Output<globjects::Texture *> gradientTexture; ///< Texture with gradients
 
 
 public:
