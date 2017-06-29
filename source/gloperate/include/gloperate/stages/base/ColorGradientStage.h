@@ -21,7 +21,7 @@ class ColorGradientList;
 
 /**
 *  @brief
-*    Stage that loads and creates a color gradient list from a file path
+*    Stage that loads a color gradient list from a file path
 */
 class GLOPERATE_API ColorGradientStage : public Stage
 {
@@ -31,7 +31,7 @@ public:
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that loads and creates a color gradient list from a file path"
+      , "Stage that loads a color gradient list from a file path"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -39,10 +39,10 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>  filePath;          ///< path to the source file of the color gradient list
+    Input<cppassist::FilePath>  filePath;          ///< Path to the source file of the color gradient list
 
     // Outputs
-    Output<ColorGradientList *> colorGradientList; ///< the color gradient list object
+    Output<ColorGradientList *> colorGradientList; ///< The color gradient list object
 
 
 public:

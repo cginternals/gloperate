@@ -5,8 +5,6 @@
 #include <gloperate/base/ResourceManager.h>
 #include <gloperate/rendering/ColorGradientList.h>
 
-#include <gloperate/gloperate.h>
-
 
 namespace gloperate
 {
