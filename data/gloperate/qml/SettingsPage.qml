@@ -156,7 +156,7 @@ Item
 
                             ClickLabel
                             {
-                                text: "Remove"
+                                text: 'Remove'
                                 Layout.alignment: Qt.AlignRight
 
                                 onClicked:
@@ -170,7 +170,7 @@ Item
 
                     ClickLabel
                     {
-                        text: "Add"
+                        text: 'Add'
 
                         FileDialog
                         {
