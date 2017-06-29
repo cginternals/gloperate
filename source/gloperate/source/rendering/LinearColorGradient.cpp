@@ -5,6 +5,7 @@
 
 #include <glm/common.hpp>
 
+
 namespace gloperate
 {
 

@@ -23,9 +23,8 @@ namespace gloperate
 *    The ColorGradientList represents and manages a list of AbstractColorGradients.
 *
 *    The color gradients are stored and sorted by their names, requiring a lookup by name.
-*
-*    A texture containing all gradients can be created.
-*    For a lookup in this texture it is useful to query the texture index of the current gradient by the indexOf method.
+*    A texture containing all gradients can be created. For a lookup in this texture,
+*    it is useful to query the texture index of the current gradient by the indexOf method.
 *
 *  @see Color
 *  @see AbstractColorGradient
@@ -150,30 +149,27 @@ public:
     *    Get a vector containing pixel data for all gradients
     *
     *  @param[in] numColors
-    *    Number of colors for each gradient
+    *    Number of pixels for each gradient
     *
     *  @return
-    *    Vector containing pixel data.
+    *    Vector containing pixel data for all gradients (dimensions: numPixels x size())
     *
     *  @see
     *    AbstractColorGradient::pixelData()
     */
-    std::vector<unsigned char> pixelData(size_t numColors) const;
+    std::vector<unsigned char> pixelData(size_t numPixels) const;
 
     /**
     *  @brief
     *    Get a texture containing all gradients
     *
-    *  @param[in] numColors
-    *    Number of colors for each gradient (i.e., number of texels on x dimension)
+    *  @param[in] numPixels
+    *    Number of pixels for each gradient
     *
     *  @return
-    *    A fully initialized texture containing all gradients
-    *
-    *  @remarks
-    *   The texture has texel dimensions of (numColors x size()).
+    *    Texture containing all gradients (dimensions: numPixels x size())
     */
-    std::unique_ptr<globjects::Texture> generateTexture(size_t numColors) const;
+    std::unique_ptr<globjects::Texture> generateTexture(size_t numPixels) const;
 
 
 protected:
