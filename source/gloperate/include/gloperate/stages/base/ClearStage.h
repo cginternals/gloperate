@@ -22,6 +22,9 @@ namespace gloperate
 {
 
 
+class ClearValueInput;
+
+
 /**
 *  @brief
 *    Stage that clears the screen with a background color
@@ -78,10 +81,7 @@ protected:
 
 
 protected:
-    std::vector<Input<Color> *>                 m_colorValueInputs;        ///< Color clear values
-    std::vector<Input<float> *>                 m_depthValueInputs;        ///< Depth clear values
-    std::vector<Input<int> *>                   m_stencilValueInputs;      ///< Stencil clear values
-    std::vector<Input<std::pair<float, int>> *> m_depthStencilValueInputs; ///< Depth-stencil clear values
+    std::vector<std::unique_ptr<ClearValueInput>>                 m_clearValueInputs;        ///< clear values of differing types
 };
 
 
