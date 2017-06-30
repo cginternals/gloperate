@@ -436,6 +436,8 @@ ApplicationWindow
             // Load settings
             settings.load();
         }
+        
+        gloperate.components.scanPlugins();
 
         // Set render stage
         window.stage = settings.stage;
