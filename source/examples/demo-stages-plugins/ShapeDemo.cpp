@@ -123,7 +123,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     addStage(m_clear.get());
     m_clear->createInput("ColorAttachment") << m_framebuffer->colorBuffer;
     m_clear->createInput("DepthAttachment") << m_framebuffer->depthBuffer;
-    m_clear->createInput("ColorValue") = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_clear->createInput("ColorValue") << canvasInterface.backgroundColor;
     m_clear->createInput("DepthValue") = 1.0f;
     m_clear->renderInterface.viewport << canvasInterface.viewport;
 

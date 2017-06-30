@@ -26,7 +26,7 @@ ClearStage::ClearStage(Environment * environment, const std::string & name)
 , clear("clear",  this, true)
 {
     inputAdded.connect( [this] (AbstractSlot * connectedInput) {
-        auto colorValueInput = dynamic_cast<Input<glm::vec4> *>(connectedInput);
+        auto colorValueInput = dynamic_cast<Input<Color> *>(connectedInput);
         auto depthValueInput = dynamic_cast<Input<float> *>(connectedInput);
         auto stencilValueInput = dynamic_cast<Input<int> *>(connectedInput);
         auto depthStencilValueInput = dynamic_cast<Input<std::pair<float, int>> *>(connectedInput);
@@ -105,7 +105,8 @@ void ClearStage::onProcess()
             const auto attachmentDrawBuffer = (**input)->clearBufferDrawBuffer(colorAttachmentIndex);
             const auto clearColor = **m_colorValueInputs.at(colorAttachmentIndex);
 
-            fbo->clearBuffer(attachmentBuffer, attachmentDrawBuffer, clearColor);
+            auto clearColorF = clearColor.toVec4();
+            fbo->clearBuffer(attachmentBuffer, attachmentDrawBuffer, clearColorF);
 
             ++colorAttachmentIndex;
         });

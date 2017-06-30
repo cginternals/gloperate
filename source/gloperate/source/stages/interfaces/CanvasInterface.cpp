@@ -8,7 +8,7 @@ namespace gloperate
 
 CanvasInterface::CanvasInterface(Stage * stage)
 : RenderInterface(stage)
-, backgroundColor("backgroundColor", stage)
+, backgroundColor("backgroundColor", stage, Color(0, 0, 0, 255))
 , frameCounter   ("frameCounter", stage)
 , timeDelta      ("timeDelta", stage)
 {
