@@ -198,6 +198,11 @@ void Canvas::updateTime()
     float timeDelta = std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
     m_timeDelta += timeDelta;
 
+    if (!m_renderStage)
+    {
+        return;
+    }
+
     // Update timing
     auto slotTimeDelta = m_renderStage->findInput<float>([](Input<float>* input) { return input->name() == "timeDelta"; });
     if (slotTimeDelta)
@@ -219,6 +224,11 @@ void Canvas::setViewport(const glm::vec4 & deviceViewport)
     // Store viewport information
     m_viewport  = deviceViewport;
     m_initialized = true;
+
+    if (!m_renderStage)
+    {
+        return;
+    }
 
     // Promote new viewport
     auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
@@ -244,7 +254,10 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
 
     // Abort if not initialized
-    if (!m_initialized || !m_renderStage) return;
+    if (!m_initialized || !m_renderStage)
+    {
+        return;
+    }
 
     // Check if the render stage is to be replaced
     if (m_replaceStage)
@@ -302,31 +315,30 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         {
             m_colorTarget->releaseTarget();
         }
-
-        if (depthStencilAttachment)
+        if (depthAttachment)
         {
-            m_depthTarget->setTarget(depthStencilAttachment);
-            m_stencilTarget->setTarget(depthStencilAttachment);
+            m_depthTarget->setTarget(depthAttachment);
         }
         else
         {
-            if (depthAttachment)
-            {
-                m_depthTarget->setTarget(depthAttachment);
-            }
-            else
-            {
-                m_depthTarget->releaseTarget();
-            }
+            m_depthTarget->releaseTarget();
+        }
 
-            if (stencilAttachment)
-            {
-                m_stencilTarget->setTarget(stencilAttachment);
-            }
-            else
-            {
-                m_stencilTarget->releaseTarget();
-            }
+        if (stencilAttachment)
+        {
+            m_stencilTarget->setTarget(stencilAttachment);
+        }
+        else
+        {
+            m_stencilTarget->releaseTarget();
+        }
+        if (depthStencilAttachment)
+        {
+            m_depthStencilTarget->setTarget(depthStencilAttachment);
+        }
+        else
+        {
+            m_depthStencilTarget->releaseTarget();
         }
     }
 
@@ -336,6 +348,9 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     });
     m_renderStage->forAllInputs<gloperate::DepthRenderTarget *>([this](Input<DepthRenderTarget *> * input) {
         input->setValue(m_depthTarget.get());
+    });
+    m_renderStage->forAllInputs<gloperate::DepthStencilRenderTarget *>([this](Input<DepthStencilRenderTarget *> * input) {
+        input->setValue(m_depthStencilTarget.get());
     });
     m_renderStage->forAllInputs<gloperate::StencilRenderTarget *>([this](Input<StencilRenderTarget *> * input) {
         input->setValue(m_stencilTarget.get());
@@ -449,6 +464,11 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 
 void Canvas::checkRedraw()
 {
+    if (!m_renderStage)
+    {
+        return;
+    }
+
     bool redraw = false;
     m_renderStage->forAllOutputs<ColorRenderTarget *>([& redraw](Output<ColorRenderTarget *> * output) {
         if (**output && !output->isValid())

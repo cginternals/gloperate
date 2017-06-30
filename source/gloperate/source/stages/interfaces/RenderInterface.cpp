@@ -13,6 +13,7 @@
 #include <gloperate/rendering/RenderTargetType.h>
 #include <gloperate/rendering/ColorRenderTarget.h>
 #include <gloperate/rendering/DepthRenderTarget.h>
+#include <gloperate/rendering/DepthStencilRenderTarget.h>
 #include <gloperate/rendering/StencilRenderTarget.h>
 
 
@@ -102,12 +103,13 @@ void RenderInterface::updateRenderTargetOutputs() {
 
 bool RenderInterface::allRenderTargetsCompatible() const
 {
-    if (m_colorRenderTargetOutputs.empty() && m_depthRenderTargetOutputs.empty() && m_stencilRenderTargetOutputs.empty())
+    if (m_colorRenderTargetInputs.empty() && m_depthRenderTargetInputs.empty() && m_depthStencilRenderTargetInputs.empty() && m_stencilRenderTargetInputs.empty())
     {
         return true;
     }
 
-    auto numberOfDepthAttachments = m_depthRenderTargetOutputs.size() + m_stencilRenderTargetOutputs.size();
+    auto numberOfDepthAttachments = m_depthRenderTargetOutputs.size() + m_depthStencilRenderTargetOutputs.size();
+    auto numberOfStencilAttachments = m_depthStencilRenderTargetOutputs.size() + m_stencilRenderTargetOutputs.size();
 
     auto allDefaultFramebufferAttachments =
         std::all_of(m_colorRenderTargetInputs.begin(), m_colorRenderTargetInputs.end(), [](Input<ColorRenderTarget *> * input) {
@@ -232,7 +234,7 @@ bool RenderInterface::allRenderTargetsCompatible() const
             return renderTarget->attachmentRequiresUserDefinedFramebuffer();
         });
 
-    return allDefaultFramebufferAttachments != allUserDefinedFramebufferAttachments && numberOfDepthAttachments <= 1;
+    return allDefaultFramebufferAttachments != allUserDefinedFramebufferAttachments && numberOfDepthAttachments <= 1 && numberOfStencilAttachments <= 1;
 }
 
 const std::vector<Input<ColorRenderTarget *> *> & RenderInterface::colorRenderTargetInputs() const
@@ -247,7 +249,7 @@ const std::vector<Input<DepthRenderTarget *> *> & RenderInterface::depthRenderTa
 
 const std::vector<Input<DepthStencilRenderTarget *> *> & RenderInterface::depthStencilRenderTargetInputs() const
 {
-    return m_depthRenderTargetInputs;
+    return m_depthStencilRenderTargetInputs;
 }
 
 const std::vector<Input<StencilRenderTarget *> *> & RenderInterface::stencilRenderTargetInputs() const
@@ -263,6 +265,11 @@ Input<ColorRenderTarget *> * RenderInterface::colorRenderTargetInput(size_t inde
 Input<DepthRenderTarget *> * RenderInterface::depthRenderTargetInput(size_t index) const
 {
     return m_depthRenderTargetInputs.size() > index ? m_depthRenderTargetInputs.at(index) : nullptr;
+}
+
+Input<DepthStencilRenderTarget *> * RenderInterface::depthStencilRenderTargetInput(size_t index) const
+{
+    return m_depthStencilRenderTargetInputs.size() > index ? m_depthStencilRenderTargetInputs.at(index) : nullptr;
 }
 
 Input<StencilRenderTarget *> * RenderInterface::stencilRenderTargetInput(size_t index) const
@@ -284,6 +291,13 @@ DepthRenderTarget * RenderInterface::depthRenderTarget(size_t index) const
     return input ? **input : nullptr;
 }
 
+DepthStencilRenderTarget * RenderInterface::depthStencilRenderTarget(size_t index) const
+{
+    const auto input = depthStencilRenderTargetInput(index);
+
+    return input ? **input : nullptr;
+}
+
 StencilRenderTarget * RenderInterface::stencilRenderTarget(size_t index) const
 {
     const auto input = stencilRenderTargetInput(index);
@@ -301,6 +315,11 @@ const std::vector<Output<DepthRenderTarget *> *> & RenderInterface::depthRenderT
     return m_depthRenderTargetOutputs;
 }
 
+const std::vector<Output<DepthStencilRenderTarget *> *> & RenderInterface::depthStencilRenderTargetOutputs() const
+{
+    return m_depthStencilRenderTargetOutputs;
+}
+
 const std::vector<Output<StencilRenderTarget *> *> & RenderInterface::stencilRenderTargetOutputs() const
 {
     return m_stencilRenderTargetOutputs;
@@ -314,6 +333,11 @@ Output<ColorRenderTarget *> * RenderInterface::colorRenderTargetOutput(size_t in
 Output<DepthRenderTarget *> * RenderInterface::depthRenderTargetOutput(size_t index) const
 {
     return m_depthRenderTargetOutputs.size() > index ? m_depthRenderTargetOutputs.at(index) : nullptr;
+}
+
+Output<DepthStencilRenderTarget *> * RenderInterface::depthStencilRenderTargetOutput(size_t index) const
+{
+    return m_depthStencilRenderTargetOutputs.size() > index ? m_depthStencilRenderTargetOutputs.at(index) : nullptr;
 }
 
 Output<StencilRenderTarget *> * RenderInterface::stencilRenderTargetOutput(size_t index) const
@@ -331,6 +355,11 @@ void RenderInterface::addRenderTargetInput(Input<DepthRenderTarget *> * input)
     m_depthRenderTargetInputs.push_back(input);
 }
 
+void RenderInterface::addRenderTargetInput(Input<DepthStencilRenderTarget *> * input)
+{
+    m_depthStencilRenderTargetInputs.push_back(input);
+}
+
 void RenderInterface::addRenderTargetInput(Input<StencilRenderTarget *> * input)
 {
     m_stencilRenderTargetInputs.push_back(input);
@@ -344,6 +373,11 @@ void RenderInterface::addRenderTargetOutput(Output<ColorRenderTarget *> * input)
 void RenderInterface::addRenderTargetOutput(Output<DepthRenderTarget *> * input)
 {
     m_depthRenderTargetOutputs.push_back(input);
+}
+
+void RenderInterface::addRenderTargetOutput(Output<DepthStencilRenderTarget *> * input)
+{
+    m_depthStencilRenderTargetOutputs.push_back(input);
 }
 
 void RenderInterface::addRenderTargetOutput(Output<StencilRenderTarget *> * input)
@@ -372,6 +406,18 @@ void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<DepthRend
     for (auto i = size_t(0); i < end; ++i)
     {
         callback(depthRenderTargetInput(i), depthRenderTargetOutput(i));
+    }
+}
+
+void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<DepthStencilRenderTarget *> *, Output<DepthStencilRenderTarget *> *)> callback, bool includeIncompletePairs)
+{
+    const auto end = includeIncompletePairs
+        ? std::max(m_depthStencilRenderTargetInputs.size(), m_depthStencilRenderTargetOutputs.size())
+        : std::min(m_depthStencilRenderTargetInputs.size(), m_depthStencilRenderTargetOutputs.size());
+
+    for (auto i = size_t(0); i < end; ++i)
+    {
+        callback(depthStencilRenderTargetInput(i), depthStencilRenderTargetOutput(i));
     }
 }
 
@@ -421,6 +467,21 @@ globjects::Framebuffer * RenderInterface::obtainFBO() const
     }
 
     for (auto input : m_depthRenderTargetInputs)
+    {
+        auto nextFBO = obtainFBO(0, **input);
+
+        if (!currentFBO)
+        {
+            currentFBO = nextFBO;
+        }
+
+        if (nextFBO != currentFBO)
+        {
+            return nullptr;
+        }
+    }
+
+    for (auto input : m_depthStencilRenderTargetInputs)
     {
         auto nextFBO = obtainFBO(0, **input);
 

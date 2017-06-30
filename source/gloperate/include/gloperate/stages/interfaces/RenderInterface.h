@@ -158,7 +158,7 @@ public:
     *  @return
     *    The vector of depth-stencil render target inputs
     */
-    const std::vector<Input<DepthStencilRenderTarget *> *> & depthRenderTargetInputs() const;
+    const std::vector<Input<DepthStencilRenderTarget *> *> & depthStencilRenderTargetInputs() const;
 
     /**
     *  @brief
