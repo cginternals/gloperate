@@ -1,16 +1,31 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.0
 
 import QmlToolbox.Base 1.0
 import QmlToolbox.Controls 1.0
 
+import gloperate.rendering 1.0
+
 
 Item
 {
+    id: item
+
     anchors.fill: parent
 
     property var settings: null
+
+    Connections
+    {
+        target: settings
+
+        onPluginPathsChanged:
+        {
+            pluginPathEditor.update();
+        }
+    }
 
     ScrollArea
     {
@@ -104,6 +119,81 @@ Item
                     {
                         var position = model[index];
                         settings.panelPosition = position;
+                    }
+                }
+
+                Label
+                {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+
+                    text: 'Plugin Paths'
+                }
+
+                // Plugin Paths Editor
+                Column
+                {
+                    id: pluginPathEditor
+
+                    property var pluginPaths: []
+
+                    spacing: Ui.style.paddingMedium
+
+                    function update()
+                    {
+                        pluginPaths = gloperate.components.pluginPaths();
+                    }
+
+                    Repeater
+                    {
+                        model: pluginPathEditor.pluginPaths.length
+
+                        Row
+                        {
+                            spacing: Ui.style.paddingMedium
+
+                            Label
+                            {                                
+                                text: pluginPathEditor.pluginPaths[index]
+                            }
+
+                            ClickLabel
+                            {
+                                text: 'Remove'
+                                Layout.alignment: Qt.AlignRight
+
+                                onClicked:
+                                {
+                                    gloperate.components.removePluginPath(pluginPathEditor.pluginPaths[index]);
+                                    item.settings.pluginPaths = gloperate.components.getPluginPaths();
+                                }
+                            }
+                        }
+                    }
+
+                    ClickLabel
+                    {
+                        text: 'Add'
+
+                        FileDialog
+                        {
+                            id: fileDialog
+
+                            selectFolder: true
+                            folder:       shortcuts.home
+
+                            onAccepted:
+                            {
+                                var path = QmlUtils.urlToLocalFile(fileDialog.fileUrl);
+
+                                gloperate.components.addPluginPath(path);
+                                item.settings.pluginPaths = gloperate.components.getPluginPaths();
+                            }
+                        }
+
+                        onClicked:
+                        {
+                            fileDialog.open();
+                        }
                     }
                 }
             }
