@@ -417,6 +417,13 @@ ApplicationWindow
         {
             Ui.debugMode = debugMode;
         }
+
+        onPluginPathsChanged:
+        {
+            // Scan for plugins
+            gloperate.components.setPluginPaths(settings.pluginPaths);
+            gloperate.components.scanPlugins();
+        }
     }
 
     Component.onCompleted:
@@ -431,7 +438,6 @@ ApplicationWindow
         }
 
         // Scan for plugins
-        gloperate.components.setPluginPaths(settings.pluginPaths);
         gloperate.components.scanPlugins();
 
         // Set render stage

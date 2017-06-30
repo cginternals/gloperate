@@ -3,6 +3,8 @@
 
 #include <gloperate/rendering/AbstractColorGradient.h>
 
+#include <gloperate/rendering/ColorGradientList.h>
+
 
 namespace gloperate
 {
@@ -14,9 +16,9 @@ CPPEXPOSE_COMPONENT(ColorGradientSelectionStage, gloperate::Stage)
 ColorGradientSelectionStage::ColorGradientSelectionStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "ColorGradientSelectionStage", name)
 , gradients("gradients", this)
-, gradientName("gradientName", this)
+, name("name", this)
 , gradient("gradient", this)
-, gradientIndex("gradientIndex", this)
+, index("index", this)
 {
 }
 
@@ -26,9 +28,9 @@ ColorGradientSelectionStage::~ColorGradientSelectionStage()
 
 void ColorGradientSelectionStage::onProcess()
 {
-    // Update ooutputs
-    gradientIndex.setValue(gradients->indexOf(*gradientName));
-    gradient.setValue(gradients->at(*gradientName));
+    // Update outputs
+    index.setValue(gradients->indexOf(*name));
+    gradient.setValue(gradients->at(*name));
 }
 
 
