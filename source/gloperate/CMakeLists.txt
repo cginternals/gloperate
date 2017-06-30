@@ -118,7 +118,6 @@ set(headers
     ${include_path}/rendering/LinearColorGradient.inl
     ${include_path}/rendering/ColorGradientList.h
     ${include_path}/rendering/ColorGradientList.inl
-    ${include_path}/rendering/ColorGradientPreparation.h
 
     ${include_path}/stages/interfaces/RenderInterface.h
     ${include_path}/stages/interfaces/CanvasInterface.h
@@ -128,6 +127,7 @@ set(headers
     ${include_path}/stages/base/RenderbufferRenderTargetStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/BlitStage.h
+    ${include_path}/stages/base/ColorGradientStage.h
     ${include_path}/stages/base/ColorGradientSelectionStage.h
     ${include_path}/stages/base/ColorGradientTextureStage.h
     ${include_path}/stages/base/ShaderStage.h
@@ -160,6 +160,7 @@ set(headers
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
 
+    ${include_path}/loaders/ColorGradientLoader.h
     ${include_path}/loaders/ShaderLoader.h
     ${include_path}/loaders/GlrawTextureLoader.h
     ${include_path}/loaders/RawFileNameSuffix.h
@@ -217,12 +218,12 @@ set(sources
     ${source_path}/rendering/AbstractColorGradient.cpp
     ${source_path}/rendering/LinearColorGradient.cpp
     ${source_path}/rendering/ColorGradientList.cpp
-    ${source_path}/rendering/ColorGradientPreparation.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
     ${source_path}/stages/interfaces/CanvasInterface.cpp
     ${source_path}/stages/base/FloatSelectionStage.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/ColorGradientStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
     ${source_path}/stages/base/ShaderStage.cpp
@@ -257,6 +258,7 @@ set(sources
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
 
+    ${source_path}/loaders/ColorGradientLoader.cpp
     ${source_path}/loaders/ShaderLoader.cpp
     ${source_path}/loaders/GlrawTextureLoader.cpp
     ${source_path}/loaders/RawFileNameSuffix.cpp

@@ -29,6 +29,7 @@ RenderInterface::RenderInterface(Stage * stage)
     stage->inputAdded.connect( [this] (AbstractSlot * connectedInput) {
         auto colorRenderTargetInput = dynamic_cast<Input<ColorRenderTarget *> *>(connectedInput);
         auto depthRenderTargetInput = dynamic_cast<Input<DepthRenderTarget *> *>(connectedInput);
+        auto depthStencilRenderTargetInput = dynamic_cast<Input<DepthStencilRenderTarget *> *>(connectedInput);
         auto stencilRenderTargetInput = dynamic_cast<Input<StencilRenderTarget *> *>(connectedInput);
 
         if (colorRenderTargetInput)
@@ -41,6 +42,11 @@ RenderInterface::RenderInterface(Stage * stage)
             addRenderTargetInput(depthRenderTargetInput);
         }
 
+        if (depthStencilRenderTargetInput)
+        {
+            addRenderTargetInput(depthStencilRenderTargetInput);
+        }
+
         if (stencilRenderTargetInput)
         {
             addRenderTargetInput(stencilRenderTargetInput);
@@ -50,6 +56,7 @@ RenderInterface::RenderInterface(Stage * stage)
     stage->outputAdded.connect( [this] (AbstractSlot * connectedOutput) {
         auto colorRenderTargetOutput = dynamic_cast<Output<ColorRenderTarget *> *>(connectedOutput);
         auto depthRenderTargetOutput = dynamic_cast<Output<DepthRenderTarget *> *>(connectedOutput);
+        auto depthStencilRenderTargetOutput = dynamic_cast<Output<DepthStencilRenderTarget *> *>(connectedOutput);
         auto stencilRenderTargetOutput = dynamic_cast<Output<StencilRenderTarget *> *>(connectedOutput);
 
         if (colorRenderTargetOutput)
@@ -60,6 +67,11 @@ RenderInterface::RenderInterface(Stage * stage)
         if (depthRenderTargetOutput)
         {
             addRenderTargetOutput(depthRenderTargetOutput);
+        }
+
+        if (depthStencilRenderTargetOutput)
+        {
+            addRenderTargetOutput(depthStencilRenderTargetOutput);
         }
 
         if (stencilRenderTargetOutput)
@@ -78,6 +90,9 @@ void RenderInterface::updateRenderTargetOutputs() {
         output->setValue(**input);
     });
     pairwiseRenderTargetsDo([](Input<DepthRenderTarget *> * input, Output<DepthRenderTarget *> * output) {
+        output->setValue(**input);
+    });
+    pairwiseRenderTargetsDo([](Input<DepthStencilRenderTarget *> * input, Output<DepthStencilRenderTarget *> * output) {
         output->setValue(**input);
     });
     pairwiseRenderTargetsDo([](Input<StencilRenderTarget *> * input, Output<StencilRenderTarget *> * output) {
@@ -111,6 +126,21 @@ bool RenderInterface::allRenderTargetsCompatible() const
             return !renderTarget->attachmentRequiresUserDefinedFramebuffer();
         })
         && std::all_of(m_depthRenderTargetInputs.begin(), m_depthRenderTargetInputs.end(), [](Input<DepthRenderTarget *> * input) {
+            if (input == nullptr)
+            {
+                return true;
+            }
+
+            auto renderTarget = **input;
+
+            if (renderTarget == nullptr)
+            {
+                return true;
+            }
+
+            return !renderTarget->attachmentRequiresUserDefinedFramebuffer();
+        })
+        && std::all_of(m_depthStencilRenderTargetInputs.begin(), m_depthStencilRenderTargetInputs.end(), [](Input<DepthStencilRenderTarget *> * input) {
             if (input == nullptr)
             {
                 return true;
@@ -171,6 +201,21 @@ bool RenderInterface::allRenderTargetsCompatible() const
 
             return renderTarget->attachmentRequiresUserDefinedFramebuffer();
         })
+        && std::all_of(m_depthStencilRenderTargetInputs.begin(), m_depthStencilRenderTargetInputs.end(), [](Input<DepthStencilRenderTarget *> * input) {
+            if (input == nullptr)
+            {
+                return true;
+            }
+
+            auto renderTarget = **input;
+
+            if (renderTarget == nullptr)
+            {
+                return true;
+            }
+
+            return renderTarget->attachmentRequiresUserDefinedFramebuffer();
+        })
         && std::all_of(m_stencilRenderTargetInputs.begin(), m_stencilRenderTargetInputs.end(), [](Input<StencilRenderTarget *> * input) {
             if (input == nullptr)
             {
@@ -196,6 +241,11 @@ const std::vector<Input<ColorRenderTarget *> *> & RenderInterface::colorRenderTa
 }
 
 const std::vector<Input<DepthRenderTarget *> *> & RenderInterface::depthRenderTargetInputs() const
+{
+    return m_depthRenderTargetInputs;
+}
+
+const std::vector<Input<DepthStencilRenderTarget *> *> & RenderInterface::depthStencilRenderTargetInputs() const
 {
     return m_depthRenderTargetInputs;
 }

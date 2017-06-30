@@ -35,10 +35,8 @@ BasicFramebufferStage::~BasicFramebufferStage()
 void BasicFramebufferStage::onContextInit(AbstractGLContext *)
 {
     m_colorBuffer = cppassist::make_unique<ColorRenderTarget>();
-    m_colorBuffer->setUnderlyingAttachmentType(AttachmentType::Color);
 
     m_depthBuffer = cppassist::make_unique<DepthRenderTarget>();
-    m_depthBuffer->setUnderlyingAttachmentType(AttachmentType::Depth);
 
     // Create color texture
     m_colorTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);

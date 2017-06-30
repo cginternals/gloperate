@@ -127,19 +127,5 @@ gl::GLenum AbstractRenderTarget::clearBufferAttachment() const
         : m_defaultFBOAttachment;
 }
 
-gl::GLint AbstractRenderTarget::clearBufferDrawBuffer(size_t index) const
-{
-    return attachmentRequiresUserDefinedFramebuffer()
-        ? (m_internalAttachmentType == AttachmentType::Color ? index : 0)
-        : 0;
-}
-
-gl::GLenum AbstractRenderTarget::drawBufferAttachment(size_t index) const
-{
-    return attachmentRequiresUserDefinedFramebuffer()
-        ? gl::GL_COLOR_ATTACHMENT0 + index
-        : m_defaultFBOAttachment;
-}
-
 
 } // namespace gloperate

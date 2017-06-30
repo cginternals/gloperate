@@ -23,6 +23,7 @@ class Stage;
 class AbstractRenderTarget;
 class ColorRenderTarget;
 class DepthRenderTarget;
+class DepthStencilRenderTarget;
 class StencilRenderTarget;
 
 
@@ -152,6 +153,15 @@ public:
 
     /**
     *  @brief
+    *    Get the vector of all registered depth-stencil render target inputs
+    *
+    *  @return
+    *    The vector of depth-stencil render target inputs
+    */
+    const std::vector<Input<DepthStencilRenderTarget *> *> & depthRenderTargetInputs() const;
+
+    /**
+    *  @brief
     *    Get the vector of all registered stencil render target inputs
     *
     *  @return
@@ -182,6 +192,18 @@ public:
     *    The depth render target input at given index, 'null' if index is invalid
     */
     Input<DepthRenderTarget *> * depthRenderTargetInput(size_t index) const;
+
+    /**
+    *  @brief
+    *    Get the depth-stencil render target input at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The depth-stencil render target input at given index, 'null' if index is invalid
+    */
+    Input<DepthStencilRenderTarget *> * depthStencilRenderTargetInput(size_t index) const;
 
     /**
     *  @brief
@@ -221,6 +243,18 @@ public:
 
     /**
     *  @brief
+    *    Get the depth-stencil render target at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The depth-stencil render target at given index, 'null' if index is invalid
+    */
+    DepthStencilRenderTarget * depthStencilRenderTarget(size_t index) const;
+
+    /**
+    *  @brief
     *    Get the stencil render target at given index
     *
     *  @param[in] index
@@ -248,6 +282,15 @@ public:
     *    The vector of depth render target outputs
     */
     const std::vector<Output<DepthRenderTarget *> *> & depthRenderTargetOutputs() const;
+
+    /**
+    *  @brief
+    *    Get the vector of all registered depth-stencil render target outputs
+    *
+    *  @return
+    *    The vector of depth-stencil render target outputs
+    */
+    const std::vector<Output<DepthStencilRenderTarget *> *> & depthStencilRenderTargetOutputs() const;
 
     /**
     *  @brief
@@ -284,6 +327,18 @@ public:
 
     /**
     *  @brief
+    *    Get the depth-stencil render target output at given index
+    *
+    *  @param[in] index
+    *    The index of the render target
+    *
+    *  @return
+    *    The depth render target output at given index, 'null' if index is invalid
+    */
+    Output<DepthStencilRenderTarget *> * depthStencilRenderTargetOutput(size_t index) const;
+
+    /**
+    *  @brief
     *    Get the stencil render target output at given index
     *
     *  @param[in] index
@@ -314,6 +369,15 @@ public:
 
     /**
     *  @brief
+    *    Registers new depth-stencil render target input
+    *
+    *  @param[in] input
+    *    New depth-stencil render target input
+    */
+    void addRenderTargetInput(Input<DepthStencilRenderTarget *> * input);
+
+    /**
+    *  @brief
     *    Registers new stencil render target input
     *
     *  @param[in] input
@@ -338,6 +402,15 @@ public:
     *    New render depth target output
     */
     void addRenderTargetOutput(Output<DepthRenderTarget *> * output);
+
+    /**
+    *  @brief
+    *    Registers new depth-stencil render target output
+    *
+    *  @param[in] input
+    *    New render depth-stencil target output
+    */
+    void addRenderTargetOutput(Output<DepthStencilRenderTarget *> * output);
 
     /**
     *  @brief
@@ -372,6 +445,17 @@ public:
 
     /**
     *  @brief
+    *    Iterate over all pairs of depth-stencil render target inputs and outputs and call the callback
+    *
+    *  @param[in] callback
+    *    The callback
+    *  @param[in] includeIncompletePairs
+    *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
+    */
+    void pairwiseRenderTargetsDo(std::function<void(Input<DepthStencilRenderTarget *> *, Output<DepthStencilRenderTarget *> *)> callback, bool includeIncompletePairs = false);
+
+    /**
+    *  @brief
     *    Iterate over all pairs of stencil render target inputs and outputs and call the callback
     *
     *  @param[in] callback
@@ -401,14 +485,16 @@ public:
 
 
 protected:
-    std::unique_ptr<globjects::Framebuffer>      m_defaultFBO;                 ///< Default FBO for configuration
-    std::unique_ptr<globjects::Framebuffer>      m_fbo;                        ///< Intermediate FBO for configuration
-    std::vector<Input <ColorRenderTarget   *> *> m_colorRenderTargetInputs;    ///< List of input color render targets
-    std::vector<Input <DepthRenderTarget   *> *> m_depthRenderTargetInputs;    ///< List of input depth render targets
-    std::vector<Input <StencilRenderTarget *> *> m_stencilRenderTargetInputs;  ///< List of input depth-stencil render targets
-    std::vector<Output<ColorRenderTarget   *> *> m_colorRenderTargetOutputs;   ///< List of output color render targets (pass-through)
-    std::vector<Output<DepthRenderTarget   *> *> m_depthRenderTargetOutputs;   ///< List of output depth render targets (pass-through)
-    std::vector<Output<StencilRenderTarget *> *> m_stencilRenderTargetOutputs; ///< List of output depth-stencil render targets (pass-through)
+    std::unique_ptr<globjects::Framebuffer>           m_defaultFBO;                      ///< Default FBO for configuration
+    std::unique_ptr<globjects::Framebuffer>           m_fbo;                             ///< Intermediate FBO for configuration
+    std::vector<Input <ColorRenderTarget        *> *> m_colorRenderTargetInputs;         ///< List of input color render targets
+    std::vector<Input <DepthRenderTarget        *> *> m_depthRenderTargetInputs;         ///< List of input depth render targets
+    std::vector<Input <DepthStencilRenderTarget *> *> m_depthStencilRenderTargetInputs;  ///< List of input depth-stencil render targets
+    std::vector<Input <StencilRenderTarget      *> *> m_stencilRenderTargetInputs;       ///< List of input stencil render targets
+    std::vector<Output<ColorRenderTarget        *> *> m_colorRenderTargetOutputs;        ///< List of output color render targets (pass-through)
+    std::vector<Output<DepthRenderTarget        *> *> m_depthRenderTargetOutputs;        ///< List of output depth render targets (pass-through)
+    std::vector<Output<DepthStencilRenderTarget *> *> m_depthStencilRenderTargetOutputs; ///< List of output depth-stencil render targets (pass-through)
+    std::vector<Output<StencilRenderTarget      *> *> m_stencilRenderTargetOutputs;      ///< List of output stencil render targets (pass-through)
 };
 
 

@@ -171,6 +171,8 @@ public:
     */
     gl::GLenum clearBufferAttachment() const;
 
+
+public:
     /**
     *  @brief
     *    Get the draw buffer attachment index
@@ -184,7 +186,7 @@ public:
     *  @remarks
     *    If this is no color attachment, '0' is returned
     */
-    gl::GLint clearBufferDrawBuffer(size_t index) const;
+    virtual gl::GLint clearBufferDrawBuffer(size_t index) const = 0;
 
     /**
     *  @brief
@@ -196,10 +198,8 @@ public:
     *  @return
     *    The symbolic constant for the attachment name
     */
-    gl::GLenum drawBufferAttachment(size_t index) const;
+    virtual gl::GLenum drawBufferAttachment(size_t index) const = 0;
 
-
-public:
     /**
     *  @brief
     *    Get attachment type

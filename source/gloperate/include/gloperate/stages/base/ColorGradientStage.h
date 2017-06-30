@@ -2,18 +2,14 @@
 #pragma once
 
 
+#include <cppassist/fs/FilePath.h>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-
-
-namespace globjects
-{
-    class Texture;
-}
 
 
 namespace gloperate
@@ -25,17 +21,17 @@ class ColorGradientList;
 
 /**
 *  @brief
-*    Stage that creates a texture containing color gradients
+*    Stage that loads a color gradient list from a file path
 */
-class GLOPERATE_API ColorGradientTextureStage : public gloperate::Stage
+class GLOPERATE_API ColorGradientStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        ColorGradientTextureStage, gloperate::Stage
+        ColorGradientStage, gloperate::Stage
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
-      , "Stage that creates a texture containing color gradients"
+      , "Stage that loads a color gradient list from a file path"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
@@ -43,11 +39,10 @@ public:
 
 public:
     // Inputs
-    Input<ColorGradientList *>   gradients;    ///< List of color gradients
-    Input<size_t>                textureWidth; ///< Size of texture in X-dimension
+    Input<cppassist::FilePath>  filePath;  ///< Path to the source file of the color gradient list
 
     // Outputs
-    Output<globjects::Texture *> texture;      ///< Texture with gradients
+    Output<ColorGradientList *> gradients; ///< List of color gradients
 
 
 public:
@@ -60,13 +55,13 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    ColorGradientTextureStage(gloperate::Environment * environment, const std::string & name = "");
+    ColorGradientStage(Environment * environment, const std::string & name = "ColorGradientStage");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~ColorGradientTextureStage();
+    virtual ~ColorGradientStage();
 
 
 protected:
@@ -77,7 +72,7 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::Texture> m_gradientTexture; ///< Gradient texture
+    std::unique_ptr<ColorGradientList> m_colorGradientList; ///< Shader object
 };
 
 
