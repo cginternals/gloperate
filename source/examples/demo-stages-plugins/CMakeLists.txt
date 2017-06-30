@@ -5,7 +5,7 @@
 
 find_package(OpenGL    REQUIRED)
 find_package(glm       REQUIRED)
-find_package(assimp    REQUIRED)
+find_package(ASSIMP    REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cpplocate REQUIRED)
