@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppassist/typelist/TypeList.h>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
@@ -22,7 +24,8 @@ namespace gloperate
 {
 
 
-class ClearValueInput;
+class AbstractClearInput;
+class ClearValueAdder;
 
 
 /**
@@ -34,6 +37,8 @@ class ClearValueInput;
 */
 class GLOPERATE_API ClearStage : public Stage
 {
+    friend class ClearValueAdder;
+
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         ClearStage, gloperate::Stage
@@ -44,6 +49,12 @@ public:
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v1.0.0"
     )
+
+    /**
+    *  @brief
+    *    The list of supported types for framebuffer clearing
+    */
+    using SupportedClearValueTypes = cppassist::TypeList<int, float, std::pair<float, int>, Color>;
 
 
 public:
@@ -79,9 +90,16 @@ protected:
     virtual void onContextInit(AbstractGLContext * content) override;
     virtual void onContextDeinit(AbstractGLContext * content) override;
 
+    /**
+    *  @brief
+    *    Reprocess inputs and build up input helper structure for easy clear value and render target association
+    */
+    void reprocessInputs();
+
 
 protected:
-    std::vector<std::unique_ptr<ClearValueInput>>                 m_clearValueInputs;        ///< clear values of differing types
+    bool                                             m_reprocessInputs; ///< Recreate input helper structure upon next process
+    std::vector<std::unique_ptr<AbstractClearInput>> m_clearInputs;     ///< clear values of differing types
 };
 
 
