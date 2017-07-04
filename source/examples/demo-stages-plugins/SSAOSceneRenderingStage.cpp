@@ -56,6 +56,7 @@ SSAOSceneRenderingStage::~SSAOSceneRenderingStage()
 
 void SSAOSceneRenderingStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -70,6 +71,8 @@ void SSAOSceneRenderingStage::onContextDeinit(gloperate::AbstractGLContext *)
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void SSAOSceneRenderingStage::onProcess()

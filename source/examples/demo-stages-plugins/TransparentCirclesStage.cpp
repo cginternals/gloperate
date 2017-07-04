@@ -50,6 +50,7 @@ TransparentCirclesStage::~TransparentCirclesStage()
 
 void TransparentCirclesStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -64,6 +65,8 @@ void TransparentCirclesStage::onContextDeinit(gloperate::AbstractGLContext *)
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void TransparentCirclesStage::onProcess()

@@ -41,6 +41,7 @@ MultiFrameSceneRenderingStage::~MultiFrameSceneRenderingStage()
 
 void MultiFrameSceneRenderingStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -60,6 +61,8 @@ void MultiFrameSceneRenderingStage::onContextDeinit(gloperate::AbstractGLContext
         }
         m_drawable.reset();
     }
+
+    canvasInterface.onContextDeinit();
 }
 
 void MultiFrameSceneRenderingStage::onProcess()

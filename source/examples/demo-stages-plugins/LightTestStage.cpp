@@ -66,8 +66,7 @@ LightTestStage::~LightTestStage()
 
 void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    if (m_vao) // protect against initializing twice
-        return;
+    canvasInterface.onContextInit();
 
     // Setup Geometry
     m_vao = cppassist::make_unique<globjects::VertexArray>();
@@ -121,6 +120,8 @@ void LightTestStage::onContextDeinit(gloperate::AbstractGLContext *)
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void LightTestStage::onProcess()

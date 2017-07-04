@@ -55,8 +55,7 @@ SSAOApplicationStage::~SSAOApplicationStage()
 
 void SSAOApplicationStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    if (m_vao) // protect against initializing twice
-        return;
+    renderInterface.onContextInit();
 
     setupGeometry();
     setupProgram();
@@ -73,6 +72,8 @@ void SSAOApplicationStage::onContextDeinit(gloperate::AbstractGLContext *)
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    renderInterface.onContextDeinit();
 }
 
 void SSAOApplicationStage::onProcess()

@@ -84,6 +84,7 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     m_renderStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
     m_renderStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
     m_renderStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    //m_renderStage->createInput("Depth") << *createInput<gloperate::DepthRenderTarget *>("Depth"); // TODO: fix depth
     m_renderStage->lightColorTypeData << m_lightAccumulationStage->colorTypeData;
     m_renderStage->lightPositionData << m_lightAccumulationStage->positionData;
     m_renderStage->lightAttenuationData << m_lightAccumulationStage->attenuationData;

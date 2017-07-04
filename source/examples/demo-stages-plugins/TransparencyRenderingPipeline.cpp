@@ -31,7 +31,7 @@ TransparencyRenderingPipeline::TransparencyRenderingPipeline(gloperate::Environm
     m_transparencyRenderStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
     m_transparencyRenderStage->transparencyKernel << m_transparencyKernelStage->texture;
     m_transparencyRenderStage->noiseKernel << m_noiseKernelStage->texture;
-    m_transparencyKernelStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    m_transparencyRenderStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
 
     *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_transparencyRenderStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 }

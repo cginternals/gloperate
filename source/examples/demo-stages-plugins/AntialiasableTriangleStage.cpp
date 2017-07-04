@@ -40,6 +40,7 @@ AntialiasableTriangleStage::~AntialiasableTriangleStage()
 
 void AntialiasableTriangleStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -54,6 +55,8 @@ void AntialiasableTriangleStage::onContextDeinit(gloperate::AbstractGLContext *)
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void AntialiasableTriangleStage::onProcess()

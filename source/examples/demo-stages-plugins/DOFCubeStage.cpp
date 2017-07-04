@@ -59,6 +59,7 @@ DOFCubeStage::~DOFCubeStage()
 
 void DOFCubeStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -69,6 +70,7 @@ void DOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_program.reset();
     m_fragmentShader.reset();
     m_vertexShader.reset();
+    canvasInterface.onContextDeinit();
 
     // deinitialize geometry
     m_vertexBuffer.reset();

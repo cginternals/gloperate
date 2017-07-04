@@ -60,11 +60,11 @@ void TextureFromRenderTargetExtractionStage::extractTexture(AbstractRenderTarget
     switch (renderTarget->currentTargetType())
     {
     case RenderTargetType::Texture:
-        texture.setValue(colorRenderTarget->textureAttachment());
+        texture.setValue(renderTarget->textureAttachment());
         break;
     case RenderTargetType::UserDefinedFBOAttachment:
         {
-            auto attachment = colorRenderTarget->framebufferAttachment()->asTextureAttachment();
+            auto attachment = renderTarget->framebufferAttachment()->asTextureAttachment();
 
             texture.setValue(attachment ? attachment->texture() : nullptr);
         }

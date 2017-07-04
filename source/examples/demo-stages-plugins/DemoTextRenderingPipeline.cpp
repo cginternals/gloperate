@@ -64,8 +64,8 @@ DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * en
     glyphPreparation->optimized << optimized;
 
     auto glyphRendering = cppassist::make_unique<gloperate_text::GlyphRenderStage>(environment, "GlyphRendering");
-    glyphRendering->vertexCloud       << glyphPreparation->vertexCloud;
-    glyphRendering->viewport          << renderInterface.viewport;
+    glyphRendering->vertexCloud << glyphPreparation->vertexCloud;
+    glyphRendering->renderInterface.viewport << renderInterface.viewport;
     glyphRendering->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
     *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *glyphRendering->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 

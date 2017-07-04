@@ -55,8 +55,7 @@ MultiFramePostprocessingStage::~MultiFramePostprocessingStage()
 
 void MultiFramePostprocessingStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    if (m_vao) // protect against initializing twice
-        return;
+    canvasInterface.onContextInit();
 
     setupGeometry();
     setupProgram();
@@ -73,6 +72,8 @@ void MultiFramePostprocessingStage::onContextDeinit(gloperate::AbstractGLContext
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void MultiFramePostprocessingStage::onProcess()
