@@ -69,11 +69,13 @@ void MultiFrameAggregationStage::onProcess()
     gl::glBlendFunc(gl::GL_CONSTANT_ALPHA, gl::GL_ONE_MINUS_CONSTANT_ALPHA);
     gl::glBlendEquation(gl::GL_FUNC_ADD);
     gl::glEnable(gl::GL_BLEND);
+    gl::glDisable(gl::GL_DEPTH_TEST);
 
     m_triangle->setTexture(*intermediateFrame);
     m_triangle->draw();
 
     gl::glDisable(gl::GL_BLEND);
+    gl::glEnable(gl::GL_DEPTH_TEST);
 
     renderInterface.updateRenderTargetOutputs();
 }

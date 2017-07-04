@@ -20,7 +20,7 @@ CPPEXPOSE_COMPONENT(ShaderDemoPipeline, gloperate::Stage)
 
 ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , shader1("shader1", this)
 , shader2("shader2", this)
 , texture("texture", this)
@@ -37,8 +37,8 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     std::string dataPath = gloperate::dataPath();
 
     // Setup parameters
-    shader1 = dataPath + "/gloperate/shaders/demo/demo.frag";
-    shader2 = dataPath + "/gloperate/shaders/demo/demo.vert";
+    shader1 = dataPath + "/gloperate/shaders/demos/demo.frag";
+    shader2 = dataPath + "/gloperate/shaders/demos/demo.vert";
 
     texture = dataPath + "/gloperate/textures/gloperate-logo.png";
 
@@ -57,7 +57,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
 
     // Framebuffer stage
     addStage(m_framebufferStage.get());
-    m_framebufferStage->viewport << renderInterface.deviceViewport;
+    m_framebufferStage->viewport << canvasInterface.viewport;
 
     // Demo drawable stage (supplies demo drawable)
     addStage(m_demoDrawableStage.get());
@@ -73,21 +73,20 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
 
     // Rasterization stage
     addStage(m_rasterizationStage.get());
-    m_rasterizationStage->renderInterface.targetFBO << m_framebufferStage->fbo;
-    m_rasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_rasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    m_rasterizationStage->renderInterface.viewport << canvasInterface.viewport;
     m_rasterizationStage->drawable << m_renderPassStage->renderPass;
-    m_rasterizationStage->colorTexture << m_framebufferStage->colorTexture;
+    m_rasterizationStage->createInput("Color") << m_framebufferStage->colorBuffer;
+    m_rasterizationStage->createInput("Depth") << m_framebufferStage->depthBuffer;
 
     // Blit stage
     addStage(m_blitStage.get());
-    m_blitStage->sourceFBO << m_rasterizationStage->fboOut;
-    m_blitStage->sourceViewport << renderInterface.deviceViewport;
-    m_blitStage->targetFBO << renderInterface.targetFBO;
-    m_blitStage->targetViewport << renderInterface.deviceViewport;
+    m_blitStage->source << *m_rasterizationStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+    m_blitStage->sourceViewport << canvasInterface.viewport;
+    m_blitStage->target << *createInput<gloperate::ColorRenderTarget *>("Color");
+    m_blitStage->targetViewport << canvasInterface.viewport;
 
     // Outputs
-    renderInterface.rendered << m_blitStage->rendered;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_blitStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 }
 
 ShaderDemoPipeline::~ShaderDemoPipeline()

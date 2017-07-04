@@ -40,6 +40,13 @@ void HemisphereDistributionKernelStage::onContextInit(gloperate::AbstractGLConte
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);
 }
 
+
+void HemisphereDistributionKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_texture.reset();
+}
+
+
 void HemisphereDistributionKernelStage::onProcess()
 {
     bool regenKernel = *regenerate;

@@ -140,7 +140,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     // Colorize program stage
     addStage(m_colorizeProgram.get());
     *m_colorizeProgram->createInput<cppassist::FilePath>("shader1") = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
-    *m_colorizeProgram->createInput<cppassist::FilePath>("shader2") = dataPath + "/gloperate/shaders/demo/colorize.frag";
+    *m_colorizeProgram->createInput<cppassist::FilePath>("shader2") = dataPath + "/gloperate/shaders/demos/colorize.frag";
 
     auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::ColorRenderTarget *>("ColorAttachmentOut");
 
