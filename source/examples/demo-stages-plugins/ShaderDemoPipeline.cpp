@@ -37,8 +37,8 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     std::string dataPath = gloperate::dataPath();
 
     // Setup parameters
-    shader1 = dataPath + "/gloperate/shaders/demo/demo.frag";
-    shader2 = dataPath + "/gloperate/shaders/demo/demo.vert";
+    shader1 = dataPath + "/gloperate/shaders/demos/demo.frag";
+    shader2 = dataPath + "/gloperate/shaders/demos/demo.vert";
 
     texture = dataPath + "/gloperate/textures/gloperate-logo.png";
 
