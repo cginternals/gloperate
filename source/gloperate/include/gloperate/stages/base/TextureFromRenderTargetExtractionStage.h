@@ -22,7 +22,11 @@ namespace gloperate
 {
 
 
+class AbstractRenderTarget;
 class ColorRenderTarget;
+class DepthRenderTarget;
+class StencilRenderTarget;
+class DepthStencilRenderTarget;
 
 
 /**
@@ -45,7 +49,10 @@ public:
 
 public:
     // Inputs
-    Input<gloperate::ColorRenderTarget *> colorRenderTarget; ///< Color render target
+    Input<gloperate::ColorRenderTarget        *> colorRenderTarget;        ///< Color render target
+    Input<gloperate::DepthRenderTarget        *> depthRenderTarget;        ///< Depth render target
+    Input<gloperate::StencilRenderTarget      *> stencilRenderTarget;      ///< Stencil render target
+    Input<gloperate::DepthStencilRenderTarget *> depthStencilRenderTarget; ///< Depth stencil render target
 
     // Outputs
     Output<globjects::Texture *>          texture;           ///< Internal texture of render target
@@ -73,6 +80,12 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
+
+    /**
+    *  @brief
+    *    Extract texture from RenderTarget and update output
+    */
+    void extractTexture(AbstractRenderTarget * renderTarget);
 };
 
 

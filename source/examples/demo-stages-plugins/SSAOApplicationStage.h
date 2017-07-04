@@ -51,8 +51,6 @@ public:
     Input<glm::mat4>            projectionMatrix; ///< Projection matrix used for rendering the scene
     Input<glm::mat3>            normalMatrix;     ///< Normal matrix from scene rendering
 
-    Input<bool>                 sceneRendered;    ///< Scene rendering stage processed?
-
 
 public:
     /**

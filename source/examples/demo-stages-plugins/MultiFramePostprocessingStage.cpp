@@ -46,7 +46,6 @@ MultiFramePostprocessingStage::MultiFramePostprocessingStage(gloperate::Environm
 , ssaoNoise("ssaoNoise", this, nullptr)
 , projectionMatrix("projectionMatrix", this)
 , normalMatrix("normalMatrix", this)
-, sceneRendered("sceneRendered", this, false)
 {
 }
 

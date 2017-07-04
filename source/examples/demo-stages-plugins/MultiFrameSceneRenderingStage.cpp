@@ -110,7 +110,7 @@ void MultiFrameSceneRenderingStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }
 
 void MultiFrameSceneRenderingStage::setupGeometry()

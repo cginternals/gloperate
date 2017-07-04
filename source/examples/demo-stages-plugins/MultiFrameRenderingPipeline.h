@@ -12,6 +12,7 @@
 namespace gloperate
 {
     class TextureRenderTargetStage;
+    class TextureFromRenderTargetExtractionStage;
 }
 
 
@@ -89,5 +90,8 @@ protected:
 
     // Rendering
     std::unique_ptr<MultiFrameSceneRenderingStage>                         m_renderingStage;
+    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_colorTextureExtractionStage;
+    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_depthTextureExtractionStage;
+    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_normalTextureExtractionStage;
     std::unique_ptr<MultiFramePostprocessingStage>                         m_postprocessingStage;
 };

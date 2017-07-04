@@ -46,7 +46,6 @@ SSAOApplicationStage::SSAOApplicationStage(gloperate::Environment * environment,
 , ssaoNoise("ssaoNoise", this, nullptr)
 , projectionMatrix("projectionMatrix", this)
 , normalMatrix("normalMatrix", this)
-, sceneRendered("sceneRendered", this, false)
 {
 }
 
@@ -80,12 +79,13 @@ void SSAOApplicationStage::onProcess()
 {
     if (!(*colorTexture && *normalTexture && *depthTexture && *ssaoKernel && *ssaoNoise))
     {
-        renderInterface.rendered.setValue(false);
+        renderInterface.updateRenderTargetOutputs();
+
         return;
     }
 
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *renderInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -96,16 +96,8 @@ void SSAOApplicationStage::onProcess()
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = renderInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
-
-    // Clear background
-    auto & color = *renderInterface.backgroundColor;
-    gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
-    gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
-    gl::glEnable(gl::GL_SCISSOR_TEST);
-    gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
-    gl::glDisable(gl::GL_SCISSOR_TEST);
 
     // Set uniforms
     m_program->setUniform("projectionMatrix", *projectionMatrix);
@@ -135,7 +127,7 @@ void SSAOApplicationStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    renderInterface.updateRenderTargetOutputs();
 }
 
 void SSAOApplicationStage::setupGeometry()

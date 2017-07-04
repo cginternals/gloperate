@@ -38,7 +38,7 @@ CPPEXPOSE_COMPONENT(TransparentCirclesStage, gloperate::Stage)
 
 TransparentCirclesStage::TransparentCirclesStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , transparencyKernel("transparencyKernel", this, nullptr)
 , noiseKernel("noiseKernel", this, nullptr)
 {
@@ -69,7 +69,7 @@ void TransparentCirclesStage::onContextDeinit(gloperate::AbstractGLContext *)
 void TransparentCirclesStage::onProcess()
 {
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -80,11 +80,11 @@ void TransparentCirclesStage::onProcess()
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    auto & color = *renderInterface.backgroundColor;
+    auto & color = *canvasInterface.backgroundColor;
     gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -152,7 +152,7 @@ void TransparentCirclesStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }
 
 void TransparentCirclesStage::setupGeometry()

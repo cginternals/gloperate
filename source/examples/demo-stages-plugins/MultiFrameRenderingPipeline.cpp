@@ -7,6 +7,7 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/TextureRenderTargetStage.h>
+#include <gloperate/stages/base/TextureFromRenderTargetExtractionStage.h>
 
 #include <gloperate-glkernel/stages/DiscDistributionKernelStage.h>
 #include <gloperate-glkernel/stages/HemisphereDistributionKernelStage.h>
@@ -33,6 +34,9 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 , m_noiseStage(cppassist::make_unique<gloperate_glkernel::NoiseKernelStage>(environment))
 , m_transparencyKernelStage(cppassist::make_unique<gloperate_glkernel::TransparencyKernelStage>(environment))
 , m_renderingStage(cppassist::make_unique<MultiFrameSceneRenderingStage>(environment))
+, m_colorTextureExtractionStage(cppassist::make_unique<gloperate::TextureFromRenderTargetExtractionStage>(environment))
+, m_depthTextureExtractionStage(cppassist::make_unique<gloperate::TextureFromRenderTargetExtractionStage>(environment))
+, m_normalTextureExtractionStage(cppassist::make_unique<gloperate::TextureFromRenderTargetExtractionStage>(environment))
 , m_postprocessingStage(cppassist::make_unique<MultiFramePostprocessingStage>(environment))
 {
     addStage(m_colorTextureStage.get());
@@ -82,7 +86,14 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_renderingStage->noiseKernelTexture << m_noiseStage->texture;
     m_renderingStage->transparencyKernelTexture << m_transparencyKernelStage->texture;
 
-    // TODO: fix renderingStage <-> postprocessingStage interface
+    addStage(m_colorTextureExtractionStage.get());
+    m_colorTextureExtractionStage->colorRenderTarget << *m_renderingStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+
+    addStage(m_depthTextureExtractionStage.get());
+    m_depthTextureExtractionStage->depthRenderTarget << *m_renderingStage->createOutput<gloperate::DepthRenderTarget *>("DepthOut");
+
+    addStage(m_normalTextureExtractionStage.get());
+    m_normalTextureExtractionStage->colorRenderTarget << *m_renderingStage->createOutput<gloperate::ColorRenderTarget *>("NormalOut");
 
     addStage(m_postprocessingStage.get());
     m_postprocessingStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
@@ -90,14 +101,13 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_postprocessingStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
     m_postprocessingStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
     m_postprocessingStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
-    m_postprocessingStage->colorTexture << m_colorTextureStage->texture;
-    m_postprocessingStage->normalTexture << m_normalTextureStage->texture;
-    m_postprocessingStage->depthTexture << m_depthTextureStage->texture;
+    m_postprocessingStage->colorTexture << m_colorTextureExtractionStage->texture;
+    m_postprocessingStage->normalTexture << m_normalTextureExtractionStage->texture;
+    m_postprocessingStage->depthTexture << m_depthTextureExtractionStage->texture;
     m_postprocessingStage->ssaoKernel << m_ssaoKernelStage->texture;
     m_postprocessingStage->ssaoNoise << m_noiseStage->texture;
     m_postprocessingStage->projectionMatrix << m_renderingStage->projectionMatrix;
     m_postprocessingStage->normalMatrix << m_renderingStage->normalMatrix;
-    m_postprocessingStage->sceneRendered << m_renderingStage->canvasInterface.rendered;
 
     *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_postprocessingStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 }
