@@ -33,6 +33,13 @@ void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 }
 
+
+void TransparencyKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_texture.reset();
+}
+
+
 void TransparencyKernelStage::onProcess()
 {
     if (*regenerate)
