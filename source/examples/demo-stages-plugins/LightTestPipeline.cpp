@@ -81,7 +81,7 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     addStage(m_renderStage.get());
     m_renderStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_renderStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
-    //m_renderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    m_renderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_renderStage->renderInterface.frameCounter << renderInterface.frameCounter;
     m_renderStage->renderInterface.timeDelta << renderInterface.timeDelta;
     m_renderStage->renderInterface.targetFBO << renderInterface.targetFBO;

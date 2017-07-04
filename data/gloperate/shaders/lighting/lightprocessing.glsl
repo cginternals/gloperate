@@ -8,10 +8,10 @@
 #define LIGHT_TYPE_POINT_ATT 4
 
 #ifdef LIGHT_PROCESSING_PHONG
-    #include </gloperate/shaders/lightProcessingPhong.glsl>
+    #include </gloperate/shaders/lighting/lightprocessing_phong.glsl>
 #else
     // Default: Diffuse only
-    #include </gloperate/shaders/lightProcessingDiffuse.glsl>
+    #include </gloperate/shaders/lighting/lightprocessing_diffuse.glsl>
 #endif
 
 vec3 lightIntensity(

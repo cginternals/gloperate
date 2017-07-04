@@ -6,8 +6,6 @@
 
 #include <glm/vec4.hpp>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
@@ -16,6 +14,7 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/rendering/ScreenAlignedQuad.h>
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
@@ -76,20 +75,13 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess() override;
-
-    // Helper functions
-    void setupGeometry();
-    void setupProgram();
 
 
 protected:
     // Data
-    std::unique_ptr<globjects::VertexArray> m_vao;            ///< VAO for screen aligned quad
-    std::unique_ptr<globjects::Buffer>      m_vertexBuffer;   ///< VBO for screen aligned quad
-    std::unique_ptr<globjects::Shader>      m_vertexShader;   ///< Vertex shader
-    std::unique_ptr<globjects::Shader>      m_fragmentShader; ///< Fragment shader
-    std::unique_ptr<globjects::Program>     m_program;        ///< Shader program used for aggregation
+    std::unique_ptr<gloperate::ScreenAlignedQuad> m_quad;           ///< Screen aligned quad
 };
 
 

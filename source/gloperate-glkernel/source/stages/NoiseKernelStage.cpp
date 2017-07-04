@@ -36,6 +36,13 @@ void NoiseKernelStage::onContextInit(gloperate::AbstractGLContext *)
     m_texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_REPEAT);
 }
 
+
+void NoiseKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_texture.reset();
+}
+
+
 void NoiseKernelStage::onProcess()
 {
     bool regen = *regenerate;

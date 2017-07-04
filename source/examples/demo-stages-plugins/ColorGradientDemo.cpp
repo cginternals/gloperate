@@ -92,8 +92,8 @@ ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::strin
 
     // Program stage for shape
     addStage(m_shapeProgram.get());
-    *m_shapeProgram->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demo/gradient.vert";
-    *m_shapeProgram->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demo/gradient.frag";
+    *m_shapeProgram->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/gradient.vert";
+    *m_shapeProgram->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/gradient.frag";
 
     // Render pass stage for shape
     addStage(m_shapeRenderPass.get());

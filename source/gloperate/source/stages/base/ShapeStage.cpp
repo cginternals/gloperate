@@ -1,6 +1,8 @@
 
 #include <gloperate/stages/base/ShapeStage.h>
 
+#include <glm/vec2.hpp>
+
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/rendering/Point.h>

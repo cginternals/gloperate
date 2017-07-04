@@ -101,7 +101,7 @@ void MultiFrameAggregationPipeline::connectBasicRenderInterface(gloperate::Rende
     interface.deviceViewport << renderInterface.deviceViewport;
     interface.virtualViewport << renderInterface.virtualViewport;
     interface.backgroundColor << renderInterface.backgroundColor;
-    interface.frameCounter << renderInterface.frameCounter;
+    interface.frameCounter << m_controlStage->currentFrame;
     interface.timeDelta << renderInterface.timeDelta;
     interface.targetFBO << m_renderFramebufferStage->fbo;
 

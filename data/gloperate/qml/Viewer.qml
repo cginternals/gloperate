@@ -439,6 +439,9 @@ ApplicationWindow
         
         gloperate.components.scanPlugins();
 
+        // Scan for plugins
+        gloperate.components.scanPlugins();
+
         // Set render stage
         window.stage = settings.stage;
         propertyEditor.update();
