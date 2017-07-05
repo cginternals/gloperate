@@ -6,6 +6,8 @@
 
 #include <globjects/Framebuffer.h>
 #include <globjects/FramebufferAttachment.h>
+#include <globjects/AttachedRenderbuffer.h>
+#include <globjects/AttachedTexture.h>
 #include <globjects/Renderbuffer.h>
 #include <globjects/Texture.h>
 
@@ -25,6 +27,118 @@ AbstractRenderTarget::AbstractRenderTarget()
 
 AbstractRenderTarget::~AbstractRenderTarget()
 {
+}
+
+bool AbstractRenderTarget::matchesAttachment(const AbstractRenderTarget * other) const
+{
+    if (this == other)
+    {
+        return true;
+    }
+
+    if (currentTargetType() == other->currentTargetType())
+    {
+        switch (currentTargetType())
+        {
+        case RenderTargetType::Texture:
+            if (textureAttachment() == nullptr || other->textureAttachment() == nullptr)
+            {
+                return false;
+            }
+
+            return textureAttachment()->id() == other->textureAttachment()->id();
+        case RenderTargetType::Renderbuffer:
+            if (renderbufferAttachment() == nullptr || other->renderbufferAttachment() == nullptr)
+            {
+                return false;
+            }
+
+            return renderbufferAttachment()->id() == other->renderbufferAttachment()->id();
+        case RenderTargetType::DefaultFBOAttachment:
+            return defaultFramebufferAttachment() == other->defaultFramebufferAttachment();
+        case RenderTargetType::UserDefinedFBOAttachment:
+            if (framebufferAttachment() == nullptr || other->framebufferAttachment() == nullptr)
+            {
+                return false;
+            }
+
+            if (framebufferAttachment() == other->framebufferAttachment())
+            {
+                return true;
+            }
+
+            if (framebufferAttachment()->isTextureAttachment() && other->framebufferAttachment()->isTextureAttachment())
+            {
+                return framebufferAttachment()->asTextureAttachment()->texture()->id() ==
+                    other->framebufferAttachment()->asTextureAttachment()->texture()->id();
+            }
+            else if (framebufferAttachment()->isRenderBufferAttachment() && other->framebufferAttachment()->isRenderBufferAttachment())
+            {
+                return framebufferAttachment()->asRenderBufferAttachment()->renderBuffer()->id() ==
+                    other->framebufferAttachment()->asRenderBufferAttachment()->renderBuffer()->id();
+            }
+            else
+            {
+                return false;
+            }
+        case RenderTargetType::Invalid:
+        default:
+            return false;
+        }
+    }
+    else if (currentTargetType() == RenderTargetType::DefaultFBOAttachment || other->currentTargetType() == RenderTargetType::DefaultFBOAttachment)
+    {
+        return false;
+    }
+    else if ((currentTargetType() == RenderTargetType::Texture || currentTargetType() == RenderTargetType::Renderbuffer) &&
+        (other->currentTargetType() == RenderTargetType::Texture || other->currentTargetType() == RenderTargetType::Renderbuffer))
+    {
+        return false;
+    }
+    else if (currentTargetType() == RenderTargetType::UserDefinedFBOAttachment)
+    {
+        if (other->currentTargetType() == RenderTargetType::Texture)
+        {
+            return framebufferAttachment()->isTextureAttachment()
+                && framebufferAttachment()->asTextureAttachment()->texture()->id() == other->textureAttachment()->id();
+        }
+        else if (other->currentTargetType() == RenderTargetType::Renderbuffer)
+        {
+            return framebufferAttachment()->isRenderBufferAttachment()
+                && framebufferAttachment()->asRenderBufferAttachment()->renderBuffer()->id() == other->renderbufferAttachment()->id();
+        }
+        else
+        {
+            assert(false);
+
+            return false;
+        }
+    }
+    else if (other->currentTargetType() == RenderTargetType::UserDefinedFBOAttachment)
+    {
+        if (currentTargetType() == RenderTargetType::Texture)
+        {
+            return other->framebufferAttachment()->isTextureAttachment()
+                && other->framebufferAttachment()->asTextureAttachment()->texture()->id() == textureAttachment()->id();
+        }
+        else if (currentTargetType() == RenderTargetType::Renderbuffer)
+        {
+            return other->framebufferAttachment()->isRenderBufferAttachment()
+                && other->framebufferAttachment()->asRenderBufferAttachment()->renderBuffer()->id() == renderbufferAttachment()->id();
+        }
+        else
+        {
+            assert(false);
+
+            return false;
+        }
+    }
+    else
+    {
+        assert(false);
+
+        return false;
+    }
 }
 
 void AbstractRenderTarget::releaseTarget()

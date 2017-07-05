@@ -52,6 +52,18 @@ public:
 
     /**
     *  @brief
+    *    Checks if this and another AbstractRenderTarget points to the same render underlying framebuffer memory segment
+    *
+    *  @param[in] other
+    *    The other render target
+    *
+    *  @return
+    *    'true' if both render targets points to the same framebuffer attachment, else 'false'
+    */
+    bool matchesAttachment(const AbstractRenderTarget * other) const;
+
+    /**
+    *  @brief
     *    Release the current target
     */
     void releaseTarget();
