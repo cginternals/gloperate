@@ -154,5 +154,32 @@ std::unique_ptr<globjects::Texture> ColorGradientList::generateTexture(size_t nu
     return texture;
 }
 
+std::unique_ptr<globjects::Texture> ColorGradientList::generateCompositeTexture(size_t numPixels, const std::vector<ColorGradientList *> & otherLists) const
+{
+    auto texture = globjects::Texture::createDefault();
+
+    size_t totalSize = m_gradients.size();
+    for (auto other : otherLists)
+    {
+        totalSize += other->size();
+    }
+
+    std::vector<unsigned char> data;
+    data.reserve(numPixels * totalSize);
+
+    std::vector<unsigned char> partialData = pixelData(numPixels);
+    data.insert(data.end(), partialData.begin(), partialData.end());
+
+    for (auto other : otherLists)
+    {
+        partialData = other->pixelData(numPixels);
+        data.insert(data.end(), partialData.begin(), partialData.end());
+    }
+
+    texture->image2D(0, gl::GL_RGBA, numPixels, totalSize, 0, gl::GL_BGRA, gl::GL_UNSIGNED_BYTE, data.data());
+
+    return texture;
+}
+
 
 } // namespace gloperate

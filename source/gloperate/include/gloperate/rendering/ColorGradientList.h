@@ -203,6 +203,20 @@ public:
     */
     std::unique_ptr<globjects::Texture> generateTexture(size_t numPixels) const;
 
+    /**
+    *  @brief
+    *    Get a texture containing all gradients in this and other ColorGradientLists
+    *
+    *  @param[in] numPixels
+    *    Number of pixels for each gradient
+    *  @param[in] otherLists
+    *    Additional ColorGradientLists
+    *
+    *  @return
+    *    Texture containing all gradients (dimensions: numPixels x total size of all lists())
+    */
+    std::unique_ptr<globjects::Texture> generateCompositeTexture(size_t numPixels, const std::vector<ColorGradientList *> & otherLists) const;
+
 
 protected:
     std::map<std::string, std::unique_ptr<AbstractColorGradient>> m_gradients; ///< The list of gradients with their name as lookup key
