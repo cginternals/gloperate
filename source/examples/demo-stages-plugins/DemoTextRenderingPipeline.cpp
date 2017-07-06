@@ -2,6 +2,7 @@
 #include "DemoTextRenderingPipeline.h"
 
 #include <gloperate/gloperate.h>
+#include <gloperate/stages/base/ClearStage.h>
 
 #include <gloperate-text/Alignment.h>
 #include <gloperate-text/LineAnchor.h>
@@ -63,15 +64,21 @@ DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * en
     glyphPreparation->sequences << demo->sequences;
     glyphPreparation->optimized << optimized;
 
+    auto clearStage = cppassist::make_unique<gloperate::ClearStage>(environment, "ClearStage");
+    clearStage->renderInterface.targetFBO << renderInterface.targetFBO;
+    clearStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    clearStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+
     auto glyphRendering = cppassist::make_unique<gloperate_text::GlyphRenderStage>(environment, "GlyphRendering");
     glyphRendering->vertexCloud       << glyphPreparation->vertexCloud;
     glyphRendering->viewport          << renderInterface.deviceViewport;
-    glyphRendering->targetFramebuffer << renderInterface.targetFBO;
+    glyphRendering->targetFramebuffer << clearStage->fboOut;
 
     renderInterface.rendered << glyphRendering->rendered;
 
     addStage(std::move(fontImport));
     addStage(std::move(demo));
     addStage(std::move(glyphPreparation));
+    addStage(std::move(clearStage));
     addStage(std::move(glyphRendering));
 }
