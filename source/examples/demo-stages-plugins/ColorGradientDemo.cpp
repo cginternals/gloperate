@@ -28,7 +28,7 @@ ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::strin
 : Pipeline(environment, "ColorGradientDemo", name)
 , renderInterface(this)
 , colors("colors", this, dataPath() + "/gloperate/gradients/colorbrewer.json")
-, gradient("gradient", this)
+, gradient("gradient", this, "Set1-5")
 , value("value", this, 0.5f)
 , m_trackball(cppassist::make_unique<TrackballStage>(environment, "Trackball"))
 , m_shape(cppassist::make_unique<ShapeStage>(environment, "Shape"))
@@ -73,7 +73,6 @@ ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::strin
     {
         gradient.setOption("choices", cppexpose::Variant::fromVector(gradients->names()));
         gradient.setOption("pixmaps", cppexpose::Variant::fromVector(gradients->pixmaps({ 80, 20 })));
-        gradient.setValue(gradients->gradients().begin()->first);
     });
 
     // Color gradients texture stage
