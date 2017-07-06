@@ -9,10 +9,23 @@
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
 
+namespace globjects
+{
+    class NamedString;
+}
+
+
 namespace gloperate
 {
+    class ScreenAlignedQuad;
+    class Camera;
+
     class FramebufferStage;
     class TextureStage;
+    class ProgramStage;
+    class RenderPassStage;
+    class RasterizationStage;
+    class ClearStage;
 }
 
 
@@ -25,8 +38,7 @@ namespace gloperate_glkernel
 }
 
 
-class MultiFrameSceneRenderingStage;
-class MultiFramePostprocessingStage;
+class GeometryImporterStage;
 
 
 /**
@@ -75,6 +87,12 @@ public:
 
 
 protected:
+    // Virtual Stage interface
+    virtual void onContextInit(gloperate::AbstractGLContext * context);
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context);
+
+
+protected:
     // Stages
     // Custom FBO
     std::unique_ptr<gloperate::TextureStage>                               m_colorTextureStage;   ///< Stage creating color texture for main rendering
@@ -90,6 +108,16 @@ protected:
     std::unique_ptr<gloperate_glkernel::TransparencyKernelStage>           m_transparencyKernelStage; ///< kernel for transparency
 
     // Rendering
-    std::unique_ptr<MultiFrameSceneRenderingStage>                         m_renderingStage;
-    std::unique_ptr<MultiFramePostprocessingStage>                         m_postprocessingStage;
+    std::unique_ptr<GeometryImporterStage>                                 m_renderGeometryStage;              ///< geometry for rendering step
+    std::unique_ptr<gloperate::ProgramStage>                               m_renderProgramStage;               ///< shader program for rendering step
+    std::unique_ptr<gloperate::Camera>                                     m_camera;                           ///< camera for rendering step
+    std::unique_ptr<gloperate::RenderPassStage>                            m_renderPassStage;                  ///< render pass for rendering step
+    std::unique_ptr<gloperate::ClearStage>                                 m_renderClearStage;                 ///< FBO clear for rendering step
+    std::unique_ptr<gloperate::RasterizationStage>                         m_renderRasterizationStage;         ///< rasterization for rendering step
+    std::unique_ptr<gloperate::ScreenAlignedQuad>                          m_screenAlignedQuad;                ///< geometry for postprocessing step
+    std::unique_ptr<globjects::NamedString>                                m_ssaoNamedString;                  ///< named string for shader include
+    std::unique_ptr<gloperate::ProgramStage>                               m_postprocessingProgramStage;       ///< shader program for postprocessing step
+    std::unique_ptr<gloperate::RenderPassStage>                            m_postprocessingPassStage;          ///< render pass for postprocessing step
+    std::unique_ptr<gloperate::ClearStage>                                 m_postprocessingClearStage;         ///< FBO clear for postprocessing step
+    std::unique_ptr<gloperate::RasterizationStage>                         m_postprocessingRasterizationStage; ///< rasterization for postprocessing step
 };

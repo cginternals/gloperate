@@ -6,7 +6,6 @@
 const vec4 baseColor = vec4(1.0, 1.0, 1.0, 0.65);
 
 
-//uniform sampler3D noiseKernel;
 uniform sampler2D transparencyKernel;
 
 uniform int currentFrame;

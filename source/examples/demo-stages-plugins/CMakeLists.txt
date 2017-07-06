@@ -43,6 +43,7 @@ set(headers
     ${include_path}/AntialiasableTriangleStage.h
     ${include_path}/AntialiasingRenderingPipeline.h
     ${include_path}/AssimpMeshLoader.h
+    ${include_path}/GeometryImporterStage.h
     ${include_path}/ColorGradientDemo.h
     ${include_path}/DemoAntialiasingAggregationPipeline.h
     ${include_path}/DemoDOFAggregationPipeline.h
@@ -74,6 +75,7 @@ set(sources
     ${source_path}/AntialiasableTriangleStage.cpp
     ${source_path}/AntialiasingRenderingPipeline.cpp
     ${source_path}/AssimpMeshLoader.cpp
+    ${source_path}/GeometryImporterStage.cpp
     ${source_path}/ColorGradientDemo.cpp
     ${source_path}/DemoAntialiasingAggregationPipeline.cpp
     ${source_path}/DemoDOFAggregationPipeline.cpp
