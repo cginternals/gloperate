@@ -16,7 +16,7 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 namespace globjects
@@ -41,7 +41,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface;       ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface;       ///< Interface for rendering into a viewer
 
     // Inputs
     Input<float> glossiness;                          ///< Glossiness of the cube (0.0 to 1.0)

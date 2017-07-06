@@ -12,7 +12,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 /**
@@ -35,7 +35,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Outputs
     Output<glm::mat4> projectionMatrix;         ///< Projection matrix used for rendering

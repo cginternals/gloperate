@@ -26,7 +26,7 @@ using namespace gloperate;
 
 ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::string & name)
 : Pipeline(environment, "ColorGradientDemo", name)
-, renderInterface(this)
+, canvasInterface(this)
 , colors("colors", this, dataPath() + "/gloperate/gradients/colorbrewer.json")
 , gradient("gradient", this)
 , value("value", this, 0.5f)
@@ -56,7 +56,7 @@ ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::strin
 
     // Trackball stage
     addStage(m_trackball.get());
-    m_trackball->viewport << renderInterface.deviceViewport;
+    m_trackball->viewport << canvasInterface.viewport;
 
     // Shape stage
     addStage(m_shape.get());
@@ -108,19 +108,20 @@ ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::strin
 
     // Clear stage
     addStage(m_clear.get());
-    m_clear->renderInterface.targetFBO << renderInterface.targetFBO;
-    m_clear->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_clear->renderInterface.backgroundColor = Color(0.0f, 0.0f, 0.0f, 1.0f);
-    m_clear->createInput("renderPass") << m_shapeRenderPass->renderPass;
+    m_clear->createInput("ColorAttachment") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    m_clear->createInput("DepthAttachment") << *createInput<gloperate::DepthRenderTarget *>("Depth");
+    m_clear->createInput("ColorValue") << canvasInterface.backgroundColor;
+    m_clear->createInput("DepthValue") = 1.0f;
 
     // Rasterization stage for shape
     addStage(m_shapeRasterization.get());
-    m_shapeRasterization->renderInterface.targetFBO << m_clear->fboOut;
-    m_shapeRasterization->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_shapeRasterization->createInput("Color") << *m_clear->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+    m_shapeRasterization->createInput("Depth") << *m_clear->createOutput<gloperate::DepthRenderTarget *>("DepthOut");
+    m_shapeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_shapeRasterization->drawable << m_shapeRenderPass->renderPass;
 
     // Outputs
-    renderInterface.rendered << m_shapeRasterization->renderInterface.rendered;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_shapeRasterization->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 }
 
 ColorGradientDemo::~ColorGradientDemo()

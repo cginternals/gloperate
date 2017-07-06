@@ -4,12 +4,12 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects/base/StringTemplate.h>
-#include <globjects/base/StaticStringSource.h>
-#include <globjects/VertexArray.h>
-#include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
-#include <globjects/globjects.h>
+#include <globjects/FramebufferAttachment.h>
+#include <globjects/AttachedTexture.h>
+
+#include <gloperate/rendering/ColorRenderTarget.h>
+#include <gloperate/rendering/AttachmentType.h>
 
 
 namespace gloperate_glkernel
@@ -21,12 +21,9 @@ CPPEXPOSE_COMPONENT(MultiFrameAggregationStage, gloperate::Stage)
 
 MultiFrameAggregationStage::MultiFrameAggregationStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, aggregationFBO("aggregationFBO", this)
-, texture("texture", this)
-, textureRerendered("textureRerendered", this)
-, viewport("viewport", this)
+, renderInterface  (this)
+, intermediateFrame("intermediateFrame", this)
 , aggregationFactor("aggregationFactor", this)
-, aggregatedFBO("aggregatedFBO", this)
 {
 }
 
@@ -36,30 +33,37 @@ MultiFrameAggregationStage::~MultiFrameAggregationStage()
 
 void MultiFrameAggregationStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
 {
-    m_quad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
+    m_triangle = cppassist::make_unique<gloperate::ScreenAlignedTriangle>();
+
+    renderInterface.onContextInit();
 }
 
 void MultiFrameAggregationStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
 {
-    m_quad.reset();
+    m_triangle = nullptr;
+
+    renderInterface.onContextDeinit();
 }
 
 void MultiFrameAggregationStage::onProcess()
 {
-    if (!(*texture))
+    if (!renderInterface.allRenderTargetsCompatible())
+    {
+        cppassist::warning("gloperate") << "Framebuffer configuration not compatible";
+
         return;
+    }
+
+    auto fbo = renderInterface.obtainFBO();
 
     gl::glViewport(
-        0,              // Origin (0,0) because content was already shifted in main render pass
-        0,              // Applying the origin again would shift the result again
-        (*viewport).z,
-        (*viewport).w
+        renderInterface.viewport->x,
+        renderInterface.viewport->y,
+        renderInterface.viewport->z,
+        renderInterface.viewport->w
     );
 
-    globjects::Framebuffer * fbo = *aggregationFBO;
     fbo->bind(gl::GL_FRAMEBUFFER);
-
-    m_quad->setTexture(*texture);
 
     gl::glBlendColor(0.0f, 0.0f, 0.0f, *aggregationFactor);
     gl::glBlendFunc(gl::GL_CONSTANT_ALPHA, gl::GL_ONE_MINUS_CONSTANT_ALPHA);
@@ -67,12 +71,13 @@ void MultiFrameAggregationStage::onProcess()
     gl::glEnable(gl::GL_BLEND);
     gl::glDisable(gl::GL_DEPTH_TEST);
 
-    m_quad->draw();
+    m_triangle->setTexture(*intermediateFrame);
+    m_triangle->draw();
 
     gl::glDisable(gl::GL_BLEND);
     gl::glEnable(gl::GL_DEPTH_TEST);
 
-    aggregatedFBO.setValue(*aggregationFBO);
+    renderInterface.updateRenderTargetOutputs();
 }
 
 

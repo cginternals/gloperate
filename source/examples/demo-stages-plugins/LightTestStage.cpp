@@ -51,7 +51,7 @@ CPPEXPOSE_COMPONENT(LightTestStage, gloperate::Stage)
 
 LightTestStage::LightTestStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "LightTestStage", name)
-, renderInterface(this)
+, canvasInterface(this)
 , glossiness("glossiness", this, 0.0f)
 , totalTime("totalTime", this, 0.0f)
 , lightColorTypeData("lightColorTypeData", this, nullptr)
@@ -66,8 +66,7 @@ LightTestStage::~LightTestStage()
 
 void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    if (m_vao) // protect against initializing twice
-        return;
+    canvasInterface.onContextInit();
 
     // Setup Geometry
     m_vao = cppassist::make_unique<globjects::VertexArray>();
@@ -121,12 +120,14 @@ void LightTestStage::onContextDeinit(gloperate::AbstractGLContext *)
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void LightTestStage::onProcess()
 {
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -137,11 +138,11 @@ void LightTestStage::onProcess()
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    auto & color = *renderInterface.backgroundColor;
+    auto & color = *canvasInterface.backgroundColor;
     gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -183,5 +184,5 @@ void LightTestStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }

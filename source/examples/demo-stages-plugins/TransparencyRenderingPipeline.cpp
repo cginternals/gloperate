@@ -13,7 +13,7 @@ CPPEXPOSE_COMPONENT(TransparencyRenderingPipeline, gloperate::Stage)
 
 TransparencyRenderingPipeline::TransparencyRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , m_transparencyKernelStage(cppassist::make_unique<gloperate_glkernel::TransparencyKernelStage>(environment))
 , m_noiseKernelStage(cppassist::make_unique<gloperate_glkernel::NoiseKernelStage>(environment))
 , m_transparencyRenderStage(cppassist::make_unique<TransparentCirclesStage>(environment))
@@ -25,16 +25,15 @@ TransparencyRenderingPipeline::TransparencyRenderingPipeline(gloperate::Environm
     m_noiseKernelStage->dimensions.setValue(glm::ivec3(64, 64, 64));
 
     addStage(m_transparencyRenderStage.get());
-    m_transparencyRenderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_transparencyRenderStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_transparencyRenderStage->renderInterface.frameCounter << renderInterface.frameCounter;
-    m_transparencyRenderStage->renderInterface.targetFBO << renderInterface.targetFBO;
-    m_transparencyRenderStage->renderInterface.timeDelta << renderInterface.timeDelta;
-    m_transparencyRenderStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
+    m_transparencyRenderStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
+    m_transparencyRenderStage->canvasInterface.viewport << canvasInterface.viewport;
+    m_transparencyRenderStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
+    m_transparencyRenderStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
     m_transparencyRenderStage->transparencyKernel << m_transparencyKernelStage->texture;
     m_transparencyRenderStage->noiseKernel << m_noiseKernelStage->texture;
+    m_transparencyRenderStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
 
-    renderInterface.rendered << m_transparencyRenderStage->renderInterface.rendered;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_transparencyRenderStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 }
 
 TransparencyRenderingPipeline::~TransparencyRenderingPipeline()

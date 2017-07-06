@@ -11,26 +11,27 @@ CPPEXPOSE_COMPONENT(DemoSSAOAggregationPipeline, gloperate::Stage)
 
 DemoSSAOAggregationPipeline::DemoSSAOAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
 , m_ssaoPipeline(cppassist::make_unique<SSAORenderingPipeline>(environment))
 {
     addStage(m_multiFramePipeline.get());
 
-    m_multiFramePipeline->setFrameRenderer(m_ssaoPipeline->renderInterface);
+    m_multiFramePipeline->addStage(m_ssaoPipeline.get());
+    //m_ssaoPipeline->multiFrameCount << multiFrameCount;
 
     // Inputs
-    m_multiFramePipeline->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_multiFramePipeline->renderInterface.virtualViewport << renderInterface.virtualViewport;
-    m_multiFramePipeline->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_multiFramePipeline->renderInterface.frameCounter << renderInterface.frameCounter;
-    m_multiFramePipeline->renderInterface.timeDelta << renderInterface.timeDelta;
-    m_multiFramePipeline->renderInterface.targetFBO << renderInterface.targetFBO;
+    *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
+
+    m_multiFramePipeline->canvasInterface.viewport << canvasInterface.viewport;
+    m_multiFramePipeline->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
+    m_multiFramePipeline->canvasInterface.frameCounter << canvasInterface.frameCounter;
+    m_multiFramePipeline->canvasInterface.timeDelta << canvasInterface.timeDelta;
     m_multiFramePipeline->multiFrameCount << multiFrameCount;
 
     // Outputs
-    renderInterface.rendered << m_multiFramePipeline->renderInterface.rendered;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_multiFramePipeline->canvasInterface.colorRenderTargetOutput(0);
 }
 
 DemoSSAOAggregationPipeline::~DemoSSAOAggregationPipeline()

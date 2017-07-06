@@ -12,7 +12,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 #include <gloperate/rendering/Camera.h>
 
 
@@ -36,7 +36,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface;      ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface;      ///< Interface for rendering into a viewer
 
     // Inputs
     Input<std::vector<glm::vec2> *> subpixelOffsets; ///< Subpixel offsets for multiframe antialiasing
@@ -66,7 +66,6 @@ protected:
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
     virtual void onProcess() override;
-    virtual void onInputValueChanged(gloperate::AbstractSlot * slot) override;
 
     // Helper functions
     void setupGeometry();

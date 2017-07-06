@@ -7,7 +7,7 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Input.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 namespace gloperate_glkernel
@@ -39,7 +39,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
     Input<int>                 multiFrameCount; ///< Number of frames to aggregate
@@ -66,6 +66,6 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_aggregationPipeline; ///< Aggregation Pipeline
-    std::unique_ptr<MultiFrameRenderingPipeline>                       m_renderingPipeline;   ///< Demo pipeline generating frames to aggregate
+    std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline; ///< Aggregation Pipeline
+    std::unique_ptr<MultiFrameRenderingPipeline>                       m_renderingPipeline;  ///< Demo pipeline generating frames to aggregate
 };

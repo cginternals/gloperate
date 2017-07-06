@@ -5,6 +5,7 @@
 #include <glm/vec4.hpp>
 
 #include <gloperate/pipeline/Stage.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
 
 #include <gloperate-text/GlyphVertexCloud.h>
 
@@ -29,11 +30,9 @@ class GlyphVertexCloud;
 class GLOPERATE_TEXT_API GlyphRenderStage : public gloperate::Stage
 {
 public:
-    Input<GlyphVertexCloud *> vertexCloud;
-    Input<glm::vec4> viewport;
-    Input<globjects::Framebuffer *> targetFramebuffer;
+    gloperate::RenderInterface renderInterface; ///< Interface to render into render targets
 
-    Output<bool> rendered;
+    Input<GlyphVertexCloud *> vertexCloud;
 
 
 public:

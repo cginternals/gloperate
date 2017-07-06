@@ -6,7 +6,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 namespace gloperate_glkernel {
@@ -38,7 +38,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
 
 public:

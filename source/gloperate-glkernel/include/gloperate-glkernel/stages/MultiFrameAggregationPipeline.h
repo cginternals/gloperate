@@ -6,7 +6,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
@@ -14,10 +14,11 @@
 namespace gloperate
 {
     class BasicFramebufferStage;
-    class TextureStage;
+    class TextureRenderTargetStage;
+    class RenderbufferRenderTargetStage;
     class FramebufferStage;
     class BlitStage;
-}
+} // namespace gloperate
 
 
 namespace gloperate_glkernel
@@ -26,6 +27,7 @@ namespace gloperate_glkernel
 
 class MultiFrameControlStage;
 class MultiFrameAggregationStage;
+class IntermediateFramePreparationStage;
 
 
 /**
@@ -48,10 +50,10 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<int> multiFrameCount; ///< Maximum number of frames to aggregate
+    Input<int>                 multiFrameCount; ///< Maximum number of frames to aggregate
 
 
 public:
@@ -72,37 +74,34 @@ public:
     */
     virtual ~MultiFrameAggregationPipeline();
 
-    /**
-    *  @brief
-    *    Set the frame generating stage/pipeline
-    *
-    *  @param[in] interface
-    *    Render interface of the frame generating stage
-    */
-    void setFrameRenderer(gloperate::RenderInterface & interface);
-
 
 protected:
-    // Virtual Stage interface
-    virtual void onProcess() override;
+    /**
+    *  @brief
+    *    Set the intermediate frame generating stage/pipeline
+    *
+    *  @param[in] stage
+    *    The render stage
+    */
+    void setRenderStage(gloperate::Stage * stage);
 
-    // Helper functions
-    void connectBasicRenderInterface(gloperate::RenderInterface & interface);
+    /**
+    *  @brief
+    *    Disconnects the current render stage.
+    */
     void disconnectRenderStage();
 
 
 protected:
     // Aggregation stages
-    std::unique_ptr<gloperate::BasicFramebufferStage> m_renderFramebufferStage;       ///< FBO stage for frame generating stage
-    std::unique_ptr<gloperate::TextureStage>          m_aggregationColorTextureStage; ///< Aggregation color texture
-    std::unique_ptr<gloperate::TextureStage>          m_aggregationDepthTextureStage; ///< Aggregation depth texture
-    std::unique_ptr<gloperate::FramebufferStage>      m_aggregationFramebufferStage;  ///< Aggregation FBO
-    std::unique_ptr<MultiFrameControlStage>           m_controlStage;                 ///< Multiframe control stage
-    std::unique_ptr<MultiFrameAggregationStage>       m_aggregationStage;             ///< Aggregation stage
-    std::unique_ptr<gloperate::BlitStage>             m_blitStage;                    ///< Blit stage
+    std::unique_ptr<gloperate::TextureRenderTargetStage>      m_colorRenderTargetStage;        ///< Aggregation color render target
+    std::unique_ptr<gloperate::RenderbufferRenderTargetStage> m_depthStencilRenderTargetStage; ///< Aggregation depth stencil render target
+    std::unique_ptr<MultiFrameControlStage>                   m_controlStage;                  ///< Multiframe control stage
+    std::unique_ptr<IntermediateFramePreparationStage>        m_framePreparationStage;         ///< Intermediate frame preparation stage
+    std::unique_ptr<MultiFrameAggregationStage>               m_aggregationStage;              ///< Aggregation stage
 
     // Inserted Stage/Pipeline
-    Stage * m_frameRenderStage; ///< Frame generating stage
+    Stage                                                   * m_renderStage;                   ///< Actual rendering stage, providing intermediate frames
 };
 
 

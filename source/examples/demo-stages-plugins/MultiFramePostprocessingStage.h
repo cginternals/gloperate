@@ -14,7 +14,7 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 #include <gloperate/rendering/Camera.h>
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 
@@ -39,7 +39,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface  renderInterface;  ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface  canvasInterface;  ///< Interface for rendering into a viewer
 
     // Inputs
     Input<globjects::Texture *> colorTexture;     ///< Color texture of the scene
@@ -50,8 +50,6 @@ public:
     Input<globjects::Texture *> ssaoNoise;        ///< SSAO noise texture
     Input<glm::mat4>            projectionMatrix; ///< Projection matrix used for rendering the scene
     Input<glm::mat3>            normalMatrix;     ///< Normal matrix from scene rendering
-
-    Input<bool>                 sceneRendered;    ///< Scene rendering stage processed?
 
 
 public:
