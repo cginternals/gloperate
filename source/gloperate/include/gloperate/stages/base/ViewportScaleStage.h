@@ -19,13 +19,13 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage that adjusts the viewport by a given scaleFactor
+*    Stage that scales a viewport by a given scaleFactor
 */
-class GLOPERATE_API VirtualViewportStage : public Stage
+class GLOPERATE_API ViewportScaleStage : public Stage
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        VirtualViewportStage, gloperate::Stage
+        ViewportScaleStage, gloperate::Stage
       , ""   // Tags
       , ""   // Icon
       , ""   // Annotations
@@ -37,11 +37,12 @@ public:
 
 public:
     // Inputs
-    Input<glm::vec4>  viewport;     ///< old viewport
+    Input<glm::vec4>  viewport;     ///< Input viewport
     Input<float>      scaleFactor;  ///< Scale factor
 
     // Outputs
-    Output<glm::vec4> virtualViewport; ///< new viewport
+    Output<glm::vec4> scaledViewport; ///< Scaled viewport
+
 
 public:
     /**
@@ -53,22 +54,18 @@ public:
     *  @param[in] name
     *    Stage name
     */
-    VirtualViewportStage(Environment * environment, const std::string & name = "");
+    ViewportScaleStage(Environment * environment, const std::string & name = "");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~VirtualViewportStage();
+    virtual ~ViewportScaleStage();
 
 
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
-
-
-protected:
-    glm::vec4 m_virtualViewport;
 };
 
 
