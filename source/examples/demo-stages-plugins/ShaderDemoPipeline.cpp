@@ -7,6 +7,7 @@
 #include <gloperate/stages/base/TextureLoadStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/ShaderStage.h>
+#include <gloperate/stages/base/ClearStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
 
@@ -29,6 +30,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
 , m_programStage(cppassist::make_unique<gloperate::ProgramStage>(environment, "ProgramStage"))
 , m_framebufferStage(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "BasicFramebufferStage"))
 , m_demoDrawableStage(cppassist::make_unique<DemoDrawableStage>(environment, "DemoDrawableStage"))
+, m_clearStage(cppassist::make_unique<gloperate::ClearStage>(environment, "ClearStage"))
 , m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "RenderPassStage"))
 , m_rasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "RasterizationStage"))
 , m_blitStage(cppassist::make_unique<gloperate::BlitStage>(environment, "BlitStage"))
@@ -67,6 +69,7 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     // m_renderPassStage->camera.setValue(new Camera(glm::vec3(0.0, 0.0, 12.0)));
     m_renderPassStage->drawable << m_demoDrawableStage->drawable;
     m_renderPassStage->program << m_programStage->program;
+    m_renderPassStage->depthTest = false;
 
     auto textureInput = m_renderPassStage->createInput<globjects::Texture *>("texColor");
     *textureInput << m_textureLoadStage->texture;
@@ -79,11 +82,17 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     m_rasterizationStage->drawable << m_renderPassStage->renderPass;
     m_rasterizationStage->colorTexture << m_framebufferStage->colorTexture;
 
+    // Clear stage
+    addStage(m_clearStage.get());
+    m_clearStage->renderInterface.targetFBO << renderInterface.targetFBO;
+    m_clearStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_clearStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+
     // Blit stage
     addStage(m_blitStage.get());
     m_blitStage->sourceFBO << m_rasterizationStage->fboOut;
     m_blitStage->sourceViewport << renderInterface.deviceViewport;
-    m_blitStage->targetFBO << renderInterface.targetFBO;
+    m_blitStage->targetFBO << m_clearStage->fboOut;
     m_blitStage->targetViewport << renderInterface.deviceViewport;
 
     // Outputs

@@ -17,6 +17,7 @@ namespace gloperate
     class TextureLoadStage;
     class ShaderStage;
     class ProgramStage;
+    class ClearStage;
     class RasterizationStage;
     class RenderPassStage;
     class BlitStage;
@@ -81,6 +82,8 @@ protected:
 
     std::unique_ptr<gloperate::BasicFramebufferStage> m_framebufferStage;  ///< Stage which creates the framebuffer
     std::unique_ptr<DemoDrawableStage> m_demoDrawableStage;                ///< Stage which creates the drawable
+
+    std::unique_ptr<gloperate::ClearStage> m_clearStage;                   ///< Stage which clears the FBO before rendering
 
     std::unique_ptr<gloperate::RenderPassStage>    m_renderPassStage;      ///< Stage which creates the render pass
     std::unique_ptr<gloperate::RasterizationStage> m_rasterizationStage;   ///< Stage which renders the scene
