@@ -85,8 +85,6 @@ protected:
 
     std::unique_ptr<gloperate::ProgramStage>          m_programStage;       ///< Stage which creates the program
 
-    std::unique_ptr<gloperate::ClearStage> m_clearStage;                   ///< Stage which clears the FBO before rendering
-
     std::unique_ptr<gloperate::RenderPassStage>       m_renderPassStage;    ///< Stage which creates the render pass
     std::unique_ptr<gloperate::RasterizationStage>    m_rasterizationStage; ///< Stage which renders the scene
 

@@ -27,7 +27,6 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
 , m_textureLoadStage(cppassist::make_unique<gloperate::TextureLoadStage>(environment, "TextureLoadStage"))
 , m_shaderStage(cppassist::make_unique<gloperate::ShaderStage>(environment, "ShaderStage"))
 , m_programStage(cppassist::make_unique<gloperate::ProgramStage>(environment, "ProgramStage"))
-, m_clearStage(cppassist::make_unique<gloperate::ClearStage>(environment, "ClearStage"))
 , m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "RenderPassStage"))
 , m_rasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "RasterizationStage"))
 {
@@ -62,17 +61,11 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     auto textureInput = m_renderPassStage->createInput<globjects::Texture *>("texColor");
     *textureInput << m_textureLoadStage->texture;
 
-    // Clear stage
-    addStage(m_clearStage.get());
-    m_clearStage->renderInterface.viewport << canvasInterface.viewport;
-    m_clearStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
-    auto clearedColorTarget = m_clearStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
-
     // Rasterization stage
     addStage(m_rasterizationStage.get());
     m_rasterizationStage->renderInterface.viewport << canvasInterface.viewport;
     m_rasterizationStage->drawable << m_renderPassStage->renderPass;
-    m_rasterizationStage->createInput("Color") << *clearedColorTarget;
+    m_rasterizationStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
     auto rasterizedColorTarget = m_rasterizationStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 
     // Outputs
