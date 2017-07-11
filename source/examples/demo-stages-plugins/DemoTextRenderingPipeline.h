@@ -7,7 +7,7 @@
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 #include <gloperate/gloperate-version.h>
 
 
@@ -33,7 +33,7 @@ public:
 
 
 public:
-    gloperate::RenderInterface renderInterface;
+    gloperate::CanvasInterface canvasInterface;
 
     Input<cppassist::FilePath> fontFilename;
 

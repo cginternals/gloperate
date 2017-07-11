@@ -47,8 +47,6 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 
 Stage::~Stage()
 {
-    info() << m_name << " destroyed.";
-
     if (Pipeline * parent = parentPipeline())
     {
         parent->removeStage(this);
@@ -513,6 +511,22 @@ void Stage::invalidateInputConnections()
     if (parentPipeline())
     {
         parentPipeline()->invalidateStageOrder();
+    }
+}
+
+void Stage::forAllInputs(std::function<void(gloperate::AbstractSlot *)> callback)
+{
+    for (const auto input : m_inputs)
+    {
+        callback(input);
+    }
+}
+
+void Stage::forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callback)
+{
+    for (const auto output : m_outputs)
+    {
+        callback(output);
     }
 }
 

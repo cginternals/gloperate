@@ -8,7 +8,7 @@
 #include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Input.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 namespace gloperate
@@ -45,13 +45,14 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<cppassist::FilePath> shader1; ///< Shader 1 filename
-    Input<cppassist::FilePath> shader2; ///< Shader 2 filename
+    Input<cppassist::FilePath> shader1;         ///< Shader 1 filename
+    Input<cppassist::FilePath> shader2;         ///< Shader 2 filename
 
-    Input<cppassist::FilePath> texture; ///< Texture filename
+    Input<cppassist::FilePath> texture;         ///< Texture filename
+
 
 public:
     /**
@@ -78,16 +79,16 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate::TextureLoadStage> m_textureLoadStage;       ///< Stage that loads a static picture
+    std::unique_ptr<gloperate::TextureLoadStage>      m_textureLoadStage;   ///< Stage that loads a static picture
 
-    std::unique_ptr<gloperate::ShaderStage> m_shaderStage;                 ///< Stage which loads one shader
+    std::unique_ptr<gloperate::ShaderStage>           m_shaderStage;        ///< Stage which loads one shader
 
-    std::unique_ptr<gloperate::ProgramStage> m_programStage;               ///< Stage which creates the program
+    std::unique_ptr<gloperate::ProgramStage>          m_programStage;       ///< Stage which creates the program
 
     std::unique_ptr<gloperate::ClearStage> m_clearStage;                   ///< Stage which clears the FBO before rendering
 
-    std::unique_ptr<gloperate::RenderPassStage>    m_renderPassStage;      ///< Stage which creates the render pass
-    std::unique_ptr<gloperate::RasterizationStage> m_rasterizationStage;   ///< Stage which renders the scene
+    std::unique_ptr<gloperate::RenderPassStage>       m_renderPassStage;    ///< Stage which creates the render pass
+    std::unique_ptr<gloperate::RasterizationStage>    m_rasterizationStage; ///< Stage which renders the scene
 
     // Geometry
     std::unique_ptr<gloperate::Quad> m_quad;

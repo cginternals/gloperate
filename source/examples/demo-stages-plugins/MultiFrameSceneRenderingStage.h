@@ -11,7 +11,7 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/rendering/Drawable.h>
 #include <gloperate/pipeline/Stage.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 /**
@@ -34,7 +34,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface;            ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface;            ///< Interface for rendering into a viewer
 
     // Inputs
     Input<std::vector<glm::vec2> *> subpixelShiftKernel;   ///< Subpixel shifts for antialiasing

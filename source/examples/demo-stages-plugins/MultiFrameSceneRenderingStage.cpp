@@ -25,7 +25,7 @@ CPPEXPOSE_COMPONENT(MultiFrameSceneRenderingStage, gloperate::Stage)
 
 MultiFrameSceneRenderingStage::MultiFrameSceneRenderingStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , subpixelShiftKernel("subpixelShiftKernel", this)
 , dofShiftKernel("dofShiftKernel", this)
 , noiseKernelTexture("noiseKernelTexture", this)
@@ -41,6 +41,7 @@ MultiFrameSceneRenderingStage::~MultiFrameSceneRenderingStage()
 
 void MultiFrameSceneRenderingStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -60,6 +61,8 @@ void MultiFrameSceneRenderingStage::onContextDeinit(gloperate::AbstractGLContext
         }
         m_drawable.reset();
     }
+
+    canvasInterface.onContextDeinit();
 }
 
 void MultiFrameSceneRenderingStage::onProcess()
@@ -68,7 +71,7 @@ void MultiFrameSceneRenderingStage::onProcess()
         return;
 
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -89,11 +92,11 @@ void MultiFrameSceneRenderingStage::onProcess()
     m_program->setUniform("viewProjectionMatrix", viewProjectionMatrix);
 
     // Bind color FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    auto & color = *renderInterface.backgroundColor;
+    auto & color = *canvasInterface.backgroundColor;
     gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -110,7 +113,7 @@ void MultiFrameSceneRenderingStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }
 
 void MultiFrameSceneRenderingStage::setupGeometry()

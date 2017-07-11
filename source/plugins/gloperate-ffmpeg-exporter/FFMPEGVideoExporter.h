@@ -94,6 +94,5 @@ protected:
     bool                                     m_initialized;
     AbstractVideoExporter::ContextHandling   m_contextHandling;
 
-    glm::vec4                                m_savedDeviceViewport;
-    glm::vec4                                m_savedVirtualViewport;
+    glm::vec4                                m_savedViewport;
 };

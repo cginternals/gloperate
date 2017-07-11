@@ -6,13 +6,13 @@
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 namespace gloperate
 {
-    class FramebufferStage;
-    class TextureStage;
+    class TextureRenderTargetStage;
+    class TextureFromRenderTargetExtractionStage;
 }
 
 
@@ -49,7 +49,7 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
     Input<int> multiFrameCount;                 ///< Total number of frames to aggregate
@@ -77,10 +77,9 @@ public:
 protected:
     // Stages
     // Custom FBO
-    std::unique_ptr<gloperate::TextureStage>                               m_colorTextureStage;   ///< Stage creating color texture for main rendering
-    std::unique_ptr<gloperate::TextureStage>                               m_depthTextureStage;   ///< Stage creating depth texture for main rendering
-    std::unique_ptr<gloperate::TextureStage>                               m_normalTextureStage;  ///< Stage creating normal texture for main rendering
-    std::unique_ptr<gloperate::FramebufferStage>                           m_fboStage;            ///< Stage creating FBO for main rendering
+    std::unique_ptr<gloperate::TextureRenderTargetStage>                   m_colorTextureStage;   ///< Stage creating color texture for main rendering
+    std::unique_ptr<gloperate::TextureRenderTargetStage>                   m_depthTextureStage;   ///< Stage creating depth texture for main rendering
+    std::unique_ptr<gloperate::TextureRenderTargetStage>                   m_normalTextureStage;  ///< Stage creating normal texture for main rendering
 
     // Kernels
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage>       m_subpixelStage;           ///< subpixel offsets for antialiasing
@@ -91,5 +90,8 @@ protected:
 
     // Rendering
     std::unique_ptr<MultiFrameSceneRenderingStage>                         m_renderingStage;
+    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_colorTextureExtractionStage;
+    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_depthTextureExtractionStage;
+    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_normalTextureExtractionStage;
     std::unique_ptr<MultiFramePostprocessingStage>                         m_postprocessingStage;
 };

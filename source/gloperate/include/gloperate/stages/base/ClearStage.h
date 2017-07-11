@@ -14,7 +14,7 @@
 namespace globjects
 {
     class Framebuffer;
-    class Texture;
+    class FramebufferAttachment;
 }
 
 
@@ -22,12 +22,12 @@ namespace gloperate
 {
 
 
-class AbstractDrawable;
-
-
 /**
 *  @brief
 *    Stage that clears the screen with a background color
+*
+*  If a valid viewport is set (width and height are greater or equal to '0', only the area of
+*  the given viewport is cleared, otherwise the full render targets are cleared.
 */
 class GLOPERATE_API ClearStage : public Stage
 {
@@ -45,14 +45,10 @@ public:
 
 public:
     // Interfaces
-    RenderInterface                  renderInterface; ///< Interface for rendering into a viewer
+    RenderInterface renderInterface; ///< Renderinterface to manage render targets inputs and outputs
 
     // Inputs
-    Input<globjects::Texture *>      colorTexture;    ///< Pass in of texture input/output
-
-    // Outputs
-    Output<globjects::Framebuffer *> fboOut;          ///< Pass through framebuffer
-    Output<globjects::Texture *>     colorTextureOut; ///< Pass through color texture
+    Input<bool>     clear;           ///< Flag if buffers should get cleared
 
 
 public:
@@ -78,6 +74,14 @@ protected:
     // Virtual Stage interface
     virtual void onProcess() override;
     virtual void onContextInit(AbstractGLContext * content) override;
+    virtual void onContextDeinit(AbstractGLContext * content) override;
+
+
+protected:
+    std::vector<Input<Color> *>                 m_colorValueInputs;        ///< Color clear values
+    std::vector<Input<float> *>                 m_depthValueInputs;        ///< Depth clear values
+    std::vector<Input<int> *>                   m_stencilValueInputs;      ///< Stencil clear values
+    std::vector<Input<std::pair<float, int>> *> m_depthStencilValueInputs; ///< Depth-stencil clear values
 };
 
 

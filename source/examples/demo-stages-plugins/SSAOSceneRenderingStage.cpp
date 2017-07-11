@@ -44,7 +44,7 @@ CPPEXPOSE_COMPONENT(SSAOSceneRenderingStage, gloperate::Stage)
 
 SSAOSceneRenderingStage::SSAOSceneRenderingStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , projectionMatrix("projectionMatrix", this)
 , normalMatrix("normalMatrix", this)
 {
@@ -56,6 +56,7 @@ SSAOSceneRenderingStage::~SSAOSceneRenderingStage()
 
 void SSAOSceneRenderingStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -70,12 +71,14 @@ void SSAOSceneRenderingStage::onContextDeinit(gloperate::AbstractGLContext *)
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void SSAOSceneRenderingStage::onProcess()
 {
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -96,11 +99,11 @@ void SSAOSceneRenderingStage::onProcess()
     m_program->setUniform("viewProjectionMatrix", viewProjectionMatrix);
 
     // Bind color FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    auto & color = *renderInterface.backgroundColor;
+    const auto & color = *canvasInterface.backgroundColor;
     gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -117,7 +120,7 @@ void SSAOSceneRenderingStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }
 
 void SSAOSceneRenderingStage::setupGeometry()

@@ -25,7 +25,9 @@ namespace gloperate
 {
 
 
-class RenderTarget;
+class ColorRenderTarget;
+class DepthRenderTarget;
+class StencilRenderTarget;
 
 
 /**
@@ -48,14 +50,13 @@ public:
 
 public:
     // Inputs
-    Input<glm::vec4>                  viewport;     ///< Texture size
+    Input<glm::vec4>                       viewport;     ///< Texture size
 
     // Outputs
-    Output<globjects::Framebuffer *>  fbo;          ///< Framebuffer
-    Output<globjects::Texture *>      colorTexture; ///< Color texture
-    Output<globjects::Texture *>      depthTexture; ///< Depth texture
-    Output<gloperate::RenderTarget *> colorBuffer;  ///< Color attachment
-    Output<gloperate::RenderTarget *> depthBuffer;  ///< Depth attachment
+    Output<globjects::Texture *>           colorTexture; ///< Color texture
+    Output<globjects::Texture *>           depthTexture; ///< Depth texture
+    Output<gloperate::ColorRenderTarget *> colorBuffer;  ///< Color attachment
+    Output<gloperate::DepthRenderTarget *> depthBuffer;  ///< Depth attachment
 
 
 public:
@@ -83,16 +84,12 @@ protected:
     virtual void onContextDeinit(AbstractGLContext * context) override;
     virtual void onProcess() override;
 
-    // Helper functions
-    void rebuildFBO();
-
 
 protected:
-    std::unique_ptr<globjects::Framebuffer>  m_fbo;          ///< The created framebuffer
-    std::unique_ptr<globjects::Texture>      m_colorTexture; ///< The created texture
-    std::unique_ptr<globjects::Texture>      m_depthTexture; ///< The created texture
-    std::unique_ptr<gloperate::RenderTarget> m_colorBuffer;  ///< Color texture
-    std::unique_ptr<gloperate::RenderTarget> m_depthBuffer;  ///< Depth texture
+    std::unique_ptr<globjects::Texture>           m_colorTexture; ///< Internal color texture
+    std::unique_ptr<globjects::Texture>           m_depthTexture; ///< Internal depth texture
+    std::unique_ptr<gloperate::ColorRenderTarget> m_colorBuffer;  ///< Color texture
+    std::unique_ptr<gloperate::DepthRenderTarget> m_depthBuffer;  ///< Depth texture
 };
 
 

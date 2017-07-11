@@ -436,8 +436,6 @@ ApplicationWindow
             // Load settings
             settings.load();
         }
-        
-        gloperate.components.scanPlugins();
 
         // Scan for plugins
         gloperate.components.scanPlugins();

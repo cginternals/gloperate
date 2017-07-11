@@ -4,17 +4,12 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <glm/vec4.hpp>
-
-#include <globjects/Program.h>
-#include <globjects/Shader.h>
 #include <globjects/Texture.h>
-#include <globjects/Framebuffer.h>
 
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
-#include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <gloperate/rendering/ScreenAlignedTriangle.h>
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
 
@@ -35,22 +30,19 @@ public:
       , ""
       , ""
       , ""
-      , "Stage that aggregates multiple subsequent frames into a single framebuffer"
+      , "Stage that aggregates multiple subsequent frames into a single texture"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
     )
 
 
 public:
-    // Inputs
-    Input<globjects::Framebuffer *>  aggregationFBO;    ///< FBO to aggregate into
-    Input<globjects::Texture *>      texture;           ///< New frame to add to aggregation
-    Input<bool>                      textureRerendered; ///< Add texture to aggregation?
-    Input<glm::vec4>                 viewport;          ///< Target viewport
-    Input<float>                     aggregationFactor; ///< Weight of new frame in current aggregation
+    // Render Interface
+    gloperate::RenderInterface  renderInterface;   ///< Render interface for aggregation target
 
-    // Outputs
-    Output<globjects::Framebuffer *> aggregatedFBO;     ///< Framebuffer containing aggregation
+    // Inputs
+    Input<globjects::Texture *> intermediateFrame; ///< Current frame texture
+    Input<float>                aggregationFactor; ///< Weight of new frame in current aggregation
 
 
 public:
@@ -81,7 +73,7 @@ protected:
 
 protected:
     // Data
-    std::unique_ptr<gloperate::ScreenAlignedQuad> m_quad;           ///< Screen aligned quad
+    std::unique_ptr<gloperate::ScreenAlignedTriangle> m_triangle;   ///< Screen-aligned Triangle for 'blitting'
 };
 
 

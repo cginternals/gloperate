@@ -20,7 +20,7 @@ CPPEXPOSE_COMPONENT(ShaderDemoPipeline, gloperate::Stage)
 
 ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , shader1("shader1", this)
 , shader2("shader2", this)
 , texture("texture", this)
@@ -64,19 +64,19 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
 
     // Clear stage
     addStage(m_clearStage.get());
-    m_clearStage->renderInterface.targetFBO << renderInterface.targetFBO;
-    m_clearStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_clearStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    m_clearStage->renderInterface.viewport << canvasInterface.viewport;
+    m_clearStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    auto clearedColorTarget = m_clearStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 
     // Rasterization stage
     addStage(m_rasterizationStage.get());
-    m_rasterizationStage->renderInterface.targetFBO << m_clearStage->fboOut;
-    m_rasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_rasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    m_rasterizationStage->renderInterface.viewport << canvasInterface.viewport;
     m_rasterizationStage->drawable << m_renderPassStage->renderPass;
+    m_rasterizationStage->createInput("Color") << *clearedColorTarget;
+    auto rasterizedColorTarget = m_rasterizationStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 
     // Outputs
-    renderInterface.rendered << m_rasterizationStage->renderInterface.rendered;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *rasterizedColorTarget;
 }
 
 ShaderDemoPipeline::~ShaderDemoPipeline()

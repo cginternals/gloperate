@@ -29,7 +29,7 @@ CPPEXPOSE_COMPONENT(DemoTextRenderingPipeline, gloperate::Stage)
 
 DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : gloperate::Pipeline{ environment, "DemoTextRenderingPipeline", name }
-, renderInterface{ this }
+, canvasInterface{ this }
 , fontFilename{ "fontFilename", this, gloperate::dataPath() + "/gloperate-text/fonts/opensansr36.fnt" }
 , string      { "string",       this, lorem }
 , numChars    { "numChars",     this, 0 }
@@ -50,7 +50,7 @@ DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * en
     demo->numChars     << numChars;
     demo->font         << fontImport->font;
     demo->fontSize     << fontSize;
-    demo->viewport     << renderInterface.deviceViewport;
+    demo->viewport     << canvasInterface.viewport;
     demo->origin       << origin;
     demo->margins      << margins;
     demo->wordWrap     << wordWrap;
@@ -65,16 +65,16 @@ DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * en
     glyphPreparation->optimized << optimized;
 
     auto clearStage = cppassist::make_unique<gloperate::ClearStage>(environment, "ClearStage");
-    clearStage->renderInterface.targetFBO << renderInterface.targetFBO;
-    clearStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    clearStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    clearStage->renderInterface.viewport << canvasInterface.viewport;
+    clearStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    clearStage->createInput("ColorValue") << canvasInterface.backgroundColor;
+    auto clearedColorTarget = clearStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 
     auto glyphRendering = cppassist::make_unique<gloperate_text::GlyphRenderStage>(environment, "GlyphRendering");
-    glyphRendering->vertexCloud       << glyphPreparation->vertexCloud;
-    glyphRendering->viewport          << renderInterface.deviceViewport;
-    glyphRendering->targetFramebuffer << clearStage->fboOut;
-
-    renderInterface.rendered << glyphRendering->rendered;
+    glyphRendering->vertexCloud << glyphPreparation->vertexCloud;
+    glyphRendering->renderInterface.viewport << canvasInterface.viewport;
+    glyphRendering->createInput("Color") << *clearedColorTarget;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *glyphRendering->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 
     addStage(std::move(fontImport));
     addStage(std::move(demo));
