@@ -74,29 +74,31 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     auto textureInput = m_renderPassStage->createInput<globjects::Texture *>("texColor");
     *textureInput << m_textureLoadStage->texture;
 
-    // Rasterization stage
-    addStage(m_rasterizationStage.get());
-    m_rasterizationStage->renderInterface.targetFBO << m_framebufferStage->fbo;
-    m_rasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_rasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_rasterizationStage->drawable << m_renderPassStage->renderPass;
-    m_rasterizationStage->colorTexture << m_framebufferStage->colorTexture;
-
     // Clear stage
     addStage(m_clearStage.get());
     m_clearStage->renderInterface.targetFBO << renderInterface.targetFBO;
     m_clearStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_clearStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
 
+    // Rasterization stage
+    addStage(m_rasterizationStage.get());
+    m_rasterizationStage->renderInterface.targetFBO << m_clearStage->fboOut;
+    m_rasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_rasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    m_rasterizationStage->drawable << m_renderPassStage->renderPass;
+    m_rasterizationStage->colorTexture << m_framebufferStage->colorTexture;
+
+    /*
     // Blit stage
     addStage(m_blitStage.get());
     m_blitStage->sourceFBO << m_rasterizationStage->fboOut;
     m_blitStage->sourceViewport << renderInterface.deviceViewport;
     m_blitStage->targetFBO << m_clearStage->fboOut;
     m_blitStage->targetViewport << renderInterface.deviceViewport;
+    */
 
     // Outputs
-    renderInterface.rendered << m_blitStage->rendered;
+    renderInterface.rendered << m_rasterizationStage->renderInterface.rendered;
 }
 
 ShaderDemoPipeline::~ShaderDemoPipeline()
