@@ -10,8 +10,7 @@
 #include <gloperate/stages/base/ClearStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
-
-#include "DemoDrawableStage.h"
+#include <gloperate/rendering/Quad.h>
 
 #include <cppassist/logging/logging.h>
 
@@ -28,12 +27,9 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
 , m_textureLoadStage(cppassist::make_unique<gloperate::TextureLoadStage>(environment, "TextureLoadStage"))
 , m_shaderStage(cppassist::make_unique<gloperate::ShaderStage>(environment, "ShaderStage"))
 , m_programStage(cppassist::make_unique<gloperate::ProgramStage>(environment, "ProgramStage"))
-, m_framebufferStage(cppassist::make_unique<gloperate::BasicFramebufferStage>(environment, "BasicFramebufferStage"))
-, m_demoDrawableStage(cppassist::make_unique<DemoDrawableStage>(environment, "DemoDrawableStage"))
 , m_clearStage(cppassist::make_unique<gloperate::ClearStage>(environment, "ClearStage"))
 , m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "RenderPassStage"))
 , m_rasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "RasterizationStage"))
-, m_blitStage(cppassist::make_unique<gloperate::BlitStage>(environment, "BlitStage"))
 {
     // Get data path
     std::string dataPath = gloperate::dataPath();
@@ -57,17 +53,9 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     m_programStage->createInput("shader1") << shader1;
     m_programStage->createInput("shader2") << m_shaderStage->shader;
 
-    // Framebuffer stage
-    addStage(m_framebufferStage.get());
-    m_framebufferStage->viewport << renderInterface.deviceViewport;
-
-    // Demo drawable stage (supplies demo drawable)
-    addStage(m_demoDrawableStage.get());
-
     // Render pass stage with fixed camera
     addStage(m_renderPassStage.get());
-    // m_renderPassStage->camera.setValue(new Camera(glm::vec3(0.0, 0.0, 12.0)));
-    m_renderPassStage->drawable << m_demoDrawableStage->drawable;
+    //m_renderPassStage->drawable = m_quad.get(); // Will be set in onContextInit
     m_renderPassStage->program << m_programStage->program;
     m_renderPassStage->depthTest = false;
 
@@ -86,16 +74,6 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
     m_rasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
     m_rasterizationStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
     m_rasterizationStage->drawable << m_renderPassStage->renderPass;
-    m_rasterizationStage->colorTexture << m_framebufferStage->colorTexture;
-
-    /*
-    // Blit stage
-    addStage(m_blitStage.get());
-    m_blitStage->sourceFBO << m_rasterizationStage->fboOut;
-    m_blitStage->sourceViewport << renderInterface.deviceViewport;
-    m_blitStage->targetFBO << m_clearStage->fboOut;
-    m_blitStage->targetViewport << renderInterface.deviceViewport;
-    */
 
     // Outputs
     renderInterface.rendered << m_rasterizationStage->renderInterface.rendered;
@@ -103,4 +81,20 @@ ShaderDemoPipeline::ShaderDemoPipeline(gloperate::Environment * environment, con
 
 ShaderDemoPipeline::~ShaderDemoPipeline()
 {
+}
+
+void ShaderDemoPipeline::onContextInit(gloperate::AbstractGLContext * context)
+{
+    m_quad = cppassist::make_unique<gloperate::Quad>();
+
+    m_renderPassStage->drawable = m_quad.get();
+
+    Pipeline::onContextInit(context);
+}
+
+void ShaderDemoPipeline::onContextDeinit(gloperate::AbstractGLContext *context)
+{
+    Pipeline::onContextDeinit(context);
+
+    m_quad.reset();
 }

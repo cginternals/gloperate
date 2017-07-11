@@ -7,7 +7,6 @@
 #include "ColorGradientDemo.h"
 #include "DemoAntialiasingAggregationPipeline.h"
 #include "DemoDOFAggregationPipeline.h"
-#include "DemoDrawableStage.h"
 #include "DemoMultiFrameAggregationPipeline.h"
 #include "DemoSSAOAggregationPipeline.h"
 #include "DemoTextRenderingPipeline.h"
@@ -37,7 +36,6 @@ CPPEXPOSE_PLUGIN_LIBRARY
     CPPEXPOSE_PLUGIN_COMPONENT(ColorGradientDemo)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoAntialiasingAggregationPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoDOFAggregationPipeline)
-    CPPEXPOSE_PLUGIN_COMPONENT(DemoDrawableStage)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoMultiFrameAggregationPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoSSAOAggregationPipeline)
     CPPEXPOSE_PLUGIN_COMPONENT(DemoTextRenderingPipeline)
