@@ -85,13 +85,10 @@ protected:
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage>       m_subpixelStage;           ///< subpixel offsets for antialiasing
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage>       m_dofShiftStage;           ///< offsets for depth of field
     std::unique_ptr<gloperate_glkernel::HemisphereDistributionKernelStage> m_ssaoKernelStage;         ///< kernel for SSAO
-    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;              ///< noise for SSAO & Transparency
+    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;              ///< noise for SSAO
     std::unique_ptr<gloperate_glkernel::TransparencyKernelStage>           m_transparencyKernelStage; ///< kernel for transparency
 
     // Rendering
     std::unique_ptr<MultiFrameSceneRenderingStage>                         m_renderingStage;
-    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_colorTextureExtractionStage;
-    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_depthTextureExtractionStage;
-    std::unique_ptr<gloperate::TextureFromRenderTargetExtractionStage>     m_normalTextureExtractionStage;
     std::unique_ptr<MultiFramePostprocessingStage>                         m_postprocessingStage;
 };

@@ -30,15 +30,15 @@ MultiFrameControlStage::~MultiFrameControlStage()
 void MultiFrameControlStage::onProcess()
 {
     m_currentFrame++;
-    currentFrame.setValue(m_currentFrame);
+    currentFrame = m_currentFrame;
 
     if (m_currentFrame < *multiFrameCount)
     {
-        aggregationFactor.setValue(1.0f/m_currentFrame);
+        aggregationFactor = 1.0f/m_currentFrame;
     }
     else
     {
-        aggregationFactor.setValue(0.0f);
+        aggregationFactor = 0.0f;
         setAlwaysProcessed(false);
     }
 }
