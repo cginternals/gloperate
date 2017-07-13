@@ -63,11 +63,6 @@ void RenderWindow::onContextDeinit()
 void RenderWindow::onResize(ResizeEvent & event)
 {
     m_virtualSize = event.size();
-
-    m_canvas->setViewport(
-        glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
-      , glm::vec4(0, 0, m_virtualSize.x, m_virtualSize.y)
-    );
 }
 
 void RenderWindow::onFramebufferResize(ResizeEvent & event)
@@ -76,7 +71,6 @@ void RenderWindow::onFramebufferResize(ResizeEvent & event)
 
     m_canvas->setViewport(
         glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
-      , glm::vec4(0, 0, m_virtualSize.x, m_virtualSize.y)
     );
 }
 

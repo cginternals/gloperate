@@ -27,7 +27,7 @@ class AbstractDrawable;
 
 /**
 *  @brief
-*    Stage that rasterizes a given drawable
+*    Stage that rasterizes a given drawable into render targets
 */
 class GLOPERATE_API RasterizationStage : public Stage
 {
@@ -50,12 +50,6 @@ public:
     // Inputs
     Input<bool>                          rasterize;       ///< If connected, it enables/disables rasterization
     Input<gloperate::AbstractDrawable *> drawable;        ///< Drawable that is rendered
-    Input<globjects::Texture *>          colorTexture;    ///< Pass in of texture input/output
-
-    // Outputs
-    Output<globjects::Framebuffer *>     fboOut;          ///< Pass through framebuffer
-    Output<globjects::Texture *>         colorTextureOut; ///< Pass through color texture
-
 
 public:
     /**
@@ -79,6 +73,8 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
+    virtual void onContextInit(AbstractGLContext * content) override;
+    virtual void onContextDeinit(AbstractGLContext * content) override;
 };
 
 

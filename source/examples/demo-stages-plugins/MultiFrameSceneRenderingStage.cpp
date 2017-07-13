@@ -25,7 +25,7 @@ CPPEXPOSE_COMPONENT(MultiFrameSceneRenderingStage, gloperate::Stage)
 
 MultiFrameSceneRenderingStage::MultiFrameSceneRenderingStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , subpixelShiftKernel("subpixelShiftKernel", this)
 , dofShiftKernel("dofShiftKernel", this)
 , transparencyKernelTexture("transparencyKernelTexture", this)
@@ -40,6 +40,7 @@ MultiFrameSceneRenderingStage::~MultiFrameSceneRenderingStage()
 
 void MultiFrameSceneRenderingStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -59,6 +60,8 @@ void MultiFrameSceneRenderingStage::onContextDeinit(gloperate::AbstractGLContext
         }
         m_drawable.reset();
     }
+
+    canvasInterface.onContextDeinit();
 }
 
 void MultiFrameSceneRenderingStage::onProcess()
@@ -67,7 +70,7 @@ void MultiFrameSceneRenderingStage::onProcess()
         return;
 
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -82,9 +85,9 @@ void MultiFrameSceneRenderingStage::onProcess()
     auto projectionMatrix = glm::perspective(20.0f, viewport.z / viewport.w, 1.0f, 10.0f);
     auto viewProjectionMatrix = projectionMatrix * viewMatrix;
 
-    auto subpixelShift = (*subpixelShiftKernel)->at((*renderInterface.frameCounter) % (*subpixelShiftKernel)->size());
+    auto subpixelShift = (*subpixelShiftKernel)->at((*canvasInterface.frameCounter) % (*subpixelShiftKernel)->size());
     subpixelShift *= glm::vec2(1.0f, 1.0f) / glm::vec2(viewport.z, viewport.w);
-    auto dofShift = (*dofShiftKernel)->at((*renderInterface.frameCounter) % (*dofShiftKernel)->size());
+    auto dofShift = (*dofShiftKernel)->at((*canvasInterface.frameCounter) % (*dofShiftKernel)->size());
 
     this->projectionMatrix.setValue(projectionMatrix);
     this->normalMatrix.setValue(glm::inverseTranspose(glm::mat3(viewMatrix)));
@@ -93,14 +96,14 @@ void MultiFrameSceneRenderingStage::onProcess()
     m_program->setUniform("projectionMatrix", projectionMatrix);
     m_program->setUniform("subpixelShift", subpixelShift);
     m_program->setUniform("dofShift", dofShift);
-    m_program->setUniform("currentFrame", *renderInterface.frameCounter);
+    m_program->setUniform("currentFrame", *canvasInterface.frameCounter);
 
     // Bind color FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    auto & color = *renderInterface.backgroundColor;
+    auto & color = *canvasInterface.backgroundColor;
     gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -127,7 +130,7 @@ void MultiFrameSceneRenderingStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }
 
 void MultiFrameSceneRenderingStage::setupGeometry()

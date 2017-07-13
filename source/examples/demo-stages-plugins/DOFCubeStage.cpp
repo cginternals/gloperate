@@ -48,7 +48,7 @@ CPPEXPOSE_COMPONENT(DOFCubeStage, gloperate::Stage)
 
 DOFCubeStage::DOFCubeStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , dofShifts("dofShift", this, nullptr)
 {
 }
@@ -59,6 +59,7 @@ DOFCubeStage::~DOFCubeStage()
 
 void DOFCubeStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -69,6 +70,7 @@ void DOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
     m_program.reset();
     m_fragmentShader.reset();
     m_vertexShader.reset();
+    canvasInterface.onContextDeinit();
 
     // deinitialize geometry
     m_vertexBuffer.reset();
@@ -78,7 +80,7 @@ void DOFCubeStage::onContextDeinit(gloperate::AbstractGLContext *)
 void DOFCubeStage::onProcess()
 {
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -89,11 +91,11 @@ void DOFCubeStage::onProcess()
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    auto & color = *renderInterface.backgroundColor;
+    auto & color = *canvasInterface.backgroundColor;
     gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -102,7 +104,7 @@ void DOFCubeStage::onProcess()
 
     // Set uniforms
     m_program->setUniform("dofShift", *dofShifts
-                                      ? (*dofShifts)->at((*renderInterface.frameCounter) % (*dofShifts)->size())
+                                      ? (*dofShifts)->at((*canvasInterface.frameCounter) % (*dofShifts)->size())
                                       : glm::vec2(0.0f));
 
     auto viewMatrix = glm::lookAt(glm::vec3(1.02f, -1.02f, 1.1f), glm::vec3(0.5f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -119,7 +121,7 @@ void DOFCubeStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }
 
 void DOFCubeStage::setupGeometry()

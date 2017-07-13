@@ -29,7 +29,7 @@ CPPEXPOSE_COMPONENT(AntialiasableTriangleStage, gloperate::Stage)
 
 AntialiasableTriangleStage::AntialiasableTriangleStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , subpixelOffsets("subpixelOffset", this, nullptr)
 {
 }
@@ -40,6 +40,7 @@ AntialiasableTriangleStage::~AntialiasableTriangleStage()
 
 void AntialiasableTriangleStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
     setupGeometry();
     setupProgram();
 }
@@ -54,12 +55,14 @@ void AntialiasableTriangleStage::onContextDeinit(gloperate::AbstractGLContext *)
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void AntialiasableTriangleStage::onProcess()
 {
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -70,11 +73,11 @@ void AntialiasableTriangleStage::onProcess()
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    auto & color = *renderInterface.backgroundColor;
+    auto & color = *canvasInterface.backgroundColor;
     gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -83,7 +86,7 @@ void AntialiasableTriangleStage::onProcess()
 
     // Set uniforms
     m_program->setUniform("offset", *subpixelOffsets
-                                    ? (*subpixelOffsets)->at((*renderInterface.frameCounter) % (*subpixelOffsets)->size())
+                                    ? (*subpixelOffsets)->at((*canvasInterface.frameCounter) % (*subpixelOffsets)->size())
                                     : glm::vec2(0.0f));
 
     // Draw geometry
@@ -95,12 +98,7 @@ void AntialiasableTriangleStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
-}
-
-void AntialiasableTriangleStage::onInputValueChanged(gloperate::AbstractSlot * /*slot*/)
-{
-    renderInterface.rendered.invalidate();
+    canvasInterface.updateRenderTargetOutputs();
 }
 
 void AntialiasableTriangleStage::setupGeometry()
