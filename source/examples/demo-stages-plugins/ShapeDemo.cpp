@@ -144,12 +144,13 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::ColorRenderTarget *>("ColorAttachmentOut");
 
-    /* Hack Start */
+    // [TODO] Remove hack!
+    // Hack Start
     shapeColorOutput->valueInvalidated.onFire([=]() {
-        m_clear->renderInterface.colorRenderTargetOutput(0)->invalidate();
-        m_clear->renderInterface.depthRenderTargetOutput(0)->invalidate();
+        m_clear->renderInterface.colorRenderTargetOutputs()[0]->invalidate();
+        m_clear->renderInterface.depthRenderTargetOutputs()[0]->invalidate();
     });
-    /* Hack End */
+    // Hack End
 
     addStage(m_textureExtractionStage.get());
     m_textureExtractionStage->colorRenderTarget << *shapeColorOutput;

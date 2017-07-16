@@ -207,7 +207,7 @@ public:
     *  @return
     *    The attachment type
     */
-    virtual AttachmentType underlyingAttachmentType() const = 0;
+    virtual AttachmentType attachmentType() const = 0;
 
     /**
     *  @brief

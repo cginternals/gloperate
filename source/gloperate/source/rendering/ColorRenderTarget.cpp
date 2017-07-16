@@ -11,7 +11,7 @@ namespace gloperate
 {
 
 
-AttachmentType ColorRenderTarget::underlyingAttachmentType() const
+AttachmentType ColorRenderTarget::attachmentType() const
 {
     return AttachmentType::Color;
 }

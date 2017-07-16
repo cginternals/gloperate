@@ -117,7 +117,7 @@ void ClearStage::onProcess()
                 return;
             }
 
-            if ((**input)->underlyingAttachmentType() == AttachmentType::Depth)
+            if ((**input)->attachmentType() == AttachmentType::Depth)
             {
                 if (m_depthValueInputs.size() <= depthAttachmentIndex)
                 {
@@ -130,7 +130,7 @@ void ClearStage::onProcess()
 
                 ++depthAttachmentIndex;
             }
-            else if ((**input)->underlyingAttachmentType() == AttachmentType::DepthStencil)
+            else if ((**input)->attachmentType() == AttachmentType::DepthStencil)
             {
                 if (m_depthStencilValueInputs.size() <= depthStencilAttachmentIndex)
                 {
@@ -152,7 +152,7 @@ void ClearStage::onProcess()
                 return;
             }
 
-            if ((**input)->underlyingAttachmentType() == AttachmentType::Stencil)
+            if ((**input)->attachmentType() == AttachmentType::Stencil)
             {
                 if (m_stencilValueInputs.size() <= stencilAttachmentIndex)
                 {
@@ -165,7 +165,7 @@ void ClearStage::onProcess()
 
                 ++stencilAttachmentIndex;
             }
-            else if ((**input)->underlyingAttachmentType() == AttachmentType::DepthStencil)
+            else if ((**input)->attachmentType() == AttachmentType::DepthStencil)
             {
                 if (std::find(clearedDepthStencilTargets.begin(), clearedDepthStencilTargets.end(), **input) != clearedDepthStencilTargets.end())
                 {

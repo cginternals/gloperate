@@ -59,8 +59,8 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     m_framePreparationStage->intermediateFrameTexture << m_colorRenderTargetStage->texture;
 
     addStage(m_aggregationStage.get());
-    (*m_aggregationStage->createInput<gloperate::ColorRenderTarget *>("ColorTarget")) << (*canvasInterface.colorRenderTargetInput(0));
-    (*canvasInterface.colorRenderTargetOutput(0)) << (*m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut"));
+    (*m_aggregationStage->createInput<gloperate::ColorRenderTarget *>("ColorTarget")) << (*canvasInterface.colorRenderTargetInputs()[0]);
+    (*canvasInterface.colorRenderTargetOutputs()[0]) << (*m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut"));
     m_aggregationStage->intermediateFrame << m_framePreparationStage->intermediateFrameTextureOut; // set by setRenderStage
     m_aggregationStage->renderInterface.viewport << canvasInterface.viewport;
     m_aggregationStage->aggregationFactor << m_controlStage->aggregationFactor;

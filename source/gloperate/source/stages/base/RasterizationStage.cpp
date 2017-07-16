@@ -39,7 +39,7 @@ void RasterizationStage::onContextDeinit(AbstractGLContext *)
 
 void RasterizationStage::onProcess()
 {
-    if (!renderInterface.allRenderTargetsCompatible())
+    if (!renderInterface.renderTargetsAreCompatible())
     {
         cppassist::warning("gloperate") << "Framebuffer attachments not compatible";
 

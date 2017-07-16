@@ -36,9 +36,10 @@ class GLOPERATE_API CanvasInterface : public RenderInterface
 {
 public:
     // Inputs
-    Input<Color>     backgroundColor; ///< Background color (RGBA)
-    Input<int>       frameCounter;    ///< Frame counter (number of frames)
-    Input<float>     timeDelta;       ///< Time delta since last frame (in seconds)
+    Input<Color> backgroundColor; ///< Background color (RGBA)
+    Input<int>   frameCounter;    ///< Frame counter (number of frames)
+    Input<float> timeDelta;       ///< Time delta since last frame (in seconds)
+
 
 public:
     /**

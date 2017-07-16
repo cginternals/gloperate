@@ -49,7 +49,7 @@ void IntermediateFramePreparationStage::onContextDeinit(gloperate::AbstractGLCon
 
 void IntermediateFramePreparationStage::onProcess()
 {
-    if (!renderInterface.allRenderTargetsCompatible())
+    if (!renderInterface.renderTargetsAreCompatible())
     {
         cppassist::warning("gloperate") << "Framebuffer configuration not compatible";
 

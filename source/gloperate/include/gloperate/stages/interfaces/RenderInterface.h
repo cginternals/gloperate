@@ -2,8 +2,6 @@
 #pragma once
 
 
-#include <gloperate/gloperate_api.h>
-
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 #include <gloperate/base/ExtendedProperties.h>
@@ -32,13 +30,17 @@ class StencilRenderTarget;
 *    Interface that can be used for rendering stages and pipelines
 *
 *    A render stage is a stage that renders into render targets, given
-*    a common viewport.
-*
-*    This class can be used to instanciate the necessary inputs and outputs
+*    a common viewport. This class can be used to instanciate the necessary inputs
 *    for rendering stages. It can just be instanciated on a stage or pipeline
 *    and it will add the inputs and outputs directly to the stage (the interface
 *    itself is not an object in the hierarchy).
 *
+*    Render target inputs and outputs must be added dynamically to the stage
+*    (see Stage::createInput) and will be picked up by the RenderInterface
+*    automatically. They should reflect the targets the stage wants to render
+*    into. To render into the specified targets, the stage should call obtainFBO()
+*    and bind the returned framebuffer object before rendering.
+*    
 *    The viewport is initialized with an invalid width and height (i.e., -1.0
 *    per component) which results in no rendering for rasterization stages and
 *    full clearing for clear stages.
@@ -82,7 +84,7 @@ public:
     *  @return
     *    'true', if all registered render targets are compatible using one single FBO, else 'false'
     */
-    bool allRenderTargetsCompatible() const;
+    bool renderTargetsAreCompatible() const;
 
     /**
     *  @brief
@@ -127,6 +129,8 @@ public:
     *    The render target to attach
     *  @param[in] fbo
     *    The user-defined framebuffer used for user-defined attachments
+    *  @param[in] defaultFBO
+    *    Default default FBO for the current configuration
     *
     *  @return
     *    The matching framebuffer; either fbo or defaultFBO, depending on the type of the render target attachment
@@ -135,7 +139,7 @@ public:
 
     /**
     *  @brief
-    *    Get the vector of all registered color render target inputs
+    *    Get all registered color render target inputs
     *
     *  @return
     *    The vector of color render target inputs
@@ -144,7 +148,7 @@ public:
 
     /**
     *  @brief
-    *    Get the vector of all registered depth render target inputs
+    *    Get all registered depth render target inputs
     *
     *  @return
     *    The vector of depth render target inputs
@@ -153,7 +157,7 @@ public:
 
     /**
     *  @brief
-    *    Get the vector of all registered depth-stencil render target inputs
+    *    Get all registered depth-stencil render target inputs
     *
     *  @return
     *    The vector of depth-stencil render target inputs
@@ -162,7 +166,7 @@ public:
 
     /**
     *  @brief
-    *    Get the vector of all registered stencil render target inputs
+    *    Get all registered stencil render target inputs
     *
     *  @return
     *    The vector of stencil render target inputs
@@ -171,103 +175,7 @@ public:
 
     /**
     *  @brief
-    *    Get the color render target input at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The color render target input at given index, 'null' if index is invalid
-    */
-    Input<ColorRenderTarget *> * colorRenderTargetInput(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the depth render target input at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The depth render target input at given index, 'null' if index is invalid
-    */
-    Input<DepthRenderTarget *> * depthRenderTargetInput(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the depth-stencil render target input at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The depth-stencil render target input at given index, 'null' if index is invalid
-    */
-    Input<DepthStencilRenderTarget *> * depthStencilRenderTargetInput(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the stencil render target input at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The stencil render target input at given index, 'null' if index is invalid
-    */
-    Input<StencilRenderTarget *> * stencilRenderTargetInput(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the color render target at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The color render target at given index, 'null' if index is invalid
-    */
-    ColorRenderTarget * colorRenderTarget(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the depth render target at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The depth render target at given index, 'null' if index is invalid
-    */
-    DepthRenderTarget * depthRenderTarget(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the depth-stencil render target at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The depth-stencil render target at given index, 'null' if index is invalid
-    */
-    DepthStencilRenderTarget * depthStencilRenderTarget(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the stencil render target at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The stencil render target at given index, 'null' if index is invalid
-    */
-    StencilRenderTarget * stencilRenderTarget(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the vector of all registered color render target outputs
+    *    Get all registered color render target outputs
     *
     *  @return
     *    The vector of color render target outputs
@@ -276,7 +184,7 @@ public:
 
     /**
     *  @brief
-    *    Get the vector of all registered depth render target outputs
+    *    Get all registered depth render target outputs
     *
     *  @return
     *    The vector of depth render target outputs
@@ -285,7 +193,7 @@ public:
 
     /**
     *  @brief
-    *    Get the vector of all registered depth-stencil render target outputs
+    *    Get all registered depth-stencil render target outputs
     *
     *  @return
     *    The vector of depth-stencil render target outputs
@@ -294,7 +202,7 @@ public:
 
     /**
     *  @brief
-    *    Get the vector of all registered stencil render target outputs
+    *    Get all registered stencil render target outputs
     *
     *  @return
     *    The vector of stencil render target outputs
@@ -303,130 +211,10 @@ public:
 
     /**
     *  @brief
-    *    Get the color render target output at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The color render target output at given index, 'null' if index is invalid
-    */
-    Output<ColorRenderTarget *> * colorRenderTargetOutput(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the depth render target output at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The depth render target output at given index, 'null' if index is invalid
-    */
-    Output<DepthRenderTarget *> * depthRenderTargetOutput(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the depth-stencil render target output at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The depth render target output at given index, 'null' if index is invalid
-    */
-    Output<DepthStencilRenderTarget *> * depthStencilRenderTargetOutput(size_t index) const;
-
-    /**
-    *  @brief
-    *    Get the stencil render target output at given index
-    *
-    *  @param[in] index
-    *    The index of the render target
-    *
-    *  @return
-    *    The stencil render target output at given index, 'null' if index is invalid
-    */
-    Output<StencilRenderTarget *> * stencilRenderTargetOutput(size_t index) const;
-
-    /**
-    *  @brief
-    *    Registers new color render target input
-    *
-    *  @param[in] input
-    *    New color render target input
-    */
-    void addRenderTargetInput(Input<ColorRenderTarget *> * input);
-
-    /**
-    *  @brief
-    *    Registers new depth render target input
-    *
-    *  @param[in] input
-    *    New depth render target input
-    */
-    void addRenderTargetInput(Input<DepthRenderTarget *> * input);
-
-    /**
-    *  @brief
-    *    Registers new depth-stencil render target input
-    *
-    *  @param[in] input
-    *    New depth-stencil render target input
-    */
-    void addRenderTargetInput(Input<DepthStencilRenderTarget *> * input);
-
-    /**
-    *  @brief
-    *    Registers new stencil render target input
-    *
-    *  @param[in] input
-    *    New stencil render target input
-    */
-    void addRenderTargetInput(Input<StencilRenderTarget *> * input);
-
-    /**
-    *  @brief
-    *    Registers new color render target output
-    *
-    *  @param[in] input
-    *    New render color target output
-    */
-    void addRenderTargetOutput(Output<ColorRenderTarget *> * output);
-
-    /**
-    *  @brief
-    *    Registers new depth render target output
-    *
-    *  @param[in] input
-    *    New render depth target output
-    */
-    void addRenderTargetOutput(Output<DepthRenderTarget *> * output);
-
-    /**
-    *  @brief
-    *    Registers new depth-stencil render target output
-    *
-    *  @param[in] input
-    *    New render depth-stencil target output
-    */
-    void addRenderTargetOutput(Output<DepthStencilRenderTarget *> * output);
-
-    /**
-    *  @brief
-    *    Registers new stencil render target output
-    *
-    *  @param[in] input
-    *    New render stencil target output
-    */
-    void addRenderTargetOutput(Output<StencilRenderTarget *> * output);
-
-    /**
-    *  @brief
-    *    Iterate over all pairs of color render target inputs and outputs and call the callback
+    *    Call function on each pair of color render target inputs and outputs
     *
     *  @param[in] callback
-    *    The callback
+    *    Callback function
     *  @param[in] includeIncompletePairs
     *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
     */
@@ -434,10 +222,10 @@ public:
 
     /**
     *  @brief
-    *    Iterate over all pairs of depth render target inputs and outputs and call the callback
+    *    Call function on each pair of depth render target inputs and outputs
     *
     *  @param[in] callback
-    *    The callback
+    *    Callback function
     *  @param[in] includeIncompletePairs
     *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
     */
@@ -445,10 +233,10 @@ public:
 
     /**
     *  @brief
-    *    Iterate over all pairs of depth-stencil render target inputs and outputs and call the callback
+    *    Call function on each pair of depth-stencil render target inputs and outputs
     *
     *  @param[in] callback
-    *    The callback
+    *    Callback function
     *  @param[in] includeIncompletePairs
     *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
     */
@@ -456,10 +244,10 @@ public:
 
     /**
     *  @brief
-    *    Iterate over all pairs of stencil render target inputs and outputs and call the callback
+    *    Call function on each pair of stencil render target inputs and outputs
     *
     *  @param[in] callback
-    *    The callback
+    *    Callback function
     *  @param[in] includeIncompletePairs
     *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
     */
@@ -482,6 +270,26 @@ public:
     *  @see Stage::onContextDeinit()
     */
     void onContextDeinit();
+
+
+protected:
+    /**
+    *  @brief
+    *    Register render target input
+    *
+    *  @param[in] input
+    *    Render target input (must NOT be null!)
+    */
+    void registerRenderTargetInput(AbstractSlot * input);
+
+    /**
+    *  @brief
+    *    Register render target output
+    *
+    *  @param[in] output
+    *    Render target output (must NOT be null!)
+    */
+    void registerRenderTargetOutput(AbstractSlot * output);
 
 
 protected:
