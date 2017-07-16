@@ -39,6 +39,7 @@ class GLOPERATE_API ClearStage : public Stage
 {
     friend class ClearValueAdder;
 
+
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         ClearStage, gloperate::Stage
@@ -62,7 +63,7 @@ public:
     RenderInterface renderInterface; ///< Renderinterface to manage render targets inputs and outputs
 
     // Inputs
-    Input<bool>     clear;           ///< Flag if buffers should get cleared
+    Input<bool> clear; ///< Flag if buffers should get cleared
 
 
 public:
@@ -99,7 +100,7 @@ protected:
 
 protected:
     bool                                             m_reprocessInputs; ///< Recreate input helper structure upon next process
-    std::vector<std::unique_ptr<AbstractClearInput>> m_clearInputs;     ///< clear values of differing types
+    std::vector<std::unique_ptr<AbstractClearInput>> m_clearInputs;     ///< Clear values of differing types
 };
 
 
