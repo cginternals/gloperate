@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppassist/typelist/TypeList.h>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>
@@ -22,6 +24,10 @@ namespace gloperate
 {
 
 
+class AbstractClearInput;
+class ClearValueAdder;
+
+
 /**
 *  @brief
 *    Stage that clears the screen with a background color
@@ -31,6 +37,9 @@ namespace gloperate
 */
 class GLOPERATE_API ClearStage : public Stage
 {
+    friend class ClearValueAdder;
+
+
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         ClearStage, gloperate::Stage
@@ -42,13 +51,19 @@ public:
       , "v1.0.0"
     )
 
+    /**
+    *  @brief
+    *    The list of supported types for framebuffer clearing
+    */
+    using SupportedClearValueTypes = cppassist::TypeList<int, float, std::pair<float, int>, Color>;
+
 
 public:
     // Interfaces
     RenderInterface renderInterface; ///< Renderinterface to manage render targets inputs and outputs
 
     // Inputs
-    Input<bool>     clear;           ///< Flag if buffers should get cleared
+    Input<bool> clear; ///< Flag if buffers should get cleared
 
 
 public:
@@ -76,12 +91,16 @@ protected:
     virtual void onContextInit(AbstractGLContext * content) override;
     virtual void onContextDeinit(AbstractGLContext * content) override;
 
+    /**
+    *  @brief
+    *    Reprocess inputs and build up input helper structure for easy clear value and render target association
+    */
+    void reprocessInputs();
+
 
 protected:
-    std::vector<Input<Color> *>                 m_colorValueInputs;        ///< Color clear values
-    std::vector<Input<float> *>                 m_depthValueInputs;        ///< Depth clear values
-    std::vector<Input<int> *>                   m_stencilValueInputs;      ///< Stencil clear values
-    std::vector<Input<std::pair<float, int>> *> m_depthStencilValueInputs; ///< Depth-stencil clear values
+    bool                                             m_reprocessInputs; ///< Recreate input helper structure upon next process
+    std::vector<std::unique_ptr<AbstractClearInput>> m_clearInputs;     ///< Clear values of differing types
 };
 
 
