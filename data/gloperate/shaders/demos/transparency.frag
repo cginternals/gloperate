@@ -7,9 +7,9 @@ const float alpha = 0.35;
 
 
 uniform sampler2D transparencyKernel;
-uniform sampler3D noiseKernel;
-uniform vec3 color;
-uniform float randVal;
+uniform sampler2DArray noiseKernel;
+uniform vec4 color;
+uniform int frameCounter;
 
 
 in vec2 v_localPos;
@@ -25,14 +25,15 @@ void main()
         discard;
     }
 
-    float rand = texture(noiseKernel, vec3(v_localPos * 0.5 + 0.5, randVal)).r;
+    float rand = texture(noiseKernel, vec3(v_localPos * 0.5 + 0.5, frameCounter)).r;
 
+    float alpha = color.a;
     ivec2 transpSize = textureSize(transparencyKernel, 0);
-    ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize);
-    bool opaque = texelFetch(transparencyKernel, transpIndex, 0).r > 0.5;
+    ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize) + ivec2(frameCounter, 0);
+    bool opaque = texelFetch(transparencyKernel, transpIndex % transpSize, 0).r > 0.5;
 
     if (!opaque)
         discard;
 
-    fragColor = vec4(color, 1.0);
+    fragColor = vec4(color.rgb, 1.0);
 }

@@ -101,7 +101,7 @@ void TransparentCirclesStage::onProcess()
         (*noiseKernel)->bindActive(1);
 
     // Prepare random value
-    m_program->setUniform("randVal", glm::linearRand(0.0f, 1.0f));
+    m_program->setUniform("frameCounter", *canvasInterface.frameCounter);
 
     // Prepare model matrix
     auto modelMatrix = glm::mat4(1.0f);
@@ -113,7 +113,7 @@ void TransparentCirclesStage::onProcess()
     // Red
     m_program->setUniform("modelViewProjectionMatrix", modelMatrix);
     m_program->setUniform("z", 0.0f);
-    m_program->setUniform("color", glm::vec3(1,0,0));
+    m_program->setUniform("color", glm::vec4(1.0f, 0.0f, 0.0f, 0.3f));
 
     m_program->use();
     m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
@@ -126,7 +126,7 @@ void TransparentCirclesStage::onProcess()
     // Green
     m_program->setUniform("modelViewProjectionMatrix", modelMatrix);
     m_program->setUniform("z", 0.1f);
-    m_program->setUniform("color", glm::vec3(0,1,0));
+    m_program->setUniform("color", glm::vec4(0.0f, 1.0f, 0.0f, 0.5f));
 
     m_program->use();
     m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
@@ -139,7 +139,7 @@ void TransparentCirclesStage::onProcess()
     // Blue
     m_program->setUniform("modelViewProjectionMatrix", modelMatrix);
     m_program->setUniform("z", 0.2f);
-    m_program->setUniform("color", glm::vec3(0,0,1));
+    m_program->setUniform("color", glm::vec4(0.0f, 0.0f, 1.0f, 0.7f));
 
     m_program->use();
     m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);

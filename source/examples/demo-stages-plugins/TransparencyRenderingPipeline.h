@@ -9,6 +9,11 @@
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
+namespace gloperate {
+    class TextureRenderTargetStage;
+}
+
+
 namespace gloperate_glkernel {
     class TransparencyKernelStage;
     class NoiseKernelStage;
@@ -64,5 +69,6 @@ protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::TransparencyKernelStage> m_transparencyKernelStage;  ///< Stage generating transparency kernel
     std::unique_ptr<gloperate_glkernel::NoiseKernelStage>        m_noiseKernelStage;         ///< Stage generating random noise
+    std::unique_ptr<gloperate::TextureRenderTargetStage>         m_depthBufferStage;         ///< Stage creating depth buffer for rendering
     std::unique_ptr<TransparentCirclesStage>                     m_transparencyRenderStage;  ///< Rendering stage
 };
