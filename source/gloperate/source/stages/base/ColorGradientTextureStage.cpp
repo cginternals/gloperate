@@ -37,27 +37,17 @@ void ColorGradientTextureStage::onContextDeinit(AbstractGLContext *)
 
 void ColorGradientTextureStage::onProcess()
 {
-    std::vector<ColorGradientList *> additionalGradients;
+    std::vector<ColorGradientList *> gradientLists;
 
     for (auto input : inputs())
     {
-        // Only consider dynamic inputs
-        if (!input->isDynamic())
-            continue;
-
         if (input->type() == typeid(ColorGradientList *))
         {
-            additionalGradients.push_back(static_cast<Input<ColorGradientList *> *>(input)->value());
+            gradientLists.push_back(static_cast<Input<ColorGradientList *> *>(input)->value());
         }
     }
 
-    if (additionalGradients.size() == 0)
-    {
-        // Generate texture
-        m_gradientTexture = gradients->generateTexture(*textureWidth);
-    } else {
-        m_gradientTexture = gradients->generateCompositeTexture(*textureWidth, additionalGradients);
-    }
+    m_gradientTexture = ColorGradientList::generateTexture(*textureWidth, gradientLists);
 
     // Update output
     this->texture.setValue(m_gradientTexture.get());
