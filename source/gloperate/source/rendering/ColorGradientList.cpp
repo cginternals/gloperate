@@ -17,6 +17,30 @@ namespace gloperate
 {
 
 
+std::unique_ptr<globjects::Texture> ColorGradientList::generateTexture(const std::vector<ColorGradientList *> & colorGradientLists, size_t numPixels)
+{
+    auto texture = globjects::Texture::createDefault();
+
+    size_t numberOfGradients = 0;
+    for (auto list : colorGradientLists)
+    {
+        numberOfGradients += list->size();
+    }
+    size_t gradientSize = numPixels * sizeof(std::uint32_t);
+
+    std::vector<unsigned char> data(numberOfGradients * gradientSize);
+    size_t offset = 0;
+    for (auto list : colorGradientLists)
+    {
+        list->appendPixelData(numPixels, &(data[offset * gradientSize]));
+        offset += list->size();
+    }
+
+    texture->image2D(0, gl::GL_RGBA, numPixels, numberOfGradients, 0, gl::GL_BGRA, gl::GL_UNSIGNED_BYTE, data.data());
+
+    return texture;
+}
+
 ColorGradientList::ColorGradientList()
 {
 }
@@ -147,30 +171,6 @@ std::unique_ptr<globjects::Texture> ColorGradientList::generateTexture(size_t nu
     appendPixelData(numPixels, &(data[0]));
 
     texture->image2D(0, gl::GL_RGBA, numPixels, m_gradients.size(), 0, gl::GL_BGRA, gl::GL_UNSIGNED_BYTE, data.data());
-
-    return texture;
-}
-
-std::unique_ptr<globjects::Texture> ColorGradientList::generateTexture(size_t numPixels, const std::vector<ColorGradientList *> & colorGradientLists)
-{
-    auto texture = globjects::Texture::createDefault();
-
-    size_t numberOfGradients = 0;
-    for (auto list : colorGradientLists)
-    {
-        numberOfGradients += list->size();
-    }
-    size_t gradientSize = numPixels * sizeof(std::uint32_t);
-
-    std::vector<unsigned char> data(numberOfGradients * gradientSize);
-    size_t offset = 0;
-    for (auto list : colorGradientLists)
-    {
-        list->appendPixelData(numPixels, &(data[offset * gradientSize]));
-        offset += list->size();
-    }
-
-    texture->image2D(0, gl::GL_RGBA, numPixels, numberOfGradients, 0, gl::GL_BGRA, gl::GL_UNSIGNED_BYTE, data.data());
 
     return texture;
 }

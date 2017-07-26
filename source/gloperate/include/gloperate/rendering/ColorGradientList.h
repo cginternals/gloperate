@@ -41,15 +41,16 @@ public:
     *  @brief
     *    Generate a texture from multiple ColorGradientLists
     *
-    *  @param[in] numPixels
-    *    Number of pixels for each gradient
     *  @param[in] colorGradientLists
     *    All color gradient lists
+    *  @param[in] numPixels
+    *    Number of pixels for each gradient
     *
     *  @return
     *    Texture containing all gradients (dimensions: numPixels x sum of all list sizes)
     */
-    static std::unique_ptr<globjects::Texture> generateTexture(size_t numPixels, const std::vector<ColorGradientList *> & colorGradientLists);
+    static std::unique_ptr<globjects::Texture> generateTexture(const std::vector<ColorGradientList *> & colorGradientLists, size_t numPixels);
+
 
 public:
     /**
