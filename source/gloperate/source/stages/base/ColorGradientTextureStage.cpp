@@ -47,7 +47,7 @@ void ColorGradientTextureStage::onProcess()
         }
     }
 
-    m_gradientTexture = ColorGradientList::generateTexture(*textureWidth, gradientLists);
+    m_gradientTexture = ColorGradientList::generateTexture(gradientLists, *textureWidth);
 
     // Update output
     this->texture.setValue(m_gradientTexture.get());
