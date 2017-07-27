@@ -70,6 +70,8 @@ set(headers
 )
 
 set(sources
+    ${source_path}/plugin.cpp
+
     ${source_path}/AntialiasableTriangleStage.cpp
     ${source_path}/AntialiasingRenderingPipeline.cpp
     ${source_path}/AssimpMeshLoader.cpp

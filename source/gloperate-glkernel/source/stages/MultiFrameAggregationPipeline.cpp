@@ -91,6 +91,16 @@ void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
     auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
     (*slotViewport) << canvasInterface.viewport;
 
+    // Promote timeDelta, if applicable
+    auto slotTimeDelta = m_renderStage->findInput<float>([](Input<float>* input) { return input->name() == "timeDelta"; });
+    if (slotTimeDelta)
+        (*slotTimeDelta) << canvasInterface.timeDelta;
+
+    // Inject internal framecount into render stage
+    auto slotFrameCount = m_renderStage->findInput<int>([](Input<int>* input) { return input->name() == "frameCounter"; });
+    if (slotFrameCount)
+        (*slotFrameCount) << m_controlStage->currentFrame;
+
     // Update render stage input render targets
     m_renderStage->forAllInputs<gloperate::ColorRenderTarget *>([this](Input<gloperate::ColorRenderTarget *> * input) {
         (*input) << m_colorRenderTargetStage->colorRenderTarget;
