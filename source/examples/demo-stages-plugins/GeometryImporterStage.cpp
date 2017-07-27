@@ -27,5 +27,6 @@ void GeometryImporterStage::onProcess()
     if (loaded)
     {
         m_geometry = std::move(loaded);
+        geometry = m_geometry.get();
     }
 }

@@ -11,7 +11,7 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/TextureRenderTargetStage.h>
-#include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <gloperate/rendering/Quad.h>
 #include <gloperate/rendering/Camera.h>
 #include <gloperate/stages/base/ClearStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
@@ -41,8 +41,6 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 , m_ssaoKernelStage(cppassist::make_unique<gloperate_glkernel::HemisphereDistributionKernelStage>(environment))
 , m_noiseStage(cppassist::make_unique<gloperate_glkernel::NoiseKernelStage>(environment))
 , m_transparencyKernelStage(cppassist::make_unique<gloperate_glkernel::TransparencyKernelStage>(environment))
-//, m_renderingStage(cppassist::make_unique<MultiFrameSceneRenderingStage>(environment))
-//, m_postprocessingStage(cppassist::make_unique<MultiFramePostprocessingStage>(environment))
 , m_renderGeometryStage(cppassist::make_unique<GeometryImporterStage>(environment))
 , m_renderProgramStage(cppassist::make_unique<gloperate::ProgramStage>(environment, "RenderProgramStage"))
 , m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "RenderPassStage"))
@@ -90,20 +88,6 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     addStage(m_transparencyKernelStage.get());
     m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
 
-    /*
-    addStage(m_renderingStage.get());
-    m_renderingStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
-    m_renderingStage->canvasInterface.viewport << canvasInterface.viewport;
-    m_renderingStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
-    m_renderingStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
-    m_renderingStage->createInput("Color") << m_colorTextureStage->colorRenderTarget;
-    m_renderingStage->createInput("Depth") << m_depthTextureStage->depthRenderTarget;
-    m_renderingStage->createInput("Normal") << m_normalTextureStage->colorRenderTarget;
-    m_renderingStage->subpixelShiftKernel << m_subpixelStage->kernel;
-    m_renderingStage->dofShiftKernel << m_dofShiftStage->kernel;
-    m_renderingStage->transparencyKernelTexture << m_transparencyKernelStage->texture;
-    */
-
     addStage(m_renderGeometryStage.get());
     m_renderGeometryStage->filePath = dataPath + "/gloperate/meshes/demos/multi_frame_demo.obj";
 
@@ -124,28 +108,20 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     addStage(m_renderClearStage.get());
     m_renderClearStage->createInput("Color") << m_colorTextureStage->colorRenderTarget;
     m_renderClearStage->createInput("ColorValue") = gloperate::Color(0.0f, 0.0f, 0.0f, 1.0f);
+    m_renderClearStage->createInput("Normal") << m_normalTextureStage->colorRenderTarget;
+    m_renderClearStage->createInput("NormalValue") = gloperate::Color(0.0f, 0.0f, 0.0f);
+    m_renderClearStage->createInput("Depth") << m_depthTextureStage->depthRenderTarget;
+    m_renderClearStage->createInput("DepthValue") = 1.0f;
     m_renderClearStage->renderInterface.viewport << canvasInterface.viewport;
+    m_renderClearStage->createInput("ClearTrigger") << canvasInterface.timeDelta;
 
     addStage(m_renderRasterizationStage.get());
     m_renderRasterizationStage->createInput("Color") << *m_renderClearStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+    m_renderRasterizationStage->createInput("Normal") << *m_renderClearStage->createOutput<gloperate::ColorRenderTarget *>("NormalOut");
+    m_renderRasterizationStage->createInput("Depth") << *m_renderClearStage->createOutput<gloperate::DepthRenderTarget *>("DepthOut");
     m_renderRasterizationStage->renderInterface.viewport << canvasInterface.viewport;
     m_renderRasterizationStage->drawable << m_renderPassStage->renderPass;
-
-    /*
-    addStage(m_postprocessingStage.get());
-    m_postprocessingStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
-    m_postprocessingStage->canvasInterface.viewport << canvasInterface.viewport;
-    m_postprocessingStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
-    m_postprocessingStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
-    m_postprocessingStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
-    m_postprocessingStage->colorTexture << m_colorTextureExtractionStage->texture;
-    m_postprocessingStage->normalTexture << m_normalTextureExtractionStage->texture;
-    m_postprocessingStage->depthTexture << m_depthTextureExtractionStage->texture;
-    m_postprocessingStage->ssaoKernel << m_ssaoKernelStage->texture;
-    m_postprocessingStage->ssaoNoise << m_noiseStage->texture;
-    m_postprocessingStage->projectionMatrix << m_renderingStage->projectionMatrix;
-    m_postprocessingStage->normalMatrix << m_renderingStage->normalMatrix;
-    */
+    m_renderRasterizationStage->createInput("timeDelta") << canvasInterface.timeDelta;
 
     addStage(m_postprocessingProgramStage.get());
     *m_postprocessingProgramStage->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
@@ -166,16 +142,17 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     //m_postprocessingPassStage->createInput("normalMatrix") will be set in onContextInit
 
     addStage(m_postprocessingClearStage.get());
-    m_postprocessingClearStage->createInput("Color") << *m_renderRasterizationStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+    m_postprocessingClearStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
     m_postprocessingClearStage->createInput("ColorValue") << canvasInterface.backgroundColor;
     m_postprocessingClearStage->renderInterface.viewport << canvasInterface.viewport;
+    m_postprocessingClearStage->createInput("ClearTrigger") << *m_renderRasterizationStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 
     addStage(m_postprocessingRasterizationStage.get());
     m_postprocessingRasterizationStage->createInput("Color") << *m_postprocessingClearStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
     m_postprocessingRasterizationStage->renderInterface.viewport << canvasInterface.viewport;
     m_postprocessingRasterizationStage->drawable << m_postprocessingPassStage->renderPass;
+    m_postprocessingRasterizationStage->createInput("timeDelta") << canvasInterface.timeDelta;
 
-    //renderInterface.rendered << m_postprocessingStage->renderInterface.rendered;
     *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_postprocessingRasterizationStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 }
 
@@ -190,10 +167,10 @@ void MultiFrameRenderingPipeline::onContextInit(gloperate::AbstractGLContext * c
 
     m_camera = cppassist::make_unique<gloperate::Camera>(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     m_ssaoNamedString = globjects::NamedString::create("/gloperate/shaders/lighting/ssao.glsl", new globjects::File(gloperate::dataPath() + "/gloperate/shaders/lighting/ssao.glsl"));
-    m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
+    m_quad = cppassist::make_unique<gloperate::Quad>();
 
     m_renderPassStage->camera = m_camera.get();
-    m_postprocessingPassStage->drawable = m_screenAlignedQuad.get();
+    m_postprocessingPassStage->drawable = m_quad.get();
     m_postprocessingPassStage->camera = m_camera.get(); // provide necessary matrices for postprocessing calculations
 
     Pipeline::onContextInit(context);
@@ -203,7 +180,7 @@ void MultiFrameRenderingPipeline::onContextDeinit(gloperate::AbstractGLContext *
 {
     Pipeline::onContextDeinit(context);
 
-    m_screenAlignedQuad.reset();
+    m_quad.reset();
     m_ssaoNamedString.reset();
     m_camera.reset();
 }
