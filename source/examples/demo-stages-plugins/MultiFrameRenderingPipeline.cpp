@@ -10,10 +10,9 @@
 #include <globjects/base/File.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/stages/base/TextureRenderTargetStage.h>
 #include <gloperate/rendering/ScreenAlignedQuad.h>
 #include <gloperate/rendering/Camera.h>
-#include <gloperate/stages/base/FramebufferStage.h>
-#include <gloperate/stages/base/TextureStage.h>
 #include <gloperate/stages/base/ClearStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
@@ -32,12 +31,11 @@ CPPEXPOSE_COMPONENT(MultiFrameRenderingPipeline, gloperate::Stage)
 
 MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 1)
-, m_colorTextureStage(cppassist::make_unique<gloperate::TextureStage>(environment, "ColorTextureStage"))
-, m_depthTextureStage(cppassist::make_unique<gloperate::TextureStage>(environment, "DepthTextureStage"))
-, m_normalTextureStage(cppassist::make_unique<gloperate::TextureStage>(environment, "NormalTextureStage"))
-, m_fboStage(cppassist::make_unique<gloperate::FramebufferStage>(environment))
+, m_colorTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorTextureStage"))
+, m_depthTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "DepthTextureStage"))
+, m_normalTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "NormalTextureStage"))
 , m_subpixelStage(cppassist::make_unique<gloperate_glkernel::DiscDistributionKernelStage>(environment))
 , m_dofShiftStage(cppassist::make_unique<gloperate_glkernel::DiscDistributionKernelStage>(environment))
 , m_ssaoKernelStage(cppassist::make_unique<gloperate_glkernel::HemisphereDistributionKernelStage>(environment))
@@ -61,24 +59,19 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_colorTextureStage->format.setValue(gl::GL_RGBA);
     m_colorTextureStage->type.setValue(gl::GL_UNSIGNED_BYTE);
     m_colorTextureStage->internalFormat.setValue(gl::GL_RGBA8);
-    m_colorTextureStage->size << renderInterface.deviceViewport;
+    m_colorTextureStage->size << canvasInterface.viewport;
 
     addStage(m_depthTextureStage.get());
     m_depthTextureStage->format.setValue(gl::GL_DEPTH_COMPONENT);
     m_depthTextureStage->type.setValue(gl::GL_UNSIGNED_BYTE);
     m_depthTextureStage->internalFormat.setValue(gl::GL_DEPTH_COMPONENT);
-    m_depthTextureStage->size << renderInterface.deviceViewport;
+    m_depthTextureStage->size << canvasInterface.viewport;
 
     addStage(m_normalTextureStage.get());
     m_normalTextureStage->format.setValue(gl::GL_RGB);
     m_normalTextureStage->type.setValue(gl::GL_UNSIGNED_BYTE);
     m_normalTextureStage->internalFormat.setValue(gl::GL_RGB8);
-    m_normalTextureStage->size << renderInterface.deviceViewport;
-
-    addStage(m_fboStage.get());
-    m_fboStage->colorTexture << m_colorTextureStage->renderTarget;
-    m_fboStage->depthTexture << m_depthTextureStage->renderTarget;
-    *(m_fboStage->createInput<gloperate::RenderTarget *>("NormalTexture")) << m_normalTextureStage->renderTarget;
+    m_normalTextureStage->size << canvasInterface.viewport;
 
     addStage(m_subpixelStage.get());
     m_subpixelStage->kernelSize << multiFrameCount;
@@ -99,12 +92,13 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 
     /*
     addStage(m_renderingStage.get());
-    m_renderingStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_renderingStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_renderingStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
-    m_renderingStage->renderInterface.frameCounter << renderInterface.frameCounter;
-    m_renderingStage->renderInterface.timeDelta << renderInterface.timeDelta;
-    m_renderingStage->renderInterface.targetFBO << m_fboStage->fbo;
+    m_renderingStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
+    m_renderingStage->canvasInterface.viewport << canvasInterface.viewport;
+    m_renderingStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
+    m_renderingStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
+    m_renderingStage->createInput("Color") << m_colorTextureStage->colorRenderTarget;
+    m_renderingStage->createInput("Depth") << m_depthTextureStage->depthRenderTarget;
+    m_renderingStage->createInput("Normal") << m_normalTextureStage->colorRenderTarget;
     m_renderingStage->subpixelShiftKernel << m_subpixelStage->kernel;
     m_renderingStage->dofShiftKernel << m_dofShiftStage->kernel;
     m_renderingStage->transparencyKernelTexture << m_transparencyKernelStage->texture;
@@ -121,38 +115,36 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_renderPassStage->drawable << m_renderGeometryStage->geometry;
     m_renderPassStage->program << m_renderProgramStage->program;
     //m_renderPassStage->camera is set in onContextInit
-    m_renderPassStage->createInput("currentFrame") << renderInterface.frameCounter;
+    m_renderPassStage->createInput("currentFrame") << canvasInterface.frameCounter;
     m_renderPassStage->createInput("dofShiftKernel") << m_dofShiftStage->texture;
     m_renderPassStage->createInput("subpixelShiftKernel") << m_subpixelStage->texture;
     m_renderPassStage->createInput("transparencyKernel") << m_transparencyKernelStage->texture;
-    m_renderPassStage->createInput("viewport") << renderInterface.deviceViewport;
+    m_renderPassStage->createInput("viewport") << canvasInterface.viewport;
 
     addStage(m_renderClearStage.get());
-    m_renderClearStage->renderInterface.targetFBO << m_fboStage->fbo;
-    m_renderClearStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_renderClearStage->renderInterface.backgroundColor = gloperate::Color(0.0f, 0.0f, 0.0f, 1.0f);
+    m_renderClearStage->createInput("Color") << m_colorTextureStage->colorRenderTarget;
+    m_renderClearStage->createInput("ColorValue") = gloperate::Color(0.0f, 0.0f, 0.0f, 1.0f);
+    m_renderClearStage->renderInterface.viewport << canvasInterface.viewport;
 
     addStage(m_renderRasterizationStage.get());
-    m_renderRasterizationStage->renderInterface.targetFBO << m_renderClearStage->fboOut;
-    m_renderRasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_renderRasterizationStage->createInput("Color") << *m_renderClearStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+    m_renderRasterizationStage->renderInterface.viewport << canvasInterface.viewport;
     m_renderRasterizationStage->drawable << m_renderPassStage->renderPass;
 
     /*
     addStage(m_postprocessingStage.get());
-    m_postprocessingStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_postprocessingStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_postprocessingStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
-    m_postprocessingStage->renderInterface.frameCounter << renderInterface.frameCounter;
-    m_postprocessingStage->renderInterface.targetFBO << renderInterface.targetFBO;
-    m_postprocessingStage->renderInterface.timeDelta << renderInterface.timeDelta;
-    m_postprocessingStage->colorTexture << m_colorTextureStage->texture;
-    m_postprocessingStage->normalTexture << m_normalTextureStage->texture;
-    m_postprocessingStage->depthTexture << m_depthTextureStage->texture;
+    m_postprocessingStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
+    m_postprocessingStage->canvasInterface.viewport << canvasInterface.viewport;
+    m_postprocessingStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
+    m_postprocessingStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
+    m_postprocessingStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    m_postprocessingStage->colorTexture << m_colorTextureExtractionStage->texture;
+    m_postprocessingStage->normalTexture << m_normalTextureExtractionStage->texture;
+    m_postprocessingStage->depthTexture << m_depthTextureExtractionStage->texture;
     m_postprocessingStage->ssaoKernel << m_ssaoKernelStage->texture;
     m_postprocessingStage->ssaoNoise << m_noiseStage->texture;
     m_postprocessingStage->projectionMatrix << m_renderingStage->projectionMatrix;
     m_postprocessingStage->normalMatrix << m_renderingStage->normalMatrix;
-    m_postprocessingStage->sceneRendered << m_renderingStage->renderInterface.rendered;
     */
 
     addStage(m_postprocessingProgramStage.get());
@@ -163,7 +155,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     //m_postprocessingPassStage->drawable will be set in onContextInit
     m_postprocessingPassStage->program << m_postprocessingProgramStage->program;
     m_postprocessingPassStage->depthTest = false;
-    m_postprocessingPassStage->createInput("currentFrame") << renderInterface.frameCounter;
+    m_postprocessingPassStage->createInput("currentFrame") << canvasInterface.frameCounter;
     m_postprocessingPassStage->createInput("colorTexture") << m_colorTextureStage->texture;
     m_postprocessingPassStage->createInput("normalTexture") << m_normalTextureStage->texture;
     m_postprocessingPassStage->createInput("depthTexture") << m_depthTextureStage->texture;
@@ -174,17 +166,17 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     //m_postprocessingPassStage->createInput("normalMatrix") will be set in onContextInit
 
     addStage(m_postprocessingClearStage.get());
-    m_postprocessingClearStage->renderInterface.targetFBO << m_renderRasterizationStage->fboOut;
-    m_postprocessingClearStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_postprocessingClearStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
+    m_postprocessingClearStage->createInput("Color") << *m_renderRasterizationStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+    m_postprocessingClearStage->createInput("ColorValue") << canvasInterface.backgroundColor;
+    m_postprocessingClearStage->renderInterface.viewport << canvasInterface.viewport;
 
     addStage(m_postprocessingRasterizationStage.get());
-    m_postprocessingRasterizationStage->renderInterface.targetFBO << m_postprocessingClearStage->fboOut;
-    m_postprocessingRasterizationStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
+    m_postprocessingRasterizationStage->createInput("Color") << *m_postprocessingClearStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+    m_postprocessingRasterizationStage->renderInterface.viewport << canvasInterface.viewport;
     m_postprocessingRasterizationStage->drawable << m_postprocessingPassStage->renderPass;
 
     //renderInterface.rendered << m_postprocessingStage->renderInterface.rendered;
-    renderInterface.rendered << m_postprocessingRasterizationStage->renderInterface.rendered;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_postprocessingRasterizationStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 }
 
 MultiFrameRenderingPipeline::~MultiFrameRenderingPipeline()

@@ -93,7 +93,6 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
     auto ratio = window->devicePixelRatio();
     m_canvas->setViewport(
         glm::vec4(0, 0, m_renderItem->width() * ratio, m_renderItem->height() * ratio)
-      , glm::vec4(0, 0, m_renderItem->width(),         m_renderItem->height())
     );
 
     // This function is called by Qt. We must not reset the context here because

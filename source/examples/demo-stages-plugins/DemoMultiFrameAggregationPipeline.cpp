@@ -11,27 +11,27 @@ CPPEXPOSE_COMPONENT(DemoMultiFrameAggregationPipeline, gloperate::Stage)
 
 DemoMultiFrameAggregationPipeline::DemoMultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 256)
-, m_aggregationPipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
+, m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
 , m_renderingPipeline(cppassist::make_unique<MultiFrameRenderingPipeline>(environment))
 {
-    addStage(m_aggregationPipeline.get());
+    addStage(m_multiFramePipeline.get());
 
-    m_aggregationPipeline->setFrameRenderer(m_renderingPipeline->renderInterface);
+    m_multiFramePipeline->addStage(m_renderingPipeline.get());
     m_renderingPipeline->multiFrameCount << multiFrameCount;
 
     // Inputs
-    m_aggregationPipeline->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_aggregationPipeline->renderInterface.virtualViewport << renderInterface.virtualViewport;
-    m_aggregationPipeline->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_aggregationPipeline->renderInterface.frameCounter << renderInterface.frameCounter;
-    m_aggregationPipeline->renderInterface.timeDelta << renderInterface.timeDelta;
-    m_aggregationPipeline->renderInterface.targetFBO << renderInterface.targetFBO;
-    m_aggregationPipeline->multiFrameCount << multiFrameCount;
+    *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
+
+    m_multiFramePipeline->canvasInterface.viewport << canvasInterface.viewport;
+    m_multiFramePipeline->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
+    m_multiFramePipeline->canvasInterface.frameCounter << canvasInterface.frameCounter;
+    m_multiFramePipeline->canvasInterface.timeDelta << canvasInterface.timeDelta;
+    m_multiFramePipeline->multiFrameCount << multiFrameCount;
 
     // Outputs
-    renderInterface.rendered << m_aggregationPipeline->renderInterface.rendered;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_multiFramePipeline->canvasInterface.colorRenderTargetOutput(0);
 }
 
 DemoMultiFrameAggregationPipeline::~DemoMultiFrameAggregationPipeline()

@@ -76,6 +76,7 @@ set(headers
     ${include_path}/pipeline/Stage.inl
     ${include_path}/pipeline/Pipeline.h
     ${include_path}/pipeline/AbstractSlot.h
+    ${include_path}/pipeline/AbstractSlot.inl
     ${include_path}/pipeline/Slot.h
     ${include_path}/pipeline/Slot.inl
     ${include_path}/pipeline/Input.h
@@ -84,6 +85,7 @@ set(headers
     ${include_path}/pipeline/Output.inl
 
     ${include_path}/rendering/AbstractDrawable.h
+    ${include_path}/rendering/AttachmentType.h
     ${include_path}/rendering/Camera.h
     ${include_path}/rendering/CameraUtils.h
     ${include_path}/rendering/Drawable.h
@@ -92,7 +94,11 @@ set(headers
     ${include_path}/rendering/RenderPass.h
     ${include_path}/rendering/LightType.h
     ${include_path}/rendering/Light.h
-    ${include_path}/rendering/RenderTarget.h
+    ${include_path}/rendering/AbstractRenderTarget.h
+    ${include_path}/rendering/ColorRenderTarget.h
+    ${include_path}/rendering/DepthRenderTarget.h
+    ${include_path}/rendering/DepthStencilRenderTarget.h
+    ${include_path}/rendering/StencilRenderTarget.h
     ${include_path}/rendering/RenderTargetType.h
     ${include_path}/rendering/TransparencyMasksGenerator.h
     ${include_path}/rendering/ScreenAlignedQuad.h
@@ -115,9 +121,11 @@ set(headers
     ${include_path}/rendering/ColorGradientList.inl
 
     ${include_path}/stages/interfaces/RenderInterface.h
+    ${include_path}/stages/interfaces/CanvasInterface.h
+    ${include_path}/stages/base/FloatSelectionStage.h
     ${include_path}/stages/base/BasicFramebufferStage.h
-    ${include_path}/stages/base/FramebufferStage.h
-    ${include_path}/stages/base/TextureStage.h
+    ${include_path}/stages/base/TextureRenderTargetStage.h
+    ${include_path}/stages/base/RenderbufferRenderTargetStage.h
     ${include_path}/stages/base/TextureLoadStage.h
     ${include_path}/stages/base/BlitStage.h
     ${include_path}/stages/base/ColorGradientStage.h
@@ -131,6 +139,7 @@ set(headers
     ${include_path}/stages/base/ShapeStage.h
     ${include_path}/stages/base/TransformStage.h
     ${include_path}/stages/base/TimerStage.h
+    ${include_path}/stages/base/TextureFromRenderTargetExtractionStage.h
     ${include_path}/stages/navigation/TrackballStage.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
@@ -190,7 +199,11 @@ set(sources
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/NoiseTexture.cpp
     ${source_path}/rendering/RenderPass.cpp
-    ${source_path}/rendering/RenderTarget.cpp
+    ${source_path}/rendering/AbstractRenderTarget.cpp
+    ${source_path}/rendering/ColorRenderTarget.cpp
+    ${source_path}/rendering/DepthRenderTarget.cpp
+    ${source_path}/rendering/DepthStencilRenderTarget.cpp
+    ${source_path}/rendering/StencilRenderTarget.cpp
     ${source_path}/rendering/TransparencyMasksGenerator.cpp
     ${source_path}/rendering/ScreenAlignedQuad.cpp
     ${source_path}/rendering/ScreenAlignedTriangle.cpp
@@ -208,6 +221,8 @@ set(sources
     ${source_path}/rendering/ColorGradientList.cpp
 
     ${source_path}/stages/interfaces/RenderInterface.cpp
+    ${source_path}/stages/interfaces/CanvasInterface.cpp
+    ${source_path}/stages/base/FloatSelectionStage.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
     ${source_path}/stages/base/ColorGradientStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
@@ -217,13 +232,14 @@ set(sources
     ${source_path}/stages/base/RasterizationStage.cpp
     ${source_path}/stages/base/ClearStage.cpp
     ${source_path}/stages/base/ProgramStage.cpp
-    ${source_path}/stages/base/FramebufferStage.cpp
-    ${source_path}/stages/base/TextureStage.cpp
+    ${source_path}/stages/base/TextureRenderTargetStage.cpp
+    ${source_path}/stages/base/RenderbufferRenderTargetStage.cpp
     ${source_path}/stages/base/TextureLoadStage.cpp
     ${source_path}/stages/base/BlitStage.cpp
     ${source_path}/stages/base/ShapeStage.cpp
     ${source_path}/stages/base/TransformStage.cpp
     ${source_path}/stages/base/TimerStage.cpp
+    ${source_path}/stages/base/TextureFromRenderTargetExtractionStage.cpp
     ${source_path}/stages/navigation/TrackballStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp

@@ -38,7 +38,7 @@ CPPEXPOSE_COMPONENT(MultiFramePostprocessingStage, gloperate::Stage)
 
 MultiFramePostprocessingStage::MultiFramePostprocessingStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
-, renderInterface(this)
+, canvasInterface(this)
 , colorTexture("colorTexture", this, nullptr)
 , normalTexture("normalTexture", this, nullptr)
 , depthTexture("depthTexture", this, nullptr)
@@ -46,7 +46,6 @@ MultiFramePostprocessingStage::MultiFramePostprocessingStage(gloperate::Environm
 , ssaoNoise("ssaoNoise", this, nullptr)
 , projectionMatrix("projectionMatrix", this)
 , normalMatrix("normalMatrix", this)
-, sceneRendered("sceneRendered", this, false)
 {
 }
 
@@ -56,8 +55,7 @@ MultiFramePostprocessingStage::~MultiFramePostprocessingStage()
 
 void MultiFramePostprocessingStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    if (m_vao) // protect against initializing twice
-        return;
+    canvasInterface.onContextInit();
 
     setupGeometry();
     setupProgram();
@@ -74,18 +72,21 @@ void MultiFramePostprocessingStage::onContextDeinit(gloperate::AbstractGLContext
     // deinitialize geometry
     m_vertexBuffer.reset();
     m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void MultiFramePostprocessingStage::onProcess()
 {
     if (!(*colorTexture && *normalTexture && *depthTexture && *ssaoKernel && *ssaoNoise))
     {
-        renderInterface.rendered.setValue(false);
+        canvasInterface.updateRenderTargetOutputs();
+
         return;
     }
 
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -96,11 +97,11 @@ void MultiFramePostprocessingStage::onProcess()
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    auto & color = *renderInterface.backgroundColor;
+    auto & color = *canvasInterface.backgroundColor;
     gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
@@ -111,7 +112,7 @@ void MultiFramePostprocessingStage::onProcess()
     m_program->setUniform("projectionMatrix", *projectionMatrix);
     m_program->setUniform("projectionInverseMatrix", glm::inverse(*projectionMatrix));
     m_program->setUniform("normalMatrix", *normalMatrix);
-    m_program->setUniform("currentFrame", *renderInterface.frameCounter);
+    m_program->setUniform("currentFrame", *canvasInterface.frameCounter);
 
     // Bind textures
     (*colorTexture) ->bindActive(0);
@@ -136,7 +137,7 @@ void MultiFramePostprocessingStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }
 
 void MultiFramePostprocessingStage::setupGeometry()
