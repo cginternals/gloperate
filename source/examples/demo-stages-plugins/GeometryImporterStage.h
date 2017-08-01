@@ -65,6 +65,7 @@ public:
 protected:
     // Virtual Stage inteface
     virtual void onProcess() override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
 
 
 protected:

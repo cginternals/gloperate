@@ -20,6 +20,11 @@ GeometryImporterStage::~GeometryImporterStage()
 {
 }
 
+void GeometryImporterStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
+{
+    m_geometry.reset();
+}
+
 void GeometryImporterStage::onProcess()
 {
     auto loaded = std::unique_ptr<gloperate::Drawable>(m_environment->resourceManager()->load<gloperate::Drawable>((*filePath).path()));
