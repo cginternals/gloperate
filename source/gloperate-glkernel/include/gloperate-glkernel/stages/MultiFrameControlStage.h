@@ -40,7 +40,6 @@ public:
     // Inputs
     Input<int>       frameNumber;       ///< Total frame count
     Input<int>       multiFrameCount;   ///< Maximum number of frames to aggregate
-    Input<glm::vec4> viewport;          ///< Viewport
 
     // Outputs
     Output<int>      currentFrame;      ///< Number of currently aggregated frame

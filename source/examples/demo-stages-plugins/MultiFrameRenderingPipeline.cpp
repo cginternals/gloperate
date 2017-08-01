@@ -33,6 +33,10 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 : Pipeline(environment, name)
 , canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 1)
+, useAntialiasing("useAntialiasing", this, true)
+, useDOF("useDOF", this, true)
+, useSSAO("useSSAO", this, true)
+, useTransparency("useTransparency", this, true)
 , m_colorTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorTextureStage"))
 , m_depthTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "DepthTextureStage"))
 , m_normalTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "NormalTextureStage"))
@@ -101,8 +105,11 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     //m_renderPassStage->camera is set in onContextInit
     m_renderPassStage->createInput("currentFrame") << canvasInterface.frameCounter;
     m_renderPassStage->createInput("dofShiftKernel") << m_dofShiftStage->texture;
+    m_renderPassStage->createInput("useDOF") << useDOF;
     m_renderPassStage->createInput("subpixelShiftKernel") << m_subpixelStage->texture;
+    m_renderPassStage->createInput("useAntialiasing") << useAntialiasing;
     m_renderPassStage->createInput("transparencyKernel") << m_transparencyKernelStage->texture;
+    m_renderPassStage->createInput("useTransparency") << useTransparency;
     m_renderPassStage->createInput("viewport") << canvasInterface.viewport;
 
     addStage(m_renderClearStage.get());
@@ -137,6 +144,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_postprocessingPassStage->createInput("depthTexture") << m_depthTextureStage->texture;
     m_postprocessingPassStage->createInput("ssaoKernelTexture") << m_ssaoKernelStage->texture;
     m_postprocessingPassStage->createInput("ssaoNoiseTexture") << m_noiseStage->texture;
+    m_postprocessingPassStage->createInput("useSSAO") << useSSAO;
     //m_postprocessingPassStage->createInput("projectionMatrix") will be set in onContextInit
     //m_postprocessingPassStage->createInput("projectionInverseMatrix") will be set in onContextInit
     //m_postprocessingPassStage->createInput("normalMatrix") will be set in onContextInit

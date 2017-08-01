@@ -51,7 +51,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     addStage(m_controlStage.get());
     m_controlStage->frameNumber << canvasInterface.frameCounter;
     m_controlStage->multiFrameCount << multiFrameCount;
-    m_controlStage->viewport << canvasInterface.viewport;
+    m_controlStage->createInput("viewport") << canvasInterface.viewport;
 
     addStage(m_framePreparationStage.get());
 

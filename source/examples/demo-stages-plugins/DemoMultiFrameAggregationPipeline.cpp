@@ -23,6 +23,10 @@ DemoMultiFrameAggregationPipeline::DemoMultiFrameAggregationPipeline(gloperate::
 
     // Inputs
     *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
+    m_renderingPipeline->useAntialiasing << *createInput<bool>("useAntialiasing");
+    m_renderingPipeline->useDOF << *createInput<bool>("useDOF");
+    m_renderingPipeline->useSSAO << *createInput<bool>("useSSAO");
+    m_renderingPipeline->useTransparency << *createInput<bool>("useTransparency");
 
     m_multiFramePipeline->canvasInterface.viewport << canvasInterface.viewport;
     m_multiFramePipeline->canvasInterface.backgroundColor << canvasInterface.backgroundColor;

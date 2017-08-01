@@ -65,6 +65,11 @@ public:
     // Inputs
     Input<int> multiFrameCount;                 ///< Total number of frames to aggregate
 
+    Input<bool> useAntialiasing;                ///< Flag enabling antialiasing effect
+    Input<bool> useDOF;                         ///< Flag enabling depth of field effect
+    Input<bool> useSSAO;                        ///< Flag enabling ssao effect
+    Input<bool> useTransparency;                ///< Flag enabling transparency effect
+
 
 public:
     /**

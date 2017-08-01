@@ -15,7 +15,6 @@ MultiFrameControlStage::MultiFrameControlStage(gloperate::Environment * environm
 : Stage(environment, name)
 , frameNumber("frameNumber", this)
 , multiFrameCount("multiFrameCount", this)
-, viewport("viewport", this)
 , currentFrame("currentFrame", this)
 , aggregationFactor("aggregationFactor", this)
 , m_currentFrame(0)
