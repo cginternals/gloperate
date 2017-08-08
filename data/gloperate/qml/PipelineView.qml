@@ -76,4 +76,9 @@ Item
             pipelineEditor.load(path);
         }
     }
+
+    function update()
+    {
+        pipelineEditor.update();
+    }
 }

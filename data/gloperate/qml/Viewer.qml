@@ -247,6 +247,7 @@ ApplicationWindow
             settings.stage = name;
             window.stage   = name;
             propertyEditor.update();
+            pipelineView.update();
         }
     }
 
