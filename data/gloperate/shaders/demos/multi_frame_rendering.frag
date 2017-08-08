@@ -10,6 +10,8 @@ uniform sampler2D transparencyKernel;
 
 uniform int currentFrame;
 
+uniform bool useTransparency;
+
 
 in vec4 v_position;
 flat in vec3 v_normal;
@@ -23,11 +25,15 @@ void main()
     // produce cheap, high frequency noise
     float rand = dot(v_position, vec4(1024));
 
+    float alpha = baseColor.a;
     ivec2 transpSize = textureSize(transparencyKernel, 0);
-    ivec2 transpIndex = ivec2(vec2(rand, baseColor.a) * transpSize + ivec2(currentFrame, 0));
+    ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize + ivec2(currentFrame, 0));
     bool opaque = texelFetch(transparencyKernel, transpIndex % transpSize, 0).r > 0.5;
 
-    if (!opaque)
+    if (alpha == 1.0)
+        opaque = true;
+
+    if (!opaque && useTransparency)
         discard;
 
     fragColor = vec4(baseColor.rgb, 1.0);

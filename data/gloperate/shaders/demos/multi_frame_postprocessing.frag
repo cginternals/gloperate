@@ -24,6 +24,8 @@ uniform mat3 normalMatrix;
 
 uniform int currentFrame;
 
+uniform bool useSSAO;
+
 
 in vec2 v_uv;
 
@@ -34,23 +36,26 @@ void main()
 {
     vec3 baseColor = texture(colorTexture, v_uv).rgb;
 
-    vec3 ssaoFactor = ssao(
-        v_uv,
-        ssaoColor,
-        farZ,
-        ssaoRadius,
-        ssaoIntensity,
-        ssaoKernelTexture,
-        ssaoNoiseTexture,
-        depthTexture,
-        normalTexture,
-        projectionMatrix,
-        projectionInverseMatrix,
-        normalMatrix,
-        currentFrame
-    );
+    vec3 ssaoFactor = vec3(1.0);
 
-    //ssaoFactor = vec3(1.0);
+    if (useSSAO)
+    {
+        ssaoFactor = ssao(
+            v_uv,
+            ssaoColor,
+            farZ,
+            ssaoRadius,
+            ssaoIntensity,
+            ssaoKernelTexture,
+            ssaoNoiseTexture,
+            depthTexture,
+            normalTexture,
+            projectionMatrix,
+            projectionInverseMatrix,
+            normalMatrix,
+            currentFrame
+        );
+    }
 
     fragColor = vec4(baseColor * ssaoFactor, 1.0);
 }
