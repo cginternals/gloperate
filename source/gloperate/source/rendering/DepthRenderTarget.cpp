@@ -10,7 +10,7 @@ namespace gloperate
 {
 
 
-AttachmentType DepthRenderTarget::underlyingAttachmentType() const
+AttachmentType DepthRenderTarget::attachmentType() const
 {
     return AttachmentType::Depth;
 }

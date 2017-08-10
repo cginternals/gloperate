@@ -12,7 +12,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Type of a render target
+*    Technical type of a render target
 */
 enum class RenderTargetType : unsigned int
 {

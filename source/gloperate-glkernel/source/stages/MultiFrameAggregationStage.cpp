@@ -47,7 +47,7 @@ void MultiFrameAggregationStage::onContextDeinit(gloperate::AbstractGLContext * 
 
 void MultiFrameAggregationStage::onProcess()
 {
-    if (!renderInterface.allRenderTargetsCompatible())
+    if (!renderInterface.renderTargetsAreCompatible())
     {
         cppassist::warning("gloperate") << "Framebuffer configuration not compatible";
 

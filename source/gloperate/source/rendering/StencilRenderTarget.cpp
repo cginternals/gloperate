@@ -10,7 +10,7 @@ namespace gloperate
 {
 
 
-AttachmentType StencilRenderTarget::underlyingAttachmentType() const
+AttachmentType StencilRenderTarget::attachmentType() const
 {
     return AttachmentType::Stencil;
 }

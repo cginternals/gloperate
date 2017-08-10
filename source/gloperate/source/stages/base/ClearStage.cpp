@@ -260,7 +260,7 @@ void ClearStage::onProcess()
             clearValueInput->clear(fbo, colorAttachmentIndex);
 
             // Count color attachments
-            if (renderTarget->underlyingAttachmentType() == AttachmentType::Color)
+            if (renderTarget->attachmentType() == AttachmentType::Color)
             {
                 ++colorAttachmentIndex;
             }

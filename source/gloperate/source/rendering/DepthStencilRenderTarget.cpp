@@ -10,7 +10,7 @@ namespace gloperate
 {
 
 
-AttachmentType DepthStencilRenderTarget::underlyingAttachmentType() const
+AttachmentType DepthStencilRenderTarget::attachmentType() const
 {
     return AttachmentType::DepthStencil;
 }

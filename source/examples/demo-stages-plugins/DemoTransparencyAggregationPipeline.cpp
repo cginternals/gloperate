@@ -22,8 +22,7 @@ DemoTransparencyAggregationPipeline::DemoTransparencyAggregationPipeline(glopera
     //m_transparencyPipeline->multiFrameCount << multiFrameCount;
 
     // Inputs
-    // Inputs
-    *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
+    *m_multiFramePipeline->canvasInterface.colorRenderTargetInputs()[0] << *createInput<gloperate::ColorRenderTarget *>("Color");
 
     m_multiFramePipeline->canvasInterface.viewport << canvasInterface.viewport;
     m_multiFramePipeline->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
@@ -32,7 +31,7 @@ DemoTransparencyAggregationPipeline::DemoTransparencyAggregationPipeline(glopera
     m_multiFramePipeline->multiFrameCount << multiFrameCount;
 
     // Outputs
-    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_multiFramePipeline->canvasInterface.colorRenderTargetOutput(0);
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_multiFramePipeline->canvasInterface.colorRenderTargetOutputs()[0];
 }
 
 DemoTransparencyAggregationPipeline::~DemoTransparencyAggregationPipeline()

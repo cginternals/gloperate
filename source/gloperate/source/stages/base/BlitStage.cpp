@@ -40,10 +40,17 @@ void BlitStage::onContextDeinit(AbstractGLContext * /*context*/)
 
 void BlitStage::onProcess()
 {
+    // Omit blit if source and target are identical
     if (*source == *target)
     {
         targetOut.setValue(*target);
 
+        return;
+    }
+
+    // Abort if source or target are invalid
+    if (!*source || !*target)
+    {
         return;
     }
 

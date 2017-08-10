@@ -28,7 +28,7 @@ public:
     // Virtual AbstractRenderTarget interface
     virtual gl::GLint clearBufferDrawBuffer(size_t index) const override;
     virtual gl::GLenum drawBufferAttachment(size_t index) const override;
-    virtual AttachmentType underlyingAttachmentType() const override;
+    virtual AttachmentType attachmentType() const override;
     virtual gl::GLenum attachmentGLType() const override;
 };
 
