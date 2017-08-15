@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <QMap>
+
 #include <cppexpose/scripting/AbstractScriptBackend.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
