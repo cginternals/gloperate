@@ -12,7 +12,8 @@
 #include <gloperate/pipeline/Output.h>
 
 
-namespace globjects {
+namespace globjects
+{
     class Shader;
     class AbstractStringSource;
 }
@@ -42,10 +43,10 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>   filePath;   ///< path to the source file of the shader
+    Input<cppassist::FilePath>  filePath; ///< path to the source file of the shader
 
     // Outputs
-    Output<globjects::Shader *>  shader;     ///< the shader object
+    Output<globjects::Shader *> shader;   ///< the shader object
 
 
 public:
@@ -69,7 +70,10 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onContextInit(AbstractGLContext * context) override;
+    virtual void onContextDeinit(AbstractGLContext * context) override;
+    virtual void onProcess() override;
+
 
 protected:
     std::unique_ptr<globjects::Shader> m_shader; ///< Shader object

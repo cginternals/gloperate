@@ -10,13 +10,14 @@
 #include <qmltoolbox/Application.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/TimerManager.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/GLContextFactory.h>
 
 #include <gloperate-qtquick/QmlScriptContext.h>
 
-    
+
 namespace gloperate_qtquick
 {
 
@@ -29,7 +30,6 @@ void Application::initialize()
 Application::Application(int & argc, char ** argv)
 : QGuiApplication(argc, argv)
 , m_environment()
-, m_updateManager(&m_environment)
 , m_qmlEngine(&m_environment)
 {
     // Read command line options
@@ -37,6 +37,11 @@ Application::Application(int & argc, char ** argv)
     argumentParser.parse(argc, argv);
 
     const auto contextFormat = argumentParser.value("--context");
+
+    if (argumentParser.isSet("-safemode"))
+    {
+        m_environment.setSafeMode(true);
+    }
 
     // Create scripting context
     m_environment.setupScripting(
@@ -50,6 +55,10 @@ Application::Application(int & argc, char ** argv)
 
     // Specify desired context format
     gloperate::GLContextFormat format;
+    format.setVersion(3, 2);
+    format.setProfile(gloperate::GLContextFormat::Profile::Core);
+    format.setForwardCompatible(true);
+
     if (!contextFormat.empty())
     {
         if (!format.initializeFromString(contextFormat))
@@ -61,6 +70,21 @@ Application::Application(int & argc, char ** argv)
     // Convert and set Qt context format
     QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
     QSurfaceFormat::setDefaultFormat(qFormat);
+
+    // Pass additional command line parameters on to the QML
+    QStringList paramsList;
+    auto params = argumentParser.params();
+    for (auto param : params) paramsList << QString::fromStdString(param);
+
+    m_qmlEngine.rootContext()->setContextProperty("commandLineParams", paramsList);
+
+    // Create global timer
+    QObject::connect(
+        &m_timer, &QTimer::timeout,
+        this, &Application::onTimer
+    );
+
+    m_timer.start(5);
 }
 
 Application::~Application()
@@ -95,6 +119,12 @@ const gloperate::Environment & Application::environment() const
 gloperate::Environment & Application::environment()
 {
     return m_environment;
+}
+
+void Application::onTimer()
+{
+    // Update scripting timers
+    m_environment.timerManager()->update();
 }
 
 

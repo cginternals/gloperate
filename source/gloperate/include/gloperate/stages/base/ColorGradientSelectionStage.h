@@ -2,16 +2,12 @@
 #pragma once
 
 
-#include <string>
-
 #include <cppexpose/plugin/plugin_api.h>
 
-#include <gloperate/gloperate_api.h>
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/base/ColorGradientList.h>
 
 
 namespace gloperate
@@ -19,6 +15,7 @@ namespace gloperate
 
 
 class AbstractColorGradient;
+class ColorGradientList;
 
 
 /**
@@ -40,11 +37,13 @@ public:
 
 
 public:
-    Input<ColorGradientList *>            gradients;     ///< List of gradients
-    Input<std::string>                    gradientName;  ///< Name of chosen gradient
+    // Inputs
+    Input<ColorGradientList *>            gradients; ///< List of color gradients
+    Input<std::string>                    name;      ///< Name of chosen gradient
 
-    Output<const AbstractColorGradient *> gradient;      ///< Gradient
-    Output<size_t>                        gradientIndex; ///< Index of gradient
+    // Outputs
+    Output<const AbstractColorGradient *> gradient;  ///< Color gradient
+    Output<unsigned int>                  index;     ///< Index of color gradient
 
 
 public:
@@ -59,16 +58,16 @@ public:
     */
     ColorGradientSelectionStage(gloperate::Environment * environment, const std::string & name = "");
 
-
-protected:
     /**
     *  @brief
-    *    Process one iteration
-    *
-    *  @remarks
-    *    Overriden
+    *    Destructor
     */
-    virtual void onProcess(gloperate::AbstractGLContext * /*context*/) override;
+    ~ColorGradientSelectionStage();
+
+
+protected:
+    // Virtual Stage interface
+    virtual void onProcess() override;
 };
 
 

@@ -4,10 +4,9 @@
 
 #include <QGuiApplication>
 #include <QString>
+#include <QTimer>
 
 #include <gloperate/base/Environment.h>
-
-#include <gloperate-qt/base/UpdateManager.h>
 
 #include <gloperate-qtquick/QmlEngine.h>
 
@@ -114,9 +113,13 @@ public:
 
 
 protected:
-    gloperate::Environment      m_environment;   ///< Main gloperate environment
-    gloperate_qt::UpdateManager m_updateManager; ///< Timing update manager
-    QmlEngine                   m_qmlEngine;     ///< Spezialied QML engine for gloperate
+    void onTimer();
+
+
+protected:
+    gloperate::Environment m_environment; ///< Main gloperate environment
+    QmlEngine              m_qmlEngine;   ///< Spezialied QML engine for gloperate
+    QTimer                 m_timer;       ///< Global timer (e.g., to update scripting timers)
 };
 
 

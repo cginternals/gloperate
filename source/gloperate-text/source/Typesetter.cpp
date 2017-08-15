@@ -141,7 +141,7 @@ inline std::u32string::const_iterator Typesetter::typeset_forward(
     // setup common delimiters 
     // Note: u32string::find outperforms set::count here (tested)
 
-	static const auto delimiters = std::u32string({ '\x0A', ' ', ',', '.', '-', '/', '(', ')', '[', ']', '<', '>' });
+    static const auto delimiters = std::u32string({ '\x0A', ' ', ',', '.', '-', '/', '(', ')', '[', ']', '<', '>' });
 
     const auto iBegin = sequence.string().cbegin();
     const auto iEnd = sequence.string().cend();

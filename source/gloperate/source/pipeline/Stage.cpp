@@ -43,20 +43,10 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 {
     // Set object class name
     setClassName(className);
-
-    // Register functions
-    addFunction("getDescription", this, &Stage::scr_getDescription);
-    addFunction("getConnections", this, &Stage::scr_getConnections);
-    addFunction("getSlot",        this, &Stage::scr_getSlot);
-    addFunction("setSlotValue",   this, &Stage::scr_setSlotValue);
-    addFunction("createSlot",     this, &Stage::scr_createSlot);
-    addFunction("slotTypes",      this, &Stage::scr_slotTypes);
 }
 
 Stage::~Stage()
 {
-    info() << m_name << " destroyed.";
-
     if (Pipeline * parent = parentPipeline())
     {
         parent->removeStage(this);
@@ -109,10 +99,10 @@ void Stage::deinitContext(AbstractGLContext * context)
     onContextDeinit(context);
 }
 
-void Stage::process(AbstractGLContext * context)
+void Stage::process()
 {
     debug(1, "gloperate") << this->qualifiedName() << ": processing";
-    onProcess(context);
+    onProcess();
 
     for (auto input : m_inputs)
     {
@@ -158,6 +148,56 @@ void Stage::invalidateOutputs()
     {
         output->invalidate();
     }
+}
+
+AbstractSlot * Stage::getSlot(const std::string & path)
+{
+    std::vector<std::string> names = cppassist::string::split(path, '.');
+
+    Stage * stage = this;
+
+    for (size_t i=0; i<names.size(); i++)
+    {
+        std::string name = names[i];
+
+        // Ignore own stage name at the beginning
+        if (name == stage->name() && i == 0)
+        {
+            continue;
+        }
+
+        // Check if stage is a pipeline and has a substage with the given name
+        if (stage->isPipeline())
+        {
+            Pipeline * pipeline = static_cast<Pipeline *>(stage);
+            Stage * sub = pipeline->stage(name);
+
+            if (sub)
+            {
+                stage = sub;
+                continue;
+            }
+        }
+
+        // If there is no more substage but more names to fetch, return error
+        if (i != names.size() - 1)
+        {
+            return nullptr;
+        }
+
+        // Check if stage has a slot with that name
+        auto inputSlot = stage->input(name);
+        if (inputSlot) {
+            return inputSlot;
+        }
+
+        auto outputSlot = stage->output(name);
+        if (outputSlot) {
+            return outputSlot;
+        }
+    }
+
+    return nullptr;
 }
 
 const std::vector<AbstractSlot *> & Stage::inputs() const
@@ -356,12 +396,19 @@ void Stage::outputRequiredChanged(AbstractSlot * slot)
 
 void Stage::inputValueChanged(AbstractSlot * slot)
 {
+    inputChanged(slot);
+
     onInputValueChanged(slot);
 }
 
 void Stage::inputValueInvalidated(AbstractSlot * slot)
 {
     onInputValueInvalidated(slot);
+}
+
+void Stage::inputOptionsChanged(AbstractSlot * slot)
+{
+    inputChanged(slot);
 }
 
 
@@ -422,7 +469,7 @@ void Stage::onContextDeinit(AbstractGLContext *)
 {
 }
 
-void Stage::onProcess(AbstractGLContext *)
+void Stage::onProcess()
 {
 }
 
@@ -467,140 +514,20 @@ void Stage::invalidateInputConnections()
     }
 }
 
-cppexpose::Variant Stage::scr_getDescription()
+void Stage::forAllInputs(std::function<void(gloperate::AbstractSlot *)> callback)
 {
-    Variant obj = Variant::map();
-
-    // Get name
-    (*obj.asMap())["name"] = name();
-
-    // List inputs
-    Variant inputs = Variant::array();
-
-    for (auto input : m_inputs)
+    for (const auto input : m_inputs)
     {
-        inputs.asArray()->push_back(input->name());
+        callback(input);
     }
-
-    (*obj.asMap())["inputs"] = inputs;
-
-    // List outputs
-    Variant outputs = Variant::array();
-
-    for (auto output : m_outputs)
-    {
-        outputs.asArray()->push_back(output->name());
-    }
-
-    (*obj.asMap())["outputs"] = outputs;
-
-    // Return stage description
-    return obj;
 }
 
-cppexpose::Variant Stage::scr_getConnections()
+void Stage::forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callback)
 {
-    Variant obj = Variant::array();
-
-    auto addSlot = [&obj, this] (AbstractSlot * slot)
+    for (const auto output : m_outputs)
     {
-        // Check if slot is connected
-        if (slot->isConnected())
-        {
-            // Get connection info
-            std::string from = slot->source()->qualifiedName();
-            std::string to   = slot->qualifiedName();
-
-            // Describe connection
-            Variant connection = Variant::map();
-            (*connection.asMap())["from"] = from;
-            (*connection.asMap())["to"]   = to;
-
-            // Add connection
-            obj.asArray()->push_back(connection);
-        }
-    };
-
-    // List connections
-    for (auto input : m_inputs)
-    {
-        addSlot(input);
+        callback(output);
     }
-
-    for (auto output : m_outputs)
-    {
-        addSlot(output);
-    }
-
-    // Return connections
-    return obj;
-}
-
-cppexpose::Variant Stage::scr_getSlot(const std::string & name)
-{
-    Variant obj = Variant::map();
-
-    // Get slot
-    AbstractSlot * slot = input(name);
-    if (!slot) slot = output(name);
-
-    // Return invalid if slot does not exist
-    if (!slot)
-    {
-        return obj;
-    }
-
-    // Create slot description
-    (*obj.asMap())["name"]    = slot->name();
-    (*obj.asMap())["type"]    = slot->typeName();
-    (*obj.asMap())["value"]   = slot->toString();
-    (*obj.asMap())["options"] = slot->options();
-
-    // Return slot description
-    return obj;
-}
-
-void Stage::scr_setSlotValue(const std::string & name, const cppexpose::Variant & value)
-{
-    // Get slot
-    AbstractSlot * slot = input(name);
-    if (!slot) slot = output(name);
-
-    // Return invalid if slot does not exist
-    if (!slot)
-    {
-        return;
-    }
-
-    // Set slot value
-    slot->fromVariant(value);
-}
-
-void Stage::scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name)
-{
-    createSlot(slotType, type, name);
-}
-
-cppexpose::Variant Stage::scr_slotTypes()
-{
-    Variant types = Variant::array();
-
-    types.asArray()->push_back("bool");
-    types.asArray()->push_back("int");
-    types.asArray()->push_back("float");
-    types.asArray()->push_back("vec2");
-    types.asArray()->push_back("vec3");
-    types.asArray()->push_back("vec4");
-    types.asArray()->push_back("ivec2");
-    types.asArray()->push_back("ivec3");
-    types.asArray()->push_back("ivec4");
-    types.asArray()->push_back("string");
-    types.asArray()->push_back("file");
-    types.asArray()->push_back("color");
-    types.asArray()->push_back("texture");
-    types.asArray()->push_back("fbo");
-
-    return types;
 }
 
 

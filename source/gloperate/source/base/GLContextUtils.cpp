@@ -51,29 +51,32 @@ gloperate::GLContextFormat GLContextUtils::retrieveFormat()
 
     format.setProfile(retrieveProfile());
 
-    i = -1; glGetIntegerv(GLenum::GL_RED_BITS, &i);
-    format.setRedBufferSize(i);
+    if (format.profile() != GLContextFormat::Profile::Core)
+    {
+        i = -1; glGetIntegerv(GLenum::GL_RED_BITS, &i);
+        format.setRedBufferSize(i);
 
-    i = -1; glGetIntegerv(GLenum::GL_GREEN_BITS, &i);
-    format.setGreenBufferSize(i);
+        i = -1; glGetIntegerv(GLenum::GL_GREEN_BITS, &i);
+        format.setGreenBufferSize(i);
 
-    i = -1; glGetIntegerv(GLenum::GL_BLUE_BITS, &i);
-    format.setBlueBufferSize(i);
+        i = -1; glGetIntegerv(GLenum::GL_BLUE_BITS, &i);
+        format.setBlueBufferSize(i);
 
-    i = -1; glGetIntegerv(GLenum::GL_ALPHA_BITS, &i);
-    format.setAlphaBufferSize(i);
+        i = -1; glGetIntegerv(GLenum::GL_ALPHA_BITS, &i);
+        format.setAlphaBufferSize(i);
 
-    i = -1; glGetIntegerv(GLenum::GL_DEPTH_BITS, &i);
-    format.setDepthBufferSize(i);
+        i = -1; glGetIntegerv(GLenum::GL_DEPTH_BITS, &i);
+        format.setDepthBufferSize(i);
 
-    i = -1; glGetIntegerv(GLenum::GL_STENCIL_BITS, &i);
-    format.setStencilBufferSize(i);
+        i = -1; glGetIntegerv(GLenum::GL_STENCIL_BITS, &i);
+        format.setStencilBufferSize(i);
+
+        b = GL_FALSE; glGetBooleanv(GLenum::GL_STEREO, &b);
+        format.setStereo(b == GL_TRUE);
+    }
 
     i = -1; glGetIntegerv(GLenum::GL_SAMPLES, &i);
     format.setSamples(i);
-
-    b = GL_FALSE; glGetBooleanv(GLenum::GL_STEREO, &b);
-    format.setStereo(b == GL_TRUE);
 
     return format;
 }

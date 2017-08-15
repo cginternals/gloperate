@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <functional>
 
 #include <cppexpose/reflection/Object.h>
 
@@ -40,12 +41,15 @@ class Output;
 */
 class GLOPERATE_API Stage : public cppexpose::Object
 {
+    friend class Canvas;
+
+
 public:
     // Define component types
     using AbstractComponentType = gloperate::AbstractComponent<Stage>;
 
     template <typename Type>
-    using ComponentType = gloperate::Component<Stage, Type>;
+    using ComponentType = gloperate::StageComponent<Type>;
 
     // Import data types into local namespace
     template <typename T>
@@ -68,6 +72,9 @@ public:
         template <typename T>
         Input<T> * operator<<(Slot<T> & source);
 
+        template <typename T>
+        Input<T> * operator=(const T & value);
+
     private:
         std::string m_name;
         Stage * m_stage;
@@ -80,6 +87,7 @@ public:
     cppexpose::Signal<AbstractSlot *> inputRemoved;  ///< Called when an input slot has been removed
     cppexpose::Signal<AbstractSlot *> outputAdded;   ///< Called when an output slot has been added
     cppexpose::Signal<AbstractSlot *> outputRemoved; ///< Called when an output slot has been removed
+    cppexpose::Signal<AbstractSlot *> inputChanged;  ///< Called when an input slot has changed its value or options
 
 
 public:
@@ -97,6 +105,7 @@ public:
     Stage(Environment * environment, const std::string & className = "Stage", const std::string & name = "");
 
     Stage(const Stage &) = delete;
+
     Stage & operator=(const Stage &) = delete;
 
     /**
@@ -174,12 +183,9 @@ public:
     *  @brief
     *    Process stage
     *
-    *  @param[in] context
-    *    OpenGL context that is current (must NOT null!)
-    *
     *  @see onProcess
     */
-    void process(AbstractGLContext * context);
+    void process();
 
     /**
     *  @brief
@@ -240,6 +246,18 @@ public:
 
     /**
     *  @brief
+    *    Called when the options of an input slot have changed
+    *
+    *  @param[in] slot
+    *    Input slot which has been invalidated
+    *
+    *  @remarks
+    *    Will emit the signal inputChanged.
+    */
+    void inputOptionsChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
     *    Check if stage is always processed
     *
     *  @return
@@ -274,6 +292,18 @@ public:
     *    Invalidate all outputs
     */
     void invalidateOutputs();
+
+    /**
+    *  @brief
+    *    Get a slot of this stage or a substage
+    *
+    *  @param[in] path
+    *    Path to the slot from this stage. Can contain the name of this stage as first element.
+    *
+    *  @return
+    *    Slot, nullptr if not found
+    */
+    AbstractSlot * getSlot(const std::string & path);
 
     /**
     *  @brief
@@ -570,6 +600,58 @@ public:
     */
     std::string qualifiedName() const;
 
+    /**
+    *  @brief
+    *    Return the first input of type T where the callback returns 'true'
+    *
+    *  @param[in] callback
+    *    The callback
+    *
+    *  @return
+    *    The first input where the callback returns 'true'
+    */
+    template <typename T>
+    gloperate::Input<T> * findInput(std::function<bool(gloperate::Input<T> *)> callback);
+
+    /**
+    *  @brief
+    *    Iterate over all inputs and execute the callback.
+    */
+    void forAllInputs(std::function<void(gloperate::AbstractSlot *)> callback);
+
+    /**
+    *  @brief
+    *    Iterate over all inputs of type T and execute the callback.
+    */
+    template <typename T>
+    void forAllInputs(std::function<void(gloperate::Input<T> *)> callback);
+
+    /**
+    *  @brief
+    *    Return the first output of type T where the callback returns 'true'
+    *
+    *  @param[in] callback
+    *    The callback
+    *
+    *  @return
+    *    The first output where the callback returns 'true'
+    */
+    template <typename T>
+    gloperate::Output<T> * findOutput(std::function<bool(gloperate::Output<T> *)> callback);
+
+    /**
+    *  @brief
+    *    Iterate over all inputs and execute the callback.
+    */
+    void forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callback);
+
+    /**
+    *  @brief
+    *    Iterate over all inputs of type T and execute the callback.
+    */
+    template <typename T>
+    void forAllOutputs(std::function<void(gloperate::Output<T> *)> callback);
+
 
 protected:
     /**
@@ -585,7 +667,7 @@ protected:
     *    textures and geometries, in this function.
     *
     *  @param[in] context
-    *    OpenGL context used for rendering (must NOT null!)
+    *    OpenGL context used for rendering (must NOT be null!)
     */
     virtual void onContextInit(AbstractGLContext * context);
 
@@ -594,10 +676,13 @@ protected:
     *    De-Initialize in OpenGL context
     *
     *    This function is called when the OpenGL context is destroyed.
-    *    The object must release its OpenGL objects at this point.
+    *    The object MUST release its OpenGL objects at this point
+    *    to make sure they are released in the same thread they have
+    *    be created (e.g., the render thread). Otherwise, the
+    *    application may crash on shutdown.
     *
     *  @param[in] context
-    *    OpenGL context used for rendering (must NOT null!)
+    *    OpenGL context used for rendering (must NOT be null!)
     *
     *  @see onContextInit()
     */
@@ -611,9 +696,6 @@ protected:
     *    At this point, the stage is expected to process its
     *    inputs and create its output data.
     *
-    *  @param[in] context
-    *    OpenGL context that is current (must NOT null!)
-    *
     *  @remarks
     *    The provided OpenGL context is already made current by
     *    the caller of this function, i.e., the viewer or parent
@@ -622,7 +704,7 @@ protected:
     *    manages its own context, it needs to rebind the former
     *    context at the end of its execution.
     */
-    virtual void onProcess(AbstractGLContext * context);
+    virtual void onProcess();
 
     /**
     *  @brief
@@ -695,16 +777,6 @@ protected:
     *    Common implementation of addOutput(AbstractSlot *) and addOutput(std::unique_ptr<AbstractSlot> &&)
     */
     void registerOutput(AbstractSlot * output);
-
-
-protected:
-    // Scripting functions
-    virtual cppexpose::Variant scr_getDescription();
-    cppexpose::Variant scr_getConnections();
-    cppexpose::Variant scr_getSlot(const std::string & name);
-    void scr_setSlotValue(const std::string & name, const cppexpose::Variant & value);
-    void scr_createSlot(const std::string & slotType, const std::string & type, const std::string & name);
-    cppexpose::Variant scr_slotTypes();
 
 
 protected:

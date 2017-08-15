@@ -13,7 +13,6 @@
 
 #include <glbinding/Binding.h>
 
-#include <gloperate/base/GLContextUtils.h>
 #include <gloperate/base/GLContextFormat.h>
 
 #include <gloperate-glfw/GLContext.h>
@@ -26,7 +25,10 @@ namespace gloperate_glfw
 {
 
 
-GLContextFactory::GLContextFactory()
+GLContextFactory::GLContextFactory(GLFWmonitor * monitor, unsigned int width, unsigned int height)
+: m_monitor(monitor)
+, m_width(width)
+, m_height(height)
 {
 }
 
@@ -36,10 +38,11 @@ GLContextFactory::~GLContextFactory()
 
 std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(const gloperate::GLContextFormat & format) const
 {
+    // Adjust GLFW settings to produce the given context format
     initializeGLFWState(format);
 
     // Create window
-    GLFWwindow * window = glfwCreateWindow(1, 1, "", nullptr, nullptr);
+    GLFWwindow * window = glfwCreateWindow(m_width, m_height, "", m_monitor, nullptr);
     if (!window)
     {
         return nullptr;
@@ -51,6 +54,7 @@ std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(co
     // Handle swap behavior
     context->updateSwapBehavior(format.swapBehavior());
 
+    // Return context (and window)
     return std::move(context);
 }
 
@@ -66,6 +70,7 @@ void GLContextFactory::initializeGLFWState(const gloperate::GLContextFormat & fo
     // Set OpenGL version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, format.majorVersion());
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, format.minorVersion());
+    glfwWindowHint(GLFW_DOUBLEBUFFER, int(true));
 
     // Set OpenGL context flags
     if (format.version() >= glbinding::Version(3, 0))

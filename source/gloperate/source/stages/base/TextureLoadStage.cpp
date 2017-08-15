@@ -30,27 +30,18 @@ void TextureLoadStage::onContextInit(AbstractGLContext *)
 
 void TextureLoadStage::onContextDeinit(AbstractGLContext *)
 {
+    // Clean up OpenGL objects
     m_texture = nullptr;
 }
 
-void TextureLoadStage::onProcess(AbstractGLContext *)
+void TextureLoadStage::onProcess()
 {
-    // Check if texture needs to be rebuilt
-    if (!texture.isValid())
-    {
-        // Load texture
-        loadTexture();
-
-        // Update outputs
-        texture.setValue(m_texture.get());
-    }
-}
-
-void TextureLoadStage::loadTexture()
-{
-    // Load texture from file
+    // Load texture
     auto tex = m_environment->resourceManager()->load<globjects::Texture>((*filename).path());
     m_texture = tex ? std::unique_ptr<globjects::Texture>(tex) : globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+
+    // Update outputs
+    texture.setValue(m_texture.get());
 }
 
 

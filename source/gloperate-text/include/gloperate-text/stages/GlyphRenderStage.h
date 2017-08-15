@@ -1,11 +1,12 @@
 
 #pragma once
 
+
 #include <glm/vec4.hpp>
 
 #include <gloperate/pipeline/Stage.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <gloperate-text/gloperate-text_api.h>
 #include <gloperate-text/GlyphVertexCloud.h>
 
 
@@ -29,12 +30,9 @@ class GlyphVertexCloud;
 class GLOPERATE_TEXT_API GlyphRenderStage : public gloperate::Stage
 {
 public:
+    gloperate::RenderInterface renderInterface; ///< Interface to render into render targets
+
     Input<GlyphVertexCloud *> vertexCloud;
-
-    Input<glm::vec4> viewport;
-    Input<globjects::Framebuffer *> targetFramebuffer;
-
-    Output<bool> rendered;
 
 
 public:
@@ -45,7 +43,7 @@ public:
 protected:
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
     virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
 
 protected:

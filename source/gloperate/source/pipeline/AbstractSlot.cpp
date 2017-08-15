@@ -13,6 +13,16 @@ namespace gloperate
 
 AbstractSlot::AbstractSlot()
 : m_slotType(SlotType::Unknown)
+, m_dynamic(false)
+, m_required(false)
+, m_feedback(false)
+{
+}
+
+AbstractSlot::AbstractSlot(const cppexpose::Variant & options)
+: AbstractProperty(options)
+, m_slotType(SlotType::Unknown)
+, m_dynamic(false)
 , m_required(false)
 , m_feedback(false)
 {
@@ -47,6 +57,11 @@ std::string AbstractSlot::qualifiedName() const
     return (stage != nullptr) ? stage->qualifiedName() + "." + name() : name();
 }
 
+bool AbstractSlot::isDynamic() const
+{
+    return m_dynamic;
+}
+
 bool AbstractSlot::isRequired() const
 {
     return m_required;
@@ -54,14 +69,16 @@ bool AbstractSlot::isRequired() const
 
 void AbstractSlot::setRequired(bool required)
 {
-    if (m_required != required)
+    if (m_required == required)
     {
-        m_required = required;
-
-        cppassist::debug(3, "gloperate") << this->qualifiedName() << ": required changed to " << required;
-
-        onRequiredChanged();
+        return;
     }
+
+    m_required = required;
+
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": required changed to " << required;
+
+    onRequiredChanged();
 }
 
 bool AbstractSlot::isFeedback() const

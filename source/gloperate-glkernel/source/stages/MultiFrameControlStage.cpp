@@ -1,7 +1,6 @@
 
 #include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 
-#include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
 
 
@@ -21,25 +20,39 @@ MultiFrameControlStage::MultiFrameControlStage(gloperate::Environment * environm
 , aggregationFactor("aggregationFactor", this)
 , m_currentFrame(0)
 {
-    viewport.valueChanged.connect([this](const glm::vec4 &){
-        m_currentFrame = 0;
-    });
+    setAlwaysProcessed(true);
 }
 
 MultiFrameControlStage::~MultiFrameControlStage()
 {
 }
 
-void MultiFrameControlStage::onProcess(gloperate::AbstractGLContext *)
+void MultiFrameControlStage::onProcess()
 {
     m_currentFrame++;
+    currentFrame.setValue(m_currentFrame);
 
     if (m_currentFrame < *multiFrameCount)
     {
-        currentFrame.setValue(m_currentFrame);
         aggregationFactor.setValue(1.0f/m_currentFrame);
+    }
+    else
+    {
+        aggregationFactor.setValue(0.0f);
+        setAlwaysProcessed(false);
     }
 }
 
+void MultiFrameControlStage::onInputValueChanged(gloperate::AbstractSlot * slot)
+{
+    if (slot != &frameNumber)
+    {
+        m_currentFrame = 0;
+        setAlwaysProcessed(true);
+    }
 
-} // namespace gloperate
+    Stage::onInputValueChanged(slot);
+}
+
+
+} // namespace gloperate_glkernel

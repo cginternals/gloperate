@@ -1,4 +1,6 @@
+
 #version 330
+
 
 uniform sampler2D glyphs;
 uniform vec4 color = vec4(0.0, 0.0, 0.0, 1.0);

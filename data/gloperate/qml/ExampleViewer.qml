@@ -19,7 +19,7 @@ ApplicationWindow
     property bool  renderBackground: true
 
     // Stage
-    property string stage: 'DemoPipeline'
+    property string stage: 'ShapeDemo'
 
     x:       100
     y:       100

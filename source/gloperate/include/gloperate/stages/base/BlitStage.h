@@ -9,9 +9,13 @@
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/gloperate-version.h>
+
+#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+
+#include <gloperate/rendering/ColorRenderTarget.h>
 
 
 namespace gloperate
@@ -20,7 +24,7 @@ namespace gloperate
 
 /**
 *  @brief
-*    Stage for blitting from one framebuffer to another
+*    Stage for blitting from one framebuffer into another
 */
 class GLOPERATE_API BlitStage : public Stage
 {
@@ -30,7 +34,7 @@ public:
       , ""
       , ""
       , ""
-      , "Stage for blitting from one framebuffer to another"
+      , "Stage for blitting from one framebuffer into another"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
     )
@@ -38,14 +42,15 @@ public:
 
 public:
     // Inputs
-    Input<globjects::Framebuffer *>  sourceFBO;           ///< FBO containing the source attachments
-    Input<glm::vec4>                 sourceViewport;      ///< Viewport for reading from source FBO
-    Input<globjects::Framebuffer *>  destinationFBO;      ///< FBO with destination attachments
-    Input<glm::vec4>                 destinationViewport; ///< Viewport for writing into destination FBO
+    Input<gloperate::ColorRenderTarget *> source;         ///< Source render target
+    Input<glm::vec4>                      sourceViewport; ///< Source Viewport for reading from source
+    Input<gloperate::ColorRenderTarget *> target;         ///< Target render target
+    Input<glm::vec4>                      targetViewport; ///< Target viewport for writing into target
+    Input<gl::GLenum>                     minFilter;      ///< Interpolation mode used when target size is lower than source size (default: linear interpolation)
+    Input<gl::GLenum>                     magFilter;      ///< Interpolation mode used when target size is greater than source size (default: nearest filtering)
 
     // Outputs
-    Output<globjects::Framebuffer *> blittedFBO;          ///< FBO containing blitted result
-    Output<bool>                     blitted;             ///< True if processed successfully
+    Output<gloperate::ColorRenderTarget *> targetOut;     ///< Pass-through target render target
 
 
 public:
@@ -63,7 +68,15 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess() override;
+    virtual void onContextInit(AbstractGLContext * context) override;
+    virtual void onContextDeinit(AbstractGLContext * context) override;
+
+
+protected:
+    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Intermediate default FBO
+    std::unique_ptr<globjects::Framebuffer> m_sourceFBO; ///< Intermediate source FBO
+    std::unique_ptr<globjects::Framebuffer> m_targetFBO; ///< Intermediate target FBO
 };
 
 

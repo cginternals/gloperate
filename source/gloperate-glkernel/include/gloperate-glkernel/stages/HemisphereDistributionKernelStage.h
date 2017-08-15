@@ -1,11 +1,8 @@
 
 #pragma once
 
-#include <gloperate-glkernel/gloperate-glkernel_api.h>
 
 #include <vector>
-
-#include <glkernel/Kernel.h>
 
 #include <cppexpose/plugin/plugin_api.h>
 
@@ -15,6 +12,10 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+
+#include <glkernel/Kernel.h>
+
+#include <gloperate-glkernel/gloperate-glkernel_api.h>
 
 
 namespace gloperate_glkernel
@@ -30,9 +31,9 @@ class GLOPERATE_GLKERNEL_API HemisphereDistributionKernelStage : public gloperat
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
         HemisphereDistributionKernelStage, gloperate::Stage
-      , ""   // Tags
-      , ""   // Icon
-      , ""   // Annotations
+      , "" // Tags
+      , "" // Icon
+      , "" // Annotations
       , "Stage that creates a set of random 3D-vectors for multiframe rendering"
       , GLOPERATE_AUTHOR_ORGANIZATION
       , "v0.1.0"
@@ -71,7 +72,8 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onContextInit(gloperate::AbstractGLContext * context) override;
-    virtual void onProcess(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+    virtual void onProcess() override;
 
     // Helper functions
     void resizeKernel();
@@ -80,11 +82,9 @@ protected:
 
 protected:
     // Data
-    glkernel::kernel3 m_kernel;                       ///< Kernel object
-    std::vector<glm::vec3> m_kernelData;              ///< Vector with kernel data
-    std::unique_ptr<globjects::Texture> m_texture;    ///< Texture with kernel data
-    
-
+    glkernel::kernel3 m_kernel;                    ///< Kernel object
+    std::vector<glm::vec3> m_kernelData;           ///< Vector with kernel data
+    std::unique_ptr<globjects::Texture> m_texture; ///< Texture with kernel data
 };
 
 

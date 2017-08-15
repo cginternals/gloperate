@@ -5,6 +5,7 @@
 
 find_package(OpenGL    REQUIRED)
 find_package(glm       REQUIRED)
+find_package(ASSIMP    REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cpplocate REQUIRED)
@@ -39,55 +40,61 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
-    ${include_path}/DemoStage.h
-    ${include_path}/DemoPipeline.h
-    ${include_path}/ShaderDemoPipeline.h
-    ${include_path}/DemoAntialiasableTriangleStage.h
-    ${include_path}/DemoAntialiasingPipeline.h
-    ${include_path}/DemoDOFCubeStage.h
-    ${include_path}/DemoDOFPipeline.h
-    ${include_path}/DemoSSAORenderingStage.h
-    ${include_path}/DemoSSAOPostprocessingStage.h
-    ${include_path}/DemoSSAOPipeline.h
-    ${include_path}/DemoTransparencyStage.h
-    ${include_path}/DemoTransparencyPipeline.h
-    ${include_path}/DemoMultiFramePipeline.h
-    ${include_path}/SpinningRectStage.h
-    ${include_path}/DemoRenderStage.h
+    ${include_path}/AntialiasableTriangleStage.h
+    ${include_path}/AntialiasingRenderingPipeline.h
+    ${include_path}/AssimpMeshLoader.h
+    ${include_path}/ColorGradientDemo.h
+    ${include_path}/DemoAntialiasingAggregationPipeline.h
+    ${include_path}/DemoDOFAggregationPipeline.h
     ${include_path}/DemoDrawableStage.h
-    ${include_path}/TimerStage.h
-    ${include_path}/ColorizeStage.h
-    ${include_path}/LightTestStage.h
-    ${include_path}/LightTestPipeline.h
+    ${include_path}/DemoMultiFrameAggregationPipeline.h
+    ${include_path}/DemoSSAOAggregationPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
+    ${include_path}/DemoTransparencyAggregationPipeline.h
+    ${include_path}/DOFCubeStage.h
+    ${include_path}/DOFRenderingPipeline.h
     ${include_path}/GlyphSequenceDemoStage.h
+    ${include_path}/LightTestPipeline.h
+    ${include_path}/LightTestStage.h
+    ${include_path}/MultiFramePostprocessingStage.h
+    ${include_path}/MultiFrameRenderingPipeline.h
+    ${include_path}/MultiFrameSceneRenderingStage.h
+    ${include_path}/ShaderDemoPipeline.h
+    ${include_path}/ShapeDemo.h
+    ${include_path}/SSAOApplicationStage.h
+    ${include_path}/SSAORenderingPipeline.h
+    ${include_path}/SSAOSceneRenderingStage.h
+    ${include_path}/TransparencyRenderingPipeline.h
+    ${include_path}/TransparentCirclesStage.h
 )
 
 set(sources
-    ${source_path}/plugin.cpp
-
-    ${source_path}/DemoStage.cpp
-    ${source_path}/DemoPipeline.cpp
-    ${source_path}/ShaderDemoPipeline.cpp
-    ${source_path}/DemoAntialiasableTriangleStage.cpp
-    ${source_path}/DemoAntialiasingPipeline.cpp
-    ${source_path}/DemoDOFCubeStage.cpp
-    ${source_path}/DemoDOFPipeline.cpp
-    ${source_path}/DemoSSAORenderingStage.cpp
-    ${source_path}/DemoSSAOPostprocessingStage.cpp
-    ${source_path}/DemoSSAOPipeline.cpp
-    ${source_path}/DemoTransparencyStage.cpp
-    ${source_path}/DemoTransparencyPipeline.cpp
-    ${source_path}/DemoMultiFramePipeline.cpp
-    ${source_path}/SpinningRectStage.cpp
-    ${source_path}/DemoRenderStage.cpp
+    ${source_path}/AntialiasableTriangleStage.cpp
+    ${source_path}/AntialiasingRenderingPipeline.cpp
+    ${source_path}/AssimpMeshLoader.cpp
+    ${source_path}/ColorGradientDemo.cpp
+    ${source_path}/DemoAntialiasingAggregationPipeline.cpp
+    ${source_path}/DemoDOFAggregationPipeline.cpp
     ${source_path}/DemoDrawableStage.cpp
-    ${source_path}/TimerStage.cpp
-    ${source_path}/ColorizeStage.cpp
-    ${source_path}/LightTestStage.cpp
-    ${source_path}/LightTestPipeline.cpp
+    ${source_path}/DemoMultiFrameAggregationPipeline.cpp
+    ${source_path}/DemoSSAOAggregationPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp
+    ${source_path}/DemoTransparencyAggregationPipeline.cpp
+    ${source_path}/DOFCubeStage.cpp
+    ${source_path}/DOFRenderingPipeline.cpp
     ${source_path}/GlyphSequenceDemoStage.cpp
+    ${source_path}/LightTestPipeline.cpp
+    ${source_path}/LightTestStage.cpp
+    ${source_path}/MultiFramePostprocessingStage.cpp
+    ${source_path}/MultiFrameRenderingPipeline.cpp
+    ${source_path}/MultiFrameSceneRenderingStage.cpp
+    ${source_path}/ShaderDemoPipeline.cpp
+    ${source_path}/ShapeDemo.cpp
+    ${source_path}/SSAOApplicationStage.cpp
+    ${source_path}/SSAORenderingPipeline.cpp
+    ${source_path}/SSAOSceneRenderingStage.cpp
+    ${source_path}/TransparencyRenderingPipeline.cpp
+    ${source_path}/TransparentCirclesStage.cpp
 )
 
 # Group source files
@@ -138,6 +145,7 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
+    ${ASSIMP_INCLUDE_DIR}
 
     PUBLIC
 
@@ -156,6 +164,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${OPENGL_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
     ${META_PROJECT_NAME}::gloperate
     ${META_PROJECT_NAME}::gloperate-glkernel
     ${META_PROJECT_NAME}::gloperate-text

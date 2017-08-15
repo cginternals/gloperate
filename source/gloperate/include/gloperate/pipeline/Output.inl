@@ -37,7 +37,7 @@ void Output<T>::onRequiredChanged()
     }
     else
     {
-        // Inform parent stage
+        // Inform parent stage to propagate required state to inputs
         if (Stage * stage = this->parentStage())
         {
             stage->outputRequiredChanged(this);

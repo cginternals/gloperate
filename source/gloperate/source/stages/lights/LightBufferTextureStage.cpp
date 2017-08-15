@@ -41,9 +41,21 @@ LightBufferTextureStage::~LightBufferTextureStage()
 
 void LightBufferTextureStage::onContextInit(AbstractGLContext * /*context*/)
 {
+    setupBufferTextures();
 }
 
-void LightBufferTextureStage::onProcess(AbstractGLContext * /*context*/)
+void LightBufferTextureStage::onContextDeinit(AbstractGLContext * /*context*/)
+{
+    m_attenuationTexture.reset();
+    m_positionTexture.reset();
+    m_colorTypeTexture.reset();
+
+    m_attenuationBuffer.reset();
+    m_positionBuffer.reset();
+    m_colorTypeBuffer.reset();
+}
+
+void LightBufferTextureStage::onProcess()
 {
     if (!colorTypeData.isValid() || !positionData.isValid() || !attenuationData.isValid())
     {

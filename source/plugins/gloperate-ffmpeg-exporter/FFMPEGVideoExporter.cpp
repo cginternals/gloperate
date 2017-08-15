@@ -17,7 +17,7 @@
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
-#include <gloperate/base/AbstractCanvas.h>
+#include <gloperate/base/Canvas.h>
 #include <gloperate/base/AbstractGLContext.h>
 
 
@@ -76,7 +76,7 @@ FFMPEGVideoExporter::~FFMPEGVideoExporter()
     delete m_image;
 }
 
-void FFMPEGVideoExporter::setTarget(gloperate::AbstractCanvas * canvas, const cppexpose::VariantMap & parameters)
+void FFMPEGVideoExporter::setTarget(gloperate::Canvas * canvas, const cppexpose::VariantMap & parameters)
 {
     // Save configuration
     m_canvas     = canvas;
@@ -92,14 +92,17 @@ void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling con
 
     auto fps = m_parameters.at("fps").toULongLong();
     auto length = m_parameters.at("duration").toULongLong() * fps;
-    auto timeDelta = 1.f / static_cast<float>(fps);
+    //auto timeDelta = 1.f / static_cast<float>(fps);
 
     initialize(contextHandling);
 
     for (unsigned int i = 0; i < length; ++i)
     {
-        m_canvas->environment()->update(timeDelta);
-        m_canvas->onRender(m_fbo.get());
+        // [TODO]: Revert to explicit virtual time management
+        //m_canvas->environment()->update(timeDelta);
+        m_canvas->updateTime();
+
+        m_canvas->render(m_fbo.get());
 
         m_fbo_quad->bind(gl::GL_FRAMEBUFFER);
 
@@ -151,9 +154,9 @@ void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::F
     auto height = m_parameters.at("height").toULongLong();
     auto viewport = glm::vec4(0, 0, width, height);
 
-    m_canvas->onRender(m_fbo.get());
+    m_canvas->render(m_fbo.get());
 
-    auto destVP = m_canvas->savedDeviceViewport();
+    auto destVP = m_savedViewport;
 
     std::array<gl::GLint, 4> srcRect = {{int(viewport.x), int(viewport.y), int(viewport.z), int(viewport.w)}};
     std::array<gl::GLint, 4> destRect = {{int(destVP.x), int(destVP.y), int(destVP.z), int(destVP.w)}};
@@ -212,8 +215,9 @@ void FFMPEGVideoExporter::initialize(ContextHandling contextHandling)
 
     m_fbo->clearBuffer(gl::GL_COLOR, 0, glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
 
-    m_canvas->onSaveViewport();
-    m_canvas->onViewport(viewport, viewport);
+    m_savedViewport = m_canvas->viewport();
+
+    m_canvas->setViewport(viewport);
 
     if (m_contextHandling == AbstractVideoExporter::ActivateContext)
     {
@@ -238,7 +242,7 @@ void FFMPEGVideoExporter::finalize()
         m_canvas->openGLContext()->release();
     }
 
-    m_canvas->onResetViewport();
+    m_canvas->setViewport(m_savedViewport);
 
     m_initialized = false;
 }

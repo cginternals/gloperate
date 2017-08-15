@@ -3,14 +3,9 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/Program.h>
 #include <globjects/Framebuffer.h>
-#include <globjects/Texture.h>
 
-#include <gloperate/rendering/RenderPass.h>
-#include <gloperate/rendering/Drawable.h>
-
-#include <gloperate/gloperate.h>
+#include <gloperate/rendering/AbstractDrawable.h>
 
 
 namespace gloperate
@@ -22,14 +17,9 @@ CPPEXPOSE_COMPONENT(RasterizationStage, gloperate::Stage)
 
 RasterizationStage::RasterizationStage(Environment * environment, const std::string & name)
 : Stage(environment, "RasterizationStage", name)
-, renderInterface (this)
-, rasterize       ("rasterize",       this, true)
-//, drawable        ("drawable",        this)
-//, program         ("program",         this)
-, renderPass      ("renderPass",      this)
-, colorTexture    ("colorTexture",    this)
-, fboOut          ("fboOut",          this)
-, colorTextureOut ("colorTextureOut", this)
+, renderInterface(             this)
+, rasterize      ("rasterize", this, true)
+, drawable       ("drawable",  this)
 {
 }
 
@@ -39,41 +29,47 @@ RasterizationStage::~RasterizationStage()
 
 void RasterizationStage::onContextInit(AbstractGLContext *)
 {
+    renderInterface.onContextInit();
 }
 
-void RasterizationStage::onProcess(AbstractGLContext *)
+void RasterizationStage::onContextDeinit(AbstractGLContext *)
 {
-    if (!*rasterize)
+    renderInterface.onContextDeinit();
+}
+
+void RasterizationStage::onProcess()
+{
+    if (!renderInterface.allRenderTargetsCompatible())
     {
+        cppassist::warning("gloperate") << "Framebuffer attachments not compatible";
+
         return;
     }
 
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    const glm::vec4 & viewport = *renderInterface.deviceViewport;
+    // Check if rasterization is enabled
+    if (*rasterize)
+    {
+        // Set viewport
+        const glm::vec4 & viewport = *renderInterface.viewport;
+        gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
-    gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+        // Configure FBO
+        auto fbo = renderInterface.obtainFBO();
 
-    // bind FBO
-    fbo->bind(gl::GL_FRAMEBUFFER);
+        // Bind FBO
+        fbo->bind(gl::GL_FRAMEBUFFER);
 
-    // Clear background
-    const glm::vec3 & color = *renderInterface.backgroundColor;
-    gl::glClearColor(color.r, color.g, color.b, 1.0f);
-    gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
-    gl::glEnable(gl::GL_SCISSOR_TEST);
-    gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
-    gl::glDisable(gl::GL_SCISSOR_TEST);
+        fbo->printStatus(true);
 
+        // Render the drawable
+        (*drawable)->draw();
 
+        // Unbind FBO
+        fbo->unbind();
+    }
 
-    // draw with the RenderPass
-    (*renderPass)->draw();
-
-    // unbind FBO
-    globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
-
-    fboOut.setValue(fbo);
-    colorTextureOut.setValue(*colorTexture);
+    // Update outputs
+    renderInterface.updateRenderTargetOutputs();
 }
 
 

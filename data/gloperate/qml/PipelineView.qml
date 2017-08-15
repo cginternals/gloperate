@@ -14,8 +14,8 @@ Item
 
     signal closed()
 
-    property var    pipelineInterface: null ///< Interface for communicating with the actual pipeline
-    property string path:              ''   ///< Path to pipeline
+    property var    properties: null ///< Interface for communicating with the actual properties
+    property string path:       ''   ///< Path to pipeline
 
     implicitWidth:  pipelineEditor.implicitWidth
     implicitHeight: pipelineEditor.implicitHeight
@@ -26,7 +26,7 @@ Item
 
         anchors.fill: parent
 
-        pipelineInterface: page.pipelineInterface
+        properties: page.properties
 
         Button
         {
@@ -58,8 +58,7 @@ Item
                 anchors.fill: parent
                 anchors.margins: 1
 
-                //path: 'DemoPipeline.TextureLoadStage.texture'
-                path: 'DemoPipeline.FramebufferStage1.colorTexture'
+                path: 'ShapeDemo.Framebuffer.colorTexture'
             }
 
             MouseArea
@@ -70,8 +69,11 @@ Item
         }
     }
 
-    Component.onCompleted:
+    onVisibleChanged:
     {
-        pipelineEditor.load(path);
+        if (visible)
+        {
+            pipelineEditor.load(path);
+        }
     }
 }

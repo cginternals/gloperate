@@ -16,7 +16,7 @@ namespace gloperate
 *    The cached value is intended for use in lazy initialization, getter or setters
 *    and removes the overhead of adding 'dirty', 'valid', or 'update' flags to your
 *    class. Especially when having multiple values, cached value allows per value
-*    validity flags. Note: all setters are of this class are const, simplifying const
+*    validity flags. Note: all setters of this class are const, simplifying const
 *    getters in classes by holding a mutable value as member.
 *
 *    Typeical usage of the CachedValue:
@@ -72,6 +72,13 @@ public:
     */
     CachedValue(T && value);
 
+    /**
+    *  @brief
+    *    Check if vaue is valid
+    *
+    *  @return
+    *    'true' if value is valid, else 'false'
+    */
     bool isValid() const;
 
     /**
@@ -136,4 +143,4 @@ protected:
 } // namespace gloperate
 
 
-#include "CachedValue.inl"
+#include <gloperate/base/CachedValue.inl>

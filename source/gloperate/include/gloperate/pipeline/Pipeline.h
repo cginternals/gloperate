@@ -37,6 +37,7 @@ namespace gloperate
 class GLOPERATE_API Pipeline : public Stage
 {
     friend class Stage;
+    friend class Canvas;
 
 
 public:
@@ -126,18 +127,6 @@ public:
     */
     void invalidateStageOrder();
 
-    /**
-    *  @brief
-    *    Get a slot of this pipeline or a subpipeline
-    *
-    *  @param[in] path
-    *    Path to the slot from this pipeline. Can contain the name of this pipeline as first element.
-    *
-    *  @return
-    *    Slot, nullptr if not found
-    */
-    AbstractSlot * getSlot(const std::string & path);
-
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
@@ -158,18 +147,9 @@ protected:
     // Virtual Stage interface
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess() override;
     virtual void onInputValueChanged(AbstractSlot * slot) override;
     virtual void onOutputRequiredChanged(AbstractSlot * slot) override;
-
-
-protected:
-    // Scripting functions
-    virtual cppexpose::Variant scr_getDescription() override;
-    std::string scr_createStage(const std::string & className, const std::string & name);
-    void scr_removeStage(const std::string & name);
-    void scr_createConnection(const std::string & from, const std::string & to);
-    void scr_removeConnection(const std::string & to);
 
 
 protected:

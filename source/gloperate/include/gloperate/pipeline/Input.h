@@ -89,6 +89,10 @@ protected:
     // Virtual Typed<T> interface
     virtual void onValueChanged(const T & value) override;
 
+    // Virtual AbstractProperty interface
+    virtual void onOptionChanged(const std::string & option) override;
+
+
 protected:
     // Data
     std::map<std::thread::id, bool> m_cycleGuard; ///< Protection against cyclic propagation of change-events (one per thread to be thread-safe)

@@ -18,25 +18,22 @@ namespace gloperate_text
 
 GlyphRenderStage::GlyphRenderStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "GlyphRenderStage", name)
+, renderInterface(this)
 , vertexCloud("vertexCloud", this)
-, viewport("viewport", this)
-, targetFramebuffer("targetFramebuffer", this)
-, rendered("rendered", this)
 {
 }
-
 
 GlyphRenderStage::~GlyphRenderStage()
 {
 }
 
-
 void GlyphRenderStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    renderInterface.onContextInit();
+
     m_vSource = GlyphRenderer::vertexShaderSource();
     m_gSource = GlyphRenderer::geometryShaderSource();
     m_fSource = GlyphRenderer::fragmentShaderSource();
-
 
     m_vertexShader = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER, m_vSource.get());
     m_geometryShader = cppassist::make_unique<globjects::Shader>(gl::GL_GEOMETRY_SHADER, m_gSource.get());
@@ -50,17 +47,16 @@ void GlyphRenderStage::onContextInit(gloperate::AbstractGLContext *)
     m_renderer = cppassist::make_unique<GlyphRenderer>(m_program.get());
 }
 
-
 void GlyphRenderStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
+    renderInterface.onContextDeinit();
 }
 
-
-void GlyphRenderStage::onProcess(gloperate::AbstractGLContext *)
+void GlyphRenderStage::onProcess()
 {
-    gl::glViewport(viewport->x, viewport->y, viewport->z, viewport->w);
+    gl::glViewport(renderInterface.viewport->x, renderInterface.viewport->y, renderInterface.viewport->z, renderInterface.viewport->w);
 
-    auto fbo = targetFramebuffer.value();
+    auto fbo = renderInterface.obtainFBO();
     fbo->bind();
 
     gl::glDepthMask(gl::GL_FALSE);
@@ -77,7 +73,7 @@ void GlyphRenderStage::onProcess(gloperate::AbstractGLContext *)
 
     fbo->unbind();
 
-    rendered.setValue(true);
+    renderInterface.updateRenderTargetOutputs();
 }
 
 

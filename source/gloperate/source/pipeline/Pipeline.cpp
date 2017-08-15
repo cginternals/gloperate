@@ -31,11 +31,6 @@ Pipeline::Pipeline(Environment * environment, const std::string & className, con
 : Stage(environment, className, name)
 , m_sorted(false)
 {
-    // Register functions
-    addFunction("createStage",      this, &Pipeline::scr_createStage);
-    addFunction("removeStage",      this, &Pipeline::scr_removeStage);
-    addFunction("createConnection", this, &Pipeline::scr_createConnection);
-    addFunction("removeConnection", this, &Pipeline::scr_removeConnection);
 }
 
 Pipeline::~Pipeline()
@@ -147,56 +142,6 @@ void Pipeline::invalidateStageOrder()
     m_sorted = false;
 }
 
-AbstractSlot * Pipeline::getSlot(const std::string & path)
-{
-    std::vector<std::string> names = cppassist::string::split(path, '.');
-
-    Stage * stage = this;
-
-    for (size_t i=0; i<names.size(); i++)
-    {
-        std::string name = names[i];
-
-        // Ignore own stage name at the beginning
-        if (name == stage->name() && i == 0)
-        {
-            continue;
-        }
-
-        // Check if stage is a pipeline and has a substage with the given name
-        if (stage->isPipeline())
-        {
-            Pipeline * pipeline = static_cast<Pipeline *>(stage);
-            Stage * sub = pipeline->stage(name);
-
-            if (sub)
-            {
-                stage = sub;
-                continue;
-            }
-        }
-
-        // If there is no more substage but more names to fetch, return error
-        if (i != names.size() - 1)
-        {
-            return nullptr;
-        }
-
-        // Check if stage has a slot with that name
-        auto inputSlot = stage->input(name);
-        if (inputSlot) {
-            return inputSlot;
-        }
-
-        auto outputSlot = stage->output(name);
-        if (outputSlot) {
-            return outputSlot;
-        }
-    }
-
-    return nullptr;
-}
-
 bool Pipeline::isPipeline() const
 {
     return true;
@@ -290,7 +235,7 @@ void Pipeline::onContextDeinit(AbstractGLContext * context)
     }
 }
 
-void Pipeline::onProcess(AbstractGLContext * context)
+void Pipeline::onProcess()
 {
     if (!m_sorted) {
         sortStages();
@@ -299,7 +244,7 @@ void Pipeline::onProcess(AbstractGLContext * context)
     for (auto stage : m_stages)
     {
         if (stage->needsProcessing()) {
-            stage->process(context);
+            stage->process();
         }
         else
         {
@@ -316,75 +261,6 @@ void Pipeline::onInputValueChanged(AbstractSlot *)
 void Pipeline::onOutputRequiredChanged(AbstractSlot *)
 {
     // Not necessary for pipelines (handled by inner connections)
-}
-
-cppexpose::Variant Pipeline::scr_getDescription()
-{
-    // Get stage description
-    cppexpose::Variant obj = Stage::scr_getDescription();
-
-    // List stages
-    Variant stages = Variant::array();
-
-    for (auto stage : m_stages)
-    {
-        stages.asArray()->push_back(stage->name());
-    }
-
-    (*obj.asMap())["stages"] = stages;
-
-    // Return pipeline description
-    return obj;
-}
-
-std::string Pipeline::scr_createStage(const std::string & className, const std::string & name)
-{
-    // Get component manager
-    auto componentManager = m_environment->componentManager();
-
-    // Get component for the requested stage
-    auto component = componentManager->component<gloperate::Stage>(className);
-
-    if (component)
-    {
-        // Create stage
-        auto stage = component->createInstance(m_environment, name);
-        auto stagePtr = stage.get();
-
-        addStage(std::move(stage));
-
-        return stagePtr->name();
-    }
-
-    return "";
-}
-
-void Pipeline::scr_removeStage(const std::string & name)
-{
-    Stage * stage = this->stage(name);
-
-    removeStage(stage);
-}
-
-void Pipeline::scr_createConnection(const std::string & from, const std::string & to)
-{
-    AbstractSlot * slotTo   = getSlot(to);
-    AbstractSlot * slotFrom = getSlot(from);
-
-    if (slotTo && slotFrom)
-    {
-        slotTo->connect(slotFrom);
-    }
-}
-
-void Pipeline::scr_removeConnection(const std::string & to)
-{
-    AbstractSlot * slotTo = getSlot(to);
-
-    if (slotTo)
-    {
-        slotTo->disconnect();
-    }
 }
 
 

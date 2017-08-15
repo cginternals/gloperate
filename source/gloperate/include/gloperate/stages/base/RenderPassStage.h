@@ -5,20 +5,21 @@
 #include <cppexpose/plugin/plugin_api.h>
 #include <cppexpose/signal/ScopedConnection.h>
 
+#include <glm/glm.hpp>
+
+#include <glbinding/gl/types.h>
+
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 
 
-namespace globjects {
-
-
-class Program;
-class State;
-
-
-} // namespace globjects
+namespace globjects
+{
+    class Program;
+    class State;
+}
 
 
 namespace gloperate
@@ -35,10 +36,12 @@ class RenderPass;
 *    Stage that creates a render pass
 *
 *    Additional inputs of the following types can be created dynamically:
-*        Type            -               Description
-*    globjects::Texture  -  all textures are attached via their (input) name
+*
+*    Type                   Description
+*    ------------------     -----------
+*    globjects::Texture  -  textures are attached via their input name
 *    globjects::Buffer   -  buffers are added as shader storage buffers
-*    uniforms of type T  -  are updated automatically, see createNewUniformInput()
+*    uniforms of type T  -  other types are added as uniforms via their input name
 */
 class GLOPERATE_API RenderPassStage : public Stage
 {
@@ -56,14 +59,23 @@ public:
 
 public:
     // Inputs
-    Input<gloperate::AbstractDrawable *> drawable;      ///< the drawable to be drawn
-    Input<globjects::Program *> program;        ///< the program used for rendering
-    Input<gloperate::Camera *> camera;          ///< the input camera
+    Input<gloperate::AbstractDrawable *> drawable;    ///< The drawable to be drawn
+    Input<globjects::Program *>          program;     ///< The program used for rendering
+    Input<gloperate::Camera *>           camera;      ///< The input camera
+    Input<glm::mat4>                     modelMatrix; ///< Transformation matrix
+
+    Input<bool>       depthTest; ///< Enable depth test?
+    Input<bool>       depthMask; ///< Enable writing to the depth buffer?
+    Input<gl::GLenum> depthFunc; ///< Depth function (e.g., gl::GL_LEQUAL)
+    Input<bool>       culling;   ///< Enable culling?
+    Input<gl::GLenum> cullFace;  ///< Cull face (e.g., gl::GL_BACK or gl::GL_FRONT)
+    Input<gl::GLenum> frontFace; ///< Front face (e.g., gl::GL_CCW)
+    Input<bool>       blending;  ///< Enable blending?
 
     // Additional dynamic inputs can be created, see class description
 
     // Outputs
-    Output<gloperate::RenderPass *> renderPass; ///< The created and configured RenderPass
+    Output<gloperate::AbstractDrawable *> renderPass; ///< The created and configured RenderPass
 
 
 public:
@@ -101,16 +113,21 @@ public:
 
 protected:
     // Virtual Stage interface
-    virtual void onProcess(AbstractGLContext * context) override;
+    virtual void onProcess() override;
     void onContextInit(AbstractGLContext * content) override;
 
+    // Helper functions
+    void setUniformValue(globjects::Program * program, AbstractSlot * input);
+
+
 protected:
-    std::unique_ptr<gloperate::RenderPass> m_renderPass;                ///< RenderPass object
-    std::unique_ptr<globjects::State> m_beforeState;
+    // OpenGL objects
+    std::unique_ptr<gloperate::RenderPass> m_renderPass;  ///< The created render pass
+    std::unique_ptr<globjects::State>      m_beforeState; ///< OpenGL states for rendering
+
+    // Signal connections
     cppexpose::ScopedConnection m_inputAddedConnection;
     cppexpose::ScopedConnection m_inputRemovedConnection;
-
-    std::unordered_map<std::string, std::function<void()>> uniformSetters; ///< Stores a lambda expression which updates the uniform value
 };
 
 

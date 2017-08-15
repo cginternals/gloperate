@@ -60,13 +60,11 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/base/Application.h
-    ${include_path}/base/UpdateManager.h
     ${include_path}/base/OpenGLWindow.h
     ${include_path}/base/RenderWindow.h
     ${include_path}/base/GLContext.h
     ${include_path}/base/GLContextFactory.h
     ${include_path}/base/Converter.h
-    ${include_path}/base/input.h
 
     ${include_path}/scripting/ECMA26251Completer.h
     ${include_path}/scripting/ECMA26251SyntaxHighlighter.h
@@ -80,14 +78,12 @@ set(headers
 
 set(sources
     ${source_path}/base/Application.cpp
-    ${source_path}/base/UpdateManager.cpp
     ${source_path}/base/OpenGLWindow.cpp
     ${source_path}/base/RenderWindow.cpp
     ${source_path}/base/GLContext.cpp
     ${source_path}/base/GLContext_qt.cpp
     ${source_path}/base/GLContextFactory.cpp
     ${source_path}/base/Converter.cpp
-    ${source_path}/base/input.cpp
     
     ${source_path}/scripting/ECMA26251Completer.cpp
     ${source_path}/scripting/ECMA26251SyntaxHighlighter.cpp

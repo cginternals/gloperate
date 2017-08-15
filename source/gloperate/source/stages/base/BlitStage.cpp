@@ -4,7 +4,8 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 
-#include <globjects/logging.h>
+#include <gloperate/stages/interfaces/RenderInterface.h>
+
 
 namespace gloperate
 {
@@ -12,38 +13,69 @@ namespace gloperate
 
 BlitStage::BlitStage(Environment * environment, const std::string & name)
 :Stage(environment, name)
-, sourceFBO("sourceFBO", this)
+, source("source", this)
 , sourceViewport("sourceViewport", this)
-, destinationFBO("destinationFBO", this)
-, destinationViewport("destinationViewport", this)
-, blittedFBO("blittedFBO", this)
-, blitted("blitted", this)
+, target("target", this)
+, targetViewport("targetViewport", this)
+, minFilter("minFilter", this, gl::GL_LINEAR)
+, magFilter("magFilter", this, gl::GL_NEAREST)
+, targetOut("targetOut", this)
 {
+    setAlwaysProcessed(true);
 }
 
-void BlitStage::onProcess(AbstractGLContext * /*context*/)
+void BlitStage::onContextInit(AbstractGLContext * /*context*/)
 {
-    globjects::Framebuffer * srcFBO = *sourceFBO;
+    m_defaultFBO = globjects::Framebuffer::defaultFBO();
+    m_sourceFBO  = cppassist::make_unique<globjects::Framebuffer>();
+    m_targetFBO  = cppassist::make_unique<globjects::Framebuffer>();
+}
 
-    globjects::Framebuffer * destFBO = *destinationFBO;
+void BlitStage::onContextDeinit(AbstractGLContext * /*context*/)
+{
+    m_defaultFBO = nullptr;
+    m_sourceFBO  = nullptr;
+    m_targetFBO  = nullptr;
+}
 
-    std::array<gl::GLint, 4> srcRect = {{
+void BlitStage::onProcess()
+{
+    if (*source == *target)
+    {
+        targetOut.setValue(*target);
+
+        return;
+    }
+
+    std::array<gl::GLint, 4> sourceRect = {{
         static_cast<gl::GLint>((*sourceViewport).x),
         static_cast<gl::GLint>((*sourceViewport).y),
         static_cast<gl::GLint>((*sourceViewport).z),
         static_cast<gl::GLint>((*sourceViewport).w)
     }};
-    std::array<gl::GLint, 4> destRect = {{
-        static_cast<gl::GLint>((*destinationViewport).x),
-        static_cast<gl::GLint>((*destinationViewport).y),
-        static_cast<gl::GLint>((*destinationViewport).z),
-        static_cast<gl::GLint>((*destinationViewport).w)
+    std::array<gl::GLint, 4> targetRect = {{
+        static_cast<gl::GLint>((*targetViewport).x),
+        static_cast<gl::GLint>((*targetViewport).y),
+        static_cast<gl::GLint>((*targetViewport).z),
+        static_cast<gl::GLint>((*targetViewport).w)
     }};
 
-    srcFBO->blit(gl::GL_COLOR_ATTACHMENT0, srcRect, destFBO, destFBO->id() == 0 ? gl::GL_BACK_LEFT : gl::GL_COLOR_ATTACHMENT0, destRect, gl::GL_COLOR_BUFFER_BIT, gl::GL_LINEAR);
+    globjects::Framebuffer * sourceFBO = RenderInterface::obtainFBO(0, *source, m_sourceFBO.get(), m_defaultFBO.get());
+    globjects::Framebuffer * targetFBO = RenderInterface::obtainFBO(0, *target, m_targetFBO.get(), m_defaultFBO.get());
 
-    blittedFBO.setValue(*destinationFBO);
-    blitted.setValue(true);
+    auto sourceAttachment = source->drawBufferAttachment(0);
+    auto targetAttachment = target->drawBufferAttachment(0);
+
+    if (sourceRect[2] <= targetRect[2] && sourceRect[3] <= targetRect[3])
+    {
+        sourceFBO->blit(sourceAttachment, sourceRect, targetFBO, targetAttachment, targetRect, gl::GL_COLOR_BUFFER_BIT, *magFilter);
+    }
+    else
+    {
+        sourceFBO->blit(sourceAttachment, sourceRect, targetFBO, targetAttachment, targetRect, gl::GL_COLOR_BUFFER_BIT, *minFilter);
+    }
+
+    targetOut.setValue(*target);
 }
 
 

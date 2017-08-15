@@ -1,7 +1,9 @@
 
 #include <gloperate/stages/base/ColorGradientTextureStage.h>
 
-#include <gloperate/base/ColorGradientList.h>
+#include <globjects/Texture.h>
+
+#include <gloperate/rendering/ColorGradientList.h>
 
 
 namespace gloperate
@@ -15,20 +17,40 @@ ColorGradientTextureStage::ColorGradientTextureStage(gloperate::Environment * en
 : Stage(environment, "ColorGradientTextureStage", name)
 , gradients("gradients", this)
 , textureWidth("textureWidth", this, 128)
-, gradientTexture("gradientTexture", this)
+, texture("texture", this)
 {
 }
 
-void ColorGradientTextureStage::onProcess(gloperate::AbstractGLContext * /*context*/)
+ColorGradientTextureStage::~ColorGradientTextureStage()
 {
-    if(!m_gradientTexture)
-    {
-        //generate texture
-        m_gradientTexture = gradients->generateTexture(*textureWidth);
+}
 
-        //update output
-        this->gradientTexture.setValue(m_gradientTexture.get());
+void ColorGradientTextureStage::onContextInit(AbstractGLContext *)
+{
+}
+
+void ColorGradientTextureStage::onContextDeinit(AbstractGLContext *)
+{
+    // Clean up OpenGL objects
+    m_gradientTexture = nullptr;
+}
+
+void ColorGradientTextureStage::onProcess()
+{
+    std::vector<ColorGradientList *> gradientLists;
+
+    for (auto input : inputs())
+    {
+        if (input->type() == typeid(ColorGradientList *))
+        {
+            gradientLists.push_back(static_cast<Input<ColorGradientList *> *>(input)->value());
+        }
     }
+
+    m_gradientTexture = ColorGradientList::generateTexture(gradientLists, *textureWidth);
+
+    // Update output
+    this->texture.setValue(m_gradientTexture.get());
 }
 
 

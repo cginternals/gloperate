@@ -68,14 +68,10 @@ protected:
     // Virtual Stage interface
     virtual void onContextInit(AbstractGLContext * context) override;
     virtual void onContextDeinit(AbstractGLContext * context) override;
-    virtual void onProcess(AbstractGLContext * context) override;
-
-    // Helper functions
-    void loadTexture();
+    virtual void onProcess() override;
 
 
 protected:
-    // Data
     std::unique_ptr<globjects::Texture> m_texture; ///< Texture
 };
 

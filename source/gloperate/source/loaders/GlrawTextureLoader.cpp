@@ -14,14 +14,18 @@
 
 #include <globjects/Texture.h>
 
-#include <gloperate/base/RawFileNameSuffix.h>
+#include <gloperate/loaders/RawFileNameSuffix.h>
+
+
+namespace gloperate
+{
 
 
 CPPEXPOSE_COMPONENT(GlrawTextureLoader, gloperate::AbstractLoader)
 
 
-GlrawTextureLoader::GlrawTextureLoader(gloperate::Environment * environment)
-    : gloperate::Loader<globjects::Texture>(environment)
+GlrawTextureLoader::GlrawTextureLoader(Environment * environment)
+: Loader<globjects::Texture>(environment)
 {
     m_extensions.push_back(".raw");
     m_extensions.push_back(".glraw");
@@ -59,7 +63,7 @@ std::string GlrawTextureLoader::allLoadingTypes() const
     return allTypes;
 }
 
-globjects::Texture * GlrawTextureLoader::load(const std::string & filename, const cppexpose::Variant & /*options*/, std::function<void(int, int)> /*progress*/) const
+globjects::Texture * GlrawTextureLoader::load(const std::string & filename, const cppexpose::Variant &, std::function<void(int, int)>) const
 {
     globjects::Texture * texture = nullptr;
 
@@ -75,6 +79,7 @@ globjects::Texture * GlrawTextureLoader::load(const std::string & filename, cons
 globjects::Texture * GlrawTextureLoader::loadGLRawImage(const std::string & filename) const
 {
     cppassist::DescriptiveRawFile rawFile;
+
     if (!rawFile.load(filename))
         return nullptr;
 
@@ -120,7 +125,8 @@ globjects::Texture * GlrawTextureLoader::loadGLRawImage(const std::string & file
 
 globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filename) const
 {
-    gloperate::RawFileNameSuffix suffix(filename);
+    RawFileNameSuffix suffix(filename);
+
     if (!suffix.isValid())
         return nullptr;
 
@@ -159,3 +165,6 @@ globjects::Texture * GlrawTextureLoader::loadRawImage(const std::string & filena
 
     return texture;
 }
+
+
+} // namespace gloperate

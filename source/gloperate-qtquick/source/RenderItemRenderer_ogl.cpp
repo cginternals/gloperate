@@ -14,10 +14,11 @@
 #include <globjects/Shader.h>
 
 #include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <gloperate/base/Canvas.h>
+
 #include <gloperate-qt/base/GLContext.h>
 
 #include <gloperate-qtquick/RenderItem.h>
-#include <gloperate/base/Canvas.h>
 
 
 namespace gloperate_qtquick
@@ -30,19 +31,14 @@ RenderItemRenderer::RenderItemRenderer(RenderItem * renderItem)
 , m_canvasInitialized(false)
 , m_width(0)
 , m_height(0)
+, m_canvas(renderItem->canvas())
 {
 }
 
 RenderItemRenderer::~RenderItemRenderer()
 {
-    if (!m_renderItem->canvas())
-    {
-        return;
-    }
-
-    // free pipeline as the pipeline got initialized using OpenGL context of this
-    // [TODO]: Reevaluate the destruction / deinitialization chain
-    m_renderItem->canvas()->onContextDeinit();
+    // Deinitialize canvas (must be performed in the render thread!)
+    m_renderItem->canvas()->setOpenGLContext(nullptr);
 }
 
 void RenderItemRenderer::configureFbo(int fboId, unsigned int width, unsigned int height)
@@ -83,17 +79,7 @@ void RenderItemRenderer::initializeFboAttachments()
 
     // Create screen-aligned quad
     m_screenAlignedQuad = cppassist::make_unique<gloperate::ScreenAlignedQuad>();
-
-    // Create shader program
-    m_vertexShaderSource   = m_screenAlignedQuad->vertexShaderSource();
-    m_fragmentShaderSource = m_screenAlignedQuad->fragmentShaderSourceInverted();
-
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   m_vertexShaderSource.get());
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, m_fragmentShaderSource.get());
-
-    m_program = cppassist::make_unique<globjects::Program>();
-    m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
-    m_program->setUniform("source", 0);
+    m_screenAlignedQuad->setInverted(true);
 }
 
 void RenderItemRenderer::renderTexture()
@@ -104,12 +90,8 @@ void RenderItemRenderer::renderTexture()
     gl::glEnable(gl::GL_BLEND);
     gl::glDisable(gl::GL_CULL_FACE);
 
-    gl::glActiveTexture(gl::GL_TEXTURE0);
-    m_texColor->bind();
-
-    m_program->use();
+    m_screenAlignedQuad->setTexture(m_texColor.get());
     m_screenAlignedQuad->draw();
-    m_program->release();
 }
 
 

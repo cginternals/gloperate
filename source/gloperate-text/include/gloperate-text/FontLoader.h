@@ -81,7 +81,7 @@ public:
     *    Get file dialog filter for all loadable file types.
     *
     *  @return
-    *   File dialog filter for all loadable file types.
+    *    File dialog filter for all loadable file types.
     */
     virtual std::vector<std::string> loadingTypes() const override;
 
@@ -90,7 +90,7 @@ public:
     *    Get file dialog filter for all loadable file types as one string.
     *
     *  @return
-    *   File dialog filter for all loadable file types.
+    *    File dialog filter for all loadable file types.
     */
     virtual std::string allLoadingTypes() const override;
 

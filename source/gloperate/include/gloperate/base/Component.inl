@@ -24,23 +24,23 @@ std::unique_ptr<BaseType> Component<BaseType, Type>::createInstance(gloperate::E
 
 
 template <class Type>
-Component<gloperate::Stage, Type>::Component()
+StageComponent<Type>::StageComponent()
 {
 }
 
 template <class Type>
-Component<gloperate::Stage, Type>::~Component()
+StageComponent<Type>::~StageComponent()
 {
 }
 
 template <class Type>
-std::unique_ptr<gloperate::Stage> Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment)
+std::unique_ptr<gloperate::Stage> StageComponent<Type>::createInstance(gloperate::Environment * environment)
 {
     return cppassist::make_unique<Type>(environment);
 }
 
 template <class Type>
-std::unique_ptr<gloperate::Stage> Component<gloperate::Stage, Type>::createInstance(gloperate::Environment * environment, const std::string & name)
+std::unique_ptr<gloperate::Stage> StageComponent<Type>::createInstance(gloperate::Environment * environment, const std::string & name)
 {
     return cppassist::make_unique<Type>(environment, name);
 }

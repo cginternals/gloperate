@@ -1,7 +1,9 @@
 
 #pragma once
 
+
 #include <functional>
+
 #include <cppexpose/typed/TypedEnum.h>
 
 
@@ -21,10 +23,11 @@ enum class LineAnchor : unsigned char
 namespace std
 {
 
+
 template<>
 struct hash<gloperate_text::LineAnchor>
 {
-    std::hash<unsigned char>::result_type operator()(
+    std::hash<unsigned char>::result_type operator() (
         const gloperate_text::LineAnchor & arg) const
     {
         std::hash<unsigned char> hasher;
@@ -32,23 +35,27 @@ struct hash<gloperate_text::LineAnchor>
     }
 };
 
+
 } // namespace std
+
 
 namespace cppexpose
 {
+
 
 template<>
 struct EnumDefaultStrings<gloperate_text::LineAnchor>
 {
     std::map<gloperate_text::LineAnchor, std::string> operator()()
     {
-        return{
-            { gloperate_text::LineAnchor::Ascent, "Ascent" },
-            { gloperate_text::LineAnchor::Center, "Centered" },
+        return {
+            { gloperate_text::LineAnchor::Ascent,   "Ascent" },
+            { gloperate_text::LineAnchor::Center,   "Centered" },
             { gloperate_text::LineAnchor::Baseline, "Baseline" },
-            { gloperate_text::LineAnchor::Descent, "Descent" }
+            { gloperate_text::LineAnchor::Descent,  "Descent" }
         };
     }
 };
+
 
 } // namespace cppexpose

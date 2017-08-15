@@ -18,13 +18,11 @@ FontImporterStage::FontImporterStage(gloperate::Environment * environment, const
 {
 }
 
-
 FontImporterStage::~FontImporterStage()
 {
 }
 
-
-void FontImporterStage::onProcess(gloperate::AbstractGLContext *)
+void FontImporterStage::onProcess()
 {
     auto newFont = std::unique_ptr<FontFace>{ m_environment->resourceManager()->load<FontFace>(fontFilePath.value().path())};
 

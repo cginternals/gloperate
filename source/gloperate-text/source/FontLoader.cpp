@@ -8,13 +8,13 @@
 #include <set>
 #include <map>
 
-#include <glbinding/gl/enum.h>
-
 #include <cppassist/logging/logging.h>
 #include <cppassist/string/conversion.h>
 #include <cppassist/string/manipulation.h>
 #include <cppassist/fs//FilePath.h>
 #include <cppassist/fs/RawFile.h>
+
+#include <glbinding/gl/enum.h>
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
@@ -48,7 +48,6 @@ std::string FontLoader::allLoadingTypes() const
 {
     return "*.fnt";
 }
-
 
 FontFace * FontLoader::load(const std::string & filename
     , const cppexpose::Variant &, const std::function<void(int, int)>) const
