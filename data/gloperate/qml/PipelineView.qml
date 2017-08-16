@@ -59,30 +59,9 @@ Item
             }
         }
 
-        Rectangle
+        PreviewItem
         {
-            x:      100
-            y:      100
-            width:  200
-            height: 200
-
-            color:        'white'
-            border.color: 'black'
-            border.width: 1
-
-            TextureItem
-            {
-                anchors.fill: parent
-                anchors.margins: 1
-
-                path: 'ShapeDemo.Framebuffer.colorTexture'
-            }
-
-            MouseArea
-            {
-                anchors.fill: parent
-                drag.target: parent
-            }
+            path: 'ShapeDemo.Framebuffer.colorTexture'
         }
     }
 
