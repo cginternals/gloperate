@@ -1,6 +1,7 @@
 
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QmlToolbox.Base           1.0
 import QmlToolbox.Controls       1.0
@@ -163,8 +164,7 @@ ApplicationWindow
 
                         onTriggered:
                         {
-                            pipelineView.visible = true;
-                            mainView.visible     = false;
+                            showEditor();
                         }
                     }
                 }
@@ -247,7 +247,8 @@ ApplicationWindow
             settings.stage = name;
             window.stage   = name;
             propertyEditor.update();
-            pipelineView.update();
+            internalPipelineView.update();
+            externalPipelineView.update();
         }
     }
 
@@ -323,19 +324,88 @@ ApplicationWindow
         // Pipeline view
         PipelineView
         {
-            id: pipelineView
+            id: internalPipelineView
 
             anchors.fill: parent
             visible:      false
 
-            properties: gloperatePipeline
-            path:       'root'
+            properties:   gloperatePipeline
+            path:         'root'
+            toggleButton: 'Open in new window'
 
             onClosed:
             {
-                mainView.visible     = true;
-                pipelineView.visible = false;
+                hideEditor();
             }
+
+            onToggled:
+            {
+                toggleEditor();
+            }
+        }
+    }
+
+    // Pipeline view in separate window
+    Window
+    {
+        id: popoutWindow
+
+        title: 'Pipeline Editor'
+
+        PipelineView
+        {
+            id: externalPipelineView
+
+            anchors.fill: parent
+
+            properties:   gloperatePipeline
+            path:         'root'
+            toggleButton: 'Show inside main window'
+
+            onClosed:
+            {
+                hideEditor();
+            }
+
+            onToggled:
+            {
+                toggleEditor();
+            }
+        }
+    }
+
+    // Toggles between internal and external pipeline editor
+    function toggleEditor()
+    {
+        hideEditor();
+        settings.editor = (settings.editor === "internal" ? "external" : "internal");
+        showEditor();
+    }
+
+    // Shows the pipeline editor
+    function showEditor()
+    {
+        if (settings.editor === "internal")
+        {
+            internalPipelineView.visible = true;
+            mainView.visible             = false;
+            internalPipelineView.load();
+        } else {
+            popoutWindow.showMaximized();
+            popoutWindow.raise();
+            externalPipelineView.load();
+        }
+    }
+
+    // Hides the pipeline editor
+    function hideEditor()
+    {
+        if (settings.editor === "internal")
+        {
+            mainView.visible             = true;
+            internalPipelineView.visible = false;
+        } else {
+            popoutWindow.hide();
         }
     }
 
@@ -406,6 +476,7 @@ ApplicationWindow
         property int    logLevel:      3
         property bool   debugMode:     false
         property string panelPosition: 'left'
+        property string editor:        'internal'
         property string stage:         ''
         property string pluginPaths:   ''
 
