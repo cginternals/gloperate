@@ -13,9 +13,11 @@ Item
     id: page
 
     signal closed()
+    signal toggled()
 
-    property var    properties: null ///< Interface for communicating with the actual properties
-    property string path:       ''   ///< Path to pipeline
+    property var    properties:   null ///< Interface for communicating with the actual properties
+    property string path:         ''   ///< Path to pipeline
+    property string toggleButton: ''   ///< Description of the toggle state button
 
     implicitWidth:  pipelineEditor.implicitWidth
     implicitHeight: pipelineEditor.implicitHeight
@@ -39,6 +41,21 @@ Item
             onClicked:
             {
                 page.closed();
+            }
+        }
+
+        Button
+        {
+            text: page.toggleButton
+            visible: page.toggleButton === "" ? false : true
+
+            anchors.top:     parent.top
+            anchors.right:   parent.right
+            anchors.margins: Ui.style.paddingMedium
+
+            onClicked:
+            {
+                page.toggled();
             }
         }
 
@@ -69,12 +86,9 @@ Item
         }
     }
 
-    onVisibleChanged:
+    function load()
     {
-        if (visible)
-        {
-            pipelineEditor.load(path);
-        }
+        pipelineEditor.load(path);
     }
 
     function update()

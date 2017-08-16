@@ -124,6 +124,26 @@ Item
 
                 Label
                 {
+                    Layout.alignment: Qt.AlignRight
+
+                    text: 'Pipeline Editor'
+                }
+
+                ComboBox
+                {
+                    model: [ 'external', 'internal' ]
+
+                    currentIndex: model.indexOf(settings.editor)
+
+                    onActivated:
+                    {
+                        var editor = model[index];
+                        settings.editor = editor;
+                    }
+                }
+
+                Label
+                {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
 
                     text: 'Plugin Paths'
