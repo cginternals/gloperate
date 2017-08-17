@@ -33,17 +33,6 @@ TransparencyRenderingPipeline::TransparencyRenderingPipeline(gloperate::Environm
     addStage(m_transparencyKernelStage.get());
     m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
 
-    /*
-    addStage(m_transparencyRenderStage.get());
-    m_transparencyRenderStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
-    m_transparencyRenderStage->canvasInterface.viewport << canvasInterface.viewport;
-    m_transparencyRenderStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
-    m_transparencyRenderStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
-    m_transparencyRenderStage->transparencyKernel << m_transparencyKernelStage->texture;
-    m_transparencyRenderStage->noiseKernel << m_noiseKernelStage->texture;
-    m_transparencyRenderStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
-    */
-
     addStage(m_programStage.get());
     *m_programStage->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/transparency.vert";
     *m_programStage->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/transparency.frag";

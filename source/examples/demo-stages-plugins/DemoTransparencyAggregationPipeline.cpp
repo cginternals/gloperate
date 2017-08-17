@@ -12,7 +12,7 @@ CPPEXPOSE_COMPONENT(DemoTransparencyAggregationPipeline, gloperate::Stage)
 DemoTransparencyAggregationPipeline::DemoTransparencyAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , canvasInterface(this)
-, multiFrameCount("multiFrameCount", this, 64)
+, multiFrameCount("multiFrameCount", this, 256)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
 , m_transparencyPipeline(cppassist::make_unique<TransparencyRenderingPipeline>(environment))
 {
@@ -22,9 +22,7 @@ DemoTransparencyAggregationPipeline::DemoTransparencyAggregationPipeline(glopera
     //m_transparencyPipeline->multiFrameCount << multiFrameCount;
 
     // Inputs
-    // Inputs
     *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
-
     m_multiFramePipeline->canvasInterface.viewport << canvasInterface.viewport;
     m_multiFramePipeline->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
     m_multiFramePipeline->canvasInterface.frameCounter << canvasInterface.frameCounter;

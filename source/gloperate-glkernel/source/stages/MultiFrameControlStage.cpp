@@ -31,14 +31,16 @@ void MultiFrameControlStage::onProcess()
     m_currentFrame++;
     currentFrame.setValue(m_currentFrame);
 
-    if (m_currentFrame < *multiFrameCount)
+    if (m_currentFrame <= *multiFrameCount)
     {
         aggregationFactor.setValue(1.0f/m_currentFrame);
+        cppassist::debug(3, "gloperate") << "Aggregating frame " << m_currentFrame << " of " << *multiFrameCount << " with factor " << *aggregationFactor;
     }
     else
     {
         aggregationFactor.setValue(0.0f);
         setAlwaysProcessed(false);
+        cppassist::debug(3, "gloperate") << "Finished Aggregation";
     }
 }
 

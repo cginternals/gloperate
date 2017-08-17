@@ -1,3 +1,7 @@
+
+#ifndef RANDOM
+#define RANDOM
+
 // A single iteration of Bob Jenkins' One-At-A-Time hashing algorithm.
 uint hash( uint x ) {
      x += ( x << 10u );
@@ -32,3 +36,5 @@ float random( float x, float y ) { return floatConstruct(hash(floatBitsToUint(ve
 float random( vec2  v ) { return floatConstruct(hash(floatBitsToUint(v))); }
 float random( vec3  v ) { return floatConstruct(hash(floatBitsToUint(v))); }
 float random( vec4  v ) { return floatConstruct(hash(floatBitsToUint(v))); }
+
+#endif // RANDOM

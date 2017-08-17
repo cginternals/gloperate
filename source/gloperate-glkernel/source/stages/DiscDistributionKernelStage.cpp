@@ -28,7 +28,7 @@ vec2 pushCorners(const vec2 & v)
     if (std::max(std::abs(v.x), std::abs(v.y)) < 1e-10f)
         return v;
 
-    vec2 maxVec = v / std::max(v.x, v.y);
+    vec2 maxVec = v / std::max(std::abs(v.x), std::abs(v.y));
     float maxLen = length(maxVec);
     return v / maxLen;
 }
