@@ -861,6 +861,15 @@ cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::st
             // Include options
             const VariantMap & options = slot->options();
 
+            // Hide render targets from property editor by default
+            if (slot->type() == typeid(gloperate::ColorRenderTarget *)
+                    || slot->type() == typeid(gloperate::DepthRenderTarget *)
+                    || slot->type() == typeid(gloperate::StencilRenderTarget *)
+                    || slot->type() == typeid(gloperate::DepthStencilRenderTarget *))
+            {
+                (*status.asMap())["hidden"] = Variant::fromValue(true);
+            }
+
             for (auto it : options)
             {
                 std::string key = it.first;
