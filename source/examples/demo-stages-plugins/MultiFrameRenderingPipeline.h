@@ -113,14 +113,16 @@ protected:
     // Rendering
     std::unique_ptr<GeometryImporterStage>                                 m_renderGeometryStage;              ///< geometry for rendering step
     std::unique_ptr<gloperate::ProgramStage>                               m_renderProgramStage;               ///< shader program for rendering step
-    std::unique_ptr<gloperate::Camera>                                     m_camera;                           ///< camera for rendering step
     std::unique_ptr<gloperate::RenderPassStage>                            m_renderPassStage;                  ///< render pass for rendering step
     std::unique_ptr<gloperate::ClearStage>                                 m_renderClearStage;                 ///< FBO clear for rendering step
     std::unique_ptr<gloperate::RasterizationStage>                         m_renderRasterizationStage;         ///< rasterization for rendering step
-    std::unique_ptr<gloperate::Quad>                                       m_quad;                             ///< geometry for postprocessing step
-    std::unique_ptr<globjects::NamedString>                                m_ssaoNamedString;                  ///< named string for shader include
     std::unique_ptr<gloperate::ProgramStage>                               m_postprocessingProgramStage;       ///< shader program for postprocessing step
     std::unique_ptr<gloperate::RenderPassStage>                            m_postprocessingPassStage;          ///< render pass for postprocessing step
     std::unique_ptr<gloperate::ClearStage>                                 m_postprocessingClearStage;         ///< FBO clear for postprocessing step
     std::unique_ptr<gloperate::RasterizationStage>                         m_postprocessingRasterizationStage; ///< rasterization for postprocessing step
+
+    // Rendering ressources
+    std::unique_ptr<globjects::NamedString>                                m_ssaoNamedString; ///< named string for shader include
+    std::unique_ptr<gloperate::Camera>                                     m_camera;          ///< camera for rendering step
+    std::unique_ptr<gloperate::Quad>                                       m_quad;            ///< geometry for postprocessing step
 };
