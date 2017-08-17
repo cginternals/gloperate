@@ -51,7 +51,7 @@ void QmlScriptContext::addGlobalObject(cppexpose::Object * obj)
     m_globalObjWrappers[obj] = globalObjWrapper;
 
     // Add global object
-    m_engine->globalObject().setProperty(QString::fromStdString(obj->name()), globalObjWrapper->wrapObject());
+    m_engine->rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant::fromValue(globalObjWrapper->wrapObject()));
 }
 
 void QmlScriptContext::removeGlobalObject(cppexpose::Object * obj)
@@ -62,8 +62,8 @@ void QmlScriptContext::removeGlobalObject(cppexpose::Object * obj)
         return;
     }
 
-    // Remove global object
-    m_engine->globalObject().deleteProperty(QString::fromStdString(obj->name()));
+    // Remove global object by setting it to null
+    m_engine->rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant{});
 
     // Destroy object wrapper
     delete m_globalObjWrappers[obj];
