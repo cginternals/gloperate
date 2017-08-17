@@ -656,6 +656,11 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
                 (*connection.asMap())["from"] = from;
                 (*connection.asMap())["to"]   = to;
 
+                if (slot->isFeedback())
+                {
+                    (*connection.asMap())["feedback"] = true;
+                }
+
                 // Add connection
                 obj.asArray()->push_back(connection);
             }
