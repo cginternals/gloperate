@@ -163,7 +163,7 @@ public:
     }
 
     template< typename T>
-    void operator()()
+    void apply()
     {
         auto clearValueInputT = dynamic_cast<const Input<T> *>(m_clearValueInput);
 

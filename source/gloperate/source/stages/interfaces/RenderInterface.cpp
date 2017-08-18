@@ -86,17 +86,18 @@ RenderInterface::~RenderInterface()
 {
 }
 
-void RenderInterface::updateRenderTargetOutputs() {
-    pairwiseRenderTargetsDo([](Input<ColorRenderTarget *> * input, Output<ColorRenderTarget *> * output) {
+void RenderInterface::updateRenderTargetOutputs()
+{
+    pairwiseColorRenderTargetsDo([](Input<ColorRenderTarget *> * input, Output<ColorRenderTarget *> * output) {
         output->setValue(**input);
     });
-    pairwiseRenderTargetsDo([](Input<DepthRenderTarget *> * input, Output<DepthRenderTarget *> * output) {
+    pairwiseDepthRenderTargetsDo([](Input<DepthRenderTarget *> * input, Output<DepthRenderTarget *> * output) {
         output->setValue(**input);
     });
-    pairwiseRenderTargetsDo([](Input<DepthStencilRenderTarget *> * input, Output<DepthStencilRenderTarget *> * output) {
+    pairwiseDepthStencilRenderTargetsDo([](Input<DepthStencilRenderTarget *> * input, Output<DepthStencilRenderTarget *> * output) {
         output->setValue(**input);
     });
-    pairwiseRenderTargetsDo([](Input<StencilRenderTarget *> * input, Output<StencilRenderTarget *> * output) {
+    pairwiseStencilRenderTargetsDo([](Input<StencilRenderTarget *> * input, Output<StencilRenderTarget *> * output) {
         output->setValue(**input);
     });
 }
@@ -385,7 +386,7 @@ void RenderInterface::addRenderTargetOutput(Output<StencilRenderTarget *> * inpu
     m_stencilRenderTargetOutputs.push_back(input);
 }
 
-void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<ColorRenderTarget *> *, Output<ColorRenderTarget *> *)> callback, bool includeIncompletePairs)
+void RenderInterface::pairwiseColorRenderTargetsDo(std::function<void(Input<ColorRenderTarget *> *, Output<ColorRenderTarget *> *)> callback, bool includeIncompletePairs)
 {
     const auto end = includeIncompletePairs
         ? std::max(m_colorRenderTargetInputs.size(), m_colorRenderTargetOutputs.size())
@@ -397,7 +398,7 @@ void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<ColorRend
     }
 }
 
-void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<DepthRenderTarget *> *, Output<DepthRenderTarget *> *)> callback, bool includeIncompletePairs)
+void RenderInterface::pairwiseDepthRenderTargetsDo(std::function<void(Input<DepthRenderTarget *> *, Output<DepthRenderTarget *> *)> callback, bool includeIncompletePairs)
 {
     const auto end = includeIncompletePairs
         ? std::max(m_depthRenderTargetInputs.size(), m_depthRenderTargetOutputs.size())
@@ -409,7 +410,7 @@ void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<DepthRend
     }
 }
 
-void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<DepthStencilRenderTarget *> *, Output<DepthStencilRenderTarget *> *)> callback, bool includeIncompletePairs)
+void RenderInterface::pairwiseDepthStencilRenderTargetsDo(std::function<void(Input<DepthStencilRenderTarget *> *, Output<DepthStencilRenderTarget *> *)> callback, bool includeIncompletePairs)
 {
     const auto end = includeIncompletePairs
         ? std::max(m_depthStencilRenderTargetInputs.size(), m_depthStencilRenderTargetOutputs.size())
@@ -421,7 +422,7 @@ void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<DepthSten
     }
 }
 
-void RenderInterface::pairwiseRenderTargetsDo(std::function<void(Input<StencilRenderTarget *> *, Output<StencilRenderTarget *> *)> callback, bool includeIncompletePairs)
+void RenderInterface::pairwiseStencilRenderTargetsDo(std::function<void(Input<StencilRenderTarget *> *, Output<StencilRenderTarget *> *)> callback, bool includeIncompletePairs)
 {
     const auto end = includeIncompletePairs
         ? std::max(m_stencilRenderTargetInputs.size(), m_stencilRenderTargetOutputs.size())
