@@ -31,16 +31,18 @@ template <typename T>
 std::vector<Input<T> *> Stage::inputs() const
 {
     auto result = std::vector<Input<T> *>{};
-    
+
     // We do not reserve a heuristically derived number of elements as we assume
     // the vector growing strategy would handle most cases efficiently
     // result.reserve(inputs().size() / 2);
-    
+
     for (auto input : inputs())
     {
-        if (input->type() == typeid(T))
+        auto * typedInput = dynamic_cast<Input<T> *>(input);
+
+        if (typedInput)
         {
-            result.push_back(static_cast<Input<T> *>(input));
+            result.push_back(typedInput);
         }
     }
 
@@ -71,16 +73,18 @@ template <typename T>
 std::vector<Output<T> *> Stage::outputs() const
 {
     auto result = std::vector<Output<T> *>{};
-    
+
     // We do not reserve a heuristically derived number of elements as we assume
     // the vector growing strategy would handle most cases efficiently
     // result.reserve(outputs().size() / 2);
-    
+
     for (auto output : outputs())
     {
-        if (output->type() == typeid(T))
+        auto * typedOutput = dynamic_cast<Output<T> *>(output);
+
+        if (typedOutput)
         {
-            result.push_back(static_cast<Output<T> *>(output));
+            result.push_back(typedOutput);
         }
     }
 
