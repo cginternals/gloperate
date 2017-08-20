@@ -301,7 +301,7 @@ void ClearStage::reprocessInputs()
         // Find next input that defines a clear value
         skipUntil(clearValueIt, m_inputs.end(), [] (AbstractSlot * input)
         {
-            return input->isOfAnyType<Color, float, int, std::pair<float, int>>();
+            return input->isOfAnyType<Color, float, int, std::pair<float, int>, glm::vec4, glm::ivec4, glm::uvec4>();
         });
 
         // Find next input that defines a render target

@@ -55,7 +55,7 @@ public:
     *  @brief
     *    The list of supported types for framebuffer clearing
     */
-    using SupportedClearValueTypes = cppassist::TypeList<int, float, std::pair<float, int>, Color>;
+    using SupportedClearValueTypes = cppassist::TypeList<int, float, std::pair<float, int>, Color, glm::vec4, glm::ivec4, glm::uvec4>;
 
 
 public:
