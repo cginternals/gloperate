@@ -148,7 +148,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     /* Hack Start */
     shapeColorOutput->valueInvalidated.onFire([=]() {
         m_clear->renderInterface.colorRenderTargetOutput(0)->invalidate();
-        m_clear->renderInterface.depthRenderTargetOutput(0)->invalidate();
+        // m_clear->renderInterface.depthRenderTargetOutput(0)->invalidate();
     });
     /* Hack End */
 

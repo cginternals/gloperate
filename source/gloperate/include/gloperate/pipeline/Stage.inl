@@ -40,6 +40,13 @@ std::vector<Input<T> *> Stage::inputs() const
     {
         auto * typedInput = dynamic_cast<Input<T> *>(input);
 
+        // [TODO] This workaround is currently needed on macos for Input<cppassist::FilePath>,
+        //        because the dynamic cast fails.
+        if (!typedInput && input->type() == typeid(T))
+        {
+            typedInput = static_cast<Input<T> *>(input);
+        }
+
         if (typedInput)
         {
             result.push_back(typedInput);
@@ -81,6 +88,13 @@ std::vector<Output<T> *> Stage::outputs() const
     for (auto output : outputs())
     {
         auto * typedOutput = dynamic_cast<Output<T> *>(output);
+
+        // [TODO] This workaround is currently needed on macos for Input<cppassist::FilePath>,
+        //        because the dynamic cast fails.
+        if (!typedOutput && output->type() == typeid(T))
+        {
+            typedOutput = static_cast<Output<T> *>(input);
+        }
 
         if (typedOutput)
         {
