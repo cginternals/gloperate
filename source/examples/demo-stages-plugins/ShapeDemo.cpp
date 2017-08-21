@@ -166,7 +166,8 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Colorize rasterization stage
     addStage(m_colorizeRasterization.get());
-    m_colorizeRasterization->createInput("ColorAttachment") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    m_colorizeRasterization->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    //m_colorizeRasterization->createInput("Depth") << *createInput<gloperate::DepthRenderTarget *>("Depth"); // This example doesn't need a depth buffer for postprocessing
     m_colorizeRasterization->renderInterface.viewport << canvasInterface.viewport;
     m_colorizeRasterization->drawable << m_colorizeRenderPass->renderPass;
 

@@ -28,6 +28,7 @@
 #include <gloperate/rendering/StencilRenderTarget.h>
 #include <gloperate/rendering/AttachmentType.h>
 #include <gloperate/stages/base/BlitStage.h>
+#include <gloperate/stages/base/RenderbufferRenderTargetStage.h>
 
 
 using namespace cppassist;
@@ -54,10 +55,15 @@ Canvas::Canvas(Environment * environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
 , m_timeDelta(0.0f)
+, m_colorRenderTargetStage(cppassist::make_unique<RenderbufferRenderTargetStage>(environment))
+, m_depthRenderTargetStage(cppassist::make_unique<RenderbufferRenderTargetStage>(environment))
+, m_stencilRenderTargetStage(cppassist::make_unique<RenderbufferRenderTargetStage>(environment))
+, m_depthStencilRenderTargetStage(cppassist::make_unique<RenderbufferRenderTargetStage>(environment))
 , m_blitStage(cppassist::make_unique<BlitStage>(environment, "FinalBlit"))
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
 , m_replaceStage(false)
+, m_targetFBOColorTarget(cppassist::make_unique<ColorRenderTarget>())
 , m_colorTarget(cppassist::make_unique<ColorRenderTarget>())
 , m_depthTarget(cppassist::make_unique<DepthRenderTarget>())
 , m_depthStencilTarget(cppassist::make_unique<DepthStencilRenderTarget>())
@@ -79,6 +85,11 @@ Canvas::Canvas(Environment * environment)
 
     // Register canvas
     m_environment->registerCanvas(this);
+
+    m_colorRenderTargetStage->internalFormat = gl::GL_RGBA8;
+    m_depthRenderTargetStage->internalFormat = gl::GL_DEPTH_COMPONENT;
+    m_stencilRenderTargetStage->internalFormat = gl::GL_STENCIL;
+    m_depthStencilRenderTargetStage->internalFormat = gl::GL_DEPTH24_STENCIL8;
 }
 
 Canvas::~Canvas()
@@ -159,6 +170,10 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
         }
 
         m_blitStage->deinitContext(m_openGLContext);
+        m_colorRenderTargetStage->deinitContext(m_openGLContext);
+        m_depthRenderTargetStage->deinitContext(m_openGLContext);
+        m_stencilRenderTargetStage->deinitContext(m_openGLContext);
+        m_depthStencilRenderTargetStage->deinitContext(m_openGLContext);
 
         m_openGLContext = nullptr;
     }
@@ -176,6 +191,10 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
         }
 
         m_blitStage->initContext(m_openGLContext);
+        m_colorRenderTargetStage->initContext(m_openGLContext);
+        m_depthRenderTargetStage->initContext(m_openGLContext);
+        m_stencilRenderTargetStage->initContext(m_openGLContext);
+        m_depthStencilRenderTargetStage->initContext(m_openGLContext);
     }
 
     // Reset status
@@ -288,72 +307,34 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         m_replaceStage = false;
     }
 
-    // Extract default color and depth buffer from FBO
     if (targetFBO->isDefault())
     {
-        m_colorTarget->setTarget(gl::GL_BACK_LEFT);
-        m_depthTarget->setTarget(gl::GL_DEPTH_ATTACHMENT);
-        m_stencilTarget->setTarget(gl::GL_STENCIL_ATTACHMENT);
+        m_targetFBOColorTarget->setTarget(gl::GL_BACK_LEFT);
     }
     else
     {
-        unsigned int i = 0;
-        globjects::FramebufferAttachment * colorAttachment = nullptr;
-        while (i < 16 && colorAttachment == nullptr)
-        {
-            colorAttachment = targetFBO->getAttachment(gl::GL_COLOR_ATTACHMENT0+i);
-        }
-        const auto depthAttachment = targetFBO->getAttachment(gl::GL_DEPTH_ATTACHMENT);
-        const auto stencilAttachment = targetFBO->getAttachment(gl::GL_STENCIL_ATTACHMENT);
-        const auto depthStencilAttachment = targetFBO->getAttachment(gl::GL_DEPTH_STENCIL_ATTACHMENT);
-
-        if (colorAttachment)
-        {
-            m_colorTarget->setTarget(colorAttachment);
-        }
-        else
-        {
-            m_colorTarget->releaseTarget();
-        }
-        if (depthAttachment)
-        {
-            m_depthTarget->setTarget(depthAttachment);
-        }
-        else
-        {
-            m_depthTarget->releaseTarget();
-        }
-
-        if (stencilAttachment)
-        {
-            m_stencilTarget->setTarget(stencilAttachment);
-        }
-        else
-        {
-            m_stencilTarget->releaseTarget();
-        }
-        if (depthStencilAttachment)
-        {
-            m_depthStencilTarget->setTarget(depthStencilAttachment);
-        }
-        else
-        {
-            m_depthStencilTarget->releaseTarget();
-        }
+        m_targetFBOColorTarget->setTarget(targetFBO->getAttachment(gl::GL_COLOR_ATTACHMENT0));
     }
 
+    ColorRenderTarget * colorRenderTarget = nullptr;
+    DepthRenderTarget * depthRenderTarget = nullptr;
+    StencilRenderTarget * stencilRenderTarget = nullptr;
+    DepthStencilRenderTarget * depthStencilRenderTarget = nullptr;
+
+    determineRenderTargets(targetFBO, colorRenderTarget, depthRenderTarget, stencilRenderTarget, depthStencilRenderTarget);
+
     // Update render stage input render targets
-    m_renderStage->forAllInputs<gloperate::ColorRenderTarget *>([this](Input<ColorRenderTarget *> * input) {
-        input->setValue(m_colorTarget.get());
+    m_renderStage->forAllInputs<gloperate::ColorRenderTarget *>([colorRenderTarget](Input<ColorRenderTarget *> * input) {
+        input->setValue(colorRenderTarget);
     });
-    m_renderStage->forAllInputs<gloperate::DepthRenderTarget *>([this](Input<DepthRenderTarget *> * input) {
-        input->setValue(m_depthTarget.get());
+    m_renderStage->forAllInputs<gloperate::DepthRenderTarget *>([depthRenderTarget](Input<DepthRenderTarget *> * input) {
+        input->setValue(depthRenderTarget);
     });
-    m_renderStage->forAllInputs<gloperate::DepthStencilRenderTarget *>([this](Input<DepthStencilRenderTarget *> * input) {
-        input->setValue(m_depthStencilTarget.get());
+    m_renderStage->forAllInputs<gloperate::DepthStencilRenderTarget *>([depthStencilRenderTarget](Input<DepthStencilRenderTarget *> * input) {
+        input->setValue(depthStencilRenderTarget);
     });
-    m_renderStage->forAllInputs<gloperate::StencilRenderTarget *>([this](Input<StencilRenderTarget *> * input) {
-        input->setValue(m_stencilTarget.get());
+    m_renderStage->forAllInputs<gloperate::StencilRenderTarget *>([stencilRenderTarget](Input<StencilRenderTarget *> * input) {
+        input->setValue(stencilRenderTarget);
     });
 
     // Render
@@ -365,9 +346,9 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
     if (colorOutput)
     {
-        if (**colorOutput == m_colorTarget.get())
+        if ((**colorOutput)->matchesAttachment(m_targetFBOColorTarget.get()))
         {
-
+            // nothing to blit
         }
         else
         {
@@ -377,7 +358,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
             m_blitStage->source = **colorOutput;
             m_blitStage->sourceViewport = viewport ? **viewport : m_viewport;
-            m_blitStage->target = m_colorTarget.get();
+            m_blitStage->target = m_targetFBOColorTarget.get();
             m_blitStage->targetViewport = m_viewport;
             m_blitStage->process();
         }
@@ -872,6 +853,207 @@ cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::st
     }
 
     return status;
+}
+
+void Canvas::determineRenderTargets(
+    globjects::Framebuffer * targetFBO,
+    ColorRenderTarget * & colorRenderTarget,
+    DepthRenderTarget * & depthRenderTarget,
+    StencilRenderTarget * & stencilRenderTarget,
+    DepthStencilRenderTarget * & depthStencilRenderTarget
+)
+{
+    // Check render stage render target requirements
+
+    auto requiresColorRenderTarget = false;
+    auto requiresDepthRenderTarget = false;
+    auto requiresStencilRenderTarget = false;
+    auto requiresDepthStencilRenderTarget = false;
+
+    m_renderStage->forAllInputs([& requiresColorRenderTarget, & requiresDepthRenderTarget, & requiresStencilRenderTarget, & requiresDepthStencilRenderTarget](AbstractSlot * slot) {
+        requiresColorRenderTarget |= dynamic_cast<Input<ColorRenderTarget *> *>(slot) != nullptr;
+        requiresDepthRenderTarget |= dynamic_cast<Input<DepthRenderTarget *> *>(slot) != nullptr;
+        requiresStencilRenderTarget |= dynamic_cast<Input<StencilRenderTarget *> *>(slot) != nullptr;
+        requiresDepthStencilRenderTarget |= dynamic_cast<Input<DepthStencilRenderTarget *> *>(slot) != nullptr;
+    });
+
+    if (requiresDepthStencilRenderTarget && (requiresDepthRenderTarget || requiresStencilRenderTarget))
+    {
+        cppassist::warning("gloperate") << "Render stage requests both combined and separate render targets; only combined is assigned";
+        requiresDepthRenderTarget = false;
+        requiresStencilRenderTarget = false;
+    }
+
+    // Extract default color and depth buffer from FBO
+    if (targetFBO->isDefault())
+    {
+        if (requiresDepthRenderTarget || requiresStencilRenderTarget || requiresDepthStencilRenderTarget)
+        {
+            // Emulate default FBO with additional attachments
+            m_colorTarget->releaseTarget();
+            m_depthTarget->releaseTarget();
+            m_stencilTarget->releaseTarget();
+            m_depthStencilTarget->releaseTarget();
+
+            m_colorRenderTargetStage->size = m_viewport;
+            m_colorRenderTargetStage->process();
+            colorRenderTarget = *m_colorRenderTargetStage->colorRenderTarget;
+
+            if (requiresDepthRenderTarget)
+            {
+                m_depthRenderTargetStage->size = m_viewport;
+                m_depthRenderTargetStage->process();
+                depthRenderTarget = *m_depthRenderTargetStage->depthRenderTarget;
+            }
+            else
+            {
+                depthRenderTarget = nullptr;
+            }
+
+            if (requiresStencilRenderTarget)
+            {
+                m_stencilRenderTargetStage->size = m_viewport;
+                m_stencilRenderTargetStage->process();
+                stencilRenderTarget = *m_stencilRenderTargetStage->stencilRenderTarget;
+            }
+            else
+            {
+                stencilRenderTarget = nullptr;
+            }
+
+            if (requiresDepthStencilRenderTarget)
+            {
+                m_depthStencilRenderTargetStage->size = m_viewport;
+                m_depthStencilRenderTargetStage->process();
+                depthStencilRenderTarget = *m_depthStencilRenderTargetStage->depthStencilRenderTarget;
+            }
+            else
+            {
+                depthStencilRenderTarget = nullptr;
+            }
+        }
+        else
+        {
+            // Default FBO can be used
+            m_colorTarget->setTarget(gl::GL_BACK_LEFT);
+            m_depthTarget->releaseTarget();
+            m_stencilTarget->releaseTarget();
+            m_depthStencilTarget->releaseTarget();
+
+            colorRenderTarget = m_colorTarget.get();
+            depthRenderTarget = nullptr;
+            stencilRenderTarget = nullptr;
+            depthStencilRenderTarget = nullptr;
+        }
+    }
+    else
+    {
+        unsigned int i = 0;
+        globjects::FramebufferAttachment * colorAttachment = nullptr;
+
+        while (i < 16 && colorAttachment == nullptr)
+        {
+            colorAttachment = targetFBO->getAttachment(gl::GL_COLOR_ATTACHMENT0+i);
+        }
+
+        const auto depthAttachment = targetFBO->getAttachment(gl::GL_DEPTH_ATTACHMENT);
+        const auto stencilAttachment = targetFBO->getAttachment(gl::GL_STENCIL_ATTACHMENT);
+        const auto depthStencilAttachment = targetFBO->getAttachment(gl::GL_DEPTH_STENCIL_ATTACHMENT);
+
+        if (requiresColorRenderTarget)
+        {
+            if (colorAttachment)
+            {
+                m_colorTarget->setTarget(colorAttachment);
+                colorRenderTarget = m_colorTarget.get();
+            }
+            else
+            {
+                cppassist::warning("gloperate") << "Target FBO doesn't have a color attachment";
+
+                // Emulate color attachment
+                m_colorTarget->releaseTarget();
+
+                m_colorRenderTargetStage->size = m_viewport;
+                m_colorRenderTargetStage->process();
+                colorRenderTarget = *m_colorRenderTargetStage->colorRenderTarget;
+            }
+        }
+        else
+        {
+            m_colorTarget->releaseTarget();
+            colorRenderTarget = nullptr;
+        }
+
+        if (requiresDepthRenderTarget)
+        {
+            if (depthAttachment)
+            {
+                m_depthTarget->setTarget(depthAttachment);
+                depthRenderTarget = m_depthTarget.get();
+            }
+            else
+            {
+                // Emulate depth attachment
+                m_depthTarget->releaseTarget();
+
+                m_depthRenderTargetStage->size = m_viewport;
+                m_depthRenderTargetStage->process();
+                depthRenderTarget = *m_depthRenderTargetStage->depthRenderTarget;
+            }
+        }
+        else
+        {
+            m_depthTarget->releaseTarget();
+            depthRenderTarget = nullptr;
+        }
+
+        if (requiresStencilRenderTarget)
+        {
+            if (stencilAttachment)
+            {
+                m_stencilTarget->setTarget(stencilAttachment);
+                stencilRenderTarget = m_stencilTarget.get();
+            }
+            else
+            {
+                // Emulate stencil attachment
+                m_stencilTarget->releaseTarget();
+
+                m_stencilRenderTargetStage->size = m_viewport;
+                m_stencilRenderTargetStage->process();
+                stencilRenderTarget = *m_stencilRenderTargetStage->stencilRenderTarget;
+            }
+        }
+        else
+        {
+            m_stencilTarget->releaseTarget();
+            stencilRenderTarget = nullptr;
+        }
+
+        if (requiresDepthStencilRenderTarget)
+        {
+            if (depthStencilAttachment)
+            {
+                m_depthStencilTarget->setTarget(depthStencilAttachment);
+                depthStencilRenderTarget = m_depthStencilTarget.get();
+            }
+            else
+            {
+                // Emulate depth-stencil attachment
+                m_depthStencilTarget->releaseTarget();
+
+                m_depthStencilRenderTargetStage->size = m_viewport;
+                m_depthStencilRenderTargetStage->process();
+                depthStencilRenderTarget = *m_depthStencilRenderTargetStage->depthStencilRenderTarget;
+            }
+        }
+        else
+        {
+            m_depthStencilTarget->releaseTarget();
+            depthStencilRenderTarget = nullptr;
+        }
+    }
 }
 
 
