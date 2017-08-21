@@ -473,16 +473,22 @@ void Stage::onProcess()
 {
 }
 
-void Stage::onInputValueChanged(AbstractSlot *)
+void Stage::onInputValueChanged(AbstractSlot * slot)
 {
-    // Invalidate all outputs
-    invalidateOutputs();
+    if (!slot->isFeedback())
+    {
+        // Invalidate all outputs
+        invalidateOutputs();
+    }
 }
 
-void Stage::onInputValueInvalidated(AbstractSlot *)
+void Stage::onInputValueInvalidated(AbstractSlot * slot)
 {
-    // Invalidate all outputs
-    invalidateOutputs();
+    if (!slot->isFeedback())
+    {
+        // Invalidate all outputs
+        invalidateOutputs();
+    }
 }
 
 void Stage::onOutputRequiredChanged(AbstractSlot *)
