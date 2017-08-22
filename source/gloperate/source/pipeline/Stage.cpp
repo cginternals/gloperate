@@ -39,6 +39,7 @@ Stage::CreateConnectedInputProxy::~CreateConnectedInputProxy()
 Stage::Stage(Environment * environment, const std::string & className, const std::string & name)
 : cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
+, m_context{nullptr}
 , m_alwaysProcess(false)
 {
     // Set object class name
@@ -90,13 +91,29 @@ bool Stage::requires(const Stage * stage, bool recursive) const
 void Stage::initContext(AbstractGLContext * context)
 {
     debug(2, "gloperate") << this->qualifiedName() << ": initContext";
+
+    m_context = context;
+
     onContextInit(context);
 }
 
 void Stage::deinitContext(AbstractGLContext * context)
 {
     debug(2, "gloperate") << this->qualifiedName() << ": deinitContex";
+
     onContextDeinit(context);
+
+    m_context = nullptr;
+}
+
+AbstractGLContext * Stage::context()
+{
+    return m_context;
+}
+
+const AbstractGLContext * Stage::context() const
+{
+    return m_context;
 }
 
 void Stage::process()
