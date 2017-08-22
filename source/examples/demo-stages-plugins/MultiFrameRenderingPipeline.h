@@ -122,7 +122,8 @@ protected:
     std::unique_ptr<gloperate::RasterizationStage>                         m_postprocessingRasterizationStage; ///< rasterization for postprocessing step
 
     // Rendering ressources
-    std::unique_ptr<globjects::NamedString>                                m_ssaoNamedString; ///< named string for shader include
-    std::unique_ptr<gloperate::Camera>                                     m_camera;          ///< camera for rendering step
-    std::unique_ptr<gloperate::Quad>                                       m_quad;            ///< geometry for postprocessing step
+    std::unique_ptr<globjects::NamedString>                                m_randomNamedString; ///< named string for shader include
+    std::unique_ptr<globjects::NamedString>                                m_ssaoNamedString;   ///< named string for shader include
+    std::unique_ptr<gloperate::Camera>                                     m_camera;            ///< camera for rendering step
+    std::unique_ptr<gloperate::Quad>                                       m_quad;              ///< geometry for postprocessing step
 };

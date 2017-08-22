@@ -1,6 +1,9 @@
 
-#version 140
+#version 330
 #extension GL_ARB_explicit_attrib_location : require
+#extension GL_ARB_shading_language_include : require
+
+#include </gloperate/shaders/util/random.glsl>
 
 
 const vec4 baseColor = vec4(1.0, 1.0, 1.0, 0.65);
@@ -22,8 +25,7 @@ layout (location = 1) out vec3 normal;
 
 void main()
 {
-    // produce cheap, high frequency noise
-    float rand = dot(v_position, vec4(1024));
+    float rand = random(v_position);
 
     float alpha = baseColor.a;
     ivec2 transpSize = textureSize(transparencyKernel, 0);
