@@ -24,11 +24,11 @@ class TransparencyRenderingPipeline;
 *  @brief
 *    Demo pipeline showing multiframe aggregation
 */
-class DemoTransparencyAggregationPipeline : public gloperate::Pipeline
+class DemoMultiFrameAggregationPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoTransparencyAggregationPipeline, gloperate::Stage
+        DemoMultiFrameAggregationPipeline, gloperate::Stage
       , "RenderStage Demos" // Tags
       , ""                  // Icon
       , ""                  // Annotations
@@ -56,13 +56,13 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoTransparencyAggregationPipeline(gloperate::Environment * environment, const std::string & name = "DemoTransparencyAggregationPipeline");
+    DemoMultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name = "DemoMultiFrameAggregationPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoTransparencyAggregationPipeline();
+    virtual ~DemoMultiFrameAggregationPipeline();
 
 
 protected:
