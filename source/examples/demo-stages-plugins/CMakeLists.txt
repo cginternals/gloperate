@@ -40,63 +40,37 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(headers
-    ${include_path}/AntialiasableTriangleStage.h
-    ${include_path}/AntialiasingRenderingPipeline.h
     ${include_path}/AssimpMeshLoader.h
-    ${include_path}/GeometryImporterStage.h
     ${include_path}/ColorGradientDemo.h
-    ${include_path}/DemoAntialiasingAggregationPipeline.h
-    ${include_path}/DemoDOFAggregationPipeline.h
     ${include_path}/DemoDrawableStage.h
     ${include_path}/DemoMultiFrameAggregationPipeline.h
-    ${include_path}/DemoSSAOAggregationPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
     ${include_path}/DemoTransparencyAggregationPipeline.h
-    ${include_path}/DOFCubeStage.h
-    ${include_path}/DOFRenderingPipeline.h
+    ${include_path}/GeometryImporterStage.h
     ${include_path}/GlyphSequenceDemoStage.h
     ${include_path}/LightTestPipeline.h
     ${include_path}/LightTestStage.h
-    ${include_path}/MultiFramePostprocessingStage.h
     ${include_path}/MultiFrameRenderingPipeline.h
-    ${include_path}/MultiFrameSceneRenderingStage.h
     ${include_path}/ShaderDemoPipeline.h
     ${include_path}/ShapeDemo.h
-    ${include_path}/SSAOApplicationStage.h
-    ${include_path}/SSAORenderingPipeline.h
-    ${include_path}/SSAOSceneRenderingStage.h
     ${include_path}/TransparencyRenderingPipeline.h
-    ${include_path}/TransparentCirclesStage.h
 )
 
 set(sources
-    ${source_path}/AntialiasableTriangleStage.cpp
-    ${source_path}/AntialiasingRenderingPipeline.cpp
     ${source_path}/AssimpMeshLoader.cpp
-    ${source_path}/GeometryImporterStage.cpp
     ${source_path}/ColorGradientDemo.cpp
-    ${source_path}/DemoAntialiasingAggregationPipeline.cpp
-    ${source_path}/DemoDOFAggregationPipeline.cpp
     ${source_path}/DemoDrawableStage.cpp
     ${source_path}/DemoMultiFrameAggregationPipeline.cpp
-    ${source_path}/DemoSSAOAggregationPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp
     ${source_path}/DemoTransparencyAggregationPipeline.cpp
-    ${source_path}/DOFCubeStage.cpp
-    ${source_path}/DOFRenderingPipeline.cpp
+    ${source_path}/GeometryImporterStage.cpp
     ${source_path}/GlyphSequenceDemoStage.cpp
     ${source_path}/LightTestPipeline.cpp
     ${source_path}/LightTestStage.cpp
-    ${source_path}/MultiFramePostprocessingStage.cpp
     ${source_path}/MultiFrameRenderingPipeline.cpp
-    ${source_path}/MultiFrameSceneRenderingStage.cpp
     ${source_path}/ShaderDemoPipeline.cpp
     ${source_path}/ShapeDemo.cpp
-    ${source_path}/SSAOApplicationStage.cpp
-    ${source_path}/SSAORenderingPipeline.cpp
-    ${source_path}/SSAOSceneRenderingStage.cpp
     ${source_path}/TransparencyRenderingPipeline.cpp
-    ${source_path}/TransparentCirclesStage.cpp
 )
 
 # Group source files
