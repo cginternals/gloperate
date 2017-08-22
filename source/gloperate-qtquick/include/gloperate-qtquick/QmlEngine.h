@@ -36,8 +36,6 @@ namespace gloperate_qtquick
 class GLOPERATE_QTQUICK_API QmlEngine : public qmltoolbox::QmlApplicationEngine
 {
     Q_OBJECT
-    Q_PROPERTY(QJSValue global    READ global    WRITE setGlobal)
-    Q_PROPERTY(QJSValue gloperate READ gloperate WRITE setGloperate)
 
 
 public:
@@ -124,60 +122,6 @@ public:
 
     /**
     *  @brief
-    *    Get object 'global'
-    *
-    *  @return
-    *    Object
-    */
-    const QJSValue & global() const;
-
-    /**
-    *  @brief
-    *    Get object 'global'
-    *
-    *  @return
-    *    Object
-    */
-    QJSValue & global();
-
-    /**
-    *  @brief
-    *    Set object 'global'
-    *
-    *  @param[in] obj
-    *    Object
-    */
-    void setGlobal(const QJSValue & obj);
-
-    /**
-    *  @brief
-    *    Get object 'gloperate'
-    *
-    *  @return
-    *    Object
-    */
-    const QJSValue & gloperate() const;
-
-    /**
-    *  @brief
-    *    Get object 'gloperate'
-    *
-    *  @return
-    *    Object
-    */
-    QJSValue & gloperate();
-
-    /**
-    *  @brief
-    *    Set object 'gloperate'
-    *
-    *  @param[in] obj
-    *    Object
-    */
-    void setGloperate(const QJSValue & obj);
-
-    /**
-    *  @brief
     *    Get path to gloperate qml module
     *
     *  @return
@@ -188,8 +132,6 @@ public:
 
 protected:
     gloperate::Environment * m_environment;      ///< Gloperate environment (must NOT be null)
-    QJSValue                 m_global;           ///< Object 'global', can be used to store global values
-    QJSValue                 m_gloperate;        ///< Object 'gloperate', contains exposed API functions from gloperate
     QString                  m_gloperateQmlPath; ///< Path to gloperate qml module
 };
 

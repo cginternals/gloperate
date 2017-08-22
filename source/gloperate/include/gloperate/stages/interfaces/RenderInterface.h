@@ -430,7 +430,7 @@ public:
     *  @param[in] includeIncompletePairs
     *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
     */
-    void pairwiseRenderTargetsDo(std::function<void(Input<ColorRenderTarget *> *, Output<ColorRenderTarget *> *)> callback, bool includeIncompletePairs = false);
+    void pairwiseColorRenderTargetsDo(std::function<void(Input<ColorRenderTarget *> *, Output<ColorRenderTarget *> *)> callback, bool includeIncompletePairs = false);
 
     /**
     *  @brief
@@ -441,7 +441,7 @@ public:
     *  @param[in] includeIncompletePairs
     *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
     */
-    void pairwiseRenderTargetsDo(std::function<void(Input<DepthRenderTarget *> *, Output<DepthRenderTarget *> *)> callback, bool includeIncompletePairs = false);
+    void pairwiseDepthRenderTargetsDo(std::function<void(Input<DepthRenderTarget *> *, Output<DepthRenderTarget *> *)> callback, bool includeIncompletePairs = false);
 
     /**
     *  @brief
@@ -452,7 +452,7 @@ public:
     *  @param[in] includeIncompletePairs
     *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
     */
-    void pairwiseRenderTargetsDo(std::function<void(Input<DepthStencilRenderTarget *> *, Output<DepthStencilRenderTarget *> *)> callback, bool includeIncompletePairs = false);
+    void pairwiseDepthStencilRenderTargetsDo(std::function<void(Input<DepthStencilRenderTarget *> *, Output<DepthStencilRenderTarget *> *)> callback, bool includeIncompletePairs = false);
 
     /**
     *  @brief
@@ -463,7 +463,7 @@ public:
     *  @param[in] includeIncompletePairs
     *    If 'true', also incomplete pairs are passed to the callback (i.e., either input or output is 'null')
     */
-    void pairwiseRenderTargetsDo(std::function<void(Input<StencilRenderTarget *> *, Output<StencilRenderTarget *> *)> callback, bool includeIncompletePairs = false);
+	void pairwiseStencilRenderTargetsDo(std::function<void(Input<StencilRenderTarget *> *, Output<StencilRenderTarget *> *)> callback, bool includeIncompletePairs = false);
 
 
 public:
