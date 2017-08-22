@@ -43,9 +43,9 @@ set(headers
     ${include_path}/AssimpMeshLoader.h
     ${include_path}/ColorGradientDemo.h
     ${include_path}/DemoDrawableStage.h
+    ${include_path}/DemoMultiFrameEffectsPipeline.h
     ${include_path}/DemoMultiFrameAggregationPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
-    ${include_path}/DemoTransparencyAggregationPipeline.h
     ${include_path}/GeometryImporterStage.h
     ${include_path}/GlyphSequenceDemoStage.h
     ${include_path}/LightTestPipeline.h
@@ -60,9 +60,9 @@ set(sources
     ${source_path}/AssimpMeshLoader.cpp
     ${source_path}/ColorGradientDemo.cpp
     ${source_path}/DemoDrawableStage.cpp
+    ${source_path}/DemoMultiFrameEffectsPipeline.cpp
     ${source_path}/DemoMultiFrameAggregationPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp
-    ${source_path}/DemoTransparencyAggregationPipeline.cpp
     ${source_path}/GeometryImporterStage.cpp
     ${source_path}/GlyphSequenceDemoStage.cpp
     ${source_path}/LightTestPipeline.cpp

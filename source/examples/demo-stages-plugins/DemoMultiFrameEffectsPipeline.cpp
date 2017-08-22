@@ -1,15 +1,15 @@
 
-#include "DemoMultiFrameAggregationPipeline.h"
+#include "DemoMultiFrameEffectsPipeline.h"
 
 #include <gloperate/gloperate.h>
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.h>
 
 #include "MultiFrameRenderingPipeline.h"
 
-CPPEXPOSE_COMPONENT(DemoMultiFrameAggregationPipeline, gloperate::Stage)
+CPPEXPOSE_COMPONENT(DemoMultiFrameEffectsPipeline, gloperate::Stage)
 
 
-DemoMultiFrameAggregationPipeline::DemoMultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name)
+DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
 , canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 256)
@@ -38,6 +38,6 @@ DemoMultiFrameAggregationPipeline::DemoMultiFrameAggregationPipeline(gloperate::
     *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_multiFramePipeline->canvasInterface.colorRenderTargetOutput(0);
 }
 
-DemoMultiFrameAggregationPipeline::~DemoMultiFrameAggregationPipeline()
+DemoMultiFrameEffectsPipeline::~DemoMultiFrameEffectsPipeline()
 {
 }
