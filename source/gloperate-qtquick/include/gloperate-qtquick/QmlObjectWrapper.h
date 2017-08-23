@@ -57,7 +57,7 @@ public:
 
     /**
     *  @brief
-    *    Create wrapper object in the scripting environment
+    *    Create wrapper object in the scripting environment or get existing
     *
     *  @return
     *    Script value wrapping the object

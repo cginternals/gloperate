@@ -25,8 +25,9 @@
 #include <gloperate-qtquick/VideoProfile.h>
 #include <gloperate-qtquick/TextController.h>
 #include <gloperate-qtquick/QmlScriptFunction.h>
+#include <gloperate-qtquick/QmlObjectWrapper.h>
 
-    
+
 namespace gloperate_qtquick
 {
 
@@ -53,6 +54,13 @@ QmlEngine::QmlEngine(gloperate::Environment * environment)
 
 QmlEngine::~QmlEngine()
 {
+    // Disconnect from Object::beforeDestroy signals
+    for (auto & objectWrapper : m_objectWrappers)
+    {
+        objectWrapper.second.second.disconnect();
+    }
+
+    // m_objectWrappers are deleted through the Qt object hierarchy
 }
 
 const gloperate::Environment * QmlEngine::environment() const
@@ -63,6 +71,21 @@ const gloperate::Environment * QmlEngine::environment() const
 gloperate::Environment * QmlEngine::environment()
 {
     return m_environment;
+}
+
+void QmlEngine::addGlobalObject(cppexpose::Object * obj)
+{
+    // Create object wrapper
+    const auto wrapper = getOrCreateObjectWrapper(obj);
+
+    // Add global object
+    rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant::fromValue(wrapper->wrapObject()));
+}
+
+void QmlEngine::removeGlobalObject(cppexpose::Object * obj)
+{
+    // Remove global object by setting it to null
+    rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant{});
 }
 
 QString QmlEngine::executeScript(const QString & code)
@@ -258,6 +281,12 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         return obj;
     }
 
+    else if (var.hasType<cppexpose::Object *>()) {
+        const auto object = var.value<cppexpose::Object *>();
+
+        return getOrCreateObjectWrapper(object)->wrapObject();
+    }
+
     else {
         return QJSValue();
     }
@@ -342,6 +371,33 @@ cppexpose::Variant QmlEngine::fromQVariant(const QVariant & value)
 const QString & QmlEngine::gloperateModulePath() const
 {
     return m_gloperateQmlPath;
+}
+
+
+QmlObjectWrapper * QmlEngine::getOrCreateObjectWrapper(cppexpose::Object * object)
+{
+    // Check if wrapper exists
+    const auto itr = m_objectWrappers.find(object);
+    if (itr != m_objectWrappers.end())
+    {
+        return itr->second.first;
+    }
+
+    // Wrap object
+    const auto wrapper = new QmlObjectWrapper(this, object);
+
+    // Delete wrapper when object is destroyed
+    // The connection will be deleted when this backend is destroyed
+    const auto beforeDestroy = object->beforeDestroy.connect([this, object](cppexpose::AbstractProperty *)
+    {
+        delete m_objectWrappers[object].first;
+        m_objectWrappers.erase(object);
+    });
+
+    // Save wrapper for later
+    m_objectWrappers[object] = {wrapper, beforeDestroy};
+
+    return wrapper;
 }
 
 
