@@ -10,6 +10,8 @@
 
 #include <cppexpose/typed/GetTyped.h>
 
+#include <globjects/Texture.h>
+
 #include <gloperate/base/Range.h>
 #include <gloperate/rendering/Color.h>
 
@@ -106,6 +108,25 @@ struct GetTyped<gloperate::Color, BASE>
     using Type = TypedColor<BASE>;
 };
 
+/**
+*  @brief
+*    Property implementation for pointers to globjects::Texture
+*/
+template <typename BASE>
+class TypedTexturePtr : public cppexpose::Typed<globjects::Texture *, BASE>
+{
+public:
+    TypedTexturePtr();
+    virtual ~TypedTexturePtr();
+
+    virtual std::string typeName() const override;
+};
+
+template <typename BASE>
+struct GetTyped<globjects::Texture *, BASE>
+{
+    using Type = TypedTexturePtr<BASE>;
+};
 
 /**
 *  @brief

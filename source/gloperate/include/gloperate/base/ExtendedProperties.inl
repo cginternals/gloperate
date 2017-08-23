@@ -134,6 +134,23 @@ bool TypedColor<BASE>::fromVariant(const Variant & variant)
 
 
 template <typename BASE>
+TypedTexturePtr<BASE>::TypedTexturePtr()
+{
+}
+
+template <typename BASE>
+TypedTexturePtr<BASE>::~TypedTexturePtr()
+{
+}
+
+template <typename BASE>
+std::string TypedTexturePtr<BASE>::typeName() const
+{
+    return "texture";
+}
+
+
+template <typename BASE>
 TypedRange<BASE>::TypedRange()
 {
 }
