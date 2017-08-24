@@ -403,13 +403,11 @@ ApplicationWindow
     // Hides the pipeline editor
     function hideEditor()
     {
-        if (settings.editor === "internal")
-        {
-            mainView.visible             = true;
-            internalPipelineView.visible = false;
-        } else {
-            popoutWindow.hide();
-        }
+        // hide internal editor
+        mainView.visible             = true;
+        internalPipelineView.visible = false;
+        // hide external editor
+        popoutWindow.hide();
     }
 
     // Bottom Panel
