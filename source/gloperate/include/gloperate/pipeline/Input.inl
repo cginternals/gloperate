@@ -29,7 +29,7 @@ Input<T>::~Input()
 template <typename T>
 void Input<T>::onValueInvalidated()
 {
-    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": input changed value";
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": input invalidated";
 
     std::lock_guard<std::recursive_mutex> lock(this->m_cycleMutex);
 
@@ -74,6 +74,8 @@ void Input<T>::onValueInvalidated()
 template <typename T>
 void Input<T>::onValueChanged(const T & value)
 {
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": input changed value";
+
     this->setChanged(true);
 
     // Emit signal

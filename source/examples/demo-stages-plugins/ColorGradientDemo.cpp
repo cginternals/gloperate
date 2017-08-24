@@ -74,6 +74,8 @@ ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::strin
         gradient.setOption("choices", cppexpose::Variant::fromVector(gradients->names()));
         gradient.setOption("pixmaps", cppexpose::Variant::fromVector(gradients->pixmaps({ 80, 20 })));
     });
+    // Explicitly set as ComboBox, even if gradients are not yet loaded
+    gradient.setOption("choices", cppexpose::Variant::array());
 
     // Color gradients texture stage
     addStage(m_colorGradientTexture.get());

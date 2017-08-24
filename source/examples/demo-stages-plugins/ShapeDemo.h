@@ -30,6 +30,7 @@ namespace gloperate
     class TransformStage;
     class FloatSelectionStage;
     class TextureFromRenderTargetExtractionStage;
+    class ViewportScaleStage;
 }
 
 
@@ -107,6 +108,8 @@ protected:
     std::unique_ptr<gloperate::FloatSelectionStage>                    m_floatSelection;         ///< Selection between user-defined angle and timer-updated angle
 
     std::unique_ptr<gloperate::TrackballStage>                         m_trackball;              ///< Trackball camera navigation stage
+
+    std::unique_ptr<gloperate::ViewportScaleStage>                     m_viewportScale;          ///< Viewport scale stage
 
     std::unique_ptr<gloperate::ShapeStage>                             m_shape;                  ///< Stage that generates a basic shape
     std::unique_ptr<gloperate::TextureLoadStage>                       m_texture;                ///< Stage that loads a static picture

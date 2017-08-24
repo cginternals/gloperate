@@ -8,7 +8,7 @@
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/Loader.h>
 #include <gloperate/base/Storer.h>
- 
+
 
 namespace gloperate
 {
@@ -29,8 +29,11 @@ std::vector<AbstractLoader *> ResourceManager::loaders() const
 {
     // Get list of raw pointers
     std::vector<AbstractLoader *> loaders;
-    std::transform(m_loaders.begin(), m_loaders.end(), std::back_inserter(loaders), [](const std::unique_ptr<AbstractLoader> & loader) { return loader.get(); });
-    
+    std::transform(m_loaders.begin(), m_loaders.end(), std::back_inserter(loaders), [] (const std::unique_ptr<AbstractLoader> & loader)
+    {
+        return loader.get();
+    } );
+
     // Return list of loaders
     return loaders;
 }

@@ -17,6 +17,7 @@ ColorGradientStage::ColorGradientStage(Environment * environment, const std::str
 : Stage(environment, "ColorGradientStage", name)
 , filePath("filePath", this)
 , gradients("gradients", this)
+, size("size", this, 0)
 {
 }
 
@@ -41,6 +42,7 @@ void ColorGradientStage::onProcess()
 
     // Update outputs
     gradients.setValue(m_colorGradientList.get());
+    size.setValue(m_colorGradientList->size());
 }
 
 
