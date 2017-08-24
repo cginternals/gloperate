@@ -76,6 +76,7 @@ set(headers
     ${include_path}/pipeline/Stage.inl
     ${include_path}/pipeline/Pipeline.h
     ${include_path}/pipeline/AbstractSlot.h
+    ${include_path}/pipeline/AbstractSlot.inl
     ${include_path}/pipeline/Slot.h
     ${include_path}/pipeline/Slot.inl
     ${include_path}/pipeline/Input.h
@@ -139,6 +140,7 @@ set(headers
     ${include_path}/stages/base/TransformStage.h
     ${include_path}/stages/base/TimerStage.h
     ${include_path}/stages/base/TextureFromRenderTargetExtractionStage.h
+    ${include_path}/stages/base/ViewportScaleStage.h
     ${include_path}/stages/navigation/TrackballStage.h
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
@@ -239,6 +241,7 @@ set(sources
     ${source_path}/stages/base/TransformStage.cpp
     ${source_path}/stages/base/TimerStage.cpp
     ${source_path}/stages/base/TextureFromRenderTargetExtractionStage.cpp
+    ${source_path}/stages/base/ViewportScaleStage.cpp
     ${source_path}/stages/navigation/TrackballStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
