@@ -39,6 +39,22 @@ class GLOPERATE_API ColorGradientList
 public:
     /**
     *  @brief
+    *    Generate a texture from multiple ColorGradientLists
+    *
+    *  @param[in] colorGradientLists
+    *    All color gradient lists
+    *  @param[in] numPixels
+    *    Number of pixels for each gradient
+    *
+    *  @return
+    *    Texture containing all gradients (dimensions: numPixels x sum of all list sizes)
+    */
+    static std::unique_ptr<globjects::Texture> generateTexture(const std::vector<ColorGradientList *> & colorGradientLists, size_t numPixels);
+
+
+public:
+    /**
+    *  @brief
     *    Constructor
     *
     *    Construct an empty color gradient list.
@@ -178,18 +194,17 @@ public:
 
     /**
     *  @brief
-    *    Get a vector containing pixel data for all gradients
+    *    Writes raw pixel data of all gradients into an array or a vector
     *
     *  @param[in] numColors
     *    Number of pixels for each gradient
-    *
-    *  @return
-    *    Vector containing pixel data for all gradients (dimensions: numPixels x size())
+    *  @param[in] start
+    *    Start position, size needs to be sufficient for writing all data
     *
     *  @see
     *    AbstractColorGradient::pixelData()
     */
-    std::vector<unsigned char> pixelData(size_t numPixels) const;
+    void appendPixelData(size_t numPixels, unsigned char * start) const;
 
     /**
     *  @brief
@@ -202,7 +217,6 @@ public:
     *    Texture containing all gradients (dimensions: numPixels x size())
     */
     std::unique_ptr<globjects::Texture> generateTexture(size_t numPixels) const;
-
 
 protected:
     std::map<std::string, std::unique_ptr<AbstractColorGradient>> m_gradients; ///< The list of gradients with their name as lookup key

@@ -65,6 +65,12 @@ public:
     */
     BlitStage(Environment * environment, const std::string & name = "BlitStage");
 
+    /**
+    *  @brief
+    *    Virtual destructor
+    */
+    virtual ~BlitStage();
+
 
 protected:
     // Virtual Stage interface
@@ -74,9 +80,12 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::Framebuffer> m_defaultFBO; ///< Intermediate default FBO
-    std::unique_ptr<globjects::Framebuffer> m_sourceFBO; ///< Intermediate source FBO
-    std::unique_ptr<globjects::Framebuffer> m_targetFBO; ///< Intermediate target FBO
+    std::unique_ptr<globjects::Framebuffer>       m_defaultFBO;         ///< Intermediate default FBO
+    std::unique_ptr<globjects::Framebuffer>       m_sourceFBO;          ///< Intermediate source FBO
+    std::unique_ptr<globjects::Framebuffer>       m_targetFBO;          ///< Intermediate target FBO
+    std::unique_ptr<globjects::Framebuffer>       m_intermediateFBO;    ///< Intermediate FBO for same-target blitting
+    std::unique_ptr<gloperate::ColorRenderTarget> m_intermediateTarget; ///< Intermediate render target for same-target blitting
+    std::unique_ptr<globjects::Renderbuffer>      m_intermediateBuffer; ///< Intermediate render buffer for same-target blitting
 };
 
 

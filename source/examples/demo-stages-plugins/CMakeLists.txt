@@ -46,7 +46,6 @@ set(headers
     ${include_path}/ColorGradientDemo.h
     ${include_path}/DemoAntialiasingAggregationPipeline.h
     ${include_path}/DemoDOFAggregationPipeline.h
-    ${include_path}/DemoDrawableStage.h
     ${include_path}/DemoMultiFrameAggregationPipeline.h
     ${include_path}/DemoSSAOAggregationPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
@@ -75,7 +74,6 @@ set(sources
     ${source_path}/ColorGradientDemo.cpp
     ${source_path}/DemoAntialiasingAggregationPipeline.cpp
     ${source_path}/DemoDOFAggregationPipeline.cpp
-    ${source_path}/DemoDrawableStage.cpp
     ${source_path}/DemoMultiFrameAggregationPipeline.cpp
     ${source_path}/DemoSSAOAggregationPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp

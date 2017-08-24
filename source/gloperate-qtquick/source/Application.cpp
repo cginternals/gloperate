@@ -17,7 +17,7 @@
 
 #include <gloperate-qtquick/QmlScriptContext.h>
 
-    
+
 namespace gloperate_qtquick
 {
 
@@ -70,6 +70,13 @@ Application::Application(int & argc, char ** argv)
     // Convert and set Qt context format
     QSurfaceFormat qFormat = gloperate_qt::GLContextFactory::toQSurfaceFormat(format);
     QSurfaceFormat::setDefaultFormat(qFormat);
+
+    // Pass additional command line parameters on to the QML
+    QStringList paramsList;
+    auto params = argumentParser.params();
+    for (auto param : params) paramsList << QString::fromStdString(param);
+
+    m_qmlEngine.rootContext()->setContextProperty("commandLineParams", paramsList);
 
     // Create global timer
     QObject::connect(
