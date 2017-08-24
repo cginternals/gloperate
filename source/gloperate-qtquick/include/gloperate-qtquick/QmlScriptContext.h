@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <QMap>
+
 #include <cppexpose/scripting/AbstractScriptBackend.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
@@ -45,13 +47,14 @@ public:
 
     // Virtual AbstractScriptBackend functions
     virtual void initialize(cppexpose::ScriptContext * scriptContext) override;
-    virtual void setGlobalObject(cppexpose::Object * obj) override;
+    virtual void addGlobalObject(cppexpose::Object * obj) override;
+    virtual void removeGlobalObject(cppexpose::Object * obj) override;
     virtual cppexpose::Variant evaluate(const std::string & code) override;
 
 
 protected:
-    QmlEngine        * m_engine;           ///< Qml engine with gloperate integration
-    QmlObjectWrapper * m_globalObjWrapper; ///< Global object wrapper (can be null)
+    QmlEngine                                   * m_engine;            ///< Qml engine with gloperate integration
+    QMap<cppexpose::Object *, QmlObjectWrapper *> m_globalObjWrappers; ///< Global objects
 };
 
 

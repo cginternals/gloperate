@@ -25,7 +25,6 @@ namespace gloperate_qtquick
 
 QmlScriptContext::QmlScriptContext(QmlEngine * engine)
 : m_engine(engine)
-, m_globalObjWrapper(nullptr)
 {
 }
 
@@ -39,29 +38,36 @@ void QmlScriptContext::initialize(cppexpose::ScriptContext * scriptContext)
     m_scriptContext = scriptContext;
 }
 
-void QmlScriptContext::setGlobalObject(cppexpose::Object * obj)
+void QmlScriptContext::addGlobalObject(cppexpose::Object * obj)
 {
-    // Check arguments
-    if (!obj) return;
-
-    // This backend only supports the name 'gloperate' for the global object.
-    // If the specified object has another name, issue a warning.
-    if (obj->name() != "gloperate")
+    // Check if obj exists
+    if (m_globalObjWrappers.contains(obj))
     {
-        warning() << "QmlScriptContext: '" << obj->name() << "' is not supported as a name for the global scripting object. Using 'gloperate' instead.";
-    }
-
-    // Destroy former global object wrapper
-    if (m_globalObjWrapper)
-    {
-        delete m_globalObjWrapper;
+        return;
     }
 
     // Create object wrapper
-    m_globalObjWrapper = new QmlObjectWrapper(m_engine, obj);
+    const auto globalObjWrapper = new QmlObjectWrapper(m_engine, obj);
+    m_globalObjWrappers[obj] = globalObjWrapper;
 
-    // Set object as global object 'gloperate'
-    m_engine->setGloperate(m_globalObjWrapper->wrapObject());
+    // Add global object
+    m_engine->rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant::fromValue(globalObjWrapper->wrapObject()));
+}
+
+void QmlScriptContext::removeGlobalObject(cppexpose::Object * obj)
+{
+    // Check if obj exists
+    if (!m_globalObjWrappers.contains(obj))
+    {
+        return;
+    }
+
+    // Remove global object by setting it to null
+    m_engine->rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant{});
+
+    // Destroy object wrapper
+    delete m_globalObjWrappers[obj];
+    m_globalObjWrappers.remove(obj);
 }
 
 Variant QmlScriptContext::evaluate(const std::string & code)

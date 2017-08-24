@@ -25,6 +25,11 @@ T * ResourceManager::load(const std::string & filename, const cppexpose::Variant
 
     // Get file extension
     std::string ext = FilePath(filename).extension();
+    auto pos = ext.find_last_of('.');
+    if (pos != std::string::npos)
+    {
+        ext = ext.substr(pos + 1);
+    }
 
     // Find suitable loader
     for (const auto & loader : m_loaders) {

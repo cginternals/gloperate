@@ -43,6 +43,7 @@ public:
 
     // Outputs
     Output<ColorGradientList *> gradients; ///< List of color gradients
+    Output<unsigned int>        size;      ///< Number of loaded color gradients
 
 
 public:

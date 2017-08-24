@@ -49,10 +49,6 @@ QmlEngine::QmlEngine(gloperate::Environment * environment)
 
     // Register global functions and properties
     rootContext()->setContextObject(this);
-
-    // Create global objects
-    m_global    = newObject();
-    m_gloperate = newObject();
 }
 
 QmlEngine::~QmlEngine()
@@ -341,36 +337,6 @@ cppexpose::Variant QmlEngine::fromQVariant(const QVariant & value)
     else {
         return cppexpose::Variant();
     }
-}
-
-const QJSValue & QmlEngine::global() const
-{
-    return m_global;
-}
-
-QJSValue & QmlEngine::global()
-{
-    return m_global;
-}
-
-void QmlEngine::setGlobal(const QJSValue & obj)
-{
-    m_global = obj;
-}
-
-const QJSValue & QmlEngine::gloperate() const
-{
-    return m_gloperate;
-}
-
-QJSValue & QmlEngine::gloperate()
-{
-    return m_gloperate;
-}
-
-void QmlEngine::setGloperate(const QJSValue & obj)
-{
-    m_gloperate = obj;
 }
 
 const QString & QmlEngine::gloperateModulePath() const
