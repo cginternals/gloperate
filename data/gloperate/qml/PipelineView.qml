@@ -62,6 +62,11 @@ Item
 
     function load()
     {
+        if (pipelineEditor.loaded)
+        {
+            return;
+        }
+
         pipelineEditor.load(path);
 
         configureInternalStages(properties.getInternalStages());

@@ -526,6 +526,7 @@ ApplicationWindow
         // Add preview stage
         gloperatePipeline.clearInternalStages();
         gloperatePipeline.addInternalStage(previewStage.stageDefinition);
+        gloperatePipeline.editor = settings.editor;
 
         // Set render stage
         window.stage = settings.stage;
