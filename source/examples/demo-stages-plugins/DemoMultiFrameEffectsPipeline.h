@@ -10,25 +10,24 @@
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
-namespace gloperate_glkernel {
-
-class MultiFrameAggregationPipeline;
-
+namespace gloperate_glkernel
+{
+    class MultiFrameAggregationPipeline;
 }
 
 
-class TransparencyRenderingPipeline;
+class MultiFrameRenderingPipeline;
 
 
 /**
 *  @brief
 *    Demo pipeline showing multiframe aggregation
 */
-class DemoTransparencyAggregationPipeline : public gloperate::Pipeline
+class DemoMultiFrameEffectsPipeline : public gloperate::Pipeline
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
-        DemoTransparencyAggregationPipeline, gloperate::Stage
+        DemoMultiFrameEffectsPipeline, gloperate::Stage
       , "RenderStage Demos" // Tags
       , ""                  // Icon
       , ""                  // Annotations
@@ -56,17 +55,17 @@ public:
     *  @param[in] name
     *    Pipeline name
     */
-    DemoTransparencyAggregationPipeline(gloperate::Environment * environment, const std::string & name = "DemoTransparencyAggregationPipeline");
+    DemoMultiFrameEffectsPipeline(gloperate::Environment * environment, const std::string & name = "DemoMultiFrameEffectsPipeline");
 
     /**
     *  @brief
     *    Destructor
     */
-    virtual ~DemoTransparencyAggregationPipeline();
+    virtual ~DemoMultiFrameEffectsPipeline();
 
 
 protected:
     // Stages
-    std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline;   ///< Aggregation Pipeline
-    std::unique_ptr<TransparencyRenderingPipeline>                     m_transparencyPipeline; ///< Pipeline generating frames to aggregate
+    std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline; ///< Aggregation Pipeline
+    std::unique_ptr<MultiFrameRenderingPipeline>                       m_renderingPipeline;  ///< Demo pipeline generating frames to aggregate
 };

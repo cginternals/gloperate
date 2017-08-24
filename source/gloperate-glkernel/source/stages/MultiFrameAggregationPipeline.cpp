@@ -51,7 +51,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     addStage(m_controlStage.get());
     m_controlStage->frameNumber << canvasInterface.frameCounter;
     m_controlStage->multiFrameCount << multiFrameCount;
-    m_controlStage->viewport << canvasInterface.viewport;
+    m_controlStage->createInput("viewport") << canvasInterface.viewport;
 
     addStage(m_framePreparationStage.get());
 
@@ -75,6 +75,14 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
             disconnectRenderStage();
         }
     });
+
+    inputAdded.connect([this](gloperate::AbstractSlot * input) {
+        addThroughputInput(input);
+    });
+
+    inputRemoved.connect([this](gloperate::AbstractSlot * input) {
+        removeThroughputInput(input);
+    });
 }
 
 MultiFrameAggregationPipeline::~MultiFrameAggregationPipeline()
@@ -91,7 +99,7 @@ void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
     auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
     (*slotViewport) << canvasInterface.viewport;
 
-    // Promote time delta information
+    // Promote timeDelta, if applicable
     auto slotTimeDelta = m_renderStage->findInput<float>([](Input<float>* input) { return input->name() == "timeDelta"; });
     if (slotTimeDelta)
         (*slotTimeDelta) << canvasInterface.timeDelta;
@@ -134,5 +142,41 @@ void MultiFrameAggregationPipeline::disconnectRenderStage()
     m_renderStage = nullptr;
 }
 
+void MultiFrameAggregationPipeline::addThroughputInput(gloperate::AbstractSlot * input)
+{
+    static const std::set<std::string> defaultInputs {"ColorTarget", "multiFrameCount", "backgroundColor", "frameCounter", "timeDelta", "viewport"};
+
+    if (defaultInputs.count(input->name()))
+        return;
+
+    m_additionalInputs.insert(input);
+
+    if (m_renderStage)
+        connectThroughputInput(input);
+}
+
+void MultiFrameAggregationPipeline::connectThroughputInput(gloperate::AbstractSlot * input)
+{
+    if (!m_renderStage)
+        return;
+
+    const auto renderInput = m_renderStage->input(input->name());
+
+    if (renderInput)
+    {
+        renderInput->connect(input);
+        m_controlStage->createSlot("Input", renderInput->typeName(), input->name())->connect(input);
+    }
+}
+
+void MultiFrameAggregationPipeline::removeThroughputInput(gloperate::AbstractSlot * input)
+{
+    static const std::set<std::string> defaultInputs {"ColorTarget", "multiFrameCount", "backgroundColor", "frameCounter", "timeDelta", "viewport"};
+
+    if (defaultInputs.count(input->name()))
+        return;
+
+    m_additionalInputs.erase(input);
+}
 
 } // namespace gloperate_glkernel

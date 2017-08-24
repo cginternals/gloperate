@@ -9,10 +9,22 @@
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
+namespace globjects
+{
+    class NamedString;
+}
+
+
 namespace gloperate
 {
     class TextureRenderTargetStage;
     class TextureFromRenderTargetExtractionStage;
+    class Quad;
+    class Camera;
+    class ProgramStage;
+    class RenderPassStage;
+    class RasterizationStage;
+    class ClearStage;
 }
 
 
@@ -25,8 +37,7 @@ namespace gloperate_glkernel
 }
 
 
-class MultiFrameSceneRenderingStage;
-class MultiFramePostprocessingStage;
+class GeometryImporterStage;
 
 
 /**
@@ -54,6 +65,11 @@ public:
     // Inputs
     Input<int> multiFrameCount;                 ///< Total number of frames to aggregate
 
+    Input<bool> useAntialiasing;                ///< Flag enabling antialiasing effect
+    Input<bool> useDOF;                         ///< Flag enabling depth of field effect
+    Input<bool> useSSAO;                        ///< Flag enabling ssao effect
+    Input<bool> useTransparency;                ///< Flag enabling transparency effect
+
 
 public:
     /**
@@ -75,6 +91,12 @@ public:
 
 
 protected:
+    // Virtual Stage interface
+    virtual void onContextInit(gloperate::AbstractGLContext * context);
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context);
+
+
+protected:
     // Stages
     // Custom FBO
     std::unique_ptr<gloperate::TextureRenderTargetStage>                   m_colorTextureStage;   ///< Stage creating color texture for main rendering
@@ -85,10 +107,23 @@ protected:
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage>       m_subpixelStage;           ///< subpixel offsets for antialiasing
     std::unique_ptr<gloperate_glkernel::DiscDistributionKernelStage>       m_dofShiftStage;           ///< offsets for depth of field
     std::unique_ptr<gloperate_glkernel::HemisphereDistributionKernelStage> m_ssaoKernelStage;         ///< kernel for SSAO
-    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;              ///< noise for SSAO
+    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>                  m_noiseStage;              ///< noise for SSAO & Transparency
     std::unique_ptr<gloperate_glkernel::TransparencyKernelStage>           m_transparencyKernelStage; ///< kernel for transparency
 
     // Rendering
-    std::unique_ptr<MultiFrameSceneRenderingStage>                         m_renderingStage;
-    std::unique_ptr<MultiFramePostprocessingStage>                         m_postprocessingStage;
+    std::unique_ptr<GeometryImporterStage>                                 m_renderGeometryStage;              ///< geometry for rendering step
+    std::unique_ptr<gloperate::ProgramStage>                               m_renderProgramStage;               ///< shader program for rendering step
+    std::unique_ptr<gloperate::RenderPassStage>                            m_renderPassStage;                  ///< render pass for rendering step
+    std::unique_ptr<gloperate::ClearStage>                                 m_renderClearStage;                 ///< FBO clear for rendering step
+    std::unique_ptr<gloperate::RasterizationStage>                         m_renderRasterizationStage;         ///< rasterization for rendering step
+    std::unique_ptr<gloperate::ProgramStage>                               m_postprocessingProgramStage;       ///< shader program for postprocessing step
+    std::unique_ptr<gloperate::RenderPassStage>                            m_postprocessingPassStage;          ///< render pass for postprocessing step
+    std::unique_ptr<gloperate::ClearStage>                                 m_postprocessingClearStage;         ///< FBO clear for postprocessing step
+    std::unique_ptr<gloperate::RasterizationStage>                         m_postprocessingRasterizationStage; ///< rasterization for postprocessing step
+
+    // Rendering ressources
+    std::unique_ptr<globjects::NamedString>                                m_randomNamedString; ///< named string for shader include
+    std::unique_ptr<globjects::NamedString>                                m_ssaoNamedString;   ///< named string for shader include
+    std::unique_ptr<gloperate::Camera>                                     m_camera;            ///< camera for rendering step
+    std::unique_ptr<gloperate::Quad>                                       m_quad;              ///< geometry for postprocessing step
 };

@@ -4,23 +4,26 @@
 
 #include <cppexpose/plugin/plugin_api.h>
 
+#include <globjects/NamedString.h>
+
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 namespace gloperate {
-    class TextureRenderTargetStage;
+    class Drawable;
+
+    class ProgramStage;
+    class ClearStage;
+    class RenderPassStage;
+    class RasterizationStage;
 }
 
 
 namespace gloperate_glkernel {
     class TransparencyKernelStage;
-    class NoiseKernelStage;
 }
-
-
-class TransparentCirclesStage;
 
 
 /**
@@ -66,9 +69,20 @@ public:
 
 
 protected:
+    // Virtual Stage interface
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
+
+
+protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::TransparencyKernelStage> m_transparencyKernelStage;  ///< Stage generating transparency kernel
-    std::unique_ptr<gloperate_glkernel::NoiseKernelStage>        m_noiseKernelStage;         ///< Stage generating random noise
-    std::unique_ptr<gloperate::TextureRenderTargetStage>         m_depthBufferStage;         ///< Stage creating depth buffer for rendering
-    std::unique_ptr<TransparentCirclesStage>                     m_transparencyRenderStage;  ///< Rendering stage
+    std::unique_ptr<gloperate::ProgramStage>                     m_programStage;
+    std::unique_ptr<gloperate::RenderPassStage>                  m_renderPassStage;
+    std::unique_ptr<gloperate::ClearStage>                       m_clearStage;
+    std::unique_ptr<gloperate::RasterizationStage>               m_rasterizationStage;
+
+    // Rendering ressources
+    std::unique_ptr<gloperate::Drawable>                         m_drawable;
+    std::unique_ptr<globjects::NamedString>                      m_randomIncludeNamedString;
 };

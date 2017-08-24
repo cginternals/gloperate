@@ -37,7 +37,7 @@ Item
 
     function getSlotTypes(path)
     {
-        var types = canvas ? canvas.getSlotTypes() : null;
+        var types = canvas ? canvas.getSlotTypes(path) : null;
 
         if (types) return types;
         else       return [];
@@ -63,7 +63,7 @@ Item
     {
         if (canvas)
         {
-            canvas.createSlot(path, slotType, type, name);
+            canvas.createSlot(path, slot, slotType, type);
         }
     }
 

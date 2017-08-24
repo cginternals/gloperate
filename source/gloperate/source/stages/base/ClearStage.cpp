@@ -113,7 +113,7 @@ public:
 *    Representation of a clear value
 *
 *    A clear value corresponds to a render target input and its
-*    respective clear value input. 
+*    respective clear value input.
 */
 template <typename T>
 class ClearValueInput : public AbstractClearInput
@@ -163,7 +163,7 @@ public:
     }
 
     template< typename T>
-    void operator()()
+    void invoke()
     {
         auto clearValueInputT = dynamic_cast<const Input<T> *>(m_clearValueInput);
 

@@ -84,6 +84,7 @@ void RenderPassStage::onProcess()
         glm::mat4 projectionMatrix          = camera ? camera->projectionMatrix() : glm::mat4(1.0f);
         glm::mat3 normalMatrix              = camera ? camera->normalMatrix()     : glm::mat3(1.0f);
         glm::mat4 modelMatrix               = hasModelMatrix ? *this->modelMatrix : glm::mat4(1.0f);
+        glm::mat4 projectionInverseMatrix   = glm::inverse(projectionMatrix);
         glm::mat4 viewProjectionMatrix      = projectionMatrix * viewMatrix;
         glm::mat4 modelViewMatrix           = viewMatrix * modelMatrix;
         glm::mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
@@ -92,6 +93,7 @@ void RenderPassStage::onProcess()
         (*program)->setUniform<glm::mat4>("viewProjectionMatrix",      viewProjectionMatrix);
         (*program)->setUniform<glm::mat4>("viewMatrix",                viewMatrix);
         (*program)->setUniform<glm::mat4>("projectionMatrix",          projectionMatrix);
+        (*program)->setUniform<glm::mat4>("projectionInverseMatrix",   projectionInverseMatrix);
         (*program)->setUniform<glm::mat3>("normalMatrix",              normalMatrix);
         (*program)->setUniform<glm::mat4>("modelMatrix",               modelMatrix);
         (*program)->setUniform<glm::mat4>("modelViewMatrix",           modelViewMatrix);

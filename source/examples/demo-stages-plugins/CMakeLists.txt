@@ -43,40 +43,34 @@ set(headers
     ${include_path}/AssimpMeshLoader.h
     ${include_path}/ColorGradientDemo.h
     ${include_path}/DemoDrawableStage.h
+    ${include_path}/DemoMultiFrameEffectsPipeline.h
     ${include_path}/DemoMultiFrameAggregationPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
-    ${include_path}/DemoTransparencyAggregationPipeline.h
+    ${include_path}/GeometryImporterStage.h
     ${include_path}/GlyphSequenceDemoStage.h
     ${include_path}/LightTestPipeline.h
     ${include_path}/LightTestStage.h
-    ${include_path}/MultiFramePostprocessingStage.h
     ${include_path}/MultiFrameRenderingPipeline.h
-    ${include_path}/MultiFrameSceneRenderingStage.h
     ${include_path}/ShaderDemoPipeline.h
     ${include_path}/ShapeDemo.h
     ${include_path}/TransparencyRenderingPipeline.h
-    ${include_path}/TransparentCirclesStage.h
 )
 
 set(sources
-    ${source_path}/plugin.cpp
-
     ${source_path}/AssimpMeshLoader.cpp
     ${source_path}/ColorGradientDemo.cpp
     ${source_path}/DemoDrawableStage.cpp
+    ${source_path}/DemoMultiFrameEffectsPipeline.cpp
     ${source_path}/DemoMultiFrameAggregationPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp
-    ${source_path}/DemoTransparencyAggregationPipeline.cpp
+    ${source_path}/GeometryImporterStage.cpp
     ${source_path}/GlyphSequenceDemoStage.cpp
     ${source_path}/LightTestPipeline.cpp
     ${source_path}/LightTestStage.cpp
-    ${source_path}/MultiFramePostprocessingStage.cpp
     ${source_path}/MultiFrameRenderingPipeline.cpp
-    ${source_path}/MultiFrameSceneRenderingStage.cpp
     ${source_path}/ShaderDemoPipeline.cpp
     ${source_path}/ShapeDemo.cpp
     ${source_path}/TransparencyRenderingPipeline.cpp
-    ${source_path}/TransparentCirclesStage.cpp
 )
 
 # Group source files

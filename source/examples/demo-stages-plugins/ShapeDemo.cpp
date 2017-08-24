@@ -73,6 +73,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     // Timer stage
     addStage(m_timer.get());
     m_timer->interval = 2.0f * glm::pi<float>();
+    m_timer->interval.setOption("maximumValue", 2.0f * glm::pi<float>());
 
     addStage(m_floatSelection.get());
     m_floatSelection->createInput("timerValue") << m_timer->virtualTime;

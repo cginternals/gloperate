@@ -159,7 +159,7 @@ void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> 
     m_scriptContext = std::move(scriptContext);
 
     // Set global object
-    m_scriptContext->setGlobalObject(this);
+    m_scriptContext->addGlobalObject(this);
 
     // Output scripting errors to console
     m_scriptContext->scriptException.connect( [] (const std::string & error) -> void

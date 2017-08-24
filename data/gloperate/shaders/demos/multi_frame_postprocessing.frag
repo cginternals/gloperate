@@ -1,5 +1,5 @@
 
-#version 140
+#version 150
 #extension GL_ARB_explicit_attrib_location : require
 #extension GL_ARB_shading_language_include : require
 
@@ -8,8 +8,7 @@
 
 const vec3 ssaoColor = vec3(0.0);
 const float farZ = 10.0;
-const float ssaoRadius = 0.2;
-const float ssaoIntensity = 0.5;
+const float ssaoRadius = 0.5;
 
 
 uniform sampler2D colorTexture;
@@ -18,11 +17,13 @@ uniform sampler2D depthTexture;
 uniform sampler1D ssaoKernelTexture;
 uniform sampler2DArray ssaoNoiseTexture;
 
-uniform mat4 projectionMatrix;
-uniform mat4 projectionInverseMatrix;
+uniform mat4 viewProjectionMatrix;
+uniform mat4 viewProjectionInverseMatrix;
 uniform mat3 normalMatrix;
 
 uniform int currentFrame;
+
+uniform bool useSSAO;
 
 
 in vec2 v_uv;
@@ -34,23 +35,22 @@ void main()
 {
     vec3 baseColor = texture(colorTexture, v_uv).rgb;
 
-    vec3 ssaoFactor = ssao(
-        v_uv,
-        ssaoColor,
-        farZ,
-        ssaoRadius,
-        ssaoIntensity,
-        ssaoKernelTexture,
-        ssaoNoiseTexture,
-        depthTexture,
-        normalTexture,
-        projectionMatrix,
-        projectionInverseMatrix,
-        normalMatrix,
-        currentFrame
-    );
+    float ssaoFactor = 1.0;
 
-    //ssaoFactor = vec3(1.0);
+    if (useSSAO)
+    {
+        ssaoFactor = ssao(
+            v_uv,
+            depthTexture,
+            normalTexture,
+            ssaoNoiseTexture,
+            ssaoKernelTexture,
+            viewProjectionMatrix,
+            inverse(viewProjectionMatrix),
+            ssaoRadius,
+            currentFrame
+        );
+    }
 
     fragColor = vec4(baseColor * ssaoFactor, 1.0);
 }
