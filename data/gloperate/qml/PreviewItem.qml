@@ -1,10 +1,7 @@
 
 import QtQuick 2.0
-import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.0
 
 import QmlToolbox.Base 1.0
-import QmlToolbox.Controls 1.0
 
 import gloperate.rendering 1.0
 
@@ -15,12 +12,14 @@ Item
 
     property string path: '' ///< holds the path to the texture
 
+    implicitWidth:  200
+    implicitHeight: 180
+
     Rectangle
     {
-        x:      100
-        y:      100
-        width:  200
-        height: 200
+        anchors.fill: parent
+        anchors.leftMargin: Ui.style.pipelineSlotSize
+        anchors.rightMargin: Ui.style.pipelineSlotSize / 2
 
         color:        'white'
         border.color: 'black'
@@ -34,10 +33,10 @@ Item
             path: previewItem.path
         }
 
-        MouseArea
-        {
-            anchors.fill: parent
-            drag.target: parent
-        }
+        // MouseArea
+        // {
+        //     anchors.fill: parent
+        //     drag.target: parent
+        // }
     }
 }

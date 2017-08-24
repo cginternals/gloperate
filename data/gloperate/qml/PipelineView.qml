@@ -58,20 +58,30 @@ Item
                 page.toggled();
             }
         }
-
-        PreviewItem
-        {
-            path: 'ShapeDemo.Framebuffer.colorTexture'
-        }
     }
 
     function load()
     {
         pipelineEditor.load(path);
+
+        configureInternalStages(properties.getInternalStages());
     }
 
     function update()
     {
         pipelineEditor.update();
+
+        configureInternalStages(properties.getInternalStages());
+    }
+
+    function configureInternalStages(internalStages)
+    {
+        for (var stageName in internalStages)
+        {
+            var stageDefinition = internalStages[stageName];
+            var stageObject = pipelineEditor.pipeline.stageItems[stageDefinition.name];
+
+            stageDefinition.configureComponents(stageObject);
+        }
     }
 }

@@ -468,6 +468,11 @@ ApplicationWindow
         }
     }
 
+    PreviewStage
+    {
+        id: previewStage
+    }
+
     Settings
     {
         id: settings
@@ -499,6 +504,11 @@ ApplicationWindow
             gloperate.components.setPluginPaths(settings.pluginPaths);
             gloperate.components.scanPlugins();
         }
+
+        onEditorChanged:
+        {
+            gloperatePipeline.editor = settings.editor;
+        }
     }
 
     Component.onCompleted:
@@ -514,6 +524,10 @@ ApplicationWindow
 
         // Scan for plugins
         gloperate.components.scanPlugins();
+
+        // Add preview stage
+        gloperatePipeline.clearInternalStages();
+        gloperatePipeline.addInternalStage(previewStage.stageDefinition);
 
         // Set render stage
         window.stage = settings.stage;
