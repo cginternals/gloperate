@@ -13,8 +13,9 @@ Item
 
     signal slotChanged(string path, string slot, var status)
 
-    // Canvas scripting interface (accessed by 'root')
-    property var canvas: null
+    property var canvas:         null ///< Canvas scripting interface (accessed by 'root')
+    property var internalStages: {}   ///< Store stages only accessible for scripting and UI
+    property string editor:      ''   ///< State of editor
 
     function getStageTypes()
     {
@@ -71,12 +72,35 @@ Item
     {
         var connections = canvas ? canvas.getConnections(path) : null;
 
-        if (connections) return connections;
-        else             return [];
+        if (!connections)
+        {
+            return [];
+        }
+
+        if (path === "root")
+        {
+            for (var internalPath in internalStages)
+            {
+                if (isVisible(internalStages[internalPath]))
+                {
+                    connections = connections.concat(internalStages[internalPath].getConnections());
+                }
+            }
+        }
+
+        return connections;
     }
 
     function createConnection(sourcePath, sourceSlot, destPath, destSlot)
     {
+        for (var internalPath in internalStages)
+        {
+            if (destPath === internalPath)
+            {
+                internalStages[internalPath].connectionCreated(sourcePath, sourceSlot, destPath, destSlot);
+            }
+        }
+
         if (canvas)
         {
             canvas.createConnection(sourcePath, sourceSlot, destPath, destSlot);
@@ -85,6 +109,14 @@ Item
 
     function removeConnection(path, slot)
     {
+        for (var internalPath in internalStages)
+        {
+            if (path === internalPath)
+            {
+                internalStages[internalPath].connectionRemoved(path, slot);
+            }
+        }
+
         if (canvas)
         {
             canvas.removeConnection(path, slot);
@@ -94,6 +126,26 @@ Item
     function getStage(path)
     {
         var info = canvas ? canvas.getStage(path) : null;
+
+        if (info && path === "root")
+        {
+            for (var internalPath in internalStages)
+            {
+                var stage = internalStages[internalPath];
+                if (isVisible(stage))
+                {
+                    info.stages.push(stage.name);
+                }
+            }
+        }
+
+        for (var internalPath in internalStages)
+        {
+            if (path === internalPath)
+            {
+                return internalStages[internalPath].getDescription();
+            }
+        }
 
         if (info) {
             return info;
@@ -136,5 +188,37 @@ Item
         {
             canvas.setValue(path, slot, value);
         }
+    }
+
+    function isVisible(stage)
+    {
+        return editor === 'internal' ? stage.isVisibleInternal : stage.isVisibleExternal;
+    }
+
+    function getInternalStages()
+    {
+        var stages = {};
+
+        for (var internalPath in internalStages)
+        {
+            var stage = internalStages[internalPath];
+
+            if (isVisible(stage))
+            {
+                stages[internalPath] = stage;
+            }
+        }
+
+        return stages;
+    }
+
+    function clearInternalStages()
+    {
+        internalStages = {};
+    }
+
+    function addInternalStage(stage)
+    {
+        internalStages[stage.path] = stage;
     }
 }

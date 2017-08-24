@@ -62,7 +62,15 @@ void TextureItemRenderer::renderTexture()
     Canvas * canvas = m_environment->canvases().front();
     Stage * stage = canvas->renderStage();
     if (!stage) return;
-    AbstractSlot * slot = stage->getSlot(m_path.toStdString());
+
+    std::string slotPath = m_path.toStdString();
+
+    // Replace root in slot path with render stage name
+    if (string::hasPrefix(slotPath, "root")) {
+        slotPath.replace(0, 4, stage->name());
+    }
+
+    AbstractSlot * slot = stage->getSlot(slotPath);
     if (!slot) return;
 
     // Check if it is a texture slot
