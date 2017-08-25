@@ -32,6 +32,9 @@ namespace gloperate_qtquick
 {
 
 
+const char * s_qmlObjectPointerKey   = "_obj";
+
+
 QmlEngine::QmlEngine(gloperate::Environment * environment)
 : qmltoolbox::QmlApplicationEngine()
 , m_environment(environment)
@@ -148,10 +151,10 @@ cppexpose::Variant QmlEngine::fromScriptValue(const QJSValue & value)
         QJSValueIterator it(value);
         while (it.next())
         {
-            // If a property _obj exists, the object is a cppexpose::Object.
+            // If a property s_qmlObjectPointerKey exists, the object is a cppexpose::Object.
             // In this case, extract the pointer and return that.
             // Otherwise, continue to build a key-value map of the object's properties
-            if (it.name() == "_obj")
+            if (it.name() == s_qmlObjectPointerKey)
             {
                 assert(it.value().isQObject());
                 const auto objWrapper = static_cast<QmlObjectWrapper *>(it.value().toQObject());

@@ -50,6 +50,9 @@ namespace gloperate_qtquick
 {
 
 
+extern const char * s_qmlObjectPointerKey;
+
+
 QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::Object * obj)
 : m_engine(engine)
 , m_object(obj)
@@ -84,7 +87,7 @@ QJSValue QmlObjectWrapper::wrapObject()
 
     // Make internal object wrapper available as '_obj'
     QJSValue internal = m_engine->newQObject(this);
-    m_obj.setProperty("_obj", internal);
+    m_obj.setProperty(s_qmlObjectPointerKey, internal);
 
     // Helper script for adding properties and functions
     m_registerProperty = m_engine->evaluate(s_registerProperty);
