@@ -161,7 +161,10 @@ public:
     *    Get existing wrapper for object or create a new one
     *
     *  @param[in] object
-    *    Object to be wrapped
+    *    Object to be wrapped (must NOT be null)
+    *
+    *  @return
+    *    Object wrapper (never null)
     *
     *  @remarks
     *    The returned object wrapper is owned by the backend
