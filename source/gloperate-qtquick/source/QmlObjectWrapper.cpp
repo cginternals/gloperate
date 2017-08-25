@@ -61,6 +61,16 @@ QmlObjectWrapper::~QmlObjectWrapper()
     // Wrapped objects are deleted through the Qt object hierarchy
 }
 
+cppexpose::Object * QmlObjectWrapper::object()
+{
+    return m_object;
+}
+
+const cppexpose::Object * QmlObjectWrapper::object() const
+{
+    return m_object;
+}
+
 QJSValue QmlObjectWrapper::wrapObject()
 {
     // Check if wrapper object has already been created
