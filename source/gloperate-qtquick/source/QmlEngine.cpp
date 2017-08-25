@@ -146,28 +146,35 @@ cppexpose::Variant QmlEngine::fromScriptValue(const QJSValue & value)
 
     else if (value.isObject())
     {
-        cppexpose::VariantMap obj;
-
-        QJSValueIterator it(value);
-        while (it.next())
+        // If a property s_qmlObjectPointerKey exists, the object is a cppexpose::Object.
+        // In this case, extract the pointer and return that.
+        // Otherwise, build a key-value map of the object's properties.
+        if (value.hasOwnProperty(s_qmlObjectPointerKey))
         {
-            // If a property s_qmlObjectPointerKey exists, the object is a cppexpose::Object.
-            // In this case, extract the pointer and return that.
-            // Otherwise, continue to build a key-value map of the object's properties
-            if (it.name() == s_qmlObjectPointerKey)
-            {
-                assert(it.value().isQObject());
-                const auto objWrapper = static_cast<QmlObjectWrapper *>(it.value().toQObject());
+            assert(it.value().isQObject());
+            const auto objWrapper = static_cast<QmlObjectWrapper *>(value.property(s_qmlObjectPointerKey).toQObject());
 
-                return cppexpose::Variant::fromValue(objWrapper->object());
-            }
-            else
-            {
-                obj[it.name().toStdString()] = fromScriptValue(it.value());
-            }
+            return cppexpose::Variant::fromValue(objWrapper->object());
         }
 
-        return obj;
+        else
+        {
+            cppexpose::VariantMap obj;
+
+            QJSValueIterator it(value);
+            while (it.next())
+            {
+                if (it.name() == s_qmlObjectPointerKey)
+                {
+                }
+                else
+                {
+                    obj[it.name().toStdString()] = fromScriptValue(it.value());
+                }
+            }
+
+            return obj;
+        }
     }
 
     else {
