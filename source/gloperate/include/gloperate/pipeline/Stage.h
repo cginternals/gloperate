@@ -177,6 +177,26 @@ public:
     */
     void deinitContext(AbstractGLContext * context);
 
+    /**
+    *  @brief
+    *    Get the OpenGL context this stage has been initialized in
+    *
+    *  @remarks
+    *    Can be null if the stage has not been initialized yet, or
+    *    already deinitialized again.
+    */
+    AbstractGLContext * context();
+
+    /**
+    *  @brief
+    *    Get the OpenGL context this stage has been initialized in
+    *
+    *  @remarks
+    *    Can be null if the stage has not been initialized yet, or
+    *    already deinitialized again.
+    */
+    const AbstractGLContext * context() const;
+
     // [TODO] prepare
 
     /**
@@ -780,8 +800,9 @@ protected:
 
 
 protected:
-    Environment * m_environment;    ///< Gloperate environment to which the stage belongs
-    bool          m_alwaysProcess;  ///< Is the stage always processed?
+    Environment       * m_environment;    ///< Gloperate environment to which the stage belongs
+    AbstractGLContext * m_context;        ///< OpenGL context this stage has been initialized in (can be null)
+    bool                m_alwaysProcess;  ///< Is the stage always processed?
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs

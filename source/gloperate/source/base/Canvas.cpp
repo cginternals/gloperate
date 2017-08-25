@@ -153,8 +153,10 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
     {
         debug(2, "gloperate") << "deinitContext()";
 
-        if (m_renderStage)
+        if (m_renderStage && m_renderStage->context())
         {
+            assert(m_renderStage->context() == m_openGLContext);
+
             m_renderStage->deinitContext(m_openGLContext);
         }
 
@@ -266,14 +268,26 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         if (m_oldStage)
         {
             // Deinitialize old stage
-            m_oldStage->deinitContext(m_openGLContext);
+            if (m_oldStage->context())
+            {
+                assert(m_oldStage->context() == m_openGLContext);
+
+                m_oldStage->deinitContext(m_openGLContext);
+            }
 
             // Destroy old stage
             m_oldStage = nullptr;
         }
 
         // Initialize stage
-        m_renderStage->initContext(m_openGLContext);
+        if (m_renderStage->context())
+        {
+            assert(m_renderStage->context() == m_openGLContext);
+        }
+        else
+        {
+            m_renderStage->initContext(m_openGLContext);
+        }
 
         // Promote viewport information
         auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
