@@ -57,7 +57,25 @@ public:
 
     /**
     *  @brief
-    *    Create wrapper object in the scripting environment
+    *    Get wrapped cppexpose::Object
+    *
+    *  @return
+    *    Wrapped object (never null)
+    */
+    cppexpose::Object * object();
+
+    /**
+    *  @brief
+    *    Get wrapped cppexpose::Object
+    *
+    *  @return
+    *    Wrapped object (never null)
+    */
+    const cppexpose::Object * object() const;
+
+    /**
+    *  @brief
+    *    Create wrapper object in the scripting environment or get existing
     *
     *  @return
     *    Script value wrapping the object

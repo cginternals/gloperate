@@ -50,6 +50,9 @@ namespace gloperate_qtquick
 {
 
 
+extern const char * s_qmlObjectPointerKey;
+
+
 QmlObjectWrapper::QmlObjectWrapper(QmlEngine * engine, cppexpose::Object * obj)
 : m_engine(engine)
 , m_object(obj)
@@ -61,14 +64,30 @@ QmlObjectWrapper::~QmlObjectWrapper()
     // Wrapped objects are deleted through the Qt object hierarchy
 }
 
+cppexpose::Object * QmlObjectWrapper::object()
+{
+    return m_object;
+}
+
+const cppexpose::Object * QmlObjectWrapper::object() const
+{
+    return m_object;
+}
+
 QJSValue QmlObjectWrapper::wrapObject()
 {
+    // Check if wrapper object has already been created
+    if (m_obj.isObject())
+    {
+        return m_obj;
+    }
+
     // Create a nice javascript wrapper object
     m_obj = m_engine->newObject();
 
     // Make internal object wrapper available as '_obj'
     QJSValue internal = m_engine->newQObject(this);
-    m_obj.setProperty("_obj", internal);
+    m_obj.setProperty(s_qmlObjectPointerKey, internal);
 
     // Helper script for adding properties and functions
     m_registerProperty = m_engine->evaluate(s_registerProperty);
@@ -83,7 +102,7 @@ QJSValue QmlObjectWrapper::wrapObject()
             // Add object wrapper
             Object * obj = static_cast<Object *>(property);
 
-            QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, obj);
+            QmlObjectWrapper * wrapper = m_engine->getOrCreateObjectWrapper(obj);
             m_wrappedObjects.push_back(wrapper);
 
             QJSValue wrapObj = wrapper->wrapObject();
@@ -137,7 +156,7 @@ QJSValue QmlObjectWrapper::wrapObject()
         {
             // Add object wrapper
             Object * obj = static_cast<Object *>(property);
-            QmlObjectWrapper * wrapper = new QmlObjectWrapper(m_engine, obj);
+            QmlObjectWrapper * wrapper = m_engine->getOrCreateObjectWrapper(obj);
 
             assert(m_wrappedObjects.size() == index);
 
@@ -162,10 +181,7 @@ QJSValue QmlObjectWrapper::wrapObject()
     {
         // Remove object
         m_obj.deleteProperty(QString::fromStdString(property->name()));
-        delete *(m_wrappedObjects.begin() + index);
         m_wrappedObjects.erase(m_wrappedObjects.begin() + index);
-
-        // [TODO] remove object wrapper from parent wrapper? -> currently a memory leak
     });
 
     // Return wrapper object

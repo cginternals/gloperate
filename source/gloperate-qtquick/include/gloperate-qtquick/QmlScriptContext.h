@@ -53,8 +53,7 @@ public:
 
 
 protected:
-    QmlEngine                                   * m_engine;            ///< Qml engine with gloperate integration
-    QMap<cppexpose::Object *, QmlObjectWrapper *> m_globalObjWrappers; ///< Global objects
+    QmlEngine * m_engine;            ///< Qml engine with gloperate integration
 };
 
 
