@@ -151,8 +151,10 @@ cppexpose::Variant QmlEngine::fromScriptValue(const QJSValue & value)
         // Otherwise, build a key-value map of the object's properties.
         if (value.hasOwnProperty(s_qmlObjectPointerKey))
         {
-            assert(it.value().isQObject());
-            const auto objWrapper = static_cast<QmlObjectWrapper *>(value.property(s_qmlObjectPointerKey).toQObject());
+            const auto objectPointer = value.property(s_qmlObjectPointerKey);
+            assert(objectPointer.isQObject());
+
+            const auto objWrapper = static_cast<QmlObjectWrapper *>(objectPointer.toQObject());
 
             return cppexpose::Variant::fromValue(objWrapper->object());
         }
