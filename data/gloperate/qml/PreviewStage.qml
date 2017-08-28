@@ -45,7 +45,7 @@ Item
             previewComponent.path = '';
         }
 
-        function configureComponents(stageItem)
+        function onConfigure(stageItem)
         {
             previewComponent = stageItem.addComponent(newPreview, {});
         }

@@ -32,11 +32,5 @@ Item
 
             path: previewItem.path
         }
-
-        // MouseArea
-        // {
-        //     anchors.fill: parent
-        //     drag.target: parent
-        // }
     }
 }

@@ -22,7 +22,20 @@ Item
     property bool isVisibleInternal: true ///< Whether this stage should be visible in 'internal' mode
     property bool isVisibleExternal: true ///< Whether this stage should be visible in 'external' mode
 
-    function configureComponents(stageItem) {} ///< Configure stage item in pipeline editor
+    property bool configured: false ///< Whether this stage is already configured
+
+    function onConfigure(stageItem) {} ///< To be overridden with actual configuration
+
+    function configure(stageItem) {
+        if (configured)
+        {
+            return;
+        }
+
+        onConfigure(stageItem);
+
+        configured = true;
+    }
 
     onConnectionCreated:
     {

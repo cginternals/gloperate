@@ -69,24 +69,28 @@ Item
 
         pipelineEditor.load(path);
 
-        configureInternalStages(properties.getInternalStages());
+        configureInternalStages();
+
+        pipelineEditor.pipeline.stageCreated.connect(configureInternalStages);
     }
 
     function update()
     {
         pipelineEditor.update();
 
-        configureInternalStages(properties.getInternalStages());
+        configureInternalStages();
     }
 
-    function configureInternalStages(internalStages)
+    function configureInternalStages()
     {
+        var internalStages = properties.getInternalStages();
+
         for (var stageName in internalStages)
         {
             var stageDefinition = internalStages[stageName];
             var stageObject = pipelineEditor.pipeline.stageItems[stageDefinition.name];
 
-            stageDefinition.configureComponents(stageObject);
+            stageDefinition.configure(stageObject);
         }
     }
 }

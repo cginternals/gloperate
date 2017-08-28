@@ -455,6 +455,8 @@ ApplicationWindow
     {
         id: gloperatePipeline
 
+        editor: settings.editor
+
         onCanvasChanged:
         {
             propertyEditor.update();
@@ -467,11 +469,6 @@ ApplicationWindow
                 });
             }
         }
-    }
-
-    PreviewStage
-    {
-        id: previewStage
     }
 
     Settings
@@ -526,10 +523,9 @@ ApplicationWindow
         // Scan for plugins
         gloperate.components.scanPlugins();
 
-        // Add preview stage
+        // Initialize internal stages and add one preview stage
         gloperatePipeline.clearInternalStages();
-        gloperatePipeline.addInternalStage(previewStage.stageDefinition);
-        gloperatePipeline.editor = settings.editor;
+        gloperatePipeline.createInternalStage("root", "PreviewStage", "PreviewStage");
 
         // Set render stage
         window.stage = settings.stage;
