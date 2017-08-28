@@ -459,10 +459,13 @@ ApplicationWindow
         {
             propertyEditor.update();
 
-            canvas.onStageInputChanged(function(slot, status)
+            if (canvas)
             {
-                gloperatePipeline.slotChanged('root', slot, status);
-            });
+                canvas.onStageInputChanged(function(slot, status)
+                {
+                    gloperatePipeline.slotChanged('root', slot, status);
+                });
+            }
         }
     }
 
