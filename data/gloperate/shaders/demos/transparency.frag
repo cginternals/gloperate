@@ -29,7 +29,7 @@ void main()
 
     float alpha = v_color.a;
     ivec2 transpSize = textureSize(transparencyKernel, 0);
-    ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize) + ivec2(frameCounter, 0);
+    ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize) + ivec2(currentFrame, 0);
     bool opaque = texelFetch(transparencyKernel, transpIndex % transpSize, 0).r > 0.5;
 
     if (!opaque)
