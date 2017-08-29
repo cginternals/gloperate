@@ -12,7 +12,6 @@
 #include <cppexpose/reflection/Object.h>
 
 #include <gloperate-qtquick/QmlEngine.h>
-#include <gloperate-qtquick/QmlObjectWrapper.h>
 
 
 using namespace cppassist;
@@ -30,7 +29,6 @@ QmlScriptContext::QmlScriptContext(QmlEngine * engine)
 
 QmlScriptContext::~QmlScriptContext()
 {
-    // m_globalObjWrapper is deleted through the Qt object hierarchy
 }
 
 void QmlScriptContext::initialize(cppexpose::ScriptContext * scriptContext)
@@ -40,34 +38,12 @@ void QmlScriptContext::initialize(cppexpose::ScriptContext * scriptContext)
 
 void QmlScriptContext::addGlobalObject(cppexpose::Object * obj)
 {
-    // Check if obj exists
-    if (m_globalObjWrappers.contains(obj))
-    {
-        return;
-    }
-
-    // Create object wrapper
-    const auto globalObjWrapper = new QmlObjectWrapper(m_engine, obj);
-    m_globalObjWrappers[obj] = globalObjWrapper;
-
-    // Add global object
-    m_engine->rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant::fromValue(globalObjWrapper->wrapObject()));
+    m_engine->addGlobalObject(obj);
 }
 
 void QmlScriptContext::removeGlobalObject(cppexpose::Object * obj)
 {
-    // Check if obj exists
-    if (!m_globalObjWrappers.contains(obj))
-    {
-        return;
-    }
-
-    // Remove global object by setting it to null
-    m_engine->rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant{});
-
-    // Destroy object wrapper
-    delete m_globalObjWrappers[obj];
-    m_globalObjWrappers.remove(obj);
+    m_engine->removeGlobalObject(obj);
 }
 
 Variant QmlScriptContext::evaluate(const std::string & code)

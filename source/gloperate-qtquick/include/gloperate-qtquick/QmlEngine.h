@@ -5,6 +5,7 @@
 #include <QJSValue>
 #include <QString>
 
+#include <cppexpose/signal/Connection.h>
 #include <cppexpose/variant/Variant.h>
 
 #include <qmltoolbox/QmlApplicationEngine.h>
@@ -14,6 +15,11 @@
 
 class QVariant;
 
+namespace cppexpose
+{
+    class Object;
+}
+
 namespace gloperate
 {
     class Environment;
@@ -22,6 +28,9 @@ namespace gloperate
 
 namespace gloperate_qtquick
 {
+
+
+class QmlObjectWrapper;
 
 
 /**
@@ -71,6 +80,24 @@ public:
     *    Gloperate environment (cannot be null)
     */
     gloperate::Environment * environment();
+
+    /**
+    *  @brief
+    *    Add a global object that is exposed into the scripting environment
+    *
+    *  @param[in] obj
+    *    Global object (must NOT be null)
+    */
+    void addGlobalObject(cppexpose::Object * obj);
+
+    /**
+    *  @brief
+    *    Remove a global object that is exposed into the scripting environment
+    *
+    *  @param[in] obj
+    *    Global object (must NOT be null)
+    */
+    void removeGlobalObject(cppexpose::Object * obj);
 
     /**
     *  @brief
@@ -129,10 +156,28 @@ public:
     */
     const QString & gloperateModulePath() const;
 
+    /**
+    *  @brief
+    *    Get existing wrapper for object or create a new one
+    *
+    *  @param[in] object
+    *    Object to be wrapped (must NOT be null)
+    *
+    *  @return
+    *    Object wrapper (never null)
+    *
+    *  @remarks
+    *    The returned object wrapper is owned by the backend
+    *    and will be deleted if either the backend or the
+    *    wrapped object is destroyed
+    */
+    QmlObjectWrapper * getOrCreateObjectWrapper(cppexpose::Object * object);
+
 
 protected:
-    gloperate::Environment * m_environment;      ///< Gloperate environment (must NOT be null)
-    QString                  m_gloperateQmlPath; ///< Path to gloperate qml module
+    gloperate::Environment                                                            * m_environment;      ///< Gloperate environment (must NOT be null)
+    QString                                                                             m_gloperateQmlPath; ///< Path to gloperate qml module
+    std::map<cppexpose::Object *, std::pair<QmlObjectWrapper *, cppexpose::Connection>> m_objectWrappers;   ///< Global objects
 };
 
 

@@ -365,16 +365,15 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
     if (colorOutput)
     {
-        if (**colorOutput == m_colorTarget.get())
-        {
+        const auto viewport = m_renderStage->findOutput<glm::vec4>([this](Output<glm::vec4> *) {
+            return true;
+        });
 
-        }
-        else
-        {
-            auto viewport = m_renderStage->findOutput<glm::vec4>([this](Output<glm::vec4> *) {
-                return true;
-            });
+        const auto viewportDiffering = viewport && glm::distance(**viewport, m_viewport) > glm::epsilon<float>();
+        const auto colorOutputDiffering = **colorOutput != m_colorTarget.get();
 
+        if (viewportDiffering || colorOutputDiffering)
+        {
             m_blitStage->source = **colorOutput;
             m_blitStage->sourceViewport = viewport ? **viewport : m_viewport;
             m_blitStage->target = m_colorTarget.get();

@@ -599,7 +599,7 @@ globjects::Framebuffer * RenderInterface::obtainFBO(size_t index, AbstractRender
             const auto attachment = fbo->getAttachment(attachmentIndex);
 
             const auto attachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(attachment);
-            if (!attachment->isRenderBufferAttachment() || attachedRenderbuffer->renderBuffer() != renderTarget->renderbufferAttachment())
+            if (!attachment || !attachment->isRenderBufferAttachment() || attachedRenderbuffer->renderBuffer() != renderTarget->renderbufferAttachment())
             {
                 fbo->attachRenderBuffer(attachmentIndex, renderTarget->renderbufferAttachment());
             }

@@ -42,7 +42,6 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}")
 set(headers
     ${include_path}/AssimpMeshLoader.h
     ${include_path}/ColorGradientDemo.h
-    ${include_path}/DemoDrawableStage.h
     ${include_path}/DemoMultiFrameEffectsPipeline.h
     ${include_path}/DemoMultiFrameAggregationPipeline.h
     ${include_path}/DemoTextRenderingPipeline.h
@@ -59,7 +58,6 @@ set(headers
 set(sources
     ${source_path}/AssimpMeshLoader.cpp
     ${source_path}/ColorGradientDemo.cpp
-    ${source_path}/DemoDrawableStage.cpp
     ${source_path}/DemoMultiFrameEffectsPipeline.cpp
     ${source_path}/DemoMultiFrameAggregationPipeline.cpp
     ${source_path}/DemoTextRenderingPipeline.cpp

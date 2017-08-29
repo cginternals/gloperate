@@ -15,6 +15,7 @@ namespace gloperate
     class LightCreationStage;
     class LightBufferTextureStage;
     class TimerStage;
+    class TextureRenderTargetStage;
 }
 
 class LightTestStage;
@@ -83,10 +84,11 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage1;
-    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage2;
-    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage3;
-    std::unique_ptr<gloperate::LightBufferTextureStage> m_lightAccumulationStage;
-    std::unique_ptr<gloperate::TimerStage>              m_timerStage;
-    std::unique_ptr<LightTestStage>                     m_renderStage;
+    std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage1;
+    std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage2;
+    std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage3;
+    std::unique_ptr<gloperate::LightBufferTextureStage>  m_lightAccumulationStage;
+    std::unique_ptr<gloperate::TimerStage>               m_timerStage;
+    std::unique_ptr<gloperate::TextureRenderTargetStage> m_depthBufferStage;
+    std::unique_ptr<LightTestStage>                      m_renderStage;
 };
