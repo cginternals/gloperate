@@ -91,33 +91,6 @@ protected:
     */
     void disconnectRenderStage();
 
-    /**
-    *  @brief
-    *    Add non-default input to the pipeline
-    *
-    *  @param[in] input
-    *    The input to be added
-    */
-    void addThroughputInput(gloperate::AbstractSlot * input);
-
-    /**
-    *  @brief
-    *    Connect a non-default input to the rendering stage/pipeline
-    *
-    *  @param[in] input
-    *    The input to be connected
-    */
-    void connectThroughputInput(gloperate::AbstractSlot * input);
-
-    /**
-    *  @brief
-    *    Remove non-default input from the pipeline
-    *
-    *  @param[in] input
-    *    The input to be removed
-    */
-    void removeThroughputInput(gloperate::AbstractSlot * input);
-
 
 protected:
     // Aggregation stages
@@ -129,9 +102,6 @@ protected:
 
     // Inserted Stage/Pipeline
     Stage                                                   * m_renderStage;                   ///< Actual rendering stage, providing intermediate frames
-
-    // Input troughput
-    std::set<gloperate::AbstractSlot *>                       m_additionalInputs;              ///< Registry of non-default inputs
 };
 
 
