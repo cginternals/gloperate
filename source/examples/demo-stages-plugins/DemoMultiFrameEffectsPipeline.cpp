@@ -44,9 +44,21 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
     m_multiFramePipeline->restartAggregationOn(useSSAOInput);
     m_multiFramePipeline->restartAggregationOn(useTransparencyInput);
 
-    auto transparencyAlphaInput = createInput<float>("transparency_alpha", 0.65f);
-    m_renderingPipeline->transparency_alpha << *transparencyAlphaInput;
+    auto dofIntensityInput = createInput<float>("dofIntensity", 0.01f);
+    auto dofFocusInput = createInput<float>("dofFocus", 0.1f);
+    auto ssaoRadiusInput = createInput<float>("ssaoRadius", 0.5f);
+    auto transparencyAlphaInput = createInput<float>("transparencyAlpha", 0.65f);
+    m_renderingPipeline->dofIntensity << *dofIntensityInput;
+    m_renderingPipeline->dofFocus << *dofFocusInput;
+    m_renderingPipeline->ssaoRadius << *ssaoRadiusInput;
+    m_renderingPipeline->transparencyAlpha << *transparencyAlphaInput;
+    m_multiFramePipeline->restartAggregationOn(dofIntensityInput);
+    m_multiFramePipeline->restartAggregationOn(dofFocusInput);
+    m_multiFramePipeline->restartAggregationOn(ssaoRadiusInput);
     m_multiFramePipeline->restartAggregationOn(transparencyAlphaInput);
+
+    dofIntensityInput->setOption("maximumValue", 0.02f);
+    dofFocusInput->setOption("maximumValue", 2.0f);
 
     *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
 

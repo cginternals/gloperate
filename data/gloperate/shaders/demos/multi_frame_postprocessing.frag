@@ -8,7 +8,6 @@
 
 const vec3 ssaoColor = vec3(0.0);
 const float farZ = 10.0;
-const float ssaoRadius = 0.5;
 
 
 uniform sampler2D colorTexture;
@@ -20,6 +19,8 @@ uniform sampler2DArray ssaoNoiseTexture;
 uniform mat4 viewProjectionMatrix;
 uniform mat4 viewProjectionInverseMatrix;
 uniform mat3 normalMatrix;
+
+uniform float ssaoRadius = 0.5;
 
 uniform int currentFrame;
 

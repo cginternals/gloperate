@@ -14,7 +14,7 @@ uniform sampler2D transparencyKernel;
 uniform int currentFrame;
 
 uniform bool useTransparency;
-uniform float transparency_alpha;
+uniform float transparencyAlpha;
 
 
 in vec4 v_position;
@@ -28,7 +28,7 @@ void main()
 {
     float rand = random(v_position);
 
-    float alpha = transparency_alpha;
+    float alpha = transparencyAlpha;
     ivec2 transpSize = textureSize(transparencyKernel, 0);
     ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize) + ivec2(currentFrame, 0);
     bool opaque = texelFetch(transparencyKernel, transpIndex % transpSize, 0).r > 0.5;

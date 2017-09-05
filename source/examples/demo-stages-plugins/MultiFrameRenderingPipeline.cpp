@@ -38,7 +38,10 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 , useDOF("useDOF", this, true)
 , useSSAO("useSSAO", this, true)
 , useTransparency("useTransparency", this, true)
-, transparency_alpha("transparency_alpha", this, 0.65)
+, dofIntensity("dofIntensity", this, 0.01f)
+, dofFocus("dofFocus", this, 0.1f)
+, ssaoRadius("ssaoRadius", this, 0.5f)
+, transparencyAlpha("transparencyAlpha", this, 0.65)
 , m_colorTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorTextureStage"))
 , m_depthTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "DepthTextureStage"))
 , m_normalTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "NormalTextureStage"))
@@ -86,7 +89,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 
     addStage(m_dofShiftStage.get());
     m_dofShiftStage->kernelSize << multiFrameCount;
-    m_dofShiftStage->radius = 0.01f;
+    m_dofShiftStage->radius << dofIntensity;
 
     addStage(m_ssaoKernelStage.get());
     m_ssaoKernelStage->kernelSize.setValue(16);
@@ -111,11 +114,12 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_renderPassStage->createInput("currentFrame") << canvasInterface.frameCounter;
     m_renderPassStage->createInput("dofShiftKernel") << m_dofShiftStage->texture;
     m_renderPassStage->createInput("useDOF") << useDOF;
+    m_renderPassStage->createInput("dofZFocus") << dofFocus;
     m_renderPassStage->createInput("subpixelShiftKernel") << m_subpixelStage->texture;
     m_renderPassStage->createInput("useAntialiasing") << useAntialiasing;
     m_renderPassStage->createInput("transparencyKernel") << m_transparencyKernelStage->texture;
     m_renderPassStage->createInput("useTransparency") << useTransparency;
-    m_renderPassStage->createInput("transparency_alpha") << transparency_alpha;
+    m_renderPassStage->createInput("transparencyAlpha") << transparencyAlpha;
     m_renderPassStage->createInput("viewport") << canvasInterface.viewport;
 
     addStage(m_renderClearStage.get());
@@ -152,6 +156,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_postprocessingPassStage->createInput("ssaoKernelTexture") << m_ssaoKernelStage->texture;
     m_postprocessingPassStage->createInput("ssaoNoiseTexture") << m_noiseStage->texture;
     m_postprocessingPassStage->createInput("useSSAO") << useSSAO;
+    m_postprocessingPassStage->createInput("ssaoRadius") << ssaoRadius;
 
     addStage(m_postprocessingClearStage.get());
     m_postprocessingClearStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");

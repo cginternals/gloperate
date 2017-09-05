@@ -71,7 +71,10 @@ public:
     Input<bool> useSSAO;                        ///< Flag enabling ssao effect
     Input<bool> useTransparency;                ///< Flag enabling transparency effect
 
-    Input<float> transparency_alpha;            ///< Alpha value for transparency
+    Input<float> dofIntensity;                 ///< Intensity value for DOF
+    Input<float> dofFocus;                     ///< Focus distance for DOF
+    Input<float> ssaoRadius;                   ///< Effect radius for SSAO
+    Input<float> transparencyAlpha;            ///< Alpha value for transparency
 
 
 public:
