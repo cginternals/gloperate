@@ -33,10 +33,12 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 : Pipeline(environment, name)
 , canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 1)
+, camera("camera", this, nullptr)
 , useAntialiasing("useAntialiasing", this, true)
 , useDOF("useDOF", this, true)
 , useSSAO("useSSAO", this, true)
 , useTransparency("useTransparency", this, true)
+, transparency_alpha("transparency_alpha", this, 0.65)
 , m_colorTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorTextureStage"))
 , m_depthTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "DepthTextureStage"))
 , m_normalTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "NormalTextureStage"))
@@ -54,7 +56,10 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 , m_postprocessingPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "PostprocessingPassStage"))
 , m_postprocessingClearStage(cppassist::make_unique<gloperate::ClearStage>(environment, "PostprocessingClearStage"))
 , m_postprocessingRasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "PostprocessingRasterizationStage"))
+, m_camera(cppassist::make_unique<gloperate::Camera>(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))
 {
+    camera.setValue(m_camera.get());
+
     auto dataPath = gloperate::dataPath();
 
     addStage(m_colorTextureStage.get());
@@ -102,7 +107,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     addStage(m_renderPassStage.get());
     m_renderPassStage->drawable << m_renderGeometryStage->geometry;
     m_renderPassStage->program << m_renderProgramStage->program;
-    //m_renderPassStage->camera is set in onContextInit
+    m_renderPassStage->camera << camera;
     m_renderPassStage->createInput("currentFrame") << canvasInterface.frameCounter;
     m_renderPassStage->createInput("dofShiftKernel") << m_dofShiftStage->texture;
     m_renderPassStage->createInput("useDOF") << useDOF;
@@ -110,6 +115,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_renderPassStage->createInput("useAntialiasing") << useAntialiasing;
     m_renderPassStage->createInput("transparencyKernel") << m_transparencyKernelStage->texture;
     m_renderPassStage->createInput("useTransparency") << useTransparency;
+    m_renderPassStage->createInput("transparency_alpha") << transparency_alpha;
     m_renderPassStage->createInput("viewport") << canvasInterface.viewport;
 
     addStage(m_renderClearStage.get());
@@ -137,6 +143,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     addStage(m_postprocessingPassStage.get());
     //m_postprocessingPassStage->drawable will be set in onContextInit
     m_postprocessingPassStage->program << m_postprocessingProgramStage->program;
+    m_postprocessingPassStage->camera << camera;
     m_postprocessingPassStage->depthTest = false;
     m_postprocessingPassStage->createInput("currentFrame") << canvasInterface.frameCounter;
     m_postprocessingPassStage->createInput("colorTexture") << m_colorTextureStage->texture;
@@ -145,9 +152,6 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_postprocessingPassStage->createInput("ssaoKernelTexture") << m_ssaoKernelStage->texture;
     m_postprocessingPassStage->createInput("ssaoNoiseTexture") << m_noiseStage->texture;
     m_postprocessingPassStage->createInput("useSSAO") << useSSAO;
-    //m_postprocessingPassStage->createInput("projectionMatrix") will be set in onContextInit
-    //m_postprocessingPassStage->createInput("projectionInverseMatrix") will be set in onContextInit
-    //m_postprocessingPassStage->createInput("normalMatrix") will be set in onContextInit
 
     addStage(m_postprocessingClearStage.get());
     m_postprocessingClearStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
@@ -170,17 +174,11 @@ MultiFrameRenderingPipeline::~MultiFrameRenderingPipeline()
 
 void MultiFrameRenderingPipeline::onContextInit(gloperate::AbstractGLContext * context)
 {
-    if (m_camera)
-        return;
-
-    m_camera = cppassist::make_unique<gloperate::Camera>(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     m_ssaoNamedString   = globjects::NamedString::create("/gloperate/shaders/lighting/ssao.glsl", new globjects::File(gloperate::dataPath() + "/gloperate/shaders/lighting/ssao.glsl"));
     m_randomNamedString = globjects::NamedString::create("/gloperate/shaders/util/random.glsl",   new globjects::File(gloperate::dataPath() + "/gloperate/shaders/util/random.glsl"));
     m_quad = cppassist::make_unique<gloperate::Quad>();
 
-    m_renderPassStage->camera = m_camera.get();
     m_postprocessingPassStage->drawable = m_quad.get();
-    m_postprocessingPassStage->camera = m_camera.get(); // provide necessary matrices for postprocessing calculations
 
     Pipeline::onContextInit(context);
 }

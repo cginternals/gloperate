@@ -10,6 +10,12 @@
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
+namespace gloperate
+{
+    class TrackballStage;
+}
+
+
 namespace gloperate_glkernel
 {
     class MultiFrameAggregationPipeline;
@@ -68,4 +74,5 @@ protected:
     // Stages
     std::unique_ptr<gloperate_glkernel::MultiFrameAggregationPipeline> m_multiFramePipeline; ///< Aggregation Pipeline
     std::unique_ptr<MultiFrameRenderingPipeline>                       m_renderingPipeline;  ///< Demo pipeline generating frames to aggregate
+    std::unique_ptr<gloperate::TrackballStage>                         m_trackballStage;     ///< Stage for trackball navigation
 };

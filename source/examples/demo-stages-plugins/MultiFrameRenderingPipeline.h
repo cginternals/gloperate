@@ -64,11 +64,14 @@ public:
 
     // Inputs
     Input<int> multiFrameCount;                 ///< Total number of frames to aggregate
+    Input<gloperate::Camera *> camera;          ///< Camera provided by navigation
 
     Input<bool> useAntialiasing;                ///< Flag enabling antialiasing effect
     Input<bool> useDOF;                         ///< Flag enabling depth of field effect
     Input<bool> useSSAO;                        ///< Flag enabling ssao effect
     Input<bool> useTransparency;                ///< Flag enabling transparency effect
+
+    Input<float> transparency_alpha;            ///< Alpha value for transparency
 
 
 public:

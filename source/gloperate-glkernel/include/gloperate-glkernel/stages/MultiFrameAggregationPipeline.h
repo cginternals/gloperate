@@ -75,6 +75,15 @@ public:
     virtual ~MultiFrameAggregationPipeline();
 
 
+public:
+    /**
+    *  @brief
+    *    Let a slot cause the aggregation to restart, when it's value changes.
+    */
+    template <typename T>
+    void restartAggregationOn(gloperate::Slot<T> * slot);
+
+
 protected:
     /**
     *  @brief
@@ -106,3 +115,5 @@ protected:
 
 
 } // namespace gloperate_glkernel
+
+#include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.inl>
