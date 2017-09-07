@@ -162,7 +162,7 @@ public:
     {
     }
 
-    template< typename T>
+    template<typename T>
     void invoke()
     {
         auto clearValueInputT = dynamic_cast<const Input<T> *>(m_clearValueInput);

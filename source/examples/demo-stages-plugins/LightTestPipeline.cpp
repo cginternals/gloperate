@@ -1,7 +1,10 @@
 
 #include "LightTestPipeline.h"
 
+#include <glbinding/gl/enum.h>
+
 #include <gloperate/stages/base/TimerStage.h>
+#include <gloperate/stages/base/TextureRenderTargetStage.h>
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/lights/LightBufferTextureStage.h>
 
@@ -32,6 +35,7 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
 , m_lightDefStage3(cppassist::make_unique<gloperate::LightCreationStage>(environment))
 , m_lightAccumulationStage(cppassist::make_unique<gloperate::LightBufferTextureStage>(environment))
 , m_timerStage(cppassist::make_unique<gloperate::TimerStage>(environment))
+, m_depthBufferStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment))
 , m_renderStage(cppassist::make_unique<LightTestStage>(environment))
 {
     glossiness.setOptions({
@@ -78,13 +82,19 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     addStage(m_timerStage.get());
     m_timerStage->timeDelta << canvasInterface.timeDelta;
 
+    addStage(m_depthBufferStage.get());
+    m_depthBufferStage->size << canvasInterface.viewport;
+    m_depthBufferStage->type = gl::GL_UNSIGNED_BYTE;
+    m_depthBufferStage->format = gl::GL_DEPTH_COMPONENT;
+    m_depthBufferStage->internalFormat = gl::GL_DEPTH_COMPONENT;
+
     addStage(m_renderStage.get());
     m_renderStage->canvasInterface.viewport << canvasInterface.viewport;
     m_renderStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
     m_renderStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
     m_renderStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
     m_renderStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
-    //m_renderStage->createInput("Depth") << *createInput<gloperate::DepthRenderTarget *>("Depth"); // TODO: fix depth
+    m_renderStage->createInput("Depth") << m_depthBufferStage->depthRenderTarget;
     m_renderStage->lightColorTypeData << m_lightAccumulationStage->colorTypeData;
     m_renderStage->lightPositionData << m_lightAccumulationStage->positionData;
     m_renderStage->lightAttenuationData << m_lightAccumulationStage->attenuationData;

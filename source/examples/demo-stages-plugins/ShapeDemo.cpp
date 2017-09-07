@@ -21,6 +21,7 @@
 #include <gloperate/rendering/Quad.h>
 #include <gloperate/rendering/ColorRenderTarget.h>
 #include <gloperate/stages/base/TextureFromRenderTargetExtractionStage.h>
+#include <gloperate/stages/base/ViewportScaleStage.h>
 
 
 CPPEXPOSE_COMPONENT(ShapeDemo, gloperate::Stage)
@@ -41,6 +42,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 , m_timer(cppassist::make_unique<TimerStage>(environment, "Timer"))
 , m_floatSelection(cppassist::make_unique<FloatSelectionStage>(environment, "FloatSelection"))
 , m_trackball(cppassist::make_unique<TrackballStage>(environment, "Trackball"))
+, m_viewportScale(cppassist::make_unique<ViewportScaleStage>(environment, "ViewportScale"))
 , m_shape(cppassist::make_unique<ShapeStage>(environment, "Shape"))
 , m_texture(cppassist::make_unique<TextureLoadStage>(environment, "Texture"))
 , m_framebuffer(cppassist::make_unique<BasicFramebufferStage>(environment, "Framebuffer"))
@@ -80,9 +82,14 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_floatSelection->createInput("angle") << angle;
     m_floatSelection->index = 1u;
 
+    addStage(m_viewportScale.get());
+    m_viewportScale->viewport << canvasInterface.viewport;
+    //m_viewportScale->scaleFactor = 1.0;
+    m_viewportScale->scaleFactor << *createInput<float>("ViewportScaleFactor", 1.0f);
+
     // Trackball stage
     addStage(m_trackball.get());
-    m_trackball->viewport << canvasInterface.viewport;
+    m_trackball->viewport << m_viewportScale->scaledViewport;
 
     // Shape stage
     addStage(m_shape.get());
@@ -99,7 +106,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Framebuffer stage
     addStage(m_framebuffer.get());
-    m_framebuffer->viewport << canvasInterface.viewport;
+    m_framebuffer->viewport << m_viewportScale->scaledViewport;
 
     // Transform stage for shape
     addStage(m_shapeTransform.get());
@@ -126,7 +133,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     m_clear->createInput("DepthAttachment") << m_framebuffer->depthBuffer;
     m_clear->createInput("ColorValue") << canvasInterface.backgroundColor;
     m_clear->createInput("DepthValue") = 1.0f;
-    m_clear->renderInterface.viewport << canvasInterface.viewport;
+    m_clear->renderInterface.viewport << m_viewportScale->scaledViewport;
 
     // Invalidation of Clear Stage if new rendering should take place
     m_clear->createInput("renderPass") << m_shapeRenderPass->renderPass;
@@ -135,7 +142,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     addStage(m_shapeRasterization.get());
     m_shapeRasterization->createInput("ColorAttachment") << *m_clear->createOutput<gloperate::ColorRenderTarget *>("ColorAttachmentOut");
     m_shapeRasterization->createInput("DepthAttachment") << *m_clear->createOutput<gloperate::DepthRenderTarget *>("DepthAttachmentOut");
-    m_shapeRasterization->renderInterface.viewport << canvasInterface.viewport;
+    m_shapeRasterization->renderInterface.viewport << m_viewportScale->scaledViewport;
     m_shapeRasterization->drawable << m_shapeRenderPass->renderPass;
 
     // Colorize program stage
@@ -167,13 +174,13 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     // Colorize rasterization stage
     addStage(m_colorizeRasterization.get());
     m_colorizeRasterization->createInput("ColorAttachment") << *createInput<gloperate::ColorRenderTarget *>("Color");
-    m_colorizeRasterization->renderInterface.viewport << canvasInterface.viewport;
+    m_colorizeRasterization->renderInterface.viewport << m_viewportScale->scaledViewport;
     m_colorizeRasterization->drawable << m_colorizeRenderPass->renderPass;
 
     // Outputs
     *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_colorizeRasterization->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
     //*createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *shapeColorOutput;
-    //*createOutput<glm::vec4>("ViewportOut") = glm::vec4(0, 0, 700, 700);
+    *createOutput<glm::vec4>("ViewportOut") << m_viewportScale->scaledViewport;
 
     // Start rotation
     rotate = true;
