@@ -15,8 +15,8 @@ uniform vec3 eye;
 uniform float glossiness;
 
 
-in vec3 v_worldPosition;
-flat in vec3 v_normal;
+in vec3 g_worldPosition;
+in vec3 g_normal;
 
 layout (location = 0) out vec4 fragColor;
 
@@ -24,10 +24,10 @@ layout (location = 0) out vec4 fragColor;
 void main()
 {
     vec3 color = lightIntensity(
-        v_worldPosition,
+        g_worldPosition,
         vec3(1.0),
         vec3(0.5),
-        v_normal,
+        g_normal,
         glossiness,
         eye,
         colorTypeData,

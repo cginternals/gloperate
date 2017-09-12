@@ -10,15 +10,27 @@
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
+namespace globjects
+{
+    class NamedString;
+}
+
+
 namespace gloperate
 {
+    class Camera;
+
     class LightCreationStage;
     class LightBufferTextureStage;
     class TimerStage;
     class TextureRenderTargetStage;
+    class ShapeStage;
+    class TransformStage;
+    class ClearStage;
+    class ProgramStage;
+    class RenderPassStage;
+    class RasterizationStage;
 }
-
-class LightTestStage;
 
 
 /**
@@ -83,6 +95,11 @@ public:
 
 
 protected:
+    // Virtual Stage interface
+    void onContextInit(gloperate::AbstractGLContext * context);
+    void onContextDeinit(gloperate::AbstractGLContext * context);
+
+protected:
     // Stages
     std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage1;
     std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage2;
@@ -90,5 +107,16 @@ protected:
     std::unique_ptr<gloperate::LightBufferTextureStage>  m_lightAccumulationStage;
     std::unique_ptr<gloperate::TimerStage>               m_timerStage;
     std::unique_ptr<gloperate::TextureRenderTargetStage> m_depthBufferStage;
-    std::unique_ptr<LightTestStage>                      m_renderStage;
+    std::unique_ptr<gloperate::ClearStage>               m_clearStage;
+    std::unique_ptr<gloperate::ProgramStage>             m_programStage;
+    std::unique_ptr<gloperate::ShapeStage>               m_shapeStage;
+    std::unique_ptr<gloperate::TransformStage>           m_transformStage;
+    std::unique_ptr<gloperate::RenderPassStage>          m_renderPassStage;
+    std::unique_ptr<gloperate::RasterizationStage>       m_rasterizationStage;
+
+    // Rendering ressources
+    std::unique_ptr<gloperate::Camera>      m_camera;
+    std::unique_ptr<globjects::NamedString> m_lightProcessingString;
+    std::unique_ptr<globjects::NamedString> m_lightProcessingDiffuseString;
+    std::unique_ptr<globjects::NamedString> m_lightProcessingPhongString;
 };

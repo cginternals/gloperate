@@ -48,7 +48,6 @@ set(headers
     ${include_path}/GeometryImporterStage.h
     ${include_path}/GlyphSequenceDemoStage.h
     ${include_path}/LightTestPipeline.h
-    ${include_path}/LightTestStage.h
     ${include_path}/MultiFrameRenderingPipeline.h
     ${include_path}/ShaderDemoPipeline.h
     ${include_path}/ShapeDemo.h
@@ -64,7 +63,6 @@ set(sources
     ${source_path}/GeometryImporterStage.cpp
     ${source_path}/GlyphSequenceDemoStage.cpp
     ${source_path}/LightTestPipeline.cpp
-    ${source_path}/LightTestStage.cpp
     ${source_path}/MultiFrameRenderingPipeline.cpp
     ${source_path}/ShaderDemoPipeline.cpp
     ${source_path}/ShapeDemo.cpp
