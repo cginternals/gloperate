@@ -57,6 +57,19 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
 {
     const auto dataPath = gloperate::dataPath();
 
+    const cppexpose::VariantMap typeOptions{{
+        {"type", "int"}, // HACK: override auto-assigned value "int32" to show editor
+        {"asSpinBox", true},
+        {"minimumValue", 0},
+        {"maximumValue", 4},
+        {"decimals", 0},
+        {"stepSize", 1}
+    }};
+
+    lightType1.setOptions(typeOptions);
+    lightType2.setOptions(typeOptions);
+    lightType3.setOptions(typeOptions);
+
     addStage(m_lightDefStage1.get());
     m_lightDefStage1->color << lightColor1;
     m_lightDefStage1->position << lightPos1;
