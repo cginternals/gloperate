@@ -60,17 +60,17 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     m_lightDefStage3->attenuationCoefficients << lightAttenuation3;
 
     lightType1.setValue(0);
-    lightColor1.setValue(glm::vec3(0.5, 0, 0));
+    lightColor1.setValue(gloperate::Color(0.5f, 0.0f, 0.0f));
     lightPos1.setValue(glm::vec3(-2, 0, -2));
     lightAttenuation1.setValue(glm::vec3(1, 0.2f, 0.01f));
 
     lightType2.setValue(1);
-    lightColor2.setValue(glm::vec3(0.125, 0.125, 0.125));
+    lightColor2.setValue(gloperate::Color(0.125f, 0.125f, 0.125f));
     lightPos2.setValue(glm::vec3(0, 0, 0));
     lightAttenuation2.setValue(glm::vec3(1, 0.2f, 0.01f));
 
     lightType3.setValue(4);
-    lightColor3.setValue(glm::vec3(1, 1, 1));
+    lightColor3.setValue(gloperate::Color(1.0f, 1.0f, 1.0f));
     lightPos3.setValue(glm::vec3(1.5, -1.3, -1.5));
     lightAttenuation3.setValue(glm::vec3(1, 0.2f, 0.01f));
 
