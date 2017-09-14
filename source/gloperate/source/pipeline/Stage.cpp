@@ -6,14 +6,19 @@
 #include <cppassist/string/conversion.h>
 #include <cppassist/logging/logging.h>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 
-#include <gloperate/base/ExtendedProperties.h>
+//#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/AbstractSlot.h>
+
+// TODO: fix
+#include <glm/glm.hpp>
+#include <cppassist/fs/FilePath.h>
+#include <gloperate/rendering/Color.h>
 
 
 using namespace cppassist;

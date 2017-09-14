@@ -8,7 +8,7 @@
 #include <cppassist/string/regex.h>
 #include <cppassist/logging/logging.h>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 #include <cppexpose/json/JSON.h>
 
 #include <gloperate/gloperate.h>
@@ -75,29 +75,26 @@ ColorGradientList * ColorGradientLoader::load(const std::string & filename, cons
         return nullptr;
     }
 
-    const cppexpose::VariantMap * jsonMap = json.asMap();
-
-    for (const auto & gradientPair : *jsonMap)
+    for (const auto & baseName : json.keys())
     {
-        const std::string & baseName = gradientPair.first;
-        const cppexpose::VariantMap * gradient = gradientPair.second.asMap();
+        const cppexpose::Variant gradient = json.element(baseName);
 
-        for (const auto & classesPair : *gradient)
+        for (const auto & classNumber : gradient.keys())
         {
-            const std::string & classNumber = classesPair.first;
-
             if (classNumber == "type")
             {
                 continue;
             }
 
-            const cppexpose::VariantArray * colorList = classesPair.second.asArray();
+            const cppexpose::Variant colorList = gradient.element(classNumber);
 
             std::vector<Color> colors;
-            colors.reserve(colorList->size());
+            colors.reserve(colorList.numElements());
 
-            for (const auto & colorString : *colorList)
+            for (size_t i = 0; i < colorList.numElements(); ++i)
             {
+                const auto & colorString = colorList.element(i);
+
                 std::vector<std::string> rgbValues = cppassist::string::extract(colorString.value<std::string>(), R"([0-9]+)");
 
                 colors.emplace_back(std::stoi(rgbValues[0]), std::stoi(rgbValues[1]), std::stoi(rgbValues[2]));

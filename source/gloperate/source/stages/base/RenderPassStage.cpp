@@ -123,7 +123,7 @@ void RenderPassStage::onProcess()
             continue;
 
         // Texture
-        if (input->type() == typeid(globjects::Texture *))
+        if (input->type() == cppexpose::ConcreteType<globjects::Texture *>())
         {
             // Get texture
             globjects::Texture * texture = static_cast<Input<globjects::Texture *> *>(input)->value();
@@ -144,7 +144,7 @@ void RenderPassStage::onProcess()
         }
 
         // Shader storage buffer
-        else if (input->type() == typeid(globjects::Buffer *))
+        else if (input->type() == cppexpose::ConcreteType<globjects::Buffer *>())
         {
             // Get buffer
             globjects::Buffer * buffer = static_cast<Input<globjects::Buffer *> *>(input)->value();
@@ -158,7 +158,7 @@ void RenderPassStage::onProcess()
         }
 
         // Color
-        else if (input->type() == typeid(Color))
+        else if (input->type() == cppexpose::ConcreteType<Color>())
         {
             // Get color
             const Color & color = **(static_cast<Input<Color> *>(input));
@@ -180,23 +180,24 @@ void RenderPassStage::onProcess()
 
 void RenderPassStage::setUniformValue(globjects::Program * program, AbstractSlot * input)
 {
-    if (input->type() == typeid(float)) {
+    // TODO: finalize
+    if (input->type() == cppexpose::ConcreteType<float>()) {
         program->setUniform<float>(input->name(), static_cast<Input<float> *>(input)->value());
-    } else if (input->type() == typeid(int)) {
+    } else if (input->type() == cppexpose::ConcreteType<int>()) {
         program->setUniform<int>(input->name(), static_cast<Input<int> *>(input)->value());
-    } else if (input->type() == typeid(unsigned int)) {
+    } else if (input->type() == cppexpose::ConcreteType<unsigned int>()) {
         program->setUniform<unsigned int>(input->name(), static_cast<Input<unsigned int> *>(input)->value());
-    } else if (input->type() == typeid(bool)) {
+    } else if (input->type() == cppexpose::ConcreteType<bool>()) {
         program->setUniform<bool>(input->name(), static_cast<Input<bool> *>(input)->value());
-    } else if (input->type() == typeid(glm::vec2)) {
+    } else if (input->type() == cppexpose::ConcreteType<glm::vec2>()) {
         program->setUniform<glm::vec2>(input->name(), static_cast<Input<glm::vec2> *>(input)->value());
-    } else if (input->type() == typeid(glm::vec3)) {
+    } else if (input->type() == cppexpose::ConcreteType<glm::vec3>()) {
         program->setUniform<glm::vec3>(input->name(), static_cast<Input<glm::vec3> *>(input)->value());
-    } else if (input->type() == typeid(glm::vec4)) {
+    } else if (input->type() == cppexpose::ConcreteType<glm::vec4>()) {
         program->setUniform<glm::vec4>(input->name(), static_cast<Input<glm::vec4> *>(input)->value());
-    } else if (input->type() == typeid(glm::ivec2)) {
+    } else if (input->type() == cppexpose::ConcreteType<glm::ivec2>()) {
         program->setUniform<glm::ivec2>(input->name(), static_cast<Input<glm::ivec2> *>(input)->value());
-    } else if (input->type() == typeid(glm::ivec3)) {
+    }/* else if (input->type() == typeid(glm::ivec3)) {
         program->setUniform<glm::ivec3>(input->name(), static_cast<Input<glm::ivec3> *>(input)->value());
     } else if (input->type() == typeid(glm::ivec4)) {
         program->setUniform<glm::ivec4>(input->name(), static_cast<Input<glm::ivec4> *>(input)->value());
@@ -276,7 +277,7 @@ void RenderPassStage::setUniformValue(globjects::Program * program, AbstractSlot
         program->setUniform<std::vector<gl::GLuint64>>(input->name(), static_cast<Input<std::vector<gl::GLuint64>> *>(input)->value());
     } else if (input->type() == typeid(std::vector<globjects::TextureHandle>)) {
         program->setUniform<std::vector<globjects::TextureHandle>>(input->name(), static_cast<Input<std::vector<globjects::TextureHandle>> *>(input)->value());
-    }
+    }*/
 }
 
 

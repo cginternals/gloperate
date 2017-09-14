@@ -6,7 +6,7 @@
 #include <QString>
 
 #include <cppexpose/signal/Connection.h>
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <qmltoolbox/QmlApplicationEngine.h>
 

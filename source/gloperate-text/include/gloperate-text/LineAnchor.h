@@ -44,9 +44,10 @@ namespace cppexpose
 
 
 template<>
-struct EnumDefaultStrings<gloperate_text::LineAnchor>
+class EnumValues<gloperate_text::LineAnchor>
 {
-    std::map<gloperate_text::LineAnchor, std::string> operator()()
+public:
+    static std::map<gloperate_text::LineAnchor, std::string> namedValues()
     {
         return {
             { gloperate_text::LineAnchor::Ascent,   "Ascent" },

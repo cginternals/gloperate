@@ -13,9 +13,9 @@ CanvasInterface::CanvasInterface(Stage * stage)
 , timeDelta      ("timeDelta", stage)
 {
     // Hide inputs in property editor
-    backgroundColor.setOption("hidden", true);
-    frameCounter   .setOption("hidden", true);
-    timeDelta      .setOption("hidden", true);
+    //backgroundColor.setOption("hidden", true);
+    //frameCounter   .setOption("hidden", true);
+    //timeDelta      .setOption("hidden", true);
 }
 
 CanvasInterface::~CanvasInterface()

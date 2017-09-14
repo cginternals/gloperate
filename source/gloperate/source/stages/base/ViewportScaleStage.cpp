@@ -1,6 +1,8 @@
 
 #include <gloperate/stages/base/ViewportScaleStage.h>
 
+#include <glm/common.hpp>
+
 #include <gloperate/rendering/AbstractRenderTarget.h>
 
 

@@ -60,9 +60,10 @@ namespace cppexpose
 *    Template specialization of enum strings for Alignment.
 */
 template<>
-struct EnumDefaultStrings<gloperate_text::Alignment>
+class EnumValues<gloperate_text::Alignment>
 {
-    std::map<gloperate_text::Alignment, std::string> operator()()
+public:
+    static std::map<gloperate_text::Alignment, std::string> namedValues()
     {
         return{
             { gloperate_text::Alignment::LeftAligned, "LeftAligned" },

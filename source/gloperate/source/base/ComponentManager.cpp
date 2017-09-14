@@ -3,7 +3,7 @@
 
 #include <fstream>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 
 using namespace cppexpose;
@@ -68,7 +68,7 @@ cppexpose::Variant ComponentManager::scr_pluginPaths()
 
     cppexpose::Variant lst = cppexpose::Variant::array();
     for (auto path : paths) {
-        lst.asArray()->push_back(cppexpose::Variant(path));
+        lst.pushElement(cppexpose::Variant(path));
     }
 
     return lst;
@@ -96,18 +96,17 @@ cppexpose::Variant ComponentManager::scr_components()
     auto & components = this->components();
     for (auto * component : components) {
         cppexpose::Variant obj = cppexpose::Variant::map();
-        cppexpose::VariantMap & map = *obj.asMap();
 
-        map["name"]        = cppexpose::Variant(component->name());
-        map["description"] = cppexpose::Variant(component->description());
-        map["type"]        = cppexpose::Variant(component->type());
-        map["tags"]        = cppexpose::Variant(component->tags());
-        map["icon"]        = cppexpose::Variant(component->icon());
-        map["annotations"] = cppexpose::Variant(component->annotations());
-        map["vendor"]      = cppexpose::Variant(component->vendor());
-        map["version"]     = cppexpose::Variant(component->version());
+        obj.setElement("name", cppexpose::Variant(component->name()));
+        obj.setElement("description", cppexpose::Variant(component->description()));
+        obj.setElement("type", cppexpose::Variant(component->type()));
+        obj.setElement("tags", cppexpose::Variant(component->tags()));
+        obj.setElement("icon", cppexpose::Variant(component->icon()));
+        obj.setElement("annotations", cppexpose::Variant(component->annotations()));
+        obj.setElement("vendor", cppexpose::Variant(component->vendor()));
+        obj.setElement("version", cppexpose::Variant(component->version()));
 
-        lst.asArray()->push_back(obj);
+        lst.pushElement(obj);
     }
 
     return lst;

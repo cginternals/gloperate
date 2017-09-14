@@ -2,6 +2,7 @@
 #include <gloperate-qtquick/QmlEngine.h>
 
 #include <cstring>
+#include <cassert>
 
 #include <QVariant>
 #include <QQmlContext>
@@ -10,7 +11,6 @@
 #include <QImage>
 
 #include <cppexpose/reflection/Property.h>
-#include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/function/Function.h>
 
 #include <cppassist/fs/FilePath.h>

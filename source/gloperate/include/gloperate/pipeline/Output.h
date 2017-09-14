@@ -80,11 +80,11 @@ public:
 
 protected:
     // Virtual AbstractSlot interface
-    virtual void onValueInvalidated() override;
-    virtual void onRequiredChanged() override;
+    virtual void onValueInvalidated();
+    virtual void onRequiredChanged();
 
     // Virtual Typed<T> interface
-    virtual void onValueChanged(const T & value) override;
+    virtual void onValueChanged(const T & value);
 };
 
 

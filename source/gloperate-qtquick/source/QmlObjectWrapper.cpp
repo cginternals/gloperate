@@ -5,7 +5,7 @@
 
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/reflection/Method.h>
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <gloperate-qtquick/QmlEngine.h>
 

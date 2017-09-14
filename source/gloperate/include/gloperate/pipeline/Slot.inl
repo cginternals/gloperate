@@ -4,8 +4,6 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <cppexpose/typed/Typed.h>
-
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Slot.h>
 
@@ -38,28 +36,32 @@ auto Slot<T>::DereferenceHelper<U*>::pointer(U * const * value) -> Pointer
 
 template <typename T>
 Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value)
-: cppexpose::DirectValue<T, AbstractSlot>(value)
+: AbstractSlot(name)
+, m_value(value)
 , m_valid(true)
 , m_source(nullptr)
 {
+    // TODO: implement
     // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr);
+    //this->initProperty(name, nullptr);
 
     // Initialize slot, will also add slot as a property
-    this->initSlot(slotType, parent);
+    //this->initSlot(slotType, parent);
 }
 
 template <typename T>
 Slot<T>::Slot(SlotType slotType, const std::string & name, const T & value)
-: cppexpose::DirectValue<T, AbstractSlot>(value)
+: AbstractSlot(name)
+, m_value(value)
 , m_valid(true)
 , m_source(nullptr)
 {
     // Make as a dynamic slot
     this->m_dynamic = true;
 
+    // TODO: reimplement
     // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr);
+    //this->initProperty(name, nullptr);
 
     // Initialize slot
     this->initSlot(slotType, nullptr);
@@ -92,7 +94,6 @@ bool Slot<T>::connect(Slot<T> * source)
     {
         this->onValueInvalidated();
     } );
-
     // Emit events
     this->promoteConnection();
     this->promoteRequired();
@@ -166,7 +167,7 @@ void Slot<T>::disconnect()
 
     // Emit events
     this->promoteConnection();
-    this->onValueChanged(this->m_value);
+    this->onValueChanged(this->m_value.value());
 }
 
 template <typename T>
@@ -234,7 +235,7 @@ T Slot<T>::value() const
     }
 
     // Return own data
-    return this->m_value;
+    return this->m_value.value();
 }
 
 template <typename T>
@@ -251,7 +252,7 @@ void Slot<T>::setValue(const T & value)
     this->m_valid = true;
 
     // Emit signal
-    this->onValueChanged(this->m_value);
+    this->onValueChanged(this->m_value.value());
 }
 
 template <typename T>
@@ -264,7 +265,7 @@ const T * Slot<T>::ptr() const
     }
 
     // Return own data
-    return &this->m_value;
+    return this->m_value.ptr();
 }
 
 template <typename T>
@@ -277,11 +278,11 @@ T * Slot<T>::ptr()
     }
 
     // Return own data
-    return &this->m_value;
+    return this->m_value.ptr();
 }
 
 template <typename T>
-std::unique_ptr<cppexpose::AbstractTyped> Slot<T>::clone() const
+std::unique_ptr<cppexpose::AbstractValueContainer> Slot<T>::createCopy() const
 {
     return nullptr;
 }

@@ -84,13 +84,13 @@ public:
 
 protected:
     // Virtual AbstractSlot interface
-    virtual void onValueInvalidated() override;
+    virtual void onValueInvalidated();
 
     // Virtual Typed<T> interface
-    virtual void onValueChanged(const T & value) override;
+    virtual void onValueChanged(const T & value);
 
     // Virtual AbstractProperty interface
-    virtual void onOptionChanged(const std::string & option) override;
+    virtual void onOptionChanged(const std::string & option);
 
 
 protected:

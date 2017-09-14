@@ -25,7 +25,7 @@ RenderInterface::RenderInterface(Stage * stage)
 : viewport("viewport", stage, glm::vec4(0.0, 0.0, -1.0, -1.0))
 {
     // Hide inputs in property editor
-    viewport.setOption("hidden", true);
+    //viewport.setOption("hidden", true);
 
     stage->inputAdded.connect( [this] (AbstractSlot * connectedInput) {
         auto colorRenderTargetInput = dynamic_cast<Input<ColorRenderTarget *> *>(connectedInput);

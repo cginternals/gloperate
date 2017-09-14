@@ -14,7 +14,7 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <glbinding/gl/enum.h>
 

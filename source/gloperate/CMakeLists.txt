@@ -188,7 +188,7 @@ set(sources
     ${source_path}/base/AbstractLoader.cpp
     ${source_path}/base/AbstractStorer.cpp
     ${source_path}/base/Range.cpp
-    ${source_path}/base/ExtendedProperties.cpp
+    #${source_path}/base/ExtendedProperties.cpp
 
     ${source_path}/pipeline/Stage.cpp
     ${source_path}/pipeline/Pipeline.cpp

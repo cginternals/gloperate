@@ -6,7 +6,7 @@
 #include <cppassist/fs/readfile.h>
 #include <cppassist/fs/FilePath.h>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <glbinding/Meta.h>
 
