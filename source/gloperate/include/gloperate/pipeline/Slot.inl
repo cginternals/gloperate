@@ -41,12 +41,11 @@ Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const
 , m_valid(true)
 , m_source(nullptr)
 {
-    // TODO: implement
     // Do not add property to object, yet. Just initialize the property itself
     //this->initProperty(name, nullptr);
 
     // Initialize slot, will also add slot as a property
-    //this->initSlot(slotType, parent);
+    this->initSlot(slotType, parent);
 }
 
 template <typename T>
