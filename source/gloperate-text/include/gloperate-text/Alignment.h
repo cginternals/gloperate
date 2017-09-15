@@ -4,7 +4,7 @@
 
 #include <functional>
 
-#include <cppexpose/typed/TypedEnum.h>
+#include <cppexpose/type/EnumValues.h>
 
 
 namespace gloperate_text
@@ -63,12 +63,12 @@ template<>
 class EnumValues<gloperate_text::Alignment>
 {
 public:
-    static std::map<gloperate_text::Alignment, std::string> namedValues()
+    static std::map<std::string, gloperate_text::Alignment> namedValues()
     {
-        return{
-            { gloperate_text::Alignment::LeftAligned, "LeftAligned" },
-            { gloperate_text::Alignment::Centered, "Centered" },
-            { gloperate_text::Alignment::RightAligned, "RightAligned" }
+        return {
+            { "LeftAligned", gloperate_text::Alignment::LeftAligned },
+            { "Centered", gloperate_text::Alignment::Centered },
+            { "RightAligned", gloperate_text::Alignment::RightAligned }
         };
     }
 };

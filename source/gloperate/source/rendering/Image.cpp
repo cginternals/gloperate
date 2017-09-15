@@ -241,5 +241,15 @@ void Image::initializeImage(int width, int height, GLenum format, GLenum type)
     m_type     = type;
 }
 
+bool Image::operator==(const Image & other) const
+{
+    return this == &other;
+}
+
+bool Image::operator!=(const Image & other) const
+{
+    return this != &other;
+}
+
 
 } // namespace gloperate

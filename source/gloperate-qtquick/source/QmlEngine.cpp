@@ -250,24 +250,24 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         return QJSValue(var.value<cppassist::FilePath>().path().c_str());
     }
 
-    else if (var.isBool()) {
-        return QJSValue(var.toBool());
+    else if (var.isBoolean()) {
+        return QJSValue(var.value<bool>());
     }
 
-    else if (var.isUnsignedIntegral()) {
-        return QJSValue((unsigned int)var.toULongLong());
+    else if (var.isUnsigned()) {
+        return QJSValue(var.value<unsigned int>());
     }
 
-    else if (var.isSignedIntegral() || var.isIntegral()) {
-        return QJSValue((int)var.toLongLong());
+    else if (var.isIntegral()) {
+        return QJSValue(var.value<int>());
     }
 
     else if (var.isFloatingPoint()) {
-        return QJSValue(var.toDouble());
+        return QJSValue(var.value<double>());
     }
 
     else if (var.isString()) {
-        return QJSValue(var.toString().c_str());
+        return QJSValue(var.value<std::string>().c_str());
     }
 
     else if (var.hasType<gloperate::Image>()) {

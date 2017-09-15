@@ -333,6 +333,36 @@ public:
     */
     friend void swap(Image & first, Image & second) GLOPERATE_NOEXCEPT;
 
+    /**
+    *  @brief
+    *    Equality operator
+    *
+    *  @param[in] other
+    *    The other image for comparison
+    *
+    *  @return
+    *    'true' if both images are equal, else 'false'
+    *
+    *  @remarks
+    *    Two images are considered equal if they are the same object
+    */
+    bool operator==(const Image & other) const;
+
+    /**
+    *  @brief
+    *    Inequality operator
+    *
+    *  @param[in] other
+    *    The other image for comparison
+    *
+    *  @return
+    *    'true' if both image differ, else 'false'
+    *
+    *  @remarks
+    *    Two images are considered equal if they are the same object
+    */
+    bool operator!=(const Image & other) const;
+
 
 protected:
     /**

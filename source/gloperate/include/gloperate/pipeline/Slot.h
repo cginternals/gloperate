@@ -192,6 +192,8 @@ public:
     virtual bool fromULongLong(unsigned long long value) override;
     virtual double toDouble() const override;
     virtual bool fromDouble(double value) override;
+    virtual cppexpose::Variant toVariant() const override;
+    virtual bool fromVariant(const cppexpose::Variant & variant) override;
     virtual size_t numElements() const override;
     virtual cppexpose::Variant element(size_t i) const override;
     virtual void setElement(size_t i, const cppexpose::Variant & value) override;
