@@ -1,6 +1,8 @@
 
 #include <gloperate/pipeline/Pipeline.h>
 
+#include <cassert>
+
 #include <iostream>
 #include <vector>
 #include <set>
@@ -8,7 +10,7 @@
 #include <cppassist/logging/logging.h>
 #include <cppassist/string/manipulation.h>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ComponentManager.h>

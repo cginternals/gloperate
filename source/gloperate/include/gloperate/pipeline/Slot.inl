@@ -4,8 +4,6 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <cppexpose/typed/Typed.h>
-
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Slot.h>
 
@@ -38,12 +36,13 @@ auto Slot<T>::DereferenceHelper<U*>::pointer(U * const * value) -> Pointer
 
 template <typename T>
 Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const T & value)
-: cppexpose::DirectValue<T, AbstractSlot>(value)
+: AbstractSlot(name)
+, m_value(value)
 , m_valid(true)
 , m_source(nullptr)
 {
     // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr);
+    //this->initProperty(name, nullptr);
 
     // Initialize slot, will also add slot as a property
     this->initSlot(slotType, parent);
@@ -51,15 +50,17 @@ Slot<T>::Slot(SlotType slotType, const std::string & name, Stage * parent, const
 
 template <typename T>
 Slot<T>::Slot(SlotType slotType, const std::string & name, const T & value)
-: cppexpose::DirectValue<T, AbstractSlot>(value)
+: AbstractSlot(name)
+, m_value(value)
 , m_valid(true)
 , m_source(nullptr)
 {
     // Make as a dynamic slot
     this->m_dynamic = true;
 
+    // TODO: reimplement
     // Do not add property to object, yet. Just initialize the property itself
-    this->initProperty(name, nullptr);
+    //this->initProperty(name, nullptr);
 
     // Initialize slot
     this->initSlot(slotType, nullptr);
@@ -83,7 +84,7 @@ bool Slot<T>::connect(Slot<T> * source)
     // Set source
     m_source = source;
 
-    // Connect to data container; no direct binding of member function to achive virtual lookup
+    // Connect to data container; no direct binding of member function to achive lookup
     m_valueConnection = m_source->valueChanged.connect([this] (const T & value)
     {
         this->onValueChanged(value);
@@ -92,7 +93,6 @@ bool Slot<T>::connect(Slot<T> * source)
     {
         this->onValueInvalidated();
     } );
-
     // Emit events
     this->promoteConnection();
     this->promoteRequired();
@@ -166,7 +166,7 @@ void Slot<T>::disconnect()
 
     // Emit events
     this->promoteConnection();
-    this->onValueChanged(this->m_value);
+    this->onValueChanged(this->m_value.value());
 }
 
 template <typename T>
@@ -234,7 +234,7 @@ T Slot<T>::value() const
     }
 
     // Return own data
-    return this->m_value;
+    return this->m_value.value();
 }
 
 template <typename T>
@@ -251,7 +251,7 @@ void Slot<T>::setValue(const T & value)
     this->m_valid = true;
 
     // Emit signal
-    this->onValueChanged(this->m_value);
+    this->onValueChanged(this->m_value.value());
 }
 
 template <typename T>
@@ -264,7 +264,7 @@ const T * Slot<T>::ptr() const
     }
 
     // Return own data
-    return &this->m_value;
+    return this->m_value.ptr();
 }
 
 template <typename T>
@@ -277,13 +277,289 @@ T * Slot<T>::ptr()
     }
 
     // Return own data
-    return &this->m_value;
+    return this->m_value.ptr();
 }
 
 template <typename T>
-std::unique_ptr<cppexpose::AbstractTyped> Slot<T>::clone() const
+const cppexpose::Type & Slot<T>::type() const
+{
+    return m_value.type();
+}
+
+template <typename T>
+cppexpose::Type & Slot<T>::type()
+{
+    return m_value.type();
+}
+
+template <typename T>
+const cppexpose::AbstractBaseType * Slot<T>::baseType() const
+{
+    return m_value.baseType();
+}
+
+template <typename T>
+cppexpose::AbstractBaseType * Slot<T>::baseType()
+{
+    return m_value.baseType();
+}
+
+template <typename T>
+const cppexpose::Type & Slot<T>::elementType() const
+{
+    return m_value.elementType();
+}
+
+template <typename T>
+cppexpose::Type & Slot<T>::elementType()
+{
+    return m_value.elementType();
+}
+
+template <typename T>
+const std::string & Slot<T>::typeName() const
+{
+    static cppexpose::BaseType<T> subType;
+    static const auto name = std::string("slot<") + subType.typeName() + ">";
+
+    return name;
+}
+
+template <typename T>
+bool Slot<T>::isNull() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isType() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isConst() const
+{
+    return m_source != nullptr;
+}
+
+template <typename T>
+bool Slot<T>::isArray() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isDynamicArray() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isMap() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isBoolean() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isNumber() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isIntegral() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isUnsigned() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isFloatingPoint() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::isString() const
+{
+    return false;
+}
+
+template <typename T>
+std::unique_ptr<cppexpose::AbstractValueContainer> Slot<T>::createCopy() const
 {
     return nullptr;
+}
+
+template <typename T>
+bool Slot<T>::compareTypeAndValue(const AbstractValueContainer & value) const
+{
+    // TODO: implement
+    return false;
+}
+
+template <typename T>
+std::string Slot<T>::toString() const
+{
+    if (m_source)
+    {
+        return m_source->toString();
+    }
+
+    return m_value.toString();
+}
+
+template <typename T>
+bool Slot<T>::fromString(const std::string & value)
+{
+    // TODO: implement
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::toBool() const
+{
+    return false;
+}
+
+template <typename T>
+bool Slot<T>::fromBool(bool value)
+{
+    return false;
+}
+
+template <typename T>
+long long Slot<T>::toLongLong() const
+{
+    return 0;
+}
+
+template <typename T>
+bool Slot<T>::fromLongLong(long long value)
+{
+    return false;
+}
+
+template <typename T>
+unsigned long long Slot<T>::toULongLong() const
+{
+    return 0;
+}
+
+template <typename T>
+bool Slot<T>::fromULongLong(unsigned long long value)
+{
+    return false;
+}
+
+template <typename T>
+double Slot<T>::toDouble() const
+{
+    return 0.0;
+}
+
+template <typename T>
+bool Slot<T>::fromDouble(double value)
+{
+    return false;
+}
+
+template <typename T>
+cppexpose::Variant Slot<T>::toVariant() const
+{
+    if (m_source != nullptr)
+    {
+        return m_source->toVariant();
+    }
+
+    return m_value.toVariant();
+}
+
+template <typename T>
+bool Slot<T>::fromVariant(const cppexpose::Variant & variant)
+{
+    return m_value.fromVariant(variant);
+
+    // TODO: remove connection upon explicit value update?
+}
+
+template <typename T>
+size_t Slot<T>::numElements() const
+{
+    return m_source != nullptr ? m_source->numElements() : m_value.numElements();
+}
+
+template <typename T>
+cppexpose::Variant Slot<T>::element(size_t i) const
+{
+    return m_source != nullptr ? m_source->element(i) : m_value.element(i);
+}
+
+template <typename T>
+void Slot<T>::setElement(size_t i, const cppexpose::Variant & value)
+{
+    if (isConst())
+    {
+        return;
+    }
+
+    m_value.setElement(i, value);
+}
+
+template <typename T>
+void Slot<T>::pushElement(const cppexpose::Variant & value)
+{
+    if (isConst())
+    {
+        return;
+    }
+
+    m_value.pushElement(value);
+}
+
+template <typename T>
+std::vector<std::string> Slot<T>::keys() const
+{
+    if (m_source != nullptr)
+    {
+        return m_source->keys();
+    }
+
+    return m_value.keys();
+}
+
+template <typename T>
+cppexpose::Variant Slot<T>::element(const std::string & key) const
+{
+    if (m_source != nullptr)
+    {
+        return m_source->element(key);
+    }
+
+    return m_value.element(key);
+}
+
+template <typename T>
+void Slot<T>::setElement(const std::string & key, const cppexpose::Variant & value)
+{
+    if (isConst())
+    {
+        return;
+    }
+
+    m_value.setElement(key, value);
 }
 
 template <typename T>

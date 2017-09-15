@@ -3,7 +3,7 @@
 
 
 #include <functional>
-#include <cppexpose/typed/TypedEnum.h>
+#include <cppexpose/type/EnumValues.h>
 
 
 namespace gloperate
@@ -59,9 +59,10 @@ namespace cppexpose
 *    Template specialization of enum strings for RenderTargetType.
 */
 template<>
-struct EnumDefaultStrings<gloperate::AttachmentType>
+class EnumValues<gloperate::AttachmentType>
 {
-    std::map<gloperate::AttachmentType, std::string> operator()()
+public:
+    static std::map<gloperate::AttachmentType, std::string> namedValues()
     {
         return {
             { gloperate::AttachmentType::Color, "Color" },

@@ -52,12 +52,12 @@ bool FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
     auto filepath = parameters.at("filepath").toString();
     auto format = parameters.at("format").toString();
     auto codec = parameters.at("codec").toString();
-    auto width = parameters.at("width").toULongLong();
-    auto height = parameters.at("height").toULongLong();
-    auto fps = parameters.at("fps").toULongLong();
+    auto width = parameters.at("width").value<unsigned int>();
+    auto height = parameters.at("height").value<unsigned int>();
+    auto fps = parameters.at("fps").value<unsigned int>();
 
-    auto gopsize = parameters.at("gopsize").toLongLong() != 0 ? parameters.at("gopsize").toLongLong() : fps * 2;
-    auto bitrate = parameters.at("bitrate").toLongLong() != 0 ? parameters.at("bitrate").toLongLong() : 400000;
+    auto gopsize = parameters.at("gopsize").value<int>() != 0 ? parameters.at("gopsize").value<int>() : fps * 2;
+    auto bitrate = parameters.at("bitrate").value<int>() != 0 ? parameters.at("bitrate").value<int>() : 400000;
 
     if (filepath == "")
     {

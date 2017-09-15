@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include <glbinding/gl/enum.h>
 
@@ -12,7 +13,7 @@
 #include <cppassist/memory/make_unique.h>
 #include <cppassist/string/manipulation.h>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <globjects/Framebuffer.h>
 
@@ -539,20 +540,20 @@ cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)
     {
         Variant types = Variant::array();
 
-        types.asArray()->push_back("bool");
-        types.asArray()->push_back("int");
-        types.asArray()->push_back("float");
-        types.asArray()->push_back("vec2");
-        types.asArray()->push_back("vec3");
-        types.asArray()->push_back("vec4");
-        types.asArray()->push_back("ivec2");
-        types.asArray()->push_back("ivec3");
-        types.asArray()->push_back("ivec4");
-        types.asArray()->push_back("string");
-        types.asArray()->push_back("file");
-        types.asArray()->push_back("color");
-        types.asArray()->push_back("texture");
-        types.asArray()->push_back("fbo");
+        types.pushElement("bool");
+        types.pushElement("int");
+        types.pushElement("float");
+        types.pushElement("vec2");
+        types.pushElement("vec3");
+        types.pushElement("vec4");
+        types.pushElement("ivec2");
+        types.pushElement("ivec3");
+        types.pushElement("ivec4");
+        types.pushElement("string");
+        types.pushElement("file");
+        types.pushElement("color");
+        types.pushElement("texture");
+        types.pushElement("fbo");
 
         return types;
     }
@@ -652,11 +653,11 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 
                 // Describe connection
                 Variant connection = Variant::map();
-                (*connection.asMap())["from"] = from;
-                (*connection.asMap())["to"]   = to;
+                connection.setElement("from", from);
+                connection.setElement("to", to);
 
                 // Add connection
-                obj.asArray()->push_back(connection);
+                obj.pushElement(connection);
             }
         };
 
@@ -725,25 +726,25 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
         // Compose stage information
         Variant obj = Variant::map();
 
-        (*obj.asMap())["name"] = name();
+        obj.setElement("name", name());
 
         // List inputs
         Variant inputs = Variant::array();
         for (auto input : stage->inputs())
         {
-            inputs.asArray()->push_back(input->name());
+            inputs.pushElement(input->name());
         }
 
-        (*obj.asMap())["inputs"] = inputs;
+        obj.setElement("inputs", inputs);
 
         // List outputs
         Variant outputs = Variant::array();
         for (auto output : stage->outputs())
         {
-            outputs.asArray()->push_back(output->name());
+            outputs.pushElement(output->name());
         }
 
-        (*obj.asMap())["outputs"] = outputs;
+        obj.setElement("outputs", outputs);
 
         // List stages
         Variant stages = Variant::array();
@@ -754,11 +755,11 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
             auto stageList = pipeline->stages();
             for (auto stage : stageList)
             {
-                stages.asArray()->push_back(stage->name());
+                stages.pushElement(stage->name());
             }
         }
 
-        (*obj.asMap())["stages"] = stages;
+        obj.setElement("stages", stages);
 
         // Return information about stage
         return obj;
@@ -784,7 +785,8 @@ cppexpose::Variant Canvas::scr_getValue(const std::string & path, const std::str
         AbstractSlot * slot = stage->getSlot(slotName);
         if (slot)
         {
-            return slot->toVariant();
+            // TODO: use real variant converter here
+            return cppexpose::Variant(slot->toString());
         }
     }
 
@@ -853,12 +855,13 @@ cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::st
         if (slot)
         {
             // Compose slot information
-            (*status.asMap())["name"]  = slot->name();
-            (*status.asMap())["type"]  = slot->typeName();
-            (*status.asMap())["value"] = slot->toVariant();
+            status.setElement("name", slot->name());
+            status.setElement("type", slot->typeName());
+            status.setElement("value", slot->toVariant());
 
+            // TODO: implement
             // Include options
-            const VariantMap & options = slot->options();
+            /*const VariantMap & options = slot->options();
 
             for (auto it : options)
             {
@@ -866,7 +869,7 @@ cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::st
                 Variant & value = it.second;
 
                 (*status.asMap())[key] = value;
-            }
+            }*/
         }
     }
 

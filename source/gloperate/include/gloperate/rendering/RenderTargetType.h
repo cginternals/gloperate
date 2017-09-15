@@ -3,7 +3,7 @@
 
 
 #include <functional>
-#include <cppexpose/typed/TypedEnum.h>
+#include <cppexpose/type/EnumValues.h>
 
 
 namespace gloperate
@@ -60,9 +60,10 @@ namespace cppexpose
 *    Template specialization of enum strings for RenderTargetType.
 */
 template<>
-struct EnumDefaultStrings<gloperate::RenderTargetType>
+class EnumValues<gloperate::RenderTargetType>
 {
-    std::map<gloperate::RenderTargetType, std::string> operator()()
+public:
+    static std::map<gloperate::RenderTargetType, std::string> namedValues()
     {
         return {
             { gloperate::RenderTargetType::Invalid, "Invalid" },

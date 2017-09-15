@@ -4,9 +4,11 @@
 
 #include <gloperate/gloperate_api.h>
 
+#include <glm/vec4.hpp>
+
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
-#include <gloperate/base/ExtendedProperties.h>
+//#include <gloperate/base/ExtendedProperties.h>
 
 
 namespace globjects

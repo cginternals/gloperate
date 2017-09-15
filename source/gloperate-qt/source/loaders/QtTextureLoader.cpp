@@ -5,7 +5,7 @@
 #include <QImage>
 #include <QImageReader>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <glbinding/gl/gl.h>
 

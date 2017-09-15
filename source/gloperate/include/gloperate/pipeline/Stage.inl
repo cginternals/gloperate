@@ -30,6 +30,8 @@ Input<T> * Stage::CreateConnectedInputProxy::operator=(const T & value)
 template <typename T>
 std::vector<Input<T> *> Stage::inputs() const
 {
+    static cppexpose::ConcreteType<T> type;
+
     auto result = std::vector<Input<T> *>{};
     
     // We do not reserve a heuristically derived number of elements as we assume
@@ -38,7 +40,7 @@ std::vector<Input<T> *> Stage::inputs() const
     
     for (auto input : inputs())
     {
-        if (input->type() == typeid(T))
+        if (input->type() == type)
         {
             result.push_back(static_cast<Input<T> *>(input));
         }
@@ -70,6 +72,8 @@ Input<T> * Stage::createConnectedInput(const std::string & name, Slot<T> & sourc
 template <typename T>
 std::vector<Output<T> *> Stage::outputs() const
 {
+    static cppexpose::ConcreteType<T> type;
+
     auto result = std::vector<Output<T> *>{};
     
     // We do not reserve a heuristically derived number of elements as we assume
@@ -78,7 +82,7 @@ std::vector<Output<T> *> Stage::outputs() const
     
     for (auto output : outputs())
     {
-        if (output->type() == typeid(T))
+        if (output->type() == type)
         {
             result.push_back(static_cast<Output<T> *>(output));
         }

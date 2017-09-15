@@ -37,11 +37,13 @@ void ColorGradientTextureStage::onContextDeinit(AbstractGLContext *)
 
 void ColorGradientTextureStage::onProcess()
 {
+    static cppexpose::ConcreteType<ColorGradientList *> colorGradientListPointerType;
+
     std::vector<ColorGradientList *> gradientLists;
 
     for (auto input : inputs())
     {
-        if (input->type() == typeid(ColorGradientList *))
+        if (input->type() == colorGradientListPointerType)
         {
             gradientLists.push_back(static_cast<Input<ColorGradientList *> *>(input)->value());
         }

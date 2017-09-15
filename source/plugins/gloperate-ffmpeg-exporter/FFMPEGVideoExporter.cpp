@@ -86,12 +86,12 @@ void FFMPEGVideoExporter::setTarget(gloperate::Canvas * canvas, const cppexpose:
 
 void FFMPEGVideoExporter::createVideo(AbstractVideoExporter::ContextHandling contextHandling, std::function<void(int, int)> progress)
 {
-    auto width = m_parameters.at("width").toULongLong();
-    auto height = m_parameters.at("height").toULongLong();
+    auto width = m_parameters.at("width").value<unsigned int>();
+    auto height = m_parameters.at("height").value<unsigned int>();
     auto viewport = glm::vec4(0, 0, width, height);
 
-    auto fps = m_parameters.at("fps").toULongLong();
-    auto length = m_parameters.at("duration").toULongLong() * fps;
+    auto fps = m_parameters.at("fps").value<unsigned int>();
+    auto length = m_parameters.at("duration").value<unsigned int>() * fps;
     //auto timeDelta = 1.f / static_cast<float>(fps);
 
     initialize(contextHandling);
@@ -150,8 +150,8 @@ void FFMPEGVideoExporter::onRender(ContextHandling contextHandling, globjects::F
         initialize(contextHandling);
     }
 
-    auto width = m_parameters.at("width").toULongLong();
-    auto height = m_parameters.at("height").toULongLong();
+    auto width = m_parameters.at("width").value<unsigned int>();
+    auto height = m_parameters.at("height").value<unsigned int>();
     auto viewport = glm::vec4(0, 0, width, height);
 
     m_canvas->render(m_fbo.get());
@@ -204,8 +204,8 @@ void FFMPEGVideoExporter::initialize(ContextHandling contextHandling)
 {
     m_contextHandling = contextHandling;
 
-    auto width = m_parameters.at("width").toULongLong();
-    auto height = m_parameters.at("height").toULongLong();
+    auto width = m_parameters.at("width").value<unsigned int>();
+    auto height = m_parameters.at("height").value<unsigned int>();
 
     auto viewport = glm::vec4(0, 0, width, height);
 
@@ -296,8 +296,8 @@ void FFMPEGVideoExporter::createAndSetupShader()
 
 void FFMPEGVideoExporter::createAndSetupBuffer()
 {
-    auto width = m_parameters.at("width").toULongLong();
-    auto height = m_parameters.at("height").toULongLong();
+    auto width = m_parameters.at("width").value<unsigned int>();
+    auto height = m_parameters.at("height").value<unsigned int>();
 
     m_image = new Image(width, height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE);
 

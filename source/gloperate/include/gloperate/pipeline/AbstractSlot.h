@@ -282,6 +282,11 @@ public:
     bool isOfAnyType() const;
 
 
+    // Copied from cppexpose::Object
+    cppexpose::Variant toVariant() const;
+    bool fromVariant(const cppexpose::Variant & value);
+
+
 protected:
     /**
     *  @brief

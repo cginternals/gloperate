@@ -2,7 +2,9 @@
 #pragma once
 
 
-#include <gloperate/base/ExtendedProperties.h>
+#include <gloperate/rendering/Color.h>
+
+//#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 

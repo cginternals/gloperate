@@ -44,17 +44,18 @@ namespace cppexpose
 
 
 template <>
-struct EnumDefaultStrings<gloperate::ShapeType>
+class EnumValues<gloperate::ShapeType>
 {
-    std::map<gloperate::ShapeType, std::string> operator()()
+public:
+    static std::map<std::string, gloperate::ShapeType> namedValues()
     {
-        std::map<gloperate::ShapeType, std::string> values;
-        values[gloperate::ShapeType::None]     = "None";
-        values[gloperate::ShapeType::Point]    = "Point";
-        values[gloperate::ShapeType::Quad]     = "Quad";
-        values[gloperate::ShapeType::Triangle] = "Triangle";
-        values[gloperate::ShapeType::Box]      = "Box";
-        values[gloperate::ShapeType::Sphere]   = "Sphere";
+        std::map<std::string, gloperate::ShapeType> values;
+        values["None"]     = gloperate::ShapeType::None;
+        values["Point"]    = gloperate::ShapeType::Point;
+        values["Quad"]     = gloperate::ShapeType::Quad;
+        values["Triangle"] = gloperate::ShapeType::Triangle;
+        values["Box"]      = gloperate::ShapeType::Box;
+        values["Sphere"]   = gloperate::ShapeType::Sphere;
 
         return values;
     }

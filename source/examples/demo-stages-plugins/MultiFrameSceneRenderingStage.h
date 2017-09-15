@@ -2,6 +2,9 @@
 #pragma once
 
 
+#include <glm/mat3x3.hpp>
+#include <glm/mat4x4.hpp>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <globjects/Program.h>

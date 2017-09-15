@@ -12,15 +12,16 @@ namespace gloperate
 
 
 AbstractSlot::AbstractSlot()
-: m_slotType(SlotType::Unknown)
+: AbstractProperty("")
+, m_slotType(SlotType::Unknown)
 , m_dynamic(false)
 , m_required(false)
 , m_feedback(false)
 {
 }
 
-AbstractSlot::AbstractSlot(const cppexpose::Variant & options)
-: AbstractProperty(options)
+AbstractSlot::AbstractSlot(const cppexpose::Variant & /*options*/)
+: AbstractProperty("")
 , m_slotType(SlotType::Unknown)
 , m_dynamic(false)
 , m_required(false)
@@ -111,6 +112,53 @@ void AbstractSlot::initSlot(SlotType slotType, Stage * parent)
             parent->addOutput(this);
         }
     }
+}
+
+cppexpose::Variant AbstractSlot::toVariant() const
+{
+    // Create variant map from all properties in the object
+    cppexpose::Variant map = cppexpose::Variant::map();
+
+    // TODO: implement
+    /*for (const auto & it : m_propertiesMap) {
+        // Get name and property
+        const std::string & name = it.first;
+        AbstractProperty *  prop = it.second;
+
+        // Add to variant map
+        (*map.asMap())[name] = prop->toVariant();
+    }*/
+
+    // Return variant representation
+    return map;
+}
+
+bool AbstractSlot::fromVariant(const cppexpose::Variant & value)
+{
+    // Check if variant is a map
+    if (!value.isMap()) {
+        return false;
+    }
+
+    // TODO: implement
+    /*
+    // Get all values from variant map
+    for (const auto & name : value.keys()) {
+        // Get name and value
+        const cppexpose::Variant & var = value.element(name);
+
+        // If this names an existing property, set its value
+        AbstractProperty * prop = this->property(name);
+
+        if (prop)
+        {
+            prop->fromVariant(var);
+        }
+    }
+    */
+
+    // Done
+    return true;
 }
 
 

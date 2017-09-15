@@ -66,7 +66,7 @@ void TextureItemRenderer::renderTexture()
     if (!slot) return;
 
     // Check if it is a texture slot
-    if (slot && slot->type() == typeid(globjects::Texture *))
+    if (slot && slot->type() == cppexpose::ConcreteType<globjects::Texture *>())
     {
         texture = static_cast< Slot<globjects::Texture *> * >(slot)->value();
     }

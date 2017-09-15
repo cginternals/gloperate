@@ -1,11 +1,13 @@
 
 #include <gloperate-qtquick/QmlObjectWrapper.h>
 
+#include <cassert>
+
 #include <QJSValueIterator>
 
 #include <cppexpose/reflection/Object.h>
 #include <cppexpose/reflection/Method.h>
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 
 #include <gloperate-qtquick/QmlEngine.h>
 
@@ -94,9 +96,9 @@ QJSValue QmlObjectWrapper::wrapObject()
     m_registerFunction = m_engine->evaluate(s_registerFunction);
 
     // Add properties to object
-    for (unsigned int i=0; i<m_object->numSubValues(); i++)
+    for (const auto & propertyPair : m_object->properties())
     {
-        AbstractProperty * property = m_object->property(i);
+        AbstractProperty * property = propertyPair.second;
 
         if (property->isObject()) {
             // Add object wrapper
@@ -223,15 +225,15 @@ QJSValue QmlObjectWrapper::callFunc(const QString & name, const QJSValue & args)
     }
 
     // Get function arguments as array
-    cppexpose::VariantArray emptyArgs;
     cppexpose::Variant value = m_engine->fromScriptValue(args);
-    cppexpose::VariantArray * argList = value.asArray();
-    if (!argList) {
-        argList = &emptyArgs;
+    cppexpose::VariantArray functionArgs;
+    if (value.isArray())
+    {
+        functionArgs = value.value<VariantArray>();
     }
 
     // Call function
-    return m_engine->toScriptValue(function.call(*argList));
+    return m_engine->toScriptValue(function.call(functionArgs));
 }
 
 

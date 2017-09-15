@@ -4,7 +4,7 @@
 
 #include <functional>
 
-#include <cppexpose/typed/TypedEnum.h>
+#include <cppexpose/type/EnumValues.h>
 
 
 namespace gloperate_text
@@ -44,15 +44,16 @@ namespace cppexpose
 
 
 template<>
-struct EnumDefaultStrings<gloperate_text::LineAnchor>
+class EnumValues<gloperate_text::LineAnchor>
 {
-    std::map<gloperate_text::LineAnchor, std::string> operator()()
+public:
+    static std::map<std::string, gloperate_text::LineAnchor> namedValues()
     {
         return {
-            { gloperate_text::LineAnchor::Ascent,   "Ascent" },
-            { gloperate_text::LineAnchor::Center,   "Centered" },
-            { gloperate_text::LineAnchor::Baseline, "Baseline" },
-            { gloperate_text::LineAnchor::Descent,  "Descent" }
+            { "Ascent",   gloperate_text::LineAnchor::Ascent   },
+            { "Centered", gloperate_text::LineAnchor::Center   },
+            { "Baseline", gloperate_text::LineAnchor::Baseline },
+            { "Descent",  gloperate_text::LineAnchor::Descent  }
         };
     }
 };

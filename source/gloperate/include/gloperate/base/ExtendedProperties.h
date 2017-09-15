@@ -8,7 +8,7 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
-#include <cppexpose/typed/GetTyped.h>
+#include <cppexpose/type/GetTyped.h>
 
 #include <gloperate/base/Range.h>
 #include <gloperate/rendering/Color.h>
@@ -153,6 +153,12 @@ public:
 
     cppexpose::Variant toVariant() const override;
     bool fromVariant(const cppexpose::Variant & value) override;
+};
+
+template <typename T, typename = void>
+struct GLOPERATE_TEMPLATE_API GetType
+{
+    using Type = BaseTypeImplGeneric<T>;
 };
 
 template <typename BASE>

@@ -3,6 +3,8 @@
 
 #include <glbinding/gl/gl.h>
 
+#include <glm/vec2.hpp>
+
 #include <globjects/Texture.h>
 
 #include <gloperate/rendering/AbstractRenderTarget.h>

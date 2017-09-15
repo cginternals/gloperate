@@ -9,7 +9,7 @@
 #include <glm/fwd.hpp>
 
 #include <cppexpose/reflection/Object.h>
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 #include <cppexpose/signal/Signal.h>
 #include <cppexpose/signal/ScopedConnection.h>
 

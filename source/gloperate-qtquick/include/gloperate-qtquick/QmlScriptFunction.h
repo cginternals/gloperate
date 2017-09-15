@@ -4,7 +4,7 @@
 
 #include <QJSValue>
 
-#include <cppexpose/variant/Variant.h>
+#include <cppexpose/reflection/Variant.h>
 #include <cppexpose/function/AbstractFunction.h>
 
 #include <gloperate-qtquick/gloperate-qtquick_api.h>

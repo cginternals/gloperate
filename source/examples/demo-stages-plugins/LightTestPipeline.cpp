@@ -38,10 +38,10 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
 , m_depthBufferStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment))
 , m_renderStage(cppassist::make_unique<LightTestStage>(environment))
 {
-    glossiness.setOptions({
+    /*glossiness.setOptions({
         {"minimum", 0.0f},
         {"maximum", 1.0f}
-    });
+    });*/
 
     addStage(m_lightDefStage1.get());
     m_lightDefStage1->color << lightColor1;

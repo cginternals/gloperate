@@ -11,6 +11,7 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/rendering/Color.h>
 
 
 namespace globjects

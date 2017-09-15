@@ -4,12 +4,14 @@
 
 #include <string>
 
+#include <cppassist/fs/FilePath.h>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <globjects/Texture.h>
 
 #include <gloperate/gloperate-version.h>
-#include <gloperate/base/ExtendedProperties.h>
+//#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
