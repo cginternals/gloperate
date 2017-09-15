@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <glm/vec2.hpp>
+
 #include <cppassist/fs/FilePath.h>
 
 #include <cppexpose/plugin/plugin_api.h>

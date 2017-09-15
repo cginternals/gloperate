@@ -108,9 +108,9 @@ Drawable * AssimpMeshLoader::load(const std::string & filename, const cppexpose:
     bool smoothNormals = false;
 
     // Get options
-    const cppexpose::VariantMap * map = options.asMap();
-    if (map) {
-        if (map->count("smoothNormals") > 0) smoothNormals = map->at("smoothNormals").value<bool>();
+    if (!options.element("smoothNormals").isNull())
+    {
+        smoothNormals = options.element("smoothNormals").value<bool>();
     }
 
     // Import scene

@@ -1,6 +1,8 @@
 
 #include "ShapeDemo.h"
 
+#include <glm/gtc/constants.hpp>
+
 #include <glbinding/gl/enum.h>
 
 #include <gloperate/gloperate.h>
@@ -62,9 +64,9 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     // Setup parameters
     texture = dataPath + "/gloperate/textures/gloperate-logo.glraw";
 
-    angle.setOption("minimumValue", 0.0f);
-    angle.setOption("maximumValue", 2.0f * glm::pi<float>());
-    angle.setOption("updateOnDrag", true);
+    //angle.setOption("minimumValue", 0.0f);
+    //angle.setOption("maximumValue", 2.0f * glm::pi<float>());
+    //angle.setOption("updateOnDrag", true);
 
     rotate.valueChanged.connect(this, &ShapeDemo::onRotateChanged);
     m_timer->virtualTime.valueChanged.connect([this](const float & angle) {
@@ -75,7 +77,7 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
     // Timer stage
     addStage(m_timer.get());
     m_timer->interval = 2.0f * glm::pi<float>();
-    m_timer->interval.setOption("maximumValue", 2.0f * glm::pi<float>());
+    //m_timer->interval.setOption("maximumValue", 2.0f * glm::pi<float>());
 
     addStage(m_floatSelection.get());
     m_floatSelection->createInput("timerValue") << m_timer->virtualTime;

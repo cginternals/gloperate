@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <cppassist/fs/FilePath.h>
+
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/gloperate-version.h>

@@ -45,9 +45,9 @@ ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::strin
     std::string dataPath = gloperate::dataPath();
 
     // Setup parameters
-    value.setOption("minimumValue", 0.0f);
-    value.setOption("maximumValue", 1.0f);
-    value.setOption("updateOnDrag", true);
+    //value.setOption("minimumValue", 0.0f);
+    //value.setOption("maximumValue", 1.0f);
+    //value.setOption("updateOnDrag", true);
     value.valueChanged.connect([this] (const float & value)
     {
         float v = 0.2 + 0.8 * value;
@@ -71,11 +71,11 @@ ColorGradientDemo::ColorGradientDemo(Environment * environment, const std::strin
     m_colorGradientLoading->filePath << colors;
     m_colorGradientLoading->gradients.valueChanged.connect([this] (const gloperate::ColorGradientList * gradients)
     {
-        gradient.setOption("choices", cppexpose::Variant::fromVector(gradients->names()));
-        gradient.setOption("pixmaps", cppexpose::Variant::fromVector(gradients->pixmaps({ 80, 20 })));
+        //gradient.setOption("choices", cppexpose::Variant::fromVector(gradients->names()));
+        //gradient.setOption("pixmaps", cppexpose::Variant::fromVector(gradients->pixmaps({ 80, 20 })));
     });
     // Explicitly set as ComboBox, even if gradients are not yet loaded
-    gradient.setOption("choices", cppexpose::Variant::array());
+    //gradient.setOption("choices", cppexpose::Variant::array());
 
     // Color gradients texture stage
     addStage(m_colorGradientTexture.get());
