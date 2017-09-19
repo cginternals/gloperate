@@ -19,15 +19,13 @@ namespace globjects
 
 namespace gloperate
 {
-    class Camera;
     enum LightType;
 
     class LightCreationStage;
     class LightBufferTextureStage;
-    class TimerStage;
+    class TrackballStage;
     class TextureRenderTargetStage;
     class ShapeStage;
-    class TransformStage;
     class ClearStage;
     class ProgramStage;
     class RenderPassStage;
@@ -107,17 +105,15 @@ protected:
     std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage2;
     std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage3;
     std::unique_ptr<gloperate::LightBufferTextureStage>  m_lightAccumulationStage;
-    std::unique_ptr<gloperate::TimerStage>               m_timerStage;
+    std::unique_ptr<gloperate::TrackballStage>           m_trackballStage;
     std::unique_ptr<gloperate::TextureRenderTargetStage> m_depthBufferStage;
     std::unique_ptr<gloperate::ClearStage>               m_clearStage;
     std::unique_ptr<gloperate::ProgramStage>             m_programStage;
     std::unique_ptr<gloperate::ShapeStage>               m_shapeStage;
-    std::unique_ptr<gloperate::TransformStage>           m_transformStage;
     std::unique_ptr<gloperate::RenderPassStage>          m_renderPassStage;
     std::unique_ptr<gloperate::RasterizationStage>       m_rasterizationStage;
 
     // Rendering ressources
-    std::unique_ptr<gloperate::Camera>      m_camera;
     std::unique_ptr<globjects::NamedString> m_lightProcessingString;
     std::unique_ptr<globjects::NamedString> m_lightProcessingDiffuseString;
     std::unique_ptr<globjects::NamedString> m_lightProcessingPhongString;

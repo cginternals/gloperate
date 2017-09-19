@@ -12,15 +12,14 @@
 #include <gloperate/rendering/Camera.h>
 #include <gloperate/rendering/LightType.h>
 #include <gloperate/stages/base/TextureRenderTargetStage.h>
-#include <gloperate/stages/base/TimerStage.h>
 #include <gloperate/stages/base/ClearStage.h>
 #include <gloperate/stages/base/ShapeStage.h>
-#include <gloperate/stages/base/TransformStage.h>
 #include <gloperate/stages/base/ProgramStage.h>
 #include <gloperate/stages/base/RenderPassStage.h>
 #include <gloperate/stages/base/RasterizationStage.h>
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/lights/LightBufferTextureStage.h>
+#include <gloperate/stages/navigation/TrackballStage.h>
 
 
 CPPEXPOSE_COMPONENT(LightTestPipeline, gloperate::Stage)
@@ -48,13 +47,11 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
 , m_lightAccumulationStage(cppassist::make_unique<gloperate::LightBufferTextureStage>(environment))
 , m_depthBufferStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment))
 , m_clearStage(cppassist::make_unique<gloperate::ClearStage>(environment))
+, m_trackballStage(cppassist::make_unique<gloperate::TrackballStage>(environment))
 , m_shapeStage(cppassist::make_unique<gloperate::ShapeStage>(environment))
-, m_transformStage(cppassist::make_unique<gloperate::TransformStage>(environment))
-, m_timerStage(cppassist::make_unique<gloperate::TimerStage>(environment))
 , m_programStage(cppassist::make_unique<gloperate::ProgramStage>(environment))
 , m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment))
 , m_rasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment))
-, m_camera(cppassist::make_unique<gloperate::Camera>(glm::vec3(0.0f, 2.0f, 3.0f)))
 {
     glossiness.setOptions({
         {"minimumValue", 0.0f},
@@ -85,9 +82,6 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     *(m_lightAccumulationStage->createLightInput()) << m_lightDefStage2->light;
     *(m_lightAccumulationStage->createLightInput()) << m_lightDefStage3->light;
 
-    addStage(m_timerStage.get());
-    m_timerStage->timeDelta << canvasInterface.timeDelta;
-
     addStage(m_depthBufferStage.get());
     m_depthBufferStage->size << canvasInterface.viewport;
     m_depthBufferStage->type = gl::GL_UNSIGNED_BYTE;
@@ -105,14 +99,13 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     m_shapeStage->height    = 1.0f;
     m_shapeStage->depth     = 1.0f;
 
-    addStage(m_transformStage.get());
-    m_transformStage->rotationAngle << m_timerStage->virtualTime;
+    addStage(m_trackballStage.get());
+    m_trackballStage->viewport << canvasInterface.viewport;
 
     addStage(m_renderPassStage.get());
     m_renderPassStage->drawable << m_shapeStage->drawable;
     m_renderPassStage->program << m_programStage->program;
-    m_renderPassStage->camera = m_camera.get();
-    m_renderPassStage->modelMatrix << m_transformStage->modelMatrix;
+    m_renderPassStage->camera << m_trackballStage->camera;
     m_renderPassStage->createInput("glossiness") << glossiness;
     m_renderPassStage->createInput("colorTypeData") << m_lightAccumulationStage->colorTypeData;
     m_renderPassStage->createInput("positionData") << m_lightAccumulationStage->positionData;
