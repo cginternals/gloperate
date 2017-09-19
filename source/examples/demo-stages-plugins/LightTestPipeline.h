@@ -7,6 +7,7 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Input.h>
+#include <gloperate/rendering/Color.h>
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
@@ -19,6 +20,7 @@ namespace globjects
 namespace gloperate
 {
     class Camera;
+    enum LightType;
 
     class LightCreationStage;
     class LightBufferTextureStage;
@@ -58,13 +60,13 @@ public:
     // Inputs
     Input<float> glossiness;                    ///< Glossiness of the cube (0.0 to 1.0)
 
-    Input<int> lightType1;                      ///< Type of 1st light
-    Input<int> lightType2;                      ///< Type of 2nd light
-    Input<int> lightType3;                      ///< Type of 3rd light
+    Input<gloperate::LightType> lightType1;     ///< Type of 1st light
+    Input<gloperate::LightType> lightType2;     ///< Type of 2nd light
+    Input<gloperate::LightType> lightType3;     ///< Type of 3rd light
 
-    Input<glm::vec3> lightColor1;               ///< Color of 1st light
-    Input<glm::vec3> lightColor2;               ///< Color of 2nd light
-    Input<glm::vec3> lightColor3;               ///< Color of 3rd light
+    Input<gloperate::Color> lightColor1;        ///< Color of 1st light
+    Input<gloperate::Color> lightColor2;        ///< Color of 2nd light
+    Input<gloperate::Color> lightColor3;        ///< Color of 3rd light
 
     Input<glm::vec3> lightPos1;                 ///< Position/Direction of 1st light
     Input<glm::vec3> lightPos2;                 ///< Position/Direction of 2nd light
