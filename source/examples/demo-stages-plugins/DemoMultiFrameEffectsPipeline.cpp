@@ -19,6 +19,13 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
 , m_renderingPipeline(cppassist::make_unique<MultiFrameRenderingPipeline>(environment))
 , m_trackballStage(cppassist::make_unique<gloperate::TrackballStage>(environment))
 {
+    multiFrameCount.setOptions({
+        {"type", "int"}, // HACK: replace auto-assigned value "int32" to display editor
+        {"minimumValue", 1},
+        {"maximumValue", 4096},
+        {"asSpinBox", true}
+    });
+
     addStage(m_multiFramePipeline.get());
 
     m_multiFramePipeline->addStage(m_renderingPipeline.get());
@@ -58,7 +65,11 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
     m_multiFramePipeline->restartAggregationOn(transparencyAlphaInput);
 
     dofIntensityInput->setOption("maximumValue", 0.02f);
+    dofIntensityInput->setOption("updateOnDrag", true);
     dofFocusInput->setOption("maximumValue", 2.0f);
+    dofFocusInput->setOption("updateOnDrag", true);
+    ssaoRadiusInput->setOption("updateOnDrag", true);
+    transparencyAlphaInput->setOption("updateOnDrag", true);
 
     *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
 

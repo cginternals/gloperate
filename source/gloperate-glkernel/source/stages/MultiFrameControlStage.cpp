@@ -31,7 +31,7 @@ void MultiFrameControlStage::onProcess()
     m_currentFrame++;
     currentFrame = m_currentFrame;
 
-    if (m_currentFrame < *multiFrameCount)
+    if (m_currentFrame <= *multiFrameCount)
     {
         aggregationFactor = 1.0f/m_currentFrame;
     }
