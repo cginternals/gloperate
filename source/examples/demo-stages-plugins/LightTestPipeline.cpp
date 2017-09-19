@@ -3,6 +3,7 @@
 
 #include <glbinding/gl/enum.h>
 
+#include <gloperate/rendering/LightType.h>
 #include <gloperate/stages/base/TimerStage.h>
 #include <gloperate/stages/base/TextureRenderTargetStage.h>
 #include <gloperate/stages/lights/LightCreationStage.h>
@@ -59,17 +60,17 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     m_lightDefStage3->type << lightType3;
     m_lightDefStage3->attenuationCoefficients << lightAttenuation3;
 
-    lightType1.setValue(0);
+    lightType1.setValue(gloperate::LightType::None);
     lightColor1.setValue(gloperate::Color(0.5f, 0.0f, 0.0f));
     lightPos1.setValue(glm::vec3(-2, 0, -2));
     lightAttenuation1.setValue(glm::vec3(1, 0.2f, 0.01f));
 
-    lightType2.setValue(1);
+    lightType2.setValue(gloperate::LightType::Ambient);
     lightColor2.setValue(gloperate::Color(0.125f, 0.125f, 0.125f));
     lightPos2.setValue(glm::vec3(0, 0, 0));
     lightAttenuation2.setValue(glm::vec3(1, 0.2f, 0.01f));
 
-    lightType3.setValue(4);
+    lightType3.setValue(gloperate::LightType::PointAttenuated);
     lightColor3.setValue(gloperate::Color(1.0f, 1.0f, 1.0f));
     lightPos3.setValue(glm::vec3(1.5, -1.3, -1.5));
     lightAttenuation3.setValue(glm::vec3(1, 0.2f, 0.01f));

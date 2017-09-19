@@ -13,6 +13,8 @@
 
 namespace gloperate
 {
+    enum LightType;
+
     class LightCreationStage;
     class LightBufferTextureStage;
     class TimerStage;
@@ -47,9 +49,9 @@ public:
     // Inputs
     Input<float> glossiness;                    ///< Glossiness of the cube (0.0 to 1.0)
 
-    Input<int> lightType1;                      ///< Type of 1st light
-    Input<int> lightType2;                      ///< Type of 2nd light
-    Input<int> lightType3;                      ///< Type of 3rd light
+    Input<gloperate::LightType> lightType1;     ///< Type of 1st light
+    Input<gloperate::LightType> lightType2;     ///< Type of 2nd light
+    Input<gloperate::LightType> lightType3;     ///< Type of 3rd light
 
     Input<gloperate::Color> lightColor1;        ///< Color of 1st light
     Input<gloperate::Color> lightColor2;        ///< Color of 2nd light
