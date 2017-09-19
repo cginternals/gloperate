@@ -8,6 +8,8 @@
 
 #include <cppexpose/variant/Variant.h>
 
+#include <glbinding/gl/gl.h>
+
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 
@@ -40,7 +42,14 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 : cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
+, m_measurementCycle(0)
+, m_measurementHistorySize(20) //must be even
 {
+	if (true /*measurement flag*/)
+	{
+		m_cpuTimes.resize(m_measurementHistorySize);
+		m_gpuTimes.resize(m_measurementHistorySize);
+	}
     // Set object class name
     setClassName(className);
 }
@@ -90,6 +99,13 @@ bool Stage::requires(const Stage * stage, bool recursive) const
 void Stage::initContext(AbstractGLContext * context)
 {
     debug(2, "gloperate") << this->qualifiedName() << ": initContext";
+
+	gl::glGenQueries(2, m_queryID[0]); //front buffer 
+	gl::glGenQueries(2, m_queryID[1]); //back buffer
+	// dummy query for first frame
+	gl::glQueryCounter(m_queryID[0][0], gl::GL_TIMESTAMP); 
+	gl::glQueryCounter(m_queryID[0][1], gl::GL_TIMESTAMP);
+
     onContextInit(context);
 }
 
@@ -102,8 +118,40 @@ void Stage::deinitContext(AbstractGLContext * context)
 void Stage::process()
 {
     debug(1, "gloperate") << this->qualifiedName() << ": processing";
-    onProcess();
 
+	if (true /*flag*/)
+	{
+		//cpu
+		auto start = std::chrono::high_resolution_clock::now();
+		//gpu ToDo check for opengl context
+		unsigned int queryFrontBuffer = m_measurementCycle % 2;
+		unsigned int queryBackBuffer = (m_measurementCycle + 1) % 2;
+		gl::glQueryCounter(m_queryID[queryBackBuffer][0], gl::GL_TIMESTAMP); //gpu start
+
+		onProcess();
+		
+		//cpu
+		auto end = std::chrono::high_resolution_clock::now();
+		auto cpu_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+		//gpu
+		gl::glQueryCounter(m_queryID[queryBackBuffer][1], gl::GL_TIMESTAMP); //gpu end
+		//get values from last frame
+		gl::GLuint64 gpu_start, gpu_end;
+		gl::glGetQueryObjectui64v(m_queryID[queryFrontBuffer][0], gl::GL_QUERY_RESULT, &gpu_start);
+		gl::glGetQueryObjectui64v(m_queryID[queryFrontBuffer][1], gl::GL_QUERY_RESULT, &gpu_end);
+		auto gpu_duration = gpu_end - gpu_start;
+
+		//save values
+		m_cpuTimes[m_measurementCycle] = cpu_duration;
+		m_gpuTimes[m_measurementCycle] = gpu_duration;
+
+		m_measurementCycle = (m_measurementCycle +1) % m_measurementHistorySize;
+	}
+	else
+	{
+		onProcess();
+	}
+	
     for (auto input : m_inputs)
     {
         input->setChanged(false);
@@ -528,6 +576,57 @@ void Stage::forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callbac
     {
         callback(output);
     }
+}
+
+std::uint64_t Stage::lastCPUTime() const
+{
+	return m_cpuTimes[m_measurementCycle - 1 % m_measurementHistorySize];
+}
+
+std::uint64_t Stage::lastGPUTime() const
+{
+	return m_gpuTimes[m_measurementCycle - 1 % m_measurementHistorySize];
+}
+
+std::vector<std::uint64_t> Stage::historyCPU() const
+{
+	std::vector<std::uint64_t> history;
+	for (auto i = m_measurementCycle; i < m_measurementHistorySize; ++i)
+	{
+		history.push_back(m_cpuTimes[i]);
+	}
+	for (auto i = 0; i < m_measurementCycle; ++i)
+	{
+		history.push_back(m_cpuTimes[i]);
+	}
+	return history;
+}
+
+std::vector<std::uint64_t> Stage::historyGPU() const
+{
+	std::vector<std::uint64_t> history;
+	for (auto i = m_measurementCycle; i < m_measurementHistorySize; ++i)
+	{
+		history.push_back(m_gpuTimes[i]);
+	}
+	for (auto i = 0; i < m_measurementCycle; ++i)
+	{
+		history.push_back(m_gpuTimes[i]);
+	}
+	return history;
+}
+
+void Stage::setMeasurementHistorySize(unsigned int size)
+{
+	if (size % 2 != 0)
+		return;
+
+	m_measurementHistorySize = size;
+	m_cpuTimes.clear(); 
+	m_cpuTimes.resize(size);
+	m_gpuTimes.clear();
+	m_gpuTimes.resize(size);
+	m_measurementCycle = m_measurementCycle % 2; //reset but keep even/odd
 }
 
 

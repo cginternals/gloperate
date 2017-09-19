@@ -652,6 +652,40 @@ public:
     template <typename T>
     void forAllOutputs(std::function<void(gloperate::Output<T> *)> callback);
 
+	/**
+	*  @brief
+	*    Return the time spent in onProcess in nanoseconds.
+	*/
+	std::uint64_t lastCPUTime() const;
+
+	/**
+	*  @brief
+	*    Return the gpu time for gpu commands issued during onProcess in nanoseconds.
+	*    Due to the async nature of gpu processing, this value is one iteration (i.e. frame) late.
+	*/
+	std::uint64_t lastGPUTime() const;
+
+	/**
+	*  @brief
+	*    Return the history of cpu time measurement of onProcess (most recent values last).
+	*/
+	std::vector<std::uint64_t> historyCPU() const;
+
+	/**
+	*  @brief
+	*    Return the history of gpu time measurement of onProcess (most recent values last).
+	*    Due to the async nature of gpu processing, these values are one iteration (i.e. frame) late.
+	*    This means that the value at index n corresponds to the value at index n-1 in the cpu measurement history.
+	*/
+	std::vector<std::uint64_t> historyGPU() const;
+
+	/**
+	*  @brief
+	*    Set the amount of cached values for time measurement. The size
+	*    must be even! Also clears previous history.
+	*/
+	void setMeasurementHistorySize(unsigned int size);
+
 
 protected:
     /**
@@ -782,6 +816,12 @@ protected:
 protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
+
+	std::vector<std::uint64_t>	m_cpuTimes;
+	std::vector<std::uint64_t>	m_gpuTimes;
+	unsigned int				m_measurementCycle;
+	unsigned int				m_measurementHistorySize;
+	unsigned int				m_queryID[2][2];
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs
