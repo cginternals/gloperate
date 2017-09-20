@@ -144,10 +144,10 @@ void Pipeline::invalidateStageOrder()
 
 void Pipeline::setMeasurementFlagForAllStages(bool flag)
 {
-	for (auto stage : stages())
-	{
-		stage->setMeasurementFlag(flag);
-	}
+    for (auto stage : stages())
+    {
+        stage->setMeasurementFlag(flag);
+    }
 }
 
 bool Pipeline::isPipeline() const

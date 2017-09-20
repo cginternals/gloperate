@@ -57,7 +57,7 @@ public:
 
     template <typename T>
     using Output = gloperate::Output<T>;
-    
+
     // Helper class for createInput()
     class GLOPERATE_API CreateConnectedInputProxy
     {
@@ -380,7 +380,7 @@ public:
     *
     *  @remarks
     *    The operator<< must be called exactly once on the returned proxy object.
-    *    
+    *
     *    createInput("somename") << someOutput; behaves exactly like
     *    createConnectedInput("somename", someOutput);
     */
@@ -652,62 +652,76 @@ public:
     template <typename T>
     void forAllOutputs(std::function<void(gloperate::Output<T> *)> callback);
 
-	/**
-	*  @brief
-	*    CPU duration of onProcess in nanoseconds
-	*/
-	std::uint64_t lastCPUTime() const;
+    /**
+    *  @brief
+    *    Get CPU duration of onProcess in nanoseconds.
+    *
+    *  @return
+    *    duration in nanoseconds
+    */
+    std::uint64_t lastCPUTime() const;
 
-	/**
-	*  @brief
-	*    The gpu time for gpu commands issued during onProcess in nanoseconds.
-	*
-	*  @remarks
-	*    Due to the async nature of gpu processing, this value is one iteration (i.e. frame) late.
-	*/
-	std::uint64_t lastGPUTime() const;
+    /**
+    *  @brief
+    *    Get GPU time for GPU commands issued during onProcess in nanoseconds.
+    *
+    *  @return
+    *    duration in nanoseconds
+    *
+    *  @remarks
+    *    Due to the async nature of GPU processing, this value is one iteration (i.e. frame) late.
+    */
+    std::uint64_t lastGPUTime() const;
 
-	/**
-	*  @brief
-	*    Return the history of cpu time measurement of onProcess (most recent values last).
-	*
-	*  @remarks
-	*    This accessor has a complexity linear in the size of the history.
-	*/
-	std::vector<std::uint64_t> historyCPU() const;
+    /**
+    *  @brief
+    *    Return the history of CPU time measurement of onProcess.
+    *
+    *  @return
+    *    list of CPU times in nanoseconds (most recent values last)
+    *
+    *  @remarks
+    *    This accessor has a complexity linear in the size of the history.
+    */
+    std::vector<std::uint64_t> historyCPU() const;
 
-	/**
-	*  @brief
-	*    Return the history of gpu time measurement of onProcess (most recent values last).
-	*
-	*  @remarks
-	*    Due to the async nature of gpu processing, these values are one iteration (i.e. frame) late.
-	*    This means that the value at index n corresponds to the value at index n-1 in the cpu measurement history.
-	*    This accessor has a complexity linear in the size of the history.
-	*/
-	std::vector<std::uint64_t> historyGPU() const;
+    /**
+    *  @brief
+    *    Return the history of GPU time measurement of onProcess
+    *
+    *  @return
+    *    list of GPU times in nanoseconds (most recent values last)
+    *
+    *  @remarks
+    *    Due to the async nature of GPU processing, these values are one iteration (i.e. frame) late.
+    *    This means that the value at index n corresponds to the value at index n-1 in the cpu measurement history.
+    *    This accessor has a complexity linear in the size of the history.
+    */
+    std::vector<std::uint64_t> historyGPU() const;
 
-	/**
-	*  @brief
-	*    Set the amount of cached values for time measurement. Also clears previous history.
-	*
-	*  @param[in] size
-	*    Size of the internal ring buffer to store measurement results. 
-	*    must be even. the function does nothing for odd values
-	*/
-	void setMeasurementHistorySize(unsigned int size);
+    /**
+    *  @brief
+    *    Set the amount of cached values for time measurement. Also clear previous history.
+    *
+    *  @param[in] size
+    *    size of measurement history (must be even)
+    *
+    *  @remarks
+    *    The function does nothing for odd input values.
+    */
+    void setMeasurementHistorySize(unsigned int size);
 
-	/**
-	*  @brief
-	*    Set measurement flag. 
-	*
-	*  @param[in] flag
-	*    true(enable); false(disable)
-	*  
-	*  @remarks
-	*    the history is not cleared when measurement is disabled
-	*/
-	void setMeasurementFlag(bool flag);
+    /**
+    *  @brief
+    *    Set measurement flag.
+    *
+    *  @param[in] flag
+    *    'true' if enabled, 'false' if disabled
+    *
+    *  @remarks
+    *    The history is not cleared when measurement is toggled.
+    */
+    void setMeasurementFlag(bool flag);
 
 protected:
     /**
@@ -839,12 +853,12 @@ protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
 
-	std::vector<std::uint64_t>  m_cpuTimes;               ///< List of cpu performance numbers
-	std::vector<std::uint64_t>  m_gpuTimes;               ///< List of gpu performance numbers
-	unsigned int                m_measurementCycle;       ///< internal counter to access ring buffers
-	unsigned int                m_measurementHistorySize; ///< size of cpu- and gpuTimes
-	unsigned int                m_queryID[2][2];          ///< Query openGL objects (front/back; start/end)
-	bool                        m_enableMeasurement;      ///< flag to enable measurement for cpu and gpu
+    std::vector<std::uint64_t>  m_cpuTimes;               ///< List of cpu performance numbers
+    std::vector<std::uint64_t>  m_gpuTimes;               ///< List of gpu performance numbers
+    unsigned int                m_measurementCycle;       ///< internal counter to access ring buffers
+    unsigned int                m_measurementHistorySize; ///< size of cpu- and gpuTimes
+    unsigned int                m_queryID[2][2];          ///< Query openGL objects (front/back; start/end)
+    bool                        m_enableMeasurement;      ///< flag to enable measurement for cpu and gpu
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs
