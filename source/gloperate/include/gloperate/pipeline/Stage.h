@@ -836,12 +836,12 @@ protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
 
-	std::vector<std::uint64_t>  m_cpuTimes;
-	std::vector<std::uint64_t>  m_gpuTimes;
-	unsigned int                m_measurementCycle;
-	unsigned int                m_measurementHistorySize;
-	unsigned int                m_queryID[2][2];
-	bool                        m_enableMeasurement;
+	std::vector<std::uint64_t>  m_cpuTimes;               ///< List of cpu performance numbers
+	std::vector<std::uint64_t>  m_gpuTimes;               ///< List of gpu performance numbers
+	unsigned int                m_measurementCycle;       ///< internal counter to access ring buffers
+	unsigned int                m_measurementHistorySize; ///< size of cpu- and gpuTimes
+	unsigned int                m_queryID[2][2];          ///< Query openGL objects (front/back; start/end)
+	bool                        m_enableMeasurement;      ///< flag to enable measurement for cpu and gpu
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs
