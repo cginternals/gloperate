@@ -43,14 +43,11 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 , m_environment(environment)
 , m_alwaysProcess(false)
 , m_measurementCycle(0)
-, m_measurementHistorySize(20) //must be even
+, m_measurementHistorySize(10) //must be even
 , m_enableMeasurement(false)
 {
-	if (m_enableMeasurement)
-	{
-		m_cpuTimes.resize(m_measurementHistorySize);
-		m_gpuTimes.resize(m_measurementHistorySize);
-	}
+	m_cpuTimes.resize(m_measurementHistorySize);
+	m_gpuTimes.resize(m_measurementHistorySize);
     // Set object class name
     setClassName(className);
 }

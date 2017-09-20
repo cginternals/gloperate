@@ -654,13 +654,21 @@ public:
 
 	/**
 	*  @brief
-	*    Return the time spent in onProcess in nanoseconds.
+	*    The time spent in onProcess in nanoseconds.
+	*
+	*  @return
+	*    unsigned long representing cpu duration of onProcess in nanoseconds
 	*/
 	std::uint64_t lastCPUTime() const;
 
 	/**
 	*  @brief
-	*    Return the gpu time for gpu commands issued during onProcess in nanoseconds.
+	*    The gpu time for gpu commands issued during onProcess in nanoseconds.
+	*
+	*  @return
+	*    unsigned long representing gpu duration of onProcess in nanoseconds
+	*
+	*  @remarks
 	*    Due to the async nature of gpu processing, this value is one iteration (i.e. frame) late.
 	*/
 	std::uint64_t lastGPUTime() const;
@@ -668,14 +676,20 @@ public:
 	/**
 	*  @brief
 	*    Return the history of cpu time measurement of onProcess (most recent values last).
+	*
+	*  @remarks
+	*    Complexity is linear in the size of the history.
 	*/
 	std::vector<std::uint64_t> historyCPU() const;
 
 	/**
 	*  @brief
 	*    Return the history of gpu time measurement of onProcess (most recent values last).
+	*
+	*  @remarks
 	*    Due to the async nature of gpu processing, these values are one iteration (i.e. frame) late.
 	*    This means that the value at index n corresponds to the value at index n-1 in the cpu measurement history.
+	*    Complexity is linear in the size of the history.
 	*/
 	std::vector<std::uint64_t> historyGPU() const;
 
@@ -688,7 +702,7 @@ public:
 
 	/**
 	*  @brief
-	*    Set measurement flag.
+	*    Set measurement flag. true(enable) false(disable)
 	*/
 	void setMeasurementFlag(bool flag);
 
@@ -822,12 +836,12 @@ protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
 
-	std::vector<std::uint64_t>	m_cpuTimes;
-	std::vector<std::uint64_t>	m_gpuTimes;
-	unsigned int				m_measurementCycle;
-	unsigned int				m_measurementHistorySize;
-	unsigned int				m_queryID[2][2];
-	bool						m_enableMeasurement;
+	std::vector<std::uint64_t>  m_cpuTimes;
+	std::vector<std::uint64_t>  m_gpuTimes;
+	unsigned int                m_measurementCycle;
+	unsigned int                m_measurementHistorySize;
+	unsigned int                m_queryID[2][2];
+	bool                        m_enableMeasurement;
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs

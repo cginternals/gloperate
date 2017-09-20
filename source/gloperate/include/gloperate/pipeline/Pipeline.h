@@ -129,7 +129,10 @@ public:
 
 	/**
 	*  @brief
-	*    self explanatory
+	*    Set measurement flag for all stages. true(enable) false(disable)
+	*
+	*  @remarks
+	*    This is not recursive.
 	*/
 	void setMeasurementFlagForAllStages(bool flag);
 
