@@ -131,6 +131,9 @@ public:
 	*  @brief
 	*    Set measurement flag for all stages. true(enable) false(disable)
 	*
+	*  @param[in] flag
+	*    true(enable); false(disable)
+	*
 	*  @remarks
 	*    This is not recursive.
 	*/

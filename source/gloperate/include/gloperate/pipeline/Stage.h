@@ -654,19 +654,13 @@ public:
 
 	/**
 	*  @brief
-	*    The time spent in onProcess in nanoseconds.
-	*
-	*  @return
-	*    unsigned long representing cpu duration of onProcess in nanoseconds
+	*    CPU duration of onProcess in nanoseconds
 	*/
 	std::uint64_t lastCPUTime() const;
 
 	/**
 	*  @brief
 	*    The gpu time for gpu commands issued during onProcess in nanoseconds.
-	*
-	*  @return
-	*    unsigned long representing gpu duration of onProcess in nanoseconds
 	*
 	*  @remarks
 	*    Due to the async nature of gpu processing, this value is one iteration (i.e. frame) late.
@@ -678,7 +672,7 @@ public:
 	*    Return the history of cpu time measurement of onProcess (most recent values last).
 	*
 	*  @remarks
-	*    Complexity is linear in the size of the history.
+	*    This accessor has a complexity linear in the size of the history.
 	*/
 	std::vector<std::uint64_t> historyCPU() const;
 
@@ -689,20 +683,29 @@ public:
 	*  @remarks
 	*    Due to the async nature of gpu processing, these values are one iteration (i.e. frame) late.
 	*    This means that the value at index n corresponds to the value at index n-1 in the cpu measurement history.
-	*    Complexity is linear in the size of the history.
+	*    This accessor has a complexity linear in the size of the history.
 	*/
 	std::vector<std::uint64_t> historyGPU() const;
 
 	/**
 	*  @brief
-	*    Set the amount of cached values for time measurement. The size
-	*    must be even! Also clears previous history.
+	*    Set the amount of cached values for time measurement. Also clears previous history.
+	*
+	*  @param[in] size
+	*    Size of the internal ring buffer to store measurement results. 
+	*    must be even. the function does nothing for odd values
 	*/
 	void setMeasurementHistorySize(unsigned int size);
 
 	/**
 	*  @brief
-	*    Set measurement flag. true(enable) false(disable)
+	*    Set measurement flag. 
+	*
+	*  @param[in] flag
+	*    true(enable); false(disable)
+	*  
+	*  @remarks
+	*    the history is not cleared when measurement is disabled
 	*/
 	void setMeasurementFlag(bool flag);
 
