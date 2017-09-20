@@ -686,6 +686,11 @@ public:
 	*/
 	void setMeasurementHistorySize(unsigned int size);
 
+	/**
+	*  @brief
+	*    Set measurement flag.
+	*/
+	void setMeasurementFlag(bool flag);
 
 protected:
     /**
@@ -822,6 +827,7 @@ protected:
 	unsigned int				m_measurementCycle;
 	unsigned int				m_measurementHistorySize;
 	unsigned int				m_queryID[2][2];
+	bool						m_enableMeasurement;
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs

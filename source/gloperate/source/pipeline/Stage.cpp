@@ -44,8 +44,9 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 , m_alwaysProcess(false)
 , m_measurementCycle(0)
 , m_measurementHistorySize(20) //must be even
+, m_enableMeasurement(false)
 {
-	if (true /*measurement flag*/)
+	if (m_enableMeasurement)
 	{
 		m_cpuTimes.resize(m_measurementHistorySize);
 		m_gpuTimes.resize(m_measurementHistorySize);
@@ -103,7 +104,7 @@ void Stage::initContext(AbstractGLContext * context)
 	gl::glGenQueries(2, m_queryID[0]); //front buffer 
 	gl::glGenQueries(2, m_queryID[1]); //back buffer
 	// dummy query for first frame
-	gl::glQueryCounter(m_queryID[0][0], gl::GL_TIMESTAMP); 
+	gl::glQueryCounter(m_queryID[0][0], gl::GL_TIMESTAMP);
 	gl::glQueryCounter(m_queryID[0][1], gl::GL_TIMESTAMP);
 
     onContextInit(context);
@@ -119,7 +120,7 @@ void Stage::process()
 {
     debug(1, "gloperate") << this->qualifiedName() << ": processing";
 
-	if (true /*flag*/)
+	if (m_enableMeasurement)
 	{
 		//cpu
 		auto start = std::chrono::high_resolution_clock::now();
@@ -145,7 +146,7 @@ void Stage::process()
 		m_cpuTimes[m_measurementCycle] = cpu_duration;
 		m_gpuTimes[m_measurementCycle] = gpu_duration;
 
-		m_measurementCycle = (m_measurementCycle +1) % m_measurementHistorySize;
+		m_measurementCycle = (m_measurementCycle + 1) % m_measurementHistorySize;
 	}
 	else
 	{
@@ -627,6 +628,11 @@ void Stage::setMeasurementHistorySize(unsigned int size)
 	m_gpuTimes.clear();
 	m_gpuTimes.resize(size);
 	m_measurementCycle = m_measurementCycle % 2; //reset but keep even/odd
+}
+
+void Stage::setMeasurementFlag(bool flag)
+{
+	m_enableMeasurement = flag;
 }
 
 

@@ -127,6 +127,12 @@ public:
     */
     void invalidateStageOrder();
 
+	/**
+	*  @brief
+	*    self explanatory
+	*/
+	void setMeasurementFlagForAllStages(bool flag);
+
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
