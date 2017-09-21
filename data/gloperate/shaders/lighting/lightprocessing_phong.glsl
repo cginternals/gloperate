@@ -24,6 +24,8 @@ vec3 singleLightIntensity(
     case LIGHT_TYPE_POINT:
         {
             vec3 L = lightPosition - worldPosition;
+            if (dot(L, normal) < 0.0)
+                return vec3(0.0);
             vec3 V = normalize(eyePosition - worldPosition);
             vec3 R = normalize(2 * normal - normalize(L));
             float diffusePart = max(dot(normalize(L), normal), 0.0);
@@ -35,6 +37,8 @@ vec3 singleLightIntensity(
     case LIGHT_TYPE_POINT_ATT:
         {
             vec3 L = lightPosition - worldPosition;
+            if (dot(L, normal) < 0.0)
+                return vec3(0.0);
             vec3 V = normalize(eyePosition - worldPosition);
             vec3 R = normalize(2 * normal - normalize(L));
             float d = length(L);

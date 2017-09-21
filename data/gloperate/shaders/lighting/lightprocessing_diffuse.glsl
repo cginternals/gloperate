@@ -24,11 +24,15 @@ vec3 singleLightIntensity(
     case LIGHT_TYPE_POINT:
         {
             vec3 L = lightPosition - worldPosition;
+            if (dot(L, normal) < 0.0)
+                return vec3(0.0);
             return diffuseColor * lightColor * max(dot(normalize(L), normal), 0.0);
         }
     case LIGHT_TYPE_POINT_ATT:
         {
             vec3 L = lightPosition - worldPosition;
+            if (dot(L, normal) < 0.0)
+                return vec3(0.0);
             float d = length(L);
             float attenuation = 1 / (attenuationCoefficients.x + attenuationCoefficients.y * d + attenuationCoefficients.z * d*d);
             return diffuseColor * lightColor * attenuation * max(dot(normalize(L), normal), 0.0);
