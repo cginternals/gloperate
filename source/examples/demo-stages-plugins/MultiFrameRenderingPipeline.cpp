@@ -1,9 +1,6 @@
 
 #include "MultiFrameRenderingPipeline.h"
 
-#include <cppassist/memory/make_unique.h>
-#include <cppassist/fs/FilePath.h>
-
 #include <glbinding/gl/enum.h>
 
 #include <globjects/NamedString.h>
@@ -39,7 +36,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 , useSSAO("useSSAO", this, true)
 , useTransparency("useTransparency", this, true)
 , dofIntensity("dofIntensity", this, 0.01f)
-, dofFocus("dofFocus", this, 0.1f)
+, dofZFocus("dofZFocus", this, 0.1f)
 , ssaoRadius("ssaoRadius", this, 0.5f)
 , transparencyAlpha("transparencyAlpha", this, 0.65)
 , m_colorTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorTextureStage"))
@@ -114,7 +111,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_renderPassStage->createInput("currentFrame") << canvasInterface.frameCounter;
     m_renderPassStage->createInput("dofShiftKernel") << m_dofShiftStage->texture;
     m_renderPassStage->createInput("useDOF") << useDOF;
-    m_renderPassStage->createInput("dofZFocus") << dofFocus;
+    m_renderPassStage->createInput("dofZFocus") << dofZFocus;
     m_renderPassStage->createInput("subpixelShiftKernel") << m_subpixelStage->texture;
     m_renderPassStage->createInput("useAntialiasing") << useAntialiasing;
     m_renderPassStage->createInput("transparencyKernel") << m_transparencyKernelStage->texture;

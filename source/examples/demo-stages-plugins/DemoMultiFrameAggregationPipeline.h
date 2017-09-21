@@ -11,9 +11,7 @@
 
 
 namespace gloperate_glkernel {
-
-class MultiFrameAggregationPipeline;
-
+    class MultiFrameAggregationPipeline;
 }
 
 

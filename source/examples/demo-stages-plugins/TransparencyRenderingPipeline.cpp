@@ -100,13 +100,13 @@ void TransparencyRenderingPipeline::onContextInit(gloperate::AbstractGLContext *
     m_drawable->setBuffer(0, vertexBuffer);
     m_drawable->setData(0, vertices, gl::GL_STATIC_DRAW);
 
-    // std::tuples contain their data in reverse order!
     m_drawable->bindAttribute(0, 0);
     m_drawable->bindAttribute(1, 1);
     m_drawable->bindAttribute(2, 2);
     m_drawable->setAttributeBindingBuffer(0, 0, 0, sizeof(vertexData));
     m_drawable->setAttributeBindingBuffer(1, 0, 0, sizeof(vertexData));
     m_drawable->setAttributeBindingBuffer(2, 0, 0, sizeof(vertexData));
+    // std::tuples contain their data in reverse order!
     m_drawable->setAttributeBindingFormat(0, 2, gl::GL_FLOAT, gl::GL_FALSE, sizeof(glm::vec4) + sizeof(glm::vec2));
     m_drawable->setAttributeBindingFormat(1, 2, gl::GL_FLOAT, gl::GL_FALSE, sizeof(glm::vec4));
     m_drawable->setAttributeBindingFormat(2, 4, gl::GL_FLOAT, gl::GL_FALSE, 0);

@@ -45,10 +45,20 @@ public:
 
 public:
     // Interfaces
-    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface;   ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<int>                 multiFrameCount; ///< Number of frames to aggregate
+    Input<int>                 multiFrameCount;   ///< Number of frames to aggregate
+
+    Input<bool>                useAntialiasing;   ///< Flag for activating antialiasing effect
+    Input<bool>                useDOF;            ///< Flag for activating depth of field effect
+    Input<bool>                useSSAO;           ///< Flag for activating ssao effect
+    Input<bool>                useTransparency;   ///< Flag for activating transparency effect
+
+    Input<float>               dofIntensity;      ///< depth of field intensity (max shift)
+    Input<float>               dofZFocus;         ///< depth of field focus distance
+    Input<float>               ssaoRadius;        ///< ssao effect radius
+    Input<float>               transparencyAlpha; ///< alpha value of whole scene
 
 
 public:

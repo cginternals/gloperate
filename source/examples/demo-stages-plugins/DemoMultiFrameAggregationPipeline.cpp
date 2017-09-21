@@ -17,7 +17,7 @@ DemoMultiFrameAggregationPipeline::DemoMultiFrameAggregationPipeline(gloperate::
 , m_transparencyPipeline(cppassist::make_unique<TransparencyRenderingPipeline>(environment))
 {
     multiFrameCount.setOptions({
-        {"type", "int"}, // HACK: replace auto-assigned value "int32" to display editor
+        {"type", "int"}, // Workaround: replace auto-assigned value "int32" to display editor
         {"minimumValue", 1},
         {"maximumValue", 4096},
         {"asSpinBox", true}
@@ -26,7 +26,6 @@ DemoMultiFrameAggregationPipeline::DemoMultiFrameAggregationPipeline(gloperate::
     addStage(m_multiFramePipeline.get());
 
     m_multiFramePipeline->addStage(m_transparencyPipeline.get());
-    //m_transparencyPipeline->multiFrameCount << multiFrameCount;
 
     // Inputs
     *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");

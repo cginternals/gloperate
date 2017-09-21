@@ -15,12 +15,20 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
 : Pipeline(environment, name)
 , canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 256)
+, useAntialiasing("useAntialiasing", this)
+, useDOF("useDOF", this)
+, useSSAO("useSSAO", this)
+, useTransparency("useTransparency", this)
+, dofIntensity("dofIntensity", this, 0.01f)
+, dofZFocus("dofZFocus", this, 0.1f)
+, ssaoRadius("ssaoRadius", this, 0.5f)
+, transparencyAlpha("transparencyAlpha", this, 0.65f)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
 , m_renderingPipeline(cppassist::make_unique<MultiFrameRenderingPipeline>(environment))
 , m_trackballStage(cppassist::make_unique<gloperate::TrackballStage>(environment))
 {
     multiFrameCount.setOptions({
-        {"type", "int"}, // HACK: replace auto-assigned value "int32" to display editor
+        {"type", "int"}, // Workaround: replace auto-assigned value "int32" to display editor
         {"minimumValue", 1},
         {"maximumValue", 4096},
         {"asSpinBox", true}
@@ -38,38 +46,30 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
     m_renderingPipeline->camera << m_trackballStage->camera;
     m_multiFramePipeline->restartAggregationOn(&m_trackballStage->camera);
 
-    auto useAntialiasingInput = createInput<bool>("useAntialiasing");
-    auto useDOFInput = createInput<bool>("useDOF");
-    auto useSSAOInput = createInput<bool>("useSSAO");
-    auto useTransparencyInput = createInput<bool>("useTransparency");
-    m_renderingPipeline->useAntialiasing << *useAntialiasingInput;
-    m_renderingPipeline->useDOF          << *useDOFInput;
-    m_renderingPipeline->useSSAO         << *useSSAOInput;
-    m_renderingPipeline->useTransparency << *useTransparencyInput;
-    m_multiFramePipeline->restartAggregationOn(useAntialiasingInput);
-    m_multiFramePipeline->restartAggregationOn(useDOFInput);
-    m_multiFramePipeline->restartAggregationOn(useSSAOInput);
-    m_multiFramePipeline->restartAggregationOn(useTransparencyInput);
+    m_renderingPipeline->useAntialiasing << useAntialiasing;
+    m_renderingPipeline->useDOF          << useDOF;
+    m_renderingPipeline->useSSAO         << useSSAO;
+    m_renderingPipeline->useTransparency << useTransparency;
+    m_multiFramePipeline->restartAggregationOn(&useAntialiasing);
+    m_multiFramePipeline->restartAggregationOn(&useDOF);
+    m_multiFramePipeline->restartAggregationOn(&useSSAO);
+    m_multiFramePipeline->restartAggregationOn(&useTransparency);
 
-    auto dofIntensityInput = createInput<float>("dofIntensity", 0.01f);
-    auto dofFocusInput = createInput<float>("dofFocus", 0.1f);
-    auto ssaoRadiusInput = createInput<float>("ssaoRadius", 0.5f);
-    auto transparencyAlphaInput = createInput<float>("transparencyAlpha", 0.65f);
-    m_renderingPipeline->dofIntensity << *dofIntensityInput;
-    m_renderingPipeline->dofFocus << *dofFocusInput;
-    m_renderingPipeline->ssaoRadius << *ssaoRadiusInput;
-    m_renderingPipeline->transparencyAlpha << *transparencyAlphaInput;
-    m_multiFramePipeline->restartAggregationOn(dofIntensityInput);
-    m_multiFramePipeline->restartAggregationOn(dofFocusInput);
-    m_multiFramePipeline->restartAggregationOn(ssaoRadiusInput);
-    m_multiFramePipeline->restartAggregationOn(transparencyAlphaInput);
+    m_renderingPipeline->dofIntensity << dofIntensity;
+    m_renderingPipeline->dofZFocus << dofZFocus;
+    m_renderingPipeline->ssaoRadius << ssaoRadius;
+    m_renderingPipeline->transparencyAlpha << transparencyAlpha;
+    m_multiFramePipeline->restartAggregationOn(&dofIntensity);
+    m_multiFramePipeline->restartAggregationOn(&dofZFocus);
+    m_multiFramePipeline->restartAggregationOn(&ssaoRadius);
+    m_multiFramePipeline->restartAggregationOn(&transparencyAlpha);
 
-    dofIntensityInput->setOption("maximumValue", 0.02f);
-    dofIntensityInput->setOption("updateOnDrag", true);
-    dofFocusInput->setOption("maximumValue", 2.0f);
-    dofFocusInput->setOption("updateOnDrag", true);
-    ssaoRadiusInput->setOption("updateOnDrag", true);
-    transparencyAlphaInput->setOption("updateOnDrag", true);
+    dofIntensity.setOption("maximumValue", 0.02f);
+    dofIntensity.setOption("updateOnDrag", true);
+    dofZFocus.setOption("maximumValue", 2.0f);
+    dofZFocus.setOption("updateOnDrag", true);
+    ssaoRadius.setOption("updateOnDrag", true);
+    transparencyAlpha.setOption("updateOnDrag", true);
 
     *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
 
