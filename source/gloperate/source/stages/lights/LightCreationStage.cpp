@@ -25,7 +25,7 @@ LightCreationStage::~LightCreationStage()
 
 void LightCreationStage::onProcess()
 {
-    light.setValue(Light{LightType(*type), *color, *position, *attenuationCoefficients});
+    light.setValue(Light{*type, (*color).toVec3(), *position, *attenuationCoefficients});
 }
 
 

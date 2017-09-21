@@ -11,6 +11,7 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
 #include <gloperate/rendering/Light.h>
+#include <gloperate/rendering/Color.h>
 
 
 namespace gloperate
@@ -37,8 +38,8 @@ public:
 
 public:
     // Inputs
-    Input<int> type;                          ///< Type id of the light
-    Input<glm::vec3> color;                   ///< Color of the light
+    Input<LightType> type;                    ///< Type id of the light
+    Input<Color> color;                       ///< Color of the light
     Input<glm::vec3> position;                ///< Position of local light, direction of global light
     Input<glm::vec3> attenuationCoefficients; ///< Coefficients for attenuation in the order: constant, linear, quadratic
 
