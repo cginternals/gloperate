@@ -289,6 +289,15 @@ protected:
     *    Input slot
     */
     void stageInputChanged(AbstractSlot * slot);
+
+    /**
+    *  @brief
+    *    Called when an output on the current stage was added
+    *
+    *  @param[in] slot
+    *    Output slot
+    */
+    void stageOutputAdded(AbstractSlot * slot);
     //@}
 
     //@{
@@ -322,6 +331,8 @@ protected:
     glm::vec4                                 m_viewport;               ///< Viewport (in real device coordinates)
     float                                     m_timeDelta;              ///< Time delta since the last update (in seconds)
     std::unique_ptr<Stage>                    m_renderStage;            ///< Render stage that renders into the canvas
+    bool                                      m_needsRedraw;            ///< 'true' if the current renderStage needs a redraw
+    std::vector<cppexpose::ScopedConnection>  m_invalidationConnections;///< List that removes all lambdas with 'this' bound when canvas is destroyed
     std::unique_ptr<Stage>                    m_oldStage;               ///< Old render stage, will be destroyed on the next render call
     std::unique_ptr<BlitStage>                m_blitStage;              ///< Blit stage that is used to blit to target color attachment if render stage uses own targets
     std::unique_ptr<MouseDevice>              m_mouseDevice;            ///< Device for Mouse Events

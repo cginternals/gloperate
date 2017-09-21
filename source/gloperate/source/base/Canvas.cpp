@@ -54,6 +54,7 @@ Canvas::Canvas(Environment * environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
 , m_timeDelta(0.0f)
+, m_needsRedraw(false)
 , m_blitStage(cppassist::make_unique<BlitStage>(environment, "FinalBlit"))
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
@@ -109,6 +110,10 @@ Stage * Canvas::renderStage()
 
 void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 {
+    // Guard clause
+    if (!stage)
+        return;
+
     // Save old stage
     m_oldStage = std::unique_ptr<Stage>(m_renderStage.release());
 
@@ -117,6 +122,23 @@ void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 
     // Connect to changes on the stage's input slots
     m_inputChangedConnection = m_renderStage->inputChanged.connect(this, &Canvas::stageInputChanged);
+
+    // Check if redraw is needed
+    m_needsRedraw = false;
+    m_renderStage->forAllOutputs<ColorRenderTarget *>([this](Output<ColorRenderTarget *> * output) {
+        if (**output && !output->isValid())
+        {
+            this->m_needsRedraw = true;
+        }
+
+        // Connect on all relevant slots' invalidation signals
+        auto connection = output->valueInvalidated.connect([this]() {
+            this->m_needsRedraw = true;
+        });
+
+        // Bind connection lifetime on my lifetime
+        this->m_invalidationConnections.push_back(connection);
+    });
 
     // Issue a redraw
     m_replaceStage = true;
@@ -464,21 +486,12 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 void Canvas::checkRedraw()
 {
     if (!m_renderStage)
-    {
         return;
-    }
 
-    bool redraw = false;
-    m_renderStage->forAllOutputs<ColorRenderTarget *>([& redraw](Output<ColorRenderTarget *> * output) {
-        if (**output && !output->isValid())
-        {
-            redraw = true;
-        }
-    });
-
-    if (redraw)
+    if (m_needsRedraw)
     {
         this->redraw();
+        m_needsRedraw = false;
     }
 }
 
@@ -515,6 +528,23 @@ void Canvas::stageInputChanged(AbstractSlot * slot)
 
     // Put changed input into list, will be processed on next update
     m_changedInputs.push_back(slot);
+}
+
+void Canvas::stageOutputAdded(AbstractSlot * slot)
+{
+    const auto outputT = dynamic_cast<gloperate::Output<ColorRenderTarget *> *>(slot);
+
+    // Check if output is relevant
+    if (!outputT)
+        return;
+
+    // Connect on invalidation
+    auto connection = outputT->valueInvalidated.connect([this]() {
+        this->m_needsRedraw = true;
+    });
+
+    // Bind connection lifetime on my lifetime
+    m_invalidationConnections.push_back(connection);
 }
 
 void Canvas::scr_onStageInputChanged(const cppexpose::Variant & func)
