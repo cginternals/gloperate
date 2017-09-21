@@ -127,18 +127,6 @@ public:
     */
     void invalidateStageOrder();
 
-    /**
-    *  @brief
-    *    Set measurement flag for all stages.
-    *
-    *  @param[in] flag
-    *    'true' if enabled, 'false' if disabled
-    *
-    *  @remarks
-    *    This is not recursive and equal to a 'setMeasurementFlag' call for all owned stages.
-    */
-    void setMeasurementFlagForAllStages(bool flag);
-
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 

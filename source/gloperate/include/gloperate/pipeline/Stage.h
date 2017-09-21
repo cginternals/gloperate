@@ -658,6 +658,9 @@ public:
     *
     *  @return
     *    duration in nanoseconds
+    *
+    *  @remarks
+    *    To be consistent with 'lastGPUTime', this value is one iteration (i.e. frame) late.
     */
     std::uint64_t lastCPUTime() const;
 
@@ -675,53 +678,29 @@ public:
 
     /**
     *  @brief
-    *    Return the history of CPU time measurement of onProcess.
-    *
-    *  @return
-    *    list of CPU times in nanoseconds (most recent values last)
-    *
-    *  @remarks
-    *    This accessor has a complexity linear in the size of the history.
-    */
-    std::vector<std::uint64_t> historyCPU() const;
-
-    /**
-    *  @brief
-    *    Return the history of GPU time measurement of onProcess
-    *
-    *  @return
-    *    list of GPU times in nanoseconds (most recent values last)
-    *
-    *  @remarks
-    *    Due to the async nature of GPU processing, these values are one iteration (i.e. frame) late.
-    *    This means that the value at index n corresponds to the value at index n-1 in the cpu measurement history.
-    *    This accessor has a complexity linear in the size of the history.
-    */
-    std::vector<std::uint64_t> historyGPU() const;
-
-    /**
-    *  @brief
-    *    Set the amount of cached values for time measurement. Also clear previous history.
-    *
-    *  @param[in] size
-    *    size of measurement history (must be even)
-    *
-    *  @remarks
-    *    The function does nothing for odd input values.
-    */
-    void setMeasurementHistorySize(unsigned int size);
-
-    /**
-    *  @brief
     *    Set measurement flag.
     *
     *  @param[in] flag
     *    'true' if enabled, 'false' if disabled
+    *  @param[in] recursive
+    *    if set, calls itself recursively on all substages
     *
     *  @remarks
-    *    The history is not cleared when measurement is toggled.
+    *    Previous measurement values are set to 0.
     */
-    void setMeasurementFlag(bool flag);
+    void setMeasurementFlag(bool flag, bool recursive);
+
+    /**
+    *  @brief
+    *    Pass measurement data to canvas via callback.
+    *
+    *  @param[in] func
+    *    function to pass measurement data
+    *
+    *  @remarks
+    *    If this stage is a pipeline the call is recursive.
+    */
+    void sendMeasurementValues(std::function<void(Stage*, uint64_t, uint64_t)> func);
 
 protected:
     /**
@@ -853,12 +832,12 @@ protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
 
-    std::vector<std::uint64_t>  m_cpuTimes;               ///< List of cpu performance numbers
-    std::vector<std::uint64_t>  m_gpuTimes;               ///< List of gpu performance numbers
-    unsigned int                m_measurementCycle;       ///< internal counter to access ring buffers
-    unsigned int                m_measurementHistorySize; ///< size of cpu- and gpuTimes
-    unsigned int                m_queryID[2][2];          ///< Query openGL objects (front/back; start/end)
-    bool                        m_enableMeasurement;      ///< flag to enable measurement for cpu and gpu
+    bool                        m_useQueryPairOne;      ///< internal counter to access ring buffers
+    std::array<unsigned int, 4> m_queries;              ///< Query openGL objects (front/back; start/end)
+    uint64_t                    m_lastCPUDuration;      ///< nanoseconds spend in onProcess last frame
+    uint64_t                    m_currentCPUDuration;   ///< nanoseconds spend in onProcess current frame
+    uint64_t                    m_lastGPUDuration;      ///< nanoseconds for GPU commands issued during onProcess
+    bool                        m_enableMeasurement;    ///< flag to enable measurement for cpu and gpu
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs

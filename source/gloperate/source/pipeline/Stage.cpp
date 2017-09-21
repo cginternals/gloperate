@@ -24,10 +24,12 @@ using namespace cppexpose;
 
 namespace
 {
-    enum QueryIndex
+    enum Query
     {
-        start = 0,
-        end = 1
+        PairOneStart = 0,
+        PairOneEnd = 1,
+        PairTwoStart = 2,
+        PairTwoEnd = 3
     };
 }
 
@@ -52,12 +54,12 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 : cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
-, m_measurementCycle(0)
-, m_measurementHistorySize(10) //must be even
+, m_useQueryPairOne(true)
+, m_lastCPUDuration(0)
+, m_currentCPUDuration(0)
+, m_lastGPUDuration(0)
 , m_enableMeasurement(false)
 {
-    m_cpuTimes.resize(m_measurementHistorySize);
-    m_gpuTimes.resize(m_measurementHistorySize);
     // Set object class name
     setClassName(className);
 }
@@ -108,11 +110,18 @@ void Stage::initContext(AbstractGLContext * context)
 {
     debug(2, "gloperate") << this->qualifiedName() << ": initContext";
 
-    gl::glGenQueries(2, m_queryID[0]); //front buffer
-    gl::glGenQueries(2, m_queryID[1]); //back buffer
-    // dummy query for first frame
-    gl::glQueryCounter(m_queryID[0][QueryIndex::start], gl::GL_TIMESTAMP); //start
-    gl::glQueryCounter(m_queryID[0][QueryIndex::end], gl::GL_TIMESTAMP); //end
+    gl::glGenQueries(4, m_queries.data());
+    // dummy querys for first frame
+    if (m_useQueryPairOne)
+    {
+        gl::glQueryCounter(m_queries[Query::PairOneStart], gl::GL_TIMESTAMP);
+        gl::glQueryCounter(m_queries[Query::PairOneEnd], gl::GL_TIMESTAMP);
+    }
+    else
+    {
+        gl::glQueryCounter(m_queries[Query::PairTwoStart], gl::GL_TIMESTAMP);
+        gl::glQueryCounter(m_queries[Query::PairTwoEnd], gl::GL_TIMESTAMP);
+    }
 
     onContextInit(context);
 }
@@ -129,31 +138,35 @@ void Stage::process()
 
     if (m_enableMeasurement)
     {
+        auto usedStartQuery = m_useQueryPairOne ? Query::PairOneStart : Query::PairTwoStart;
+        auto usedEndQuery = m_useQueryPairOne ? Query::PairOneEnd : Query::PairTwoEnd;
+        auto unusedStartQuery = m_useQueryPairOne ? Query::PairTwoStart : Query::PairOneStart;
+        auto unusedEndQuery = m_useQueryPairOne ? Query::PairTwoEnd : Query::PairOneEnd;
+
         //cpu
-        auto start = std::chrono::high_resolution_clock::now();
-        //gpu ToDo check for opengl context
-        unsigned int queryLast = m_measurementCycle % 2; //switches betwenn 1 and 0
-        unsigned int queryCurrent = 1 - queryLast;       //opposite of queryLast
-        gl::glQueryCounter(m_queryID[queryCurrent][QueryIndex::start], gl::GL_TIMESTAMP); //gpu start
+        auto cpu_start = std::chrono::high_resolution_clock::now();
+
+        //gpu
+        gl::glQueryCounter(m_queries[unusedStartQuery], gl::GL_TIMESTAMP);
 
         onProcess();
 
         //cpu
-        auto end = std::chrono::high_resolution_clock::now();
-        auto cpu_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+        auto cpu_end = std::chrono::high_resolution_clock::now();
+        m_lastCPUDuration = m_currentCPUDuration;
+        m_currentCPUDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(cpu_end - cpu_start).count();
+        
         //gpu
-        gl::glQueryCounter(m_queryID[queryCurrent][QueryIndex::end], gl::GL_TIMESTAMP); //gpu end
-        //get values from last frame
+        gl::glQueryCounter(m_queries[unusedEndQuery], gl::GL_TIMESTAMP);
+
+        //get gpu values from last frame
         gl::GLuint64 gpu_start, gpu_end;
-        gl::glGetQueryObjectui64v(m_queryID[queryLast][QueryIndex::start], gl::GL_QUERY_RESULT, &gpu_start);
-        gl::glGetQueryObjectui64v(m_queryID[queryLast][QueryIndex::end], gl::GL_QUERY_RESULT, &gpu_end);
-        auto gpu_duration = gpu_end - gpu_start;
+        gl::glGetQueryObjectui64v(m_queries[usedStartQuery], gl::GL_QUERY_RESULT, &gpu_start);
+        gl::glGetQueryObjectui64v(m_queries[usedEndQuery], gl::GL_QUERY_RESULT, &gpu_end);
+        m_lastGPUDuration = gpu_end - gpu_start;
 
-        //save values
-        m_cpuTimes[m_measurementCycle] = cpu_duration;
-        m_gpuTimes[m_measurementCycle] = gpu_duration;
-
-        m_measurementCycle = (m_measurementCycle + 1) % m_measurementHistorySize;
+        //switch queries for next frame
+        m_useQueryPairOne = !m_useQueryPairOne;
     }
     else
     {
@@ -588,46 +601,48 @@ void Stage::forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callbac
 
 std::uint64_t Stage::lastCPUTime() const
 {
-    return m_cpuTimes[m_measurementCycle - 1 % m_measurementHistorySize];
+    return m_lastCPUDuration;
 }
 
 std::uint64_t Stage::lastGPUTime() const
 {
-    return m_gpuTimes[m_measurementCycle - 1 % m_measurementHistorySize];
+    return m_lastGPUDuration;
 }
 
-std::vector<std::uint64_t> Stage::historyCPU() const
+void Stage::setMeasurementFlag(bool flag, bool recursive)
 {
-    std::vector<std::uint64_t> history(m_measurementHistorySize);
-    std::copy(m_cpuTimes.begin() + m_measurementCycle, m_cpuTimes.end(), history.begin());
-    std::copy(m_cpuTimes.begin(), m_cpuTimes.begin() + m_measurementCycle, history.begin() + (m_measurementHistorySize - m_measurementCycle));
-    return history;
-}
-
-std::vector<std::uint64_t> Stage::historyGPU() const
-{
-    std::vector<std::uint64_t> history(m_measurementHistorySize);
-    std::copy(m_gpuTimes.begin() + m_measurementCycle, m_gpuTimes.end(), history.begin());
-    std::copy(m_gpuTimes.begin(), m_gpuTimes.begin() + m_measurementCycle, history.begin() + (m_measurementHistorySize - m_measurementCycle));
-    return history;
-}
-
-void Stage::setMeasurementHistorySize(unsigned int size)
-{
-    if (size % 2 != 0)
-        return;
-
-    m_measurementHistorySize = size;
-    m_cpuTimes.clear();
-    m_cpuTimes.resize(size);
-    m_gpuTimes.clear();
-    m_gpuTimes.resize(size);
-    m_measurementCycle = m_measurementCycle % 2; //reset but keep even/odd
-}
-
-void Stage::setMeasurementFlag(bool flag)
-{
+    m_currentCPUDuration = 0;
+    m_lastCPUDuration = 0;
+    m_lastGPUDuration = 0;
     m_enableMeasurement = flag;
+
+    if (recursive && isPipeline())
+    {
+        for (auto stage : static_cast<Pipeline*>(this)->stages())
+        {
+            stage->setMeasurementFlag(flag, true);
+        }
+    }
+}
+
+void Stage::sendMeasurementValues(std::function<void(Stage*, uint64_t, uint64_t)> func)
+{
+    if (m_enableMeasurement)
+    {
+        func(this, lastCPUTime(), lastGPUTime());  
+    }
+    else
+    {
+        func(this, 0, 0);
+    }
+
+    if (isPipeline())
+    {
+        for (auto stage : static_cast<Pipeline*>(this)->stages())
+        {
+            stage->sendMeasurementValues(func);
+        }
+    }
 }
 
 

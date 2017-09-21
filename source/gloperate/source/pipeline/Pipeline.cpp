@@ -142,14 +142,6 @@ void Pipeline::invalidateStageOrder()
     m_sorted = false;
 }
 
-void Pipeline::setMeasurementFlagForAllStages(bool flag)
-{
-    for (auto stage : stages())
-    {
-        stage->setMeasurementFlag(flag);
-    }
-}
-
 bool Pipeline::isPipeline() const
 {
     return true;

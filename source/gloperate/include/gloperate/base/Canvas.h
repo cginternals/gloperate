@@ -53,6 +53,7 @@ class GLOPERATE_API Canvas : public cppexpose::Object
 public:
     // Must be emitted only from the UI thread
     cppexpose::Signal<> redraw; ///< Called when the canvas needs to be redrawn
+    cppexpose::Signal<Stage*, int, uint64_t, uint64_t> receiveMeasurementValue; ///< called when a stage sends measurement values
 
 
 public:
@@ -262,8 +263,26 @@ public:
     void promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
     //@}
 
+    /**
+    *  @brief
+    *    Set measurement flag for render stage and all substages.
+    *
+    *  @param[in] flag
+    *    'true' if enabled, 'false' if disabled
+    *
+    *  @remarks
+    *    The measurement index counter 'm_measurementCycle' is set to 0 each time.
+    */
+    void setMeasurement(bool flag);
 
 protected:
+
+    /**
+    *  @brief
+    *    Cause 'receiveMeasurementValue' signal to be emitted once for each substage with measurement enabled.
+    */
+    void triggerMeasurementSignal();
+
     //@{
     /**
     *  @brief
@@ -319,6 +338,8 @@ protected:
     AbstractGLContext                       * m_openGLContext;          ///< OpenGL context used for rendering onto the canvas
     bool                                      m_initialized;            ///< 'true' if the context has been initialized and the viewport has been set, else 'false'
     gloperate::ChronoTimer                    m_clock;                  ///< Time measurement
+    int                                       m_measurementCycle;       ///< Iteration counter of time measurement
+    bool                                      m_enableMeasurement;      ///< flag to enable measurement for cpu and gpu
     glm::vec4                                 m_viewport;               ///< Viewport (in real device coordinates)
     float                                     m_timeDelta;              ///< Time delta since the last update (in seconds)
     std::unique_ptr<Stage>                    m_renderStage;            ///< Render stage that renders into the canvas
