@@ -132,9 +132,12 @@ void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
         }
 
         // Connect on all relevant slots' invalidation signals
-        output->valueInvalidated.connect([this]() {
+        auto connection = output->valueInvalidated.connect([this]() {
             this->m_needsRedraw = true;
         });
+
+        // Bind connection lifetime on my lifetime
+        this->m_invalidationConnections.push_back(connection);
     });
 
     // Issue a redraw
@@ -536,9 +539,12 @@ void Canvas::stageOutputAdded(AbstractSlot * slot)
         return;
 
     // Connect on invalidation
-    outputT->valueInvalidated.connect([this]() {
+    auto connection = outputT->valueInvalidated.connect([this]() {
         this->m_needsRedraw = true;
     });
+
+    // Bind connection lifetime on my lifetime
+    m_invalidationConnections.push_back(connection);
 }
 
 void Canvas::scr_onStageInputChanged(const cppexpose::Variant & func)
