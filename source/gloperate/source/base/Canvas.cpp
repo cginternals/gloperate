@@ -362,7 +362,10 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     m_renderStage->process();
 
     if (m_enableMeasurement)
-        triggerMeasurementSignal();
+    {
+        triggerMeasurementSignal(m_renderStage.get());
+        m_measurementCycle++;
+    }
 
     auto colorOutput = m_renderStage->findOutput<gloperate::ColorRenderTarget *>([this](Output<ColorRenderTarget *> * output) {
         return **output != nullptr;
@@ -476,17 +479,23 @@ void Canvas::setMeasurement(bool flag)
     m_renderStage->setMeasurementFlag(flag, true);
 }
 
-void Canvas::triggerMeasurementSignal()
+void Canvas::triggerMeasurementSignal(Stage* stage)
 {
-    if (!m_renderStage)
+    if (!stage)
         return;
 
-    m_renderStage->sendMeasurementValues([this](Stage* stage, uint64_t cpuTime, uint64_t gpuTime) {
-        //emit signal
-        receiveMeasurementValue(stage, m_measurementCycle, cpuTime, gpuTime);
-    });
+    auto cpuTime = stage->measurementFlag() ? stage->lastCPUTime() : 0;
+    auto gpuTime = stage->measurementFlag() ? stage->lastGPUTime() : 0;
+    
+    receiveMeasurementValue(stage, m_measurementCycle, cpuTime, gpuTime);
 
-    m_measurementCycle++;
+    if (stage->isPipeline())
+    {
+        for (auto subStage : static_cast<Pipeline*>(stage)->stages())
+        {
+            triggerMeasurementSignal(subStage);
+        }
+    }
 }
 
 void Canvas::checkRedraw()

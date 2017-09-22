@@ -281,7 +281,7 @@ protected:
     *  @brief
     *    Cause 'receiveMeasurementValue' signal to be emitted once for each substage with measurement enabled.
     */
-    void triggerMeasurementSignal();
+    void triggerMeasurementSignal(Stage* stage);
 
     //@{
     /**

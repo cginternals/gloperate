@@ -690,6 +690,15 @@ public:
     */
     void setMeasurementFlag(bool flag, bool recursive);
 
+    /**
+    *  @brief
+    *    Get measurement flag.
+    *
+    *  @return
+    *    flag set by 'setMeasurementFlag'
+    */
+    bool measurementFlag();
+
 protected:
     /**
     *  @brief
@@ -814,18 +823,6 @@ protected:
     *    Common implementation of addOutput(AbstractSlot *) and addOutput(std::unique_ptr<AbstractSlot> &&)
     */
     void registerOutput(AbstractSlot * output);
-
-    /**
-    *  @brief
-    *    Pass measurement data to canvas via callback.
-    *
-    *  @param[in] func
-    *    function to pass measurement data
-    *
-    *  @remarks
-    *    If this stage is a pipeline the call is recursive.
-    */
-    void sendMeasurementValues(std::function<void(Stage*, uint64_t, uint64_t)> func);
 
 
 protected:

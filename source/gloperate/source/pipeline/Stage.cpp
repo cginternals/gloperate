@@ -625,24 +625,9 @@ void Stage::setMeasurementFlag(bool flag, bool recursive)
     }
 }
 
-void Stage::sendMeasurementValues(std::function<void(Stage*, uint64_t, uint64_t)> func)
+bool Stage::measurementFlag()
 {
-    if (m_enableMeasurement)
-    {
-        func(this, lastCPUTime(), lastGPUTime());  
-    }
-    else
-    {
-        func(this, 0, 0);
-    }
-
-    if (isPipeline())
-    {
-        for (auto stage : static_cast<Pipeline*>(this)->stages())
-        {
-            stage->sendMeasurementValues(func);
-        }
-    }
+    return m_enableMeasurement;
 }
 
 
