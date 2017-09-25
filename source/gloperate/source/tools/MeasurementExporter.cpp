@@ -7,6 +7,12 @@
 #include <gloperate/base/Canvas.h>
 
 
+namespace
+{
+    unsigned int cache_limit = 1000;
+}
+
+
 namespace gloperate
 {
 
@@ -36,10 +42,10 @@ void MeasurementExporter::stopMeasuring()
 
 void MeasurementExporter::receiveValue(Stage * stage, int cycle, uint64_t cpu_time, uint64_t gpu_time)
 {
-    if (m_data[stage].size() >= 1000)
+    if (m_data[stage].size() >= cache_limit)
         writeData();
 
-    m_data[stage].push_back({ cpu_time, gpu_time });
+    m_data[stage].emplace_back(cpu_time, gpu_time);
 }
 
 void MeasurementExporter::writeData()
@@ -65,7 +71,7 @@ void MeasurementExporter::writeData()
 
     //write content
     bool end = false;
-    for (int i = 0; i < 1000 && !end; ++i)
+    for (int i = 0; i < cache_limit && !end; ++i)
     {
         for (auto stage : m_stages)
         {
@@ -90,4 +96,4 @@ void MeasurementExporter::writeData()
 
 
 
-} //namespace gloperate
+} // namespace gloperate

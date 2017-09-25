@@ -615,14 +615,6 @@ void Stage::setMeasurementFlag(bool flag, bool recursive)
     m_lastCPUDuration = 0;
     m_lastGPUDuration = 0;
     m_enableMeasurement = flag;
-
-    if (recursive && isPipeline())
-    {
-        for (auto stage : static_cast<Pipeline*>(this)->stages())
-        {
-            stage->setMeasurementFlag(flag, true);
-        }
-    }
 }
 
 bool Stage::measurementFlag()

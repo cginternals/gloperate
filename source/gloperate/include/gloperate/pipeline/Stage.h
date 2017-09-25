@@ -688,7 +688,7 @@ public:
     *  @remarks
     *    Previous measurement values are set to 0.
     */
-    void setMeasurementFlag(bool flag, bool recursive);
+    virtual void setMeasurementFlag(bool flag, bool recursive);
 
     /**
     *  @brief
