@@ -53,6 +53,8 @@ Canvas::Canvas(Environment * environment)
 , m_environment(environment)
 , m_openGLContext(nullptr)
 , m_initialized(false)
+, m_measurementCycle(0)
+, m_enableMeasurement(false)
 , m_timeDelta(0.0f)
 , m_blitStage(cppassist::make_unique<BlitStage>(environment, "FinalBlit"))
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
@@ -359,6 +361,9 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     // Render
     m_renderStage->process();
 
+    if (m_enableMeasurement)
+        triggerMeasurementSignal();
+
     auto colorOutput = m_renderStage->findOutput<gloperate::ColorRenderTarget *>([this](Output<ColorRenderTarget *> * output) {
         return **output != nullptr;
     });
@@ -459,6 +464,29 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 
     // Check if a redraw is required
     checkRedraw();
+}
+
+void Canvas::setMeasurement(bool flag)
+{
+    if (!m_renderStage)
+        return;
+
+    m_measurementCycle = 0;
+    m_enableMeasurement = flag;
+    m_renderStage->setMeasurementFlag(flag, true);
+}
+
+void Canvas::triggerMeasurementSignal()
+{
+    if (!m_renderStage)
+        return;
+
+    m_renderStage->sendMeasurementValues([this](Stage* stage, uint64_t cpuTime, uint64_t gpuTime) {
+        //emit signal
+        receiveMeasurementValue(stage, m_measurementCycle, cpuTime, gpuTime);
+    });
+
+    m_measurementCycle++;
 }
 
 void Canvas::checkRedraw()

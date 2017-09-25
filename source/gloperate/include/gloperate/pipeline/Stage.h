@@ -57,7 +57,7 @@ public:
 
     template <typename T>
     using Output = gloperate::Output<T>;
-    
+
     // Helper class for createInput()
     class GLOPERATE_API CreateConnectedInputProxy
     {
@@ -380,7 +380,7 @@ public:
     *
     *  @remarks
     *    The operator<< must be called exactly once on the returned proxy object.
-    *    
+    *
     *    createInput("somename") << someOutput; behaves exactly like
     *    createConnectedInput("somename", someOutput);
     */
@@ -652,6 +652,43 @@ public:
     template <typename T>
     void forAllOutputs(std::function<void(gloperate::Output<T> *)> callback);
 
+    /**
+    *  @brief
+    *    Get CPU duration of onProcess in nanoseconds.
+    *
+    *  @return
+    *    duration in nanoseconds
+    *
+    *  @remarks
+    *    To be consistent with 'lastGPUTime', this value is one iteration (i.e. frame) late.
+    */
+    std::uint64_t lastCPUTime() const;
+
+    /**
+    *  @brief
+    *    Get GPU time for GPU commands issued during onProcess in nanoseconds.
+    *
+    *  @return
+    *    duration in nanoseconds
+    *
+    *  @remarks
+    *    Due to the async nature of GPU processing, this value is one iteration (i.e. frame) late.
+    */
+    std::uint64_t lastGPUTime() const;
+
+    /**
+    *  @brief
+    *    Set measurement flag.
+    *
+    *  @param[in] flag
+    *    'true' if enabled, 'false' if disabled
+    *  @param[in] recursive
+    *    if set, calls itself recursively on all substages
+    *
+    *  @remarks
+    *    Previous measurement values are set to 0.
+    */
+    void setMeasurementFlag(bool flag, bool recursive);
 
 protected:
     /**
@@ -778,10 +815,29 @@ protected:
     */
     void registerOutput(AbstractSlot * output);
 
+    /**
+    *  @brief
+    *    Pass measurement data to canvas via callback.
+    *
+    *  @param[in] func
+    *    function to pass measurement data
+    *
+    *  @remarks
+    *    If this stage is a pipeline the call is recursive.
+    */
+    void sendMeasurementValues(std::function<void(Stage*, uint64_t, uint64_t)> func);
+
 
 protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
+
+    bool                        m_useQueryPairOne;      ///< internal counter to access ring buffers
+    std::array<unsigned int, 4> m_queries;              ///< Query openGL objects (front/back; start/end)
+    uint64_t                    m_lastCPUDuration;      ///< nanoseconds spend in onProcess last frame
+    uint64_t                    m_currentCPUDuration;   ///< nanoseconds spend in onProcess current frame
+    uint64_t                    m_lastGPUDuration;      ///< nanoseconds for GPU commands issued during onProcess
+    bool                        m_enableMeasurement;    ///< flag to enable measurement for cpu and gpu
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs

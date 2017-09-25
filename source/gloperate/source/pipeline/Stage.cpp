@@ -8,6 +8,8 @@
 
 #include <cppexpose/variant/Variant.h>
 
+#include <glbinding/gl/gl.h>
+
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 
@@ -18,6 +20,18 @@
 
 using namespace cppassist;
 using namespace cppexpose;
+
+
+namespace
+{
+    enum Query
+    {
+        PairOneStart = 0,
+        PairOneEnd = 1,
+        PairTwoStart = 2,
+        PairTwoEnd = 3
+    };
+}
 
 
 namespace gloperate
@@ -40,6 +54,11 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 : cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
+, m_useQueryPairOne(true)
+, m_lastCPUDuration(0)
+, m_currentCPUDuration(0)
+, m_lastGPUDuration(0)
+, m_enableMeasurement(false)
 {
     // Set object class name
     setClassName(className);
@@ -90,6 +109,20 @@ bool Stage::requires(const Stage * stage, bool recursive) const
 void Stage::initContext(AbstractGLContext * context)
 {
     debug(2, "gloperate") << this->qualifiedName() << ": initContext";
+
+    gl::glGenQueries(4, m_queries.data());
+    // dummy querys for first frame
+    if (m_useQueryPairOne)
+    {
+        gl::glQueryCounter(m_queries[Query::PairOneStart], gl::GL_TIMESTAMP);
+        gl::glQueryCounter(m_queries[Query::PairOneEnd], gl::GL_TIMESTAMP);
+    }
+    else
+    {
+        gl::glQueryCounter(m_queries[Query::PairTwoStart], gl::GL_TIMESTAMP);
+        gl::glQueryCounter(m_queries[Query::PairTwoEnd], gl::GL_TIMESTAMP);
+    }
+
     onContextInit(context);
 }
 
@@ -102,7 +135,43 @@ void Stage::deinitContext(AbstractGLContext * context)
 void Stage::process()
 {
     debug(1, "gloperate") << this->qualifiedName() << ": processing";
-    onProcess();
+
+    if (m_enableMeasurement)
+    {
+        auto usedStartQuery = m_useQueryPairOne ? Query::PairOneStart : Query::PairTwoStart;
+        auto usedEndQuery = m_useQueryPairOne ? Query::PairOneEnd : Query::PairTwoEnd;
+        auto unusedStartQuery = m_useQueryPairOne ? Query::PairTwoStart : Query::PairOneStart;
+        auto unusedEndQuery = m_useQueryPairOne ? Query::PairTwoEnd : Query::PairOneEnd;
+
+        //cpu
+        auto cpu_start = std::chrono::high_resolution_clock::now();
+
+        //gpu
+        gl::glQueryCounter(m_queries[unusedStartQuery], gl::GL_TIMESTAMP);
+
+        onProcess();
+
+        //cpu
+        auto cpu_end = std::chrono::high_resolution_clock::now();
+        m_lastCPUDuration = m_currentCPUDuration;
+        m_currentCPUDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(cpu_end - cpu_start).count();
+        
+        //gpu
+        gl::glQueryCounter(m_queries[unusedEndQuery], gl::GL_TIMESTAMP);
+
+        //get gpu values from last frame
+        gl::GLuint64 gpu_start, gpu_end;
+        gl::glGetQueryObjectui64v(m_queries[usedStartQuery], gl::GL_QUERY_RESULT, &gpu_start);
+        gl::glGetQueryObjectui64v(m_queries[usedEndQuery], gl::GL_QUERY_RESULT, &gpu_end);
+        m_lastGPUDuration = gpu_end - gpu_start;
+
+        //switch queries for next frame
+        m_useQueryPairOne = !m_useQueryPairOne;
+    }
+    else
+    {
+        onProcess();
+    }
 
     for (auto input : m_inputs)
     {
@@ -527,6 +596,52 @@ void Stage::forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callbac
     for (const auto output : m_outputs)
     {
         callback(output);
+    }
+}
+
+std::uint64_t Stage::lastCPUTime() const
+{
+    return m_lastCPUDuration;
+}
+
+std::uint64_t Stage::lastGPUTime() const
+{
+    return m_lastGPUDuration;
+}
+
+void Stage::setMeasurementFlag(bool flag, bool recursive)
+{
+    m_currentCPUDuration = 0;
+    m_lastCPUDuration = 0;
+    m_lastGPUDuration = 0;
+    m_enableMeasurement = flag;
+
+    if (recursive && isPipeline())
+    {
+        for (auto stage : static_cast<Pipeline*>(this)->stages())
+        {
+            stage->setMeasurementFlag(flag, true);
+        }
+    }
+}
+
+void Stage::sendMeasurementValues(std::function<void(Stage*, uint64_t, uint64_t)> func)
+{
+    if (m_enableMeasurement)
+    {
+        func(this, lastCPUTime(), lastGPUTime());  
+    }
+    else
+    {
+        func(this, 0, 0);
+    }
+
+    if (isPipeline())
+    {
+        for (auto stage : static_cast<Pipeline*>(this)->stages())
+        {
+            stage->sendMeasurementValues(func);
+        }
     }
 }
 
