@@ -42,6 +42,9 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
     addStage(m_trackballStage.get());
     m_trackballStage->viewport << canvasInterface.viewport;
 
+    // Force m_trackballStage to be sorted in front of m_multiFramePipeline
+    m_multiFramePipeline->createInput("camera") << m_trackballStage->camera;
+
     // Inputs
     m_renderingPipeline->camera << m_trackballStage->camera;
     m_multiFramePipeline->restartAggregationOn(&m_trackballStage->camera);
