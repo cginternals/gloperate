@@ -22,6 +22,7 @@ layout (location = 0) in vec3 a_vertex;
 layout (location = 1) in vec3 a_normal;
 
 out vec4 v_position;
+out vec3 v_color;
 flat out vec3 v_normal;
 
 
@@ -36,6 +37,7 @@ void main()
     vec4 dofShiftedPos = projectionMatrix * dofViewPos;
 
     v_position = dofShiftedPos + vec4(subpixelShift, 0.0, 0.0) * float(useAntialiasing);
+    v_color = vec3(0.6) + 0.2 * a_vertex + 0.2 * (a_normal * 0.5 + 0.5);
     v_normal = a_normal;
     gl_Position = v_position;
 }

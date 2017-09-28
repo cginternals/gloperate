@@ -18,6 +18,7 @@ uniform float transparencyAlpha;
 
 
 in vec4 v_position;
+in vec3 v_color;
 flat in vec3 v_normal;
 
 layout (location = 0) out vec4 fragColor;
@@ -39,6 +40,6 @@ void main()
     if (!opaque && useTransparency)
         discard;
 
-    fragColor = vec4(baseColor, 1.0);
+    fragColor = vec4(v_color, 1.0);
     normal = v_normal;
 }
