@@ -17,10 +17,12 @@ namespace globjects
 
 namespace gloperate
 {
-    class TextureRenderTargetStage;
-    class TextureFromRenderTargetExtractionStage;
     class Quad;
     class Camera;
+
+    class TextureRenderTargetStage;
+    class TextureFromRenderTargetExtractionStage;
+    class TransformStage;
     class ProgramStage;
     class RenderPassStage;
     class RasterizationStage;
@@ -118,6 +120,7 @@ protected:
 
     // Rendering
     std::unique_ptr<GeometryImporterStage>                                 m_renderGeometryStage;              ///< geometry for rendering step
+    std::unique_ptr<gloperate::TransformStage>                             m_transformStage;                   ///< model matrix for rendering
     std::unique_ptr<gloperate::ProgramStage>                               m_renderProgramStage;               ///< shader program for rendering step
     std::unique_ptr<gloperate::RenderPassStage>                            m_renderPassStage;                  ///< render pass for rendering step
     std::unique_ptr<gloperate::ClearStage>                                 m_renderClearStage;                 ///< FBO clear for rendering step

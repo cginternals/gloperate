@@ -16,8 +16,7 @@ uniform sampler2D depthTexture;
 uniform sampler1D ssaoKernelTexture;
 uniform sampler2DArray ssaoNoiseTexture;
 
-uniform mat4 viewProjectionMatrix;
-uniform mat4 viewProjectionInverseMatrix;
+uniform mat4 modelViewProjectionMatrix;
 uniform mat3 normalMatrix;
 
 uniform float ssaoRadius = 0.5;
@@ -46,8 +45,8 @@ void main()
             normalTexture,
             ssaoNoiseTexture,
             ssaoKernelTexture,
-            viewProjectionMatrix,
-            inverse(viewProjectionMatrix),
+            modelViewProjectionMatrix,
+            inverse(modelViewProjectionMatrix),
             ssaoRadius,
             currentFrame
         );

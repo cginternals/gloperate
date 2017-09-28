@@ -6,7 +6,7 @@
 uniform sampler1D dofShiftKernel;
 uniform sampler1D subpixelShiftKernel;
 
-uniform mat4 viewMatrix;
+uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
 uniform vec4 viewport;
@@ -31,7 +31,7 @@ void main()
     vec2 subpixelShift = texelFetch(subpixelShiftKernel, currentFrame, 0).xy;
     subpixelShift /= viewport.zw;
 
-    vec4 viewPos = viewMatrix * vec4(a_vertex, 1.0);
+    vec4 viewPos = modelViewMatrix * vec4(a_vertex, 1.0);
     vec4 dofViewPos = vec4(viewPos.xy + dofShift * (viewPos.z + dofZFocus) * float(useDOF), viewPos.zw);
     vec4 dofShiftedPos = projectionMatrix * dofViewPos;
 
