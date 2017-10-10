@@ -19,9 +19,8 @@ uniform sampler2DArray ssaoNoiseTexture;
 uniform mat4 modelViewProjectionMatrix;
 uniform mat3 normalMatrix;
 
-uniform float ssaoRadius = 0.5;
-
 uniform int currentFrame;
+uniform float ssaoRadius;
 
 uniform bool useSSAO;
 
@@ -37,6 +36,7 @@ void main()
 
     float ssaoFactor = 1.0;
 
+    // Run SSAO calculation
     if (useSSAO)
     {
         ssaoFactor = ssao(
@@ -52,5 +52,6 @@ void main()
         );
     }
 
+    // Apply SSAO
     fragColor = vec4(baseColor * ssaoFactor, 1.0);
 }

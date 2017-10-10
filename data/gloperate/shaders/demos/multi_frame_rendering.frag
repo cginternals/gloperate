@@ -6,15 +6,12 @@
 #include </gloperate/shaders/util/random.glsl>
 
 
-const vec3 baseColor = vec3(1.0, 1.0, 1.0);
-
-
 uniform sampler2D transparencyKernel;
 
 uniform int currentFrame;
+uniform float transparencyAlpha;
 
 uniform bool useTransparency;
-uniform float transparencyAlpha;
 
 
 in vec4 v_position;
@@ -27,16 +24,16 @@ layout (location = 1) out vec3 normal;
 
 void main()
 {
-    float rand = random(v_position);
-
+    // Sample from transparency kernel
     float alpha = transparencyAlpha;
+    float rand = random(v_position);
     ivec2 transpSize = textureSize(transparencyKernel, 0);
     ivec2 transpIndex = ivec2(vec2(rand, alpha) * transpSize) + ivec2(currentFrame, 0);
     bool opaque = texelFetch(transparencyKernel, transpIndex % transpSize, 0).r > 0.5;
 
+    // Discard transparent pixels
     if (alpha == 1.0)
         opaque = true;
-
     if (!opaque && useTransparency)
         discard;
 
