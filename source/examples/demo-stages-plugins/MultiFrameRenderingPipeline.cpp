@@ -91,7 +91,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_dofShiftStage->radius << dofIntensity;
 
     addStage(m_ssaoKernelStage.get());
-    m_ssaoKernelStage->kernelSize.setValue(16);
+    m_ssaoKernelStage->kernelSize.setValue(256);
 
     addStage(m_noiseStage.get());
     m_noiseStage->dimensions.setValue(glm::ivec3(64, 64, 64));

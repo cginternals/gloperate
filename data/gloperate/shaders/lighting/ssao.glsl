@@ -46,10 +46,11 @@ float ssao(
 
     mat3 tbn = getRandomizedTBN(normal, uv, depthTexture, noiseTexture, currentFrame);
 
-    int numSamples = textureSize(kernelTexture, 0);
+    int totalSamples = textureSize(kernelTexture, 0);
+    const int numSamples = 16;
 
     for (int i = 0; i < numSamples; ++i) {
-        vec3 sampleOffset = tbn * texelFetch(kernelTexture, i, 0).xyz;
+        vec3 sampleOffset = tbn * texelFetch(kernelTexture, (i + numSamples * currentFrame) % totalSamples, 0).xyz;
         sampleOffset *= radius;
 
         vec3 samplePosition = worldPosition.xyz + sampleOffset;
