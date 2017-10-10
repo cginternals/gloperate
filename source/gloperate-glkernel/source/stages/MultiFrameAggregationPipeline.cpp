@@ -40,13 +40,13 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
 
     addStage(m_colorRenderTargetStage.get());
     m_colorRenderTargetStage->size << canvasInterface.viewport;
-    m_colorRenderTargetStage->format.setValue(gl::GL_RGBA);
-    m_colorRenderTargetStage->internalFormat.setValue(gl::GL_RGBA32F);
-    m_colorRenderTargetStage->type.setValue(gl::GL_FLOAT);
+    m_colorRenderTargetStage->format = gl::GL_RGBA;
+    m_colorRenderTargetStage->internalFormat = gl::GL_RGBA32F;
+    m_colorRenderTargetStage->type = gl::GL_FLOAT;
 
     addStage(m_depthStencilRenderTargetStage.get());
     m_depthStencilRenderTargetStage->size << canvasInterface.viewport;
-    m_depthStencilRenderTargetStage->internalFormat.setValue(gl::GL_DEPTH24_STENCIL8);
+    m_depthStencilRenderTargetStage->internalFormat = gl::GL_DEPTH24_STENCIL8;
 
     addStage(m_controlStage.get());
     m_controlStage->frameNumber << canvasInterface.frameCounter;

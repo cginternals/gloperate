@@ -60,26 +60,26 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 , m_postprocessingRasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "PostprocessingRasterizationStage"))
 , m_camera(cppassist::make_unique<gloperate::Camera>(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))
 {
-    camera.setValue(m_camera.get());
+    camera = m_camera.get();
 
     auto dataPath = gloperate::dataPath();
 
     addStage(m_colorTextureStage.get());
-    m_colorTextureStage->format.setValue(gl::GL_RGBA);
-    m_colorTextureStage->type.setValue(gl::GL_UNSIGNED_BYTE);
-    m_colorTextureStage->internalFormat.setValue(gl::GL_RGBA8);
+    m_colorTextureStage->format = gl::GL_RGBA;
+    m_colorTextureStage->type = gl::GL_UNSIGNED_BYTE;
+    m_colorTextureStage->internalFormat = gl::GL_RGBA8;
     m_colorTextureStage->size << canvasInterface.viewport;
 
     addStage(m_depthTextureStage.get());
-    m_depthTextureStage->format.setValue(gl::GL_DEPTH_COMPONENT);
-    m_depthTextureStage->type.setValue(gl::GL_UNSIGNED_BYTE);
-    m_depthTextureStage->internalFormat.setValue(gl::GL_DEPTH_COMPONENT);
+    m_depthTextureStage->format = gl::GL_DEPTH_COMPONENT;
+    m_depthTextureStage->type = gl::GL_UNSIGNED_BYTE;
+    m_depthTextureStage->internalFormat = gl::GL_DEPTH_COMPONENT;
     m_depthTextureStage->size << canvasInterface.viewport;
 
     addStage(m_normalTextureStage.get());
-    m_normalTextureStage->format.setValue(gl::GL_RGB);
-    m_normalTextureStage->type.setValue(gl::GL_FLOAT);
-    m_normalTextureStage->internalFormat.setValue(gl::GL_RGB32F);
+    m_normalTextureStage->format = gl::GL_RGB;
+    m_normalTextureStage->type = gl::GL_FLOAT;
+    m_normalTextureStage->internalFormat = gl::GL_RGB32F;
     m_normalTextureStage->size << canvasInterface.viewport;
 
     addStage(m_subpixelStage.get());
@@ -91,13 +91,13 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_dofShiftStage->radius << dofIntensity;
 
     addStage(m_ssaoKernelStage.get());
-    m_ssaoKernelStage->kernelSize.setValue(256);
+    m_ssaoKernelStage->kernelSize = 256;
 
     addStage(m_noiseStage.get());
-    m_noiseStage->dimensions.setValue(glm::ivec3(64, 64, 64));
+    m_noiseStage->dimensions = glm::ivec3(64, 64, 64);
 
     addStage(m_transparencyKernelStage.get());
-    m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
+    m_transparencyKernelStage->kernelSize = glm::ivec2(256, 256);
 
     addStage(m_renderGeometryStage.get());
     m_renderGeometryStage->filePath = dataPath + "/gloperate/meshes/demos/multi_frame_demo.obj";

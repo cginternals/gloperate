@@ -31,7 +31,7 @@ TransparencyRenderingPipeline::TransparencyRenderingPipeline(gloperate::Environm
     auto dataPath = gloperate::dataPath();
 
     addStage(m_transparencyKernelStage.get());
-    m_transparencyKernelStage->kernelSize.setValue(glm::ivec2(256, 256));
+    m_transparencyKernelStage->kernelSize = glm::ivec2(256, 256);
 
     addStage(m_programStage.get());
     *m_programStage->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/transparency.vert";

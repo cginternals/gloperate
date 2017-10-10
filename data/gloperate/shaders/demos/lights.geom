@@ -14,10 +14,12 @@ void main()
     vec3 b = v_worldPosition[1];
     vec3 c = v_worldPosition[2];
 
+    // Calculate face normal ...
     vec3 tangent = b - a;
     vec3 bitangent = c - a;
     vec3 normal = normalize(cross(tangent, bitangent));
 
+    // ... and add normal to vertex information
     gl_Position = gl_in[0].gl_Position;
     g_worldPosition = v_worldPosition[0];
     g_normal = normal;
