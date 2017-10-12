@@ -21,6 +21,7 @@ uniform mat3 normalMatrix;
 
 uniform int currentFrame;
 uniform float ssaoRadius;
+uniform float ssaoIntensity;
 
 uniform bool useSSAO;
 
@@ -53,5 +54,5 @@ void main()
     }
 
     // Apply SSAO
-    fragColor = vec4(baseColor * ssaoFactor, 1.0);
+    fragColor = vec4(baseColor * mix(1.0, ssaoFactor, ssaoIntensity), 1.0);
 }

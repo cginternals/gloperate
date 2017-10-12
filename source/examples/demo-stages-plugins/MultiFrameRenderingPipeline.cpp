@@ -38,7 +38,8 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 , useTransparency("useTransparency", this, true)
 , dofIntensity("dofIntensity", this, 0.01f)
 , dofZFocus("dofZFocus", this, 0.1f)
-, ssaoRadius("ssaoRadius", this, 0.5f)
+, ssaoRadius("ssaoRadius", this, 0.35f)
+, ssaoIntensity("ssaoIntensity", this, 0.7f)
 , transparencyAlpha("transparencyAlpha", this, 0.65)
 , m_colorTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorTextureStage"))
 , m_depthTextureStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "DepthTextureStage"))
@@ -91,7 +92,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_dofShiftStage->radius << dofIntensity;
 
     addStage(m_ssaoKernelStage.get());
-    m_ssaoKernelStage->kernelSize = 256;
+    m_ssaoKernelStage->kernelSize = 1024;
 
     addStage(m_noiseStage.get());
     m_noiseStage->dimensions = glm::ivec3(64, 64, 64);
@@ -161,6 +162,7 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_postprocessingPassStage->createInput("ssaoNoiseTexture") << m_noiseStage->texture;
     m_postprocessingPassStage->createInput("useSSAO") << useSSAO;
     m_postprocessingPassStage->createInput("ssaoRadius") << ssaoRadius;
+    m_postprocessingPassStage->createInput("ssaoIntensity") << ssaoIntensity;
 
     addStage(m_postprocessingClearStage.get());
     m_postprocessingClearStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");

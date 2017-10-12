@@ -76,6 +76,7 @@ public:
     Input<float> dofIntensity;                  ///< Intensity value for DOF
     Input<float> dofZFocus;                     ///< Focus distance for DOF
     Input<float> ssaoRadius;                    ///< Effect radius for SSAO
+    Input<float> ssaoIntensity;                 ///< Effect intensity for SSAO
     Input<float> transparencyAlpha;             ///< Alpha value for transparency
 
 

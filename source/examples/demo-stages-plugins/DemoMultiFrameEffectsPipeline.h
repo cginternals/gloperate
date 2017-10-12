@@ -58,6 +58,7 @@ public:
     Input<float>               dofIntensity;      ///< depth of field intensity (max shift)
     Input<float>               dofZFocus;         ///< depth of field focus distance
     Input<float>               ssaoRadius;        ///< ssao effect radius
+    Input<float>               ssaoIntensity;     ///< ssao effect intensity
     Input<float>               transparencyAlpha; ///< alpha value of whole scene
 
 

@@ -21,7 +21,8 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
 , useTransparency("useTransparency", this)
 , dofIntensity("dofIntensity", this, 0.01f)
 , dofZFocus("dofZFocus", this, 0.1f)
-, ssaoRadius("ssaoRadius", this, 0.5f)
+, ssaoRadius("ssaoRadius", this, 0.15f)
+, ssaoIntensity("ssaoIntensity", this, 0.4f)
 , transparencyAlpha("transparencyAlpha", this, 0.65f)
 , m_multiFramePipeline(cppassist::make_unique<gloperate_glkernel::MultiFrameAggregationPipeline>(environment))
 , m_renderingPipeline(cppassist::make_unique<MultiFrameRenderingPipeline>(environment))
@@ -61,10 +62,12 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
     m_renderingPipeline->dofIntensity << dofIntensity;
     m_renderingPipeline->dofZFocus << dofZFocus;
     m_renderingPipeline->ssaoRadius << ssaoRadius;
+    m_renderingPipeline->ssaoIntensity << ssaoIntensity;
     m_renderingPipeline->transparencyAlpha << transparencyAlpha;
     m_multiFramePipeline->restartAggregationOn(&dofIntensity);
     m_multiFramePipeline->restartAggregationOn(&dofZFocus);
     m_multiFramePipeline->restartAggregationOn(&ssaoRadius);
+    m_multiFramePipeline->restartAggregationOn(&ssaoIntensity);
     m_multiFramePipeline->restartAggregationOn(&transparencyAlpha);
 
     dofIntensity.setOption("maximumValue", 0.02f);
