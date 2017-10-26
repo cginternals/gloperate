@@ -9,6 +9,7 @@
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/rendering/Color.h>
 #include <gloperate/stages/interfaces/CanvasInterface.h>
+#include <gloperate/rendering/LightType.h>
 
 
 namespace globjects
@@ -19,8 +20,6 @@ namespace globjects
 
 namespace gloperate
 {
-    enum LightType;
-
     class LightCreationStage;
     class LightBufferTextureStage;
     class TrackballStage;

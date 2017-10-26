@@ -74,26 +74,26 @@ void TransparencyRenderingPipeline::onContextInit(gloperate::AbstractGLContext *
     // sorted from back to front to render correctly without depth buffer
     static const std::vector<vertexData> vertices {
         // blue, center at (0.2598, -0.15)
-        {{-0.2402f,  0.35f}, {-1.0f,  1.0f}, {0.0f, 0.0f, 1.0f, 0.8f}},
-        {{-0.2402f, -0.65f}, {-1.0f, -1.0f}, {0.0f, 0.0f, 1.0f, 0.8f}},
-        {{ 0.7598f, -0.65f}, { 1.0f, -1.0f}, {0.0f, 0.0f, 1.0f, 0.8f}},
-        {{ 0.7598f, -0.65f}, { 1.0f, -1.0f}, {0.0f, 0.0f, 1.0f, 0.8f}},
-        {{ 0.7598f,  0.35f}, { 1.0f,  1.0f}, {0.0f, 0.0f, 1.0f, 0.8f}},
-        {{-0.2402f,  0.35f}, {-1.0f,  1.0f}, {0.0f, 0.0f, 1.0f, 0.8f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.2402f,  0.35f}, glm::vec2{-1.0f,  1.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 0.8f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.2402f, -0.65f}, glm::vec2{-1.0f, -1.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 0.8f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.7598f, -0.65f}, glm::vec2{ 1.0f, -1.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 0.8f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.7598f, -0.65f}, glm::vec2{ 1.0f, -1.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 0.8f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.7598f,  0.35f}, glm::vec2{ 1.0f,  1.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 0.8f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.2402f,  0.35f}, glm::vec2{-1.0f,  1.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 0.8f}},
         // green, center at (-0.2598, -0.15)
-        {{-0.7598f,  0.35f}, {-1.0f,  1.0f}, {0.0f, 1.0f, 0.0f, 0.5f}},
-        {{-0.7598f, -0.65f}, {-1.0f, -1.0f}, {0.0f, 1.0f, 0.0f, 0.5f}},
-        {{ 0.2402f, -0.65f}, { 1.0f, -1.0f}, {0.0f, 1.0f, 0.0f, 0.5f}},
-        {{ 0.2402f, -0.65f}, { 1.0f, -1.0f}, {0.0f, 1.0f, 0.0f, 0.5f}},
-        {{ 0.2402f,  0.35f}, { 1.0f,  1.0f}, {0.0f, 1.0f, 0.0f, 0.5f}},
-        {{-0.7598f,  0.35f}, {-1.0f,  1.0f}, {0.0f, 1.0f, 0.0f, 0.5f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.7598f,  0.35f}, glm::vec2{-1.0f,  1.0f}, glm::vec4{0.0f, 1.0f, 0.0f, 0.5f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.7598f, -0.65f}, glm::vec2{-1.0f, -1.0f}, glm::vec4{0.0f, 1.0f, 0.0f, 0.5f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.2402f, -0.65f}, glm::vec2{ 1.0f, -1.0f}, glm::vec4{0.0f, 1.0f, 0.0f, 0.5f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.2402f, -0.65f}, glm::vec2{ 1.0f, -1.0f}, glm::vec4{0.0f, 1.0f, 0.0f, 0.5f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.2402f,  0.35f}, glm::vec2{ 1.0f,  1.0f}, glm::vec4{0.0f, 1.0f, 0.0f, 0.5f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.7598f,  0.35f}, glm::vec2{-1.0f,  1.0f}, glm::vec4{0.0f, 1.0f, 0.0f, 0.5f}},
         // red, center at (0.0, 0.3)
-        {{-0.5f,  0.8f}, {-1.0f,  1.0f}, {1.0f, 0.0f, 0.0f, 0.3f}},
-        {{-0.5f, -0.2f}, {-1.0f, -1.0f}, {1.0f, 0.0f, 0.0f, 0.3f}},
-        {{ 0.5f, -0.2f}, { 1.0f, -1.0f}, {1.0f, 0.0f, 0.0f, 0.3f}},
-        {{ 0.5f, -0.2f}, { 1.0f, -1.0f}, {1.0f, 0.0f, 0.0f, 0.3f}},
-        {{ 0.5f,  0.8f}, { 1.0f,  1.0f}, {1.0f, 0.0f, 0.0f, 0.3f}},
-        {{-0.5f,  0.8f}, {-1.0f,  1.0f}, {1.0f, 0.0f, 0.0f, 0.3f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.5f,  0.8f}, glm::vec2{-1.0f,  1.0f}, glm::vec4{1.0f, 0.0f, 0.0f, 0.3f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.5f, -0.2f}, glm::vec2{-1.0f, -1.0f}, glm::vec4{1.0f, 0.0f, 0.0f, 0.3f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.5f, -0.2f}, glm::vec2{ 1.0f, -1.0f}, glm::vec4{1.0f, 0.0f, 0.0f, 0.3f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.5f, -0.2f}, glm::vec2{ 1.0f, -1.0f}, glm::vec4{1.0f, 0.0f, 0.0f, 0.3f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{ 0.5f,  0.8f}, glm::vec2{ 1.0f,  1.0f}, glm::vec4{1.0f, 0.0f, 0.0f, 0.3f}},
+        std::tuple<glm::vec2, glm::vec2, glm::vec4>{glm::vec2{-0.5f,  0.8f}, glm::vec2{-1.0f,  1.0f}, glm::vec4{1.0f, 0.0f, 0.0f, 0.3f}},
     };
 
     globjects::Buffer * vertexBuffer = new globjects::Buffer;
