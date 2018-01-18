@@ -147,6 +147,19 @@ bool Pipeline::isPipeline() const
     return true;
 }
 
+void Pipeline::setMeasurementFlag(bool flag, bool recursive)
+{
+    Stage::setMeasurementFlag(flag, recursive);
+
+    if (recursive)
+    {
+        for (auto stage : this->stages())
+        {
+            stage->setMeasurementFlag(flag, true);
+        }
+    }
+}
+
 void Pipeline::sortStages()
 {
     debug("gloperate") << this->qualifiedName() << ": sort stages";

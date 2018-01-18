@@ -130,6 +130,20 @@ public:
     // Virtual Stage interface
     virtual bool isPipeline() const override;
 
+    /**
+    *  @brief
+    *    Set measurement flag.
+    *
+    *  @param[in] flag
+    *    'true' if enabled, 'false' if disabled
+    *  @param[in] recursive
+    *    if set, calls itself recursively on all substages
+    *
+    *  @remarks
+    *    Previous measurement values are set to 0.
+    */
+    void setMeasurementFlag(bool flag, bool recursive) override;
+
 
 protected:
     /**

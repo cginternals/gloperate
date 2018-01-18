@@ -161,6 +161,7 @@ set(headers
 
     ${include_path}/tools/AbstractVideoExporter.h
     ${include_path}/tools/ImageExporter.h
+    ${include_path}/tools/MeasurementExporter.h
 
     ${include_path}/loaders/ColorGradientLoader.h
     ${include_path}/loaders/ShaderLoader.h
@@ -260,6 +261,7 @@ set(sources
 
     ${source_path}/tools/AbstractVideoExporter.cpp
     ${source_path}/tools/ImageExporter.cpp
+    ${source_path}/tools/MeasurementExporter.cpp
 
     ${source_path}/loaders/ColorGradientLoader.cpp
     ${source_path}/loaders/ShaderLoader.cpp
