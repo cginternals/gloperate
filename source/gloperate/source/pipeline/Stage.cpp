@@ -8,6 +8,8 @@
 
 #include <cppexpose/variant/Variant.h>
 
+#include <glbinding/gl/gl.h>
+
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 
@@ -18,6 +20,18 @@
 
 using namespace cppassist;
 using namespace cppexpose;
+
+
+namespace
+{
+    enum Query
+    {
+        PairOneStart = 0,
+        PairOneEnd = 1,
+        PairTwoStart = 2,
+        PairTwoEnd = 3
+    };
+}
 
 
 namespace gloperate
@@ -40,6 +54,11 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 : cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
+, m_useQueryPairOne(true)
+, m_timeMeasurement(false)
+, m_lastCPUDuration(0)
+, m_currentCPUDuration(0)
+, m_lastGPUDuration(0)
 {
     // Set object class name
     setClassName(className);
@@ -90,6 +109,20 @@ bool Stage::requires(const Stage * stage, bool recursive) const
 void Stage::initContext(AbstractGLContext * context)
 {
     debug(2, "gloperate") << this->qualifiedName() << ": initContext";
+
+    gl::glGenQueries(4, m_queries.data());
+    // dummy querys for first frame
+    if (m_useQueryPairOne)
+    {
+        gl::glQueryCounter(m_queries[Query::PairOneStart], gl::GL_TIMESTAMP);
+        gl::glQueryCounter(m_queries[Query::PairOneEnd], gl::GL_TIMESTAMP);
+    }
+    else
+    {
+        gl::glQueryCounter(m_queries[Query::PairTwoStart], gl::GL_TIMESTAMP);
+        gl::glQueryCounter(m_queries[Query::PairTwoEnd], gl::GL_TIMESTAMP);
+    }
+
     onContextInit(context);
 }
 
@@ -102,7 +135,47 @@ void Stage::deinitContext(AbstractGLContext * context)
 void Stage::process()
 {
     debug(1, "gloperate") << this->qualifiedName() << ": processing";
-    onProcess();
+
+    if (m_timeMeasurement)
+    {
+        auto usedStartQuery = m_useQueryPairOne ? Query::PairOneStart : Query::PairTwoStart;
+        auto usedEndQuery = m_useQueryPairOne ? Query::PairOneEnd : Query::PairTwoEnd;
+        auto unusedStartQuery = m_useQueryPairOne ? Query::PairTwoStart : Query::PairOneStart;
+        auto unusedEndQuery = m_useQueryPairOne ? Query::PairTwoEnd : Query::PairOneEnd;
+
+        // Start CPU time measurement
+        auto cpu_start = std::chrono::high_resolution_clock::now();
+
+        // Start GPU time measurement
+        gl::glQueryCounter(m_queries[unusedStartQuery], gl::GL_TIMESTAMP);
+
+        // Execute stage
+        onProcess();
+
+        // Stop CPU time measurement
+        auto cpu_end = std::chrono::high_resolution_clock::now();
+        m_lastCPUDuration = m_currentCPUDuration;
+        m_currentCPUDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(cpu_end - cpu_start).count();
+
+        // Stop GPU time measurement
+        gl::glQueryCounter(m_queries[unusedEndQuery], gl::GL_TIMESTAMP);
+
+        // Get GPU values from last frame
+        gl::GLuint64 gpu_start, gpu_end;
+        gl::glGetQueryObjectui64v(m_queries[usedStartQuery], gl::GL_QUERY_RESULT, &gpu_start);
+        gl::glGetQueryObjectui64v(m_queries[usedEndQuery], gl::GL_QUERY_RESULT, &gpu_end);
+        m_lastGPUDuration = gpu_end - gpu_start;
+
+        // Switch queries for next frame
+        m_useQueryPairOne = !m_useQueryPairOne;
+
+        // Emit measured times
+        timeMeasured(m_currentCPUDuration, m_lastGPUDuration);
+    }
+    else
+    {
+        onProcess();
+    }
 
     for (auto input : m_inputs)
     {
@@ -528,6 +601,29 @@ void Stage::forAllOutputs(std::function<void(gloperate::AbstractSlot *)> callbac
     {
         callback(output);
     }
+}
+
+std::uint64_t Stage::lastCPUTime() const
+{
+    return m_lastCPUDuration;
+}
+
+std::uint64_t Stage::lastGPUTime() const
+{
+    return m_lastGPUDuration;
+}
+
+bool Stage::timeMeasurement() const
+{
+    return m_timeMeasurement;
+}
+
+void Stage::setTimeMeasurement(bool enabled, bool)
+{
+    m_currentCPUDuration = 0;
+    m_lastCPUDuration    = 0;
+    m_lastGPUDuration    = 0;
+    m_timeMeasurement    = enabled;
 }
 
 
