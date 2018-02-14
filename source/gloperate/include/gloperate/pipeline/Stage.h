@@ -831,12 +831,13 @@ protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
 
-    bool                        m_useQueryPairOne;      ///< internal counter to access ring buffers
-    std::array<unsigned int, 4> m_queries;              ///< Query openGL objects (front/back; start/end)
     bool                        m_timeMeasurement;      ///< Status of time measurements for CPU and GPU
-    uint64_t                    m_lastCPUDuration;      ///< nanoseconds spend in onProcess last frame
-    uint64_t                    m_currentCPUDuration;   ///< nanoseconds spend in onProcess current frame
-    uint64_t                    m_lastGPUDuration;      ///< nanoseconds for GPU commands issued during onProcess
+    bool                        m_useQueryPairOne;      ///< Flag indicating which queries are currently used
+    bool                        m_resultAvailable;      ///< Flag indicating whether a measurement from previous frames is available for report
+    std::array<unsigned int, 4> m_queries;              ///< OpenGL query objects (front/back; start/end)
+    uint64_t                    m_lastCPUDuration;      ///< Time spent in onProcess last frame (in nanoseconds)
+    uint64_t                    m_currentCPUDuration;   ///< Time spent in onProcess current frame (in nanoseconds)
+    uint64_t                    m_lastGPUDuration;      ///< Time for GPU commands issued during onProcess (in nanoseconds)
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs

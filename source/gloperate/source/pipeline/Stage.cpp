@@ -54,8 +54,9 @@ Stage::Stage(Environment * environment, const std::string & className, const std
 : cppexpose::Object((name.empty()) ? className : name)
 , m_environment(environment)
 , m_alwaysProcess(false)
-, m_useQueryPairOne(true)
 , m_timeMeasurement(false)
+, m_useQueryPairOne(true)
+, m_resultAvailable(false)
 , m_lastCPUDuration(0)
 , m_currentCPUDuration(0)
 , m_lastGPUDuration(0)
@@ -110,8 +111,10 @@ void Stage::initContext(AbstractGLContext * context)
 {
     debug(2, "gloperate") << this->qualifiedName() << ": initContext";
 
+    // Create time queries
     gl::glGenQueries(4, m_queries.data());
-    // dummy querys for first frame
+
+    // Dummy querys for first frame
     if (m_useQueryPairOne)
     {
         gl::glQueryCounter(m_queries[Query::PairOneStart], gl::GL_TIMESTAMP);
@@ -138,10 +141,11 @@ void Stage::process()
 
     if (m_timeMeasurement)
     {
-        auto usedStartQuery = m_useQueryPairOne ? Query::PairOneStart : Query::PairTwoStart;
-        auto usedEndQuery = m_useQueryPairOne ? Query::PairOneEnd : Query::PairTwoEnd;
+        // Get currently used queries
+        auto usedStartQuery   = m_useQueryPairOne ? Query::PairOneStart : Query::PairTwoStart;
+        auto usedEndQuery     = m_useQueryPairOne ? Query::PairOneEnd   : Query::PairTwoEnd;
         auto unusedStartQuery = m_useQueryPairOne ? Query::PairTwoStart : Query::PairOneStart;
-        auto unusedEndQuery = m_useQueryPairOne ? Query::PairTwoEnd : Query::PairOneEnd;
+        auto unusedEndQuery   = m_useQueryPairOne ? Query::PairTwoEnd   : Query::PairOneEnd;
 
         // Start CPU time measurement
         auto cpu_start = std::chrono::high_resolution_clock::now();
@@ -170,7 +174,9 @@ void Stage::process()
         m_useQueryPairOne = !m_useQueryPairOne;
 
         // Emit measured times
-        timeMeasured(m_currentCPUDuration, m_lastGPUDuration);
+        if (m_resultAvailable) {
+            timeMeasured(m_lastCPUDuration, m_lastGPUDuration);
+        } else m_resultAvailable = true;
     }
     else
     {
@@ -484,7 +490,6 @@ void Stage::inputOptionsChanged(AbstractSlot * slot)
     inputChanged(slot);
 }
 
-
 std::string Stage::getFreeName(const std::string & name) const
 {
     std::string nameOut = name;
@@ -620,10 +625,11 @@ bool Stage::timeMeasurement() const
 
 void Stage::setTimeMeasurement(bool enabled, bool)
 {
+    m_timeMeasurement    = enabled;
+    m_resultAvailable    = false;
     m_currentCPUDuration = 0;
     m_lastCPUDuration    = 0;
     m_lastGPUDuration    = 0;
-    m_timeMeasurement    = enabled;
 }
 
 
