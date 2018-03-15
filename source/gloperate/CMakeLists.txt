@@ -165,6 +165,7 @@ set(headers
     ${include_path}/loaders/ColorGradientLoader.h
     ${include_path}/loaders/ShaderLoader.h
     ${include_path}/loaders/GlrawTextureLoader.h
+    ${include_path}/loaders/GlrawTextureStorer.h
     ${include_path}/loaders/RawFileNameSuffix.h
 )
 
@@ -264,6 +265,7 @@ set(sources
     ${source_path}/loaders/ColorGradientLoader.cpp
     ${source_path}/loaders/ShaderLoader.cpp
     ${source_path}/loaders/GlrawTextureLoader.cpp
+    ${source_path}/loaders/GlrawTextureStorer.cpp
     ${source_path}/loaders/RawFileNameSuffix.cpp
 )
 
