@@ -7,7 +7,7 @@
 #include <gloperate-qt/gloperate-qt_api.h>
 
 
-class QWindow;
+class QSurface;
 class QSurfaceFormat;
 
 
@@ -26,10 +26,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] window
+    *  @param[in] surface
     *    Surface on which contexts are created (must NOT be null)
     */
-    GLContextFactory(QWindow * window);
+    GLContextFactory(QSurface * surface);
 
     /**
     *  @brief
@@ -54,7 +54,7 @@ public:
 
 
 protected:
-    QWindow * m_window; ///< Surface on which contexts are created
+    QSurface * m_surface; ///< Surface on which contexts are created
 };
 
 

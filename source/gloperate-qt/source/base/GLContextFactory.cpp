@@ -13,8 +13,8 @@ namespace gloperate_qt
 {
 
 
-GLContextFactory::GLContextFactory(QWindow * window)
-: m_window(window)
+GLContextFactory::GLContextFactory(QSurface * surface)
+: m_surface(surface)
 {
 }
 
@@ -34,7 +34,7 @@ std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(co
         return nullptr;
     }
 
-    return cppassist::make_unique<GLContext>(m_window, qContext.release());
+    return cppassist::make_unique<GLContext>(m_surface, qContext.release());
 }
 
 QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextFormat & format)

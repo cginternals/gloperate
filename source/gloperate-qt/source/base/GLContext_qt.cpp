@@ -1,7 +1,7 @@
 
 #include <gloperate-qt/base/GLContext.h>
 
-#include <QWindow>
+#include <QSurface>
 #include <QOpenGLContext>
 
 
@@ -24,9 +24,9 @@ void GLContext::destroyContext()
     m_context = nullptr;
 }
 
-void GLContext::makeCurrent(QOpenGLContext * context, QWindow * window)
+void GLContext::makeCurrent(QOpenGLContext * context, QSurface * surface)
 {
-    context->makeCurrent(window);
+    context->makeCurrent(surface);
 }
 
 void GLContext::doneCurrent(QOpenGLContext * context)

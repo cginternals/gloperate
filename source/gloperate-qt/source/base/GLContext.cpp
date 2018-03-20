@@ -13,12 +13,12 @@ namespace gloperate_qt
 {
 
 
-GLContext::GLContext(QWindow * window, QOpenGLContext * context, bool takeOwnership)
-: m_window(window)
+GLContext::GLContext(QSurface * surface, QOpenGLContext * context, bool takeOwnership)
+: m_surface(surface)
 , m_context(context)
 , m_ownsContext(takeOwnership)
 {
-    assert(window);
+    assert(surface);
     assert(context);
 
     // Activate context
@@ -42,9 +42,9 @@ GLContext::~GLContext()
 
 void GLContext::use() const
 {
-    if (m_window && m_context)
+    if (m_surface && m_context)
     {
-        GLContext::makeCurrent(m_context, m_window);
+        GLContext::makeCurrent(m_context, m_surface);
     }
 }
 
