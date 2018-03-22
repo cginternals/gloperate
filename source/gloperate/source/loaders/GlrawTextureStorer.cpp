@@ -56,6 +56,90 @@ namespace
         { gl::GL_COMPRESSED_RGBA_S3TC_DXT5_EXT,          "dxt5-rgba"       }
     };
 
+    gl::GLenum baseFormat(gl::GLenum format)
+    {
+        // According to table 2 on https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexImage2D.xhtml
+        using namespace gl;
+        switch (format)
+        {
+            case GL_RED:
+            case GL_R8:
+            case GL_R8_SNORM:
+            case GL_R8I:
+            case GL_R8UI:
+            case GL_R16:
+            case GL_R16_SNORM:
+            case GL_R16F:
+            case GL_R16I:
+            case GL_R16UI:
+            case GL_R32F:
+            case GL_R32I:
+            case GL_R32UI:
+                return GL_RED;
+
+            case GL_RG:
+            case GL_RG8:
+            case GL_RG8_SNORM:
+            case GL_RG8I:
+            case GL_RG8UI:
+            case GL_RG16:
+            case GL_RG16_SNORM:
+            case GL_RG16F:
+            case GL_RG16I:
+            case GL_RG16UI:
+            case GL_RG32F:
+            case GL_RG32I:
+            case GL_RG32UI:
+                return GL_RG;
+
+            case GL_RGB:
+            case GL_R3_G3_B2:
+            case GL_RGB4:
+            case GL_RGB5:
+            case GL_RGB8:
+            case GL_RGB8_SNORM:
+            case GL_RGB10:
+            case GL_RGB12:
+            case GL_RGB16_SNORM:
+            case GL_SRGB8:
+            case GL_RGB16F:
+            case GL_RGB32F:
+            case GL_R11F_G11F_B10F:
+            case GL_RGB9_E5:
+            case GL_RGB8I:
+            case GL_RGB8UI:
+            case GL_RGB16I:
+            case GL_RGB16UI:
+            case GL_RGB32I:
+            case GL_RGB32UI:
+                return GL_RGB;
+
+            case GL_RGBA:
+            case GL_RGBA2: // listed as GL_RGB, but having 2 alpha bits, and "RGBA" in name
+            case GL_RGBA4: // listed as GL_RGB, but having 4 alpha bits, and "RGBA" in name
+            case GL_RGB5_A1:
+            case GL_RGBA8:
+            case GL_RGBA8_SNORM:
+            case GL_RGB10_A2:
+            case GL_RGB10_A2UI:
+            case GL_RGBA12:
+            case GL_RGBA16:
+            case GL_SRGB8_ALPHA8:
+            case GL_RGBA16F:
+            case GL_RGBA32F:
+            case GL_RGBA8I:
+            case GL_RGBA8UI:
+            case GL_RGBA16I:
+            case GL_RGBA16UI:
+            case GL_RGBA32I:
+            case GL_RGBA32UI:
+                return GL_RGBA;
+
+            default:
+                return format;
+        }
+    }
+
 } // namespace
 
 
@@ -123,7 +207,7 @@ bool GlrawTextureStorer::storeGLRawImage(const std::string & filename, const glo
     const auto height = static_cast<size_t>(texture->getLevelParameter(0, gl::GL_TEXTURE_HEIGHT));
 
     const auto compressed = static_cast<bool>(texture->getLevelParameter(0, gl::GL_TEXTURE_COMPRESSED));
-    const auto format = static_cast<gl::GLenum>(texture->getLevelParameter(0, gl::GL_TEXTURE_INTERNAL_FORMAT));
+    const auto format = baseFormat(static_cast<gl::GLenum>(texture->getLevelParameter(0, gl::GL_TEXTURE_INTERNAL_FORMAT)));
 
     auto internalType = static_cast<gl::GLenum>(texture->getLevelParameter(0, gl::GL_TEXTURE_RED_TYPE));
     if (internalType == gl::GL_UNSIGNED_NORMALIZED) internalType = gl::GL_UNSIGNED_BYTE;
@@ -192,7 +276,7 @@ bool GlrawTextureStorer::storeRawImage(const std::string & filename, const globj
     const auto height = static_cast<size_t>(texture->getLevelParameter(0, gl::GL_TEXTURE_HEIGHT));
 
     const auto compressed = static_cast<bool>(texture->getLevelParameter(0, gl::GL_TEXTURE_COMPRESSED));
-    const auto format = static_cast<gl::GLenum>(texture->getLevelParameter(0, gl::GL_TEXTURE_INTERNAL_FORMAT));
+    const auto format = baseFormat(static_cast<gl::GLenum>(texture->getLevelParameter(0, gl::GL_TEXTURE_INTERNAL_FORMAT)));
 
     std::stringstream suffixCollector;
     suffixCollector << "." << width << "." << height << ".";
