@@ -13,9 +13,11 @@ Item
     id: page
 
     signal closed()
+    signal toggled()
 
-    property var    properties: null ///< Interface for communicating with the actual properties
-    property string path:       ''   ///< Path to pipeline
+    property var    properties:   null ///< Interface for communicating with the actual properties
+    property string path:         ''   ///< Path to pipeline
+    property string toggleButton: ''   ///< Description of the toggle state button
 
     implicitWidth:  pipelineEditor.implicitWidth
     implicitHeight: pipelineEditor.implicitHeight
@@ -42,38 +44,53 @@ Item
             }
         }
 
-        Rectangle
+        Button
         {
-            x:      100
-            y:      100
-            width:  200
-            height: 200
+            text: page.toggleButton
+            visible: page.toggleButton === "" ? false : true
 
-            color:        'white'
-            border.color: 'black'
-            border.width: 1
+            anchors.top:     parent.top
+            anchors.right:   parent.right
+            anchors.margins: Ui.style.paddingMedium
 
-            TextureItem
+            onClicked:
             {
-                anchors.fill: parent
-                anchors.margins: 1
-
-                path: 'ShapeDemo.Framebuffer.colorTexture'
-            }
-
-            MouseArea
-            {
-                anchors.fill: parent
-                drag.target: parent
+                page.toggled();
             }
         }
     }
 
-    onVisibleChanged:
+    function load()
     {
-        if (visible)
+        if (pipelineEditor.loaded)
         {
-            pipelineEditor.load(path);
+            return;
+        }
+
+        pipelineEditor.load(path);
+
+        configureInternalStages();
+
+        pipelineEditor.pipeline.stageCreated.connect(configureInternalStages);
+    }
+
+    function update()
+    {
+        pipelineEditor.update();
+
+        configureInternalStages();
+    }
+
+    function configureInternalStages()
+    {
+        var internalStages = properties.getInternalStages();
+
+        for (var stageName in internalStages)
+        {
+            var stageDefinition = internalStages[stageName];
+            var stageObject = pipelineEditor.pipeline.stageItems[stageDefinition.name];
+
+            stageDefinition.configure(stageObject);
         }
     }
 }

@@ -13,10 +13,10 @@ ScrollArea
     /// Called when a render stage has been selected
     signal renderStageSelected(string name)
 
-    property var categories:      []     ///< List of categories
-    property var stages:          {}     ///< List of stages, sorted by categories ( { 'cat1': [ { name: '', description: '', ... } ], 'cat2': [], ...})
-    property var currentCategory: 'Demo' ///< The currently selected category
-    property var currentStage:    ''     ///< The currently selected stage
+    property var categories:      []      ///< List of categories
+    property var stages:          {}      ///< List of stages, sorted by categories ( { 'cat1': [ { name: '', description: '', ... } ], 'cat2': [], ...})
+    property var currentCategory: 'Demos' ///< The currently selected category
+    property var currentStage:    ''      ///< The currently selected stage
 
     contentWidth:  layout.width
     contentHeight: layout.height
@@ -66,7 +66,7 @@ ScrollArea
 
                 Repeater
                 {
-                    model: item.stages[item.currentCategory].length
+                    model: item.stages === undefined ? 0 : item.stages[item.currentCategory].length
 
                     ClickLabel
                     {

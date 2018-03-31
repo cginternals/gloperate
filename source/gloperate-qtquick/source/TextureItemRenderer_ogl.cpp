@@ -7,6 +7,8 @@
 
 #include <globjects/base/AbstractStringSource.h>
 #include <globjects/Framebuffer.h>
+#include <globjects/FramebufferAttachment.h>
+#include <globjects/AttachedTexture.h>
 #include <globjects/Texture.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
@@ -15,6 +17,7 @@
 #include <gloperate/base/Canvas.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/rendering/ScreenAlignedQuad.h>
+#include <gloperate/rendering/ColorRenderTarget.h>
 
 #include <gloperate-qtquick/TextureItem.h>
 
@@ -62,13 +65,31 @@ void TextureItemRenderer::renderTexture()
     Canvas * canvas = m_environment->canvases().front();
     Stage * stage = canvas->renderStage();
     if (!stage) return;
-    AbstractSlot * slot = stage->getSlot(m_path.toStdString());
+
+    std::string slotPath = m_path.toStdString();
+
+    // Replace root in slot path with render stage name
+    if (string::hasPrefix(slotPath, "root")) {
+        slotPath.replace(0, 4, stage->name());
+    }
+
+    AbstractSlot * slot = stage->getSlot(slotPath);
     if (!slot) return;
 
     // Check if it is a texture slot
     if (slot && slot->type() == typeid(globjects::Texture *))
     {
         texture = static_cast< Slot<globjects::Texture *> * >(slot)->value();
+    }
+
+    // Check if it is a texture slot
+    if (slot && slot->type() == typeid(gloperate::ColorRenderTarget *))
+    {
+        gloperate::ColorRenderTarget * renderTarget = static_cast< Slot<gloperate::ColorRenderTarget *> * >(slot)->value();
+        if (renderTarget->currentTargetType() == RenderTargetType::UserDefinedFBOAttachment)
+        {
+            texture = renderTarget->framebufferAttachment()->asTextureAttachment()->texture();
+        }
     }
 
     // Abort if texture is invalid

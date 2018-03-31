@@ -655,6 +655,11 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
                 (*connection.asMap())["from"] = from;
                 (*connection.asMap())["to"]   = to;
 
+                if (slot->isFeedback())
+                {
+                    (*connection.asMap())["feedback"] = true;
+                }
+
                 // Add connection
                 obj.asArray()->push_back(connection);
             }
@@ -856,6 +861,7 @@ cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::st
             (*status.asMap())["name"]  = slot->name();
             (*status.asMap())["type"]  = slot->typeName();
             (*status.asMap())["value"] = slot->toVariant();
+            (*status.asMap())["required"] = slot->isRequired();
 
             // Include options
             const VariantMap & options = slot->options();

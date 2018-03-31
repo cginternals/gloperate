@@ -1,6 +1,7 @@
 
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QmlToolbox.Base           1.0
 import QmlToolbox.Controls       1.0
@@ -163,8 +164,7 @@ ApplicationWindow
 
                         onTriggered:
                         {
-                            pipelineView.visible = true;
-                            mainView.visible     = false;
+                            showEditor();
                         }
                     }
                 }
@@ -247,6 +247,8 @@ ApplicationWindow
             settings.stage = name;
             window.stage   = name;
             propertyEditor.update();
+            internalPipelineView.update();
+            externalPipelineView.update();
         }
     }
 
@@ -322,20 +324,90 @@ ApplicationWindow
         // Pipeline view
         PipelineView
         {
-            id: pipelineView
+            id: internalPipelineView
 
             anchors.fill: parent
             visible:      false
 
-            properties: gloperatePipeline
-            path:       'root'
+            properties:   gloperatePipeline
+            path:         'root'
+            toggleButton: 'Open in new window'
 
             onClosed:
             {
-                mainView.visible     = true;
-                pipelineView.visible = false;
+                hideEditor();
+            }
+
+            onToggled:
+            {
+                toggleEditor();
             }
         }
+    }
+
+    // Pipeline view in separate window
+    Window
+    {
+        id: popoutWindow
+
+        title: 'Pipeline Editor'
+
+        minimumWidth:  750
+        minimumHeight: 550
+
+        PipelineView
+        {
+            id: externalPipelineView
+
+            anchors.fill: parent
+
+            properties:   gloperatePipeline
+            path:         'root'
+            toggleButton: 'Show inside main window'
+
+            onClosed:
+            {
+                hideEditor();
+            }
+
+            onToggled:
+            {
+                toggleEditor();
+            }
+        }
+    }
+
+    // Toggles between internal and external pipeline editor
+    function toggleEditor()
+    {
+        hideEditor();
+        settings.editor = (settings.editor === "internal" ? "external" : "internal");
+        showEditor();
+    }
+
+    // Shows the pipeline editor
+    function showEditor()
+    {
+        if (settings.editor === "internal")
+        {
+            internalPipelineView.visible = true;
+            mainView.visible             = false;
+            internalPipelineView.load();
+        } else {
+            popoutWindow.showMaximized();
+            popoutWindow.raise();
+            externalPipelineView.load();
+        }
+    }
+
+    // Hides the pipeline editor
+    function hideEditor()
+    {
+        // hide internal editor
+        mainView.visible             = true;
+        internalPipelineView.visible = false;
+        // hide external editor
+        popoutWindow.hide();
     }
 
     // Bottom Panel
@@ -383,14 +455,19 @@ ApplicationWindow
     {
         id: gloperatePipeline
 
+        editor: settings.editor
+
         onCanvasChanged:
         {
             propertyEditor.update();
 
-            canvas.onStageInputChanged(function(slot, status)
+            if (canvas)
             {
-                gloperatePipeline.slotChanged('root', slot, status);
-            });
+                canvas.onStageInputChanged(function(slot, status)
+                {
+                    gloperatePipeline.slotChanged('root', slot, status);
+                });
+            }
         }
     }
 
@@ -405,6 +482,7 @@ ApplicationWindow
         property int    logLevel:      3
         property bool   debugMode:     false
         property string panelPosition: 'left'
+        property string editor:        'internal'
         property string stage:         ''
         property string pluginPaths:   ''
 
@@ -424,6 +502,11 @@ ApplicationWindow
             gloperate.components.setPluginPaths(settings.pluginPaths);
             gloperate.components.scanPlugins();
         }
+
+        onEditorChanged:
+        {
+            gloperatePipeline.editor = settings.editor;
+        }
     }
 
     Component.onCompleted:
@@ -439,6 +522,10 @@ ApplicationWindow
 
         // Scan for plugins
         gloperate.components.scanPlugins();
+
+        // Initialize internal stages and add one preview stage
+        gloperatePipeline.clearInternalStages();
+        gloperatePipeline.createInternalStage("root", "PreviewStage", "PreviewStage");
 
         // Set render stage
         window.stage = settings.stage;
