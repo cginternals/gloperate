@@ -23,7 +23,7 @@ namespace gloperate
 *    Stage for blitting from one framebuffer to another
 */
 template <typename T>
-class GLOPERATE_API VectorSelectionStage : public Stage
+class VectorSelectionStage : public Stage
 {
 public:
     // Inputs
