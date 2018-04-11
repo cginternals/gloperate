@@ -42,6 +42,9 @@ int main(int argc, char * argv[])
 
     // Specify desired context format
     gloperate::GLContextFormat format;
+    format.setVersion(3, 2);
+    format.setProfile(gloperate::GLContextFormat::Profile::Core);
+    format.setForwardCompatible(true);
 
     if (!contextString.empty())
     {
@@ -53,7 +56,7 @@ int main(int argc, char * argv[])
 
     window.setContextFormat(format);
 
-    window.canvas()->loadRenderStage("DemoPipeline");
+    window.canvas()->loadRenderStage("ShapeDemo");
     window.setTitle("gloperate viewer");
     window.setSize(1280, 720);
     if (!window.create())

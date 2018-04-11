@@ -299,10 +299,10 @@ gloperate::KeyModifier Converter::fromQtModifiers(int mod)
 {
     gloperate::KeyModifier modifier = gloperate::ModNone;
 
-    modifier = modifier | (Qt::ShiftModifier & mod)   ? gloperate::ModShift   : gloperate::ModNone;
-    modifier = modifier | (Qt::ControlModifier & mod) ? gloperate::ModControl : gloperate::ModNone;
-    modifier = modifier | (Qt::AltModifier & mod)     ? gloperate::ModAlt     : gloperate::ModNone;
-    modifier = modifier | (Qt::MetaModifier & mod)    ? gloperate::ModSuper   : gloperate::ModNone;
+    modifier = modifier | ((Qt::ShiftModifier & mod)   ? gloperate::ModShift   : gloperate::ModNone);
+    modifier = modifier | ((Qt::ControlModifier & mod) ? gloperate::ModControl : gloperate::ModNone);
+    modifier = modifier | ((Qt::AltModifier & mod)     ? gloperate::ModAlt     : gloperate::ModNone);
+    modifier = modifier | ((Qt::MetaModifier & mod)    ? gloperate::ModSuper   : gloperate::ModNone);
 
     return modifier;
 }

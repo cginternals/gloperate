@@ -1,6 +1,10 @@
 
 #include <gloperate/stages/base/ColorGradientTextureStage.h>
 
+#include <globjects/Texture.h>
+
+#include <gloperate/rendering/ColorGradientList.h>
+
 
 namespace gloperate
 {
@@ -13,7 +17,7 @@ ColorGradientTextureStage::ColorGradientTextureStage(gloperate::Environment * en
 : Stage(environment, "ColorGradientTextureStage", name)
 , gradients("gradients", this)
 , textureWidth("textureWidth", this, 128)
-, gradientTexture("gradientTexture", this)
+, texture("texture", this)
 {
 }
 
@@ -33,11 +37,20 @@ void ColorGradientTextureStage::onContextDeinit(AbstractGLContext *)
 
 void ColorGradientTextureStage::onProcess()
 {
-    // Generate texture
-    m_gradientTexture = gradients->generateTexture(*textureWidth);
+    std::vector<ColorGradientList *> gradientLists;
+
+    for (auto input : inputs())
+    {
+        if (input->type() == typeid(ColorGradientList *))
+        {
+            gradientLists.push_back(static_cast<Input<ColorGradientList *> *>(input)->value());
+        }
+    }
+
+    m_gradientTexture = ColorGradientList::generateTexture(gradientLists, *textureWidth);
 
     // Update output
-    this->gradientTexture.setValue(m_gradientTexture.get());
+    this->texture.setValue(m_gradientTexture.get());
 }
 
 

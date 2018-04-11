@@ -5,6 +5,7 @@
 #include <QJSValue>
 #include <QString>
 
+#include <cppexpose/signal/Connection.h>
 #include <cppexpose/variant/Variant.h>
 
 #include <qmltoolbox/QmlApplicationEngine.h>
@@ -14,6 +15,11 @@
 
 class QVariant;
 
+namespace cppexpose
+{
+    class Object;
+}
+
 namespace gloperate
 {
     class Environment;
@@ -22,6 +28,9 @@ namespace gloperate
 
 namespace gloperate_qtquick
 {
+
+
+class QmlObjectWrapper;
 
 
 /**
@@ -36,8 +45,6 @@ namespace gloperate_qtquick
 class GLOPERATE_QTQUICK_API QmlEngine : public qmltoolbox::QmlApplicationEngine
 {
     Q_OBJECT
-    Q_PROPERTY(QJSValue global    READ global    WRITE setGlobal)
-    Q_PROPERTY(QJSValue gloperate READ gloperate WRITE setGloperate)
 
 
 public:
@@ -73,6 +80,24 @@ public:
     *    Gloperate environment (cannot be null)
     */
     gloperate::Environment * environment();
+
+    /**
+    *  @brief
+    *    Add a global object that is exposed into the scripting environment
+    *
+    *  @param[in] obj
+    *    Global object (must NOT be null)
+    */
+    void addGlobalObject(cppexpose::Object * obj);
+
+    /**
+    *  @brief
+    *    Remove a global object that is exposed into the scripting environment
+    *
+    *  @param[in] obj
+    *    Global object (must NOT be null)
+    */
+    void removeGlobalObject(cppexpose::Object * obj);
 
     /**
     *  @brief
@@ -124,60 +149,6 @@ public:
 
     /**
     *  @brief
-    *    Get object 'global'
-    *
-    *  @return
-    *    Object
-    */
-    const QJSValue & global() const;
-
-    /**
-    *  @brief
-    *    Get object 'global'
-    *
-    *  @return
-    *    Object
-    */
-    QJSValue & global();
-
-    /**
-    *  @brief
-    *    Set object 'global'
-    *
-    *  @param[in] obj
-    *    Object
-    */
-    void setGlobal(const QJSValue & obj);
-
-    /**
-    *  @brief
-    *    Get object 'gloperate'
-    *
-    *  @return
-    *    Object
-    */
-    const QJSValue & gloperate() const;
-
-    /**
-    *  @brief
-    *    Get object 'gloperate'
-    *
-    *  @return
-    *    Object
-    */
-    QJSValue & gloperate();
-
-    /**
-    *  @brief
-    *    Set object 'gloperate'
-    *
-    *  @param[in] obj
-    *    Object
-    */
-    void setGloperate(const QJSValue & obj);
-
-    /**
-    *  @brief
     *    Get path to gloperate qml module
     *
     *  @return
@@ -185,12 +156,28 @@ public:
     */
     const QString & gloperateModulePath() const;
 
+    /**
+    *  @brief
+    *    Get existing wrapper for object or create a new one
+    *
+    *  @param[in] object
+    *    Object to be wrapped (must NOT be null)
+    *
+    *  @return
+    *    Object wrapper (never null)
+    *
+    *  @remarks
+    *    The returned object wrapper is owned by the backend
+    *    and will be deleted if either the backend or the
+    *    wrapped object is destroyed
+    */
+    QmlObjectWrapper * getOrCreateObjectWrapper(cppexpose::Object * object);
+
 
 protected:
-    gloperate::Environment * m_environment;      ///< Gloperate environment (must NOT be null)
-    QJSValue                 m_global;           ///< Object 'global', can be used to store global values
-    QJSValue                 m_gloperate;        ///< Object 'gloperate', contains exposed API functions from gloperate
-    QString                  m_gloperateQmlPath; ///< Path to gloperate qml module
+    gloperate::Environment                                                            * m_environment;      ///< Gloperate environment (must NOT be null)
+    QString                                                                             m_gloperateQmlPath; ///< Path to gloperate qml module
+    std::map<cppexpose::Object *, std::pair<QmlObjectWrapper *, cppexpose::Connection>> m_objectWrappers;   ///< Global objects
 };
 
 

@@ -48,6 +48,9 @@ int main(int argc, char * argv[])
 
     // Specify desired context format
     gloperate::GLContextFormat format;
+    format.setVersion(3, 2);
+    format.setProfile(gloperate::GLContextFormat::Profile::Core);
+    format.setForwardCompatible(true);
 
     if (!contextString.empty())
     {
@@ -61,7 +64,7 @@ int main(int argc, char * argv[])
 
     auto windowRaw = window.get();
     window->createContext();
-    window->canvas()->loadRenderStage("DemoPipeline");
+    window->canvas()->loadRenderStage("ShapeDemo");
 
     // Create main window
     QMainWindow mainWindow;

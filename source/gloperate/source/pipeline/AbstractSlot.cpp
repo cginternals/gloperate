@@ -19,6 +19,15 @@ AbstractSlot::AbstractSlot()
 {
 }
 
+AbstractSlot::AbstractSlot(const cppexpose::Variant & options)
+: AbstractProperty(options)
+, m_slotType(SlotType::Unknown)
+, m_dynamic(false)
+, m_required(false)
+, m_feedback(false)
+{
+}
+
 AbstractSlot::~AbstractSlot()
 {
     // Get parent stage
@@ -60,14 +69,16 @@ bool AbstractSlot::isRequired() const
 
 void AbstractSlot::setRequired(bool required)
 {
-    if (m_required != required)
+    if (m_required == required)
     {
-        m_required = required;
-
-        cppassist::debug(3, "gloperate") << this->qualifiedName() << ": required changed to " << required;
-
-        onRequiredChanged();
+        return;
     }
+
+    m_required = required;
+
+    cppassist::debug(3, "gloperate") << this->qualifiedName() << ": required changed to " << required;
+
+    onRequiredChanged();
 }
 
 bool AbstractSlot::isFeedback() const

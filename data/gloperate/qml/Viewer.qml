@@ -360,9 +360,9 @@ ApplicationWindow
                 scriptConsole.output("> " + command + "\n");
                 var res = executeScript(command);
 
-                if (res != undefined)
+                if (res !== undefined)
                 {
-                    console.log(res);
+                    console.log(scriptConsole.prettyPrint(res));
                 }
             }
         }
@@ -418,10 +418,12 @@ ApplicationWindow
         {
             Ui.debugMode = debugMode;
         }
-        
-        onContinuousRedrawChanged:
+
+        onPluginPathsChanged:
         {
-            gloperate.system.setContinuousRedraw(continuousRedraw);
+            // Scan for plugins
+            gloperate.components.setPluginPaths(settings.pluginPaths);
+            gloperate.components.scanPlugins();
         }
     }
 
@@ -437,7 +439,6 @@ ApplicationWindow
         }
 
         // Scan for plugins
-        gloperate.components.setPluginPaths(settings.pluginPaths);
         gloperate.components.scanPlugins();
 
         // Set render stage

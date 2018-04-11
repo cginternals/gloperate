@@ -63,6 +63,13 @@ void DiscDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);
 }
 
+
+void DiscDistributionKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    m_texture.reset();
+}
+
+
 void DiscDistributionKernelStage::onProcess()
 {
     bool regenKernel = *regenerate;

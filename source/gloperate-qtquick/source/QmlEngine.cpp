@@ -1,28 +1,38 @@
 
 #include <gloperate-qtquick/QmlEngine.h>
 
+#include <cstring>
+
 #include <QVariant>
 #include <QQmlContext>
 #include <QJSValueIterator>
+#include <QBuffer>
+#include <QImage>
 
 #include <cppexpose/reflection/Property.h>
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/function/Function.h>
 
 #include <cppassist/fs/FilePath.h>
+#include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
 #include <gloperate/base/Environment.h>
+#include <gloperate/rendering/Image.h>
 
 #include <gloperate-qtquick/RenderItem.h>
 #include <gloperate-qtquick/TextureItem.h>
 #include <gloperate-qtquick/VideoProfile.h>
 #include <gloperate-qtquick/TextController.h>
 #include <gloperate-qtquick/QmlScriptFunction.h>
+#include <gloperate-qtquick/QmlObjectWrapper.h>
 
-    
+
 namespace gloperate_qtquick
 {
+
+
+const char * s_qmlObjectPointerKey   = "_obj";
 
 
 QmlEngine::QmlEngine(gloperate::Environment * environment)
@@ -43,14 +53,17 @@ QmlEngine::QmlEngine(gloperate::Environment * environment)
 
     // Register global functions and properties
     rootContext()->setContextObject(this);
-
-    // Create global objects
-    m_global    = newObject();
-    m_gloperate = newObject();
 }
 
 QmlEngine::~QmlEngine()
 {
+    // Disconnect from Object::beforeDestroy signals
+    for (auto & objectWrapper : m_objectWrappers)
+    {
+        objectWrapper.second.second.disconnect();
+    }
+
+    // m_objectWrappers are deleted through the Qt object hierarchy
 }
 
 const gloperate::Environment * QmlEngine::environment() const
@@ -61,6 +74,21 @@ const gloperate::Environment * QmlEngine::environment() const
 gloperate::Environment * QmlEngine::environment()
 {
     return m_environment;
+}
+
+void QmlEngine::addGlobalObject(cppexpose::Object * obj)
+{
+    // Create object wrapper
+    const auto wrapper = getOrCreateObjectWrapper(obj);
+
+    // Add global object
+    rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant::fromValue(wrapper->wrapObject()));
+}
+
+void QmlEngine::removeGlobalObject(cppexpose::Object * obj)
+{
+    // Remove global object by setting it to null
+    rootContext()->setContextProperty(QString::fromStdString(obj->name()), QVariant{});
 }
 
 QString QmlEngine::executeScript(const QString & code)
@@ -116,16 +144,39 @@ cppexpose::Variant QmlEngine::fromScriptValue(const QJSValue & value)
         return array;
     }
 
-    else if (value.isObject()) {
-        cppexpose::VariantMap obj;
-
-        QJSValueIterator it(value);
-        while (it.next())
+    else if (value.isObject())
+    {
+        // If a property s_qmlObjectPointerKey exists, the object is a cppexpose::Object.
+        // In this case, extract the pointer and return that.
+        // Otherwise, build a key-value map of the object's properties.
+        if (value.hasOwnProperty(s_qmlObjectPointerKey))
         {
-            obj[it.name().toStdString()] = fromScriptValue(it.value());
+            const auto objectPointer = value.property(s_qmlObjectPointerKey);
+            assert(objectPointer.isQObject());
+
+            const auto objWrapper = static_cast<QmlObjectWrapper *>(objectPointer.toQObject());
+
+            return cppexpose::Variant::fromValue(objWrapper->object());
         }
 
-        return obj;
+        else
+        {
+            cppexpose::VariantMap obj;
+
+            QJSValueIterator it(value);
+            while (it.next())
+            {
+                if (it.name() == s_qmlObjectPointerKey)
+                {
+                }
+                else
+                {
+                    obj[it.name().toStdString()] = fromScriptValue(it.value());
+                }
+            }
+
+            return obj;
+        }
     }
 
     else {
@@ -219,6 +270,20 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         return QJSValue(var.toString().c_str());
     }
 
+    else if (var.hasType<gloperate::Image>()) {
+        const gloperate::Image * image = var.ptr<gloperate::Image>();
+
+        QImage conversion((unsigned char *) image->data(), image->width(), image->height(), QImage::Format_RGB32);
+
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        buffer.open(QIODevice::WriteOnly);
+        conversion.save(&buffer, "PNG", 0);
+        QString imgBase64 = QString::fromLatin1(byteArray.toBase64().data());
+
+        return toScriptValue("data:image/png;base64," + imgBase64.toStdString());
+    }
+
     else if (var.hasType<cppexpose::VariantArray>()) {
         QJSValue array = newArray();
 
@@ -240,6 +305,12 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         }
 
         return obj;
+    }
+
+    else if (var.hasType<cppexpose::Object *>()) {
+        const auto object = var.value<cppexpose::Object *>();
+
+        return getOrCreateObjectWrapper(object)->wrapObject();
     }
 
     else {
@@ -280,7 +351,7 @@ cppexpose::Variant QmlEngine::fromQVariant(const QVariant & value)
         QStringList list = value.toStringList();
         for (QStringList::iterator it = list.begin(); it != list.end(); ++it)
         {
-            array.push_back( cppexpose::Variant((*it).toStdString()) );
+            array.push_back(cppexpose::Variant((*it).toStdString()) );
         }
 
         return array;
@@ -318,44 +389,46 @@ cppexpose::Variant QmlEngine::fromQVariant(const QVariant & value)
         return cppexpose::Variant(value.toString().toStdString());
     }
 
+    else if (value.canConvert<QJSValue>())
+    {
+        return fromScriptValue(value.value<QJSValue>());
+    }
+
     else {
         return cppexpose::Variant();
     }
 }
 
-const QJSValue & QmlEngine::global() const
-{
-    return m_global;
-}
-
-QJSValue & QmlEngine::global()
-{
-    return m_global;
-}
-
-void QmlEngine::setGlobal(const QJSValue & obj)
-{
-    m_global = obj;
-}
-
-const QJSValue & QmlEngine::gloperate() const
-{
-    return m_gloperate;
-}
-
-QJSValue & QmlEngine::gloperate()
-{
-    return m_gloperate;
-}
-
-void QmlEngine::setGloperate(const QJSValue & obj)
-{
-    m_gloperate = obj;
-}
-
 const QString & QmlEngine::gloperateModulePath() const
 {
     return m_gloperateQmlPath;
+}
+
+
+QmlObjectWrapper * QmlEngine::getOrCreateObjectWrapper(cppexpose::Object * object)
+{
+    // Check if wrapper exists
+    const auto itr = m_objectWrappers.find(object);
+    if (itr != m_objectWrappers.end())
+    {
+        return itr->second.first;
+    }
+
+    // Wrap object
+    const auto wrapper = new QmlObjectWrapper(this, object);
+
+    // Delete wrapper when object is destroyed
+    // The connection will be deleted when this backend is destroyed
+    const auto beforeDestroy = object->beforeDestroy.connect([this, object](cppexpose::AbstractProperty *)
+    {
+        delete m_objectWrappers[object].first;
+        m_objectWrappers.erase(object);
+    });
+
+    // Save wrapper for later
+    m_objectWrappers[object] = {wrapper, beforeDestroy};
+
+    return wrapper;
 }
 
 

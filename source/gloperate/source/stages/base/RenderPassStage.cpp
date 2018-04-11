@@ -27,6 +27,7 @@ RenderPassStage::RenderPassStage(Environment * environment, const std::string & 
 , drawable("drawable", this)
 , program("program", this)
 , camera("camera", this)
+, modelMatrix("modelMatrix", this, glm::mat4(1.0))
 , depthTest("depthTest", this, true)
 , depthMask("depthMask", this, true)
 , depthFunc("depthFunc", this, gl::GL_LEQUAL)
@@ -69,16 +70,32 @@ void RenderPassStage::onProcess()
     m_renderPass->setGeometry((*drawable));
     m_renderPass->setProgram((*program));
 
-    // Update camera uniforms
-    if (camera.isValid() && *this->camera)
-    {
-        gloperate::Camera * camera = *this->camera;
+    // Check if a camera or a model matrix is set
+    Camera * camera = (this->camera.isValid() && *this->camera) ? *this->camera : nullptr;
+    bool hasModelMatrix = (this->modelMatrix.isValid());
 
-        (*program)->setUniform<glm::vec3>("eye",                  camera->eye());
-        (*program)->setUniform<glm::mat4>("viewProjectionMatrix", camera->viewProjectionMatrix());
-        (*program)->setUniform<glm::mat4>("viewMatrix",           camera->viewMatrix());
-        (*program)->setUniform<glm::mat4>("projectionMatrix",     camera->projectionMatrix());
-        (*program)->setUniform<glm::mat3>("normalMatrixMatrix",   camera->normalMatrix());
+    // Update transformation uniforms
+    if (camera || hasModelMatrix)
+    {
+        // [TODO] Cache these and only recompute them when they have changed
+
+        glm::vec3 eye                       = camera ? camera->eye()              : glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::mat4 viewMatrix                = camera ? camera->viewMatrix()       : glm::mat4(1.0f);
+        glm::mat4 projectionMatrix          = camera ? camera->projectionMatrix() : glm::mat4(1.0f);
+        glm::mat3 normalMatrix              = camera ? camera->normalMatrix()     : glm::mat3(1.0f);
+        glm::mat4 modelMatrix               = hasModelMatrix ? *this->modelMatrix : glm::mat4(1.0f);
+        glm::mat4 viewProjectionMatrix      = projectionMatrix * viewMatrix;
+        glm::mat4 modelViewMatrix           = viewMatrix * modelMatrix;
+        glm::mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+
+        (*program)->setUniform<glm::vec3>("eye",                       eye);
+        (*program)->setUniform<glm::mat4>("viewProjectionMatrix",      viewProjectionMatrix);
+        (*program)->setUniform<glm::mat4>("viewMatrix",                viewMatrix);
+        (*program)->setUniform<glm::mat4>("projectionMatrix",          projectionMatrix);
+        (*program)->setUniform<glm::mat3>("normalMatrix",              normalMatrix);
+        (*program)->setUniform<glm::mat4>("modelMatrix",               modelMatrix);
+        (*program)->setUniform<glm::mat4>("modelViewMatrix",           modelViewMatrix);
+        (*program)->setUniform<glm::mat4>("modelViewProjectionMatrix", modelViewProjectionMatrix);
     }
 
     // Update OpenGL states
@@ -108,14 +125,17 @@ void RenderPassStage::onProcess()
         // Texture
         if (input->type() == typeid(globjects::Texture *))
         {
-            // Get texture input
-            auto textureInput = static_cast<Input<globjects::Texture *> *>(input);
+            // Get texture
+            globjects::Texture * texture = static_cast<Input<globjects::Texture *> *>(input)->value();
+
+            if (!texture)
+                continue;
 
             // Attach texture
             (*program)->setUniform<int>(input->name(), textureIndex);
-            m_renderPass->setTexture(textureIndex, **textureInput);
+            m_renderPass->setTexture(textureIndex, texture);
 
-            if ((**textureInput)->target() == gl::GL_TEXTURE_CUBE_MAP)
+            if (texture->target() == gl::GL_TEXTURE_CUBE_MAP)
             {
                 m_renderPass->stateBefore()->enable(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
             }
@@ -126,22 +146,25 @@ void RenderPassStage::onProcess()
         // Shader storage buffer
         else if (input->type() == typeid(globjects::Buffer *))
         {
-            // Get buffer input
-            auto bufferInput = static_cast<Input<globjects::Buffer *> *>(input);
+            // Get buffer
+            globjects::Buffer * buffer = static_cast<Input<globjects::Buffer *> *>(input)->value();
+
+            if (!buffer)
+                continue;
 
             // Attach shader storage buffer
-            m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, **bufferInput);
+            m_renderPass->setShaderStorageBuffer(shaderStorageBufferIndex, buffer);
             ++shaderStorageBufferIndex;
         }
 
         // Color
         else if (input->type() == typeid(Color))
         {
-            // Get color input
-            auto colorInput = static_cast<Input<Color> *>(input);
+            // Get color
+            const Color & color = **(static_cast<Input<Color> *>(input));
 
             // Set color uniform
-            (*program)->setUniform<glm::vec4>(input->name(), (*colorInput)->toVec4());
+            (*program)->setUniform<glm::vec4>(input->name(), color.toVec4());
         }
 
         // Basic uniform

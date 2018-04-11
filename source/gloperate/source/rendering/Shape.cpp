@@ -26,5 +26,14 @@ cppassist::Flags<ShapeOption> Shape::options() const
     return m_options;
 }
 
+void Shape::draw() const
+{
+}
+
+Shape::Shape(cppassist::Flags<ShapeOption> options)
+: Shape(ShapeType::None, options)
+{
+}
+
 
 } // namespace gloperate

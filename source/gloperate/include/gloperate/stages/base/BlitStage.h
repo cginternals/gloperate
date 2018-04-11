@@ -9,9 +9,13 @@
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/gloperate-version.h>
+
+#include <gloperate/base/ExtendedProperties.h>
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/pipeline/Input.h>
 #include <gloperate/pipeline/Output.h>
+
+#include <gloperate/rendering/ColorRenderTarget.h>
 
 
 namespace gloperate
@@ -38,14 +42,15 @@ public:
 
 public:
     // Inputs
-    Input<globjects::Framebuffer *>  sourceFBO;      ///< FBO containing the source attachments
-    Input<glm::vec4>                 sourceViewport; ///< Viewport for reading from source FBO
-    Input<globjects::Framebuffer *>  targetFBO;      ///< FBO with destination attachments
-    Input<glm::vec4>                 targetViewport; ///< Viewport for writing into destination FBO
+    Input<gloperate::ColorRenderTarget *> source;         ///< Source render target
+    Input<glm::vec4>                      sourceViewport; ///< Source Viewport for reading from source
+    Input<gloperate::ColorRenderTarget *> target;         ///< Target render target
+    Input<glm::vec4>                      targetViewport; ///< Target viewport for writing into target
+    Input<gl::GLenum>                     minFilter;      ///< Interpolation mode used when target size is lower than source size (default: linear interpolation)
+    Input<gl::GLenum>                     magFilter;      ///< Interpolation mode used when target size is greater than source size (default: nearest filtering)
 
     // Outputs
-    Output<globjects::Framebuffer *> fboOut;         ///< Pass through framebuffer
-    Output<bool>                     rendered;       ///< 'true' if output has been rendered
+    Output<gloperate::ColorRenderTarget *> targetOut;     ///< Pass-through target render target
 
 
 public:
@@ -60,10 +65,27 @@ public:
     */
     BlitStage(Environment * environment, const std::string & name = "BlitStage");
 
+    /**
+    *  @brief
+    *    Virtual destructor
+    */
+    virtual ~BlitStage();
+
 
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
+    virtual void onContextInit(AbstractGLContext * context) override;
+    virtual void onContextDeinit(AbstractGLContext * context) override;
+
+
+protected:
+    std::unique_ptr<globjects::Framebuffer>       m_defaultFBO;         ///< Intermediate default FBO
+    std::unique_ptr<globjects::Framebuffer>       m_sourceFBO;          ///< Intermediate source FBO
+    std::unique_ptr<globjects::Framebuffer>       m_targetFBO;          ///< Intermediate target FBO
+    std::unique_ptr<globjects::Framebuffer>       m_intermediateFBO;    ///< Intermediate FBO for same-target blitting
+    std::unique_ptr<gloperate::ColorRenderTarget> m_intermediateTarget; ///< Intermediate render target for same-target blitting
+    std::unique_ptr<globjects::Renderbuffer>      m_intermediateBuffer; ///< Intermediate render buffer for same-target blitting
 };
 
 

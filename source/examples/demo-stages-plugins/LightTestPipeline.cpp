@@ -1,11 +1,14 @@
 
 #include "LightTestPipeline.h"
 
+#include <glbinding/gl/enum.h>
+
+#include <gloperate/stages/base/TimerStage.h>
+#include <gloperate/stages/base/TextureRenderTargetStage.h>
 #include <gloperate/stages/lights/LightCreationStage.h>
 #include <gloperate/stages/lights/LightBufferTextureStage.h>
 
 #include "LightTestStage.h"
-#include "TimerStage.h"
 
 
 CPPEXPOSE_COMPONENT(LightTestPipeline, gloperate::Stage)
@@ -13,7 +16,7 @@ CPPEXPOSE_COMPONENT(LightTestPipeline, gloperate::Stage)
 
 LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, "LightTestPipeline", name)
-, renderInterface(this)
+, canvasInterface(this)
 , glossiness("glossiness", this)
 , lightType1("lightType1", this)
 , lightType2("lightType2", this)
@@ -31,7 +34,8 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
 , m_lightDefStage2(cppassist::make_unique<gloperate::LightCreationStage>(environment))
 , m_lightDefStage3(cppassist::make_unique<gloperate::LightCreationStage>(environment))
 , m_lightAccumulationStage(cppassist::make_unique<gloperate::LightBufferTextureStage>(environment))
-, m_timerStage(cppassist::make_unique<TimerStage>(environment))
+, m_timerStage(cppassist::make_unique<gloperate::TimerStage>(environment))
+, m_depthBufferStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment))
 , m_renderStage(cppassist::make_unique<LightTestStage>(environment))
 {
     glossiness.setOptions({
@@ -76,22 +80,28 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     *(m_lightAccumulationStage->createLightInput()) << m_lightDefStage3->light;
 
     addStage(m_timerStage.get());
-    m_timerStage->timeDelta << renderInterface.timeDelta;
+    m_timerStage->timeDelta << canvasInterface.timeDelta;
+
+    addStage(m_depthBufferStage.get());
+    m_depthBufferStage->size << canvasInterface.viewport;
+    m_depthBufferStage->type = gl::GL_UNSIGNED_BYTE;
+    m_depthBufferStage->format = gl::GL_DEPTH_COMPONENT;
+    m_depthBufferStage->internalFormat = gl::GL_DEPTH_COMPONENT;
 
     addStage(m_renderStage.get());
-    m_renderStage->renderInterface.deviceViewport << renderInterface.deviceViewport;
-    m_renderStage->renderInterface.virtualViewport << renderInterface.virtualViewport;
-    //m_renderStage->renderInterface.backgroundColor << renderInterface.backgroundColor;
-    m_renderStage->renderInterface.frameCounter << renderInterface.frameCounter;
-    m_renderStage->renderInterface.timeDelta << renderInterface.timeDelta;
-    m_renderStage->renderInterface.targetFBO << renderInterface.targetFBO;
+    m_renderStage->canvasInterface.viewport << canvasInterface.viewport;
+    m_renderStage->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
+    m_renderStage->canvasInterface.frameCounter << canvasInterface.frameCounter;
+    m_renderStage->canvasInterface.timeDelta << canvasInterface.timeDelta;
+    m_renderStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    m_renderStage->createInput("Depth") << m_depthBufferStage->depthRenderTarget;
     m_renderStage->lightColorTypeData << m_lightAccumulationStage->colorTypeData;
     m_renderStage->lightPositionData << m_lightAccumulationStage->positionData;
     m_renderStage->lightAttenuationData << m_lightAccumulationStage->attenuationData;
     m_renderStage->glossiness << glossiness;
     m_renderStage->totalTime << m_timerStage->virtualTime;
 
-    renderInterface.rendered << m_renderStage->renderInterface.rendered;
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_renderStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 }
 
 LightTestPipeline::~LightTestPipeline()

@@ -17,12 +17,9 @@ CPPEXPOSE_COMPONENT(RasterizationStage, gloperate::Stage)
 
 RasterizationStage::RasterizationStage(Environment * environment, const std::string & name)
 : Stage(environment, "RasterizationStage", name)
-, renderInterface(this)
-, rasterize      ("rasterize",       this, true)
-, drawable       ("drawable",        this)
-, colorTexture   ("colorTexture",    this)
-, fboOut         ("fboOut",          this)
-, colorTextureOut("colorTextureOut", this)
+, renderInterface(             this)
+, rasterize      ("rasterize", this, true)
+, drawable       ("drawable",  this)
 {
 }
 
@@ -30,31 +27,49 @@ RasterizationStage::~RasterizationStage()
 {
 }
 
+void RasterizationStage::onContextInit(AbstractGLContext *)
+{
+    renderInterface.onContextInit();
+}
+
+void RasterizationStage::onContextDeinit(AbstractGLContext *)
+{
+    renderInterface.onContextDeinit();
+}
+
 void RasterizationStage::onProcess()
 {
-    // Check if rasterization is enabled
-    if (!*rasterize)
+    if (!renderInterface.allRenderTargetsCompatible())
     {
+        cppassist::warning("gloperate") << "Framebuffer attachments not compatible";
+
         return;
     }
 
-    // Set viewport
-    const glm::vec4 & viewport = *renderInterface.deviceViewport;
-    gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+    // Check if rasterization is enabled
+    if (*rasterize)
+    {
+        // Set viewport
+        const glm::vec4 & viewport = *renderInterface.viewport;
+        gl::glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
-    // Bind FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
-    fbo->bind(gl::GL_FRAMEBUFFER);
+        // Configure FBO
+        auto fbo = renderInterface.obtainFBO();
 
-    // Render the drawable
-    (*drawable)->draw();
+        // Bind FBO
+        fbo->bind(gl::GL_FRAMEBUFFER);
 
-    // Unbind FBO
-    globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
+        fbo->printStatus(true);
+
+        // Render the drawable
+        (*drawable)->draw();
+
+        // Unbind FBO
+        fbo->unbind();
+    }
 
     // Update outputs
-    fboOut.setValue(fbo);
-    colorTextureOut.setValue(*colorTexture);
+    renderInterface.updateRenderTargetOutputs();
 }
 
 

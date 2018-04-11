@@ -236,7 +236,9 @@ public:
     *    Value of input mode
     *
     *  @notes
-    *    - [TODO] What modes and values are supported here??
+    *    Possible values include GLFW_CURSOR, GLFW_STICKY_KEYS,
+    *    or GLFW_STICKY_MOUSE_BUTTONS. For more information,
+    *    refer to GLFW docs to glfwGetInputMode.
     */
     int inputMode(int mode) const;
 
@@ -250,7 +252,9 @@ public:
     *    Input mode value
     *
     *  @notes
-    *    - [TODO] What modes and values are supported here??
+    *    Possible values include GLFW_CURSOR, GLFW_STICKY_KEYS,
+    *    or GLFW_STICKY_MOUSE_BUTTONS. For more information,
+    *    refer to GLFW docs to glfwGetInputMode.
     */
     void setInputMode(int mode, int value);
 

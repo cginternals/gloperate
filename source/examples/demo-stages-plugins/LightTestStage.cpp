@@ -6,8 +6,6 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 
-#include <globjects/base/StringTemplate.h>
-#include <globjects/base/StaticStringSource.h>
 #include <globjects/base/File.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
@@ -16,12 +14,15 @@
 #include <globjects/globjects.h>
 
 #include <gloperate/gloperate.h>
+#include <gloperate/base/Environment.h>
 
 
 namespace
 {
 
 
+// Geometry describing the cube
+// position, surface normal
 static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
     {{ glm::vec3(-1.f, -1.f, -1.f), glm::vec3( 0.0f, -1.0f,  0.0) }},
     {{ glm::vec3(-1.f, -1.f, +1.f), glm::vec3( 0.0f, -1.0f,  0.0) }},
@@ -39,67 +40,7 @@ static const std::array<std::array<glm::vec3, 2>, 14> s_cube { {
     {{ glm::vec3(-1.f, +1.f, +1.f), glm::vec3( 0.0f,  1.0f,  0.0) }}
 } };
 
-static const char * s_vertexShader = R"(
-    #version 140
-    #extension GL_ARB_explicit_attrib_location : require
-
-    uniform mat4 modelMatrix;
-    uniform mat4 modelViewProjection;
-
-    layout (location = 0) in vec3 a_vertex;
-    layout (location = 1) in vec3 a_normal;
-
-    out vec3 v_worldPosition;
-    flat out vec3 v_normal;
-
-    void main()
-    {
-        gl_Position = modelViewProjection * vec4(a_vertex, 1.0);
-
-        v_worldPosition = (modelMatrix * vec4(a_vertex, 1.0)).xyz;
-        v_normal = normalize((modelMatrix * vec4(a_normal, 0.0)).xyz);
-    }
-)";
-
-static const char * s_fragmentShader = R"(
-    #version 140
-    #extension GL_ARB_explicit_attrib_location : require
-    #extension GL_ARB_shading_language_include : require
-
-    #define LIGHT_PROCESSING_PHONG
-
-    #include </gloperate/shaders/lighting/lightprocessing.glsl>
-
-    uniform samplerBuffer colorTypeData;
-    uniform samplerBuffer positionData;
-    uniform samplerBuffer attenuationData;
-
-    uniform vec3 eye;
-    uniform float glossiness;
-
-    in vec3 v_worldPosition;
-    flat in vec3 v_normal;
-
-    layout (location = 0) out vec4 fragColor;
-
-    void main()
-    {
-        vec3 color = lightIntensity(
-            v_worldPosition,
-            vec3(1.0),
-            vec3(0.5),
-            v_normal,
-            glossiness,
-            eye,
-            colorTypeData,
-            positionData,
-            attenuationData);
-
-        fragColor = vec4(color, 1.0);
-    }
-)";
-
-static const glm::vec3 cameraEye(0.0f, -1.5f, -3.0f);
+static const glm::vec3 s_cameraEye(0.0f, -1.5f, -3.0f);
 
 
 } // namespace
@@ -110,7 +51,7 @@ CPPEXPOSE_COMPONENT(LightTestStage, gloperate::Stage)
 
 LightTestStage::LightTestStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, "LightTestStage", name)
-, renderInterface(this)
+, canvasInterface(this)
 , glossiness("glossiness", this, 0.0f)
 , totalTime("totalTime", this, 0.0f)
 , lightColorTypeData("lightColorTypeData", this, nullptr)
@@ -123,8 +64,10 @@ LightTestStage::~LightTestStage()
 {
 }
 
-void LightTestStage::onContextInitialize(gloperate::AbstractGLContext *)
+void LightTestStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    canvasInterface.onContextInit();
+
     // Setup Geometry
     m_vao = cppassist::make_unique<globjects::VertexArray>();
     m_vertexBuffer = cppassist::make_unique<globjects::Buffer>();
@@ -142,18 +85,10 @@ void LightTestStage::onContextInitialize(gloperate::AbstractGLContext *)
     normalBinding->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(glm::vec3));
     m_vao->enable(1);
 
-    // Setup Program
-    // [TODO] this is a memory leak! Use resource loader?
-    globjects::StringTemplate * vertexShaderSource   = new globjects::StringTemplate(new globjects::StaticStringSource(s_vertexShader  ));
-    globjects::StringTemplate * fragmentShaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(s_fragmentShader));
+    // setup Program
+    m_vertexShader   = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath() + "/gloperate/shaders/demos/DemoLights.vert"));
+    m_fragmentShader = std::unique_ptr<globjects::Shader>(m_environment->resourceManager()->load<globjects::Shader>(gloperate::dataPath() + "/gloperate/shaders/demos/DemoLights.frag"));
 
-#ifdef __APPLE__
-    vertexShaderSource  ->replace("#version 140", "#version 150");
-    fragmentShaderSource->replace("#version 140", "#version 150");
-#endif
-
-    m_vertexShader   = cppassist::make_unique<globjects::Shader>(gl::GL_VERTEX_SHADER,   vertexShaderSource);
-    m_fragmentShader = cppassist::make_unique<globjects::Shader>(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
     m_program = cppassist::make_unique<globjects::Program>();
     m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
@@ -161,19 +96,38 @@ void LightTestStage::onContextInitialize(gloperate::AbstractGLContext *)
     m_program->setUniform("positionData", 1);
     m_program->setUniform("attenuationData", 2);
 
-    m_program->setUniform("eye", cameraEye);
+    m_program->setUniform("eye", s_cameraEye);
 
-    // [TODO] fix memory leak
+    // register NamedStrings for shader includes
     auto dataFolderPath = gloperate::dataPath();
-    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing.glsl"));
-    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_diffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_diffuse.glsl"));
-    globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_phong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_phong.glsl"));
+    m_lightProcessingString        = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing.glsl"));
+    m_lightProcessingDiffuseString = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_diffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_diffuse.glsl"));
+    m_lightProcessingPhongString   = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_phong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_phong.glsl"));
+}
+
+void LightTestStage::onContextDeinit(gloperate::AbstractGLContext *)
+{
+    // deregister NamedStrings
+    m_lightProcessingDiffuseString.reset();
+    m_lightProcessingPhongString.reset();
+    m_lightProcessingString.reset();
+
+    // deinitialize program
+    m_program.reset();
+    m_fragmentShader.reset();
+    m_vertexShader.reset();
+
+    // deinitialize geometry
+    m_vertexBuffer.reset();
+    m_vao.reset();
+
+    canvasInterface.onContextDeinit();
 }
 
 void LightTestStage::onProcess()
 {
     // Get viewport
-    glm::vec4 viewport = *renderInterface.deviceViewport;
+    const glm::vec4 & viewport = *canvasInterface.viewport;
 
     // Update viewport
     gl::glViewport(
@@ -184,12 +138,12 @@ void LightTestStage::onProcess()
     );
 
     // Bind FBO
-    globjects::Framebuffer * fbo = *renderInterface.targetFBO;
+    globjects::Framebuffer * fbo = canvasInterface.obtainFBO();
     fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear background
-    glm::vec3 color = *renderInterface.backgroundColor;
-    gl::glClearColor(color.r, color.g, color.b, 1.0f);
+    auto & color = *canvasInterface.backgroundColor;
+    gl::glClearColor(color.redf(), color.greenf(), color.bluef(), 1.0f);
     gl::glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
     gl::glEnable(gl::GL_SCISSOR_TEST);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
@@ -197,7 +151,7 @@ void LightTestStage::onProcess()
 
     // Update transformation
     auto model = glm::rotate((*totalTime) / 3.0f, glm::vec3(0, 1, 0));
-    auto view = glm::lookAt(cameraEye, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    auto view = glm::lookAt(s_cameraEye, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     auto projection = glm::perspective(30.0f, viewport.z / viewport.w, 0.1f, 10.0f);
     m_program->setUniform("modelMatrix", model);
     m_program->setUniform("modelViewProjection", projection * view * model);
@@ -230,5 +184,5 @@ void LightTestStage::onProcess()
     globjects::Framebuffer::unbind(gl::GL_FRAMEBUFFER);
 
     // Signal that output is valid
-    renderInterface.rendered.setValue(true);
+    canvasInterface.updateRenderTargetOutputs();
 }

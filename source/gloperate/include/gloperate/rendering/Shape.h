@@ -2,36 +2,18 @@
 #pragma once
 
 
-#include <cppassist/flags/Flags.h>
+#include <map>
+
+#include <cppexpose/reflection/Property.h>
 
 #include <gloperate/rendering/AbstractDrawable.h>
+#include <gloperate/rendering/ShapeType.h>
+
+#include <cppassist/flags/Flags.h> // Must be included last
 
 
 namespace gloperate
 {
-
-
-/**
-*  @brief
-*    Type of basic shapes
-*/
-enum class ShapeType : int
-{
-    None,  ///< No shape
-    Quad,  ///< 2D rectangle or quad
-    Box,   ///< 3D box or cube
-    Sphere ///< 3D sphere or ellipsoid
-};
-
-/**
-*  @brief
-*    Options for basic shapes
-*/
-enum class ShapeOption : int
-{
-    None = 0,            ///< No option
-    IncludeTexCoords = 1 ///< Include texture coordinates in geometry
-};
 
 
 /**
@@ -45,12 +27,10 @@ public:
     *  @brief
     *    Constructor
     *
-    *  @param[in] type
-    *    Type of the shape
     *  @param[in] options
     *    Shape options
     */
-    Shape(ShapeType shapeType, cppassist::Flags<ShapeOption> options);
+    Shape(cppassist::Flags<ShapeOption> options);
 
     /**
     *  @brief
@@ -75,6 +55,22 @@ public:
     *    Shape options
     */
     cppassist::Flags<ShapeOption> options() const;
+
+    // Virtual AbstractDrawable functions
+    virtual void draw() const override;
+
+
+protected:
+    /**
+    *  @brief
+    *    Constructor
+    *
+    *  @param[in] type
+    *    Type of the shape
+    *  @param[in] options
+    *    Shape options
+    */
+    Shape(ShapeType shapeType, cppassist::Flags<ShapeOption> options);
 
 
 protected:

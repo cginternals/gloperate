@@ -38,6 +38,7 @@ set(headers
     ${include_path}/stages/MultiFrameAggregationPipeline.h
     ${include_path}/stages/MultiFrameAggregationStage.h
     ${include_path}/stages/MultiFrameControlStage.h
+    ${include_path}/stages/IntermediateFramePreparationStage.h
 
     ${include_path}/stages/KernelToPointInPlaneStage.h
     ${include_path}/stages/DiscDistributionKernelStage.h
@@ -50,6 +51,7 @@ set(sources
     ${source_path}/stages/MultiFrameAggregationPipeline.cpp
     ${source_path}/stages/MultiFrameAggregationStage.cpp
     ${source_path}/stages/MultiFrameControlStage.cpp
+    ${source_path}/stages/IntermediateFramePreparationStage.cpp
 
     ${source_path}/stages/KernelToPointInPlaneStage.cpp
     ${source_path}/stages/DiscDistributionKernelStage.cpp

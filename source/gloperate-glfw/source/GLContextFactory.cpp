@@ -70,6 +70,7 @@ void GLContextFactory::initializeGLFWState(const gloperate::GLContextFormat & fo
     // Set OpenGL version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, format.majorVersion());
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, format.minorVersion());
+    glfwWindowHint(GLFW_DOUBLEBUFFER, int(true));
 
     // Set OpenGL context flags
     if (format.version() >= glbinding::Version(3, 0))

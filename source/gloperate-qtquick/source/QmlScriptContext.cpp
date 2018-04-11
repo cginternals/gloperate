@@ -12,7 +12,6 @@
 #include <cppexpose/reflection/Object.h>
 
 #include <gloperate-qtquick/QmlEngine.h>
-#include <gloperate-qtquick/QmlObjectWrapper.h>
 
 
 using namespace cppassist;
@@ -25,13 +24,11 @@ namespace gloperate_qtquick
 
 QmlScriptContext::QmlScriptContext(QmlEngine * engine)
 : m_engine(engine)
-, m_globalObjWrapper(nullptr)
 {
 }
 
 QmlScriptContext::~QmlScriptContext()
 {
-    // m_globalObjWrapper is deleted through the Qt object hierarchy
 }
 
 void QmlScriptContext::initialize(cppexpose::ScriptContext * scriptContext)
@@ -39,29 +36,14 @@ void QmlScriptContext::initialize(cppexpose::ScriptContext * scriptContext)
     m_scriptContext = scriptContext;
 }
 
-void QmlScriptContext::setGlobalObject(cppexpose::Object * obj)
+void QmlScriptContext::addGlobalObject(cppexpose::Object * obj)
 {
-    // Check arguments
-    if (!obj) return;
+    m_engine->addGlobalObject(obj);
+}
 
-    // This backend only supports the name 'gloperate' for the global object.
-    // If the specified object has another name, issue a warning.
-    if (obj->name() != "gloperate")
-    {
-        warning() << "QmlScriptContext: '" << obj->name() << "' is not supported as a name for the global scripting object. Using 'gloperate' instead.";
-    }
-
-    // Destroy former global object wrapper
-    if (m_globalObjWrapper)
-    {
-        delete m_globalObjWrapper;
-    }
-
-    // Create object wrapper
-    m_globalObjWrapper = new QmlObjectWrapper(m_engine, obj);
-
-    // Set object as global object 'gloperate'
-    m_engine->setGloperate(m_globalObjWrapper->wrapObject());
+void QmlScriptContext::removeGlobalObject(cppexpose::Object * obj)
+{
+    m_engine->removeGlobalObject(obj);
 }
 
 Variant QmlScriptContext::evaluate(const std::string & code)

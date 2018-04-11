@@ -51,6 +51,15 @@ public:
 
     /**
     *  @brief
+    *    Constructor
+    *
+    *  @param[in] options
+    *    Options with which the property is initialized
+    */
+    AbstractSlot(const cppexpose::Variant & options);
+
+    /**
+    *  @brief
     *    Destructor
     */
     virtual ~AbstractSlot();
@@ -259,6 +268,19 @@ public:
     */
     virtual void onValueInvalidated() = 0;
 
+    /**
+    *  @brief
+    *    Check if the Slot is a slot of any type given by the template argument list
+    *
+    *  @tparam Types
+    *    The variadic template parameter list of all types to check
+    *
+    *  @return
+    *    'true' if the slot is of any type given, else 'false'
+    */
+    template <typename... Types>
+    bool isOfAnyType() const;
+
 
 protected:
     /**
@@ -284,3 +306,6 @@ protected:
 
 
 } // namespace cppexpose
+
+
+#include <gloperate/pipeline/AbstractSlot.inl>

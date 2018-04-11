@@ -7,18 +7,18 @@
 #include <gloperate/gloperate-version.h>
 #include <gloperate/pipeline/Pipeline.h>
 #include <gloperate/pipeline/Input.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 
 
 namespace gloperate
 {
     class LightCreationStage;
     class LightBufferTextureStage;
+    class TimerStage;
+    class TextureRenderTargetStage;
 }
 
-
 class LightTestStage;
-class TimerStage;
 
 
 /**
@@ -41,26 +41,26 @@ public:
 
 public:
     // Interfaces
-    gloperate::RenderInterface renderInterface;    ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<float> glossiness;                       ///< Glossiness of the cube (0.0 to 1.0)
+    Input<float> glossiness;                    ///< Glossiness of the cube (0.0 to 1.0)
 
-    Input<int> lightType1;                         ///< Type of 1st light
-    Input<int> lightType2;                         ///< Type of 2nd light
-    Input<int> lightType3;                         ///< Type of 3rd light
+    Input<int> lightType1;                      ///< Type of 1st light
+    Input<int> lightType2;                      ///< Type of 2nd light
+    Input<int> lightType3;                      ///< Type of 3rd light
 
-    Input<glm::vec3> lightColor1;                  ///< Color of 1st light
-    Input<glm::vec3> lightColor2;                  ///< Color of 2nd light
-    Input<glm::vec3> lightColor3;                  ///< Color of 3rd light
+    Input<glm::vec3> lightColor1;               ///< Color of 1st light
+    Input<glm::vec3> lightColor2;               ///< Color of 2nd light
+    Input<glm::vec3> lightColor3;               ///< Color of 3rd light
 
-    Input<glm::vec3> lightPos1;                    ///< Position/Direction of 1st light
-    Input<glm::vec3> lightPos2;                    ///< Position/Direction of 2nd light
-    Input<glm::vec3> lightPos3;                    ///< Position/Direction of 3rd light
+    Input<glm::vec3> lightPos1;                 ///< Position/Direction of 1st light
+    Input<glm::vec3> lightPos2;                 ///< Position/Direction of 2nd light
+    Input<glm::vec3> lightPos3;                 ///< Position/Direction of 3rd light
 
-    Input<glm::vec3> lightAttenuation1;            ///< Attenuation coefficients of 1st light
-    Input<glm::vec3> lightAttenuation2;            ///< Attenuation coefficients of 2nd light
-    Input<glm::vec3> lightAttenuation3;            ///< Attenuation coefficients of 3rd light
+    Input<glm::vec3> lightAttenuation1;         ///< Attenuation coefficients of 1st light
+    Input<glm::vec3> lightAttenuation2;         ///< Attenuation coefficients of 2nd light
+    Input<glm::vec3> lightAttenuation3;         ///< Attenuation coefficients of 3rd light
 
 
 public:
@@ -84,10 +84,11 @@ public:
 
 protected:
     // Stages
-    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage1;
-    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage2;
-    std::unique_ptr<gloperate::LightCreationStage>      m_lightDefStage3;
-    std::unique_ptr<gloperate::LightBufferTextureStage> m_lightAccumulationStage;
-    std::unique_ptr<TimerStage>                         m_timerStage;
-    std::unique_ptr<LightTestStage>                     m_renderStage;
+    std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage1;
+    std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage2;
+    std::unique_ptr<gloperate::LightCreationStage>       m_lightDefStage3;
+    std::unique_ptr<gloperate::LightBufferTextureStage>  m_lightAccumulationStage;
+    std::unique_ptr<gloperate::TimerStage>               m_timerStage;
+    std::unique_ptr<gloperate::TextureRenderTargetStage> m_depthBufferStage;
+    std::unique_ptr<LightTestStage>                      m_renderStage;
 };
