@@ -8,7 +8,7 @@
 
 #include <cppexpose/variant/Variant.h>
 
-#include <glbinding/Meta.h>
+#include <glbinding-aux/Meta.h>
 
 #include <globjects/base/File.h>
 #include <globjects/Shader.h>
@@ -34,7 +34,7 @@ ShaderLoader::ShaderLoader(Environment * environment)
     // Get list of supported file formats
     for (std::pair<std::string, gl::GLenum> kv_pair : m_extensionToType) {
         m_extensions.push_back(std::string(".") + kv_pair.first);
-        m_types.push_back(glbinding::Meta::getString(kv_pair.second) + " (*." + kv_pair.first + ")");
+        m_types.push_back(glbinding::aux::Meta::getString(kv_pair.second) + " (*." + kv_pair.first + ")");
     }
 
     // Add entry that contains all supported file formats

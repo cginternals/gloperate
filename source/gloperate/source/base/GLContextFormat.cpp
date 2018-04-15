@@ -9,6 +9,11 @@
 #include <cppassist/string/conversion.h>
 #include <cppassist/logging/logging.h>
 
+#include <glbinding-aux/ValidVersions.h>
+
+
+using namespace glbinding::aux;
+
 
 namespace gloperate
 {
@@ -19,7 +24,7 @@ const std::string & GLContextFormat::profileString(const Profile profile)
     static const std::map<Profile, std::string> profileIdentifier =
     {
         { Profile::Core,          "Core" }
-      , { Profile::Compatibility, "Compatibility" } 
+      , { Profile::Compatibility, "Compatibility" }
       , { Profile::None,          "None" }
     };
 
@@ -61,9 +66,9 @@ glbinding::Version GLContextFormat::validateVersion(
     }
 
     // If specified version in invalid, try to find the nearest version
-    else if (!requested.isValid())
+    else if (!ValidVersions::isValid(requested))
     {
-        glbinding::Version nearest = requested.nearest();
+        glbinding::Version nearest = ValidVersions::nearest(requested);
         return nearest > maximumVersion ? maximumVersion : nearest;
     }
 

@@ -14,6 +14,7 @@
 #include <gloperate/base/GLContextUtils.h>
 
 #include <gloperate-qt/base/GLContext.h>
+#include <gloperate-qt/base/QtOpenGL.h>
 
 #include <gloperate-qtquick/RenderItem.h>
 #include <gloperate-qtquick/Utils.h>
@@ -43,7 +44,9 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
     if (!m_contextInitialized)
     {
         // Initialize glbinding and globjects in context
-        Utils::initContext();
+        Utils::initContext([window] (const char * name) -> glbinding::ProcAddress {
+            return gloperate_qt::QtOpenGL::getProcAddress(window->openglContext(), name);
+        });
 
         // Print context info
         info() << std::endl
