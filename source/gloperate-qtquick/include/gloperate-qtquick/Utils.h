@@ -2,6 +2,8 @@
 #pragma once
 
 
+#include <glbinding/ProcAddress.h>
+
 #include <gloperate-qtquick/gloperate-qtquick_api.h>
 
 
@@ -19,18 +21,24 @@ public:
     /**
     *  @brief
     *    Initialize glbinding and globjects in the current context
+    *
+    *  @param[in] functionPointerResolver
+    *    Function that resolves OpenGL function names
     */
-    static void initContext();
+    static void initContext(glbinding::GetProcAddress functionPointerResolver);
 
     /**
     *  @brief
     *    Registers current context for globjects.
     *
+    *  @param[in] functionPointerResolver
+    *    Function that resolves OpenGL function names
+    *
     *  @remarks
     *    This function is necessary to handle the deletion of the QML objects
     *    From the main thread instead of the QSGRenderThread.
     */
-    static void registerGlobjectsContext();
+    static void registerGlobjectsContext(glbinding::GetProcAddress functionPointerResolver);
 
     /**
     *  @brief

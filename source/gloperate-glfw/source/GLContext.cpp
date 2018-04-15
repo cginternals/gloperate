@@ -43,11 +43,13 @@ GLContext::GLContext(GLFWwindow * window)
     // Activate context
     use();
 
-    // Initialize glbinding in context (needed for context utils)
-    initializeBindings();
+    // Initialize glbinding and globjects in context (needed for context utils)
+    initializeBindings([](const char * name) -> glbinding::ProcAddress
+    {
+        return glfwGetProcAddress(name);
+    });
 
-    // Read context handle and format
-    m_handle = GLContextUtils::tryFetchHandle();
+    // Read context format
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context
