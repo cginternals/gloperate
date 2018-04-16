@@ -67,8 +67,6 @@ glbinding::Version GLContextUtils::retrieveVersion()
 
 GLContextFormat::Profile GLContextUtils::retrieveProfile()
 {
-    assert(0 != glbinding::getCurrentContext());
-
     gl::ContextProfileMask profileMask = gl::GL_NONE_BIT;
     glGetIntegerv(GLenum::GL_CONTEXT_PROFILE_MASK, reinterpret_cast<GLint*>(&profileMask));
 
@@ -92,8 +90,6 @@ GLContextFormat::Profile GLContextUtils::retrieveProfile()
 
 std::string GLContextUtils::version()
 {
-    assert(0 != glbinding::getCurrentContext());
-
     return glbinding::aux::ContextInfo::version().toString();
 }
 
@@ -104,15 +100,11 @@ std::string GLContextUtils::profile()
 
 std::string GLContextUtils::vendor()
 {
-    assert(0 != glbinding::getCurrentContext());
-
     return glbinding::aux::ContextInfo::vendor();
 }
 
 std::string GLContextUtils::renderer()
 {
-    assert(0 != glbinding::getCurrentContext());
-
     return glbinding::aux::ContextInfo::renderer();
 }
 
