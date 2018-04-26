@@ -29,27 +29,6 @@ class GLOPERATE_API GLContextUtils
 public:
     /**
     *  @brief
-    *    Check if current context is valid
-    *
-    *  @return
-    *    'true' if handle() > 0, else 'false'
-    */
-    static bool isValid();
-
-    /**
-    *  @brief
-    *    Try to fetch the handle of the current context
-    *
-    *  @return
-    *    Context handle
-    *
-    *  @notes
-    *    - Requires active context
-    */
-    static glbinding::ContextHandle tryFetchHandle();
-
-    /**
-    *  @brief
     *    Read context format from current context
     *
     *  @return

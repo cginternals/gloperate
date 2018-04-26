@@ -6,23 +6,23 @@
 
 #include <globjects/globjects.h>
 
-    
+
 namespace gloperate_qtquick
 {
 
 
-void Utils::initContext()
+void Utils::initContext(glbinding::GetProcAddress functionPointerResolver)
 {
-    glbinding::Binding::initialize(false);
-    globjects::init();
+    // Initialize globjects and glbinding
+    globjects::init(functionPointerResolver);
 #ifdef DEBUG
     globjects::DebugMessage::enable(true);
 #endif
 }
 
-void Utils::registerGlobjectsContext()
+void Utils::registerGlobjectsContext(glbinding::GetProcAddress functionPointerResolver)
 {
-    globjects::registerCurrentContext();
+    globjects::registerCurrentContext(functionPointerResolver);
 }
 
 void Utils::setGlobjectsContext()
