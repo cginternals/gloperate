@@ -34,6 +34,7 @@ RenderItem::RenderItem(QQuickItem * parent)
 {
     // Set input modes
     setAcceptedMouseButtons(Qt::AllButtons);
+    setAcceptHoverEvents(true);
     setFlag(ItemAcceptsInputMethod, true);
 
     // Connect update timer
@@ -146,6 +147,17 @@ void RenderItem::mouseMoveEvent(QMouseEvent * event)
     }
 }
 
+void RenderItem::hoverMoveEvent(QHoverEvent * event)
+{
+    if (m_canvas)
+    {
+        m_canvas->promoteMouseMove(glm::ivec2(
+            (int)(event->pos().x() * window()->devicePixelRatio()),
+            (int)(event->pos().y() * window()->devicePixelRatio()))
+        );
+    }
+}
+
 void RenderItem::mousePressEvent(QMouseEvent * event)
 {
     if (m_canvas)
@@ -183,7 +195,7 @@ void RenderItem::wheelEvent(QWheelEvent * event)
     }
 }
 
-void RenderItem::onTimer()    
+void RenderItem::onTimer()
 {
     if (!m_canvas)
     {
