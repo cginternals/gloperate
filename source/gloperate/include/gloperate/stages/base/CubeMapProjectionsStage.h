@@ -29,7 +29,7 @@ public:
     Input<float>     nearPlane;
     Input<float>     farPlane;
 
-    Output<std::vector<glm::mat4> *> projections;
+    Output<std::vector<glm::mat4>> projections;
 
 
 protected:
