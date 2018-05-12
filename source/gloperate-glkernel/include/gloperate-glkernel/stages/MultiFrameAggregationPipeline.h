@@ -50,10 +50,14 @@ public:
 
 public:
     // Interfaces
-    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface            canvasInterface;   ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<int>                 multiFrameCount; ///< Maximum number of frames to aggregate
+    Input<int>                            multiFrameCount;   ///< Maximum number of frames to aggregate
+    Input<gloperate::ColorRenderTarget*>  aggregationTarget; ///< RenderTarget to aggregate into
+
+    // Outputs
+    Output<gloperate::ColorRenderTarget*> aggregatedTarget;  ///< RenderTarget with aggregated content
 
 
 public:

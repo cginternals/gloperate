@@ -23,9 +23,11 @@ CPPEXPOSE_COMPONENT(MultiFrameAggregationPipeline, gloperate::Stage)
 
 MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
-// Inputs
+// Inputs & Outputs
 , canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
+, aggregationTarget("aggregationTarget", this)
+, aggregatedTarget("aggregatedTarget", this)
 // Stages
 , m_colorRenderTargetStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorStage"))
 , m_depthStencilRenderTargetStage(cppassist::make_unique<gloperate::RenderbufferRenderTargetStage>(environment, "DepthStencilStage"))
@@ -35,9 +37,6 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
 // Additional Stages
 , m_renderStage(nullptr)
 {
-    createInput <gloperate::ColorRenderTarget *>("ColorTarget");
-    createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut");
-
     addStage(m_colorRenderTargetStage.get());
     m_colorRenderTargetStage->size << canvasInterface.viewport;
     m_colorRenderTargetStage->format.setValue(gl::GL_RGBA);
@@ -59,11 +58,12 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     m_framePreparationStage->intermediateFrameTexture << m_colorRenderTargetStage->texture;
 
     addStage(m_aggregationStage.get());
-    (*m_aggregationStage->createInput<gloperate::ColorRenderTarget *>("ColorTarget")) << (*canvasInterface.colorRenderTargetInput(0));
-    (*canvasInterface.colorRenderTargetOutput(0)) << (*m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut"));
+    m_aggregationStage->createInput("ColorTarget") << aggregationTarget;
     m_aggregationStage->intermediateFrame << m_framePreparationStage->intermediateFrameTextureOut; // set by setRenderStage
     m_aggregationStage->renderInterface.viewport << canvasInterface.viewport;
     m_aggregationStage->aggregationFactor << m_controlStage->aggregationFactor;
+
+    aggregatedTarget << (*m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut"));
 
     stageAdded.connect([this](Stage * stage) {
         setRenderStage(stage);
