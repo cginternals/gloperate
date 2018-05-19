@@ -9,6 +9,7 @@
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
+#include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 
 
 namespace gloperate
@@ -25,7 +26,6 @@ namespace gloperate_glkernel
 {
 
 
-class MultiFrameControlStage;
 class MultiFrameAggregationStage;
 class IntermediateFramePreparationStage;
 
@@ -79,6 +79,11 @@ public:
     virtual ~MultiFrameAggregationPipeline();
 
 
+public:
+    template <typename T>
+    gloperate::Input<T> * restartAggregationOn(gloperate::Slot<T> * slot);
+
+
 protected:
     /**
     *  @brief
@@ -110,3 +115,5 @@ protected:
 
 
 } // namespace gloperate_glkernel
+
+#include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.inl>

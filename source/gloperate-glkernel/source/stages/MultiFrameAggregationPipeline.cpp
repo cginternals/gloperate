@@ -112,6 +112,14 @@ void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
     {
         m_framePreparationStage->intermediateRenderTarget << (*slotColorRenderTarget);
     }
+
+
+    // Connect other inputs if present
+    auto slotFrameCounter = dynamic_cast<Input<int>*>(m_renderStage->input("frameCounter"));
+    if (slotFrameCounter)
+    {
+        *slotFrameCounter << m_controlStage->currentFrame;
+    }
 }
 
 void MultiFrameAggregationPipeline::disconnectRenderStage()
