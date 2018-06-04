@@ -96,6 +96,13 @@ void RenderPassStage::onProcess()
         (*program)->setUniform<glm::mat4>("modelMatrix",               modelMatrix);
         (*program)->setUniform<glm::mat4>("modelViewMatrix",           modelViewMatrix);
         (*program)->setUniform<glm::mat4>("modelViewProjectionMatrix", modelViewProjectionMatrix);
+
+        (*program)->setUniform<glm::mat4>("projectionInverseMatrix",   glm::inverse(projectionMatrix));
+    }
+
+    if (camera)
+    {
+        (*program)->setUniform<float>("farZ", camera->zFar());
     }
 
     // Update OpenGL states
