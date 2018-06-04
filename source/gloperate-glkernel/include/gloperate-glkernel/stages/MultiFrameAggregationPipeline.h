@@ -103,11 +103,13 @@ protected:
 
 protected:
     // Aggregation stages
-    std::unique_ptr<gloperate::TextureRenderTargetStage>      m_colorRenderTargetStage;        ///< Aggregation color render target
+    std::unique_ptr<gloperate::TextureRenderTargetStage>      m_colorRenderTargetStage;        ///< Render target for frame rendering
+    std::unique_ptr<gloperate::TextureRenderTargetStage>      m_aggregationRenderTargetStage;  ///< Render target the aggregation happens on
     std::unique_ptr<gloperate::RenderbufferRenderTargetStage> m_depthStencilRenderTargetStage; ///< Aggregation depth stencil render target
     std::unique_ptr<MultiFrameControlStage>                   m_controlStage;                  ///< Multiframe control stage
     std::unique_ptr<IntermediateFramePreparationStage>        m_framePreparationStage;         ///< Intermediate frame preparation stage
     std::unique_ptr<MultiFrameAggregationStage>               m_aggregationStage;              ///< Aggregation stage
+    std::unique_ptr<gloperate::BlitStage>                     m_blitStage;                     ///< Blit from aggregation to output
 
     // Inserted Stage/Pipeline
     Stage                                                   * m_renderStage;                   ///< Actual rendering stage, providing intermediate frames
