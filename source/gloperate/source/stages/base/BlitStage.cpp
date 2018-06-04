@@ -86,6 +86,8 @@ void BlitStage::onProcess()
     globjects::Framebuffer * targetFBO = RenderInterface::obtainFBO(0, *target, m_targetFBO.get(), m_defaultFBO.get());
     auto targetAttachment = target->drawBufferAttachment(0);
 
+    targetFBO->bind();
+
     if (sourceRect[2] <= targetRect[2] && sourceRect[3] <= targetRect[3])
     {
         sourceFBO->blit(sourceAttachment, sourceRect, targetFBO, targetAttachment, targetRect, gl::GL_COLOR_BUFFER_BIT, *magFilter);
