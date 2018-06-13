@@ -8,6 +8,6 @@ gloperate::Input<T> * MultiFrameAggregationPipeline::restartAggregationOn(gloper
 {
     return m_controlStage->createInput(slot->name()) << *slot;
 }
- 
+
 
 } // namespace gloperate_glkernel
