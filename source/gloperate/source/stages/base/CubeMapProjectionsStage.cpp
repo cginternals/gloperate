@@ -21,6 +21,7 @@ CubeMapProjectionsStage::CubeMapProjectionsStage(gloperate::Environment * enviro
 , nearPlane("nearPlane", this, 0.1f)
 , farPlane("farPlane", this, 4.0f)
 , projections("projections", this)
+, projectionsDirect("projectionsDirect", this)
 {
     m_projections.resize(6);
 }
@@ -39,7 +40,8 @@ void CubeMapProjectionsStage::onProcess()
         m_projections.at(i) = projection * glm::lookAt(c, c + viewDirs[i], ups[i]);
     }
 
-    projections.setValue(m_projections);
+    projections.setValue(&m_projections);
+    projectionsDirect.setValue(m_projections);
 }
 
 } // namespace gloperate
