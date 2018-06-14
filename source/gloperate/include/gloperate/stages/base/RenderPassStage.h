@@ -114,7 +114,7 @@ public:
 protected:
     // Virtual Stage interface
     virtual void onProcess() override;
-    void onContextInit(AbstractGLContext * content) override;
+    virtual void onContextInit(AbstractGLContext * content) override;
 
     // Helper functions
     void setUniformValue(globjects::Program * program, AbstractSlot * input);
