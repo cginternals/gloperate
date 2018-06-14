@@ -167,11 +167,6 @@ void RenderWindow::onIconify(IconifyEvent &)
 void RenderWindow::onIdle()
 {
     m_canvas->updateTime();
-
-    if (m_canvas->environment()->continuousRedraw())
-    {
-        repaint();
-    }
 }
 
 gloperate::MouseButton RenderWindow::fromGLFWMouseButton(int button) const

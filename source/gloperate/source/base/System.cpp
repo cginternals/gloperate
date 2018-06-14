@@ -19,8 +19,6 @@ System::System(Environment * environment)
     // Register functions
     addFunction("logLevel",            this, &System::scr_logLevel);
     addFunction("setLogLevel",         this, &System::scr_setLogLevel);
-    addFunction("continuousRedraw",    this, &System::scr_continuousRedraw);
-    addFunction("setContinuousRedraw", this, &System::scr_setContinuousRedraw);
     addFunction("safeMode",            this, &System::scr_safeMode);
     addFunction("load",                this, &System::scr_load);
     addFunction("load",                this, &System::scr_load);
@@ -45,16 +43,6 @@ void System::scr_setLogLevel(int logLevel)
     {
         cppassist::setVerbosityLevel(logLevel);
     }
-}
-
-bool System::scr_continuousRedraw()
-{
-    return m_environment->continuousRedraw();
-}
-
-void System::scr_setContinuousRedraw(bool continuousRedraw)
-{
-    m_environment->setContinuousRedraw(continuousRedraw);
 }
 
 bool System::scr_safeMode()

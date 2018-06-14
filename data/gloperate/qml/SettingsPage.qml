@@ -101,24 +101,6 @@ Item
                         settings.debugMode = !settings.debugMode;
                     }
                 }
-                
-                Label
-                {
-                    Layout.alignment: Qt.AlignRight
-
-                    text: 'Enable Continuous Redraw'
-                }
-
-                Switch
-                {
-                    text: ''
-                    checked: settings.continuousRedraw
-
-                    onClicked:
-                    {
-                        settings.continuousRedraw = !settings.continuousRedraw;
-                    }
-                }
 
                 Label
                 {

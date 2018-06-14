@@ -24,7 +24,6 @@ Environment::Environment()
 , m_timerManager(this)
 , m_scriptContext(nullptr)
 , m_safeMode(false)
-, m_continuousRedraw(false)
 {
     addProperty(&m_componentManager);
     addProperty(&m_resourceManager);
@@ -146,16 +145,6 @@ bool Environment::safeMode() const
 void Environment::setSafeMode(bool safeMode)
 {
     m_safeMode = safeMode;
-}
-
-bool Environment::continuousRedraw() const
-{
-    return m_continuousRedraw;
-}
-
-void Environment::setContinuousRedraw(bool continuousRedraw)
-{
-    m_continuousRedraw = continuousRedraw;
 }
 
 void Environment::initializeScripting(std::unique_ptr<cppexpose::ScriptContext> && scriptContext)

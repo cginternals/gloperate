@@ -69,11 +69,6 @@ void RenderWindow::onPaint()
 void RenderWindow::onTimer()
 {
     m_canvas->updateTime();
-
-    if (m_canvas->environment()->continuousRedraw())
-    {
-        updateGL();
-    }
 }
 
 void RenderWindow::keyPressEvent(QKeyEvent * event)

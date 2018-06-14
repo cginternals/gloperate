@@ -203,11 +203,6 @@ void RenderItem::onTimer()
     }
 
     m_canvas->updateTime();
-
-    if (m_canvas->environment()->continuousRedraw())
-    {
-        update();
-    }
 }
 
 
