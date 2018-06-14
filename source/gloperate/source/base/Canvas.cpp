@@ -470,12 +470,16 @@ void Canvas::checkRedraw()
     }
 
     bool redraw = m_renderStage->alwaysProcessed();
-    m_renderStage->forAllOutputs<ColorRenderTarget *>([& redraw](Output<ColorRenderTarget *> * output) {
-        if (**output && !output->isValid())
-        {
-            redraw = true;
-        }
-    });
+    
+    if (!redraw)
+    {
+        m_renderStage->forAllOutputs<ColorRenderTarget *>([& redraw](Output<ColorRenderTarget *> * output) {
+            if (**output && !output->isValid())
+            {
+                redraw = true;
+            }
+        });
+    }
 
     if (redraw)
     {
