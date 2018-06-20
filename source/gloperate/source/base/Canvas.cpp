@@ -146,7 +146,7 @@ AbstractGLContext * Canvas::openGLContext()
 
 void Canvas::setOpenGLContext(AbstractGLContext * context)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // Deinitialize renderer in old context
     if (m_openGLContext)
@@ -184,7 +184,7 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
 
 void Canvas::updateTime()
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // In multithreaded viewers, updateTime() might get called several times
     // before render(). Therefore, the time delta is accumulated until the
@@ -219,7 +219,7 @@ void Canvas::updateTime()
 
 void Canvas::setViewport(const glm::vec4 & deviceViewport)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // Store viewport information
     m_viewport  = deviceViewport;
@@ -245,7 +245,7 @@ const glm::vec4 & Canvas::viewport() const
 
 void Canvas::render(globjects::Framebuffer * targetFBO)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // Reset time delta
     m_timeDelta = 0.0f;
@@ -385,7 +385,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
 
 void Canvas::promoteKeyPress(int key, int modifier)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
 
@@ -398,7 +398,7 @@ void Canvas::promoteKeyPress(int key, int modifier)
 
 void Canvas::promoteKeyRelease(int key, int modifier)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
 
@@ -411,7 +411,7 @@ void Canvas::promoteKeyRelease(int key, int modifier)
 
 void Canvas::promoteMouseMove(const glm::ivec2 & pos)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
@@ -424,7 +424,7 @@ void Canvas::promoteMouseMove(const glm::ivec2 & pos)
 
 void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
@@ -437,7 +437,7 @@ void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
 
 void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
@@ -450,7 +450,7 @@ void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
 
 void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
@@ -531,7 +531,7 @@ void Canvas::scr_onStageInputChanged(const cppexpose::Variant & func)
 
 cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -562,7 +562,7 @@ cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)
 
 std::string Canvas::scr_createStage(const std::string & path, const std::string & name, const std::string & type)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -592,7 +592,7 @@ std::string Canvas::scr_createStage(const std::string & path, const std::string 
 
 void Canvas::scr_removeStage(const std::string & path, const std::string & name)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -610,7 +610,7 @@ void Canvas::scr_removeStage(const std::string & path, const std::string & name)
 
 void Canvas::scr_createSlot(const std::string & path, const std::string & slot, const std::string & slotType, const std::string & type)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -622,7 +622,7 @@ void Canvas::scr_createSlot(const std::string & path, const std::string & slot, 
 
 cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -680,7 +680,7 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 
 void Canvas::scr_createConnection(const std::string & sourcePath, const std::string & sourceSlot, const std::string & destPath, const std::string & destSlot)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * sourceStage = getStageObject(sourcePath);
     Stage * destStage   = getStageObject(destPath);
@@ -699,7 +699,7 @@ void Canvas::scr_createConnection(const std::string & sourcePath, const std::str
 
 void Canvas::scr_removeConnection(const std::string & path, const std::string & slot)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -716,7 +716,7 @@ void Canvas::scr_removeConnection(const std::string & path, const std::string & 
 
 cppexpose::Variant Canvas::scr_getStage(const std::string & path)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // Get stage
     Stage * stage = getStageObject(path);
@@ -769,14 +769,14 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
 
 cppexpose::Variant Canvas::scr_getSlot(const std::string & path, const std::string & slotName)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     return getSlotStatus(path, slotName);
 }
 
 cppexpose::Variant Canvas::scr_getValue(const std::string & path, const std::string & slotName)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
     if (stage)
@@ -793,7 +793,7 @@ cppexpose::Variant Canvas::scr_getValue(const std::string & path, const std::str
 
 void Canvas::scr_setValue(const std::string & path, const std::string & slotName, const cppexpose::Variant & value)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
     if (stage)
