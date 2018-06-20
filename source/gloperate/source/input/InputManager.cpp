@@ -101,18 +101,17 @@ void InputManager::onEvent(std::unique_ptr<InputEvent> && event)
             wy       = mouseEvent->wheelDelta().y;
         }
 
-        std::vector<cppexpose::Variant> params;
-        params.push_back(device);
-        params.push_back(type);
-        params.push_back(key);
-        params.push_back(modifier);
-        params.push_back(button);
-        params.push_back(x);
-        params.push_back(y);
-        params.push_back(wx);
-        params.push_back(wy);
-
-        func.call(params);
+        func.call({
+            device,
+            type,
+            key,
+            modifier,
+            button,
+            x,
+            y,
+            wx,
+            wy
+        });
     }
 
 	m_events.push_back(std::move(event));
