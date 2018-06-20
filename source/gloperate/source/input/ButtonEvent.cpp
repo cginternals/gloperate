@@ -30,7 +30,7 @@ int ButtonEvent::modifier() const
 
 std::string ButtonEvent::asString() const
 {
-    return type() == Type::ButtonPress ? "Press " : "Release " + std::to_string(m_key) + ":" + std::to_string(m_modifier);
+    return (type() == Type::ButtonPress ? "Press " : "Release ") + std::to_string(m_key) + ":" + std::to_string(m_modifier);
 }
 
 

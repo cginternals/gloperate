@@ -30,7 +30,7 @@ public:
     /**
     *  @brief
     *    Get key code
-    *    
+    *
     *  @return
     *    The key code
     */
@@ -39,7 +39,7 @@ public:
     /**
     *  @brief
     *    Get modifier
-    *    
+    *
     *  @return
     *    The modifier
     */
@@ -50,8 +50,8 @@ public:
     virtual std::string asString() const override;
 
 protected:
-    int         m_key;
-    int         m_modifier;
+    int m_key;
+    int m_modifier;
 };
 
 

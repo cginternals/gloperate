@@ -21,7 +21,6 @@ System::System(Environment * environment)
     addFunction("setLogLevel", this, &System::scr_setLogLevel);
     addFunction("safeMode",    this, &System::src_safeMode);
     addFunction("load",        this, &System::scr_load);
-    addFunction("load",        this, &System::scr_load);
     addFunction("readFile",    this, &System::scr_readFile);
     addFunction("writeFile",   this, &System::scr_writeFile);
     addFunction("appendFile",  this, &System::scr_appendFile);

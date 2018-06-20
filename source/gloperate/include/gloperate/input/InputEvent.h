@@ -65,6 +65,15 @@ public:
 
     /**
     *  @brief
+    *    Get device that generated the event
+    *
+    *  @return
+    *    Pointer to the device that generated the event (never null)
+    */
+    AbstractDevice * device() const;
+
+    /**
+    *  @brief
     *    Get event description as string
     *
     *  @return
