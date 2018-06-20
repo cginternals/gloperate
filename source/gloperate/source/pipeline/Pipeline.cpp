@@ -173,7 +173,6 @@ void Pipeline::sortStages()
         {
             critical() << "Pipeline is not a directed acyclic graph";
             couldBeSorted = false;
-            addSorted(stage);
             return;
         }
 
