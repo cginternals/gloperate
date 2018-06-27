@@ -101,6 +101,7 @@ void RenderPassStage::onProcess()
     if (camera)
     {
         (*program)->setUniform<float>("farZ", camera->zFar());
+        (*program)->setUniform<float>("nearZ", camera->zNear());
     }
 
     // Update OpenGL states
