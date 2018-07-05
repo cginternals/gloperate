@@ -9,6 +9,7 @@
 #include <gloperate/stages/interfaces/CanvasInterface.h>
 
 #include <gloperate-glkernel/gloperate-glkernel_api.h>
+#include <gloperate-glkernel/stages/MultiFrameControlStage.h>
 
 
 namespace gloperate
@@ -25,7 +26,6 @@ namespace gloperate_glkernel
 {
 
 
-class MultiFrameControlStage;
 class MultiFrameAggregationStage;
 class IntermediateFramePreparationStage;
 
@@ -50,10 +50,14 @@ public:
 
 public:
     // Interfaces
-    gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
+    gloperate::CanvasInterface            canvasInterface;   ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<int>                 multiFrameCount; ///< Maximum number of frames to aggregate
+    Input<int>                            multiFrameCount;   ///< Maximum number of frames to aggregate
+    Input<gloperate::ColorRenderTarget*>  aggregationTarget; ///< RenderTarget to aggregate into
+
+    // Outputs
+    Output<gloperate::ColorRenderTarget*> aggregatedTarget;  ///< RenderTarget with aggregated content
 
 
 public:
@@ -75,6 +79,11 @@ public:
     virtual ~MultiFrameAggregationPipeline();
 
 
+public:
+    template <typename T>
+    gloperate::Input<T> * restartAggregationOn(gloperate::Slot<T> * slot);
+
+
 protected:
     /**
     *  @brief
@@ -94,11 +103,13 @@ protected:
 
 protected:
     // Aggregation stages
-    std::unique_ptr<gloperate::TextureRenderTargetStage>      m_colorRenderTargetStage;        ///< Aggregation color render target
+    std::unique_ptr<gloperate::TextureRenderTargetStage>      m_colorRenderTargetStage;        ///< Render target for frame rendering
+    std::unique_ptr<gloperate::TextureRenderTargetStage>      m_aggregationRenderTargetStage;  ///< Render target the aggregation happens on
     std::unique_ptr<gloperate::RenderbufferRenderTargetStage> m_depthStencilRenderTargetStage; ///< Aggregation depth stencil render target
     std::unique_ptr<MultiFrameControlStage>                   m_controlStage;                  ///< Multiframe control stage
     std::unique_ptr<IntermediateFramePreparationStage>        m_framePreparationStage;         ///< Intermediate frame preparation stage
     std::unique_ptr<MultiFrameAggregationStage>               m_aggregationStage;              ///< Aggregation stage
+    std::unique_ptr<gloperate::BlitStage>                     m_blitStage;                     ///< Blit from aggregation to output
 
     // Inserted Stage/Pipeline
     Stage                                                   * m_renderStage;                   ///< Actual rendering stage, providing intermediate frames
@@ -106,3 +117,5 @@ protected:
 
 
 } // namespace gloperate_glkernel
+
+#include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.inl>
