@@ -98,6 +98,12 @@ void RenderPassStage::onProcess()
         (*program)->setUniform<glm::mat4>("modelViewProjectionMatrix", modelViewProjectionMatrix);
     }
 
+    if (camera)
+    {
+        (*program)->setUniform<float>("farZ", camera->zFar());
+        (*program)->setUniform<float>("nearZ", camera->zNear());
+    }
+
     // Update OpenGL states
     if (*this->depthTest) m_renderPass->stateBefore()->enable (gl::GL_DEPTH_TEST);
     else                  m_renderPass->stateBefore()->disable(gl::GL_DEPTH_TEST);
