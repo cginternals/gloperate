@@ -327,7 +327,7 @@ protected:
     std::unique_ptr<MouseDevice>              m_mouseDevice;            ///< Device for Mouse Events
     std::unique_ptr<KeyboardDevice>           m_keyboardDevice;         ///< Device for Keyboard Events
     bool                                      m_replaceStage;           ///< 'true' if the stage has just been replaced, else 'false'
-    std::mutex                                m_mutex;                  ///< Mutex for separating main and render thread
+    std::recursive_mutex                      m_mutex;                  ///< Mutex for separating main and render thread
     cppexpose::ScopedConnection               m_inputChangedConnection; ///< Connection for the inputChanged-signal of the current stage
     cppexpose::Function                       m_inputChangedCallback;   ///< Script function that is called on inputChanged (slot, status)
     std::vector<AbstractSlot *>               m_changedInputs;          ///< List of changed input slots

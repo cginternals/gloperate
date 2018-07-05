@@ -17,15 +17,14 @@ System::System(Environment * environment)
 , m_environment(environment)
 {
     // Register functions
-    addFunction("logLevel",            this, &System::scr_logLevel);
-    addFunction("setLogLevel",         this, &System::scr_setLogLevel);
-    addFunction("safeMode",            this, &System::scr_safeMode);
-    addFunction("load",                this, &System::scr_load);
-    addFunction("load",                this, &System::scr_load);
-    addFunction("readFile",            this, &System::scr_readFile);
-    addFunction("writeFile",           this, &System::scr_writeFile);
-    addFunction("appendFile",          this, &System::scr_appendFile);
-    addFunction("exit",                this, &System::scr_exit);
+    addFunction("logLevel",    this, &System::scr_logLevel);
+    addFunction("setLogLevel", this, &System::scr_setLogLevel);
+    addFunction("safeMode",    this, &System::scr_safeMode);
+    addFunction("load",        this, &System::scr_load);
+    addFunction("readFile",    this, &System::scr_readFile);
+    addFunction("writeFile",   this, &System::scr_writeFile);
+    addFunction("appendFile",  this, &System::scr_appendFile);
+    addFunction("exit",        this, &System::scr_exit);
 }
 
 System::~System()

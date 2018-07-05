@@ -36,6 +36,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
     ${include_path}/stages/MultiFrameAggregationPipeline.h
+    ${include_path}/stages/MultiFrameAggregationPipeline.inl
     ${include_path}/stages/MultiFrameAggregationStage.h
     ${include_path}/stages/MultiFrameControlStage.h
     ${include_path}/stages/IntermediateFramePreparationStage.h
