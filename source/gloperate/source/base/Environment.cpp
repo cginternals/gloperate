@@ -137,7 +137,7 @@ void Environment::exit(int exitCode)
     this->exitApplication(exitCode);
 }
 
-bool Environment::safeMode()
+bool Environment::safeMode() const
 {
     return m_safeMode;
 }

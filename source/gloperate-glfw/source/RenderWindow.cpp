@@ -9,6 +9,7 @@
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/base/Canvas.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-glfw/GLContext.h>
 #include <gloperate-glfw/WindowEvent.h>

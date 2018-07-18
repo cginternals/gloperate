@@ -8,6 +8,7 @@
 #include <QOpenGLContext>
 
 #include <gloperate/base/Canvas.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Converter.h>

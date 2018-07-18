@@ -10,6 +10,7 @@
 #include <cppassist/memory/make_unique.h>
 
 #include <gloperate/base/Canvas.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-qt/base/Converter.h>
 
@@ -196,10 +197,12 @@ void RenderItem::wheelEvent(QWheelEvent * event)
 
 void RenderItem::onTimer()
 {
-    if (m_canvas)
+    if (!m_canvas)
     {
-        m_canvas->updateTime();
+        return;
     }
+
+    m_canvas->updateTime();
 }
 
 
