@@ -37,6 +37,9 @@ public:
 public:
     // Inputs
     Input<glm::vec4> viewport; ///< Viewport (in real device coordinates)
+    Input<float> defaultPitch; ///< Default pitch to rotate against
+    Input<float> defaultYaw; ///< Default yaw to rotate against
+    Input<float> defaultZoom; ///< Default zoom
 
     // Outputs
     Output<gloperate::Camera *> camera; ///< Camera for the scene
