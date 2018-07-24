@@ -9,11 +9,18 @@
 #include <gloperate-text/gloperate-text_api.h>
 
 
-namespace gloperate_text
+namespace openll
 {
 
 
 class FontFace;
+
+
+}
+
+
+namespace gloperate_text
+{
 
 
 class GLOPERATE_TEXT_API FontImporterStage : public gloperate::Stage
@@ -21,7 +28,7 @@ class GLOPERATE_TEXT_API FontImporterStage : public gloperate::Stage
 public:
     Input<cppassist::FilePath> fontFilePath;
 
-    Output<FontFace *> font;
+    Output<openll::FontFace *> font;
 
 
 public:
@@ -34,7 +41,7 @@ protected:
 
 
 protected:
-    std::unique_ptr<FontFace> m_font;
+    std::unique_ptr<openll::FontFace> m_font;
 };
 
 

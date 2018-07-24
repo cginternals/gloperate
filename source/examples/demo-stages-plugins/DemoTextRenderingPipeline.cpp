@@ -4,8 +4,8 @@
 #include <gloperate/gloperate.h>
 #include <gloperate/stages/base/ClearStage.h>
 
-#include <gloperate-text/Alignment.h>
-#include <gloperate-text/LineAnchor.h>
+#include <openll/Alignment.h>
+#include <openll/LineAnchor.h>
 #include <gloperate-text/stages/FontImporterStage.h>
 #include <gloperate-text/stages/GlyphPreparationStage.h>
 #include <gloperate-text/stages/GlyphRenderStage.h>
@@ -38,8 +38,8 @@ DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * en
 , margins     { "margins",      this, { 0.0f, 0.0f, 0.0f, 0.0f } } // t r b l
 , wordWrap    { "wordWrap",     this, true }
 , lineWidth   { "lineWidth",    this, 400.0f }
-, alignment   { "alignment",    this, gloperate_text::Alignment::Centered }
-, lineAnchor  { "lineAnchor",   this, gloperate_text::LineAnchor::Baseline }
+, alignment   { "alignment",    this, openll::Alignment::Centered }
+, lineAnchor  { "lineAnchor",   this, openll::LineAnchor::Baseline }
 , optimized   { "optimized",    this, true }
 {
     auto fontImport = cppassist::make_unique<gloperate_text::FontImporterStage>(environment, "FontImport");

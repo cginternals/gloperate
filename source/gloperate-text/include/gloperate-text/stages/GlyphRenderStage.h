@@ -7,7 +7,9 @@
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
 
-#include <gloperate-text/GlyphVertexCloud.h>
+#include <gloperate-text/gloperate-text_api.h>
+
+#include <openll/GlyphVertexCloud.h>
 
 
 namespace globjects
@@ -19,7 +21,7 @@ namespace globjects
 }
 
 
-namespace gloperate_text
+namespace openll
 {
 
 
@@ -27,12 +29,19 @@ class GlyphRenderer;
 class GlyphVertexCloud;
 
 
+} // namespace
+
+
+namespace gloperate_text
+{
+
+
 class GLOPERATE_TEXT_API GlyphRenderStage : public gloperate::Stage
 {
 public:
     gloperate::RenderInterface renderInterface; ///< Interface to render into render targets
 
-    Input<GlyphVertexCloud *> vertexCloud;
+    Input<openll::GlyphVertexCloud *> vertexCloud;
 
 
 public:
@@ -47,17 +56,7 @@ protected:
 
 
 protected:
-    std::unique_ptr<globjects::AbstractStringSource> m_vSource;
-    std::unique_ptr<globjects::AbstractStringSource> m_gSource;
-    std::unique_ptr<globjects::AbstractStringSource> m_fSource;
-
-    std::unique_ptr<globjects::Shader> m_vertexShader;
-    std::unique_ptr<globjects::Shader> m_geometryShader;
-    std::unique_ptr<globjects::Shader> m_fragmentShader;
-
-    std::unique_ptr<globjects::Program> m_program;
-
-    std::unique_ptr<GlyphRenderer> m_renderer;
+    std::unique_ptr<openll::GlyphRenderer> m_renderer;
 };
 
 
