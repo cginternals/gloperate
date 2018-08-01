@@ -6,6 +6,7 @@
 
 #include <gloperate/pipeline/Stage.h>
 #include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/rendering/Camera.h>
 
 #include <gloperate-text/gloperate-text_api.h>
 
@@ -42,6 +43,7 @@ public:
     gloperate::RenderInterface renderInterface; ///< Interface to render into render targets
 
     Input<openll::GlyphVertexCloud *> vertexCloud;
+    Input<gloperate::Camera *> camera;
 
 
 public:

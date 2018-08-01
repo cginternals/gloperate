@@ -18,6 +18,7 @@ GlyphRenderStage::GlyphRenderStage(gloperate::Environment * environment, const s
 : Stage(environment, "GlyphRenderStage", name)
 , renderInterface(this)
 , vertexCloud("vertexCloud", this)
+, camera("camera", this)
 {
 }
 
@@ -49,7 +50,14 @@ void GlyphRenderStage::onProcess()
     gl::glEnable(gl::GL_BLEND);
     gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
-    m_renderer->render(*vertexCloud.value());
+    if (*camera != nullptr)
+    {
+        m_renderer->renderInWorld(*vertexCloud.value(), camera->viewProjectionMatrix());
+    }
+    else
+    {
+        m_renderer->render(*vertexCloud.value());
+    }
     
     gl::glDepthMask(gl::GL_TRUE);
     gl::glDisable(gl::GL_CULL_FACE);
