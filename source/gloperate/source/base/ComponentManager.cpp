@@ -55,7 +55,7 @@ std::string ComponentManager::scr_getPluginPaths()
 
 void ComponentManager::scr_setPluginPaths(const std::string & allPaths)
 {
-    std::vector<std::string> paths = cppassist::string::split(allPaths, ';');
+    std::vector<std::string> paths = cppassist::string::split(allPaths, ';', false);
 
     for (auto path : paths) {
         this->addPluginPath(path, PluginPathType::UserDefined);

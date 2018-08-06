@@ -812,10 +812,10 @@ Stage * Canvas::getStageObject(const std::string & path) const
     Stage * stage = nullptr;
 
     // Split path
-    auto names = string::split(path, '.');
+    const auto names = string::split(path, '.', true);
 
     // Resolve path
-    for (auto name : names)
+    for (const auto & name : names)
     {
         if (!stage && name == "root")
         {

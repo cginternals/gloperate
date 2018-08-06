@@ -231,13 +231,13 @@ void Stage::invalidateOutputs()
 
 AbstractSlot * Stage::getSlot(const std::string & path)
 {
-    std::vector<std::string> names = cppassist::string::split(path, '.');
+    const auto names = cppassist::string::split(path, '.', true);
 
     Stage * stage = this;
 
     for (size_t i=0; i<names.size(); i++)
     {
-        std::string name = names[i];
+        const std::string & name = names[i];
 
         // Ignore own stage name at the beginning
         if (name == stage->name() && i == 0)
