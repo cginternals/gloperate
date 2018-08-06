@@ -71,7 +71,7 @@ void RenderPassStage::onProcess()
     m_renderPass->setProgram((*program));
 
     // Check if a camera or a model matrix is set
-    Camera * camera = (this->camera.isValid() && *this->camera) ? *this->camera : nullptr;
+    AbstractCamera * camera = (this->camera.isValid() && *this->camera) ? *this->camera : nullptr;
     bool hasModelMatrix = (this->modelMatrix.isValid());
 
     // Update transformation uniforms

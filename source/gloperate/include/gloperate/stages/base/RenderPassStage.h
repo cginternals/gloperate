@@ -27,7 +27,7 @@ namespace gloperate
 
 
 class AbstractDrawable;
-class Camera;
+class AbstractCamera;
 class RenderPass;
 
 
@@ -61,7 +61,7 @@ public:
     // Inputs
     Input<gloperate::AbstractDrawable *> drawable;    ///< The drawable to be drawn
     Input<globjects::Program *>          program;     ///< The program used for rendering
-    Input<gloperate::Camera *>           camera;      ///< The input camera
+    Input<gloperate::AbstractCamera *>   camera;      ///< The input camera
     Input<glm::mat4>                     modelMatrix; ///< Transformation matrix
 
     Input<bool>       depthTest; ///< Enable depth test?

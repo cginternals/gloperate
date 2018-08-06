@@ -42,7 +42,7 @@ public:
     Input<float> defaultZoom; ///< Default zoom
 
     // Outputs
-    Output<gloperate::Camera *> camera; ///< Camera for the scene
+    Output<gloperate::AbstractCamera *> camera; ///< Camera for the scene
 
 
 public:

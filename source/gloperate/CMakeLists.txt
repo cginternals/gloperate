@@ -86,7 +86,10 @@ set(headers
 
     ${include_path}/rendering/AbstractDrawable.h
     ${include_path}/rendering/AttachmentType.h
+    ${include_path}/rendering/AbstractCamera.h
     ${include_path}/rendering/Camera.h
+    ${include_path}/rendering/OrthographicCamera.h
+    ${include_path}/rendering/PerspectiveCamera.h
     ${include_path}/rendering/CameraUtils.h
     ${include_path}/rendering/Drawable.h
     ${include_path}/rendering/Drawable.inl
@@ -198,7 +201,10 @@ set(sources
     ${source_path}/pipeline/AbstractSlot.cpp
 
     ${source_path}/rendering/AbstractDrawable.cpp
+    ${source_path}/rendering/AbstractCamera.cpp
     ${source_path}/rendering/Camera.cpp
+    ${source_path}/rendering/OrthographicCamera.cpp
+    ${source_path}/rendering/PerspectiveCamera.cpp
     ${source_path}/rendering/CameraUtils.cpp
     ${source_path}/rendering/Drawable.cpp
     ${source_path}/rendering/NoiseTexture.cpp
