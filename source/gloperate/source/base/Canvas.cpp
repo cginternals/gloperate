@@ -409,53 +409,53 @@ void Canvas::promoteKeyRelease(int key, int modifier)
     checkRedraw();
 }
 
-void Canvas::promoteMouseMove(const glm::ivec2 & pos)
+void Canvas::promoteMouseMove(const glm::ivec2 & pos, int modifier)
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
-    m_mouseDevice->move(pos);
+    m_mouseDevice->move(pos, modifier);
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
+void Canvas::promoteMousePress(int button, const glm::ivec2 & pos, int modifier)
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
-    m_mouseDevice->buttonPress(button, pos);
+    m_mouseDevice->buttonPress(button, pos, modifier);
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
+void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos, int modifier)
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
-    m_mouseDevice->buttonRelease(button, pos);
+    m_mouseDevice->buttonRelease(button, pos, modifier);
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
+void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos, int modifier)
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
-    m_mouseDevice->wheelScroll(delta, pos);
+    m_mouseDevice->wheelScroll(delta, pos, modifier);
 
     // Check if a redraw is required
     checkRedraw();

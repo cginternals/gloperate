@@ -195,19 +195,21 @@ protected:
 
 /**
 *  @brief
-*    Representation of a mouse event
+*    Representation of a mouse event (including scroll events)
 */
 class GLOPERATE_GLFW_API MouseEvent : public WindowEvent
 {
 public:
     MouseEvent(const glm::ivec2 & pos);
     MouseEvent(const glm::ivec2 & pos, int button, int action, int modifiers);
+    MouseEvent(const glm::ivec2 & pos, const glm::vec2 & delta, int modifiers);
 
     int button() const;
     int action() const;
     int modifiers() const;
 
     const glm::ivec2 & pos() const;
+    const glm::vec2 & delta() const;
 
     int x() const;
     int y() const;
@@ -219,6 +221,7 @@ protected:
     int m_modifiers;
 
     glm::ivec2 m_pos;
+    glm::vec2  m_delta;
 };
 
 
@@ -241,25 +244,6 @@ class GLOPERATE_GLFW_API MouseLeaveEvent : public WindowEvent
 {
 public:
     MouseLeaveEvent();
-};
-
-
-/**
-*  @brief
-*    Representation of a mouse scroll event
-*/
-class GLOPERATE_GLFW_API ScrollEvent : public WindowEvent
-{
-public:
-    ScrollEvent(const glm::vec2 & offset, const glm::ivec2 & pos);
-
-    const glm::vec2 & offset() const;
-    const glm::ivec2 & pos() const;
-
-
-protected:
-    glm::vec2 m_offset;
-    glm::ivec2 m_pos;
 };
 
 

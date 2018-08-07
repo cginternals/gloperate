@@ -105,94 +105,103 @@ QQuickFramebufferObject::Renderer * RenderItem::createRenderer() const
 void RenderItem::keyPressEvent(QKeyEvent * event)
 {
     // Skip auto-repeated key events
-    if (event->isAutoRepeat())
+    if (event->isAutoRepeat() || !m_canvas)
     {
         return;
     }
 
-    if (m_canvas)
-    {
-        m_canvas->promoteKeyPress(
-            Converter::fromQtKeyCode(event->key(), event->modifiers()),
-            Converter::fromQtModifiers(event->modifiers())
-        );
-    }
+    m_canvas->promoteKeyPress(
+        Converter::fromQtKeyCode(event->key(), event->modifiers()),
+        Converter::fromQtModifiers(event->modifiers())
+    );
 }
 
 void RenderItem::keyReleaseEvent(QKeyEvent * event)
 {
     // Skip auto-repeated key events
-    if (event->isAutoRepeat())
+    if (event->isAutoRepeat() || !m_canvas)
     {
         return;
     }
 
-    if (m_canvas)
-    {
-        m_canvas->promoteKeyRelease(
-            Converter::fromQtKeyCode(event->key(), event->modifiers()),
-            Converter::fromQtModifiers(event->modifiers())
-        );
-    }
+    m_canvas->promoteKeyRelease(
+        Converter::fromQtKeyCode(event->key(), event->modifiers()),
+        Converter::fromQtModifiers(event->modifiers())
+    );
 }
 
 void RenderItem::mouseMoveEvent(QMouseEvent * event)
 {
-    if (m_canvas)
+    if (!m_canvas)
     {
-        m_canvas->promoteMouseMove(glm::ivec2(
-            (int)(event->x() * window()->devicePixelRatio()),
-            (int)(event->y() * window()->devicePixelRatio()))
-        );
+        return;
     }
+
+    m_canvas->promoteMouseMove(glm::ivec2(
+        (int)(event->x() * window()->devicePixelRatio()),
+        (int)(event->y() * window()->devicePixelRatio())),
+        Converter::fromQtModifiers(event->modifiers())
+    );
 }
 
 void RenderItem::hoverMoveEvent(QHoverEvent * event)
 {
-    if (m_canvas)
+    if (!m_canvas)
     {
-        m_canvas->promoteMouseMove(glm::ivec2(
-            (int)(event->pos().x() * window()->devicePixelRatio()),
-            (int)(event->pos().y() * window()->devicePixelRatio()))
-        );
+        return;
     }
+
+    m_canvas->promoteMouseMove(glm::ivec2(
+        (int)(event->pos().x() * window()->devicePixelRatio()),
+        (int)(event->pos().y() * window()->devicePixelRatio())),
+        Converter::fromQtModifiers(event->modifiers())
+    );
 }
 
 void RenderItem::mousePressEvent(QMouseEvent * event)
 {
-    if (m_canvas)
+    if (!m_canvas)
     {
-        m_canvas->promoteMousePress(
-            Converter::fromQtMouseButton(event->button()),
-            glm::ivec2( (int)(event->x() * window()->devicePixelRatio()),
-                        (int)(event->y() * window()->devicePixelRatio()) )
-        );
+        return;
     }
+
+    m_canvas->promoteMousePress(
+        Converter::fromQtMouseButton(event->button()),
+        glm::ivec2( (int)(event->x() * window()->devicePixelRatio()),
+                    (int)(event->y() * window()->devicePixelRatio()) ),
+        Converter::fromQtModifiers(event->modifiers())
+    );
 }
 
 void RenderItem::mouseReleaseEvent(QMouseEvent * event)
 {
-    if (m_canvas)
+    if (!m_canvas)
     {
-        m_canvas->promoteMouseRelease(
-            Converter::fromQtMouseButton(event->button()),
-            glm::ivec2( (int)(event->x() * window()->devicePixelRatio()),
-                        (int)(event->y() * window()->devicePixelRatio()) )
-        );
+        return;
     }
+
+    m_canvas->promoteMouseRelease(
+        Converter::fromQtMouseButton(event->button()),
+        glm::ivec2( (int)(event->x() * window()->devicePixelRatio()),
+                    (int)(event->y() * window()->devicePixelRatio()) ),
+        Converter::fromQtModifiers(event->modifiers())
+    );
 }
 
 void RenderItem::wheelEvent(QWheelEvent * event)
 {
-    if (m_canvas)
+    if (!m_canvas)
     {
-        m_canvas->promoteMouseWheel(
-            glm::vec2( event->orientation() == Qt::Vertical ? 0.0f : (float)event->delta(),
-                       event->orientation() == Qt::Vertical ? (float)event->delta() : 0.0f ),
-            glm::ivec2( (int)(event->x() * window()->devicePixelRatio()),
-                        (int)(event->y() * window()->devicePixelRatio()) )
-        );
+        return;
     }
+
+    m_canvas->promoteMouseWheel(
+        glm::vec2( event->orientation() == Qt::Vertical ? 0.0f : (float)event->delta(),
+                   event->orientation() == Qt::Vertical ? (float)event->delta() : 0.0f ),
+        glm::ivec2( (int)(event->x() * window()->devicePixelRatio()),
+                    (int)(event->y() * window()->devicePixelRatio()) ),
+        Converter::fromQtModifiers(event->modifiers())
+    );
 }
 
 void RenderItem::onTimer()

@@ -477,7 +477,7 @@ void Window::handleEvent(WindowEvent & event)
             break;
 
         case WindowEvent::Type::Scroll:
-            onScroll(static_cast<ScrollEvent &>(event));
+            onScroll(static_cast<MouseEvent &>(event));
             break;
 
         case WindowEvent::Type::Focus:
@@ -629,7 +629,7 @@ void Window::onMouseLeave(MouseLeaveEvent &)
 {
 }
 
-void Window::onScroll(ScrollEvent &)
+void Window::onScroll(MouseEvent &)
 {
 }
 

@@ -225,8 +225,10 @@ public:
     *
     *  @param[in] pos
     *    Mouse position
+    *  @param[in] modifier
+    *    Modifiers (gloperate modifier codes)
     */
-    void promoteMouseMove(const glm::ivec2 & pos);
+    void promoteMouseMove(const glm::ivec2 & pos, int modifier);
 
     /**
     *  @brief
@@ -236,8 +238,10 @@ public:
     *    Mouse button (gloperate button code)
     *  @param[in] pos
     *    Mouse position
+    *  @param[in] modifier
+    *    Modifiers (gloperate modifier codes)
     */
-    void promoteMousePress(int button, const glm::ivec2 & pos);
+    void promoteMousePress(int button, const glm::ivec2 & pos, int modifier);
 
     /**
     *  @brief
@@ -247,8 +251,10 @@ public:
     *    Mouse button (gloperate button code)
     *  @param[in] pos
     *    Mouse position
+    *  @param[in] modifier
+    *    Modifiers (gloperate modifier codes)
     */
-    void promoteMouseRelease(int button, const glm::ivec2 & pos);
+    void promoteMouseRelease(int button, const glm::ivec2 & pos, int modifier);
 
     /**
     *  @brief
@@ -258,8 +264,10 @@ public:
     *    Wheel delta
     *  @param[in] pos
     *    Mouse position
+    *  @param[in] modifier
+    *    Modifiers (gloperate modifier codes)
     */
-    void promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos);
+    void promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos, int modifier);
     //@}
 
 
