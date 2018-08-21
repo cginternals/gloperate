@@ -58,6 +58,7 @@ Canvas::Canvas(Environment * environment)
 , m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), "mouse"))
 , m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), "keyboard"))
 , m_replaceStage(false)
+, m_rendered(false)
 , m_colorTarget(cppassist::make_unique<ColorRenderTarget>())
 , m_depthTarget(cppassist::make_unique<DepthRenderTarget>())
 , m_depthStencilTarget(cppassist::make_unique<DepthStencilRenderTarget>())
@@ -65,6 +66,7 @@ Canvas::Canvas(Environment * environment)
 {
     // Register functions
     addFunction("onStageInputChanged", this, &Canvas::scr_onStageInputChanged);
+    addFunction("onRendered",          this, &Canvas::scr_onRendered);
     addFunction("getSlotTypes",        this, &Canvas::scr_getSlotTypes);
     addFunction("createStage",         this, &Canvas::scr_createStage);
     addFunction("removeStage",         this, &Canvas::scr_removeStage);
@@ -363,15 +365,19 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         return **output != nullptr;
     });
 
+    // Check if a blit pass is necessary
     if (colorOutput)
     {
+        // Get viewport
         const auto viewport = m_renderStage->findOutput<glm::vec4>([this](Output<glm::vec4> *) {
             return true;
         });
 
+        // Check if either viewport or color output target are different than the input
         const auto viewportDiffering = viewport && glm::distance(**viewport, m_viewport) > glm::epsilon<float>();
         const auto colorOutputDiffering = **colorOutput != m_colorTarget.get();
 
+        // If so, blit color output to target
         if (viewportDiffering || colorOutputDiffering)
         {
             m_blitStage->source = **colorOutput;
@@ -381,6 +387,9 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
             m_blitStage->process();
         }
     }
+
+    // Signal that a frame has been rendered
+    m_rendered = true;
 }
 
 void Canvas::promoteKeyPress(int key, int modifier)
@@ -463,6 +472,23 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 
 void Canvas::checkRedraw()
 {
+    // Invoke callbacks after a frame has been rendered
+    if (m_rendered) {
+        // Invoke callbacks
+        for (auto func : m_renderedCallbacks) {
+            if (!func.isEmpty()) {
+                std::vector<Variant> params;
+                func.call(params);
+            }
+        }
+
+        // Clear callbacks
+        m_renderedCallbacks.clear();
+
+        // Reset flag
+        m_rendered = false;
+    }
+
     if (!m_renderStage)
     {
         return;
@@ -527,6 +553,18 @@ void Canvas::scr_onStageInputChanged(const cppexpose::Variant & func)
 
     // Save callback function
     m_inputChangedCallback = func.value<cppexpose::Function>();
+}
+
+void Canvas::scr_onRendered(const cppexpose::Variant & func)
+{
+    // Check if a function has been passed
+    if (!func.hasType<cppexpose::Function>())
+    {
+        return;
+    }
+
+    // Save callback function
+    m_renderedCallbacks.push_back(func.value<cppexpose::Function>());
 }
 
 cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)

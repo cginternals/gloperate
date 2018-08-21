@@ -294,6 +294,7 @@ protected:
     //@{
     // Scripting functions
     void scr_onStageInputChanged(const cppexpose::Variant & func);
+    void scr_onRendered(const cppexpose::Variant & func);
     cppexpose::Variant scr_getSlotTypes(const std::string & path);
     std::string scr_createStage(const std::string & path, const std::string & name, const std::string & type);
     void scr_removeStage(const std::string & path, const std::string & name);
@@ -330,6 +331,8 @@ protected:
     std::recursive_mutex                      m_mutex;                  ///< Mutex for separating main and render thread
     cppexpose::ScopedConnection               m_inputChangedConnection; ///< Connection for the inputChanged-signal of the current stage
     cppexpose::Function                       m_inputChangedCallback;   ///< Script function that is called on inputChanged (slot, status)
+    std::vector<cppexpose::Function>          m_renderedCallbacks;      ///< Script functions that are called once after rendering
+    bool                                      m_rendered;               ///< 'true' after a new frame has been drawn
     std::vector<AbstractSlot *>               m_changedInputs;          ///< List of changed input slots
     std::mutex                                m_changedInputMutex;      ///< Mutex to access m_changedInputs
 
