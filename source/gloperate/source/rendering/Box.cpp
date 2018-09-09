@@ -29,48 +29,48 @@ Box::Box(float width, float height, float depth, cppassist::Flags<ShapeOption> o
         , glm::vec3(-0.5f,  0.5f,  0.5f)
 
         , glm::vec3( 0.5f, -0.5f,  0.5f)
-        , glm::vec3(-0.5f,  0.5f,  0.5f)
         , glm::vec3( 0.5f,  0.5f,  0.5f)
+        , glm::vec3(-0.5f,  0.5f,  0.5f)
 
         , glm::vec3(-0.5f, -0.5f, -0.5f)
         , glm::vec3(-0.5f,  0.5f, -0.5f)
         , glm::vec3( 0.5f, -0.5f, -0.5f)
 
         , glm::vec3(-0.5f,  0.5f, -0.5f)
-        , glm::vec3( 0.5f, -0.5f, -0.5f)
         , glm::vec3( 0.5f,  0.5f, -0.5f)
+        , glm::vec3( 0.5f, -0.5f, -0.5f)
 
         , glm::vec3(-0.5f, -0.5f,  0.5f)
         , glm::vec3(-0.5f,  0.5f,  0.5f)
         , glm::vec3(-0.5f, -0.5f, -0.5f)
 
         , glm::vec3(-0.5f,  0.5f,  0.5f)
-        , glm::vec3(-0.5f, -0.5f, -0.5f)
         , glm::vec3(-0.5f,  0.5f, -0.5f)
+        , glm::vec3(-0.5f, -0.5f, -0.5f)
 
         , glm::vec3( 0.5f, -0.5f, -0.5f)
         , glm::vec3( 0.5f,  0.5f, -0.5f)
         , glm::vec3( 0.5f, -0.5f,  0.5f)
 
         , glm::vec3( 0.5f,  0.5f, -0.5f)
-        , glm::vec3( 0.5f, -0.5f,  0.5f)
         , glm::vec3( 0.5f,  0.5f,  0.5f)
+        , glm::vec3( 0.5f, -0.5f,  0.5f)
 
         , glm::vec3(-0.5f,  0.5f,  0.5f)
         , glm::vec3( 0.5f,  0.5f,  0.5f)
         , glm::vec3(-0.5f,  0.5f, -0.5f)
 
         , glm::vec3( 0.5f,  0.5f,  0.5f)
-        , glm::vec3(-0.5f,  0.5f, -0.5f)
         , glm::vec3( 0.5f,  0.5f, -0.5f)
+        , glm::vec3(-0.5f,  0.5f, -0.5f)
 
         , glm::vec3(-0.5f, -0.5f,  0.5f)
         , glm::vec3(-0.5f, -0.5f, -0.5f)
         , glm::vec3( 0.5f, -0.5f,  0.5f)
 
         , glm::vec3(-0.5f, -0.5f, -0.5f)
-        , glm::vec3( 0.5f, -0.5f,  0.5f)
         , glm::vec3( 0.5f, -0.5f, -0.5f)
+        , glm::vec3( 0.5f, -0.5f,  0.5f)
     } };
 
     static const std::array<glm::vec2, 36> texcoords { {
@@ -79,15 +79,7 @@ Box::Box(float width, float height, float depth, cppassist::Flags<ShapeOption> o
         , glm::vec2(0.0f, 1.0f)
 
         , glm::vec2(1.0f, 0.0f)
-        , glm::vec2(0.0f, 1.0f)
         , glm::vec2(1.0f, 1.0f)
-
-        , glm::vec2(1.0f, 0.0f)
-        , glm::vec2(1.0f, 1.0f)
-        , glm::vec2(0.0f, 0.0f)
-
-        , glm::vec2(1.0f, 1.0f)
-        , glm::vec2(0.0f, 0.0f)
         , glm::vec2(0.0f, 1.0f)
 
         , glm::vec2(1.0f, 0.0f)
@@ -95,32 +87,40 @@ Box::Box(float width, float height, float depth, cppassist::Flags<ShapeOption> o
         , glm::vec2(0.0f, 0.0f)
 
         , glm::vec2(1.0f, 1.0f)
-        , glm::vec2(0.0f, 0.0f)
         , glm::vec2(0.0f, 1.0f)
+        , glm::vec2(0.0f, 0.0f)
 
         , glm::vec2(1.0f, 0.0f)
         , glm::vec2(1.0f, 1.0f)
         , glm::vec2(0.0f, 0.0f)
 
         , glm::vec2(1.0f, 1.0f)
-        , glm::vec2(0.0f, 0.0f)
         , glm::vec2(0.0f, 1.0f)
+        , glm::vec2(0.0f, 0.0f)
+
+        , glm::vec2(1.0f, 0.0f)
+        , glm::vec2(1.0f, 1.0f)
+        , glm::vec2(0.0f, 0.0f)
+
+        , glm::vec2(1.0f, 1.0f)
+        , glm::vec2(0.0f, 1.0f)
+        , glm::vec2(0.0f, 0.0f)
 
         , glm::vec2(0.0f, 0.0f)
         , glm::vec2(1.0f, 0.0f)
         , glm::vec2(0.0f, 1.0f)
 
         , glm::vec2(1.0f, 0.0f)
-        , glm::vec2(0.0f, 1.0f)
         , glm::vec2(1.0f, 1.0f)
+        , glm::vec2(0.0f, 1.0f)
 
         , glm::vec2(0.0f, 1.0f)
         , glm::vec2(0.0f, 0.0f)
         , glm::vec2(1.0f, 1.0f)
 
         , glm::vec2(0.0f, 0.0f)
-        , glm::vec2(1.0f, 1.0f)
         , glm::vec2(1.0f, 0.0f)
+        , glm::vec2(1.0f, 1.0f)
     } };
 
     // Create drawable
