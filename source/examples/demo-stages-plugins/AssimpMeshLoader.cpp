@@ -170,6 +170,7 @@ Drawable * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
     globjects::Buffer * vertexBuffer = new globjects::Buffer;
     geometry->setBuffer(0, vertexBuffer);
     geometry->setData(0, std::move(vertices), gl::GL_STATIC_DRAW);
+    geometry->bindAttribute(0, 0);
     geometry->setAttributeBindingBuffer(0, 0, 0, sizeof(glm::vec3));
     geometry->setAttributeBindingFormat(0, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
     geometry->enableAttributeBinding(0);
@@ -187,8 +188,9 @@ Drawable * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
         globjects::Buffer * normalBuffer = new globjects::Buffer;
         geometry->setBuffer(1, normalBuffer);
         geometry->setData(1, std::move(normals), gl::GL_STATIC_DRAW);
-        geometry->setAttributeBindingFormat(1, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
+        geometry->bindAttribute(1, 1);
         geometry->setAttributeBindingBuffer(1, 1, 0, sizeof(glm::vec3));
+        geometry->setAttributeBindingFormat(1, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
         geometry->enableAttributeBinding(1);
     }
 
@@ -205,8 +207,9 @@ Drawable * AssimpMeshLoader::convertGeometry(const aiMesh * mesh) const
         globjects::Buffer * texCoordBuffer = new globjects::Buffer;
         geometry->setBuffer(2, texCoordBuffer);
         geometry->setData(2, std::move(textureCoordinates), gl::GL_STATIC_DRAW);
-        geometry->setAttributeBindingFormat(2, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
+        geometry->bindAttribute(2, 2);
         geometry->setAttributeBindingBuffer(2, 2, 0, sizeof(glm::vec3));
+        geometry->setAttributeBindingFormat(2, 3, gl::GL_FLOAT, gl::GL_FALSE, 0);
         geometry->enableAttributeBinding(2);
     }
 

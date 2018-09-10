@@ -49,8 +49,6 @@ void GlyphSequenceDemoStage::onProcess()
         m_sequences.front().setText(text);
     }
 
-    sequences.setValue(&m_sequences);
-
     if (font.value() == nullptr)
     {
         return;
@@ -58,10 +56,13 @@ void GlyphSequenceDemoStage::onProcess()
 
     m_sequences.front().setWordWrap(wordWrap.value());
     m_sequences.front().setLineWidth(scaledLineWidth);
+    m_sequences.front().setFontSize(scaledFontSize);
+    m_sequences.front().setFontFace(**font);
     m_sequences.front().setAlignment(alignment.value());
     m_sequences.front().setLineAnchor(lineAnchor.value());
-    m_sequences.front().setFontSize(scaledFontSize);
-    m_sequences.front().setFontFace(*font.value());
+
     m_sequences.front().setTransform2D(origin.value(), glm::uvec2{ viewport->z, viewport->w }, pixelPerInch.value());
     m_sequences.front().setMargins(margins.value());
+
+    sequences.setValue(&m_sequences);
 }

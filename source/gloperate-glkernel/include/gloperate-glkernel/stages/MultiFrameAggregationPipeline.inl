@@ -11,3 +11,4 @@ gloperate::Input<T> * MultiFrameAggregationPipeline::restartAggregationOn(gloper
 
 
 } // namespace gloperate_glkernel
+

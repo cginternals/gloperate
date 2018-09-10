@@ -78,16 +78,16 @@ ShaderDemoPipeline::~ShaderDemoPipeline()
 
 void ShaderDemoPipeline::onContextInit(gloperate::AbstractGLContext * context)
 {
+    Pipeline::onContextInit(context);
+
     m_quad = cppassist::make_unique<gloperate::Quad>();
 
     m_renderPassStage->drawable = m_quad.get();
-
-    Pipeline::onContextInit(context);
 }
 
 void ShaderDemoPipeline::onContextDeinit(gloperate::AbstractGLContext *context)
 {
-    Pipeline::onContextDeinit(context);
-
     m_quad.reset();
+
+    Pipeline::onContextDeinit(context);
 }

@@ -80,6 +80,10 @@ public:
 
 
 public:
+    /**
+    *  @brief
+    *    Let a slot cause the aggregation to restart, when it's value changes.
+    */
     template <typename T>
     gloperate::Input<T> * restartAggregationOn(gloperate::Slot<T> * slot);
 
@@ -117,5 +121,6 @@ protected:
 
 
 } // namespace gloperate_glkernel
+
 
 #include <gloperate-glkernel/stages/MultiFrameAggregationPipeline.inl>

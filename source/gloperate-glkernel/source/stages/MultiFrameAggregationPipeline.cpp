@@ -42,8 +42,8 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     addStage(m_colorRenderTargetStage.get());
     m_colorRenderTargetStage->size << canvasInterface.viewport;
     m_colorRenderTargetStage->format.setValue(gl::GL_RGBA);
-    m_colorRenderTargetStage->internalFormat.setValue(gl::GL_RGBA8);
-    m_colorRenderTargetStage->type.setValue(gl::GL_INT);
+    m_colorRenderTargetStage->internalFormat.setValue(gl::GL_RGBA32F);
+    m_colorRenderTargetStage->type.setValue(gl::GL_FLOAT);
 
     addStage(m_aggregationRenderTargetStage.get());
     m_aggregationRenderTargetStage->size << canvasInterface.viewport;
@@ -56,6 +56,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     m_depthStencilRenderTargetStage->internalFormat.setValue(gl::GL_DEPTH24_STENCIL8);
 
     addStage(m_controlStage.get());
+    m_controlStage->timeDelta << canvasInterface.timeDelta;
     m_controlStage->frameNumber << canvasInterface.frameCounter;
     m_controlStage->multiFrameCount << multiFrameCount;
     m_controlStage->viewport << canvasInterface.viewport;
@@ -105,6 +106,16 @@ void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
     auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
     (*slotViewport) << canvasInterface.viewport;
 
+    // Promote timeDelta, if applicable
+    auto slotTimeDelta = m_renderStage->findInput<float>([](Input<float>* input) { return input->name() == "timeDelta"; });
+    if (slotTimeDelta)
+        (*slotTimeDelta) << canvasInterface.timeDelta;
+
+    // Provide current frame as frame count
+    auto slotFrameCount = m_renderStage->findInput<int>([](Input<int>* input) { return input->name() == "frameCounter"; });
+    if (slotFrameCount)
+        (*slotFrameCount) << m_controlStage->currentFrame;
+
     // Update render stage input render targets
     m_renderStage->forAllInputs<gloperate::ColorRenderTarget *>([this](Input<gloperate::ColorRenderTarget *> * input) {
         (*input) << m_colorRenderTargetStage->colorRenderTarget;
@@ -125,14 +136,6 @@ void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
     if (slotColorRenderTarget)
     {
         m_framePreparationStage->intermediateRenderTarget << (*slotColorRenderTarget);
-    }
-
-
-    // Connect other inputs if present
-    auto slotFrameCounter = dynamic_cast<Input<int>*>(m_renderStage->input("frameCounter"));
-    if (slotFrameCounter)
-    {
-        *slotFrameCounter << m_controlStage->currentFrame;
     }
 }
 

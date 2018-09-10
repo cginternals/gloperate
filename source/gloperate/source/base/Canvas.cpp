@@ -112,7 +112,7 @@ Stage * Canvas::renderStage()
 void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 {
     // Save old stage
-    m_oldStage = std::unique_ptr<Stage>(m_renderStage.release());
+    m_oldStage = std::move(m_renderStage);
 
     // Set stage
     m_renderStage = std::move(stage);
@@ -172,10 +172,12 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
 
         m_openGLContext = context;
 
-        if (m_renderStage)
+        // Initialization happens later during render
+        /*if (m_renderStage)
         {
             m_renderStage->initContext(m_openGLContext);
-        }
+        }*/
+        m_replaceStage = true;
 
         m_blitStage->initContext(m_openGLContext);
     }

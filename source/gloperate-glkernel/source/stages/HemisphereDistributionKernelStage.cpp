@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include <glm/vec3.hpp>
+#include <glm/gtc/random.hpp>
 
 #include <glbinding/gl/enum.h>
 
@@ -13,6 +14,7 @@
 #include <glkernel/sample.h>
 #include <glkernel/scale.h>
 #include <glkernel/sort.h>
+#include <glkernel/shuffle.h>
 
 
 namespace gloperate_glkernel
@@ -76,7 +78,12 @@ void HemisphereDistributionKernelStage::resizeKernel()
 void HemisphereDistributionKernelStage::regenerateKernel()
 {
     glkernel::sample::hammersley_sphere(m_kernel);
-    glkernel::sort::distance(m_kernel, glm::vec3(0.0f, 0.0f, 1.0f));
+
+    glkernel::shuffle::random(m_kernel);
+
+    std::transform(m_kernel.begin(), m_kernel.end(), m_kernel.begin(), [](const glm::vec3 & v){
+        return v * glm::linearRand(0.1f, 1.0f);
+    });
 }
 
 
