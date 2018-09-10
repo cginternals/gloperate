@@ -17,8 +17,6 @@
 
 #include <gloperate-qtquick/QmlScriptContext.h>
 
-#include <cppassist/logging/logging.h>
-
 
 namespace gloperate_qtquick
 {
@@ -87,8 +85,6 @@ Application::Application(int & argc, char ** argv)
     );
 
     m_timer.start(5);
-
-    // cppassist::setVerbosityLevel(7);
 }
 
 Application::~Application()
