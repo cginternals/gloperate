@@ -53,12 +53,30 @@ public:
 
     /**
     *  @brief
+    *    Set view matrix
+    *
+    *  @param[in] matrix
+    *    View matrix
+    */
+    void setViewMatrix(const glm::mat4 & matrix);
+
+    /**
+    *  @brief
     *    Get projection matrix
     *
     *  @return
     *    Projection matrix
     */
     const glm::mat4 & projectionMatrix() const;
+
+    /**
+    *  @brief
+    *    Set projection matrix
+    *
+    *  @param[in] matrix
+    *    Projection matrix
+    */
+    void setProjectionMatrix(const glm::mat4 & matrix);
 
     /**
     *  @brief
@@ -147,6 +165,40 @@ public:
     *    Far plane
     */
     void perspective(float fovy, const glm::ivec2 & viewport, float zNear, float zFar);
+
+    /**
+    *  @brief
+    *    Set a orthogonal projection matrix
+    *
+    *  @param[in] left
+    *    Left border of viewbox
+    *  @param[in] right
+    *    Right border of viewbox
+    *  @param[in] top
+    *    Top border of viewbox
+    *  @param[in] bottom
+    *    Bottom border of viewbox
+    *  @param[in] zNear
+    *    Near plane
+    *  @param[in] zFar
+    *    Far plane
+    */
+    void ortho(float left, float right, float top, float bottom, float zNear, float zFar);
+
+    /**
+    *  @brief
+    *    Set a orthogonal projection matrix
+    *
+    *  @param[in] fovy
+    *    Vertical angle
+    *  @param[in] ratio
+    *    Aspect ratio
+    *  @param[in] zNear
+    *    Near plane
+    *  @param[in] zFar
+    *    Far plane
+    */
+    void ortho(float fovy, float aspect, float zNear, float zFar);
 
     /**
     *  @brief

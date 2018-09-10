@@ -25,21 +25,27 @@ Camera::~Camera()
 
 void Camera::lookAt(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & up)
 {
-    m_viewMatrix = glm::lookAt(eye, center, up);
-
-    update();
+    setViewMatrix(glm::lookAt(eye, center, up));
 }
 
 void Camera::perspective(float fovy, float ratio, float zNear, float zFar)
 {
-    m_projectionMatrix = glm::perspective(fovy, ratio, zNear, zFar);
-
-    update();
+    setProjectionMatrix(glm::perspective(fovy, ratio, zNear, zFar));
 }
 
 void Camera::perspective(float fovy, const ivec2 &viewport, float zNear, float zFar)
 {
-    perspective(fovy, glm::max(float(viewport.x) / viewport.y, 1.0f), zNear, zFar);
+    setProjectionMatrix(glm::perspective(fovy, glm::max(float(viewport.x) / viewport.y, 1.0f), zNear, zFar));
+}
+
+void Camera::ortho(float left, float right, float top, float bottom, float zNear, float zFar)
+{
+    setProjectionMatrix(glm::ortho(left, right, bottom, bottom, zNear, zFar));
+}
+
+void Camera::ortho(float fovy, float aspect, float zNear, float zFar)
+{
+    setProjectionMatrix(glm::ortho(-fovy * aspect, fovy * aspect, -fovy, fovy, zNear, zFar));
 }
 
 void Camera::update() const
@@ -54,9 +60,23 @@ const mat4 & Camera::viewMatrix() const
     return m_viewMatrix;
 }
 
+void Camera::setViewMatrix(const glm::mat4 & matrix)
+{
+    m_viewMatrix = matrix;
+
+    update();
+}
+
 const mat4 & Camera::projectionMatrix() const
 {
     return m_projectionMatrix;
+}
+
+void Camera::setProjectionMatrix(const glm::mat4 & matrix)
+{
+    m_projectionMatrix = matrix;
+
+    update();
 }
 
 const mat4 & Camera::viewProjectionMatrix() const

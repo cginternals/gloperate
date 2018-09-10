@@ -3,6 +3,8 @@
 
 #include <cppassist/fs/FilePath.h>
 
+#include <iostream>
+
 #include <cpplocate/cpplocate.h>
 
 
@@ -43,6 +45,8 @@ const std::string & dataPath()
 const std::string & pluginPath()
 {
     static const auto path = determinePluginPath();
+
+    std::cout << "Plugin path: " << path << std::endl;
 
     return path;
 }
