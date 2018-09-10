@@ -21,8 +21,6 @@ MultiFrameControlStage::MultiFrameControlStage(gloperate::Environment * environm
 , aggregationFactor("aggregationFactor", this)
 , m_currentFrame(0)
 {
-    // TODO: remove
-    setAlwaysProcessed(true);
 }
 
 MultiFrameControlStage::~MultiFrameControlStage()
@@ -40,7 +38,6 @@ void MultiFrameControlStage::onProcess()
     else
     {
         aggregationFactor.setValue(0.0f);
-        setAlwaysProcessed(false);
     }
 }
 
@@ -49,7 +46,6 @@ void MultiFrameControlStage::onInputValueChanged(gloperate::AbstractSlot * slot)
     if (slot != &frameNumber && slot != &timeDelta)
     {
         m_currentFrame = 0;
-        setAlwaysProcessed(true);
     }
 
     Stage::onInputValueChanged(slot);

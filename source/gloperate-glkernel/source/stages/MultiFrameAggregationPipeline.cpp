@@ -56,6 +56,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     m_depthStencilRenderTargetStage->internalFormat.setValue(gl::GL_DEPTH24_STENCIL8);
 
     addStage(m_controlStage.get());
+    m_controlStage->timeDelta << canvasInterface.timeDelta;
     m_controlStage->frameNumber << canvasInterface.frameCounter;
     m_controlStage->multiFrameCount << multiFrameCount;
     m_controlStage->viewport << canvasInterface.viewport;
