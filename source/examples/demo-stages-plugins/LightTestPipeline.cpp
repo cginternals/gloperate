@@ -134,19 +134,19 @@ LightTestPipeline::~LightTestPipeline()
 
 void LightTestPipeline::onContextInit(gloperate::AbstractGLContext * context)
 {
+    Pipeline::onContextInit(context);
+
     const auto dataFolderPath = gloperate::dataPath();
     m_lightProcessingString        = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing.glsl"));
     m_lightProcessingDiffuseString = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_diffuse.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_diffuse.glsl"));
     m_lightProcessingPhongString   = globjects::NamedString::create("/gloperate/shaders/lighting/lightprocessing_phong.glsl", new globjects::File(dataFolderPath + "/gloperate/shaders/lighting/lightprocessing_phong.glsl"));
-
-    Pipeline::onContextInit(context);
 }
 
 void LightTestPipeline::onContextDeinit(gloperate::AbstractGLContext * context)
 {
-    Pipeline::onContextDeinit(context);
-
     m_lightProcessingDiffuseString.reset();
     m_lightProcessingPhongString.reset();
     m_lightProcessingString.reset();
+
+    Pipeline::onContextDeinit(context);
 }

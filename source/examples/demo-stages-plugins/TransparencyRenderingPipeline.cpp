@@ -65,6 +65,8 @@ TransparencyRenderingPipeline::~TransparencyRenderingPipeline()
 
 void TransparencyRenderingPipeline::onContextInit(gloperate::AbstractGLContext * context)
 {
+    Pipeline::onContextInit(context);
+
     using vertexData = std::tuple<glm::vec2, glm::vec2, glm::vec4>;
     //                            position   uv         color
 
@@ -117,14 +119,12 @@ void TransparencyRenderingPipeline::onContextInit(gloperate::AbstractGLContext *
     m_renderPassStage->drawable = m_drawable.get();
 
     m_randomIncludeNamedString = globjects::NamedString::create("/gloperate/shaders/util/random.glsl", new globjects::File(gloperate::dataPath() + "/gloperate/shaders/util/random.glsl"));
-
-    Pipeline::onContextInit(context);
 }
 
 void TransparencyRenderingPipeline::onContextDeinit(gloperate::AbstractGLContext * context)
 {
-    Pipeline::onContextDeinit(context);
-
     m_randomIncludeNamedString.reset();
     m_drawable.reset();
+
+    Pipeline::onContextDeinit(context);
 }
