@@ -9,10 +9,10 @@
 
 #include <gloperate/pipeline/Stage.h>
 
-#include <gloperate-text/GlyphSequence.h>
+#include <openll/Label.h>
 
 
-namespace gloperate_text
+namespace openll
 {
     enum class LineAnchor : unsigned char;
     enum class Alignment : unsigned char;
@@ -26,12 +26,12 @@ public:
     Input<std::string> string;
     Input<uint32_t> numChars;
 
-    Input<gloperate_text::FontFace *> font;
+    Input<openll::FontFace *> font;
     Input<float> fontSize;
     Input<bool> wordWrap;
     Input<float> lineWidth;
-    Input<gloperate_text::Alignment> alignment;
-    Input<gloperate_text::LineAnchor> lineAnchor;
+    Input<openll::Alignment> alignment;
+    Input<openll::LineAnchor> lineAnchor;
 
     Input<glm::vec2> origin;
     Input<glm::vec4> margins;
@@ -39,7 +39,7 @@ public:
     Input<float> pixelPerInch;
     Input<glm::vec4> viewport;
 
-    Output<std::vector<gloperate_text::GlyphSequence> *> sequences;
+    Output<std::vector<openll::Label> *> sequences;
 
 
 public:
@@ -51,5 +51,5 @@ protected:
 
 
 protected:
-    std::vector<gloperate_text::GlyphSequence> m_sequences;
+    std::vector<openll::Label> m_sequences;
 };

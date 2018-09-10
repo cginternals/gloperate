@@ -195,7 +195,7 @@ public:
     *    from file. Instead, it resets all settings to default and restores
     *    the config file.
     */
-    bool safeMode();    
+    bool safeMode() const;
 
     /**
     *  @brief

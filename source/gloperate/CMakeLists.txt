@@ -124,6 +124,7 @@ set(headers
     ${include_path}/stages/interfaces/CanvasInterface.h
     ${include_path}/stages/base/FloatSelectionStage.h
     ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/CubeMapProjectionsStage.h
     ${include_path}/stages/base/TextureRenderTargetStage.h
     ${include_path}/stages/base/RenderbufferRenderTargetStage.h
     ${include_path}/stages/base/TextureLoadStage.h
@@ -142,6 +143,8 @@ set(headers
     ${include_path}/stages/base/TextureFromRenderTargetExtractionStage.h
     ${include_path}/stages/base/ViewportScaleStage.h
     ${include_path}/stages/navigation/TrackballStage.h
+    ${include_path}/stages/base/VectorSelectionStage.h
+    ${include_path}/stages/base/VectorSelectionStage.inl
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
 
@@ -225,6 +228,7 @@ set(sources
     ${source_path}/stages/interfaces/CanvasInterface.cpp
     ${source_path}/stages/base/FloatSelectionStage.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/CubeMapProjectionsStage.cpp
     ${source_path}/stages/base/ColorGradientStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp

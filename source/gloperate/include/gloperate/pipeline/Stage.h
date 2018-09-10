@@ -57,7 +57,7 @@ public:
 
     template <typename T>
     using Output = gloperate::Output<T>;
-    
+
     // Helper class for createInput()
     class GLOPERATE_API CreateConnectedInputProxy
     {
@@ -83,11 +83,12 @@ public:
 
 
 public:
-    cppexpose::Signal<AbstractSlot *> inputAdded;    ///< Called when an input slot has been added
-    cppexpose::Signal<AbstractSlot *> inputRemoved;  ///< Called when an input slot has been removed
-    cppexpose::Signal<AbstractSlot *> outputAdded;   ///< Called when an output slot has been added
-    cppexpose::Signal<AbstractSlot *> outputRemoved; ///< Called when an output slot has been removed
-    cppexpose::Signal<AbstractSlot *> inputChanged;  ///< Called when an input slot has changed its value or options
+    cppexpose::Signal<AbstractSlot *>     inputAdded;    ///< Called when an input slot has been added
+    cppexpose::Signal<AbstractSlot *>     inputRemoved;  ///< Called when an input slot has been removed
+    cppexpose::Signal<AbstractSlot *>     outputAdded;   ///< Called when an output slot has been added
+    cppexpose::Signal<AbstractSlot *>     outputRemoved; ///< Called when an output slot has been removed
+    cppexpose::Signal<AbstractSlot *>     inputChanged;  ///< Called when an input slot has changed its value or options
+    cppexpose::Signal<uint64_t, uint64_t> timeMeasured;  ///< Called when the timing has been measured
 
 
 public:
@@ -380,7 +381,7 @@ public:
     *
     *  @remarks
     *    The operator<< must be called exactly once on the returned proxy object.
-    *    
+    *
     *    createInput("somename") << someOutput; behaves exactly like
     *    createConnectedInput("somename", someOutput);
     */
@@ -652,6 +653,53 @@ public:
     template <typename T>
     void forAllOutputs(std::function<void(gloperate::Output<T> *)> callback);
 
+    /**
+    *  @brief
+    *    Get CPU duration of onProcess in nanoseconds.
+    *
+    *  @return
+    *    duration in nanoseconds
+    *
+    *  @remarks
+    *    To be consistent with 'lastGPUTime', this value is one iteration (i.e. frame) late.
+    */
+    std::uint64_t lastCPUTime() const;
+
+    /**
+    *  @brief
+    *    Get GPU time for GPU commands issued during onProcess in nanoseconds.
+    *
+    *  @return
+    *    duration in nanoseconds
+    *
+    *  @remarks
+    *    Due to the async nature of GPU processing, this value is one iteration (i.e. frame) late.
+    */
+    std::uint64_t lastGPUTime() const;
+
+    /**
+    *  @brief
+    *    Check if time measurements are enabled
+    *
+    *  @return
+    *    'true' if time measurements are enabled, else 'false'
+    */
+    bool timeMeasurement() const;
+
+    /**
+    *  @brief
+    *    Enable or disable time measurement
+    *
+    *  @param[in] enabled
+    *    'true' if enabled, 'false' if disabled
+    *  @param[in] recursive
+    *    If 'true', time measurements are set recursively on all substages
+    *
+    *  @remarks
+    *    Previous measurement values are set to 0.
+    */
+    virtual void setTimeMeasurement(bool enabled, bool recursive = false);
+
 
 protected:
     /**
@@ -782,6 +830,14 @@ protected:
 protected:
     Environment * m_environment;    ///< Gloperate environment to which the stage belongs
     bool          m_alwaysProcess;  ///< Is the stage always processed?
+
+    bool                        m_timeMeasurement;      ///< Status of time measurements for CPU and GPU
+    bool                        m_useQueryPairOne;      ///< Flag indicating which queries are currently used
+    bool                        m_resultAvailable;      ///< Flag indicating whether a measurement from previous frames is available for report
+    std::array<unsigned int, 4> m_queries;              ///< OpenGL query objects (front/back; start/end)
+    uint64_t                    m_lastCPUDuration;      ///< Time spent in onProcess last frame (in nanoseconds)
+    uint64_t                    m_currentCPUDuration;   ///< Time spent in onProcess current frame (in nanoseconds)
+    uint64_t                    m_lastGPUDuration;      ///< Time for GPU commands issued during onProcess (in nanoseconds)
 
     std::vector<AbstractSlot *>                     m_inputs;     ///< List of inputs
     std::unordered_map<std::string, AbstractSlot *> m_inputsMap;  ///< Map of names and inputs

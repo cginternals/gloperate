@@ -11,7 +11,7 @@
 #include <gloperate/gloperate-version.h>
 
 
-namespace gloperate_text
+namespace openll
 {
     enum class Alignment : unsigned char;
     enum class LineAnchor : unsigned char;
@@ -48,8 +48,8 @@ public:
     Input<bool> wordWrap;
     Input<float> lineWidth;
 
-    Input<gloperate_text::Alignment> alignment;
-    Input<gloperate_text::LineAnchor> lineAnchor;
+    Input<openll::Alignment> alignment;
+    Input<openll::LineAnchor> lineAnchor;
     Input<bool> optimized;
 
 

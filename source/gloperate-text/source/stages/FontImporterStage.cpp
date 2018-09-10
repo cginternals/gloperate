@@ -4,7 +4,7 @@
 #include <gloperate/base/Environment.h>
 #include <gloperate/base/ResourceManager.h>
 
-#include <gloperate-text/FontFace.h>
+#include <openll/FontFace.h>
 
 
 namespace gloperate_text
@@ -24,7 +24,7 @@ FontImporterStage::~FontImporterStage()
 
 void FontImporterStage::onProcess()
 {
-    auto newFont = std::unique_ptr<FontFace>{ m_environment->resourceManager()->load<FontFace>(fontFilePath.value().path())};
+    auto newFont = std::unique_ptr<openll::FontFace>{ m_environment->resourceManager()->load<openll::FontFace>(fontFilePath.value().path())};
 
     if (newFont)
     {

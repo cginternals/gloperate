@@ -9,23 +9,30 @@
 #include <gloperate-text/gloperate-text_api.h>
 
 
-namespace gloperate_text
+namespace openll
 {
 
 
 class FontFace;
-class GlyphSequence;
+class Label;
 class GlyphVertexCloud;
+
+
+} // namespace openll
+
+
+namespace gloperate_text
+{
 
 
 class GLOPERATE_TEXT_API GlyphPreparationStage : public gloperate::Stage
 {
 public:
-    Input<FontFace *> font;
-    Input<std::vector<GlyphSequence> *> sequences;
+    Input<openll::FontFace *> font;
+    Input<std::vector<openll::Label> *> sequences;
     Input<bool> optimized;
 
-    Output<GlyphVertexCloud *> vertexCloud;
+    Output<openll::GlyphVertexCloud *> vertexCloud;
 
 
 public:
@@ -40,7 +47,7 @@ protected:
 
 
 protected:
-    std::unique_ptr<GlyphVertexCloud> m_vertexCloud;
+    std::unique_ptr<openll::GlyphVertexCloud> m_vertexCloud;
 };
 
 

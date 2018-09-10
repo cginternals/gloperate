@@ -257,7 +257,11 @@ void ClearStage::onProcess()
             auto fbo = renderInterface.obtainFBO(colorAttachmentIndex, renderTarget);
 
             // Clear render target
-            clearValueInput->clear(fbo, colorAttachmentIndex);
+            if (renderTarget->underlyingAttachmentType() == AttachmentType::Color)
+            {
+                fbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
+            }
+            clearValueInput->clear(fbo, 0);
 
             // Count color attachments
             if (renderTarget->underlyingAttachmentType() == AttachmentType::Color)

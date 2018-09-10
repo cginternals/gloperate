@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <glbinding/ContextHandle.h>
+#include <glbinding/ProcAddress.h>
 
 #include <gloperate/base/AbstractContext.h>
 #include <gloperate/base/GLContextFormat.h>
@@ -38,21 +38,6 @@ public:
 
     /**
     *  @brief
-    *    Get context handle
-    *
-    *  @return
-    *    OpenGL context handle
-    *
-    *  @remarks
-    *    Note for derived classes:
-    *    The data member m_handle has to be initialized to
-    *    the correct value when creating a context.
-    *    It is not retrieved automatically by this function.
-    */
-    glbinding::ContextHandle handle() const;
-
-    /**
-    *  @brief
     *    Get context format
     *
     *  @return
@@ -72,15 +57,17 @@ public:
     *  @brief
     *    Initialize glbinding and globjects in the current context
     *
+    *  @param[in] functionPointerResolver
+    *    Function that resolves OpenGL function names
+    *
     *  @remarks
     *    Should only be called once per context
     */
-    static void initializeBindings();
+    static void initializeBindings(glbinding::GetProcAddress functionPointerResolver);
 
 
 protected:
-    glbinding::ContextHandle m_handle; ///< OpenGL context handle
-    GLContextFormat          m_format; ///< OpenGL context format
+    GLContextFormat m_format; ///< OpenGL context format
 };
 
 

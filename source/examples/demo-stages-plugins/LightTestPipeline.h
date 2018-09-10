@@ -55,23 +55,23 @@ public:
     gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<float> glossiness;                    ///< Glossiness of the cube (0.0 to 1.0)
+    Input<float> glossiness;                ///< Glossiness of the cube (0.0 to 1.0)
 
-    Input<gloperate::LightType> lightType1;     ///< Type of 1st light
-    Input<gloperate::LightType> lightType2;     ///< Type of 2nd light
-    Input<gloperate::LightType> lightType3;     ///< Type of 3rd light
+    Input<int> lightType1;              ///< Type of 1st light
+    Input<int> lightType2;              ///< Type of 2nd light
+    Input<int> lightType3;              ///< Type of 3rd light
 
-    Input<gloperate::Color> lightColor1;        ///< Color of 1st light
-    Input<gloperate::Color> lightColor2;        ///< Color of 2nd light
-    Input<gloperate::Color> lightColor3;        ///< Color of 3rd light
+    Input<glm::vec3> lightColor1;       ///< Color of 1st light
+    Input<glm::vec3> lightColor2;       ///< Color of 2nd light
+    Input<glm::vec3> lightColor3;       ///< Color of 3rd light
 
-    Input<glm::vec3> lightPos1;                 ///< Position/Direction of 1st light
-    Input<glm::vec3> lightPos2;                 ///< Position/Direction of 2nd light
-    Input<glm::vec3> lightPos3;                 ///< Position/Direction of 3rd light
+    Input<glm::vec3> lightPos1;         ///< Position/Direction of 1st light
+    Input<glm::vec3> lightPos2;         ///< Position/Direction of 2nd light
+    Input<glm::vec3> lightPos3;         ///< Position/Direction of 3rd light
 
-    Input<glm::vec3> lightAttenuation1;         ///< Attenuation coefficients of 1st light
-    Input<glm::vec3> lightAttenuation2;         ///< Attenuation coefficients of 2nd light
-    Input<glm::vec3> lightAttenuation3;         ///< Attenuation coefficients of 3rd light
+    Input<glm::vec3> lightAttenuation1; ///< Attenuation coefficients of 1st light
+    Input<glm::vec3> lightAttenuation2; ///< Attenuation coefficients of 2nd light
+    Input<glm::vec3> lightAttenuation3; ///< Attenuation coefficients of 3rd light
 
 
 public:

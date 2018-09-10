@@ -9,6 +9,7 @@ find_package(globjects REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cpplocate REQUIRED)
+find_package(openll    REQUIRED)
 
 
 # 
@@ -38,30 +39,14 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/Alignment.h
-    ${include_path}/LineAnchor.h
-    ${include_path}/FontFace.h
     ${include_path}/FontLoader.h
-    ${include_path}/Glyph.h
-    ${include_path}/GlyphRenderer.h
-    ${include_path}/GlyphSequence.h
-    ${include_path}/GlyphVertexCloud.h
-    ${include_path}/Typesetter.h
- 
     ${include_path}/stages/FontImporterStage.h
     ${include_path}/stages/GlyphPreparationStage.h
     ${include_path}/stages/GlyphRenderStage.h
 )
 
 set(sources
-    ${source_path}/FontFace.cpp
     ${source_path}/FontLoader.cpp
-    ${source_path}/Glyph.cpp
-    ${source_path}/GlyphRenderer.cpp
-    ${source_path}/GlyphSequence.cpp
-    ${source_path}/GlyphVertexCloud.cpp
-    ${source_path}/Typesetter.cpp
-
     ${source_path}/stages/FontImporterStage.cpp
     ${source_path}/stages/GlyphPreparationStage.cpp
     ${source_path}/stages/GlyphRenderStage.cpp
@@ -152,6 +137,7 @@ target_link_libraries(${target}
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
+    openll::openll
 
     INTERFACE
 )
