@@ -35,12 +35,8 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
         {"asSpinBox", true}
     });
 
-    addStage(m_multiFramePipeline.get());
-
-    m_multiFramePipeline->addStage(m_renderingPipeline.get());
     m_renderingPipeline->multiFrameCount << multiFrameCount;
 
-    addStage(m_trackballStage.get());
     m_trackballStage->viewport << canvasInterface.viewport;
 
     // Force m_trackballStage to be sorted in front of m_multiFramePipeline
@@ -77,7 +73,7 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
     ssaoRadius.setOption("updateOnDrag", true);
     transparencyAlpha.setOption("updateOnDrag", true);
 
-    *m_multiFramePipeline->canvasInterface.colorRenderTargetInput(0) << *createInput<gloperate::ColorRenderTarget *>("Color");
+    m_multiFramePipeline->aggregationTarget << *createInput<gloperate::ColorRenderTarget *>("Color");
 
     m_multiFramePipeline->canvasInterface.viewport << canvasInterface.viewport;
     m_multiFramePipeline->canvasInterface.backgroundColor << canvasInterface.backgroundColor;
@@ -86,7 +82,12 @@ DemoMultiFrameEffectsPipeline::DemoMultiFrameEffectsPipeline(gloperate::Environm
     m_multiFramePipeline->multiFrameCount << multiFrameCount;
 
     // Outputs
-    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_multiFramePipeline->canvasInterface.colorRenderTargetOutput(0);
+    *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << m_multiFramePipeline->aggregatedTarget;
+    // *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *m_renderingPipeline->canvasInterface.colorRenderTargetOutput(0);
+
+    addStage(m_multiFramePipeline.get());
+    m_multiFramePipeline->addStage(m_renderingPipeline.get());
+    addStage(m_trackballStage.get());
 }
 
 DemoMultiFrameEffectsPipeline::~DemoMultiFrameEffectsPipeline()

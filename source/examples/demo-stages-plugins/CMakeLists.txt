@@ -12,6 +12,7 @@ find_package(cpplocate REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(glkernel  REQUIRED)
+find_package(openll    REQUIRED)
 
 
 #
@@ -146,6 +147,7 @@ target_link_libraries(${target}
     glbinding::glbinding
     globjects::globjects
     glkernel::glkernel
+    openll::openll
 
     PUBLIC
     ${DEFAULT_LIBRARIES}

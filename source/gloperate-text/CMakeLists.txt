@@ -133,6 +133,7 @@ target_link_libraries(${target}
     cppassist::cppassist
     glbinding::glbinding
     globjects::globjects
+    openll::openll
     ${META_PROJECT_NAME}::gloperate
 
     PUBLIC

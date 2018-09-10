@@ -184,21 +184,21 @@ MultiFrameRenderingPipeline::~MultiFrameRenderingPipeline()
 
 void MultiFrameRenderingPipeline::onContextInit(gloperate::AbstractGLContext * context)
 {
+    Pipeline::onContextInit(context);
+
     m_ssaoNamedString   = globjects::NamedString::create("/gloperate/shaders/lighting/ssao.glsl", new globjects::File(gloperate::dataPath() + "/gloperate/shaders/lighting/ssao.glsl"));
     m_randomNamedString = globjects::NamedString::create("/gloperate/shaders/util/random.glsl",   new globjects::File(gloperate::dataPath() + "/gloperate/shaders/util/random.glsl"));
     m_quad = cppassist::make_unique<gloperate::Quad>();
 
     m_postprocessingPassStage->drawable = m_quad.get();
-
-    Pipeline::onContextInit(context);
 }
 
 void MultiFrameRenderingPipeline::onContextDeinit(gloperate::AbstractGLContext * context)
 {
-    Pipeline::onContextDeinit(context);
-
     m_quad.reset();
     m_randomNamedString.reset();
     m_ssaoNamedString.reset();
     m_camera.reset();
+
+    Pipeline::onContextDeinit(context);
 }

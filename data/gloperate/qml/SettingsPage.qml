@@ -74,7 +74,7 @@ Item
 
                 ComboBox
                 {
-                    model: [ 'Critical', 'Error', 'Warning', 'Message', 'Debug', 'Debug (2)', 'Debug (3)', 'Debug (4)' ]
+                    model: [ 'Critical', 'Error', 'Warning', 'Message', 'Debug', 'Debug (2)', 'Debug (3)', 'Debug (4)', 'Debug (5)' ]
 
                     currentIndex: settings.logLevel
 

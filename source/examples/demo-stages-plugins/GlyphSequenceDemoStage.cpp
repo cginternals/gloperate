@@ -31,7 +31,7 @@ void GlyphSequenceDemoStage::onProcess()
 
     // TODO: property editor has a fixed range [0, 2 * PI], remove scaling once this is fixed!
     const auto scaledFontSize = fontSize.value() * 16.0f;
-    const auto scaledLineWidth = lineWidth.value() * 160.0f;
+    const auto scaledLineWidth = lineWidth.value() * 160.0f * 7;
 
     if (numChars.value() == 0)
     {
@@ -49,6 +49,11 @@ void GlyphSequenceDemoStage::onProcess()
         m_sequences.front().setText(text);
     }
 
+    if (font.value() == nullptr)
+    {
+        return;
+    }
+
     m_sequences.front().setWordWrap(wordWrap.value());
     m_sequences.front().setLineWidth(scaledLineWidth);
     m_sequences.front().setFontSize(scaledFontSize);
@@ -56,7 +61,7 @@ void GlyphSequenceDemoStage::onProcess()
     m_sequences.front().setAlignment(alignment.value());
     m_sequences.front().setLineAnchor(lineAnchor.value());
 
-    m_sequences.front().setTransform2D(origin.value(), { viewport->z, viewport->w }, pixelPerInch.value());
+    m_sequences.front().setTransform2D(origin.value(), glm::uvec2{ viewport->z, viewport->w }, pixelPerInch.value());
     m_sequences.front().setMargins(margins.value());
 
     sequences.setValue(&m_sequences);

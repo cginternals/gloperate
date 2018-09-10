@@ -524,6 +524,11 @@ globjects::Framebuffer * RenderInterface::obtainFBO(size_t index, AbstractRender
 
 globjects::Framebuffer * RenderInterface::obtainFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO)
 {
+    if (renderTarget == nullptr)
+    {
+        return nullptr;
+    }
+
     auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
 
     if (renderTarget->underlyingAttachmentType() == AttachmentType::Depth)

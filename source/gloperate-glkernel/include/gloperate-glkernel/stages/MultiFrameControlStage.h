@@ -38,6 +38,8 @@ public:
 
 public:
     // Inputs
+    Input<float>     timeDelta;         ///< Passed time in seconds since last frame
+    Input<glm::vec4> viewport;          ///< the viewport to restart aggregation
     Input<int>       frameNumber;       ///< Total frame count
     Input<int>       multiFrameCount;   ///< Maximum number of frames to aggregate
 

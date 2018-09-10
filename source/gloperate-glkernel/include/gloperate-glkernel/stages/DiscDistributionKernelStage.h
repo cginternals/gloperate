@@ -42,13 +42,13 @@ public:
 
 public:
     // Inputs
-    gloperate::Input<int> kernelSize;                   ///< Number of values to generate
-    gloperate::Input<float> radius;                     ///< Radius of the distribution disc
-    gloperate::Input<bool> regenerate;                  ///< Regenerate kernel?
+    Input<int> kernelSize;                   ///< Number of values to generate
+    Input<float> radius;                     ///< Radius of the distribution disc
+    Input<bool> regenerate;                  ///< Regenerate kernel?
 
     // Outputs
-    gloperate::Output<std::vector<glm::vec2> *> kernel; ///< Pointer to std::vector with kernel values
-    gloperate::Output<globjects::Texture *> texture;    ///< Pointer to globjects::Texture with kernel values
+    Output<std::vector<glm::vec2> *> kernel; ///< Pointer to std::vector with kernel values
+    Output<globjects::Texture *> texture;    ///< Pointer to globjects::Texture with kernel values
 
 
 public:

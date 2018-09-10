@@ -13,12 +13,15 @@ CPPEXPOSE_COMPONENT(MultiFrameControlStage, gloperate::Stage)
 
 MultiFrameControlStage::MultiFrameControlStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
+, timeDelta("timeDelta", this)
+, viewport("viewport", this)
 , frameNumber("frameNumber", this)
 , multiFrameCount("multiFrameCount", this)
 , currentFrame("currentFrame", this)
 , aggregationFactor("aggregationFactor", this)
 , m_currentFrame(0)
 {
+    // TODO: remove
     setAlwaysProcessed(true);
 }
 
@@ -28,23 +31,22 @@ MultiFrameControlStage::~MultiFrameControlStage()
 
 void MultiFrameControlStage::onProcess()
 {
-    m_currentFrame++;
-    currentFrame = m_currentFrame;
-
-    if (m_currentFrame <= *multiFrameCount)
+    if (m_currentFrame < *multiFrameCount)
     {
-        aggregationFactor = 1.0f/m_currentFrame;
+        currentFrame.setValue(m_currentFrame);
+        aggregationFactor.setValue(1.0f/(m_currentFrame+1));
+        ++m_currentFrame;
     }
     else
     {
-        aggregationFactor = 0.0f;
+        aggregationFactor.setValue(0.0f);
         setAlwaysProcessed(false);
     }
 }
 
 void MultiFrameControlStage::onInputValueChanged(gloperate::AbstractSlot * slot)
 {
-    if (slot != &frameNumber)
+    if (slot != &frameNumber && slot != &timeDelta)
     {
         m_currentFrame = 0;
         setAlwaysProcessed(true);
