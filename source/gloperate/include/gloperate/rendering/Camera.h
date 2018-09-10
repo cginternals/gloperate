@@ -15,15 +15,13 @@ namespace gloperate
 
 /**
 *  @brief
-*    Represents matrices for a typical 3D perspective look-at camera.
+*    Represents matrices for a camera within a virtual scene.
 *
-*    A camera is specified via near, far, fovy, as well as an eye, a center, and an up 
-*    vector. Camera itself does not use any OpenGL calls, but merely provides lazy
-*    math to all common matrices required for affine transformation of a scene,
-*    namely the view and projection matrices, their combination and all related
-*    inverses (as well as a normal matrix).
-*    The class relies on lazy computation of all matrices, causing less recomputations
-*    of, e.g., matrices and inverse matrices requested on an irregular basis.
+*    The camera provides access to view and projection matrices that can be configured
+*    as well as accessors for derived inverted matrices, their products and a
+*    normal matrix.
+*
+*    For convenience, setters that wrap glm camera functions are provided.
 */
 class GLOPERATE_API Camera
 {
@@ -35,184 +33,14 @@ public:
     /**
     *  @brief
     *    Constructor
-    *
-    *  @param[in] eye
-    *    Camera position
-    *  @param[in] center
-    *    Look-at position
-    *  @param[in] up
-    *    Up-vector
     */
-    Camera(const glm::vec3 & eye    = glm::vec3(0.0, 0.0, 1.0),
-           const glm::vec3 & center = glm::vec3(0.0, 0.0, 0.0),
-           const glm::vec3 & up     = glm::vec3(0.0, 1.0, 0.0) );
+    Camera();
 
     /**
     *  @brief
     *    Destructor
     */
     virtual ~Camera();
-
-    /**
-    *  @brief
-    *    Check if camera is updated automatically
-    *
-    *  @return
-    *    'true' if camera is updated automatically, else 'false'
-    */
-    bool autoUpdating() const;
-
-    /**
-    *  @brief
-    *    Set if camera is updated automatically
-    *
-    *  @param[in] autoUpdate
-    *    'true' if camera is updated automatically, else 'false'
-    */
-    void setAutoUpdating(bool autoUpdate);
-
-    /**
-    *  @brief
-    *    Update camera matrices
-    */
-    void update() const;
-
-    /**
-    *  @brief
-    *    Get camera (eye) position
-    *
-    *  @return
-    *    Camera position
-    */
-    const glm::vec3 & eye() const;
-
-    /**
-    *  @brief
-    *    Set camera (eye) position
-    *
-    *  @param[in] eye
-    *    Camera position
-    */
-    void setEye(const glm::vec3 & eye);
-
-    /**
-    *  @brief
-    *    Get look-at (center) position
-    *
-    *  @return
-    *    Look-at position
-    */
-    const glm::vec3 & center() const;
-
-    /**
-    *  @brief
-    *    Set look-at (center) position
-    *
-    *  @param[in] center
-    *    Look-at position
-    */
-    void setCenter(const glm::vec3 & center);
-
-    /**
-    *  @brief
-    *    Get up-vector
-    *
-    *  @return
-    *    Up-vector
-    */
-    const glm::vec3 & up() const;
-
-    /**
-    *  @brief
-    *    Set up-vector
-    *
-    *  @param[in] up
-    *    Up-vector
-    */
-    void setUp(const glm::vec3 & up);
-
-    /**
-    *  @brief
-    *    Get near plane
-    *
-    *  @return
-    *    Near plane
-    */
-    float zNear() const;
-
-    /**
-    *  @brief
-    *    Set near plane
-    *
-    *  @param[in] zNear
-    *    Near plane
-    */
-    void setZNear(float zNear);
-
-    /**
-    *  @brief
-    *    Get far plane
-    *
-    *  @return
-    *    Far plane
-    */
-    float zFar() const;
-
-    /**
-    *  @brief
-    *    Set far plane
-    *
-    *  @param[in] zFar
-    *    Far plane
-    */
-    void setZFar(float zFar);
-
-    /**
-    *  @brief
-    *    Get field-of-view angle (Y)
-    *
-    *  @return
-    *    Angle
-    */
-    float fovy() const;
-
-    /**
-    *  @brief
-    *    Set field-of-view angle (Y)
-    *
-    *  @param[in] fovy
-    *    Angle
-    */
-    void setFovy(float fovy);
-
-    /**
-    *  @brief
-    *    Get aspect ratio (width / height)
-    *
-    *  @return
-    *    Aspect ratio
-    */
-    float aspectRatio() const;
-
-    /**
-    *  @brief
-    *    Set aspect ratio (width / height)
-    *
-    *  @param[in] ratio
-    *    Aspect ratio
-    */
-    void setAspectRatio(float ratio);
-
-    /**
-    *  @brief
-    *    Set aspect ratio by providing a viewport
-    *
-    *  @param[in] viewport
-    *    Viewport size
-    */
-    void setAspectRatio(const glm::ivec2 & viewport);
-
-    // lazy matrices getters
 
     /**
     *  @brief
@@ -279,12 +107,70 @@ public:
 
     /**
     *  @brief
+    *    Set a look-at view matrix
+    *
+    *  @param[in] eye
+    *    Camera position
+    *  @param[in] center
+    *    Look-at position
+    *  @return
+    *    Up-vector
+    */
+    void lookAt(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & up);
+
+    /**
+    *  @brief
+    *    Set a perspective projection matrix
+    *
+    *  @param[in] fovy
+    *    Vertical angle
+    *  @param[in] ratio
+    *    Aspect ratio
+    *  @param[in] zNear
+    *    Near plane
+    *  @param[in] zFar
+    *    Far plane
+    */
+    void perspective(float fovy, float ratio, float zNear, float zFar);
+
+    /**
+    *  @brief
+    *    Set a perspective projection matrix
+    *
+    *  @param[in] fovy
+    *    Vertical angle
+    *  @param[in] viewport
+    *    Target viewport, used to derive the aspect ratio
+    *  @param[in] zNear
+    *    Near plane
+    *  @param[in] zFar
+    *    Far plane
+    */
+    void perspective(float fovy, const glm::ivec2 & viewport, float zNear, float zFar);
+
+    /**
+    *  @brief
+    *    Recompute eye from view matrix
+    *
+    *  @return
+    *    The position of the camera in world space
+    */
+    glm::vec3 eyeFromViewMatrix() const;
+
+
+protected:
+    /**
+    *  @brief
+    *    Update camera matrices
+    */
+    void update() const;
+
+    /**
+    *  @brief
     *    Emit signal that camera has been modified
     */
     void changed();
 
-
-protected:
     /**
     *  @brief
     *    Mark data dirty
@@ -305,23 +191,10 @@ protected:
 
 
 protected:
-    // Internal data
-    mutable bool m_dirty; ///< Has the data been changed? If true, matrices will be recalculated
-    bool m_autoUpdate;    ///< 'true' if camera is updated automatically, else 'false'
-
-    // Camera data
-    glm::vec3 m_eye;      ///< Camera position
-    glm::vec3 m_center;   ///< Look-at position
-    glm::vec3 m_up;       ///< Up-vector
-    float     m_fovy;     ///< Field-of-view angle (Y)
-    float     m_aspect;   ///< Aspect ratio (width / height)
-    float     m_zNear;    ///< Near plane
-    float     m_zFar;     ///< Far plane
-
     // Camera matrices
-    gloperate::CachedValue<glm::mat4> m_viewMatrix;                   ///< View matrix
+                           glm::mat4  m_viewMatrix;                   ///< View matrix
+                           glm::mat4  m_projectionMatrix;             ///< Projection matrix
     gloperate::CachedValue<glm::mat4> m_viewInvertedMatrix;           ///< Inverted view matrix
-    gloperate::CachedValue<glm::mat4> m_projectionMatrix;             ///< Projection matrix
     gloperate::CachedValue<glm::mat4> m_projectionInvertedMatrix;     ///< Inverted projection matrix
     gloperate::CachedValue<glm::mat4> m_viewProjectionMatrix;         ///< View-projection matrix
     gloperate::CachedValue<glm::mat4> m_viewProjectionInvertedMatrix; ///< Invertex view-projection matrix

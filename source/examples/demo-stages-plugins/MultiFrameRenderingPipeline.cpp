@@ -59,9 +59,10 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 , m_postprocessingPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment, "PostprocessingPassStage"))
 , m_postprocessingClearStage(cppassist::make_unique<gloperate::ClearStage>(environment, "PostprocessingClearStage"))
 , m_postprocessingRasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment, "PostprocessingRasterizationStage"))
-, m_camera(cppassist::make_unique<gloperate::Camera>(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))
+, m_camera(cppassist::make_unique<gloperate::Camera>())
 {
     camera = m_camera.get();
+    camera->lookAt(glm::vec3(2.0f, 1.0f, 1.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     auto dataPath = gloperate::dataPath();
 

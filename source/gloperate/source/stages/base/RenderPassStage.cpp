@@ -3,6 +3,9 @@
 
 #include <glbinding/gl/enum.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+
 #include <globjects/Program.h>
 #include <globjects/State.h>
 #include <globjects/Texture.h>
@@ -67,41 +70,37 @@ void RenderPassStage::onContextInit(AbstractGLContext *)
 void RenderPassStage::onProcess()
 {
     // Setup render pass geometry and program
-    m_renderPass->setGeometry((*drawable));
-    m_renderPass->setProgram((*program));
+    m_renderPass->setGeometry(*drawable);
+    m_renderPass->setProgram(*program);
 
     // Check if a camera or a model matrix is set
     Camera * camera = (this->camera.isValid() && *this->camera) ? *this->camera : nullptr;
     bool hasModelMatrix = (this->modelMatrix.isValid());
-
-    // Update transformation uniforms
-    if (camera || hasModelMatrix)
-    {
-        // [TODO] Cache these and only recompute them when they have changed
-
-        glm::vec3 eye                       = camera ? camera->eye()              : glm::vec3(0.0f, 0.0f, 0.0f);
-        glm::mat4 viewMatrix                = camera ? camera->viewMatrix()       : glm::mat4(1.0f);
-        glm::mat4 projectionMatrix          = camera ? camera->projectionMatrix() : glm::mat4(1.0f);
-        glm::mat3 normalMatrix              = camera ? camera->normalMatrix()     : glm::mat3(1.0f);
-        glm::mat4 modelMatrix               = hasModelMatrix ? *this->modelMatrix : glm::mat4(1.0f);
-        glm::mat4 viewProjectionMatrix      = projectionMatrix * viewMatrix;
-        glm::mat4 modelViewMatrix           = viewMatrix * modelMatrix;
-        glm::mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
-
-        (*program)->setUniform<glm::vec3>("eye",                       eye);
-        (*program)->setUniform<glm::mat4>("viewProjectionMatrix",      viewProjectionMatrix);
-        (*program)->setUniform<glm::mat4>("viewMatrix",                viewMatrix);
-        (*program)->setUniform<glm::mat4>("projectionMatrix",          projectionMatrix);
-        (*program)->setUniform<glm::mat3>("normalMatrix",              normalMatrix);
-        (*program)->setUniform<glm::mat4>("modelMatrix",               modelMatrix);
-        (*program)->setUniform<glm::mat4>("modelViewMatrix",           modelViewMatrix);
-        (*program)->setUniform<glm::mat4>("modelViewProjectionMatrix", modelViewProjectionMatrix);
-    }
+    const glm::mat4 modelMatrix = hasModelMatrix ? *this->modelMatrix : glm::mat4(1.0f);
 
     if (camera)
     {
-        (*program)->setUniform<float>("farZ", camera->zFar());
-        (*program)->setUniform<float>("nearZ", camera->zNear());
+        (*program)->setUniform<glm::mat4>("viewProjectionMatrix",         camera->viewProjectionMatrix());
+        (*program)->setUniform<glm::mat4>("viewProjectionInvertedMatrix", camera->viewProjectionInvertedMatrix());
+        (*program)->setUniform<glm::mat4>("viewMatrix",                   camera->viewMatrix());
+        (*program)->setUniform<glm::mat4>("viewInvertexMatrix",           camera->viewInvertedMatrix());
+        (*program)->setUniform<glm::mat4>("projectionMatrix",             camera->projectionMatrix());
+        (*program)->setUniform<glm::mat4>("projectionInvertedMatrix",     camera->projectionInvertedMatrix());
+        (*program)->setUniform<glm::mat3>("normalMatrix",                 camera->normalMatrix());
+    }
+
+    if (hasModelMatrix)
+    {
+        (*program)->setUniform<glm::mat4>("modelMatrix", modelMatrix);
+    }
+
+    if (camera && hasModelMatrix)
+    {
+        (*program)->setUniform<glm::mat4>("modelViewProjectionMatrix",         camera->viewProjectionMatrix() * modelMatrix);
+        (*program)->setUniform<glm::mat4>("modelViewProjectionInvertedMatrix", glm::inverse(camera->viewProjectionMatrix() * modelMatrix));
+        (*program)->setUniform<glm::mat4>("modelViewMatrix",                   camera->viewMatrix() * modelMatrix);
+        (*program)->setUniform<glm::mat4>("modelViewInvertexMatrix",           glm::inverse(camera->viewMatrix() * modelMatrix));
+        (*program)->setUniform<glm::mat3>("modelNormalMatrix",                 glm::inverseTranspose(glm::mat3(camera->viewMatrix() * modelMatrix)));
     }
 
     // Update OpenGL states
