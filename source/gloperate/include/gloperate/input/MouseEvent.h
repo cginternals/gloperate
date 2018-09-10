@@ -25,8 +25,10 @@ public:
     *    The current position of the Mouse
     *  @param[in] button
     *    The button that was pressed or released (according to gloperate::MouseButton)
+    *  @param[in] modifiers
+    *    The modifier mask
     */
-    MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, int button = 0);
+    MouseEvent(Type type, AbstractDevice * dispatchingDevice, const glm::ivec2 & pos, int button = 0, int modifiers = 0);
 
     /**
     *  @brief
@@ -40,8 +42,10 @@ public:
     *    The current position of the Mouse
     *  @param[in] wheelDelta
     *    The delta of the mouse wheel
+    *  @param[in] modifiers
+    *    The modifier mask
     */
-    MouseEvent(Type type, AbstractDevice * dispatchingDevice, glm::ivec2 pos, glm::vec2 wheelDelta);
+    MouseEvent(Type type, AbstractDevice * dispatchingDevice, const glm::ivec2 & pos, const glm::vec2 & wheelDelta, int modifiers = 0);
 
     /**
     *  @brief
@@ -50,7 +54,7 @@ public:
     *  @return
     *    The position of the mouse
     */
-    glm::ivec2 pos() const;
+    const glm::ivec2 & pos() const;
 
     /**
     *  @brief
@@ -63,12 +67,21 @@ public:
 
     /**
     *  @brief
+    *    Gets the modifier mask active in this event
+    *
+    *  @return
+    *    The modifier mask with bits set according to gloperate::KeyModifier
+    */
+    int modifiers() const;
+
+    /**
+    *  @brief
     *    Gets the wheelDelta of this event
     *
     *  @return
     *    The wheel delta (most mice only have y)
     */
-    glm::vec2 wheelDelta() const;
+    const glm::vec2 & wheelDelta() const;
 
     // Virtual InputEvent interface
     virtual std::string asString() const override;
@@ -77,6 +90,7 @@ public:
 protected:
     glm::ivec2 m_pos;
     int        m_button;
+    int        m_modifiers;
     glm::vec2  m_wheelDelta;
 };
 

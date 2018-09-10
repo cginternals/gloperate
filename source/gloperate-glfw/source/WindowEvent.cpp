@@ -152,6 +152,17 @@ MouseEvent::MouseEvent(const glm::ivec2 & pos, const int button, const int actio
 {
 }
 
+MouseEvent::MouseEvent(const glm::ivec2 & pos, const glm::vec2 & delta, int modifiers)
+: WindowEvent(Type::Scroll)
+, m_button(-1)
+, m_action(-1)
+, m_modifiers(modifiers)
+, m_pos(pos)
+, m_delta(delta)
+{
+}
+
+
 int MouseEvent::button() const
 {
     return m_button;
@@ -182,6 +193,11 @@ const glm::ivec2 & MouseEvent::pos() const
     return m_pos;
 }
 
+const glm::vec2 & MouseEvent::delta() const
+{
+    return m_delta;
+}
+
 
 MouseEnterEvent::MouseEnterEvent()
 : WindowEvent(Type::MouseEnter)
@@ -192,24 +208,6 @@ MouseEnterEvent::MouseEnterEvent()
 MouseLeaveEvent::MouseLeaveEvent()
 : WindowEvent(Type::MouseLeave)
 {
-}
-
-
-ScrollEvent::ScrollEvent(const glm::vec2 & offset, const glm::ivec2 & pos)
-: WindowEvent(Type::Scroll)
-, m_offset(offset)
-, m_pos(pos)
-{
-}
-
-const glm::vec2 & ScrollEvent::offset() const
-{
-    return m_offset;
-}
-
-const glm::ivec2 & ScrollEvent::pos() const
-{
-    return m_pos;
 }
 
 

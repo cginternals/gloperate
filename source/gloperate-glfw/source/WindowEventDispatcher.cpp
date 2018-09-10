@@ -164,7 +164,8 @@ void WindowEventDispatcher::handleCursorEnter(GLFWwindow * glfwWindow, int enter
 
 void WindowEventDispatcher::handleScroll(GLFWwindow * glfwWindow, double xOffset, double yOffset)
 {
-    dispatchEvent(glfwWindow, cppassist::make_unique<ScrollEvent>(glm::vec2(xOffset, yOffset), mousePosition(glfwWindow)));
+    // GLFW cannot handle modifiers for scroll events
+    dispatchEvent(glfwWindow, cppassist::make_unique<MouseEvent>(mousePosition(glfwWindow), glm::vec2(xOffset, yOffset), 0));
 }
 
 void WindowEventDispatcher::handleResize(GLFWwindow * glfwWindow, int width, int height)
