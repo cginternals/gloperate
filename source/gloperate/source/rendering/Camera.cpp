@@ -38,9 +38,9 @@ void Camera::perspective(float fovy, const ivec2 &viewport, float zNear, float z
     setProjectionMatrix(glm::perspective(fovy, glm::max(float(viewport.x) / viewport.y, 1.0f), zNear, zFar));
 }
 
-void Camera::ortho(float left, float right, float top, float bottom, float zNear, float zFar)
+void Camera::ortho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
-    setProjectionMatrix(glm::ortho(left, right, bottom, bottom, zNear, zFar));
+    setProjectionMatrix(glm::ortho(left, right, bottom, top, zNear, zFar));
 }
 
 void Camera::ortho(float fovy, float aspect, float zNear, float zFar)

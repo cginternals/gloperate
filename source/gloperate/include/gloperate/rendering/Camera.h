@@ -183,7 +183,7 @@ public:
     *  @param[in] zFar
     *    Far plane
     */
-    void ortho(float left, float right, float top, float bottom, float zNear, float zFar);
+    void ortho(float left, float right, float bottom, float top, float zNear, float zFar);
 
     /**
     *  @brief
