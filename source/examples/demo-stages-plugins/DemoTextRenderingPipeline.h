@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <cppexpose/plugin/plugin_api.h>
 
@@ -35,7 +35,7 @@ public:
 public:
     gloperate::CanvasInterface canvasInterface;
 
-    Input<cppassist::FilePath> fontFilename;
+    Input<cppfs::FilePath> fontFilename;
 
     Input<std::string> string;
     Input<uint32_t> numChars;

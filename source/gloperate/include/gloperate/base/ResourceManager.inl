@@ -2,13 +2,11 @@
 #pragma once
 
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <gloperate/base/Loader.h>
 #include <gloperate/base/Storer.h>
 
-
-using namespace cppassist;
 
 
 namespace gloperate
@@ -24,7 +22,7 @@ T * ResourceManager::load(const std::string & filename, const cppexpose::Variant
     }
 
     // Get file extension
-    std::string ext = FilePath(filename).extension();
+    std::string ext = cppfs::FilePath(filename).extension();
     auto pos = ext.find_last_of('.');
     if (pos != std::string::npos)
     {
@@ -57,7 +55,7 @@ bool ResourceManager::store(const std::string & filename, T * resource, const cp
     }
 
     // Get file extension
-    std::string ext = FilePath(filename).extension();
+    std::string ext = cppfs::FilePath(filename).extension();
 
     // Find suitable storer
     for (const auto & storer : m_storers) {

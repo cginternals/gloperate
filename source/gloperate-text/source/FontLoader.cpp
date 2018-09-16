@@ -11,8 +11,9 @@
 #include <cppassist/logging/logging.h>
 #include <cppassist/string/conversion.h>
 #include <cppassist/string/manipulation.h>
-#include <cppassist/fs//FilePath.h>
 #include <cppassist/fs/RawFile.h>
+
+#include <cppfs/FilePath.h>
 
 #include <glbinding/gl/enum.h>
 
@@ -37,7 +38,7 @@ FontLoader::FontLoader(gloperate::Environment * environment)
 
 bool FontLoader::canLoad(const std::string & ext) const
 {
-    return ext == "fnt";
+    return ext == ".fnt";
 }
 
 std::vector<std::string> FontLoader::loadingTypes() const

@@ -114,8 +114,8 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Program stage for shape
     addStage(m_shapeProgram.get());
-    *m_shapeProgram->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/geometry/geometry.vert";
-    *m_shapeProgram->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/geometry/geometry.frag";
+    *m_shapeProgram->createInput<cppfs::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/geometry/geometry.vert";
+    *m_shapeProgram->createInput<cppfs::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/geometry/geometry.frag";
 
     // Render pass stage for shape
     addStage(m_shapeRenderPass.get());
@@ -147,8 +147,8 @@ ShapeDemo::ShapeDemo(Environment * environment, const std::string & name)
 
     // Colorize program stage
     addStage(m_colorizeProgram.get());
-    *m_colorizeProgram->createInput<cppassist::FilePath>("shader1") = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
-    *m_colorizeProgram->createInput<cppassist::FilePath>("shader2") = dataPath + "/gloperate/shaders/demos/colorize.frag";
+    *m_colorizeProgram->createInput<cppfs::FilePath>("shader1") = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
+    *m_colorizeProgram->createInput<cppfs::FilePath>("shader2") = dataPath + "/gloperate/shaders/demos/colorize.frag";
 
     auto shapeColorOutput = m_shapeRasterization->createOutput<gloperate::ColorRenderTarget *>("ColorAttachmentOut");
 

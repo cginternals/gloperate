@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <gloperate/pipeline/Stage.h>
 
@@ -26,7 +26,7 @@ namespace gloperate_text
 class GLOPERATE_TEXT_API FontImporterStage : public gloperate::Stage
 {
 public:
-    Input<cppassist::FilePath> fontFilePath;
+    Input<cppfs::FilePath>     fontFilePath;
 
     Output<openll::FontFace *> font;
 

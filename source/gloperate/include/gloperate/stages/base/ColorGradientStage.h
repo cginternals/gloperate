@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <cppexpose/plugin/plugin_api.h>
 
@@ -39,7 +39,7 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>  filePath;  ///< Path to the source file of the color gradient list
+    Input<cppfs::FilePath>      filePath;  ///< Path to the source file of the color gradient list
 
     // Outputs
     Output<ColorGradientList *> gradients; ///< List of color gradients

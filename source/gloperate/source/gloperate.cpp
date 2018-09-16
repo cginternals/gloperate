@@ -1,7 +1,7 @@
 
 #include <gloperate/gloperate.h>
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <cpplocate/cpplocate.h>
 
@@ -20,8 +20,8 @@ std::string determineDataPath()
 
 std::string determinePluginPath()
 {
-    std::string path = cppassist::FilePath(cpplocate::getLibraryPath(reinterpret_cast<void *>(&gloperate::dataPath))).directoryPath();
-    path = cppassist::FilePath(path).path();
+    std::string path = cppfs::FilePath(cpplocate::getLibraryPath(reinterpret_cast<void *>(&gloperate::dataPath))).directoryPath();
+    path = cppfs::FilePath(path).fullPath();
 
     return path;
 }

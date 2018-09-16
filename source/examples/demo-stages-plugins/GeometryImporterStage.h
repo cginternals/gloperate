@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <cppexpose/plugin/plugin_api.h>
 
@@ -37,7 +37,7 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath> filePath;  ///< path to file containing geometry
+    Input<cppfs::FilePath> filePath;  ///< path to file containing geometry
 
     // Outputs
     Output<gloperate::AbstractDrawable *> geometry; ///< the geometry

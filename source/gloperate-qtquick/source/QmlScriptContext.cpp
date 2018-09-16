@@ -14,10 +14,6 @@
 #include <gloperate-qtquick/QmlEngine.h>
 
 
-using namespace cppassist;
-using namespace cppexpose;
-
-
 namespace gloperate_qtquick
 {
 
@@ -46,7 +42,7 @@ void QmlScriptContext::removeGlobalObject(cppexpose::Object * obj)
     m_engine->removeGlobalObject(obj);
 }
 
-Variant QmlScriptContext::evaluate(const std::string & code)
+cppexpose::Variant QmlScriptContext::evaluate(const std::string & code)
 {
     QQmlExpression expr(m_engine->rootContext(), nullptr, QString::fromStdString(code));
 

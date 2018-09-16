@@ -30,10 +30,6 @@
 #include <gloperate/stages/base/BlitStage.h>
 
 
-using namespace cppassist;
-using namespace cppexpose;
-
-
 namespace
 {
 
@@ -153,7 +149,7 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
-        debug(2, "gloperate") << "deinitContext()";
+        cppassist::debug(2, "gloperate") << "deinitContext()";
 
         if (m_renderStage)
         {
@@ -168,7 +164,7 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
     // Initialize renderer in new context
     if (context)
     {
-        debug(2, "gloperate") << "initContext()";
+        cppassist::debug(2, "gloperate") << "initContext()";
 
         m_openGLContext = context;
 
@@ -255,7 +251,7 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
     m_timeDelta = 0.0f;
 
     auto fboName = targetFBO->hasName() ? targetFBO->name() : std::to_string(targetFBO->id());
-    debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
+    cppassist::debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
 
     // Abort if not initialized
     if (!m_initialized || !m_renderStage)
@@ -398,7 +394,7 @@ void Canvas::promoteKeyPress(int key, int modifier)
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
+    cppassist::debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
     m_keyboardDevice->keyPress(key, modifier);
@@ -411,7 +407,7 @@ void Canvas::promoteKeyRelease(int key, int modifier)
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
+    cppassist::debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
     m_keyboardDevice->keyRelease(key, modifier);
@@ -424,7 +420,7 @@ void Canvas::promoteMouseMove(const glm::ivec2 & pos, int modifier)
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->move(pos, modifier);
@@ -437,7 +433,7 @@ void Canvas::promoteMousePress(int button, const glm::ivec2 & pos, int modifier)
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->buttonPress(button, pos, modifier);
@@ -450,7 +446,7 @@ void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos, int modifie
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->buttonRelease(button, pos, modifier);
@@ -463,7 +459,7 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos, 
 {
     std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
     m_mouseDevice->wheelScroll(delta, pos, modifier);
@@ -479,7 +475,7 @@ void Canvas::checkRedraw()
         // Invoke callbacks
         for (auto func : m_renderedCallbacks) {
             if (!func.isEmpty()) {
-                std::vector<Variant> params;
+                std::vector<cppexpose::Variant> params;
                 func.call(params);
             }
         }
@@ -523,7 +519,7 @@ void Canvas::promoteChangedInputs()
     {
         // Get slot status
         std::string name = slot->name();
-        Variant status = getSlotStatus("root", name);
+        cppexpose::Variant status = getSlotStatus("root", name);
 
         // Invoke callback function
         std::vector<cppexpose::Variant> params;
@@ -577,7 +573,7 @@ cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)
 
     if (stage)
     {
-        Variant types = Variant::array();
+        cppexpose::Variant types = cppexpose::Variant::array();
 
         types.asArray()->push_back("bool");
         types.asArray()->push_back("int");
@@ -668,7 +664,7 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 
     if (stage)
     {
-        Variant obj = Variant::array();
+        cppexpose::Variant obj = cppexpose::Variant::array();
 
         auto addSlot = [&obj, this] (AbstractSlot * slot)
         {
@@ -682,16 +678,16 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
                 // Replace name of stage with "root"
                 std::string stageName = m_renderStage->name();
 
-                if (string::hasPrefix(from, stageName)) {
+                if (cppassist::string::hasPrefix(from, stageName)) {
                     from.replace(0, stageName.length(), "root");
                 }
 
-                if (string::hasPrefix(to, stageName)) {
+                if (cppassist::string::hasPrefix(to, stageName)) {
                     to.replace(0, stageName.length(), "root");
                 }
 
                 // Describe connection
-                Variant connection = Variant::map();
+                cppexpose::Variant connection = cppexpose::Variant::map();
                 (*connection.asMap())["from"] = from;
                 (*connection.asMap())["to"]   = to;
 
@@ -763,12 +759,12 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
     if (stage)
     {
         // Compose stage information
-        Variant obj = Variant::map();
+        cppexpose::Variant obj = cppexpose::Variant::map();
 
         (*obj.asMap())["name"] = name();
 
         // List inputs
-        Variant inputs = Variant::array();
+        cppexpose::Variant inputs = cppexpose::Variant::array();
         for (auto input : stage->inputs())
         {
             inputs.asArray()->push_back(input->name());
@@ -777,7 +773,7 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
         (*obj.asMap())["inputs"] = inputs;
 
         // List outputs
-        Variant outputs = Variant::array();
+        cppexpose::Variant outputs = cppexpose::Variant::array();
         for (auto output : stage->outputs())
         {
             outputs.asArray()->push_back(output->name());
@@ -786,7 +782,7 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
         (*obj.asMap())["outputs"] = outputs;
 
         // List stages
-        Variant stages = Variant::array();
+        cppexpose::Variant stages = cppexpose::Variant::array();
         if (stage->isPipeline())
         {
             Pipeline * pipeline = static_cast<Pipeline*>(stage);
@@ -852,7 +848,7 @@ Stage * Canvas::getStageObject(const std::string & path) const
     Stage * stage = nullptr;
 
     // Split path
-    const auto names = string::split(path, '.', true);
+    const auto names = cppassist::string::split(path, '.', true);
 
     // Resolve path
     for (const auto & name : names)
@@ -882,7 +878,7 @@ Stage * Canvas::getStageObject(const std::string & path) const
 
 cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::string & slotName)
 {
-    Variant status = Variant::map();
+    cppexpose::Variant status = cppexpose::Variant::map();
 
     // Get stage
     Stage * stage = getStageObject(path);
@@ -898,12 +894,12 @@ cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::st
             (*status.asMap())["value"] = slot->toVariant();
 
             // Include options
-            const VariantMap & options = slot->options();
+            const cppexpose::VariantMap & options = slot->options();
 
             for (auto it : options)
             {
                 std::string key = it.first;
-                Variant & value = it.second;
+                cppexpose::Variant & value = it.second;
 
                 (*status.asMap())[key] = value;
             }

@@ -58,7 +58,7 @@ public:
 
     // Inputs
     Input<gloperate::ShapeType> shape;           ///< Shape type
-    Input<cppassist::FilePath>  texture;         ///< Texture filename
+    Input<cppfs::FilePath>      texture;         ///< Texture filename
     Input<float>                angle;           ///< Current rotation angle
     Input<bool>                 rotate;          ///< Rotation automatically?
     Input<gloperate::Color>     color;           ///< Mixer color

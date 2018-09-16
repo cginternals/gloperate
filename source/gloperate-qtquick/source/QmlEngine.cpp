@@ -13,7 +13,8 @@
 #include <cppexpose/typed/DirectValue.h>
 #include <cppexpose/function/Function.h>
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
+
 #include <cppassist/logging/logging.h>
 
 #include <gloperate/gloperate.h>
@@ -246,8 +247,8 @@ QJSValue QmlEngine::toScriptValue(const cppexpose::Variant & var)
         return QJSValue(var.value<bool>());
     }
 
-    else if (var.hasType<cppassist::FilePath>()) {
-        return QJSValue(var.value<cppassist::FilePath>().path().c_str());
+    else if (var.hasType<cppfs::FilePath>()) {
+        return QJSValue(var.value<cppfs::FilePath>().path().c_str());
     }
 
     else if (var.isBool()) {

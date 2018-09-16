@@ -34,8 +34,8 @@ TransparencyRenderingPipeline::TransparencyRenderingPipeline(gloperate::Environm
     m_transparencyKernelStage->kernelSize = glm::ivec2(256, 256);
 
     addStage(m_programStage.get());
-    *m_programStage->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/transparency.vert";
-    *m_programStage->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/transparency.frag";
+    *m_programStage->createInput<cppfs::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/transparency.vert";
+    *m_programStage->createInput<cppfs::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/transparency.frag";
 
     addStage(m_renderPassStage.get());
     //m_renderPassStage->drawable will be set in onContextInit

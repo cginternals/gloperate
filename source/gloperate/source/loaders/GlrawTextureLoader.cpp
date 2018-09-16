@@ -3,7 +3,8 @@
 
 #include <algorithm>
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
+
 #include <cppassist/fs/readfile.h>
 #include <cppassist/fs/RawFile.h>
 #include <cppassist/fs/DescriptiveRawFile.h>
@@ -67,10 +68,10 @@ globjects::Texture * GlrawTextureLoader::load(const std::string & filename, cons
 {
     globjects::Texture * texture = nullptr;
 
-    cppassist::FilePath filePath(filename);
-    if (filePath.extension() == "glraw")
+    cppfs::FilePath filePath(filename);
+    if (filePath.extension() == ".glraw")
         texture = loadGLRawImage(filename);
-    else if (filePath.extension() == "raw")
+    else if (filePath.extension() == ".raw")
         texture = loadRawImage(filename);
 
     return texture;

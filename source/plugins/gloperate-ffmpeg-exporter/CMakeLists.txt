@@ -9,6 +9,7 @@ find_package(cppassist REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
+find_package(cppfs     REQUIRED)
 
 # FFMPEG
 find_package(FFMPEG)

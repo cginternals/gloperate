@@ -16,10 +16,6 @@
 #include <gloperate/pipeline/Output.h>
 
 
-using namespace cppassist;
-using namespace cppexpose;
-
-
 namespace gloperate
 {
 
@@ -96,7 +92,7 @@ void Pipeline::registerStage(Stage * stage)
         m_stagesMap.insert(std::make_pair(stage->name(), stage));
     }
 
-    debug(1, "gloperate") << stage->qualifiedName() << ": add to pipeline";
+    cppassist::debug(1, "gloperate") << stage->qualifiedName() << ": add to pipeline";
 
     // Shouldn't be required if each slot of a stage would disconnect from connections
     // and this would be propagated to the normal stage order invalidation
@@ -122,7 +118,7 @@ bool Pipeline::removeStage(Stage * stage)
     m_stages.erase(it);
     m_stagesMap.erase(stage->name());
 
-    debug(1, "gloperate") << stage->qualifiedName() << ": remove from pipeline";
+    cppassist::debug(1, "gloperate") << stage->qualifiedName() << ": remove from pipeline";
 
     stageRemoved(stage);
 
@@ -138,7 +134,7 @@ bool Pipeline::removeStage(Stage * stage)
 
 void Pipeline::invalidateStageOrder()
 {
-    debug(1, "gloperate") << this->name() << ": invalidate stage order; resort on next process";
+    cppassist::debug(1, "gloperate") << this->name() << ": invalidate stage order; resort on next process";
     m_sorted = false;
 }
 
@@ -149,7 +145,7 @@ bool Pipeline::isPipeline() const
 
 void Pipeline::sortStages()
 {
-    debug("gloperate") << this->qualifiedName() << ": sort stages";
+    cppassist::debug("gloperate") << this->qualifiedName() << ": sort stages";
 
     auto couldBeSorted = true;
     std::vector<Stage *> sorted;
@@ -171,7 +167,7 @@ void Pipeline::sortStages()
 
         if (touched.count(stage) > 0)
         {
-            critical() << "Pipeline is not a directed acyclic graph";
+            cppassist::critical() << "Pipeline is not a directed acyclic graph";
             couldBeSorted = false;
             return;
         }
@@ -208,10 +204,10 @@ void Pipeline::sortStages()
         visit(stage);
     }
 
-    debug(2, "gloperate") << "Stage order after sorting";
+    cppassist::debug(2, "gloperate") << "Stage order after sorting";
     for (const auto stage : sorted)
     {
-        debug(2, "gloperate") << stage->qualifiedName();
+        cppassist::debug(2, "gloperate") << stage->qualifiedName();
     }
 
     m_stages = sorted;
@@ -247,7 +243,7 @@ void Pipeline::onProcess()
         }
         else
         {
-            debug(2, "gloperate") << stage->qualifiedName() << ": omit execution";
+            cppassist::debug(2, "gloperate") << stage->qualifiedName() << ": omit execution";
         }
     }
 }

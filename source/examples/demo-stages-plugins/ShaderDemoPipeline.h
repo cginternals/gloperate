@@ -48,10 +48,10 @@ public:
     gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<cppassist::FilePath> shader1;         ///< Shader 1 filename
-    Input<cppassist::FilePath> shader2;         ///< Shader 2 filename
+    Input<cppfs::FilePath> shader1;         ///< Shader 1 filename
+    Input<cppfs::FilePath> shader2;         ///< Shader 2 filename
 
-    Input<cppassist::FilePath> texture;         ///< Texture filename
+    Input<cppfs::FilePath> texture;         ///< Texture filename
 
 
 public:

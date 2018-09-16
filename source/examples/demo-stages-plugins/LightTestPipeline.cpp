@@ -89,9 +89,9 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
     m_depthBufferStage->internalFormat = gl::GL_DEPTH_COMPONENT;
 
     addStage(m_programStage.get());
-    *m_programStage->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/lights.vert";
-    *m_programStage->createInput<cppassist::FilePath>("geometryShader") = dataPath + "/gloperate/shaders/demos/lights.geom";
-    *m_programStage->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/lights.frag";
+    *m_programStage->createInput<cppfs::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/lights.vert";
+    *m_programStage->createInput<cppfs::FilePath>("geometryShader") = dataPath + "/gloperate/shaders/demos/lights.geom";
+    *m_programStage->createInput<cppfs::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/lights.frag";
 
     addStage(m_shapeStage.get());
     m_shapeStage->shapeType = gloperate::ShapeType::Box;

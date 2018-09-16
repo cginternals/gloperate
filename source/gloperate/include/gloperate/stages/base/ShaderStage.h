@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <cppexpose/plugin/plugin_api.h>
 
@@ -43,7 +43,7 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>  filePath; ///< path to the source file of the shader
+    Input<cppfs::FilePath>      filePath; ///< path to the source file of the shader
 
     // Outputs
     Output<globjects::Shader *> shader;   ///< the shader object

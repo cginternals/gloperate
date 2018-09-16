@@ -108,8 +108,8 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_transformStage->translation = glm::vec3(-0.5f, 0.0f, 0.0f);
 
     addStage(m_renderProgramStage.get());
-    *m_renderProgramStage->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/multi_frame_rendering.vert";
-    *m_renderProgramStage->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/multi_frame_rendering.frag";
+    *m_renderProgramStage->createInput<cppfs::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/demos/multi_frame_rendering.vert";
+    *m_renderProgramStage->createInput<cppfs::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/multi_frame_rendering.frag";
 
     addStage(m_renderPassStage.get());
     m_renderPassStage->drawable << m_renderGeometryStage->geometry;
@@ -146,8 +146,8 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
     m_renderRasterizationStage->drawable << m_renderPassStage->renderPass;
 
     addStage(m_postprocessingProgramStage.get());
-    *m_postprocessingProgramStage->createInput<cppassist::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
-    *m_postprocessingProgramStage->createInput<cppassist::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/multi_frame_postprocessing.frag";
+    *m_postprocessingProgramStage->createInput<cppfs::FilePath>("vertexShader")   = dataPath + "/gloperate/shaders/geometry/screenaligned.vert";
+    *m_postprocessingProgramStage->createInput<cppfs::FilePath>("fragmentShader") = dataPath + "/gloperate/shaders/demos/multi_frame_postprocessing.frag";
 
     addStage(m_postprocessingPassStage.get());
     //m_postprocessingPassStage->drawable will be set in onContextInit

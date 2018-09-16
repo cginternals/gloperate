@@ -20,9 +20,6 @@
 #include <gloperate-qtquick/Utils.h>
 
 
-using namespace cppassist;
-
-
 namespace gloperate_qtquick
 {
 
@@ -49,7 +46,7 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
         });
 
         // Print context info
-        info() << std::endl
+        cppassist::info() << std::endl
             << "OpenGL Version:  " << gloperate::GLContextUtils::version() << std::endl
             << "OpenGL Vendor:   " << gloperate::GLContextUtils::vendor() << std::endl
             << "OpenGL Renderer: " << gloperate::GLContextUtils::renderer() << std::endl;

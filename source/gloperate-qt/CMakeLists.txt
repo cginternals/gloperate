@@ -10,6 +10,7 @@ find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(cpplocate REQUIRED)
+find_package(cppfs     REQUIRED)
 
 # Qt5
 find_package(Qt5OpenGL  5.1)

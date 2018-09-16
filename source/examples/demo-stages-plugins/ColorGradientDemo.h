@@ -49,7 +49,7 @@ public:
     gloperate::CanvasInterface canvasInterface; ///< Interface for rendering into a viewer
 
     // Inputs
-    Input<cppassist::FilePath> colors;   ///< Color gradients filename
+    Input<cppfs::FilePath>     colors;   ///< Color gradients filename
     Input<std::string>         gradient; ///< Selected gradient
     Input<float>               value;    ///< Value (0..1) that is mapped to color and size
 
