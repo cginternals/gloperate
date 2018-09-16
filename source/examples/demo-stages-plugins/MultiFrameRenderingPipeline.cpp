@@ -80,8 +80,8 @@ MultiFrameRenderingPipeline::MultiFrameRenderingPipeline(gloperate::Environment 
 
     addStage(m_normalTextureStage.get());
     m_normalTextureStage->format = gl::GL_RGB;
-    m_normalTextureStage->type = gl::GL_FLOAT;
-    m_normalTextureStage->internalFormat = gl::GL_RGB32F;
+    m_normalTextureStage->type = gl::GL_SHORT;
+    m_normalTextureStage->internalFormat = gl::GL_RGB16_SNORM;
     m_normalTextureStage->size << canvasInterface.viewport;
 
     addStage(m_subpixelStage.get());
