@@ -38,7 +38,7 @@ FontLoader::FontLoader(gloperate::Environment * environment)
 
 bool FontLoader::canLoad(const std::string & ext) const
 {
-    return ext == ".fnt";
+    return ext == "fnt";
 }
 
 std::vector<std::string> FontLoader::loadingTypes() const
