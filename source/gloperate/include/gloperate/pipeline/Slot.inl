@@ -299,7 +299,10 @@ void Slot<T>::promoteConnection()
 {
     // Emit signal
     this->connectionChanged();
-    this->parentStage()->invalidateInputConnections();
+    if (this->parentStage())
+    {
+        this->parentStage()->invalidateInputConnections();
+    }
 }
 
 template <typename T>
