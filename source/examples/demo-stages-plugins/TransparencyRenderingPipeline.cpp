@@ -24,8 +24,8 @@ TransparencyRenderingPipeline::TransparencyRenderingPipeline(gloperate::Environm
 , canvasInterface(this)
 , m_transparencyKernelStage(cppassist::make_unique<gloperate_glkernel::TransparencyKernelStage>(environment))
 , m_programStage(cppassist::make_unique<gloperate::ProgramStage>(environment))
-, m_clearStage(cppassist::make_unique<gloperate::ClearStage>(environment))
 , m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment))
+, m_clearStage(cppassist::make_unique<gloperate::ClearStage>(environment))
 , m_rasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment))
 {
     auto dataPath = gloperate::dataPath();

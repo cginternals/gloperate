@@ -45,11 +45,11 @@ LightTestPipeline::LightTestPipeline(gloperate::Environment * environment, const
 , m_lightDefStage2(cppassist::make_unique<gloperate::LightCreationStage>(environment))
 , m_lightDefStage3(cppassist::make_unique<gloperate::LightCreationStage>(environment))
 , m_lightAccumulationStage(cppassist::make_unique<gloperate::LightBufferTextureStage>(environment))
+, m_trackballStage(cppassist::make_unique<gloperate::TrackballStage>(environment))
 , m_depthBufferStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment))
 , m_clearStage(cppassist::make_unique<gloperate::ClearStage>(environment))
-, m_trackballStage(cppassist::make_unique<gloperate::TrackballStage>(environment))
-, m_shapeStage(cppassist::make_unique<gloperate::ShapeStage>(environment))
 , m_programStage(cppassist::make_unique<gloperate::ProgramStage>(environment))
+, m_shapeStage(cppassist::make_unique<gloperate::ShapeStage>(environment))
 , m_renderPassStage(cppassist::make_unique<gloperate::RenderPassStage>(environment))
 , m_rasterizationStage(cppassist::make_unique<gloperate::RasterizationStage>(environment))
 {
