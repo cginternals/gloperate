@@ -31,8 +31,11 @@ void MultiFrameControlStage::onProcess()
 {
     if (m_currentFrame < *multiFrameCount)
     {
+        const auto factor = 1.0f/(m_currentFrame+1);
+
         currentFrame.setValue(m_currentFrame);
-        aggregationFactor.setValue(1.0f/(m_currentFrame+1));
+        aggregationFactor.setValue(factor);
+
         ++m_currentFrame;
     }
     else

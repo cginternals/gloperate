@@ -66,10 +66,18 @@ void MultiFrameAggregationStage::onProcess()
     fbo->bind(gl::GL_FRAMEBUFFER);
     fbo->printStatus(true);
 
-    gl::glBlendColor(0.0f, 0.0f, 0.0f, *aggregationFactor);
-    gl::glBlendFunc(gl::GL_CONSTANT_ALPHA, gl::GL_ONE_MINUS_CONSTANT_ALPHA);
-    gl::glBlendEquation(gl::GL_FUNC_ADD);
-    gl::glEnable(gl::GL_BLEND);
+    if (*aggregationFactor > 0.99f) // first frame, no blending required
+    {
+        gl::glDisable(gl::GL_BLEND);
+    }
+    else
+    {
+        gl::glBlendColor(0.0f, 0.0f, 0.0f, *aggregationFactor);
+        gl::glBlendFunc(gl::GL_CONSTANT_ALPHA, gl::GL_ONE_MINUS_CONSTANT_ALPHA);
+        gl::glBlendEquation(gl::GL_FUNC_ADD);
+        gl::glEnable(gl::GL_BLEND);
+    }
+
     gl::glDisable(gl::GL_DEPTH_TEST);
 
     m_triangle->setTexture(*intermediateFrame);
