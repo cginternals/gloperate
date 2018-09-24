@@ -64,6 +64,7 @@ void MultiFrameAggregationStage::onProcess()
     );
 
     fbo->bind(gl::GL_FRAMEBUFFER);
+    fbo->printStatus(true);
 
     gl::glBlendColor(0.0f, 0.0f, 0.0f, *aggregationFactor);
     gl::glBlendFunc(gl::GL_CONSTANT_ALPHA, gl::GL_ONE_MINUS_CONSTANT_ALPHA);

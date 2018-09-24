@@ -48,7 +48,10 @@ void MultiFrameControlStage::onInputValueChanged(gloperate::AbstractSlot * slot)
         m_currentFrame = 0;
     }
 
-    Stage::onInputValueChanged(slot);
+    if (m_currentFrame < *multiFrameCount)
+    {
+        Stage::onInputValueChanged(slot);
+    }
 }
 
 

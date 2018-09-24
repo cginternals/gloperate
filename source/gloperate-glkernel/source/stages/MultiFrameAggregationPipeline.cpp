@@ -64,6 +64,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     addStage(m_framePreparationStage.get());
 
     // m_framePreparationStage->intermediateRenderTarget << ...; // later set by setRenderStage
+    m_framePreparationStage->renderInterface.viewport << canvasInterface.viewport;
     m_framePreparationStage->intermediateFrameTexture << m_colorRenderTargetStage->texture;
 
     addStage(m_aggregationStage.get());
@@ -79,6 +80,7 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     m_blitStage->targetViewport << canvasInterface.viewport;
 
     aggregatedTarget << m_blitStage->targetOut;
+    // aggregatedTarget << *m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut");
 
     stageAdded.connect([this](Stage * stage) {
         setRenderStage(stage);
