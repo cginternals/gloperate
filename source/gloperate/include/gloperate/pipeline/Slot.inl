@@ -73,6 +73,8 @@ Slot<T>::~Slot()
 template <typename T>
 bool Slot<T>::connect(Slot<T> * source)
 {
+    assert(source != nullptr);
+
     cppassist::debug(2, "gloperate") << this->qualifiedName() << ": connect slot " << source->qualifiedName();
 
     // Check if source is valid
@@ -297,7 +299,10 @@ void Slot<T>::promoteConnection()
 {
     // Emit signal
     this->connectionChanged();
-    this->parentStage()->invalidateInputConnections();
+    if (this->parentStage())
+    {
+        this->parentStage()->invalidateInputConnections();
+    }
 }
 
 template <typename T>

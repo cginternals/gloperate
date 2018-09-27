@@ -30,7 +30,13 @@ TransparencyKernelStage::~TransparencyKernelStage()
 
 void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
-    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+    m_texture = globjects::Texture::create(gl::GL_TEXTURE_2D);
+
+    m_texture->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_LINEAR);
+    m_texture->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_LINEAR);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
+    m_texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_REPEAT);
 }
 
 

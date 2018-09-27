@@ -524,6 +524,11 @@ globjects::Framebuffer * RenderInterface::obtainFBO(size_t index, AbstractRender
 
 globjects::Framebuffer * RenderInterface::obtainFBO(size_t index, AbstractRenderTarget * renderTarget, globjects::Framebuffer * fbo, globjects::Framebuffer * defaultFBO)
 {
+    if (renderTarget == nullptr)
+    {
+        return nullptr;
+    }
+
     auto attachmentIndex = gl::GL_COLOR_ATTACHMENT0 + index;
 
     if (renderTarget->underlyingAttachmentType() == AttachmentType::Depth)
@@ -599,7 +604,7 @@ globjects::Framebuffer * RenderInterface::obtainFBO(size_t index, AbstractRender
             const auto attachment = fbo->getAttachment(attachmentIndex);
 
             const auto attachedRenderbuffer = static_cast<globjects::AttachedRenderbuffer *>(attachment);
-            if (!attachment->isRenderBufferAttachment() || attachedRenderbuffer->renderBuffer() != renderTarget->renderbufferAttachment())
+            if (!attachment || !attachment->isRenderBufferAttachment() || attachedRenderbuffer->renderBuffer() != renderTarget->renderbufferAttachment())
             {
                 fbo->attachRenderBuffer(attachmentIndex, renderTarget->renderbufferAttachment());
             }

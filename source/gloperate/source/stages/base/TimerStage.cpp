@@ -4,9 +4,6 @@
 #include <cppassist/logging/logging.h>
 
 
-using namespace cppassist;
-
-
 namespace gloperate
 {
 

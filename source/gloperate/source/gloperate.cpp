@@ -1,8 +1,9 @@
 
 #include <gloperate/gloperate.h>
 
+#include <cppfs/FilePath.h>
+
 #include <cpplocate/cpplocate.h>
-#include <cpplocate/utils.h>
 
 
 namespace
@@ -19,7 +20,8 @@ std::string determineDataPath()
 
 std::string determinePluginPath()
 {
-    std::string path = cpplocate::utils::getDirectoryPath(cpplocate::getLibraryPath(reinterpret_cast<void *>(&gloperate::dataPath)));
+    std::string path = cppfs::FilePath(cpplocate::getLibraryPath(reinterpret_cast<void *>(&gloperate::dataPath))).directoryPath();
+    path = cppfs::FilePath(path).fullPath();
 
     return path;
 }

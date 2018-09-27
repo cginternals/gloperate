@@ -20,6 +20,9 @@ CPPEXPOSE_COMPONENT(TrackballStage, gloperate::Stage)
 TrackballStage::TrackballStage(Environment * environment, const std::string & name)
 : Stage(environment, name), AbstractEventConsumer(environment->inputManager())
 , viewport("viewport", this)
+, defaultPitch("defaultPitch", this, 0.0f)
+, defaultYaw("defaultYaw", this, 0.0f)
+, defaultZoom("defaultZoom", this, 1.0f)
 , camera("camera", this)
 , m_camera(cppassist::make_unique<Camera>())
 , m_lastMousePosition(0, 0)
@@ -93,12 +96,11 @@ void TrackballStage::onEvent(InputEvent * event)
 
 void TrackballStage::onProcess()
 {
-    m_camera->setAspectRatio(viewport->z / viewport->w);
+    auto mat = glm::yawPitchRoll(glm::radians(*defaultYaw + m_yaw), glm::radians(*defaultPitch + m_pitch), 0.f);
+    glm::vec4 rotatedCameraPosition = mat * glm::vec4(0.f, 0.f, 3.f * *defaultZoom * m_zoom, 1.f);
 
-    auto mat = glm::yawPitchRoll(glm::radians(m_yaw), glm::radians(m_pitch), 0.f);
-    glm::vec4 rotatedCameraPosition = mat * glm::vec4(0.f, 0.f, 3.f * m_zoom, 1.f);
-
-    m_camera->setEye(glm::vec3(rotatedCameraPosition) / rotatedCameraPosition.w);
+    m_camera->lookAt(glm::vec3(rotatedCameraPosition) / rotatedCameraPosition.w, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    m_camera->perspective(glm::radians(40.0f), glm::ivec2(viewport->z, viewport->w), 0.1f, 64.0f);
 
     camera.setValue(m_camera.get());
 }

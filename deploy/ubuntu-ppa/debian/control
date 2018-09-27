@@ -1,0 +1,35 @@
+Source: libgloperate
+Section: misc
+Priority: optional
+Maintainer: Willy Scheibel <willy.scheibel@cginternals.com>
+Build-Depends: build-essential, cmake, libglbinding-dev, libglobjects-dev, libglm-dev, libglkernel-dev, libglfw3-dev, libcpplocate-dev, libcpplocate-dbg, libcppassist-dev, libcppexpose-dev, libqmltoolbox-dev, qtbase5-dev, libqt5opengl5-dev, doxygen, graphviz
+Standards-Version: 3.8.0
+
+Package: libgloperate
+Architecture: any
+Depends: libglbinding, libglobjects, libcpplocate, libcppassist, libcppexpose, libqmltoolbox, libglfw3, libqt5core5a, libqt5opengl5
+Homepage: https://globjects.org
+Description: C++ library for defining and controlling modern GPU rendering/processing operations.
+
+Package: libgloperate-dev
+Architecture: any
+Depends: libgloperate, libglbinding-dev, libglobjects-dev, libglm-dev, libglkernel-dev, libglfw3-dev, libcpplocate-dev, libcpplocate-dbg, libcppassist-dev, libcppexpose-dev, libqmltoolbox-dev, qtbase5-dev, libqt5opengl5-dev
+Homepage: https://gloperate.org
+Description: C++ library for defining and controlling modern GPU rendering/processing operations.
+
+Package: libgloperate-docs
+Architecture: any
+Homepage: https://gloperate.org
+Description: C++ library for defining and controlling modern GPU rendering/processing operations.
+
+Package: libgloperate-dbg
+Architecture: any
+Depends: libgloperate, libgloperate-dev
+Homepage: https://gloperate.org
+Description: C++ library for defining and controlling modern GPU rendering/processing operations.
+
+Package: libgloperate-all
+Architecture: any
+Depends: libgloperate, libgloperate-dev, libgloperate-docs
+Homepage: https://gloperate.org
+Description: C++ library for defining and controlling modern GPU rendering/processing operations.

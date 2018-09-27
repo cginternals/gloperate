@@ -39,7 +39,7 @@ public:
 
 public:
     // Inputs
-    Input<cppassist::FilePath>   filename; ///< Texture filename
+    Input<cppfs::FilePath>       filename; ///< Texture filename
 
     // Outputs
     Output<globjects::Texture *> texture;  ///< Texture object

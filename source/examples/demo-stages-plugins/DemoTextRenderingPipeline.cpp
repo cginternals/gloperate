@@ -2,9 +2,10 @@
 #include "DemoTextRenderingPipeline.h"
 
 #include <gloperate/gloperate.h>
+#include <gloperate/stages/base/ClearStage.h>
 
-#include <gloperate-text/Alignment.h>
-#include <gloperate-text/LineAnchor.h>
+#include <openll/Alignment.h>
+#include <openll/LineAnchor.h>
 #include <gloperate-text/stages/FontImporterStage.h>
 #include <gloperate-text/stages/GlyphPreparationStage.h>
 #include <gloperate-text/stages/GlyphRenderStage.h>
@@ -28,7 +29,7 @@ CPPEXPOSE_COMPONENT(DemoTextRenderingPipeline, gloperate::Stage)
 
 DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * environment, const std::string & name)
 : gloperate::Pipeline{ environment, "DemoTextRenderingPipeline", name }
-, renderInterface{ this }
+, canvasInterface{ this }
 , fontFilename{ "fontFilename", this, gloperate::dataPath() + "/gloperate-text/fonts/opensansr36.fnt" }
 , string      { "string",       this, lorem }
 , numChars    { "numChars",     this, 0 }
@@ -37,8 +38,8 @@ DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * en
 , margins     { "margins",      this, { 0.0f, 0.0f, 0.0f, 0.0f } } // t r b l
 , wordWrap    { "wordWrap",     this, true }
 , lineWidth   { "lineWidth",    this, 400.0f }
-, alignment   { "alignment",    this, gloperate_text::Alignment::Centered }
-, lineAnchor  { "lineAnchor",   this, gloperate_text::LineAnchor::Baseline }
+, alignment   { "alignment",    this, openll::Alignment::Centered }
+, lineAnchor  { "lineAnchor",   this, openll::LineAnchor::Baseline }
 , optimized   { "optimized",    this, true }
 {
     auto fontImport = cppassist::make_unique<gloperate_text::FontImporterStage>(environment, "FontImport");
@@ -49,7 +50,7 @@ DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * en
     demo->numChars     << numChars;
     demo->font         << fontImport->font;
     demo->fontSize     << fontSize;
-    demo->viewport     << renderInterface.viewport;
+    demo->viewport     << canvasInterface.viewport;
     demo->origin       << origin;
     demo->margins      << margins;
     demo->wordWrap     << wordWrap;
@@ -63,14 +64,21 @@ DemoTextRenderingPipeline::DemoTextRenderingPipeline(gloperate::Environment * en
     glyphPreparation->sequences << demo->sequences;
     glyphPreparation->optimized << optimized;
 
+    auto clearStage = cppassist::make_unique<gloperate::ClearStage>(environment, "ClearStage");
+    clearStage->renderInterface.viewport << canvasInterface.viewport;
+    clearStage->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    clearStage->createInput("ColorValue") << canvasInterface.backgroundColor;
+    auto clearedColorTarget = clearStage->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
+
     auto glyphRendering = cppassist::make_unique<gloperate_text::GlyphRenderStage>(environment, "GlyphRendering");
     glyphRendering->vertexCloud << glyphPreparation->vertexCloud;
-    glyphRendering->renderInterface.viewport << renderInterface.viewport;
-    glyphRendering->createInput("Color") << *createInput<gloperate::ColorRenderTarget *>("Color");
+    glyphRendering->renderInterface.viewport << canvasInterface.viewport;
+    glyphRendering->createInput("Color") << *clearedColorTarget;
     *createOutput<gloperate::ColorRenderTarget *>("ColorOut") << *glyphRendering->createOutput<gloperate::ColorRenderTarget *>("ColorOut");
 
     addStage(std::move(fontImport));
     addStage(std::move(demo));
     addStage(std::move(glyphPreparation));
+    addStage(std::move(clearStage));
     addStage(std::move(glyphRendering));
 }

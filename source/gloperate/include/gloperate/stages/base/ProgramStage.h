@@ -17,7 +17,7 @@ namespace globjects
     class Shader;
 }
 
-namespace cppassist
+namespace cppfs
 {
     class FilePath;
 }
@@ -31,7 +31,7 @@ namespace gloperate
 *  @brief
 *    Stage that creates a program from multiple shaders
 *
-*    It expects input of pointers to globjects::Shader or cppassist::FilePath objects.
+*    It expects input of pointers to globjects::Shader or cppfs::FilePath objects.
 */
 class GLOPERATE_API ProgramStage : public Stage
 {

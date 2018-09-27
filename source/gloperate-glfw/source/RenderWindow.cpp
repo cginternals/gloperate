@@ -9,6 +9,7 @@
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/base/Canvas.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-glfw/GLContext.h>
 #include <gloperate-glfw/WindowEvent.h>
@@ -123,6 +124,7 @@ void RenderWindow::onMousePress(MouseEvent & event)
     m_canvas->promoteMousePress(
         fromGLFWMouseButton(event.button())
       , event.pos()
+      , event.modifiers()
     );
 }
 
@@ -131,12 +133,13 @@ void RenderWindow::onMouseRelease(MouseEvent & event)
     m_canvas->promoteMouseRelease(
         fromGLFWMouseButton(event.button())
       , event.pos()
+      , event.modifiers()
     );
 }
 
 void RenderWindow::onMouseMove(MouseEvent & event)
 {
-    m_canvas->promoteMouseMove(event.pos());
+    m_canvas->promoteMouseMove(event.pos(), event.modifiers());
 }
 
 void RenderWindow::onMouseEnter(MouseEnterEvent &)
@@ -147,11 +150,12 @@ void RenderWindow::onMouseLeave(MouseLeaveEvent &)
 {
 }
 
-void RenderWindow::onScroll(ScrollEvent & event)
+void RenderWindow::onScroll(MouseEvent & event)
 {
     m_canvas->promoteMouseWheel(
-        event.offset()
+        event.delta()
       , event.pos()
+      , 0
     );
 }
 

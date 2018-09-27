@@ -2,16 +2,16 @@
 #pragma once
 
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <cppexpose/plugin/plugin_api.h>
 
 #include <gloperate/pipeline/Pipeline.h>
-#include <gloperate/stages/interfaces/RenderInterface.h>
+#include <gloperate/stages/interfaces/CanvasInterface.h>
 #include <gloperate/gloperate-version.h>
 
 
-namespace gloperate_text
+namespace openll
 {
     enum class Alignment : unsigned char;
     enum class LineAnchor : unsigned char;
@@ -33,9 +33,9 @@ public:
 
 
 public:
-    gloperate::RenderInterface renderInterface;
+    gloperate::CanvasInterface canvasInterface;
 
-    Input<cppassist::FilePath> fontFilename;
+    Input<cppfs::FilePath> fontFilename;
 
     Input<std::string> string;
     Input<uint32_t> numChars;
@@ -48,8 +48,8 @@ public:
     Input<bool> wordWrap;
     Input<float> lineWidth;
 
-    Input<gloperate_text::Alignment> alignment;
-    Input<gloperate_text::LineAnchor> lineAnchor;
+    Input<openll::Alignment> alignment;
+    Input<openll::LineAnchor> lineAnchor;
     Input<bool> optimized;
 
 

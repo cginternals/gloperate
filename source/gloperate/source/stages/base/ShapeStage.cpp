@@ -12,9 +12,6 @@
 #include <gloperate/rendering/Sphere.h>
 
 
-using namespace cppassist;
-
-
 namespace gloperate
 {
 
@@ -52,7 +49,7 @@ void ShapeStage::onProcess()
 {
     // Get shape options
     ShapeType type = *shapeType;
-    Flags<ShapeOption> options = ShapeOption::None;
+    cppassist::Flags<ShapeOption> options = ShapeOption::None;
     if (*this->texCoords) options = ShapeOption::IncludeTexCoords;
 
     // Create shape

@@ -33,7 +33,6 @@ class KeyEvent;
 class MouseEvent;
 class MouseEnterEvent;
 class MouseLeaveEvent;
-class ScrollEvent;
 class MoveEvent;
 class ResizeEvent;
 class PaintEvent;
@@ -412,7 +411,7 @@ protected:
     virtual void onMouseRelease(MouseEvent & event);
     virtual void onMouseEnter(MouseEnterEvent & event);
     virtual void onMouseLeave(MouseLeaveEvent & event);
-    virtual void onScroll(ScrollEvent & event);
+    virtual void onScroll(MouseEvent & event);
     virtual void onFocus(FocusEvent & event);
     virtual void onIconify(IconifyEvent & event);
     virtual void onClose(CloseEvent & event);

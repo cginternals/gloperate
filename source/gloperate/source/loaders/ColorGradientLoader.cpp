@@ -3,8 +3,9 @@
 
 #include <algorithm>
 
+#include <cppfs/FilePath.h>
+
 #include <cppassist/fs/readfile.h>
-#include <cppassist/fs/FilePath.h>
 #include <cppassist/string/regex.h>
 #include <cppassist/logging/logging.h>
 

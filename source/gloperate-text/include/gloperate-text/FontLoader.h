@@ -13,6 +13,12 @@
 #include <gloperate-text/gloperate-text_api.h>
 
 
+namespace openll
+{
+    class FontFace;
+}
+
+
 namespace gloperate
 {
     class ResourceManager;
@@ -23,16 +29,13 @@ namespace gloperate_text
 {
 
 
-class FontFace;
-
-
 /**
 * @brief
 *   The FontLoader provides interfaces to load font face descriptions from files.
 *
 *   It can be registered at a ResourceManager as a generic loader for font faces.
 */
-class GLOPERATE_TEXT_API FontLoader : public gloperate::Loader<FontFace>
+class GLOPERATE_TEXT_API FontLoader : public gloperate::Loader<openll::FontFace>
 {
 public:
     CPPEXPOSE_DECLARE_COMPONENT(
@@ -110,90 +113,10 @@ public:
     *  @return
     *    A configured and initialized FontFace on success, else 'nullptr'
     */
-    virtual FontFace * load(
+    virtual openll::FontFace * load(
         const std::string & filename
     ,   const cppexpose::Variant & options = cppexpose::Variant()
     ,   std::function<void(int, int)> progress  = nullptr) const override;
-
-
-protected:
-    /**
-    *  @brief
-    *    Handle common info block of font face description file
-    *
-    *  @param[in]    stream
-    *    The stream to read info from
-    *  @param[inout] fontFace
-    *    The font face to construct
-    *  @param[out]   fontSize
-    *    The retrieved font size of the font face
-    */
-    void handleInfo(std::stringstream & stream, FontFace & fontFace, float & fontSize) const;
-
-    /**
-    *  @brief
-    *    Handle common block of font face description file
-    *
-    *  @param[in]    stream
-    *    The stream to read info from
-    *  @param[inout] fontFace
-    *    The font face to construct
-    *  @param[in]   fontSize
-    *    The font size to correctly determine other metrics
-    */
-    void handleCommon(std::stringstream & stream, FontFace & fontFace, float fontSize) const;
-
-    /**
-    *  @brief
-    *    Handle font face page block of font face description file
-    *
-    *  @param[in]    stream
-    *    The stream to read info from
-    *  @param[inout] fontFace
-    *    The font face to construct
-    *  @param[out]   filename
-    *    The file name of the description file to derivate glyph texture atlas file paths
-    */
-    void handlePage(std::stringstream & stream, FontFace & fontFace
-        , const std::string & filename) const;
-
-    /**
-    *  @brief
-    *    Handle font face character block of font face description file
-    *
-    *  @param[in]    stream
-    *    The stream to read info from
-    *  @param[inout] fontFace
-    *    The font face to construct
-    */
-    void handleChar(std::stringstream & stream, FontFace & fontFace) const;
-
-    /**
-    *  @brief
-    *    Handle font face kerning block of font face description file
-    *
-    *  @param[in]    stream
-    *    The stream to read info from
-    *  @param[inout] fontFace
-    *    The font face to construct
-    */
-    void handleKerning(std::stringstream & stream, FontFace & fontFace) const;
-
-    /**
-    *  @brief
-    *    Extract all key-value pairs of one line in the description file
-    *
-    *  @param[in] stream
-    *    The stream to read from
-    *  @param[in] mandatoryKeys
-    *    The list of mandatory keys required for successful extraction
-    *
-    *  @return
-    *    The list of all extracted key-value pairs, empty if not all mandatory keys exist
-    */
-    static StringPairs readKeyValuePairs(
-        std::stringstream & stream
-    ,   const std::initializer_list<const char *> & mandatoryKeys);
 };
 
 

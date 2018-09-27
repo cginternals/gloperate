@@ -5,6 +5,8 @@
 
 #include <gloperate/base/GLContextUtils.h>
 
+#include <gloperate-qt/base/QtOpenGL.h>
+
 
 using namespace gloperate;
 
@@ -24,11 +26,12 @@ GLContext::GLContext(QWindow * window, QOpenGLContext * context, bool takeOwners
     // Activate context
     use();
 
-    // Initialize glbinding in context (needed for context utils)
-    initializeBindings();
+    // Initialize glbinding and globjects in context (needed for context utils)
+    initializeBindings([this] (const char * name) -> glbinding::ProcAddress {
+        return QtOpenGL::getProcAddress(m_context, name);
+    });
 
-    // Read context handle and format
-    m_handle = GLContextUtils::tryFetchHandle();
+    // Read context format
     m_format = GLContextUtils::retrieveFormat();
 
     // Deactivate context

@@ -113,7 +113,7 @@ public:
 *    Representation of a clear value
 *
 *    A clear value corresponds to a render target input and its
-*    respective clear value input. 
+*    respective clear value input.
 */
 template <typename T>
 class ClearValueInput : public AbstractClearInput
@@ -162,8 +162,8 @@ public:
     {
     }
 
-    template< typename T>
-    void apply()
+    template<typename T>
+    void invoke()
     {
         auto clearValueInputT = dynamic_cast<const Input<T> *>(m_clearValueInput);
 
@@ -257,7 +257,11 @@ void ClearStage::onProcess()
             auto fbo = renderInterface.obtainFBO(colorAttachmentIndex, renderTarget);
 
             // Clear render target
-            clearValueInput->clear(fbo, colorAttachmentIndex);
+            if (renderTarget->underlyingAttachmentType() == AttachmentType::Color)
+            {
+                fbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
+            }
+            clearValueInput->clear(fbo, 0);
 
             // Count color attachments
             if (renderTarget->underlyingAttachmentType() == AttachmentType::Color)
@@ -301,7 +305,7 @@ void ClearStage::reprocessInputs()
         // Find next input that defines a clear value
         skipUntil(clearValueIt, m_inputs.end(), [] (AbstractSlot * input)
         {
-            return input->isOfAnyType<Color, float, int, std::pair<float, int>>();
+            return input->isOfAnyType<Color, float, int, std::pair<float, int>, glm::vec4, glm::ivec4, glm::uvec4>();
         });
 
         // Find next input that defines a render target

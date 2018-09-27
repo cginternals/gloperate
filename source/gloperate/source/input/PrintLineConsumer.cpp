@@ -6,9 +6,6 @@
 #include <gloperate/input/InputEvent.h>
 
 
-using namespace cppassist;
-
-
 namespace gloperate
 {
 
@@ -24,7 +21,7 @@ PrintLineConsumer::~PrintLineConsumer()
 
 void PrintLineConsumer::onEvent(gloperate::InputEvent * event)
 {
-    info() << event->asString();
+    cppassist::info() << event->asString();
 }
 
 

@@ -4,11 +4,12 @@
 #include <algorithm>
 
 #include <cppassist/fs/readfile.h>
-#include <cppassist/fs/FilePath.h>
+
+#include <cppfs/FilePath.h>
 
 #include <cppexpose/variant/Variant.h>
 
-#include <glbinding/Meta.h>
+#include <glbinding-aux/Meta.h>
 
 #include <globjects/base/File.h>
 #include <globjects/Shader.h>
@@ -24,17 +25,17 @@ CPPEXPOSE_COMPONENT(ShaderLoader, gloperate::AbstractLoader)
 ShaderLoader::ShaderLoader(Environment * environment)
 : Loader<globjects::Shader>(environment)
 , m_extensionToType({
-    {"vert", gl::GL_VERTEX_SHADER},
-    {"tesc", gl::GL_TESS_CONTROL_SHADER},
-    {"tese", gl::GL_TESS_EVALUATION_SHADER},
-    {"geom", gl::GL_GEOMETRY_SHADER},
-    {"frag", gl::GL_FRAGMENT_SHADER},
-    {"comp", gl::GL_COMPUTE_SHADER}})
+    {".vert", gl::GL_VERTEX_SHADER},
+    {".tesc", gl::GL_TESS_CONTROL_SHADER},
+    {".tese", gl::GL_TESS_EVALUATION_SHADER},
+    {".geom", gl::GL_GEOMETRY_SHADER},
+    {".frag", gl::GL_FRAGMENT_SHADER},
+    {".comp", gl::GL_COMPUTE_SHADER}})
 {
     // Get list of supported file formats
     for (std::pair<std::string, gl::GLenum> kv_pair : m_extensionToType) {
-        m_extensions.push_back(std::string(".") + kv_pair.first);
-        m_types.push_back(glbinding::Meta::getString(kv_pair.second) + " (*." + kv_pair.first + ")");
+        m_extensions.push_back(kv_pair.first);
+        m_types.push_back(glbinding::aux::Meta::getString(kv_pair.second) + " (*" + kv_pair.first + ")");
     }
 
     // Add entry that contains all supported file formats
@@ -53,7 +54,7 @@ ShaderLoader::~ShaderLoader()
 bool ShaderLoader::canLoad(const std::string & ext) const
 {
     // Check if file type is supported
-    return (std::count(m_extensions.begin(), m_extensions.end(), "." + ext) > 0);
+    return std::count(m_extensions.begin(), m_extensions.end(), "." + ext) > 0;
 }
 
 std::vector<std::string> ShaderLoader::loadingTypes() const
@@ -79,7 +80,8 @@ globjects::Shader * ShaderLoader::load(const std::string & filename, const cppex
 {
     globjects::Shader * shader;
 
-    auto it = m_extensionToType.find(cppassist::FilePath(filename).extension());
+    const auto extension = cppfs::FilePath(filename).extension();
+    auto it = m_extensionToType.find(extension);
 
     // [TODO] Remove file memory leak
     globjects::File * file = new globjects::File(filename, false);

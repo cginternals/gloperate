@@ -14,12 +14,10 @@
 #include <gloperate/base/GLContextUtils.h>
 
 #include <gloperate-qt/base/GLContext.h>
+#include <gloperate-qt/base/QtOpenGL.h>
 
 #include <gloperate-qtquick/RenderItem.h>
 #include <gloperate-qtquick/Utils.h>
-
-
-using namespace cppassist;
 
 
 namespace gloperate_qtquick
@@ -43,10 +41,12 @@ QOpenGLFramebufferObject * RenderItemRenderer::createFramebufferObject(const QSi
     if (!m_contextInitialized)
     {
         // Initialize glbinding and globjects in context
-        Utils::initContext();
+        Utils::initContext([window] (const char * name) -> glbinding::ProcAddress {
+            return gloperate_qt::QtOpenGL::getProcAddress(window->openglContext(), name);
+        });
 
         // Print context info
-        info() << std::endl
+        cppassist::info() << std::endl
             << "OpenGL Version:  " << gloperate::GLContextUtils::version() << std::endl
             << "OpenGL Vendor:   " << gloperate::GLContextUtils::vendor() << std::endl
             << "OpenGL Renderer: " << gloperate::GLContextUtils::renderer() << std::endl;

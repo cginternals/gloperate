@@ -41,7 +41,7 @@ protected:
     // Scripting functions
     int scr_logLevel();
     void scr_setLogLevel(int logLevel);
-    bool src_safeMode();
+    bool scr_safeMode();
     void scr_load(const std::string & filename);
     std::string scr_readFile(const std::string & filename);
     void scr_writeFile(const std::string & filename, const cppexpose::Variant & value);

@@ -1,7 +1,7 @@
 
 #include <gloperate/stages/base/ProgramStage.h>
 
-#include <cppassist/fs/FilePath.h>
+#include <cppfs/FilePath.h>
 
 #include <globjects/Shader.h>
 #include <globjects/Program.h>
@@ -69,7 +69,7 @@ void ProgramStage::onProcess()
     }
 
     // Load and attach all shaders from inputs of type FilePath
-    for (auto input : inputs<cppassist::FilePath>())
+    for (auto input : inputs<cppfs::FilePath>())
     {
         if (auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path()))
         {

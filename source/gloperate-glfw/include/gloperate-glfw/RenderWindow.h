@@ -86,7 +86,7 @@ protected:
     virtual void onMouseMove(MouseEvent & event) override;
     virtual void onMouseEnter(MouseEnterEvent & event) override;
     virtual void onMouseLeave(MouseLeaveEvent & event) override;
-    virtual void onScroll(ScrollEvent & event) override;
+    virtual void onScroll(MouseEvent & event) override;
     virtual void onFocus(FocusEvent & event) override;
     virtual void onIconify(IconifyEvent & event) override;
     virtual void onIdle() override;

@@ -117,6 +117,11 @@ void OpenGLWindow::deinitializeContext()
 
 void OpenGLWindow::resize(QResizeEvent * event)
 {
+    if (!m_context)
+    {
+        return;
+    }
+
     if (!m_initialized) {
         initializeContext();
     }
@@ -132,6 +137,11 @@ void OpenGLWindow::resize(QResizeEvent * event)
 
 void OpenGLWindow::paint()
 {
+    if (!m_context)
+    {
+        return;
+    }
+
     if (!m_initialized) {
         initializeContext();
     }

@@ -19,23 +19,15 @@ AbstractGLContext::~AbstractGLContext()
 {
 }
 
-glbinding::ContextHandle AbstractGLContext::handle() const
-{
-    return m_handle;
-}
-
 const GLContextFormat & AbstractGLContext::format() const
 {
     return m_format;
 }
 
-void AbstractGLContext::initializeBindings()
+void AbstractGLContext::initializeBindings(glbinding::GetProcAddress functionPointerResolver)
 {
-    // Initialize glbinding
-    glbinding::Binding::initialize(false);
-
-    // Initialize globjects
-    globjects::init();
+    // Initialize globjects and glbinding
+    globjects::init(functionPointerResolver);
 
     // Enable debug messages
 #ifndef NDEBUG

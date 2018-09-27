@@ -30,10 +30,6 @@
 #include <gloperate/stages/base/BlitStage.h>
 
 
-using namespace cppassist;
-using namespace cppexpose;
-
-
 namespace
 {
 
@@ -55,9 +51,10 @@ Canvas::Canvas(Environment * environment)
 , m_initialized(false)
 , m_timeDelta(0.0f)
 , m_blitStage(cppassist::make_unique<BlitStage>(environment, "FinalBlit"))
-, m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), m_name))
-, m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), m_name))
+, m_mouseDevice(cppassist::make_unique<MouseDevice>(m_environment->inputManager(), "mouse"))
+, m_keyboardDevice(cppassist::make_unique<KeyboardDevice>(m_environment->inputManager(), "keyboard"))
 , m_replaceStage(false)
+, m_rendered(false)
 , m_colorTarget(cppassist::make_unique<ColorRenderTarget>())
 , m_depthTarget(cppassist::make_unique<DepthRenderTarget>())
 , m_depthStencilTarget(cppassist::make_unique<DepthStencilRenderTarget>())
@@ -65,6 +62,7 @@ Canvas::Canvas(Environment * environment)
 {
     // Register functions
     addFunction("onStageInputChanged", this, &Canvas::scr_onStageInputChanged);
+    addFunction("onRendered",          this, &Canvas::scr_onRendered);
     addFunction("getSlotTypes",        this, &Canvas::scr_getSlotTypes);
     addFunction("createStage",         this, &Canvas::scr_createStage);
     addFunction("removeStage",         this, &Canvas::scr_removeStage);
@@ -110,7 +108,7 @@ Stage * Canvas::renderStage()
 void Canvas::setRenderStage(std::unique_ptr<Stage> && stage)
 {
     // Save old stage
-    m_oldStage = std::unique_ptr<Stage>(m_renderStage.release());
+    m_oldStage = std::move(m_renderStage);
 
     // Set stage
     m_renderStage = std::move(stage);
@@ -146,12 +144,12 @@ AbstractGLContext * Canvas::openGLContext()
 
 void Canvas::setOpenGLContext(AbstractGLContext * context)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // Deinitialize renderer in old context
     if (m_openGLContext)
     {
-        debug(2, "gloperate") << "deinitContext()";
+        cppassist::debug(2, "gloperate") << "deinitContext()";
 
         if (m_renderStage)
         {
@@ -166,14 +164,16 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
     // Initialize renderer in new context
     if (context)
     {
-        debug(2, "gloperate") << "initContext()";
+        cppassist::debug(2, "gloperate") << "initContext()";
 
         m_openGLContext = context;
 
-        if (m_renderStage)
+        // Initialization happens later during render
+        /*if (m_renderStage)
         {
             m_renderStage->initContext(m_openGLContext);
-        }
+        }*/
+        m_replaceStage = true;
 
         m_blitStage->initContext(m_openGLContext);
     }
@@ -184,7 +184,7 @@ void Canvas::setOpenGLContext(AbstractGLContext * context)
 
 void Canvas::updateTime()
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // In multithreaded viewers, updateTime() might get called several times
     // before render(). Therefore, the time delta is accumulated until the
@@ -219,7 +219,7 @@ void Canvas::updateTime()
 
 void Canvas::setViewport(const glm::vec4 & deviceViewport)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // Store viewport information
     m_viewport  = deviceViewport;
@@ -245,13 +245,13 @@ const glm::vec4 & Canvas::viewport() const
 
 void Canvas::render(globjects::Framebuffer * targetFBO)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // Reset time delta
     m_timeDelta = 0.0f;
 
     auto fboName = targetFBO->hasName() ? targetFBO->name() : std::to_string(targetFBO->id());
-    debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
+    cppassist::debug(2, "gloperate") << "render(); " << "targetFBO: " << fboName;
 
     // Abort if not initialized
     if (!m_initialized || !m_renderStage)
@@ -363,18 +363,21 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
         return **output != nullptr;
     });
 
+    // Check if a blit pass is necessary
     if (colorOutput)
     {
-        if (**colorOutput == m_colorTarget.get())
-        {
+        // Get viewport
+        const auto viewport = m_renderStage->findOutput<glm::vec4>([this](Output<glm::vec4> *) {
+            return true;
+        });
 
-        }
-        else
-        {
-            auto viewport = m_renderStage->findOutput<glm::vec4>([this](Output<glm::vec4> *) {
-                return true;
-            });
+        // Check if either viewport or color output target are different than the input
+        const auto viewportDiffering = viewport && glm::distance(**viewport, m_viewport) > glm::epsilon<float>();
+        const auto colorOutputDiffering = **colorOutput != m_colorTarget.get();
 
+        // If so, blit color output to target
+        if (viewportDiffering || colorOutputDiffering)
+        {
             m_blitStage->source = **colorOutput;
             m_blitStage->sourceViewport = viewport ? **viewport : m_viewport;
             m_blitStage->target = m_colorTarget.get();
@@ -382,13 +385,16 @@ void Canvas::render(globjects::Framebuffer * targetFBO)
             m_blitStage->process();
         }
     }
+
+    // Signal that a frame has been rendered
+    m_rendered = true;
 }
 
 void Canvas::promoteKeyPress(int key, int modifier)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
+    cppassist::debug(2, "gloperate") << "keyPressed(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
     m_keyboardDevice->keyPress(key, modifier);
@@ -399,9 +405,9 @@ void Canvas::promoteKeyPress(int key, int modifier)
 
 void Canvas::promoteKeyRelease(int key, int modifier)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
+    cppassist::debug(2, "gloperate") << "keyReleased(" << key << ", " << modifier << ")";
 
     // Promote keyboard event
     m_keyboardDevice->keyRelease(key, modifier);
@@ -410,53 +416,53 @@ void Canvas::promoteKeyRelease(int key, int modifier)
     checkRedraw();
 }
 
-void Canvas::promoteMouseMove(const glm::ivec2 & pos)
+void Canvas::promoteMouseMove(const glm::ivec2 & pos, int modifier)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2, "gloperate") << "mouseMoved(" << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
-    m_mouseDevice->move(pos);
+    m_mouseDevice->move(pos, modifier);
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas::promoteMousePress(int button, const glm::ivec2 & pos)
+void Canvas::promoteMousePress(int button, const glm::ivec2 & pos, int modifier)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2, "gloperate") << "mousePressed(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
-    m_mouseDevice->buttonPress(button, pos);
+    m_mouseDevice->buttonPress(button, pos, modifier);
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos)
+void Canvas::promoteMouseRelease(int button, const glm::ivec2 & pos, int modifier)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2, "gloperate") << "mouseReleased(" << button << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
-    m_mouseDevice->buttonRelease(button, pos);
+    m_mouseDevice->buttonRelease(button, pos, modifier);
 
     // Check if a redraw is required
     checkRedraw();
 }
 
-void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
+void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos, int modifier)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
-    debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
+    cppassist::debug(2, "gloperate") << "mouseWheel(" << delta.x << ", " << delta.y << ", " << pos.x << ", " << pos.y << ")";
 
     // Promote mouse event
-    m_mouseDevice->wheelScroll(delta, pos);
+    m_mouseDevice->wheelScroll(delta, pos, modifier);
 
     // Check if a redraw is required
     checkRedraw();
@@ -464,6 +470,23 @@ void Canvas::promoteMouseWheel(const glm::vec2 & delta, const glm::ivec2 & pos)
 
 void Canvas::checkRedraw()
 {
+    // Invoke callbacks after a frame has been rendered
+    if (m_rendered) {
+        // Invoke callbacks
+        for (auto func : m_renderedCallbacks) {
+            if (!func.isEmpty()) {
+                std::vector<cppexpose::Variant> params;
+                func.call(params);
+            }
+        }
+
+        // Clear callbacks
+        m_renderedCallbacks.clear();
+
+        // Reset flag
+        m_rendered = false;
+    }
+
     if (!m_renderStage)
     {
         return;
@@ -496,7 +519,7 @@ void Canvas::promoteChangedInputs()
     {
         // Get slot status
         std::string name = slot->name();
-        Variant status = getSlotStatus("root", name);
+        cppexpose::Variant status = getSlotStatus("root", name);
 
         // Invoke callback function
         std::vector<cppexpose::Variant> params;
@@ -530,15 +553,27 @@ void Canvas::scr_onStageInputChanged(const cppexpose::Variant & func)
     m_inputChangedCallback = func.value<cppexpose::Function>();
 }
 
+void Canvas::scr_onRendered(const cppexpose::Variant & func)
+{
+    // Check if a function has been passed
+    if (!func.hasType<cppexpose::Function>())
+    {
+        return;
+    }
+
+    // Save callback function
+    m_renderedCallbacks.push_back(func.value<cppexpose::Function>());
+}
+
 cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
     if (stage)
     {
-        Variant types = Variant::array();
+        cppexpose::Variant types = cppexpose::Variant::array();
 
         types.asArray()->push_back("bool");
         types.asArray()->push_back("int");
@@ -563,7 +598,7 @@ cppexpose::Variant Canvas::scr_getSlotTypes(const std::string & path)
 
 std::string Canvas::scr_createStage(const std::string & path, const std::string & name, const std::string & type)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -593,7 +628,7 @@ std::string Canvas::scr_createStage(const std::string & path, const std::string 
 
 void Canvas::scr_removeStage(const std::string & path, const std::string & name)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -611,7 +646,7 @@ void Canvas::scr_removeStage(const std::string & path, const std::string & name)
 
 void Canvas::scr_createSlot(const std::string & path, const std::string & slot, const std::string & slotType, const std::string & type)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -623,13 +658,13 @@ void Canvas::scr_createSlot(const std::string & path, const std::string & slot, 
 
 cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
     if (stage)
     {
-        Variant obj = Variant::array();
+        cppexpose::Variant obj = cppexpose::Variant::array();
 
         auto addSlot = [&obj, this] (AbstractSlot * slot)
         {
@@ -643,16 +678,16 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
                 // Replace name of stage with "root"
                 std::string stageName = m_renderStage->name();
 
-                if (string::hasPrefix(from, stageName)) {
+                if (cppassist::string::hasPrefix(from, stageName)) {
                     from.replace(0, stageName.length(), "root");
                 }
 
-                if (string::hasPrefix(to, stageName)) {
+                if (cppassist::string::hasPrefix(to, stageName)) {
                     to.replace(0, stageName.length(), "root");
                 }
 
                 // Describe connection
-                Variant connection = Variant::map();
+                cppexpose::Variant connection = cppexpose::Variant::map();
                 (*connection.asMap())["from"] = from;
                 (*connection.asMap())["to"]   = to;
 
@@ -681,7 +716,7 @@ cppexpose::Variant Canvas::scr_getConnections(const std::string & path)
 
 void Canvas::scr_createConnection(const std::string & sourcePath, const std::string & sourceSlot, const std::string & destPath, const std::string & destSlot)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * sourceStage = getStageObject(sourcePath);
     Stage * destStage   = getStageObject(destPath);
@@ -700,7 +735,7 @@ void Canvas::scr_createConnection(const std::string & sourcePath, const std::str
 
 void Canvas::scr_removeConnection(const std::string & path, const std::string & slot)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
 
@@ -717,19 +752,19 @@ void Canvas::scr_removeConnection(const std::string & path, const std::string & 
 
 cppexpose::Variant Canvas::scr_getStage(const std::string & path)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     // Get stage
     Stage * stage = getStageObject(path);
     if (stage)
     {
         // Compose stage information
-        Variant obj = Variant::map();
+        cppexpose::Variant obj = cppexpose::Variant::map();
 
         (*obj.asMap())["name"] = name();
 
         // List inputs
-        Variant inputs = Variant::array();
+        cppexpose::Variant inputs = cppexpose::Variant::array();
         for (auto input : stage->inputs())
         {
             inputs.asArray()->push_back(input->name());
@@ -738,7 +773,7 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
         (*obj.asMap())["inputs"] = inputs;
 
         // List outputs
-        Variant outputs = Variant::array();
+        cppexpose::Variant outputs = cppexpose::Variant::array();
         for (auto output : stage->outputs())
         {
             outputs.asArray()->push_back(output->name());
@@ -747,7 +782,7 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
         (*obj.asMap())["outputs"] = outputs;
 
         // List stages
-        Variant stages = Variant::array();
+        cppexpose::Variant stages = cppexpose::Variant::array();
         if (stage->isPipeline())
         {
             Pipeline * pipeline = static_cast<Pipeline*>(stage);
@@ -770,14 +805,14 @@ cppexpose::Variant Canvas::scr_getStage(const std::string & path)
 
 cppexpose::Variant Canvas::scr_getSlot(const std::string & path, const std::string & slotName)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     return getSlotStatus(path, slotName);
 }
 
 cppexpose::Variant Canvas::scr_getValue(const std::string & path, const std::string & slotName)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
     if (stage)
@@ -794,7 +829,7 @@ cppexpose::Variant Canvas::scr_getValue(const std::string & path, const std::str
 
 void Canvas::scr_setValue(const std::string & path, const std::string & slotName, const cppexpose::Variant & value)
 {
-    std::lock_guard<std::mutex> lock(this->m_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->m_mutex);
 
     Stage * stage = getStageObject(path);
     if (stage)
@@ -813,10 +848,10 @@ Stage * Canvas::getStageObject(const std::string & path) const
     Stage * stage = nullptr;
 
     // Split path
-    auto names = string::split(path, '.');
+    const auto names = cppassist::string::split(path, '.', true);
 
     // Resolve path
-    for (auto name : names)
+    for (const auto & name : names)
     {
         if (!stage && name == "root")
         {
@@ -843,7 +878,7 @@ Stage * Canvas::getStageObject(const std::string & path) const
 
 cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::string & slotName)
 {
-    Variant status = Variant::map();
+    cppexpose::Variant status = cppexpose::Variant::map();
 
     // Get stage
     Stage * stage = getStageObject(path);
@@ -859,12 +894,12 @@ cppexpose::Variant Canvas::getSlotStatus(const std::string & path, const std::st
             (*status.asMap())["value"] = slot->toVariant();
 
             // Include options
-            const VariantMap & options = slot->options();
+            const cppexpose::VariantMap & options = slot->options();
 
             for (auto it : options)
             {
                 std::string key = it.first;
-                Variant & value = it.second;
+                cppexpose::Variant & value = it.second;
 
                 (*status.asMap())[key] = value;
             }

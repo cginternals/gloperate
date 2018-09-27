@@ -8,6 +8,7 @@
 #include <QOpenGLContext>
 
 #include <gloperate/base/Canvas.h>
+#include <gloperate/base/Environment.h>
 
 #include <gloperate-qt/base/GLContext.h>
 #include <gloperate-qt/base/Converter.h>
@@ -102,7 +103,8 @@ void RenderWindow::mouseMoveEvent(QMouseEvent * event)
 {
     m_canvas->promoteMouseMove(glm::ivec2(
         (int)(event->x() * devicePixelRatio()),
-        (int)(event->y() * devicePixelRatio()))
+        (int)(event->y() * devicePixelRatio())),
+        Converter::fromQtModifiers(event->modifiers())
     );
 }
 
@@ -111,7 +113,8 @@ void RenderWindow::mousePressEvent(QMouseEvent * event)
     m_canvas->promoteMousePress(
         Converter::fromQtMouseButton(event->button()),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),
-                    (int)(event->y() * devicePixelRatio()) )
+                    (int)(event->y() * devicePixelRatio()) ),
+        Converter::fromQtModifiers(event->modifiers())
     );
 }
 
@@ -120,7 +123,8 @@ void RenderWindow::mouseReleaseEvent(QMouseEvent * event)
     m_canvas->promoteMouseRelease(
         Converter::fromQtMouseButton(event->button()),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),
-                    (int)(event->y() * devicePixelRatio()) )
+                    (int)(event->y() * devicePixelRatio()) ),
+        Converter::fromQtModifiers(event->modifiers())
     );
 }
 
@@ -130,7 +134,8 @@ void RenderWindow::wheelEvent(QWheelEvent * event)
         glm::vec2( event->orientation() == Qt::Vertical ? 0.0f : (float)event->delta(),
                    event->orientation() == Qt::Vertical ? (float)event->delta() : 0.0f ),
         glm::ivec2( (int)(event->x() * devicePixelRatio()),
-                    (int)(event->y() * devicePixelRatio()) )
+                    (int)(event->y() * devicePixelRatio()) ),
+        Converter::fromQtModifiers(event->modifiers())
     );
 }
 

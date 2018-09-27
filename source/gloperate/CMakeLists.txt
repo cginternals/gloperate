@@ -1,7 +1,7 @@
 
-# 
+#
 # External dependencies
-# 
+#
 
 find_package(OpenGL     REQUIRED)
 find_package(glm        REQUIRED)
@@ -13,9 +13,9 @@ find_package(qmltoolbox REQUIRED)
 find_package(cpplocate  REQUIRED)
 
 
-# 
+#
 # Library name and options
-# 
+#
 
 # Target name
 set(target gloperate)
@@ -32,9 +32,9 @@ set(template_export_file "include/${target}/${target}_api.h")
 set(export_macro         "${target_id}_API")
 
 
-# 
+#
 # Sources
-# 
+#
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
@@ -124,6 +124,7 @@ set(headers
     ${include_path}/stages/interfaces/CanvasInterface.h
     ${include_path}/stages/base/FloatSelectionStage.h
     ${include_path}/stages/base/BasicFramebufferStage.h
+    ${include_path}/stages/base/CubeMapProjectionsStage.h
     ${include_path}/stages/base/TextureRenderTargetStage.h
     ${include_path}/stages/base/RenderbufferRenderTargetStage.h
     ${include_path}/stages/base/TextureLoadStage.h
@@ -140,7 +141,10 @@ set(headers
     ${include_path}/stages/base/TransformStage.h
     ${include_path}/stages/base/TimerStage.h
     ${include_path}/stages/base/TextureFromRenderTargetExtractionStage.h
+    ${include_path}/stages/base/ViewportScaleStage.h
     ${include_path}/stages/navigation/TrackballStage.h
+    ${include_path}/stages/base/VectorSelectionStage.h
+    ${include_path}/stages/base/VectorSelectionStage.inl
     ${include_path}/stages/lights/LightCreationStage.h
     ${include_path}/stages/lights/LightBufferTextureStage.h
 
@@ -224,6 +228,7 @@ set(sources
     ${source_path}/stages/interfaces/CanvasInterface.cpp
     ${source_path}/stages/base/FloatSelectionStage.cpp
     ${source_path}/stages/base/BasicFramebufferStage.cpp
+    ${source_path}/stages/base/CubeMapProjectionsStage.cpp
     ${source_path}/stages/base/ColorGradientStage.cpp
     ${source_path}/stages/base/ColorGradientSelectionStage.cpp
     ${source_path}/stages/base/ColorGradientTextureStage.cpp
@@ -240,6 +245,7 @@ set(sources
     ${source_path}/stages/base/TransformStage.cpp
     ${source_path}/stages/base/TimerStage.cpp
     ${source_path}/stages/base/TextureFromRenderTargetExtractionStage.cpp
+    ${source_path}/stages/base/ViewportScaleStage.cpp
     ${source_path}/stages/navigation/TrackballStage.cpp
     ${source_path}/stages/lights/LightCreationStage.cpp
     ${source_path}/stages/lights/LightBufferTextureStage.cpp
@@ -268,15 +274,15 @@ set(sources
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
-source_group_by_path(${include_path} "\\\\.h$|\\\\.inl$" 
+source_group_by_path(${include_path} "\\\\.h$|\\\\.inl$"
     ${header_group} ${headers})
-source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.inl$" 
+source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.inl$"
     ${source_group} ${sources})
 
 
-# 
+#
 # Create library
-# 
+#
 
 # Build library
 add_library(${target}
@@ -319,9 +325,9 @@ generate_template_export_header(${target}
 )
 
 
-# 
+#
 # Project options
-# 
+#
 
 set_target_properties(${target}
     PROPERTIES
@@ -332,9 +338,9 @@ set_target_properties(${target}
 )
 
 
-# 
+#
 # Include directories
-# 
+#
 
 target_include_directories(${target}
     PRIVATE
@@ -353,9 +359,9 @@ target_include_directories(${target}
 )
 
 
-# 
+#
 # Libraries
-# 
+#
 
 target_link_libraries(${target}
     PRIVATE
@@ -373,9 +379,9 @@ target_link_libraries(${target}
 )
 
 
-# 
+#
 # Compile definitions
-# 
+#
 
 target_compile_definitions(${target}
     PRIVATE
@@ -389,9 +395,9 @@ target_compile_definitions(${target}
 )
 
 
-# 
+#
 # Compile options
-# 
+#
 
 target_compile_options(${target}
     PRIVATE
@@ -403,9 +409,9 @@ target_compile_options(${target}
 )
 
 
-# 
+#
 # Linker options
-# 
+#
 
 target_link_libraries(${target}
     PRIVATE
@@ -428,9 +434,9 @@ perform_health_checks(
 )
 
 
-# 
+#
 # Deployment
-# 
+#
 
 # Library
 install(TARGETS ${target}

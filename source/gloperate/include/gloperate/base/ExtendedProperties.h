@@ -51,7 +51,7 @@ bool glmFromString(const std::string & string, T * data);
 *    Helper template to determine the vector type as string
 */
 template <typename T>
-class VectorPrefix
+class GLOPERATE_TEMPLATE_API VectorPrefix
 {
 public:
     static const std::string & getPrefix();
@@ -65,7 +65,7 @@ public:
 *    Spezialization for integer vector types
 */
 template <>
-class VectorPrefix<int>
+class GLOPERATE_API VectorPrefix<int>
 {
 public:
     static const std::string & getPrefix();
@@ -84,7 +84,7 @@ namespace cppexpose
 *    Property implementation for gloperate::Color
 */
 template <typename BASE>
-class TypedColor : public cppexpose::Typed<gloperate::Color, BASE>
+class GLOPERATE_TEMPLATE_API TypedColor : public cppexpose::Typed<gloperate::Color, BASE>
 {
 public:
     TypedColor();
@@ -101,7 +101,7 @@ public:
 };
 
 template <typename BASE>
-struct GetTyped<gloperate::Color, BASE>
+struct GLOPERATE_TEMPLATE_API GetTyped<gloperate::Color, BASE>
 {
     using Type = TypedColor<BASE>;
 };
@@ -112,7 +112,7 @@ struct GetTyped<gloperate::Color, BASE>
 *    Property implementation for gloperate::Range
 */
 template <typename BASE>
-class TypedRange : public cppexpose::Typed<gloperate::Range, BASE>
+class GLOPERATE_TEMPLATE_API TypedRange : public cppexpose::Typed<gloperate::Range, BASE>
 {
 public:
     TypedRange();
@@ -129,7 +129,7 @@ public:
 };
 
 template <typename BASE>
-struct GetTyped<gloperate::Range, BASE>
+struct GLOPERATE_TEMPLATE_API GetTyped<gloperate::Range, BASE>
 {
     using Type = TypedRange<BASE>;
 };
@@ -140,7 +140,7 @@ struct GetTyped<gloperate::Range, BASE>
 *    Property implementation for GLM vector types
 */
 template <typename VectorType, typename ValueType, glm::length_t Size, typename BASE>
-class TypedGlmVec : public cppexpose::Typed<VectorType, BASE>
+class GLOPERATE_TEMPLATE_API TypedGlmVec : public cppexpose::Typed<VectorType, BASE>
 {
 public:
     TypedGlmVec();
@@ -156,37 +156,37 @@ public:
 };
 
 template <typename BASE>
-struct GetTyped<glm::vec2, BASE>
+struct GLOPERATE_TEMPLATE_API GetTyped<glm::vec2, BASE>
 {
     using Type = TypedGlmVec<glm::vec2, glm::vec2::value_type, 2, BASE>;
 };
 
 template <typename BASE>
-struct GetTyped<glm::ivec2, BASE>
+struct GLOPERATE_TEMPLATE_API GetTyped<glm::ivec2, BASE>
 {
     using Type = TypedGlmVec<glm::ivec2, glm::ivec2::value_type, 2, BASE>;
 };
 
 template <typename BASE>
-struct GetTyped<glm::vec3, BASE>
+struct GLOPERATE_TEMPLATE_API GetTyped<glm::vec3, BASE>
 {
     using Type = TypedGlmVec<glm::vec3, glm::vec3::value_type, 3, BASE>;
 };
 
 template <typename BASE>
-struct GetTyped<glm::ivec3, BASE>
+struct GLOPERATE_TEMPLATE_API GetTyped<glm::ivec3, BASE>
 {
     using Type = TypedGlmVec<glm::ivec3, glm::ivec3::value_type, 3, BASE>;
 };
 
 template <typename BASE>
-struct GetTyped<glm::vec4, BASE>
+struct GLOPERATE_TEMPLATE_API GetTyped<glm::vec4, BASE>
 {
     using Type = TypedGlmVec<glm::vec4, glm::vec4::value_type, 4, BASE>;
 };
 
 template <typename BASE>
-struct GetTyped<glm::ivec4, BASE>
+struct GLOPERATE_TEMPLATE_API GetTyped<glm::ivec4, BASE>
 {
     using Type = TypedGlmVec<glm::ivec4, glm::ivec4::value_type, 4, BASE>;
 };

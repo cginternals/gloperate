@@ -23,32 +23,40 @@ CPPEXPOSE_COMPONENT(MultiFrameAggregationPipeline, gloperate::Stage)
 
 MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environment * environment, const std::string & name)
 : Pipeline(environment, name)
-// Inputs
+// Inputs & Outputs
 , canvasInterface(this)
 , multiFrameCount("multiFrameCount", this, 64)
+, aggregationTarget("aggregationTarget", this)
+, aggregatedTarget("aggregatedTarget", this)
 // Stages
 , m_colorRenderTargetStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "ColorStage"))
+, m_aggregationRenderTargetStage(cppassist::make_unique<gloperate::TextureRenderTargetStage>(environment, "AggregationBufferStage"))
 , m_depthStencilRenderTargetStage(cppassist::make_unique<gloperate::RenderbufferRenderTargetStage>(environment, "DepthStencilStage"))
 , m_controlStage(cppassist::make_unique<MultiFrameControlStage>(environment, "MultiFrameControlStage"))
 , m_framePreparationStage(cppassist::make_unique<IntermediateFramePreparationStage>(environment, "IntermediateFramePreparationStage"))
 , m_aggregationStage(cppassist::make_unique<MultiFrameAggregationStage>(environment, "MultiFrameAggregationStage"))
+, m_blitStage(cppassist::make_unique<gloperate::BlitStage>(environment, "BlitStage"))
 // Additional Stages
 , m_renderStage(nullptr)
 {
-    createInput <gloperate::ColorRenderTarget *>("ColorTarget");
-    createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut");
-
     addStage(m_colorRenderTargetStage.get());
     m_colorRenderTargetStage->size << canvasInterface.viewport;
     m_colorRenderTargetStage->format.setValue(gl::GL_RGBA);
     m_colorRenderTargetStage->internalFormat.setValue(gl::GL_RGBA32F);
     m_colorRenderTargetStage->type.setValue(gl::GL_FLOAT);
 
+    addStage(m_aggregationRenderTargetStage.get());
+    m_aggregationRenderTargetStage->size << canvasInterface.viewport;
+    m_aggregationRenderTargetStage->format = gl::GL_RGBA;
+    m_aggregationRenderTargetStage->internalFormat = gl::GL_RGBA32F;
+    m_aggregationRenderTargetStage->type = gl::GL_FLOAT;
+
     addStage(m_depthStencilRenderTargetStage.get());
     m_depthStencilRenderTargetStage->size << canvasInterface.viewport;
     m_depthStencilRenderTargetStage->internalFormat.setValue(gl::GL_DEPTH24_STENCIL8);
 
     addStage(m_controlStage.get());
+    m_controlStage->timeDelta << canvasInterface.timeDelta;
     m_controlStage->frameNumber << canvasInterface.frameCounter;
     m_controlStage->multiFrameCount << multiFrameCount;
     m_controlStage->viewport << canvasInterface.viewport;
@@ -56,14 +64,23 @@ MultiFrameAggregationPipeline::MultiFrameAggregationPipeline(gloperate::Environm
     addStage(m_framePreparationStage.get());
 
     // m_framePreparationStage->intermediateRenderTarget << ...; // later set by setRenderStage
+    m_framePreparationStage->renderInterface.viewport << canvasInterface.viewport;
     m_framePreparationStage->intermediateFrameTexture << m_colorRenderTargetStage->texture;
 
     addStage(m_aggregationStage.get());
-    (*m_aggregationStage->createInput<gloperate::ColorRenderTarget *>("ColorTarget")) << (*canvasInterface.colorRenderTargetInput(0));
-    (*canvasInterface.colorRenderTargetOutput(0)) << (*m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut"));
+    m_aggregationStage->createInput("ColorTarget") << m_aggregationRenderTargetStage->colorRenderTarget;
     m_aggregationStage->intermediateFrame << m_framePreparationStage->intermediateFrameTextureOut; // set by setRenderStage
     m_aggregationStage->renderInterface.viewport << canvasInterface.viewport;
     m_aggregationStage->aggregationFactor << m_controlStage->aggregationFactor;
+
+    addStage(m_blitStage.get());
+    m_blitStage->source << *m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut");
+    m_blitStage->sourceViewport << canvasInterface.viewport;
+    m_blitStage->target << aggregationTarget;
+    m_blitStage->targetViewport << canvasInterface.viewport;
+
+    aggregatedTarget << m_blitStage->targetOut;
+    // aggregatedTarget << *m_aggregationStage->createOutput<gloperate::ColorRenderTarget *>("ColorTargetOut");
 
     stageAdded.connect([this](Stage * stage) {
         setRenderStage(stage);
@@ -90,6 +107,16 @@ void MultiFrameAggregationPipeline::setRenderStage(gloperate::Stage * stage)
     // Promote viewport information
     auto slotViewport = m_renderStage->findInput<glm::vec4>([](Input<glm::vec4>* input) { return input->name() == "viewport"; });
     (*slotViewport) << canvasInterface.viewport;
+
+    // Promote timeDelta, if applicable
+    auto slotTimeDelta = m_renderStage->findInput<float>([](Input<float>* input) { return input->name() == "timeDelta"; });
+    if (slotTimeDelta)
+        (*slotTimeDelta) << canvasInterface.timeDelta;
+
+    // Provide current frame as frame count
+    auto slotFrameCount = m_renderStage->findInput<int>([](Input<int>* input) { return input->name() == "frameCounter"; });
+    if (slotFrameCount)
+        (*slotFrameCount) << m_controlStage->currentFrame;
 
     // Update render stage input render targets
     m_renderStage->forAllInputs<gloperate::ColorRenderTarget *>([this](Input<gloperate::ColorRenderTarget *> * input) {

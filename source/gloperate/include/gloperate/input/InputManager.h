@@ -2,8 +2,9 @@
 #pragma once
 
 
-#include <list>
 #include <memory>
+#include <list>
+#include <map>
 
 #include <cppexpose/reflection/Object.h>
 
@@ -81,11 +82,18 @@ public:
 
 
 protected:
+    // Scripting functions
+    int  scr_onInput(const cppexpose::Variant & func);
+
+
+protected:
     Environment                                      * m_environment; ///< Gloperate environment to which the manager belongs
     std::list<AbstractEventConsumer *>                 m_consumers;
     std::list<std::unique_ptr<AbstractDeviceProvider>> m_deviceProviders;
     std::list<AbstractDevice *>                        m_devices;
     std::list<std::unique_ptr<InputEvent>>             m_events;
+    std::map<int, cppexpose::Function>                 m_callbacks;
+    int                                                m_nextId;      ///< Next callback ID
 };
 
 

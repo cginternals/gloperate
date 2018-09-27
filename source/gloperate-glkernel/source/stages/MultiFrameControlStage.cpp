@@ -13,14 +13,14 @@ CPPEXPOSE_COMPONENT(MultiFrameControlStage, gloperate::Stage)
 
 MultiFrameControlStage::MultiFrameControlStage(gloperate::Environment * environment, const std::string & name)
 : Stage(environment, name)
+, timeDelta("timeDelta", this)
+, viewport("viewport", this)
 , frameNumber("frameNumber", this)
 , multiFrameCount("multiFrameCount", this)
-, viewport("viewport", this)
 , currentFrame("currentFrame", this)
 , aggregationFactor("aggregationFactor", this)
 , m_currentFrame(0)
 {
-    setAlwaysProcessed(true);
 }
 
 MultiFrameControlStage::~MultiFrameControlStage()
@@ -29,29 +29,32 @@ MultiFrameControlStage::~MultiFrameControlStage()
 
 void MultiFrameControlStage::onProcess()
 {
-    m_currentFrame++;
-    currentFrame.setValue(m_currentFrame);
-
     if (m_currentFrame < *multiFrameCount)
     {
-        aggregationFactor.setValue(1.0f/m_currentFrame);
+        const auto factor = 1.0f/(m_currentFrame+1);
+
+        currentFrame.setValue(m_currentFrame);
+        aggregationFactor.setValue(factor);
+
+        ++m_currentFrame;
     }
     else
     {
         aggregationFactor.setValue(0.0f);
-        setAlwaysProcessed(false);
     }
 }
 
 void MultiFrameControlStage::onInputValueChanged(gloperate::AbstractSlot * slot)
 {
-    if (slot != &frameNumber)
+    if (slot != &frameNumber && slot != &timeDelta)
     {
         m_currentFrame = 0;
-        setAlwaysProcessed(true);
     }
 
-    Stage::onInputValueChanged(slot);
+    if (m_currentFrame < *multiFrameCount)
+    {
+        Stage::onInputValueChanged(slot);
+    }
 }
 
 

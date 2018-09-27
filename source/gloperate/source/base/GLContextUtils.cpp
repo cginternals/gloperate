@@ -5,8 +5,9 @@
 
 #include <cppassist/logging/logging.h>
 
-#include <glbinding/ContextInfo.h>
 #include <glbinding/gl/gl.h>
+
+#include <glbinding-aux/ContextInfo.h>
 
 
 using namespace gl;
@@ -16,32 +17,10 @@ namespace gloperate
 {
 
 
-bool GLContextUtils::isValid()
-{
-    return (tryFetchHandle() > 0);
-}
-
-glbinding::ContextHandle GLContextUtils::tryFetchHandle()
-{
-    const glbinding::ContextHandle handle = glbinding::getCurrentContext();
-
-    if (handle == 0)
-    {
-        cppassist::critical("Acquiring OpenGL context handle failed.");
-    }
-
-    return handle;
-}
-
 gloperate::GLContextFormat GLContextUtils::retrieveFormat()
 {
     // Create context format description
     gloperate::GLContextFormat format;
-
-    // Check if current context is valid, else return invalid format
-    if (!isValid()) {
-        return format;
-    }
 
     // Retrieve format
     GLint i;
@@ -83,13 +62,11 @@ gloperate::GLContextFormat GLContextUtils::retrieveFormat()
 
 glbinding::Version GLContextUtils::retrieveVersion()
 {
-    return glbinding::ContextInfo::version();
+    return glbinding::aux::ContextInfo::version();
 }
 
 GLContextFormat::Profile GLContextUtils::retrieveProfile()
 {
-    assert(0 != glbinding::getCurrentContext());
-
     gl::ContextProfileMask profileMask = gl::GL_NONE_BIT;
     glGetIntegerv(GLenum::GL_CONTEXT_PROFILE_MASK, reinterpret_cast<GLint*>(&profileMask));
 
@@ -102,7 +79,7 @@ GLContextFormat::Profile GLContextUtils::retrieveProfile()
     {
         return GLContextFormat::Profile::Core;
     }
-    
+
     if ((profileMask & GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) != gl::GL_NONE_BIT)
     {
         return GLContextFormat::Profile::Compatibility;
@@ -113,9 +90,7 @@ GLContextFormat::Profile GLContextUtils::retrieveProfile()
 
 std::string GLContextUtils::version()
 {
-    assert(0 != glbinding::getCurrentContext());
-
-    return glbinding::ContextInfo::version().toString();
+    return glbinding::aux::ContextInfo::version().toString();
 }
 
 std::string GLContextUtils::profile()
@@ -125,16 +100,12 @@ std::string GLContextUtils::profile()
 
 std::string GLContextUtils::vendor()
 {
-    assert(0 != glbinding::getCurrentContext());
-
-    return glbinding::ContextInfo::vendor();
+    return glbinding::aux::ContextInfo::vendor();
 }
 
 std::string GLContextUtils::renderer()
 {
-    assert(0 != glbinding::getCurrentContext());
-
-    return glbinding::ContextInfo::renderer();
+    return glbinding::aux::ContextInfo::renderer();
 }
 
 

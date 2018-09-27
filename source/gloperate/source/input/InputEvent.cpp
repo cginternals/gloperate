@@ -26,6 +26,11 @@ InputEvent::Type InputEvent::type() const
     return m_type;
 }
 
+AbstractDevice * InputEvent::device() const
+{
+    return m_dispatchingDevice;
+}
+
 std::string InputEvent::asString() const
 {
     return std::to_string(static_cast<int>(m_type));
