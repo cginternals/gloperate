@@ -73,6 +73,8 @@ set(headers
     ${include_path}/scripting/ScriptPromptWidget.h
     ${include_path}/scripting/ScriptSyntaxHighlighter.h
 
+    ${include_path}/loaders/QtImageLoader.h
+    ${include_path}/loaders/QtImageStorer.h
     ${include_path}/loaders/QtTextureLoader.h
     ${include_path}/loaders/QtTextureStorer.h
 )
@@ -95,6 +97,8 @@ set(sources
 
     ${source_path}/loaders/QtTextureLoader.cpp
     ${source_path}/loaders/QtTextureStorer.cpp
+    ${source_path}/loaders/QtImageLoader.cpp
+    ${source_path}/loaders/QtImageStorer.cpp
 )
 
 # Group source files
