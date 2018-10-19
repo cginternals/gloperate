@@ -1,18 +1,13 @@
-![gloperate Logo](gloperate-logo.png "gloperate")
 
-C++ library for defining and controlling modern GPU rendering/processing operations
+<br><a href="https://github.com/cginternals/gloperate/"><img src="https://raw.githubusercontent.com/cginternals/gloperate/master/gloperate-logo.svg?sanitize=true" width="50%"></a>
 
-## Project Health (master)
+*gloperate* is a cross-platform C++ library for defining and controlling modern GPU rendering/processing operations.
 
-| Service | System | Compiler | Status |
-| ------- | ------ | -------- | -----: |
-|  [Travis-CI](https://travis-ci.org/cginternals/globjects) | Ubuntu 14.04 | GCC 4.8, Clang 3.5 | upcoming |
-|  [Travis-CI](https://travis-ci.org/cginternals/globjects) | OS X | Clang ? | upcoming |
-| [Coverity](https://scan.coverity.com/projects/6831?tab=overview) | Ubuntu 14.04 | GCC 5.4 | [![Coverity Status](https://scan.coverity.com/projects/6831/badge.svg)](https://scan.coverity.com/projects/6831) |
-| Jenkins <br><br><br><br> | Ubuntu 14.04 <br><br><br><br> | GCC 4.8 <br> GCC 4.9 <br> GCC 5.4 <br> Clang 3.9 <br> | upcoming <br> upcoming <br> upcoming <br> upcoming <br> |
-| Jenkins <br><br> | Windows 10 <br><br> | MSVC 2013 Update 5 <br>  MSVC 2015 Update 1 <br> | upcoming <br>upcoming <br> |
+![GitHub release](https://img.shields.io/github/release/cginternals/gloperate.svg)
+[![Travis](https://img.shields.io/travis/cginternals/gloperate/master.svg?style=flat&logo=travis)](https://travis-ci.org/cginternals/gloperate)
+[![Appveyor](https://img.shields.io/appveyor/ci/scheibel/gloperate/master.svg?style=flat&logo=appveyor)](https://ci.appveyor.com/project/scheibel/gloperate/branch/master)
+[![Tokei](https://tokei.rs/b1/github/cginternals/gloperate)](https://github.com/Aaronepower/tokei)
 
-Please note that our OS X build node is currently broken (physically). However, *gloperate* is maintained for OS X as well and there are many people using it on OS X on a regular basis.
 
 ### Dependencies
 
@@ -27,16 +22,3 @@ The following dev-libraries and programs need to be provided for correct CMake c
 
 * Window and Context creation (GLFW 3.1): http://www.glfw.org/
 * Qt (>=5.4): http://qt-project.org/
-
-### Development Notes
-
-If you are contributing to this project, please keep the following notes in mind:
-* Add your name and email to the AUTHORS file.
-* Follow coding conventions according to google's [C++ Style Guide](http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml).
-* Commits should provide a meaningful  message, which uses the imperative, present tense: "change", not "changed" nor "changes", AND start with a capital letter.
-* Commits should always refer to an issue: use ```#xxx```, ```fix #xxx```, or ```close #xxx```.
-* Pull Requests are reviewed by at least one other developer on another platform.
-* Use lazy initialization as often as possible for time consuming tasks.
-* Member Variables always start with ```m_```, ```g_```, and ```s_``` (e.g.,```m_member```, ```g_global```, and ```s_static```)..
-* Interface or abstract class names always start with Abstract (e.g., ```AbstractArray```).
-* Enforce strict include sequence: cpp-related header, std, glm, glbinding, globjects.
