@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <algorithm>
 
+// [TODO]: Workaround until https://github.com/g-truc/glm/pull/856
 #include <glm/common.hpp>
 
 #include <cppassist/memory/make_unique.h>
