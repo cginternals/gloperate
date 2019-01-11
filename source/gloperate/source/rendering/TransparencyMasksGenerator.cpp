@@ -5,6 +5,7 @@
 #include <algorithm>
 
 // [TODO]: Workaround until https://github.com/g-truc/glm/pull/856
+#include <glm/detail/type_vec1.hpp>
 #include <glm/common.hpp>
 
 #include <cppassist/memory/make_unique.h>
