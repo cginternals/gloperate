@@ -34,7 +34,7 @@ cmake_policy(SET CMP0020 NEW)
 set(target gloperate-viewer)
 
 # Exit here if required dependencies are not met
-if (NOT Qt5Core_FOUND)
+if (NOT Qt5Core_FOUND OR NOT Qt5Quick_FOUND)
     message(STATUS "App ${target} skipped: Qt5 not found")
     return()
 else()
