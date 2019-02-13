@@ -1,6 +1,7 @@
 
 #include <gloperate-qt/base/GLContextFactory.h>
 
+#include <QtGlobal>
 #include <QOpenGLContext>
 #include <QSurfaceFormat>
 
@@ -49,8 +50,24 @@ QSurfaceFormat GLContextFactory::toQSurfaceFormat(const gloperate::GLContextForm
     // Set OpenGL context flags
     if (format.version() >= glbinding::Version(3, 0))
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 3, 0))
         qFormat.setOption(QSurfaceFormat::DeprecatedFunctions, !format.forwardCompatible());
         qFormat.setOption(QSurfaceFormat::DebugContext, format.debugContext());
+#else
+        auto options = static_cast<QSurfaceFormat::FormatOptions>(0);
+
+        if (!format.forwardCompatible())
+        {
+            options |= QSurfaceFormat::DeprecatedFunctions;
+        }
+
+        if (format.debugContext())
+        {
+            options |= QSurfaceFormat::DebugContext;
+        }
+
+        qFormat.setOption(options);
+#endif
     }
 
     // Set OpenGL profile
