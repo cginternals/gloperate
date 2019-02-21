@@ -9,7 +9,6 @@ find_package(glbinding  REQUIRED)
 find_package(globjects  REQUIRED)
 find_package(cppexpose  REQUIRED)
 find_package(cppassist  REQUIRED)
-find_package(qmltoolbox REQUIRED)
 find_package(cpplocate  REQUIRED)
 
 

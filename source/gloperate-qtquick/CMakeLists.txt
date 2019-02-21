@@ -10,7 +10,8 @@ find_package(globjects  REQUIRED)
 find_package(cppexpose  REQUIRED)
 find_package(cppassist  REQUIRED)
 find_package(cpplocate  REQUIRED)
-find_package(qmltoolbox REQUIRED)
+
+find_package(qmltoolbox)
 
 # Qt5
 find_package(Qt5Core    5.1)
@@ -39,6 +40,9 @@ set(target gloperate-qtquick)
 # Exit here if required dependencies are not met
 if (NOT Qt5Core_FOUND OR NOT Qt5Quick_FOUND)
     message("Lib ${target} skipped: Qt5 not found")
+    return()
+elif (NOT qmltoolbox_FOUND)
+    message("Lib ${target} skipped: qmltoolbox not found")
     return()
 else()
     message(STATUS "Lib ${target}")
