@@ -25,14 +25,6 @@ TimerStage::~TimerStage()
 {
 }
 
-void TimerStage::onContextInit(gloperate::AbstractGLContext *)
-{
-}
-
-void TimerStage::onContextDeinit(gloperate::AbstractGLContext *)
-{
-}
-
 void TimerStage::onProcess()
 {
     m_time += (*timeDelta) * (*factor);

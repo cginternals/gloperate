@@ -27,12 +27,15 @@ ColorGradientTextureStage::~ColorGradientTextureStage()
 
 void ColorGradientTextureStage::onContextInit(AbstractGLContext *)
 {
+    texture.invalidate();
 }
 
 void ColorGradientTextureStage::onContextDeinit(AbstractGLContext *)
 {
     // Clean up OpenGL objects
     m_gradientTexture = nullptr;
+
+    texture.setValue(nullptr);
 }
 
 void ColorGradientTextureStage::onProcess()

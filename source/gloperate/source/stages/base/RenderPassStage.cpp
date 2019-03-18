@@ -1,6 +1,8 @@
 
 #include <gloperate/stages/base/RenderPassStage.h>
 
+#include <cppassist/logging/logging.h>
+
 #include <glbinding/gl/enum.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -65,6 +67,19 @@ void RenderPassStage::onContextInit(AbstractGLContext *)
     // Create OpenGL state set
     m_beforeState = cppassist::make_unique<globjects::State>(globjects::State::DeferredMode);
     m_renderPass->setStateBefore(m_beforeState.get());
+
+    renderPass.invalidate();
+}
+
+void RenderPassStage::onContextDeinit(AbstractGLContext *)
+{
+    // Create OpenGL state set
+    m_beforeState = nullptr;
+
+    // Create render pass
+    m_renderPass = nullptr;
+
+    renderPass.setValue(nullptr);
 }
 
 void RenderPassStage::onProcess()

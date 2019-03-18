@@ -37,14 +37,16 @@ void TransparencyKernelStage::onContextInit(gloperate::AbstractGLContext *)
     m_texture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_REPEAT);
     m_texture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_REPEAT);
     m_texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_REPEAT);
-}
 
+    texture.invalidate();
+}
 
 void TransparencyKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
     m_texture.reset();
-}
 
+    texture.setValue(nullptr);
+}
 
 void TransparencyKernelStage::onProcess()
 {

@@ -28,11 +28,15 @@ GlyphPreparationStage::~GlyphPreparationStage()
 void GlyphPreparationStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_vertexCloud = cppassist::make_unique<openll::GlyphVertexCloud>();
+
+    vertexCloud.invalidate();
 }
 
 void GlyphPreparationStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
     m_vertexCloud = nullptr;
+
+    vertexCloud.setValue(nullptr);
 }
 
 void GlyphPreparationStage::onProcess()

@@ -38,6 +38,8 @@ void IntermediateFramePreparationStage::onContextInit(gloperate::AbstractGLConte
     m_targetFBO = cppassist::make_unique<globjects::Framebuffer>();
 
     renderInterface.onContextInit();
+
+    intermediateFrameTextureOut.invalidate();
 }
 
 void IntermediateFramePreparationStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
@@ -45,6 +47,8 @@ void IntermediateFramePreparationStage::onContextDeinit(gloperate::AbstractGLCon
     m_targetFBO = nullptr;
 
     renderInterface.onContextDeinit();
+
+    intermediateFrameTextureOut.setValue(nullptr);
 }
 
 void IntermediateFramePreparationStage::onProcess()

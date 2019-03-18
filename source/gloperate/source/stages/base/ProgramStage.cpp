@@ -42,6 +42,8 @@ ProgramStage::~ProgramStage()
 void ProgramStage::onContextInit(AbstractGLContext *)
 {
     m_program = cppassist::make_unique<globjects::Program>();
+
+    program.invalidate();
 }
 
 void ProgramStage::onContextDeinit(AbstractGLContext *)
@@ -49,10 +51,15 @@ void ProgramStage::onContextDeinit(AbstractGLContext *)
     // Clean up OpenGL objects
     m_shaders.clear();
     m_program = nullptr;
+
+    program.setValue(nullptr);
 }
 
 void ProgramStage::onProcess()
 {
+    // Remove all loaded shader files from resource manager
+    m_shaders.clear();
+
     // Detach all shaders from program
     for (auto shader : m_program->shaders())
     {
@@ -71,8 +78,12 @@ void ProgramStage::onProcess()
     // Load and attach all shaders from inputs of type FilePath
     for (auto input : inputs<cppfs::FilePath>())
     {
+        // cppassist::warning("gloperate") << "Load shader " << (*input)->path();
+
         if (auto shader = environment()->resourceManager()->load<globjects::Shader>((*input)->path()))
         {
+            // cppassist::warning("gloperate-resource-manager") << "Loaded shader " << shader->id();
+
             m_shaders.emplace_back(shader);
             m_program->attach(shader);
         }

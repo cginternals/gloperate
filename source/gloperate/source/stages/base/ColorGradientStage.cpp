@@ -25,16 +25,6 @@ ColorGradientStage::~ColorGradientStage()
 {
 }
 
-void ColorGradientStage::onContextInit(AbstractGLContext *)
-{
-}
-
-void ColorGradientStage::onContextDeinit(AbstractGLContext *)
-{
-    // Clean up OpenGL objects
-    m_colorGradientList = nullptr;
-}
-
 void ColorGradientStage::onProcess()
 {
     // Load color gradient list

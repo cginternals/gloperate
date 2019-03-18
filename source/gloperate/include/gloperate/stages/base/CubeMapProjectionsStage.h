@@ -21,7 +21,6 @@ class GLOPERATE_API CubeMapProjectionsStage : public gloperate::Stage
 {
 public:
     CubeMapProjectionsStage(gloperate::Environment * environment, const std::string & name = "CubeMapProjectionsStage");
-    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
 
 
 public:

@@ -46,15 +46,25 @@ void BasicFramebufferStage::onContextInit(AbstractGLContext *)
 
     m_colorBuffer->setTarget(m_colorTexture.get());
     m_depthBuffer->setTarget(m_depthTexture.get());
+
+    colorTexture.invalidate();
+    depthTexture.invalidate();
+    colorBuffer.invalidate();
+    depthBuffer.invalidate();
 }
 
 void BasicFramebufferStage::onContextDeinit(AbstractGLContext *)
 {
     // Clean up OpenGL objects
-    m_colorBuffer         = nullptr;
-    m_depthBuffer         = nullptr;
-    m_colorTexture        = nullptr;
+    m_colorBuffer  = nullptr;
+    m_depthBuffer  = nullptr;
+    m_colorTexture = nullptr;
     m_depthTexture = nullptr;
+
+    colorTexture.setValue(nullptr);
+    depthTexture.setValue(nullptr);
+    colorBuffer.setValue(nullptr);
+    depthBuffer.setValue(nullptr);
 }
 
 void BasicFramebufferStage::onProcess()

@@ -37,12 +37,15 @@ ShapeStage::~ShapeStage()
 
 void ShapeStage::onContextInit(gloperate::AbstractGLContext *)
 {
+    drawable.invalidate();
 }
 
 void ShapeStage::onContextDeinit(AbstractGLContext *)
 {
     // Clean up OpenGL objects
     m_shape = nullptr;
+
+    drawable.setValue(nullptr);
 }
 
 void ShapeStage::onProcess()

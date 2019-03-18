@@ -26,10 +26,6 @@ CubeMapProjectionsStage::CubeMapProjectionsStage(gloperate::Environment * enviro
     m_projections.resize(6);
 }
 
-void CubeMapProjectionsStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
-{
-}
-
 void CubeMapProjectionsStage::onProcess()
 {
     const auto c = *center;

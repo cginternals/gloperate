@@ -79,7 +79,7 @@ bool Window::create()
     }
 
     // Create internal window
-    if (!createInternalWindow(m_format, m_windowedModeSize.x, m_windowedModeSize.y))
+    if (!createInternalWindow(m_format, m_windowedModeSize.x, m_windowedModeSize.y, false))
     {
         cppassist::critical() << "Creating native window with OpenGL context failed.";
         return false;
@@ -156,23 +156,33 @@ bool Window::isFullscreen() const
 
 void Window::setFullscreen(bool fullscreen)
 {
-    if (!m_window)
+    if (fullscreen == m_fullscreen)
     {
         return;
     }
 
-    // Switch to fullscreen-mode
-    if (fullscreen && !m_fullscreen)
+    if (!m_fullscreen)
+    {
+        // Remember old window size
+        m_windowedModeSize = size();
+    }
+
+    m_fullscreen = fullscreen;
+
+    recreateWindow();
+}
+
+bool Window::recreateWindow()
+{
+    // Create window in fullscreen-mode
+    if (m_fullscreen)
     {
         // Get monitor on which fullscreen mode is requested
         GLFWmonitor * monitor = glfwGetPrimaryMonitor();
         if (!monitor)
         {
-            return;
+            return false;
         }
-
-        // Remember old window size
-        m_windowedModeSize = size();
 
         // Set window size to monitor size
         const GLFWvidmode * mode = glfwGetVideoMode(monitor);
@@ -183,18 +193,17 @@ void Window::setFullscreen(bool fullscreen)
         destroyInternalWindow();
 
         // Create new internal window
-        if (createInternalWindow(m_format, w, h, monitor))
+        if (createInternalWindow(m_format, w, h, true, monitor))
         {
             // Show window
             show();
 
-            // Save fullscreen mode
-            m_fullscreen = true;
+            return true;
         }
     }
 
-    // Switch to windowed-mode
-    else if (!fullscreen && m_fullscreen)
+    // Create window in windowed mode
+    else
     {
         int w = m_windowedModeSize.x;
         int h = m_windowedModeSize.y;
@@ -203,15 +212,16 @@ void Window::setFullscreen(bool fullscreen)
         destroyInternalWindow();
 
         // Create new internal window
-        if (createInternalWindow(m_format, w, h, nullptr))
+        if (createInternalWindow(m_format, w, h, true, nullptr))
         {
             // Show window
             show();
 
-            // Save windowed mode
-            m_fullscreen = false;
+            return true;
         }
     }
+
+    return false;
 }
 
 glm::ivec2 Window::position() const
@@ -509,12 +519,14 @@ void Window::clearEventQueue()
     std::swap(m_eventQueue, empty);
 }
 
-bool Window::createInternalWindow(const GLContextFormat & format, int width, int height, GLFWmonitor * monitor)
+bool Window::createInternalWindow(const GLContextFormat & format, int width, int height, bool setContextActive, GLFWmonitor * monitor)
 {
     // Abort if window is already created
     assert(!m_context);
     if (m_context)
     {
+        cppassist::warning("gloperate-glfw") << "Attempt to create GLFW window although a context is already initialized";
+
         return false;
     }
 
@@ -525,6 +537,8 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
     // Check if context has been created
     if (!m_context)
     {
+        cppassist::warning("gloperate-glfw") << "Attempt to create GLFW window but context couldn't get created";
+
         return false;
     }
 
@@ -542,8 +556,13 @@ bool Window::createInternalWindow(const GLContextFormat & format, int width, int
 
     // Initialize rendering components with new context
     glfwMakeContextCurrent(m_window);
+    cppassist::debug("gloperate-glfw") << "Initialize new context";
     onContextInit();
-    glfwMakeContextCurrent(nullptr);
+
+    if (!setContextActive)
+    {
+        glfwMakeContextCurrent(nullptr);
+    }
 
     // Promote current size
     queueEvent(cppassist::make_unique<ResizeEvent>(size()));
@@ -558,11 +577,14 @@ void Window::destroyInternalWindow()
     // Abort if window has not been created
     if (!m_context)
     {
+        cppassist::warning("gloperate-glfw") << "Deinitialize GLFW window although none is initialized";
+
         return;
     }
 
     // Deinitialize rendering components from old context
     glfwMakeContextCurrent(m_window);
+    cppassist::debug("gloperate-glfw") << "Deinitialize GLFW window";
     onContextDeinit();
     glfwMakeContextCurrent(nullptr);
 
@@ -575,6 +597,8 @@ void Window::destroyInternalWindow()
     // Reset internal pointers
     m_context = nullptr;
     m_window  = nullptr;
+
+    // cppassist::debug("gloperate-glfw") << "GLFW window deinitialized";
 }
 
 void Window::onContextInit()

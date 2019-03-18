@@ -368,6 +368,15 @@ protected:
 
     /**
     *  @brief
+    *    Recreates GLFW window using current settings
+    *
+    *  @return
+    *    'true' on success, else 'false'
+    */
+    bool recreateWindow();
+
+    /**
+    *  @brief
     *    Create internal window and OpenGL context
     *
     *  @param[in] format
@@ -386,7 +395,7 @@ protected:
     *    This function will actually create a new window with the given context
     *    format, so any previously obtained window IDs will be rendered invalid.
     */
-    bool createInternalWindow(const gloperate::GLContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
+    bool createInternalWindow(const gloperate::GLContextFormat & format, int width, int height, bool setContextActive, GLFWmonitor * monitor = nullptr);
 
     /**
     *  @brief

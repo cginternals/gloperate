@@ -61,14 +61,16 @@ DiscDistributionKernelStage::~DiscDistributionKernelStage()
 void DiscDistributionKernelStage::onContextInit(gloperate::AbstractGLContext *)
 {
     m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_1D);
-}
 
+    texture.invalidate();
+}
 
 void DiscDistributionKernelStage::onContextDeinit(gloperate::AbstractGLContext *)
 {
     m_texture.reset();
-}
 
+    texture.setValue(nullptr);
+}
 
 void DiscDistributionKernelStage::onProcess()
 {

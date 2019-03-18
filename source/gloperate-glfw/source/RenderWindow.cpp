@@ -81,8 +81,7 @@ void RenderWindow::onMove(MoveEvent &)
 
 void RenderWindow::onPaint(PaintEvent &)
 {
-    // [TODO] Optimize memory reallocation problem
-    auto defaultFBO = globjects::Framebuffer::defaultFBO();
+    static const auto defaultFBO = globjects::Framebuffer::defaultFBO();
 
     m_canvas->render(defaultFBO.get());
 }
@@ -100,14 +99,23 @@ void RenderWindow::onKeyPress(KeyEvent & event)
         fromGLFWModifier(event.modifiers())
     );
 
-    if (event.key() == GLFW_KEY_F11 || (event.key() == GLFW_KEY_ENTER && (event.modifiers() & GLFW_MOD_ALT) != 0) )
+    // Toogle Fullscreen shortcuts <F11> and <Alt> + <Enter>
+    if (event.key() == GLFW_KEY_F11
+        || (event.key() == GLFW_KEY_ENTER && (event.modifiers() & GLFW_MOD_ALT) != 0))
     {
         setFullscreen(!isFullscreen());
     }
 
+    // Close shortcut <Esc>
     if (event.key() == GLFW_KEY_ESCAPE)
     {
         close();
+    }
+
+    // Reload OpenGL Context <Ctrl> + <F5>
+    if (event.key() == GLFW_KEY_F5 && (event.modifiers() & GLFW_MOD_CONTROL) != 0)
+    {
+        recreateWindow();
     }
 }
 

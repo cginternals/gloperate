@@ -29,16 +29,21 @@ ShaderStage::~ShaderStage()
 
 void ShaderStage::onContextInit(AbstractGLContext *)
 {
+    shader.invalidate();
 }
 
 void ShaderStage::onContextDeinit(AbstractGLContext *)
 {
     // Clean up OpenGL objects
     m_shader = nullptr;
+
+    shader.setValue(nullptr);
 }
 
 void ShaderStage::onProcess()
 {
+    cppassist::warning("gloperate") << "Load shader " << (*filePath).path();
+
     // Load shader
     m_shader = std::unique_ptr<globjects::Shader>(environment()->resourceManager()->load<globjects::Shader>((*filePath).path()));
 

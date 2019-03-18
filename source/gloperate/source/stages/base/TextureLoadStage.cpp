@@ -26,12 +26,15 @@ TextureLoadStage::~TextureLoadStage()
 
 void TextureLoadStage::onContextInit(AbstractGLContext *)
 {
+    texture.invalidate();
 }
 
 void TextureLoadStage::onContextDeinit(AbstractGLContext *)
 {
     // Clean up OpenGL objects
     m_texture = nullptr;
+
+    texture.setValue(nullptr);
 }
 
 void TextureLoadStage::onProcess()

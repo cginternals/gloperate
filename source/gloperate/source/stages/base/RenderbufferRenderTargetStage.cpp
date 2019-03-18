@@ -48,6 +48,11 @@ void RenderbufferRenderTargetStage::onContextInit(gloperate::AbstractGLContext *
     m_colorRenderTarget   = cppassist::make_unique<ColorRenderTarget>();
     m_depthRenderTarget   = cppassist::make_unique<DepthRenderTarget>();
     m_stencilRenderTarget = cppassist::make_unique<StencilRenderTarget>();
+
+    renderbuffer.invalidate();
+    colorRenderTarget.invalidate();
+    depthRenderTarget.invalidate();
+    stencilRenderTarget.invalidate();
 }
 
 void RenderbufferRenderTargetStage::onContextDeinit(AbstractGLContext *)
@@ -57,6 +62,11 @@ void RenderbufferRenderTargetStage::onContextDeinit(AbstractGLContext *)
     m_colorRenderTarget   = nullptr;
     m_depthRenderTarget   = nullptr;
     m_stencilRenderTarget = nullptr;
+
+    renderbuffer.setValue(nullptr);
+    colorRenderTarget.setValue(nullptr);
+    depthRenderTarget.setValue(nullptr);
+    stencilRenderTarget.setValue(nullptr);
 }
 
 void RenderbufferRenderTargetStage::onProcess()
