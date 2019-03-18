@@ -38,6 +38,8 @@ public:
 
 protected:
     virtual void onProcess() override;
+    virtual void onContextInit(gloperate::AbstractGLContext * context) override;
+    virtual void onContextDeinit(gloperate::AbstractGLContext * context) override;
 
 
 protected:

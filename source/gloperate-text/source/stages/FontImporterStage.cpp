@@ -22,12 +22,28 @@ FontImporterStage::~FontImporterStage()
 {
 }
 
+void FontImporterStage::onContextInit(gloperate::AbstractGLContext * /*context*/)
+{
+    font.invalidate();
+}
+
+void FontImporterStage::onContextDeinit(gloperate::AbstractGLContext * /*context*/)
+{
+    m_font = nullptr;
+
+    font.setValue(nullptr);
+}
+
 void FontImporterStage::onProcess()
 {
+    cppassist::debug(0, "gloperate-text") << "Attempt to load font from " << fontFilePath.value().path();
+
     auto newFont = std::unique_ptr<openll::FontFace>{ m_environment->resourceManager()->load<openll::FontFace>(fontFilePath.value().path())};
 
     if (newFont)
     {
+        cppassist::debug(0, "gloperate-text") << "Loaded font " << newFont.get() << " from " << fontFilePath.value().path();
+
         m_font = std::move(newFont);
         font.setValue(m_font.get());
     }
