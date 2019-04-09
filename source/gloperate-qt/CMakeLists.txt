@@ -35,7 +35,7 @@ cmake_policy(SET CMP0020 NEW)
 set(target gloperate-qt)
 
 # Exit here if required dependencies are not met
-if (NOT Qt5Core_FOUND)
+if (NOT Qt5Core_FOUND OR NOT Qt5OpenGL_FOUND)
     message("Lib ${target} skipped: Qt5 not found")
     return()
 else()
