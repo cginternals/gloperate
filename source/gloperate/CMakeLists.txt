@@ -3,7 +3,6 @@
 # External dependencies
 #
 
-find_package(OpenGL     REQUIRED)
 find_package(glm        REQUIRED)
 find_package(glbinding  REQUIRED)
 find_package(globjects  REQUIRED)
@@ -364,7 +363,6 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    ${OPENGL_LIBRARIES}
     cpplocate::cpplocate
     cppexpose::cppexpose
     cppassist::cppassist
