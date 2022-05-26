@@ -9,7 +9,7 @@ find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(cpplocate REQUIRED)
-find_package(GLFW)
+find_package(glfw3)
 
 
 #
@@ -20,7 +20,7 @@ find_package(GLFW)
 set(target gloperate-glfw)
 
 # Exit here if required dependencies are not met
-if (NOT GLFW_FOUND)
+if (NOT glfw3_FOUND)
     message("Lib ${target} skipped: GLFW not found")
     return()
 else()
@@ -123,7 +123,6 @@ target_include_directories(${target}
     ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/include
-    ${GLFW_INCLUDE_DIR}
 
     PUBLIC
 
@@ -140,10 +139,7 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    ${GLFW_LIBRARIES}
-    ${GLFW_cocoa_LIBRARY}
-    ${GLFW_iokit_LIBRARY}
-    ${GLFW_corevideo_LIBRARY}
+    glfw
     cpplocate::cpplocate
     cppexpose::cppexpose
     cppassist::cppassist
@@ -164,10 +160,11 @@ target_link_libraries(${target}
 
 target_compile_definitions(${target}
     PRIVATE
+    ${DEFAULT_COMPILE_DEFINITIONS}
+    GLFW_INCLUDE_NONE
 
     PUBLIC
     $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_id}_STATIC_DEFINE>
-    ${DEFAULT_COMPILE_DEFINITIONS}
     GLM_FORCE_RADIANS
 
     INTERFACE
@@ -180,9 +177,9 @@ target_compile_definitions(${target}
 
 target_compile_options(${target}
     PRIVATE
+    ${DEFAULT_COMPILE_OPTIONS}
 
     PUBLIC
-    ${DEFAULT_COMPILE_OPTIONS}
 
     INTERFACE
 )
@@ -194,9 +191,9 @@ target_compile_options(${target}
 
 target_link_libraries(${target}
     PRIVATE
+    ${DEFAULT_LINKER_OPTIONS}
 
     PUBLIC
-    ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
 )

@@ -4,7 +4,6 @@
 #
 
 find_package(glm       REQUIRED)
-find_package(ASSIMP    REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cpplocate REQUIRED)
@@ -12,6 +11,7 @@ find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(glkernel  REQUIRED)
 find_package(openll    REQUIRED)
+find_package(ASSIMP)
 
 
 #
@@ -22,6 +22,13 @@ find_package(openll    REQUIRED)
 set(target demo-stages-plugins)
 
 # Exit here if required dependencies are not met
+if (NOT ASSIMP_FOUND)
+    message(STATUS "Plugin ${target} skipped: ASSIMP not found")
+    return()
+else()
+    message(STATUS "Plugin ${target}")
+endif()
+
 message(STATUS "Plugin ${target}")
 
 # Set API export file and macro

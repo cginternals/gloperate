@@ -152,7 +152,7 @@ void WindowEventDispatcher::handleCursorPos(GLFWwindow * glfwWindow, double xPos
 
 void WindowEventDispatcher::handleCursorEnter(GLFWwindow * glfwWindow, int entered)
 {
-    if (entered == GL_TRUE)
+    if (entered == GLFW_TRUE)
     {
         dispatchEvent(glfwWindow, cppassist::make_unique<MouseEnterEvent>());
     }
@@ -185,12 +185,12 @@ void WindowEventDispatcher::handleMove(GLFWwindow * glfwWindow, int x, int y)
 
 void WindowEventDispatcher::handleFocus(GLFWwindow * glfwWindow, int focused)
 {
-    dispatchEvent(glfwWindow, cppassist::make_unique<FocusEvent>(focused == GL_TRUE));
+    dispatchEvent(glfwWindow, cppassist::make_unique<FocusEvent>(focused == GLFW_TRUE));
 }
 
 void WindowEventDispatcher::handleIconify(GLFWwindow * glfwWindow, int iconified)
 {
-    dispatchEvent(glfwWindow, cppassist::make_unique<IconifyEvent>(iconified == GL_TRUE));
+    dispatchEvent(glfwWindow, cppassist::make_unique<IconifyEvent>(iconified == GLFW_TRUE));
 }
 
 void WindowEventDispatcher::handleClose(GLFWwindow * glfwWindow)

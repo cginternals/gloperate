@@ -5,7 +5,6 @@
     #include <windows.h>
 #endif
 
-#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
 
