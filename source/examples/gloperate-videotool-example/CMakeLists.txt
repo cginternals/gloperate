@@ -7,7 +7,7 @@ find_package(glm       REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(cpplocate REQUIRED)
-find_package(GLFW)
+find_package(glfw3)
 find_package(FFMPEG)
 
 
@@ -19,7 +19,7 @@ find_package(FFMPEG)
 set(target gloperate-videotool-example)
 
 # Exit here if required dependencies are not met
-if (NOT GLFW_FOUND)
+if (NOT glfw3_FOUND)
     message(STATUS "Example ${target} skipped: GLFW not found")
     return()
 elseif(NOT FFMPEG_FOUND)

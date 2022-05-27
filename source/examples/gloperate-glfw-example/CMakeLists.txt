@@ -9,7 +9,7 @@ find_package(globjects REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(cpplocate REQUIRED)
-find_package(GLFW)
+find_package(glfw3)
 
 
 #
@@ -20,7 +20,7 @@ find_package(GLFW)
 set(target gloperate-glfw-example)
 
 # Exit here if required dependencies are not met
-if (NOT GLFW_FOUND)
+if (NOT glfw3_FOUND)
     message(STATUS "Example ${target} skipped: GLFW not found")
     return()
 else()
