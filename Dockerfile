@@ -1,101 +1,115 @@
-ARG BASE=ubuntu:20.04
+ARG BASE=cginternals/rendering-base:latest
+ARG BASE_DEV=cginternals/rendering-base:dev
+ARG CPPLOCATE_DEPENDENCY=cginternals/cpplocate:latest
+ARG CPPFS_DEPENDENCY=cginternals/cppfs:latest
+ARG CPPASSIST_DEPENDENCY=cginternals/cppassist:latest
+ARG CPPEXPOSE_DEPENDENCY=cginternals/cppexpose:latest
+ARG GLKERNEL_DEPENDENCY=cginternals/glkernel:latest
+ARG GLBINDING_DEPENDENCY=cginternals/glbinding:latest
+ARG GLOBJECTS_DEPENDENCY=cginternals/globjects:latest
+ARG OPENLL_DEPENDENCY=cginternals/openll:latest
 ARG PROJECT_NAME=gloperate
-ARG WORKSPACE=/workspace
+
+# DEPENDENCIES
+
+FROM $CPPLOCATE_DEPENDENCY AS cpplocate
+
+FROM $CPPFS_DEPENDENCY AS cppfs
+
+FROM $CPPASSIST_DEPENDENCY AS cppassist
+
+FROM $CPPEXPOSE_DEPENDENCY AS cppexpose
+
+FROM $GLKERNEL_DEPENDENCY AS glkernel
+
+FROM $GLBINDING_DEPENDENCY AS glbinding
+
+FROM $GLOBJECTS_DEPENDENCY AS globjects
+
+FROM $OPENLL_DEPENDENCY AS openll
 
 # BUILD
 
-FROM $BASE AS gloperate-build
+FROM $BASE_DEV AS build
 
 ARG PROJECT_NAME
-ARG WORKSPACE
 ARG COMPILER_FLAGS="-j 4"
 
-ENV DEBIAN_FRONTEND=noninteractive
+COPY --from=cpplocate $WORKSPACE/cpplocate $WORKSPACE/cpplocate
+COPY --from=cppfs $WORKSPACE/cppfs $WORKSPACE/cppfs
+COPY --from=cppassist $WORKSPACE/cppassist $WORKSPACE/cppassist
+COPY --from=cppexpose $WORKSPACE/cppexpose $WORKSPACE/cppexpose
+COPY --from=glkernel $WORKSPACE/glkernel $WORKSPACE/glkernel
+COPY --from=glbinding $WORKSPACE/glbinding $WORKSPACE/glbinding
+COPY --from=globjects $WORKSPACE/globjects $WORKSPACE/globjects
+COPY --from=openll $WORKSPACE/openll $WORKSPACE/openll
 
-RUN apt update
-RUN apt install -y --no-install-recommends sudo \
-    && echo 'user ALL=(ALL) NOPASSWD: ALL' >/etc/sudoers.d/user
-RUN apt install -y --no-install-recommends --reinstall ca-certificates
-RUN apt install -y --no-install-recommends cmake git build-essential
+ENV cpplocate_DIR="$WORKSPACE/cpplocate"
+ENV cppfs_DIR="$WORKSPACE/cppfs"
+ENV cppassist_DIR="$WORKSPACE/cppassist"
+ENV cppexpose_DIR="$WORKSPACE/cppexpose"
+ENV glkernel_DIR="$WORKSPACE/glkernel"
+ENV glbinding_DIR="$WORKSPACE/glbinding"
+ENV globjects_DIR="$WORKSPACE/globjects"
+ENV openll_DIR="$WORKSPACE/openll"
+ENV gloperate_DIR="$WORKSPACE/$PROJECT_NAME"
 
-ENV PROJECT_DIR="$WORKSPACE/$PROJECT_NAME"
+WORKDIR $WORKSPACE/$PROJECT_NAME
 
-WORKDIR $WORKSPACE
+ADD cmake cmake
+ADD docs docs
+ADD deploy deploy
+ADD source source
+ADD data data
+ADD CMakeLists.txt CMakeLists.txt
+ADD configure configure
+ADD $PROJECT_NAME-config.cmake $PROJECT_NAME-config.cmake
+ADD $PROJECT_NAME-logo.svg $PROJECT_NAME-logo.svg
+ADD $PROJECT_NAME-logo.png $PROJECT_NAME-logo.png
+ADD LICENSE LICENSE
+ADD README.md README.md
+ADD AUTHORS AUTHORS
 
-COPY --from=cpplocate:latest $WORKSPACE/cpplocate $WORKSPACE/cpplocate
-COPY --from=cppassist:latest $WORKSPACE/cppassist $WORKSPACE/cppassist
-COPY --from=cppexpose:latest $WORKSPACE/cppexpose $WORKSPACE/cppexpose
-COPY --from=cppfs:latest $WORKSPACE/cppfs $WORKSPACE/cppfs
-COPY --from=globjects:latest $WORKSPACE/glm $WORKSPACE/glm
-COPY --from=glbinding:latest $WORKSPACE/glfw $WORKSPACE/glfw
-COPY --from=glkernel:latest $WORKSPACE/glkernel $WORKSPACE/glkernel
-COPY --from=glbinding:latest $WORKSPACE/glbinding $WORKSPACE/glbinding
-COPY --from=globjects:latest $WORKSPACE/globjects $WORKSPACE/globjects
-COPY --from=openll:latest $WORKSPACE/openll $WORKSPACE/openll
-
-RUN apt install -y --no-install-recommends \
-    libxcursor-dev libxinerama-dev libxrandr-dev libxi-dev
-
-ENV glfw3_DIR=$WORKSPACE/glfw/lib/cmake
-ENV glm_DIR=$WORKSPACE/glm/cmake
-
-WORKDIR $WORKSPACE
-
-ADD cmake $PROJECT_NAME/cmake
-ADD docs $PROJECT_NAME/docs
-ADD deploy $PROJECT_NAME/deploy
-ADD source $PROJECT_NAME/source
-ADD data $PROJECT_NAME/data
-ADD CMakeLists.txt $PROJECT_NAME/CMakeLists.txt
-ADD configure $PROJECT_NAME/configure
-ADD $PROJECT_NAME-config.cmake $PROJECT_NAME/$PROJECT_NAME-config.cmake
-ADD $PROJECT_NAME-logo.svg $PROJECT_NAME/$PROJECT_NAME-logo.svg
-ADD $PROJECT_NAME-logo.png $PROJECT_NAME/$PROJECT_NAME-logo.png
-ADD LICENSE $PROJECT_NAME/LICENSE
-ADD README.md $PROJECT_NAME/README.md
-ADD AUTHORS $PROJECT_NAME/AUTHORS
-
-ENV CMAKE_PREFIX_PATH=$WORKSPACE
-
-WORKDIR $PROJECT_DIR
 RUN ./configure
-RUN CMAKE_OPTIONS="-DOPTION_BUILD_TESTS=Off -DOPTION_BUILD_EXAMPLES=On -DCMAKE_INSTALL_PREFIX=$WORKSPACE/$PROJECT_NAME-install" ./configure
+RUN CMAKE_OPTIONS="-DOPTION_BUILD_TESTS=Off -DOPTION_BUILD_EXAMPLES=On" ./configure
 RUN cmake --build build -- $COMPILER_FLAGS
+
+# INSTALL
+
+FROM build as install
+
+ARG PROJECT_NAME
+
+WORKDIR $WORKSPACE/$PROJECT_NAME
+
+RUN CMAKE_OPTIONS="-DCMAKE_INSTALL_PREFIX=$WORKSPACE/$PROJECT_NAME-install" ./configure
 RUN cmake --build build --target install
 
 # DEPLOY
 
-FROM $BASE AS gloperate
+FROM $BASE AS deploy
 
 ARG PROJECT_NAME
-ARG WORKSPACE
-ENV PROJECT_DIR="$WORKSPACE/$PROJECT_NAME"
 
-ENV DEBIAN_FRONTEND=noninteractive
+COPY --from=build $WORKSPACE/glm $WORKSPACE/glm
+COPY --from=build $WORKSPACE/glfw $WORKSPACE/glfw
+COPY --from=build $WORKSPACE/cpplocate $WORKSPACE/cpplocate
+COPY --from=build $WORKSPACE/cppfs $WORKSPACE/cppfs
+COPY --from=build $WORKSPACE/cppassist $WORKSPACE/cppassist
+COPY --from=build $WORKSPACE/cppexpose $WORKSPACE/cppexpose
+COPY --from=build $WORKSPACE/glkernel $WORKSPACE/glkernel
+COPY --from=build $WORKSPACE/glbinding $WORKSPACE/glbinding
+COPY --from=build $WORKSPACE/globjects $WORKSPACE/globjects
+COPY --from=build $WORKSPACE/openll $WORKSPACE/openll
 
-RUN apt update
-RUN apt install -y --no-install-recommends cmake libx11-6 nvidia-driver-470
+COPY --from=install $WORKSPACE/$PROJECT_NAME-install $WORKSPACE/$PROJECT_NAME
 
-WORKDIR $PROJECT_DIR
-
-COPY --from=gloperate-build $WORKSPACE/cpplocate $WORKSPACE/cpplocate
-COPY --from=gloperate-build $WORKSPACE/cppassist $WORKSPACE/cppassist
-COPY --from=gloperate-build $WORKSPACE/cppexpose $WORKSPACE/cppexpose
-COPY --from=gloperate-build $WORKSPACE/cppfs $WORKSPACE/cppfs
-COPY --from=gloperate-build $WORKSPACE/glm $WORKSPACE/glm
-COPY --from=gloperate-build $WORKSPACE/glfw $WORKSPACE/glfw
-COPY --from=gloperate-build $WORKSPACE/glkernel $WORKSPACE/glkernel
-COPY --from=gloperate-build $WORKSPACE/glbinding $WORKSPACE/glbinding
-COPY --from=gloperate-build $WORKSPACE/globjects $WORKSPACE/globjects
-COPY --from=gloperate-build $WORKSPACE/openll $WORKSPACE/openll
-
-COPY --from=gloperate-build $WORKSPACE/$PROJECT_NAME-install $WORKSPACE/$PROJECT_NAME
-
-ENV LD_LIBRARY_PATH=$WORKSPACE/cpplocate/lib
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/glfw/lib
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cpplocate/lib
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cppfs/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cppassist/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cppexpose/lib
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cppfs/lib
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/glfw/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/glbinding/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/globjects/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/openll/lib
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/$PROJECT_NAME/lib
