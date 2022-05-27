@@ -54,6 +54,8 @@ ENV globjects_DIR="$WORKSPACE/globjects"
 ENV openll_DIR="$WORKSPACE/openll"
 ENV gloperate_DIR="$WORKSPACE/$PROJECT_NAME"
 
+RUN apt install -y libassimp-dev
+
 WORKDIR $WORKSPACE/$PROJECT_NAME
 
 ADD cmake cmake
@@ -90,6 +92,8 @@ RUN cmake --build build --target install
 FROM $BASE AS deploy
 
 ARG PROJECT_NAME
+
+RUN apt install -y libassimp5
 
 COPY --from=build $WORKSPACE/glm $WORKSPACE/glm
 COPY --from=build $WORKSPACE/glfw $WORKSPACE/glfw
