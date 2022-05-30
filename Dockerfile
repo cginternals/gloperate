@@ -4,6 +4,7 @@ ARG CPPLOCATE_DEPENDENCY=cginternals/cpplocate:latest
 ARG CPPFS_DEPENDENCY=cginternals/cppfs:latest
 ARG CPPASSIST_DEPENDENCY=cginternals/cppassist:latest
 ARG CPPEXPOSE_DEPENDENCY=cginternals/cppexpose:latest
+ARG QMLTOOLBOX_DEPENDENCY=cginternals/qmltoolbox:latest
 ARG GLKERNEL_DEPENDENCY=cginternals/glkernel:latest
 ARG GLBINDING_DEPENDENCY=cginternals/glbinding:latest
 ARG GLOBJECTS_DEPENDENCY=cginternals/globjects:latest
@@ -19,6 +20,8 @@ FROM $CPPFS_DEPENDENCY AS cppfs
 FROM $CPPASSIST_DEPENDENCY AS cppassist
 
 FROM $CPPEXPOSE_DEPENDENCY AS cppexpose
+
+FROM $QMLTOOLBOX_DEPENDENCY AS qmltoolbox
 
 FROM $GLKERNEL_DEPENDENCY AS glkernel
 
@@ -39,6 +42,7 @@ COPY --from=cpplocate $WORKSPACE/cpplocate $WORKSPACE/cpplocate
 COPY --from=cppfs $WORKSPACE/cppfs $WORKSPACE/cppfs
 COPY --from=cppassist $WORKSPACE/cppassist $WORKSPACE/cppassist
 COPY --from=cppexpose $WORKSPACE/cppexpose $WORKSPACE/cppexpose
+COPY --from=qmltoolbox $WORKSPACE/qmltoolbox $WORKSPACE/qmltoolbox
 COPY --from=glkernel $WORKSPACE/glkernel $WORKSPACE/glkernel
 COPY --from=glbinding $WORKSPACE/glbinding $WORKSPACE/glbinding
 COPY --from=globjects $WORKSPACE/globjects $WORKSPACE/globjects
@@ -48,13 +52,19 @@ ENV cpplocate_DIR="$WORKSPACE/cpplocate"
 ENV cppfs_DIR="$WORKSPACE/cppfs"
 ENV cppassist_DIR="$WORKSPACE/cppassist"
 ENV cppexpose_DIR="$WORKSPACE/cppexpose"
+ENV cqmltoolbox_DIR="$WORKSPACE/qmltoolbox"
 ENV glkernel_DIR="$WORKSPACE/glkernel"
 ENV glbinding_DIR="$WORKSPACE/glbinding"
 ENV globjects_DIR="$WORKSPACE/globjects"
 ENV openll_DIR="$WORKSPACE/openll"
 ENV gloperate_DIR="$WORKSPACE/$PROJECT_NAME"
 
-RUN apt install -y libassimp-dev
+RUN apt install -y libassimp-dev \
+    qtbase5-dev libqt5qml5 qtdeclarative5-dev qtquickcontrols2-5-dev libqt5quicktemplates2-5 \
+    libqt5core5a libqt5qml5 libqt5quick5 libqt5quickwidgets5 libqt5quickcontrols2-5 libqt5quicktemplates2-5 \
+    qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qtquick-dialogs qml-module-qtquick-layouts \
+    qml-module-qtquick-templates2 qml-module-qt-labs-settings qml-module-qt-labs-folderlistmodel \
+    libqt5opengl5-dev libqt5opengl5
 
 WORKDIR $WORKSPACE/$PROJECT_NAME
 
@@ -93,7 +103,11 @@ FROM $BASE AS deploy
 
 ARG PROJECT_NAME
 
-RUN apt install -y libassimp5
+RUN apt install -y libassimp5 libqt5qml5 libqt5quicktemplates2-5 \
+    libqt5core5a libqt5qml5 libqt5quick5 libqt5quickwidgets5 libqt5quickcontrols2-5 libqt5quicktemplates2-5 \
+    qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qtquick-dialogs qml-module-qtquick-layouts \
+    qml-module-qtquick-templates2 qml-module-qt-labs-settings qml-module-qt-labs-folderlistmodel \
+    libqt5opengl5
 
 COPY --from=build $WORKSPACE/glm $WORKSPACE/glm
 COPY --from=build $WORKSPACE/glfw $WORKSPACE/glfw
@@ -101,6 +115,7 @@ COPY --from=build $WORKSPACE/cpplocate $WORKSPACE/cpplocate
 COPY --from=build $WORKSPACE/cppfs $WORKSPACE/cppfs
 COPY --from=build $WORKSPACE/cppassist $WORKSPACE/cppassist
 COPY --from=build $WORKSPACE/cppexpose $WORKSPACE/cppexpose
+COPY --from=build $WORKSPACE/qmltoolbox $WORKSPACE/qmltoolbox
 COPY --from=build $WORKSPACE/glkernel $WORKSPACE/glkernel
 COPY --from=build $WORKSPACE/glbinding $WORKSPACE/glbinding
 COPY --from=build $WORKSPACE/globjects $WORKSPACE/globjects
@@ -113,6 +128,7 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cpplocate/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cppfs/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cppassist/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cppexpose/lib
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/qmltoolbox/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/glbinding/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/globjects/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/openll/lib
