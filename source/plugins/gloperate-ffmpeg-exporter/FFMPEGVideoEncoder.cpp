@@ -107,7 +107,7 @@ bool FFMPEGVideoEncoder::initEncoding(const cppexpose::VariantMap & parameters)
 
     // Some formats want stream headers to be separate
     if (m_context->oformat->flags & AVFMT_GLOBALHEADER) {
-        m_videoStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
+        m_videoStream->codec->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
     }
 
     // [DEBUG] Output video stream info
@@ -193,7 +193,8 @@ void FFMPEGVideoEncoder::putFrame(const char * data, int width, int height)
 
     // Encode video frame
     int res = 0;
-    if (m_context->oformat->flags & AVFMT_RAWPICTURE) {
+    // AVFMT_RAWPICTURE was deprecated and not available anymore
+    /*if (m_context->oformat->flags & AVFMT_RAWPICTURE) {
         // Raw image format
         packet.flags |= AV_PKT_FLAG_KEY;
         packet.stream_index = m_videoStream->index;
@@ -202,7 +203,7 @@ void FFMPEGVideoEncoder::putFrame(const char * data, int width, int height)
 
         // Write frame
         res = av_write_frame(m_context, &packet);
-    } else {
+    } else */{
         // Encode image frame
         int got_output;
         avcodec_encode_video2(m_videoStream->codec, &packet, m_frame, &got_output);

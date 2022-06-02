@@ -3,24 +3,14 @@
 # External dependencies
 #
 
-find_package(glm REQUIRED)
+# find_package(glm REQUIRED)
 find_package(cpplocate REQUIRED)
 find_package(cppassist REQUIRED)
 find_package(cppexpose REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-
 # FFMPEG
 find_package(FFMPEG)
-
-# Enable automoc
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
-set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
-
-# ENABLE CMP0020: Automatically link Qt executables to qtmain target on Windows.
-cmake_policy(SET CMP0020 NEW)
 
 
 #

@@ -6,10 +6,11 @@
 # find_package(glm REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
-find_package(cppassist REQUIRED)
 find_package(cppexpose REQUIRED)
+find_package(cppassist REQUIRED)
 find_package(cpplocate REQUIRED)
-find_package(openll    REQUIRED)
+find_package(EGL)
+find_package(eglbinding)
 
 
 #
@@ -17,10 +18,18 @@ find_package(openll    REQUIRED)
 #
 
 # Target name
-set(target gloperate-text)
+set(target gloperate-headless)
 
 # Exit here if required dependencies are not met
-message(STATUS "Lib ${target}")
+if (NOT eglbinding_FOUND)
+    message("Lib ${target} skipped: eglbinding not found")
+    return()
+elif (NOT EGL_FOUND)
+    message("Lib ${target} skipped: EGL not found")
+    return()
+else()
+    message(STATUS "Lib ${target}")
+endif()
 
 # Set API export file and macro
 string(MAKE_C_IDENTIFIER ${target} target_id)
@@ -39,17 +48,21 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/FontLoader.h
-    ${include_path}/stages/FontImporterStage.h
-    ${include_path}/stages/GlyphPreparationStage.h
-    ${include_path}/stages/GlyphRenderStage.h
+    ${include_path}/Application.h
+    ${include_path}/Surface.h
+    ${include_path}/RenderSurface.h
+    ${include_path}/GLContext.h
+    ${include_path}/GLContextFactory.h
+    ${include_path}/getProcAddress.h
 )
 
 set(sources
-    ${source_path}/FontLoader.cpp
-    ${source_path}/stages/FontImporterStage.cpp
-    ${source_path}/stages/GlyphPreparationStage.cpp
-    ${source_path}/stages/GlyphRenderStage.cpp
+    ${source_path}/Application.cpp
+    ${source_path}/Surface.cpp
+    ${source_path}/RenderSurface.cpp
+    ${source_path}/GLContext.cpp
+    ${source_path}/GLContextFactory.cpp
+    ${source_path}/getProcAddress.cpp
 )
 
 # Group source files
@@ -101,6 +114,7 @@ set_target_properties(${target}
     SOVERSION ${META_VERSION_MAJOR}
 )
 
+
 #
 # Include directories
 #
@@ -127,18 +141,16 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-    ${OPENGL_LIBRARIES}
     cpplocate::cpplocate
     cppexpose::cppexpose
     cppassist::cppassist
     glbinding::glbinding
     globjects::globjects
-    openll::openll
+    eglbinding::eglbinding
     ${META_PROJECT_NAME}::gloperate
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
-    openll::openll
 
     INTERFACE
 )
@@ -150,10 +162,11 @@ target_link_libraries(${target}
 
 target_compile_definitions(${target}
     PRIVATE
+    ${DEFAULT_COMPILE_DEFINITIONS}
+    GLFW_INCLUDE_NONE
 
     PUBLIC
-    $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_upper}_STATIC_DEFINE>
-    ${DEFAULT_COMPILE_DEFINITIONS}
+    $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_id}_STATIC_DEFINE>
     GLM_FORCE_RADIANS
 
     INTERFACE
@@ -166,9 +179,9 @@ target_compile_definitions(${target}
 
 target_compile_options(${target}
     PRIVATE
+    ${DEFAULT_COMPILE_OPTIONS}
 
     PUBLIC
-    ${DEFAULT_COMPILE_OPTIONS}
 
     INTERFACE
 )
@@ -180,9 +193,9 @@ target_compile_options(${target}
 
 target_link_libraries(${target}
     PRIVATE
+    ${DEFAULT_LINKER_OPTIONS}
 
     PUBLIC
-    ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
 )
