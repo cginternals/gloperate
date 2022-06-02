@@ -146,11 +146,11 @@ target_link_libraries(${target}
     cppassist::cppassist
     glbinding::glbinding
     globjects::globjects
-    eglbinding::eglbinding
     ${META_PROJECT_NAME}::gloperate
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
+    eglbinding::eglbinding
 
     INTERFACE
 )

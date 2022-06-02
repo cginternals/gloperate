@@ -210,19 +210,6 @@ protected:
 
     /**
     *  @brief
-    *    Check for repaint event
-    *
-    *  @remarks
-    *    If repaint() has been called on the window, a repaint event
-    *    will be added to the window's event queue. This needs to be
-    *    done as a separate call to avoid event processing to get stuck
-    *    in an endless loop. Make sure to call Application::pollEvents()
-    *    and updateRepaintEvent() in turn.
-    */
-    void updateRepaintEvent();
-
-    /**
-    *  @brief
     *    Recreates GLFW window using current settings
     *
     *  @return

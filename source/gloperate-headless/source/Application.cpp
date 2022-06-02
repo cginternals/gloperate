@@ -132,7 +132,8 @@ void Application::processEvents()
         surface->idle();
 
         // If surface needs updating, let it send an udate event
-        surface->updateRepaintEvent();
+        // TODO: ?
+        // surface->updateRepaintEvent();
 
         // Process all events for the surface
         if (surface->hasPendingEvents()) {

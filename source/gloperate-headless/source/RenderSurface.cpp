@@ -19,8 +19,8 @@ namespace gloperate_headless
 {
 
 
-RenderSurface::RenderSurface(gloperate::Environment * environment)
-: Surface(Application::s_app->m_display)
+RenderSurface::RenderSurface(Application * app, gloperate::Environment * environment)
+: Surface(app->m_display)
 , m_environment(environment)
 , m_canvas(cppassist::make_unique<Canvas>(environment))
 {
@@ -30,9 +30,9 @@ RenderSurface::RenderSurface(gloperate::Environment * environment)
     } );
 
     // TODO: ?
-    /*m_canvas->setViewport(
-        glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
-    );*/
+    m_canvas->setViewport(
+        glm::vec4(0, 0, 1920, 1080)
+    );
 }
 
 RenderSurface::~RenderSurface()

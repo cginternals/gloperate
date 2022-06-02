@@ -21,6 +21,9 @@ namespace gloperate_headless
 {
 
 
+class Application;
+
+
 /**
 *  @brief
 *    Default rendering surface for gloperate scenes
@@ -31,11 +34,14 @@ public:
     /**
     *  @brief
     *    Constructor
+    * 
+    *  @param[in] app
+    *    Application instance
     *
     *  @param[in] environment
     *    Environment to which the window belongs (must NOT be null)
     */
-    RenderSurface(gloperate::Environment * environment);
+    RenderSurface(Application * app, gloperate::Environment * environment);
 
     /**
     *  @brief
