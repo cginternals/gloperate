@@ -8,6 +8,7 @@ ARG QMLTOOLBOX_DEPENDENCY=cginternals/qmltoolbox:latest
 ARG GLKERNEL_DEPENDENCY=cginternals/glkernel:latest
 ARG GLBINDING_DEPENDENCY=cginternals/glbinding:latest
 ARG GLOBJECTS_DEPENDENCY=cginternals/globjects:latest
+ARG EGLBINDING_DEPENDENCY=cginternals/eglbinding:latest
 ARG OPENLL_DEPENDENCY=cginternals/openll:latest
 ARG PROJECT_NAME=gloperate
 
@@ -29,6 +30,8 @@ FROM $GLBINDING_DEPENDENCY AS glbinding
 
 FROM $GLOBJECTS_DEPENDENCY AS globjects
 
+FROM $EGLBINDING_DEPENDENCY AS eglbinding
+
 FROM $OPENLL_DEPENDENCY AS openll
 
 # BUILD
@@ -46,6 +49,7 @@ COPY --from=qmltoolbox $WORKSPACE/qmltoolbox $WORKSPACE/qmltoolbox
 COPY --from=glkernel $WORKSPACE/glkernel $WORKSPACE/glkernel
 COPY --from=glbinding $WORKSPACE/glbinding $WORKSPACE/glbinding
 COPY --from=globjects $WORKSPACE/globjects $WORKSPACE/globjects
+COPY --from=eglbinding $WORKSPACE/eglbinding $WORKSPACE/eglbinding
 COPY --from=openll $WORKSPACE/openll $WORKSPACE/openll
 
 ENV cpplocate_DIR="$WORKSPACE/cpplocate"
@@ -56,6 +60,7 @@ ENV qmltoolbox_DIR="$WORKSPACE/qmltoolbox"
 ENV glkernel_DIR="$WORKSPACE/glkernel"
 ENV glbinding_DIR="$WORKSPACE/glbinding"
 ENV globjects_DIR="$WORKSPACE/globjects"
+ENV eglbinding_DIR="$WORKSPACE/eglbinding"
 ENV openll_DIR="$WORKSPACE/openll"
 ENV gloperate_DIR="$WORKSPACE/$PROJECT_NAME"
 
@@ -119,6 +124,7 @@ COPY --from=build $WORKSPACE/qmltoolbox $WORKSPACE/qmltoolbox
 COPY --from=build $WORKSPACE/glkernel $WORKSPACE/glkernel
 COPY --from=build $WORKSPACE/glbinding $WORKSPACE/glbinding
 COPY --from=build $WORKSPACE/globjects $WORKSPACE/globjects
+COPY --from=build $WORKSPACE/eglbinding $WORKSPACE/eglbinding
 COPY --from=build $WORKSPACE/openll $WORKSPACE/openll
 
 COPY --from=install $WORKSPACE/$PROJECT_NAME-install $WORKSPACE/$PROJECT_NAME
@@ -131,5 +137,6 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/cppexpose/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/qmltoolbox/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/glbinding/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/globjects/lib
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/eglbinding/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/openll/lib
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WORKSPACE/$PROJECT_NAME/lib
