@@ -99,7 +99,7 @@ int main(int argc, char * argv[])
     gl::glReadPixels(0, 0, width, height, gl::GL_RGB, gl::GL_UNSIGNED_BYTE, pixels.data());
     gl::glFinish();
 
-    std::fstream stream("test.1280.720.rgb.ub.raw", std::fstream::out | std::fstream::binary);
+    std::fstream stream("gloperate-headless-"+std::to_string(width)+"."+std::to_string(height)+".rgb.ub.raw", std::fstream::out | std::fstream::binary);
     stream.write(reinterpret_cast<const char *>(pixels.data()), pixels.size());
     stream.close();
 
