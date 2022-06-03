@@ -16,6 +16,27 @@ using namespace gloperate;
 using namespace egl;
 
 
+namespace
+{
+
+
+EGLint profileToEGLBits(GLContextFormat::Profile profile)
+{
+    switch (profile)
+    {
+    case GLContextFormat::Profile::Core:
+        return static_cast<EGLint>(EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT);
+    case GLContextFormat::Profile::Compatibility:
+        return static_cast<EGLint>(EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT);
+    default:
+        return 0;
+    }
+}
+
+
+} // namespace
+
+
 namespace gloperate_headless
 {
 
@@ -70,14 +91,19 @@ std::unique_ptr<gloperate::AbstractGLContext> GLContextFactory::createContext(co
     ctxattr.emplace_back(static_cast<EGLint>(EGL_CONTEXT_MINOR_VERSION));
     ctxattr.emplace_back(static_cast<EGLint>(format.minorVersion()));
 
-    ctxattr.emplace_back(static_cast<EGLint>(EGL_CONTEXT_OPENGL_PROFILE_MASK));
-    ctxattr.emplace_back(static_cast<EGLint>(format.profile()));
+    if (format.profile() != GLContextFormat::Profile::None)
+    {
+        ctxattr.emplace_back(static_cast<EGLint>(EGL_CONTEXT_OPENGL_PROFILE_MASK));
+        ctxattr.emplace_back(static_cast<EGLint>(profileToEGLBits(format.profile())));
+    }
 
+    /*
     ctxattr.emplace_back(static_cast<EGLint>(EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE));
     ctxattr.emplace_back(static_cast<EGLint>(format.forwardCompatible()));
 
     ctxattr.emplace_back(static_cast<EGLint>(EGL_CONTEXT_OPENGL_DEBUG));
     ctxattr.emplace_back(static_cast<EGLint>(format.debugContext()));
+    */
 
     ctxattr.emplace_back(static_cast<EGLint>(EGL_NONE));
 

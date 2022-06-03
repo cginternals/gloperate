@@ -2,11 +2,21 @@
 #pragma once
 
 
-#include <eglbinding/egl/types.h>
-
 #include <gloperate/base/AbstractGLContext.h>
 
 #include <gloperate-headless/gloperate-headless_api.h>
+
+
+namespace egl
+{
+
+
+using EGLDisplay = void*;
+using EGLSurface = void*;
+using EGLContext = void*;
+
+
+} // namespace egl
 
 
 namespace gloperate_headless

@@ -3,6 +3,8 @@
 
 #include <glm/glm.hpp>
 
+#include <cppassist/logging/logging.h>
+
 #include <globjects/Framebuffer.h>
 
 #include <gloperate/base/Canvas.h>
@@ -10,6 +12,7 @@
 
 #include <gloperate-headless/Application.h>
 #include <gloperate-headless/GLContext.h>
+#include <gloperate-headless/SurfaceEvent.h>
 
 
 using namespace gloperate;
@@ -28,11 +31,6 @@ RenderSurface::RenderSurface(Application * app, gloperate::Environment * environ
     {
         repaint();
     } );
-
-    // TODO: ?
-    m_canvas->setViewport(
-        glm::vec4(0, 0, 1920, 1080)
-    );
 }
 
 RenderSurface::~RenderSurface()
@@ -62,6 +60,78 @@ void RenderSurface::onContextInit()
 void RenderSurface::onContextDeinit()
 {
     m_canvas->setOpenGLContext(nullptr);
+}
+
+void RenderSurface::onResize(ResizeEvent & event)
+{
+    m_deviceSize = event.size();
+
+    m_canvas->setViewport(
+        glm::vec4(0, 0, m_deviceSize.x,  m_deviceSize.y)
+    );
+}
+
+void RenderSurface::onPaint(PaintEvent &)
+{
+    static const auto defaultFBO = globjects::Framebuffer::defaultFBO();
+
+    cppassist::info("gloperate-headless") << "Surface::onPaint";
+
+    m_canvas->render(defaultFBO.get());
+}
+
+void RenderSurface::onKeyPress(KeyEvent & event)
+{
+    // Skip auto-repeated key events
+    if (event.action() == static_cast<unsigned int>(SurfaceEvent::ActionType::Repeat))
+    {
+        return;
+    }
+
+    m_canvas->promoteKeyPress(
+        event.key(),
+        event.modifiers()
+    );
+}
+
+void RenderSurface::onKeyRelease(KeyEvent & event)
+{
+    m_canvas->promoteKeyRelease(
+        event.key(),
+        event.modifiers()
+    );
+}
+
+void RenderSurface::onMousePress(MouseEvent & event)
+{
+    m_canvas->promoteMousePress(
+        event.button()
+      , event.pos()
+      , event.modifiers()
+    );
+}
+
+void RenderSurface::onMouseRelease(MouseEvent & event)
+{
+    m_canvas->promoteMouseRelease(
+        event.button()
+      , event.pos()
+      , event.modifiers()
+    );
+}
+
+void RenderSurface::onMouseMove(MouseEvent & event)
+{
+    m_canvas->promoteMouseMove(event.pos(), event.modifiers());
+}
+
+void RenderSurface::onScroll(MouseEvent & event)
+{
+    m_canvas->promoteMouseWheel(
+        event.delta()
+      , event.pos()
+      , 0
+    );
 }
 
 void RenderSurface::onIdle()

@@ -2,9 +2,17 @@
 #pragma once
 
 
-#include <eglbinding/egl/types.h>
-
 #include <gloperate-headless/gloperate-headless_api.h>
+
+
+namespace egl
+{
+
+
+using EGLDisplay = void*;
+
+
+} // namespace egl
 
 
 namespace gloperate
@@ -98,6 +106,17 @@ public:
     *    Exit code (0 for no error, > 0 for error)
     */
     int run();
+
+    /**
+    *  @brief
+    *    Run the main loop once
+    *
+    *    Execute the message loop for the application.
+    *
+    *  @return
+    *    Exit code (0 for no error, > 0 for error)
+    */
+    int frame();
 
     /**
     *  @brief

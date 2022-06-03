@@ -5,6 +5,8 @@
 #include <chrono>
 #include <thread>
 
+#include <cppassist/logging/logging.h>
+
 #include <eglbinding/eglbinding.h>
 #include <eglbinding/egl/egl.h>
 
@@ -66,17 +68,28 @@ Application::Application(gloperate::Environment * environment, int &, char **)
 
     assert(m_display != nullptr);
 
+    cppassist::debug("gloperate-headless") << "Load EGL Display " << m_display;
+
     EGLint vmajor, vminor;
 
     const auto result = eglInitialize(m_display, &vmajor, &vminor);
     (void)result;
     assert(result);
+
+    cppassist::debug("gloperate-headless") << "Initialize with EGL Version " << vmajor << "." << vminor;
 }
 
 Application::~Application()
 {
     // Deregister application
     s_app = nullptr;
+
+    if (m_display != nullptr)
+    {
+        cppassist::debug("gloperate-headless") << "Terminate EGL Display " << m_display;
+
+        eglTerminate(m_display);   
+    }
 }
 
 int Application::run()
@@ -95,12 +108,31 @@ int Application::run()
     while (m_running)
     {
         // Wait until drawing finished.
-        eglWaitClient();
         processEvents();
+        eglWaitClient();
     }
 
-    // Deinitialize eglbinding
-    eglTerminate(m_display);
+    // Return with exit code
+    return m_exitCode;
+}
+
+int Application::frame()
+{
+    // Abort if application is already running
+    if (m_running)
+    {
+        return 1;
+    }
+
+    // Start application
+    m_running  = true;
+    m_exitCode = 0;
+
+    // Wait until drawing finished.
+    processEvents();
+    eglWaitClient();
+
+    m_running  = false;
 
     // Return with exit code
     return m_exitCode;
@@ -132,8 +164,7 @@ void Application::processEvents()
         surface->idle();
 
         // If surface needs updating, let it send an udate event
-        // TODO: ?
-        // surface->updateRepaintEvent();
+        surface->updateRepaintEvent();
 
         // Process all events for the surface
         if (surface->hasPendingEvents()) {

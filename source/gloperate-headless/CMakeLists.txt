@@ -53,6 +53,7 @@ set(headers
     ${include_path}/RenderSurface.h
     ${include_path}/GLContext.h
     ${include_path}/GLContextFactory.h
+    ${include_path}/SurfaceEvent.h
     ${include_path}/getProcAddress.h
 )
 
@@ -62,6 +63,7 @@ set(sources
     ${source_path}/RenderSurface.cpp
     ${source_path}/GLContext.cpp
     ${source_path}/GLContextFactory.cpp
+    ${source_path}/SurfaceEvent.cpp
     ${source_path}/getProcAddress.cpp
 )
 

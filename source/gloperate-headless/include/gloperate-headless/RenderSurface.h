@@ -81,6 +81,14 @@ protected:
     // Virtual Window functions
     virtual void onContextInit() override;
     virtual void onContextDeinit() override;
+    virtual void onResize(ResizeEvent & event) override;
+    virtual void onPaint(PaintEvent & event) override;
+    virtual void onKeyPress(KeyEvent & event) override;
+    virtual void onKeyRelease(KeyEvent & event) override;
+    virtual void onMousePress(MouseEvent & event) override;
+    virtual void onMouseRelease(MouseEvent & event) override;
+    virtual void onMouseMove(MouseEvent & event) override;
+    virtual void onScroll(MouseEvent & event) override;
     virtual void onIdle() override;
 
 
@@ -88,7 +96,6 @@ protected:
     gloperate::Environment           * m_environment; ///< Gloperate environment to which the window belongs (must NOT be null) 
     std::unique_ptr<gloperate::Canvas> m_canvas;      ///< Canvas that controls the rendering onto the window (must NOT be null)
     glm::ivec2                         m_deviceSize;  ///< Window size (real device pixels)
-    glm::ivec2                         m_virtualSize; ///< Window size (virtual pixel size)
 };
 
 

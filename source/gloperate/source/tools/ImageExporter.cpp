@@ -3,6 +3,8 @@
 
 #include <cassert>
 
+#include <cppassist/logging/logging.h>
+
 #include <glm/vec4.hpp>
 
 #include <glbinding/gl/gl.h>
@@ -44,6 +46,7 @@ void ImageExporter::setTarget(Canvas * canvas, const std::string & filename, int
 
 void ImageExporter::save(ImageExporter::ContextHandling)
 {
+    cppassist::critical("gloperate") << "ImageExporter::save currently not implemented.";
     // [TODO] Reimplement
 
     /*

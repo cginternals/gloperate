@@ -73,6 +73,8 @@ bool QtTextureStorer::store(const std::string & filename, const globjects::Textu
         return false;
     }
 
+
+
     // Load image
 
     texture->bind();
