@@ -12,6 +12,7 @@ set(MODULE_NAMES
     gloperate-qtquick
     gloperate-glfw
     gloperate-glkernel
+    gloperate-headless
 #    gloperate-osg
 #    gloperate-assimp
     gloperate-text
